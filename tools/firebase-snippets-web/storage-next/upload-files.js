@@ -3,7 +3,7 @@
 
 function uploadRef() {
   // [START storage_upload_ref]
-  const { getStorage, ref } = require("firebase/storage");
+  const { getStorage, ref } = require('firebase/storage');
 
   // Create a root reference
   const storage = getStorage();
@@ -15,8 +15,8 @@ function uploadRef() {
   const mountainImagesRef = ref(storage, 'images/mountains.jpg');
 
   // While the file names are the same, the references point to different files
-  mountainsRef.name === mountainImagesRef.name;           // true
-  mountainsRef.fullPath === mountainImagesRef.fullPath;   // false
+  mountainsRef.name === mountainImagesRef.name; // true
+  mountainsRef.fullPath === mountainImagesRef.fullPath; // false
   // [END storage_upload_ref]
 }
 
@@ -25,7 +25,7 @@ function uploadRef() {
  */
 function uploadBlob(file) {
   // [START storage_upload_blob]
-  const { getStorage, ref, uploadBytes } = require("firebase/storage");
+  const { getStorage, ref, uploadBytes } = require('firebase/storage');
 
   const storage = getStorage();
   const storageRef = ref(storage, 'some-child');
@@ -39,12 +39,14 @@ function uploadBlob(file) {
 
 function uploadBytes() {
   // [START storage_upload_bytes]
-  const { getStorage, ref, uploadBytes } = require("firebase/storage");
+  const { getStorage, ref, uploadBytes } = require('firebase/storage');
 
   const storage = getStorage();
   const storageRef = ref(storage, 'some-child');
 
-  const bytes = new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21]);
+  const bytes = new Uint8Array([
+    0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
+  ]);
   uploadBytes(storageRef, bytes).then((snapshot) => {
     console.log('Uploaded an array!');
   });
@@ -53,7 +55,7 @@ function uploadBytes() {
 
 function uploadString() {
   // [START storage_upload_string]
-  const { getStorage, ref, uploadString } = require("firebase/storage");
+  const { getStorage, ref, uploadString } = require('firebase/storage');
 
   const storage = getStorage();
   const storageRef = ref(storage, 'some-child');
@@ -89,7 +91,7 @@ function uploadString() {
  */
 function uploadMetadata(file) {
   // [START storage_upload_metadata]
-  const { getStorage, ref, uploadBytes } = require("firebase/storage");
+  const { getStorage, ref, uploadBytes } = require('firebase/storage');
 
   const storage = getStorage();
   const storageRef = ref(storage, 'images/mountains.jpg');
@@ -110,7 +112,7 @@ function uploadMetadata(file) {
  */
 function manageUploads(file) {
   // [START storage_manage_uploads]
-  const { getStorage, ref, uploadBytesResumable } = require("firebase/storage");
+  const { getStorage, ref, uploadBytesResumable } = require('firebase/storage');
 
   const storage = getStorage();
   const storageRef = ref(storage, 'images/mountains.jpg');
@@ -134,7 +136,7 @@ function manageUploads(file) {
  */
 function monitorUpload(file) {
   // [START storage_monitor_upload]
-  const { getStorage, ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage");
+  const { getStorage, ref, uploadBytesResumable, getDownloadURL } = require('firebase/storage');
 
   const storage = getStorage();
   const storageRef = ref(storage, 'images/rivers.jpg');
@@ -145,7 +147,8 @@ function monitorUpload(file) {
   // 1. 'state_changed' observer, called any time the state changes
   // 2. Error observer, called on failure
   // 3. Completion observer, called on successful completion
-  uploadTask.on('state_changed',
+  uploadTask.on(
+    'state_changed',
     (snapshot) => {
       // Observe state change events such as progress, pause, and resume
       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
@@ -169,7 +172,7 @@ function monitorUpload(file) {
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
         console.log('File available at', downloadURL);
       });
-    }
+    },
   );
   // [END storage_monitor_upload]
 }
@@ -179,14 +182,14 @@ function monitorUpload(file) {
  */
 function uploadHandleError(file) {
   // [START storage_upload_handle_error]
-  const { getStorage, ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage");
+  const { getStorage, ref, uploadBytesResumable, getDownloadURL } = require('firebase/storage');
 
   const storage = getStorage();
 
   // Create the file metadata
   /** @type {any} */
   const metadata = {
-    contentType: 'image/jpeg'
+    contentType: 'image/jpeg',
   };
 
   // Upload file and metadata to the object 'images/mountains.jpg'
@@ -194,7 +197,8 @@ function uploadHandleError(file) {
   const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
   // Listen for state changes, errors, and completion of the upload.
-  uploadTask.on('state_changed',
+  uploadTask.on(
+    'state_changed',
     (snapshot) => {
       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -231,7 +235,7 @@ function uploadHandleError(file) {
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
         console.log('File available at', downloadURL);
       });
-    }
+    },
   );
   // [END storage_upload_handle_error]
 }

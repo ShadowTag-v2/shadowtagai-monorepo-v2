@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Directive, directive} from 'lit/directive.js';
-import {classMap, type ClassInfo} from 'lit/directives/class-map.js';
+import { Directive, directive } from 'lit/directive.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
 
 /** Divider classes. */
 export const DIVIDER_CLASSES = {
@@ -25,9 +25,7 @@ export interface DividerClassesState {
  * @param state The state of the divider.
  * @return An object of class names and truthy values if they apply.
  */
-export function dividerClasses({
-  vertical = false,
-}: DividerClassesState = {}): ClassInfo {
+export function dividerClasses({ vertical = false }: DividerClassesState = {}): ClassInfo {
   return {
     [DIVIDER_CLASSES.divider]: true,
     [DIVIDER_CLASSES.dividerVertical]: vertical,

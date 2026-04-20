@@ -4,19 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {focusRingClasses} from '@material/web/labs/gb/components/focus/focus-ring.js';
-import {
-  rippleClasses,
-  setupRipple,
-} from '@material/web/labs/gb/components/ripple/ripple.js';
-import {PSEUDO_CLASSES} from '@material/web/labs/gb/components/shared/pseudo-classes.js';
+import { focusRingClasses } from '@material/web/labs/gb/components/focus/focus-ring.js';
+import { rippleClasses, setupRipple } from '@material/web/labs/gb/components/ripple/ripple.js';
+import { PSEUDO_CLASSES } from '@material/web/labs/gb/components/shared/pseudo-classes.js';
 import {
   AsyncDirective,
-  AttributePart,
+  type AttributePart,
+  type DirectiveParameters,
   directive,
-  DirectiveParameters,
 } from 'lit/async-directive.js';
-import {classMap, type ClassInfo} from 'lit/directives/class-map.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
 
 /** Checkbox classes. */
 export const CHECKBOX_CLASSES = {
@@ -83,10 +80,7 @@ export function checkboxClasses({
  * @param checkbox The element on which to set up checkbox functionality.
  * @param opts Setup options, supports a cleanup `signal`.
  */
-export function setupCheckbox(
-  checkbox: HTMLElement,
-  opts?: {signal?: AbortSignal},
-): void {
+export function setupCheckbox(checkbox: HTMLElement, opts?: { signal?: AbortSignal }): void {
   setupRipple(checkbox, opts);
 }
 
@@ -107,10 +101,7 @@ class CheckboxDirective extends AsyncDirective {
     });
   }
 
-  override update(
-    {element}: AttributePart,
-    [state]: DirectiveParameters<this>,
-  ) {
+  override update({ element }: AttributePart, [state]: DirectiveParameters<this>) {
     if (this.isConnected && element !== this.element) {
       this.element = element as HTMLElement;
       this.disconnected();
@@ -127,7 +118,7 @@ class CheckboxDirective extends AsyncDirective {
   protected override reconnected() {
     if (this.element) {
       this.cleanup = new AbortController();
-      setupCheckbox(this.element, {signal: this.cleanup.signal});
+      setupCheckbox(this.element, { signal: this.cleanup.signal });
     }
   }
 }

@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
+import type * as firestore from '@google-cloud/firestore';
 import * as protos from '../protos/firestore_v1_proto_api';
-
-import {QueryPartition} from './query-partition';
-import {requestTag} from './util';
-import {logger} from './logger';
-import {Query} from './reference/query';
-import {QueryOptions} from './reference/query-options';
-import {FieldPath} from './path';
-import {Firestore} from './index';
-import {validateInteger} from './validate';
+import type { Firestore } from './index';
+import { logger } from './logger';
+import { FieldPath } from './path';
+import { QueryPartition } from './query-partition';
+import { Query } from './reference/query';
+import { QueryOptions } from './reference/query-options';
+import { requestTag } from './util';
+import { validateInteger } from './validate';
 
 import api = protos.google.firestore.v1;
-import {defaultConverter} from './types';
-import {compareArrays} from './order';
-import {SPAN_NAME_PARTITION_QUERY} from './telemetry/trace-util';
+
+import { compareArrays } from './order';
+import { SPAN_NAME_PARTITION_QUERY } from './telemetry/trace-util';
+import { defaultConverter } from './types';
 
 /**
  * A `CollectionGroup` refers to all documents that are contained in a
@@ -48,14 +48,9 @@ export class CollectionGroup<
   constructor(
     firestore: Firestore,
     collectionId: string,
-    converter:
-      | firestore.FirestoreDataConverter<AppModelType, DbModelType>
-      | undefined,
+    converter: firestore.FirestoreDataConverter<AppModelType, DbModelType> | undefined,
   ) {
-    super(
-      firestore,
-      QueryOptions.forCollectionGroupQuery(collectionId, converter),
-    );
+    super(firestore, QueryOptions.forCollectionGroupQuery(collectionId, converter));
   }
 
   /**
@@ -84,50 +79,41 @@ export class CollectionGroup<
   ): AsyncIterable<QueryPartition<AppModelType, DbModelType>> {
     const partitions: Array<api.IValue>[] = [];
 
-    await this._firestore._traceUtil.startActiveSpan(
-      SPAN_NAME_PARTITION_QUERY,
-      async () => {
-        validateInteger('desiredPartitionCount', desiredPartitionCount, {
-          minValue: 1,
-        });
+    await this._firestore._traceUtil.startActiveSpan(SPAN_NAME_PARTITION_QUERY, async () => {
+      validateInteger('desiredPartitionCount', desiredPartitionCount, {
+        minValue: 1,
+      });
 
-        const tag = requestTag();
-        await this.firestore.initializeIfNeeded(tag);
+      const tag = requestTag();
+      await this.firestore.initializeIfNeeded(tag);
 
-        if (desiredPartitionCount > 1) {
-          // Partition queries require explicit ordering by __name__.
-          const queryWithDefaultOrder = this.orderBy(FieldPath.documentId());
-          const request: api.IPartitionQueryRequest =
-            queryWithDefaultOrder.toProto();
+      if (desiredPartitionCount > 1) {
+        // Partition queries require explicit ordering by __name__.
+        const queryWithDefaultOrder = this.orderBy(FieldPath.documentId());
+        const request: api.IPartitionQueryRequest = queryWithDefaultOrder.toProto();
 
-          // Since we are always returning an extra partition (with an empty endBefore
-          // cursor), we reduce the desired partition count by one.
-          request.partitionCount = desiredPartitionCount - 1;
+        // Since we are always returning an extra partition (with an empty endBefore
+        // cursor), we reduce the desired partition count by one.
+        request.partitionCount = desiredPartitionCount - 1;
 
-          const stream = await this.firestore.requestStream(
-            'partitionQueryStream',
-            /* bidirectional= */ false,
-            request,
-            tag,
-          );
-          stream.resume();
-
-          for await (const currentCursor of stream) {
-            partitions.push(currentCursor.values ?? []);
-          }
-        }
-
-        logger(
-          'Firestore.getPartitions',
+        const stream = await this.firestore.requestStream(
+          'partitionQueryStream',
+          /* bidirectional= */ false,
+          request,
           tag,
-          'Received %d partitions',
-          partitions.length,
         );
+        stream.resume();
 
-        // Sort the partitions as they may not be ordered if responses are paged.
-        partitions.sort((l, r) => compareArrays(l, r));
-      },
-    );
+        for await (const currentCursor of stream) {
+          partitions.push(currentCursor.values ?? []);
+        }
+      }
+
+      logger('Firestore.getPartitions', tag, 'Received %d partitions', partitions.length);
+
+      // Sort the partitions as they may not be ordered if responses are paged.
+      partitions.sort((l, r) => compareArrays(l, r));
+    });
 
     for (let i = 0; i < partitions.length; ++i) {
       yield new QueryPartition(
@@ -205,19 +191,13 @@ export class CollectionGroup<
     NewAppModelType,
     NewDbModelType extends firestore.DocumentData = firestore.DocumentData,
   >(
-    converter: firestore.FirestoreDataConverter<
-      NewAppModelType,
-      NewDbModelType
-    > | null,
+    converter: firestore.FirestoreDataConverter<NewAppModelType, NewDbModelType> | null,
   ): CollectionGroup<NewAppModelType, NewDbModelType>;
   withConverter<
     NewAppModelType,
     NewDbModelType extends firestore.DocumentData = firestore.DocumentData,
   >(
-    converter: firestore.FirestoreDataConverter<
-      NewAppModelType,
-      NewDbModelType
-    > | null,
+    converter: firestore.FirestoreDataConverter<NewAppModelType, NewDbModelType> | null,
   ): CollectionGroup<NewAppModelType, NewDbModelType> {
     return new CollectionGroup<NewAppModelType, NewDbModelType>(
       this.firestore,

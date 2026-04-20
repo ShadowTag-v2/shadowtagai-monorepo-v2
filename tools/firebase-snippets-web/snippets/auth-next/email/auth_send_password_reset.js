@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_send_password_reset_modular]
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 
 const auth = getAuth();
 sendPasswordResetEmail(auth, email)

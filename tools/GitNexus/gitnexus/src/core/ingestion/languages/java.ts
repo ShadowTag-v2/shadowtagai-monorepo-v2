@@ -8,14 +8,14 @@
  */
 
 import { SupportedLanguages } from '../../../config/supported-languages.js';
-import { defineLanguage } from '../language-provider.js';
-import { javaTypeConfig } from '../type-extractors/jvm.js';
 import { javaExportChecker } from '../export-detection.js';
+import { javaConfig } from '../field-extractors/configs/jvm.js';
+import { createFieldExtractor } from '../field-extractors/generic.js';
 import { resolveJavaImport } from '../import-resolvers/jvm.js';
+import { defineLanguage } from '../language-provider.js';
 import { extractJavaNamedBindings } from '../named-bindings/java.js';
 import { JAVA_QUERIES } from '../tree-sitter-queries.js';
-import { createFieldExtractor } from '../field-extractors/generic.js';
-import { javaConfig } from '../field-extractors/configs/jvm.js';
+import { javaTypeConfig } from '../type-extractors/jvm.js';
 
 export const javaProvider = defineLanguage({
   id: SupportedLanguages.Java,

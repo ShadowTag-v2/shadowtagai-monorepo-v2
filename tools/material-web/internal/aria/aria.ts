@@ -96,12 +96,11 @@ export function ariaPropertyToAttribute<K extends ARIAProperty>(property: K) {
 }
 
 // Converts an `ariaFoo` string type to an `aria-foo` string type.
-type ARIAPropertyToAttribute<K extends string> =
-  K extends `aria${infer Suffix}Element${infer OptS}`
+type ARIAPropertyToAttribute<K extends string> = K extends `aria${infer Suffix}Element${infer OptS}`
+  ? `aria-${Lowercase<Suffix>}`
+  : K extends `aria${infer Suffix}`
     ? `aria-${Lowercase<Suffix>}`
-    : K extends `aria${infer Suffix}`
-      ? `aria-${Lowercase<Suffix>}`
-      : K;
+    : K;
 
 /**
  * An extension of `ARIAMixin` that enforces strict value types for aria
@@ -127,26 +126,10 @@ export interface ARIAMixinStrict extends ARIAMixin {
   ariaColCount: `${number}` | null;
   ariaColIndex: `${number}` | null;
   ariaColSpan: `${number}` | null;
-  ariaCurrent:
-    | 'page'
-    | 'step'
-    | 'location'
-    | 'date'
-    | 'time'
-    | 'true'
-    | 'false'
-    | null;
+  ariaCurrent: 'page' | 'step' | 'location' | 'date' | 'time' | 'true' | 'false' | null;
   ariaDisabled: 'true' | 'false' | null;
   ariaExpanded: 'true' | 'false' | null;
-  ariaHasPopup:
-    | 'false'
-    | 'true'
-    | 'menu'
-    | 'listbox'
-    | 'tree'
-    | 'grid'
-    | 'dialog'
-    | null;
+  ariaHasPopup: 'false' | 'true' | 'menu' | 'listbox' | 'tree' | 'grid' | 'dialog' | null;
   ariaHidden: 'true' | 'false' | null;
   ariaInvalid: 'true' | 'false' | null;
   ariaKeyShortcuts: string | null;

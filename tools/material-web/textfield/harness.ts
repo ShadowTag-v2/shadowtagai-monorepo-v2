@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Harness} from '../testing/harness.js';
+import { Harness } from '../testing/harness.js';
 
-import {TextField} from './internal/text-field.js';
+import type { TextField } from './internal/text-field.js';
 
 /**
  * Test harness for text field elements.
@@ -52,11 +52,7 @@ export class TextFieldHarness extends Harness<TextField> {
    */
   async deleteValue(beginIndex?: number, endIndex?: number) {
     this.simulateKeypress(await this.getInteractiveElement(), 'Backspace');
-    this.simulateDeletion(
-      await this.getInteractiveElement(),
-      beginIndex,
-      endIndex,
-    );
+    this.simulateDeletion(await this.getInteractiveElement(), beginIndex, endIndex);
   }
 
   override async reset() {
@@ -122,9 +118,7 @@ export class TextFieldHarness extends Harness<TextField> {
     element.dispatchEvent(new InputEvent('input', init));
   }
 
-  protected simulateChangeIfNeeded(
-    element: HTMLInputElement | HTMLTextAreaElement,
-  ) {
+  protected simulateChangeIfNeeded(element: HTMLInputElement | HTMLTextAreaElement) {
     if (this.valueBeforeChange === element.value) {
       return;
     }

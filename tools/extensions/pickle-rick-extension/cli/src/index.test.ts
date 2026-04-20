@@ -1,23 +1,27 @@
-import { expect, test, describe, mock } from "bun:test";
+import { describe, expect, mock, test } from 'bun:test';
 
-mock.module("commander", () => ({
+mock.module('commander', () => ({
   program: {
-    name: mock(() => ({ description: mock(() => ({ version: mock(() => ({
-      action: mock(() => ({ parse: mock(() => {}) }))
-    })) })) })),
+    name: mock(() => ({
+      description: mock(() => ({
+        version: mock(() => ({
+          action: mock(() => ({ parse: mock(() => {}) })),
+        })),
+      })),
+    })),
     command: mock(() => ({
       description: mock(() => ({
-        action: mock(() => {})
-      }))
+        action: mock(() => {}),
+      })),
     })),
-    parse: mock(() => {})
-  }
+    parse: mock(() => {}),
+  },
 }));
 
-import "./index.js";
+import './index.js';
 
-describe("CLI Entry Point", () => {
-  test("index.ts should load without errors", () => {
+describe('CLI Entry Point', () => {
+  test('index.ts should load without errors', () => {
     // If we got here, it loaded
     expect(true).toBe(true);
   });

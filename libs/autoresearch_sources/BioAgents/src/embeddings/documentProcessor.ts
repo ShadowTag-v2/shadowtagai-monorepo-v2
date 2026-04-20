@@ -1,9 +1,9 @@
-import matter from "front-matter";
-import fs from "fs/promises";
-import mammoth from "mammoth";
-import path from "path";
-import { PDFParse } from "pdf-parse";
-import logger from "../utils/logger";
+import matter from 'front-matter';
+import fs from 'fs/promises';
+import mammoth from 'mammoth';
+import path from 'path';
+import { PDFParse } from 'pdf-parse';
+import logger from '../utils/logger';
 
 export interface ProcessedDocument {
   title: string;
@@ -28,22 +28,22 @@ export class DocumentProcessor {
 
     try {
       switch (ext) {
-        case ".md": {
-          const rawContent = await fs.readFile(filePath, "utf-8");
+        case '.md': {
+          const rawContent = await fs.readFile(filePath, 'utf-8');
           const parsed = matter(rawContent);
           frontMatterData = parsed.attributes;
           content = parsed.body;
           break;
         }
 
-        case ".docx": {
+        case '.docx': {
           const buffer = await fs.readFile(filePath);
           const result = await mammoth.extractRawText({ buffer });
           content = result.value;
           break;
         }
 
-        case ".pdf":
+        case '.pdf':
           try {
             const parser = new PDFParse({ url: filePath });
             const pdfResult = await parser.getText();

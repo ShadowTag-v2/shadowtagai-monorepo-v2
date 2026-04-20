@@ -6,7 +6,7 @@
 
 // [START rtdb_ondisconnect_cancel_modular]
 const onDisconnectRef = onDisconnect(presenceRef);
-onDisconnectRef.set("I disconnected");
+onDisconnectRef.set('I disconnected');
 // some time later when we change our minds
 onDisconnectRef.cancel();
 // [END rtdb_ondisconnect_cancel_modular]

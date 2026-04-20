@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START fb_functions_call_add_message_error_modular]
-import { getFunctions, httpsCallable } from "firebase/functions";
+import { getFunctions, httpsCallable } from 'firebase/functions';
 
 const functions = getFunctions();
 const addMessage = httpsCallable(functions, 'addMessage');

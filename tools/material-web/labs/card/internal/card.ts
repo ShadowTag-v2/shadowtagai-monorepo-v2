@@ -6,7 +6,7 @@
 
 import '../../../elevation/elevation.js';
 
-import {html, LitElement} from 'lit';
+import { html, LitElement } from 'lit';
 
 /**
  * A card component.

@@ -1,7 +1,7 @@
-import logger from "../utils/logger";
-import { STORAGE_CONFIG } from "./config";
-import { S3StorageProvider } from "./providers/s3";
-import type { StorageProvider } from "./types";
+import logger from '../utils/logger';
+import { STORAGE_CONFIG } from './config';
+import { S3StorageProvider } from './providers/s3';
+import type { StorageProvider } from './types';
 
 /**
  * Create a storage provider based on environment configuration
@@ -12,17 +12,17 @@ function createStorageProvider(): StorageProvider | null {
   if (!provider) {
     if (logger) {
       logger.warn(
-        "STORAGE_PROVIDER not configured. File uploads will not be persisted to cloud storage.",
+        'STORAGE_PROVIDER not configured. File uploads will not be persisted to cloud storage.',
       );
     }
     return null;
   }
 
   switch (provider) {
-    case "s3": {
+    case 's3': {
       if (!s3.accessKeyId || !s3.secretAccessKey || !s3.bucket) {
         throw new Error(
-          "S3 storage provider requires AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and S3_BUCKET environment variables",
+          'S3 storage provider requires AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and S3_BUCKET environment variables',
         );
       }
 
@@ -92,15 +92,15 @@ export const getFileUploadPath = (
  * Simple helper to guess MIME type from filename
  */
 export function getMimeTypeFromFilename(filename: string): string {
-  const ext = filename.split(".").pop()?.toLowerCase();
+  const ext = filename.split('.').pop()?.toLowerCase();
   const mimeTypes: Record<string, string> = {
-    pdf: "application/pdf",
-    csv: "text/csv",
-    xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    xls: "application/vnd.ms-excel",
-    txt: "text/plain",
-    json: "application/json",
-    md: "text/markdown",
+    pdf: 'application/pdf',
+    csv: 'text/csv',
+    xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    xls: 'application/vnd.ms-excel',
+    txt: 'text/plain',
+    json: 'application/json',
+    md: 'text/markdown',
   };
-  return mimeTypes[ext || ""] || "application/octet-stream";
+  return mimeTypes[ext || ''] || 'application/octet-stream';
 }

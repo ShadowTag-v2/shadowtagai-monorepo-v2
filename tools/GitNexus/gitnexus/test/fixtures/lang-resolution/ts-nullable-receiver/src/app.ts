@@ -1,5 +1,5 @@
-import { User } from './user';
 import { Repo } from './repo';
+import { User } from './user';
 
 export function processEntities(): void {
   const user: User | null = new User();

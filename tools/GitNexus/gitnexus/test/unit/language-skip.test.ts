@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { isLanguageAvailable, loadLanguage } from '../../src/core/tree-sitter/parser-loader.js';
+import { describe, expect, it } from 'vitest';
 import { SupportedLanguages } from '../../src/config/supported-languages.js';
+import { isLanguageAvailable, loadLanguage } from '../../src/core/tree-sitter/parser-loader.js';
 
 describe('isLanguageAvailable', () => {
   it('returns true for installed languages', () => {

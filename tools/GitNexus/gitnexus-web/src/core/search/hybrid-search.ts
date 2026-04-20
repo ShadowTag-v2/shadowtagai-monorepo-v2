@@ -8,8 +8,8 @@
  * production search systems.
  */
 
-import { searchBM25, isBM25Ready, type BM25SearchResult } from './bm25-index';
 import type { SemanticSearchResult } from '../embeddings/types';
+import { type BM25SearchResult, isBM25Ready, searchBM25 } from './bm25-index';
 
 /**
  * RRF constant - standard value used in the literature
@@ -19,9 +19,9 @@ const RRF_K = 60;
 
 export interface HybridSearchResult {
   filePath: string;
-  score: number;           // RRF score
-  rank: number;            // Final rank
-  sources: ('bm25' | 'semantic')[];  // Which methods found this
+  score: number; // RRF score
+  rank: number; // Final rank
+  sources: ('bm25' | 'semantic')[]; // Which methods found this
 
   // Metadata from semantic search (if available)
   nodeId?: string;
@@ -46,19 +46,19 @@ export interface HybridSearchResult {
 export const mergeWithRRF = (
   bm25Results: BM25SearchResult[],
   semanticResults: SemanticSearchResult[],
-  limit: number = 10
+  limit: number = 10,
 ): HybridSearchResult[] => {
   const merged = new Map<string, HybridSearchResult>();
 
   // Process BM25 results
   for (let i = 0; i < bm25Results.length; i++) {
     const r = bm25Results[i];
-    const rrfScore = 1 / (RRF_K + i + 1);  // i+1 because rank starts at 1
+    const rrfScore = 1 / (RRF_K + i + 1); // i+1 because rank starts at 1
 
     merged.set(r.filePath, {
       filePath: r.filePath,
       score: rrfScore,
-      rank: 0,  // Will be set after sorting
+      rank: 0, // Will be set after sorting
       sources: ['bm25'],
       bm25Score: r.score,
     });

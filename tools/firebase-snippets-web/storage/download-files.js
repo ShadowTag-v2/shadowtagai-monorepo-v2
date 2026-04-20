@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/storage";
+import firebase from 'firebase/app';
+import 'firebase/storage';
 
 function downloadCreateRef() {
   // [START storage_download_create_ref]
@@ -12,7 +12,9 @@ function downloadCreateRef() {
 
   // Create a reference from an HTTPS URL
   // Note that in the URL, characters are URL escaped!
-  var httpsReference = storage.refFromURL('https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg');
+  var httpsReference = storage.refFromURL(
+    'https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg',
+  );
   // [END storage_download_create_ref]
 }
 
@@ -20,7 +22,9 @@ function downloadViaUrl() {
   const storageRef = firebase.storage().ref();
 
   // [START storage_download_via_url]
-  storageRef.child('images/stars.jpg').getDownloadURL()
+  storageRef
+    .child('images/stars.jpg')
+    .getDownloadURL()
     .then((url) => {
       // `url` is the download URL for 'images/stars.jpg'
 
@@ -51,30 +55,31 @@ function downloadFullExample() {
   var starsRef = storageRef.child('images/stars.jpg');
 
   // Get the download URL
-  starsRef.getDownloadURL()
-  .then((url) => {
-    // Insert url into an <img> tag to "download"
-  })
-  .catch((error) => {
-    // A full list of error codes is available at
-    // https://firebase.google.com/docs/storage/web/handle-errors
-    switch (error.code) {
-      case 'storage/object-not-found':
-        // File doesn't exist
-        break;
-      case 'storage/unauthorized':
-        // User doesn't have permission to access the object
-        break;
-      case 'storage/canceled':
-        // User canceled the upload
-        break;
+  starsRef
+    .getDownloadURL()
+    .then((url) => {
+      // Insert url into an <img> tag to "download"
+    })
+    .catch((error) => {
+      // A full list of error codes is available at
+      // https://firebase.google.com/docs/storage/web/handle-errors
+      switch (error.code) {
+        case 'storage/object-not-found':
+          // File doesn't exist
+          break;
+        case 'storage/unauthorized':
+          // User doesn't have permission to access the object
+          break;
+        case 'storage/canceled':
+          // User canceled the upload
+          break;
 
-      // ...
+        // ...
 
-      case 'storage/unknown':
-        // Unknown error occurred, inspect the server response
-        break;
-    }
-  });
+        case 'storage/unknown':
+          // Unknown error occurred, inspect the server response
+          break;
+      }
+    });
   // [END storage_download_full_example]
 }

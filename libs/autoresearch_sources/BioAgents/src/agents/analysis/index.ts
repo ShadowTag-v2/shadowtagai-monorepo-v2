@@ -1,9 +1,9 @@
-import type { AnalysisArtifact, OnPollUpdate } from "../../types/core";
-import logger from "../../utils/logger";
-import { analyzeWithBio } from "./bio";
-import { analyzeWithEdison } from "./edison";
+import type { AnalysisArtifact, OnPollUpdate } from '../../types/core';
+import logger from '../../utils/logger';
+import { analyzeWithBio } from './bio';
+import { analyzeWithEdison } from './edison';
 
-type AnalysisType = "EDISON" | "BIO";
+type AnalysisType = 'EDISON' | 'BIO';
 
 export type Dataset = {
   filename: string;
@@ -46,7 +46,7 @@ export async function analysisAgent(input: {
   const result: AnalysisResult = {
     objective,
     start: new Date().toISOString(),
-    output: "",
+    output: '',
     artifacts: [],
   };
 
@@ -56,12 +56,12 @@ export async function analysisAgent(input: {
       type,
       datasets: datasets.map((d) => `${d.filename} (${d.description})`),
     },
-    "analysis_agent_started",
+    'analysis_agent_started',
   );
 
   try {
     switch (type) {
-      case "EDISON": {
+      case 'EDISON': {
         const { output, jobId } = await analyzeWithEdison(
           objective,
           datasets,
@@ -72,7 +72,7 @@ export async function analysisAgent(input: {
         result.jobId = jobId;
         break;
       }
-      case "BIO": {
+      case 'BIO': {
         const { output, artifacts, jobId, reasoning } = await analyzeWithBio(
           objective,
           datasets,
@@ -90,13 +90,13 @@ export async function analysisAgent(input: {
         throw new Error(`Unknown analysis type: ${type}`);
     }
   } catch (err) {
-    logger.error({ err, objective, type }, "analysis_agent_failed");
-    result.output = `Error performing analysis: ${err instanceof Error ? err.message : "Unknown error"}`;
+    logger.error({ err, objective, type }, 'analysis_agent_failed');
+    result.output = `Error performing analysis: ${err instanceof Error ? err.message : 'Unknown error'}`;
   }
 
   result.end = new Date().toISOString();
 
-  logger.info({ objective, type, outputLength: result.output.length }, "analysis_agent_completed");
+  logger.info({ objective, type, outputLength: result.output.length }, 'analysis_agent_completed');
 
   return result;
 }

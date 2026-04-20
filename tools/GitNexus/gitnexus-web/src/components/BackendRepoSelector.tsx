@@ -1,5 +1,5 @@
-import { Server, ArrowRight } from '@/lib/lucide-icons';
-import { BackendRepo } from '../services/backend';
+import { ArrowRight, Server } from '@/lib/lucide-icons';
+import type { BackendRepo } from '../services/backend';
 
 interface BackendRepoSelectorProps {
   repos: BackendRepo[];
@@ -67,9 +67,8 @@ export const BackendRepoSelector = ({
         <div className="text-center text-text-muted py-8">
           <p className="text-sm mb-2">No indexed repositories found</p>
           <p className="text-xs">
-            Run{' '}
-            <code className="px-1 py-0.5 bg-elevated rounded">gitnexus analyze</code>{' '}
-            in a repository
+            Run <code className="px-1 py-0.5 bg-elevated rounded">gitnexus analyze</code> in a
+            repository
           </p>
         </div>
       )}

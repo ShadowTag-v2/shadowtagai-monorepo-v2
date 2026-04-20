@@ -5,12 +5,12 @@
 // 'npm run snippets'.
 
 // [START update_document_modular]
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from 'firebase/firestore';
 
-const washingtonRef = doc(db, "cities", "DC");
+const washingtonRef = doc(db, 'cities', 'DC');
 
 // Set the "capital" field of the city 'DC'
 await updateDoc(washingtonRef, {
-  capital: true
+  capital: true,
 });
 // [END update_document_modular]

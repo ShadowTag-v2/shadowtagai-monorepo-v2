@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START storage_list_all_modular]
-import { getStorage, ref, listAll } from "firebase/storage";
+import { getStorage, listAll, ref } from 'firebase/storage';
 
 const storage = getStorage();
 
@@ -22,7 +22,8 @@ listAll(listRef)
     res.items.forEach((itemRef) => {
       // All the items under listRef.
     });
-  }).catch((error) => {
+  })
+  .catch((error) => {
     // Uh-oh, an error occurred!
   });
 // [END storage_list_all_modular]

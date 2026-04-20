@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Argv, ArgumentsCamelCase, CommandModule } from 'yargs';
-import { initializeGeminiCLI } from './init-gemini-cli.js';
+import type { ArgumentsCamelCase, Argv, CommandModule } from 'yargs';
 import * as gcloud from '../gcloud_executor.js';
 import { log } from '../utility/logger.js';
+import { initializeGeminiCLI } from './init-gemini-cli.js';
 
 interface InstallArgs {
   agent: string;

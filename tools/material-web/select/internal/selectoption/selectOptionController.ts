@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {ReactiveController, ReactiveControllerHost} from 'lit';
+import type { ReactiveController, ReactiveControllerHost } from 'lit';
 
 import {
   MenuItemController,
-  MenuItemControllerConfig,
+  type MenuItemControllerConfig,
 } from '../../../menu/internal/controllers/menuItemController.js';
-import {SelectOption} from './select-option.js';
+import type { SelectOption } from './select-option.js';
 
 /**
  * Creates an event fired by a SelectOption to request selection from md-select.

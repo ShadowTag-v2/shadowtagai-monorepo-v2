@@ -7,7 +7,7 @@
  * Follows existing lbug integration test patterns (lbug-core-adapter,
  * lbug-pool, lbug-pool-stability).
  */
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { withTestLbugDB } from '../helpers/test-indexed-db.js';
 
 // ─── isDbBusyError ────────────────────────────────────────────────────────

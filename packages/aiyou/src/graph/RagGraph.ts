@@ -1,7 +1,12 @@
-import { ArtifactId, Vector, EmbeddingRef, TagSet } from "@shared/types";
+import type { ArtifactId, EmbeddingRef, TagSet, Vector } from '@shared/types';
 
 export type NodeId = string;
-export type Edge = { from: NodeId; to: NodeId; rel: "cites"|"derives"|"mentions"|"duplicates"; weight?: number };
+export type Edge = {
+  from: NodeId;
+  to: NodeId;
+  rel: 'cites' | 'derives' | 'mentions' | 'duplicates';
+  weight?: number;
+};
 
 export interface InsertDoc {
   artifactId: ArtifactId;
@@ -13,7 +18,7 @@ export interface InsertDoc {
 export interface RetrieveQuery {
   q: string;
   k?: number;
-  filter?: TagSet;      // delegates to ShadowTag for fast filtering
+  filter?: TagSet; // delegates to ShadowTag for fast filtering
 }
 
 export interface RetrieveHit {

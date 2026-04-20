@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { test, expect, vi, describe, beforeEach, afterEach } from 'vitest';
 import { BackupDRClient } from '@google-cloud/backupdr';
 import { SqlInstancesServiceClient, SqlOperationsServiceClient } from '@google-cloud/sql';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 vi.mock('@google-cloud/backupdr');
 vi.mock('@google-cloud/sql');

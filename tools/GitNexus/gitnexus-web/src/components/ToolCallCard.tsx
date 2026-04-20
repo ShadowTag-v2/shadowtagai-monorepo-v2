@@ -6,7 +6,14 @@
  */
 
 import { useState } from 'react';
-import { ChevronDown, ChevronRight, Sparkles, Check, Loader2, AlertCircle } from '@/lib/lucide-icons';
+import {
+  AlertCircle,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Loader2,
+  Sparkles,
+} from '@/lib/lucide-icons';
 import type { ToolCallInfo } from '../core/llm/types';
 
 interface ToolCallCardProps {
@@ -84,13 +91,13 @@ const getStatusDisplay = (status: ToolCallInfo['status']) => {
 const getToolDisplayName = (name: string): string => {
   const names: Record<string, string> = {
     // Current 7-tool architecture
-    'search': '🔍 Search Code',
-    'cypher': '🔗 Cypher Query',
-    'grep': '🔎 Pattern Search',
-    'read': '📄 Read File',
-    'overview': '🗺️ Codebase Overview',
-    'explore': '🔬 Deep Dive',
-    'impact': '💥 Impact Analysis',
+    search: '🔍 Search Code',
+    cypher: '🔗 Cypher Query',
+    grep: '🔎 Pattern Search',
+    read: '📄 Read File',
+    overview: '🗺️ Codebase Overview',
+    explore: '🔬 Deep Dive',
+    impact: '💥 Impact Analysis',
   };
   return names[name] || name;
 };
@@ -101,13 +108,20 @@ export const ToolCallCard = ({ toolCall, defaultExpanded = false }: ToolCallCard
   const formattedArgs = formatArgs(toolCall.args);
 
   return (
-    <div className={`rounded-lg border ${status.borderColor} ${status.bgColor} overflow-hidden transition-all`}>
+    <div
+      className={`rounded-lg border ${status.borderColor} ${status.bgColor} overflow-hidden transition-all`}
+    >
       {/* Header - always visible */}
       <div
         role="button"
         tabIndex={0}
         onClick={() => setIsExpanded(!isExpanded)}
-        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsExpanded(!isExpanded); } }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsExpanded(!isExpanded);
+          }
+        }}
         className="w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-white/5 transition-colors cursor-pointer select-none"
       >
         {/* Expand/collapse icon */}
@@ -152,8 +166,7 @@ export const ToolCallCard = ({ toolCall, defaultExpanded = false }: ToolCallCard
                 <pre className="text-xs text-text-secondary p-2 whitespace-pre-wrap font-mono">
                   {toolCall.result.length > 3000
                     ? toolCall.result.slice(0, 3000) + '\n\n... (truncated)'
-                    : toolCall.result
-                  }
+                    : toolCall.result}
                 </pre>
               </div>
             </div>

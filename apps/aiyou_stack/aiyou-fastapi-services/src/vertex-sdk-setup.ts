@@ -10,7 +10,7 @@
  * - GOOGLE_APPLICATION_CREDENTIALS: Path to service account JSON (optional if using default auth)
  */
 
-import { AnthropicVertex } from "@anthropic-ai/vertex-sdk";
+import { AnthropicVertex } from '@anthropic-ai/vertex-sdk';
 
 // Vertex AI client configuration
 export interface VertexConfig {
@@ -50,7 +50,7 @@ export interface JudgeDecision {
   latencyMs: number;
   cost: number;
   model: string;
-  layer: "rules" | "gemini" | "pytorch";
+  layer: 'rules' | 'gemini' | 'pytorch';
 }
 
 /**
@@ -67,13 +67,13 @@ export async function judgeWithGemini(
 
   try {
     const response = await client.messages.create({
-      model: "claude-sonnet-4-5@20250929",
+      model: 'claude-sonnet-4-5@20250929',
       max_tokens: 512,
       temperature: 0.1,
       system: buildJudgeSystemPrompt(),
       messages: [
         {
-          role: "user",
+          role: 'user',
           content: buildJudgePrompt(request),
         },
       ],
@@ -86,8 +86,8 @@ export async function judgeWithGemini(
       ...decision,
       latencyMs,
       cost: calculateCost(response),
-      model: "claude-sonnet-4-5@20250929",
-      layer: "gemini",
+      model: 'claude-sonnet-4-5@20250929',
+      layer: 'gemini',
     };
   } catch (error) {
     // Fallback to reject on error (fail-safe)
@@ -97,8 +97,8 @@ export async function judgeWithGemini(
       reason: `Error during analysis: ${error}`,
       latencyMs: Date.now() - startTime,
       cost: 0,
-      model: "claude-sonnet-4-5@20250929",
-      layer: "gemini",
+      model: 'claude-sonnet-4-5@20250929',
+      layer: 'gemini',
     };
   }
 }
@@ -133,7 +133,7 @@ function buildJudgePrompt(request: JudgeRequest): string {
 CONTENT:
 ${request.content}
 
-USER_ID: ${request.userId || "anonymous"}
+USER_ID: ${request.userId || 'anonymous'}
 
 Respond with JSON only.`;
 }
@@ -156,14 +156,14 @@ function parseGeminiDecision(response: unknown): {
       };
     }
   } catch (error) {
-    console.error("Failed to parse Gemini decision:", error);
+    console.error('Failed to parse Gemini decision:', error);
   }
 
   // Default to reject if parsing fails
   return {
     approved: false,
     confidence: 0.5,
-    reason: "Failed to parse decision",
+    reason: 'Failed to parse decision',
   };
 }
 

@@ -1,9 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import {
-  OAuthProvider,
   connectAuthEmulator,
   getAuth,
   getRedirectResult,
+  OAuthProvider,
   onAuthStateChanged,
   signInWithRedirect,
   signOut,
@@ -18,18 +18,10 @@ if (window.location.hostname === 'localhost') {
   connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 }
 
-const signInButton = document.getElementById(
-  'quickstart-sign-in',
-)! as HTMLButtonElement;
-const oauthToken = document.getElementById(
-  'quickstart-oauthtoken',
-)! as HTMLDivElement;
-const signInStatus = document.getElementById(
-  'quickstart-sign-in-status',
-)! as HTMLSpanElement;
-const accountDetails = document.getElementById(
-  'quickstart-account-details',
-)! as HTMLDivElement;
+const signInButton = document.getElementById('quickstart-sign-in')! as HTMLButtonElement;
+const oauthToken = document.getElementById('quickstart-oauthtoken')! as HTMLDivElement;
+const signInStatus = document.getElementById('quickstart-sign-in-status')! as HTMLSpanElement;
+const accountDetails = document.getElementById('quickstart-account-details')! as HTMLDivElement;
 
 /**
  * Function called when clicking the Login/Logout button.
@@ -47,7 +39,7 @@ function toggleSignIn() {
 
 // Result from Redirect auth flow.
 getRedirectResult(auth)
-  .then(function (result) {
+  .then((result) => {
     if (!result) return;
     const credential = OAuthProvider.credentialFromResult(result);
     if (credential) {
@@ -62,7 +54,7 @@ getRedirectResult(auth)
     // The signed-in user info.
     const user = result.user;
   })
-  .catch(function (error) {
+  .catch((error) => {
     // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -71,9 +63,7 @@ getRedirectResult(auth)
     // The firebase.auth.AuthCredential type that was used.
     const credential = error.credential;
     if (errorCode === 'auth/account-exists-with-different-credential') {
-      alert(
-        'You have already signed up with a different auth provider for that email.',
-      );
+      alert('You have already signed up with a different auth provider for that email.');
       // If you are using multiple auth providers on your app you should handle linking
       // the user's accounts here.
     } else {
@@ -82,7 +72,7 @@ getRedirectResult(auth)
   });
 
 // Listening for auth state changes.
-onAuthStateChanged(auth, function (user) {
+onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in. Note that unlike other providers supported by Firebase Auth, Microsoft does
     // not provide a profile photo so user.photoURL will be null. However, it can be queried using

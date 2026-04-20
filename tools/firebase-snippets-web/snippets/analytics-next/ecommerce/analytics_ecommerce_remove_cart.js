@@ -5,13 +5,13 @@
 // 'npm run snippets'.
 
 // [START analytics_ecommerce_remove_cart_modular]
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 // Prepare ecommerce params
 const params6 = {
   currency: 'USD',
   value: 24.99,
-  items: [item_jeggings]
+  items: [item_jeggings],
 };
 
 // Log event

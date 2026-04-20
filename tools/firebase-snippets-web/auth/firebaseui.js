@@ -1,10 +1,10 @@
 // These samples are intended for Web so this import would normally be
 // done in HTML however using modules here is more convenient for
 // ensuring sample correctness offline.
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
-import * as firebaseui from "firebaseui";
+import * as firebaseui from 'firebaseui';
 
 // Docs: https://source.corp.google.com/piper///depot/google3/third_party/devsite/firebase/en/docs/auth/web/firebaseui.md
 
@@ -20,9 +20,7 @@ function fuiStartEmail() {
   var ui = fuiInit();
   // [START auth_fui_start_email]
   ui.start('#firebaseui-auth-container', {
-    signInOptions: [
-      firebase.auth.EmailAuthProvider.PROVIDER_ID
-    ],
+    signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
     // Other config options...
   });
   // [END auth_fui_start_email]
@@ -35,9 +33,9 @@ function fuiStartEmailOptions() {
     signInOptions: [
       {
         provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        requireDisplayName: false
-      }
-    ]
+        requireDisplayName: false,
+      },
+    ],
   });
   // [END auth_fui_start_email_options]
 }
@@ -49,8 +47,8 @@ function fuiStartEmailLink() {
     signInOptions: [
       {
         provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        signInMethod: firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD
-      }
+        signInMethod: firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD,
+      },
     ],
     // Other config options...
   });
@@ -98,19 +96,19 @@ function fuiStartEmailLinkOptions() {
             handleCodeInApp: true,
             // Whether to handle link in iOS app if installed.
             iOS: {
-              bundleId: 'com.example.ios'
+              bundleId: 'com.example.ios',
             },
             // Whether to handle link in Android app if opened in an Android
             // device.
             android: {
               packageName: 'com.example.android',
               installApp: true,
-              minimumVersion: '12'
-            }
+              minimumVersion: '12',
+            },
           };
-        }
-      }
-    ]
+        },
+      },
+    ],
   });
   // [END auth_fui_start_email_link_options]
 }
@@ -124,7 +122,7 @@ function fuiStartOauth() {
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       firebase.auth.FacebookAuthProvider.PROVIDER_ID,
       firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-      firebase.auth.GithubAuthProvider.PROVIDER_ID
+      firebase.auth.GithubAuthProvider.PROVIDER_ID,
     ],
     // Other config options...
   });
@@ -138,31 +136,24 @@ function fuiStartOauthOptions() {
     signInOptions: [
       {
         provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        scopes: [
-          'https://www.googleapis.com/auth/contacts.readonly'
-        ],
+        scopes: ['https://www.googleapis.com/auth/contacts.readonly'],
         customParameters: {
           // Forces account selection even when one account
           // is available.
-          prompt: 'select_account'
-        }
+          prompt: 'select_account',
+        },
       },
       {
         provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        scopes: [
-          'public_profile',
-          'email',
-          'user_likes',
-          'user_friends'
-        ],
+        scopes: ['public_profile', 'email', 'user_likes', 'user_friends'],
         customParameters: {
           // Forces password re-entry.
-          auth_type: 'reauthenticate'
-        }
+          auth_type: 'reauthenticate',
+        },
       },
       firebase.auth.TwitterAuthProvider.PROVIDER_ID, // Twitter does not support scopes.
-      firebase.auth.EmailAuthProvider.PROVIDER_ID // Other providers don't need to be given as object.
-    ]
+      firebase.auth.EmailAuthProvider.PROVIDER_ID, // Other providers don't need to be given as object.
+    ],
   });
   // [END auth_fui_start_oauth_options]
 }
@@ -171,9 +162,7 @@ function fuiStartPhone() {
   var ui = fuiInit();
   // [START auth_fui_start_phone]
   ui.start('#firebaseui-auth-container', {
-    signInOptions: [
-      firebase.auth.PhoneAuthProvider.PROVIDER_ID
-    ],
+    signInOptions: [firebase.auth.PhoneAuthProvider.PROVIDER_ID],
     // Other config options...
   });
   // [END auth_fui_start_phone]
@@ -189,7 +178,7 @@ function fuiStartPhoneOptions() {
         recaptchaParameters: {
           type: 'image', // 'audio'
           size: 'normal', // 'invisible' or 'compact'
-          badge: 'bottomleft' // ' bottomright' or 'inline' applies to invisible.
+          badge: 'bottomleft', // ' bottomright' or 'inline' applies to invisible.
         },
         defaultCountry: 'GB', // Set default country to the United Kingdom (+44).
         // For prefilling the national number, set defaultNationNumber.
@@ -207,9 +196,9 @@ function fuiStartPhoneOptions() {
         // will always have higher priority than 'loginHint' which will be ignored
         // in their favor. In this case, the default country will be 'GB' even
         // though 'loginHint' specified the country code as '+1'.
-        loginHint: '+11234567890'
-      }
-    ]
+        loginHint: '+11234567890',
+      },
+    ],
   });
   // [END auth_fui_start_phone_options]
 }
@@ -228,7 +217,7 @@ function fuiConfig() {
         // The widget is rendered.
         // Hide the loader.
         document.getElementById('loader').style.display = 'none';
-      }
+      },
     },
     // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
     signInFlow: 'popup',
@@ -240,12 +229,12 @@ function fuiConfig() {
       firebase.auth.TwitterAuthProvider.PROVIDER_ID,
       firebase.auth.GithubAuthProvider.PROVIDER_ID,
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      firebase.auth.PhoneAuthProvider.PROVIDER_ID
+      firebase.auth.PhoneAuthProvider.PROVIDER_ID,
     ],
     // Terms of service url.
     tosUrl: '<your-tos-url>',
     // Privacy policy url.
-    privacyPolicyUrl: '<your-privacy-policy-url>'
+    privacyPolicyUrl: '<your-privacy-policy-url>',
   };
   // [END auth_fui_config]
 }
@@ -274,7 +263,7 @@ function fuiHandleAnonymous() {
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       firebase.auth.FacebookAuthProvider.PROVIDER_ID,
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      firebase.auth.PhoneAuthProvider.PROVIDER_ID
+      firebase.auth.PhoneAuthProvider.PROVIDER_ID,
     ],
     callbacks: {
       // signInFailure callback must be provided to handle merge conflicts which
@@ -291,11 +280,14 @@ function fuiHandleAnonymous() {
         // user.
         // ...
         // Finish sign-in after data is copied.
-        return firebase.auth().signInWithCredential(cred).then(() => {
-          return;
-        });
-      }
-    }
+        return firebase
+          .auth()
+          .signInWithCredential(cred)
+          .then(() => {
+            return;
+          });
+      },
+    },
   });
   // [END auth_fui_handle_anonymous]
 }

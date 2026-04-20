@@ -1,15 +1,14 @@
-import { useState } from "react";
-import type { ActionFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
-import { useActionData } from "@remix-run/react";
-import qs from "qs";
-import { Label } from "~/components/Label";
-import { createBundle, getBundle } from "~/firebase.server";
-import type { Bundle } from "~/types";
-import { Button } from "~/components/Button";
-import { TrashIcon } from "~/components/icons";
-import { Input } from "~/components/form";
+import type { ActionFunction } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
+import { useActionData } from '@remix-run/react';
+import qs from 'qs';
+import { useState } from 'react';
+import { Button } from '~/components/Button';
+import { Input } from '~/components/form';
+import { TrashIcon } from '~/components/icons';
+import { Label } from '~/components/Label';
+import { createBundle, getBundle } from '~/firebase.server';
+import type { Bundle } from '~/types';
 
 export const action: ActionFunction = async ({ request }) => {
   const text = await request.text();
@@ -20,17 +19,17 @@ export const action: ActionFunction = async ({ request }) => {
   if (await getBundle(id)) {
     return json({
       errors: {
-        id: "Bundle with that ID already exists!",
+        id: 'Bundle with that ID already exists!',
       },
       form,
     });
   }
 
-  const data: Omit<Bundle, "id"> = {
+  const data: Omit<Bundle, 'id'> = {
     clientCache: (form.clientCache as string) || null,
     serverCache: (form.serverCache as string) || null,
     fileCache: (form.fileCache as string) || null,
-    docs: form.docs ? (form.docs as string).split(",") : null,
+    docs: form.docs ? (form.docs as string).split(',') : null,
     params: {},
     queries: {},
   };
@@ -45,12 +44,11 @@ export const action: ActionFunction = async ({ request }) => {
       }
 
       data.params![name] = {
-        required: required === "true",
-        type: type || "string",
+        required: required === 'true',
+        type: type || 'string',
       };
     }
   }
-
 
   if (Array.isArray(form.query)) {
     for (const _query of form.query) {
@@ -71,33 +69,29 @@ export const action: ActionFunction = async ({ request }) => {
         query.condition.forEach((condition: any) => {
           const type = condition.type;
           switch (type) {
-            case "startAt":
-            case "startAfter":
-            case "endAt":
-            case "endBefore":
+            case 'startAt':
+            case 'startAfter':
+            case 'endAt':
+            case 'endBefore':
               data.queries![id].conditions!.push({
                 [condition.type]: condition.value,
               });
               break;
-            case "limit":
-            case "limitToLast":
-            case "offset":
+            case 'limit':
+            case 'limitToLast':
+            case 'offset':
               data.queries![id].conditions!.push({
                 [condition.type]: parseInt(condition.value),
               });
               break;
-            case "orderBy":
+            case 'orderBy':
               data.queries![id].conditions!.push({
                 [condition.type]: [condition.value, condition.direction],
               });
               break;
-            case "where": {
+            case 'where': {
               data.queries![id].conditions!.push({
-                [condition.type]: [
-                  condition.field,
-                  condition.op,
-                  condition.value,
-                ],
+                [condition.type]: [condition.field, condition.op, condition.value],
               });
             }
           }
@@ -117,45 +111,68 @@ export default function Create() {
   const action = useActionData();
 
   const [queries, setQueries] = useState<string[]>(
-    action?.form.query ? randomArray(action?.form.query.length) : []
+    action?.form.query ? randomArray(action?.form.query.length) : [],
   );
   const [params, setParams] = useState<string[]>(
-    action?.form.params ? randomArray(action?.form.params.length) : []
+    action?.form.params ? randomArray(action?.form.params.length) : [],
   );
 
   return (
     <div className="max-w-5xl mx-auto">
-      <h2 className="text-2xl font-bold leading-tight tracking-tight">
-        Create a new bundle
-      </h2>
+      <h2 className="text-2xl font-bold leading-tight tracking-tight">Create a new bundle</h2>
       <p className="mt-2">
-        The below form allows you to create a new bundle with all available
-        options in your Firebase Console.
+        The below form allows you to create a new bundle with all available options in your Firebase
+        Console.
       </p>
       <form method="post" action="/create">
         <Label
           label="Bundle ID *"
           description="A required type for the bundle name. This is used to accept incoming HTTP requests from the callable function, e,g `/bundles/<bundleName>`."
         >
-          <Input name="id" type="text" required placeholder="e.g. users" defaultValue={action?.form.id} error={action?.errors.id} />
+          <Input
+            name="id"
+            type="text"
+            required
+            placeholder="e.g. users"
+            defaultValue={action?.form.id}
+            error={action?.errors.id}
+          />
         </Label>
         <Label
           label="Client Cache"
           description="An optional value. Specifies how long to keep the bundle in the client's cache, in seconds. If not defined, client-side cache is disabled."
         >
-          <Input name="clientCache" type="number" placeholder="e.g. 300" defaultValue={action?.form.clientCache} error={action?.errors.clientCache} />
+          <Input
+            name="clientCache"
+            type="number"
+            placeholder="e.g. 300"
+            defaultValue={action?.form.clientCache}
+            error={action?.errors.clientCache}
+          />
         </Label>
         <Label
           label="Server Cache"
           description="An optional value. Only use in combination with Firebase Hosting. Specifies how long to keep the bundle in Firebase Hosting's CDN cache, in seconds."
         >
-          <Input name="serverCache" type="number" placeholder="e.g. 300" defaultValue={action?.form.serverCache} error={action?.errors.serverCache} />
+          <Input
+            name="serverCache"
+            type="number"
+            placeholder="e.g. 300"
+            defaultValue={action?.form.serverCache}
+            error={action?.errors.serverCache}
+          />
         </Label>
         <Label
           label="File Cache"
           description="An optional value. Specifies how long (in seconds) to keep the bundle in a Cloud Storage bucket, in seconds. If not defined, Cloud Storage bucket is not accessed."
         >
-          <Input name="fileCache" type="number" placeholder="e.g. 300" defaultValue={action?.form.fileCache} error={action?.errors.fileCache} />
+          <Input
+            name="fileCache"
+            type="number"
+            placeholder="e.g. 300"
+            defaultValue={action?.form.fileCache}
+            error={action?.errors.fileCache}
+          />
         </Label>
         <Label
           label="Documents"
@@ -238,7 +255,12 @@ function Param(props: {
   return (
     <div className="grid grid-cols-[1fr,1fr,1fr,auto] gap-3 items-center">
       <Label label="Name">
-        <input name={`params[${props.index}][name]`} type="string" required defaultValue={props.defaults?.name} />
+        <input
+          name={`params[${props.index}][name]`}
+          type="string"
+          required
+          defaultValue={props.defaults?.name}
+        />
       </Label>
       <Label label="Required">
         <select name={`params[${props.index}][required]`} defaultValue={props.defaults?.required}>
@@ -274,7 +296,7 @@ function Queries(props: {
   defaults?: any;
 }) {
   const [conditions, setConditions] = useState<string[]>(
-    props.defaults?.condition ? randomArray(props.defaults.condition.length) : []
+    props.defaults?.condition ? randomArray(props.defaults.condition.length) : [],
   );
 
   return (
@@ -283,15 +305,17 @@ function Queries(props: {
         label="Query ID"
         description="The unique query ID to be added to the bundle."
         action={
-          <button
-            className="w-6 h-6 hover:opacity-50"
-            onClick={() => props.onDelete(props.id)}
-          >
+          <button className="w-6 h-6 hover:opacity-50" onClick={() => props.onDelete(props.id)}>
             <TrashIcon />
           </button>
         }
       >
-        <Input name={`query[${props.index}][id]`} type="string" required defaultValue={props.defaults?.id} />
+        <Input
+          name={`query[${props.index}][id]`}
+          type="string"
+          required
+          defaultValue={props.defaults?.id}
+        />
       </Label>
       <Label label="The collection path to perform the query on.">
         <Input
@@ -335,8 +359,8 @@ function Condition(props: {
   onDelete: (id: string) => void;
   defaults?: any;
 }) {
-  const [type, setType] = useState(props.defaults?.type ?? "where");
-  const [op, setOp] = useState(props.defaults?.op ?? "<");
+  const [type, setType] = useState(props.defaults?.type ?? 'where');
+  const [op, setOp] = useState(props.defaults?.op ?? '<');
 
   const stringInput = () => (
     <Input
@@ -382,16 +406,16 @@ function Condition(props: {
           setOp(e.target.value);
         }}
       >
-        <option value="<">{"<"}</option>
-        <option value="<=">{"<="}</option>
-        <option value="==">{"=="}</option>
-        <option value="!=">{"!="}</option>
-        <option value=">=">{">="}</option>
-        <option value=">">{">"}</option>
-        <option value="array-contains">{"array-contains"}</option>
-        <option value="in">{"in"}</option>
-        <option value="not-in">{"not-in"}</option>
-        <option value="array-contains-any">{"array-contains-any"}</option>
+        <option value="<">{'<'}</option>
+        <option value="<=">{'<='}</option>
+        <option value="==">{'=='}</option>
+        <option value="!=">{'!='}</option>
+        <option value=">=">{'>='}</option>
+        <option value=">">{'>'}</option>
+        <option value="array-contains">{'array-contains'}</option>
+        <option value="in">{'in'}</option>
+        <option value="not-in">{'not-in'}</option>
+        <option value="array-contains-any">{'array-contains-any'}</option>
       </select>
       <Input
         type="string"
@@ -403,13 +427,13 @@ function Condition(props: {
 
   const value = () => {
     switch (type) {
-      case "limit":
-      case "limitToLast":
-      case "offset":
+      case 'limit':
+      case 'limitToLast':
+      case 'offset':
         return numberInput();
-      case "orderBy":
+      case 'orderBy':
         return orderInput();
-      case "where":
+      case 'where':
         return whereInput();
       default:
         return stringInput();
@@ -419,15 +443,15 @@ function Condition(props: {
   const description = () => {
     if (type === 'where') {
       switch (op) {
-        case "in":
-        case "not-in":
-        case "array-contains-any":
+        case 'in':
+        case 'not-in':
+        case 'array-contains-any':
           return "Use a command delimited string to specify multiple values. For example: 'value1,value2,value3'";
         default:
-          return "";
+          return '';
       }
     }
-  }
+  };
 
   return (
     <div className="border p-3 mb-3">

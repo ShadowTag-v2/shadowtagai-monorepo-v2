@@ -1,9 +1,9 @@
 // [SNIPPET_REGISTRY disabled]
 // [SNIPPETS_SEPARATION enabled]
 
-const MyUserDataRepo = function() {};
+const MyUserDataRepo = () => {};
 
-MyUserDataRepo.prototype.merge = function(data1, data2) {
+MyUserDataRepo.prototype.merge = (data1, data2) => {
   // TODO(you): How you implement this is specific to your application!
   return {
     ...data1,
@@ -11,22 +11,27 @@ MyUserDataRepo.prototype.merge = function(data1, data2) {
   };
 };
 
-MyUserDataRepo.prototype.set = function(user, data) {
+MyUserDataRepo.prototype.set = (user, data) => {
   // TODO(you): How you implement this is specific to your application!
 };
 
-MyUserDataRepo.prototype.delete = function(user) {
+MyUserDataRepo.prototype.delete = (user) => {
   // TODO(you): How you implement this is specific to your application!
 };
 
-MyUserDataRepo.prototype.get = function(user) {
+MyUserDataRepo.prototype.get = (user) => {
   // TODO(you): How you implement this is specific to your application!
   return {};
 };
 
 function getProviders() {
   // [START auth_get_providers]
-  const { GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, GithubAuthProvider } = require("firebase/auth");
+  const {
+    GoogleAuthProvider,
+    FacebookAuthProvider,
+    TwitterAuthProvider,
+    GithubAuthProvider,
+  } = require('firebase/auth');
 
   const googleProvider = new GoogleAuthProvider();
   const facebookProvider = new FacebookAuthProvider();
@@ -37,82 +42,91 @@ function getProviders() {
 
 function simpleLink(credential) {
   // [START auth_simple_link]
-  const { getAuth, linkWithCredential } = require("firebase/auth");
+  const { getAuth, linkWithCredential } = require('firebase/auth');
 
   const auth = getAuth();
   linkWithCredential(auth.currentUser, credential)
     .then((usercred) => {
       const user = usercred.user;
-      console.log("Account linking success", user);
-    }).catch((error) => {
-      console.log("Account linking error", error);
+      console.log('Account linking success', user);
+    })
+    .catch((error) => {
+      console.log('Account linking error', error);
     });
   // [END auth_simple_link]
 }
 
 function anonymousLink(credential) {
   // [START auth_anonymous_link]
-  const { getAuth, linkWithCredential } = require("firebase/auth");
+  const { getAuth, linkWithCredential } = require('firebase/auth');
 
   const auth = getAuth();
   linkWithCredential(auth.currentUser, credential)
     .then((usercred) => {
       const user = usercred.user;
-      console.log("Anonymous account successfully upgraded", user);
-    }).catch((error) => {
-      console.log("Error upgrading anonymous account", error);
+      console.log('Anonymous account successfully upgraded', user);
+    })
+    .catch((error) => {
+      console.log('Error upgrading anonymous account', error);
     });
   // [END auth_anonymous_link]
 }
 
 function linkWithPopup() {
   // [START auth_link_with_popup]
-  const { getAuth, linkWithPopup, GoogleAuthProvider } = require("firebase/auth");
+  const { getAuth, linkWithPopup, GoogleAuthProvider } = require('firebase/auth');
   const provider = new GoogleAuthProvider();
 
   const auth = getAuth();
-  linkWithPopup(auth.currentUser, provider).then((result) => {
-    // Accounts successfully linked.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const user = result.user;
-    // ...
-  }).catch((error) => {
-    // Handle Errors here.
-    // ...
-  });
+  linkWithPopup(auth.currentUser, provider)
+    .then((result) => {
+      // Accounts successfully linked.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const user = result.user;
+      // ...
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      // ...
+    });
   // [END auth_link_with_popup]
 }
 
 function linkWithRedirect() {
   // [START auth_link_with_redirect]
-  const { getAuth, linkWithRedirect, GoogleAuthProvider } = require("firebase/auth");
+  const { getAuth, linkWithRedirect, GoogleAuthProvider } = require('firebase/auth');
   const provider = new GoogleAuthProvider();
 
   const auth = getAuth();
-  linkWithRedirect(auth.currentUser, provider)
-    .then(/* ... */)
-    .catch(/* ... */);
+  linkWithRedirect(auth.currentUser, provider).then(/* ... */).catch(/* ... */);
   // [END auth_link_with_redirect]
 
   // [START auth_get_redirect_result]
-  const { getRedirectResult } = require("firebase/auth");
-  getRedirectResult(auth).then((result) => {
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    if (credential) {
-      // Accounts successfully linked.
-      const user = result.user;
+  const { getRedirectResult } = require('firebase/auth');
+  getRedirectResult(auth)
+    .then((result) => {
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      if (credential) {
+        // Accounts successfully linked.
+        const user = result.user;
+        // ...
+      }
+    })
+    .catch((error) => {
+      // Handle Errors here.
       // ...
-    }
-  }).catch((error) => {
-    // Handle Errors here.
-    // ...
-  });
+    });
   // [END auth_get_redirect_result]
 }
 
 function mergeAccounts(newCredential) {
   // [START auth_merge_accounts]
-  const { getAuth, signInWithCredential, linkWithCredential, OAuthProvider } = require("firebase/auth");
+  const {
+    getAuth,
+    signInWithCredential,
+    linkWithCredential,
+    OAuthProvider,
+  } = require('firebase/auth');
 
   // The implementation of how you store your user data depends on your application
   const repo = new MyUserDataRepo();
@@ -129,40 +143,42 @@ function mergeAccounts(newCredential) {
   repo.delete(prevUser);
 
   // Sign in user with the account you want to link to
-  signInWithCredential(auth, newCredential).then((result) => {
-    console.log("Sign In Success", result);
-    const currentUser = result.user;
-    const currentUserData = repo.get(currentUser);
+  signInWithCredential(auth, newCredential)
+    .then((result) => {
+      console.log('Sign In Success', result);
+      const currentUser = result.user;
+      const currentUserData = repo.get(currentUser);
 
-    // Merge prevUser and currentUser data stored in Firebase.
-    // Note: How you handle this is specific to your application
-    const mergedData = repo.merge(prevUserData, currentUserData);
+      // Merge prevUser and currentUser data stored in Firebase.
+      // Note: How you handle this is specific to your application
+      const mergedData = repo.merge(prevUserData, currentUserData);
 
-    const credential = OAuthProvider.credentialFromResult(result);
-    return linkWithCredential(prevUser, credential)
-      .then((linkResult) => {
-        // Sign in with the newly linked credential
-        const linkCredential = OAuthProvider.credentialFromResult(linkResult);
-        return signInWithCredential(auth, linkCredential);
-      })
-      .then((signInResult) => {
-        // Save the merged data to the new user
-        repo.set(signInResult.user, mergedData);
-      });
-  }).catch((error) => {
-    // If there are errors we want to undo the data merge/deletion
-    console.log("Sign In Error", error);
-    repo.set(prevUser, prevUserData);
-  });
+      const credential = OAuthProvider.credentialFromResult(result);
+      return linkWithCredential(prevUser, credential)
+        .then((linkResult) => {
+          // Sign in with the newly linked credential
+          const linkCredential = OAuthProvider.credentialFromResult(linkResult);
+          return signInWithCredential(auth, linkCredential);
+        })
+        .then((signInResult) => {
+          // Save the merged data to the new user
+          repo.set(signInResult.user, mergedData);
+        });
+    })
+    .catch((error) => {
+      // If there are errors we want to undo the data merge/deletion
+      console.log('Sign In Error', error);
+      repo.set(prevUser, prevUserData);
+    });
   // [END auth_merge_accounts]
 }
 
 function makeEmailCredential() {
-  const email = "test@test.com";
-  const password = "abcde12345";
+  const email = 'test@test.com';
+  const password = 'abcde12345';
 
   // [START auth_make_email_credential]
-  const { EmailAuthProvider } = require("firebase/auth");
+  const { EmailAuthProvider } = require('firebase/auth');
 
   const credential = EmailAuthProvider.credential(email, password);
   // [END auth_make_email_credential]
@@ -170,73 +186,88 @@ function makeEmailCredential() {
 
 function unlink(providerId) {
   // [START auth_unlink_provider]
-  const { getAuth, unlink } = require("firebase/auth");
+  const { getAuth, unlink } = require('firebase/auth');
 
   const auth = getAuth();
-  unlink(auth.currentUser, providerId).then(() => {
-    // Auth provider unlinked from account
-    // ...
-  }).catch((error) => {
-    // An error happened
-    // ...
-  });
+  unlink(auth.currentUser, providerId)
+    .then(() => {
+      // Auth provider unlinked from account
+      // ...
+    })
+    .catch((error) => {
+      // An error happened
+      // ...
+    });
   // [END auth_unlink_provider]
 }
 
-function accountExistsPopup(auth, facebookProvider, goToApp, promptUserForPassword, promptUserForSignInMethod, getProviderForProviderId) {
+function accountExistsPopup(
+  auth,
+  facebookProvider,
+  goToApp,
+  promptUserForPassword,
+  promptUserForSignInMethod,
+  getProviderForProviderId,
+) {
   // [START account_exists_popup]
-  const { signInWithPopup, signInWithEmailAndPassword, linkWithCredential } = require("firebase/auth");
+  const {
+    signInWithPopup,
+    signInWithEmailAndPassword,
+    linkWithCredential,
+  } = require('firebase/auth');
 
   // User tries to sign in with Facebook.
   signInWithPopup(auth, facebookProvider).catch((error) => {
-  // User's email already exists.
-  if (error.code === 'auth/account-exists-with-different-credential') {
-    // The pending Facebook credential.
-    const pendingCred = error.credential;
-    // The provider account's email address.
-    const email = error.customData.email;
+    // User's email already exists.
+    if (error.code === 'auth/account-exists-with-different-credential') {
+      // The pending Facebook credential.
+      const pendingCred = error.credential;
+      // The provider account's email address.
+      const email = error.customData.email;
 
-    // Present the user with a list of providers they might have
-    // used to create the original account.
-    // Then, ask the user to sign in with the existing provider.
-    const method = promptUserForSignInMethod();
+      // Present the user with a list of providers they might have
+      // used to create the original account.
+      // Then, ask the user to sign in with the existing provider.
+      const method = promptUserForSignInMethod();
 
-    if (method === 'password') {
-      // TODO: Ask the user for their password.
-      // In real scenario, you should handle this asynchronously.
-      const password = promptUserForPassword();
-      signInWithEmailAndPassword(auth, email, password).then((result) => {
-        return linkWithCredential(result.user, pendingCred);
-      }).then(() => {
-        // Facebook account successfully linked to the existing user.
-        goToApp();
+      if (method === 'password') {
+        // TODO: Ask the user for their password.
+        // In real scenario, you should handle this asynchronously.
+        const password = promptUserForPassword();
+        signInWithEmailAndPassword(auth, email, password)
+          .then((result) => {
+            return linkWithCredential(result.user, pendingCred);
+          })
+          .then(() => {
+            // Facebook account successfully linked to the existing user.
+            goToApp();
+          });
+        return;
+      }
+
+      // All other cases are external providers.
+      // Construct provider object for that provider.
+      // TODO: Implement getProviderForProviderId.
+      const provider = getProviderForProviderId(method);
+      // At this point, you should let the user know that they already have an
+      // account with a different provider, and validate they want to sign in
+      // with the new provider.
+      // Note: Browsers usually block popups triggered asynchronously, so in
+      // real app, you should ask the user to click on a "Continue" button
+      // that will trigger signInWithPopup().
+      signInWithPopup(auth, provider).then((result) => {
+        // Note: Identity Platform doesn't control the provider's sign-in
+        // flow, so it's possible for the user to sign in with an account
+        // with a different email from the first one.
+
+        // Link the Facebook credential. We have access to the pending
+        // credential, so we can directly call the link method.
+        linkWithCredential(result.user, pendingCred).then((userCred) => {
+          // Success.
+          goToApp();
+        });
       });
-      return;
     }
-
-    // All other cases are external providers.
-    // Construct provider object for that provider.
-    // TODO: Implement getProviderForProviderId.
-    const provider = getProviderForProviderId(method);
-    // At this point, you should let the user know that they already have an
-    // account with a different provider, and validate they want to sign in
-    // with the new provider.
-    // Note: Browsers usually block popups triggered asynchronously, so in
-    // real app, you should ask the user to click on a "Continue" button
-    // that will trigger signInWithPopup().
-    signInWithPopup(auth, provider).then((result) => {
-      // Note: Identity Platform doesn't control the provider's sign-in
-      // flow, so it's possible for the user to sign in with an account
-      // with a different email from the first one.
-
-      // Link the Facebook credential. We have access to the pending
-      // credential, so we can directly call the link method.
-      linkWithCredential(result.user, pendingCred).then((userCred) => {
-        // Success.
-        goToApp();
-      });
-    });
-  }
-});
-// [END account_exists_popup]
+  });
+  // [END account_exists_popup]
 }

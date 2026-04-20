@@ -8,10 +8,10 @@
  * - Limit parameter
  * - Empty inputs
  */
-import { describe, it, expect } from 'vitest';
-import { mergeWithRRF } from '../../src/core/search/hybrid-search.js';
-import type { BM25SearchResult } from '../../src/core/search/bm25-index.js';
+import { describe, expect, it } from 'vitest';
 import type { SemanticSearchResult } from '../../src/core/embeddings/types.js';
+import type { BM25SearchResult } from '../../src/core/search/bm25-index.js';
+import { mergeWithRRF } from '../../src/core/search/hybrid-search.js';
 
 let bm25Rank = 0;
 function makeBM25(filePath: string, score: number): BM25SearchResult {
@@ -23,7 +23,10 @@ function makeSemantic(filePath: string, distance: number): SemanticSearchResult 
     filePath,
     distance,
     nodeId: `node:${filePath}`,
-    name: filePath.split('/').pop()!.replace(/\.\w+$/, ''),
+    name: filePath
+      .split('/')
+      .pop()!
+      .replace(/\.\w+$/, ''),
     label: 'Function',
     startLine: 1,
     endLine: 10,
@@ -37,10 +40,7 @@ describe('mergeWithRRF', () => {
   });
 
   it('handles BM25-only results', () => {
-    const bm25: BM25SearchResult[] = [
-      makeBM25('src/a.ts', 10),
-      makeBM25('src/b.ts', 5),
-    ];
+    const bm25: BM25SearchResult[] = [makeBM25('src/a.ts', 10), makeBM25('src/b.ts', 5)];
     const result = mergeWithRRF(bm25, []);
     expect(result).toHaveLength(2);
     expect(result[0].filePath).toBe('src/a.ts');
@@ -102,7 +102,7 @@ describe('mergeWithRRF', () => {
       makeBM25('src/c.ts', 1),
     ];
     const result = mergeWithRRF(bm25, []);
-    expect(result.map(r => r.rank)).toEqual([1, 2, 3]);
+    expect(result.map((r) => r.rank)).toEqual([1, 2, 3]);
   });
 
   it('preserves semantic metadata on shared results', () => {

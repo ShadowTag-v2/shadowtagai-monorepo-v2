@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RestaurantCardComponent } from './restaurant-card.component';
 
@@ -25,7 +25,7 @@ describe('RestaurantCardComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [RestaurantCardComponent],
-      imports: []
+      imports: [],
     });
     fixture = TestBed.createComponent(RestaurantCardComponent);
     component = fixture.componentInstance;

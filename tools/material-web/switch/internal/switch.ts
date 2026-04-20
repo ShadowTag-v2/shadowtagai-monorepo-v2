@@ -7,38 +7,33 @@
 import '../../focus/md-focus-ring.js';
 import '../../ripple/ripple.js';
 
-import {html, isServer, LitElement, nothing, TemplateResult} from 'lit';
-import {property, query} from 'lit/decorators.js';
-import {ClassInfo, classMap} from 'lit/directives/class-map.js';
+import { html, isServer, LitElement, nothing, type TemplateResult } from 'lit';
+import { property, query } from 'lit/decorators.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
 
-import {mixinDelegatesAria} from '../../internal/aria/delegate.js';
-import {
-  afterDispatch,
-  setupDispatchHooks,
-} from '../../internal/events/dispatch-hooks.js';
+import { mixinDelegatesAria } from '../../internal/aria/delegate.js';
+import { afterDispatch, setupDispatchHooks } from '../../internal/events/dispatch-hooks.js';
 import {
   dispatchActivationClick,
   isActivationClick,
 } from '../../internal/events/form-label-activation.js';
-import {redispatchEvent} from '../../internal/events/redispatch-event.js';
+import { redispatchEvent } from '../../internal/events/redispatch-event.js';
 import {
   createValidator,
   getValidityAnchor,
   mixinConstraintValidation,
 } from '../../labs/behaviors/constraint-validation.js';
-import {mixinElementInternals} from '../../labs/behaviors/element-internals.js';
+import { mixinElementInternals } from '../../labs/behaviors/element-internals.js';
 import {
   getFormState,
   getFormValue,
   mixinFormAssociated,
 } from '../../labs/behaviors/form-associated.js';
-import {CheckboxValidator} from '../../labs/behaviors/validators/checkbox-validator.js';
+import { CheckboxValidator } from '../../labs/behaviors/validators/checkbox-validator.js';
 
 // Separate variable needed for closure.
 const switchBaseClass = mixinDelegatesAria(
-  mixinConstraintValidation(
-    mixinFormAssociated(mixinElementInternals(LitElement)),
-  ),
+  mixinConstraintValidation(mixinFormAssociated(mixinElementInternals(LitElement))),
 );
 
 /**
@@ -58,18 +53,18 @@ export class Switch extends switchBaseClass {
    * Puts the switch in the selected state and sets the form submission value to
    * the `value` property.
    */
-  @property({type: Boolean}) selected = false;
+  @property({ type: Boolean }) selected = false;
 
   /**
    * Shows both the selected and deselected icons.
    */
-  @property({type: Boolean}) icons = false;
+  @property({ type: Boolean }) icons = false;
 
   /**
    * Shows only the selected icon, and not the deselected icon. If `true`,
    * overrides the behavior of the `icons` property.
    */
-  @property({type: Boolean, attribute: 'show-only-selected-icon'})
+  @property({ type: Boolean, attribute: 'show-only-selected-icon' })
   showOnlySelectedIcon = false;
 
   /**
@@ -78,7 +73,7 @@ export class Switch extends switchBaseClass {
    *
    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox#validation
    */
-  @property({type: Boolean}) required = false;
+  @property({ type: Boolean }) required = false;
 
   /**
    * The value associated with this switch on form submission. `null` is
@@ -142,9 +137,9 @@ export class Switch extends switchBaseClass {
 
   private getRenderClasses(): ClassInfo {
     return {
-      'selected': this.selected,
-      'unselected': !this.selected,
-      'disabled': this.disabled,
+      selected: this.selected,
+      unselected: !this.selected,
+      disabled: this.disabled,
     };
   }
 

@@ -5,5 +5,5 @@
 // 'npm run snippets'.
 
 // [START simple_query_not_equal_modular]
-const notCapitalQuery = query(citiesRef, where("capital", "!=", false));
+const notCapitalQuery = query(citiesRef, where('capital', '!=', false));
 // [END simple_query_not_equal_modular]

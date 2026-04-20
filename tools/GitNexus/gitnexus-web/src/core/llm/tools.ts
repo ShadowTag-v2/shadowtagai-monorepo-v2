@@ -14,14 +14,18 @@
 import { tool } from '@langchain/core/tools';
 import { z } from 'zod';
 // Note: GRAPH_SCHEMA_DESCRIPTION from './types' is available if needed for additional context
-import { WebGPUNotAvailableError, embedText, embeddingToArray, initEmbedder, isEmbedderReady } from '../embeddings/embedder';
+import {
+  embeddingToArray,
+  embedText,
+  initEmbedder,
+  isEmbedderReady,
+  WebGPUNotAvailableError,
+} from '../embeddings/embedder';
 import { NODE_TABLES, REL_TYPES } from '../lbug/schema';
 
-const validLabel = (label: string): boolean =>
-  (NODE_TABLES as readonly string[]).includes(label);
+const validLabel = (label: string): boolean => (NODE_TABLES as readonly string[]).includes(label);
 
-const validRelType = (t: string): boolean =>
-  (REL_TYPES as readonly string[]).includes(t);
+const validRelType = (t: string): boolean => (REL_TYPES as readonly string[]).includes(t);
 
 /**
  * Tool factory - creates tools bound to the LadybugDB query functions
@@ -33,9 +37,8 @@ export const createGraphRAGTools = (
   hybridSearch: (query: string, k?: number) => Promise<any[]>,
   isEmbeddingReady: () => boolean,
   isBM25Ready: () => boolean,
-  fileContents: Map<string, string>
+  fileContents: Map<string, string>,
 ) => {
-
   // ============================================================================
   // TOOL 1: SEARCH (Hybrid + 1-hop expansion)
   // ============================================================================
@@ -44,7 +47,15 @@ export const createGraphRAGTools = (
    * Unified search tool: BM25 + Semantic + RRF, with 1-hop graph context
    */
   const searchTool = tool(
-    async ({ query, limit, groupByProcess }: { query: string; limit?: number; groupByProcess?: boolean }) => {
+    async ({
+      query,
+      limit,
+      groupByProcess,
+    }: {
+      query: string;
+      limit?: number;
+      groupByProcess?: boolean;
+    }) => {
       const k = limit ?? 10;
       const shouldGroup = groupByProcess ?? true;
 
@@ -116,8 +127,8 @@ export const createGraphRAGTools = (
             const connRes = await executeQuery(connectionsQuery);
             if (connRes.length > 0) {
               const row = connRes[0];
-              const rawOutgoing = Array.isArray(row) ? row[0] : (row.outgoing || []);
-              const rawIncoming = Array.isArray(row) ? row[1] : (row.incoming || []);
+              const rawOutgoing = Array.isArray(row) ? row[0] : row.outgoing || [];
+              const rawIncoming = Array.isArray(row) ? row[1] : row.incoming || [];
               const outgoing = (rawOutgoing || []).filter((c: any) => c && c.name).slice(0, 3);
               const incoming = (rawIncoming || []).filter((c: any) => c && c.name).slice(0, 3);
 
@@ -205,16 +216,25 @@ export const createGraphRAGTools = (
       }
 
       const formatResult = (r: ResultInfo, stepInfo?: ProcessInfo) => {
-        const stepLabel = stepInfo?.step ? ` (step ${stepInfo.step}/${stepInfo.stepCount ?? '?'})` : '';
+        const stepLabel = stepInfo?.step
+          ? ` (step ${stepInfo.step}/${stepInfo.stepCount ?? '?'})`
+          : '';
         return `[${r.idx}] ${r.label}: ${r.name}${r.score}${stepLabel}\n    ID: ${r.nodeId}\n    File: ${r.filePath}${r.location}\n    Cluster: ${r.clusterLabel}\n    Found by: ${r.sources}${r.connections}`;
       };
 
       if (!shouldGroup) {
-        return `Found ${searchResults.length} matches:\n\n${results.map(r => formatResult(r)).join('\n\n')}`;
+        return `Found ${searchResults.length} matches:\n\n${results.map((r) => formatResult(r)).join('\n\n')}`;
       }
 
       // Group by process (or "No process")
-      const processMap = new Map<string, { label: string; stepCount?: number; entries: { result: ResultInfo; step?: number; stepCount?: number }[] }>();
+      const processMap = new Map<
+        string,
+        {
+          label: string;
+          stepCount?: number;
+          entries: { result: ResultInfo; step?: number; stepCount?: number }[];
+        }
+      >();
       const noProcessKey = '__no_process__';
 
       for (const r of results) {
@@ -246,12 +266,15 @@ export const createGraphRAGTools = (
 
       for (const [pid, group] of sortedProcesses) {
         const stepInfo = group.stepCount ? `, ${group.stepCount} steps` : '';
-        const header = pid === noProcessKey
-          ? `NO PROCESS (${group.entries.length} matches)`
-          : `PROCESS: ${group.label} (${group.entries.length} matches${stepInfo})`;
+        const header =
+          pid === noProcessKey
+            ? `NO PROCESS (${group.entries.length} matches)`
+            : `PROCESS: ${group.label} (${group.entries.length} matches${stepInfo})`;
         lines.push(header);
-        group.entries.forEach(entry => {
-          const stepLabel = entry.step ? { id: pid, label: group.label, step: entry.step, stepCount: entry.stepCount } : undefined;
+        group.entries.forEach((entry) => {
+          const stepLabel = entry.step
+            ? { id: pid, label: group.label, step: entry.step, stepCount: entry.stepCount }
+            : undefined;
           lines.push(formatResult(entry.result, stepLabel));
         });
         lines.push('');
@@ -261,13 +284,22 @@ export const createGraphRAGTools = (
     },
     {
       name: 'search',
-      description: 'Search for code by keywords or concepts. Combines keyword matching and semantic understanding. Groups results by process with cluster context.',
+      description:
+        'Search for code by keywords or concepts. Combines keyword matching and semantic understanding. Groups results by process with cluster context.',
       schema: z.object({
-        query: z.string().describe('What you are looking for (e.g., "authentication middleware", "database connection")'),
-        groupByProcess: z.boolean().optional().nullable().describe('Group results by process (default: true)'),
+        query: z
+          .string()
+          .describe(
+            'What you are looking for (e.g., "authentication middleware", "database connection")',
+          ),
+        groupByProcess: z
+          .boolean()
+          .optional()
+          .nullable()
+          .describe('Group results by process (default: true)'),
         limit: z.number().optional().nullable().describe('Max results to return (default: 10)'),
       }),
-    }
+    },
   );
 
   // ============================================================================
@@ -315,26 +347,28 @@ export const createGraphRAGTools = (
 
         // Get column names from first result (now objects from executeQuery)
         const firstRow = results[0];
-        const columnNames = typeof firstRow === 'object' && !Array.isArray(firstRow)
-          ? Object.keys(firstRow)
-          : [];
+        const columnNames =
+          typeof firstRow === 'object' && !Array.isArray(firstRow) ? Object.keys(firstRow) : [];
 
         // Format as markdown table (more token efficient than JSON per row)
         if (columnNames.length > 0) {
           const header = `| ${columnNames.join(' | ')} |`;
           const separator = `|${columnNames.map(() => '---').join('|')}|`;
 
-          const rows = results.slice(0, 50).map(row => {
-            const values = columnNames.map(col => {
-              const val = row[col];
-              if (val === null || val === undefined) return '';
-              if (typeof val === 'object') return JSON.stringify(val);
-              // Truncate long values and escape pipe characters
-              const str = String(val).replace(/\|/g, '\\|');
-              return str.length > 60 ? str.slice(0, 57) + '...' : str;
-            });
-            return `| ${values.join(' | ')} |`;
-          }).join('\n');
+          const rows = results
+            .slice(0, 50)
+            .map((row) => {
+              const values = columnNames.map((col) => {
+                const val = row[col];
+                if (val === null || val === undefined) return '';
+                if (typeof val === 'object') return JSON.stringify(val);
+                // Truncate long values and escape pipe characters
+                const str = String(val).replace(/\|/g, '\\|');
+                return str.length > 60 ? str.slice(0, 57) + '...' : str;
+              });
+              return `| ${values.join(' | ')} |`;
+            })
+            .join('\n');
 
           const truncated = results.length > 50 ? `\n\n_(${results.length - 50} more rows)_` : '';
           return `**${results.length} results:**\n\n${header}\n${separator}\n${rows}${truncated}`;
@@ -372,9 +406,15 @@ WITH emb, distance WHERE distance < 0.5
 MATCH (n:Function {id: emb.nodeId}) RETURN n`,
       schema: z.object({
         cypher: z.string().describe('The Cypher query to execute'),
-        query: z.string().optional().nullable().describe('Natural language query to embed (required if cypher contains {{QUERY_VECTOR}})'),
+        query: z
+          .string()
+          .optional()
+          .nullable()
+          .describe(
+            'Natural language query to embed (required if cypher contains {{QUERY_VECTOR}})',
+          ),
       }),
-    }
+    },
   );
 
   // ============================================================================
@@ -382,7 +422,12 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
   // ============================================================================
 
   const grepTool = tool(
-    async ({ pattern, fileFilter, caseSensitive, maxResults }: {
+    async ({
+      pattern,
+      fileFilter,
+      caseSensitive,
+      maxResults,
+    }: {
       pattern: string;
       fileFilter?: string;
       caseSensitive?: boolean;
@@ -424,7 +469,7 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
           return `No matches for "${pattern}"${fileFilter ? ` in files matching "${fileFilter}"` : ''}`;
         }
 
-        const formatted = results.map(r => `${r.file}:${r.line}: ${r.content}`).join('\n');
+        const formatted = results.map((r) => `${r.file}:${r.line}: ${r.content}`).join('\n');
         const truncatedMsg = results.length >= limit ? `\n\n(Showing first ${limit} results)` : '';
 
         return `Found ${results.length} matches:\n\n${formatted}${truncatedMsg}`;
@@ -434,14 +479,25 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
     },
     {
       name: 'grep',
-      description: 'Search for exact text patterns across all files using regex. Use for finding specific strings, error messages, TODOs, variable names, etc.',
+      description:
+        'Search for exact text patterns across all files using regex. Use for finding specific strings, error messages, TODOs, variable names, etc.',
       schema: z.object({
-        pattern: z.string().describe('Regex pattern to search for (e.g., "TODO", "console\\.log", "API_KEY")'),
-        fileFilter: z.string().optional().nullable().describe('Only search files containing this string (e.g., ".ts", "src/api")'),
-        caseSensitive: z.boolean().optional().nullable().describe('Case-sensitive search (default: false)'),
+        pattern: z
+          .string()
+          .describe('Regex pattern to search for (e.g., "TODO", "console\\.log", "API_KEY")'),
+        fileFilter: z
+          .string()
+          .optional()
+          .nullable()
+          .describe('Only search files containing this string (e.g., ".ts", "src/api")'),
+        caseSensitive: z
+          .boolean()
+          .optional()
+          .nullable()
+          .describe('Case-sensitive search (default: false)'),
         maxResults: z.number().optional().nullable().describe('Max results (default: 100)'),
       }),
-    }
+    },
   );
 
   // ============================================================================
@@ -497,11 +553,11 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
       if (!content) {
         const fileName = filePath.split('/').pop()?.toLowerCase() || '';
         const similar = Array.from(fileContents.keys())
-          .filter(p => p.toLowerCase().includes(fileName))
+          .filter((p) => p.toLowerCase().includes(fileName))
           .slice(0, 5);
 
         if (similar.length > 0) {
-          return `File not found: "${filePath}"\n\nDid you mean:\n${similar.map(f => `  - ${f}`).join('\n')}`;
+          return `File not found: "${filePath}"\n\nDid you mean:\n${similar.map((f) => `  - ${f}`).join('\n')}`;
         }
         return `File not found: "${filePath}"`;
       }
@@ -518,11 +574,12 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
     },
     {
       name: 'read',
-      description: 'Read the full content of a file. Use to see source code after finding files via search or grep.',
+      description:
+        'Read the full content of a file. Use to see source code after finding files via search or grep.',
       schema: z.object({
         filePath: z.string().describe('File path to read (can be partial like "src/utils.ts")'),
       }),
-    }
+    },
   );
 
   // ============================================================================
@@ -572,7 +629,8 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
           const symbols = Array.isArray(row) ? row[3] : row.symbolCount;
           const cohesion = Array.isArray(row) ? row[2] : row.cohesion;
           const desc = Array.isArray(row) ? row[4] : row.description;
-          const cohesionText = cohesion !== null && cohesion !== undefined ? Number(cohesion).toFixed(2) : '';
+          const cohesionText =
+            cohesion !== null && cohesion !== undefined ? Number(cohesion).toFixed(2) : '';
           return `| ${label || ''} | ${symbols ?? ''} | ${cohesionText} | ${desc ?? ''} |`;
         });
 
@@ -581,7 +639,7 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
           const steps = Array.isArray(row) ? row[3] : row.stepCount;
           const type = Array.isArray(row) ? row[2] : row.type;
           const communities = Array.isArray(row) ? row[4] : row.communities;
-          const clusterText = Array.isArray(communities) ? communities.length : (communities ? 1 : 0);
+          const clusterText = Array.isArray(communities) ? communities.length : communities ? 1 : 0;
           return `| ${label || ''} | ${steps ?? ''} | ${type ?? ''} | ${clusterText} |`;
         });
 
@@ -621,9 +679,10 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
     },
     {
       name: 'overview',
-      description: 'Codebase map showing all clusters and processes, plus cross-cluster dependencies.',
+      description:
+        'Codebase map showing all clusters and processes, plus cross-cluster dependencies.',
       schema: z.object({}),
-    }
+    },
   );
 
   // ============================================================================
@@ -631,14 +690,21 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
   // ============================================================================
 
   const exploreTool = tool(
-    async ({ target, type }: { target: string; type?: 'symbol' | 'cluster' | 'process' | null }) => {
+    async ({
+      target,
+      type,
+    }: {
+      target: string;
+      type?: 'symbol' | 'cluster' | 'process' | null;
+    }) => {
       const safeTarget = target.replace(/'/g, "''");
       let resolvedType = type ?? null;
       let processRow: any | null = null;
       let communityRow: any | null = null;
       let symbolRow: any | null = null;
 
-      const getRowValue = (row: any, idx: number, key: string) => Array.isArray(row) ? row[idx] : row[key];
+      const getRowValue = (row: any, idx: number, key: string) =>
+        Array.isArray(row) ? row[idx] : row[key];
 
       if (!resolvedType || resolvedType === 'process') {
         const processQuery = `
@@ -826,8 +892,10 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
           executeQuery(connectionsQuery),
         ]);
 
-        const clusterLabel = clusterRes.length > 0 ? getRowValue(clusterRes[0], 0, 'label') : 'Unclustered';
-        const clusterDesc = clusterRes.length > 0 ? getRowValue(clusterRes[0], 1, 'description') : '';
+        const clusterLabel =
+          clusterRes.length > 0 ? getRowValue(clusterRes[0], 0, 'label') : 'Unclustered';
+        const clusterDesc =
+          clusterRes.length > 0 ? getRowValue(clusterRes[0], 1, 'description') : '';
 
         const processLines = processRes.map((row: any) => {
           const plabel = getRowValue(row, 0, 'label');
@@ -839,8 +907,8 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
         let connections = 'None';
         if (connRes.length > 0) {
           const row = connRes[0];
-          const rawOutgoing = Array.isArray(row) ? row[0] : (row.outgoing || []);
-          const rawIncoming = Array.isArray(row) ? row[1] : (row.incoming || []);
+          const rawOutgoing = Array.isArray(row) ? row[0] : row.outgoing || [];
+          const rawIncoming = Array.isArray(row) ? row[1] : row.incoming || [];
           const outgoing = (rawOutgoing || []).filter((c: any) => c && c.name).slice(0, 5);
           const incoming = (rawIncoming || []).filter((c: any) => c && c.name).slice(0, 5);
 
@@ -875,12 +943,17 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
     },
     {
       name: 'explore',
-      description: 'Deep dive on a symbol, cluster, or process. Shows membership, participation, and connections.',
+      description:
+        'Deep dive on a symbol, cluster, or process. Shows membership, participation, and connections.',
       schema: z.object({
         target: z.string().describe('Name or ID of a symbol, cluster, or process'),
-        type: z.enum(['symbol', 'cluster', 'process']).optional().nullable().describe('Optional target type (auto-detected if omitted)'),
+        type: z
+          .enum(['symbol', 'cluster', 'process'])
+          .optional()
+          .nullable()
+          .describe('Optional target type (auto-detected if omitted)'),
       }),
-    }
+    },
   );
 
   // ============================================================================
@@ -888,7 +961,14 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
   // ============================================================================
 
   const impactTool = tool(
-    async ({ target, direction, maxDepth, relationTypes, includeTests, minConfidence }: {
+    async ({
+      target,
+      direction,
+      maxDepth,
+      relationTypes,
+      includeTests,
+      minConfidence,
+    }: {
       target: string;
       direction: 'upstream' | 'downstream';
       maxDepth?: number;
@@ -904,25 +984,33 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
       const isTestFile = (path: string): boolean => {
         if (!path) return false;
         const p = path.toLowerCase();
-        return p.includes('.test.') || p.includes('.spec.') ||
-               p.includes('__tests__') || p.includes('__mocks__') ||
-               p.endsWith('.test.ts') || p.endsWith('.test.tsx') ||
-               p.endsWith('.spec.ts') || p.endsWith('.spec.tsx');
+        return (
+          p.includes('.test.') ||
+          p.includes('.spec.') ||
+          p.includes('__tests__') ||
+          p.includes('__mocks__') ||
+          p.endsWith('.test.ts') ||
+          p.endsWith('.test.tsx') ||
+          p.endsWith('.spec.ts') ||
+          p.endsWith('.spec.tsx')
+        );
       };
 
       // Default to usage-based relation types (exclude CONTAINS, DEFINES for impact analysis)
       const defaultRelTypes = ['CALLS', 'IMPORTS', 'EXTENDS', 'IMPLEMENTS'];
-      const activeRelTypes = relationTypes && relationTypes.length > 0
-        ? relationTypes.filter(t => validRelType(t))
-        : defaultRelTypes;
+      const activeRelTypes =
+        relationTypes && relationTypes.length > 0
+          ? relationTypes.filter((t) => validRelType(t))
+          : defaultRelTypes;
       if (activeRelTypes.length === 0) {
         return `No valid relation types provided. Valid types: ${(REL_TYPES as readonly string[]).join(', ')}`;
       }
-      const relTypeFilter = activeRelTypes.map(t => `'${t.replace(/'/g, "''")}'`).join(', ');
+      const relTypeFilter = activeRelTypes.map((t) => `'${t.replace(/'/g, "''")}'`).join(', ');
 
-      const directionLabel = direction === 'upstream'
-        ? 'Files that DEPEND ON this (breakage risk)'
-        : 'Dependencies this RELIES ON';
+      const directionLabel =
+        direction === 'upstream'
+          ? 'Files that DEPEND ON this (breakage risk)'
+          : 'Dependencies this RELIES ON';
 
       // Try to find the target node first
       // If target contains '/', search by filePath; otherwise by name
@@ -955,7 +1043,9 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
       }
 
       // Handle multiple matches - require disambiguation
-      const allPaths = targetResults.map((r: any) => Array.isArray(r) ? r[2] : r.filePath).filter(Boolean);
+      const allPaths = targetResults
+        .map((r: any) => (Array.isArray(r) ? r[2] : r.filePath))
+        .filter(Boolean);
 
       // If multiple matches and target doesn't look like a specific path, ask for clarification
       if (targetResults.length > 1 && !target.includes('/')) {
@@ -982,7 +1072,9 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
       const targetFilePath = Array.isArray(targetNode) ? targetNode[2] : targetNode.filePath;
 
       if (import.meta.env.DEV) {
-        console.log(`🎯 Impact: Found target "${target}" → id=${targetId}, type=${targetType}, filePath=${targetFilePath}`);
+        console.log(
+          `🎯 Impact: Found target "${target}" → id=${targetId}, type=${targetType}, filePath=${targetFilePath}`,
+        );
       }
 
       // No more multipleMatchWarning needed - we either disambiguated or returned early
@@ -999,9 +1091,10 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
 
       // Depth 1 query - direct connections with edge metadata
       // For File targets: find callers of any code element with matching filePath
-      const d1Query = direction === 'upstream'
-        ? isFileTarget
-          ? `
+      const d1Query =
+        direction === 'upstream'
+          ? isFileTarget
+            ? `
             MATCH (affected)-[r:CodeRelation]->(callee)
             WHERE callee.filePath = '${(targetFilePath || target).replace(/'/g, "''")}'
               AND r.type IN [${relTypeFilter}]
@@ -1019,7 +1112,7 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
               r.reason AS reason
             LIMIT 300
           `
-          : `
+            : `
             MATCH (target {id: '${targetId.replace(/'/g, "''")}'})
             MATCH (affected)-[r:CodeRelation]->(target)
             WHERE r.type IN [${relTypeFilter}]
@@ -1036,8 +1129,8 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
               r.reason AS reason
             LIMIT 300
           `
-        : isFileTarget
-          ? `
+          : isFileTarget
+            ? `
             MATCH (caller)-[r:CodeRelation]->(affected)
             WHERE caller.filePath = '${(targetFilePath || target).replace(/'/g, "''")}'
               AND r.type IN [${relTypeFilter}]
@@ -1055,7 +1148,7 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
               r.reason AS reason
             LIMIT 300
           `
-          : `
+            : `
             MATCH (target {id: '${targetId.replace(/'/g, "''")}'})
             MATCH (target)-[r:CodeRelation]->(affected)
             WHERE r.type IN [${relTypeFilter}]
@@ -1075,23 +1168,28 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
       if (import.meta.env.DEV) {
         console.log(`🔍 Impact d=1 query:\n${d1Query}`);
       }
-      depthQueries.push(executeQuery(d1Query).then(results => {
-        if (import.meta.env.DEV) {
-          console.log(`📊 Impact d=1 results: ${results.length} rows`);
-          if (results.length > 0) {
-            console.log('   Sample:', results.slice(0, 3));
-          }
-        }
-        return results;
-      }).catch(err => {
-        if (import.meta.env.DEV) console.warn('Impact d=1 query failed:', err);
-        return [];
-      }));
+      depthQueries.push(
+        executeQuery(d1Query)
+          .then((results) => {
+            if (import.meta.env.DEV) {
+              console.log(`📊 Impact d=1 results: ${results.length} rows`);
+              if (results.length > 0) {
+                console.log('   Sample:', results.slice(0, 3));
+              }
+            }
+            return results;
+          })
+          .catch((err) => {
+            if (import.meta.env.DEV) console.warn('Impact d=1 query failed:', err);
+            return [];
+          }),
+      );
 
       // Depth 2 query - 2 hops
       if (depth >= 2) {
-        const d2Query = direction === 'upstream'
-          ? `
+        const d2Query =
+          direction === 'upstream'
+            ? `
             MATCH (target {id: '${targetId.replace(/'/g, "''")}'})
             MATCH (a)-[r1:CodeRelation]->(target)
             MATCH (affected)-[r2:CodeRelation]->(a)
@@ -1111,7 +1209,7 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
               r2.reason AS reason
             LIMIT 200
           `
-          : `
+            : `
             MATCH (target {id: '${targetId.replace(/'/g, "''")}'})
             MATCH (target)-[r1:CodeRelation]->(a)
             MATCH (a)-[r2:CodeRelation]->(affected)
@@ -1131,16 +1229,19 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
               r2.reason AS reason
             LIMIT 200
           `;
-        depthQueries.push(executeQuery(d2Query).catch(err => {
-          if (import.meta.env.DEV) console.warn('Impact d=2 query failed:', err);
-          return [];
-        }));
+        depthQueries.push(
+          executeQuery(d2Query).catch((err) => {
+            if (import.meta.env.DEV) console.warn('Impact d=2 query failed:', err);
+            return [];
+          }),
+        );
       }
 
       // Depth 3 query - 3 hops
       if (depth >= 3) {
-        const d3Query = direction === 'upstream'
-          ? `
+        const d3Query =
+          direction === 'upstream'
+            ? `
             MATCH (target {id: '${targetId.replace(/'/g, "''")}'})
             MATCH (a)-[r1:CodeRelation]->(target)
             MATCH (b)-[r2:CodeRelation]->(a)
@@ -1162,7 +1263,7 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
               r3.reason AS reason
             LIMIT 100
           `
-          : `
+            : `
             MATCH (target {id: '${targetId.replace(/'/g, "''")}'})
             MATCH (target)-[r1:CodeRelation]->(a)
             MATCH (a)-[r2:CodeRelation]->(b)
@@ -1184,10 +1285,12 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
               r3.reason AS reason
             LIMIT 100
           `;
-        depthQueries.push(executeQuery(d3Query).catch(err => {
-          if (import.meta.env.DEV) console.warn('Impact d=3 query failed:', err);
-          return [];
-        }));
+        depthQueries.push(
+          executeQuery(d3Query).catch((err) => {
+            if (import.meta.env.DEV) console.warn('Impact d=3 query failed:', err);
+            return [];
+          }),
+        );
       }
 
       // Wait for all depth queries
@@ -1229,7 +1332,7 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
               filePath: filePath,
               startLine: Array.isArray(row) ? row[4] : row.startLine,
               edgeType: Array.isArray(row) ? row[5] : row.edgeType || 'CALLS',
-              confidence: Array.isArray(row) ? row[6] : row.confidence ?? 1.0,
+              confidence: Array.isArray(row) ? row[6] : (row.confidence ?? 1.0),
               reason: Array.isArray(row) ? row[7] : row.reason || '',
             };
             byDepth.get(d)!.push(info);
@@ -1267,7 +1370,7 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
           }
 
           if (hints.length > 0) {
-            const formatted = hints.map(h => `${h.file}:${h.line}: ${h.content}`).join('\n');
+            const formatted = hints.map((h) => `${h.file}:${h.line}: ${h.content}`).join('\n');
             return `No ${direction} dependencies found for "${target}" (types: ${activeRelTypes.join(', ')}), but textual references were detected (graph may be incomplete):\n\n${formatted}${multipleMatchWarning}`;
           }
         }
@@ -1293,8 +1396,13 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
       // Affected processes and clusters
       const maxIdsForContext = 500;
       const trimmedIds = allNodeIds.slice(0, maxIdsForContext);
-      const idList = trimmedIds.map(id => `'${id.replace(/'/g, "''")}'`).join(', ');
-      let affectedProcesses: Array<{ label: string; hits: number; minStep: number | null; stepCount: number | null }> = [];
+      const idList = trimmedIds.map((id) => `'${id.replace(/'/g, "''")}'`).join(', ');
+      let affectedProcesses: Array<{
+        label: string;
+        hits: number;
+        minStep: number | null;
+        stepCount: number | null;
+      }> = [];
       let affectedClusters: Array<{ label: string; hits: number; impact: string }> = [];
 
       if (trimmedIds.length > 0) {
@@ -1312,12 +1420,15 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
           ORDER BY hits DESC
           LIMIT 20
         `;
-        const directIdList = depth1.map(n => `'${n.id.replace(/'/g, "''")}'`).join(', ');
-        const directClusterQuery = depth1.length > 0 ? `
+        const directIdList = depth1.map((n) => `'${n.id.replace(/'/g, "''")}'`).join(', ');
+        const directClusterQuery =
+          depth1.length > 0
+            ? `
           MATCH (s)-[:CodeRelation {type: 'MEMBER_OF'}]->(c:Community)
           WHERE s.id IN [${directIdList}]
           RETURN DISTINCT c.label AS label
-        ` : '';
+        `
+            : '';
 
         const [processRes, clusterRes, directClusterRes] = await Promise.all([
           executeQuery(processQuery),
@@ -1352,7 +1463,12 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
       let risk = 'LOW';
       if (directCount >= 30 || processCount >= 5 || clusterCount >= 5 || totalAffected >= 200) {
         risk = 'CRITICAL';
-      } else if (directCount >= 15 || processCount >= 3 || clusterCount >= 3 || totalAffected >= 100) {
+      } else if (
+        directCount >= 15 ||
+        processCount >= 3 ||
+        clusterCount >= 3 ||
+        totalAffected >= 100
+      ) {
         risk = 'HIGH';
       } else if (directCount >= 5 || totalAffected >= 30) {
         risk = 'MEDIUM';
@@ -1365,12 +1481,15 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
         ``,
         `AFFECTED PROCESSES:`,
         ...(affectedProcesses.length > 0
-          ? affectedProcesses.map(p => `- ${p.label} - BROKEN at step ${p.minStep ?? '?'} (${p.hits} symbols, ${p.stepCount ?? '?'} steps)`)
+          ? affectedProcesses.map(
+              (p) =>
+                `- ${p.label} - BROKEN at step ${p.minStep ?? '?'} (${p.hits} symbols, ${p.stepCount ?? '?'} steps)`,
+            )
           : ['- None found']),
         ``,
         `AFFECTED CLUSTERS:`,
         ...(affectedClusters.length > 0
-          ? affectedClusters.map(c => `- ${c.label} (${c.impact}, ${c.hits} symbols)`)
+          ? affectedClusters.map((c) => `- ${c.label} (${c.impact}, ${c.hits} symbols)`)
           : ['- None found']),
         ``,
         `RISK: ${risk}`,
@@ -1399,9 +1518,11 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
 
         for (const [path, c] of fileContents.entries()) {
           const normalizedKey = path.replace(/\\/g, '/');
-          if (normalizedKey === normalizedPath ||
-              normalizedKey.endsWith(normalizedPath) ||
-              normalizedPath.endsWith(normalizedKey)) {
+          if (
+            normalizedKey === normalizedPath ||
+            normalizedKey.endsWith(normalizedPath) ||
+            normalizedPath.endsWith(normalizedKey)
+          ) {
             content = c;
             break;
           }
@@ -1421,11 +1542,12 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
 
       // Depth 1 - Critical (with call site snippets)
       if (depth1.length > 0) {
-        const header = direction === 'upstream'
-          ? `d=1 (Directly DEPEND ON ${target}):`
-          : `d=1 (${target} USES these):`;
+        const header =
+          direction === 'upstream'
+            ? `d=1 (Directly DEPEND ON ${target}):`
+            : `d=1 (${target} USES these):`;
         lines.push(header);
-        depth1.slice(0, 15).forEach(n => {
+        depth1.slice(0, 15).forEach((n) => {
           lines.push(formatNode(n));
           // Add call site snippet for d=1 results
           const snippet = getCallSiteSnippet(n);
@@ -1439,11 +1561,12 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
 
       // Depth 2 - High impact
       if (depth2.length > 0) {
-        const header = direction === 'upstream'
-          ? `d=2 (Indirectly DEPEND ON ${target}):`
-          : `d=2 (${target} USES these indirectly):`;
+        const header =
+          direction === 'upstream'
+            ? `d=2 (Indirectly DEPEND ON ${target}):`
+            : `d=2 (${target} USES these indirectly):`;
         lines.push(header);
-        depth2.slice(0, 15).forEach(n => lines.push(formatNode(n)));
+        depth2.slice(0, 15).forEach((n) => lines.push(formatNode(n)));
         if (depth2.length > 15) lines.push(`  ... +${depth2.length - 15} more`);
         lines.push(``);
       }
@@ -1451,7 +1574,7 @@ MATCH (n:Function {id: emb.nodeId}) RETURN n`,
       // Depth 3 - Transitive
       if (depth3.length > 0) {
         lines.push(`d=3 (Deep impact/dependency):`);
-        depth3.slice(0, 5).forEach(n => lines.push(formatNode(n)));
+        depth3.slice(0, 5).forEach((n) => lines.push(formatNode(n)));
         if (depth3.length > 5) lines.push(`  ... +${depth3.length - 5} more`);
         lines.push(``);
       }
@@ -1495,26 +1618,40 @@ Additional output sections:
 - Risk summary (based on direct callers, processes, clusters)`,
       schema: z.object({
         target: z.string().describe('Name of the function, class, or file to analyze'),
-        direction: z.enum(['upstream', 'downstream']).describe('upstream = what depends on this; downstream = what this depends on'),
-        maxDepth: z.number().optional().nullable().describe('Max traversal depth (default: 3, max: 10)'),
-        relationTypes: z.array(z.string()).optional().nullable().describe('Filter by relation types: CALLS, IMPORTS, EXTENDS, IMPLEMENTS, CONTAINS, DEFINES (default: usage-based)'),
-        includeTests: z.boolean().optional().nullable().describe('Include test files in results (default: false, excludes .test.ts, .spec.ts, __tests__)'),
-        minConfidence: z.number().optional().nullable().describe('Minimum edge confidence 0-1 (default: 0.7, excludes fuzzy/inferred matches)'),
+        direction: z
+          .enum(['upstream', 'downstream'])
+          .describe('upstream = what depends on this; downstream = what this depends on'),
+        maxDepth: z
+          .number()
+          .optional()
+          .nullable()
+          .describe('Max traversal depth (default: 3, max: 10)'),
+        relationTypes: z
+          .array(z.string())
+          .optional()
+          .nullable()
+          .describe(
+            'Filter by relation types: CALLS, IMPORTS, EXTENDS, IMPLEMENTS, CONTAINS, DEFINES (default: usage-based)',
+          ),
+        includeTests: z
+          .boolean()
+          .optional()
+          .nullable()
+          .describe(
+            'Include test files in results (default: false, excludes .test.ts, .spec.ts, __tests__)',
+          ),
+        minConfidence: z
+          .number()
+          .optional()
+          .nullable()
+          .describe('Minimum edge confidence 0-1 (default: 0.7, excludes fuzzy/inferred matches)'),
       }),
-    }
+    },
   );
 
   // ============================================================================
   // RETURN ALL TOOLS
   // ============================================================================
 
-  return [
-    searchTool,
-    cypherTool,
-    grepTool,
-    readTool,
-    overviewTool,
-    exploreTool,
-    impactTool,
-  ];
+  return [searchTool, cypherTool, grepTool, readTool, overviewTool, exploreTool, impactTool];
 };

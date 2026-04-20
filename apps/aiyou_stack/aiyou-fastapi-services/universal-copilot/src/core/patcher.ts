@@ -3,9 +3,9 @@
  * Safely applies code patches with validation and rollback
  */
 
-import * as fs from "node:fs/promises";
-import * as path from "node:path";
-import { PatchError } from "./errors.js";
+import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
+import { PatchError } from './errors.js';
 
 /**
  * Patch application result
@@ -85,30 +85,30 @@ export class UnifiedPatcher {
    * Apply unified diff format to content
    */
   private applyUnifiedDiff(original: string, diff: string, filePath: string): string {
-    const lines = diff.split("\n");
+    const lines = diff.split('\n');
 
     // Validate diff format
     if (!this.isValidDiff(lines, filePath)) {
-      throw new PatchError("Invalid unified diff format");
+      throw new PatchError('Invalid unified diff format');
     }
 
     // Extract hunks
     const hunks = this.parseHunks(lines);
 
     // Apply each hunk
-    let result = original.split("\n");
+    let result = original.split('\n');
     for (const hunk of hunks) {
       result = this.applyHunk(result, hunk);
     }
 
-    return result.join("\n");
+    return result.join('\n');
   }
 
   private isValidDiff(lines: string[], filePath: string): boolean {
     // Check for diff headers
-    const hasOldMarker = lines.some((l) => l.startsWith("---") && l.includes(filePath));
-    const hasNewMarker = lines.some((l) => l.startsWith("+++") && l.includes(filePath));
-    const hasHunkMarker = lines.some((l) => l.startsWith("@@"));
+    const hasOldMarker = lines.some((l) => l.startsWith('---') && l.includes(filePath));
+    const hasNewMarker = lines.some((l) => l.startsWith('+++') && l.includes(filePath));
+    const hasHunkMarker = lines.some((l) => l.startsWith('@@'));
 
     return hasOldMarker && hasNewMarker && hasHunkMarker;
   }
@@ -118,7 +118,7 @@ export class UnifiedPatcher {
     let currentHunk: Hunk | null = null;
 
     for (const line of lines) {
-      if (line.startsWith("@@")) {
+      if (line.startsWith('@@')) {
         // New hunk
         if (currentHunk) {
           hunks.push(currentHunk);
@@ -126,11 +126,11 @@ export class UnifiedPatcher {
         currentHunk = this.parseHunkHeader(line);
       } else if (currentHunk) {
         // Hunk content
-        if (line.startsWith("-")) {
+        if (line.startsWith('-')) {
           currentHunk.removed.push(line.substring(1));
-        } else if (line.startsWith("+")) {
+        } else if (line.startsWith('+')) {
           currentHunk.added.push(line.substring(1));
-        } else if (line.startsWith(" ")) {
+        } else if (line.startsWith(' ')) {
           // Context line (included in both)
           const content = line.substring(1);
           currentHunk.removed.push(content);
@@ -155,9 +155,9 @@ export class UnifiedPatcher {
 
     return {
       oldStart: parseInt(match[1]),
-      oldCount: parseInt(match[2] || "1"),
+      oldCount: parseInt(match[2] || '1'),
       newStart: parseInt(match[3]),
-      newCount: parseInt(match[4] || "1"),
+      newCount: parseInt(match[4] || '1'),
       removed: [],
       added: [],
     };
@@ -216,7 +216,7 @@ export class UnifiedPatcher {
   }
 
   private async createBackup(filePath: string, content: string): Promise<string> {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const backupPath = `${filePath}.backup-${timestamp}`;
 
     await this.writeFile(backupPath, content);
@@ -225,7 +225,7 @@ export class UnifiedPatcher {
 
   private async readFile(filePath: string): Promise<string> {
     try {
-      return await fs.readFile(filePath, "utf-8");
+      return await fs.readFile(filePath, 'utf-8');
     } catch (error: unknown) {
       throw new PatchError(`Failed to read file: ${error.message}`, { filePath });
     }
@@ -235,15 +235,15 @@ export class UnifiedPatcher {
     try {
       // Ensure directory exists
       await fs.mkdir(path.dirname(filePath), { recursive: true });
-      await fs.writeFile(filePath, content, "utf-8");
+      await fs.writeFile(filePath, content, 'utf-8');
     } catch (error: unknown) {
       throw new PatchError(`Failed to write file: ${error.message}`, { filePath });
     }
   }
 
   private countChangedLines(original: string, patched: string): number {
-    const originalLines = original.split("\n");
-    const patchedLines = patched.split("\n");
+    const originalLines = original.split('\n');
+    const patchedLines = patched.split('\n');
 
     let changes = 0;
     const maxLen = Math.max(originalLines.length, patchedLines.length);
@@ -262,11 +262,11 @@ export class UnifiedPatcher {
     const ext = path.extname(filePath);
 
     // For now, just check for basic issues
-    if (ext === ".json") {
+    if (ext === '.json') {
       try {
         JSON.parse(content);
       } catch {
-        throw new PatchError("Invalid JSON syntax after patch");
+        throw new PatchError('Invalid JSON syntax after patch');
       }
     }
 

@@ -1,5 +1,5 @@
 // ...existing code...
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { isWriteQuery as isWriteQueryAdapter } from '../../src/mcp/core/lbug-adapter';
 import { isWriteQuery as isWriteQueryBackend } from '../../src/mcp/local/local-backend';
 

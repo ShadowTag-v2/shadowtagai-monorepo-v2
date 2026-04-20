@@ -1,7 +1,7 @@
 [
   {
     "context_length": 512,
-    "threshold": 1e-06,
+    "threshold": 1e-6,
     "overall_skip_rate": 0.09126935686383929,
     "total_positions": 229376,
     "total_skipped": 20935,
@@ -207,7 +207,7 @@
   },
   {
     "context_length": 2048,
-    "threshold": 1e-06,
+    "threshold": 1e-6,
     "overall_skip_rate": 0.20713915143694198,
     "total_positions": 917504,
     "total_skipped": 190051,
@@ -413,7 +413,7 @@
   },
   {
     "context_length": 4096,
-    "threshold": 1e-06,
+    "threshold": 1e-6,
     "overall_skip_rate": 0.28397914341517855,
     "total_positions": 1835008,
     "total_skipped": 521104,
@@ -619,7 +619,7 @@
   },
   {
     "context_length": 5001,
-    "threshold": 1e-06,
+    "threshold": 1e-6,
     "overall_skip_rate": 0.2694229011340589,
     "total_positions": 2240448,
     "total_skipped": 603628,

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "preact/hooks";
-import { useConversation } from "../../providers/ConversationProvider";
-import { Icon } from "../icons";
+import { useEffect, useState } from 'preact/hooks';
+import { useConversation } from '../../providers/ConversationProvider';
+import { Icon } from '../icons';
 
 interface Artifact {
   id?: string;
@@ -24,15 +24,15 @@ interface Props {
   defaultExpanded?: boolean;
 }
 
-const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp", ".svg"];
+const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp', '.svg'];
 
 const isImageFile = (filename: string): boolean =>
   IMAGE_EXTENSIONS.some((ext) => filename.toLowerCase().endsWith(ext));
 
 const getMimeType = (filename: string, providedMimeType?: string): string => {
   if (providedMimeType) return providedMimeType;
-  const ext = filename.split(".").pop()?.toLowerCase() || "png";
-  return `image/${ext === "svg" ? "svg+xml" : ext}`;
+  const ext = filename.split('.').pop()?.toLowerCase() || 'png';
+  return `image/${ext === 'svg' ? 'svg+xml' : ext}`;
 };
 
 async function fetchPresignedUrl(
@@ -99,7 +99,7 @@ export function ArtifactViewer({ results, defaultExpanded = true }: Props) {
     if (artifact.content) {
       return `data:${getMimeType(artifact.filename, artifact.mimeType)};base64,${artifact.content}`;
     }
-    return "";
+    return '';
   };
 
   const handleDownload = async (artifact: Artifact) => {
@@ -110,7 +110,7 @@ export function ArtifactViewer({ results, defaultExpanded = true }: Props) {
       if (artifact.path && userId && conversationStateId) {
         const url = await fetchPresignedUrl(userId, conversationStateId, artifact.path);
         if (url) {
-          window.open(url, "_blank");
+          window.open(url, '_blank');
           return;
         }
       }
@@ -119,7 +119,7 @@ export function ArtifactViewer({ results, defaultExpanded = true }: Props) {
         const bytes = Uint8Array.from(atob(artifact.content), (c) => c.charCodeAt(0));
         const blob = new Blob([bytes]);
         const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
+        const a = document.createElement('a');
         a.href = url;
         a.download = artifact.filename;
         a.click();
@@ -127,9 +127,9 @@ export function ArtifactViewer({ results, defaultExpanded = true }: Props) {
         return;
       }
 
-      throw new Error("No download method available");
+      throw new Error('No download method available');
     } catch (err) {
-      console.error("Failed to download artifact:", err);
+      console.error('Failed to download artifact:', err);
     } finally {
       setIsDownloading(null);
     }
@@ -146,13 +146,13 @@ export function ArtifactViewer({ results, defaultExpanded = true }: Props) {
           <div className="artifact-viewer-badges">
             {hasArtifacts && (
               <span className="artifact-badge artifact-badge-files">
-                {allArtifacts.length} file{allArtifacts.length !== 1 ? "s" : ""}
+                {allArtifacts.length} file{allArtifacts.length !== 1 ? 's' : ''}
               </span>
             )}
             {hasErrors && (
               <span className="artifact-badge artifact-badge-error">
                 {results.filter((r) => r.error).length} error
-                {results.filter((r) => r.error).length !== 1 ? "s" : ""}
+                {results.filter((r) => r.error).length !== 1 ? 's' : ''}
               </span>
             )}
             {totalExecutionTime > 0 && (
@@ -165,7 +165,7 @@ export function ArtifactViewer({ results, defaultExpanded = true }: Props) {
         <Icon
           name="chevronDown"
           size={16}
-          className={`artifact-viewer-chevron ${isExpanded ? "expanded" : ""}`}
+          className={`artifact-viewer-chevron ${isExpanded ? 'expanded' : ''}`}
         />
       </button>
 
@@ -210,7 +210,7 @@ export function ArtifactViewer({ results, defaultExpanded = true }: Props) {
                   return (
                     <div
                       key={artifact.id || index}
-                      className={`artifact-file-card ${isImage ? "artifact-file-image" : ""}`}
+                      className={`artifact-file-card ${isImage ? 'artifact-file-image' : ''}`}
                       onClick={() => isImage && setSelectedArtifact(artifact)}
                     >
                       {isImage ? (
@@ -219,7 +219,7 @@ export function ArtifactViewer({ results, defaultExpanded = true }: Props) {
                             src={getImageSrc(artifact)}
                             alt={artifact.description || artifact.filename}
                             onError={(e) => {
-                              (e.target as HTMLImageElement).style.display = "none";
+                              (e.target as HTMLImageElement).style.display = 'none';
                             }}
                           />
                         </div>

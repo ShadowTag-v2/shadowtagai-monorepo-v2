@@ -8,12 +8,12 @@
  * - GET /api/clarification/:sessionId - Get session state
  */
 
-import { Elysia } from "elysia";
+import { Elysia } from 'elysia';
 import {
   clarificationPlanAgent,
   clarificationPlanRegenerateAgent,
   clarificationQuestionsAgent,
-} from "../agents/clarification";
+} from '../agents/clarification';
 import {
   addPlanFeedback,
   approveClarificationPlan,
@@ -21,17 +21,17 @@ import {
   getClarificationSessionForUser,
   setClarificationPlan,
   submitClarificationAnswers,
-} from "../db/clarification";
-import { getOrCreateUserByWallet } from "../db/operations";
-import { authResolver } from "../middleware/authResolver";
-import { rateLimitMiddleware } from "../middleware/rateLimiter";
-import type { AuthContext } from "../types/auth";
+} from '../db/clarification';
+import { getOrCreateUserByWallet } from '../db/operations';
+import { authResolver } from '../middleware/authResolver';
+import { rateLimitMiddleware } from '../middleware/rateLimiter';
+import type { AuthContext } from '../types/auth';
 import type {
   ClarificationAnswer,
   ClarificationPlan,
   ClarificationQuestion,
-} from "../types/clarification";
-import logger from "../utils/logger";
+} from '../types/clarification';
+import logger from '../utils/logger';
 
 /**
  * Response type for generate-questions endpoint
@@ -93,14 +93,14 @@ export const clarificationRoute = new Elysia().guard(
       authResolver({
         required: true,
       }),
-      rateLimitMiddleware("chat"), // Use chat rate limit
+      rateLimitMiddleware('chat'), // Use chat rate limit
     ],
   },
   (app) =>
     app
       // Generate clarification questions from a query
       .post(
-        "/api/clarification/generate-questions",
+        '/api/clarification/generate-questions',
         async (ctx): Promise<GenerateQuestionsResponse> => {
           const { body, set, request } = ctx;
           const parsedBody = body as {
@@ -110,11 +110,11 @@ export const clarificationRoute = new Elysia().guard(
 
           // Validate query
           const query = parsedBody.query;
-          if (!query || typeof query !== "string" || query.trim().length === 0) {
+          if (!query || typeof query !== 'string' || query.trim().length === 0) {
             set.status = 400;
             return {
               ok: false,
-              error: "Missing required field: query",
+              error: 'Missing required field: query',
             };
           }
 
@@ -123,15 +123,15 @@ export const clarificationRoute = new Elysia().guard(
 
           // Get userId from auth context - require authentication
           const auth = (request as any).auth as AuthContext | undefined;
-          if (!auth?.userId && !(auth?.method === "x402" && auth?.externalId)) {
+          if (!auth?.userId && !(auth?.method === 'x402' && auth?.externalId)) {
             set.status = 401;
-            return { ok: false, error: "Authentication required" };
+            return { ok: false, error: 'Authentication required' };
           }
 
           let userId = auth.userId!;
 
           // For x402 users, ensure wallet user record exists
-          if (auth?.method === "x402" && auth?.externalId) {
+          if (auth?.method === 'x402' && auth?.externalId) {
             const { user } = await getOrCreateUserByWallet(auth.externalId);
             userId = user.id;
           }
@@ -143,7 +143,7 @@ export const clarificationRoute = new Elysia().guard(
               queryPreview: query.substring(0, 100),
               datasetCount: datasets?.length || 0,
             },
-            "clarification_generate_questions_request",
+            'clarification_generate_questions_request',
           );
 
           try {
@@ -162,7 +162,7 @@ export const clarificationRoute = new Elysia().guard(
                 sessionId: session.id,
                 questionCount: result.questions.length,
               },
-              "clarification_session_created",
+              'clarification_session_created',
             );
 
             return {
@@ -174,19 +174,19 @@ export const clarificationRoute = new Elysia().guard(
           } catch (error) {
             logger.error(
               { error, userId, query: query.substring(0, 100) },
-              "clarification_generate_questions_failed",
+              'clarification_generate_questions_failed',
             );
             set.status = 500;
             return {
               ok: false,
-              error: error instanceof Error ? error.message : "Failed to generate questions",
+              error: error instanceof Error ? error.message : 'Failed to generate questions',
             };
           }
         },
       )
 
       // Submit answers and get generated plan
-      .post("/api/clarification/submit-answers", async (ctx): Promise<SubmitAnswersResponse> => {
+      .post('/api/clarification/submit-answers', async (ctx): Promise<SubmitAnswersResponse> => {
         const { body, set, request } = ctx;
         const parsedBody = body as {
           sessionId?: string;
@@ -200,20 +200,20 @@ export const clarificationRoute = new Elysia().guard(
           set.status = 400;
           return {
             ok: false,
-            error: "Missing required fields: sessionId and answers",
+            error: 'Missing required fields: sessionId and answers',
           };
         }
 
         // Get userId from auth context
         const auth = (request as any).auth as AuthContext | undefined;
-        if (!auth?.userId && !(auth?.method === "x402" && auth?.externalId)) {
+        if (!auth?.userId && !(auth?.method === 'x402' && auth?.externalId)) {
           set.status = 401;
-          return { ok: false, error: "Authentication required" };
+          return { ok: false, error: 'Authentication required' };
         }
 
         let userId = auth.userId!;
 
-        if (auth?.method === "x402" && auth?.externalId) {
+        if (auth?.method === 'x402' && auth?.externalId) {
           const { user } = await getOrCreateUserByWallet(auth.externalId);
           userId = user.id;
         }
@@ -224,7 +224,7 @@ export const clarificationRoute = new Elysia().guard(
             sessionId,
             answerCount: answers.length,
           },
-          "clarification_submit_answers_request",
+          'clarification_submit_answers_request',
         );
 
         try {
@@ -234,12 +234,12 @@ export const clarificationRoute = new Elysia().guard(
             set.status = 404;
             return {
               ok: false,
-              error: "Session not found or access denied",
+              error: 'Session not found or access denied',
             };
           }
 
           // Validate session status
-          if (session.status !== "questions_generated") {
+          if (session.status !== 'questions_generated') {
             set.status = 400;
             return {
               ok: false,
@@ -266,7 +266,7 @@ export const clarificationRoute = new Elysia().guard(
               sessionId,
               taskCount: planResult.plan.initialTasks.length,
             },
-            "clarification_plan_generated",
+            'clarification_plan_generated',
           );
 
           return {
@@ -275,17 +275,17 @@ export const clarificationRoute = new Elysia().guard(
             plan: planResult.plan,
           };
         } catch (error) {
-          logger.error({ error, userId, sessionId }, "clarification_submit_answers_failed");
+          logger.error({ error, userId, sessionId }, 'clarification_submit_answers_failed');
           set.status = 500;
           return {
             ok: false,
-            error: error instanceof Error ? error.message : "Failed to submit answers",
+            error: error instanceof Error ? error.message : 'Failed to submit answers',
           };
         }
       })
 
       // Provide feedback on plan or approve it
-      .post("/api/clarification/plan-feedback", async (ctx): Promise<PlanFeedbackResponse> => {
+      .post('/api/clarification/plan-feedback', async (ctx): Promise<PlanFeedbackResponse> => {
         const { body, set, request } = ctx;
         const parsedBody = body as {
           sessionId?: string;
@@ -296,11 +296,11 @@ export const clarificationRoute = new Elysia().guard(
 
         // Validate input
         const { sessionId, feedback, approved, datasets } = parsedBody;
-        if (!sessionId || typeof approved !== "boolean") {
+        if (!sessionId || typeof approved !== 'boolean') {
           set.status = 400;
           return {
             ok: false,
-            error: "Missing required fields: sessionId and approved",
+            error: 'Missing required fields: sessionId and approved',
           };
         }
 
@@ -309,20 +309,20 @@ export const clarificationRoute = new Elysia().guard(
           set.status = 400;
           return {
             ok: false,
-            error: "Feedback is required when not approving the plan",
+            error: 'Feedback is required when not approving the plan',
           };
         }
 
         // Get userId from auth context - require authentication
         const auth = (request as any).auth as AuthContext | undefined;
-        if (!auth?.userId && !(auth?.method === "x402" && auth?.externalId)) {
+        if (!auth?.userId && !(auth?.method === 'x402' && auth?.externalId)) {
           set.status = 401;
-          return { ok: false, error: "Authentication required" };
+          return { ok: false, error: 'Authentication required' };
         }
 
         let userId = auth.userId!;
 
-        if (auth?.method === "x402" && auth?.externalId) {
+        if (auth?.method === 'x402' && auth?.externalId) {
           const { user } = await getOrCreateUserByWallet(auth.externalId);
           userId = user.id;
         }
@@ -334,7 +334,7 @@ export const clarificationRoute = new Elysia().guard(
             approved,
             hasFeedback: !!feedback,
           },
-          "clarification_plan_feedback_request",
+          'clarification_plan_feedback_request',
         );
 
         try {
@@ -344,12 +344,12 @@ export const clarificationRoute = new Elysia().guard(
             set.status = 404;
             return {
               ok: false,
-              error: "Session not found or access denied",
+              error: 'Session not found or access denied',
             };
           }
 
           // Validate session status
-          if (session.status !== "plan_generated" && session.status !== "answers_submitted") {
+          if (session.status !== 'plan_generated' && session.status !== 'answers_submitted') {
             set.status = 400;
             return {
               ok: false,
@@ -362,7 +362,7 @@ export const clarificationRoute = new Elysia().guard(
             set.status = 400;
             return {
               ok: false,
-              error: "No plan to provide feedback on",
+              error: 'No plan to provide feedback on',
             };
           }
 
@@ -370,7 +370,7 @@ export const clarificationRoute = new Elysia().guard(
             // Approve the plan
             const updatedSession = await approveClarificationPlan(sessionId);
 
-            logger.info({ sessionId }, "clarification_plan_approved");
+            logger.info({ sessionId }, 'clarification_plan_approved');
 
             return {
               ok: true,
@@ -403,7 +403,7 @@ export const clarificationRoute = new Elysia().guard(
                 sessionId,
                 taskCount: planResult.plan.initialTasks.length,
               },
-              "clarification_plan_regenerated",
+              'clarification_plan_regenerated',
             );
 
             return {
@@ -414,35 +414,35 @@ export const clarificationRoute = new Elysia().guard(
             };
           }
         } catch (error) {
-          logger.error({ error, userId, sessionId }, "clarification_plan_feedback_failed");
+          logger.error({ error, userId, sessionId }, 'clarification_plan_feedback_failed');
           set.status = 500;
           return {
             ok: false,
-            error: error instanceof Error ? error.message : "Failed to process feedback",
+            error: error instanceof Error ? error.message : 'Failed to process feedback',
           };
         }
       })
 
       // Get session state
-      .get("/api/clarification/:sessionId", async (ctx): Promise<GetSessionResponse> => {
+      .get('/api/clarification/:sessionId', async (ctx): Promise<GetSessionResponse> => {
         const { params, set, request } = ctx;
         const { sessionId } = params;
 
         // Get userId from auth context - require authentication
         const auth = (request as any).auth as AuthContext | undefined;
-        if (!auth?.userId && !(auth?.method === "x402" && auth?.externalId)) {
+        if (!auth?.userId && !(auth?.method === 'x402' && auth?.externalId)) {
           set.status = 401;
-          return { ok: false, error: "Authentication required" };
+          return { ok: false, error: 'Authentication required' };
         }
 
         let userId = auth.userId!;
 
-        if (auth?.method === "x402" && auth?.externalId) {
+        if (auth?.method === 'x402' && auth?.externalId) {
           const { user } = await getOrCreateUserByWallet(auth.externalId);
           userId = user.id;
         }
 
-        logger.info({ userId, sessionId }, "clarification_get_session_request");
+        logger.info({ userId, sessionId }, 'clarification_get_session_request');
 
         try {
           // Get session and verify ownership
@@ -451,7 +451,7 @@ export const clarificationRoute = new Elysia().guard(
             set.status = 404;
             return {
               ok: false,
-              error: "Session not found or access denied",
+              error: 'Session not found or access denied',
             };
           }
 
@@ -469,11 +469,11 @@ export const clarificationRoute = new Elysia().guard(
             },
           };
         } catch (error) {
-          logger.error({ error, userId, sessionId }, "clarification_get_session_failed");
+          logger.error({ error, userId, sessionId }, 'clarification_get_session_failed');
           set.status = 500;
           return {
             ok: false,
-            error: error instanceof Error ? error.message : "Failed to get session",
+            error: error instanceof Error ? error.message : 'Failed to get session',
           };
         }
       }),

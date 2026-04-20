@@ -5,11 +5,10 @@
 // 'npm run snippets'.
 
 // [START auth_link_with_redirect_modular]
-import { getAuth, linkWithRedirect, GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, linkWithRedirect } from 'firebase/auth';
+
 const provider = new GoogleAuthProvider();
 
 const auth = getAuth();
-linkWithRedirect(auth.currentUser, provider)
-  .then(/* ... */)
-  .catch(/* ... */);
+linkWithRedirect(auth.currentUser, provider).then(/* ... */).catch(/* ... */);
 // [END auth_link_with_redirect_modular]

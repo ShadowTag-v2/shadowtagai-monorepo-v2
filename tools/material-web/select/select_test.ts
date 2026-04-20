@@ -6,15 +6,15 @@
 
 // import 'jasmine'; (google3-only)
 
-import {html, render} from 'lit';
+import { html, render } from 'lit';
 
-import {createFormTests} from '../testing/forms.js';
-import {createTokenTests} from '../testing/tokens.js';
+import { createFormTests } from '../testing/forms.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdFilledSelect} from './filled-select.js';
-import {SelectHarness} from './harness.js';
-import {MdOutlinedSelect} from './outlined-select.js';
-import {MdSelectOption} from './select-option.js';
+import { MdFilledSelect } from './filled-select.js';
+import { SelectHarness } from './harness.js';
+import { MdOutlinedSelect } from './outlined-select.js';
+import { MdSelectOption } from './select-option.js';
 
 describe('<md-outlined-select>', () => {
   describe('.styles', () => {
@@ -105,9 +105,7 @@ describe('<md-outlined-select>', () => {
     await harness.keypress('z');
     await selectEl.updateComplete;
 
-    expect(selectEl.value)
-      .withContext('value after non-matching typeahead keypress')
-      .toBe('apple');
+    expect(selectEl.value).withContext('value after non-matching typeahead keypress').toBe('apple');
     expect(changed).withContext('did not change').toBeFalse();
   });
 
@@ -133,17 +131,13 @@ describe('<md-outlined-select>', () => {
     await selectEl.updateComplete; // wait for menu to open
 
     await harness.clickOption(1);
-    expect(selectEl.value)
-      .withContext('value after clicking option')
-      .toBe('banana');
+    expect(selectEl.value).withContext('value after clicking option').toBe('banana');
 
     await harness.keypress('z');
     await selectEl.updateComplete;
 
     expect(selectEl.value)
-      .withContext(
-        'value after non-matching typeahead keypress stays the same (banana)',
-      )
+      .withContext('value after non-matching typeahead keypress stays the same (banana)')
       .toBe('banana');
   });
 
@@ -217,9 +211,7 @@ describe('<md-outlined-select>', () => {
             select.value = 'one';
           },
           assertReset(select) {
-            expect(select.value)
-              .withContext('select.value after reset')
-              .toBe('');
+            expect(select.value).withContext('select.value after reset').toBe('');
           },
         },
         {
@@ -234,9 +226,7 @@ describe('<md-outlined-select>', () => {
             select.value = 'one';
           },
           assertReset(select) {
-            expect(select.value)
-              .withContext('select.value after reset')
-              .toBe('two');
+            expect(select.value).withContext('select.value after reset').toBe('two');
           },
         },
       ],
@@ -250,9 +240,7 @@ describe('<md-outlined-select>', () => {
             </md-outlined-select>
           `,
           assertRestored(select) {
-            expect(select.value)
-              .withContext('select.value after restore')
-              .toBe('');
+            expect(select.value).withContext('select.value after restore').toBe('');
           },
         },
         {
@@ -264,9 +252,7 @@ describe('<md-outlined-select>', () => {
             </md-outlined-select>
           `,
           assertRestored(select) {
-            expect(select.value)
-              .withContext('select.value after restore')
-              .toBe('two');
+            expect(select.value).withContext('select.value after restore').toBe('two');
           },
         },
       ],

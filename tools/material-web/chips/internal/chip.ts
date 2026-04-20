@@ -7,11 +7,11 @@
 import '../../focus/md-focus-ring.js';
 import '../../ripple/ripple.js';
 
-import {html, isServer, LitElement, PropertyValues, TemplateResult} from 'lit';
-import {property} from 'lit/decorators.js';
-import {ClassInfo, classMap} from 'lit/directives/class-map.js';
+import { html, isServer, LitElement, type PropertyValues, type TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
 
-import {mixinDelegatesAria} from '../../internal/aria/delegate.js';
+import { mixinDelegatesAria } from '../../internal/aria/delegate.js';
 
 // Separate variable needed for closure.
 const chipBaseClass = mixinDelegatesAria(LitElement);
@@ -33,7 +33,7 @@ export abstract class Chip extends chipBaseClass {
    *
    * Disabled chips are not focusable, unless `always-focusable` is set.
    */
-  @property({type: Boolean, reflect: true}) disabled = false;
+  @property({ type: Boolean, reflect: true }) disabled = false;
 
   /**
    * Whether or not the chip is "soft-disabled" (disabled but still
@@ -43,7 +43,7 @@ export abstract class Chip extends chipBaseClass {
    * https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls
    * for more guidance on when this is needed.
    */
-  @property({type: Boolean, attribute: 'soft-disabled', reflect: true})
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true })
   softDisabled = false;
 
   /**
@@ -55,7 +55,7 @@ export abstract class Chip extends chipBaseClass {
    *
    * @deprecated Use `softDisabled` instead of `alwaysFocusable` + `disabled`.
    */
-  @property({type: Boolean, attribute: 'always-focusable'})
+  @property({ type: Boolean, attribute: 'always-focusable' })
   alwaysFocusable = false;
 
   // TODO(b/350810013): remove the label property.
@@ -72,8 +72,7 @@ export abstract class Chip extends chipBaseClass {
    * Add this attribute when a chip has a `slot="icon"` to avoid a Flash Of
    * Unstyled Content.
    */
-  @property({type: Boolean, reflect: true, attribute: 'has-icon'}) hasIcon =
-    false;
+  @property({ type: Boolean, reflect: true, attribute: 'has-icon' }) hasIcon = false;
 
   /**
    * The `id` of the action the primary focus ring and ripple are for.
@@ -114,13 +113,13 @@ export abstract class Chip extends chipBaseClass {
 
   protected override updated(changed: PropertyValues<Chip>) {
     if (changed.has('disabled') && changed.get('disabled') !== undefined) {
-      this.dispatchEvent(new Event('update-focus', {bubbles: true}));
+      this.dispatchEvent(new Event('update-focus', { bubbles: true }));
     }
   }
 
   protected getContainerClasses(): ClassInfo {
     return {
-      'disabled': this.disabled || this.softDisabled,
+      disabled: this.disabled || this.softDisabled,
       'has-icon': this.hasIcon,
     };
   }
@@ -162,7 +161,7 @@ export abstract class Chip extends chipBaseClass {
 
   private handleIconChange(event: Event) {
     const slot = event.target as HTMLSlotElement;
-    this.hasIcon = slot.assignedElements({flatten: true}).length > 0;
+    this.hasIcon = slot.assignedElements({ flatten: true }).length > 0;
   }
 
   private handleClick(event: Event) {

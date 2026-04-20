@@ -4,9 +4,9 @@
 // To update the snippets in this file, edit the source and then run
 // 'npm run snippets'.
 
+import { getAuth } from 'firebase/auth';
 // [START rtdb_social_most_starred_modular]
-import { getDatabase, ref, query, orderByChild } from "firebase/database";
-import { getAuth } from "firebase/auth";
+import { getDatabase, orderByChild, query, ref } from 'firebase/database';
 
 const db = getDatabase();
 const auth = getAuth();

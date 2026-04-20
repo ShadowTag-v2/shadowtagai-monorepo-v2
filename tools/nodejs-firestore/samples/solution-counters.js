@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-'use strict';
-const {Firestore, FieldValue} = require('@google-cloud/firestore');
+const { Firestore, FieldValue } = require('@google-cloud/firestore');
 
 async function main() {
   // [START firestore_solution_sharded_counter_increment]
   function incrementCounter(docRef, numShards) {
     const shardId = Math.floor(Math.random() * numShards);
     const shardRef = docRef.collection('shards').doc(shardId.toString());
-    return shardRef.set({count: FieldValue.increment(1)}, {merge: true});
+    return shardRef.set({ count: FieldValue.increment(1) }, { merge: true });
   }
   // [END firestore_solution_sharded_counter_increment]
 
@@ -42,7 +41,7 @@ async function main() {
     const shardsCollectionRef = docRef.collection('shards');
     const shardDocs = await shardsCollectionRef.select('id').get();
     const promises = [];
-    shardDocs.forEach(async doc => {
+    shardDocs.forEach(async (doc) => {
       promises.push(shardsCollectionRef.doc(doc.id).delete());
     });
     return Promise.all(promises);
@@ -51,9 +50,7 @@ async function main() {
 
   // Create a new client
   const firestore = new Firestore();
-  const docRef = firestore.doc(
-    'distributed_counter_samples/distributed_counter',
-  );
+  const docRef = firestore.doc('distributed_counter_samples/distributed_counter');
   // Clean up documents from potential prior test runs
   await deleteDocs(docRef);
   const numberOfShards = 10;

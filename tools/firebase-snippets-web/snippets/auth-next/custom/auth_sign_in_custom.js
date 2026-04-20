@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_sign_in_custom_modular]
-import { getAuth, signInWithCustomToken } from "firebase/auth";
+import { getAuth, signInWithCustomToken } from 'firebase/auth';
 
 const auth = getAuth();
 signInWithCustomToken(auth, token)

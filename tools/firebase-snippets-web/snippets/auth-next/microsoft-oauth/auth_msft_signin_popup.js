@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_msft_signin_popup_modular]
-import { getAuth, signInWithPopup, OAuthProvider } from "firebase/auth";
+import { getAuth, OAuthProvider, signInWithPopup } from 'firebase/auth';
 
 const auth = getAuth();
 signInWithPopup(auth, provider)

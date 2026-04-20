@@ -1,23 +1,23 @@
-import { z } from "zod";
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import { z } from 'zod';
 import {
+  blobResource,
+  blobResourceUri,
   textResource,
   textResourceUri,
-  blobResourceUri,
-  blobResource,
-} from "../resources/templates.js";
+} from '../resources/templates.js';
 
 // Tool input schema
 const GetResourceLinksSchema = z.object({
-  count: z.number().min(1).max(10).default(3).describe("Number of resource links to return (1-10)"),
+  count: z.number().min(1).max(10).default(3).describe('Number of resource links to return (1-10)'),
 });
 
 // Tool configuration
-const name = "get-resource-links";
+const name = 'get-resource-links';
 const config = {
-  title: "Get Resource Links Tool",
-  description: "Returns up to ten resource links that reference different types of resources",
+  title: 'Get Resource Links Tool',
+  description: 'Returns up to ten resource links that reference different types of resources',
   inputSchema: GetResourceLinksSchema,
 };
 
@@ -37,9 +37,9 @@ export const registerGetResourceLinksTool = (server: McpServer) => {
     const { count } = GetResourceLinksSchema.parse(args);
 
     // Add intro text content block
-    const content: CallToolResult["content"] = [];
+    const content: CallToolResult['content'] = [];
     content.push({
-      type: "text",
+      type: 'text',
       text: `Here are ${count} resource links to resources available in this server:`,
     });
 
@@ -53,11 +53,11 @@ export const registerGetResourceLinksTool = (server: McpServer) => {
       const resource = isOdd ? textResource(uri, resourceId) : blobResource(uri, resourceId);
 
       content.push({
-        type: "resource_link",
+        type: 'resource_link',
         uri: resource.uri,
-        name: `${isOdd ? "Text" : "Blob"} Resource ${resourceId}`,
+        name: `${isOdd ? 'Text' : 'Blob'} Resource ${resourceId}`,
         description: `Resource ${resourceId}: ${
-          resource.mimeType === "text/plain" ? "plaintext resource" : "binary blob resource"
+          resource.mimeType === 'text/plain' ? 'plaintext resource' : 'binary blob resource'
         }`,
         mimeType: resource.mimeType,
       });

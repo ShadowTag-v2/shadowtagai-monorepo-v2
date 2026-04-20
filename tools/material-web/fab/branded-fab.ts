@@ -4,15 +4,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {CSSResultOrNative} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import type { CSSResultOrNative } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {Fab, FabVariant} from './internal/fab.js';
-import {styles} from './internal/fab-branded-styles.cssresult.js';
-import {styles as forcedColors} from './internal/forced-colors-styles.cssresult.js';
-import {styles as sharedStyles} from './internal/shared-styles.cssresult.js';
+import { Fab, type FabVariant } from './internal/fab.js';
+import { styles } from './internal/fab-branded-styles.cssresult.js';
+import { styles as forcedColors } from './internal/forced-colors-styles.cssresult.js';
+import { styles as sharedStyles } from './internal/shared-styles.cssresult.js';
 
-export {type FabSize} from './internal/shared.js';
+export type { FabSize } from './internal/shared.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -58,15 +58,11 @@ export class MdBrandedFab extends Fab {
   override getRenderClasses() {
     return {
       ...super.getRenderClasses(),
-      'primary': false,
-      'secondary': false,
-      'tertiary': false,
-      'small': false,
+      primary: false,
+      secondary: false,
+      tertiary: false,
+      small: false,
     };
   }
-  static override styles: CSSResultOrNative[] = [
-    sharedStyles,
-    styles,
-    forcedColors,
-  ];
+  static override styles: CSSResultOrNative[] = [sharedStyles, styles, forcedColors];
 }

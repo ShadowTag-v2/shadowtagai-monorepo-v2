@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {CSSResultOrNative} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import type { CSSResultOrNative } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {FilledButton} from './internal/filled-button.js';
-import {styles as filledStyles} from './internal/filled-styles.cssresult.js';
-import {styles as sharedElevationStyles} from './internal/shared-elevation-styles.cssresult.js';
-import {styles as sharedStyles} from './internal/shared-styles.cssresult.js';
+import { FilledButton } from './internal/filled-button.js';
+import { styles as filledStyles } from './internal/filled-styles.cssresult.js';
+import { styles as sharedElevationStyles } from './internal/shared-elevation-styles.cssresult.js';
+import { styles as sharedStyles } from './internal/shared-styles.cssresult.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -40,9 +40,5 @@ declare global {
  */
 @customElement('md-filled-button')
 export class MdFilledButton extends FilledButton {
-  static override styles: CSSResultOrNative[] = [
-    sharedStyles,
-    sharedElevationStyles,
-    filledStyles,
-  ];
+  static override styles: CSSResultOrNative[] = [sharedStyles, sharedElevationStyles, filledStyles];
 }

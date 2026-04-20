@@ -1,4 +1,4 @@
-export type PricingTier = "free" | "basic" | "premium";
+export type PricingTier = 'free' | 'basic' | 'premium';
 
 export interface ToolPricing {
   tool: string;
@@ -33,62 +33,62 @@ export const toolPricing: Record<string, ToolPricing> = {
   // These should NEVER be charged - they're the base system
 
   PLANNING: {
-    tool: "PLANNING",
-    priceUSD: "0.00", // FREE - This is core routing logic
-    tier: "free",
-    description: "Request planning (core system)",
+    tool: 'PLANNING',
+    priceUSD: '0.00', // FREE - This is core routing logic
+    tier: 'free',
+    description: 'Request planning (core system)',
   },
 
   REPLY: {
-    tool: "REPLY",
-    priceUSD: "0.00", // FREE - LLM costs are covered by your margin
-    tier: "free",
-    description: "Response generation (included)",
-    costToYouUSD: "0.01", // Your LLM cost per request
+    tool: 'REPLY',
+    priceUSD: '0.00', // FREE - LLM costs are covered by your margin
+    tier: 'free',
+    description: 'Response generation (included)',
+    costToYouUSD: '0.01', // Your LLM cost per request
   },
 
   KNOWLEDGE: {
-    tool: "KNOWLEDGE",
-    priceUSD: "0.00", // FREE - It's your own knowledge base
-    tier: "free",
-    description: "Knowledge base retrieval (included)",
+    tool: 'KNOWLEDGE',
+    priceUSD: '0.00', // FREE - It's your own knowledge base
+    tier: 'free',
+    description: 'Knowledge base retrieval (included)',
   },
 
-  "FILE-UPLOAD": {
-    tool: "FILE-UPLOAD",
-    priceUSD: "0.00", // FREE - Just file processing
-    tier: "free",
-    description: "File upload and processing (included)",
+  'FILE-UPLOAD': {
+    tool: 'FILE-UPLOAD',
+    priceUSD: '0.00', // FREE - Just file processing
+    tier: 'free',
+    description: 'File upload and processing (included)',
   },
 
   // ===== BASIC TIER (Enhanced Features) =====
   // Charge a small amount for advanced features
 
   HYPOTHESIS: {
-    tool: "HYPOTHESIS",
-    priceUSD: "0.05", // $0.05 - Advanced reasoning
-    tier: "basic",
-    description: "Hypothesis generation (advanced reasoning)",
-    costToYouUSD: "0.01", // Your cost (LLM with longer context)
+    tool: 'HYPOTHESIS',
+    priceUSD: '0.05', // $0.05 - Advanced reasoning
+    tier: 'basic',
+    description: 'Hypothesis generation (advanced reasoning)',
+    costToYouUSD: '0.01', // Your cost (LLM with longer context)
   },
 
   // ===== PREMIUM TIER (External APIs) =====
   // Charge for expensive third-party services
 
   OPENSCHOLAR: {
-    tool: "OPENSCHOLAR",
-    priceUSD: "0.10", // $0.10 - External API + processing
-    tier: "premium",
-    description: "OpenScholar scientific paper retrieval",
-    costToYouUSD: "0.05", // Your actual cost from OpenScholar API
+    tool: 'OPENSCHOLAR',
+    priceUSD: '0.10', // $0.10 - External API + processing
+    tier: 'premium',
+    description: 'OpenScholar scientific paper retrieval',
+    costToYouUSD: '0.05', // Your actual cost from OpenScholar API
   },
 
-  "SEMANTIC-SCHOLAR": {
-    tool: "SEMANTIC-SCHOLAR",
-    priceUSD: "0.10", // $0.10 - External API + synthesis
-    tier: "premium",
-    description: "Semantic Scholar research synthesis",
-    costToYouUSD: "0.05", // Your cost (API + Claude for synthesis)
+  'SEMANTIC-SCHOLAR': {
+    tool: 'SEMANTIC-SCHOLAR',
+    priceUSD: '0.10', // $0.10 - External API + synthesis
+    tier: 'premium',
+    description: 'Semantic Scholar research synthesis',
+    costToYouUSD: '0.05', // Your cost (API + Claude for synthesis)
   },
 };
 
@@ -97,7 +97,7 @@ export const toolPricing: Record<string, ToolPricing> = {
  */
 export function getTotalPremiumToolsPrice(): number {
   return Object.values(toolPricing).reduce((sum, tool) => {
-    const amount = Number.parseFloat(tool.priceUSD || "0");
+    const amount = Number.parseFloat(tool.priceUSD || '0');
     return sum + (Number.isFinite(amount) ? amount : 0);
   }, 0);
 }
@@ -116,52 +116,52 @@ export function getTotalPremiumToolsPrice(): number {
 export const routePricing: RoutePricing[] = [
   // x402 payment routes
   {
-    route: "/api/x402/chat",
-    priceUSD: "0.01",
-    description: "Chat API access via x402 payment",
+    route: '/api/x402/chat',
+    priceUSD: '0.01',
+    description: 'Chat API access via x402 payment',
   },
   {
-    route: "/api/x402/deep-research/start",
-    priceUSD: "0.025",
-    description: "Deep research initiation via x402 payment",
+    route: '/api/x402/deep-research/start',
+    priceUSD: '0.025',
+    description: 'Deep research initiation via x402 payment',
   },
   // Note: /api/x402/deep-research/status/:messageId is FREE (no payment)
 
   // Individual agent routes
   {
-    route: "/api/x402/agents/literature",
-    priceUSD: "0.01",
-    description: "Literature search agent - searches scientific papers and knowledge bases",
+    route: '/api/x402/agents/literature',
+    priceUSD: '0.01',
+    description: 'Literature search agent - searches scientific papers and knowledge bases',
   },
   {
-    route: "/api/x402/agents/reply",
-    priceUSD: "0.01",
-    description: "Reply agent - generates AI responses based on context",
+    route: '/api/x402/agents/reply',
+    priceUSD: '0.01',
+    description: 'Reply agent - generates AI responses based on context',
   },
   {
-    route: "/api/x402/agents/planning",
-    priceUSD: "0.01",
-    description: "Planning agent - creates research plans and task breakdowns",
+    route: '/api/x402/agents/planning',
+    priceUSD: '0.01',
+    description: 'Planning agent - creates research plans and task breakdowns',
   },
   {
-    route: "/api/x402/agents/hypothesis",
-    priceUSD: "0.02",
-    description: "Hypothesis agent - generates scientific hypotheses from research",
+    route: '/api/x402/agents/hypothesis',
+    priceUSD: '0.02',
+    description: 'Hypothesis agent - generates scientific hypotheses from research',
   },
   {
-    route: "/api/x402/agents/reflection",
-    priceUSD: "0.015",
-    description: "Reflection agent - evaluates and reflects on research progress",
+    route: '/api/x402/agents/reflection',
+    priceUSD: '0.015',
+    description: 'Reflection agent - evaluates and reflects on research progress',
   },
   {
-    route: "/api/x402/agents/discovery",
-    priceUSD: "0.02",
-    description: "Discovery agent - extracts scientific discoveries from research",
+    route: '/api/x402/agents/discovery',
+    priceUSD: '0.02',
+    description: 'Discovery agent - extracts scientific discoveries from research',
   },
   {
-    route: "/api/x402/agents/analysis",
-    priceUSD: "0.025",
-    description: "Analysis agent - performs data analysis on datasets",
+    route: '/api/x402/agents/analysis',
+    priceUSD: '0.025',
+    description: 'Analysis agent - performs data analysis on datasets',
   },
 ];
 

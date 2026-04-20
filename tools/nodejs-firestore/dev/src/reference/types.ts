@@ -15,15 +15,15 @@
  */
 
 import * as protos from '../../protos/firestore_v1_proto_api';
-import {PipelineResult} from '../pipelines';
+import type { PipelineResult } from '../pipelines';
+
 import api = protos.google.firestore.v1;
 
-import {Timestamp} from '../timestamp';
-import {ExplainMetrics} from '../query-profile';
-import {QueryDocumentSnapshot} from '../document';
-
-import * as firestore from '@google-cloud/firestore';
-import {ExplainStats} from '../pipelines/pipelines';
+import type * as firestore from '@google-cloud/firestore';
+import type { QueryDocumentSnapshot } from '../document';
+import type { ExplainStats } from '../pipelines/pipelines';
+import type { ExplainMetrics } from '../query-profile';
+import type { Timestamp } from '../timestamp';
 
 export interface QueryStreamElement<
   AppModelType = firestore.DocumentData,
@@ -41,8 +41,7 @@ export interface QueryResponse<TSnapshot> {
   result?: TSnapshot;
 }
 
-export interface QuerySnapshotResponse<TSnapshot>
-  extends QueryResponse<TSnapshot> {
+export interface QuerySnapshotResponse<TSnapshot> extends QueryResponse<TSnapshot> {
   result: TSnapshot;
 }
 

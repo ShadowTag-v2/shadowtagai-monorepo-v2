@@ -1,6 +1,6 @@
-import { useState } from "preact/hooks";
-import { Icon } from "../icons";
-import { ArtifactViewer } from "./ArtifactViewer";
+import { useState } from 'preact/hooks';
+import { Icon } from '../icons';
+import { ArtifactViewer } from './ArtifactViewer';
 
 interface Dataset {
   id: string;
@@ -10,9 +10,9 @@ interface Dataset {
 }
 
 function formatFileSize(bytes: number): string {
-  if (bytes === 0) return "0 Bytes";
+  if (bytes === 0) return '0 Bytes';
   const k = 1024;
-  const sizes = ["Bytes", "KB", "MB", "GB"];
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return `${(bytes / k ** i).toFixed(1)} ${sizes[i]}`;
 }
@@ -20,7 +20,7 @@ function formatFileSize(bytes: number): string {
 interface AnalysisArtifact {
   id: string;
   description: string;
-  type: "FILE" | "FOLDER";
+  type: 'FILE' | 'FOLDER';
   content?: string;
   name: string;
   path?: string;
@@ -87,13 +87,13 @@ export function ResearchStatePanel({
 
   const formatStepType = (type: string) => {
     const types: Record<string, { label: string; icon: string; color: string }> = {
-      LITERATURE: { label: "Literature Search", icon: "📚", color: "#8b5cf6" },
-      ANALYSIS: { label: "Data Analysis", icon: "📊", color: "#06b6d4" },
-      HYPOTHESIS: { label: "Hypothesis", icon: "💡", color: "#f59e0b" },
-      REFLECTION: { label: "Reflection", icon: "🔍", color: "#10b981" },
-      PLANNING: { label: "Planning", icon: "📋", color: "#3b82f6" },
+      LITERATURE: { label: 'Literature Search', icon: '📚', color: '#8b5cf6' },
+      ANALYSIS: { label: 'Data Analysis', icon: '📊', color: '#06b6d4' },
+      HYPOTHESIS: { label: 'Hypothesis', icon: '💡', color: '#f59e0b' },
+      REFLECTION: { label: 'Reflection', icon: '🔍', color: '#10b981' },
+      PLANNING: { label: 'Planning', icon: '📋', color: '#3b82f6' },
     };
-    return types[type] || { label: type, icon: "⚡", color: "#6b7280" };
+    return types[type] || { label: type, icon: '⚡', color: '#6b7280' };
   };
 
   const parseCitationText = (text: string) => {
@@ -106,16 +106,16 @@ export function ResearchStatePanel({
     while ((match = regex.exec(text)) !== null) {
       if (match.index > lastIndex) {
         parts.push({
-          type: "text",
+          type: 'text',
           content: text.slice(lastIndex, match.index),
         });
       }
-      parts.push({ type: "link", text: match[1], url: match[2] });
+      parts.push({ type: 'link', text: match[1], url: match[2] });
       lastIndex = match.index + match[0].length;
     }
 
     if (lastIndex < text.length) {
-      parts.push({ type: "text", content: text.slice(lastIndex) });
+      parts.push({ type: 'text', content: text.slice(lastIndex) });
     }
 
     return parts;
@@ -124,7 +124,7 @@ export function ResearchStatePanel({
   const renderCitationText = (text: string) => {
     const parts = parseCitationText(text);
     return parts.map((part, i) =>
-      part.type === "link" ? (
+      part.type === 'link' ? (
         <a
           key={i}
           href={part.url}
@@ -147,7 +147,7 @@ export function ResearchStatePanel({
   const showLoadingState = isLoading && (!state || !state.currentObjective);
 
   return (
-    <div className={`research-state-panel ${isExpanded ? "expanded" : ""}`}>
+    <div className={`research-state-panel ${isExpanded ? 'expanded' : ''}`}>
       <button className="research-state-header" onClick={onToggle}>
         <div className="research-state-header-left">
           <span className="research-state-icon">🧬</span>
@@ -157,7 +157,7 @@ export function ResearchStatePanel({
           <Icon
             name="chevronDown"
             size={16}
-            className={`research-state-chevron ${isExpanded ? "expanded" : ""}`}
+            className={`research-state-chevron ${isExpanded ? 'expanded' : ''}`}
           />
         </div>
       </button>
@@ -190,7 +190,7 @@ export function ResearchStatePanel({
             <div className="research-section">
               <button
                 className="research-section-toggle"
-                onClick={() => toggleSection("hypothesis")}
+                onClick={() => toggleSection('hypothesis')}
               >
                 <div className="research-section-toggle-left">
                   <span className="research-section-icon">💡</span>
@@ -199,17 +199,17 @@ export function ResearchStatePanel({
                 <Icon
                   name="chevronDown"
                   size={14}
-                  className={`research-section-chevron ${expandedSections.hypothesis ? "expanded" : ""}`}
+                  className={`research-section-chevron ${expandedSections.hypothesis ? 'expanded' : ''}`}
                 />
               </button>
               {expandedSections.hypothesis && (
                 <div className="research-section-body research-hypothesis">
                   <div className="research-hypothesis-content">
-                    {state?.currentHypothesis?.split("\n").map((line, i) => {
-                      if (line.startsWith("## ")) {
+                    {state?.currentHypothesis?.split('\n').map((line, i) => {
+                      if (line.startsWith('## ')) {
                         return (
                           <h4 key={i} className="research-hypothesis-heading">
-                            {line.replace("## ", "")}
+                            {line.replace('## ', '')}
                           </h4>
                         );
                       }
@@ -233,7 +233,7 @@ export function ResearchStatePanel({
             <div className="research-section">
               <button
                 className="research-section-toggle"
-                onClick={() => toggleSection("discoveries")}
+                onClick={() => toggleSection('discoveries')}
               >
                 <div className="research-section-toggle-left">
                   <span className="research-section-icon">🔬</span>
@@ -242,7 +242,7 @@ export function ResearchStatePanel({
                 <Icon
                   name="chevronDown"
                   size={14}
-                  className={`research-section-chevron ${expandedSections.discoveries ? "expanded" : ""}`}
+                  className={`research-section-chevron ${expandedSections.discoveries ? 'expanded' : ''}`}
                 />
               </button>
               {expandedSections.discoveries && (
@@ -262,7 +262,7 @@ export function ResearchStatePanel({
           {/* Key Insights */}
           {state?.keyInsights && state.keyInsights.length > 0 && (
             <div className="research-section">
-              <button className="research-section-toggle" onClick={() => toggleSection("insights")}>
+              <button className="research-section-toggle" onClick={() => toggleSection('insights')}>
                 <div className="research-section-toggle-left">
                   <span className="research-section-icon">✨</span>
                   <span>Key Insights ({state.keyInsights.length})</span>
@@ -270,7 +270,7 @@ export function ResearchStatePanel({
                 <Icon
                   name="chevronDown"
                   size={14}
-                  className={`research-section-chevron ${expandedSections.insights ? "expanded" : ""}`}
+                  className={`research-section-chevron ${expandedSections.insights ? 'expanded' : ''}`}
                 />
               </button>
               {expandedSections.insights && (
@@ -292,7 +292,7 @@ export function ResearchStatePanel({
             <div className="research-section">
               <button
                 className="research-section-toggle"
-                onClick={() => toggleSection("methodology")}
+                onClick={() => toggleSection('methodology')}
               >
                 <div className="research-section-toggle-left">
                   <span className="research-section-icon">🔬</span>
@@ -301,7 +301,7 @@ export function ResearchStatePanel({
                 <Icon
                   name="chevronDown"
                   size={14}
-                  className={`research-section-chevron ${expandedSections.methodology ? "expanded" : ""}`}
+                  className={`research-section-chevron ${expandedSections.methodology ? 'expanded' : ''}`}
                 />
               </button>
               {expandedSections.methodology && (
@@ -315,7 +315,7 @@ export function ResearchStatePanel({
           {/* Uploaded Datasets */}
           {state?.uploadedDatasets && state.uploadedDatasets.length > 0 && (
             <div className="research-section">
-              <button className="research-section-toggle" onClick={() => toggleSection("datasets")}>
+              <button className="research-section-toggle" onClick={() => toggleSection('datasets')}>
                 <div className="research-section-toggle-left">
                   <span className="research-section-icon">📁</span>
                   <span>Datasets ({state.uploadedDatasets.length})</span>
@@ -323,7 +323,7 @@ export function ResearchStatePanel({
                 <Icon
                   name="chevronDown"
                   size={14}
-                  className={`research-section-chevron ${expandedSections.datasets ? "expanded" : ""}`}
+                  className={`research-section-chevron ${expandedSections.datasets ? 'expanded' : ''}`}
                 />
               </button>
               {expandedSections.datasets && (
@@ -349,7 +349,7 @@ export function ResearchStatePanel({
           {/* Completed Steps */}
           {completedSteps.length > 0 && (
             <div className="research-section">
-              <button className="research-section-toggle" onClick={() => toggleSection("plan")}>
+              <button className="research-section-toggle" onClick={() => toggleSection('plan')}>
                 <div className="research-section-toggle-left">
                   <span className="research-section-icon">✅</span>
                   <span>Completed Steps ({completedSteps.length})</span>
@@ -357,7 +357,7 @@ export function ResearchStatePanel({
                 <Icon
                   name="chevronDown"
                   size={14}
-                  className={`research-section-chevron ${expandedSections.plan ? "expanded" : ""}`}
+                  className={`research-section-chevron ${expandedSections.plan ? 'expanded' : ''}`}
                 />
               </button>
               {expandedSections.plan && (
@@ -400,7 +400,7 @@ export function ResearchStatePanel({
 
                           {/* Step artifacts */}
                           {step.artifacts && step.artifacts.length > 0 && (
-                            <div className="research-step-artifacts" style={{ marginTop: "8px" }}>
+                            <div className="research-step-artifacts" style={{ marginTop: '8px' }}>
                               <ArtifactViewer
                                 results={[
                                   {
@@ -408,7 +408,7 @@ export function ResearchStatePanel({
                                     artifacts: step.artifacts.map((a) => ({
                                       id: a.id,
                                       filename: a.name,
-                                      content: a.content || "",
+                                      content: a.content || '',
                                       description: a.description,
                                       path: a.path,
                                     })),
@@ -426,7 +426,7 @@ export function ResearchStatePanel({
                                 {isOutputExpanded
                                   ? step.output
                                   : needsTruncation
-                                    ? step.output.slice(0, outputPreviewLength) + "..."
+                                    ? step.output.slice(0, outputPreviewLength) + '...'
                                     : step.output}
                               </pre>
                               {needsTruncation && (

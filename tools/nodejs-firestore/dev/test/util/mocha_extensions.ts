@@ -17,10 +17,10 @@
 
 /* eslint-disable no-restricted-properties */
 
-import {describe, it} from 'mocha';
+import { describe, it } from 'mocha';
 
 // Helper to make a type itselt (T) and optionally union that with (T['skip'])
-type tOrSkipT<T> = T | (T extends {skip: unknown} ? T['skip'] : T);
+type tOrSkipT<T> = T | (T extends { skip: unknown } ? T['skip'] : T);
 
 declare module 'mocha' {
   // eslint-disable-next-line @typescript-eslint/no-namespace

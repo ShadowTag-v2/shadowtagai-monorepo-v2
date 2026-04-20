@@ -1,4 +1,4 @@
-import logger from "../utils/logger";
+import logger from '../utils/logger';
 
 /**
  * Retry configuration for LLM calls
@@ -19,10 +19,10 @@ export const RETRY_CONFIG = {
  * - openai → google (gemini-2.5-pro)
  */
 export const FALLBACK_CONFIG: Record<string, { provider: string; model: string }> = {
-  anthropic: { provider: "google", model: "gemini-2.5-pro" },
-  google: { provider: "anthropic", model: "claude-sonnet-4-5-20250514" },
-  openai: { provider: "google", model: "gemini-2.5-pro" },
-  openrouter: { provider: "google", model: "gemini-2.5-pro" },
+  anthropic: { provider: 'google', model: 'gemini-2.5-pro' },
+  google: { provider: 'anthropic', model: 'claude-sonnet-4-5-20250514' },
+  openai: { provider: 'google', model: 'gemini-2.5-pro' },
+  openrouter: { provider: 'google', model: 'gemini-2.5-pro' },
 };
 
 /**
@@ -62,32 +62,32 @@ export function isRetryableError(error: unknown): boolean {
   if (error instanceof Error) {
     const message = error.message.toLowerCase();
     // Rate limit errors
-    if (message.includes("rate limit") || message.includes("429")) {
+    if (message.includes('rate limit') || message.includes('429')) {
       return true;
     }
     // Server errors (5xx)
     if (
-      message.includes("500") ||
-      message.includes("502") ||
-      message.includes("503") ||
-      message.includes("504") ||
-      message.includes("server error") ||
-      message.includes("internal error")
+      message.includes('500') ||
+      message.includes('502') ||
+      message.includes('503') ||
+      message.includes('504') ||
+      message.includes('server error') ||
+      message.includes('internal error')
     ) {
       return true;
     }
     // Network/timeout errors
     if (
-      message.includes("timeout") ||
-      message.includes("network") ||
-      message.includes("econnreset") ||
-      message.includes("econnrefused") ||
-      message.includes("socket hang up")
+      message.includes('timeout') ||
+      message.includes('network') ||
+      message.includes('econnreset') ||
+      message.includes('econnrefused') ||
+      message.includes('socket hang up')
     ) {
       return true;
     }
     // Overloaded errors
-    if (message.includes("overloaded")) {
+    if (message.includes('overloaded')) {
       return true;
     }
   }
@@ -122,7 +122,7 @@ export async function withRetry<T>(
       lastError = error instanceof Error ? error : new Error(String(error));
 
       if (!isRetryableError(error)) {
-        logger.error({ err: lastError, provider, attempt }, "llm_non_retryable_error");
+        logger.error({ err: lastError, provider, attempt }, 'llm_non_retryable_error');
         throw lastError;
       }
 
@@ -133,7 +133,7 @@ export async function withRetry<T>(
           maxRetries,
           error: lastError.message,
         },
-        "llm_retry_attempt",
+        'llm_retry_attempt',
       );
 
       if (options.onRetry) {
@@ -142,7 +142,7 @@ export async function withRetry<T>(
 
       if (attempt < maxRetries - 1) {
         const delay = calculateBackoffDelay(attempt);
-        logger.info({ delay, provider }, "llm_retry_delay");
+        logger.info({ delay, provider }, 'llm_retry_delay');
         await sleep(delay);
       }
     }
@@ -159,7 +159,7 @@ export async function withRetry<T>(
           fallbackModel: fallbackConfig.model,
           originalError: lastError.message,
         },
-        "llm_fallback_triggered",
+        'llm_fallback_triggered',
       );
 
       if (options.onFallback) {
@@ -176,5 +176,5 @@ export async function withRetry<T>(
     }
   }
 
-  throw lastError || new Error("All retry attempts failed");
+  throw lastError || new Error('All retry attempts failed');
 }

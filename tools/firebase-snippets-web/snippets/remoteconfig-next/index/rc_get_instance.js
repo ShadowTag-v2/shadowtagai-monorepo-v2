@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START rc_get_instance_modular]
-import { getRemoteConfig } from "firebase/remote-config";
+import { getRemoteConfig } from 'firebase/remote-config';
 
 const remoteConfig = getRemoteConfig();
 // [END rc_get_instance_modular]

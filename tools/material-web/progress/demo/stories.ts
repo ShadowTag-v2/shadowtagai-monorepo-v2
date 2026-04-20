@@ -10,10 +10,10 @@ import '@material/web/iconbutton/icon-button.js';
 import '@material/web/progress/circular-progress.js';
 import '@material/web/progress/linear-progress.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {MdCircularProgress} from '@material/web/progress/circular-progress.js';
-import {css, html} from 'lit';
-import {classMap} from 'lit/directives/class-map.js';
+import type { MdCircularProgress } from '@material/web/progress/circular-progress.js';
+import { css, html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for linear progress stories. */
 export interface StoryKnobs {
@@ -47,9 +47,9 @@ const linear: MaterialStoryInit<StoryKnobs> = {
     }
   `,
   render(knobs) {
-    const {value, max, indeterminate, fourColor} = knobs;
+    const { value, max, indeterminate, fourColor } = knobs;
     const buffer = knobs['buffer (linear)'];
-    const classes = {'custom': knobs['custom theme (linear)']};
+    const classes = { custom: knobs['custom theme (linear)'] };
 
     return html` <md-linear-progress
       aria-label="An example linear progress bar"
@@ -64,7 +64,7 @@ const linear: MaterialStoryInit<StoryKnobs> = {
 
 const circular: MaterialStoryInit<StoryKnobs> = {
   name: 'Circular progress',
-  render({value, max, indeterminate, fourColor}) {
+  render({ value, max, indeterminate, fourColor }) {
     return html`
       <md-circular-progress
         aria-label="An example circular progress"
@@ -108,11 +108,9 @@ const components: MaterialStoryInit<StoryKnobs> = {
       position: absolute;
     }
   `,
-  render({value, max}) {
-    const toggleIndeterminate = ({target}: Event) => {
-      const spinner = (target as HTMLElement).parentElement?.querySelector(
-        'md-circular-progress',
-      );
+  render({ value, max }) {
+    const toggleIndeterminate = ({ target }: Event) => {
+      const spinner = (target as HTMLElement).parentElement?.querySelector('md-circular-progress');
       if (!spinner) {
         return;
       }
@@ -121,7 +119,7 @@ const components: MaterialStoryInit<StoryKnobs> = {
 
     const loadTime = 2500;
     let loadTimeout = -1;
-    const toggleLoad = ({target}: {target: HTMLElement}) => {
+    const toggleLoad = ({ target }: { target: HTMLElement }) => {
       const spinner = target.firstElementChild as MdCircularProgress;
       const label = target.lastElementChild as HTMLElement;
       const shouldLoad = spinner.style.display === 'none';
@@ -130,7 +128,7 @@ const components: MaterialStoryInit<StoryKnobs> = {
       clearTimeout(loadTimeout);
       if (shouldLoad) {
         loadTimeout = setTimeout(() => {
-          toggleLoad({target});
+          toggleLoad({ target });
         }, loadTime);
       }
     };

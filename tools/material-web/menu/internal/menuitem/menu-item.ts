@@ -8,20 +8,15 @@ import '../../../focus/md-focus-ring.js';
 import '../../../labs/item/item.js';
 import '../../../ripple/ripple.js';
 
-import {html, LitElement, nothing, TemplateResult} from 'lit';
-import {
-  property,
-  query,
-  queryAssignedElements,
-  queryAssignedNodes,
-} from 'lit/decorators.js';
-import {ClassInfo, classMap} from 'lit/directives/class-map.js';
-import {literal, html as staticHtml, StaticValue} from 'lit/static-html.js';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
+import { property, query, queryAssignedElements, queryAssignedNodes } from 'lit/decorators.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
+import { literal, type StaticValue, html as staticHtml } from 'lit/static-html.js';
 
-import {ARIAMixinStrict} from '../../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../../internal/aria/delegate.js';
+import type { ARIAMixinStrict } from '../../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../../internal/aria/delegate.js';
 import {
-  MenuItem,
+  type MenuItem,
   MenuItemController,
   type MenuItemType,
 } from '../controllers/menuItemController.js';
@@ -43,7 +38,7 @@ export class MenuItemEl extends menuItemBaseClass implements MenuItem {
   /**
    * Disables the item and makes it non-selectable and non-interactive.
    */
-  @property({type: Boolean, reflect: true}) disabled = false;
+  @property({ type: Boolean, reflect: true }) disabled = false;
 
   /**
    * Sets the behavior and role of the menu item, defaults to "menuitem".
@@ -64,20 +59,20 @@ export class MenuItemEl extends menuItemBaseClass implements MenuItem {
   /**
    * Keeps the menu open if clicked or keyboard selected.
    */
-  @property({type: Boolean, attribute: 'keep-open'}) keepOpen = false;
+  @property({ type: Boolean, attribute: 'keep-open' }) keepOpen = false;
 
   /**
    * Sets the item in the selected visual state when a submenu is opened.
    */
-  @property({type: Boolean}) selected = false;
+  @property({ type: Boolean }) selected = false;
 
   @query('.list-item') protected readonly listItemRoot!: HTMLElement | null;
 
-  @queryAssignedElements({slot: 'headline'})
+  @queryAssignedElements({ slot: 'headline' })
   protected readonly headlineElements!: HTMLElement[];
-  @queryAssignedElements({slot: 'supporting-text'})
+  @queryAssignedElements({ slot: 'supporting-text' })
   protected readonly supportingTextElements!: HTMLElement[];
-  @queryAssignedNodes({slot: ''})
+  @queryAssignedNodes({ slot: '' })
   protected readonly defaultElements!: Node[];
 
   /**
@@ -88,7 +83,7 @@ export class MenuItemEl extends menuItemBaseClass implements MenuItem {
     return this.menuItemController.typeaheadText;
   }
 
-  @property({attribute: 'typeahead-text'})
+  @property({ attribute: 'typeahead-text' })
   set typeaheadText(text: string) {
     this.menuItemController.setTypeaheadText(text);
   }
@@ -187,8 +182,8 @@ export class MenuItemEl extends menuItemBaseClass implements MenuItem {
    */
   protected getRenderClasses(): ClassInfo {
     return {
-      'disabled': this.disabled,
-      'selected': this.selected,
+      disabled: this.disabled,
+      selected: this.selected,
     };
   }
 

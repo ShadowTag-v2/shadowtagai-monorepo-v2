@@ -1,7 +1,7 @@
-import { LLM } from "../../llm/provider";
-import type { LLMProvider } from "../../types/core";
-import logger from "../../utils/logger";
-import { reflectionPrompt } from "./prompts";
+import { LLM } from '../../llm/provider';
+import type { LLMProvider } from '../../types/core';
+import logger from '../../utils/logger';
+import { reflectionPrompt } from './prompts';
 
 export type ReflectionDoc = {
   title: string;
@@ -15,7 +15,7 @@ export type ReflectionOptions = {
   thinking?: boolean;
   thinkingBudget?: number;
   messageId?: string; // For token usage tracking
-  usageType?: "chat" | "deep-research" | "paper-generation";
+  usageType?: 'chat' | 'deep-research' | 'paper-generation';
   // Existing values to preserve on parse failure
   existingObjective?: string;
   existingEvolvingObjective?: string;
@@ -45,20 +45,20 @@ export async function reflectOnWorld(
   documents: ReflectionDoc[],
   options: ReflectionOptions = {},
 ): Promise<ReflectionResult> {
-  const model = process.env.REFLECTION_LLM_MODEL || "gemini-2.5-pro";
+  const model = process.env.REFLECTION_LLM_MODEL || 'gemini-2.5-pro';
 
   // Build document content
   const documentText = documents
     .map((d) => `Title: ${d.title}\nContext: ${d.context}\n\n${d.text}`)
-    .join("\n\n---\n\n");
+    .join('\n\n---\n\n');
 
   // Use reflection prompt
   const reflectionInstruction = reflectionPrompt
-    .replace("{{question}}", question)
-    .replace("{{documents}}", documentText);
+    .replace('{{question}}', question)
+    .replace('{{documents}}', documentText);
 
   const REFLECTION_LLM_PROVIDER: LLMProvider =
-    (process.env.REFLECTION_LLM_PROVIDER as LLMProvider) || "google";
+    (process.env.REFLECTION_LLM_PROVIDER as LLMProvider) || 'google';
   const llmApiKey = process.env[`${REFLECTION_LLM_PROVIDER.toUpperCase()}_API_KEY`];
 
   if (!llmApiKey) {
@@ -74,7 +74,7 @@ export async function reflectOnWorld(
     model,
     messages: [
       {
-        role: "user" as const,
+        role: 'user' as const,
         content: reflectionInstruction,
       },
     ],
@@ -91,29 +91,29 @@ export async function reflectOnWorld(
     let parsedResponse;
     try {
       const cleaned = response.content
-        .replace(/```json\n?/, "")
-        .replace(/\n?```$/, "")
+        .replace(/```json\n?/, '')
+        .replace(/\n?```$/, '')
         .trim();
       parsedResponse = JSON.parse(cleaned);
     } catch (parseError) {
       // try to locate the json inbetween {} in the message content
       const jsonMatch = response.content.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/);
-      const jsonString = jsonMatch ? jsonMatch[1] || "" : "";
+      const jsonString = jsonMatch ? jsonMatch[1] || '' : '';
       try {
         parsedResponse = JSON.parse(jsonString);
       } catch {
         logger.warn(
           { content: response.content.substring(0, 300) },
-          "reflection_json_parse_failed",
+          'reflection_json_parse_failed',
         );
         // Preserve existing values from conversation state
         parsedResponse = {
-          currentObjective: options.existingObjective || "",
-          evolvingObjective: options.existingEvolvingObjective || "",
+          currentObjective: options.existingObjective || '',
+          evolvingObjective: options.existingEvolvingObjective || '',
           keyInsights: options.existingInsights || [],
           discoveries: [],
-          methodology: options.existingMethodology || "",
-          conversationTitle: options.existingTitle || "",
+          methodology: options.existingMethodology || '',
+          conversationTitle: options.existingTitle || '',
         };
       }
     }
@@ -135,7 +135,7 @@ export async function reflectOnWorld(
         hasMethodology: !!parsedResponse.methodology,
         docCount: documents.length,
       },
-      "reflection_completed",
+      'reflection_completed',
     );
 
     return {
@@ -150,7 +150,7 @@ export async function reflectOnWorld(
       thought: undefined, // TODO: Extract thinking if available from response
     };
   } catch (error) {
-    logger.error({ error }, "reflection_failed");
+    logger.error({ error }, 'reflection_failed');
     throw error;
   }
 }

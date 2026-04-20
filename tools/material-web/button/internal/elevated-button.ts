@@ -6,9 +6,9 @@
 
 import '../../elevation/elevation.js';
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Button} from './button.js';
+import { Button } from './button.js';
 
 /**
  * An elevated button component.

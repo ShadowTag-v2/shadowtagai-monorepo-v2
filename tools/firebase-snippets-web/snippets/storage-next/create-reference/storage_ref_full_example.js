@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START storage_ref_full_example_modular]
-import { getStorage, ref } from "firebase/storage";
+import { getStorage, ref } from 'firebase/storage';
 
 const storage = getStorage();
 

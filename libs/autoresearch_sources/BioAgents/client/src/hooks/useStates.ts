@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "preact/hooks";
-import { getConversationState, supabase } from "../lib/supabase";
+import { useEffect, useRef, useState } from 'preact/hooks';
+import { getConversationState, supabase } from '../lib/supabase';
 
 export interface ToolState {
   start: number;
@@ -79,7 +79,7 @@ export function useStates(userId: string, conversationId: string): UseStatesRetu
 
   // Reset states when conversation changes
   useEffect(() => {
-    console.log("[useStates] Conversation changed, resetting states:", conversationId);
+    console.log('[useStates] Conversation changed, resetting states:', conversationId);
     setCurrentState(null);
     setConversationState(null);
     setError(null);
@@ -102,25 +102,25 @@ export function useStates(userId: string, conversationId: string): UseStatesRetu
 
         // Fetch message-level state (for thinking steps, etc.)
         const { data, error: fetchError } = await supabase
-          .from("states")
-          .select("*")
-          .eq("values->>conversationId", conversationId)
-          .order("created_at", { ascending: false })
+          .from('states')
+          .select('*')
+          .eq('values->>conversationId', conversationId)
+          .order('created_at', { ascending: false })
           .limit(1)
           .single();
 
-        if (fetchError && fetchError.code !== "PGRST116") {
+        if (fetchError && fetchError.code !== 'PGRST116') {
           // PGRST116 = no rows returned
           throw fetchError;
         }
 
         if (mounted) {
           if (data) {
-            console.log("[useStates] Fetched message state:", data);
+            console.log('[useStates] Fetched message state:', data);
             setCurrentState(data as State);
             setError(null);
           } else {
-            console.log("[useStates] No message state found for conversation:", conversationId);
+            console.log('[useStates] No message state found for conversation:', conversationId);
             setCurrentState(null);
           }
         }
@@ -130,23 +130,23 @@ export function useStates(userId: string, conversationId: string): UseStatesRetu
           const convState = await getConversationState(conversationId);
           if (mounted) {
             if (convState) {
-              console.log("[useStates] Fetched conversation state:", convState);
+              console.log('[useStates] Fetched conversation state:', convState);
               setConversationState(convState as ConversationState);
             } else {
-              console.log("[useStates] No conversation state found for:", conversationId);
+              console.log('[useStates] No conversation state found for:', conversationId);
               setConversationState(null);
             }
           }
         } catch (convErr) {
-          console.log("[useStates] Error fetching conversation state:", convErr);
+          console.log('[useStates] Error fetching conversation state:', convErr);
           if (mounted) {
             setConversationState(null);
           }
         }
       } catch (err) {
-        console.error("[useStates] Error fetching state:", err);
+        console.error('[useStates] Error fetching state:', err);
         if (mounted) {
-          setError(err instanceof Error ? err.message : "Failed to fetch state");
+          setError(err instanceof Error ? err.message : 'Failed to fetch state');
         }
       } finally {
         if (mounted) {
@@ -174,7 +174,7 @@ export function useStates(userId: string, conversationId: string): UseStatesRetu
           const currentValues = JSON.stringify(conversationStateRef.current?.values || {});
           const newValues = JSON.stringify(convState.values || {});
           if (currentValues !== newValues) {
-            console.log("[useStates Polling] Conversation state updated!", {
+            console.log('[useStates Polling] Conversation state updated!', {
               hadPrevious: !!conversationStateRef.current,
               newKeys: Object.keys(convState.values || {}),
             });
@@ -194,44 +194,44 @@ export function useStates(userId: string, conversationId: string): UseStatesRetu
     const statesChannel = supabase
       .channel(`states:${userId}`)
       .on(
-        "postgres_changes",
+        'postgres_changes',
         {
-          event: "INSERT",
-          schema: "public",
-          table: "states",
+          event: 'INSERT',
+          schema: 'public',
+          table: 'states',
         },
         (payload) => {
-          console.log("[useStates] State INSERT:", payload);
+          console.log('[useStates] State INSERT:', payload);
           const newState = payload.new as State;
 
           // Only update if this state is for the current conversation
           // Note: We don't filter by userId because x402 external agents use a system userId
           if (newState.values?.conversationId === conversationId) {
-            console.log("[useStates] Setting new state from INSERT");
+            console.log('[useStates] Setting new state from INSERT');
             setCurrentState(newState);
             setError(null);
           }
         },
       )
       .on(
-        "postgres_changes",
+        'postgres_changes',
         {
-          event: "UPDATE",
-          schema: "public",
-          table: "states",
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'states',
         },
         (payload) => {
-          console.log("[useStates] State UPDATE:", payload);
+          console.log('[useStates] State UPDATE:', payload);
           const updatedState = payload.new as State;
 
           // Only update if this state is for the current conversation
           // Note: We don't filter by userId because x402 external agents use a system userId
           if (updatedState.values?.conversationId === conversationId) {
-            console.log("[useStates] ✅ Setting updated state from UPDATE");
+            console.log('[useStates] ✅ Setting updated state from UPDATE');
             setCurrentState(updatedState);
             setError(null);
           } else {
-            console.log("[useStates] ❌ Skipping UPDATE - wrong conversation");
+            console.log('[useStates] ❌ Skipping UPDATE - wrong conversation');
           }
         },
       )
@@ -241,51 +241,51 @@ export function useStates(userId: string, conversationId: string): UseStatesRetu
     const convStatesChannel = supabase
       .channel(`conversation_states:${conversationId}`)
       .on(
-        "postgres_changes",
+        'postgres_changes',
         {
-          event: "INSERT",
-          schema: "public",
-          table: "conversation_states",
+          event: 'INSERT',
+          schema: 'public',
+          table: 'conversation_states',
         },
         async (payload) => {
-          console.log("[useStates] ConversationState INSERT:", payload);
+          console.log('[useStates] ConversationState INSERT:', payload);
           // Re-fetch to get the linked state
           try {
             const convState = await getConversationState(conversationId);
             if (convState) {
-              console.log("[useStates] Updated conversation state from INSERT:", convState);
+              console.log('[useStates] Updated conversation state from INSERT:', convState);
               setConversationState(convState as ConversationState);
             }
           } catch (err) {
-            console.error("[useStates] Error refetching conversation state:", err);
+            console.error('[useStates] Error refetching conversation state:', err);
           }
         },
       )
       .on(
-        "postgres_changes",
+        'postgres_changes',
         {
-          event: "UPDATE",
-          schema: "public",
-          table: "conversation_states",
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'conversation_states',
         },
         async (payload) => {
-          console.log("[useStates] ConversationState UPDATE:", payload);
+          console.log('[useStates] ConversationState UPDATE:', payload);
           const updatedConvState = payload.new as ConversationState;
 
           // Check if this is our conversation's state
           if (conversationState && conversationState.id === updatedConvState.id) {
-            console.log("[useStates] ✅ Setting updated conversation state from UPDATE");
+            console.log('[useStates] ✅ Setting updated conversation state from UPDATE');
             setConversationState(updatedConvState);
           } else {
             // If we don't have the conversation state yet, fetch it
             try {
               const convState = await getConversationState(conversationId);
               if (convState && convState.id === updatedConvState.id) {
-                console.log("[useStates] ✅ Fetched and set conversation state from UPDATE");
+                console.log('[useStates] ✅ Fetched and set conversation state from UPDATE');
                 setConversationState(convState as ConversationState);
               }
             } catch (err) {
-              console.error("[useStates] Error refetching conversation state:", err);
+              console.error('[useStates] Error refetching conversation state:', err);
             }
           }
         },
@@ -303,14 +303,14 @@ export function useStates(userId: string, conversationId: string): UseStatesRetu
   // Manual refetch function for WebSocket-triggered updates
   const refetchConversationState = async () => {
     try {
-      console.log("[useStates] Manual refetch triggered");
+      console.log('[useStates] Manual refetch triggered');
       const convState = await getConversationState(conversationId);
       if (convState) {
-        console.log("[useStates] Refetched conversation state:", convState.id);
+        console.log('[useStates] Refetched conversation state:', convState.id);
         setConversationState(convState as ConversationState);
       }
     } catch (err) {
-      console.error("[useStates] Error refetching conversation state:", err);
+      console.error('[useStates] Error refetching conversation state:', err);
     }
   };
 

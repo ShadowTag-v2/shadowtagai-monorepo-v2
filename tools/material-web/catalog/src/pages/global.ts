@@ -38,15 +38,13 @@ function applyColorThemeListeners() {
 
   // Listen for system color change and applies the new theme if the current
   // color mode is 'auto'.
-  window
-    .matchMedia('(prefers-color-scheme: dark)')
-    .addEventListener('change', () => {
-      if (getCurrentMode() !== 'auto') {
-        return;
-      }
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (getCurrentMode() !== 'auto') {
+      return;
+    }
 
-      changeColor(getCurrentSeedColor()!);
-    });
+    changeColor(getCurrentSeedColor()!);
+  });
 }
 
 /**

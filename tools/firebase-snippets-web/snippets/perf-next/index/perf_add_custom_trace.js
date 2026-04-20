@@ -5,9 +5,9 @@
 // 'npm run snippets'.
 
 // [START perf_add_custom_trace_modular]
-import { trace } from "firebase/performance";
+import { trace } from 'firebase/performance';
 
-const t = trace(perf, "CUSTOM_TRACE_NAME");
+const t = trace(perf, 'CUSTOM_TRACE_NAME');
 t.start();
 
 // Code that you want to trace

@@ -5,18 +5,18 @@
 // 'npm run snippets'.
 
 // [START auth_phone_recaptcha_verifier_visible_modular]
-import { getAuth, RecaptchaVerifier } from "firebase/auth";
+import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 
 const auth = getAuth();
 window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-  'size': 'normal',
-  'callback': (response) => {
+  size: 'normal',
+  callback: (response) => {
     // reCAPTCHA solved, allow signInWithPhoneNumber.
     // ...
   },
   'expired-callback': () => {
     // Response expired. Ask user to solve reCAPTCHA again.
     // ...
-  }
+  },
 });
 // [END auth_phone_recaptcha_verifier_visible_modular]

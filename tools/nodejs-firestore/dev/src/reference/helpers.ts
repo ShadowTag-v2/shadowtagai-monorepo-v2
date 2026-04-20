@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
-import {invalidArgumentMessage, validateEnumValue} from '../validate';
-import {validateUserInput} from '../serializer';
-import {DocumentReference} from './document-reference';
-import {comparisonOperators, directionOperators} from './constants';
+import type * as firestore from '@google-cloud/firestore';
+import { validateUserInput } from '../serializer';
+import { invalidArgumentMessage, validateEnumValue } from '../validate';
+import { comparisonOperators, directionOperators } from './constants';
+import { DocumentReference } from './document-reference';
 
 /**
  * Validates the input string as a field order direction.
@@ -37,7 +37,7 @@ export function validateQueryOrder(
 ): firestore.OrderByDirection | undefined {
   // For backwards compatibility, we support both lower and uppercase values.
   op = typeof op === 'string' ? op.toLowerCase() : op;
-  validateEnumValue(arg, op, Object.keys(directionOperators), {optional: true});
+  validateEnumValue(arg, op, Object.keys(directionOperators), { optional: true });
   return op as firestore.OrderByDirection | undefined;
 }
 
@@ -65,21 +65,12 @@ export function validateQueryOperator(
 
   validateEnumValue(arg, op, Object.keys(comparisonOperators));
 
-  if (
-    typeof fieldValue === 'number' &&
-    isNaN(fieldValue) &&
-    op !== '==' &&
-    op !== '!='
-  ) {
-    throw new Error(
-      "Invalid query. You can only perform '==' and '!=' comparisons on NaN.",
-    );
+  if (typeof fieldValue === 'number' && isNaN(fieldValue) && op !== '==' && op !== '!=') {
+    throw new Error("Invalid query. You can only perform '==' and '!=' comparisons on NaN.");
   }
 
   if (fieldValue === null && op !== '==' && op !== '!=') {
-    throw new Error(
-      "Invalid query. You can only perform '==' and '!=' comparisons on Null.",
-    );
+    throw new Error("Invalid query. You can only perform '==' and '!=' comparisons on Null.");
   }
 
   return op as firestore.WhereFilterOp;
@@ -94,10 +85,7 @@ export function validateQueryOperator(
  * @param value The argument to validate.
  * @returns the DocumentReference if valid
  */
-export function validateDocumentReference<
-  AppModelType,
-  DbModelType extends firestore.DocumentData,
->(
+export function validateDocumentReference<AppModelType, DbModelType extends firestore.DocumentData>(
   arg: string | number,
   value: firestore.DocumentReference<AppModelType, DbModelType>,
 ): DocumentReference<AppModelType, DbModelType> {
@@ -134,5 +122,5 @@ export function validateQueryValue(
  * @internal
  */
 export function coalesce<T>(...values: Array<T | undefined>): T | undefined {
-  return values.find(value => value !== undefined);
+  return values.find((value) => value !== undefined);
 }

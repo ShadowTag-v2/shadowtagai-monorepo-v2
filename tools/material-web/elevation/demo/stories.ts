@@ -6,8 +6,8 @@
 
 import '@material/web/elevation/elevation.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {css, html} from 'lit';
+import { css, html } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for elevation stories. */
 export interface StoryKnobs {
@@ -64,7 +64,7 @@ const styles = css`
 const standard: MaterialStoryInit<StoryKnobs> = {
   name: 'Elevation',
   styles,
-  render({level}) {
+  render({ level }) {
     const clampedLevel = Math.min(Math.max(level, 0), 5);
     return html`
       <div class="box level${clampedLevel}">

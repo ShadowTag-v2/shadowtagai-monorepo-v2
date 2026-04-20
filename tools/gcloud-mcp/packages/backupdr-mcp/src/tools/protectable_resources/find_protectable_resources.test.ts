@@ -16,7 +16,7 @@
 
 // import { DisksClient, InstancesClient } from '@google-cloud/compute';
 // import { SqlInstancesServiceClient } from '@google-cloud/sql';
-import { beforeEach, describe, expect, it, vi, Mock } from 'vitest';
+import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
 import { apiClientFactory } from '../../utility/api_client_factory.js';
 import { findProtectableResources } from './find_protectable_resources.js';
 

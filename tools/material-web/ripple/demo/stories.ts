@@ -6,8 +6,8 @@
 
 import '@material/web/ripple/ripple.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {css, html} from 'lit';
+import { css, html } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for ripple stories. */
 export interface StoryKnobs {

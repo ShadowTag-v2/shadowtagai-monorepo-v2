@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-import {GoogleError} from 'google-gax';
 import * as assert from 'assert';
+import type { GoogleError } from 'google-gax';
 
-import {logger} from './logger';
-import {Deferred, requestTag as generateTag} from './util';
+import { logger } from './logger';
+import { Deferred, requestTag as generateTag } from './util';
 
-export const CLIENT_TERMINATED_ERROR_MSG =
-  'The client has already been terminated';
+export const CLIENT_TERMINATED_ERROR_MSG = 'The client has already been terminated';
 
 /**
  * An auto-resizing pool that distributes concurrent operations over multiple
@@ -42,7 +41,7 @@ export class ClientPool<T extends object> {
    */
   private readonly activeClients = new Map<
     T,
-    {activeRequestCount: number; grpcEnabled: boolean}
+    { activeRequestCount: number; grpcEnabled: boolean }
   >();
 
   /**
@@ -97,8 +96,7 @@ export class ClientPool<T extends object> {
     private readonly concurrentOperationLimit: number,
     private readonly maxIdleClients: number,
     private readonly clientFactory: (requiresGrpc: boolean) => T,
-    private readonly clientDestructor: (client: T) => Promise<void> = () =>
-      Promise.resolve(),
+    private readonly clientDestructor: (client: T) => Promise<void> = () => Promise.resolve(),
   ) {
     this.lazyLogStringForAllClientIds = new LazyLogStringForAllClientIds({
       activeClients: this.activeClients,
@@ -234,9 +232,7 @@ export class ClientPool<T extends object> {
    * @private
    * @internal
    */
-  private shouldGarbageCollectClient(
-    client: T,
-  ): ShouldGarbageCollectClientResult {
+  private shouldGarbageCollectClient(client: T): ShouldGarbageCollectClientResult {
     const clientMetadata = this.activeClients.get(client)!;
 
     if (clientMetadata.activeRequestCount !== 0) {
@@ -270,12 +266,10 @@ export class ClientPool<T extends object> {
     // more than 100 idle capacity with default settings).
     let idleCapacityCount = 0;
     for (const [, metadata] of this.activeClients) {
-      idleCapacityCount +=
-        this.concurrentOperationLimit - metadata.activeRequestCount;
+      idleCapacityCount += this.concurrentOperationLimit - metadata.activeRequestCount;
     }
 
-    const maxIdleCapacityCount =
-      this.maxIdleClients * this.concurrentOperationLimit;
+    const maxIdleCapacityCount = this.maxIdleClients * this.concurrentOperationLimit;
     return new IdleCapacity({
       shouldGarbageCollectClient: idleCapacityCount > maxIdleCapacityCount,
       clientActiveRequestCount: clientMetadata.activeRequestCount,
@@ -308,9 +302,7 @@ export class ClientPool<T extends object> {
   // Visible for testing.
   get opCount(): number {
     let activeOperationCount = 0;
-    this.activeClients.forEach(
-      metadata => (activeOperationCount += metadata.activeRequestCount),
-    );
+    this.activeClients.forEach((metadata) => (activeOperationCount += metadata.activeRequestCount));
     return activeOperationCount;
   }
 
@@ -322,10 +314,7 @@ export class ClientPool<T extends object> {
    * @internal
    */
   // Visible for testing.
-  get _activeClients(): Map<
-    T,
-    {activeRequestCount: number; grpcEnabled: boolean}
-  > {
+  get _activeClients(): Map<T, { activeRequestCount: number; grpcEnabled: boolean }> {
     return this.activeClients;
   }
 
@@ -341,11 +330,7 @@ export class ClientPool<T extends object> {
    * @private
    * @internal
    */
-  run<V>(
-    requestTag: string,
-    requiresGrpc: boolean,
-    op: (client: T) => Promise<V>,
-  ): Promise<V> {
+  run<V>(requestTag: string, requiresGrpc: boolean, op: (client: T) => Promise<V>): Promise<V> {
     if (this.terminated) {
       return Promise.reject(new Error(CLIENT_TERMINATED_ERROR_MSG));
     }
@@ -362,7 +347,7 @@ export class ClientPool<T extends object> {
         await this.release(requestTag, client);
         return Promise.reject(err);
       })
-      .then(async res => {
+      .then(async (res) => {
         await this.release(requestTag, client);
         return res;
       });
@@ -401,12 +386,12 @@ export class ClientPool<T extends object> {
  * failed clients.
  */
 class LazyLogStringForAllClientIds<T extends object> {
-  private readonly activeClients: Map<T, {activeRequestCount: number}>;
+  private readonly activeClients: Map<T, { activeRequestCount: number }>;
   private readonly failedClients: Set<T>;
   private readonly clientIdByClient: WeakMap<T, string>;
 
   constructor(config: {
-    activeClients: Map<T, {activeRequestCount: number}>;
+    activeClients: Map<T, { activeRequestCount: number }>;
     failedClients: Set<T>;
     clientIdByClient: WeakMap<T, string>;
   }) {
@@ -424,7 +409,7 @@ class LazyLogStringForAllClientIds<T extends object> {
       .sort()
       .join(', ');
     const failedClientsDescription = Array.from(this.failedClients)
-      .map(client => `${this.clientIdByClient.get(client)}`)
+      .map((client) => `${this.clientIdByClient.get(client)}`)
       .sort()
       .join(', ');
 

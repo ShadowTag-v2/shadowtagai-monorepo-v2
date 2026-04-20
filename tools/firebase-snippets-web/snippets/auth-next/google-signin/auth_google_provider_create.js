@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_google_provider_create_modular]
-import { GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider } from 'firebase/auth';
 
 const provider = new GoogleAuthProvider();
 // [END auth_google_provider_create_modular]

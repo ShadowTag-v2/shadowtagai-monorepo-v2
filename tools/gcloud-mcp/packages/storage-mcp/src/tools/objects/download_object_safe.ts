@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import fs from 'fs';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
 import { apiClientFactory } from '../../utility/index.js';
 import { logger } from '../../utility/logger.js';

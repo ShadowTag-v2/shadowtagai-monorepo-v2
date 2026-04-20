@@ -3,7 +3,7 @@
 
 function deleteFile() {
   // [START storage_delete_file]
-  const { getStorage, ref, deleteObject } = require("firebase/storage");
+  const { getStorage, ref, deleteObject } = require('firebase/storage');
 
   const storage = getStorage();
 
@@ -11,10 +11,12 @@ function deleteFile() {
   const desertRef = ref(storage, 'images/desert.jpg');
 
   // Delete the file
-  deleteObject(desertRef).then(() => {
-    // File deleted successfully
-  }).catch((error) => {
-    // Uh-oh, an error occurred!
-  });
+  deleteObject(desertRef)
+    .then(() => {
+      // File deleted successfully
+    })
+    .catch((error) => {
+      // Uh-oh, an error occurred!
+    });
   // [END storage_delete_file]
 }

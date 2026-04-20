@@ -4,41 +4,37 @@
  * Provides Graph RAG agent capabilities for code analysis.
  */
 
-// Types
-export * from './types';
-
-// Settings management
+// Agent
 export {
-  loadSettings,
-  saveSettings,
-  updateProviderSettings,
-  setActiveProvider,
-  getActiveProviderConfig,
-  isProviderConfigured,
-  clearSettings,
-  getProviderDisplayName,
-  getAvailableModels,
-} from './settings-service';
-
-// Tools
-export { createGraphRAGTools } from './tools';
-
+  type AgentMessage,
+  BASE_SYSTEM_PROMPT,
+  createChatModel,
+  createGraphRAGAgent,
+  invokeAgent,
+  streamAgentResponse,
+} from './agent';
 // Context Builder
 export {
   buildCodebaseContext,
-  formatContextForPrompt,
   buildDynamicSystemPrompt,
   type CodebaseContext,
   type CodebaseStats,
+  formatContextForPrompt,
   type Hotspot,
 } from './context-builder';
-
-// Agent
+// Settings management
 export {
-  createChatModel,
-  createGraphRAGAgent,
-  streamAgentResponse,
-  invokeAgent,
-  BASE_SYSTEM_PROMPT,
-  type AgentMessage,
-} from './agent';
+  clearSettings,
+  getActiveProviderConfig,
+  getAvailableModels,
+  getProviderDisplayName,
+  isProviderConfigured,
+  loadSettings,
+  saveSettings,
+  setActiveProvider,
+  updateProviderSettings,
+} from './settings-service';
+// Tools
+export { createGraphRAGTools } from './tools';
+// Types
+export * from './types';

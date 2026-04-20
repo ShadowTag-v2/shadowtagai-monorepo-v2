@@ -1,6 +1,6 @@
-import type { WebSearchResult } from "../llm/types";
-import type { State } from "../types/core";
-import logger from "./logger";
+import type { WebSearchResult } from '../llm/types';
+import type { State } from '../types/core';
+import logger from './logger';
 
 export function addVariablesToState(state: State, variables: Record<string, any>) {
   state.values = {
@@ -34,21 +34,21 @@ export function cleanWebSearchResults(webSearchResults: WebSearchResult[]): WebS
 
     // Check if title looks like a URL
     if (
-      cleanedTitle.startsWith("http://") ||
-      cleanedTitle.startsWith("https://") ||
-      cleanedTitle.startsWith("www.")
+      cleanedTitle.startsWith('http://') ||
+      cleanedTitle.startsWith('https://') ||
+      cleanedTitle.startsWith('www.')
     ) {
       try {
         // Parse the URL to extract just the domain
-        const urlToParse = cleanedTitle.startsWith("www.")
+        const urlToParse = cleanedTitle.startsWith('www.')
           ? `https://${cleanedTitle}`
           : cleanedTitle;
         const parsedUrl = new URL(urlToParse);
-        cleanedTitle = parsedUrl.hostname.replace(/^www\./, "www.");
+        cleanedTitle = parsedUrl.hostname.replace(/^www\./, 'www.');
 
         // Ensure it starts with www.
-        if (!cleanedTitle.startsWith("www.")) {
-          cleanedTitle = "www." + cleanedTitle;
+        if (!cleanedTitle.startsWith('www.')) {
+          cleanedTitle = 'www.' + cleanedTitle;
         }
       } catch {
         // If parsing fails, keep the original title
@@ -70,7 +70,7 @@ export function cleanWebSearchResults(webSearchResults: WebSearchResult[]): WebS
  */
 export function formatConversationHistory(messages: any[]): string {
   if (!messages || messages.length === 0) {
-    return "";
+    return '';
   }
 
   return messages
@@ -84,7 +84,7 @@ export function formatConversationHistory(messages: any[]): string {
       }
       return formattedMessages;
     })
-    .join("\n");
+    .join('\n');
 }
 
 export function parseKeyValueXml(text: string): Record<string, any> | null {
@@ -97,12 +97,12 @@ export function parseKeyValueXml(text: string): Record<string, any> | null {
 
   if (xmlBlockMatch) {
     xmlContent = xmlBlockMatch[1]!;
-    logger.debug("Found response XML block");
+    logger.debug('Found response XML block');
   } else {
     // Fall back to finding any XML block (e.g., <response>...</response>)
     const fallbackMatch = text.match(/<(\w+)>([\s\S]*?)<\/\1>/);
     if (!fallbackMatch) {
-      logger.warn("Could not find XML block in text");
+      logger.warn('Could not find XML block in text');
       logger.debug(`Text content: ${text.substring(0, 200)}...`);
       return null;
     }
@@ -122,18 +122,18 @@ export function parseKeyValueXml(text: string): Record<string, any> | null {
       const key = match[1]!;
       // Basic unescaping for common XML entities (add more as needed)
       const value = match[2]!
-        .replace(/&lt;/g, "<")
-        .replace(/&gt;/g, ">")
-        .replace(/&amp;/g, "&")
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&')
         .replace(/&quot;/g, '"')
         .replace(/&apos;/g, "'")
         .trim();
 
       // Handle potential comma-separated lists for specific keys
-      if (key === "actions" || key === "providers" || key === "evaluators") {
-        result[key] = value ? value.split(",").map((s) => s.trim()) : [];
-      } else if (key === "simple") {
-        result[key] = value.toLowerCase() === "true";
+      if (key === 'actions' || key === 'providers' || key === 'evaluators') {
+        result[key] = value ? value.split(',').map((s) => s.trim()) : [];
+      } else if (key === 'simple') {
+        result[key] = value.toLowerCase() === 'true';
       } else {
         result[key] = value;
       }
@@ -145,7 +145,7 @@ export function parseKeyValueXml(text: string): Record<string, any> | null {
 
   // Return null if no key-value pairs were found
   if (Object.keys(result).length === 0) {
-    logger.warn("No key-value pairs extracted from XML content");
+    logger.warn('No key-value pairs extracted from XML content');
     logger.debug(`XML content was: ${xmlContent.substring(0, 200)}...`);
     return null;
   }

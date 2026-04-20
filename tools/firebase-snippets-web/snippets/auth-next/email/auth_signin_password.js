@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_signin_password_modular]
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const auth = getAuth();
 signInWithEmailAndPassword(auth, email, password)

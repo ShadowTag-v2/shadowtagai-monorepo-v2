@@ -6,6 +6,6 @@
 
 // [START auth_twitter_provider_params_modular]
 provider.setCustomParameters({
-  'lang': 'es'
+  lang: 'es',
 });
 // [END auth_twitter_provider_params_modular]

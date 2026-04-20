@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { beforeEach, describe, expect, it, vi, Mock } from 'vitest';
-import { csqlRestore } from './csql_restore.js';
+import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
 import { apiClientFactory } from '../../utility/api_client_factory.js';
+import { csqlRestore } from './csql_restore.js';
 
 vi.mock('../../utility/api_client_factory.js');
 

@@ -4,10 +4,10 @@
  * Shells out to pandoc to produce syntactically valid LaTeX from Markdown.
  */
 
-import { spawn } from "child_process";
-import * as path from "path";
-import * as fs from "fs";
-import logger from "../../../utils/logger";
+import { spawn } from 'child_process';
+import * as fs from 'fs';
+import * as path from 'path';
+import logger from '../../../utils/logger';
 
 /**
  * Convert a Markdown file to LaTeX using Pandoc
@@ -24,25 +24,25 @@ export async function pandocConvert(
 ): Promise<string> {
   await checkPandocInstalled();
 
-  const texPath = path.join(outputDir, "main.tex");
+  const texPath = path.join(outputDir, 'main.tex');
 
   const args = [
     mdPath,
-    "-o",
+    '-o',
     texPath,
-    "--standalone",
-    "--natbib",
+    '--standalone',
+    '--natbib',
     `--bibliography=${bibPath}`,
     // Use XeLaTeX as the PDF engine reference (affects template vars)
-    "--pdf-engine=xelatex",
+    '--pdf-engine=xelatex',
   ];
 
-  logger.info({ args }, "running_pandoc");
+  logger.info({ args }, 'running_pandoc');
 
   const { success, stderr } = await runPandoc(args, path.dirname(mdPath));
 
   if (!success) {
-    logger.error({ stderr }, "pandoc_conversion_failed");
+    logger.error({ stderr }, 'pandoc_conversion_failed');
     throw new Error(`Pandoc conversion failed:\n${stderr}`);
   }
 
@@ -51,11 +51,11 @@ export async function pandocConvert(
   }
 
   // Post-process: ensure XeLaTeX compatibility
-  let texContent = fs.readFileSync(texPath, "utf-8");
+  let texContent = fs.readFileSync(texPath, 'utf-8');
   texContent = patchForXelatex(texContent);
-  fs.writeFileSync(texPath, texContent, "utf-8");
+  fs.writeFileSync(texPath, texContent, 'utf-8');
 
-  logger.info({ texPath }, "pandoc_conversion_complete");
+  logger.info({ texPath }, 'pandoc_conversion_complete');
   return texPath;
 }
 
@@ -67,42 +67,42 @@ function patchForXelatex(tex: string): string {
   let result = tex;
 
   // For older Pandoc: replace inputenc with fontspec (XeLaTeX native Unicode)
-  result = result.replace(/\\usepackage\[utf8\]\{inputenc\}/g, "\\usepackage{fontspec}");
+  result = result.replace(/\\usepackage\[utf8\]\{inputenc\}/g, '\\usepackage{fontspec}');
 
   // Remove \usepackage[T1]{fontenc} — XeLaTeX uses fontspec instead
-  result = result.replace(/\\usepackage\[T1\]\{fontenc\}\n?/g, "");
+  result = result.replace(/\\usepackage\[T1\]\{fontenc\}\n?/g, '');
 
   // Remove lmodern — Latin Modern lacks glyphs for Unicode Greek (κ,γ,η,etc.)
   // and math symbols (≈,≤,≥,etc.)
-  result = result.replace(/\\usepackage\{lmodern\}\n?/g, "");
+  result = result.replace(/\\usepackage\{lmodern\}\n?/g, '');
 
   // Ensure Linux Libertine is set as main font (2000+ glyphs, full Unicode)
   // and graphicspath is set — inject both before \begin{document}
-  const docBegin = result.indexOf("\\begin{document}");
+  const docBegin = result.indexOf('\\begin{document}');
   if (docBegin !== -1) {
     const preambleAdditions: string[] = [];
 
-    if (!result.includes("\\setmainfont")) {
+    if (!result.includes('\\setmainfont')) {
       // Use \IfFontExistsTF to handle both OTF ("Linux Libertine O" from Debian)
       // and TTF ("Linux Libertine" from Homebrew/other) installations
       preambleAdditions.push(
-        "\\IfFontExistsTF{Linux Libertine O}" +
-          "{\\setmainfont{Linux Libertine O}\\setsansfont{Linux Biolinum O}}" +
-          "{\\setmainfont{Linux Libertine}}",
+        '\\IfFontExistsTF{Linux Libertine O}' +
+          '{\\setmainfont{Linux Libertine O}\\setsansfont{Linux Biolinum O}}' +
+          '{\\setmainfont{Linux Libertine}}',
       );
     }
 
-    if (!result.includes("\\graphicspath")) {
-      preambleAdditions.push("\\graphicspath{{figures/}}");
+    if (!result.includes('\\graphicspath')) {
+      preambleAdditions.push('\\graphicspath{{figures/}}');
     }
 
     if (preambleAdditions.length > 0) {
       result =
-        result.slice(0, docBegin) + preambleAdditions.join("\n") + "\n\n" + result.slice(docBegin);
+        result.slice(0, docBegin) + preambleAdditions.join('\n') + '\n\n' + result.slice(docBegin);
     }
   }
 
-  logger.info({ hasSetmainfont: result.includes("\\setmainfont") }, "patchForXelatex_complete");
+  logger.info({ hasSetmainfont: result.includes('\\setmainfont') }, 'patchForXelatex_complete');
 
   return result;
 }
@@ -112,37 +112,37 @@ function patchForXelatex(tex: string): string {
  */
 export async function checkPandocInstalled(): Promise<void> {
   return new Promise((resolve, reject) => {
-    const proc = spawn("pandoc", ["--version"], {
+    const proc = spawn('pandoc', ['--version'], {
       env: {
         ...process.env,
         PATH: `/usr/local/bin:/opt/homebrew/bin:${process.env.PATH}`,
       },
     });
 
-    let stdout = "";
+    let stdout = '';
 
-    proc.stdout?.on("data", (data) => {
+    proc.stdout?.on('data', (data) => {
       stdout += data.toString();
     });
 
-    proc.on("close", (code) => {
+    proc.on('close', (code) => {
       if (code === 0) {
-        const versionLine = stdout.split("\n")[0] || "unknown";
-        logger.info({ version: versionLine }, "pandoc_available");
+        const versionLine = stdout.split('\n')[0] || 'unknown';
+        logger.info({ version: versionLine }, 'pandoc_available');
         resolve();
       } else {
         reject(
           new Error(
-            "Pandoc is not installed or not in PATH. Install with: apt-get install pandoc (Linux) or brew install pandoc (macOS)",
+            'Pandoc is not installed or not in PATH. Install with: apt-get install pandoc (Linux) or brew install pandoc (macOS)',
           ),
         );
       }
     });
 
-    proc.on("error", () => {
+    proc.on('error', () => {
       reject(
         new Error(
-          "Pandoc is not installed or not in PATH. Install with: apt-get install pandoc (Linux) or brew install pandoc (macOS)",
+          'Pandoc is not installed or not in PATH. Install with: apt-get install pandoc (Linux) or brew install pandoc (macOS)',
         ),
       );
     });
@@ -159,7 +159,7 @@ function runPandoc(
   cwd: string,
 ): Promise<{ success: boolean; stdout: string; stderr: string }> {
   return new Promise((resolve) => {
-    const proc = spawn("pandoc", args, {
+    const proc = spawn('pandoc', args, {
       cwd,
       env: {
         ...process.env,
@@ -167,24 +167,24 @@ function runPandoc(
       },
     });
 
-    let stdout = "";
-    let stderr = "";
+    let stdout = '';
+    let stderr = '';
     let killed = false;
 
     const timer = setTimeout(() => {
       killed = true;
-      proc.kill("SIGKILL");
+      proc.kill('SIGKILL');
     }, PANDOC_TIMEOUT_MS);
 
-    proc.stdout?.on("data", (data) => {
+    proc.stdout?.on('data', (data) => {
       stdout += data.toString();
     });
 
-    proc.stderr?.on("data", (data) => {
+    proc.stderr?.on('data', (data) => {
       stderr += data.toString();
     });
 
-    proc.on("close", (code) => {
+    proc.on('close', (code) => {
       clearTimeout(timer);
       if (killed) {
         resolve({
@@ -197,9 +197,9 @@ function runPandoc(
       }
     });
 
-    proc.on("error", (error) => {
+    proc.on('error', (error) => {
       clearTimeout(timer);
-      resolve({ success: false, stdout: "", stderr: error.message });
+      resolve({ success: false, stdout: '', stderr: error.message });
     });
   });
 }

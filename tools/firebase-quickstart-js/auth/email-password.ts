@@ -21,24 +21,14 @@ if (window.location.hostname === 'localhost') {
 
 const emailInput = document.getElementById('email')! as HTMLInputElement;
 const passwordInput = document.getElementById('password')! as HTMLInputElement;
-const signInButton = document.getElementById(
-  'quickstart-sign-in',
-)! as HTMLButtonElement;
-const signUpButton = document.getElementById(
-  'quickstart-sign-up',
-)! as HTMLButtonElement;
+const signInButton = document.getElementById('quickstart-sign-in')! as HTMLButtonElement;
+const signUpButton = document.getElementById('quickstart-sign-up')! as HTMLButtonElement;
 const passwordResetButton = document.getElementById(
   'quickstart-password-reset',
 )! as HTMLButtonElement;
-const verifyEmailButton = document.getElementById(
-  'quickstart-verify-email',
-)! as HTMLButtonElement;
-const signInStatus = document.getElementById(
-  'quickstart-sign-in-status',
-)! as HTMLSpanElement;
-const accountDetails = document.getElementById(
-  'quickstart-account-details',
-)! as HTMLDivElement;
+const verifyEmailButton = document.getElementById('quickstart-verify-email')! as HTMLButtonElement;
+const signInStatus = document.getElementById('quickstart-sign-in-status')! as HTMLSpanElement;
+const accountDetails = document.getElementById('quickstart-account-details')! as HTMLDivElement;
 
 /**
  * Handles the sign in button press.
@@ -58,7 +48,7 @@ function toggleSignIn() {
       return;
     }
     // Sign in with email and pass.
-    signInWithEmailAndPassword(auth, email, password).catch(function (error) {
+    signInWithEmailAndPassword(auth, email, password).catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -89,7 +79,7 @@ function handleSignUp() {
     return;
   }
   // Create user with email and pass.
-  createUserWithEmailAndPassword(auth, email, password).catch(function (error) {
+  createUserWithEmailAndPassword(auth, email, password).catch((error) => {
     // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -106,7 +96,7 @@ function handleSignUp() {
  * Sends an email verification to the user.
  */
 function sendVerificationEmailToUser() {
-  sendEmailVerification(auth.currentUser!).then(function () {
+  sendEmailVerification(auth.currentUser!).then(() => {
     // Email Verification sent!
     alert('Email Verification Sent!');
   });
@@ -115,11 +105,11 @@ function sendVerificationEmailToUser() {
 function sendPasswordReset() {
   const email = emailInput.value;
   sendPasswordResetEmail(auth, email)
-    .then(function () {
+    .then(() => {
       // Password Reset Email Sent!
       alert('Password Reset Email Sent!');
     })
-    .catch(function (error) {
+    .catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -133,7 +123,7 @@ function sendPasswordReset() {
 }
 
 // Listening for auth state changes.
-onAuthStateChanged(auth, function (user) {
+onAuthStateChanged(auth, (user) => {
   verifyEmailButton.disabled = true;
   if (user) {
     // User is signed in.

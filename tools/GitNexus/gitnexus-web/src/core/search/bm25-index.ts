@@ -8,9 +8,9 @@
 import MiniSearch from 'minisearch';
 
 export interface BM25Document {
-  id: string;       // File path
-  content: string;  // File content
-  name: string;     // File name (boosted in search)
+  id: string; // File path
+  content: string; // File content
+  name: string; // File name (boosted in search)
 }
 
 export interface BM25SearchResult {
@@ -37,7 +37,7 @@ export const buildBM25Index = (fileContents: Map<string, string>): number => {
   // Create new MiniSearch instance with BM25-like scoring
   searchIndex = new MiniSearch<BM25Document>({
     fields: ['content', 'name'], // Fields to index
-    storeFields: ['id'],         // Fields to return in results
+    storeFields: ['id'], // Fields to return in results
 
     // Tokenizer: split on non-alphanumeric, camelCase, snake_case
     tokenize: (text: string) => {
@@ -50,7 +50,10 @@ export const buildBM25Index = (fileContents: Map<string, string>): number => {
         if (token.length === 0) continue;
 
         // Split camelCase
-        const camelParts = token.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase().split(' ');
+        const camelParts = token
+          .replace(/([a-z])([A-Z])/g, '$1 $2')
+          .toLowerCase()
+          .split(' ');
         expanded.push(...camelParts);
 
         // Also keep original token for exact matches
@@ -60,7 +63,7 @@ export const buildBM25Index = (fileContents: Map<string, string>): number => {
       }
 
       // Filter out very short tokens and common noise
-      return expanded.filter(t => t.length > 1 && !STOP_WORDS.has(t));
+      return expanded.filter((t) => t.length > 1 && !STOP_WORDS.has(t));
     },
   });
 
@@ -105,7 +108,7 @@ export const searchBM25 = (query: string, limit: number = 20): BM25SearchResult[
   const results = searchIndex.search(query, {
     fuzzy: 0.2,
     prefix: true,
-    boost: { name: 2 },  // Boost file name matches
+    boost: { name: 2 }, // Boost file name matches
   });
 
   // Limit results and add rank
@@ -150,11 +153,56 @@ export const clearBM25Index = (): void => {
  */
 const STOP_WORDS = new Set([
   // JavaScript/TypeScript keywords
-  'const', 'let', 'var', 'function', 'return', 'if', 'else', 'for', 'while',
-  'class', 'new', 'this', 'import', 'export', 'from', 'default', 'async', 'await',
-  'try', 'catch', 'throw', 'typeof', 'instanceof', 'true', 'false', 'null', 'undefined',
+  'const',
+  'let',
+  'var',
+  'function',
+  'return',
+  'if',
+  'else',
+  'for',
+  'while',
+  'class',
+  'new',
+  'this',
+  'import',
+  'export',
+  'from',
+  'default',
+  'async',
+  'await',
+  'try',
+  'catch',
+  'throw',
+  'typeof',
+  'instanceof',
+  'true',
+  'false',
+  'null',
+  'undefined',
 
   // Common English stop words
-  'the', 'is', 'at', 'which', 'on', 'a', 'an', 'and', 'or', 'but', 'in', 'with',
-  'to', 'of', 'it', 'be', 'as', 'by', 'that', 'for', 'are', 'was', 'were',
+  'the',
+  'is',
+  'at',
+  'which',
+  'on',
+  'a',
+  'an',
+  'and',
+  'or',
+  'but',
+  'in',
+  'with',
+  'to',
+  'of',
+  'it',
+  'be',
+  'as',
+  'by',
+  'that',
+  'for',
+  'are',
+  'was',
+  'were',
 ]);

@@ -1,23 +1,23 @@
 import {
-  InputRenderable,
-  type InputRenderableOptions,
-  InputRenderableEvents,
-  type PasteEvent,
-  type KeyEvent,
-  RGBA,
-  parseColor,
   type ColorInput,
+  fg,
+  InputRenderable,
+  InputRenderableEvents,
+  type InputRenderableOptions,
+  type KeyEvent,
+  type PasteEvent,
+  parseColor,
   type RenderContext,
-} from "@opentui/core";
-import { fg } from "@opentui/core";
+  type RGBA,
+} from '@opentui/core';
 
 export enum MultiLineInputEvents {
-  INPUT = "input",
-  CHANGE = "change",
-  SUBMIT = "submit",
+  INPUT = 'input',
+  CHANGE = 'change',
+  SUBMIT = 'submit',
 }
 
-export interface MultiLineInputOptions extends Omit<InputRenderableOptions, "value"> {
+export interface MultiLineInputOptions extends Omit<InputRenderableOptions, 'value'> {
   /** Initial text value (can include newlines) */
   value?: string;
   /** Minimum height in lines (default: 1) */
@@ -46,7 +46,7 @@ export class MultiLineInputRenderable extends InputRenderable {
   constructor(ctx: RenderContext, options: MultiLineInputOptions) {
     // Convert newlines to empty string for initial parent call
     // We'll restore them after initialization
-    const sanitizedValue = (options.value ?? "").replace(/[\n\r]/g, "");
+    const sanitizedValue = (options.value ?? '').replace(/[\n\r]/g, '');
 
     super(ctx, {
       ...options,
@@ -57,7 +57,7 @@ export class MultiLineInputRenderable extends InputRenderable {
     this._maxHeight = options.maxHeight ?? 10;
 
     // Restore the original value with newlines if provided
-    if (options.value && options.value.includes("\n")) {
+    if (options.value && options.value.includes('\n')) {
       this.setText(options.value);
     }
 
@@ -77,7 +77,7 @@ export class MultiLineInputRenderable extends InputRenderable {
   public setPlaceholderWithColor(placeholder: string, color: RGBA): void {
     this._customPlaceholderColor = color;
     if (!placeholder) {
-      this.placeholder = "";
+      this.placeholder = '';
       return;
     }
     // Create a styled text with the placeholder color
@@ -108,7 +108,7 @@ export class MultiLineInputRenderable extends InputRenderable {
    */
   public override handleKeyPress(key: KeyEvent): boolean {
     // Handle Shift+Enter to insert newline
-    if ((key.name === "return" || key.name === "linefeed") && key.shift) {
+    if ((key.name === 'return' || key.name === 'linefeed') && key.shift) {
       this.newLine();
       return true;
     }

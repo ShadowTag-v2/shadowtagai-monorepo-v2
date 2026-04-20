@@ -1,11 +1,11 @@
-import fs from "fs/promises";
-import path from "path";
-import os from "os";
-import { randomBytes } from "crypto";
-import { diffLines, createTwoFilesPatch } from "diff";
-import { minimatch } from "minimatch";
-import { normalizePath, expandHome } from "./path-utils.js";
-import { isPathWithinAllowedDirectories } from "./path-validation.js";
+import { randomBytes } from 'crypto';
+import { createTwoFilesPatch, diffLines } from 'diff';
+import fs from 'fs/promises';
+import { minimatch } from 'minimatch';
+import os from 'os';
+import path from 'path';
+import { expandHome, normalizePath } from './path-utils.js';
+import { isPathWithinAllowedDirectories } from './path-validation.js';
 
 // Global allowed directories - set by the main module
 let allowedDirectories: string[] = [];
@@ -42,8 +42,8 @@ export interface SearchResult {
 
 // Pure Utility Functions
 export function formatSize(bytes: number): string {
-  const units = ["B", "KB", "MB", "GB", "TB"];
-  if (bytes === 0) return "0 B";
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+  if (bytes === 0) return '0 B';
 
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
 
@@ -54,13 +54,13 @@ export function formatSize(bytes: number): string {
 }
 
 export function normalizeLineEndings(text: string): string {
-  return text.replace(/\r\n/g, "\n");
+  return text.replace(/\r\n/g, '\n');
 }
 
 export function createUnifiedDiff(
   originalContent: string,
   newContent: string,
-  filepath: string = "file",
+  filepath: string = 'file',
 ): string {
   // Ensure consistent line endings for diff
   const normalizedOriginal = normalizeLineEndings(originalContent);
@@ -71,8 +71,8 @@ export function createUnifiedDiff(
     filepath,
     normalizedOriginal,
     normalizedNew,
-    "original",
-    "modified",
+    'original',
+    'modified',
   );
 }
 
@@ -112,7 +112,7 @@ export async function validatePath(requestedPath: string): Promise<string> {
   const isAllowed = isPathWithinAllowedDirectories(normalizedRequested, allowedDirectories);
   if (!isAllowed) {
     throw new Error(
-      `Access denied - path outside allowed directories: ${absolute} not in ${allowedDirectories.join(", ")}`,
+      `Access denied - path outside allowed directories: ${absolute} not in ${allowedDirectories.join(', ')}`,
     );
   }
 
@@ -123,21 +123,21 @@ export async function validatePath(requestedPath: string): Promise<string> {
     const normalizedReal = normalizePath(realPath);
     if (!isPathWithinAllowedDirectories(normalizedReal, allowedDirectories)) {
       throw new Error(
-        `Access denied - symlink target outside allowed directories: ${realPath} not in ${allowedDirectories.join(", ")}`,
+        `Access denied - symlink target outside allowed directories: ${realPath} not in ${allowedDirectories.join(', ')}`,
       );
     }
     return realPath;
   } catch (error) {
     // Security: For new files that don't exist yet, verify parent directory
     // This ensures we can't create files in unauthorized locations
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
       const parentDir = path.dirname(absolute);
       try {
         const realParentPath = await fs.realpath(parentDir);
         const normalizedParent = normalizePath(realParentPath);
         if (!isPathWithinAllowedDirectories(normalizedParent, allowedDirectories)) {
           throw new Error(
-            `Access denied - parent directory outside allowed directories: ${realParentPath} not in ${allowedDirectories.join(", ")}`,
+            `Access denied - parent directory outside allowed directories: ${realParentPath} not in ${allowedDirectories.join(', ')}`,
           );
         }
         return absolute;
@@ -165,7 +165,7 @@ export async function getFileStats(filePath: string): Promise<FileInfo> {
 
 export async function readFileContent(
   filePath: string,
-  encoding: string = "utf-8",
+  encoding: string = 'utf-8',
 ): Promise<string> {
   return await fs.readFile(filePath, encoding as BufferEncoding);
 }
@@ -174,15 +174,15 @@ export async function writeFileContent(filePath: string, content: string): Promi
   try {
     // Security: 'wx' flag ensures exclusive creation - fails if file/symlink exists,
     // preventing writes through pre-existing symlinks
-    await fs.writeFile(filePath, content, { encoding: "utf-8", flag: "wx" });
+    await fs.writeFile(filePath, content, { encoding: 'utf-8', flag: 'wx' });
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "EEXIST") {
+    if ((error as NodeJS.ErrnoException).code === 'EEXIST') {
       // Security: Use atomic rename to prevent race conditions where symlinks
       // could be created between validation and write. Rename operations
       // replace the target file atomically and don't follow symlinks.
-      const tempPath = `${filePath}.${randomBytes(16).toString("hex")}.tmp`;
+      const tempPath = `${filePath}.${randomBytes(16).toString('hex')}.tmp`;
       try {
-        await fs.writeFile(tempPath, content, "utf-8");
+        await fs.writeFile(tempPath, content, 'utf-8');
         await fs.rename(tempPath, filePath);
       } catch (renameError) {
         try {
@@ -208,7 +208,7 @@ export async function applyFileEdits(
   dryRun: boolean = false,
 ): Promise<string> {
   // Read file content and normalize line endings
-  const content = normalizeLineEndings(await fs.readFile(filePath, "utf-8"));
+  const content = normalizeLineEndings(await fs.readFile(filePath, 'utf-8'));
 
   // Apply edits sequentially
   let modifiedContent = content;
@@ -223,8 +223,8 @@ export async function applyFileEdits(
     }
 
     // Otherwise, try line-by-line matching with flexibility for whitespace
-    const oldLines = normalizedOld.split("\n");
-    const contentLines = modifiedContent.split("\n");
+    const oldLines = normalizedOld.split('\n');
+    const contentLines = modifiedContent.split('\n');
     let matchFound = false;
 
     for (let i = 0; i <= contentLines.length - oldLines.length; i++) {
@@ -238,21 +238,21 @@ export async function applyFileEdits(
 
       if (isMatch) {
         // Preserve original indentation of first line
-        const originalIndent = contentLines[i].match(/^\s*/)?.[0] || "";
-        const newLines = normalizedNew.split("\n").map((line, j) => {
+        const originalIndent = contentLines[i].match(/^\s*/)?.[0] || '';
+        const newLines = normalizedNew.split('\n').map((line, j) => {
           if (j === 0) return originalIndent + line.trimStart();
           // For subsequent lines, try to preserve relative indentation
-          const oldIndent = oldLines[j]?.match(/^\s*/)?.[0] || "";
-          const newIndent = line.match(/^\s*/)?.[0] || "";
+          const oldIndent = oldLines[j]?.match(/^\s*/)?.[0] || '';
+          const newIndent = line.match(/^\s*/)?.[0] || '';
           if (oldIndent && newIndent) {
             const relativeIndent = newIndent.length - oldIndent.length;
-            return originalIndent + " ".repeat(Math.max(0, relativeIndent)) + line.trimStart();
+            return originalIndent + ' '.repeat(Math.max(0, relativeIndent)) + line.trimStart();
           }
           return line;
         });
 
         contentLines.splice(i, oldLines.length, ...newLines);
-        modifiedContent = contentLines.join("\n");
+        modifiedContent = contentLines.join('\n');
         matchFound = true;
         break;
       }
@@ -268,18 +268,18 @@ export async function applyFileEdits(
 
   // Format diff with appropriate number of backticks
   let numBackticks = 3;
-  while (diff.includes("`".repeat(numBackticks))) {
+  while (diff.includes('`'.repeat(numBackticks))) {
     numBackticks++;
   }
-  const formattedDiff = `${"`".repeat(numBackticks)}diff\n${diff}${"`".repeat(numBackticks)}\n\n`;
+  const formattedDiff = `${'`'.repeat(numBackticks)}diff\n${diff}${'`'.repeat(numBackticks)}\n\n`;
 
   if (!dryRun) {
     // Security: Use atomic rename to prevent race conditions where symlinks
     // could be created between validation and write. Rename operations
     // replace the target file atomically and don't follow symlinks.
-    const tempPath = `${filePath}.${randomBytes(16).toString("hex")}.tmp`;
+    const tempPath = `${filePath}.${randomBytes(16).toString('hex')}.tmp`;
     try {
-      await fs.writeFile(tempPath, modifiedContent, "utf-8");
+      await fs.writeFile(tempPath, modifiedContent, 'utf-8');
       await fs.rename(tempPath, filePath);
     } catch (error) {
       try {
@@ -298,16 +298,16 @@ export async function tailFile(filePath: string, numLines: number): Promise<stri
   const stats = await fs.stat(filePath);
   const fileSize = stats.size;
 
-  if (fileSize === 0) return "";
+  if (fileSize === 0) return '';
 
   // Open file for reading
-  const fileHandle = await fs.open(filePath, "r");
+  const fileHandle = await fs.open(filePath, 'r');
   try {
     const lines: string[] = [];
     let position = fileSize;
     const chunk = Buffer.alloc(CHUNK_SIZE);
     let linesFound = 0;
-    let remainingText = "";
+    let remainingText = '';
 
     // Read chunks from the end of the file until we have enough lines
     while (position > 0 && linesFound < numLines) {
@@ -318,11 +318,11 @@ export async function tailFile(filePath: string, numLines: number): Promise<stri
       if (!bytesRead) break;
 
       // Get the chunk as a string and prepend any remaining text from previous iteration
-      const readData = chunk.slice(0, bytesRead).toString("utf-8");
+      const readData = chunk.slice(0, bytesRead).toString('utf-8');
       const chunkText = readData + remainingText;
 
       // Split by newlines and count
-      const chunkLines = normalizeLineEndings(chunkText).split("\n");
+      const chunkLines = normalizeLineEndings(chunkText).split('\n');
 
       // If this isn't the end of the file, the first line is likely incomplete
       // Save it to prepend to the next chunk
@@ -338,7 +338,7 @@ export async function tailFile(filePath: string, numLines: number): Promise<stri
       }
     }
 
-    return lines.join("\n");
+    return lines.join('\n');
   } finally {
     await fileHandle.close();
   }
@@ -346,10 +346,10 @@ export async function tailFile(filePath: string, numLines: number): Promise<stri
 
 // New function to get the first N lines of a file
 export async function headFile(filePath: string, numLines: number): Promise<string> {
-  const fileHandle = await fs.open(filePath, "r");
+  const fileHandle = await fs.open(filePath, 'r');
   try {
     const lines: string[] = [];
-    let buffer = "";
+    let buffer = '';
     let bytesRead = 0;
     const chunk = Buffer.alloc(1024); // 1KB buffer
 
@@ -358,11 +358,11 @@ export async function headFile(filePath: string, numLines: number): Promise<stri
       const result = await fileHandle.read(chunk, 0, chunk.length, bytesRead);
       if (result.bytesRead === 0) break; // End of file
       bytesRead += result.bytesRead;
-      buffer += chunk.slice(0, result.bytesRead).toString("utf-8");
+      buffer += chunk.slice(0, result.bytesRead).toString('utf-8');
 
-      const newLineIndex = buffer.lastIndexOf("\n");
+      const newLineIndex = buffer.lastIndexOf('\n');
       if (newLineIndex !== -1) {
-        const completeLines = buffer.slice(0, newLineIndex).split("\n");
+        const completeLines = buffer.slice(0, newLineIndex).split('\n');
         buffer = buffer.slice(newLineIndex + 1);
         for (const line of completeLines) {
           lines.push(line);
@@ -376,7 +376,7 @@ export async function headFile(filePath: string, numLines: number): Promise<stri
       lines.push(buffer);
     }
 
-    return lines.join("\n");
+    return lines.join('\n');
   } finally {
     await fileHandle.close();
   }

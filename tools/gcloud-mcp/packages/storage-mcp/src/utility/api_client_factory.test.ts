@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { Storage } from '@google-cloud/storage';
 import { ServiceUsageClient } from '@google-cloud/service-usage';
-import { ApiClientFactory as ApiClientFactoryClass } from './api_client_factory.js';
+import { Storage } from '@google-cloud/storage';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { ApiClientFactory as ApiClientFactoryClass } from './api_client_factory.js';
 
 // Mock the @google-cloud/storage library
 vi.mock('@google-cloud/storage');

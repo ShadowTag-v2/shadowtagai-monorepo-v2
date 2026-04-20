@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as fs from 'node:fs';
-import * as path from 'node:path';
 import * as os from 'node:os';
+import * as path from 'node:path';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { addToJar } from './jar-utils.js';
 
 vi.mock('node:fs');
@@ -34,7 +34,7 @@ describe('jar_utils', () => {
     expect(fs.copyFileSync).toHaveBeenCalled();
     expect(fs.writeFileSync).toHaveBeenCalledWith(
       expect.stringContaining('meta.json'),
-      expect.any(String)
+      expect.any(String),
     );
     expect(result).toContain('jar');
   });

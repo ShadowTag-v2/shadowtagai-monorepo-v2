@@ -16,24 +16,24 @@
 
 import { initializeApp } from 'firebase/app';
 import {
-  GoogleAuthProvider,
-  User,
   connectAuthEmulator,
+  GoogleAuthProvider,
   getAuth,
   onAuthStateChanged,
   signInWithPopup,
-  signOut
+  signOut,
+  type User,
 } from 'firebase/auth';
 import {
-  DataSnapshot,
+  connectDatabaseEmulator,
+  type DataSnapshot,
   getDatabase,
   limitToLast,
   onChildAdded,
   query,
   ref,
-  connectDatabaseEmulator
 } from 'firebase/database';
-import { getFunctions, httpsCallable, connectFunctionsEmulator } from 'firebase/functions';
+import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions';
 import { firebaseConfig } from './config';
 
 initializeApp(firebaseConfig);
@@ -69,33 +69,48 @@ function addNumbers() {
   const secondNumberValue = parseFloat(secondNumber.value);
   addNumbersButton.disabled = true;
   const sendNotification = httpsCallable(functions, 'addNumbers');
-  sendNotification({ firstNumber: firstNumberValue, secondNumber: secondNumberValue }).then(function(result) {
+  sendNotification({ firstNumber: firstNumberValue, secondNumber: secondNumberValue })
+    .then((result) => {
       console.log('Cloud Function called successfully.', result);
       // Read results of the Cloud Function.
       const data = result.data as {
-        firstNumber: number,
-        secondNumber: number,
-        operationResult: number,
-        operator: string
+        firstNumber: number;
+        secondNumber: number;
+        operationResult: number;
+        operator: string;
       };
       const firstNumber = data.firstNumber;
       const secondNumber = data.secondNumber;
       const operationResult = data.operationResult;
       const operator = data.operator;
-      window.alert('Here is the result of the formula: ' + firstNumber + ' '
-        + operator + ' ' + secondNumber + ' = ' + operationResult);
+      window.alert(
+        'Here is the result of the formula: ' +
+          firstNumber +
+          ' ' +
+          operator +
+          ' ' +
+          secondNumber +
+          ' = ' +
+          operationResult,
+      );
       addNumbersButton.disabled = false;
-    }
-  ).catch(function(error) {
-    // Getting the Error details.
-    const code = error.code;
-    const message = error.message;
-    const details = error.details;
-    console.error('There was an error when calling the Cloud Function', error);
-    window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
-      + code + '\nError Message:' + message + '\nError Details:' + details);
-    addNumbersButton.disabled = false;
-  });
+    })
+    .catch((error) => {
+      // Getting the Error details.
+      const code = error.code;
+      const message = error.message;
+      const details = error.details;
+      console.error('There was an error when calling the Cloud Function', error);
+      window.alert(
+        'There was an error when calling the Cloud Function:\n\nError Code: ' +
+          code +
+          '\nError Message:' +
+          message +
+          '\nError Details:' +
+          details,
+      );
+      addNumbersButton.disabled = false;
+    });
 }
 
 // Adds a message to the Realtime Database by calling the `addMessage` server-side function.
@@ -103,25 +118,33 @@ function addMessage() {
   const messageTextInput = messageText.value;
   addMessageButton.disabled = true;
   const addMessage = httpsCallable(functions, 'addMessage');
-  addMessage({ text: messageTextInput }).then(function(result) {
-    // Read result of the Cloud Function.
-    const data = result.data as { text: string };
-    const sanitizedMessage = data.text;
-    if (messageTextInput !== sanitizedMessage) {
-      window.alert('You were naughty. Your message was sanitized to:\n\n' + sanitizedMessage);
-    }
-    messageText.value = '';
-    addMessageButton.disabled = false;
-  }).catch(function(error) {
-    // Getting the Error details.
-    const code = error.code;
-    const message = error.message;
-    const details = error.details;
-    console.error('There was an error when calling the Cloud Function', error);
-    window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
-      + code + '\nError Message:' + message + '\nError Details:' + details);
-    addMessageButton.disabled = false;
-  });
+  addMessage({ text: messageTextInput })
+    .then((result) => {
+      // Read result of the Cloud Function.
+      const data = result.data as { text: string };
+      const sanitizedMessage = data.text;
+      if (messageTextInput !== sanitizedMessage) {
+        window.alert('You were naughty. Your message was sanitized to:\n\n' + sanitizedMessage);
+      }
+      messageText.value = '';
+      addMessageButton.disabled = false;
+    })
+    .catch((error) => {
+      // Getting the Error details.
+      const code = error.code;
+      const message = error.message;
+      const details = error.details;
+      console.error('There was an error when calling the Cloud Function', error);
+      window.alert(
+        'There was an error when calling the Cloud Function:\n\nError Code: ' +
+          code +
+          '\nError Message:' +
+          message +
+          '\nError Details:' +
+          details,
+      );
+      addMessageButton.disabled = false;
+    });
 }
 
 // Start the Firebase signs-in flow via Google account.
@@ -137,7 +160,7 @@ async function signUserOut() {
 }
 
 // This is called when the Firebase auth state has changed. i.e. the User has signed-in or signed-out.
-const onAuthStateChangedHandler = function(user: User | null) {
+const onAuthStateChangedHandler = (user: User | null) => {
   if (user) {
     // When a user signs-in we remove the sign-in splash page.
     splashPage.style.display = 'none';
@@ -148,7 +171,7 @@ const onAuthStateChangedHandler = function(user: User | null) {
 };
 
 // This is called when a new Message has been added to the realtime Database.
-const onNewMessage = function(snap: DataSnapshot) {
+const onNewMessage = (snap: DataSnapshot) => {
   const text = snap.val().text;
   const name = snap.val().author.name;
   const messageElement = document.createElement('div');

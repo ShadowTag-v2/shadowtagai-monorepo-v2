@@ -17,10 +17,12 @@
 import * as deepEqual from 'fast-deep-equal';
 
 import * as protos from '../../protos/firestore_v1_proto_api';
+
 import api = protos.google.firestore.v1;
-import {FilterInternal} from './filter-internal';
-import {Serializer} from '../serializer';
-import {FieldPath} from '../path';
+
+import type { FieldPath } from '../path';
+import type { Serializer } from '../serializer';
+import { FilterInternal } from './filter-internal';
 
 /**
  * A field constraint for a Query where clause.

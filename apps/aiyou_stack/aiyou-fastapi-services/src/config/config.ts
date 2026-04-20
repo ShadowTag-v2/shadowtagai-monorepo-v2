@@ -15,15 +15,15 @@ export interface Config {
 
 export const config: Config = {
   anthropic: {
-    apiKey: process.env.ANTHROPIC_API_KEY || "",
-    model: "claude-sonnet-4-5-20250929",
+    apiKey: process.env.ANTHROPIC_API_KEY || '',
+    model: 'claude-sonnet-4-5-20250929',
   },
   server: {
-    port: parseInt(process.env.PORT || "3000"),
-    host: process.env.HOST || "localhost",
+    port: parseInt(process.env.PORT || '3000'),
+    host: process.env.HOST || 'localhost',
   },
   analytics: {
-    retentionDays: parseInt(process.env.RETENTION_DAYS || "30"),
-    minSessionsForAnalysis: parseInt(process.env.MIN_SESSIONS || "10"),
+    retentionDays: parseInt(process.env.RETENTION_DAYS || '30'),
+    minSessionsForAnalysis: parseInt(process.env.MIN_SESSIONS || '10'),
   },
 };

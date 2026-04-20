@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_oidc_provider_create_modular]
-import { OAuthProvider } from "firebase/auth";
+import { OAuthProvider } from 'firebase/auth';
 
-const provider = new OAuthProvider("oidc.myProvider");
+const provider = new OAuthProvider('oidc.myProvider');
 // [END auth_oidc_provider_create_modular]

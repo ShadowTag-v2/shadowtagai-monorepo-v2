@@ -6,19 +6,19 @@
 
 import '../../divider/divider.js';
 
-import {html, isServer, LitElement, nothing} from 'lit';
-import {property, query, state} from 'lit/decorators.js';
-import {classMap} from 'lit/directives/class-map.js';
+import { html, isServer, LitElement, nothing } from 'lit';
+import { property, query, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
-import {ARIAMixinStrict} from '../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../internal/aria/delegate.js';
-import {redispatchEvent} from '../../internal/events/redispatch-event.js';
+import type { ARIAMixinStrict } from '../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../internal/aria/delegate.js';
+import { redispatchEvent } from '../../internal/events/redispatch-event.js';
 
 import {
   DIALOG_DEFAULT_CLOSE_ANIMATION,
   DIALOG_DEFAULT_OPEN_ANIMATION,
-  DialogAnimation,
-  DialogAnimationArgs,
+  type DialogAnimation,
+  type DialogAnimationArgs,
 } from './animations.js';
 
 // Separate variable needed for closure.
@@ -42,7 +42,7 @@ export class Dialog extends dialogBaseClass {
   /**
    * Opens the dialog when set to `true` and closes it when set to `false`.
    */
-  @property({type: Boolean})
+  @property({ type: Boolean })
   get open() {
     return this.isOpen;
   }
@@ -65,7 +65,7 @@ export class Dialog extends dialogBaseClass {
   /**
    * Skips the opening and closing animations.
    */
-  @property({type: Boolean}) quick = false;
+  @property({ type: Boolean }) quick = false;
 
   /**
    * Gets or sets the dialog's return value, usually to indicate which button
@@ -73,7 +73,7 @@ export class Dialog extends dialogBaseClass {
    *
    * https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/returnValue
    */
-  @property({attribute: false}) returnValue = '';
+  @property({ attribute: false }) returnValue = '';
 
   /**
    * The type of dialog for accessibility. Set this to `alert` to announce a
@@ -93,7 +93,7 @@ export class Dialog extends dialogBaseClass {
    * be disabled. Only turn this off if the use case of a dialog is more
    * accessible without focus trapping.
    */
-  @property({type: Boolean, attribute: 'no-focus-trap'})
+  @property({ type: Boolean, attribute: 'no-focus-trap' })
   noFocusTrap = false;
 
   /**
@@ -186,9 +186,7 @@ export class Dialog extends dialogBaseClass {
       return;
     }
 
-    const preventOpen = !this.dispatchEvent(
-      new Event('open', {cancelable: true}),
-    );
+    const preventOpen = !this.dispatchEvent(new Event('open', { cancelable: true }));
     if (preventOpen) {
       this.open = false;
       this.isOpening = false;
@@ -240,9 +238,7 @@ export class Dialog extends dialogBaseClass {
 
     const prevReturnValue = this.returnValue;
     this.returnValue = returnValue;
-    const preventClose = !this.dispatchEvent(
-      new Event('close', {cancelable: true}),
-    );
+    const preventClose = !this.dispatchEvent(new Event('close', { cancelable: true }));
     if (preventClose) {
       this.returnValue = prevReturnValue;
       return;
@@ -265,13 +261,12 @@ export class Dialog extends dialogBaseClass {
   }
 
   protected override render() {
-    const scrollable =
-      this.open && !(this.isAtScrollTop && this.isAtScrollBottom);
+    const scrollable = this.open && !(this.isAtScrollTop && this.isAtScrollBottom);
     const classes = {
       'has-headline': this.hasHeadline,
       'has-actions': this.hasActions,
       'has-icon': this.hasIcon,
-      'scrollable': scrollable,
+      scrollable: scrollable,
       'show-top-divider': scrollable && !this.isAtScrollTop,
       'show-bottom-divider': scrollable && !this.isAtScrollBottom,
     };
@@ -287,7 +282,7 @@ export class Dialog extends dialogBaseClass {
         @focus=${this.handleFocusTrapFocus}></div>
     `;
 
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     return html`
       <div class="scrim"></div>
       <dialog
@@ -337,7 +332,7 @@ export class Dialog extends dialogBaseClass {
           this.handleAnchorIntersection(entry);
         }
       },
-      {root: this.scroller!},
+      { root: this.scroller! },
     );
 
     this.intersectionObserver.observe(this.topAnchor!);
@@ -354,9 +349,7 @@ export class Dialog extends dialogBaseClass {
 
     // Click originated on the backdrop. Native `<dialog>`s will not cancel,
     // but Material dialogs do.
-    const preventDefault = !this.dispatchEvent(
-      new Event('cancel', {cancelable: true}),
-    );
+    const preventDefault = !this.dispatchEvent(new Event('cancel', { cancelable: true }));
     if (preventDefault) {
       return;
     }
@@ -370,7 +363,7 @@ export class Dialog extends dialogBaseClass {
 
   private handleSubmit(event: SubmitEvent) {
     const form = event.target as HTMLFormElement;
-    const {submitter} = event;
+    const { submitter } = event;
     if (form.getAttribute('method') !== 'dialog' || !submitter) {
       return;
     }
@@ -404,7 +397,7 @@ export class Dialog extends dialogBaseClass {
     }
 
     this.escapePressedWithoutCancel = false;
-    this.dialog?.dispatchEvent(new Event('cancel', {cancelable: true}));
+    this.dialog?.dispatchEvent(new Event('cancel', { cancelable: true }));
   }
 
   private handleKeydown(event: KeyboardEvent) {
@@ -433,7 +426,7 @@ export class Dialog extends dialogBaseClass {
       return;
     }
 
-    const {dialog, scrim, container, headline, content, actions} = this;
+    const { dialog, scrim, container, headline, content, actions } = this;
     if (!dialog || !scrim || !container || !headline || !content || !actions) {
       return;
     }
@@ -493,7 +486,7 @@ export class Dialog extends dialogBaseClass {
   }
 
   private handleAnchorIntersection(entry: IntersectionObserverEntry) {
-    const {target, isIntersecting} = entry;
+    const { target, isIntersecting } = entry;
     if (target === this.topAnchor) {
       this.isAtScrollTop = isIntersecting;
     }
@@ -510,8 +503,7 @@ export class Dialog extends dialogBaseClass {
   }
 
   private handleFocusTrapFocus(event: FocusEvent) {
-    const [firstFocusableChild, lastFocusableChild] =
-      this.getFirstAndLastFocusableChildren();
+    const [firstFocusableChild, lastFocusableChild] = this.getFirstAndLastFocusableChildren();
     if (!firstFocusableChild || !lastFocusableChild) {
       // When a dialog does not have focusable children, the dialog itself
       // receives focus.
@@ -531,8 +523,7 @@ export class Dialog extends dialogBaseClass {
     // happens when focus leaves and returns to the window, such as clicking on
     // the browser's URL bar and pressing Tab, or switching focus between
     // iframes.
-    const focusCameFromOutsideDialog =
-      !focusCameFromFirstChild && !focusCameFromLastChild;
+    const focusCameFromOutsideDialog = !focusCameFromFirstChild && !focusCameFromLastChild;
 
     // Focus the dialog's first child when we reach the end of the dialog and
     // focus is moving forward. Or, when focus is moving forwards into the
@@ -560,9 +551,7 @@ export class Dialog extends dialogBaseClass {
     // won't actually reach here.
   }
 
-  private getFirstAndLastFocusableChildren():
-    | [HTMLElement, HTMLElement]
-    | [null, null] {
+  private getFirstAndLastFocusableChildren(): [HTMLElement, HTMLElement] | [null, null] {
     if (!this.treewalker) {
       return [null, null];
     }
@@ -589,9 +578,7 @@ export class Dialog extends dialogBaseClass {
     // We set lastFocusableChild immediately after finding a
     // firstFocusableChild, which means the pair is either both null or both
     // non-null. Cast since TypeScript does not recognize this.
-    return [firstFocusableChild, lastFocusableChild] as
-      | [HTMLElement, HTMLElement]
-      | [null, null];
+    return [firstFocusableChild, lastFocusableChild] as [HTMLElement, HTMLElement] | [null, null];
   }
 }
 
@@ -605,9 +592,7 @@ function isFocusable(element: Element): element is HTMLElement {
     ':is(button,input,select,textarea,object,:is(a,area)[href],[tabindex],[contenteditable=true])';
   const notDisabled = ':not(:disabled,[disabled])';
   const notNegativeTabIndex = ':not([tabindex^="-"])';
-  if (
-    element.matches(knownFocusableElements + notDisabled + notNegativeTabIndex)
-  ) {
+  if (element.matches(knownFocusableElements + notDisabled + notNegativeTabIndex)) {
     return true;
   }
 

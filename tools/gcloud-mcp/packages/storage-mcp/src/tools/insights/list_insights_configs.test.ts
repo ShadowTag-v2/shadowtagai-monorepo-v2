@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { listInsightsConfigs, registerListInsightsConfigsTool } from './list_insights_configs';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { apiClientFactory } from '../../utility/index.js';
 import { logger } from '../../utility/logger.js';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { listInsightsConfigs, registerListInsightsConfigsTool } from './list_insights_configs';
 
 vi.mock('../../utility/index.js');
 vi.mock('../../utility/logger.js');

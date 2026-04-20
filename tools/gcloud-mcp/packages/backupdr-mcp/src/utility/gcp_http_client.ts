@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { GoogleAuth, type AuthClient } from 'google-auth-library';
+import { type AuthClient, GoogleAuth } from 'google-auth-library';
 import { apiClientFactory } from './api_client_factory.js';
 
 // Interface for the API parameters

@@ -4,11 +4,19 @@
 // To update the snippets in this file, edit the source and then run
 // 'npm run snippets'.
 
+import { initializeApp } from 'firebase/app';
 // [START auth_get_auth_equivalent_modular]
-import {initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, browserSessionPersistence, indexedDBLocalPersistence} from "firebase/auth";
-import {initializeApp} from "firebase/app";
+import {
+  browserLocalPersistence,
+  browserPopupRedirectResolver,
+  browserSessionPersistence,
+  indexedDBLocalPersistence,
+  initializeAuth,
+} from 'firebase/auth';
 
-const app = initializeApp({/** Your app config */});
+const app = initializeApp({
+  /** Your app config */
+});
 const auth = initializeAuth(app, {
   persistence: [indexedDBLocalPersistence, browserLocalPersistence, browserSessionPersistence],
   popupRedirectResolver: browserPopupRedirectResolver,

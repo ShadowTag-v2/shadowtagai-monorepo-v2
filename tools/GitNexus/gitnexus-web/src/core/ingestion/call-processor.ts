@@ -1,12 +1,12 @@
-import { KnowledgeGraph } from '../graph/types';
-import { ASTCache } from './ast-cache';
-import { SymbolTable } from './symbol-table';
-import { ImportMap } from './import-processor';
-import { loadParser, loadLanguage } from '../tree-sitter/parser-loader';
-import { LANGUAGE_QUERIES } from './tree-sitter-queries';
 import { generateId } from '../../lib/utils';
-import { getLanguageFromFilename } from './utils';
+import type { KnowledgeGraph } from '../graph/types';
+import { loadLanguage, loadParser } from '../tree-sitter/parser-loader';
+import type { ASTCache } from './ast-cache';
 import { callRouters } from './call-routing';
+import type { ImportMap } from './import-processor';
+import type { SymbolTable } from './symbol-table';
+import { LANGUAGE_QUERIES } from './tree-sitter-queries';
+import { getLanguageFromFilename } from './utils';
 
 /**
  * Node types that represent function/method definitions across languages.
@@ -37,7 +37,7 @@ const FUNCTION_NODE_TYPES = new Set([
   'function_item',
   'impl_item', // Methods inside impl blocks
   // Ruby
-  'method',           // def foo
+  'method', // def foo
   'singleton_method', // def self.foo
 ]);
 
@@ -48,7 +48,7 @@ const FUNCTION_NODE_TYPES = new Set([
 const findEnclosingFunction = (
   node: any,
   filePath: string,
-  symbolTable: SymbolTable
+  symbolTable: SymbolTable,
 ): string | null => {
   let current = node.parent;
 
@@ -59,61 +59,74 @@ const findEnclosingFunction = (
       let label = 'Function';
 
       // Different node types have different name locations
-      if (current.type === 'function_declaration' ||
-          current.type === 'function_definition' ||
-          current.type === 'async_function_declaration' ||
-          current.type === 'generator_function_declaration' ||
-          current.type === 'function_item') { // Rust function
+      if (
+        current.type === 'function_declaration' ||
+        current.type === 'function_definition' ||
+        current.type === 'async_function_declaration' ||
+        current.type === 'generator_function_declaration' ||
+        current.type === 'function_item'
+      ) {
+        // Rust function
         // Named function: function foo() {}
-        const nameNode = current.childForFieldName?.('name') ||
-                         current.children?.find((c: any) => c.type === 'identifier' || c.type === 'property_identifier');
+        const nameNode =
+          current.childForFieldName?.('name') ||
+          current.children?.find(
+            (c: any) => c.type === 'identifier' || c.type === 'property_identifier',
+          );
         funcName = nameNode?.text;
       } else if (current.type === 'impl_item') {
         // Rust method inside impl block: wrapper around function_item or const_item
         // We need to look inside for the function_item
         const funcItem = current.children?.find((c: any) => c.type === 'function_item');
         if (funcItem) {
-           const nameNode = funcItem.childForFieldName?.('name') ||
-                            funcItem.children?.find((c: any) => c.type === 'identifier');
-           funcName = nameNode?.text;
-           label = 'Method';
+          const nameNode =
+            funcItem.childForFieldName?.('name') ||
+            funcItem.children?.find((c: any) => c.type === 'identifier');
+          funcName = nameNode?.text;
+          label = 'Method';
         }
       } else if (current.type === 'method_definition') {
         // Method: foo() {} inside class (JS/TS)
-        const nameNode = current.childForFieldName?.('name') ||
-                         current.children?.find((c: any) => c.type === 'property_identifier');
+        const nameNode =
+          current.childForFieldName?.('name') ||
+          current.children?.find((c: any) => c.type === 'property_identifier');
         funcName = nameNode?.text;
         label = 'Method';
       } else if (current.type === 'method_declaration') {
         // Java method: public void foo() {}
-        const nameNode = current.childForFieldName?.('name') ||
-                         current.children?.find((c: any) => c.type === 'identifier');
+        const nameNode =
+          current.childForFieldName?.('name') ||
+          current.children?.find((c: any) => c.type === 'identifier');
         funcName = nameNode?.text;
         label = 'Method';
       } else if (current.type === 'constructor_declaration') {
         // Java constructor: public ClassName() {}
-        const nameNode = current.childForFieldName?.('name') ||
-                         current.children?.find((c: any) => c.type === 'identifier');
+        const nameNode =
+          current.childForFieldName?.('name') ||
+          current.children?.find((c: any) => c.type === 'identifier');
         funcName = nameNode?.text;
         label = 'Method'; // Treat constructors as methods for process detection
       } else if (current.type === 'method') {
         // Ruby instance method: def foo
-        const nameNode = current.childForFieldName?.('name') ||
-                         current.children?.find((c: any) => c.type === 'identifier');
+        const nameNode =
+          current.childForFieldName?.('name') ||
+          current.children?.find((c: any) => c.type === 'identifier');
         funcName = nameNode?.text;
         label = 'Method';
       } else if (current.type === 'singleton_method') {
         // Ruby class method: def self.foo
-        const nameNode = current.childForFieldName?.('name') ||
-                         current.children?.find((c: any) => c.type === 'identifier');
+        const nameNode =
+          current.childForFieldName?.('name') ||
+          current.children?.find((c: any) => c.type === 'identifier');
         funcName = nameNode?.text;
         label = 'Method';
       } else if (current.type === 'arrow_function' || current.type === 'function_expression') {
         // Arrow/expression: const foo = () => {} - check parent variable declarator
         const parent = current.parent;
         if (parent?.type === 'variable_declarator') {
-          const nameNode = parent.childForFieldName?.('name') ||
-                           parent.children?.find((c: any) => c.type === 'identifier');
+          const nameNode =
+            parent.childForFieldName?.('name') ||
+            parent.children?.find((c: any) => c.type === 'identifier');
           funcName = nameNode?.text;
         }
       }
@@ -144,24 +157,37 @@ const findEnclosingFunction = (
 
 /** AST node types that represent a class-like container */
 const CLASS_CONTAINER_TYPES = new Set([
-  'class_declaration', 'abstract_class_declaration',
-  'interface_declaration', 'struct_declaration', 'record_declaration',
-  'class_specifier', 'struct_specifier',
-  'impl_item', 'trait_item',
+  'class_declaration',
+  'abstract_class_declaration',
+  'interface_declaration',
+  'struct_declaration',
+  'record_declaration',
+  'class_specifier',
+  'struct_specifier',
+  'impl_item',
+  'trait_item',
   'class_definition',
   'trait_declaration',
   'protocol_declaration',
-  'class', 'module', // Ruby
+  'class',
+  'module', // Ruby
 ]);
 
 const CONTAINER_TYPE_TO_LABEL: Record<string, string> = {
-  class_declaration: 'Class', abstract_class_declaration: 'Class',
+  class_declaration: 'Class',
+  abstract_class_declaration: 'Class',
   interface_declaration: 'Interface',
-  struct_declaration: 'Struct', struct_specifier: 'Struct',
-  class_specifier: 'Class', class_definition: 'Class',
-  impl_item: 'Impl', trait_item: 'Trait', trait_declaration: 'Trait',
-  record_declaration: 'Record', protocol_declaration: 'Interface',
-  class: 'Class', module: 'Module',
+  struct_declaration: 'Struct',
+  struct_specifier: 'Struct',
+  class_specifier: 'Class',
+  class_definition: 'Class',
+  impl_item: 'Impl',
+  trait_item: 'Trait',
+  trait_declaration: 'Trait',
+  record_declaration: 'Record',
+  protocol_declaration: 'Interface',
+  class: 'Class',
+  module: 'Module',
 };
 
 /** Walk up AST to find enclosing class/struct/interface, return its generateId or null. */
@@ -169,9 +195,14 @@ const findEnclosingClassId = (node: any, filePath: string): string | null => {
   let current = node.parent;
   while (current) {
     if (CLASS_CONTAINER_TYPES.has(current.type)) {
-      const nameNode = current.childForFieldName?.('name')
-        ?? current.children?.find((c: any) =>
-          c.type === 'type_identifier' || c.type === 'identifier' || c.type === 'name' || c.type === 'constant'
+      const nameNode =
+        current.childForFieldName?.('name') ??
+        current.children?.find(
+          (c: any) =>
+            c.type === 'type_identifier' ||
+            c.type === 'identifier' ||
+            c.type === 'name' ||
+            c.type === 'constant',
         );
       if (nameNode) {
         const label = CONTAINER_TYPE_TO_LABEL[current.type] || 'Class';
@@ -189,7 +220,7 @@ export const processCalls = async (
   astCache: ASTCache,
   symbolTable: SymbolTable,
   importMap: ImportMap,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ) => {
   const parser = await loadParser();
 
@@ -231,9 +262,9 @@ export const processCalls = async (
     const callRouter = callRouters[language];
 
     // 3. Process each call match
-    matches.forEach(match => {
+    matches.forEach((match) => {
       const captureMap: Record<string, any> = {};
-      match.captures.forEach(c => captureMap[c.name] = c.node);
+      match.captures.forEach((c) => (captureMap[c.name] = c.node));
 
       // Only process @call captures
       if (!captureMap['call']) return;
@@ -253,16 +284,25 @@ export const processCalls = async (
 
           case 'heritage':
             for (const item of routed.items) {
-              const childId = symbolTable.lookupExact(file.path, item.enclosingClass) ||
-                              symbolTable.lookupFuzzy(item.enclosingClass)[0]?.nodeId ||
-                              generateId('Class', `${file.path}:${item.enclosingClass}`);
-              const parentId = symbolTable.lookupFuzzy(item.mixinName)[0]?.nodeId ||
-                               generateId('Module', `${item.mixinName}`);
+              const childId =
+                symbolTable.lookupExact(file.path, item.enclosingClass) ||
+                symbolTable.lookupFuzzy(item.enclosingClass)[0]?.nodeId ||
+                generateId('Class', `${file.path}:${item.enclosingClass}`);
+              const parentId =
+                symbolTable.lookupFuzzy(item.mixinName)[0]?.nodeId ||
+                generateId('Module', `${item.mixinName}`);
               if (childId && parentId) {
-                const relId = generateId('IMPLEMENTS', `${childId}->${parentId}:${item.heritageKind}`);
+                const relId = generateId(
+                  'IMPLEMENTS',
+                  `${childId}->${parentId}:${item.heritageKind}`,
+                );
                 graph.addRelationship({
-                  id: relId, sourceId: childId, targetId: parentId,
-                  type: 'IMPLEMENTS', confidence: 1.0, reason: item.heritageKind,
+                  id: relId,
+                  sourceId: childId,
+                  targetId: parentId,
+                  type: 'IMPLEMENTS',
+                  confidence: 1.0,
+                  reason: item.heritageKind,
                 });
               }
             }
@@ -277,23 +317,33 @@ export const processCalls = async (
                 id: nodeId,
                 label: 'Property' as any, // TODO: add 'Property' to graph node label union
                 properties: {
-                  name: item.propName, filePath: file.path,
-                  startLine: item.startLine, endLine: item.endLine,
-                  language, isExported: true,
+                  name: item.propName,
+                  filePath: file.path,
+                  startLine: item.startLine,
+                  endLine: item.endLine,
+                  language,
+                  isExported: true,
                   description: item.accessorType,
                 },
               });
               symbolTable.add(file.path, item.propName, nodeId, 'Property');
               const relId = generateId('DEFINES', `${fileId}->${nodeId}`);
               graph.addRelationship({
-                id: relId, sourceId: fileId, targetId: nodeId,
-                type: 'DEFINES', confidence: 1.0, reason: '',
+                id: relId,
+                sourceId: fileId,
+                targetId: nodeId,
+                type: 'DEFINES',
+                confidence: 1.0,
+                reason: '',
               });
               if (propEnclosingClassId) {
                 graph.addRelationship({
                   id: generateId('HAS_METHOD', `${propEnclosingClassId}->${nodeId}`),
-                  sourceId: propEnclosingClassId, targetId: nodeId,
-                  type: 'HAS_METHOD', confidence: 1.0, reason: '',
+                  sourceId: propEnclosingClassId,
+                  targetId: nodeId,
+                  type: 'HAS_METHOD',
+                  confidence: 1.0,
+                  reason: '',
                 });
               }
             }
@@ -309,12 +359,7 @@ export const processCalls = async (
       if (isBuiltInOrNoise(calledName)) return;
 
       // 4. Resolve the target using priority strategy (returns confidence)
-      const resolved = resolveCallTarget(
-        calledName,
-        file.path,
-        symbolTable,
-        importMap
-      );
+      const resolved = resolveCallTarget(calledName, file.path, symbolTable, importMap);
 
       if (!resolved) return;
 
@@ -338,7 +383,11 @@ export const processCalls = async (
     });
 
     // Extract Laravel routes from route files via procedural AST walk
-    if (language === 'php' && (file.path.includes('/routes/') || file.path.startsWith('routes/')) && file.path.endsWith('.php')) {
+    if (
+      language === 'php' &&
+      (file.path.includes('/routes/') || file.path.startsWith('routes/')) &&
+      file.path.endsWith('.php')
+    ) {
       const extractedRoutes = extractLaravelRoutes(tree, file.path);
       for (const route of extractedRoutes) {
         if (!route.controllerName || !route.methodName) continue;
@@ -418,7 +467,14 @@ interface RouteGroupContext {
 }
 
 const ROUTE_HTTP_METHODS = new Set([
-  'get', 'post', 'put', 'patch', 'delete', 'options', 'any', 'match',
+  'get',
+  'post',
+  'put',
+  'patch',
+  'delete',
+  'options',
+  'any',
+  'match',
 ]);
 
 const ROUTE_RESOURCE_METHODS = new Set(['resource', 'apiResource']);
@@ -433,8 +489,8 @@ function isRouteStaticCall(node: any): boolean {
 }
 
 function getCallMethodName(node: any): string | null {
-  const nameNode = node.childForFieldName?.('name') ??
-    node.children?.find((c: any) => c.type === 'name');
+  const nameNode =
+    node.childForFieldName?.('name') ?? node.children?.find((c: any) => c.type === 'name');
   return nameNode?.text ?? null;
 }
 
@@ -447,17 +503,19 @@ function findClosureBody(argsNode: any): any | null {
   for (const child of argsNode.children ?? []) {
     if (child.type === 'argument') {
       for (const inner of child.children ?? []) {
-        if (inner.type === 'anonymous_function' ||
-            inner.type === 'arrow_function') {
-          return inner.childForFieldName?.('body') ??
-            inner.children?.find((c: any) => c.type === 'compound_statement');
+        if (inner.type === 'anonymous_function' || inner.type === 'arrow_function') {
+          return (
+            inner.childForFieldName?.('body') ??
+            inner.children?.find((c: any) => c.type === 'compound_statement')
+          );
         }
       }
     }
-    if (child.type === 'anonymous_function' ||
-        child.type === 'arrow_function') {
-      return child.childForFieldName?.('body') ??
-        child.children?.find((c: any) => c.type === 'compound_statement');
+    if (child.type === 'anonymous_function' || child.type === 'arrow_function') {
+      return (
+        child.childForFieldName?.('body') ??
+        child.children?.find((c: any) => c.type === 'compound_statement')
+      );
     }
   }
   return null;
@@ -465,7 +523,7 @@ function findClosureBody(argsNode: any): any | null {
 
 function findDescendant(node: any, type: string): any {
   if (node.type === type) return node;
-  for (const child of (node.children ?? [])) {
+  for (const child of node.children ?? []) {
     const found = findDescendant(child, type);
     if (found) return found;
   }
@@ -505,7 +563,9 @@ function extractMiddlewareArg(argsNode: any): string[] {
       const items: string[] = [];
       for (const el of target.children ?? []) {
         if (el.type === 'array_element_initializer') {
-          const str = el.children?.find((c: any) => c.type === 'string' || c.type === 'encapsed_string');
+          const str = el.children?.find(
+            (c: any) => c.type === 'string' || c.type === 'encapsed_string',
+          );
           const val = str ? extractStringContent(str) : null;
           if (val) items.push(val);
         }
@@ -527,7 +587,10 @@ function extractClassArg(argsNode: any): string | null {
   return null;
 }
 
-function extractControllerTarget(argsNode: any): { controller: string | null; method: string | null } {
+function extractControllerTarget(argsNode: any): {
+  controller: string | null;
+  method: string | null;
+} {
   if (!argsNode) return { controller: null, method: null };
 
   const args: any[] = [];
@@ -660,7 +723,11 @@ function parseArrayGroupArgs(argsNode: any): RouteGroupContext {
 function extractLaravelRoutes(tree: any, filePath: string): ExtractedRoute[] {
   const routes: ExtractedRoute[] = [];
 
-  function resolveStack(stack: RouteGroupContext[]): { middleware: string[]; prefix: string | null; controller: string | null } {
+  function resolveStack(stack: RouteGroupContext[]): {
+    middleware: string[];
+    prefix: string | null;
+    controller: string | null;
+  } {
     const middleware: string[] = [];
     let prefix: string | null = null;
     let controller: string | null = null;
@@ -682,7 +749,8 @@ function extractLaravelRoutes(tree: any, filePath: string): ExtractedRoute[] {
     const effective = resolveStack(groupStack);
 
     for (const attr of chainAttrs) {
-      if (attr.method === 'middleware') effective.middleware.push(...extractMiddlewareArg(attr.argsNode));
+      if (attr.method === 'middleware')
+        effective.middleware.push(...extractMiddlewareArg(attr.argsNode));
       if (attr.method === 'prefix') {
         const p = extractFirstStringArg(attr.argsNode);
         if (p) effective.prefix = effective.prefix ? `${effective.prefix}/${p}` : p;
@@ -700,7 +768,9 @@ function extractLaravelRoutes(tree: any, filePath: string): ExtractedRoute[] {
       const actions = httpMethod === 'apiResource' ? API_RESOURCE_ACTIONS : RESOURCE_ACTIONS;
       for (const action of actions) {
         routes.push({
-          filePath, httpMethod, routePath,
+          filePath,
+          httpMethod,
+          routePath,
           controllerName: target.controller ?? effective.controller,
           methodName: action,
           middleware: [...effective.middleware],
@@ -711,7 +781,9 @@ function extractLaravelRoutes(tree: any, filePath: string): ExtractedRoute[] {
     } else {
       const target = extractControllerTarget(argsNode);
       routes.push({
-        filePath, httpMethod, routePath,
+        filePath,
+        httpMethod,
+        routePath,
         controllerName: target.controller ?? effective.controller,
         methodName: target.method,
         middleware: [...effective.middleware],
@@ -746,7 +818,8 @@ function extractLaravelRoutes(tree: any, filePath: string): ExtractedRoute[] {
       if (chain.terminalMethod === 'group') {
         const groupCtx: RouteGroupContext = { middleware: [], prefix: null, controller: null };
         for (const attr of chain.attributes) {
-          if (attr.method === 'middleware') groupCtx.middleware.push(...extractMiddlewareArg(attr.argsNode));
+          if (attr.method === 'middleware')
+            groupCtx.middleware.push(...extractMiddlewareArg(attr.argsNode));
           if (attr.method === 'prefix') groupCtx.prefix = extractFirstStringArg(attr.argsNode);
           if (attr.method === 'controller') groupCtx.controller = extractClassArg(attr.argsNode);
         }
@@ -758,8 +831,17 @@ function extractLaravelRoutes(tree: any, filePath: string): ExtractedRoute[] {
         }
         return;
       }
-      if (ROUTE_HTTP_METHODS.has(chain.terminalMethod) || ROUTE_RESOURCE_METHODS.has(chain.terminalMethod)) {
-        emitRoute(chain.terminalMethod, chain.terminalArgs, node.startPosition.row, groupStack, chain.attributes);
+      if (
+        ROUTE_HTTP_METHODS.has(chain.terminalMethod) ||
+        ROUTE_RESOURCE_METHODS.has(chain.terminalMethod)
+      ) {
+        emitRoute(
+          chain.terminalMethod,
+          chain.terminalArgs,
+          node.startPosition.row,
+          groupStack,
+          chain.attributes,
+        );
         return;
       }
     }
@@ -782,8 +864,8 @@ function extractLaravelRoutes(tree: any, filePath: string): ExtractedRoute[] {
  */
 interface ResolveResult {
   nodeId: string;
-  confidence: number;  // 0-1: how sure are we?
-  reason: string;      // 'import-resolved' | 'same-file' | 'fuzzy-global'
+  confidence: number; // 0-1: how sure are we?
+  reason: string; // 'import-resolved' | 'same-file' | 'fuzzy-global'
 }
 
 /**
@@ -798,7 +880,7 @@ const resolveCallTarget = (
   calledName: string,
   currentFile: string,
   symbolTable: SymbolTable,
-  importMap: ImportMap
+  importMap: ImportMap,
 ): ResolveResult | null => {
   // Strategy A: Check imported files (HIGH confidence - we know the import chain)
   const importedFiles = importMap.get(currentFile);
@@ -835,68 +917,309 @@ const resolveCallTarget = (
 /** Pre-built set (module-level singleton) to avoid re-creating per call */
 const BUILT_IN_NAMES = new Set([
   // JavaScript/TypeScript built-ins
-  'console', 'log', 'warn', 'error', 'info', 'debug',
-  'setTimeout', 'setInterval', 'clearTimeout', 'clearInterval',
-  'parseInt', 'parseFloat', 'isNaN', 'isFinite',
-  'encodeURI', 'decodeURI', 'encodeURIComponent', 'decodeURIComponent',
-  'JSON', 'parse', 'stringify',
-  'Object', 'Array', 'String', 'Number', 'Boolean', 'Symbol', 'BigInt',
-  'Map', 'Set', 'WeakMap', 'WeakSet',
-  'Promise', 'resolve', 'reject', 'then', 'catch', 'finally',
-  'Math', 'Date', 'RegExp', 'Error',
-  'require', 'import', 'export',
-  'fetch', 'Response', 'Request',
+  'console',
+  'log',
+  'warn',
+  'error',
+  'info',
+  'debug',
+  'setTimeout',
+  'setInterval',
+  'clearTimeout',
+  'clearInterval',
+  'parseInt',
+  'parseFloat',
+  'isNaN',
+  'isFinite',
+  'encodeURI',
+  'decodeURI',
+  'encodeURIComponent',
+  'decodeURIComponent',
+  'JSON',
+  'parse',
+  'stringify',
+  'Object',
+  'Array',
+  'String',
+  'Number',
+  'Boolean',
+  'Symbol',
+  'BigInt',
+  'Map',
+  'Set',
+  'WeakMap',
+  'WeakSet',
+  'Promise',
+  'resolve',
+  'reject',
+  'then',
+  'catch',
+  'finally',
+  'Math',
+  'Date',
+  'RegExp',
+  'Error',
+  'require',
+  'import',
+  'export',
+  'fetch',
+  'Response',
+  'Request',
   // React hooks and common functions
-  'useState', 'useEffect', 'useCallback', 'useMemo', 'useRef', 'useContext',
-  'useReducer', 'useLayoutEffect', 'useImperativeHandle', 'useDebugValue',
-  'createElement', 'createContext', 'createRef', 'forwardRef', 'memo', 'lazy',
+  'useState',
+  'useEffect',
+  'useCallback',
+  'useMemo',
+  'useRef',
+  'useContext',
+  'useReducer',
+  'useLayoutEffect',
+  'useImperativeHandle',
+  'useDebugValue',
+  'createElement',
+  'createContext',
+  'createRef',
+  'forwardRef',
+  'memo',
+  'lazy',
   // Common array/object methods
-  'map', 'filter', 'reduce', 'forEach', 'find', 'findIndex', 'some', 'every',
-  'includes', 'indexOf', 'slice', 'splice', 'concat', 'join', 'split',
-  'push', 'pop', 'shift', 'unshift', 'sort', 'reverse',
-  'keys', 'values', 'entries', 'assign', 'freeze', 'seal',
-  'hasOwnProperty', 'toString', 'valueOf',
+  'map',
+  'filter',
+  'reduce',
+  'forEach',
+  'find',
+  'findIndex',
+  'some',
+  'every',
+  'includes',
+  'indexOf',
+  'slice',
+  'splice',
+  'concat',
+  'join',
+  'split',
+  'push',
+  'pop',
+  'shift',
+  'unshift',
+  'sort',
+  'reverse',
+  'keys',
+  'values',
+  'entries',
+  'assign',
+  'freeze',
+  'seal',
+  'hasOwnProperty',
+  'toString',
+  'valueOf',
   // Python built-ins
-  'print', 'len', 'range', 'str', 'int', 'float', 'list', 'dict', 'set', 'tuple',
-  'open', 'read', 'write', 'close', 'append', 'extend', 'update',
-  'super', 'type', 'isinstance', 'issubclass', 'getattr', 'setattr', 'hasattr',
-  'enumerate', 'zip', 'sorted', 'reversed', 'min', 'max', 'sum', 'abs',
+  'print',
+  'len',
+  'range',
+  'str',
+  'int',
+  'float',
+  'list',
+  'dict',
+  'set',
+  'tuple',
+  'open',
+  'read',
+  'write',
+  'close',
+  'append',
+  'extend',
+  'update',
+  'super',
+  'type',
+  'isinstance',
+  'issubclass',
+  'getattr',
+  'setattr',
+  'hasattr',
+  'enumerate',
+  'zip',
+  'sorted',
+  'reversed',
+  'min',
+  'max',
+  'sum',
+  'abs',
   // C/C++ standard library and common kernel helpers
-  'printf', 'fprintf', 'sprintf', 'snprintf', 'vprintf', 'vfprintf', 'vsprintf', 'vsnprintf',
-  'scanf', 'fscanf', 'sscanf',
-  'malloc', 'calloc', 'realloc', 'free', 'memcpy', 'memmove', 'memset', 'memcmp',
-  'strlen', 'strcpy', 'strncpy', 'strcat', 'strncat', 'strcmp', 'strncmp', 'strstr', 'strchr', 'strrchr',
-  'atoi', 'atol', 'atof', 'strtol', 'strtoul', 'strtoll', 'strtoull', 'strtod',
-  'sizeof', 'offsetof', 'typeof',
-  'assert', 'abort', 'exit', '_exit',
-  'fopen', 'fclose', 'fread', 'fwrite', 'fseek', 'ftell', 'rewind', 'fflush', 'fgets', 'fputs',
+  'printf',
+  'fprintf',
+  'sprintf',
+  'snprintf',
+  'vprintf',
+  'vfprintf',
+  'vsprintf',
+  'vsnprintf',
+  'scanf',
+  'fscanf',
+  'sscanf',
+  'malloc',
+  'calloc',
+  'realloc',
+  'free',
+  'memcpy',
+  'memmove',
+  'memset',
+  'memcmp',
+  'strlen',
+  'strcpy',
+  'strncpy',
+  'strcat',
+  'strncat',
+  'strcmp',
+  'strncmp',
+  'strstr',
+  'strchr',
+  'strrchr',
+  'atoi',
+  'atol',
+  'atof',
+  'strtol',
+  'strtoul',
+  'strtoll',
+  'strtoull',
+  'strtod',
+  'sizeof',
+  'offsetof',
+  'typeof',
+  'assert',
+  'abort',
+  'exit',
+  '_exit',
+  'fopen',
+  'fclose',
+  'fread',
+  'fwrite',
+  'fseek',
+  'ftell',
+  'rewind',
+  'fflush',
+  'fgets',
+  'fputs',
   // Linux kernel common macros/helpers (not real call targets)
-  'likely', 'unlikely', 'BUG', 'BUG_ON', 'WARN', 'WARN_ON', 'WARN_ONCE',
-  'IS_ERR', 'PTR_ERR', 'ERR_PTR', 'IS_ERR_OR_NULL',
-  'ARRAY_SIZE', 'container_of', 'list_for_each_entry', 'list_for_each_entry_safe',
-  'min', 'max', 'clamp', 'abs', 'swap',
-  'pr_info', 'pr_warn', 'pr_err', 'pr_debug', 'pr_notice', 'pr_crit', 'pr_emerg',
-  'printk', 'dev_info', 'dev_warn', 'dev_err', 'dev_dbg',
-  'GFP_KERNEL', 'GFP_ATOMIC',
-  'spin_lock', 'spin_unlock', 'spin_lock_irqsave', 'spin_unlock_irqrestore',
-  'mutex_lock', 'mutex_unlock', 'mutex_init',
-  'kfree', 'kmalloc', 'kzalloc', 'kcalloc', 'krealloc', 'kvmalloc', 'kvfree',
-  'get', 'put',
+  'likely',
+  'unlikely',
+  'BUG',
+  'BUG_ON',
+  'WARN',
+  'WARN_ON',
+  'WARN_ONCE',
+  'IS_ERR',
+  'PTR_ERR',
+  'ERR_PTR',
+  'IS_ERR_OR_NULL',
+  'ARRAY_SIZE',
+  'container_of',
+  'list_for_each_entry',
+  'list_for_each_entry_safe',
+  'min',
+  'max',
+  'clamp',
+  'abs',
+  'swap',
+  'pr_info',
+  'pr_warn',
+  'pr_err',
+  'pr_debug',
+  'pr_notice',
+  'pr_crit',
+  'pr_emerg',
+  'printk',
+  'dev_info',
+  'dev_warn',
+  'dev_err',
+  'dev_dbg',
+  'GFP_KERNEL',
+  'GFP_ATOMIC',
+  'spin_lock',
+  'spin_unlock',
+  'spin_lock_irqsave',
+  'spin_unlock_irqrestore',
+  'mutex_lock',
+  'mutex_unlock',
+  'mutex_init',
+  'kfree',
+  'kmalloc',
+  'kzalloc',
+  'kcalloc',
+  'krealloc',
+  'kvmalloc',
+  'kvfree',
+  'get',
+  'put',
   // Ruby built-ins and Kernel methods
-  'puts', 'print', 'p', 'pp', 'warn', 'raise', 'fail',
-  'require', 'require_relative', 'load', 'autoload',
-  'include', 'extend', 'prepend',
-  'attr_accessor', 'attr_reader', 'attr_writer',
-  'public', 'private', 'protected', 'module_function',
-  'lambda', 'proc', 'block_given?',
-  'nil?', 'is_a?', 'kind_of?', 'instance_of?', 'respond_to?',
-  'freeze', 'frozen?', 'dup', 'clone', 'tap', 'then', 'yield_self',
+  'puts',
+  'print',
+  'p',
+  'pp',
+  'warn',
+  'raise',
+  'fail',
+  'require',
+  'require_relative',
+  'load',
+  'autoload',
+  'include',
+  'extend',
+  'prepend',
+  'attr_accessor',
+  'attr_reader',
+  'attr_writer',
+  'public',
+  'private',
+  'protected',
+  'module_function',
+  'lambda',
+  'proc',
+  'block_given?',
+  'nil?',
+  'is_a?',
+  'kind_of?',
+  'instance_of?',
+  'respond_to?',
+  'freeze',
+  'frozen?',
+  'dup',
+  'clone',
+  'tap',
+  'then',
+  'yield_self',
   // Ruby enumerables
-  'each', 'map', 'select', 'reject', 'find', 'detect', 'collect',
-  'inject', 'reduce', 'flat_map', 'each_with_object', 'each_with_index',
-  'any?', 'all?', 'none?', 'count', 'first', 'last',
-  'sort', 'sort_by', 'min', 'max', 'min_by', 'max_by',
-  'group_by', 'partition', 'zip', 'compact', 'flatten', 'uniq',
+  'each',
+  'map',
+  'select',
+  'reject',
+  'find',
+  'detect',
+  'collect',
+  'inject',
+  'reduce',
+  'flat_map',
+  'each_with_object',
+  'each_with_index',
+  'any?',
+  'all?',
+  'none?',
+  'count',
+  'first',
+  'last',
+  'sort',
+  'sort_by',
+  'min',
+  'max',
+  'min_by',
+  'max_by',
+  'group_by',
+  'partition',
+  'zip',
+  'compact',
+  'flatten',
+  'uniq',
 ]);
 
 const isBuiltInOrNoise = (name: string): boolean => BUILT_IN_NAMES.has(name);

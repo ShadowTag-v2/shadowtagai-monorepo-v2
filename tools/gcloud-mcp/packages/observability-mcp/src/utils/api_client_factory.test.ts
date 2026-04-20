@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { google } from 'googleapis';
 import { GoogleAuth } from 'google-auth-library';
-import { ApiClientFactory as ApiClientFactoryClass } from './api_client_factory.js';
+import { google } from 'googleapis';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { ApiClientFactory as ApiClientFactoryClass } from './api_client_factory.js';
 
 // Mock the googleapis library
 vi.mock('googleapis', () => ({

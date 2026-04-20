@@ -7,12 +7,11 @@
 import '@material/web/labs/gb/components/button/md-button.js';
 import '@material/web/labs/gb/components/card/md-card.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {CardColor} from '@material/web/labs/gb/components/card/card.js';
-import {adoptStyles} from '@material/web/labs/gb/styles/adopt-styles.js';
-import {css, html, nothing} from 'lit';
-
-import {styles as m3Styles} from '@material/web/labs/gb/styles/m3.css' with {type: 'css'}; // github-only
+import type { CardColor } from '@material/web/labs/gb/components/card/card.js';
+import { adoptStyles } from '@material/web/labs/gb/styles/adopt-styles.js';
+import { styles as m3Styles } from '@material/web/labs/gb/styles/m3.css' with { type: 'css' }; // github-only
+import { css, html, nothing } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 // import {styles as m3Styles} from '@material/web/labs/gb/styles/m3.cssresult.js'; // google3-only
 
 /** Knob types for card stories. */

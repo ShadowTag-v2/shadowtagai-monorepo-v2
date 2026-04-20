@@ -7,26 +7,23 @@
 import '../../elevation/elevation.js';
 import '../../focus/md-focus-ring.js';
 
-import {LitElement, PropertyValues, html, isServer, nothing} from 'lit';
-import {property, query, queryAssignedElements, state} from 'lit/decorators.js';
-import {ClassInfo, classMap} from 'lit/directives/class-map.js';
-import {styleMap} from 'lit/directives/style-map.js';
+import { html, isServer, LitElement, nothing, type PropertyValues } from 'lit';
+import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
-import {EASING, createAnimationSignal} from '../../internal/motion/animation.js';
-import {
-  ListController,
-  NavigableKeys,
-} from '../../list/internal/list-controller.js';
+import { createAnimationSignal, EASING } from '../../internal/motion/animation.js';
+import { ListController, NavigableKeys } from '../../list/internal/list-controller.js';
 import {
   getActiveItem,
   getFirstActivatableItem,
   getLastActivatableItem,
 } from '../../list/internal/list-navigation-helpers.js';
 
-import {MenuItem} from './controllers/menuItemController.js';
+import type { MenuItem } from './controllers/menuItemController.js';
 import {
-  ActivateTypeaheadEvent,
-  DeactivateTypeaheadEvent,
+  type ActivateTypeaheadEvent,
+  type DeactivateTypeaheadEvent,
   FocusState,
   isClosableKey,
   isElementInSubtree,
@@ -34,11 +31,11 @@ import {
 import {
   Corner,
   SurfacePositionController,
-  SurfacePositionTarget,
+  type SurfacePositionTarget,
 } from './controllers/surfacePositionController.js';
-import {TypeaheadController} from './controllers/typeaheadController.js';
+import { TypeaheadController } from './controllers/typeaheadController.js';
 
-export {Corner} from './controllers/surfacePositionController.js';
+export { Corner } from './controllers/surfacePositionController.js';
 
 /**
  * The default value for the typeahead buffer time in Milliseconds.
@@ -65,9 +62,7 @@ const menuNavKeys = new Set<string>([
  *    Defaults to `window.document`
  * @return Returns the currently deeply focused element or `null` if none.
  */
-function getFocusedElement(
-  activeDoc: Document | ShadowRoot = document,
-): HTMLElement | null {
+function getFocusedElement(activeDoc: Document | ShadowRoot = document): HTMLElement | null {
   let activeEl = activeDoc.activeElement as HTMLElement | null;
 
   // Check for activeElement in the case that an element with a shadow root host
@@ -135,12 +130,11 @@ export abstract class Menu extends LitElement {
    * - Your browser supports `popover`.
    * - Most cases. Once popover is in browsers, this will become the default.
    */
-  @property() positioning: 'absolute' | 'fixed' | 'document' | 'popover' =
-    'absolute';
+  @property() positioning: 'absolute' | 'fixed' | 'document' | 'popover' = 'absolute';
   /**
    * Skips the opening and closing animations.
    */
-  @property({type: Boolean}) quick = false;
+  @property({ type: Boolean }) quick = false;
   /**
    * Displays overflow content like a submenu. Not required in most cases when
    * using `positioning="popover"`.
@@ -149,12 +143,12 @@ export abstract class Menu extends LitElement {
    * `md-menu {max-height:...}`
    * and have items overflowing items in the "y" direction.
    */
-  @property({type: Boolean, attribute: 'has-overflow'}) hasOverflow = false;
+  @property({ type: Boolean, attribute: 'has-overflow' }) hasOverflow = false;
   /**
    * Opens the menu and makes it visible. Alternative to the `.show()` and
    * `.close()` methods
    */
-  @property({type: Boolean, reflect: true}) open = false;
+  @property({ type: Boolean, reflect: true }) open = false;
   /**
    * Offsets the menu's inline alignment from the anchor by the given number in
    * pixels. This value is direction aware and will follow the LTR / RTL
@@ -163,31 +157,29 @@ export abstract class Menu extends LitElement {
    * e.g. LTR: positive -> right, negative -> left
    *      RTL: positive -> left, negative -> right
    */
-  @property({type: Number, attribute: 'x-offset'}) xOffset = 0;
+  @property({ type: Number, attribute: 'x-offset' }) xOffset = 0;
   /**
    * Offsets the menu's block alignment from the anchor by the given number in
    * pixels.
    *
    * e.g. positive -> down, negative -> up
    */
-  @property({type: Number, attribute: 'y-offset'}) yOffset = 0;
+  @property({ type: Number, attribute: 'y-offset' }) yOffset = 0;
   /**
    * Disable the `flip` behavior that usually happens on the horizontal axis
    * when the surface would render outside the viewport.
    */
-  @property({type: Boolean, attribute: 'no-horizontal-flip'}) noHorizontalFlip =
-    false;
+  @property({ type: Boolean, attribute: 'no-horizontal-flip' }) noHorizontalFlip = false;
   /**
    * Disable the `flip` behavior that usually happens on the vertical axis when
    * the surface would render outside the viewport.
    */
-  @property({type: Boolean, attribute: 'no-vertical-flip'}) noVerticalFlip =
-    false;
+  @property({ type: Boolean, attribute: 'no-vertical-flip' }) noVerticalFlip = false;
   /**
    * The max time between the keystrokes of the typeahead menu behavior before
    * it clears the typeahead buffer.
    */
-  @property({type: Number, attribute: 'typeahead-delay'})
+  @property({ type: Number, attribute: 'typeahead-delay' })
   typeaheadDelay = DEFAULT_TYPEAHEAD_BUFFER_TIME;
   /**
    * The corner of the anchor which to align the menu in the standard logical
@@ -197,7 +189,7 @@ export abstract class Menu extends LitElement {
    * if the menu would render outisde the viewport.
    * Use `no-horizontal-flip` or `no-vertical-flip` to force the usage of the value
    */
-  @property({attribute: 'anchor-corner'})
+  @property({ attribute: 'anchor-corner' })
   anchorCorner: Corner = Corner.END_START;
   /**
    * The corner of the menu which to align the anchor in the standard logical
@@ -207,14 +199,14 @@ export abstract class Menu extends LitElement {
    * if the menu would render outisde the viewport.
    * Use `no-horizontal-flip` or `no-vertical-flip` to force the usage of the value
    */
-  @property({attribute: 'menu-corner'}) menuCorner: Corner = Corner.START_START;
+  @property({ attribute: 'menu-corner' }) menuCorner: Corner = Corner.START_START;
   /**
    * Keeps the user clicks outside the menu.
    *
    * NOTE: clicking outside may still cause focusout to close the menu so see
    * `stayOpenOnFocusout`.
    */
-  @property({type: Boolean, attribute: 'stay-open-on-outside-click'})
+  @property({ type: Boolean, attribute: 'stay-open-on-outside-click' })
   stayOpenOnOutsideClick = false;
   /**
    * Keeps the menu open when focus leaves the menu's composed subtree.
@@ -222,13 +214,13 @@ export abstract class Menu extends LitElement {
    * NOTE: Focusout behavior will stop propagation of the focusout event. Set
    * this property to true to opt-out of menu's focusout handling altogether.
    */
-  @property({type: Boolean, attribute: 'stay-open-on-focusout'})
+  @property({ type: Boolean, attribute: 'stay-open-on-focusout' })
   stayOpenOnFocusout = false;
   /**
    * After closing, does not restore focus to the last focused element before
    * the menu was opened.
    */
-  @property({type: Boolean, attribute: 'skip-restore-focus'})
+  @property({ type: Boolean, attribute: 'skip-restore-focus' })
   skipRestoreFocus = false;
   /**
    * The element that should be focused by default once opened.
@@ -237,7 +229,7 @@ export abstract class Menu extends LitElement {
    * `tabindex` to `0` and change md-menu's display to something other than
    * `display: contents` when necessary.
    */
-  @property({attribute: 'default-focus'})
+  @property({ attribute: 'default-focus' })
   defaultFocus: FocusState = FocusState.FIRST_ITEM;
 
   /**
@@ -245,10 +237,10 @@ export abstract class Menu extends LitElement {
    * menu items will wrap focus back to the beginning and vice versa. Use this
    * for ARIA patterns that do not wrap focus, like combobox.
    */
-  @property({type: Boolean, attribute: 'no-navigation-wrap'})
+  @property({ type: Boolean, attribute: 'no-navigation-wrap' })
   noNavigationWrap = false;
 
-  @queryAssignedElements({flatten: true}) protected slotItems!: HTMLElement[];
+  @queryAssignedElements({ flatten: true }) protected slotItems!: HTMLElement[];
   @state() private typeaheadActive = true;
 
   /**
@@ -294,9 +286,7 @@ export abstract class Menu extends LitElement {
       // key so it can close the menu instead of navigate the list.
       // Therefore we need to include all keys but left/right arrow close
       // key
-      const arrowOpen = isRtl
-        ? NavigableKeys.ArrowLeft
-        : NavigableKeys.ArrowRight;
+      const arrowOpen = isRtl ? NavigableKeys.ArrowLeft : NavigableKeys.ArrowRight;
 
       if (key === arrowOpen) {
         return true;
@@ -341,17 +331,13 @@ export abstract class Menu extends LitElement {
    */
   get anchorElement(): (HTMLElement & Partial<SurfacePositionTarget>) | null {
     if (this.anchor) {
-      return (this.getRootNode() as Document | ShadowRoot).querySelector(
-        `#${this.anchor}`,
-      );
+      return (this.getRootNode() as Document | ShadowRoot).querySelector(`#${this.anchor}`);
     }
 
     return this.currentAnchorElement;
   }
 
-  set anchorElement(
-    element: (HTMLElement & Partial<SurfacePositionTarget>) | null,
-  ) {
+  set anchorElement(element: (HTMLElement & Partial<SurfacePositionTarget>) | null,) {
     this.currentAnchorElement = element;
     this.requestUpdate('anchorElement');
   }
@@ -368,7 +354,7 @@ export abstract class Menu extends LitElement {
       // Capture so that we can grab the event before it reaches the menu item
       // istelf. Specifically useful for the case where typeahead encounters a
       // space and we don't want the menu item to close the menu.
-      this.addEventListener('keydown', this.captureKeydown, {capture: true});
+      this.addEventListener('keydown', this.captureKeydown, { capture: true });
       this.addEventListener('focusout', this.handleFocusout);
     }
   }
@@ -377,36 +363,29 @@ export abstract class Menu extends LitElement {
    * Handles positioning the surface and aligning it to the anchor as well as
    * keeping it in the viewport.
    */
-  private readonly menuPositionController = new SurfacePositionController(
-    this,
-    () => {
-      return {
-        anchorCorner: this.anchorCorner,
-        surfaceCorner: this.menuCorner,
-        surfaceEl: this.surfaceEl,
-        anchorEl: this.anchorElement,
-        positioning:
-          this.positioning === 'popover' ? 'document' : this.positioning,
-        isOpen: this.open,
-        xOffset: this.xOffset,
-        yOffset: this.yOffset,
-        disableBlockFlip: this.noVerticalFlip,
-        disableInlineFlip: this.noHorizontalFlip,
-        onOpen: this.onOpened,
-        beforeClose: this.beforeClose,
-        onClose: this.onClosed,
-        // We can't resize components that have overflow like menus with
-        // submenus because the overflow-y will show menu items / content
-        // outside the bounds of the menu. Popover API fixes this because each
-        // submenu is hoisted to the top-layer and are not considered overflow
-        // content.
-        repositionStrategy:
-          this.hasOverflow && this.positioning !== 'popover'
-            ? 'move'
-            : 'resize',
-      };
-    },
-  );
+  private readonly menuPositionController = new SurfacePositionController(this, () => {
+    return {
+      anchorCorner: this.anchorCorner,
+      surfaceCorner: this.menuCorner,
+      surfaceEl: this.surfaceEl,
+      anchorEl: this.anchorElement,
+      positioning: this.positioning === 'popover' ? 'document' : this.positioning,
+      isOpen: this.open,
+      xOffset: this.xOffset,
+      yOffset: this.yOffset,
+      disableBlockFlip: this.noVerticalFlip,
+      disableInlineFlip: this.noHorizontalFlip,
+      onOpen: this.onOpened,
+      beforeClose: this.beforeClose,
+      onClose: this.onClosed,
+      // We can't resize components that have overflow like menus with
+      // submenus because the overflow-y will show menu items / content
+      // outside the bounds of the menu. Popover API fixes this because each
+      // submenu is hoisted to the top-layer and are not considered overflow
+      // content.
+      repositionStrategy: this.hasOverflow && this.positioning !== 'popover' ? 'move' : 'resize',
+    };
+  });
 
   /**
    * The menu items associated with this menu. The items must be `MenuItem`s and
@@ -443,7 +422,7 @@ export abstract class Menu extends LitElement {
       changed.has('positioning') &&
       this.positioning === 'popover' &&
       // type required for Google JS conformance
-      !(this as unknown as {showPopover?: () => void}).showPopover
+      !(this as unknown as { showPopover?: () => void }).showPopover
     ) {
       this.positioning = 'fixed';
     }
@@ -547,11 +526,7 @@ export abstract class Menu extends LitElement {
     // Do not close if we focused out by clicking on the anchor element. We
     // can't assume anchor buttons can be the related target because of iOS does
     // not focus buttons.
-    if (
-      this.stayOpenOnFocusout ||
-      !this.open ||
-      this.pointerPath.includes(anchorEl)
-    ) {
+    if (this.stayOpenOnFocusout || !this.open || this.pointerPath.includes(anchorEl)) {
       return;
     }
 
@@ -562,8 +537,7 @@ export abstract class Menu extends LitElement {
       // clicked (shift+tab case).
       if (
         isElementInSubtree(event.relatedTarget, this) ||
-        (this.pointerPath.length !== 0 &&
-          isElementInSubtree(event.relatedTarget, anchorEl))
+        (this.pointerPath.length !== 0 && isElementInSubtree(event.relatedTarget, anchorEl))
       ) {
         return;
       }
@@ -584,11 +558,7 @@ export abstract class Menu extends LitElement {
   };
 
   private captureKeydown(event: KeyboardEvent) {
-    if (
-      event.target === this &&
-      !event.defaultPrevented &&
-      isClosableKey(event.code)
-    ) {
+    if (event.target === this && !event.defaultPrevented && isClosableKey(event.code)) {
       event.preventDefault();
       this.close();
     }
@@ -622,7 +592,7 @@ export abstract class Menu extends LitElement {
     // the items before the animation has begun and causes the list to slide
     // (block-padding-of-the-menu)px at the end of the animation
     switch (this.defaultFocus) {
-      case FocusState.FIRST_ITEM:
+      case FocusState.FIRST_ITEM: {
         const first = getFirstActivatableItem(items);
         if (first) {
           first.tabIndex = 0;
@@ -630,7 +600,8 @@ export abstract class Menu extends LitElement {
           await (first as LitElement & MenuItem).updateComplete;
         }
         break;
-      case FocusState.LAST_ITEM:
+      }
+      case FocusState.LAST_ITEM: {
         const last = getLastActivatableItem(items);
         if (last) {
           last.tabIndex = 0;
@@ -638,6 +609,7 @@ export abstract class Menu extends LitElement {
           await (last as LitElement & MenuItem).updateComplete;
         }
         break;
+      }
       case FocusState.LIST_ROOT:
         this.focus();
         break;
@@ -706,11 +678,10 @@ export abstract class Menu extends LitElement {
     const ITEM_OPACITY_DURATION = 250;
     // We want to fit every child fade-in animation within the full duration of
     // the animation.
-    const DELAY_BETWEEN_ITEMS =
-      (FULL_DURATION - ITEM_OPACITY_DURATION) / children.length;
+    const DELAY_BETWEEN_ITEMS = (FULL_DURATION - ITEM_OPACITY_DURATION) / children.length;
 
     const surfaceHeightAnimation = surfaceEl.animate(
-      [{height: '0px'}, {height: `${height}px`}],
+      [{ height: '0px' }, { height: `${height}px` }],
       {
         duration: FULL_DURATION,
         easing: EASING.EMPHASIZED,
@@ -720,15 +691,12 @@ export abstract class Menu extends LitElement {
     // in view, so we need to translate it upwards the opposite direction of the
     // height animation
     const upPositionCorrectionAnimation = slotEl.animate(
-      [
-        {transform: openingUpwards ? `translateY(-${height}px)` : ''},
-        {transform: ''},
-      ],
-      {duration: FULL_DURATION, easing: EASING.EMPHASIZED},
+      [{ transform: openingUpwards ? `translateY(-${height}px)` : '' }, { transform: '' }],
+      { duration: FULL_DURATION, easing: EASING.EMPHASIZED },
     );
 
     const surfaceOpacityAnimation = surfaceEl.animate(
-      [{opacity: 0}, {opacity: 1}],
+      [{ opacity: 0 }, { opacity: 1 }],
       SURFACE_OPACITY_DURATION,
     );
 
@@ -738,7 +706,7 @@ export abstract class Menu extends LitElement {
       // If we are animating upwards, then reverse the children list.
       const directionalIndex = openingUpwards ? children.length - 1 - i : i;
       const child = children[directionalIndex];
-      const animation = child.animate([{opacity: 0}, {opacity: 1}], {
+      const animation = child.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: ITEM_OPACITY_DURATION,
         delay: DELAY_BETWEEN_ITEMS * i,
       });
@@ -821,15 +789,11 @@ export abstract class Menu extends LitElement {
     // We want to fit every child fade-out animation within the full duration of
     // the animation.
     const DELAY_BETWEEN_ITEMS =
-      (FULL_DURATION - ITEM_OPACITY_INITIAL_DELAY - ITEM_OPACITY_DURATION) /
-      children.length;
+      (FULL_DURATION - ITEM_OPACITY_INITIAL_DELAY - ITEM_OPACITY_DURATION) / children.length;
 
     // The mock has the animation shrink to 35%
     const surfaceHeightAnimation = surfaceEl.animate(
-      [
-        {height: `${height}px`},
-        {height: `${height * END_HEIGHT_PERCENTAGE}px`},
-      ],
+      [{ height: `${height}px` }, { height: `${height * END_HEIGHT_PERCENTAGE}px` }],
       {
         duration: FULL_DURATION,
         easing: EASING.EMPHASIZED_ACCELERATE,
@@ -841,20 +805,20 @@ export abstract class Menu extends LitElement {
     // of the height animation
     const downPositionCorrectionAnimation = slotEl.animate(
       [
-        {transform: ''},
+        { transform: '' },
         {
           transform: closingDownwards
             ? `translateY(-${height * (1 - END_HEIGHT_PERCENTAGE)}px)`
             : '',
         },
       ],
-      {duration: FULL_DURATION, easing: EASING.EMPHASIZED_ACCELERATE},
+      { duration: FULL_DURATION, easing: EASING.EMPHASIZED_ACCELERATE },
     );
 
-    const surfaceOpacityAnimation = surfaceEl.animate(
-      [{opacity: 1}, {opacity: 0}],
-      {duration: SURFACE_OPACITY_DURATION, delay: SURFACE_OPACITY_DELAY},
-    );
+    const surfaceOpacityAnimation = surfaceEl.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: SURFACE_OPACITY_DURATION,
+      delay: SURFACE_OPACITY_DELAY,
+    });
 
     const childrenAnimations: Array<[HTMLElement, Animation]> = [];
 
@@ -863,7 +827,7 @@ export abstract class Menu extends LitElement {
       // children so that we animate in the opposite direction.
       const directionalIndex = closingDownwards ? i : children.length - 1 - i;
       const child = children[directionalIndex];
-      const animation = child.animate([{opacity: 1}, {opacity: 0}], {
+      const animation = child.animate([{ opacity: 1 }, { opacity: 0 }], {
         duration: ITEM_OPACITY_DURATION,
         delay: ITEM_OPACITY_INITIAL_DELAY + DELAY_BETWEEN_ITEMS * i,
       });
@@ -909,10 +873,10 @@ export abstract class Menu extends LitElement {
   }
 
   private setUpGlobalEventListeners() {
-    document.addEventListener('click', this.onDocumentClick, {capture: true});
+    document.addEventListener('click', this.onDocumentClick, { capture: true });
     window.addEventListener('pointerdown', this.onWindowPointerdown);
-    document.addEventListener('resize', this.onWindowResize, {passive: true});
-    window.addEventListener('resize', this.onWindowResize, {passive: true});
+    document.addEventListener('resize', this.onWindowResize, { passive: true });
+    window.addEventListener('resize', this.onWindowResize, { passive: true });
   }
 
   private cleanUpGlobalEventListeners() {
@@ -989,9 +953,7 @@ export abstract class Menu extends LitElement {
 
   close() {
     this.open = false;
-    const maybeSubmenu = this.slotItems as Array<
-      HTMLElement & {close?: () => void}
-    >;
+    const maybeSubmenu = this.slotItems as Array<HTMLElement & { close?: () => void }>;
     maybeSubmenu.forEach((item) => {
       item.close?.();
     });

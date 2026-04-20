@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { onAuthStateChanged, User } from "firebase/auth";
-import { handleGetCurrentUser, handleDeleteReview } from "@/lib/MovieService";
-import { MdStar } from "react-icons/md";
-import { AuthContext } from "@/lib/firebase";
-import MovieCard from "@/components/moviecard";
+import { onAuthStateChanged, type User } from 'firebase/auth';
+import React, { useContext, useEffect, useState } from 'react';
+import { MdStar } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
+import MovieCard from '@/components/moviecard';
+import { AuthContext } from '@/lib/firebase';
+import { handleDeleteReview, handleGetCurrentUser } from '@/lib/MovieService';
 
 export default function MyProfilePage() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function MyProfilePage() {
         setAuthUser(user);
         loadUserProfile();
       } else {
-        navigate("/");
+        navigate('/');
       }
     });
 
@@ -32,7 +32,7 @@ export default function MyProfilePage() {
       const userProfile = await handleGetCurrentUser();
       setUser(userProfile);
     } catch (error) {
-      console.error("Error loading user profile:", error);
+      console.error('Error loading user profile:', error);
     } finally {
       setLoading(false);
     }
@@ -44,7 +44,7 @@ export default function MyProfilePage() {
       await handleDeleteReview(reviewMovieId);
       loadUserProfile();
     } catch (error) {
-      console.error("Error deleting review:", error);
+      console.error('Error deleting review:', error);
     }
   }
 
@@ -54,9 +54,7 @@ export default function MyProfilePage() {
   return (
     <div className="container mx-auto p-4 bg-gray-900 min-h-screen text-white">
       <div className="mb-8">
-        <h1 className="text-5xl font-bold mb-4">
-          Welcome back, {user.username}
-        </h1>
+        <h1 className="text-5xl font-bold mb-4">Welcome back, {user.username}</h1>
       </div>
 
       <div className="mt-8">
@@ -67,9 +65,7 @@ export default function MyProfilePage() {
               key={review.id}
               className="bg-gray-800 rounded-lg overflow-scroll shadow-md p-4 relative max-h-72"
             >
-              <h3 className="font-bold text-lg mb-1 text-white">
-                {review.movie.title}
-              </h3>
+              <h3 className="font-bold text-lg mb-1 text-white">{review.movie.title}</h3>
               <div className="flex items-center text-yellow-500 mb-2">
                 <MdStar className="text-yellow-500" size={24} />
                 <span className="ml-1 text-gray-400">{review.rating}</span>
@@ -95,7 +91,7 @@ export default function MyProfilePage() {
               <MovieCard
                 key={fav.movie.id}
                 id={fav.movie.id}
-                title={fav.movie.title || "TBA"}
+                title={fav.movie.title || 'TBA'}
                 imageUrl={fav.movie.imageUrl}
                 rating={fav.movie.rating}
                 genre={fav.movie.genre}

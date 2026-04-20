@@ -6,15 +6,15 @@
 
 import '@material/web/labs/gb/components/divider/md-divider.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {divider} from '@material/web/labs/gb/components/divider/divider.js';
-import {styles as dividerStyles} from '@material/web/labs/gb/components/divider/divider.cssresult.js';
-import {adoptStyles} from '@material/web/labs/gb/styles/adopt-styles.js';
-import {styles as m3Styles} from '@material/web/labs/gb/styles/m3.cssresult.js';
-import {css, html} from 'lit';
+import { styles as dividerStyles } from '@material/web/labs/gb/components/divider/divider.cssresult.js';
+import { divider } from '@material/web/labs/gb/components/divider/divider.js';
+import { adoptStyles } from '@material/web/labs/gb/styles/adopt-styles.js';
+import { styles as m3Styles } from '@material/web/labs/gb/styles/m3.cssresult.js';
+import { css, html } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for divider stories. */
-export interface StoryKnobs {}
+export type StoryKnobs = {};
 
 adoptStyles(document, [m3Styles]);
 
@@ -66,7 +66,7 @@ const directive: MaterialStoryInit<StoryKnobs> = {
 
       <div class="row">
         <div>Horizontal</div>
-        <hr class="${divider({vertical: true})}" />
+        <hr class="${divider({ vertical: true })}" />
         <div>Items</div>
       </div>
     `;

@@ -2,39 +2,27 @@ function cleanupClipboardText(targetSelector) {
   const targetElement = document.querySelector(targetSelector);
 
   // exclude "Generic Prompt" and "Generic Output" spans from copy
-  const excludedClasses = ["gp", "go"];
+  const excludedClasses = ['gp', 'go'];
 
   const clipboardText = Array.from(targetElement.childNodes)
-    .filter(
-      (node) =>
-        !excludedClasses.some((className) =>
-          node?.classList?.contains(className)
-        )
-    )
+    .filter((node) => !excludedClasses.some((className) => node?.classList?.contains(className)))
     .map((node) => node.textContent)
-    .filter((s) => s != "");
-  return clipboardText.join("").trim();
+    .filter((s) => s != '');
+  return clipboardText.join('').trim();
 }
 
 // Sets copy text to attributes lazily using an Intersection Observer.
 function setCopyText() {
   // The `data-clipboard-text` attribute allows for customized content in the copy
   // See: https://www.npmjs.com/package/clipboard#copy-text-from-attribute
-  const attr = "clipboardText";
+  const attr = 'clipboardText';
   // all "copy" buttons whose target selector is a <code> element
-  const elements = document.querySelectorAll(
-    'button[data-clipboard-target$="code"]'
-  );
+  const elements = document.querySelectorAll('button[data-clipboard-target$="code"]');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       // target in the viewport that have not been patched
-      if (
-        entry.intersectionRatio > 0 &&
-        entry.target.dataset[attr] === undefined
-      ) {
-        entry.target.dataset[attr] = cleanupClipboardText(
-          entry.target.dataset.clipboardTarget
-        );
+      if (entry.intersectionRatio > 0 && entry.target.dataset[attr] === undefined) {
+        entry.target.dataset[attr] = cleanupClipboardText(entry.target.dataset.clipboardTarget);
       }
     });
   });
@@ -48,30 +36,30 @@ function setCopyText() {
 // it will not result in a page refresh in the browser
 // See `How to integrate with third-party JavaScript libraries` guideline:
 // https://squidfunk.github.io/mkdocs-material/customization/?h=javascript#additional-javascript
-document$.subscribe(function () {
+document$.subscribe(() => {
   setCopyText();
 });
 
 // Use client-side redirects for anchors that have moved.
 // Other redirects should use `redirect_maps` in the `mkdocs.yml` file instead.
-(function () {
+(() => {
   // (there are no redirects yet)
-  let redirect_maps = {};
+  const redirect_maps = {};
 
   // The prefix for the site, see `site_dir` in `mkdocs.yml`
-  let site_dir = "ty";
+  const site_dir = 'ty';
 
   function get_path() {
     var path = window.location.pathname;
 
     // Trim the site prefix
-    if (path.startsWith("/" + site_dir + "/")) {
+    if (path.startsWith('/' + site_dir + '/')) {
       path = path.slice(site_dir.length + 2);
     }
 
     // Always include a trailing `/`
-    if (!path.endsWith("/")) {
-      path = path + "/";
+    if (!path.endsWith('/')) {
+      path = path + '/';
     }
 
     // Check for an anchor
@@ -80,11 +68,11 @@ document$.subscribe(function () {
       return path;
     }
 
-    return path + "#" + anchor;
+    return path + '#' + anchor;
   }
 
-  let path = get_path();
-  if (path && redirect_maps.hasOwnProperty(path)) {
-    window.location.replace("/" + site_dir + "/" + redirect_maps[path]);
+  const path = get_path();
+  if (path && Object.hasOwn(redirect_maps, path)) {
+    window.location.replace('/' + site_dir + '/' + redirect_maps[path]);
   }
 })();

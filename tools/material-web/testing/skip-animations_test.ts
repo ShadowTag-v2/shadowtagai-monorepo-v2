@@ -6,7 +6,7 @@
 
 // import 'jasmine'; (google3-only)
 
-import {installSkipWebAnimations} from './skip-animations.js';
+import { installSkipWebAnimations } from './skip-animations.js';
 
 describe('skip-animations test', () => {
   let element: HTMLElement;
@@ -24,7 +24,7 @@ describe('skip-animations test', () => {
 
   it('does not skip animations before installing', () => {
     // Act
-    element.animate([{color: 'rgb(255, 255, 255'}, {color: 'rgb(0, 0, 0)'}], {
+    element.animate([{ color: 'rgb(255, 255, 255' }, { color: 'rgb(0, 0, 0)' }], {
       duration: 1000,
     });
 
@@ -37,7 +37,7 @@ describe('skip-animations test', () => {
     uninstallFunction = installSkipWebAnimations();
 
     // Act
-    element.animate([{color: 'rgb(255, 255, 255'}, {color: 'rgb(0, 0, 0)'}], {
+    element.animate([{ color: 'rgb(255, 255, 255' }, { color: 'rgb(0, 0, 0)' }], {
       duration: 1000,
     });
 

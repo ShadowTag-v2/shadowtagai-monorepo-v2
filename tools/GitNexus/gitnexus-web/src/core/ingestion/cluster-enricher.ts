@@ -5,7 +5,7 @@
  * Generates semantic names, keywords, and descriptions using an LLM.
  */
 
-import { CommunityNode } from './community-processor';
+import type { CommunityNode } from './community-processor';
 
 // ============================================================================
 // TYPES
@@ -36,16 +36,11 @@ export interface ClusterMemberInfo {
 // PROMPT TEMPLATE
 // ============================================================================
 
-const buildEnrichmentPrompt = (
-  members: ClusterMemberInfo[],
-  heuristicLabel: string
-): string => {
+const buildEnrichmentPrompt = (members: ClusterMemberInfo[], heuristicLabel: string): string => {
   // Limit to first 20 members to control token usage
   const limitedMembers = members.slice(0, 20);
 
-  const memberList = limitedMembers
-    .map(m => `${m.name} (${m.type})`)
-    .join(', ');
+  const memberList = limitedMembers.map((m) => `${m.name} (${m.type})`).join(', ');
 
   return `Analyze this code cluster and provide a semantic name and short description.
 
@@ -53,17 +48,14 @@ Heuristic: "${heuristicLabel}"
 Members: ${memberList}${members.length > 20 ? ` (+${members.length - 20} more)` : ''}
 
 Reply with JSON only:
-{"name": "2-4 word semantic name", "description": "One sentence describing purpose"}`
+{"name": "2-4 word semantic name", "description": "One sentence describing purpose"}`;
 };
 
 // ============================================================================
 // PARSE LLM RESPONSE
 // ============================================================================
 
-const parseEnrichmentResponse = (
-  response: string,
-  fallbackLabel: string
-): ClusterEnrichment => {
+const parseEnrichmentResponse = (response: string, fallbackLabel: string): ClusterEnrichment => {
   try {
     // Extract JSON from response (handles markdown code blocks)
     const jsonMatch = response.match(/\{[\s\S]*\}/);
@@ -104,7 +96,7 @@ export const enrichClusters = async (
   communities: CommunityNode[],
   memberMap: Map<string, ClusterMemberInfo[]>,
   llmClient: LLMClient,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ): Promise<EnrichmentResult> => {
   const enrichments = new Map<string, ClusterEnrichment>();
   let tokensUsed = 0;
@@ -161,7 +153,7 @@ export const enrichClustersBatch = async (
   memberMap: Map<string, ClusterMemberInfo[]>,
   llmClient: LLMClient,
   batchSize: number = 5,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ): Promise<EnrichmentResult> => {
   const enrichments = new Map<string, ClusterEnrichment>();
   let tokensUsed = 0;
@@ -173,17 +165,17 @@ export const enrichClustersBatch = async (
 
     const batch = communities.slice(i, i + batchSize);
 
-    const batchPrompt = batch.map((community, idx) => {
-      const members = memberMap.get(community.id) || [];
-      const limitedMembers = members.slice(0, 15);
-      const memberList = limitedMembers
-        .map(m => `${m.name} (${m.type})`)
-        .join(', ');
+    const batchPrompt = batch
+      .map((community, idx) => {
+        const members = memberMap.get(community.id) || [];
+        const limitedMembers = members.slice(0, 15);
+        const memberList = limitedMembers.map((m) => `${m.name} (${m.type})`).join(', ');
 
-      return `Cluster ${idx + 1} (id: ${community.id}):
+        return `Cluster ${idx + 1} (id: ${community.id}):
 Heuristic: "${community.heuristicLabel}"
 Members: ${memberList}`;
-    }).join('\n\n');
+      })
+      .join('\n\n');
 
     const prompt = `Analyze these code clusters and generate semantic names, keywords, and descriptions.
 

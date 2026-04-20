@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ObjectValue, Serializer} from '../serializer';
-import {ObjectValueFieldPath} from '../path';
-import {ApiMapValue} from '../types';
-import {isPlainObject, mapToArray} from '../util';
-import {google} from '../../protos/firestore_v1_proto_api';
+import { google } from '../../protos/firestore_v1_proto_api';
+import { ObjectValueFieldPath } from '../path';
+import { ObjectValue, type Serializer } from '../serializer';
+import type { ApiMapValue } from '../types';
+import { isPlainObject, mapToArray } from '../util';
+
 import IValue = google.firestore.v1.IValue;
 export type OptionsDefinitions = Record<string, OptionDefinition>;
 export type OptionDefinition = {
@@ -69,20 +70,16 @@ export class OptionsUtil {
    * @param serializer - Use this serializer to serialize primitives to proto.
    * @private
    */
-  private _getKnownOptions(
-    options: Record<string, unknown>,
-    serializer: Serializer,
-  ): ObjectValue {
+  private _getKnownOptions(options: Record<string, unknown>, serializer: Serializer): ObjectValue {
     const knownOptions: ObjectValue = ObjectValue.empty();
 
     // SERIALIZE KNOWN OPTIONS
     for (const knownOptionKey in this.optionDefinitions) {
-      const optionDefinition: OptionDefinition =
-        this.optionDefinitions[knownOptionKey];
+      const optionDefinition: OptionDefinition = this.optionDefinitions[knownOptionKey];
 
       if (knownOptionKey in options) {
         const optionValue: unknown = options[knownOptionKey];
-        let protoValue: IValue | undefined = undefined;
+        let protoValue: IValue | undefined;
 
         if (optionDefinition.nestedOptions && isPlainObject(optionValue)) {
           const nestedUtil = new OptionsUtil(optionDefinition.nestedOptions);
@@ -96,10 +93,7 @@ export class OptionsUtil {
         }
 
         if (protoValue) {
-          knownOptions.set(
-            new ObjectValueFieldPath(optionDefinition.serverName),
-            protoValue,
-          );
+          knownOptions.set(new ObjectValueFieldPath(optionDefinition.serverName), protoValue);
         }
       }
     }

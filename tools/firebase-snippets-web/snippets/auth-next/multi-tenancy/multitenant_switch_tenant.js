@@ -7,9 +7,9 @@
 // [START multitenant_switch_tenant_modular]
 // One Auth instance
 // Switch to tenant1
-auth.tenantId = "TENANT_ID1";
+auth.tenantId = 'TENANT_ID1';
 // Switch to tenant2
-auth.tenantId = "TENANT_ID2";
+auth.tenantId = 'TENANT_ID2';
 // Switch back to project level IdPs
 auth.tenantId = null;
 // [END multitenant_switch_tenant_modular]

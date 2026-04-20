@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
+import type * as firestore from '@google-cloud/firestore';
 
-import {QueryDocumentSnapshot} from './document';
+import type { QueryDocumentSnapshot } from './document';
 
 export type DocumentChangeType = 'added' | 'removed' | 'modified';
 

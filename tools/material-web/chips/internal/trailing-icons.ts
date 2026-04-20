@@ -7,9 +7,9 @@
 import '../../focus/md-focus-ring.js';
 import '../../ripple/ripple.js';
 
-import {html, nothing} from 'lit';
+import { html, nothing } from 'lit';
 
-import {Chip} from './chip.js';
+import type { Chip } from './chip.js';
 
 interface RemoveButtonProperties {
   ariaLabel: string | null;
@@ -58,9 +58,7 @@ function handleRemoveClick(this: Chip, event: Event) {
   }
 
   event.stopPropagation();
-  const preventDefault = !this.dispatchEvent(
-    new Event('remove', {cancelable: true}),
-  );
+  const preventDefault = !this.dispatchEvent(new Event('remove', { cancelable: true }));
   if (preventDefault) {
     return;
   }

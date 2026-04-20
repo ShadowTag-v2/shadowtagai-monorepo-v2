@@ -4,15 +4,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html, isServer, LitElement, PropertyValues} from 'lit';
-import {property, query, state} from 'lit/decorators.js';
-import {classMap} from 'lit/directives/class-map.js';
+import { html, isServer, LitElement, type PropertyValues } from 'lit';
+import { property, query, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 import {
-  Attachable,
+  type Attachable,
   AttachableController,
 } from '../../internal/controller/attachable-controller.js';
-import {EASING} from '../../internal/motion/animation.js';
+import { EASING } from '../../internal/motion/animation.js';
 
 const PRESS_GROW_MS = 450;
 const MINIMUM_PRESS_MS = 225;
@@ -91,9 +91,7 @@ const TOUCH_DELAY_MS = 150;
  * Used to detect if HCM is active. Events do not process during HCM when the
  * ripple is not displayed.
  */
-const FORCED_COLORS = isServer
-  ? null
-  : window.matchMedia('(forced-colors: active)');
+const FORCED_COLORS = isServer ? null : window.matchMedia('(forced-colors: active)');
 
 /**
  * A ripple component.
@@ -102,7 +100,7 @@ export class Ripple extends LitElement implements Attachable {
   /**
    * Disables the ripple.
    */
-  @property({type: Boolean, reflect: true}) disabled = false;
+  @property({ type: Boolean, reflect: true }) disabled = false;
 
   get htmlFor() {
     return this.attachableController.htmlFor;
@@ -151,8 +149,8 @@ export class Ripple extends LitElement implements Attachable {
 
   protected override render() {
     const classes = {
-      'hovered': this.hovered,
-      'pressed': this.pressed,
+      hovered: this.hovered,
+      pressed: this.pressed,
     };
 
     return html`<div class="surface ${classMap(classes)}"></div>`;
@@ -274,12 +272,9 @@ export class Ripple extends LitElement implements Attachable {
   }
 
   private determineRippleSize() {
-    const {height, width} = this.getBoundingClientRect();
+    const { height, width } = this.getBoundingClientRect();
     const maxDim = Math.max(height, width);
-    const softEdgeSize = Math.max(
-      SOFT_EDGE_CONTAINER_RATIO * maxDim,
-      SOFT_EDGE_MINIMUM_SIZE,
-    );
+    const softEdgeSize = Math.max(SOFT_EDGE_CONTAINER_RATIO * maxDim, SOFT_EDGE_MINIMUM_SIZE);
 
     // `?? 1` may be removed once `currentCSSZoom` is widely available.
     const zoom = this.currentCSSZoom ?? 1;
@@ -299,11 +294,11 @@ export class Ripple extends LitElement implements Attachable {
     x: number;
     y: number;
   } {
-    const {scrollX, scrollY} = window;
-    const {left, top} = this.getBoundingClientRect();
+    const { scrollX, scrollY } = window;
+    const { left, top } = this.getBoundingClientRect();
     const documentX = scrollX + left;
     const documentY = scrollY + top;
-    const {pageX, pageY} = pointerEvent;
+    const { pageX, pageY } = pointerEvent;
     // `?? 1` may be removed once `currentCSSZoom` is widely available.
     const zoom = this.currentCSSZoom ?? 1;
     return {
@@ -313,7 +308,7 @@ export class Ripple extends LitElement implements Attachable {
   }
 
   private getTranslationCoordinates(positionEvent?: Event) {
-    const {height, width} = this.getBoundingClientRect();
+    const { height, width } = this.getBoundingClientRect();
     // `?? 1` may be removed once `currentCSSZoom` is widely available.
     const zoom = this.currentCSSZoom ?? 1;
     // end in the center
@@ -338,7 +333,7 @@ export class Ripple extends LitElement implements Attachable {
       y: startPoint.y - this.initialSize / 2,
     };
 
-    return {startPoint, endPoint};
+    return { startPoint, endPoint };
   }
 
   private startPressAnimation(positionEvent?: Event) {
@@ -349,8 +344,7 @@ export class Ripple extends LitElement implements Attachable {
     this.pressed = true;
     this.growAnimation?.cancel();
     this.determineRippleSize();
-    const {startPoint, endPoint} =
-      this.getTranslationCoordinates(positionEvent);
+    const { startPoint, endPoint } = this.getTranslationCoordinates(positionEvent);
     const translateStart = `${startPoint.x}px, ${startPoint.y}px`;
     const translateEnd = `${endPoint.x}px, ${endPoint.y}px`;
 
@@ -417,10 +411,7 @@ export class Ripple extends LitElement implements Attachable {
       return false;
     }
 
-    if (
-      this.rippleStartEvent &&
-      this.rippleStartEvent.pointerId !== event.pointerId
-    ) {
+    if (this.rippleStartEvent && this.rippleStartEvent.pointerId !== event.pointerId) {
       return false;
     }
 
@@ -432,7 +423,7 @@ export class Ripple extends LitElement implements Attachable {
     return this.isTouch(event) || isPrimaryButton;
   }
 
-  private isTouch({pointerType}: PointerEvent) {
+  private isTouch({ pointerType }: PointerEvent) {
     return pointerType === 'touch';
   }
 

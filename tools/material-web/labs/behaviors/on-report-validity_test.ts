@@ -6,33 +6,31 @@
 
 // import 'jasmine'; (google3-only)
 
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import { html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 import {
   createValidator,
   getValidityAnchor,
   mixinConstraintValidation,
 } from './constraint-validation.js';
-import {mixinElementInternals} from './element-internals.js';
-import {mixinFocusable} from './focusable.js';
-import {getFormValue, mixinFormAssociated} from './form-associated.js';
-import {mixinOnReportValidity, onReportValidity} from './on-report-validity.js';
-import {CheckboxValidator} from './validators/checkbox-validator.js';
+import { mixinElementInternals } from './element-internals.js';
+import { mixinFocusable } from './focusable.js';
+import { getFormValue, mixinFormAssociated } from './form-associated.js';
+import { mixinOnReportValidity, onReportValidity } from './on-report-validity.js';
+import { CheckboxValidator } from './validators/checkbox-validator.js';
 
 describe('mixinOnReportValidity()', () => {
   const baseClass = mixinFocusable(
     mixinOnReportValidity(
-      mixinConstraintValidation(
-        mixinFormAssociated(mixinElementInternals(LitElement)),
-      ),
+      mixinConstraintValidation(mixinFormAssociated(mixinElementInternals(LitElement))),
     ),
   );
 
   @customElement('test-on-report-validity')
   class TestOnReportValidity extends baseClass {
-    @property({type: Boolean}) checked = false;
-    @property({type: Boolean}) required = false;
+    @property({ type: Boolean }) checked = false;
+    @property({ type: Boolean }) required = false;
 
     override render() {
       return html`<div id="root"></div>`;
@@ -69,9 +67,7 @@ describe('mixinOnReportValidity()', () => {
 
         control.required = true;
         control.reportValidity();
-        expect(control[onReportValidity]).toHaveBeenCalledOnceWith(
-          jasmine.any(Event),
-        );
+        expect(control[onReportValidity]).toHaveBeenCalledOnceWith(jasmine.any(Event));
       });
 
       it('should NOT be called when reportValidity() is called and invalid but default prevented', () => {
@@ -128,7 +124,7 @@ describe('mixinOnReportValidity()', () => {
               // Prevent the test page from actually reloading
               event.preventDefault();
             },
-            {capture: true},
+            { capture: true },
           );
 
           document.body.appendChild(form);
@@ -148,7 +144,7 @@ describe('mixinOnReportValidity()', () => {
               // Prevent the test page from actually reloading
               event.preventDefault();
             },
-            {capture: true},
+            { capture: true },
           );
 
           const submitButton = document.createElement('button');
@@ -180,9 +176,7 @@ describe('mixinOnReportValidity()', () => {
 
           control.required = true;
           form.reportValidity();
-          expect(control[onReportValidity]).toHaveBeenCalledOnceWith(
-            jasmine.any(Event),
-          );
+          expect(control[onReportValidity]).toHaveBeenCalledOnceWith(jasmine.any(Event));
         });
 
         it('should NOT be called when form.reportValidity() is called and invalid but default prevented', () => {
@@ -213,16 +207,14 @@ describe('mixinOnReportValidity()', () => {
               // as valid and the form tries to submit.
               event.preventDefault();
             },
-            {capture: true},
+            { capture: true },
           );
 
           document.body.appendChild(form);
           control.required = true;
           form.requestSubmit();
           form.remove();
-          expect(control[onReportValidity]).toHaveBeenCalledOnceWith(
-            jasmine.any(Event),
-          );
+          expect(control[onReportValidity]).toHaveBeenCalledOnceWith(jasmine.any(Event));
         });
 
         it('should NOT be called when form.requestSubmit() is called and invalid but default prevented', () => {
@@ -238,7 +230,7 @@ describe('mixinOnReportValidity()', () => {
               // as valid and the form tries to submit.
               event.preventDefault();
             },
-            {capture: true},
+            { capture: true },
           );
 
           control.required = true;
@@ -265,7 +257,7 @@ describe('mixinOnReportValidity()', () => {
               // as valid and the form tries to submit.
               event.preventDefault();
             },
-            {capture: true},
+            { capture: true },
           );
 
           control.required = true;
@@ -274,9 +266,7 @@ describe('mixinOnReportValidity()', () => {
           document.body.appendChild(form);
           submitButton.click();
           form.remove();
-          expect(control[onReportValidity]).toHaveBeenCalledOnceWith(
-            jasmine.any(Event),
-          );
+          expect(control[onReportValidity]).toHaveBeenCalledOnceWith(jasmine.any(Event));
         });
 
         it('should NOT be called when form submits declaratively and invalid but default prevented', () => {
@@ -292,7 +282,7 @@ describe('mixinOnReportValidity()', () => {
               // as valid and the form tries to submit.
               event.preventDefault();
             },
-            {capture: true},
+            { capture: true },
           );
 
           control.required = true;
@@ -342,7 +332,7 @@ describe('mixinOnReportValidity()', () => {
               // Prevent the test page from actually reloading.
               event.preventDefault();
             },
-            {capture: true},
+            { capture: true },
           );
 
           control.required = true;
@@ -377,7 +367,7 @@ describe('mixinOnReportValidity()', () => {
               // Prevent the test page from actually reloading.
               event.preventDefault();
             },
-            {capture: true},
+            { capture: true },
           );
 
           control.required = true;
@@ -391,9 +381,7 @@ describe('mixinOnReportValidity()', () => {
           form.requestSubmit();
           form.remove();
 
-          expect(invalidSibling.validity.valid)
-            .withContext('sibling is invalid')
-            .toBeFalse();
+          expect(invalidSibling.validity.valid).withContext('sibling is invalid').toBeFalse();
           expect(control[onReportValidity]).toHaveBeenCalledWith(null);
         });
 
@@ -412,7 +400,7 @@ describe('mixinOnReportValidity()', () => {
               // Prevent the test page from actually reloading.
               event.preventDefault();
             },
-            {capture: true},
+            { capture: true },
           );
 
           control.required = true;
@@ -465,9 +453,7 @@ describe('mixinOnReportValidity()', () => {
 
         control.required = true;
         control.reportValidity();
-        expect(control.focus)
-          .withContext('is focused')
-          .toHaveBeenCalledTimes(1);
+        expect(control.focus).withContext('is focused').toHaveBeenCalledTimes(1);
       });
 
       it('should only focus the first invalid control of a form', () => {
@@ -529,9 +515,7 @@ describe('mixinOnReportValidity()', () => {
           .withContext('first control (invalid) is not focused')
           .not.toHaveBeenCalled();
         expect(secondControl.focus)
-          .withContext(
-            'second control (invalid, called reportValidity()) is focused',
-          )
+          .withContext('second control (invalid, called reportValidity()) is focused')
           .toHaveBeenCalledTimes(1);
       });
     });

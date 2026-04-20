@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_email_link_send_modular]
-import { getAuth, sendSignInLinkToEmail } from "firebase/auth";
+import { getAuth, sendSignInLinkToEmail } from 'firebase/auth';
 
 const auth = getAuth();
 sendSignInLinkToEmail(auth, email, actionCodeSettings)

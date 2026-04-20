@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { describe, test, before, after } from "node:test";
-import assert from "node:assert/strict";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import assert from 'node:assert/strict';
+import { after, before, describe, test } from 'node:test';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const ORCH_NAME = process.env.ORCH_NAME;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const orchDir = path.join(__dirname, ORCH_NAME);
-const quickstartPath = path.join(orchDir, "quickstart.js");
+const quickstartPath = path.join(orchDir, 'quickstart.js');
 
 const { main: runAgent } = await import(quickstartPath);
 
-const GOLDEN_KEYWORDS = ["Hilton Basel", "Hyatt Regency", "book"];
+const GOLDEN_KEYWORDS = ['Hilton Basel', 'Hyatt Regency', 'book'];
 
 describe(`${ORCH_NAME} Quickstart Agent`, () => {
   let capturedOutput = [];
@@ -42,14 +42,14 @@ describe(`${ORCH_NAME} Quickstart Agent`, () => {
     console.log = originalLog;
   });
 
-  test("outputContainsRequiredKeywords", async () => {
+  test('outputContainsRequiredKeywords', async () => {
     capturedOutput = [];
     await runAgent();
-    const actualOutput = capturedOutput.join("\n");
+    const actualOutput = capturedOutput.join('\n');
 
     assert.ok(
       actualOutput.length > 0,
-      "Assertion Failed: Script ran successfully but produced no output."
+      'Assertion Failed: Script ran successfully but produced no output.',
     );
 
     const missingKeywords = [];
@@ -61,7 +61,7 @@ describe(`${ORCH_NAME} Quickstart Agent`, () => {
 
     assert.ok(
       missingKeywords.length === 0,
-      `Assertion Failed: The following keywords were missing from the output: [${missingKeywords.join(", ")}]`
+      `Assertion Failed: The following keywords were missing from the output: [${missingKeywords.join(', ')}]`,
     );
   });
 });

@@ -1,13 +1,14 @@
-import { useRef, useEffect, useCallback, useState } from 'react';
-import Sigma from 'sigma';
-import Graph from 'graphology';
-import FA2Layout from 'graphology-layout-forceatlas2/worker';
-import forceAtlas2 from 'graphology-layout-forceatlas2';
-import noverlap from 'graphology-layout-noverlap';
 import EdgeCurveProgram from '@sigma/edge-curve';
-import { SigmaNodeAttributes, SigmaEdgeAttributes } from '../lib/graph-adapter';
-import type { NodeAnimation } from './useAppState';
+import Graph from 'graphology';
+import forceAtlas2 from 'graphology-layout-forceatlas2';
+import FA2Layout from 'graphology-layout-forceatlas2/worker';
+import noverlap from 'graphology-layout-noverlap';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import Sigma from 'sigma';
 import type { EdgeType } from '../lib/constants';
+import type { SigmaEdgeAttributes, SigmaNodeAttributes } from '../lib/graph-adapter';
+import type { NodeAnimation } from './useAppState';
+
 // Helper: Parse hex color to RGB
 const hexToRgb = (hex: string): { r: number; g: number; b: number } => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -22,10 +23,15 @@ const hexToRgb = (hex: string): { r: number; g: number; b: number } => {
 
 // Helper: RGB to hex
 const rgbToHex = (r: number, g: number, b: number): string => {
-  return '#' + [r, g, b].map(x => {
-    const hex = Math.max(0, Math.min(255, Math.round(x))).toString(16);
-    return hex.length === 1 ? '0' + hex : hex;
-  }).join('');
+  return (
+    '#' +
+    [r, g, b]
+      .map((x) => {
+        const hex = Math.max(0, Math.min(255, Math.round(x))).toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+      })
+      .join('')
+  );
 };
 
 // Dim a color by mixing with dark background (keeps color hint)
@@ -35,7 +41,7 @@ const dimColor = (hex: string, amount: number): string => {
   return rgbToHex(
     darkBg.r + (rgb.r - darkBg.r) * amount,
     darkBg.g + (rgb.g - darkBg.g) * amount,
-    darkBg.b + (rgb.b - darkBg.b) * amount
+    darkBg.b + (rgb.b - darkBg.b) * amount,
   );
 };
 
@@ -43,9 +49,9 @@ const dimColor = (hex: string, amount: number): string => {
 const brightenColor = (hex: string, factor: number): string => {
   const rgb = hexToRgb(hex);
   return rgbToHex(
-    rgb.r + (255 - rgb.r) * (factor - 1) / factor,
-    rgb.g + (255 - rgb.g) * (factor - 1) / factor,
-    rgb.b + (255 - rgb.b) * (factor - 1) / factor
+    rgb.r + ((255 - rgb.r) * (factor - 1)) / factor,
+    rgb.g + ((255 - rgb.g) * (factor - 1)) / factor,
+    rgb.b + ((255 - rgb.b) * (factor - 1)) / factor,
   );
 };
 
@@ -77,7 +83,7 @@ interface UseSigmaReturn {
 
 // Noverlap for final cleanup - minimal since it starts with good positions
 const NOVERLAP_SETTINGS = {
-  maxIterations: 20,  // Reduced - less cleanup needed
+  maxIterations: 20, // Reduced - less cleanup needed
   ratio: 1.1,
   margin: 10,
   expansion: 1.05,
@@ -101,7 +107,7 @@ const getFA2Settings = (nodeCount: number) => {
 
     // Barnes-Hut for performance - use it even on smaller graphs
     barnesHutOptimize: nodeCount > 200,
-    barnesHutTheta: isLarge ? 0.8 : 0.6,  // Higher = faster but less accurate
+    barnesHutTheta: isLarge ? 0.8 : 0.6, // Higher = faster but less accurate
 
     // These help with clustering while keeping spread
     strongGravityMode: false,
@@ -115,12 +121,12 @@ const getFA2Settings = (nodeCount: number) => {
 // Layout duration - let it run longer for better results
 // Web Worker + WebGL means minimal system impact
 const getLayoutDuration = (nodeCount: number): number => {
-  if (nodeCount > 10000) return 45000;  // 45s for huge graphs
-  if (nodeCount > 5000) return 35000;   // 35s
-  if (nodeCount > 2000) return 30000;   // 30s
-  if (nodeCount > 1000) return 30000;   // 30s
-  if (nodeCount > 500) return 25000;    // 25s
-  return 20000;                         // 20s for small graphs
+  if (nodeCount > 10000) return 45000; // 45s for huge graphs
+  if (nodeCount > 5000) return 35000; // 35s
+  if (nodeCount > 2000) return 30000; // 30s
+  if (nodeCount > 1000) return 30000; // 30s
+  if (nodeCount > 500) return 25000; // 25s
+  return 20000; // 20s for small graphs
 };
 
 export const useSigma = (options: UseSigmaOptions = {}): UseSigmaReturn => {
@@ -144,7 +150,12 @@ export const useSigma = (options: UseSigmaOptions = {}): UseSigmaReturn => {
     animatedNodesRef.current = options.animatedNodes || new Map();
     visibleEdgeTypesRef.current = options.visibleEdgeTypes || null;
     sigmaRef.current?.refresh();
-  }, [options.highlightedNodeIds, options.blastRadiusNodeIds, options.animatedNodes, options.visibleEdgeTypes]);
+  }, [
+    options.highlightedNodeIds,
+    options.blastRadiusNodeIds,
+    options.animatedNodes,
+    options.visibleEdgeTypes,
+  ]);
 
   // Animation loop for node effects
   useEffect(() => {
@@ -182,10 +193,7 @@ export const useSigma = (options: UseSigmaOptions = {}): UseSigmaReturn => {
     const camera = sigma.getCamera();
     const currentRatio = camera.ratio;
     // Imperceptible zoom change that triggers re-render
-    camera.animate(
-      { ratio: currentRatio * 1.0001 },
-      { duration: 50 }
-    );
+    camera.animate({ ratio: currentRatio * 1.0001 }, { duration: 50 });
 
     sigma.refresh();
   }, []);
@@ -360,7 +368,8 @@ export const useSigma = (options: UseSigmaOptions = {}): UseSigmaReturn => {
           const graph = graphRef.current;
           if (graph) {
             const isSelected = node === currentSelected;
-            const isNeighbor = graph.hasEdge(node, currentSelected) || graph.hasEdge(currentSelected, node);
+            const isNeighbor =
+              graph.hasEdge(node, currentSelected) || graph.hasEdge(currentSelected, node);
 
             if (isSelected) {
               res.color = data.color;
@@ -534,26 +543,29 @@ export const useSigma = (options: UseSigmaOptions = {}): UseSigmaReturn => {
     }, duration);
   }, []);
 
-  const setGraph = useCallback((newGraph: Graph<SigmaNodeAttributes, SigmaEdgeAttributes>) => {
-    const sigma = sigmaRef.current;
-    if (!sigma) return;
+  const setGraph = useCallback(
+    (newGraph: Graph<SigmaNodeAttributes, SigmaEdgeAttributes>) => {
+      const sigma = sigmaRef.current;
+      if (!sigma) return;
 
-    if (layoutRef.current) {
-      layoutRef.current.kill();
-      layoutRef.current = null;
-    }
-    if (layoutTimeoutRef.current) {
-      clearTimeout(layoutTimeoutRef.current);
-      layoutTimeoutRef.current = null;
-    }
+      if (layoutRef.current) {
+        layoutRef.current.kill();
+        layoutRef.current = null;
+      }
+      if (layoutTimeoutRef.current) {
+        clearTimeout(layoutTimeoutRef.current);
+        layoutTimeoutRef.current = null;
+      }
 
-    graphRef.current = newGraph;
-    sigma.setGraph(newGraph);
-    setSelectedNode(null);
+      graphRef.current = newGraph;
+      sigma.setGraph(newGraph);
+      setSelectedNode(null);
 
-    runLayout(newGraph);
-    sigma.getCamera().animatedReset({ duration: 500 });
-  }, [runLayout, setSelectedNode]);
+      runLayout(newGraph);
+      sigma.getCamera().animatedReset({ duration: 500 });
+    },
+    [runLayout, setSelectedNode],
+  );
 
   const focusNode = useCallback((nodeId: string) => {
     const sigma = sigmaRef.current;
@@ -570,10 +582,7 @@ export const useSigma = (options: UseSigmaOptions = {}): UseSigmaReturn => {
     // Only animate camera if selecting a new node
     if (!alreadySelected) {
       const nodeAttrs = graph.getNodeAttributes(nodeId);
-      sigma.getCamera().animate(
-        { x: nodeAttrs.x, y: nodeAttrs.y, ratio: 0.15 },
-        { duration: 400 }
-      );
+      sigma.getCamera().animate({ x: nodeAttrs.x, y: nodeAttrs.y, ratio: 0.15 }, { duration: 400 });
     }
 
     sigma.refresh();

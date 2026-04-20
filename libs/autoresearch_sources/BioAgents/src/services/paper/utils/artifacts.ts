@@ -1,10 +1,10 @@
-import * as fs from "fs";
-import * as path from "path";
-import logger from "../../../utils/logger";
-import { getStorageProvider } from "../../../storage";
-import { sanitizeFilename } from "./textUtils";
-import type { AnalysisArtifact, PlanTask } from "../../../types/core";
-import type { FigureInfo } from "../types";
+import * as fs from 'fs';
+import * as path from 'path';
+import { getStorageProvider } from '../../../storage';
+import type { AnalysisArtifact, PlanTask } from '../../../types/core';
+import logger from '../../../utils/logger';
+import type { FigureInfo } from '../types';
+import { sanitizeFilename } from './textUtils';
 
 export async function downloadDiscoveryFigures(
   allowedTasks: PlanTask[],
@@ -15,18 +15,18 @@ export async function downloadDiscoveryFigures(
 ): Promise<FigureInfo[]> {
   const figures: FigureInfo[] = [];
   const analysisTasks = allowedTasks.filter(
-    (task) => task.type === "ANALYSIS" && task.artifacts && task.artifacts.length > 0,
+    (task) => task.type === 'ANALYSIS' && task.artifacts && task.artifacts.length > 0,
   );
 
-  logger.info({ discoveryIndex, analysisTasks: analysisTasks.length }, "downloading_figures");
+  logger.info({ discoveryIndex, analysisTasks: analysisTasks.length }, 'downloading_figures');
 
   for (const task of analysisTasks) {
     if (!task.artifacts) continue;
 
     for (const artifact of task.artifacts) {
-      if (artifact.type !== "FILE") continue;
+      if (artifact.type !== 'FILE') continue;
 
-      const ext = getFileExtension(artifact.name || artifact.path || "");
+      const ext = getFileExtension(artifact.name || artifact.path || '');
       if (!isImageExtension(ext)) continue;
 
       try {
@@ -45,13 +45,13 @@ export async function downloadDiscoveryFigures(
             artifactId: artifact.id,
             errorMessage: error instanceof Error ? error.message : String(error),
           },
-          "artifact_download_failed",
+          'artifact_download_failed',
         );
       }
     }
   }
 
-  logger.info({ discoveryIndex, figureCount: figures.length }, "figures_downloaded");
+  logger.info({ discoveryIndex, figureCount: figures.length }, 'figures_downloaded');
   return figures;
 }
 
@@ -66,7 +66,7 @@ async function downloadArtifact(
   let artifactPath = artifact.path;
   if (!artifactPath) return null;
 
-  if (artifactPath.startsWith("task/")) {
+  if (artifactPath.startsWith('task/')) {
     artifactPath = `user/${userId}/conversation/${conversationStateId}/${artifactPath}`;
   }
 
@@ -76,7 +76,7 @@ async function downloadArtifact(
   const localPath = path.join(figuresDir, stableFilename);
 
   const buffer =
-    artifactPath.startsWith("http://") || artifactPath.startsWith("https://")
+    artifactPath.startsWith('http://') || artifactPath.startsWith('https://')
       ? await downloadFromURL(artifactPath)
       : await downloadFromStorage(artifactPath);
 
@@ -87,7 +87,7 @@ async function downloadArtifact(
   return {
     filename: stableFilename,
     captionSeed,
-    sourceJobId: task.jobId || task.id || "unknown",
+    sourceJobId: task.jobId || task.id || 'unknown',
     originalPath: artifactPath,
   };
 }
@@ -109,20 +109,20 @@ async function downloadFromStorage(key: string): Promise<Buffer> {
     if (artifactBaseUrl) {
       return await downloadFromURL(`${artifactBaseUrl}/${key}`);
     }
-    throw new Error("Storage provider not available and ARTIFACT_BASE_URL not configured");
+    throw new Error('Storage provider not available and ARTIFACT_BASE_URL not configured');
   }
 
   try {
     return await storage.download(key);
   } catch (error: any) {
-    logger.error({ key, error: error?.message }, "storage_download_failed");
+    logger.error({ key, error: error?.message }, 'storage_download_failed');
     throw error;
   }
 }
 
 function getFileExtension(filename: string): string {
   const match = filename.match(/\.([^.]+)$/);
-  return match?.[1]?.toLowerCase() || "";
+  return match?.[1]?.toLowerCase() || '';
 }
 
 /**
@@ -131,6 +131,6 @@ function getFileExtension(filename: string): string {
  * Note: SVG and PDF are excluded - they are not supported by vision models.
  */
 function isImageExtension(ext: string): boolean {
-  const imageExtensions = ["png", "jpg", "jpeg", "gif", "webp"];
+  const imageExtensions = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
   return imageExtensions.includes(ext.toLowerCase());
 }

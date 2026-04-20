@@ -6,10 +6,10 @@
 
 import '../../divider/divider.js';
 
-import {html, isServer, LitElement} from 'lit';
-import {property, query, queryAssignedElements} from 'lit/decorators.js';
+import { html, isServer, LitElement } from 'lit';
+import { property, query, queryAssignedElements } from 'lit/decorators.js';
 
-import {ANIMATE_INDICATOR, Tab} from './tab.js';
+import { ANIMATE_INDICATOR, type Tab } from './tab.js';
 
 /**
  * @fires change {Event} Fired when the selected tab changes. The target's
@@ -39,7 +39,7 @@ export class Tabs extends LitElement {
   /**
    * The tabs of this tab bar.
    */
-  @queryAssignedElements({flatten: true, selector: '[md-tab]'})
+  @queryAssignedElements({ flatten: true, selector: '[md-tab]' })
   readonly tabs!: Tab[];
 
   /**
@@ -63,7 +63,7 @@ export class Tabs extends LitElement {
    *
    * @export
    */
-  @property({type: Number, attribute: 'active-tab-index'})
+  @property({ type: Number, attribute: 'active-tab-index' })
   get activeTabIndex() {
     return this.tabs.findIndex((tab) => tab.active);
   }
@@ -101,7 +101,7 @@ export class Tabs extends LitElement {
   /**
    * Whether or not to automatically select a tab when it is focused.
    */
-  @property({type: Boolean, attribute: 'auto-activate'}) autoActivate = false;
+  @property({ type: Boolean, attribute: 'auto-activate' }) autoActivate = false;
 
   @query('.tabs') private readonly tabsScrollerElement!: HTMLElement | null;
   @query('slot') private readonly slotElement!: HTMLSlotElement | null;
@@ -134,13 +134,9 @@ export class Tabs extends LitElement {
    */
   async scrollToTab(tabToScrollTo?: Tab | null) {
     await this.updateComplete;
-    const {tabs} = this;
+    const { tabs } = this;
     tabToScrollTo ??= this.activeTab;
-    if (
-      !tabToScrollTo ||
-      !tabs.includes(tabToScrollTo) ||
-      !this.tabsScrollerElement
-    ) {
+    if (!tabToScrollTo || !tabs.includes(tabToScrollTo) || !this.tabsScrollerElement) {
       return;
     }
 
@@ -162,7 +158,7 @@ export class Tabs extends LitElement {
     // focused on initialization, use 'instant' to immediately bring the focused
     // tab into view.
     const behavior: ScrollBehavior = !this.focusedTab ? 'instant' : 'auto';
-    this.tabsScrollerElement.scrollTo({behavior, top: 0, left: to});
+    this.tabsScrollerElement.scrollTo({ behavior, top: 0, left: to });
   }
 
   protected override render() {
@@ -188,7 +184,7 @@ export class Tabs extends LitElement {
   }
 
   private activateTab(activeTab: Tab) {
-    const {tabs} = this;
+    const { tabs } = this;
     const previousTab = this.activeTab;
     if (!tabs.includes(activeTab) || previousTab === activeTab) {
       // Ignore setting activeTab to a tab element that is not a child.
@@ -203,7 +199,7 @@ export class Tabs extends LitElement {
       // Don't dispatch a change event if activating a tab when no previous tabs
       // were selected, such as when md-tabs auto-selects the first tab.
       const defaultPrevented = !this.dispatchEvent(
-        new Event('change', {bubbles: true, cancelable: true}),
+        new Event('change', { bubbles: true, cancelable: true }),
       );
       if (defaultPrevented) {
         for (const tab of tabs) {
@@ -238,7 +234,7 @@ export class Tabs extends LitElement {
       return;
     }
 
-    const {tabs} = this;
+    const { tabs } = this;
     // Don't try to select another tab if there aren't any.
     if (tabs.length < 2) {
       return;
@@ -254,7 +250,7 @@ export class Tabs extends LitElement {
       // Check if moving forwards or backwards
       const isRtl = getComputedStyle(this).direction === 'rtl';
       const forwards = isRtl ? isLeft : isRight;
-      const {focusedTab} = this;
+      const { focusedTab } = this;
       if (!focusedTab) {
         // If there is not already a tab focused, select the first or last tab
         // based on the direction we're traveling.
@@ -292,7 +288,7 @@ export class Tabs extends LitElement {
       return;
     }
 
-    const {activeTab} = this;
+    const { activeTab } = this;
     if (activeTab) {
       this.updateFocusableTab(activeTab);
     }

@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as sanitizer from './sanitizer';
+
 import * as admin from 'firebase-admin';
-import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import { setGlobalOptions } from 'firebase-functions/v2';
+import { HttpsError, onCall } from 'firebase-functions/v2/https';
+import * as sanitizer from './sanitizer';
 
 setGlobalOptions({ maxInstances: 10 });
 
@@ -40,7 +41,7 @@ exports.addNumbers = onCall((request) => {
     throw new HttpsError(
       'invalid-argument',
       'The function must be called with two arguments ' +
-      '"firstNumber" and "secondNumber" which must both be numbers.'
+        '"firstNumber" and "secondNumber" which must both be numbers.',
     );
   }
   // [END addHttpsError]
@@ -51,7 +52,7 @@ exports.addNumbers = onCall((request) => {
     firstNumber: firstNumber,
     secondNumber: secondNumber,
     operator: '+',
-    operationResult: firstNumber + secondNumber
+    operationResult: firstNumber + secondNumber,
   };
   // [END returnAddData]
 });
@@ -72,16 +73,13 @@ exports.addMessage = onCall((request) => {
     throw new HttpsError(
       'invalid-argument',
       'The function must be called with ' +
-      'one arguments "text" containing the message text to add.'
+        'one arguments "text" containing the message text to add.',
     );
   }
   // Checking that the user is authenticated.
   if (!request.auth) {
     // Throwing an HttpsError so that the client gets the error details.
-    throw new HttpsError(
-      'failed-precondition',
-      'The function must be called while authenticated.'
-    );
+    throw new HttpsError('failed-precondition', 'The function must be called while authenticated.');
   }
   // [END messageHttpsErrors]
 
@@ -102,7 +100,7 @@ exports.addMessage = onCall((request) => {
       .ref('/messages')
       .push({
         text: sanitizedMessage,
-        author: { uid, name, picture, email }
+        author: { uid, name, picture, email },
       })
       .then(() => {
         console.log('New Message written');

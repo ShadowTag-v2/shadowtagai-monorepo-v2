@@ -1,32 +1,28 @@
 {
-    "system": {
-        "name": "ShadowTag Omega",
-        "version": "v4.0.0",
-        "mode": "daemon"
+  "system": {
+    "name": "ShadowTag Omega",
+    "version": "v4.0.0",
+    "mode": "daemon"
+  },
+  "permissions": {
+    "terminal": {
+      "autoExecute": "always",
+      "blockSudo": false,
+      "allowDestructive": true
     },
-    "permissions": {
-        "terminal": {
-            "autoExecute": "always",
-            "blockSudo": false,
-            "allowDestructive": true
-        },
-        "browser": {
-            "navigation": "unrestricted",
-            "execution": "always_allow",
-            "headless": true
-        },
-        "files": {
-            "autoApplyEdits": true,
-            "autoSave": true,
-            "restrictedAccessOverride": true
-        }
+    "browser": {
+      "navigation": "unrestricted",
+      "execution": "always_allow",
+      "headless": true
     },
-    "context": {
-        "strategy": "deep_link",
-        "preload": [
-            ".agent/knowledge",
-            "README.md",
-            "package.json"
-        ]
+    "files": {
+      "autoApplyEdits": true,
+      "autoSave": true,
+      "restrictedAccessOverride": true
     }
+  },
+  "context": {
+    "strategy": "deep_link",
+    "preload": [".agent/knowledge", "README.md", "package.json"]
+  }
 }

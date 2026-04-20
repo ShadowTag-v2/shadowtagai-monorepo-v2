@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import { SecretManagerServiceClient } from '@google-cloud/secret-manager';
+import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 // 1. INITIALIZE THE VAULT CLIENT
@@ -21,11 +21,10 @@ async function getStripeKey() {
     // Decode the payload (it comes as a Buffer)
     const payload = version.payload?.data?.toString();
 
-    if (!payload) throw new Error("VAULT_EMPTY: Secret payload is null.");
+    if (!payload) throw new Error('VAULT_EMPTY: Secret payload is null.');
     return payload;
-
   } catch (error) {
-    console.error("🚨 SECURITY ALERT: Failed to access Vault.", error);
+    console.error('🚨 SECURITY ALERT: Failed to access Vault.', error);
     // In "Deep Think" mode, we fail closed.
     // We do not fallback to env vars.
     throw error;
@@ -34,7 +33,7 @@ async function getStripeKey() {
 
 export async function POST(req: Request) {
   try {
-    console.log("> ORCHESTRATOR: INITIATING COMMERCIAL HANDSHAKE...");
+    console.log('> ORCHESTRATOR: INITIATING COMMERCIAL HANDSHAKE...');
 
     // 2. JUST-IN-TIME KEY FETCH
     // The key exists in memory ONLY for the duration of this request.
@@ -69,7 +68,7 @@ export async function POST(req: Request) {
         architecture: 'sovereign_v1',
         origin: 'cloud_run_reactor',
         compliance: 'strict_act_as',
-        environment: process.env.NODE_ENV
+        environment: process.env.NODE_ENV,
       },
 
       // Customize the Stripe hosted page to match the "Void" aesthetic
@@ -79,14 +78,13 @@ export async function POST(req: Request) {
     console.log(`> HANDSHAKE_COMPLETE: Session ${session.id} created.`);
 
     return NextResponse.json({ id: session.id });
-
   } catch (err: any) {
-    console.error("REACTOR_IGNITION_FAILED:", err);
+    console.error('REACTOR_IGNITION_FAILED:', err);
 
     // Obscure the actual error from the client to prevent info leakage
     return NextResponse.json(
-      { error: "SYSTEM_HALTED: Ignition Sequence Aborted." },
-      { status: 500 }
+      { error: 'SYSTEM_HALTED: Ignition Sequence Aborted.' },
+      { status: 500 },
     );
   }
 }

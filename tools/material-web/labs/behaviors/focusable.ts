@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {LitElement} from 'lit';
-import {property} from 'lit/decorators.js';
+import type { LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
 
-import {MixinBase, MixinReturn} from './mixin.js';
+import type { MixinBase, MixinReturn } from './mixin.js';
 
 /**
  * An element that can enable and disable `tabindex` focusability.
@@ -51,7 +51,7 @@ export function mixinFocusable<T extends MixinBase<LitElement>>(
   base: T,
 ): MixinReturn<T, Focusable> {
   abstract class FocusableElement extends base implements Focusable {
-    @property({noAccessor: true})
+    @property({ noAccessor: true })
     declare tabIndex: number;
 
     get [isFocusable]() {
@@ -76,11 +76,7 @@ export function mixinFocusable<T extends MixinBase<LitElement>>(
       this[updateTabIndex]();
     }
 
-    override attributeChangedCallback(
-      name: string,
-      old: string | null,
-      value: string | null,
-    ) {
+    override attributeChangedCallback(name: string, old: string | null, value: string | null) {
       if (name !== 'tabindex') {
         super.attributeChangedCallback(name, old, value);
         return;

@@ -6,17 +6,17 @@
 
 // import 'jasmine'; (google3-only)
 
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import { html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 import {
   createValidator,
   getValidityAnchor,
   mixinConstraintValidation,
 } from './constraint-validation.js';
-import {mixinElementInternals} from './element-internals.js';
-import {getFormValue, mixinFormAssociated} from './form-associated.js';
-import {CheckboxValidator} from './validators/checkbox-validator.js';
+import { mixinElementInternals } from './element-internals.js';
+import { getFormValue, mixinFormAssociated } from './form-associated.js';
+import { CheckboxValidator } from './validators/checkbox-validator.js';
 
 describe('mixinConstraintValidation()', () => {
   const baseClass = mixinConstraintValidation(
@@ -25,8 +25,8 @@ describe('mixinConstraintValidation()', () => {
 
   @customElement('test-constraint-validation')
   class TestConstraintValidation extends baseClass {
-    @property({type: Boolean}) checked = false;
-    @property({type: Boolean}) required = false;
+    @property({ type: Boolean }) checked = false;
+    @property({ type: Boolean }) required = false;
 
     override render() {
       return html`<div id="root"></div>`;
@@ -99,17 +99,13 @@ describe('mixinConstraintValidation()', () => {
   describe('checkValidity()', () => {
     it('should return true when element is valid', () => {
       const control = new TestConstraintValidation();
-      expect(control.checkValidity())
-        .withContext('checkValidity() return')
-        .toBeTrue();
+      expect(control.checkValidity()).withContext('checkValidity() return').toBeTrue();
     });
 
     it('should return false when element is invalid', () => {
       const control = new TestConstraintValidation();
       control.required = true;
-      expect(control.checkValidity())
-        .withContext('checkValidity() return')
-        .toBeFalse();
+      expect(control.checkValidity()).withContext('checkValidity() return').toBeFalse();
     });
 
     it('should dispatch invalid event when invalid', () => {
@@ -125,17 +121,13 @@ describe('mixinConstraintValidation()', () => {
   describe('reportValidity()', () => {
     it('should return true when element is valid', () => {
       const control = new TestConstraintValidation();
-      expect(control.reportValidity())
-        .withContext('reportValidity() return')
-        .toBeTrue();
+      expect(control.reportValidity()).withContext('reportValidity() return').toBeTrue();
     });
 
     it('should return false when element is invalid', () => {
       const control = new TestConstraintValidation();
       control.required = true;
-      expect(control.reportValidity())
-        .withContext('reportValidity() return')
-        .toBeFalse();
+      expect(control.reportValidity()).withContext('reportValidity() return').toBeFalse();
     });
 
     it('should dispatch invalid event when invalid', () => {
@@ -152,26 +144,20 @@ describe('mixinConstraintValidation()', () => {
     it('should set customError to true when given a non-empty string', () => {
       const control = new TestConstraintValidation();
       control.setCustomValidity('Error');
-      expect(control.validity.customError)
-        .withContext('validity.customError')
-        .toBeTrue();
+      expect(control.validity.customError).withContext('validity.customError').toBeTrue();
     });
 
     it('should set customError to false when set to an empty string', () => {
       const control = new TestConstraintValidation();
       control.setCustomValidity('');
-      expect(control.validity.customError)
-        .withContext('validity.customError')
-        .toBeFalse();
+      expect(control.validity.customError).withContext('validity.customError').toBeFalse();
     });
 
     it('should report custom validation message over other validation messages', () => {
       const control = new TestConstraintValidation();
       control.required = true;
       control.setCustomValidity('Error');
-      expect(control.validationMessage)
-        .withContext('validationMessage')
-        .toBe('Error');
+      expect(control.validationMessage).withContext('validationMessage').toBe('Error');
     });
   });
 });

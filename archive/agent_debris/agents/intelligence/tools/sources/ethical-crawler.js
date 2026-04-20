@@ -7,9 +7,9 @@
  * Part of PNKLN Core Stack™ Intelligence Layer
  */
 
-import { tool } from "@anthropic-ai/claude-agent-sdk";
-import robotsParser from "robots-parser";
-import fetch from "node-fetch";
+import { tool } from '@anthropic-ai/claude-agent-sdk';
+import fetch from 'node-fetch';
+import robotsParser from 'robots-parser';
 
 // In-memory cache for robots.txt rules
 const robotsCache = new Map();
@@ -35,9 +35,9 @@ async function getRobotRules(url) {
   try {
     const response = await fetch(robotsUrl, {
       headers: {
-        "User-Agent": "PNKLN-Intelligence-Bot/1.0 (+https://pnkln.ai/bot)"
+        'User-Agent': 'PNKLN-Intelligence-Bot/1.0 (+https://pnkln.ai/bot)',
       },
-      timeout: 5000
+      timeout: 5000,
     });
 
     const robotsTxt = await response.text();
@@ -46,21 +46,21 @@ async function getRobotRules(url) {
     // Cache the rules
     robotsCache.set(domain, {
       robots,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
 
     return robots;
   } catch (error) {
     console.warn(`Failed to fetch robots.txt for ${domain}:`, error.message);
     // Return permissive default if robots.txt not available
-    return robotsParser(robotsUrl, "User-agent: *\nAllow: /");
+    return robotsParser(robotsUrl, 'User-agent: *\nAllow: /');
   }
 }
 
 /**
  * Check if URL is allowed by robots.txt
  */
-async function isAllowed(url, userAgent = "PNKLN-Intelligence-Bot") {
+async function isAllowed(url, userAgent = 'PNKLN-Intelligence-Bot') {
   const robots = await getRobotRules(url);
   return robots.isAllowed(url, userAgent);
 }
@@ -70,7 +70,7 @@ async function isAllowed(url, userAgent = "PNKLN-Intelligence-Bot") {
  */
 async function getCrawlDelay(url, defaultDelay = 1000) {
   const robots = await getRobotRules(url);
-  const delay = robots.getCrawlDelay("PNKLN-Intelligence-Bot");
+  const delay = robots.getCrawlDelay('PNKLN-Intelligence-Bot');
   return (delay || defaultDelay / 1000) * 1000; // Convert to milliseconds
 }
 
@@ -81,14 +81,14 @@ async function enforceRateLimit(url, customDelay = null) {
   const urlObj = new URL(url);
   const domain = `${urlObj.protocol}//${urlObj.host}`;
 
-  const delay = customDelay || await getCrawlDelay(url);
+  const delay = customDelay || (await getCrawlDelay(url));
   const lastRequest = lastRequestTime.get(domain);
 
   if (lastRequest) {
     const timeSinceLastRequest = Date.now() - lastRequest;
     if (timeSinceLastRequest < delay) {
       const waitTime = delay - timeSinceLastRequest;
-      await new Promise(resolve => setTimeout(resolve, waitTime));
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
     }
   }
 
@@ -96,49 +96,49 @@ async function enforceRateLimit(url, customDelay = null) {
 }
 
 export const ethicalCrawlerTool = tool({
-  name: "ethical_crawler",
-  description: "Ethically crawl web sources with robots.txt compliance and rate limiting",
+  name: 'ethical_crawler',
+  description: 'Ethically crawl web sources with robots.txt compliance and rate limiting',
   parameters: {
-    type: "object",
+    type: 'object',
     properties: {
       url: {
-        type: "string",
-        description: "The URL to crawl"
+        type: 'string',
+        description: 'The URL to crawl',
       },
       respectRobots: {
-        type: "boolean",
-        description: "Whether to respect robots.txt (default: true)",
-        default: true
+        type: 'boolean',
+        description: 'Whether to respect robots.txt (default: true)',
+        default: true,
       },
       customDelay: {
-        type: "number",
-        description: "Custom delay in milliseconds (overrides robots.txt crawl-delay)"
+        type: 'number',
+        description: 'Custom delay in milliseconds (overrides robots.txt crawl-delay)',
       },
       userAgent: {
-        type: "string",
-        description: "Custom user agent string",
-        default: "PNKLN-Intelligence-Bot/1.0 (+https://pnkln.ai/bot)"
+        type: 'string',
+        description: 'Custom user agent string',
+        default: 'PNKLN-Intelligence-Bot/1.0 (+https://pnkln.ai/bot)',
       },
       maxRetries: {
-        type: "number",
-        description: "Maximum number of retries on failure",
-        default: 3
+        type: 'number',
+        description: 'Maximum number of retries on failure',
+        default: 3,
       },
       timeout: {
-        type: "number",
-        description: "Request timeout in milliseconds",
-        default: 30000
-      }
+        type: 'number',
+        description: 'Request timeout in milliseconds',
+        default: 30000,
+      },
     },
-    required: ["url"]
+    required: ['url'],
   },
   execute: async ({
     url,
     respectRobots = true,
     customDelay = null,
-    userAgent = "PNKLN-Intelligence-Bot/1.0 (+https://pnkln.ai/bot)",
+    userAgent = 'PNKLN-Intelligence-Bot/1.0 (+https://pnkln.ai/bot)',
     maxRetries = 3,
-    timeout = 30000
+    timeout = 30000,
   }) => {
     const result = {
       url,
@@ -150,8 +150,8 @@ export const ethicalCrawlerTool = tool({
       ethical: {
         robotsChecked: respectRobots,
         rateLimited: true,
-        userAgent
-      }
+        userAgent,
+      },
     };
 
     try {
@@ -163,12 +163,12 @@ export const ethicalCrawlerTool = tool({
         if (!allowed) {
           return {
             success: false,
-            error: "URL disallowed by robots.txt",
+            error: 'URL disallowed by robots.txt',
             data: result,
             metadata: {
               ethical: true,
-              reason: "robots-txt-disallow"
-            }
+              reason: 'robots-txt-disallow',
+            },
           };
         }
 
@@ -184,27 +184,27 @@ export const ethicalCrawlerTool = tool({
         try {
           const response = await fetch(url, {
             headers: {
-              "User-Agent": userAgent,
-              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-              "Accept-Language": "en-US,en;q=0.5",
-              "DNT": "1"
+              'User-Agent': userAgent,
+              Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+              'Accept-Language': 'en-US,en;q=0.5',
+              DNT: '1',
             },
             timeout,
-            redirect: "follow"
+            redirect: 'follow',
           });
 
           if (!response.ok) {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
           }
 
-          const contentType = response.headers.get("content-type") || "";
+          const contentType = response.headers.get('content-type') || '';
           result.content = await response.text();
           result.metadata = {
             statusCode: response.status,
             contentType,
             contentLength: result.content.length,
             finalUrl: response.url,
-            attempt
+            attempt,
           };
 
           return {
@@ -214,16 +214,15 @@ export const ethicalCrawlerTool = tool({
               ethical: true,
               robotsCompliant: respectRobots,
               rateLimited: true,
-              attempts: attempt
-            }
+              attempts: attempt,
+            },
           };
-
         } catch (error) {
           lastError = error;
           if (attempt < maxRetries) {
             // Exponential backoff
-            const backoffTime = Math.pow(2, attempt) * 1000;
-            await new Promise(resolve => setTimeout(resolve, backoffTime));
+            const backoffTime = 2 ** attempt * 1000;
+            await new Promise((resolve) => setTimeout(resolve, backoffTime));
           }
         }
       }
@@ -235,10 +234,9 @@ export const ethicalCrawlerTool = tool({
         data: result,
         metadata: {
           ethical: true,
-          attempts: maxRetries
-        }
+          attempts: maxRetries,
+        },
       };
-
     } catch (error) {
       return {
         success: false,
@@ -246,11 +244,11 @@ export const ethicalCrawlerTool = tool({
         data: result,
         metadata: {
           ethical: true,
-          robotsCompliant: respectRobots
-        }
+          robotsCompliant: respectRobots,
+        },
       };
     }
-  }
+  },
 });
 
 export default ethicalCrawlerTool;

@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { SignInModalComponent } from './sign-in-modal.component';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { projectConfig } from 'src/environments/environment.default';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-import { of } from 'rxjs';
-import { MatIconModule } from '@angular/material/icon';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { FormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { of } from 'rxjs';
+import { projectConfig } from 'src/environments/environment.default';
+import { SignInModalComponent } from './sign-in-modal.component';
 
 describe('SignInModalComponent', () => {
   let component: SignInModalComponent;
@@ -37,7 +35,8 @@ describe('SignInModalComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MatDialogModule,
+      imports: [
+        MatDialogModule,
         MatIconModule,
         MatDividerModule,
         MatFormFieldModule,
@@ -46,18 +45,20 @@ describe('SignInModalComponent', () => {
         BrowserAnimationsModule,
         provideFirebaseApp(() => initializeApp(projectConfig)),
         provideFirestore(() => getFirestore()),
-        provideAuth(() => getAuth())],
+        provideAuth(() => getAuth()),
+      ],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         {
-          provide: MatDialogRef, useValue: {
+          provide: MatDialogRef,
+          useValue: {
             backdropClick: () => {
-              return of(MouseEvent)
-            }
-          }
-        }
+              return of(MouseEvent);
+            },
+          },
+        },
       ],
-      declarations: [SignInModalComponent]
+      declarations: [SignInModalComponent],
     });
     fixture = TestBed.createComponent(SignInModalComponent);
     component = fixture.componentInstance;

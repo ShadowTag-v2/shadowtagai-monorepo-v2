@@ -6,11 +6,11 @@
 
 import '@material/web/iconbutton/outlined-icon-button.js';
 
-import {MdOutlinedIconButton} from '@material/web/iconbutton/outlined-icon-button.js';
-import type {PlaygroundPreview} from 'playground-elements/playground-preview.js';
-import {PostDoc} from 'postdoc-lib';
+import type { MdOutlinedIconButton } from '@material/web/iconbutton/outlined-icon-button.js';
+import type { PlaygroundPreview } from 'playground-elements/playground-preview.js';
+import { PostDoc } from 'postdoc-lib';
 
-import {getCurrentThemeString} from '../utils/theme.js';
+import { getCurrentThemeString } from '../utils/theme.js';
 
 /**
  * Gets the iframe of a playground preview, and updates the iframe communication
@@ -19,10 +19,7 @@ import {getCurrentThemeString} from '../utils/theme.js';
  * @param postdoc The instance of the iframe communication library.
  * @param previewEl An element reference to the playground preview element.
  */
-async function updateMessageTargetOnIframeLoad(
-  postdoc: PostDoc,
-  previewEl: PlaygroundPreview,
-) {
+async function updateMessageTargetOnIframeLoad(postdoc: PostDoc, previewEl: PlaygroundPreview) {
   await previewEl.updateComplete;
   const iframe = previewEl.iframe!;
 

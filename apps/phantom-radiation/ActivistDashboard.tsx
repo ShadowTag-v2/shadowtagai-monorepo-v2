@@ -1,5 +1,5 @@
-import type React from "react";
-import { useState, useEffect } from "react";
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 // Design Aesthetic: Glassmorphism per Vibe Coding Directive 2
 // Variant 2 (Glassmorphism) as selected by Nano Banana 2 Vision Critic.
@@ -22,9 +22,9 @@ const ActivistDashboard: React.FC = () => {
     const fetchData = async () => {
       try {
         // This is a placeholder API endpoint. Replace with your actual API endpoint.
-        const response = await fetch("/api/activist-target");
+        const response = await fetch('/api/activist-target');
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
         const data: ActivistTargetData = await response.json();
         setTargetData(data);
@@ -106,7 +106,7 @@ const ActivistDashboard: React.FC = () => {
                     {targetData.ticker}
                   </h2>
                   <span className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-red-500/20 text-red-400 border border-red-500/30">
-                    {targetData.fraudFlag ? "Fraud Detected" : "Clear"}
+                    {targetData.fraudFlag ? 'Fraud Detected' : 'Clear'}
                   </span>
                 </div>
                 <div className="text-right">
@@ -114,7 +114,7 @@ const ActivistDashboard: React.FC = () => {
                     Viability Score
                   </div>
                   <div
-                    className={`text-5xl font-black ${targetData.viabilityScore < 60 ? "text-red-500" : "text-emerald-500"}`}
+                    className={`text-5xl font-black ${targetData.viabilityScore < 60 ? 'text-red-500' : 'text-emerald-500'}`}
                   >
                     {targetData.viabilityScore}
                     <span className="text-xl text-gray-500 font-medium">/100</span>

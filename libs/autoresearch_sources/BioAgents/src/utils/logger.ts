@@ -1,14 +1,14 @@
-import pino from "pino";
+import pino from 'pino';
 
 const logger = pino({
-  level: "info",
+  level: 'info',
   transport: {
-    target: "pino-pretty",
+    target: 'pino-pretty',
     options: {
       colorize: true,
-      translateTime: "SYS:yyyy-mm-dd HH:MM:ss",
-      ignore: "pid,hostname",
-      messageFormat: "{msg}",
+      translateTime: 'SYS:yyyy-mm-dd HH:MM:ss',
+      ignore: 'pid,hostname',
+      messageFormat: '{msg}',
     },
   },
 });

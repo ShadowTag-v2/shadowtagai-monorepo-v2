@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START fs_bundle_load_modular]
-import { loadBundle, namedQuery, getDocsFromCache } from "firebase/firestore";
+import { getDocsFromCache, loadBundle, namedQuery } from 'firebase/firestore';
 
 async function fetchFromBundle() {
   // Fetch the bundle from Firebase Hosting, if the CDN cache is hit the 'X-Cache'

@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import * as firestore from '@google-cloud/firestore';
+import type * as firestore from '@google-cloud/firestore';
 import * as protos from '../../protos/firestore_v1_proto_api';
+
 import api = protos.google.firestore.v1;
 
-import {DocumentReference} from '../reference/document-reference';
-import {ProtoSerializable, Serializer} from '../serializer';
-
+import type { CollectionReference } from '../reference/collection-reference';
+import type { DocumentReference } from '../reference/document-reference';
+import type { ProtoSerializable, Serializer } from '../serializer';
 import {
-  AggregateFunction,
-  BooleanExpression,
-  Expression,
-  Field,
+  type AggregateFunction,
+  type BooleanExpression,
+  type Expression,
+  type Field,
   field,
-  Ordering,
+  type Ordering,
 } from './expression';
-import {OptionsUtil} from './options-util';
-import {CollectionReference} from '../reference/collection-reference';
+import { OptionsUtil } from './options-util';
 
 /**
  * Interface for Stage classes.
@@ -61,12 +61,8 @@ export class RemoveFields implements Stage {
   _toProto(serializer: Serializer): api.Pipeline.IStage {
     return {
       name: this.name,
-      args: this.options.fields.map(f => serializer.encodeValue(f)!),
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      args: this.options.fields.map((f) => serializer.encodeValue(f)!),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -98,11 +94,7 @@ export class Aggregate implements Stage {
         serializer.encodeValue(this.options.accumulators)!,
         serializer.encodeValue(this.options.groups)!,
       ],
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -130,11 +122,7 @@ export class Distinct implements Stage {
     return {
       name: this.name,
       args: [serializer.encodeValue(this.options.groups)!],
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -173,11 +161,7 @@ export class CollectionSource implements Stage {
     return {
       name: this.name,
       args: [serializer.encodeReference(this.collectionPath)],
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -185,8 +169,7 @@ export class CollectionSource implements Stage {
 /**
  * Internal options for CollectionGroup stage.
  */
-export type InternalCollectionGroupStageOptions =
-  firestore.Pipelines.CollectionGroupStageOptions;
+export type InternalCollectionGroupStageOptions = firestore.Pipelines.CollectionGroupStageOptions;
 
 /**
  * CollectionGroup stage
@@ -204,15 +187,8 @@ export class CollectionGroupSource implements Stage {
   _toProto(serializer: Serializer): api.Pipeline.IStage {
     return {
       name: this.name,
-      args: [
-        serializer.encodeReference(''),
-        serializer.encodeValue(this.options.collectionId)!,
-      ],
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      args: [serializer.encodeReference(''), serializer.encodeValue(this.options.collectionId)!],
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -220,8 +196,7 @@ export class CollectionGroupSource implements Stage {
 /**
  * Internal options for Database stage.
  */
-export type InternalDatabaseStageOptions =
-  firestore.Pipelines.DatabaseStageOptions;
+export type InternalDatabaseStageOptions = firestore.Pipelines.DatabaseStageOptions;
 
 /**
  * Database stage.
@@ -235,11 +210,7 @@ export class DatabaseSource implements Stage {
   _toProto(serializer: Serializer): api.Pipeline.IStage {
     return {
       name: this.name,
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -263,18 +234,14 @@ export class DocumentsSource implements Stage {
   readonly formattedPaths: string[];
 
   constructor(private options: InternalDocumentsStageOptions) {
-    this.formattedPaths = options.docs.map(ref => '/' + ref.path);
+    this.formattedPaths = options.docs.map((ref) => '/' + ref.path);
   }
 
   _toProto(serializer: Serializer): api.Pipeline.IStage {
     return {
       name: this.name,
-      args: this.formattedPaths.map(p => serializer.encodeReference(p)!),
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      args: this.formattedPaths.map((p) => serializer.encodeReference(p)!),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -282,10 +249,7 @@ export class DocumentsSource implements Stage {
 /**
  * Internal options for Where stage.
  */
-export type InternalWhereStageOptions = Omit<
-  firestore.Pipelines.WhereStageOptions,
-  'condition'
-> & {
+export type InternalWhereStageOptions = Omit<firestore.Pipelines.WhereStageOptions, 'condition'> & {
   condition: BooleanExpression;
 };
 
@@ -302,11 +266,7 @@ export class Where implements Stage {
     return {
       name: this.name,
       args: [this.options.condition._toProto(serializer)],
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -383,11 +343,7 @@ export class Sample implements Stage {
         serializer.encodeValue(this.options.rate)!,
         serializer.encodeValue(this.options.mode)!,
       ],
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -410,11 +366,7 @@ export class Union implements Stage {
     return {
       name: this.name,
       args: [serializer.encodeValue(this.options.other)!],
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -451,11 +403,7 @@ export class Unnest implements Stage {
         serializer.encodeValue(this.options.expr)!,
         serializer.encodeValue(field(this.options.alias))!,
       ],
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -478,11 +426,7 @@ export class Limit implements Stage {
     return {
       name: this.name,
       args: [serializer.encodeValue(this.options.limit)!],
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -505,11 +449,7 @@ export class Offset implements Stage {
     return {
       name: this.name,
       args: [serializer.encodeValue(this.options.offset)!],
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -536,15 +476,8 @@ export class ReplaceWith implements Stage {
   _toProto(serializer: Serializer): api.Pipeline.IStage {
     return {
       name: this.name,
-      args: [
-        serializer.encodeValue(this.options.map)!,
-        serializer.encodeValue('full_replace'),
-      ],
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      args: [serializer.encodeValue(this.options.map)!, serializer.encodeValue('full_replace')],
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -572,11 +505,7 @@ export class Select implements Stage {
     return {
       name: this.name,
       args: [serializer.encodeValue(this.options.selections)!],
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -604,11 +533,7 @@ export class AddFields implements Stage {
     return {
       name: this.name,
       args: [serializer.encodeValue(this.options.fields)!],
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -616,10 +541,7 @@ export class AddFields implements Stage {
 /**
  * Internal options for Sort stage.
  */
-export type InternalSortStageOptions = Omit<
-  firestore.Pipelines.SortStageOptions,
-  'orderings'
-> & {
+export type InternalSortStageOptions = Omit<firestore.Pipelines.SortStageOptions, 'orderings'> & {
   orderings: Array<Ordering>;
 };
 
@@ -635,12 +557,8 @@ export class Sort implements Stage {
   _toProto(serializer: Serializer): api.Pipeline.IStage {
     return {
       name: this.name,
-      args: this.options.orderings.map(o => serializer.encodeValue(o)!),
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.options.rawOptions,
-      ),
+      args: this.options.orderings.map((o) => serializer.encodeValue(o)!),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.options.rawOptions),
     };
   }
 }
@@ -668,12 +586,8 @@ export class RawStage implements Stage {
   _toProto(serializer: Serializer): api.Pipeline.IStage {
     return {
       name: this.name,
-      args: this.params.map(o => o._toProto(serializer)),
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        {},
-        this.rawOptions,
-      ),
+      args: this.params.map((o) => o._toProto(serializer)),
+      options: this.optionsUtil.getOptionsProto(serializer, {}, this.rawOptions),
     };
   }
 }

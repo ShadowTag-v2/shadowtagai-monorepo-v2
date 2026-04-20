@@ -13,7 +13,7 @@
 // limitations under the License.
 
 function labeledEvent(data) {
-  return data.event === "labeled" && data.label.name === "needs more info";
+  return data.event === 'labeled' && data.label.name === 'needs more info';
 }
 
 const numberOfDaysLimit = 15;
@@ -28,7 +28,7 @@ module.exports = async ({ github, context }) => {
   const issues = await github.rest.issues.listForRepo({
     owner: owner,
     repo: repo,
-    labels: "needs more info",
+    labels: 'needs more info',
   });
   const numbers = issues.data.map((e) => e.number);
 
@@ -40,7 +40,7 @@ module.exports = async ({ github, context }) => {
         repo: repo,
         issue_number: number,
       },
-      (response) => response.data.filter(labeledEvent)
+      (response) => response.data.filter(labeledEvent),
     );
 
     const latest_response_label = events[events.length - 1];
@@ -55,7 +55,7 @@ module.exports = async ({ github, context }) => {
         owner: owner,
         repo: repo,
         issue_number: number,
-        state: "closed",
+        state: 'closed',
       });
 
       await github.rest.issues.createComment({

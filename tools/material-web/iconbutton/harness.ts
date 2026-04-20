@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Harness} from '../testing/harness.js';
+import { Harness } from '../testing/harness.js';
 
-import {IconButton} from './internal/icon-button.js';
+import type { IconButton } from './internal/icon-button.js';
 
 /**
  * Test harness for icon buttons.

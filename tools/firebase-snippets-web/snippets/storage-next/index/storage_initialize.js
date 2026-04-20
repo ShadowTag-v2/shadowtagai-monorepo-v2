@@ -5,8 +5,8 @@
 // 'npm run snippets'.
 
 // [START storage_initialize_modular]
-import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
+import { initializeApp } from 'firebase/app';
+import { getStorage } from 'firebase/storage';
 
 // Set the configuration for your app
 // TODO: Replace with your app's config object
@@ -14,7 +14,7 @@ const firebaseConfig = {
   apiKey: '<your-api-key>',
   authDomain: '<your-auth-domain>',
   databaseURL: '<your-database-url>',
-  storageBucket: '<your-storage-bucket-url>'
+  storageBucket: '<your-storage-bucket-url>',
 };
 const firebaseApp = initializeApp(firebaseConfig);
 

@@ -10,7 +10,7 @@
 
 import Graph from 'graphology';
 import leiden from '../../vendor/leiden/index.js';
-import { KnowledgeGraph, NodeLabel } from '../graph/types';
+import type { KnowledgeGraph, NodeLabel } from '../graph/types';
 
 // ============================================================================
 // TYPES
@@ -74,7 +74,7 @@ export const getCommunityColor = (communityIndex: number): string => {
  */
 export const processCommunities = async (
   knowledgeGraph: KnowledgeGraph,
-  onProgress?: (message: string, progress: number) => void
+  onProgress?: (message: string, progress: number) => void,
 ): Promise<CommunityDetectionResult> => {
   onProgress?.('Building graph for community detection...', 0);
 
@@ -87,7 +87,7 @@ export const processCommunities = async (
     return {
       communities: [],
       memberships: [],
-      stats: { totalCommunities: 0, modularity: 0, nodesProcessed: 0 }
+      stats: { totalCommunities: 0, modularity: 0, nodesProcessed: 0 },
     };
   }
 
@@ -95,7 +95,7 @@ export const processCommunities = async (
 
   // Step 2: Run Leiden algorithm for community detection
   const details = leiden.detailed(graph, {
-    resolution: 1.0,  // Default resolution, can be tuned
+    resolution: 1.0, // Default resolution, can be tuned
     randomWalk: true,
   });
 
@@ -106,7 +106,7 @@ export const processCommunities = async (
     details.communities as Record<string, number>,
     details.count,
     graph,
-    knowledgeGraph
+    knowledgeGraph,
   );
 
   onProgress?.('Creating membership edges...', 80);
@@ -129,7 +129,7 @@ export const processCommunities = async (
       totalCommunities: details.count,
       modularity: details.modularity,
       nodesProcessed: graph.order,
-    }
+    },
   };
 };
 
@@ -149,7 +149,7 @@ const buildGraphologyGraph = (knowledgeGraph: KnowledgeGraph): Graph => {
   const symbolTypes = new Set<NodeLabel>(['Function', 'Class', 'Method', 'Interface']);
 
   // Add symbol nodes
-  knowledgeGraph.nodes.forEach(node => {
+  knowledgeGraph.nodes.forEach((node) => {
     if (symbolTypes.has(node.label)) {
       graph.addNode(node.id, {
         name: node.properties.name,
@@ -163,11 +163,15 @@ const buildGraphologyGraph = (knowledgeGraph: KnowledgeGraph): Graph => {
   // We can also include EXTENDS/IMPLEMENTS for OOP clustering
   const clusteringRelTypes = new Set(['CALLS', 'EXTENDS', 'IMPLEMENTS']);
 
-  knowledgeGraph.relationships.forEach(rel => {
+  knowledgeGraph.relationships.forEach((rel) => {
     if (clusteringRelTypes.has(rel.type)) {
       // Only add edge if both nodes exist in our symbol graph
       // Also skip self-loops (recursive calls) - not allowed in undirected graph
-      if (graph.hasNode(rel.sourceId) && graph.hasNode(rel.targetId) && rel.sourceId !== rel.targetId) {
+      if (
+        graph.hasNode(rel.sourceId) &&
+        graph.hasNode(rel.targetId) &&
+        rel.sourceId !== rel.targetId
+      ) {
         // Avoid duplicate edges
         if (!graph.hasEdge(rel.sourceId, rel.targetId)) {
           graph.addEdge(rel.sourceId, rel.targetId);
@@ -190,7 +194,7 @@ const createCommunityNodes = (
   communities: Record<string, number>,
   communityCount: number,
   graph: Graph,
-  knowledgeGraph: KnowledgeGraph
+  knowledgeGraph: KnowledgeGraph,
 ): CommunityNode[] => {
   // Group node IDs by community
   const communityMembers = new Map<number, string[]>();
@@ -204,7 +208,7 @@ const createCommunityNodes = (
 
   // Build node lookup for file paths
   const nodePathMap = new Map<string, string>();
-  knowledgeGraph.nodes.forEach(node => {
+  knowledgeGraph.nodes.forEach((node) => {
     if (node.properties.filePath) {
       nodePathMap.set(node.id, node.properties.filePath);
     }
@@ -245,12 +249,12 @@ const generateHeuristicLabel = (
   memberIds: string[],
   nodePathMap: Map<string, string>,
   graph: Graph,
-  commNum: number
+  commNum: number,
 ): string => {
   // Collect folder names from file paths
   const folderCounts = new Map<string, number>();
 
-  memberIds.forEach(nodeId => {
+  memberIds.forEach((nodeId) => {
     const filePath = nodePathMap.get(nodeId) || '';
     const parts = filePath.split('/').filter(Boolean);
 
@@ -258,7 +262,11 @@ const generateHeuristicLabel = (
     if (parts.length >= 2) {
       const folder = parts[parts.length - 2];
       // Skip generic folder names
-      if (!['src', 'lib', 'core', 'utils', 'common', 'shared', 'helpers'].includes(folder.toLowerCase())) {
+      if (
+        !['src', 'lib', 'core', 'utils', 'common', 'shared', 'helpers'].includes(
+          folder.toLowerCase(),
+        )
+      ) {
         folderCounts.set(folder, (folderCounts.get(folder) || 0) + 1);
       }
     }
@@ -282,7 +290,7 @@ const generateHeuristicLabel = (
 
   // Fallback: use function names to detect patterns
   const names: string[] = [];
-  memberIds.forEach(nodeId => {
+  memberIds.forEach((nodeId) => {
     const name = graph.getNodeAttribute(nodeId, 'name');
     if (name) names.push(name);
   });
@@ -333,9 +341,9 @@ const calculateCohesion = (memberIds: string[], graph: Graph): number => {
   let totalEdges = 0;
 
   // Count internal vs total edges for community members
-  memberIds.forEach(nodeId => {
+  memberIds.forEach((nodeId) => {
     if (graph.hasNode(nodeId)) {
-      graph.forEachNeighbor(nodeId, neighbor => {
+      graph.forEachNeighbor(nodeId, (neighbor) => {
         totalEdges++;
         if (memberSet.has(neighbor)) {
           internalEdges++;

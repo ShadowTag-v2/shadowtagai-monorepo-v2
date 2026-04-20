@@ -25,26 +25,26 @@ import {
   registerViewIamPolicyTool,
 } from './buckets/index.js';
 import {
-  registerCopyObjectTool,
+  registerExecuteInsightsQueryTool,
+  registerGetMetadataTableSchemaTool,
+  registerListInsightsConfigsTool,
+} from './insights/index.js';
+import {
   registerCopyObjectSafeTool,
+  registerCopyObjectTool,
   registerDeleteObjectTool,
-  registerDownloadObjectTool,
   registerDownloadObjectSafeTool,
+  registerDownloadObjectTool,
   registerListObjectsTool,
   registerMoveObjectTool,
   registerReadObjectContentTool,
   registerReadObjectMetadataTool,
   registerUpdateObjectMetadataTool,
-  registerUploadObjectTool,
   registerUploadObjectSafeTool,
-  registerWriteObjectTool,
+  registerUploadObjectTool,
   registerWriteObjectSafeTool,
+  registerWriteObjectTool,
 } from './objects/index.js';
-import {
-  registerExecuteInsightsQueryTool,
-  registerGetMetadataTableSchemaTool,
-  registerListInsightsConfigsTool,
-} from './insights/index.js';
 
 export const commonSafeTools = [
   registerListBucketsTool,

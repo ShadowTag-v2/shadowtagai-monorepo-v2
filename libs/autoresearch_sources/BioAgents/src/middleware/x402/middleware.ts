@@ -1,8 +1,8 @@
-import { Elysia } from "elysia";
-import logger from "../../utils/logger";
-import { x402Config, X402_VERSION } from "./config";
-import { routePricing } from "./pricing";
-import { x402Service } from "./service";
+import { Elysia } from 'elysia';
+import logger from '../../utils/logger';
+import { X402_VERSION, x402Config } from './config';
+import { routePricing } from './pricing';
+import { x402Service } from './service';
 
 /**
  * x402 V2 Payment Middleware
@@ -16,8 +16,8 @@ import { x402Service } from "./service";
  */
 
 // V2 Header names
-const PAYMENT_SIGNATURE_HEADER = "payment-signature";
-const PAYMENT_RESPONSE_HEADER = "PAYMENT-RESPONSE";
+const PAYMENT_SIGNATURE_HEADER = 'payment-signature';
+const PAYMENT_RESPONSE_HEADER = 'PAYMENT-RESPONSE';
 
 export interface X402MiddlewareOptions {
   enabled?: boolean;
@@ -44,7 +44,7 @@ export interface X402Request extends Request {
 
 export function x402Middleware(options: X402MiddlewareOptions = {}) {
   const enabled = options.enabled ?? x402Config.enabled;
-  const plugin = new Elysia({ name: "x402-v2-middleware" });
+  const plugin = new Elysia({ name: 'x402-v2-middleware' });
 
   if (logger) {
     logger.info(
@@ -55,7 +55,7 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
         paymentAddress: x402Config.paymentAddress,
         x402Version: X402_VERSION,
       },
-      enabled ? "x402_v2_middleware_ENABLED" : "x402_v2_middleware_DISABLED",
+      enabled ? 'x402_v2_middleware_ENABLED' : 'x402_v2_middleware_DISABLED',
     );
   }
 
@@ -63,7 +63,7 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
     return plugin;
   }
 
-  plugin.onBeforeHandle({ as: "scoped" }, async ({ request, path, set }: any) => {
+  plugin.onBeforeHandle({ as: 'scoped' }, async ({ request, path, set }: any) => {
     // Check if request should bypass x402 (whitelisted users)
     if ((request as any).bypassX402) {
       const user = (request as any).authenticatedUser;
@@ -74,7 +74,7 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
             authMethod: user?.authMethod,
             path,
           },
-          "x402_v2_bypassed_for_whitelisted_user",
+          'x402_v2_bypassed_for_whitelisted_user',
         );
       }
       return; // Skip x402 payment check
@@ -92,27 +92,27 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
 
     // V2: Check for PAYMENT-SIGNATURE header (also check legacy X-PAYMENT for compatibility)
     const paymentHeader =
-      request.headers.get(PAYMENT_SIGNATURE_HEADER) || request.headers.get("x-payment"); // Legacy fallback
+      request.headers.get(PAYMENT_SIGNATURE_HEADER) || request.headers.get('x-payment'); // Legacy fallback
 
     // Debug headers
     if (logger) {
       const headers: Record<string, string> = {};
       request.headers.forEach((value: string, key: string) => {
-        if (key.toLowerCase() === "authorization" || key.toLowerCase().includes("payment")) {
-          headers[key] = value ? `[present, ${value.length} chars]` : "[empty]";
+        if (key.toLowerCase() === 'authorization' || key.toLowerCase().includes('payment')) {
+          headers[key] = value ? `[present, ${value.length} chars]` : '[empty]';
         } else {
           headers[key] = value;
         }
       });
-      logger.info({ path, headers, hasPayment: !!paymentHeader }, "x402_v2_request_headers");
+      logger.info({ path, headers, hasPayment: !!paymentHeader }, 'x402_v2_request_headers');
     }
 
     // Build full URL for resource field
     const url = new URL(request.url);
-    const forwardedProto = request.headers.get("x-forwarded-proto");
+    const forwardedProto = request.headers.get('x-forwarded-proto');
     const protocol =
       forwardedProto ||
-      (x402Config.environment === "mainnet" ? "https" : url.protocol.replace(":", ""));
+      (x402Config.environment === 'mainnet' ? 'https' : url.protocol.replace(':', ''));
     const resourceUrl = `${protocol}://${url.host}${pricing.route}`;
 
     if (logger) {
@@ -124,7 +124,7 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
           resolvedProtocol: protocol,
           resourceUrl,
         },
-        "x402_v2_resource_url_built",
+        'x402_v2_resource_url_built',
       );
     }
 
@@ -147,9 +147,9 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
       return new Response(JSON.stringify(paymentRequired), {
         status: 402,
         headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          "Content-Encoding": "identity",
-          "PAYMENT-REQUIRED": paymentRequiredHeader,
+          'Content-Type': 'application/json; charset=utf-8',
+          'Content-Encoding': 'identity',
+          'PAYMENT-REQUIRED': paymentRequiredHeader,
         },
       });
     }
@@ -162,7 +162,7 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
           paymentHeaderLength: paymentHeader.length,
           paymentHeaderPrefix: paymentHeader.substring(0, 50),
         },
-        "x402_v2_payment_header_received",
+        'x402_v2_payment_header_received',
       );
     }
 
@@ -177,14 +177,14 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
 
     if (!verification.isValid) {
       if (logger)
-        logger.warn({ path, reason: verification.invalidReason }, "x402_v2_payment_invalid");
+        logger.warn({ path, reason: verification.invalidReason }, 'x402_v2_payment_invalid');
 
       const paymentRequired = x402Service.generatePaymentRequired(
         resourceUrl,
         pricing.description,
         pricing.priceUSD,
       );
-      paymentRequired.error = verification.invalidReason ?? "Invalid payment";
+      paymentRequired.error = verification.invalidReason ?? 'Invalid payment';
 
       set.status = 402;
 
@@ -193,9 +193,9 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
       return new Response(JSON.stringify(paymentRequired), {
         status: 402,
         headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          "Content-Encoding": "identity",
-          "PAYMENT-REQUIRED": paymentRequiredHeader,
+          'Content-Type': 'application/json; charset=utf-8',
+          'Content-Encoding': 'identity',
+          'PAYMENT-REQUIRED': paymentRequiredHeader,
         },
       });
     }
@@ -207,7 +207,7 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
       if (logger)
         logger.error(
           { path, errorReason: settlement.errorReason },
-          "x402_v2_payment_settlement_failed",
+          'x402_v2_payment_settlement_failed',
         );
 
       const paymentRequired = x402Service.generatePaymentRequired(
@@ -215,7 +215,7 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
         pricing.description,
         pricing.priceUSD,
       );
-      paymentRequired.error = settlement.errorReason ?? "Payment settlement failed";
+      paymentRequired.error = settlement.errorReason ?? 'Payment settlement failed';
 
       set.status = 402;
 
@@ -224,9 +224,9 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
       return new Response(JSON.stringify(paymentRequired), {
         status: 402,
         headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          "Content-Encoding": "identity",
-          "PAYMENT-REQUIRED": paymentRequiredHeader,
+          'Content-Type': 'application/json; charset=utf-8',
+          'Content-Encoding': 'identity',
+          'PAYMENT-REQUIRED': paymentRequiredHeader,
         },
       });
     }
@@ -234,7 +234,7 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
     if (logger) {
       logger.info(
         { path, transaction: settlement.transaction, network: settlement.network },
-        "x402_v2_payment_settled",
+        'x402_v2_payment_settled',
       );
     }
 
@@ -254,8 +254,8 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
 
       if (logger) {
         logger.info(
-          { paymentResponseHeader: paymentResponseHeader.substring(0, 50) + "..." },
-          "x402_v2_response_header_set",
+          { paymentResponseHeader: paymentResponseHeader.substring(0, 50) + '...' },
+          'x402_v2_response_header_set',
         );
       }
     }

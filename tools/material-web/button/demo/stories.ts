@@ -11,8 +11,8 @@ import '@material/web/button/outlined-button.js';
 import '@material/web/button/text-button.js';
 import '@material/web/icon/icon.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {css, html} from 'lit';
+import { css, html } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for button stories. */
 export interface StoryKnobs {
@@ -39,7 +39,7 @@ const styles = css`
 const buttons: MaterialStoryInit<StoryKnobs> = {
   name: 'Button variants',
   styles,
-  render({label, disabled, softDisabled}) {
+  render({ label, disabled, softDisabled }) {
     return html`
       <div class="column">
         <div class="row">
@@ -120,7 +120,7 @@ const buttons: MaterialStoryInit<StoryKnobs> = {
 const links: MaterialStoryInit<StoryKnobs> = {
   name: 'Links',
   styles,
-  render({label, disabled, softDisabled}) {
+  render({ label, disabled, softDisabled }) {
     return html`
       <div class="column">
         <div class="row">

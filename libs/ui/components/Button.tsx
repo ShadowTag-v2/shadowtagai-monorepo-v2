@@ -11,7 +11,7 @@
  * All legacy button variants across 14+ landing pages MUST migrate to this.
  */
 
-import React from 'react';
+import type React from 'react';
 import '../styles/buttons.css';
 
 /** Canonical variant set — NO new variants without Invariant #92 review. */
@@ -65,15 +65,15 @@ export const Button: React.FC<ButtonProps> = ({
     .join(' ');
 
   return (
-    <button
-      className={classes}
-      disabled={disabled || loading}
-      {...rest}
-    >
+    <button className={classes} disabled={disabled || loading} {...rest}>
       {loading ? (
-        <span className="btn__spinner" aria-hidden="true">⏳</span>
+        <span className="btn__spinner" aria-hidden="true">
+          ⏳
+        </span>
       ) : icon ? (
-        <span className="btn__icon" aria-hidden="true">{icon}</span>
+        <span className="btn__icon" aria-hidden="true">
+          {icon}
+        </span>
       ) : null}
       {children}
     </button>

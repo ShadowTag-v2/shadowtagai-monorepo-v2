@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html, render} from 'lit';
+import { html, render } from 'lit';
 
-import {Validator} from './validator.js';
+import { Validator } from './validator.js';
 
 /**
  * Constraint validation properties for a select dropdown.
@@ -50,7 +50,7 @@ export class SelectValidator extends Validator<SelectState> {
     return prev.value === next.value && prev.required === next.required;
   }
 
-  protected override copy({value, required}: SelectState) {
-    return {value, required};
+  protected override copy({ value, required }: SelectState) {
+    return { value, required };
   }
 }

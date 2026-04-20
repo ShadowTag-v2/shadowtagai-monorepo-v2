@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import ForceGraph2D from "react-force-graph-2d";
+import React, { useEffect, useRef } from 'react';
+import ForceGraph2D from 'react-force-graph-2d';
 
 export const CollaborationGraph = ({ data }) => {
   const fgRef = useRef();
@@ -16,15 +16,15 @@ export const CollaborationGraph = ({ data }) => {
         height={400}
         width={700}
         nodeCanvasObject={(node, ctx, globalScale) => {
-          if (node.id === "antigravity_agent_01") {
+          if (node.id === 'antigravity_agent_01') {
             // Draw a glowing square for the Agent
-            ctx.fillStyle = "#ff0034"; // High-Vis Red
+            ctx.fillStyle = '#ff0034'; // High-Vis Red
             ctx.fillRect(node.x - 6, node.y - 6, 12, 12);
           } else {
             // Draw standard circles for Researchers
             ctx.beginPath();
             ctx.arc(node.x, node.y, 5, 0, 2 * Math.PI, false);
-            ctx.fillStyle = "#58a6ff";
+            ctx.fillStyle = '#58a6ff';
             ctx.fill();
           }
         }}

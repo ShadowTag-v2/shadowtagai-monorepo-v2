@@ -51,7 +51,7 @@ ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 */
 
 // [CODE STARTS]
-module = await import("https://esm.sh/@google/genai@1.4.0");
+module = await import('https://esm.sh/@google/genai@1.4.0');
 GoogleGenAI = module.GoogleGenAI;
 ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 // [CODE ENDS]
@@ -69,8 +69,8 @@ In this example you can see the `gemini-2.5-flash` model has an 1M tokens contex
 // [CODE STARTS]
 modelInfo = await ai.models.get({ model: MODEL_ID });
 
-console.log("Context window:", modelInfo.inputTokenLimit, "tokens");
-console.log("Max output window:", modelInfo.outputTokenLimit, "tokens");
+console.log('Context window:', modelInfo.inputTokenLimit, 'tokens');
+console.log('Max output window:', modelInfo.outputTokenLimit, 'tokens');
 
 // [CODE ENDS]
 
@@ -100,7 +100,7 @@ For more information about all Gemini models, check the [documentation](https://
 */
 
 // [CODE STARTS]
-MODEL_ID = "gemini-2.5-flash"; // "gemini-2.5-flash-lite", "gemini-2.5-flash""gemini-2.5-pro", "gemini-3.1-flash-lite-preview", "gemini-3-flash-preview", "gemini-3.1-pro-preview"
+MODEL_ID = 'gemini-2.5-flash'; // "gemini-2.5-flash-lite", "gemini-2.5-flash""gemini-2.5-pro", "gemini-3.1-flash-lite-preview", "gemini-3-flash-preview", "gemini-3.1-pro-preview"
 // [CODE ENDS]
 
 /* Markdown (render)
@@ -112,7 +112,7 @@ countTokensResponse = await ai.models.countTokens({
   model: MODEL_ID,
   contents: [{ text: "What's the highest mountain in Africa?" }],
 });
-console.log("Prompt tokens:", countTokensResponse.totalTokens);
+console.log('Prompt tokens:', countTokensResponse.totalTokens);
 // [CODE ENDS]
 
 /* Output Sample
@@ -128,7 +128,7 @@ When you call `ai.models.generateContent` (or `ai.sendMessage`) the response obj
 // [CODE STARTS]
 genResponse = await ai.models.generateContent({
   model: MODEL_ID,
-  contents: "The quick brown fox jumps over the lazy dog.",
+  contents: 'The quick brown fox jumps over the lazy dog.',
 });
 
 console.log(genResponse.text);
@@ -145,9 +145,9 @@ It&#x27;s famously used for testing typewriters, keyboards, and fonts, as it all
 */
 
 // [CODE STARTS]
-console.log("Prompt tokens:", genResponse.usageMetadata.promptTokenCount);
-console.log("Output tokens:", genResponse.usageMetadata.candidatesTokenCount);
-console.log("Total tokens:", genResponse.usageMetadata.totalTokenCount);
+console.log('Prompt tokens:', genResponse.usageMetadata.promptTokenCount);
+console.log('Output tokens:', genResponse.usageMetadata.candidatesTokenCount);
+console.log('Total tokens:', genResponse.usageMetadata.totalTokenCount);
 // [CODE ENDS]
 
 /* Output Sample
@@ -174,12 +174,12 @@ The current rates and token sizes can be found on the [documentation](https://ai
 
 // [CODE STARTS]
 const IMAGE_URL =
-  "https://t3.gstatic.com/licensed-image?q=tbn:ANd9GcQVVI2MWny3lHHTBYrzBOkRDMrJ3Bq2SbJrY0utnaCL8r0prFCjGFyujAFblaPu_eqAMXSPkrTqYGJ3rqdIQQ";
+  'https://t3.gstatic.com/licensed-image?q=tbn:ANd9GcQVVI2MWny3lHHTBYrzBOkRDMrJ3Bq2SbJrY0utnaCL8r0prFCjGFyujAFblaPu_eqAMXSPkrTqYGJ3rqdIQQ';
 imageBlob = await fetch(IMAGE_URL).then((res) => res.blob());
 
 imageDataUrl = await new Promise((resolve) => {
   reader = new FileReader();
-  reader.onloadend = () => resolve(reader.result.split(",")[1]);
+  reader.onloadend = () => resolve(reader.result.split(',')[1]);
   reader.readAsDataURL(imageBlob);
 });
 
@@ -211,7 +211,7 @@ countTokensResponse = await ai.models.countTokens({
   ],
 });
 
-console.log("Prompt with image tokens:", countTokensResponse.totalTokens);
+console.log('Prompt with image tokens:', countTokensResponse.totalTokens);
 // [CODE ENDS]
 
 /* Output Sample
@@ -234,7 +234,7 @@ The model sees identical tokens if you upload parts of the prompt through the fi
 organUpload = await ai.files.upload({
   file: imageBlob,
   mimeType: imageBlob.type,
-  displayName: "organ.jpg",
+  displayName: 'organ.jpg',
 });
 
 countTokensResponse = await ai.models.countTokens({
@@ -242,7 +242,7 @@ countTokensResponse = await ai.models.countTokens({
   contents: [{ fileData: { fileUri: organUpload.uri } }],
 });
 
-console.log("Prompt with image tokens:", countTokensResponse.totalTokens);
+console.log('Prompt with image tokens:', countTokensResponse.totalTokens);
 
 // [CODE ENDS]
 
@@ -258,7 +258,7 @@ Audio and video are each converted to tokens at a fixed rate of tokens per minut
 
 // [CODE STARTS]
 mp3Url =
-  "https://storage.googleapis.com/generativeai-downloads/data/State_of_the_Union_Address_30_January_1961.mp3";
+  'https://storage.googleapis.com/generativeai-downloads/data/State_of_the_Union_Address_30_January_1961.mp3';
 response = await fetch(mp3Url);
 audioBlob = await response.blob();
 
@@ -266,8 +266,8 @@ audioUrl = URL.createObjectURL(audioBlob);
 audio = new Audio(audioUrl);
 
 await new Promise((resolve) => {
-  audio.addEventListener("loadedmetadata", () => {
-    console.log("Duration (in seconds):", audio.duration);
+  audio.addEventListener('loadedmetadata', () => {
+    console.log('Duration (in seconds):', audio.duration);
     resolve();
   });
 });
@@ -287,8 +287,8 @@ As you can see, this audio file is 2610s long.
 // [CODE STARTS]
 uploadedAudio = await ai.files.upload({
   file: audioBlob,
-  displayName: "sample.mp3",
-  mimeType: "audio/mpeg",
+  displayName: 'sample.mp3',
+  mimeType: 'audio/mpeg',
 });
 // [CODE ENDS]
 
@@ -305,8 +305,8 @@ countTokensResponse = await ai.models.countTokens({
   ],
 });
 
-console.log("Prompt with audio tokens:", countTokensResponse.totalTokens);
-console.log("Tokens per second:", countTokensResponse.totalTokens / 2610);
+console.log('Prompt with audio tokens:', countTokensResponse.totalTokens);
+console.log('Tokens per second:', countTokensResponse.totalTokens / 2610);
 // [CODE ENDS]
 
 /* Output Sample

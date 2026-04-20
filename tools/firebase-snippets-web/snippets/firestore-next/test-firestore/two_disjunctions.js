@@ -5,5 +5,5 @@
 // 'npm run snippets'.
 
 // [START two_disjunctions_modular]
-query(collectionRef, or( where("a", "==", 1), where("b", "==", 2) ));
+query(collectionRef, or(where('a', '==', 1), where('b', '==', 2)));
 // [END two_disjunctions_modular]

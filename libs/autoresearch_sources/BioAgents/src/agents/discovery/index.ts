@@ -1,6 +1,6 @@
-import type { ConversationState, Discovery, Message, PlanTask } from "../../types/core";
-import logger from "../../utils/logger";
-import { extractDiscoveries, fixDiscoveryArtifactPaths, type DiscoveryDoc } from "./utils";
+import type { ConversationState, Discovery, Message, PlanTask } from '../../types/core';
+import logger from '../../utils/logger';
+import { type DiscoveryDoc, extractDiscoveries, fixDiscoveryArtifactPaths } from './utils';
 
 type DiscoveryAgentResult = {
   discoveries: Discovery[];
@@ -35,7 +35,7 @@ export async function discoveryAgent(input: {
       hasHypothesis: !!hypothesis,
       currentDiscoveries: conversationState.values.discoveries?.length || 0,
     },
-    "discovery_agent_started",
+    'discovery_agent_started',
   );
 
   try {
@@ -52,14 +52,14 @@ export async function discoveryAgent(input: {
           hasOutput: !!task.output,
           outputLength: task.output?.length || 0,
         },
-        "processing_task_for_discovery",
+        'processing_task_for_discovery',
       );
 
       if (task.output && task.output.trim()) {
         discoveryDocs.push({
           title: task.objective,
-          text: `Task ID: ${task.id}\nJob ID: ${task.jobId || "N/A"}\nTask Type: ${task.type}\n\nOutput:\n${task.output}`,
-          context: `Output from ${task.type} task (${task.id}, Job ID: ${task.jobId || "N/A"})`,
+          text: `Task ID: ${task.id}\nJob ID: ${task.jobId || 'N/A'}\nTask Type: ${task.type}\n\nOutput:\n${task.output}`,
+          context: `Output from ${task.type} task (${task.id}, Job ID: ${task.jobId || 'N/A'})`,
         });
       }
     });
@@ -67,21 +67,21 @@ export async function discoveryAgent(input: {
     // Add hypothesis if available
     if (hypothesis) {
       discoveryDocs.push({
-        title: "Current Hypothesis",
+        title: 'Current Hypothesis',
         text: hypothesis,
-        context: "Working hypothesis from completed tasks",
+        context: 'Working hypothesis from completed tasks',
       });
     }
 
     // Build conversation history from recent messages
     let conversationHistory = `Research Question: ${message.question || conversationState.values.objective}
-Evolving Research Direction: ${conversationState.values.evolvingObjective || conversationState.values.objective || "Not set"}
-Current Objective: ${conversationState.values.currentObjective || "Not set"}`;
+Evolving Research Direction: ${conversationState.values.evolvingObjective || conversationState.values.objective || 'Not set'}
+Current Objective: ${conversationState.values.currentObjective || 'Not set'}`;
 
     const conversationId = message.conversation_id;
     if (conversationId) {
       try {
-        const { getMessagesByConversation } = await import("../../db/operations");
+        const { getMessagesByConversation } = await import('../../db/operations');
         // Fetch 6 messages (current + 5 previous), then skip the first one (current message)
         const allMessages = await getMessagesByConversation(conversationId, 6);
 
@@ -106,22 +106,22 @@ Current Objective: ${conversationState.values.currentObjective || "Not set"}`;
                 parts.push(`Assistant: ${msg.summary}`);
               }
 
-              return parts.join("\n");
+              return parts.join('\n');
             })
-            .join("\n\n");
+            .join('\n\n');
 
           if (messageHistory) {
             conversationHistory += `\n\nRecent Conversation History (last ${orderedMessages.length} exchanges):\n${messageHistory}`;
           }
         }
       } catch (error) {
-        logger.warn({ error }, "Failed to fetch conversation history for discovery agent");
+        logger.warn({ error }, 'Failed to fetch conversation history for discovery agent');
       }
     }
 
     if (discoveryDocs.length === 0) {
       logger.warn(
-        "No task outputs available for discovery extraction, returning current discoveries",
+        'No task outputs available for discovery extraction, returning current discoveries',
       );
       const end = new Date().toISOString();
       return {
@@ -131,18 +131,18 @@ Current Objective: ${conversationState.values.currentObjective || "Not set"}`;
       };
     }
 
-    logger.info({ docCount: discoveryDocs.length }, "extracting_discoveries_from_tasks");
+    logger.info({ docCount: discoveryDocs.length }, 'extracting_discoveries_from_tasks');
 
     // Extract discoveries
     const { discoveries } = await extractDiscoveries(
-      message.question || conversationState.values.objective || "",
+      message.question || conversationState.values.objective || '',
       conversationState.values.discoveries || [],
       conversationHistory,
       discoveryDocs,
       {
         maxTokens: 8000,
         messageId: message.id,
-        usageType: "deep-research",
+        usageType: 'deep-research',
       },
     );
 
@@ -157,7 +157,7 @@ Current Objective: ${conversationState.values.currentObjective || "Not set"}`;
         discoveryCount: fixedDiscoveries.length,
         discoveries: fixedDiscoveries,
       },
-      "discovery_agent_completed",
+      'discovery_agent_completed',
     );
 
     return {
@@ -166,7 +166,7 @@ Current Objective: ${conversationState.values.currentObjective || "Not set"}`;
       end,
     };
   } catch (err) {
-    logger.error({ err }, "discovery_agent_failed");
+    logger.error({ err }, 'discovery_agent_failed');
     throw err;
   }
 }

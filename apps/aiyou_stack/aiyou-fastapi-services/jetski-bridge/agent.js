@@ -1,15 +1,15 @@
 // agent.js - The "Brain" of the operation
-const puppeteer = require("puppeteer-core");
-const axios = require("axios");
-require("dotenv").config(); // Load your GEMINI_API_KEY or OPENAI_API_KEY
+const puppeteer = require('puppeteer-core');
+const axios = require('axios');
+require('dotenv').config(); // Load your GEMINI_API_KEY or OPENAI_API_KEY
 
 // CONFIGURATION
-const CHROME_DEBUG_URL = "http://127.0.0.1:9222"; // Port enabled by --remote-debugging-port
-const BRIDGE_CONTROL_URL = "http://127.0.0.1:8080/control";
+const CHROME_DEBUG_URL = 'http://127.0.0.1:9222'; // Port enabled by --remote-debugging-port
+const BRIDGE_CONTROL_URL = 'http://127.0.0.1:8080/control';
 const GOAL = "Go to Google Cloud Console, search for 'VM Instances', and click the first result.";
 
 async function runAgentLoop() {
-  console.log("🤖 Agent started. Connecting to Chrome...");
+  console.log('🤖 Agent started. Connecting to Chrome...');
 
   // 1. CONNECT TO CHROME (The "Eyes")
   // We use puppeteer-core to connect to the existing browser instance
@@ -18,7 +18,7 @@ async function runAgentLoop() {
   });
   const page = (await browser.pages())[0]; // Grab the first open tab
 
-  console.log("✅ Connected to active tab:", await page.url());
+  console.log('✅ Connected to active tab:', await page.url());
 
   // THE AGENT LOOP
   let step = 0;
@@ -28,15 +28,15 @@ async function runAgentLoop() {
     console.log(`\n--- STEP ${step + 1} ---`);
 
     // A. TAKE SCREENSHOT
-    const screenshotBase64 = await page.screenshot({ encoding: "base64" });
-    console.log("📸 Screenshot captured.");
+    const screenshotBase64 = await page.screenshot({ encoding: 'base64' });
+    console.log('📸 Screenshot captured.');
 
     // B. THINK (Call LLM)
     const action = await askLLM(GOAL, screenshotBase64);
-    console.log("🧠 LLM Decided:", action);
+    console.log('🧠 LLM Decided:', action);
 
-    if (action.type === "finish") {
-      console.log("🎉 Goal achieved!");
+    if (action.type === 'finish') {
+      console.log('🎉 Goal achieved!');
       break;
     }
 
@@ -49,9 +49,9 @@ async function runAgentLoop() {
         action: action.type,
         payload: action.payload,
       });
-      console.log("🚀 Command sent to Bridge.");
+      console.log('🚀 Command sent to Bridge.');
     } catch (err) {
-      console.error("❌ Bridge Error:", err.message);
+      console.error('❌ Bridge Error:', err.message);
     }
 
     // Wait for the browser to react (simple delay)
@@ -81,20 +81,20 @@ async function askLLM(goal, imageBase64) {
 
   // --- HARDCODED DEMO LOGIC (For testing without API Key) ---
   const stepLogic = [
-    { type: "navigate", payload: { url: "https://console.cloud.google.com" } },
+    { type: 'navigate', payload: { url: 'https://console.cloud.google.com' } },
     {
-      type: "exec",
+      type: 'exec',
       payload: {
         code: `document.querySelector('input[type="text"]').value = 'VM Instances';`,
       },
     }, // Simplified search
     {
-      type: "exec",
+      type: 'exec',
       payload: {
         code: `document.querySelector('button[aria-label="Search"]').click();`,
       },
     },
-    { type: "finish", payload: {} },
+    { type: 'finish', payload: {} },
   ];
 
   // Return a random step for demonstration if logic isn't implemented

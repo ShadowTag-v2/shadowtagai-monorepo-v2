@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { registerListDataSourcesTool } from './list_datasources.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { registerGetDataSourceTool } from './get_datasource.js';
+import { registerListDataSourcesTool } from './list_datasources.js';
 
 export const registerDataSourcesTools = (server: McpServer) => {
   registerListDataSourcesTool(server);

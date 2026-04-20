@@ -15,67 +15,62 @@
  */
 
 import * as protos from '../../protos/firestore_v1_proto_api';
-import api = protos.google.firestore.v1;
-import * as firestore from '@google-cloud/firestore';
-import {GoogleError} from 'google-gax';
-import {Transform} from 'stream';
-import {and, field, Ordering} from '../pipelines';
 
-import {CompositeFilter, UnaryFilter} from '../filter';
+import api = protos.google.firestore.v1;
+
+import type * as firestore from '@google-cloud/firestore';
+import type { GoogleError } from 'google-gax';
+import { Transform } from 'stream';
+import { type CompositeFilter, UnaryFilter } from '../filter';
 import {
   AggregateField,
-  DocumentChange,
+  type DocumentChange,
   DocumentSnapshot,
   FieldPath,
   Filter,
-  Firestore,
-  QueryDocumentSnapshot,
+  type Firestore,
+  type QueryDocumentSnapshot,
   Timestamp,
 } from '../index';
-import {compare} from '../order';
-import {validateFieldPath} from '../path';
-import {Pipeline} from '../pipelines';
+import { compare } from '../order';
+import { validateFieldPath } from '../path';
+import { and, field, Ordering, type Pipeline } from '../pipelines';
 import {
   reverseOrderings,
   toPipelineBooleanExpr,
   whereConditionsFromCursor,
 } from '../pipelines/pipeline-util';
-import {ExplainResults} from '../query-profile';
-import {Serializer} from '../serializer';
-import {defaultConverter} from '../types';
+import { ExplainResults } from '../query-profile';
+import { Serializer } from '../serializer';
+import { SPAN_NAME_QUERY_GET } from '../telemetry/trace-util';
+import { defaultConverter } from '../types';
 import {
   invalidArgumentMessage,
   validateFunction,
   validateInteger,
   validateMinNumberOfArguments,
 } from '../validate';
-import {QueryWatch} from '../watch';
-import {AggregateQuery} from './aggregate-query';
-import {CompositeFilterInternal} from './composite-filter-internal';
-import {comparisonOperators, directionOperators} from './constants';
-import {DocumentReference} from './document-reference';
-import {FieldFilterInternal} from './field-filter-internal';
-import {FieldOrder} from './field-order';
-import {FilterInternal} from './filter-internal';
-import {
-  validateQueryOperator,
-  validateQueryOrder,
-  validateQueryValue,
-} from './helpers';
-import {QueryOptions} from './query-options';
-import {QuerySnapshot} from './query-snapshot';
-
-import {QueryUtil} from './query-util';
+import type { QueryWatch } from '../watch';
+import { AggregateQuery } from './aggregate-query';
+import { CompositeFilterInternal } from './composite-filter-internal';
+import { comparisonOperators, directionOperators } from './constants';
+import { DocumentReference } from './document-reference';
+import { FieldFilterInternal } from './field-filter-internal';
+import { FieldOrder } from './field-order';
+import type { FilterInternal } from './filter-internal';
+import { validateQueryOperator, validateQueryOrder, validateQueryValue } from './helpers';
+import type { QueryOptions } from './query-options';
+import { QuerySnapshot } from './query-snapshot';
+import { QueryUtil } from './query-util';
 import {
   LimitType,
-  QueryCursor,
-  QueryResponse,
-  QuerySnapshotResponse,
-  QueryStreamElement,
+  type QueryCursor,
+  type QueryResponse,
+  type QuerySnapshotResponse,
+  type QueryStreamElement,
 } from './types';
-import {VectorQuery} from './vector-query';
-import {VectorQueryOptions} from './vector-query-options';
-import {SPAN_NAME_QUERY_GET} from '../telemetry/trace-util';
+import { VectorQuery } from './vector-query';
+import type { VectorQueryOptions } from './vector-query-options';
 
 /**
  * A Query refers to a query which you can read or stream from. You can also
@@ -102,11 +97,7 @@ export class Query<
    * @internal
    * @private
    **/
-  readonly _queryUtil: QueryUtil<
-    AppModelType,
-    DbModelType,
-    Query<AppModelType, DbModelType>
-  >;
+  readonly _queryUtil: QueryUtil<AppModelType, DbModelType, Query<AppModelType, DbModelType>>;
 
   /**
    * @internal
@@ -128,13 +119,12 @@ export class Query<
     readonly _queryOptions: QueryOptions<AppModelType, DbModelType>,
   ) {
     this._serializer = new Serializer(_firestore);
-    this._allowUndefined =
-      !!this._firestore._settings.ignoreUndefinedProperties;
-    this._queryUtil = new QueryUtil<
-      AppModelType,
-      DbModelType,
-      Query<AppModelType, DbModelType>
-    >(_firestore, _queryOptions, this._serializer);
+    this._allowUndefined = !!this._firestore._settings.ignoreUndefinedProperties;
+    this._queryUtil = new QueryUtil<AppModelType, DbModelType, Query<AppModelType, DbModelType>>(
+      _firestore,
+      _queryOptions,
+      this._serializer,
+    );
   }
 
   /**
@@ -315,8 +305,7 @@ export class Query<
     if (FieldPath.documentId().isEqual(path)) {
       if (operator === 'array-contains' || operator === 'array-contains-any') {
         throw new Error(
-          `Invalid Query. You can't perform '${operator}' ` +
-            'queries on FieldPath.documentId().',
+          `Invalid Query. You can't perform '${operator}' ` + 'queries on FieldPath.documentId().',
         );
       } else if (operator === 'in' || operator === 'not-in') {
         if (!Array.isArray(value) || value.length === 0) {
@@ -324,18 +313,13 @@ export class Query<
             `Invalid Query. A non-empty array is required for '${operator}' filters.`,
           );
         }
-        value = value.map(el => this.validateReference(el));
+        value = value.map((el) => this.validateReference(el));
       } else {
         value = this.validateReference(value);
       }
     }
 
-    return new FieldFilterInternal(
-      this._serializer,
-      path,
-      comparisonOperators[operator],
-      value,
-    );
+    return new FieldFilterInternal(this._serializer, path, comparisonOperators[operator], value);
   }
 
   /**
@@ -345,8 +329,8 @@ export class Query<
   _parseCompositeFilter(compositeFilterData: CompositeFilter): FilterInternal {
     const parsedFilters = compositeFilterData
       ._getFilters()
-      .map(filter => this._parseFilter(filter))
-      .filter(parsedFilter => parsedFilter.getFilters().length > 0);
+      .map((filter) => this._parseFilter(filter))
+      .filter((parsedFilter) => parsedFilter.getFilters().length > 0);
 
     // For composite filters containing 1 filter, return the only filter.
     // For example: AND(FieldFilter1) == FieldFilter1
@@ -390,7 +374,7 @@ export class Query<
     const fields: api.StructuredQuery.IFieldReference[] = [];
 
     if (fieldPaths.length === 0) {
-      fields.push({fieldPath: FieldPath.documentId().formattedName});
+      fields.push({ fieldPath: FieldPath.documentId().formattedName });
     } else {
       for (let i = 0; i < fieldPaths.length; ++i) {
         validateFieldPath(i, fieldPaths[i]);
@@ -403,7 +387,7 @@ export class Query<
     // By specifying a field mask, the query result no longer conforms to type
     // `T`. We there return `Query<DocumentData>`;
     const options = this._queryOptions.with({
-      projection: {fields},
+      projection: { fields },
     }) as QueryOptions<firestore.DocumentData, firestore.DocumentData>;
     return new Query(this._firestore, options);
   }
@@ -514,7 +498,7 @@ export class Query<
   limitToLast(limit: number): Query<AppModelType, DbModelType> {
     validateInteger('limitToLast', limit);
 
-    const options = this._queryOptions.with({limit, limitType: LimitType.Last});
+    const options = this._queryOptions.with({ limit, limitType: LimitType.Last });
     return new Query(this._firestore, options);
   }
 
@@ -542,7 +526,7 @@ export class Query<
   offset(offset: number): Query<AppModelType, DbModelType> {
     validateInteger('offset', offset);
 
-    const options = this._queryOptions.with({offset});
+    const options = this._queryOptions.with({ offset });
     return new Query(this._firestore, options);
   }
 
@@ -563,11 +547,7 @@ export class Query<
    * `snapshot` is the `AggregateQuerySnapshot` resulting from running the
    * returned query.
    */
-  count(): AggregateQuery<
-    {count: firestore.AggregateField<number>},
-    AppModelType,
-    DbModelType
-  > {
+  count(): AggregateQuery<{ count: firestore.AggregateField<number> }, AppModelType, DbModelType> {
     return this.aggregate({
       count: AggregateField.count(),
     });
@@ -606,10 +586,7 @@ export class Query<
   aggregate<T extends firestore.AggregateSpec>(
     aggregateSpec: T,
   ): AggregateQuery<T, AppModelType, DbModelType> {
-    return new AggregateQuery<T, AppModelType, DbModelType>(
-      this,
-      aggregateSpec,
-    );
+    return new AggregateQuery<T, AppModelType, DbModelType>(this, aggregateSpec);
   }
 
   /**
@@ -677,9 +654,7 @@ export class Query<
    * @param options - An argument specifying the behavior of the {@link VectorQuery} returned by this function.
    * See {@link VectorQueryOptions}.
    */
-  findNearest(
-    options: VectorQueryOptions,
-  ): VectorQuery<AppModelType, DbModelType>;
+  findNearest(options: VectorQueryOptions): VectorQuery<AppModelType, DbModelType>;
 
   findNearest(
     vectorFieldOrOptions: string | firestore.FieldPath | VectorQueryOptions,
@@ -689,10 +664,7 @@ export class Query<
       distanceMeasure?: 'EUCLIDEAN' | 'COSINE' | 'DOT_PRODUCT';
     },
   ): VectorQuery<AppModelType, DbModelType> {
-    if (
-      typeof vectorFieldOrOptions === 'string' ||
-      vectorFieldOrOptions instanceof FieldPath
-    ) {
+    if (typeof vectorFieldOrOptions === 'string' || vectorFieldOrOptions instanceof FieldPath) {
       const vqOptions: VectorQueryOptions = {
         distanceMeasure: options!.distanceMeasure!,
         limit: options!.limit!,
@@ -705,9 +677,7 @@ export class Query<
     }
   }
 
-  _findNearest(
-    options: VectorQueryOptions,
-  ): VectorQuery<AppModelType, DbModelType> {
+  _findNearest(options: VectorQueryOptions): VectorQuery<AppModelType, DbModelType> {
     validateFieldPath('vectorField', options.vectorField);
 
     if (options.limit <= 0) {
@@ -719,10 +689,7 @@ export class Query<
         ? options.queryVector.length
         : options.queryVector.toArray().length) === 0
     ) {
-      throw invalidArgumentMessage(
-        'queryVector',
-        'vector size must be larger than 0',
-      );
+      throw invalidArgumentMessage('queryVector', 'vector size must be larger than 0');
     }
 
     return new VectorQuery<AppModelType, DbModelType>(this, options);
@@ -743,44 +710,34 @@ export class Query<
     let pipeline: Pipeline;
     const db = this.firestore;
     if (this._isCollectionGroupQuery()) {
-      pipeline = db
-        .pipeline()
-        .collectionGroup(this._queryOptions.collectionId!);
+      pipeline = db.pipeline().collectionGroup(this._queryOptions.collectionId!);
     } else {
       pipeline = db
         .pipeline()
         .collection(
-          this._queryOptions.parentPath.append(this._queryOptions.collectionId)
-            .relativeName,
+          this._queryOptions.parentPath.append(this._queryOptions.collectionId).relativeName,
         );
     }
 
     // filters
     for (const filter of this._queryOptions.filters) {
-      pipeline = pipeline.where(
-        toPipelineBooleanExpr(filter, this._serializer),
-      );
+      pipeline = pipeline.where(toPipelineBooleanExpr(filter, this._serializer));
     }
 
     // projections
     const projections = this._queryOptions.projection?.fields || [];
     if (projections.length > 0) {
-      const projectionFields = projections.map(p => field(p.fieldPath!));
-      pipeline = pipeline.select(
-        projectionFields[0],
-        ...projectionFields.slice(1),
-      );
+      const projectionFields = projections.map((p) => field(p.fieldPath!));
+      pipeline = pipeline.select(projectionFields[0], ...projectionFields.slice(1));
     }
 
     // orders
     // Ignore inequality fields when creating implicit order-bys
     // for generating existsConditions, because existence filters
     // will have already been added in the call to `toPipelineBooleanExpr`
-    const existsConditions = this.createImplicitOrderBy(true).map(
-      fieldOrder => {
-        return field(fieldOrder.field).exists();
-      },
-    );
+    const existsConditions = this.createImplicitOrderBy(true).map((fieldOrder) => {
+      return field(fieldOrder.field).exists();
+    });
     if (existsConditions.length > 1) {
       const [first, second, ...rest] = existsConditions;
       pipeline = pipeline.where(and(first, second, ...rest));
@@ -788,8 +745,8 @@ export class Query<
       pipeline = pipeline.where(existsConditions[0]);
     }
 
-    const orderings = this.createImplicitOrderBy().map(fieldOrder => {
-      let dir: 'ascending' | 'descending' | undefined = undefined;
+    const orderings = this.createImplicitOrderBy().map((fieldOrder) => {
+      let dir: 'ascending' | 'descending' | undefined;
       switch (fieldOrder.direction) {
         case 'ASCENDING': {
           dir = 'ascending';
@@ -806,28 +763,17 @@ export class Query<
     if (orderings.length > 0) {
       if (this._queryOptions.limitType === LimitType.Last) {
         const actualOrderings = reverseOrderings(orderings);
-        pipeline = pipeline.sort(
-          actualOrderings[0],
-          ...actualOrderings.slice(1),
-        );
+        pipeline = pipeline.sort(actualOrderings[0], ...actualOrderings.slice(1));
         // cursors
         if (this._queryOptions.startAt !== undefined) {
           pipeline = pipeline.where(
-            whereConditionsFromCursor(
-              this._queryOptions.startAt,
-              orderings,
-              'after',
-            ),
+            whereConditionsFromCursor(this._queryOptions.startAt, orderings, 'after'),
           );
         }
 
         if (this._queryOptions.endAt !== undefined) {
           pipeline = pipeline.where(
-            whereConditionsFromCursor(
-              this._queryOptions.endAt,
-              orderings,
-              'before',
-            ),
+            whereConditionsFromCursor(this._queryOptions.endAt, orderings, 'before'),
           );
         }
 
@@ -840,20 +786,12 @@ export class Query<
         pipeline = pipeline.sort(orderings[0], ...orderings.slice(1));
         if (this._queryOptions.startAt !== undefined) {
           pipeline = pipeline.where(
-            whereConditionsFromCursor(
-              this._queryOptions.startAt,
-              orderings,
-              'after',
-            ),
+            whereConditionsFromCursor(this._queryOptions.startAt, orderings, 'after'),
           );
         }
         if (this._queryOptions.endAt !== undefined) {
           pipeline = pipeline.where(
-            whereConditionsFromCursor(
-              this._queryOptions.endAt,
-              orderings,
-              'before',
-            ),
+            whereConditionsFromCursor(this._queryOptions.endAt, orderings, 'before'),
           );
         }
 
@@ -882,9 +820,7 @@ export class Query<
       return true;
     }
 
-    return (
-      other instanceof Query && this._queryOptions.isEqual(other._queryOptions)
-    );
+    return other instanceof Query && this._queryOptions.isEqual(other._queryOptions);
   }
 
   /**
@@ -916,9 +852,7 @@ export class Query<
    * @returns The implicit ordering semantics.
    */
   private createImplicitOrderByForCursor(
-    cursorValuesOrDocumentSnapshot: Array<
-      DocumentSnapshot<AppModelType, DbModelType> | unknown
-    >,
+    cursorValuesOrDocumentSnapshot: Array<DocumentSnapshot<AppModelType, DbModelType> | unknown>,
   ): FieldOrder[] {
     // Add an implicit orderBy if the only cursor value is a DocumentSnapshot.
     if (
@@ -933,9 +867,7 @@ export class Query<
 
   private createImplicitOrderBy(ignoreInequalityFields = false): FieldOrder[] {
     const fieldOrders = this._queryOptions.fieldOrders.slice();
-    const fieldsNormalized = new Set([
-      ...fieldOrders.map(item => item.field.toString()),
-    ]);
+    const fieldsNormalized = new Set([...fieldOrders.map((item) => item.field.toString())]);
 
     /** The order of the implicit ordering always matches the last explicit order by. */
     const lastDirection =
@@ -953,10 +885,7 @@ export class Query<
        */
       const inequalityFields = this.getInequalityFilterFields();
       for (const field of inequalityFields) {
-        if (
-          !fieldsNormalized.has(field.toString()) &&
-          !field.isEqual(FieldPath.documentId())
-        ) {
+        if (!fieldsNormalized.has(field.toString()) && !field.isEqual(FieldPath.documentId())) {
           fieldOrders.push(new FieldOrder(field, lastDirection));
           fieldsNormalized.add(field.toString());
         }
@@ -1010,7 +939,7 @@ export class Query<
       );
     }
 
-    const options: QueryCursor = {values: [], before};
+    const options: QueryCursor = { values: [], before };
 
     for (let i = 0; i < fieldValues.length; ++i) {
       let fieldValue = fieldValues[i];
@@ -1039,9 +968,7 @@ export class Query<
    * @private
    * @internal
    */
-  private validateReference(
-    val: unknown,
-  ): DocumentReference<AppModelType, DbModelType> {
+  private validateReference(val: unknown): DocumentReference<AppModelType, DbModelType> {
     const basePath = this._queryOptions.allDescendants
       ? this._queryOptions.parentPath
       : this._queryOptions.parentPath.append(this._queryOptions.collectionId);
@@ -1087,13 +1014,9 @@ export class Query<
       );
     }
 
-    if (
-      !this._queryOptions.allDescendants &&
-      reference._path.parent()!.compareTo(basePath) !== 0
-    ) {
+    if (!this._queryOptions.allDescendants && reference._path.parent()!.compareTo(basePath) !== 0) {
       throw new Error(
-        'Only a direct child can be used as a query boundary. ' +
-          `Found: "${reference.path}".`,
+        'Only a direct child can be used as a query boundary. ' + `Found: "${reference.path}".`,
       );
     }
     return reference;
@@ -1120,25 +1043,13 @@ export class Query<
    * });
    * ```
    */
-  startAt(
-    ...fieldValuesOrDocumentSnapshot: Array<unknown>
-  ): Query<AppModelType, DbModelType> {
-    validateMinNumberOfArguments(
-      'Query.startAt',
-      fieldValuesOrDocumentSnapshot,
-      1,
-    );
+  startAt(...fieldValuesOrDocumentSnapshot: Array<unknown>): Query<AppModelType, DbModelType> {
+    validateMinNumberOfArguments('Query.startAt', fieldValuesOrDocumentSnapshot, 1);
 
-    const fieldOrders = this.createImplicitOrderByForCursor(
-      fieldValuesOrDocumentSnapshot,
-    );
-    const startAt = this.createCursor(
-      fieldOrders,
-      fieldValuesOrDocumentSnapshot,
-      true,
-    );
+    const fieldOrders = this.createImplicitOrderByForCursor(fieldValuesOrDocumentSnapshot);
+    const startAt = this.createCursor(fieldOrders, fieldValuesOrDocumentSnapshot, true);
 
-    const options = this._queryOptions.with({fieldOrders, startAt});
+    const options = this._queryOptions.with({ fieldOrders, startAt });
     return new Query(this._firestore, options);
   }
 
@@ -1164,25 +1075,13 @@ export class Query<
    * });
    * ```
    */
-  startAfter(
-    ...fieldValuesOrDocumentSnapshot: Array<unknown>
-  ): Query<AppModelType, DbModelType> {
-    validateMinNumberOfArguments(
-      'Query.startAfter',
-      fieldValuesOrDocumentSnapshot,
-      1,
-    );
+  startAfter(...fieldValuesOrDocumentSnapshot: Array<unknown>): Query<AppModelType, DbModelType> {
+    validateMinNumberOfArguments('Query.startAfter', fieldValuesOrDocumentSnapshot, 1);
 
-    const fieldOrders = this.createImplicitOrderByForCursor(
-      fieldValuesOrDocumentSnapshot,
-    );
-    const startAt = this.createCursor(
-      fieldOrders,
-      fieldValuesOrDocumentSnapshot,
-      false,
-    );
+    const fieldOrders = this.createImplicitOrderByForCursor(fieldValuesOrDocumentSnapshot);
+    const startAt = this.createCursor(fieldOrders, fieldValuesOrDocumentSnapshot, false);
 
-    const options = this._queryOptions.with({fieldOrders, startAt});
+    const options = this._queryOptions.with({ fieldOrders, startAt });
     return new Query(this._firestore, options);
   }
 
@@ -1207,25 +1106,13 @@ export class Query<
    * });
    * ```
    */
-  endBefore(
-    ...fieldValuesOrDocumentSnapshot: Array<unknown>
-  ): Query<AppModelType, DbModelType> {
-    validateMinNumberOfArguments(
-      'Query.endBefore',
-      fieldValuesOrDocumentSnapshot,
-      1,
-    );
+  endBefore(...fieldValuesOrDocumentSnapshot: Array<unknown>): Query<AppModelType, DbModelType> {
+    validateMinNumberOfArguments('Query.endBefore', fieldValuesOrDocumentSnapshot, 1);
 
-    const fieldOrders = this.createImplicitOrderByForCursor(
-      fieldValuesOrDocumentSnapshot,
-    );
-    const endAt = this.createCursor(
-      fieldOrders,
-      fieldValuesOrDocumentSnapshot,
-      true,
-    );
+    const fieldOrders = this.createImplicitOrderByForCursor(fieldValuesOrDocumentSnapshot);
+    const endAt = this.createCursor(fieldOrders, fieldValuesOrDocumentSnapshot, true);
 
-    const options = this._queryOptions.with({fieldOrders, endAt});
+    const options = this._queryOptions.with({ fieldOrders, endAt });
     return new Query(this._firestore, options);
   }
 
@@ -1250,25 +1137,13 @@ export class Query<
    * });
    * ```
    */
-  endAt(
-    ...fieldValuesOrDocumentSnapshot: Array<unknown>
-  ): Query<AppModelType, DbModelType> {
-    validateMinNumberOfArguments(
-      'Query.endAt',
-      fieldValuesOrDocumentSnapshot,
-      1,
-    );
+  endAt(...fieldValuesOrDocumentSnapshot: Array<unknown>): Query<AppModelType, DbModelType> {
+    validateMinNumberOfArguments('Query.endAt', fieldValuesOrDocumentSnapshot, 1);
 
-    const fieldOrders = this.createImplicitOrderByForCursor(
-      fieldValuesOrDocumentSnapshot,
-    );
-    const endAt = this.createCursor(
-      fieldOrders,
-      fieldValuesOrDocumentSnapshot,
-      false,
-    );
+    const fieldOrders = this.createImplicitOrderByForCursor(fieldValuesOrDocumentSnapshot);
+    const endAt = this.createCursor(fieldOrders, fieldValuesOrDocumentSnapshot, false);
 
-    const options = this._queryOptions.with({fieldOrders, endAt});
+    const options = this._queryOptions.with({ fieldOrders, endAt });
     return new Query(this._firestore, options);
   }
 
@@ -1291,13 +1166,10 @@ export class Query<
    * ```
    */
   async get(): Promise<QuerySnapshot<AppModelType, DbModelType>> {
-    return this._firestore._traceUtil.startActiveSpan(
-      SPAN_NAME_QUERY_GET,
-      async () => {
-        const {result} = await this._get();
-        return result;
-      },
-    );
+    return this._firestore._traceUtil.startActiveSpan(SPAN_NAME_QUERY_GET, async () => {
+      const { result } = await this._get();
+      return result;
+    });
   }
 
   /**
@@ -1314,10 +1186,7 @@ export class Query<
     if (options === undefined) {
       options = {};
     }
-    const {result, explainMetrics} = await this._getResponse(
-      undefined,
-      options,
-    );
+    const { result, explainMetrics } = await this._getResponse(undefined, options);
     if (!explainMetrics) {
       throw new Error('No explain results');
     }
@@ -1340,21 +1209,14 @@ export class Query<
     if (!result.result) {
       throw new Error('No QuerySnapshot result');
     }
-    return result as QuerySnapshotResponse<
-      QuerySnapshot<AppModelType, DbModelType>
-    >;
+    return result as QuerySnapshotResponse<QuerySnapshot<AppModelType, DbModelType>>;
   }
 
   _getResponse(
     transactionOrReadTime?: Uint8Array | Timestamp | api.ITransactionOptions,
     explainOptions?: firestore.ExplainOptions,
   ): Promise<QueryResponse<QuerySnapshot<AppModelType, DbModelType>>> {
-    return this._queryUtil._getResponse(
-      this,
-      transactionOrReadTime,
-      true,
-      explainOptions,
-    );
+    return this._queryUtil._getResponse(this, transactionOrReadTime, true, explainOptions);
   }
 
   /**
@@ -1410,9 +1272,7 @@ export class Query<
    * });
    * ```
    */
-  explainStream(
-    explainOptions?: firestore.ExplainOptions,
-  ): NodeJS.ReadableStream {
+  explainStream(explainOptions?: firestore.ExplainOptions): NodeJS.ReadableStream {
     if (explainOptions === undefined) {
       explainOptions = {};
     }
@@ -1426,11 +1286,7 @@ export class Query<
     const responseStream = this._stream(undefined, explainOptions);
     const transform = new Transform({
       objectMode: true,
-      transform(
-        chunk: QueryStreamElement<AppModelType, DbModelType>,
-        encoding,
-        callback,
-      ) {
+      transform(chunk: QueryStreamElement<AppModelType, DbModelType>, encoding, callback) {
         if (chunk.document || chunk.explainMetrics) {
           callback(undefined, {
             document: chunk.document,
@@ -1440,7 +1296,7 @@ export class Query<
       },
     });
     responseStream.pipe(transform);
-    responseStream.on('error', e => transform.destroy(e));
+    responseStream.on('error', (e) => transform.destroy(e));
     return transform;
   }
 
@@ -1453,9 +1309,7 @@ export class Query<
    */
   private toCursor(cursor: QueryCursor | undefined): api.ICursor | undefined {
     if (cursor) {
-      return cursor.before
-        ? {before: true, values: cursor.values}
-        : {values: cursor.values};
+      return cursor.before ? { before: true, values: cursor.values } : { values: cursor.values };
     }
 
     return undefined;
@@ -1478,10 +1332,7 @@ export class Query<
   ): api.IRunQueryRequest {
     const projectId = this.firestore.projectId;
     const databaseId = this.firestore.databaseId;
-    const parentPath = this._queryOptions.parentPath.toQualifiedResourcePath(
-      projectId,
-      databaseId,
-    );
+    const parentPath = this._queryOptions.parentPath.toQualifiedResourcePath(projectId, databaseId);
 
     const structuredQuery = this.toStructuredQuery();
 
@@ -1489,15 +1340,12 @@ export class Query<
     // reversed ordered, and flipped startAt/endAt to work properly.
     if (this._queryOptions.limitType === LimitType.Last) {
       if (!this._queryOptions.hasFieldOrders()) {
-        throw new Error(
-          'limitToLast() queries require specifying at least one orderBy() clause.',
-        );
+        throw new Error('limitToLast() queries require specifying at least one orderBy() clause.');
       }
 
-      structuredQuery.orderBy = this._queryOptions.fieldOrders!.map(order => {
+      structuredQuery.orderBy = this._queryOptions.fieldOrders!.map((order) => {
         // Flip the orderBy directions since we want the last results
-        const dir =
-          order.direction === 'DESCENDING' ? 'ASCENDING' : 'DESCENDING';
+        const dir = order.direction === 'DESCENDING' ? 'ASCENDING' : 'DESCENDING';
         return new FieldOrder(order.field, dir).toProto();
       });
 
@@ -1545,10 +1393,7 @@ export class Query<
   _toBundledQuery(): protos.firestore.IBundledQuery {
     const projectId = this.firestore.projectId;
     const databaseId = this.firestore.databaseId;
-    const parentPath = this._queryOptions.parentPath.toQualifiedResourcePath(
-      projectId,
-      databaseId,
-    );
+    const parentPath = this._queryOptions.parentPath.toQualifiedResourcePath(projectId, databaseId);
     const structuredQuery = this.toStructuredQuery();
 
     const bundledQuery: protos.firestore.IBundledQuery = {
@@ -1587,16 +1432,14 @@ export class Query<
     }
 
     if (this._queryOptions.hasFieldOrders()) {
-      structuredQuery.orderBy = this._queryOptions.fieldOrders.map(o =>
-        o.toProto(),
-      );
+      structuredQuery.orderBy = this._queryOptions.fieldOrders.map((o) => o.toProto());
     }
 
     structuredQuery.startAt = this.toCursor(this._queryOptions.startAt);
     structuredQuery.endAt = this.toCursor(this._queryOptions.endAt);
 
     if (this._queryOptions.limit) {
-      structuredQuery.limit = {value: this._queryOptions.limit};
+      structuredQuery.limit = { value: this._queryOptions.limit };
     }
 
     structuredQuery.offset = this._queryOptions.offset;
@@ -1640,12 +1483,7 @@ export class Query<
     transactionOrReadTime?: Uint8Array | Timestamp | api.ITransactionOptions,
     explainOptions?: firestore.ExplainOptions,
   ): NodeJS.ReadableStream {
-    return this._queryUtil._stream(
-      this,
-      transactionOrReadTime,
-      true,
-      explainOptions,
-    );
+    return this._queryUtil._stream(this, transactionOrReadTime, true, explainOptions);
   }
 
   /**
@@ -1678,14 +1516,13 @@ export class Query<
     onError?: (error: Error) => void,
   ): () => void {
     validateFunction('onNext', onNext);
-    validateFunction('onError', onError, {optional: true});
+    validateFunction('onError', onError, { optional: true });
 
-    const watch: QueryWatch<AppModelType, DbModelType> =
-      new (require('../watch').QueryWatch)(
-        this.firestore,
-        this,
-        this._queryOptions.converter,
-      );
+    const watch: QueryWatch<AppModelType, DbModelType> = new (require('../watch').QueryWatch)(
+      this.firestore,
+      this,
+      this._queryOptions.converter,
+    );
 
     return watch.onSnapshot((readTime, size, docs, changes) => {
       onNext(new QuerySnapshot(this, readTime, size, docs, changes));
@@ -1706,9 +1543,7 @@ export class Query<
     return (doc1, doc2) => {
       // Add implicit sorting by name, using the last specified direction.
       const lastDirection = this._queryOptions.hasFieldOrders()
-        ? this._queryOptions.fieldOrders[
-            this._queryOptions.fieldOrders.length - 1
-          ].direction
+        ? this._queryOptions.fieldOrders[this._queryOptions.fieldOrders.length - 1].direction
         : 'ASCENDING';
       const orderBys = this._queryOptions.fieldOrders.concat(
         new FieldOrder(FieldPath.documentId(), lastDirection),
@@ -1745,10 +1580,7 @@ export class Query<
     NewAppModelType,
     NewDbModelType extends firestore.DocumentData = firestore.DocumentData,
   >(
-    converter: firestore.FirestoreDataConverter<
-      NewAppModelType,
-      NewDbModelType
-    > | null,
+    converter: firestore.FirestoreDataConverter<NewAppModelType, NewDbModelType> | null,
   ): Query<NewAppModelType, NewDbModelType>;
   /**
    * Applies a custom data converter to this Query, allowing you to use your
@@ -1804,10 +1636,7 @@ export class Query<
     NewAppModelType,
     NewDbModelType extends firestore.DocumentData = firestore.DocumentData,
   >(
-    converter: firestore.FirestoreDataConverter<
-      NewAppModelType,
-      NewDbModelType
-    > | null,
+    converter: firestore.FirestoreDataConverter<NewAppModelType, NewDbModelType> | null,
   ): Query<NewAppModelType, NewDbModelType> {
     return new Query<NewAppModelType, NewDbModelType>(
       this.firestore,
@@ -1827,12 +1656,6 @@ export class Query<
     docs: () => Array<QueryDocumentSnapshot<AppModelType, DbModelType>>,
     changes: () => Array<DocumentChange<AppModelType, DbModelType>>,
   ): QuerySnapshot<AppModelType, DbModelType> {
-    return new QuerySnapshot<AppModelType, DbModelType>(
-      this,
-      readTime,
-      size,
-      docs,
-      changes,
-    );
+    return new QuerySnapshot<AppModelType, DbModelType>(this, readTime, size, docs, changes);
   }
 }

@@ -1,16 +1,16 @@
- # Copyright 2024 Google LLC
- #
- # Licensed under the Apache License, Version 2.0 (the "License");
- # you may not use this file except in compliance with the License.
- # You may obtain a copy of the License at
- #
- #      http://www.apache.org/licenses/LICENSE-2.0
- #
- # Unless required by applicable law or agreed to in writing, software
- # distributed under the License is distributed on an "AS IS" BASIS,
- # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- # See the License for the specific language governing permissions and
- # limitations under the License.
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 mutation {
   movie_insertMany(
@@ -323,292 +323,232 @@ mutation {
   )
   movieMetadata_insertMany(
     data: [
+      { movieId: "550e8400-e29b-41d4-a716-446655440000", director: "Henry Caldwell" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440001", director: "Juliana Mason, Clark Avery" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440002", director: "Diana Rivers" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440003", director: "Liam Thatcher" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440004", director: "Evelyn Hart" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440005", director: "Grayson Brooks" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440006", director: "Isabella Quinn" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440007", director: "Vincent Hale" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440008", director: "Amelia Sutton" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440009", director: "Lucas Stone" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440010", director: "Sophia Langford" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440011", director: "Noah Bennett" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440012", director: "Chloe Armstrong" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440013", director: "Sebastian Crane" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440014", director: "Isla Fitzgerald" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440015", director: "Oliver Hayes" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440016", director: "Mila Donovan" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440017", director: "Carter Monroe, Elise Turner" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440018", director: "Adrian Blake" }
+      { movieId: "550e8400-e29b-41d4-a716-446655440019", director: "Hazel Carter" }
+    ]
+  )
+  movieActor_insertMany(
+    data: [
       {
         movieId: "550e8400-e29b-41d4-a716-446655440000"
-        director: "Henry Caldwell"
+        actorId: "123e4567-e89b-12d3-a456-426614174020"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440000"
+        actorId: "123e4567-e89b-12d3-a456-426614174021"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440001"
-        director: "Juliana Mason, Clark Avery"
+        actorId: "123e4567-e89b-12d3-a456-426614174021"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440001"
+        actorId: "123e4567-e89b-12d3-a456-426614174022"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440002"
-        director: "Diana Rivers"
+        actorId: "123e4567-e89b-12d3-a456-426614174022"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440002"
+        actorId: "123e4567-e89b-12d3-a456-426614174023"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440003"
-        director: "Liam Thatcher"
+        actorId: "123e4567-e89b-12d3-a456-426614174023"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440003"
+        actorId: "123e4567-e89b-12d3-a456-426614174024"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440004"
-        director: "Evelyn Hart"
+        actorId: "123e4567-e89b-12d3-a456-426614174024"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440004"
+        actorId: "123e4567-e89b-12d3-a456-426614174025"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440005"
-        director: "Grayson Brooks"
+        actorId: "123e4567-e89b-12d3-a456-426614174025"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440005"
+        actorId: "123e4567-e89b-12d3-a456-426614174026"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440006"
-        director: "Isabella Quinn"
+        actorId: "123e4567-e89b-12d3-a456-426614174026"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440006"
+        actorId: "123e4567-e89b-12d3-a456-426614174027"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440007"
-        director: "Vincent Hale"
+        actorId: "123e4567-e89b-12d3-a456-426614174027"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440007"
+        actorId: "123e4567-e89b-12d3-a456-426614174028"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440008"
-        director: "Amelia Sutton"
+        actorId: "123e4567-e89b-12d3-a456-426614174028"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440008"
+        actorId: "123e4567-e89b-12d3-a456-426614174029"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440009"
-        director: "Lucas Stone"
+        actorId: "123e4567-e89b-12d3-a456-426614174029"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440009"
+        actorId: "123e4567-e89b-12d3-a456-426614174030"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440010"
-        director: "Sophia Langford"
+        actorId: "123e4567-e89b-12d3-a456-426614174030"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440010"
+        actorId: "123e4567-e89b-12d3-a456-426614174031"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440011"
-        director: "Noah Bennett"
+        actorId: "123e4567-e89b-12d3-a456-426614174031"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440011"
+        actorId: "123e4567-e89b-12d3-a456-426614174032"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440012"
-        director: "Chloe Armstrong"
+        actorId: "123e4567-e89b-12d3-a456-426614174032"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440012"
+        actorId: "123e4567-e89b-12d3-a456-426614174033"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440013"
-        director: "Sebastian Crane"
+        actorId: "123e4567-e89b-12d3-a456-426614174033"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440013"
+        actorId: "123e4567-e89b-12d3-a456-426614174034"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440014"
-        director: "Isla Fitzgerald"
+        actorId: "123e4567-e89b-12d3-a456-426614174034"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440014"
+        actorId: "123e4567-e89b-12d3-a456-426614174035"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440015"
-        director: "Oliver Hayes"
+        actorId: "123e4567-e89b-12d3-a456-426614174035"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440015"
+        actorId: "123e4567-e89b-12d3-a456-426614174036"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440016"
-        director: "Mila Donovan"
+        actorId: "123e4567-e89b-12d3-a456-426614174036"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440016"
+        actorId: "123e4567-e89b-12d3-a456-426614174037"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440017"
-        director: "Carter Monroe, Elise Turner"
+        actorId: "123e4567-e89b-12d3-a456-426614174037"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440017"
+        actorId: "123e4567-e89b-12d3-a456-426614174038"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440018"
-        director: "Adrian Blake"
+        actorId: "123e4567-e89b-12d3-a456-426614174038"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440018"
+        actorId: "123e4567-e89b-12d3-a456-426614174039"
+        role: "supporting"
       }
       {
         movieId: "550e8400-e29b-41d4-a716-446655440019"
-        director: "Hazel Carter"
+        actorId: "123e4567-e89b-12d3-a456-426614174039"
+        role: "main"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440019"
+        actorId: "123e4567-e89b-12d3-a456-426614174020"
+        role: "supporting"
       }
     ]
   )
-movieActor_insertMany(
-  data: [
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440000"
-      actorId: "123e4567-e89b-12d3-a456-426614174020"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440000"
-      actorId: "123e4567-e89b-12d3-a456-426614174021"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440001"
-      actorId: "123e4567-e89b-12d3-a456-426614174021"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440001"
-      actorId: "123e4567-e89b-12d3-a456-426614174022"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440002"
-      actorId: "123e4567-e89b-12d3-a456-426614174022"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440002"
-      actorId: "123e4567-e89b-12d3-a456-426614174023"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440003"
-      actorId: "123e4567-e89b-12d3-a456-426614174023"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440003"
-      actorId: "123e4567-e89b-12d3-a456-426614174024"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440004"
-      actorId: "123e4567-e89b-12d3-a456-426614174024"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440004"
-      actorId: "123e4567-e89b-12d3-a456-426614174025"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440005"
-      actorId: "123e4567-e89b-12d3-a456-426614174025"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440005"
-      actorId: "123e4567-e89b-12d3-a456-426614174026"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440006"
-      actorId: "123e4567-e89b-12d3-a456-426614174026"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440006"
-      actorId: "123e4567-e89b-12d3-a456-426614174027"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440007"
-      actorId: "123e4567-e89b-12d3-a456-426614174027"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440007"
-      actorId: "123e4567-e89b-12d3-a456-426614174028"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440008"
-      actorId: "123e4567-e89b-12d3-a456-426614174028"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440008"
-      actorId: "123e4567-e89b-12d3-a456-426614174029"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440009"
-      actorId: "123e4567-e89b-12d3-a456-426614174029"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440009"
-      actorId: "123e4567-e89b-12d3-a456-426614174030"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440010"
-      actorId: "123e4567-e89b-12d3-a456-426614174030"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440010"
-      actorId: "123e4567-e89b-12d3-a456-426614174031"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440011"
-      actorId: "123e4567-e89b-12d3-a456-426614174031"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440011"
-      actorId: "123e4567-e89b-12d3-a456-426614174032"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440012"
-      actorId: "123e4567-e89b-12d3-a456-426614174032"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440012"
-      actorId: "123e4567-e89b-12d3-a456-426614174033"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440013"
-      actorId: "123e4567-e89b-12d3-a456-426614174033"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440013"
-      actorId: "123e4567-e89b-12d3-a456-426614174034"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440014"
-      actorId: "123e4567-e89b-12d3-a456-426614174034"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440014"
-      actorId: "123e4567-e89b-12d3-a456-426614174035"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440015"
-      actorId: "123e4567-e89b-12d3-a456-426614174035"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440015"
-      actorId: "123e4567-e89b-12d3-a456-426614174036"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440016"
-      actorId: "123e4567-e89b-12d3-a456-426614174036"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440016"
-      actorId: "123e4567-e89b-12d3-a456-426614174037"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440017"
-      actorId: "123e4567-e89b-12d3-a456-426614174037"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440017"
-      actorId: "123e4567-e89b-12d3-a456-426614174038"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440018"
-      actorId: "123e4567-e89b-12d3-a456-426614174038"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440018"
-      actorId: "123e4567-e89b-12d3-a456-426614174039"
-      role: "supporting"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440019"
-      actorId: "123e4567-e89b-12d3-a456-426614174039"
-      role: "main"
-    }
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440019"
-      actorId: "123e4567-e89b-12d3-a456-426614174020"
-      role: "supporting"
-    }
-  ]
-)
   user_insertMany(
     data: [
       { id: "SnLgOC3lN4hcIl69s53cW0Q8R1T2", username: "sherlock_h" }
@@ -672,30 +612,12 @@ movieActor_insertMany(
 
   favorite_movie_insertMany(
     data: [
-      {
-        userId: "SnLgOC3lN4hcIl69s53cW0Q8R1T2"
-        movieId: "550e8400-e29b-41d4-a716-446655440000"
-      }
-      {
-        userId: "fep4fXpGWsaRpuphq9CIrBIXQ0S2"
-        movieId: "550e8400-e29b-41d4-a716-446655440001"
-      }
-      {
-        userId: "TBedjwCX0Jf955Uuoxk6k74sY0l1"
-        movieId: "550e8400-e29b-41d4-a716-446655440002"
-      }
-      {
-        userId: "SnLgOC3lN4hcIl69s53cW0Q8R1T2"
-        movieId: "550e8400-e29b-41d4-a716-446655440003"
-      }
-      {
-        userId: "fep4fXpGWsaRpuphq9CIrBIXQ0S2"
-        movieId: "550e8400-e29b-41d4-a716-446655440004"
-      }
-      {
-        userId: "TBedjwCX0Jf955Uuoxk6k74sY0l1"
-        movieId: "550e8400-e29b-41d4-a716-446655440005"
-      }
+      { userId: "SnLgOC3lN4hcIl69s53cW0Q8R1T2", movieId: "550e8400-e29b-41d4-a716-446655440000" }
+      { userId: "fep4fXpGWsaRpuphq9CIrBIXQ0S2", movieId: "550e8400-e29b-41d4-a716-446655440001" }
+      { userId: "TBedjwCX0Jf955Uuoxk6k74sY0l1", movieId: "550e8400-e29b-41d4-a716-446655440002" }
+      { userId: "SnLgOC3lN4hcIl69s53cW0Q8R1T2", movieId: "550e8400-e29b-41d4-a716-446655440003" }
+      { userId: "fep4fXpGWsaRpuphq9CIrBIXQ0S2", movieId: "550e8400-e29b-41d4-a716-446655440004" }
+      { userId: "TBedjwCX0Jf955Uuoxk6k74sY0l1", movieId: "550e8400-e29b-41d4-a716-446655440005" }
     ]
   )
 }

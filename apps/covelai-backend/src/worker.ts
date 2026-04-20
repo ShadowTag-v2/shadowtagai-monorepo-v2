@@ -12,7 +12,7 @@ async function run() {
         (ctx) => ({
           async execute(input, next) {
             // Read X-KOVELAI-IDEMPOTENCY implicitly validated by neurosymbolic ASIC gate
-            console.log("Enforcing idempotency headers against temporal registry.");
+            console.log('Enforcing idempotency headers against temporal registry.');
             return next(input);
           },
         }),

@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
-
+import type * as firestore from '@google-cloud/firestore';
+import * as assert from 'assert';
 import * as deepEqual from 'fast-deep-equal';
 
-import * as assert from 'assert';
-
-import {google} from '../protos/firestore_v1_proto_api';
-import {FieldTransform} from './field-value';
-import {FieldPath, validateFieldPath} from './path';
-import {DocumentReference} from './reference/document-reference';
-import {Serializer} from './serializer';
-import {Timestamp} from './timestamp';
-import {ApiMapValue, defaultConverter, UpdateMap} from './types';
-import {isEmpty, isObject, isPlainObject} from './util';
+import { google } from '../protos/firestore_v1_proto_api';
+import { FieldTransform } from './field-value';
+import { FieldPath, validateFieldPath } from './path';
+import { DocumentReference } from './reference/document-reference';
+import type { Serializer } from './serializer';
+import type { Timestamp } from './timestamp';
+import { type ApiMapValue, defaultConverter, type UpdateMap } from './types';
+import { isEmpty, isObject, isPlainObject } from './util';
 
 import api = google.firestore.v1;
 
@@ -86,11 +84,7 @@ export class DocumentSnapshotBuilder<
           this.createTime!,
           this.updateTime!,
         )
-      : new DocumentSnapshot<AppModelType, DbModelType>(
-          this.ref,
-          undefined,
-          this.readTime!,
-        );
+      : new DocumentSnapshot<AppModelType, DbModelType>(this.ref, undefined, this.readTime!);
   }
 }
 
@@ -179,15 +173,11 @@ export class DocumentSnapshot<
    * @param data The field/value map to expand.
    * @returns The created DocumentSnapshot.
    */
-  static fromUpdateMap<
-    AppModelType,
-    DbModelType extends firestore.DocumentData,
-  >(
+  static fromUpdateMap<AppModelType, DbModelType extends firestore.DocumentData>(
     ref: firestore.DocumentReference<AppModelType, DbModelType>,
     data: UpdateMap,
   ): DocumentSnapshot<AppModelType, DbModelType> {
-    const serializer = (ref as DocumentReference<AppModelType, DbModelType>)
-      .firestore._serializer!;
+    const serializer = (ref as DocumentReference<AppModelType, DbModelType>).firestore._serializer!;
 
     /**
      * Merges 'value' at the field path specified by the path array into
@@ -223,12 +213,7 @@ export class DocumentSnapshot<
             },
           };
 
-          const nestedValue = merge(
-            childNode.mapValue.fields,
-            value,
-            path,
-            pos + 1,
-          );
+          const nestedValue = merge(childNode.mapValue.fields, value, path, pos + 1);
 
           if (nestedValue) {
             childNode.mapValue.fields = nestedValue;
@@ -240,12 +225,7 @@ export class DocumentSnapshot<
         }
       } else {
         assert(!isLast, "Can't merge current value into a nested object");
-        target[key].mapValue!.fields = merge(
-          target[key].mapValue!.fields!,
-          value,
-          path,
-          pos + 1,
-        );
+        target[key].mapValue!.fields = merge(target[key].mapValue!.fields!, value, path, pos + 1);
         return target;
       }
     }
@@ -257,10 +237,7 @@ export class DocumentSnapshot<
       merge(res, value, path, 0);
     }
 
-    return new DocumentSnapshot(
-      ref as DocumentReference<AppModelType, DbModelType>,
-      res,
-    );
+    return new DocumentSnapshot(ref as DocumentReference<AppModelType, DbModelType>, res);
   }
 
   /**
@@ -429,10 +406,7 @@ export class DocumentSnapshot<
     // We only want to use the converter and create a new QueryDocumentSnapshot
     // if a converter has been provided.
     if (this.ref._converter !== defaultConverter()) {
-      const untypedReference = new DocumentReference(
-        this.ref.firestore,
-        this.ref._path,
-      );
+      const untypedReference = new DocumentReference(this.ref.firestore, this.ref._path);
       return this.ref._converter.fromFirestore(
         new QueryDocumentSnapshot(
           untypedReference,
@@ -555,17 +529,13 @@ export class DocumentSnapshot<
    * @returns {boolean} true if this `DocumentSnapshot` is equal to the provided
    * value.
    */
-  isEqual(
-    other: firestore.DocumentSnapshot<AppModelType, DbModelType>,
-  ): boolean {
+  isEqual(other: firestore.DocumentSnapshot<AppModelType, DbModelType>): boolean {
     // Since the read time is different on every document read, we explicitly
     // ignore all document metadata in this comparison.
     return (
       this === other ||
       (other instanceof DocumentSnapshot &&
-        this._ref.isEqual(
-          (other as DocumentSnapshot<AppModelType, DbModelType>)._ref,
-        ) &&
+        this._ref.isEqual((other as DocumentSnapshot<AppModelType, DbModelType>)._ref) &&
         deepEqual(this._fieldsProto, other._fieldsProto))
     );
   }
@@ -656,9 +626,7 @@ export class QueryDocumentSnapshot<
   data(): AppModelType {
     const data = super.data();
     if (!data) {
-      throw new Error(
-        'The data in a QueryDocumentSnapshot should always exist.',
-      );
+      throw new Error('The data in a QueryDocumentSnapshot should always exist.');
     }
     return data;
   }
@@ -713,9 +681,7 @@ export class DocumentMask {
    * @internal
    * @param fieldMask A list of field paths.
    */
-  static fromFieldMask(
-    fieldMask: Array<string | firestore.FieldPath>,
-  ): DocumentMask {
+  static fromFieldMask(fieldMask: Array<string | firestore.FieldPath>): DocumentMask {
     const fieldPaths: FieldPath[] = [];
 
     for (const fieldPath of fieldMask) {
@@ -736,10 +702,7 @@ export class DocumentMask {
   static fromObject(data: firestore.DocumentData): DocumentMask {
     const fieldPaths: FieldPath[] = [];
 
-    function extractFieldPaths(
-      currentData: firestore.DocumentData,
-      currentPath?: FieldPath,
-    ): void {
+    function extractFieldPaths(currentData: firestore.DocumentData, currentPath?: FieldPath): void {
       let isEmpty = true;
 
       for (const key of Object.keys(currentData)) {
@@ -748,9 +711,7 @@ export class DocumentMask {
         // We don't split on dots since fromObject is called with
         // DocumentData.
         const childSegment = new FieldPath(key);
-        const childPath = currentPath
-          ? currentPath.append(childSegment)
-          : childSegment;
+        const childPath = currentPath ? currentPath.append(childSegment) : childSegment;
         const value = currentData[key];
         if (value instanceof FieldTransform) {
           if (value.includeInDocumentMask) {
@@ -797,10 +758,7 @@ export class DocumentMask {
    * @param input A sorted array of FieldPaths.
    * @param values An array of FieldPaths to remove.
    */
-  private static removeFromSortedArray(
-    input: FieldPath[],
-    values: FieldPath[],
-  ): void {
+  private static removeFromSortedArray(input: FieldPath[], values: FieldPath[]): void {
     for (let i = 0; i < input.length; ) {
       let removed = false;
 
@@ -865,9 +823,7 @@ export class DocumentMask {
      * Applies this DocumentMask to 'data' and computes the list of field paths
      * that were specified in the mask but are not present in 'data'.
      */
-    const applyDocumentMask: (
-      data: firestore.DocumentData,
-    ) => firestore.DocumentData = data => {
+    const applyDocumentMask: (data: firestore.DocumentData) => firestore.DocumentData = (data) => {
       const remainingPaths = this._sortedPaths.slice(0);
 
       const processObject: (
@@ -876,10 +832,8 @@ export class DocumentMask {
       ) => firestore.DocumentData | null = (currentData, currentPath) => {
         let result: firestore.DocumentData | null = null;
 
-        Object.keys(currentData).forEach(key => {
-          const childPath = currentPath
-            ? currentPath.append(key)
-            : new FieldPath(key);
+        Object.keys(currentData).forEach((key) => {
+          const childPath = currentPath ? currentPath.append(key) : new FieldPath(key);
           if (this.contains(childPath)) {
             DocumentMask.removeFromSortedArray(remainingPaths, [childPath]);
             result = result || {};
@@ -911,9 +865,7 @@ export class DocumentMask {
     const result = applyDocumentMask(data);
 
     if (result.remainingPaths.length !== 0) {
-      throw new Error(
-        `Input data is missing for field "${result.remainingPaths[0]}".`,
-      );
+      throw new Error(`Input data is missing for field "${result.remainingPaths[0]}".`);
     }
 
     return result.filteredData;
@@ -988,10 +940,7 @@ export class DocumentTransform<
       updateMap.set(new FieldPath(prop), obj[prop]);
     }
 
-    return DocumentTransform.fromUpdateMap<AppModelType, DbModelType>(
-      ref,
-      updateMap,
-    );
+    return DocumentTransform.fromUpdateMap<AppModelType, DbModelType>(ref, updateMap);
   }
 
   /**
@@ -1003,27 +952,18 @@ export class DocumentTransform<
    * @param data The update data to extract the transformations from.
    * @returns The Document Transform.
    */
-  static fromUpdateMap<
-    AppModelType,
-    DbModelType extends firestore.DocumentData,
-  >(
+  static fromUpdateMap<AppModelType, DbModelType extends firestore.DocumentData>(
     ref: firestore.DocumentReference<AppModelType, DbModelType>,
     data: UpdateMap,
   ): DocumentTransform<AppModelType, DbModelType> {
     const transforms = new Map<FieldPath, FieldTransform>();
 
-    function encode_(
-      val: unknown,
-      path: FieldPath,
-      allowTransforms: boolean,
-    ): void {
+    function encode_(val: unknown, path: FieldPath, allowTransforms: boolean): void {
       if (val instanceof FieldTransform && val.includeInDocumentTransform) {
         if (allowTransforms) {
           transforms.set(path, val);
         } else {
-          throw new Error(
-            `${val.methodName}() is not supported inside of array values.`,
-          );
+          throw new Error(`${val.methodName}() is not supported inside of array values.`);
         }
       } else if (Array.isArray(val)) {
         for (let i = 0; i < val.length; ++i) {
@@ -1041,10 +981,7 @@ export class DocumentTransform<
       encode_(value, FieldPath.fromArgument(key), true);
     });
 
-    return new DocumentTransform(
-      ref as DocumentReference<AppModelType, DbModelType>,
-      transforms,
-    );
+    return new DocumentTransform(ref as DocumentReference<AppModelType, DbModelType>, transforms);
   }
 
   /**
@@ -1073,9 +1010,8 @@ export class DocumentTransform<
    * @internal
    */
   validate(): void {
-    const allowUndefined =
-      !!this.ref.firestore._settings.ignoreUndefinedProperties;
-    this.transforms.forEach(transform => transform.validate(allowUndefined));
+    const allowUndefined = !!this.ref.firestore._settings.ignoreUndefinedProperties;
+    this.transforms.forEach((transform) => transform.validate(allowUndefined));
   }
 
   /**
@@ -1087,9 +1023,7 @@ export class DocumentTransform<
    * @returns A list of Firestore 'FieldTransform' Protos
    */
   toProto(serializer: Serializer): api.DocumentTransform.IFieldTransform[] {
-    return Array.from(this.transforms, ([path, transform]) =>
-      transform.toProto(serializer, path),
-    );
+    return Array.from(this.transforms, ([path, transform]) => transform.toProto(serializer, path));
   }
 }
 

@@ -3,8 +3,8 @@
 
 function initialize() {
   // [START storage_initialize]
-  const { initializeApp } = require("firebase/app");
-  const { getStorage } = require("firebase/storage");
+  const { initializeApp } = require('firebase/app');
+  const { getStorage } = require('firebase/storage');
 
   // Set the configuration for your app
   // TODO: Replace with your app's config object
@@ -12,7 +12,7 @@ function initialize() {
     apiKey: '<your-api-key>',
     authDomain: '<your-auth-domain>',
     databaseURL: '<your-database-url>',
-    storageBucket: '<your-storage-bucket-url>'
+    storageBucket: '<your-storage-bucket-url>',
   };
   const firebaseApp = initializeApp(firebaseConfig);
 
@@ -23,30 +23,30 @@ function initialize() {
 
 function multipleBuckets() {
   // [START storage_multiple_buckets]
-  const { getApp } = require("firebase/app");
-  const { getStorage } = require("firebase/storage");
+  const { getApp } = require('firebase/app');
+  const { getStorage } = require('firebase/storage');
 
   // Get a non-default Storage bucket
   const firebaseApp = getApp();
-  const storage = getStorage(firebaseApp, "gs://my-custom-bucket");
+  const storage = getStorage(firebaseApp, 'gs://my-custom-bucket');
   // [END storage_multiple_buckets]
 }
 
 function storageCustomApp() {
-  const { initializeApp } = require("firebase/app");
+  const { initializeApp } = require('firebase/app');
 
   const customApp = initializeApp({
     // ... custom stuff
   });
 
   // [START storage_custom_app]
-  const { getStorage } = require("firebase/storage");
+  const { getStorage } = require('firebase/storage');
 
   // Get the default bucket from a custom firebase.app.App
   const storage1 = getStorage(customApp);
 
   // Get a non-default bucket from a custom firebase.app.App
-  const storage2 = getStorage(customApp, "gs://my-custom-bucket");
+  const storage2 = getStorage(customApp, 'gs://my-custom-bucket');
   // [END storage_custom_app]
 }
 
@@ -61,11 +61,11 @@ function storageOnComplete(file) {
 
   /** @type {any} */
   const metadata = {
-    'contentType': file.type
+    contentType: file.type,
   };
 
   // [START storage_on_complete]
-  const { getStorage, ref, uploadBytesResumable, getDownloadURL } = require("firebase/storage");
+  const { getStorage, ref, uploadBytesResumable, getDownloadURL } = require('firebase/storage');
 
   const storage = getStorage();
   const imageRef = ref(storage, 'images/' + file.name);
@@ -78,7 +78,8 @@ function storageOnComplete(file) {
         console.log('File available at', url);
         // ...
       });
-    }).catch((error) => {
+    })
+    .catch((error) => {
       console.error('Upload failed', error);
       // ...
     });

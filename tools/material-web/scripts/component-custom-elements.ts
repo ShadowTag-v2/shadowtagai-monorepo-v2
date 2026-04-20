@@ -41,16 +41,9 @@ export const COMPONENT_CUSTOM_ELEMENTS = {
   progress: ['progress/linear-progress.ts', 'progress/circular-progress.ts'],
   radio: ['radio/radio.ts'],
   ripple: ['ripple/ripple.ts'],
-  select: [
-    'select/filled-select.ts',
-    'select/outlined-select.ts',
-    'select/select-option.ts',
-  ],
+  select: ['select/filled-select.ts', 'select/outlined-select.ts', 'select/select-option.ts'],
   slider: ['slider/slider.ts'],
   switch: ['switch/switch.ts'],
   tabs: ['tabs/tabs.ts', 'tabs/primary-tab.ts', 'tabs/secondary-tab.ts'],
-  textField: [
-    'textfield/filled-text-field.ts',
-    'textfield/outlined-text-field.ts',
-  ],
+  textField: ['textfield/filled-text-field.ts', 'textfield/outlined-text-field.ts'],
 } as const;

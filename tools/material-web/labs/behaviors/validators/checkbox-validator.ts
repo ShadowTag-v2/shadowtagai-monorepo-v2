@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Validator} from './validator.js';
+import { Validator } from './validator.js';
 
 /**
  * Constraint validation properties for a checkbox.
@@ -47,7 +47,7 @@ export class CheckboxValidator extends Validator<CheckboxState> {
     return prev.checked === next.checked && prev.required === next.required;
   }
 
-  protected override copy({checked, required}: CheckboxState) {
-    return {checked, required};
+  protected override copy({ checked, required }: CheckboxState) {
+    return { checked, required };
   }
 }

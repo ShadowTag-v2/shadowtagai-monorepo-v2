@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_twitter_provider_credential_modular]
-import { TwitterAuthProvider } from "firebase/auth";
+import { TwitterAuthProvider } from 'firebase/auth';
 
 const credential = TwitterAuthProvider.credential(accessToken, secret);
 // [END auth_twitter_provider_credential_modular]

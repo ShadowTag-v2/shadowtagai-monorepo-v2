@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_oidc_signin_redirect_modular]
-import { getAuth, signInWithRedirect } from "firebase/auth";
+import { getAuth, signInWithRedirect } from 'firebase/auth';
 
 const auth = getAuth();
 signInWithRedirect(auth, provider);

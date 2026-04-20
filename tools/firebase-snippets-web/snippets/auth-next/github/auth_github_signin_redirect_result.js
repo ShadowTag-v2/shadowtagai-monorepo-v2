@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_github_signin_redirect_result_modular]
-import { getAuth, getRedirectResult, GithubAuthProvider } from "firebase/auth";
+import { GithubAuthProvider, getAuth, getRedirectResult } from 'firebase/auth';
 
 const auth = getAuth();
 getRedirectResult(auth)
@@ -21,7 +21,8 @@ getRedirectResult(auth)
     const user = result.user;
     // IdP data available using getAdditionalUserInfo(result)
     // ...
-  }).catch((error) => {
+  })
+  .catch((error) => {
     // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;

@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as firestore from '@google-cloud/firestore';
+import type * as firestore from '@google-cloud/firestore';
 
 import * as assert from 'assert';
-
-import Firestore, {
-  BulkWriter,
+import type { GoogleError } from 'google-gax';
+import type Firestore from '.';
+import {
+  type BulkWriter,
   CollectionReference,
   DocumentReference,
   FieldPath,
   Query,
-  QueryDocumentSnapshot,
+  type QueryDocumentSnapshot,
 } from '.';
-import {Deferred, wrapError} from './util';
-import type {GoogleError} from 'google-gax';
-import {BulkWriterError} from './bulk-writer';
-import {QueryOptions} from './reference/query-options';
-import {StatusCode} from './status-code';
+import type { BulkWriterError } from './bulk-writer';
+import { QueryOptions } from './reference/query-options';
+import { StatusCode } from './status-code';
+import { Deferred, wrapError } from './util';
 
 /*!
  * Datastore allowed numeric IDs where Firestore only allows strings. Numeric
@@ -195,7 +195,7 @@ export class RecursiveDelete {
     this.streamInProgress = true;
     let streamedDocsCount = 0;
     stream
-      .on('error', err => {
+      .on('error', (err) => {
         err.code = StatusCode.UNAVAILABLE;
         err.stack = 'Failed to fetch children documents: ' + err.stack;
         this.lastError = err;
@@ -238,9 +238,7 @@ export class RecursiveDelete {
       parentPath = parentPath.popLast();
     }
     const collectionId =
-      ref instanceof CollectionReference
-        ? ref.id
-        : (ref as DocumentReference<unknown>).parent.id;
+      ref instanceof CollectionReference ? ref.id : (ref as DocumentReference<unknown>).parent.id;
 
     let query: Query = new Query(
       this.firestore,
@@ -285,7 +283,7 @@ export class RecursiveDelete {
   private onQueryEnd(): void {
     this.documentsPending = false;
     if (this.ref instanceof DocumentReference) {
-      this.writer.delete(this.ref).catch(err => this.incrementErrorCount(err));
+      this.writer.delete(this.ref).catch((err) => this.incrementErrorCount(err));
     }
     void this.writer.flush().then(async () => {
       if (this.lastError === undefined) {
@@ -303,9 +301,7 @@ export class RecursiveDelete {
 
         // Wrap the BulkWriter error last to provide the full stack trace.
         this.completionDeferred.reject(
-          this.lastError.stack
-            ? wrapError(error, this.lastError.stack ?? '')
-            : error,
+          this.lastError.stack ? wrapError(error, this.lastError.stack ?? '') : error,
         );
       }
     });
@@ -321,7 +317,7 @@ export class RecursiveDelete {
     this.pendingOpsCount++;
     void this.writer
       .delete(docRef)
-      .catch(err => {
+      .catch((err) => {
         this.incrementErrorCount(err);
       })
       .then(() => {

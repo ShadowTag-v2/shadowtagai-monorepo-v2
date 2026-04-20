@@ -5,16 +5,16 @@
 // 'npm run snippets'.
 
 // [START add_ada_lovelace_modular]
-import { collection, addDoc } from "firebase/firestore";
+import { addDoc, collection } from 'firebase/firestore';
 
 try {
-  const docRef = await addDoc(collection(db, "users"), {
-    first: "Ada",
-    last: "Lovelace",
-    born: 1815
+  const docRef = await addDoc(collection(db, 'users'), {
+    first: 'Ada',
+    last: 'Lovelace',
+    born: 1815,
   });
-  console.log("Document written with ID: ", docRef.id);
+  console.log('Document written with ID: ', docRef.id);
 } catch (e) {
-  console.error("Error adding document: ", e);
+  console.error('Error adding document: ', e);
 }
 // [END add_ada_lovelace_modular]

@@ -10,12 +10,12 @@
  *   POST http://localhost:8787/v1/chat/completions (defaults to OpenAI)
  */
 
-import express from "express";
-import fetch from "node-fetch";
-import type { Request, Response } from "express";
+import type { Request, Response } from 'express';
+import express from 'express';
+import fetch from 'node-fetch';
 
 const app = express();
-app.use(express.json({ limit: "5mb" }));
+app.use(express.json({ limit: '5mb' }));
 
 interface TargetConfig {
   base: string;
@@ -27,22 +27,22 @@ interface TargetConfig {
  * Select LLM backend based on target query parameter.
  */
 function pickTarget(target: string | undefined): TargetConfig {
-  const t = (target || "openai").toLowerCase();
+  const t = (target || 'openai').toLowerCase();
 
   switch (t) {
-    case "local":
+    case 'local':
       return {
         base: process.env.LOCAL_BASE_URL!,
-        key: "no-key",
+        key: 'no-key',
         model: process.env.LOCAL_MODEL!,
       };
 
-    case "gemini":
+    case 'gemini':
     default:
       return {
-        base: "https://generativelanguage.googleapis.com/v1beta", // Direct Gemini API
+        base: 'https://generativelanguage.googleapis.com/v1beta', // Direct Gemini API
         key: process.env.GEMINI_API_KEY!,
-        model: "gemini-1.5-flash",
+        model: 'gemini-1.5-flash',
       };
   }
 }
@@ -50,7 +50,7 @@ function pickTarget(target: string | undefined): TargetConfig {
 /**
  * OpenAI-compatible chat completions endpoint.
  */
-app.post("/v1/chat/completions", async (req: Request, res: Response) => {
+app.post('/v1/chat/completions', async (req: Request, res: Response) => {
   try {
     const target = pickTarget(req.query.target as string);
 
@@ -62,24 +62,24 @@ app.post("/v1/chat/completions", async (req: Request, res: Response) => {
 
     // Prepare headers
     const headers: Record<string, string> = {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
 
-    if (target.key && target.key !== "no-key") {
-      headers["Authorization"] = `Bearer ${target.key}`;
+    if (target.key && target.key !== 'no-key') {
+      headers['Authorization'] = `Bearer ${target.key}`;
     }
 
     // Some providers (e.g., OpenRouter) require additional headers
     if (process.env.HTTP_REFERER) {
-      headers["HTTP-Referer"] = process.env.HTTP_REFERER;
+      headers['HTTP-Referer'] = process.env.HTTP_REFERER;
     }
     if (process.env.X_TITLE) {
-      headers["X-Title"] = process.env.X_TITLE;
+      headers['X-Title'] = process.env.X_TITLE;
     }
 
     // Forward request to target provider
     const response = await fetch(`${target.base}/chat/completions`, {
-      method: "POST",
+      method: 'POST',
       headers,
       body: JSON.stringify(body),
     });
@@ -89,14 +89,14 @@ app.post("/v1/chat/completions", async (req: Request, res: Response) => {
     // Forward response back to client
     res
       .status(response.status)
-      .set("Content-Type", response.headers.get("content-type") || "application/json")
+      .set('Content-Type', response.headers.get('content-type') || 'application/json')
       .send(text);
   } catch (e: unknown) {
-    console.error("Router error:", e);
+    console.error('Router error:', e);
     res.status(500).json({
       error: {
         message: e?.message || String(e),
-        type: "router_error",
+        type: 'router_error',
       },
     });
   }
@@ -105,9 +105,9 @@ app.post("/v1/chat/completions", async (req: Request, res: Response) => {
 /**
  * Health check endpoint.
  */
-app.get("/health", (req: Request, res: Response) => {
+app.get('/health', (req: Request, res: Response) => {
   res.json({
-    status: "ok",
+    status: 'ok',
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
   });
@@ -116,16 +116,16 @@ app.get("/health", (req: Request, res: Response) => {
 /**
  * Root endpoint (info).
  */
-app.get("/", (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response) => {
   res.json({
-    name: "ShadowTag-v4 Multi-Model Router",
-    version: "0.1.0",
+    name: 'ShadowTag-v4 Multi-Model Router',
+    version: '0.1.0',
     endpoints: {
-      chat: "/v1/chat/completions",
-      health: "/health",
+      chat: '/v1/chat/completions',
+      health: '/health',
     },
-    targets: ["openai", "grok", "cheetah", "anthropic", "alt", "local"],
-    usage: "POST /v1/chat/completions?target=<target>",
+    targets: ['openai', 'grok', 'cheetah', 'anthropic', 'alt', 'local'],
+    usage: 'POST /v1/chat/completions?target=<target>',
   });
 });
 

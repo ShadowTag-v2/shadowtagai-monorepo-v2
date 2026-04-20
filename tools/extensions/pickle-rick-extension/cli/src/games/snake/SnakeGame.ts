@@ -96,7 +96,7 @@ export class SnakeGame {
         y: Math.floor(Math.random() * this.height),
       };
       const onSnake = this.snake.some(
-        (segment) => segment.x === newFood.x && segment.y === newFood.y
+        (segment) => segment.x === newFood.x && segment.y === newFood.y,
       );
       if (!onSnake) return newFood;
       attempts++;

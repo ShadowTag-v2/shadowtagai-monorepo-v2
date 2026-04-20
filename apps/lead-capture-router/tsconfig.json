@@ -10,10 +10,6 @@
     "skipLibCheck": true
   },
   "compileOnSave": true,
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "src/mock.ts"
-  ]
+  "include": ["src"],
+  "exclude": ["src/mock.ts"]
 }

@@ -6,14 +6,11 @@
 
 import '@material/web/labs/gb/components/button/md-button.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {
-  ButtonColor,
-  ButtonSize,
-} from '@material/web/labs/gb/components/button/button.js';
-import {adoptStyles} from '@material/web/labs/gb/styles/adopt-styles.js';
-import {styles as m3Styles} from '@material/web/labs/gb/styles/m3.cssresult.js';
-import {html, nothing} from 'lit';
+import type { ButtonColor, ButtonSize } from '@material/web/labs/gb/components/button/button.js';
+import { adoptStyles } from '@material/web/labs/gb/styles/adopt-styles.js';
+import { styles as m3Styles } from '@material/web/labs/gb/styles/m3.cssresult.js';
+import { html, nothing } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for button stories. */
 export interface StoryKnobs {

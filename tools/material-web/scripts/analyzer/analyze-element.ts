@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type {ReactiveProperty} from '@lit-labs/analyzer/lib/model.js';
-import {
+import type { ReactiveProperty } from '@lit-labs/analyzer/lib/model.js';
+import type {
   AbsolutePath,
   Analyzer,
   ClassDeclaration,
@@ -102,8 +102,7 @@ export function analyzeElementApi(
     elementModule.getCustomElementExports()[0];
 
   if (!customElementModule) {
-    const unknownSuperClassDeclaration =
-      elementModule.getDeclaration(superClassName);
+    const unknownSuperClassDeclaration = elementModule.getDeclaration(superClassName);
 
     // Type-cast declaration
     if (
@@ -120,10 +119,7 @@ export function analyzeElementApi(
     }
   }
 
-  const {properties, reactiveProperties} = analyzeFields(
-    customElementModule,
-    elementModule,
-  );
+  const { properties, reactiveProperties } = analyzeFields(customElementModule, elementModule);
   const methods = analyzeMethods(customElementModule);
   let events: MdEventInfo[] = [];
   if (customElementModule.isLitElementDeclaration()) {
@@ -133,8 +129,7 @@ export function analyzeElementApi(
   const superclass = customElementModule.heritage.superClass;
 
   const elementDocModule: MdModuleInfo = {
-    customElementName: (customElementModule as unknown as {tagname?: string})
-      .tagname,
+    customElementName: (customElementModule as unknown as { tagname?: string }).tagname,
     className: customElementModule.name,
     classPath: elementEntrypoint,
     summary: makeMarkdownFriendly(customElementModule.summary),
@@ -154,11 +149,7 @@ export function analyzeElementApi(
       elementEntrypoint,
       path.relative(elementEntrypoint, superClassLocation),
     );
-    const superClassModule = analyzeElementApi(
-      analyzer,
-      absolutePath,
-      superclass.name,
-    );
+    const superClassModule = analyzeElementApi(analyzer, absolutePath, superclass.name);
     elementDocModule.superClass = superClassModule;
   }
 
@@ -185,7 +176,7 @@ const FIELDS_TO_IGNORE = new Set(['isListItem', 'isMenuItem']);
 export function analyzeFields(
   classDeclaration: LitElementExport | LitElementDeclaration | ClassDeclaration,
   module: Module,
-): {properties: MdPropertyInfo[]; reactiveProperties: MdPropertyInfo[]} {
+): { properties: MdPropertyInfo[]; reactiveProperties: MdPropertyInfo[] } {
   const properties: MdPropertyInfo[] = [];
   const reactiveProperties: MdPropertyInfo[] = [];
 
@@ -208,8 +199,7 @@ export function analyzeFields(
       const variableDeclaration = module.getDeclaration(field.default);
 
       if (variableDeclaration.isVariableDeclaration()) {
-        const node =
-          variableDeclaration.node as unknown as ts.VariableDeclaration;
+        const node = variableDeclaration.node as unknown as ts.VariableDeclaration;
 
         // attempt to get the default value. If it's not a string, just use the
         // variable name.
@@ -217,7 +207,7 @@ export function analyzeFields(
       }
     }
 
-    let attribute: string | undefined = undefined;
+    let attribute: string | undefined;
     let propertyArray = properties;
 
     // If it is a reactive property, put it in the reactive properties array
@@ -242,7 +232,7 @@ export function analyzeFields(
       default: makeMarkdownFriendly(defaultVal),
     });
   }
-  return {properties, reactiveProperties};
+  return { properties, reactiveProperties };
 }
 
 /**
@@ -344,8 +334,8 @@ export function analyzeEvents(
     const composed = description?.includes('--composed') || false;
 
     // Remove the --bubbles and --composed from the description
-    description = description?.replace(/\s*\-\-bubbles\s*/g, '');
-    description = description?.replace(/\s*\-\-composed\s*/g, '');
+    description = description?.replace(/\s*--bubbles\s*/g, '');
+    description = description?.replace(/\s*--composed\s*/g, '');
     description = makeMarkdownFriendly(description);
 
     events.push({

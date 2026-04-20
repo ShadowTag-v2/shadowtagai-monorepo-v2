@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { searchMoviesByDescription } from '@/lib/MovieService';
+import type React from 'react';
+import { useState } from 'react';
 import { FaSpinner } from 'react-icons/fa';
+import { searchMoviesByDescription } from '@/lib/MovieService';
 
 export default function VectorSearchPage() {
   const [query, setQuery] = useState('');
@@ -27,7 +28,9 @@ export default function VectorSearchPage() {
     <div className="container mx-auto p-4 bg-gray-900 min-h-screen text-white">
       <h1 className="text-4xl font-bold mb-4">Vector Movie Search</h1>
       <form onSubmit={handleSearch} className="mb-8">
-        <label htmlFor="query" className="block mb-2 text-xl">Enter your query</label>
+        <label htmlFor="query" className="block mb-2 text-xl">
+          Enter your query
+        </label>
         <div className="flex items-center">
           <input
             id="query"
@@ -57,7 +60,10 @@ export default function VectorSearchPage() {
           <h2 className="text-2xl font-bold mb-4">Results</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {results.map((movie) => (
-              <div key={movie.id} className="bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer">
+              <div
+                key={movie.id}
+                className="bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer"
+              >
                 <img className="w-full h-64 object-cover" src={movie.imageUrl} alt={movie.title} />
                 <div className="p-4">
                   <h3 className="font-bold text-lg mb-1 text-white">{movie.title}</h3>
@@ -67,7 +73,12 @@ export default function VectorSearchPage() {
                   </div>
                   <div className="flex flex-wrap gap-1 mt-2">
                     {movie?.tags?.map((tag, index) => (
-                      <span key={index} className="bg-gray-700 text-white px-2 py-1 rounded-full text-xs">{tag}</span>
+                      <span
+                        key={index}
+                        className="bg-gray-700 text-white px-2 py-1 rounded-full text-xs"
+                      >
+                        {tag}
+                      </span>
                     ))}
                   </div>
                 </div>

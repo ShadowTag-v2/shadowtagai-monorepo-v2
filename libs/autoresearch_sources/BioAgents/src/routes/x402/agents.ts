@@ -1,19 +1,18 @@
-import { Elysia, t } from "elysia";
-import { x402Middleware, type X402Settlement } from "../../middleware/x402/middleware";
-import { create402Response } from "../../middleware/x402/service";
-import { routePricing } from "../../middleware/x402/pricing";
-import { authResolver } from "../../middleware/authResolver";
-import logger from "../../utils/logger";
-import type { Message, PlanTask, ConversationState, Discovery } from "../../types/core";
-
+import { Elysia, t } from 'elysia';
+import { analysisAgent, type Dataset } from '../../agents/analysis';
+import { discoveryAgent } from '../../agents/discovery';
+import { hypothesisAgent } from '../../agents/hypothesis';
 // Import agents
-import { literatureAgent, type BioLiteratureMode } from "../../agents/literature";
-import { hypothesisAgent } from "../../agents/hypothesis";
-import { analysisAgent, type Dataset } from "../../agents/analysis";
-import { discoveryAgent } from "../../agents/discovery";
-import { reflectionAgent } from "../../agents/reflection";
-import { planningAgent } from "../../agents/planning";
-import { replyAgent } from "../../agents/reply";
+import { type BioLiteratureMode, literatureAgent } from '../../agents/literature';
+import { planningAgent } from '../../agents/planning';
+import { reflectionAgent } from '../../agents/reflection';
+import { replyAgent } from '../../agents/reply';
+import { authResolver } from '../../middleware/authResolver';
+import { type X402Settlement, x402Middleware } from '../../middleware/x402/middleware';
+import { routePricing } from '../../middleware/x402/pricing';
+import { create402Response } from '../../middleware/x402/service';
+import type { ConversationState, Discovery, Message, PlanTask } from '../../types/core';
+import logger from '../../utils/logger';
 
 /**
  * Helper to get x402Settlement from request
@@ -48,7 +47,7 @@ function createConversationState(
     id: crypto.randomUUID(),
     userId,
     values: {
-      objective: "",
+      objective: '',
       ...values,
     },
   };
@@ -62,7 +61,7 @@ function createCompletedTasks(tasks: Array<{ objective: string; output: string }
     id: crypto.randomUUID(),
     objective: t.objective,
     output: t.output,
-    status: "completed" as const,
+    status: 'completed' as const,
   }));
 }
 
@@ -81,18 +80,18 @@ function createCompletedTasks(tasks: Array<{ objective: string; output: string }
  */
 function getAgentPricing() {
   return routePricing
-    .filter((p) => p.route.startsWith("/api/x402/agents/"))
+    .filter((p) => p.route.startsWith('/api/x402/agents/'))
     .map((p) => ({
-      name: p.route.replace("/api/x402/agents/", ""),
+      name: p.route.replace('/api/x402/agents/', ''),
       endpoint: p.route,
       priceUSD: p.priceUSD,
       description: p.description,
     }));
 }
 
-export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents" })
+export const x402IndividualAgentsRoute = new Elysia({ prefix: '/api/x402/agents' })
   // List all available agents and their pricing
-  .get("/", () => {
+  .get('/', () => {
     return {
       agents: getAgentPricing(),
     };
@@ -105,19 +104,19 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
   // =====================================================
   // LITERATURE AGENT - Standalone, simple input
   // =====================================================
-  .get("/literature", ({ request }) => create402Response(request, "/api/x402/agents/literature"))
-  .post("/literature", async ({ body, request, set }) => {
+  .get('/literature', ({ request }) => create402Response(request, '/api/x402/agents/literature'))
+  .post('/literature', async ({ body, request, set }) => {
     const x402Settlement = getX402Settlement(request);
-    if (!x402Settlement) return create402Response(request, "/api/x402/agents/literature");
+    if (!x402Settlement) return create402Response(request, '/api/x402/agents/literature');
 
-    const { objective, type = "OPENSCHOLAR" } = body as {
+    const { objective, type = 'OPENSCHOLAR' } = body as {
       objective: string;
-      type?: "OPENSCHOLAR" | "KNOWLEDGE" | "EDISON" | "BIOLIT" | "BIOLITDEEP";
+      type?: 'OPENSCHOLAR' | 'KNOWLEDGE' | 'EDISON' | 'BIOLIT' | 'BIOLITDEEP';
     };
 
     if (!objective) {
       set.status = 400;
-      return { error: "objective is required" };
+      return { error: 'objective is required' };
     }
 
     try {
@@ -129,7 +128,7 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
         result,
       };
     } catch (error: any) {
-      logger.error({ error: error.message }, "literature_agent_error");
+      logger.error({ error: error.message }, 'literature_agent_error');
       set.status = 500;
       return { error: error.message };
     }
@@ -138,10 +137,10 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
   // =====================================================
   // REPLY AGENT - Needs message context
   // =====================================================
-  .get("/reply", ({ request }) => create402Response(request, "/api/x402/agents/reply"))
-  .post("/reply", async ({ body, request, set }) => {
+  .get('/reply', ({ request }) => create402Response(request, '/api/x402/agents/reply'))
+  .post('/reply', async ({ body, request, set }) => {
     const x402Settlement = getX402Settlement(request);
-    if (!x402Settlement) return create402Response(request, "/api/x402/agents/reply");
+    if (!x402Settlement) return create402Response(request, '/api/x402/agents/reply');
 
     const {
       message,
@@ -149,13 +148,13 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
       systemPrompt,
     } = body as {
       message: string;
-      context?: Array<{ role: "user" | "assistant"; content: string }>;
+      context?: Array<{ role: 'user' | 'assistant'; content: string }>;
       systemPrompt?: string;
     };
 
     if (!message) {
       set.status = 400;
-      return { error: "message is required" };
+      return { error: 'message is required' };
     }
 
     try {
@@ -164,13 +163,13 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
         objective: message,
         message: {
           id: crypto.randomUUID(),
-          userId: x402Settlement.payer || "x402-user",
+          userId: x402Settlement.payer || 'x402-user',
           timestamp: new Date().toISOString(),
           content: message,
         },
         conversationHistory: context.map((c, i) => ({
           id: `ctx-${i}`,
-          userId: c.role === "user" ? x402Settlement.payer || "x402-user" : "assistant",
+          userId: c.role === 'user' ? x402Settlement.payer || 'x402-user' : 'assistant',
           timestamp: new Date().toISOString(),
           content: c.content,
           role: c.role,
@@ -189,7 +188,7 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
         },
       };
     } catch (error: any) {
-      logger.error({ error: error.message }, "reply_agent_error");
+      logger.error({ error: error.message }, 'reply_agent_error');
       set.status = 500;
       return { error: error.message };
     }
@@ -198,10 +197,10 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
   // =====================================================
   // PLANNING AGENT - Creates research plans
   // =====================================================
-  .get("/planning", ({ request }) => create402Response(request, "/api/x402/agents/planning"))
-  .post("/planning", async ({ body, request, set }) => {
+  .get('/planning', ({ request }) => create402Response(request, '/api/x402/agents/planning'))
+  .post('/planning', async ({ body, request, set }) => {
     const x402Settlement = getX402Settlement(request);
-    if (!x402Settlement) return create402Response(request, "/api/x402/agents/planning");
+    if (!x402Settlement) return create402Response(request, '/api/x402/agents/planning');
 
     const { objective, existingPlan } = body as {
       objective: string;
@@ -210,7 +209,7 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
 
     if (!objective) {
       set.status = 400;
-      return { error: "objective is required" };
+      return { error: 'objective is required' };
     }
 
     try {
@@ -218,7 +217,7 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
         objective,
         message: {
           id: crypto.randomUUID(),
-          userId: x402Settlement.payer || "x402-user",
+          userId: x402Settlement.payer || 'x402-user',
           timestamp: new Date().toISOString(),
           content: objective,
         },
@@ -232,7 +231,7 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
         result,
       };
     } catch (error: any) {
-      logger.error({ error: error.message }, "planning_agent_error");
+      logger.error({ error: error.message }, 'planning_agent_error');
       set.status = 500;
       return { error: error.message };
     }
@@ -241,10 +240,10 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
   // =====================================================
   // HYPOTHESIS AGENT - Needs research context
   // =====================================================
-  .get("/hypothesis", ({ request }) => create402Response(request, "/api/x402/agents/hypothesis"))
-  .post("/hypothesis", async ({ body, request, set }) => {
+  .get('/hypothesis', ({ request }) => create402Response(request, '/api/x402/agents/hypothesis'))
+  .post('/hypothesis', async ({ body, request, set }) => {
     const x402Settlement = getX402Settlement(request);
-    if (!x402Settlement) return create402Response(request, "/api/x402/agents/hypothesis");
+    if (!x402Settlement) return create402Response(request, '/api/x402/agents/hypothesis');
 
     const {
       objective,
@@ -263,7 +262,7 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
 
     if (!objective) {
       set.status = 400;
-      return { error: "objective is required" };
+      return { error: 'objective is required' };
     }
 
     try {
@@ -271,11 +270,11 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
         objective,
         message: {
           id: crypto.randomUUID(),
-          userId: x402Settlement.payer || "x402-user",
+          userId: x402Settlement.payer || 'x402-user',
           timestamp: new Date().toISOString(),
           content: objective,
         },
-        conversationState: createConversationState(x402Settlement.payer || "x402-user", {
+        conversationState: createConversationState(x402Settlement.payer || 'x402-user', {
           currentHypothesis,
           discoveries: [],
         }),
@@ -289,7 +288,7 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
         result,
       };
     } catch (error: any) {
-      logger.error({ error: error.message }, "hypothesis_agent_error");
+      logger.error({ error: error.message }, 'hypothesis_agent_error');
       set.status = 500;
       return { error: error.message };
     }
@@ -298,29 +297,29 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
   // =====================================================
   // ANALYSIS AGENT - Needs datasets
   // =====================================================
-  .get("/analysis", ({ request }) => create402Response(request, "/api/x402/agents/analysis"))
-  .post("/analysis", async ({ body, request, set }) => {
+  .get('/analysis', ({ request }) => create402Response(request, '/api/x402/agents/analysis'))
+  .post('/analysis', async ({ body, request, set }) => {
     const x402Settlement = getX402Settlement(request);
-    if (!x402Settlement) return create402Response(request, "/api/x402/agents/analysis");
+    if (!x402Settlement) return create402Response(request, '/api/x402/agents/analysis');
 
     const {
       objective,
       datasets,
-      type = "BIO",
+      type = 'BIO',
     } = body as {
       objective: string;
       datasets: Array<{ filename: string; id: string; description: string; content?: string }>;
-      type?: "EDISON" | "BIO";
+      type?: 'EDISON' | 'BIO';
     };
 
     if (!objective) {
       set.status = 400;
-      return { error: "objective is required" };
+      return { error: 'objective is required' };
     }
 
     if (!datasets || datasets.length === 0) {
       set.status = 400;
-      return { error: "datasets array is required" };
+      return { error: 'datasets array is required' };
     }
 
     try {
@@ -329,14 +328,14 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
         filename: d.filename,
         id: d.id,
         description: d.description,
-        content: d.content ? Buffer.from(d.content, "base64") : undefined,
+        content: d.content ? Buffer.from(d.content, 'base64') : undefined,
       }));
 
       const result = await analysisAgent({
         objective,
         datasets: processedDatasets,
         type,
-        userId: x402Settlement.payer || "x402-user",
+        userId: x402Settlement.payer || 'x402-user',
         conversationStateId: crypto.randomUUID(),
       });
 
@@ -347,7 +346,7 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
         result,
       };
     } catch (error: any) {
-      logger.error({ error: error.message }, "analysis_agent_error");
+      logger.error({ error: error.message }, 'analysis_agent_error');
       set.status = 500;
       return { error: error.message };
     }
@@ -356,10 +355,10 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
   // =====================================================
   // REFLECTION AGENT - Evaluates research
   // =====================================================
-  .get("/reflection", ({ request }) => create402Response(request, "/api/x402/agents/reflection"))
-  .post("/reflection", async ({ body, request, set }) => {
+  .get('/reflection', ({ request }) => create402Response(request, '/api/x402/agents/reflection'))
+  .post('/reflection', async ({ body, request, set }) => {
     const x402Settlement = getX402Settlement(request);
-    if (!x402Settlement) return create402Response(request, "/api/x402/agents/reflection");
+    if (!x402Settlement) return create402Response(request, '/api/x402/agents/reflection');
 
     const {
       objective,
@@ -375,7 +374,7 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
 
     if (!objective) {
       set.status = 400;
-      return { error: "objective is required" };
+      return { error: 'objective is required' };
     }
 
     try {
@@ -383,11 +382,11 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
         objective,
         message: {
           id: crypto.randomUUID(),
-          userId: x402Settlement.payer || "x402-user",
+          userId: x402Settlement.payer || 'x402-user',
           timestamp: new Date().toISOString(),
           content: objective,
         },
-        conversationState: createConversationState(x402Settlement.payer || "x402-user", {
+        conversationState: createConversationState(x402Settlement.payer || 'x402-user', {
           currentHypothesis: hypothesis,
           discoveries: discoveries as Discovery[],
         }),
@@ -401,7 +400,7 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
         result,
       };
     } catch (error: any) {
-      logger.error({ error: error.message }, "reflection_agent_error");
+      logger.error({ error: error.message }, 'reflection_agent_error');
       set.status = 500;
       return { error: error.message };
     }
@@ -410,10 +409,10 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
   // =====================================================
   // DISCOVERY AGENT - Extracts discoveries
   // =====================================================
-  .get("/discovery", ({ request }) => create402Response(request, "/api/x402/agents/discovery"))
-  .post("/discovery", async ({ body, request, set }) => {
+  .get('/discovery', ({ request }) => create402Response(request, '/api/x402/agents/discovery'))
+  .post('/discovery', async ({ body, request, set }) => {
     const x402Settlement = getX402Settlement(request);
-    if (!x402Settlement) return create402Response(request, "/api/x402/agents/discovery");
+    if (!x402Settlement) return create402Response(request, '/api/x402/agents/discovery');
 
     const {
       hypothesis,
@@ -432,18 +431,18 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
 
     if (!completedTasks || completedTasks.length === 0) {
       set.status = 400;
-      return { error: "completedTasks array is required" };
+      return { error: 'completedTasks array is required' };
     }
 
     try {
       const result = await discoveryAgent({
         message: {
           id: crypto.randomUUID(),
-          userId: x402Settlement.payer || "x402-user",
+          userId: x402Settlement.payer || 'x402-user',
           timestamp: new Date().toISOString(),
-          content: "",
+          content: '',
         },
-        conversationState: createConversationState(x402Settlement.payer || "x402-user", {
+        conversationState: createConversationState(x402Settlement.payer || 'x402-user', {
           discoveries: existingDiscoveries as Discovery[],
         }),
         tasksToConsider: createCompletedTasks(completedTasks),
@@ -457,7 +456,7 @@ export const x402IndividualAgentsRoute = new Elysia({ prefix: "/api/x402/agents"
         result,
       };
     } catch (error: any) {
-      logger.error({ error: error.message }, "discovery_agent_error");
+      logger.error({ error: error.message }, 'discovery_agent_error');
       set.status = 500;
       return { error: error.message };
     }

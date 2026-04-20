@@ -7,13 +7,13 @@
 import '../icon/icon.js';
 import './icon-button.js';
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Environment} from '../testing/environment.js';
-import {createTokenTests} from '../testing/tokens.js';
+import { Environment } from '../testing/environment.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {IconButtonHarness} from './harness.js';
-import {MdIconButton} from './icon-button.js';
+import { IconButtonHarness } from './harness.js';
+import { MdIconButton } from './icon-button.js';
 
 const ICON_BUTTON_TEMPLATE = html`
   <md-icon-button aria-label="Star">
@@ -45,10 +45,9 @@ describe('icon button tests', () => {
 
   describe('md-icon-button', () => {
     it(
-      'setting `disabled` updates the disabled attribute on the native ' +
-        'button element',
+      'setting `disabled` updates the disabled attribute on the native ' + 'button element',
       async () => {
-        const {element} = await setUpTest('button');
+        const { element } = await setUpTest('button');
         const button = element.shadowRoot!.querySelector('button')!;
 
         element.disabled = true;
@@ -63,7 +62,7 @@ describe('icon button tests', () => {
 
     it('should not be focusable when disabled', async () => {
       // Arrange
-      const {element} = await setUpTest('button');
+      const { element } = await setUpTest('button');
       element.disabled = true;
       await element.updateComplete;
 
@@ -78,7 +77,7 @@ describe('icon button tests', () => {
 
     it('should be focusable when soft-disabled', async () => {
       // Arrange
-      const {element} = await setUpTest('button');
+      const { element } = await setUpTest('button');
       element.softDisabled = true;
       await element.updateComplete;
 
@@ -94,7 +93,7 @@ describe('icon button tests', () => {
     it('should not be clickable when disabled', async () => {
       // Arrange
       const clickListener = jasmine.createSpy('clickListener');
-      const {element} = await setUpTest('button');
+      const { element } = await setUpTest('button');
       element.disabled = true;
       element.addEventListener('click', clickListener);
       await element.updateComplete;
@@ -109,7 +108,7 @@ describe('icon button tests', () => {
     it('should not be clickable when soft-disabled', async () => {
       // Arrange
       const clickListener = jasmine.createSpy('clickListener');
-      const {element} = await setUpTest('button');
+      const { element } = await setUpTest('button');
       element.softDisabled = true;
       element.addEventListener('click', clickListener);
       await element.updateComplete;
@@ -122,10 +121,9 @@ describe('icon button tests', () => {
     });
 
     it(
-      'setting `ariaLabel` updates the aria-label attribute on the native ' +
-        'button element',
+      'setting `ariaLabel` updates the aria-label attribute on the native ' + 'button element',
       async () => {
-        const {element} = await setUpTest('button');
+        const { element } = await setUpTest('button');
         const button = element.shadowRoot!.querySelector('button')!;
 
         element.ariaLabel = 'test';
@@ -136,27 +134,22 @@ describe('icon button tests', () => {
   });
 
   describe('md-icon-button link', () => {
-    it(
-      'setting `ariaLabel` updates the aria-label attribute on the anchor' +
-        'tag',
-      async () => {
-        const {element} = await setUpTest('link');
-        const anchor = element.shadowRoot!.querySelector('a')!;
-        expect(anchor).not.toBeNull();
+    it('setting `ariaLabel` updates the aria-label attribute on the anchor' + 'tag', async () => {
+      const { element } = await setUpTest('link');
+      const anchor = element.shadowRoot!.querySelector('a')!;
+      expect(anchor).not.toBeNull();
 
-        element.ariaLabel = 'test';
-        await element.updateComplete;
-        expect(anchor.getAttribute('aria-label')).toBe('test');
-      },
-    );
+      element.ariaLabel = 'test';
+      await element.updateComplete;
+      expect(anchor.getAttribute('aria-label')).toBe('test');
+    });
   });
 
   describe('md-icon-button toggle', () => {
     it(
-      'setting `disabled` updates the disabled attribute on the native ' +
-        'button element',
+      'setting `disabled` updates the disabled attribute on the native ' + 'button element',
       async () => {
-        const {element} = await setUpTest('toggle');
+        const { element } = await setUpTest('toggle');
         const button = element.shadowRoot!.querySelector('button')!;
 
         element.disabled = true;
@@ -170,10 +163,9 @@ describe('icon button tests', () => {
     );
 
     it(
-      'setting `ariaLabel` updates the aria-label attribute on the native ' +
-        'button element',
+      'setting `ariaLabel` updates the aria-label attribute on the native ' + 'button element',
       async () => {
-        const {element} = await setUpTest('toggle');
+        const { element } = await setUpTest('toggle');
         const button = element.shadowRoot!.querySelector('button')!;
 
         element.ariaLabel = 'test';
@@ -183,7 +175,7 @@ describe('icon button tests', () => {
     );
 
     it('toggles the `selected` state when button is clicked', async () => {
-      const {element, harness} = await setUpTest('toggle');
+      const { element, harness } = await setUpTest('toggle');
 
       expect(element.selected).toBeFalse();
       await harness.clickWithMouse();
@@ -193,7 +185,7 @@ describe('icon button tests', () => {
     });
 
     it('fires input and change events when clicked', async () => {
-      const {element, harness} = await setUpTest('toggle');
+      const { element, harness } = await setUpTest('toggle');
       let changeEvent = false;
       let inputEvent = false;
       element.addEventListener('input', () => (inputEvent = true));
@@ -206,7 +198,7 @@ describe('icon button tests', () => {
     });
 
     it('setting `selected` updates the aria-pressed attribute on the native button element', async () => {
-      const {element} = await setUpTest('toggle');
+      const { element } = await setUpTest('toggle');
 
       element.selected = true;
       await element.updateComplete;
@@ -219,7 +211,7 @@ describe('icon button tests', () => {
     });
 
     it('button with toggled aria label toggles aria label', async () => {
-      const {element, harness} = await setUpTest('toggle');
+      const { element, harness } = await setUpTest('toggle');
       element.ariaLabelSelected = 'aria label on';
       element.ariaLabel = 'aria label off';
       await element.updateComplete;
@@ -260,7 +252,7 @@ describe('icon button tests', () => {
     });
 
     it('should allow preventing toggle click event', async () => {
-      const {element, harness} = await setUpTest('toggle');
+      const { element, harness } = await setUpTest('toggle');
 
       element.addEventListener('click', (event) => {
         event.preventDefault();
@@ -268,9 +260,7 @@ describe('icon button tests', () => {
 
       expect(element.selected).withContext('selected before click').toBeFalse();
       await harness.clickWithMouse();
-      expect(element.selected)
-        .withContext('selected after prevent default click')
-        .toBeFalse();
+      expect(element.selected).withContext('selected after prevent default click').toBeFalse();
     });
   });
 

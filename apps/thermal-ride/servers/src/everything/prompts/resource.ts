@@ -1,14 +1,15 @@
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { resourceTypeCompleter, resourceIdForPromptCompleter } from "../resources/templates.js";
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import {
-  textResource,
-  textResourceUri,
-  blobResourceUri,
   blobResource,
+  blobResourceUri,
   RESOURCE_TYPE_BLOB,
   RESOURCE_TYPE_TEXT,
   RESOURCE_TYPES,
-} from "../resources/templates.js";
+  resourceIdForPromptCompleter,
+  resourceTypeCompleter,
+  textResource,
+  textResourceUri,
+} from '../resources/templates.js';
 
 /**
  * Register a prompt with an embedded resource reference
@@ -26,10 +27,10 @@ export const registerEmbeddedResourcePrompt = (server: McpServer) => {
 
   // Register the prompt
   server.registerPrompt(
-    "resource-prompt",
+    'resource-prompt',
     {
-      title: "Resource Prompt",
-      description: "A prompt that includes an embedded resource reference",
+      title: 'Resource Prompt',
+      description: 'A prompt that includes an embedded resource reference',
       argsSchema: promptArgsSchema,
     },
     (args) => {
@@ -66,16 +67,16 @@ export const registerEmbeddedResourcePrompt = (server: McpServer) => {
       return {
         messages: [
           {
-            role: "user",
+            role: 'user',
             content: {
-              type: "text",
+              type: 'text',
               text: `This prompt includes the ${resourceType} resource with id: ${resourceId}. Please analyze the following resource:`,
             },
           },
           {
-            role: "user",
+            role: 'user',
             content: {
-              type: "resource",
+              type: 'resource',
               resource: resource,
             },
           },

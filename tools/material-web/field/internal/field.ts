@@ -4,47 +4,40 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  html,
-  LitElement,
-  nothing,
-  PropertyValues,
-  render,
-  TemplateResult,
-} from 'lit';
-import {property, query, queryAssignedElements, state} from 'lit/decorators.js';
-import {classMap} from 'lit/directives/class-map.js';
+import { html, LitElement, nothing, type PropertyValues, render, type TemplateResult } from 'lit';
+import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
-import {EASING} from '../../internal/motion/animation.js';
+import { EASING } from '../../internal/motion/animation.js';
 
 /**
  * A field component.
  */
 export class Field extends LitElement {
-  @property({type: Boolean}) disabled = false;
-  @property({type: Boolean}) error = false;
-  @property({type: Boolean}) focused = false;
+  @property({ type: Boolean }) disabled = false;
+  @property({ type: Boolean }) error = false;
+  @property({ type: Boolean }) focused = false;
   @property() label = '';
-  @property({type: Boolean, attribute: 'no-asterisk'}) noAsterisk = false;
-  @property({type: Boolean}) populated = false;
-  @property({type: Boolean}) required = false;
-  @property({type: Boolean}) resizable = false;
-  @property({attribute: 'supporting-text'}) supportingText = '';
-  @property({attribute: 'error-text'}) errorText = '';
-  @property({type: Number}) count = -1;
-  @property({type: Number}) max = -1;
+  @property({ type: Boolean, attribute: 'no-asterisk' }) noAsterisk = false;
+  @property({ type: Boolean }) populated = false;
+  @property({ type: Boolean }) required = false;
+  @property({ type: Boolean }) resizable = false;
+  @property({ attribute: 'supporting-text' }) supportingText = '';
+  @property({ attribute: 'error-text' }) errorText = '';
+  @property({ type: Number }) count = -1;
+  @property({ type: Number }) max = -1;
 
   /**
    * Whether or not the field has leading content.
    */
-  @property({type: Boolean, attribute: 'has-start'}) hasStart = false;
+  @property({ type: Boolean, attribute: 'has-start' }) hasStart = false;
 
   /**
    * Whether or not the field has trailing content.
    */
-  @property({type: Boolean, attribute: 'has-end'}) hasEnd = false;
+  @property({ type: Boolean, attribute: 'has-end' }) hasEnd = false;
 
-  @queryAssignedElements({slot: 'aria-describedby'})
+  @queryAssignedElements({ slot: 'aria-describedby' })
   private readonly slottedAriaDescribedBy!: HTMLElement[];
 
   private get counterText() {
@@ -91,8 +84,7 @@ export class Field extends LitElement {
 
   protected override update(props: PropertyValues<Field>) {
     // Client-side property updates
-    const isDisabledChanging =
-      props.has('disabled') && props.get('disabled') !== undefined;
+    const isDisabledChanging = props.has('disabled') && props.get('disabled') !== undefined;
     if (isDisabledChanging) {
       this.disableTransitions = true;
     }
@@ -117,15 +109,15 @@ export class Field extends LitElement {
     const restingLabel = this.renderLabel(/*isFloating*/ false);
     const outline = this.renderOutline?.(floatingLabel);
     const classes = {
-      'disabled': this.disabled,
+      disabled: this.disabled,
       'disable-transitions': this.disableTransitions,
-      'error': this.error && !this.disabled,
-      'focused': this.focused,
+      error: this.error && !this.disabled,
+      focused: this.focused,
       'with-start': this.hasStart,
       'with-end': this.hasEnd,
-      'populated': this.populated,
-      'resizable': this.resizable,
-      'required': this.required,
+      populated: this.populated,
+      resizable: this.resizable,
+      required: this.required,
       'no-label': !this.label,
     };
 
@@ -188,7 +180,7 @@ export class Field extends LitElement {
   protected renderOutline?(floatingLabel: unknown): TemplateResult;
 
   private renderSupportingText() {
-    const {supportingOrErrorText, counterText} = this;
+    const { supportingOrErrorText, counterText } = this;
     if (!supportingOrErrorText && !counterText) {
       return nothing;
     }
@@ -198,16 +190,13 @@ export class Field extends LitElement {
     const start = html`<span>${supportingOrErrorText}</span>`;
     // Conditionally render counter so we don't render the extra `gap`.
     // TODO(b/244473435): add aria-label and announcements
-    const end = counterText
-      ? html`<span class="counter">${counterText}</span>`
-      : nothing;
+    const end = counterText ? html`<span class="counter">${counterText}</span>` : nothing;
 
     // Announce if there is an error and error text visible.
     // If refreshErrorAlert is true, do not announce. This will remove the
     // role="alert" attribute. Another render cycle will happen after an
     // animation frame to re-add the role.
-    const shouldErrorAnnounce =
-      this.error && this.errorText && !this.refreshErrorAlert;
+    const shouldErrorAnnounce = this.error && this.errorText && !this.refreshErrorAlert;
     const role = shouldErrorAnnounce ? 'alert' : nothing;
     return html`
       <div class="supporting-text" role=${role}>${start}${end}</div>
@@ -240,15 +229,13 @@ export class Field extends LitElement {
     }
 
     const classes = {
-      'hidden': !visible,
-      'floating': isFloating,
-      'resting': !isFloating,
+      hidden: !visible,
+      floating: isFloating,
+      resting: !isFloating,
     };
 
     // Add '*' if a label is present and the field is required
-    const labelText = `${this.label}${
-      this.required && !this.noAsterisk ? '*' : ''
-    }`;
+    const labelText = `${this.label}${this.required && !this.noAsterisk ? '*' : ''}`;
 
     return html`
       <span class="label ${classMap(classes)}" aria-hidden=${!visible}
@@ -308,7 +295,7 @@ export class Field extends LitElement {
   }
 
   private getLabelKeyframes() {
-    const {floatingLabelEl, restingLabelEl} = this;
+    const { floatingLabelEl, restingLabelEl } = this;
     if (!floatingLabelEl || !restingLabelEl) {
       return [];
     }
@@ -339,10 +326,7 @@ export class Field extends LitElement {
     // we move the floating label down to the resting label's position, it won't
     // exactly match because of this. We need to adjust by half of what the
     // final scaled floating label's height will be.
-    const yDelta =
-      restingY -
-      floatingY +
-      Math.round((restingHeight - floatingHeight * scale) / 2);
+    const yDelta = restingY - floatingY + Math.round((restingHeight - floatingHeight * scale) / 2);
 
     // Create the two transforms: floating to resting (using the calculations
     // above), and resting to floating (re-setting the transform to initial
@@ -358,14 +342,14 @@ export class Field extends LitElement {
     const width = isRestingClipped ? `${restingClientWidth / scale}px` : '';
     if (this.focused || this.populated) {
       return [
-        {transform: restTransform, width},
-        {transform: floatTransform, width},
+        { transform: restTransform, width },
+        { transform: floatTransform, width },
       ];
     }
 
     return [
-      {transform: floatTransform, width},
-      {transform: restTransform, width},
+      { transform: floatTransform, width },
+      { transform: restTransform, width },
     ];
   }
 

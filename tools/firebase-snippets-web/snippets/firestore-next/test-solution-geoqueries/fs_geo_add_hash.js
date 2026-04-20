@@ -18,6 +18,6 @@ const londonRef = doc(db, 'cities', 'LON');
 await updateDoc(londonRef, {
   geohash: hash,
   lat: lat,
-  lng: lng
+  lng: lng,
 });
 // [END fs_geo_add_hash_modular]

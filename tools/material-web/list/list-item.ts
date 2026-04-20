@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {CSSResultOrNative} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import type { CSSResultOrNative } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {ListItemEl as ListItem} from './internal/listitem/list-item.js';
-import {styles} from './internal/listitem/list-item-styles.cssresult.js';
+import { ListItemEl as ListItem } from './internal/listitem/list-item.js';
+import { styles } from './internal/listitem/list-item-styles.cssresult.js';
 
-export {type ListItemType} from './internal/listitem/list-item.js';
+export type { ListItemType } from './internal/listitem/list-item.js';
 
 declare global {
   interface HTMLElementTagNameMap {

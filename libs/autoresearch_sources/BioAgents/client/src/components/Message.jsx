@@ -1,9 +1,9 @@
-import { useState } from "preact/hooks";
-import { Icon } from "./icons";
-import { InlineCitationText } from "./InlineCitationText";
+import { useState } from 'preact/hooks';
+import { InlineCitationText } from './InlineCitationText';
+import { Icon } from './icons';
 
 export function Message({ message }) {
-  const isUser = message.role === "user";
+  const isUser = message.role === 'user';
   const [copied, setCopied] = useState(false);
 
   // Format timestamp for display
@@ -17,8 +17,8 @@ export function Message({ message }) {
     const isToday = date.toDateString() === now.toDateString();
 
     const timeStr = date.toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
+      hour: 'numeric',
+      minute: '2-digit',
       hour12: true,
     });
 
@@ -27,8 +27,8 @@ export function Message({ message }) {
     }
 
     const dateStr = date.toLocaleDateString([], {
-      month: "short",
-      day: "numeric",
+      month: 'short',
+      day: 'numeric',
     });
     return `${dateStr}, ${timeStr}`;
   };
@@ -39,26 +39,26 @@ export function Message({ message }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error("Failed to copy:", err);
+      console.error('Failed to copy:', err);
     }
   };
 
   const formatFileSize = (bytes) => {
-    if (!bytes) return "";
-    if (bytes === 0) return "0 Bytes";
+    if (!bytes) return '';
+    if (bytes === 0) return '0 Bytes';
     const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return `${(bytes / k ** i).toFixed(2)} ${sizes[i]}`;
   };
 
   const getFileIcon = (mimeType) => {
-    if (!mimeType) return "file";
-    if (mimeType.includes("pdf")) return "file";
-    if (mimeType.includes("image")) return "image";
-    if (mimeType.includes("spreadsheet") || mimeType.includes("excel") || mimeType.includes("csv"))
-      return "file";
-    return "file";
+    if (!mimeType) return 'file';
+    if (mimeType.includes('pdf')) return 'file';
+    if (mimeType.includes('image')) return 'image';
+    if (mimeType.includes('spreadsheet') || mimeType.includes('excel') || mimeType.includes('csv'))
+      return 'file';
+    return 'file';
   };
 
   const timestamp = formatTimestamp(message.timestamp);
@@ -106,7 +106,7 @@ export function Message({ message }) {
             {timestamp && <div className="message-timestamp">{timestamp}</div>}
             <div className="message-actions">
               <button onClick={handleCopy} className="message-action-icon-btn" title="Copy">
-                <Icon name={copied ? "check" : "copy"} size={18} />
+                <Icon name={copied ? 'check' : 'copy'} size={18} />
               </button>
               <button
                 disabled
@@ -152,15 +152,15 @@ export function Message({ message }) {
 
   // Debug: log message to see if thinkingState is present
   if (!isUser && message.thinkingState) {
-    console.log("[Message] Rendering with thinkingState:", message.thinkingState);
+    console.log('[Message] Rendering with thinkingState:', message.thinkingState);
   } else if (!isUser) {
-    console.log("[Message] No thinkingState for assistant message:", message.id);
+    console.log('[Message] No thinkingState for assistant message:', message.id);
   }
 
   return (
-    <div className={`message ${isUser ? "user" : "assistant"}`}>
-      <div className={`avatar ${isUser ? "user" : "assistant"}`}>
-        <Icon name={isUser ? "user" : "bot"} size={16} />
+    <div className={`message ${isUser ? 'user' : 'assistant'}`}>
+      <div className={`avatar ${isUser ? 'user' : 'assistant'}`}>
+        <Icon name={isUser ? 'user' : 'bot'} size={16} />
       </div>
       <div className="message-content-container">{renderContent()}</div>
     </div>

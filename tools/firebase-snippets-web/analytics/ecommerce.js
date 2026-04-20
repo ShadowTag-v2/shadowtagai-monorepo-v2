@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/analytics";
+import firebase from 'firebase/app';
+import 'firebase/analytics';
 
 // [START analytics_ecommerce_items]
 // A pair of jeggings
@@ -9,7 +9,7 @@ const item_jeggings = {
   item_category: 'pants',
   item_variant: 'black',
   item_brand: 'Google',
-  price: 9.99
+  price: 9.99,
 };
 
 // A pair of boots
@@ -19,7 +19,7 @@ const item_boots = {
   item_category: 'shoes',
   item_variant: 'brown',
   item_brand: 'Google',
-  price: 24.99
+  price: 24.99,
 };
 
 // A pair of socks
@@ -29,7 +29,7 @@ const item_socks = {
   item_category: 'socks',
   item_variant: 'red',
   item_brand: 'Google',
-  price: 5.99
+  price: 5.99,
 };
 // [END analytics_ecommerce_items]
 
@@ -39,7 +39,7 @@ function ecommerceViewItemList() {
   const params1 = {
     item_list_id: 'L001',
     item_list_name: 'Related products',
-    items: [item_jeggings, item_boots, item_socks]
+    items: [item_jeggings, item_boots, item_socks],
   };
 
   // Log event
@@ -53,7 +53,7 @@ function ecommerceSelectItem() {
   const params2 = {
     item_list_id: 'L001',
     item_list_name: 'Related products',
-    items: [item_jeggings]
+    items: [item_jeggings],
   };
 
   // Log event
@@ -62,13 +62,13 @@ function ecommerceSelectItem() {
 }
 
 function ecommerceViewItemDetails() {
-    // [START analytics_ecommerce_view_item_details]
-    // Prepare ecommerce event params
-    const params3 = {
-      currency: 'USD',
-      value: 9.99,
-      items: [item_jeggings]
-    };
+  // [START analytics_ecommerce_view_item_details]
+  // Prepare ecommerce event params
+  const params3 = {
+    currency: 'USD',
+    value: 9.99,
+    items: [item_jeggings],
+  };
 
   // Log event
   firebase.analytics().logEvent(firebase.analytics.EventName.VIEW_ITEM, params3);
@@ -80,14 +80,14 @@ function ecommerceAddCart() {
   // Specify order quantity
   const item_jeggings_quantity = {
     ...item_jeggings,
-    quantity: 2
+    quantity: 2,
   };
 
   // Prepare ecommerce bundle
   const params4 = {
     currency: 'USD',
     value: 19.98,
-    items: [item_jeggings_quantity]
+    items: [item_jeggings_quantity],
   };
 
   // Log event when a product is added to a wishlist
@@ -103,19 +103,19 @@ function ecommerceViewCart() {
   // Specify order quantity
   const item_jeggings_quantity = {
     ...item_jeggings,
-    quantity: 2
+    quantity: 2,
   };
 
   const item_boots_quantity = {
     ...item_boots,
-    quantity: 1
+    quantity: 1,
   };
 
   // Prepare ecommerce params
   const params5 = {
     currency: 'USD',
     value: 44.97,
-    items: [item_jeggings_quantity, item_boots_quantity]
+    items: [item_jeggings_quantity, item_boots_quantity],
   };
 
   // Log event when the cart is viewed
@@ -129,7 +129,7 @@ function ecommerceRemoveCart() {
   const params6 = {
     currency: 'USD',
     value: 24.99,
-    items: [item_jeggings]
+    items: [item_jeggings],
   };
 
   // Log event
@@ -144,7 +144,7 @@ function ecommerceCheckout() {
     currency: 'USD',
     value: 14.98, // Total Revenue
     coupon: 'SUMMER_FUN',
-    items: [item_jeggings]
+    items: [item_jeggings],
   };
 
   // Log event
@@ -160,7 +160,7 @@ function ecommerceShippingInfo() {
     value: 14.98, // Total Revenue
     coupon: 'SUMMER_FUN',
     shipping_tier: 'Ground',
-    items: [item_jeggings]
+    items: [item_jeggings],
   };
 
   // Log event
@@ -176,7 +176,7 @@ function ecommercePaymentInfo() {
     value: 14.98, // Total Revenue
     coupon: 'SUMMER_FUN',
     payment_type: 'Visa',
-    items: [item_jeggings]
+    items: [item_jeggings],
   };
 
   // Log event
@@ -195,7 +195,7 @@ function ecommercePurchase() {
     tax: 2.85,
     shipping: 5.34,
     coupon: 'SUMMER_FUN',
-    items: [item_jeggings]
+    items: [item_jeggings],
   };
 
   // Log event
@@ -211,13 +211,13 @@ function ecommerceRefund() {
     affiliation: 'Google Store',
     currency: 'USD',
     value: 9.99,
-    items: []
+    items: [],
   };
 
   // (Optional) For partial refunds, define the item_id and quantity of refunded items
   const refundedProduct = {
     item_id: 'SKU_123', // Required
-    quantity: 1 // Required
+    quantity: 1, // Required
   };
 
   params11.items.push(refundedProduct);
@@ -236,7 +236,7 @@ function ecommercePromotions() {
     creative_name: 'summer2020_promo.jpg',
     creative_slot: 'featured_app_1',
     location_id: 'HERO_BANNER',
-    items: [item_jeggings]
+    items: [item_jeggings],
   };
 
   // Log event when a promotion is displayed

@@ -8,15 +8,9 @@
  * Node labels that should be embedded for semantic search
  * These are code elements that benefit from semantic matching
  */
-export const EMBEDDABLE_LABELS = [
-  'Function',
-  'Class',
-  'Method',
-  'Interface',
-  'File',
-] as const;
+export const EMBEDDABLE_LABELS = ['Function', 'Class', 'Method', 'Interface', 'File'] as const;
 
-export type EmbeddableLabel = typeof EMBEDDABLE_LABELS[number];
+export type EmbeddableLabel = (typeof EMBEDDABLE_LABELS)[number];
 
 /**
  * Check if a label should be embedded
@@ -64,7 +58,6 @@ export interface EmbeddingConfig {
   /** Maximum characters of code snippet to include */
   maxSnippetLength: number;
 }
-
 
 /**
  * Default embedding configuration

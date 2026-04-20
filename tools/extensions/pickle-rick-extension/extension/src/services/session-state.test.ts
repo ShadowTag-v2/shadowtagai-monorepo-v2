@@ -80,7 +80,7 @@ describe('session-state utilities', () => {
     fs.writeFileSync(
       statePath,
       JSON.stringify({ active: true, working_dir: '/repo', step: 'prd' }, null, 2),
-      'utf8'
+      'utf8',
     );
 
     const state = readStateFile(statePath);
@@ -134,12 +134,12 @@ describe('session-state utilities', () => {
     fs.writeFileSync(
       oldStatePath,
       JSON.stringify({ active: true, working_dir: '/repo', step: 'prd' }, null, 2),
-      'utf8'
+      'utf8',
     );
     fs.writeFileSync(
       newStatePath,
       JSON.stringify({ active: true, working_dir: '/repo', step: 'plan' }, null, 2),
-      'utf8'
+      'utf8',
     );
 
     const now = Date.now();

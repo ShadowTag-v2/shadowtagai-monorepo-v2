@@ -15,11 +15,13 @@
  * limitations under the License.
  */
 
-import {ProtoSerializable, Serializer} from '../serializer';
-import {google} from '../../protos/firestore_v1_proto_api';
+import { google } from '../../protos/firestore_v1_proto_api';
+import type { ProtoSerializable, Serializer } from '../serializer';
+
 import IStructuredPipeline = google.firestore.v1.IStructuredPipeline;
 import IPipeline = google.firestore.v1.IPipeline;
-import {OptionsUtil} from './options-util';
+
+import { OptionsUtil } from './options-util';
 
 /**
  * Defines the known options for StructuredPipeline and the valid values of
@@ -40,9 +42,7 @@ export type StructuredPipelineOptions = {
  * StructuredPipeline encapsulates the Pipeline and PipelineOptions and supports
  * serialization of this data to a StructuredPipeline proto.
  */
-export class StructuredPipeline
-  implements ProtoSerializable<IStructuredPipeline>
-{
+export class StructuredPipeline implements ProtoSerializable<IStructuredPipeline> {
   /**
    * OptionsUtil which defines the known StructuredPipelineOptions.
    * This maps client side options to their server names and structure.
@@ -83,11 +83,7 @@ export class StructuredPipeline
   _toProto(serializer: Serializer): IStructuredPipeline {
     return {
       pipeline: this.pipeline._toProto(serializer),
-      options: this.optionsUtil.getOptionsProto(
-        serializer,
-        this.options,
-        this.optionsOverride,
-      ),
+      options: this.optionsUtil.getOptionsProto(serializer, this.options, this.optionsOverride),
     };
   }
 }

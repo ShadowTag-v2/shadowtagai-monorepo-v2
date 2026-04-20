@@ -5,9 +5,9 @@
 // 'npm run snippets'.
 
 // [START storage_list_paginate_modular]
-import { getStorage, ref, list } from "firebase/storage";
+import { getStorage, list, ref } from 'firebase/storage';
 
-async function pageTokenExample(){
+async function pageTokenExample() {
   // Create a reference under which you want to list
   const storage = getStorage();
   const listRef = ref(storage, 'files/uid');

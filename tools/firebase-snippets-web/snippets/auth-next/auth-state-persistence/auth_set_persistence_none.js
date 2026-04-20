@@ -5,7 +5,13 @@
 // 'npm run snippets'.
 
 // [START auth_set_persistence_none_modular]
-import { getAuth, setPersistence, signInWithRedirect, inMemoryPersistence, GoogleAuthProvider } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  inMemoryPersistence,
+  setPersistence,
+  signInWithRedirect,
+} from 'firebase/auth';
 
 const auth = getAuth();
 setPersistence(auth, inMemoryPersistence)

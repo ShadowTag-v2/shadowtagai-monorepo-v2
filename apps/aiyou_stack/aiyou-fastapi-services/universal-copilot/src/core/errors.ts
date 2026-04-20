@@ -13,7 +13,7 @@ export class CopilotError extends Error {
     public readonly details?: Record<string, unknown>,
   ) {
     super(message);
-    this.name = "CopilotError";
+    this.name = 'CopilotError';
     Object.setPrototypeOf(this, CopilotError.prototype);
   }
 }
@@ -28,8 +28,8 @@ export class ProviderError extends CopilotError {
     retryable: boolean = false,
     details?: Record<string, unknown>,
   ) {
-    super(message, "PROVIDER_ERROR", retryable, { ...details, provider });
-    this.name = "ProviderError";
+    super(message, 'PROVIDER_ERROR', retryable, { ...details, provider });
+    this.name = 'ProviderError';
     Object.setPrototypeOf(this, ProviderError.prototype);
   }
 }
@@ -43,8 +43,8 @@ export class RateLimitError extends CopilotError {
     public readonly retryAfterMs?: number,
     details?: Record<string, unknown>,
   ) {
-    super(message, "RATE_LIMIT_EXCEEDED", true, { ...details, retryAfterMs });
-    this.name = "RateLimitError";
+    super(message, 'RATE_LIMIT_EXCEEDED', true, { ...details, retryAfterMs });
+    this.name = 'RateLimitError';
     Object.setPrototypeOf(this, RateLimitError.prototype);
   }
 }
@@ -59,12 +59,12 @@ export class GovernanceError extends CopilotError {
     public readonly violatedAxioms: string[],
     details?: Record<string, unknown>,
   ) {
-    super(message, "GOVERNANCE_REJECTED", false, {
+    super(message, 'GOVERNANCE_REJECTED', false, {
       ...details,
       riskLevel,
       violatedAxioms,
     });
-    this.name = "GovernanceError";
+    this.name = 'GovernanceError';
     Object.setPrototypeOf(this, GovernanceError.prototype);
   }
 }
@@ -74,8 +74,8 @@ export class GovernanceError extends CopilotError {
  */
 export class ValidationError extends CopilotError {
   constructor(message: string, details?: Record<string, unknown>) {
-    super(message, "VALIDATION_ERROR", false, details);
-    this.name = "ValidationError";
+    super(message, 'VALIDATION_ERROR', false, details);
+    this.name = 'ValidationError';
     Object.setPrototypeOf(this, ValidationError.prototype);
   }
 }
@@ -85,8 +85,8 @@ export class ValidationError extends CopilotError {
  */
 export class PatchError extends CopilotError {
   constructor(message: string, details?: Record<string, unknown>) {
-    super(message, "PATCH_ERROR", false, details);
-    this.name = "PatchError";
+    super(message, 'PATCH_ERROR', false, details);
+    this.name = 'PatchError';
     Object.setPrototypeOf(this, PatchError.prototype);
   }
 }
@@ -99,8 +99,8 @@ export class TimeoutError extends CopilotError {
     message: string,
     public readonly timeoutMs: number,
   ) {
-    super(message, "TIMEOUT", true, { timeoutMs });
-    this.name = "TimeoutError";
+    super(message, 'TIMEOUT', true, { timeoutMs });
+    this.name = 'TimeoutError';
     Object.setPrototypeOf(this, TimeoutError.prototype);
   }
 }

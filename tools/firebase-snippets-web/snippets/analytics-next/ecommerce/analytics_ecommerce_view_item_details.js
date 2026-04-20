@@ -5,13 +5,13 @@
 // 'npm run snippets'.
 
 // [START analytics_ecommerce_view_item_details_modular]
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 // Prepare ecommerce event params
 const params3 = {
   currency: 'USD',
   value: 9.99,
-  items: [item_jeggings]
+  items: [item_jeggings],
 };
 
 // Log event

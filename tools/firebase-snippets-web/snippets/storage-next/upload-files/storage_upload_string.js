@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START storage_upload_string_modular]
-import { getStorage, ref, uploadString } from "firebase/storage";
+import { getStorage, ref, uploadString } from 'firebase/storage';
 
 const storage = getStorage();
 const storageRef = ref(storage, 'some-child');

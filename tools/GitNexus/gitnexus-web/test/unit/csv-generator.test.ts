@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { generateAllCSVs } from '../../src/core/lbug/csv-generator';
 import { createKnowledgeGraph } from '../../src/core/graph/graph';
+import { generateAllCSVs } from '../../src/core/lbug/csv-generator';
 import { NODE_TABLES } from '../../src/core/lbug/schema';
 
 describe('generateAllCSVs', () => {
@@ -21,7 +21,10 @@ describe('generateAllCSVs', () => {
     for (const label of testTables) {
       const csv = csvData.nodes.get(label);
       expect(csv, `CSV for ${label} should be generated`).toBeDefined();
-      expect(csv!.split('\n').length, `CSV for ${label} should have header + 1 row`).toBeGreaterThanOrEqual(2);
+      expect(
+        csv!.split('\n').length,
+        `CSV for ${label} should have header + 1 row`,
+      ).toBeGreaterThanOrEqual(2);
     }
   });
 
@@ -106,7 +109,8 @@ describe('generateAllCSVs', () => {
   it('handles all NODE_TABLES without crashing', () => {
     const graph = createKnowledgeGraph();
     for (const table of NODE_TABLES) {
-      if (table === 'File' || table === 'Folder' || table === 'Community' || table === 'Process') continue;
+      if (table === 'File' || table === 'Folder' || table === 'Community' || table === 'Process')
+        continue;
       graph.addNode({
         id: `${table}:test:item`,
         label: table,
@@ -126,7 +130,7 @@ describe('generateAllCSVs', () => {
     const csvData = generateAllCSVs(graph, new Map());
     // Nodes map may have header-only entries or be empty
     for (const [, csv] of csvData.nodes.entries()) {
-      const rows = csv.split('\n').filter(r => r.trim());
+      const rows = csv.split('\n').filter((r) => r.trim());
       expect(rows.length).toBeLessThanOrEqual(1); // header only, no data
     }
   });
@@ -134,7 +138,7 @@ describe('generateAllCSVs', () => {
   it('empty graph produces relCSV with only a header', () => {
     const graph = createKnowledgeGraph();
     const csvData = generateAllCSVs(graph, new Map());
-    const lines = csvData.relCSV.split('\n').filter(r => r.trim());
+    const lines = csvData.relCSV.split('\n').filter((r) => r.trim());
     expect(lines.length).toBeLessThanOrEqual(1);
   });
 

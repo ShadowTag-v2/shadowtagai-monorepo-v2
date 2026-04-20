@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { createRequire } from 'node:module';
 import gzipPlugin from '@luncheon/esbuild-plugin-gzip';
 import esbuild from 'esbuild';
-import {copyFileSync} from 'fs';
-import {createRequire} from 'node:module';
-import {join} from 'path';
+import { copyFileSync } from 'fs';
+import { join } from 'path';
 import tinyGlob from 'tiny-glob';
 
 // dev mode build
@@ -48,11 +48,11 @@ let componentsBuild = Promise.resolve();
 // development build
 if (DEV) {
   componentsBuild = esbuild
-                        .build({
-                          ...config,
-                          entryPoints,
-                        })
-                        .catch(() => process.exit(1));
+    .build({
+      ...config,
+      entryPoints,
+    })
+    .catch(() => process.exit(1));
 
   // production build
 } else {
@@ -88,24 +88,24 @@ if (DEV) {
   };
 
   componentsBuild = esbuild
-                        .build({
-                          ...config,
-                          entryPoints,
-                        })
-                        .catch(() => process.exit(1));
+    .build({
+      ...config,
+      entryPoints,
+    })
+    .catch(() => process.exit(1));
 }
 
 // seperate build so that the SSR bundle doesn't affect bundling for the
 // frontend
 const ssrBuild = esbuild
-                     .build({
-                       ...config,
-                       format: 'iife',
-                       splitting: false,
-                       conditions: ['node'],
-                       entryPoints: ['src/ssr.ts'],
-                     })
-                     .catch(() => process.exit(1));
+  .build({
+    ...config,
+    format: 'iife',
+    splitting: false,
+    conditions: ['node'],
+    entryPoints: ['src/ssr.ts'],
+  })
+  .catch(() => process.exit(1));
 
 // Glob of files that will be inlined on the page in <script> tags
 const tsInlineEntrypoints = [
@@ -113,26 +113,26 @@ const tsInlineEntrypoints = [
   // Anything in this directory will be inlined
   './src/inline/*.ts',
 ];
-const inlineFilesPromises =
-    tsInlineEntrypoints.map(async (entry) => tinyGlob(entry));
+const inlineFilesPromises = tsInlineEntrypoints.map(async (entry) => tinyGlob(entry));
 const inlineEntryPoints = (await Promise.all(inlineFilesPromises)).flat();
 
 // this code is inlined into the HTML because it is performance-sensitive
 const inlineBuild = esbuild
-                        .build({
-                          ...config,
-                          format: 'iife',
-                          splitting: false,
-                          entryPoints: inlineEntryPoints,
-                        })
-                        .catch(() => process.exit(1));
+  .build({
+    ...config,
+    format: 'iife',
+    splitting: false,
+    entryPoints: inlineEntryPoints,
+  })
+  .catch(() => process.exit(1));
 
 await Promise.all([componentsBuild, ssrBuild, inlineBuild]);
 
 // Copy the playground-elements worker to the build folder
 const require = createRequire(import.meta.url);
 copyFileSync(
-    require.resolve('playground-elements/playground-typescript-worker.js'),
-    join(jsFolder, 'hydration-entrypoints/playground-typescript-worker.js'));
+  require.resolve('playground-elements/playground-typescript-worker.js'),
+  join(jsFolder, 'hydration-entrypoints/playground-typescript-worker.js'),
+);
 
 process.exit(0);

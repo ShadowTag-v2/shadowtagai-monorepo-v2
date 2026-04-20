@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from "preact/hooks";
-import { createWalletClient, custom, publicActions, type Address, type Chain } from "viem";
-import { base, baseSepolia } from "viem/chains";
-import { wrapFetchWithPayment, x402Client } from "@x402/fetch";
-import { registerExactEvmScheme } from "@x402/evm/exact/client";
-import type { WalletClient } from "viem";
-import { useToast } from "./useToast";
+import { registerExactEvmScheme } from '@x402/evm/exact/client';
+import { wrapFetchWithPayment, x402Client } from '@x402/fetch';
+import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
+import type { WalletClient } from 'viem';
+import { type Address, type Chain, createWalletClient, custom, publicActions } from 'viem';
+import { base, baseSepolia } from 'viem/chains';
+import { useToast } from './useToast';
 
 // Protocol type
-type PaymentProtocol = "x402" | "b402";
+type PaymentProtocol = 'x402' | 'b402';
 
 // Network info from server
 type NetworkInfo = {
@@ -106,11 +106,11 @@ export function useX402Payment(): UseX402PaymentReturn {
     const provider = providerRef.current;
     if (
       provider &&
-      typeof provider.removeListener === "function" &&
+      typeof provider.removeListener === 'function' &&
       providerListenersAttachedRef.current
     ) {
-      provider.removeListener("accountsChanged", handleAccountsChangedRef.current);
-      provider.removeListener("disconnect", handleDisconnectRef.current);
+      provider.removeListener('accountsChanged', handleAccountsChangedRef.current);
+      provider.removeListener('disconnect', handleDisconnectRef.current);
       providerListenersAttachedRef.current = false;
     }
 
@@ -127,8 +127,8 @@ export function useX402Payment(): UseX402PaymentReturn {
 
     try {
       const [configRes, pricingRes] = await Promise.all([
-        fetch("/api/x402/config").catch(() => null),
-        fetch("/api/x402/pricing").catch(() => null),
+        fetch('/api/x402/config').catch(() => null),
+        fetch('/api/x402/pricing').catch(() => null),
       ]);
 
       if (configRes && configRes.ok) {
@@ -143,7 +143,7 @@ export function useX402Payment(): UseX402PaymentReturn {
         setPricing(null);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load x402 configuration");
+      setError(err instanceof Error ? err.message : 'Failed to load x402 configuration');
       setConfig({ enabled: false });
       setPricing(null);
     } finally {
@@ -164,11 +164,11 @@ export function useX402Payment(): UseX402PaymentReturn {
   }, [config?.enabled, config?.network, resetSigner]);
 
   const getTargetChain = useCallback((): Chain => {
-    const network = config?.network ?? "base-sepolia";
+    const network = config?.network ?? 'base-sepolia';
     switch (network) {
-      case "base":
+      case 'base':
         return base;
-      case "base-sepolia":
+      case 'base-sepolia':
       default:
         return baseSepolia;
     }
@@ -180,34 +180,34 @@ export function useX402Payment(): UseX402PaymentReturn {
       setIsCheckingBalance(true);
       try {
         if (!provider) {
-          console.error("[checkBalance] Provider not available");
-          throw new Error("Provider not available");
+          console.error('[checkBalance] Provider not available');
+          throw new Error('Provider not available');
         }
 
-        const network = config?.network || "base-sepolia";
+        const network = config?.network || 'base-sepolia';
 
         // x402 uses USDC on Base (6 decimals)
         const tokenAddress =
           config?.usdcAddress && config.usdcAddress.length > 0
             ? config.usdcAddress
-            : network === "base"
-              ? "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-              : "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
+            : network === 'base'
+              ? '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
+              : '0x036CbD53842c5426634e7929541eC2318f3dCF7e';
         const tokenDecimals = 6;
 
         // ERC20 balanceOf ABI
-        const balanceOfAbi = "70a08231"; // balanceOf(address) - function selector
-        const paddedAddress = address.slice(2).padStart(64, "0");
+        const balanceOfAbi = '70a08231'; // balanceOf(address) - function selector
+        const paddedAddress = address.slice(2).padStart(64, '0');
         const callData = `0x${balanceOfAbi}${paddedAddress}`;
 
         const balance = await provider.request({
-          method: "eth_call",
+          method: 'eth_call',
           params: [
             {
               to: tokenAddress,
               data: callData,
             },
-            "latest",
+            'latest',
           ],
         });
 
@@ -218,7 +218,7 @@ export function useX402Payment(): UseX402PaymentReturn {
 
         setUsdcBalance(balanceInToken.toFixed(2));
       } catch (err) {
-        setUsdcBalance("0.00");
+        setUsdcBalance('0.00');
       } finally {
         setIsCheckingBalance(false);
       }
@@ -236,20 +236,20 @@ export function useX402Payment(): UseX402PaymentReturn {
 
   const connectWallet = useCallback(async () => {
     if (!config?.enabled) {
-      throw new Error("x402 is not enabled; cannot connect wallet.");
+      throw new Error('x402 is not enabled; cannot connect wallet.');
     }
 
     setIsConnecting(true);
     setError(null);
 
     try {
-      if (typeof window === "undefined") {
-        throw new Error("Wallet connections are only available in the browser environment.");
+      if (typeof window === 'undefined') {
+        throw new Error('Wallet connections are only available in the browser environment.');
       }
 
       // Check for browser wallet (MetaMask, Rainbow, etc.)
       if (!(window as any).ethereum) {
-        throw new Error("No Ethereum wallet detected. Please install MetaMask or another wallet.");
+        throw new Error('No Ethereum wallet detected. Please install MetaMask or another wallet.');
       }
 
       const provider = (window as any).ethereum;
@@ -258,34 +258,34 @@ export function useX402Payment(): UseX402PaymentReturn {
       const chain = getTargetChain();
       const rpcUrl = chain.rpcUrls.default.http?.[0];
       if (!rpcUrl) {
-        throw new Error("Unable to determine RPC URL for configured network.");
+        throw new Error('Unable to determine RPC URL for configured network.');
       }
 
       // Request accounts
       let accounts = (await provider.request({
-        method: "eth_requestAccounts",
+        method: 'eth_requestAccounts',
       })) as string[];
 
       if (!accounts || accounts.length === 0) {
-        throw new Error("No wallet accounts returned by provider.");
+        throw new Error('No wallet accounts returned by provider.');
       }
 
       const targetChainHex = `0x${chain.id.toString(16)}`;
       const currentChainHex = (await provider.request({
-        method: "eth_chainId",
+        method: 'eth_chainId',
       })) as string | undefined;
 
       // Switch to correct network if needed
       if (!currentChainHex || currentChainHex.toLowerCase() !== targetChainHex.toLowerCase()) {
         try {
           await provider.request({
-            method: "wallet_switchEthereumChain",
+            method: 'wallet_switchEthereumChain',
             params: [{ chainId: targetChainHex }],
           });
         } catch (switchError: any) {
           if (switchError?.code === 4902) {
             await provider.request({
-              method: "wallet_addEthereumChain",
+              method: 'wallet_addEthereumChain',
               params: [
                 {
                   chainId: targetChainHex,
@@ -302,12 +302,12 @@ export function useX402Payment(): UseX402PaymentReturn {
         }
 
         accounts = (await provider.request({
-          method: "eth_requestAccounts",
+          method: 'eth_requestAccounts',
         })) as string[];
       }
 
       if (!accounts || accounts.length === 0) {
-        throw new Error("No wallet accounts returned by provider.");
+        throw new Error('No wallet accounts returned by provider.');
       }
 
       const account = accounts[0] as Address;
@@ -324,7 +324,7 @@ export function useX402Payment(): UseX402PaymentReturn {
       // Create x402 v2 client and register EVM scheme
       const client = new x402Client();
       // Get network in CAIP-2 format (e.g., "eip155:8453" for Base mainnet)
-      const networkId = chain.id === 8453 ? "eip155:8453" : "eip155:84532";
+      const networkId = chain.id === 8453 ? 'eip155:8453' : 'eip155:84532';
       registerExactEvmScheme(client, {
         signer: walletClient as any,
         networks: [networkId],
@@ -334,7 +334,7 @@ export function useX402Payment(): UseX402PaymentReturn {
       // Create wrapped fetch with x402 v2 payment capability
       wrappedFetchRef.current = wrapFetchWithPayment(fetch, client);
 
-      console.log("[useX402Payment] MetaMask wrapped fetch created:", {
+      console.log('[useX402Payment] MetaMask wrapped fetch created:', {
         hasWrappedFetch: !!wrappedFetchRef.current,
         walletAddress: account,
         chain: chain.name,
@@ -351,7 +351,7 @@ export function useX402Payment(): UseX402PaymentReturn {
         await checkBalanceForAddress(account, provider);
       }, 500);
 
-      if (typeof provider.on === "function" && !providerListenersAttachedRef.current) {
+      if (typeof provider.on === 'function' && !providerListenersAttachedRef.current) {
         handleAccountsChangedRef.current = (accounts: string[]) => {
           if (!accounts || accounts.length === 0) {
             resetSigner();
@@ -366,13 +366,13 @@ export function useX402Payment(): UseX402PaymentReturn {
           resetSigner();
         };
 
-        provider.on("accountsChanged", handleAccountsChangedRef.current);
-        provider.on("disconnect", handleDisconnectRef.current);
+        provider.on('accountsChanged', handleAccountsChangedRef.current);
+        provider.on('disconnect', handleDisconnectRef.current);
         providerListenersAttachedRef.current = true;
       }
     } catch (err) {
       resetSigner();
-      const errorMsg = err instanceof Error ? err.message : "Failed to connect wallet.";
+      const errorMsg = err instanceof Error ? err.message : 'Failed to connect wallet.';
       setError(errorMsg);
 
       // Show error toast
@@ -395,7 +395,7 @@ export function useX402Payment(): UseX402PaymentReturn {
       resetSigner();
 
       // Show disconnection toast
-      toast.info("👋 Wallet Disconnected", 3000);
+      toast.info('👋 Wallet Disconnected', 3000);
     }
   }, [resetSigner, toast]);
 
@@ -410,11 +410,11 @@ export function useX402Payment(): UseX402PaymentReturn {
     if (usdcBalance !== null && !isCheckingBalance && walletAddress) {
       const balance = parseFloat(usdcBalance);
       if (balance < 0.1) {
-        const network = config?.network || "base-sepolia";
-        const isTestnet = network.includes("sepolia");
+        const network = config?.network || 'base-sepolia';
+        const isTestnet = network.includes('sepolia');
 
         toast.warning(
-          `⚠️ Low USDC Balance\n\nYour balance is $${usdcBalance} USDC. You need at least $0.10 to make payments.\n\n${isTestnet ? "Get free testnet USDC from Circle Faucet!" : "Please fund your wallet."}`,
+          `⚠️ Low USDC Balance\n\nYour balance is $${usdcBalance} USDC. You need at least $0.10 to make payments.\n\n${isTestnet ? 'Get free testnet USDC from Circle Faucet!' : 'Please fund your wallet.'}`,
           8000,
         );
       }
@@ -445,7 +445,7 @@ export function useX402Payment(): UseX402PaymentReturn {
       const shouldUseWrapped = currentCanSign && hasWrappedFetch;
       const actualFetch = shouldUseWrapped ? wrappedFetchRef.current : fetch;
 
-      console.log("[useX402Payment] fetchWithPayment called:", {
+      console.log('[useX402Payment] fetchWithPayment called:', {
         canSign: currentCanSign,
         configEnabled: config?.enabled,
         walletAddress,
@@ -453,16 +453,16 @@ export function useX402Payment(): UseX402PaymentReturn {
         hasWrappedFetch,
         shouldUseWrapped,
         url:
-          typeof input === "string"
+          typeof input === 'string'
             ? input
             : input instanceof URL
               ? input.toString()
-              : "Request object",
+              : 'Request object',
       });
 
       if (!shouldUseWrapped) {
         console.warn(
-          "[useX402Payment] NOT using wrapped fetch - payment header will NOT be added!",
+          '[useX402Payment] NOT using wrapped fetch - payment header will NOT be added!',
         );
       }
 
@@ -478,7 +478,7 @@ export function useX402Payment(): UseX402PaymentReturn {
   const setEmbeddedWalletClient = useCallback(
     (client: any, address: string) => {
       if (!client || !address) {
-        console.error("[useX402Payment] Invalid embedded wallet client or address");
+        console.error('[useX402Payment] Invalid embedded wallet client or address');
         return;
       }
 
@@ -491,7 +491,7 @@ export function useX402Payment(): UseX402PaymentReturn {
       // Create x402 v2 client and register EVM scheme
       const x402ClientInstance = new x402Client();
       // Get network from config, default to testnet
-      const networkId = config?.network === "base" ? "eip155:8453" : "eip155:84532";
+      const networkId = config?.network === 'base' ? 'eip155:8453' : 'eip155:84532';
       registerExactEvmScheme(x402ClientInstance, {
         signer: client as any,
         networks: [networkId],
@@ -508,7 +508,7 @@ export function useX402Payment(): UseX402PaymentReturn {
             // Forward all requests to the client's transport
             return await client.transport.request({ method, params });
           } catch (error) {
-            console.error("[useX402Payment] Provider shim error:", method, error);
+            console.error('[useX402Payment] Provider shim error:', method, error);
             throw error;
           }
         },
@@ -537,7 +537,7 @@ export function useX402Payment(): UseX402PaymentReturn {
     isCheckingBalance,
     hasInsufficientBalance,
     // Protocol info
-    protocol: (config?.protocol || "x402") as PaymentProtocol,
+    protocol: (config?.protocol || 'x402') as PaymentProtocol,
     availableNetworks: config?.availableNetworks || [],
     // Methods
     refresh: fetchConfig,

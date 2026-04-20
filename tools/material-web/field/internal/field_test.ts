@@ -6,13 +6,13 @@
 
 // import 'jasmine'; (google3-only)
 
-import {html, TemplateResult} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import { html, type TemplateResult } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {Environment} from '../../testing/environment.js';
-import {FieldHarness} from '../harness.js';
+import { Environment } from '../../testing/environment.js';
+import { FieldHarness } from '../harness.js';
 
-import {Field} from './field.js';
+import { Field } from './field.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -31,11 +31,7 @@ class TestField extends Field {
   }
 
   didErrorAnnounce() {
-    return (
-      this.renderRoot
-        .querySelector('.supporting-text')
-        ?.getAttribute('role') === 'alert'
-    );
+    return this.renderRoot.querySelector('.supporting-text')?.getAttribute('role') === 'alert';
   }
 
   // Ensure floating/resting labels are both rendered
@@ -77,7 +73,7 @@ describe('Field', () => {
 
   it('should unfocus field when disabled', async () => {
     // Setup.
-    const {instance, harness} = await setupTest();
+    const { instance, harness } = await setupTest();
     await harness.focusWithKeyboard();
     await env.waitForStability();
     // Test case.
@@ -91,14 +87,12 @@ describe('Field', () => {
 
   it('should not allow focus when disabled', async () => {
     // Setup.
-    const {instance, harness} = await setupTest({disabled: true});
+    const { instance, harness } = await setupTest({ disabled: true });
     await harness.focusWithKeyboard();
     // Test case.
     await env.waitForStability();
     // Assertion.
-    expect(instance.focused)
-      .withContext('focused set back to false when disabled')
-      .toBe(false);
+    expect(instance.focused).withContext('focused set back to false when disabled').toBe(false);
   });
 
   /*
@@ -291,12 +285,10 @@ describe('Field', () => {
     it('should render empty string when there is no label', async () => {
       // Setup.
       // Test case.
-      const {instance} = await setupTest({label: undefined});
+      const { instance } = await setupTest({ label: undefined });
       // Assertion.
       expect(instance.labelText)
-        .withContext(
-          'label text should be empty string if label is not provided',
-        )
+        .withContext('label text should be empty string if label is not provided')
         .toBe('');
     });
 
@@ -304,7 +296,7 @@ describe('Field', () => {
       // Setup.
       // Test case.
       const labelValue = 'Label';
-      const {instance} = await setupTest({label: labelValue});
+      const { instance } = await setupTest({ label: labelValue });
       // Assertion.
       expect(instance.labelText)
         .withContext('label text should equal label when not required')
@@ -315,19 +307,17 @@ describe('Field', () => {
       // Setup.
       // Test case.
       const labelValue = 'Label';
-      const {instance} = await setupTest({required: true, label: labelValue});
+      const { instance } = await setupTest({ required: true, label: labelValue });
       // Assertion.
       expect(instance.labelText)
-        .withContext(
-          'label text should equal label with asterisk when required',
-        )
+        .withContext('label text should equal label with asterisk when required')
         .toBe(`${labelValue}*`);
     });
 
     it('should not render asterisk if required when there is no label', async () => {
       // Setup.
       // Test case.
-      const {instance} = await setupTest({required: true, label: undefined});
+      const { instance } = await setupTest({ required: true, label: undefined });
       // Assertion.
       expect(instance.labelText)
         .withContext(
@@ -340,16 +330,14 @@ describe('Field', () => {
       // Setup.
       // Test case.
       const labelValue = 'Label';
-      const {instance} = await setupTest({
+      const { instance } = await setupTest({
         required: true,
         label: labelValue,
         noAsterisk: true,
       });
       //Assertion
       expect(instance.labelText)
-        .withContext(
-          'label test should equal label without asterisk, when required and noAsterisk',
-        )
+        .withContext('label test should equal label without asterisk, when required and noAsterisk')
         .toBe(labelValue);
     });
   });
@@ -357,7 +345,7 @@ describe('Field', () => {
   describe('supporting text', () => {
     it('should update to errorText when error is true', async () => {
       const errorText = 'Error message';
-      const {instance} = await setupTest({
+      const { instance } = await setupTest({
         error: true,
         supportingText: 'Supporting text',
         errorText,
@@ -369,29 +357,25 @@ describe('Field', () => {
 
   describe('error announcement', () => {
     it('should announce errors when both error and errorText are set', async () => {
-      const {instance} = await setupTest({
+      const { instance } = await setupTest({
         error: true,
         errorText: 'Error message',
       });
 
-      expect(instance.didErrorAnnounce())
-        .withContext('instance.didErrorAnnounce()')
-        .toBeTrue();
+      expect(instance.didErrorAnnounce()).withContext('instance.didErrorAnnounce()').toBeTrue();
     });
 
     it('should not announce supporting text', async () => {
-      const {instance} = await setupTest();
+      const { instance } = await setupTest();
       instance.error = true;
       instance.supportingText = 'Not an error';
       await env.waitForStability();
 
-      expect(instance.didErrorAnnounce())
-        .withContext('instance.didErrorAnnounce()')
-        .toBeFalse();
+      expect(instance.didErrorAnnounce()).withContext('instance.didErrorAnnounce()').toBeFalse();
     });
 
     it('should re-announce when reannounceError() is called', async () => {
-      const {instance} = await setupTest({
+      const { instance } = await setupTest({
         error: true,
         errorText: 'Error message',
       });
@@ -413,24 +397,18 @@ describe('Field', () => {
 
   describe('label animation', () => {
     it('should not produce NaN transforms when populated while hidden', async () => {
-      const {instance} = await setupTest({label: 'Hidden Label'});
+      const { instance } = await setupTest({ label: 'Hidden Label' });
       instance.style.display = 'none';
       await env.waitForStability();
 
-      const floatingLabel =
-        instance.shadowRoot?.querySelector('.label.floating')!;
+      const floatingLabel = instance.shadowRoot?.querySelector('.label.floating')!;
       expect(floatingLabel).withContext('floating label element').toBeDefined();
-      const floatingLabelAnimateSpy = spyOn(
-        floatingLabel,
-        'animate',
-      ).and.callThrough();
+      const floatingLabelAnimateSpy = spyOn(floatingLabel, 'animate').and.callThrough();
 
       instance.populated = true;
       await env.waitForStability();
 
-      expect(floatingLabelAnimateSpy)
-        .withContext('floatingLabel.animate()')
-        .not.toHaveBeenCalled();
+      expect(floatingLabelAnimateSpy).withContext('floatingLabel.animate()').not.toHaveBeenCalled();
     });
   });
 });

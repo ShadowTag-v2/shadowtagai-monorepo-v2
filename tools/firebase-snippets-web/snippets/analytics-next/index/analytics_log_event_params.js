@@ -5,11 +5,11 @@
 // 'npm run snippets'.
 
 // [START analytics_log_event_params_modular]
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 const analytics = getAnalytics();
 logEvent(analytics, 'select_content', {
   content_type: 'image',
-  content_id: 'P12453'
+  content_id: 'P12453',
 });
 // [END analytics_log_event_params_modular]

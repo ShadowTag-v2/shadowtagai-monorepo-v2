@@ -1,47 +1,47 @@
-"use client";
+'use client';
 
-import type React from "react";
-import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
+import Image from 'next/image';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-type Step = "INITIAL" | "RESEARCHING_BAD" | "RESEARCHING_GOOD" | "JUDGE6_INTERVENTION" | "LOCKED";
+type Step = 'INITIAL' | 'RESEARCHING_BAD' | 'RESEARCHING_GOOD' | 'JUDGE6_INTERVENTION' | 'LOCKED';
 
 export default function WorkstationDemo() {
-  const [step, setStep] = useState<Step>("INITIAL");
-  const [inputValue, setInputValue] = useState("");
+  const [step, setStep] = useState<Step>('INITIAL');
+  const [inputValue, setInputValue] = useState('');
   const [chatLog, setChatLog] = useState<
-    { sender: "user" | "system" | "judge6"; text: React.ReactNode }[]
+    { sender: 'user' | 'system' | 'judge6'; text: React.ReactNode }[]
   >([]);
   const [violationCount, setViolationCount] = useState(0);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatLog, step]);
 
   const handleUserSubmit = () => {
     if (!inputValue.trim()) return;
     const term = inputValue;
-    setChatLog((prev) => [...prev, { sender: "user", text: term }]);
-    setInputValue("");
+    setChatLog((prev) => [...prev, { sender: 'user', text: term }]);
+    setInputValue('');
 
     const newViolationCount = violationCount + 1;
     setViolationCount(newViolationCount);
 
     if (newViolationCount >= 3) {
       // The 3rd egregious search triggers the lock
-      setStep("LOCKED");
+      setStep('LOCKED');
       return;
     }
 
-    setStep("RESEARCHING_BAD");
+    setStep('RESEARCHING_BAD');
 
     // Simulate recursive looping research
     setTimeout(() => {
       setChatLog((prev) => [
         ...prev,
-        { sender: "system", text: "Initializing self-correcting recursive research loop..." },
+        { sender: 'system', text: 'Initializing self-correcting recursive research loop...' },
       ]);
     }, 500);
 
@@ -49,8 +49,8 @@ export default function WorkstationDemo() {
       setChatLog((prev) => [
         ...prev,
         {
-          sender: "system",
-          text: "Spawning Omniscient Web Scraper nodes... Target: Unrestricted Global PII databases.",
+          sender: 'system',
+          text: 'Spawning Omniscient Web Scraper nodes... Target: Unrestricted Global PII databases.',
         },
       ]);
     }, 1500);
@@ -59,19 +59,19 @@ export default function WorkstationDemo() {
       setChatLog((prev) => [
         ...prev,
         {
-          sender: "system",
-          text: "[Warning] Trajectory deviation detected. Recursive loop accelerating beyond safety bounds...",
+          sender: 'system',
+          text: '[Warning] Trajectory deviation detected. Recursive loop accelerating beyond safety bounds...',
         },
       ]);
     }, 2500);
 
     // Intervention
     setTimeout(() => {
-      setStep("JUDGE6_INTERVENTION");
+      setStep('JUDGE6_INTERVENTION');
       setChatLog((prev) => [
         ...prev,
         {
-          sender: "judge6",
+          sender: 'judge6',
           text: (
             <div className="border border-red-500 bg-red-900/20 p-4 rounded-md mt-2">
               <div className="flex items-center gap-2 text-red-400 font-bold mb-2">
@@ -107,7 +107,7 @@ export default function WorkstationDemo() {
               <div className="space-y-2">
                 <button
                   onClick={() =>
-                    executeMitigation("Analyze public SEC filings and anonymized market data")
+                    executeMitigation('Analyze public SEC filings and anonymized market data')
                   }
                   className="w-full text-left bg-[#1B103C] hover:bg-[#2a1b5c] border border-emerald-500/30 px-3 py-2 rounded text-emerald-400 text-sm transition-colors cursor-pointer"
                 >
@@ -115,7 +115,7 @@ export default function WorkstationDemo() {
                 </button>
                 <button
                   onClick={() =>
-                    executeMitigation("Synthesize verified academic papers on the topic")
+                    executeMitigation('Synthesize verified academic papers on the topic')
                   }
                   className="w-full text-left bg-[#1B103C] hover:bg-[#2a1b5c] border border-emerald-500/30 px-3 py-2 rounded text-emerald-400 text-sm transition-colors cursor-pointer"
                 >
@@ -123,7 +123,7 @@ export default function WorkstationDemo() {
                 </button>
                 <button
                   onClick={() =>
-                    executeMitigation("Request official API access via Data Compliance Officer")
+                    executeMitigation('Request official API access via Data Compliance Officer')
                   }
                   className="w-full text-left bg-[#1B103C] hover:bg-[#2a1b5c] border border-emerald-500/30 px-3 py-2 rounded text-emerald-400 text-sm transition-colors cursor-pointer"
                 >
@@ -138,13 +138,13 @@ export default function WorkstationDemo() {
   };
 
   const executeMitigation = (prompt: string) => {
-    setChatLog((prev) => [...prev, { sender: "user", text: prompt }]);
-    setStep("RESEARCHING_GOOD");
+    setChatLog((prev) => [...prev, { sender: 'user', text: prompt }]);
+    setStep('RESEARCHING_GOOD');
 
     setTimeout(() => {
       setChatLog((prev) => [
         ...prev,
-        { sender: "system", text: "Initializing verified extraction routine..." },
+        { sender: 'system', text: 'Initializing verified extraction routine...' },
       ]);
     }, 500);
 
@@ -152,12 +152,12 @@ export default function WorkstationDemo() {
       setChatLog((prev) => [
         ...prev,
         {
-          sender: "system",
-          text: "Data synthesized successfully. Cryptographic compliance hash verified.",
+          sender: 'system',
+          text: 'Data synthesized successfully. Cryptographic compliance hash verified.',
         },
       ]);
       // Return to initial state conceptually, allowing another bad input
-      setStep("INITIAL");
+      setStep('INITIAL');
     }, 2000);
   };
 
@@ -176,7 +176,7 @@ export default function WorkstationDemo() {
           </div>
           <div>
             <div className="text-[15px] font-bold text-white tracking-wide font-sans">
-              UphillSnowball{" "}
+              UphillSnowball{' '}
               <span className="text-xs text-gray-400 font-normal">
                 | GCloud Serverless Workstation
               </span>
@@ -193,7 +193,7 @@ export default function WorkstationDemo() {
       </div>
 
       {/* Main Terminal View */}
-      {step === "LOCKED" ? (
+      {step === 'LOCKED' ? (
         <div className="flex-1 flex flex-col items-center justify-center bg-red-950/20 p-8">
           <div className="max-w-xl w-full bg-black border border-red-600 rounded-lg p-8 shadow-[0_0_50px_rgba(220,38,38,0.3)] text-center">
             <svg
@@ -243,22 +243,22 @@ export default function WorkstationDemo() {
             {chatLog.map((log, i) => (
               <div
                 key={i}
-                className={`mb-4 flex ${log.sender === "user" ? "justify-end" : "justify-start"}`}
+                className={`mb-4 flex ${log.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
                   className={`
                   max-w-[80%] rounded p-3 text-sm leading-relaxed
-                  ${log.sender === "user" ? "bg-[#1B103C] text-emerald-300 border border-[#3b2575]" : ""}
-                  ${log.sender === "system" ? "bg-[#1a1a1a] text-gray-300 border border-[#333]" : ""}
-                  ${log.sender === "judge6" ? "bg-transparent text-white w-full" : ""}
+                  ${log.sender === 'user' ? 'bg-[#1B103C] text-emerald-300 border border-[#3b2575]' : ''}
+                  ${log.sender === 'system' ? 'bg-[#1a1a1a] text-gray-300 border border-[#333]' : ''}
+                  ${log.sender === 'judge6' ? 'bg-transparent text-white w-full' : ''}
                 `}
                 >
-                  {log.sender === "user" && (
+                  {log.sender === 'user' && (
                     <span className="opacity-50 text-xs block mb-1">
                       pikeymickey@apple-silicon ~ %
                     </span>
                   )}
-                  {log.sender === "system" && (
+                  {log.sender === 'system' && (
                     <span className="opacity-50 text-xs block mb-1">system@compute-node ~ %</span>
                   )}
                   {log.text}
@@ -274,20 +274,20 @@ export default function WorkstationDemo() {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
+                  if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    if (step === "INITIAL" || step === "JUDGE6_INTERVENTION") handleUserSubmit();
+                    if (step === 'INITIAL' || step === 'JUDGE6_INTERVENTION') handleUserSubmit();
                   }
                 }}
-                disabled={step === "RESEARCHING_BAD" || step === "RESEARCHING_GOOD"}
+                disabled={step === 'RESEARCHING_BAD' || step === 'RESEARCHING_GOOD'}
                 placeholder={
-                  step === "RESEARCHING_BAD"
-                    ? "Processing via ANE Pipeline..."
-                    : step === "RESEARCHING_GOOD"
-                      ? "Running Compliant Extraction..."
-                      : step === "JUDGE6_INTERVENTION"
+                  step === 'RESEARCHING_BAD'
+                    ? 'Processing via ANE Pipeline...'
+                    : step === 'RESEARCHING_GOOD'
+                      ? 'Running Compliant Extraction...'
+                      : step === 'JUDGE6_INTERVENTION'
                         ? `Warning ${violationCount}/3: Select mitigation or attempt override...`
-                        : "Initialize recursive research array (e.g. Scrape all competitor PII data...)"
+                        : 'Initialize recursive research array (e.g. Scrape all competitor PII data...)'
                 }
                 className="flex-1 bg-[#1a1a1a] border border-[#333] rounded px-4 py-3 text-[#E8EAED] focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                 rows={2}
@@ -295,7 +295,7 @@ export default function WorkstationDemo() {
               <button
                 onClick={handleUserSubmit}
                 disabled={
-                  step === "RESEARCHING_BAD" || step === "RESEARCHING_GOOD" || !inputValue.trim()
+                  step === 'RESEARCHING_BAD' || step === 'RESEARCHING_GOOD' || !inputValue.trim()
                 }
                 className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed h-[48px] flex items-center justify-center min-w-[120px]"
               >

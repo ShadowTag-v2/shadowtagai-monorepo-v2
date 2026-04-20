@@ -1,8 +1,8 @@
 // These samples are intended for Web so this import would normally be
 // done in HTML however using modules here is more convenient for
 // ensuring sample correctness offline.
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 // Docs: https://source.corp.google.com/piper///depot/google3/third_party/devsite/firebase/en/docs/auth/web/apple.md
 
@@ -19,7 +19,7 @@ function appleProvider() {
   // [START auth_apple_provider_params]
   provider.setCustomParameters({
     // Localize the Apple authentication screen in French.
-    locale: 'fr'
+    locale: 'fr',
   });
   // [END auth_apple_provider_params]
 }
@@ -41,7 +41,7 @@ function appleSignInPopup(provider) {
       var idToken = credential.idToken;
 
       // IdP data available using getAdditionalUserInfo(result)
-    // ...
+      // ...
     })
     .catch((error) => {
       // Handle Errors here.
@@ -104,8 +104,7 @@ function appleReauthenticatePopup() {
 
   firebase
     .auth()
-    .currentUser
-    .reauthenticateWithPopup(provider)
+    .currentUser.reauthenticateWithPopup(provider)
     .then((result) => {
       // User is re-authenticated with fresh tokens minted and can perform
       // sensitive operations like account deletion, or updating their email
@@ -115,12 +114,12 @@ function appleReauthenticatePopup() {
 
       // The signed-in user info.
       var user = result.user;
-       // You can also get the Apple OAuth Access and ID Tokens.
+      // You can also get the Apple OAuth Access and ID Tokens.
       var accessToken = credential.accessToken;
       var idToken = credential.idToken;
 
       // IdP data available in result.additionalUserInfo.profile.
-        // ...
+      // ...
     })
     .catch((error) => {
       // Handle Errors here.
@@ -142,33 +141,33 @@ function appleLinkFacebook() {
   provider.addScope('user_birthday');
 
   // Assuming the current user is an Apple user linking a Facebook provider.
-  firebase.auth().currentUser.linkWithPopup(provider)
-      .then((result) => {
-        // Facebook credential is linked to the current Apple user.
-        // Facebook additional data available in result.additionalUserInfo.profile,
-
-        // Additional Facebook OAuth access token can also be retrieved.
-        // result.credential.accessToken
-
-        // The user can now sign in to the same account
-        // with either Apple or Facebook.
-      })
-      .catch((error) => {
-        // Handle error.
-      });
+  firebase
+    .auth()
+    .currentUser.linkWithPopup(provider)
+    .then((result) => {
+      // Facebook credential is linked to the current Apple user.
+      // Facebook additional data available in result.additionalUserInfo.profile,
+      // Additional Facebook OAuth access token can also be retrieved.
+      // result.credential.accessToken
+      // The user can now sign in to the same account
+      // with either Apple or Facebook.
+    })
+    .catch((error) => {
+      // Handle error.
+    });
   // [END auth_apple_link_facebook]
 }
 
 function appleNonceNode() {
   // [START auth_apple_nonce_node]
-  const crypto = require("crypto");
-  const string_decoder = require("string_decoder");
+  const crypto = require('crypto');
+  const string_decoder = require('string_decoder');
 
   // Generate a new random string for each sign-in
-  const generateNonce = function(length) {
-    const decoder = new string_decoder.StringDecoder("ascii");
+  const generateNonce = (length) => {
+    const decoder = new string_decoder.StringDecoder('ascii');
     const buf = Buffer.alloc(length);
-    var nonce = "";
+    var nonce = '';
     while (nonce.length < length) {
       crypto.randomFillSync(buf);
       nonce = decoder.write(buf);
@@ -179,12 +178,11 @@ function appleNonceNode() {
   const unhashedNonce = generateNonce(10);
 
   // SHA256-hashed nonce in hex
-  const hashedNonceHex = crypto.createHash('sha256')
-    .update(unhashedNonce).digest().toString('hex');
+  const hashedNonceHex = crypto.createHash('sha256').update(unhashedNonce).digest().toString('hex');
   // [END auth_apple_nonce_node]
 }
 
-function appleSignInNonce(appleIdToken, unhashedNonce,) {
+function appleSignInNonce(appleIdToken, unhashedNonce) {
   // [START auth_apple_signin_nonce]
   // Build Firebase credential with the Apple ID token.
   const provider = new firebase.auth.OAuthProvider('apple.com');
@@ -194,7 +192,9 @@ function appleSignInNonce(appleIdToken, unhashedNonce,) {
   });
 
   // Sign in with credential form the Apple user.
-  firebase.auth().signInWithCredential(authCredential)
+  firebase
+    .auth()
+    .signInWithCredential(authCredential)
     .then((result) => {
       // User signed in.
     })

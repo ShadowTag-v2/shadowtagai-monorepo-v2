@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {describe, it} from 'mocha';
-import {createInstance} from './util/helpers';
-import {expect} from 'chai';
-import {DisabledTraceUtil} from '../src/telemetry/disabled-trace-util';
-import {EnabledTraceUtil} from '../src/telemetry/enabled-trace-util';
-import {NodeTracerProvider} from '@opentelemetry/sdk-trace-node';
-import {ProxyTracerProvider, trace} from '@opentelemetry/api';
+import { type ProxyTracerProvider, trace } from '@opentelemetry/api';
+import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node';
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
+import { DisabledTraceUtil } from '../src/telemetry/disabled-trace-util';
+import { EnabledTraceUtil } from '../src/telemetry/enabled-trace-util';
+import { createInstance } from './util/helpers';
 
 describe('Firestore Tracing Controls', () => {
   let originalEnvVarValue: string | undefined;
@@ -144,14 +144,10 @@ describe('Firestore Tracing Controls', () => {
 
     expect(firestore._traceUtil instanceof EnabledTraceUtil).to.be.true;
     // Make sure the SDK uses the one that was given to it, not the global one.
-    expect(
-      (firestore._traceUtil as EnabledTraceUtil).tracerProvider ===
-        myTracerProvider,
-    ).to.be.true;
-    expect(
-      (firestore._traceUtil as EnabledTraceUtil).tracerProvider !==
-        globalTracerProvider,
-    ).to.be.true;
+    expect((firestore._traceUtil as EnabledTraceUtil).tracerProvider === myTracerProvider).to.be
+      .true;
+    expect((firestore._traceUtil as EnabledTraceUtil).tracerProvider !== globalTracerProvider).to.be
+      .true;
   });
 
   it('uses the global tracerProvider if nothing was passed to it', async () => {
@@ -162,8 +158,7 @@ describe('Firestore Tracing Controls', () => {
     const firestore = await createInstance();
 
     expect(firestore._traceUtil instanceof EnabledTraceUtil).to.be.true;
-    const enabledTraceUtil: EnabledTraceUtil =
-      firestore._traceUtil as EnabledTraceUtil;
+    const enabledTraceUtil: EnabledTraceUtil = firestore._traceUtil as EnabledTraceUtil;
     // Since a TracerProvider is not provided to the SDK directly, the SDK obtains
     // the tracer provider from the global `TraceAPI`. The `TraceAPI` returns a
     // `ProxyTracerProvider` instance. To check equality, we need to compare our
@@ -176,7 +171,7 @@ describe('Firestore Tracing Controls', () => {
   it('Generates an error if the given tracerProvider is not valid', async () => {
     try {
       await createInstance(undefined, {
-        openTelemetry: {tracerProvider: 123},
+        openTelemetry: { tracerProvider: 123 },
       });
     } catch (e) {
       expect(

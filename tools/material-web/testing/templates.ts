@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {TemplateResult} from 'lit';
-import {DirectiveResult} from 'lit/directive.js';
-import {ClassInfo} from 'lit/directives/class-map.js';
-import {ref} from 'lit/directives/ref.js';
-import {literal, StaticValue} from 'lit/static-html.js';
+import type { TemplateResult } from 'lit';
+import type { DirectiveResult } from 'lit/directive.js';
+import type { ClassInfo } from 'lit/directives/class-map.js';
+import { ref } from 'lit/directives/ref.js';
+import type { literal, StaticValue } from 'lit/static-html.js';
 
-import {Harness, HarnessElement, isElementWithHarness} from './harness.js';
-import {TestTableTemplate} from './table/test-table.js';
+import { type Harness, type HarnessElement, isElementWithHarness } from './harness.js';
+import type { TestTableTemplate } from './table/test-table.js';
 
 /**
  * Pre-defined test table template states commonly shared between components.
@@ -70,10 +70,7 @@ export enum State {
  * @template H Optional element harness type.
  * @template V Variant name types.
  */
-export class TemplateBuilder<
-  H extends Harness = Harness,
-  V extends string = never,
-> {
+export class TemplateBuilder<H extends Harness = Harness, V extends string = never> {
   /**
    * A map of variant names and their template factories.
    */
@@ -81,7 +78,9 @@ export class TemplateBuilder<
   /**
    * The current harness constructor to use when rendering.
    */
-  private harnessCtor?: new (element: HarnessElement<H>) => H;
+  private harnessCtor?: new (
+    element: HarnessElement<H>,
+  ) => H;
   /**
    * The current state callback to invoke after rendering.
    */
@@ -100,8 +99,8 @@ export class TemplateBuilder<
       testCaseProps.push({});
     }
 
-    return Array.from(this.variants.values()).flatMap(({display, factory}) => {
-      return testCaseProps.map((props) => ({display, render: factory(props)}));
+    return Array.from(this.variants.values()).flatMap(({ display, factory }) => {
+      return testCaseProps.map((props) => ({ display, render: factory(props) }));
     });
   }
 
@@ -119,9 +118,9 @@ export class TemplateBuilder<
       throw new Error(`Missing variant '${variant}' in TemplateBuilder.`);
     }
 
-    const {display, factory} = displayAndRender;
+    const { display, factory } = displayAndRender;
     const render = factory(testCaseProps);
-    return {display, render};
+    return { display, render };
   }
 
   /**
@@ -182,19 +181,14 @@ export class TemplateBuilder<
    *     options specify a `display` name and the variant `render` function.
    * @return The template builder, now using the provided variants.
    */
-  withVariants(
-    variants: Record<string, TemplateRender<H> | TemplateVariantOptions<H>>,
-  ) {
+  withVariants(variants: Record<string, TemplateRender<H> | TemplateVariantOptions<H>>) {
     // TODO: clean this up by only allowing TemplateVariantOptions and force
     // users to specify the display name.
     for (const variant of Object.keys(variants)) {
       this.withVariant(variant, variants[variant]);
     }
 
-    return this as unknown as TemplateBuilder<
-      H,
-      V | Extract<keyof typeof variants, string>
-    >;
+    return this as unknown as TemplateBuilder<H, V | Extract<keyof typeof variants, string>>;
   }
 
   /**
@@ -213,9 +207,9 @@ export class TemplateBuilder<
     // TODO: clean this up by only allowing TemplateVariantOptions and force
     // users to specify the display name.
     const typedThis = this as unknown as TemplateBuilder<H, V | NewVariant>;
-    const {display, render} =
+    const { display, render } =
       typeof renderOrOptions === 'function'
-        ? {display: variant, render: renderOrOptions}
+        ? { display: variant, render: renderOrOptions }
         : renderOrOptions;
 
     typedThis.variants.set(variant, {
@@ -349,10 +343,7 @@ export type TemplateRender<H extends Harness> = (
  * @param state The current test table state.
  * @param harness The rendered element's harness.
  */
-export type TemplateStateCallback<H extends Harness> = (
-  state: string,
-  harness: H,
-) => void;
+export type TemplateStateCallback<H extends Harness> = (state: string, harness: H) => void;
 
 /**
  * Element properties for a harness constructor. Returns a partial object with

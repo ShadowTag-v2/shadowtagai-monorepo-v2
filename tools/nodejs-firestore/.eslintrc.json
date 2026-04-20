@@ -2,13 +2,8 @@
   "extends": "./node_modules/gts",
   "overrides": [
     {
-      "files": [
-        "dev/src/**/*.ts"
-      ],
-      "excludedFiles": [
-        "dev/src/v1/*.ts",
-        "dev/src/v1beta1/*.ts"
-      ],
+      "files": ["dev/src/**/*.ts"],
+      "excludedFiles": ["dev/src/v1/*.ts", "dev/src/v1beta1/*.ts"],
       "parser": "@typescript-eslint/parser",
       "rules": {
         "@typescript-eslint/explicit-function-return-type": [
@@ -18,7 +13,7 @@
             "allowTypedFunctionExpressions": true
           }
         ],
-        "no-console": ["error", {"allow": ["error"]}],
+        "no-console": ["error", { "allow": ["error"] }],
         "@typescript-eslint/no-unused-vars": [
           "warn",
           {
@@ -29,10 +24,7 @@
       }
     },
     {
-      "files": [
-        "dev/test/*.ts",
-        "dev/system-test/*.ts"
-      ],
+      "files": ["dev/test/*.ts", "dev/system-test/*.ts"],
       "parser": "@typescript-eslint/parser",
       "rules": {
         "no-restricted-properties": [

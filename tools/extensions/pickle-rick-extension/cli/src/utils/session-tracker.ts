@@ -43,9 +43,7 @@ class SessionTracker {
    * Get all tracked sessions
    */
   public getTrackedSessions(): TrackedSession[] {
-    return Array.from(this.sessions.values()).sort(
-      (a, b) => b.createdAt - a.createdAt
-    );
+    return Array.from(this.sessions.values()).sort((a, b) => b.createdAt - a.createdAt);
   }
 
   /**

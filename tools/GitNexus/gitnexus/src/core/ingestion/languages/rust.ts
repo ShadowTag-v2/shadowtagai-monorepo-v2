@@ -11,26 +11,70 @@
  */
 
 import { SupportedLanguages } from '../../../config/supported-languages.js';
-import { defineLanguage } from '../language-provider.js';
-import { typeConfig as rustConfig } from '../type-extractors/rust.js';
 import { rustExportChecker } from '../export-detection.js';
+import { rustConfig as rustFieldConfig } from '../field-extractors/configs/rust.js';
+import { createFieldExtractor } from '../field-extractors/generic.js';
 import { resolveRustImport } from '../import-resolvers/rust.js';
+import { defineLanguage } from '../language-provider.js';
 import { extractRustNamedBindings } from '../named-bindings/rust.js';
 import { RUST_QUERIES } from '../tree-sitter-queries.js';
-import { createFieldExtractor } from '../field-extractors/generic.js';
-import { rustConfig as rustFieldConfig } from '../field-extractors/configs/rust.js';
+import { typeConfig as rustConfig } from '../type-extractors/rust.js';
 
 const BUILT_INS: ReadonlySet<string> = new Set([
-  'unwrap', 'expect', 'unwrap_or', 'unwrap_or_else', 'unwrap_or_default',
-  'ok', 'err', 'is_ok', 'is_err', 'map', 'map_err', 'and_then', 'or_else',
-  'clone', 'to_string', 'to_owned', 'into', 'from', 'as_ref', 'as_mut',
-  'iter', 'into_iter', 'collect', 'filter', 'fold', 'for_each',
-  'len', 'is_empty', 'push', 'pop', 'insert', 'remove', 'contains',
-  'format', 'write', 'writeln', 'panic', 'unreachable', 'todo', 'unimplemented',
-  'vec', 'println', 'eprintln', 'dbg',
-  'lock', 'read', 'try_lock',
-  'spawn', 'join', 'sleep',
-  'Some', 'None', 'Ok', 'Err',
+  'unwrap',
+  'expect',
+  'unwrap_or',
+  'unwrap_or_else',
+  'unwrap_or_default',
+  'ok',
+  'err',
+  'is_ok',
+  'is_err',
+  'map',
+  'map_err',
+  'and_then',
+  'or_else',
+  'clone',
+  'to_string',
+  'to_owned',
+  'into',
+  'from',
+  'as_ref',
+  'as_mut',
+  'iter',
+  'into_iter',
+  'collect',
+  'filter',
+  'fold',
+  'for_each',
+  'len',
+  'is_empty',
+  'push',
+  'pop',
+  'insert',
+  'remove',
+  'contains',
+  'format',
+  'write',
+  'writeln',
+  'panic',
+  'unreachable',
+  'todo',
+  'unimplemented',
+  'vec',
+  'println',
+  'eprintln',
+  'dbg',
+  'lock',
+  'read',
+  'try_lock',
+  'spawn',
+  'join',
+  'sleep',
+  'Some',
+  'None',
+  'Ok',
+  'Err',
 ]);
 
 export const rustProvider = defineLanguage({

@@ -1,11 +1,11 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, connectAuthEmulator, signInAnonymously } from 'firebase/auth';
+import { connectAuthEmulator, getAuth, signInAnonymously } from 'firebase/auth';
 import {
   connectStorageEmulator,
+  getDownloadURL,
   getStorage,
   ref,
   uploadBytes,
-  getDownloadURL,
 } from 'firebase/storage';
 import { firebaseConfig } from './config';
 
@@ -39,16 +39,16 @@ function handleFileSelect(e: Event) {
 
   // Push to child path.
   uploadBytes(ref(storageRef, 'images/' + file.name), file)
-    .then(function (snapshot) {
+    .then((snapshot) => {
       console.log('Uploaded', snapshot.metadata.size, 'bytes.');
       console.log('File metadata:', snapshot.metadata);
       // Let's get a download URL for the file.
-      getDownloadURL(snapshot.ref).then(function (url) {
+      getDownloadURL(snapshot.ref).then((url) => {
         console.log('File available at', url);
         linkBox.innerHTML = '<a href="' + url + '">Click For File</a>';
       });
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.error('Upload failed:', error);
     });
 }
@@ -56,16 +56,14 @@ function handleFileSelect(e: Event) {
 fileInput.addEventListener('change', handleFileSelect, false);
 fileInput.disabled = true;
 
-auth.onAuthStateChanged(function (user) {
+auth.onAuthStateChanged((user) => {
   if (user) {
     console.log('Anonymous user signed-in.', user);
     fileInput.disabled = false;
   } else {
-    console.log(
-      'There was no anonymous session. Creating a new anonymous user.',
-    );
+    console.log('There was no anonymous session. Creating a new anonymous user.');
     // Sign the user in anonymously since accessing Storage requires the user to be authorized.
-    signInAnonymously(auth).catch(function (error) {
+    signInAnonymously(auth).catch((error) => {
       if (error.code === 'auth/operation-not-allowed') {
         window.alert(
           'Anonymous Sign-in failed. Please make sure that you have enabled anonymous ' +

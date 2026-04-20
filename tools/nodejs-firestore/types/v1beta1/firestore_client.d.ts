@@ -22,7 +22,7 @@ import type {
   ClientOptions,
   PaginationCallback,
 } from 'google-gax';
-import {Transform} from 'stream';
+import { Transform } from 'stream';
 import * as protos from '../protos/firestore_v1beta1_proto_api';
 /**
  *  The Cloud Firestore service.
@@ -95,10 +95,7 @@ export declare class FirestoreClient {
    *     const client = new FirestoreClient({fallback: true}, gax);
    *     ```
    */
-  constructor(
-    opts?: ClientOptions,
-    gaxInstance?: typeof gax | typeof gax.fallback,
-  );
+  constructor(opts?: ClientOptions, gaxInstance?: typeof gax | typeof gax.fallback);
   /**
    * Initialize the client.
    * Performs asynchronous operations (such as authentication) and prepares the client.
@@ -340,9 +337,7 @@ export declare class FirestoreClient {
     options: CallOptions,
     callback: Callback<
       protos.google.firestore.v1beta1.IBeginTransactionResponse,
-      | protos.google.firestore.v1beta1.IBeginTransactionRequest
-      | null
-      | undefined,
+      protos.google.firestore.v1beta1.IBeginTransactionRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -350,9 +345,7 @@ export declare class FirestoreClient {
     request: protos.google.firestore.v1beta1.IBeginTransactionRequest,
     callback: Callback<
       protos.google.firestore.v1beta1.IBeginTransactionResponse,
-      | protos.google.firestore.v1beta1.IBeginTransactionRequest
-      | null
-      | undefined,
+      protos.google.firestore.v1beta1.IBeginTransactionRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -943,9 +936,7 @@ export declare class FirestoreClient {
     options: CallOptions,
     callback: PaginationCallback<
       protos.google.firestore.v1beta1.IPartitionQueryRequest,
-      | protos.google.firestore.v1beta1.IPartitionQueryResponse
-      | null
-      | undefined,
+      protos.google.firestore.v1beta1.IPartitionQueryResponse | null | undefined,
       protos.google.firestore.v1beta1.ICursor
     >,
   ): void;
@@ -953,9 +944,7 @@ export declare class FirestoreClient {
     request: protos.google.firestore.v1beta1.IPartitionQueryRequest,
     callback: PaginationCallback<
       protos.google.firestore.v1beta1.IPartitionQueryRequest,
-      | protos.google.firestore.v1beta1.IPartitionQueryResponse
-      | null
-      | undefined,
+      protos.google.firestore.v1beta1.IPartitionQueryResponse | null | undefined,
       protos.google.firestore.v1beta1.ICursor
     >,
   ): void;
@@ -1124,9 +1113,7 @@ export declare class FirestoreClient {
     options: CallOptions,
     callback: PaginationCallback<
       protos.google.firestore.v1beta1.IListCollectionIdsRequest,
-      | protos.google.firestore.v1beta1.IListCollectionIdsResponse
-      | null
-      | undefined,
+      protos.google.firestore.v1beta1.IListCollectionIdsResponse | null | undefined,
       string
     >,
   ): void;
@@ -1134,9 +1121,7 @@ export declare class FirestoreClient {
     request: protos.google.firestore.v1beta1.IListCollectionIdsRequest,
     callback: PaginationCallback<
       protos.google.firestore.v1beta1.IListCollectionIdsRequest,
-      | protos.google.firestore.v1beta1.IListCollectionIdsResponse
-      | null
-      | undefined,
+      protos.google.firestore.v1beta1.IListCollectionIdsResponse | null | undefined,
       string
     >,
   ): void;

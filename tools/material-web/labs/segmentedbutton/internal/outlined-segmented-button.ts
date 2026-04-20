@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {SegmentedButton} from './segmented-button.js';
+import { SegmentedButton } from './segmented-button.js';
 
 /**
  * b/265346443 - add docs

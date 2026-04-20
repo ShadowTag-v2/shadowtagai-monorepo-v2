@@ -50,14 +50,14 @@ function permalinks(markdownIt) {
       Object.assign(new state.Token('div_open', 'div', 1), {
         attrs: [['class', `heading ${headingTag}`]],
         block: true,
-      })
+      }),
     );
     state.tokens.splice(
       idx + 4,
       0,
       Object.assign(new state.Token('div_close', 'div', -1), {
         block: true,
-      })
+      }),
     );
     linkAfterHeaderBase(slug, opts, state, idx + 1);
   };

@@ -1,14 +1,15 @@
-import React, { useState, useCallback } from "react";
 import {
-  getImagenModel,
-  ImagenModelParams,
-  ImagenInlineImage,
-  ImagenGenerationResponse,
-  AI,
+  type AI,
   AIError,
-} from "firebase/ai";
-import PromptInput from "../components/Common/PromptInput";
-import styles from "./ImagenView.module.css";
+  getImagenModel,
+  type ImagenGenerationResponse,
+  type ImagenInlineImage,
+  type ImagenModelParams,
+} from 'firebase/ai';
+import type React from 'react';
+import { useCallback, useState } from 'react';
+import PromptInput from '../components/Common/PromptInput';
+import styles from './ImagenView.module.css';
 
 // Simple component to display generated images or placeholders/loading states.
 const ImageDisplay: React.FC<{
@@ -20,13 +21,9 @@ const ImageDisplay: React.FC<{
     <div className={styles.imageDisplayContainer}>
       {isLoading && <div className={styles.loading}>Generating images...</div>}
       {!isLoading && images.length === 0 && !filteredReason && (
-        <div className={styles.placeholder}>
-          Generated images will appear here.
-        </div>
+        <div className={styles.placeholder}>Generated images will appear here.</div>
       )}
-      {filteredReason && (
-        <div className={styles.filteredReason}>Filtered: {filteredReason}</div>
-      )}
+      {filteredReason && <div className={styles.filteredReason}>Filtered: {filteredReason}</div>}
       <div className={styles.imageList}>
         {images.map((img, index) => (
           <div key={index} className={styles.imageWrapper}>
@@ -50,16 +47,11 @@ interface ImagenViewProps {
 /**
  * View component for interacting with the Imagen model to generate images.
  */
-const ImagenView: React.FC<ImagenViewProps> = ({
-  currentParams,
-  aiInstance,
-}) => {
-  const [currentPrompt, setCurrentPrompt] = useState("");
+const ImagenView: React.FC<ImagenViewProps> = ({ currentParams, aiInstance }) => {
+  const [currentPrompt, setCurrentPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [resultImages, setResultImages] = useState<ImagenInlineImage[]>([]);
-  const [filteredReason, setFilteredReason] = useState<string | undefined>(
-    undefined,
-  );
+  const [filteredReason, setFilteredReason] = useState<string | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
 
   const handleImageGenerationSubmit = useCallback(async () => {
@@ -84,33 +76,32 @@ const ImagenView: React.FC<ImagenViewProps> = ({
       const result: ImagenGenerationResponse<ImagenInlineImage> =
         await imagenModel.generateImages(promptText);
 
-      console.log("[ImagenView] Image generation successful.", result);
+      console.log('[ImagenView] Image generation successful.', result);
       setResultImages(result.images);
       setFilteredReason(result.filteredReason);
     } catch (err: unknown) {
-      console.error("[ImagenView] Error during image generation:", err);
+      console.error('[ImagenView] Error during image generation:', err);
       if (err instanceof AIError) {
-        const message =
-          err.message || "Failed to generate images due to an unknown error.";
+        const message = err.message || 'Failed to generate images due to an unknown error.';
         const details = err.customErrorData?.errorDetails
           ? ` Details: ${JSON.stringify(err.customErrorData.errorDetails)}`
-          : "";
+          : '';
         setError(`Error: ${message}${details}`);
       } else {
-        setError("Failed to generate images due to an unknown error.");
+        setError('Failed to generate images due to an unknown error.');
       }
       setResultImages([]);
     } finally {
       setIsLoading(false);
-      setCurrentPrompt("");
+      setCurrentPrompt('');
     }
   }, [currentPrompt, isLoading, currentParams, aiInstance]);
 
   const suggestions = [
-    "A photorealistic portrait of a tabby cat wearing sunglasses.",
-    "Impressionist painting of a sunflower field at sunset.",
+    'A photorealistic portrait of a tabby cat wearing sunglasses.',
+    'Impressionist painting of a sunflower field at sunset.',
     "Logo for a coffee shop called 'The Daily Grind', minimalist style.",
-    "Pixel art sprite of a friendly robot navigating a maze.",
+    'Pixel art sprite of a friendly robot navigating a maze.',
   ];
   const handleSuggestion = (suggestion: string) => {
     setCurrentPrompt(suggestion);
@@ -120,11 +111,7 @@ const ImagenView: React.FC<ImagenViewProps> = ({
     <div className={styles.imagenViewContainer}>
       {error && <div className={styles.errorMessage}>{error}</div>}
       <div className={styles.displayArea}>
-        <ImageDisplay
-          images={resultImages}
-          filteredReason={filteredReason}
-          isLoading={isLoading}
-        />
+        <ImageDisplay images={resultImages} filteredReason={filteredReason} isLoading={isLoading} />
       </div>
       <div className={styles.inputAreaContainer}>
         <PromptInput

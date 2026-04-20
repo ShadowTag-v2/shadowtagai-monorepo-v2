@@ -1,12 +1,12 @@
-import { updateConversationState } from "../../db/operations";
-import { getConversationBasePath, getStorageProvider, getUploadPath } from "../../storage";
-import type { ConversationState, UploadedFile } from "../../types/core";
-import logger from "../../utils/logger";
-import { addVariablesToState } from "../../utils/state";
-import { generateUUID } from "../../utils/uuid";
-import { MAX_FILE_SIZE_MB } from "./config";
-import { parseFile } from "./parsers";
-import { formatFileSize, mbToBytes } from "./utils";
+import { updateConversationState } from '../../db/operations';
+import { getConversationBasePath, getStorageProvider, getUploadPath } from '../../storage';
+import type { ConversationState, UploadedFile } from '../../types/core';
+import logger from '../../utils/logger';
+import { addVariablesToState } from '../../utils/state';
+import { generateUUID } from '../../utils/uuid';
+import { MAX_FILE_SIZE_MB } from './config';
+import { parseFile } from './parsers';
+import { formatFileSize, mbToBytes } from './utils';
 
 /**
  * File upload agent for processing and storing uploaded files
@@ -35,13 +35,13 @@ export async function fileUploadAgent(input: {
   const { files, conversationState, userId } = input;
 
   if (!files || files.length === 0) {
-    logger.info("No files to process");
+    logger.info('No files to process');
     return { uploadedDatasets: [], errors: [] };
   }
 
   logger.info(
     { fileCount: files.length, conversationStateId: conversationState.id },
-    "file_upload_agent_started",
+    'file_upload_agent_started',
   );
 
   const rawFiles: Array<{
@@ -98,7 +98,7 @@ export async function fileUploadAgent(input: {
   const uploadedFiles = await uploadFilesToStorage(userId, conversationStateId, rawFiles).catch(
     (err) => {
       errors.push(`Storage upload error: ${(err as Error).message}`);
-      logger.error("Failed to upload files to storage:", err as any);
+      logger.error('Failed to upload files to storage:', err as any);
       return [];
     },
   );
@@ -109,8 +109,8 @@ export async function fileUploadAgent(input: {
       const rawFile = rawFiles.find((rf) => rf.filename === file.filename);
       const description = await generateFileDescription(
         file.filename,
-        file.mimeType || "",
-        rawFile?.parsedText || "",
+        file.mimeType || '',
+        rawFile?.parsedText || '',
       );
       return {
         id: file.id,
@@ -129,7 +129,7 @@ export async function fileUploadAgent(input: {
         description: d.description,
       })),
     },
-    "file_descriptions_generated",
+    'file_descriptions_generated',
   );
 
   // Update conversation state with newly uploaded datasets, replacing duplicates by filename
@@ -163,10 +163,10 @@ export async function fileUploadAgent(input: {
             description: d.description,
           })),
         },
-        "conversation_state_persisted",
+        'conversation_state_persisted',
       );
     } catch (err) {
-      logger.error("Failed to update conversation state in DB:", err as any);
+      logger.error('Failed to update conversation state in DB:', err as any);
     }
   }
 
@@ -175,7 +175,7 @@ export async function fileUploadAgent(input: {
       uploadedCount: uploadedDatasets.length,
       errorCount: errors.length,
     },
-    "file_upload_agent_completed",
+    'file_upload_agent_completed',
   );
 
   return {
@@ -192,7 +192,7 @@ async function generateFileDescription(
   mimeType: string,
   parsedText: string,
 ): Promise<string> {
-  const { LLM } = await import("../../llm/provider");
+  const { LLM } = await import('../../llm/provider');
 
   // Create a short preview of the content
   const contentPreview = parsedText.slice(0, 1000);
@@ -215,7 +215,7 @@ Examples:
 
 Description:`;
 
-  const DESCRIPTION_LLM_PROVIDER = process.env.PLANNING_LLM_PROVIDER || "google";
+  const DESCRIPTION_LLM_PROVIDER = process.env.PLANNING_LLM_PROVIDER || 'google';
   const apiKey = process.env[`${DESCRIPTION_LLM_PROVIDER.toUpperCase()}_API_KEY`];
 
   if (!apiKey) {
@@ -231,10 +231,10 @@ Description:`;
     });
 
     const response = await llmProvider.createChatCompletion({
-      model: process.env.PLANNING_LLM_MODEL || "gemini-2.5-flash",
+      model: process.env.PLANNING_LLM_MODEL || 'gemini-2.5-flash',
       messages: [
         {
-          role: "user" as const,
+          role: 'user' as const,
           content: prompt,
         },
       ],
@@ -268,14 +268,14 @@ async function uploadFilesToStorage(
 ): Promise<Array<UploadedFile>> {
   if (files.length === 0 || !conversationId || !userId) {
     if (logger)
-      logger.warn("No files to upload or missing conversationId/userId, skipping storage upload");
+      logger.warn('No files to upload or missing conversationId/userId, skipping storage upload');
     return [];
   }
 
   const storageProvider = getStorageProvider();
 
   if (!storageProvider) {
-    if (logger) logger.warn("No storage provider configured, skipping cloud storage upload");
+    if (logger) logger.warn('No storage provider configured, skipping cloud storage upload');
     return [];
   }
 

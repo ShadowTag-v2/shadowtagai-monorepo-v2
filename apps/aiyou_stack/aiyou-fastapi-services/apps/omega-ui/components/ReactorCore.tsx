@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { loadStripe } from "@stripe/stripe-js";
-import { useState } from "react";
+import { loadStripe } from '@stripe/stripe-js';
+import { useState } from 'react';
 
 // Initialize Stripe (Public Key is safe here)
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
@@ -13,13 +13,13 @@ export default function ReactorCore() {
     setLoading(true);
     try {
       const stripe = await stripePromise;
-      if (!stripe) throw new Error("Stripe failed to initialize.");
+      if (!stripe) throw new Error('Stripe failed to initialize.');
 
       // Call your secure backend (see Step 3)
-      const response = await fetch("/api/ignite-reactor", { method: "POST" });
+      const response = await fetch('/api/ignite-reactor', { method: 'POST' });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error('Network response was not ok');
       }
 
       const session = await response.json();
@@ -31,7 +31,7 @@ export default function ReactorCore() {
         console.error(result.error.message);
       }
     } catch (error) {
-      console.error("Ignition failed:", error);
+      console.error('Ignition failed:', error);
     } finally {
       setLoading(false);
     }
@@ -72,7 +72,7 @@ export default function ReactorCore() {
             disabled={loading}
             className="w-full py-4 bg-starlight hover:bg-white text-void font-mono font-bold tracking-widest uppercase rounded transition-all transform active:scale-[0.98] shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(110,86,207,0.4)]"
           >
-            {loading ? "INITIALIZING..." : "[ IGNITE REACTOR ]"}
+            {loading ? 'INITIALIZING...' : '[ IGNITE REACTOR ]'}
           </button>
 
           <div className="mt-6 pt-6 border-t border-tension flex justify-between text-[10px] font-mono text-gray-500 uppercase">

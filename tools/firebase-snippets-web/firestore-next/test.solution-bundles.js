@@ -9,7 +9,7 @@ const { Firestore } = require('firebase/firestore');
 var db;
 
 // [START fs_bundle_load]
-const { loadBundle, namedQuery, getDocsFromCache } = require("firebase/firestore");
+const { loadBundle, namedQuery, getDocsFromCache } = require('firebase/firestore');
 
 async function fetchFromBundle() {
   // Fetch the bundle from Firebase Hosting, if the CDN cache is hit the 'X-Cache'
@@ -28,23 +28,23 @@ async function fetchFromBundle() {
 }
 // [END fs_bundle_load]
 
-describe("firestore-solution-bundles", () => {
-    before(() => {
-      const { initializeApp } = require("firebase/app");
-      const { getFirestore} = require("firebase/firestore");
+describe('firestore-solution-bundles', () => {
+  before(() => {
+    const { initializeApp } = require('firebase/app');
+    const { getFirestore } = require('firebase/firestore');
 
-      const config = {
-          apiKey: "AIzaSyArvVh6VSdXicubcvIyuB-GZs8ua0m0DTI",
-          authDomain: "firestorequickstarts.firebaseapp.com",
-          projectId: "firestorequickstarts",
-      };
-      const app = initializeApp(config, "solution-bundles");
-      db = getFirestore(app);
-    });
+    const config = {
+      apiKey: 'AIzaSyArvVh6VSdXicubcvIyuB-GZs8ua0m0DTI',
+      authDomain: 'firestorequickstarts.firebaseapp.com',
+      projectId: 'firestorequickstarts',
+    };
+    const app = initializeApp(config, 'solution-bundles');
+    db = getFirestore(app);
+  });
 
-    describe("solution-bundles", () => {
-      it("should fetch a bundle", (done) => {
-        fetchFromBundle().finally(done);
-      });
+  describe('solution-bundles', () => {
+    it('should fetch a bundle', (done) => {
+      fetchFromBundle().finally(done);
     });
+  });
 });

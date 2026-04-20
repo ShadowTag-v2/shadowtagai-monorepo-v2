@@ -1,12 +1,8 @@
 // gitnexus/src/core/ingestion/field-extractor.ts
 
+import type { SupportedLanguages } from '../../config/supported-languages.js';
+import type { ExtractedFields, FieldExtractorContext, FieldVisibility } from './field-types.js';
 import type { SyntaxNode } from './utils/ast-helpers.js';
-import { SupportedLanguages } from '../../config/supported-languages.js';
-import type {
-  FieldExtractorContext,
-  ExtractedFields,
-  FieldVisibility,
-} from './field-types.js';
 
 /**
  * Language-specific field extractor

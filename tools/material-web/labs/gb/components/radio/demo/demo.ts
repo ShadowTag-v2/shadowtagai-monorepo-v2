@@ -7,25 +7,22 @@
 import './material-collection.js';
 import './index.js';
 
+import { boolInput, Knob } from './index.js';
 import {
-  KnobTypesToKnobs,
+  type KnobTypesToKnobs,
   MaterialCollection,
   materialInitsToStoryInits,
   setUpDemo,
 } from './material-collection.js';
-import {boolInput, Knob} from './index.js';
 
-import {stories, StoryKnobs} from './stories.js';
+import { type StoryKnobs, stories } from './stories.js';
 
-const collection = new MaterialCollection<KnobTypesToKnobs<StoryKnobs>>(
-  'Radio',
-  [
-    new Knob('disabled', {
-      ui: boolInput(),
-    }),
-  ],
-);
+const collection = new MaterialCollection<KnobTypesToKnobs<StoryKnobs>>('Radio', [
+  new Knob('disabled', {
+    ui: boolInput(),
+  }),
+]);
 
 collection.addStories(...materialInitsToStoryInits(stories));
 
-setUpDemo(collection, {fonts: 'roboto', icons: 'material-symbols'});
+setUpDemo(collection, { fonts: 'roboto', icons: 'material-symbols' });

@@ -15,6 +15,7 @@
  */
 
 import * as protos from '../../protos/firestore_v1_proto_api';
+
 import api = protos.google.firestore.v1;
 
 /**
@@ -24,11 +25,10 @@ import api = protos.google.firestore.v1;
  * @private
  * @internal
  */
-export const directionOperators: {[k: string]: api.StructuredQuery.Direction} =
-  {
-    asc: 'ASCENDING',
-    desc: 'DESCENDING',
-  };
+export const directionOperators: { [k: string]: api.StructuredQuery.Direction } = {
+  asc: 'ASCENDING',
+  desc: 'DESCENDING',
+};
 
 /**
  * Filter conditions in a `Query.where()` clause are specified using the

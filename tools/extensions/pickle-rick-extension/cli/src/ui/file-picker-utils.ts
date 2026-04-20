@@ -1,7 +1,15 @@
-import { CliRenderer, InputRenderable, InputRenderableEvents, BoxRenderable, Renderable, SyntaxStyle, RGBA } from "@opentui/core";
-import { FilePickerView } from "./components/FilePickerView.js";
-import { recursiveSearch } from "../utils/search.js";
-import { THEME } from "./theme.js";
+import {
+  type BoxRenderable,
+  type CliRenderer,
+  type InputRenderable,
+  InputRenderableEvents,
+  type Renderable,
+  RGBA,
+  SyntaxStyle,
+} from '@opentui/core';
+import { recursiveSearch } from '../utils/search.js';
+import { FilePickerView } from './components/FilePickerView.js';
+import { THEME } from './theme.js';
 
 export interface FilePickerState {
   activePicker: FilePickerView | null;
@@ -29,22 +37,28 @@ type PickerPositionResolver = () => number;
 export function setupFilePicker(
   renderer: CliRenderer,
   input: InputRenderable,
-  container: BoxRenderable | (Renderable & { add: (r: Renderable) => void, remove: (id: string) => void }),
+  container:
+    | BoxRenderable
+    | (Renderable & { add: (r: Renderable) => void; remove: (id: string) => void }),
   state: FilePickerState,
-  options: { bottom?: PickerPositionValue | PickerPositionResolver, left?: PickerPositionValue, width?: PickerPositionValue } = {}
+  options: {
+    bottom?: PickerPositionValue | PickerPositionResolver;
+    left?: PickerPositionValue;
+    width?: PickerPositionValue;
+  } = {},
 ) {
   const resolveBottom = (): number => {
-    if (typeof options.bottom === "function") {
+    if (typeof options.bottom === 'function') {
       return options.bottom();
     }
-    if (typeof options.bottom === "number") {
+    if (typeof options.bottom === 'number') {
       return options.bottom;
     }
     return 5;
   };
   // Setup syntax highlighting for file paths
   const syntaxStyle = SyntaxStyle.create();
-  const filePathStyleId = syntaxStyle.registerStyle("filepath", {
+  const filePathStyleId = syntaxStyle.registerStyle('filepath', {
     fg: RGBA.fromHex(THEME.accent),
     bold: true,
   });
@@ -147,7 +161,7 @@ export function setupFilePicker(
     if (triggerMatch) {
       const query = triggerMatch[1];
       const { files } = await recursiveSearch(process.cwd(), query);
-      const normalizedFiles = files.map((f) => f.replace(process.cwd() + "/", ""));
+      const normalizedFiles = files.map((f) => f.replace(process.cwd() + '/', ''));
 
       if (normalizedFiles.length > 0) {
         const pickerBottom = resolveBottom();
@@ -158,7 +172,7 @@ export function setupFilePicker(
             {
               onSelect: (item) => {
                 // Keep the @ prefix when inserting the file path
-                const newValue = value.replace(/(^| )@[^ ]*$/, "$1@" + item);
+                const newValue = value.replace(/(^| )@[^ ]*$/, '$1@' + item);
                 input.value = newValue;
                 updateFilePathHighlights();
                 cleanupPicker();
@@ -166,13 +180,13 @@ export function setupFilePicker(
               onCancel: () => cleanupPicker(),
             },
             {
-              position: "absolute",
+              position: 'absolute',
               bottom: pickerBottom,
               left: options.left ?? 0,
-              width: options.width ?? "100%",
+              width: options.width ?? '100%',
               maxHeight: 10,
               zIndex: 2000,
-            }
+            },
           );
           container.add(state.activePicker);
         } else {

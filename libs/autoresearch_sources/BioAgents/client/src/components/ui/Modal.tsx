@@ -1,5 +1,5 @@
-import type { ComponentChildren } from "preact";
-import { useEffect } from "preact/hooks";
+import type { ComponentChildren } from 'preact';
+import { useEffect } from 'preact/hooks';
 
 interface ModalProps {
   isOpen: boolean;
@@ -8,28 +8,28 @@ interface ModalProps {
   maxWidth?: string;
 }
 
-export function Modal({ isOpen, onClose, children, maxWidth = "500px" }: ModalProps) {
+export function Modal({ isOpen, onClose, children, maxWidth = '500px' }: ModalProps) {
   // Close on Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
+      if (e.key === 'Escape' && isOpen) {
         onClose();
       }
     };
 
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     }
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     };
   }, [isOpen]);
 
@@ -38,43 +38,43 @@ export function Modal({ isOpen, onClose, children, maxWidth = "500px" }: ModalPr
   return (
     <div
       style={{
-        position: "fixed",
+        position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
         zIndex: 9999,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "20px",
-        animation: "fadeIn 0.2s ease-out",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
+        animation: 'fadeIn 0.2s ease-out',
       }}
       onClick={onClose}
     >
       {/* Backdrop */}
       <div
         style={{
-          position: "absolute",
+          position: 'absolute',
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          background: "rgba(0, 0, 0, 0.85)",
-          backdropFilter: "blur(8px)",
-          animation: "fadeIn 0.2s ease-out",
+          background: 'rgba(0, 0, 0, 0.85)',
+          backdropFilter: 'blur(8px)',
+          animation: 'fadeIn 0.2s ease-out',
         }}
       />
 
       {/* Modal Content */}
       <div
         style={{
-          position: "relative",
-          width: "100%",
+          position: 'relative',
+          width: '100%',
           maxWidth,
-          maxHeight: "90vh",
-          overflowY: "auto",
-          animation: "slideUp 0.3s ease-out",
+          maxHeight: '90vh',
+          overflowY: 'auto',
+          animation: 'slideUp 0.3s ease-out',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -83,29 +83,29 @@ export function Modal({ isOpen, onClose, children, maxWidth = "500px" }: ModalPr
           type="button"
           onClick={onClose}
           style={{
-            position: "absolute",
-            top: "16px",
-            right: "16px",
-            width: "32px",
-            height: "32px",
-            borderRadius: "8px",
-            background: "rgba(255, 255, 255, 0.05)",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            color: "#a1a1a1",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            transition: "all 0.2s ease",
+            position: 'absolute',
+            top: '16px',
+            right: '16px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            color: '#a1a1a1',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.2s ease',
             zIndex: 1,
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
-            e.currentTarget.style.color = "#ffffff";
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+            e.currentTarget.style.color = '#ffffff';
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
-            e.currentTarget.style.color = "#a1a1a1";
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+            e.currentTarget.style.color = '#a1a1a1';
           }}
           aria-label="Close modal"
         >

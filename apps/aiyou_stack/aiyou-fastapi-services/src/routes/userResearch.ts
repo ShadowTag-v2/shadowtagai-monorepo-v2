@@ -1,5 +1,5 @@
-import { AnalysisRequestSchema, UserFeedbackSchema, UserFlowEventSchema } from "../models/schemas";
-import { userResearchService } from "../services/userResearchService";
+import { AnalysisRequestSchema, UserFeedbackSchema, UserFlowEventSchema } from '../models/schemas';
+import { userResearchService } from '../services/userResearchService';
 
 export interface RouteRequest<T = any> {
   body?: T;
@@ -29,7 +29,7 @@ export class UserResearchRoutes {
     try {
       const { sessionId } = req.params || {};
       if (!sessionId) {
-        return { status: 400, error: "Session ID is required" };
+        return { status: 400, error: 'Session ID is required' };
       }
 
       const event = UserFlowEventSchema.omit({ id: true }).parse(req.body);
@@ -44,7 +44,7 @@ export class UserResearchRoutes {
     try {
       const { sessionId } = req.params || {};
       if (!sessionId) {
-        return { status: 400, error: "Session ID is required" };
+        return { status: 400, error: 'Session ID is required' };
       }
 
       const { completedGoal } = req.body || {};
@@ -59,12 +59,12 @@ export class UserResearchRoutes {
     try {
       const { sessionId } = req.params || {};
       if (!sessionId) {
-        return { status: 400, error: "Session ID is required" };
+        return { status: 400, error: 'Session ID is required' };
       }
 
       const session = await userResearchService.getSession(sessionId);
       if (!session) {
-        return { status: 404, error: "Session not found" };
+        return { status: 404, error: 'Session not found' };
       }
       return { status: 200, data: session };
     } catch (error: unknown) {
@@ -144,7 +144,7 @@ export class UserResearchRoutes {
     try {
       const { currentFlow, goalPage } = req.body || {};
       if (!currentFlow || !goalPage) {
-        return { status: 400, error: "currentFlow and goalPage are required" };
+        return { status: 400, error: 'currentFlow and goalPage are required' };
       }
 
       const optimization = await userResearchService.optimizeFlow(currentFlow, goalPage);
@@ -198,7 +198,7 @@ export class UserResearchRoutes {
   async clearAllData(req: RouteRequest): Promise<RouteResponse> {
     try {
       userResearchService.clearAllData();
-      return { status: 200, data: { message: "All data cleared successfully" } };
+      return { status: 200, data: { message: 'All data cleared successfully' } };
     } catch (error: unknown) {
       return { status: 500, error: error.message };
     }
@@ -210,34 +210,34 @@ export const userResearchRoutes = new UserResearchRoutes();
 // Route definitions for easy integration
 export const routes = {
   // Session Management
-  "POST /api/sessions": (req: RouteRequest) => userResearchRoutes.createSession(req),
-  "POST /api/sessions/:sessionId/events": (req: RouteRequest) => userResearchRoutes.trackEvent(req),
-  "POST /api/sessions/:sessionId/end": (req: RouteRequest) => userResearchRoutes.endSession(req),
-  "GET /api/sessions/:sessionId": (req: RouteRequest) => userResearchRoutes.getSession(req),
-  "GET /api/sessions": (req: RouteRequest) => userResearchRoutes.getSessions(req),
+  'POST /api/sessions': (req: RouteRequest) => userResearchRoutes.createSession(req),
+  'POST /api/sessions/:sessionId/events': (req: RouteRequest) => userResearchRoutes.trackEvent(req),
+  'POST /api/sessions/:sessionId/end': (req: RouteRequest) => userResearchRoutes.endSession(req),
+  'GET /api/sessions/:sessionId': (req: RouteRequest) => userResearchRoutes.getSession(req),
+  'GET /api/sessions': (req: RouteRequest) => userResearchRoutes.getSessions(req),
 
   // Pain Point Detection
-  "POST /api/analysis/pain-points": (req: RouteRequest) => userResearchRoutes.detectPainPoints(req),
-  "GET /api/analysis/rage-quits": (req: RouteRequest) =>
+  'POST /api/analysis/pain-points': (req: RouteRequest) => userResearchRoutes.detectPainPoints(req),
+  'GET /api/analysis/rage-quits': (req: RouteRequest) =>
     userResearchRoutes.getRageQuitAnalysis(req),
 
   // Recommendations
-  "POST /api/recommendations": (req: RouteRequest) =>
+  'POST /api/recommendations': (req: RouteRequest) =>
     userResearchRoutes.generateRecommendations(req),
-  "GET /api/recommendations": (req: RouteRequest) => userResearchRoutes.getRecommendations(req),
+  'GET /api/recommendations': (req: RouteRequest) => userResearchRoutes.getRecommendations(req),
 
   // Flow Analysis
-  "POST /api/analysis/flow": (req: RouteRequest) => userResearchRoutes.analyzeFlow(req),
-  "POST /api/analysis/optimize-flow": (req: RouteRequest) => userResearchRoutes.optimizeFlow(req),
+  'POST /api/analysis/flow': (req: RouteRequest) => userResearchRoutes.analyzeFlow(req),
+  'POST /api/analysis/optimize-flow': (req: RouteRequest) => userResearchRoutes.optimizeFlow(req),
 
   // Feedback
-  "POST /api/feedback": (req: RouteRequest) => userResearchRoutes.submitFeedback(req),
-  "GET /api/feedback": (req: RouteRequest) => userResearchRoutes.getFeedback(req),
-  "POST /api/analysis/feedback": (req: RouteRequest) => userResearchRoutes.analyzeFeedback(req),
+  'POST /api/feedback': (req: RouteRequest) => userResearchRoutes.submitFeedback(req),
+  'GET /api/feedback': (req: RouteRequest) => userResearchRoutes.getFeedback(req),
+  'POST /api/analysis/feedback': (req: RouteRequest) => userResearchRoutes.analyzeFeedback(req),
 
   // Analytics
-  "GET /api/analytics": (req: RouteRequest) => userResearchRoutes.getAnalytics(req),
+  'GET /api/analytics': (req: RouteRequest) => userResearchRoutes.getAnalytics(req),
 
   // Utility
-  "DELETE /api/data": (req: RouteRequest) => userResearchRoutes.clearAllData(req),
+  'DELETE /api/data': (req: RouteRequest) => userResearchRoutes.clearAllData(req),
 };

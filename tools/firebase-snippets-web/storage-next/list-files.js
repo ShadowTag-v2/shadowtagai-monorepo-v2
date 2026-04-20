@@ -3,7 +3,7 @@
 
 function listAll() {
   // [START storage_list_all]
-  const { getStorage, ref, listAll } = require("firebase/storage");
+  const { getStorage, ref, listAll } = require('firebase/storage');
 
   const storage = getStorage();
 
@@ -20,7 +20,8 @@ function listAll() {
       res.items.forEach((itemRef) => {
         // All the items under listRef.
       });
-    }).catch((error) => {
+    })
+    .catch((error) => {
       // Uh-oh, an error occurred!
     });
   // [END storage_list_all]
@@ -28,9 +29,9 @@ function listAll() {
 
 function listPaginate() {
   // [START storage_list_paginate]
-  const { getStorage, ref, list } = require("firebase/storage");
+  const { getStorage, ref, list } = require('firebase/storage');
 
-  async function pageTokenExample(){
+  async function pageTokenExample() {
     // Create a reference under which you want to list
     const storage = getStorage();
     const listRef = ref(storage, 'files/uid');

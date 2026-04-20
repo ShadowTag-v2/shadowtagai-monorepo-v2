@@ -1,9 +1,9 @@
-import type { Task } from "../task/Task";
-import type { ClineProvider } from "./ClineProvider";
-import { saveTaskMessages } from "../task-persistence";
-import * as vscode from "vscode";
-import pWaitFor from "p-wait-for";
-import { t } from "../../i18n";
+import pWaitFor from 'p-wait-for';
+import * as vscode from 'vscode';
+import { t } from '../../i18n';
+import type { Task } from '../task/Task';
+import { saveTaskMessages } from '../task-persistence';
+import type { ClineProvider } from './ClineProvider';
 
 export interface CheckpointRestoreConfig {
   provider: ClineProvider;
@@ -11,7 +11,7 @@ export interface CheckpointRestoreConfig {
   messageTs: number;
   messageIndex: number;
   checkpoint: { hash: string };
-  operation: "delete" | "edit";
+  operation: 'delete' | 'edit';
   editData?: {
     editedContent: string;
     images?: string[];
@@ -32,7 +32,7 @@ export async function handleCheckpointRestoreOperation(
     // For delete operations, ensure the task is properly aborted to handle any pending ask operations
     // This prevents "Current ask promise was ignored" errors
     // For edit operations, we don't abort because the checkpoint restore will handle it
-    if (operation === "delete" && currentCline && !currentCline.abort) {
+    if (operation === 'delete' && currentCline && !currentCline.abort) {
       currentCline.abortTask();
       // Wait a bit for the abort to complete
       await pWaitFor(() => currentCline.abort === true, {
@@ -44,7 +44,7 @@ export async function handleCheckpointRestoreOperation(
     }
 
     // For edit operations, set up pending edit data before restoration
-    if (operation === "edit" && editData) {
+    if (operation === 'edit' && editData) {
       const operationId = `task-${currentCline.taskId}`;
       provider.setPendingEditOperation(operationId, {
         messageTs,
@@ -59,14 +59,14 @@ export async function handleCheckpointRestoreOperation(
     await currentCline.checkpointRestore({
       ts: messageTs,
       commitHash: checkpoint.hash,
-      mode: "restore",
+      mode: 'restore',
       operation,
     });
 
     // For delete operations, we need to save messages and reinitialize
     // For edit operations, the reinitialization happens automatically
     // and processes the pending edit
-    if (operation === "delete") {
+    if (operation === 'delete') {
       // Save the updated messages to disk after checkpoint restoration
       await saveTaskMessages({
         messages: currentCline.clineMessages,
@@ -103,7 +103,7 @@ export async function waitForClineInitialization(
     });
     return true;
   } catch (error) {
-    vscode.window.showErrorMessage(t("common:errors.checkpoint_timeout"));
+    vscode.window.showErrorMessage(t('common:errors.checkpoint_timeout'));
     return false;
   }
 }

@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Progress} from './progress.js';
+import { Progress } from './progress.js';
 
 /**
  * A circular progress component.

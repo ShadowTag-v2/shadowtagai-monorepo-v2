@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { toolWrapper } from '../utils/index.js';
 import {
+  getTrace,
+  listAlertPolicies,
+  listAlerts,
+  listBuckets,
   listGroupStats,
   listLogEntries,
   listLogNames,
-  listBuckets,
-  listViews,
-  listSinks,
   listLogScopes,
   listMetricDescriptors,
+  listSinks,
   listTimeSeries,
-  listAlertPolicies,
-  listAlerts,
   listTraces,
-  getTrace,
+  listViews,
 } from './index.js';
 
 export const registerTools = (server: McpServer): void => {

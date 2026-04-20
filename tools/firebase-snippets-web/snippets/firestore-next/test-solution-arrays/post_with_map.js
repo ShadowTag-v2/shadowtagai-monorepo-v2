@@ -7,11 +7,11 @@
 // [START post_with_map_modular]
 // Sample document in the 'posts' collection
 {
-    title: "My great post",
-    categories: {
-        "technology": true,
+  title: 'My great post', categories;
+  :
+  ('technology');
+  : true,
         "opinion": true,
         "cats": true
-    }
 }
 // [END post_with_map_modular]

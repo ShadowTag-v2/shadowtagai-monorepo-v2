@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_yahoo_provider_create_modular]
-import { OAuthProvider } from "firebase/auth";
+import { OAuthProvider } from 'firebase/auth';
 
 const provider = new OAuthProvider('yahoo.com');
 // [END auth_yahoo_provider_create_modular]

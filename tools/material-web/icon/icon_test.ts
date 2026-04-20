@@ -7,12 +7,12 @@
 // import 'jasmine'; (google3-only)
 import './icon.js';
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Environment} from '../testing/environment.js';
-import {createTokenTests} from '../testing/tokens.js';
+import { Environment } from '../testing/environment.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdIcon} from './icon.js';
+import { MdIcon } from './icon.js';
 
 describe('<md-icon>', () => {
   const env = new Environment();

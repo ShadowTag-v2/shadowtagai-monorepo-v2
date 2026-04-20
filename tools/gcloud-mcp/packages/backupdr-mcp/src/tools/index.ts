@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 
-import {
-  registerCreateBackupVaultTool,
-  registerDeleteBackupVaultTool,
-  registerGetBackupVaultTool,
-  registerListBackupVaultsTool,
-} from './backup_vaults/index.js';
+import { registerBackupPlanAssociationsTools } from './backup_plan_associations/index.js';
 import {
   registerCreateBackupPlanTool,
   registerDeleteBackupPlanTool,
@@ -27,9 +22,14 @@ import {
   registerListBackupPlansTool,
   registerUpdateBackupPlanTool,
 } from './backup_plans/index.js';
-import { registerBackupPlanAssociationsTools } from './backup_plan_associations/index.js';
-import { registerDataSourcesTools } from './datasources/index.js';
+import {
+  registerCreateBackupVaultTool,
+  registerDeleteBackupVaultTool,
+  registerGetBackupVaultTool,
+  registerListBackupVaultsTool,
+} from './backup_vaults/index.js';
 import { registerBackupsTools } from './backups/index.js';
+import { registerDataSourcesTools } from './datasources/index.js';
 // import { registerListResourceBackupConfigsTool } from './resource_backup_configs/list_resource_backup_config.js';
 import { registerFindProtectableResourcesTool } from './protectable_resources/index.js';
 

@@ -10,20 +10,19 @@
 
 import { SupportedLanguages } from '../../../config/supported-languages.js';
 import type { LanguageProvider } from '../language-provider.js';
-
-import { typescriptProvider, javascriptProvider } from './typescript.js';
-import { pythonProvider } from './python.js';
+import { cProvider, cppProvider } from './c-cpp.js';
+import { cobolProvider } from './cobol.js';
+import { csharpProvider } from './csharp.js';
+import { dartProvider } from './dart.js';
+import { goProvider } from './go.js';
 import { javaProvider } from './java.js';
 import { kotlinProvider } from './kotlin.js';
-import { goProvider } from './go.js';
-import { rustProvider } from './rust.js';
-import { csharpProvider } from './csharp.js';
-import { cProvider, cppProvider } from './c-cpp.js';
 import { phpProvider } from './php.js';
+import { pythonProvider } from './python.js';
 import { rubyProvider } from './ruby.js';
+import { rustProvider } from './rust.js';
 import { swiftProvider } from './swift.js';
-import { dartProvider } from './dart.js';
-import { cobolProvider } from './cobol.js';
+import { javascriptProvider, typescriptProvider } from './typescript.js';
 
 export const providers = {
   [SupportedLanguages.JavaScript]: javascriptProvider,
@@ -67,7 +66,10 @@ export function getProviderForFile(filePath: string): LanguageProvider | null {
 
 /** Pre-computed list of providers that have implicit import wiring (e.g., Swift).
  *  Built once at module load — avoids iterating all 13 providers per call. */
-export const providersWithImplicitWiring = Object.values(providers)
-  .filter((p): p is LanguageProvider & { implicitImportWirer: NonNullable<LanguageProvider['implicitImportWirer']> } =>
-    p.implicitImportWirer != null
-  );
+export const providersWithImplicitWiring = Object.values(providers).filter(
+  (
+    p,
+  ): p is LanguageProvider & {
+    implicitImportWirer: NonNullable<LanguageProvider['implicitImportWirer']>;
+  } => p.implicitImportWirer != null,
+);

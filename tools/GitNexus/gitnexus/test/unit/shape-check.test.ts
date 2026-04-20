@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { extractResponseShapes } from '../../src/core/ingestion/route-extractors/response-shapes.js';
+import { describe, expect, it } from 'vitest';
 import { extractConsumerAccessedKeys } from '../../src/core/ingestion/call-processor.js';
+import { extractResponseShapes } from '../../src/core/ingestion/route-extractors/response-shapes.js';
 
 describe('extractResponseShapes', () => {
   it('extracts unquoted keys from .json() call', () => {

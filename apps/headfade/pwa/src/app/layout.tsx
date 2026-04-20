@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "@packages/ui/dark-luxury.css";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import '@packages/ui/dark-luxury.css';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "HeadFadeAi | Gamified Turing Test",
-  description: "Can you tell what is real?",
+  title: 'HeadFadeAi | Gamified Turing Test',
+  description: 'Can you tell what is real?',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -5,17 +5,19 @@
 // 'npm run snippets'.
 
 // [START auth_update_password_modular]
-import { getAuth, updatePassword } from "firebase/auth";
+import { getAuth, updatePassword } from 'firebase/auth';
 
 const auth = getAuth();
 
 const user = auth.currentUser;
 const newPassword = getASecureRandomPassword();
 
-updatePassword(user, newPassword).then(() => {
-  // Update successful.
-}).catch((error) => {
-  // An error ocurred
-  // ...
-});
+updatePassword(user, newPassword)
+  .then(() => {
+    // Update successful.
+  })
+  .catch((error) => {
+    // An error ocurred
+    // ...
+  });
 // [END auth_update_password_modular]

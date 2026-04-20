@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html} from 'lit';
-import {customElement} from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
+import { html } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
-import {Environment} from '../../testing/environment.js';
-import {Harness} from '../../testing/harness.js';
+import { Environment } from '../../testing/environment.js';
+import { Harness } from '../../testing/harness.js';
 
-import {Switch} from './switch.js';
+import { Switch } from './switch.js';
 
 @customElement('md-test-switch')
 class TestSwitch extends Switch {}
@@ -43,10 +43,7 @@ function renderSwitchInLabel(propsInit: Partial<TestSwitch> = {}) {
 describe('md-switch', () => {
   const env = new Environment();
 
-  async function switchElement(
-    propsInit: Partial<TestSwitch> = {},
-    template = renderSwitch,
-  ) {
+  async function switchElement(propsInit: Partial<TestSwitch> = {}, template = renderSwitch) {
     const root = env.render(html`<div>${template(propsInit)}</div>`);
     await env.waitForStability();
     const element = root.querySelector('md-test-switch');
@@ -66,7 +63,7 @@ describe('md-switch', () => {
     let selected: TestSwitch;
 
     beforeEach(async () => {
-      selected = await switchElement({selected: true});
+      selected = await switchElement({ selected: true });
     });
 
     it('is false by default', () => {
@@ -94,7 +91,7 @@ describe('md-switch', () => {
     let disabled: TestSwitch;
 
     beforeEach(async () => {
-      disabled = await switchElement({disabled: true});
+      disabled = await switchElement({ disabled: true });
     });
 
     it('is false by default', () => {
@@ -164,19 +161,15 @@ describe('md-switch', () => {
 
     it('reflects `selected` state in input events', () => {
       let state = false;
-      const inputHandler = jasmine
-        .createSpy('inputHandler')
-        .and.callFake(() => {
-          state = toggle.selected;
-        });
+      const inputHandler = jasmine.createSpy('inputHandler').and.callFake(() => {
+        state = toggle.selected;
+      });
 
       toggle.addEventListener('input', inputHandler);
 
       toggle.click();
       expect(inputHandler).withContext('input listener').toHaveBeenCalled();
-      expect(state)
-        .withContext('switch.selected during input listener')
-        .toBeTrue();
+      expect(state).withContext('switch.selected during input listener').toBeTrue();
     });
   });
 
@@ -190,7 +183,7 @@ describe('md-switch', () => {
     }
 
     it('does not submit if not selected', async () => {
-      const harness = await switchInForm({name: 'foo'});
+      const harness = await switchInForm({ name: 'foo' });
       const formData = await harness.submitForm();
       expect(formData.get('foo')).toBeNull();
     });
@@ -206,7 +199,7 @@ describe('md-switch', () => {
     });
 
     it('does not submit if name is not provided', async () => {
-      const harness = await switchInForm({selected: true});
+      const harness = await switchInForm({ selected: true });
       const formData = await harness.submitForm();
       const keys = Array.from(formData.keys());
       expect(keys.length).toEqual(0);
@@ -242,18 +235,14 @@ describe('md-switch', () => {
     it('should set valueMissing when required and not selected', async () => {
       toggle.required = true;
 
-      expect(toggle.validity.valueMissing)
-        .withContext('toggle.validity.valueMissing')
-        .toBeTrue();
+      expect(toggle.validity.valueMissing).withContext('toggle.validity.valueMissing').toBeTrue();
     });
 
     it('should not set valueMissing when required and selected', async () => {
       toggle.required = true;
       toggle.selected = true;
 
-      expect(toggle.validity.valueMissing)
-        .withContext('toggle.validity.valueMissing')
-        .toBeFalse();
+      expect(toggle.validity.valueMissing).withContext('toggle.validity.valueMissing').toBeFalse();
     });
   });
 });

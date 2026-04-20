@@ -1,4 +1,4 @@
-import type { DesignSystemBuilderConfig } from "../types/design-system";
+import type { DesignSystemBuilderConfig } from '../types/design-system';
 
 export const designSystemBuilderConfig: DesignSystemBuilderConfig = {
   systemPrompt: `You are a Design Systems Expert specializing in building scalable component libraries.
@@ -30,24 +30,24 @@ When creating a design system:
 - Ensure responsive behavior`,
 
   tools: [
-    "generate_design_tokens",
-    "create_component",
-    "scaffold_library",
-    "generate_style_guide",
-    "validate_accessibility",
-    "export_to_framework",
+    'generate_design_tokens',
+    'create_component',
+    'scaffold_library',
+    'generate_style_guide',
+    'validate_accessibility',
+    'export_to_framework',
   ],
 
-  defaultFramework: "react",
-  outputPath: "./generated-design-system",
+  defaultFramework: 'react',
+  outputPath: './generated-design-system',
 
   maxTokens: 4096,
   temperature: 0.7,
 };
 
 export const vertexWorkbenchConfig = {
-  projectId: process.env.GCP_PROJECT_ID || "",
-  location: process.env.GCP_LOCATION || "us-central1",
-  modelName: process.env.VERTEX_MODEL || "gemini-pro",
+  projectId: process.env.GCP_PROJECT_ID || '',
+  location: process.env.GCP_LOCATION || 'us-central1',
+  modelName: process.env.VERTEX_MODEL || 'gemini-pro',
   credentials: process.env.GOOGLE_APPLICATION_CREDENTIALS,
 };

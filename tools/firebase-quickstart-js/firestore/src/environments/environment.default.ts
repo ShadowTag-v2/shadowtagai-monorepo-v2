@@ -12,14 +12,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
-
+ */
 
 /**  If connecting to a live Firebase project (one that you set up in the
  * Firebase console) put your config vars into the `environment.prod.ts` file.
  * Otherwise, leave untouched to enable connection to demo project and emulators.
-*/
+ */
 export const projectConfig = {
   projectId: 'demo-friendly-eats',
-  apiKey: 'API_KEY_UNUSED'
-}
+  apiKey: 'API_KEY_UNUSED',
+};

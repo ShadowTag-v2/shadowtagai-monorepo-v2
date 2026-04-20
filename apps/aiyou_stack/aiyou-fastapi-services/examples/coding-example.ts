@@ -5,15 +5,15 @@
  * with different personas and tools for software development tasks.
  */
 
-import { query } from "@anthropic-ai/claude-agent-sdk";
-import testRunnerTool from "../agents/coding/tools/test-runner.js";
+import { query } from '@anthropic-ai/claude-agent-sdk';
+import testRunnerTool from '../agents/coding/tools/test-runner.js';
 
 /**
  * Example 1: Backend Development
  * Using the backend developer persona for API development
  */
 async function backendDevelopmentExample() {
-  console.log("=== Backend Development Example ===\n");
+  console.log('=== Backend Development Example ===\n');
 
   const result = await query({
     prompt: `Create a RESTful API endpoint for user management with the following requirements:
@@ -34,16 +34,16 @@ async function backendDevelopmentExample() {
 
     options: {
       systemPrompt: {
-        type: "file",
-        path: "./agents/coding/personas/backend-dev.md",
+        type: 'file',
+        path: './agents/coding/personas/backend-dev.md',
       },
       tools: [testRunnerTool],
-      settingSources: ["project", "local"],
+      settingSources: ['project', 'local'],
       temperature: 0.3, // Backend dev uses low temperature for consistency
     },
   });
 
-  console.log("Backend Development Result:");
+  console.log('Backend Development Result:');
   console.log(result);
 }
 
@@ -52,7 +52,7 @@ async function backendDevelopmentExample() {
  * Using the frontend developer persona for UI component creation
  */
 async function frontendDevelopmentExample() {
-  console.log("\n=== Frontend Development Example ===\n");
+  console.log('\n=== Frontend Development Example ===\n');
 
   const result = await query({
     prompt: `Create a reusable data table component with the following features:
@@ -75,16 +75,16 @@ async function frontendDevelopmentExample() {
 
     options: {
       systemPrompt: {
-        type: "file",
-        path: "./agents/coding/personas/frontend-dev.md",
+        type: 'file',
+        path: './agents/coding/personas/frontend-dev.md',
       },
       tools: [testRunnerTool],
-      settingSources: ["project", "local"],
+      settingSources: ['project', 'local'],
       temperature: 0.4,
     },
   });
 
-  console.log("Frontend Development Result:");
+  console.log('Frontend Development Result:');
   console.log(result);
 }
 
@@ -93,7 +93,7 @@ async function frontendDevelopmentExample() {
  * Using the DevOps persona for deployment automation
  */
 async function devopsPipelineExample() {
-  console.log("\n=== DevOps CI/CD Pipeline Example ===\n");
+  console.log('\n=== DevOps CI/CD Pipeline Example ===\n');
 
   const result = await query({
     prompt: `Create a complete CI/CD pipeline for a Node.js application:
@@ -121,15 +121,15 @@ async function devopsPipelineExample() {
 
     options: {
       systemPrompt: {
-        type: "file",
-        path: "./agents/coding/personas/devops.md",
+        type: 'file',
+        path: './agents/coding/personas/devops.md',
       },
-      settingSources: ["project", "local"],
+      settingSources: ['project', 'local'],
       temperature: 0.3,
     },
   });
 
-  console.log("DevOps Pipeline Result:");
+  console.log('DevOps Pipeline Result:');
   console.log(result);
 }
 
@@ -138,7 +138,7 @@ async function devopsPipelineExample() {
  * Using coding agent for comprehensive code review
  */
 async function codeReviewExample() {
-  console.log("\n=== Code Review Example ===\n");
+  console.log('\n=== Code Review Example ===\n');
 
   const codeToReview = `
   function getUserData(userId) {
@@ -168,14 +168,14 @@ async function codeReviewExample() {
 
     options: {
       systemPrompt: {
-        type: "file",
-        path: "./agents/coding/personas/backend-dev.md",
+        type: 'file',
+        path: './agents/coding/personas/backend-dev.md',
       },
       temperature: 0.3,
     },
   });
 
-  console.log("Code Review Result:");
+  console.log('Code Review Result:');
   console.log(result);
 }
 
@@ -184,7 +184,7 @@ async function codeReviewExample() {
  * Demonstrating automated test generation
  */
 async function testSuiteCreationExample() {
-  console.log("\n=== Test Suite Creation Example ===\n");
+  console.log('\n=== Test Suite Creation Example ===\n');
 
   const result = await query({
     prompt: `Create a comprehensive test suite for an e-commerce shopping cart:
@@ -210,27 +210,27 @@ async function testSuiteCreationExample() {
 
     options: {
       systemPrompt: {
-        type: "file",
-        path: "./agents/coding/personas/backend-dev.md",
+        type: 'file',
+        path: './agents/coding/personas/backend-dev.md',
       },
       tools: [testRunnerTool],
       temperature: 0.3,
     },
   });
 
-  console.log("Test Suite Creation Result:");
+  console.log('Test Suite Creation Result:');
   console.log(result);
 
   // Run the generated tests
-  console.log("\nRunning tests...");
+  console.log('\nRunning tests...');
   const testResult = await testRunnerTool.execute({
-    framework: "jest",
-    path: "./tests",
+    framework: 'jest',
+    path: './tests',
     coverage: true,
     verbose: true,
   });
 
-  console.log("Test Results:", testResult);
+  console.log('Test Results:', testResult);
 }
 
 /**
@@ -238,7 +238,7 @@ async function testSuiteCreationExample() {
  * Using coding agent to modernize legacy code
  */
 async function refactoringExample() {
-  console.log("\n=== Code Refactoring Example ===\n");
+  console.log('\n=== Code Refactoring Example ===\n');
 
   const legacyCode = `
   var app = {
@@ -275,14 +275,14 @@ async function refactoringExample() {
 
     options: {
       systemPrompt: {
-        type: "file",
-        path: "./agents/coding/personas/backend-dev.md",
+        type: 'file',
+        path: './agents/coding/personas/backend-dev.md',
       },
       temperature: 0.3,
     },
   });
 
-  console.log("Refactoring Result:");
+  console.log('Refactoring Result:');
   console.log(result);
 }
 
@@ -291,7 +291,7 @@ async function refactoringExample() {
  * Using coding agent to optimize code performance
  */
 async function performanceOptimizationExample() {
-  console.log("\n=== Performance Optimization Example ===\n");
+  console.log('\n=== Performance Optimization Example ===\n');
 
   const result = await query({
     prompt: `Optimize the performance of a slow database query application:
@@ -314,14 +314,14 @@ async function performanceOptimizationExample() {
 
     options: {
       systemPrompt: {
-        type: "file",
-        path: "./agents/coding/personas/backend-dev.md",
+        type: 'file',
+        path: './agents/coding/personas/backend-dev.md',
       },
       temperature: 0.3,
     },
   });
 
-  console.log("Performance Optimization Result:");
+  console.log('Performance Optimization Result:');
   console.log(result);
 }
 
@@ -329,8 +329,8 @@ async function performanceOptimizationExample() {
  * Main execution
  */
 async function main() {
-  console.log("Master Agent Framework - Coding Agent Examples\n");
-  console.log("=".repeat(60));
+  console.log('Master Agent Framework - Coding Agent Examples\n');
+  console.log('='.repeat(60));
 
   try {
     // Run examples
@@ -342,10 +342,10 @@ async function main() {
     await refactoringExample();
     await performanceOptimizationExample();
 
-    console.log("\n" + "=".repeat(60));
-    console.log("\nAll examples completed successfully!");
+    console.log('\n' + '='.repeat(60));
+    console.log('\nAll examples completed successfully!');
   } catch (error) {
-    console.error("Error running examples:", error);
+    console.error('Error running examples:', error);
     process.exit(1);
   }
 }

@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-export * from './get_metadata_table_schema.js';
 export * from './execute_insights_query.js';
+export * from './get_metadata_table_schema.js';
 export * from './list_insights_configs.js';

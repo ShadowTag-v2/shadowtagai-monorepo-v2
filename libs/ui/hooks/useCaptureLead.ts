@@ -12,18 +12,18 @@ export function useCaptureLead() {
       const response = await fetch('/api/captureContact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
         if (response.status === 400) {
-          throw new Error(data.error || "Validation Failed. Please check the form parameters.");
+          throw new Error(data.error || 'Validation Failed. Please check the form parameters.');
         } else if (response.status === 429) {
-          throw new Error("Too Many Requests. Please try again later.");
+          throw new Error('Too Many Requests. Please try again later.');
         }
-        throw new Error("An unexpected error occurred.");
+        throw new Error('An unexpected error occurred.');
       }
 
       setSuccess(true);

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { registerListBackupsTool } from './list_backups.js';
-import { registerGetBackupTool } from './get_backup.js';
-import { registerDeleteBackupTool } from './delete_backup.js';
-import { registerRestoreBackupTool } from './restore_backup.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { registerCsqlRestoreTool } from './csql_restore.js';
+import { registerDeleteBackupTool } from './delete_backup.js';
+import { registerGetBackupTool } from './get_backup.js';
 import { registerGetCsqlOperationTool } from './get_csql_operation.js';
 import { registerGetOperationTool } from './get_operation.js';
+import { registerListBackupsTool } from './list_backups.js';
+import { registerRestoreBackupTool } from './restore_backup.js';
 
 export const registerBackupsTools = (server: McpServer) => {
   registerListBackupsTool(server);

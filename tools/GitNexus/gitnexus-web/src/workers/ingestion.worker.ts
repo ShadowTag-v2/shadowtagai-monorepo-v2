@@ -1,32 +1,45 @@
+import { SystemMessage } from '@langchain/core/messages';
 import * as Comlink from 'comlink';
-import { runIngestionPipeline, runPipelineFromFiles } from '../core/ingestion/pipeline';
-import { PipelineProgress, SerializablePipelineResult, serializePipelineResult } from '../types/pipeline';
-import { FileEntry } from '../services/zip';
+import { disposeEmbedder, isEmbedderReady } from '../core/embeddings/embedder';
 import {
-  runEmbeddingPipeline,
   semanticSearch as doSemanticSearch,
   semanticSearchWithContext as doSemanticSearchWithContext,
   type EmbeddingProgressCallback,
+  runEmbeddingPipeline,
 } from '../core/embeddings/embedding-pipeline';
-import { isEmbedderReady, disposeEmbedder } from '../core/embeddings/embedder';
 import type { EmbeddingProgress, SemanticSearchResult } from '../core/embeddings/types';
-import type { ProviderConfig, AgentStreamChunk } from '../core/llm/types';
-import { createGraphRAGAgent, streamAgentResponse, type AgentMessage, createChatModel } from '../core/llm/agent';
 import { createKnowledgeGraph } from '../core/graph/graph';
 import type { GraphNode, GraphRelationship } from '../core/graph/types';
-import { SystemMessage } from '@langchain/core/messages';
-import { enrichClustersBatch, ClusterMemberInfo, ClusterEnrichment } from '../core/ingestion/cluster-enricher';
-import { CommunityNode } from '../core/ingestion/community-processor';
-import { PipelineResult } from '../types/pipeline';
+import {
+  type ClusterEnrichment,
+  type ClusterMemberInfo,
+  enrichClustersBatch,
+} from '../core/ingestion/cluster-enricher';
+import type { CommunityNode } from '../core/ingestion/community-processor';
+import { runIngestionPipeline, runPipelineFromFiles } from '../core/ingestion/pipeline';
+import {
+  type AgentMessage,
+  createChatModel,
+  createGraphRAGAgent,
+  streamAgentResponse,
+} from '../core/llm/agent';
 import { buildCodebaseContext, type CodebaseContext } from '../core/llm/context-builder';
+import type { AgentStreamChunk, ProviderConfig } from '../core/llm/types';
 import {
   buildBM25Index,
-  searchBM25,
-  isBM25Ready,
   getBM25Stats,
-  mergeWithRRF,
   type HybridSearchResult,
+  isBM25Ready,
+  mergeWithRRF,
+  searchBM25,
 } from '../core/search';
+import type { FileEntry } from '../services/zip';
+import {
+  type PipelineProgress,
+  type PipelineResult,
+  type SerializablePipelineResult,
+  serializePipelineResult,
+} from '../types/pipeline';
 
 // Lazy import for LadybugDB to avoid breaking worker if SharedArrayBuffer unavailable
 let lbugAdapter: typeof import('../core/lbug/lbug-adapter') | null = null;
@@ -48,7 +61,7 @@ let isEmbeddingComplete = false;
 const finalizePipeline = async (
   result: PipelineResult,
   onProgress: (progress: PipelineProgress) => void,
-  clusteringConfig?: ProviderConfig
+  clusteringConfig?: ProviderConfig,
 ): Promise<SerializablePipelineResult> => {
   currentGraphResult = result;
 
@@ -176,7 +189,7 @@ const createHttpHybridSearch = (backendUrl: string, repo: string) => {
         endLine: s.endLine,
         content: s.content ?? '',
         sources: ['bm25', 'semantic'],
-        score: Math.max(0, 1 - (i * 0.02)),
+        score: Math.max(0, 1 - i * 0.02),
       }));
 
       const defs: any[] = (data.definitions ?? []).map((d: any, i: number) => ({
@@ -186,7 +199,7 @@ const createHttpHybridSearch = (backendUrl: string, repo: string) => {
         filePath: d.filePath,
         content: '',
         sources: ['bm25'],
-        score: Math.max(0, 0.5 - (i * 0.02)),
+        score: Math.max(0, 0.5 - i * 0.02),
       }));
 
       return [...symbols, ...defs].slice(0, k);
@@ -212,7 +225,7 @@ const workerApi = {
   async runPipeline(
     file: File,
     onProgress: (progress: PipelineProgress) => void,
-    clusteringConfig?: ProviderConfig
+    clusteringConfig?: ProviderConfig,
   ): Promise<SerializablePipelineResult> {
     console.log('🔧 runPipeline called with clusteringConfig:', !!clusteringConfig);
     const result = await runIngestionPipeline(file, onProgress);
@@ -226,7 +239,7 @@ const workerApi = {
   async loadServerGraph(
     nodes: GraphNode[],
     relationships: GraphRelationship[],
-    fileContents: Record<string, string>
+    fileContents: Record<string, string>,
   ): Promise<void> {
     const graph = createKnowledgeGraph();
     for (const node of nodes) graph.addNode(node);
@@ -313,7 +326,7 @@ const workerApi = {
   async runPipelineFromFiles(
     files: FileEntry[],
     onProgress: (progress: PipelineProgress) => void,
-    clusteringConfig?: ProviderConfig
+    clusteringConfig?: ProviderConfig,
   ): Promise<SerializablePipelineResult> {
     // Skip extraction phase, start from 15%
     onProgress({
@@ -339,7 +352,7 @@ const workerApi = {
    */
   async startEmbeddingPipeline(
     onProgress: (progress: EmbeddingProgress) => void,
-    forceDevice?: 'webgpu' | 'wasm'
+    forceDevice?: 'webgpu' | 'wasm',
   ): Promise<void> {
     const lbug = await getLbugAdapter();
     if (!lbug.isLbugReady()) {
@@ -362,7 +375,7 @@ const workerApi = {
       lbug.executeQuery,
       lbug.executeWithReusedStatement,
       progressCallback,
-      forceDevice ? { device: forceDevice } : {}
+      forceDevice ? { device: forceDevice } : {},
     );
   },
 
@@ -372,7 +385,7 @@ const workerApi = {
    * @param onProgress - Progress callback
    */
   async startBackgroundEnrichment(
-    onProgress?: (current: number, total: number) => void
+    onProgress?: (current: number, total: number) => void,
   ): Promise<{ enriched: number; skipped: boolean }> {
     if (!pendingEnrichmentConfig) {
       console.log('⏭️ No pending enrichment config, skipping');
@@ -381,10 +394,7 @@ const workerApi = {
 
     console.log('✨ Starting background LLM enrichment...');
     try {
-      await workerApi.enrichCommunities(
-        pendingEnrichmentConfig,
-        onProgress ?? (() => {})
-      );
+      await workerApi.enrichCommunities(pendingEnrichmentConfig, onProgress ?? (() => {}));
       pendingEnrichmentConfig = null; // Clear after running
       console.log('✅ Background enrichment completed');
       return { enriched: 1, skipped: false };
@@ -414,7 +424,7 @@ const workerApi = {
   async semanticSearch(
     query: string,
     k: number = 10,
-    maxDistance: number = 0.5
+    maxDistance: number = 0.5,
   ): Promise<SemanticSearchResult[]> {
     const lbug = await getLbugAdapter();
     if (!lbug.isLbugReady()) {
@@ -435,11 +445,7 @@ const workerApi = {
    * @param hops - Number of graph hops to expand (default: 2)
    * @returns Search results with connected nodes
    */
-  async semanticSearchWithContext(
-    query: string,
-    k: number = 5,
-    hops: number = 2
-  ): Promise<any[]> {
+  async semanticSearchWithContext(query: string, k: number = 5, hops: number = 2): Promise<any[]> {
     const lbug = await getLbugAdapter();
     if (!lbug.isLbugReady()) {
       throw new Error('Database not ready. Please load a repository first.');
@@ -459,16 +465,13 @@ const workerApi = {
    * @param k - Number of results to return (default: 10)
    * @returns Hybrid search results with RRF scores
    */
-  async hybridSearch(
-    query: string,
-    k: number = 10
-  ): Promise<HybridSearchResult[]> {
+  async hybridSearch(query: string, k: number = 10): Promise<HybridSearchResult[]> {
     if (!isBM25Ready()) {
       throw new Error('Search index not ready. Please load a repository first.');
     }
 
     // Get BM25 results (always available after ingestion)
-    const bm25Results = searchBM25(query, k * 3);  // Get more for better RRF merge
+    const bm25Results = searchBM25(query, k * 3); // Get more for better RRF merge
 
     // Get semantic results if embeddings are ready
     let semanticResults: SemanticSearchResult[] = [];
@@ -553,7 +556,10 @@ const workerApi = {
    * @param config - Provider configuration (Azure OpenAI or Gemini)
    * @param projectName - Name of the loaded project/repository
    */
-  async initializeAgent(config: ProviderConfig, projectName?: string): Promise<{ success: boolean; error?: string }> {
+  async initializeAgent(
+    config: ProviderConfig,
+    projectName?: string,
+  ): Promise<{ success: boolean; error?: string }> {
     try {
       const lbug = await getLbugAdapter();
       if (!lbug.isLbugReady()) {
@@ -597,7 +603,10 @@ const workerApi = {
       // Use provided projectName, or fallback to 'project' if not provided
       const resolvedProjectName = projectName || 'project';
       if (import.meta.env.DEV) {
-        console.log('📛 Project name received:', { provided: projectName, resolved: resolvedProjectName });
+        console.log('📛 Project name received:', {
+          provided: projectName,
+          resolved: resolvedProjectName,
+        });
       }
 
       let codebaseContext;
@@ -623,7 +632,7 @@ const workerApi = {
         () => isEmbeddingComplete,
         () => isBM25Ready(),
         storedFileContents,
-        codebaseContext
+        codebaseContext,
       );
       currentProviderConfig = config;
 
@@ -686,13 +695,13 @@ const workerApi = {
       // isBM25Ready is true — BM25 is available via the server's hybrid search.
       currentAgent = createGraphRAGAgent(
         config,
-        executeQuery,          // Cypher via HTTP
-        hybridSearch,          // semanticSearch → server hybrid search
-        hybridSearch,          // semanticSearchWithContext → same
-        hybridSearch,          // hybridSearch → server hybrid search
-        () => false,           // isEmbeddingReady → no local embedder
-        () => true,            // isBM25Ready → available via server
-        contents,              // fileContents Map
+        executeQuery, // Cypher via HTTP
+        hybridSearch, // semanticSearch → server hybrid search
+        hybridSearch, // semanticSearchWithContext → same
+        hybridSearch, // hybridSearch → server hybrid search
+        () => false, // isEmbeddingReady → no local embedder
+        () => true, // isBM25Ready → available via server
+        contents, // fileContents Map
         codebaseContext,
       );
 
@@ -737,10 +746,13 @@ const workerApi = {
    */
   async chatStream(
     messages: AgentMessage[],
-    onChunk: (chunk: AgentStreamChunk) => void
+    onChunk: (chunk: AgentStreamChunk) => void,
   ): Promise<void> {
     if (!currentAgent) {
-      onChunk({ type: 'error', error: 'Agent not initialized. Please configure an LLM provider first.' });
+      onChunk({
+        type: 'error',
+        error: 'Agent not initialized. Please configure an LLM provider first.',
+      });
       return;
     }
 
@@ -785,8 +797,8 @@ const workerApi = {
    */
   async enrichCommunities(
     providerConfig: ProviderConfig,
-    onProgress: (current: number, total: number) => void
-  ): Promise<{ enrichments: Record<string, ClusterEnrichment>, tokensUsed: number }> {
+    onProgress: (current: number, total: number) => void,
+  ): Promise<{ enrichments: Record<string, ClusterEnrichment>; tokensUsed: number }> {
     if (!currentGraphResult) {
       throw new Error('No graph loaded. Please ingest a repository first.');
     }
@@ -797,14 +809,17 @@ const workerApi = {
 
     // Filter for community nodes
     const communityNodes = graph.nodes
-      .filter(n => n.label === 'Community')
-      .map(n => ({
-        id: n.id,
-        label: 'Community',
-        heuristicLabel: n.properties.heuristicLabel,
-        cohesion: n.properties.cohesion,
-        symbolCount: n.properties.symbolCount
-      } as CommunityNode));
+      .filter((n) => n.label === 'Community')
+      .map(
+        (n) =>
+          ({
+            id: n.id,
+            label: 'Community',
+            heuristicLabel: n.properties.heuristicLabel,
+            cohesion: n.properties.cohesion,
+            symbolCount: n.properties.symbolCount,
+          }) as CommunityNode,
+      );
 
     if (communityNodes.length === 0) {
       return { enrichments: {}, tokensUsed: 0 };
@@ -814,10 +829,10 @@ const workerApi = {
     const memberMap = new Map<string, ClusterMemberInfo[]>();
 
     // Initialize map
-    communityNodes.forEach(c => memberMap.set(c.id, []));
+    communityNodes.forEach((c) => memberMap.set(c.id, []));
 
     // Build a Map for O(1) node lookups instead of O(N) find per relationship
-    const nodeById = new Map(graph.nodes.map(n => [n.id, n]));
+    const nodeById = new Map(graph.nodes.map((n) => [n.id, n]));
 
     // Find all MEMBER_OF edges
     for (const rel of graph.relationships) {
@@ -836,7 +851,7 @@ const workerApi = {
             memberMap.get(communityId)?.push({
               name: memberNode.properties.name,
               filePath: memberNode.properties.filePath,
-              type: memberNode.label
+              type: memberNode.label,
             });
           }
         }
@@ -849,10 +864,10 @@ const workerApi = {
       generate: async (prompt: string): Promise<string> => {
         const response = await chatModel.invoke([
           new SystemMessage('You are a helpful code analysis assistant.'),
-          { role: 'user', content: prompt }
+          { role: 'user', content: prompt },
         ]);
         return response.content as string;
-      }
+      },
     };
 
     // Run enrichment
@@ -861,15 +876,17 @@ const workerApi = {
       memberMap,
       llmClient,
       5, // Batch size
-      onProgress
+      onProgress,
     );
 
     if (import.meta.env.DEV) {
-      console.log(`✨ Enriched ${enrichments.size} clusters using ~${Math.round(tokensUsed)} tokens`);
+      console.log(
+        `✨ Enriched ${enrichments.size} clusters using ~${Math.round(tokensUsed)} tokens`,
+      );
     }
 
     // Update graph nodes with enrichment data
-    graph.nodes.forEach(node => {
+    graph.nodes.forEach((node) => {
       if (node.label === 'Community' && enrichments.has(node.id)) {
         const enrichment = enrichments.get(node.id)!;
         node.properties.name = enrichment.name; // Update display label
@@ -901,7 +918,6 @@ const workerApi = {
       `;
 
       await lbug.executeWithReusedStatement(updateQuery, paramsList);
-
     } catch (err) {
       console.error('Failed to update LadybugDB with enrichment:', err);
     }
@@ -913,7 +929,6 @@ const workerApi = {
     }
 
     return { enrichments: enrichmentsRecord, tokensUsed };
-
   },
 };
 

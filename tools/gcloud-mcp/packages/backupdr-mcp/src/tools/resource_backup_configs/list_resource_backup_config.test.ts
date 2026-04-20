@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { describe, it, expect, vi } from 'vitest';
-import { listResourceBackupConfigs } from './list_resource_backup_config.js';
+import { describe, expect, it, vi } from 'vitest';
 import { googleCloudHttpClient } from '../../utility/gcp_http_client.js';
+import { listResourceBackupConfigs } from './list_resource_backup_config.js';
 
 vi.mock('../../utility/gcp_http_client', () => ({
   googleCloudHttpClient: {

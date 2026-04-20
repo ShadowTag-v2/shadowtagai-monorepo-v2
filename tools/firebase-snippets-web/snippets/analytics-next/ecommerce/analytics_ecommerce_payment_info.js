@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START analytics_ecommerce_payment_info_modular]
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 // Prepare ecommerce params
 const params9 = {
@@ -13,7 +13,7 @@ const params9 = {
   value: 14.98, // Total Revenue
   coupon: 'SUMMER_FUN',
   payment_type: 'Visa',
-  items: [item_jeggings]
+  items: [item_jeggings],
 };
 
 // Log event

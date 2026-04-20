@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START order_multiple_modular]
-import { query, orderBy } from "firebase/firestore";
+import { orderBy, query } from 'firebase/firestore';
 
-const q = query(citiesRef, orderBy("state"), orderBy("population", "desc"));
+const q = query(citiesRef, orderBy('state'), orderBy('population', 'desc'));
 // [END order_multiple_modular]

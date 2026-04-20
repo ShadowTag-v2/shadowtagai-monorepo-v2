@@ -14,12 +14,12 @@
  * Last Updated: 2025-11-08
  */
 
-import { ClaudeAgentOptions, query } from "@anthropic-ai/claude-agent-sdk";
+import { ClaudeAgentOptions, query } from '@anthropic-ai/claude-agent-sdk';
 import {
   WEALTH_ACCELERATION_AGENT_PROMPT,
   WEALTH_ACCELERATION_SYSTEM_PROMPT,
-} from "../prompts/wealth-acceleration-strategist";
-import { monetizationTools } from "../tools/monetization-tools";
+} from '../prompts/wealth-acceleration-strategist';
+import { monetizationTools } from '../tools/monetization-tools';
 
 /**
  * Configuration options for the Wealth Acceleration Agent
@@ -88,7 +88,7 @@ export interface BusinessContext {
   /**
    * Engagement level (low, medium, high)
    */
-  engagementLevel?: "low" | "medium" | "high";
+  engagementLevel?: 'low' | 'medium' | 'high';
 
   /**
    * Existing revenue streams
@@ -124,7 +124,7 @@ export class WealthAccelerationAgent {
 
   constructor(config: WealthAccelerationAgentConfig = {}) {
     this.config = {
-      model: "claude-sonnet-4.5-20250514",
+      model: 'claude-sonnet-4.5-20250514',
       maxTokens: 8000,
       temperature: 1.0,
       enableExtendedThinking: true,
@@ -146,10 +146,10 @@ export class WealthAccelerationAgent {
    */
   private formatBusinessContext(): string {
     if (!this.businessContext) {
-      return "";
+      return '';
     }
 
-    const parts = ["<business_context>"];
+    const parts = ['<business_context>'];
 
     if (this.businessContext.niche) {
       parts.push(`Niche: ${this.businessContext.niche}`);
@@ -170,29 +170,29 @@ export class WealthAccelerationAgent {
     }
 
     if (this.businessContext.revenueStreams?.length) {
-      parts.push(`Current Revenue Streams: ${this.businessContext.revenueStreams.join(", ")}`);
+      parts.push(`Current Revenue Streams: ${this.businessContext.revenueStreams.join(', ')}`);
     }
 
     if (this.businessContext.offers?.length) {
-      parts.push("\nCurrent Offers:");
+      parts.push('\nCurrent Offers:');
       this.businessContext.offers.forEach((offer) => {
         parts.push(
-          `- ${offer.name}: $${offer.price}${offer.monthlySales ? ` (${offer.monthlySales} sales/month)` : ""}`,
+          `- ${offer.name}: $${offer.price}${offer.monthlySales ? ` (${offer.monthlySales} sales/month)` : ''}`,
         );
       });
     }
 
     if (this.businessContext.platforms?.length) {
-      parts.push(`\nPlatforms: ${this.businessContext.platforms.join(", ")}`);
+      parts.push(`\nPlatforms: ${this.businessContext.platforms.join(', ')}`);
     }
 
     if (this.businessContext.additionalContext) {
       parts.push(`\nAdditional Context:\n${this.businessContext.additionalContext}`);
     }
 
-    parts.push("</business_context>");
+    parts.push('</business_context>');
 
-    return parts.join("\n");
+    return parts.join('\n');
   }
 
   /**
@@ -226,18 +226,18 @@ export class WealthAccelerationAgent {
         options,
       })) {
         if (this.config.verbose) {
-          console.log("[Wealth Acceleration Agent]:", message);
+          console.log('[Wealth Acceleration Agent]:', message);
         } else {
           // Output the message content
-          if (typeof message === "string") {
+          if (typeof message === 'string') {
             process.stdout.write(message);
-          } else if (message.type === "text") {
+          } else if (message.type === 'text') {
             process.stdout.write(message.text);
           }
         }
       }
     } catch (error) {
-      console.error("Error running agent:", error);
+      console.error('Error running agent:', error);
       throw error;
     }
   }
@@ -379,7 +379,7 @@ Don't just give me numbers—tell me exactly how to engineer higher customer val
   async assessOpportunities(
     niche: string,
     audienceSize: number,
-    engagement: "low" | "medium" | "high",
+    engagement: 'low' | 'medium' | 'high',
     currentRevenue: number,
     potentialStreams: string[],
   ): Promise<void> {
@@ -390,7 +390,7 @@ Niche: ${niche}
 Audience Size: ${audienceSize}
 Engagement: ${engagement}
 Current Revenue: $${currentRevenue}
-Potential Revenue Streams: ${potentialStreams.join(", ")}
+Potential Revenue Streams: ${potentialStreams.join(', ')}
 
 Analyze:
 1. Which revenue streams are the highest-leverage opportunities for me RIGHT NOW?

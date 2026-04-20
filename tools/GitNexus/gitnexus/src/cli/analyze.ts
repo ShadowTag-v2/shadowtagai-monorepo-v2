@@ -4,22 +4,38 @@
  * Indexes a repository and stores the knowledge graph in .gitnexus/
  */
 
-import path from 'path';
 import { execFileSync } from 'child_process';
-import v8 from 'v8';
 import cliProgress from 'cli-progress';
+import fs from 'fs/promises';
+import path from 'path';
+import v8 from 'v8';
 import { runPipelineFromRepo } from '../core/ingestion/pipeline.js';
-import { initLbug, loadGraphToLbug, getLbugStats, executeQuery, executeWithReusedStatement, closeLbug, createFTSIndex, loadCachedEmbeddings } from '../core/lbug/lbug-adapter.js';
+import {
+  closeLbug,
+  createFTSIndex,
+  executeQuery,
+  executeWithReusedStatement,
+  getLbugStats,
+  initLbug,
+  loadCachedEmbeddings,
+  loadGraphToLbug,
+} from '../core/lbug/lbug-adapter.js';
+import { getCurrentCommit, getGitRoot, hasGitDir } from '../storage/git.js';
 // Embedding imports are lazy (dynamic import) so onnxruntime-node is never
 // loaded when embeddings are not requested. This avoids crashes on Node
 // versions whose ABI is not yet supported by the native binary (#89).
 // disposeEmbedder intentionally not called — ONNX Runtime segfaults on cleanup (see #38)
-import { getStoragePaths, saveMeta, loadMeta, addToGitignore, registerRepo, getGlobalRegistryPath, cleanupOldKuzuFiles } from '../storage/repo-manager.js';
-import { getCurrentCommit, getGitRoot, hasGitDir } from '../storage/git.js';
+import {
+  addToGitignore,
+  cleanupOldKuzuFiles,
+  getGlobalRegistryPath,
+  getStoragePaths,
+  loadMeta,
+  registerRepo,
+  saveMeta,
+} from '../storage/repo-manager.js';
 import { generateAIContextFiles } from './ai-context.js';
-import { generateSkillFiles, type GeneratedSkillInfo } from './skill-gen.js';
-import fs from 'fs/promises';
-
+import { type GeneratedSkillInfo, generateSkillFiles } from './skill-gen.js';
 
 const HEAP_MB = 8192;
 const HEAP_FLAG = `--max-old-space-size=${HEAP_MB}`;
@@ -71,10 +87,7 @@ const PHASE_LABELS: Record<string, string> = {
   done: 'Done',
 };
 
-export const analyzeCommand = async (
-  inputPath?: string,
-  options?: AnalyzeOptions
-) => {
+export const analyzeCommand = async (inputPath?: string, options?: AnalyzeOptions) => {
   if (ensureHeap()) return;
 
   if (options?.verbose) {
@@ -90,7 +103,9 @@ export const analyzeCommand = async (
     const gitRoot = getGitRoot(process.cwd());
     if (!gitRoot) {
       if (!options?.skipGit) {
-        console.log('  Not inside a git repository.\n  Tip: pass --skip-git to index any folder without a .git directory.\n');
+        console.log(
+          '  Not inside a git repository.\n  Tip: pass --skip-git to index any folder without a .git directory.\n',
+        );
         process.exitCode = 1;
         return;
       }
@@ -103,12 +118,16 @@ export const analyzeCommand = async (
 
   const repoHasGit = hasGitDir(repoPath);
   if (!repoHasGit && !options?.skipGit) {
-    console.log('  Not a git repository.\n  Tip: pass --skip-git to index any folder without a .git directory.\n');
+    console.log(
+      '  Not a git repository.\n  Tip: pass --skip-git to index any folder without a .git directory.\n',
+    );
     process.exitCode = 1;
     return;
   }
   if (!repoHasGit) {
-    console.log('  Warning: no .git directory found \u2014 commit-tracking and incremental updates disabled.\n');
+    console.log(
+      '  Warning: no .git directory found \u2014 commit-tracking and incremental updates disabled.\n',
+    );
   }
 
   const { storagePath, lbugPath } = getStoragePaths(repoPath);
@@ -123,7 +142,12 @@ export const analyzeCommand = async (
   const currentCommit = repoHasGit ? getCurrentCommit(repoPath) : '';
   const existingMeta = await loadMeta(storagePath);
 
-  if (existingMeta && !options?.force && !options?.skills && existingMeta.lastCommit === currentCommit) {
+  if (
+    existingMeta &&
+    !options?.force &&
+    !options?.skills &&
+    existingMeta.lastCommit === currentCommit
+  ) {
     // Non-git folders have currentCommit = '' — always rebuild since we can't detect changes
     if (currentCommit !== '') {
       console.log('  Already up to date\n');
@@ -132,20 +156,25 @@ export const analyzeCommand = async (
   }
 
   if (process.env.GITNEXUS_NO_GITIGNORE) {
-    console.log('  GITNEXUS_NO_GITIGNORE is set — skipping .gitignore (still reading .gitnexusignore)\n');
+    console.log(
+      '  GITNEXUS_NO_GITIGNORE is set — skipping .gitignore (still reading .gitnexusignore)\n',
+    );
   }
 
   // Single progress bar for entire pipeline
-  const bar = new cliProgress.SingleBar({
-    format: '  {bar} {percentage}% | {phase}',
-    barCompleteChar: '\u2588',
-    barIncompleteChar: '\u2591',
-    hideCursor: true,
-    barGlue: '',
-    autopadding: true,
-    clearOnComplete: false,
-    stopOnComplete: false,
-  }, cliProgress.Presets.shades_grey);
+  const bar = new cliProgress.SingleBar(
+    {
+      format: '  {bar} {percentage}% | {phase}',
+      barCompleteChar: '\u2588',
+      barIncompleteChar: '\u2591',
+      hideCursor: true,
+      barGlue: '',
+      autopadding: true,
+      clearOnComplete: false,
+      stopOnComplete: false,
+    },
+    cliProgress.Presets.shades_grey,
+  );
 
   bar.start(100, 0, { phase: 'Initializing...' });
 
@@ -156,7 +185,9 @@ export const analyzeCommand = async (
     aborted = true;
     bar.stop();
     console.log('\n  Interrupted — cleaning up...');
-    closeLbug().catch(() => {}).finally(() => process.exit(130));
+    closeLbug()
+      .catch(() => {})
+      .finally(() => process.exit(130));
   };
   process.on('SIGINT', sigintHandler);
 
@@ -168,7 +199,7 @@ export const analyzeCommand = async (
   const barLog = (...args: any[]) => {
     // Clear the bar line, print the message, then let the next bar.update redraw
     process.stdout.write('\x1b[2K\r');
-    origLog(args.map(a => (typeof a === 'string' ? a : String(a))).join(' '));
+    origLog(args.map((a) => (typeof a === 'string' ? a : String(a))).join(' '));
   };
   console.log = barLog;
   console.warn = barLog;
@@ -181,7 +212,10 @@ export const analyzeCommand = async (
 
   /** Update bar with phase label + elapsed seconds (shown after 3s). */
   const updateBar = (value: number, phaseLabel: string) => {
-    if (phaseLabel !== lastPhaseLabel) { lastPhaseLabel = phaseLabel; phaseStart = Date.now(); }
+    if (phaseLabel !== lastPhaseLabel) {
+      lastPhaseLabel = phaseLabel;
+      phaseStart = Date.now();
+    }
     const elapsed = Math.round((Date.now() - phaseStart) / 1000);
     const display = elapsed >= 3 ? `${phaseLabel} (${elapsed}s)` : phaseLabel;
     bar.update(value, { phase: display });
@@ -212,7 +246,9 @@ export const analyzeCommand = async (
       cachedEmbeddings = cached.embeddings;
       await closeLbug();
     } catch {
-      try { await closeLbug(); } catch {}
+      try {
+        await closeLbug();
+      } catch {}
     }
   }
 
@@ -229,17 +265,24 @@ export const analyzeCommand = async (
   await closeLbug();
   const lbugFiles = [lbugPath, `${lbugPath}.wal`, `${lbugPath}.lock`];
   for (const f of lbugFiles) {
-    try { await fs.rm(f, { recursive: true, force: true }); } catch {}
+    try {
+      await fs.rm(f, { recursive: true, force: true });
+    } catch {}
   }
 
   const t0Lbug = Date.now();
   await initLbug(lbugPath);
   let lbugMsgCount = 0;
-  const lbugResult = await loadGraphToLbug(pipelineResult.graph, pipelineResult.repoPath, storagePath, (msg) => {
-    lbugMsgCount++;
-    const progress = Math.min(84, 60 + Math.round((lbugMsgCount / (lbugMsgCount + 10)) * 24));
-    updateBar(progress, msg);
-  });
+  const lbugResult = await loadGraphToLbug(
+    pipelineResult.graph,
+    pipelineResult.repoPath,
+    storagePath,
+    (msg) => {
+      lbugMsgCount++;
+      const progress = Math.min(84, 60 + Math.round((lbugMsgCount / (lbugMsgCount + 10)) * 24));
+      updateBar(progress, msg);
+    },
+  );
   const lbugTime = ((Date.now() - t0Lbug) / 1000).toFixed(1);
   const lbugWarnings = lbugResult.warnings;
 
@@ -265,7 +308,9 @@ export const analyzeCommand = async (
     const { EMBEDDING_DIMS } = await import('../core/lbug/schema.js');
     if (cachedDims !== EMBEDDING_DIMS) {
       // Dimensions changed (e.g. switched embedding model) — discard cache and re-embed all
-      console.error(`⚠️  Embedding dimensions changed (${cachedDims}d → ${EMBEDDING_DIMS}d), discarding cache`);
+      console.error(
+        `⚠️  Embedding dimensions changed (${cachedDims}d → ${EMBEDDING_DIMS}d), discarding cache`,
+      );
       cachedEmbeddings = [];
       cachedEmbeddingNodeIds = new Set();
     } else {
@@ -273,13 +318,15 @@ export const analyzeCommand = async (
       const EMBED_BATCH = 200;
       for (let i = 0; i < cachedEmbeddings.length; i += EMBED_BATCH) {
         const batch = cachedEmbeddings.slice(i, i + EMBED_BATCH);
-        const paramsList = batch.map(e => ({ nodeId: e.nodeId, embedding: e.embedding }));
+        const paramsList = batch.map((e) => ({ nodeId: e.nodeId, embedding: e.embedding }));
         try {
           await executeWithReusedStatement(
             `CREATE (e:CodeEmbedding {nodeId: $nodeId, embedding: $embedding})`,
             paramsList,
           );
-        } catch { /* some may fail if node was removed, that's fine */ }
+        } catch {
+          /* some may fail if node was removed, that's fine */
+        }
       }
     }
   }
@@ -309,9 +356,12 @@ export const analyzeCommand = async (
       executeWithReusedStatement,
       (progress) => {
         const scaled = 90 + Math.round((progress.percent / 100) * 8);
-        const label = progress.phase === 'loading-model'
-          ? (httpMode ? 'Connecting to embedding endpoint...' : 'Loading embedding model...')
-          : `Embedding ${progress.nodesProcessed || 0}/${progress.totalNodes || '?'}`;
+        const label =
+          progress.phase === 'loading-model'
+            ? httpMode
+              ? 'Connecting to embedding endpoint...'
+              : 'Loading embedding model...'
+            : `Embedding ${progress.nodesProcessed || 0}/${progress.totalNodes || '?'}`;
         updateBar(scaled, label);
       },
       {},
@@ -328,7 +378,9 @@ export const analyzeCommand = async (
   try {
     const embResult = await executeQuery(`MATCH (e:CodeEmbedding) RETURN count(e) AS cnt`);
     embeddingCount = embResult?.[0]?.cnt ?? 0;
-  } catch { /* table may not exist if embeddings never ran */ }
+  } catch {
+    /* table may not exist if embeddings never ran */
+  }
 
   const meta = {
     repoPath,
@@ -360,7 +412,7 @@ export const analyzeCommand = async (
       const label = c.heuristicLabel || c.label || 'Unknown';
       groups.set(label, (groups.get(label) || 0) + c.symbolCount);
     }
-    aggregatedClusterCount = Array.from(groups.values()).filter(count => count >= 5).length;
+    aggregatedClusterCount = Array.from(groups.values()).filter((count) => count >= 5).length;
   }
 
   let generatedSkills: GeneratedSkillInfo[] = [];
@@ -370,14 +422,20 @@ export const analyzeCommand = async (
     generatedSkills = skillResult.skills;
   }
 
-  const aiContext = await generateAIContextFiles(repoPath, storagePath, projectName, {
-    files: pipelineResult.totalFileCount,
-    nodes: stats.nodes,
-    edges: stats.edges,
-    communities: pipelineResult.communityResult?.stats.totalCommunities,
-    clusters: aggregatedClusterCount,
-    processes: pipelineResult.processResult?.stats.totalProcesses,
-  }, generatedSkills);
+  const aiContext = await generateAIContextFiles(
+    repoPath,
+    storagePath,
+    projectName,
+    {
+      files: pipelineResult.totalFileCount,
+      nodes: stats.nodes,
+      edges: stats.edges,
+      communities: pipelineResult.communityResult?.stats.totalCommunities,
+      clusters: aggregatedClusterCount,
+      processes: pipelineResult.processResult?.stats.totalProcesses,
+    },
+    generatedSkills,
+  );
 
   await closeLbug();
   // Note: we intentionally do NOT call disposeEmbedder() here.
@@ -398,9 +456,15 @@ export const analyzeCommand = async (
 
   // ── Summary ───────────────────────────────────────────────────────
   const embeddingsCached = cachedEmbeddings.length > 0;
-  console.log(`\n  Repository indexed successfully (${totalTime}s)${embeddingsCached ? ` [${cachedEmbeddings.length} embeddings cached]` : ''}\n`);
-  console.log(`  ${stats.nodes.toLocaleString()} nodes | ${stats.edges.toLocaleString()} edges | ${pipelineResult.communityResult?.stats.totalCommunities || 0} clusters | ${pipelineResult.processResult?.stats.totalProcesses || 0} flows`);
-  console.log(`  LadybugDB ${lbugTime}s | FTS ${ftsTime}s | Embeddings ${embeddingSkipped ? embeddingSkipReason : embeddingTime + 's'}`);
+  console.log(
+    `\n  Repository indexed successfully (${totalTime}s)${embeddingsCached ? ` [${cachedEmbeddings.length} embeddings cached]` : ''}\n`,
+  );
+  console.log(
+    `  ${stats.nodes.toLocaleString()} nodes | ${stats.edges.toLocaleString()} edges | ${pipelineResult.communityResult?.stats.totalCommunities || 0} clusters | ${pipelineResult.processResult?.stats.totalProcesses || 0} flows`,
+  );
+  console.log(
+    `  LadybugDB ${lbugTime}s | FTS ${ftsTime}s | Embeddings ${embeddingSkipped ? embeddingSkipReason : embeddingTime + 's'}`,
+  );
   console.log(`  ${repoPath}`);
 
   if (aiContext.files.length > 0) {
@@ -413,7 +477,9 @@ export const analyzeCommand = async (
       const m = w.match(/\((\d+) edges\)/);
       return sum + (m ? parseInt(m[1]) : 0);
     }, 0);
-    console.log(`  Note: ${totalFallback} edges across ${lbugWarnings.length} types inserted via fallback (schema will be updated in next release)`);
+    console.log(
+      `  Note: ${totalFallback} edges across ${lbugWarnings.length} types inserted via fallback (schema will be updated in next release)`,
+    );
   }
 
   try {

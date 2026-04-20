@@ -4,11 +4,13 @@
 // To update the snippets in this file, edit the source and then run
 // 'npm run snippets'.
 
+import { initializeApp } from 'firebase/app';
 // [START auth_only_indexed_db_modular]
-import {initializeAuth, indexedDBLocalPersistence} from "firebase/auth";
-import {initializeApp} from "firebase/app";
+import { indexedDBLocalPersistence, initializeAuth } from 'firebase/auth';
 
-const app = initializeApp({/** Your app config */});
+const app = initializeApp({
+  /** Your app config */
+});
 const auth = initializeAuth(app, {
   persistence: indexedDBLocalPersistence,
   // No popupRedirectResolver defined

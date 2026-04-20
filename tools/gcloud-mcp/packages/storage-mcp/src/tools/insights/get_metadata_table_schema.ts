@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { TableField } from '@google-cloud/bigquery';
+import type { protos } from '@google-cloud/service-usage';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
 import { apiClientFactory } from '../../utility/index.js';
 import { logger } from '../../utility/logger.js';
-import { TableField } from '@google-cloud/bigquery';
-import { protos } from '@google-cloud/service-usage';
 
 type ServiceResource = protos.google.api.serviceusage.v1.IService;
 

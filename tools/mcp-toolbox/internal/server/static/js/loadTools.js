@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { renderToolInterface } from "./toolDisplay.js";
-import { escapeHtml } from "./sanitize.js";
+import { escapeHtml } from './sanitize.js';
+import { renderToolInterface } from './toolDisplay.js';
 
 let currentToolsList = [];
 
@@ -25,32 +25,32 @@ let currentToolsList = [];
  * @returns {!Promise<void>} A promise that resolves when the tools are loaded and rendered, or rejects on error.
  */
 export async function loadTools(secondNavContent, toolDisplayArea, toolsetName) {
-    secondNavContent.innerHTML = '<p>Fetching tools...</p>';
-    try {
-        const url = toolsetName ? `/mcp/${toolsetName}` : `/mcp`;
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'MCP-Protocol-Version': '2025-11-25'
-            },
-            body: JSON.stringify({
-                jsonrpc: "2.0",
-                id: "1",
-                method: "tools/list",
-            })
-        });
+  secondNavContent.innerHTML = '<p>Fetching tools...</p>';
+  try {
+    const url = toolsetName ? `/mcp/${toolsetName}` : `/mcp`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'MCP-Protocol-Version': '2025-11-25',
+      },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: '1',
+        method: 'tools/list',
+      }),
+    });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const apiResponse = await response.json();
-        renderToolList(apiResponse, secondNavContent, toolDisplayArea);
-    } catch (error) {
-        console.error('Failed to load tools:', error);
-        secondNavContent.innerHTML = `<p class="error">Failed to load tools: <pre><code>${escapeHtml(String(error))}</code></pre></p>`;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+
+    const apiResponse = await response.json();
+    renderToolList(apiResponse, secondNavContent, toolDisplayArea);
+  } catch (error) {
+    console.error('Failed to load tools:', error);
+    secondNavContent.innerHTML = `<p class="error">Failed to load tools: <pre><code>${escapeHtml(String(error))}</code></pre></p>`;
+  }
 }
 
 /**
@@ -60,39 +60,44 @@ export async function loadTools(secondNavContent, toolDisplayArea, toolsetName) 
  * @param {!HTMLElement} toolDisplayArea The HTML element for displaying tool details (passed to event handlers).
  */
 function renderToolList(apiResponse, secondNavContent, toolDisplayArea) {
-    secondNavContent.innerHTML = '';
+  secondNavContent.innerHTML = '';
 
-    if (apiResponse && apiResponse.error) {
-        console.error('MCP API Error:', apiResponse.error);
-        secondNavContent.textContent = `Error: ${apiResponse.error.message || 'Unknown MCP error'}`;
-        return;
-    }
+  if (apiResponse && apiResponse.error) {
+    console.error('MCP API Error:', apiResponse.error);
+    secondNavContent.textContent = `Error: ${apiResponse.error.message || 'Unknown MCP error'}`;
+    return;
+  }
 
-    if (!apiResponse || !apiResponse.result || !Array.isArray(apiResponse.result.tools)) {
-        console.error('Error: Expected a valid MCP response with "result.tools" array, but received:', apiResponse);
-        secondNavContent.textContent = 'Error: Invalid response format from toolset API.';
-        return;
-    }
+  if (!apiResponse || !apiResponse.result || !Array.isArray(apiResponse.result.tools)) {
+    console.error(
+      'Error: Expected a valid MCP response with "result.tools" array, but received:',
+      apiResponse,
+    );
+    secondNavContent.textContent = 'Error: Invalid response format from toolset API.';
+    return;
+  }
 
-    currentToolsList = apiResponse.result.tools;
+  currentToolsList = apiResponse.result.tools;
 
-    if (currentToolsList.length === 0) {
-        secondNavContent.textContent = 'No tools found.';
-        return;
-    }
+  if (currentToolsList.length === 0) {
+    secondNavContent.textContent = 'No tools found.';
+    return;
+  }
 
-    const ul = document.createElement('ul');
-    currentToolsList.forEach(toolObj => {
-        const li = document.createElement('li');
-        const button = document.createElement('button');
-        button.textContent = toolObj.name;
-        button.dataset.toolname = toolObj.name;
-        button.classList.add('tool-button');
-        button.addEventListener('click', (event) => handleToolClick(event, secondNavContent, toolDisplayArea));
-        li.appendChild(button);
-        ul.appendChild(li);
-    });
-    secondNavContent.appendChild(ul);
+  const ul = document.createElement('ul');
+  currentToolsList.forEach((toolObj) => {
+    const li = document.createElement('li');
+    const button = document.createElement('button');
+    button.textContent = toolObj.name;
+    button.dataset.toolname = toolObj.name;
+    button.classList.add('tool-button');
+    button.addEventListener('click', (event) =>
+      handleToolClick(event, secondNavContent, toolDisplayArea),
+    );
+    li.appendChild(button);
+    ul.appendChild(li);
+  });
+  secondNavContent.appendChild(ul);
 }
 
 /**
@@ -102,15 +107,15 @@ function renderToolList(apiResponse, secondNavContent, toolDisplayArea) {
  * @param {!HTMLElement} toolDisplayArea The HTML element where tool details will be shown.
  */
 function handleToolClick(event, secondNavContent, toolDisplayArea) {
-    const toolName = event.target.dataset.toolname;
-    if (toolName) {
-        const currentActive = secondNavContent.querySelector('.tool-button.active');
-        if (currentActive) {
-            currentActive.classList.remove('active');
-        }
-        event.target.classList.add('active');
-        renderToolDetails(toolName, toolDisplayArea);
+  const toolName = event.target.dataset.toolname;
+  if (toolName) {
+    const currentActive = secondNavContent.querySelector('.tool-button.active');
+    if (currentActive) {
+      currentActive.classList.remove('active');
     }
+    event.target.classList.add('active');
+    renderToolDetails(toolName, toolDisplayArea);
+  }
 }
 
 /**
@@ -119,71 +124,72 @@ function handleToolClick(event, secondNavContent, toolDisplayArea) {
  * @param {!HTMLElement} toolDisplayArea The HTML element to display the tool interface in.
  */
 function renderToolDetails(toolName, toolDisplayArea) {
-    const toolObject = currentToolsList.find(t => t.name === toolName);
+  const toolObject = currentToolsList.find((t) => t.name === toolName);
 
-    if (!toolObject) {
-        toolDisplayArea.innerHTML = `<p class="error">Tool "${escapeHtml(toolName)}" data not found.</p>`;
-        return;
+  if (!toolObject) {
+    toolDisplayArea.innerHTML = `<p class="error">Tool "${escapeHtml(toolName)}" data not found.</p>`;
+    return;
+  }
+
+  console.debug('Rendering tool object: ', toolObject);
+
+  let toolAuthRequired = [];
+  let toolAuthParams = {};
+  if (toolObject._meta) {
+    if (toolObject._meta['toolbox/authInvoke']) {
+      toolAuthRequired = toolObject._meta['toolbox/authInvoke'];
     }
-
-    console.debug("Rendering tool object: ", toolObject);
-
-    let toolAuthRequired = [];
-    let toolAuthParams = {};
-    if (toolObject._meta) {
-        if (toolObject._meta["toolbox/authInvoke"]) {
-            toolAuthRequired = toolObject._meta["toolbox/authInvoke"];
-        }
-        if (toolObject._meta["toolbox/authParam"]) {
-            toolAuthParams = toolObject._meta["toolbox/authParam"];
-        }
+    if (toolObject._meta['toolbox/authParam']) {
+      toolAuthParams = toolObject._meta['toolbox/authParam'];
     }
+  }
 
-    // Default processing if inputSchema properties are not present
-    let toolParameters = [];
-    if (toolObject.inputSchema && toolObject.inputSchema.properties) {
-        const props = toolObject.inputSchema.properties;
-        const requiredFields = toolObject.inputSchema.required || [];
+  // Default processing if inputSchema properties are not present
+  let toolParameters = [];
+  if (toolObject.inputSchema && toolObject.inputSchema.properties) {
+    const props = toolObject.inputSchema.properties;
+    const requiredFields = toolObject.inputSchema.required || [];
 
-        toolParameters = Object.keys(props).map(paramName => {
-            const param = props[paramName];
-            let inputType = 'text';
-            const apiType = param.type ? param.type.toLowerCase() : 'string';
-            let valueType = 'string';
-            let label = param.description || paramName;
+    toolParameters = Object.keys(props).map((paramName) => {
+      const param = props[paramName];
+      let inputType = 'text';
+      const apiType = param.type ? param.type.toLowerCase() : 'string';
+      let valueType = 'string';
+      let label = param.description || paramName;
 
-            if (apiType === 'integer' || apiType === 'number') {
-                inputType = 'number';
-                valueType = 'number';
-            } else if (apiType === 'boolean') {
-                inputType = 'checkbox';
-                valueType = 'boolean';
-            } else if (apiType === 'array') {
-                inputType = 'textarea';
-                const itemType = param.items && param.items.type ? param.items.type.toLowerCase() : 'string';
-                valueType = `array<${itemType}>`;
-                label += ' (Array)';
-            }
+      if (apiType === 'integer' || apiType === 'number') {
+        inputType = 'number';
+        valueType = 'number';
+      } else if (apiType === 'boolean') {
+        inputType = 'checkbox';
+        valueType = 'boolean';
+      } else if (apiType === 'array') {
+        inputType = 'textarea';
+        const itemType =
+          param.items && param.items.type ? param.items.type.toLowerCase() : 'string';
+        valueType = `array<${itemType}>`;
+        label += ' (Array)';
+      }
 
-            return {
-                name: paramName,
-                type: inputType,
-                valueType: valueType,
-                label: label,
-                required: requiredFields.includes(paramName),
-                authServices: toolAuthParams[paramName] || []
-            };
-        });
-    }
+      return {
+        name: paramName,
+        type: inputType,
+        valueType: valueType,
+        label: label,
+        required: requiredFields.includes(paramName),
+        authServices: toolAuthParams[paramName] || [],
+      };
+    });
+  }
 
-    const toolInterfaceData = {
-        id: toolName,
-        name: toolName,
-        description: toolObject.description || "No description provided.",
-        authRequired: toolAuthRequired,
-        parameters: toolParameters
-    };
+  const toolInterfaceData = {
+    id: toolName,
+    name: toolName,
+    description: toolObject.description || 'No description provided.',
+    authRequired: toolAuthRequired,
+    parameters: toolParameters,
+  };
 
-    console.debug("Transformed toolInterfaceData:", toolInterfaceData);
-    renderToolInterface(toolInterfaceData, toolDisplayArea);
+  console.debug('Transformed toolInterfaceData:', toolInterfaceData);
+  renderToolInterface(toolInterfaceData, toolDisplayArea);
 }

@@ -6,8 +6,8 @@ import {
   getConversation,
   getConversationState,
   updateConversation,
-} from "../../db/operations";
-import logger from "../../utils/logger";
+} from '../../db/operations';
+import logger from '../../utils/logger';
 
 export interface SetupResult {
   success: boolean;
@@ -39,17 +39,17 @@ export async function ensureUserAndConversation(
         email: `${userId}@temp.local`,
       });
       if (user) {
-        if (logger) logger.info({ userId }, "user_created");
+        if (logger) logger.info({ userId }, 'user_created');
       } else {
         // User already exists (createUser returns null for duplicates)
-        if (logger) logger.debug({ userId }, "user_already_exists");
+        if (logger) logger.debug({ userId }, 'user_already_exists');
       }
     } catch (err: any) {
-      if (logger) logger.error({ err, userId }, "create_user_failed");
-      return { success: false, error: "Failed to create user" };
+      if (logger) logger.error({ err, userId }, 'create_user_failed');
+      return { success: false, error: 'Failed to create user' };
     }
   } else {
-    if (logger) logger.info({ userId }, "user_creation_skipped_x402");
+    if (logger) logger.info({ userId }, 'user_creation_skipped_x402');
   }
 
   // Check if conversation exists and validate ownership
@@ -62,24 +62,24 @@ export async function ensureUserAndConversation(
         if (logger) {
           logger.warn(
             { conversationId, requestedBy: userId, ownedBy: existingConversation.user_id },
-            "conversation_ownership_mismatch",
+            'conversation_ownership_mismatch',
           );
         }
         return {
           success: false,
-          error: "Access denied: conversation belongs to another user",
+          error: 'Access denied: conversation belongs to another user',
         };
       }
       // Ownership validated, conversation exists
       if (logger) {
-        logger.info({ conversationId, userId }, "conversation_ownership_validated");
+        logger.info({ conversationId, userId }, 'conversation_ownership_validated');
       }
       return { success: true };
     }
   } catch (err: any) {
     // Conversation doesn't exist - that's fine, we'll create it
     if (logger) {
-      logger.info({ conversationId }, "conversation_not_found_will_create");
+      logger.info({ conversationId }, 'conversation_not_found_will_create');
     }
   }
 
@@ -89,17 +89,17 @@ export async function ensureUserAndConversation(
       id: conversationId,
       user_id: userId,
     });
-    if (logger) logger.info({ conversationId, userId }, "conversation_created");
+    if (logger) logger.info({ conversationId, userId }, 'conversation_created');
   } catch (err: any) {
     // Handle race condition: conversation was created between check and create
-    if (err.code === "23505") {
+    if (err.code === '23505') {
       // Re-check ownership for the race condition case
       try {
         const racedConversation = await getConversation(conversationId);
         if (racedConversation && racedConversation.user_id !== userId) {
           return {
             success: false,
-            error: "Access denied: conversation belongs to another user",
+            error: 'Access denied: conversation belongs to another user',
           };
         }
       } catch {
@@ -107,9 +107,9 @@ export async function ensureUserAndConversation(
       }
     } else {
       if (logger) {
-        logger.error({ err, conversationId }, "create_conversation_failed");
+        logger.error({ err, conversationId }, 'create_conversation_failed');
       }
-      return { success: false, error: "Failed to create conversation" };
+      return { success: false, error: 'Failed to create conversation' };
     }
   }
 
@@ -140,7 +140,7 @@ export async function setupConversationData(
       if (logger) {
         logger.info(
           { conversationStateId: conversationStateRecord.id },
-          "conversation_state_fetched",
+          'conversation_state_fetched',
         );
       }
     } else {
@@ -155,17 +155,17 @@ export async function setupConversationData(
       if (logger) {
         logger.info(
           { conversationStateId: conversationStateRecord.id },
-          "conversation_state_created",
+          'conversation_state_created',
         );
       }
     }
   } catch (err) {
     if (logger) {
-      logger.error({ err }, "get_or_create_conversation_state_failed");
+      logger.error({ err }, 'get_or_create_conversation_state_failed');
     }
     return {
       success: false,
-      error: "Failed to get or create conversation state",
+      error: 'Failed to get or create conversation state',
     };
   }
 
@@ -179,19 +179,19 @@ export async function setupConversationData(
       },
     });
     console.log(
-      "[setup] Created state with id:",
+      '[setup] Created state with id:',
       stateRecord.id,
-      "for conversation:",
+      'for conversation:',
       conversationId,
-      "user:",
+      'user:',
       userId,
     );
     if (logger) {
-      logger.info({ stateId: stateRecord.id }, "state_created");
+      logger.info({ stateId: stateRecord.id }, 'state_created');
     }
   } catch (err) {
-    if (logger) logger.error({ err }, "create_state_failed");
-    return { success: false, error: "Failed to create state" };
+    if (logger) logger.error({ err }, 'create_state_failed');
+    return { success: false, error: 'Failed to create state' };
   }
 
   return {

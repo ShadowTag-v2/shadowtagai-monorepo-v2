@@ -7,7 +7,7 @@
 import * as fs from 'fs';
 import * as util from 'util';
 
-const {values, positionals} = util.parseArgs({
+const { values, positionals } = util.parseArgs({
   allowPositionals: true,
   options: {
     suffix: {
@@ -18,18 +18,15 @@ const {values, positionals} = util.parseArgs({
 
 const cssFilePath = positionals[0];
 if (!cssFilePath) {
-  throw new Error(
-    `Usage: node scripts/css-to-ts.js <input.css> [output.ts] [--suffix=<suffix>]`,
-  );
+  throw new Error(`Usage: node scripts/css-to-ts.js <input.css> [output.ts] [--suffix=<suffix>]`);
 }
 
-const tsFilePath =
-  positionals[1] || cssFilePath.replace('.css', `${values.suffix || ''}.ts`);
+const tsFilePath = positionals[1] || cssFilePath.replace('.css', `${values.suffix || ''}.ts`);
 const cssContent = fs
-  .readFileSync(cssFilePath, {encoding: 'utf8'})
+  .readFileSync(cssFilePath, { encoding: 'utf8' })
   // Remove source map comments since the css is embedded.
   // "/*# sourceMappingURL=checkbox-styles.css.map */"
-  .replace(/\/\*#\ sourceMappingURL=[^\*]+ \*\//, '');
+  .replace(/\/\*# sourceMappingURL=[^*]+ \*\//, '');
 
 fs.writeFileSync(
   tsFilePath,

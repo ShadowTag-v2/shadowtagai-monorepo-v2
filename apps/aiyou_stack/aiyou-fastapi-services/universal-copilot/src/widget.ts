@@ -3,36 +3,36 @@
  * Shows: request → governance → routing → patch → apply
  */
 
-import * as fs from "node:fs/promises";
-import * as path from "node:path";
-import { CopilotRouter } from "./core/router.js";
-import { createPatcher } from "./core/patcher.js";
-import { createGovernance } from "./core/governance.js";
-import type { CopilotRequest, RouterConfig } from "./core/schema.js";
+import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
+import { createGovernance } from './core/governance.js';
+import { createPatcher } from './core/patcher.js';
+import { CopilotRouter } from './core/router.js';
+import type { CopilotRequest, RouterConfig } from './core/schema.js';
 
 async function main() {
-  console.log("🚀 Universal Copilot Demo\n");
-  console.log("=".repeat(60));
+  console.log('🚀 Universal Copilot Demo\n');
+  console.log('='.repeat(60));
 
   // Configuration
-  const useMock = process.env.USE_MOCK === "1";
-  const enableGovernance = process.env.ENABLE_GOVERNANCE !== "0";
+  const useMock = process.env.USE_MOCK === '1';
+  const enableGovernance = process.env.ENABLE_GOVERNANCE !== '0';
 
   const config: RouterConfig = {
-    defaultProvider: useMock ? "mock" : "auto",
+    defaultProvider: useMock ? 'mock' : 'auto',
     enableGovernance,
-    corInstanceId: process.env.COR_INSTANCE_ID || "copilot-demo",
+    corInstanceId: process.env.COR_INSTANCE_ID || 'copilot-demo',
     rateLimitRps: 6.6,
     rateLimitConcurrent: 2,
     providers: {
       mock: {},
       openai: {
         apiKey: process.env.OPENAI_API_KEY,
-        model: "gpt-4o-2024-08-06",
+        model: 'gpt-4o-2024-08-06',
       },
       anthropic: {
         apiKey: process.env.ANTHROPIC_API_KEY,
-        model: "claude-sonnet-4-20250514",
+        model: 'claude-sonnet-4-20250514',
       },
     },
   };
@@ -42,14 +42,14 @@ async function main() {
   const router = new CopilotRouter(config, governance);
   const patcher = createPatcher();
 
-  console.log("\nConfiguration:");
+  console.log('\nConfiguration:');
   console.log(`  Provider: ${config.defaultProvider}`);
-  console.log(`  Governance: ${enableGovernance ? "enabled" : "disabled"}`);
-  console.log(`  Available providers: ${router.getAvailableProviders().join(", ")}`);
-  console.log("=".repeat(60) + "\n");
+  console.log(`  Governance: ${enableGovernance ? 'enabled' : 'disabled'}`);
+  console.log(`  Available providers: ${router.getAvailableProviders().join(', ')}`);
+  console.log('='.repeat(60) + '\n');
 
   // Test file
-  const testFile = path.join(process.cwd(), "tests", "fixtures", "sample.ts");
+  const testFile = path.join(process.cwd(), 'tests', 'fixtures', 'sample.ts');
 
   // Ensure fixtures directory exists
   await fs.mkdir(path.dirname(testFile), { recursive: true });
@@ -66,39 +66,39 @@ async function main() {
   try {
     await fs.access(testFile);
   } catch {
-    await fs.writeFile(testFile, sampleCode, "utf-8");
+    await fs.writeFile(testFile, sampleCode, 'utf-8');
     console.log(`Created test file: ${testFile}\n`);
   }
 
   // Read current code
-  const currentCode = await fs.readFile(testFile, "utf-8");
+  const currentCode = await fs.readFile(testFile, 'utf-8');
 
   // Create request
   const request: CopilotRequest = {
     selection: {
       filePath: testFile,
-      language: "typescript",
+      language: 'typescript',
       code: currentCode,
     },
-    intent: "optimize",
+    intent: 'optimize',
     modelPref: config.defaultProvider,
     maxTokens: 800,
     temperature: 0.2,
   };
 
-  console.log("Request:");
+  console.log('Request:');
   console.log(`  File: ${request.selection.filePath}`);
   console.log(`  Intent: ${request.intent}`);
   console.log(`  Language: ${request.selection.language}`);
   console.log(`\nOriginal code:\n${currentCode}\n`);
-  console.log("=".repeat(60));
+  console.log('='.repeat(60));
 
   try {
     // Route request
-    console.log("\n⚙️  Processing request...\n");
+    console.log('\n⚙️  Processing request...\n');
     const response = await router.route(request);
 
-    console.log("Response:");
+    console.log('Response:');
     console.log(`  Provider: ${response.provider}`);
     console.log(`  Latency: ${response.latencyMs}ms`);
     console.log(`  Tokens: ${response.tokensUsed}`);
@@ -114,10 +114,10 @@ async function main() {
     }
 
     console.log(`\nUnified Diff:\n${response.patch.unifiedDiff}\n`);
-    console.log("=".repeat(60));
+    console.log('='.repeat(60));
 
     // Apply patch (dry run first)
-    console.log("\n📝 Applying patch (dry run)...\n");
+    console.log('\n📝 Applying patch (dry run)...\n');
     const dryRunResult = await patcher.applyPatch(
       response.patch.filePath,
       response.patch.unifiedDiff,
@@ -128,7 +128,7 @@ async function main() {
       console.log(`✅ Dry run successful: ${dryRunResult.linesChanged} lines would change`);
 
       // Apply for real
-      console.log("\n📝 Applying patch...\n");
+      console.log('\n📝 Applying patch...\n');
       const result = await patcher.applyPatch(response.patch.filePath, response.patch.unifiedDiff, {
         createBackup: true,
       });
@@ -141,7 +141,7 @@ async function main() {
         }
 
         // Show new code
-        const newCode = await fs.readFile(testFile, "utf-8");
+        const newCode = await fs.readFile(testFile, 'utf-8');
         console.log(`\nNew code:\n${newCode}\n`);
       } else {
         console.error(`❌ Failed to apply patch: ${result.error}`);
@@ -151,8 +151,8 @@ async function main() {
     }
 
     // Show statistics
-    console.log("=".repeat(60));
-    console.log("\nRouter Statistics:");
+    console.log('='.repeat(60));
+    console.log('\nRouter Statistics:');
     const stats = router.getStats();
     console.log(`  Total requests: ${stats.totalRequests}`);
     console.log(`  Successful: ${stats.successfulRequests}`);
@@ -161,7 +161,7 @@ async function main() {
     console.log(`  Average latency: ${Math.round(stats.averageLatencyMs)}ms`);
     console.log(`  Provider usage:`, stats.providerUsage);
   } catch (error: unknown) {
-    console.error("\n❌ Error:", error.message);
+    console.error('\n❌ Error:', error.message);
     if (error.code) {
       console.error(`   Code: ${error.code}`);
     }
@@ -171,14 +171,14 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("\n" + "=".repeat(60));
-  console.log("✨ Demo complete!");
+  console.log('\n' + '='.repeat(60));
+  console.log('✨ Demo complete!');
 }
 
 // Run if executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
   main().catch((error) => {
-    console.error("Fatal error:", error);
+    console.error('Fatal error:', error);
     process.exit(1);
   });
 }

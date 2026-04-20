@@ -1,4 +1,4 @@
-import type { TextEncodingResult } from "./types";
+import type { TextEncodingResult } from './types';
 
 /**
  * Text Encoding Module
@@ -10,14 +10,14 @@ export class TextEncoder {
    * Encode text to Base64
    */
   static toBase64(text: string): TextEncodingResult {
-    const buffer = Buffer.from(text, "utf-8");
-    const encoded = buffer.toString("base64");
+    const buffer = Buffer.from(text, 'utf-8');
+    const encoded = buffer.toString('base64');
 
     return {
       encoded,
       originalLength: text.length,
       encodedLength: encoded.length,
-      encoding: "base64",
+      encoding: 'base64',
     };
   }
 
@@ -25,22 +25,22 @@ export class TextEncoder {
    * Decode Base64 to text
    */
   static fromBase64(encoded: string): string {
-    return Buffer.from(encoded, "base64").toString("utf-8");
+    return Buffer.from(encoded, 'base64').toString('utf-8');
   }
 
   /**
    * Encode text to Base64 URL-safe format
    */
   static toBase64Url(text: string): TextEncodingResult {
-    const buffer = Buffer.from(text, "utf-8");
-    const base64 = buffer.toString("base64");
-    const encoded = base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+    const buffer = Buffer.from(text, 'utf-8');
+    const base64 = buffer.toString('base64');
+    const encoded = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 
     return {
       encoded,
       originalLength: text.length,
       encodedLength: encoded.length,
-      encoding: "base64url",
+      encoding: 'base64url',
     };
   }
 
@@ -48,28 +48,28 @@ export class TextEncoder {
    * Decode Base64 URL-safe format to text
    */
   static fromBase64Url(encoded: string): string {
-    let base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
+    let base64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
 
     // Add padding
     while (base64.length % 4) {
-      base64 += "=";
+      base64 += '=';
     }
 
-    return Buffer.from(base64, "base64").toString("utf-8");
+    return Buffer.from(base64, 'base64').toString('utf-8');
   }
 
   /**
    * Encode text to hexadecimal
    */
   static toHex(text: string): TextEncodingResult {
-    const buffer = Buffer.from(text, "utf-8");
-    const encoded = buffer.toString("hex");
+    const buffer = Buffer.from(text, 'utf-8');
+    const encoded = buffer.toString('hex');
 
     return {
       encoded,
       originalLength: text.length,
       encodedLength: encoded.length,
-      encoding: "hex",
+      encoding: 'hex',
     };
   }
 
@@ -77,7 +77,7 @@ export class TextEncoder {
    * Decode hexadecimal to text
    */
   static fromHex(encoded: string): string {
-    return Buffer.from(encoded, "hex").toString("utf-8");
+    return Buffer.from(encoded, 'hex').toString('utf-8');
   }
 
   /**
@@ -90,7 +90,7 @@ export class TextEncoder {
       encoded,
       originalLength: text.length,
       encodedLength: encoded.length,
-      encoding: "url",
+      encoding: 'url',
     };
   }
 
@@ -105,16 +105,16 @@ export class TextEncoder {
    * Encode text to binary string (0s and 1s)
    */
   static toBinary(text: string): TextEncodingResult {
-    const buffer = Buffer.from(text, "utf-8");
+    const buffer = Buffer.from(text, 'utf-8');
     const encoded = Array.from(buffer)
-      .map((byte) => byte.toString(2).padStart(8, "0"))
-      .join("");
+      .map((byte) => byte.toString(2).padStart(8, '0'))
+      .join('');
 
     return {
       encoded,
       originalLength: text.length,
       encodedLength: encoded.length,
-      encoding: "binary",
+      encoding: 'binary',
     };
   }
 
@@ -124,7 +124,7 @@ export class TextEncoder {
   static fromBinary(encoded: string): string {
     const bytes = encoded.match(/.{8}/g) || [];
     const buffer = Buffer.from(bytes.map((byte) => parseInt(byte, 2)));
-    return buffer.toString("utf-8");
+    return buffer.toString('utf-8');
   }
 
   /**
@@ -133,13 +133,13 @@ export class TextEncoder {
   static toAscii(text: string): TextEncodingResult {
     const encoded = Array.from(text)
       .map((char) => char.charCodeAt(0))
-      .join(",");
+      .join(',');
 
     return {
       encoded,
       originalLength: text.length,
       encodedLength: encoded.length,
-      encoding: "ascii",
+      encoding: 'ascii',
     };
   }
 
@@ -148,23 +148,23 @@ export class TextEncoder {
    */
   static fromAscii(encoded: string): string {
     return encoded
-      .split(",")
+      .split(',')
       .map((code) => String.fromCharCode(parseInt(code, 10)))
-      .join("");
+      .join('');
   }
 
   /**
    * Encode text to UTF-8 bytes (comma-separated)
    */
   static toUtf8Bytes(text: string): TextEncodingResult {
-    const buffer = Buffer.from(text, "utf-8");
-    const encoded = Array.from(buffer).join(",");
+    const buffer = Buffer.from(text, 'utf-8');
+    const encoded = Array.from(buffer).join(',');
 
     return {
       encoded,
       originalLength: text.length,
       encodedLength: encoded.length,
-      encoding: "utf8-bytes",
+      encoding: 'utf8-bytes',
     };
   }
 
@@ -172,8 +172,8 @@ export class TextEncoder {
    * Decode UTF-8 bytes to text
    */
   static fromUtf8Bytes(encoded: string): string {
-    const bytes = encoded.split(",").map((b) => parseInt(b, 10));
-    return Buffer.from(bytes).toString("utf-8");
+    const bytes = encoded.split(',').map((b) => parseInt(b, 10));
+    return Buffer.from(bytes).toString('utf-8');
   }
 
   /**
@@ -181,17 +181,17 @@ export class TextEncoder {
    */
   static toHtmlEntities(text: string): TextEncodingResult {
     const encoded = text
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
 
     return {
       encoded,
       originalLength: text.length,
       encodedLength: encoded.length,
-      encoding: "html-entities",
+      encoding: 'html-entities',
     };
   }
 
@@ -200,9 +200,9 @@ export class TextEncoder {
    */
   static fromHtmlEntities(encoded: string): string {
     return encoded
-      .replace(/&amp;/g, "&")
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">")
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
       .replace(/&quot;/g, '"')
       .replace(/&#39;/g, "'");
   }
@@ -212,7 +212,7 @@ export class TextEncoder {
    */
   static rot13(text: string): TextEncodingResult {
     const encoded = text.replace(/[a-zA-Z]/g, (char) => {
-      const start = char <= "Z" ? 65 : 97;
+      const start = char <= 'Z' ? 65 : 97;
       return String.fromCharCode(((char.charCodeAt(0) - start + 13) % 26) + start);
     });
 
@@ -220,15 +220,15 @@ export class TextEncoder {
       encoded,
       originalLength: text.length,
       encodedLength: encoded.length,
-      encoding: "rot13",
+      encoding: 'rot13',
     };
   }
 
   /**
    * Encode to data URI
    */
-  static toDataUri(text: string, mimeType: string = "text/plain"): string {
-    const base64 = Buffer.from(text, "utf-8").toString("base64");
+  static toDataUri(text: string, mimeType: string = 'text/plain'): string {
+    const base64 = Buffer.from(text, 'utf-8').toString('base64');
     return `data:${mimeType};base64,${base64}`;
   }
 
@@ -238,12 +238,12 @@ export class TextEncoder {
   static fromDataUri(dataUri: string): { data: string; mimeType: string } {
     const matches = dataUri.match(/^data:([^;]+);base64,(.+)$/);
     if (!matches) {
-      throw new Error("Invalid data URI format");
+      throw new Error('Invalid data URI format');
     }
 
     return {
       mimeType: matches[1],
-      data: Buffer.from(matches[2], "base64").toString("utf-8"),
+      data: Buffer.from(matches[2], 'base64').toString('utf-8'),
     };
   }
 }

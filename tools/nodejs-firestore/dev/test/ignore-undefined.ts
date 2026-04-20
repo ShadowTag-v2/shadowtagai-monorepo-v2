@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
-import {fieldFiltersQuery, orderBy, queryEquals, startAt} from './query';
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
+import { fieldFiltersQuery, orderBy, queryEquals, startAt } from './query';
 import {
-  ApiOverride,
+  type ApiOverride,
   create,
   createInstance,
   document,
   emptyQueryStream,
-  InvalidApiUsage,
+  type InvalidApiUsage,
   requestEquals,
   response,
   set,
@@ -43,7 +43,7 @@ const FOO_MAP = {
 describe('ignores undefined values', () => {
   it('in set()', async () => {
     const overrides: ApiOverride = {
-      commit: request => {
+      commit: (request) => {
         requestEquals(
           request,
           set({
@@ -65,7 +65,7 @@ describe('ignores undefined values', () => {
 
   it('in set({ merge: true })', async () => {
     const overrides: ApiOverride = {
-      commit: request => {
+      commit: (request) => {
         requestEquals(
           request,
           set({
@@ -85,13 +85,13 @@ describe('ignores undefined values', () => {
         foo: 'foo',
         bar: undefined,
       },
-      {merge: true},
+      { merge: true },
     );
   });
 
   it('in create()', async () => {
     const overrides: ApiOverride = {
-      commit: request => {
+      commit: (request) => {
         requestEquals(
           request,
           create({
@@ -113,7 +113,7 @@ describe('ignores undefined values', () => {
 
   it('in update()', async () => {
     const overrides: ApiOverride = {
-      commit: request => {
+      commit: (request) => {
         requestEquals(
           request,
           update({
@@ -132,14 +132,12 @@ describe('ignores undefined values', () => {
       bar: 'bar',
       baz: undefined,
     });
-    await firestore
-      .doc('collectionId/documentId')
-      .update({foo: {bar: 'bar', baz: undefined}});
+    await firestore.doc('collectionId/documentId').update({ foo: { bar: 'bar', baz: undefined } });
   });
 
   it('with top-level field in update()', async () => {
     const overrides: ApiOverride = {
-      commit: request => {
+      commit: (request) => {
         requestEquals(
           request,
           update({
@@ -162,7 +160,7 @@ describe('ignores undefined values', () => {
 
   it('in query filters', async () => {
     const overrides: ApiOverride = {
-      runQuery: request => {
+      runQuery: (request) => {
         queryEquals(request, fieldFiltersQuery('foo', 'EQUAL', FOO_MAP));
         return emptyQueryStream();
       },
@@ -173,18 +171,14 @@ describe('ignores undefined values', () => {
     });
     await firestore
       .collection('collectionId')
-      .where('foo', '==', {bar: 'bar', baz: undefined})
+      .where('foo', '==', { bar: 'bar', baz: undefined })
       .get();
   });
 
   it('in query cursors', async () => {
     const overrides: ApiOverride = {
-      runQuery: request => {
-        queryEquals(
-          request,
-          orderBy('foo', 'ASCENDING'),
-          startAt(true, FOO_MAP),
-        );
+      runQuery: (request) => {
+        queryEquals(request, orderBy('foo', 'ASCENDING'), startAt(true, FOO_MAP));
         return emptyQueryStream();
       },
     };
@@ -195,7 +189,7 @@ describe('ignores undefined values', () => {
     await firestore
       .collection('collectionId')
       .orderBy('foo')
-      .startAt({bar: 'bar', baz: undefined})
+      .startAt({ bar: 'bar', baz: undefined })
       .get();
   });
 });
@@ -203,48 +197,32 @@ describe('ignores undefined values', () => {
 describe('rejects undefined values', () => {
   describe('in top-level call', () => {
     it('to set()', async () => {
-      const firestore = await createInstance(
-        {},
-        {ignoreUndefinedProperties: true},
-      );
+      const firestore = await createInstance({}, { ignoreUndefinedProperties: true });
       expect(() => {
-        void firestore
-          .doc('collectionId/documentId')
-          .set(undefined as InvalidApiUsage);
+        void firestore.doc('collectionId/documentId').set(undefined as InvalidApiUsage);
       }).to.throw(
         'Value for argument "data" is not a valid Firestore document. Input is not a plain JavaScript object.',
       );
     });
 
     it('to create()', async () => {
-      const firestore = await createInstance(
-        {},
-        {ignoreUndefinedProperties: true},
-      );
+      const firestore = await createInstance({}, { ignoreUndefinedProperties: true });
       expect(() => {
-        void firestore
-          .doc('collectionId/documentId')
-          .create(undefined as InvalidApiUsage);
+        void firestore.doc('collectionId/documentId').create(undefined as InvalidApiUsage);
       }).to.throw(
         'Value for argument "data" is not a valid Firestore document. Input is not a plain JavaScript object.',
       );
     });
 
     it('to update()', async () => {
-      const firestore = await createInstance(
-        {},
-        {ignoreUndefinedProperties: true},
-      );
+      const firestore = await createInstance({}, { ignoreUndefinedProperties: true });
       expect(() => {
         void firestore.doc('collectionId/documentId').update('foo', undefined);
       }).to.throw('"undefined" values are only ignored inside of objects.');
     });
 
     it('to Query.where()', async () => {
-      const firestore = await createInstance(
-        {},
-        {ignoreUndefinedProperties: true},
-      );
+      const firestore = await createInstance({}, { ignoreUndefinedProperties: true });
       expect(() => {
         firestore
           .doc('collectionId/documentId')
@@ -254,10 +232,7 @@ describe('rejects undefined values', () => {
     });
 
     it('to Query.startAt()', async () => {
-      const firestore = await createInstance(
-        {},
-        {ignoreUndefinedProperties: true},
-      );
+      const firestore = await createInstance({}, { ignoreUndefinedProperties: true });
       expect(() => {
         firestore
           .doc('collectionId/documentId')
@@ -308,9 +283,7 @@ describe('rejects undefined values', () => {
     it('in query filters', async () => {
       const firestore = await createInstance({});
       expect(() => {
-        firestore
-          .collection('collectionId')
-          .where('foo', '==', {bar: 'bar', baz: undefined});
+        firestore.collection('collectionId').where('foo', '==', { bar: 'bar', baz: undefined });
       }).to.throw(
         'Cannot use "undefined" as a Firestore value (found in field "baz"). If you want to ignore undefined values, enable `ignoreUndefinedProperties`.',
       );
@@ -319,10 +292,7 @@ describe('rejects undefined values', () => {
     it('in query cursors', async () => {
       const firestore = await createInstance({});
       expect(() => {
-        firestore
-          .collection('collectionId')
-          .orderBy('foo')
-          .startAt({bar: 'bar', baz: undefined});
+        firestore.collection('collectionId').orderBy('foo').startAt({ bar: 'bar', baz: undefined });
       }).to.throw(
         'Cannot use "undefined" as a Firestore value (found in field "baz"). If you want to ignore undefined values, enable `ignoreUndefinedProperties`.',
       );

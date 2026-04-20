@@ -45,7 +45,7 @@ function block(message: string, additionalContext: string): void {
         hookEventName: 'AfterAgent',
         additionalContext,
       },
-    })
+    }),
   );
 }
 
@@ -63,7 +63,11 @@ async function main() {
     process.env.EXTENSION_DIR || path.join(os.homedir(), '.gemini/extensions/pickle-rick');
   const input = readHookInput();
 
-  const stateFile = resolveStateFilePath(extensionDir, process.cwd(), process.env.PICKLE_STATE_FILE);
+  const stateFile = resolveStateFilePath(
+    extensionDir,
+    process.cwd(),
+    process.env.PICKLE_STATE_FILE,
+  );
   if (!stateFile) {
     allow();
     return;
@@ -78,7 +82,10 @@ async function main() {
   }
 
   if (!isSamePathOrDescendant(process.cwd(), state.working_dir)) {
-    log('INFO', `Skipped due to cwd mismatch. cwd=${process.cwd()} working_dir=${state.working_dir}`);
+    log(
+      'INFO',
+      `Skipped due to cwd mismatch. cwd=${process.cwd()} working_dir=${state.working_dir}`,
+    );
     allow();
     return;
   }
@@ -111,7 +118,8 @@ async function main() {
   const isWorkerDone = isWorker && responseText.includes('<promise>I AM DONE</promise>');
 
   const isPrdDone = !isWorker && responseText.includes('<promise>PRD_COMPLETE</promise>');
-  const isBreakdownDone = !isWorker && responseText.includes('<promise>BREAKDOWN_COMPLETE</promise>');
+  const isBreakdownDone =
+    !isWorker && responseText.includes('<promise>BREAKDOWN_COMPLETE</promise>');
   const isTicketSelected = !isWorker && responseText.includes('<promise>TICKET_SELECTED</promise>');
   const isTicketDone = !isWorker && responseText.includes('<promise>TICKET_COMPLETE</promise>');
   const isTaskDone = !isWorker && responseText.includes('<promise>TASK_COMPLETE</promise>');
@@ -131,7 +139,8 @@ async function main() {
     if (isPrdDone) feedback = '🥒 PRD complete. Proceed to Breakdown.';
     if (isBreakdownDone) feedback = '🥒 Breakdown complete. Proceed to ticket execution.';
     if (isTicketSelected) feedback = '🥒 Ticket selected. Begin research.';
-    if (isTicketDone || isTaskDone) feedback = '🥒 Ticket complete. Continue with validation or next ticket.';
+    if (isTicketDone || isTaskDone)
+      feedback = '🥒 Ticket complete. Continue with validation or next ticket.';
     log('INFO', `Blocking stop for checkpoint token. feedback="${feedback}"`);
     block(feedback, promptContext);
     return;

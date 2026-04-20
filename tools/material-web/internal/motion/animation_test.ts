@@ -6,7 +6,7 @@
 
 // import 'jasmine'; (google3-only)
 import {
-  AnimationSignal,
+  type AnimationSignal,
   createAnimationSignal,
   createThrottle,
   msFromTimeCSSValue,
@@ -44,9 +44,7 @@ describe('createAnimationSignal()', () => {
     it('should not abort the AbortSignal', () => {
       const signal = task.start();
       task.finish();
-      expect(signal.aborted)
-        .withContext('finishing a task should not signal an abort')
-        .toBeFalse();
+      expect(signal.aborted).withContext('finishing a task should not signal an abort').toBeFalse();
     });
 
     it('should not abort previous tasks when starting after finishing', () => {

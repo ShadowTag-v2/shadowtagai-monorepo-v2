@@ -1,5 +1,5 @@
-import logger from "../../utils/logger";
-import { startEdisonTask, awaitEdisonTask } from "../../utils/edison";
+import { awaitEdisonTask, startEdisonTask } from '../../utils/edison';
+import logger from '../../utils/logger';
 
 /**
  * Search using Edison AI agent for deep literature search
@@ -9,20 +9,20 @@ export async function searchEdison(objective: string): Promise<{ output: string;
   const EDISON_API_KEY = process.env.EDISON_API_KEY;
 
   if (!EDISON_API_URL || !EDISON_API_KEY) {
-    throw new Error("Edison API URL or API key not configured");
+    throw new Error('Edison API URL or API key not configured');
   }
 
-  logger.info({ objective }, "starting_edison_literature_search");
+  logger.info({ objective }, 'starting_edison_literature_search');
 
   // Start Edison task with LITERATURE job type
   const taskResponse = await startEdisonTask(
     EDISON_API_URL,
     EDISON_API_KEY,
-    "LITERATURE",
+    'LITERATURE',
     objective,
   );
 
-  logger.info({ taskId: taskResponse.task_id }, "edison_task_started_awaiting_completion");
+  logger.info({ taskId: taskResponse.task_id }, 'edison_task_started_awaiting_completion');
 
   // Poll for task completion
   const result = await awaitEdisonTask(EDISON_API_URL, EDISON_API_KEY, taskResponse.task_id);
@@ -31,10 +31,10 @@ export async function searchEdison(objective: string): Promise<{ output: string;
     throw new Error(`Edison task failed: ${result.error}`);
   }
 
-  logger.info({ taskId: taskResponse.task_id }, "edison_literature_search_completed");
+  logger.info({ taskId: taskResponse.task_id }, 'edison_literature_search_completed');
 
   return {
-    output: result.answer || "No answer received from Edison",
+    output: result.answer || 'No answer received from Edison',
     jobId: taskResponse.task_id,
   };
 }

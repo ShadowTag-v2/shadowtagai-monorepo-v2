@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {describe, it, beforeEach, afterEach} from 'mocha';
-import {expect} from 'chai';
+import { expect } from 'chai';
+import { afterEach, beforeEach, describe, it } from 'mocha';
 import * as through2 from 'through2';
 
-import {DocumentReference, Firestore, setLogFunction} from '../src';
+import { DocumentReference, type Firestore, setLogFunction } from '../src';
 import {
-  ApiOverride,
+  type ApiOverride,
   createInstance,
   DATABASE_ROOT,
   document,
-  InvalidApiUsage,
+  type InvalidApiUsage,
   Post,
   postConverter,
   requestEquals,
@@ -39,7 +39,7 @@ describe('Collection interface', () => {
   let firestore: Firestore;
 
   beforeEach(() => {
-    return createInstance().then(firestoreInstance => {
+    return createInstance().then((firestoreInstance) => {
       firestore = firestoreInstance;
     });
   });
@@ -97,7 +97,7 @@ describe('Collection interface', () => {
 
   it('has add() method', () => {
     const overrides: ApiOverride = {
-      commit: request => {
+      commit: (request) => {
         // Verify that the document name uses an auto-generated id.
         const docIdRe =
           /^projects\/test-project\/databases\/\(default\)\/documents\/collectionId\/[a-zA-Z0-9]{20}$/;
@@ -136,12 +136,12 @@ describe('Collection interface', () => {
       },
     };
 
-    return createInstance(overrides).then(firestore => {
+    return createInstance(overrides).then((firestore) => {
       const collectionRef = firestore.collection('collectionId');
       const promise = collectionRef.add({});
       expect(promise).to.be.an.instanceOf(Promise);
 
-      return promise.then(documentRef => {
+      return promise.then((documentRef) => {
         expect(documentRef).to.be.an.instanceOf(DocumentReference);
         expect(collectionRef.id).to.equal('collectionId');
         expect(documentRef.id).to.have.length(20);
@@ -151,23 +151,23 @@ describe('Collection interface', () => {
 
   it('has list() method', () => {
     const overrides: ApiOverride = {
-      listDocuments: request => {
+      listDocuments: (request) => {
         expect(request).to.deep.eq({
           parent: `${DATABASE_ROOT}/documents/a/b`,
           collectionId: 'c',
           showMissing: true,
-          mask: {fieldPaths: []},
+          mask: { fieldPaths: [] },
         });
 
         return response([document('first'), document('second')]);
       },
     };
 
-    return createInstance(overrides).then(firestore => {
+    return createInstance(overrides).then((firestore) => {
       return firestore
         .collection('a/b/c')
         .listDocuments()
-        .then(documentRefs => {
+        .then((documentRefs) => {
           expect(documentRefs[0].id).to.equal('first');
           expect(documentRefs[1].id).to.equal('second');
         });
@@ -185,7 +185,7 @@ describe('Collection interface', () => {
   it('for CollectionReference.withConverter().doc()', async () => {
     const doc = document('documentId', 'author', 'author', 'title', 'post');
     const overrides: ApiOverride = {
-      commit: request => {
+      commit: (request) => {
         const expectedRequest = set({
           document: doc,
         });
@@ -196,7 +196,7 @@ describe('Collection interface', () => {
       batchGetDocuments: () => {
         const stream = through2.obj();
         setImmediate(() => {
-          stream.push({found: doc, readTime: {seconds: 5, nanos: 6}});
+          stream.push({ found: doc, readTime: { seconds: 5, nanos: 6 } });
           stream.push(null);
         });
 
@@ -204,7 +204,7 @@ describe('Collection interface', () => {
       },
     };
 
-    return createInstance(overrides).then(async firestore => {
+    return createInstance(overrides).then(async (firestore) => {
       const docRef = firestore
         .collection('collectionId')
         .withConverter(postConverter)
@@ -220,17 +220,11 @@ describe('Collection interface', () => {
   it('for CollectionReference.withConverter().add()', async () => {
     let doc = document('dummy');
     const overrides: ApiOverride = {
-      commit: request => {
+      commit: (request) => {
         // Extract the auto-generated document ID.
         const docId = request.writes![0].update!.name!;
         const docIdSplit = docId.split('/');
-        doc = document(
-          docIdSplit[docIdSplit.length - 1],
-          'author',
-          'author',
-          'title',
-          'post',
-        );
+        doc = document(docIdSplit[docIdSplit.length - 1], 'author', 'author', 'title', 'post');
         expect(request).to.deep.equal({
           database: DATABASE_ROOT,
           writes: [
@@ -258,14 +252,14 @@ describe('Collection interface', () => {
       batchGetDocuments: () => {
         const stream = through2.obj();
         setImmediate(() => {
-          stream.push({found: doc, readTime: {seconds: 5, nanos: 6}});
+          stream.push({ found: doc, readTime: { seconds: 5, nanos: 6 } });
           stream.push(null);
         });
         return stream;
       },
     };
 
-    return createInstance(overrides).then(async firestore => {
+    return createInstance(overrides).then(async (firestore) => {
       const docRef = await firestore
         .collection('collectionId')
         .withConverter(postConverter)
@@ -278,7 +272,7 @@ describe('Collection interface', () => {
   });
 
   it('withConverter(null) applies the default converter', async () => {
-    return createInstance().then(async firestore => {
+    return createInstance().then(async (firestore) => {
       const docRef = firestore
         .collection('collectionId')
         .withConverter(postConverter)
@@ -289,7 +283,7 @@ describe('Collection interface', () => {
   });
 
   it('drops the converter when calling CollectionReference<T>.parent()', () => {
-    return createInstance().then(async firestore => {
+    return createInstance().then(async (firestore) => {
       const postsCollection = firestore
         .collection('users/user1/posts')
         .withConverter(postConverter);

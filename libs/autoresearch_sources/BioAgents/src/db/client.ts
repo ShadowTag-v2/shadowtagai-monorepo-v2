@@ -10,8 +10,8 @@
  * All API routes using this client must verify authentication first via authResolver.
  */
 
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import logger from "../utils/logger";
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import logger from '../utils/logger';
 
 // Singleton instances
 let serviceClient: SupabaseClient | null = null;
@@ -36,7 +36,7 @@ export function getServiceClient(): SupabaseClient {
   const serviceKey = process.env.SUPABASE_SERVICE_KEY;
 
   if (!url) {
-    throw new Error("SUPABASE_URL environment variable is not configured");
+    throw new Error('SUPABASE_URL environment variable is not configured');
   }
 
   if (!serviceKey) {
@@ -45,13 +45,13 @@ export function getServiceClient(): SupabaseClient {
     const anonKey = process.env.SUPABASE_ANON_KEY;
     if (!anonKey) {
       throw new Error(
-        "Neither SUPABASE_SERVICE_KEY nor SUPABASE_ANON_KEY environment variable is configured",
+        'Neither SUPABASE_SERVICE_KEY nor SUPABASE_ANON_KEY environment variable is configured',
       );
     }
 
     logger.warn(
-      "SUPABASE_SERVICE_KEY not configured, falling back to SUPABASE_ANON_KEY. " +
-        "This may cause RLS policy failures in production.",
+      'SUPABASE_SERVICE_KEY not configured, falling back to SUPABASE_ANON_KEY. ' +
+        'This may cause RLS policy failures in production.',
     );
 
     serviceClient = createClient(url, anonKey, {
@@ -71,7 +71,7 @@ export function getServiceClient(): SupabaseClient {
     },
   });
 
-  logger.info("Supabase service client initialized with service role key");
+  logger.info('Supabase service client initialized with service role key');
 
   return serviceClient;
 }
@@ -95,11 +95,11 @@ export function getAnonClient(): SupabaseClient {
   const anonKey = process.env.SUPABASE_ANON_KEY;
 
   if (!url) {
-    throw new Error("SUPABASE_URL environment variable is not configured");
+    throw new Error('SUPABASE_URL environment variable is not configured');
   }
 
   if (!anonKey) {
-    throw new Error("SUPABASE_ANON_KEY environment variable is not configured");
+    throw new Error('SUPABASE_ANON_KEY environment variable is not configured');
   }
 
   anonClient = createClient(url, anonKey, {

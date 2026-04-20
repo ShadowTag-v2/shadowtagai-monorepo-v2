@@ -1,38 +1,47 @@
 // These samples are intended for Web so this import would normally be
 // done in HTML however using modules here is more convenient for
 // ensuring sample correctness offline.
-import firebase from "firebase/app";
-import "firebase/database";
+import firebase from 'firebase/app';
+import 'firebase/database';
 
 // [START rtdb_write_new_user]
 function writeUserData(userId, name, email, imageUrl) {
-  firebase.database().ref('users/' + userId).set({
-    username: name,
-    email: email,
-    profile_picture : imageUrl
-  });
+  firebase
+    .database()
+    .ref('users/' + userId)
+    .set({
+      username: name,
+      email: email,
+      profile_picture: imageUrl,
+    });
 }
 // [END rtdb_write_new_user]
 
 function writeUserDataWithCompletion(userId, name, email, imageUrl) {
   // [START rtdb_write_new_user_completion]
-  firebase.database().ref('users/' + userId).set({
-    username: name,
-    email: email,
-    profile_picture : imageUrl
-  }, (error) => {
-    if (error) {
-      // The write failed...
-    } else {
-      // Data saved successfully!
-    }
-  });
+  firebase
+    .database()
+    .ref('users/' + userId)
+    .set(
+      {
+        username: name,
+        email: email,
+        profile_picture: imageUrl,
+      },
+      (error) => {
+        if (error) {
+          // The write failed...
+        } else {
+          // Data saved successfully!
+        }
+      },
+    );
   // [END rtdb_write_new_user_completion]
 }
 
 function socialListenStarCount() {
   const postElement = document.querySelector('#post');
-  const postId = "1234";
+  const postId = '1234';
   function updateStarCount(a, b) {
     // ...
   }
@@ -49,10 +58,14 @@ function socialListenStarCount() {
 function socialSingleValueRead() {
   // [START rtdb_social_single_value_read]
   var userId = firebase.auth().currentUser.uid;
-  return firebase.database().ref('/users/' + userId).once('value').then((snapshot) => {
-    var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-    // ...
-  });
+  return firebase
+    .database()
+    .ref('/users/' + userId)
+    .once('value')
+    .then((snapshot) => {
+      var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+      // ...
+    });
   // [END rtdb_social_single_value_read]
 }
 
@@ -65,7 +78,7 @@ function writeNewPost(uid, username, picture, title, body) {
     body: body,
     title: title,
     starCount: 0,
-    authorPic: picture
+    authorPic: picture,
   };
 
   // Get a key for a new Post.
@@ -81,22 +94,28 @@ function writeNewPost(uid, username, picture, title, body) {
 // [END rtdb_social_write_fan_out]
 
 function socialCompletionCallback() {
-  const userId = "123";
-  const email = "test@example.com";
-  const imageUrl = "https://example.com/image.png";
+  const userId = '123';
+  const email = 'test@example.com';
+  const imageUrl = 'https://example.com/image.png';
 
   // [START rtdb_social_completion_callback]
-  firebase.database().ref('users/' + userId).set({
-    username: name,
-    email: email,
-    profile_picture : imageUrl
-  }, (error) => {
-    if (error) {
-      // The write failed...
-    } else {
-      // Data saved successfully!
-    }
-  });
+  firebase
+    .database()
+    .ref('users/' + userId)
+    .set(
+      {
+        username: name,
+        email: email,
+        profile_picture: imageUrl,
+      },
+      (error) => {
+        if (error) {
+          // The write failed...
+        } else {
+          // Data saved successfully!
+        }
+      },
+    );
   // [END rtdb_social_completion_callback]
 }
 
@@ -142,14 +161,19 @@ function addStar(uid, key) {
 function readOnceWithGet(userId) {
   // [START rtdb_read_once_get]
   const dbRef = firebase.database().ref();
-  dbRef.child("users").child(userId).get().then((snapshot) => {
-    if (snapshot.exists()) {
-      console.log(snapshot.val());
-    } else {
-      console.log("No data available");
-    }
-  }).catch((error) => {
-    console.error(error);
-  });
+  dbRef
+    .child('users')
+    .child(userId)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+      } else {
+        console.log('No data available');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   // [END rtdb_read_once_get]
 }

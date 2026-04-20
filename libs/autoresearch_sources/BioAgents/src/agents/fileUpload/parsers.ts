@@ -1,16 +1,16 @@
-import * as XLSX from "xlsx";
-import Papa from "papaparse";
-import type { ParsedFile } from "./types";
-import { FILE_TYPES } from "./config";
-import { formatFileSize, matchesMimeType, matchesExtension } from "./utils";
+import Papa from 'papaparse';
+import * as XLSX from 'xlsx';
+import { FILE_TYPES } from './config';
+import type { ParsedFile } from './types';
+import { formatFileSize, matchesExtension, matchesMimeType } from './utils';
 
-export type { ParsedFile } from "./types";
+export type { ParsedFile } from './types';
 
 // ==================== Individual Parsers ====================
 
 export async function parseExcel(buffer: Buffer, filename: string): Promise<ParsedFile> {
-  const workbook = XLSX.read(buffer, { type: "buffer" });
-  let allText = "";
+  const workbook = XLSX.read(buffer, { type: 'buffer' });
+  let allText = '';
 
   for (const sheetName of workbook.SheetNames) {
     const worksheet = workbook.Sheets[sheetName];
@@ -21,7 +21,7 @@ export async function parseExcel(buffer: Buffer, filename: string): Promise<Pars
 
   return {
     filename,
-    mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     text: allText.trim(),
     metadata: {
       sheets: workbook.SheetNames,
@@ -31,27 +31,27 @@ export async function parseExcel(buffer: Buffer, filename: string): Promise<Pars
 }
 
 export async function parseCSV(buffer: Buffer, filename: string): Promise<ParsedFile> {
-  const text = buffer.toString("utf-8");
+  const text = buffer.toString('utf-8');
   const result = Papa.parse(text, {
     header: true,
     skipEmptyLines: true,
   });
 
   if (result.errors.length > 0) {
-    throw new Error(`CSV parsing errors: ${result.errors.map((e) => e.message).join(", ")}`);
+    throw new Error(`CSV parsing errors: ${result.errors.map((e) => e.message).join(', ')}`);
   }
 
   const headers = result.meta.fields || [];
-  let formattedText = headers.join(", ") + "\n";
+  let formattedText = headers.join(', ') + '\n';
 
   for (const row of result.data as Record<string, any>[]) {
-    const values = headers.map((h) => row[h] || "");
-    formattedText += values.join(", ") + "\n";
+    const values = headers.map((h) => row[h] || '');
+    formattedText += values.join(', ') + '\n';
   }
 
   return {
     filename,
-    mimeType: "text/csv",
+    mimeType: 'text/csv',
     text: formattedText,
     metadata: {
       rows: result.data.length,
@@ -62,10 +62,10 @@ export async function parseCSV(buffer: Buffer, filename: string): Promise<Parsed
 }
 
 export async function parseMarkdown(buffer: Buffer, filename: string): Promise<ParsedFile> {
-  const text = buffer.toString("utf-8");
+  const text = buffer.toString('utf-8');
   return {
     filename,
-    mimeType: "text/markdown",
+    mimeType: 'text/markdown',
     text,
     metadata: {
       size: buffer.length,
@@ -74,26 +74,26 @@ export async function parseMarkdown(buffer: Buffer, filename: string): Promise<P
 }
 
 export async function parseJSON(buffer: Buffer, filename: string): Promise<ParsedFile> {
-  const text = buffer.toString("utf-8");
+  const text = buffer.toString('utf-8');
   const data = JSON.parse(text);
   const formattedJSON = JSON.stringify(data, null, 2);
 
   return {
     filename,
-    mimeType: "application/json",
+    mimeType: 'application/json',
     text: formattedJSON,
     metadata: {
       size: buffer.length,
-      type: Array.isArray(data) ? "array" : typeof data,
+      type: Array.isArray(data) ? 'array' : typeof data,
     },
   };
 }
 
 export async function parseText(buffer: Buffer, filename: string): Promise<ParsedFile> {
-  const text = buffer.toString("utf-8");
+  const text = buffer.toString('utf-8');
   return {
     filename,
-    mimeType: "text/plain",
+    mimeType: 'text/plain',
     text,
     metadata: {
       size: buffer.length,
@@ -104,11 +104,11 @@ export async function parseText(buffer: Buffer, filename: string): Promise<Parse
 export async function parsePDF(buffer: Buffer, filename: string): Promise<ParsedFile> {
   return {
     filename,
-    mimeType: "application/pdf",
+    mimeType: 'application/pdf',
     text: `[PDF Document: ${filename}]\nSize: ${formatFileSize(buffer.length)}\nNote: PDF content will be analyzed by the AI model.`,
     metadata: {
       size: buffer.length,
-      type: "pdf",
+      type: 'pdf',
     },
   };
 }
@@ -125,30 +125,30 @@ export async function parseImage(
   mimeType: string,
 ): Promise<ParsedFile> {
   // Determine image type from filename or mimeType
-  let imageType = "image";
-  if (mimeType.includes("png") || filename.endsWith(".png")) {
-    imageType = "PNG";
+  let imageType = 'image';
+  if (mimeType.includes('png') || filename.endsWith('.png')) {
+    imageType = 'PNG';
   } else if (
-    mimeType.includes("jpeg") ||
-    mimeType.includes("jpg") ||
-    filename.endsWith(".jpg") ||
-    filename.endsWith(".jpeg")
+    mimeType.includes('jpeg') ||
+    mimeType.includes('jpg') ||
+    filename.endsWith('.jpg') ||
+    filename.endsWith('.jpeg')
   ) {
-    imageType = "JPEG";
-  } else if (mimeType.includes("webp") || filename.endsWith(".webp")) {
-    imageType = "WebP";
-  } else if (mimeType.includes("gif") || filename.endsWith(".gif")) {
-    imageType = "GIF";
+    imageType = 'JPEG';
+  } else if (mimeType.includes('webp') || filename.endsWith('.webp')) {
+    imageType = 'WebP';
+  } else if (mimeType.includes('gif') || filename.endsWith('.gif')) {
+    imageType = 'GIF';
   }
 
   return {
     filename,
-    mimeType: mimeType || "image/unknown",
+    mimeType: mimeType || 'image/unknown',
     // Placeholder text - actual image analysis happens at LLM level
     text: `[${imageType} Image: ${filename}]\nSize: ${formatFileSize(buffer.length)}\nNote: Image will be analyzed visually by the AI model.`,
     metadata: {
       size: buffer.length,
-      type: "image",
+      type: 'image',
       imageType,
     },
   };
@@ -170,13 +170,13 @@ export async function parseFile(
     FILE_TYPES.find((ft) => matchesExtension(filename, ft.extensions));
 
   if (!fileType) {
-    const supportedExts = FILE_TYPES.flatMap((ft) => ft.extensions).join(", ");
+    const supportedExts = FILE_TYPES.flatMap((ft) => ft.extensions).join(', ');
     throw new Error(`Unsupported file type: ${mimeType}. Supported: ${supportedExts}`);
   }
 
   try {
     // Special handling for images to pass mimeType
-    const isImageFile = mimeType.includes("image") || filename.match(/\.(png|jpg|jpeg|webp|gif)$/i);
+    const isImageFile = mimeType.includes('image') || filename.match(/\.(png|jpg|jpeg|webp|gif)$/i);
 
     if (isImageFile) {
       return await parseImage(buffer, filename, mimeType);

@@ -13,8 +13,8 @@
  * from the same Database is the officially supported concurrency pattern.
  */
 
-import fs from 'fs/promises';
 import lbug from '@ladybugdb/core';
+import fs from 'fs/promises';
 
 /** Per-repo pool: one Database, many Connections */
 interface PoolEntry {
@@ -262,9 +262,9 @@ async function doInitLbug(repoId: string, dbPath: string): Promise<void> {
       try {
         const db = new lbug.Database(
           dbPath,
-          0,     // bufferManagerSize (default)
+          0, // bufferManagerSize (default)
           false, // enableCompression (default)
-          true,  // readOnly
+          true, // readOnly
         );
         restoreStdout();
         shared = { db, refCount: 0, ftsLoaded: false };
@@ -273,17 +273,17 @@ async function doInitLbug(repoId: string, dbPath: string): Promise<void> {
       } catch (err: any) {
         restoreStdout();
         lastError = err instanceof Error ? err : new Error(String(err));
-        const isLockError = lastError.message.includes('Could not set lock')
-          || lastError.message.includes('lock');
+        const isLockError =
+          lastError.message.includes('Could not set lock') || lastError.message.includes('lock');
         if (!isLockError || attempt === LOCK_RETRY_ATTEMPTS) break;
-        await new Promise(resolve => setTimeout(resolve, LOCK_RETRY_DELAY_MS * attempt));
+        await new Promise((resolve) => setTimeout(resolve, LOCK_RETRY_DELAY_MS * attempt));
       }
     }
 
     if (!shared) {
       throw new Error(
         `LadybugDB unavailable for ${repoId}. Another process may be rebuilding the index. ` +
-        `Retry later. (${lastError?.message || 'unknown error'})`
+          `Retry later. (${lastError?.message || 'unknown error'})`,
       );
     }
   }
@@ -319,7 +319,15 @@ async function doInitLbug(repoId: string, dbPath: string): Promise<void> {
   // Register pool entry only after all connections are pre-warmed and FTS is
   // loaded.  Concurrent executeQuery calls see either "not initialized"
   // (and throw cleanly) or a fully ready pool — never a half-built one.
-  pool.set(repoId, { db, available, checkedOut: 0, waiters: [], lastUsed: Date.now(), dbPath, closed: false });
+  pool.set(repoId, {
+    db,
+    available,
+    checkedOut: 0,
+    waiters: [],
+    lastUsed: Date.now(),
+    dbPath,
+    closed: false,
+  });
   ensureIdleTimer();
 }
 
@@ -380,7 +388,7 @@ export async function initLbugWithDb(
     waiters: [],
     lastUsed: Date.now(),
     dbPath,
-    closed: false
+    closed: false,
   });
   ensureIdleTimer();
 }
@@ -404,8 +412,8 @@ function checkout(entry: PoolEntry): Promise<lbug.Connection> {
   if (totalConns < MAX_CONNS_PER_REPO) {
     throw new Error(
       `Connection pool integrity error: expected ${MAX_CONNS_PER_REPO} ` +
-      `connections but found ${totalConns} (${entry.available.length} available, ` +
-      `${entry.checkedOut} checked out)`
+        `connections but found ${totalConns} (${entry.available.length} available, ` +
+        `${entry.checkedOut} checked out)`,
     );
   }
 
@@ -418,7 +426,11 @@ function checkout(entry: PoolEntry): Promise<lbug.Connection> {
     const timer = setTimeout(() => {
       const idx = entry.waiters.indexOf(waiter);
       if (idx !== -1) entry.waiters.splice(idx, 1);
-      reject(new Error(`Connection pool exhausted: timed out after ${WAITER_TIMEOUT_MS}ms waiting for a free connection`));
+      reject(
+        new Error(
+          `Connection pool exhausted: timed out after ${WAITER_TIMEOUT_MS}ms waiting for a free connection`,
+        ),
+      );
     }, WAITER_TIMEOUT_MS);
     entry.waiters.push(waiter);
   });
@@ -544,14 +556,14 @@ export const closeLbug = async (repoId?: string): Promise<void> => {
   }
 };
 
-
 /**
  * Check if a specific repo's pool is active
  */
 export const isLbugReady = (repoId: string): boolean => pool.has(repoId);
 
 /** Regex to detect write operations in user-supplied Cypher queries */
-export const CYPHER_WRITE_RE = /(?<!:)\b(CREATE|DELETE|SET|MERGE|REMOVE|DROP|ALTER|COPY|DETACH|FOREACH)\b/i;
+export const CYPHER_WRITE_RE =
+  /(?<!:)\b(CREATE|DELETE|SET|MERGE|REMOVE|DROP|ALTER|COPY|DETACH|FOREACH)\b/i;
 
 /** Check if a Cypher query contains write operations */
 export function isWriteQuery(query: string): boolean {

@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-import {DocumentData} from '@google-cloud/firestore';
+import type { DocumentData } from '@google-cloud/firestore';
 
-import {randomBytes} from 'crypto';
-import type {CallSettings, ClientConfig, GoogleError} from 'google-gax';
-import type {BackoffSettings} from 'google-gax/build/src/gax';
+import { randomBytes } from 'crypto';
+import type { CallSettings, ClientConfig, GoogleError } from 'google-gax';
+import type { BackoffSettings } from 'google-gax/build/src/gax';
 import * as gapicConfig from './v1/firestore_client_config.json';
+
 import Dict = NodeJS.Dict;
 
 /**
@@ -34,10 +35,7 @@ export class Deferred<R> {
 
   constructor() {
     this.promise = new Promise<R>(
-      (
-        resolve: (value: R | Promise<R>) => void,
-        reject: (reason: Error) => void,
-      ) => {
+      (resolve: (value: R | Promise<R>) => void, reject: (reason: Error) => void) => {
         this.resolve = resolve;
         this.reject = reject;
       },
@@ -55,12 +53,11 @@ export class Deferred<R> {
  * @returns {string} A unique 20-character wide identifier.
  */
 export function autoId(): string {
-  const chars =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let autoId = '';
   while (autoId.length < 20) {
     const bytes = randomBytes(40);
-    bytes.forEach(b => {
+    bytes.forEach((b) => {
       // Length of `chars` is 62. We only take bytes between 0 and 62*4-1
       // (both inclusive). The value is then evenly mapped to indices of `char`
       // via a modulo operation.
@@ -92,7 +89,7 @@ export function requestTag(): string {
  * @private
  * @internal
  */
-export function isObject(value: unknown): value is {[k: string]: unknown} {
+export function isObject(value: unknown): value is { [k: string]: unknown } {
   return Object.prototype.toString.call(value) === '[object Object]';
 }
 
@@ -141,10 +138,7 @@ export function isFunction(value: unknown): boolean {
  * @private
  * @internal
  */
-export function isPermanentRpcError(
-  err: GoogleError,
-  methodName: string,
-): boolean {
+export function isPermanentRpcError(err: GoogleError, methodName: string): boolean {
   if (err.code !== undefined) {
     const retryCodes = getRetryCodes(methodName);
     return retryCodes.indexOf(err.code) === -1;
@@ -167,7 +161,7 @@ function getServiceConfig(methodName: string): CallSettings | undefined {
       gapicConfig as ClientConfig,
       {},
       require('google-gax').Status,
-    ) as {[k: string]: CallSettings};
+    ) as { [k: string]: CallSettings };
   }
   return serviceConfig[methodName];
 }
@@ -191,10 +185,7 @@ export function getRetryCodes(methodName: string): number[] {
  * @internal
  */
 export function getTotalTimeout(methodName: string): number {
-  return (
-    getServiceConfig(methodName)?.retry?.backoffSettings?.totalTimeoutMillis ??
-    0
-  );
+  return getServiceConfig(methodName)?.retry?.backoffSettings?.totalTimeoutMillis ?? 0;
 }
 
 /**
@@ -283,7 +274,7 @@ export function mapToArray<V, R>(
 ): R[] {
   const result: R[] = [];
   for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    if (Object.hasOwn(obj, key)) {
       result.push(fn(obj[key]!, key, obj));
     }
   }
@@ -299,7 +290,7 @@ export function mapToArray<V, R>(
  * @param right Array of objects supporting `isEqual`.
  * @returns True if arrays are equal.
  */
-export function isArrayEqual<T extends {isEqual: (t: T) => boolean}>(
+export function isArrayEqual<T extends { isEqual: (t: T) => boolean }>(
   left: T[],
   right: T[],
 ): boolean {
@@ -325,7 +316,7 @@ export function isArrayEqual<T extends {isEqual: (t: T) => boolean}>(
  * @param right Optional object supporting `isEqual`.
  * @returns True if equal.
  */
-export function isOptionalEqual<T extends {isEqual: (t: T) => boolean}>(
+export function isOptionalEqual<T extends { isEqual: (t: T) => boolean }>(
   left: T | undefined,
   right: T | undefined,
 ): boolean {
@@ -349,10 +340,7 @@ export function isOptionalEqual<T extends {isEqual: (t: T) => boolean}>(
  * @param right Array of primitives.
  * @returns True if arrays are equal.
  */
-export function isPrimitiveArrayEqual<T extends number | string>(
-  left: T[],
-  right: T[],
-): boolean {
+export function isPrimitiveArrayEqual<T extends number | string>(left: T[], right: T[]): boolean {
   if (left.length !== right.length) {
     return false;
   }
@@ -366,10 +354,7 @@ export function isPrimitiveArrayEqual<T extends number | string>(
   return true;
 }
 
-export function cast<T>(
-  val: unknown,
-  constructor?: {new (...args: unknown[]): T},
-): T {
+export function cast<T>(val: unknown, constructor?: { new (...args: unknown[]): T }): T {
   if (!constructor) {
     return val as T;
   } else if (val instanceof constructor) {
@@ -384,7 +369,7 @@ export function forEach<V>(
   fn: (key: string, val: V) => void,
 ): void {
   for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    if (Object.hasOwn(obj, key)) {
       fn(key, obj[key]);
     }
   }

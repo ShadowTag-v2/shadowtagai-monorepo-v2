@@ -5,9 +5,9 @@
  * Implements all framework best practices.
  */
 
-import { query, tool } from "@anthropic-ai/claude-agent-sdk";
-import { readFile, writeFile } from "fs/promises";
-import { join } from "path";
+import { query, tool } from '@anthropic-ai/claude-agent-sdk';
+import { readFile, writeFile } from 'fs/promises';
+import { join } from 'path';
 
 // ==================== Types ====================
 
@@ -21,15 +21,15 @@ interface CodeReviewResult {
 
 interface CodeIssue {
   line: number;
-  severity: "critical" | "high" | "medium" | "low";
-  category: "bug" | "security" | "performance" | "style";
+  severity: 'critical' | 'high' | 'medium' | 'low';
+  category: 'bug' | 'security' | 'performance' | 'style';
   message: string;
   fix?: string;
 }
 
 interface CodeSuggestion {
   line: number;
-  type: "refactor" | "optimization" | "modernization";
+  type: 'refactor' | 'optimization' | 'modernization';
   message: string;
   example?: string;
 }
@@ -172,54 +172,54 @@ Must:
 // ==================== Tools ====================
 
 const readCodeFileTool = tool({
-  name: "read_code_file",
-  description: "Read source code file for analysis. Use when reviewing specific files.",
+  name: 'read_code_file',
+  description: 'Read source code file for analysis. Use when reviewing specific files.',
   parameters: {
-    type: "object",
+    type: 'object',
     properties: {
       filePath: {
-        type: "string",
-        description: "Path to code file relative to project root",
+        type: 'string',
+        description: 'Path to code file relative to project root',
       },
     },
-    required: ["filePath"],
+    required: ['filePath'],
   },
   execute: async ({ filePath }) => {
     // Security: only allow reading from src/, tests/, examples/
-    const allowedDirs = ["src/", "tests/", "examples/"];
+    const allowedDirs = ['src/', 'tests/', 'examples/'];
     if (!allowedDirs.some((dir) => filePath.startsWith(dir))) {
-      throw new Error(`Access denied: can only read files in ${allowedDirs.join(", ")}`);
+      throw new Error(`Access denied: can only read files in ${allowedDirs.join(', ')}`);
     }
 
-    const content = await readFile(filePath, "utf-8");
-    const lines = content.split("\n");
+    const content = await readFile(filePath, 'utf-8');
+    const lines = content.split('\n');
 
     return {
       filePath,
       content,
       lines: lines.length,
-      size: Buffer.byteLength(content, "utf-8"),
+      size: Buffer.byteLength(content, 'utf-8'),
     };
   },
 });
 
 const searchCodePatternTool = tool({
-  name: "search_code_pattern",
+  name: 'search_code_pattern',
   description:
-    "Search for code patterns (e.g., SQL injection vulnerabilities, deprecated APIs). Use for security and quality checks.",
+    'Search for code patterns (e.g., SQL injection vulnerabilities, deprecated APIs). Use for security and quality checks.',
   parameters: {
-    type: "object",
+    type: 'object',
     properties: {
       pattern: {
-        type: "string",
-        description: "Regex pattern to search for",
+        type: 'string',
+        description: 'Regex pattern to search for',
       },
       category: {
-        type: "string",
+        type: 'string',
         description: "Pattern category (e.g., 'sql-injection', 'xss', 'deprecated-api')",
       },
     },
-    required: ["pattern", "category"],
+    required: ['pattern', 'category'],
   },
   execute: async ({ pattern, category }) => {
     // Mock implementation - in production, would use ripgrep or similar
@@ -230,10 +230,10 @@ const searchCodePatternTool = tool({
       pattern,
       matches: [
         {
-          file: "src/database.ts",
+          file: 'src/database.ts',
           line: 45,
           code: 'db.query("SELECT * FROM users WHERE id = " + userId)',
-          risk: "SQL injection vulnerability",
+          risk: 'SQL injection vulnerability',
         },
       ],
     };
@@ -241,22 +241,22 @@ const searchCodePatternTool = tool({
 });
 
 const analyzeComplexityTool = tool({
-  name: "analyze_complexity",
+  name: 'analyze_complexity',
   description:
-    "Analyze code complexity metrics (cyclomatic complexity, cognitive complexity). Use to identify overly complex functions.",
+    'Analyze code complexity metrics (cyclomatic complexity, cognitive complexity). Use to identify overly complex functions.',
   parameters: {
-    type: "object",
+    type: 'object',
     properties: {
       code: {
-        type: "string",
-        description: "Code to analyze",
+        type: 'string',
+        description: 'Code to analyze',
       },
     },
-    required: ["code"],
+    required: ['code'],
   },
   execute: async ({ code }) => {
     // Simplified complexity analysis
-    const lines = code.split("\n").length;
+    const lines = code.split('\n').length;
     const conditionals = (code.match(/if|else|switch|case|while|for|\?/g) || []).length;
     const complexity = conditionals + 1;
 
@@ -272,7 +272,7 @@ const analyzeComplexityTool = tool({
       linesOfCode: lines,
       maintainabilityIndex: Math.round(maintainabilityIndex),
       assessment:
-        complexity > 10 ? "High complexity - consider refactoring" : "Acceptable complexity",
+        complexity > 10 ? 'High complexity - consider refactoring' : 'Acceptable complexity',
     };
   },
 });
@@ -288,13 +288,13 @@ export class CodingAgent {
 
   async reviewCode(code: string, context?: { filePath?: string }): Promise<CodeReviewResult> {
     console.log(
-      `[Coding Agent] Starting code review${context?.filePath ? ` for ${context.filePath}` : ""}...`,
+      `[Coding Agent] Starting code review${context?.filePath ? ` for ${context.filePath}` : ''}...`,
     );
 
     const prompt = `
 Review this code for bugs, security issues, performance problems, and improvements:
 
-${context?.filePath ? `File: ${context.filePath}\n` : ""}
+${context?.filePath ? `File: ${context.filePath}\n` : ''}
 \`\`\`
 ${code}
 \`\`\`
@@ -319,7 +319,7 @@ Use available tools to:
           systemPrompt: CODING_AGENT_PROMPT,
           tools: this.tools,
           maxTokens: 8000,
-          model: "claude-sonnet-4.5-20250514",
+          model: 'claude-sonnet-4.5-20250514',
         },
       });
 
@@ -379,7 +379,7 @@ Provide the refactored code with explanations.
       options: {
         systemPrompt: CODING_AGENT_PROMPT,
         maxTokens: 6000,
-        model: "claude-sonnet-4.5-20250514",
+        model: 'claude-sonnet-4.5-20250514',
       },
     });
 
@@ -392,11 +392,11 @@ Provide the refactored code with explanations.
       const parsed = JSON.parse(rawResult);
 
       return {
-        file: filePath || "unknown",
+        file: filePath || 'unknown',
         issues: parsed.issues || [],
         suggestions: parsed.suggestions || [],
         metrics: parsed.metrics || {
-          linesOfCode: code.split("\n").length,
+          linesOfCode: code.split('\n').length,
           complexity: 0,
           maintainabilityIndex: 0,
         },
@@ -405,11 +405,11 @@ Provide the refactored code with explanations.
     } catch {
       // Fallback: extract structured data from text
       return {
-        file: filePath || "unknown",
+        file: filePath || 'unknown',
         issues: [],
         suggestions: [],
         metrics: {
-          linesOfCode: code.split("\n").length,
+          linesOfCode: code.split('\n').length,
           complexity: 0,
           maintainabilityIndex: 0,
         },
@@ -422,17 +422,17 @@ Provide the refactored code with explanations.
     // Validation checks
     const checks = [
       {
-        name: "Critical issues identified",
+        name: 'Critical issues identified',
         pass:
-          review.issues.filter((i) => i.severity === "critical").length > 0 ||
-          review.summary.toLowerCase().includes("no critical issues"),
+          review.issues.filter((i) => i.severity === 'critical').length > 0 ||
+          review.summary.toLowerCase().includes('no critical issues'),
       },
       {
-        name: "Recommendations are specific",
+        name: 'Recommendations are specific',
         pass: review.issues.every((i) => i.message && i.message.length > 10),
       },
       {
-        name: "Metrics calculated",
+        name: 'Metrics calculated',
         pass: review.metrics.linesOfCode > 0,
       },
     ];

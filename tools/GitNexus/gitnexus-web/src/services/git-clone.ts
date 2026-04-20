@@ -1,8 +1,8 @@
+import LightningFS from '@isomorphic-git/lightning-fs';
 import git from 'isomorphic-git';
 import http from 'isomorphic-git/http/web';
-import LightningFS from '@isomorphic-git/lightning-fs';
 import { shouldIgnorePath } from '../config/ignore-service';
-import { FileEntry } from './zip';
+import type { FileEntry } from './zip';
 
 // Initialize virtual filesystem (persists in IndexedDB)
 // Use a unique name each time to avoid stale data issues
@@ -52,7 +52,7 @@ const createProxiedHttp = (): typeof http => {
  */
 export const parseGitHubUrl = (url: string): { owner: string; repo: string } | null => {
   const cleaned = url.trim().replace(/\.git$/, '');
-  const match = cleaned.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+  const match = cleaned.match(/github\.com\/([^/]+)\/([^/]+)/);
 
   if (!match) return null;
 
@@ -73,7 +73,7 @@ export const parseGitHubUrl = (url: string): { owner: string; repo: string } | n
 export const cloneRepository = async (
   url: string,
   onProgress?: (phase: string, progress: number) => void,
-  token?: string
+  token?: string,
 ): Promise<FileEntry[]> => {
   const parsed = parseGitHubUrl(url);
   if (!parsed) {
@@ -179,7 +179,7 @@ const readAllFiles = async (baseDir: string, currentDir: string): Promise<FileEn
     } else {
       // Read file content
       try {
-        const content = await pfs.readFile(fullPath, { encoding: 'utf8' }) as string;
+        const content = (await pfs.readFile(fullPath, { encoding: 'utf8' })) as string;
         files.push({
           path: relativePath,
           content,

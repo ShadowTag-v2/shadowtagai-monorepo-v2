@@ -8,17 +8,14 @@ import '../../../focus/md-focus-ring.js';
 import '../../../labs/item/item.js';
 import '../../../ripple/ripple.js';
 
-import {html, LitElement, nothing, PropertyValues, TemplateResult} from 'lit';
-import {property, query} from 'lit/decorators.js';
-import {ClassInfo, classMap} from 'lit/directives/class-map.js';
-import {literal, html as staticHtml, StaticValue} from 'lit/static-html.js';
+import { html, LitElement, nothing, type PropertyValues, type TemplateResult } from 'lit';
+import { property, query } from 'lit/decorators.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
+import { literal, type StaticValue, html as staticHtml } from 'lit/static-html.js';
 
-import {ARIAMixinStrict} from '../../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../../internal/aria/delegate.js';
-import {
-  createRequestActivationEvent,
-  ListItem,
-} from '../list-navigation-helpers.js';
+import type { ARIAMixinStrict } from '../../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../../internal/aria/delegate.js';
+import { createRequestActivationEvent, type ListItem } from '../list-navigation-helpers.js';
 
 /**
  * Supported behaviors for a list item.
@@ -42,18 +39,18 @@ export class ListItemEl extends listItemBaseClass implements ListItem {
   /**
    * Disables the item and makes it non-selectable and non-interactive.
    */
-  @property({type: Boolean, reflect: true}) disabled = false;
+  @property({ type: Boolean, reflect: true }) disabled = false;
 
   /**
    * Sets the behavior of the list item, defaults to "text". Change to "link" or
    * "button" for interactive items.
    */
-  @property({reflect: true}) type: ListItemType = 'text';
+  @property({ reflect: true }) type: ListItemType = 'text';
 
   /**
    * READONLY. Sets the `md-list-item` attribute on the element.
    */
-  @property({type: Boolean, attribute: 'md-list-item', reflect: true})
+  @property({ type: Boolean, attribute: 'md-list-item', reflect: true })
   isListItem = true;
 
   /**
@@ -172,7 +169,7 @@ export class ListItemEl extends listItemBaseClass implements ListItem {
    * Classes applied to the list item root.
    */
   protected getRenderClasses(): ClassInfo {
-    return {'disabled': this.isDisabled};
+    return { disabled: this.isDisabled };
   }
 
   /**

@@ -4,7 +4,7 @@
  * Common utilities for writing tests across the project
  */
 
-import { jest } from "@jest/globals";
+import { jest } from '@jest/globals';
 
 /**
  * Creates a mock function with type safety
@@ -121,11 +121,11 @@ export const assertions = {
     }
 
     if (!error) {
-      throw new Error("Expected function to throw an error");
+      throw new Error('Expected function to throw an error');
     }
 
     if (expected) {
-      if (typeof expected === "string") {
+      if (typeof expected === 'string') {
         if (!error.message.includes(expected)) {
           throw new Error(
             `Expected error message to include "${expected}", got "${error.message}"`,
@@ -144,7 +144,7 @@ export const assertions = {
    */
   toBeDefined<T>(value: T | undefined | null): asserts value is T {
     if (value === undefined || value === null) {
-      throw new Error("Expected value to be defined");
+      throw new Error('Expected value to be defined');
     }
   },
 
@@ -153,7 +153,7 @@ export const assertions = {
    */
   toBeOfType<T>(value: unknown, guard: (val: unknown) => val is T): asserts value is T {
     if (!guard(value)) {
-      throw new Error("Type guard failed");
+      throw new Error('Type guard failed');
     }
   },
 };
@@ -164,7 +164,7 @@ export const assertions = {
 export const mockData = {
   user: (overrides?: unknown) => ({
     id: testData.randomString(8),
-    name: "Test User",
+    name: 'Test User',
     email: testData.randomEmail(),
     createdAt: new Date(),
     ...overrides,
@@ -177,7 +177,7 @@ export const mockData = {
     ...overrides,
   }),
 
-  error: (message: string = "Test error", code: number = 500) => ({
+  error: (message: string = 'Test error', code: number = 500) => ({
     success: false,
     error: {
       message,
@@ -196,14 +196,14 @@ export const dbHelpers = {
    */
   async clearAll(): Promise<void> {
     // Implementation depends on database
-    console.log("Clear all test data");
+    console.log('Clear all test data');
   },
 
   /**
    * Seeds test data
    */
   async seed(data: unknown): Promise<void> {
-    console.log("Seed test data", data);
+    console.log('Seed test data', data);
   },
 
   /**
@@ -259,12 +259,12 @@ export const snapshot = {
    */
   sanitize(data: unknown): unknown {
     if (data instanceof Date) {
-      return "[Date]";
+      return '[Date]';
     }
-    if (typeof data === "object" && data !== null) {
+    if (typeof data === 'object' && data !== null) {
       const sanitized: unknown = Array.isArray(data) ? [] : {};
       for (const key in data) {
-        if (key === "id" || key === "createdAt" || key === "updatedAt") {
+        if (key === 'id' || key === 'createdAt' || key === 'updatedAt') {
           sanitized[key] = `[${key}]`;
         } else {
           sanitized[key] = snapshot.sanitize(data[key]);
@@ -285,9 +285,9 @@ export const consoleSpy = {
    */
   suppress(): jest.SpyInstance[] {
     return [
-      jest.spyOn(console, "log").mockImplementation(),
-      jest.spyOn(console, "error").mockImplementation(),
-      jest.spyOn(console, "warn").mockImplementation(),
+      jest.spyOn(console, 'log').mockImplementation(),
+      jest.spyOn(console, 'error').mockImplementation(),
+      jest.spyOn(console, 'warn').mockImplementation(),
     ];
   },
 

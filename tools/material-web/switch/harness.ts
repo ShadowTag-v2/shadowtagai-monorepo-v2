@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Harness} from '../testing/harness.js';
+import { Harness } from '../testing/harness.js';
 
-import {Switch} from './internal/switch.js';
+import type { Switch } from './internal/switch.js';
 
 /**
  * Test harness for switch elements.

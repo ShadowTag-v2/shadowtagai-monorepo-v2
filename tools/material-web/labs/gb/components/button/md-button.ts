@@ -4,23 +4,24 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {ARIAMixinStrict} from '@material/web/internal/aria/aria.js';
-import {mixinDelegatesAria} from '@material/web/internal/aria/delegate.js';
-import {redispatchEvent} from '@material/web/internal/events/redispatch-event.js';
-import {mixinElementInternals} from '@material/web/labs/behaviors/element-internals.js';
-import {mixinFormAssociated} from '@material/web/labs/behaviors/form-associated.js';
-import {mixinFormSubmitter} from '@material/web/labs/behaviors/form-submitter.js';
-import {css, CSSResultOrNative, html, LitElement, nothing} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
-
-import focusRingStyles from '@material/web/labs/gb/components/focus/focus-ring.css' with {type: 'css'}; // github-only
+import type { ARIAMixinStrict } from '@material/web/internal/aria/aria.js';
+import { mixinDelegatesAria } from '@material/web/internal/aria/delegate.js';
+import { redispatchEvent } from '@material/web/internal/events/redispatch-event.js';
+import { mixinElementInternals } from '@material/web/labs/behaviors/element-internals.js';
+import { mixinFormAssociated } from '@material/web/labs/behaviors/form-associated.js';
+import { mixinFormSubmitter } from '@material/web/labs/behaviors/form-submitter.js';
+import focusRingStyles from '@material/web/labs/gb/components/focus/focus-ring.css' with {
+  type: 'css',
+}; // github-only
 // import focusRingStyles from '@material/web/labs/gb/components/focus/focus-ring.cssresult.js'; // google3-only
-import rippleStyles from '@material/web/labs/gb/components/ripple/ripple.css' with {type: 'css'}; // github-only
+import rippleStyles from '@material/web/labs/gb/components/ripple/ripple.css' with { type: 'css' }; // github-only
+import { type CSSResultOrNative, css, html, LitElement, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 // import rippleStyles from '@material/web/labs/gb/components/ripple/ripple.cssresult.js'; // google3-only
-import buttonStyles from './button.css' with {type: 'css'}; // github-only
+import buttonStyles from './button.css' with { type: 'css' }; // github-only
 // import buttonStyles from './button.cssresult.js'; // google3-only
 
-import {button} from './button.js';
+import { button } from './button.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -73,7 +74,7 @@ export class Button extends baseClass {
   /**
    * Changes the shape of the button to be square.
    */
-  @property({type: Boolean}) square = false;
+  @property({ type: Boolean }) square = false;
 
   /**
    * A string indicating the behavior of the button.
@@ -84,7 +85,7 @@ export class Button extends baseClass {
    * - "toggle": A toggle button using the `selected` property.
    * - "link": An anchor link (`<a>`). Type is always "link" when `href` is set.
    */
-  @property({noAccessor: true})
+  @property({ noAccessor: true })
   override get type(): string {
     return this.href ? 'link' : super.type;
   }
@@ -103,13 +104,13 @@ export class Button extends baseClass {
    * https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls
    * for more guidance on when this is needed.
    */
-  @property({type: Boolean, attribute: 'soft-disabled', reflect: true})
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true })
   softDisabled = false;
 
   /**
    * Whether or not the button is selected, when `type="toggle"`.
    */
-  @property({type: Boolean}) selected = false;
+  @property({ type: Boolean }) selected = false;
 
   /**
    * The URL that the link button points to.
@@ -139,7 +140,7 @@ export class Button extends baseClass {
     });
 
     // Needed for closure conformance
-    const {ariaLabel, ariaHasPopup, ariaExpanded} = this as ARIAMixinStrict;
+    const { ariaLabel, ariaHasPopup, ariaExpanded } = this as ARIAMixinStrict;
     if (this.type === 'link') {
       return html`<a
         part="btn"

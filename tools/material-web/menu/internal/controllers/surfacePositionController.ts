@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {ReactiveController, ReactiveControllerHost} from 'lit';
-import {StyleInfo} from 'lit/directives/style-map.js';
+import type { ReactiveController, ReactiveControllerHost } from 'lit';
+import type { StyleInfo } from 'lit/directives/style-map.js';
 
 /**
  * Declare popoverAPI functions and properties. See
@@ -138,7 +138,7 @@ export interface SurfacePositionControllerProperties {
 export class SurfacePositionController implements ReactiveController {
   // The current styles to apply to the surface.
   private surfaceStylesInternal: StyleInfo = {
-    'display': 'none',
+    display: 'none',
   };
   // Previous values stored for change detection. Open change detection is
   // calculated separately so initialize it here.
@@ -213,8 +213,8 @@ export class SurfacePositionController implements ReactiveController {
     // Paint the surface transparently so that we can get the position and the
     // rect info of the surface.
     this.surfaceStylesInternal = {
-      'display': 'block',
-      'opacity': '0',
+      display: 'block',
+      opacity: '0',
     };
 
     // Wait for it to be visible.
@@ -225,11 +225,8 @@ export class SurfacePositionController implements ReactiveController {
     // made visible + Animation Frame before calling showPopover().
     // https://bugs.webkit.org/show_bug.cgi?id=264069
     // also the cast is required due to differing TS types in Google and OSS.
-    if (
-      (surfaceEl as unknown as {popover: string}).popover &&
-      surfaceEl.isConnected
-    ) {
-      (surfaceEl as unknown as {showPopover: () => void}).showPopover();
+    if ((surfaceEl as unknown as { popover: string }).popover && surfaceEl.isConnected) {
+      (surfaceEl as unknown as { showPopover: () => void }).showPopover();
     }
 
     const surfaceRect = surfaceEl.getSurfacePositionClientRect
@@ -238,16 +235,11 @@ export class SurfacePositionController implements ReactiveController {
     const anchorRect = anchorEl.getSurfacePositionClientRect
       ? anchorEl.getSurfacePositionClientRect()
       : anchorEl.getBoundingClientRect();
-    const [surfaceBlock, surfaceInline] = surfaceCorner.split('-') as Array<
-      'start' | 'end'
-    >;
-    const [anchorBlock, anchorInline] = anchorCorner.split('-') as Array<
-      'start' | 'end'
-    >;
+    const [surfaceBlock, surfaceInline] = surfaceCorner.split('-') as Array<'start' | 'end'>;
+    const [anchorBlock, anchorInline] = anchorCorner.split('-') as Array<'start' | 'end'>;
 
     // LTR depends on the direction of the SURFACE not the anchor.
-    const isLTR =
-      getComputedStyle(surfaceEl as HTMLElement).direction === 'ltr';
+    const isLTR = getComputedStyle(surfaceEl as HTMLElement).direction === 'ltr';
 
     /*
      * For more on inline and block dimensions, see MDN article:
@@ -289,17 +281,16 @@ export class SurfacePositionController implements ReactiveController {
      */
 
     // Calculate the block positioning properties
-    let {blockInset, blockOutOfBoundsCorrection, surfaceBlockProperty} =
-      this.calculateBlock({
-        surfaceRect,
-        anchorRect,
-        anchorBlock,
-        surfaceBlock,
-        yOffset,
-        positioning,
-        windowInnerHeight,
-        blockScrollbarHeight,
-      });
+    let { blockInset, blockOutOfBoundsCorrection, surfaceBlockProperty } = this.calculateBlock({
+      surfaceRect,
+      anchorRect,
+      anchorBlock,
+      surfaceBlock,
+      yOffset,
+      positioning,
+      windowInnerHeight,
+      blockScrollbarHeight,
+    });
 
     // If the surface should be out of bounds in the block direction, flip the
     // surface and anchor corner block values and recalculate
@@ -320,9 +311,7 @@ export class SurfacePositionController implements ReactiveController {
 
       // In the case that the flipped verion would require less out of bounds
       // correcting, use the flipped corner block values
-      if (
-        blockOutOfBoundsCorrection > flippedBlock.blockOutOfBoundsCorrection
-      ) {
+      if (blockOutOfBoundsCorrection > flippedBlock.blockOutOfBoundsCorrection) {
         blockInset = flippedBlock.blockInset;
         blockOutOfBoundsCorrection = flippedBlock.blockOutOfBoundsCorrection;
         surfaceBlockProperty = flippedBlock.surfaceBlockProperty;
@@ -330,18 +319,17 @@ export class SurfacePositionController implements ReactiveController {
     }
 
     // Calculate the inline positioning properties
-    let {inlineInset, inlineOutOfBoundsCorrection, surfaceInlineProperty} =
-      this.calculateInline({
-        surfaceRect,
-        anchorRect,
-        anchorInline,
-        surfaceInline,
-        xOffset,
-        positioning,
-        isLTR,
-        windowInnerWidth,
-        inlineScrollbarWidth,
-      });
+    let { inlineInset, inlineOutOfBoundsCorrection, surfaceInlineProperty } = this.calculateInline({
+      surfaceRect,
+      anchorRect,
+      anchorInline,
+      surfaceInline,
+      xOffset,
+      positioning,
+      isLTR,
+      windowInnerWidth,
+      inlineScrollbarWidth,
+    });
 
     // If the surface should be out of bounds in the inline direction, flip the
     // surface and anchor corner inline values and recalculate
@@ -364,8 +352,7 @@ export class SurfacePositionController implements ReactiveController {
       // In the case that the flipped verion would require less out of bounds
       // correcting, use the flipped corner inline values
       if (
-        Math.abs(inlineOutOfBoundsCorrection) >
-        Math.abs(flippedInline.inlineOutOfBoundsCorrection)
+        Math.abs(inlineOutOfBoundsCorrection) > Math.abs(flippedInline.inlineOutOfBoundsCorrection)
       ) {
         inlineInset = flippedInline.inlineInset;
         inlineOutOfBoundsCorrection = flippedInline.inlineOutOfBoundsCorrection;
@@ -381,8 +368,8 @@ export class SurfacePositionController implements ReactiveController {
     }
 
     this.surfaceStylesInternal = {
-      'display': 'block',
-      'opacity': '1',
+      display: 'block',
+      opacity: '1',
       [surfaceBlockProperty]: `${blockInset}px`,
       [surfaceInlineProperty]: `${inlineInset}px`,
     };
@@ -434,8 +421,7 @@ export class SurfacePositionController implements ReactiveController {
     } = config;
     // We use number booleans to multiply values rather than `if` / ternary
     // statements because it _heavily_ cuts down on nesting and readability
-    const relativeToWindow =
-      positioning === 'fixed' || positioning === 'document' ? 1 : 0;
+    const relativeToWindow = positioning === 'fixed' || positioning === 'document' ? 1 : 0;
     const relativeToDocument = positioning === 'document' ? 1 : 0;
     const isSurfaceBlockStart = surfaceBlock === 'start' ? 1 : 0;
     const isSurfaceBlockEnd = surfaceBlock === 'end' ? 1 : 0;
@@ -446,21 +432,14 @@ export class SurfacePositionController implements ReactiveController {
     // The absolute block position of the anchor relative to window
     const blockTopLayerOffset =
       isSurfaceBlockStart * anchorRect.top +
-      isSurfaceBlockEnd *
-        (windowInnerHeight - anchorRect.bottom - blockScrollbarHeight);
+      isSurfaceBlockEnd * (windowInnerHeight - anchorRect.bottom - blockScrollbarHeight);
     const blockDocumentOffset =
       isSurfaceBlockStart * window.scrollY - isSurfaceBlockEnd * window.scrollY;
 
     // If the surface's block would be out of bounds of the window, move it back
     // in
     const blockOutOfBoundsCorrection = Math.abs(
-      Math.min(
-        0,
-        windowInnerHeight -
-          blockTopLayerOffset -
-          blockAnchorOffset -
-          surfaceRect.height,
-      ),
+      Math.min(0, windowInnerHeight - blockTopLayerOffset - blockAnchorOffset - surfaceRect.height),
     );
 
     // The block logical value of the surface
@@ -469,10 +448,9 @@ export class SurfacePositionController implements ReactiveController {
       relativeToDocument * blockDocumentOffset +
       blockAnchorOffset;
 
-    const surfaceBlockProperty =
-      surfaceBlock === 'start' ? 'inset-block-start' : 'inset-block-end';
+    const surfaceBlockProperty = surfaceBlock === 'start' ? 'inset-block-start' : 'inset-block-end';
 
-    return {blockInset, blockOutOfBoundsCorrection, surfaceBlockProperty};
+    return { blockInset, blockOutOfBoundsCorrection, surfaceBlockProperty };
   }
 
   /**
@@ -503,8 +481,7 @@ export class SurfacePositionController implements ReactiveController {
     } = config;
     // We use number booleans to multiply values rather than `if` / ternary
     // statements because it _heavily_ cuts down on nesting and readability
-    const relativeToWindow =
-      positioning === 'fixed' || positioning === 'document' ? 1 : 0;
+    const relativeToWindow = positioning === 'fixed' || positioning === 'document' ? 1 : 0;
     const relativeToDocument = positioning === 'document' ? 1 : 0;
     const isLTR = isLTRBool ? 1 : 0;
     const isRTL = isLTRBool ? 0 : 1;
@@ -517,39 +494,27 @@ export class SurfacePositionController implements ReactiveController {
     // The inline position of the anchor relative to window in LTR
     const inlineTopLayerOffsetLTR =
       isSurfaceInlineStart * anchorRect.left +
-      isSurfaceInlineEnd *
-        (windowInnerWidth - anchorRect.right - inlineScrollbarWidth);
+      isSurfaceInlineEnd * (windowInnerWidth - anchorRect.right - inlineScrollbarWidth);
     // The inline position of the anchor relative to window in RTL
     const inlineTopLayerOffsetRTL =
-      isSurfaceInlineStart *
-        (windowInnerWidth - anchorRect.right - inlineScrollbarWidth) +
+      isSurfaceInlineStart * (windowInnerWidth - anchorRect.right - inlineScrollbarWidth) +
       isSurfaceInlineEnd * anchorRect.left;
     // The inline position of the anchor relative to window
-    const inlineTopLayerOffset =
-      isLTR * inlineTopLayerOffsetLTR + isRTL * inlineTopLayerOffsetRTL;
+    const inlineTopLayerOffset = isLTR * inlineTopLayerOffsetLTR + isRTL * inlineTopLayerOffsetRTL;
 
     // The inline position of the anchor relative to window in LTR
     const inlineDocumentOffsetLTR =
-      isSurfaceInlineStart * window.scrollX -
-      isSurfaceInlineEnd * window.scrollX;
+      isSurfaceInlineStart * window.scrollX - isSurfaceInlineEnd * window.scrollX;
     // The inline position of the anchor relative to window in RTL
     const inlineDocumentOffsetRTL =
-      isSurfaceInlineEnd * window.scrollX -
-      isSurfaceInlineStart * window.scrollX;
+      isSurfaceInlineEnd * window.scrollX - isSurfaceInlineStart * window.scrollX;
     // The inline position of the anchor relative to window
-    const inlineDocumentOffset =
-      isLTR * inlineDocumentOffsetLTR + isRTL * inlineDocumentOffsetRTL;
+    const inlineDocumentOffset = isLTR * inlineDocumentOffsetLTR + isRTL * inlineDocumentOffsetRTL;
 
     // If the surface's inline would be out of bounds of the window, move it
     // back in
     const inlineOutOfBoundsCorrection = Math.abs(
-      Math.min(
-        0,
-        windowInnerWidth -
-          inlineTopLayerOffset -
-          inlineAnchorOffset -
-          surfaceRect.width,
-      ),
+      Math.min(0, windowInnerWidth - inlineTopLayerOffset - inlineAnchorOffset - surfaceRect.width),
     );
 
     // The inline logical value of the surface
@@ -564,10 +529,7 @@ export class SurfacePositionController implements ReactiveController {
     // There are cases where the element is RTL but the root of the page is not.
     // In these cases we want to not use logical properties.
     if (positioning === 'document' || positioning === 'fixed') {
-      if (
-        (surfaceInline === 'start' && isLTRBool) ||
-        (surfaceInline === 'end' && !isLTRBool)
-      ) {
+      if ((surfaceInline === 'start' && isLTRBool) || (surfaceInline === 'end' && !isLTRBool)) {
         surfaceInlineProperty = 'left';
       } else {
         surfaceInlineProperty = 'right';
@@ -633,18 +595,15 @@ export class SurfacePositionController implements ReactiveController {
    */
   private close() {
     this.surfaceStylesInternal = {
-      'display': 'none',
+      display: 'none',
     };
     this.host.requestUpdate();
     const surfaceEl = this.getProperties().surfaceEl;
 
     // The following type casts are required due to differing TS types in Google
     // and open source.
-    if (
-      (surfaceEl as unknown as {popover?: string})?.popover &&
-      surfaceEl?.isConnected
-    ) {
-      (surfaceEl as unknown as {hidePopover: () => void}).hidePopover();
+    if ((surfaceEl as unknown as { popover?: string })?.popover && surfaceEl?.isConnected) {
+      (surfaceEl as unknown as { hidePopover: () => void }).hidePopover();
     }
   }
 }

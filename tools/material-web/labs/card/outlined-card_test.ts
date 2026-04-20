@@ -6,9 +6,9 @@
 
 // import 'jasmine'; (google3-only)
 
-import {createTokenTests} from '../../testing/tokens.js';
+import { createTokenTests } from '../../testing/tokens.js';
 
-import {MdOutlinedCard} from './outlined-card.js';
+import { MdOutlinedCard } from './outlined-card.js';
 
 describe('<md-outlined-card>', () => {
   describe('.styles', () => {

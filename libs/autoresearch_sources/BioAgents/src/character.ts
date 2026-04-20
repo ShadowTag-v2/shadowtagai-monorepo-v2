@@ -1,4 +1,4 @@
-import { readFileSync, existsSync } from "fs";
+import { existsSync, readFileSync } from 'fs';
 
 export interface Character {
   name: string;
@@ -9,7 +9,7 @@ export interface Character {
  * Default BIOS character - a scientific bioagent for the AI BIO xyz platform
  */
 const defaultCharacter: Character = {
-  name: "BIOS",
+  name: 'BIOS',
   system: `You are BIOS, an expert scientific research assistant available on the AI BIO xyz agent platform.
 
 IDENTITY
@@ -67,7 +67,7 @@ function loadCharacter(): Character {
       }
       console.warn("[Character] CHARACTER_JSON missing 'name' or 'system' field, using default");
     } catch (error) {
-      console.warn("[Character] Failed to parse CHARACTER_JSON, using default:", error);
+      console.warn('[Character] Failed to parse CHARACTER_JSON, using default:', error);
     }
   }
 
@@ -76,7 +76,7 @@ function loadCharacter(): Character {
   if (characterFile) {
     try {
       if (existsSync(characterFile)) {
-        const fileContent = readFileSync(characterFile, "utf-8");
+        const fileContent = readFileSync(characterFile, 'utf-8');
         const parsed = JSON.parse(fileContent);
         if (parsed.name && parsed.system) {
           console.log(`[Character] Loaded character "${parsed.name}" from file: ${characterFile}`);

@@ -15,21 +15,13 @@
  */
 
 import { Component, inject } from '@angular/core';
-import {
-  where,
-  QueryConstraint,
-  orderBy,
-} from '@angular/fire/firestore';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogRef
-} from '@angular/material/dialog';
-import { Restaurant } from '../../types/restaurant';
-import { Observable } from 'rxjs';
-import { FilterDialogComponent } from '../filter-dialog/filter-dialog.component';
-import { DEFAULT_SORT_DATA, DialogData } from '../filter-dialog/dialogdata';
 import { Auth, signOut } from '@angular/fire/auth';
+import { orderBy, type QueryConstraint, where } from '@angular/fire/firestore';
+import { MAT_DIALOG_DATA, type MatDialog, MatDialogRef } from '@angular/material/dialog';
+import type { Observable } from 'rxjs';
+import type { Restaurant } from '../../types/restaurant';
+import { DEFAULT_SORT_DATA, type DialogData } from '../filter-dialog/dialogdata';
+import { FilterDialogComponent } from '../filter-dialog/filter-dialog.component';
 import { SignInModalComponent } from '../sign-in-modal/sign-in-modal.component';
 import { HomepageFirestore } from './hompage.service';
 
@@ -40,34 +32,32 @@ import { HomepageFirestore } from './hompage.service';
   providers: [
     {
       provide: MAT_DIALOG_DATA,
-      useValue: {}
+      useValue: {},
     },
     {
       provide: MatDialogRef,
-      useValue: {}
-    }
-  ]
+      useValue: {},
+    },
+  ],
 })
-
 export class HomepageComponent {
   public auth: Auth = inject(Auth);
   title = 'FriendlyEats-Homepage';
   private sortingData: DialogData = DEFAULT_SORT_DATA;
   private homepageFirestore = inject(HomepageFirestore);
-  restaurants = this.homepageFirestore
-    .getRestaurantCollectionData() as Observable<Restaurant[]>;
+  restaurants = this.homepageFirestore.getRestaurantCollectionData() as Observable<Restaurant[]>;
 
   private fetchWithUpdatedFilters = () => {
-    const constraints: QueryConstraint[] = []
+    const constraints: QueryConstraint[] = [];
 
     if (this.sortingData.city !== 'Any') {
-      constraints.push(where('city', '==', this.sortingData.city))
+      constraints.push(where('city', '==', this.sortingData.city));
     }
     if (this.sortingData.category !== 'Any') {
-      constraints.push(where('category', '==', this.sortingData.category))
+      constraints.push(where('category', '==', this.sortingData.category));
     }
     if (this.sortingData.price !== -1) {
-      constraints.push(where('price', '==', this.sortingData.price))
+      constraints.push(where('price', '==', this.sortingData.price));
     }
     if (this.sortingData.sortBy === 'Rating') {
       constraints.push(orderBy('numRatings', 'desc'));
@@ -75,30 +65,26 @@ export class HomepageComponent {
       constraints.push(orderBy('avgRating', 'desc'));
     }
 
-    this.restaurants = this.homepageFirestore
-      .getRestaurantsGivenConstraints(constraints);
-  }
+    this.restaurants = this.homepageFirestore.getRestaurantsGivenConstraints(constraints);
+  };
 
   openFilterDialog(): void {
     this.dialogRef = this.dialog.open(FilterDialogComponent, {
-      data: this.sortingData
+      data: this.sortingData,
     });
 
-    this.dialogRef.afterClosed().subscribe(result => {
+    this.dialogRef.afterClosed().subscribe((result) => {
       this.sortingData = result;
-      this.fetchWithUpdatedFilters()
+      this.fetchWithUpdatedFilters();
     });
-
   }
 
   openSignInDialog(): void {
-    this.dialog.open(SignInModalComponent,
-      { data: { isCreatingAccount: false } });
+    this.dialog.open(SignInModalComponent, { data: { isCreatingAccount: false } });
   }
 
   openCreateAccountDialog(): void {
-    this.dialog.open(SignInModalComponent,
-      { data: { isCreatingAccount: true } });
+    this.dialog.open(SignInModalComponent, { data: { isCreatingAccount: true } });
   }
 
   public signOutWithFirebase() {
@@ -107,5 +93,6 @@ export class HomepageComponent {
 
   constructor(
     public dialog: MatDialog,
-    public dialogRef: MatDialogRef<FilterDialogComponent>) { }
+    public dialogRef: MatDialogRef<FilterDialogComponent>,
+  ) {}
 }

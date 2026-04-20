@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {LitElement} from 'lit';
+import type { LitElement } from 'lit';
 
-import {MixinBase, MixinReturn} from './mixin.js';
+import type { MixinBase, MixinReturn } from './mixin.js';
 
 /**
  * A unique symbol used for protected access to an instance's
@@ -53,10 +53,7 @@ const privateInternals = Symbol('privateInternals');
 export function mixinElementInternals<T extends MixinBase<LitElement>>(
   base: T,
 ): MixinReturn<T, WithElementInternals> {
-  abstract class WithElementInternalsElement
-    extends base
-    implements WithElementInternals
-  {
+  abstract class WithElementInternalsElement extends base implements WithElementInternals {
     get [internals]() {
       // Create internals in getter so that it can be used in methods called on
       // construction in `ReactiveElement`, such as `requestUpdate()`.

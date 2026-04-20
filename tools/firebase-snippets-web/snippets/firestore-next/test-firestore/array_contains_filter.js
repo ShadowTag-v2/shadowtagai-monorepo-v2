@@ -5,6 +5,7 @@
 // 'npm run snippets'.
 
 // [START array_contains_filter_modular]
-import { query, where } from "firebase/firestore";
-const q = query(citiesRef, where("regions", "array-contains", "west_coast"));
+import { query, where } from 'firebase/firestore';
+
+const q = query(citiesRef, where('regions', 'array-contains', 'west_coast'));
 // [END array_contains_filter_modular]

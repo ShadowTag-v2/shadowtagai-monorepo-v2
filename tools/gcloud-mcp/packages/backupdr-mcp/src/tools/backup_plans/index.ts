@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-export * from './list_backup_plans.js';
 export * from './create_backup_plan.js';
 export * from './delete_backup_plan.js';
 export * from './get_backup_plan.js';
+export * from './list_backup_plans.js';
 export * from './update_backup_plan.js';

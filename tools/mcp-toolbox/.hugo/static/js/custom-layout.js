@@ -2,8 +2,7 @@
  * Custom Layout Interactivity
  * Handles dynamic offsets, DOM repositioning, and UI enhancements.
  */
-document.addEventListener('DOMContentLoaded', function() {
-
+document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   // DYNAMIC STYLES INJECTION
   // ==========================================================================
@@ -113,7 +112,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Create the Banner
   var banner = document.createElement('div');
   banner.className = 'theme-migration-banner';
-  banner.innerHTML = '⚠️ <strong>Archived Docs:</strong> Visit <a href="https://mcp-toolbox.dev/">mcp-toolbox.dev</a> for the latest version.';
+  banner.innerHTML =
+    '⚠️ <strong>Archived Docs:</strong> Visit <a href="https://mcp-toolbox.dev/">mcp-toolbox.dev</a> for the latest version.';
   wrapper.appendChild(banner);
 
   // Inject the wrapper into the center information column
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (contentArea) {
     contentArea.prepend(wrapper);
   } else {
-    console.warn("Could not find the main content column to inject the banner.");
+    console.warn('Could not find the main content column to inject the banner.');
   }
 
   // Initialize the dynamic offset
@@ -143,13 +143,14 @@ document.addEventListener('DOMContentLoaded', function() {
   // ==========================================================================
   // BREADCRUMBS REPOSITIONING
   // ==========================================================================
-  var breadcrumbs = document.querySelector('.td-breadcrumbs') || document.querySelector('nav[aria-label="breadcrumb"]');
+  var breadcrumbs =
+    document.querySelector('.td-breadcrumbs') ||
+    document.querySelector('nav[aria-label="breadcrumb"]');
   var pageTitle = document.querySelector('.td-content h1');
 
   if (breadcrumbs && pageTitle) {
     pageTitle.parentNode.insertBefore(breadcrumbs, pageTitle);
-    breadcrumbs.style.marginTop = "1rem";
-    breadcrumbs.style.marginBottom = "2rem";
+    breadcrumbs.style.marginTop = '1rem';
+    breadcrumbs.style.marginBottom = '2rem';
   }
-
 });

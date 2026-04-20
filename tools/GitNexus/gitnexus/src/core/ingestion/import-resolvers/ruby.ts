@@ -3,9 +3,9 @@
  * Handles path resolution for Ruby's require and require_relative calls.
  */
 
+import type { ImportResult, ResolveCtx } from './types.js';
 import type { SuffixIndex } from './utils.js';
 import { suffixResolve } from './utils.js';
-import type { ImportResult, ResolveCtx } from './types.js';
 
 /**
  * Resolve a Ruby require/require_relative path to a matching .rb file (low-level helper).
@@ -29,6 +29,11 @@ export function resolveRubyImport(
   _filePath: string,
   ctx: ResolveCtx,
 ): ImportResult {
-  const resolved = resolveRubyImportInternal(rawImportPath, ctx.normalizedFileList, ctx.allFileList, ctx.index);
+  const resolved = resolveRubyImportInternal(
+    rawImportPath,
+    ctx.normalizedFileList,
+    ctx.allFileList,
+    ctx.index,
+  );
   return resolved ? { kind: 'files', files: [resolved] } : null;
 }

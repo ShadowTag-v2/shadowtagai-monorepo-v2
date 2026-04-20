@@ -27,9 +27,6 @@ export function ariaSelector(selector: string) {
     return selector;
   }
 
-  const selectorWithDataShifted = selector.replaceAll(
-    HAS_ARIA_ATTRIBUTE_REGEX,
-    '[data-$1',
-  );
+  const selectorWithDataShifted = selector.replaceAll(HAS_ARIA_ATTRIBUTE_REGEX, '[data-$1');
   return `${selector},${selectorWithDataShifted}`;
 }

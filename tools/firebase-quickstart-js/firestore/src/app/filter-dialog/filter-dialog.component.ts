@@ -15,9 +15,8 @@
  */
 
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DialogData, filterCategories, filterCities } from './dialogdata';
-
+import { MAT_DIALOG_DATA, type MatDialogRef } from '@angular/material/dialog';
+import { type DialogData, filterCategories, filterCities } from './dialogdata';
 
 @Component({
   selector: 'app-filter-dialog',
@@ -46,5 +45,4 @@ export class FilterDialogComponent {
   onCancelClick(): void {
     this.dialogRef.close(this.data);
   }
-
 }

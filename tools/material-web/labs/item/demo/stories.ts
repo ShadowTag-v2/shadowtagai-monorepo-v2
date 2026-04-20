@@ -7,9 +7,9 @@
 import '@material/web/icon/icon.js';
 import '@material/web/labs/item/item.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {css, html, nothing} from 'lit';
-import {classMap} from 'lit/directives/class-map.js';
+import { css, html, nothing } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for item stories. */
 export interface StoryKnobs {
@@ -116,9 +116,7 @@ const longText: MaterialStoryInit<StoryKnobs> = {
 };
 
 function getKnobContent(knobs: StoryKnobs, threeLines = false) {
-  const overline = knobs.overline
-    ? html`<div slot="overline">${knobs.overline}</div>`
-    : nothing;
+  const overline = knobs.overline ? html`<div slot="overline">${knobs.overline}</div>` : nothing;
 
   const classes = {
     'align-start': threeLines,

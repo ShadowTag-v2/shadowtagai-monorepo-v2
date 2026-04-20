@@ -17,17 +17,17 @@
  */
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import yargs, { type ArgumentsCamelCase, type CommandModule } from 'yargs';
+import { hideBin } from 'yargs/helpers';
+import pkg from '../package.json' with { type: 'json' };
+import { init } from './commands/init.js';
 import {
   commonSafeTools,
   destructiveWriteTools,
   otherDestructiveTools,
   safeWriteTools,
 } from './tools/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import pkg from '../package.json' with { type: 'json' };
-import yargs, { ArgumentsCamelCase, CommandModule } from 'yargs';
-import { hideBin } from 'yargs/helpers';
-import { init } from './commands/init.js';
 import { log } from './utility/logger.js';
 
 const exitProcessAfter = <T, U>(cmd: CommandModule<T, U>): CommandModule<T, U> => ({

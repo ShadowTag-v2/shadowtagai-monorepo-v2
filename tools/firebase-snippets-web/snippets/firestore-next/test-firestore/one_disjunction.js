@@ -5,5 +5,5 @@
 // 'npm run snippets'.
 
 // [START one_disjunction_modular]
-query(collectionRef, where("a", "==", 1));
+query(collectionRef, where('a', '==', 1));
 // [END one_disjunction_modular]

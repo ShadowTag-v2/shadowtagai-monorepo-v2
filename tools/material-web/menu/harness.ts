@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {LitElement} from 'lit';
+import type { LitElement } from 'lit';
 
-import {Harness} from '../testing/harness.js';
+import { Harness } from '../testing/harness.js';
 
-import {Menu} from './internal/menu.js';
-import {MenuItemHarness} from './internal/menuitem/harness.js';
+import type { Menu } from './internal/menu.js';
+import { MenuItemHarness } from './internal/menuitem/harness.js';
 
-export {MenuItemHarness} from './internal/menuitem/harness.js';
+export { MenuItemHarness } from './internal/menuitem/harness.js';
 
 /**
  * Test harness for menu.
@@ -27,9 +27,7 @@ export class MenuHarness extends Harness<Menu> {
 
   /** @return ListItem harnesses for the menu's items. */
   getItems() {
-    return this.element.items.map(
-      (item) => new MenuItemHarness(item as typeof item & LitElement),
-    );
+    return this.element.items.map((item) => new MenuItemHarness(item as typeof item & LitElement));
   }
 
   async show() {
@@ -44,7 +42,7 @@ export class MenuHarness extends Harness<Menu> {
         () => {
           resolve(true);
         },
-        {once: true},
+        { once: true },
       );
     });
 

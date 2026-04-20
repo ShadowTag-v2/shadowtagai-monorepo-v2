@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_msft_signin_redirect_result_modular]
-import { getAuth, getRedirectResult, OAuthProvider } from "firebase/auth";
+import { getAuth, getRedirectResult, OAuthProvider } from 'firebase/auth';
 
 const auth = getAuth();
 getRedirectResult(auth)

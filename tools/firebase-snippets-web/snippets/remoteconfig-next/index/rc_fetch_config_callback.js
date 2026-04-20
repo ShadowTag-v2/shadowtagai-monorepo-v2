@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START rc_fetch_config_callback_modular]
-import { fetchAndActivate } from "firebase/remote-config";
+import { fetchAndActivate } from 'firebase/remote-config';
 
 fetchAndActivate(remoteConfig)
   .then(() => {

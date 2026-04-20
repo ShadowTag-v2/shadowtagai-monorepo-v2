@@ -6,17 +6,17 @@
 
 // import 'jasmine'; (google3-only)
 
-import {html} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import { html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {Environment} from '../../testing/environment.js';
-import {Harness} from '../../testing/harness.js';
-import {ChipHarness} from '../harness.js';
+import { Environment } from '../../testing/environment.js';
+import { Harness } from '../../testing/harness.js';
+import { ChipHarness } from '../harness.js';
 
-import {AssistChip} from './assist-chip.js';
-import {Chip} from './chip.js';
-import {ChipSet} from './chip-set.js';
-import {InputChip} from './input-chip.js';
+import { AssistChip } from './assist-chip.js';
+import type { Chip } from './chip.js';
+import { ChipSet } from './chip-set.js';
+import { InputChip } from './input-chip.js';
 
 @customElement('test-chip-set')
 class TestChipSet extends ChipSet {}
@@ -64,15 +64,9 @@ describe('Chip set', () => {
         new TestAssistChip(),
       ]);
 
-      expect(chipSet.chips[0].getAttribute('tabindex'))
-        .withContext('first tabindex')
-        .toBe('0');
-      expect(chipSet.chips[1].getAttribute('tabindex'))
-        .withContext('second tabindex')
-        .toBe('-1');
-      expect(chipSet.chips[2].getAttribute('tabindex'))
-        .withContext('third tabindex')
-        .toBe('-1');
+      expect(chipSet.chips[0].getAttribute('tabindex')).withContext('first tabindex').toBe('0');
+      expect(chipSet.chips[1].getAttribute('tabindex')).withContext('second tabindex').toBe('-1');
+      expect(chipSet.chips[2].getAttribute('tabindex')).withContext('third tabindex').toBe('-1');
     });
 
     async function testNavigation({
@@ -245,7 +239,7 @@ describe('Chip set', () => {
       // Don't use harness focusing since we need to test real focus states
       second.focus();
       await harness.keypress('ArrowLeft');
-      const {trailingAction} = first as unknown as {
+      const { trailingAction } = first as unknown as {
         trailingAction: HTMLElement;
       };
       expect(trailingAction.matches(':focus-within'))
@@ -263,9 +257,7 @@ describe('Chip set', () => {
       // Don't use harness focusing since we need to test real focus states
       first.focus();
       await harness.keypress('Enter');
-      expect(first.matches(':focus-within'))
-        .withContext('first chip is still focused')
-        .toBeTrue();
+      expect(first.matches(':focus-within')).withContext('first chip is still focused').toBeTrue();
     });
 
     it('should do nothing if there are not at least two chips', async () => {

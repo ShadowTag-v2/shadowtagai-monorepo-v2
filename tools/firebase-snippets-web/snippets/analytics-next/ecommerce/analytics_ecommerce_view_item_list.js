@@ -5,13 +5,13 @@
 // 'npm run snippets'.
 
 // [START analytics_ecommerce_view_item_list_modular]
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 // Prepare ecommerce params
 const params1 = {
   item_list_id: 'L001',
   item_list_name: 'Related products',
-  items: [item_jeggings, item_boots, item_socks]
+  items: [item_jeggings, item_boots, item_socks],
 };
 
 // Log event

@@ -13,7 +13,9 @@
         },
         {
           "rubricId": "helpfulness",
-          "rubricContent": { "textProperty": "The response is helpful and provides useful information." }
+          "rubricContent": {
+            "textProperty": "The response is helpful and provides useful information."
+          }
         }
       ]
     }

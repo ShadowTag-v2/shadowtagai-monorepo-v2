@@ -11,8 +11,8 @@ module.exports = defineConfig({
     viewport: { width: 1280, height: 720 },
     // Auto-enable DevTools logging for a11y parameters
     launchOptions: {
-      args: ['--enable-blink-features=AccessibilityObjectModel']
-    }
+      args: ['--enable-blink-features=AccessibilityObjectModel'],
+    },
   },
   projects: [
     {

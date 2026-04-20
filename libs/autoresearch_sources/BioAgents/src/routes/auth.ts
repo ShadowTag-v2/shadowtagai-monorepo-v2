@@ -1,8 +1,8 @@
-import { Elysia, t } from "elysia";
-import * as jose from "jose";
-import { verifyJWT } from "../services/jwt";
+import { Elysia, t } from 'elysia';
+import * as jose from 'jose';
+import { verifyJWT } from '../services/jwt';
 
-const UI_PASSWORD = process.env.UI_PASSWORD || "";
+const UI_PASSWORD = process.env.UI_PASSWORD || '';
 const JWT_EXPIRATION = 24 * 60 * 60; // 24 hours in seconds
 
 /**
@@ -12,7 +12,7 @@ const JWT_EXPIRATION = 24 * 60 * 60; // 24 hours in seconds
 async function generateUIToken(userId: string): Promise<string | null> {
   const secret = process.env.BIOAGENTS_SECRET;
   if (!secret) {
-    console.warn("[Auth] BIOAGENTS_SECRET not configured, cannot generate JWT");
+    console.warn('[Auth] BIOAGENTS_SECRET not configured, cannot generate JWT');
     return null;
   }
 
@@ -21,9 +21,9 @@ async function generateUIToken(userId: string): Promise<string | null> {
 
   const jwt = await new jose.SignJWT({
     sub: userId,
-    type: "ui_session", // Mark this as a UI session token
+    type: 'ui_session', // Mark this as a UI session token
   })
-    .setProtectedHeader({ alg: "HS256" })
+    .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt(now)
     .setExpirationTime(now + JWT_EXPIRATION)
     .sign(secretKey);
@@ -38,13 +38,13 @@ async function generateUIToken(userId: string): Promise<string | null> {
 function generateDevUserId(): string {
   // Use a fixed UUID for dev UI users - this ensures conversation persistence
   // In a real system, you'd have actual user accounts
-  return "550e8400-e29b-41d4-a716-446655440000";
+  return '550e8400-e29b-41d4-a716-446655440000';
 }
 
-export const authRoute = new Elysia({ prefix: "/api/auth" })
+export const authRoute = new Elysia({ prefix: '/api/auth' })
   // Login endpoint - validates password and returns JWT
   .post(
-    "/login",
+    '/login',
     async ({ body, set }) => {
       // Check if BIOAGENTS_SECRET is configured (required for JWT)
       const hasSecret = !!process.env.BIOAGENTS_SECRET;
@@ -54,7 +54,7 @@ export const authRoute = new Elysia({ prefix: "/api/auth" })
         if (!hasSecret) {
           return {
             success: true,
-            message: "Authentication not required (no password or secret configured)",
+            message: 'Authentication not required (no password or secret configured)',
           };
         }
 
@@ -63,7 +63,7 @@ export const authRoute = new Elysia({ prefix: "/api/auth" })
         return {
           success: true,
           token,
-          message: "Authentication not required",
+          message: 'Authentication not required',
         };
       }
 
@@ -74,7 +74,7 @@ export const authRoute = new Elysia({ prefix: "/api/auth" })
           set.status = 500;
           return {
             success: false,
-            message: "Server misconfigured: BIOAGENTS_SECRET required for JWT auth",
+            message: 'Server misconfigured: BIOAGENTS_SECRET required for JWT auth',
           };
         }
 
@@ -82,7 +82,7 @@ export const authRoute = new Elysia({ prefix: "/api/auth" })
         const token = await generateUIToken(generateDevUserId());
         if (!token) {
           set.status = 500;
-          return { success: false, message: "Failed to generate authentication token" };
+          return { success: false, message: 'Failed to generate authentication token' };
         }
 
         return {
@@ -94,7 +94,7 @@ export const authRoute = new Elysia({ prefix: "/api/auth" })
 
       // Invalid password
       set.status = 401;
-      return { success: false, message: "Invalid password" };
+      return { success: false, message: 'Invalid password' };
     },
     {
       body: t.Object({
@@ -104,14 +104,14 @@ export const authRoute = new Elysia({ prefix: "/api/auth" })
   )
 
   // Logout endpoint - client should clear stored token
-  .post("/logout", () => {
+  .post('/logout', () => {
     // JWT tokens are stateless - client just needs to delete them
     // No server-side state to clear
     return { success: true };
   })
 
   // Check auth status - validates JWT if provided
-  .get("/status", async ({ headers }) => {
+  .get('/status', async ({ headers }) => {
     const isAuthRequired = UI_PASSWORD.length > 0;
 
     // Check for JWT in Authorization header
@@ -120,7 +120,7 @@ export const authRoute = new Elysia({ prefix: "/api/auth" })
     let userId: string | null = null;
 
     if (authHeader) {
-      const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : authHeader;
+      const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
 
       const result = await verifyJWT(token);
       if (result.valid && result.payload) {

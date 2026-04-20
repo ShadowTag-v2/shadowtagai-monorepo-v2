@@ -16,8 +16,8 @@
 
 import { execaNode } from 'execa';
 import fs from 'fs-extra';
-import { join } from 'path';
 import { createRequire } from 'module';
+import { join } from 'path';
 
 async function apiReport(opts) {
   const cwd = opts.cwd;
@@ -55,14 +55,14 @@ async function apiReport(opts) {
         'ae-unresolved-link': {
           // Error on unresolved link because this can
           // lead to a bad user experience when reading docs.
-          logLevel: 'error'
+          logLevel: 'error',
         },
         'ae-extra-release-tag': {
           // @internal tag is used for TSDoc
           // @private tag is used for JSDoc
           // TODO: Suppress this warning until we drop JSDoc.
-          logLevel: 'none'
-        }
+          logLevel: 'none',
+        },
       },
       tsdocMessageReporting: {
         'tsdoc-param-tag-missing-hyphen': {
@@ -70,24 +70,16 @@ async function apiReport(opts) {
           // TSDoc works fine without the hypen, and JSDoc does not use it.
           // TODO: Suppress this warning until we drop JSDoc.
           logLevel: 'none',
-          "addToApiReportFile": false
-        }
-      }
+          addToApiReportFile: false,
+        },
+      },
     },
   };
   const apiExtractorConfigPath = join(cwd, 'api-extractor.json');
-  await fs.writeFile(
-    apiExtractorConfigPath,
-    JSON.stringify(apiExtractorConfig, null, 2),
-  );
+  await fs.writeFile(apiExtractorConfigPath, JSON.stringify(apiExtractorConfig, null, 2));
 
   // Run API Extractor
-  const apiExtractorCmd = join(
-    process.cwd(),
-    'node_modules',
-    '.bin',
-    'api-extractor',
-  );
+  const apiExtractorCmd = join(process.cwd(), 'node_modules', '.bin', 'api-extractor');
   await withLogs(execaNode)(apiExtractorCmd, ['run', '--local']);
 
   // Cleanup
@@ -97,8 +89,8 @@ async function apiReport(opts) {
 }
 
 function withLogs(execaFn) {
-  return async function (cmd, args, cwd) {
-    const opts = {cwd};
+  return async (cmd, args, cwd) => {
+    const opts = { cwd };
 
     opts.stdout = process.stdout;
     opts.stderr = process.stderr;
@@ -109,14 +101,12 @@ function withLogs(execaFn) {
 
 const require = createRequire(import.meta.url);
 apiReport({
-  cloudRadApiExtractorConfigPath: require.resolve(
-    '@google-cloud/cloud-rad/api-extractor.json',
-  ),
+  cloudRadApiExtractorConfigPath: require.resolve('@google-cloud/cloud-rad/api-extractor.json'),
   cwd: process.cwd(),
 })
-  .then(outputDir => {
+  .then((outputDir) => {
     console.log(`SUCCESS: API Report written to ${outputDir}`);
   })
-  .catch(err => {
+  .catch((err) => {
     console.log(`FAILED: ${err}`);
   });

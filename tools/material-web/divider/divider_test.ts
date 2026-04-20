@@ -6,9 +6,9 @@
 
 // import 'jasmine'; (google3-only)
 
-import {createTokenTests} from '../testing/tokens.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdDivider} from './divider.js';
+import { MdDivider } from './divider.js';
 
 describe('<md-divider>', () => {
   describe('.styles', () => {

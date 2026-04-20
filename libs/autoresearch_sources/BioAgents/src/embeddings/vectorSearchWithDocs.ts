@@ -1,9 +1,9 @@
 // lib/vectorSearchWithDocs.ts
-import { getServiceClient } from "../db/client";
-import logger from "../utils/logger";
-import { DocumentProcessor } from "./documentProcessor";
-import { TextChunker } from "./textChunker";
-import { VectorSearchWithReranker } from "./vectorSearch";
+import { getServiceClient } from '../db/client';
+import logger from '../utils/logger';
+import { DocumentProcessor } from './documentProcessor';
+import { TextChunker } from './textChunker';
+import { VectorSearchWithReranker } from './vectorSearch';
 
 // Use service client to bypass RLS for document operations
 const supabase = getServiceClient();
@@ -23,12 +23,12 @@ export class VectorSearchWithDocuments extends VectorSearchWithReranker {
 
     // 1. Get all unique titles currently stored in the database using DISTINCT
     const { data: existingDocs, error } = await supabase
-      .from("documents")
-      .select("title", { count: "exact" })
+      .from('documents')
+      .select('title', { count: 'exact' })
       .limit(10000);
 
     if (error) {
-      logger.error("DB Error: Could not fetch existing document titles.", error as any);
+      logger.error('DB Error: Could not fetch existing document titles.', error as any);
       return;
     }
 
@@ -39,7 +39,7 @@ export class VectorSearchWithDocuments extends VectorSearchWithReranker {
     // 2. Process all local files to get their titles and content.
     const localDocs = await this.documentProcessor.processDirectory(dirPath);
     if (localDocs.length === 0) {
-      logger.info("📂 No local documents found in the specified directory.");
+      logger.info('📂 No local documents found in the specified directory.');
       return;
     }
 
@@ -59,7 +59,7 @@ export class VectorSearchWithDocuments extends VectorSearchWithReranker {
     });
 
     if (newDocuments.length === 0) {
-      logger.info("✅ All local documents are already in the database. No action needed.");
+      logger.info('✅ All local documents are already in the database. No action needed.');
       return;
     }
 
@@ -111,7 +111,7 @@ export class VectorSearchWithDocuments extends VectorSearchWithReranker {
         logger.error(`  - Failed to add batch starting at index ${i}: ${e.message}`);
         logger.error(`  - Error details:`, e);
         // Log which documents were in this batch
-        logger.error(`  - Documents in failed batch: ${batch.map((d) => d.title).join(", ")}`);
+        logger.error(`  - Documents in failed batch: ${batch.map((d) => d.title).join(', ')}`);
       }
     }
 

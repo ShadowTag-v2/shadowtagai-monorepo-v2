@@ -6,9 +6,9 @@
 
 // import 'jasmine'; (google3-only)
 
-import {createTokenTests} from '../testing/tokens.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdAssistChip} from './assist-chip.js';
+import { MdAssistChip } from './assist-chip.js';
 
 describe('<md-assist-chip>', () => {
   describe('.styles', () => {

@@ -5,19 +5,19 @@
 // 'npm run snippets'.
 
 // [START analytics_ecommerce_add_cart_modular]
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 // Specify order quantity
 const item_jeggings_quantity = {
   ...item_jeggings,
-  quantity: 2
+  quantity: 2,
 };
 
 // Prepare ecommerce bundle
 const params4 = {
   currency: 'USD',
   value: 19.98,
-  items: [item_jeggings_quantity]
+  items: [item_jeggings_quantity],
 };
 
 // Log event when a product is added to a wishlist

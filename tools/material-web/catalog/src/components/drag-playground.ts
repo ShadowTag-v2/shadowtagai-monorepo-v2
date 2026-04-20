@@ -4,9 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-
-import { LitElement, css, html } from 'lit';
-import { customElement, state, query } from 'lit/decorators.js';
+import { css, html, LitElement } from 'lit';
+import { customElement, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import '@material/web/icon/icon.js';
@@ -194,8 +193,7 @@ export class DragPlayground extends LitElement {
     if (!this.isDragging) return;
 
     const { clientY: mouseY } = event;
-    const { top: wrapperTop, bottom: wrapperBottom } =
-      this.wrapperEl.getBoundingClientRect();
+    const { top: wrapperTop, bottom: wrapperBottom } = this.wrapperEl.getBoundingClientRect();
 
     // The height of the wrapper
     const height = wrapperBottom - wrapperTop;

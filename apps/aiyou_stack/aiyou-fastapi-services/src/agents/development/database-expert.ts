@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from "../../types/agent.types";
-import { BaseAgent } from "../../utils/base-agent";
+} from '../../types/agent.types';
+import { BaseAgent } from '../../utils/base-agent';
 
 export class DatabaseExpertAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: "database-expert",
-    name: "Database Expert",
-    category: "development",
+    id: 'database-expert',
+    name: 'Database Expert',
+    category: 'development',
     description:
-      "Fixes those queries that take 30 seconds. Designs schemas that scale to millions.",
-    tagline: "Database optimization and schema design",
-    capabilities: ["analysis", "optimization", "implementation"],
-    tags: ["database", "sql", "nosql", "optimization", "indexing", "migrations"],
-    difficulty: "advanced",
-    estimatedTime: "2-4 hours",
+      'Fixes those queries that take 30 seconds. Designs schemas that scale to millions.',
+    tagline: 'Database optimization and schema design',
+    capabilities: ['analysis', 'optimization', 'implementation'],
+    tags: ['database', 'sql', 'nosql', 'optimization', 'indexing', 'migrations'],
+    difficulty: 'advanced',
+    estimatedTime: '2-4 hours',
   };
 
   prompt: AgentPromptTemplate = {
@@ -49,42 +49,42 @@ Turn 30-second queries into 30-millisecond queries.`,
   };
 
   tools: AgentTools = {
-    required: ["Glob", "Read", "Grep", "Write", "Edit"],
-    optional: ["Bash"],
+    required: ['Glob', 'Read', 'Grep', 'Write', 'Edit'],
+    optional: ['Bash'],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: "Schema Analysis",
-        description: "Review database schema and relationships",
-        action: "Analyze tables, indexes, constraints",
+        name: 'Schema Analysis',
+        description: 'Review database schema and relationships',
+        action: 'Analyze tables, indexes, constraints',
       },
       {
-        name: "Query Profiling",
-        description: "Identify slow queries",
-        action: "Profile queries and analyze execution plans",
+        name: 'Query Profiling',
+        description: 'Identify slow queries',
+        action: 'Profile queries and analyze execution plans',
       },
       {
-        name: "Optimization",
-        description: "Optimize queries and add indexes",
-        action: "Rewrite queries, add indexes, eliminate N+1",
+        name: 'Optimization',
+        description: 'Optimize queries and add indexes',
+        action: 'Rewrite queries, add indexes, eliminate N+1',
       },
       {
-        name: "Schema Improvements",
-        description: "Improve schema design",
-        action: "Normalize/denormalize, add constraints",
+        name: 'Schema Improvements',
+        description: 'Improve schema design',
+        action: 'Normalize/denormalize, add constraints',
       },
       {
-        name: "Migration",
-        description: "Create database migrations",
-        action: "Generate safe migration scripts",
+        name: 'Migration',
+        description: 'Create database migrations',
+        action: 'Generate safe migration scripts',
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow["steps"][0],
+    step: AgentWorkflow['steps'][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

@@ -5,15 +5,14 @@
 // 'npm run snippets'.
 
 // [START fb_functions_call_add_message_modular]
-import { getFunctions, httpsCallable } from "firebase/functions";
+import { getFunctions, httpsCallable } from 'firebase/functions';
 
 const functions = getFunctions();
 const addMessage = httpsCallable(functions, 'addMessage');
-addMessage({ text: messageText })
-  .then((result) => {
-    // Read result of the Cloud Function.
-    /** @type {any} */
-    const data = result.data;
-    const sanitizedMessage = data.text;
-  });
+addMessage({ text: messageText }).then((result) => {
+  // Read result of the Cloud Function.
+  /** @type {any} */
+  const data = result.data;
+  const sanitizedMessage = data.text;
+});
 // [END fb_functions_call_add_message_modular]

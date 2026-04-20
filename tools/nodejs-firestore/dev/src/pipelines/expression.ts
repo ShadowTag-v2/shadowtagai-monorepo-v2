@@ -13,12 +13,15 @@
 // limitations under the License.
 
 import * as protos from '../../protos/firestore_v1_proto_api';
+
 import api = protos.google.firestore.v1;
 
 import type * as firestore from '@google-cloud/firestore';
 
-import {VectorValue} from '../field-value';
-import {FieldPath} from '../path';
+import type { VectorValue } from '../field-value';
+import { FieldPath } from '../path';
+import { type HasUserData, type Serializer, validateUserInput } from '../serializer';
+import { cast } from '../util';
 import {
   fieldOrExpression,
   isFirestoreValue,
@@ -26,8 +29,6 @@ import {
   valueToDefaultExpr,
   vectorToExpr,
 } from './pipeline-util';
-import {HasUserData, Serializer, validateUserInput} from '../serializer';
-import {cast} from '../util';
 
 /**
  * @beta
@@ -76,9 +77,7 @@ export type Type =
  * The `Expression` class provides a fluent API for building expressions. You can chain together
  * method calls to create complex expressions.
  */
-export abstract class Expression
-  implements firestore.Pipelines.Expression, HasUserData
-{
+export abstract class Expression implements firestore.Pipelines.Expression, HasUserData {
   abstract expressionType: firestore.Pipelines.ExpressionType;
 
   /**
@@ -126,7 +125,7 @@ export abstract class Expression
     const values = [second, ...others];
     return new FunctionExpression('add', [
       this,
-      ...values.map(value => valueToDefaultExpr(value)),
+      ...values.map((value) => valueToDefaultExpr(value)),
     ]);
   }
 
@@ -146,9 +145,7 @@ export abstract class Expression
     } else if (this instanceof FunctionExpression) {
       return new BooleanFunctionExpression(this);
     } else {
-      throw new Error(
-        `Conversion of type ${typeof this} to BooleanExpression not supported.`,
-      );
+      throw new Error(`Conversion of type ${typeof this} to BooleanExpression not supported.`);
     }
   }
 
@@ -181,13 +178,8 @@ export abstract class Expression
    * @returns A new `Expression` representing the subtraction operation.
    */
   subtract(subtrahend: number): FunctionExpression;
-  subtract(
-    subtrahend: number | firestore.Pipelines.Expression,
-  ): FunctionExpression {
-    return new FunctionExpression('subtract', [
-      this,
-      valueToDefaultExpr(subtrahend),
-    ]);
+  subtract(subtrahend: number | firestore.Pipelines.Expression): FunctionExpression {
+    return new FunctionExpression('subtract', [this, valueToDefaultExpr(subtrahend)]);
   }
 
   /**
@@ -204,14 +196,11 @@ export abstract class Expression
    * @param others Optional additional expressions or literals to multiply by.
    * @returns A new `Expression` representing the multiplication operation.
    */
-  multiply(
-    second: Expression | number,
-    ...others: Array<Expression | number>
-  ): FunctionExpression {
+  multiply(second: Expression | number, ...others: Array<Expression | number>): FunctionExpression {
     return new FunctionExpression('multiply', [
       this,
       valueToDefaultExpr(second),
-      ...others.map(value => valueToDefaultExpr(value)),
+      ...others.map((value) => valueToDefaultExpr(value)),
     ]);
   }
 
@@ -245,10 +234,7 @@ export abstract class Expression
    */
   divide(divisor: number): FunctionExpression;
   divide(divisor: number | Expression): FunctionExpression {
-    return new FunctionExpression('divide', [
-      this,
-      valueToDefaultExpr(divisor),
-    ]);
+    return new FunctionExpression('divide', [this, valueToDefaultExpr(divisor)]);
   }
 
   /**
@@ -314,10 +300,7 @@ export abstract class Expression
    */
   equal(value: unknown): BooleanExpression;
   equal(other: unknown): BooleanExpression {
-    return new FunctionExpression('equal', [
-      this,
-      valueToDefaultExpr(other),
-    ]).asBoolean();
+    return new FunctionExpression('equal', [this, valueToDefaultExpr(other)]).asBoolean();
   }
 
   /**
@@ -350,10 +333,7 @@ export abstract class Expression
    */
   notEqual(value: unknown): BooleanExpression;
   notEqual(other: unknown): BooleanExpression {
-    return new FunctionExpression('not_equal', [
-      this,
-      valueToDefaultExpr(other),
-    ]).asBoolean();
+    return new FunctionExpression('not_equal', [this, valueToDefaultExpr(other)]).asBoolean();
   }
 
   /**
@@ -386,10 +366,7 @@ export abstract class Expression
    */
   lessThan(value: unknown): BooleanExpression;
   lessThan(other: unknown): BooleanExpression {
-    return new FunctionExpression('less_than', [
-      this,
-      valueToDefaultExpr(other),
-    ]).asBoolean();
+    return new FunctionExpression('less_than', [this, valueToDefaultExpr(other)]).asBoolean();
   }
 
   /**
@@ -459,10 +436,7 @@ export abstract class Expression
    */
   greaterThan(value: unknown): BooleanExpression;
   greaterThan(other: unknown): BooleanExpression {
-    return new FunctionExpression('greater_than', [
-      this,
-      valueToDefaultExpr(other),
-    ]).asBoolean();
+    return new FunctionExpression('greater_than', [this, valueToDefaultExpr(other)]).asBoolean();
   }
 
   /**
@@ -521,7 +495,7 @@ export abstract class Expression
     ...otherArrays: Array<Expression | unknown[]>
   ): FunctionExpression {
     const elements = [secondArray, ...otherArrays];
-    const exprValues = elements.map(value => valueToDefaultExpr(value));
+    const exprValues = elements.map((value) => valueToDefaultExpr(value));
     return new FunctionExpression('array_concat', [this, ...exprValues]);
   }
 
@@ -594,10 +568,7 @@ export abstract class Expression
     const normalizedExpr = Array.isArray(values)
       ? new ListOfExprs(values.map(valueToDefaultExpr))
       : cast<Expression>(values);
-    return new FunctionExpression('array_contains_all', [
-      this,
-      normalizedExpr,
-    ]).asBoolean();
+    return new FunctionExpression('array_contains_all', [this, normalizedExpr]).asBoolean();
   }
 
   /**
@@ -630,16 +601,11 @@ export abstract class Expression
    * @returns A new `Expression` representing the 'array_contains_any' comparison.
    */
   arrayContainsAny(arrayExpression: Expression): BooleanExpression;
-  arrayContainsAny(
-    values: Array<unknown | Expression> | Expression,
-  ): BooleanExpression {
+  arrayContainsAny(values: Array<unknown | Expression> | Expression): BooleanExpression {
     const normalizedExpr = Array.isArray(values)
       ? new ListOfExprs(values.map(valueToDefaultExpr))
       : cast<Expression>(values);
-    return new FunctionExpression('array_contains_any', [
-      this,
-      normalizedExpr,
-    ]).asBoolean();
+    return new FunctionExpression('array_contains_any', [this, normalizedExpr]).asBoolean();
   }
 
   /**
@@ -720,10 +686,7 @@ export abstract class Expression
    */
   arrayFirstN(n: Expression): FunctionExpression;
   arrayFirstN(n: number | Expression): FunctionExpression {
-    return new FunctionExpression('array_first_n', [
-      this,
-      valueToDefaultExpr(n),
-    ]);
+    return new FunctionExpression('array_first_n', [this, valueToDefaultExpr(n)]);
   }
 
   /**
@@ -772,10 +735,7 @@ export abstract class Expression
    */
   arrayLastN(n: Expression): FunctionExpression;
   arrayLastN(n: number | Expression): FunctionExpression {
-    return new FunctionExpression('array_last_n', [
-      this,
-      valueToDefaultExpr(n),
-    ]);
+    return new FunctionExpression('array_last_n', [this, valueToDefaultExpr(n)]);
   }
 
   /**
@@ -996,10 +956,7 @@ export abstract class Expression
    */
   arrayIndexOfAll(search: Expression): FunctionExpression;
   arrayIndexOfAll(search: unknown | Expression): FunctionExpression {
-    return new FunctionExpression('array_index_of_all', [
-      this,
-      valueToDefaultExpr(search),
-    ]);
+    return new FunctionExpression('array_index_of_all', [this, valueToDefaultExpr(search)]);
   }
 
   /**
@@ -1074,10 +1031,7 @@ export abstract class Expression
     const exprOthers = Array.isArray(others)
       ? new ListOfExprs(others.map(valueToDefaultExpr))
       : cast<Expression>(others);
-    return new FunctionExpression('not_equal_any', [
-      this,
-      exprOthers,
-    ]).asBoolean();
+    return new FunctionExpression('not_equal_any', [this, exprOthers]).asBoolean();
   }
 
   /**
@@ -1142,10 +1096,7 @@ export abstract class Expression
    */
   like(pattern: Expression): BooleanExpression;
   like(stringOrExpr: string | Expression): BooleanExpression {
-    return new FunctionExpression('like', [
-      this,
-      valueToDefaultExpr(stringOrExpr),
-    ]).asBoolean();
+    return new FunctionExpression('like', [this, valueToDefaultExpr(stringOrExpr)]).asBoolean();
   }
 
   /**
@@ -1222,10 +1173,7 @@ export abstract class Expression
    */
   regexFind(pattern: Expression): FunctionExpression;
   regexFind(stringOrExpr: string | Expression): FunctionExpression {
-    return new FunctionExpression('regex_find', [
-      this,
-      valueToDefaultExpr(stringOrExpr),
-    ]);
+    return new FunctionExpression('regex_find', [this, valueToDefaultExpr(stringOrExpr)]);
   }
 
   /**
@@ -1266,10 +1214,7 @@ export abstract class Expression
    */
   regexFindAll(pattern: Expression): FunctionExpression;
   regexFindAll(stringOrExpr: string | Expression): FunctionExpression {
-    return new FunctionExpression('regex_find_all', [
-      this,
-      valueToDefaultExpr(stringOrExpr),
-    ]);
+    return new FunctionExpression('regex_find_all', [this, valueToDefaultExpr(stringOrExpr)]);
   }
 
   /**
@@ -1466,9 +1411,7 @@ export abstract class Expression
    * trimmed from the input. If not specified, then whitespace will be trimmed.
    * @returns A new `Expr` representing the trimmed string or byte array.
    */
-  trim(
-    valueToTrim?: string | Expression | Uint8Array | Buffer,
-  ): FunctionExpression {
+  trim(valueToTrim?: string | Expression | Uint8Array | Buffer): FunctionExpression {
     const args: Expression[] = [this];
     if (valueToTrim) {
       args.push(valueToDefaultExpr(valueToTrim));
@@ -1493,9 +1436,7 @@ export abstract class Expression
    * If not specified, whitespace will be trimmed.
    * @returns A new `Expression` representing the trimmed string.
    */
-  ltrim(
-    valueToTrim?: string | Expression | Uint8Array | Buffer,
-  ): FunctionExpression {
+  ltrim(valueToTrim?: string | Expression | Uint8Array | Buffer): FunctionExpression {
     const args: Expression[] = [this];
     if (valueToTrim) {
       args.push(valueToDefaultExpr(valueToTrim));
@@ -1520,9 +1461,7 @@ export abstract class Expression
    * If not specified, whitespace will be trimmed.
    * @returns A new `Expression` representing the trimmed string or byte array.
    */
-  rtrim(
-    valueToTrim?: string | Expression | Uint8Array | Buffer,
-  ): FunctionExpression {
+  rtrim(valueToTrim?: string | Expression | Uint8Array | Buffer): FunctionExpression {
     const args: Expression[] = [this];
     if (valueToTrim) {
       args.push(valueToDefaultExpr(valueToTrim));
@@ -1566,13 +1505,8 @@ export abstract class Expression
    * @param search The substring or byte sequence to search for.
    * @returns A new `Expression` representing the index of the first occurrence.
    */
-  stringIndexOf(
-    search: string | Expression | Uint8Array | Buffer,
-  ): FunctionExpression {
-    return new FunctionExpression('string_index_of', [
-      this,
-      valueToDefaultExpr(search),
-    ]);
+  stringIndexOf(search: string | Expression | Uint8Array | Buffer): FunctionExpression {
+    return new FunctionExpression('string_index_of', [this, valueToDefaultExpr(search)]);
   }
 
   /**
@@ -1589,10 +1523,7 @@ export abstract class Expression
    * @returns A new `Expression` representing the repeated string or byte array.
    */
   stringRepeat(repetitions: number | Expression): FunctionExpression {
-    return new FunctionExpression('string_repeat', [
-      this,
-      valueToDefaultExpr(repetitions),
-    ]);
+    return new FunctionExpression('string_repeat', [this, valueToDefaultExpr(repetitions)]);
   }
 
   /**
@@ -1659,10 +1590,7 @@ export abstract class Expression
    * @param others Optional additional expressions or literals to concatenate.
    * @returns A new `Expr` representing the concatenated value.
    */
-  concat(
-    second: Expression | unknown,
-    ...others: Array<Expression | unknown>
-  ): FunctionExpression {
+  concat(second: Expression | unknown, ...others: Array<Expression | unknown>): FunctionExpression {
     const elements = [second, ...others];
     const exprs = elements.map(valueToDefaultExpr);
     return new FunctionExpression('concat', [this, ...exprs]);
@@ -2067,10 +1995,7 @@ export abstract class Expression
     ...others: Array<Expression | unknown>
   ): FunctionExpression {
     const values = [second, ...others];
-    return new FunctionExpression('maximum', [
-      this,
-      ...values.map(valueToDefaultExpr),
-    ]);
+    return new FunctionExpression('maximum', [this, ...values.map(valueToDefaultExpr)]);
   }
 
   /**
@@ -2092,10 +2017,7 @@ export abstract class Expression
     ...others: Array<Expression | unknown>
   ): FunctionExpression {
     const values = [second, ...others];
-    return new FunctionExpression('minimum', [
-      this,
-      ...values.map(valueToDefaultExpr),
-    ]);
+    return new FunctionExpression('minimum', [this, ...values.map(valueToDefaultExpr)]);
   }
 
   /**
@@ -2142,13 +2064,8 @@ export abstract class Expression
    * @returns A new `Expression` representing the Cosine distance between the two vectors.
    */
   cosineDistance(vector: firestore.VectorValue | number[]): FunctionExpression;
-  cosineDistance(
-    other: Expression | firestore.VectorValue | number[],
-  ): FunctionExpression {
-    return new FunctionExpression('cosine_distance', [
-      this,
-      vectorToExpr(other),
-    ]);
+  cosineDistance(other: Expression | firestore.VectorValue | number[]): FunctionExpression {
+    return new FunctionExpression('cosine_distance', [this, vectorToExpr(other)]);
   }
 
   /**
@@ -2180,9 +2097,7 @@ export abstract class Expression
    * @returns A new `Expression` representing the dot product between the two vectors.
    */
   dotProduct(vector: firestore.VectorValue | number[]): FunctionExpression;
-  dotProduct(
-    other: Expression | firestore.VectorValue | number[],
-  ): FunctionExpression {
+  dotProduct(other: Expression | firestore.VectorValue | number[]): FunctionExpression {
     return new FunctionExpression('dot_product', [this, vectorToExpr(other)]);
   }
 
@@ -2214,16 +2129,9 @@ export abstract class Expression
    * @param vector The other vector (as a VectorValue) to compare against.
    * @returns A new `Expression` representing the Euclidean distance between the two vectors.
    */
-  euclideanDistance(
-    vector: firestore.VectorValue | number[],
-  ): FunctionExpression;
-  euclideanDistance(
-    other: Expression | firestore.VectorValue | number[],
-  ): FunctionExpression {
-    return new FunctionExpression('euclidean_distance', [
-      this,
-      vectorToExpr(other),
-    ]);
+  euclideanDistance(vector: firestore.VectorValue | number[]): FunctionExpression;
+  euclideanDistance(other: Expression | firestore.VectorValue | number[]): FunctionExpression {
+    return new FunctionExpression('euclidean_distance', [this, vectorToExpr(other)]);
   }
 
   /**
@@ -2360,14 +2268,7 @@ export abstract class Expression
     amount: number,
   ): FunctionExpression;
   timestampAdd(
-    unit:
-      | Expression
-      | 'microsecond'
-      | 'millisecond'
-      | 'second'
-      | 'minute'
-      | 'hour'
-      | 'day',
+    unit: Expression | 'microsecond' | 'millisecond' | 'second' | 'minute' | 'hour' | 'day',
     amount: Expression | number,
   ): FunctionExpression {
     return new FunctionExpression('timestamp_add', [
@@ -2412,14 +2313,7 @@ export abstract class Expression
     amount: number,
   ): FunctionExpression;
   timestampSubtract(
-    unit:
-      | Expression
-      | 'microsecond'
-      | 'millisecond'
-      | 'second'
-      | 'minute'
-      | 'hour'
-      | 'day',
+    unit: Expression | 'microsecond' | 'millisecond' | 'second' | 'minute' | 'hour' | 'day',
     amount: Expression | number,
   ): FunctionExpression {
     return new FunctionExpression('timestamp_subtract', [
@@ -2464,19 +2358,12 @@ export abstract class Expression
    * substring will end at the end of the input.
    */
   substring(position: Expression, length?: Expression): FunctionExpression;
-  substring(
-    position: Expression | number,
-    length?: Expression | number,
-  ): FunctionExpression {
+  substring(position: Expression | number, length?: Expression | number): FunctionExpression {
     const positionExpr = valueToDefaultExpr(position);
     if (length === undefined) {
       return new FunctionExpression('substring', [this, positionExpr]);
     } else {
-      return new FunctionExpression('substring', [
-        this,
-        positionExpr,
-        valueToDefaultExpr(length),
-      ]);
+      return new FunctionExpression('substring', [this, positionExpr, valueToDefaultExpr(length)]);
     }
   }
 
@@ -2515,10 +2402,7 @@ export abstract class Expression
    */
   arrayGet(indexExpr: Expression): FunctionExpression;
   arrayGet(index: Expression | number): FunctionExpression {
-    return new FunctionExpression('array_get', [
-      this,
-      valueToDefaultExpr(index),
-    ]);
+    return new FunctionExpression('array_get', [this, valueToDefaultExpr(index)]);
   }
 
   /**
@@ -2572,10 +2456,7 @@ export abstract class Expression
    */
   ifError(catchValue: unknown): FunctionExpression;
   ifError(catchValue: unknown): FunctionExpression {
-    return new FunctionExpression('if_error', [
-      this,
-      valueToDefaultExpr(catchValue),
-    ]);
+    return new FunctionExpression('if_error', [this, valueToDefaultExpr(catchValue)]);
   }
 
   /**
@@ -2621,10 +2502,7 @@ export abstract class Expression
    */
   mapRemove(keyExpr: Expression): FunctionExpression;
   mapRemove(stringExpr: Expression | string): FunctionExpression {
-    return new FunctionExpression('map_remove', [
-      this,
-      valueToDefaultExpr(stringExpr),
-    ]);
+    return new FunctionExpression('map_remove', [this, valueToDefaultExpr(stringExpr)]);
   }
 
   /**
@@ -2650,11 +2528,7 @@ export abstract class Expression
   ): FunctionExpression {
     const secondMapExpr = valueToDefaultExpr(secondMap);
     const otherMapExprs = otherMaps.map(valueToDefaultExpr);
-    return new FunctionExpression('map_merge', [
-      this,
-      secondMapExpr,
-      ...otherMapExprs,
-    ]);
+    return new FunctionExpression('map_merge', [this, secondMapExpr, ...otherMapExprs]);
   }
 
   /**
@@ -2735,10 +2609,7 @@ export abstract class Expression
     if (decimalPlaces === undefined) {
       return new FunctionExpression('trunc', [this]);
     }
-    return new FunctionExpression('trunc', [
-      this,
-      valueToDefaultExpr(decimalPlaces),
-    ]);
+    return new FunctionExpression('trunc', [this, valueToDefaultExpr(decimalPlaces)]);
   }
 
   /**
@@ -2785,10 +2656,7 @@ export abstract class Expression
     if (decimalPlaces === undefined) {
       return new FunctionExpression('round', [this]);
     } else {
-      return new FunctionExpression('round', [
-        this,
-        valueToDefaultExpr(decimalPlaces),
-      ]);
+      return new FunctionExpression('round', [this, valueToDefaultExpr(decimalPlaces)]);
     }
   }
 
@@ -2903,10 +2771,7 @@ export abstract class Expression
   ifAbsent(elseExpression: unknown): Expression;
 
   ifAbsent(elseValueOrExpression: Expression | unknown): Expression {
-    return new FunctionExpression('if_absent', [
-      this,
-      valueToDefaultExpr(elseValueOrExpression),
-    ]);
+    return new FunctionExpression('if_absent', [this, valueToDefaultExpr(elseValueOrExpression)]);
   }
 
   /**
@@ -2938,10 +2803,7 @@ export abstract class Expression
   join(delimiter: string): Expression;
 
   join(delimeterValueOrExpression: string | Expression): Expression {
-    return new FunctionExpression('join', [
-      this,
-      valueToDefaultExpr(delimeterValueOrExpression),
-    ]);
+    return new FunctionExpression('join', [this, valueToDefaultExpr(delimeterValueOrExpression)]);
   }
 
   /**
@@ -3004,10 +2866,7 @@ export abstract class Expression
    */
   split(delimiter: Expression): FunctionExpression;
   split(delimiter: string | Expression): FunctionExpression {
-    return new FunctionExpression('split', [
-      this,
-      valueToDefaultExpr(delimiter),
-    ]);
+    return new FunctionExpression('split', [this, valueToDefaultExpr(delimiter)]);
   }
 
   /**
@@ -3043,17 +2902,12 @@ export abstract class Expression
    * the TZ database (e.g., "America/Los_Angeles") or in the format "Etc/GMT-1".
    * @returns A new {Expression} representing the truncated timestamp.
    */
-  timestampTruncate(
-    granularity: Expression,
-    timezone?: string | Expression,
-  ): FunctionExpression;
+  timestampTruncate(granularity: Expression, timezone?: string | Expression): FunctionExpression;
   timestampTruncate(
     granularity: firestore.Pipelines.TimeGranularity | Expression,
     timezone?: string | Expression,
   ): FunctionExpression {
-    const internalGranularity = isString(granularity)
-      ? granularity.toLowerCase()
-      : granularity;
+    const internalGranularity = isString(granularity) ? granularity.toLowerCase() : granularity;
 
     const args = [this, valueToDefaultExpr(internalGranularity)];
     if (timezone) {
@@ -3094,10 +2948,7 @@ export abstract class Expression
    * @returns A new `BooleanExpression` that evaluates to true if the expression's result is of the given type, false otherwise.
    */
   isType(type: Type): BooleanExpression {
-    return new FunctionExpression('is_type', [
-      this,
-      constant(type),
-    ]).asBoolean();
+    return new FunctionExpression('is_type', [this, constant(type)]).asBoolean();
   }
 
   // TODO(new-expression): Add new expression method definitions above this line
@@ -3178,7 +3029,7 @@ export class AggregateFunction implements AggregateFunction, HasUserData {
    * @internal
    */
   _validateUserData(ignoreUndefinedProperties: boolean): void {
-    this.params.forEach(expr => {
+    this.params.forEach((expr) => {
       return expr._validateUserData(ignoreUndefinedProperties);
     });
   }
@@ -3216,7 +3067,7 @@ export class AggregateFunction implements AggregateFunction, HasUserData {
     return {
       functionValue: {
         name: this.name,
-        args: this.params.map(p => p._toProto(serializer)),
+        args: this.params.map((p) => p._toProto(serializer)),
       },
     };
   }
@@ -3261,9 +3112,7 @@ export class AliasedAggregate implements AliasedAggregate, HasUserData {
  * allowing the expression's result to be referred to by name in the output
  * of a Firestore pipeline query.
  */
-export class AliasedExpression
-  implements firestore.Pipelines.Selectable, HasUserData
-{
+export class AliasedExpression implements firestore.Pipelines.Selectable, HasUserData {
   expressionType: firestore.Pipelines.ExpressionType = 'AliasedExpression';
   selectable = true as const;
 
@@ -3310,7 +3159,7 @@ class ListOfExprs extends Expression {
   _toProto(serializer: Serializer): api.IValue {
     return {
       arrayValue: {
-        values: this.exprs.map(p => p._toProto(serializer)!),
+        values: this.exprs.map((p) => p._toProto(serializer)!),
       },
     };
   }
@@ -3321,7 +3170,7 @@ class ListOfExprs extends Expression {
    * @internal
    */
   _validateUserData(ignoreUndefinedProperties: boolean): void {
-    this.exprs.forEach(expr => {
+    this.exprs.forEach((expr) => {
       return expr._validateUserData(ignoreUndefinedProperties);
     });
   }
@@ -3344,10 +3193,7 @@ class ListOfExprs extends Expression {
  * const cityField = field("address.city");
  * ```
  */
-export class Field
-  extends Expression
-  implements firestore.Pipelines.Selectable
-{
+export class Field extends Expression implements firestore.Pipelines.Selectable {
   readonly expressionType: firestore.Pipelines.ExpressionType = 'Field';
   selectable = true as const;
 
@@ -3636,7 +3482,7 @@ export class MapValue extends Expression {
    * @internal
    */
   _validateUserData(ignoreUndefinedProperties: boolean): void {
-    this.plainObject.forEach(expr => {
+    this.plainObject.forEach((expr) => {
       return expr._validateUserData(ignoreUndefinedProperties);
     });
   }
@@ -3669,7 +3515,7 @@ export class FunctionExpression extends Expression {
     return {
       functionValue: {
         name: this._methodName,
-        args: this.params.map(p => cast<Expression>(p)._toProto(serializer)),
+        args: this.params.map((p) => cast<Expression>(p)._toProto(serializer)),
       },
     };
   }
@@ -3680,7 +3526,7 @@ export class FunctionExpression extends Expression {
    * @internal
    */
   _validateUserData(ignoreUndefinedProperties: boolean): void {
-    this.params.forEach(expr => {
+    this.params.forEach((expr) => {
       return expr._validateUserData(ignoreUndefinedProperties);
     });
   }
@@ -3709,7 +3555,7 @@ class MapFunctionExpr extends FunctionExpression {
   _toProto(serializer: Serializer): api.IValue {
     const args: api.IValue[] = [];
     for (const key in this.map) {
-      if (Object.prototype.hasOwnProperty.call(this.map, key)) {
+      if (Object.hasOwn(this.map, key)) {
         if (this.map[key]) {
           args.push(constant(key)._toProto(serializer));
           args.push(this.map[key]!._toProto(serializer));
@@ -3762,9 +3608,7 @@ class ArrayFunctionExpr extends FunctionExpression {
     return {
       functionValue: {
         name: this._methodName,
-        args: this.values
-          .filter(v => !!v)
-          .map(value => value!._toProto(serializer)),
+        args: this.values.filter((v) => !!v).map((value) => value!._toProto(serializer)),
       },
     };
   }
@@ -3917,14 +3761,9 @@ export abstract class BooleanExpression
   ifError(catchValue: unknown): FunctionExpression;
   ifError(catchValue: unknown): unknown {
     const normalizedCatchValue = valueToDefaultExpr(catchValue);
-    const expr = new FunctionExpression('if_error', [
-      this,
-      normalizedCatchValue,
-    ]);
+    const expr = new FunctionExpression('if_error', [this, normalizedCatchValue]);
 
-    return normalizedCatchValue instanceof BooleanExpression
-      ? expr.asBoolean()
-      : expr;
+    return normalizedCatchValue instanceof BooleanExpression ? expr.asBoolean() : expr;
   }
 
   _toProto(serializer: Serializer): api.IValue {
@@ -4007,10 +3846,7 @@ export function arrayGet(arrayField: string, index: number): FunctionExpression;
  * @param indexExpr An Expression evaluating to the index of the element to return.
  * @returns A new Expression representing the 'arrayGet' operation.
  */
-export function arrayGet(
-  arrayField: string,
-  indexExpr: Expression,
-): FunctionExpression;
+export function arrayGet(arrayField: string, indexExpr: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -4027,10 +3863,7 @@ export function arrayGet(
  * @param index The index of the element to return.
  * @returns A new Expression representing the 'arrayGet' operation.
  */
-export function arrayGet(
-  arrayExpression: Expression,
-  index: number,
-): FunctionExpression;
+export function arrayGet(arrayExpression: Expression, index: number): FunctionExpression;
 
 /**
  * @beta
@@ -4048,10 +3881,7 @@ export function arrayGet(
  * @param indexExpr An Expression evaluating to the index of the element to return.
  * @returns A new Expression representing the 'arrayGet' operation.
  */
-export function arrayGet(
-  arrayExpression: Expression,
-  indexExpr: Expression,
-): FunctionExpression;
+export function arrayGet(arrayExpression: Expression, indexExpr: Expression): FunctionExpression;
 export function arrayGet(
   array: Expression | string,
   index: Expression | number,
@@ -4117,10 +3947,7 @@ export function ifError(
  * returned if the tryExpr produces an error.
  * @returns A new `Expression` representing the 'ifError' operation.
  */
-export function ifError(
-  tryExpr: Expression,
-  catchExpr: Expression,
-): FunctionExpression;
+export function ifError(tryExpr: Expression, catchExpr: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -4139,19 +3966,13 @@ export function ifError(
  * error.
  * @returns A new `Expression` representing the 'ifError' operation.
  */
-export function ifError(
-  tryExpr: Expression,
-  catchValue: unknown,
-): FunctionExpression;
+export function ifError(tryExpr: Expression, catchValue: unknown): FunctionExpression;
 
 export function ifError(
   tryExpr: Expression,
   catchValue: unknown,
 ): FunctionExpression | BooleanExpression {
-  if (
-    tryExpr instanceof BooleanExpression &&
-    catchValue instanceof BooleanExpression
-  ) {
+  if (tryExpr instanceof BooleanExpression && catchValue instanceof BooleanExpression) {
     return tryExpr.ifError(catchValue).asBoolean();
   } else {
     return tryExpr.ifError(valueToDefaultExpr(catchValue));
@@ -4229,10 +4050,7 @@ export function mapRemove(mapExpr: Expression, key: string): FunctionExpression;
  * @param mapField The name of a field containing a map value.
  * @param keyExpr An expression that produces the name of the key to remove from the input map.
  */
-export function mapRemove(
-  mapField: string,
-  keyExpr: Expression,
-): FunctionExpression;
+export function mapRemove(mapField: string, keyExpr: Expression): FunctionExpression;
 /**
  * @beta
  * Creates an expression that removes a key from the map produced by evaluating an expression.
@@ -4245,10 +4063,7 @@ export function mapRemove(
  * @param mapExpr An expression return a map value.
  * @param keyExpr An expression that produces the name of the key to remove from the input map.
  */
-export function mapRemove(
-  mapExpr: Expression,
-  keyExpr: Expression,
-): FunctionExpression;
+export function mapRemove(mapExpr: Expression, keyExpr: Expression): FunctionExpression;
 
 export function mapRemove(
   mapExpr: Expression | string,
@@ -4323,9 +4138,7 @@ export function mapMerge(
  *
  * @returns A new `Expr` representing the documentId operation.
  */
-export function documentId(
-  documentPath: string | firestore.DocumentReference,
-): FunctionExpression;
+export function documentId(documentPath: string | firestore.DocumentReference): FunctionExpression;
 
 /**
  * @beta
@@ -4354,11 +4167,7 @@ export function documentId(
  * @param position Index of the first character of the substring.
  * @param length Length of the substring.
  */
-export function substring(
-  field: string,
-  position: number,
-  length?: number,
-): FunctionExpression;
+export function substring(field: string, position: number, length?: number): FunctionExpression;
 
 /**
  * @beta
@@ -4368,11 +4177,7 @@ export function substring(
  * @param position Index of the first character of the substring.
  * @param length Length of the substring.
  */
-export function substring(
-  input: Expression,
-  position: number,
-  length?: number,
-): FunctionExpression;
+export function substring(input: Expression, position: number, length?: number): FunctionExpression;
 
 /**
  * @beta
@@ -4409,8 +4214,7 @@ export function substring(
 ): FunctionExpression {
   const fieldExpr = fieldOrExpression(field);
   const positionExpr = valueToDefaultExpr(position);
-  const lengthExpr =
-    length === undefined ? undefined : valueToDefaultExpr(length);
+  const lengthExpr = length === undefined ? undefined : valueToDefaultExpr(length);
   return fieldExpr.substring(positionExpr, lengthExpr);
 }
 
@@ -4427,10 +4231,7 @@ export function substring(
  * @param second The second expression or literal to add.
  * @returns A new `Expression` representing the addition operation.
  */
-export function add(
-  first: Expression,
-  second: Expression | unknown,
-): FunctionExpression;
+export function add(first: Expression, second: Expression | unknown): FunctionExpression;
 
 /**
  * @beta
@@ -4445,15 +4246,9 @@ export function add(
  * @param second The second expression or literal to add.
  * @returns A new `Expression` representing the addition operation.
  */
-export function add(
-  fieldName: string,
-  second: Expression | unknown,
-): FunctionExpression;
+export function add(fieldName: string, second: Expression | unknown): FunctionExpression;
 
-export function add(
-  first: Expression | string,
-  second: Expression | unknown,
-): FunctionExpression {
+export function add(first: Expression | string, second: Expression | unknown): FunctionExpression {
   return fieldOrExpression(first).add(valueToDefaultExpr(second));
 }
 
@@ -4470,10 +4265,7 @@ export function add(
  * @param subtrahend The expression to subtract.
  * @returns A new `Expression` representing the subtraction operation.
  */
-export function subtract(
-  minuend: Expression,
-  subtrahend: Expression,
-): FunctionExpression;
+export function subtract(minuend: Expression, subtrahend: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -4488,10 +4280,7 @@ export function subtract(
  * @param subtrahend The constant value to subtract.
  * @returns A new `Expression` representing the subtraction operation.
  */
-export function subtract(
-  minuend: Expression,
-  subtrahend: unknown,
-): FunctionExpression;
+export function subtract(minuend: Expression, subtrahend: unknown): FunctionExpression;
 
 /**
  * @beta
@@ -4506,10 +4295,7 @@ export function subtract(
  * @param subtrahend The expression to subtract.
  * @returns A new `Expression` representing the subtraction operation.
  */
-export function subtract(
-  minuendFieldName: string,
-  subtrahend: Expression,
-): FunctionExpression;
+export function subtract(minuendFieldName: string, subtrahend: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -4524,10 +4310,7 @@ export function subtract(
  * @param subtrahend The constant value to subtract.
  * @returns A new `Expression` representing the subtraction operation.
  */
-export function subtract(
-  minuendFieldName: string,
-  subtrahend: unknown,
-): FunctionExpression;
+export function subtract(minuendFieldName: string, subtrahend: unknown): FunctionExpression;
 export function subtract(
   left: Expression | string,
   right: Expression | unknown,
@@ -4550,10 +4333,7 @@ export function subtract(
  * @param second The second expression or literal to multiply.
  * @returns A new `Expression` representing the multiplication operation.
  */
-export function multiply(
-  first: Expression,
-  second: Expression | unknown,
-): FunctionExpression;
+export function multiply(first: Expression, second: Expression | unknown): FunctionExpression;
 
 /**
  * @beta
@@ -4568,10 +4348,7 @@ export function multiply(
  * @param second The second expression or literal to multiply.
  * @returns A new `Expression` representing the multiplication operation.
  */
-export function multiply(
-  fieldName: string,
-  second: Expression | unknown,
-): FunctionExpression;
+export function multiply(fieldName: string, second: Expression | unknown): FunctionExpression;
 
 export function multiply(
   first: Expression | string,
@@ -4593,10 +4370,7 @@ export function multiply(
  * @param divisort The expression to divide by.
  * @returns A new `Expression` representing the division operation.
  */
-export function divide(
-  dividend: Expression,
-  divisort: Expression,
-): FunctionExpression;
+export function divide(dividend: Expression, divisort: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -4611,10 +4385,7 @@ export function divide(
  * @param divisor The constant value to divide by.
  * @returns A new `Expression` representing the division operation.
  */
-export function divide(
-  dividend: Expression,
-  divisor: unknown,
-): FunctionExpression;
+export function divide(dividend: Expression, divisor: unknown): FunctionExpression;
 
 /**
  * @beta
@@ -4629,10 +4400,7 @@ export function divide(
  * @param divisor The expression to divide by.
  * @returns A new `Expression` representing the division operation.
  */
-export function divide(
-  dividend: string,
-  divisor: Expression,
-): FunctionExpression;
+export function divide(dividend: string, divisor: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -4700,10 +4468,7 @@ export function mod(expression: Expression, value: unknown): FunctionExpression;
  * @param expression The divisor expression.
  * @returns A new `Expression` representing the modulo operation.
  */
-export function mod(
-  fieldName: string,
-  expression: Expression,
-): FunctionExpression;
+export function mod(fieldName: string, expression: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -4719,10 +4484,7 @@ export function mod(
  * @returns A new `Expression` representing the modulo operation.
  */
 export function mod(fieldName: string, value: unknown): FunctionExpression;
-export function mod(
-  left: Expression | string,
-  right: Expression | unknown,
-): FunctionExpression {
+export function mod(left: Expression | string, right: Expression | unknown): FunctionExpression {
   const normalizedLeft = fieldOrExpression(left);
   const normalizedRight = valueToDefaultExpr(right);
   return normalizedLeft.mod(normalizedRight);
@@ -4744,11 +4506,8 @@ export function map(elements: Record<string, unknown>): FunctionExpression {
   const result: Record<string, Expression | undefined> = {};
 
   for (const key in elements) {
-    if (Object.prototype.hasOwnProperty.call(elements, key)) {
-      result[key] =
-        elements[key] !== undefined
-          ? valueToDefaultExpr(elements[key])
-          : undefined;
+    if (Object.hasOwn(elements, key)) {
+      result[key] = elements[key] !== undefined ? valueToDefaultExpr(elements[key]) : undefined;
     }
   }
   return new MapFunctionExpr(result);
@@ -4769,7 +4528,7 @@ export function map(elements: Record<string, unknown>): FunctionExpression {
 export function _mapValue(plainObject: Record<string, unknown>): MapValue {
   const result: Map<string, Expression> = new Map<string, Expression>();
   for (const key in plainObject) {
-    if (Object.prototype.hasOwnProperty.call(plainObject, key)) {
+    if (Object.hasOwn(plainObject, key)) {
       const value = plainObject[key];
       result.set(key, valueToDefaultExpr(value));
     }
@@ -4791,7 +4550,7 @@ export function _mapValue(plainObject: Record<string, unknown>): MapValue {
  */
 export function array(elements: unknown[]): FunctionExpression {
   return new ArrayFunctionExpr(
-    elements.map(element => {
+    elements.map((element) => {
       return element !== undefined ? valueToDefaultExpr(element) : undefined;
     }),
   );
@@ -4825,10 +4584,7 @@ export function equal(left: Expression, right: Expression): BooleanExpression;
  * @param value The constant value to compare to.
  * @returns A new `Expression` representing the equality comparison.
  */
-export function equal(
-  expression: Expression,
-  value: unknown,
-): BooleanExpression;
+export function equal(expression: Expression, value: unknown): BooleanExpression;
 
 /**
  * @beta
@@ -4843,10 +4599,7 @@ export function equal(
  * @param expression The expression to compare to.
  * @returns A new `Expression` representing the equality comparison.
  */
-export function equal(
-  fieldName: string,
-  expression: Expression,
-): BooleanExpression;
+export function equal(fieldName: string, expression: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -4862,10 +4615,7 @@ export function equal(
  * @returns A new `Expression` representing the equality comparison.
  */
 export function equal(fieldName: string, value: unknown): BooleanExpression;
-export function equal(
-  left: Expression | string,
-  right: unknown,
-): BooleanExpression {
+export function equal(left: Expression | string, right: unknown): BooleanExpression {
   const leftExpr = fieldOrExpression(left);
   const rightExpr = valueToDefaultExpr(right);
   return leftExpr.equal(rightExpr);
@@ -4884,10 +4634,7 @@ export function equal(
  * @param right The second expression to compare.
  * @returns A new `Expression` representing the inequality comparison.
  */
-export function notEqual(
-  left: Expression,
-  right: Expression,
-): BooleanExpression;
+export function notEqual(left: Expression, right: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -4902,10 +4649,7 @@ export function notEqual(
  * @param value The constant value to compare to.
  * @returns A new `Expression` representing the inequality comparison.
  */
-export function notEqual(
-  expression: Expression,
-  value: unknown,
-): BooleanExpression;
+export function notEqual(expression: Expression, value: unknown): BooleanExpression;
 
 /**
  * @beta
@@ -4920,10 +4664,7 @@ export function notEqual(
  * @param expression The expression to compare to.
  * @returns A new `Expression` representing the inequality comparison.
  */
-export function notEqual(
-  fieldName: string,
-  expression: Expression,
-): BooleanExpression;
+export function notEqual(fieldName: string, expression: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -4939,10 +4680,7 @@ export function notEqual(
  * @returns A new `Expression` representing the inequality comparison.
  */
 export function notEqual(fieldName: string, value: unknown): BooleanExpression;
-export function notEqual(
-  left: Expression | string,
-  right: unknown,
-): BooleanExpression {
+export function notEqual(left: Expression | string, right: unknown): BooleanExpression {
   const leftExpr = fieldOrExpression(left);
   const rightExpr = valueToDefaultExpr(right);
   return leftExpr.notEqual(rightExpr);
@@ -4961,10 +4699,7 @@ export function notEqual(
  * @param right The second expression to compare.
  * @returns A new `Expression` representing the less than comparison.
  */
-export function lessThan(
-  left: Expression,
-  right: Expression,
-): BooleanExpression;
+export function lessThan(left: Expression, right: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -4979,10 +4714,7 @@ export function lessThan(
  * @param value The constant value to compare to.
  * @returns A new `Expression` representing the less than comparison.
  */
-export function lessThan(
-  expression: Expression,
-  value: unknown,
-): BooleanExpression;
+export function lessThan(expression: Expression, value: unknown): BooleanExpression;
 
 /**
  * @beta
@@ -4997,10 +4729,7 @@ export function lessThan(
  * @param expression The expression to compare to.
  * @returns A new `Expression` representing the less than comparison.
  */
-export function lessThan(
-  fieldName: string,
-  expression: Expression,
-): BooleanExpression;
+export function lessThan(fieldName: string, expression: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -5016,10 +4745,7 @@ export function lessThan(
  * @returns A new `Expression` representing the less than comparison.
  */
 export function lessThan(fieldName: string, value: unknown): BooleanExpression;
-export function lessThan(
-  left: Expression | string,
-  right: unknown,
-): BooleanExpression {
+export function lessThan(left: Expression | string, right: unknown): BooleanExpression {
   const leftExpr = fieldOrExpression(left);
   const rightExpr = valueToDefaultExpr(right);
   return leftExpr.lessThan(rightExpr);
@@ -5039,10 +4765,7 @@ export function lessThan(
  * @param right The second expression to compare.
  * @returns A new `Expression` representing the less than or equal to comparison.
  */
-export function lessThanOrEqual(
-  left: Expression,
-  right: Expression,
-): BooleanExpression;
+export function lessThanOrEqual(left: Expression, right: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -5057,10 +4780,7 @@ export function lessThanOrEqual(
  * @param value The constant value to compare to.
  * @returns A new `Expression` representing the less than or equal to comparison.
  */
-export function lessThanOrEqual(
-  expression: Expression,
-  value: unknown,
-): BooleanExpression;
+export function lessThanOrEqual(expression: Expression, value: unknown): BooleanExpression;
 
 /**
  * @beta
@@ -5075,10 +4795,7 @@ export function lessThanOrEqual(
  * @param expression The expression to compare to.
  * @returns A new `Expression` representing the less than or equal to comparison.
  */
-export function lessThanOrEqual(
-  fieldName: string,
-  expression: Expression,
-): BooleanExpression;
+export function lessThanOrEqual(fieldName: string, expression: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -5093,14 +4810,8 @@ export function lessThanOrEqual(
  * @param value The constant value to compare to.
  * @returns A new `Expression` representing the less than or equal to comparison.
  */
-export function lessThanOrEqual(
-  fieldName: string,
-  value: unknown,
-): BooleanExpression;
-export function lessThanOrEqual(
-  left: Expression | string,
-  right: unknown,
-): BooleanExpression {
+export function lessThanOrEqual(fieldName: string, value: unknown): BooleanExpression;
+export function lessThanOrEqual(left: Expression | string, right: unknown): BooleanExpression {
   const leftExpr = fieldOrExpression(left);
   const rightExpr = valueToDefaultExpr(right);
   return leftExpr.lessThanOrEqual(rightExpr);
@@ -5120,10 +4831,7 @@ export function lessThanOrEqual(
  * @param right The second expression to compare.
  * @returns A new `Expression` representing the greater than comparison.
  */
-export function greaterThan(
-  left: Expression,
-  right: Expression,
-): BooleanExpression;
+export function greaterThan(left: Expression, right: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -5138,10 +4846,7 @@ export function greaterThan(
  * @param value The constant value to compare to.
  * @returns A new `Expression` representing the greater than comparison.
  */
-export function greaterThan(
-  expression: Expression,
-  value: unknown,
-): BooleanExpression;
+export function greaterThan(expression: Expression, value: unknown): BooleanExpression;
 
 /**
  * @beta
@@ -5156,10 +4861,7 @@ export function greaterThan(
  * @param expression The expression to compare to.
  * @returns A new `Expression` representing the greater than comparison.
  */
-export function greaterThan(
-  fieldName: string,
-  expression: Expression,
-): BooleanExpression;
+export function greaterThan(fieldName: string, expression: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -5174,14 +4876,8 @@ export function greaterThan(
  * @param value The constant value to compare to.
  * @returns A new `Expression` representing the greater than comparison.
  */
-export function greaterThan(
-  fieldName: string,
-  value: unknown,
-): BooleanExpression;
-export function greaterThan(
-  left: Expression | string,
-  right: unknown,
-): BooleanExpression {
+export function greaterThan(fieldName: string, value: unknown): BooleanExpression;
+export function greaterThan(left: Expression | string, right: unknown): BooleanExpression {
   const leftExpr = fieldOrExpression(left);
   const rightExpr = valueToDefaultExpr(right);
   return leftExpr.greaterThan(rightExpr);
@@ -5201,10 +4897,7 @@ export function greaterThan(
  * @param right The second expression to compare.
  * @returns A new `Expression` representing the greater than or equal to comparison.
  */
-export function greaterThanOrEqual(
-  left: Expression,
-  right: Expression,
-): BooleanExpression;
+export function greaterThanOrEqual(left: Expression, right: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -5220,10 +4913,7 @@ export function greaterThanOrEqual(
  * @param value The constant value to compare to.
  * @returns A new `Expression` representing the greater than or equal to comparison.
  */
-export function greaterThanOrEqual(
-  expression: Expression,
-  value: unknown,
-): BooleanExpression;
+export function greaterThanOrEqual(expression: Expression, value: unknown): BooleanExpression;
 
 /**
  * @beta
@@ -5238,10 +4928,7 @@ export function greaterThanOrEqual(
  * @param value The expression to compare to.
  * @returns A new `Expression` representing the greater than or equal to comparison.
  */
-export function greaterThanOrEqual(
-  fieldName: string,
-  value: Expression,
-): BooleanExpression;
+export function greaterThanOrEqual(fieldName: string, value: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -5257,14 +4944,8 @@ export function greaterThanOrEqual(
  * @param value The constant value to compare to.
  * @returns A new `Expression` representing the greater than or equal to comparison.
  */
-export function greaterThanOrEqual(
-  fieldName: string,
-  value: unknown,
-): BooleanExpression;
-export function greaterThanOrEqual(
-  left: Expression | string,
-  right: unknown,
-): BooleanExpression {
+export function greaterThanOrEqual(fieldName: string, value: unknown): BooleanExpression;
+export function greaterThanOrEqual(left: Expression | string, right: unknown): BooleanExpression {
   const leftExpr = fieldOrExpression(left);
   const rightExpr = valueToDefaultExpr(right);
   return leftExpr.greaterThanOrEqual(rightExpr);
@@ -5317,11 +4998,8 @@ export function arrayConcat(
   secondArray: Expression | unknown[],
   ...otherArrays: Array<Expression | unknown[]>
 ): FunctionExpression {
-  const exprValues = otherArrays.map(element => valueToDefaultExpr(element));
-  return fieldOrExpression(firstArray).arrayConcat(
-    fieldOrExpression(secondArray),
-    ...exprValues,
-  );
+  const exprValues = otherArrays.map((element) => valueToDefaultExpr(element));
+  return fieldOrExpression(firstArray).arrayConcat(fieldOrExpression(secondArray), ...exprValues);
 }
 
 /**
@@ -5337,10 +5015,7 @@ export function arrayConcat(
  * @param element The element to search for in the array.
  * @returns A new `Expression` representing the 'array_contains' comparison.
  */
-export function arrayContains(
-  array: Expression,
-  element: Expression,
-): BooleanExpression;
+export function arrayContains(array: Expression, element: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -5355,10 +5030,7 @@ export function arrayContains(
  * @param element The element to search for in the array.
  * @returns A new `Expression` representing the 'array_contains' comparison.
  */
-export function arrayContains(
-  array: Expression,
-  element: unknown,
-): BooleanExpression;
+export function arrayContains(array: Expression, element: unknown): BooleanExpression;
 
 /**
  * @beta
@@ -5373,10 +5045,7 @@ export function arrayContains(
  * @param element The element to search for in the array.
  * @returns A new `Expression` representing the 'array_contains' comparison.
  */
-export function arrayContains(
-  fieldName: string,
-  element: Expression,
-): BooleanExpression;
+export function arrayContains(fieldName: string, element: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -5391,14 +5060,8 @@ export function arrayContains(
  * @param element The element to search for in the array.
  * @returns A new `Expression` representing the 'array_contains' comparison.
  */
-export function arrayContains(
-  fieldName: string,
-  element: unknown,
-): BooleanExpression;
-export function arrayContains(
-  array: Expression | string,
-  element: unknown,
-): BooleanExpression {
+export function arrayContains(fieldName: string, element: unknown): BooleanExpression;
+export function arrayContains(array: Expression | string, element: unknown): BooleanExpression {
   const arrayExpr = fieldOrExpression(array);
   const elementExpr = valueToDefaultExpr(element);
   return arrayExpr.arrayContains(elementExpr);
@@ -5457,10 +5120,7 @@ export function arrayContainsAny(
  * @param values An expression that evaluates to an array, whose elements to check for in the array.
  * @returns A new `Expression` representing the 'array_contains_any' comparison.
  */
-export function arrayContainsAny(
-  array: Expression,
-  values: Expression,
-): BooleanExpression;
+export function arrayContainsAny(array: Expression, values: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -5477,10 +5137,7 @@ export function arrayContainsAny(
  * @param values An expression that evaluates to an array, whose elements to check for in the array field.
  * @returns A new `Expression` representing the 'array_contains_any' comparison.
  */
-export function arrayContainsAny(
-  fieldName: string,
-  values: Expression,
-): BooleanExpression;
+export function arrayContainsAny(fieldName: string, values: Expression): BooleanExpression;
 export function arrayContainsAny(
   array: Expression | string,
   values: unknown[] | Expression,
@@ -5542,10 +5199,7 @@ export function arrayContainsAll(
  * @param arrayExpression The elements to check for in the array.
  * @returns A new `Expression` representing the 'array_contains_all' comparison.
  */
-export function arrayContainsAll(
-  array: Expression,
-  arrayExpression: Expression,
-): BooleanExpression;
+export function arrayContainsAll(array: Expression, arrayExpression: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -5561,10 +5215,7 @@ export function arrayContainsAll(
  * @param arrayExpression The elements to check for in the array.
  * @returns A new `Expression` representing the 'array_contains_all' comparison.
  */
-export function arrayContainsAll(
-  fieldName: string,
-  arrayExpression: Expression,
-): BooleanExpression;
+export function arrayContainsAll(fieldName: string, arrayExpression: Expression): BooleanExpression;
 export function arrayContainsAll(
   array: Expression | string,
   values: unknown[] | Expression,
@@ -5639,10 +5290,7 @@ export function equalAny(
  * @param arrayExpression An expression that evaluates to an array, whose elements to check for equality to the input.
  * @returns A new `Expression` representing the 'IN' comparison.
  */
-export function equalAny(
-  expression: Expression,
-  arrayExpression: Expression,
-): BooleanExpression;
+export function equalAny(expression: Expression, arrayExpression: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -5658,10 +5306,7 @@ export function equalAny(
  * @param values The values to check against.
  * @returns A new `Expression` representing the 'IN' comparison.
  */
-export function equalAny(
-  fieldName: string,
-  values: Array<Expression | unknown>,
-): BooleanExpression;
+export function equalAny(fieldName: string, values: Array<Expression | unknown>): BooleanExpression;
 
 /**
  * @beta
@@ -5677,10 +5322,7 @@ export function equalAny(
  * @param arrayExpression An expression that evaluates to an array, whose elements to check for equality to the input field.
  * @returns A new `Expression` representing the 'IN' comparison.
  */
-export function equalAny(
-  fieldName: string,
-  arrayExpression: Expression,
-): BooleanExpression;
+export function equalAny(fieldName: string, arrayExpression: Expression): BooleanExpression;
 export function equalAny(
   element: Expression | string,
   values: unknown[] | Expression,
@@ -5744,10 +5386,7 @@ export function notEqualAny(
  * @param arrayExpression The values to check against.
  * @returns A new `Expression` representing the 'NOT IN' comparison.
  */
-export function notEqualAny(
-  element: Expression,
-  arrayExpression: Expression,
-): BooleanExpression;
+export function notEqualAny(element: Expression, arrayExpression: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -5762,10 +5401,7 @@ export function notEqualAny(
  * @param arrayExpression The values to check against.
  * @returns A new `Expression` representing the 'NOT IN' comparison.
  */
-export function notEqualAny(
-  fieldName: string,
-  arrayExpression: Expression,
-): BooleanExpression;
+export function notEqualAny(fieldName: string, arrayExpression: Expression): BooleanExpression;
 
 export function notEqualAny(
   element: Expression | string,
@@ -5801,11 +5437,7 @@ export function xor(
   second: BooleanExpression,
   ...additionalConditions: BooleanExpression[]
 ): BooleanExpression {
-  return new FunctionExpression('xor', [
-    first,
-    second,
-    ...additionalConditions,
-  ]).asBoolean();
+  return new FunctionExpression('xor', [first, second, ...additionalConditions]).asBoolean();
 }
 
 /**
@@ -5903,7 +5535,7 @@ export function logicalMaximum(
 ): FunctionExpression {
   return fieldOrExpression(first).logicalMaximum(
     valueToDefaultExpr(second),
-    ...others.map(value => valueToDefaultExpr(value)),
+    ...others.map((value) => valueToDefaultExpr(value)),
   );
 }
 
@@ -5959,7 +5591,7 @@ export function logicalMinimum(
 ): FunctionExpression {
   return fieldOrExpression(first).logicalMinimum(
     valueToDefaultExpr(second),
-    ...others.map(value => valueToDefaultExpr(value)),
+    ...others.map((value) => valueToDefaultExpr(value)),
   );
 }
 
@@ -6114,9 +5746,7 @@ export function exp(expression: Expression): FunctionExpression;
  */
 export function exp(fieldName: string): FunctionExpression;
 
-export function exp(
-  expressionOrFieldName: Expression | string,
-): FunctionExpression {
+export function exp(expressionOrFieldName: Expression | string): FunctionExpression {
   return fieldOrExpression(expressionOrFieldName).exp();
 }
 
@@ -6260,10 +5890,7 @@ export function like(fieldName: string, pattern: Expression): BooleanExpression;
  * @param pattern The pattern to search for. You can use "%" as a wildcard character.
  * @returns A new `Expression` representing the 'like' comparison.
  */
-export function like(
-  stringExpression: Expression,
-  pattern: string,
-): BooleanExpression;
+export function like(stringExpression: Expression, pattern: string): BooleanExpression;
 
 /**
  * @beta
@@ -6278,14 +5905,8 @@ export function like(
  * @param pattern The pattern to search for. You can use "%" as a wildcard character.
  * @returns A new `Expression` representing the 'like' comparison.
  */
-export function like(
-  stringExpression: Expression,
-  pattern: Expression,
-): BooleanExpression;
-export function like(
-  left: Expression | string,
-  pattern: Expression | string,
-): BooleanExpression {
+export function like(stringExpression: Expression, pattern: Expression): BooleanExpression;
+export function like(left: Expression | string, pattern: Expression | string): BooleanExpression {
   const leftExpr = fieldOrExpression(left);
   const patternExpr = valueToDefaultExpr(pattern);
   return leftExpr.like(patternExpr);
@@ -6305,10 +5926,7 @@ export function like(
  * @param pattern The regular expression to use for the search.
  * @returns A new `Expression` representing the 'contains' comparison.
  */
-export function regexContains(
-  fieldName: string,
-  pattern: string,
-): BooleanExpression;
+export function regexContains(fieldName: string, pattern: string): BooleanExpression;
 
 /**
  * @beta
@@ -6324,10 +5942,7 @@ export function regexContains(
  * @param pattern The regular expression to use for the search.
  * @returns A new `Expression` representing the 'contains' comparison.
  */
-export function regexContains(
-  fieldName: string,
-  pattern: Expression,
-): BooleanExpression;
+export function regexContains(fieldName: string, pattern: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -6343,10 +5958,7 @@ export function regexContains(
  * @param pattern The regular expression to use for the search.
  * @returns A new `Expression` representing the 'contains' comparison.
  */
-export function regexContains(
-  stringExpression: Expression,
-  pattern: string,
-): BooleanExpression;
+export function regexContains(stringExpression: Expression, pattern: string): BooleanExpression;
 
 /**
  * @beta
@@ -6362,10 +5974,7 @@ export function regexContains(
  * @param pattern The regular expression to use for the search.
  * @returns A new `Expression` representing the 'contains' comparison.
  */
-export function regexContains(
-  stringExpression: Expression,
-  pattern: Expression,
-): BooleanExpression;
+export function regexContains(stringExpression: Expression, pattern: Expression): BooleanExpression;
 export function regexContains(
   left: Expression | string,
   pattern: Expression | string,
@@ -6393,10 +6002,7 @@ export function regexContains(
  * @param pattern The regular expression to search for.
  * @returns A new `Expression` representing the regular expression find function.
  */
-export function regexFind(
-  fieldName: string,
-  pattern: string,
-): FunctionExpression;
+export function regexFind(fieldName: string, pattern: string): FunctionExpression;
 
 /**
  * @beta
@@ -6416,10 +6022,7 @@ export function regexFind(
  * @param pattern The regular expression to search for.
  * @returns A new `Expression` representing the regular expression find function.
  */
-export function regexFind(
-  fieldName: string,
-  pattern: Expression,
-): FunctionExpression;
+export function regexFind(fieldName: string, pattern: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -6439,10 +6042,7 @@ export function regexFind(
  * @param pattern The regular expression to search for.
  * @returns A new `Expression` representing the regular expression find function.
  */
-export function regexFind(
-  stringExpression: Expression,
-  pattern: string,
-): FunctionExpression;
+export function regexFind(stringExpression: Expression, pattern: string): FunctionExpression;
 
 /**
  * @beta
@@ -6462,10 +6062,7 @@ export function regexFind(
  * @param pattern The regular expression to search for.
  * @returns A new `Expression` representing the regular expression find function.
  */
-export function regexFind(
-  stringExpression: Expression,
-  pattern: Expression,
-): FunctionExpression;
+export function regexFind(stringExpression: Expression, pattern: Expression): FunctionExpression;
 export function regexFind(
   left: Expression | string,
   pattern: Expression | string,
@@ -6493,10 +6090,7 @@ export function regexFind(
  * @param pattern The regular expression to search for.
  * @returns A new `Expression` that evaluates to an array of matched substrings.
  */
-export function regexFindAll(
-  fieldName: string,
-  pattern: string,
-): FunctionExpression;
+export function regexFindAll(fieldName: string, pattern: string): FunctionExpression;
 
 /**
  * @beta
@@ -6516,10 +6110,7 @@ export function regexFindAll(
  * @param pattern The regular expression to search for.
  * @returns A new `Expression` that evaluates to an array of matched substrings.
  */
-export function regexFindAll(
-  fieldName: string,
-  pattern: Expression,
-): FunctionExpression;
+export function regexFindAll(fieldName: string, pattern: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -6539,10 +6130,7 @@ export function regexFindAll(
  * @param pattern The regular expression to search for.
  * @returns A new `Expression` that evaluates to an array of matched substrings.
  */
-export function regexFindAll(
-  stringExpression: Expression,
-  pattern: string,
-): FunctionExpression;
+export function regexFindAll(stringExpression: Expression, pattern: string): FunctionExpression;
 
 /**
  * @beta
@@ -6562,10 +6150,7 @@ export function regexFindAll(
  * @param pattern The regular expression to search for.
  * @returns A new `Expression` that evaluates to an array of matched substrings.
  */
-export function regexFindAll(
-  stringExpression: Expression,
-  pattern: Expression,
-): FunctionExpression;
+export function regexFindAll(stringExpression: Expression, pattern: Expression): FunctionExpression;
 export function regexFindAll(
   left: Expression | string,
   pattern: Expression | string,
@@ -6588,10 +6173,7 @@ export function regexFindAll(
  * @param pattern The regular expression to use for the match.
  * @returns A new `Expression` representing the regular expression match.
  */
-export function regexMatch(
-  fieldName: string,
-  pattern: string,
-): BooleanExpression;
+export function regexMatch(fieldName: string, pattern: string): BooleanExpression;
 
 /**
  * @beta
@@ -6606,10 +6188,7 @@ export function regexMatch(
  * @param pattern The regular expression to use for the match.
  * @returns A new `Expression` representing the regular expression match.
  */
-export function regexMatch(
-  fieldName: string,
-  pattern: Expression,
-): BooleanExpression;
+export function regexMatch(fieldName: string, pattern: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -6625,10 +6204,7 @@ export function regexMatch(
  * @param pattern The regular expression to use for the match.
  * @returns A new `Expression` representing the regular expression match.
  */
-export function regexMatch(
-  stringExpression: Expression,
-  pattern: string,
-): BooleanExpression;
+export function regexMatch(stringExpression: Expression, pattern: string): BooleanExpression;
 
 /**
  * @beta
@@ -6644,10 +6220,7 @@ export function regexMatch(
  * @param pattern The regular expression to use for the match.
  * @returns A new `Expression` representing the regular expression match.
  */
-export function regexMatch(
-  stringExpression: Expression,
-  pattern: Expression,
-): BooleanExpression;
+export function regexMatch(stringExpression: Expression, pattern: Expression): BooleanExpression;
 export function regexMatch(
   left: Expression | string,
   pattern: Expression | string,
@@ -6670,10 +6243,7 @@ export function regexMatch(
  * @param substring The substring to search for.
  * @returns A new `Expression` representing the 'contains' comparison.
  */
-export function stringContains(
-  fieldName: string,
-  substring: string,
-): BooleanExpression;
+export function stringContains(fieldName: string, substring: string): BooleanExpression;
 
 /**
  * @beta
@@ -6688,10 +6258,7 @@ export function stringContains(
  * @param substring The expression representing the substring to search for.
  * @returns A new `Expression` representing the 'contains' comparison.
  */
-export function stringContains(
-  fieldName: string,
-  substring: Expression,
-): BooleanExpression;
+export function stringContains(fieldName: string, substring: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -6706,10 +6273,7 @@ export function stringContains(
  * @param substring The substring to search for.
  * @returns A new `Expression` representing the 'contains' comparison.
  */
-export function stringContains(
-  stringExpression: Expression,
-  substring: string,
-): BooleanExpression;
+export function stringContains(stringExpression: Expression, substring: string): BooleanExpression;
 
 /**
  * @beta
@@ -6750,10 +6314,7 @@ export function stringContains(
  * @param prefix The prefix to check for.
  * @returns A new `Expression` representing the 'starts with' comparison.
  */
-export function startsWith(
-  fieldName: string,
-  prefix: string,
-): BooleanExpression;
+export function startsWith(fieldName: string, prefix: string): BooleanExpression;
 
 /**
  * @beta
@@ -6768,10 +6329,7 @@ export function startsWith(
  * @param prefix The expression representing the prefix.
  * @returns A new `Expression` representing the 'starts with' comparison.
  */
-export function startsWith(
-  fieldName: string,
-  prefix: Expression,
-): BooleanExpression;
+export function startsWith(fieldName: string, prefix: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -6786,10 +6344,7 @@ export function startsWith(
  * @param prefix The prefix to check for.
  * @returns A new `Expression` representing the 'starts with' comparison.
  */
-export function startsWith(
-  stringExpression: Expression,
-  prefix: string,
-): BooleanExpression;
+export function startsWith(stringExpression: Expression, prefix: string): BooleanExpression;
 
 /**
  * @beta
@@ -6804,10 +6359,7 @@ export function startsWith(
  * @param prefix The prefix to check for.
  * @returns A new `Expression` representing the 'starts with' comparison.
  */
-export function startsWith(
-  stringExpression: Expression,
-  prefix: Expression,
-): BooleanExpression;
+export function startsWith(stringExpression: Expression, prefix: Expression): BooleanExpression;
 export function startsWith(
   expr: Expression | string,
   prefix: Expression | string,
@@ -6843,10 +6395,7 @@ export function endsWith(fieldName: string, suffix: string): BooleanExpression;
  * @param suffix The expression representing the postfix.
  * @returns A new `Expression` representing the 'ends with' comparison.
  */
-export function endsWith(
-  fieldName: string,
-  suffix: Expression,
-): BooleanExpression;
+export function endsWith(fieldName: string, suffix: Expression): BooleanExpression;
 
 /**
  * @beta
@@ -6861,10 +6410,7 @@ export function endsWith(
  * @param suffix The postfix to check for.
  * @returns A new `Expression` representing the 'ends with' comparison.
  */
-export function endsWith(
-  stringExpression: Expression,
-  suffix: string,
-): BooleanExpression;
+export function endsWith(stringExpression: Expression, suffix: string): BooleanExpression;
 
 /**
  * @beta
@@ -6879,10 +6425,7 @@ export function endsWith(
  * @param suffix The postfix to check for.
  * @returns A new `Expression` representing the 'ends with' comparison.
  */
-export function endsWith(
-  stringExpression: Expression,
-  suffix: Expression,
-): BooleanExpression;
+export function endsWith(stringExpression: Expression, suffix: Expression): BooleanExpression;
 export function endsWith(
   expr: Expression | string,
   suffix: Expression | string,
@@ -6970,10 +6513,7 @@ export function toUpper(expr: Expression | string): FunctionExpression {
  * trimmed from the input. If not specified, then whitespace will be trimmed.
  * @returns A new `Expr` representing the trimmed string.
  */
-export function trim(
-  fieldName: string,
-  valueToTrim?: string | Expression,
-): FunctionExpression;
+export function trim(fieldName: string, valueToTrim?: string | Expression): FunctionExpression;
 
 /**
  * @beta
@@ -7372,14 +6912,8 @@ export function mapGet(fieldName: string, subField: string): FunctionExpression;
  * @param subField The key to access in the map.
  * @returns A new `Expression` representing the value associated with the given key in the map.
  */
-export function mapGet(
-  mapExpression: Expression,
-  subField: string,
-): FunctionExpression;
-export function mapGet(
-  fieldOrExpr: string | Expression,
-  subField: string,
-): FunctionExpression {
+export function mapGet(mapExpression: Expression, subField: string): FunctionExpression;
+export function mapGet(fieldOrExpr: string | Expression, subField: string): FunctionExpression {
   return fieldOrExpression(fieldOrExpr).mapGet(subField);
 }
 
@@ -7523,9 +7057,7 @@ export function mapValues(mapField: string): FunctionExpression;
  * @returns A new `Expression` representing the values of the map.
  */
 export function mapValues(mapExpression: Expression): FunctionExpression;
-export function mapValues(
-  fieldOrExpr: string | Expression,
-): FunctionExpression {
+export function mapValues(fieldOrExpr: string | Expression): FunctionExpression {
   return fieldOrExpression(fieldOrExpr).mapValues();
 }
 
@@ -7570,9 +7102,7 @@ export function mapEntries(mapField: string): FunctionExpression;
  * @returns A new `Expression` representing the entries of the map.
  */
 export function mapEntries(mapExpression: Expression): FunctionExpression;
-export function mapEntries(
-  fieldOrExpr: string | Expression,
-): FunctionExpression {
+export function mapEntries(fieldOrExpr: string | Expression): FunctionExpression {
   return fieldOrExpression(fieldOrExpr).mapEntries();
 }
 
@@ -7903,9 +7433,7 @@ export function arrayAggDistinct(expression: Expression): AggregateFunction;
  * @returns A new `AggregateFunction` representing the 'array_agg_distinct' aggregation.
  */
 export function arrayAggDistinct(fieldName: string): AggregateFunction;
-export function arrayAggDistinct(
-  value: Expression | string,
-): AggregateFunction {
+export function arrayAggDistinct(value: Expression | string): AggregateFunction {
   return fieldOrExpression(value).arrayAggDistinct();
 }
 
@@ -7940,10 +7468,7 @@ export function cosineDistance(
  * @param vectorExpression The other vector (represented as an Expression) to compare against.
  * @returns A new `Expression` representing the cosine distance between the two vectors.
  */
-export function cosineDistance(
-  fieldName: string,
-  vectorExpression: Expression,
-): FunctionExpression;
+export function cosineDistance(fieldName: string, vectorExpression: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -8002,10 +7527,7 @@ export function cosineDistance(
  * @param vector The other vector (as an array of doubles or VectorValue) to calculate with.
  * @returns A new `Expression` representing the dot product between the two vectors.
  */
-export function dotProduct(
-  fieldName: string,
-  vector: number[] | VectorValue,
-): FunctionExpression;
+export function dotProduct(fieldName: string, vector: number[] | VectorValue): FunctionExpression;
 
 /**
  * @beta
@@ -8020,10 +7542,7 @@ export function dotProduct(
  * @param vectorExpression The other vector (represented as an Expression) to calculate with.
  * @returns A new `Expression` representing the dot product between the two vectors.
  */
-export function dotProduct(
-  fieldName: string,
-  vectorExpression: Expression,
-): FunctionExpression;
+export function dotProduct(fieldName: string, vectorExpression: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -8210,9 +7729,7 @@ export function unixMicrosToTimestamp(expr: Expression): FunctionExpression;
  * @returns A new `Expression` representing the timestamp.
  */
 export function unixMicrosToTimestamp(fieldName: string): FunctionExpression;
-export function unixMicrosToTimestamp(
-  expr: Expression | string,
-): FunctionExpression {
+export function unixMicrosToTimestamp(expr: Expression | string): FunctionExpression {
   return fieldOrExpression(expr).unixMicrosToTimestamp();
 }
 
@@ -8243,9 +7760,7 @@ export function timestampToUnixMicros(expr: Expression): FunctionExpression;
  * @returns A new `Expression` representing the number of microseconds since epoch.
  */
 export function timestampToUnixMicros(fieldName: string): FunctionExpression;
-export function timestampToUnixMicros(
-  expr: Expression | string,
-): FunctionExpression {
+export function timestampToUnixMicros(expr: Expression | string): FunctionExpression {
   return fieldOrExpression(expr).timestampToUnixMicros();
 }
 
@@ -8278,9 +7793,7 @@ export function unixMillisToTimestamp(expr: Expression): FunctionExpression;
  * @returns A new `Expression` representing the timestamp.
  */
 export function unixMillisToTimestamp(fieldName: string): FunctionExpression;
-export function unixMillisToTimestamp(
-  expr: Expression | string,
-): FunctionExpression {
+export function unixMillisToTimestamp(expr: Expression | string): FunctionExpression {
   const normalizedExpr = fieldOrExpression(expr);
   return normalizedExpr.unixMillisToTimestamp();
 }
@@ -8312,9 +7825,7 @@ export function timestampToUnixMillis(expr: Expression): FunctionExpression;
  * @returns A new `Expression` representing the number of milliseconds since epoch.
  */
 export function timestampToUnixMillis(fieldName: string): FunctionExpression;
-export function timestampToUnixMillis(
-  expr: Expression | string,
-): FunctionExpression {
+export function timestampToUnixMillis(expr: Expression | string): FunctionExpression {
   const normalizedExpr = fieldOrExpression(expr);
   return normalizedExpr.timestampToUnixMillis();
 }
@@ -8348,9 +7859,7 @@ export function unixSecondsToTimestamp(expr: Expression): FunctionExpression;
  * @returns A new `Expression` representing the timestamp.
  */
 export function unixSecondsToTimestamp(fieldName: string): FunctionExpression;
-export function unixSecondsToTimestamp(
-  expr: Expression | string,
-): FunctionExpression {
+export function unixSecondsToTimestamp(expr: Expression | string): FunctionExpression {
   const normalizedExpr = fieldOrExpression(expr);
   return normalizedExpr.unixSecondsToTimestamp();
 }
@@ -8382,9 +7891,7 @@ export function timestampToUnixSeconds(expr: Expression): FunctionExpression;
  * @returns A new `Expression` representing the number of seconds since epoch.
  */
 export function timestampToUnixSeconds(fieldName: string): FunctionExpression;
-export function timestampToUnixSeconds(
-  expr: Expression | string,
-): FunctionExpression {
+export function timestampToUnixSeconds(expr: Expression | string): FunctionExpression {
   const normalizedExpr = fieldOrExpression(expr);
   return normalizedExpr.timestampToUnixSeconds();
 }
@@ -8450,14 +7957,7 @@ export function timestampAdd(
 ): FunctionExpression;
 export function timestampAdd(
   timestamp: Expression | string,
-  unit:
-    | Expression
-    | 'microsecond'
-    | 'millisecond'
-    | 'second'
-    | 'minute'
-    | 'hour'
-    | 'day',
+  unit: Expression | 'microsecond' | 'millisecond' | 'second' | 'minute' | 'hour' | 'day',
   amount: Expression | number,
 ): FunctionExpression {
   const normalizedTimestamp = fieldOrExpression(timestamp);
@@ -8527,23 +8027,13 @@ export function timestampSubtract(
 ): FunctionExpression;
 export function timestampSubtract(
   timestamp: Expression | string,
-  unit:
-    | Expression
-    | 'microsecond'
-    | 'millisecond'
-    | 'second'
-    | 'minute'
-    | 'hour'
-    | 'day',
+  unit: Expression | 'microsecond' | 'millisecond' | 'second' | 'minute' | 'hour' | 'day',
   amount: Expression | number,
 ): FunctionExpression {
   const normalizedTimestamp = fieldOrExpression(timestamp);
   const normalizedUnit = valueToDefaultExpr(unit);
   const normalizedAmount = valueToDefaultExpr(amount);
-  return normalizedTimestamp.timestampSubtract(
-    normalizedUnit,
-    normalizedAmount,
-  );
+  return normalizedTimestamp.timestampSubtract(normalizedUnit, normalizedAmount);
 }
 
 /**
@@ -8667,10 +8157,7 @@ export function pow(base: string, exponent: Expression): FunctionExpression;
  * @returns A new `Expression` representing the power operation.
  */
 export function pow(base: string, exponent: number): FunctionExpression;
-export function pow(
-  base: Expression | string,
-  exponent: Expression | number,
-): FunctionExpression {
+export function pow(base: Expression | string, exponent: Expression | number): FunctionExpression {
   return fieldOrExpression(base).pow(exponent as number);
 }
 
@@ -8730,10 +8217,7 @@ export function round(expression: Expression): FunctionExpression;
  * @param decimalPlaces A constant or expression specifying the rounding precision in decimal places.
  * @returns A new `Expr` representing the rounded value.
  */
-export function round(
-  fieldName: string,
-  decimalPlaces: number | Expression,
-): FunctionExpression;
+export function round(fieldName: string, decimalPlaces: number | Expression): FunctionExpression;
 
 /**
  * @beta
@@ -8807,10 +8291,7 @@ export function trunc(expression: Expression): FunctionExpression;
  * @param decimalPlaces A constant or expression specifying the truncation precision in decimal places.
  * @returns A new `Expression` representing the truncated value.
  */
-export function trunc(
-  fieldName: string,
-  decimalPlaces: number | Expression,
-): FunctionExpression;
+export function trunc(fieldName: string, decimalPlaces: number | Expression): FunctionExpression;
 
 /**
  * @beta
@@ -9148,9 +8629,7 @@ export function ifAbsent(
   fieldNameOrExpression: string | Expression,
   elseValue: Expression | unknown,
 ): Expression {
-  return fieldOrExpression(fieldNameOrExpression).ifAbsent(
-    valueToDefaultExpr(elseValue),
-  );
+  return fieldOrExpression(fieldNameOrExpression).ifAbsent(valueToDefaultExpr(elseValue));
 }
 
 /**
@@ -9181,10 +8660,7 @@ export function join(arrayFieldName: string, delimiter: string): Expression;
  * @param delimiterExpression The expression that evaluates to the delimiter string.
  * @returns A new Expression representing the join operation.
  */
-export function join(
-  arrayExpression: Expression,
-  delimiterExpression: Expression,
-): Expression;
+export function join(arrayExpression: Expression, delimiterExpression: Expression): Expression;
 
 /**
  * @beta
@@ -9199,10 +8675,7 @@ export function join(
  * @param delimiter The string to use as a delimiter.
  * @returns A new Expression representing the join operation.
  */
-export function join(
-  arrayExpression: Expression,
-  delimiter: string,
-): Expression;
+export function join(arrayExpression: Expression, delimiter: string): Expression;
 
 /**
  * @beta
@@ -9217,10 +8690,7 @@ export function join(
  * @param delimiterExpression The expression that evaluates to the delimiter string.
  * @returns A new Expression representing the join operation.
  */
-export function join(
-  arrayFieldName: string,
-  delimiterExpression: Expression,
-): Expression;
+export function join(arrayFieldName: string, delimiterExpression: Expression): Expression;
 export function join(
   fieldNameOrExpression: string | Expression,
   delimiterValueOrExpression: Expression | string,
@@ -9323,10 +8793,7 @@ export function split(fieldName: string, delimiter: string): FunctionExpression;
  *
  * @returns A new `Expression` representing the split function.
  */
-export function split(
-  fieldName: string,
-  delimiter: Expression,
-): FunctionExpression;
+export function split(fieldName: string, delimiter: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -9343,10 +8810,7 @@ export function split(
  *
  * @returns A new `Expression` representing the split function.
  */
-export function split(
-  expression: Expression,
-  delimiter: string,
-): FunctionExpression;
+export function split(expression: Expression, delimiter: string): FunctionExpression;
 
 /**
  * @beta
@@ -9363,17 +8827,12 @@ export function split(
  *
  * @returns A new `Expression` representing the split function.
  */
-export function split(
-  expression: Expression,
-  delimiter: Expression,
-): FunctionExpression;
+export function split(expression: Expression, delimiter: Expression): FunctionExpression;
 export function split(
   fieldNameOrExpression: string | Expression,
   delimiter: string | Expression,
 ): FunctionExpression {
-  return fieldOrExpression(fieldNameOrExpression).split(
-    valueToDefaultExpr(delimiter),
-  );
+  return fieldOrExpression(fieldNameOrExpression).split(valueToDefaultExpr(delimiter));
 }
 
 /**
@@ -9467,10 +8926,7 @@ export function timestampTruncate(
   const internalGranularity = isString(granularity)
     ? valueToDefaultExpr(granularity.toLowerCase())
     : granularity;
-  return fieldOrExpression(fieldNameOrExpression).timestampTruncate(
-    internalGranularity,
-    timezone,
-  );
+  return fieldOrExpression(fieldNameOrExpression).timestampTruncate(internalGranularity, timezone);
 }
 
 /**
@@ -9499,9 +8955,7 @@ export function type(fieldName: string): FunctionExpression;
  * @returns A new {Expression} representing the data type.
  */
 export function type(expression: Expression): FunctionExpression;
-export function type(
-  fieldNameOrExpression: string | Expression,
-): FunctionExpression {
+export function type(fieldNameOrExpression: string | Expression): FunctionExpression {
   return fieldOrExpression(fieldNameOrExpression).type();
 }
 
@@ -9572,10 +9026,7 @@ export function arrayFirstN(fieldName: string, n: number): FunctionExpression;
  * @param n An expression evaluating to the number of elements to return.
  * @returns A new `Expression` representing the first `n` elements.
  */
-export function arrayFirstN(
-  fieldName: string,
-  n: Expression,
-): FunctionExpression;
+export function arrayFirstN(fieldName: string, n: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -9592,10 +9043,7 @@ export function arrayFirstN(
  * @param n The number of elements to return.
  * @returns A new `Expression` representing the first `n` elements.
  */
-export function arrayFirstN(
-  arrayExpression: Expression,
-  n: number,
-): FunctionExpression;
+export function arrayFirstN(arrayExpression: Expression, n: number): FunctionExpression;
 
 /**
  * @beta
@@ -9612,10 +9060,7 @@ export function arrayFirstN(
  * @param n An expression evaluating to the number of elements to return.
  * @returns A new `Expression` representing the first `n` elements.
  */
-export function arrayFirstN(
-  arrayExpression: Expression,
-  n: Expression,
-): FunctionExpression;
+export function arrayFirstN(arrayExpression: Expression, n: Expression): FunctionExpression;
 export function arrayFirstN(
   array: Expression | string,
   n: Expression | number,
@@ -9690,10 +9135,7 @@ export function arrayLastN(fieldName: string, n: number): FunctionExpression;
  * @param n An expression evaluating to the number of elements to return.
  * @returns A new `Expression` representing the last `n` elements.
  */
-export function arrayLastN(
-  fieldName: string,
-  n: Expression,
-): FunctionExpression;
+export function arrayLastN(fieldName: string, n: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -9710,10 +9152,7 @@ export function arrayLastN(
  * @param n The number of elements to return.
  * @returns A new `Expression` representing the last `n` elements.
  */
-export function arrayLastN(
-  arrayExpression: Expression,
-  n: number,
-): FunctionExpression;
+export function arrayLastN(arrayExpression: Expression, n: number): FunctionExpression;
 
 /**
  * @beta
@@ -9730,14 +9169,8 @@ export function arrayLastN(
  * @param n An expression evaluating to the number of elements to return.
  * @returns A new `Expression` representing the last `n` elements.
  */
-export function arrayLastN(
-  arrayExpression: Expression,
-  n: Expression,
-): FunctionExpression;
-export function arrayLastN(
-  array: Expression | string,
-  n: Expression | number,
-): FunctionExpression {
+export function arrayLastN(arrayExpression: Expression, n: Expression): FunctionExpression;
+export function arrayLastN(array: Expression | string, n: Expression | number): FunctionExpression {
   return fieldOrExpression(array).arrayLastN(valueToDefaultExpr(n));
 }
 
@@ -9816,10 +9249,7 @@ export function arrayMaximumN(fieldName: string, n: number): FunctionExpression;
  * @param n An expression evaluating to the number of elements to return.
  * @returns A new `Expression` representing the largest `n` elements.
  */
-export function arrayMaximumN(
-  fieldName: string,
-  n: Expression,
-): FunctionExpression;
+export function arrayMaximumN(fieldName: string, n: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -9840,10 +9270,7 @@ export function arrayMaximumN(
  * @param n The number of elements to return.
  * @returns A new `Expression` representing the largest `n` elements.
  */
-export function arrayMaximumN(
-  arrayExpression: Expression,
-  n: number,
-): FunctionExpression;
+export function arrayMaximumN(arrayExpression: Expression, n: number): FunctionExpression;
 
 /**
  * @beta
@@ -9864,10 +9291,7 @@ export function arrayMaximumN(
  * @param n An expression evaluating to the number of elements to return.
  * @returns A new `Expression` representing the largest `n` elements.
  */
-export function arrayMaximumN(
-  arrayExpression: Expression,
-  n: Expression,
-): FunctionExpression;
+export function arrayMaximumN(arrayExpression: Expression, n: Expression): FunctionExpression;
 export function arrayMaximumN(
   array: Expression | string,
   n: Expression | number,
@@ -9950,10 +9374,7 @@ export function arrayMinimumN(fieldName: string, n: number): FunctionExpression;
  * @param n An expression evaluating to the number of elements to return.
  * @returns A new `Expression` representing the smallest `n` elements.
  */
-export function arrayMinimumN(
-  fieldName: string,
-  n: Expression,
-): FunctionExpression;
+export function arrayMinimumN(fieldName: string, n: Expression): FunctionExpression;
 
 /**
  * @beta
@@ -9974,10 +9395,7 @@ export function arrayMinimumN(
  * @param n The number of elements to return.
  * @returns A new `Expression` representing the smallest `n` elements.
  */
-export function arrayMinimumN(
-  arrayExpression: Expression,
-  n: number,
-): FunctionExpression;
+export function arrayMinimumN(arrayExpression: Expression, n: number): FunctionExpression;
 
 /**
  * @beta
@@ -9998,10 +9416,7 @@ export function arrayMinimumN(
  * @param n An expression evaluating to the number of elements to return.
  * @returns A new `Expression` representing the smallest `n` elements.
  */
-export function arrayMinimumN(
-  arrayExpression: Expression,
-  n: Expression,
-): FunctionExpression;
+export function arrayMinimumN(arrayExpression: Expression, n: Expression): FunctionExpression;
 export function arrayMinimumN(
   array: Expression | string,
   n: Expression | number,
@@ -10025,10 +9440,7 @@ export function arrayMinimumN(
  * @param search The value to search for.
  * @returns A new `Expression` representing the index.
  */
-export function arrayIndexOf(
-  fieldName: string,
-  search: unknown | Expression,
-): FunctionExpression;
+export function arrayIndexOf(fieldName: string, search: unknown | Expression): FunctionExpression;
 
 /**
  * @beta
@@ -10187,10 +9599,7 @@ export function isType(fieldName: string, type: Type): BooleanExpression;
  * @returns A new `BooleanExpression` that evaluates to true if the expression's result is of the given type, false otherwise.
  */
 export function isType(expression: Expression, type: Type): BooleanExpression;
-export function isType(
-  fieldNameOrExpression: string | Expression,
-  type: Type,
-): BooleanExpression {
+export function isType(fieldNameOrExpression: string | Expression, type: Type): BooleanExpression {
   return fieldOrExpression(fieldNameOrExpression).isType(type);
 }
 

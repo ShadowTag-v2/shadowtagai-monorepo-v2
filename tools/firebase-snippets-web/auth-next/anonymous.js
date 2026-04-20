@@ -3,7 +3,7 @@
 
 function anonSignIn() {
   // [START auth_anon_sign_in]
-  const { getAuth, signInAnonymously } = require("firebase/auth");
+  const { getAuth, signInAnonymously } = require('firebase/auth');
 
   const auth = getAuth();
   signInAnonymously(auth)

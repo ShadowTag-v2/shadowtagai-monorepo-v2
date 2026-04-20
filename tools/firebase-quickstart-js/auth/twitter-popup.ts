@@ -1,11 +1,11 @@
 import { initializeApp } from 'firebase/app';
 import {
-  TwitterAuthProvider,
   connectAuthEmulator,
   getAuth,
   onAuthStateChanged,
   signInWithPopup,
   signOut,
+  TwitterAuthProvider,
 } from 'firebase/auth';
 import { firebaseConfig } from './config';
 
@@ -17,21 +17,11 @@ if (window.location.hostname === 'localhost') {
   connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 }
 
-const accountDetails = document.getElementById(
-  'quickstart-account-details',
-) as HTMLDivElement;
-const oauthsecret = document.getElementById(
-  'quickstart-oauthsecret',
-) as HTMLDivElement;
-const oauthtoken = document.getElementById(
-  'quickstart-oauthtoken',
-) as HTMLDivElement;
-const signInButton = document.getElementById(
-  'quickstart-sign-in',
-) as HTMLButtonElement;
-const signInStatus = document.getElementById(
-  'quickstart-sign-in-status',
-) as HTMLDivElement;
+const accountDetails = document.getElementById('quickstart-account-details') as HTMLDivElement;
+const oauthsecret = document.getElementById('quickstart-oauthsecret') as HTMLDivElement;
+const oauthtoken = document.getElementById('quickstart-oauthtoken') as HTMLDivElement;
+const signInButton = document.getElementById('quickstart-sign-in') as HTMLButtonElement;
+const signInStatus = document.getElementById('quickstart-sign-in-status') as HTMLDivElement;
 
 /**
  * Function called when clicking the Login/Logout button.
@@ -40,7 +30,7 @@ function toggleSignIn() {
   if (!auth.currentUser) {
     const provider = new TwitterAuthProvider();
     signInWithPopup(auth, provider)
-      .then(function (result) {
+      .then((result) => {
         const credential = TwitterAuthProvider.credentialFromResult(result);
         // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
         // You can use these server side with your app's credentials to access the Twitter API.
@@ -51,7 +41,7 @@ function toggleSignIn() {
         oauthtoken.textContent = token ?? '';
         oauthsecret.textContent = secret ?? '';
       })
-      .catch(function (error) {
+      .catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -60,9 +50,7 @@ function toggleSignIn() {
         // The firebase.auth.AuthCredential type that was used.
         const credential = error.credential;
         if (errorCode === 'auth/account-exists-with-different-credential') {
-          alert(
-            'You have already signed up with a different auth provider for that email.',
-          );
+          alert('You have already signed up with a different auth provider for that email.');
           // If you are using multiple auth providers on your app you should handle linking
           // the user's accounts here.
         } else {
@@ -76,7 +64,7 @@ function toggleSignIn() {
 }
 
 // Listening for auth state changes.
-onAuthStateChanged(auth, function (user) {
+onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in.
     const displayName = user.displayName;

@@ -3,11 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import Menu from './pages/Menu';
-import Login from './pages/Login';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+import Menu from './pages/Menu';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -17,4 +16,5 @@ ReactDOM.render(
       <Route exact path="/dashboard" element={<Dashboard />} />
     </Routes>
   </BrowserRouter>,
-  document.getElementById('root'));
+  document.getElementById('root'),
+);

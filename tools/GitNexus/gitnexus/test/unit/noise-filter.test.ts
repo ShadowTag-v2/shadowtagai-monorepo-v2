@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { getProvider } from '../../src/core/ingestion/languages/index.js';
+import { describe, expect, it } from 'vitest';
 import { SupportedLanguages } from '../../src/config/supported-languages.js';
+import { getProvider } from '../../src/core/ingestion/languages/index.js';
 
 const isBuiltIn = (name: string, lang: SupportedLanguages) => getProvider(lang).isBuiltInName(name);
 

@@ -12,9 +12,9 @@ import {
   SchemeContent,
 } from '@material/material-color-utilities';
 
-import type {Theme} from '../types/color-events.js';
+import type { Theme } from '../types/color-events.js';
 
-import {applyThemeString} from './apply-theme-string.js';
+import { applyThemeString } from './apply-theme-string.js';
 
 /**
  * A Mapping of color token name to MCU HCT color function generator.
@@ -96,7 +96,7 @@ export function hexFromHct(hue: number, chroma: number, tone: number) {
  */
 export function themeFromSourceColor(color: string, isDark: boolean): Theme {
   const scheme = new SchemeContent(Hct.fromInt(argbFromHex(color)), isDark, 0);
-  const theme: {[key: string]: string} = {};
+  const theme: { [key: string]: string } = {};
 
   for (const [key, value] of Object.entries(materialColors)) {
     theme[key] = hexFromArgb(value.getArgb(scheme));

@@ -15,8 +15,8 @@
  */
 
 import { BigQuery } from '@google-cloud/bigquery';
-import { Storage } from '@google-cloud/storage';
 import { ServiceUsageClient } from '@google-cloud/service-usage';
+import { Storage } from '@google-cloud/storage';
 import { StorageInsightsClient } from '@google-cloud/storageinsights';
 import { USER_AGENT } from './user_agent.js';
 

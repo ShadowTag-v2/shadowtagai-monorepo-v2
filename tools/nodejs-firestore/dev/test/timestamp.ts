@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
 import * as through2 from 'through2';
 
-import {google} from '../protos/firestore_v1_proto_api';
+import { google } from '../protos/firestore_v1_proto_api';
 
 import * as Firestore from '../src/index';
 import {
-  ApiOverride,
+  type ApiOverride,
   createInstance as createInstanceHelper,
   document,
 } from '../test/util/helpers';
@@ -32,7 +32,7 @@ function createInstance(opts: {}, document: api.IDocument) {
     batchGetDocuments: () => {
       const stream = through2.obj();
       setImmediate(() => {
-        stream.push({found: document, readTime: {seconds: 5, nanos: 6}});
+        stream.push({ found: document, readTime: { seconds: 5, nanos: 6 } });
         stream.push(null);
       });
 
@@ -56,12 +56,12 @@ const DOCUMENT_WITH_EMPTY_TIMESTAMP = document('documentId', 'moonLanding', {
 
 describe('timestamps', () => {
   it('returned by default', () => {
-    return createInstance({}, DOCUMENT_WITH_TIMESTAMP).then(firestore => {
+    return createInstance({}, DOCUMENT_WITH_TIMESTAMP).then((firestore) => {
       const expected = new Firestore.Timestamp(-14182920, 123000123);
       return firestore
         .doc('collectionId/documentId')
         .get()
-        .then(res => {
+        .then((res) => {
           expect(res.data()!['moonLanding'].isEqual(expected)).to.be.true;
           expect(res.get('moonLanding')!.isEqual(expected)).to.be.true;
         });
@@ -69,11 +69,11 @@ describe('timestamps', () => {
   });
 
   it('retain seconds and nanoseconds', () => {
-    return createInstance({}, DOCUMENT_WITH_TIMESTAMP).then(firestore => {
+    return createInstance({}, DOCUMENT_WITH_TIMESTAMP).then((firestore) => {
       return firestore
         .doc('collectionId/documentId')
         .get()
-        .then(res => {
+        .then((res) => {
           const timestamp = res.get('moonLanding');
           expect(timestamp.seconds).to.equal(-14182920);
           expect(timestamp.nanoseconds).to.equal(123000123);
@@ -82,25 +82,23 @@ describe('timestamps', () => {
   });
 
   it('convert to date', () => {
-    return createInstance({}, DOCUMENT_WITH_TIMESTAMP).then(firestore => {
+    return createInstance({}, DOCUMENT_WITH_TIMESTAMP).then((firestore) => {
       return firestore
         .doc('collectionId/documentId')
         .get()
-        .then(res => {
+        .then((res) => {
           const timestamp = res.get('moonLanding');
-          expect(new Date(-14182920 * 1000 + 123).getTime()).to.equal(
-            timestamp.toDate().getTime(),
-          );
+          expect(new Date(-14182920 * 1000 + 123).getTime()).to.equal(timestamp.toDate().getTime());
         });
     });
   });
 
   it('convert to millis', () => {
-    return createInstance({}, DOCUMENT_WITH_TIMESTAMP).then(firestore => {
+    return createInstance({}, DOCUMENT_WITH_TIMESTAMP).then((firestore) => {
       return firestore
         .doc('collectionId/documentId')
         .get()
-        .then(res => {
+        .then((res) => {
           const timestamp = res.get('moonLanding');
           expect(-14182920 * 1000 + 123).to.equal(timestamp.toMillis());
         });
@@ -108,13 +106,13 @@ describe('timestamps', () => {
   });
 
   it('support missing values', () => {
-    return createInstance({}, DOCUMENT_WITH_EMPTY_TIMESTAMP).then(firestore => {
+    return createInstance({}, DOCUMENT_WITH_EMPTY_TIMESTAMP).then((firestore) => {
       const expected = new Firestore.Timestamp(0, 0);
 
       return firestore
         .doc('collectionId/documentId')
         .get()
-        .then(res => {
+        .then((res) => {
           expect(res.get('moonLanding').isEqual(expected)).to.be.true;
         });
     });
@@ -167,12 +165,8 @@ describe('timestamps', () => {
   });
 
   it('valueOf', () => {
-    expect(new Firestore.Timestamp(-62135596677, 456).valueOf()).to.equal(
-      '000000000123.000000456',
-    );
-    expect(new Firestore.Timestamp(-62135596800, 0).valueOf()).to.equal(
-      '000000000000.000000000',
-    );
+    expect(new Firestore.Timestamp(-62135596677, 456).valueOf()).to.equal('000000000123.000000456');
+    expect(new Firestore.Timestamp(-62135596800, 0).valueOf()).to.equal('000000000000.000000000');
     expect(new Firestore.Timestamp(253402300799, 1e9 - 1).valueOf()).to.equal(
       '315537897599.999999999',
     );

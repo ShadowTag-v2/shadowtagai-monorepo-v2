@@ -6,9 +6,9 @@
 
 // import 'jasmine'; (google3-only)
 
-import {createTokenTests} from '../testing/tokens.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdOutlinedField} from './outlined-field.js';
+import { MdOutlinedField } from './outlined-field.js';
 
 describe('<md-outlined-field>', () => {
   describe('.styles', () => {

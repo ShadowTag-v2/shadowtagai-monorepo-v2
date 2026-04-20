@@ -3,7 +3,7 @@
  * Using Zod for runtime validation and TypeScript inference
  */
 
-import { z } from "zod";
+import { z } from 'zod';
 
 /**
  * Code selection from editor
@@ -23,13 +23,13 @@ export type Selection = z.infer<typeof Selection>;
  * User intent for code modification
  */
 export const Intent = z.enum([
-  "explain", // Generate explanation
-  "refactor", // Improve code structure
-  "test", // Generate tests
-  "fix", // Fix bugs or issues
-  "optimize", // Improve performance
-  "document", // Add documentation
-  "security", // Fix security issues
+  'explain', // Generate explanation
+  'refactor', // Improve code structure
+  'test', // Generate tests
+  'fix', // Fix bugs or issues
+  'optimize', // Improve performance
+  'document', // Add documentation
+  'security', // Fix security issues
 ]);
 
 export type Intent = z.infer<typeof Intent>;
@@ -38,10 +38,10 @@ export type Intent = z.infer<typeof Intent>;
  * LLM provider selection
  */
 export const Provider = z.enum([
-  "mock", // Deterministic mock for testing
-  "openai", // OpenAI GPT models
-  "anthropic", // Anthropic Claude models
-  "auto", // Automatic selection based on task
+  'mock', // Deterministic mock for testing
+  'openai', // OpenAI GPT models
+  'anthropic', // Anthropic Claude models
+  'auto', // Automatic selection based on task
 ]);
 
 export type Provider = z.infer<typeof Provider>;
@@ -51,8 +51,8 @@ export type Provider = z.infer<typeof Provider>;
  */
 export const CopilotRequest = z.object({
   selection: Selection,
-  intent: Intent.default("fix"),
-  modelPref: Provider.default("mock"),
+  intent: Intent.default('fix'),
+  modelPref: Provider.default('mock'),
   maxTokens: z.number().int().positive().max(8000).default(800),
   temperature: z.number().min(0).max(2).default(0.2),
   userId: z.string().optional(),
@@ -122,9 +122,9 @@ export type ProviderConfig = z.infer<typeof ProviderConfig>;
  * Router configuration
  */
 export const RouterConfig = z.object({
-  defaultProvider: Provider.default("mock"),
+  defaultProvider: Provider.default('mock'),
   enableGovernance: z.boolean().default(true),
-  corInstanceId: z.string().default("copilot-001"),
+  corInstanceId: z.string().default('copilot-001'),
   rateLimitRps: z.number().positive().default(6.6),
   rateLimitConcurrent: z.number().int().positive().default(2),
   providers: z.record(Provider, ProviderConfig).optional(),

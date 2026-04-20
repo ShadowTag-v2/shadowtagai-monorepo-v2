@@ -1,7 +1,7 @@
-import type { AnalysisArtifact, PlanTask } from "../types/core";
-import logger from "../utils/logger";
-import { walletAddressToUUID } from "../utils/uuid";
-import { getServiceClient } from "./client";
+import type { AnalysisArtifact, PlanTask } from '../types/core';
+import logger from '../utils/logger';
+import { walletAddressToUUID } from '../utils/uuid';
+import { getServiceClient } from './client';
 
 // Use service client to bypass RLS - auth is verified by middleware
 const supabase = getServiceClient();
@@ -52,9 +52,9 @@ export interface Message {
 
 // User operations
 export async function getUser(userId: string) {
-  const { data, error } = await supabase.from("users").select("*").eq("id", userId).single();
+  const { data, error } = await supabase.from('users').select('*').eq('id', userId).single();
 
-  if (error && error.code !== "PGRST116") {
+  if (error && error.code !== 'PGRST116') {
     logger.error(`[getUser] Error getting user: ${error.message}`);
     throw error;
   } // PGRST116 = not found
@@ -63,15 +63,15 @@ export async function getUser(userId: string) {
 
 export async function createUser(userData: User) {
   const { data, error } = await supabase
-    .from("users")
-    .upsert(userData, { onConflict: "id", ignoreDuplicates: true })
+    .from('users')
+    .upsert(userData, { onConflict: 'id', ignoreDuplicates: true })
     .select()
     .single();
 
   if (error) {
     // PGRST116 = not found (can happen with ignoreDuplicates when no row returned)
     // 23505 = duplicate key (shouldn't happen with upsert but handle gracefully)
-    if (error.code === "PGRST116" || error.code === "23505") {
+    if (error.code === 'PGRST116' || error.code === '23505') {
       // User already exists, return null (caller should handle)
       return null;
     }
@@ -86,12 +86,12 @@ export async function createUser(userData: User) {
  */
 export async function getUserByWallet(walletAddress: string) {
   const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq("wallet_address", walletAddress.toLowerCase())
+    .from('users')
+    .select('*')
+    .eq('wallet_address', walletAddress.toLowerCase())
     .single();
 
-  if (error && error.code !== "PGRST116") {
+  if (error && error.code !== 'PGRST116') {
     logger.error(`[getUserByWallet] Error getting user by wallet: ${error.message}`);
     throw error;
   } // PGRST116 = not found
@@ -118,9 +118,9 @@ export async function getOrCreateUserByWallet(walletAddress: string): Promise<{
 
   // First try to find user by deterministic UUID (primary lookup)
   const { data: existingUserById, error: idError } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", deterministicUserId)
+    .from('users')
+    .select('*')
+    .eq('id', deterministicUserId)
     .single();
 
   if (existingUserById && !idError) {
@@ -141,7 +141,7 @@ export async function getOrCreateUserByWallet(walletAddress: string): Promise<{
         // Step 1: Create new user with deterministic UUID (copy from old user)
         // Don't include created_at - let DB generate it
         const { data: newUserData, error: createError } = await supabase
-          .from("users")
+          .from('users')
           .insert({
             id: deterministicUserId,
             username: existingUserByWallet.username,
@@ -151,7 +151,7 @@ export async function getOrCreateUserByWallet(walletAddress: string): Promise<{
           .select()
           .single();
 
-        if (createError && createError.code !== "23505") {
+        if (createError && createError.code !== '23505') {
           // 23505 = already exists (race condition), which is fine
           logger.error(
             `[getOrCreateUserByWallet] Failed to create new user: ${createError.message}`,
@@ -161,9 +161,9 @@ export async function getOrCreateUserByWallet(walletAddress: string): Promise<{
 
         // Step 2: Update all conversations to use new user ID
         const { error: convError } = await supabase
-          .from("conversations")
+          .from('conversations')
           .update({ user_id: deterministicUserId })
-          .eq("user_id", oldUserId);
+          .eq('user_id', oldUserId);
 
         if (convError) {
           logger.error(
@@ -173,27 +173,27 @@ export async function getOrCreateUserByWallet(walletAddress: string): Promise<{
 
         // Step 3: Update all messages to use new user ID (if they have user_id column)
         const { error: msgError } = await supabase
-          .from("messages")
+          .from('messages')
           .update({ user_id: deterministicUserId })
-          .eq("user_id", oldUserId);
+          .eq('user_id', oldUserId);
 
-        if (msgError && msgError.code !== "42703") {
+        if (msgError && msgError.code !== '42703') {
           // 42703 = column doesn't exist, which is fine
           logger.error(`[getOrCreateUserByWallet] Failed to migrate messages: ${msgError.message}`);
         }
 
         // Step 4: Delete old user (clean up) - only after new user is confirmed
-        if (newUserData || createError?.code === "23505") {
-          await supabase.from("users").delete().eq("id", oldUserId);
+        if (newUserData || createError?.code === '23505') {
+          await supabase.from('users').delete().eq('id', oldUserId);
         }
 
         logger.info(`[getOrCreateUserByWallet] Migration complete for wallet ${normalizedWallet}`);
 
         // Return the new user
         const { data: migratedUser } = await supabase
-          .from("users")
-          .select("*")
-          .eq("id", deterministicUserId)
+          .from('users')
+          .select('*')
+          .eq('id', deterministicUserId)
           .single();
 
         if (migratedUser) {
@@ -218,7 +218,7 @@ export async function getOrCreateUserByWallet(walletAddress: string): Promise<{
   // Create new user with deterministic UUID and wallet identity
   const shortWallet = normalizedWallet.slice(0, 10);
   const { data: newUser, error: createError } = await supabase
-    .from("users")
+    .from('users')
     .insert({
       id: deterministicUserId, // Use deterministic UUID
       username: `wallet_${shortWallet}`,
@@ -230,12 +230,12 @@ export async function getOrCreateUserByWallet(walletAddress: string): Promise<{
 
   if (createError) {
     // Handle race condition: user might have been created by another request
-    if (createError.code === "23505") {
+    if (createError.code === '23505') {
       // Unique violation - user already exists, fetch and return
       const { data: raceUser } = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", deterministicUserId)
+        .from('users')
+        .select('*')
+        .eq('id', deterministicUserId)
         .single();
       if (raceUser) {
         return { user: raceUser, isNew: false };
@@ -250,7 +250,7 @@ export async function getOrCreateUserByWallet(walletAddress: string): Promise<{
 // Conversation operations
 export async function createConversation(conversationData: Conversation) {
   const { data, error } = await supabase
-    .from("conversations")
+    .from('conversations')
     .insert(conversationData)
     .select()
     .single();
@@ -264,7 +264,7 @@ export async function createConversation(conversationData: Conversation) {
 
 // Message operations
 export async function createMessage(messageData: Message) {
-  const { data, error } = await supabase.from("messages").insert(messageData).select().single();
+  const { data, error } = await supabase.from('messages').insert(messageData).select().single();
 
   if (error) {
     logger.error(`[createMessage] Error creating message: ${error.message}`);
@@ -275,9 +275,9 @@ export async function createMessage(messageData: Message) {
 
 export async function updateMessage(id: string, updates: Partial<Message>) {
   const { data, error } = await supabase
-    .from("messages")
+    .from('messages')
     .update(updates)
-    .eq("id", id)
+    .eq('id', id)
     .select()
     .single();
 
@@ -290,9 +290,9 @@ export async function updateMessage(id: string, updates: Partial<Message>) {
 
 export async function getMessage(id: string) {
   const { data, error } = await supabase
-    .from("messages")
-    .select("*, state:states(*)")
-    .eq("id", id)
+    .from('messages')
+    .select('*, state:states(*)')
+    .eq('id', id)
     .single();
 
   if (error) {
@@ -304,10 +304,10 @@ export async function getMessage(id: string) {
 
 export async function getMessagesByConversation(conversationId: string, limit?: number) {
   let query = supabase
-    .from("messages")
-    .select("*, state:states(*)")
-    .eq("conversation_id", conversationId)
-    .order("created_at", { ascending: false });
+    .from('messages')
+    .select('*, state:states(*)')
+    .eq('conversation_id', conversationId)
+    .order('created_at', { ascending: false });
 
   if (limit) {
     query = query.limit(limit);
@@ -326,7 +326,7 @@ export async function getMessagesByConversation(conversationId: string, limit?: 
 
 // State operations
 export async function createState(stateData: { values: any }) {
-  const { data, error } = await supabase.from("states").insert(stateData).select().single();
+  const { data, error } = await supabase.from('states').insert(stateData).select().single();
 
   if (error) {
     logger.error(`[createState] Error creating state: ${error.message}`);
@@ -344,9 +344,9 @@ export async function updateState(id: string, values: any) {
   const cleanedValues = cleanValues(values);
 
   const { data, error } = await supabase
-    .from("states")
+    .from('states')
     .update({ values: cleanedValues })
-    .eq("id", id)
+    .eq('id', id)
     .select()
     .single();
 
@@ -358,7 +358,7 @@ export async function updateState(id: string, values: any) {
 }
 
 export async function getState(id: string) {
-  const { data, error } = await supabase.from("states").select("*").eq("id", id).single();
+  const { data, error } = await supabase.from('states').select('*').eq('id', id).single();
 
   if (error) {
     logger.error(`[getState] Error getting state: ${error.message}`);
@@ -370,7 +370,7 @@ export async function getState(id: string) {
 // ConversationState operations
 export async function createConversationState(stateData: { values: any }) {
   const { data, error } = await supabase
-    .from("conversation_states")
+    .from('conversation_states')
     .insert(stateData)
     .select()
     .single();
@@ -404,9 +404,9 @@ export async function updateConversationState(
 
   const cleanedValues = cleanValues(finalValues);
   const { data, error } = await supabase
-    .from("conversation_states")
+    .from('conversation_states')
     .update({ values: cleanedValues })
-    .eq("id", id)
+    .eq('id', id)
     .select()
     .single();
 
@@ -419,9 +419,9 @@ export async function updateConversationState(
 
 export async function getConversationState(id: string) {
   const { data, error } = await supabase
-    .from("conversation_states")
-    .select("*")
-    .eq("id", id)
+    .from('conversation_states')
+    .select('*')
+    .eq('id', id)
     .single();
 
   if (error) {
@@ -433,7 +433,7 @@ export async function getConversationState(id: string) {
 
 // Get conversation by ID
 export async function getConversation(id: string) {
-  const { data, error } = await supabase.from("conversations").select("*").eq("id", id).single();
+  const { data, error } = await supabase.from('conversations').select('*').eq('id', id).single();
 
   if (error) {
     logger.error(`[getConversation] Error getting conversation: ${error.message}`);
@@ -445,10 +445,10 @@ export async function getConversation(id: string) {
 // Get all conversations for a user
 export async function getUserConversations(userId: string) {
   const { data, error } = await supabase
-    .from("conversations")
-    .select("id, user_id, conversation_state_id, created_at")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    .from('conversations')
+    .select('id, user_id, conversation_state_id, created_at')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
 
   if (error) {
     logger.error(`[getUserConversations] Error getting user conversations: ${error.message}`);
@@ -460,9 +460,9 @@ export async function getUserConversations(userId: string) {
 // Update conversation to link conversation_state_id
 export async function updateConversation(id: string, updates: Partial<Conversation>) {
   const { data, error } = await supabase
-    .from("conversations")
+    .from('conversations')
     .update(updates)
-    .eq("id", id)
+    .eq('id', id)
     .select()
     .single();
 
@@ -530,7 +530,7 @@ function cleanValues(values: any): any {
 // Token Usage Operations
 // ============================================================================
 
-export type TokenUsageType = "chat" | "deep-research" | "paper-generation";
+export type TokenUsageType = 'chat' | 'deep-research' | 'paper-generation';
 
 export interface TokenUsage {
   id?: string;
@@ -551,14 +551,14 @@ export interface TokenUsage {
  * Either message_id or paper_id must be provided
  */
 export async function createTokenUsage(
-  tokenUsage: Omit<TokenUsage, "id" | "created_at">,
+  tokenUsage: Omit<TokenUsage, 'id' | 'created_at'>,
 ): Promise<TokenUsage> {
   // Validate that at least one reference is provided
   if (!tokenUsage.message_id && !tokenUsage.paper_id) {
-    throw new Error("Either message_id or paper_id must be provided");
+    throw new Error('Either message_id or paper_id must be provided');
   }
 
-  const { data, error } = await supabase.from("token_usage").insert(tokenUsage).select().single();
+  const { data, error } = await supabase.from('token_usage').insert(tokenUsage).select().single();
 
   if (error) {
     throw error;

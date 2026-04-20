@@ -6,7 +6,7 @@
 
 // import 'jasmine'; (google3-only)
 
-import {Validator} from './validator.js';
+import { Validator } from './validator.js';
 
 describe('Validator', () => {
   interface CustomState {
@@ -15,10 +15,10 @@ describe('Validator', () => {
   }
 
   class CustomValidator extends Validator<CustomState> {
-    computeValidity({required, value}: CustomState) {
+    computeValidity({ required, value }: CustomState) {
       const valueMissing = required && !value;
       return {
-        validity: {valueMissing},
+        validity: { valueMissing },
         validationMessage: valueMissing ? 'Value missing' : '',
       };
     }
@@ -27,8 +27,8 @@ describe('Validator', () => {
       return prev.value === next.value && prev.required === next.required;
     }
 
-    copy({value, required}: CustomState) {
-      return {value, required};
+    copy({ value, required }: CustomState) {
+      return { value, required };
     }
   }
 
@@ -43,19 +43,19 @@ describe('Validator', () => {
       const validator = new CustomValidator(() => currentState);
 
       expect(validator.getValidity()).toEqual({
-        validity: jasmine.objectContaining({valueMissing: false}),
+        validity: jasmine.objectContaining({ valueMissing: false }),
         validationMessage: '',
       });
 
       currentState.required = true;
       expect(validator.getValidity()).toEqual({
-        validity: jasmine.objectContaining({valueMissing: true}),
+        validity: jasmine.objectContaining({ valueMissing: true }),
         validationMessage: 'Value missing',
       });
 
       currentState.value = 'Foo';
       expect(validator.getValidity()).toEqual({
-        validity: jasmine.objectContaining({valueMissing: false}),
+        validity: jasmine.objectContaining({ valueMissing: false }),
         validationMessage: '',
       });
     });

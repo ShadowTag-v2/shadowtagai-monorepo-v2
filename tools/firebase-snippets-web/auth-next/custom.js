@@ -2,10 +2,10 @@
 // [SNIPPETS_SEPARATION enabled]
 
 function signInCustom() {
-  const token = "token123";
+  const token = 'token123';
 
   // [START auth_sign_in_custom]
-  const { getAuth, signInWithCustomToken } = require("firebase/auth");
+  const { getAuth, signInWithCustomToken } = require('firebase/auth');
 
   const auth = getAuth();
   signInWithCustomToken(auth, token)

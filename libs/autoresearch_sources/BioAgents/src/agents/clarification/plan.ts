@@ -5,15 +5,15 @@
  * based on clarification answers.
  */
 
-import { LLM } from "../../llm/provider";
+import { LLM } from '../../llm/provider';
 import type {
   ClarificationAnswer,
   ClarificationPlan,
   ClarificationQuestion,
-} from "../../types/clarification";
-import type { LLMProvider } from "../../types/core";
-import logger from "../../utils/logger";
-import { GENERATE_PLAN_PROMPT, REGENERATE_PLAN_PROMPT } from "./prompts";
+} from '../../types/clarification';
+import type { LLMProvider } from '../../types/core';
+import logger from '../../utils/logger';
+import { GENERATE_PLAN_PROMPT, REGENERATE_PLAN_PROMPT } from './prompts';
 
 export type DatasetInfo = {
   filename: string;
@@ -37,10 +37,10 @@ function formatQuestionsAndAnswers(
 
   return questions
     .map((q, index) => {
-      const answer = answerMap.get(index) || "(No answer provided)";
+      const answer = answerMap.get(index) || '(No answer provided)';
       return `Q${index + 1} [${q.category}]: ${q.question}\nA${index + 1}: ${answer}`;
     })
-    .join("\n\n");
+    .join('\n\n');
 }
 
 /**
@@ -48,11 +48,11 @@ function formatQuestionsAndAnswers(
  */
 function formatAvailableDatasets(datasets?: DatasetInfo[]): string {
   if (!datasets || datasets.length === 0) {
-    return "No datasets available. Only LITERATURE tasks can be planned.";
+    return 'No datasets available. Only LITERATURE tasks can be planned.';
   }
   return datasets
-    .map((d) => `- ${d.filename}${d.description ? `: ${d.description}` : ""}`)
-    .join("\n");
+    .map((d) => `- ${d.filename}${d.description ? `: ${d.description}` : ''}`)
+    .join('\n');
 }
 
 /**
@@ -61,10 +61,10 @@ function formatAvailableDatasets(datasets?: DatasetInfo[]): string {
 function formatPlanForPrompt(plan: ClarificationPlan): string {
   const taskList = plan.initialTasks
     .map((t, i) => {
-      const filenames = t.datasetFilenames.length > 0 ? t.datasetFilenames.join(", ") : "None";
+      const filenames = t.datasetFilenames.length > 0 ? t.datasetFilenames.join(', ') : 'None';
       return `  ${i + 1}. [${t.type}] ${t.objective}\n     Datasets: ${filenames}`;
     })
-    .join("\n");
+    .join('\n');
 
   return `Objective: ${plan.objective}
 Initial Tasks:
@@ -87,7 +87,7 @@ export async function generatePlanFromContext(input: {
   const CLARIFICATION_LLM_PROVIDER: LLMProvider =
     (process.env.CLARIFICATION_LLM_PROVIDER as LLMProvider) ||
     (process.env.PLANNING_LLM_PROVIDER as LLMProvider) ||
-    "google";
+    'google';
 
   const llmApiKey = process.env[`${CLARIFICATION_LLM_PROVIDER.toUpperCase()}_API_KEY`];
 
@@ -99,7 +99,7 @@ export async function generatePlanFromContext(input: {
     options.model ||
     process.env.CLARIFICATION_LLM_MODEL ||
     process.env.PLANNING_LLM_MODEL ||
-    "gemini-2.5-pro";
+    'gemini-2.5-pro';
 
   const llmProvider = new LLM({
     name: CLARIFICATION_LLM_PROVIDER,
@@ -109,13 +109,13 @@ export async function generatePlanFromContext(input: {
   const questionsAndAnswers = formatQuestionsAndAnswers(questions, answers);
   const availableDatasets = formatAvailableDatasets(datasets);
 
-  const prompt = GENERATE_PLAN_PROMPT.replace("{query}", query)
-    .replace("{questionsAndAnswers}", questionsAndAnswers)
-    .replace("{availableDatasets}", availableDatasets);
+  const prompt = GENERATE_PLAN_PROMPT.replace('{query}', query)
+    .replace('{questionsAndAnswers}', questionsAndAnswers)
+    .replace('{availableDatasets}', availableDatasets);
 
   logger.info(
     { query: query.substring(0, 100), answerCount: answers.length, model },
-    "generating_clarification_plan",
+    'generating_clarification_plan',
   );
 
   try {
@@ -123,7 +123,7 @@ export async function generatePlanFromContext(input: {
       model,
       messages: [
         {
-          role: "user" as const,
+          role: 'user' as const,
           content: prompt,
         },
       ],
@@ -141,13 +141,13 @@ export async function generatePlanFromContext(input: {
       const jsonStr = jsonMatch && jsonMatch[1] ? jsonMatch[1].trim() : content;
       parsed = JSON.parse(jsonStr);
     } catch (parseError) {
-      logger.error({ content, parseError }, "failed_to_parse_plan_response");
-      throw new Error("Failed to parse plan from LLM response");
+      logger.error({ content, parseError }, 'failed_to_parse_plan_response');
+      throw new Error('Failed to parse plan from LLM response');
     }
 
     // Validate required fields
     if (!parsed.objective) {
-      throw new Error("Plan missing required field: objective");
+      throw new Error('Plan missing required field: objective');
     }
 
     // Ensure arrays have defaults
@@ -161,12 +161,12 @@ export async function generatePlanFromContext(input: {
         objective: plan.objective.substring(0, 100),
         taskCount: plan.initialTasks.length,
       },
-      "clarification_plan_generated",
+      'clarification_plan_generated',
     );
 
     return plan;
   } catch (error) {
-    logger.error({ error, query }, "generate_plan_failed");
+    logger.error({ error, query }, 'generate_plan_failed');
     throw error;
   }
 }
@@ -189,7 +189,7 @@ export async function regeneratePlanFromFeedback(input: {
   const CLARIFICATION_LLM_PROVIDER: LLMProvider =
     (process.env.CLARIFICATION_LLM_PROVIDER as LLMProvider) ||
     (process.env.PLANNING_LLM_PROVIDER as LLMProvider) ||
-    "google";
+    'google';
 
   const llmApiKey = process.env[`${CLARIFICATION_LLM_PROVIDER.toUpperCase()}_API_KEY`];
 
@@ -201,7 +201,7 @@ export async function regeneratePlanFromFeedback(input: {
     options.model ||
     process.env.CLARIFICATION_LLM_MODEL ||
     process.env.PLANNING_LLM_MODEL ||
-    "gemini-2.5-pro";
+    'gemini-2.5-pro';
 
   const llmProvider = new LLM({
     name: CLARIFICATION_LLM_PROVIDER,
@@ -212,11 +212,11 @@ export async function regeneratePlanFromFeedback(input: {
   const availableDatasets = formatAvailableDatasets(datasets);
   const previousPlanStr = formatPlanForPrompt(previousPlan);
 
-  const prompt = REGENERATE_PLAN_PROMPT.replace("{query}", query)
-    .replace("{questionsAndAnswers}", questionsAndAnswers)
-    .replace("{availableDatasets}", availableDatasets)
-    .replace("{previousPlan}", previousPlanStr)
-    .replace("{feedback}", feedback);
+  const prompt = REGENERATE_PLAN_PROMPT.replace('{query}', query)
+    .replace('{questionsAndAnswers}', questionsAndAnswers)
+    .replace('{availableDatasets}', availableDatasets)
+    .replace('{previousPlan}', previousPlanStr)
+    .replace('{feedback}', feedback);
 
   logger.info(
     {
@@ -225,7 +225,7 @@ export async function regeneratePlanFromFeedback(input: {
       model,
       datasetCount: datasets?.length ?? 0,
     },
-    "regenerating_clarification_plan",
+    'regenerating_clarification_plan',
   );
 
   try {
@@ -233,7 +233,7 @@ export async function regeneratePlanFromFeedback(input: {
       model,
       messages: [
         {
-          role: "user" as const,
+          role: 'user' as const,
           content: prompt,
         },
       ],
@@ -251,13 +251,13 @@ export async function regeneratePlanFromFeedback(input: {
       const jsonStr = jsonMatch && jsonMatch[1] ? jsonMatch[1].trim() : content;
       parsed = JSON.parse(jsonStr);
     } catch (parseError) {
-      logger.error({ content, parseError }, "failed_to_parse_regenerated_plan_response");
-      throw new Error("Failed to parse regenerated plan from LLM response");
+      logger.error({ content, parseError }, 'failed_to_parse_regenerated_plan_response');
+      throw new Error('Failed to parse regenerated plan from LLM response');
     }
 
     // Validate required fields
     if (!parsed.objective) {
-      throw new Error("Regenerated plan missing required field: objective");
+      throw new Error('Regenerated plan missing required field: objective');
     }
 
     // Ensure arrays have defaults
@@ -271,12 +271,12 @@ export async function regeneratePlanFromFeedback(input: {
         objective: plan.objective.substring(0, 100),
         taskCount: plan.initialTasks.length,
       },
-      "clarification_plan_regenerated",
+      'clarification_plan_regenerated',
     );
 
     return plan;
   } catch (error) {
-    logger.error({ error, query, feedback }, "regenerate_plan_failed");
+    logger.error({ error, query, feedback }, 'regenerate_plan_failed');
     throw error;
   }
 }

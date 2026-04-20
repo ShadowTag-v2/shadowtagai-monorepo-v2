@@ -10,7 +10,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Git-Protocol, Accept');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Content-Type, Authorization, Git-Protocol, Accept',
+    );
     res.status(200).end();
     return;
   }
@@ -34,7 +37,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  if (!allowedHosts.some(host => parsedUrl.hostname.endsWith(host))) {
+  if (!allowedHosts.some((host) => parsedUrl.hostname.endsWith(host))) {
     res.status(403).json({ error: 'Only GitHub URLs are allowed' });
     return;
   }
@@ -95,7 +98,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(response.status);
     const buffer = await response.arrayBuffer();
     res.send(Buffer.from(buffer));
-
   } catch (error) {
     console.error('Proxy error:', error);
     res.status(500).json({ error: 'Proxy request failed', details: String(error) });

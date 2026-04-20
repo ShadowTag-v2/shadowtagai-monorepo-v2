@@ -34,7 +34,7 @@ const fsSync = require('fs');
  * @param isDev {boolean} Whether or not the build is in development mode.
  * @param config {{jsdir: string}} Configuration options to set the JS directory
  */
-function inlineJS(eleventyConfig, isDev, {jsDir}) {
+function inlineJS(eleventyConfig, isDev, { jsDir }) {
   eleventyConfig.addShortcode('inlinejs', (path) => {
     // script type module
     if (isDev) {

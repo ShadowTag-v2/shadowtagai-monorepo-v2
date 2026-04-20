@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {isServer, ReactiveController, ReactiveControllerHost} from 'lit';
+import { isServer, type ReactiveController, type ReactiveControllerHost } from 'lit';
 
 /**
  * An element that can be attached to an associated controlling element.
@@ -85,9 +85,7 @@ if (!isServer) {
     for (const record of records) {
       // When a control's `for` attribute changes, inform its
       // `AttachableController` to update to a new control.
-      (record.target as AttachableControllerHost)[
-        ATTACHABLE_CONTROLLER
-      ]?.hostConnected();
+      (record.target as AttachableControllerHost)[ATTACHABLE_CONTROLLER]?.hostConnected();
     }
   });
 }
@@ -132,9 +130,9 @@ export class AttachableController implements ReactiveController, Attachable {
         return null;
       }
 
-      return (
-        this.host.getRootNode() as Document | ShadowRoot
-      ).querySelector<HTMLElement>(`#${this.htmlFor}`);
+      return (this.host.getRootNode() as Document | ShadowRoot).querySelector<HTMLElement>(
+        `#${this.htmlFor}`,
+      );
     }
 
     return this.currentControl || this.host.parentElement;
@@ -159,14 +157,11 @@ export class AttachableController implements ReactiveController, Attachable {
    */
   constructor(
     private readonly host: AttachableControllerHost,
-    private readonly onControlChange: (
-      prev: HTMLElement | null,
-      next: HTMLElement | null,
-    ) => void,
+    private readonly onControlChange: (prev: HTMLElement | null, next: HTMLElement | null) => void,
   ) {
     host.addController(this);
     host[ATTACHABLE_CONTROLLER] = this;
-    FOR_ATTRIBUTE_OBSERVER?.observe(host, {attributeFilter: ['for']});
+    FOR_ATTRIBUTE_OBSERVER?.observe(host, { attributeFilter: ['for'] });
   }
 
   attach(control: HTMLElement) {

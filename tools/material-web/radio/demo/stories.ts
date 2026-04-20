@@ -6,11 +6,8 @@
 
 import '@material/web/radio/radio.js';
 
-import {
-  labelStyles,
-  MaterialStoryInit,
-} from './material-collection.js';
-import {css, html} from 'lit';
+import { css, html } from 'lit';
+import { labelStyles, type MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for radio stories. */
 export interface StoryKnobs {
@@ -19,7 +16,7 @@ export interface StoryKnobs {
 
 const radio: MaterialStoryInit<StoryKnobs> = {
   name: 'Radios',
-  render({disabled}) {
+  render({ disabled }) {
     return html`
       <div role="radiogroup" aria-label="An example group of radio buttons">
         <md-radio
@@ -61,7 +58,7 @@ const withLabels: MaterialStoryInit<StoryKnobs> = {
       }
     `,
   ],
-  render({disabled}) {
+  render({ disabled }) {
     return html`
       <div class="column" role="radiogroup" aria-label="Animals">
         <div class="radio-label">

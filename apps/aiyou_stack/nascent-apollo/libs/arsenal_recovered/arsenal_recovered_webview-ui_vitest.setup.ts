@@ -1,11 +1,11 @@
-import "@testing-library/jest-dom";
-import "@testing-library/jest-dom/vitest";
+import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/vitest';
 
 // Force React into development mode for tests
 // This is needed to enable act(...) function in React Testing Library
 globalThis.process = globalThis.process || {};
 globalThis.process.env = globalThis.process.env || {};
-globalThis.process.env.NODE_ENV = "development";
+globalThis.process.env.NODE_ENV = 'development';
 
 class MockResizeObserver {
   observe() {}
@@ -19,7 +19,7 @@ global.ResizeObserver = MockResizeObserver;
 // FAST Foundation tries to set HTMLElement.focus property, but it's read-only in JSDOM
 // The issue is that FAST Foundation's handleUnsupportedDelegatesFocus tries to set element.focus = originalFocus
 // but JSDOM's HTMLElement.focus is a getter-only property
-Object.defineProperty(HTMLElement.prototype, "focus", {
+Object.defineProperty(HTMLElement.prototype, 'focus', {
   get: function () {
     return (
       this._focus ||
@@ -34,7 +34,7 @@ Object.defineProperty(HTMLElement.prototype, "focus", {
   configurable: true,
 });
 
-Object.defineProperty(window, "matchMedia", {
+Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({
     matches: false,

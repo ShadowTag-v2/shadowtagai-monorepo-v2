@@ -58,7 +58,7 @@
 .research-progress-count {
   font-size: 12px;
   color: var(--text-secondary);
-  font-family: "JetBrains Mono", monospace;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .research-progress-current {
@@ -523,7 +523,7 @@
 .research-step-output-content {
   padding: 12px;
   font-size: 12px;
-  font-family: "JetBrains Mono", monospace;
+  font-family: 'JetBrains Mono', monospace;
   color: var(--text-tertiary);
   max-height: 300px;
   overflow-y: auto;
@@ -828,7 +828,7 @@
   background: var(--bg-tertiary);
   color: var(--text-tertiary);
   border: 1px solid var(--border-color);
-  font-family: "JetBrains Mono", monospace;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .artifact-viewer-chevron {
@@ -887,7 +887,7 @@
 .artifact-output-content {
   padding: 14px;
   margin: 0;
-  font-family: "JetBrains Mono", monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   line-height: 1.6;
   color: var(--text-primary);
@@ -920,7 +920,7 @@
 .artifact-error-content {
   padding: 14px;
   margin: 0;
-  font-family: "JetBrains Mono", monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   line-height: 1.6;
   color: #fca5a5;

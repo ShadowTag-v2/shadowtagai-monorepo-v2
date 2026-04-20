@@ -9,9 +9,9 @@
  * - Deep Research: 3 requests per 5 minutes per user
  */
 
-import type { AuthContext } from "../types/auth";
-import { isJobQueueEnabled } from "../services/queue/connection";
-import logger from "../utils/logger";
+import { isJobQueueEnabled } from '../services/queue/connection';
+import type { AuthContext } from '../types/auth';
+import logger from '../utils/logger';
 
 /**
  * Rate limit configuration
@@ -26,11 +26,11 @@ interface RateLimitConfig {
  */
 const RATE_LIMITS: Record<string, RateLimitConfig> = {
   chat: {
-    max: parseInt(process.env.CHAT_RATE_LIMIT_PER_MINUTE || "10"),
+    max: parseInt(process.env.CHAT_RATE_LIMIT_PER_MINUTE || '10'),
     window: 60, // 1 minute
   },
-  "deep-research": {
-    max: parseInt(process.env.DEEP_RESEARCH_RATE_LIMIT_PER_5MIN || "3"),
+  'deep-research': {
+    max: parseInt(process.env.DEEP_RESEARCH_RATE_LIMIT_PER_5MIN || '3'),
     window: 300, // 5 minutes
   },
 };
@@ -56,7 +56,7 @@ export interface RateLimitResult {
  */
 export async function checkRateLimit(
   userId: string,
-  action: "chat" | "deep-research",
+  action: 'chat' | 'deep-research',
 ): Promise<RateLimitResult> {
   // If job queue is not enabled, skip rate limiting
   if (!isJobQueueEnabled()) {
@@ -69,12 +69,12 @@ export async function checkRateLimit(
 
   const config = RATE_LIMITS[action];
   if (!config) {
-    logger.warn({ action }, "unknown_rate_limit_action");
+    logger.warn({ action }, 'unknown_rate_limit_action');
     return { allowed: true, remaining: 999, resetIn: 0 };
   }
 
   // Get Redis connection
-  const { getBullMQConnection } = await import("../services/queue/connection");
+  const { getBullMQConnection } = await import('../services/queue/connection');
   const redis = getBullMQConnection();
 
   const key = `ratelimit:${action}:${userId}`;
@@ -107,9 +107,9 @@ export async function checkRateLimit(
       await redis.zremrangebyscore(key, now, now);
 
       // Get oldest entry to calculate reset time
-      const oldest = await redis.zrange(key, 0, 0, "WITHSCORES");
+      const oldest = await redis.zrange(key, 0, 0, 'WITHSCORES');
       const resetIn =
-        oldest.length > 1 ? config.window - (now - parseInt(oldest[1] || "0")) : config.window;
+        oldest.length > 1 ? config.window - (now - parseInt(oldest[1] || '0')) : config.window;
 
       logger.warn(
         {
@@ -119,7 +119,7 @@ export async function checkRateLimit(
           max: config.max,
           resetIn,
         },
-        "rate_limit_exceeded",
+        'rate_limit_exceeded',
       );
 
       return {
@@ -137,7 +137,7 @@ export async function checkRateLimit(
         max: config.max,
         remaining: config.max - currentCount - 1,
       },
-      "rate_limit_checked",
+      'rate_limit_checked',
     );
 
     return {
@@ -147,7 +147,7 @@ export async function checkRateLimit(
     };
   } catch (error) {
     // On Redis error, allow request but log warning
-    logger.error({ error, userId, action }, "rate_limit_check_failed");
+    logger.error({ error, userId, action }, 'rate_limit_check_failed');
     return {
       allowed: true,
       remaining: 999,
@@ -178,7 +178,7 @@ export async function checkRateLimit(
  * );
  * ```
  */
-export function rateLimitMiddleware(action: "chat" | "deep-research") {
+export function rateLimitMiddleware(action: 'chat' | 'deep-research') {
   return async ({ request, set }: { request: Request & { auth?: AuthContext }; set: any }) => {
     // Skip if job queue not enabled
     if (!isJobQueueEnabled()) {
@@ -190,11 +190,11 @@ export function rateLimitMiddleware(action: "chat" | "deep-research") {
 
     if (!auth?.userId) {
       // Should not happen if authResolver runs before this middleware
-      logger.warn({ action }, "rate_limit_no_auth_context");
+      logger.warn({ action }, 'rate_limit_no_auth_context');
       set.status = 401;
       return {
-        error: "Authentication required",
-        message: "You must be authenticated to access this endpoint",
+        error: 'Authentication required',
+        message: 'You must be authenticated to access this endpoint',
       };
     }
 
@@ -202,14 +202,14 @@ export function rateLimitMiddleware(action: "chat" | "deep-research") {
     const result = await checkRateLimit(userId, action);
 
     // Set rate limit headers
-    set.headers["X-RateLimit-Limit"] = String(RATE_LIMITS[action]?.max || 0);
-    set.headers["X-RateLimit-Remaining"] = String(result.remaining);
-    set.headers["X-RateLimit-Reset"] = String(result.resetIn);
+    set.headers['X-RateLimit-Limit'] = String(RATE_LIMITS[action]?.max || 0);
+    set.headers['X-RateLimit-Remaining'] = String(result.remaining);
+    set.headers['X-RateLimit-Reset'] = String(result.resetIn);
 
     if (!result.allowed) {
       set.status = 429;
       return {
-        error: "Rate limit exceeded",
+        error: 'Rate limit exceeded',
         message: `Too many requests. Try again in ${result.resetIn} seconds.`,
         retryAfter: result.resetIn,
       };

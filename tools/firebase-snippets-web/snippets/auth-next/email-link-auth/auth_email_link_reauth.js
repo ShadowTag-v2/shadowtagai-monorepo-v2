@@ -5,11 +5,10 @@
 // 'npm run snippets'.
 
 // [START auth_email_link_reauth_modular]
-import { getAuth, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+import { EmailAuthProvider, getAuth, reauthenticateWithCredential } from 'firebase/auth';
 
 // Construct the email link credential from the current URL.
-const credential = EmailAuthProvider.credentialWithLink(
-  email, window.location.href);
+const credential = EmailAuthProvider.credentialWithLink(email, window.location.href);
 
 // Re-authenticate the user with this credential.
 const auth = getAuth();
