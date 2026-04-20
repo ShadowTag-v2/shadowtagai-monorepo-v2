@@ -66,6 +66,14 @@
   <!-- Preload hero as AVIF (57KB vs 105KB WebP) -->
   <link rel="preload" as="image" href="/images/hero-bg.avif" type="image/avif" fetchpriority="high"/>
   <link rel="preload" as="image" href="/images/logo.webp" type="image/webp"/>
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5QW1DZL23V"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-5QW1DZL23V');
+  </script>
   <style>
     @font-face { font-family: 'Inter'; font-display: optional; src: local('Inter'); }
     body { margin: 0; background: #080c18; color: #dfe2f4; font-family: 'Inter', -apple-system, sans-serif; }
