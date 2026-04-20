@@ -80,7 +80,7 @@ test.describe('KovelAI Homepage — Navigation', () => {
   test('CTA button has correct ID', async ({ page }) => {
     const cta = page.locator('#cta-start');
     await expect(cta).toBeVisible();
-    await expect(cta).toContainText('Start Free Trial');
+    await expect(cta).toContainText('Request Access');
   });
 });
 
@@ -98,7 +98,7 @@ test.describe('KovelAI Homepage — CTA Buttons', () => {
   test('Practice pricing CTA exists with correct ID', async ({ page }) => {
     const cta = page.locator('#cta-practice');
     await expect(cta).toBeAttached();
-    await expect(cta).toContainText(/Start Free Trial/i);
+    await expect(cta).toContainText(/Get Started/i);
   });
 
   test('Enterprise pricing CTA exists with correct ID', async ({ page }) => {
@@ -225,7 +225,7 @@ test.describe('KovelAI Homepage — A11y Basics', () => {
 
   test('CTA buttons have meaningful text', async ({ page }) => {
     const startBtn = page.locator('#cta-start');
-    await expect(startBtn).toHaveAttribute('aria-label', /Start free trial/i);
+    await expect(startBtn).toHaveAttribute('aria-label', /Request access/i);
   });
 });
 

@@ -67,3 +67,9 @@
 - **Severity**: Low
 - **Status**: Monitored
 - **Description**: Antigravity IDE SharedProcess uncaught exception ('fireEvent'). Upstream bug, no action required.
+
+## Risk #48: Porsche Trademark in Customer-Facing Assets
+- **Type**: Legal/IP
+- **Severity**: 🟠 High
+- **Status**: RESOLVED
+- **Description**: Veo-generated video (`porsche-peelout-compressed.mp4`) and UI labels on kovelai.web.app referenced "Porsche" trademark. Renamed file to `supercar-peelout-compressed.mp4`, updated all 8 references across showreel.html, video-gallery.html, cinematic-landing.html, index.html, scroll-frames.js, video-sitemap.xml, OG/Twitter meta tags. Zero remaining trademark references in `apps/kovelai/` and `apps/shadowtagai/`. aiyou_stack internal references retained (non-customer-facing).
