@@ -22,7 +22,7 @@ data:
   GCP_LOCATION: "us-central1"
   DEPLOYMENT_MODE: "gke-autopilot"
   ENVIRONMENT: "production"
-  DEFAULT_MODEL: "gemini-2.0-flash"
+  DEFAULT_MODEL: "gemini-3.1-flash-lite-preview"
   BATCH_MODE_ENABLED: "true"
   CACHING_ENABLED: "true"
   CIRCUIT_BREAKER_ENABLED: "true"

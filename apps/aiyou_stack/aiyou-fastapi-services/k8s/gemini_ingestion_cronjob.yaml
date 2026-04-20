@@ -38,7 +38,7 @@ metadata:
   namespace: ingestion-system
 data:
   # Gemini Configuration
-  GEMINI_MODEL: "gemini-2.0-flash-exp"
+  GEMINI_MODEL: "gemini-3.1-flash-lite-preview"
   GEMINI_TEMPERATURE: "0.1"
   GEMINI_MAX_TOKENS: "2048"
 

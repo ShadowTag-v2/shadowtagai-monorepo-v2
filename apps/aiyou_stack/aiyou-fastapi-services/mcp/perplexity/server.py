@@ -467,7 +467,7 @@ async def test_perplexity_mcp():
     watermark = await server.watermark_content(
         content="Based on user reviews and specifications, the iPhone 15 Pro Max offers excellent camera performance...",
         source="perplexity_comet",
-        metadata={"query": "best phone 2024", "model": "gemini-2.0"},
+        metadata={"query": "best phone 2024", "model": "gemini-3.1-flash-lite-preview"},
     )
     print(f"  Signature: {watermark.signature[:50]}...")
     print(f"  Merkle Root: {watermark.merkle_root[:50]}...")

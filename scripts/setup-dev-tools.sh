@@ -54,7 +54,7 @@ if [ ! -f "$TOOLS_DIR/antigravity-proxy/.env" ]; then
 GEMINI_API_KEY=your-gemini-api-key-here
 
 # Optional: Specific model to use
-GEMINI_MODEL=gemini-2.0-flash-exp
+GEMINI_MODEL=gemini-3.1-flash-lite-preview
 EOF
     echo "  Created antigravity-proxy/.env (edit with your API key)"
 fi

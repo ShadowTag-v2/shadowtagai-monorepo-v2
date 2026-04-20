@@ -73,6 +73,6 @@ business_rules:
 # SELF-PROMPTING LOOP CONFIG
 loop_protocol:
   max_iterations: 3
-  model_r1: "gemini-2.0-flash" # Divergent
-  model_r2: "gemini-2.0-flash" # Convergent
-  model_r3: "gemini-2.0-pro"   # Final Verdict
+  model_r1: "gemini-3.1-flash-lite-preview" # Divergent
+  model_r2: "gemini-3.1-flash-lite-preview" # Convergent
+  model_r3: "gemini-3.1-flash-lite-preview"   # Final Verdict

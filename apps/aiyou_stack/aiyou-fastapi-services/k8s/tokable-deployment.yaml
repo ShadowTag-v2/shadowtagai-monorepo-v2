@@ -42,7 +42,7 @@ data:
   # AI Configuration
   AI_MODEL_GESTURE: "mediapipe-holistic"
   AI_MODEL_EMOTION: "vertex-ai-emotion-v1"
-  AI_MODEL_ART: "gemini-2.0-pro"
+  AI_MODEL_ART: "gemini-3.1-flash-lite-preview"
   MAX_PROCESSING_TIME_MS: "100"
 
   # Stream Configuration

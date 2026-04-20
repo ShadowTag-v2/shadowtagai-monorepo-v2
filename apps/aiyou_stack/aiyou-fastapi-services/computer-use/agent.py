@@ -21,7 +21,7 @@ from .audit import log
 from .executor import VH, VW, run_action
 
 # Configuration
-MODEL = os.environ.get("CU_MODEL", "gemini-2.5-computer-use-preview-10-2025")
+MODEL = os.environ.get("CU_MODEL", "gemini-3.1-flash-lite-preview")
 GOAL = os.environ.get("CU_GOAL", "Navigate to example.com and verify the page loads.")
 START = os.environ.get("CU_START_URL", "https://example.com")
 
