@@ -26,8 +26,11 @@
     .topbar .dot { width: 8px; height: 8px; border-radius: 50%; animation: blink 2s infinite; }
     .topbar .dot.live { background: var(--green); }
     .topbar .dot.idle { background: var(--amber); }
+    .topbar .dot.offline { background: var(--red); animation: none; }
     @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
     .topbar-right { display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: var(--text-muted); }
+    #conn-status { display: flex; align-items: center; gap: 4px; }
+    #conn-status .dot { width: 6px; height: 6px; }
 
     /* ── Dashboard Grid ── */
     .dashboard { display: grid; grid-template-columns: 280px 1fr 300px; grid-template-rows: auto 1fr; gap: 0; min-height: calc(100vh - 48px); }
@@ -35,8 +38,8 @@
     /* ── Left: Agent Roster ── */
     .agent-roster { background: var(--surface); border-right: 1px solid var(--border); padding: 1rem; overflow-y: auto; }
     .roster-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.75rem; }
-    .agent-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; }
-    .agent-card:hover { border-color: var(--cyan); }
+    #agent-list .agent-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; }
+    #agent-list .agent-card:hover { border-color: var(--cyan); }
     .agent-card .name { font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
     .agent-card .role { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
     .agent-card .stats { display: flex; gap: 0.75rem; margin-top: 0.5rem; font-size: 0.7rem; color: var(--text-muted); }
@@ -46,33 +49,69 @@
     .task-feed { padding: 1.5rem; overflow-y: auto; }
     .feed-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
     .feed-header h2 { font-size: 1rem; font-weight: 600; }
-    .task-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; margin-bottom: 0.75rem; transition: all 0.2s; }
+    .new-task-btn { background: var(--cyan); color: var(--bg); border: none; padding: 0.4rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+    .new-task-btn:hover { transform: scale(1.05); box-shadow: 0 0 16px var(--cyan-glow); }
+    .new-task-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* New Task Form */
+    #new-task-form { display: none; background: var(--surface); border: 1px solid var(--cyan); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; animation: slideDown 0.2s ease-out; }
+    #new-task-form.visible { display: block; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+    #new-task-form textarea { width: 100%; min-height: 60px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem; color: var(--text); font-family: var(--sans); font-size: 0.85rem; resize: vertical; }
+    #new-task-form textarea:focus { outline: none; border-color: var(--cyan); }
+    #new-task-form .form-actions { display: flex; gap: 0.5rem; margin-top: 0.5rem; justify-content: flex-end; }
+    #new-task-form button { padding: 0.35rem 0.8rem; border-radius: 6px; border: none; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    #new-task-form .submit { background: var(--cyan); color: var(--bg); }
+    #new-task-form .submit:hover { box-shadow: 0 0 12px var(--cyan-glow); }
+    #new-task-form .cancel { background: var(--surface-2); color: var(--text-muted); }
+
+    .task-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; margin-bottom: 0.75rem; transition: all 0.2s; animation: fadeIn 0.3s ease-out; }
     .task-card:hover { border-color: var(--cyan); transform: translateY(-1px); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .task-card .task-header { display: flex; align-items: center; justify-content: space-between; }
     .task-card .task-id { font-family: var(--mono); font-size: 0.75rem; color: var(--cyan); }
     .task-card .task-status { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
-    .status-planned { background: rgba(34,211,238,0.1); color: var(--cyan); }
-    .status-running { background: rgba(16,185,129,0.1); color: var(--green); }
-    .status-completed { background: rgba(167,139,250,0.1); color: var(--purple); }
-    .status-blocked { background: rgba(239,68,68,0.1); color: var(--red); }
+    .status-planned, .status-pending { background: rgba(34,211,238,0.1); color: var(--cyan); }
+    .status-running, .status-processing { background: rgba(16,185,129,0.1); color: var(--green); }
+    .status-completed, .status-done { background: rgba(167,139,250,0.1); color: var(--purple); }
+    .status-blocked, .status-failed { background: rgba(239,68,68,0.1); color: var(--red); }
     .task-card .task-desc { font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.5; }
     .task-card .task-meta { display: flex; gap: 1rem; margin-top: 0.75rem; font-size: 0.7rem; color: var(--text-muted); }
+    .task-card .task-result { margin-top: 0.5rem; padding: 0.5rem; border-radius: 6px; background: var(--surface-2); font-family: var(--mono); font-size: 0.72rem; line-height: 1.5; max-height: 120px; overflow-y: auto; }
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); font-size: 0.85rem; }
 
     /* ── Right: Gauntlet Monitor ── */
     .gauntlet-panel { background: var(--surface); border-left: 1px solid var(--border); padding: 1rem; overflow-y: auto; }
     .gauntlet-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.75rem; }
-    .layer-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0; font-size: 0.75rem; border-bottom: 1px solid rgba(36,41,56,0.5); }
+
+    /* Gauntlet Test Form */
+    #gauntlet-test { margin-bottom: 1rem; }
+    #gauntlet-test input { width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 0.6rem; color: var(--text); font-family: var(--mono); font-size: 0.72rem; }
+    #gauntlet-test input:focus { outline: none; border-color: var(--cyan); }
+    #gauntlet-test button { margin-top: 0.4rem; width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 0.35rem; color: var(--cyan); font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    #gauntlet-test button:hover { border-color: var(--cyan); }
+
+    .layer-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0; font-size: 0.75rem; border-bottom: 1px solid rgba(36,41,56,0.5); transition: all 0.15s; }
     .layer-num { font-family: var(--mono); color: var(--text-muted); width: 24px; text-align: right; }
     .layer-name { flex: 1; }
-    .layer-status { width: 8px; height: 8px; border-radius: 50%; }
+    .layer-detail { font-size: 0.65rem; color: var(--text-muted); max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .layer-status { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .layer-status.pass { background: var(--green); }
     .layer-status.warn { background: var(--amber); }
     .layer-status.block { background: var(--red); }
+    .layer-status.idle { background: var(--text-muted); }
 
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1rem; }
-    .stat-box { background: var(--surface-2); border-radius: 8px; padding: 0.75rem; text-align: center; }
-    .stat-box .value { font-size: 1.5rem; font-weight: 700; }
+    .stat-box { background: var(--surface-2); border-radius: 8px; padding: 0.75rem; text-align: center; transition: all 0.2s; }
+    .stat-box .value { font-size: 1.5rem; font-weight: 700; transition: all 0.3s; }
     .stat-box .label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+    /* ── Toast Notifications ── */
+    #toast-container { position: fixed; bottom: 1rem; right: 1rem; z-index: 999; display: flex; flex-direction: column; gap: 0.5rem; }
+    .toast { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 1rem; font-size: 0.75rem; animation: toastIn 0.3s ease-out; max-width: 320px; }
+    .toast.success { border-color: var(--green); }
+    .toast.error { border-color: var(--red); }
+    @keyframes toastIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
     @media (max-width: 1024px) {
       .dashboard { grid-template-columns: 1fr; }
@@ -82,9 +121,9 @@
 </head>
 <body>
   <div class="topbar">
-    <h1><span class="dot live"></span> UphillSnowball</h1>
+    <h1><span class="dot" id="status-dot"></span> UphillSnowball</h1>
     <div class="topbar-right">
-      <span>Sovereign Mode</span>
+      <span id="conn-status"><span class="dot offline"></span> Connecting…</span>
       <span>|</span>
       <span id="uptime">Uptime: 0h</span>
     </div>
@@ -93,30 +132,9 @@
   <div class="dashboard">
     <!-- Left: Agents -->
     <div class="agent-roster">
-      <div class="roster-title">Agent Swarm (4 Active)</div>
-
-      <div class="agent-card">
-        <div class="name"><span class="dot live" style="width:6px;height:6px"></span> Kosmos</div>
-        <div class="role">Director — Strategic Planning</div>
-        <div class="stats"><span>📋 42 tasks</span><span>🔥 127K tokens</span></div>
-      </div>
-
-      <div class="agent-card">
-        <div class="name"><span class="dot live" style="width:6px;height:6px"></span> BioAgent</div>
-        <div class="role">Researcher — Deep Analysis</div>
-        <div class="stats"><span>📋 38 tasks</span><span>🔥 89K tokens</span></div>
-      </div>
-
-      <div class="agent-card">
-        <div class="name"><span class="dot idle" style="width:6px;height:6px"></span> n-autoresearch</div>
-        <div class="role">Executor — Code & Builds</div>
-        <div class="stats"><span>📋 67 tasks</span><span>🔥 201K tokens</span></div>
-      </div>
-
-      <div class="agent-card">
-        <div class="name"><span class="dot live" style="width:6px;height:6px"></span> Judge #6</div>
-        <div class="role">Reviewer — Governance Gate</div>
-        <div class="stats"><span>📋 147 reviews</span><span>⛔ 3 blocked</span></div>
+      <div class="roster-title">Agent Swarm (<span id="agent-count">0</span> Active)</div>
+      <div id="agent-list">
+        <div class="empty-state">Connecting to swarm…</div>
       </div>
     </div>
 
@@ -124,43 +142,19 @@
     <div class="task-feed">
       <div class="feed-header">
         <h2>Task Feed</h2>
-        <button style="background:var(--cyan);color:var(--bg);border:none;padding:0.4rem 1rem;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.8rem">+ New Task</button>
+        <button class="new-task-btn" id="new-task-toggle">+ New Task</button>
       </div>
 
-      <div class="task-card">
-        <div class="task-header">
-          <span class="task-id">task_1713390000</span>
-          <span class="task-status status-running">Running</span>
+      <div id="new-task-form">
+        <textarea id="task-input" placeholder="Describe the task for the swarm…"></textarea>
+        <div class="form-actions">
+          <button class="cancel" id="cancel-task">Cancel</button>
+          <button class="submit" id="submit-task">Submit Task</button>
         </div>
-        <div class="task-desc">Build CounselConduit Gemini RAG pipeline with SSE streaming</div>
-        <div class="task-meta"><span>Agent: n-autoresearch</span><span>Tokens: 4,200</span><span>Risk: 3/25</span></div>
       </div>
 
-      <div class="task-card">
-        <div class="task-header">
-          <span class="task-id">task_1713389500</span>
-          <span class="task-status status-completed">Completed</span>
-        </div>
-        <div class="task-desc">Implement 17-Layer Gauntlet with RKILL circuit breaker</div>
-        <div class="task-meta"><span>Agent: Kosmos → n-autoresearch</span><span>Tokens: 8,100</span><span>Duration: 2.3s</span></div>
-      </div>
-
-      <div class="task-card">
-        <div class="task-header">
-          <span class="task-id">task_1713389000</span>
-          <span class="task-status status-blocked">Blocked</span>
-        </div>
-        <div class="task-desc">Deploy to Cloud Run with Stripe production keys</div>
-        <div class="task-meta"><span>Blocked by: Judge #6 (risk 18/25)</span><span>Requires: Human review</span></div>
-      </div>
-
-      <div class="task-card">
-        <div class="task-header">
-          <span class="task-id">task_1713388500</span>
-          <span class="task-status status-planned">Planned</span>
-        </div>
-        <div class="task-desc">Wire Firestore document ingestion for attorney uploads</div>
-        <div class="task-meta"><span>Assigned: BioAgent (research) → n-autoresearch (implement)</span></div>
+      <div id="task-list">
+        <div class="empty-state">No tasks yet. Submit one to begin.</div>
       </div>
     </div>
 
@@ -168,41 +162,321 @@
     <div class="gauntlet-panel">
       <div class="gauntlet-title">17-Layer Gauntlet</div>
 
-      <div class="layer-item"><span class="layer-num">01</span><span class="layer-name">Identity Check</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">02</span><span class="layer-name">Role Authorization</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">03</span><span class="layer-name">Session Validity</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">04</span><span class="layer-name">Rate Limit</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">05</span><span class="layer-name">Content Safety</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">06</span><span class="layer-name">Command Safety</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">07</span><span class="layer-name">Path Protection</span><span class="layer-status warn"></span></div>
-      <div class="layer-item"><span class="layer-num">08</span><span class="layer-name">Gemini Zone</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">09</span><span class="layer-name">LOC Ceiling</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">10</span><span class="layer-name">Dependency Check</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">11</span><span class="layer-name">Model Isolation</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">12</span><span class="layer-name">Output Size</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">13</span><span class="layer-name">Network Egress</span><span class="layer-status warn"></span></div>
-      <div class="layer-item"><span class="layer-num">14</span><span class="layer-name">Cost Guard</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">15</span><span class="layer-name">Git Safety</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">16</span><span class="layer-name">Telemetry Airgap</span><span class="layer-status pass"></span></div>
-      <div class="layer-item"><span class="layer-num">17</span><span class="layer-name">RKILL Switch</span><span class="layer-status pass"></span></div>
+      <div id="gauntlet-test">
+        <input type="text" id="gauntlet-command" placeholder="Test a command: e.g. rm -rf /">
+        <button id="run-gauntlet">Run Gauntlet Check</button>
+      </div>
+
+      <div id="gauntlet-layers"></div>
 
       <div class="stats-grid">
-        <div class="stat-box"><div class="value" style="color:var(--green)">294</div><div class="label">Tasks Complete</div></div>
-        <div class="stat-box"><div class="value" style="color:var(--red)">3</div><div class="label">Blocked</div></div>
-        <div class="stat-box"><div class="value" style="color:var(--cyan)">417K</div><div class="label">Tokens Used</div></div>
-        <div class="stat-box"><div class="value" style="color:var(--amber)">2</div><div class="label">Warnings</div></div>
+        <div class="stat-box"><div class="value" style="color:var(--green)" id="stat-completed">0</div><div class="label">Completed</div></div>
+        <div class="stat-box"><div class="value" style="color:var(--red)" id="stat-blocked">0</div><div class="label">Blocked</div></div>
+        <div class="stat-box"><div class="value" style="color:var(--cyan)" id="stat-tokens">0</div><div class="label">Tokens</div></div>
+        <div class="stat-box"><div class="value" style="color:var(--amber)" id="stat-warnings">0</div><div class="label">Warnings</div></div>
       </div>
     </div>
   </div>
 
+  <div id="toast-container"></div>
+
   <script>
-    // Live uptime counter
-    const start = Date.now();
+    // ── Configuration ──
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? `http://${window.location.hostname}:8080`
+      : '';  // Same origin when deployed behind Firebase Hosting rewrite
+
+    const GAUNTLET_LAYER_NAMES = [
+      'Identity Check', 'Role Authorization', 'Session Validity', 'Rate Limit',
+      'Content Safety', 'Command Safety', 'Path Protection', 'Gemini Zone',
+      'LOC Ceiling', 'Dependency Check', 'Model Isolation', 'Output Size',
+      'Network Egress', 'Cost Guard', 'Git Safety', 'Telemetry Airgap', 'RKILL Switch'
+    ];
+
+    // ── State ──
+    let connected = false;
+    let stats = { completed: 0, blocked: 0, tokens: 0, warnings: 0 };
+
+    // ── DOM Refs ──
+    const statusDot = document.getElementById('status-dot');
+    const connStatus = document.getElementById('conn-status');
+    const agentCount = document.getElementById('agent-count');
+    const agentList = document.getElementById('agent-list');
+    const taskList = document.getElementById('task-list');
+    const newTaskForm = document.getElementById('new-task-form');
+    const taskInput = document.getElementById('task-input');
+    const gauntletLayers = document.getElementById('gauntlet-layers');
+
+    // ── Toast ──
+    function toast(msg, type = 'info') {
+      const el = document.createElement('div');
+      el.className = `toast ${type}`;
+      el.textContent = msg;
+      document.getElementById('toast-container').appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }
+
+    // ── Connection Status ──
+    function setConnected(state) {
+      connected = state;
+      const dot = connStatus.querySelector('.dot');
+      if (state) {
+        statusDot.className = 'dot live';
+        dot.className = 'dot live';
+        connStatus.innerHTML = `<span class="dot live"></span> Connected`;
+      } else {
+        statusDot.className = 'dot offline';
+        dot.className = 'dot offline';
+        connStatus.innerHTML = `<span class="dot offline"></span> Disconnected`;
+      }
+    }
+
+    // ── Initialize Gauntlet Layers ──
+    function initGauntletLayers() {
+      gauntletLayers.innerHTML = GAUNTLET_LAYER_NAMES.map((name, i) =>
+        `<div class="layer-item" id="layer-${i+1}">
+          <span class="layer-num">${String(i+1).padStart(2,'0')}</span>
+          <span class="layer-name">${name}</span>
+          <span class="layer-detail" id="layer-detail-${i+1}"></span>
+          <span class="layer-status idle" id="layer-status-${i+1}"></span>
+        </div>`
+      ).join('');
+    }
+
+    // ── Render Agent Cards ──
+    function renderAgents(agents) {
+      if (!agents || agents.length === 0) {
+        agentList.innerHTML = '<div class="empty-state">No agents online</div>';
+        agentCount.textContent = '0';
+        return;
+      }
+      agentCount.textContent = agents.length;
+      agentList.innerHTML = agents.map(a => `
+        <div class="agent-card">
+          <div class="name"><span class="dot ${a.status === 'active' ? 'live' : 'idle'}" style="width:6px;height:6px"></span> ${a.role}</div>
+          <div class="role">${a.model}</div>
+          <div class="stats"><span>🌡 ${a.temperature}</span></div>
+        </div>
+      `).join('');
+    }
+
+    // ── Render Task Cards ──
+    function renderTasks(tasks) {
+      if (!tasks || tasks.length === 0) {
+        taskList.innerHTML = '<div class="empty-state">No tasks yet. Submit one to begin.</div>';
+        return;
+      }
+      taskList.innerHTML = tasks.map(t => {
+        const statusClass = `status-${(t.status || 'pending').toLowerCase()}`;
+        const time = new Date(t.created_at * 1000).toLocaleTimeString();
+        const resultBlock = t.result ? `<div class="task-result">${escHtml(t.result.substring(0, 500))}</div>` : '';
+        return `
+          <div class="task-card" id="task-${t.task_id}">
+            <div class="task-header">
+              <span class="task-id">${t.task_id}</span>
+              <span class="task-status ${statusClass}">${t.status || 'Pending'}</span>
+            </div>
+            <div class="task-desc">${escHtml(t.description)}</div>
+            <div class="task-meta">
+              <span>Agent: ${t.assigned_agent || 'unassigned'}</span>
+              <span>${time}</span>
+            </div>
+            ${resultBlock}
+          </div>`;
+      }).join('');
+    }
+
+    function escHtml(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    // ── API Calls ──
+    async function fetchAgents() {
+      try {
+        const res = await fetch(`${API_BASE}/api/agents`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        setConnected(true);
+        renderAgents(data);
+      } catch (e) {
+        setConnected(false);
+        console.warn('Agent fetch failed:', e.message);
+      }
+    }
+
+    async function fetchTasks() {
+      try {
+        const res = await fetch(`${API_BASE}/api/tasks`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        setConnected(true);
+        renderTasks(data);
+        // Update stats
+        stats.completed = data.filter(t => t.status === 'completed' || t.status === 'done').length;
+        stats.blocked = data.filter(t => t.status === 'blocked' || t.status === 'failed').length;
+        updateStats();
+      } catch (e) {
+        setConnected(false);
+        console.warn('Task fetch failed:', e.message);
+      }
+    }
+
+    async function submitTask(description) {
+      try {
+        const res = await fetch(`${API_BASE}/api/tasks`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ description })
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.detail || `HTTP ${res.status}`);
+        }
+        const task = await res.json();
+        toast(`Task ${task.task_id} submitted`, 'success');
+        // Start SSE stream for this task
+        streamTask(task.task_id);
+        // Refresh task list
+        fetchTasks();
+        return task;
+      } catch (e) {
+        toast(`Submit failed: ${e.message}`, 'error');
+        throw e;
+      }
+    }
+
+    // ── SSE Stream ──
+    function streamTask(taskId) {
+      const es = new EventSource(`${API_BASE}/api/tasks/${taskId}/stream`);
+      es.addEventListener('status', (e) => {
+        try {
+          const data = JSON.parse(e.data.replace(/'/g, '"'));
+          toast(`${taskId}: ${data.status}`, data.status === 'failed' ? 'error' : 'success');
+          fetchTasks();
+        } catch { /* ignore parse errors from keep-alive */ }
+      });
+      es.addEventListener('ping', () => { /* keep-alive, ignore */ });
+      es.onerror = () => {
+        es.close();
+      };
+      // Auto-close after 5 minutes
+      setTimeout(() => es.close(), 300000);
+    }
+
+    // ── Gauntlet ──
+    async function runGauntlet(command) {
+      // Reset layers to idle
+      for (let i = 1; i <= 17; i++) {
+        document.getElementById(`layer-status-${i}`).className = 'layer-status idle';
+        document.getElementById(`layer-detail-${i}`).textContent = '';
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/api/gauntlet/evaluate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'shell_command', command, content: command })
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        // Animate layers with staggered delay
+        data.layers.forEach((layer, i) => {
+          setTimeout(() => {
+            const statusEl = document.getElementById(`layer-status-${layer.layer_id}`);
+            const detailEl = document.getElementById(`layer-detail-${layer.layer_id}`);
+            if (statusEl) {
+              const cls = layer.verdict === 'pass' ? 'pass' : layer.verdict === 'warn' ? 'warn' : 'block';
+              statusEl.className = `layer-status ${cls}`;
+            }
+            if (detailEl && layer.detail) {
+              detailEl.textContent = layer.detail;
+              detailEl.title = layer.detail;
+            }
+          }, i * 60);
+        });
+
+        const resultType = data.passed ? 'success' : 'error';
+        toast(`Gauntlet: ${data.verdict} (${data.total_elapsed_ms}ms)`, resultType);
+
+        if (!data.passed) stats.blocked++;
+        if (data.layers.some(l => l.verdict === 'warn')) stats.warnings++;
+        updateStats();
+      } catch (e) {
+        toast(`Gauntlet error: ${e.message}`, 'error');
+      }
+    }
+
+    // ── Stats ──
+    function updateStats() {
+      document.getElementById('stat-completed').textContent = stats.completed;
+      document.getElementById('stat-blocked').textContent = stats.blocked;
+      document.getElementById('stat-tokens').textContent = stats.tokens > 1000 ? `${Math.round(stats.tokens/1000)}K` : stats.tokens;
+      document.getElementById('stat-warnings').textContent = stats.warnings;
+    }
+
+    // ── Event Handlers ──
+    document.getElementById('new-task-toggle').addEventListener('click', () => {
+      newTaskForm.classList.toggle('visible');
+      if (newTaskForm.classList.contains('visible')) taskInput.focus();
+    });
+
+    document.getElementById('cancel-task').addEventListener('click', () => {
+      newTaskForm.classList.remove('visible');
+      taskInput.value = '';
+    });
+
+    document.getElementById('submit-task').addEventListener('click', async () => {
+      const desc = taskInput.value.trim();
+      if (!desc) return;
+      document.getElementById('submit-task').disabled = true;
+      try {
+        await submitTask(desc);
+        taskInput.value = '';
+        newTaskForm.classList.remove('visible');
+      } finally {
+        document.getElementById('submit-task').disabled = false;
+      }
+    });
+
+    taskInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+        document.getElementById('submit-task').click();
+      }
+    });
+
+    document.getElementById('run-gauntlet').addEventListener('click', () => {
+      const cmd = document.getElementById('gauntlet-command').value.trim();
+      if (!cmd) return;
+      runGauntlet(cmd);
+    });
+
+    document.getElementById('gauntlet-command').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('run-gauntlet').click();
+    });
+
+    // ── Uptime Counter ──
+    const startTime = Date.now();
     setInterval(() => {
-      const h = Math.floor((Date.now() - start) / 3600000);
-      const m = Math.floor(((Date.now() - start) % 3600000) / 60000);
+      const elapsed = Date.now() - startTime;
+      const h = Math.floor(elapsed / 3600000);
+      const m = Math.floor((elapsed % 3600000) / 60000);
       document.getElementById('uptime').textContent = `Uptime: ${h}h ${m}m`;
     }, 60000);
+
+    // ── Boot ──
+    initGauntletLayers();
+    fetchAgents();
+    fetchTasks();
+    // Poll every 10s
+    setInterval(fetchAgents, 10000);
+    setInterval(fetchTasks, 10000);
+    // Initial health check
+    fetch(`${API_BASE}/api/health`).then(r => {
+      if (r.ok) setConnected(true);
+    }).catch(() => setConnected(false));
   </script>
 </body>
 </html>
