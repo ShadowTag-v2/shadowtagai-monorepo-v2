@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KovelAI | Pricing</title>
+  <meta name="description" content="KovelAI pricing plans for law firms. From solo practitioners to enterprise."/>
+  <link rel="canonical" href="https://kovelai.com/pricing"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/shared/components.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #0a0d14; color: #e4e8f7; min-height: 100vh; }
+    .pricing-hero { text-align: center; padding: 4rem 1.5rem 2rem; }
+    .pricing-hero h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .pricing-hero p { color: #8b92a8; max-width: 500px; margin: 0 auto; line-height: 1.6; }
+    .pricing-toggle { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; }
+    .pricing-toggle button { padding: 0.5rem 1.25rem; border-radius: 8px; border: 1px solid #2a3042; background: transparent; color: #8b92a8; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+    .pricing-toggle button.active { background: #c9a14a; color: #0a0d14; border-color: #c9a14a; font-weight: 600; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; }
+    .pricing-card { background: #12161f; border: 1px solid #2a3042; border-radius: 16px; padding: 2rem; text-align: center; transition: all 0.3s; position: relative; }
+    .pricing-card:hover { border-color: #c9a14a; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+    .pricing-card.featured { border-color: #c9a14a; background: linear-gradient(180deg, rgba(201,161,74,0.06) 0%, #12161f 100%); }
+    .pricing-card.featured::before { content: 'Most Popular'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #c9a14a; color: #0a0d14; padding: 3px 14px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .tier-name { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: #c9a14a; margin-bottom: 1rem; }
+    .price { font-size: 2.8rem; font-weight: 700; }
+    .price span { font-size: 1rem; font-weight: 400; color: #8b92a8; }
+    .price-annual { font-size: 0.8rem; color: #8b92a8; margin-top: 0.25rem; }
+    .feature-list { list-style: none; text-align: left; margin: 1.5rem 0; min-height: 200px; }
+    .feature-list li { padding: 0.4rem 0; font-size: 0.85rem; color: #8b92a8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.4; }
+    .feature-list li::before { content: '✓'; color: #34d399; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .cta-btn { display: block; width: 100%; padding: 0.85rem; border-radius: 10px; border: none; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.25s; }
+    .cta-primary { background: #c9a14a; color: #0a0d14; }
+    .cta-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .cta-secondary { background: transparent; color: #e4e8f7; border: 1px solid #2a3042; }
+    .cta-secondary:hover { border-color: #c9a14a; color: #c9a14a; }
+    .enterprise-note { text-align: center; padding: 2rem; color: #8b92a8; font-size: 0.85rem; }
+    .enterprise-note a { color: #c9a14a; }
+    @media (max-width: 768px) { .pricing-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="pricing-hero">
+    <h1>Simple, Transparent Pricing</h1>
+    <p>Scale with your practice. Every plan includes Kovel Doctrine protection and zero-retention architecture.</p>
+    <div class="pricing-toggle">
+      <button class="active" id="monthly-btn">Monthly</button>
+      <button id="annual-btn">Annual (Save 20%)</button>
+    </div>
+  </div>
+
+  <div class="pricing-grid">
+    <!-- Trial -->
+    <div class="pricing-card">
+      <div class="tier-name">Trial</div>
+      <div class="price">$0<span>/mo</span></div>
+      <div class="price-annual">Free forever</div>
+      <ul class="feature-list">
+        <li>10,000 tokens/month</li>
+        <li>1 attorney seat</li>
+        <li>Basic legal research</li>
+        <li>Kovel Doctrine protection</li>
+        <li>Zero-retention architecture</li>
+        <li>Email support</li>
+      </ul>
+      <button class="cta-btn cta-secondary">Get Started</button>
+    </div>
+
+    <!-- Professional -->
+    <div class="pricing-card featured">
+      <div class="tier-name">Professional</div>
+      <div class="price" id="pro-price">$149<span>/mo</span></div>
+      <div class="price-annual" id="pro-annual">$1,788/year billed monthly</div>
+      <ul class="feature-list">
+        <li>100,000 tokens/month</li>
+        <li>5 attorney seats</li>
+        <li>Advanced legal research + RAG</li>
+        <li>Document ingestion & analysis</li>
+        <li>Streaming chat interface</li>
+        <li>Audit log access</li>
+        <li>Priority support</li>
+        <li>Judge #6 governance reports</li>
+      </ul>
+      <button class="cta-btn cta-primary">Get Started</button>
+    </div>
+
+    <!-- Enterprise -->
+    <div class="pricing-card">
+      <div class="tier-name">Enterprise</div>
+      <div class="price" id="ent-price">$20K<span>/mo</span></div>
+      <div class="price-annual" id="ent-annual">Custom annual agreements</div>
+      <ul class="feature-list">
+        <li>1,000,000+ tokens/month</li>
+        <li>Unlimited attorney seats</li>
+        <li>Custom model fine-tuning</li>
+        <li>BYOK (Bring Your Own Key)</li>
+        <li>Dedicated Cloud Run instance</li>
+        <li>SSO / SAML integration</li>
+        <li>24/7 white-glove support</li>
+        <li>Custom compliance reporting</li>
+        <li>SLA guarantee (99.9%)</li>
+      </ul>
+      <button class="cta-btn cta-secondary">Contact Sales</button>
+    </div>
+  </div>
+
+  <div class="enterprise-note">
+    Need a custom plan? <a href="mailto:enterprise@kovelai.com">Contact our team</a> for volume pricing and tailored compliance packages.
+  </div>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    // Stripe publishable key (frontend-safe)
+    const stripe = Stripe('pklive_51Syh9JEHnWpykeMix1QOpvIGqGYYMEXJhC0CHdCKQ1OAnQM6aSoE0Qk9e4axIf07r7b4ZaEQNU0izDO6F9ACZlNV00vF4W4mS2');
+    const API_BASE = window.location.hostname === 'localhost'
+      ? 'http://localhost:8080'
+      : 'https://counselconduit-api.run.app';
+
+    // Live price IDs
+    const PRICES = {
+      pro_monthly: 'price_1TNKSREHnWpykeMiRMDlVgLl',
+      pro_annual: 'price_1TNKSjEHnWpykeMi0S9GCVjy',
+      ent_monthly: 'price_1TNKSREHnWpykeMi8mrDf4rI',
+    };
+
+    let billingCycle = 'monthly';
+    const monthlyBtn = document.getElementById('monthly-btn');
+    const annualBtn = document.getElementById('annual-btn');
+    const proPrice = document.getElementById('pro-price');
+    const proAnnual = document.getElementById('pro-annual');
+
+    monthlyBtn.addEventListener('click', () => {
+      monthlyBtn.classList.add('active');
+      annualBtn.classList.remove('active');
+      proPrice.innerHTML = '$149<span>/mo</span>';
+      proAnnual.textContent = '$1,788/year billed monthly';
+      billingCycle = 'monthly';
+    });
+
+    annualBtn.addEventListener('click', () => {
+      annualBtn.classList.add('active');
+      monthlyBtn.classList.remove('active');
+      proPrice.innerHTML = '$119<span>/mo</span>';
+      proAnnual.textContent = '$1,428/year — save $360';
+      billingCycle = 'annual';
+    });
+
+    // CTA Handlers
+    document.querySelectorAll('.cta-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const card = e.target.closest('.pricing-card');
+        const tier = card.querySelector('.tier-name').textContent.toLowerCase();
+
+        if (tier === 'trial') {
+          window.location.href = '/onboarding.html';
+          return;
+        }
+
+        if (tier === 'enterprise') {
+          window.location.href = 'mailto:enterprise@kovelai.com?subject=Enterprise%20Plan%20Inquiry';
+          return;
+        }
+
+        // Professional tier → Stripe Checkout
+        const priceId = billingCycle === 'annual' ? PRICES.pro_annual : PRICES.pro_monthly;
+        try {
+          const res = await fetch(`${API_BASE}/billing/checkout`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Kovel-Auth': localStorage.getItem('kovel_token') || 'dev_anonymous',
+            },
+            body: JSON.stringify({ tier: 'professional', annual: billingCycle === 'annual' }),
+          });
+          const data = await res.json();
+          if (data.checkout_url) {
+            window.location.href = data.checkout_url;
+          }
+        } catch (err) {
+          // Fallback: direct Stripe redirect
+          const { error } = await stripe.redirectToCheckout({
+            lineItems: [{ price: priceId, quantity: 1 }],
+            mode: 'subscription',
+            successUrl: window.location.origin + '/chat.html?session=success',
+            cancelUrl: window.location.href,
+          });
+          if (error) console.error(error);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
