@@ -15,6 +15,8 @@ jobs:
   test-proxy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Skip on Dependabot PRs — GEMINI_API_KEY unavailable to fork-like actors.
+    if: github.actor != 'dependabot[bot]'
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:

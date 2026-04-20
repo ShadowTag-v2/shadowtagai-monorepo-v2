@@ -42,7 +42,8 @@ def get_ide_micro_behaviors():
 
 def local_slm_predict_intent(behaviors):
     # Processed locally for $0.00 cost via Llama-3-8B
-    return "Fix non-quadratic constraint in ZK circuit. Use Q* MCTS if needed."
+    error = behaviors.get("recent_linter_error", "unknown")
+    return f"Fix {error} in ZK circuit. Use Q* MCTS if needed."
 
 
 async def singularity_bci_bridge():

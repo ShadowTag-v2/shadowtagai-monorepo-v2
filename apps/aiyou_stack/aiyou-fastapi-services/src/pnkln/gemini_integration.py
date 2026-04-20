@@ -266,7 +266,7 @@ Max hints per session: 5
 
 Be supportive but don't give away answers."""
 
-    prompt = f"""Student needs help with this assignment:
+    prompt = f"""Student {student_id} needs help with this assignment:
 {task_description}
 
 Provide a helpful hint to get them started. Ask a guiding question."""

@@ -28,6 +28,8 @@ jobs:
     name: "Resolve PR context"
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Dependabot PRs are fork-like: GEMINI_API_KEY is unavailable. Skip entirely.
+    if: github.actor != 'dependabot[bot]'
     outputs:
       pr_number: ${{ steps.ctx.outputs.pr_number }}
       base_ref:  ${{ steps.ctx.outputs.base_ref }}

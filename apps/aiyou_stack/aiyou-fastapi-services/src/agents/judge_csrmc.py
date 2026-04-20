@@ -182,7 +182,6 @@ class JudgeCSRMC:
     def get_dashboard_link(self) -> str:
         """Returns the link to the Real-Time Ops Dashboard."""
         return "https://regscale.internal.army.mil/dashboard/csrmc-live"
-        return "https://regscale.internal.army.mil/dashboard/csrmc-live"
 
     def evaluate_compliance(
         self,
