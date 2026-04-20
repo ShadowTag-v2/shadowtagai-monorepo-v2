@@ -3,6 +3,41 @@
 
 ---
 
+## PRE-EXECUTION: Retrieve Missing Lists (TASK 3/4/6 placeholders)
+
+The 9 playground repo names, 5 ZIP bundle specs, and 34 ehanc69 repo names exist **only** in
+the original Cor.workspace message (compacted out of Claude context). Retrieve before starting:
+
+```bash
+# Option A: Query Master Brain (preferred if already seeded)
+BRAIN_ID=$(cat ~/.notebooklm/master-brain-id 2>/dev/null)
+nlm notebook query "$BRAIN_ID" "Cor.workspace Cor.Playground Transfer Package playground repos"
+nlm notebook query "$BRAIN_ID" "antigravity ZIP bundle fold-in matrix ehanc69 repos"
+
+# Option B: Read raw JSONL transcript directly (guaranteed source)
+python3 - <<'EOF'
+import json, pathlib, sys
+transcript = pathlib.Path(
+    "/Users/pikeymickey/.claude/projects/-Users-pikeymickey/a55a251e-6cbe-45ed-891b-81ded3342b17.jsonl"
+)
+for line in transcript.read_text().splitlines():
+    try:
+        obj = json.loads(line)
+        # Search for Cor.workspace message containing the lists
+        text = json.dumps(obj)
+        if "Cor.Playground" in text or "ehanc69" in text or "fold-in matrix" in text:
+            print(json.dumps(obj, indent=2)[:3000])
+            print("---")
+    except Exception:
+        pass
+EOF
+```
+
+Once retrieved, fill placeholders in TASK 3 (`ehanc69/REPO_1` ... `REPO_9`) and
+TASK 6 (the 34-repo loop). TASK 7 targets are already filled — see 7a–7d below.
+
+---
+
 ## SESSION INIT (Run first, every session)
 
 ```bash
@@ -198,7 +233,7 @@ npm install --workspaces
 
 ```bash
 # Ruff scan (Python)
-.venv/bin/ruff check . --select F401,F811 --output-format=text 2>&1 | head -100
+.venv/bin/ruff check . --select F401,F811 --output-format=full 2>&1 | head -100
 
 # Biome scan (TS/JS)
 npx @biomejs/biome check . --diagnostic-level=error 2>&1 | grep 'Cannot find module' | head -50
@@ -208,33 +243,66 @@ npx @biomejs/biome check . --diagnostic-level=error 2>&1 | grep 'Cannot find mod
 
 ---
 
-## TASK 6 — 34-Repo BLOCKED Fold-In Batch
+## TASK 6 — ehanc69 Fold-In Batch (Cloud-Only, No Local Mac Download)
 
-> All `ehanc69/*` repos are BLOCKED because local source is missing. Must clone first.
+> Runs entirely on a GitHub Actions runner via `.github/workflows/ehanc69-foldin.yml`.
+> No local `git clone` required. Auth uses two GitHub Apps.
+
+### Step 1 — One-time secret setup (run ONCE on Mac, then never again)
 
 ```bash
-TOKEN=$(python3 scripts/auth_github_app.py)
-mkdir -p third_party/ehanc69-fold-staging
+# Store PEM keys as GitHub Actions secrets
+gh secret set SHADOWTAG_APP_PRIVATE_KEY \
+  --repo ShadowTag-v2/Monorepo-Uphillsnowball \
+  < ~/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem
 
-# Clone all 34 repos from ehanc69/ org
-# (Repo list: see fold-in matrix from original Cor.workspace message)
-# Template:
-for repo in REPO_LIST_FROM_MATRIX; do
-  git clone "https://x-access-token:${TOKEN}@github.com/ehanc69/${repo}.git" \
-    "third_party/ehanc69-fold-staging/${repo}"
-done
+gh secret set EHANC69_APP_PRIVATE_KEY \
+  --repo ShadowTag-v2/Monorepo-Uphillsnowball \
+  < ~/Downloads/antigravity-manager.2026-03-13.private-key.pem
 
-# Then trigger fold-in batch
-# (Assumes /monorepo-fold-in-batch skill is registered)
-# Invoke via Claude Code or Gemini skill runner:
-#   /monorepo-fold-in-batch third_party/ehanc69-fold-staging
+# Store App IDs as GitHub Actions variables (not secret — these are public)
+gh variable set SHADOWTAG_APP_ID --body "3018200" \
+  --repo ShadowTag-v2/Monorepo-Uphillsnowball
+
+gh variable set EHANC69_APP_ID --body "3018080" \
+  --repo ShadowTag-v2/Monorepo-Uphillsnowball
 ```
 
-**34 repos** (fill from fold-in matrix provided in original message — all blocked with local source missing):
+### Step 2 — Dry run (verify list before committing)
+
+```bash
+gh workflow run ehanc69-foldin.yml \
+  --repo ShadowTag-v2/Monorepo-Uphillsnowball \
+  -f dry_run=true
+
+# Watch output:
+gh run list --workflow=ehanc69-foldin.yml --repo ShadowTag-v2/Monorepo-Uphillsnowball
+gh run watch --repo ShadowTag-v2/Monorepo-Uphillsnowball
 ```
-# ehanc69/[repo-1] through ehanc69/[repo-34]
-# Source: Cor.workspace message, fold-in matrix section
+
+### Step 3 — Live run (writes to monorepo, pushes to main)
+
+```bash
+gh workflow run ehanc69-foldin.yml \
+  --repo ShadowTag-v2/Monorepo-Uphillsnowball \
+  -f dry_run=false
 ```
+
+Result: all ehanc69 repos folded into `third_party/ehanc69/[repo]/`
+via copy + squash commit (snapshot only, no source history imported).
+
+### What the workflow does
+1. Generates installation tokens for both GitHub Apps (no secrets on disk)
+2. Clones monorepo on ephemeral ubuntu runner (cloud, not Mac)
+3. Self-discovers all non-archived ehanc69 repos via API (currently 56)
+4. Shallow clones each source repo (~1Gbps between GitHub servers)
+5. `scripts/mass_subtree_merge.py` copies each into `third_party/ehanc69/[repo]/`
+6. Each repo gets a single squash commit (no history carried)
+7. Pushes merged result to `main`
+
+### Note
+The Google OAuth client secret file (`client_secret_...apps.googleusercontent.com.json`)
+is for NotebookLM/Google Workspace auth, NOT GitHub. Do NOT add it as a GH Actions secret.
 
 ---
 
