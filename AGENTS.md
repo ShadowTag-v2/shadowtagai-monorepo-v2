@@ -122,8 +122,8 @@ unless the user explicitly directs a control plane change:
 
 ## Hardened state
 
-- v9.5 canonicalized: 2026-04-18
-- Commit: `3e75a769a3`
+- v9.5 canonicalized: 2026-04-20
+- Commit: `c9741076c1`
 - CI Python: 3.13 (all 3 workflows)
 - venv primary: CPython 3.14.3
 - Firestore: 2 databases (`(default)`, `shadowtag-engine`)
@@ -131,7 +131,7 @@ unless the user explicitly directs a control plane change:
 - Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v9.5)
 - Semantic Kernel: .NET 11.0 Preview 2
 - Tests: 87 unit passed (E2E skipped — live Cloud Run endpoints)
-- Lighthouse: P93+ / A93+ / BP100 / SEO100
+- Lighthouse: P93 / A96 / BP100 / SEO100 (PageSpeed Insights verified 2026-04-20)
 - Dead code: clean (vulture + ruff — 0 violations at 80%+ confidence in gitleaks_guardian.py)
 - CSP headers: full parity across kovelai + shadowtagai (unsafe-eval removed)
 - Infrastructure: shadowtagai.web.app + kovelai.web.app + shadowtag-omega-v4.web.app deployed
@@ -178,6 +178,12 @@ unless the user explicitly directs a control plane change:
 - Vulture: 0 findings at 90%+ confidence across recovered Python
 - Tests: 5 passed (test_dispatch_compute.py)
 - Veo 3.1 Pipeline: veo_pipeline.py operational (6 presets, Veo 3.1/3.1-Fast/3.1-Lite/3.0/2.0), google-genai SDK 1.66.0+, GCS bucket gs://shadowtag-omega-v4-media, frame extraction via ffmpeg 8.1
+- Video Compression: 52MB → 20MB kovelai (10 videos), 19MB → 8.8MB shadowtagai (7 videos), CRF 30, H.264, faststart
+- Branded Billboards: KovelAI (cyan neon) + ShadowTag AI (magenta neon) composited onto hero-drift via ffmpeg overlay
+- Billboard Assets: kovelai-billboard.png, shadowtag-billboard.png, og-billboard-branded.png, promo-screenshot.png
+- Firebase Preview Channels: kovelai--staging (7d TTL)
+- Security Headers: CSP + HSTS (preload) + XFO (DENY) + CORP + COOP + Permissions-Policy — all 8 verified live
+- Multi-site Deploy: kovelai.web.app + shadowtagai.web.app + shadowtag-omega-v4.web.app — all 3 live (2026-04-20)
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
