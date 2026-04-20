@@ -47,7 +47,7 @@ async def register(user_data: UserCreate):
     - Return user object without password
     """
     # Hash the password
-    hashed_password = get_password_hash(user_data.password)
+    get_password_hash(user_data.password)
 
     # Create user object (in production, save to database)
     user = User(

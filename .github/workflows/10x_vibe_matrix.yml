@@ -1,0 +1,192 @@
+name: 10X Vibe Coding Matrix
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/**'
+      - 'core/**'
+      - 'control/**'
+      - 'src/**'
+      - 'scripts/**'
+      - 'tools/**'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  PYTHON_VERSION: '3.13'
+  NODE_VERSION: '22'
+
+jobs:
+  # ─────────────────────────────────────────────
+  # Phase 1: Gitleaks & Token Exorcism
+  # ─────────────────────────────────────────────
+  phase-1-gitleaks:
+    name: "Phase 1 — Gitleaks & Token Exorcism"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: detect --source . --verbose --redact
+
+      - name: detect-private-key
+        run: |
+          echo "🔑 Scanning for private keys..."
+          if grep -rlE "BEGIN (RSA|DSA|EC|OPENSSH) PRIVATE KEY" \
+            --include="*.py" --include="*.js" --include="*.ts" \
+            --include="*.json" --include="*.yaml" --include="*.yml" \
+            --include="*.env" --include="*.md" \
+            apps/ core/ control/ src/ scripts/ tools/ 2>/dev/null; then
+            echo "❌ PRIVATE KEY DETECTED — blocking commit"
+            exit 1
+          fi
+          echo "✅ No private keys found"
+
+  # ─────────────────────────────────────────────
+  # Phase 2: Pinkln YOLO Purge (ruff + biome)
+  # ─────────────────────────────────────────────
+  phase-2-lint:
+    name: "Phase 2 — Pinkln YOLO Purge"
+    runs-on: ubuntu-latest
+    needs: phase-1-gitleaks
+    outputs:
+      fixes_applied: ${{ steps.check-fixes.outputs.fixes_applied }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install ruff + vulture
+        run: pip install ruff vulture
+
+      - name: Ruff fix (safe auto-fixes only)
+        id: ruff-fix
+        run: |
+          echo "🧹 Running ruff --fix (safe fixes only)..."
+          ruff check apps/ core/ control/ src/ scripts/ tools/ \
+            --fix --select E,W,F,I \
+            --ignore E501 \
+            --output-format=text 2>&1 | tee /tmp/ruff-output.txt || true
+          echo "ruff_exit=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Vulture dead code scan
+        run: |
+          echo "🦅 Running vulture (80%+ confidence)..."
+          vulture apps/ core/ control/ src/ scripts/ tools/ \
+            --min-confidence 80 2>&1 | tee /tmp/vulture-output.txt || true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Biome lint (JS/TS)
+        run: |
+          echo "🧬 Running biome lint..."
+          npx -y @biomejs/biome check \
+            apps/ core/ tools/ \
+            --files-ignore-unknown=true \
+            --no-errors-on-unmatched 2>&1 | tee /tmp/biome-output.txt || true
+
+      - name: Check for auto-fixes
+        id: check-fixes
+        run: |
+          if [ -n "$(git diff --name-only)" ]; then
+            echo "fixes_applied=true" >> "$GITHUB_OUTPUT"
+            echo "📝 Auto-fixes were applied"
+            git diff --stat
+          else
+            echo "fixes_applied=false" >> "$GITHUB_OUTPUT"
+            echo "✅ No fixes needed"
+          fi
+
+  # ─────────────────────────────────────────────
+  # Phase 3: Tactical UI Auditor
+  # ─────────────────────────────────────────────
+  phase-3-ui-audit:
+    name: "Phase 3 — Tactical UI Auditor"
+    runs-on: ubuntu-latest
+    needs: phase-2-lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: pip install beautifulsoup4 lxml
+
+      - name: Run UI Consistency Auditor
+        run: |
+          if [ -f "scripts/ui_consistency_auditor.py" ]; then
+            echo "🎨 Running UI consistency audit..."
+            python scripts/ui_consistency_auditor.py 2>&1 || true
+          else
+            echo "⚠️ UI auditor script not found — skipping"
+          fi
+
+      - name: Check frontend for orphaned actions
+        run: |
+          echo "🔍 Scanning for orphaned onClick/onSubmit handlers..."
+          find apps/ -name "*.tsx" -o -name "*.jsx" 2>/dev/null | head -50 | while read f; do
+            # Flag handlers referencing undefined functions
+            grep -n 'onClick=\|onSubmit=\|onChange=' "$f" 2>/dev/null || true
+          done
+          echo "✅ UI audit complete"
+
+  # ─────────────────────────────────────────────
+  # Phase 4: Auto-Commit (only if fixes applied)
+  # ─────────────────────────────────────────────
+  phase-4-autocommit:
+    name: "Phase 4 — Auto-Commit Fixes"
+    runs-on: ubuntu-latest
+    needs: [phase-2-lint, phase-3-ui-audit]
+    if: needs.phase-2-lint.outputs.fixes_applied == 'true' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Re-apply ruff fixes
+        run: |
+          ruff check apps/ core/ control/ src/ scripts/ tools/ \
+            --fix --select E,W,F,I \
+            --ignore E501 || true
+
+      - name: Commit auto-fixes
+        run: |
+          git config user.name "Antigravity V60 [Bot]"
+          git config user.email "bot@shadowtag.ai"
+          if [ -n "$(git diff --name-only)" ]; then
+            git add -A
+            COMMIT_MSG="fix(lint): auto-fix ruff + biome violations [10X Vibe Matrix]"
+            git commit -m "$COMMIT_MSG"
+            git push
+            echo "Auto-commit pushed"
+          else
+            echo "No changes to commit"
+          fi

@@ -354,7 +354,6 @@ class SquadronVotingEngine:
 
     async def _collect_all_vehicle_votes(self, decision: dict[str, Any]) -> None:
         """Collect votes from all vehicle crews"""
-        tasks = []
 
         for vehicle_id, crew in self.vehicle_crews.items():
             # Simulate agent voting (in production, this calls actual agents)

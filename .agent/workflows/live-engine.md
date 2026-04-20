@@ -13,14 +13,14 @@ description: Sets the comprehensive environment variables and paths for "God Mod
 1. `gcloud_auth_solver.py`: Ready (Jetski/Browser).
 2. `omega_auth_daemon.py`: RUNNING (PID: Active).
 3. Service Accounts: `767252945109-compute@developer.gserviceaccount.com` is now REFRESHING every 3 minutes, as you are getting detokenized that quickly. This is this service account’s only function! `shadowtag-core-run-sa@shadowtag-omega-v4.iam.gserviceaccount.com` is for cloud runs.
-4. `BRAIN_DIR="/Users/pikeymickey/.gemini/antigravity/brain/MEGA_PERMA_BRAIN"`
+4. `BRAIN_DIR` is per-conversation: `~/.gemini/antigravity/brain/<conversation-id>`
 5. Ensure you are saving everything to beads as you go.
 
 ## Environment Setup
    // turbo-all
 
 ```bash
-export BRAIN_DIR="/Users/pikeymickey/.gemini/antigravity/brain/MEGA_PERMA_BRAIN"
+# BRAIN_DIR is set dynamically per-conversation by Antigravity platform
 export GCP_PROJECT_ID="shadowtag-omega-v4"
 export AGENT_TOOLBELT="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/docs/toolbelt.md"
 export AGENT_LAWS="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/rules/shadowtag-laws.md"

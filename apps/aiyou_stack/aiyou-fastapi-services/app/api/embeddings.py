@@ -153,7 +153,7 @@ async def create_collection(collection_name: str, metadata: dict = None):
     """Create a new vector collection."""
     try:
         service = get_embeddings_service()
-        collection = service.create_collection(collection_name=collection_name, metadata=metadata)
+        service.create_collection(collection_name=collection_name, metadata=metadata)
 
         return {"message": "Collection created successfully", "collection_name": collection_name}
 

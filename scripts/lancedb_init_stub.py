@@ -1,6 +1,7 @@
-import lancedb
-import os
 import glob
+import os
+
+import lancedb
 import pyarrow as pa
 
 # LanceDB Automation Stub

@@ -1,9 +1,11 @@
 from __future__ import annotations
-from pathlib import Path
-from ..config import load_settings
-from ..adapters.authority_state import AuthorityState, record_authority_event
-from ..utils.db import pg_conn
+
 import json
+from pathlib import Path
+
+from ..adapters.authority_state import AuthorityState, record_authority_event
+from ..config import load_settings
+from ..utils.db import pg_conn
 
 
 def detect_drift():

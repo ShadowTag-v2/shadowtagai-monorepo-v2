@@ -13,12 +13,12 @@ Security: 100% audit trail via ShadowTag
 Performance: <50ms compliance check
 """
 
-from typing import Any
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
+from typing import Any
 
-from .timeline_engine import Timeline, TimelineEvent, EventStatus
+from .timeline_engine import EventStatus, Timeline, TimelineEvent
 
 
 class ComplianceStatus(Enum):

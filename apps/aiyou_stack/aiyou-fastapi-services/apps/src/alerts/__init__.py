@@ -263,7 +263,7 @@ class PredictiveAlertingSystem:
         if predicted > budget * 0.95 and confidence > 0.7:
             # Predict time to overrun
             current = cost_data.get("current", 0.0)
-            utilization = cost_data.get("utilization", 0.0)
+            cost_data.get("utilization", 0.0)
 
             # If at 50% now and projected to 100%, ~50% of month left
             # Rough estimate of days until overrun

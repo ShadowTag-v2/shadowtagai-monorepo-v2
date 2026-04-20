@@ -262,7 +262,7 @@ class GDPRModule(ComplianceModule):
         # Data Minimization check
         if control.control_id == "GDPR-5.1c":
             if input_data.contains_pii:
-                data_categories = metadata.get("data_categories", [])
+                metadata.get("data_categories", [])
                 purpose = metadata.get("processing_purpose", "")
                 if not purpose:
                     return ControlResult(

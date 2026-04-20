@@ -1,6 +1,7 @@
 from fastapi import APIRouter
-from ..models.contracts import ContextRequest, ContextResponse
+
 from ..config import load_settings
+from ..models.contracts import ContextRequest, ContextResponse
 from ..retrieval.context_builder import collect_context
 
 router = APIRouter(prefix="/api")

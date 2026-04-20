@@ -95,7 +95,7 @@ def train_gpt():
     )  # Small validation set
 
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
+    DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
     print(f"   Training samples: {len(train_dataset):,}")
     print(f"   Validation samples: {len(val_dataset):,}")
@@ -120,7 +120,7 @@ def train_gpt():
     optimizer = Adam(model.parameters(), lr=LEARNING_RATE)
     loss_fn = CrossEntropyLoss()
 
-    trainer = Trainer(model, optimizer, loss_fn)
+    Trainer(model, optimizer, loss_fn)
 
     # 6. Training Loop
     print("\n🚀 Starting Training...")

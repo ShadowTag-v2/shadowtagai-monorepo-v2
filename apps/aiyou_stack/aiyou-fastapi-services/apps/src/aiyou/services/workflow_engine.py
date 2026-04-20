@@ -108,7 +108,7 @@ class WorkflowExecutionEngine:
         this would prompt the user.
         """
         title = action.get("title", "Input")
-        prompt = action.get("prompt", "")
+        action.get("prompt", "")
 
         # Check if input was pre-filled
         value = self.workflow_state.get(title)
@@ -165,7 +165,7 @@ class WorkflowExecutionEngine:
 
         Updates existing OPORD context with summary/decisions.
         """
-        note_title = action.get("noteTitle", "Context Index")
+        action.get("noteTitle", "Context Index")
         content = action.get("content", "")
 
         # Expand template variables

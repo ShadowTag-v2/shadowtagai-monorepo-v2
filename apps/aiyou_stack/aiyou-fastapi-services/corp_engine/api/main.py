@@ -362,7 +362,7 @@ async def create_workspace(tenant_id: str, name: str, description: str | None = 
         raise HTTPException(status_code=404, detail="Tenant not found")
 
     # Check license limits
-    tier = LICENSE_TIERS[tenant["license_tier"]]
+    LICENSE_TIERS[tenant["license_tier"]]
     # In production, count existing workspaces
 
     workspace_id = str(uuid.uuid4())

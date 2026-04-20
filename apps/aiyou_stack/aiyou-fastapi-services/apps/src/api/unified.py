@@ -211,7 +211,7 @@ async def get_system_health():
     """
     # Initialize components
     registry = ModelRegistry()
-    gpu_pool = GPUPool(registry)
+    GPUPool(registry)
 
     layers = []
 
@@ -319,7 +319,7 @@ async def unified_inference(request: InferenceRequest, api_key: str = Header(ali
     """
     # Validate API key and get tier
     tier = await validate_api_key(api_key)
-    plan = PRICING_PLANS[tier]
+    PRICING_PLANS[tier]
 
     start_time = datetime.now(datetime.timezone.utc)
 
@@ -373,7 +373,7 @@ async def analyze_aerospace_deployment(
     await validate_api_key(api_key)
 
     # Initialize aerospace components
-    edge_mesh = EdgeMeshArchitecture()
+    EdgeMeshArchitecture()
     roi_calc = ROICalculator()
 
     # Calculate base economics

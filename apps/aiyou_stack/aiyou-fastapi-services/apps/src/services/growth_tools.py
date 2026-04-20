@@ -16,8 +16,8 @@ def analyze_metrics(args: dict[str, Any]) -> dict[str, Any]:
 
     """
     metrics = args.get("metrics", {})
-    time_range = args.get("time_range", "7d")
-    dimensions = args.get("dimensions", [])
+    args.get("time_range", "7d")
+    args.get("dimensions", [])
 
     analysis = {
         "summary": {},

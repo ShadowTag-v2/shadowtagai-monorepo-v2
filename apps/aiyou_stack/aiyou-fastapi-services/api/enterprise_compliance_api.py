@@ -420,7 +420,7 @@ class EnterpriseComplianceEngine:
         Instead of validating each item separately (expensive),
         we validate the batch with shared context (cheap).
         """
-        start_time = time.time()
+        time.time()
 
         # Estimate single-item token cost
         estimated_single_tokens = len(request.items) * 1500  # ~1500 tokens per item

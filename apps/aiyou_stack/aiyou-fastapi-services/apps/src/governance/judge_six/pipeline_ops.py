@@ -31,7 +31,7 @@ class PipelineOps:
 
         # Create an Event to keep the main thread alive if needed,
         # but typically this is run in a background thread or blocking process.
-        done_event = threading.Event()
+        threading.Event()
 
         def on_snapshot(col_snapshot, changes, read_time):
             """Wrapper callback to handle the snapshot."""

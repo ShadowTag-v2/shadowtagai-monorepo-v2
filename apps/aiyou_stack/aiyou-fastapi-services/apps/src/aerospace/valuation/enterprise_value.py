@@ -177,7 +177,7 @@ class EnterpriseValuationModel:
     ) -> float:
         """Calculate aerospace division contribution to enterprise value"""
         # Aerospace is part of defense_pnt + infrastructure_mesh
-        defense_value = self.calculate_division_value("defense_pnt", scenario)
+        self.calculate_division_value("defense_pnt", scenario)
         # Aerospace contributes ~$90-100B uplift to integrated value
         aerospace_uplift = 95_000_000_000
         return aerospace_uplift

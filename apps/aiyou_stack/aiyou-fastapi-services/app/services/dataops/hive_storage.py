@@ -270,7 +270,7 @@ class HiveStorageService:
     async def cleanup_old_data(self, days_old: int = 30) -> dict[str, Any]:
         """Cleanup data older than specified days"""
         try:
-            cutoff_date = datetime.utcnow().timestamp() - (days_old * 86400)
+            datetime.utcnow().timestamp() - (days_old * 86400)
             cleaned_count = 0
 
             # Cleanup logic would go here

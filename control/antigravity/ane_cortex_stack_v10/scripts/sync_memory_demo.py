@@ -1,10 +1,10 @@
-from service.app.config import load_settings
 from service.app.adapters.cortexltm import (
-    create_thread,
     add_event,
-    write_summary,
+    create_thread,
     upsert_master_memory,
+    write_summary,
 )
+from service.app.config import load_settings
 
 s = load_settings()
 user_id = "00000000-0000-0000-0000-000000000001"

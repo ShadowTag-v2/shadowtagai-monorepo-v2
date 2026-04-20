@@ -21,7 +21,7 @@ non-reasoning models to boost accuracy by 1-8% at zero cost.
 from __future__ import annotations
 
 import logging
-from enum import Enum, StrEnum
+from enum import StrEnum
 
 from opentelemetry import trace
 from pydantic import BaseModel, Field
@@ -235,7 +235,7 @@ async def run_oracle_pipeline(req: OracleRequest) -> OracleResponse:
             "oracle.firm_id": req.firm_id,
             "oracle.include_counter": req.include_counter,
         },
-    ) as pipeline_span:
+    ):
         try:
             from apps.counselconduit.api.model_router import (
                 ModelRequest,

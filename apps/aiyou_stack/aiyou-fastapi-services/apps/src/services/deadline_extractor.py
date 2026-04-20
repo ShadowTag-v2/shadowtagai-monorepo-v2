@@ -150,7 +150,7 @@ class DeadlineExtractor:
         deadlines = []
 
         # Process text with SpaCy
-        doc = self.nlp(text)
+        self.nlp(text)
 
         # Search for deadline patterns
         for pattern in self.deadline_patterns:

@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from .routers import health, search, context, bootstrap, hydrate, validate, promotions
+
+from .routers import bootstrap, context, health, hydrate, promotions, search, validate
 
 app = FastAPI(title="ANE Cortex Stack API", version="0.10.0")
 app.include_router(health.router)

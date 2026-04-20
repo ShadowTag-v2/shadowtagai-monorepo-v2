@@ -26,12 +26,11 @@ from __future__ import annotations
 import json
 import logging
 import os
-from datetime import datetime, UTC
+import urllib.error
+import urllib.request
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
-
-import urllib.request
-import urllib.error
 
 logger = logging.getLogger(__name__)
 

@@ -16,16 +16,14 @@ Usage:
   python loop_steward.py --dry-run
 """
 
-import json
 import os
 import subprocess
 import sys
 import time
-from datetime import datetime, UTC
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
 from enum import Enum
 from pathlib import Path
-
 
 # --- Configuration -----------------------------------------------------------
 

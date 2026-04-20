@@ -31,7 +31,7 @@ class ChatRequest(BaseModel):
 @app.post("/chat")
 def chat(r: ChatRequest):
     # 1. Access Memory
-    context = get_static_memory()
+    get_static_memory()
 
     # 2. Heuristic: Do we need the browser?
     needs_browsing = "browse" in r.query.lower() or "check" in r.query.lower()

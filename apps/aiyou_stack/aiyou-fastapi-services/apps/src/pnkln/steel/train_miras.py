@@ -74,7 +74,7 @@ def train_miras():
     val_dataset = CharDataset(val_text, SEQ_LEN, tokenizer)
 
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
+    DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
     # 4. Initialize Model (Yaad)
     print("\n🏗️  Initializing Yaad Model...")

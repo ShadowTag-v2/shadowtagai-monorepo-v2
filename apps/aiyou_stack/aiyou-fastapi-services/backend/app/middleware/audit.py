@@ -21,7 +21,7 @@ class AuditMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         """Process request and create audit log"""
         start_time = time.time()
-        request_id = str(uuid.uuid4())
+        str(uuid.uuid4())
 
         # Skip audit for health checks and docs
         if request.url.path in ["/health", "/api/docs", "/api/redoc", "/openapi.json"]:
@@ -57,7 +57,7 @@ class AuditMiddleware(BaseHTTPMiddleware):
             raise
         finally:
             # Calculate duration
-            duration_ms = int((time.time() - start_time) * 1000)
+            int((time.time() - start_time) * 1000)
 
             # Determine action type from method
             action = self._method_to_action(request_method)

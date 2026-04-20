@@ -21,7 +21,7 @@ def paginate(items: list[T], page: int = 1, page_size: int = 10) -> tuple[list[T
 
     """
     total_items = len(items)
-    total_pages = ceil(total_items / page_size) if page_size > 0 else 0
+    ceil(total_items / page_size) if page_size > 0 else 0
 
     # Calculate slice indices
     start_idx = (page - 1) * page_size

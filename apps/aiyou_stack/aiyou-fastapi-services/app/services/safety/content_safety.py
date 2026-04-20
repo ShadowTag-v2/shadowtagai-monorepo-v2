@@ -265,7 +265,7 @@ class ContentSafetyService:
     ) -> bool:
         """Log a safety violation for audit trail"""
         try:
-            log_entry = {
+            {
                 "violation_type": violation_type,
                 "content_snippet": content_snippet[:100],
                 "metadata": metadata or {},
