@@ -1,12 +1,12 @@
 {
   "repoPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball",
-  "lastCommit": "f7116d18c08e7752dcc7b6e53629616058576f89",
-  "indexedAt": "2026-04-20T20:19:44.798Z",
+  "lastCommit": "cfa04adf7be09a98410fa5b073cb75afe5a1fb28",
+  "indexedAt": "2026-04-20T22:51:32.739Z",
   "stats": {
-    "files": 20723,
-    "nodes": 274740,
-    "edges": 507344,
-    "communities": 5696,
+    "files": 20550,
+    "nodes": 273867,
+    "edges": 506115,
+    "communities": 5657,
     "processes": 300,
     "embeddings": 0
   }
