@@ -33,11 +33,14 @@ LOCAL_URL = "http://localhost:8080"
 
 
 def _get_base() -> str:
-    """Return LOCAL_URL if service is running locally, else env/production."""
+    """Return LOCAL_URL if CounselConduit is running locally, else env/production."""
     try:
         r = httpx.get(f"{LOCAL_URL}/health", timeout=2)
         if r.status_code == 200:
-            return LOCAL_URL
+            data = r.json()
+            # Verify it's actually CounselConduit (not Gemma-4 llama-server on :8080)
+            if data.get("service") == "counselconduit":
+                return LOCAL_URL
     except Exception:
         pass
     return BASE_URL
