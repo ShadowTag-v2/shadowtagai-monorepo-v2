@@ -218,3 +218,4 @@ libs/autoresearch_sources/Kosmos/**/.env*
 # Linter / test caches
 .pytest_cache/
 .ruff_cache/
+third_party/security/
