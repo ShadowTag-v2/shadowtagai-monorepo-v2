@@ -6,7 +6,7 @@
   ],
   "settings": {
     "liveServer.settings.root": "/",
-    "liveServer.settings.port": 5508,
+    "liveServer.settings.port": 5509,
     "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python3",
     "geminicodeassist.agentYoloMode": true,
     "java.import.generatesSources": false,
@@ -24,7 +24,7 @@
       "**/tools/java-firestore/**",
       "**/tools/google-cloud-dart/**",
       "**/deep-archive/**",
-      "**/.gradle/**"
+      "**/.gradle/**",
     ],
     "files.exclude": {
       "**/*.proto": true,
@@ -65,7 +65,7 @@
       "**/.gradle/**": true,
       "**/dist/**": true,
       "**/.next/**": true,
-      "**/.firebase/**": true
+      "**/.firebase/**": true,
     },
     "search.exclude": {
       "**/node_modules/**": true,
@@ -91,7 +91,7 @@
       "**/deep-archive/**": true,
       "**/.gradle/**": true,
       "**/dist/**": true,
-      "**/.next/**": true
+      "**/.next/**": true,
     },
     "python.analysis.exclude": [
       "**/archive",
@@ -105,7 +105,7 @@
       "**/third_party",
       "**/reference_architectures",
       "**/tools/google-cloud-dart",
-      "**/tools/dio"
+      "**/tools/dio",
     ],
     "dart.analysisExcludedFolders": [
       "archive",
@@ -119,7 +119,7 @@
       "tools/dio",
       "tools/Mole",
       "tools/PureMac",
-      "node_modules"
+      "node_modules",
     ],
     "java.server.launchMode": "LightWeight",
     "java.autobuild.enabled": false,
@@ -139,9 +139,9 @@
     "cloudcode.enableExperiments": false,
     "cloudcode.autoDependencies": "off",
     "cloudcode.dependencyPaths": {
-      "gcloud": "/opt/homebrew/share/google-cloud-sdk/bin/gcloud"
+      "gcloud": "/opt/homebrew/share/google-cloud-sdk/bin/gcloud",
     },
     "gradle.nestedProjects": false,
-    "java.gradle.enabled": false
+    "java.gradle.enabled": false,
   }
 }
