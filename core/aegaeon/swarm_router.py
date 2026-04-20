@@ -5,7 +5,7 @@ Two tiers:
   - Fast Path (Semaphore 5): extraction, PR formatting, simple Q&A
   - Heavy Lift (Semaphore 2): architectural anomaly detection, escalation
 
-All instances share one cached_content=cache_name for ~75% cost reduction.
+All instances share one cached_content=cache_name for ~90% cost reduction (Gemini 2.5+ pricing).
 
 Usage:
     from core.aegaeon.swarm_router import SwarmRouter
@@ -42,7 +42,7 @@ class SwarmRouter:
     def __init__(
         self,
         cache_name: str | None = None,
-        model: str = "models/gemini-2.0-flash",
+        model: str = "models/gemini-2.5-flash",
     ):
         self._cache_name = cache_name
         self._model = model
