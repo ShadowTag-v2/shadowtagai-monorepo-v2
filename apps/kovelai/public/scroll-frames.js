@@ -27,7 +27,7 @@
     lazyThreshold: 0.05,
     enableWebP: false, // JPG frames from Veo extraction
     enableRetina: true,
-    videoFallbackSrc: '/videos/porsche-peelout-compressed.mp4',
+    videoFallbackSrc: '/videos/supercar-peelout-compressed.mp4',
     lowPowerThreshold: 4, // CPU cores threshold for fallback
   };
 
