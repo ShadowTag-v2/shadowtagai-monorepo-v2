@@ -22,10 +22,10 @@
     frameDir: 'frames/hero_drift_0',
     webpDir: 'frames/hero_drift_0_webp',
     framePrefix: 'frame_',
-    totalFrames: 80,
+    totalFrames: 48,
     frameDigits: 4,
     lazyThreshold: 0.05,
-    enableWebP: false, // PNG only — ffmpeg webp encoder not available
+    enableWebP: false, // JPG frames from Veo extraction
     enableRetina: true,
     videoFallbackSrc: '/videos/hero-drift-compressed.mp4',
     lowPowerThreshold: 4, // CPU cores threshold for fallback
@@ -66,6 +66,8 @@
     video.muted = true;
     video.loop = true;
     video.playsInline = true;
+    video.poster = '/images/posters/hero-drift-compressed.webp';
+    video.setAttribute('loading', 'lazy');
     video.style.cssText = 'width:100%;height:100%;object-fit:cover;opacity:0.85;';
     video.id = 'scroll-video-fallback';
 
@@ -80,7 +82,7 @@
     const num = String(index + 1).padStart(CONFIG.frameDigits, '0');
     const useWebP = CONFIG.enableWebP && supportsWebP();
     const dir = useWebP ? CONFIG.webpDir : CONFIG.frameDir;
-    const ext = useWebP ? '.webp' : '.png';
+    const ext = useWebP ? '.webp' : '.jpg';
     return `${dir}/${CONFIG.framePrefix}${num}${ext}`;
   }
 
@@ -145,10 +147,10 @@
         images[i].addEventListener('error', () => {
           // Fallback: if WebP fails, try PNG
           if (CONFIG.enableWebP && images[i].src.includes('.webp')) {
-            const pngUrl = images[i].src
+            const jpgUrl = images[i].src
               .replace(CONFIG.webpDir, CONFIG.frameDir)
-              .replace('.webp', '.png');
-            images[i].src = pngUrl;
+              .replace('.webp', '.jpg');
+            images[i].src = jpgUrl;
           }
         });
       }
