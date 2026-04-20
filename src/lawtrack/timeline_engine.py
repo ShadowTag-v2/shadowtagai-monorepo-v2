@@ -25,6 +25,7 @@ from .rules_database import JurisdictionRule, RulesDatabase, TimeCalculation
 
 class EventStatus(Enum):
     """Timeline event status"""
+
     PENDING = "pending"
     COMPLETED = "completed"
     OVERDUE = "overdue"
@@ -33,15 +34,17 @@ class EventStatus(Enum):
 
 class EventPriority(Enum):
     """Event priority (for mobile tiles)"""
-    CRITICAL = "critical"   # Show on mobile critical tiles
-    HIGH = "high"           # Important but not critical
-    MEDIUM = "medium"       # Standard priority
-    LOW = "low"             # Background/informational
+
+    CRITICAL = "critical"  # Show on mobile critical tiles
+    HIGH = "high"  # Important but not critical
+    MEDIUM = "medium"  # Standard priority
+    LOW = "low"  # Background/informational
 
 
 @dataclass
 class TimelineEvent:
     """Single event in timeline"""
+
     id: str
     rule_id: str
     title: str
@@ -51,13 +54,14 @@ class TimelineEvent:
     priority: EventPriority
     dependencies: list[str]  # Event IDs that must complete first
     requirements: list[str]  # What needs to be done
-    rule_reference: str      # e.g., "FRCP 12(a)(1)(A)"
+    rule_reference: str  # e.g., "FRCP 12(a)(1)(A)"
     created_at: datetime = field(default_factory=datetime.now)
 
 
 @dataclass
 class Timeline:
     """Complete case timeline"""
+
     case_id: str
     jurisdiction_name: str
     case_type: str
@@ -94,17 +98,17 @@ class TimelineEngine:
         # For now, hardcode major 2025-2026 holidays
 
         return [
-            datetime(2025, 1, 1),   # New Year's Day
+            datetime(2025, 1, 1),  # New Year's Day
             datetime(2025, 1, 20),  # MLK Day
             datetime(2025, 2, 17),  # Presidents Day
             datetime(2025, 5, 26),  # Memorial Day
-            datetime(2025, 7, 4),   # Independence Day
-            datetime(2025, 9, 1),   # Labor Day
-            datetime(2025, 10, 13), # Columbus Day
-            datetime(2025, 11, 11), # Veterans Day
-            datetime(2025, 11, 27), # Thanksgiving
-            datetime(2025, 12, 25), # Christmas
-            datetime(2026, 1, 1),   # New Year's Day 2026
+            datetime(2025, 7, 4),  # Independence Day
+            datetime(2025, 9, 1),  # Labor Day
+            datetime(2025, 10, 13),  # Columbus Day
+            datetime(2025, 11, 11),  # Veterans Day
+            datetime(2025, 11, 27),  # Thanksgiving
+            datetime(2025, 12, 25),  # Christmas
+            datetime(2026, 1, 1),  # New Year's Day 2026
         ]
 
     def generate_timeline(
@@ -276,7 +280,7 @@ class TimelineEngine:
         days_until = (due_date - datetime.now()).days
 
         # Critical: <7 days and filing/appearance type
-        if days_until < 7 and rule.rule_type.value in ['filing', 'appearance', 'trial']:
+        if days_until < 7 and rule.rule_type.value in ["filing", "appearance", "trial"]:
             return EventPriority.CRITICAL
 
         # High: 7-14 days
@@ -302,11 +306,7 @@ class TimelineEngine:
         Returns:
             List of critical events (for mobile UI)
         """
-        return [
-            event for event in timeline.events
-            if event.priority == EventPriority.CRITICAL
-            and event.status == EventStatus.PENDING
-        ]
+        return [event for event in timeline.events if event.priority == EventPriority.CRITICAL and event.status == EventStatus.PENDING]
 
     def update_event_status(
         self,
@@ -344,6 +344,7 @@ class TimelineEngine:
         """
         # Clone timeline
         import copy
+
         modified_timeline = copy.deepcopy(timeline)
 
         # Find and modify event

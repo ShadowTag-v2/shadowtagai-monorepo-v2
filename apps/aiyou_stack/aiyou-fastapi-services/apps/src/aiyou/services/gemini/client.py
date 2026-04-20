@@ -399,7 +399,13 @@ class GeminiClient:
             # Parse JSON response
             import json
 
-            metadata = json.loads(content.strip().removeprefix("```json\n").removeprefix("```json").removesuffix("```").strip())
+            metadata = json.loads(
+                content.strip()
+                .removeprefix("```json\n")
+                .removeprefix("```json")
+                .removesuffix("```")
+                .strip()
+            )
             metadata["tokens_used"] = tokens_used
 
             return metadata

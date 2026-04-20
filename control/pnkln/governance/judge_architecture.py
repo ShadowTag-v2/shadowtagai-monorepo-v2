@@ -1123,7 +1123,7 @@ class JudgeVerdictFormatter:
             f"║ Status: {status_symbol[verdict.status]} {verdict.status.value:<48}║",
             f"║ Reason: {verdict.reason:<50}║",
             f"║ IQ Level: {verdict.iq_level:<48}║",
-            f"║ Processing Time: {verdict.processing_time_ms:.0f}ms{' '*(40-len(str(int(verdict.processing_time_ms))))}║",
+            f"║ Processing Time: {verdict.processing_time_ms:.0f}ms{' ' * (40 - len(str(int(verdict.processing_time_ms))))}║",
         ]
 
         if verdict.blockers:
