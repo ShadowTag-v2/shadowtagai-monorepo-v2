@@ -11,7 +11,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg: #080b12; --surface: #0f1219; --surface-2: #171c28;
-      --border: #242938; --text: #e0e4ef; --text-muted: #6b7394;
+      --border: #242938; --text: #e0e4ef; --text-muted: #8b93b4;
       --cyan: #22d3ee; --cyan-glow: rgba(34,211,238,0.08);
       --green: #10b981; --red: #ef4444; --amber: #f59e0b;
       --purple: #a78bfa;
@@ -129,7 +129,7 @@
     </div>
   </div>
 
-  <div class="dashboard">
+  <main class="dashboard" role="main">
     <!-- Left: Agents -->
     <div class="agent-roster">
       <div class="roster-title">Agent Swarm (<span id="agent-count">0</span> Active)</div>
@@ -176,7 +176,7 @@
         <div class="stat-box"><div class="value" style="color:var(--amber)" id="stat-warnings">0</div><div class="label">Warnings</div></div>
       </div>
     </div>
-  </div>
+  </main>
 
   <div id="toast-container"></div>
 
