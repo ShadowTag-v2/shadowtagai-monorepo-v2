@@ -79,6 +79,11 @@ archive/external_repos_root/
 .lancedb/
 data/lancedb/
 data/intelligence_pipeline/
+data/aegaeon/
+data/sovereign_mlx/
+data/drive_ingest/
+data/file_index/
+data/reports/
 output/
 tmp/
 **/*.sqlite3
