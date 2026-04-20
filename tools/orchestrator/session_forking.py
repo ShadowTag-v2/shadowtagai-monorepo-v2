@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 import uuid
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from pathlib import Path
 from typing import Any
 
@@ -31,7 +31,7 @@ class WorkUnit:
     description: str = ""
     status: str = "pending"  # pending, in_progress, complete, failed, rolled_back
     created_at: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+        default_factory=lambda: datetime.now(UTC).isoformat()
     )
     completed_at: str | None = None
     verification: str | None = None
@@ -99,7 +99,7 @@ def complete_fork(
 ) -> WorkUnit:
     """Mark a fork as complete with optional verification."""
     fork.status = "complete"
-    fork.completed_at = datetime.now(timezone.utc).isoformat()
+    fork.completed_at = datetime.now(UTC).isoformat()
     fork.verification = verification_result
     _log_fork(fork, "completed")
     return fork
@@ -108,7 +108,7 @@ def complete_fork(
 def fail_fork(fork: WorkUnit, error: str) -> WorkUnit:
     """Mark a fork as failed."""
     fork.status = "failed"
-    fork.completed_at = datetime.now(timezone.utc).isoformat()
+    fork.completed_at = datetime.now(UTC).isoformat()
     fork.verification = f"FAILED: {error}"
     _log_fork(fork, "failed")
     return fork
@@ -144,7 +144,7 @@ def _log_fork(fork: WorkUnit, event: str) -> None:
     with FORK_LOG_PATH.open("a") as f:
         f.write(
             json.dumps(
-                {"event": event, "timestamp": datetime.now(timezone.utc).isoformat(), **fork.to_dict()},
+                {"event": event, "timestamp": datetime.now(UTC).isoformat(), **fork.to_dict()},
                 default=str,
             )
             + "\n"

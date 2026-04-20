@@ -17,7 +17,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from pathlib import Path
 from typing import Any
 
@@ -109,7 +109,7 @@ def stage_and_commit(message: str | None = None) -> dict[str, Any]:
         return {"phase": "git", "success": False, "error": err[:200]}
 
     if message is None:
-        message = f"chore: f1 gca finish ({datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')})"
+        message = f"chore: f1 gca finish ({datetime.now(UTC).strftime('%Y-%m-%d %H:%M')})"
 
     rc, out, err = run_cmd(["git", "commit", "-m", message])
     committed = rc == 0 or "nothing to commit" in (out + err)
@@ -135,7 +135,7 @@ def run_gca(commit_message: str | None = None) -> dict[str, Any]:
 
     all_ok = all(p["success"] for p in phases)
     summary = {
-        "gca_run": datetime.now(timezone.utc).isoformat(),
+        "gca_run": datetime.now(UTC).isoformat(),
         "all_phases_passed": all_ok,
         "phases": phases,
     }
