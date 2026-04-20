@@ -10,6 +10,8 @@ jobs:
   csrmc-audit:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Dependabot PRs cannot access GEMINI_API_KEY — skip to avoid startup_failure noise.
+    if: github.actor != 'dependabot[bot]'
     steps:
       - uses: actions/checkout@v4
       - run: npm install -g @google/gemini-cli-beta

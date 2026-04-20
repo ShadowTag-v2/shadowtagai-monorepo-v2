@@ -40,7 +40,7 @@ from src.models.pool import GPUPool
 from src.models.registry import ModelRegistry
 
 # Layer 0: Optimization & Monetization
-from src.monetization import PRICING_PLANS, PricingTier, validate_api_key
+from src.monetization import PRICING_PLANS, PricingTier
 
 # Ratings & Training
 

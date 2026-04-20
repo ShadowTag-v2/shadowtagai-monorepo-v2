@@ -20,7 +20,7 @@ from src.evolution.dte import DTESystem
 from src.integration.unified_orchestrator import UnifiedPinklnOrchestrator
 from src.models.pool import GPUPool
 from src.models.registry import ModelRegistry
-from src.monetization import PRICING_PLANS, PricingTier, validate_api_key
+from src.monetization import PRICING_PLANS, PricingTier
 
 router = APIRouter(prefix="/api/v1/unified", tags=["Unified Ecosystem"])
 

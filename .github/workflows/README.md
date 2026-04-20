@@ -1,7 +1,10 @@
 # CI/CD Workflows — Monorepo-Uphillsnowball
 
-> **Note**: All workflows require GitHub Actions minutes. On the free plan,
-> private repos get 2,000 min/month. Runs show `startup_failure` when exhausted.
+> **Note**: `startup_failure` has two causes: (1) GitHub Actions minutes exhausted
+> (free plan: 2,000 min/month for private repos), or (2) Dependabot PRs triggering
+> workflows that need secrets not available to fork-like actors (`GEMINI_API_KEY`,
+> `DOCKER_PASSWORD`, etc.). The latter is fixed with
+> `if: github.actor != 'dependabot[bot]'` guards — see individual workflow files.
 
 ## Hardening Standards
 
@@ -131,8 +134,20 @@ Deploy workflows use keyless auth via WIF:
 ## Troubleshooting
 
 ### `startup_failure` on all runs
-GitHub Actions minutes exhausted. Check billing at:
-Settings → Billing → Actions
+Two causes:
+
+**Cause A — Minutes exhausted** (all workflows fail at queue time):
+Check Settings → Billing → Actions.
+
+**Cause B — Dependabot / fork PR secrets** (GCA + Judge6 + Antigravity CI fail,
+other workflows pass): Fixed with `if: github.actor != 'dependabot[bot]'` on each
+job that requires `GEMINI_API_KEY`. Already applied to:
+- `gca-pr-review.yml` (setup job)
+- `judge6_yolo_gate.yml` (csrmc-audit job)
+- `antigravity_ci.yml` (test-proxy job)
+
+This is a known GitHub limitation — secrets are not passed to untrusted PRs.
+No code bug. No fix needed beyond the guard clauses above.
 
 ### YAML validation
 ```bash

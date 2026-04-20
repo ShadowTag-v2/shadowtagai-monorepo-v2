@@ -37,7 +37,7 @@ class GameportService:
         session = GameSession(
             game_id=game.id,
             user_id=user.id,
-            gpu_node_id="mock-node-1",
+            gpu_node_id=f"mock-node-{gpu_region or 'us-east-1'}",
             started_at=datetime.utcnow(),
         )
         db.add(session)

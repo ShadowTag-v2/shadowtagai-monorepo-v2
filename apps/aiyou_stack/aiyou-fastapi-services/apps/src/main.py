@@ -152,7 +152,6 @@ app.include_router(growth_router, prefix=settings.api_prefix)
 
 # WEALTH LEAK PLUG: Monetization Middleware
 from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.responses import JSONResponse
 
 from .pnkln.api.monetization import monetization
 
