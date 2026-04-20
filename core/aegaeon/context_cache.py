@@ -2,7 +2,7 @@
 
 Builds a persistent Gemini Context Cache ("Master Memory Slab") from
 CLAUDE.md, .beads/, judge6 config, and monorepo manifest. Cached tokens
-cost ~75% less on subsequent requests.
+cost ~90% less on subsequent requests (Gemini 2.5+ pricing).
 
 State persists to data/aegaeon/cache_state.json.
 
@@ -41,7 +41,7 @@ SLAB_SOURCES = [
 ]
 
 # Default model for caching
-DEFAULT_MODEL = "models/gemini-2.0-flash"
+DEFAULT_MODEL = "models/gemini-2.5-flash"
 DEFAULT_TTL_HOURS = 24
 
 
