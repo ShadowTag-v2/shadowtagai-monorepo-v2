@@ -50,6 +50,9 @@
 | 42 | Third-party Stripe `sk_test_` key in cloned `reference_architectures/terraform/` (Odoo fixture) | 🟡 Medium | RESOLVED | NOT our account (`acct_1Syh9JEHnWpykeMi`). Confirmed Odoo demo test key. Path gitignored, allowlisted in `.gitleaks.toml`, suppressed in `.gitleaksignore`. `reference_architectures/` purged (4.3GB freed). |
 | 43 | Third-party Vault token `s.Fg8w...` in cloned `reference_architectures/opentofu/website/docs/` | 🟡 Medium | RESOLVED | OpenTofu documentation example (not live). Path gitignored, allowlisted in `.gitleaks.toml`, suppressed in `.gitleaksignore`. `reference_architectures/` purged. |
 
+| 44 | ShadowTagAI CSP included `unsafe-eval` + missing HSTS/COOP/CORP | 🟠 High | RESOLVED | `unsafe-eval` removed from `script-src`. Cloudflare Turnstile (`challenges.cloudflare.com`) added to `script-src` + `frame-src`. HSTS (preload, 1yr), COOP (same-origin), CORP (same-origin) added. Deployed `35de3f5ae7`. All 9 security headers verified live via `curl -D -`. |
+| 45 | GPG signing key not uploaded to GitHub — commits unverified on remote | 🟡 Medium | KNOWN | Ed25519 key `7B0BE56159C521F8BBD2EF39301A4A10622FFE11` generated and signing commits locally. GitHub 2FA ("Confirm access") blocks automated upload. **Action**: Manually add GPG public key at `github.com/settings/keys` after 2FA approval. |
+
 ## Review Policy
 
 - Risks with status `RESOLVED` are kept for institutional memory.
