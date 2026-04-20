@@ -205,27 +205,29 @@ class TestAttestation:
 class TestGDPR:
     def test_deletion_request(self, base_url):
         """Client requests account deletion (Article 17)."""
-        params = {"user_id": "client_test_001"}
+        payload = {"confirmation": "DELETE MY ACCOUNT", "reason": "test"}
         r = httpx.post(
-            f"{base_url}/gdpr/request-deletion",
-            params=params,
+            f"{base_url}/account/delete",
+            json=payload,
             timeout=10,
         )
-        assert r.status_code == 200
+        assert r.status_code == 202
         data = r.json()
         assert "receipt_id" in data
-        assert data["status"] == "pending"
+        assert data["status"] == "scheduled"
 
     def test_export_my_data(self, base_url):
         """Client requests data export (Article 20 - portability)."""
-        r = httpx.get(
-            f"{base_url}/gdpr/export/client_test_001",
+        payload = {"format": "json"}
+        r = httpx.post(
+            f"{base_url}/account/export",
+            json=payload,
             timeout=10,
         )
-        assert r.status_code == 200
+        assert r.status_code == 202
         data = r.json()
-        assert "user_id" in data
-        assert data["user_id"] == "client_test_001"
+        assert "export_id" in data
+        assert data["format"] == "json"
 
 
 # ── Stripe Webhook ─────────────────────────────────────────────────────
