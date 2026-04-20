@@ -1,11 +1,12 @@
-import * as admin from 'firebase-admin';
+import { initializeApp } from 'firebase-admin/app';
+import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import * as logger from 'firebase-functions/logger';
 import { onRequest } from 'firebase-functions/v2/https';
 import { z } from 'zod';
 
 // Initialize Firebase Admin App
-admin.initializeApp();
-const db = admin.firestore();
+initializeApp();
+const db = getFirestore();
 
 // ─── Rate Limiting (Firestore-backed) ────────────────────────────
 const RATE_LIMIT_WINDOW_MS = 60_000;
@@ -101,7 +102,7 @@ export const captureLead = onRequest(
       const leadDocument = {
         ...payload,
         status: 'NEW', // NEW | CONTACTED | DISQUALIFIED
-        receivedAt: admin.firestore.FieldValue.serverTimestamp(),
+        receivedAt: FieldValue.serverTimestamp(),
         deviceUserAgent: request.headers['user-agent'] || 'unknown',
         clientIp, // Stored for abuse tracking, never returned to client
       };
@@ -156,7 +157,7 @@ export const captureContact = onRequest(
       const docRef = await db.collection('contact_requests').add({
         ...payload,
         status: 'NEW',
-        receivedAt: admin.firestore.FieldValue.serverTimestamp(),
+        receivedAt: FieldValue.serverTimestamp(),
         deviceUserAgent: request.headers['user-agent'] || 'unknown',
       });
       response.status(200).json({ success: true, requestId: docRef.id });
