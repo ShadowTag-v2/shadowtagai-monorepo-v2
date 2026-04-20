@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# Alpha-Omega recovery scaffold\n
-||||||| empty tree
-=======
 import asyncio
 
 import websockets
@@ -77,4 +73,3 @@ if __name__ == "__main__":
         asyncio.run(singularity_bci_bridge())
     except Exception as e:
         print(f"Daemon error: {e}")
->>>>>>> 5003ee8144b25604e711ef88a2d161f951a40419
