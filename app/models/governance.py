@@ -1,6 +1,7 @@
 """
 Governance models and schemas
 """
+
 from pydantic import BaseModel, Field
 from typing import Optional, Any
 from datetime import datetime
@@ -9,6 +10,7 @@ from enum import Enum, StrEnum
 
 class RiskLevel(StrEnum):
     """Risk level classification"""
+
     UNACCEPTABLE = "unacceptable"
     HIGH = "high"
     LIMITED = "limited"
@@ -17,6 +19,7 @@ class RiskLevel(StrEnum):
 
 class ComplianceFramework(StrEnum):
     """Compliance frameworks"""
+
     EU_AI_ACT = "eu_ai_act"
     DSA_VLOP = "dsa_vlop"
     NIST_RMF = "nist_rmf"
@@ -27,19 +30,20 @@ class ComplianceFramework(StrEnum):
 
 class GovernanceAssessmentRequest(BaseModel):
     """Request for governance assessment"""
+
     content_type: str = Field(..., description="Type of content being assessed")
     content_id: str | None = Field(None, description="Unique content identifier")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
     user_age: int | None = Field(None, description="User age for COPPA compliance")
     is_ai_generated: bool = Field(default=False, description="Whether content is AI-generated")
     frameworks: list[ComplianceFramework] = Field(
-        default=[ComplianceFramework.EU_AI_ACT, ComplianceFramework.NIST_RMF],
-        description="Frameworks to assess against"
+        default=[ComplianceFramework.EU_AI_ACT, ComplianceFramework.NIST_RMF], description="Frameworks to assess against"
     )
 
 
 class ControlAssessment(BaseModel):
     """Individual control assessment"""
+
     control_id: str
     control_name: str
     status: str  # "compliant", "non-compliant", "partial", "not_applicable"
@@ -49,6 +53,7 @@ class ControlAssessment(BaseModel):
 
 class GovernanceAssessmentResponse(BaseModel):
     """Response from governance assessment"""
+
     assessment_id: str
     timestamp: datetime
     risk_level: RiskLevel
@@ -63,6 +68,7 @@ class GovernanceAssessmentResponse(BaseModel):
 
 class EUAIActAssessment(BaseModel):
     """EU AI Act specific assessment"""
+
     risk_classification: RiskLevel
     transparency_requirements: list[str]
     human_oversight_required: bool
@@ -73,6 +79,7 @@ class EUAIActAssessment(BaseModel):
 
 class NISTRMFAssessment(BaseModel):
     """NIST AI RMF assessment"""
+
     govern_score: float = Field(..., ge=0.0, le=1.0)
     map_score: float = Field(..., ge=0.0, le=1.0)
     measure_score: float = Field(..., ge=0.0, le=1.0)
@@ -83,6 +90,7 @@ class NISTRMFAssessment(BaseModel):
 
 class ISO42001Assessment(BaseModel):
     """ISO/IEC 42001 AIMS assessment"""
+
     context_of_organization: float = Field(..., ge=0.0, le=1.0)
     leadership: float = Field(..., ge=0.0, le=1.0)
     planning: float = Field(..., ge=0.0, le=1.0)
