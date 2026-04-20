@@ -41,7 +41,7 @@ class ClaudeCodeMemory:
                 import google.generativeai as genai
 
                 genai.configure(api_key=self.google_key)
-                self.gemini_model = genai.GenerativeModel("gemini-2.0-flash-exp")
+                self.gemini_model = genai.GenerativeModel("gemini-3.1-flash-lite-preview")
             except ImportError:
                 print("[WARNING] google-generativeai not installed")
 

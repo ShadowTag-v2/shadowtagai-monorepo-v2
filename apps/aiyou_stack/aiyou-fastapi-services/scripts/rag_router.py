@@ -36,7 +36,7 @@ def route_query(user_query: str):
 
     try:
         response = client.models.generate_content(
-            model="gemini-2.0-flash-exp",  # Fast router model
+            model="gemini-3.1-flash-lite-preview",  # Fast router model
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_INSTRUCTION,
                 response_mime_type="application/json",

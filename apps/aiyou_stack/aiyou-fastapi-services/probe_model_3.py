@@ -9,9 +9,9 @@ client = Client(vertexai=True, project=PROJECT_ID, location=LOCATION)
 CANDIDATES = [
     "gemini-3.0-flash",
     "gemini-3.0-pro-exp",
-    "gemini-2.0-flash-thinking-exp-1219",
-    "gemini-2.0-pro-exp",
-    "gemini-2.5-flash",
+    "gemini-3.1-flash-lite-preview-thinking-exp-1219",
+    "gemini-3.1-flash-lite-preview",
+    "gemini-3.1-flash-lite-preview",
 ]
 
 print(f"--- PROBING INTELLIGENCE SPECTRUM ({PROJECT_ID}) ---")

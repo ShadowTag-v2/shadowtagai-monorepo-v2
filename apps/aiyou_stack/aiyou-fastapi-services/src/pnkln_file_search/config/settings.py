@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     # Vertex AI Configuration
     vertex_ai_location: str = Field(default="us-central1", description="Vertex AI location")
     vertex_ai_model: str = Field(
-        default="gemini-2.0-flash-exp",
+        default="gemini-3.1-flash-lite-preview",
         description="Gemini model for file search",
     )
 

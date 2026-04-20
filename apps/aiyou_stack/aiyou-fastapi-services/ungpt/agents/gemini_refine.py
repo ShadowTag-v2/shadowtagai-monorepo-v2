@@ -37,7 +37,7 @@ async def refine(
     current_draft: str,
     tools: list[str] | None = None,
     feedback: str | None = None,
-    model: str = "gemini-2.0-flash-exp",
+    model: str = "gemini-3.1-flash-lite-preview",
     api_key: str = "",
 ) -> dict[str, Any]:
     """Refine the draft using Gemini.

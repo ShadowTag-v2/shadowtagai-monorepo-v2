@@ -69,7 +69,7 @@ class COROrchestrator:
         self,
         project_id: str,
         location: str = "us-central1",
-        model_name: str = "gemini-2.0-flash-001",
+        model_name: str = "gemini-3.1-flash-lite-preview-001",
     ):
         self.project_id = project_id
         self.location = location

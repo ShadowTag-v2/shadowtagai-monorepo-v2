@@ -13,7 +13,7 @@ except Exception as e:
     print(f"Error initializing gemini-1.0-pro-001: {e}")
 
 try:
-    model = GenerativeModel("gemini-1.5-flash-001")
-    print("gemini-1.5-flash-001 initialized")
+    model = GenerativeModel("gemini-3.1-flash-lite-preview-001")
+    print("gemini-3.1-flash-lite-preview-001 initialized")
 except Exception as e:
-    print(f"Error initializing gemini-1.5-flash-001: {e}")
+    print(f"Error initializing gemini-3.1-flash-lite-preview-001: {e}")

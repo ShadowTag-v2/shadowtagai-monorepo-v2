@@ -21,7 +21,7 @@ class AgentConfig(BaseModel):
 
     name: str
     description: str
-    model: str = "gemini-2.0-flash-exp"
+    model: str = "gemini-3.1-flash-lite-preview"
     temperature: float = 0.7
     max_tokens: int = 2048
     cheat_sheet_enabled: bool = True

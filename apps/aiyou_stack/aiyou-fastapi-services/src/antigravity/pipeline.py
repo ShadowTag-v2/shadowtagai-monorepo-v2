@@ -88,7 +88,7 @@ class AntigravityPipeline:
         self.minion = minion(model="gemini-3.1-flash-lite-preview")
 
         # Stage 3: 10× Gemini Code Assist (Gemini 2.0 Flash - "Heavy Lifting")
-        self.executor = create_execution_pool(pool_size=10, model="gemini-2.0-flash-exp")
+        self.executor = create_execution_pool(pool_size=10, model="gemini-3.1-flash-lite-preview")
 
         # Stage 4: Validation and deployment
         self.validator = CodePMCSClient(codepmcs_url) if codepmcs_url else None

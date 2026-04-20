@@ -28,7 +28,7 @@ class ModelConfig:
 
     project_id: str
     location: str = "us-central1"
-    model: str = "gemini-2.0-flash-exp"  # Gemini 2.0 Flash for 15-20% cost reduction
+    model: str = "gemini-3.1-flash-lite-preview"  # Gemini 2.0 Flash for 15-20% cost reduction
     temperature: float = 0.7
     max_tokens: int = 8192
     top_p: float = 0.95
@@ -59,7 +59,7 @@ class VertexAIClient:
         self.config = config or ModelConfig(
             project_id=os.getenv("GCP_PROJECT_ID", ""),
             location=os.getenv("GCP_LOCATION", "us-central1"),
-            model=os.getenv("DEFAULT_MODEL", "gemini-1.5-flash"),
+            model=os.getenv("DEFAULT_MODEL", "gemini-3.1-flash-lite-preview"),
         )
 
         # Initialize Vertex AI

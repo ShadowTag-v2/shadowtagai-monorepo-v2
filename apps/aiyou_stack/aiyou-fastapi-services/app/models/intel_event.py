@@ -161,7 +161,7 @@ class IntelEvent(BaseModel):
     # Provenance
     raw_text_hash: str = Field(default="", description="SHA-256 hash of raw input text for dedup")
     gemini_model: str = Field(
-        default="gemini-2.0-flash",
+        default="gemini-3.1-flash-lite-preview",
         description="Gemini model used for extraction",
     )
     gemini_confidence: float = Field(

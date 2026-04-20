@@ -122,7 +122,7 @@ class AtomicConsensusOrchestrator:
 
             if self.google_key:
                 genai.configure(api_key=self.google_key)
-                self.gemini_model = genai.GenerativeModel("gemini-2.0-flash-exp")
+                self.gemini_model = genai.GenerativeModel("gemini-3.1-flash-lite-preview")
             else:
                 self.gemini_model = None
         except ImportError:
@@ -326,7 +326,7 @@ Decomposition Hints: {", ".join(intake_data.get("decomposition_hints", []))}
         # 3. Count model usage from threads based on allocation
         # With Ultrathink: Gemini 40%, Claude 35%, GPT 15%, Perplexity 5%, Grok 5%
         model_pricing_map = {
-            "Gemini": "gemini-2.0-flash-exp",
+            "Gemini": "gemini-3.1-flash-lite-preview",
             "Claude": "claude-sonnet-4-20250514",
             "GPT": "gpt-4-turbo-preview",
             "Perplexity": "llama-3.1-sonar-large-128k-online",

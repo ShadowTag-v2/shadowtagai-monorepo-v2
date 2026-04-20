@@ -115,7 +115,7 @@ TOKEN_ROUTER_CONFIG = {
     # Model mappings
     "models": {
         "short": {
-            "default": "gemini-1.5-flash",
+            "default": "gemini-3.1-flash-lite-preview",
             "alternatives": ["gpt-4o-mini", "claude-3-haiku-20240307"],
             "cost_per_1k_tokens": 0.00015,
             "latency_ms": 50,

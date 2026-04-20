@@ -94,7 +94,7 @@ class GeminiResearchAgent:
 
     def __init__(
         self,
-        model_name: str = "gemini-2.0-flash-exp",
+        model_name: str = "gemini-3.1-flash-lite-preview",
         api_key: str | None = None,
         max_function_calls: int = 10,
         timeout_seconds: int = 60,
@@ -103,7 +103,7 @@ class GeminiResearchAgent:
         """Initialize Gemini Research Agent.
 
         Args:
-            model_name: Gemini model (default gemini-2.0-flash-exp for speed)
+            model_name: Gemini model (default gemini-3.1-flash-lite-preview for speed)
             api_key: Google API key (defaults to GOOGLE_API_KEY env var)
             max_function_calls: Max function calls per research (default 10)
             timeout_seconds: Total timeout (default 60s)

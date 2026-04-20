@@ -198,7 +198,7 @@ class TierClassifier:
 
         if GEMINI_AVAILABLE and self.api_key:
             genai.configure(api_key=self.api_key)
-            self.model = genai.GenerativeModel("gemini-2.0-flash-exp")
+            self.model = genai.GenerativeModel("gemini-3.1-flash-lite-preview")
             self.enabled = True
             logger.info("Gemini tier classifier initialized")
         else:

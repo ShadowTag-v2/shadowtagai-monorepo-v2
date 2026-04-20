@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 class GeminiModel(Enum):
     """Available Gemini models with cost characteristics."""
 
-    FLASH = "gemini-2.5-flash"  # Fast, cheap - upgraded to 2.5
+    FLASH = "gemini-3.1-flash-lite-preview"  # Fast, cheap - upgraded to 2.5
     PRO = "gemini-3.1-flash-lite-preview"  # Deep reasoning (using 1.5 until 2.5 GA)
 
     @property

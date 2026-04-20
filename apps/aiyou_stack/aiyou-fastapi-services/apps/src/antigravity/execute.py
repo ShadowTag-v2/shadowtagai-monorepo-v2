@@ -90,7 +90,7 @@ Return ONLY valid JSON with working code."""
         self,
         pool_size: int = 10,
         use_kosmos: bool = True,
-        model: str = "gemini-2.0-flash-exp",
+        model: str = "gemini-3.1-flash-lite-preview",
     ):
         self.pool_size = pool_size
         self.semaphore = asyncio.Semaphore(pool_size)
@@ -265,7 +265,7 @@ raise SecurityError("Task blocked by RSTA consensus - security validation failed
 # Factory function with environment-based selection
 def create_execution_pool(
     pool_size: int = 10,
-    model: str = "gemini-2.0-flash-exp",
+    model: str = "gemini-3.1-flash-lite-preview",
 ) -> GeminiCodeAssistPool:
     """Create execution pool based on environment config.
 

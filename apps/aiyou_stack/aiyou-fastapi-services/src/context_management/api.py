@@ -65,7 +65,7 @@ async def create_session(request: CreateSessionRequest):
             "role": "architecture_review",
             "goal": "Comprehensive pre-production analysis of ingestion pipeline",
             "constraints": "Pre-prod environment, no production telemetry",
-            "model_name": "gemini-2.0-pro",
+            "model_name": "gemini-3.1-flash-lite-preview",
             "confidence_threshold": 0.60
         }
         ```
@@ -223,7 +223,7 @@ async def create_summary(request: CreateSummaryRequest):
             "recommendations": ["Add LinkedIn source"],
             "risks_identified": ["Twitter API dependency"],
             "related_threads": ["https://github.com/org/repo/issues/123"],
-            "tags": ["ingestion", "gemini-2.0-pro", "pre-production"]
+            "tags": ["ingestion", "gemini-3.1-flash-lite-preview", "pre-production"]
         }
         ```
 

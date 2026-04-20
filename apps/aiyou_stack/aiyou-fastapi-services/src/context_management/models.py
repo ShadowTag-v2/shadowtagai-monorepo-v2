@@ -48,7 +48,7 @@ class AnalysisSession(BaseModel):
     status: SessionStatus = Field(default=SessionStatus.ACTIVE)
 
     # AI Model information
-    model_name: str = Field(default="gemini-2.0-pro", description="AI model used")
+    model_name: str = Field(default="gemini-3.1-flash-lite-preview", description="AI model used")
     confidence_threshold: float = Field(
         default=0.60,
         ge=0.0,
@@ -72,7 +72,7 @@ class AnalysisSession(BaseModel):
                 "role": "architecture_review",
                 "goal": "Comprehensive pre-production analysis of ingestion pipeline",
                 "constraints": "Pre-prod environment, no production telemetry available",
-                "model_name": "gemini-2.0-pro",
+                "model_name": "gemini-3.1-flash-lite-preview",
                 "confidence_threshold": 0.60,
                 "total_tokens": 45000,
                 "context_window_size": 2_000_000,
@@ -138,7 +138,7 @@ class ChatSummary(BaseModel):
                     "https://github.com/org/repo/issues/123",
                     "https://pnkln.ai/docs/ingestion-layer",
                 ],
-                "tags": ["ingestion", "gemini-2.0-pro", "pre-production", "architecture"],
+                "tags": ["ingestion", "gemini-3.1-flash-lite-preview", "pre-production", "architecture"],
             },
         }
 
@@ -188,7 +188,7 @@ class CreateSessionRequest(BaseModel):
     role: AnalysisRole
     goal: str
     constraints: str | None = None
-    model_name: str = "gemini-2.0-pro"
+    model_name: str = "gemini-3.1-flash-lite-preview"
     confidence_threshold: float = 0.60
     parent_session_id: str | None = None
 

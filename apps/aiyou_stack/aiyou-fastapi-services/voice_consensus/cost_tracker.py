@@ -15,7 +15,7 @@ PRICING = {
         "input": 3.00,  # $3 per 1M input tokens
         "output": 15.00,  # $15 per 1M output tokens
     },
-    "gemini-2.0-flash-exp": {
+    "gemini-3.1-flash-lite-preview": {
         "input": 0.075,  # $0.075 per 1M input tokens
         "output": 0.30,  # $0.30 per 1M output tokens
     },

@@ -192,7 +192,7 @@ Output JSON (no additional text):
         self.api_key = api_key
         if genai and api_key:
             genai.configure(api_key=api_key)
-            self.model = genai.GenerativeModel("gemini-2.0-flash-exp")
+            self.model = genai.GenerativeModel("gemini-3.1-flash-lite-preview")
         else:
             self.model = None  # Fallback to rule-based classification
 

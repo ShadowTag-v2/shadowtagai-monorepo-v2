@@ -73,7 +73,7 @@ class GeminiAnalysisResponse(BaseModel):
     risks: list[str] = Field(default_factory=list, description="Identified risks")
 
     # Metadata
-    model_used: str = Field(default="gemini-2.0-pro", description="Gemini model used")
+    model_used: str = Field(default="gemini-3.1-flash-lite-preview", description="Gemini model used")
     tokens_used: int | None = Field(None, description="Tokens consumed")
     analysis_time_seconds: float = Field(..., description="Analysis duration")
 

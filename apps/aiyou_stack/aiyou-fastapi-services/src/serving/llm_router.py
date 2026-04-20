@@ -1,8 +1,8 @@
 """Multi-LLM Router - Pure Gemini Brain & Brawn Architecture
 
 Routes requests to appropriate Gemini model based on task type:
-- Brain (Planning/Reasoning): gemini-2.0-flash-thinking-exp
-- Brawn (Coding/Execution): gemini-2.0-flash-exp
+- Brain (Planning/Reasoning): gemini-3.1-flash-lite-preview-thinking-exp
+- Brawn (Coding/Execution): gemini-3.1-flash-lite-preview
 - Grounding (Governance): gemini-3.1-flash-lite-preview
 
 Target latencies:
@@ -91,9 +91,9 @@ class LLMRouter:
     # Model configurations - Pure Gemini Stack
     MODEL_CONFIG = {
         LLMProvider.GEMINI: {
-            "planning": "gemini-2.0-flash-thinking-exp",
-            "coding": "gemini-2.0-flash-exp",
-            "quick": "gemini-2.0-flash-exp",
+            "planning": "gemini-3.1-flash-lite-preview-thinking-exp",
+            "coding": "gemini-3.1-flash-lite-preview",
+            "quick": "gemini-3.1-flash-lite-preview",
             "governance": "gemini-3.1-flash-lite-preview",
             "default": "gemini-3.1-flash-lite-preview",
         },
@@ -101,8 +101,8 @@ class LLMRouter:
 
     # Pricing (USD per 1M tokens) - Updated for Gemini
     PRICING = {
-        "gemini-2.0-flash-exp": {"input": 0.075, "output": 0.30},
-        "gemini-2.0-flash-thinking-exp": {"input": 0.075, "output": 0.30},
+        "gemini-3.1-flash-lite-preview": {"input": 0.075, "output": 0.30},
+        "gemini-3.1-flash-lite-preview-thinking-exp": {"input": 0.075, "output": 0.30},
         "gemini-3.1-flash-lite-preview": {"input": 3.50, "output": 10.50},
     }
 
@@ -148,8 +148,8 @@ class LLMRouter:
                 genai.configure(api_key=self.gemini_api_key)
                 # Pre-load commonly used models
                 for model_name in [
-                    "gemini-2.0-flash-exp",
-                    "gemini-2.0-flash-thinking-exp",
+                    "gemini-3.1-flash-lite-preview",
+                    "gemini-3.1-flash-lite-preview-thinking-exp",
                     "gemini-3.1-flash-lite-preview",
                 ]:
                     try:
@@ -243,8 +243,8 @@ class LLMRouter:
         """Query multiple Gemini models and return best response."""
         # Define model priority for ensemble
         models = [
-            "gemini-2.0-flash-thinking-exp",
-            "gemini-2.0-flash-exp",
+            "gemini-3.1-flash-lite-preview-thinking-exp",
+            "gemini-3.1-flash-lite-preview",
             "gemini-3.1-flash-lite-preview",
         ][:k]
 

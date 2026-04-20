@@ -191,7 +191,7 @@ def demo_with_function_calling(orchestrator: UnifiedOrchestrator):
         ),
     ]
 
-    function_caller = GeminiFunctionCaller(model_name="gemini-2.0-flash-exp", tools=tools)
+    function_caller = GeminiFunctionCaller(model_name="gemini-3.1-flash-lite-preview", tools=tools)
 
     # Create orchestrator with function calling
     orch_with_tools = UnifiedOrchestrator(function_caller=function_caller, enable_auto_routing=True)

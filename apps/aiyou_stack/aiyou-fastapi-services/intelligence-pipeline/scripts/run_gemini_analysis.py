@@ -36,7 +36,7 @@ class IntelligencePipelineAnalyzer:
             raise ValueError("GOOGLE_API_KEY environment variable not set")
 
         genai.configure(api_key=self.api_key)
-        self.model = genai.GenerativeModel("gemini-2.0-flash-exp")
+        self.model = genai.GenerativeModel("gemini-3.1-flash-lite-preview")
 
     def load_documents(self, base_path: Path) -> dict[str, str]:
         """Load all input documents for analysis"""
@@ -154,7 +154,7 @@ Execute the analysis framework above on these documents. Provide a comprehensive
         # Add metadata header
         metadata = f"""---
 generated: {datetime.now().isoformat()}
-analyzer: Gemini 2.0 Pro (gemini-2.0-flash-exp)
+analyzer: Gemini 2.0 Pro (gemini-3.1-flash-lite-preview)
 component: PNKLN Intelligence Pipeline
 version: 1.0.0
 confidence_floor: 60%
