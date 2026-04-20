@@ -349,6 +349,12 @@ class Judge6Engine:
       G5: SECURITY → Credential exposure, injection, exfil
     """
 
+    # Risk #34: Chain depth limit — auto-ESCALATE when >10 sequential shell commands
+    MAX_CHAIN_DEPTH = 10
+
+    # Encoding patterns that indicate payload reconstruction attacks
+    _ENCODING_PATTERNS = ("base64", "b64decode", "xxd", "printf", "\\x", "eval(", "exec(")
+
     def __init__(
         self,
         ceo_notifier: Callable[[GovernanceDecision], None] | None = None,
@@ -358,6 +364,86 @@ class Judge6Engine:
         self._ceo_notifier = ceo_notifier
         self._audit_callback = audit_callback
         self._decision_count = 0
+        self._session_chain: list[str] = []
+
+    def evaluate_chain(self, commands: list[str]) -> GovernanceDecision:
+        """Evaluate a sequence of shell commands for chain-depth attacks (Risk #34).
+
+        Auto-escalates to L5_LOCKOUT when:
+        - More than MAX_CHAIN_DEPTH sequential shell commands in a session
+        - Any command contains encoding/reconstruction patterns (base64, xxd, etc.)
+        """
+        self._session_chain.extend(commands)
+
+        # Check for encoding/reconstruction in ANY command in the chain
+        encoding_detected = any(pattern in cmd.lower() for cmd in self._session_chain for pattern in self._ENCODING_PATTERNS)
+
+        chain_exceeded = len(self._session_chain) > self.MAX_CHAIN_DEPTH
+
+        if chain_exceeded or encoding_detected:
+            reason = (
+                f"CHAIN DEPTH EXCEEDED ({len(self._session_chain)} > {self.MAX_CHAIN_DEPTH})"
+                if chain_exceeded
+                else f"ENCODING RECONSTRUCTION DETECTED in command chain of {len(self._session_chain)}"
+            )
+            event = RiskEvent(
+                violation_type=ViolationType.CYBER_INJECTION,
+                raw_signal="; ".join(self._session_chain[-5:]),
+                source="chain_depth_monitor",
+                context={"chain_length": len(self._session_chain), "encoding_detected": encoding_detected},
+            )
+            # Force EXTREME risk + lockout
+            assessment = RiskAssessment(
+                event_id=event.event_id,
+                violation_type=event.violation_type,
+                probability=0.95,
+                severity=0.95,
+                risk_level=RiskLevel.EXTREME,
+                risk_score=0.9025,
+                applicable_frameworks=["CYBER", "OPERATIONAL"],
+                enforcement_level=EnforcementLevel.L5_LOCKOUT,
+                reasoning=f"Risk #34 auto-escalation: {reason}",
+            )
+            control = MitigationControl(
+                violation_type=event.violation_type,
+                framework="CYBER",
+                framework_ref="Adversa AI 50-subcommand bypass — AGENTS.md Risk #34",
+                enforcement_level=EnforcementLevel.L5_LOCKOUT,
+                action_taken=f"CHAIN ATTACK BLOCKED: {reason}. Session commands quarantined.",
+                automated=True,
+                ceo_notified=True,
+                user_locked_out=True,
+                evidence={"chain": self._session_chain[-10:], "encoding_detected": encoding_detected},
+            )
+            decision = GovernanceDecision(
+                event=event,
+                assessment=assessment,
+                control=control,
+                verdict="BLOCK",
+                allowed=False,
+                reasons=[control.action_taken],
+                atp_steps_executed=list(range(1, 6)),
+            )
+            self._session_chain.clear()
+            if self._ceo_notifier:
+                self._ceo_notifier(decision)
+            if self._audit_callback:
+                self._audit_callback(decision)
+            return decision
+
+        # Chain is within limits — evaluate last command normally
+        return self.evaluate(
+            RiskEvent(
+                violation_type=ViolationType.OP_SCOPE_CREEP,
+                raw_signal=commands[-1] if commands else "",
+                source="chain_depth_monitor",
+                context={"chain_length": len(self._session_chain)},
+            )
+        )
+
+    def reset_chain(self) -> None:
+        """Reset the chain depth counter (call after session boundary)."""
+        self._session_chain.clear()
 
     def evaluate(self, event: RiskEvent) -> GovernanceDecision:
         t0 = time.perf_counter()
