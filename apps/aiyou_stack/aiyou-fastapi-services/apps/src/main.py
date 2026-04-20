@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from starlette.middleware.base import BaseHTTPMiddleware
 
 from .config import settings
 from .database import get_db_context, init_db
@@ -151,8 +152,6 @@ app.include_router(growth_router, prefix=settings.api_prefix)
 
 
 # WEALTH LEAK PLUG: Monetization Middleware
-from starlette.middleware.base import BaseHTTPMiddleware
-
 from .pnkln.api.monetization import monetization
 
 

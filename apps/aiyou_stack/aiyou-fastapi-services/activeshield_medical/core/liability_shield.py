@@ -86,9 +86,9 @@ class ShieldResult(BaseModel):
     processing_time_ms: float = 0.0
 
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session  # noqa: E402 — must follow Pydantic models (circular import guard)
 
-from ..models import ActiveShieldAdverseEvent, ActiveShieldAuditLog
+from ..models import ActiveShieldAdverseEvent, ActiveShieldAuditLog  # noqa: E402
 
 
 class LiabilityShield:

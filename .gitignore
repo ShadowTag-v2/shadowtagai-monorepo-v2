@@ -211,3 +211,10 @@ tools/google-workspace-cli/.git/
 
 # Quarantine Third-Party Envs
 libs/autoresearch_sources/Kosmos/**/.env*
+
+# Python build artifacts
+*.egg-info/
+
+# Linter / test caches
+.pytest_cache/
+.ruff_cache/

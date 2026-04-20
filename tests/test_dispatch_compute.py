@@ -28,10 +28,9 @@ def test_ane_bridge():
         print(f"  compile_count: {get_compile_count()}")
         assert result is True, "ANE bridge init failed"
         print("  ✅ PASS")
-        return True
     except Exception as e:
         print(f"  ❌ FAIL: {e}")
-        return False
+        raise
 
 
 def test_turboquant():
@@ -54,13 +53,12 @@ def test_turboquant():
         print(f"  Values shape: {values.shape}")
         assert scores.numel() > 0, "Empty attention scores"
         print("  ✅ PASS")
-        return True
     except ImportError:
-        print("  ⚠️ SKIP (torch not installed)")
-        return None
+        import pytest
+        pytest.skip("torch not installed")
     except Exception as e:
         print(f"  ❌ FAIL: {e}")
-        return False
+        raise
 
 
 def test_aimdo_allocator():
@@ -80,13 +78,12 @@ def test_aimdo_allocator():
         alloc = AimdoAllocator()
         print(f"  AimdoAllocator created (VBARs: {len(alloc._vbars)})")
         print("  ✅ PASS")
-        return True
     except ImportError:
-        print("  ⚠️ SKIP (torch/psutil not installed)")
-        return None
+        import pytest
+        pytest.skip("torch/psutil not installed")
     except Exception as e:
         print(f"  ❌ FAIL: {e}")
-        return False
+        raise
 
 
 def test_dispatch_compute():
@@ -107,12 +104,11 @@ def test_dispatch_compute():
         print(f"  Result type: {type(result)}")
         print(f"  Result: {str(result)[:200]}")
         print("  ✅ PASS")
-        return True
     except Exception as e:
         print(f"  ❌ FAIL: {e}")
         # This is expected to fail without proper model/litellm setup
         print("  (Expected — no model loaded, all tiers cascaded)")
-        return False
+        raise
 
 
 def test_vector_db():
@@ -126,10 +122,9 @@ def test_vector_db():
         print(f"  EMBED_DIM: {EMBED_DIM}")
         assert EMBED_DIM == 768
         print("  ✅ PASS")
-        return True
     except Exception as e:
         print(f"  ❌ FAIL: {e}")
-        return False
+        raise
 
 
 if __name__ == "__main__":
