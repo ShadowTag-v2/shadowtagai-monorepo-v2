@@ -193,6 +193,9 @@ unless the user explicitly directs a control plane change:
 - Staging Channel: kovelai--staging-zjaqs7fe.web.app (7d TTL, deployed 2026-04-20)
 - Cloud Run Health: CounselConduit 200 OK, Stripe webhook endpoint LIVE (400 on invalid payload = correct)
 
+- Gemma-4 31B Sovereign: gemma-4-31B-it-Q4_K_M.gguf (17GB) at ~/models/, served via llama-server (ANE build) on 127.0.0.1:8080, OpenAI-compat API, thinking mode active, inference verified (2026-04-20)
+- GEPA Router: dspy_gepa_router.py (118 LOC) at tools/orchestrator/, sidekick :8080 + auditor :8081 endpoints configured
+
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
