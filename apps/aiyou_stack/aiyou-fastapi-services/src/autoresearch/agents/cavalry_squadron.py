@@ -58,8 +58,8 @@ VEHICLE_SPECS = {
 # Model mapping by tier
 TIER_MODELS = {
     JURATier.PRO: "gemini-3.1-flash-lite-preview-preview-06-05",
-    JURATier.FLASH: "gemini-2.5-flash",
-    JURATier.FREE: "gemini-2.0-flash",
+    JURATier.FLASH: "gemini-3.1-flash-lite-preview",
+    JURATier.FREE: "gemini-3.1-flash-lite-preview",
 }
 
 
@@ -71,7 +71,7 @@ class Agent:
     role: str  # crew, dismount
     vehicle_id: str | None = None
     troop: TroopType | None = None
-    model: str = "gemini-2.5-flash"
+    model: str = "gemini-3.1-flash-lite-preview"
     status: str = "ready"  # ready, tasked, executing, complete, error
 
     def to_dict(self) -> dict[str, Any]:
@@ -193,7 +193,7 @@ class Troop:
     name: str
     target_strength: int
     platoons: list[Platoon] = field(default_factory=list)
-    model: str = "gemini-2.5-flash"
+    model: str = "gemini-3.1-flash-lite-preview"
     commander: str | None = None
 
     @property
@@ -280,7 +280,7 @@ class CavalrySquadron:
         TroopType.ALPHA_ARMOR: {
             "name": "ALPHA - Armor Troop",
             "target_strength": 130,
-            "model": "gemini-2.5-flash",
+            "model": "gemini-3.1-flash-lite-preview",
             "commander": "Armor Lead",
             "platoons": [
                 ("Tank PLT", 43),
@@ -292,7 +292,7 @@ class CavalrySquadron:
         TroopType.BRAVO_STRYKER: {
             "name": "BRAVO - Stryker Troop",
             "target_strength": 130,
-            "model": "gemini-2.5-flash",
+            "model": "gemini-3.1-flash-lite-preview",
             "commander": "Stryker Lead",
             "platoons": [
                 ("Scout PLT", 43),
@@ -304,7 +304,7 @@ class CavalrySquadron:
         TroopType.CHARLIE_BRADLEY: {
             "name": "CHARLIE - Bradley Troop",
             "target_strength": 130,
-            "model": "gemini-2.5-flash",
+            "model": "gemini-3.1-flash-lite-preview",
             "commander": "Bradley Lead",
             "platoons": [
                 ("Bradley PLT", 43),

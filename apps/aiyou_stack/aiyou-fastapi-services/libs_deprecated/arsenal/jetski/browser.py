@@ -37,7 +37,7 @@ class JetskiAgent:
 
     def __init__(self):
         self.client = genai.Client(vertexai=True, location="us-central1")
-        self.model = "gemini-2.0-flash-exp"
+        self.model = "gemini-3.1-flash-lite-preview"
         self.brave_path = find_brave_path()
 
     async def execute(self, task: str, url: str = "https://search.brave.com"):

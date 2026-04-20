@@ -14,7 +14,7 @@ except ImportError:
 # Configuration
 PROJECT_ID = os.getenv("PROJECT_ID", "acquired-jet-478701-b3")
 LOCATION = "us-central1"
-MODEL_ID = "gemini-2.0-flash-exp"  # Or appropriate model version
+MODEL_ID = "gemini-3.1-flash-lite-preview"  # Or appropriate model version
 
 
 async def main() -> None:

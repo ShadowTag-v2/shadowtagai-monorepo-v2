@@ -108,12 +108,12 @@ async def extract_intake_summary(
     Args:
         session_id: The Vent Mode session ID.
         transcript: List of {"role": "client"|"ai", "content": "..."} messages.
-        model_override: Optional model ID. Defaults to gemini-2.0-flash-lite.
+        model_override: Optional model ID. Defaults to gemini-3.1-flash-lite-preview.
 
     Returns:
         IntakeSummary dataclass with extracted fields.
     """
-    model = model_override or "gemini/gemini-2.0-flash-lite"
+    model = model_override or "gemini/gemini-3.1-flash-lite-preview"
 
     # Format transcript for analysis
     formatted = "\n".join(f"[{msg['role'].upper()}]: {msg['content']}" for msg in transcript)

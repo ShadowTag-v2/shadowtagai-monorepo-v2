@@ -103,7 +103,7 @@ class ContractualPinklnAdapter:
 
         # Initialize Gemini function caller
         self.gemini_caller = GeminiFunctionCaller(
-            model_name="gemini-2.0-flash-exp",
+            model_name="gemini-3.1-flash-lite-preview",
             tools=self.tools,
             api_key=self.gemini_api_key,
             system_instruction=self._get_system_instruction(),

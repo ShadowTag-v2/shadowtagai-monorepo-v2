@@ -246,7 +246,7 @@ class OPORDGenerator:
             friendly={
                 "agents_available": context.get("agents_available", 600),
                 "models": context.get(
-                    "models", ["gemini-2.5-flash", "gemini-3.1-flash-lite-preview"]
+                    "models", ["gemini-3.1-flash-lite-preview", "gemini-3.1-flash-lite-preview"]
                 ),
                 "existing_code": context.get("existing_code", []),
             },
@@ -411,9 +411,9 @@ class OPORDGenerator:
             token_limit=context.get("token_limit", 1_000_000),
             time_limit_seconds=context.get("time_limit", 300),  # 5 min default
             fallback_resources=[
-                "gemini-2.5-flash-preview-05-20",
-                "gemini-2.0-flash",
-                "gemini-2.0-flash-lite",
+                "gemini-3.1-flash-lite-preview-preview-05-20",
+                "gemini-3.1-flash-lite-preview",
+                "gemini-3.1-flash-lite-preview-lite",
             ],
         )
 

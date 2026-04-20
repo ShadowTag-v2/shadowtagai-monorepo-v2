@@ -106,7 +106,7 @@ class NewsAdapter(SourceAdapter):
                 prompt="Extract the full article body as plain prose. Return only the article text.",
                 source=url,
                 config={
-                    "llm": {"api_key": os.environ["GEMINI_API_KEY"], "model": "gemini-2.0-flash"},
+                    "llm": {"api_key": os.environ["GEMINI_API_KEY"], "model": "gemini-3.1-flash-lite-preview"},
                     "verbose": False,
                 },
             )

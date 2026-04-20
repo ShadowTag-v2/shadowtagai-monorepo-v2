@@ -88,8 +88,8 @@ class JURATier(StrEnum):
 # Model mapping by tier
 TIER_MODELS = {
     JURATier.PRO: "gemini-3.1-flash-lite-preview-preview-06-05",
-    JURATier.FLASH: "gemini-2.5-flash",
-    JURATier.FREE: "gemini-2.0-flash",
+    JURATier.FLASH: "gemini-3.1-flash-lite-preview",
+    JURATier.FREE: "gemini-3.1-flash-lite-preview",
 }
 
 
@@ -101,7 +101,7 @@ class Agent:
     role: str
     section: str | None = None
     troop: TroopType | None = None
-    model: str = "gemini-2.5-flash"
+    model: str = "gemini-3.1-flash-lite-preview"
     status: str = "ready"  # ready, tasked, executing, complete, error
     vote: bool | None = None  # True=approve, False=reject, None=abstain
 
@@ -155,7 +155,7 @@ class Troop:
     name: str
     target_strength: int
     sections: list[Section] = field(default_factory=list)
-    model: str = "gemini-2.5-flash"
+    model: str = "gemini-3.1-flash-lite-preview"
     rsta_function: str = ""  # Primary RSTA function
 
     @property
@@ -222,7 +222,7 @@ class RSTASquadron:
             "callsign": "HEADHUNTER",
             "target_strength": 90,
             "model": "gemini-3-pro-preview",
-            "secondary_model": "gemini-2.5-flash",
+            "secondary_model": "gemini-3.1-flash-lite-preview",
             "rsta_function": "Command & Control, Judge #6",
             "atp_reference": "ATP 3-20.96 Chapter 2",
             "sections": [
@@ -296,7 +296,7 @@ class RSTASquadron:
             "callsign": "BRAVO",
             "target_strength": 130,
             "model": "gemini-3.1-flash-lite-preview",
-            "secondary_model": "gemini-2.5-flash",
+            "secondary_model": "gemini-3.1-flash-lite-preview",
             "rsta_function": "Heavy Lift Engineering",
             "atp_reference": "ATP 3-20.96 Heavy Maneuver",
             "sections": [
@@ -340,7 +340,7 @@ class RSTASquadron:
             "name": "TROOP D 'DELTA' - Shadow Ops / Optimization",
             "callsign": "DELTA",
             "target_strength": 130,
-            "model": "gemini-2.5-flash",
+            "model": "gemini-3.1-flash-lite-preview",
             "secondary_model": "grok-beta",
             "rsta_function": "Optimization & Exploitation",
             "atp_reference": "ATP 3-20.96 Chapter 4 Security",
@@ -360,7 +360,7 @@ class RSTASquadron:
             "name": "FSC 'FORWARD SUPPORT' - CI/CD Logistics",
             "callsign": "SUPPLY",
             "target_strength": 50,
-            "model": "gemini-2.5-flash",
+            "model": "gemini-3.1-flash-lite-preview",
             "rsta_function": "CI/CD Pipelines, Deployment",
             "atp_reference": "ATP 3-20.96 Sustainment",
             "sections": [
@@ -787,7 +787,7 @@ class RSTASquadron:
             return {
                 "escalate": False,
                 "reason": "high_entropy_warning",
-                "target_model": "gemini-2.5-flash",
+                "target_model": "gemini-3.1-flash-lite-preview",
                 "target_troop": None,
                 "confidence": confidence,
                 "threshold": self.PROTOCOL_2511_THRESHOLDS["high_entropy"],
@@ -932,13 +932,13 @@ class RSTASquadron:
                 "TROOP_D": {
                     "name": "DELTA",
                     "strength": 130,
-                    "model": "gemini-2.5-flash",
+                    "model": "gemini-3.1-flash-lite-preview",
                     "role": "Shadow Ops / Optimization",
                 },
                 "FSC": {
                     "name": "FORWARD SUPPORT",
                     "strength": 50,
-                    "model": "gemini-2.5-flash",
+                    "model": "gemini-3.1-flash-lite-preview",
                     "role": "CI/CD Logistics",
                 },
             },

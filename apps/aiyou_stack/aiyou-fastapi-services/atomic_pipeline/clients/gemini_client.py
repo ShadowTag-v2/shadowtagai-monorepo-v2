@@ -11,9 +11,9 @@ Specs (Gemini 2.5 Pro Preview - Default):
 
 Available Models:
 - gemini-3.1-flash-lite-preview-preview-06-05    - Best quality, extended thinking (1M context)
-- gemini-2.5-flash-preview-05-20  - Fast inference, 1M context
-- gemini-2.0-flash                - Fast, economical
-- gemini-2.0-flash-lite           - Ultra-fast, minimal cost
+- gemini-3.1-flash-lite-preview-preview-05-20  - Fast inference, 1M context
+- gemini-3.1-flash-lite-preview                - Fast, economical
+- gemini-3.1-flash-lite-preview-lite           - Ultra-fast, minimal cost
 
 @omarsar0 Pattern:
 - Gemini 2.5 Pro leads creative direction (~$0.087/design at 7K tokens)
@@ -41,15 +41,15 @@ class GeminiModel(StrEnum):
     GEMINI_25_PRO = (
         "gemini-3.1-flash-lite-preview-preview-06-05"  # 1M+ context, best design/reasoning
     )
-    GEMINI_25_FLASH = "gemini-2.5-flash-preview-05-20"  # Fast inference, 1M context
+    GEMINI_25_FLASH = "gemini-3.1-flash-lite-preview-preview-05-20"  # Fast inference, 1M context
 
     # Gemini 2.0 series (stable)
-    GEMINI_20_FLASH = "gemini-2.0-flash"  # Fast, economical
-    GEMINI_20_FLASH_LITE = "gemini-2.0-flash-lite"  # Ultra-fast, minimal
+    GEMINI_20_FLASH = "gemini-3.1-flash-lite-preview"  # Fast, economical
+    GEMINI_20_FLASH_LITE = "gemini-3.1-flash-lite-preview-lite"  # Ultra-fast, minimal
 
     # Aliases for backwards compatibility
     GEMINI_PRO = "gemini-3.1-flash-lite-preview-preview-06-05"
-    GEMINI_FLASH = "gemini-2.5-flash-preview-05-20"
+    GEMINI_FLASH = "gemini-3.1-flash-lite-preview-preview-05-20"
 
 
 class GeminiConfig(BaseModel):

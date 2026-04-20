@@ -109,7 +109,7 @@ class DarkWebAdapter(SourceAdapter):
                 prompt="Extract the main article title and body text as plain prose. Return only the text content.",
                 source=html,
                 config={
-                    "llm": {"api_key": gemini_key, "model": "gemini-2.0-flash"},
+                    "llm": {"api_key": gemini_key, "model": "gemini-3.1-flash-lite-preview"},
                     "verbose": False,
                 },
             )

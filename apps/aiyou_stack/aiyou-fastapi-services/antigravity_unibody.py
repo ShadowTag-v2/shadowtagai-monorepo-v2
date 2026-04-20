@@ -19,7 +19,7 @@ from pathlib import Path
 # --- CONFIGURATION (The "Four Corners" Exhaustive Check) ---
 PROJECT_ID = "acquired-jet-478701-b3"
 REGION = "us-central1"
-MODEL_ID = "gemini-2.5-flash"
+MODEL_ID = "gemini-3.1-flash-lite-preview"
 REPO_ROOT = Path.cwd()
 
 # Define the ideal state

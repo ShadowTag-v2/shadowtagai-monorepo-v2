@@ -52,7 +52,7 @@ class RecursiveCritique(Skill):
         name: str = "RecursiveCritique",
         description: str = "Iteratively improve responses through self-critique",
         initial_rating: float = 1650.0,  # Higher than ToT (more sophisticated)
-        model: str = "gemini-2.0-flash-exp",
+        model: str = "gemini-3.1-flash-lite-preview",
         max_iterations: int = 3,
         acceptance_threshold: float = 0.85,
     ):

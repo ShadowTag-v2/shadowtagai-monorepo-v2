@@ -56,7 +56,7 @@ class VertexAIAnalyzer:
 
     def __init__(self, project_id: str = "your-project-id"):
         self.project_id = project_id
-        self.model = "gemini-2.0-pro"  # Mock for now
+        self.model = "gemini-3.1-flash-lite-preview"  # Mock for now
 
     async def analyze_cost_optimization(
         self,

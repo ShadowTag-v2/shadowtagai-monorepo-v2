@@ -19,7 +19,7 @@ def generate_grounded_content(prompt="How much is Google stock?"):
     request = discoveryengine.GenerateGroundedContentRequest(
         location=location_path,
         generation_spec=discoveryengine.GenerateGroundedContentRequest.GenerationSpec(
-            model_id="gemini-1.5-flash",
+            model_id="gemini-3.1-flash-lite-preview",
         ),
         contents=[
             discoveryengine.GroundedGenerationContent(

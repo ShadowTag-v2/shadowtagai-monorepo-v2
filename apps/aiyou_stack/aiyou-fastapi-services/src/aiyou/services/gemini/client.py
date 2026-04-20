@@ -99,14 +99,14 @@ class GeminiClient:
         self.pricing = {
             "gemini-3.1-flash-lite-preview": {"input": 3.50, "output": 10.50},  # USD per 1M tokens
             "gemini-3.1-flash-lite-preview-vision": {"input": 3.50, "output": 10.50},
-            "gemini-1.5-flash": {"input": 0.35, "output": 1.05},  # Cheaper, faster model
+            "gemini-3.1-flash-lite-preview": {"input": 0.35, "output": 1.05},  # Cheaper, faster model
             "textembedding-gecko": 0.025,  # Per 1K characters
         }
 
         # Rate limits (requests per minute)
         self.rate_limits = {
             "gemini-3.1-flash-lite-preview": 60,
-            "gemini-1.5-flash": 360,
+            "gemini-3.1-flash-lite-preview": 360,
         }
 
         self._request_counts = {}  # Track requests for rate limiting
@@ -363,7 +363,7 @@ class GeminiClient:
             }
 
         """
-        await self._check_rate_limit("gemini-1.5-flash")  # Use faster model for metadata
+        await self._check_rate_limit("gemini-3.1-flash-lite-preview")  # Use faster model for metadata
 
         prompt = f"""
         Based on this {content_type} content description, generate optimized metadata:
@@ -381,7 +381,7 @@ class GeminiClient:
 
         try:
             if self.mode == "genai":
-                model = genai.GenerativeModel("gemini-1.5-flash")  # Faster, cheaper
+                model = genai.GenerativeModel("gemini-3.1-flash-lite-preview")  # Faster, cheaper
                 response = await asyncio.to_thread(model.generate_content, prompt)
                 content = response.text
                 tokens_used = (
