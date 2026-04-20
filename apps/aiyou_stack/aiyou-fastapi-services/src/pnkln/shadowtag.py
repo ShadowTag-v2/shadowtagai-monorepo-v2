@@ -78,7 +78,7 @@ class ShadowTag:
 
         watermarked = shadowtag.watermark(
             content="AI generated report",
-            metadata={'task': 'research', 'model': 'gemini-2.0'}
+            metadata={'task': 'research', 'model': 'gemini-3.1-flash-lite-preview'}
         )
 
         # Verify later

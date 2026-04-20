@@ -106,7 +106,7 @@ VSCODE_SETTINGS='{
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "ShadowTag-v2.repairProvider": "gemini",
-  "ShadowTag-v2.genModel": "gemini-2.0-pro",
+  "ShadowTag-v2.genModel": "gemini-3.1-flash-lite-preview",
   "ShadowTag-v2.autoRepairOnSave": true
 }'
 
@@ -135,12 +135,12 @@ CURSOR_SETTINGS='{
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cursor.ai.model": "gemini-2.0-pro",
+  "cursor.ai.model": "gemini-3.1-flash-lite-preview",
   "cursor.ai.autoApply": true,
   "cursor.ai.applyWithoutReview": true,
   "cursor.chat.autoAcceptChanges": true,
   "ShadowTag-v2.repairProvider": "gemini",
-  "ShadowTag-v2.genModel": "gemini-2.0-pro",
+  "ShadowTag-v2.genModel": "gemini-3.1-flash-lite-preview",
   "ShadowTag-v2.autoRepairOnSave": true
 }'
 

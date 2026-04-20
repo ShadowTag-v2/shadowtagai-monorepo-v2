@@ -140,7 +140,7 @@ async function callGeminiFlash(
   content: string,
   env: Env,
 ): Promise<{ approved: boolean; confidence: number; reason: string }> {
-  const endpoint = `https://${env.GOOGLE_CLOUD_LOCATION}-aiplatform.googleapis.com/v1/projects/${env.GOOGLE_CLOUD_PROJECT}/locations/${env.GOOGLE_CLOUD_LOCATION}/publishers/google/models/gemini-1.5-flash-002:generateContent`;
+  const endpoint = `https://${env.GOOGLE_CLOUD_LOCATION}-aiplatform.googleapis.com/v1/projects/${env.GOOGLE_CLOUD_PROJECT}/locations/${env.GOOGLE_CLOUD_LOCATION}/publishers/google/models/gemini-3.1-flash-lite-preview:generateContent`;
 
   const systemPrompt = `You are Judge #6, an AI governance enforcement system. Analyze the following content for policy violations.
 

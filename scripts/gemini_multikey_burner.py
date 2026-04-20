@@ -75,7 +75,7 @@ class MultiKeyGeminiBurner:
     def _get_model(self, key: str):
         """Configure and return model for a specific key."""
         genai.configure(api_key=key)
-        return genai.GenerativeModel("gemini-2.0-flash-exp")  # Fast model for burning
+        return genai.GenerativeModel("gemini-3.1-flash-lite-preview")  # Fast model for burning
 
     def generate(self, prompt: str) -> str:
         """Generate with next available key."""

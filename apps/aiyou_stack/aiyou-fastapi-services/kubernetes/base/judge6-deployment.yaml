@@ -15,7 +15,7 @@ data:
       - name: gemini-policy
         weight: 0.5
         timeout_ms: 30
-        model_id: gemini-1.5-flash-002
+        model_id: gemini-3.1-flash-lite-preview
         max_retries: 2
       - name: pytorch-neural
         weight: 0.3
@@ -120,7 +120,7 @@ spec:
         imagePullPolicy: Always
         env:
         - name: MODEL_ID
-          value: "gemini-1.5-flash-002"
+          value: "gemini-3.1-flash-lite-preview"
         - name: LATENCY_BUDGET_MS
           value: "30"
         - name: GOOGLE_CLOUD_PROJECT

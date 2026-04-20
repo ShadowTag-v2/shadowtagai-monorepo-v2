@@ -153,7 +153,7 @@ if [[ -f "${VIDEO_FILE}" ]]; then
   ACCESS_TOKEN=$(gcloud auth print-access-token)
   PROJECT_ID="${GOOGLE_CLOUD_PROJECT}"
   LOCATION="${REGION:-us-central1}"
-  MODEL="gemini-2.5-pro"
+  MODEL="gemini-3.1-flash-lite-preview"
   PROMPT=$(cat "${PROJECT_ROOT}/prompts/judge6-cinematic.md")
   RESPONSE=$(curl -s -X POST -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "Content-Type: application/json" "https://${LOCATION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/${MODEL}:generateContent" -d '{"contents":[{"role":"user","parts":[{"text":"'"${PROMPT}"'"},{"fileData":{"mimeType":"video/mp4","fileUri":"'"${GCS_PATH}"'"}}]}],"generationConfig":{"temperature":0.0,"responseMimeType":"application/json"}}')
   VERDICT=$(echo "${RESPONSE}" | jq -r '.candidates[0].content.parts[0].text | fromjson.verdict // "FAIL"')
