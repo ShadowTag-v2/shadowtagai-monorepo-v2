@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
-import {QueryDocumentSnapshot} from '../document';
-import {DocumentChange} from '../document-change';
-import {Timestamp} from '../timestamp';
-import {validateFunction} from '../validate';
-import {isArrayEqual} from '../util';
-import {Query} from './query';
+import type * as firestore from '@google-cloud/firestore';
+import type { QueryDocumentSnapshot } from '../document';
+import type { DocumentChange } from '../document-change';
+import type { Timestamp } from '../timestamp';
+import { isArrayEqual } from '../util';
+import { validateFunction } from '../validate';
+import type { Query } from './query';
 
 /**
  * A QuerySnapshot contains zero or more
@@ -39,18 +39,10 @@ export class QuerySnapshot<
   DbModelType extends firestore.DocumentData = firestore.DocumentData,
 > implements firestore.QuerySnapshot<AppModelType, DbModelType>
 {
-  private _materializedDocs: Array<
-    QueryDocumentSnapshot<AppModelType, DbModelType>
-  > | null = null;
-  private _materializedChanges: Array<
-    DocumentChange<AppModelType, DbModelType>
-  > | null = null;
-  private _docs:
-    | (() => Array<QueryDocumentSnapshot<AppModelType, DbModelType>>)
-    | null = null;
-  private _changes:
-    | (() => Array<DocumentChange<AppModelType, DbModelType>>)
-    | null = null;
+  private _materializedDocs: Array<QueryDocumentSnapshot<AppModelType, DbModelType>> | null = null;
+  private _materializedChanges: Array<DocumentChange<AppModelType, DbModelType>> | null = null;
+  private _docs: (() => Array<QueryDocumentSnapshot<AppModelType, DbModelType>>) | null = null;
+  private _changes: (() => Array<DocumentChange<AppModelType, DbModelType>>) | null = null;
 
   /**
    * @private
@@ -239,9 +231,7 @@ export class QuerySnapshot<
    * ```
    */
   forEach(
-    callback: (
-      result: firestore.QueryDocumentSnapshot<AppModelType, DbModelType>,
-    ) => void,
+    callback: (result: firestore.QueryDocumentSnapshot<AppModelType, DbModelType>) => void,
     thisArg?: unknown,
   ): void {
     validateFunction('callback', callback);
@@ -282,15 +272,13 @@ export class QuerySnapshot<
     if (this._materializedDocs && !this._materializedChanges) {
       // If we have only materialized the documents, we compare them first.
       return (
-        isArrayEqual(this.docs, other.docs) &&
-        isArrayEqual(this.docChanges(), other.docChanges())
+        isArrayEqual(this.docs, other.docs) && isArrayEqual(this.docChanges(), other.docChanges())
       );
     }
 
     // Otherwise, we compare the changes first as we expect there to be fewer.
     return (
-      isArrayEqual(this.docChanges(), other.docChanges()) &&
-      isArrayEqual(this.docs, other.docs)
+      isArrayEqual(this.docChanges(), other.docChanges()) && isArrayEqual(this.docs, other.docs)
     );
   }
 }

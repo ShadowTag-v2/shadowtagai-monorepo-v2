@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {CSSResultOrNative} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import type { CSSResultOrNative } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {MenuItemEl} from './internal/menuitem/menu-item.js';
-import {styles} from './internal/menuitem/menu-item-styles.cssresult.js';
+import { MenuItemEl } from './internal/menuitem/menu-item.js';
+import { styles } from './internal/menuitem/menu-item-styles.cssresult.js';
 
-export {type MenuItem} from './internal/controllers/menuItemController.js';
-export {type CloseMenuEvent} from './internal/controllers/shared.js';
+export type { MenuItem } from './internal/controllers/menuItemController.js';
+export type { CloseMenuEvent } from './internal/controllers/shared.js';
 
 declare global {
   interface HTMLElementTagNameMap {

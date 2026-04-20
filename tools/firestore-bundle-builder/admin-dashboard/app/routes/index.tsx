@@ -1,10 +1,10 @@
-import type { LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { AnchorButton } from "~/components/Button";
+import type { LoaderFunction } from '@remix-run/node';
+import { json } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
+import { AnchorButton } from '~/components/Button';
 
-import { getBundles } from "~/firebase.server";
-import type { Bundle } from "~/types";
+import { getBundles } from '~/firebase.server';
+import type { Bundle } from '~/types';
 
 export const loader: LoaderFunction = async () => {
   return json({
@@ -42,10 +42,7 @@ export default function Index() {
             </tr>
           )}
           {bundles.map((bundle) => (
-            <tr
-              key={bundle.id}
-              className="border-t [&>td]:p-3 [&>.code]:font-mono"
-            >
+            <tr key={bundle.id} className="border-t [&>td]:p-3 [&>.code]:font-mono">
               <td className="code">{bundle.id}</td>
               <td>
                 <a

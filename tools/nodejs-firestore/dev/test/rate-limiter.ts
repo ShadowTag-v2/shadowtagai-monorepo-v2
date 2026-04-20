@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {describe, it, beforeEach} from 'mocha';
-import {expect} from 'chai';
+import { expect } from 'chai';
+import { beforeEach, describe, it } from 'mocha';
 
-import {RateLimiter} from '../src/rate-limiter';
+import { RateLimiter } from '../src/rate-limiter';
 
 describe('RateLimiter', () => {
   let limiter: RateLimiter;
@@ -38,33 +38,25 @@ describe('RateLimiter', () => {
     expect(limiter.tryMakeRequest(1, new Date(0).getTime())).to.be.false;
 
     // Tokens will only refill up to max capacity.
-    expect(limiter.tryMakeRequest(501, new Date(1 * 1000).getTime())).to.be
-      .false;
-    expect(limiter.tryMakeRequest(500, new Date(1 * 1000).getTime())).to.be
-      .true;
+    expect(limiter.tryMakeRequest(501, new Date(1 * 1000).getTime())).to.be.false;
+    expect(limiter.tryMakeRequest(500, new Date(1 * 1000).getTime())).to.be.true;
 
     // Tokens will refill incrementally based on the number of ms elapsed.
-    expect(limiter.tryMakeRequest(250, new Date(1 * 1000 + 499).getTime())).to
-      .be.false;
-    expect(limiter.tryMakeRequest(249, new Date(1 * 1000 + 500).getTime())).to
-      .be.true;
+    expect(limiter.tryMakeRequest(250, new Date(1 * 1000 + 499).getTime())).to.be.false;
+    expect(limiter.tryMakeRequest(249, new Date(1 * 1000 + 500).getTime())).to.be.true;
 
     // Scales with multiplier.
-    expect(limiter.tryMakeRequest(751, new Date((5 * 60 - 1) * 1000).getTime()))
-      .to.be.false;
-    expect(limiter.tryMakeRequest(751, new Date(5 * 60 * 1000).getTime())).to.be
-      .false;
-    expect(limiter.tryMakeRequest(750, new Date(5 * 60 * 1000).getTime())).to.be
-      .true;
+    expect(limiter.tryMakeRequest(751, new Date((5 * 60 - 1) * 1000).getTime())).to.be.false;
+    expect(limiter.tryMakeRequest(751, new Date(5 * 60 * 1000).getTime())).to.be.false;
+    expect(limiter.tryMakeRequest(750, new Date(5 * 60 * 1000).getTime())).to.be.true;
 
     // Tokens will never exceed capacity.
-    expect(limiter.tryMakeRequest(751, new Date((5 * 60 + 3) * 1000).getTime()))
-      .to.be.false;
+    expect(limiter.tryMakeRequest(751, new Date((5 * 60 + 3) * 1000).getTime())).to.be.false;
 
     // Rejects requests made before lastRefillTime
-    expect(() =>
-      limiter.tryMakeRequest(751, new Date((5 * 60 + 2) * 1000).getTime()),
-    ).to.throw('Request time should not be before the last token refill time.');
+    expect(() => limiter.tryMakeRequest(751, new Date((5 * 60 + 2) * 1000).getTime())).to.throw(
+      'Request time should not be before the last token refill time.',
+    );
   });
 
   it('calculates the number of ms needed to place the next request', () => {
@@ -95,22 +87,12 @@ describe('RateLimiter', () => {
 
   it('calculates the maximum number of operations correctly', async () => {
     expect(limiter.calculateCapacity(new Date(0).getTime())).to.equal(500);
-    expect(
-      limiter.calculateCapacity(new Date(5 * 60 * 1000).getTime()),
-    ).to.equal(750);
-    expect(
-      limiter.calculateCapacity(new Date(10 * 60 * 1000).getTime()),
-    ).to.equal(1125);
-    expect(
-      limiter.calculateCapacity(new Date(15 * 60 * 1000).getTime()),
-    ).to.equal(1687);
-    expect(
-      limiter.calculateCapacity(new Date(90 * 60 * 1000).getTime()),
-    ).to.equal(738945);
+    expect(limiter.calculateCapacity(new Date(5 * 60 * 1000).getTime())).to.equal(750);
+    expect(limiter.calculateCapacity(new Date(10 * 60 * 1000).getTime())).to.equal(1125);
+    expect(limiter.calculateCapacity(new Date(15 * 60 * 1000).getTime())).to.equal(1687);
+    expect(limiter.calculateCapacity(new Date(90 * 60 * 1000).getTime())).to.equal(738945);
 
     // Check that maximum rate limit is enforced.
-    expect(
-      limiter.calculateCapacity(new Date(1000 * 60 * 1000).getTime()),
-    ).to.equal(1000000);
+    expect(limiter.calculateCapacity(new Date(1000 * 60 * 1000).getTime())).to.equal(1000000);
   });
 });

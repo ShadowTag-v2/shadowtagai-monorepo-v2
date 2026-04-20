@@ -1,6 +1,6 @@
-import { Brain, Loader2, Check, AlertCircle, Zap, FlaskConical } from '@/lib/lucide-icons';
-import { useAppState } from '../hooks/useAppState';
 import { useState } from 'react';
+import { AlertCircle, Brain, Check, FlaskConical, Loader2, Zap } from '@/lib/lucide-icons';
+import { useAppState } from '../hooks/useAppState';
 import { WebGPUFallbackDialog } from './WebGPUFallbackDialog';
 
 /**
@@ -31,8 +31,10 @@ export const EmbeddingStatus = () => {
       await startEmbeddings(forceDevice);
     } catch (error: any) {
       // Check if it's a WebGPU not available error
-      if (error?.name === 'WebGPUNotAvailableError' ||
-          error?.message?.includes('WebGPU not available')) {
+      if (
+        error?.name === 'WebGPUNotAvailableError' ||
+        error?.message?.includes('WebGPU not available')
+      ) {
         setShowFallbackDialog(true);
       } else {
         console.error('Embedding failed:', error);

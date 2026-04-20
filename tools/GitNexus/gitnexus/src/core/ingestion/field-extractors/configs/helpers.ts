@@ -5,9 +5,9 @@
  * Keeps individual config files small.
  */
 
-import type { SyntaxNode } from '../../utils/ast-helpers.js';
-import { extractSimpleTypeName } from '../../type-extractors/shared.js';
 import type { FieldVisibility } from '../../field-types.js';
+import { extractSimpleTypeName } from '../../type-extractors/shared.js';
+import type { SyntaxNode } from '../../utils/ast-helpers.js';
 
 // ---------------------------------------------------------------------------
 // Modifier scanning
@@ -129,7 +129,10 @@ export function typeFromAnnotation(node: SyntaxNode): string | undefined {
  * Find the first descendant (depth-first, one level) matching one of the given types
  * and return its text via extractSimpleTypeName.
  */
-export function typeFromDescendant(node: SyntaxNode, types: ReadonlySet<string>): string | undefined {
+export function typeFromDescendant(
+  node: SyntaxNode,
+  types: ReadonlySet<string>,
+): string | undefined {
   for (let i = 0; i < node.namedChildCount; i++) {
     const child = node.namedChild(i);
     if (!child) continue;

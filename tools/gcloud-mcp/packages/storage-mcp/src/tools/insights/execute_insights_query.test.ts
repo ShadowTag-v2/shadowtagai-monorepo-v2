@@ -15,8 +15,8 @@
  */
 
 import { BigQuery } from '@google-cloud/bigquery';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   executeInsightsQuery,
   registerExecuteInsightsQueryTool,

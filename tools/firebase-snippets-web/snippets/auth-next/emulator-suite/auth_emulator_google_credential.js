@@ -5,10 +5,13 @@
 // 'npm run snippets'.
 
 // [START auth_emulator_google_credential_modular]
-import { getAuth, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, signInWithCredential } from 'firebase/auth';
 
 const auth = getAuth();
-signInWithCredential(auth, GoogleAuthProvider.credential(
-  '{"sub": "abc123", "email": "foo@example.com", "email_verified": true}'
-));
+signInWithCredential(
+  auth,
+  GoogleAuthProvider.credential(
+    '{"sub": "abc123", "email": "foo@example.com", "email_verified": true}',
+  ),
+);
 // [END auth_emulator_google_credential_modular]

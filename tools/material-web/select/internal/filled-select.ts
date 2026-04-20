@@ -6,9 +6,9 @@
 
 import '../../field/filled-field.js';
 
-import {literal} from 'lit/static-html.js';
+import { literal } from 'lit/static-html.js';
 
-import {Select} from './select.js';
+import { Select } from './select.js';
 
 // tslint:disable-next-line:enforce-comments-on-exported-symbols
 export abstract class FilledSelect extends Select {

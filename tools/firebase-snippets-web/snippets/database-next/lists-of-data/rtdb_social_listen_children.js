@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START rtdb_social_listen_children_modular]
-import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved } from "firebase/database";
+import { getDatabase, onChildAdded, onChildChanged, onChildRemoved, ref } from 'firebase/database';
 
 const db = getDatabase();
 const commentsRef = ref(db, 'post-comments/' + postId);

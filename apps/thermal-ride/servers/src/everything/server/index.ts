@@ -1,17 +1,17 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
-  InMemoryTaskStore,
   InMemoryTaskMessageQueue,
-} from "@modelcontextprotocol/sdk/experimental/tasks";
+  InMemoryTaskStore,
+} from '@modelcontextprotocol/sdk/experimental/tasks';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { registerPrompts } from '../prompts/index.js';
+import { readInstructions, registerResources } from '../resources/index.js';
 import {
   setSubscriptionHandlers,
   stopSimulatedResourceUpdates,
-} from "../resources/subscriptions.js";
-import { registerConditionalTools, registerTools } from "../tools/index.js";
-import { registerResources, readInstructions } from "../resources/index.js";
-import { registerPrompts } from "../prompts/index.js";
-import { stopSimulatedLogging } from "./logging.js";
-import { syncRoots } from "./roots.js";
+} from '../resources/subscriptions.js';
+import { registerConditionalTools, registerTools } from '../tools/index.js';
+import { stopSimulatedLogging } from './logging.js';
+import { syncRoots } from './roots.js';
 
 // Server Factory response
 export type ServerFactoryResponse = {
@@ -45,9 +45,9 @@ export const createServer: () => ServerFactoryResponse = () => {
   // Create the server
   const server = new McpServer(
     {
-      name: "mcp-servers/everything",
-      title: "Everything Reference Server",
-      version: "2.0.0",
+      name: 'mcp-servers/everything',
+      title: 'Everything Reference Server',
+      version: '2.0.0',
     },
     {
       capabilities: {

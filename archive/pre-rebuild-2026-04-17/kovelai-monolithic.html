@@ -2636,7 +2636,7 @@ document.getElementById('closeModal').addEventListener('click', closeContactModa
 document.getElementById('contactModal').addEventListener('click', function(e) {
     if (e.target === this) closeContactModal();
 });
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeContactModal();
 });
 
@@ -2758,7 +2758,7 @@ function ccActivateAnalytics(prefs) {
         s.async = true;
         s.src = 'https://www.googletagmanager.com/gtag/js?id=G-5QW1DZL23V';
         document.head.appendChild(s);
-        s.onload = function() {
+        s.onload = () => {
             gtag('js', new Date());
             gtag('config', 'G-5QW1DZL23V', {
                 'anonymize_ip': true,
@@ -2781,9 +2781,7 @@ var _kovelSessionId = null;
 var _kovelVisitorId = null;
 
 function ccGenerateId() {
-    return 'xxxx-xxxx-xxxx'.replace(/x/g, function() {
-        return Math.floor(Math.random() * 16).toString(16);
-    }) + '-' + Date.now().toString(36);
+    return 'xxxx-xxxx-xxxx'.replace(/x/g, () => Math.floor(Math.random() * 16).toString(16)) + '-' + Date.now().toString(36);
 }
 
 function ccInitSession() {
@@ -2829,7 +2827,7 @@ function ccCaptureAttribution() {
     var utmData = {};
     var hasUtm = false;
 
-    utmKeys.forEach(function(key) {
+    utmKeys.forEach((key) => {
         var val = params.get(key);
         if (val) { utmData[key] = val; hasUtm = true; }
     });
@@ -2893,13 +2891,13 @@ function ccTrackEngagement() {
             'visitor_timezone': deviceProfile.tz,
             'visitor_language': deviceProfile.lang,
             'visitor_connection': deviceProfile.connection,
-            'referrer_source': (function() {
+            'referrer_source': (() => {
                 try { var r = localStorage.getItem('kovelai_ref'); return r ? JSON.parse(r).source : 'direct'; } catch(e) { return 'direct'; }
             })(),
-            'utm_source': (function() {
+            'utm_source': (() => {
                 try { var u = localStorage.getItem('kovelai_utm'); return u ? JSON.parse(u).utm_source : 'organic'; } catch(e) { return 'organic'; }
             })(),
-            'session_count': (function() {
+            'session_count': (() => {
                 var c = parseInt(localStorage.getItem('kovelai_sc') || '0') + 1;
                 localStorage.setItem('kovelai_sc', c.toString());
                 return c;
@@ -2924,10 +2922,10 @@ function ccTrackEngagement() {
     var scrollThresholds = [25, 50, 75, 100];
     var scrollFired = {};
     var maxScroll = 0;
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', () => {
         var scrollPct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
         if (scrollPct > maxScroll) maxScroll = scrollPct;
-        scrollThresholds.forEach(function(t) {
+        scrollThresholds.forEach((t) => {
             if (scrollPct >= t && !scrollFired[t]) {
                 scrollFired[t] = true;
                 if (typeof gtag === 'function') {
@@ -2942,8 +2940,8 @@ function ccTrackEngagement() {
     }, { passive: true });
 
     // ── CTA Click Tracking (enhanced) ──
-    document.querySelectorAll('[onclick*="openContactModal"], a[href="#discovery"], .btn-magnetic, a[href*="schedule"], a[href*="demo"]').forEach(function(btn) {
-        btn.addEventListener('click', function() {
+    document.querySelectorAll('[onclick*="openContactModal"], a[href="#discovery"], .btn-magnetic, a[href*="schedule"], a[href*="demo"]').forEach((btn) => {
+        btn.addEventListener('click', () => {
             if (typeof gtag === 'function') {
                 gtag('event', 'cta_click', {
                     'cta_text': btn.textContent.trim().substring(0, 50),
@@ -2957,8 +2955,8 @@ function ccTrackEngagement() {
     });
 
     // ── Time on Page (30s, 60s, 120s, 300s, 600s) ──
-    [30, 60, 120, 300, 600].forEach(function(sec) {
-        setTimeout(function() {
+    [30, 60, 120, 300, 600].forEach((sec) => {
+        setTimeout(() => {
             if (typeof gtag === 'function') {
                 gtag('event', 'time_on_page', {
                     'seconds': sec,
@@ -2972,14 +2970,14 @@ function ccTrackEngagement() {
     // ── Form Submissions → Lead Generation ──
     var contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', function() {
+        contactForm.addEventListener('submit', () => {
             if (typeof gtag === 'function') {
                 gtag('event', 'generate_lead', {
                     'event_category': 'engagement',
                     'event_label': 'contact_form_submit',
                     'visitor_id': _kovelVisitorId,
                     'session_id': _kovelSessionId,
-                    'utm_source': (function() {
+                    'utm_source': (() => {
                         try { var u = localStorage.getItem('kovelai_utm'); return u ? JSON.parse(u).utm_source : 'organic'; } catch(e) { return 'organic'; }
                     })()
                 });
@@ -2990,8 +2988,8 @@ function ccTrackEngagement() {
     // ── Section Visibility Tracking (conversion funnel) ──
     var sectionIds = ['hero-header','features','how-it-works','pricing','ceo-card','testimonials','discovery'];
     var visibilityFired = {};
-    var sectionObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
+    var sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
             if (entry.isIntersecting && !visibilityFired[entry.target.id]) {
                 visibilityFired[entry.target.id] = true;
                 if (typeof gtag === 'function') {
@@ -3005,14 +3003,14 @@ function ccTrackEngagement() {
             }
         });
     }, { threshold: 0.3 });
-    sectionIds.forEach(function(id) {
+    sectionIds.forEach((id) => {
         var el = document.getElementById(id);
         if (el) sectionObserver.observe(el);
     });
 
     // ── Exit Intent Detection ──
     var exitFired = false;
-    document.addEventListener('mouseout', function(e) {
+    document.addEventListener('mouseout', (e) => {
         if (!exitFired && e.clientY < 5 && e.relatedTarget == null) {
             exitFired = true;
             if (typeof gtag === 'function') {
@@ -3028,13 +3026,13 @@ function ccTrackEngagement() {
 
     // ── Rage Click Detection (3+ clicks within 500ms in same area) ──
     var clickLog = [];
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', (e) => {
         var now = Date.now();
         clickLog.push({ x: e.clientX, y: e.clientY, t: now });
         // Keep only last 2 seconds
-        clickLog = clickLog.filter(function(c) { return now - c.t < 2000; });
+        clickLog = clickLog.filter((c) => now - c.t < 2000);
         // Detect 3+ clicks within 500ms within 50px radius
-        var recent = clickLog.filter(function(c) { return now - c.t < 500; });
+        var recent = clickLog.filter((c) => now - c.t < 500);
         if (recent.length >= 3) {
             var dx = Math.abs(recent[0].x - recent[recent.length - 1].x);
             var dy = Math.abs(recent[0].y - recent[recent.length - 1].y);
@@ -3057,10 +3055,10 @@ function ccTrackEngagement() {
     if (heroVideo) {
         var videoMilestones = [25, 50, 75, 100];
         var videoFired = {};
-        heroVideo.addEventListener('timeupdate', function() {
+        heroVideo.addEventListener('timeupdate', () => {
             if (heroVideo.duration && heroVideo.duration > 0) {
                 var pct = Math.round((heroVideo.currentTime / heroVideo.duration) * 100);
-                videoMilestones.forEach(function(m) {
+                videoMilestones.forEach((m) => {
                     if (pct >= m && !videoFired[m]) {
                         videoFired[m] = true;
                         if (typeof gtag === 'function') {
@@ -3074,12 +3072,12 @@ function ccTrackEngagement() {
                 });
             }
         });
-        heroVideo.addEventListener('play', function() {
+        heroVideo.addEventListener('play', () => {
             if (typeof gtag === 'function') {
                 gtag('event', 'video_start', { 'video_id': 'hero_video', 'session_id': _kovelSessionId });
             }
         });
-        heroVideo.addEventListener('pause', function() {
+        heroVideo.addEventListener('pause', () => {
             if (typeof gtag === 'function') {
                 gtag('event', 'video_pause', {
                     'video_id': 'hero_video',
@@ -3091,9 +3089,9 @@ function ccTrackEngagement() {
     }
 
     // ── Outbound Link Click Tracking ──
-    document.querySelectorAll('a[href^="http"]').forEach(function(link) {
+    document.querySelectorAll('a[href^="http"]').forEach((link) => {
         if (link.hostname !== window.location.hostname) {
-            link.addEventListener('click', function() {
+            link.addEventListener('click', () => {
                 if (typeof gtag === 'function') {
                     gtag('event', 'outbound_click', {
                         'link_url': link.href.substring(0, 200),
@@ -3107,7 +3105,7 @@ function ccTrackEngagement() {
     });
 
     // ── Page Unload: Final Session Summary ──
-    window.addEventListener('beforeunload', function() {
+    window.addEventListener('beforeunload', () => {
         if (typeof gtag === 'function' && navigator.sendBeacon) {
             // Use sendBeacon for reliability
             var summary = {
@@ -3128,7 +3126,7 @@ function ccTrackEngagement() {
 }
 
 // ===== Re-activate on page load if consent already given =====
-(function() {
+(() => {
     var stored = localStorage.getItem('kovelai_cc');
     if (stored) {
         try {
@@ -3360,7 +3358,7 @@ document.addEventListener('DOMContentLoaded', ccInit);
    ═══════════════════════════════════════════════════ */
 
 /* ===== SCROLL PROGRESS BAR ===== */
-(function() {
+(() => {
     const scrollProgress = document.getElementById('scrollProgress');
     if (!scrollProgress) return;
     window.addEventListener('scroll', () => {
@@ -3373,7 +3371,7 @@ document.addEventListener('DOMContentLoaded', ccInit);
 })();
 
 /* ===== KINETIC TYPOGRAPHY — HERO TITLE ===== */
-(function() {
+(() => {
     const heroTitle = document.getElementById('heroTitle');
     if (!heroTitle) return;
     // Get text content without the <br/> and <span> — preserve structure
@@ -3411,7 +3409,7 @@ document.addEventListener('DOMContentLoaded', ccInit);
 })();
 
 /* ===== GRADIENT SWEEP TRIGGER ===== */
-(function() {
+(() => {
     const sweepElements = document.querySelectorAll('.gradient-sweep');
     const sweepObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -3424,7 +3422,7 @@ document.addEventListener('DOMContentLoaded', ccInit);
 })();
 
 /* ===== MAGNETIC BUTTON EFFECT ===== */
-(function() {
+(() => {
     document.querySelectorAll('.btn-magnetic').forEach(btn => {
         btn.addEventListener('mousemove', (e) => {
             const rect = btn.getBoundingClientRect();
@@ -3439,7 +3437,7 @@ document.addEventListener('DOMContentLoaded', ccInit);
 })();
 
 /* ===== PARALLAX ON KOVEL AURORA ORBS ===== */
-(function() {
+(() => {
     const auroraOrbs = document.querySelectorAll('.kovel-aurora-orb');
     let ticking = false;
     window.addEventListener('scroll', () => {
@@ -3461,15 +3459,15 @@ document.addEventListener('DOMContentLoaded', ccInit);
 
 <!-- Video Lazy-Load Observer -->
 <script>
-(function() {
+(() => {
   const heroVideo = document.getElementById('heroVideo');
   if (!heroVideo) return;
-  const observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         heroVideo.preload = 'auto';
         heroVideo.load();
-        heroVideo.play().catch(function() {});
+        heroVideo.play().catch(() => {});
         observer.unobserve(entry.target);
       }
     });

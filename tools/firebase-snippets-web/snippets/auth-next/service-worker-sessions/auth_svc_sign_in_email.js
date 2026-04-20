@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_svc_sign_in_email_modular]
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 // Sign in screen.
 const auth = getAuth();

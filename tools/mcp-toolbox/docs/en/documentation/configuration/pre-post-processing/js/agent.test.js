@@ -12,24 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { describe, test, before, after } from "node:test";
-import assert from "node:assert/strict";
+import assert from 'node:assert/strict';
+import { after, before, describe, test } from 'node:test';
 
-import path from "path";
-import { fileURLToPath } from "url";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const ORCH_NAME = process.env.ORCH_NAME;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const orchDir = path.join(__dirname, ORCH_NAME);
-const agentPath = path.join(orchDir, "agent.js");
+const agentPath = path.join(orchDir, 'agent.js');
 
 const { main: runAgent } = await import(agentPath);
 
-const GOLDEN_KEYWORDS = [
-  "AI:",
-  "Loyalty Points",
-  "POLICY CHECK: Intercepting 'update-hotel'"
-];
+const GOLDEN_KEYWORDS = ['AI:', 'Loyalty Points', "POLICY CHECK: Intercepting 'update-hotel'"];
 
 describe(`${ORCH_NAME} Pre/Post Processing Agent`, () => {
   let capturedOutput = [];
@@ -42,12 +38,16 @@ describe(`${ORCH_NAME} Pre/Post Processing Agent`, () => {
     originalError = console.error;
 
     console.log = (...args) => {
-      const msg = args.map(a => (typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a))).join(' ');
+      const msg = args
+        .map((a) => (typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)))
+        .join(' ');
       capturedOutput.push(msg);
     };
 
     console.error = (...args) => {
-      const msg = args.map(a => (typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a))).join(' ');
+      const msg = args
+        .map((a) => (typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)))
+        .join(' ');
       capturedErrors.push(msg);
     };
   });
@@ -57,25 +57,21 @@ describe(`${ORCH_NAME} Pre/Post Processing Agent`, () => {
     console.error = originalError;
   });
 
-  test("runs without errors and outputContainsRequiredKeywords", async () => {
+  test('runs without errors and outputContainsRequiredKeywords', async () => {
     capturedOutput = [];
     capturedErrors = [];
 
     await runAgent();
 
-    const actualErrors = capturedErrors.filter(err => !err.includes('Warning'));
+    const actualErrors = capturedErrors.filter((err) => !err.includes('Warning'));
 
-    assert.equal(
-        actualErrors.length,
-        0,
-        `Script produced stderr: ${actualErrors.join("\n")}`
-    );
+    assert.equal(actualErrors.length, 0, `Script produced stderr: ${actualErrors.join('\n')}`);
 
-    const actualOutput = capturedOutput.join("\n");
+    const actualOutput = capturedOutput.join('\n');
 
     assert.ok(
       actualOutput.length > 0,
-      "Assertion Failed: Script ran successfully but produced no output."
+      'Assertion Failed: Script ran successfully but produced no output.',
     );
 
     const missingKeywords = [];
@@ -88,7 +84,7 @@ describe(`${ORCH_NAME} Pre/Post Processing Agent`, () => {
 
     assert.ok(
       missingKeywords.length === 0,
-      `Assertion Failed: The following keywords were missing from the output: [${missingKeywords.join(", ")}]`
+      `Assertion Failed: The following keywords were missing from the output: [${missingKeywords.join(', ')}]`,
     );
   });
 });

@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START order_and_limit_modular]
-import { query, orderBy, limit } from "firebase/firestore";
+import { limit, orderBy, query } from 'firebase/firestore';
 
-const q = query(citiesRef, orderBy("name"), limit(3));
+const q = query(citiesRef, orderBy('name'), limit(3));
 // [END order_and_limit_modular]

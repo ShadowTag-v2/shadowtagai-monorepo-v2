@@ -6,12 +6,12 @@
 
 // import 'jasmine'; (google3-only)
 
-import {html, TemplateResult} from 'lit';
+import { html, type TemplateResult } from 'lit';
 
-import {Environment} from '../../testing/environment.js';
-import {Harness} from '../../testing/harness.js';
+import { Environment } from '../../testing/environment.js';
+import { Harness } from '../../testing/harness.js';
 
-import {FocusRing} from './focus-ring.js';
+import { FocusRing } from './focus-ring.js';
 
 customElements.define('test-focus-ring', FocusRing);
 
@@ -46,7 +46,7 @@ describe('focus ring', () => {
 
   describe('control', () => {
     it('should be the parentElement by default', () => {
-      const {button, focusRing} = setupTest(html`
+      const { button, focusRing } = setupTest(html`
         <button>
           <test-focus-ring></test-focus-ring>
         </button>
@@ -56,7 +56,7 @@ describe('focus ring', () => {
     });
 
     it('should be a referenced element when using a for attribute', () => {
-      const {button, focusRing} = setupTest(html`
+      const { button, focusRing } = setupTest(html`
         <button id="button"></button>
         <test-focus-ring for="button"></test-focus-ring>
       `);
@@ -65,7 +65,7 @@ describe('focus ring', () => {
     });
 
     it('should update a referenced element when for attribute changes', async () => {
-      const {root, focusRing} = setupTest(html`
+      const { root, focusRing } = setupTest(html`
         <button id="first"></button>
         <button id="second"></button>
         <test-focus-ring for="first"></test-focus-ring>
@@ -77,16 +77,14 @@ describe('focus ring', () => {
       }
 
       focusRing.setAttribute('for', 'second');
-      expect(focusRing.control)
-        .withContext('focusRing.control')
-        .toBe(secondButton);
+      expect(focusRing.control).withContext('focusRing.control').toBe(secondButton);
       await new Harness(secondButton).focusWithKeyboard();
 
       expect(focusRing.visible).withContext('focusRing.visible').toBeTrue();
     });
 
     it('should be able to be imperatively attached', () => {
-      const {button, focusRing} = setupTest(html`
+      const { button, focusRing } = setupTest(html`
         <button></button>
         <test-focus-ring></test-focus-ring>
       `);
@@ -96,23 +94,19 @@ describe('focus ring', () => {
     });
 
     it('should do nothing if attaching the same control', () => {
-      const {button, focusRing} = setupTest(html`
+      const { button, focusRing } = setupTest(html`
         <button>
           <test-focus-ring></test-focus-ring>
         </button>
       `);
 
-      expect(focusRing.control)
-        .withContext('focusRing.control before attach')
-        .toBe(button);
+      expect(focusRing.control).withContext('focusRing.control before attach').toBe(button);
       focusRing.attach(button);
-      expect(focusRing.control)
-        .withContext('focusRing.control after attach')
-        .toBe(button);
+      expect(focusRing.control).withContext('focusRing.control after attach').toBe(button);
     });
 
     it('should detach previous control when attaching a new one', async () => {
-      const {harness, focusRing} = setupTest(html`
+      const { harness, focusRing } = setupTest(html`
         <button>
           <test-focus-ring></test-focus-ring>
         </button>
@@ -126,7 +120,7 @@ describe('focus ring', () => {
     });
 
     it('should detach when removed from the DOM', async () => {
-      const {harness, focusRing} = setupTest(html`
+      const { harness, focusRing } = setupTest(html`
         <button>
           <test-focus-ring></test-focus-ring>
         </button>
@@ -139,7 +133,7 @@ describe('focus ring', () => {
     });
 
     it('should be able to be imperatively detached', () => {
-      const {focusRing} = setupTest(html`
+      const { focusRing } = setupTest(html`
         <button>
           <test-focus-ring></test-focus-ring>
         </button>
@@ -150,7 +144,7 @@ describe('focus ring', () => {
     });
 
     it('should not be controlled with an empty for attribute', () => {
-      const {focusRing} = setupTest(html`
+      const { focusRing } = setupTest(html`
         <button>
           <test-focus-ring for=""></test-focus-ring>
         </button>
@@ -161,33 +155,29 @@ describe('focus ring', () => {
   });
 
   it('should be hidden on non-keyboard focus', async () => {
-    const {harness, focusRing} = setupTest(html`
+    const { harness, focusRing } = setupTest(html`
       <button>
         <test-focus-ring></test-focus-ring>
       </button>
     `);
 
     await harness.clickWithMouse();
-    expect(focusRing.visible)
-      .withContext('focusRing.visible after clickWithMouse')
-      .toBeFalse();
+    expect(focusRing.visible).withContext('focusRing.visible after clickWithMouse').toBeFalse();
   });
 
   it('should be visible on keyboard focus', async () => {
-    const {harness, focusRing} = setupTest(html`
+    const { harness, focusRing } = setupTest(html`
       <button>
         <test-focus-ring></test-focus-ring>
       </button>
     `);
 
     await harness.focusWithKeyboard();
-    expect(focusRing.visible)
-      .withContext('focusRing.visible after focusWithKeyboard')
-      .toBeTrue();
+    expect(focusRing.visible).withContext('focusRing.visible after focusWithKeyboard').toBeTrue();
   });
 
   it('should hide on blur', async () => {
-    const {harness, focusRing} = setupTest(html`
+    const { harness, focusRing } = setupTest(html`
       <button>
         <test-focus-ring></test-focus-ring>
       </button>
@@ -195,8 +185,6 @@ describe('focus ring', () => {
 
     focusRing.visible = true;
     await harness.blur();
-    expect(focusRing.visible)
-      .withContext('focusRing.visible after blur')
-      .toBeFalse();
+    expect(focusRing.visible).withContext('focusRing.visible after blur').toBeFalse();
   });
 });

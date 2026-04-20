@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { describe, it, expect, assert } from 'vitest';
-import { toolWrapper, MAX_CHAR_LIMIT } from './tool_wrapper.js';
+import { assert, describe, expect, it } from 'vitest';
+import { MAX_CHAR_LIMIT, toolWrapper } from './tool_wrapper.js';
 
 describe('toolWrapper', () => {
   it('should return the result of the callback in a CallToolResult object', async () => {

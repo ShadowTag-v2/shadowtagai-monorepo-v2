@@ -9,16 +9,16 @@
  * 5. Create vector index for semantic search
  */
 
-import { initEmbedder, embedBatch, embedText, embeddingToArray, isEmbedderReady } from './embedder';
+import { embedBatch, embeddingToArray, embedText, initEmbedder, isEmbedderReady } from './embedder';
 import { generateBatchEmbeddingTexts, generateEmbeddingText } from './text-generator';
 import {
-  type EmbeddingProgress,
-  type EmbeddingConfig,
-  type EmbeddableNode,
-  type SemanticSearchResult,
-  type ModelProgress,
   DEFAULT_EMBEDDING_CONFIG,
   EMBEDDABLE_LABELS,
+  type EmbeddableNode,
+  type EmbeddingConfig,
+  type EmbeddingProgress,
+  type ModelProgress,
+  type SemanticSearchResult,
 } from './types';
 
 /**
@@ -31,7 +31,7 @@ export type EmbeddingProgressCallback = (progress: EmbeddingProgress) => void;
  * Uses table-specific queries (File has different schema than code elements)
  */
 const queryEmbeddableNodes = async (
-  executeQuery: (cypher: string) => Promise<any[]>
+  executeQuery: (cypher: string) => Promise<any[]>,
 ): Promise<EmbeddableNode[]> => {
   const allNodes: EmbeddableNode[] = [];
 
@@ -88,13 +88,13 @@ const queryEmbeddableNodes = async (
 const batchInsertEmbeddings = async (
   executeWithReusedStatement: (
     cypher: string,
-    paramsList: Array<Record<string, any>>
+    paramsList: Array<Record<string, any>>,
   ) => Promise<void>,
-  updates: Array<{ id: string; embedding: number[] }>
+  updates: Array<{ id: string; embedding: number[] }>,
 ): Promise<void> => {
   // INSERT into separate embedding table - much more memory efficient!
   const cypher = `CREATE (e:CodeEmbedding {nodeId: $nodeId, embedding: $embedding})`;
-  const paramsList = updates.map(u => ({ nodeId: u.id, embedding: u.embedding }));
+  const paramsList = updates.map((u) => ({ nodeId: u.id, embedding: u.embedding }));
   await executeWithReusedStatement(cypher, paramsList);
 };
 
@@ -105,7 +105,7 @@ const batchInsertEmbeddings = async (
 let vectorExtensionLoaded = false;
 
 const createVectorIndex = async (
-  executeQuery: (cypher: string) => Promise<any[]>
+  executeQuery: (cypher: string) => Promise<any[]>,
 ): Promise<void> => {
   // LadybugDB v0.15+ requires explicit VECTOR extension loading (once per session)
   if (!vectorExtensionLoaded) {
@@ -143,9 +143,12 @@ const createVectorIndex = async (
  */
 export const runEmbeddingPipeline = async (
   executeQuery: (cypher: string) => Promise<any[]>,
-  executeWithReusedStatement: (cypher: string, paramsList: Array<Record<string, any>>) => Promise<void>,
+  executeWithReusedStatement: (
+    cypher: string,
+    paramsList: Array<Record<string, any>>,
+  ) => Promise<void>,
   onProgress: EmbeddingProgressCallback,
-  config: Partial<EmbeddingConfig> = {}
+  config: Partial<EmbeddingConfig> = {},
 ): Promise<void> => {
   const finalConfig = { ...DEFAULT_EMBEDDING_CONFIG, ...config };
 
@@ -231,7 +234,7 @@ export const runEmbeddingPipeline = async (
       processedNodes += batch.length;
 
       // Report progress (20-90% for embedding phase)
-      const embeddingProgress = 20 + ((processedNodes / totalNodes) * 70);
+      const embeddingProgress = 20 + (processedNodes / totalNodes) * 70;
       onProgress({
         phase: 'embedding',
         percent: Math.round(embeddingProgress),
@@ -299,7 +302,7 @@ export const semanticSearch = async (
   executeQuery: (cypher: string) => Promise<any[]>,
   query: string,
   k: number = 10,
-  maxDistance: number = 0.5
+  maxDistance: number = 0.5,
 ): Promise<SemanticSearchResult[]> => {
   if (!isEmbedderReady()) {
     throw new Error('Embedding model not initialized. Run embedding pipeline first.');
@@ -342,7 +345,7 @@ export const semanticSearch = async (
   const results: SemanticSearchResult[] = [];
 
   for (const [label, items] of byLabel) {
-    const idList = items.map(i => `'${i.nodeId.replace(/'/g, "''")}'`).join(', ');
+    const idList = items.map((i) => `'${i.nodeId.replace(/'/g, "''")}'`).join(', ');
     try {
       let nodeQuery: string;
       if (label === 'File') {
@@ -405,13 +408,13 @@ export const semanticSearchWithContext = async (
   executeQuery: (cypher: string) => Promise<any[]>,
   query: string,
   k: number = 5,
-  _hops: number = 1
+  _hops: number = 1,
 ): Promise<any[]> => {
   // For multi-table schema, just return semantic search results
   // Graph traversal is complex with separate tables - use execute_vector_cypher instead
   const results = await semanticSearch(executeQuery, query, k, 0.5);
 
-  return results.map(r => ({
+  return results.map((r) => ({
     matchId: r.nodeId,
     matchName: r.name,
     matchLabel: r.label,

@@ -24,131 +24,131 @@ const ENTRY_POINT_PATTERNS: Record<string, RegExp[]> = {
   // Universal patterns (apply to all languages)
   '*': [
     /^(main|init|bootstrap|start|run|setup|configure)$/i,
-    /^handle[A-Z]/,           // handleLogin, handleSubmit
-    /^on[A-Z]/,               // onClick, onSubmit
-    /Handler$/,               // RequestHandler
-    /Controller$/,            // UserController
-    /^process[A-Z]/,          // processPayment
-    /^execute[A-Z]/,          // executeQuery
-    /^perform[A-Z]/,          // performAction
-    /^dispatch[A-Z]/,         // dispatchEvent
-    /^trigger[A-Z]/,          // triggerAction
-    /^fire[A-Z]/,             // fireEvent
-    /^emit[A-Z]/,             // emitEvent
+    /^handle[A-Z]/, // handleLogin, handleSubmit
+    /^on[A-Z]/, // onClick, onSubmit
+    /Handler$/, // RequestHandler
+    /Controller$/, // UserController
+    /^process[A-Z]/, // processPayment
+    /^execute[A-Z]/, // executeQuery
+    /^perform[A-Z]/, // performAction
+    /^dispatch[A-Z]/, // dispatchEvent
+    /^trigger[A-Z]/, // triggerAction
+    /^fire[A-Z]/, // fireEvent
+    /^emit[A-Z]/, // emitEvent
   ],
 
   // JavaScript/TypeScript
-  'javascript': [
-    /^use[A-Z]/,              // React hooks (useEffect, etc.)
+  javascript: [
+    /^use[A-Z]/, // React hooks (useEffect, etc.)
   ],
-  'typescript': [
-    /^use[A-Z]/,              // React hooks
+  typescript: [
+    /^use[A-Z]/, // React hooks
   ],
 
   // Python
-  'python': [
-    /^app$/,                  // Flask/FastAPI app
-    /^(get|post|put|delete|patch)_/i,  // REST conventions
-    /^api_/,                  // API functions
-    /^view_/,                 // Django views
+  python: [
+    /^app$/, // Flask/FastAPI app
+    /^(get|post|put|delete|patch)_/i, // REST conventions
+    /^api_/, // API functions
+    /^view_/, // Django views
   ],
 
   // Java
-  'java': [
-    /^do[A-Z]/,               // doGet, doPost (Servlets)
-    /^create[A-Z]/,           // Factory patterns
-    /^build[A-Z]/,            // Builder patterns
-    /Service$/,               // UserService
+  java: [
+    /^do[A-Z]/, // doGet, doPost (Servlets)
+    /^create[A-Z]/, // Factory patterns
+    /^build[A-Z]/, // Builder patterns
+    /Service$/, // UserService
   ],
 
   // C#
-  'csharp': [
-    /^(Get|Post|Put|Delete)/,  // ASP.NET conventions
-    /Action$/,                 // MVC actions
-    /^On[A-Z]/,               // Event handlers
-    /Async$/,                 // Async entry points
+  csharp: [
+    /^(Get|Post|Put|Delete)/, // ASP.NET conventions
+    /Action$/, // MVC actions
+    /^On[A-Z]/, // Event handlers
+    /Async$/, // Async entry points
   ],
 
   // Go
-  'go': [
-    /Handler$/,               // http.Handler pattern
-    /^Serve/,                 // ServeHTTP
-    /^New[A-Z]/,              // Constructor pattern (returns new instance)
-    /^Make[A-Z]/,             // Make functions
+  go: [
+    /Handler$/, // http.Handler pattern
+    /^Serve/, // ServeHTTP
+    /^New[A-Z]/, // Constructor pattern (returns new instance)
+    /^Make[A-Z]/, // Make functions
   ],
 
   // Rust
-  'rust': [
+  rust: [
     /^(get|post|put|delete)_handler$/i,
-    /^handle_/,               // handle_request
-    /^new$/,                  // Constructor pattern
-    /^run$/,                  // run entry point
-    /^spawn/,                 // Async spawn
+    /^handle_/, // handle_request
+    /^new$/, // Constructor pattern
+    /^run$/, // run entry point
+    /^spawn/, // Async spawn
   ],
 
   // C - explicit main() boost (critical for C programs)
-  'c': [
-    /^main$/,                 // THE entry point
-    /^init_/,                 // Initialization functions
-    /^start_/,                // Start functions
-    /^run_/,                  // Run functions
+  c: [
+    /^main$/, // THE entry point
+    /^init_/, // Initialization functions
+    /^start_/, // Start functions
+    /^run_/, // Run functions
   ],
 
   // C++ - same as C plus class patterns
-  'cpp': [
-    /^main$/,                 // THE entry point
+  cpp: [
+    /^main$/, // THE entry point
     /^init_/,
-    /^Create[A-Z]/,           // Factory patterns
-    /^Run$/,                  // Run methods
-    /^Start$/,                // Start methods
+    /^Create[A-Z]/, // Factory patterns
+    /^Run$/, // Run methods
+    /^Start$/, // Start methods
   ],
 
   // Swift / iOS
-  'swift': [
-    /^viewDidLoad$/,                  // UIKit lifecycle
-    /^viewWillAppear$/,               // UIKit lifecycle
-    /^viewDidAppear$/,                // UIKit lifecycle
-    /^viewWillDisappear$/,            // UIKit lifecycle
-    /^viewDidDisappear$/,             // UIKit lifecycle
-    /^application\(/,                 // AppDelegate methods
-    /^scene\(/,                       // SceneDelegate methods
-    /^body$/,                         // SwiftUI View.body
-    /Coordinator$/,                   // Coordinator pattern
-    /^sceneDidBecomeActive$/,         // SceneDelegate lifecycle
-    /^sceneWillResignActive$/,        // SceneDelegate lifecycle
+  swift: [
+    /^viewDidLoad$/, // UIKit lifecycle
+    /^viewWillAppear$/, // UIKit lifecycle
+    /^viewDidAppear$/, // UIKit lifecycle
+    /^viewWillDisappear$/, // UIKit lifecycle
+    /^viewDidDisappear$/, // UIKit lifecycle
+    /^application\(/, // AppDelegate methods
+    /^scene\(/, // SceneDelegate methods
+    /^body$/, // SwiftUI View.body
+    /Coordinator$/, // Coordinator pattern
+    /^sceneDidBecomeActive$/, // SceneDelegate lifecycle
+    /^sceneWillResignActive$/, // SceneDelegate lifecycle
     /^didFinishLaunchingWithOptions$/, // AppDelegate
-    /ViewController$/,                // ViewController classes
-    /^configure[A-Z]/,               // Configuration methods
-    /^setup[A-Z]/,                    // Setup methods
-    /^makeBody$/,                     // SwiftUI ViewModifier
+    /ViewController$/, // ViewController classes
+    /^configure[A-Z]/, // Configuration methods
+    /^setup[A-Z]/, // Setup methods
+    /^makeBody$/, // SwiftUI ViewModifier
   ],
 
   // PHP / Laravel
-  'php': [
-    /Controller$/,            // UserController (class name convention)
-    /^handle$/,               // Job::handle(), Listener::handle()
-    /^execute$/,              // Command::execute()
-    /^boot$/,                 // ServiceProvider::boot()
-    /^register$/,             // ServiceProvider::register()
-    /^__invoke$/,             // Invokable controllers/actions
-    /^(index|show|store|update|destroy|create|edit)$/,  // RESTful resource methods
-    /^(get|post|put|delete|patch)[A-Z]/,  // Explicit HTTP method actions
-    /^run$/,                  // Command/Job run()
-    /^fire$/,                 // Event fire()
-    /^dispatch$/,             // Dispatchable jobs
-    /Service$/,               // UserService (Service layer)
-    /Repository$/,            // UserRepository (Repository pattern)
-    /^find$/,                 // Repository::find()
-    /^findAll$/,              // Repository::findAll()
-    /^save$/,                 // Repository::save()
-    /^delete$/,               // Repository::delete()
+  php: [
+    /Controller$/, // UserController (class name convention)
+    /^handle$/, // Job::handle(), Listener::handle()
+    /^execute$/, // Command::execute()
+    /^boot$/, // ServiceProvider::boot()
+    /^register$/, // ServiceProvider::register()
+    /^__invoke$/, // Invokable controllers/actions
+    /^(index|show|store|update|destroy|create|edit)$/, // RESTful resource methods
+    /^(get|post|put|delete|patch)[A-Z]/, // Explicit HTTP method actions
+    /^run$/, // Command/Job run()
+    /^fire$/, // Event fire()
+    /^dispatch$/, // Dispatchable jobs
+    /Service$/, // UserService (Service layer)
+    /Repository$/, // UserRepository (Repository pattern)
+    /^find$/, // Repository::find()
+    /^findAll$/, // Repository::findAll()
+    /^save$/, // Repository::save()
+    /^delete$/, // Repository::delete()
   ],
 
   // Ruby
-  'ruby': [
-    /^call$/,                 // Service objects (MyService.call)
-    /^perform$/,              // Background jobs (Sidekiq, ActiveJob)
-    /^execute$/,              // Command pattern
+  ruby: [
+    /^call$/, // Service objects (MyService.call)
+    /^perform$/, // Background jobs (Sidekiq, ActiveJob)
+    /^execute$/, // Command pattern
   ],
 };
 
@@ -161,16 +161,16 @@ const ENTRY_POINT_PATTERNS: Record<string, RegExp[]> = {
  * These get penalized in scoring
  */
 const UTILITY_PATTERNS: RegExp[] = [
-  /^(get|set|is|has|can|should|will|did)[A-Z]/,  // Accessors/predicates
-  /^_/,                                            // Private by convention
-  /^(format|parse|validate|convert|transform)/i,  // Transformation utilities
-  /^(log|debug|error|warn|info)$/i,               // Logging
-  /^(to|from)[A-Z]/,                              // Conversions
-  /^(encode|decode)/i,                            // Encoding utilities
-  /^(serialize|deserialize)/i,                    // Serialization
-  /^(clone|copy|deep)/i,                          // Cloning utilities
-  /^(merge|extend|assign)/i,                      // Object utilities
-  /^(filter|map|reduce|sort|find)/i,             // Collection utilities (standalone)
+  /^(get|set|is|has|can|should|will|did)[A-Z]/, // Accessors/predicates
+  /^_/, // Private by convention
+  /^(format|parse|validate|convert|transform)/i, // Transformation utilities
+  /^(log|debug|error|warn|info)$/i, // Logging
+  /^(to|from)[A-Z]/, // Conversions
+  /^(encode|decode)/i, // Encoding utilities
+  /^(serialize|deserialize)/i, // Serialization
+  /^(clone|copy|deep)/i, // Cloning utilities
+  /^(merge|extend|assign)/i, // Object utilities
+  /^(filter|map|reduce|sort|find)/i, // Collection utilities (standalone)
   /Helper$/,
   /Util$/,
   /Utils$/,
@@ -210,7 +210,7 @@ export function calculateEntryPointScore(
   isExported: boolean,
   callerCount: number,
   calleeCount: number,
-  filePath: string = ''  // Optional for backwards compatibility
+  filePath: string = '', // Optional for backwards compatibility
 ): EntryPointScoreResult {
   const reasons: string[] = [];
 
@@ -234,8 +234,8 @@ export function calculateEntryPointScore(
   let nameMultiplier = 1.0;
 
   // Check negative patterns first (utilities get penalized)
-  if (UTILITY_PATTERNS.some(p => p.test(name))) {
-    nameMultiplier = 0.3;  // Significant penalty
+  if (UTILITY_PATTERNS.some((p) => p.test(name))) {
+    nameMultiplier = 0.3; // Significant penalty
     reasons.push('utility-pattern');
   } else {
     // Check positive patterns
@@ -243,8 +243,8 @@ export function calculateEntryPointScore(
     const langPatterns = ENTRY_POINT_PATTERNS[language] || [];
     const allPatterns = [...universalPatterns, ...langPatterns];
 
-    if (allPatterns.some(p => p.test(name))) {
-      nameMultiplier = 1.5;  // Bonus for matching entry point pattern
+    if (allPatterns.some((p) => p.test(name))) {
+      nameMultiplier = 1.5; // Bonus for matching entry point pattern
       reasons.push('entry-pattern');
     }
   }

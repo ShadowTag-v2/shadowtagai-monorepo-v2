@@ -5,9 +5,9 @@
  * When a notification is received, it's broadcast to connected WebSocket clients.
  */
 
-import { getSubscriber } from "../queue/connection";
-import { broadcastToConversation } from "./handler";
-import logger from "../../utils/logger";
+import logger from '../../utils/logger';
+import { getSubscriber } from '../queue/connection';
+import { broadcastToConversation } from './handler';
 
 let isSubscribed = false;
 
@@ -19,7 +19,7 @@ let isSubscribed = false;
  */
 export async function startRedisSubscription() {
   if (isSubscribed) {
-    logger.warn("redis_subscription_already_started");
+    logger.warn('redis_subscription_already_started');
     return;
   }
 
@@ -27,12 +27,12 @@ export async function startRedisSubscription() {
     const subscriber = getSubscriber();
 
     // Subscribe to conversation channels using pattern
-    await subscriber.psubscribe("conversation:*");
+    await subscriber.psubscribe('conversation:*');
 
-    subscriber.on("pmessage", (pattern, channel, message) => {
+    subscriber.on('pmessage', (pattern, channel, message) => {
       try {
         // channel = "conversation:abc123"
-        const conversationId = channel.split(":")[1];
+        const conversationId = channel.split(':')[1];
         const notification = JSON.parse(message);
 
         // Broadcast to all WebSocket clients in this conversation
@@ -44,17 +44,17 @@ export async function startRedisSubscription() {
             jobId: notification.jobId,
             conversationId,
           },
-          "redis_notification_received_and_broadcast",
+          'redis_notification_received_and_broadcast',
         );
       } catch (e) {
-        logger.error({ error: e, channel, message }, "redis_message_processing_failed");
+        logger.error({ error: e, channel, message }, 'redis_message_processing_failed');
       }
     });
 
     isSubscribed = true;
-    logger.info("redis_subscription_started");
+    logger.info('redis_subscription_started');
   } catch (error) {
-    logger.error({ error }, "redis_subscription_failed");
+    logger.error({ error }, 'redis_subscription_failed');
     throw error;
   }
 }
@@ -69,11 +69,11 @@ export async function stopRedisSubscription() {
 
   try {
     const subscriber = getSubscriber();
-    await subscriber.punsubscribe("conversation:*");
+    await subscriber.punsubscribe('conversation:*');
     isSubscribed = false;
-    logger.info("redis_subscription_stopped");
+    logger.info('redis_subscription_stopped');
   } catch (error) {
-    logger.error({ error }, "redis_unsubscribe_failed");
+    logger.error({ error }, 'redis_unsubscribe_failed');
   }
 }
 

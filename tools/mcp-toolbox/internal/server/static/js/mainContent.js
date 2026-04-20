@@ -18,14 +18,14 @@
  * @param {string} idString The id of the item inside the main content area.
  */
 function renderMainContent(containerId, idString, instructionContent) {
-    const mainContentContainer = document.getElementById(containerId);
-    if (!mainContentContainer) {
-        console.error(`Content container with ID "${containerId}" not found.`);
-        return;
-    }
+  const mainContentContainer = document.getElementById(containerId);
+  if (!mainContentContainer) {
+    console.error(`Content container with ID "${containerId}" not found.`);
+    return;
+  }
 
-    const idAttribute = idString ? `id="${idString}"` : '';
-    const contentHTML = `
+  const idAttribute = idString ? `id="${idString}"` : '';
+  const contentHTML = `
         <div class="main-content-area">
         <div class="top-bar">
         </div>
@@ -35,11 +35,11 @@ function renderMainContent(containerId, idString, instructionContent) {
     </div>
     `;
 
-    mainContentContainer.innerHTML = contentHTML;
+  mainContentContainer.innerHTML = contentHTML;
 }
 
 function getHomepageInstructions() {
-    return `
+  return `
       <div class="resource-instructions">
         <h1 class="resource-title">Welcome to Toolbox UI</h1>
         <p class="resource-intro">Toolbox UI is a built-in web interface that allows users to visually inspect and test out configured resources such as tools and toolsets. To get started, select a resource from the navigation tab to the left.</p>
@@ -49,7 +49,7 @@ function getHomepageInstructions() {
 }
 
 function getToolInstructions() {
-    return `
+  return `
       <div class="resource-instructions">
         <h1 class="resource-title">Tools</h1>
         <p class="resource-intro">To inspect and test a tool, please click on one of your tools to the left.</p>
@@ -65,7 +65,7 @@ function getToolInstructions() {
 }
 
 function getToolsetInstructions() {
-    return `
+  return `
       <div class="resource-instructions">
         <h1 class="resource-title">Toolsets</h1>
         <p class="resource-intro">To inspect a specific toolset, please enter the name of a toolset and press search.</p>

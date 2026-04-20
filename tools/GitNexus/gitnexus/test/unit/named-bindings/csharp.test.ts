@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
-import { extractCSharpNamedBindings } from '../../../src/core/ingestion/named-bindings/csharp.js';
 import Parser from 'tree-sitter';
 import CSharp from 'tree-sitter-c-sharp';
+import { describe, expect, it } from 'vitest';
+import { extractCSharpNamedBindings } from '../../../src/core/ingestion/named-bindings/csharp.js';
 
 const parser = new Parser();
 

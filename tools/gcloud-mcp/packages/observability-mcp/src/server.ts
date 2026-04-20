@@ -18,11 +18,11 @@
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { registerTools } from './tools/registration.js';
-import pkg from '../package.json' with { type: 'json' };
-import yargs, { ArgumentsCamelCase, CommandModule } from 'yargs';
+import yargs, { type ArgumentsCamelCase, type CommandModule } from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import pkg from '../package.json' with { type: 'json' };
 import { init } from './commands/init.js';
+import { registerTools } from './tools/registration.js';
 
 const getServer = (): McpServer => {
   const server = new McpServer({

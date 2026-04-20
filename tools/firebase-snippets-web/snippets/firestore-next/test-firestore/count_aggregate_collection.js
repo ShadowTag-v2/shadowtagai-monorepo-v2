@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START count_aggregate_collection_modular]
-const coll = collection(db, "cities");
+const coll = collection(db, 'cities');
 const snapshot = await getCountFromServer(coll);
 console.log('count: ', snapshot.data().count);
 // [END count_aggregate_collection_modular]

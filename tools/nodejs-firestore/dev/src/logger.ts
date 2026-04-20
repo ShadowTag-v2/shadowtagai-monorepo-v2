@@ -16,7 +16,7 @@
 
 import * as util from 'util';
 
-import {validateFunction} from './validate';
+import { validateFunction } from './validate';
 
 /*! The Firestore library version */
 let libVersion: string;
@@ -43,8 +43,7 @@ export function logger(
     const formattedMessage = util.format(logMessage, ...additionalArgs);
     const time = new Date().toISOString();
     logFunction(
-      `Firestore (${libVersion}) ${time} ${requestTag} [${methodName}]: ` +
-        formattedMessage,
+      `Firestore (${libVersion}) ${time} ${requestTag} [${methodName}]: ` + formattedMessage,
     );
   }
 }

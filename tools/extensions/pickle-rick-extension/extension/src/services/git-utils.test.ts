@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as fs from 'fs';
-import { update_ticket_status, get_branch_name } from './git-utils.js';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { get_branch_name, update_ticket_status } from './git-utils.js';
 
 vi.mock('fs');
 vi.mock('child_process', () => ({
@@ -40,7 +40,7 @@ Body`;
 
       expect(fs.writeFileSync).toHaveBeenCalledWith(
         ticketPath,
-        expect.stringContaining('status: "Done"')
+        expect.stringContaining('status: "Done"'),
       );
     });
 

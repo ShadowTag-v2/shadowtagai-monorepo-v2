@@ -7,26 +7,16 @@
         "docRefPath": "projects/projectID/databases/(default)/documents/C/d",
         "fieldPaths": [
           {
-            "field": [
-              "a"
-            ]
+            "field": ["a"]
           },
           {
-            "field": [
-              "b"
-            ]
+            "field": ["b"]
           },
           {
-            "field": [
-              "c"
-            ]
+            "field": ["c"]
           }
         ],
-        "jsonValues": [
-          "1",
-          "\"ServerTimestamp\"",
-          "{\"d\": \"ServerTimestamp\"}"
-        ],
+        "jsonValues": ["1", "\"ServerTimestamp\"", "{\"d\": \"ServerTimestamp\"}"],
         "request": {
           "database": "projects/projectID/databases/(default)",
           "writes": [
@@ -40,10 +30,7 @@
                 }
               },
               "updateMask": {
-                "fieldPaths": [
-                  "a",
-                  "c"
-                ]
+                "fieldPaths": ["a", "c"]
               },
               "currentDocument": {
                 "exists": true

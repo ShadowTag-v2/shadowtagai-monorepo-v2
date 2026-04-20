@@ -12,14 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {DocumentData} from '@google-cloud/firestore';
-
+import type { DocumentData } from '@google-cloud/firestore';
+import { expect } from 'chai';
 import * as duplexify from 'duplexify';
-
-import {it, xit, describe} from 'mocha';
-import {expect} from 'chai';
-import * as path from 'path';
 import * as fs from 'fs';
+import { describe, it, xit } from 'mocha';
+import * as path from 'path';
 import * as protobufjs from 'protobufjs';
 import * as through2 from 'through2';
 import * as proto from '../protos/firestore_v1_proto_api';
@@ -29,19 +27,19 @@ import {
   DocumentSnapshot,
   FieldPath,
   FieldValue,
-  Firestore,
-  Query,
-  QueryDocumentSnapshot,
+  type Firestore,
+  type Query,
+  type QueryDocumentSnapshot,
   QuerySnapshot,
   Timestamp,
 } from '../src';
-import {fieldsFromJson} from '../src/convert';
-import {DocumentChangeType} from '../src/document-change';
-import {QualifiedResourcePath} from '../src/path';
-import {UnaryMethod} from '../src/types';
-import {isObject} from '../src/util';
+import { fieldsFromJson } from '../src/convert';
+import type { DocumentChangeType } from '../src/document-change';
+import { QualifiedResourcePath } from '../src/path';
+import type { UnaryMethod } from '../src/types';
+import { isObject } from '../src/util';
 import {
-  ApiOverride,
+  type ApiOverride,
   createInstance as createInstanceHelper,
   response,
 } from '../test/util/helpers';
@@ -69,17 +67,11 @@ protobufRoot.resolvePath = (origin, target) => {
   }
   return target;
 };
-const protoDefinition = protobufRoot.loadSync(
-  path.join(__dirname, 'test-definition.proto'),
-);
+const protoDefinition = protobufRoot.loadSync(path.join(__dirname, 'test-definition.proto'));
 
 const TEST_SUITE_TYPE = protoDefinition.lookupType('tests.TestFile');
-const STRUCTURED_QUERY_TYPE = protoDefinition.lookupType(
-  'google.firestore.v1.StructuredQuery',
-);
-const COMMIT_REQUEST_TYPE = protoDefinition.lookupType(
-  'google.firestore.v1.CommitRequest',
-);
+const STRUCTURED_QUERY_TYPE = protoDefinition.lookupType('google.firestore.v1.StructuredQuery');
+const COMMIT_REQUEST_TYPE = protoDefinition.lookupType('google.firestore.v1.CommitRequest');
 
 // Firestore instance initialized by the test runner.
 let firestore: Firestore;
@@ -101,7 +93,7 @@ const watchQuery = () => {
 const createInstance = (overrides: ApiOverride) => {
   return createInstanceHelper(overrides, {
     projectId: CONFORMANCE_TEST_PROJECT_ID,
-  }).then(firestoreClient => {
+  }).then((firestoreClient) => {
     firestore = firestoreClient;
   });
 };
@@ -127,13 +119,9 @@ const convertInput = {
     }
     function convertArray(arr: unknown[]): unknown[] | FieldValue {
       if (arr.length > 0 && arr[0] === 'ArrayUnion') {
-        return FieldValue.arrayUnion(
-          ...(convertArray(arr.slice(1)) as unknown[]),
-        );
+        return FieldValue.arrayUnion(...(convertArray(arr.slice(1)) as unknown[]));
       } else if (arr.length > 0 && arr[0] === 'ArrayRemove') {
-        return FieldValue.arrayRemove(
-          ...(convertArray(arr.slice(1)) as unknown[]),
-        );
+        return FieldValue.arrayRemove(...(convertArray(arr.slice(1)) as unknown[]));
       } else {
         for (let i = 0; i < arr.length; ++i) {
           arr[i] = convertValue(arr[i]);
@@ -141,7 +129,7 @@ const convertInput = {
         return arr;
       }
     }
-    function convertObject(obj: {[k: string]: unknown}) {
+    function convertObject(obj: { [k: string]: unknown }) {
       for (const key of Object.keys(obj)) {
         obj[key] = convertValue(obj[key]);
       }
@@ -221,9 +209,7 @@ const convertInput = {
       const type = ['unspecified', 'added', 'removed', 'modified'][
         change.kind
       ] as DocumentChangeType;
-      changes.push(
-        new DocumentChange(type, doc, change.oldIndex, change.newIndex),
-      );
+      changes.push(new DocumentChange(type, doc, change.oldIndex, change.newIndex));
     }
 
     return new QuerySnapshot(
@@ -259,7 +245,7 @@ const convertProto = {
 function commitHandler(
   spec: ConformanceProto,
 ): UnaryMethod<api.ICommitRequest, api.ICommitResponse> {
-  return request => {
+  return (request) => {
     const actualCommit = COMMIT_REQUEST_TYPE.fromObject(request);
     const expectedCommit = COMMIT_REQUEST_TYPE.fromObject(spec.request);
     expect(actualCommit).to.deep.equal(expectedCommit);
@@ -279,15 +265,13 @@ function commitHandler(
 /** Request handler for _runQuery. */
 function queryHandler(spec: ConformanceProto) {
   return (request: api.IRunQueryRequest) => {
-    const actualQuery = STRUCTURED_QUERY_TYPE.fromObject(
-      request.structuredQuery!,
-    );
+    const actualQuery = STRUCTURED_QUERY_TYPE.fromObject(request.structuredQuery!);
     const expectedQuery = STRUCTURED_QUERY_TYPE.fromObject(spec.query);
     expect(actualQuery).to.deep.equal(expectedQuery);
     const stream = through2.obj();
     setImmediate(() => {
       // Empty query always emits a readTime
-      stream.push({readTime: {seconds: 0, nanos: 0}});
+      stream.push({ readTime: { seconds: 0, nanos: 0 } });
       stream.push(null);
     });
     return stream;
@@ -303,7 +287,7 @@ function getHandler(spec: ConformanceProto) {
     setImmediate(() => {
       stream.push({
         missing: getDocument.name,
-        readTime: {seconds: 0, nanos: 0},
+        readTime: { seconds: 0, nanos: 0 },
       });
       stream.push(null);
     });
@@ -315,7 +299,7 @@ function runTest(spec: ConformanceProto) {
   console.log(`Running Spec:\n${JSON.stringify(spec, null, 2)}\n`);
 
   const updateTest = (spec: ConformanceProto) => {
-    const overrides = {commit: commitHandler(spec)};
+    const overrides = { commit: commitHandler(spec) };
     return createInstance(overrides).then(() => {
       const varargs: unknown[] = [];
 
@@ -340,7 +324,7 @@ function runTest(spec: ConformanceProto) {
   };
 
   const queryTest = (spec: ConformanceProto) => {
-    const overrides = {runQuery: queryHandler(spec)};
+    const overrides = { runQuery: queryHandler(spec) };
     const applyClause = (query: Query, clause: ConformanceProto) => {
       if (clause.select) {
         query = query.select(...convertInput.paths(clause.select.fields));
@@ -382,7 +366,7 @@ function runTest(spec: ConformanceProto) {
   };
 
   const deleteTest = (spec: ConformanceProto) => {
-    const overrides = {commit: commitHandler(spec)};
+    const overrides = { commit: commitHandler(spec) };
     return createInstance(overrides).then(() => {
       if (spec.precondition) {
         const precondition = convertInput.precondition(deleteSpec.precondition);
@@ -394,9 +378,9 @@ function runTest(spec: ConformanceProto) {
   };
 
   const setTest = (spec: ConformanceProto) => {
-    const overrides = {commit: commitHandler(spec)};
+    const overrides = { commit: commitHandler(spec) };
     return createInstance(overrides).then(() => {
-      const setOption: {merge?: boolean; mergeFields?: FieldPath[]} = {};
+      const setOption: { merge?: boolean; mergeFields?: FieldPath[] } = {};
       if (spec.option && spec.option.all) {
         setOption.merge = true;
       } else if (spec.option && spec.option.fields) {
@@ -413,16 +397,14 @@ function runTest(spec: ConformanceProto) {
   };
 
   const createTest = (spec: ConformanceProto) => {
-    const overrides = {commit: commitHandler(spec)};
+    const overrides = { commit: commitHandler(spec) };
     return createInstance(overrides).then(() => {
-      return docRef(spec.docRefPath).create(
-        convertInput.argument(spec.jsonData) as DocumentData,
-      );
+      return docRef(spec.docRefPath).create(convertInput.argument(spec.jsonData) as DocumentData);
     });
   };
 
   const getTest = (spec: ConformanceProto) => {
-    const overrides = {batchGetDocuments: getHandler(spec)};
+    const overrides = { batchGetDocuments: getHandler(spec) };
     return createInstance(overrides).then(() => {
       return docRef(spec.docRefPath).get();
     });
@@ -438,15 +420,11 @@ function runTest(spec: ConformanceProto) {
     return createInstance(overrides).then(() => {
       return new Promise<void>((resolve, reject) => {
         const unlisten = watchQuery().onSnapshot(
-          actualSnap => {
+          (actualSnap) => {
             const expectedSnapshot = expectedSnapshots.shift();
             if (expectedSnapshot) {
-              if (
-                !actualSnap.isEqual(convertInput.snapshot(expectedSnapshot))
-              ) {
-                reject(
-                  new Error('Expected and actual snapshots do not match.'),
-                );
+              if (!actualSnap.isEqual(convertInput.snapshot(expectedSnapshot))) {
+                reject(new Error('Expected and actual snapshots do not match.'));
               }
 
               if (expectedSnapshots.length === 0 || !spec.isError) {
@@ -457,7 +435,7 @@ function runTest(spec: ConformanceProto) {
               reject(new Error('Received unexpected snapshot'));
             }
           },
-          err => {
+          (err) => {
             expect(expectedSnapshots).to.have.length(0);
             unlisten();
             reject(err);
@@ -511,7 +489,7 @@ function runTest(spec: ConformanceProto) {
     () => {
       expect(testSpec.isError || false).to.be.false;
     },
-    err => {
+    (err) => {
       if (!testSpec.isError) {
         throw err;
       }
@@ -539,7 +517,7 @@ function normalizeTimestamp(obj: Record<string, unknown>) {
  * Convert a string TimeStamp, e.g. "1970-01-01T00:00:42Z", to its protobuf
  * type.
  */
-function convertTimestamp(text: string): {[key: string]: number} {
+function convertTimestamp(text: string): { [key: string]: number } {
   const split = text.split(':');
   const secondsStr = split[split.length - 1];
 
@@ -567,11 +545,7 @@ function normalizeInt32Value(obj: Record<string, unknown>, parent = '') {
   const fieldNames = ['limit'];
   const parentNames = ['query'];
   for (const key of Object.keys(obj)) {
-    if (
-      fieldNames.includes(key) &&
-      typeof obj[key] === 'number' &&
-      parentNames.includes(parent)
-    ) {
+    if (fieldNames.includes(key) && typeof obj[key] === 'number' && parentNames.includes(parent)) {
       obj[key] = {
         value: obj[key],
       };
@@ -602,12 +576,12 @@ describe('Conformance Tests', () => {
       testDataJson = testDataJson.concat(testFile);
     }
 
-    return testDataJson.map(testFile => testFile.tests[0]);
+    return testDataJson.map((testFile) => testFile.tests[0]);
   };
 
   for (const testCase of loadTestCases()) {
-    const isIgnored = ignoredRe.find(re => re.test(testCase.description));
-    const isExclusive = exclusiveRe.find(re => re.test(testCase.description));
+    const isIgnored = ignoredRe.find((re) => re.test(testCase.description));
+    const isExclusive = exclusiveRe.find((re) => re.test(testCase.description));
 
     if (isIgnored || (exclusiveRe.length > 0 && !isExclusive)) {
       xit(`${testCase.description}`, () => {});

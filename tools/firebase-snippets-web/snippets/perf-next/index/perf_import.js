@@ -5,5 +5,5 @@
 // 'npm run snippets'.
 
 // [START perf_import_modular]
-import { getPerformance } from "firebase/performance";
+import { getPerformance } from 'firebase/performance';
 // [END perf_import_modular]

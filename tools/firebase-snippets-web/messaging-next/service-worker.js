@@ -1,12 +1,12 @@
 // [SNIPPET_REGISTRY disabled]
 // [SNIPPETS_SEPARATION enabled]
 
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
 
 const firebaseApp = initializeApp({
   apiKey: '### FIREBASE API KEY ###',
   appId: '### FIREBASE APP ID ###',
-  projectId: '### FIREBASE PROJECT ID ###'
+  projectId: '### FIREBASE PROJECT ID ###',
 });
 
 // See: https://github.com/microsoft/TypeScript/issues/14877
@@ -15,8 +15,8 @@ let self;
 
 function initInSw() {
   // [START messaging_init_in_sw]
-  const { initializeApp } = require("firebase/app");
-  const { getMessaging } = require("firebase/messaging/sw");
+  const { initializeApp } = require('firebase/app');
+  const { getMessaging } = require('firebase/messaging/sw');
 
   // Initialize the Firebase app in the service worker by passing in
   // your app's Firebase config object.
@@ -40,8 +40,8 @@ function initInSw() {
 
 function onBackgroundMessage() {
   // [START messaging_on_background_message]
-  const { getMessaging } = require("firebase/messaging/sw");
-  const { onBackgroundMessage } = require("firebase/messaging/sw");
+  const { getMessaging } = require('firebase/messaging/sw');
+  const { onBackgroundMessage } = require('firebase/messaging/sw');
 
   const messaging = getMessaging();
   onBackgroundMessage(messaging, (payload) => {
@@ -50,11 +50,10 @@ function onBackgroundMessage() {
     const notificationTitle = 'Background Message Title';
     const notificationOptions = {
       body: 'Background Message body.',
-      icon: '/firebase-logo.png'
+      icon: '/firebase-logo.png',
     };
 
-    self.registration.showNotification(notificationTitle,
-      notificationOptions);
+    self.registration.showNotification(notificationTitle, notificationOptions);
   });
   // [END messaging_on_background_message]
 }

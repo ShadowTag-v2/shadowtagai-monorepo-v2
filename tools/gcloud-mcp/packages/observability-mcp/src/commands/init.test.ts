@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { vi, describe, it, expect, afterEach } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { init } from './init.js';
 import { initializeGeminiCLI } from './init-gemini-cli.js';
 

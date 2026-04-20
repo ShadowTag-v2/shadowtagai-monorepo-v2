@@ -17,7 +17,7 @@ const moeClient = {
     console.log(`[RoE] Executing inference with ${params.kPaths} parallel expert routes.`);
     console.log(`[RoE] Clean-Cache status: ${params.cleanCache}`);
     // Probability-avg logic executed natively in C++ backend
-    return { token: "generated_token", logits_avg: 0.98 };
+    return { token: 'generated_token', logits_avg: 0.98 };
   },
 };
 

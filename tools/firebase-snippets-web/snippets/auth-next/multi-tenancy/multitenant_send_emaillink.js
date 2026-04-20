@@ -5,7 +5,8 @@
 // 'npm run snippets'.
 
 // [START multitenant_send_emaillink_modular]
-import { sendSignInLinkToEmail } from "firebase/auth";
+import { sendSignInLinkToEmail } from 'firebase/auth';
+
 // Switch to TENANT_ID1
 auth.tenantId = 'TENANT_ID1';
 

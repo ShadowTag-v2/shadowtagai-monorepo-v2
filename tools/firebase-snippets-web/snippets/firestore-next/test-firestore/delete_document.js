@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START delete_document_modular]
-import { doc, deleteDoc } from "firebase/firestore";
+import { deleteDoc, doc } from 'firebase/firestore';
 
-await deleteDoc(doc(db, "cities", "DC"));
+await deleteDoc(doc(db, 'cities', 'DC'));
 // [END delete_document_modular]

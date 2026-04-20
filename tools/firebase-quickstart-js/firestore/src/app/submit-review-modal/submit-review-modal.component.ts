@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import { Component, ViewEncapsulation, inject, Inject } from "@angular/core";
-import { Firestore, collection, addDoc } from "@angular/fire/firestore";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog"
+import { Component, Inject, inject, ViewEncapsulation } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
+import { addDoc, collection, Firestore } from '@angular/fire/firestore';
+import { MAT_DIALOG_DATA, type MatDialogRef } from '@angular/material/dialog';
 
-import { Rating } from "../../types/ratings";
+import type { Rating } from '../../types/ratings';
 
 @Component({
-  selector: "app-submit-review-modal",
-  templateUrl: "./submit-review-modal.component.html",
-  styleUrls: ["./submit-review-modal.component.css"],
-  encapsulation: ViewEncapsulation.None
+  selector: 'app-submit-review-modal',
+  templateUrl: './submit-review-modal.component.html',
+  styleUrls: ['./submit-review-modal.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SubmitReviewModalComponent {
   private firestore: Firestore = inject(Firestore);
@@ -33,7 +33,7 @@ export class SubmitReviewModalComponent {
   public auth = inject(Auth);
   public review: Rating = {
     rating: 5,
-    text: ""
+    text: '',
   };
 
   constructor(
@@ -46,19 +46,16 @@ export class SubmitReviewModalComponent {
   }
 
   public async onSubmitClick() {
-    const collectionRef = collection(
-      this.firestore,
-      `restaurants/${this.restaurantId}/ratings`
-    );
+    const collectionRef = collection(this.firestore, `restaurants/${this.restaurantId}/ratings`);
 
     await addDoc(collectionRef, {
       ...this.review,
-      userName: this.auth.currentUser ? this.auth.currentUser.email : 'Anonymous'
+      userName: this.auth.currentUser ? this.auth.currentUser.email : 'Anonymous',
     } as Rating);
     this.dialogRef.close();
   }
 
   public determineStarColor(starIndex: number): string {
-    return starIndex <= this.review.rating ? "#feb22c" : "gray";
+    return starIndex <= this.review.rating ? '#feb22c' : 'gray';
   }
 }

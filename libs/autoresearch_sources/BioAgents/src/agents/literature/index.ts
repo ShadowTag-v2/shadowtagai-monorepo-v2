@@ -1,13 +1,13 @@
-import type { OnPollUpdate } from "../../types/core";
-import logger from "../../utils/logger";
-import { searchBioLiterature } from "./bio";
-import { searchEdison } from "./edison";
-import { searchKnowledge } from "./knowledge";
-import { searchOpenScholar } from "./openscholar";
+import type { OnPollUpdate } from '../../types/core';
+import logger from '../../utils/logger';
+import { searchBioLiterature } from './bio';
+import { searchEdison } from './edison';
+import { searchKnowledge } from './knowledge';
+import { searchOpenScholar } from './openscholar';
 
-type LiteratureType = "OPENSCHOLAR" | "KNOWLEDGE" | "EDISON" | "BIOLIT" | "BIOLITDEEP";
+type LiteratureType = 'OPENSCHOLAR' | 'KNOWLEDGE' | 'EDISON' | 'BIOLIT' | 'BIOLITDEEP';
 
-export type BioLiteratureMode = "fast" | "deep";
+export type BioLiteratureMode = 'fast' | 'deep';
 
 type LiteratureResult = {
   objective: string;
@@ -40,7 +40,7 @@ export async function literatureAgent(input: {
   const { objective, type, onPollUpdate } = input;
   const start = new Date().toISOString();
 
-  logger.info({ objective, type }, "literature_agent_started");
+  logger.info({ objective, type }, 'literature_agent_started');
 
   let output: string;
   let count: number | undefined;
@@ -49,33 +49,33 @@ export async function literatureAgent(input: {
 
   try {
     switch (type) {
-      case "OPENSCHOLAR": {
+      case 'OPENSCHOLAR': {
         const result = await searchOpenScholar(objective);
         output = result.output;
         count = result.count;
         break;
       }
-      case "KNOWLEDGE": {
+      case 'KNOWLEDGE': {
         const result = await searchKnowledge(objective);
         output = result.output;
         count = result.count;
         break;
       }
-      case "BIOLIT": {
-        const result = await searchBioLiterature(objective, "fast", onPollUpdate);
+      case 'BIOLIT': {
+        const result = await searchBioLiterature(objective, 'fast', onPollUpdate);
         output = result.output;
         jobId = result.jobId;
         reasoning = result.reasoning;
         break;
       }
-      case "BIOLITDEEP": {
-        const result = await searchBioLiterature(objective, "deep", onPollUpdate);
+      case 'BIOLITDEEP': {
+        const result = await searchBioLiterature(objective, 'deep', onPollUpdate);
         output = result.output;
         jobId = result.jobId;
         reasoning = result.reasoning;
         break;
       }
-      case "EDISON": {
+      case 'EDISON': {
         const result = await searchEdison(
           objective +
             "/n/nMANDATORY: Make sure that the final literature search result is returned along with inline citations for each claim made in the result. MANDATORY FORMAT: Each claim should be in the following format: (claim goes in the parentheses)[DOI] or (claim goes in the parentheses)[URL]. If there are general statements, it is alright to not include citations for them. DOI URL is totally enough, you don't need to include formats like [pelaezvico2025integrativeanalysisof pages 1-4].\n\nMANDATORY CITATION COUNT: Do your absolute best to cite at least 5 sources in your answer.",
@@ -88,15 +88,15 @@ export async function literatureAgent(input: {
         throw new Error(`Unknown literature type: ${type}`);
     }
   } catch (err) {
-    logger.error({ err, objective, type }, "literature_agent_failed");
-    output = `Error searching literature: ${err instanceof Error ? err.message : "Unknown error"}`;
+    logger.error({ err, objective, type }, 'literature_agent_failed');
+    output = `Error searching literature: ${err instanceof Error ? err.message : 'Unknown error'}`;
   }
 
   const end = new Date().toISOString();
 
   logger.info(
     { objective, type, outputLength: output.length, count },
-    "literature_agent_completed",
+    'literature_agent_completed',
   );
 
   return {

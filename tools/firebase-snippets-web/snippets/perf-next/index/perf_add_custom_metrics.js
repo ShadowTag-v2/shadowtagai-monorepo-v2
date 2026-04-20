@@ -5,13 +5,13 @@
 // 'npm run snippets'.
 
 // [START perf_add_custom_metrics_modular]
-import { trace } from "firebase/performance";
+import { trace } from 'firebase/performance';
 
 async function getInventory(inventoryIds) {
-  const t = trace(perf, "inventoryRetrieval");
+  const t = trace(perf, 'inventoryRetrieval');
 
   // Tracks the number of IDs fetched (the metric could help you to optimize in the future)
-  t.incrementMetric("numberOfIds", inventoryIds.length);
+  t.incrementMetric('numberOfIds', inventoryIds.length);
 
   // Measures the time it takes to request inventory based on the amount of inventory
   t.start();

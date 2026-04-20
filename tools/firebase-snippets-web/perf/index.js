@@ -1,8 +1,8 @@
 // [START perf_import_app]
-import firebase from "firebase/app";
+import firebase from 'firebase/app';
 // [END perf_import_app]
 // [START perf_import]
-import "firebase/performance";
+import 'firebase/performance';
 // [END perf_import]
 
 const perf = firebase.performance();
@@ -27,7 +27,7 @@ function intialize() {
 
 function addCustomTrace() {
   // [START perf_add_custom_trace]
-  const trace = perf.trace("CUSTOM_TRACE_NAME");
+  const trace = perf.trace('CUSTOM_TRACE_NAME');
   trace.start();
 
   // Code that you want to trace
@@ -41,29 +41,29 @@ function userTimingMarks() {
   // [START perf_user_timing_marks]
   const performance = window.performance;
 
-  performance.mark("measurementStart");
+  performance.mark('measurementStart');
 
   // Code that you want to trace
   // ...
 
-  performance.mark("measurementStop");
-  performance.measure("customTraceName", "measurementStart", "measurementStop");
+  performance.mark('measurementStop');
+  performance.measure('customTraceName', 'measurementStart', 'measurementStop');
   // [END perf_user_timing_marks]
 }
 
 function addCustomAttributes() {
   // [START perf_add_custom_attributes]
-  const trace = perf.trace("test_trace");
-  trace.putAttribute("experiment", "A");
+  const trace = perf.trace('test_trace');
+  trace.putAttribute('experiment', 'A');
 
   // Update scenario
-  trace.putAttribute("experiment", "B");
+  trace.putAttribute('experiment', 'B');
 
   // Reading scenario
-  const experimentValue = trace.getAttribute("experiment");
+  const experimentValue = trace.getAttribute('experiment');
 
   // Delete scenario
-  trace.removeAttribute("experiment");
+  trace.removeAttribute('experiment');
 
   // Read attributes
   const traceAttributes = trace.getAttributes();
@@ -77,10 +77,10 @@ function addCustomMetrics() {
 
   // [START perf_add_custom_metrics]
   async function getInventory(inventoryIds) {
-    const trace = perf.trace("inventoryRetrieval");
+    const trace = perf.trace('inventoryRetrieval');
 
     // Tracks the number of IDs fetched (the metric could help you to optimize in the future)
-    trace.incrementMetric("numberOfIds", inventoryIds.length);
+    trace.incrementMetric('numberOfIds', inventoryIds.length);
 
     // Measures the time it takes to request inventory based on the amount of inventory
     trace.start();

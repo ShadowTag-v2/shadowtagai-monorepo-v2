@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_apple_signin_nonce_modular]
-import { getAuth, signInWithCredential, OAuthProvider } from "firebase/auth";
+import { getAuth, OAuthProvider, signInWithCredential } from 'firebase/auth';
 
 const auth = getAuth();
 

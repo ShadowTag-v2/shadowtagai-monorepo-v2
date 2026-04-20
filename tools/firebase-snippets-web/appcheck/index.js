@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/app-check";
+import firebase from 'firebase/app';
+import 'firebase/app-check';
 
 function initialize() {
   // [START appcheck_initialize]
@@ -15,7 +15,8 @@ function initialize() {
 
     // Optional argument. If true, the SDK automatically refreshes App Check
     // tokens as needed.
-    true);
+    true,
+  );
   // [END appcheck_initialize]
 }
 
@@ -28,18 +29,18 @@ function customProvider() {
         // expiration time.
 
         // [START_EXCLUDE]
-        const tokenFromServer = "abc1234";
+        const tokenFromServer = 'abc1234';
         const expirationFromServer = 1234;
         // [END_EXCLUDE]
 
         const appCheckToken = {
           token: tokenFromServer,
-          expireTimeMillis: expirationFromServer * 1000
+          expireTimeMillis: expirationFromServer * 1000,
         };
 
         resolve(appCheckToken);
       });
-    }
+    },
   };
   // [END appcheck_custom_provider]
 
@@ -60,7 +61,8 @@ function initializeCustomProvider() {
 
     // Optional argument. If true, the SDK automatically refreshes App Check
     // tokens as needed.
-    true);
+    true,
+  );
   // [END appcheck_initialize_custom_provider]
 }
 
@@ -68,17 +70,17 @@ function initializeCustomProvider() {
 const callApiWithAppCheckExample = async () => {
   let appCheckTokenResponse;
   try {
-      appCheckTokenResponse = await firebase.appCheck().getToken(/* forceRefresh= */ false);
+    appCheckTokenResponse = await firebase.appCheck().getToken(/* forceRefresh= */ false);
   } catch (err) {
-      // Handle any errors if the token was not retrieved.
-      return;
+    // Handle any errors if the token was not retrieved.
+    return;
   }
 
   // Include the App Check token with requests to your server.
   const apiResponse = await fetch('https://yourbackend.example.com/yourApiEndpoint', {
-      headers: {
-          'X-Firebase-AppCheck': appCheckTokenResponse.token,
-      }
+    headers: {
+      'X-Firebase-AppCheck': appCheckTokenResponse.token,
+    },
   });
 
   // Handle response from your backend.

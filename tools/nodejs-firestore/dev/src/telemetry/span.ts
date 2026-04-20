@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import {Span as OpenTelemetrySpan} from '@opentelemetry/api';
-import {Attributes} from './trace-util';
+import type { Span as OpenTelemetrySpan } from '@opentelemetry/api';
+import type { Attributes } from './trace-util';
 
 /**
  * @private

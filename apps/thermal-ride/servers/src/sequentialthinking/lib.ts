@@ -1,4 +1,4 @@
-import chalk from "chalk";
+import chalk from 'chalk';
 
 export interface ThoughtData {
   thought: string;
@@ -19,7 +19,7 @@ export class SequentialThinkingServer {
 
   constructor() {
     this.disableThoughtLogging =
-      (process.env.DISABLE_THOUGHT_LOGGING || "").toLowerCase() === "true";
+      (process.env.DISABLE_THOUGHT_LOGGING || '').toLowerCase() === 'true';
   }
 
   private formatThought(thoughtData: ThoughtData): string {
@@ -33,22 +33,22 @@ export class SequentialThinkingServer {
       branchId,
     } = thoughtData;
 
-    let prefix = "";
-    let context = "";
+    let prefix = '';
+    let context = '';
 
     if (isRevision) {
-      prefix = chalk.yellow("🔄 Revision");
+      prefix = chalk.yellow('🔄 Revision');
       context = ` (revising thought ${revisesThought})`;
     } else if (branchFromThought) {
-      prefix = chalk.green("🌿 Branch");
+      prefix = chalk.green('🌿 Branch');
       context = ` (from thought ${branchFromThought}, ID: ${branchId})`;
     } else {
-      prefix = chalk.blue("💭 Thought");
-      context = "";
+      prefix = chalk.blue('💭 Thought');
+      context = '';
     }
 
     const header = `${prefix} ${thoughtNumber}/${totalThoughts}${context}`;
-    const border = "─".repeat(Math.max(header.length, thought.length) + 4);
+    const border = '─'.repeat(Math.max(header.length, thought.length) + 4);
 
     return `
 ┌${border}┐
@@ -59,7 +59,7 @@ export class SequentialThinkingServer {
   }
 
   public processThought(input: ThoughtData): {
-    content: Array<{ type: "text"; text: string }>;
+    content: Array<{ type: 'text'; text: string }>;
     isError?: boolean;
   } {
     try {
@@ -86,7 +86,7 @@ export class SequentialThinkingServer {
       return {
         content: [
           {
-            type: "text" as const,
+            type: 'text' as const,
             text: JSON.stringify(
               {
                 thoughtNumber: input.thoughtNumber,
@@ -105,11 +105,11 @@ export class SequentialThinkingServer {
       return {
         content: [
           {
-            type: "text" as const,
+            type: 'text' as const,
             text: JSON.stringify(
               {
                 error: error instanceof Error ? error.message : String(error),
-                status: "failed",
+                status: 'failed',
               },
               null,
               2,

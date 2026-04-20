@@ -6,28 +6,16 @@ initializeApp(firebaseConfig);
 
 const auth = getAuth();
 
-const signInButton = document.getElementById(
-  'sign-in-button',
-) as HTMLButtonElement;
-const signOutButton = document.getElementById(
-  'sign-out-button',
-) as HTMLButtonElement;
-const signInStatus = document.getElementById(
-  'sign-in-status',
-) as HTMLSpanElement;
-const accountDetails = document.getElementById(
-  'account-details',
-) as HTMLDivElement;
+const signInButton = document.getElementById('sign-in-button') as HTMLButtonElement;
+const signOutButton = document.getElementById('sign-out-button') as HTMLButtonElement;
+const signInStatus = document.getElementById('sign-in-status') as HTMLSpanElement;
+const accountDetails = document.getElementById('account-details') as HTMLDivElement;
 
 /**
  * Function called when clicking the Login/Logout button.
  */
 function onSignInClick() {
-  window.open(
-    'phone-simple-popup.html',
-    '_blank',
-    'height=600px,width=450px,top=100px,left=100px',
-  );
+  window.open('phone-simple-popup.html', '_blank', 'height=600px,width=450px,top=100px,left=100px');
 }
 
 /**
@@ -74,7 +62,7 @@ function updateSignedInUserStatusUI() {
 }
 
 // Listening for auth state changes.
-onAuthStateChanged(auth, function (user) {
+onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in.
     const uid = user.uid;

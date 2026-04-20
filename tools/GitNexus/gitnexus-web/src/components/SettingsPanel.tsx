@@ -1,14 +1,27 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { X, Key, Server, Brain, Check, AlertCircle, Eye, EyeOff, RefreshCw, ChevronDown, Loader2, Search } from '@/lib/lucide-icons';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  AlertCircle,
+  Brain,
+  Check,
+  ChevronDown,
+  Eye,
+  EyeOff,
+  Key,
+  Loader2,
+  RefreshCw,
+  Search,
+  Server,
+  X,
+} from '@/lib/lucide-icons';
+import { DEFAULT_OLLAMA_BASE_URL } from '../config/ui-constants';
+import {
+  fetchOpenRouterModels,
+  getAvailableModels,
+  getProviderDisplayName,
   loadSettings,
   saveSettings,
-  getProviderDisplayName,
-  getAvailableModels,
-  fetchOpenRouterModels,
 } from '../core/llm/settings-service';
-import type { LLMSettings, LLMProvider } from '../core/llm/types';
-import { DEFAULT_OLLAMA_BASE_URL } from '../config/ui-constants';
+import type { LLMProvider, LLMSettings } from '../core/llm/types';
 import { ProviderConfigCard } from './settings/ProviderConfigCard';
 
 interface SettingsPanelProps {
@@ -31,7 +44,13 @@ interface OpenRouterModelComboboxProps {
   onLoadModels: () => void;
 }
 
-const OpenRouterModelCombobox = ({ value, onChange, models, isLoading, onLoadModels }: OpenRouterModelComboboxProps) => {
+const OpenRouterModelCombobox = ({
+  value,
+  onChange,
+  models,
+  isLoading,
+  onLoadModels,
+}: OpenRouterModelComboboxProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,16 +60,15 @@ const OpenRouterModelCombobox = ({ value, onChange, models, isLoading, onLoadMod
   const filteredModels = useMemo(() => {
     if (!searchTerm.trim()) return models;
     const lower = searchTerm.toLowerCase();
-    return models.filter(m =>
-      m.id.toLowerCase().includes(lower) ||
-      m.name.toLowerCase().includes(lower)
+    return models.filter(
+      (m) => m.id.toLowerCase().includes(lower) || m.name.toLowerCase().includes(lower),
     );
   }, [models, searchTerm]);
 
   // Find display name for current value
   const displayValue = useMemo(() => {
     if (!value) return '';
-    const found = models.find(m => m.id === value);
+    const found = models.find((m) => m.id === value);
     return found ? found.name : value;
   }, [value, models]);
 
@@ -93,7 +111,7 @@ const OpenRouterModelCombobox = ({ value, onChange, models, isLoading, onLoadMod
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && searchTerm) {
       // If exact match in filtered, select it; otherwise use raw input
-      const exact = filteredModels.find(m => m.id.toLowerCase() === searchTerm.toLowerCase());
+      const exact = filteredModels.find((m) => m.id.toLowerCase() === searchTerm.toLowerCase());
       if (exact) {
         handleSelect(exact.id);
       } else if (filteredModels.length === 1) {
@@ -127,16 +145,20 @@ const OpenRouterModelCombobox = ({ value, onChange, models, isLoading, onLoadMod
             onKeyDown={handleKeyDown}
             placeholder="Search or type model ID..."
             className="flex-1 bg-transparent text-text-primary placeholder:text-text-muted outline-none font-mono text-sm"
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           />
         ) : (
-          <span className={`flex-1 font-mono text-sm truncate ${value ? 'text-text-primary' : 'text-text-muted'}`}>
+          <span
+            className={`flex-1 font-mono text-sm truncate ${value ? 'text-text-primary' : 'text-text-muted'}`}
+          >
             {displayValue || 'Select or type a model...'}
           </span>
         )}
         <div className="flex items-center gap-1">
           {isLoading && <Loader2 className="w-4 h-4 animate-spin text-text-muted" />}
-          <ChevronDown className={`w-4 h-4 text-text-muted transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown
+            className={`w-4 h-4 text-text-muted transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          />
         </div>
       </div>
 
@@ -165,7 +187,7 @@ const OpenRouterModelCombobox = ({ value, onChange, models, isLoading, onLoadMod
             </div>
           ) : (
             <div className="max-h-64 overflow-y-auto">
-              {filteredModels.slice(0, 50).map(model => (
+              {filteredModels.slice(0, 50).map((model) => (
                 <button
                   key={model.id}
                   onClick={() => handleSelect(model.id)}
@@ -192,7 +214,9 @@ const OpenRouterModelCombobox = ({ value, onChange, models, isLoading, onLoadMod
 /**
  * Check connection to local Ollama instance
  */
-const checkOllamaStatus = async (baseUrl: string): Promise<{ ok: boolean; error: string | null }> => {
+const checkOllamaStatus = async (
+  baseUrl: string,
+): Promise<{ ok: boolean; error: string | null }> => {
   try {
     const response = await fetch(`${baseUrl}/api/tags`, {
       method: 'GET',
@@ -201,7 +225,10 @@ const checkOllamaStatus = async (baseUrl: string): Promise<{ ok: boolean; error:
 
     if (!response.ok) {
       if (response.status === 0 || response.status === 404) {
-        return { ok: false, error: 'Cannot connect to Ollama. Make sure it\'s running with `ollama serve`' };
+        return {
+          ok: false,
+          error: "Cannot connect to Ollama. Make sure it's running with `ollama serve`",
+        };
       }
       return { ok: false, error: `Ollama API error: ${response.status}` };
     }
@@ -210,12 +237,19 @@ const checkOllamaStatus = async (baseUrl: string): Promise<{ ok: boolean; error:
   } catch (error) {
     return {
       ok: false,
-      error: 'Cannot connect to Ollama. Make sure it\'s running with `ollama serve`'
+      error: "Cannot connect to Ollama. Make sure it's running with `ollama serve`",
     };
   }
 };
 
-export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, isBackendConnected, onBackendUrlChange }: SettingsPanelProps) => {
+export const SettingsPanel = ({
+  isOpen,
+  onClose,
+  onSettingsSaved,
+  backendUrl,
+  isBackendConnected,
+  onBackendUrlChange,
+}: SettingsPanelProps) => {
   const [settings, setSettings] = useState<LLMSettings>(loadSettings);
   const [showApiKey, setShowApiKey] = useState<Record<string, boolean>>({});
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
@@ -274,7 +308,7 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
   }, [settings.ollama?.baseUrl, settings.activeProvider, checkOllamaConnection]);
 
   const handleProviderChange = (provider: LLMProvider) => {
-    setSettings(prev => ({ ...prev, activeProvider: provider }));
+    setSettings((prev) => ({ ...prev, activeProvider: provider }));
   };
 
   const handleSave = () => {
@@ -292,21 +326,26 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
   };
 
   const toggleApiKeyVisibility = (key: string) => {
-    setShowApiKey(prev => ({ ...prev, [key]: !prev[key] }));
+    setShowApiKey((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   if (!isOpen) return null;
 
-  const providers: LLMProvider[] = ['openai', 'gemini', 'anthropic', 'azure-openai', 'ollama', 'openrouter', 'minimax', 'glm'];
-
+  const providers: LLMProvider[] = [
+    'openai',
+    'gemini',
+    'anthropic',
+    'azure-openai',
+    'ollama',
+    'openrouter',
+    'minimax',
+    'glm',
+  ];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
       {/* Panel */}
       <div className="relative bg-surface border border-border-subtle rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden max-h-[90vh] flex flex-col">
@@ -334,14 +373,14 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
           {/* Local Server */}
           {backendUrl !== undefined && onBackendUrlChange && (
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-text-secondary">
-                Local Server
-              </label>
+              <label className="block text-sm font-medium text-text-secondary">Local Server</label>
               <div className="space-y-2">
                 <div className="flex items-center gap-2 mb-2">
                   <Server className="w-4 h-4 text-text-muted" />
                   <span className="text-sm text-text-secondary">Backend URL</span>
-                  <span className={`w-2 h-2 rounded-full ${isBackendConnected ? 'bg-green-400' : 'bg-red-400'}`} />
+                  <span
+                    className={`w-2 h-2 rounded-full ${isBackendConnected ? 'bg-green-400' : 'bg-red-400'}`}
+                  />
                   <span className="text-xs text-text-muted">
                     {isBackendConnected ? 'Connected' : 'Not connected'}
                   </span>
@@ -354,7 +393,8 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                   className="w-full px-4 py-3 bg-elevated border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all font-mono text-sm"
                 />
                 <p className="text-xs text-text-muted">
-                  Run <code className="px-1 py-0.5 bg-elevated rounded">gitnexus serve</code> to start the local server
+                  Run <code className="px-1 py-0.5 bg-elevated rounded">gitnexus serve</code> to
+                  start the local server
                 </p>
               </div>
             </div>
@@ -362,27 +402,42 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
 
           {/* Provider Selection */}
           <div className="space-y-3">
-            <label className="block text-sm font-medium text-text-secondary">
-              Provider
-            </label>
+            <label className="block text-sm font-medium text-text-secondary">Provider</label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {providers.map(provider => (
+              {providers.map((provider) => (
                 <button
                   key={provider}
                   onClick={() => handleProviderChange(provider)}
                   className={`
                     flex items-center gap-3 p-4 rounded-xl border-2 transition-all
-                    ${settings.activeProvider === provider
-                      ? 'border-accent bg-accent/10 text-text-primary'
-                      : 'border-border-subtle bg-elevated hover:border-accent/50 text-text-secondary'
+                    ${
+                      settings.activeProvider === provider
+                        ? 'border-accent bg-accent/10 text-text-primary'
+                        : 'border-border-subtle bg-elevated hover:border-accent/50 text-text-secondary'
                     }
                   `}
                 >
-                  <div className={`
+                  <div
+                    className={`
                     w-8 h-8 rounded-lg flex items-center justify-center text-lg
                     ${settings.activeProvider === provider ? 'bg-accent/20' : 'bg-surface'}
-                  `}>
-                    {provider === 'openai' ? '🤖' : provider === 'gemini' ? '💎' : provider === 'anthropic' ? '🧠' : provider === 'ollama' ? '🦙' : provider === 'openrouter' ? '🌐' : provider === 'minimax' ? '⚡' : provider === 'glm' ? '🔮' : '☁️'}
+                  `}
+                  >
+                    {provider === 'openai'
+                      ? '🤖'
+                      : provider === 'gemini'
+                        ? '💎'
+                        : provider === 'anthropic'
+                          ? '🧠'
+                          : provider === 'ollama'
+                            ? '🦙'
+                            : provider === 'openrouter'
+                              ? '🌐'
+                              : provider === 'minimax'
+                                ? '⚡'
+                                : provider === 'glm'
+                                  ? '🔮'
+                                  : '☁️'}
                   </div>
                   <span className="font-medium">{getProviderDisplayName(provider)}</span>
                 </button>
@@ -405,19 +460,21 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                 helperLink: 'https://platform.openai.com/api-keys',
                 helperLinkLabel: 'OpenAI Platform',
                 isVisible: !!showApiKey['openai'],
-                onChange: (value) => setSettings(prev => ({
-                  ...prev,
-                  openai: { ...prev.openai!, apiKey: value }
-                })),
+                onChange: (value) =>
+                  setSettings((prev) => ({
+                    ...prev,
+                    openai: { ...prev.openai!, apiKey: value },
+                  })),
                 onToggleVisibility: () => toggleApiKeyVisibility('openai'),
               }}
               model={{
                 value: settings.openai?.model ?? 'gpt-5.2-chat',
                 placeholder: 'e.g., gpt-4o, gpt-4-turbo, gpt-3.5-turbo',
-                onChange: (value) => setSettings(prev => ({
-                  ...prev,
-                  openai: { ...prev.openai!, model: value }
-                })),
+                onChange: (value) =>
+                  setSettings((prev) => ({
+                    ...prev,
+                    openai: { ...prev.openai!, model: value },
+                  })),
               }}
             >
               <div className="space-y-2">
@@ -428,15 +485,18 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                 <input
                   type="url"
                   value={settings.openai?.baseUrl ?? ''}
-                  onChange={e => setSettings(prev => ({
-                    ...prev,
-                    openai: { ...prev.openai!, baseUrl: e.target.value }
-                  }))}
+                  onChange={(e) =>
+                    setSettings((prev) => ({
+                      ...prev,
+                      openai: { ...prev.openai!, baseUrl: e.target.value },
+                    }))
+                  }
                   placeholder="https://api.openai.com/v1 (default)"
                   className="w-full px-4 py-3 bg-elevated border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all"
                 />
                 <p className="text-xs text-text-muted">
-                  Leave empty to use the default OpenAI API. Set a custom URL for proxies or compatible APIs.
+                  Leave empty to use the default OpenAI API. Set a custom URL for proxies or
+                  compatible APIs.
                 </p>
               </div>
             </ProviderConfigCard>
@@ -453,19 +513,21 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                 helperLink: 'https://aistudio.google.com/app/apikey',
                 helperLinkLabel: 'Google AI Studio',
                 isVisible: !!showApiKey['gemini'],
-                onChange: (value) => setSettings(prev => ({
-                  ...prev,
-                  gemini: { ...prev.gemini!, apiKey: value }
-                })),
+                onChange: (value) =>
+                  setSettings((prev) => ({
+                    ...prev,
+                    gemini: { ...prev.gemini!, apiKey: value },
+                  })),
                 onToggleVisibility: () => toggleApiKeyVisibility('gemini'),
               }}
               model={{
                 value: settings.gemini?.model ?? 'gemini-2.0-flash',
                 placeholder: 'e.g., gemini-2.0-flash, gemini-1.5-pro',
-                onChange: (value) => setSettings(prev => ({
-                  ...prev,
-                  gemini: { ...prev.gemini!, model: value }
-                })),
+                onChange: (value) =>
+                  setSettings((prev) => ({
+                    ...prev,
+                    gemini: { ...prev.gemini!, model: value },
+                  })),
               }}
             />
           )}
@@ -481,19 +543,21 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                 helperLink: 'https://console.anthropic.com/settings/keys',
                 helperLinkLabel: 'Anthropic Console',
                 isVisible: !!showApiKey['anthropic'],
-                onChange: (value) => setSettings(prev => ({
-                  ...prev,
-                  anthropic: { ...prev.anthropic!, apiKey: value }
-                })),
+                onChange: (value) =>
+                  setSettings((prev) => ({
+                    ...prev,
+                    anthropic: { ...prev.anthropic!, apiKey: value },
+                  })),
                 onToggleVisibility: () => toggleApiKeyVisibility('anthropic'),
               }}
               model={{
                 value: settings.anthropic?.model ?? 'claude-sonnet-4-20250514',
                 placeholder: 'e.g., claude-sonnet-4-20250514, claude-3-opus',
-                onChange: (value) => setSettings(prev => ({
-                  ...prev,
-                  anthropic: { ...prev.anthropic!, model: value }
-                })),
+                onChange: (value) =>
+                  setSettings((prev) => ({
+                    ...prev,
+                    anthropic: { ...prev.anthropic!, model: value },
+                  })),
               }}
             />
           )}
@@ -510,10 +574,12 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                   <input
                     type={showApiKey['azure'] ? 'text' : 'password'}
                     value={settings.azureOpenAI?.apiKey ?? ''}
-                    onChange={e => setSettings(prev => ({
-                      ...prev,
-                      azureOpenAI: { ...prev.azureOpenAI!, apiKey: e.target.value }
-                    }))}
+                    onChange={(e) =>
+                      setSettings((prev) => ({
+                        ...prev,
+                        azureOpenAI: { ...prev.azureOpenAI!, apiKey: e.target.value },
+                      }))
+                    }
                     placeholder="Enter your Azure OpenAI API key"
                     className="w-full px-4 py-3 pr-12 bg-elevated border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all"
                   />
@@ -522,7 +588,11 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                     onClick={() => toggleApiKeyVisibility('azure')}
                     className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text-muted hover:text-text-primary transition-colors"
                   >
-                    {showApiKey['azure'] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showApiKey['azure'] ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -535,10 +605,12 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                 <input
                   type="url"
                   value={settings.azureOpenAI?.endpoint ?? ''}
-                  onChange={e => setSettings(prev => ({
-                    ...prev,
-                    azureOpenAI: { ...prev.azureOpenAI!, endpoint: e.target.value }
-                  }))}
+                  onChange={(e) =>
+                    setSettings((prev) => ({
+                      ...prev,
+                      azureOpenAI: { ...prev.azureOpenAI!, endpoint: e.target.value },
+                    }))
+                  }
                   placeholder="https://your-resource.openai.azure.com"
                   className="w-full px-4 py-3 bg-elevated border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all"
                 />
@@ -549,10 +621,12 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                 <input
                   type="text"
                   value={settings.azureOpenAI?.deploymentName ?? ''}
-                  onChange={e => setSettings(prev => ({
-                    ...prev,
-                    azureOpenAI: { ...prev.azureOpenAI!, deploymentName: e.target.value }
-                  }))}
+                  onChange={(e) =>
+                    setSettings((prev) => ({
+                      ...prev,
+                      azureOpenAI: { ...prev.azureOpenAI!, deploymentName: e.target.value },
+                    }))
+                  }
                   placeholder="e.g., gpt-4o-deployment"
                   className="w-full px-4 py-3 bg-elevated border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all"
                 />
@@ -564,10 +638,12 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                   <input
                     type="text"
                     value={settings.azureOpenAI?.model ?? 'gpt-4o'}
-                    onChange={e => setSettings(prev => ({
-                      ...prev,
-                      azureOpenAI: { ...prev.azureOpenAI!, model: e.target.value }
-                    }))}
+                    onChange={(e) =>
+                      setSettings((prev) => ({
+                        ...prev,
+                        azureOpenAI: { ...prev.azureOpenAI!, model: e.target.value },
+                      }))
+                    }
                     placeholder="gpt-4o"
                     className="w-full px-4 py-3 bg-elevated border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all"
                   />
@@ -578,10 +654,12 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                   <input
                     type="text"
                     value={settings.azureOpenAI?.apiVersion ?? '2024-08-01-preview'}
-                    onChange={e => setSettings(prev => ({
-                      ...prev,
-                      azureOpenAI: { ...prev.azureOpenAI!, apiVersion: e.target.value }
-                    }))}
+                    onChange={(e) =>
+                      setSettings((prev) => ({
+                        ...prev,
+                        azureOpenAI: { ...prev.azureOpenAI!, apiVersion: e.target.value },
+                      }))
+                    }
                     placeholder="2024-08-01-preview"
                     className="w-full px-4 py-3 bg-elevated border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all"
                   />
@@ -616,7 +694,8 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                     className="text-accent hover:underline"
                   >
                     ollama.ai
-                  </a>, then run:
+                  </a>
+                  , then run:
                 </p>
                 <code className="block mt-2 px-3 py-2 bg-black/30 rounded-lg text-amber-200 font-mono text-sm">
                   ollama serve
@@ -632,16 +711,20 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                   <input
                     type="url"
                     value={settings.ollama?.baseUrl ?? DEFAULT_OLLAMA_BASE_URL}
-                    onChange={e => setSettings(prev => ({
-                      ...prev,
-                      ollama: { ...prev.ollama!, baseUrl: e.target.value }
-                    }))}
+                    onChange={(e) =>
+                      setSettings((prev) => ({
+                        ...prev,
+                        ollama: { ...prev.ollama!, baseUrl: e.target.value },
+                      }))
+                    }
                     placeholder={DEFAULT_OLLAMA_BASE_URL}
                     className="flex-1 px-4 py-3 bg-elevated border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all font-mono text-sm"
                   />
                   <button
                     type="button"
-                    onClick={() => checkOllamaConnection(settings.ollama?.baseUrl ?? DEFAULT_OLLAMA_BASE_URL)}
+                    onClick={() =>
+                      checkOllamaConnection(settings.ollama?.baseUrl ?? DEFAULT_OLLAMA_BASE_URL)
+                    }
                     disabled={isCheckingOllama}
                     className="px-3 py-3 bg-elevated border border-border-subtle rounded-xl text-text-secondary hover:text-text-primary hover:border-accent/50 transition-colors disabled:opacity-50"
                     title="Check connection"
@@ -669,15 +752,18 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                 <input
                   type="text"
                   value={settings.ollama?.model ?? ''}
-                  onChange={e => setSettings(prev => ({
-                    ...prev,
-                    ollama: { ...prev.ollama!, model: e.target.value }
-                  }))}
+                  onChange={(e) =>
+                    setSettings((prev) => ({
+                      ...prev,
+                      ollama: { ...prev.ollama!, model: e.target.value },
+                    }))
+                  }
                   placeholder="e.g., llama3.2, mistral, codellama"
                   className="w-full px-4 py-3 bg-elevated border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all font-mono text-sm"
                 />
                 <p className="text-xs text-text-muted">
-                  Pull a model with <code className="px-1 py-0.5 bg-elevated rounded">ollama pull llama3.2</code>
+                  Pull a model with{' '}
+                  <code className="px-1 py-0.5 bg-elevated rounded">ollama pull llama3.2</code>
                 </p>
               </div>
             </div>
@@ -694,10 +780,11 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                 helperLink: 'https://openrouter.ai/keys',
                 helperLinkLabel: 'OpenRouter Keys',
                 isVisible: !!showApiKey['openrouter'],
-                onChange: (value) => setSettings(prev => ({
-                  ...prev,
-                  openrouter: { ...prev.openrouter!, apiKey: value }
-                })),
+                onChange: (value) =>
+                  setSettings((prev) => ({
+                    ...prev,
+                    openrouter: { ...prev.openrouter!, apiKey: value },
+                  })),
                 onToggleVisibility: () => toggleApiKeyVisibility('openrouter'),
               }}
             >
@@ -705,10 +792,12 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                 <label className="text-sm font-medium text-text-secondary">Model</label>
                 <OpenRouterModelCombobox
                   value={settings.openrouter?.model ?? ''}
-                  onChange={(model) => setSettings(prev => ({
-                    ...prev,
-                    openrouter: { ...prev.openrouter!, model }
-                  }))}
+                  onChange={(model) =>
+                    setSettings((prev) => ({
+                      ...prev,
+                      openrouter: { ...prev.openrouter!, model },
+                    }))
+                  }
                   models={openRouterModels}
                   isLoading={isLoadingModels}
                   onLoadModels={loadOpenRouterModels}
@@ -739,19 +828,21 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                 helperLink: 'https://platform.minimax.io',
                 helperLinkLabel: 'MiniMax Platform',
                 isVisible: !!showApiKey['minimax'],
-                onChange: (value) => setSettings(prev => ({
-                  ...prev,
-                  minimax: { ...prev.minimax!, apiKey: value }
-                })),
+                onChange: (value) =>
+                  setSettings((prev) => ({
+                    ...prev,
+                    minimax: { ...prev.minimax!, apiKey: value },
+                  })),
                 onToggleVisibility: () => toggleApiKeyVisibility('minimax'),
               }}
               model={{
                 value: settings.minimax?.model ?? 'MiniMax-M2.5',
                 placeholder: 'e.g., MiniMax-M2.5, MiniMax-M2.5-highspeed',
-                onChange: (value) => setSettings(prev => ({
-                  ...prev,
-                  minimax: { ...prev.minimax!, model: value }
-                })),
+                onChange: (value) =>
+                  setSettings((prev) => ({
+                    ...prev,
+                    minimax: { ...prev.minimax!, model: value },
+                  })),
                 helperText: 'Available: MiniMax-M2.5 (default), MiniMax-M2.5-highspeed (faster)',
               }}
             />
@@ -769,10 +860,12 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                   <input
                     type={showApiKey['glm'] ? 'text' : 'password'}
                     value={settings.glm?.apiKey ?? ''}
-                    onChange={e => setSettings(prev => ({
-                      ...prev,
-                      glm: { ...prev.glm!, apiKey: e.target.value }
-                    }))}
+                    onChange={(e) =>
+                      setSettings((prev) => ({
+                        ...prev,
+                        glm: { ...prev.glm!, apiKey: e.target.value },
+                      }))
+                    }
                     placeholder="Enter your Z.AI API key"
                     className="w-full px-4 py-3 pr-12 bg-elevated border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all"
                   />
@@ -781,7 +874,11 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                     onClick={() => toggleApiKeyVisibility('glm')}
                     className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-text-muted hover:text-text-primary transition-colors"
                   >
-                    {showApiKey['glm'] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showApiKey['glm'] ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
                   </button>
                 </div>
                 <p className="text-xs text-text-muted">
@@ -801,14 +898,18 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                 <label className="text-sm font-medium text-text-secondary">Model</label>
                 <select
                   value={settings.glm?.model ?? 'GLM-5'}
-                  onChange={e => setSettings(prev => ({
-                    ...prev,
-                    glm: { ...prev.glm!, model: e.target.value }
-                  }))}
+                  onChange={(e) =>
+                    setSettings((prev) => ({
+                      ...prev,
+                      glm: { ...prev.glm!, model: e.target.value },
+                    }))
+                  }
                   className="w-full px-4 py-3 bg-elevated border border-border-subtle rounded-xl text-text-primary focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all font-mono text-sm"
                 >
-                  {getAvailableModels('glm').map(model => (
-                    <option key={model} value={model}>{model}</option>
+                  {getAvailableModels('glm').map((model) => (
+                    <option key={model} value={model}>
+                      {model}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -818,10 +919,12 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                 <input
                   type="text"
                   value={settings.glm?.baseUrl ?? 'https://api.z.ai/api/coding/paas/v4'}
-                  onChange={e => setSettings(prev => ({
-                    ...prev,
-                    glm: { ...prev.glm!, baseUrl: e.target.value }
-                  }))}
+                  onChange={(e) =>
+                    setSettings((prev) => ({
+                      ...prev,
+                      glm: { ...prev.glm!, baseUrl: e.target.value },
+                    }))
+                  }
                   placeholder="https://api.z.ai/api/coding/paas/v4"
                   className="w-full px-4 py-3 bg-elevated border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all font-mono text-sm"
                 />
@@ -839,7 +942,10 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
                 🔒
               </div>
               <div className="text-xs text-text-muted leading-relaxed">
-                <span className="text-text-secondary font-medium">Privacy:</span> Your API keys are stored only in your browser's session storage and are cleared when the tab closes. They're sent directly to the LLM provider when you chat. Your code never leaves your machine.
+                <span className="text-text-secondary font-medium">Privacy:</span> Your API keys are
+                stored only in your browser's session storage and are cleared when the tab closes.
+                They're sent directly to the LLM provider when you chat. Your code never leaves your
+                machine.
               </div>
             </div>
           </div>

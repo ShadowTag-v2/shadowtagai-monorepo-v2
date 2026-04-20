@@ -71,7 +71,7 @@ function blockquote($) {
       continue;
     }
 
-    let newText = text.replace(iconRegex, '');
+    const newText = text.replace(iconRegex, '');
     $first.text(newText);
 
     const type = match[1].toLowerCase();
@@ -116,7 +116,7 @@ function blockquote($) {
  * @param {[RegExp|string, string,(match: string, ...pattern: string[]) => string]} redirects Any redirects we want to apply
  */
 function mdMarkdown(eleventyConfig, redirects) {
-  eleventyConfig.addFilter('mdMarkdown', function (html) {
+  eleventyConfig.addFilter('mdMarkdown', (html) => {
     const $ = cheerio.load(html);
 
     fixLinks($, redirects);

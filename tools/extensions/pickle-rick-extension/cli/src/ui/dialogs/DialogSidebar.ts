@@ -1,6 +1,6 @@
-import { DashboardDialog } from "./DashboardDialog.js";
-import { SessionData } from "../../types/tasks.js";
-import { CliRenderer } from "@opentui/core";
+import type { CliRenderer } from '@opentui/core';
+import type { SessionData } from '../../types/tasks.js';
+import { DashboardDialog } from './DashboardDialog.js';
 
 export class DialogSidebar {
   private dashboardDialog: DashboardDialog;
@@ -40,18 +40,15 @@ export class DialogSidebar {
     // Dialog doesn't support input
   }
 
-  public hideInput() {
-  }
+  public hideInput() {}
 
-  public focusInput() {
-  }
+  public focusInput() {}
 
   public get onHide() {
     return undefined;
   }
 
-  public set onHide(callback: (() => void) | undefined) {
-  }
+  public set onHide(callback: (() => void) | undefined) {}
 
   public get input() {
     return undefined;

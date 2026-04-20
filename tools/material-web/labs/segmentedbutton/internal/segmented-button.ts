@@ -7,12 +7,12 @@
 import '../../../focus/md-focus-ring.js';
 import '../../../ripple/ripple.js';
 
-import {html, LitElement, nothing, PropertyValues, TemplateResult} from 'lit';
-import {property, queryAssignedElements, state} from 'lit/decorators.js';
-import {classMap} from 'lit/directives/class-map.js';
+import { html, LitElement, nothing, type PropertyValues, type TemplateResult } from 'lit';
+import { property, queryAssignedElements, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
-import {ARIAMixinStrict} from '../../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../../internal/aria/delegate.js';
+import type { ARIAMixinStrict } from '../../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../../internal/aria/delegate.js';
 
 // Separate variable needed for closure.
 const segmentedButtonBaseClass = mixinDelegatesAria(LitElement);
@@ -27,14 +27,14 @@ const segmentedButtonBaseClass = mixinDelegatesAria(LitElement);
  * clicked. --bubbles --composed
  */
 export class SegmentedButton extends segmentedButtonBaseClass {
-  @property({type: Boolean}) disabled = false;
-  @property({type: Boolean}) selected = false;
+  @property({ type: Boolean }) disabled = false;
+  @property({ type: Boolean }) selected = false;
   @property() label = '';
-  @property({type: Boolean, attribute: 'no-checkmark'}) noCheckmark = false;
-  @property({type: Boolean, attribute: 'has-icon'}) hasIcon = false;
+  @property({ type: Boolean, attribute: 'no-checkmark' }) noCheckmark = false;
+  @property({ type: Boolean, attribute: 'has-icon' }) hasIcon = false;
 
   @state() private animState = '';
-  @queryAssignedElements({slot: 'icon', flatten: true})
+  @queryAssignedElements({ slot: 'icon', flatten: true })
   private readonly iconElement!: HTMLElement[];
 
   protected override update(props: PropertyValues<SegmentedButton>) {
@@ -45,9 +45,7 @@ export class SegmentedButton extends segmentedButtonBaseClass {
     this.hasIcon = this.iconElement.length > 0;
   }
 
-  private nextAnimationState(
-    changedProps: PropertyValues<SegmentedButton>,
-  ): string {
+  private nextAnimationState(changedProps: PropertyValues<SegmentedButton>): string {
     const prevSelected = changedProps.get('selected');
     // Early exit for first update.
     if (prevSelected === undefined) return '';
@@ -73,7 +71,7 @@ export class SegmentedButton extends segmentedButtonBaseClass {
 
   protected override render() {
     // Needed for closure conformance
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     return html`
       <button
         tabindex="${this.disabled ? '-1' : '0'}"
@@ -113,9 +111,7 @@ export class SegmentedButton extends segmentedButtonBaseClass {
   }
 
   private renderLeading() {
-    return this.label === ''
-      ? this.renderLeadingWithoutLabel()
-      : this.renderLeadingWithLabel();
+    return this.label === '' ? this.renderLeadingWithoutLabel() : this.renderLeadingWithLabel();
   }
 
   private renderLeadingWithoutLabel() {

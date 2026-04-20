@@ -6,15 +6,15 @@
  * - Queue mode: Uses Redis for cross-process status
  */
 
-import logger from "../../utils/logger";
-import { isJobQueueEnabled } from "../queue/connection";
+import logger from '../../utils/logger';
+import { isJobQueueEnabled } from '../queue/connection';
 
 export type FileStatus =
-  | "pending" // Upload URL generated, waiting for upload
-  | "uploaded" // File in S3, not yet processed
-  | "processing" // Processing job running
-  | "ready" // Processed and ready to use
-  | "error"; // Processing failed
+  | 'pending' // Upload URL generated, waiting for upload
+  | 'uploaded' // File in S3, not yet processed
+  | 'processing' // Processing job running
+  | 'ready' // Processed and ready to use
+  | 'error'; // Processing failed
 
 export interface FileStatusRecord {
   fileId: string;
@@ -38,7 +38,7 @@ export interface FileStatusRecord {
 const fileStatusMap = new Map<string, FileStatusRecord>();
 
 // TTL for status records (configurable, default 1 hour)
-const statusTtlMinutes = parseInt(process.env.FILE_STATUS_TTL_MINUTES || "60", 10);
+const statusTtlMinutes = parseInt(process.env.FILE_STATUS_TTL_MINUTES || '60', 10);
 const STATUS_TTL_MS = statusTtlMinutes * 60 * 1000;
 
 /**
@@ -48,7 +48,7 @@ async function getRedisClient() {
   if (!isJobQueueEnabled()) {
     return null;
   }
-  const { getBullMQConnection } = await import("../queue/connection");
+  const { getBullMQConnection } = await import('../queue/connection');
   return getBullMQConnection();
 }
 
@@ -56,14 +56,14 @@ async function getRedisClient() {
  * Create a new file status record
  */
 export async function createFileStatus(
-  data: Omit<FileStatusRecord, "status" | "createdAt" | "updatedAt" | "expiresAt">,
+  data: Omit<FileStatusRecord, 'status' | 'createdAt' | 'updatedAt' | 'expiresAt'>,
 ): Promise<FileStatusRecord> {
   const now = new Date().toISOString();
   const expiresAt = new Date(Date.now() + STATUS_TTL_MS).toISOString();
 
   const record: FileStatusRecord = {
     ...data,
-    status: "pending",
+    status: 'pending',
     createdAt: now,
     updatedAt: now,
     expiresAt,
@@ -74,12 +74,12 @@ export async function createFileStatus(
   if (redis) {
     // Queue mode: Store in Redis
     const key = `file:status:${data.fileId}`;
-    await redis.set(key, JSON.stringify(record), "EX", Math.floor(STATUS_TTL_MS / 1000));
-    logger.info({ fileId: data.fileId, key }, "file_status_created_redis");
+    await redis.set(key, JSON.stringify(record), 'EX', Math.floor(STATUS_TTL_MS / 1000));
+    logger.info({ fileId: data.fileId, key }, 'file_status_created_redis');
   } else {
     // In-process mode: Store in memory
     fileStatusMap.set(data.fileId, record);
-    logger.info({ fileId: data.fileId }, "file_status_created_memory");
+    logger.info({ fileId: data.fileId }, 'file_status_created_memory');
   }
 
   return record;
@@ -108,12 +108,12 @@ export async function getFileStatus(fileId: string): Promise<FileStatusRecord | 
  */
 export async function updateFileStatus(
   fileId: string,
-  updates: Partial<Pick<FileStatusRecord, "status" | "description" | "error" | "jobId">>,
+  updates: Partial<Pick<FileStatusRecord, 'status' | 'description' | 'error' | 'jobId'>>,
 ): Promise<FileStatusRecord | null> {
   const record = await getFileStatus(fileId);
 
   if (!record) {
-    logger.warn({ fileId }, "file_status_not_found_for_update");
+    logger.warn({ fileId }, 'file_status_not_found_for_update');
     return null;
   }
 
@@ -132,11 +132,11 @@ export async function updateFileStatus(
       0,
       Math.floor((new Date(record.expiresAt).getTime() - Date.now()) / 1000),
     );
-    await redis.set(key, JSON.stringify(updatedRecord), "EX", remainingTtl || 3600);
-    logger.info({ fileId, status: updates.status }, "file_status_updated_redis");
+    await redis.set(key, JSON.stringify(updatedRecord), 'EX', remainingTtl || 3600);
+    logger.info({ fileId, status: updates.status }, 'file_status_updated_redis');
   } else {
     fileStatusMap.set(fileId, updatedRecord);
-    logger.info({ fileId, status: updates.status }, "file_status_updated_memory");
+    logger.info({ fileId, status: updates.status }, 'file_status_updated_memory');
   }
 
   return updatedRecord;
@@ -151,10 +151,10 @@ export async function deleteFileStatus(fileId: string): Promise<void> {
   if (redis) {
     const key = `file:status:${fileId}`;
     await redis.del(key);
-    logger.info({ fileId }, "file_status_deleted_redis");
+    logger.info({ fileId }, 'file_status_deleted_redis');
   } else {
     fileStatusMap.delete(fileId);
-    logger.info({ fileId }, "file_status_deleted_memory");
+    logger.info({ fileId }, 'file_status_deleted_memory');
   }
 }
 
@@ -168,10 +168,10 @@ export async function getPendingFileIds(conversationStateId: string): Promise<st
   if (redis) {
     // In queue mode, scan Redis for file status keys
     const pendingFileIds: string[] = [];
-    let cursor = "0";
+    let cursor = '0';
 
     do {
-      const [nextCursor, keys] = await redis.scan(cursor, "MATCH", "file:status:*", "COUNT", 100);
+      const [nextCursor, keys] = await redis.scan(cursor, 'MATCH', 'file:status:*', 'COUNT', 100);
       cursor = nextCursor;
 
       for (const key of keys) {
@@ -180,15 +180,15 @@ export async function getPendingFileIds(conversationStateId: string): Promise<st
           const record = JSON.parse(data) as FileStatusRecord;
           if (
             record.conversationStateId === conversationStateId &&
-            (record.status === "pending" ||
-              record.status === "uploaded" ||
-              record.status === "processing")
+            (record.status === 'pending' ||
+              record.status === 'uploaded' ||
+              record.status === 'processing')
           ) {
             pendingFileIds.push(record.fileId);
           }
         }
       }
-    } while (cursor !== "0");
+    } while (cursor !== '0');
 
     return pendingFileIds;
   } else {
@@ -197,9 +197,9 @@ export async function getPendingFileIds(conversationStateId: string): Promise<st
     for (const [fileId, record] of fileStatusMap) {
       if (
         record.conversationStateId === conversationStateId &&
-        (record.status === "pending" ||
-          record.status === "uploaded" ||
-          record.status === "processing")
+        (record.status === 'pending' ||
+          record.status === 'uploaded' ||
+          record.status === 'processing')
       ) {
         pendingFileIds.push(fileId);
       }
@@ -224,6 +224,6 @@ export function cleanupExpiredStatus(): void {
   }
 
   if (cleaned > 0) {
-    logger.info({ cleaned }, "expired_file_status_cleaned");
+    logger.info({ cleaned }, 'expired_file_status_cleaned');
   }
 }

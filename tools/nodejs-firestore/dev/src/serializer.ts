@@ -14,32 +14,34 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
+import type * as firestore from '@google-cloud/firestore';
 
 import * as proto from '../protos/firestore_v1_proto_api';
-
-import {DeleteTransform, FieldTransform, VectorValue} from './field-value';
-import {detectGoogleProtobufValueType, detectValueType} from './convert';
-import {GeoPoint} from './geo-point';
-import {DocumentReference, Firestore} from './index';
-import {FieldPath, ObjectValueFieldPath, QualifiedResourcePath} from './path';
-import {Timestamp} from './timestamp';
-import {ApiMapValue, ValidationOptions} from './types';
-import {forEach, isEmpty, isObject, isPlainObject} from './util';
-import {customObjectMessage, invalidArgumentMessage} from './validate';
-import {Pipeline} from './pipelines';
+import { detectGoogleProtobufValueType, detectValueType } from './convert';
+import { DeleteTransform, FieldTransform, VectorValue } from './field-value';
+import { GeoPoint } from './geo-point';
+import { DocumentReference, type Firestore } from './index';
+import { FieldPath, ObjectValueFieldPath, QualifiedResourcePath } from './path';
+import { Pipeline } from './pipelines';
+import { Timestamp } from './timestamp';
+import type { ApiMapValue, ValidationOptions } from './types';
+import { forEach, isEmpty, isObject, isPlainObject } from './util';
+import { customObjectMessage, invalidArgumentMessage } from './validate';
 
 import api = proto.google.firestore.v1;
+
+import { google } from '../protos/firestore_v1_proto_api';
 import {
   RESERVED_MAP_KEY,
   RESERVED_MAP_KEY_VECTOR_VALUE,
   VECTOR_MAP_VECTORS_KEY,
 } from './map-type';
-import {google} from '../protos/firestore_v1_proto_api';
+
 import IMapValue = google.firestore.v1.IMapValue;
 import IValue = google.firestore.v1.IValue;
 import Value = google.firestore.v1.Value;
-import {isString} from './pipelines/pipeline-util';
+
+import { isString } from './pipelines/pipeline-util';
 
 /**
  * The maximum depth of a Firestore object.
@@ -69,15 +71,14 @@ export interface Serializable {
 export class Serializer {
   private allowUndefined: boolean;
   private createDocumentReference: (path: string) => DocumentReference;
-  private createInteger: (n: number | string) => number | BigInt;
+  private createInteger: (n: number | string) => number | bigint;
 
   constructor(private firestore: Firestore) {
     // Instead of storing the `firestore` object, we store just a reference to
     // its `.doc()` method. This avoid a circular reference, which breaks
     // JSON.stringify().
-    this.createDocumentReference = path => firestore.doc(path);
-    this.createInteger = n =>
-      firestore._settings.useBigInt ? BigInt(n) : Number(n);
+    this.createDocumentReference = (path) => firestore.doc(path);
+    this.createInteger = (n) => (firestore._settings.useBigInt ? BigInt(n) : Number(n));
     this.allowUndefined = !!firestore._settings.ignoreUndefinedProperties;
   }
 
@@ -238,7 +239,7 @@ export class Serializer {
     }
 
     if (val instanceof Map) {
-      const map: api.IMapValue = {fields: {}};
+      const map: api.IMapValue = { fields: {} };
       for (const [key, value] of val.entries()) {
         if (typeof key !== 'string') {
           throw new Error(`Cannot encode map with non-string key: ${key}`);
@@ -297,7 +298,7 @@ export class Serializer {
           },
           [VECTOR_MAP_VECTORS_KEY]: {
             arrayValue: {
-              values: rawVector.map(value => {
+              values: rawVector.map((value) => {
                 return {
                   doubleValue: value,
                 };
@@ -337,9 +338,7 @@ export class Serializer {
         return Timestamp.fromProto(proto.timestampValue!);
       }
       case 'referenceValue': {
-        const resourcePath = QualifiedResourcePath.fromSlashSeparatedString(
-          proto.referenceValue!,
-        );
+        const resourcePath = QualifiedResourcePath.fromSlashSeparatedString(proto.referenceValue!);
         if (resourcePath.isDocument) {
           return this.createDocumentReference(resourcePath.relativeName);
         } else {
@@ -383,9 +382,7 @@ export class Serializer {
         return proto.bytesValue;
       }
       default: {
-        throw new Error(
-          'Cannot decode type from Firestore Value: ' + JSON.stringify(proto),
-        );
+        throw new Error('Cannot decode type from Firestore Value: ' + JSON.stringify(proto));
       }
     }
   }
@@ -419,10 +416,7 @@ export class Serializer {
         return this.decodeGoogleProtobufStruct(proto.structValue);
       }
       default: {
-        throw new Error(
-          'Cannot decode type from google.protobuf.Value: ' +
-            JSON.stringify(proto),
-        );
+        throw new Error('Cannot decode type from google.protobuf.Value: ' + JSON.stringify(proto));
       }
     }
   }
@@ -435,9 +429,7 @@ export class Serializer {
    * @param proto A Google Protobuf 'ListValue'.
    * @returns The converted JS type.
    */
-  decodeGoogleProtobufList(
-    proto: proto.google.protobuf.IListValue | null | undefined,
-  ): unknown[] {
+  decodeGoogleProtobufList(proto: proto.google.protobuf.IListValue | null | undefined): unknown[] {
     const result: unknown[] = [];
     if (proto && proto.values && Array.isArray(proto.values)) {
       for (const value of proto.values) {
@@ -622,19 +614,17 @@ export function validateUserInput(
  * @private
  * @internal
  */
-function isMomentJsType(value: unknown): value is {toDate(): Date} {
+function isMomentJsType(value: unknown): value is { toDate(): Date } {
   return (
     typeof value === 'object' &&
     value !== null &&
     value.constructor &&
     value.constructor.name === 'Moment' &&
-    typeof (value as {toDate: unknown}).toDate === 'function'
+    typeof (value as { toDate: unknown }).toDate === 'function'
   );
 }
 
-export function isProtoValueSerializable(
-  value: unknown,
-): value is ProtoValueSerializable {
+export function isProtoValueSerializable(value: unknown): value is ProtoValueSerializable {
   return (
     !!value &&
     typeof (value as ProtoValueSerializable)._toProto === 'function' &&
@@ -664,10 +654,10 @@ export function hasUserData(value: unknown): value is HasUserData {
  * ability to add and remove fields.
  */
 export class ObjectValue {
-  constructor(readonly value: {mapValue: IMapValue}) {}
+  constructor(readonly value: { mapValue: IMapValue }) {}
 
   static empty(): ObjectValue {
-    return new ObjectValue({mapValue: {}});
+    return new ObjectValue({ mapValue: {} });
   }
 
   /**
@@ -689,7 +679,7 @@ export class ObjectValue {
   setAll(data: Map<ObjectValueFieldPath, IValue | null>): void {
     let parent = new ObjectValueFieldPath();
 
-    let upserts: {[key: string]: IValue} = {};
+    let upserts: { [key: string]: IValue } = {};
     let deletes: string[] = [];
 
     data.forEach((value, path) => {
@@ -721,16 +711,16 @@ export class ObjectValue {
     let current = this.value;
 
     if (!current.mapValue!.fields) {
-      current.mapValue = {fields: {}};
+      current.mapValue = { fields: {} };
     }
 
     for (let i = 0; i < path.size; ++i) {
       let next = current.mapValue!.fields![path.get(i)];
       if (!isMapValue(next) || !next.mapValue.fields) {
-        next = {mapValue: {fields: {}}};
+        next = { mapValue: { fields: {} } };
         current.mapValue!.fields![path.get(i)] = next;
       }
-      current = next as {mapValue: IMapValue};
+      current = next as { mapValue: IMapValue };
     }
 
     return current.mapValue!.fields!;
@@ -742,7 +732,7 @@ export class ObjectValue {
    */
   private applyChanges(
     fieldsMap: Record<string, IValue>,
-    inserts: {[key: string]: IValue},
+    inserts: { [key: string]: IValue },
     deletes: string[],
   ): void {
     forEach(inserts, (key, val) => (fieldsMap[key] = val));
@@ -753,8 +743,6 @@ export class ObjectValue {
 }
 
 /** Returns true if `value` is a MapValue. */
-export function isMapValue(
-  value?: IValue | null,
-): value is {mapValue: IMapValue} {
+export function isMapValue(value?: IValue | null): value is { mapValue: IMapValue } {
   return !!value && 'mapValue' in value;
 }

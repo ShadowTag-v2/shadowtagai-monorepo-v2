@@ -1,10 +1,10 @@
-import type { ConversationState, Message, PlanTask } from "../../types/core";
+import type { ConversationState, Message, PlanTask } from '../../types/core';
 import {
   fetchConversationHistory,
   resolveQuestionForReply,
-} from "../../utils/deep-research/continuation-utils";
-import logger from "../../utils/logger";
-import { generateReply } from "./utils";
+} from '../../utils/deep-research/continuation-utils';
+import logger from '../../utils/logger';
+import { generateReply } from './utils';
 
 type ReplyResult = {
   reply: string;
@@ -50,7 +50,7 @@ export async function replyAgent(input: {
       hasInsights: (conversationState.values.keyInsights?.length || 0) > 0,
       hasDiscoveries: (conversationState.values.discoveries?.length || 0) > 0,
     },
-    "reply_agent_started",
+    'reply_agent_started',
   );
 
   // Fetch conversation history for classifier context (handles "continue", "yes", etc.)
@@ -66,15 +66,15 @@ export async function replyAgent(input: {
 
   logger.info(
     {
-      messageQuestion: message.question?.substring(0, 50) || "EMPTY",
+      messageQuestion: message.question?.substring(0, 50) || 'EMPTY',
       resolvedQuestion: questionForReply.substring(0, 50),
       source: message.question
-        ? "current"
+        ? 'current'
         : conversationHistory.find((h) => h.question)
-          ? "history"
-          : "objective",
+          ? 'history'
+          : 'objective',
     },
-    "reply_agent_question_resolved",
+    'reply_agent_question_resolved',
   );
 
   try {
@@ -99,7 +99,7 @@ export async function replyAgent(input: {
         thinking: true,
         thinkingBudget: 1024,
         messageId: message.id,
-        usageType: "deep-research",
+        usageType: 'deep-research',
         isFinal,
       },
     );
@@ -108,7 +108,7 @@ export async function replyAgent(input: {
 
     // Extract summary section for conversation history
     const summaryMatch = reply.match(/## Summary\s+([\s\S]+?)(?:\n---|\n##|$)/);
-    const summary = summaryMatch ? summaryMatch[1]!.trim() : reply.substring(0, 300) + "..."; // Fallback to first 300 chars
+    const summary = summaryMatch ? summaryMatch[1]!.trim() : reply.substring(0, 300) + '...'; // Fallback to first 300 chars
 
     logger.info(
       {
@@ -117,7 +117,7 @@ export async function replyAgent(input: {
         completedTaskCount: completedMaxTasks.length,
         nextPlanCount: nextPlan.length,
       },
-      "reply_agent_completed",
+      'reply_agent_completed',
     );
 
     return {
@@ -127,7 +127,7 @@ export async function replyAgent(input: {
       end,
     };
   } catch (err) {
-    logger.error({ err }, "reply_agent_failed");
+    logger.error({ err }, 'reply_agent_failed');
     throw err;
   }
 }

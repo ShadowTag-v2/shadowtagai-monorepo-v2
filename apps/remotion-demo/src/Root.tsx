@@ -1,6 +1,6 @@
-import React from "react";
-import { Composition } from "remotion";
-import { CounselConduitDemo } from "./CounselConduitDemo";
+import type React from 'react';
+import { Composition } from 'remotion';
+import { CounselConduitDemo } from './CounselConduitDemo';
 
 export const RemotionRoot: React.FC = () => {
   return (

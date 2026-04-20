@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Button} from './button.js';
+import { Button } from './button.js';
 
 /**
  * An outlined button component.

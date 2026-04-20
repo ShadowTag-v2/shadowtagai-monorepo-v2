@@ -5,13 +5,13 @@
  * IQ BASELINE: 160 (Reject anything with < 0.9 confidence)
  */
 
-const { VertexAI } = require("@google-cloud/vertexai");
+const { VertexAI } = require('@google-cloud/vertexai');
 
 // --- CONFIGURATION ---
 const CONFIG = {
   project: process.env.GOOGLE_PROJECT_ID,
-  location: "us-central1", // Low latency zone
-  model: "gemini-1.5-pro-preview", // High IQ model
+  location: 'us-central1', // Low latency zone
+  model: 'gemini-1.5-pro-preview', // High IQ model
   strictMode: {
     enabled: true,
     confidenceThreshold: 0.9, // Board IQ 160 equivalent
@@ -53,7 +53,7 @@ async function generateLift(assertion) {
 
   try {
     const result = await model.generateContent({
-      content: [{ role: "user", parts: [{ text: prompt }] }],
+      content: [{ role: 'user', parts: [{ text: prompt }] }],
       tools: [groundingTool],
     });
 
@@ -66,7 +66,7 @@ async function generateLift(assertion) {
   } catch (error) {
     console.error(`[ANTIGRAVITY] Engine Stall: ${error.message}`);
     // In Strict Mode, an engine stall is a mandatory abort.
-    return { status: "ABORT", lift: 0, reason: "Grounding API Unreachable" };
+    return { status: 'ABORT', lift: 0, reason: 'Grounding API Unreachable' };
   }
 }
 
@@ -76,8 +76,8 @@ async function generateLift(assertion) {
  */
 function calculatePhysics(auditLog, metadata) {
   // Extract status from the Audit Log
-  const isCleared = auditLog.includes("status: CLEARED");
-  const isGrounded = auditLog.includes("status: GROUNDED");
+  const isCleared = auditLog.includes('status: CLEARED');
+  const isGrounded = auditLog.includes('status: GROUNDED');
 
   // Check Grounding Metadata (The "Truth" Signal)
   const hasEvidence = metadata && metadata.searchEntryPoint;
@@ -86,31 +86,31 @@ function calculatePhysics(auditLog, metadata) {
   if (CONFIG.strictMode.enabled) {
     if (isGrounded) {
       return {
-        status: "HEAVY",
+        status: 'HEAVY',
         lift: 0.0,
-        action: "SOP-B (ABORT & REVIEW)",
-        reason: "Contradictory evidence found. Drag coefficient too high.",
-        evidence: metadata?.webSearchQueries || "Direct Contradiction",
+        action: 'SOP-B (ABORT & REVIEW)',
+        reason: 'Contradictory evidence found. Drag coefficient too high.',
+        evidence: metadata?.webSearchQueries || 'Direct Contradiction',
       };
     }
 
     if (!isCleared && !hasEvidence) {
       return {
-        status: "NULL",
+        status: 'NULL',
         lift: 0.1,
-        action: "SOP-C (HUMAN OVERRIDE)",
-        reason: "Insufficient data to generate lift. Hovering.",
+        action: 'SOP-C (HUMAN OVERRIDE)',
+        reason: 'Insufficient data to generate lift. Hovering.',
       };
     }
   }
 
   // If we are here, we have LIFT.
   return {
-    status: "ORBIT",
+    status: 'ORBIT',
     lift: 1.0,
-    action: "EXECUTE",
-    reason: "Assertion verified by live ground truth.",
-    source: metadata?.searchEntryPoint?.renderedContent || "Google Index",
+    action: 'EXECUTE',
+    reason: 'Assertion verified by live ground truth.',
+    source: metadata?.searchEntryPoint?.renderedContent || 'Google Index',
   };
 }
 

@@ -1,8 +1,19 @@
-import { useState, useCallback, useRef, DragEvent } from 'react';
-import { Upload, FileArchive, Github, Loader2, ArrowRight, Key, Eye, EyeOff, Globe, X } from '@/lib/lucide-icons';
+import { type DragEvent, useCallback, useRef, useState } from 'react';
+import {
+  ArrowRight,
+  Eye,
+  EyeOff,
+  FileArchive,
+  Github,
+  Globe,
+  Key,
+  Loader2,
+  Upload,
+  X,
+} from '@/lib/lucide-icons';
 import { cloneRepository, parseGitHubUrl } from '../services/git-clone';
-import { connectToServer, type ConnectToServerResult } from '../services/server-connection';
-import { FileEntry } from '../services/zip';
+import { type ConnectToServerResult, connectToServer } from '../services/server-connection';
+import type { FileEntry } from '../services/zip';
 
 interface DropZoneProps {
   onFileSelect: (file: File) => void;
@@ -54,33 +65,39 @@ export const DropZone = ({ onFileSelect, onGitClone, onServerConnect }: DropZone
     setIsDragging(false);
   }, []);
 
-  const handleDrop = useCallback((e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
+  const handleDrop = useCallback(
+    (e: DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragging(false);
 
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      const file = files[0];
-      if (file.name.endsWith('.zip')) {
-        onFileSelect(file);
-      } else {
-        setError('Please drop a .zip file');
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        const file = files[0];
+        if (file.name.endsWith('.zip')) {
+          onFileSelect(file);
+        } else {
+          setError('Please drop a .zip file');
+        }
       }
-    }
-  }, [onFileSelect]);
+    },
+    [onFileSelect],
+  );
 
-  const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      if (file.name.endsWith('.zip')) {
-        onFileSelect(file);
-      } else {
-        setError('Please select a .zip file');
+  const handleFileInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = e.target.files;
+      if (files && files.length > 0) {
+        const file = files[0];
+        if (file.name.endsWith('.zip')) {
+          onFileSelect(file);
+        } else {
+          setError('Please select a .zip file');
+        }
       }
-    }
-  }, [onFileSelect]);
+    },
+    [onFileSelect],
+  );
 
   const handleGitClone = async () => {
     if (!githubUrl.trim()) {
@@ -102,7 +119,7 @@ export const DropZone = ({ onFileSelect, onGitClone, onServerConnect }: DropZone
       const files = await cloneRepository(
         githubUrl,
         (phase, percent) => setCloneProgress({ phase, percent }),
-        githubToken || undefined
+        githubToken || undefined,
       );
 
       setGithubToken('');
@@ -113,9 +130,15 @@ export const DropZone = ({ onFileSelect, onGitClone, onServerConnect }: DropZone
     } catch (err) {
       console.error('Clone failed:', err);
       const message = err instanceof Error ? err.message : 'Failed to clone repository';
-      if (message.includes('401') || message.includes('403') || message.includes('Authentication')) {
+      if (
+        message.includes('401') ||
+        message.includes('403') ||
+        message.includes('Authentication')
+      ) {
         if (!githubToken) {
-          setError('This looks like a private repo. Add a GitHub PAT (Personal Access Token) to access it.');
+          setError(
+            'This looks like a private repo. Add a GitHub PAT (Personal Access Token) to access it.',
+          );
         } else {
           setError('Authentication failed. Check your token permissions (needs repo access).');
         }
@@ -156,7 +179,7 @@ export const DropZone = ({ onFileSelect, onGitClone, onServerConnect }: DropZone
         (phase, downloaded, total) => {
           setServerProgress({ phase, downloaded, total });
         },
-        abortController.signal
+        abortController.signal,
       );
 
       if (onServerConnect) {
@@ -201,13 +224,17 @@ export const DropZone = ({ onFileSelect, onGitClone, onServerConnect }: DropZone
         {/* Tab Switcher */}
         <div className="flex mb-4 bg-surface border border-border-default rounded-xl p-1">
           <button
-            onClick={() => { setActiveTab('zip'); setError(null); }}
+            onClick={() => {
+              setActiveTab('zip');
+              setError(null);
+            }}
             className={`
               flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg
               text-sm font-medium transition-all duration-200
-              ${activeTab === 'zip'
-                ? 'bg-accent text-white shadow-md'
-                : 'text-text-secondary hover:text-text-primary hover:bg-elevated'
+              ${
+                activeTab === 'zip'
+                  ? 'bg-accent text-white shadow-md'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-elevated'
               }
             `}
           >
@@ -215,13 +242,17 @@ export const DropZone = ({ onFileSelect, onGitClone, onServerConnect }: DropZone
             ZIP Upload
           </button>
           <button
-            onClick={() => { setActiveTab('github'); setError(null); }}
+            onClick={() => {
+              setActiveTab('github');
+              setError(null);
+            }}
             className={`
               flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg
               text-sm font-medium transition-all duration-200
-              ${activeTab === 'github'
-                ? 'bg-accent text-white shadow-md'
-                : 'text-text-secondary hover:text-text-primary hover:bg-elevated'
+              ${
+                activeTab === 'github'
+                  ? 'bg-accent text-white shadow-md'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-elevated'
               }
             `}
           >
@@ -229,13 +260,17 @@ export const DropZone = ({ onFileSelect, onGitClone, onServerConnect }: DropZone
             GitHub URL
           </button>
           <button
-            onClick={() => { setActiveTab('server'); setError(null); }}
+            onClick={() => {
+              setActiveTab('server');
+              setError(null);
+            }}
             className={`
               flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg
               text-sm font-medium transition-all duration-200
-              ${activeTab === 'server'
-                ? 'bg-accent text-white shadow-md'
-                : 'text-text-secondary hover:text-text-primary hover:bg-elevated'
+              ${
+                activeTab === 'server'
+                  ? 'bg-accent text-white shadow-md'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-elevated'
               }
             `}
           >
@@ -259,9 +294,10 @@ export const DropZone = ({ onFileSelect, onGitClone, onServerConnect }: DropZone
                 relative p-16
                 bg-surface border-2 border-dashed rounded-3xl
                 transition-all duration-300 cursor-pointer
-                ${isDragging
-                  ? 'border-accent bg-elevated scale-105 shadow-glow'
-                  : 'border-border-default hover:border-accent/50 hover:bg-elevated/50 animate-breathe'
+                ${
+                  isDragging
+                    ? 'border-accent bg-elevated scale-105 shadow-glow'
+                    : 'border-border-default hover:border-accent/50 hover:bg-elevated/50 animate-breathe'
                 }
               `}
               onDragOver={handleDragOver}
@@ -278,14 +314,16 @@ export const DropZone = ({ onFileSelect, onGitClone, onServerConnect }: DropZone
               />
 
               {/* Icon */}
-              <div className={`
+              <div
+                className={`
                 mx-auto w-20 h-20 mb-6
                 flex items-center justify-center
                 bg-gradient-to-br from-accent to-node-interface
                 rounded-2xl shadow-glow
                 transition-transform duration-300
                 ${isDragging ? 'scale-110' : ''}
-              `}>
+              `}
+              >
                 {isDragging ? (
                   <Upload className="w-10 h-10 text-white" />
                 ) : (
@@ -308,7 +346,6 @@ export const DropZone = ({ onFileSelect, onGitClone, onServerConnect }: DropZone
                 </span>
               </div>
             </div>
-
           </>
         )}
 
@@ -405,8 +442,7 @@ export const DropZone = ({ onFileSelect, onGitClone, onServerConnect }: DropZone
                       ? `Cloning... ${cloneProgress.percent}%`
                       : cloneProgress.phase === 'reading'
                         ? 'Reading files...'
-                        : 'Starting...'
-                    }
+                        : 'Starting...'}
                   </>
                 ) : (
                   <>
@@ -512,8 +548,7 @@ export const DropZone = ({ onFileSelect, onGitClone, onServerConnect }: DropZone
                             : `Downloading... ${formatBytes(serverProgress.downloaded)}`
                           : serverProgress.phase === 'extracting'
                             ? 'Processing...'
-                            : 'Connecting...'
-                      }
+                            : 'Connecting...'}
                     </>
                   ) : (
                     <>
@@ -549,9 +584,7 @@ export const DropZone = ({ onFileSelect, onGitClone, onServerConnect }: DropZone
                       serverProgressPercent === null ? 'animate-pulse' : ''
                     }`}
                     style={{
-                      width: serverProgressPercent !== null
-                        ? `${serverProgressPercent}%`
-                        : '100%',
+                      width: serverProgressPercent !== null ? `${serverProgressPercent}%` : '100%',
                     }}
                   />
                 </div>

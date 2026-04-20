@@ -14,35 +14,36 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
+import type * as firestore from '@google-cloud/firestore';
 
-import {GoogleError} from 'google-gax';
+import type { GoogleError } from 'google-gax';
 import * as proto from '../protos/firestore_v1_proto_api';
 
-import {ExponentialBackoff} from './backoff';
-import {DocumentSnapshot} from './document';
-import {DEFAULT_MAX_TRANSACTION_ATTEMPTS, Firestore, WriteBatch} from './index';
-import {Pipeline, PipelineResult, PipelineSnapshot} from './pipelines';
-import {Timestamp} from './timestamp';
-import {logger} from './logger';
-import {FieldPath, validateFieldPath} from './path';
-import {StatusCode} from './status-code';
-import {AggregateQuery} from './reference/aggregate-query';
-import {AggregateQuerySnapshot} from './reference/aggregate-query-snapshot';
-import {DocumentReference} from './reference/document-reference';
-import {Query} from './reference/query';
-import {QuerySnapshot} from './reference/query-snapshot';
-import {validateDocumentReference} from './reference/helpers';
-
-import {isObject, isPlainObject} from './util';
+import { ExponentialBackoff } from './backoff';
+import type { DocumentSnapshot } from './document';
+import { DocumentReader } from './document-reader';
+import { DEFAULT_MAX_TRANSACTION_ATTEMPTS, type Firestore, type WriteBatch } from './index';
+import { logger } from './logger';
+import { FieldPath, validateFieldPath } from './path';
+import { Pipeline, type PipelineResult, PipelineSnapshot } from './pipelines';
+import { AggregateQuery } from './reference/aggregate-query';
+import type { AggregateQuerySnapshot } from './reference/aggregate-query-snapshot';
+import { DocumentReference } from './reference/document-reference';
+import { validateDocumentReference } from './reference/helpers';
+import { Query } from './reference/query';
+import type { QuerySnapshot } from './reference/query-snapshot';
+import { StatusCode } from './status-code';
+import { Timestamp } from './timestamp';
+import { isObject, isPlainObject } from './util';
 import {
   invalidArgumentMessage,
-  RequiredArgumentOptions,
+  type RequiredArgumentOptions,
   validateMinNumberOfArguments,
   validateOptional,
 } from './validate';
-import {DocumentReader} from './document-reader';
+
 import api = proto.google.firestore.v1;
+
 import {
   ATTRIBUTE_KEY_ATTEMPTS_ALLOWED,
   ATTRIBUTE_KEY_ATTEMPTS_REMAINING,
@@ -65,8 +66,7 @@ import {
 const READ_AFTER_WRITE_ERROR_MSG =
   'Firestore transactions require all reads to be executed before all writes.';
 
-const READ_ONLY_WRITE_ERROR_MSG =
-  'Firestore read-only transactions cannot execute writes.';
+const READ_ONLY_WRITE_ERROR_MSG = 'Firestore read-only transactions cannot execute writes.';
 
 /**
  * A reference to a transaction.
@@ -117,12 +117,9 @@ export class Transaction implements firestore.Transaction {
     if (transactionOptions?.readOnly) {
       // Avoid initialising write batch and backoff unnecessarily for read-only transactions
       this._maxAttempts = 1;
-      this._readOnlyReadTime = transactionOptions.readTime as
-        | Timestamp
-        | undefined;
+      this._readOnlyReadTime = transactionOptions.readTime as Timestamp | undefined;
     } else {
-      this._maxAttempts =
-        transactionOptions?.maxAttempts || DEFAULT_MAX_TRANSACTION_ATTEMPTS;
+      this._maxAttempts = transactionOptions?.maxAttempts || DEFAULT_MAX_TRANSACTION_ATTEMPTS;
       this._writeBatch = firestore.batch();
       this._backoff = new ExponentialBackoff();
     }
@@ -162,14 +159,8 @@ export class Transaction implements firestore.Transaction {
     DbModelType extends firestore.DocumentData,
     AggregateSpecType extends firestore.AggregateSpec,
   >(
-    aggregateQuery: firestore.AggregateQuery<
-      AggregateSpecType,
-      AppModelType,
-      DbModelType
-    >,
-  ): Promise<
-    AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>
-  >;
+    aggregateQuery: firestore.AggregateQuery<AggregateSpecType, AppModelType, DbModelType>,
+  ): Promise<AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>>;
 
   /**
    * Retrieve a document or a query result from the database. Holds a
@@ -213,12 +204,9 @@ export class Transaction implements firestore.Transaction {
     }
 
     if (refOrQuery instanceof DocumentReference) {
-      return this._firestore._traceUtil.startActiveSpan(
-        SPAN_NAME_TRANSACTION_GET_DOCUMENT,
-        () => {
-          return this.withLazyStartedTransaction(refOrQuery, this.getSingleFn);
-        },
-      );
+      return this._firestore._traceUtil.startActiveSpan(SPAN_NAME_TRANSACTION_GET_DOCUMENT, () => {
+        return this.withLazyStartedTransaction(refOrQuery, this.getSingleFn);
+      });
     }
 
     if (refOrQuery instanceof Query || refOrQuery instanceof AggregateQuery) {
@@ -267,19 +255,14 @@ export class Transaction implements firestore.Transaction {
    */
   getAll<AppModelType, DbModelType extends firestore.DocumentData>(
     ...documentRefsOrReadOptions: Array<
-      | firestore.DocumentReference<AppModelType, DbModelType>
-      | firestore.ReadOptions
+      firestore.DocumentReference<AppModelType, DbModelType> | firestore.ReadOptions
     >
   ): Promise<Array<DocumentSnapshot<AppModelType, DbModelType>>> {
     if (this._writeBatch && !this._writeBatch.isEmpty) {
       throw new Error(READ_AFTER_WRITE_ERROR_MSG);
     }
 
-    validateMinNumberOfArguments(
-      'Transaction.getAll',
-      documentRefsOrReadOptions,
-      1,
-    );
+    validateMinNumberOfArguments('Transaction.getAll', documentRefsOrReadOptions, 1);
 
     return this.withLazyStartedTransaction(
       parseGetAllArguments(documentRefsOrReadOptions),
@@ -325,13 +308,9 @@ export class Transaction implements firestore.Transaction {
     }
 
     if (pipeline instanceof Pipeline) {
-      return this.withLazyStartedTransaction(
-        pipeline,
-        this.executePipelineFn,
-      ).then(results => {
+      return this.withLazyStartedTransaction(pipeline, this.executePipelineFn).then((results) => {
         const executionTime = results.reduce((maxTime, result) => {
-          return result._executionTime &&
-            result._executionTime?.valueOf() > maxTime.valueOf()
+          return result._executionTime && result._executionTime?.valueOf() > maxTime.valueOf()
             ? result._executionTime
             : maxTime;
         }, Timestamp.fromMillis(0));
@@ -429,10 +408,7 @@ export class Transaction implements firestore.Transaction {
     if (options) {
       this._writeBatch.set(documentRef, data, options);
     } else {
-      this._writeBatch.set(
-        documentRef,
-        data as firestore.WithFieldValue<AppModelType>,
-      );
+      this._writeBatch.set(documentRef, data as firestore.WithFieldValue<AppModelType>);
     }
     return this;
   }
@@ -480,13 +456,8 @@ export class Transaction implements firestore.Transaction {
    */
   update<AppModelType, DbModelType extends firestore.DocumentData>(
     documentRef: firestore.DocumentReference<AppModelType, DbModelType>,
-    dataOrField:
-      | firestore.UpdateData<DbModelType>
-      | string
-      | firestore.FieldPath,
-    ...preconditionOrValues: Array<
-      firestore.Precondition | unknown | string | firestore.FieldPath
-    >
+    dataOrField: firestore.UpdateData<DbModelType> | string | firestore.FieldPath,
+    ...preconditionOrValues: Array<firestore.Precondition | unknown | string | firestore.FieldPath>
   ): Transaction {
     if (!this._writeBatch) {
       throw new Error(READ_ONLY_WRITE_ERROR_MSG);
@@ -584,48 +555,43 @@ export class Transaction implements firestore.Transaction {
    * @internal
    */
   async rollback(): Promise<void> {
-    return this._firestore._traceUtil.startActiveSpan(
-      SPAN_NAME_TRANSACTION_ROLLBACK,
-      async () => {
-        // No need to roll back if we have not lazily started the transaction
-        // or if we are read only
-        if (!this._transactionIdPromise || !this._writeBatch) {
-          return;
-        }
+    return this._firestore._traceUtil.startActiveSpan(SPAN_NAME_TRANSACTION_ROLLBACK, async () => {
+      // No need to roll back if we have not lazily started the transaction
+      // or if we are read only
+      if (!this._transactionIdPromise || !this._writeBatch) {
+        return;
+      }
 
-        let transactionId: Uint8Array;
-        try {
-          transactionId = await this._transactionIdPromise;
-        } catch {
-          // This means the initial read operation rejected
-          // and we do not have a transaction ID to roll back
-          this._transactionIdPromise = undefined;
-          return;
-        }
-
-        const request: api.IRollbackRequest = {
-          database: this._firestore.formattedName,
-          transaction: transactionId,
-        };
+      let transactionId: Uint8Array;
+      try {
+        transactionId = await this._transactionIdPromise;
+      } catch {
+        // This means the initial read operation rejected
+        // and we do not have a transaction ID to roll back
         this._transactionIdPromise = undefined;
-        this._prevTransactionId = transactionId;
+        return;
+      }
 
-        // We don't need to wait for rollback to completed before continuing.
-        // If there are any locks held, then rollback will eventually release them.
-        // Rollback can be done concurrently thereby reducing latency caused by
-        // otherwise blocking.
-        this._firestore
-          .request('rollback', request, this._requestTag)
-          .catch(err => {
-            logger(
-              'Firestore.runTransaction',
-              this._requestTag,
-              'Best effort to rollback failed with error:',
-              err,
-            );
-          });
-      },
-    );
+      const request: api.IRollbackRequest = {
+        database: this._firestore.formattedName,
+        transaction: transactionId,
+      };
+      this._transactionIdPromise = undefined;
+      this._prevTransactionId = transactionId;
+
+      // We don't need to wait for rollback to completed before continuing.
+      // If there are any locks held, then rollback will eventually release them.
+      // Rollback can be done concurrently thereby reducing latency caused by
+      // otherwise blocking.
+      this._firestore.request('rollback', request, this._requestTag).catch((err) => {
+        logger(
+          'Firestore.runTransaction',
+          this._requestTag,
+          'Best effort to rollback failed with error:',
+          err,
+        );
+      });
+    });
   }
 
   /**
@@ -636,63 +602,56 @@ export class Transaction implements firestore.Transaction {
    * @param updateFunction The user function to execute within the transaction
    * context.
    */
-  async runTransaction<T>(
-    updateFunction: (transaction: Transaction) => Promise<T>,
-  ): Promise<T> {
-    return this._firestore._traceUtil.startActiveSpan(
-      SPAN_NAME_TRANSACTION_RUN,
-      async span => {
-        // No backoff is set for readonly transactions (i.e. attempts == 1)
-        if (!this._writeBatch) {
-          return this.runTransactionOnce(updateFunction);
-        }
+  async runTransaction<T>(updateFunction: (transaction: Transaction) => Promise<T>): Promise<T> {
+    return this._firestore._traceUtil.startActiveSpan(SPAN_NAME_TRANSACTION_RUN, async (span) => {
+      // No backoff is set for readonly transactions (i.e. attempts == 1)
+      if (!this._writeBatch) {
+        return this.runTransactionOnce(updateFunction);
+      }
 
-        let lastError: GoogleError | undefined = undefined;
-        for (let attempt = 0; attempt < this._maxAttempts; ++attempt) {
-          span.setAttributes({
-            [ATTRIBUTE_KEY_TRANSACTION_TYPE]: this._writeBatch
-              ? 'READ_WRITE'
-              : 'READ_ONLY',
-            [ATTRIBUTE_KEY_ATTEMPTS_ALLOWED]: this._maxAttempts,
-            [ATTRIBUTE_KEY_ATTEMPTS_REMAINING]: this._maxAttempts - attempt - 1,
-          });
+      let lastError: GoogleError | undefined;
+      for (let attempt = 0; attempt < this._maxAttempts; ++attempt) {
+        span.setAttributes({
+          [ATTRIBUTE_KEY_TRANSACTION_TYPE]: this._writeBatch ? 'READ_WRITE' : 'READ_ONLY',
+          [ATTRIBUTE_KEY_ATTEMPTS_ALLOWED]: this._maxAttempts,
+          [ATTRIBUTE_KEY_ATTEMPTS_REMAINING]: this._maxAttempts - attempt - 1,
+        });
 
-          try {
-            if (lastError) {
-              logger(
-                'Firestore.runTransaction',
-                this._requestTag,
-                'Retrying transaction after error:',
-                lastError,
-              );
+        try {
+          if (lastError) {
+            logger(
+              'Firestore.runTransaction',
+              this._requestTag,
+              'Retrying transaction after error:',
+              lastError,
+            );
 
-              span.addEvent('Initiate transaction retry');
-            }
+            span.addEvent('Initiate transaction retry');
+          }
 
-            this._writeBatch._reset();
+          this._writeBatch._reset();
 
-            await maybeBackoff(this._backoff!, lastError);
+          await maybeBackoff(this._backoff!, lastError);
 
-            return await this.runTransactionOnce(updateFunction);
-          } catch (err) {
-            lastError = err;
+          return await this.runTransactionOnce(updateFunction);
+        } catch (err) {
+          lastError = err;
 
-            if (!isRetryableTransactionError(err)) {
-              break;
-            }
+          if (!isRetryableTransactionError(err)) {
+            break;
           }
         }
+      }
 
-        logger(
-          'Firestore.runTransaction',
-          this._requestTag,
-          'Transaction not eligible for retry, returning error: %s',
-          lastError,
-        );
+      logger(
+        'Firestore.runTransaction',
+        this._requestTag,
+        'Transaction not eligible for retry, returning error: %s',
+        lastError,
+      );
 
-        return Promise.reject(lastError);
-      },
-    );
+      return Promise.reject(lastError);
+    });
   }
 
   /**
@@ -710,9 +669,7 @@ export class Transaction implements firestore.Transaction {
     try {
       const promise = updateFunction(this);
       if (!(promise instanceof Promise)) {
-        throw new Error(
-          'You must return a Promise in your transaction()-callback.',
-        );
+        throw new Error('You must return a Promise in your transaction()-callback.');
       }
       const result = await promise;
       if (this._writeBatch) {
@@ -742,29 +699,27 @@ export class Transaction implements firestore.Transaction {
       this: typeof this,
       param: TParam,
       opts: Uint8Array | api.ITransactionOptions | Timestamp,
-    ) => Promise<{transaction?: Uint8Array; result: TResult}>,
+    ) => Promise<{ transaction?: Uint8Array; result: TResult }>,
   ): Promise<TResult> {
     if (this._transactionIdPromise) {
       // Simply queue this subsequent read operation after the first read
       // operation has resolved and we don't expect a transaction ID in the
       // response because we are not starting a new transaction
       return this._transactionIdPromise
-        .then(opts => resultFn.call(this, param, opts))
-        .then(r => r.result);
+        .then((opts) => resultFn.call(this, param, opts))
+        .then((r) => r.result);
     } else {
       if (this._readOnlyReadTime) {
         // We do not start a transaction for read-only transactions
         // do not set _prevTransactionId
-        return resultFn
-          .call(this, param, this._readOnlyReadTime)
-          .then(r => r.result);
+        return resultFn.call(this, param, this._readOnlyReadTime).then((r) => r.result);
       } else {
         // This is the first read of the transaction so we create the appropriate
         // options for lazily starting the transaction inside this first read op
         const opts: api.ITransactionOptions = {};
         if (this._writeBatch) {
           opts.readWrite = this._prevTransactionId
-            ? {retryTransaction: this._prevTransactionId}
+            ? { retryTransaction: this._prevTransactionId }
             : {};
         } else {
           opts.readOnly = {};
@@ -774,7 +729,7 @@ export class Transaction implements firestore.Transaction {
 
         // Ensure the _transactionIdPromise is set synchronously so that
         // subsequent operations will not race to start another transaction
-        this._transactionIdPromise = resultPromise.then(r => {
+        this._transactionIdPromise = resultPromise.then((r) => {
           if (!r.transaction) {
             // Illegal state
             // The read operation was provided with new transaction options but did not return a transaction ID
@@ -784,38 +739,27 @@ export class Transaction implements firestore.Transaction {
           return r.transaction;
         });
 
-        return resultPromise.then(r => r.result);
+        return resultPromise.then((r) => r.result);
       }
     }
   }
 
-  private async getSingleFn<
-    AppModelType,
-    DbModelType extends firestore.DocumentData,
-  >(
+  private async getSingleFn<AppModelType, DbModelType extends firestore.DocumentData>(
     document: DocumentReference<AppModelType, DbModelType>,
     opts: Uint8Array | api.ITransactionOptions | Timestamp,
   ): Promise<{
     transaction?: Uint8Array;
     result: DocumentSnapshot<AppModelType, DbModelType>;
   }> {
-    const documentReader = new DocumentReader(
-      this._firestore,
-      [document],
-      undefined,
-      opts,
-    );
+    const documentReader = new DocumentReader(this._firestore, [document], undefined, opts);
     const {
       transaction,
       result: [result],
     } = await documentReader._get(this._requestTag);
-    return {transaction, result};
+    return { transaction, result };
   }
 
-  private async getBatchFn<
-    AppModelType,
-    DbModelType extends firestore.DocumentData,
-  >(
+  private async getBatchFn<AppModelType, DbModelType extends firestore.DocumentData>(
     {
       documents,
       fieldMask,
@@ -831,12 +775,7 @@ export class Transaction implements firestore.Transaction {
     return this._firestore._traceUtil.startActiveSpan(
       SPAN_NAME_TRANSACTION_GET_DOCUMENTS,
       async () => {
-        const documentReader = new DocumentReader(
-          this._firestore,
-          documents,
-          fieldMask,
-          opts,
-        );
+        const documentReader = new DocumentReader(this._firestore, documents, fieldMask, opts);
         return documentReader._get(this._requestTag);
       },
     );
@@ -862,8 +801,8 @@ export class Transaction implements firestore.Transaction {
     transaction?: Uint8Array;
     result: Array<PipelineResult>;
   }> {
-    const {transaction, result} = await pipeline._execute(opts);
-    return {transaction, result: result || []};
+    const { transaction, result } = await pipeline._execute(opts);
+    return { transaction, result: result || [] };
   }
 }
 
@@ -876,20 +815,16 @@ export class Transaction implements firestore.Transaction {
  * @param documentRefsOrReadOptions An array of document references followed by
  * an optional ReadOptions object.
  */
-export function parseGetAllArguments<
-  AppModelType,
-  DbModelType extends firestore.DocumentData,
->(
+export function parseGetAllArguments<AppModelType, DbModelType extends firestore.DocumentData>(
   documentRefsOrReadOptions: Array<
-    | firestore.DocumentReference<AppModelType, DbModelType>
-    | firestore.ReadOptions
+    firestore.DocumentReference<AppModelType, DbModelType> | firestore.ReadOptions
   >,
 ): {
   documents: Array<DocumentReference<AppModelType, DbModelType>>;
   fieldMask: FieldPath[] | undefined;
 } {
   let documents: Array<DocumentReference<AppModelType, DbModelType>>;
-  let readOptions: firestore.ReadOptions | undefined = undefined;
+  let readOptions: firestore.ReadOptions | undefined;
 
   if (Array.isArray(documentRefsOrReadOptions[0])) {
     throw new Error(
@@ -900,32 +835,24 @@ export function parseGetAllArguments<
 
   if (
     documentRefsOrReadOptions.length > 0 &&
-    isPlainObject(
-      documentRefsOrReadOptions[documentRefsOrReadOptions.length - 1],
-    )
+    isPlainObject(documentRefsOrReadOptions[documentRefsOrReadOptions.length - 1])
   ) {
     readOptions = documentRefsOrReadOptions.pop() as firestore.ReadOptions;
-    documents = documentRefsOrReadOptions as Array<
-      DocumentReference<AppModelType, DbModelType>
-    >;
+    documents = documentRefsOrReadOptions as Array<DocumentReference<AppModelType, DbModelType>>;
   } else {
-    documents = documentRefsOrReadOptions as Array<
-      DocumentReference<AppModelType, DbModelType>
-    >;
+    documents = documentRefsOrReadOptions as Array<DocumentReference<AppModelType, DbModelType>>;
   }
 
   for (let i = 0; i < documents.length; ++i) {
     validateDocumentReference<AppModelType, DbModelType>(i, documents[i]);
   }
 
-  validateReadOptions('options', readOptions, {optional: true});
+  validateReadOptions('options', readOptions, { optional: true });
   const fieldMask =
     readOptions && readOptions.fieldMask
-      ? readOptions.fieldMask.map(fieldPath =>
-          FieldPath.fromArgument(fieldPath),
-        )
+      ? readOptions.fieldMask.map((fieldPath) => FieldPath.fromArgument(fieldPath))
       : undefined;
-  return {fieldMask, documents};
+  return { fieldMask, documents };
 }
 
 /**
@@ -945,20 +872,15 @@ function validateReadOptions(
 ): void {
   if (!validateOptional(value, options)) {
     if (!isObject(value)) {
-      throw new Error(
-        `${invalidArgumentMessage(arg, 'read option')} Input is not an object.'`,
-      );
+      throw new Error(`${invalidArgumentMessage(arg, 'read option')} Input is not an object.'`);
     }
 
-    const options = value as {[k: string]: unknown};
+    const options = value as { [k: string]: unknown };
 
     if (options.fieldMask !== undefined) {
       if (!Array.isArray(options.fieldMask)) {
         throw new Error(
-          `${invalidArgumentMessage(
-            arg,
-            'read option',
-          )} "fieldMask" is not an array.`,
+          `${invalidArgumentMessage(arg, 'read option')} "fieldMask" is not an array.`,
         );
       }
 
@@ -1011,10 +933,7 @@ function isRetryableTransactionError(error: GoogleError): boolean {
  * @internal
  * @returns A Promise that resolves after the delay expired.
  */
-async function maybeBackoff(
-  backoff: ExponentialBackoff,
-  error?: GoogleError,
-): Promise<void> {
+async function maybeBackoff(backoff: ExponentialBackoff, error?: GoogleError): Promise<void> {
   if (
     (error?.code as number | undefined) === StatusCode.RESOURCE_EXHAUSTED ||
     (error?.code as number | undefined) === 409

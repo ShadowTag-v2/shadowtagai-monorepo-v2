@@ -1,7 +1,7 @@
-import { LLM } from "../../llm/provider";
-import type { LLMProvider } from "../../types/core";
-import logger from "../../utils/logger";
-import { hypGenDeepResearchPrompt } from "./prompts";
+import { LLM } from '../../llm/provider';
+import type { LLMProvider } from '../../types/core';
+import logger from '../../utils/logger';
+import { hypGenDeepResearchPrompt } from './prompts';
 
 export type HypothesisDoc = {
   title: string;
@@ -14,9 +14,9 @@ export type HypothesisOptions = {
   maxTokens?: number;
   thinking?: boolean;
   thinkingBudget?: number;
-  mode?: "create" | "update";
+  mode?: 'create' | 'update';
   messageId?: string; // For token usage tracking
-  usageType?: "chat" | "deep-research" | "paper-generation";
+  usageType?: 'chat' | 'deep-research' | 'paper-generation';
 };
 
 export type HypothesisResult = {
@@ -33,21 +33,21 @@ export async function generateHypothesis(
   documents: HypothesisDoc[],
   options: HypothesisOptions = {},
 ): Promise<HypothesisResult> {
-  const model = process.env.HYP_LLM_MODEL || "gemini-2.5-pro";
-  const mode = options.mode ?? "create";
+  const model = process.env.HYP_LLM_MODEL || 'gemini-2.5-pro';
+  const mode = options.mode ?? 'create';
 
   // Build document content
-  const documentText = documents.map((d) => `Title: ${d.title}\n\n${d.text}`).join("\n\n\n");
+  const documentText = documents.map((d) => `Title: ${d.title}\n\n${d.text}`).join('\n\n\n');
 
   // Use deep research prompt
-  let hypGenInstruction = hypGenDeepResearchPrompt.replace("{{question}}", question);
+  let hypGenInstruction = hypGenDeepResearchPrompt.replace('{{question}}', question);
 
   // Add mode-specific instructions
-  if (mode === "update") {
+  if (mode === 'update') {
     hypGenInstruction += `\n\nIMPORTANT: You are UPDATING an existing hypothesis. The current hypothesis is included in the documents. Refine and improve it based on the new findings, but maintain consistency with the overall research direction.`;
   }
 
-  const HYP_LLM_PROVIDER: LLMProvider = (process.env.HYP_LLM_PROVIDER as LLMProvider) || "google";
+  const HYP_LLM_PROVIDER: LLMProvider = (process.env.HYP_LLM_PROVIDER as LLMProvider) || 'google';
   const llmApiKey = process.env[`${HYP_LLM_PROVIDER.toUpperCase()}_API_KEY`];
 
   if (!llmApiKey) {
@@ -63,11 +63,11 @@ export async function generateHypothesis(
     model,
     messages: [
       {
-        role: "assistant" as const,
+        role: 'assistant' as const,
         content: `Use the following evidence set to formulate a hypothesis: ${documentText}`,
       },
       {
-        role: "user" as const,
+        role: 'user' as const,
         content: hypGenInstruction,
       },
     ],
@@ -84,7 +84,7 @@ export async function generateHypothesis(
     let finalText = response.content;
     try {
       finalText = JSON.parse(
-        response.content.replace(/```json\n?/, "").replace(/\n?```$/, ""),
+        response.content.replace(/```json\n?/, '').replace(/\n?```$/, ''),
       ).message;
     } catch {
       // Keep raw text if not JSON
@@ -96,7 +96,7 @@ export async function generateHypothesis(
         hypothesisLength: finalText.length,
         docCount: documents.length,
       },
-      "hypothesis_generated",
+      'hypothesis_generated',
     );
 
     return {
@@ -104,7 +104,7 @@ export async function generateHypothesis(
       thought: undefined, // TODO: Extract thinking if available from response
     };
   } catch (error) {
-    logger.error({ error, mode }, "hypothesis_generation_failed");
+    logger.error({ error, mode }, 'hypothesis_generation_failed');
     throw error;
   }
 }

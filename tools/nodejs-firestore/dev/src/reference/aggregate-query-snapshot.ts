@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
+import type * as firestore from '@google-cloud/firestore';
 import * as deepEqual from 'fast-deep-equal';
-
-import * as firestore from '@google-cloud/firestore';
-import {Timestamp} from '../timestamp';
-import {AggregateQuery} from './aggregate-query';
+import type { Timestamp } from '../timestamp';
+import type { AggregateQuery } from './aggregate-query';
 
 /**
  * The results of executing an aggregation query.
@@ -27,12 +26,7 @@ export class AggregateQuerySnapshot<
   AggregateSpecType extends firestore.AggregateSpec,
   AppModelType = firestore.DocumentData,
   DbModelType extends firestore.DocumentData = firestore.DocumentData,
-> implements
-    firestore.AggregateQuerySnapshot<
-      AggregateSpecType,
-      AppModelType,
-      DbModelType
-    >
+> implements firestore.AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>
 {
   /**
    * @internal
@@ -43,11 +37,7 @@ export class AggregateQuerySnapshot<
    * query.
    */
   constructor(
-    private readonly _query: AggregateQuery<
-      AggregateSpecType,
-      AppModelType,
-      DbModelType
-    >,
+    private readonly _query: AggregateQuery<AggregateSpecType, AppModelType, DbModelType>,
     private readonly _readTime: Timestamp,
     private readonly _data: firestore.AggregateSpecData<AggregateSpecType>,
   ) {}
@@ -89,11 +79,7 @@ export class AggregateQuerySnapshot<
    * defined above, or `false` otherwise.
    */
   isEqual(
-    other: firestore.AggregateQuerySnapshot<
-      AggregateSpecType,
-      AppModelType,
-      DbModelType
-    >,
+    other: firestore.AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>,
   ): boolean {
     if (this === other) {
       return true;

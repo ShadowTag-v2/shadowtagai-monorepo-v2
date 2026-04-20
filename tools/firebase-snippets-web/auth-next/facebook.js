@@ -3,7 +3,7 @@
 
 function facebookProvider() {
   // [START auth_facebook_provider_create]
-  const { FacebookAuthProvider } = require("firebase/auth");
+  const { FacebookAuthProvider } = require('firebase/auth');
 
   const provider = new FacebookAuthProvider();
   // [END auth_facebook_provider_create]
@@ -14,14 +14,14 @@ function facebookProvider() {
 
   // [START auth_facebook_provider_params]
   provider.setCustomParameters({
-    'display': 'popup'
+    display: 'popup',
   });
   // [END auth_facebook_provider_params]
 }
 
 function facebookSignInPopup(provider) {
   // [START auth_facebook_signin_popup]
-  const { getAuth, signInWithPopup, FacebookAuthProvider } = require("firebase/auth");
+  const { getAuth, signInWithPopup, FacebookAuthProvider } = require('firebase/auth');
 
   const auth = getAuth();
   signInWithPopup(auth, provider)
@@ -52,7 +52,7 @@ function facebookSignInPopup(provider) {
 
 function facebookSignInRedirectResult() {
   // [START auth_facebook_signin_redirect_result]
-  const { getAuth, getRedirectResult, FacebookAuthProvider } = require("firebase/auth");
+  const { getAuth, getRedirectResult, FacebookAuthProvider } = require('firebase/auth');
 
   const auth = getAuth();
   getRedirectResult(auth)
@@ -64,7 +64,8 @@ function facebookSignInRedirectResult() {
       const user = result.user;
       // IdP data available using getAdditionalUserInfo(result)
       // ...
-    }).catch((error) => {
+    })
+    .catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -84,7 +85,13 @@ function checkLoginState_wrapper() {
   }
 
   // [START auth_facebook_callback]
-  const { getAuth, onAuthStateChanged, signInWithCredential, signOut, FacebookAuthProvider } = require("firebase/auth");
+  const {
+    getAuth,
+    onAuthStateChanged,
+    signInWithCredential,
+    signOut,
+    FacebookAuthProvider,
+  } = require('firebase/auth');
   const auth = getAuth();
 
   function checkLoginState(response) {
@@ -95,21 +102,19 @@ function checkLoginState_wrapper() {
         // Check if we are already signed-in Firebase with the correct user.
         if (!isUserEqual(response.authResponse, firebaseUser)) {
           // Build Firebase credential with the Facebook auth token.
-          const credential = FacebookAuthProvider.credential(
-              response.authResponse.accessToken);
+          const credential = FacebookAuthProvider.credential(response.authResponse.accessToken);
 
           // Sign in with the credential from the Facebook user.
-          signInWithCredential(auth, credential)
-            .catch((error) => {
-              // Handle Errors here.
-              const errorCode = error.code;
-              const errorMessage = error.message;
-              // The email of the user's account used.
-              const email = error.customData.email;
-              // The AuthCredential type that was used.
-              const credential = FacebookAuthProvider.credentialFromError(error);
-              // ...
-            });
+          signInWithCredential(auth, credential).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = FacebookAuthProvider.credentialFromError(error);
+            // ...
+          });
         } else {
           // User is already signed-in Firebase with the correct user.
         }
@@ -124,14 +129,16 @@ function checkLoginState_wrapper() {
 
 function isUserEqual_wrapper() {
   // [START auth_facebook_checksameuser]
-  const { FacebookAuthProvider } = require("firebase/auth");
+  const { FacebookAuthProvider } = require('firebase/auth');
 
   function isUserEqual(facebookAuthResponse, firebaseUser) {
     if (firebaseUser) {
       const providerData = firebaseUser.providerData;
       for (let i = 0; i < providerData.length; i++) {
-        if (providerData[i].providerId === FacebookAuthProvider.PROVIDER_ID &&
-            providerData[i].uid === facebookAuthResponse.userID) {
+        if (
+          providerData[i].providerId === FacebookAuthProvider.PROVIDER_ID &&
+          providerData[i].uid === facebookAuthResponse.userID
+        ) {
           // We don't need to re-auth the Firebase connection.
           return true;
         }
@@ -142,10 +149,9 @@ function isUserEqual_wrapper() {
   // [END auth_facebook_checksameuser]
 }
 
-
 function authWithCredential(credential) {
   // [START auth_facebook_signin_credential]
-  const { getAuth, signInWithCredential, FacebookAuthProvider } = require("firebase/auth");
+  const { getAuth, signInWithCredential, FacebookAuthProvider } = require('firebase/auth');
 
   // Sign in with the credential from the Facebook user.
   const auth = getAuth();
@@ -169,7 +175,7 @@ function authWithCredential(credential) {
 
 function facebookProviderCredential(accessToken) {
   // [START auth_facebook_provider_credential]
-  const { FacebookAuthProvider } = require("firebase/auth");
+  const { FacebookAuthProvider } = require('firebase/auth');
 
   const credential = FacebookAuthProvider.credential(accessToken);
   // [END auth_facebook_provider_credential]

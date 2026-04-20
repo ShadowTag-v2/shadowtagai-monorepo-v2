@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-/// <reference types="vitest/globals" />
-import { describe, it, expect, vi } from 'vitest';
-import { updateBucketLabels, registerUpdateBucketLabelsTool } from './update_bucket_labels.js';
-import { apiClientFactory } from '../../utility/index.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+/// <reference types="vitest/globals" />
+import { describe, expect, it, vi } from 'vitest';
+import { apiClientFactory } from '../../utility/index.js';
+import { registerUpdateBucketLabelsTool, updateBucketLabels } from './update_bucket_labels.js';
 
 vi.mock('../../utility/index.js');
 vi.mock('@modelcontextprotocol/sdk/server/mcp.js');

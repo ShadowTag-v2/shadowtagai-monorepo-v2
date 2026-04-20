@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import {
-  Auth,
-  clouderrorreporting_v1beta1,
-  logging_v2,
-  monitoring_v3,
-  cloudtrace_v1,
-  google,
-} from 'googleapis';
 import { GoogleAuth } from 'google-auth-library';
+import {
+  type Auth,
+  type clouderrorreporting_v1beta1,
+  type cloudtrace_v1,
+  google,
+  type logging_v2,
+  type monitoring_v3,
+} from 'googleapis';
 
 export class ApiClientFactory {
   private static instance: ApiClientFactory;

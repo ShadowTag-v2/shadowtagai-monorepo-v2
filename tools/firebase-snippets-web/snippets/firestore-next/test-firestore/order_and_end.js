@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START order_and_end_modular]
-import { query, orderBy, endAt } from "firebase/firestore";
+import { endAt, orderBy, query } from 'firebase/firestore';
 
-const q = query(citiesRef, orderBy("population"), endAt(1000000));
+const q = query(citiesRef, orderBy('population'), endAt(1000000));
 // [END order_and_end_modular]

@@ -55,7 +55,7 @@
 </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", () => {
   // Add links to GitHub issues for documentation feedback and feature requests
   const docIssueLink = document.querySelector('.td-page-meta__issue');
     if (docIssueLink) {
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function() {
   links.forEach(link => {
     if (!link.name || !link.url) return;
 
-    let rawUrl = link.isRight ? link.redirect : link.url;
+    const rawUrl = link.isRight ? link.redirect : link.url;
     // Only strip double slashes if it is an internal relative link
     let finalUrl = rawUrl.startsWith('http') ? rawUrl : rawUrl.replace(/\/+/g, '/');
 
@@ -157,10 +157,10 @@ document.addEventListener("DOMContentLoaded", function() {
                         .find(el => el.textContent.includes('Releases') || el.textContent.match(/v\d+\./) || el.textContent.includes('dev'));
 
     if (relBtn) {
-      let label = currentPath.includes('/dev/') ? "dev" : (versionMatch ? versionMatch[1].replace(/\//g, '') : "Releases");
+      const label = currentPath.includes('/dev/') ? "dev" : (versionMatch ? versionMatch[1].replace(/\//g, '') : "Releases");
 
       // Update the text on the dropdown button itself
-      for (let n of relBtn.childNodes) {
+      for (const n of relBtn.childNodes) {
         if (n.nodeType === 3 && n.textContent.trim().length > 1) {
           n.textContent = ' ' + label;
           break;
@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function() {
           headerLabel.style.cursor = "pointer";
           headerLabel.innerHTML = `<span style="font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">${group.header}</span>`;
 
-          headerLabel.addEventListener('click', function(e) {
+          headerLabel.addEventListener('click', (e) => {
             e.preventDefault();
             subUl.style.display = subUl.style.display === "none" ? "block" : "none";
           });

@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {isServer, LitElement, PropertyDeclaration, PropertyValues} from 'lit';
+import { isServer, type LitElement, type PropertyDeclaration, type PropertyValues } from 'lit';
 
-import {internals, WithElementInternals} from './element-internals.js';
-import {FormAssociated} from './form-associated.js';
-import {MixinBase, MixinReturn} from './mixin.js';
-import {Validator} from './validators/validator.js';
+import { internals, type WithElementInternals } from './element-internals.js';
+import type { FormAssociated } from './form-associated.js';
+import type { MixinBase, MixinReturn } from './mixin.js';
+import type { Validator } from './validators/validator.js';
 
 /**
  * A form associated element that provides constraint validation APIs.
@@ -151,10 +151,7 @@ const privateCustomValidationMessage = Symbol('privateCustomValidationMessage');
 export function mixinConstraintValidation<
   T extends MixinBase<LitElement & FormAssociated & WithElementInternals>,
 >(base: T): MixinReturn<T, ConstraintValidation> {
-  abstract class ConstraintValidationElement
-    extends base
-    implements ConstraintValidation
-  {
+  abstract class ConstraintValidationElement extends base implements ConstraintValidation {
     get validity() {
       this[privateSyncValidity]();
       return this[internals].validity;
@@ -196,11 +193,7 @@ export function mixinConstraintValidation<
       this[privateSyncValidity]();
     }
 
-    override requestUpdate(
-      name?: PropertyKey,
-      oldValue?: unknown,
-      options?: PropertyDeclaration,
-    ) {
+    override requestUpdate(name?: PropertyKey, oldValue?: unknown, options?: PropertyDeclaration) {
       super.requestUpdate(name, oldValue, options);
       this[privateSyncValidity]();
     }
@@ -232,15 +225,14 @@ export function mixinConstraintValidation<
         this[privateValidator] = this[createValidator]();
       }
 
-      const {validity, validationMessage: nonCustomValidationMessage} =
+      const { validity, validationMessage: nonCustomValidationMessage } =
         this[privateValidator].getValidity();
 
       const customError = !!this[privateCustomValidationMessage];
-      const validationMessage =
-        this[privateCustomValidationMessage] || nonCustomValidationMessage;
+      const validationMessage = this[privateCustomValidationMessage] || nonCustomValidationMessage;
 
       this[internals].setValidity(
-        {...validity, customError},
+        { ...validity, customError },
         validationMessage,
         this[getValidityAnchor]() ?? undefined,
       );

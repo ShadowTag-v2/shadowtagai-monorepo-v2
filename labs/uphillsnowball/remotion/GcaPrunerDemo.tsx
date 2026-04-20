@@ -12,7 +12,14 @@
  * Requires: npm install remotion @remotion/cli
  */
 
-import { AbsoluteFill, Sequence, useCurrentFrame, interpolate, spring, useVideoConfig } from 'remotion';
+import {
+  AbsoluteFill,
+  interpolate,
+  Sequence,
+  spring,
+  useCurrentFrame,
+  useVideoConfig,
+} from 'remotion';
 
 const FONT = 'JetBrains Mono, SF Mono, Consolas, monospace';
 
@@ -21,7 +28,9 @@ const TerminalLine = ({ text, delay, color = '#e0e0e0' }) => {
   const { fps } = useVideoConfig();
 
   const opacity = interpolate(frame - delay, [0, 8], [0, 1], { extrapolateRight: 'clamp' });
-  const chars = Math.floor(interpolate(frame - delay, [0, 20], [0, text.length], { extrapolateRight: 'clamp' }));
+  const chars = Math.floor(
+    interpolate(frame - delay, [0, 20], [0, text.length], { extrapolateRight: 'clamp' }),
+  );
 
   if (frame < delay) return null;
 
@@ -45,9 +54,17 @@ const DiagnosticScene = () => (
     <TerminalLine text="Thread count:                    1" delay={60} color="#cdd6f4" />
     <TerminalLine text="Other preserved keys:           18" delay={70} color="#a6e3a1" />
     <TerminalLine text="" delay={75} />
-    <TerminalLine text='Preserved keys: ["Error: ENOENT... at Object.Date"]' delay={80} color="#f38ba8" />
+    <TerminalLine
+      text='Preserved keys: ["Error: ENOENT... at Object.Date"]'
+      delay={80}
+      color="#f38ba8"
+    />
     <TerminalLine text="" delay={95} />
-    <TerminalLine text="🤯 It's deserializing this into RAM on every load." delay={100} color="#cba6f7" />
+    <TerminalLine
+      text="🤯 It's deserializing this into RAM on every load."
+      delay={100}
+      color="#cba6f7"
+    />
   </AbsoluteFill>
 );
 
@@ -56,14 +73,22 @@ const FixScene = () => (
     <TerminalLine text="$ python3 prune_gca_chat_threads.py --write" delay={0} color="#a6e3a1" />
     <TerminalLine text="" delay={10} />
     <TerminalLine text="──── WRITE MODE ────" delay={15} color="#cdd6f4" />
-    <TerminalLine text="Backup created: state.vscdb.backup.20260416T212001" delay={25} color="#89b4fa" />
+    <TerminalLine
+      text="Backup created: state.vscdb.backup.20260416T212001"
+      delay={25}
+      color="#89b4fa"
+    />
     <TerminalLine text="" delay={30} />
     <TerminalLine text="📉 Before:    26,723,331 bytes" delay={35} color="#f38ba8" />
     <TerminalLine text="🔥 After:          5,228 bytes" delay={50} color="#a6e3a1" />
     <TerminalLine text="⚡ Freed:     26,718,103 bytes" delay={65} color="#f9e2af" />
     <TerminalLine text="   Threads:   26,857,757 → 2 bytes" delay={75} color="#cdd6f4" />
     <TerminalLine text="" delay={80} />
-    <TerminalLine text="Running VACUUM to reclaim SQLite dead space..." delay={85} color="#89b4fa" />
+    <TerminalLine
+      text="Running VACUUM to reclaim SQLite dead space..."
+      delay={85}
+      color="#89b4fa"
+    />
     <TerminalLine text="   DB file before: 59,723,776 bytes" delay={95} color="#f38ba8" />
     <TerminalLine text="   DB file after:   1,228,800 bytes" delay={105} color="#a6e3a1" />
     <TerminalLine text="   Disk reclaimed: 58,494,976 bytes" delay={115} color="#f9e2af" />
@@ -84,6 +109,4 @@ export const GcaPrunerDemo = () => (
 );
 
 // Remotion config
-export const RemotionRoot = () => (
-  <GcaPrunerDemo />
-);
+export const RemotionRoot = () => <GcaPrunerDemo />;

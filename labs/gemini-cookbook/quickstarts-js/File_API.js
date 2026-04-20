@@ -56,7 +56,7 @@ ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 */
 
 // [CODE STARTS]
-module = await import("https://esm.sh/@google/genai@1.4.0");
+module = await import('https://esm.sh/@google/genai@1.4.0');
 GoogleGenAI = module.GoogleGenAI;
 ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 // [CODE ENDS]
@@ -70,7 +70,7 @@ For more information about all Gemini models, check the [documentation](https://
 */
 
 // [CODE STARTS]
-MODEL_ID = "gemini-2.5-flash"; // "gemini-2.5-flash-lite", "gemini-2.5-flash""gemini-2.5-pro", "gemini-3.1-flash-lite-preview", "gemini-3-flash-preview", "gemini-3.1-pro-preview"
+MODEL_ID = 'gemini-2.5-flash'; // "gemini-2.5-flash-lite", "gemini-2.5-flash""gemini-2.5-pro", "gemini-3.1-flash-lite-preview", "gemini-3-flash-preview", "gemini-3.1-pro-preview"
 // [CODE ENDS]
 
 /* Markdown (render)
@@ -85,12 +85,12 @@ First, you will prepare a sample image to upload to the API.
 
 // [CODE STARTS]
 imageFile = await fetch(
-  "https://storage.googleapis.com/generativeai-downloads/images/jetpack.jpg",
+  'https://storage.googleapis.com/generativeai-downloads/images/jetpack.jpg',
 ).then((res) => res.blob());
 
 imageDataUrl = await new Promise((resolve) => {
   reader = new FileReader();
-  reader.onloadend = () => resolve(reader.result.split(",")[1]); // Get only base64 string
+  reader.onloadend = () => resolve(reader.result.split(',')[1]); // Get only base64 string
   reader.readAsDataURL(imageFile);
 });
 console.image(imageDataUrl);
@@ -160,10 +160,10 @@ response = await ai.models.generateContent({
     {
       fileData: {
         fileUri: uploadedFile.uri,
-        mimeType: "image/jpeg",
+        mimeType: 'image/jpeg',
       },
     },
-    "Describe the image with a creative description.",
+    'Describe the image with a creative description.',
   ],
 });
 
@@ -211,32 +211,31 @@ This example shows you how to load a markdown file into a prompt using the File 
 */
 
 // [CODE STARTS]
-fileUrl =
-  "https://raw.githubusercontent.com/google-gemini/cookbook/main/CONTRIBUTING.md";
+fileUrl = 'https://raw.githubusercontent.com/google-gemini/cookbook/main/CONTRIBUTING.md';
 
 response = await fetch(fileUrl);
 blob = await response.blob();
-file = new File([blob], "contrib.md", { type: "text/markdown" });
+file = new File([blob], 'contrib.md', { type: 'text/markdown' });
 
 uploadedFile = await ai.files.upload({
   file,
   config: {
-    displayName: "CONTRIBUTING.md",
-    mimeType: "text/markdown",
+    displayName: 'CONTRIBUTING.md',
+    mimeType: 'text/markdown',
   },
 });
-console.log("Uploaded:", uploadedFile.uri);
+console.log('Uploaded:', uploadedFile.uri);
 
 modelResponse = await ai.models.generateContent({
   model: MODEL_ID,
   contents: [
     {
-      text: "What should I do before I start writing, when following these guidelines?",
+      text: 'What should I do before I start writing, when following these guidelines?',
     },
     {
       fileData: {
         fileUri: uploadedFile.uri,
-        mimeType: "text/markdown",
+        mimeType: 'text/markdown',
       },
     },
   ],
@@ -270,30 +269,29 @@ Some common text formats are automatically detected, such as `text/x-python`, `t
 */
 
 // [CODE STARTS]
-fileUrl =
-  "https://raw.githubusercontent.com/google/gemma.cpp/main/examples/hello_world/run.cc";
+fileUrl = 'https://raw.githubusercontent.com/google/gemma.cpp/main/examples/hello_world/run.cc';
 
 response = await fetch(fileUrl);
 blob = await response.blob();
-cppFile = new File([blob], "gemma.cpp", { type: "text/plain" }); // Forced MIME
+cppFile = new File([blob], 'gemma.cpp', { type: 'text/plain' }); // Forced MIME
 
 uploadedCpp = await ai.files.upload({
   file: cppFile,
   config: {
-    displayName: "gemma.cpp",
-    mimeType: "text/plain",
+    displayName: 'gemma.cpp',
+    mimeType: 'text/plain',
   },
 });
-console.log("Uploaded:", uploadedCpp.uri);
+console.log('Uploaded:', uploadedCpp.uri);
 
 modelResponse = await ai.models.generateContent({
   model: MODEL_ID,
   contents: [
-    { text: "What does this program do?" },
+    { text: 'What does this program do?' },
     {
       fileData: {
         fileUri: uploadedCpp.uri,
-        mimeType: "text/plain",
+        mimeType: 'text/plain',
       },
     },
   ],

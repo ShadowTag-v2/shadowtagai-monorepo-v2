@@ -1,4 +1,4 @@
-import { GraphNode, GraphRelationship } from '../core/graph/types';
+import type { GraphNode, GraphRelationship } from '../core/graph/types';
 
 export interface RepoSummary {
   name: string;
@@ -78,9 +78,11 @@ export async function fetchGraph(
   baseUrl: string,
   onProgress?: (downloaded: number, total: number | null) => void,
   signal?: AbortSignal,
-  repoName?: string
+  repoName?: string,
 ): Promise<{ nodes: GraphNode[]; relationships: GraphRelationship[] }> {
-  const url = repoName ? `${baseUrl}/graph?repo=${encodeURIComponent(repoName)}` : `${baseUrl}/graph`;
+  const url = repoName
+    ? `${baseUrl}/graph?repo=${encodeURIComponent(repoName)}`
+    : `${baseUrl}/graph`;
   const response = await fetch(url, { signal });
   if (!response.ok) {
     throw new Error(`Server returned ${response.status}: ${response.statusText}`);
@@ -132,7 +134,7 @@ export async function connectToServer(
   url: string,
   onProgress?: (phase: string, downloaded: number, total: number | null) => void,
   signal?: AbortSignal,
-  repoName?: string
+  repoName?: string,
 ): Promise<ConnectToServerResult> {
   const baseUrl = normalizeServerUrl(url);
 
@@ -146,7 +148,7 @@ export async function connectToServer(
     baseUrl,
     (downloaded, total) => onProgress?.('downloading', downloaded, total),
     signal,
-    repoName
+    repoName,
   );
 
   // Phase 3: Extract file contents

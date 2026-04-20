@@ -6,9 +6,9 @@
 
 // import 'jasmine'; (google3-only)
 
-import {createTokenTests} from '../testing/tokens.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdFilledField} from './filled-field.js';
+import { MdFilledField } from './filled-field.js';
 
 describe('<md-filled-field>', () => {
   describe('.styles', () => {

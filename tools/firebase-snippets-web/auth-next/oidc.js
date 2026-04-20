@@ -3,15 +3,15 @@
 
 function oidcProvider() {
   // [START auth_oidc_provider_create]
-  const { OAuthProvider } = require("firebase/auth");
+  const { OAuthProvider } = require('firebase/auth');
 
-  const provider = new OAuthProvider("oidc.myProvider");
+  const provider = new OAuthProvider('oidc.myProvider');
   // [END auth_oidc_provider_create]
 }
 
 function oidcSignInPopup(provider) {
   // [START auth_oidc_signin_popup]
-  const { getAuth, signInWithPopup, OAuthProvider } = require("firebase/auth");
+  const { getAuth, signInWithPopup, OAuthProvider } = require('firebase/auth');
 
   const auth = getAuth();
   signInWithPopup(auth, provider)
@@ -19,7 +19,8 @@ function oidcSignInPopup(provider) {
       // User is signed in.
       const credential = OAuthProvider.credentialFromResult(result);
       // This gives you an access token for the OIDC provider. You can use it to directly interact with that provider
-    }).catch((error) => {
+    })
+    .catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -35,7 +36,7 @@ function oidcSignInPopup(provider) {
 
 function oidcSignInRedirect(provider) {
   // [START auth_oidc_signin_redirect]
-  const { getAuth, signInWithRedirect } = require("firebase/auth");
+  const { getAuth, signInWithRedirect } = require('firebase/auth');
 
   const auth = getAuth();
   signInWithRedirect(auth, provider);
@@ -44,7 +45,7 @@ function oidcSignInRedirect(provider) {
 
 function oidcSignInRedirectResult(provider) {
   // [START auth_oidc_signin_redirect_result]
-  const { getAuth, getRedirectResult, OAuthProvider } = require("firebase/auth");
+  const { getAuth, getRedirectResult, OAuthProvider } = require('firebase/auth');
 
   const auth = getAuth();
   getRedirectResult(auth)
@@ -69,7 +70,7 @@ function oidcSignInRedirectResult(provider) {
 
 function oidcDirectSignIn(provider, oidcIdToken) {
   // [START auth_oidc_direct_sign_in]
-  const { getAuth, OAuthProvider, signInWithCredential } = require("firebase/auth");
+  const { getAuth, OAuthProvider, signInWithCredential } = require('firebase/auth');
 
   const auth = getAuth();
   const credential = provider.credential({

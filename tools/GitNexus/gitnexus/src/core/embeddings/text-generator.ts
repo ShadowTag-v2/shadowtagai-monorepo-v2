@@ -49,29 +49,25 @@ const truncateContent = (content: string, maxLength: number): string => {
  * Removes excessive whitespace while preserving structure
  */
 const cleanContent = (content: string): string => {
-  return content
-    // Normalize line endings
-    .replace(/\r\n/g, '\n')
-    // Remove excessive blank lines (more than 2)
-    .replace(/\n{3,}/g, '\n\n')
-    // Trim each line
-    .split('\n')
-    .map(line => line.trimEnd())
-    .join('\n')
-    .trim();
+  return (
+    content
+      // Normalize line endings
+      .replace(/\r\n/g, '\n')
+      // Remove excessive blank lines (more than 2)
+      .replace(/\n{3,}/g, '\n\n')
+      // Trim each line
+      .split('\n')
+      .map((line) => line.trimEnd())
+      .join('\n')
+      .trim()
+  );
 };
 
 /**
  * Generate embedding text for a Function node
  */
-const generateFunctionText = (
-  node: EmbeddableNode,
-  maxSnippetLength: number
-): string => {
-  const parts: string[] = [
-    `Function: ${node.name}`,
-    `File: ${getFileName(node.filePath)}`,
-  ];
+const generateFunctionText = (node: EmbeddableNode, maxSnippetLength: number): string => {
+  const parts: string[] = [`Function: ${node.name}`, `File: ${getFileName(node.filePath)}`];
 
   const dir = getDirectory(node.filePath);
   if (dir) {
@@ -90,14 +86,8 @@ const generateFunctionText = (
 /**
  * Generate embedding text for a Class node
  */
-const generateClassText = (
-  node: EmbeddableNode,
-  maxSnippetLength: number
-): string => {
-  const parts: string[] = [
-    `Class: ${node.name}`,
-    `File: ${getFileName(node.filePath)}`,
-  ];
+const generateClassText = (node: EmbeddableNode, maxSnippetLength: number): string => {
+  const parts: string[] = [`Class: ${node.name}`, `File: ${getFileName(node.filePath)}`];
 
   const dir = getDirectory(node.filePath);
   if (dir) {
@@ -116,14 +106,8 @@ const generateClassText = (
 /**
  * Generate embedding text for a Method node
  */
-const generateMethodText = (
-  node: EmbeddableNode,
-  maxSnippetLength: number
-): string => {
-  const parts: string[] = [
-    `Method: ${node.name}`,
-    `File: ${getFileName(node.filePath)}`,
-  ];
+const generateMethodText = (node: EmbeddableNode, maxSnippetLength: number): string => {
+  const parts: string[] = [`Method: ${node.name}`, `File: ${getFileName(node.filePath)}`];
 
   const dir = getDirectory(node.filePath);
   if (dir) {
@@ -142,14 +126,8 @@ const generateMethodText = (
 /**
  * Generate embedding text for an Interface node
  */
-const generateInterfaceText = (
-  node: EmbeddableNode,
-  maxSnippetLength: number
-): string => {
-  const parts: string[] = [
-    `Interface: ${node.name}`,
-    `File: ${getFileName(node.filePath)}`,
-  ];
+const generateInterfaceText = (node: EmbeddableNode, maxSnippetLength: number): string => {
+  const parts: string[] = [`Interface: ${node.name}`, `File: ${getFileName(node.filePath)}`];
 
   const dir = getDirectory(node.filePath);
   if (dir) {
@@ -169,14 +147,8 @@ const generateInterfaceText = (
  * Generate embedding text for a File node
  * Uses file name and first N characters of content
  */
-const generateFileText = (
-  node: EmbeddableNode,
-  maxSnippetLength: number
-): string => {
-  const parts: string[] = [
-    `File: ${node.name}`,
-    `Path: ${node.filePath}`,
-  ];
+const generateFileText = (node: EmbeddableNode, maxSnippetLength: number): string => {
+  const parts: string[] = [`File: ${node.name}`, `Path: ${node.filePath}`];
 
   if (node.content) {
     const cleanedContent = cleanContent(node.content);
@@ -198,7 +170,7 @@ const generateFileText = (
  */
 export const generateEmbeddingText = (
   node: EmbeddableNode,
-  config: Partial<EmbeddingConfig> = {}
+  config: Partial<EmbeddingConfig> = {},
 ): string => {
   const maxSnippetLength = config.maxSnippetLength ?? DEFAULT_EMBEDDING_CONFIG.maxSnippetLength;
 
@@ -228,7 +200,7 @@ export const generateEmbeddingText = (
  */
 export const generateBatchEmbeddingTexts = (
   nodes: EmbeddableNode[],
-  config: Partial<EmbeddingConfig> = {}
+  config: Partial<EmbeddingConfig> = {},
 ): string[] => {
-  return nodes.map(node => generateEmbeddingText(node, config));
+  return nodes.map((node) => generateEmbeddingText(node, config));
 };

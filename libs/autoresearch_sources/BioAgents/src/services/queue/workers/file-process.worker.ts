@@ -3,11 +3,11 @@
  * Processes uploaded files: generates AI description and updates conversation state
  */
 
-import { Worker, type Job } from "bullmq";
-import { getBullMQConnection } from "../connection";
-import { publishNotification } from "../notify";
-import type { FileProcessJobData, FileProcessJobResult } from "../types";
-import logger from "../../../utils/logger";
+import { type Job, Worker } from 'bullmq';
+import logger from '../../../utils/logger';
+import { getBullMQConnection } from '../connection';
+import { publishNotification } from '../notify';
+import type { FileProcessJobData, FileProcessJobResult } from '../types';
 
 /**
  * Process a file: download preview, generate description, update state
@@ -26,12 +26,12 @@ async function processFileJob(
     size,
   } = job.data;
 
-  logger.info({ jobId: job.id, fileId, filename }, "file_process_job_started");
+  logger.info({ jobId: job.id, fileId, filename }, 'file_process_job_started');
 
   try {
     // Import processFile from file service
-    const { processFile } = await import("../../files");
-    const { updateFileStatus, getFileStatus } = await import("../../files/status");
+    const { processFile } = await import('../../files');
+    const { updateFileStatus, getFileStatus } = await import('../../files/status');
 
     // Try to get current file status from Redis, but don't fail if it's missing
     // (status may have expired due to TTL after Docker redeploy or long retry delays)
@@ -40,7 +40,7 @@ async function processFileJob(
     if (!status) {
       // Reconstruct status from job data - we have everything we need
       // This handles cases where Redis TTL expired but the job is still valid
-      logger.warn({ fileId, jobId: job.id }, "file_status_not_in_redis_using_job_data");
+      logger.warn({ fileId, jobId: job.id }, 'file_status_not_in_redis_using_job_data');
 
       status = {
         fileId,
@@ -51,7 +51,7 @@ async function processFileJob(
         filename,
         contentType,
         size,
-        status: "processing",
+        status: 'processing',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         expiresAt: new Date(Date.now() + 3600000).toISOString(), // 1 hour from now
@@ -63,7 +63,7 @@ async function processFileJob(
 
     // Publish success notification
     await publishNotification({
-      type: "file:ready",
+      type: 'file:ready',
       jobId: job.id || fileId,
       conversationId,
       fileId,
@@ -72,7 +72,7 @@ async function processFileJob(
 
     logger.info(
       { jobId: job.id, fileId, filename, description: result.description },
-      "file_process_job_completed",
+      'file_process_job_completed',
     );
 
     return {
@@ -80,24 +80,24 @@ async function processFileJob(
       description: result.description,
     };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
     logger.error(
       { jobId: job.id, fileId, filename, error: errorMessage },
-      "file_process_job_failed",
+      'file_process_job_failed',
     );
 
     // Update status to error
     try {
-      const { updateFileStatus } = await import("../../files/status");
-      await updateFileStatus(fileId, { status: "error", error: errorMessage });
+      const { updateFileStatus } = await import('../../files/status');
+      await updateFileStatus(fileId, { status: 'error', error: errorMessage });
     } catch (updateError) {
-      logger.error({ fileId, updateError }, "failed_to_update_file_status_on_error");
+      logger.error({ fileId, updateError }, 'failed_to_update_file_status_on_error');
     }
 
     // Publish error notification
     await publishNotification({
-      type: "file:error",
+      type: 'file:error',
       jobId: job.id || fileId,
       conversationId,
       fileId,
@@ -115,32 +115,32 @@ export function createFileProcessWorker(): Worker<FileProcessJobData, FileProces
   const connection = getBullMQConnection();
 
   const worker = new Worker<FileProcessJobData, FileProcessJobResult>(
-    "file-process",
+    'file-process',
     processFileJob,
     {
       connection,
-      concurrency: parseInt(process.env.FILE_PROCESS_CONCURRENCY || "5", 10),
+      concurrency: parseInt(process.env.FILE_PROCESS_CONCURRENCY || '5', 10),
       // Lock duration for job processing (2 minutes)
       lockDuration: 120000,
     },
   );
 
   // Event handlers
-  worker.on("completed", (job, result) => {
-    logger.info({ jobId: job.id, fileId: result.fileId }, "file_process_worker_job_completed");
+  worker.on('completed', (job, result) => {
+    logger.info({ jobId: job.id, fileId: result.fileId }, 'file_process_worker_job_completed');
   });
 
-  worker.on("failed", (job, error) => {
-    logger.error({ jobId: job?.id, error: error.message }, "file_process_worker_job_failed");
+  worker.on('failed', (job, error) => {
+    logger.error({ jobId: job?.id, error: error.message }, 'file_process_worker_job_failed');
   });
 
-  worker.on("error", (error) => {
-    logger.error({ error: error.message }, "file_process_worker_error");
+  worker.on('error', (error) => {
+    logger.error({ error: error.message }, 'file_process_worker_error');
   });
 
   logger.info(
-    { concurrency: process.env.FILE_PROCESS_CONCURRENCY || "5" },
-    "file_process_worker_started",
+    { concurrency: process.env.FILE_PROCESS_CONCURRENCY || '5' },
+    'file_process_worker_started',
   );
 
   return worker;

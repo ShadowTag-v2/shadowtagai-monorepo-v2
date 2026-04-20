@@ -6,11 +6,7 @@
 
 // import 'jasmine'; (google3-only)
 
-import {
-  InputState,
-  TextAreaState,
-  TextFieldValidator,
-} from './text-field-validator.js';
+import { type InputState, type TextAreaState, TextFieldValidator } from './text-field-validator.js';
 
 // Note: minlength and maxlength validation can NOT be tested programmatically.
 // These properties will not trigger constraint validation until a user has
@@ -39,7 +35,7 @@ describe('TextFieldValidator', () => {
         renderedControl: null,
       }));
 
-      const {validity, validationMessage} = validator.getValidity();
+      const { validity, validationMessage } = validator.getValidity();
       expect(validity.valueMissing).withContext('valueMissing').toBeTrue();
       expect(validationMessage).withContext('validationMessage').not.toBe('');
     });
@@ -62,7 +58,7 @@ describe('TextFieldValidator', () => {
         renderedControl: null,
       }));
 
-      const {validity, validationMessage} = validator.getValidity();
+      const { validity, validationMessage } = validator.getValidity();
       expect(validity.valueMissing).withContext('valueMissing').toBeFalse();
       expect(validationMessage).withContext('validationMessage').toBe('');
     });
@@ -85,7 +81,7 @@ describe('TextFieldValidator', () => {
         renderedControl: null,
       }));
 
-      const {validity, validationMessage} = validator.getValidity();
+      const { validity, validationMessage } = validator.getValidity();
       expect(validity.valueMissing).withContext('valueMissing').toBeFalse();
       expect(validationMessage).withContext('validationMessage').toBe('');
     });
@@ -142,7 +138,7 @@ describe('TextFieldValidator', () => {
         renderedControl: null,
       }));
 
-      const {validity, validationMessage} = validator.getValidity();
+      const { validity, validationMessage } = validator.getValidity();
       expect(validity.typeMismatch).withContext('typeMismatch').toBeTrue();
       expect(validationMessage).withContext('validationMessage').not.toBe('');
     });
@@ -165,7 +161,7 @@ describe('TextFieldValidator', () => {
         renderedControl: null,
       }));
 
-      const {validity, validationMessage} = validator.getValidity();
+      const { validity, validationMessage } = validator.getValidity();
       expect(validity.typeMismatch).withContext('typeMismatch').toBeFalse();
       expect(validationMessage).withContext('validationMessage').toBe('');
     });
@@ -190,7 +186,7 @@ describe('TextFieldValidator', () => {
         renderedControl: null,
       }));
 
-      const {validity, validationMessage} = validator.getValidity();
+      const { validity, validationMessage } = validator.getValidity();
       expect(validity.rangeUnderflow).withContext('rangeUnderflow').toBeTrue();
       expect(validationMessage).withContext('validationMessage').not.toBe('');
     });
@@ -213,7 +209,7 @@ describe('TextFieldValidator', () => {
         renderedControl: null,
       }));
 
-      const {validity, validationMessage} = validator.getValidity();
+      const { validity, validationMessage } = validator.getValidity();
       expect(validity.rangeOverflow).withContext('rangeOverflow').toBeTrue();
       expect(validationMessage).withContext('validationMessage').not.toBe('');
     });
@@ -236,7 +232,7 @@ describe('TextFieldValidator', () => {
         renderedControl: null,
       }));
 
-      const {validity, validationMessage} = validator.getValidity();
+      const { validity, validationMessage } = validator.getValidity();
       expect(validity.rangeUnderflow).withContext('rangeUnderflow').toBeFalse();
       expect(validity.rangeOverflow).withContext('rangeOverflow').toBeFalse();
       expect(validationMessage).withContext('validationMessage').toBe('');
@@ -260,7 +256,7 @@ describe('TextFieldValidator', () => {
         renderedControl: null,
       }));
 
-      const {validity, validationMessage} = validator.getValidity();
+      const { validity, validationMessage } = validator.getValidity();
       expect(validity.stepMismatch).withContext('stepMismatch').toBeTrue();
       expect(validationMessage).withContext('validationMessage').not.toBe('');
     });
@@ -283,7 +279,7 @@ describe('TextFieldValidator', () => {
         renderedControl: null,
       }));
 
-      const {validity, validationMessage} = validator.getValidity();
+      const { validity, validationMessage } = validator.getValidity();
       expect(validity.stepMismatch).withContext('stepMismatch').toBeFalse();
       expect(validationMessage).withContext('validationMessage').toBe('');
     });
@@ -304,7 +300,7 @@ describe('TextFieldValidator', () => {
         renderedControl: null,
       }));
 
-      const {validity, validationMessage} = validator.getValidity();
+      const { validity, validationMessage } = validator.getValidity();
       expect(validity.valueMissing).withContext('valueMissing').toBeTrue();
       expect(validationMessage).withContext('validationMessage').not.toBe('');
     });
@@ -323,7 +319,7 @@ describe('TextFieldValidator', () => {
         renderedControl: null,
       }));
 
-      const {validity, validationMessage} = validator.getValidity();
+      const { validity, validationMessage } = validator.getValidity();
       expect(validity.valueMissing).withContext('valueMissing').toBeFalse();
       expect(validationMessage).withContext('validationMessage').toBe('');
     });
@@ -342,7 +338,7 @@ describe('TextFieldValidator', () => {
         renderedControl: null,
       }));
 
-      const {validity, validationMessage} = validator.getValidity();
+      const { validity, validationMessage } = validator.getValidity();
       expect(validity.valueMissing).withContext('valueMissing').toBeFalse();
       expect(validationMessage).withContext('validationMessage').toBe('');
     });

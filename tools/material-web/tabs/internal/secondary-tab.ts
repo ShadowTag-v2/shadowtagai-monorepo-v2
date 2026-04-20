@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Tab} from './tab.js';
+import { Tab } from './tab.js';
 
 /**
  * A secondary tab component.

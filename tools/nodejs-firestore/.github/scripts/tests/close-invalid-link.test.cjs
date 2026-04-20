@@ -53,7 +53,9 @@ describe('close issues with invalid links', () => {
 
   it('does not do anything if it is a bug with an appropriate link', async () => {
     const context = { repo: { owner: 'testOrg', repo: 'testRepo' }, issue: { number: 1 } };
-    issuesStub.get.resolves({ data: { body: fs.readFileSync('./fixtures/validIssueBody.txt', 'utf-8') } });
+    issuesStub.get.resolves({
+      data: { body: fs.readFileSync('./fixtures/validIssueBody.txt', 'utf-8') },
+    });
 
     await closeInvalidLink({ github: octokitStub, context });
 
@@ -64,7 +66,11 @@ describe('close issues with invalid links', () => {
 
   it('does not do anything if it is a bug with an appropriate link and the template changes', async () => {
     const context = { repo: { owner: 'testOrg', repo: 'testRepo' }, issue: { number: 1 } };
-    issuesStub.get.resolves({ data: { body: fs.readFileSync('./fixtures/validIssueBodyDifferentLinkLocation.txt', 'utf-8') } });
+    issuesStub.get.resolves({
+      data: {
+        body: fs.readFileSync('./fixtures/validIssueBodyDifferentLinkLocation.txt', 'utf-8'),
+      },
+    });
 
     await closeInvalidLink({ github: octokitStub, context });
 
@@ -75,7 +81,9 @@ describe('close issues with invalid links', () => {
 
   it('closes the issue if the link is invalid', async () => {
     const context = { repo: { owner: 'testOrg', repo: 'testRepo' }, issue: { number: 1 } };
-    issuesStub.get.resolves({ data: { body: fs.readFileSync('./fixtures/invalidIssueBody.txt', 'utf-8') } });
+    issuesStub.get.resolves({
+      data: { body: fs.readFileSync('./fixtures/invalidIssueBody.txt', 'utf-8') },
+    });
 
     await closeInvalidLink({ github: octokitStub, context });
 

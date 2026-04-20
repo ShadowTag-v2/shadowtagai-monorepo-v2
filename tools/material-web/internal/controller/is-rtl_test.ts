@@ -1,6 +1,6 @@
 // import 'jasmine'; (google3-only)
 
-import {isRtl} from './is-rtl.js';
+import { isRtl } from './is-rtl.js';
 
 function setDirection(node: HTMLElement, rtl: boolean) {
   node.dir = rtl ? 'rtl' : 'ltr';

@@ -174,8 +174,12 @@
         "tokens/versions/**/_md-*.scss",
         "!tokens/versions/**/*-meta.scss"
       ],
-      "output": ["tokens/versions/**/*-meta.scss"],
-      "dependencies": ["build:scripts"]
+      "output": [
+        "tokens/versions/**/*-meta.scss"
+      ],
+      "dependencies": [
+        "build:scripts"
+      ]
     },
     "test": {
       "command": "wtr",

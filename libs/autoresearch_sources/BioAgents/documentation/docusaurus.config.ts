@@ -1,42 +1,42 @@
-import { themes as prismThemes } from "prism-react-renderer";
-import type { Config } from "@docusaurus/types";
-import type * as Preset from "@docusaurus/preset-classic";
+import type * as Preset from '@docusaurus/preset-classic';
+import type { Config } from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
 
 const config: Config = {
-  title: "BioAgents",
-  tagline: "AI-powered research agents for biological sciences",
-  favicon: "img/favicon.ico",
+  title: 'BioAgents',
+  tagline: 'AI-powered research agents for biological sciences',
+  favicon: 'img/favicon.ico',
 
   future: {
     v4: true,
   },
 
-  url: "https://bio-xyz.github.io",
-  baseUrl: "/documentation/",
+  url: 'https://bio-xyz.github.io',
+  baseUrl: '/documentation/',
 
-  organizationName: "bio-xyz",
-  projectName: "BioAgents",
+  organizationName: 'bio-xyz',
+  projectName: 'BioAgents',
 
-  onBrokenLinks: "warn",
+  onBrokenLinks: 'warn',
 
   i18n: {
-    defaultLocale: "en",
-    locales: ["en"],
+    defaultLocale: 'en',
+    locales: ['en'],
   },
 
   presets: [
     [
-      "classic",
+      'classic',
       {
         docs: {
-          path: "content",
-          routeBasePath: "/", // Docs at root - no /docs prefix
-          sidebarPath: "./sidebars.ts",
-          editUrl: "https://github.com/bio-xyz/BioAgents/tree/main/documentation/",
+          path: 'content',
+          routeBasePath: '/', // Docs at root - no /docs prefix
+          sidebarPath: './sidebars.ts',
+          editUrl: 'https://github.com/bio-xyz/BioAgents/tree/main/documentation/',
         },
         blog: false, // Disable blog
         theme: {
-          customCss: "./src/css/custom.css",
+          customCss: './src/css/custom.css',
         },
       } satisfies Preset.Options,
     ],
@@ -44,93 +44,93 @@ const config: Config = {
 
   themes: [
     [
-      "@easyops-cn/docusaurus-search-local",
+      '@easyops-cn/docusaurus-search-local',
       {
         hashed: true,
-        language: ["en"],
+        language: ['en'],
         highlightSearchTermsOnTargetPage: true,
         explicitSearchResultPath: true,
-        docsDir: "content",
-        docsRouteBasePath: "/",
+        docsDir: 'content',
+        docsRouteBasePath: '/',
         indexBlog: false,
         searchBarShortcutHint: false,
-        searchBarPosition: "right",
-        searchContextByPaths: ["getting-started", "guides", "architecture", "deployment"],
+        searchBarPosition: 'right',
+        searchContextByPaths: ['getting-started', 'guides', 'architecture', 'deployment'],
         removeDefaultStemmer: true,
       },
     ],
   ],
 
   themeConfig: {
-    image: "img/BIOLogo.svg",
+    image: 'img/BIOLogo.svg',
     colorMode: {
-      defaultMode: "light",
+      defaultMode: 'light',
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: "BioAgents",
+      title: 'BioAgents',
       logo: {
-        alt: "BioAgents Logo",
-        src: "img/BIOLogo.svg",
-        srcDark: "img/BIOLogo-dark.svg",
+        alt: 'BioAgents Logo',
+        src: 'img/BIOLogo.svg',
+        srcDark: 'img/BIOLogo-dark.svg',
       },
       items: [
         {
-          to: "/",
-          position: "left",
-          label: "Documentation",
+          to: '/',
+          position: 'left',
+          label: 'Documentation',
         },
         {
-          href: "https://github.com/bio-xyz/BioAgents",
-          label: "GitHub",
-          position: "right",
+          href: 'https://github.com/bio-xyz/BioAgents',
+          label: 'GitHub',
+          position: 'right',
         },
       ],
     },
     footer: {
-      style: "light",
+      style: 'light',
       links: [
         {
-          title: "Documentation",
+          title: 'Documentation',
           items: [
             {
-              label: "Getting Started",
-              to: "/",
+              label: 'Getting Started',
+              to: '/',
             },
             {
-              label: "Installation",
-              to: "/getting-started/installation",
+              label: 'Installation',
+              to: '/getting-started/installation',
             },
             {
-              label: "Configuration",
-              to: "/getting-started/configuration",
+              label: 'Configuration',
+              to: '/getting-started/configuration',
             },
           ],
         },
         {
-          title: "Reference",
+          title: 'Reference',
           items: [
             {
-              label: "Architecture",
-              to: "/architecture/overview",
+              label: 'Architecture',
+              to: '/architecture/overview',
             },
             {
-              label: "Deployment",
-              to: "/deployment/docker",
+              label: 'Deployment',
+              to: '/deployment/docker',
             },
           ],
         },
         {
-          title: "Community",
+          title: 'Community',
           items: [
             {
-              label: "GitHub",
-              href: "https://github.com/bio-xyz/BioAgents",
+              label: 'GitHub',
+              href: 'https://github.com/bio-xyz/BioAgents',
             },
             {
-              label: "Bio.xyz",
-              href: "https://bio.xyz",
+              label: 'Bio.xyz',
+              href: 'https://bio.xyz',
             },
           ],
         },
@@ -140,7 +140,7 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
-      additionalLanguages: ["bash", "typescript", "json", "yaml", "docker"],
+      additionalLanguages: ['bash', 'typescript', 'json', 'yaml', 'docker'],
     },
   } satisfies Preset.ThemeConfig,
 };

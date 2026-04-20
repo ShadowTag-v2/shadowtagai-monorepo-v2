@@ -5,7 +5,7 @@
 
 function createGoogleProvider() {
   // [START auth_create_google_provider]
-  const { GoogleAuthProvider } = require("firebase/auth/cordova");
+  const { GoogleAuthProvider } = require('firebase/auth/cordova');
 
   const provider = new GoogleAuthProvider();
   // [END auth_create_google_provider]
@@ -13,7 +13,12 @@ function createGoogleProvider() {
 
 function cordovaSignInRedirect() {
   // [START auth_cordova_sign_in_redirect]
-  const { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider } = require("firebase/auth/cordova");
+  const {
+    getAuth,
+    signInWithRedirect,
+    getRedirectResult,
+    GoogleAuthProvider,
+  } = require('firebase/auth/cordova');
 
   const auth = getAuth();
   signInWithRedirect(auth, new GoogleAuthProvider())
@@ -30,7 +35,8 @@ function cordovaSignInRedirect() {
       // The signed-in user info.
       const user = result.user;
       // ...
-    }).catch((error) => {
+    })
+    .catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -40,7 +46,7 @@ function cordovaSignInRedirect() {
 
 function cordovaRedirectResult() {
   // [START auth_cordova_redirect_result]
-  const { getAuth, getRedirectResult, GoogleAuthProvider } = require("firebase/auth/cordova");
+  const { getAuth, getRedirectResult, GoogleAuthProvider } = require('firebase/auth/cordova');
 
   const auth = getAuth();
   getRedirectResult(auth)

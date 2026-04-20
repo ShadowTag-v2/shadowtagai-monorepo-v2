@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html, isServer, LitElement} from 'lit';
-import {queryAssignedElements} from 'lit/decorators.js';
+import { html, isServer, LitElement } from 'lit';
+import { queryAssignedElements } from 'lit/decorators.js';
 
-import {ListController, NavigableKeys} from './list-controller.js';
-import {ListItem as SharedListItem} from './list-navigation-helpers.js';
+import { ListController, NavigableKeys } from './list-controller.js';
+import type { ListItem as SharedListItem } from './list-navigation-helpers.js';
 
 const NAVIGABLE_KEY_SET = new Set<string>(Object.values(NavigableKeys));
 
@@ -26,8 +26,8 @@ export class List extends LitElement {
    * `HTMLSlotElement.queryAssignedElements` and thus will _only_ include direct
    * children / directly slotted elements.
    */
-  @queryAssignedElements({flatten: true})
-  protected slotItems!: Array<ListItem | (HTMLElement & {item?: ListItem})>;
+  @queryAssignedElements({ flatten: true })
+  protected slotItems!: Array<ListItem | (HTMLElement & { item?: ListItem })>;
 
   /** @export */
   get items() {
@@ -35,8 +35,7 @@ export class List extends LitElement {
   }
 
   private readonly listController = new ListController<ListItem>({
-    isItem: (item: HTMLElement): item is ListItem =>
-      item.hasAttribute('md-list-item'),
+    isItem: (item: HTMLElement): item is ListItem => item.hasAttribute('md-list-item'),
     getPossibleItems: () => this.slotItems,
     isRtl: () => getComputedStyle(this).direction === 'rtl',
     deactivateItem: (item) => {

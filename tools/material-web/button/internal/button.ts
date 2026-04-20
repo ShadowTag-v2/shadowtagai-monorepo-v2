@@ -7,18 +7,18 @@
 import '../../focus/md-focus-ring.js';
 import '../../ripple/ripple.js';
 
-import {html, isServer, LitElement, nothing} from 'lit';
-import {property, query, queryAssignedElements} from 'lit/decorators.js';
+import { html, isServer, LitElement, nothing } from 'lit';
+import { property, query, queryAssignedElements } from 'lit/decorators.js';
 
-import {ARIAMixinStrict} from '../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../internal/aria/delegate.js';
+import type { ARIAMixinStrict } from '../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../internal/aria/delegate.js';
 import {
   dispatchActivationClick,
   isActivationClick,
 } from '../../internal/events/form-label-activation.js';
-import {mixinElementInternals} from '../../labs/behaviors/element-internals.js';
-import {mixinFormAssociated} from '../../labs/behaviors/form-associated.js';
-import {mixinFormSubmitter} from '../../labs/behaviors/form-submitter.js';
+import { mixinElementInternals } from '../../labs/behaviors/element-internals.js';
+import { mixinFormAssociated } from '../../labs/behaviors/form-associated.js';
+import { mixinFormSubmitter } from '../../labs/behaviors/form-submitter.js';
 
 // Separate variable needed for closure.
 const buttonBaseClass = mixinDelegatesAria(
@@ -48,7 +48,7 @@ export abstract class Button extends buttonBaseClass {
    * https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls
    * for more guidance on when this is needed.
    */
-  @property({type: Boolean, attribute: 'soft-disabled', reflect: true})
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true })
   softDisabled = false;
 
   /**
@@ -75,18 +75,17 @@ export abstract class Button extends buttonBaseClass {
    *
    * _Note:_ Link buttons cannot have trailing icons.
    */
-  @property({type: Boolean, attribute: 'trailing-icon', reflect: true})
+  @property({ type: Boolean, attribute: 'trailing-icon', reflect: true })
   trailingIcon = false;
 
   /**
    * Whether to display the icon or not.
    */
-  @property({type: Boolean, attribute: 'has-icon', reflect: true}) hasIcon =
-    false;
+  @property({ type: Boolean, attribute: 'has-icon', reflect: true }) hasIcon = false;
 
   @query('.button') private readonly buttonElement!: HTMLElement | null;
 
-  @queryAssignedElements({slot: 'icon', flatten: true})
+  @queryAssignedElements({ slot: 'icon', flatten: true })
   private readonly assignedIcons!: HTMLElement[];
 
   constructor() {
@@ -130,7 +129,7 @@ export abstract class Button extends buttonBaseClass {
 
   private renderButton() {
     // Needed for closure conformance
-    const {ariaLabel, ariaHasPopup, ariaExpanded} = this as ARIAMixinStrict;
+    const { ariaLabel, ariaHasPopup, ariaExpanded } = this as ARIAMixinStrict;
     return html`<button
       id="button"
       class="button"
@@ -145,7 +144,7 @@ export abstract class Button extends buttonBaseClass {
 
   private renderLink() {
     // Needed for closure conformance
-    const {ariaLabel, ariaHasPopup, ariaExpanded} = this as ARIAMixinStrict;
+    const { ariaLabel, ariaHasPopup, ariaExpanded } = this as ARIAMixinStrict;
     return html`<a
       id="link"
       class="button"

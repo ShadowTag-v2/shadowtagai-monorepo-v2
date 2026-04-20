@@ -6,11 +6,8 @@
 
 import '@material/web/checkbox/checkbox.js';
 
-import {
-  labelStyles,
-  MaterialStoryInit,
-} from './material-collection.js';
-import {css, html} from 'lit';
+import { css, html } from 'lit';
+import { labelStyles, type MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for checkbox stories. */
 export interface StoryKnobs {
@@ -21,7 +18,7 @@ export interface StoryKnobs {
 
 const checkbox: MaterialStoryInit<StoryKnobs> = {
   name: 'Checkbox',
-  render({checked, disabled, indeterminate}) {
+  render({ checked, disabled, indeterminate }) {
     return html`
       <md-checkbox
         aria-label="An example checkbox"
@@ -53,7 +50,7 @@ const withLabels: MaterialStoryInit<StoryKnobs> = {
       }
     `,
   ],
-  render({disabled}) {
+  render({ disabled }) {
     return html`
       <ol aria-label="Animals">
         <li>

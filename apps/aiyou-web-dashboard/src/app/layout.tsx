@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
-import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
-import "./globals.css";
-import Image from "next/image";
-import Link from "next/link";
-import { CopilotKit } from "@copilotkit/react-core";
-import "@copilotkit/react-ui/styles.css";
+import type { Metadata } from 'next';
+import { Inter, Outfit } from 'next/font/google';
+import './globals.css';
+import { CopilotKit } from '@copilotkit/react-core';
+import Image from 'next/image';
+import Link from 'next/link';
+import '@copilotkit/react-ui/styles.css';
 
 const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+  variable: '--font-inter',
+  subsets: ['latin'],
 });
 
 const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
+  variable: '--font-outfit',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "ShadowTag - Serving the Global AI Industry",
-  description: "Advanced Intelligence Matrices and Commercial AI Protocol Enforcement.",
+  title: 'ShadowTag - Serving the Global AI Industry',
+  description: 'Advanced Intelligence Matrices and Commercial AI Protocol Enforcement.',
 };
 
 export default function RootLayout({
@@ -33,13 +33,38 @@ export default function RootLayout({
       <body className="flex flex-col min-h-screen font-sans bg-white text-gray-900 relative">
         {/* Top Mini Nav */}
         <div className="bg-[#0B0A11] border-b border-gray-800 text-xs text-white flex justify-end items-center px-8 py-1.5 space-x-6 font-semibold tracking-wide border-opacity-70">
-          <button type="button" className="hover:text-gray-300" aria-label="Decrease font size" onClick={() => { document.documentElement.style.fontSize = Math.max(12, parseFloat(getComputedStyle(document.documentElement).fontSize) - 2) + 'px'; }}>
+          <button
+            type="button"
+            className="hover:text-gray-300"
+            aria-label="Decrease font size"
+            onClick={() => {
+              document.documentElement.style.fontSize =
+                Math.max(12, parseFloat(getComputedStyle(document.documentElement).fontSize) - 2) +
+                'px';
+            }}
+          >
             A-
           </button>
-          <button type="button" className="hover:text-gray-300" aria-label="Increase font size" onClick={() => { document.documentElement.style.fontSize = Math.min(24, parseFloat(getComputedStyle(document.documentElement).fontSize) + 2) + 'px'; }}>
+          <button
+            type="button"
+            className="hover:text-gray-300"
+            aria-label="Increase font size"
+            onClick={() => {
+              document.documentElement.style.fontSize =
+                Math.min(24, parseFloat(getComputedStyle(document.documentElement).fontSize) + 2) +
+                'px';
+            }}
+          >
             A+
           </button>
-          <button type="button" className="flex items-center hover:text-gray-300" aria-label="Toggle high contrast" onClick={() => { document.documentElement.classList.toggle('high-contrast'); }}>
+          <button
+            type="button"
+            className="flex items-center hover:text-gray-300"
+            aria-label="Toggle high contrast"
+            onClick={() => {
+              document.documentElement.classList.toggle('high-contrast');
+            }}
+          >
             <svg
               className="w-3 h-3 mr-1"
               fill="currentColor"
@@ -50,7 +75,16 @@ export default function RootLayout({
             </svg>
             Contrast
           </button>
-          <button type="button" className="flex items-center hover:text-gray-300" aria-label="Open accessibility options" onClick={() => { document.querySelector('.fixed.bottom-6.left-6')?.scrollIntoView({ behavior: 'smooth' }); }}>
+          <button
+            type="button"
+            className="flex items-center hover:text-gray-300"
+            aria-label="Open accessibility options"
+            onClick={() => {
+              document
+                .querySelector('.fixed.bottom-6.left-6')
+                ?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
             <svg
               className="w-3 h-3 mr-1"
               fill="currentColor"

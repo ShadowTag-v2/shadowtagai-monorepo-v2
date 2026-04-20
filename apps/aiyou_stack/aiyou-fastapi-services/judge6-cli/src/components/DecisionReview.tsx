@@ -5,21 +5,21 @@
  * Uses Ink's alternate screen buffer for flicker-free updates.
  */
 
-import type React from "react";
-import { useState } from "react";
-import { Box, Text } from "ink";
-import TextInput from "ink-text-input";
-import Spinner from "ink-spinner";
-import type { DecisionValidationResponse, ValidationHistory } from "../types.js";
-import { RiskMatrix } from "./RiskMatrix.js";
-import { Judge6ApiClient } from "../api.js";
+import { Box, Text } from 'ink';
+import Spinner from 'ink-spinner';
+import TextInput from 'ink-text-input';
+import type React from 'react';
+import { useState } from 'react';
+import { Judge6ApiClient } from '../api.js';
+import type { DecisionValidationResponse, ValidationHistory } from '../types.js';
+import { RiskMatrix } from './RiskMatrix.js';
 
 interface DecisionReviewProps {
   apiUrl?: string;
 }
 
 export const DecisionReview: React.FC<DecisionReviewProps> = ({ apiUrl }) => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [decision, setDecision] = useState<DecisionValidationResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,9 +49,9 @@ export const DecisionReview: React.FC<DecisionReviewProps> = ({ apiUrl }) => {
           timestamp: new Date().toISOString(),
         },
       ]);
-      setQuery("");
+      setQuery('');
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
+      setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setLoading(false);
     }
@@ -59,31 +59,31 @@ export const DecisionReview: React.FC<DecisionReviewProps> = ({ apiUrl }) => {
 
   const getResultColor = (result: string): string => {
     switch (result) {
-      case "approved":
-        return "green";
-      case "blocked_purpose":
-        return "yellow";
-      case "blocked_reasons":
-        return "magenta";
-      case "blocked_brakes":
-        return "red";
+      case 'approved':
+        return 'green';
+      case 'blocked_purpose':
+        return 'yellow';
+      case 'blocked_reasons':
+        return 'magenta';
+      case 'blocked_brakes':
+        return 'red';
       default:
-        return "white";
+        return 'white';
     }
   };
 
   const getResultSymbol = (result: string): string => {
     switch (result) {
-      case "approved":
-        return "✓";
-      case "blocked_purpose":
-        return "⚠";
-      case "blocked_reasons":
-        return "⊘";
-      case "blocked_brakes":
-        return "⊗";
+      case 'approved':
+        return '✓';
+      case 'blocked_purpose':
+        return '⚠';
+      case 'blocked_reasons':
+        return '⊘';
+      case 'blocked_brakes':
+        return '⊗';
       default:
-        return "?";
+        return '?';
     }
   };
 
@@ -130,8 +130,8 @@ export const DecisionReview: React.FC<DecisionReviewProps> = ({ apiUrl }) => {
             {/* Purpose Validation */}
             <Box marginTop={1}>
               <Text bold>Purpose: </Text>
-              <Text color={decision.purpose_valid ? "green" : "red"}>
-                {decision.purpose_valid ? "✓" : "✗"}
+              <Text color={decision.purpose_valid ? 'green' : 'red'}>
+                {decision.purpose_valid ? '✓' : '✗'}
               </Text>
               <Text dimColor> (score: {(decision.purpose_score * 100).toFixed(1)}%)</Text>
             </Box>
@@ -142,8 +142,8 @@ export const DecisionReview: React.FC<DecisionReviewProps> = ({ apiUrl }) => {
             {/* Reasons Validation */}
             <Box marginTop={1}>
               <Text bold>Reasons: </Text>
-              <Text color={decision.reasons_valid ? "green" : "red"}>
-                {decision.reasons_valid ? "✓" : "✗"}
+              <Text color={decision.reasons_valid ? 'green' : 'red'}>
+                {decision.reasons_valid ? '✓' : '✗'}
               </Text>
               <Text dimColor> (score: {(decision.reasons_score * 100).toFixed(1)}%)</Text>
             </Box>
@@ -151,8 +151,8 @@ export const DecisionReview: React.FC<DecisionReviewProps> = ({ apiUrl }) => {
             {/* Brakes Check */}
             <Box marginTop={1}>
               <Text bold>Brakes: </Text>
-              <Text color={decision.brakes_clear ? "green" : "red"}>
-                {decision.brakes_clear ? "✓ CLEAR" : "⊗ VIOLATED"}
+              <Text color={decision.brakes_clear ? 'green' : 'red'}>
+                {decision.brakes_clear ? '✓ CLEAR' : '⊗ VIOLATED'}
               </Text>
               <Text dimColor> (score: {(decision.brakes_score * 100).toFixed(1)}%)</Text>
             </Box>
@@ -190,8 +190,8 @@ export const DecisionReview: React.FC<DecisionReviewProps> = ({ apiUrl }) => {
               </Text>
               <Box marginTop={1}>
                 <Text dimColor>
-                  Approved: {history.filter((h) => h.response.result === "approved").length} •{" "}
-                  Blocked: {history.filter((h) => h.response.result !== "approved").length}
+                  Approved: {history.filter((h) => h.response.result === 'approved').length} •{' '}
+                  Blocked: {history.filter((h) => h.response.result !== 'approved').length}
                 </Text>
               </Box>
             </Box>
@@ -203,7 +203,7 @@ export const DecisionReview: React.FC<DecisionReviewProps> = ({ apiUrl }) => {
       <Box marginTop={1} borderStyle="round" borderColor="green">
         <Box paddingX={1}>
           <Text bold color="green">
-            →{" "}
+            →{' '}
           </Text>
           <TextInput
             value={query}

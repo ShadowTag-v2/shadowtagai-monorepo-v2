@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Harness} from '../../testing/harness.js';
-import {NavigationTabHarness} from '../navigationtab/harness.js';
+import { Harness } from '../../testing/harness.js';
+import { NavigationTabHarness } from '../navigationtab/harness.js';
 
-import {NavigationBar} from './internal/navigation-bar.js';
+import type { NavigationBar } from './internal/navigation-bar.js';
 
 /**
  * Test harness for navigation bars.

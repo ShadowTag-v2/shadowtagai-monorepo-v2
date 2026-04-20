@@ -68,7 +68,7 @@ export const createSymbolTable = (): SymbolTable => {
 
   const getStats = () => ({
     fileCount: fileIndex.size,
-    globalSymbolCount: globalIndex.size
+    globalSymbolCount: globalIndex.size,
   });
 
   const clear = () => {

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { X, Snail, Rocket, SkipForward } from '@/lib/lucide-icons';
+import { useEffect, useState } from 'react';
+import { Rocket, SkipForward, Snail, X } from '@/lib/lucide-icons';
 
 interface WebGPUFallbackDialogProps {
   isOpen: boolean;
@@ -69,9 +69,7 @@ export const WebGPUFallbackDialog = ({
               🤔
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-text-primary">
-                WebGPU said "nope"
-              </h2>
+              <h2 className="text-lg font-semibold text-text-primary">WebGPU said "nope"</h2>
               <p className="text-sm text-text-muted mt-0.5">
                 Your browser doesn't support GPU acceleration
               </p>
@@ -82,8 +80,8 @@ export const WebGPUFallbackDialog = ({
         {/* Content */}
         <div className="px-6 py-5 space-y-4">
           <p className="text-sm text-text-secondary leading-relaxed">
-            Couldn't create embeddings with WebGPU, so semantic search (Graph RAG)
-            won't be as smart. The graph still works fine though!
+            Couldn't create embeddings with WebGPU, so semantic search (Graph RAG) won't be as
+            smart. The graph still works fine though!
           </p>
 
           <div className="bg-elevated/50 rounded-lg p-4 border border-border-subtle">
@@ -94,16 +92,21 @@ export const WebGPUFallbackDialog = ({
               <li className="flex items-start gap-2">
                 <Snail className="w-4 h-4 mt-0.5 text-amber-400 flex-shrink-0" />
                 <span>
-                  <strong className="text-text-secondary">Use CPU</strong> — Works but {isSmallCodebase ? 'a bit' : 'way'} slower
+                  <strong className="text-text-secondary">Use CPU</strong> — Works but{' '}
+                  {isSmallCodebase ? 'a bit' : 'way'} slower
                   {nodeCount > 0 && (
-                    <span className="text-text-muted"> (~{estimatedMinutes} min for {nodeCount} nodes)</span>
+                    <span className="text-text-muted">
+                      {' '}
+                      (~{estimatedMinutes} min for {nodeCount} nodes)
+                    </span>
                   )}
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <SkipForward className="w-4 h-4 mt-0.5 text-blue-400 flex-shrink-0" />
                 <span>
-                  <strong className="text-text-secondary">Skip it</strong> — Graph works, just no AI semantic search
+                  <strong className="text-text-secondary">Skip it</strong> — Graph works, just no AI
+                  semantic search
                 </span>
               </li>
             </ul>
@@ -116,9 +119,7 @@ export const WebGPUFallbackDialog = ({
             </p>
           )}
 
-          <p className="text-xs text-text-muted">
-            💡 Tip: Try Chrome or Edge for WebGPU support
-          </p>
+          <p className="text-xs text-text-muted">💡 Tip: Try Chrome or Edge for WebGPU support</p>
         </div>
 
         {/* Actions */}

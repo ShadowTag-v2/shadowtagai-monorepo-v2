@@ -1,13 +1,13 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import ActorPage from "./pages/Actor";
-import MoviePage from "./pages/Movie";
-import MyProfilePage from "./pages/MyProfile";
-import VectorSearchPage from "./pages/VectorSearch";
-import AdvancedSearchPage from "./pages/AdvancedSearch";
-import NotFound from "./pages/NotFound";
-import RootLayout from "./layout/RootLayout";
+import React from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import RootLayout from './layout/RootLayout';
+import ActorPage from './pages/Actor';
+import AdvancedSearchPage from './pages/AdvancedSearch';
+import Home from './pages/Home';
+import MoviePage from './pages/Movie';
+import MyProfilePage from './pages/MyProfile';
+import NotFound from './pages/NotFound';
+import VectorSearchPage from './pages/VectorSearch';
 
 export default function App() {
   return (

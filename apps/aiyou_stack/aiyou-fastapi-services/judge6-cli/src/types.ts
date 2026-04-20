@@ -16,7 +16,7 @@ export interface DecisionValidationResponse {
   reasons_score: number;
   brakes_clear: boolean;
   brakes_score: number;
-  result: "approved" | "blocked_purpose" | "blocked_reasons" | "blocked_brakes";
+  result: 'approved' | 'blocked_purpose' | 'blocked_reasons' | 'blocked_brakes';
   explanation: string;
   risk_level?: RiskLevel;
   compressed_bytes?: number;

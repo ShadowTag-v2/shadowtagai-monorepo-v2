@@ -1,16 +1,16 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
-  TYPESCRIPT_QUERIES,
-  JAVASCRIPT_QUERIES,
-  PYTHON_QUERIES,
-  JAVA_QUERIES,
   C_QUERIES,
-  GO_QUERIES,
   CPP_QUERIES,
   CSHARP_QUERIES,
-  RUST_QUERIES,
+  GO_QUERIES,
+  JAVA_QUERIES,
+  JAVASCRIPT_QUERIES,
   PHP_QUERIES,
+  PYTHON_QUERIES,
+  RUST_QUERIES,
   SWIFT_QUERIES,
+  TYPESCRIPT_QUERIES,
 } from '../../src/core/ingestion/tree-sitter-queries.js';
 
 describe('tree-sitter queries', () => {

@@ -6,7 +6,7 @@
 class ParticleSystem {
   constructor(canvas) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext("2d");
+    this.ctx = canvas.getContext('2d');
     this.particles = [];
     this.particleCount = 80;
     this.mouse = { x: null, y: null, radius: 150 };
@@ -15,8 +15,8 @@ class ParticleSystem {
     this.init();
     this.animate();
 
-    window.addEventListener("resize", () => this.resize());
-    window.addEventListener("mousemove", (e) => {
+    window.addEventListener('resize', () => this.resize());
+    window.addEventListener('mousemove', (e) => {
       this.mouse.x = e.clientX;
       this.mouse.y = e.clientY;
     });
@@ -99,19 +99,19 @@ class StatsManager {
   constructor() {
     this.stats = {
       sync: [
-        { value: "98.7%", label: "NEURAL SYNC" },
-        { value: "99.2%", label: "ACCURACY" },
-        { value: "97.1%", label: "STABILITY" },
+        { value: '98.7%', label: 'NEURAL SYNC' },
+        { value: '99.2%', label: 'ACCURACY' },
+        { value: '97.1%', label: 'STABILITY' },
       ],
       players: [
-        { value: "2.4M", label: "ACTIVE PLAYERS" },
-        { value: "847K", label: "IN COMBAT" },
-        { value: "12K", label: "TOURNAMENTS" },
+        { value: '2.4M', label: 'ACTIVE PLAYERS' },
+        { value: '847K', label: 'IN COMBAT' },
+        { value: '12K', label: 'TOURNAMENTS' },
       ],
       latency: [
-        { value: "12ms", label: "AVG LATENCY" },
-        { value: "99.9%", label: "UPTIME" },
-        { value: "156", label: "EDGE NODES" },
+        { value: '12ms', label: 'AVG LATENCY' },
+        { value: '99.9%', label: 'UPTIME' },
+        { value: '156', label: 'EDGE NODES' },
       ],
     };
 
@@ -126,21 +126,21 @@ class StatsManager {
         if (!circle) return;
 
         // Fade out
-        circle.style.opacity = "0";
+        circle.style.opacity = '0';
 
         setTimeout(() => {
           // Update value
           this.indices[key] = (this.indices[key] + 1) % this.stats[key].length;
           const stat = this.stats[key][this.indices[key]];
 
-          const valueEl = circle.querySelector(".stat-value");
-          const labelEl = circle.querySelector(".stat-label");
+          const valueEl = circle.querySelector('.stat-value');
+          const labelEl = circle.querySelector('.stat-label');
 
           if (valueEl) valueEl.textContent = stat.value;
           if (labelEl) labelEl.textContent = stat.label;
 
           // Fade in
-          circle.style.opacity = "1";
+          circle.style.opacity = '1';
         }, 300);
       });
     }, 5000);
@@ -150,11 +150,11 @@ class StatsManager {
 // Smooth scroll for navigation
 function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", function (e) {
+    anchor.addEventListener('click', function (e) {
       e.preventDefault();
-      const target = document.querySelector(this.getAttribute("href"));
+      const target = document.querySelector(this.getAttribute('href'));
       if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
+        target.scrollIntoView({ behavior: 'smooth' });
       }
     });
   });
@@ -162,23 +162,23 @@ function initSmoothScroll() {
 
 // Active nav link on scroll
 function initScrollSpy() {
-  const sections = document.querySelectorAll("section[id]");
-  const navLinks = document.querySelectorAll(".nav-links a");
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
 
-  window.addEventListener("scroll", () => {
-    let current = "";
+  window.addEventListener('scroll', () => {
+    let current = '';
 
     sections.forEach((section) => {
       const sectionTop = section.offsetTop - 200;
       if (window.scrollY >= sectionTop) {
-        current = section.getAttribute("id");
+        current = section.getAttribute('id');
       }
     });
 
     navLinks.forEach((link) => {
-      link.classList.remove("active");
-      if (link.getAttribute("href") === `#${current}`) {
-        link.classList.add("active");
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('active');
       }
     });
   });
@@ -190,23 +190,23 @@ function initScrollAnimations() {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("animate-in");
+          entry.target.classList.add('animate-in');
         }
       });
     },
     { threshold: 0.1 },
   );
 
-  document.querySelectorAll(".feature-card").forEach((card) => {
-    card.style.opacity = "0";
-    card.style.transform = "translateY(30px)";
-    card.style.transition = "all 0.6s ease";
+  document.querySelectorAll('.feature-card').forEach((card) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(30px)';
+    card.style.transition = 'all 0.6s ease';
     observer.observe(card);
   });
 }
 
 // Add animate-in styles
-const style = document.createElement("style");
+const style = document.createElement('style');
 style.textContent = `
     .animate-in {
         opacity: 1 !important;
@@ -216,8 +216,8 @@ style.textContent = `
 document.head.appendChild(style);
 
 // Initialize everything
-document.addEventListener("DOMContentLoaded", () => {
-  const canvas = document.getElementById("particle-canvas");
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('particle-canvas');
   if (canvas) {
     new ParticleSystem(canvas);
   }
@@ -228,8 +228,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollAnimations();
 
   console.log(
-    "%c NEXUSUS AI ",
-    "background: #00ffff; color: #000; font-weight: bold; padding: 4px 8px;",
+    '%c NEXUSUS AI ',
+    'background: #00ffff; color: #000; font-weight: bold; padding: 4px 8px;',
   );
-  console.log("%c Neural Combat Evolution - Powered by GamePort ", "color: #888;");
+  console.log('%c Neural Combat Evolution - Powered by GamePort ', 'color: #888;');
 });

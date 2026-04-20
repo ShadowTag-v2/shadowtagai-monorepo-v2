@@ -23,21 +23,21 @@
  * @return {string} The escaped string safe for HTML rendering.
  */
 const htmlEscapes = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#x27;',
-    '`': '&#x60;'
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#x27;',
+  '`': '&#x60;',
 };
 
 const escapeCharsRegex = /[&<>"'`]/g;
 
 export function escapeHtml(input) {
-    if (input === null || input === undefined) {
-        return '';
-    }
+  if (input === null || input === undefined) {
+    return '';
+  }
 
-    const str = String(input);
-    return str.replace(escapeCharsRegex, (char) => htmlEscapes[char]);
+  const str = String(input);
+  return str.replace(escapeCharsRegex, (char) => htmlEscapes[char]);
 }

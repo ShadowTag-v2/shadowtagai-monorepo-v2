@@ -1,8 +1,8 @@
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import {
   SubscribeRequestSchema,
   UnsubscribeRequestSchema,
-} from "@modelcontextprotocol/sdk/types.js";
+} from '@modelcontextprotocol/sdk/types.js';
 
 // Track subscriber session id lists by URI
 const subscriptions: Map<string, Set<string | undefined>> = new Map<
@@ -47,9 +47,9 @@ export const setSubscriptionHandlers = (server: McpServer) => {
     // Acknowledge the subscribe request
     await server.sendLoggingMessage(
       {
-        level: "info",
+        level: 'info',
         data: `Received Subscribe Resource request for URI: ${uri} ${
-          sessionId ? `from session ${sessionId}` : ""
+          sessionId ? `from session ${sessionId}` : ''
         }`,
       },
       sessionId,
@@ -75,9 +75,9 @@ export const setSubscriptionHandlers = (server: McpServer) => {
     // Acknowledge the subscribe request
     await server.sendLoggingMessage(
       {
-        level: "info",
+        level: 'info',
         data: `Received Unsubscribe Resource request: ${uri} ${
-          sessionId ? `from session ${sessionId}` : ""
+          sessionId ? `from session ${sessionId}` : ''
         }`,
       },
       sessionId,
@@ -115,7 +115,7 @@ const sendSimulatedResourceUpdates = async (
     // If this client is subscribed, send the notification
     if (subscribers.has(sessionId)) {
       await server.server.notification({
-        method: "notifications/resources/updated",
+        method: 'notifications/resources/updated',
         params: { uri },
       });
     } else {

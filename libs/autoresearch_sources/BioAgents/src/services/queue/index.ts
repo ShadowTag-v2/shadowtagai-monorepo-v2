@@ -7,16 +7,24 @@
 
 // Connection management
 export {
+  closeConnections,
   getBullMQConnection,
   getPublisher,
   getSubscriber,
   isJobQueueEnabled,
-  closeConnections,
-} from "./connection";
-
+} from './connection';
+// Notification helpers
+export {
+  notify,
+  notifyJobCompleted,
+  notifyJobFailed,
+  notifyJobProgress,
+  notifyJobStarted,
+  notifyMessageUpdated,
+  notifyStateUpdated,
+} from './notify';
 // Queue instances
-export { getChatQueue, getDeepResearchQueue, closeQueues } from "./queues";
-
+export { closeQueues, getChatQueue, getDeepResearchQueue } from './queues';
 // Types
 export type {
   ChatJobData,
@@ -26,19 +34,8 @@ export type {
   JobProgress,
   Notification,
   NotificationType,
-} from "./types";
-
-// Notification helpers
-export {
-  notify,
-  notifyJobStarted,
-  notifyJobProgress,
-  notifyJobCompleted,
-  notifyJobFailed,
-  notifyMessageUpdated,
-  notifyStateUpdated,
-} from "./notify";
+} from './types';
 
 // Workers (for worker process)
-export { startChatWorker } from "./workers/chat.worker";
-export { startDeepResearchWorker } from "./workers/deep-research.worker";
+export { startChatWorker } from './workers/chat.worker';
+export { startDeepResearchWorker } from './workers/deep-research.worker';

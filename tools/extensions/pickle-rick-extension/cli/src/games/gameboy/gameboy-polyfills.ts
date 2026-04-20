@@ -8,25 +8,29 @@ class ImageDataPolyfill {
   readonly data: Uint8ClampedArray;
   readonly width: number;
   readonly height: number;
-  readonly colorSpace: PredefinedColorSpace = "srgb";
+  readonly colorSpace: PredefinedColorSpace = 'srgb';
 
   constructor(width: number, height: number);
   constructor(data: Uint8ClampedArray, width: number, height?: number);
   constructor(dataOrWidth: Uint8ClampedArray | number, widthOrHeight: number, height?: number) {
     imageDataCreateCount++;
-    if (typeof dataOrWidth === "number") {
+    if (typeof dataOrWidth === 'number') {
       this.width = dataOrWidth;
       this.height = widthOrHeight;
       this.data = new Uint8ClampedArray(this.width * this.height * 4);
       if (imageDataCreateCount <= 5) {
-        console.log(`[Polyfill] ImageData created #${imageDataCreateCount}: ${this.width}x${this.height}, data length: ${this.data.length}`);
+        console.log(
+          `[Polyfill] ImageData created #${imageDataCreateCount}: ${this.width}x${this.height}, data length: ${this.data.length}`,
+        );
       }
     } else {
       this.data = dataOrWidth;
       this.width = widthOrHeight;
-      this.height = height ?? (dataOrWidth.length / 4 / widthOrHeight);
+      this.height = height ?? dataOrWidth.length / 4 / widthOrHeight;
       if (imageDataCreateCount <= 5) {
-        console.log(`[Polyfill] ImageData created from existing data #${imageDataCreateCount}: ${this.width}x${this.height}`);
+        console.log(
+          `[Polyfill] ImageData created from existing data #${imageDataCreateCount}: ${this.width}x${this.height}`,
+        );
       }
     }
   }
@@ -35,15 +39,21 @@ class ImageDataPolyfill {
 // Polyfill AudioContext with a no-op implementation
 class AudioContextPolyfill {
   readonly sampleRate = 44100;
-  readonly state = "suspended";
+  readonly state = 'suspended';
   readonly destination = { connect: () => {}, disconnect: () => {} };
   readonly audioWorklet = {
     addModule: () => Promise.resolve(),
   };
 
-  resume() { return Promise.resolve(); }
-  suspend() { return Promise.resolve(); }
-  close() { return Promise.resolve(); }
+  resume() {
+    return Promise.resolve();
+  }
+  suspend() {
+    return Promise.resolve();
+  }
+  close() {
+    return Promise.resolve();
+  }
   createGain() {
     return {
       gain: { value: 1, setValueAtTime: () => {} },
@@ -54,7 +64,7 @@ class AudioContextPolyfill {
   createOscillator() {
     return {
       frequency: { value: 440 },
-      type: "sine",
+      type: 'sine',
       connect: () => {},
       disconnect: () => {},
       start: () => {},
@@ -88,37 +98,37 @@ class AudioWorkletNodePolyfill {
 }
 
 // Apply polyfills to globalThis immediately on import
-if (typeof globalThis.ImageData === "undefined") {
+if (typeof globalThis.ImageData === 'undefined') {
   (globalThis as any).ImageData = ImageDataPolyfill;
 }
-if (typeof globalThis.AudioContext === "undefined") {
+if (typeof globalThis.AudioContext === 'undefined') {
   (globalThis as any).AudioContext = AudioContextPolyfill;
 }
-if (typeof globalThis.AudioWorkletNode === "undefined") {
+if (typeof globalThis.AudioWorkletNode === 'undefined') {
   (globalThis as any).AudioWorkletNode = AudioWorkletNodePolyfill;
 }
 // Some libs check for window
-if (typeof globalThis.window === "undefined") {
+if (typeof globalThis.window === 'undefined') {
   (globalThis as any).window = globalThis;
 }
 
 // Polyfill navigator with gamepad support
-if (typeof globalThis.navigator === "undefined" || !(globalThis.navigator as any).getGamepads) {
+if (typeof globalThis.navigator === 'undefined' || !(globalThis.navigator as any).getGamepads) {
   (globalThis as any).navigator = {
     ...(globalThis as any).navigator,
     getGamepads: () => [],
-    userAgent: "Bun",
-    language: "en-US",
+    userAgent: 'Bun',
+    language: 'en-US',
   };
 }
 
 // Polyfill requestAnimationFrame
-if (typeof globalThis.requestAnimationFrame === "undefined") {
+if (typeof globalThis.requestAnimationFrame === 'undefined') {
   (globalThis as any).requestAnimationFrame = (callback: FrameRequestCallback): number => {
     return setTimeout(() => callback(performance.now()), 16) as unknown as number;
   };
 }
-if (typeof globalThis.cancelAnimationFrame === "undefined") {
+if (typeof globalThis.cancelAnimationFrame === 'undefined') {
   (globalThis as any).cancelAnimationFrame = (id: number): void => {
     clearTimeout(id);
   };
@@ -128,8 +138,8 @@ if (typeof globalThis.cancelAnimationFrame === "undefined") {
 class CanvasRenderingContext2DPolyfill {
   private canvas: any;
   private pixels: Uint8ClampedArray;
-  public fillStyle: string = "#000000";
-  public strokeStyle: string = "#000000";
+  public fillStyle: string = '#000000';
+  public strokeStyle: string = '#000000';
   public globalAlpha: number = 1;
   public imageSmoothingEnabled: boolean = true;
 
@@ -140,14 +150,14 @@ class CanvasRenderingContext2DPolyfill {
 
   private parseColor(color: string): [number, number, number, number] {
     // Parse hex color
-    if (color.startsWith("#")) {
+    if (color.startsWith('#')) {
       const hex = color.slice(1);
       if (hex.length === 6) {
         return [
           parseInt(hex.slice(0, 2), 16),
           parseInt(hex.slice(2, 4), 16),
           parseInt(hex.slice(4, 6), 16),
-          255
+          255,
         ];
       }
     }
@@ -158,14 +168,14 @@ class CanvasRenderingContext2DPolyfill {
         parseInt(rgbMatch[1]),
         parseInt(rgbMatch[2]),
         parseInt(rgbMatch[3]),
-        rgbMatch[4] ? Math.floor(parseFloat(rgbMatch[4]) * 255) : 255
+        rgbMatch[4] ? Math.floor(parseFloat(rgbMatch[4]) * 255) : 255,
       ];
     }
     return [0, 0, 0, 255];
   }
 
   createImageData(sw: number | ImageData, sh?: number): ImageData {
-    if (typeof sw === "number") {
+    if (typeof sw === 'number') {
       return new (globalThis as any).ImageData(sw, sh!);
     }
     return new (globalThis as any).ImageData(sw.width, sw.height);
@@ -240,7 +250,9 @@ class CanvasRenderingContext2DPolyfill {
 
   drawImage() {}
   fillText() {}
-  measureText() { return { width: 0 }; }
+  measureText() {
+    return { width: 0 };
+  }
   save() {}
   restore() {}
   scale() {}
@@ -257,7 +269,9 @@ class CanvasRenderingContext2DPolyfill {
   clip() {}
   setTransform() {}
   resetTransform() {}
-  getTransform() { return { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 }; }
+  getTransform() {
+    return { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 };
+  }
 }
 
 class CanvasPolyfill {
@@ -273,23 +287,25 @@ class CanvasPolyfill {
   }
 
   getContext(type: string) {
-    if (type === "2d") {
+    if (type === '2d') {
       return this.context;
     }
     return null;
   }
 
-  toDataURL() { return ""; }
+  toDataURL() {
+    return '';
+  }
   toBlob() {}
   addEventListener() {}
   removeEventListener() {}
 }
 
 // Polyfill document with proper canvas support
-if (typeof globalThis.document === "undefined") {
+if (typeof globalThis.document === 'undefined') {
   (globalThis as any).document = {
     createElement: (tag: string) => {
-      if (tag === "canvas") {
+      if (tag === 'canvas') {
         return new CanvasPolyfill();
       }
       return { style: {}, appendChild: () => {}, addEventListener: () => {} };

@@ -1,8 +1,8 @@
 // gitnexus/src/core/ingestion/field-types.ts
 
-import type { TypeEnvironment } from './type-env.js';
+import type { SupportedLanguages } from '../../config/supported-languages.js';
 import type { SymbolTable } from './symbol-table.js';
-import { SupportedLanguages } from '../../config/supported-languages.js';
+import type { TypeEnvironment } from './type-env.js';
 
 /**
  * Visibility levels used across all supported languages.

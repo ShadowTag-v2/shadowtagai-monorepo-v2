@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_twitter_provider_create_modular]
-import { TwitterAuthProvider } from "firebase/auth";
+import { TwitterAuthProvider } from 'firebase/auth';
 
 const provider = new TwitterAuthProvider();
 // [END auth_twitter_provider_create_modular]

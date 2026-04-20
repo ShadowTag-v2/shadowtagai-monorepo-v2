@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { vi, describe, it, expect, beforeEach, afterEach, Mock } from 'vitest';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { afterEach, beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
+import { apiClientFactory } from '../../utility/index.js';
+import { logger } from '../../utility/logger.js';
 import {
   getMetadataTableSchema,
   registerGetMetadataTableSchemaTool,
 } from './get_metadata_table_schema.js';
-import { apiClientFactory } from '../../utility/index.js';
-import { logger } from '../../utility/logger.js';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 
 vi.mock('../../utility/index.js');
 vi.mock('../../utility/logger.js');

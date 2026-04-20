@@ -1,12 +1,12 @@
-import type React from "react";
-import "./CriticalTile.css"; // Assume we create some specific CSS or tailwind
+import type React from 'react';
+import './CriticalTile.css'; // Assume we create some specific CSS or tailwind
 
 export interface CriticalTileProps {
   imperativeAction: string; // e.g "SIGN" "FILE" "REVIEW"
   matterName: string; // e.g "Smith v. Jones - 12(b)(6)"
   deadlineIso: string; // The critical date
   ruleCitation: string; // e.g "FRCP 12(a)"
-  intensityLevel: "gentle" | "moderate" | "aggressive" | "no-slack"; // Slider
+  intensityLevel: 'gentle' | 'moderate' | 'aggressive' | 'no-slack'; // Slider
   onTap: () => void; // Trigger workflow
 }
 
@@ -21,14 +21,14 @@ export const CriticalTile: React.FC<CriticalTileProps> = ({
   // Determine color based on intensity to fit Dark Luxury
   const getColorScheme = () => {
     switch (intensityLevel) {
-      case "no-slack":
-        return "bg-red-900 border-red-500 text-white";
-      case "aggressive":
-        return "bg-orange-900 border-orange-500 text-white";
-      case "moderate":
-        return "bg-zinc-800 border-yellow-500 text-gray-200";
+      case 'no-slack':
+        return 'bg-red-900 border-red-500 text-white';
+      case 'aggressive':
+        return 'bg-orange-900 border-orange-500 text-white';
+      case 'moderate':
+        return 'bg-zinc-800 border-yellow-500 text-gray-200';
       default:
-        return "bg-black border-slate-700 text-gray-400";
+        return 'bg-black border-slate-700 text-gray-400';
     }
   };
 
@@ -39,8 +39,8 @@ export const CriticalTile: React.FC<CriticalTileProps> = ({
       onClick={onTap}
       className={`relative w-full h-screen flex flex-col justify-center items-center p-8 cursor-pointer transition-all duration-300 transform active:scale-95 ${getColorScheme()}`}
       style={{
-        boxShadow: "inset 0 0 100px rgba(0,0,0,0.8)",
-        backdropFilter: "blur(10px)",
+        boxShadow: 'inset 0 0 100px rgba(0,0,0,0.8)',
+        backdropFilter: 'blur(10px)',
       }}
     >
       <div className="absolute top-8 left-8">

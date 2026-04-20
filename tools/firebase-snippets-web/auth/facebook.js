@@ -1,8 +1,8 @@
 // These samples are intended for Web so this import would normally be
 // done in HTML however using modules here is more convenient for
 // ensuring sample correctness offline.
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 function facebookProvider() {
   // [START auth_facebook_provider_create]
@@ -15,7 +15,7 @@ function facebookProvider() {
 
   // [START auth_facebook_provider_params]
   provider.setCustomParameters({
-    'display': 'popup'
+    display: 'popup',
   });
   // [END auth_facebook_provider_params]
 }
@@ -32,7 +32,7 @@ function facebookSignInPopup(provider) {
       // The signed-in user info.
       var user = result.user;
       // IdP data available in result.additionalUserInfo.profile.
-        // ...
+      // ...
 
       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
       var accessToken = credential.accessToken;
@@ -55,7 +55,8 @@ function facebookSignInPopup(provider) {
 
 function facebookSignInRedirectResult() {
   // [START auth_facebook_signin_redirect_result]
-  firebase.auth()
+  firebase
+    .auth()
     .getRedirectResult()
     .then((result) => {
       if (result.credential) {
@@ -69,8 +70,9 @@ function facebookSignInRedirectResult() {
       // The signed-in user info.
       var user = result.user;
       // IdP data available in result.additionalUserInfo.profile.
-        // ...
-    }).catch((error) => {
+      // ...
+    })
+    .catch((error) => {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -93,10 +95,13 @@ function checkLoginState(response) {
       if (!isUserEqual(response.authResponse, firebaseUser)) {
         // Build Firebase credential with the Facebook auth token.
         var credential = firebase.auth.FacebookAuthProvider.credential(
-            response.authResponse.accessToken);
+          response.authResponse.accessToken,
+        );
 
         // Sign in with the credential from the Facebook user.
-        firebase.auth().signInWithCredential(credential)
+        firebase
+          .auth()
+          .signInWithCredential(credential)
           .catch((error) => {
             // Handle Errors here.
             var errorCode = error.code;
@@ -123,8 +128,10 @@ function isUserEqual(facebookAuthResponse, firebaseUser) {
   if (firebaseUser) {
     var providerData = firebaseUser.providerData;
     for (var i = 0; i < providerData.length; i++) {
-      if (providerData[i].providerId === firebase.auth.FacebookAuthProvider.PROVIDER_ID &&
-          providerData[i].uid === facebookAuthResponse.userID) {
+      if (
+        providerData[i].providerId === firebase.auth.FacebookAuthProvider.PROVIDER_ID &&
+        providerData[i].uid === facebookAuthResponse.userID
+      ) {
         // We don't need to re-auth the Firebase connection.
         return true;
       }
@@ -137,7 +144,9 @@ function isUserEqual(facebookAuthResponse, firebaseUser) {
 function authWithCredential(credential) {
   // [START auth_facebook_signin_credential]
   // Sign in with the credential from the Facebook user.
-  firebase.auth().signInWithCredential(credential)
+  firebase
+    .auth()
+    .signInWithCredential(credential)
     .then((result) => {
       // Signed in
       var credential = result.credential;

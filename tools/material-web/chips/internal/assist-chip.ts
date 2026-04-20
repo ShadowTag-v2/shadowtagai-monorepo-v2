@@ -6,18 +6,18 @@
 
 import '../../elevation/elevation.js';
 
-import {html, nothing} from 'lit';
-import {property} from 'lit/decorators.js';
+import { html, nothing } from 'lit';
+import { property } from 'lit/decorators.js';
 
-import {ARIAMixinStrict} from '../../internal/aria/aria.js';
+import type { ARIAMixinStrict } from '../../internal/aria/aria.js';
 
-import {Chip} from './chip.js';
+import { Chip } from './chip.js';
 
 /**
  * An assist chip component.
  */
 export class AssistChip extends Chip {
-  @property({type: Boolean}) elevated = false;
+  @property({ type: Boolean }) elevated = false;
   @property() href = '';
   /**
    * The filename to use when downloading the linked resource.
@@ -47,7 +47,7 @@ export class AssistChip extends Chip {
   }
 
   protected override renderPrimaryAction(content: unknown) {
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     if (this.href) {
       return html`
         <a

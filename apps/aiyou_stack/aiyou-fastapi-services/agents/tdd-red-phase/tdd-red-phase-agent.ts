@@ -11,8 +11,8 @@
  * @version 1.0.0
  */
 
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from 'fs';
+import * as path from 'path';
 
 // ============================================================================
 // TYPES & INTERFACES
@@ -23,8 +23,8 @@ interface ComplianceRule {
   name: string;
   description: string;
   weight: number;
-  severity: "critical" | "high" | "medium" | "low";
-  enforcement: "mandatory" | "recommended";
+  severity: 'critical' | 'high' | 'medium' | 'low';
+  enforcement: 'mandatory' | 'recommended';
   [key: string]: unknown;
 }
 
@@ -88,7 +88,7 @@ interface TestSuite {
 
 interface Test {
   name: string;
-  type: "integration" | "unit";
+  type: 'integration' | 'unit';
   code: string;
   assertions: number;
   purpose: string;
@@ -111,9 +111,9 @@ export class TDDRedPhaseAgent {
   private startTime: number = 0;
   private iteration: number = 0;
 
-  constructor(configPath: string = "../../src/config/tdd-compliance-rules.json") {
+  constructor(configPath: string = '../../src/config/tdd-compliance-rules.json') {
     const resolvedPath = path.resolve(__dirname, configPath);
-    const configData = fs.readFileSync(resolvedPath, "utf-8");
+    const configData = fs.readFileSync(resolvedPath, 'utf-8');
     this.config = JSON.parse(configData);
   }
 
@@ -139,7 +139,7 @@ export class TDDRedPhaseAgent {
         // Check timeout
         if (this.isTimedOut()) {
           complianceReport.escalation_triggered = true;
-          complianceReport.escalation_reason = "timeout_reached";
+          complianceReport.escalation_reason = 'timeout_reached';
           break;
         }
 
@@ -155,7 +155,7 @@ export class TDDRedPhaseAgent {
       // Escalation if max iterations exceeded
       if (this.iteration >= this.config.max_iterations && !complianceReport.passed) {
         complianceReport.escalation_triggered = true;
-        complianceReport.escalation_reason = "iterations_exceeded";
+        complianceReport.escalation_reason = 'iterations_exceeded';
       }
 
       // Generate audit trail
@@ -175,9 +175,9 @@ export class TDDRedPhaseAgent {
         iteration: this.iteration,
         violations_found: [
           {
-            rule_id: "SYSTEM",
-            rule_name: "execution_error",
-            severity: "critical",
+            rule_id: 'SYSTEM',
+            rule_name: 'execution_error',
+            severity: 'critical',
             description: `Agent execution failed: ${(error as Error).message}`,
           },
         ],
@@ -186,7 +186,7 @@ export class TDDRedPhaseAgent {
         passed: false,
         execution_time_ms: Date.now() - this.startTime,
         escalation_triggered: true,
-        escalation_reason: "execution_error",
+        escalation_reason: 'execution_error',
       };
 
       return {
@@ -234,7 +234,7 @@ export class TDDRedPhaseAgent {
   private extractModuleName(requirements: string): string {
     // Extract module name from requirements
     const match = requirements.match(/module[:\s]+([a-zA-Z0-9_-]+)/i);
-    return match ? match[1] : "unnamed_module";
+    return match ? match[1] : 'unnamed_module';
   }
 
   private async generateIntegrationTests(requirements: string): Promise<Test[]> {
@@ -243,36 +243,36 @@ export class TDDRedPhaseAgent {
 
     const integrationTests: Test[] = [
       {
-        name: "test_should_complete_full_workflow_when_valid_input",
-        type: "integration",
-        code: this.generateIntegrationTestCode("full_workflow", requirements),
+        name: 'test_should_complete_full_workflow_when_valid_input',
+        type: 'integration',
+        code: this.generateIntegrationTestCode('full_workflow', requirements),
         assertions: 3,
-        purpose: "Verify complete workflow from input to output",
-        edge_cases_covered: ["happy_path", "typical_scenario"],
+        purpose: 'Verify complete workflow from input to output',
+        edge_cases_covered: ['happy_path', 'typical_scenario'],
       },
       {
-        name: "test_should_handle_external_service_failure_when_dependency_unavailable",
-        type: "integration",
-        code: this.generateIntegrationTestCode("service_failure", requirements),
+        name: 'test_should_handle_external_service_failure_when_dependency_unavailable',
+        type: 'integration',
+        code: this.generateIntegrationTestCode('service_failure', requirements),
         assertions: 2,
-        purpose: "Verify graceful degradation on external failures",
-        edge_cases_covered: ["service_down", "timeout"],
+        purpose: 'Verify graceful degradation on external failures',
+        edge_cases_covered: ['service_down', 'timeout'],
       },
       {
-        name: "test_should_maintain_data_integrity_when_concurrent_operations",
-        type: "integration",
-        code: this.generateIntegrationTestCode("concurrency", requirements),
+        name: 'test_should_maintain_data_integrity_when_concurrent_operations',
+        type: 'integration',
+        code: this.generateIntegrationTestCode('concurrency', requirements),
         assertions: 4,
-        purpose: "Verify thread safety and data consistency",
-        edge_cases_covered: ["race_condition", "concurrent_writes"],
+        purpose: 'Verify thread safety and data consistency',
+        edge_cases_covered: ['race_condition', 'concurrent_writes'],
       },
       {
-        name: "test_should_validate_api_contract_when_integration_points_called",
-        type: "integration",
-        code: this.generateIntegrationTestCode("api_contract", requirements),
+        name: 'test_should_validate_api_contract_when_integration_points_called',
+        type: 'integration',
+        code: this.generateIntegrationTestCode('api_contract', requirements),
         assertions: 5,
-        purpose: "Verify API contract compliance",
-        edge_cases_covered: ["schema_validation", "response_format"],
+        purpose: 'Verify API contract compliance',
+        edge_cases_covered: ['schema_validation', 'response_format'],
       },
     ];
 
@@ -284,20 +284,20 @@ export class TDDRedPhaseAgent {
 
     const unitTests: Test[] = [
       {
-        name: "test_should_return_null_when_input_is_null",
-        type: "unit",
-        code: this.generateUnitTestCode("null_input", requirements),
+        name: 'test_should_return_null_when_input_is_null',
+        type: 'unit',
+        code: this.generateUnitTestCode('null_input', requirements),
         assertions: 1,
-        purpose: "Verify null handling",
-        edge_cases_covered: ["null"],
+        purpose: 'Verify null handling',
+        edge_cases_covered: ['null'],
       },
       {
-        name: "test_should_return_empty_when_input_is_empty",
-        type: "unit",
-        code: this.generateUnitTestCode("empty_input", requirements),
+        name: 'test_should_return_empty_when_input_is_empty',
+        type: 'unit',
+        code: this.generateUnitTestCode('empty_input', requirements),
         assertions: 1,
-        purpose: "Verify empty input handling",
-        edge_cases_covered: ["empty"],
+        purpose: 'Verify empty input handling',
+        edge_cases_covered: ['empty'],
       },
     ];
 
@@ -392,36 +392,36 @@ def test_${scenario}(self):
     const violations: Violation[] = [];
 
     switch (rule.id) {
-      case "R1": // Coverage completeness
+      case 'R1': // Coverage completeness
         // Check if all public methods have tests
         if (testSuite.metadata.total_tests === 0) {
           violations.push({
             rule_id: rule.id,
             rule_name: rule.name,
             severity: rule.severity,
-            description: "No tests generated for module",
-            suggestion: "Generate comprehensive test coverage",
+            description: 'No tests generated for module',
+            suggestion: 'Generate comprehensive test coverage',
           });
         }
         break;
 
-      case "R2": // Test independence
+      case 'R2': // Test independence
         // Check for shared state or dependencies
         for (const test of testSuite.tests) {
-          if (test.code.includes("global ") || test.code.includes("shared_")) {
+          if (test.code.includes('global ') || test.code.includes('shared_')) {
             violations.push({
               rule_id: rule.id,
               rule_name: rule.name,
               severity: rule.severity,
               description: `Test ${test.name} may have shared state`,
               location: test.name,
-              suggestion: "Use fixtures or setup/teardown for isolation",
+              suggestion: 'Use fixtures or setup/teardown for isolation',
             });
           }
         }
         break;
 
-      case "R3": // Naming convention
+      case 'R3': // Naming convention
         for (const test of testSuite.tests) {
           if (!test.name.match(/^test_should_.*_when_.*$/)) {
             violations.push({
@@ -430,13 +430,13 @@ def test_${scenario}(self):
               severity: rule.severity,
               description: `Test name "${test.name}" doesn't follow convention`,
               location: test.name,
-              suggestion: "Use pattern: test_should_{action}_when_{condition}",
+              suggestion: 'Use pattern: test_should_{action}_when_{condition}',
             });
           }
         }
         break;
 
-      case "R4": // Assertion presence
+      case 'R4': // Assertion presence
         for (const test of testSuite.tests) {
           if (test.assertions < 1) {
             violations.push({
@@ -445,28 +445,28 @@ def test_${scenario}(self):
               severity: rule.severity,
               description: `Test ${test.name} has no assertions`,
               location: test.name,
-              suggestion: "Add at least one assertion to verify behavior",
+              suggestion: 'Add at least one assertion to verify behavior',
             });
           }
         }
         break;
 
-      case "R5": // Resource cleanup
+      case 'R5': // Resource cleanup
         for (const test of testSuite.tests) {
-          if (!test.code.includes("cleanup") && !test.code.includes("teardown")) {
+          if (!test.code.includes('cleanup') && !test.code.includes('teardown')) {
             violations.push({
               rule_id: rule.id,
               rule_name: rule.name,
               severity: rule.severity,
               description: `Test ${test.name} missing cleanup`,
               location: test.name,
-              suggestion: "Add teardown or cleanup method",
+              suggestion: 'Add teardown or cleanup method',
             });
           }
         }
         break;
 
-      case "R7": {
+      case 'R7': {
         // Edge case coverage
         const requiredCases = rule.required_cases || [];
         const allCasesCovered = testSuite.tests.flatMap((t) => t.edge_cases_covered);
@@ -485,14 +485,14 @@ def test_${scenario}(self):
         break;
       }
 
-      case "R10": // Integration ratio (80/20 rule)
+      case 'R10': // Integration ratio (80/20 rule)
         if (testSuite.metadata.integration_ratio < rule.min_integration_ratio) {
           violations.push({
             rule_id: rule.id,
             rule_name: rule.name,
             severity: rule.severity,
             description: `Integration ratio ${(testSuite.metadata.integration_ratio * 100).toFixed(1)}% below required ${rule.min_integration_ratio * 100}%`,
-            suggestion: "Add more integration tests to meet 80/20 doctrine",
+            suggestion: 'Add more integration tests to meet 80/20 doctrine',
           });
         }
         break;
@@ -516,7 +516,7 @@ def test_${scenario}(self):
 
     for (const violation of violations) {
       switch (violation.rule_id) {
-        case "R3": // Fix naming convention
+        case 'R3': // Fix naming convention
           if (violation.location) {
             const test = testSuite.tests.find((t) => t.name === violation.location);
             if (test) {
@@ -526,28 +526,28 @@ def test_${scenario}(self):
           }
           break;
 
-        case "R4": // Add missing assertions
+        case 'R4': // Add missing assertions
           if (violation.location) {
             const test = testSuite.tests.find((t) => t.name === violation.location);
             if (test) {
               test.assertions = Math.max(1, test.assertions);
-              test.code += "\n    assert result is not None  # Added assertion";
+              test.code += '\n    assert result is not None  # Added assertion';
               corrections.push(`Added assertion to ${violation.location}`);
             }
           }
           break;
 
-        case "R5": // Add cleanup
+        case 'R5': // Add cleanup
           if (violation.location) {
             const test = testSuite.tests.find((t) => t.name === violation.location);
             if (test) {
-              test.code += "\n    # Teardown\n    cleanup()";
+              test.code += '\n    # Teardown\n    cleanup()';
               corrections.push(`Added cleanup to ${violation.location}`);
             }
           }
           break;
 
-        case "R7": {
+        case 'R7': {
           // Add missing edge cases
           const missingCase = violation.description.match(/Missing edge case: (\w+)/)?.[1];
           if (missingCase) {
@@ -558,18 +558,18 @@ def test_${scenario}(self):
           break;
         }
 
-        case "R10": {
+        case 'R10': {
           // Add integration tests to meet 80/20
           const additionalIntegrationTests = await this.generateIntegrationTests(testSuite.module);
           testSuite.tests.push(...additionalIntegrationTests.slice(0, 2)); // Add 2 more
-          corrections.push("Added integration tests to meet 80/20 ratio");
+          corrections.push('Added integration tests to meet 80/20 ratio');
           break;
         }
       }
     }
 
     // Recalculate metadata
-    const integrationCount = testSuite.tests.filter((t) => t.type === "integration").length;
+    const integrationCount = testSuite.tests.filter((t) => t.type === 'integration').length;
     const totalCount = testSuite.tests.length;
 
     testSuite.metadata = {
@@ -584,7 +584,7 @@ def test_${scenario}(self):
 
   private correctTestName(originalName: string): string {
     // Simple name correction - in production, use smarter logic
-    if (originalName.startsWith("test_")) {
+    if (originalName.startsWith('test_')) {
       const remainder = originalName.slice(5);
       return `test_should_${remainder}_when_condition`;
     }
@@ -594,7 +594,7 @@ def test_${scenario}(self):
   private async generateEdgeCaseTest(edgeCase: string, module: string): Promise<Test> {
     return {
       name: `test_should_handle_${edgeCase}_when_${edgeCase}_input`,
-      type: "unit",
+      type: 'unit',
       code: this.generateUnitTestCode(edgeCase, module),
       assertions: 1,
       purpose: `Handle ${edgeCase} edge case`,
@@ -615,8 +615,8 @@ def test_${scenario}(self):
    * Generate audit trail for compliance decisions
    */
   private async generateAuditTrail(report: ComplianceReport): Promise<string> {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const filename = this.config.audit.filename_pattern.replace("{timestamp}", timestamp);
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const filename = this.config.audit.filename_pattern.replace('{timestamp}', timestamp);
     const auditDir = path.resolve(__dirname, this.config.audit.output_dir);
 
     // Ensure logs directory exists
@@ -640,7 +640,7 @@ def test_${scenario}(self):
       judge6_integration: this.config.judge6_integration,
     };
 
-    fs.writeFileSync(filepath, JSON.stringify(auditData, null, 2), "utf-8");
+    fs.writeFileSync(filepath, JSON.stringify(auditData, null, 2), 'utf-8');
 
     return filepath;
   }

@@ -8,30 +8,73 @@
  */
 
 import { SupportedLanguages } from '../../../config/supported-languages.js';
-import { defineLanguage } from '../language-provider.js';
-import { kotlinTypeConfig } from '../type-extractors/jvm.js';
 import { kotlinExportChecker } from '../export-detection.js';
-import { resolveKotlinImport } from '../import-resolvers/jvm.js';
-import { extractKotlinNamedBindings } from '../named-bindings/kotlin.js';
-import { appendKotlinWildcard } from '../import-resolvers/jvm.js';
-import { KOTLIN_QUERIES } from '../tree-sitter-queries.js';
-import { isKotlinClassMethod } from '../utils/ast-helpers.js';
-import { createFieldExtractor } from '../field-extractors/generic.js';
 import { kotlinConfig } from '../field-extractors/configs/jvm.js';
+import { createFieldExtractor } from '../field-extractors/generic.js';
+import { appendKotlinWildcard, resolveKotlinImport } from '../import-resolvers/jvm.js';
+import { defineLanguage } from '../language-provider.js';
+import { extractKotlinNamedBindings } from '../named-bindings/kotlin.js';
+import { KOTLIN_QUERIES } from '../tree-sitter-queries.js';
+import { kotlinTypeConfig } from '../type-extractors/jvm.js';
+import { isKotlinClassMethod } from '../utils/ast-helpers.js';
 
 const BUILT_INS: ReadonlySet<string> = new Set([
-  'println', 'print', 'readLine', 'require', 'requireNotNull', 'check', 'assert', 'lazy', 'error',
-  'listOf', 'mapOf', 'setOf', 'mutableListOf', 'mutableMapOf', 'mutableSetOf',
-  'arrayOf', 'sequenceOf', 'also', 'apply', 'run', 'with', 'takeIf', 'takeUnless',
-  'TODO', 'buildString', 'buildList', 'buildMap', 'buildSet',
-  'repeat', 'synchronized',
-  'launch', 'async', 'runBlocking', 'withContext', 'coroutineScope',
-  'supervisorScope', 'delay',
-  'flow', 'flowOf', 'collect', 'emit', 'onEach', 'catch',
-  'buffer', 'conflate', 'distinctUntilChanged',
-  'flatMapLatest', 'flatMapMerge', 'combine',
-  'stateIn', 'shareIn', 'launchIn',
-  'to', 'until', 'downTo', 'step',
+  'println',
+  'print',
+  'readLine',
+  'require',
+  'requireNotNull',
+  'check',
+  'assert',
+  'lazy',
+  'error',
+  'listOf',
+  'mapOf',
+  'setOf',
+  'mutableListOf',
+  'mutableMapOf',
+  'mutableSetOf',
+  'arrayOf',
+  'sequenceOf',
+  'also',
+  'apply',
+  'run',
+  'with',
+  'takeIf',
+  'takeUnless',
+  'TODO',
+  'buildString',
+  'buildList',
+  'buildMap',
+  'buildSet',
+  'repeat',
+  'synchronized',
+  'launch',
+  'async',
+  'runBlocking',
+  'withContext',
+  'coroutineScope',
+  'supervisorScope',
+  'delay',
+  'flow',
+  'flowOf',
+  'collect',
+  'emit',
+  'onEach',
+  'catch',
+  'buffer',
+  'conflate',
+  'distinctUntilChanged',
+  'flatMapLatest',
+  'flatMapMerge',
+  'combine',
+  'stateIn',
+  'shareIn',
+  'launchIn',
+  'to',
+  'until',
+  'downTo',
+  'step',
 ]);
 
 export const kotlinProvider = defineLanguage({

@@ -4,12 +4,13 @@
  * Tests: streamAllCSVsToDisk with real graph data.
  * Covers hardening fixes: LRU cache (#24), BufferedCSVWriter flush
  */
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+
 import fs from 'fs/promises';
 import path from 'path';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { streamAllCSVsToDisk } from '../../src/core/lbug/csv-generator.js';
 import { createTempDir, type TestDBHandle } from '../helpers/test-db.js';
 import { buildTestGraph } from '../helpers/test-graph.js';
-import { streamAllCSVsToDisk } from '../../src/core/lbug/csv-generator.js';
 
 let tmpHandle: TestDBHandle;
 let csvDir: string;
@@ -33,7 +34,11 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  try { await tmpHandle.cleanup(); } catch { /* best-effort */ }
+  try {
+    await tmpHandle.cleanup();
+  } catch {
+    /* best-effort */
+  }
 });
 
 describe('streamAllCSVsToDisk', () => {
@@ -42,9 +47,33 @@ describe('streamAllCSVsToDisk', () => {
       [
         { id: 'file:src/index.ts', label: 'File', name: 'index.ts', filePath: 'src/index.ts' },
         { id: 'file:src/utils.ts', label: 'File', name: 'utils.ts', filePath: 'src/utils.ts' },
-        { id: 'func:main', label: 'Function', name: 'main', filePath: 'src/index.ts', startLine: 1, endLine: 4, isExported: true },
-        { id: 'func:helper', label: 'Function', name: 'helper', filePath: 'src/utils.ts', startLine: 1, endLine: 3, isExported: true },
-        { id: 'class:App', label: 'Class', name: 'App', filePath: 'src/index.ts', startLine: 6, endLine: 8, isExported: true },
+        {
+          id: 'func:main',
+          label: 'Function',
+          name: 'main',
+          filePath: 'src/index.ts',
+          startLine: 1,
+          endLine: 4,
+          isExported: true,
+        },
+        {
+          id: 'func:helper',
+          label: 'Function',
+          name: 'helper',
+          filePath: 'src/utils.ts',
+          startLine: 1,
+          endLine: 3,
+          isExported: true,
+        },
+        {
+          id: 'class:App',
+          label: 'Class',
+          name: 'App',
+          filePath: 'src/index.ts',
+          startLine: 6,
+          endLine: 8,
+          isExported: true,
+        },
         { id: 'folder:src', label: 'Folder', name: 'src', filePath: 'src' },
       ],
       [
@@ -186,9 +215,7 @@ describe('streamAllCSVsToDisk', () => {
   });
 
   it('handles node with empty string properties', async () => {
-    const graph = buildTestGraph([
-      { id: 'file:empty', label: 'File', name: '', filePath: '' },
-    ]);
+    const graph = buildTestGraph([{ id: 'file:empty', label: 'File', name: '', filePath: '' }]);
 
     const result = await streamAllCSVsToDisk(graph, repoDir, csvDir);
     const fileCsv = result.nodeFiles.get('File');

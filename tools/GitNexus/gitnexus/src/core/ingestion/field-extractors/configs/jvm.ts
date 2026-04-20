@@ -1,10 +1,10 @@
 // gitnexus/src/core/ingestion/field-extractors/configs/jvm.ts
 
 import { SupportedLanguages } from '../../../../config/supported-languages.js';
+import type { FieldVisibility } from '../../field-types.js';
+import { extractSimpleTypeName } from '../../type-extractors/shared.js';
 import type { FieldExtractionConfig } from '../generic.js';
 import { findVisibility, hasKeyword, hasModifier, typeFromField } from './helpers.js';
-import { extractSimpleTypeName } from '../../type-extractors/shared.js';
-import type { FieldVisibility } from '../../field-types.js';
 
 // ---------------------------------------------------------------------------
 // Java
@@ -75,10 +75,7 @@ const KOTLIN_VIS = new Set<FieldVisibility>(['public', 'private', 'protected', '
 
 export const kotlinConfig: FieldExtractionConfig = {
   language: SupportedLanguages.Kotlin,
-  typeDeclarationNodes: [
-    'class_declaration',
-    'object_declaration',
-  ],
+  typeDeclarationNodes: ['class_declaration', 'object_declaration'],
   fieldNodeTypes: ['property_declaration'],
   bodyNodeTypes: ['class_body'],
   defaultVisibility: 'public',
@@ -105,8 +102,13 @@ export const kotlinConfig: FieldExtractionConfig = {
       if (child?.type === 'variable_declaration') {
         for (let j = 0; j < child.namedChildCount; j++) {
           const t = child.namedChild(j);
-          if (t && (t.type === 'user_type' || t.type === 'type_identifier'
-            || t.type === 'nullable_type' || t.type === 'generic_type')) {
+          if (
+            t &&
+            (t.type === 'user_type' ||
+              t.type === 'type_identifier' ||
+              t.type === 'nullable_type' ||
+              t.type === 'generic_type')
+          ) {
             return extractSimpleTypeName(t) ?? t.text?.trim();
           }
         }

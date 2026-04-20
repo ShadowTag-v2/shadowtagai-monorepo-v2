@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach, MockInstance } from 'vitest';
+import type { ChildProcess } from 'child_process';
 import * as child_process from 'child_process';
-import { ChildProcess } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
+import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest';
+import { createMockChildProcess, FakeChildProcess } from './utility/test_utils.js';
 import {
-  spawnWhereAsync,
-  getPythonVersionAsync,
   findWindowsPythonPathAsync,
+  getPythonVersionAsync,
   getSDKRootDirectoryAsync,
   getWindowsCloudSDKSettingsAsync,
+  spawnWhereAsync,
 } from './windows_gcloud_utils.js';
-import { FakeChildProcess, createMockChildProcess } from './utility/test_utils.js';
 
 vi.mock('child_process');
 vi.mock('fs');

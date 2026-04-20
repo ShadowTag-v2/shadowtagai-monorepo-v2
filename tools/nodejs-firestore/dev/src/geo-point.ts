@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
+import type * as firestore from '@google-cloud/firestore';
 
-import {google} from '../protos/firestore_v1_proto_api';
-import {Serializable} from './serializer';
-import {validateNumber} from './validate';
+import { google } from '../protos/firestore_v1_proto_api';
+import type { Serializable } from './serializer';
+import { validateNumber } from './validate';
 
 import api = google.firestore.v1;
 
@@ -51,8 +51,8 @@ export class GeoPoint implements Serializable, firestore.GeoPoint {
    * ```
    */
   constructor(latitude: number, longitude: number) {
-    validateNumber('latitude', latitude, {minValue: -90, maxValue: 90});
-    validateNumber('longitude', longitude, {minValue: -180, maxValue: 180});
+    validateNumber('latitude', latitude, { minValue: -90, maxValue: 90 });
+    validateNumber('longitude', longitude, { minValue: -180, maxValue: 180 });
 
     this._latitude = latitude;
     this._longitude = longitude;

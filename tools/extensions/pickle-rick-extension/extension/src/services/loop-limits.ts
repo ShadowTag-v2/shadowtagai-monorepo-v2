@@ -17,7 +17,10 @@ function toNonNegativeInt(value: number): number {
   return Math.max(0, Math.floor(value));
 }
 
-export function evaluateLoopLimits(state: State, nowEpoch = Math.floor(Date.now() / 1000)): LimitEvaluation {
+export function evaluateLoopLimits(
+  state: State,
+  nowEpoch = Math.floor(Date.now() / 1000),
+): LimitEvaluation {
   if (state.jar_complete) {
     return {
       exceeded: true,

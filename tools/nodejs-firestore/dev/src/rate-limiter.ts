@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as assert from 'assert';
-import {logger} from './logger';
+import { logger } from './logger';
 
 /**
  * A helper that uses the Token Bucket algorithm to rate limit the number of
@@ -73,10 +73,7 @@ export class RateLimiter {
    * @private
    * @internal
    */
-  tryMakeRequest(
-    numOperations: number,
-    requestTimeMillis = Date.now(),
-  ): boolean {
+  tryMakeRequest(numOperations: number, requestTimeMillis = Date.now()): boolean {
     this.refillTokens(requestTimeMillis);
     if (numOperations <= this.availableTokens) {
       this.availableTokens -= numOperations;
@@ -96,10 +93,7 @@ export class RateLimiter {
    * @private
    * @internal
    */
-  getNextRequestDelayMs(
-    numOperations: number,
-    requestTimeMillis = Date.now(),
-  ): number {
+  getNextRequestDelayMs(numOperations: number, requestTimeMillis = Date.now()): number {
     this.refillTokens(requestTimeMillis);
     if (numOperations < this.availableTokens) {
       return 0;
@@ -129,16 +123,11 @@ export class RateLimiter {
       const capacity = this.calculateCapacity(requestTimeMillis);
       const tokensToAdd = Math.floor((elapsedTime * capacity) / 1000);
       if (tokensToAdd > 0) {
-        this.availableTokens = Math.min(
-          capacity,
-          this.availableTokens + tokensToAdd,
-        );
+        this.availableTokens = Math.min(capacity, this.availableTokens + tokensToAdd);
         this.lastRefillTimeMillis = requestTimeMillis;
       }
     } else {
-      throw new Error(
-        'Request time should not be before the last token refill time.',
-      );
+      throw new Error('Request time should not be before the last token refill time.');
     }
   }
 
@@ -150,17 +139,11 @@ export class RateLimiter {
    */
   // Visible for testing.
   calculateCapacity(requestTimeMillis: number): number {
-    assert(
-      requestTimeMillis >= this.startTimeMillis,
-      'startTime cannot be after currentTime',
-    );
+    assert(requestTimeMillis >= this.startTimeMillis, 'startTime cannot be after currentTime');
     const millisElapsed = requestTimeMillis - this.startTimeMillis;
     const operationsPerSecond = Math.min(
       Math.floor(
-        Math.pow(
-          this.multiplier,
-          Math.floor(millisElapsed / this.multiplierMillis),
-        ) * this.initialCapacity,
+        this.multiplier ** Math.floor(millisElapsed / this.multiplierMillis) * this.initialCapacity,
       ),
       this.maximumCapacity,
     );

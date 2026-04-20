@@ -3,8 +3,8 @@
  * Provides deterministic, predictable responses without API calls
  */
 
-import type { CopilotRequest, Patch, ProviderConfig } from "../core/schema.js";
-import { BaseProvider } from "./base.js";
+import type { CopilotRequest, Patch, ProviderConfig } from '../core/schema.js';
+import { BaseProvider } from './base.js';
 
 /**
  * Mock provider for deterministic testing
@@ -36,8 +36,8 @@ export class MockProvider extends BaseProvider {
     const modifiedCode = header + originalCode;
 
     // Generate unified diff format
-    const originalLines = originalCode.split("\n");
-    const modifiedLines = modifiedCode.split("\n");
+    const originalLines = originalCode.split('\n');
+    const modifiedLines = modifiedCode.split('\n');
 
     const diffLines: string[] = [
       `--- a/${filePath}`,
@@ -55,18 +55,18 @@ export class MockProvider extends BaseProvider {
       diffLines.push(`+${line}`);
     });
 
-    return diffLines.join("\n");
+    return diffLines.join('\n');
   }
 
   private createHeader(intent: string): string {
     const headers: Record<string, string> = {
-      explain: "/* Explanation: This code... */\n",
-      refactor: "/* Refactored for better structure */\n",
-      test: "/* Test coverage added */\n",
-      fix: "/* Bug fix applied */\n",
-      optimize: "/* Performance optimized */\n",
-      document: "/* Documentation added */\n",
-      security: "/* Security issue fixed */\n",
+      explain: '/* Explanation: This code... */\n',
+      refactor: '/* Refactored for better structure */\n',
+      test: '/* Test coverage added */\n',
+      fix: '/* Bug fix applied */\n',
+      optimize: '/* Performance optimized */\n',
+      document: '/* Documentation added */\n',
+      security: '/* Security issue fixed */\n',
     };
 
     return headers[intent] || `/* Mock-${intent.toUpperCase()} by router */\n`;
@@ -74,13 +74,13 @@ export class MockProvider extends BaseProvider {
 
   private createExplanation(intent: string): string {
     const explanations: Record<string, string> = {
-      explain: "This is a mock explanation of the code structure and purpose.",
-      refactor: "Code has been refactored to improve readability and maintainability.",
-      test: "Unit tests have been added to cover the main functionality.",
-      fix: "Identified bug has been fixed with proper error handling.",
-      optimize: "Performance improvements applied using efficient algorithms.",
-      document: "Comprehensive documentation added following JSDoc standards.",
-      security: "Security vulnerability patched following OWASP best practices.",
+      explain: 'This is a mock explanation of the code structure and purpose.',
+      refactor: 'Code has been refactored to improve readability and maintainability.',
+      test: 'Unit tests have been added to cover the main functionality.',
+      fix: 'Identified bug has been fixed with proper error handling.',
+      optimize: 'Performance improvements applied using efficient algorithms.',
+      document: 'Comprehensive documentation added following JSDoc standards.',
+      security: 'Security vulnerability patched following OWASP best practices.',
     };
 
     return explanations[intent] || `Mock response for ${intent} intent (deterministic test mode)`;
@@ -103,11 +103,11 @@ export class MockProvider extends BaseProvider {
   }
 
   getName(): string {
-    return "mock";
+    return 'mock';
   }
 
   getModel(): string {
-    return "mock-deterministic-v1";
+    return 'mock-deterministic-v1';
   }
 }
 

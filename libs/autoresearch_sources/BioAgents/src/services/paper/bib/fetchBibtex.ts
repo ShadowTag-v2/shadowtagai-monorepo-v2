@@ -5,25 +5,25 @@
  * and non-DOI references (PMC, PMID, NCT, ArXiv, generic URLs) as @misc entries.
  */
 
-import * as fs from "fs";
-import logger from "../../../utils/logger";
-import type { BibTeXEntry } from "../types";
+import * as fs from 'fs';
+import logger from '../../../utils/logger';
+import type { BibTeXEntry } from '../types';
 import {
   deduplicateAndResolveCollisions,
   generateBibTeXFile,
   resolveMultipleDOIs,
-} from "../utils/bibtex";
-import type { ExtractedRef } from "./extractRefs";
-import { refToCitekey, createMiscBibtexEntry, noteForRefType } from "./extractRefs";
+} from '../utils/bibtex';
+import type { ExtractedRef } from './extractRefs';
+import { createMiscBibtexEntry, noteForRefType, refToCitekey } from './extractRefs';
 export async function fetchAndWriteBibtex(
   refs: ExtractedRef[],
   outputPath: string,
 ): Promise<{ bibPath: string; entries: BibTeXEntry[] }> {
-  logger.info({ refCount: refs.length, outputPath }, "fetching_bibtex_for_refs");
+  logger.info({ refCount: refs.length, outputPath }, 'fetching_bibtex_for_refs');
 
   // Split refs by type: DOIs get full metadata, others get @misc entries
-  const doiRefs = refs.filter((r) => r.type === "doi");
-  const nonDoiRefs = refs.filter((r) => r.type !== "doi");
+  const doiRefs = refs.filter((r) => r.type === 'doi');
+  const nonDoiRefs = refs.filter((r) => r.type !== 'doi');
 
   // Resolve DOI refs via doi.org / Crossref
   const doiEntries = await resolveMultipleDOIs(doiRefs.map((r) => r.id));
@@ -34,7 +34,7 @@ export async function fetchAndWriteBibtex(
     const note = noteForRefType(ref);
     const bibtex = createMiscBibtexEntry(citekey, ref.title, ref.url, note);
     return {
-      doi: "",
+      doi: '',
       citekey,
       bibtex,
       url: ref.url,
@@ -46,7 +46,7 @@ export async function fetchAndWriteBibtex(
   const deduped = deduplicateAndResolveCollisions(allEntries);
   const bibContent = generateBibTeXFile(deduped);
 
-  fs.writeFileSync(outputPath, bibContent, "utf-8");
+  fs.writeFileSync(outputPath, bibContent, 'utf-8');
 
   logger.info(
     {
@@ -55,7 +55,7 @@ export async function fetchAndWriteBibtex(
       miscCount: miscEntries.length,
       bibPath: outputPath,
     },
-    "bibtex_file_written",
+    'bibtex_file_written',
   );
 
   return { bibPath: outputPath, entries: deduped };

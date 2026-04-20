@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
-import {isPlainObject, tryGetPreferRestEnvironmentVariable} from '../src/util';
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
 import * as sinon from 'sinon';
+import { isPlainObject, tryGetPreferRestEnvironmentVariable } from '../src/util';
 
 describe('isPlainObject()', () => {
   it('allows Object.create()', () => {
@@ -25,7 +25,7 @@ describe('isPlainObject()', () => {
   });
 
   it(' allows plain types', () => {
-    expect(isPlainObject({foo: 'bar'})).to.be.true;
+    expect(isPlainObject({ foo: 'bar' })).to.be.true;
     expect(isPlainObject({})).to.be.true;
   });
 
@@ -96,9 +96,7 @@ describe('isPlainObject()', () => {
       process.env.FIRESTORE_PREFER_REST = 'enable';
       expect(tryGetPreferRestEnvironmentVariable()).to.be.undefined;
       expect(warnSpy.calledOnce).to.be.true;
-      expect(warnSpy.getCall(0).args[0]).to.match(
-        /unsupported value.*FIRESTORE_PREFER_REST/,
-      );
+      expect(warnSpy.getCall(0).args[0]).to.match(/unsupported value.*FIRESTORE_PREFER_REST/);
     });
   });
 });

@@ -1,7 +1,7 @@
-import { LLM } from "../../llm/provider";
-import type { Discovery, LLMProvider, PlanTask, AnalysisArtifact } from "../../types/core";
-import logger from "../../utils/logger";
-import { discoveryPrompt } from "./prompts";
+import { LLM } from '../../llm/provider';
+import type { AnalysisArtifact, Discovery, LLMProvider, PlanTask } from '../../types/core';
+import logger from '../../utils/logger';
+import { discoveryPrompt } from './prompts';
 
 export type DiscoveryDoc = {
   title: string;
@@ -15,7 +15,7 @@ export type DiscoveryOptions = {
   thinking?: boolean;
   thinkingBudget?: number;
   messageId?: string; // For token usage tracking
-  usageType?: "chat" | "deep-research" | "paper-generation";
+  usageType?: 'chat' | 'deep-research' | 'paper-generation';
 };
 
 export type DiscoveryResult = {
@@ -32,28 +32,28 @@ export async function extractDiscoveries(
   documents: DiscoveryDoc[],
   options: DiscoveryOptions = {},
 ): Promise<DiscoveryResult> {
-  const model = process.env.DISCOVERY_LLM_MODEL || "gemini-2.5-pro";
+  const model = process.env.DISCOVERY_LLM_MODEL || 'gemini-2.5-pro';
 
   // Build document content
   const documentText = documents
     .map((d) => `Title: ${d.title}\nContext: ${d.context}\n\n${d.text}`)
-    .join("\n\n---\n\n");
+    .join('\n\n---\n\n');
 
   // Format existing discoveries
   const formattedDiscoveries =
     existingDiscoveries.length > 0
       ? JSON.stringify(existingDiscoveries, null, 2)
-      : "No existing discoveries yet.";
+      : 'No existing discoveries yet.';
 
   // Use discovery prompt
   const discoveryInstruction = discoveryPrompt
-    .replace("{{question}}", question)
-    .replace("{{existingDiscoveries}}", formattedDiscoveries)
-    .replace("{{conversationHistory}}", conversationHistory)
-    .replace("{{documents}}", documentText);
+    .replace('{{question}}', question)
+    .replace('{{existingDiscoveries}}', formattedDiscoveries)
+    .replace('{{conversationHistory}}', conversationHistory)
+    .replace('{{documents}}', documentText);
 
   const DISCOVERY_LLM_PROVIDER: LLMProvider =
-    (process.env.DISCOVERY_LLM_PROVIDER as LLMProvider) || "google";
+    (process.env.DISCOVERY_LLM_PROVIDER as LLMProvider) || 'google';
   const llmApiKey = process.env[`${DISCOVERY_LLM_PROVIDER.toUpperCase()}_API_KEY`];
 
   if (!llmApiKey) {
@@ -69,7 +69,7 @@ export async function extractDiscoveries(
     model,
     messages: [
       {
-        role: "user" as const,
+        role: 'user' as const,
         content: discoveryInstruction,
       },
     ],
@@ -86,18 +86,18 @@ export async function extractDiscoveries(
     let parsedResponse;
     try {
       const cleaned = response.content
-        .replace(/```json\n?/, "")
-        .replace(/\n?```$/, "")
+        .replace(/```json\n?/, '')
+        .replace(/\n?```$/, '')
         .trim();
       parsedResponse = JSON.parse(cleaned);
     } catch (parseError) {
       // try to locate the json inbetween {} in the message content
       const jsonMatch = response.content.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/);
-      const jsonString = jsonMatch ? jsonMatch[1] || "" : "";
+      const jsonString = jsonMatch ? jsonMatch[1] || '' : '';
       try {
         parsedResponse = JSON.parse(jsonString);
       } catch {
-        logger.warn({ content: response.content.substring(0, 300) }, "discovery_json_parse_failed");
+        logger.warn({ content: response.content.substring(0, 300) }, 'discovery_json_parse_failed');
         // Preserve existing discoveries from conversation state
         parsedResponse = { discoveries: existingDiscoveries };
       }
@@ -114,14 +114,14 @@ export async function extractDiscoveries(
         docCount: documents.length,
         existingDiscoveriesCount: existingDiscoveries.length,
       },
-      "discovery_extraction_completed",
+      'discovery_extraction_completed',
     );
 
     return {
       discoveries: parsedResponse.discoveries,
     };
   } catch (error) {
-    logger.error({ error }, "discovery_extraction_failed");
+    logger.error({ error }, 'discovery_extraction_failed');
     throw error;
   }
 }
@@ -145,7 +145,7 @@ export function fixDiscoveryArtifactPaths(
       }
       // Also index by path basename
       if (artifact.path) {
-        const basename = artifact.path.split("/").pop() || "";
+        const basename = artifact.path.split('/').pop() || '';
         if (basename) artifactsByName.set(basename, artifact);
       }
     }
@@ -162,7 +162,7 @@ export function fixDiscoveryArtifactPaths(
 
       // Try to find by path basename (LLM may use filename as path)
       if (artifact.path) {
-        const basename = artifact.path.split("/").pop() || "";
+        const basename = artifact.path.split('/').pop() || '';
         const matchByBasename = artifactsByName.get(basename);
         if (matchByBasename?.path) {
           return { ...artifact, path: matchByBasename.path };

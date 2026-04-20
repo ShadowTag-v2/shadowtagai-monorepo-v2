@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { registerCreateBackupPlanAssociationTool } from './create_backup_plan_association.js';
 import { registerDeleteBackupPlanAssociationTool } from './delete_backup_plan_association.js';
 import { registerGetBackupPlanAssociationTool } from './get_backup_plan_association.js';

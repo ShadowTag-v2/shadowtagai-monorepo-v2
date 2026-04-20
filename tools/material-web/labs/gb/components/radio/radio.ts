@@ -4,19 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {focusRingClasses} from '@material/web/labs/gb/components/focus/focus-ring.js';
+import { focusRingClasses } from '@material/web/labs/gb/components/focus/focus-ring.js';
+import { rippleClasses, setupRipple } from '@material/web/labs/gb/components/ripple/ripple.js';
+import { PSEUDO_CLASSES } from '@material/web/labs/gb/components/shared/pseudo-classes.js';
 import {
-  rippleClasses,
-  setupRipple,
-} from '@material/web/labs/gb/components/ripple/ripple.js';
-import {PSEUDO_CLASSES} from '@material/web/labs/gb/components/shared/pseudo-classes.js';
-import {
-  AttributePart,
+  type AttributePart,
   Directive,
+  type DirectiveParameters,
   directive,
-  DirectiveParameters,
 } from 'lit/async-directive.js';
-import {classMap, type ClassInfo} from 'lit/directives/class-map.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
 
 /** Radio classes. */
 export const RADIO_CLASSES = {
@@ -73,10 +70,7 @@ export function radioClasses({
  * @param radio The element on which to set up radio functionality.
  * @param opts Setup options, supports a cleanup `signal`.
  */
-export function setupRadio(
-  radio: HTMLElement,
-  opts?: {signal?: AbortSignal},
-): void {
+export function setupRadio(radio: HTMLElement, opts?: { signal?: AbortSignal }): void {
   setupRipple(radio, opts);
 }
 
@@ -97,15 +91,12 @@ class RadioDirective extends Directive {
     });
   }
 
-  override update(
-    {element}: AttributePart,
-    [state]: DirectiveParameters<this>,
-  ) {
+  override update({ element }: AttributePart, [state]: DirectiveParameters<this>) {
     if (element !== this.element) {
       this.element = element as HTMLElement;
       this.cleanup?.abort();
       this.cleanup = new AbortController();
-      setupRadio(this.element, {signal: this.cleanup.signal});
+      setupRadio(this.element, { signal: this.cleanup.signal });
     }
 
     return this.render(state);

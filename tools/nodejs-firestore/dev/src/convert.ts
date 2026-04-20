@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import {google} from '../protos/firestore_v1_proto_api';
+import { google } from '../protos/firestore_v1_proto_api';
 
-import {ApiMapValue, ProtobufJsValue} from './types';
-import {validateObject} from './validate';
+import type { ApiMapValue, ProtobufJsValue } from './types';
+import { validateObject } from './validate';
 
 import api = google.firestore.v1;
-import {RESERVED_MAP_KEY, RESERVED_MAP_KEY_VECTOR_VALUE} from './map-type';
+
+import { RESERVED_MAP_KEY, RESERVED_MAP_KEY_VECTOR_VALUE } from './map-type';
 
 /*!
  * @module firestore/convert
@@ -58,19 +59,14 @@ export function timestampFromJson(
     let nanos = 0;
 
     if (timestampValue.length > 20) {
-      const nanoString = timestampValue.substring(
-        20,
-        timestampValue.length - 1,
-      );
+      const nanoString = timestampValue.substring(20, timestampValue.length - 1);
       const trailingZeroes = 9 - nanoString.length;
-      nanos = Number(nanoString) * Math.pow(10, trailingZeroes);
+      nanos = Number(nanoString) * 10 ** trailingZeroes;
     }
 
     if (isNaN(seconds) || isNaN(nanos)) {
       argumentName = argumentName || 'timestampValue';
-      throw new Error(
-        `Specify a valid ISO 8601 timestamp for "${argumentName}".`,
-      );
+      throw new Error(`Specify a valid ISO 8601 timestamp for "${argumentName}".`);
     }
 
     timestampProto = {
@@ -155,9 +151,7 @@ export function detectValueType(proto: ProtobufJsValue): string {
     }
 
     if (detectedValues.length !== 1) {
-      throw new Error(
-        `Unable to infer type value from '${JSON.stringify(proto)}'.`,
-      );
+      throw new Error(`Unable to infer type value from '${JSON.stringify(proto)}'.`);
     }
 
     valueType = detectedValues[0];
@@ -189,9 +183,7 @@ export function detectValueType(proto: ProtobufJsValue): string {
  * @param proto The `firestore.v1.Value` proto.
  * @returns The string value for 'valueType'.
  */
-export function detectGoogleProtobufValueType(
-  proto: google.protobuf.IValue,
-): string {
+export function detectGoogleProtobufValueType(proto: google.protobuf.IValue): string {
   const detectedValues: string[] = [];
 
   if (proto.nullValue !== undefined) {
@@ -214,9 +206,7 @@ export function detectGoogleProtobufValueType(
   }
 
   if (detectedValues.length !== 1) {
-    throw new Error(
-      `Unable to infer type value from '${JSON.stringify(proto)}'.`,
-    );
+    throw new Error(`Unable to infer type value from '${JSON.stringify(proto)}'.`);
   }
 
   return detectedValues[0];

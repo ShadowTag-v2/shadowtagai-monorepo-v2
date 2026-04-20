@@ -17,16 +17,16 @@
  *   - Lists all papers for a conversation
  */
 
-import { randomUUID } from "crypto";
-import { Elysia } from "elysia";
-import { getServiceClient } from "../../db/client";
-import { getConversation } from "../../db/operations";
-import { authResolver } from "../../middleware/authResolver";
-import { isJobQueueEnabled } from "../../services/queue/connection";
-import { generatePaperFromConversation } from "../../services/paper/generatePaper";
-import { getStorageProvider } from "../../storage";
-import type { AuthContext } from "../../types/auth";
-import logger from "../../utils/logger";
+import { randomUUID } from 'crypto';
+import { Elysia } from 'elysia';
+import { getServiceClient } from '../../db/client';
+import { getConversation } from '../../db/operations';
+import { authResolver } from '../../middleware/authResolver';
+import { generatePaperFromConversation } from '../../services/paper/generatePaper';
+import { isJobQueueEnabled } from '../../services/queue/connection';
+import { getStorageProvider } from '../../storage';
+import type { AuthContext } from '../../types/auth';
+import logger from '../../utils/logger';
 
 // Use service client to bypass RLS - auth is verified by middleware
 const supabase = getServiceClient();
@@ -45,18 +45,18 @@ export const deepResearchPaperRoute = new Elysia().guard(
   (app) =>
     app
       // Sync paper generation (blocking)
-      .post("/api/deep-research/conversations/:conversationId/paper", paperGenerationHandler)
+      .post('/api/deep-research/conversations/:conversationId/paper', paperGenerationHandler)
       // Async paper generation (queue-based)
       .post(
-        "/api/deep-research/conversations/:conversationId/paper/async",
+        '/api/deep-research/conversations/:conversationId/paper/async',
         asyncPaperGenerationHandler,
       )
       // Paper job status
-      .get("/api/deep-research/paper/:paperId/status", paperStatusHandler)
+      .get('/api/deep-research/paper/:paperId/status', paperStatusHandler)
       // Get paper with fresh presigned URLs
-      .get("/api/deep-research/paper/:paperId", getPaperHandler)
+      .get('/api/deep-research/paper/:paperId', getPaperHandler)
       // List all papers for a conversation
-      .get("/api/deep-research/conversations/:conversationId/papers", listPapersHandler),
+      .get('/api/deep-research/conversations/:conversationId/papers', listPapersHandler),
 );
 
 /**
@@ -73,16 +73,16 @@ async function paperGenerationHandler(ctx: any) {
   if (!userId) {
     set.status = 401;
     return {
-      error: "Authentication required",
-      message: "Valid authentication is required to generate papers",
+      error: 'Authentication required',
+      message: 'Valid authentication is required to generate papers',
     };
   }
 
   if (!conversationId) {
     set.status = 400;
     return {
-      error: "Missing conversationId",
-      message: "conversationId must be provided in the route",
+      error: 'Missing conversationId',
+      message: 'conversationId must be provided in the route',
     };
   }
 
@@ -92,7 +92,7 @@ async function paperGenerationHandler(ctx: any) {
       userId,
       authMethod: auth?.method,
     },
-    "paper_generation_request",
+    'paper_generation_request',
   );
 
   try {
@@ -104,7 +104,7 @@ async function paperGenerationHandler(ctx: any) {
         paperId: result.paperId,
         conversationId: result.conversationId,
       },
-      "paper_generated_successfully",
+      'paper_generated_successfully',
     );
 
     return {
@@ -124,41 +124,41 @@ async function paperGenerationHandler(ctx: any) {
         conversationId,
         userId,
       },
-      "paper_generation_failed",
+      'paper_generation_failed',
     );
 
     // Determine appropriate status code and error message
     const errorMessage = error instanceof Error ? error.message : String(error);
 
-    if (errorMessage.includes("not found")) {
+    if (errorMessage.includes('not found')) {
       set.status = 404;
       return {
-        error: "Resource not found",
+        error: 'Resource not found',
         message: errorMessage,
       };
     }
 
-    if (errorMessage.includes("does not own")) {
+    if (errorMessage.includes('does not own')) {
       set.status = 403;
       return {
-        error: "Access denied",
-        message: "You do not have permission to generate a paper for this conversation",
+        error: 'Access denied',
+        message: 'You do not have permission to generate a paper for this conversation',
       };
     }
 
-    if (errorMessage.includes("compilation failed")) {
+    if (errorMessage.includes('compilation failed')) {
       set.status = 500;
       return {
-        error: "LaTeX compilation failed",
+        error: 'LaTeX compilation failed',
         message: errorMessage,
-        hint: "The paper content could not be compiled to PDF. Check the LaTeX syntax and citations.",
+        hint: 'The paper content could not be compiled to PDF. Check the LaTeX syntax and citations.',
       };
     }
 
     // Generic server error
     set.status = 500;
     return {
-      error: "Paper generation failed",
+      error: 'Paper generation failed',
       message: errorMessage,
     };
   }
@@ -178,33 +178,33 @@ async function getPaperHandler(ctx: any) {
   if (!userId) {
     set.status = 401;
     return {
-      error: "Authentication required",
-      message: "Valid authentication is required to access papers",
+      error: 'Authentication required',
+      message: 'Valid authentication is required to access papers',
     };
   }
 
   if (!paperId) {
     set.status = 400;
     return {
-      error: "Missing paperId",
-      message: "paperId must be provided in the route",
+      error: 'Missing paperId',
+      message: 'paperId must be provided in the route',
     };
   }
 
-  logger.info({ paperId, userId }, "paper_get_request");
+  logger.info({ paperId, userId }, 'paper_get_request');
 
   try {
     // Fetch paper from database
     const { data: paper, error: fetchError } = await supabase
-      .from("paper")
-      .select("*")
-      .eq("id", paperId)
+      .from('paper')
+      .select('*')
+      .eq('id', paperId)
       .single();
 
     if (fetchError || !paper) {
       set.status = 404;
       return {
-        error: "Paper not found",
+        error: 'Paper not found',
         message: `Paper with id ${paperId} not found`,
       };
     }
@@ -213,8 +213,8 @@ async function getPaperHandler(ctx: any) {
     if (paper.user_id !== userId) {
       set.status = 403;
       return {
-        error: "Access denied",
-        message: "You do not have permission to access this paper",
+        error: 'Access denied',
+        message: 'You do not have permission to access this paper',
       };
     }
 
@@ -223,15 +223,15 @@ async function getPaperHandler(ctx: any) {
     if (!storage) {
       set.status = 500;
       return {
-        error: "Storage unavailable",
-        message: "Storage provider is not configured",
+        error: 'Storage unavailable',
+        message: 'Storage provider is not configured',
       };
     }
 
     const pdfUrl = await storage.getPresignedUrl(paper.pdf_path, 3600);
 
     // Generate LaTeX URL if path exists (derive from pdf_path)
-    const rawLatexPath = paper.pdf_path.replace("/paper.pdf", "/main.tex");
+    const rawLatexPath = paper.pdf_path.replace('/paper.pdf', '/main.tex');
     let rawLatexUrl: string | null = null;
     try {
       if (await storage.exists(rawLatexPath)) {
@@ -241,7 +241,7 @@ async function getPaperHandler(ctx: any) {
       // LaTeX file may not exist for older papers
     }
 
-    logger.info({ paperId, userId }, "paper_urls_generated");
+    logger.info({ paperId, userId }, 'paper_urls_generated');
 
     return {
       success: true,
@@ -259,12 +259,12 @@ async function getPaperHandler(ctx: any) {
         paperId,
         userId,
       },
-      "paper_get_failed",
+      'paper_get_failed',
     );
 
     set.status = 500;
     return {
-      error: "Failed to get paper",
+      error: 'Failed to get paper',
       message: error instanceof Error ? error.message : String(error),
     };
   }
@@ -284,20 +284,20 @@ async function listPapersHandler(ctx: any) {
   if (!userId) {
     set.status = 401;
     return {
-      error: "Authentication required",
-      message: "Valid authentication is required to list papers",
+      error: 'Authentication required',
+      message: 'Valid authentication is required to list papers',
     };
   }
 
   if (!conversationId) {
     set.status = 400;
     return {
-      error: "Missing conversationId",
-      message: "conversationId must be provided in the route",
+      error: 'Missing conversationId',
+      message: 'conversationId must be provided in the route',
     };
   }
 
-  logger.info({ conversationId, userId }, "list_papers_request");
+  logger.info({ conversationId, userId }, 'list_papers_request');
 
   try {
     // Verify the user owns this conversation
@@ -306,7 +306,7 @@ async function listPapersHandler(ctx: any) {
     if (!conversation) {
       set.status = 404;
       return {
-        error: "Conversation not found",
+        error: 'Conversation not found',
         message: `Conversation with id ${conversationId} not found`,
       };
     }
@@ -314,23 +314,23 @@ async function listPapersHandler(ctx: any) {
     if (conversation.user_id !== userId) {
       set.status = 403;
       return {
-        error: "Access denied",
-        message: "You do not have permission to access this conversation",
+        error: 'Access denied',
+        message: 'You do not have permission to access this conversation',
       };
     }
 
     // Fetch all papers for this conversation
     const { data: papers, error: papersError } = await supabase
-      .from("paper")
-      .select("id, pdf_path, created_at, status")
-      .eq("conversation_id", conversationId)
-      .order("created_at", { ascending: false });
+      .from('paper')
+      .select('id, pdf_path, created_at, status')
+      .eq('conversation_id', conversationId)
+      .order('created_at', { ascending: false });
 
     if (papersError) {
       throw new Error(`Failed to fetch papers: ${papersError.message}`);
     }
 
-    logger.info({ conversationId, userId, count: papers?.length || 0 }, "papers_listed");
+    logger.info({ conversationId, userId, count: papers?.length || 0 }, 'papers_listed');
 
     return {
       success: true,
@@ -350,12 +350,12 @@ async function listPapersHandler(ctx: any) {
         conversationId,
         userId,
       },
-      "list_papers_failed",
+      'list_papers_failed',
     );
 
     set.status = 500;
     return {
-      error: "Failed to list papers",
+      error: 'Failed to list papers',
       message: error instanceof Error ? error.message : String(error),
     };
   }
@@ -366,14 +366,14 @@ async function listPapersHandler(ctx: any) {
  */
 async function checkUserHasConcurrentPaperJob(userId: string): Promise<boolean> {
   const { data, error } = await supabase
-    .from("paper")
-    .select("id")
-    .eq("user_id", userId)
-    .in("status", ["pending", "processing"])
+    .from('paper')
+    .select('id')
+    .eq('user_id', userId)
+    .in('status', ['pending', 'processing'])
     .limit(1);
 
   if (error) {
-    logger.error({ error, userId }, "failed_to_check_concurrent_paper_jobs");
+    logger.error({ error, userId }, 'failed_to_check_concurrent_paper_jobs');
     return false; // Allow on error (fail open)
   }
 
@@ -384,15 +384,15 @@ async function checkUserHasConcurrentPaperJob(userId: string): Promise<boolean> 
  * Check if global concurrent paper job limit is reached
  */
 async function checkGlobalConcurrentPaperLimit(): Promise<{ exceeded: boolean; current: number }> {
-  const maxConcurrent = parseInt(process.env.MAX_CONCURRENT_PAPER_JOBS || "3");
+  const maxConcurrent = parseInt(process.env.MAX_CONCURRENT_PAPER_JOBS || '3');
 
   const { count, error } = await supabase
-    .from("paper")
-    .select("id", { count: "exact", head: true })
-    .in("status", ["pending", "processing"]);
+    .from('paper')
+    .select('id', { count: 'exact', head: true })
+    .in('status', ['pending', 'processing']);
 
   if (error) {
-    logger.error({ error }, "failed_to_check_global_concurrent_paper_jobs");
+    logger.error({ error }, 'failed_to_check_global_concurrent_paper_jobs');
     return { exceeded: false, current: 0 }; // Allow on error (fail open)
   }
 
@@ -414,16 +414,16 @@ async function asyncPaperGenerationHandler(ctx: any) {
   if (!userId) {
     set.status = 401;
     return {
-      error: "Authentication required",
-      message: "Valid authentication is required to generate papers",
+      error: 'Authentication required',
+      message: 'Valid authentication is required to generate papers',
     };
   }
 
   if (!conversationId) {
     set.status = 400;
     return {
-      error: "Missing conversationId",
-      message: "conversationId must be provided in the route",
+      error: 'Missing conversationId',
+      message: 'conversationId must be provided in the route',
     };
   }
 
@@ -431,8 +431,8 @@ async function asyncPaperGenerationHandler(ctx: any) {
   if (!isJobQueueEnabled()) {
     set.status = 503;
     return {
-      error: "Async paper generation unavailable",
-      message: "Job queue is not enabled. Use the sync endpoint instead.",
+      error: 'Async paper generation unavailable',
+      message: 'Job queue is not enabled. Use the sync endpoint instead.',
       syncEndpoint: `/api/deep-research/conversations/${conversationId}/paper`,
     };
   }
@@ -443,7 +443,7 @@ async function asyncPaperGenerationHandler(ctx: any) {
       userId,
       authMethod: auth?.method,
     },
-    "async_paper_generation_request",
+    'async_paper_generation_request',
   );
 
   try {
@@ -452,7 +452,7 @@ async function asyncPaperGenerationHandler(ctx: any) {
     if (!conversation) {
       set.status = 404;
       return {
-        error: "Conversation not found",
+        error: 'Conversation not found',
         message: `Conversation with id ${conversationId} not found`,
       };
     }
@@ -460,8 +460,8 @@ async function asyncPaperGenerationHandler(ctx: any) {
     if (conversation.user_id !== userId) {
       set.status = 403;
       return {
-        error: "Access denied",
-        message: "You do not have permission to generate a paper for this conversation",
+        error: 'Access denied',
+        message: 'You do not have permission to generate a paper for this conversation',
       };
     }
 
@@ -470,19 +470,19 @@ async function asyncPaperGenerationHandler(ctx: any) {
     if (hasConcurrentJob) {
       set.status = 429;
       return {
-        error: "Concurrent paper limit exceeded",
+        error: 'Concurrent paper limit exceeded',
         message:
-          "You already have a paper generation job in progress. Please wait for it to complete.",
+          'You already have a paper generation job in progress. Please wait for it to complete.',
       };
     }
 
     // Check global concurrent paper job limit
     const globalLimit = await checkGlobalConcurrentPaperLimit();
     if (globalLimit.exceeded) {
-      const maxConcurrent = parseInt(process.env.MAX_CONCURRENT_PAPER_JOBS || "3");
+      const maxConcurrent = parseInt(process.env.MAX_CONCURRENT_PAPER_JOBS || '3');
       set.status = 429;
       return {
-        error: "System busy",
+        error: 'System busy',
         message: `The system is currently processing ${globalLimit.current} paper generation jobs. Maximum allowed is ${maxConcurrent}. Please try again later.`,
       };
     }
@@ -491,25 +491,25 @@ async function asyncPaperGenerationHandler(ctx: any) {
     const paperId = randomUUID();
     const pdfPath = `user/${userId}/conversation/${conversationId}/papers/${paperId}/paper.pdf`;
 
-    const { error: insertError } = await supabase.from("paper").insert({
+    const { error: insertError } = await supabase.from('paper').insert({
       id: paperId,
       user_id: userId,
       conversation_id: conversationId,
       pdf_path: pdfPath,
-      status: "pending",
+      status: 'pending',
     });
 
     if (insertError) {
-      logger.error({ insertError }, "failed_to_create_paper_record");
+      logger.error({ insertError }, 'failed_to_create_paper_record');
       set.status = 500;
       return {
-        error: "Failed to create paper record",
+        error: 'Failed to create paper record',
         message: insertError.message,
       };
     }
 
     // Enqueue job
-    const { getPaperGenerationQueue } = await import("../../services/queue/queues");
+    const { getPaperGenerationQueue } = await import('../../services/queue/queues');
     const queue = getPaperGenerationQueue();
 
     const job = await queue.add(
@@ -518,7 +518,7 @@ async function asyncPaperGenerationHandler(ctx: any) {
         paperId,
         userId,
         conversationId,
-        authMethod: auth?.method || "anonymous",
+        authMethod: auth?.method || 'anonymous',
         requestedAt: new Date().toISOString(),
       },
       {
@@ -526,7 +526,7 @@ async function asyncPaperGenerationHandler(ctx: any) {
       },
     );
 
-    logger.info({ jobId: job.id, paperId, conversationId }, "paper_generation_job_enqueued");
+    logger.info({ jobId: job.id, paperId, conversationId }, 'paper_generation_job_enqueued');
 
     // Return 202 Accepted
     set.status = 202;
@@ -535,7 +535,7 @@ async function asyncPaperGenerationHandler(ctx: any) {
       paperId,
       jobId: job.id,
       conversationId,
-      status: "queued",
+      status: 'queued',
       statusUrl: `/api/deep-research/paper/${paperId}/status`,
     };
   } catch (error) {
@@ -546,12 +546,12 @@ async function asyncPaperGenerationHandler(ctx: any) {
         conversationId,
         userId,
       },
-      "async_paper_generation_failed",
+      'async_paper_generation_failed',
     );
 
     set.status = 500;
     return {
-      error: "Failed to queue paper generation",
+      error: 'Failed to queue paper generation',
       message: error instanceof Error ? error.message : String(error),
     };
   }
@@ -571,33 +571,33 @@ async function paperStatusHandler(ctx: any) {
   if (!userId) {
     set.status = 401;
     return {
-      error: "Authentication required",
-      message: "Valid authentication is required to check paper status",
+      error: 'Authentication required',
+      message: 'Valid authentication is required to check paper status',
     };
   }
 
   if (!paperId) {
     set.status = 400;
     return {
-      error: "Missing paperId",
-      message: "paperId must be provided in the route",
+      error: 'Missing paperId',
+      message: 'paperId must be provided in the route',
     };
   }
 
-  logger.info({ paperId, userId }, "paper_status_request");
+  logger.info({ paperId, userId }, 'paper_status_request');
 
   try {
     // Fetch paper record
     const { data: paper, error } = await supabase
-      .from("paper")
-      .select("*")
-      .eq("id", paperId)
+      .from('paper')
+      .select('*')
+      .eq('id', paperId)
       .single();
 
     if (error || !paper) {
       set.status = 404;
       return {
-        error: "Paper not found",
+        error: 'Paper not found',
         message: `Paper with id ${paperId} not found`,
       };
     }
@@ -606,8 +606,8 @@ async function paperStatusHandler(ctx: any) {
     if (paper.user_id !== userId) {
       set.status = 403;
       return {
-        error: "Access denied",
-        message: "You do not have permission to access this paper",
+        error: 'Access denied',
+        message: 'You do not have permission to access this paper',
       };
     }
 
@@ -623,12 +623,12 @@ async function paperStatusHandler(ctx: any) {
       response.progress = paper.progress;
     }
 
-    if (paper.status === "completed") {
+    if (paper.status === 'completed') {
       // Generate fresh presigned URLs
       const storage = getStorageProvider();
       if (storage) {
         response.pdfUrl = await storage.getPresignedUrl(paper.pdf_path, 3600);
-        const rawLatexPath = paper.pdf_path.replace("/paper.pdf", "/main.tex");
+        const rawLatexPath = paper.pdf_path.replace('/paper.pdf', '/main.tex');
         try {
           if (await storage.exists(rawLatexPath)) {
             response.rawLatexUrl = await storage.getPresignedUrl(rawLatexPath, 3600);
@@ -639,11 +639,11 @@ async function paperStatusHandler(ctx: any) {
       }
     }
 
-    if (paper.status === "failed") {
+    if (paper.status === 'failed') {
       response.error = paper.error;
     }
 
-    logger.info({ paperId, userId, status: paper.status }, "paper_status_returned");
+    logger.info({ paperId, userId, status: paper.status }, 'paper_status_returned');
 
     return response;
   } catch (error) {
@@ -653,12 +653,12 @@ async function paperStatusHandler(ctx: any) {
         paperId,
         userId,
       },
-      "paper_status_check_failed",
+      'paper_status_check_failed',
     );
 
     set.status = 500;
     return {
-      error: "Failed to check paper status",
+      error: 'Failed to check paper status',
       message: error instanceof Error ? error.message : String(error),
     };
   }

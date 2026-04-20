@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export * from './list_backup_vaults.js';
 export * from './create_backup_vault.js';
 export * from './delete_backup_vault.js';
 export * from './get_backup_vault.js';
+export * from './list_backup_vaults.js';

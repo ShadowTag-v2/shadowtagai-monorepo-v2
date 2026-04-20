@@ -6,12 +6,12 @@
 
 import './test-table.js';
 
-import {html} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import { html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {Environment} from '../../environment.js';
+import { Environment } from '../../environment.js';
 
-import {TestTable, TestTableTemplate} from './test-table.js';
+import { TestTable, type TestTableTemplate } from './test-table.js';
 
 declare global {
   interface HTMLElementTagNameMap {

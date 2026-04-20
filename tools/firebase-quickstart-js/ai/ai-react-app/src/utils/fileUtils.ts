@@ -1,4 +1,4 @@
-import { Part } from "firebase/ai";
+import type { Part } from 'firebase/ai';
 
 /**
  * Converts a File object into a Firebase AI SDK Part object suitable for multimodal requests.
@@ -15,17 +15,15 @@ export async function fileToGenerativePart(file: File): Promise<Part> {
       // The FileReader result includes the Data URL prefix (e.g., "data:image/jpeg;base64,").
       // We only need the actual base64 data part after the comma.
       const base64String = reader.result as string;
-      if (base64String && base64String.includes(",")) {
-        resolve(base64String.split(",")[1]);
+      if (base64String && base64String.includes(',')) {
+        resolve(base64String.split(',')[1]);
       } else {
-        reject(new Error("Invalid file data format received from FileReader."));
+        reject(new Error('Invalid file data format received from FileReader.'));
       }
     };
     reader.onerror = (errorEvent) => {
       reject(
-        new Error(
-          `FileReader error: ${errorEvent?.target?.error?.message || "Unknown error"}`,
-        ),
+        new Error(`FileReader error: ${errorEvent?.target?.error?.message || 'Unknown error'}`),
       );
     };
     // Start reading the file
@@ -41,9 +39,7 @@ export async function fileToGenerativePart(file: File): Promise<Part> {
       },
     };
   } catch (error) {
-    console.error("Error converting file to Generative Part:", error);
-    throw new Error(
-      `Failed to process the file "${file.name}". Please ensure it's a valid file.`,
-    );
+    console.error('Error converting file to Generative Part:', error);
+    throw new Error(`Failed to process the file "${file.name}". Please ensure it's a valid file.`);
   }
 }

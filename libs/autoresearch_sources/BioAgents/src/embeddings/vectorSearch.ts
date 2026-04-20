@@ -1,10 +1,10 @@
 // lib/vectorSearch.ts
-import { CohereClient } from "cohere-ai";
-import { getServiceClient } from "../db/client";
-import logger from "../utils/logger";
-import { SimpleCache } from "../utils/cache";
-import { CONFIG } from "./config";
-import { createEmbeddingProvider, type EmbeddingProvider } from "./provider";
+import { CohereClient } from 'cohere-ai';
+import { getServiceClient } from '../db/client';
+import { SimpleCache } from '../utils/cache';
+import logger from '../utils/logger';
+import { CONFIG } from './config';
+import { createEmbeddingProvider, type EmbeddingProvider } from './provider';
 
 // Use service client to bypass RLS for document operations
 const supabase = getServiceClient();
@@ -41,7 +41,7 @@ export class VectorSearchWithReranker {
     const embedding = await this.embeddingProvider.generateEmbedding(`${title}\n${content}`);
 
     const { data, error } = await supabase
-      .from("documents")
+      .from('documents')
       .insert({
         title,
         content,
@@ -63,7 +63,7 @@ export class VectorSearchWithReranker {
 
     const queryEmbedding = await this.embeddingProvider.generateEmbedding(query);
 
-    const { data, error } = await supabase.rpc("match_documents", {
+    const { data, error } = await supabase.rpc('match_documents', {
       query_embedding: queryEmbedding,
       match_threshold: CONFIG.SIMILARITY_THRESHOLD,
       match_count: limit,
@@ -90,7 +90,7 @@ export class VectorSearchWithReranker {
     logger.info(`🎯 Reranking ${documents.length} documents, returning top ${topN}`);
 
     const response = await cohere.rerank({
-      model: "rerank-english-v3.0",
+      model: 'rerank-english-v3.0',
       query: query,
       documents: documents.map((doc) => ({
         text: `${doc.title}\n${doc.content}`,
@@ -139,7 +139,7 @@ export class VectorSearchWithReranker {
     const vectorResults = await this.vectorSearch(query, vectorLimit);
 
     if (vectorResults.length === 0) {
-      logger.info("❌ No vector search results found");
+      logger.info('❌ No vector search results found');
       return [];
     }
 
@@ -191,7 +191,7 @@ export class VectorSearchWithReranker {
     );
 
     const { data, error } = await supabase
-      .from("documents")
+      .from('documents')
       .insert(documentsWithEmbeddings)
       .select();
 
@@ -204,8 +204,8 @@ export class VectorSearchWithReranker {
   // Get document stats
   async getStats() {
     const { count, error } = await supabase
-      .from("documents")
-      .select("*", { count: "exact", head: true });
+      .from('documents')
+      .select('*', { count: 'exact', head: true });
 
     if (error) throw error;
 

@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_oidc_signin_popup_modular]
-import { getAuth, signInWithPopup, OAuthProvider } from "firebase/auth";
+import { getAuth, OAuthProvider, signInWithPopup } from 'firebase/auth';
 
 const auth = getAuth();
 signInWithPopup(auth, provider)
@@ -13,7 +13,8 @@ signInWithPopup(auth, provider)
     // User is signed in.
     const credential = OAuthProvider.credentialFromResult(result);
     // This gives you an access token for the OIDC provider. You can use it to directly interact with that provider
-  }).catch((error) => {
+  })
+  .catch((error) => {
     // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;

@@ -5,14 +5,14 @@
 // 'npm run snippets'.
 
 // [START app_default_init_options_modular]
-import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 // Initialize Firebase with a "default" Firebase project
 const defaultProject = initializeApp(firebaseConfig);
 
-console.log(defaultProject.name);  // "[DEFAULT]"
+console.log(defaultProject.name); // "[DEFAULT]"
 
 // Option 1: Access Firebase services via the defaultProject variable
 let defaultStorage = getStorage(defaultProject);

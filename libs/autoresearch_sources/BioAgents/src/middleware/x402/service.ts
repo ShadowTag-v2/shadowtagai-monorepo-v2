@@ -1,21 +1,21 @@
+import { createFacilitatorConfig } from '@coinbase/x402';
 import {
   decodePaymentSignatureHeader,
   encodePaymentRequiredHeader,
   encodePaymentResponseHeader,
   HTTPFacilitatorClient,
-} from "@x402/core/http";
+} from '@x402/core/http';
 import type {
-  PaymentPayload,
-  PaymentRequirements,
-  PaymentRequired,
-  VerifyResponse,
-  SettleResponse,
   Network,
-} from "@x402/core/types";
-import { createFacilitatorConfig } from "@coinbase/x402";
-import logger from "../../utils/logger";
-import { x402Config, networkConfig, X402_VERSION, hasCdpAuth, isCdpFacilitator } from "./config";
-import { routePricing } from "./pricing";
+  PaymentPayload,
+  PaymentRequired,
+  PaymentRequirements,
+  SettleResponse,
+  VerifyResponse,
+} from '@x402/core/types';
+import logger from '../../utils/logger';
+import { hasCdpAuth, isCdpFacilitator, networkConfig, X402_VERSION, x402Config } from './config';
+import { routePricing } from './pricing';
 
 /**
  * Field definition for API schema documentation
@@ -33,9 +33,9 @@ export interface FieldDef {
  */
 export interface OutputSchema {
   input: {
-    type: "http";
-    method: "GET" | "POST";
-    bodyType?: "json" | "form-data" | "multipart-form-data" | "text" | "binary";
+    type: 'http';
+    method: 'GET' | 'POST';
+    bodyType?: 'json' | 'form-data' | 'multipart-form-data' | 'text' | 'binary';
     queryParams?: Record<string, FieldDef>;
     bodyFields?: Record<string, FieldDef>;
     headerFields?: Record<string, FieldDef>;
@@ -61,10 +61,10 @@ export interface PaymentSettlementResult {
  * Convert USD string to base units (6 decimals for USDC)
  */
 export function usdToBaseUnits(amountUSD: string): string {
-  const numericAmount = amountUSD.replace(/[^0-9.]/g, "");
-  const [whole = "0", fraction = ""] = numericAmount.split(".");
-  const normalizedFraction = (fraction + "000000").slice(0, 6);
-  const result = `${whole}${normalizedFraction}`.replace(/^0+/, "") || "0";
+  const numericAmount = amountUSD.replace(/[^0-9.]/g, '');
+  const [whole = '0', fraction = ''] = numericAmount.split('.');
+  const normalizedFraction = (fraction + '000000').slice(0, 6);
+  const result = `${whole}${normalizedFraction}`.replace(/^0+/, '') || '0';
   return result;
 }
 
@@ -105,7 +105,7 @@ export class X402Service {
             facilitatorUrl: this.facilitatorConfig.url,
             cdpAuthEnabled: true,
           },
-          "x402_v2_cdp_auth_enabled",
+          'x402_v2_cdp_auth_enabled',
         );
       }
     } else if (isCdpFacilitator && !hasCdpAuth) {
@@ -113,8 +113,8 @@ export class X402Service {
       this.facilitatorConfig = { url: x402Config.facilitatorUrl };
       if (logger) {
         logger.warn(
-          "x402_v2_cdp_auth_missing: CDP facilitator URL detected but CDP_API_KEY_ID/SECRET not set. " +
-            "Auth will fail for mainnet. Set credentials or use X402_FACILITATOR_URL=https://x402.org/facilitator for testing.",
+          'x402_v2_cdp_auth_missing: CDP facilitator URL detected but CDP_API_KEY_ID/SECRET not set. ' +
+            'Auth will fail for mainnet. Set credentials or use X402_FACILITATOR_URL=https://x402.org/facilitator for testing.',
         );
       }
     } else {
@@ -134,7 +134,7 @@ export class X402Service {
           x402Version: X402_VERSION,
           cdpAuthEnabled: isCdpFacilitator && hasCdpAuth,
         },
-        "x402_v2_service_initialized",
+        'x402_v2_service_initialized',
       );
     }
   }
@@ -151,7 +151,7 @@ export class X402Service {
     // Validate CDP auth at startup if configured
     if (isCdpFacilitator && hasCdpAuth && this.facilitatorConfig.createAuthHeaders) {
       if (logger) {
-        logger.info("x402_v2_validating_cdp_auth: Testing JWT generation...");
+        logger.info('x402_v2_validating_cdp_auth: Testing JWT generation...');
       }
 
       try {
@@ -163,8 +163,8 @@ export class X402Service {
 
         if (!hasVerifyAuth || !hasSettleAuth) {
           throw new Error(
-            "CDP auth headers missing Authorization. " +
-              "Check CDP_API_KEY_ID and CDP_API_KEY_SECRET are valid.",
+            'CDP auth headers missing Authorization. ' +
+              'Check CDP_API_KEY_ID and CDP_API_KEY_SECRET are valid.',
           );
         }
 
@@ -174,9 +174,9 @@ export class X402Service {
             {
               verifyAuthPresent: !!hasVerifyAuth,
               settleAuthPresent: !!hasSettleAuth,
-              correlationContextPresent: !!authHeaders.verify?.["Correlation-Context"],
+              correlationContextPresent: !!authHeaders.verify?.['Correlation-Context'],
             },
-            "x402_v2_cdp_auth_validated: JWT generation successful",
+            'x402_v2_cdp_auth_validated: JWT generation successful',
           );
         }
       } catch (error: any) {
@@ -186,7 +186,7 @@ export class X402Service {
             {
               error: message,
             },
-            "x402_v2_cdp_auth_failed: Could not generate CDP JWT",
+            'x402_v2_cdp_auth_failed: Could not generate CDP JWT',
           );
         }
         throw new Error(`x402 CDP auth validation failed: ${message}`);
@@ -195,7 +195,7 @@ export class X402Service {
 
     this._initialized = true;
     if (logger) {
-      logger.info("x402_v2_service_ready");
+      logger.info('x402_v2_service_ready');
     }
   }
 
@@ -232,7 +232,7 @@ export class X402Service {
     // Testnet (Base Sepolia): name() = "USDC"
     // Mainnet (Base): name() = "USD Coin"
     const requirements: PaymentRequirements = {
-      scheme: "exact",
+      scheme: 'exact',
       network: x402Config.network as Network,
       asset: x402Config.usdcAddress,
       amount: usdToBaseUnits(amountUSD),
@@ -278,7 +278,7 @@ export class X402Service {
       resource: {
         url: resource,
         description: description,
-        mimeType: "application/json",
+        mimeType: 'application/json',
       },
       accepts: [requirements],
     };
@@ -288,43 +288,43 @@ export class X402Service {
       paymentRequired.extensions = {
         outputSchema: {
           input: {
-            type: "http",
-            method: "POST",
-            bodyType: "json",
+            type: 'http',
+            method: 'POST',
+            bodyType: 'json',
             bodyFields: {
               message: {
-                type: "string",
+                type: 'string',
                 required: true,
                 description: "User's question or message to the AI assistant",
               },
               conversationId: {
-                type: "string",
+                type: 'string',
                 required: false,
-                description: "Optional conversation ID for multi-turn conversations",
+                description: 'Optional conversation ID for multi-turn conversations',
               },
               userId: {
-                type: "string",
+                type: 'string',
                 required: false,
-                description: "Optional user ID for tracking",
+                description: 'Optional user ID for tracking',
               },
             },
           },
           output: {
             text: {
-              type: "string",
-              description: "AI-generated response text",
+              type: 'string',
+              description: 'AI-generated response text',
             },
             userId: {
-              type: "string",
-              description: "User identifier",
+              type: 'string',
+              description: 'User identifier',
             },
             conversationId: {
-              type: "string",
-              description: "Conversation identifier",
+              type: 'string',
+              description: 'Conversation identifier',
             },
             pollUrl: {
-              type: "string",
-              description: "URL to poll for async job status",
+              type: 'string',
+              description: 'URL to poll for async job status',
             },
           },
         },
@@ -361,10 +361,10 @@ export class X402Service {
       try {
         decodedPayment = this.decodePaymentHeader(paymentHeader);
       } catch (error) {
-        if (logger) logger.error({ error }, "Failed to decode payment header");
+        if (logger) logger.error({ error }, 'Failed to decode payment header');
         return {
           isValid: false,
-          invalidReason: (error as Error)?.message || "Invalid or malformed payment header",
+          invalidReason: (error as Error)?.message || 'Invalid or malformed payment header',
         };
       }
 
@@ -376,7 +376,7 @@ export class X402Service {
             network: x402Config.network,
             payTo: paymentRequirements.payTo,
           },
-          "x402_v2_verify_request",
+          'x402_v2_verify_request',
         );
       }
 
@@ -393,7 +393,7 @@ export class X402Service {
               invalidReason: response.invalidReason,
               payer: response.payer,
             },
-            "x402_v2_verify_failed",
+            'x402_v2_verify_failed',
           );
         }
       }
@@ -404,8 +404,8 @@ export class X402Service {
         payer: response.payer,
       };
     } catch (error: any) {
-      const message = error?.message || "Verification error";
-      if (logger) logger.error({ error }, "x402_v2_verification_error");
+      const message = error?.message || 'Verification error';
+      if (logger) logger.error({ error }, 'x402_v2_verification_error');
       return { isValid: false, invalidReason: message };
     }
   }
@@ -423,8 +423,8 @@ export class X402Service {
       try {
         decodedPayment = this.decodePaymentHeader(paymentHeader);
       } catch (e) {
-        if (logger) logger.error({ error: e }, "Failed to decode payment header for settlement");
-        return { success: false, errorReason: "Invalid payment header format" };
+        if (logger) logger.error({ error: e }, 'Failed to decode payment header for settlement');
+        return { success: false, errorReason: 'Invalid payment header format' };
       }
 
       if (logger) {
@@ -434,7 +434,7 @@ export class X402Service {
             environment: x402Config.environment,
             network: x402Config.network,
           },
-          "x402_v2_settle_request",
+          'x402_v2_settle_request',
         );
       }
 
@@ -451,7 +451,7 @@ export class X402Service {
               errorReason: response.errorReason,
               network: response.network,
             },
-            "x402_v2_settle_failed",
+            'x402_v2_settle_failed',
           );
         }
         return {
@@ -467,14 +467,14 @@ export class X402Service {
         payer: response.payer,
       };
     } catch (error: any) {
-      const message = error?.message || "Settlement error";
+      const message = error?.message || 'Settlement error';
       if (logger) {
         logger.error(
           {
             error: error?.message || String(error),
             stack: error?.stack,
           },
-          "x402_v2_settlement_error",
+          'x402_v2_settlement_error',
         );
       }
       return { success: false, errorReason: message };
@@ -527,14 +527,14 @@ export function create402Response(
 
   // Build resource URL with correct protocol
   const url = new URL(request.url);
-  const forwardedProto = request.headers.get("x-forwarded-proto");
-  const protocol = forwardedProto || url.protocol.replace(":", "");
+  const forwardedProto = request.headers.get('x-forwarded-proto');
+  const protocol = forwardedProto || url.protocol.replace(':', '');
   const resourceUrl = `${protocol}://${url.host}${routePath}`;
 
   const paymentRequired = x402Service.generatePaymentRequired(
     resourceUrl,
-    options?.description || pricing?.description || "API access via x402 payment",
-    options?.priceUSD || pricing?.priceUSD || "0.01",
+    options?.description || pricing?.description || 'API access via x402 payment',
+    options?.priceUSD || pricing?.priceUSD || '0.01',
     { includeOutputSchema: options?.includeOutputSchema ?? true },
   );
 
@@ -544,8 +544,8 @@ export function create402Response(
   return new Response(JSON.stringify(paymentRequired), {
     status: 402,
     headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "PAYMENT-REQUIRED": paymentRequiredHeader,
+      'Content-Type': 'application/json; charset=utf-8',
+      'PAYMENT-REQUIRED': paymentRequiredHeader,
     },
   });
 }

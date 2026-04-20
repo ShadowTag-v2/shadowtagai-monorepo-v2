@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Harness} from '../testing/harness.js';
+import { Harness } from '../testing/harness.js';
 
-import {CircularProgress} from './internal/circular-progress.js';
-import {LinearProgress} from './internal/linear-progress.js';
+import type { CircularProgress } from './internal/circular-progress.js';
+import type { LinearProgress } from './internal/linear-progress.js';
 
 /**
  * Test harness for linear-progress.

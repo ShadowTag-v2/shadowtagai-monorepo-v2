@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
+import type * as firestore from '@google-cloud/firestore';
 
 import * as assert from 'assert';
 import * as rbtree from 'functional-red-black-tree';
-import {GoogleError, Status} from 'google-gax';
-import {Duplex} from 'stream';
+import { GoogleError, Status } from 'google-gax';
+import type { Duplex } from 'stream';
 
-import {google} from '../protos/firestore_v1_proto_api';
-import {delayExecution, ExponentialBackoff} from './backoff';
-import {DocumentSnapshotBuilder, QueryDocumentSnapshot} from './document';
-import {DocumentChange, DocumentChangeType} from './document-change';
-import {DocumentReference, Firestore, Query} from './index';
-import {logger} from './logger';
-import {QualifiedResourcePath} from './path';
-import {Timestamp} from './timestamp';
-import {defaultConverter, RBTree} from './types';
-import {requestTag} from './util';
+import { google } from '../protos/firestore_v1_proto_api';
+import { delayExecution, ExponentialBackoff } from './backoff';
+import { DocumentSnapshotBuilder, type QueryDocumentSnapshot } from './document';
+import { DocumentChange, type DocumentChangeType } from './document-change';
+import type { DocumentReference, Firestore, Query } from './index';
+import { logger } from './logger';
+import { QualifiedResourcePath } from './path';
+import { Timestamp } from './timestamp';
+import { defaultConverter, type RBTree } from './types';
+import { requestTag } from './util';
 
 import api = google.firestore.v1;
-import {DocumentData} from '@google-cloud/firestore';
+
+import type { DocumentData } from '@google-cloud/firestore';
 
 /*!
  * Target ID used by watch. Watch uses a fixed target id since we only support
@@ -61,7 +62,7 @@ const REMOVED = {} as DocumentSnapshotBuilder<any, any>;
  * The change type for document change events.
  */
 // tslint:disable-next-line:variable-name
-const ChangeType: {[k: string]: DocumentChangeType} = {
+const ChangeType: { [k: string]: DocumentChangeType } = {
   added: 'added',
   modified: 'modified',
   removed: 'removed',
@@ -71,10 +72,7 @@ const ChangeType: {[k: string]: DocumentChangeType} = {
  * The comparator used for document watches (which should always get called with
  * the same document).
  */
-const DOCUMENT_WATCH_COMPARATOR: <
-  AppModelType,
-  DbModelType extends DocumentData,
->(
+const DOCUMENT_WATCH_COMPARATOR: <AppModelType, DbModelType extends DocumentData>(
   doc1: QueryDocumentSnapshot<AppModelType, DbModelType>,
   doc2: QueryDocumentSnapshot<AppModelType, DbModelType>,
 ) => number = (doc1, doc2) => {
@@ -114,10 +112,7 @@ const EMPTY_FUNCTION: () => void = () => {};
  * changed documents since the last snapshot delivered for this watch.
  */
 
-type DocumentComparator<
-  AppModelType,
-  DbModelType extends firestore.DocumentData,
-> = (
+type DocumentComparator<AppModelType, DbModelType extends firestore.DocumentData> = (
   l: QueryDocumentSnapshot<AppModelType, DbModelType>,
   r: QueryDocumentSnapshot<AppModelType, DbModelType>,
 ) => number;
@@ -174,10 +169,7 @@ abstract class Watch<
    * @private
    * @internal
    */
-  private docMap = new Map<
-    string,
-    QueryDocumentSnapshot<AppModelType, DbModelType>
-  >();
+  private docMap = new Map<string, QueryDocumentSnapshot<AppModelType, DbModelType>>();
 
   /**
    * The accumulated map of document changes (keyed by document name) for the
@@ -185,10 +177,7 @@ abstract class Watch<
    * @private
    * @internal
    */
-  private changeMap = new Map<
-    string,
-    DocumentSnapshotBuilder<AppModelType, DbModelType>
-  >();
+  private changeMap = new Map<string, DocumentSnapshotBuilder<AppModelType, DbModelType>>();
 
   /**
    * The current state of the query results. *
@@ -253,10 +242,7 @@ abstract class Watch<
    * Returns a comparator for QueryDocumentSnapshots that is used to order the
    * document snapshots returned by this watch.
    */
-  protected abstract getComparator(): DocumentComparator<
-    AppModelType,
-    DbModelType
-  >;
+  protected abstract getComparator(): DocumentComparator<AppModelType, DbModelType>;
 
   /**
    * Starts a watch and attaches a listener for document change events.
@@ -280,18 +266,9 @@ abstract class Watch<
     ) => void,
     onError: (error: Error) => void,
   ): () => void {
-    assert(
-      this.onNext === EMPTY_FUNCTION,
-      'onNext should not already be defined.',
-    );
-    assert(
-      this.onError === EMPTY_FUNCTION,
-      'onError should not already be defined.',
-    );
-    assert(
-      this.docTree === undefined,
-      'docTree should not already be defined.',
-    );
+    assert(this.onNext === EMPTY_FUNCTION, 'onNext should not already be defined.');
+    assert(this.onError === EMPTY_FUNCTION, 'onError should not already be defined.');
+    assert(this.docTree === undefined, 'docTree should not already be defined.');
     this.onNext = onNext;
     this.onError = onError;
     this.docTree = rbtree(this.getComparator());
@@ -325,9 +302,7 @@ abstract class Watch<
    * @private
    * @internal
    */
-  private extractCurrentChanges(
-    readTime: Timestamp,
-  ): DocumentChangeSet<AppModelType, DbModelType> {
+  private extractCurrentChanges(readTime: Timestamp): DocumentChangeSet<AppModelType, DbModelType> {
     const deletes: string[] = [];
     const adds: Array<QueryDocumentSnapshot<AppModelType, DbModelType>> = [];
     const updates: Array<QueryDocumentSnapshot<AppModelType, DbModelType>> = [];
@@ -339,18 +314,14 @@ abstract class Watch<
         }
       } else if (this.docMap.has(name)) {
         value.readTime = readTime;
-        updates.push(
-          value.build() as QueryDocumentSnapshot<AppModelType, DbModelType>,
-        );
+        updates.push(value.build() as QueryDocumentSnapshot<AppModelType, DbModelType>);
       } else {
         value.readTime = readTime;
-        adds.push(
-          value.build() as QueryDocumentSnapshot<AppModelType, DbModelType>,
-        );
+        adds.push(value.build() as QueryDocumentSnapshot<AppModelType, DbModelType>);
       }
     });
 
-    return {deletes, adds, updates};
+    return { deletes, adds, updates };
   }
 
   /**
@@ -426,11 +397,7 @@ abstract class Watch<
     }
 
     this.idleTimeoutHandle = delayExecution(() => {
-      logger(
-        'Watch.resetIdleTimeout',
-        this.requestTag,
-        'Resetting stream after idle timeout',
-      );
+      logger('Watch.resetIdleTimeout', this.requestTag, 'Resetting stream after idle timeout');
       this.currentStream?.end();
       this.currentStream = null;
 
@@ -464,11 +431,7 @@ abstract class Watch<
       .backoffAndWait()
       .then(async () => {
         if (!this.isActive) {
-          logger(
-            'Watch.initStream',
-            this.requestTag,
-            'Not initializing inactive stream',
-          );
+          logger('Watch.initStream', this.requestTag, 'Not initializing inactive stream');
           return;
         }
 
@@ -481,19 +444,10 @@ abstract class Watch<
         // Note that we need to call the internal _listen API to pass additional
         // header values in readWriteStream.
         return this.firestore
-          .requestStream(
-            'listen',
-            /* bidirectional= */ true,
-            request,
-            this.requestTag,
-          )
-          .then(backendStream => {
+          .requestStream('listen', /* bidirectional= */ true, request, this.requestTag)
+          .then((backendStream) => {
             if (!this.isActive) {
-              logger(
-                'Watch.initStream',
-                this.requestTag,
-                'Closing inactive stream',
-              );
+              logger('Watch.initStream', this.requestTag, 'Closing inactive stream');
               backendStream.emit('end');
               backendStream.on('error', () => {
                 // Note that emitting 'end' above does not prevent the Duplex
@@ -511,7 +465,7 @@ abstract class Watch<
               this.resetIdleTimeout();
               this.onData(proto);
             })
-              .on('error', err => {
+              .on('error', (err) => {
                 if (this.currentStream === backendStream) {
                   this.currentStream = null;
                   this.maybeReopenStream(err);
@@ -529,7 +483,7 @@ abstract class Watch<
             this.currentStream!.resume();
           });
       })
-      .catch(err => {
+      .catch((err) => {
         this.closeStream(err);
       });
   }
@@ -549,10 +503,7 @@ abstract class Watch<
         if (noTargetIds && change.readTime && this.current) {
           // This means everything is up-to-date, so emit the current
           // set of docs as a snapshot, if there were changes.
-          this.pushSnapshot(
-            Timestamp.fromProto(change.readTime),
-            change.resumeToken!,
-          );
+          this.pushSnapshot(Timestamp.fromProto(change.readTime), change.resumeToken!);
         }
       } else if (change.targetChangeType === 'ADD') {
         if (WATCH_TARGET_ID !== change.targetIds![0]) {
@@ -573,15 +524,10 @@ abstract class Watch<
       } else if (change.targetChangeType === 'CURRENT') {
         this.current = true;
       } else {
-        this.closeStream(
-          new Error('Unknown target change type: ' + JSON.stringify(change)),
-        );
+        this.closeStream(new Error('Unknown target change type: ' + JSON.stringify(change)));
       }
 
-      if (
-        change.resumeToken &&
-        this.affectsTarget(change.targetIds!, WATCH_TARGET_ID)
-      ) {
+      if (change.resumeToken && this.affectsTarget(change.targetIds!, WATCH_TARGET_ID)) {
         this.backoff.reset();
       }
     } else if (proto.documentChange) {
@@ -606,8 +552,7 @@ abstract class Watch<
 
       const document = proto.documentChange.document!;
       const name = document.name!;
-      const relativeName =
-        QualifiedResourcePath.fromSlashSeparatedString(name).relativeName;
+      const relativeName = QualifiedResourcePath.fromSlashSeparatedString(name).relativeName;
 
       if (changed) {
         logger('Watch.onData', this.requestTag, 'Received document change');
@@ -629,8 +574,7 @@ abstract class Watch<
     } else if (proto.documentDelete || proto.documentRemove) {
       logger('Watch.onData', this.requestTag, 'Processing remove event');
       const name = (proto.documentDelete || proto.documentRemove)!.document!;
-      const relativeName =
-        QualifiedResourcePath.fromSlashSeparatedString(name).relativeName;
+      const relativeName = QualifiedResourcePath.fromSlashSeparatedString(name).relativeName;
       this.changeMap.set(
         relativeName,
         REMOVED as DocumentSnapshotBuilder<AppModelType, DbModelType>,
@@ -644,9 +588,7 @@ abstract class Watch<
         this.resetStream();
       }
     } else {
-      this.closeStream(
-        new Error('Unknown listen response type: ' + JSON.stringify(proto)),
-      );
+      this.closeStream(new Error('Unknown listen response type: ' + JSON.stringify(proto)));
     }
   }
 
@@ -656,10 +598,7 @@ abstract class Watch<
    * @private
    * @internal
    */
-  private affectsTarget(
-    targetIds: number[] | undefined,
-    currentId: number,
-  ): boolean {
+  private affectsTarget(targetIds: number[] | undefined, currentId: number): boolean {
     if (targetIds === undefined || targetIds.length === 0) {
       return true;
     }
@@ -679,10 +618,7 @@ abstract class Watch<
    * @private
    * @internal
    */
-  private pushSnapshot(
-    readTime: Timestamp,
-    nextResumeToken?: Uint8Array,
-  ): void {
+  private pushSnapshot(readTime: Timestamp, nextResumeToken?: Uint8Array): void {
     const appliedChanges = this.computeSnapshot(readTime);
 
     if (!this.hasPushed || appliedChanges.length > 0) {
@@ -773,9 +709,7 @@ abstract class Watch<
    * @private
    * @internal
    */
-  private computeSnapshot(
-    readTime: Timestamp,
-  ): Array<DocumentChange<AppModelType, DbModelType>> {
+  private computeSnapshot(readTime: Timestamp): Array<DocumentChange<AppModelType, DbModelType>> {
     const changeSet = this.extractCurrentChanges(readTime);
     const appliedChanges: Array<DocumentChange<AppModelType, DbModelType>> = [];
 
@@ -784,24 +718,21 @@ abstract class Watch<
     // individual changes to assure that oldIndex/newIndex keep incrementing.
     changeSet.deletes.sort((name1, name2) => {
       // Deletes are sorted based on the order of the existing document.
-      return this.getComparator()(
-        this.docMap.get(name1)!,
-        this.docMap.get(name2)!,
-      );
+      return this.getComparator()(this.docMap.get(name1)!, this.docMap.get(name2)!);
     });
-    changeSet.deletes.forEach(name => {
+    changeSet.deletes.forEach((name) => {
       const change = this.deleteDoc(name);
       appliedChanges.push(change);
     });
 
     changeSet.adds.sort(this.getComparator());
-    changeSet.adds.forEach(snapshot => {
+    changeSet.adds.forEach((snapshot) => {
       const change = this.addDoc(snapshot);
       appliedChanges.push(change);
     });
 
     changeSet.updates.sort(this.getComparator());
-    changeSet.updates.forEach(snapshot => {
+    changeSet.updates.forEach((snapshot) => {
       const change = this.modifyDoc(snapshot);
       if (change) {
         appliedChanges.push(change);
@@ -810,8 +741,7 @@ abstract class Watch<
 
     assert(
       this.docTree.length === this.docMap.size,
-      'The update document ' +
-        'tree and document map should have the same number of entries.',
+      'The update document ' + 'tree and document map should have the same number of entries.',
     );
 
     return appliedChanges;
@@ -829,12 +759,7 @@ abstract class Watch<
    */
   private isPermanentWatchError(error: GoogleError): boolean {
     if (error.code === undefined) {
-      logger(
-        'Watch.isPermanentError',
-        this.requestTag,
-        'Unable to determine error code: ',
-        error,
-      );
+      logger('Watch.isPermanentError', this.requestTag, 'Unable to determine error code: ', error);
       return false;
     }
 
@@ -942,6 +867,6 @@ export class QueryWatch<
 
   getTarget(resumeToken?: Uint8Array): google.firestore.v1.ITarget {
     const query = this.query.toProto();
-    return {query, targetId: WATCH_TARGET_ID, resumeToken};
+    return { query, targetId: WATCH_TARGET_ID, resumeToken };
   }
 }

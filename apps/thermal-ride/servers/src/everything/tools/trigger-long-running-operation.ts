@@ -1,18 +1,18 @@
-import { z } from "zod";
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import { z } from 'zod';
 
 // Tool input schema
 const TriggerLongRunningOperationSchema = z.object({
-  duration: z.number().default(10).describe("Duration of the operation in seconds"),
-  steps: z.number().default(5).describe("Number of steps in the operation"),
+  duration: z.number().default(10).describe('Duration of the operation in seconds'),
+  steps: z.number().default(5).describe('Number of steps in the operation'),
 });
 
 // Tool configuration
-const name = "trigger-long-running-operation";
+const name = 'trigger-long-running-operation';
 const config = {
-  title: "Trigger Long Running Operation Tool",
-  description: "Demonstrates a long running operation with progress updates.",
+  title: 'Trigger Long Running Operation Tool',
+  description: 'Demonstrates a long running operation with progress updates.',
   inputSchema: TriggerLongRunningOperationSchema,
 };
 
@@ -43,7 +43,7 @@ export const registerTriggerLongRunningOperationTool = (server: McpServer) => {
       if (progressToken !== undefined) {
         await server.server.notification(
           {
-            method: "notifications/progress",
+            method: 'notifications/progress',
             params: {
               progress: i,
               total: steps,
@@ -58,7 +58,7 @@ export const registerTriggerLongRunningOperationTool = (server: McpServer) => {
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: `Long running operation completed. Duration: ${duration} seconds, Steps: ${steps}.`,
         },
       ],

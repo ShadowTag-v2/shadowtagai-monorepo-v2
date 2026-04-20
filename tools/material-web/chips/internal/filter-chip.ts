@@ -6,14 +6,14 @@
 
 import '../../elevation/elevation.js';
 
-import {html, nothing} from 'lit';
-import {property, query} from 'lit/decorators.js';
+import { html, nothing } from 'lit';
+import { property, query } from 'lit/decorators.js';
 
-import {ARIAMixinStrict} from '../../internal/aria/aria.js';
-import {redispatchEvent} from '../../internal/events/redispatch-event.js';
+import type { ARIAMixinStrict } from '../../internal/aria/aria.js';
+import { redispatchEvent } from '../../internal/events/redispatch-event.js';
 
-import {MultiActionChip} from './multi-action-chip.js';
-import {renderRemoveButton} from './trailing-icons.js';
+import { MultiActionChip } from './multi-action-chip.js';
+import { renderRemoveButton } from './trailing-icons.js';
 
 /**
  * A filter chip component.
@@ -21,9 +21,9 @@ import {renderRemoveButton} from './trailing-icons.js';
  * @fires remove {Event} Dispatched when the remove button is clicked.
  */
 export class FilterChip extends MultiActionChip {
-  @property({type: Boolean}) elevated = false;
-  @property({type: Boolean}) removable = false;
-  @property({type: Boolean, reflect: true}) selected = false;
+  @property({ type: Boolean }) elevated = false;
+  @property({ type: Boolean }) removable = false;
+  @property({ type: Boolean, reflect: true }) selected = false;
 
   /**
    * Only needed for SSR.
@@ -31,7 +31,7 @@ export class FilterChip extends MultiActionChip {
    * Add this attribute when a filter chip has a `slot="selected-icon"` to avoid
    * a Flash Of Unstyled Content.
    */
-  @property({type: Boolean, reflect: true, attribute: 'has-selected-icon'})
+  @property({ type: Boolean, reflect: true, attribute: 'has-selected-icon' })
   hasSelectedIcon = false;
 
   protected get primaryId() {
@@ -54,7 +54,7 @@ export class FilterChip extends MultiActionChip {
   }
 
   protected override renderPrimaryAction(content: unknown) {
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     return html`
       <button
         class="primary action"

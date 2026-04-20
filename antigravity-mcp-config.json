@@ -80,7 +80,14 @@
         "veo-3.0-fast-generate-001",
         "veo-2.0-generate-001"
       ],
-      "presets": ["hero_drift", "counselconduit_hero", "shadowtagai_marketing", "onboarding_flow", "billing_explainer", "stripe_webhook"],
+      "presets": [
+        "hero_drift",
+        "counselconduit_hero",
+        "shadowtagai_marketing",
+        "onboarding_flow",
+        "billing_explainer",
+        "stripe_webhook"
+      ],
       "output_dir": "labs/uphillsnowball/external_payloads/veo_output",
       "gcs_bucket": "gs://shadowtag-omega-v4-media",
       "sdk": "google-genai>=1.73.0",

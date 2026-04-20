@@ -7,9 +7,6 @@
     "module": "ES2022",
     "moduleResolution": "node"
   },
-  "exclude": [
-    "catalog",
-    "**/demo"
-  ],
+  "exclude": ["catalog", "**/demo"],
   "include": ["**/*"]
 }

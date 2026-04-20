@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_set_language_code_modular]
-import { getAuth } from "firebase/auth";
+import { getAuth } from 'firebase/auth';
 
 const auth = getAuth();
 auth.languageCode = 'it';

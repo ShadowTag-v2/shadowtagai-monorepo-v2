@@ -9,9 +9,9 @@ import '@material/web/icon/icon.js';
 import '@material/web/list/list.js';
 import '@material/web/list/list-item.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {css, html, nothing} from 'lit';
-import {classMap} from 'lit/directives/class-map.js';
+import { css, html, nothing } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for list stories. */
 export interface StoryKnobs {
@@ -65,7 +65,7 @@ const interactive: MaterialStoryInit<StoryKnobs> = {
   name: 'Interactive list',
   styles,
   render(knobs) {
-    const knobsNoTrailing = {...knobs, trailingIcon: false};
+    const knobsNoTrailing = { ...knobs, trailingIcon: false };
     return html`
       <md-list aria-label="Interactive example">
         <md-list-item
@@ -92,9 +92,7 @@ const interactive: MaterialStoryInit<StoryKnobs> = {
 };
 
 function getKnobContent(knobs: StoryKnobs, threeLines = false) {
-  const overline = knobs.overline
-    ? html`<div slot="overline">${knobs.overline}</div>`
-    : nothing;
+  const overline = knobs.overline ? html`<div slot="overline">${knobs.overline}</div>` : nothing;
 
   const classes = {
     'align-start': threeLines,

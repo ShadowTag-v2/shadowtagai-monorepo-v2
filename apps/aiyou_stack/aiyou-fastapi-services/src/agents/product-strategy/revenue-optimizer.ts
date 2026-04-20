@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from "../../types/agent.types";
-import { BaseAgent } from "../../utils/base-agent";
+} from '../../types/agent.types';
+import { BaseAgent } from '../../utils/base-agent';
 
 export class RevenueOptimizerAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: "revenue-optimizer",
-    name: "Revenue Optimizer",
-    category: "product-strategy",
+    id: 'revenue-optimizer',
+    name: 'Revenue Optimizer',
+    category: 'product-strategy',
     description:
-      "Spots money-making opportunities in your code. Implements pricing tiers and payment flows.",
-    tagline: "Monetization strategy and payment implementation",
-    capabilities: ["analysis", "implementation", "strategy"],
-    tags: ["revenue", "pricing", "payments", "monetization", "conversion"],
-    difficulty: "advanced",
-    estimatedTime: "2-4 hours",
+      'Spots money-making opportunities in your code. Implements pricing tiers and payment flows.',
+    tagline: 'Monetization strategy and payment implementation',
+    capabilities: ['analysis', 'implementation', 'strategy'],
+    tags: ['revenue', 'pricing', 'payments', 'monetization', 'conversion'],
+    difficulty: 'advanced',
+    estimatedTime: '2-4 hours',
   };
 
   prompt: AgentPromptTemplate = {
@@ -47,51 +47,51 @@ Focus on revenue growth:
 Be practical about implementation. Recommend payment providers, pricing models, and conversion tactics that actually work.`,
 
     context: [
-      "Current pricing/business model",
-      "Feature set and capabilities",
-      "User segments and personas",
-      "Payment infrastructure",
-      "Competitive pricing",
+      'Current pricing/business model',
+      'Feature set and capabilities',
+      'User segments and personas',
+      'Payment infrastructure',
+      'Competitive pricing',
     ],
   };
 
   tools: AgentTools = {
-    required: ["Glob", "Read", "Grep", "Write", "Edit"],
-    optional: ["WebFetch", "WebSearch"],
+    required: ['Glob', 'Read', 'Grep', 'Write', 'Edit'],
+    optional: ['WebFetch', 'WebSearch'],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: "Monetization Audit",
-        description: "Analyze current revenue model and opportunities",
-        action: "Review pricing, features, and monetization points",
+        name: 'Monetization Audit',
+        description: 'Analyze current revenue model and opportunities',
+        action: 'Review pricing, features, and monetization points',
       },
       {
-        name: "Pricing Strategy",
-        description: "Design optimal pricing tiers and packaging",
-        action: "Create value-based pricing model",
+        name: 'Pricing Strategy',
+        description: 'Design optimal pricing tiers and packaging',
+        action: 'Create value-based pricing model',
       },
       {
-        name: "Payment Flow Design",
-        description: "Optimize checkout and payment experiences",
-        action: "Design frictionless payment flows",
+        name: 'Payment Flow Design',
+        description: 'Optimize checkout and payment experiences',
+        action: 'Design frictionless payment flows',
       },
       {
-        name: "Implementation Plan",
-        description: "Build payment integration and billing logic",
-        action: "Implement Stripe/payment provider, billing, subscriptions",
+        name: 'Implementation Plan',
+        description: 'Build payment integration and billing logic',
+        action: 'Implement Stripe/payment provider, billing, subscriptions',
       },
       {
-        name: "Conversion Optimization",
-        description: "Optimize trial-to-paid and upgrade flows",
-        action: "Implement conversion tactics and experiments",
+        name: 'Conversion Optimization',
+        description: 'Optimize trial-to-paid and upgrade flows',
+        action: 'Implement conversion tactics and experiments',
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow["steps"][0],
+    step: AgentWorkflow['steps'][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

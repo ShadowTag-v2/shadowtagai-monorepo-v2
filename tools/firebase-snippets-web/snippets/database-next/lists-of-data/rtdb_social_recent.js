@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START rtdb_social_recent_modular]
-import { getDatabase, ref, query, limitToLast } from "firebase/database";
+import { getDatabase, limitToLast, query, ref } from 'firebase/database';
 
 const db = getDatabase();
 const recentPostsRef = query(ref(db, 'posts'), limitToLast(100));

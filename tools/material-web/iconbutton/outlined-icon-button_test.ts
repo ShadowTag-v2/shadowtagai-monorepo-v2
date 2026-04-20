@@ -6,9 +6,9 @@
 
 // import 'jasmine'; (google3-only)
 
-import {createTokenTests} from '../testing/tokens.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdOutlinedIconButton} from './outlined-icon-button.js';
+import { MdOutlinedIconButton } from './outlined-icon-button.js';
 
 describe('<md-outlined-icon-button>', () => {
   describe('.styles', () => {

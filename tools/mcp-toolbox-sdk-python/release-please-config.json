@@ -27,30 +27,19 @@
   "packages": {
     "packages/toolbox-core": {
       "component": "toolbox-core",
-      "extra-files": [
-        "src/toolbox_core/version.py"
-      ]
+      "extra-files": ["src/toolbox_core/version.py"]
     },
     "packages/toolbox-langchain": {
       "component": "toolbox-langchain",
-      "extra-files": [
-        "pyproject.toml",
-        "src/toolbox_langchain/version.py"
-      ]
+      "extra-files": ["pyproject.toml", "src/toolbox_langchain/version.py"]
     },
     "packages/toolbox-llamaindex": {
       "component": "toolbox-llamaindex",
-      "extra-files": [
-        "pyproject.toml",
-        "src/toolbox_llamaindex/version.py"
-      ]
+      "extra-files": ["pyproject.toml", "src/toolbox_llamaindex/version.py"]
     },
     "packages/toolbox-adk": {
       "component": "toolbox-adk",
-      "extra-files": [
-        "pyproject.toml",
-        "src/toolbox_adk/version.py"
-      ]
+      "extra-files": ["pyproject.toml", "src/toolbox_adk/version.py"]
     }
   }
 }

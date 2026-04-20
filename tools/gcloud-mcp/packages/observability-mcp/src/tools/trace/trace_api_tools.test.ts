@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { describe, it, expect, vi, Mock } from 'vitest';
-import { GaxiosResponse } from 'gaxios';
-import { cloudtrace_v1 } from 'googleapis';
-import { listTraces, getTrace } from './trace_api_tools.js';
+import type { GaxiosResponse } from 'gaxios';
+import type { cloudtrace_v1 } from 'googleapis';
+import { describe, expect, it, type Mock, vi } from 'vitest';
 import { apiClientFactory } from '../../utils/api_client_factory.js';
+import { getTrace, listTraces } from './trace_api_tools.js';
 
 const TEST_PROJECT_ID = 'my-project';
 

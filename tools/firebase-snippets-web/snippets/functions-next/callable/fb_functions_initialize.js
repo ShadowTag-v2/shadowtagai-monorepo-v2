@@ -5,14 +5,14 @@
 // 'npm run snippets'.
 
 // [START fb_functions_initialize_modular]
-import { initializeApp } from "firebase/app";
-import { getFunctions } from "firebase/functions";
+import { initializeApp } from 'firebase/app';
+import { getFunctions } from 'firebase/functions';
 
 initializeApp({
   // Your Firebase Web SDK configuration
   // [START_EXCLUDE]
-  projectId: "<PROJECT_ID>",
-  apiKey: "<API_KEY>",
+  projectId: '<PROJECT_ID>',
+  apiKey: '<API_KEY>',
   // [END_EXCLUDE]
 });
 

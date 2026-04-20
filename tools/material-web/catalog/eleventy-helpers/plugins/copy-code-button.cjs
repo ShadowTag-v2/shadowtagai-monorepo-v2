@@ -17,7 +17,7 @@ function renderCode(originalRule) {
     // Escape quotes and apostrophes so that they don't break the HTML.
     const codeblockContent = tokens[idx].content
       .replaceAll('"', '&quot;')
-      .replaceAll("'", "&apos;");
+      .replaceAll("'", '&apos;');
 
     const originalHTMLContent = originalRule(...args);
 

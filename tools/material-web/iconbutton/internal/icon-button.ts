@@ -7,21 +7,18 @@
 import '../../focus/md-focus-ring.js';
 import '../../ripple/ripple.js';
 
-import {html, isServer, LitElement, nothing} from 'lit';
-import {property, state} from 'lit/decorators.js';
-import {classMap} from 'lit/directives/class-map.js';
-import {literal, html as staticHtml} from 'lit/static-html.js';
+import { html, isServer, LitElement, nothing } from 'lit';
+import { property, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { literal, html as staticHtml } from 'lit/static-html.js';
 
-import {ARIAMixinStrict} from '../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../internal/aria/delegate.js';
-import {isRtl} from '../../internal/controller/is-rtl.js';
-import {
-  afterDispatch,
-  setupDispatchHooks,
-} from '../../internal/events/dispatch-hooks.js';
-import {mixinElementInternals} from '../../labs/behaviors/element-internals.js';
-import {mixinFormAssociated} from '../../labs/behaviors/form-associated.js';
-import {mixinFormSubmitter} from '../../labs/behaviors/form-submitter.js';
+import type { ARIAMixinStrict } from '../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../internal/aria/delegate.js';
+import { isRtl } from '../../internal/controller/is-rtl.js';
+import { afterDispatch, setupDispatchHooks } from '../../internal/events/dispatch-hooks.js';
+import { mixinElementInternals } from '../../labs/behaviors/element-internals.js';
+import { mixinFormAssociated } from '../../labs/behaviors/form-associated.js';
+import { mixinFormSubmitter } from '../../labs/behaviors/form-submitter.js';
 
 type LinkTarget = '_blank' | '_parent' | '_self' | '_top';
 
@@ -56,13 +53,13 @@ export class IconButton extends iconButtonBaseClass {
    * https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_disabled_controls
    * for more guidance on when this is needed.
    */
-  @property({type: Boolean, attribute: 'soft-disabled', reflect: true})
+  @property({ type: Boolean, attribute: 'soft-disabled', reflect: true })
   softDisabled = false;
 
   /**
    * Flips the icon if it is in an RTL context at startup.
    */
-  @property({type: Boolean, attribute: 'flip-icon-in-rtl'})
+  @property({ type: Boolean, attribute: 'flip-icon-in-rtl' })
   flipIconInRtl = false;
 
   /**
@@ -85,20 +82,20 @@ export class IconButton extends iconButtonBaseClass {
   /**
    * The `aria-label` of the button when the button is toggleable and selected.
    */
-  @property({attribute: 'aria-label-selected'}) ariaLabelSelected = '';
+  @property({ attribute: 'aria-label-selected' }) ariaLabelSelected = '';
 
   /**
    * When true, the button will toggle between selected and unselected
    * states
    */
-  @property({type: Boolean}) toggle = false;
+  @property({ type: Boolean }) toggle = false;
 
   /**
    * Sets the selected state. When false, displays the default icon. When true,
    * displays the selected icon, or the default icon If no `slot="selected"`
    * icon is provided.
    */
-  @property({type: Boolean, reflect: true}) selected = false;
+  @property({ type: Boolean, reflect: true }) selected = false;
 
   @state() private flipIcon = isRtl(this, this.flipIconInRtl);
 
@@ -126,12 +123,10 @@ export class IconButton extends iconButtonBaseClass {
         }
 
         this.selected = !wasSelected;
-        this.dispatchEvent(
-          new InputEvent('input', {bubbles: true, composed: true}),
-        );
+        this.dispatchEvent(new InputEvent('input', { bubbles: true, composed: true }));
         // Bubbles but does not compose to mimic native browser <input> & <select>
         // Additionally, native change event is not an InputEvent.
-        this.dispatchEvent(new Event('change', {bubbles: true}));
+        this.dispatchEvent(new Event('change', { bubbles: true }));
       });
     });
   }
@@ -147,15 +142,12 @@ export class IconButton extends iconButtonBaseClass {
   protected override render() {
     const tag = this.href ? literal`div` : literal`button`;
     // Needed for closure conformance
-    const {ariaLabel, ariaHasPopup, ariaExpanded} = this as ARIAMixinStrict;
+    const { ariaLabel, ariaHasPopup, ariaExpanded } = this as ARIAMixinStrict;
     const hasToggledAriaLabel = ariaLabel && this.ariaLabelSelected;
     const ariaPressedValue = !this.toggle ? nothing : this.selected;
     let ariaLabelValue: string | null | typeof nothing = nothing;
     if (!this.href) {
-      ariaLabelValue =
-        hasToggledAriaLabel && this.selected
-          ? this.ariaLabelSelected
-          : ariaLabel;
+      ariaLabelValue = hasToggledAriaLabel && this.selected ? this.ariaLabelSelected : ariaLabel;
     }
     return staticHtml`<${tag}
         class="icon-button ${classMap(this.getRenderClasses())}"
@@ -176,7 +168,7 @@ export class IconButton extends iconButtonBaseClass {
 
   private renderLink() {
     // Needed for closure conformance
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     return html`
       <a
         class="link"
@@ -193,7 +185,7 @@ export class IconButton extends iconButtonBaseClass {
   protected getRenderClasses() {
     return {
       'flip-icon': this.flipIcon,
-      'selected': this.toggle && this.selected,
+      selected: this.toggle && this.selected,
     };
   }
 

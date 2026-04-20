@@ -61,7 +61,6 @@ function parseSassFile(sassFile: string): SassdocModule {
       }
 
       sassdocLines = [];
-      continue;
     }
   }
 
@@ -74,10 +73,7 @@ function parseSassFile(sassFile: string): SassdocModule {
 const TWO_SPACES = '  ';
 const FOUR_SPACES = '    ';
 
-function sassdocToMarkdown(
-  comment: SassdocComment,
-  moduleName: string,
-): string {
+function sassdocToMarkdown(comment: SassdocComment, moduleName: string): string {
   const header = `### \`${comment.symbol}\` {#${moduleName}.${comment.symbol}}\n\n`;
   let markdown = '';
 
@@ -95,8 +91,7 @@ function sassdocToMarkdown(
       }
 
       const exampleLang = exampleMatch[1] || 'scss';
-      const exampleMarkdown =
-        '```' + `${exampleLang}\n` + exampleLines.join('\n') + '```\n\n';
+      const exampleMarkdown = '```' + `${exampleLang}\n` + exampleLines.join('\n') + '```\n\n';
       markdown += exampleMarkdown;
       continue;
     }
@@ -135,10 +130,10 @@ function sassdocToMarkdown(
   return header + signature + markdown;
 }
 
-const {values} = util.parseArgs({
+const { values } = util.parseArgs({
   options: {
-    input: {type: 'string'},
-    output: {type: 'string'},
+    input: { type: 'string' },
+    output: { type: 'string' },
   },
 });
 
@@ -152,10 +147,7 @@ const outputPath = values.output;
 const sassExtPath = values.input;
 const sassdocModules = fs
   .readdirSync(sassExtPath)
-  .filter(
-    (file) =>
-      file.startsWith('_') && file.endsWith('.scss') && !file.includes('test'),
-  )
+  .filter((file) => file.startsWith('_') && file.endsWith('.scss') && !file.includes('test'))
   .map((file) => parseSassFile(path.join(sassExtPath, file)));
 
 let generatedDocs = ``;
@@ -169,11 +161,7 @@ for (const sassdocModule of sassdocModules) {
 const mdContent = fs.readFileSync(outputPath, 'utf-8');
 const MARKER = '<!-- generated_docs_start -->\n';
 const newMdContent =
-  mdContent.substring(0, mdContent.indexOf(MARKER)) +
-  MARKER +
-  '\n' +
-  generatedDocs.trim() +
-  '\n';
+  mdContent.substring(0, mdContent.indexOf(MARKER)) + MARKER + '\n' + generatedDocs.trim() + '\n';
 
 fs.writeFileSync(outputPath, newMdContent);
 

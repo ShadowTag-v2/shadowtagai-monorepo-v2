@@ -24,7 +24,7 @@ import type {
   LocationsClient,
   LocationProtos,
 } from 'google-gax';
-import {Transform} from 'stream';
+import { Transform } from 'stream';
 import * as protos from '../protos/firestore_v1_proto_api';
 /**
  *  The Cloud Firestore service.
@@ -97,10 +97,7 @@ export declare class FirestoreClient {
    *     const client = new FirestoreClient({fallback: true}, gax);
    *     ```
    */
-  constructor(
-    opts?: ClientOptions,
-    gaxInstance?: typeof gax | typeof gax.fallback,
-  );
+  constructor(opts?: ClientOptions, gaxInstance?: typeof gax | typeof gax.fallback);
   /**
    * Initialize the client.
    * Performs asynchronous operations (such as authentication) and prepares the client.
@@ -1392,16 +1389,12 @@ export declare class FirestoreClient {
       | gax.CallOptions
       | Callback<
           LocationProtos.google.cloud.location.ILocation,
-          | LocationProtos.google.cloud.location.IGetLocationRequest
-          | null
-          | undefined,
+          LocationProtos.google.cloud.location.IGetLocationRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       LocationProtos.google.cloud.location.ILocation,
-      | LocationProtos.google.cloud.location.IGetLocationRequest
-      | null
-      | undefined,
+      LocationProtos.google.cloud.location.IGetLocationRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<LocationProtos.google.cloud.location.ILocation>;

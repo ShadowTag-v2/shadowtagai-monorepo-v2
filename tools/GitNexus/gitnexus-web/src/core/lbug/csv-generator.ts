@@ -10,8 +10,8 @@
  * - All fields are consistently quoted for safety with code content
  */
 
-import { KnowledgeGraph, GraphNode, NodeLabel } from '../graph/types';
-import { NODE_TABLES, NodeTableName } from './schema';
+import type { GraphNode, KnowledgeGraph, NodeLabel } from '../graph/types';
+import { NODE_TABLES, type NodeTableName } from './schema';
 
 // ============================================================================
 // CSV ESCAPE UTILITIES
@@ -26,8 +26,8 @@ import { NODE_TABLES, NodeTableName } from './schema';
  */
 const sanitizeUTF8 = (str: string): string => {
   return str
-    .replace(/\r\n/g, '\n')          // Normalize Windows line endings first
-    .replace(/\r/g, '\n')            // Normalize remaining \r to \n
+    .replace(/\r\n/g, '\n') // Normalize Windows line endings first
+    .replace(/\r/g, '\n') // Normalize remaining \r to \n
     .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '') // Remove control chars except \t \n
     .replace(/[\uD800-\uDFFF]/g, '') // Remove surrogate pairs (invalid standalone)
     .replace(/[\uFFFE\uFFFF]/g, ''); // Remove BOM and special chars
@@ -69,20 +69,17 @@ const isBinaryContent = (content: string): boolean => {
   let nonPrintable = 0;
   for (let i = 0; i < sample.length; i++) {
     const code = sample.charCodeAt(i);
-    if ((code < 9) || (code > 13 && code < 32) || code === 127) {
+    if (code < 9 || (code > 13 && code < 32) || code === 127) {
       nonPrintable++;
     }
   }
-  return (nonPrintable / sample.length) > 0.1;
+  return nonPrintable / sample.length > 0.1;
 };
 
 /**
  * Extract code content for a node
  */
-const extractContent = (
-  node: GraphNode,
-  fileContents: Map<string, string>
-): string => {
+const extractContent = (node: GraphNode, fileContents: Map<string, string>): string => {
   const filePath = node.properties.filePath;
   const content = fileContents.get(filePath);
 
@@ -124,7 +121,7 @@ const extractContent = (
 
 export interface CSVData {
   nodes: Map<NodeTableName, string>;
-  relCSV: string;  // Single relation CSV with from,to,type,confidence,reason columns
+  relCSV: string; // Single relation CSV with from,to,type,confidence,reason columns
 }
 
 // ============================================================================
@@ -142,12 +139,14 @@ const generateFileCSV = (nodes: GraphNode[], fileContents: Map<string, string>):
   for (const node of nodes) {
     if (node.label !== 'File') continue;
     const content = extractContent(node, fileContents);
-    rows.push([
-      escapeCSVField(node.id),
-      escapeCSVField(node.properties.name || ''),
-      escapeCSVField(node.properties.filePath || ''),
-      escapeCSVField(content),
-    ].join(','));
+    rows.push(
+      [
+        escapeCSVField(node.id),
+        escapeCSVField(node.properties.name || ''),
+        escapeCSVField(node.properties.filePath || ''),
+        escapeCSVField(content),
+      ].join(','),
+    );
   }
 
   return rows.join('\n');
@@ -163,11 +162,13 @@ const generateFolderCSV = (nodes: GraphNode[]): string => {
 
   for (const node of nodes) {
     if (node.label !== 'Folder') continue;
-    rows.push([
-      escapeCSVField(node.id),
-      escapeCSVField(node.properties.name || ''),
-      escapeCSVField(node.properties.filePath || ''),
-    ].join(','));
+    rows.push(
+      [
+        escapeCSVField(node.id),
+        escapeCSVField(node.properties.name || ''),
+        escapeCSVField(node.properties.filePath || ''),
+      ].join(','),
+    );
   }
 
   return rows.join('\n');
@@ -180,7 +181,7 @@ const generateFolderCSV = (nodes: GraphNode[]): string => {
 const generateCodeElementCSV = (
   nodes: GraphNode[],
   label: NodeLabel,
-  fileContents: Map<string, string>
+  fileContents: Map<string, string>,
 ): string => {
   const headers = ['id', 'name', 'filePath', 'startLine', 'endLine', 'isExported', 'content'];
   const rows: string[] = [headers.join(',')];
@@ -188,15 +189,17 @@ const generateCodeElementCSV = (
   for (const node of nodes) {
     if (node.label !== label) continue;
     const content = extractContent(node, fileContents);
-    rows.push([
-      escapeCSVField(node.id),
-      escapeCSVField(node.properties.name || ''),
-      escapeCSVField(node.properties.filePath || ''),
-      escapeCSVNumber(node.properties.startLine, -1),
-      escapeCSVNumber(node.properties.endLine, -1),
-      node.properties.isExported ? 'true' : 'false',
-      escapeCSVField(content),
-    ].join(','));
+    rows.push(
+      [
+        escapeCSVField(node.id),
+        escapeCSVField(node.properties.name || ''),
+        escapeCSVField(node.properties.filePath || ''),
+        escapeCSVNumber(node.properties.startLine, -1),
+        escapeCSVNumber(node.properties.endLine, -1),
+        node.properties.isExported ? 'true' : 'false',
+        escapeCSVField(content),
+      ].join(','),
+    );
   }
 
   return rows.join('\n');
@@ -210,7 +213,7 @@ const generateCodeElementCSV = (
 const generateMultiLangCSV = (
   nodes: GraphNode[],
   label: NodeLabel,
-  fileContents: Map<string, string>
+  fileContents: Map<string, string>,
 ): string => {
   const headers = ['id', 'name', 'filePath', 'startLine', 'endLine', 'content'];
   const rows: string[] = [headers.join(',')];
@@ -218,14 +221,16 @@ const generateMultiLangCSV = (
   for (const node of nodes) {
     if (node.label !== label) continue;
     const content = extractContent(node, fileContents);
-    rows.push([
-      escapeCSVField(node.id),
-      escapeCSVField(node.properties.name || ''),
-      escapeCSVField(node.properties.filePath || ''),
-      escapeCSVNumber(node.properties.startLine, -1),
-      escapeCSVNumber(node.properties.endLine, -1),
-      escapeCSVField(content),
-    ].join(','));
+    rows.push(
+      [
+        escapeCSVField(node.id),
+        escapeCSVField(node.properties.name || ''),
+        escapeCSVField(node.properties.filePath || ''),
+        escapeCSVNumber(node.properties.startLine, -1),
+        escapeCSVNumber(node.properties.endLine, -1),
+        escapeCSVField(content),
+      ].join(','),
+    );
   }
 
   return rows.join('\n');
@@ -236,7 +241,16 @@ const generateMultiLangCSV = (
  * Headers: id,label,heuristicLabel,keywords,description,enrichedBy,cohesion,symbolCount
  */
 const generateCommunityCSV = (nodes: GraphNode[]): string => {
-  const headers = ['id', 'label', 'heuristicLabel', 'keywords', 'description', 'enrichedBy', 'cohesion', 'symbolCount'];
+  const headers = [
+    'id',
+    'label',
+    'heuristicLabel',
+    'keywords',
+    'description',
+    'enrichedBy',
+    'cohesion',
+    'symbolCount',
+  ];
   const rows: string[] = [headers.join(',')];
 
   for (const node of nodes) {
@@ -246,16 +260,18 @@ const generateCommunityCSV = (nodes: GraphNode[]): string => {
     const keywords = (node.properties as any).keywords || [];
     const keywordsStr = `[${keywords.map((k: string) => `'${k.replace(/'/g, "''")}'`).join(',')}]`;
 
-    rows.push([
-      escapeCSVField(node.id),
-      escapeCSVField(node.properties.name || ''),  // label is stored in name
-      escapeCSVField(node.properties.heuristicLabel || ''),
-      escapeCSVField(keywordsStr),  // Array format for LadybugDB, needs CSV escaping for commas
-      escapeCSVField((node.properties as any).description || ''),
-      escapeCSVField((node.properties as any).enrichedBy || 'heuristic'),
-      escapeCSVNumber(node.properties.cohesion, 0),
-      escapeCSVNumber(node.properties.symbolCount, 0),
-    ].join(','));
+    rows.push(
+      [
+        escapeCSVField(node.id),
+        escapeCSVField(node.properties.name || ''), // label is stored in name
+        escapeCSVField(node.properties.heuristicLabel || ''),
+        escapeCSVField(keywordsStr), // Array format for LadybugDB, needs CSV escaping for commas
+        escapeCSVField((node.properties as any).description || ''),
+        escapeCSVField((node.properties as any).enrichedBy || 'heuristic'),
+        escapeCSVNumber(node.properties.cohesion, 0),
+        escapeCSVNumber(node.properties.symbolCount, 0),
+      ].join(','),
+    );
   }
 
   return rows.join('\n');
@@ -266,7 +282,16 @@ const generateCommunityCSV = (nodes: GraphNode[]): string => {
  * Headers: id,label,heuristicLabel,processType,stepCount,communities,entryPointId,terminalId
  */
 const generateProcessCSV = (nodes: GraphNode[]): string => {
-  const headers = ['id', 'label', 'heuristicLabel', 'processType', 'stepCount', 'communities', 'entryPointId', 'terminalId'];
+  const headers = [
+    'id',
+    'label',
+    'heuristicLabel',
+    'processType',
+    'stepCount',
+    'communities',
+    'entryPointId',
+    'terminalId',
+  ];
   const rows: string[] = [headers.join(',')];
 
   for (const node of nodes) {
@@ -276,16 +301,18 @@ const generateProcessCSV = (nodes: GraphNode[]): string => {
     const communities = (node.properties as any).communities || [];
     const communitiesStr = `[${communities.map((c: string) => `'${c.replace(/'/g, "''")}'`).join(',')}]`;
 
-    rows.push([
-      escapeCSVField(node.id),
-      escapeCSVField(node.properties.name || ''), // label stores name
-      escapeCSVField((node.properties as any).heuristicLabel || ''),
-      escapeCSVField((node.properties as any).processType || ''),
-      escapeCSVNumber((node.properties as any).stepCount, 0),
-      escapeCSVField(communitiesStr), // Needs CSV escaping because it contains commas!
-      escapeCSVField((node.properties as any).entryPointId || ''),
-      escapeCSVField((node.properties as any).terminalId || ''),
-    ].join(','));
+    rows.push(
+      [
+        escapeCSVField(node.id),
+        escapeCSVField(node.properties.name || ''), // label stores name
+        escapeCSVField((node.properties as any).heuristicLabel || ''),
+        escapeCSVField((node.properties as any).processType || ''),
+        escapeCSVNumber((node.properties as any).stepCount, 0),
+        escapeCSVField(communitiesStr), // Needs CSV escaping because it contains commas!
+        escapeCSVField((node.properties as any).entryPointId || ''),
+        escapeCSVField((node.properties as any).terminalId || ''),
+      ].join(','),
+    );
   }
 
   return rows.join('\n');
@@ -303,14 +330,16 @@ const generateRelationCSV = (graph: KnowledgeGraph): string => {
   const rows: string[] = [headers.join(',')];
 
   for (const rel of graph.relationships) {
-    rows.push([
-      escapeCSVField(rel.sourceId),
-      escapeCSVField(rel.targetId),
-      escapeCSVField(rel.type),
-      escapeCSVNumber(rel.confidence, 1.0),
-      escapeCSVField(rel.reason),
-      escapeCSVNumber((rel as any).step, 0),
-    ].join(','));
+    rows.push(
+      [
+        escapeCSVField(rel.sourceId),
+        escapeCSVField(rel.targetId),
+        escapeCSVField(rel.type),
+        escapeCSVNumber(rel.confidence, 1.0),
+        escapeCSVField(rel.reason),
+        escapeCSVNumber((rel as any).step, 0),
+      ].join(','),
+    );
   }
 
   return rows.join('\n');
@@ -326,7 +355,7 @@ const generateRelationCSV = (graph: KnowledgeGraph): string => {
  */
 export const generateAllCSVs = (
   graph: KnowledgeGraph,
-  fileContents: Map<string, string>
+  fileContents: Map<string, string>,
 ): CSVData => {
   const nodes = Array.from(graph.nodes);
 
@@ -344,7 +373,15 @@ export const generateAllCSVs = (
 
   // Generate CSVs for remaining multi-language tables (no isExported column)
   const handledTables = new Set<NodeTableName>([
-    'File', 'Folder', 'Function', 'Class', 'Interface', 'Method', 'CodeElement', 'Community', 'Process',
+    'File',
+    'Folder',
+    'Function',
+    'Class',
+    'Interface',
+    'Method',
+    'CodeElement',
+    'Community',
+    'Process',
   ]);
   for (const table of NODE_TABLES) {
     if (!handledTables.has(table)) {

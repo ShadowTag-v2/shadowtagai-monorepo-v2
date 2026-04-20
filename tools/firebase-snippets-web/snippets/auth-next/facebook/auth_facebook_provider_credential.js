@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_facebook_provider_credential_modular]
-import { FacebookAuthProvider } from "firebase/auth";
+import { FacebookAuthProvider } from 'firebase/auth';
 
 const credential = FacebookAuthProvider.credential(accessToken);
 // [END auth_facebook_provider_credential_modular]

@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {COMPONENT_CUSTOM_ELEMENTS} from '../component-custom-elements.js';
+import { COMPONENT_CUSTOM_ELEMENTS } from '../component-custom-elements.js';
 
 /**
  * A map of Markdown documentation file name to element entrypoints associated
  * with that documentation.
  */
-export const docsToElementMapping: {[key: string]: readonly string[]} = {
+export const docsToElementMapping: { [key: string]: readonly string[] } = {
   'button.md': COMPONENT_CUSTOM_ELEMENTS.button,
   'checkbox.md': COMPONENT_CUSTOM_ELEMENTS.checkbox,
   'chip.md': COMPONENT_CUSTOM_ELEMENTS.chips,

@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-import {DocumentSnapshot, DocumentSnapshotBuilder} from './document';
-import {DocumentReference} from './reference/document-reference';
-import {FieldPath} from './path';
-import {isPermanentRpcError} from './util';
-import {google} from '../protos/firestore_v1_proto_api';
-import {logger} from './logger';
-import {Firestore} from './index';
-import {Timestamp} from './timestamp';
-import {DocumentData} from '@google-cloud/firestore';
+import type { DocumentData } from '@google-cloud/firestore';
+import { google } from '../protos/firestore_v1_proto_api';
+import { type DocumentSnapshot, DocumentSnapshotBuilder } from './document';
+import type { Firestore } from './index';
+import { logger } from './logger';
+import type { FieldPath } from './path';
+import type { DocumentReference } from './reference/document-reference';
+import { Timestamp } from './timestamp';
+import { isPermanentRpcError } from './util';
+
 import api = google.firestore.v1;
 
 interface BatchGetResponse<AppModelType, DbModelType extends DocumentData> {
@@ -58,14 +59,9 @@ export class DocumentReader<AppModelType, DbModelType extends DocumentData> {
    */
   constructor(
     private readonly firestore: Firestore,
-    private readonly allDocuments: ReadonlyArray<
-      DocumentReference<AppModelType, DbModelType>
-    >,
+    private readonly allDocuments: ReadonlyArray<DocumentReference<AppModelType, DbModelType>>,
     private readonly fieldMask?: FieldPath[],
-    private readonly transactionOrReadTime?:
-      | Uint8Array
-      | api.ITransactionOptions
-      | Timestamp,
+    private readonly transactionOrReadTime?: Uint8Array | api.ITransactionOptions | Timestamp,
   ) {
     for (const docRef of this.allDocuments) {
       this.outstandingDocuments.add(docRef.formattedName);
@@ -78,10 +74,8 @@ export class DocumentReader<AppModelType, DbModelType extends DocumentData> {
    *
    * @param requestTag A unique client-assigned identifier for this request.
    */
-  async get(
-    requestTag: string,
-  ): Promise<Array<DocumentSnapshot<AppModelType, DbModelType>>> {
-    const {result} = await this._get(requestTag);
+  async get(requestTag: string): Promise<Array<DocumentSnapshot<AppModelType, DbModelType>>> {
+    const { result } = await this._get(requestTag);
     return result;
   }
 
@@ -91,15 +85,12 @@ export class DocumentReader<AppModelType, DbModelType extends DocumentData> {
    *
    * @param requestTag A unique client-assigned identifier for this request.
    */
-  async _get(
-    requestTag: string,
-  ): Promise<BatchGetResponse<AppModelType, DbModelType>> {
+  async _get(requestTag: string): Promise<BatchGetResponse<AppModelType, DbModelType>> {
     await this.fetchDocuments(requestTag);
 
     // BatchGetDocuments doesn't preserve document order. We use the request
     // order to sort the resulting documents.
-    const orderedDocuments: Array<DocumentSnapshot<AppModelType, DbModelType>> =
-      [];
+    const orderedDocuments: Array<DocumentSnapshot<AppModelType, DbModelType>> = [];
 
     for (const docRef of this.allDocuments) {
       const document = this.retrievedDocuments.get(docRef.formattedName);
@@ -143,10 +134,8 @@ export class DocumentReader<AppModelType, DbModelType extends DocumentData> {
     }
 
     if (this.fieldMask) {
-      const fieldPaths = this.fieldMask.map(
-        fieldPath => fieldPath.formattedName,
-      );
-      request.mask = {fieldPaths};
+      const fieldPaths = this.fieldMask.map((fieldPath) => fieldPath.formattedName);
+      request.mask = { fieldPaths };
     }
 
     let resultCount = 0;
@@ -174,10 +163,7 @@ export class DocumentReader<AppModelType, DbModelType extends DocumentData> {
             'Received document: %s',
             response.found.name!,
           );
-          snapshot = this.firestore.snapshot_(
-            response.found,
-            response.readTime!,
-          );
+          snapshot = this.firestore.snapshot_(response.found, response.readTime!);
         } else if (response.missing) {
           logger(
             'DocumentReader.fetchDocuments',
@@ -185,10 +171,7 @@ export class DocumentReader<AppModelType, DbModelType extends DocumentData> {
             'Document missing: %s',
             response.missing,
           );
-          snapshot = this.firestore.snapshot_(
-            response.missing,
-            response.readTime!,
-          );
+          snapshot = this.firestore.snapshot_(response.missing, response.readTime!);
         }
 
         if (snapshot) {
@@ -222,12 +205,7 @@ export class DocumentReader<AppModelType, DbModelType extends DocumentData> {
         throw error;
       }
     } finally {
-      logger(
-        'DocumentReader.fetchDocuments',
-        requestTag,
-        'Received %d results',
-        resultCount,
-      );
+      logger('DocumentReader.fetchDocuments', requestTag, 'Received %d results', resultCount);
     }
   }
 }

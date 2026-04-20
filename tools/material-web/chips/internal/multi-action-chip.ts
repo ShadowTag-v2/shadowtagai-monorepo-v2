@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html, isServer} from 'lit';
+import { html, isServer } from 'lit';
 
-import {ARIAMixinStrict} from '../../internal/aria/aria.js';
+import type { ARIAMixinStrict } from '../../internal/aria/aria.js';
 
-import {Chip} from './chip.js';
+import { Chip } from './chip.js';
 
 const ARIA_LABEL_REMOVE = 'aria-label-remove';
 
@@ -21,7 +21,7 @@ export abstract class MultiActionChip extends Chip {
       return this.getAttribute(ARIA_LABEL_REMOVE)!;
     }
 
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
 
     // TODO(b/350810013): remove `this.label` when label property is removed.
     if (ariaLabel || this.label) {
@@ -57,7 +57,7 @@ export abstract class MultiActionChip extends Chip {
     }
   }
 
-  override focus(options?: FocusOptions & {trailing?: boolean}) {
+  override focus(options?: FocusOptions & { trailing?: boolean }) {
     const isFocusable = this.alwaysFocusable || !this.disabled;
     if (isFocusable && options?.trailing && this.trailingAction) {
       this.trailingAction.focus(options);
@@ -74,9 +74,7 @@ export abstract class MultiActionChip extends Chip {
     `;
   }
 
-  protected abstract renderTrailingAction(
-    focusListener: EventListener,
-  ): unknown;
+  protected abstract renderTrailingAction(focusListener: EventListener): unknown;
 
   private handleKeyDown(event: KeyboardEvent) {
     const isLeft = event.key === 'ArrowLeft';
@@ -111,7 +109,7 @@ export abstract class MultiActionChip extends Chip {
   }
 
   private handleTrailingActionFocus() {
-    const {primaryAction, trailingAction} = this;
+    const { primaryAction, trailingAction } = this;
     if (!primaryAction || !trailingAction) {
       return;
     }
@@ -125,7 +123,7 @@ export abstract class MultiActionChip extends Chip {
       () => {
         primaryAction.tabIndex = 0;
       },
-      {once: true},
+      { once: true },
     );
   }
 }

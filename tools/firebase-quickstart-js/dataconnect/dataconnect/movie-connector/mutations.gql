@@ -1,10 +1,5 @@
 mutation UpsertUser($username: String!) @auth(level: USER) {
-  user_upsert(
-    data: {
-      id_expr: "auth.uid"
-      username: $username
-    }
-  )
+  user_upsert(data: { id_expr: "auth.uid", username: $username })
 }
 
 # Add a movie to the user's favorites list
@@ -18,8 +13,7 @@ mutation DeleteFavoritedMovie($movieId: UUID!) @auth(level: USER) {
 }
 
 # Add a review for a movie
-mutation AddReview($movieId: UUID!, $rating: Int!, $reviewText: String!)
-@auth(level: USER) {
+mutation AddReview($movieId: UUID!, $rating: Int!, $reviewText: String!) @auth(level: USER) {
   review_insert(
     data: {
       userId_expr: "auth.uid"
@@ -32,8 +26,7 @@ mutation AddReview($movieId: UUID!, $rating: Int!, $reviewText: String!)
 }
 
 # Update a user's review for a movie
-mutation UpdateReview($movieId: UUID!, $rating: Int!, $reviewText: String!)
-@auth(level: USER) {
+mutation UpdateReview($movieId: UUID!, $rating: Int!, $reviewText: String!) @auth(level: USER) {
   review_update(
     key: { userId_expr: "auth.uid", movieId: $movieId }
     data: {

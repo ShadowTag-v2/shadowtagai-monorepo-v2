@@ -3,7 +3,7 @@
 
 // Mask the global 'window' for this snippet file
 const window = {
-  recaptchaVerifier: undefined
+  recaptchaVerifier: undefined,
 };
 
 function recaptchaVerifierInvisible() {
@@ -12,41 +12,41 @@ function recaptchaVerifierInvisible() {
   }
 
   // [START auth_phone_recaptcha_verifier_invisible]
-  const { getAuth, RecaptchaVerifier } = require("firebase/auth");
+  const { getAuth, RecaptchaVerifier } = require('firebase/auth');
 
   const auth = getAuth();
   window.recaptchaVerifier = new RecaptchaVerifier(auth, 'sign-in-button', {
-    'size': 'invisible',
-    'callback': (response) => {
+    size: 'invisible',
+    callback: (response) => {
       // reCAPTCHA solved, allow signInWithPhoneNumber.
       onSignInSubmit();
-    }
+    },
   });
   // [END auth_phone_recaptcha_verifier_invisible]
 }
 
 function recaptchaVerifierVisible() {
   // [START auth_phone_recaptcha_verifier_visible]
-  const { getAuth, RecaptchaVerifier } = require("firebase/auth");
+  const { getAuth, RecaptchaVerifier } = require('firebase/auth');
 
   const auth = getAuth();
   window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-    'size': 'normal',
-    'callback': (response) => {
+    size: 'normal',
+    callback: (response) => {
       // reCAPTCHA solved, allow signInWithPhoneNumber.
       // ...
     },
     'expired-callback': () => {
       // Response expired. Ask user to solve reCAPTCHA again.
       // ...
-    }
+    },
   });
   // [END auth_phone_recaptcha_verifier_visible]
 }
 
 function recaptchaVerifierSimple() {
   // [START auth_phone_recaptcha_verifier_simple]
-  const { getAuth, RecaptchaVerifier } = require("firebase/auth");
+  const { getAuth, RecaptchaVerifier } = require('firebase/auth');
 
   const auth = getAuth();
   window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {});
@@ -54,7 +54,7 @@ function recaptchaVerifierSimple() {
 }
 
 function recaptchaRender() {
-  const { RecaptchaVerifier } = require("firebase/auth");
+  const { RecaptchaVerifier } = require('firebase/auth');
 
   /** @type {RecaptchaVerifier} */
   const recaptchaVerifier = window.recaptchaVerifier;
@@ -68,32 +68,33 @@ function recaptchaRender() {
 
 function phoneSignIn() {
   function getPhoneNumberFromUserInput() {
-    return "+15558675309";
+    return '+15558675309';
   }
 
   // [START auth_phone_signin]
-  const { getAuth, signInWithPhoneNumber } = require("firebase/auth");
+  const { getAuth, signInWithPhoneNumber } = require('firebase/auth');
 
   const phoneNumber = getPhoneNumberFromUserInput();
   const appVerifier = window.recaptchaVerifier;
 
   const auth = getAuth();
   signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-      .then((confirmationResult) => {
-        // SMS sent. Prompt user to type the code from the message, then sign the
-        // user in with confirmationResult.confirm(code).
-        window.confirmationResult = confirmationResult;
-        // ...
-      }).catch((error) => {
-        // Error; SMS not sent
-        // ...
-      });
+    .then((confirmationResult) => {
+      // SMS sent. Prompt user to type the code from the message, then sign the
+      // user in with confirmationResult.confirm(code).
+      window.confirmationResult = confirmationResult;
+      // ...
+    })
+    .catch((error) => {
+      // Error; SMS not sent
+      // ...
+    });
   // [END auth_phone_signin]
 }
 
 function verifyCode() {
   function getCodeFromUserInput() {
-    return "1234";
+    return '1234';
   }
 
   // TODO(samstern): Import ConfirmationResult type
@@ -102,19 +103,22 @@ function verifyCode() {
 
   // [START auth_phone_verify_code]
   const code = getCodeFromUserInput();
-  confirmationResult.confirm(code).then((result) => {
-    // User signed in successfully.
-    const user = result.user;
-    // ...
-  }).catch((error) => {
-    // User couldn't sign in (bad verification code?)
-    // ...
-  });
+  confirmationResult
+    .confirm(code)
+    .then((result) => {
+      // User signed in successfully.
+      const user = result.user;
+      // ...
+    })
+    .catch((error) => {
+      // User couldn't sign in (bad verification code?)
+      // ...
+    });
   // [END auth_phone_verify_code]
 }
 
 function getRecaptchaResponse() {
-  const recaptchaWidgetId = "...";
+  const recaptchaWidgetId = '...';
   const grecaptcha = {};
 
   // [START auth_get_recaptcha_response]

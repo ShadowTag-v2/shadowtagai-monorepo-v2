@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from "../../types/agent.types";
-import { BaseAgent } from "../../utils/base-agent";
+} from '../../types/agent.types';
+import { BaseAgent } from '../../utils/base-agent';
 
 export class CostOptimizerAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: "cost-optimizer",
-    name: "Cost Optimizer",
-    category: "operations",
+    id: 'cost-optimizer',
+    name: 'Cost Optimizer',
+    category: 'operations',
     description:
-      "Cuts your AWS bill by 50%. Finds waste, right-sizes everything, implements auto-scaling.",
-    tagline: "Cloud cost optimization and FinOps",
-    capabilities: ["analysis", "optimization"],
-    tags: ["cost-optimization", "finops", "aws", "cloud-costs", "savings"],
-    difficulty: "intermediate",
-    estimatedTime: "2-3 hours",
+      'Cuts your AWS bill by 50%. Finds waste, right-sizes everything, implements auto-scaling.',
+    tagline: 'Cloud cost optimization and FinOps',
+    capabilities: ['analysis', 'optimization'],
+    tags: ['cost-optimization', 'finops', 'aws', 'cloud-costs', 'savings'],
+    difficulty: 'intermediate',
+    estimatedTime: '2-3 hours',
   };
 
   prompt: AgentPromptTemplate = {
@@ -50,42 +50,42 @@ Every dollar saved is profit. Optimize ruthlessly.`,
   };
 
   tools: AgentTools = {
-    required: ["Read", "Bash"],
-    optional: ["Write", "WebFetch"],
+    required: ['Read', 'Bash'],
+    optional: ['Write', 'WebFetch'],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: "Cost Analysis",
-        description: "Analyze current spending",
-        action: "Identify top cost drivers",
+        name: 'Cost Analysis',
+        description: 'Analyze current spending',
+        action: 'Identify top cost drivers',
       },
       {
-        name: "Waste Detection",
-        description: "Find unused resources",
-        action: "Identify idle resources to terminate",
+        name: 'Waste Detection',
+        description: 'Find unused resources',
+        action: 'Identify idle resources to terminate',
       },
       {
-        name: "Right-Sizing",
-        description: "Optimize resource sizing",
-        action: "Recommend instance downsizing",
+        name: 'Right-Sizing',
+        description: 'Optimize resource sizing',
+        action: 'Recommend instance downsizing',
       },
       {
-        name: "Auto-Scaling",
-        description: "Implement cost-aware scaling",
-        action: "Add auto-scaling policies",
+        name: 'Auto-Scaling',
+        description: 'Implement cost-aware scaling',
+        action: 'Add auto-scaling policies',
       },
       {
-        name: "Savings Plans",
-        description: "Recommend commitments",
-        action: "Analyze RI and savings plan opportunities",
+        name: 'Savings Plans',
+        description: 'Recommend commitments',
+        action: 'Analyze RI and savings plan opportunities',
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow["steps"][0],
+    step: AgentWorkflow['steps'][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

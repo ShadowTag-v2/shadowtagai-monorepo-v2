@@ -6,13 +6,13 @@
  * so the GitNexus MCP server is available in all projects.
  */
 
-import fs from 'fs/promises';
-import path from 'path';
-import os from 'os';
 import { execFile } from 'child_process';
-import { promisify } from 'util';
-import { fileURLToPath } from 'url';
+import fs from 'fs/promises';
 import { glob } from 'glob';
+import os from 'os';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { promisify } from 'util';
 import { getGlobalDir } from '../storage/repo-manager.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -176,7 +176,7 @@ async function installClaudeCodeHooks(result: SetupResult): Promise<void> {
       const jsonCli = JSON.stringify(normalizedCli);
       content = content.replace(
         "let cliPath = path.resolve(__dirname, '..', '..', 'dist', 'cli', 'index.js');",
-        `let cliPath = ${jsonCli};`
+        `let cliPath = ${jsonCli};`,
       );
       await fs.writeFile(dest, content, 'utf-8');
     } catch {
@@ -187,14 +187,16 @@ async function installClaudeCodeHooks(result: SetupResult): Promise<void> {
     const hookCmd = `node "${hookPath.replace(/"/g, '\\"')}"`;
 
     // Merge hook config into ~/.claude/settings.json
-    const existing = await readJsonFile(settingsPath) || {};
+    const existing = (await readJsonFile(settingsPath)) || {};
     if (!existing.hooks) existing.hooks = {};
 
     // NOTE: SessionStart hooks are broken on Windows (Claude Code bug #23576).
     // Session context is delivered via CLAUDE.md / skills instead.
 
     // Helper: add a hook entry if one with 'gitnexus-hook' isn't already registered
-    interface HookEntry { hooks?: Array<{ command?: string }> }
+    interface HookEntry {
+      hooks?: Array<{ command?: string }>;
+    }
     function ensureHookEntry(
       eventName: string,
       matcher: string,
@@ -202,8 +204,8 @@ async function installClaudeCodeHooks(result: SetupResult): Promise<void> {
       statusMessage: string,
     ) {
       if (!existing.hooks[eventName]) existing.hooks[eventName] = [];
-      const hasHook = existing.hooks[eventName].some(
-        (h: HookEntry) => h.hooks?.some(hh => hh.command?.includes('gitnexus-hook'))
+      const hasHook = existing.hooks[eventName].some((h: HookEntry) =>
+        h.hooks?.some((hh) => hh.command?.includes('gitnexus-hook')),
       );
       if (!hasHook) {
         existing.hooks[eventName].push({
@@ -249,7 +251,7 @@ async function setupOpenCode(result: SetupResult): Promise<void> {
 function getCodexMcpTomlSection(): string {
   const entry = getMcpEntry();
   const command = JSON.stringify(entry.command);
-  const args = `[${entry.args.map(arg => JSON.stringify(arg)).join(', ')}]`;
+  const args = `[${entry.args.map((arg) => JSON.stringify(arg)).join(', ')}]`;
   return `[mcp_servers.gitnexus]\ncommand = ${command}\nargs = ${args}\n`;
 }
 
@@ -269,9 +271,7 @@ async function upsertCodexConfigToml(configPath: string): Promise<void> {
   }
 
   const section = getCodexMcpTomlSection();
-  const nextContent = existing.trim().length > 0
-    ? `${existing.trimEnd()}\n\n${section}`
-    : section;
+  const nextContent = existing.trim().length > 0 ? `${existing.trimEnd()}\n\n${section}` : section;
 
   await fs.mkdir(path.dirname(configPath), { recursive: true });
   await fs.writeFile(configPath, `${nextContent.trimEnd()}\n`, 'utf-8');
@@ -286,11 +286,9 @@ async function setupCodex(result: SetupResult): Promise<void> {
 
   try {
     const entry = getMcpEntry();
-    await execFileAsync(
-      'codex',
-      ['mcp', 'add', 'gitnexus', '--', entry.command, ...entry.args],
-      { shell: process.platform === 'win32' }
-    );
+    await execFileAsync('codex', ['mcp', 'add', 'gitnexus', '--', entry.command, ...entry.args], {
+      shell: process.platform === 'win32',
+    });
     result.configured.push('Codex');
     return;
   } catch {
@@ -413,7 +411,9 @@ async function installOpenCodeSkills(result: SetupResult): Promise<void> {
   try {
     const installed = await installSkillsTo(skillsDir);
     if (installed.length > 0) {
-      result.configured.push(`OpenCode skills (${installed.length} skills → ~/.config/opencode/skill/)`);
+      result.configured.push(
+        `OpenCode skills (${installed.length} skills → ~/.config/opencode/skill/)`,
+      );
     }
   } catch (err: any) {
     result.errors.push(`OpenCode skills: ${err.message}`);
@@ -495,8 +495,12 @@ export const setupCommand = async () => {
 
   console.log('');
   console.log('  Summary:');
-  console.log(`    MCP configured for: ${result.configured.filter(c => !c.includes('skills')).join(', ') || 'none'}`);
-  console.log(`    Skills installed to: ${result.configured.filter(c => c.includes('skills')).length > 0 ? result.configured.filter(c => c.includes('skills')).join(', ') : 'none'}`);
+  console.log(
+    `    MCP configured for: ${result.configured.filter((c) => !c.includes('skills')).join(', ') || 'none'}`,
+  );
+  console.log(
+    `    Skills installed to: ${result.configured.filter((c) => c.includes('skills')).length > 0 ? result.configured.filter((c) => c.includes('skills')).join(', ') : 'none'}`,
+  );
   console.log('');
   console.log('  Next steps:');
   console.log('    1. cd into any git repo');

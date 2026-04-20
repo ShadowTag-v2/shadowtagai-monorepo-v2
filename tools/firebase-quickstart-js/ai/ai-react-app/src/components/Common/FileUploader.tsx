@@ -1,5 +1,6 @@
-import React, { useState, useRef, ChangeEvent } from "react";
-import styles from "./FileUploader.module.css";
+import type React from 'react';
+import { type ChangeEvent, useRef, useState } from 'react';
+import styles from './FileUploader.module.css';
 
 interface FileUploaderProps {
   /** Callback triggered when a file is selected or cleared. Passes the File object or null. */
@@ -19,7 +20,7 @@ interface FileUploaderProps {
 const FileUploader: React.FC<FileUploaderProps> = ({
   onFileSelect,
   accept,
-  label = "Select File",
+  label = 'Select File',
   disabled = false,
 }) => {
   // State to store the name of the selected file for display purposes.
@@ -41,7 +42,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     // Reset the input value. This allows selecting the same file again
     // if the user clears it and then wants to re-select it immediately.
     if (event.target) {
-      event.target.value = "";
+      event.target.value = '';
     }
   };
 
@@ -57,7 +58,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     onFileSelect(null); // Notify parent
     // Also clear the hidden input's value
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
   };
 
@@ -69,7 +70,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         ref={fileInputRef}
         onChange={handleFileChange}
         accept={accept}
-        style={{ display: "none" }} // Keep it hidden
+        style={{ display: 'none' }} // Keep it hidden
         disabled={disabled}
         aria-hidden="true" // Improve accessibility
       />

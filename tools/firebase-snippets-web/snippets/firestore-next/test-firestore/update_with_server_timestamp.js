@@ -5,12 +5,12 @@
 // 'npm run snippets'.
 
 // [START update_with_server_timestamp_modular]
-import { updateDoc, serverTimestamp } from "firebase/firestore";
+import { serverTimestamp, updateDoc } from 'firebase/firestore';
 
 const docRef = doc(db, 'objects', 'some-id');
 
 // Update the timestamp field with the value from the server
 const updateTimestamp = await updateDoc(docRef, {
-    timestamp: serverTimestamp()
+  timestamp: serverTimestamp(),
 });
 // [END update_with_server_timestamp_modular]

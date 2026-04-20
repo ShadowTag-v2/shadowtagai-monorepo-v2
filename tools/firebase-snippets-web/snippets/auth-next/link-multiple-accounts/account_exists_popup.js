@@ -4,11 +4,11 @@
 // To update the snippets in this file, edit the source and then run
 // 'npm run snippets'.
 
-  // [START account_exists_popup_modular]
-  import { signInWithPopup, signInWithEmailAndPassword, linkWithCredential } from "firebase/auth";
+// [START account_exists_popup_modular]
+import { linkWithCredential, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 
-  // User tries to sign in with Facebook.
-  signInWithPopup(auth, facebookProvider).catch((error) => {
+// User tries to sign in with Facebook.
+signInWithPopup(auth, facebookProvider).catch((error) => {
   // User's email already exists.
   if (error.code === 'auth/account-exists-with-different-credential') {
     // The pending Facebook credential.
@@ -25,12 +25,14 @@
       // TODO: Ask the user for their password.
       // In real scenario, you should handle this asynchronously.
       const password = promptUserForPassword();
-      signInWithEmailAndPassword(auth, email, password).then((result) => {
-        return linkWithCredential(result.user, pendingCred);
-      }).then(() => {
-        // Facebook account successfully linked to the existing user.
-        goToApp();
-      });
+      signInWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+          return linkWithCredential(result.user, pendingCred);
+        })
+        .then(() => {
+          // Facebook account successfully linked to the existing user.
+          goToApp();
+        });
       return;
     }
 

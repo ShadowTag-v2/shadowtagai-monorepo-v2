@@ -1,4 +1,4 @@
-import { useState, useCallback } from "preact/hooks";
+import { useCallback, useState } from 'preact/hooks';
 
 /**
  * Get the JWT auth token for API authentication
@@ -10,7 +10,7 @@ import { useState, useCallback } from "preact/hooks";
  * - Only the signed JWT token is stored on the client
  */
 function getAuthToken(): string | null {
-  const authToken = localStorage.getItem("bioagents_auth_token");
+  const authToken = localStorage.getItem('bioagents_auth_token');
   if (authToken) return authToken;
   return null;
 }
@@ -19,7 +19,7 @@ export interface UploadedFile {
   fileId: string;
   filename: string;
   size: number;
-  status: "pending" | "uploading" | "processing" | "ready" | "error";
+  status: 'pending' | 'uploading' | 'processing' | 'ready' | 'error';
   description?: string;
   error?: string;
 }
@@ -35,7 +35,7 @@ export interface UploadUrlResponse {
 
 export interface ConfirmUploadResponse {
   fileId: string;
-  status: "ready" | "processing";
+  status: 'ready' | 'processing';
   filename: string;
   size: number;
   description?: string;
@@ -76,11 +76,11 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
    */
   const getAuthHeaders = useCallback((): Record<string, string> => {
     const headers: Record<string, string> = {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
     const authToken = getAuthToken();
     if (authToken) {
-      headers["Authorization"] = `Bearer ${authToken}`;
+      headers['Authorization'] = `Bearer ${authToken}`;
     }
     return headers;
   }, []);
@@ -94,23 +94,23 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
 
       // Create pending file entry
       const pendingFile: UploadedFile = {
-        fileId: "", // Will be set after getting URL
+        fileId: '', // Will be set after getting URL
         filename: file.name,
         size: file.size,
-        status: "pending",
+        status: 'pending',
       };
 
       try {
         // Step 1: Request presigned upload URL
-        console.log("[usePresignedUpload] Requesting upload URL for:", file.name);
+        console.log('[usePresignedUpload] Requesting upload URL for:', file.name);
 
-        const urlResponse = await fetch("/api/files/upload-url", {
-          method: "POST",
+        const urlResponse = await fetch('/api/files/upload-url', {
+          method: 'POST',
           headers: getAuthHeaders(),
-          credentials: "include",
+          credentials: 'include',
           body: JSON.stringify({
             filename: file.name,
-            contentType: file.type || "application/octet-stream",
+            contentType: file.type || 'application/octet-stream',
             size: file.size,
             conversationId,
             userId, // Include userId for dev mode authentication
@@ -123,24 +123,24 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
         }
 
         const uploadUrlData: UploadUrlResponse = await urlResponse.json();
-        console.log("[usePresignedUpload] Got upload URL, fileId:", uploadUrlData.fileId);
+        console.log('[usePresignedUpload] Got upload URL, fileId:', uploadUrlData.fileId);
 
         // Update file entry with fileId
         const uploadingFile: UploadedFile = {
           ...pendingFile,
           fileId: uploadUrlData.fileId,
-          status: "uploading",
+          status: 'uploading',
         };
 
         setUploadedFiles((prev) => [...prev, uploadingFile]);
 
         // Step 2: Upload file directly to S3
-        console.log("[usePresignedUpload] Uploading to S3...");
+        console.log('[usePresignedUpload] Uploading to S3...');
 
         const s3Response = await fetch(uploadUrlData.uploadUrl, {
-          method: "PUT",
+          method: 'PUT',
           headers: {
-            "Content-Type": file.type || "application/octet-stream",
+            'Content-Type': file.type || 'application/octet-stream',
           },
           body: file,
         });
@@ -149,15 +149,15 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
           throw new Error(`S3 upload failed: ${s3Response.status}`);
         }
 
-        console.log("[usePresignedUpload] S3 upload complete");
+        console.log('[usePresignedUpload] S3 upload complete');
 
         // Step 3: Confirm upload with backend
-        console.log("[usePresignedUpload] Confirming upload...");
+        console.log('[usePresignedUpload] Confirming upload...');
 
-        const confirmResponse = await fetch("/api/files/confirm", {
-          method: "POST",
+        const confirmResponse = await fetch('/api/files/confirm', {
+          method: 'POST',
           headers: getAuthHeaders(),
-          credentials: "include",
+          credentials: 'include',
           body: JSON.stringify({
             fileId: uploadUrlData.fileId,
             userId, // Include userId for dev mode authentication
@@ -170,7 +170,7 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
         }
 
         const confirmData: ConfirmUploadResponse = await confirmResponse.json();
-        console.log("[usePresignedUpload] Upload confirmed:", confirmData);
+        console.log('[usePresignedUpload] Upload confirmed:', confirmData);
 
         // Return immediately - chat worker will wait for file processing
         const completedFile: UploadedFile = {
@@ -187,8 +187,8 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
 
         return completedFile;
       } catch (error) {
-        console.error("[usePresignedUpload] Upload failed:", error);
-        const errorMessage = error instanceof Error ? error.message : "Upload failed";
+        console.error('[usePresignedUpload] Upload failed:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Upload failed';
         setUploadError(errorMessage);
 
         // Update file status to error if we have a fileId
@@ -196,7 +196,7 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
           setUploadedFiles((prev) =>
             prev.map((f) =>
               f.fileId === pendingFile.fileId
-                ? { ...f, status: "error" as const, error: errorMessage }
+                ? { ...f, status: 'error' as const, error: errorMessage }
                 : f,
             ),
           );
@@ -233,13 +233,13 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
         console.log(`[usePresignedUpload] Getting presigned URLs...`);
 
         const getPresignedUrl = async (file: File) => {
-          const response = await fetch("/api/files/upload-url", {
-            method: "POST",
+          const response = await fetch('/api/files/upload-url', {
+            method: 'POST',
             headers: getAuthHeaders(),
-            credentials: "include",
+            credentials: 'include',
             body: JSON.stringify({
               filename: file.name,
-              contentType: file.type || "application/octet-stream",
+              contentType: file.type || 'application/octet-stream',
               size: file.size,
               conversationId,
               userId,
@@ -258,7 +258,7 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
             fileId: urlData.fileId,
             filename: file.name,
             size: file.size,
-            status: "pending",
+            status: 'pending',
           };
           setUploadedFiles((prev) => [...prev, pendingFile]);
 
@@ -284,13 +284,13 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
           // Update state to uploading
           setUploadedFiles((prev) =>
             prev.map((f) =>
-              f.fileId === urlData.fileId ? { ...f, status: "uploading" as const } : f,
+              f.fileId === urlData.fileId ? { ...f, status: 'uploading' as const } : f,
             ),
           );
 
           const s3Response = await fetch(urlData.uploadUrl, {
-            method: "PUT",
-            headers: { "Content-Type": file.type || "application/octet-stream" },
+            method: 'PUT',
+            headers: { 'Content-Type': file.type || 'application/octet-stream' },
             body: file,
           });
 
@@ -308,10 +308,10 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
         // Step 3: Confirm ALL uploads in parallel
         console.log(`[usePresignedUpload] Confirming uploads...`);
         const confirmPromises = s3Results.map(async ({ file, urlData }) => {
-          const confirmResponse = await fetch("/api/files/confirm", {
-            method: "POST",
+          const confirmResponse = await fetch('/api/files/confirm', {
+            method: 'POST',
             headers: getAuthHeaders(),
-            credentials: "include",
+            credentials: 'include',
             body: JSON.stringify({ fileId: urlData.fileId, userId }),
           });
 
@@ -328,7 +328,7 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
           // Update state to processing
           setUploadedFiles((prev) =>
             prev.map((f) =>
-              f.fileId === urlData.fileId ? { ...f, status: "processing" as const } : f,
+              f.fileId === urlData.fileId ? { ...f, status: 'processing' as const } : f,
             ),
           );
 
@@ -367,8 +367,8 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
         setIsUploading(false);
         return results;
       } catch (error) {
-        console.error("[usePresignedUpload] Upload failed:", error);
-        setUploadError(error instanceof Error ? error.message : "Upload failed");
+        console.error('[usePresignedUpload] Upload failed:', error);
+        setUploadError(error instanceof Error ? error.message : 'Upload failed');
         setIsUploading(false);
         return [];
       }
@@ -383,9 +383,9 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
     async (fileId: string): Promise<UploadedFile | null> => {
       try {
         const response = await fetch(`/api/files/${fileId}/status`, {
-          method: "GET",
+          method: 'GET',
           headers: getAuthHeaders(),
-          credentials: "include",
+          credentials: 'include',
         });
 
         if (!response.ok) {
@@ -412,7 +412,7 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
 
         return fileStatus;
       } catch (error) {
-        console.error("[usePresignedUpload] Status poll failed:", error);
+        console.error('[usePresignedUpload] Status poll failed:', error);
         return null;
       }
     },

@@ -4,24 +4,24 @@
  */
 
 export type AgentCategory =
-  | "product-strategy"
-  | "development"
-  | "design-ux"
-  | "quality-testing"
-  | "operations"
-  | "business-analytics"
-  | "ai-innovation"
-  | "pnkln-stack";
+  | 'product-strategy'
+  | 'development'
+  | 'design-ux'
+  | 'quality-testing'
+  | 'operations'
+  | 'business-analytics'
+  | 'ai-innovation'
+  | 'pnkln-stack';
 
 export type AgentCapability =
-  | "analysis"
-  | "implementation"
-  | "optimization"
-  | "testing"
-  | "monitoring"
-  | "automation"
-  | "design"
-  | "strategy";
+  | 'analysis'
+  | 'implementation'
+  | 'optimization'
+  | 'testing'
+  | 'monitoring'
+  | 'automation'
+  | 'design'
+  | 'strategy';
 
 export interface AgentMetadata {
   id: string;
@@ -31,7 +31,7 @@ export interface AgentMetadata {
   tagline: string;
   capabilities: AgentCapability[];
   tags: string[];
-  difficulty: "beginner" | "intermediate" | "advanced" | "expert";
+  difficulty: 'beginner' | 'intermediate' | 'advanced' | 'expert';
   estimatedTime?: string;
   dependencies?: string[];
 }

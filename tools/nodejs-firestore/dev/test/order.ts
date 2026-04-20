@@ -12,22 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {describe, it, beforeEach, afterEach} from 'mocha';
-import {expect} from 'chai';
+import { expect } from 'chai';
+import { afterEach, beforeEach, describe, it } from 'mocha';
 
-import {google} from '../protos/firestore_v1_proto_api';
-
+import { google } from '../protos/firestore_v1_proto_api';
 import {
-  Firestore,
+  DocumentReference,
+  type Firestore,
+  GeoPoint,
   QueryDocumentSnapshot,
   setLogFunction,
   Timestamp,
 } from '../src';
-import {GeoPoint} from '../src';
-import {DocumentReference} from '../src';
 import * as order from '../src/order';
-import {QualifiedResourcePath} from '../src/path';
-import {createInstance, InvalidApiUsage, verifyInstance} from './util/helpers';
+import { QualifiedResourcePath } from '../src/path';
+import { createInstance, type InvalidApiUsage, verifyInstance } from './util/helpers';
 
 import api = google.firestore.v1;
 
@@ -56,10 +55,7 @@ describe('Order', () => {
 
   function resource(pathString: string): api.IValue {
     return wrap(
-      new DocumentReference(
-        firestore,
-        QualifiedResourcePath.fromSlashSeparatedString(pathString),
-      ),
+      new DocumentReference(firestore, QualifiedResourcePath.fromSlashSeparatedString(pathString)),
     );
   }
 
@@ -82,8 +78,8 @@ describe('Order', () => {
   it('throws on invalid value', () => {
     expect(() => {
       order.compare(
-        {valueType: 'foo'} as InvalidApiUsage,
-        {valueType: 'foo'} as InvalidApiUsage,
+        { valueType: 'foo' } as InvalidApiUsage,
+        { valueType: 'foo' } as InvalidApiUsage,
       );
     }).to.throw('Unexpected value type: foo');
   });
@@ -135,12 +131,7 @@ describe('Order', () => {
 
     docs.sort(firestore.collection('col').comparator());
 
-    expect(docs.map(doc => doc.id)).to.deep.eq([
-      'doc1',
-      'doc2',
-      'doc2',
-      'doc3',
-    ]);
+    expect(docs.map((doc) => doc.id)).to.deep.eq(['doc1', 'doc2', 'doc2', 'doc3']);
   });
 
   it('is correct', () => {
@@ -230,11 +221,11 @@ describe('Order', () => {
       [wrap(['foo', '0'])],
 
       // objects
-      [wrap({bar: 0})],
-      [wrap({bar: 0, foo: 1})],
-      [wrap({foo: 1})],
-      [wrap({foo: 2})],
-      [wrap({foo: '0'})],
+      [wrap({ bar: 0 })],
+      [wrap({ bar: 0, foo: 1 })],
+      [wrap({ foo: 1 })],
+      [wrap({ foo: 2 })],
+      [wrap({ foo: '0' })],
     ];
 
     for (let i = 0; i < groups.length; i++) {
@@ -311,15 +302,10 @@ class StringGenerator {
 
   constructor(seed: number);
   constructor(rnd: Random, surrogatePairProbability: number, maxLength: number);
-  constructor(
-    seedOrRnd: number | Random,
-    surrogatePairProbability?: number,
-    maxLength?: number,
-  ) {
+  constructor(seedOrRnd: number | Random, surrogatePairProbability?: number, maxLength?: number) {
     if (typeof seedOrRnd === 'number') {
       this.rnd = new Random(seedOrRnd);
-      this.surrogatePairProbability =
-        StringGenerator.DEFAULT_SURROGATE_PAIR_PROBABILITY;
+      this.surrogatePairProbability = StringGenerator.DEFAULT_SURROGATE_PAIR_PROBABILITY;
       this.maxLength = StringGenerator.DEFAULT_MAX_LENGTH;
     } else {
       this.rnd = seedOrRnd;
@@ -394,14 +380,8 @@ class StringGenerator {
     const lowSurrogateMin = 0xdc00;
     const lowSurrogateMax = 0xdfff;
 
-    const highSurrogate = this.nextCodePointRange(
-      highSurrogateMin,
-      highSurrogateMax,
-    );
-    const lowSurrogate = this.nextCodePointRange(
-      lowSurrogateMin,
-      lowSurrogateMax,
-    );
+    const highSurrogate = this.nextCodePointRange(highSurrogateMin, highSurrogateMax);
+    const lowSurrogate = this.nextCodePointRange(lowSurrogateMin, lowSurrogateMax);
 
     return (highSurrogate - 0xd800) * 0x400 + (lowSurrogate - 0xdc00) + 0x10000;
   }
@@ -472,7 +452,7 @@ describe('CompareUtf8Strings', () => {
     const stringPairGenerator = new StringPairGenerator(stringGenerator);
 
     for (let i = 0; i < 1000000 && errors.length < 10; i++) {
-      const {s1, s2} = stringPairGenerator.next();
+      const { s1, s2 } = stringPairGenerator.next();
 
       const actual = order.compareUtf8Strings(s1, s2);
       const expected = Buffer.from(s1, 'utf8').compare(Buffer.from(s2, 'utf8'));
@@ -491,9 +471,7 @@ describe('CompareUtf8Strings', () => {
       console.error(
         `${errors.length} test cases failed, ${passCount} test cases passed, seed=${seed};`,
       );
-      errors.forEach((error, index) =>
-        console.error(`errors[${index}]: ${error}`),
-      );
+      errors.forEach((error, index) => console.error(`errors[${index}]: ${error}`));
       throw new Error('Test failed');
     }
   }).timeout(30000);

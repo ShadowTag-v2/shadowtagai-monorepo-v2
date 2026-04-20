@@ -11,7 +11,7 @@ import {
   activatePreviousItem,
   getActiveItem,
   getFirstActivatableItem,
-  ListItem,
+  type ListItem,
 } from './list-navigation-helpers.js';
 
 // TODO: move this file to List and make List use this
@@ -129,7 +129,7 @@ export class ListController<Item extends ListItem> {
       }
 
       // If the item exposes an `item` property check if it is a list item.
-      const subItem = (itemOrParent as HTMLElement & {item?: Item}).item;
+      const subItem = (itemOrParent as HTMLElement & { item?: Item }).item;
       if (subItem && this.isItem(subItem)) {
         items.push(subItem);
       }
@@ -160,12 +160,8 @@ export class ListController<Item extends ListItem> {
     event.preventDefault();
 
     const isRtl = this.isRtl();
-    const inlinePrevious = isRtl
-      ? NavigableKeys.ArrowRight
-      : NavigableKeys.ArrowLeft;
-    const inlineNext = isRtl
-      ? NavigableKeys.ArrowLeft
-      : NavigableKeys.ArrowRight;
+    const inlinePrevious = isRtl ? NavigableKeys.ArrowRight : NavigableKeys.ArrowLeft;
+    const inlineNext = isRtl ? NavigableKeys.ArrowLeft : NavigableKeys.ArrowRight;
 
     let nextActiveItem: Item | null = null;
     switch (key) {
@@ -205,11 +201,7 @@ export class ListController<Item extends ListItem> {
         break;
     }
 
-    if (
-      nextActiveItem &&
-      activeItemRecord &&
-      activeItemRecord.item !== nextActiveItem
-    ) {
+    if (nextActiveItem && activeItemRecord && activeItemRecord.item !== nextActiveItem) {
       // If a new item was activated, remove the tabindex of the previous
       // activated item.
       activeItemRecord.item.tabIndex = -1;
@@ -228,12 +220,7 @@ export class ListController<Item extends ListItem> {
     if (activeItemRecord) {
       activeItemRecord.item.tabIndex = -1;
     }
-    return activateNextItem(
-      items,
-      activeItemRecord,
-      this.isActivatable,
-      this.wrapNavigation(),
-    );
+    return activateNextItem(items, activeItemRecord, this.isActivatable, this.wrapNavigation());
   }
 
   /**
@@ -248,12 +235,7 @@ export class ListController<Item extends ListItem> {
     if (activeItemRecord) {
       activeItemRecord.item.tabIndex = -1;
     }
-    return activatePreviousItem(
-      items,
-      activeItemRecord,
-      this.isActivatable,
-      this.wrapNavigation(),
-    );
+    return activatePreviousItem(items, activeItemRecord, this.isActivatable, this.wrapNavigation());
   }
 
   /**
@@ -303,10 +285,7 @@ export class ListController<Item extends ListItem> {
       return;
     }
 
-    const firstActivatableItem = getFirstActivatableItem(
-      items,
-      this.isActivatable,
-    );
+    const firstActivatableItem = getFirstActivatableItem(items, this.isActivatable);
 
     if (!firstActivatableItem) {
       return;

@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_saml_signin_redirect_result_modular]
-import { getAuth, getRedirectResult, SAMLAuthProvider } from "firebase/auth";
+import { getAuth, getRedirectResult, SAMLAuthProvider } from 'firebase/auth';
 
 const auth = getAuth();
 getRedirectResult(auth)

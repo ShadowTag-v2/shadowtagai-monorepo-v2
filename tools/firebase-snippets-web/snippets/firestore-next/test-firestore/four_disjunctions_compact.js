@@ -5,9 +5,8 @@
 // 'npm run snippets'.
 
 // [START four_disjunctions_compact_modular]
-query(collectionRef,
-  and( or( where("a", "==", 1), where("b", "==", 2) ),
-       or( where("c", "==", 3), where("d", "==", 4) )
-  )
+query(
+  collectionRef,
+  and(or(where('a', '==', 1), where('b', '==', 2)), or(where('c', '==', 3), where('d', '==', 4))),
 );
 // [END four_disjunctions_compact_modular]

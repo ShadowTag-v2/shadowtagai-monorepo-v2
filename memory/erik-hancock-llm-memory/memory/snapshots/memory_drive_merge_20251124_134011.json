@@ -4,11 +4,7 @@
   "shadowtagai_architecture": {
     "judge_6": {
       "description": "Gemini + PyTorch + Rules engine with 98% coverage",
-      "components": [
-        "Gemini Flash 2.0",
-        "PyTorch",
-        "Rules Engine"
-      ],
+      "components": ["Gemini Flash 2.0", "PyTorch", "Rules Engine"],
       "sla": {
         "coverage": 0.98,
         "p99_latency": "\u226490ms"
@@ -20,10 +16,7 @@
     },
     "cor_ns": {
       "description": "Unified execution brain + service mesh",
-      "components": [
-        "Execution Engine",
-        "Service Mesh"
-      ]
+      "components": ["Execution Engine", "Service Mesh"]
     }
   },
   "llm_allocation": {
@@ -47,22 +40,9 @@
   "tech_stack": {
     "extraction": "0xSero scripts (Python stdlib, sqlite3)",
     "metadata": "Gemini Flash 2.0 ($0.075/1M input)",
-    "orchestration": [
-      "Grok",
-      "Sonnet 4.5",
-      "Gemini",
-      "GPT-5",
-      "Perplexity"
-    ],
-    "storage": [
-      "GitHub",
-      "GCS"
-    ],
-    "deployment": [
-      "MacBook",
-      "Vertex AI Workbench",
-      "GKE Native"
-    ]
+    "orchestration": ["Grok", "Sonnet 4.5", "Gemini", "GPT-5", "Perplexity"],
+    "storage": ["GitHub", "GCS"],
+    "deployment": ["MacBook", "Vertex AI Workbench", "GKE Native"]
   },
   "cost_economics": {
     "initial_extraction": "$0.45 one-time",
@@ -247,11 +227,7 @@
         "text_length": 7579
       },
       "embedding": null,
-      "tags": [
-        "code",
-        "shadowtagai",
-        "python"
-      ],
+      "tags": ["code", "shadowtagai", "python"],
       "indexed_at": "2025-11-19T18:26:14.909693"
     },
     {
@@ -280,9 +256,7 @@
         "text_length": 2000
       },
       "embedding": null,
-      "tags": [
-        "judge"
-      ],
+      "tags": ["judge"],
       "indexed_at": "2025-11-24T13:24:43.760191"
     }
   ]

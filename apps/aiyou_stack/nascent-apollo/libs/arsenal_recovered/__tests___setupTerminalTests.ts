@@ -1,13 +1,13 @@
 // setupTerminalTests.ts
-import { execSync } from "child_process";
+import { execSync } from 'child_process';
 
 /**
  * Check if PowerShell Core (pwsh) is available on the system
  */
 function isPowerShellCoreAvailable() {
   try {
-    execSync("pwsh -Command \"Write-Host 'PowerShell Core is available'\"", {
-      stdio: "pipe",
+    execSync('pwsh -Command "Write-Host \'PowerShell Core is available\'"', {
+      stdio: 'pipe',
     });
     return true;
   } catch (error) {
@@ -44,7 +44,7 @@ declare global {
 if (hasPwsh) {
   // If PowerShell is available, we could set an environment variable
   // that Jest can use to determine which tests to run
-  process.env.PWSH_AVAILABLE = "true";
+  process.env.PWSH_AVAILABLE = 'true';
 
   // Note: Directly modifying Jest config at runtime is challenging
   // It's better to use environment variables and check them in your test files

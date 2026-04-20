@@ -4,8 +4,8 @@
  * Demonstrates integration testing patterns across multiple components
  */
 
-import { describe, it, expect, beforeEach } from '@jest/globals';
-import { Calculator, add, multiply } from '../../src/example';
+import { beforeEach, describe, expect, it } from '@jest/globals';
+import { add, Calculator, multiply } from '../../src/example';
 
 describe('Calculator Integration Tests', () => {
   let calculator: Calculator;
@@ -17,9 +17,9 @@ describe('Calculator Integration Tests', () => {
   describe('Complex Calculations', () => {
     it('should handle chained operations', () => {
       // Perform multiple operations
-      calculator.add(10, 5);        // 15
-      calculator.subtract(20, 8);   // 12
-      calculator.add(3, 7);         // 10
+      calculator.add(10, 5); // 15
+      calculator.subtract(20, 8); // 12
+      calculator.add(3, 7); // 10
 
       const history = calculator.getHistory();
 
@@ -34,7 +34,7 @@ describe('Calculator Integration Tests', () => {
       const sum = add(5, 3);
       const product = multiply(2, 4);
 
-      calculator.add(sum, product);  // 8 + 8 = 16
+      calculator.add(sum, product); // 8 + 8 = 16
 
       expect(calculator.getHistory()).toContain(16);
     });
@@ -79,8 +79,8 @@ describe('Calculator Integration Tests', () => {
 
     it('should handle data dependencies', () => {
       // Each operation depends on previous results
-      const step1 = calculator.add(10, 20);      // 30
-      const step2 = calculator.add(step1, 10);   // 40
+      const step1 = calculator.add(10, 20); // 30
+      const step2 = calculator.add(step1, 10); // 40
       const step3 = calculator.subtract(step2, 15); // 25
 
       expect(step1).toBe(30);

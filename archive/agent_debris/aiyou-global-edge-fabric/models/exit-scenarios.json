@@ -19,7 +19,7 @@
       "valuation": {
         "methodology": "EBITDA multiple + synergies",
         "base_multiple": 10,
-        "synergy_capture": 0.50,
+        "synergy_capture": 0.5,
         "base_valuation": 28627480000,
         "synergy_value": 4000000000,
         "total_offer": 32627480000,
@@ -71,7 +71,7 @@
         "base_valuation": 37788297600,
         "strategic_premium": 1500000000,
         "total_offer": 39288297600,
-        "likelihood": 0.30
+        "likelihood": 0.3
       }
     },
 
@@ -96,7 +96,7 @@
         "base_valuation": 40937296400,
         "synergy_value": 2150000000,
         "total_offer": 43087296400,
-        "likelihood": 0.20
+        "likelihood": 0.2
       }
     },
 
@@ -141,7 +141,7 @@
         "equity_multiple_target": 3.0,
         "base_valuation": 20039236000,
         "total_offer": 20039236000,
-        "likelihood": 0.10
+        "likelihood": 0.1
       }
     }
   },
@@ -157,7 +157,7 @@
       "methodology": "Public market comps (Cloudflare, Datadog, Snowflake)",
       "base_multiple_range": [10, 15],
       "median_multiple": 12,
-      "ipo_discount": 0.90,
+      "ipo_discount": 0.9,
       "base_valuation": 34353297600,
       "post_ipo_valuation": 30917967840,
       "likelihood": 0.35
@@ -186,21 +186,31 @@
   "weighted_exit_value": {
     "methodology": "Probability-weighted average across scenarios",
     "scenarios": [
-      {"buyer": "SpaceX/Starlink", "value": 32627480000, "probability": 0.35, "weighted": 11419618000},
-      {"buyer": "Lockheed/Northrop", "value": 29482220800, "probability": 0.25, "weighted": 7370555200},
-      {"buyer": "Google/AWS", "value": 39288297600, "probability": 0.30, "weighted": 11786489280},
-      {"buyer": "Meta", "value": 43087296400, "probability": 0.20, "weighted": 8617459280},
-      {"buyer": "Apple", "value": 56529464000, "probability": 0.15, "weighted": 8479419600},
-      {"buyer": "IPO", "value": 30917967840, "probability": 0.35, "weighted": 10821288744},
-      {"buyer": "PE", "value": 20039236000, "probability": 0.10, "weighted": 2003923600},
-      {"buyer": "Sovereign", "value": 21500000000, "probability": 0.05, "weighted": 1075000000}
+      {
+        "buyer": "SpaceX/Starlink",
+        "value": 32627480000,
+        "probability": 0.35,
+        "weighted": 11419618000
+      },
+      {
+        "buyer": "Lockheed/Northrop",
+        "value": 29482220800,
+        "probability": 0.25,
+        "weighted": 7370555200
+      },
+      { "buyer": "Google/AWS", "value": 39288297600, "probability": 0.3, "weighted": 11786489280 },
+      { "buyer": "Meta", "value": 43087296400, "probability": 0.2, "weighted": 8617459280 },
+      { "buyer": "Apple", "value": 56529464000, "probability": 0.15, "weighted": 8479419600 },
+      { "buyer": "IPO", "value": 30917967840, "probability": 0.35, "weighted": 10821288744 },
+      { "buyer": "PE", "value": 20039236000, "probability": 0.1, "weighted": 2003923600 },
+      { "buyer": "Sovereign", "value": 21500000000, "probability": 0.05, "weighted": 1075000000 }
     ],
     "total_weighted_value": 61573753704,
     "normalized_weighted_value": 29073753704
   },
 
   "founder_wealth": {
-    "equity_retention_post_dilution": 0.60,
+    "equity_retention_post_dilution": 0.6,
 
     "scenarios": {
       "spacex": {
@@ -282,7 +292,7 @@
     "regulatory_risk": {
       "description": "FAA/DoD certification delays or denials",
       "mitigation": "Modular certification strategy + early DER engagement",
-      "probability": 0.20
+      "probability": 0.2
     },
     "competition_risk": {
       "description": "AWS/Google build competing edge mesh",
@@ -292,7 +302,7 @@
     "execution_risk": {
       "description": "Miss Phase 3 deployment targets (100K poles)",
       "mitigation": "Phased rollout + partnerships with telcos/utilities",
-      "probability": 0.30
+      "probability": 0.3
     }
   }
 }

@@ -1,8 +1,16 @@
-import { Search, Settings, HelpCircle, Sparkles, Github, Star, ChevronDown } from '@/lib/lucide-icons';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ChevronDown,
+  Github,
+  HelpCircle,
+  Search,
+  Settings,
+  Sparkles,
+  Star,
+} from '@/lib/lucide-icons';
+import type { GraphNode } from '../core/graph/types';
 import { useAppState } from '../hooks/useAppState';
 import type { RepoSummary } from '../services/server-connection';
-import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
-import { GraphNode } from '../core/graph/types';
 import { EmbeddingStatus } from './EmbeddingStatus';
 
 // Color mapping for node types in search results
@@ -32,7 +40,7 @@ export const Header = ({ onFocusNode, availableRepos = [], onSwitchRepo }: Heade
     isRightPanelOpen,
     rightPanelTab,
     setSettingsPanelOpen,
-    setHelpDialogBoxOpen
+    setHelpDialogBoxOpen,
   } = useAppState();
   const [isRepoDropdownOpen, setIsRepoDropdownOpen] = useState(false);
   const repoDropdownRef = useRef<HTMLDivElement>(null);
@@ -51,7 +59,7 @@ export const Header = ({ onFocusNode, availableRepos = [], onSwitchRepo }: Heade
 
     const query = searchQuery.toLowerCase();
     return graph.nodes
-      .filter(node => node.properties.name.toLowerCase().includes(query))
+      .filter((node) => node.properties.name.toLowerCase().includes(query))
       .slice(0, 10); // Limit to 10 results
   }, [graph, searchQuery]);
 
@@ -92,10 +100,10 @@ export const Header = ({ onFocusNode, availableRepos = [], onSwitchRepo }: Heade
 
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      setSelectedIndex(i => Math.min(i + 1, searchResults.length - 1));
+      setSelectedIndex((i) => Math.min(i + 1, searchResults.length - 1));
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setSelectedIndex(i => Math.max(i - 1, 0));
+      setSelectedIndex((i) => Math.max(i - 1, 0));
     } else if (e.key === 'Enter') {
       e.preventDefault();
       const selected = searchResults[selectedIndex];
@@ -129,13 +137,15 @@ export const Header = ({ onFocusNode, availableRepos = [], onSwitchRepo }: Heade
         {projectName && (
           <div className="relative" ref={repoDropdownRef}>
             <button
-              onClick={() => availableRepos.length >= 2 && setIsRepoDropdownOpen(prev => !prev)}
+              onClick={() => availableRepos.length >= 2 && setIsRepoDropdownOpen((prev) => !prev)}
               className={`flex items-center gap-2 px-3 py-1.5 bg-surface border border-border-subtle rounded-lg text-sm text-text-secondary transition-colors ${availableRepos.length >= 2 ? 'hover:bg-hover cursor-pointer' : ''}`}
             >
               <span className="w-1.5 h-1.5 bg-node-function rounded-full animate-pulse" />
               <span className="truncate max-w-[200px]">{projectName}</span>
               {availableRepos.length >= 2 && (
-                <ChevronDown className={`w-3.5 h-3.5 text-text-muted transition-transform ${isRepoDropdownOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown
+                  className={`w-3.5 h-3.5 text-text-muted transition-transform ${isRepoDropdownOpen ? 'rotate-180' : ''}`}
+                />
               )}
             </button>
 
@@ -155,9 +165,13 @@ export const Header = ({ onFocusNode, availableRepos = [], onSwitchRepo }: Heade
                       }}
                       className={`w-full px-4 py-3 flex items-center gap-3 text-left transition-colors ${isCurrent ? 'bg-accent/10 border-l-2 border-accent' : 'hover:bg-hover border-l-2 border-transparent'}`}
                     >
-                      <span className={`w-2 h-2 rounded-full flex-shrink-0 ${isCurrent ? 'bg-node-function animate-pulse' : 'bg-text-muted'}`} />
+                      <span
+                        className={`w-2 h-2 rounded-full flex-shrink-0 ${isCurrent ? 'bg-node-function animate-pulse' : 'bg-text-muted'}`}
+                      />
                       <div className="flex-1 min-w-0">
-                        <div className={`text-sm font-medium truncate ${isCurrent ? 'text-accent' : 'text-text-primary'}`}>
+                        <div
+                          className={`text-sm font-medium truncate ${isCurrent ? 'text-accent' : 'text-text-primary'}`}
+                        >
                           {repo.name}
                         </div>
                         <div className="text-xs text-text-muted mt-0.5">
@@ -209,10 +223,11 @@ export const Header = ({ onFocusNode, availableRepos = [], onSwitchRepo }: Heade
                   <button
                     key={node.id}
                     onClick={() => handleSelectNode(node)}
-                    className={`w-full px-4 py-2.5 flex items-center gap-3 text-left transition-colors ${index === selectedIndex
-                      ? 'bg-accent/20 text-text-primary'
-                      : 'hover:bg-hover text-text-secondary'
-                      }`}
+                    className={`w-full px-4 py-2.5 flex items-center gap-3 text-left transition-colors ${
+                      index === selectedIndex
+                        ? 'bg-accent/20 text-text-primary'
+                        : 'hover:bg-hover text-text-secondary'
+                    }`}
                   >
                     {/* Node type indicator */}
                     <span
@@ -272,7 +287,8 @@ export const Header = ({ onFocusNode, availableRepos = [], onSwitchRepo }: Heade
         <button
           title="Help"
           onClick={() => setHelpDialogBoxOpen(true)}
-          className="w-9 h-9 flex items-center justify-center rounded-md text-text-secondary hover:bg-hover hover:text-text-primary transition-colors">
+          className="w-9 h-9 flex items-center justify-center rounded-md text-text-secondary hover:bg-hover hover:text-text-primary transition-colors"
+        >
           <HelpCircle className="w-4.5 h-4.5" />
         </button>
 
@@ -281,9 +297,10 @@ export const Header = ({ onFocusNode, availableRepos = [], onSwitchRepo }: Heade
           onClick={openChatPanel}
           className={`
             flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-all
-            ${isRightPanelOpen && rightPanelTab === 'chat'
-              ? 'bg-accent text-white shadow-glow'
-              : 'bg-gradient-to-r from-accent to-accent-dim text-white shadow-glow hover:shadow-lg hover:-translate-y-0.5'
+            ${
+              isRightPanelOpen && rightPanelTab === 'chat'
+                ? 'bg-accent text-white shadow-glow'
+                : 'bg-gradient-to-r from-accent to-accent-dim text-white shadow-glow hover:shadow-lg hover:-translate-y-0.5'
             }
           `}
         >

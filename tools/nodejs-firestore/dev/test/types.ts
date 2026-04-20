@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
-  QueryDocumentSnapshot,
-  DocumentReference,
-  WithFieldValue,
+import type {
   DocumentData,
-  PartialWithFieldValue,
+  DocumentReference,
+  Firestore,
   FirestoreDataConverter,
+  PartialWithFieldValue,
+  QueryDocumentSnapshot,
   SetOptions,
   UpdateData,
-  Firestore,
+  WithFieldValue,
 } from '@google-cloud/firestore';
-import {expect} from 'chai';
+import { expect } from 'chai';
 
 describe('FirestoreTypeConverter', () => {
   it('converter has the minimal typing information', () => {
@@ -33,7 +33,7 @@ describe('FirestoreTypeConverter', () => {
     }
     const converter = {
       toFirestore(obj: MyModelType) {
-        return {a: obj.stringProperty, b: obj.numberProperty};
+        return { a: obj.stringProperty, b: obj.numberProperty };
       },
       fromFirestore(snapshot: QueryDocumentSnapshot) {
         return {
@@ -42,10 +42,10 @@ describe('FirestoreTypeConverter', () => {
         };
       },
     };
-    neverCall<Promise<MyModelType>>(async docRef => {
+    neverCall<Promise<MyModelType>>(async (docRef) => {
       const newDocRef = docRef.withConverter(converter);
-      await newDocRef.set({stringProperty: 'foo', numberProperty: 42});
-      await newDocRef.update({a: 'newFoo', b: 43});
+      await newDocRef.set({ stringProperty: 'foo', numberProperty: 42 });
+      await newDocRef.update({ a: 'newFoo', b: 43 });
       const snapshot = await newDocRef.get();
       return snapshot.data()!;
     });
@@ -58,7 +58,7 @@ describe('FirestoreTypeConverter', () => {
     }
     const converter = {
       toFirestore(obj: WithFieldValue<MyModelType>): DocumentData {
-        return {a: obj.stringProperty, b: obj.numberProperty};
+        return { a: obj.stringProperty, b: obj.numberProperty };
       },
       fromFirestore(snapshot: QueryDocumentSnapshot): MyModelType {
         return {
@@ -67,10 +67,10 @@ describe('FirestoreTypeConverter', () => {
         };
       },
     };
-    neverCall<Promise<MyModelType>>(async docRef => {
+    neverCall<Promise<MyModelType>>(async (docRef) => {
       const newDocRef = docRef.withConverter(converter);
-      await newDocRef.set({stringProperty: 'foo', numberProperty: 42});
-      await newDocRef.update({a: 'newFoo', b: 43});
+      await newDocRef.set({ stringProperty: 'foo', numberProperty: 42 });
+      await newDocRef.update({ a: 'newFoo', b: 43 });
       const snapshot = await newDocRef.get();
       return snapshot.data()!;
     });
@@ -108,10 +108,10 @@ describe('FirestoreTypeConverter', () => {
         };
       },
     };
-    neverCall<Promise<MyModelType>>(async docRef => {
+    neverCall<Promise<MyModelType>>(async (docRef) => {
       const newDocRef = docRef.withConverter(converter);
-      await newDocRef.set({stringProperty: 'foo', numberProperty: 42});
-      await newDocRef.update({a: 'newFoo', b: 43});
+      await newDocRef.set({ stringProperty: 'foo', numberProperty: 42 });
+      await newDocRef.update({ a: 'newFoo', b: 43 });
       const snapshot = await newDocRef.get();
       return snapshot.data()!;
     });
@@ -124,7 +124,7 @@ describe('FirestoreTypeConverter', () => {
     }
     const converter: FirestoreDataConverter<MyModelType> = {
       toFirestore(obj: WithFieldValue<MyModelType>) {
-        return {a: obj.stringProperty, b: obj.numberProperty};
+        return { a: obj.stringProperty, b: obj.numberProperty };
       },
       fromFirestore(snapshot: QueryDocumentSnapshot) {
         return {
@@ -133,10 +133,10 @@ describe('FirestoreTypeConverter', () => {
         };
       },
     };
-    neverCall<Promise<MyModelType>>(async docRef => {
+    neverCall<Promise<MyModelType>>(async (docRef) => {
       const newDocRef = docRef.withConverter(converter);
-      await newDocRef.set({stringProperty: 'foo', numberProperty: 42});
-      await newDocRef.update({a: 'newFoo', b: 43});
+      await newDocRef.set({ stringProperty: 'foo', numberProperty: 42 });
+      await newDocRef.update({ a: 'newFoo', b: 43 });
       const snapshot = await newDocRef.get();
       return snapshot.data()!;
     });
@@ -153,7 +153,7 @@ describe('FirestoreTypeConverter', () => {
     }
     const converter: FirestoreDataConverter<MyModelType, MyDbType> = {
       toFirestore(obj: WithFieldValue<MyModelType>) {
-        return {a: obj.stringProperty, b: obj.numberProperty};
+        return { a: obj.stringProperty, b: obj.numberProperty };
       },
       fromFirestore(snapshot: QueryDocumentSnapshot) {
         return {
@@ -162,67 +162,67 @@ describe('FirestoreTypeConverter', () => {
         };
       },
     };
-    neverCall<Promise<MyModelType>>(async docRef => {
+    neverCall<Promise<MyModelType>>(async (docRef) => {
       const newDocRef = docRef.withConverter(converter);
-      await newDocRef.set({stringProperty: 'foo', numberProperty: 42});
-      await newDocRef.update({a: 'newFoo', b: 43});
+      await newDocRef.set({ stringProperty: 'foo', numberProperty: 42 });
+      await newDocRef.update({ a: 'newFoo', b: 43 });
       const snapshot = await newDocRef.get();
       return snapshot.data()!;
     });
   });
 
   it('DocumentReference.set() fails to compile if AppModelType argument is missing properties', () =>
-    neverCall(async docRef => {
-      const converter = fakeConverter<{foo: string}, {}>();
+    neverCall(async (docRef) => {
+      const converter = fakeConverter<{ foo: string }, {}>();
       const docRefWithConverter = docRef.withConverter(converter);
       // @ts-expect-error The `foo` property declared in AppModelType is missing.
       await docRefWithConverter.set({});
     }));
 
   it('DocumentReference.set() fails to compile if AppModelType argument contains undeclared properties', () =>
-    neverCall(async docRef => {
-      const converter = fakeConverter<{foo: string}, {bar: number}>();
+    neverCall(async (docRef) => {
+      const converter = fakeConverter<{ foo: string }, { bar: number }>();
       const docRefWithConverter = docRef.withConverter(converter);
       // @ts-expect-error The `bar` property is not declared in AppModelType.
-      await docRefWithConverter.set({foo: 'foo', bar: 42});
+      await docRefWithConverter.set({ foo: 'foo', bar: 42 });
     }));
 
   it('DocumentReference.set() fails to compile if AppModelType argument contains a property with an incorrect type', () =>
-    neverCall(async docRef => {
-      const converter = fakeConverter<{foo: string}, {foo: number}>();
+    neverCall(async (docRef) => {
+      const converter = fakeConverter<{ foo: string }, { foo: number }>();
       const docRefWithConverter = docRef.withConverter(converter);
       // @ts-expect-error The `foo` property is declared as `string` in
       //  AppModelType, but a `number` is specified.
-      await docRefWithConverter.set({foo: 42});
+      await docRefWithConverter.set({ foo: 42 });
     }));
 
   it('DocumentReference.update() successfully compiles even if DbModelType argument is missing properties', () =>
-    neverCall(async docRef => {
-      const converter = fakeConverter<{foo: string}, {bar: number}>();
+    neverCall(async (docRef) => {
+      const converter = fakeConverter<{ foo: string }, { bar: number }>();
       const docRefWithConverter = docRef.withConverter(converter);
       await docRefWithConverter.update({});
     }));
 
   it('DocumentReference.update() fails to compile if DbModelType argument contains undeclared properties', () =>
-    neverCall(async docRef => {
-      const converter = fakeConverter<{foo: string}, {bar: number}>();
+    neverCall(async (docRef) => {
+      const converter = fakeConverter<{ foo: string }, { bar: number }>();
       const docRefWithConverter = docRef.withConverter(converter);
       // @ts-expect-error The `foo` property is not declared in DbModelType.
-      await docRefWithConverter.update({foo: 'foo', bar: 42});
+      await docRefWithConverter.update({ foo: 'foo', bar: 42 });
     }));
 
   it('DocumentReference.update() fails to compile if DbModelType argument contains a property with an incorrect type', () =>
-    neverCall(async docRef => {
-      const converter = fakeConverter<{foo: string}, {foo: number}>();
+    neverCall(async (docRef) => {
+      const converter = fakeConverter<{ foo: string }, { foo: number }>();
       const docRefWithConverter = docRef.withConverter(converter);
       // @ts-expect-error The `foo` property is declared as `number` in
       //  DbModelType, but a `string` is specified.
-      await docRefWithConverter.update({foo: 'foo'});
+      await docRefWithConverter.update({ foo: 'foo' });
     }));
 
   it('DocumentReference.get() returns AppModelType', () =>
-    neverCall<Promise<{foo: string}>>(async docRef => {
-      const converter = fakeConverter<{foo: string}, {bar: number}>();
+    neverCall<Promise<{ foo: string }>>(async (docRef) => {
+      const converter = fakeConverter<{ foo: string }, { bar: number }>();
       const docRefWithConverter = docRef.withConverter(converter);
       const snapshot = await docRefWithConverter.get();
       return snapshot.data()!;
@@ -1059,11 +1059,11 @@ describe('UpdateData type', () => {
 
     it('fixes issues/1745#issuecomment-1804130587', () => {
       type TType = {
-        prop: Record<string, {id: string}>;
+        prop: Record<string, { id: string }>;
       };
       const update: UpdateData<TType> = {};
-      const value: {[key: string]: {id: string}} = {
-        key: {id: ''},
+      const value: { [key: string]: { id: string } } = {
+        key: { id: '' },
       };
 
       update.prop = value;
@@ -1081,13 +1081,13 @@ describe('UpdateData type', () => {
         const goodKey = 'nestedA.test';
         const badKey = 'nestedA.' + 'test';
 
-        void db.runTransaction(async t => {
+        void db.runTransaction(async (t) => {
           t.update(docRef, {
             [goodKey]: 3,
           });
         });
 
-        void db.runTransaction(async t => {
+        void db.runTransaction(async (t) => {
           t.update(docRef, {
             [badKey]: 3,
           });

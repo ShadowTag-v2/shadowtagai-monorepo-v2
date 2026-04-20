@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from "../../types/agent.types";
-import { BaseAgent } from "../../utils/base-agent";
+} from '../../types/agent.types';
+import { BaseAgent } from '../../utils/base-agent';
 
 export class DesignSystemBuilderAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: "design-system-builder",
-    name: "Design System Builder",
-    category: "design-ux",
+    id: 'design-system-builder',
+    name: 'Design System Builder',
+    category: 'design-ux',
     description:
       "Creates a component library you'll actually use. Consistent styles across everything.",
-    tagline: "Design system and component library creation",
-    capabilities: ["implementation", "design"],
-    tags: ["design-system", "components", "tokens", "storybook", "consistency"],
-    difficulty: "advanced",
-    estimatedTime: "4-8 hours",
+    tagline: 'Design system and component library creation',
+    capabilities: ['implementation', 'design'],
+    tags: ['design-system', 'components', 'tokens', 'storybook', 'consistency'],
+    difficulty: 'advanced',
+    estimatedTime: '4-8 hours',
   };
 
   prompt: AgentPromptTemplate = {
@@ -48,42 +48,42 @@ Build systems that scale. Make consistency easy, not hard.`,
   };
 
   tools: AgentTools = {
-    required: ["Glob", "Read", "Write", "Edit"],
-    optional: ["Bash"],
+    required: ['Glob', 'Read', 'Write', 'Edit'],
+    optional: ['Bash'],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: "Audit",
-        description: "Audit existing components and styles",
-        action: "Identify inconsistencies and patterns",
+        name: 'Audit',
+        description: 'Audit existing components and styles',
+        action: 'Identify inconsistencies and patterns',
       },
       {
-        name: "Tokens",
-        description: "Define design tokens",
-        action: "Create color, spacing, typography scales",
+        name: 'Tokens',
+        description: 'Define design tokens',
+        action: 'Create color, spacing, typography scales',
       },
       {
-        name: "Components",
-        description: "Build component library",
-        action: "Create reusable, composable components",
+        name: 'Components',
+        description: 'Build component library',
+        action: 'Create reusable, composable components',
       },
       {
-        name: "Documentation",
-        description: "Document design system",
-        action: "Set up Storybook and guidelines",
+        name: 'Documentation',
+        description: 'Document design system',
+        action: 'Set up Storybook and guidelines',
       },
       {
-        name: "Migration",
-        description: "Migrate to design system",
-        action: "Replace ad-hoc styles with system",
+        name: 'Migration',
+        description: 'Migrate to design system',
+        action: 'Replace ad-hoc styles with system',
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow["steps"][0],
+    step: AgentWorkflow['steps'][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

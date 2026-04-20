@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import { spawn } from 'node:child_process';
-import { existsSync, appendFileSync } from 'node:fs';
+import { appendFileSync, existsSync } from 'node:fs';
+import * as os from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import * as os from 'node:os';
 
 const EXTENSION_DIR = join(os.homedir(), '.gemini/extensions/pickle-rick');
 const HANDLERS_DIR = join(EXTENSION_DIR, 'extension', 'hooks', 'handlers');

@@ -6,10 +6,10 @@
 
 /* Slimmed down version of Lit stories story-renderer without IE renderer */
 
-import {css, LitElement, PropertyValues} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import { css, LitElement, type PropertyValues } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
-import {Story} from '../story.js';
+import type { Story } from '../story.js';
 
 /**
  * Renders a single story inside its own shadow root for style isolation.
@@ -23,7 +23,7 @@ export class StoryRenderer extends LitElement {
       }
     `,
   ];
-  @property({attribute: false}) story?: Story = undefined;
+  @property({ attribute: false }) story?: Story = undefined;
   private storyRenderComplete: Promise<void> | undefined = undefined;
 
   override updated(propertiesChanged: PropertyValues) {

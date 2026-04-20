@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_anon_sign_in_modular]
-import { getAuth, signInAnonymously } from "firebase/auth";
+import { getAuth, signInAnonymously } from 'firebase/auth';
 
 const auth = getAuth();
 signInAnonymously(auth)

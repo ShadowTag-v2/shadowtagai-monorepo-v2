@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Users, Search, Star } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Search, Star, Users } from 'lucide-react';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface Agent {
   id: string;
   name: string;
   level: string;
-  tier: "FREE" | "FLASH" | "PRO";
-  status: "active" | "idle" | "busy";
+  tier: 'FREE' | 'FLASH' | 'PRO';
+  status: 'active' | 'idle' | 'busy';
   tasks_completed: number;
   rating: number;
   specialization: string;
@@ -17,107 +17,107 @@ interface Agent {
 
 const mockAgents: Agent[] = [
   {
-    id: "fm-001",
-    name: "FM-ANALYST-001",
-    level: "L3 Partner",
-    tier: "PRO",
-    status: "busy",
+    id: 'fm-001',
+    name: 'FM-ANALYST-001',
+    level: 'L3 Partner',
+    tier: 'PRO',
+    status: 'busy',
     tasks_completed: 1245,
     rating: 4.9,
-    specialization: "Data Analysis",
+    specialization: 'Data Analysis',
   },
   {
-    id: "fm-002",
-    name: "FM-WRITER-042",
-    level: "L2 Associate",
-    tier: "FLASH",
-    status: "active",
+    id: 'fm-002',
+    name: 'FM-WRITER-042',
+    level: 'L2 Associate',
+    tier: 'FLASH',
+    status: 'active',
     tasks_completed: 892,
     rating: 4.7,
-    specialization: "Content Generation",
+    specialization: 'Content Generation',
   },
   {
-    id: "fm-003",
-    name: "FM-RESEARCH-015",
-    level: "L3 Partner",
-    tier: "PRO",
-    status: "active",
+    id: 'fm-003',
+    name: 'FM-RESEARCH-015',
+    level: 'L3 Partner',
+    tier: 'PRO',
+    status: 'active',
     tasks_completed: 1567,
     rating: 4.8,
-    specialization: "Research",
+    specialization: 'Research',
   },
   {
-    id: "fm-004",
-    name: "FM-CODE-088",
-    level: "L2 Associate",
-    tier: "FLASH",
-    status: "idle",
+    id: 'fm-004',
+    name: 'FM-CODE-088',
+    level: 'L2 Associate',
+    tier: 'FLASH',
+    status: 'idle',
     tasks_completed: 456,
     rating: 4.5,
-    specialization: "Code Review",
+    specialization: 'Code Review',
   },
   {
-    id: "fm-005",
-    name: "FM-QA-033",
-    level: "L1 Paralegal",
-    tier: "FREE",
-    status: "active",
+    id: 'fm-005',
+    name: 'FM-QA-033',
+    level: 'L1 Paralegal',
+    tier: 'FREE',
+    status: 'active',
     tasks_completed: 234,
     rating: 4.3,
-    specialization: "Quality Assurance",
+    specialization: 'Quality Assurance',
   },
   {
-    id: "fm-006",
-    name: "FM-DISPATCH",
-    level: "L4 Senior Partner",
-    tier: "PRO",
-    status: "busy",
+    id: 'fm-006',
+    name: 'FM-DISPATCH',
+    level: 'L4 Senior Partner',
+    tier: 'PRO',
+    status: 'busy',
     tasks_completed: 5678,
     rating: 5.0,
-    specialization: "Task Routing",
+    specialization: 'Task Routing',
   },
   {
-    id: "fm-007",
-    name: "FM-INTEL-007",
-    level: "L3 Partner",
-    tier: "PRO",
-    status: "active",
+    id: 'fm-007',
+    name: 'FM-INTEL-007',
+    level: 'L3 Partner',
+    tier: 'PRO',
+    status: 'active',
     tasks_completed: 2345,
     rating: 4.9,
-    specialization: "Intelligence",
+    specialization: 'Intelligence',
   },
   {
-    id: "fm-008",
-    name: "FM-SUPPORT-121",
-    level: "L1 Paralegal",
-    tier: "FREE",
-    status: "idle",
+    id: 'fm-008',
+    name: 'FM-SUPPORT-121',
+    level: 'L1 Paralegal',
+    tier: 'FREE',
+    status: 'idle',
     tasks_completed: 123,
     rating: 4.1,
-    specialization: "Customer Support",
+    specialization: 'Customer Support',
   },
 ];
 
-function TierBadge({ tier }: { tier: "FREE" | "FLASH" | "PRO" }) {
+function TierBadge({ tier }: { tier: 'FREE' | 'FLASH' | 'PRO' }) {
   const config = {
-    FREE: "bg-slate-100 text-slate-600",
-    FLASH: "bg-amber-100 text-amber-700",
-    PRO: "bg-purple-100 text-purple-700",
+    FREE: 'bg-slate-100 text-slate-600',
+    FLASH: 'bg-amber-100 text-amber-700',
+    PRO: 'bg-purple-100 text-purple-700',
   };
 
   return (
-    <span className={cn("px-2 py-0.5 rounded text-xs font-medium", config[tier])}>{tier}</span>
+    <span className={cn('px-2 py-0.5 rounded text-xs font-medium', config[tier])}>{tier}</span>
   );
 }
 
 function StatusDot({ status }: { status: string }) {
   const colors = {
-    active: "bg-green-500",
-    busy: "bg-amber-500",
-    idle: "bg-slate-300",
+    active: 'bg-green-500',
+    busy: 'bg-amber-500',
+    idle: 'bg-slate-300',
   };
 
-  return <span className={cn("w-2 h-2 rounded-full", colors[status as keyof typeof colors])} />;
+  return <span className={cn('w-2 h-2 rounded-full', colors[status as keyof typeof colors])} />;
 }
 
 function RatingStars({ rating }: { rating: number }) {
@@ -130,7 +130,7 @@ function RatingStars({ rating }: { rating: number }) {
 }
 
 export default function AgentsPage() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [filterTier, setFilterTier] = useState<string | null>(null);
 
   const filteredAgents = mockAgents.filter((agent) => {
@@ -143,9 +143,9 @@ export default function AgentsPage() {
 
   const stats = {
     total: mockAgents.length,
-    active: mockAgents.filter((a) => a.status === "active").length,
-    busy: mockAgents.filter((a) => a.status === "busy").length,
-    idle: mockAgents.filter((a) => a.status === "idle").length,
+    active: mockAgents.filter((a) => a.status === 'active').length,
+    busy: mockAgents.filter((a) => a.status === 'busy').length,
+    idle: mockAgents.filter((a) => a.status === 'idle').length,
   };
 
   return (
@@ -200,15 +200,15 @@ export default function AgentsPage() {
           />
         </div>
         <div className="flex gap-2">
-          {["FREE", "FLASH", "PRO"].map((tier) => (
+          {['FREE', 'FLASH', 'PRO'].map((tier) => (
             <button
               key={tier}
               onClick={() => setFilterTier(filterTier === tier ? null : tier)}
               className={cn(
-                "px-3 py-2 rounded-lg text-sm transition-colors",
+                'px-3 py-2 rounded-lg text-sm transition-colors',
                 filterTier === tier
-                  ? "bg-shadowtag_v4-primary text-white"
-                  : "bg-slate-100 hover:bg-slate-200",
+                  ? 'bg-shadowtag_v4-primary text-white'
+                  : 'bg-slate-100 hover:bg-slate-200',
               )}
             >
               {tier}
@@ -239,7 +239,7 @@ export default function AgentsPage() {
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-shadowtag_v4-primary flex items-center justify-center text-white text-xs font-medium">
-                      {agent.name.split("-")[1]?.slice(0, 2)}
+                      {agent.name.split('-')[1]?.slice(0, 2)}
                     </div>
                     <span className="font-medium">{agent.name}</span>
                   </div>

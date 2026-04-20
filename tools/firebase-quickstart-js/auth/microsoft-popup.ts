@@ -1,8 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import {
-  OAuthProvider,
   connectAuthEmulator,
   getAuth,
+  OAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
   signOut,
@@ -17,18 +17,10 @@ if (window.location.hostname === 'localhost') {
   connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 }
 
-const signInButton = document.getElementById(
-  'quickstart-sign-in',
-)! as HTMLButtonElement;
-const oauthToken = document.getElementById(
-  'quickstart-oauthtoken',
-)! as HTMLDivElement;
-const signInStatus = document.getElementById(
-  'quickstart-sign-in-status',
-)! as HTMLSpanElement;
-const accountDetails = document.getElementById(
-  'quickstart-account-details',
-)! as HTMLDivElement;
+const signInButton = document.getElementById('quickstart-sign-in')! as HTMLButtonElement;
+const oauthToken = document.getElementById('quickstart-oauthtoken')! as HTMLDivElement;
+const signInStatus = document.getElementById('quickstart-sign-in-status')! as HTMLSpanElement;
+const accountDetails = document.getElementById('quickstart-account-details')! as HTMLDivElement;
 
 /**
  * Function called when clicking the Login/Logout button.
@@ -39,7 +31,7 @@ function toggleSignIn() {
 
     provider.addScope('User.Read');
     signInWithPopup(auth, provider)
-      .then(function (result) {
+      .then((result) => {
         const credential = OAuthProvider.credentialFromResult(result);
         // This gives you a Microsoft Access Token. You can use it to access the Microsoft API.
         const token = credential?.accessToken;
@@ -49,7 +41,7 @@ function toggleSignIn() {
         const user = result.user;
         oauthToken.textContent = token ?? '';
       })
-      .catch(function (error) {
+      .catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -58,9 +50,7 @@ function toggleSignIn() {
         // The AuthCredential type that was used.
         const credential = error.credential;
         if (errorCode === 'auth/account-exists-with-different-credential') {
-          alert(
-            'You have already signed up with a different auth provider for that email.',
-          );
+          alert('You have already signed up with a different auth provider for that email.');
           // If you are using multiple auth providers on your app you should handle linking
           // the user's accounts here.
         } else {
@@ -74,7 +64,7 @@ function toggleSignIn() {
 }
 
 // Listening for auth state changes.
-onAuthStateChanged(auth, function (user) {
+onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in. Note that unlike other providers supported by Firebase Auth, Microsoft does
     // not provide a profile photo so user.photoURL will be null. However, it can be queried using

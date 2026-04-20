@@ -7,15 +7,15 @@
 //           github.com/levinunnink/html-form-to-google-sheet
 // ============================================================================
 
-const scriptProp = PropertiesService.getScriptProperties()
+const scriptProp = PropertiesService.getScriptProperties();
 
 /**
  * Run this function ONCE to bind the script to the active spreadsheet.
  * Go to Run > Run Function > initialSetup
  */
 function initialSetup() {
-  const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet()
-  scriptProp.setProperty('key', activeSpreadsheet.getId())
+  const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  scriptProp.setProperty('key', activeSpreadsheet.getId());
 }
 
 /**
@@ -23,64 +23,72 @@ function initialSetup() {
  * Writes form data to the appropriate sheet and sends email notification.
  */
 function doPost(e) {
-  const lock = LockService.getScriptLock()
-  lock.tryLock(10000)
+  const lock = LockService.getScriptLock();
+  lock.tryLock(10000);
 
   try {
-    const doc = SpreadsheetApp.openById(scriptProp.getProperty('key'))
+    const doc = SpreadsheetApp.openById(scriptProp.getProperty('key'));
 
     // Route to correct sheet based on hidden "sheet_name" field
-    const sheetName = e.parameter.sheet_name || 'Sheet1'
-    let sheet = doc.getSheetByName(sheetName)
+    const sheetName = e.parameter.sheet_name || 'Sheet1';
+    let sheet = doc.getSheetByName(sheetName);
 
     // Auto-create the sheet if it doesn't exist
     if (!sheet) {
-      sheet = doc.insertSheet(sheetName)
+      sheet = doc.insertSheet(sheetName);
       // Set default headers
-      const defaultHeaders = ['id', 'timestamp', 'name', 'email', 'firm', 'organization', 'inquiry_type', 'message', 'source']
-      sheet.getRange(1, 1, 1, defaultHeaders.length).setValues([defaultHeaders])
+      const defaultHeaders = [
+        'id',
+        'timestamp',
+        'name',
+        'email',
+        'firm',
+        'organization',
+        'inquiry_type',
+        'message',
+        'source',
+      ];
+      sheet.getRange(1, 1, 1, defaultHeaders.length).setValues([defaultHeaders]);
     }
 
-    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0]
-    const nextRow = sheet.getLastRow() + 1
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    const nextRow = sheet.getLastRow() + 1;
 
-    const newRow = headers.map(function(header) {
-      if (header === 'id') return Utilities.getUuid()
-      if (header === 'timestamp') return new Date().toISOString()
-      return sanitize(e.parameter[header] || '')
-    })
+    const newRow = headers.map((header) => {
+      if (header === 'id') return Utilities.getUuid();
+      if (header === 'timestamp') return new Date().toISOString();
+      return sanitize(e.parameter[header] || '');
+    });
 
-    sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow])
+    sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow]);
 
     // Format as plain text to prevent formula injection
-    sheet.getRange(nextRow, 1, 1, newRow.length).setNumberFormat('@')
+    sheet.getRange(nextRow, 1, 1, newRow.length).setNumberFormat('@');
 
     // ── Email notification ──
-    sendNotification(e.parameter, sheetName, nextRow)
+    sendNotification(e.parameter, sheetName, nextRow);
 
     // ── Auto-reply to submitter ──
-    sendAutoReply(e.parameter, sheetName)
+    sendAutoReply(e.parameter, sheetName);
 
-    return ContentService
-      .createTextOutput(JSON.stringify({
-        'result': 'success',
-        'row': nextRow
-      }))
-      .setMimeType(ContentService.MimeType.JSON)
-
+    return ContentService.createTextOutput(
+      JSON.stringify({
+        result: 'success',
+        row: nextRow,
+      }),
+    ).setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     // Send error notification
-    sendErrorNotification(err, sheetName)
+    sendErrorNotification(err, sheetName);
 
-    return ContentService
-      .createTextOutput(JSON.stringify({
-        'result': 'error',
-        'error': err.toString()
-      }))
-      .setMimeType(ContentService.MimeType.JSON)
-
+    return ContentService.createTextOutput(
+      JSON.stringify({
+        result: 'error',
+        error: err.toString(),
+      }),
+    ).setMimeType(ContentService.MimeType.JSON);
   } finally {
-    lock.releaseLock()
+    lock.releaseLock();
   }
 }
 
@@ -90,12 +98,12 @@ function doPost(e) {
  * CSV/formula injection in Google Sheets.
  */
 function sanitize(value) {
-  if (typeof value !== 'string') return value
-  const dangerousChars = ['=', '+', '-', '@']
-  if (dangerousChars.some(c => value.startsWith(c))) {
-    return "'" + value
+  if (typeof value !== 'string') return value;
+  const dangerousChars = ['=', '+', '-', '@'];
+  if (dangerousChars.some((c) => value.startsWith(c))) {
+    return "'" + value;
   }
-  return value
+  return value;
 }
 
 /**
@@ -105,14 +113,14 @@ function sanitize(value) {
 function sendNotification(params, sheetName, row) {
   // ── CONFIGURE THESE ──
   const recipients = {
-    'KovelAI':     'founder@kovelai.com',
-    'ShadowTagAI': 'founder@shadowtagai.com'
-  }
+    KovelAI: 'founder@kovelai.com',
+    ShadowTagAI: 'founder@shadowtagai.com',
+  };
 
-  const recipient = recipients[sheetName] || 'founder@kovelai.com'
-  const senderName = sheetName === 'ShadowTagAI' ? 'ShadowTag AI' : 'KovelAI'
+  const recipient = recipients[sheetName] || 'founder@kovelai.com';
+  const senderName = sheetName === 'ShadowTagAI' ? 'ShadowTag AI' : 'KovelAI';
 
-  const subject = `${senderName} — New ${params.inquiry_type || 'Contact'} Inquiry from ${params.name || 'Unknown'}`
+  const subject = `${senderName} — New ${params.inquiry_type || 'Contact'} Inquiry from ${params.name || 'Unknown'}`;
 
   const body = `
     <div style="font-family: 'Inter', -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #e0e0e0; padding: 32px; border-radius: 12px;">
@@ -131,17 +139,17 @@ function sendNotification(params, sheetName, row) {
         Auto-forwarded via Google Apps Script • <a href="https://docs.google.com/spreadsheets" style="color: #c9a96e;">Open Spreadsheet</a>
       </div>
     </div>
-  `
+  `;
 
   try {
     MailApp.sendEmail({
       to: recipient,
       subject: subject,
       htmlBody: body,
-      name: senderName
-    })
+      name: senderName,
+    });
   } catch (mailErr) {
-    console.error('Mail notification failed:', mailErr)
+    console.error('Mail notification failed:', mailErr);
   }
 }
 
@@ -149,12 +157,12 @@ function sendNotification(params, sheetName, row) {
  * Send automated reply to the person who submitted the form.
  */
 function sendAutoReply(params, sheetName) {
-  if (!params.email) return
+  if (!params.email) return;
 
-  const senderName = sheetName === 'ShadowTagAI' ? 'ShadowTag AI' : 'KovelAI'
-  const replyFrom = sheetName === 'ShadowTagAI' ? 'ShadowTag AI' : 'KovelAI'
+  const senderName = sheetName === 'ShadowTagAI' ? 'ShadowTag AI' : 'KovelAI';
+  const replyFrom = sheetName === 'ShadowTagAI' ? 'ShadowTag AI' : 'KovelAI';
 
-  const subject = `Thank you for contacting ${senderName}`
+  const subject = `Thank you for contacting ${senderName}`;
 
   const body = `
     <div style="font-family: 'Inter', -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #e0e0e0; padding: 32px; border-radius: 12px;">
@@ -171,17 +179,17 @@ function sendAutoReply(params, sheetName) {
         This is an automated confirmation. Please do not reply to this email.
       </div>
     </div>
-  `
+  `;
 
   try {
     MailApp.sendEmail({
       to: params.email,
       subject: subject,
       htmlBody: body,
-      name: replyFrom
-    })
+      name: replyFrom,
+    });
   } catch (mailErr) {
-    console.error('Auto-reply failed:', mailErr)
+    console.error('Auto-reply failed:', mailErr);
   }
 }
 
@@ -194,9 +202,9 @@ function sendErrorNotification(err, sheetName) {
       to: 'founder@kovelai.com',
       subject: `[${sheetName || 'FormScript'}] Error in form submission`,
       body: 'Form submission error:\n' + err.toString(),
-      name: 'Form Script Alert'
-    })
+      name: 'Form Script Alert',
+    });
   } catch (mailErr) {
-    console.error('Error notification failed:', mailErr)
+    console.error('Error notification failed:', mailErr);
   }
 }

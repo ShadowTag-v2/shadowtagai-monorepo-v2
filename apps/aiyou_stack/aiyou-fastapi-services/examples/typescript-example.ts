@@ -6,15 +6,15 @@
  */
 
 import {
-  refactorCode,
   analyzeCode,
-  refactorInteractive,
   type RefactorConfig,
-} from "../src/code-refactorer";
+  refactorCode,
+  refactorInteractive,
+} from '../src/code-refactorer';
 
 // Example 1: Basic code refactoring
 async function basicRefactorExample() {
-  console.log("=== Example 1: Basic Refactoring ===\n");
+  console.log('=== Example 1: Basic Refactoring ===\n');
 
   const messyCode = `
 function calc(a,b,c) {
@@ -41,24 +41,24 @@ for(var i=0;i<data.length;i++) {
 `;
 
   const result = await refactorCode(messyCode, {
-    language: "javascript",
-    focus: ["readability", "best-practices"],
-    aggressiveness: "moderate",
+    language: 'javascript',
+    focus: ['readability', 'best-practices'],
+    aggressiveness: 'moderate',
   });
 
-  console.log("Original Code:");
+  console.log('Original Code:');
   console.log(messyCode);
-  console.log("\n" + "=".repeat(50) + "\n");
-  console.log("Refactored Code:");
+  console.log('\n' + '='.repeat(50) + '\n');
+  console.log('Refactored Code:');
   console.log(result.refactoredCode);
-  console.log("\n" + "=".repeat(50) + "\n");
-  console.log("Summary:");
+  console.log('\n' + '='.repeat(50) + '\n');
+  console.log('Summary:');
   console.log(result.summary);
 }
 
 // Example 2: Code analysis only
 async function analyzeCodeExample() {
-  console.log("\n\n=== Example 2: Code Analysis ===\n");
+  console.log('\n\n=== Example 2: Code Analysis ===\n');
 
   const problematicCode = `
 function processUserData(user) {
@@ -82,18 +82,18 @@ function processUserData(user) {
 }
 `;
 
-  const analysis = await analyzeCode(problematicCode, "javascript");
+  const analysis = await analyzeCode(problematicCode, 'javascript');
 
-  console.log("Code to Analyze:");
+  console.log('Code to Analyze:');
   console.log(problematicCode);
-  console.log("\n" + "=".repeat(50) + "\n");
-  console.log("Analysis Results:");
+  console.log('\n' + '='.repeat(50) + '\n');
+  console.log('Analysis Results:');
   console.log(JSON.stringify(analysis, null, 2));
 }
 
 // Example 3: Performance-focused refactoring
 async function performanceRefactorExample() {
-  console.log("\n\n=== Example 3: Performance Optimization ===\n");
+  console.log('\n\n=== Example 3: Performance Optimization ===\n');
 
   const slowCode = `
 function findDuplicates(arr) {
@@ -126,27 +126,27 @@ function processItems(items) {
 `;
 
   const config: RefactorConfig = {
-    language: "javascript",
-    focus: ["performance", "best-practices"],
-    aggressiveness: "aggressive",
+    language: 'javascript',
+    focus: ['performance', 'best-practices'],
+    aggressiveness: 'aggressive',
     explainChanges: true,
   };
 
   const result = await refactorCode(slowCode, config);
 
-  console.log("Original Code:");
+  console.log('Original Code:');
   console.log(slowCode);
-  console.log("\n" + "=".repeat(50) + "\n");
-  console.log("Optimized Code:");
+  console.log('\n' + '='.repeat(50) + '\n');
+  console.log('Optimized Code:');
   console.log(result.refactoredCode);
-  console.log("\n" + "=".repeat(50) + "\n");
-  console.log("Optimization Summary:");
+  console.log('\n' + '='.repeat(50) + '\n');
+  console.log('Optimization Summary:');
   console.log(result.summary);
 }
 
 // Example 4: Custom style guide refactoring
 async function styleGuideRefactorExample() {
-  console.log("\n\n=== Example 4: Style Guide Enforcement ===\n");
+  console.log('\n\n=== Example 4: Style Guide Enforcement ===\n');
 
   const unstyledCode = `
 const processdata = (input)=>{
@@ -173,22 +173,22 @@ class dataProcessor {
 `;
 
   const result = await refactorCode(unstyledCode, {
-    language: "typescript",
-    focus: ["readability", "best-practices"],
-    styleGuide: "Airbnb JavaScript Style Guide",
-    aggressiveness: "moderate",
+    language: 'typescript',
+    focus: ['readability', 'best-practices'],
+    styleGuide: 'Airbnb JavaScript Style Guide',
+    aggressiveness: 'moderate',
   });
 
-  console.log("Original Code:");
+  console.log('Original Code:');
   console.log(unstyledCode);
-  console.log("\n" + "=".repeat(50) + "\n");
-  console.log("Styled Code:");
+  console.log('\n' + '='.repeat(50) + '\n');
+  console.log('Styled Code:');
   console.log(result.refactoredCode);
 }
 
 // Example 5: Interactive refactoring session
 async function interactiveRefactorExample() {
-  console.log("\n\n=== Example 5: Interactive Refactoring ===\n");
+  console.log('\n\n=== Example 5: Interactive Refactoring ===\n');
 
   const codeToRefactor = `
 function calculateTotal(items) {
@@ -210,12 +210,12 @@ function calculateTotal(items) {
 }
 `;
 
-  console.log("Starting interactive refactoring session...");
-  console.log("(In a real application, you would interact with the user here)");
+  console.log('Starting interactive refactoring session...');
+  console.log('(In a real application, you would interact with the user here)');
 
   const session = refactorInteractive(codeToRefactor, {
-    language: "javascript",
-    focus: ["readability", "maintainability"],
+    language: 'javascript',
+    focus: ['readability', 'maintainability'],
     explainChanges: true,
   });
 
@@ -232,13 +232,13 @@ function calculateTotal(items) {
     // In a real application, you would get user input here
     // For this example, we'll just end after the first response
     done = true;
-    await session.next("done");
+    await session.next('done');
   }
 }
 
 // Example 6: Addressing specific issues
 async function specificIssuesExample() {
-  console.log("\n\n=== Example 6: Addressing Specific Issues ===\n");
+  console.log('\n\n=== Example 6: Addressing Specific Issues ===\n');
 
   const buggyCode = `
 function divide(a, b) {
@@ -256,30 +256,30 @@ function saveToLocalStorage(key, value) {
 `;
 
   const result = await refactorCode(buggyCode, {
-    language: "javascript",
+    language: 'javascript',
     specificIssues: [
-      "Add error handling",
-      "Make async functions properly use async/await",
-      "Add input validation",
-      "Add try/catch blocks",
+      'Add error handling',
+      'Make async functions properly use async/await',
+      'Add input validation',
+      'Add try/catch blocks',
     ],
     explainChanges: true,
   });
 
-  console.log("Original Code:");
+  console.log('Original Code:');
   console.log(buggyCode);
-  console.log("\n" + "=".repeat(50) + "\n");
-  console.log("Fixed Code:");
+  console.log('\n' + '='.repeat(50) + '\n');
+  console.log('Fixed Code:');
   console.log(result.refactoredCode);
-  console.log("\n" + "=".repeat(50) + "\n");
-  console.log("Fixes Applied:");
+  console.log('\n' + '='.repeat(50) + '\n');
+  console.log('Fixes Applied:');
   console.log(result.summary);
 }
 
 // Main execution
 async function main() {
-  console.log("Code Refactorer Agent - Examples\n");
-  console.log("=" * 60);
+  console.log('Code Refactorer Agent - Examples\n');
+  console.log('=' * 60);
 
   try {
     // Run all examples
@@ -290,9 +290,9 @@ async function main() {
     await interactiveRefactorExample();
     await specificIssuesExample();
 
-    console.log("\n\n✅ All examples completed successfully!");
+    console.log('\n\n✅ All examples completed successfully!');
   } catch (error) {
-    console.error("❌ Error running examples:", error);
+    console.error('❌ Error running examples:', error);
     process.exit(1);
   }
 }

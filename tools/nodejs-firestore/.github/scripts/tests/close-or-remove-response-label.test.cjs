@@ -54,7 +54,9 @@ describe('close issues or remove needs more info labels', () => {
   it('closes the issue if the OP has not responded within the allotted time and there is a needs-more-info label', async () => {
     const context = { owner: 'testOrg', repo: 'testRepo' };
     const issuesInRepo = [{ user: { login: 'OP' }, labels: [{ name: 'needs more info' }] }];
-    const eventsInIssue = [{ event: 'labeled', label: { name: 'needs more info' }, created_at: getISODateDaysAgo(16) }];
+    const eventsInIssue = [
+      { event: 'labeled', label: { name: 'needs more info' }, created_at: getISODateDaysAgo(16) },
+    ];
 
     issuesStub.listForRepo.resolves({ data: issuesInRepo });
     paginateStub.resolves(eventsInIssue);
@@ -70,7 +72,9 @@ describe('close issues or remove needs more info labels', () => {
   it('does nothing if not enough time has passed and there is a needs-more-info label', async () => {
     const context = { owner: 'testOrg', repo: 'testRepo' };
     const issuesInRepo = [{ user: { login: 'OP' }, labels: [{ name: 'needs more info' }] }];
-    const eventsInIssue = [{ event: 'labeled', label: { name: 'needs more info' }, created_at: getISODateDaysAgo(14) }];
+    const eventsInIssue = [
+      { event: 'labeled', label: { name: 'needs more info' }, created_at: getISODateDaysAgo(14) },
+    ];
 
     issuesStub.listForRepo.resolves({ data: issuesInRepo });
     paginateStub.resolves(eventsInIssue);
@@ -84,8 +88,12 @@ describe('close issues or remove needs more info labels', () => {
   });
 
   it('removes the label if OP responded', async () => {
-    const context = { actor: 'OP', repo: { owner: 'testOrg', repo: 'testRepo' }, issue: { number: 1 } };
-    const issueContext = { user: {login: 'OP'}, labels: [{ name: 'needs more info' }] };
+    const context = {
+      actor: 'OP',
+      repo: { owner: 'testOrg', repo: 'testRepo' },
+      issue: { number: 1 },
+    };
+    const issueContext = { user: { login: 'OP' }, labels: [{ name: 'needs more info' }] };
 
     issuesStub.get.resolves({ data: issueContext });
 
@@ -96,8 +104,12 @@ describe('close issues or remove needs more info labels', () => {
   });
 
   it('does not remove the label if author responded', async () => {
-    const context = { actor: 'repo-maintainer', repo: { owner: 'testOrg', repo: 'testRepo' }, issue: { number: 1 } };
-    const issueContext = { user: {login: 'OP'}, labels: [{ name: 'needs more info' }] };
+    const context = {
+      actor: 'repo-maintainer',
+      repo: { owner: 'testOrg', repo: 'testRepo' },
+      issue: { number: 1 },
+    };
+    const issueContext = { user: { login: 'OP' }, labels: [{ name: 'needs more info' }] };
 
     issuesStub.get.resolves({ data: issueContext });
 

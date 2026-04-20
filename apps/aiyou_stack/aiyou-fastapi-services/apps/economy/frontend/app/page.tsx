@@ -1,4 +1,4 @@
-import WalletConnect from "../components/WalletConnect";
+import WalletConnect from '../components/WalletConnect';
 
 export default function Home() {
   return (
@@ -21,7 +21,7 @@ export default function Home() {
       <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-3 lg:text-left gap-4">
         <div className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-700 hover:bg-gray-800/30">
           <h2 className="mb-3 text-2xl font-semibold">
-            Tokenize{" "}
+            Tokenize{' '}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -41,7 +41,7 @@ export default function Home() {
 
         <div className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-700 hover:bg-gray-800/30">
           <h2 className="mb-3 text-2xl font-semibold">
-            Governance{" "}
+            Governance{' '}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>

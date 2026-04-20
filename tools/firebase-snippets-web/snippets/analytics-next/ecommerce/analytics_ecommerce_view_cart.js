@@ -5,24 +5,24 @@
 // 'npm run snippets'.
 
 // [START analytics_ecommerce_view_cart_modular]
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 // Specify order quantity
 const item_jeggings_quantity = {
   ...item_jeggings,
-  quantity: 2
+  quantity: 2,
 };
 
 const item_boots_quantity = {
   ...item_boots,
-  quantity: 1
+  quantity: 1,
 };
 
 // Prepare ecommerce params
 const params5 = {
   currency: 'USD',
   value: 44.97,
-  items: [item_jeggings_quantity, item_boots_quantity]
+  items: [item_jeggings_quantity, item_boots_quantity],
 };
 
 // Log event when the cart is viewed

@@ -15,9 +15,9 @@
  */
 
 import { mkdir, writeFile } from 'fs/promises';
+import os from 'os';
 import { join } from 'path';
 import pkg from '../../package.json' with { type: 'json' };
-import os from 'os';
 
 export const geminiMd = `
 # Cloud Observability MCP Extension for Gemini CLI

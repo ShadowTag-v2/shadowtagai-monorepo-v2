@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { describe, it, expect, vi } from 'vitest';
-import { getCsqlOperation } from './get_csql_operation.js';
+import { describe, expect, it, vi } from 'vitest';
 import { googleCloudHttpClient } from '../../utility/gcp_http_client.js';
+import { getCsqlOperation } from './get_csql_operation.js';
 
 vi.mock('../../utility/gcp_http_client', () => ({
   googleCloudHttpClient: {

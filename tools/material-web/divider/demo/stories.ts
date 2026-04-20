@@ -6,9 +6,9 @@
 
 import '@material/web/divider/divider.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {styles as typescaleStyles} from '@material/web/typography/md-typescale-styles.cssresult.js';
-import {css, html} from 'lit';
+import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.cssresult.js';
+import { css, html } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for divider stories. */
 export interface StoryKnobs {

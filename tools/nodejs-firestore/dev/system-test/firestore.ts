@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
+import type {
   DocumentData,
   ExplainMetrics,
   PartialWithFieldValue,
@@ -23,30 +23,33 @@ import {
   WithFieldValue,
 } from '@google-cloud/firestore';
 
-import {afterEach, before, beforeEach, describe, it} from 'mocha';
+import { afterEach, before, beforeEach, describe, it } from 'mocha';
 import '../test/util/mocha_extensions';
-import {expect, use} from 'chai';
+import { expect, use } from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
 import * as extend from 'extend';
-import {firestore} from '../protos/firestore_v1_proto_api';
-
+import { Status } from 'google-gax';
+import { firestore } from '../protos/firestore_v1_proto_api';
 import {
   AggregateField,
-  CollectionReference,
-  DocumentReference,
+  type CollectionReference,
+  type DocumentReference,
   DocumentSnapshot,
   FieldPath,
   FieldValue,
   Firestore,
   GeoPoint,
-  Query,
+  type Query,
   QueryDocumentSnapshot,
   setLogFunction,
   Timestamp,
-  WriteResult,
+  type WriteResult,
 } from '../src';
-import {autoId, Deferred} from '../src/util';
-import {TEST_BUNDLE_ID, verifyMetadata} from '../test/bundle';
+import type { BulkWriter } from '../src/bulk-writer';
+import type { CollectionGroup } from '../src/collection-group';
+import type { QueryPartition } from '../src/query-partition';
+import { autoId, Deferred } from '../src/util';
+import { TEST_BUNDLE_ID, verifyMetadata } from '../test/bundle';
 import {
   bundleToElementArray,
   isEnterprise,
@@ -55,13 +58,11 @@ import {
   postConverterMerge,
   verifyInstance,
 } from '../test/util/helpers';
-import {BulkWriter} from '../src/bulk-writer';
-import {Status} from 'google-gax';
-import {QueryPartition} from '../src/query-partition';
-import {CollectionGroup} from '../src/collection-group';
+
 import IBundleElement = firestore.IBundleElement;
-import {Filter} from '../src/filter';
-import {IndexTestHelper} from './index_test_helper';
+
+import { Filter } from '../src/filter';
+import { IndexTestHelper } from './index_test_helper';
 
 use(chaiAsPromised);
 
@@ -92,11 +93,7 @@ for (const key in process.env) {
   }
 }
 console.log(
-  `Running system tests with environment variables:\n ${JSON.stringify(
-    firestoreEnv,
-    null,
-    2,
-  )}`,
+  `Running system tests with environment variables:\n ${JSON.stringify(firestoreEnv, null, 2)}`,
 );
 
 if (process.env.NODE_ENV === 'DEBUG') {
@@ -162,19 +159,19 @@ describe('Firestore class', () => {
   it('has getAll() method', () => {
     const ref1 = randomCol.doc('doc1');
     const ref2 = randomCol.doc('doc2');
-    return Promise.all([ref1.set({foo: 'a'}), ref2.set({foo: 'a'})])
+    return Promise.all([ref1.set({ foo: 'a' }), ref2.set({ foo: 'a' })])
       .then(() => {
         return firestore.getAll(ref1, ref2);
       })
-      .then(docs => {
+      .then((docs) => {
         expect(docs.length).to.equal(2);
       });
   });
 
   it.skipEnterprise('can plan a query using default options', async () => {
-    await randomCol.doc('doc1').set({foo: 1});
-    await randomCol.doc('doc2').set({foo: 2});
-    await randomCol.doc('doc3').set({foo: 1});
+    await randomCol.doc('doc1').set({ foo: 1 });
+    await randomCol.doc('doc2').set({ foo: 2 });
+    await randomCol.doc('doc3').set({ foo: 1 });
     const explainResults = await randomCol.where('foo', '>', 1).explain();
 
     // Should have metrics.
@@ -192,12 +189,10 @@ describe('Firestore class', () => {
   });
 
   it.skipEnterprise('can plan a query', async () => {
-    await randomCol.doc('doc1').set({foo: 1});
-    await randomCol.doc('doc2').set({foo: 2});
-    await randomCol.doc('doc3').set({foo: 1});
-    const explainResults = await randomCol
-      .where('foo', '>', 1)
-      .explain({analyze: false});
+    await randomCol.doc('doc1').set({ foo: 1 });
+    await randomCol.doc('doc2').set({ foo: 2 });
+    await randomCol.doc('doc3').set({ foo: 1 });
+    const explainResults = await randomCol.where('foo', '>', 1).explain({ analyze: false });
 
     // Should have metrics.
     const metrics = explainResults.metrics;
@@ -214,12 +209,10 @@ describe('Firestore class', () => {
   });
 
   it.skipEnterprise('can profile a query', async () => {
-    await randomCol.doc('doc1').set({foo: 1, bar: 0});
-    await randomCol.doc('doc2').set({foo: 2, bar: 1});
-    await randomCol.doc('doc3').set({foo: 1, bar: 2});
-    const explainResults = await randomCol
-      .where('foo', '==', 1)
-      .explain({analyze: true});
+    await randomCol.doc('doc1').set({ foo: 1, bar: 0 });
+    await randomCol.doc('doc2').set({ foo: 2, bar: 1 });
+    await randomCol.doc('doc3').set({ foo: 1, bar: 2 });
+    const explainResults = await randomCol.where('foo', '==', 1).explain({ analyze: true });
 
     const metrics = explainResults.metrics;
 
@@ -227,108 +220,92 @@ describe('Firestore class', () => {
     expect(metrics.executionStats).to.not.be.null;
     expect(explainResults.snapshot).to.not.be.null;
 
-    expect(
-      Object.keys(metrics.planSummary.indexesUsed).length,
-    ).to.be.greaterThan(0);
+    expect(Object.keys(metrics.planSummary.indexesUsed).length).to.be.greaterThan(0);
 
     const stats = metrics.executionStats!;
     expect(stats.readOperations).to.be.greaterThan(0);
     expect(stats.resultsReturned).to.be.equal(2);
-    expect(
-      stats.executionDuration.nanoseconds > 0 ||
-        stats.executionDuration.seconds > 0,
-    ).to.be.true;
+    expect(stats.executionDuration.nanoseconds > 0 || stats.executionDuration.seconds > 0).to.be
+      .true;
     expect(Object.keys(stats.debugStats).length).to.be.greaterThan(0);
 
     expect(explainResults.snapshot!.size).to.equal(2);
   });
 
-  it.skipEnterprise(
-    'can profile a query that does not match any docs',
-    async () => {
-      await randomCol.doc('doc1').set({foo: 1, bar: 0});
-      await randomCol.doc('doc2').set({foo: 2, bar: 1});
-      await randomCol.doc('doc3').set({foo: 1, bar: 2});
-      const results = await randomCol.where('foo', '==', 12345).get();
-      expect(results.empty).to.be.true;
-      expect(results.docs.length).to.equal(0);
-      expect(results.readTime.toMillis()).to.be.greaterThan(0);
+  it.skipEnterprise('can profile a query that does not match any docs', async () => {
+    await randomCol.doc('doc1').set({ foo: 1, bar: 0 });
+    await randomCol.doc('doc2').set({ foo: 2, bar: 1 });
+    await randomCol.doc('doc3').set({ foo: 1, bar: 2 });
+    const results = await randomCol.where('foo', '==', 12345).get();
+    expect(results.empty).to.be.true;
+    expect(results.docs.length).to.equal(0);
+    expect(results.readTime.toMillis()).to.be.greaterThan(0);
 
-      const explainResults = await randomCol
-        .where('foo', '==', 12345)
-        .explain({analyze: true});
+    const explainResults = await randomCol.where('foo', '==', 12345).explain({ analyze: true });
 
-      const metrics = explainResults.metrics;
+    const metrics = explainResults.metrics;
 
-      expect(metrics.planSummary).to.not.be.null;
-      expect(metrics.executionStats).to.not.be.null;
-      expect(explainResults.snapshot).to.not.be.null;
+    expect(metrics.planSummary).to.not.be.null;
+    expect(metrics.executionStats).to.not.be.null;
+    expect(explainResults.snapshot).to.not.be.null;
 
-      expect(
-        Object.keys(metrics.planSummary.indexesUsed).length,
-      ).to.be.greaterThan(0);
+    expect(Object.keys(metrics.planSummary.indexesUsed).length).to.be.greaterThan(0);
 
-      const stats = metrics.executionStats!;
-      expect(stats.readOperations).to.be.greaterThan(0);
-      expect(stats.resultsReturned).to.be.equal(0);
-      expect(
-        stats.executionDuration.nanoseconds > 0 ||
-          stats.executionDuration.seconds > 0,
-      ).to.be.true;
-      expect(Object.keys(stats.debugStats).length).to.be.greaterThan(0);
+    const stats = metrics.executionStats!;
+    expect(stats.readOperations).to.be.greaterThan(0);
+    expect(stats.resultsReturned).to.be.equal(0);
+    expect(stats.executionDuration.nanoseconds > 0 || stats.executionDuration.seconds > 0).to.be
+      .true;
+    expect(Object.keys(stats.debugStats).length).to.be.greaterThan(0);
 
-      expect(explainResults.snapshot!.size).to.equal(0);
-    },
-  );
+    expect(explainResults.snapshot!.size).to.equal(0);
+  });
 
-  it.skipEnterprise(
-    'can stream explain results with default options',
-    async () => {
-      await randomCol.doc('doc1').set({foo: 1, bar: 0});
-      await randomCol.doc('doc2').set({foo: 2, bar: 1});
-      await randomCol.doc('doc3').set({foo: 1, bar: 2});
-      let totalResponses = 0;
-      let totalDocuments = 0;
-      let metrics: ExplainMetrics | null = null;
-      const stream = randomCol.explainStream();
-      const promise = new Promise<boolean>((resolve, reject) => {
-        stream.on('data', data => {
-          ++totalResponses;
-          if (data.document) {
-            ++totalDocuments;
-          }
-          if (data.metrics) {
-            metrics = data.metrics;
-          }
-        });
-        stream.on('end', () => {
-          expect(totalResponses).to.equal(1);
-          expect(totalDocuments).to.equal(0);
-          expect(metrics).to.not.be.null;
-          expect(metrics!.planSummary.indexesUsed.length).to.be.greaterThan(0);
-          expect(metrics!.executionStats).to.be.null;
-          resolve(true);
-        });
-        stream.on('error', (error: Error) => {
-          reject(error);
-        });
-      });
-
-      const success: boolean = await promise;
-      expect(success).to.be.true;
-    },
-  );
-
-  it.skipEnterprise('can stream explain results without analyze', async () => {
-    await randomCol.doc('doc1').set({foo: 1, bar: 0});
-    await randomCol.doc('doc2').set({foo: 2, bar: 1});
-    await randomCol.doc('doc3').set({foo: 1, bar: 2});
+  it.skipEnterprise('can stream explain results with default options', async () => {
+    await randomCol.doc('doc1').set({ foo: 1, bar: 0 });
+    await randomCol.doc('doc2').set({ foo: 2, bar: 1 });
+    await randomCol.doc('doc3').set({ foo: 1, bar: 2 });
     let totalResponses = 0;
     let totalDocuments = 0;
     let metrics: ExplainMetrics | null = null;
-    const stream = randomCol.explainStream({analyze: false});
+    const stream = randomCol.explainStream();
     const promise = new Promise<boolean>((resolve, reject) => {
-      stream.on('data', data => {
+      stream.on('data', (data) => {
+        ++totalResponses;
+        if (data.document) {
+          ++totalDocuments;
+        }
+        if (data.metrics) {
+          metrics = data.metrics;
+        }
+      });
+      stream.on('end', () => {
+        expect(totalResponses).to.equal(1);
+        expect(totalDocuments).to.equal(0);
+        expect(metrics).to.not.be.null;
+        expect(metrics!.planSummary.indexesUsed.length).to.be.greaterThan(0);
+        expect(metrics!.executionStats).to.be.null;
+        resolve(true);
+      });
+      stream.on('error', (error: Error) => {
+        reject(error);
+      });
+    });
+
+    const success: boolean = await promise;
+    expect(success).to.be.true;
+  });
+
+  it.skipEnterprise('can stream explain results without analyze', async () => {
+    await randomCol.doc('doc1').set({ foo: 1, bar: 0 });
+    await randomCol.doc('doc2').set({ foo: 2, bar: 1 });
+    await randomCol.doc('doc3').set({ foo: 1, bar: 2 });
+    let totalResponses = 0;
+    let totalDocuments = 0;
+    let metrics: ExplainMetrics | null = null;
+    const stream = randomCol.explainStream({ analyze: false });
+    const promise = new Promise<boolean>((resolve, reject) => {
+      stream.on('data', (data) => {
         ++totalResponses;
         if (data.document) {
           ++totalDocuments;
@@ -355,17 +332,15 @@ describe('Firestore class', () => {
   });
 
   it.skipEnterprise('can stream explain results with analyze', async () => {
-    await randomCol.doc('doc1').set({foo: 1, bar: 0});
-    await randomCol.doc('doc2').set({foo: 2, bar: 1});
-    await randomCol.doc('doc3').set({foo: 1, bar: 2});
+    await randomCol.doc('doc1').set({ foo: 1, bar: 0 });
+    await randomCol.doc('doc2').set({ foo: 2, bar: 1 });
+    await randomCol.doc('doc3').set({ foo: 1, bar: 2 });
     let totalResponses = 0;
     let totalDocuments = 0;
     let metrics: ExplainMetrics | null = null;
-    const stream = randomCol
-      .where('foo', '==', 1)
-      .explainStream({analyze: true});
+    const stream = randomCol.where('foo', '==', 1).explainStream({ analyze: true });
     const promise = new Promise<boolean>((resolve, reject) => {
-      stream.on('data', data => {
+      stream.on('data', (data) => {
         ++totalResponses;
         if (data.document) {
           ++totalDocuments;
@@ -392,36 +367,27 @@ describe('Firestore class', () => {
     expect(success).to.be.true;
   });
 
-  it.skipEnterprise(
-    'can plan an aggregate query using default options',
-    async () => {
-      await randomCol.doc('doc1').set({foo: 1});
-      await randomCol.doc('doc2').set({foo: 2});
-      await randomCol.doc('doc3').set({foo: 1});
-      const explainResults = await randomCol
-        .where('foo', '>', 0)
-        .count()
-        .explain();
+  it.skipEnterprise('can plan an aggregate query using default options', async () => {
+    await randomCol.doc('doc1').set({ foo: 1 });
+    await randomCol.doc('doc2').set({ foo: 2 });
+    await randomCol.doc('doc3').set({ foo: 1 });
+    const explainResults = await randomCol.where('foo', '>', 0).count().explain();
 
-      const metrics = explainResults.metrics;
+    const metrics = explainResults.metrics;
 
-      const plan = metrics.planSummary;
-      expect(plan).to.not.be.null;
-      expect(Object.keys(plan.indexesUsed).length).to.be.greaterThan(0);
+    const plan = metrics.planSummary;
+    expect(plan).to.not.be.null;
+    expect(Object.keys(plan.indexesUsed).length).to.be.greaterThan(0);
 
-      expect(metrics.executionStats).to.be.null;
-      expect(explainResults.snapshot).to.be.null;
-    },
-  );
+    expect(metrics.executionStats).to.be.null;
+    expect(explainResults.snapshot).to.be.null;
+  });
 
   it.skipEnterprise('can plan an aggregate query', async () => {
-    await randomCol.doc('doc1').set({foo: 1});
-    await randomCol.doc('doc2').set({foo: 2});
-    await randomCol.doc('doc3').set({foo: 1});
-    const explainResults = await randomCol
-      .where('foo', '>', 0)
-      .count()
-      .explain({analyze: false});
+    await randomCol.doc('doc1').set({ foo: 1 });
+    await randomCol.doc('doc2').set({ foo: 2 });
+    await randomCol.doc('doc3').set({ foo: 1 });
+    const explainResults = await randomCol.where('foo', '>', 0).count().explain({ analyze: false });
 
     const metrics = explainResults.metrics;
 
@@ -434,28 +400,21 @@ describe('Firestore class', () => {
   });
 
   it.skipEnterprise('can profile an aggregate query', async () => {
-    await randomCol.doc('doc1').set({foo: 1});
-    await randomCol.doc('doc2').set({foo: 2});
-    await randomCol.doc('doc3').set({foo: 1});
-    const explainResults = await randomCol
-      .where('foo', '<', 3)
-      .count()
-      .explain({analyze: true});
+    await randomCol.doc('doc1').set({ foo: 1 });
+    await randomCol.doc('doc2').set({ foo: 2 });
+    await randomCol.doc('doc3').set({ foo: 1 });
+    const explainResults = await randomCol.where('foo', '<', 3).count().explain({ analyze: true });
 
     const metrics = explainResults.metrics;
     expect(metrics.planSummary).to.not.be.null;
-    expect(
-      Object.keys(metrics.planSummary.indexesUsed).length,
-    ).to.be.greaterThan(0);
+    expect(Object.keys(metrics.planSummary.indexesUsed).length).to.be.greaterThan(0);
 
     expect(metrics.executionStats).to.not.be.null;
     const stats = metrics.executionStats!;
     expect(stats.readOperations).to.be.greaterThan(0);
     expect(stats.resultsReturned).to.be.equal(1);
-    expect(
-      stats.executionDuration.nanoseconds > 0 ||
-        stats.executionDuration.seconds > 0,
-    ).to.be.true;
+    expect(stats.executionDuration.nanoseconds > 0 || stats.executionDuration.seconds > 0).to.be
+      .true;
     expect(Object.keys(stats.debugStats).length).to.be.greaterThan(0);
 
     expect(explainResults.snapshot).to.not.be.null;
@@ -466,12 +425,12 @@ describe('Firestore class', () => {
     const indexTestHelper = new IndexTestHelper(firestore);
 
     const collectionReference = await indexTestHelper.createTestDocs([
-      {foo: 'bar'},
-      {foo: 'xxx', embedding: FieldValue.vector([10, 10])},
-      {foo: 'bar', embedding: FieldValue.vector([1, 1])},
-      {foo: 'bar', embedding: FieldValue.vector([10, 0])},
-      {foo: 'bar', embedding: FieldValue.vector([20, 0])},
-      {foo: 'bar', embedding: FieldValue.vector([100, 100])},
+      { foo: 'bar' },
+      { foo: 'xxx', embedding: FieldValue.vector([10, 10]) },
+      { foo: 'bar', embedding: FieldValue.vector([1, 1]) },
+      { foo: 'bar', embedding: FieldValue.vector([10, 0]) },
+      { foo: 'bar', embedding: FieldValue.vector([20, 0]) },
+      { foo: 'bar', embedding: FieldValue.vector([100, 100]) },
     ]);
 
     const explainResults = await indexTestHelper
@@ -482,7 +441,7 @@ describe('Firestore class', () => {
         limit: 10,
         distanceMeasure: 'COSINE',
       })
-      .explain({analyze: false});
+      .explain({ analyze: false });
 
     const metrics = explainResults.metrics;
 
@@ -498,12 +457,12 @@ describe('Firestore class', () => {
     const indexTestHelper = new IndexTestHelper(firestore);
 
     const collectionReference = await indexTestHelper.createTestDocs([
-      {foo: 'bar'},
-      {foo: 'xxx', embedding: FieldValue.vector([10, 10])},
-      {foo: 'bar', embedding: FieldValue.vector([1, 1])},
-      {foo: 'bar', embedding: FieldValue.vector([10, 0])},
-      {foo: 'bar', embedding: FieldValue.vector([20, 0])},
-      {foo: 'bar', embedding: FieldValue.vector([100, 100])},
+      { foo: 'bar' },
+      { foo: 'xxx', embedding: FieldValue.vector([10, 10]) },
+      { foo: 'bar', embedding: FieldValue.vector([1, 1]) },
+      { foo: 'bar', embedding: FieldValue.vector([10, 0]) },
+      { foo: 'bar', embedding: FieldValue.vector([20, 0]) },
+      { foo: 'bar', embedding: FieldValue.vector([100, 100]) },
     ]);
 
     const explainResults = await indexTestHelper
@@ -514,23 +473,19 @@ describe('Firestore class', () => {
         limit: 10,
         distanceMeasure: 'COSINE',
       })
-      .explain({analyze: true});
+      .explain({ analyze: true });
 
     const metrics = explainResults.metrics;
     expect(metrics.planSummary).to.not.be.null;
-    expect(
-      Object.keys(metrics.planSummary.indexesUsed).length,
-    ).to.be.greaterThan(0);
+    expect(Object.keys(metrics.planSummary.indexesUsed).length).to.be.greaterThan(0);
 
     expect(metrics.executionStats).to.not.be.null;
     const stats = metrics.executionStats!;
 
     expect(stats.readOperations).to.be.greaterThan(0);
     expect(stats.resultsReturned).to.be.equal(5);
-    expect(
-      stats.executionDuration.nanoseconds > 0 ||
-        stats.executionDuration.seconds > 0,
-    ).to.be.true;
+    expect(stats.executionDuration.nanoseconds > 0 || stats.executionDuration.seconds > 0).to.be
+      .true;
     expect(Object.keys(stats.debugStats).length).to.be.greaterThan(0);
 
     expect(explainResults.snapshot).to.not.be.null;
@@ -540,11 +495,11 @@ describe('Firestore class', () => {
   it('getAll() supports array destructuring', () => {
     const ref1 = randomCol.doc('doc1');
     const ref2 = randomCol.doc('doc2');
-    return Promise.all([ref1.set({foo: 'a'}), ref2.set({foo: 'a'})])
+    return Promise.all([ref1.set({ foo: 'a' }), ref2.set({ foo: 'a' })])
       .then(() => {
         return firestore.getAll(...[ref1, ref2]);
       })
-      .then(docs => {
+      .then((docs) => {
         expect(docs.length).to.equal(2);
       });
   });
@@ -552,25 +507,25 @@ describe('Firestore class', () => {
   it('getAll() supports field mask', () => {
     const ref1 = randomCol.doc('doc1');
     return ref1
-      .set({foo: 'a', bar: 'b'})
+      .set({ foo: 'a', bar: 'b' })
       .then(() => {
-        return firestore.getAll(ref1, {fieldMask: ['foo']});
+        return firestore.getAll(ref1, { fieldMask: ['foo'] });
       })
-      .then(docs => {
-        expect(docs[0].data()).to.deep.equal({foo: 'a'});
+      .then((docs) => {
+        expect(docs[0].data()).to.deep.equal({ foo: 'a' });
       });
   });
 
   it('getAll() supports array destructuring with field mask', () => {
     const ref1 = randomCol.doc('doc1');
     const ref2 = randomCol.doc('doc2');
-    return Promise.all([ref1.set({f: 'a', b: 'b'}), ref2.set({f: 'a', b: 'b'})])
+    return Promise.all([ref1.set({ f: 'a', b: 'b' }), ref2.set({ f: 'a', b: 'b' })])
       .then(() => {
-        return firestore.getAll(...[ref1, ref2], {fieldMask: ['f']});
+        return firestore.getAll(...[ref1, ref2], { fieldMask: ['f'] });
       })
-      .then(docs => {
-        expect(docs[0].data()).to.deep.equal({f: 'a'});
-        expect(docs[1].data()).to.deep.equal({f: 'a'});
+      .then((docs) => {
+        expect(docs[0].data()).to.deep.equal({ f: 'a' });
+        expect(docs[1].data()).to.deep.equal({ f: 'a' });
       });
   });
 
@@ -588,7 +543,7 @@ describe('Firestore class', () => {
   it('cannot make calls after the client has been terminated', async () => {
     const ref1 = randomCol.doc('doc1');
     await firestore.terminate();
-    return expect(ref1.set({foo: 100})).to.eventually.be.rejectedWith(
+    return expect(ref1.set({ foo: 100 })).to.eventually.be.rejectedWith(
       'The client has already been terminated',
     );
   });
@@ -610,7 +565,7 @@ describe('Firestore class', () => {
   it('throws an error if terminate() is called with pending BulkWriter operations', async () => {
     const writer = firestore.bulkWriter();
     const ref = randomCol.doc('doc-1');
-    void writer.set(ref, {foo: 'bar'});
+    void writer.set(ref, { foo: 'bar' });
     await expect(firestore.terminate()).to.eventually.be.rejectedWith(
       'All onSnapshot() listeners must be unsubscribed, and all BulkWriter ' +
         'instances must be closed before terminating the client. There are 0 ' +
@@ -636,7 +591,7 @@ describe.skipEmulator.skipEnterprise('CollectionGroup class', () => {
 
     const batch = firestore.batch();
     for (let i = 0; i < documentCount; ++i) {
-      batch.create(randomColl.doc(), {title: 'post', author: 'author'});
+      batch.create(randomColl.doc(), { title: 'post', author: 'author' });
     }
     await batch.commit();
   });
@@ -646,9 +601,7 @@ describe.skipEmulator.skipEnterprise('CollectionGroup class', () => {
     desiredPartitionsCount: number,
   ): Promise<QueryPartition<T>[]> {
     const partitions: QueryPartition<T>[] = [];
-    for await (const partition of collectionGroup.getPartitions(
-      desiredPartitionsCount,
-    )) {
+    for await (const partition of collectionGroup.getPartitions(desiredPartitionsCount)) {
       partitions.push(partition);
     }
     return partitions;
@@ -681,24 +634,16 @@ describe.skipEmulator.skipEnterprise('CollectionGroup class', () => {
   }
 
   it('partition query', async () => {
-    const partitions = await getPartitions(
-      collectionGroup,
-      desiredPartitionCount,
-    );
+    const partitions = await getPartitions(collectionGroup, desiredPartitionCount);
     await verifyPartitions(partitions);
   });
 
   it('partition query with manual cursors', async () => {
-    const partitions = await getPartitions(
-      collectionGroup,
-      desiredPartitionCount,
-    );
+    const partitions = await getPartitions(collectionGroup, desiredPartitionCount);
 
     const documents: QueryDocumentSnapshot<DocumentData>[] = [];
     for (const partition of partitions) {
-      let partitionedQuery: Query = collectionGroup.orderBy(
-        FieldPath.documentId(),
-      );
+      let partitionedQuery: Query = collectionGroup.orderBy(FieldPath.documentId());
       if (partition.startAt) {
         partitionedQuery = partitionedQuery.startAt(...partition.startAt);
       }
@@ -712,12 +657,8 @@ describe.skipEmulator.skipEnterprise('CollectionGroup class', () => {
   });
 
   it('partition query with converter', async () => {
-    const collectionGroupWithConverter =
-      collectionGroup.withConverter(postConverter);
-    const partitions = await getPartitions(
-      collectionGroupWithConverter,
-      desiredPartitionCount,
-    );
+    const collectionGroupWithConverter = collectionGroup.withConverter(postConverter);
+    const partitions = await getPartitions(collectionGroupWithConverter, desiredPartitionCount);
     const documents = await verifyPartitions(partitions);
 
     for (const document of documents) {
@@ -730,10 +671,7 @@ describe.skipEmulator.skipEnterprise('CollectionGroup class', () => {
 
     const collectionGroupId = randomColl.doc().id;
     const collectionGroup = firestore.collectionGroup(collectionGroupId);
-    const partitions = await getPartitions(
-      collectionGroup,
-      desiredPartitionCount,
-    );
+    const partitions = await getPartitions(collectionGroup, desiredPartitionCount);
 
     expect(partitions.length).to.equal(1);
     expect(partitions[0].startAt).to.be.undefined;
@@ -781,11 +719,11 @@ describe('CollectionReference class', () => {
 
   it('has add() method', () => {
     return randomCol
-      .add({foo: 'a'})
-      .then(ref => {
+      .add({ foo: 'a' })
+      .then((ref) => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         expect(doc.get('foo')).to.equal('a');
       });
   });
@@ -802,35 +740,30 @@ describe('CollectionReference class', () => {
     const documentRefs = await randomCol.listDocuments();
     const documents = await firestore.getAll(...documentRefs);
 
-    const existingDocs = documents.filter(doc => doc.exists);
-    const missingDocs = documents.filter(doc => !doc.exists);
+    const existingDocs = documents.filter((doc) => doc.exists);
+    const missingDocs = documents.filter((doc) => !doc.exists);
 
-    expect(existingDocs.map(doc => doc.id)).to.have.members(['a', 'c']);
-    expect(missingDocs.map(doc => doc.id)).to.have.members(['b']);
+    expect(existingDocs.map((doc) => doc.id)).to.have.members(['a', 'c']);
+    expect(missingDocs.map((doc) => doc.id)).to.have.members(['b']);
   });
 
   // showMissing is not supported in Enterprise
-  it.skipEnterprise(
-    'lists documents (more than the max page size)',
-    async () => {
-      const batch = firestore.batch();
-      const expectedResults = [];
-      for (let i = 0; i < 400; i++) {
-        const docRef = randomCol.doc(`${i}`.padStart(3, '0'));
-        batch.set(docRef, {id: i});
-        expectedResults.push(docRef.id);
-      }
-      await batch.commit();
+  it.skipEnterprise('lists documents (more than the max page size)', async () => {
+    const batch = firestore.batch();
+    const expectedResults = [];
+    for (let i = 0; i < 400; i++) {
+      const docRef = randomCol.doc(`${i}`.padStart(3, '0'));
+      batch.set(docRef, { id: i });
+      expectedResults.push(docRef.id);
+    }
+    await batch.commit();
 
-      const documentRefs = await randomCol.listDocuments();
+    const documentRefs = await randomCol.listDocuments();
 
-      const actualDocIds = documentRefs
-        .map(dr => dr.id)
-        .sort((a, b) => a.localeCompare(b));
+    const actualDocIds = documentRefs.map((dr) => dr.id).sort((a, b) => a.localeCompare(b));
 
-      expect(actualDocIds).to.deep.equal(expectedResults);
-    },
-  );
+    expect(actualDocIds).to.deep.equal(expectedResults);
+  });
 
   it('supports withConverter()', async () => {
     const ref = await firestore
@@ -883,17 +816,17 @@ describe('DocumentReference class', () => {
   it('has create()/get() method', () => {
     const ref = randomCol.doc();
     return ref
-      .create({foo: 'a'})
+      .create({ foo: 'a' })
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         expect(doc.get('foo')).to.equal('a');
       });
   });
 
   it('has set() method', () => {
-    const allSupportedTypesObject: {[field: string]: unknown} = {
+    const allSupportedTypesObject: { [field: string]: unknown } = {
       stringValue: 'a',
       trueValue: true,
       falseValue: false,
@@ -902,7 +835,7 @@ describe('DocumentReference class', () => {
       doubleValue: 0.1,
       infinityValue: Infinity,
       negativeInfinityValue: -Infinity,
-      objectValue: {foo: 'bar', '😀': '😜'},
+      objectValue: { foo: 'bar', '😀': '😜' },
       emptyObject: {},
       dateValue: new Timestamp(479978400, 123000000),
       zeroDateValue: new Timestamp(0, 0),
@@ -920,7 +853,7 @@ describe('DocumentReference class', () => {
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         const data = doc.data()!;
         expect(data.pathValue.path).to.equal(
           (allSupportedTypesObject.pathValue as DocumentReference).path,
@@ -941,7 +874,7 @@ describe('DocumentReference class', () => {
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         const actualValue = doc.data()!.nanValue;
         expect(actualValue).to.be.a('number');
         expect(actualValue).to.be.NaN;
@@ -951,14 +884,14 @@ describe('DocumentReference class', () => {
   it('round-trips BigInts', () => {
     const bigIntValue = BigInt(Number.MAX_SAFE_INTEGER) + BigInt(1);
 
-    const randomCol = getTestRoot({useBigInt: true});
+    const randomCol = getTestRoot({ useBigInt: true });
     const ref = randomCol.doc('doc');
     return ref
-      .set({bigIntValue})
+      .set({ bigIntValue })
       .then(() => ref.get())
-      .then(doc => ref.set(doc.data()!))
+      .then((doc) => ref.set(doc.data()!))
       .then(() => ref.get())
-      .then(doc => {
+      .then((doc) => {
         const actualValue = doc.data()!.bigIntValue;
         expect(actualValue).to.be.a('bigint');
         expect(actualValue).to.equal(bigIntValue);
@@ -968,13 +901,13 @@ describe('DocumentReference class', () => {
   it('supports server timestamps', () => {
     const baseObject = {
       a: 'bar',
-      b: {remove: 'bar'},
-      d: {keep: 'bar'},
+      b: { remove: 'bar' },
+      d: { keep: 'bar' },
       f: FieldValue.serverTimestamp(),
     };
     const updateObject = {
       a: FieldValue.serverTimestamp(),
-      b: {c: FieldValue.serverTimestamp()},
+      b: { c: FieldValue.serverTimestamp() },
       'd.e': FieldValue.serverTimestamp(),
     };
 
@@ -986,13 +919,13 @@ describe('DocumentReference class', () => {
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         setTimestamp = doc.get('f');
         expect(setTimestamp).to.be.an.instanceOf(Timestamp);
         expect(doc.data()).to.deep.equal({
           a: 'bar',
-          b: {remove: 'bar'},
-          d: {keep: 'bar'},
+          b: { remove: 'bar' },
+          d: { keep: 'bar' },
           f: setTimestamp,
         });
         return ref.update(updateObject);
@@ -1000,44 +933,44 @@ describe('DocumentReference class', () => {
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         const updateTimestamp = doc.get('a');
         expect(setTimestamp).to.be.an.instanceOf(Timestamp);
         expect(doc.data()).to.deep.equal({
           a: updateTimestamp,
-          b: {c: updateTimestamp},
-          d: {e: updateTimestamp, keep: 'bar'},
+          b: { c: updateTimestamp },
+          d: { e: updateTimestamp, keep: 'bar' },
           f: setTimestamp,
         });
       });
   });
 
   it('supports increment()', () => {
-    const baseData = {sum: 1};
-    const updateData = {sum: FieldValue.increment(1)};
-    const expectedData = {sum: 2};
+    const baseData = { sum: 1 };
+    const updateData = { sum: FieldValue.increment(1) };
+    const expectedData = { sum: 2 };
 
     const ref = randomCol.doc('doc');
     return ref
       .set(baseData)
       .then(() => ref.update(updateData))
       .then(() => ref.get())
-      .then(doc => {
+      .then((doc) => {
         expect(doc.data()).to.deep.equal(expectedData);
       });
   });
 
   it('supports increment() with set() with merge', () => {
-    const baseData = {sum: 1};
-    const updateData = {sum: FieldValue.increment(1)};
-    const expectedData = {sum: 2};
+    const baseData = { sum: 1 };
+    const updateData = { sum: FieldValue.increment(1) };
+    const expectedData = { sum: 2 };
 
     const ref = randomCol.doc('doc');
     return ref
       .set(baseData)
-      .then(() => ref.set(updateData, {merge: true}))
+      .then(() => ref.set(updateData, { merge: true }))
       .then(() => ref.get())
-      .then(doc => {
+      .then((doc) => {
         expect(doc.data()).to.deep.equal(expectedData);
       });
   });
@@ -1046,7 +979,7 @@ describe('DocumentReference class', () => {
     const baseObject = {
       a: [],
       b: ['foo'],
-      c: {d: ['foo']},
+      c: { d: ['foo'] },
     };
     const updateObject = {
       a: FieldValue.arrayUnion('foo', 'bar'),
@@ -1056,7 +989,7 @@ describe('DocumentReference class', () => {
     const expectedObject = {
       a: ['foo', 'bar'],
       b: ['foo', 'bar'],
-      c: {d: ['foo', 'bar']},
+      c: { d: ['foo', 'bar'] },
     };
 
     const ref = randomCol.doc('doc');
@@ -1065,7 +998,7 @@ describe('DocumentReference class', () => {
       .set(baseObject)
       .then(() => ref.update(updateObject))
       .then(() => ref.get())
-      .then(doc => {
+      .then((doc) => {
         expect(doc.data()).to.deep.equal(expectedObject);
       });
   });
@@ -1074,7 +1007,7 @@ describe('DocumentReference class', () => {
     const baseObject = {
       a: [],
       b: ['foo', 'foo', 'baz'],
-      c: {d: ['foo', 'bar', 'baz']},
+      c: { d: ['foo', 'bar', 'baz'] },
     };
     const updateObject = {
       a: FieldValue.arrayRemove('foo'),
@@ -1084,7 +1017,7 @@ describe('DocumentReference class', () => {
     const expectedObject = {
       a: [],
       b: ['baz'],
-      c: {d: ['baz']},
+      c: { d: ['baz'] },
     };
 
     const ref = randomCol.doc('doc');
@@ -1093,7 +1026,7 @@ describe('DocumentReference class', () => {
       .set(baseObject)
       .then(() => ref.update(updateObject))
       .then(() => ref.get())
-      .then(doc => {
+      .then((doc) => {
         expect(doc.data()).to.deep.equal(expectedObject);
       });
   });
@@ -1101,12 +1034,10 @@ describe('DocumentReference class', () => {
   it('supports set() with merge', () => {
     const ref = randomCol.doc('doc');
     return ref
-      .set({'a.1': 'foo', nested: {'b.1': 'bar'}})
-      .then(() =>
-        ref.set({'a.2': 'foo', nested: {'b.2': 'bar'}}, {merge: true}),
-      )
+      .set({ 'a.1': 'foo', nested: { 'b.1': 'bar' } })
+      .then(() => ref.set({ 'a.2': 'foo', nested: { 'b.2': 'bar' } }, { merge: true }))
       .then(() => ref.get())
-      .then(doc => {
+      .then((doc) => {
         const data = doc.data();
         expect(data).to.deep.equal({
           'a.1': 'foo',
@@ -1122,10 +1053,10 @@ describe('DocumentReference class', () => {
   it('supports server timestamps for merge', () => {
     const ref = randomCol.doc('doc');
     return ref
-      .set({a: 'b'})
-      .then(() => ref.set({c: FieldValue.serverTimestamp()}, {merge: true}))
+      .set({ a: 'b' })
+      .then(() => ref.set({ c: FieldValue.serverTimestamp() }, { merge: true }))
       .then(() => ref.get())
-      .then(doc => {
+      .then((doc) => {
         const updateTimestamp = doc.get('c');
         expect(updateTimestamp).to.be.an.instanceOf(Timestamp);
         expect(doc.data()).to.deep.equal({
@@ -1138,27 +1069,25 @@ describe('DocumentReference class', () => {
   it('has update() method', () => {
     const ref = randomCol.doc('doc');
     return ref
-      .set({foo: 'a'})
-      .then(res => {
-        return ref.update({foo: 'b'}, {lastUpdateTime: res.writeTime});
+      .set({ foo: 'a' })
+      .then((res) => {
+        return ref.update({ foo: 'b' }, { lastUpdateTime: res.writeTime });
       })
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         expect(doc.get('foo')).to.equal('b');
       });
   });
 
   // TODO (b/429419330) re-enable test when this bug is fixed
   it.skip('enforces that updated document exists', async () => {
-    const promise = randomCol.doc().update({foo: 'b'});
+    const promise = randomCol.doc().update({ foo: 'b' });
 
     // Validate the error message when testing against the firestore backend.
     if (process.env.FIRESTORE_EMULATOR_HOST === undefined) {
-      await expect(promise).to.eventually.be.rejectedWith(
-        /No document to update/,
-      );
+      await expect(promise).to.eventually.be.rejectedWith(/No document to update/);
     } else {
       // The emulator generates a different error message, do not validate the error message.
       await expect(promise).to.eventually.be.rejected;
@@ -1170,7 +1099,7 @@ describe('DocumentReference class', () => {
 
     const ref = randomCol.doc('doc');
     return ref
-      .set({foo: 'a'})
+      .set({ foo: 'a' })
       .then(() => {
         return ref.delete();
       })
@@ -1178,7 +1107,7 @@ describe('DocumentReference class', () => {
         deleted = true;
         return ref.get();
       })
-      .then(result => {
+      .then((result) => {
         expect(deleted).to.be.true;
         expect(result.exists).to.be.false;
       });
@@ -1193,14 +1122,12 @@ describe('DocumentReference class', () => {
   it.skip('will fail to delete document with exists: true if doc does not exist', async () => {
     const ref = randomCol.doc();
     const promise = ref
-      .delete({exists: true})
+      .delete({ exists: true })
       .then(() => Promise.reject('Delete should have failed'));
 
     // Validate the error message when testing against the firestore backend.
     if (process.env.FIRESTORE_EMULATOR_HOST === undefined) {
-      await expect(promise).to.eventually.be.rejectedWith(
-        /No document to update/,
-      );
+      await expect(promise).to.eventually.be.rejectedWith(/No document to update/);
     } else {
       // The emulator generates a different error message, do not validate the error message.
       await expect(promise).to.eventually.be.rejected;
@@ -1210,19 +1137,19 @@ describe('DocumentReference class', () => {
   it('supports non-alphanumeric field names', () => {
     const ref = randomCol.doc('doc');
     return ref
-      .set({'!.\\`': {'!.\\`': 'value'}})
+      .set({ '!.\\`': { '!.\\`': 'value' } })
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
-        expect(doc.data()).to.deep.equal({'!.\\`': {'!.\\`': 'value'}});
+      .then((doc) => {
+        expect(doc.data()).to.deep.equal({ '!.\\`': { '!.\\`': 'value' } });
         return ref.update(new FieldPath('!.\\`', '!.\\`'), 'new-value');
       })
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
-        expect(doc.data()).to.deep.equal({'!.\\`': {'!.\\`': 'new-value'}});
+      .then((doc) => {
+        expect(doc.data()).to.deep.equal({ '!.\\`': { '!.\\`': 'new-value' } });
       });
   });
 
@@ -1243,7 +1170,7 @@ describe('DocumentReference class', () => {
       .then(() => {
         return randomCol.doc('doc').listCollections();
       })
-      .then(response => {
+      .then((response) => {
         expect(response).to.have.length(collections.length);
         for (let i = 0; i < response.length; ++i) {
           expect(response[i].id).to.equal(collections[i]);
@@ -1260,48 +1187,48 @@ describe('DocumentReference class', () => {
     const actions = [
       () => ref.create({}),
       () => ref.delete(),
-      () => ref.create({a: {b: 'c'}}),
-      () => ref.set({}, {merge: true}),
+      () => ref.create({ a: { b: 'c' } }),
+      () => ref.set({}, { merge: true }),
       () => ref.set({}),
-      () => ref.set({a: {b: 'c'}}),
-      () => ref.set({a: {d: 'e'}}, {merge: true}),
-      () => ref.set({a: {d: FieldValue.delete()}}, {merge: true}),
-      () => ref.set({a: {b: FieldValue.delete()}}, {merge: true}),
-      () => ref.set({a: {e: 'foo'}}, {merge: true}),
-      () => ref.set({f: 'foo'}, {merge: true}),
-      () => ref.set({f: {g: 'foo'}}, {merge: true}),
-      () => ref.update({'f.h': 'foo'}),
-      () => ref.update({'f.g': FieldValue.delete()}),
-      () => ref.update({'f.h': FieldValue.delete()}),
-      () => ref.update({f: FieldValue.delete()}),
-      () => ref.update({'i.j': {}}),
-      () => ref.update({'i.j': {k: 'foo'}}),
-      () => ref.update({'i.j': {l: {}}}),
-      () => ref.update({i: FieldValue.delete()}),
-      () => ref.update({a: FieldValue.delete()}),
+      () => ref.set({ a: { b: 'c' } }),
+      () => ref.set({ a: { d: 'e' } }, { merge: true }),
+      () => ref.set({ a: { d: FieldValue.delete() } }, { merge: true }),
+      () => ref.set({ a: { b: FieldValue.delete() } }, { merge: true }),
+      () => ref.set({ a: { e: 'foo' } }, { merge: true }),
+      () => ref.set({ f: 'foo' }, { merge: true }),
+      () => ref.set({ f: { g: 'foo' } }, { merge: true }),
+      () => ref.update({ 'f.h': 'foo' }),
+      () => ref.update({ 'f.g': FieldValue.delete() }),
+      () => ref.update({ 'f.h': FieldValue.delete() }),
+      () => ref.update({ f: FieldValue.delete() }),
+      () => ref.update({ 'i.j': {} }),
+      () => ref.update({ 'i.j': { k: 'foo' } }),
+      () => ref.update({ 'i.j': { l: {} } }),
+      () => ref.update({ i: FieldValue.delete() }),
+      () => ref.update({ a: FieldValue.delete() }),
     ];
 
     const expectedState = [
       {},
       null,
-      {a: {b: 'c'}},
-      {a: {b: 'c'}},
+      { a: { b: 'c' } },
+      { a: { b: 'c' } },
       {},
-      {a: {b: 'c'}},
-      {a: {b: 'c', d: 'e'}},
-      {a: {b: 'c'}},
-      {a: {}},
-      {a: {e: 'foo'}},
-      {a: {e: 'foo'}, f: 'foo'},
-      {a: {e: 'foo'}, f: {g: 'foo'}},
-      {a: {e: 'foo'}, f: {g: 'foo', h: 'foo'}},
-      {a: {e: 'foo'}, f: {h: 'foo'}},
-      {a: {e: 'foo'}, f: {}},
-      {a: {e: 'foo'}},
-      {a: {e: 'foo'}, i: {j: {}}},
-      {a: {e: 'foo'}, i: {j: {k: 'foo'}}},
-      {a: {e: 'foo'}, i: {j: {l: {}}}},
-      {a: {e: 'foo'}},
+      { a: { b: 'c' } },
+      { a: { b: 'c', d: 'e' } },
+      { a: { b: 'c' } },
+      { a: {} },
+      { a: { e: 'foo' } },
+      { a: { e: 'foo' }, f: 'foo' },
+      { a: { e: 'foo' }, f: { g: 'foo' } },
+      { a: { e: 'foo' }, f: { g: 'foo', h: 'foo' } },
+      { a: { e: 'foo' }, f: { h: 'foo' } },
+      { a: { e: 'foo' }, f: {} },
+      { a: { e: 'foo' } },
+      { a: { e: 'foo' }, i: { j: {} } },
+      { a: { e: 'foo' }, i: { j: { k: 'foo' } } },
+      { a: { e: 'foo' }, i: { j: { l: {} } } },
+      { a: { e: 'foo' } },
       {},
     ];
 
@@ -1313,7 +1240,7 @@ describe('DocumentReference class', () => {
         .then(() => {
           return ref.get();
         })
-        .then(snap => {
+        .then((snap) => {
           if (!snap.exists) {
             expect(expectedState[i]).to.be.null;
           } else {
@@ -1335,20 +1262,20 @@ describe('DocumentReference class', () => {
       () =>
         ref.create({
           time: FieldValue.serverTimestamp(),
-          a: {b: FieldValue.serverTimestamp()},
+          a: { b: FieldValue.serverTimestamp() },
         }),
       () =>
         ref.set({
           time: FieldValue.serverTimestamp(),
-          a: {c: FieldValue.serverTimestamp()},
+          a: { c: FieldValue.serverTimestamp() },
         }),
       () =>
         ref.set(
           {
             time: FieldValue.serverTimestamp(),
-            a: {d: FieldValue.serverTimestamp()},
+            a: { d: FieldValue.serverTimestamp() },
           },
-          {merge: true},
+          { merge: true },
         ),
       () =>
         ref.set(
@@ -1356,15 +1283,15 @@ describe('DocumentReference class', () => {
             time: FieldValue.serverTimestamp(),
             e: FieldValue.serverTimestamp(),
           },
-          {merge: true},
+          { merge: true },
         ),
       () =>
         ref.set(
           {
             time: FieldValue.serverTimestamp(),
-            e: {f: FieldValue.serverTimestamp()},
+            e: { f: FieldValue.serverTimestamp() },
           },
-          {merge: true},
+          { merge: true },
         ),
       () =>
         ref.update({
@@ -1374,44 +1301,44 @@ describe('DocumentReference class', () => {
       () =>
         ref.update({
           time: FieldValue.serverTimestamp(),
-          'g.j': {k: FieldValue.serverTimestamp()},
+          'g.j': { k: FieldValue.serverTimestamp() },
         }),
     ];
 
     const expectedState = [
       (times: number[]) => {
-        return {time: times[0], a: {b: times[0]}};
+        return { time: times[0], a: { b: times[0] } };
       },
       (times: number[]) => {
-        return {time: times[1], a: {c: times[1]}};
+        return { time: times[1], a: { c: times[1] } };
       },
       (times: number[]) => {
-        return {time: times[2], a: {c: times[1], d: times[2]}};
+        return { time: times[2], a: { c: times[1], d: times[2] } };
       },
       (times: number[]) => {
-        return {time: times[3], a: {c: times[1], d: times[2]}, e: times[3]};
+        return { time: times[3], a: { c: times[1], d: times[2] }, e: times[3] };
       },
       (times: number[]) => {
         return {
           time: times[4],
-          a: {c: times[1], d: times[2]},
-          e: {f: times[4]},
+          a: { c: times[1], d: times[2] },
+          e: { f: times[4] },
         };
       },
       (times: number[]) => {
         return {
           time: times[5],
-          a: {c: times[1], d: times[2]},
-          e: {f: times[4]},
-          g: {h: times[5]},
+          a: { c: times[1], d: times[2] },
+          e: { f: times[4] },
+          g: { h: times[5] },
         };
       },
       (times: number[]) => {
         return {
           time: times[6],
-          a: {c: times[1], d: times[2]},
-          e: {f: times[4]},
-          g: {h: times[5], j: {k: times[6]}},
+          a: { c: times[1], d: times[2] },
+          e: { f: times[4] },
+          g: { h: times[5], j: { k: times[6] } },
         };
       },
     ];
@@ -1425,7 +1352,7 @@ describe('DocumentReference class', () => {
         .then(() => {
           return ref.get();
         })
-        .then(snap => {
+        .then((snap) => {
           times.push(snap.get('time'));
           expect(snap.data()).to.deep.equal(expectedState[i](times));
         });
@@ -1451,12 +1378,9 @@ describe('DocumentReference class', () => {
 
     const snap1 = await ref.get();
     expect(snap1.get('vector0').isEqual(FieldValue.vector([0.0]))).to.be.true;
-    expect(snap1.get('vector1').isEqual(FieldValue.vector([1, 2, 3.99]))).to.be
-      .true;
-    expect(snap1.get('vector2').isEqual(FieldValue.vector([0, 0, 0]))).to.be
-      .true;
-    expect(snap1.get('vector3').isEqual(FieldValue.vector([-1, -200, -999]))).to
-      .be.true;
+    expect(snap1.get('vector1').isEqual(FieldValue.vector([1, 2, 3.99]))).to.be.true;
+    expect(snap1.get('vector2').isEqual(FieldValue.vector([0, 0, 0]))).to.be.true;
+    expect(snap1.get('vector3').isEqual(FieldValue.vector([-1, -200, -999]))).to.be.true;
   });
 
   describe('watch', () => {
@@ -1470,7 +1394,7 @@ describe('DocumentReference class', () => {
     }
 
     function waitForSnapshot(): Promise<DocumentSnapshot> {
-      return currentDeferred.promise!.then(snapshot => {
+      return currentDeferred.promise!.then((snapshot) => {
         resetPromise();
         return snapshot as DocumentSnapshot;
       });
@@ -1485,25 +1409,25 @@ describe('DocumentReference class', () => {
       let updateTime: Timestamp;
 
       const unsubscribe = ref.onSnapshot(
-        snapshot => {
+        (snapshot) => {
           currentDeferred.resolve(snapshot);
         },
-        err => {
+        (err) => {
           currentDeferred.reject(err);
         },
       );
 
       return waitForSnapshot()
-        .then(snapshot => {
+        .then((snapshot) => {
           expect(snapshot.exists).to.be.false;
 
           // Add the document.
-          return ref.set({foo: 'a'});
+          return ref.set({ foo: 'a' });
         })
         .then(() => {
           return waitForSnapshot();
         })
-        .then(snapshot => {
+        .then((snapshot) => {
           expect(snapshot.exists).to.be.true;
           expect(snapshot.get('foo')).to.equal('a');
           readTime = snapshot.readTime;
@@ -1511,21 +1435,17 @@ describe('DocumentReference class', () => {
           updateTime = snapshot.updateTime!;
 
           // Update documents.
-          return ref.set({foo: 'b'});
+          return ref.set({ foo: 'b' });
         })
         .then(() => {
           return waitForSnapshot();
         })
-        .then(snapshot => {
+        .then((snapshot) => {
           expect(snapshot.exists).to.be.true;
           expect(snapshot.get('foo')).to.equal('b');
           expect(snapshot.createTime!.isEqual(createTime)).to.be.true;
-          expect(snapshot.readTime.toMillis()).to.be.greaterThan(
-            readTime.toMillis(),
-          );
-          expect(snapshot.updateTime!.toMillis()).to.be.greaterThan(
-            updateTime.toMillis(),
-          );
+          expect(snapshot.readTime.toMillis()).to.be.greaterThan(readTime.toMillis());
+          expect(snapshot.updateTime!.toMillis()).to.be.greaterThan(updateTime.toMillis());
           unsubscribe();
         });
     });
@@ -1534,25 +1454,25 @@ describe('DocumentReference class', () => {
       const ref = randomCol.doc('doc');
 
       const unsubscribe = ref.onSnapshot(
-        snapshot => {
+        (snapshot) => {
           currentDeferred.resolve(snapshot);
         },
-        err => {
+        (err) => {
           currentDeferred.reject(err);
         },
       );
 
       return waitForSnapshot()
-        .then(snapshot => {
+        .then((snapshot) => {
           expect(snapshot.exists).to.be.false;
 
           // Add the document.
-          return ref.set({foo: 'a'});
+          return ref.set({ foo: 'a' });
         })
         .then(() => {
           return waitForSnapshot();
         })
-        .then(snapshot => {
+        .then((snapshot) => {
           expect(snapshot.exists).to.be.true;
 
           // Delete the document.
@@ -1561,13 +1481,13 @@ describe('DocumentReference class', () => {
         .then(() => {
           return waitForSnapshot();
         })
-        .then(snapshot => {
+        .then((snapshot) => {
           expect(snapshot.exists).to.be.false;
           unsubscribe();
         });
     });
 
-    it('handles multiple docs', done => {
+    it('handles multiple docs', (done) => {
       const doc1 = randomCol.doc();
       const doc2 = randomCol.doc();
 
@@ -1580,8 +1500,8 @@ describe('DocumentReference class', () => {
       // Code blocks to run after each step.
       const run = [
         () => {
-          promises.push(doc1.set({foo: 'foo'}));
-          promises.push(doc2.set({foo: 'foo'}));
+          promises.push(doc1.set({ foo: 'foo' }));
+          promises.push(doc2.set({ foo: 'foo' }));
         },
         () => {
           promises.push(doc1.delete());
@@ -1599,18 +1519,18 @@ describe('DocumentReference class', () => {
           run.shift()!();
         }
       };
-      const unsubscribe1 = doc1.onSnapshot(snapshot => {
+      const unsubscribe1 = doc1.onSnapshot((snapshot) => {
         expect(snapshot.exists).to.equal(exists1.shift());
         maybeRun();
       });
 
-      const unsubscribe2 = doc2.onSnapshot(snapshot => {
+      const unsubscribe2 = doc2.onSnapshot((snapshot) => {
         expect(snapshot.exists).to.equal(exists2.shift());
         maybeRun();
       });
     });
 
-    it('handles multiple streams on same doc', done => {
+    it('handles multiple streams on same doc', (done) => {
       const doc = randomCol.doc();
 
       // Document transitions from non-existent to existent to non-existent.
@@ -1622,7 +1542,7 @@ describe('DocumentReference class', () => {
       // Code blocks to run after each step.
       const run = [
         () => {
-          promises.push(doc.set({foo: 'foo'}));
+          promises.push(doc.set({ foo: 'foo' }));
         },
         () => {
           promises.push(doc.delete());
@@ -1640,12 +1560,12 @@ describe('DocumentReference class', () => {
         }
       };
 
-      const unsubscribe1 = doc.onSnapshot(snapshot => {
+      const unsubscribe1 = doc.onSnapshot((snapshot) => {
         expect(snapshot.exists).to.equal(exists1.shift());
         maybeRun();
       });
 
-      const unsubscribe2 = doc.onSnapshot(snapshot => {
+      const unsubscribe2 = doc.onSnapshot((snapshot) => {
         expect(snapshot.exists).to.equal(exists2.shift());
         maybeRun();
       });
@@ -1665,21 +1585,19 @@ describe('DocumentReference class', () => {
         emptyResults[i] = new Deferred<void>();
         documentResults[i] = new Deferred<void>();
 
-        unsubscribeCallbacks[i] = randomCol
-          .where('i', '>', i)
-          .onSnapshot(snapshot => {
-            if (snapshot.size === 0) {
-              emptyResults[i].resolve();
-            } else if (snapshot.size === 1) {
-              documentResults[i].resolve();
-            }
-          });
+        unsubscribeCallbacks[i] = randomCol.where('i', '>', i).onSnapshot((snapshot) => {
+          if (snapshot.size === 0) {
+            emptyResults[i].resolve();
+          } else if (snapshot.size === 1) {
+            documentResults[i].resolve();
+          }
+        });
       }
 
-      await Promise.all(emptyResults.map(d => d.promise));
-      await ref.set({i: 1337});
-      await Promise.all(documentResults.map(d => d.promise));
-      unsubscribeCallbacks.forEach(c => c());
+      await Promise.all(emptyResults.map((d) => d.promise));
+      await ref.set({ i: 1337 });
+      await Promise.all(documentResults.map((d) => d.promise));
+      unsubscribeCallbacks.forEach((c) => c());
     });
 
     it('handles query snapshots with converters', async () => {
@@ -1689,7 +1607,7 @@ describe('DocumentReference class', () => {
       const unsubscribe = randomCol
         .where('title', '==', 'post')
         .withConverter(postConverter)
-        .onSnapshot(snapshot => {
+        .onSnapshot((snapshot) => {
           if (snapshot.size === 0) {
             setupDeferred.resolve();
           }
@@ -1707,10 +1625,7 @@ describe('DocumentReference class', () => {
   });
 
   it('supports withConverter()', async () => {
-    const ref = firestore
-      .collection('col')
-      .doc('doc')
-      .withConverter(postConverter);
+    const ref = firestore.collection('col').doc('doc').withConverter(postConverter);
     await ref.set(new Post('post', 'author'));
     const postData = await ref.get();
     const post = postData.data();
@@ -1722,7 +1637,7 @@ describe('DocumentReference class', () => {
     type Primitive = number;
     const primitiveConverter = {
       toFirestore(value: Primitive): DocumentData {
-        return {value};
+        return { value };
       },
       fromFirestore(snapshot: QueryDocumentSnapshot): Primitive {
         const data = snapshot.data();
@@ -1733,7 +1648,7 @@ describe('DocumentReference class', () => {
     type ArrayValue = number[];
     const arrayConverter = {
       toFirestore(value: ArrayValue): DocumentData {
-        return {values: value};
+        return { values: value };
       },
       fromFirestore(snapshot: QueryDocumentSnapshot): ArrayValue {
         const data = snapshot.data();
@@ -1761,27 +1676,19 @@ describe('DocumentReference class', () => {
     const updateDeferred = new Deferred<void>();
     const deleteDeferred = new Deferred<void>();
 
-    const expected = [
-      initialDeferred,
-      createDeferred,
-      setDeferred,
-      updateDeferred,
-      deleteDeferred,
-    ];
+    const expected = [initialDeferred, createDeferred, setDeferred, updateDeferred, deleteDeferred];
     let idx = 0;
     let document: DocumentSnapshot | null = null;
 
-    const unlisten = randomCol
-      .where('purpose', '==', 'vector tests')
-      .onSnapshot(snap => {
-        expected[idx].resolve();
-        idx += 1;
-        if (snap.docs.length > 0) {
-          document = snap.docs[0];
-        } else {
-          document = null;
-        }
-      });
+    const unlisten = randomCol.where('purpose', '==', 'vector tests').onSnapshot((snap) => {
+      expected[idx].resolve();
+      idx += 1;
+      if (snap.docs.length > 0) {
+        document = snap.docs[0];
+      } else {
+        document = null;
+      }
+    });
 
     await initialDeferred.promise;
     expect(document).to.be.null;
@@ -1794,10 +1701,8 @@ describe('DocumentReference class', () => {
 
     await createDeferred.promise;
     expect(document).to.be.not.null;
-    expect(document!.get('vector0').isEqual(FieldValue.vector([0.0]))).to.be
-      .true;
-    expect(document!.get('vector1').isEqual(FieldValue.vector([1, 2, 3.99]))).to
-      .be.true;
+    expect(document!.get('vector0').isEqual(FieldValue.vector([0.0]))).to.be.true;
+    expect(document!.get('vector1').isEqual(FieldValue.vector([1, 2, 3.99]))).to.be.true;
 
     await ref.set({
       purpose: 'vector tests',
@@ -1807,27 +1712,19 @@ describe('DocumentReference class', () => {
     });
     await setDeferred.promise;
     expect(document).to.be.not.null;
-    expect(document!.get('vector0').isEqual(FieldValue.vector([0.0]))).to.be
-      .true;
-    expect(document!.get('vector1').isEqual(FieldValue.vector([1, 2, 3.99]))).to
-      .be.true;
-    expect(document!.get('vector2').isEqual(FieldValue.vector([0, 0, 0]))).to.be
-      .true;
+    expect(document!.get('vector0').isEqual(FieldValue.vector([0.0]))).to.be.true;
+    expect(document!.get('vector1').isEqual(FieldValue.vector([1, 2, 3.99]))).to.be.true;
+    expect(document!.get('vector2').isEqual(FieldValue.vector([0, 0, 0]))).to.be.true;
 
     await ref.update({
       vector3: FieldValue.vector([-1, -200, -999]),
     });
     await updateDeferred.promise;
     expect(document).to.be.not.null;
-    expect(document!.get('vector0').isEqual(FieldValue.vector([0.0]))).to.be
-      .true;
-    expect(document!.get('vector1').isEqual(FieldValue.vector([1, 2, 3.99]))).to
-      .be.true;
-    expect(document!.get('vector2').isEqual(FieldValue.vector([0, 0, 0]))).to.be
-      .true;
-    expect(
-      document!.get('vector3').isEqual(FieldValue.vector([-1, -200, -999])),
-    ).to.be.true;
+    expect(document!.get('vector0').isEqual(FieldValue.vector([0.0]))).to.be.true;
+    expect(document!.get('vector1').isEqual(FieldValue.vector([1, 2, 3.99]))).to.be.true;
+    expect(document!.get('vector2').isEqual(FieldValue.vector([0, 0, 0]))).to.be.true;
+    expect(document!.get('vector3').isEqual(FieldValue.vector([-1, -200, -999]))).to.be.true;
 
     await ref.delete();
     await deleteDeferred.promise;
@@ -1847,7 +1744,7 @@ describe('runs query on a large collection', () => {
 
     const promises: Array<Promise<DocumentReference<DocumentData>>> = [];
     for (let i = 0; i < 1000; i++) {
-      promises.push(randomCol.add({foo: 'a'}));
+      promises.push(randomCol.add({ foo: 'a' }));
     }
     await Promise.all(promises);
   });
@@ -1855,7 +1752,7 @@ describe('runs query on a large collection', () => {
   afterEach(() => verifyInstance(firestore));
 
   it('can get()', () => {
-    return randomCol.get().then(res => {
+    return randomCol.get().then((res) => {
       expect(res.size).to.equal(1000);
     });
   });
@@ -1882,32 +1779,23 @@ describe.skipEnterprise('Query class - Standard DB', () => {
   let firestore: Firestore;
   let randomCol: CollectionReference;
 
-  const paginateResults = (
-    query: Query,
-    startAfter?: unknown,
-  ): Promise<PaginatedResults> => {
-    return (startAfter ? query.startAfter(startAfter) : query)
-      .get()
-      .then(snapshot => {
-        if (snapshot.empty) {
-          return {pages: 0, docs: []};
-        } else {
-          const docs = snapshot.docs;
-          return paginateResults(query, docs[docs.length - 1]).then(
-            nextPage => {
-              return {
-                pages: nextPage.pages + 1,
-                docs: docs.concat(nextPage.docs),
-              };
-            },
-          );
-        }
-      });
+  const paginateResults = (query: Query, startAfter?: unknown): Promise<PaginatedResults> => {
+    return (startAfter ? query.startAfter(startAfter) : query).get().then((snapshot) => {
+      if (snapshot.empty) {
+        return { pages: 0, docs: [] };
+      } else {
+        const docs = snapshot.docs;
+        return paginateResults(query, docs[docs.length - 1]).then((nextPage) => {
+          return {
+            pages: nextPage.pages + 1,
+            docs: docs.concat(nextPage.docs),
+          };
+        });
+      }
+    });
   };
 
-  async function addDocs(
-    ...docs: DocumentData[]
-  ): Promise<DocumentReference[]> {
+  async function addDocs(...docs: DocumentData[]): Promise<DocumentReference[]> {
     let id = 0; // Guarantees consistent ordering for the first documents
     const refs: DocumentReference[] = [];
     for (const doc of docs) {
@@ -1931,18 +1819,15 @@ describe.skipEnterprise('Query class - Standard DB', () => {
   function expectDocs(result: QuerySnapshot, ...docs: string[]): void;
   function expectDocs(result: QuerySnapshot, ...data: DocumentData[]): void;
 
-  function expectDocs(
-    result: QuerySnapshot,
-    ...data: DocumentData[] | string[]
-  ): void {
+  function expectDocs(result: QuerySnapshot, ...data: DocumentData[] | string[]): void {
     expect(result.size).to.equal(data.length);
 
     if (data.length > 0) {
       if (typeof data[0] === 'string') {
-        const actualIds = result.docs.map(docSnapshot => docSnapshot.id);
+        const actualIds = result.docs.map((docSnapshot) => docSnapshot.id);
         expect(actualIds).to.deep.equal(data);
       } else {
-        result.forEach(doc => {
+        result.forEach((doc) => {
           expect(doc.data()).to.deep.equal(data.shift());
         });
       }
@@ -1964,23 +1849,23 @@ describe.skipEnterprise('Query class - Standard DB', () => {
   it('has select() method', () => {
     const ref = randomCol.doc('doc');
     return ref
-      .set({foo: 'bar', bar: 'foo'})
+      .set({ foo: 'bar', bar: 'foo' })
       .then(() => {
         return randomCol.select('foo').get();
       })
-      .then(res => {
-        expect(res.docs[0].data()).to.deep.equal({foo: 'bar'});
+      .then((res) => {
+        expect(res.docs[0].data()).to.deep.equal({ foo: 'bar' });
       });
   });
 
   it('select() supports empty fields', () => {
     const ref = randomCol.doc('doc');
     return ref
-      .set({foo: 'bar', bar: 'foo'})
+      .set({ foo: 'bar', bar: 'foo' })
       .then(() => {
         return randomCol.select().get();
       })
-      .then(res => {
+      .then((res) => {
         expect(res.docs[0].ref.id).to.deep.equal('doc');
         expect(res.docs[0].data()).to.deep.equal({});
       });
@@ -1989,38 +1874,32 @@ describe.skipEnterprise('Query class - Standard DB', () => {
   it('has where() method', () => {
     const ref = randomCol.doc('doc');
     return ref
-      .set({foo: 'bar'})
+      .set({ foo: 'bar' })
       .then(() => {
         return randomCol.where('foo', '==', 'bar').get();
       })
-      .then(res => {
-        expect(res.docs[0].data()).to.deep.equal({foo: 'bar'});
+      .then((res) => {
+        expect(res.docs[0].data()).to.deep.equal({ foo: 'bar' });
       });
   });
 
   it('supports NaN and Null', () => {
     const ref = randomCol.doc('doc');
     return ref
-      .set({foo: NaN, bar: null})
+      .set({ foo: NaN, bar: null })
       .then(() => {
         return randomCol.where('foo', '==', NaN).where('bar', '==', null).get();
       })
-      .then(res => {
-        expect(
-          typeof res.docs[0].get('foo') === 'number' &&
-            isNaN(res.docs[0].get('foo')),
-        );
+      .then((res) => {
+        expect(typeof res.docs[0].get('foo') === 'number' && isNaN(res.docs[0].get('foo')));
         expect(res.docs[0].get('bar')).to.equal(null);
       });
   });
 
   it('supports array-contains', () => {
-    return Promise.all([
-      randomCol.add({foo: ['bar']}),
-      randomCol.add({foo: []}),
-    ])
+    return Promise.all([randomCol.add({ foo: ['bar'] }), randomCol.add({ foo: [] })])
       .then(() => randomCol.where('foo', 'array-contains', 'bar').get())
-      .then(res => {
+      .then((res) => {
         expect(res.size).to.equal(1);
         expect(res.docs[0].get('foo')).to.deep.equal(['bar']);
       });
@@ -2031,12 +1910,12 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       const indexTestHelper = new IndexTestHelper(firestore);
 
       const collectionReference = await indexTestHelper.createTestDocs([
-        {foo: 'bar'},
-        {foo: 'xxx', embedding: FieldValue.vector([10, 10])},
-        {foo: 'bar', embedding: FieldValue.vector([1, 1])},
-        {foo: 'bar', embedding: FieldValue.vector([10, 0])},
-        {foo: 'bar', embedding: FieldValue.vector([20, 0])},
-        {foo: 'bar', embedding: FieldValue.vector([100, 100])},
+        { foo: 'bar' },
+        { foo: 'xxx', embedding: FieldValue.vector([10, 10]) },
+        { foo: 'bar', embedding: FieldValue.vector([1, 1]) },
+        { foo: 'bar', embedding: FieldValue.vector([10, 0]) },
+        { foo: 'bar', embedding: FieldValue.vector([20, 0]) },
+        { foo: 'bar', embedding: FieldValue.vector([100, 100]) },
       ]);
 
       const vectorQuery = indexTestHelper
@@ -2051,24 +1930,21 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
       const res = await vectorQuery.get();
       expect(res.size).to.equal(3);
-      expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([10, 0])))
-        .to.be.true;
-      expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 1]))).to
-        .be.true;
-      expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([20, 0])))
-        .to.be.true;
+      expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([10, 0]))).to.be.true;
+      expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 1]))).to.be.true;
+      expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([20, 0]))).to.be.true;
     });
 
     it('supports findNearest by COSINE distance', async () => {
       const indexTestHelper = new IndexTestHelper(firestore);
 
       const collectionReference = await indexTestHelper.setTestDocs({
-        '1': {foo: 'bar'},
-        '2': {foo: 'xxx', embedding: FieldValue.vector([10, 10])},
-        '3': {foo: 'bar', embedding: FieldValue.vector([1, 1])},
-        '4': {foo: 'bar', embedding: FieldValue.vector([20, 0])},
-        '5': {foo: 'bar', embedding: FieldValue.vector([10, 0])},
-        '6': {foo: 'bar', embedding: FieldValue.vector([100, 100])},
+        '1': { foo: 'bar' },
+        '2': { foo: 'xxx', embedding: FieldValue.vector([10, 10]) },
+        '3': { foo: 'bar', embedding: FieldValue.vector([1, 1]) },
+        '4': { foo: 'bar', embedding: FieldValue.vector([20, 0]) },
+        '5': { foo: 'bar', embedding: FieldValue.vector([10, 0]) },
+        '6': { foo: 'bar', embedding: FieldValue.vector([100, 100]) },
       });
 
       const vectorQuery = indexTestHelper
@@ -2086,15 +1962,10 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       expect(res.size).to.equal(3);
 
       if (res.docs[0].get('embedding').isEqual(FieldValue.vector([1, 1]))) {
-        expect(
-          res.docs[1].get('embedding').isEqual(FieldValue.vector([100, 100])),
-        ).to.be.true;
+        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([100, 100]))).to.be.true;
       } else {
-        expect(
-          res.docs[0].get('embedding').isEqual(FieldValue.vector([100, 100])),
-        ).to.be.true;
-        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 1])))
-          .to.be.true;
+        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([100, 100]))).to.be.true;
+        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 1]))).to.be.true;
       }
 
       expect(
@@ -2107,12 +1978,12 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       const indexTestHelper = new IndexTestHelper(firestore);
 
       const collectionReference = await indexTestHelper.createTestDocs([
-        {foo: 'bar'},
-        {foo: 'xxx', embedding: FieldValue.vector([10, 10])},
-        {foo: 'bar', embedding: FieldValue.vector([1, 1])},
-        {foo: 'bar', embedding: FieldValue.vector([10, 0])},
-        {foo: 'bar', embedding: FieldValue.vector([20, 0])},
-        {foo: 'bar', embedding: FieldValue.vector([100, 100])},
+        { foo: 'bar' },
+        { foo: 'xxx', embedding: FieldValue.vector([10, 10]) },
+        { foo: 'bar', embedding: FieldValue.vector([1, 1]) },
+        { foo: 'bar', embedding: FieldValue.vector([10, 0]) },
+        { foo: 'bar', embedding: FieldValue.vector([20, 0]) },
+        { foo: 'bar', embedding: FieldValue.vector([100, 100]) },
       ]);
 
       const vectorQuery = indexTestHelper
@@ -2127,13 +1998,9 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
       const res = await vectorQuery.get();
       expect(res.size).to.equal(3);
-      expect(
-        res.docs[0].get('embedding').isEqual(FieldValue.vector([100, 100])),
-      ).to.be.true;
-      expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([20, 0])))
-        .to.be.true;
-      expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([10, 0])))
-        .to.be.true;
+      expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([100, 100]))).to.be.true;
+      expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([20, 0]))).to.be.true;
+      expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([10, 0]))).to.be.true;
     });
 
     it('findNearest works with converters', async () => {
@@ -2148,7 +2015,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
       const fooConverter = {
         toFirestore(d: FooDistance): DocumentData {
-          return {title: d.foo, embedding: FieldValue.vector(d.embedding)};
+          return { title: d.foo, embedding: FieldValue.vector(d.embedding) };
         },
         fromFirestore(snapshot: QueryDocumentSnapshot): FooDistance {
           const data = snapshot.data();
@@ -2157,7 +2024,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       };
 
       const collectionRef = await indexTestHelper.createTestDocs([
-        {foo: 'bar', embedding: FieldValue.vector([5, 5])},
+        { foo: 'bar', embedding: FieldValue.vector([5, 5]) },
       ]);
 
       const vectorQuery = indexTestHelper
@@ -2182,17 +2049,17 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       const indexTestHelper = new IndexTestHelper(firestore);
 
       const collectionRef = await indexTestHelper.createTestDocs([
-        {foo: 'bar'},
+        { foo: 'bar' },
 
         // These documents are skipped because it is not really a vector value
-        {foo: 'bar', embedding: [10, 10]},
-        {foo: 'bar', embedding: 'not actually a vector'},
-        {foo: 'bar', embedding: null},
+        { foo: 'bar', embedding: [10, 10] },
+        { foo: 'bar', embedding: 'not actually a vector' },
+        { foo: 'bar', embedding: null },
 
         // Actual vector values
-        {foo: 'bar', embedding: FieldValue.vector([9, 9])},
-        {foo: 'bar', embedding: FieldValue.vector([50, 50])},
-        {foo: 'bar', embedding: FieldValue.vector([100, 100])},
+        { foo: 'bar', embedding: FieldValue.vector([9, 9]) },
+        { foo: 'bar', embedding: FieldValue.vector([50, 50]) },
+        { foo: 'bar', embedding: FieldValue.vector([100, 100]) },
       ]);
 
       const vectorQuery = indexTestHelper
@@ -2207,27 +2074,23 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
       const res = await vectorQuery.get();
       expect(res.size).to.equal(3);
-      expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([9, 9]))).to
-        .be.true;
-      expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([50, 50])))
-        .to.be.true;
-      expect(
-        res.docs[2].get('embedding').isEqual(FieldValue.vector([100, 100])),
-      ).to.be.true;
+      expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([9, 9]))).to.be.true;
+      expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([50, 50]))).to.be.true;
+      expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([100, 100]))).to.be.true;
     });
 
     it('findNearest ignores mismatching dimensions', async () => {
       const indexTestHelper = new IndexTestHelper(firestore);
 
       const collectionRef = await indexTestHelper.createTestDocs([
-        {foo: 'bar'},
+        { foo: 'bar' },
 
         // Vectors with dimension mismatch
-        {foo: 'bar', embedding: FieldValue.vector([10])},
+        { foo: 'bar', embedding: FieldValue.vector([10]) },
 
         // Vectors with dimension match
-        {foo: 'bar', embedding: FieldValue.vector([9, 9])},
-        {foo: 'bar', embedding: FieldValue.vector([50, 50])},
+        { foo: 'bar', embedding: FieldValue.vector([9, 9]) },
+        { foo: 'bar', embedding: FieldValue.vector([50, 50]) },
       ]);
 
       const vectorQuery = indexTestHelper
@@ -2242,20 +2105,18 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
       const res = await vectorQuery.get();
       expect(res.size).to.equal(2);
-      expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([9, 9]))).to
-        .be.true;
-      expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([50, 50])))
-        .to.be.true;
+      expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([9, 9]))).to.be.true;
+      expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([50, 50]))).to.be.true;
     });
 
     it('supports findNearest on non-existent field', async () => {
       const indexTestHelper = new IndexTestHelper(firestore);
 
       const collectionRef = await indexTestHelper.createTestDocs([
-        {foo: 'bar'},
-        {foo: 'bar', otherField: [10, 10]},
-        {foo: 'bar', otherField: 'not actually a vector'},
-        {foo: 'bar', otherField: null},
+        { foo: 'bar' },
+        { foo: 'bar', otherField: [10, 10] },
+        { foo: 'bar', otherField: 'not actually a vector' },
+        { foo: 'bar', otherField: null },
       ]);
 
       const vectorQuery = indexTestHelper
@@ -2277,48 +2138,38 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       const indexTestHelper = new IndexTestHelper(firestore);
 
       const collectionReference = await indexTestHelper.createTestDocs([
-        {nested: {foo: 'bar'}},
-        {nested: {foo: 'xxx', embedding: FieldValue.vector([10, 10])}},
-        {nested: {foo: 'bar', embedding: FieldValue.vector([1, 1])}},
-        {nested: {foo: 'bar', embedding: FieldValue.vector([10, 0])}},
-        {nested: {foo: 'bar', embedding: FieldValue.vector([20, 0])}},
-        {nested: {foo: 'bar', embedding: FieldValue.vector([100, 100])}},
+        { nested: { foo: 'bar' } },
+        { nested: { foo: 'xxx', embedding: FieldValue.vector([10, 10]) } },
+        { nested: { foo: 'bar', embedding: FieldValue.vector([1, 1]) } },
+        { nested: { foo: 'bar', embedding: FieldValue.vector([10, 0]) } },
+        { nested: { foo: 'bar', embedding: FieldValue.vector([20, 0]) } },
+        { nested: { foo: 'bar', embedding: FieldValue.vector([100, 100]) } },
       ]);
 
-      const vectorQuery = indexTestHelper
-        .query(collectionReference)
-        .findNearest({
-          vectorField: 'nested.embedding',
-          queryVector: [10, 10],
-          limit: 3,
-          distanceMeasure: 'EUCLIDEAN',
-        });
+      const vectorQuery = indexTestHelper.query(collectionReference).findNearest({
+        vectorField: 'nested.embedding',
+        queryVector: [10, 10],
+        limit: 3,
+        distanceMeasure: 'EUCLIDEAN',
+      });
 
       const res = await vectorQuery.get();
       expect(res.size).to.equal(3);
-      expect(
-        res.docs[0]
-          .get('nested.embedding')
-          .isEqual(FieldValue.vector([10, 10])),
-      ).to.be.true;
-      expect(
-        res.docs[1].get('nested.embedding').isEqual(FieldValue.vector([10, 0])),
-      ).to.be.true;
-      expect(
-        res.docs[2].get('nested.embedding').isEqual(FieldValue.vector([1, 1])),
-      ).to.be.true;
+      expect(res.docs[0].get('nested.embedding').isEqual(FieldValue.vector([10, 10]))).to.be.true;
+      expect(res.docs[1].get('nested.embedding').isEqual(FieldValue.vector([10, 0]))).to.be.true;
+      expect(res.docs[2].get('nested.embedding').isEqual(FieldValue.vector([1, 1]))).to.be.true;
     });
 
     it('supports findNearest with select to exclude vector data in response', async () => {
       const indexTestHelper = new IndexTestHelper(firestore);
 
       const collectionReference = await indexTestHelper.createTestDocs([
-        {foo: 1},
-        {foo: 2, embedding: FieldValue.vector([10, 10])},
-        {foo: 3, embedding: FieldValue.vector([1, 1])},
-        {foo: 4, embedding: FieldValue.vector([10, 0])},
-        {foo: 5, embedding: FieldValue.vector([20, 0])},
-        {foo: 6, embedding: FieldValue.vector([100, 100])},
+        { foo: 1 },
+        { foo: 2, embedding: FieldValue.vector([10, 10]) },
+        { foo: 3, embedding: FieldValue.vector([1, 1]) },
+        { foo: 4, embedding: FieldValue.vector([10, 0]) },
+        { foo: 5, embedding: FieldValue.vector([20, 0]) },
+        { foo: 6, embedding: FieldValue.vector([100, 100]) },
       ]);
 
       const vectorQuery = indexTestHelper
@@ -2340,7 +2191,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       expect(res.docs[3].get('foo')).to.equal(5);
       expect(res.docs[4].get('foo')).to.equal(6);
 
-      res.docs.forEach(ds => expect(ds.get('embedding')).to.be.undefined);
+      res.docs.forEach((ds) => expect(ds.get('embedding')).to.be.undefined);
     });
 
     it('supports findNearest limits', async () => {
@@ -2354,23 +2205,21 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       }
 
       const collectionReference = await indexTestHelper.createTestDocs([
-        {embedding: FieldValue.vector(embeddingVector)},
+        { embedding: FieldValue.vector(embeddingVector) },
       ]);
 
-      const vectorQuery = indexTestHelper
-        .query(collectionReference)
-        .findNearest({
-          vectorField: 'embedding',
-          queryVector: queryVector,
-          limit: 1000,
-          distanceMeasure: 'EUCLIDEAN',
-        });
+      const vectorQuery = indexTestHelper.query(collectionReference).findNearest({
+        vectorField: 'embedding',
+        queryVector: queryVector,
+        limit: 1000,
+        distanceMeasure: 'EUCLIDEAN',
+      });
 
       const res = await vectorQuery.get();
       expect(res.size).to.equal(1);
-      expect(
-        (res.docs[0].get('embedding') as VectorValue).toArray(),
-      ).to.deep.equal(embeddingVector);
+      expect((res.docs[0].get('embedding') as VectorValue).toArray()).to.deep.equal(
+        embeddingVector,
+      );
     });
 
     describe('preview API (deprecated)', () => {
@@ -2378,12 +2227,12 @@ describe.skipEnterprise('Query class - Standard DB', () => {
         const indexTestHelper = new IndexTestHelper(firestore);
 
         const collectionReference = await indexTestHelper.createTestDocs([
-          {foo: 'bar'},
-          {foo: 'bar', embedding: FieldValue.vector([10, 10])},
-          {foo: 'bar', embedding: FieldValue.vector([1, 1.1])},
-          {foo: 'x', embedding: FieldValue.vector([1, 1])},
-          {foo: 'bar', embedding: FieldValue.vector([10, 0])},
-          {foo: 'bar', embedding: FieldValue.vector([-100, -100])},
+          { foo: 'bar' },
+          { foo: 'bar', embedding: FieldValue.vector([10, 10]) },
+          { foo: 'bar', embedding: FieldValue.vector([1, 1.1]) },
+          { foo: 'x', embedding: FieldValue.vector([1, 1]) },
+          { foo: 'bar', embedding: FieldValue.vector([10, 0]) },
+          { foo: 'bar', embedding: FieldValue.vector([-100, -100]) },
         ]);
 
         const vectorQuery = indexTestHelper
@@ -2396,26 +2245,21 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
         const res = await vectorQuery.get();
         expect(res.size).to.equal(3);
-        expect(
-          res.docs[0].get('embedding').isEqual(FieldValue.vector([1, 1.1])),
-        ).to.be.true;
-        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([10, 0])))
-          .to.be.true;
-        expect(
-          res.docs[2].get('embedding').isEqual(FieldValue.vector([10, 10])),
-        ).to.be.true;
+        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([1, 1.1]))).to.be.true;
+        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([10, 0]))).to.be.true;
+        expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([10, 10]))).to.be.true;
       });
 
       it('supports findNearest with COSINE', async () => {
         const indexTestHelper = new IndexTestHelper(firestore);
 
         const collectionReference = await indexTestHelper.createTestDocs([
-          {foo: 'bar'},
-          {foo: 'bar', embedding: FieldValue.vector([10, 10])},
-          {foo: 'bar', embedding: FieldValue.vector([1, 1.1])},
-          {foo: 'x', embedding: FieldValue.vector([1, 1])},
-          {foo: 'bar', embedding: FieldValue.vector([10, 0])},
-          {foo: 'bar', embedding: FieldValue.vector([-100, -100])},
+          { foo: 'bar' },
+          { foo: 'bar', embedding: FieldValue.vector([10, 10]) },
+          { foo: 'bar', embedding: FieldValue.vector([1, 1.1]) },
+          { foo: 'x', embedding: FieldValue.vector([1, 1]) },
+          { foo: 'bar', embedding: FieldValue.vector([10, 0]) },
+          { foo: 'bar', embedding: FieldValue.vector([-100, -100]) },
         ]);
 
         const vectorQuery = indexTestHelper
@@ -2428,14 +2272,9 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
         const res = await vectorQuery.get();
         expect(res.size).to.equal(3);
-        expect(
-          res.docs[0].get('embedding').isEqual(FieldValue.vector([10, 10])),
-        ).to.be.true;
-        expect(
-          res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 1.1])),
-        ).to.be.true;
-        expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([10, 0])))
-          .to.be.true;
+        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([10, 10]))).to.be.true;
+        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 1.1]))).to.be.true;
+        expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([10, 0]))).to.be.true;
       });
     });
 
@@ -2444,36 +2283,32 @@ describe.skipEnterprise('Query class - Standard DB', () => {
         const indexTestHelper = new IndexTestHelper(firestore);
 
         const collectionReference = await indexTestHelper.setTestDocs({
-          '1': {foo: 'bar'},
-          '2': {foo: 'bar', embedding: FieldValue.vector([1, 0])},
-          '3': {foo: 'bar', embedding: FieldValue.vector([0, 1])},
-          '4': {foo: 'bar', embedding: FieldValue.vector([0, -0.1])},
-          '5': {foo: 'bar', embedding: FieldValue.vector([-1, 0])},
+          '1': { foo: 'bar' },
+          '2': { foo: 'bar', embedding: FieldValue.vector([1, 0]) },
+          '3': { foo: 'bar', embedding: FieldValue.vector([0, 1]) },
+          '4': { foo: 'bar', embedding: FieldValue.vector([0, -0.1]) },
+          '5': { foo: 'bar', embedding: FieldValue.vector([-1, 0]) },
         });
 
-        const vectorQuery = indexTestHelper
-          .query(collectionReference)
-          .findNearest({
-            vectorField: 'embedding',
-            queryVector: [1, 0],
-            limit: 5,
-            distanceMeasure: 'COSINE',
-            distanceResultField: 'distance',
-          });
+        const vectorQuery = indexTestHelper.query(collectionReference).findNearest({
+          vectorField: 'embedding',
+          queryVector: [1, 0],
+          limit: 5,
+          distanceMeasure: 'COSINE',
+          distanceResultField: 'distance',
+        });
 
         const res = await vectorQuery.get();
 
         expect(res.size).to.equal(4);
 
-        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([1, 0])))
-          .to.be.true;
+        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([1, 0]))).to.be.true;
         expect(res.docs[0].get('distance')).to.equal(0);
 
         expect(res.docs[1].get('distance')).to.equal(1);
         expect(res.docs[2].get('distance')).to.equal(1);
 
-        expect(res.docs[3].get('embedding').isEqual(FieldValue.vector([-1, 0])))
-          .to.be.true;
+        expect(res.docs[3].get('embedding').isEqual(FieldValue.vector([-1, 0]))).to.be.true;
         expect(res.docs[3].get('distance')).to.equal(2);
       });
 
@@ -2481,43 +2316,35 @@ describe.skipEnterprise('Query class - Standard DB', () => {
         const indexTestHelper = new IndexTestHelper(firestore);
 
         const collectionReference = await indexTestHelper.setTestDocs({
-          '1': {foo: 'bar'},
-          '2': {foo: 'bar', embedding: FieldValue.vector([2, 0])},
-          '3': {foo: 'bar', embedding: FieldValue.vector([1, 100])},
-          '4': {foo: 'bar', embedding: FieldValue.vector([1, -0.1])},
-          '5': {foo: 'bar', embedding: FieldValue.vector([4, 4])},
+          '1': { foo: 'bar' },
+          '2': { foo: 'bar', embedding: FieldValue.vector([2, 0]) },
+          '3': { foo: 'bar', embedding: FieldValue.vector([1, 100]) },
+          '4': { foo: 'bar', embedding: FieldValue.vector([1, -0.1]) },
+          '5': { foo: 'bar', embedding: FieldValue.vector([4, 4]) },
         });
 
-        const vectorQuery = indexTestHelper
-          .query(collectionReference)
-          .findNearest({
-            vectorField: 'embedding',
-            queryVector: [1, 0],
-            limit: 5,
-            distanceMeasure: 'EUCLIDEAN',
-            distanceResultField: 'distance',
-          });
+        const vectorQuery = indexTestHelper.query(collectionReference).findNearest({
+          vectorField: 'embedding',
+          queryVector: [1, 0],
+          limit: 5,
+          distanceMeasure: 'EUCLIDEAN',
+          distanceResultField: 'distance',
+        });
 
         const res = await vectorQuery.get();
 
         expect(res.size).to.equal(4);
 
-        expect(
-          res.docs[0].get('embedding').isEqual(FieldValue.vector([1, -0.1])),
-        ).to.be.true;
+        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([1, -0.1]))).to.be.true;
         expect(res.docs[0].get('distance')).to.equal(0.1);
 
-        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([2, 0])))
-          .to.be.true;
+        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([2, 0]))).to.be.true;
         expect(res.docs[1].get('distance')).to.equal(1);
 
-        expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([4, 4])))
-          .to.be.true;
+        expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([4, 4]))).to.be.true;
         expect(res.docs[2].get('distance')).to.equal(5);
 
-        expect(
-          res.docs[3].get('embedding').isEqual(FieldValue.vector([1, 100])),
-        ).to.be.true;
+        expect(res.docs[3].get('embedding').isEqual(FieldValue.vector([1, 100]))).to.be.true;
         expect(res.docs[3].get('distance')).to.equal(100);
       });
 
@@ -2525,45 +2352,36 @@ describe.skipEnterprise('Query class - Standard DB', () => {
         const indexTestHelper = new IndexTestHelper(firestore);
 
         const collectionReference = await indexTestHelper.setTestDocs({
-          '1': {foo: 'bar'},
-          '2': {foo: 'bar', embedding: FieldValue.vector([2, 0])},
-          '3': {foo: 'bar', embedding: FieldValue.vector([1, 100])},
-          '4': {foo: 'bar', embedding: FieldValue.vector([-20, 0])},
-          '5': {foo: 'bar', embedding: FieldValue.vector([0.1, 4])},
+          '1': { foo: 'bar' },
+          '2': { foo: 'bar', embedding: FieldValue.vector([2, 0]) },
+          '3': { foo: 'bar', embedding: FieldValue.vector([1, 100]) },
+          '4': { foo: 'bar', embedding: FieldValue.vector([-20, 0]) },
+          '5': { foo: 'bar', embedding: FieldValue.vector([0.1, 4]) },
         });
 
-        const vectorQuery = indexTestHelper
-          .query(collectionReference)
-          .findNearest({
-            vectorField: 'embedding',
-            queryVector: [1, 0],
-            limit: 5,
-            distanceMeasure: 'DOT_PRODUCT',
-            distanceResultField: 'distance',
-          });
+        const vectorQuery = indexTestHelper.query(collectionReference).findNearest({
+          vectorField: 'embedding',
+          queryVector: [1, 0],
+          limit: 5,
+          distanceMeasure: 'DOT_PRODUCT',
+          distanceResultField: 'distance',
+        });
 
         const res = await vectorQuery.get();
 
         expect(res.size).to.equal(4);
 
         expect(res.docs[0].get('distance')).to.equal(2);
-        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([2, 0])))
-          .to.be.true;
+        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([2, 0]))).to.be.true;
 
         expect(res.docs[1].get('distance')).to.equal(1);
-        expect(
-          res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 100])),
-        ).to.be.true;
+        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 100]))).to.be.true;
 
         expect(res.docs[2].get('distance')).to.equal(0.1);
-        expect(
-          res.docs[2].get('embedding').isEqual(FieldValue.vector([0.1, 4])),
-        ).to.be.true;
+        expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([0.1, 4]))).to.be.true;
 
         expect(res.docs[3].get('distance')).to.equal(-20);
-        expect(
-          res.docs[3].get('embedding').isEqual(FieldValue.vector([-20, 0])),
-        ).to.be.true;
+        expect(res.docs[3].get('embedding').isEqual(FieldValue.vector([-20, 0]))).to.be.true;
       });
 
       it('overwrites distance result field on conflict', async () => {
@@ -2577,22 +2395,19 @@ describe.skipEnterprise('Query class - Standard DB', () => {
           },
         });
 
-        const vectorQuery = indexTestHelper
-          .query(collectionReference)
-          .findNearest({
-            vectorField: 'embedding',
-            queryVector: [1, 0],
-            limit: 5,
-            distanceMeasure: 'COSINE',
-            distanceResultField: 'distance',
-          });
+        const vectorQuery = indexTestHelper.query(collectionReference).findNearest({
+          vectorField: 'embedding',
+          queryVector: [1, 0],
+          limit: 5,
+          distanceMeasure: 'COSINE',
+          distanceResultField: 'distance',
+        });
 
         const res = await vectorQuery.get();
 
         expect(res.size).to.equal(1);
 
-        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([0, 1])))
-          .to.be.true;
+        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([0, 1]))).to.be.true;
         expect(res.docs[0].get('distance')).to.equal(1);
       });
 
@@ -2600,11 +2415,11 @@ describe.skipEnterprise('Query class - Standard DB', () => {
         const indexTestHelper = new IndexTestHelper(firestore);
 
         const collectionReference = await indexTestHelper.setTestDocs({
-          '1': {foo: 'bar'},
-          '2': {foo: 'bar', embedding: FieldValue.vector([1, 0])},
-          '3': {foo: 'bar', embedding: FieldValue.vector([0, 1])},
-          '4': {foo: 'bar', embedding: FieldValue.vector([0, -0.1])},
-          '5': {foo: 'bar', embedding: FieldValue.vector([-1, 0])},
+          '1': { foo: 'bar' },
+          '2': { foo: 'bar', embedding: FieldValue.vector([1, 0]) },
+          '3': { foo: 'bar', embedding: FieldValue.vector([0, 1]) },
+          '4': { foo: 'bar', embedding: FieldValue.vector([0, -0.1]) },
+          '5': { foo: 'bar', embedding: FieldValue.vector([-1, 0]) },
         });
 
         const vectorQuery = indexTestHelper
@@ -2623,15 +2438,13 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
         expect(res.size).to.equal(4);
 
-        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([1, 0])))
-          .to.be.true;
+        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([1, 0]))).to.be.true;
         expect(res.docs[0].get('distance')).to.equal(0);
 
         expect(res.docs[1].get('distance')).to.equal(1);
         expect(res.docs[2].get('distance')).to.equal(1);
 
-        expect(res.docs[3].get('embedding').isEqual(FieldValue.vector([-1, 0])))
-          .to.be.true;
+        expect(res.docs[3].get('embedding').isEqual(FieldValue.vector([-1, 0]))).to.be.true;
         expect(res.docs[3].get('distance')).to.equal(2);
       });
     });
@@ -2641,184 +2454,157 @@ describe.skipEnterprise('Query class - Standard DB', () => {
         const indexTestHelper = new IndexTestHelper(firestore);
 
         const collectionReference = await indexTestHelper.setTestDocs({
-          '1': {foo: 'bar'},
-          '2': {foo: 'bar', embedding: FieldValue.vector([1, 0])},
-          '3': {foo: 'bar', embedding: FieldValue.vector([1, 1])},
-          '4': {foo: 'bar', embedding: FieldValue.vector([0, -0.1])},
-          '5': {foo: 'bar', embedding: FieldValue.vector([-1, 0])},
+          '1': { foo: 'bar' },
+          '2': { foo: 'bar', embedding: FieldValue.vector([1, 0]) },
+          '3': { foo: 'bar', embedding: FieldValue.vector([1, 1]) },
+          '4': { foo: 'bar', embedding: FieldValue.vector([0, -0.1]) },
+          '5': { foo: 'bar', embedding: FieldValue.vector([-1, 0]) },
         });
 
-        const vectorQuery = indexTestHelper
-          .query(collectionReference)
-          .findNearest({
-            vectorField: 'embedding',
-            queryVector: [1, 0],
-            limit: 5,
-            distanceMeasure: 'COSINE',
-            distanceThreshold: 1,
-          });
+        const vectorQuery = indexTestHelper.query(collectionReference).findNearest({
+          vectorField: 'embedding',
+          queryVector: [1, 0],
+          limit: 5,
+          distanceMeasure: 'COSINE',
+          distanceThreshold: 1,
+        });
 
         const res = await vectorQuery.get();
 
         expect(res.size).to.equal(3);
 
-        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([1, 0])))
-          .to.be.true;
-        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 1])))
-          .to.be.true;
-        expect(
-          res.docs[2].get('embedding').isEqual(FieldValue.vector([0, -0.1])),
-        ).to.be.true;
+        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([1, 0]))).to.be.true;
+        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 1]))).to.be.true;
+        expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([0, -0.1]))).to.be.true;
       });
 
       it('supports querying with distance threshold using EUCLIDEAN distance', async () => {
         const indexTestHelper = new IndexTestHelper(firestore);
 
         const collectionReference = await indexTestHelper.setTestDocs({
-          '1': {foo: 'bar'},
-          '2': {foo: 'bar', embedding: FieldValue.vector([2, 0])},
-          '3': {foo: 'bar', embedding: FieldValue.vector([1, 100])},
-          '4': {foo: 'bar', embedding: FieldValue.vector([1, -0.1])},
-          '5': {foo: 'bar', embedding: FieldValue.vector([4, 4])},
+          '1': { foo: 'bar' },
+          '2': { foo: 'bar', embedding: FieldValue.vector([2, 0]) },
+          '3': { foo: 'bar', embedding: FieldValue.vector([1, 100]) },
+          '4': { foo: 'bar', embedding: FieldValue.vector([1, -0.1]) },
+          '5': { foo: 'bar', embedding: FieldValue.vector([4, 4]) },
         });
 
-        const vectorQuery = indexTestHelper
-          .query(collectionReference)
-          .findNearest({
-            vectorField: 'embedding',
-            queryVector: [1, 0],
-            limit: 5,
-            distanceMeasure: 'EUCLIDEAN',
-            distanceThreshold: 5,
-          });
+        const vectorQuery = indexTestHelper.query(collectionReference).findNearest({
+          vectorField: 'embedding',
+          queryVector: [1, 0],
+          limit: 5,
+          distanceMeasure: 'EUCLIDEAN',
+          distanceThreshold: 5,
+        });
 
         const res = await vectorQuery.get();
 
         expect(res.size).to.equal(3);
 
-        expect(
-          res.docs[0].get('embedding').isEqual(FieldValue.vector([1, -0.1])),
-        ).to.be.true;
-        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([2, 0])))
-          .to.be.true;
-        expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([4, 4])))
-          .to.be.true;
+        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([1, -0.1]))).to.be.true;
+        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([2, 0]))).to.be.true;
+        expect(res.docs[2].get('embedding').isEqual(FieldValue.vector([4, 4]))).to.be.true;
       });
 
       it('supports querying with distance threshold using DOT_PRODUCT distance', async () => {
         const indexTestHelper = new IndexTestHelper(firestore);
 
         const collectionReference = await indexTestHelper.setTestDocs({
-          '1': {foo: 'bar'},
-          '2': {foo: 'bar', embedding: FieldValue.vector([2, 0])},
-          '3': {foo: 'bar', embedding: FieldValue.vector([1, 100])},
-          '4': {foo: 'bar', embedding: FieldValue.vector([-20, 0])},
-          '5': {foo: 'bar', embedding: FieldValue.vector([0.1, 4])},
+          '1': { foo: 'bar' },
+          '2': { foo: 'bar', embedding: FieldValue.vector([2, 0]) },
+          '3': { foo: 'bar', embedding: FieldValue.vector([1, 100]) },
+          '4': { foo: 'bar', embedding: FieldValue.vector([-20, 0]) },
+          '5': { foo: 'bar', embedding: FieldValue.vector([0.1, 4]) },
         });
 
-        const vectorQuery = indexTestHelper
-          .query(collectionReference)
-          .findNearest({
-            vectorField: 'embedding',
-            queryVector: [1, 0],
-            limit: 5,
-            distanceMeasure: 'DOT_PRODUCT',
-            distanceThreshold: 1,
-          });
+        const vectorQuery = indexTestHelper.query(collectionReference).findNearest({
+          vectorField: 'embedding',
+          queryVector: [1, 0],
+          limit: 5,
+          distanceMeasure: 'DOT_PRODUCT',
+          distanceThreshold: 1,
+        });
 
         const res = await vectorQuery.get();
 
         expect(res.size).to.equal(2);
 
-        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([2, 0])))
-          .to.be.true;
+        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([2, 0]))).to.be.true;
 
-        expect(
-          res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 100])),
-        ).to.be.true;
+        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 100]))).to.be.true;
       });
 
       it('works with distance result field', async () => {
         const indexTestHelper = new IndexTestHelper(firestore);
 
         const collectionReference = await indexTestHelper.setTestDocs({
-          '1': {foo: 'bar'},
-          '2': {foo: 'bar', embedding: FieldValue.vector([2, 0])},
-          '3': {foo: 'bar', embedding: FieldValue.vector([1, 100])},
-          '4': {foo: 'bar', embedding: FieldValue.vector([-20, 0])},
-          '5': {foo: 'bar', embedding: FieldValue.vector([0.1, 4])},
+          '1': { foo: 'bar' },
+          '2': { foo: 'bar', embedding: FieldValue.vector([2, 0]) },
+          '3': { foo: 'bar', embedding: FieldValue.vector([1, 100]) },
+          '4': { foo: 'bar', embedding: FieldValue.vector([-20, 0]) },
+          '5': { foo: 'bar', embedding: FieldValue.vector([0.1, 4]) },
         });
 
-        const vectorQuery = indexTestHelper
-          .query(collectionReference)
-          .findNearest({
-            vectorField: 'embedding',
-            queryVector: [1, 0],
-            limit: 5,
-            distanceMeasure: 'DOT_PRODUCT',
-            distanceThreshold: 0.11,
-            distanceResultField: 'foo',
-          });
+        const vectorQuery = indexTestHelper.query(collectionReference).findNearest({
+          vectorField: 'embedding',
+          queryVector: [1, 0],
+          limit: 5,
+          distanceMeasure: 'DOT_PRODUCT',
+          distanceThreshold: 0.11,
+          distanceResultField: 'foo',
+        });
 
         const res = await vectorQuery.get();
 
         expect(res.size).to.equal(2);
 
         expect(res.docs[0].get('foo')).to.equal(2);
-        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([2, 0])))
-          .to.be.true;
+        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([2, 0]))).to.be.true;
 
         expect(res.docs[1].get('foo')).to.equal(1);
-        expect(
-          res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 100])),
-        ).to.be.true;
+        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 100]))).to.be.true;
       });
 
       it('will not exceed limit even if there are more results more similar than distanceThreshold', async () => {
         const indexTestHelper = new IndexTestHelper(firestore);
 
         const collectionReference = await indexTestHelper.setTestDocs({
-          '1': {foo: 'bar'},
-          '2': {foo: 'bar', embedding: FieldValue.vector([2, 0])},
-          '3': {foo: 'bar', embedding: FieldValue.vector([1, 100])},
-          '4': {foo: 'bar', embedding: FieldValue.vector([-20, 0])},
-          '5': {foo: 'bar', embedding: FieldValue.vector([0.1, 4])},
+          '1': { foo: 'bar' },
+          '2': { foo: 'bar', embedding: FieldValue.vector([2, 0]) },
+          '3': { foo: 'bar', embedding: FieldValue.vector([1, 100]) },
+          '4': { foo: 'bar', embedding: FieldValue.vector([-20, 0]) },
+          '5': { foo: 'bar', embedding: FieldValue.vector([0.1, 4]) },
         });
 
-        const vectorQuery = indexTestHelper
-          .query(collectionReference)
-          .findNearest({
-            vectorField: 'embedding',
-            queryVector: [1, 0],
-            limit: 2,
-            distanceMeasure: 'DOT_PRODUCT',
-            distanceThreshold: 0.0,
-          });
+        const vectorQuery = indexTestHelper.query(collectionReference).findNearest({
+          vectorField: 'embedding',
+          queryVector: [1, 0],
+          limit: 2,
+          distanceMeasure: 'DOT_PRODUCT',
+          distanceThreshold: 0.0,
+        });
 
         const res = await vectorQuery.get();
 
         expect(res.size).to.equal(2);
 
-        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([2, 0])))
-          .to.be.true;
+        expect(res.docs[0].get('embedding').isEqual(FieldValue.vector([2, 0]))).to.be.true;
 
-        expect(
-          res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 100])),
-        ).to.be.true;
+        expect(res.docs[1].get('embedding').isEqual(FieldValue.vector([1, 100]))).to.be.true;
       });
     });
   });
 
   it('supports !=', async () => {
     await addDocs(
-      {zip: NaN},
-      {zip: 91102},
-      {zip: 98101},
-      {zip: 98103},
-      {zip: [98101]},
-      {zip: ['98101', {zip: 98101}]},
-      {zip: {zip: 98101}},
-      {zip: null},
+      { zip: NaN },
+      { zip: 91102 },
+      { zip: 98101 },
+      { zip: 98103 },
+      { zip: [98101] },
+      { zip: ['98101', { zip: 98101 }] },
+      { zip: { zip: 98101 } },
+      { zip: null },
     );
 
     let res = await randomCol
@@ -2828,75 +2614,75 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       .get();
     expectDocs(
       res,
-      {zip: NaN},
-      {zip: 91102},
-      {zip: 98103},
-      {zip: [98101]},
-      {zip: ['98101', {zip: 98101}]},
-      {zip: {zip: 98101}},
+      { zip: NaN },
+      { zip: 91102 },
+      { zip: 98103 },
+      { zip: [98101] },
+      { zip: ['98101', { zip: 98101 }] },
+      { zip: { zip: 98101 } },
     );
 
     res = await randomCol.where('zip', '!=', NaN).get();
     expectDocs(
       res,
-      {zip: 91102},
-      {zip: 98101},
-      {zip: 98103},
-      {zip: [98101]},
-      {zip: ['98101', {zip: 98101}]},
-      {zip: {zip: 98101}},
+      { zip: 91102 },
+      { zip: 98101 },
+      { zip: 98103 },
+      { zip: [98101] },
+      { zip: ['98101', { zip: 98101 }] },
+      { zip: { zip: 98101 } },
     );
 
     res = await randomCol.where('zip', '!=', null).get();
     expectDocs(
       res,
-      {zip: NaN},
-      {zip: 91102},
-      {zip: 98101},
-      {zip: 98103},
-      {zip: [98101]},
-      {zip: ['98101', {zip: 98101}]},
-      {zip: {zip: 98101}},
+      { zip: NaN },
+      { zip: 91102 },
+      { zip: 98101 },
+      { zip: 98103 },
+      { zip: [98101] },
+      { zip: ['98101', { zip: 98101 }] },
+      { zip: { zip: 98101 } },
     );
   });
 
   it('supports != with document ID', async () => {
-    const refs = await addDocs({count: 1}, {count: 2}, {count: 3});
+    const refs = await addDocs({ count: 1 }, { count: 2 }, { count: 3 });
     const res = await randomCol
       .where(FieldPath.documentId(), '!=', refs[0].id)
       .orderBy(FieldPath.documentId())
       .get();
-    expectDocs(res, {count: 2}, {count: 3});
+    expectDocs(res, { count: 2 }, { count: 3 });
   });
 
   it('supports not-in', async () => {
     await addDocs(
-      {zip: 98101},
-      {zip: 91102},
-      {zip: 98103},
-      {zip: [98101]},
-      {zip: ['98101', {zip: 98101}]},
-      {zip: {zip: 98101}},
+      { zip: 98101 },
+      { zip: 91102 },
+      { zip: 98103 },
+      { zip: [98101] },
+      { zip: ['98101', { zip: 98101 }] },
+      { zip: { zip: 98101 } },
     );
     let res = await randomCol.where('zip', 'not-in', [98101, 98103]).get();
     expectDocs(
       res,
-      {zip: 91102},
-      {zip: [98101]},
-      {zip: ['98101', {zip: 98101}]},
-      {zip: {zip: 98101}},
+      { zip: 91102 },
+      { zip: [98101] },
+      { zip: ['98101', { zip: 98101 }] },
+      { zip: { zip: 98101 } },
     );
 
     res = await randomCol.where('zip', 'not-in', [NaN]).get();
 
     expectDocs(
       res,
-      {zip: 91102},
-      {zip: 98101},
-      {zip: 98103},
-      {zip: [98101]},
-      {zip: ['98101', {zip: 98101}]},
-      {zip: {zip: 98101}},
+      { zip: 91102 },
+      { zip: 98101 },
+      { zip: 98103 },
+      { zip: [98101] },
+      { zip: ['98101', { zip: 98101 }] },
+      { zip: { zip: 98101 } },
     );
 
     res = await randomCol.where('zip', 'not-in', [null]).get();
@@ -2905,61 +2691,54 @@ describe.skipEnterprise('Query class - Standard DB', () => {
   });
 
   it('supports not-in with document ID array', async () => {
-    const refs = await addDocs({count: 1}, {count: 2}, {count: 3});
+    const refs = await addDocs({ count: 1 }, { count: 2 }, { count: 3 });
     const res = await randomCol
       .where(FieldPath.documentId(), 'not-in', [refs[0].id, refs[1]])
       .get();
-    expectDocs(res, {count: 3});
+    expectDocs(res, { count: 3 });
   });
 
   it('supports "in"', async () => {
     await addDocs(
-      {zip: 98101},
-      {zip: 91102},
-      {zip: 98103},
-      {zip: [98101]},
-      {zip: ['98101', {zip: 98101}]},
-      {zip: {zip: 98101}},
+      { zip: 98101 },
+      { zip: 91102 },
+      { zip: 98103 },
+      { zip: [98101] },
+      { zip: ['98101', { zip: 98101 }] },
+      { zip: { zip: 98101 } },
     );
-    const res = await randomCol
-      .where('zip', 'in', [98101, 98103])
-      .orderBy('zip')
-      .get();
-    expectDocs(res, {zip: 98101}, {zip: 98103});
+    const res = await randomCol.where('zip', 'in', [98101, 98103]).orderBy('zip').get();
+    expectDocs(res, { zip: 98101 }, { zip: 98103 });
   });
 
   it('supports "in" with document ID array', async () => {
-    const refs = await addDocs({count: 1}, {count: 2}, {count: 3});
-    const res = await randomCol
-      .where(FieldPath.documentId(), 'in', [refs[0].id, refs[1]])
-      .get();
-    expectDocs(res, {count: 1}, {count: 2});
+    const refs = await addDocs({ count: 1 }, { count: 2 }, { count: 3 });
+    const res = await randomCol.where(FieldPath.documentId(), 'in', [refs[0].id, refs[1]]).get();
+    expectDocs(res, { count: 1 }, { count: 2 });
   });
 
   it('supports array-contains-any', async () => {
     await addDocs(
-      {array: [42]},
-      {array: ['a', 42, 'c']},
-      {array: [41.999, '42', {a: [42]}]},
-      {array: [42], array2: ['sigh']},
-      {array: [43]},
-      {array: [{a: 42}]},
-      {array: 42},
+      { array: [42] },
+      { array: ['a', 42, 'c'] },
+      { array: [41.999, '42', { a: [42] }] },
+      { array: [42], array2: ['sigh'] },
+      { array: [43] },
+      { array: [{ a: 42 }] },
+      { array: 42 },
     );
 
-    const res = await randomCol
-      .where('array', 'array-contains-any', [42, 43])
-      .get();
+    const res = await randomCol.where('array', 'array-contains-any', [42, 43]).get();
 
     expectDocs(
       res,
-      {array: [42]},
-      {array: ['a', 42, 'c']},
+      { array: [42] },
+      { array: ['a', 42, 'c'] },
       {
         array: [42],
         array2: ['sigh'],
       },
-      {array: [43]},
+      { array: [43] },
     );
   });
 
@@ -2971,37 +2750,37 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       .then(() => {
         return randomCol.where(FieldPath.documentId(), '>=', 'bar').get();
       })
-      .then(res => {
+      .then((res) => {
         expect(res.docs.length).to.equal(1);
       });
   });
 
   it('has orderBy() method', async () => {
-    await addDocs({foo: 'a'}, {foo: 'b'});
+    await addDocs({ foo: 'a' }, { foo: 'b' });
 
     let res = await randomCol.orderBy('foo').get();
-    expectDocs(res, {foo: 'a'}, {foo: 'b'});
+    expectDocs(res, { foo: 'a' }, { foo: 'b' });
 
     res = await randomCol.orderBy('foo', 'desc').get();
-    expectDocs(res, {foo: 'b'}, {foo: 'a'});
+    expectDocs(res, { foo: 'b' }, { foo: 'a' });
   });
 
   it('can order by FieldPath.documentId()', () => {
     const ref1 = randomCol.doc('doc1');
     const ref2 = randomCol.doc('doc2');
 
-    return Promise.all([ref1.set({foo: 'a'}), ref2.set({foo: 'b'})])
+    return Promise.all([ref1.set({ foo: 'a' }), ref2.set({ foo: 'b' })])
       .then(() => {
         return randomCol.orderBy(FieldPath.documentId()).get();
       })
-      .then(res => {
-        expect(res.docs[0].data()).to.deep.equal({foo: 'a'});
-        expect(res.docs[1].data()).to.deep.equal({foo: 'b'});
+      .then((res) => {
+        expect(res.docs[0].data()).to.deep.equal({ foo: 'a' });
+        expect(res.docs[1].data()).to.deep.equal({ foo: 'b' });
       });
   });
 
   it('can run get() on empty collection', async () => {
-    return randomCol.get().then(res => {
+    return randomCol.get().then((res) => {
       return expect(res.empty);
     });
   });
@@ -3019,14 +2798,14 @@ describe.skipEnterprise('Query class - Standard DB', () => {
   });
 
   it('has limit() method on get()', async () => {
-    await addDocs({foo: 'a'}, {foo: 'b'});
+    await addDocs({ foo: 'a' }, { foo: 'b' });
     const res = await randomCol.orderBy('foo').limit(1).get();
-    expectDocs(res, {foo: 'a'});
+    expectDocs(res, { foo: 'a' });
   });
 
   it('has limit() method on stream()', async () => {
     let received = 0;
-    await addDocs({foo: 'a'}, {foo: 'b'});
+    await addDocs({ foo: 'a' }, { foo: 'b' });
 
     const stream = randomCol.orderBy('foo').limit(1).stream();
     for await (const doc of stream) {
@@ -3038,14 +2817,14 @@ describe.skipEnterprise('Query class - Standard DB', () => {
   });
 
   it('can run limit(num), where num is larger than the collection size on get()', async () => {
-    await addDocs({foo: 'a'}, {foo: 'b'});
+    await addDocs({ foo: 'a' }, { foo: 'b' });
     const res = await randomCol.orderBy('foo').limit(3).get();
-    expectDocs(res, {foo: 'a'}, {foo: 'b'});
+    expectDocs(res, { foo: 'a' }, { foo: 'b' });
   });
 
   it('can run limit(num), where num is larger than the collection size on stream()', async () => {
     let received = 0;
-    await addDocs({foo: 'a'}, {foo: 'b'});
+    await addDocs({ foo: 'a' }, { foo: 'b' });
 
     const stream = randomCol.orderBy('foo').limit(3).stream();
     for await (const doc of stream) {
@@ -3057,31 +2836,26 @@ describe.skipEnterprise('Query class - Standard DB', () => {
   });
 
   it('has limitToLast() method', async () => {
-    await addDocs({doc: 1}, {doc: 2}, {doc: 3});
+    await addDocs({ doc: 1 }, { doc: 2 }, { doc: 3 });
     const res = await randomCol.orderBy('doc').limitToLast(2).get();
-    expectDocs(res, {doc: 2}, {doc: 3});
+    expectDocs(res, { doc: 2 }, { doc: 3 });
   });
 
   it('limitToLast() supports Query cursors', async () => {
-    await addDocs({doc: 1}, {doc: 2}, {doc: 3}, {doc: 4}, {doc: 5});
-    const res = await randomCol
-      .orderBy('doc')
-      .startAt(2)
-      .endAt(4)
-      .limitToLast(5)
-      .get();
-    expectDocs(res, {doc: 2}, {doc: 3}, {doc: 4});
+    await addDocs({ doc: 1 }, { doc: 2 }, { doc: 3 }, { doc: 4 }, { doc: 5 });
+    const res = await randomCol.orderBy('doc').startAt(2).endAt(4).limitToLast(5).get();
+    expectDocs(res, { doc: 2 }, { doc: 3 }, { doc: 4 });
   });
 
   it('can use offset() method with get()', async () => {
-    await addDocs({foo: 'a'}, {foo: 'b'});
+    await addDocs({ foo: 'a' }, { foo: 'b' });
     const res = await randomCol.orderBy('foo').offset(1).get();
-    expectDocs(res, {foo: 'b'});
+    expectDocs(res, { foo: 'b' });
   });
 
   it('can use offset() method with stream()', async () => {
     let received = 0;
-    await addDocs({foo: 'a'}, {foo: 'b'});
+    await addDocs({ foo: 'a' }, { foo: 'b' });
 
     const stream = randomCol.orderBy('foo').offset(1).stream();
     for await (const doc of stream) {
@@ -3093,14 +2867,14 @@ describe.skipEnterprise('Query class - Standard DB', () => {
   });
 
   it('can run offset(num), where num is larger than the collection size on get()', async () => {
-    await addDocs({foo: 'a'}, {foo: 'b'});
+    await addDocs({ foo: 'a' }, { foo: 'b' });
     const res = await randomCol.orderBy('foo').offset(3).get();
     expect(res.empty);
   });
 
   it('can run offset(num), where num is larger than the collection size on stream()', async () => {
     let received = 0;
-    await addDocs({foo: 'a'}, {foo: 'b'});
+    await addDocs({ foo: 'a' }, { foo: 'b' });
     const stream = randomCol.orderBy('foo').offset(3).stream();
     for await (const doc of stream) {
       expect(doc).to.be.an.instanceOf(QueryDocumentSnapshot);
@@ -3120,7 +2894,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     const batch = firestore.batch();
 
     for (let i = 0; i < 10; ++i) {
-      batch.set(randomCol.doc('doc' + i), {val: i});
+      batch.set(randomCol.doc('doc' + i), { val: i });
     }
 
     const query = randomCol.orderBy('val').limit(3);
@@ -3128,7 +2902,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     return batch
       .commit()
       .then(() => paginateResults(query))
-      .then(results => {
+      .then((results) => {
         expect(results.pages).to.equal(4);
         expect(results.docs).to.have.length(10);
       });
@@ -3138,7 +2912,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     const batch = firestore.batch();
 
     for (let i = 0; i < 10; ++i) {
-      batch.set(randomCol.doc('doc' + i), {val: i});
+      batch.set(randomCol.doc('doc' + i), { val: i });
     }
 
     const query = randomCol.where('val', '>=', 1).limit(3);
@@ -3146,7 +2920,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     return batch
       .commit()
       .then(() => paginateResults(query))
-      .then(results => {
+      .then((results) => {
         expect(results.pages).to.equal(3);
         expect(results.docs).to.have.length(9);
       });
@@ -3156,7 +2930,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     const batch = firestore.batch();
 
     for (let i = 0; i < 10; ++i) {
-      batch.set(randomCol.doc('doc' + i), {array: ['foo']});
+      batch.set(randomCol.doc('doc' + i), { array: ['foo'] });
     }
 
     const query = randomCol.where('array', 'array-contains', 'foo').limit(3);
@@ -3164,52 +2938,52 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     return batch
       .commit()
       .then(() => paginateResults(query))
-      .then(results => {
+      .then((results) => {
         expect(results.pages).to.equal(4);
         expect(results.docs).to.have.length(10);
       });
   });
 
   it('has startAt() method', async () => {
-    await addDocs({foo: 'a'}, {foo: 'b'});
+    await addDocs({ foo: 'a' }, { foo: 'b' });
     const res = await randomCol.orderBy('foo').startAt('b').get();
-    expectDocs(res, {foo: 'b'});
+    expectDocs(res, { foo: 'b' });
   });
 
   it('startAt() adds implicit order by for DocumentSnapshot', async () => {
-    const references = await addDocs({foo: 'a'}, {foo: 'b'});
+    const references = await addDocs({ foo: 'a' }, { foo: 'b' });
     const docSnap = await references[1].get();
     const res = await randomCol.startAt(docSnap).get();
-    expectDocs(res, {foo: 'b'});
+    expectDocs(res, { foo: 'b' });
   });
 
   it('has startAfter() method', async () => {
-    await addDocs({foo: 'a'}, {foo: 'b'});
+    await addDocs({ foo: 'a' }, { foo: 'b' });
     const res = await randomCol.orderBy('foo').startAfter('a').get();
-    expectDocs(res, {foo: 'b'});
+    expectDocs(res, { foo: 'b' });
   });
 
   it('has endAt() method', async () => {
-    await addDocs({foo: 'a'}, {foo: 'b'});
+    await addDocs({ foo: 'a' }, { foo: 'b' });
     const res = await randomCol.orderBy('foo').endAt('b').get();
-    expectDocs(res, {foo: 'a'}, {foo: 'b'});
+    expectDocs(res, { foo: 'a' }, { foo: 'b' });
   });
 
   it('has endBefore() method', async () => {
-    await addDocs({foo: 'a'}, {foo: 'b'});
+    await addDocs({ foo: 'a' }, { foo: 'b' });
     const res = await randomCol.orderBy('foo').endBefore('b').get();
-    expectDocs(res, {foo: 'a'});
+    expectDocs(res, { foo: 'a' });
   });
 
-  it('has stream() method', done => {
+  it('has stream() method', (done) => {
     let received = 0;
     const ref1 = randomCol.doc('doc1');
     const ref2 = randomCol.doc('doc2');
 
-    void Promise.all([ref1.set({foo: 'a'}), ref2.set({foo: 'b'})]).then(() => {
+    void Promise.all([ref1.set({ foo: 'a' }), ref2.set({ foo: 'b' })]).then(() => {
       return randomCol
         .stream()
-        .on('data', d => {
+        .on('data', (d) => {
           expect(d).to.be.an.instanceOf(DocumentSnapshot);
           ++received;
         })
@@ -3222,8 +2996,8 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
   it('stream() supports readable[Symbol.asyncIterator]()', async () => {
     let received = 0;
-    await randomCol.doc().set({foo: 'bar'});
-    await randomCol.doc().set({foo: 'bar'});
+    await randomCol.doc().set({ foo: 'bar' });
+    await randomCol.doc().set({ foo: 'bar' });
 
     const stream = randomCol.stream();
     for await (const doc of stream) {
@@ -3254,7 +3028,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     ];
     const batch = firestore.batch();
     for (const docPath of docPaths) {
-      batch.set(firestore.doc(docPath), {x: 1});
+      batch.set(firestore.doc(docPath), { x: 1 });
     }
     await batch.commit();
 
@@ -3262,7 +3036,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       .collectionGroup(collectionGroup)
       .orderBy(FieldPath.documentId())
       .get();
-    expect(querySnapshot.docs.map(d => d.id)).to.deep.equal([
+    expect(querySnapshot.docs.map((d) => d.id)).to.deep.equal([
       'cg-doc1',
       'cg-doc2',
       'cg-doc3',
@@ -3287,7 +3061,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     ];
     const batch = firestore.batch();
     for (const docPath of docPaths) {
-      batch.set(firestore.doc(docPath), {x: 1});
+      batch.set(firestore.doc(docPath), { x: 1 });
     }
     await batch.commit();
 
@@ -3297,11 +3071,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       .startAt('a/b')
       .endAt('a/b0')
       .get();
-    expect(querySnapshot.docs.map(d => d.id)).to.deep.equal([
-      'cg-doc2',
-      'cg-doc3',
-      'cg-doc4',
-    ]);
+    expect(querySnapshot.docs.map((d) => d.id)).to.deep.equal(['cg-doc2', 'cg-doc3', 'cg-doc4']);
 
     querySnapshot = await firestore
       .collectionGroup(collectionGroup)
@@ -3309,7 +3079,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       .startAfter('a/b')
       .endBefore(`a/b/${collectionGroup}/cg-doc3`)
       .get();
-    expect(querySnapshot.docs.map(d => d.id)).to.deep.equal(['cg-doc2']);
+    expect(querySnapshot.docs.map((d) => d.id)).to.deep.equal(['cg-doc2']);
   });
 
   it('can query collection groups with where filters on arbitrary documentId', async () => {
@@ -3328,7 +3098,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     ];
     const batch = firestore.batch();
     for (const docPath of docPaths) {
-      batch.set(firestore.doc(docPath), {x: 1});
+      batch.set(firestore.doc(docPath), { x: 1 });
     }
     await batch.commit();
 
@@ -3338,18 +3108,14 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       .where(FieldPath.documentId(), '<=', 'a/b0')
       .orderBy(FieldPath.documentId())
       .get();
-    expect(querySnapshot.docs.map(d => d.id)).to.deep.equal([
-      'cg-doc2',
-      'cg-doc3',
-      'cg-doc4',
-    ]);
+    expect(querySnapshot.docs.map((d) => d.id)).to.deep.equal(['cg-doc2', 'cg-doc3', 'cg-doc4']);
 
     querySnapshot = await firestore
       .collectionGroup(collectionGroup)
       .where(FieldPath.documentId(), '>', 'a/b')
       .where(FieldPath.documentId(), '<', `a/b/${collectionGroup}/cg-doc3`)
       .get();
-    expect(querySnapshot.docs.map(d => d.id)).to.deep.equal(['cg-doc2']);
+    expect(querySnapshot.docs.map((d) => d.id)).to.deep.equal(['cg-doc2']);
   });
 
   it('can query large collections', async () => {
@@ -3367,19 +3133,17 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
   it('supports OR queries', async () => {
     const collection = await testCollectionWithDocs({
-      doc1: {a: 1, b: 0},
-      doc2: {a: 2, b: 1},
-      doc3: {a: 3, b: 2},
-      doc4: {a: 1, b: 3},
-      doc5: {a: 1, b: 1},
+      doc1: { a: 1, b: 0 },
+      doc2: { a: 2, b: 1 },
+      doc3: { a: 3, b: 2 },
+      doc4: { a: 1, b: 3 },
+      doc5: { a: 1, b: 1 },
     });
 
     // Two equalities: a==1 || b==1.
     expectDocs(
       await collection
-        .where(
-          Filter.or(Filter.where('a', '==', 1), Filter.where('b', '==', 1)),
-        )
+        .where(Filter.or(Filter.where('a', '==', 1), Filter.where('b', '==', 1)))
         .orderBy(FieldPath.documentId())
         .get(),
       'doc1',
@@ -3435,9 +3199,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     // Test with limits without orderBy (the __name__ ordering is the tie breaker).
     expectDocs(
       await collection
-        .where(
-          Filter.or(Filter.where('a', '==', 2), Filter.where('b', '==', 1)),
-        )
+        .where(Filter.or(Filter.where('a', '==', 2), Filter.where('b', '==', 1)))
         .limit(1)
         .orderBy(FieldPath.documentId())
         .get(),
@@ -3449,11 +3211,11 @@ describe.skipEnterprise('Query class - Standard DB', () => {
   // Skip this test if running against standard production because it results in a 'missing index' error.
   it.skipClassic('supports OR queries with composite indexes', async () => {
     const collection = await testCollectionWithDocs({
-      doc1: {a: 1, b: 0},
-      doc2: {a: 2, b: 1},
-      doc3: {a: 3, b: 2},
-      doc4: {a: 1, b: 3},
-      doc5: {a: 1, b: 1},
+      doc1: { a: 1, b: 0 },
+      doc2: { a: 2, b: 1 },
+      doc3: { a: 3, b: 2 },
+      doc4: { a: 1, b: 3 },
+      doc5: { a: 1, b: 1 },
     });
 
     // with one inequality: a>2 || b==1.
@@ -3494,9 +3256,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     // Test with limits (explicit order by ASC): (a==2) || (b == 1) ORDER BY a LIMIT 1
     expectDocs(
       await collection
-        .where(
-          Filter.or(Filter.where('a', '==', 2), Filter.where('b', '==', 1)),
-        )
+        .where(Filter.or(Filter.where('a', '==', 2), Filter.where('b', '==', 1)))
         .limit(1)
         .orderBy('a')
         .orderBy(FieldPath.documentId())
@@ -3507,9 +3267,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     // Test with limits (explicit order by DESC): (a==2) || (b == 1) ORDER BY a LIMIT 1
     expectDocs(
       await collection
-        .where(
-          Filter.or(Filter.where('a', '==', 2), Filter.where('b', '==', 1)),
-        )
+        .where(Filter.or(Filter.where('a', '==', 2), Filter.where('b', '==', 1)))
         .limit(1)
         .orderBy('a', 'desc')
         .orderBy(FieldPath.documentId())
@@ -3520,12 +3278,12 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
   it('supports OR queries on documents with missing fields', async () => {
     const collection = await testCollectionWithDocs({
-      doc1: {a: 1, b: 0},
-      doc2: {b: 1},
-      doc3: {a: 3, b: 2},
-      doc4: {a: 1, b: 3},
-      doc5: {a: 1},
-      doc6: {a: 2},
+      doc1: { a: 1, b: 0 },
+      doc2: { b: 1 },
+      doc3: { a: 3, b: 2 },
+      doc4: { a: 1, b: 3 },
+      doc5: { a: 1 },
+      doc6: { a: 2 },
     });
 
     // Query: a==1 || b==1
@@ -3533,9 +3291,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     // allowed if the document matches at least one disjunction term.
     expectDocs(
       await collection
-        .where(
-          Filter.or(Filter.where('a', '==', 1), Filter.where('b', '==', 1)),
-        )
+        .where(Filter.or(Filter.where('a', '==', 1), Filter.where('b', '==', 1)))
         .orderBy(FieldPath.documentId())
         .get(),
       'doc1',
@@ -3547,95 +3303,79 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
   // Skip this test if running against production standard DB because it results in a 'missing index' error.
   // The Firestore Emulator and Enterprise-editions, however, do serve these queries.
-  it.skipClassic(
-    'supports OR queries on documents with missing fields',
-    async () => {
-      const collection = await testCollectionWithDocs({
-        doc1: {a: 1, b: 0},
-        doc2: {b: 1},
-        doc3: {a: 3, b: 2},
-        doc4: {a: 1, b: 3},
-        doc5: {a: 1},
-        doc6: {a: 2},
-      });
+  it.skipClassic('supports OR queries on documents with missing fields', async () => {
+    const collection = await testCollectionWithDocs({
+      doc1: { a: 1, b: 0 },
+      doc2: { b: 1 },
+      doc3: { a: 3, b: 2 },
+      doc4: { a: 1, b: 3 },
+      doc5: { a: 1 },
+      doc6: { a: 2 },
+    });
 
-      // Query: a==1 || b==1 order by a.
-      // doc2 should not be included because it's missing the field 'a', and we have "orderBy a".
-      expectDocs(
-        await collection
-          .where(
-            Filter.or(Filter.where('a', '==', 1), Filter.where('b', '==', 1)),
-          )
-          .orderBy('a')
-          .orderBy(FieldPath.documentId())
-          .get(),
-        'doc1',
-        'doc4',
-        'doc5',
-      );
+    // Query: a==1 || b==1 order by a.
+    // doc2 should not be included because it's missing the field 'a', and we have "orderBy a".
+    expectDocs(
+      await collection
+        .where(Filter.or(Filter.where('a', '==', 1), Filter.where('b', '==', 1)))
+        .orderBy('a')
+        .orderBy(FieldPath.documentId())
+        .get(),
+      'doc1',
+      'doc4',
+      'doc5',
+    );
 
-      // Query: a==1 || b==1 order by b.
-      // doc5 should not be included because it's missing the field 'b', and we have "orderBy b".
-      expectDocs(
-        await collection
-          .where(
-            Filter.or(Filter.where('a', '==', 1), Filter.where('b', '==', 1)),
-          )
-          .orderBy('b')
-          .orderBy(FieldPath.documentId())
-          .get(),
-        'doc1',
-        'doc2',
-        'doc4',
-      );
+    // Query: a==1 || b==1 order by b.
+    // doc5 should not be included because it's missing the field 'b', and we have "orderBy b".
+    expectDocs(
+      await collection
+        .where(Filter.or(Filter.where('a', '==', 1), Filter.where('b', '==', 1)))
+        .orderBy('b')
+        .orderBy(FieldPath.documentId())
+        .get(),
+      'doc1',
+      'doc2',
+      'doc4',
+    );
 
-      // Query: a>2 || b==1.
-      // This query has an implicit 'order by a'.
-      // Standard Ed: doc2 should not be included because it's missing the field 'a'.
-      expectDocs(
-        await collection
-          .where(
-            Filter.or(Filter.where('a', '>', 2), Filter.where('b', '==', 1)),
-          )
-          .get(),
-        'doc3',
-      );
+    // Query: a>2 || b==1.
+    // This query has an implicit 'order by a'.
+    // Standard Ed: doc2 should not be included because it's missing the field 'a'.
+    expectDocs(
+      await collection
+        .where(Filter.or(Filter.where('a', '>', 2), Filter.where('b', '==', 1)))
+        .get(),
+      'doc3',
+    );
 
-      // Query: a>1 || b==1 order by a order by b.
-      // doc6 should not be included because it's missing the field 'b'.
-      // doc2 should not be included because it's missing the field 'a'.
-      expectDocs(
-        await collection
-          .where(
-            Filter.or(Filter.where('a', '>', 1), Filter.where('b', '==', 1)),
-          )
-          .orderBy('a')
-          .orderBy('b')
-          .get(),
-        'doc3',
-      );
-    },
-  );
+    // Query: a>1 || b==1 order by a order by b.
+    // doc6 should not be included because it's missing the field 'b'.
+    // doc2 should not be included because it's missing the field 'a'.
+    expectDocs(
+      await collection
+        .where(Filter.or(Filter.where('a', '>', 1), Filter.where('b', '==', 1)))
+        .orderBy('a')
+        .orderBy('b')
+        .get(),
+      'doc3',
+    );
+  });
 
   it('supports OR queries with in', async () => {
     const collection = await testCollectionWithDocs({
-      doc1: {a: 1, b: 0},
-      doc2: {b: 1},
-      doc3: {a: 3, b: 2},
-      doc4: {a: 1, b: 3},
-      doc5: {a: 1},
-      doc6: {a: 2},
+      doc1: { a: 1, b: 0 },
+      doc2: { b: 1 },
+      doc3: { a: 3, b: 2 },
+      doc4: { a: 1, b: 3 },
+      doc5: { a: 1 },
+      doc6: { a: 2 },
     });
 
     // Query: a==2 || b in [2, 3]
     expectDocs(
       await collection
-        .where(
-          Filter.or(
-            Filter.where('a', '==', 2),
-            Filter.where('b', 'in', [2, 3]),
-          ),
-        )
+        .where(Filter.or(Filter.where('a', '==', 2), Filter.where('b', 'in', [2, 3])))
         .orderBy(FieldPath.documentId())
         .get(),
       'doc3',
@@ -3647,23 +3387,18 @@ describe.skipEnterprise('Query class - Standard DB', () => {
   // Skip this test if running against production because it results in a 'missing index' error.
   it.skipClassic('supports OR queries with not-in', async () => {
     const collection = await testCollectionWithDocs({
-      doc1: {a: 1, b: 0},
-      doc2: {b: 1},
-      doc3: {a: 3, b: 2},
-      doc4: {a: 1, b: 3},
-      doc5: {a: 1},
-      doc6: {a: 2},
+      doc1: { a: 1, b: 0 },
+      doc2: { b: 1 },
+      doc3: { a: 3, b: 2 },
+      doc4: { a: 1, b: 3 },
+      doc5: { a: 1 },
+      doc6: { a: 2 },
     });
     // a==2 || (b != 2 && b != 3)
     // Has implicit "orderBy b"
     expectDocs(
       await collection
-        .where(
-          Filter.or(
-            Filter.where('a', '==', 2),
-            Filter.where('b', 'not-in', [2, 3]),
-          ),
-        )
+        .where(Filter.or(Filter.where('a', '==', 2), Filter.where('b', 'not-in', [2, 3])))
         .get(),
       'doc1',
       'doc2',
@@ -3672,23 +3407,18 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
   it('supports OR queries with array membership', async () => {
     const collection = await testCollectionWithDocs({
-      doc1: {a: 1, b: [0]},
-      doc2: {b: [1]},
-      doc3: {a: 3, b: [2, 7]},
-      doc4: {a: 1, b: [3, 7]},
-      doc5: {a: 1},
-      doc6: {a: 2},
+      doc1: { a: 1, b: [0] },
+      doc2: { b: [1] },
+      doc3: { a: 3, b: [2, 7] },
+      doc4: { a: 1, b: [3, 7] },
+      doc5: { a: 1 },
+      doc6: { a: 2 },
     });
 
     // Query: a==2 || b array-contains 7
     expectDocs(
       await collection
-        .where(
-          Filter.or(
-            Filter.where('a', '==', 2),
-            Filter.where('b', 'array-contains', 7),
-          ),
-        )
+        .where(Filter.or(Filter.where('a', '==', 2), Filter.where('b', 'array-contains', 7)))
         .orderBy(FieldPath.documentId())
         .get(),
       'doc3',
@@ -3701,10 +3431,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     expectDocs(
       await collection
         .where(
-          Filter.or(
-            Filter.where('a', '==', 2),
-            Filter.where('b', 'array-contains-any', [0, 3]),
-          ),
+          Filter.or(Filter.where('a', '==', 2), Filter.where('b', 'array-contains-any', [0, 3])),
         )
         .orderBy(FieldPath.documentId())
         .get(),
@@ -3727,34 +3454,25 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       const fields = ref.firestore._serializer!.encodeFields(data);
       return randomCol.firestore.snapshot_(
         {
-          name:
-            'projects/ignored/databases/(default)/documents/' +
-            ref._path.relativeName,
+          name: 'projects/ignored/databases/(default)/documents/' + ref._path.relativeName,
           fields,
-          createTime: {seconds: 0, nanos: 0},
-          updateTime: {seconds: 0, nanos: 0},
+          createTime: { seconds: 0, nanos: 0 },
+          updateTime: { seconds: 0, nanos: 0 },
         },
-        {seconds: 0, nanos: 0},
+        { seconds: 0, nanos: 0 },
       );
     };
 
-    const docChange = (
-      type: string,
-      id: string,
-      data: DocumentData,
-    ): ExpectedChange => {
+    const docChange = (type: string, id: string, data: DocumentData): ExpectedChange => {
       return {
         type,
         doc: snapshot(id, data),
       };
     };
 
-    const added = (id: string, data: DocumentData) =>
-      docChange('added', id, data);
-    const modified = (id: string, data: DocumentData) =>
-      docChange('modified', id, data);
-    const removed = (id: string, data: DocumentData) =>
-      docChange('removed', id, data);
+    const added = (id: string, data: DocumentData) => docChange('added', id, data);
+    const modified = (id: string, data: DocumentData) => docChange('modified', id, data);
+    const removed = (id: string, data: DocumentData) => docChange('removed', id, data);
 
     function resetPromise() {
       currentDeferred.promise = new Promise((resolve, reject) => {
@@ -3764,7 +3482,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     }
 
     function waitForSnapshot(): Promise<QuerySnapshot> {
-      return currentDeferred.promise!.then(snapshot => {
+      return currentDeferred.promise!.then((snapshot) => {
         resetPromise();
         return snapshot;
       });
@@ -3772,7 +3490,7 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
     function snapshotsEqual(
       actual: QuerySnapshot,
-      expected: {docs: DocumentSnapshot[]; docChanges: ExpectedChange[]},
+      expected: { docs: DocumentSnapshot[]; docChanges: ExpectedChange[] },
     ) {
       let i;
       expect(actual.size).to.equal(expected.docs.length);
@@ -3784,12 +3502,8 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       expect(actualDocChanges.length).to.equal(expected.docChanges.length);
       for (i = 0; i < expected.docChanges.length; i++) {
         expect(actualDocChanges[i].type).to.equal(expected.docChanges[i].type);
-        expect(actualDocChanges[i].doc.ref.id).to.equal(
-          expected.docChanges[i].doc.ref.id,
-        );
-        expect(actualDocChanges[i].doc.data()).to.deep.equal(
-          expected.docChanges[i].doc.data(),
-        );
+        expect(actualDocChanges[i].doc.ref.id).to.equal(expected.docChanges[i].doc.ref.id);
+        expect(actualDocChanges[i].doc.data()).to.deep.equal(expected.docChanges[i].doc.data());
         expect(actualDocChanges[i].doc.readTime).to.exist;
         expect(actualDocChanges[i].doc.createTime).to.exist;
         expect(actualDocChanges[i].doc.updateTime).to.exist;
@@ -3804,49 +3518,49 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       const ref2 = randomCol.doc('doc2');
 
       const unsubscribe = randomCol.onSnapshot(
-        snapshot => {
+        (snapshot) => {
           currentDeferred.resolve(snapshot);
         },
-        err => {
+        (err) => {
           currentDeferred.reject!(err);
         },
       );
 
       return waitForSnapshot()
-        .then(results => {
-          snapshotsEqual(results, {docs: [], docChanges: []});
+        .then((results) => {
+          snapshotsEqual(results, { docs: [], docChanges: [] });
           // Add a result.
-          return ref1.set({foo: 'a'});
+          return ref1.set({ foo: 'a' });
         })
         .then(() => {
           return waitForSnapshot();
         })
-        .then(results => {
+        .then((results) => {
           snapshotsEqual(results, {
-            docs: [snapshot('doc1', {foo: 'a'})],
-            docChanges: [added('doc1', {foo: 'a'})],
+            docs: [snapshot('doc1', { foo: 'a' })],
+            docChanges: [added('doc1', { foo: 'a' })],
           });
           // Add another result.
-          return ref2.set({foo: 'b'});
+          return ref2.set({ foo: 'b' });
         })
         .then(() => {
           return waitForSnapshot();
         })
-        .then(results => {
+        .then((results) => {
           snapshotsEqual(results, {
-            docs: [snapshot('doc1', {foo: 'a'}), snapshot('doc2', {foo: 'b'})],
-            docChanges: [added('doc2', {foo: 'b'})],
+            docs: [snapshot('doc1', { foo: 'a' }), snapshot('doc2', { foo: 'b' })],
+            docChanges: [added('doc2', { foo: 'b' })],
           });
           // Change a result.
-          return ref2.set({bar: 'c'});
+          return ref2.set({ bar: 'c' });
         })
         .then(() => {
           return waitForSnapshot();
         })
-        .then(results => {
+        .then((results) => {
           snapshotsEqual(results, {
-            docs: [snapshot('doc1', {foo: 'a'}), snapshot('doc2', {bar: 'c'})],
-            docChanges: [modified('doc2', {bar: 'c'})],
+            docs: [snapshot('doc1', { foo: 'a' }), snapshot('doc2', { bar: 'c' })],
+            docChanges: [modified('doc2', { bar: 'c' })],
           });
           unsubscribe();
         });
@@ -3858,52 +3572,49 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
       const query = randomCol.where('included', '==', 'yes');
       const unsubscribe = query.onSnapshot(
-        snapshot => {
+        (snapshot) => {
           currentDeferred.resolve(snapshot);
         },
-        err => {
+        (err) => {
           currentDeferred.reject(err);
         },
       );
 
       return waitForSnapshot()
-        .then(results => {
-          snapshotsEqual(results, {docs: [], docChanges: []});
+        .then((results) => {
+          snapshotsEqual(results, { docs: [], docChanges: [] });
           // Add a result.
-          return ref1.set({included: 'yes'});
+          return ref1.set({ included: 'yes' });
         })
         .then(() => {
           return waitForSnapshot();
         })
-        .then(results => {
+        .then((results) => {
           snapshotsEqual(results, {
-            docs: [snapshot('doc1', {included: 'yes'})],
-            docChanges: [added('doc1', {included: 'yes'})],
+            docs: [snapshot('doc1', { included: 'yes' })],
+            docChanges: [added('doc1', { included: 'yes' })],
           });
           // Add another result.
-          return ref2.set({included: 'yes'});
+          return ref2.set({ included: 'yes' });
         })
         .then(() => {
           return waitForSnapshot();
         })
-        .then(results => {
+        .then((results) => {
           snapshotsEqual(results, {
-            docs: [
-              snapshot('doc1', {included: 'yes'}),
-              snapshot('doc2', {included: 'yes'}),
-            ],
-            docChanges: [added('doc2', {included: 'yes'})],
+            docs: [snapshot('doc1', { included: 'yes' }), snapshot('doc2', { included: 'yes' })],
+            docChanges: [added('doc2', { included: 'yes' })],
           });
           // Change a result.
-          return ref2.set({included: 'no'});
+          return ref2.set({ included: 'no' });
         })
         .then(() => {
           return waitForSnapshot();
         })
-        .then(results => {
+        .then((results) => {
           snapshotsEqual(results, {
-            docs: [snapshot('doc1', {included: 'yes'})],
-            docChanges: [removed('doc2', {included: 'yes'})],
+            docs: [snapshot('doc1', { included: 'yes' })],
+            docChanges: [removed('doc2', { included: 'yes' })],
           });
           unsubscribe();
         });
@@ -3914,41 +3625,38 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       const ref2 = randomCol.doc('doc2');
 
       const unsubscribe = randomCol.onSnapshot(
-        snapshot => {
+        (snapshot) => {
           currentDeferred.resolve(snapshot);
         },
-        err => {
+        (err) => {
           currentDeferred.reject(err);
         },
       );
 
       return waitForSnapshot()
-        .then(results => {
-          snapshotsEqual(results, {docs: [], docChanges: []});
+        .then((results) => {
+          snapshotsEqual(results, { docs: [], docChanges: [] });
           // Add a result.
-          return ref1.set({included: 'yes'});
+          return ref1.set({ included: 'yes' });
         })
         .then(() => {
           return waitForSnapshot();
         })
-        .then(results => {
+        .then((results) => {
           snapshotsEqual(results, {
-            docs: [snapshot('doc1', {included: 'yes'})],
-            docChanges: [added('doc1', {included: 'yes'})],
+            docs: [snapshot('doc1', { included: 'yes' })],
+            docChanges: [added('doc1', { included: 'yes' })],
           });
           // Add another result.
-          return ref2.set({included: 'yes'});
+          return ref2.set({ included: 'yes' });
         })
         .then(() => {
           return waitForSnapshot();
         })
-        .then(results => {
+        .then((results) => {
           snapshotsEqual(results, {
-            docs: [
-              snapshot('doc1', {included: 'yes'}),
-              snapshot('doc2', {included: 'yes'}),
-            ],
-            docChanges: [added('doc2', {included: 'yes'})],
+            docs: [snapshot('doc1', { included: 'yes' }), snapshot('doc2', { included: 'yes' })],
+            docChanges: [added('doc2', { included: 'yes' })],
           });
           // Delete a result.
           return ref2.delete();
@@ -3956,10 +3664,10 @@ describe.skipEnterprise('Query class - Standard DB', () => {
         .then(() => {
           return waitForSnapshot();
         })
-        .then(results => {
+        .then((results) => {
           snapshotsEqual(results, {
-            docs: [snapshot('doc1', {included: 'yes'})],
-            docChanges: [removed('doc2', {included: 'yes'})],
+            docs: [snapshot('doc1', { included: 'yes' })],
+            docChanges: [removed('doc2', { included: 'yes' })],
           });
           unsubscribe();
         });
@@ -3970,19 +3678,19 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       const ref2 = randomCol.doc('doc2');
       const ref3 = randomCol.doc('doc3');
 
-      await ref1.set({doc: 1});
-      await ref2.set({doc: 2});
-      await ref3.set({doc: 3});
+      await ref1.set({ doc: 1 });
+      await ref2.set({ doc: 2 });
+      await ref3.set({ doc: 3 });
 
       const unsubscribe = randomCol
         .orderBy('doc')
         .limitToLast(2)
-        .onSnapshot(snapshot => currentDeferred.resolve(snapshot));
+        .onSnapshot((snapshot) => currentDeferred.resolve(snapshot));
 
       const results = await waitForSnapshot();
       snapshotsEqual(results, {
-        docs: [snapshot('doc2', {doc: 2}), snapshot('doc3', {doc: 3})],
-        docChanges: [added('doc2', {doc: 2}), added('doc3', {doc: 3})],
+        docs: [snapshot('doc2', { doc: 2 }), snapshot('doc3', { doc: 3 })],
+        docChanges: [added('doc2', { doc: 2 }), added('doc3', { doc: 3 })],
       });
 
       unsubscribe();
@@ -3992,23 +3700,23 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       'snapshot listener sorts query by DocumentId same way as server',
       async () => {
         const batch = firestore.batch();
-        batch.set(randomCol.doc('A'), {a: 1});
-        batch.set(randomCol.doc('a'), {a: 1});
-        batch.set(randomCol.doc('Aa'), {a: 1});
-        batch.set(randomCol.doc('7'), {a: 1});
-        batch.set(randomCol.doc('12'), {a: 1});
-        batch.set(randomCol.doc('__id7__'), {a: 1});
-        batch.set(randomCol.doc('__id12__'), {a: 1});
-        batch.set(randomCol.doc('__id-2__'), {a: 1});
-        batch.set(randomCol.doc('__id1_'), {a: 1});
-        batch.set(randomCol.doc('_id1__'), {a: 1});
-        batch.set(randomCol.doc('__id'), {a: 1});
+        batch.set(randomCol.doc('A'), { a: 1 });
+        batch.set(randomCol.doc('a'), { a: 1 });
+        batch.set(randomCol.doc('Aa'), { a: 1 });
+        batch.set(randomCol.doc('7'), { a: 1 });
+        batch.set(randomCol.doc('12'), { a: 1 });
+        batch.set(randomCol.doc('__id7__'), { a: 1 });
+        batch.set(randomCol.doc('__id12__'), { a: 1 });
+        batch.set(randomCol.doc('__id-2__'), { a: 1 });
+        batch.set(randomCol.doc('__id1_'), { a: 1 });
+        batch.set(randomCol.doc('_id1__'), { a: 1 });
+        batch.set(randomCol.doc('__id'), { a: 1 });
         // largest long number
-        batch.set(randomCol.doc('__id9223372036854775807__'), {a: 1});
-        batch.set(randomCol.doc('__id9223372036854775806__'), {a: 1});
+        batch.set(randomCol.doc('__id9223372036854775807__'), { a: 1 });
+        batch.set(randomCol.doc('__id9223372036854775806__'), { a: 1 });
         // smallest long number
-        batch.set(randomCol.doc('__id-9223372036854775808__'), {a: 1});
-        batch.set(randomCol.doc('__id-9223372036854775807__'), {a: 1});
+        batch.set(randomCol.doc('__id-9223372036854775808__'), { a: 1 });
+        batch.set(randomCol.doc('__id-9223372036854775807__'), { a: 1 });
         await batch.commit();
 
         const query = randomCol.orderBy(FieldPath.documentId());
@@ -4049,11 +3757,9 @@ describe.skipEnterprise('Query class - Standard DB', () => {
             ];
 
         const getSnapshot = await query.get();
-        expect(getSnapshot.docs.map(d => d.id)).to.deep.equal(expectedDocs);
+        expect(getSnapshot.docs.map((d) => d.id)).to.deep.equal(expectedDocs);
 
-        const unsubscribe = query.onSnapshot(snapshot =>
-          currentDeferred.resolve(snapshot),
-        );
+        const unsubscribe = query.onSnapshot((snapshot) => currentDeferred.resolve(snapshot));
 
         const watchSnapshot = await waitForSnapshot();
         // Compare the snapshot (including sort order) of a snapshot
@@ -4069,23 +3775,23 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       'snapshot listener sorts filtered query by DocumentId same way as server',
       async () => {
         const batch = firestore.batch();
-        batch.set(randomCol.doc('A'), {a: 1});
-        batch.set(randomCol.doc('a'), {a: 1});
-        batch.set(randomCol.doc('Aa'), {a: 1});
-        batch.set(randomCol.doc('7'), {a: 1});
-        batch.set(randomCol.doc('12'), {a: 1});
-        batch.set(randomCol.doc('__id7__'), {a: 1});
-        batch.set(randomCol.doc('__id12__'), {a: 1});
-        batch.set(randomCol.doc('__id-2__'), {a: 1});
-        batch.set(randomCol.doc('__id1_'), {a: 1});
-        batch.set(randomCol.doc('_id1__'), {a: 1});
-        batch.set(randomCol.doc('__id'), {a: 1});
+        batch.set(randomCol.doc('A'), { a: 1 });
+        batch.set(randomCol.doc('a'), { a: 1 });
+        batch.set(randomCol.doc('Aa'), { a: 1 });
+        batch.set(randomCol.doc('7'), { a: 1 });
+        batch.set(randomCol.doc('12'), { a: 1 });
+        batch.set(randomCol.doc('__id7__'), { a: 1 });
+        batch.set(randomCol.doc('__id12__'), { a: 1 });
+        batch.set(randomCol.doc('__id-2__'), { a: 1 });
+        batch.set(randomCol.doc('__id1_'), { a: 1 });
+        batch.set(randomCol.doc('_id1__'), { a: 1 });
+        batch.set(randomCol.doc('__id'), { a: 1 });
         // largest long number
-        batch.set(randomCol.doc('__id9223372036854775807__'), {a: 1});
-        batch.set(randomCol.doc('__id9223372036854775806__'), {a: 1});
+        batch.set(randomCol.doc('__id9223372036854775807__'), { a: 1 });
+        batch.set(randomCol.doc('__id9223372036854775806__'), { a: 1 });
         // smallest long number
-        batch.set(randomCol.doc('__id-9223372036854775808__'), {a: 1});
-        batch.set(randomCol.doc('__id-9223372036854775807__'), {a: 1});
+        batch.set(randomCol.doc('__id-9223372036854775808__'), { a: 1 });
+        batch.set(randomCol.doc('__id-9223372036854775807__'), { a: 1 });
         await batch.commit();
 
         const query = randomCol
@@ -4102,11 +3808,9 @@ describe.skipEnterprise('Query class - Standard DB', () => {
         ];
 
         const getSnapshot = await query.get();
-        expect(getSnapshot.docs.map(d => d.id)).to.deep.equal(expectedDocs);
+        expect(getSnapshot.docs.map((d) => d.id)).to.deep.equal(expectedDocs);
 
-        const unsubscribe = query.onSnapshot(snapshot =>
-          currentDeferred.resolve(snapshot),
-        );
+        const unsubscribe = query.onSnapshot((snapshot) => currentDeferred.resolve(snapshot));
 
         const watchSnapshot = await waitForSnapshot();
         // Compare the snapshot (including sort order) of a snapshot
@@ -4126,21 +3830,21 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
       // Test data in the order that we expect the backend to sort it.
       const docsInOrder = [
-        {embedding: [1, 2, 3, 4, 5, 6]},
-        {embedding: [100]},
-        {embedding: FieldValue.vector([Number.NEGATIVE_INFINITY])},
-        {embedding: FieldValue.vector([-100])},
-        {embedding: FieldValue.vector([100])},
-        {embedding: FieldValue.vector([Number.POSITIVE_INFINITY])},
-        {embedding: FieldValue.vector([1, 2])},
-        {embedding: FieldValue.vector([2, 2])},
-        {embedding: FieldValue.vector([1, 2, 3])},
-        {embedding: FieldValue.vector([1, 2, 3, 4])},
-        {embedding: FieldValue.vector([1, 2, 3, 4, 5])},
-        {embedding: FieldValue.vector([1, 2, 100, 4, 4])},
-        {embedding: FieldValue.vector([100, 2, 3, 4, 5])},
-        {embedding: {HELLO: 'WORLD'}},
-        {embedding: {hello: 'world'}},
+        { embedding: [1, 2, 3, 4, 5, 6] },
+        { embedding: [100] },
+        { embedding: FieldValue.vector([Number.NEGATIVE_INFINITY]) },
+        { embedding: FieldValue.vector([-100]) },
+        { embedding: FieldValue.vector([100]) },
+        { embedding: FieldValue.vector([Number.POSITIVE_INFINITY]) },
+        { embedding: FieldValue.vector([1, 2]) },
+        { embedding: FieldValue.vector([2, 2]) },
+        { embedding: FieldValue.vector([1, 2, 3]) },
+        { embedding: FieldValue.vector([1, 2, 3, 4]) },
+        { embedding: FieldValue.vector([1, 2, 3, 4, 5]) },
+        { embedding: FieldValue.vector([1, 2, 100, 4, 4]) },
+        { embedding: FieldValue.vector([100, 2, 3, 4, 5]) },
+        { embedding: { HELLO: 'WORLD' } },
+        { embedding: { hello: 'world' } },
       ];
 
       const expectedSnapshots = [];
@@ -4155,10 +3859,10 @@ describe.skipEnterprise('Query class - Standard DB', () => {
       const orderedQuery = randomCol.orderBy('embedding');
 
       const unsubscribe = orderedQuery.onSnapshot(
-        snapshot => {
+        (snapshot) => {
           currentDeferred.resolve(snapshot);
         },
-        err => {
+        (err) => {
           currentDeferred.reject!(err);
         },
       );
@@ -4185,43 +3889,29 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     });
 
     describe('sort unicode strings', () => {
-      const expectedDocs = [
-        'b',
-        'a',
-        'h',
-        'i',
-        'c',
-        'f',
-        'e',
-        'd',
-        'g',
-        'k',
-        'j',
-      ];
+      const expectedDocs = ['b', 'a', 'h', 'i', 'c', 'f', 'e', 'd', 'g', 'k', 'j'];
 
       it('snapshot listener sorts unicode strings same as server', async () => {
         const collection = await testCollectionWithDocs({
-          a: {value: 'Łukasiewicz'},
-          b: {value: 'Sierpiński'},
-          c: {value: '岩澤'},
-          d: {value: '🄟'},
-          e: {value: 'Ｐ'},
-          f: {value: '︒'},
-          g: {value: '🐵'},
-          h: {value: '你好'},
-          i: {value: '你顥'},
-          j: {value: '😁'},
-          k: {value: '😀'},
+          a: { value: 'Łukasiewicz' },
+          b: { value: 'Sierpiński' },
+          c: { value: '岩澤' },
+          d: { value: '🄟' },
+          e: { value: 'Ｐ' },
+          f: { value: '︒' },
+          g: { value: '🐵' },
+          h: { value: '你好' },
+          i: { value: '你顥' },
+          j: { value: '😁' },
+          k: { value: '😀' },
         });
 
         const query = collection.orderBy('value');
 
         const getSnapshot = await query.get();
-        expect(getSnapshot.docs.map(d => d.id)).to.deep.equal(expectedDocs);
+        expect(getSnapshot.docs.map((d) => d.id)).to.deep.equal(expectedDocs);
 
-        const unsubscribe = query.onSnapshot(snapshot =>
-          currentDeferred.resolve(snapshot),
-        );
+        const unsubscribe = query.onSnapshot((snapshot) => currentDeferred.resolve(snapshot));
         const watchSnapshot = await waitForSnapshot();
         snapshotsEqual(watchSnapshot, {
           docs: getSnapshot.docs,
@@ -4232,27 +3922,25 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
       it('snapshot listener sorts unicode strings in array same as server', async () => {
         const collection = await testCollectionWithDocs({
-          a: {value: ['Łukasiewicz']},
-          b: {value: ['Sierpiński']},
-          c: {value: ['岩澤']},
-          d: {value: ['🄟']},
-          e: {value: ['Ｐ']},
-          f: {value: ['︒']},
-          g: {value: ['🐵']},
-          h: {value: ['你好']},
-          i: {value: ['你顥']},
-          j: {value: ['😁']},
-          k: {value: ['😀']},
+          a: { value: ['Łukasiewicz'] },
+          b: { value: ['Sierpiński'] },
+          c: { value: ['岩澤'] },
+          d: { value: ['🄟'] },
+          e: { value: ['Ｐ'] },
+          f: { value: ['︒'] },
+          g: { value: ['🐵'] },
+          h: { value: ['你好'] },
+          i: { value: ['你顥'] },
+          j: { value: ['😁'] },
+          k: { value: ['😀'] },
         });
 
         const query = collection.orderBy('value');
 
         const getSnapshot = await query.get();
-        expect(getSnapshot.docs.map(d => d.id)).to.deep.equal(expectedDocs);
+        expect(getSnapshot.docs.map((d) => d.id)).to.deep.equal(expectedDocs);
 
-        const unsubscribe = query.onSnapshot(snapshot =>
-          currentDeferred.resolve(snapshot),
-        );
+        const unsubscribe = query.onSnapshot((snapshot) => currentDeferred.resolve(snapshot));
         const watchSnapshot = await waitForSnapshot();
         snapshotsEqual(watchSnapshot, {
           docs: getSnapshot.docs,
@@ -4263,27 +3951,25 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
       it('snapshot listener sorts unicode strings in map same as server', async () => {
         const collection = await testCollectionWithDocs({
-          a: {value: {foo: 'Łukasiewicz'}},
-          b: {value: {foo: 'Sierpiński'}},
-          c: {value: {foo: '岩澤'}},
-          d: {value: {foo: '🄟'}},
-          e: {value: {foo: 'Ｐ'}},
-          f: {value: {foo: '︒'}},
-          g: {value: {foo: '🐵'}},
-          h: {value: {foo: '你好'}},
-          i: {value: {foo: '你顥'}},
-          j: {value: {foo: '😁'}},
-          k: {value: {foo: '😀'}},
+          a: { value: { foo: 'Łukasiewicz' } },
+          b: { value: { foo: 'Sierpiński' } },
+          c: { value: { foo: '岩澤' } },
+          d: { value: { foo: '🄟' } },
+          e: { value: { foo: 'Ｐ' } },
+          f: { value: { foo: '︒' } },
+          g: { value: { foo: '🐵' } },
+          h: { value: { foo: '你好' } },
+          i: { value: { foo: '你顥' } },
+          j: { value: { foo: '😁' } },
+          k: { value: { foo: '😀' } },
         });
 
         const query = collection.orderBy('value');
 
         const getSnapshot = await query.get();
-        expect(getSnapshot.docs.map(d => d.id)).to.deep.equal(expectedDocs);
+        expect(getSnapshot.docs.map((d) => d.id)).to.deep.equal(expectedDocs);
 
-        const unsubscribe = query.onSnapshot(snapshot =>
-          currentDeferred.resolve(snapshot),
-        );
+        const unsubscribe = query.onSnapshot((snapshot) => currentDeferred.resolve(snapshot));
         const watchSnapshot = await waitForSnapshot();
         snapshotsEqual(watchSnapshot, {
           docs: getSnapshot.docs,
@@ -4294,27 +3980,25 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
       it('snapshot listener sorts unicode strings in map key same as server', async () => {
         const collection = await testCollectionWithDocs({
-          a: {value: {Łukasiewicz: true}},
-          b: {value: {Sierpiński: true}},
-          c: {value: {岩澤: true}},
-          d: {value: {'🄟': true}},
-          e: {value: {Ｐ: true}},
-          f: {value: {'︒': true}},
-          g: {value: {'🐵': true}},
-          h: {value: {你好: true}},
-          i: {value: {你顥: true}},
-          j: {value: {'😁': true}},
-          k: {value: {'😀': true}},
+          a: { value: { Łukasiewicz: true } },
+          b: { value: { Sierpiński: true } },
+          c: { value: { 岩澤: true } },
+          d: { value: { '🄟': true } },
+          e: { value: { Ｐ: true } },
+          f: { value: { '︒': true } },
+          g: { value: { '🐵': true } },
+          h: { value: { 你好: true } },
+          i: { value: { 你顥: true } },
+          j: { value: { '😁': true } },
+          k: { value: { '😀': true } },
         });
 
         const query = collection.orderBy('value');
 
         const getSnapshot = await query.get();
-        expect(getSnapshot.docs.map(d => d.id)).to.deep.equal(expectedDocs);
+        expect(getSnapshot.docs.map((d) => d.id)).to.deep.equal(expectedDocs);
 
-        const unsubscribe = query.onSnapshot(snapshot =>
-          currentDeferred.resolve(snapshot),
-        );
+        const unsubscribe = query.onSnapshot((snapshot) => currentDeferred.resolve(snapshot));
         const watchSnapshot = await waitForSnapshot();
         snapshotsEqual(watchSnapshot, {
           docs: getSnapshot.docs,
@@ -4325,17 +4009,17 @@ describe.skipEnterprise('Query class - Standard DB', () => {
 
       it('snapshot listener sorts unicode strings in document key same as server', async () => {
         const collection = await testCollectionWithDocs({
-          Łukasiewicz: {value: true},
-          Sierpiński: {value: true},
-          岩澤: {value: true},
-          '🄟': {value: true},
-          Ｐ: {value: true},
-          '︒': {value: true},
-          '🐵': {value: true},
-          你好: {value: true},
-          你顥: {value: true},
-          '😁': {value: true},
-          '😀': {value: true},
+          Łukasiewicz: { value: true },
+          Sierpiński: { value: true },
+          岩澤: { value: true },
+          '🄟': { value: true },
+          Ｐ: { value: true },
+          '︒': { value: true },
+          '🐵': { value: true },
+          你好: { value: true },
+          你顥: { value: true },
+          '😁': { value: true },
+          '😀': { value: true },
         });
 
         const query = collection.orderBy(FieldPath.documentId());
@@ -4354,11 +4038,9 @@ describe.skipEnterprise('Query class - Standard DB', () => {
         ];
 
         const getSnapshot = await query.get();
-        expect(getSnapshot.docs.map(d => d.id)).to.deep.equal(expectedDocs);
+        expect(getSnapshot.docs.map((d) => d.id)).to.deep.equal(expectedDocs);
 
-        const unsubscribe = query.onSnapshot(snapshot =>
-          currentDeferred.resolve(snapshot),
-        );
+        const unsubscribe = query.onSnapshot((snapshot) => currentDeferred.resolve(snapshot));
         const watchSnapshot = await waitForSnapshot();
         snapshotsEqual(watchSnapshot, {
           docs: getSnapshot.docs,
@@ -4369,398 +4051,369 @@ describe.skipEnterprise('Query class - Standard DB', () => {
     });
   });
 
-  (process.env.FIRESTORE_EMULATOR_HOST === undefined
-    ? describe.skip
-    : describe)('multiple inequality', () => {
-    it('supports multiple inequality queries', async () => {
-      const collection = await testCollectionWithDocs({
-        doc1: {key: 'a', sort: 0, v: 0},
-        doc2: {key: 'b', sort: 3, v: 1},
-        doc3: {key: 'c', sort: 1, v: 3},
-        doc4: {key: 'd', sort: 2, v: 2},
+  (process.env.FIRESTORE_EMULATOR_HOST === undefined ? describe.skip : describe)(
+    'multiple inequality',
+    () => {
+      it('supports multiple inequality queries', async () => {
+        const collection = await testCollectionWithDocs({
+          doc1: { key: 'a', sort: 0, v: 0 },
+          doc2: { key: 'b', sort: 3, v: 1 },
+          doc3: { key: 'c', sort: 1, v: 3 },
+          doc4: { key: 'd', sort: 2, v: 2 },
+        });
+
+        // Multiple inequality fields
+        let results = await collection
+          .where('key', '!=', 'a')
+          .where('sort', '<=', 2)
+          .where('v', '>', 2)
+          .get();
+        expectDocs(results, 'doc3');
+
+        // Duplicate inequality fields
+        results = await collection
+          .where('key', '!=', 'a')
+          .where('sort', '<=', 2)
+          .where('sort', '>', 1)
+          .get();
+        expectDocs(results, 'doc4');
+
+        // With multiple IN
+        results = await collection
+          .where('key', '>=', 'a')
+          .where('sort', '<=', 2)
+          .where('v', 'in', [2, 3, 4])
+          .where('sort', 'in', [2, 3])
+          .get();
+        expectDocs(results, 'doc4');
+
+        // With NOT-IN
+        results = await collection
+          .where('key', '>=', 'a')
+          .where('sort', '<=', 2)
+          .where('v', 'not-in', [2, 4, 5])
+          .get();
+        expectDocs(results, 'doc1', 'doc3');
+
+        // With orderby
+        results = await collection
+          .where('key', '>=', 'a')
+          .where('sort', '<=', 2)
+          .orderBy('v', 'desc')
+          .get();
+        expectDocs(results, 'doc3', 'doc4', 'doc1');
+
+        // With limit
+        results = await collection
+          .where('key', '>=', 'a')
+          .where('sort', '<=', 2)
+          .orderBy('v', 'desc')
+          .limit(2)
+          .get();
+        expectDocs(results, 'doc3', 'doc4');
+
+        // With limitToLast
+        results = await collection
+          .where('key', '>=', 'a')
+          .where('sort', '<=', 2)
+          .orderBy('v', 'desc')
+          .limitToLast(2)
+          .get();
+        expectDocs(results, 'doc4', 'doc1');
       });
 
-      // Multiple inequality fields
-      let results = await collection
-        .where('key', '!=', 'a')
-        .where('sort', '<=', 2)
-        .where('v', '>', 2)
-        .get();
-      expectDocs(results, 'doc3');
+      it('can use on special values', async () => {
+        const collection = await testCollectionWithDocs({
+          doc1: { key: 'a', sort: 0, v: 0 },
+          doc2: { key: 'b', sort: NaN, v: 1 },
+          doc3: { key: 'c', sort: null, v: 3 },
+          doc4: { key: 'd', v: 0 },
+          doc5: { key: 'e', sort: 1 },
+          doc6: { key: 'f', sort: 1, v: 1 },
+        });
 
-      // Duplicate inequality fields
-      results = await collection
-        .where('key', '!=', 'a')
-        .where('sort', '<=', 2)
-        .where('sort', '>', 1)
-        .get();
-      expectDocs(results, 'doc4');
+        let results = await collection.where('key', '!=', 'a').where('sort', '<=', 2).get();
+        expectDocs(results, 'doc5', 'doc6');
 
-      // With multiple IN
-      results = await collection
-        .where('key', '>=', 'a')
-        .where('sort', '<=', 2)
-        .where('v', 'in', [2, 3, 4])
-        .where('sort', 'in', [2, 3])
-        .get();
-      expectDocs(results, 'doc4');
-
-      // With NOT-IN
-      results = await collection
-        .where('key', '>=', 'a')
-        .where('sort', '<=', 2)
-        .where('v', 'not-in', [2, 4, 5])
-        .get();
-      expectDocs(results, 'doc1', 'doc3');
-
-      // With orderby
-      results = await collection
-        .where('key', '>=', 'a')
-        .where('sort', '<=', 2)
-        .orderBy('v', 'desc')
-        .get();
-      expectDocs(results, 'doc3', 'doc4', 'doc1');
-
-      // With limit
-      results = await collection
-        .where('key', '>=', 'a')
-        .where('sort', '<=', 2)
-        .orderBy('v', 'desc')
-        .limit(2)
-        .get();
-      expectDocs(results, 'doc3', 'doc4');
-
-      // With limitToLast
-      results = await collection
-        .where('key', '>=', 'a')
-        .where('sort', '<=', 2)
-        .orderBy('v', 'desc')
-        .limitToLast(2)
-        .get();
-      expectDocs(results, 'doc4', 'doc1');
-    });
-
-    it('can use on special values', async () => {
-      const collection = await testCollectionWithDocs({
-        doc1: {key: 'a', sort: 0, v: 0},
-        doc2: {key: 'b', sort: NaN, v: 1},
-        doc3: {key: 'c', sort: null, v: 3},
-        doc4: {key: 'd', v: 0},
-        doc5: {key: 'e', sort: 1},
-        doc6: {key: 'f', sort: 1, v: 1},
+        results = await collection
+          .where('key', '!=', 'a')
+          .where('sort', '<=', 2)
+          .where('v', '<=', 1)
+          .get();
+        expectDocs(results, 'doc6');
       });
 
-      let results = await collection
-        .where('key', '!=', 'a')
-        .where('sort', '<=', 2)
-        .get();
-      expectDocs(results, 'doc5', 'doc6');
+      it('can use with array membership', async () => {
+        const collection = await testCollectionWithDocs({
+          doc1: { key: 'a', sort: 0, v: [0] },
+          doc2: { key: 'b', sort: 1, v: [0, 1, 3] },
+          doc3: { key: 'c', sort: 1, v: [] },
+          doc4: { key: 'd', sort: 2, v: [1] },
+          doc5: { key: 'e', sort: 3, v: [2, 4] },
+          doc6: { key: 'f', sort: 4, v: [NaN] },
+          doc7: { key: 'g', sort: 4, v: [null] },
+        });
 
-      results = await collection
-        .where('key', '!=', 'a')
-        .where('sort', '<=', 2)
-        .where('v', '<=', 1)
-        .get();
-      expectDocs(results, 'doc6');
-    });
+        let results = await collection
+          .where('key', '!=', 'a')
+          .where('sort', '>=', 1)
+          .where('v', 'array-contains', 0)
+          .get();
+        expectDocs(results, 'doc2');
 
-    it('can use with array membership', async () => {
-      const collection = await testCollectionWithDocs({
-        doc1: {key: 'a', sort: 0, v: [0]},
-        doc2: {key: 'b', sort: 1, v: [0, 1, 3]},
-        doc3: {key: 'c', sort: 1, v: []},
-        doc4: {key: 'd', sort: 2, v: [1]},
-        doc5: {key: 'e', sort: 3, v: [2, 4]},
-        doc6: {key: 'f', sort: 4, v: [NaN]},
-        doc7: {key: 'g', sort: 4, v: [null]},
+        results = await collection
+          .where('key', '!=', 'a')
+          .where('sort', '>=', 1)
+          .where('v', 'array-contains-any', [0, 1])
+          .get();
+        expectDocs(results, 'doc2', 'doc4');
       });
 
-      let results = await collection
-        .where('key', '!=', 'a')
-        .where('sort', '>=', 1)
-        .where('v', 'array-contains', 0)
-        .get();
-      expectDocs(results, 'doc2');
-
-      results = await collection
-        .where('key', '!=', 'a')
-        .where('sort', '>=', 1)
-        .where('v', 'array-contains-any', [0, 1])
-        .get();
-      expectDocs(results, 'doc2', 'doc4');
-    });
-
-    // Use cursor in following test cases to add implicit order by fields in the sdk and compare the
-    // result with the query fields normalized in the server.
-    it('can use with nested field', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const testData = (n?: number): any => {
-        n = n || 1;
-        return {
-          name: 'room ' + n,
-          metadata: {
-            createdAt: n,
-          },
-          field: 'field ' + n,
-          'field.dot': n,
-          'field\\slash': n,
+      // Use cursor in following test cases to add implicit order by fields in the sdk and compare the
+      // result with the query fields normalized in the server.
+      it('can use with nested field', async () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const testData = (n?: number): any => {
+          n = n || 1;
+          return {
+            name: 'room ' + n,
+            metadata: {
+              createdAt: n,
+            },
+            field: 'field ' + n,
+            'field.dot': n,
+            'field\\slash': n,
+          };
         };
-      };
 
-      const collection = await testCollectionWithDocs({
-        doc1: testData(400),
-        doc2: testData(200),
-        doc3: testData(100),
-        doc4: testData(300),
+        const collection = await testCollectionWithDocs({
+          doc1: testData(400),
+          doc2: testData(200),
+          doc3: testData(100),
+          doc4: testData(300),
+        });
+
+        // ordered by: name asc, metadata.createdAt asc, __name__  asc
+        let query = collection
+          .where('metadata.createdAt', '<=', 500)
+          .where('metadata.createdAt', '>', 100)
+          .where('name', '!=', 'room 200')
+          .orderBy('name');
+        let docSnap = await collection.doc('doc4').get();
+        let queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc4', 'doc1');
+        expectDocs(await queryWithCursor.get(), 'doc4', 'doc1');
+
+        // ordered by: name desc, field desc, field.dot desc, field\\slash desc, __name__ desc
+        query = collection
+          .where('field', '>=', 'field 100')
+          .where(new FieldPath('field.dot'), '!=', 300)
+          .where('field\\slash', '<', 400)
+          .orderBy('name', 'desc');
+        docSnap = await collection.doc('doc2').get();
+        queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc2', 'doc3');
+        expectDocs(await queryWithCursor.get(), 'doc2', 'doc3');
       });
 
-      // ordered by: name asc, metadata.createdAt asc, __name__  asc
-      let query = collection
-        .where('metadata.createdAt', '<=', 500)
-        .where('metadata.createdAt', '>', 100)
-        .where('name', '!=', 'room 200')
-        .orderBy('name');
-      let docSnap = await collection.doc('doc4').get();
-      let queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc4', 'doc1');
-      expectDocs(await queryWithCursor.get(), 'doc4', 'doc1');
+      it('can use with nested composite filters', async () => {
+        const collection = await testCollectionWithDocs({
+          doc1: { key: 'a', sort: 0, v: 5 },
+          doc2: { key: 'aa', sort: 4, v: 4 },
+          doc3: { key: 'c', sort: 3, v: 3 },
+          doc4: { key: 'b', sort: 2, v: 2 },
+          doc5: { key: 'b', sort: 2, v: 1 },
+          doc6: { key: 'b', sort: 0, v: 0 },
+        });
 
-      // ordered by: name desc, field desc, field.dot desc, field\\slash desc, __name__ desc
-      query = collection
-        .where('field', '>=', 'field 100')
-        .where(new FieldPath('field.dot'), '!=', 300)
-        .where('field\\slash', '<', 400)
-        .orderBy('name', 'desc');
-      docSnap = await collection.doc('doc2').get();
-      queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc2', 'doc3');
-      expectDocs(await queryWithCursor.get(), 'doc2', 'doc3');
-    });
+        // Implicitly ordered by: 'key' asc, 'sort' asc, 'v' asc, __name__ asc
+        let query = collection.where(
+          Filter.or(
+            Filter.and(Filter.where('key', '==', 'b'), Filter.where('sort', '<=', 2)),
+            Filter.and(Filter.where('key', '!=', 'b'), Filter.where('v', '>', 4)),
+          ),
+        );
+        let docSnap = await collection.doc('doc1').get();
+        let queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc1', 'doc6', 'doc5', 'doc4');
+        expectDocs(await queryWithCursor.get(), 'doc1', 'doc6', 'doc5', 'doc4');
 
-    it('can use with nested composite filters', async () => {
-      const collection = await testCollectionWithDocs({
-        doc1: {key: 'a', sort: 0, v: 5},
-        doc2: {key: 'aa', sort: 4, v: 4},
-        doc3: {key: 'c', sort: 3, v: 3},
-        doc4: {key: 'b', sort: 2, v: 2},
-        doc5: {key: 'b', sort: 2, v: 1},
-        doc6: {key: 'b', sort: 0, v: 0},
-      });
+        // Ordered by: 'sort' desc, 'key' asc, 'v' asc, __name__ asc
+        query = collection
+          .where(
+            Filter.or(
+              Filter.and(Filter.where('key', '==', 'b'), Filter.where('sort', '<=', 2)),
+              Filter.and(Filter.where('key', '!=', 'b'), Filter.where('v', '>', 4)),
+            ),
+          )
+          .orderBy('sort', 'desc')
+          .orderBy('key');
+        docSnap = await collection.doc('doc5').get();
+        queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc5', 'doc4', 'doc1', 'doc6');
+        expectDocs(await queryWithCursor.get(), 'doc5', 'doc4', 'doc1', 'doc6');
 
-      // Implicitly ordered by: 'key' asc, 'sort' asc, 'v' asc, __name__ asc
-      let query = collection.where(
-        Filter.or(
+        // Implicitly ordered by: 'key' asc, 'sort' asc, 'v' asc, __name__ asc
+        query = collection.where(
           Filter.and(
-            Filter.where('key', '==', 'b'),
-            Filter.where('sort', '<=', 2),
-          ),
-          Filter.and(Filter.where('key', '!=', 'b'), Filter.where('v', '>', 4)),
-        ),
-      );
-      let docSnap = await collection.doc('doc1').get();
-      let queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc1', 'doc6', 'doc5', 'doc4');
-      expectDocs(await queryWithCursor.get(), 'doc1', 'doc6', 'doc5', 'doc4');
-
-      // Ordered by: 'sort' desc, 'key' asc, 'v' asc, __name__ asc
-      query = collection
-        .where(
-          Filter.or(
-            Filter.and(
-              Filter.where('key', '==', 'b'),
-              Filter.where('sort', '<=', 2),
+            Filter.or(
+              Filter.and(Filter.where('key', '==', 'b'), Filter.where('sort', '<=', 4)),
+              Filter.and(Filter.where('key', '!=', 'b'), Filter.where('v', '>=', 4)),
             ),
-            Filter.and(
-              Filter.where('key', '!=', 'b'),
-              Filter.where('v', '>', 4),
+            Filter.or(
+              Filter.and(Filter.where('key', '>', 'b'), Filter.where('sort', '>=', 1)),
+              Filter.and(Filter.where('key', '<', 'b'), Filter.where('v', '>', 0)),
             ),
           ),
-        )
-        .orderBy('sort', 'desc')
-        .orderBy('key');
-      docSnap = await collection.doc('doc5').get();
-      queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc5', 'doc4', 'doc1', 'doc6');
-      expectDocs(await queryWithCursor.get(), 'doc5', 'doc4', 'doc1', 'doc6');
-
-      // Implicitly ordered by: 'key' asc, 'sort' asc, 'v' asc, __name__ asc
-      query = collection.where(
-        Filter.and(
-          Filter.or(
-            Filter.and(
-              Filter.where('key', '==', 'b'),
-              Filter.where('sort', '<=', 4),
-            ),
-            Filter.and(
-              Filter.where('key', '!=', 'b'),
-              Filter.where('v', '>=', 4),
-            ),
-          ),
-          Filter.or(
-            Filter.and(
-              Filter.where('key', '>', 'b'),
-              Filter.where('sort', '>=', 1),
-            ),
-            Filter.and(
-              Filter.where('key', '<', 'b'),
-              Filter.where('v', '>', 0),
-            ),
-          ),
-        ),
-      );
-      docSnap = await collection.doc('doc1').get();
-      queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc1', 'doc2');
-      expectDocs(await queryWithCursor.get(), 'doc1', 'doc2');
-    });
-
-    it('inequality fields will be implicitly ordered lexicographically by the server', async () => {
-      const collection = await testCollectionWithDocs({
-        doc1: {key: 'a', sort: 0, v: 5},
-        doc2: {key: 'aa', sort: 4, v: 4},
-        doc3: {key: 'b', sort: 3, v: 3},
-        doc4: {key: 'b', sort: 2, v: 2},
-        doc5: {key: 'b', sort: 2, v: 1},
-        doc6: {key: 'b', sort: 0, v: 0},
+        );
+        docSnap = await collection.doc('doc1').get();
+        queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc1', 'doc2');
+        expectDocs(await queryWithCursor.get(), 'doc1', 'doc2');
       });
 
-      const docSnap = await collection.doc('doc2').get();
+      it('inequality fields will be implicitly ordered lexicographically by the server', async () => {
+        const collection = await testCollectionWithDocs({
+          doc1: { key: 'a', sort: 0, v: 5 },
+          doc2: { key: 'aa', sort: 4, v: 4 },
+          doc3: { key: 'b', sort: 3, v: 3 },
+          doc4: { key: 'b', sort: 2, v: 2 },
+          doc5: { key: 'b', sort: 2, v: 1 },
+          doc6: { key: 'b', sort: 0, v: 0 },
+        });
 
-      // Implicitly ordered by: 'key' asc, 'sort' asc, __name__ asc
-      let query = collection
-        .where('key', '!=', 'a')
-        .where('sort', '>', 1)
-        .where('v', 'in', [1, 2, 3, 4]);
-      let queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc2', 'doc4', 'doc5', 'doc3');
-      expectDocs(await queryWithCursor.get(), 'doc2', 'doc4', 'doc5', 'doc3');
+        const docSnap = await collection.doc('doc2').get();
 
-      // Changing filters order will not effect implicit order.
-      // Implicitly ordered by: 'key' asc, 'sort' asc, __name__ asc
-      query = collection
-        .where('sort', '>', 1)
-        .where('key', '!=', 'a')
-        .where('v', 'in', [1, 2, 3, 4]);
-      queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc2', 'doc4', 'doc5', 'doc3');
-      expectDocs(await queryWithCursor.get(), 'doc2', 'doc4', 'doc5', 'doc3');
-    });
+        // Implicitly ordered by: 'key' asc, 'sort' asc, __name__ asc
+        let query = collection
+          .where('key', '!=', 'a')
+          .where('sort', '>', 1)
+          .where('v', 'in', [1, 2, 3, 4]);
+        let queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc2', 'doc4', 'doc5', 'doc3');
+        expectDocs(await queryWithCursor.get(), 'doc2', 'doc4', 'doc5', 'doc3');
 
-    it('can use multiple explicit order by field', async () => {
-      const collection = await testCollectionWithDocs({
-        doc1: {key: 'a', sort: 5, v: 0},
-        doc2: {key: 'aa', sort: 4, v: 0},
-        doc3: {key: 'b', sort: 3, v: 1},
-        doc4: {key: 'b', sort: 2, v: 1},
-        doc5: {key: 'bb', sort: 1, v: 1},
-        doc6: {key: 'c', sort: 0, v: 2},
+        // Changing filters order will not effect implicit order.
+        // Implicitly ordered by: 'key' asc, 'sort' asc, __name__ asc
+        query = collection
+          .where('sort', '>', 1)
+          .where('key', '!=', 'a')
+          .where('v', 'in', [1, 2, 3, 4]);
+        queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc2', 'doc4', 'doc5', 'doc3');
+        expectDocs(await queryWithCursor.get(), 'doc2', 'doc4', 'doc5', 'doc3');
       });
 
-      let docSnap = await collection.doc('doc2').get();
+      it('can use multiple explicit order by field', async () => {
+        const collection = await testCollectionWithDocs({
+          doc1: { key: 'a', sort: 5, v: 0 },
+          doc2: { key: 'aa', sort: 4, v: 0 },
+          doc3: { key: 'b', sort: 3, v: 1 },
+          doc4: { key: 'b', sort: 2, v: 1 },
+          doc5: { key: 'bb', sort: 1, v: 1 },
+          doc6: { key: 'c', sort: 0, v: 2 },
+        });
 
-      // Ordered by: 'v' asc, 'key' asc, 'sort' asc, __name__ asc
-      let query = collection
-        .where('key', '>', 'a')
-        .where('sort', '>=', 1)
-        .orderBy('v');
-      let queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc2', 'doc4', 'doc3', 'doc5');
-      expectDocs(await queryWithCursor.get(), 'doc2', 'doc4', 'doc3', 'doc5');
+        let docSnap = await collection.doc('doc2').get();
 
-      // Ordered by: 'v asc, 'sort' asc, 'key' asc,  __name__ asc
-      query = collection
-        .where('key', '>', 'a')
-        .where('sort', '>=', 1)
-        .orderBy('v')
-        .orderBy('sort');
-      queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc2', 'doc5', 'doc4', 'doc3');
-      expectDocs(await queryWithCursor.get(), 'doc2', 'doc5', 'doc4', 'doc3');
+        // Ordered by: 'v' asc, 'key' asc, 'sort' asc, __name__ asc
+        let query = collection.where('key', '>', 'a').where('sort', '>=', 1).orderBy('v');
+        let queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc2', 'doc4', 'doc3', 'doc5');
+        expectDocs(await queryWithCursor.get(), 'doc2', 'doc4', 'doc3', 'doc5');
 
-      docSnap = await collection.doc('doc5').get();
+        // Ordered by: 'v asc, 'sort' asc, 'key' asc,  __name__ asc
+        query = collection
+          .where('key', '>', 'a')
+          .where('sort', '>=', 1)
+          .orderBy('v')
+          .orderBy('sort');
+        queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc2', 'doc5', 'doc4', 'doc3');
+        expectDocs(await queryWithCursor.get(), 'doc2', 'doc5', 'doc4', 'doc3');
 
-      // Implicit order by matches the direction of last explicit order by.
-      // Ordered by: 'v' desc, 'key' desc, 'sort' desc, __name__ desc
-      query = collection
-        .where('key', '>', 'a')
-        .where('sort', '>=', 1)
-        .orderBy('v', 'desc');
-      queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc5', 'doc3', 'doc4', 'doc2');
-      expectDocs(await queryWithCursor.get(), 'doc5', 'doc3', 'doc4', 'doc2');
+        docSnap = await collection.doc('doc5').get();
 
-      // Ordered by: 'v desc, 'sort' asc, 'key' asc,  __name__ asc
-      query = collection
-        .where('key', '>', 'a')
-        .where('sort', '>=', 1)
-        .orderBy('v', 'desc')
-        .orderBy('sort');
-      queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc5', 'doc4', 'doc3', 'doc2');
-      expectDocs(await queryWithCursor.get(), 'doc5', 'doc4', 'doc3', 'doc2');
-    });
+        // Implicit order by matches the direction of last explicit order by.
+        // Ordered by: 'v' desc, 'key' desc, 'sort' desc, __name__ desc
+        query = collection.where('key', '>', 'a').where('sort', '>=', 1).orderBy('v', 'desc');
+        queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc5', 'doc3', 'doc4', 'doc2');
+        expectDocs(await queryWithCursor.get(), 'doc5', 'doc3', 'doc4', 'doc2');
 
-    it('can use in aggregate query', async () => {
-      const collection = await testCollectionWithDocs({
-        doc1: {key: 'a', sort: 5, v: 0},
-        doc2: {key: 'aa', sort: 4, v: 0},
-        doc3: {key: 'b', sort: 3, v: 1},
-        doc4: {key: 'b', sort: 2, v: 1},
-        doc5: {key: 'bb', sort: 1, v: 1},
+        // Ordered by: 'v desc, 'sort' asc, 'key' asc,  __name__ asc
+        query = collection
+          .where('key', '>', 'a')
+          .where('sort', '>=', 1)
+          .orderBy('v', 'desc')
+          .orderBy('sort');
+        queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc5', 'doc4', 'doc3', 'doc2');
+        expectDocs(await queryWithCursor.get(), 'doc5', 'doc4', 'doc3', 'doc2');
       });
 
-      const results = await collection
-        .where('key', '>', 'a')
-        .where('sort', '>=', 1)
-        .orderBy('v')
-        .count()
-        .get();
-      expect(results.data().count).to.be.equal(4);
-      //TODO(MIEQ): Add sum and average when they are public.
-    });
+      it('can use in aggregate query', async () => {
+        const collection = await testCollectionWithDocs({
+          doc1: { key: 'a', sort: 5, v: 0 },
+          doc2: { key: 'aa', sort: 4, v: 0 },
+          doc3: { key: 'b', sort: 3, v: 1 },
+          doc4: { key: 'b', sort: 2, v: 1 },
+          doc5: { key: 'bb', sort: 1, v: 1 },
+        });
 
-    it('can use document ID im multiple inequality query', async () => {
-      const collection = await testCollectionWithDocs({
-        doc1: {key: 'a', sort: 5},
-        doc2: {key: 'aa', sort: 4},
-        doc3: {key: 'b', sort: 3},
-        doc4: {key: 'b', sort: 2},
-        doc5: {key: 'bb', sort: 1},
+        const results = await collection
+          .where('key', '>', 'a')
+          .where('sort', '>=', 1)
+          .orderBy('v')
+          .count()
+          .get();
+        expect(results.data().count).to.be.equal(4);
+        //TODO(MIEQ): Add sum and average when they are public.
       });
 
-      const docSnap = await collection.doc('doc2').get();
+      it('can use document ID im multiple inequality query', async () => {
+        const collection = await testCollectionWithDocs({
+          doc1: { key: 'a', sort: 5 },
+          doc2: { key: 'aa', sort: 4 },
+          doc3: { key: 'b', sort: 3 },
+          doc4: { key: 'b', sort: 2 },
+          doc5: { key: 'bb', sort: 1 },
+        });
 
-      // Document Key in inequality field will implicitly ordered to the last.
-      // Implicitly ordered by: 'key' asc, 'sort' asc, __name__ asc
-      let query = collection
-        .where('sort', '>=', 1)
-        .where('key', '!=', 'a')
-        .where(FieldPath.documentId(), '<', 'doc5');
-      let queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc2', 'doc4', 'doc3');
-      expectDocs(await queryWithCursor.get(), 'doc2', 'doc4', 'doc3');
+        const docSnap = await collection.doc('doc2').get();
 
-      // Changing filters order will not effect implicit order.
-      // Implicitly ordered by: 'key' asc, 'sort' asc, __name__ asc
-      query = collection
-        .where(FieldPath.documentId(), '<', 'doc5')
-        .where('sort', '>=', 1)
-        .where('key', '!=', 'a');
-      queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc2', 'doc4', 'doc3');
-      expectDocs(await queryWithCursor.get(), 'doc2', 'doc4', 'doc3');
+        // Document Key in inequality field will implicitly ordered to the last.
+        // Implicitly ordered by: 'key' asc, 'sort' asc, __name__ asc
+        let query = collection
+          .where('sort', '>=', 1)
+          .where('key', '!=', 'a')
+          .where(FieldPath.documentId(), '<', 'doc5');
+        let queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc2', 'doc4', 'doc3');
+        expectDocs(await queryWithCursor.get(), 'doc2', 'doc4', 'doc3');
 
-      // Ordered by: 'sort' desc,'key' desc,  __name__ desc
-      query = collection
-        .where(FieldPath.documentId(), '<', 'doc5')
-        .where('sort', '>=', 1)
-        .where('key', '!=', 'a')
-        .orderBy('sort', 'desc');
-      queryWithCursor = query.startAt(docSnap);
-      expectDocs(await query.get(), 'doc2', 'doc3', 'doc4');
-      expectDocs(await queryWithCursor.get(), 'doc2', 'doc3', 'doc4');
-    });
-  });
+        // Changing filters order will not effect implicit order.
+        // Implicitly ordered by: 'key' asc, 'sort' asc, __name__ asc
+        query = collection
+          .where(FieldPath.documentId(), '<', 'doc5')
+          .where('sort', '>=', 1)
+          .where('key', '!=', 'a');
+        queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc2', 'doc4', 'doc3');
+        expectDocs(await queryWithCursor.get(), 'doc2', 'doc4', 'doc3');
+
+        // Ordered by: 'sort' desc,'key' desc,  __name__ desc
+        query = collection
+          .where(FieldPath.documentId(), '<', 'doc5')
+          .where('sort', '>=', 1)
+          .where('key', '!=', 'a')
+          .orderBy('sort', 'desc');
+        queryWithCursor = query.startAt(docSnap);
+        expectDocs(await query.get(), 'doc2', 'doc3', 'doc4');
+        expectDocs(await queryWithCursor.get(), 'doc2', 'doc3', 'doc4');
+      });
+    },
+  );
 });
 
 describe('count queries', () => {
@@ -4783,7 +4436,7 @@ describe('count queries', () => {
 
   describe('Run within Transaction', () => {
     countTests(async (q, n) => {
-      const res = await firestore.runTransaction(f => f.get(q));
+      const res = await firestore.runTransaction((f) => f.get(q));
       expect(res.data().count).to.equal(n);
     });
   });
@@ -4802,60 +4455,60 @@ describe('count queries', () => {
     });
 
     it('counts 0 document from filtered empty collection', async () => {
-      await randomCol.doc('doc').set({foo: 'bar'});
+      await randomCol.doc('doc').set({ foo: 'bar' });
       const count = randomCol.where('foo', '==', 'notbar').count();
       await runQueryAndExpectCount(count, 0);
     });
 
     it('counts 1 document', async () => {
-      await randomCol.doc('doc').set({foo: 'bar'});
+      await randomCol.doc('doc').set({ foo: 'bar' });
       const count = randomCol.count();
       await runQueryAndExpectCount(count, 1);
     });
 
     it('counts 1 document', async () => {
-      await randomCol.doc('doc').set({foo: 'bar'});
+      await randomCol.doc('doc').set({ foo: 'bar' });
       const count = randomCol.count();
       await runQueryAndExpectCount(count, 1);
     });
 
     it('counts 1 document', async () => {
-      await randomCol.doc('doc').set({foo: 'bar'});
+      await randomCol.doc('doc').set({ foo: 'bar' });
       const count = randomCol.count();
       await runQueryAndExpectCount(count, 1);
     });
 
     it('counts multiple documents with filter', async () => {
-      await randomCol.doc('doc1').set({foo: 'bar'});
-      await randomCol.doc('doc2').set({foo: 'bar'});
-      await randomCol.doc('doc3').set({foo: 'notbar'});
-      await randomCol.doc('doc3').set({notfoo: 'bar'});
+      await randomCol.doc('doc1').set({ foo: 'bar' });
+      await randomCol.doc('doc2').set({ foo: 'bar' });
+      await randomCol.doc('doc3').set({ foo: 'notbar' });
+      await randomCol.doc('doc3').set({ notfoo: 'bar' });
       const count = randomCol.where('foo', '==', 'bar').count();
       await runQueryAndExpectCount(count, 2);
     });
 
     it('counts up to limit', async () => {
-      await randomCol.doc('doc1').set({foo: 'bar'});
-      await randomCol.doc('doc2').set({foo: 'bar'});
-      await randomCol.doc('doc3').set({foo: 'bar'});
-      await randomCol.doc('doc4').set({foo: 'bar'});
-      await randomCol.doc('doc5').set({foo: 'bar'});
-      await randomCol.doc('doc6').set({foo: 'bar'});
-      await randomCol.doc('doc7').set({foo: 'bar'});
-      await randomCol.doc('doc8').set({foo: 'bar'});
+      await randomCol.doc('doc1').set({ foo: 'bar' });
+      await randomCol.doc('doc2').set({ foo: 'bar' });
+      await randomCol.doc('doc3').set({ foo: 'bar' });
+      await randomCol.doc('doc4').set({ foo: 'bar' });
+      await randomCol.doc('doc5').set({ foo: 'bar' });
+      await randomCol.doc('doc6').set({ foo: 'bar' });
+      await randomCol.doc('doc7').set({ foo: 'bar' });
+      await randomCol.doc('doc8').set({ foo: 'bar' });
       const count = randomCol.limit(5).count();
       await runQueryAndExpectCount(count, 5);
     });
 
     it('counts with orderBy', async () => {
-      await randomCol.doc('doc1').set({foo1: 'bar1'});
-      await randomCol.doc('doc2').set({foo1: 'bar2'});
-      await randomCol.doc('doc3').set({foo1: 'bar3'});
-      await randomCol.doc('doc4').set({foo1: 'bar4'});
-      await randomCol.doc('doc5').set({foo1: 'bar5'});
-      await randomCol.doc('doc6').set({foo2: 'bar6'});
-      await randomCol.doc('doc7').set({foo2: 'bar7'});
-      await randomCol.doc('doc8').set({foo2: 'bar8'});
+      await randomCol.doc('doc1').set({ foo1: 'bar1' });
+      await randomCol.doc('doc2').set({ foo1: 'bar2' });
+      await randomCol.doc('doc3').set({ foo1: 'bar3' });
+      await randomCol.doc('doc4').set({ foo1: 'bar4' });
+      await randomCol.doc('doc5').set({ foo1: 'bar5' });
+      await randomCol.doc('doc6').set({ foo2: 'bar6' });
+      await randomCol.doc('doc7').set({ foo2: 'bar7' });
+      await randomCol.doc('doc8').set({ foo2: 'bar8' });
 
       const count1 = randomCol.orderBy('foo2').count();
       await runQueryAndExpectCount(count1, 3);
@@ -4865,13 +4518,13 @@ describe('count queries', () => {
     });
 
     it('counts with startAt, endAt and offset', async () => {
-      await randomCol.doc('doc1').set({foo: 'bar'});
-      await randomCol.doc('doc2').set({foo: 'bar'});
-      await randomCol.doc('doc3').set({foo: 'bar'});
-      await randomCol.doc('doc4').set({foo: 'bar'});
-      await randomCol.doc('doc5').set({foo: 'bar'});
-      await randomCol.doc('doc6').set({foo: 'bar'});
-      await randomCol.doc('doc7').set({foo: 'bar'});
+      await randomCol.doc('doc1').set({ foo: 'bar' });
+      await randomCol.doc('doc2').set({ foo: 'bar' });
+      await randomCol.doc('doc3').set({ foo: 'bar' });
+      await randomCol.doc('doc4').set({ foo: 'bar' });
+      await randomCol.doc('doc5').set({ foo: 'bar' });
+      await randomCol.doc('doc6').set({ foo: 'bar' });
+      await randomCol.doc('doc7').set({ foo: 'bar' });
 
       const docSnap = await randomCol.doc('doc3').get();
 
@@ -4936,7 +4589,7 @@ describe('count queries using aggregate api', () => {
 
   describe('Run within Transaction', () => {
     countTests(async (q, n) => {
-      const res = await firestore.runTransaction(f => f.get(q));
+      const res = await firestore.runTransaction((f) => f.get(q));
       expect(res.data().count).to.equal(n);
     });
   });
@@ -4950,143 +4603,125 @@ describe('count queries using aggregate api', () => {
     ) => Promise<void>,
   ) {
     it('counts 0 document from non-existent collection', async () => {
-      const count = randomCol.aggregate({count: AggregateField.count()});
+      const count = randomCol.aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count, 0);
     });
 
     it('counts 0 document from filtered empty collection', async () => {
-      await randomCol.doc('doc').set({foo: 'bar'});
+      await randomCol.doc('doc').set({ foo: 'bar' });
       const count = randomCol
         .where('foo', '==', 'notbar')
-        .aggregate({count: AggregateField.count()});
+        .aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count, 0);
     });
 
     it('counts 1 document', async () => {
-      await randomCol.doc('doc').set({foo: 'bar'});
-      const count = randomCol.aggregate({count: AggregateField.count()});
+      await randomCol.doc('doc').set({ foo: 'bar' });
+      const count = randomCol.aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count, 1);
     });
 
     it('counts multiple documents with filter', async () => {
-      await randomCol.doc('doc1').set({foo: 'bar'});
-      await randomCol.doc('doc2').set({foo: 'bar'});
-      await randomCol.doc('doc3').set({foo: 'notbar'});
-      await randomCol.doc('doc3').set({notfoo: 'bar'});
+      await randomCol.doc('doc1').set({ foo: 'bar' });
+      await randomCol.doc('doc2').set({ foo: 'bar' });
+      await randomCol.doc('doc3').set({ foo: 'notbar' });
+      await randomCol.doc('doc3').set({ notfoo: 'bar' });
       const count = randomCol
         .where('foo', '==', 'bar')
-        .aggregate({count: AggregateField.count()});
+        .aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count, 2);
     });
 
     it('counts up to limit', async () => {
-      await randomCol.doc('doc1').set({foo: 'bar'});
-      await randomCol.doc('doc2').set({foo: 'bar'});
-      await randomCol.doc('doc3').set({foo: 'bar'});
-      await randomCol.doc('doc4').set({foo: 'bar'});
-      await randomCol.doc('doc5').set({foo: 'bar'});
-      await randomCol.doc('doc6').set({foo: 'bar'});
-      await randomCol.doc('doc7').set({foo: 'bar'});
-      await randomCol.doc('doc8').set({foo: 'bar'});
-      const count = randomCol
-        .limit(5)
-        .aggregate({count: AggregateField.count()});
+      await randomCol.doc('doc1').set({ foo: 'bar' });
+      await randomCol.doc('doc2').set({ foo: 'bar' });
+      await randomCol.doc('doc3').set({ foo: 'bar' });
+      await randomCol.doc('doc4').set({ foo: 'bar' });
+      await randomCol.doc('doc5').set({ foo: 'bar' });
+      await randomCol.doc('doc6').set({ foo: 'bar' });
+      await randomCol.doc('doc7').set({ foo: 'bar' });
+      await randomCol.doc('doc8').set({ foo: 'bar' });
+      const count = randomCol.limit(5).aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count, 5);
     });
 
     it('counts with orderBy', async () => {
-      await randomCol.doc('doc1').set({foo1: 'bar1'});
-      await randomCol.doc('doc2').set({foo1: 'bar2'});
-      await randomCol.doc('doc3').set({foo1: 'bar3'});
-      await randomCol.doc('doc4').set({foo1: 'bar4'});
-      await randomCol.doc('doc5').set({foo1: 'bar5'});
-      await randomCol.doc('doc6').set({foo2: 'bar6'});
-      await randomCol.doc('doc7').set({foo2: 'bar7'});
-      await randomCol.doc('doc8').set({foo2: 'bar8'});
+      await randomCol.doc('doc1').set({ foo1: 'bar1' });
+      await randomCol.doc('doc2').set({ foo1: 'bar2' });
+      await randomCol.doc('doc3').set({ foo1: 'bar3' });
+      await randomCol.doc('doc4').set({ foo1: 'bar4' });
+      await randomCol.doc('doc5').set({ foo1: 'bar5' });
+      await randomCol.doc('doc6').set({ foo2: 'bar6' });
+      await randomCol.doc('doc7').set({ foo2: 'bar7' });
+      await randomCol.doc('doc8').set({ foo2: 'bar8' });
 
-      const count1 = randomCol
-        .orderBy('foo2')
-        .aggregate({count: AggregateField.count()});
+      const count1 = randomCol.orderBy('foo2').aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count1, 3);
 
-      const count2 = randomCol
-        .orderBy('foo3')
-        .aggregate({count: AggregateField.count()});
+      const count2 = randomCol.orderBy('foo3').aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count2, 0);
     });
 
     it('counts with startAt, endAt and offset with DocumentReference cursor', async () => {
-      await randomCol.doc('doc1').set({foo: 'bar'});
-      await randomCol.doc('doc2').set({foo: 'bar'});
-      await randomCol.doc('doc3').set({foo: 'bar'});
-      await randomCol.doc('doc4').set({foo: 'bar'});
-      await randomCol.doc('doc5').set({foo: 'bar'});
-      await randomCol.doc('doc6').set({foo: 'bar'});
-      await randomCol.doc('doc7').set({foo: 'bar'});
+      await randomCol.doc('doc1').set({ foo: 'bar' });
+      await randomCol.doc('doc2').set({ foo: 'bar' });
+      await randomCol.doc('doc3').set({ foo: 'bar' });
+      await randomCol.doc('doc4').set({ foo: 'bar' });
+      await randomCol.doc('doc5').set({ foo: 'bar' });
+      await randomCol.doc('doc6').set({ foo: 'bar' });
+      await randomCol.doc('doc7').set({ foo: 'bar' });
 
       const count1 = randomCol
         .orderBy(FieldPath.documentId())
         .startAfter(randomCol.doc('doc3'))
-        .aggregate({count: AggregateField.count()});
+        .aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count1, 4);
 
       const count2 = randomCol
         .orderBy(FieldPath.documentId())
         .startAt(randomCol.doc('doc3'))
-        .aggregate({count: AggregateField.count()});
+        .aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count2, 5);
 
       const count3 = randomCol
         .orderBy(FieldPath.documentId())
         .endAt(randomCol.doc('doc3'))
-        .aggregate({count: AggregateField.count()});
+        .aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count3, 3);
 
       const count4 = randomCol
         .orderBy(FieldPath.documentId())
         .endBefore(randomCol.doc('doc3'))
-        .aggregate({count: AggregateField.count()});
+        .aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count4, 2);
 
-      const count5 = randomCol
-        .offset(6)
-        .aggregate({count: AggregateField.count()});
+      const count5 = randomCol.offset(6).aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count5, 1);
     });
 
     it('counts with startAt, endAt and offset with DocumentSnapshot cursor', async () => {
-      await randomCol.doc('doc1').set({foo: 'bar'});
-      await randomCol.doc('doc2').set({foo: 'bar'});
-      await randomCol.doc('doc3').set({foo: 'bar'});
-      await randomCol.doc('doc4').set({foo: 'bar'});
-      await randomCol.doc('doc5').set({foo: 'bar'});
-      await randomCol.doc('doc6').set({foo: 'bar'});
-      await randomCol.doc('doc7').set({foo: 'bar'});
+      await randomCol.doc('doc1').set({ foo: 'bar' });
+      await randomCol.doc('doc2').set({ foo: 'bar' });
+      await randomCol.doc('doc3').set({ foo: 'bar' });
+      await randomCol.doc('doc4').set({ foo: 'bar' });
+      await randomCol.doc('doc5').set({ foo: 'bar' });
+      await randomCol.doc('doc6').set({ foo: 'bar' });
+      await randomCol.doc('doc7').set({ foo: 'bar' });
       const docSnap = await randomCol.doc('doc3').get();
 
-      const count1 = randomCol
-        .startAfter(docSnap)
-        .aggregate({count: AggregateField.count()});
+      const count1 = randomCol.startAfter(docSnap).aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count1, 4);
 
-      const count2 = randomCol
-        .startAt(docSnap)
-        .aggregate({count: AggregateField.count()});
+      const count2 = randomCol.startAt(docSnap).aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count2, 5);
 
-      const count3 = randomCol
-        .endAt(docSnap)
-        .aggregate({count: AggregateField.count()});
+      const count3 = randomCol.endAt(docSnap).aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count3, 3);
 
-      const count4 = randomCol
-        .endBefore(docSnap)
-        .aggregate({count: AggregateField.count()});
+      const count4 = randomCol.endBefore(docSnap).aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count4, 2);
 
-      const count5 = randomCol
-        .offset(6)
-        .aggregate({count: AggregateField.count()});
+      const count5 = randomCol.offset(6).aggregate({ count: AggregateField.count() });
       await runQueryAndExpectCount(count5, 1);
     });
   }
@@ -5107,7 +4742,7 @@ describe('Aggregation queries', () => {
     [key: string]: DocumentData;
   }): Promise<Awaited<WriteResult>[]> {
     const sets: Array<Promise<WriteResult>> = [];
-    Object.keys(docs).forEach(key => {
+    Object.keys(docs).forEach((key) => {
       sets.push(col.doc(key).set(docs[key]));
     });
     return Promise.all(sets);
@@ -5115,28 +4750,25 @@ describe('Aggregation queries', () => {
 
   it('can run count within a transaction with readtime', async () => {
     const doc = col.doc();
-    const writeResult: WriteResult = await doc.create({some: 'data'});
+    const writeResult: WriteResult = await doc.create({ some: 'data' });
 
-    const count = await firestore.runTransaction(t => t.get(col.count()), {
+    const count = await firestore.runTransaction((t) => t.get(col.count()), {
       readOnly: true,
       readTime: writeResult.writeTime,
     });
     expect(count.data().count).to.equal(1);
 
-    const countBefore = await firestore.runTransaction(
-      t => t.get(col.count()),
-      {
-        readOnly: true,
-        readTime: Timestamp.fromMillis(writeResult.writeTime.toMillis() - 1),
-      },
-    );
+    const countBefore = await firestore.runTransaction((t) => t.get(col.count()), {
+      readOnly: true,
+      readTime: Timestamp.fromMillis(writeResult.writeTime.toMillis() - 1),
+    });
     expect(countBefore.data().count).to.equal(0);
   });
 
   it('can run count query using aggregate api', async () => {
     const testDocs = {
-      a: {author: 'authorA', title: 'titleA'},
-      b: {author: 'authorB', title: 'titleB'},
+      a: { author: 'authorA', title: 'titleA' },
+      b: { author: 'authorB', title: 'titleB' },
     };
     await addTestDocs(testDocs);
     const snapshot = await col
@@ -5149,8 +4781,8 @@ describe('Aggregation queries', () => {
 
   it('can alias aggregations using aggregate api', async () => {
     const testDocs = {
-      a: {author: 'authorA', title: 'titleA'},
-      b: {author: 'authorB', title: 'titleB'},
+      a: { author: 'authorA', title: 'titleA' },
+      b: { author: 'authorB', title: 'titleB' },
     };
     await addTestDocs(testDocs);
     const snapshot = await col
@@ -5165,8 +4797,8 @@ describe('Aggregation queries', () => {
 
   it('allows special chars in aliases when using aggregate api', async () => {
     const testDocs = {
-      a: {author: 'authorA', title: 'titleA'},
-      b: {author: 'authorB', title: 'titleB'},
+      a: { author: 'authorA', title: 'titleA' },
+      b: { author: 'authorB', title: 'titleB' },
     };
     await addTestDocs(testDocs);
     const snapshot = await col
@@ -5180,8 +4812,8 @@ describe('Aggregation queries', () => {
 
   it('allows backticks in aliases when using aggregate api', async () => {
     const testDocs = {
-      a: {author: 'authorA', title: 'titleA'},
-      b: {author: 'authorB', title: 'titleB'},
+      a: { author: 'authorA', title: 'titleA' },
+      b: { author: 'authorB', title: 'titleB' },
     };
     await addTestDocs(testDocs);
     const snapshot = await col
@@ -5195,8 +4827,8 @@ describe('Aggregation queries', () => {
 
   it('allows backslash in aliases when using aggregate api', async () => {
     const testDocs = {
-      a: {author: 'authorA', title: 'titleA'},
-      b: {author: 'authorB', title: 'titleB'},
+      a: { author: 'authorA', title: 'titleA' },
+      b: { author: 'authorB', title: 'titleB' },
     };
     await addTestDocs(testDocs);
     const snapshot = await col
@@ -5210,8 +4842,8 @@ describe('Aggregation queries', () => {
 
   it('can get duplicate aggregations using aggregate api', async () => {
     const testDocs = {
-      a: {author: 'authorA', title: 'titleA'},
-      b: {author: 'authorB', title: 'titleB'},
+      a: { author: 'authorA', title: 'titleA' },
+      b: { author: 'authorB', title: 'titleB' },
     };
     await addTestDocs(testDocs);
     const snapshot = await col
@@ -5226,8 +4858,8 @@ describe('Aggregation queries', () => {
 
   it("aggregate() doesn't use converter", async () => {
     const testDocs = {
-      a: {author: 'authorA', title: 'titleA'},
-      b: {author: 'authorB', title: 'titleB'},
+      a: { author: 'authorA', title: 'titleA' },
+      b: { author: 'authorB', title: 'titleB' },
     };
     const throwingConverter = {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -5240,9 +4872,7 @@ describe('Aggregation queries', () => {
       },
     };
     await addTestDocs(testDocs);
-    const query = col
-      .where('author', '==', 'authorA')
-      .withConverter(throwingConverter);
+    const query = col.where('author', '==', 'authorA').withConverter(throwingConverter);
     const snapshot = await query
       .aggregate({
         count: AggregateField.count(),
@@ -5262,7 +4892,7 @@ describe('Aggregation queries', () => {
     ];
     const batch = firestore.batch();
     for (const docPath of docPaths) {
-      batch.set(firestore.doc(docPath), {x: 1});
+      batch.set(firestore.doc(docPath), { x: 1 });
     }
     await batch.commit();
     const snapshot = await firestore
@@ -5277,12 +4907,12 @@ describe('Aggregation queries', () => {
   it('aggregate() fails if firestore is terminated', async () => {
     await firestore.terminate();
     await expect(
-      col.aggregate({count: AggregateField.count()}).get(),
+      col.aggregate({ count: AggregateField.count() }).get(),
     ).to.eventually.be.rejectedWith('The client has already been terminated');
   });
 
   it("terminate doesn't crash when there is aggregate query in flight", async () => {
-    void col.aggregate({count: AggregateField.count()}).get();
+    void col.aggregate({ count: AggregateField.count() }).get();
     await firestore.terminate();
   });
 
@@ -5308,9 +4938,7 @@ describe('Aggregation queries', () => {
           /index.*https:\/\/console\.firebase\.google\.com/,
         );
       } else {
-        return expect(aggregateQuery.get()).to.be.eventually.rejectedWith(
-          /index/,
-        );
+        return expect(aggregateQuery.get()).to.be.eventually.rejectedWith(/index/);
       }
     },
   );
@@ -5318,32 +4946,28 @@ describe('Aggregation queries', () => {
   describe('Aggregation queries - sum / average using aggregate() api', () => {
     it('can run sum query', async () => {
       const testDocs = {
-        a: {author: 'authorA', title: 'titleA', pages: 100},
-        b: {author: 'authorB', title: 'titleB', pages: 50},
+        a: { author: 'authorA', title: 'titleA', pages: 100 },
+        b: { author: 'authorB', title: 'titleB', pages: 50 },
       };
       await addTestDocs(testDocs);
-      const snapshot = await col
-        .aggregate({totalPages: AggregateField.sum('pages')})
-        .get();
+      const snapshot = await col.aggregate({ totalPages: AggregateField.sum('pages') }).get();
       expect(snapshot.data().totalPages).to.equal(150);
     });
 
     it('can run average query', async () => {
       const testDocs = {
-        a: {author: 'authorA', title: 'titleA', pages: 100},
-        b: {author: 'authorB', title: 'titleB', pages: 50},
+        a: { author: 'authorA', title: 'titleA', pages: 100 },
+        b: { author: 'authorB', title: 'titleB', pages: 50 },
       };
       await addTestDocs(testDocs);
-      const snapshot = await col
-        .aggregate({averagePages: AggregateField.average('pages')})
-        .get();
+      const snapshot = await col.aggregate({ averagePages: AggregateField.average('pages') }).get();
       expect(snapshot.data().averagePages).to.equal(75);
     });
 
     it('can get multiple aggregations', async () => {
       const testDocs = {
-        a: {author: 'authorA', title: 'titleA', pages: 100},
-        b: {author: 'authorB', title: 'titleB', pages: 50},
+        a: { author: 'authorA', title: 'titleA', pages: 100 },
+        b: { author: 'authorB', title: 'titleB', pages: 50 },
       };
       await addTestDocs(testDocs);
       const snapshot = await col
@@ -5360,8 +4984,8 @@ describe('Aggregation queries', () => {
 
     it('can get duplicate aggregations', async () => {
       const testDocs = {
-        a: {author: 'authorA', title: 'titleA', pages: 100},
-        b: {author: 'authorB', title: 'titleB', pages: 50},
+        a: { author: 'authorA', title: 'titleA', pages: 100 },
+        b: { author: 'authorB', title: 'titleB', pages: 50 },
       };
       await addTestDocs(testDocs);
       const snapshot = await col
@@ -5380,8 +5004,8 @@ describe('Aggregation queries', () => {
 
     it('can perform max (5) aggregations', async () => {
       const testDocs = {
-        a: {author: 'authorA', title: 'titleA', pages: 100},
-        b: {author: 'authorB', title: 'titleB', pages: 50},
+        a: { author: 'authorA', title: 'titleA', pages: 100 },
+        b: { author: 'authorB', title: 'titleB', pages: 50 },
       };
       await addTestDocs(testDocs);
       const snapshot = await col
@@ -5403,8 +5027,8 @@ describe('Aggregation queries', () => {
     // TODO (b/429419330) re-enable test when this bug is fixed
     it.skip('fails when exceeding the max (5) aggregations', async () => {
       const testDocs = {
-        a: {author: 'authorA', title: 'titleA', pages: 100},
-        b: {author: 'authorB', title: 'titleB', pages: 50},
+        a: { author: 'authorA', title: 'titleA', pages: 100 },
+        b: { author: 'authorB', title: 'titleB', pages: 50 },
       };
       await addTestDocs(testDocs);
       const aggregateQuery = await col.aggregate({
@@ -5533,7 +5157,7 @@ describe('Aggregation queries', () => {
       // A large value that will be represented as a Long on the server, but
       // doubling (2x) this value must overflow Long and force the result to be
       // represented as a Double type on the server.
-      const maxLong = Math.pow(2, 63) - 1;
+      const maxLong = 2 ** 63 - 1;
 
       const testDocs = {
         a: {
@@ -5590,9 +5214,7 @@ describe('Aggregation queries', () => {
           totalRating: AggregateField.sum('rating'),
         })
         .get();
-      expect(snapshot.data().totalRating).to.equal(
-        Number.MAX_SAFE_INTEGER - 100,
-      );
+      expect(snapshot.data().totalRating).to.equal(Number.MAX_SAFE_INTEGER - 100);
     });
 
     it('performs sum that is negative', async () => {
@@ -6319,8 +5941,8 @@ describe('Aggregation queries', () => {
       const longerAlias = longAlias + longAlias;
 
       const testDocs = {
-        a: {num: 3},
-        b: {num: 5},
+        a: { num: 3 },
+        b: { num: 5 },
       };
       await addTestDocs(testDocs);
       const snapshot = await col
@@ -6338,12 +5960,12 @@ describe('Aggregation queries', () => {
         a: {
           author: 'authorA',
           title: 'titleA',
-          metadata: {pages: 100, rating: {critic: 2, user: 5}},
+          metadata: { pages: 100, rating: { critic: 2, user: 5 } },
         },
         b: {
           author: 'authorB',
           title: 'titleB',
-          metadata: {pages: 50, rating: {critic: 4, user: 4}},
+          metadata: { pages: 50, rating: { critic: 4, user: 4 } },
         },
       };
       await addTestDocs(testDocs);
@@ -6421,7 +6043,7 @@ describe('Aggregation queries', () => {
         ];
         const batch = firestore.batch();
         for (const docPath of docPaths) {
-          batch.set(firestore.doc(docPath), {x: 2});
+          batch.set(firestore.doc(docPath), { x: 2 });
         }
         await batch.commit();
         const snapshot = await firestore
@@ -6439,10 +6061,10 @@ describe('Aggregation queries', () => {
 
       it('performs aggregations on documents with all aggregated fields', async () => {
         const testDocs = {
-          a: {author: 'authorA', title: 'titleA', pages: 100, year: 1980},
-          b: {author: 'authorB', title: 'titleB', pages: 50, year: 2020},
-          c: {author: 'authorC', title: 'titleC', pages: 150, year: 2021},
-          d: {author: 'authorD', title: 'titleD', pages: 50},
+          a: { author: 'authorA', title: 'titleA', pages: 100, year: 1980 },
+          b: { author: 'authorB', title: 'titleB', pages: 50, year: 2020 },
+          c: { author: 'authorC', title: 'titleC', pages: 150, year: 2021 },
+          d: { author: 'authorD', title: 'titleD', pages: 50 },
         };
         await addTestDocs(testDocs);
         const snapshot = await col
@@ -6557,17 +6179,15 @@ describe('Aggregation queries', () => {
   describe('Aggregation queries - orderBy Normalization Checks', () => {
     async function addTwoDocs(): Promise<void> {
       const testDocs = {
-        a: {author: 'authorA', title: 'titleA', num: 5, foo: 1},
-        b: {author: 'authorB', title: 'titleB', num: 7, foo: 2},
+        a: { author: 'authorA', title: 'titleA', num: 5, foo: 1 },
+        b: { author: 'authorB', title: 'titleB', num: 7, foo: 2 },
       };
       await addTestDocs(testDocs);
     }
 
     it('no filter, no orderBy, no cursor', async () => {
       await addTwoDocs();
-      const snapshot = await col
-        .aggregate({sum: AggregateField.sum('num')})
-        .get();
+      const snapshot = await col.aggregate({ sum: AggregateField.sum('num') }).get();
       expect(snapshot.data().sum).to.equal(12);
     });
 
@@ -6575,7 +6195,7 @@ describe('Aggregation queries', () => {
       await addTwoDocs();
       const snapshot = await col
         .where('num', '==', 5)
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(5);
     });
@@ -6584,7 +6204,7 @@ describe('Aggregation queries', () => {
       await addTwoDocs();
       const snapshot = await col
         .where('num', '>', 5)
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(7);
     });
@@ -6593,7 +6213,7 @@ describe('Aggregation queries', () => {
       await addTwoDocs();
       const snapshot = await col
         .orderBy('num')
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(12);
     });
@@ -6603,7 +6223,7 @@ describe('Aggregation queries', () => {
       const snapshot = await col
         .where('num', '==', 5)
         .orderBy('num')
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(5);
     });
@@ -6613,7 +6233,7 @@ describe('Aggregation queries', () => {
       const snapshot = await col
         .where('num', '>', 5)
         .orderBy('num')
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(7);
     });
@@ -6623,7 +6243,7 @@ describe('Aggregation queries', () => {
       const snapshot = await col
         .orderBy('num')
         .startAfter(5)
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(7);
     });
@@ -6635,7 +6255,7 @@ describe('Aggregation queries', () => {
       const snapshot = await col
         .orderBy(FieldPath.documentId())
         .startAfter(col.doc('a'))
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(7);
     });
@@ -6647,7 +6267,7 @@ describe('Aggregation queries', () => {
       const docSnap = await col.doc('a').get();
       const snapshot = await col
         .startAfter(docSnap)
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(7);
     });
@@ -6660,7 +6280,7 @@ describe('Aggregation queries', () => {
       const snapshot = await col
         .orderBy('foo')
         .startAfter(docSnap)
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(7);
     });
@@ -6673,7 +6293,7 @@ describe('Aggregation queries', () => {
       const snapshot = await col
         .orderBy('num')
         .startAfter(docSnap)
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(7);
     });
@@ -6684,7 +6304,7 @@ describe('Aggregation queries', () => {
         .where('num', '==', 5)
         .orderBy('num')
         .startAt(5)
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(5);
     });
@@ -6695,7 +6315,7 @@ describe('Aggregation queries', () => {
         .where('num', '>', 5)
         .orderBy('num')
         .startAt(5)
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(7);
     });
@@ -6708,7 +6328,7 @@ describe('Aggregation queries', () => {
         .where('num', '==', 7)
         .orderBy(FieldPath.documentId())
         .startAfter(col.doc('a'))
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(7);
     });
@@ -6722,7 +6342,7 @@ describe('Aggregation queries', () => {
         .orderBy('num')
         .orderBy(FieldPath.documentId())
         .startAfter(5, col.doc('a'))
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(7);
     });
@@ -6735,7 +6355,7 @@ describe('Aggregation queries', () => {
       const snapshot = await col
         .where('num', '==', 7)
         .startAfter(docSnap)
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(7);
     });
@@ -6748,7 +6368,7 @@ describe('Aggregation queries', () => {
       const snapshot = await col
         .where('num', '>', 0)
         .startAfter(docSnap)
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(7);
     });
@@ -6761,7 +6381,7 @@ describe('Aggregation queries', () => {
       const snapshot = await col
         .where('foo', '>', 0)
         .startAfter(docSnap)
-        .aggregate({sum: AggregateField.sum('num')})
+        .aggregate({ sum: AggregateField.sum('num') })
         .get();
       expect(snapshot.data().sum).to.equal(7);
     });
@@ -6782,15 +6402,15 @@ describe('Transaction class', () => {
   it('has get() method', () => {
     const ref = randomCol.doc('doc');
     return ref
-      .set({foo: 'bar'})
+      .set({ foo: 'bar' })
       .then(() => {
-        return firestore.runTransaction(updateFunction => {
-          return updateFunction.get(ref).then(doc => {
+        return firestore.runTransaction((updateFunction) => {
+          return updateFunction.get(ref).then((doc) => {
             return Promise.resolve(doc.get('foo'));
           });
         });
       })
-      .then(res => {
+      .then((res) => {
         expect(res).to.equal('bar');
       });
   });
@@ -6800,13 +6420,13 @@ describe('Transaction class', () => {
     const ref2 = randomCol.doc('doc2');
     return Promise.all([ref1.set({}), ref2.set({})])
       .then(() => {
-        return firestore.runTransaction(updateFunction => {
-          return updateFunction.getAll(ref1, ref2).then(docs => {
+        return firestore.runTransaction((updateFunction) => {
+          return updateFunction.getAll(ref1, ref2).then((docs) => {
             return Promise.resolve(docs.length);
           });
         });
       })
-      .then(res => {
+      .then((res) => {
         expect(res).to.equal(2);
       });
   });
@@ -6816,28 +6436,26 @@ describe('Transaction class', () => {
     const ref2 = randomCol.doc('doc2');
     return Promise.all([ref1.set({}), ref2.set({})])
       .then(() => {
-        return firestore.runTransaction(updateFunction => {
-          return updateFunction.getAll(...[ref1, ref2]).then(docs => {
+        return firestore.runTransaction((updateFunction) => {
+          return updateFunction.getAll(...[ref1, ref2]).then((docs) => {
             return Promise.resolve(docs.length);
           });
         });
       })
-      .then(res => {
+      .then((res) => {
         expect(res).to.equal(2);
       });
   });
 
   it('getAll() supports field mask', () => {
     const ref1 = randomCol.doc('doc1');
-    return ref1.set({foo: 'a', bar: 'b'}).then(() => {
+    return ref1.set({ foo: 'a', bar: 'b' }).then(() => {
       return firestore
-        .runTransaction(updateFunction => {
-          return updateFunction
-            .getAll(ref1, {fieldMask: ['foo']})
-            .then(([doc]) => doc);
+        .runTransaction((updateFunction) => {
+          return updateFunction.getAll(ref1, { fieldMask: ['foo'] }).then(([doc]) => doc);
         })
-        .then(doc => {
-          expect(doc.data()).to.deep.equal({foo: 'a'});
+        .then((doc) => {
+          expect(doc.data()).to.deep.equal({ foo: 'a' });
         });
     });
   });
@@ -6845,19 +6463,14 @@ describe('Transaction class', () => {
   it('getAll() supports array destructuring with field mask', () => {
     const ref1 = randomCol.doc('doc1');
     const ref2 = randomCol.doc('doc2');
-    return Promise.all([
-      ref1.set({f: 'a', b: 'b'}),
-      ref2.set({f: 'a', b: 'b'}),
-    ]).then(() => {
+    return Promise.all([ref1.set({ f: 'a', b: 'b' }), ref2.set({ f: 'a', b: 'b' })]).then(() => {
       return firestore
-        .runTransaction(updateFunction => {
-          return updateFunction
-            .getAll(...[ref1, ref2], {fieldMask: ['f']})
-            .then(docs => docs);
+        .runTransaction((updateFunction) => {
+          return updateFunction.getAll(...[ref1, ref2], { fieldMask: ['f'] }).then((docs) => docs);
         })
-        .then(docs => {
-          expect(docs[0].data()).to.deep.equal({f: 'a'});
-          expect(docs[1].data()).to.deep.equal({f: 'a'});
+        .then((docs) => {
+          expect(docs[0].data()).to.deep.equal({ f: 'a' });
+          expect(docs[1].data()).to.deep.equal({ f: 'a' });
         });
     });
   });
@@ -6868,7 +6481,7 @@ describe('Transaction class', () => {
     await ref1.set(new Post('post1', 'author1'));
     await ref2.set(new Post('post2', 'author2'));
 
-    const docs = await firestore.runTransaction(updateFunction => {
+    const docs = await firestore.runTransaction((updateFunction) => {
       return updateFunction.getAll(ref1, ref2);
     });
 
@@ -6879,7 +6492,7 @@ describe('Transaction class', () => {
   it('set() and get() support withConverter()', async () => {
     const ref = randomCol.doc('doc1').withConverter(postConverter);
     await ref.set(new Post('post', 'author'));
-    await firestore.runTransaction(async txn => {
+    await firestore.runTransaction(async (txn) => {
       await txn.get(ref);
       await txn.set(ref, new Post('new post', 'author'));
     });
@@ -6891,15 +6504,15 @@ describe('Transaction class', () => {
     const ref = randomCol.doc('doc');
     const query = randomCol.where('foo', '==', 'bar');
     return ref
-      .set({foo: 'bar'})
+      .set({ foo: 'bar' })
       .then(() => {
-        return firestore.runTransaction(updateFunction => {
-          return updateFunction.get(query).then(res => {
+        return firestore.runTransaction((updateFunction) => {
+          return updateFunction.get(query).then((res) => {
             return Promise.resolve(res.docs[0].get('foo'));
           });
         });
       })
-      .then(res => {
+      .then((res) => {
         expect(res).to.equal('bar');
       });
   });
@@ -6907,14 +6520,14 @@ describe('Transaction class', () => {
   it('has set() method', () => {
     const ref = randomCol.doc('doc');
     return firestore
-      .runTransaction(updateFunction => {
-        updateFunction.set(ref, {foo: 'foobar'});
+      .runTransaction((updateFunction) => {
+        updateFunction.set(ref, { foo: 'foobar' });
         return Promise.resolve();
       })
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         expect(doc.get('foo')).to.equal('foobar');
       });
   });
@@ -6927,7 +6540,7 @@ describe('Transaction class', () => {
         moo: 'chicken',
       })
       .then(() => {
-        return firestore.runTransaction(updateFunction => {
+        return firestore.runTransaction((updateFunction) => {
           return updateFunction.get(ref).then(() => {
             updateFunction.update(ref, {
               boo: FieldValue.arrayRemove('sebastian'),
@@ -6939,7 +6552,7 @@ describe('Transaction class', () => {
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         expect(doc.data()).to.deep.equal({
           boo: ['ghost'],
           moo: 'cow',
@@ -6951,9 +6564,9 @@ describe('Transaction class', () => {
     let success = false;
     const ref = randomCol.doc('doc');
     return ref
-      .set({foo: 'bar'})
+      .set({ foo: 'bar' })
       .then(() => {
-        return firestore.runTransaction(updateFunction => {
+        return firestore.runTransaction((updateFunction) => {
           updateFunction.delete(ref);
           return Promise.resolve();
         });
@@ -6962,7 +6575,7 @@ describe('Transaction class', () => {
         success = true;
         return ref.get();
       })
-      .then(result => {
+      .then((result) => {
         expect(success).to.be.true;
         expect(result.exists).to.be.false;
       });
@@ -6974,16 +6587,14 @@ describe('Transaction class', () => {
 
     let attempts = 0;
 
-    const promise = firestore.runTransaction(async transaction => {
+    const promise = firestore.runTransaction(async (transaction) => {
       ++attempts;
-      transaction.update(ref, {foo: 'b'});
+      transaction.update(ref, { foo: 'b' });
     });
 
     // Validate the error message when testing against the firestore backend.
     if (process.env.FIRESTORE_EMULATOR_HOST === undefined) {
-      await expect(promise).to.eventually.be.rejectedWith(
-        /No document to update/,
-      );
+      await expect(promise).to.eventually.be.rejectedWith(/No document to update/);
     } else {
       // The emulator generates a different error message, do not validate the error message.
       await expect(promise).to.eventually.be.rejected;
@@ -7007,20 +6618,20 @@ describe('Transaction class', () => {
       // and be retried.
       const contentionPromise = [new Deferred<void>(), new Deferred<void>()];
 
-      const firstTransaction = firestore.runTransaction(async transaction => {
+      const firstTransaction = firestore.runTransaction(async (transaction) => {
         ++attempts;
         await transaction.get(ref);
         contentionPromise[0].resolve();
         await contentionPromise[1].promise;
-        transaction.set(ref, {first: true}, {merge: true});
+        transaction.set(ref, { first: true }, { merge: true });
       });
 
-      const secondTransaction = firestore.runTransaction(async transaction => {
+      const secondTransaction = firestore.runTransaction(async (transaction) => {
         ++attempts;
         await transaction.get(ref);
         contentionPromise[1].resolve();
         await contentionPromise[0].promise;
-        transaction.set(ref, {second: true}, {merge: true});
+        transaction.set(ref, { second: true }, { merge: true });
       });
 
       await firstTransaction;
@@ -7029,28 +6640,27 @@ describe('Transaction class', () => {
       expect(attempts).to.equal(3);
 
       const finalSnapshot = await ref.get();
-      expect(finalSnapshot.data()).to.deep.equal({first: true, second: true});
+      expect(finalSnapshot.data()).to.deep.equal({ first: true, second: true });
     },
   );
 
   it('supports read-only transactions', async () => {
     const ref = randomCol.doc('doc');
-    await ref.set({foo: 'bar'});
-    const snapshot = await firestore.runTransaction(
-      updateFunction => updateFunction.get(ref),
-      {readOnly: true},
-    );
+    await ref.set({ foo: 'bar' });
+    const snapshot = await firestore.runTransaction((updateFunction) => updateFunction.get(ref), {
+      readOnly: true,
+    });
     expect(snapshot.exists).to.be.true;
   });
 
   it('supports read-only transactions with custom read-time', async () => {
     const ref = randomCol.doc('doc');
-    const writeResult = await ref.set({foo: 1});
-    await ref.set({foo: 2});
-    const snapshot = await firestore.runTransaction(
-      updateFunction => updateFunction.get(ref),
-      {readOnly: true, readTime: writeResult.writeTime},
-    );
+    const writeResult = await ref.set({ foo: 1 });
+    await ref.set({ foo: 2 });
+    const snapshot = await firestore.runTransaction((updateFunction) => updateFunction.get(ref), {
+      readOnly: true,
+      readTime: writeResult.writeTime,
+    });
     expect(snapshot.exists).to.be.true;
     expect(snapshot.get('foo')).to.equal(1);
   });
@@ -7074,13 +6684,13 @@ describe('WriteBatch class', () => {
   it('has create() method', () => {
     const ref = randomCol.doc();
     const batch = firestore.batch();
-    batch.create(ref, {foo: 'a'});
+    batch.create(ref, { foo: 'a' });
     return batch
       .commit()
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         expect(doc.get('foo')).to.equal('a');
       });
   });
@@ -7088,13 +6698,13 @@ describe('WriteBatch class', () => {
   it('has set() method', () => {
     const ref = randomCol.doc('doc');
     const batch = firestore.batch();
-    batch.set(ref, {foo: 'a'});
+    batch.set(ref, { foo: 'a' });
     return batch
       .commit()
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         expect(doc.get('foo')).to.equal('a');
       });
   });
@@ -7103,13 +6713,13 @@ describe('WriteBatch class', () => {
     const ref = randomCol.doc('doc').withConverter(postConverterMerge);
     await ref.set(new Post('walnut', 'author'));
     const batch = firestore.batch();
-    batch.set(ref, {title: 'olive'}, {merge: true});
+    batch.set(ref, { title: 'olive' }, { merge: true });
     return batch
       .commit()
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         expect(doc.get('title')).to.equal('olive');
         expect(doc.get('author')).to.equal('author');
       });
@@ -7118,13 +6728,13 @@ describe('WriteBatch class', () => {
   it('set()', () => {
     const ref = randomCol.doc('doc');
     const batch = firestore.batch();
-    batch.set(ref, {foo: 'a'});
+    batch.set(ref, { foo: 'a' });
     return batch
       .commit()
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         expect(doc.get('foo')).to.equal('a');
       });
   });
@@ -7133,7 +6743,7 @@ describe('WriteBatch class', () => {
     // Use an invalid document name that the backend will reject.
     const ref = randomCol.doc('__doc__');
     const batch = firestore.batch();
-    batch.set(ref, {foo: 'a'});
+    batch.set(ref, { foo: 'a' });
     await batch
       .commit()
       .then(() => Promise.reject('commit() should have failed'))
@@ -7145,23 +6755,23 @@ describe('WriteBatch class', () => {
   it('has update() method', () => {
     const ref = randomCol.doc('doc');
     const batch = firestore.batch();
-    batch.set(ref, {foo: 'a'});
-    batch.update(ref, {foo: 'b'});
+    batch.set(ref, { foo: 'a' });
+    batch.update(ref, { foo: 'b' });
     return batch
       .commit()
       .then(() => {
         return ref.get();
       })
-      .then(doc => {
+      .then((doc) => {
         expect(doc.get('foo')).to.equal('b');
       });
   });
 
   it('omits document transforms from write results', () => {
     const batch = firestore.batch();
-    batch.set(randomCol.doc(), {foo: 'a'});
-    batch.set(randomCol.doc(), {foo: FieldValue.serverTimestamp()});
-    return batch.commit().then(writeResults => {
+    batch.set(randomCol.doc(), { foo: 'a' });
+    batch.set(randomCol.doc(), { foo: FieldValue.serverTimestamp() });
+    return batch.commit().then((writeResults) => {
       expect(writeResults).to.have.length(2);
     });
   });
@@ -7169,13 +6779,13 @@ describe('WriteBatch class', () => {
   it('enforces that updated document exists', () => {
     const ref = randomCol.doc();
     const batch = firestore.batch();
-    batch.update(ref, {foo: 'b'});
+    batch.update(ref, { foo: 'b' });
     return batch
       .commit()
       .then(() => {
         expect.fail();
       })
-      .catch(err => {
+      .catch((err) => {
         expect(err.message.match(/No document to update/));
       });
   });
@@ -7185,7 +6795,7 @@ describe('WriteBatch class', () => {
 
     const ref = randomCol.doc('doc');
     const batch = firestore.batch();
-    batch.set(ref, {foo: 'a'});
+    batch.set(ref, { foo: 'a' });
     batch.delete(ref);
     return batch
       .commit()
@@ -7193,7 +6803,7 @@ describe('WriteBatch class', () => {
         success = true;
         return ref.get();
       })
-      .then(result => {
+      .then((result) => {
         expect(success).to.be.true;
         expect(result.exists).to.be.false;
       });
@@ -7211,10 +6821,7 @@ describe('QuerySnapshot class', () => {
     const ref1 = randomCol.doc('doc1');
     const ref2 = randomCol.doc('doc2');
 
-    querySnapshot = Promise.all([
-      ref1.set({foo: 'a'}),
-      ref2.set({foo: 'a'}),
-    ]).then(() => {
+    querySnapshot = Promise.all([ref1.set({ foo: 'a' }), ref2.set({ foo: 'a' })]).then(() => {
       return randomCol.get();
     });
   });
@@ -7223,35 +6830,35 @@ describe('QuerySnapshot class', () => {
 
   it('has query property', () => {
     return querySnapshot
-      .then(snapshot => {
+      .then((snapshot) => {
         return snapshot.query.get();
       })
-      .then(snapshot => {
+      .then((snapshot) => {
         expect(snapshot.size).to.equal(2);
       });
   });
 
   it('has empty property', () => {
     return querySnapshot
-      .then(snapshot => {
+      .then((snapshot) => {
         expect(snapshot.empty).to.be.false;
         expect(snapshot.readTime).to.exist;
         return snapshot.query.where('foo', '==', 'bar').get();
       })
-      .then(snapshot => {
+      .then((snapshot) => {
         expect(snapshot.empty).to.be.true;
         expect(snapshot.readTime).to.exist;
       });
   });
 
   it('has size property', () => {
-    return querySnapshot.then(snapshot => {
+    return querySnapshot.then((snapshot) => {
       expect(snapshot.size).to.equal(2);
     });
   });
 
   it('has docs property', () => {
-    return querySnapshot.then(snapshot => {
+    return querySnapshot.then((snapshot) => {
       expect(snapshot.docs).to.have.length(2);
       expect(snapshot.docs[0].get('foo')).to.equal('a');
     });
@@ -7260,8 +6867,8 @@ describe('QuerySnapshot class', () => {
   it('has forEach() method', () => {
     let count = 0;
 
-    return querySnapshot.then(snapshot => {
-      snapshot.forEach(doc => {
+    return querySnapshot.then((snapshot) => {
+      snapshot.forEach((doc) => {
         expect(doc.get('foo')).to.equal('a');
         ++count;
       });
@@ -7289,38 +6896,38 @@ describe('BulkWriter class', () => {
 
   it('has create() method', async () => {
     const ref = randomCol.doc('doc1');
-    const singleOp = writer.create(ref, {foo: 'bar'});
+    const singleOp = writer.create(ref, { foo: 'bar' });
     await writer.close();
     const result = await ref.get();
-    expect(result.data()).to.deep.equal({foo: 'bar'});
+    expect(result.data()).to.deep.equal({ foo: 'bar' });
     const writeTime = (await singleOp).writeTime;
     expect(writeTime).to.not.be.null;
   });
 
   it('has set() method', async () => {
     const ref = randomCol.doc('doc1');
-    const singleOp = writer.set(ref, {foo: 'bar'});
+    const singleOp = writer.set(ref, { foo: 'bar' });
     await writer.close();
     const result = await ref.get();
-    expect(result.data()).to.deep.equal({foo: 'bar'});
+    expect(result.data()).to.deep.equal({ foo: 'bar' });
     const writeTime = (await singleOp).writeTime;
     expect(writeTime).to.not.be.null;
   });
 
   it('has update() method', async () => {
     const ref = randomCol.doc('doc1');
-    await ref.set({foo: 'bar'});
-    const singleOp = writer.update(ref, {foo: 'bar2'});
+    await ref.set({ foo: 'bar' });
+    const singleOp = writer.update(ref, { foo: 'bar2' });
     await writer.close();
     const result = await ref.get();
-    expect(result.data()).to.deep.equal({foo: 'bar2'});
+    expect(result.data()).to.deep.equal({ foo: 'bar2' });
     const writeTime = (await singleOp).writeTime;
     expect(writeTime).to.not.be.null;
   });
 
   it('has delete() method', async () => {
     const ref = randomCol.doc('doc1');
-    await ref.set({foo: 'bar'});
+    await ref.set({ foo: 'bar' });
     const singleOp = writer.delete(ref);
     await writer.close();
     const result = await ref.get();
@@ -7332,8 +6939,8 @@ describe('BulkWriter class', () => {
 
   it('can write to the same document twice', async () => {
     const ref = randomCol.doc('doc1');
-    const op1 = writer.set(ref, {foo: 'bar'});
-    const op2 = writer.set(ref, {foo: 'bar2'});
+    const op1 = writer.set(ref, { foo: 'bar' });
+    const op2 = writer.set(ref, { foo: 'bar2' });
     await writer.close();
     const result = await ref.get();
     // The order of writes is not guaranteed.
@@ -7346,15 +6953,13 @@ describe('BulkWriter class', () => {
 
   it('can terminate once BulkWriter is closed', async () => {
     const ref = randomCol.doc('doc1');
-    void writer.set(ref, {foo: 'bar'});
+    void writer.set(ref, { foo: 'bar' });
     await writer.close();
     return firestore.terminate();
   });
 
   describe('recursiveDelete()', () => {
-    async function countDocumentChildren(
-      ref: DocumentReference,
-    ): Promise<number> {
+    async function countDocumentChildren(ref: DocumentReference): Promise<number> {
       let count = 0;
       const collections = await ref.listCollections();
       for (const collection of collections) {
@@ -7363,9 +6968,7 @@ describe('BulkWriter class', () => {
       return count;
     }
 
-    async function countCollectionChildren(
-      ref: CollectionReference,
-    ): Promise<number> {
+    async function countCollectionChildren(ref: CollectionReference): Promise<number> {
       let count = 0;
       const docs = await ref.listDocuments();
       for (const doc of docs) {
@@ -7386,10 +6989,10 @@ describe('BulkWriter class', () => {
       //                     ├── ernie
       //                     └── francis
       const batch = firestore.batch();
-      batch.set(randomCol.doc('anna'), {name: 'anna'});
-      batch.set(randomCol.doc('bob'), {name: 'bob'});
-      batch.set(randomCol.doc('bob/parentsCol/charlie'), {name: 'charlie'});
-      batch.set(randomCol.doc('bob/parentsCol/daniel'), {name: 'daniel'});
+      batch.set(randomCol.doc('anna'), { name: 'anna' });
+      batch.set(randomCol.doc('bob'), { name: 'bob' });
+      batch.set(randomCol.doc('bob/parentsCol/charlie'), { name: 'charlie' });
+      batch.set(randomCol.doc('bob/parentsCol/daniel'), { name: 'daniel' });
       batch.set(randomCol.doc('bob/parentsCol/daniel/childCol/ernie'), {
         name: 'ernie',
       });
@@ -7437,7 +7040,7 @@ describe('BulkWriter class', () => {
     it.skipEnterprise('does not affect other collections', async () => {
       // Add other nested collection that shouldn't be deleted.
       const collB = firestore.collection('doggos');
-      await collB.doc('doggo').set({name: 'goodboi'});
+      await collB.doc('doggo').set({ name: 'goodboi' });
 
       await firestore.recursiveDelete(collB);
       expect(await countCollectionChildren(randomCol)).to.equal(6);
@@ -7459,14 +7062,14 @@ describe('BulkWriter class', () => {
   it('can retry failed writes with a provided callback', async () => {
     let retryCount = 0;
     let code: Status = -1 as Status;
-    writer.onWriteError(error => {
+    writer.onWriteError((error) => {
       retryCount = error.failedAttempts;
       return error.failedAttempts < 3;
     });
 
     // Use an invalid document name that the backend will reject.
     const ref = randomCol.doc('__doc__');
-    writer.create(ref, {foo: 'bar'}).catch(err => {
+    writer.create(ref, { foo: 'bar' }).catch((err) => {
       code = err.code;
     });
     await writer.close();
@@ -7480,112 +7083,102 @@ describe('BulkWriter class', () => {
 });
 
 describe('Client initialization', () => {
-  const ops: Array<
+  const ops: Array<[string, (coll: CollectionReference) => Promise<unknown>, /* skip */ boolean?]> =
     [
-      string,
-      (coll: CollectionReference) => Promise<unknown>,
-      /* skip */ boolean?,
-    ]
-  > = [
-    ['CollectionReference.get()', randomColl => randomColl.get()],
-    ['CollectionReference.add()', randomColl => randomColl.add({})],
-    [
-      'CollectionReference.stream()',
-      randomColl => {
-        const deferred = new Deferred<void>();
-        randomColl.stream().on('finish', () => {
-          deferred.resolve();
-        });
-        return deferred.promise;
-      },
-    ],
-    [
-      'CollectionReference.listDocuments()',
+      ['CollectionReference.get()', (randomColl) => randomColl.get()],
+      ['CollectionReference.add()', (randomColl) => randomColl.add({})],
+      [
+        'CollectionReference.stream()',
+        (randomColl) => {
+          const deferred = new Deferred<void>();
+          randomColl.stream().on('finish', () => {
+            deferred.resolve();
+          });
+          return deferred.promise;
+        },
+      ],
+      [
+        'CollectionReference.listDocuments()',
 
-      randomColl => {
-        if (process.env.RUN_ENTERPRISE_TESTS) return Promise.resolve();
-        return randomColl.listDocuments();
-      },
-    ],
-    [
-      'CollectionReference.onSnapshot()',
-      randomColl => {
-        const deferred = new Deferred<void>();
-        const unsubscribe = randomColl.onSnapshot(() => {
-          unsubscribe();
-          deferred.resolve();
-        });
-        return deferred.promise;
-      },
-    ],
-    ['DocumentReference.get()', randomColl => randomColl.doc().get()],
-    ['DocumentReference.create()', randomColl => randomColl.doc().create({})],
-    ['DocumentReference.set()', randomColl => randomColl.doc().set({})],
-    [
-      'DocumentReference.update()',
-      async randomColl => {
-        const update = randomColl.doc().update('foo', 'bar');
+        (randomColl) => {
+          if (process.env.RUN_ENTERPRISE_TESTS) return Promise.resolve();
+          return randomColl.listDocuments();
+        },
+      ],
+      [
+        'CollectionReference.onSnapshot()',
+        (randomColl) => {
+          const deferred = new Deferred<void>();
+          const unsubscribe = randomColl.onSnapshot(() => {
+            unsubscribe();
+            deferred.resolve();
+          });
+          return deferred.promise;
+        },
+      ],
+      ['DocumentReference.get()', (randomColl) => randomColl.doc().get()],
+      ['DocumentReference.create()', (randomColl) => randomColl.doc().create({})],
+      ['DocumentReference.set()', (randomColl) => randomColl.doc().set({})],
+      [
+        'DocumentReference.update()',
+        async (randomColl) => {
+          const update = randomColl.doc().update('foo', 'bar');
 
-        // Don't validate the error message when running against the emulator.
-        // Emulator gives different error message.
-        // TODO (b/429419330) re-enable assertion when this bug is fixed
-        if (process.env.FIRESTORE_EMULATOR_HOST === undefined) {
-          // await expect(update).to.eventually.be.rejectedWith(
-          //   'No document to update',
-          // );
-          await expect(update).to.eventually.be.rejected;
-        } else {
-          await expect(update).to.eventually.be.rejected;
-        }
-      },
-    ],
-    ['DocumentReference.delete()', randomColl => randomColl.doc().delete()],
-    [
-      'DocumentReference.listCollections()',
-      randomColl => {
-        // TODO enterprise waiting on b/469490062, skip for now
-        if (isEnterprise()) return Promise.resolve();
-        return randomColl.doc().listCollections();
-      },
-    ],
-    [
-      'DocumentReference.onSnapshot()',
-      randomColl => {
-        const deferred = new Deferred<void>();
-        const unsubscribe = randomColl.doc().onSnapshot(() => {
-          unsubscribe();
-          deferred.resolve();
-        });
-        return deferred.promise;
-      },
-    ],
-    [
-      'CollectionGroup.getPartitions()',
-      async randomColl => {
-        // Requires PartitionQuery support
-        if (process.env.RUN_ENTERPRISE_TESTS) return;
+          // Don't validate the error message when running against the emulator.
+          // Emulator gives different error message.
+          // TODO (b/429419330) re-enable assertion when this bug is fixed
+          if (process.env.FIRESTORE_EMULATOR_HOST === undefined) {
+            // await expect(update).to.eventually.be.rejectedWith(
+            //   'No document to update',
+            // );
+            await expect(update).to.eventually.be.rejected;
+          } else {
+            await expect(update).to.eventually.be.rejected;
+          }
+        },
+      ],
+      ['DocumentReference.delete()', (randomColl) => randomColl.doc().delete()],
+      [
+        'DocumentReference.listCollections()',
+        (randomColl) => {
+          // TODO enterprise waiting on b/469490062, skip for now
+          if (isEnterprise()) return Promise.resolve();
+          return randomColl.doc().listCollections();
+        },
+      ],
+      [
+        'DocumentReference.onSnapshot()',
+        (randomColl) => {
+          const deferred = new Deferred<void>();
+          const unsubscribe = randomColl.doc().onSnapshot(() => {
+            unsubscribe();
+            deferred.resolve();
+          });
+          return deferred.promise;
+        },
+      ],
+      [
+        'CollectionGroup.getPartitions()',
+        async (randomColl) => {
+          // Requires PartitionQuery support
+          if (process.env.RUN_ENTERPRISE_TESTS) return;
 
-        const partitions = randomColl.firestore
-          .collectionGroup('id')
-          .getPartitions(2);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        for await (const _ of partitions);
-      },
-      // Skip this test when running against the emulator because partition queries
-      // are not supported in the emulator.
-      !!process.env.FIRESTORE_EMULATOR_HOST,
-    ],
-    [
-      'Firestore.runTransaction()',
-      randomColl => randomColl.firestore.runTransaction(t => t.get(randomColl)),
-    ],
-    [
-      'Firestore.getAll()',
-      randomColl => randomColl.firestore.getAll(randomColl.doc()),
-    ],
-    ['Firestore.batch()', randomColl => randomColl.firestore.batch().commit()],
-    ['Firestore.terminate()', randomColl => randomColl.firestore.terminate()],
-  ];
+          const partitions = randomColl.firestore.collectionGroup('id').getPartitions(2);
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          for await (const _ of partitions);
+        },
+        // Skip this test when running against the emulator because partition queries
+        // are not supported in the emulator.
+        !!process.env.FIRESTORE_EMULATOR_HOST,
+      ],
+      [
+        'Firestore.runTransaction()',
+        (randomColl) => randomColl.firestore.runTransaction((t) => t.get(randomColl)),
+      ],
+      ['Firestore.getAll()', (randomColl) => randomColl.firestore.getAll(randomColl.doc())],
+      ['Firestore.batch()', (randomColl) => randomColl.firestore.batch().commit()],
+      ['Firestore.terminate()', (randomColl) => randomColl.firestore.terminate()],
+    ];
 
   for (const [description, op, skip] of ops) {
     (!skip ? it : it.skip)(`succeeds for ${description}`, () => {
@@ -7609,9 +7202,9 @@ describe('Bundle building', () => {
     const ref4 = testCol.doc('doc4');
 
     await Promise.all([
-      ref1.set({name: '1', sort: 1, value: 'string value'}),
-      ref2.set({name: '2', sort: 2, value: 42}),
-      ref3.set({name: '3', sort: 3, value: {nested: 'nested value'}}),
+      ref1.set({ name: '1', sort: 1, value: 'string value' }),
+      ref2.set({ name: '2', sort: 2, value: 42 }),
+      ref3.set({ name: '3', sort: 3, value: { nested: 'nested value' } }),
       ref4.set({
         name: '4',
         sort: 4,
@@ -7684,11 +7277,7 @@ describe('Bundle building', () => {
     const elements = await bundleToElementArray(await bundle.build());
 
     const meta = (elements[0] as IBundleElement).metadata;
-    verifyMetadata(
-      meta!,
-      limitToLastSnap.readTime.toProto().timestampValue!,
-      1,
-    );
+    verifyMetadata(meta!, limitToLastSnap.readTime.toProto().timestampValue!, 1);
 
     let namedQuery1 = (elements[1] as IBundleElement).namedQuery;
     let namedQuery2 = (elements[2] as IBundleElement).namedQuery;
@@ -7775,7 +7364,7 @@ describe('Types test', () => {
 
   const testConverter = {
     toFirestore(testObj: WithFieldValue<TestObject>) {
-      return {...testObj};
+      return { ...testObj };
     },
     fromFirestore(snapshot: QueryDocumentSnapshot): TestObject {
       const data = snapshot.data();
@@ -7807,16 +7396,13 @@ describe('Types test', () => {
 
   describe('Nested partial support', () => {
     const testConverterMerge = {
-      toFirestore(
-        testObj: PartialWithFieldValue<TestObject>,
-        options?: SetOptions,
-      ) {
+      toFirestore(testObj: PartialWithFieldValue<TestObject>, options?: SetOptions) {
         if (options) {
           expect(testObj).to.not.be.an.instanceOf(TestObject);
         } else {
           expect(testObj).to.be.an.instanceOf(TestObject);
         }
-        return {...testObj};
+        return { ...testObj };
       },
       fromFirestore(snapshot: QueryDocumentSnapshot): TestObject {
         const data = snapshot.data();
@@ -7839,7 +7425,7 @@ describe('Types test', () => {
             timestamp: FieldValue.serverTimestamp(),
           },
         },
-        {merge: true},
+        { merge: true },
       );
 
       // Allow setting FieldValue on entire object field.
@@ -7847,7 +7433,7 @@ describe('Types test', () => {
         {
           nested: FieldValue.delete(),
         },
-        {merge: true},
+        { merge: true },
       );
     });
 
@@ -7862,7 +7448,7 @@ describe('Types test', () => {
           // @ts-expect-error Should fail to transpile.
           outerArr: null,
         },
-        {merge: true},
+        { merge: true },
       );
 
       // Check nested fields.
@@ -7877,14 +7463,14 @@ describe('Types test', () => {
             innerArr: null,
           },
         },
-        {merge: true},
+        { merge: true },
       );
       await ref.set(
         {
           // @ts-expect-error Should fail to transpile.
           nested: 3,
         },
-        {merge: true},
+        { merge: true },
       );
     });
 
@@ -7896,7 +7482,7 @@ describe('Types test', () => {
           // @ts-expect-error Should fail to transpile.
           nonexistent: 'foo',
         },
-        {merge: true},
+        { merge: true },
       );
 
       // Nested property
@@ -7907,7 +7493,7 @@ describe('Types test', () => {
             nonexistent: 'foo',
           },
         },
-        {merge: true},
+        { merge: true },
       );
     });
 
@@ -7925,7 +7511,7 @@ describe('Types test', () => {
             timestamp: FieldValue.serverTimestamp(),
           },
         },
-        {merge: true},
+        { merge: true },
       );
 
       // Omit inner fields
@@ -7940,23 +7526,20 @@ describe('Types test', () => {
             timestamp: FieldValue.serverTimestamp(),
           },
         },
-        {merge: true},
+        { merge: true },
       );
     });
   });
 
   describe('NestedPartial', () => {
     const testConverterMerge = {
-      toFirestore(
-        testObj: PartialWithFieldValue<TestObject>,
-        options?: SetOptions,
-      ) {
+      toFirestore(testObj: PartialWithFieldValue<TestObject>, options?: SetOptions) {
         if (options) {
           expect(testObj).to.not.be.an.instanceOf(TestObject);
         } else {
           expect(testObj).to.be.an.instanceOf(TestObject);
         }
-        return {...testObj};
+        return { ...testObj };
       },
       fromFirestore(snapshot: QueryDocumentSnapshot): TestObject {
         const data = snapshot.data();
@@ -7979,7 +7562,7 @@ describe('Types test', () => {
             timestamp: FieldValue.serverTimestamp(),
           },
         },
-        {merge: true},
+        { merge: true },
       );
 
       // Allow setting FieldValue on entire object field.
@@ -7987,7 +7570,7 @@ describe('Types test', () => {
         {
           nested: FieldValue.delete(),
         },
-        {merge: true},
+        { merge: true },
       );
     });
 
@@ -8002,7 +7585,7 @@ describe('Types test', () => {
           // @ts-expect-error Should fail to transpile.
           outerArr: null,
         },
-        {merge: true},
+        { merge: true },
       );
 
       // Check nested fields.
@@ -8017,14 +7600,14 @@ describe('Types test', () => {
             innerArr: null,
           },
         },
-        {merge: true},
+        { merge: true },
       );
       await ref.set(
         {
           // @ts-expect-error Should fail to transpile.
           nested: 3,
         },
-        {merge: true},
+        { merge: true },
       );
     });
 
@@ -8036,7 +7619,7 @@ describe('Types test', () => {
           // @ts-expect-error Should fail to transpile.
           nonexistent: 'foo',
         },
-        {merge: true},
+        { merge: true },
       );
 
       // Nested property
@@ -8047,7 +7630,7 @@ describe('Types test', () => {
             nonexistent: 'foo',
           },
         },
-        {merge: true},
+        { merge: true },
       );
     });
   });
@@ -8156,9 +7739,7 @@ describe('Types test', () => {
     });
 
     it('allows certain types for not others', async () => {
-      const withTryCatch = async (
-        fn: () => Promise<WriteResult>,
-      ): Promise<void> => {
+      const withTryCatch = async (fn: () => Promise<WriteResult>): Promise<void> => {
         try {
           await fn();
         } catch {
@@ -8191,9 +7772,7 @@ describe('Types test', () => {
           return value;
         }
 
-        withPartialFieldValueT(
-          value: PartialWithFieldValue<T>,
-        ): PartialWithFieldValue<T> {
+        withPartialFieldValueT(value: PartialWithFieldValue<T>): PartialWithFieldValue<T> {
           return value;
         }
 
@@ -8215,10 +7794,10 @@ describe('Types test', () => {
         }
 
         const foo = new ObjectWrapper<Foo>();
-        foo.withFieldValueT({id: '', foo: FieldValue.increment(1)});
-        foo.withPartialFieldValueT({foo: FieldValue.increment(1)});
-        foo.withT({id: '', foo: 1});
-        foo.withPartialT({foo: 1});
+        foo.withFieldValueT({ id: '', foo: FieldValue.increment(1) });
+        foo.withPartialFieldValueT({ foo: FieldValue.increment(1) });
+        foo.withT({ id: '', foo: 1 });
+        foo.withPartialT({ foo: 1 });
       });
 
       it('does not allow primitive types to use FieldValue', () => {
@@ -8297,7 +7876,7 @@ describe('Types test', () => {
 
       const testConverterOptional = {
         toFirestore(testObj: WithFieldValue<TestObjectOptional>) {
-          return {...testObj};
+          return { ...testObj };
         },
         fromFirestore(snapshot: QueryDocumentSnapshot): TestObjectOptional {
           const data = snapshot.data();
@@ -8337,7 +7916,7 @@ describe('Types test', () => {
 
       const testConverterOptional = {
         toFirestore(testObj: WithFieldValue<TestObjectOptional>) {
-          return {...testObj};
+          return { ...testObj };
         },
         fromFirestore(snapshot: QueryDocumentSnapshot): TestObjectOptional {
           const data = snapshot.data();
@@ -8366,12 +7945,12 @@ describe('Types test', () => {
           | {
               requiredStr: string;
             }
-          | {requiredNumber: number};
+          | { requiredNumber: number };
       }
 
       const testConverterUnion = {
         toFirestore(testObj: WithFieldValue<TestObjectUnion>) {
-          return {...testObj};
+          return { ...testObj };
         },
         fromFirestore(snapshot: QueryDocumentSnapshot): TestObjectUnion {
           const data = snapshot.data();
@@ -8488,7 +8067,7 @@ describe('Types test', () => {
             timestamp: FieldValue.serverTimestamp(),
           },
         },
-        {merge: true},
+        { merge: true },
       );
     });
 
@@ -8509,7 +8088,7 @@ describe('Types test', () => {
     it('Transaction.set()', async () => {
       const ref = doc.withConverter(testConverter);
 
-      return firestore.runTransaction(async tx => {
+      return firestore.runTransaction(async (tx) => {
         // Requires full object if {merge: true} is not set.
         // @ts-expect-error Should fail to transpile.
         tx.set(ref, {
@@ -8535,7 +8114,7 @@ describe('Types test', () => {
               timestamp: FieldValue.serverTimestamp(),
             },
           },
-          {merge: true},
+          { merge: true },
         );
       });
     });
@@ -8543,7 +8122,7 @@ describe('Types test', () => {
     it('Transaction.update()', async () => {
       const ref = doc.withConverter(testConverter);
 
-      return firestore.runTransaction(async tx => {
+      return firestore.runTransaction(async (tx) => {
         tx.update(ref, {
           outerArr: [],
           nested: {

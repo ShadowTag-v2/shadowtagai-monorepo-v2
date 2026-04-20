@@ -15,25 +15,19 @@
  */
 
 import * as protos from '../../protos/firestore_v1_proto_api';
+
 import api = protos.google.firestore.v1;
 
-import * as firestore from '@google-cloud/firestore';
-import {
-  QualifiedResourcePath,
-  ResourcePath,
-  validateResourcePath,
-} from '../path';
-import {autoId, requestTag} from '../util';
-import {validateDocumentData} from '../write-batch';
-import {defaultConverter} from '../types';
-import {Query} from './query';
-import Firestore from '../index';
-import {DocumentReference} from './document-reference';
-import {QueryOptions} from './query-options';
-import {
-  SPAN_NAME_COL_REF_ADD,
-  SPAN_NAME_COL_REF_LIST_DOCUMENTS,
-} from '../telemetry/trace-util';
+import type * as firestore from '@google-cloud/firestore';
+import type Firestore from '../index';
+import { QualifiedResourcePath, type ResourcePath, validateResourcePath } from '../path';
+import { SPAN_NAME_COL_REF_ADD, SPAN_NAME_COL_REF_LIST_DOCUMENTS } from '../telemetry/trace-util';
+import { defaultConverter } from '../types';
+import { autoId, requestTag } from '../util';
+import { validateDocumentData } from '../write-batch';
+import { DocumentReference } from './document-reference';
+import { Query } from './query';
+import { QueryOptions } from './query-options';
 
 /**
  * A CollectionReference object can be used for adding documents, getting
@@ -70,9 +64,7 @@ export class CollectionReference<
    * @internal
    */
   get _resourcePath(): ResourcePath {
-    return this._queryOptions.parentPath.append(
-      this._queryOptions.collectionId,
-    );
+    return this._queryOptions.parentPath.append(this._queryOptions.collectionId);
   }
 
   /**
@@ -109,10 +101,7 @@ export class CollectionReference<
    */
   get parent(): DocumentReference | null {
     if (this._queryOptions.parentPath.isDocument) {
-      return new DocumentReference(
-        this.firestore,
-        this._queryOptions.parentPath,
-      );
+      return new DocumentReference(this.firestore, this._queryOptions.parentPath);
     }
 
     return null;
@@ -165,45 +154,34 @@ export class CollectionReference<
    * });
    * ```
    */
-  listDocuments(): Promise<
-    Array<DocumentReference<AppModelType, DbModelType>>
-  > {
-    return this._firestore._traceUtil.startActiveSpan(
-      SPAN_NAME_COL_REF_LIST_DOCUMENTS,
-      () => {
-        const tag = requestTag();
-        return this.firestore.initializeIfNeeded(tag).then(() => {
-          const parentPath =
-            this._queryOptions.parentPath.toQualifiedResourcePath(
-              this.firestore.projectId,
-              this.firestore.databaseId,
-            );
+  listDocuments(): Promise<Array<DocumentReference<AppModelType, DbModelType>>> {
+    return this._firestore._traceUtil.startActiveSpan(SPAN_NAME_COL_REF_LIST_DOCUMENTS, () => {
+      const tag = requestTag();
+      return this.firestore.initializeIfNeeded(tag).then(() => {
+        const parentPath = this._queryOptions.parentPath.toQualifiedResourcePath(
+          this.firestore.projectId,
+          this.firestore.databaseId,
+        );
 
-          const request: api.IListDocumentsRequest = {
-            parent: parentPath.formattedName,
-            collectionId: this.id,
-            showMissing: true,
-            mask: {fieldPaths: []},
-          };
+        const request: api.IListDocumentsRequest = {
+          parent: parentPath.formattedName,
+          collectionId: this.id,
+          showMissing: true,
+          mask: { fieldPaths: [] },
+        };
 
-          return this.firestore
-            .request<
-              api.IListDocumentsRequest,
-              api.IDocument[]
-            >('listDocuments', request, tag)
-            .then(documents => {
-              // Note that the backend already orders these documents by name,
-              // so we do not need to manually sort them.
-              return documents.map(doc => {
-                const path = QualifiedResourcePath.fromSlashSeparatedString(
-                  doc.name!,
-                );
-                return this.doc(path.id!);
-              });
+        return this.firestore
+          .request<api.IListDocumentsRequest, api.IDocument[]>('listDocuments', request, tag)
+          .then((documents) => {
+            // Note that the backend already orders these documents by name,
+            // so we do not need to manually sort them.
+            return documents.map((doc) => {
+              const path = QualifiedResourcePath.fromSlashSeparatedString(doc.name!);
+              return this.doc(path.id!);
             });
-        });
-      },
-    );
+          });
+      });
+    });
   }
 
   doc(): DocumentReference<AppModelType, DbModelType>;
@@ -241,11 +219,7 @@ export class CollectionReference<
       );
     }
 
-    return new DocumentReference(
-      this.firestore,
-      path,
-      this._queryOptions.converter,
-    );
+    return new DocumentReference(this.firestore, path, this._queryOptions.converter);
   }
 
   /**
@@ -270,21 +244,13 @@ export class CollectionReference<
   add(
     data: firestore.WithFieldValue<AppModelType>,
   ): Promise<DocumentReference<AppModelType, DbModelType>> {
-    return this._firestore._traceUtil.startActiveSpan(
-      SPAN_NAME_COL_REF_ADD,
-      () => {
-        const firestoreData = this._queryOptions.converter.toFirestore(data);
-        validateDocumentData(
-          'data',
-          firestoreData,
-          /*allowDeletes=*/ false,
-          this._allowUndefined,
-        );
+    return this._firestore._traceUtil.startActiveSpan(SPAN_NAME_COL_REF_ADD, () => {
+      const firestoreData = this._queryOptions.converter.toFirestore(data);
+      validateDocumentData('data', firestoreData, /*allowDeletes=*/ false, this._allowUndefined);
 
-        const documentRef = this.doc();
-        return documentRef.create(data).then(() => documentRef);
-      },
-    );
+      const documentRef = this.doc();
+      return documentRef.create(data).then(() => documentRef);
+    });
   }
 
   /**
@@ -294,23 +260,15 @@ export class CollectionReference<
    * @returns {boolean} true if this `CollectionReference` is equal to the
    * provided value.
    */
-  isEqual(
-    other: firestore.CollectionReference<AppModelType, DbModelType>,
-  ): boolean {
-    return (
-      this === other ||
-      (other instanceof CollectionReference && super.isEqual(other))
-    );
+  isEqual(other: firestore.CollectionReference<AppModelType, DbModelType>): boolean {
+    return this === other || (other instanceof CollectionReference && super.isEqual(other));
   }
 
   withConverter<
     NewAppModelType,
     NewDbModelType extends firestore.DocumentData = firestore.DocumentData,
   >(
-    converter: firestore.FirestoreDataConverter<
-      NewAppModelType,
-      NewDbModelType
-    >,
+    converter: firestore.FirestoreDataConverter<NewAppModelType, NewDbModelType>,
   ): CollectionReference<NewAppModelType, NewDbModelType>;
   withConverter(
     converter: null,
@@ -370,10 +328,7 @@ export class CollectionReference<
     NewAppModelType,
     NewDbModelType extends firestore.DocumentData = firestore.DocumentData,
   >(
-    converter: firestore.FirestoreDataConverter<
-      NewAppModelType,
-      NewDbModelType
-    > | null,
+    converter: firestore.FirestoreDataConverter<NewAppModelType, NewDbModelType> | null,
   ): CollectionReference<NewAppModelType, NewDbModelType> {
     return new CollectionReference<NewAppModelType, NewDbModelType>(
       this.firestore,

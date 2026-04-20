@@ -15,10 +15,11 @@
  */
 
 import * as protos from '../../protos/firestore_v1_proto_api';
+
 import api = protos.google.firestore.v1;
 
-import {FilterInternal} from './filter-internal';
-import {FieldFilterInternal} from './field-filter-internal';
+import type { FieldFilterInternal } from './field-filter-internal';
+import { FilterInternal } from './filter-internal';
 
 export class CompositeFilterInternal extends FilterInternal {
   constructor(
@@ -70,7 +71,7 @@ export class CompositeFilterInternal extends FilterInternal {
     const proto: api.StructuredQuery.IFilter = {
       compositeFilter: {
         op: this.operator,
-        filters: this.filters.map(filter => filter.toProto()),
+        filters: this.filters.map((filter) => filter.toProto()),
       },
     };
 
@@ -83,9 +84,7 @@ export class CompositeFilterInternal extends FilterInternal {
       return (
         this.operator === other.operator &&
         this.getFilters().length === other.getFilters().length &&
-        this.getFilters().every((filter, index) =>
-          filter.isEqual(otherFilters[index]),
-        )
+        this.getFilters().every((filter, index) => filter.isEqual(otherFilters[index]))
       );
     } else {
       return false;

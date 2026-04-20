@@ -1,8 +1,8 @@
-import { z } from "zod";
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { CallToolResult, Resource } from "@modelcontextprotocol/sdk/types.js";
-import { gzipSync } from "node:zlib";
-import { getSessionResourceURI, registerSessionResource } from "../resources/session.js";
+import { gzipSync } from 'node:zlib';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { CallToolResult, Resource } from '@modelcontextprotocol/sdk/types.js';
+import { z } from 'zod';
+import { getSessionResourceURI, registerSessionResource } from '../resources/session.js';
 
 // Maximum input file size - 10 MB default
 const GZIP_MAX_FETCH_SIZE = Number(process.env.GZIP_MAX_FETCH_SIZE ?? String(10 * 1024 * 1024));
@@ -13,35 +13,35 @@ const GZIP_MAX_FETCH_TIME_MILLIS = Number(
 );
 
 // Comma-separated list of allowed domains. Empty means all domains are allowed.
-const GZIP_ALLOWED_DOMAINS = (process.env.GZIP_ALLOWED_DOMAINS ?? "")
-  .split(",")
+const GZIP_ALLOWED_DOMAINS = (process.env.GZIP_ALLOWED_DOMAINS ?? '')
+  .split(',')
   .map((d) => d.trim().toLowerCase())
   .filter((d) => d.length > 0);
 
 // Tool input schema
 const GZipFileAsResourceSchema = z.object({
-  name: z.string().describe("Name of the output file").default("README.md.gz"),
+  name: z.string().describe('Name of the output file').default('README.md.gz'),
   data: z
     .string()
     .url()
-    .describe("URL or data URI of the file content to compress")
+    .describe('URL or data URI of the file content to compress')
     .default(
-      "https://raw.githubusercontent.com/modelcontextprotocol/servers/refs/heads/main/README.md",
+      'https://raw.githubusercontent.com/modelcontextprotocol/servers/refs/heads/main/README.md',
     ),
   outputType: z
-    .enum(["resourceLink", "resource"])
-    .default("resourceLink")
+    .enum(['resourceLink', 'resource'])
+    .default('resourceLink')
     .describe(
       "How the resulting gzipped file should be returned. 'resourceLink' returns a link to a resource that can be read later, 'resource' returns a full resource object.",
     ),
 });
 
 // Tool configuration
-const name = "gzip-file-as-resource";
+const name = 'gzip-file-as-resource';
 const config = {
-  title: "GZip File as Resource Tool",
+  title: 'GZip File as Resource Tool',
   description:
-    "Compresses a single file using gzip compression. Depending upon the selected output type, returns either the compressed data as a gzipped resource or a resource link, allowing it to be downloaded in a subsequent request during the current session.",
+    'Compresses a single file using gzip compression. Depending upon the selected output type, returns either the compressed data as a gzipped resource or a resource link, allowing it to be downloaded in a subsequent request during the current session.',
   inputSchema: GZipFileAsResourceSchema,
 };
 
@@ -79,24 +79,24 @@ export const registerGZipFileAsResourceTool = (server: McpServer) => {
 
     // Create resource
     const uri = getSessionResourceURI(name);
-    const blob = compressedBuffer.toString("base64");
-    const mimeType = "application/gzip";
+    const blob = compressedBuffer.toString('base64');
+    const mimeType = 'application/gzip';
     const resource = <Resource>{ uri, name, mimeType };
 
     // Register resource, get resource link in return
-    const resourceLink = registerSessionResource(server, resource, "blob", blob);
+    const resourceLink = registerSessionResource(server, resource, 'blob', blob);
 
     // Return the resource or a resource link that can be used to access this resource later
-    if (outputType === "resource") {
+    if (outputType === 'resource') {
       return {
         content: [
           {
-            type: "resource",
+            type: 'resource',
             resource: { uri, mimeType, blob },
           },
         ],
       };
-    } else if (outputType === "resourceLink") {
+    } else if (outputType === 'resourceLink') {
       return {
         content: [resourceLink],
       };
@@ -117,14 +117,14 @@ function validateDataURI(dataUri: string): URL {
   // Validate Inputs
   const url = new URL(dataUri);
   try {
-    if (url.protocol !== "http:" && url.protocol !== "https:" && url.protocol !== "data:") {
+    if (url.protocol !== 'http:' && url.protocol !== 'https:' && url.protocol !== 'data:') {
       throw new Error(
         `Unsupported URL protocol for ${dataUri}. Only http, https, and data URLs are supported.`,
       );
     }
     if (
       GZIP_ALLOWED_DOMAINS.length > 0 &&
-      (url.protocol === "http:" || url.protocol === "https:")
+      (url.protocol === 'http:' || url.protocol === 'https:')
     ) {
       const domain = url.hostname;
       const domainAllowed = GZIP_ALLOWED_DOMAINS.some((allowedDomain) => {
@@ -166,12 +166,12 @@ async function fetchSafely(
     // Fetch the data
     const response = await fetch(url, { signal: controller.signal });
     if (!response.body) {
-      throw new Error("No response body");
+      throw new Error('No response body');
     }
 
     // Note: we can't trust the Content-Length header: a malicious or clumsy server could return much more data than advertised.
     // We check it here for early bail-out, but we still need to monitor actual bytes read below.
-    const contentLengthHeader = response.headers.get("content-length");
+    const contentLengthHeader = response.headers.get('content-length');
     if (contentLengthHeader != null) {
       const contentLength = parseInt(contentLengthHeader, 10);
       if (contentLength > maxBytes) {

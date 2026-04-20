@@ -6,9 +6,9 @@
 
 // import 'jasmine'; (google3-only)
 
-import {createTokenTests} from '../testing/tokens.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdElevation} from './elevation.js';
+import { MdElevation } from './elevation.js';
 
 describe('<md-elevation>', () => {
   describe('.styles', () => {

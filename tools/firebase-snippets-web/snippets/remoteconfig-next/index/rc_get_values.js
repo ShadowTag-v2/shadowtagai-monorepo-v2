@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START rc_get_values_modular]
-import { getValue } from "firebase/remote-config";
+import { getValue } from 'firebase/remote-config';
 
-const val = getValue(remoteConfig, "welcome_messsage");
+const val = getValue(remoteConfig, 'welcome_messsage');
 // [END rc_get_values_modular]

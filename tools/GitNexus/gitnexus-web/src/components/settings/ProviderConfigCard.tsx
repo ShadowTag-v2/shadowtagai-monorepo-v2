@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Eye, EyeOff, Key } from '@/lib/lucide-icons';
 
 type ApiKeyField = {
@@ -40,9 +40,7 @@ export const ProviderConfigCard = ({
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-sm font-semibold text-text-primary">{title}</h3>
-          {description ? (
-            <p className="text-xs text-text-muted">{description}</p>
-          ) : null}
+          {description ? <p className="text-xs text-text-muted">{description}</p> : null}
         </div>
       </div>
 
@@ -56,7 +54,7 @@ export const ProviderConfigCard = ({
             <input
               type={apiKey.isVisible ? 'text' : 'password'}
               value={apiKey.value}
-              onChange={e => apiKey.onChange(e.target.value)}
+              onChange={(e) => apiKey.onChange(e.target.value)}
               placeholder={apiKey.placeholder}
               className="w-full px-4 py-3 pr-12 bg-elevated border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all"
             />
@@ -94,13 +92,11 @@ export const ProviderConfigCard = ({
           <input
             type="text"
             value={model.value}
-            onChange={e => model.onChange(e.target.value)}
+            onChange={(e) => model.onChange(e.target.value)}
             placeholder={model.placeholder}
             className="w-full px-4 py-3 bg-elevated border border-border-subtle rounded-xl text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all font-mono text-sm"
           />
-          {model.helperText ? (
-            <p className="text-xs text-text-muted">{model.helperText}</p>
-          ) : null}
+          {model.helperText ? <p className="text-xs text-text-muted">{model.helperText}</p> : null}
         </div>
       )}
 

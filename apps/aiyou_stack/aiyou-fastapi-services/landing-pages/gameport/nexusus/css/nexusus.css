@@ -17,7 +17,7 @@
 }
 
 body {
-  font-family: "Rajdhani", sans-serif;
+  font-family: 'Rajdhani', sans-serif;
   background: var(--bg-dark);
   color: var(--text-primary);
   min-height: 100vh;
@@ -71,14 +71,14 @@ body {
 }
 
 .logo-text {
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   font-size: 1.5rem;
   font-weight: 900;
   color: var(--text-primary);
 }
 
 .logo-ai {
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   font-size: 1rem;
   color: var(--cyan);
   text-shadow: 0 0 10px var(--cyan-glow);
@@ -167,7 +167,7 @@ body {
 }
 
 .hero-title {
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   margin-bottom: 1.5rem;
   animation: fadeInUp 0.8s ease 0.2s both;
 }
@@ -220,7 +220,7 @@ body {
   align-items: center;
   gap: 0.75rem;
   padding: 1rem 2.5rem;
-  font-family: "Rajdhani", sans-serif;
+  font-family: 'Rajdhani', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -307,7 +307,7 @@ body {
 
 .stat-value {
   display: block;
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -329,7 +329,7 @@ body {
 }
 
 .section-title {
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   font-size: 2rem;
   text-align: center;
   letter-spacing: 0.2em;
@@ -366,7 +366,7 @@ body {
 }
 
 .feature-card h3 {
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   font-size: 1.25rem;
   margin-bottom: 0.75rem;
   color: var(--text-primary);

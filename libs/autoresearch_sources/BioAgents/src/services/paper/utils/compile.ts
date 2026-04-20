@@ -1,29 +1,29 @@
-import { spawn } from "child_process";
-import * as path from "path";
-import * as fs from "fs";
-import logger from "../../../utils/logger";
+import { spawn } from 'child_process';
+import * as fs from 'fs';
+import * as path from 'path';
+import logger from '../../../utils/logger';
 
 const LATEXMK_TIMEOUT_MS = 120_000; // 120 seconds for full latexmk run
 const XELATEX_PASS_TIMEOUT_MS = 60_000; // 60 seconds per xelatex/bibtex pass
 
 export async function compileLatexToPDF(
   workDir: string,
-  mainTexFile: string = "main.tex",
+  mainTexFile: string = 'main.tex',
 ): Promise<{ success: boolean; pdfPath?: string; logs: string }> {
-  const latexDir = path.join(workDir, "latex");
+  const latexDir = path.join(workDir, 'latex');
   const mainTexPath = path.join(latexDir, mainTexFile);
 
   if (!fs.existsSync(mainTexPath)) {
     throw new Error(`LaTeX main file not found: ${mainTexPath}`);
   }
 
-  logger.info({ workDir }, "compiling_latex");
+  logger.info({ workDir }, 'compiling_latex');
 
   try {
     const result = await tryLatexmk(latexDir, mainTexFile);
     if (result.success) return result;
   } catch (error) {
-    logger.warn("latexmk_failed_trying_manual");
+    logger.warn('latexmk_failed_trying_manual');
   }
 
   return await tryManualCompilation(latexDir, mainTexFile);
@@ -35,15 +35,15 @@ async function tryLatexmk(
 ): Promise<{ success: boolean; pdfPath?: string; logs: string }> {
   return new Promise((resolve) => {
     const args = [
-      "-xelatex", // Use XeLaTeX for native Unicode support
-      "-bibtex",
-      "-interaction=nonstopmode",
-      "-halt-on-error",
-      "-file-line-error",
+      '-xelatex', // Use XeLaTeX for native Unicode support
+      '-bibtex',
+      '-interaction=nonstopmode',
+      '-halt-on-error',
+      '-file-line-error',
       mainTexFile,
     ];
 
-    const proc = spawn("latexmk", args, {
+    const proc = spawn('latexmk', args, {
       cwd: latexDir,
       env: {
         ...process.env,
@@ -51,27 +51,27 @@ async function tryLatexmk(
       },
     });
 
-    let stdout = "";
-    let stderr = "";
+    let stdout = '';
+    let stderr = '';
     let killed = false;
 
     const timer = setTimeout(() => {
       killed = true;
-      proc.kill("SIGKILL");
+      proc.kill('SIGKILL');
     }, LATEXMK_TIMEOUT_MS);
 
-    proc.stdout?.on("data", (data) => {
+    proc.stdout?.on('data', (data) => {
       stdout += data.toString();
     });
 
-    proc.stderr?.on("data", (data) => {
+    proc.stderr?.on('data', (data) => {
       stderr += data.toString();
     });
 
-    proc.on("close", (code) => {
+    proc.on('close', (code) => {
       clearTimeout(timer);
-      const logs = stdout + "\n" + stderr;
-      const pdfPath = path.join(latexDir, mainTexFile.replace(".tex", ".pdf"));
+      const logs = stdout + '\n' + stderr;
+      const pdfPath = path.join(latexDir, mainTexFile.replace('.tex', '.pdf'));
 
       if (killed) {
         resolve({
@@ -79,14 +79,14 @@ async function tryLatexmk(
           logs: `latexmk timed out after ${LATEXMK_TIMEOUT_MS / 1000}s\n${logs}`,
         });
       } else if (code === 0 && fs.existsSync(pdfPath)) {
-        logger.info("latexmk_succeeded");
+        logger.info('latexmk_succeeded');
         resolve({ success: true, pdfPath, logs });
       } else {
         resolve({ success: false, logs });
       }
     });
 
-    proc.on("error", (error) => {
+    proc.on('error', (error) => {
       clearTimeout(timer);
       resolve({ success: false, logs: error.message });
     });
@@ -97,47 +97,47 @@ async function tryManualCompilation(
   latexDir: string,
   mainTexFile: string,
 ): Promise<{ success: boolean; pdfPath?: string; logs: string }> {
-  const baseFilename = mainTexFile.replace(".tex", "");
-  let allLogs = "";
+  const baseFilename = mainTexFile.replace('.tex', '');
+  let allLogs = '';
 
-  logger.info("running_manual_compilation");
+  logger.info('running_manual_compilation');
 
   // Using XeLaTeX for native Unicode support (handles β, ′, accented chars, etc.)
   const pass1 = await runCommand(
-    "xelatex",
-    ["-interaction=nonstopmode", "-halt-on-error", "-file-line-error", mainTexFile],
+    'xelatex',
+    ['-interaction=nonstopmode', '-halt-on-error', '-file-line-error', mainTexFile],
     latexDir,
   );
-  allLogs += "=== XELATEX PASS 1 ===\n" + pass1.logs + "\n\n";
+  allLogs += '=== XELATEX PASS 1 ===\n' + pass1.logs + '\n\n';
 
   if (!pass1.success) return { success: false, logs: allLogs };
 
   const auxPath = path.join(latexDir, `${baseFilename}.aux`);
   if (fs.existsSync(auxPath)) {
-    const bibtexResult = await runCommand("bibtex", [baseFilename], latexDir);
-    allLogs += "=== BIBTEX ===\n" + bibtexResult.logs + "\n\n";
+    const bibtexResult = await runCommand('bibtex', [baseFilename], latexDir);
+    allLogs += '=== BIBTEX ===\n' + bibtexResult.logs + '\n\n';
   }
 
   const pass2 = await runCommand(
-    "xelatex",
-    ["-interaction=nonstopmode", "-halt-on-error", "-file-line-error", mainTexFile],
+    'xelatex',
+    ['-interaction=nonstopmode', '-halt-on-error', '-file-line-error', mainTexFile],
     latexDir,
   );
-  allLogs += "=== XELATEX PASS 2 ===\n" + pass2.logs + "\n\n";
+  allLogs += '=== XELATEX PASS 2 ===\n' + pass2.logs + '\n\n';
 
   if (!pass2.success) return { success: false, logs: allLogs };
 
   const pass3 = await runCommand(
-    "xelatex",
-    ["-interaction=nonstopmode", "-halt-on-error", "-file-line-error", mainTexFile],
+    'xelatex',
+    ['-interaction=nonstopmode', '-halt-on-error', '-file-line-error', mainTexFile],
     latexDir,
   );
-  allLogs += "=== XELATEX PASS 3 ===\n" + pass3.logs + "\n\n";
+  allLogs += '=== XELATEX PASS 3 ===\n' + pass3.logs + '\n\n';
 
   const pdfPath = path.join(latexDir, `${baseFilename}.pdf`);
 
   if (pass3.success && fs.existsSync(pdfPath)) {
-    logger.info("manual_compilation_succeeded");
+    logger.info('manual_compilation_succeeded');
     return { success: true, pdfPath, logs: allLogs };
   }
 
@@ -159,26 +159,26 @@ async function runCommand(
       },
     });
 
-    let stdout = "";
-    let stderr = "";
+    let stdout = '';
+    let stderr = '';
     let killed = false;
 
     const timer = setTimeout(() => {
       killed = true;
-      proc.kill("SIGKILL");
+      proc.kill('SIGKILL');
     }, timeoutMs);
 
-    proc.stdout?.on("data", (data) => {
+    proc.stdout?.on('data', (data) => {
       stdout += data.toString();
     });
 
-    proc.stderr?.on("data", (data) => {
+    proc.stderr?.on('data', (data) => {
       stderr += data.toString();
     });
 
-    proc.on("close", (code) => {
+    proc.on('close', (code) => {
       clearTimeout(timer);
-      const logs = stdout + "\n" + stderr;
+      const logs = stdout + '\n' + stderr;
       if (killed) {
         resolve({
           success: false,
@@ -189,7 +189,7 @@ async function runCommand(
       }
     });
 
-    proc.on("error", (error) => {
+    proc.on('error', (error) => {
       clearTimeout(timer);
       resolve({ success: false, logs: error.message });
     });
@@ -197,8 +197,8 @@ async function runCommand(
 }
 
 export function extractLastLines(logs: string, lines: number = 200): string {
-  const allLines = logs.split("\n");
-  return allLines.slice(-lines).join("\n");
+  const allLines = logs.split('\n');
+  return allLines.slice(-lines).join('\n');
 }
 
 export function checkForUndefinedCitations(logs: string): string[] {

@@ -14,27 +14,28 @@
  * limitations under the License.
  */
 
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, inject, type OnInit } from '@angular/core';
+import { doc, docData, Firestore } from '@angular/fire/firestore';
+import type { MatDialog } from '@angular/material/dialog';
+import type { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Firestore, doc, docData, } from '@angular/fire/firestore';
-import { Restaurant } from '../../types/restaurant';
-import { MatDialog } from '@angular/material/dialog';
-import {
-  SubmitReviewModalComponent
-} from '../submit-review-modal/submit-review-modal.component';
+import type { Restaurant } from '../../types/restaurant';
+import { SubmitReviewModalComponent } from '../submit-review-modal/submit-review-modal.component';
 
 @Component({
   selector: 'app-restuarant-page',
   templateUrl: './restuarant-page.component.html',
-  styleUrls: ['./restuarant-page.component.css']
+  styleUrls: ['./restuarant-page.component.css'],
 })
 export class RestuarantPageComponent implements OnInit {
   restaurantData: Observable<Restaurant> = new Observable();
   private firestore: Firestore = inject(Firestore);
-  private restaurantId = "";
+  private restaurantId = '';
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog) { }
+  constructor(
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+  ) {}
 
   openDialog(): void {
     this.dialog.open(SubmitReviewModalComponent, { data: this.restaurantId });
@@ -44,7 +45,6 @@ export class RestuarantPageComponent implements OnInit {
     this.restaurantId = this.route.snapshot.paramMap.get('id') as string;
     const docRef = doc(this.firestore, `restaurants/${this.restaurantId}`);
 
-    this.restaurantData = docData(
-      docRef, { idField: "id" }) as Observable<Restaurant>;
+    this.restaurantData = docData(docRef, { idField: 'id' }) as Observable<Restaurant>;
   }
 }

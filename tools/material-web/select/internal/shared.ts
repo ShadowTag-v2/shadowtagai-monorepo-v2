@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {SelectOption} from './selectoption/select-option.js';
+import type { SelectOption } from './selectoption/select-option.js';
 
 /**
  * A type that describes a SelectOption and its index.

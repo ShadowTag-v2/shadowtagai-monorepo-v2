@@ -4,15 +4,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Environment} from '../testing/environment.js';
-import {createTokenTests} from '../testing/tokens.js';
+import { Environment } from '../testing/environment.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {TabsHarness} from './harness.js';
-import {MdPrimaryTab} from './primary-tab.js';
-import {MdSecondaryTab} from './secondary-tab.js';
-import {MdTabs} from './tabs.js';
+import { TabsHarness } from './harness.js';
+import { MdPrimaryTab } from './primary-tab.js';
+import { MdSecondaryTab } from './secondary-tab.js';
+import { MdTabs } from './tabs.js';
 
 interface TabsTestProps {
   activeTabIndex?: number;
@@ -34,7 +34,7 @@ describe('<md-tabs>', () => {
     await env.waitForStability();
     const tab = root.querySelector<MdTabs>('md-tabs')!;
     const harness = new TabsHarness(tab);
-    return {harness, root};
+    return { harness, root };
   }
 
   describe('.styles', () => {
@@ -45,7 +45,7 @@ describe('<md-tabs>', () => {
 
   describe('properties', () => {
     it('renders selected with indicator', async () => {
-      const {harness} = await setupTest({activeTabIndex: 1});
+      const { harness } = await setupTest({ activeTabIndex: 1 });
       expect(harness.element.activeTabIndex).toBe(1);
       expect(harness.element.activeTab).toBe(harness.harnessedItems[1].element);
       harness.harnessedItems.forEach(async (tabHarness, i) => {
@@ -67,7 +67,7 @@ describe('<md-tabs>', () => {
     });
 
     it('updates activeTab', async () => {
-      const {harness} = await setupTest({activeTabIndex: 1});
+      const { harness } = await setupTest({ activeTabIndex: 1 });
       expect(harness.element.activeTab).toBe(harness.harnessedItems[1].element);
       harness.element.activeTabIndex = 0;
       await harness.element.updateComplete;
@@ -76,7 +76,7 @@ describe('<md-tabs>', () => {
 
     it('maintains selection when tabs are mutated', async () => {
       // Note: adding and moving tabs does not change selection
-      const {harness} = await setupTest({activeTabIndex: 1});
+      const { harness } = await setupTest({ activeTabIndex: 1 });
       const [, second] = harness.element.tabs;
       expect(harness.element.activeTab).toBe(second);
       const tab = document.createElement('md-primary-tab');
@@ -100,7 +100,7 @@ describe('<md-tabs>', () => {
     });
 
     it('selects first item when selected tab is removed', async () => {
-      const {harness} = await setupTest({activeTabIndex: 1});
+      const { harness } = await setupTest({ activeTabIndex: 1 });
       const [first, second] = harness.element.tabs;
       expect(harness.element.activeTab).toBe(second);
       second.remove();
@@ -109,7 +109,7 @@ describe('<md-tabs>', () => {
     });
 
     it('should ignore setting activeTab when tab is not a child', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       const [firstTab] = harness.element.tabs;
       expect(harness.element.activeTab).toBe(firstTab);
       const unrelatedTab = document.createElement('md-primary-tab');
@@ -129,9 +129,7 @@ describe('<md-tabs>', () => {
       await env.waitForStability();
       const tabs = root.querySelector('md-tabs')!;
       expect(tabs.activeTabIndex).withContext('activeTabIndex').toBe(1);
-      expect(tabs.activeTab?.textContent)
-        .withContext('activeTab')
-        .toBe('B');
+      expect(tabs.activeTab?.textContent).withContext('activeTab').toBe('B');
     });
 
     it('should allow setting active-tab-index as an attribute', async () => {
@@ -145,14 +143,12 @@ describe('<md-tabs>', () => {
       await env.waitForStability();
       const tabs = root.querySelector('md-tabs')!;
       expect(tabs.activeTabIndex).withContext('activeTabIndex').toBe(1);
-      expect(tabs.activeTab?.textContent)
-        .withContext('activeTab')
-        .toBe('B');
+      expect(tabs.activeTab?.textContent).withContext('activeTab').toBe('B');
     });
   });
 
   it('should dispatch "change" when tab changes', async () => {
-    const {harness} = await setupTest();
+    const { harness } = await setupTest();
     const changeListener = jasmine.createSpy('changeListener');
     harness.element.addEventListener('change', changeListener);
 
@@ -161,7 +157,7 @@ describe('<md-tabs>', () => {
   });
 
   it('should not dispatch "change" when changing to unrelated tab', async () => {
-    const {harness} = await setupTest();
+    const { harness } = await setupTest();
     const changeListener = jasmine.createSpy('changeListener');
     harness.element.addEventListener('change', changeListener);
 
@@ -171,7 +167,7 @@ describe('<md-tabs>', () => {
   });
 
   it('should not dispatch "change" when setting activeTab to itself', async () => {
-    const {harness} = await setupTest();
+    const { harness } = await setupTest();
     const changeListener = jasmine.createSpy('changeListener');
     harness.element.addEventListener('change', changeListener);
 

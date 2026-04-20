@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { parseReleaseTrack, findSuggestedAlternativeCommand } from './suggest.js';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { type AccessControlList, createAccessControlList } from './denylist.js';
 import * as gcloud from './gcloud.js';
-import { createAccessControlList, AccessControlList } from './denylist.js';
+import { findSuggestedAlternativeCommand, parseReleaseTrack } from './suggest.js';
 
 vi.mock('./gcloud.js', () => {
   const lint = vi.fn();

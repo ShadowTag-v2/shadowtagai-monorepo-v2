@@ -1,8 +1,8 @@
 // [SNIPPET_REGISTRY disabled]
 
-import * as cp from "child_process";
-import * as fs from "fs";
-import * as path from "path";
+import * as cp from 'child_process';
+import * as fs from 'fs';
+import * as path from 'path';
 
 // Regex for comment which must be included in a file for it to be separated
 const RE_SNIPPETS_SEPARATION = /\[SNIPPETS_SEPARATION\s+enabled\]/;
@@ -24,7 +24,7 @@ const RE_REF_DOCS = /https:\/\/firebase\.google\.com\/docs\/reference\/js\/(.*)/
 
 // Maps v8 ref docs URLs to their v9 counterpart
 const REF_DOCS_MAPPINGS: { [key: string]: string } = {
-  "v8/firebase.User" : "auth.user"
+  'v8/firebase.User': 'auth.user',
 };
 
 type SnippetsConfig = {
@@ -33,7 +33,7 @@ type SnippetsConfig = {
   map: Record<string, string[]>;
 };
 
-const DEFAULT_SUFFIX = "_modular";
+const DEFAULT_SUFFIX = '_modular';
 
 function isBlank(line: string) {
   return line.trim().length === 0;
@@ -46,9 +46,13 @@ function replaceRefDocsUrls(lines: string[]) {
   const outputLines = [];
   for (const line of lines) {
     if (line.match(RE_REF_DOCS)) {
-      outputLines.push(line.replace(RE_REF_DOCS, (match: string, p1?: string) => {
-        return p1 ? `https://firebase.google.com/docs/reference/js/${REF_DOCS_MAPPINGS[p1]}` : match;
-      }));
+      outputLines.push(
+        line.replace(RE_REF_DOCS, (match: string, p1?: string) => {
+          return p1
+            ? `https://firebase.google.com/docs/reference/js/${REF_DOCS_MAPPINGS[p1]}`
+            : match;
+        }),
+      );
     } else {
       outputLines.push(line);
     }
@@ -80,9 +84,7 @@ function addSuffixToSnippetNames(lines: string[], snippetSuffix: string) {
     if (line.match(RE_START_SNIPPET)) {
       outputLines.push(line.replace(RE_START_SNIPPET, `[START $1${snippetSuffix}]`));
     } else if (line.match(RE_END_SNIPPET)) {
-      outputLines.push(
-        line.replace(RE_END_SNIPPET, `[END $1${snippetSuffix}]`)
-      );
+      outputLines.push(line.replace(RE_END_SNIPPET, `[END $1${snippetSuffix}]`));
     } else {
       outputLines.push(line);
     }
@@ -101,7 +103,7 @@ function adjustIndentation(lines: string[]) {
   const outputLines = [];
   for (const line of lines) {
     if (isBlank(line)) {
-      outputLines.push("");
+      outputLines.push('');
     } else {
       outputLines.push(line.slice(minIndent));
     }
@@ -115,9 +117,7 @@ function adjustIndentation(lines: string[]) {
 function removeFirstLineAfterComments(lines: string[]) {
   const outputLines = [...lines];
 
-  const firstNonComment = outputLines.findIndex(
-    (l) => !l.startsWith("//")
-  );
+  const firstNonComment = outputLines.findIndex((l) => !l.startsWith('//'));
   if (firstNonComment >= 0 && isBlank(outputLines[firstNonComment])) {
     outputLines.splice(firstNonComment, 1);
   }
@@ -133,11 +133,7 @@ function removeFirstLineAfterComments(lines: string[]) {
  * @param sourceFile the source file where the original snippet lives (used in preamble)
  * @param snippetSuffix the suffix (such as _modular)
  */
-function processSnippet(
-  lines: string[],
-  sourceFile: string,
-  snippetSuffix: string
-): string {
+function processSnippet(lines: string[], sourceFile: string, snippetSuffix: string): string {
   let outputLines = [...lines];
 
   // Perform transformations individually, in order
@@ -156,7 +152,7 @@ function processSnippet(
     `// 'npm run snippets'.`,
     ``,
   ];
-  const content = [...preambleLines, ...outputLines].join("\n");
+  const content = [...preambleLines, ...outputLines].join('\n');
   return content;
 }
 
@@ -165,11 +161,9 @@ function processSnippet(
  */
 function listSnippetFiles(): string[] {
   const output = cp
-    .execSync(
-      'find . -type f -name "*.js" -not -path "*node_modules*" -not -path "./snippets*"'
-    )
+    .execSync('find . -type f -name "*.js" -not -path "*node_modules*" -not -path "./snippets*"')
     .toString();
-  return output.split("\n").filter((x) => !isBlank(x));
+  return output.split('\n').filter((x) => !isBlank(x));
 }
 
 /**
@@ -178,7 +172,7 @@ function listSnippetFiles(): string[] {
  */
 function collectSnippets(filePath: string): SnippetsConfig {
   const fileContents = fs.readFileSync(filePath).toString();
-  const lines = fileContents.split("\n");
+  const lines = fileContents.split('\n');
 
   const config: SnippetsConfig = {
     enabled: false,
@@ -206,7 +200,7 @@ function collectSnippets(filePath: string): SnippetsConfig {
 
   // A temporary array holding the names of snippets we're currently within.
   // This allows for handling nested snippets.
-  let inSnippetNames: string[] = [];
+  const inSnippetNames: string[] = [];
 
   for (const line of lines) {
     const startMatch = line.match(RE_START_SNIPPET);
@@ -230,9 +224,7 @@ function collectSnippets(filePath: string): SnippetsConfig {
       // If we were not aware that we were inside this snippet (no previous START)
       // then we hard throw.
       if (!inSnippetNames.includes(snippetName)) {
-        throw new Error(
-          `Unrecognized END tag ${snippetName} in ${filePath}.`
-        );
+        throw new Error(`Unrecognized END tag ${snippetName} in ${filePath}.`);
       }
 
       // Collect this line as the final line of the snippet and then
@@ -260,15 +252,10 @@ async function main() {
       continue;
     }
 
-    const fileSlug = filePath
-      .replace(".js", "")
-      .replace("./", "")
-      .replace(/\./g, "-");
-    const snippetDir = path.join("./snippets", fileSlug);
+    const fileSlug = filePath.replace('.js', '').replace('./', '').replace(/\./g, '-');
+    const snippetDir = path.join('./snippets', fileSlug);
 
-    console.log(
-      `Processing: ${filePath} --> ${snippetDir} (suffix=${config.suffix})`
-    );
+    console.log(`Processing: ${filePath} --> ${snippetDir} (suffix=${config.suffix})`);
 
     if (!fs.existsSync(snippetDir)) {
       fs.mkdirSync(snippetDir, { recursive: true });
@@ -278,11 +265,7 @@ async function main() {
       const newFilePath = path.join(snippetDir, `${snippetName}.js`);
 
       const snippetLines = config.map[snippetName];
-      const content = processSnippet(
-        snippetLines,
-        filePath,
-        config.suffix
-      );
+      const content = processSnippet(snippetLines, filePath, config.suffix);
 
       fs.writeFileSync(newFilePath, content);
     }

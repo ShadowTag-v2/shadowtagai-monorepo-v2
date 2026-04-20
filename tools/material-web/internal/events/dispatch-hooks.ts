@@ -110,10 +110,7 @@ const ELEMENT_DISPATCH_HOOK_TYPES = new WeakMap<Element, Set<string>>();
  * @param element The element to set up event dispatch hooks for.
  * @param eventTypes The event types to add dispatch hooks to.
  */
-export function setupDispatchHooks(
-  element: Element,
-  ...eventTypes: [string, ...string[]]
-) {
+export function setupDispatchHooks(element: Element, ...eventTypes: [string, ...string[]]) {
   let typesAlreadySetUp = ELEMENT_DISPATCH_HOOK_TYPES.get(element);
   if (!typesAlreadySetUp) {
     typesAlreadySetUp = new Set();
@@ -142,10 +139,7 @@ export function setupDispatchHooks(
         // bubbling listeners with `stopPropagation()`).
         event.stopImmediatePropagation();
         // Make a copy.
-        const eventCopy = Reflect.construct(event.constructor, [
-          event.type,
-          event,
-        ]);
+        const eventCopy = Reflect.construct(event.constructor, [event.type, event]);
 
         // Add hooks onto the event.
         const hooks = new EventTarget();

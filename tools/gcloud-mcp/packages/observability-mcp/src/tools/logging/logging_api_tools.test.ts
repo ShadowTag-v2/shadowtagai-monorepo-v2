@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import { describe, it, expect, vi, Mock } from 'vitest';
-import { GaxiosResponse } from 'gaxios';
-import { logging_v2 } from 'googleapis';
-import {
-  listLogEntries,
-  listBuckets,
-  listViews,
-  listSinks,
-  listLogScopes,
-  listLogNames,
-} from './logging_api_tools.js';
+import type { GaxiosResponse } from 'gaxios';
+import type { logging_v2 } from 'googleapis';
+import { describe, expect, it, type Mock, vi } from 'vitest';
 import { apiClientFactory } from '../../utils/api_client_factory.js';
+import {
+  listBuckets,
+  listLogEntries,
+  listLogNames,
+  listLogScopes,
+  listSinks,
+  listViews,
+} from './logging_api_tools.js';
 
 const TEST_PROJECT_ID = 'my-project';
 const TEST_PROJECT_RESOURCE = `projects/${TEST_PROJECT_ID}`;

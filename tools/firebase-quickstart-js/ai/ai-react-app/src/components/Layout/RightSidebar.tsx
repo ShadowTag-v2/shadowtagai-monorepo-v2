@@ -1,22 +1,22 @@
-import React from "react";
-import { AppMode } from "../../App";
-import styles from "./RightSidebar.module.css";
+import {
+  FunctionCallingMode,
+  HarmBlockThreshold,
+  HarmCategory,
+  type ImagenModelParams,
+  ImagenPersonFilterLevel,
+  ImagenSafetyFilterLevel,
+  type ModelParams,
+  type UsageMetadata,
+} from 'firebase/ai';
+import type React from 'react';
+import type { AppMode } from '../../App';
 import {
   AVAILABLE_GENERATIVE_MODELS,
   AVAILABLE_IMAGEN_MODELS,
   defaultFunctionCallingTool,
   defaultGoogleSearchTool,
-} from "../../services/firebaseAIService";
-import {
-  ModelParams,
-  ImagenModelParams,
-  HarmCategory,
-  HarmBlockThreshold,
-  FunctionCallingMode,
-  ImagenSafetyFilterLevel,
-  ImagenPersonFilterLevel,
-  UsageMetadata,
-} from "firebase/ai";
+} from '../../services/firebaseAIService';
+import styles from './RightSidebar.module.css';
 
 interface RightSidebarProps {
   usageMetadata: UsageMetadata | null;
@@ -35,9 +35,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
   imagenParams,
   setImagenParams,
 }) => {
-  const handleModelParamsUpdate = (
-    updateFn: (prevState: ModelParams) => ModelParams,
-  ) => {
+  const handleModelParamsUpdate = (updateFn: (prevState: ModelParams) => ModelParams) => {
     setGenerativeParams((prevState) => updateFn(prevState));
   };
 
@@ -47,18 +45,12 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
     setImagenParams((prevState) => updateFn(prevState));
   };
 
-  const getThresholdForCategory = (
-    category: HarmCategory,
-  ): HarmBlockThreshold => {
-    const setting = (generativeParams.safetySettings || []).find(
-      (s) => s.category === category,
-    );
+  const getThresholdForCategory = (category: HarmCategory): HarmBlockThreshold => {
+    const setting = (generativeParams.safetySettings || []).find((s) => s.category === category);
     return setting?.threshold || HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE;
   };
 
-  const handleGenerativeModelChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
+  const handleGenerativeModelChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newModel = event.target.value;
     handleModelParamsUpdate((prev: ModelParams) => ({
       ...prev,
@@ -66,9 +58,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
     }));
   };
 
-  const handleTemperatureChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleTemperatureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newTemp = parseFloat(event.target.value);
     handleModelParamsUpdate((prev: ModelParams) => ({
       ...prev,
@@ -92,10 +82,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
     }));
   };
 
-  const handleSafetySettingChange = (
-    category: HarmCategory,
-    threshold: HarmBlockThreshold,
-  ) => {
+  const handleSafetySettingChange = (category: HarmCategory, threshold: HarmBlockThreshold) => {
     handleModelParamsUpdate((prev: ModelParams) => {
       const currentSettings = prev.safetySettings || [];
       let settingExists = false;
@@ -125,10 +112,10 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
       nextState.generationConfig = nextState.generationConfig ?? {};
       nextState.toolConfig = nextState.toolConfig ?? {};
 
-      if (name === "structured-output-toggle") {
+      if (name === 'structured-output-toggle') {
         if (checked) {
           // Turn ON JSON
-          nextState.generationConfig.responseMimeType = "application/json";
+          nextState.generationConfig.responseMimeType = 'application/json';
           nextState.generationConfig.responseSchema = undefined; // Use a default schema
 
           // Turn OFF Function Calling by clearing its related fields
@@ -139,14 +126,12 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
           nextState.generationConfig.responseMimeType = undefined;
           nextState.generationConfig.responseSchema = undefined;
         }
-      } else if (name === "function-call-toggle") {
+      } else if (name === 'function-call-toggle') {
         if (checked) {
           // Turn ON Function Calling
           // Use default tools if none were previously defined, otherwise keep existing
           nextState.tools =
-            prev.tools && prev.tools.length > 0
-              ? prev.tools
-              : [defaultFunctionCallingTool];
+            prev.tools && prev.tools.length > 0 ? prev.tools : [defaultFunctionCallingTool];
           nextState.toolConfig = {
             functionCallingConfig: { mode: FunctionCallingMode.AUTO },
           };
@@ -159,7 +144,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
           nextState.tools = undefined;
           nextState.toolConfig = undefined; // Clear config when turning off
         }
-      } else if (name === "google-search-toggle") {
+      } else if (name === 'google-search-toggle') {
         if (checked) {
           // Turn ON Google Search Grounding
           nextState.tools = [defaultGoogleSearchTool];
@@ -173,50 +158,40 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
           nextState.tools = undefined;
         }
       }
-      console.log("[RightSidebar] Updated generative params state:", nextState);
+      console.log('[RightSidebar] Updated generative params state:', nextState);
       return nextState;
     });
   };
 
-  const handleImagenModelChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
+  const handleImagenModelChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newModel = event.target.value;
     handleImagenModelParamsUpdate((prev: ImagenModelParams) => ({
       ...prev,
       model: newModel,
     }));
   };
-  const handleImagenSamplesChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleImagenSamplesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newCount = parseInt(event.target.value, 10);
     handleImagenModelParamsUpdate((prev: ImagenModelParams) => ({
       ...prev,
       generationConfig: { ...prev.generationConfig, numberOfImages: newCount },
     }));
   };
-  const handleImagenNegativePromptChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
+  const handleImagenNegativePromptChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newPrompt = event.target.value || undefined;
     handleImagenModelParamsUpdate((prev: ImagenModelParams) => ({
       ...prev,
       generationConfig: { ...prev.generationConfig, negativePrompt: newPrompt },
     }));
   };
-  const handleImagenSafetyChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
+  const handleImagenSafetyChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newLevel = event.target.value as ImagenSafetyFilterLevel;
     handleImagenModelParamsUpdate((prev: ImagenModelParams) => ({
       ...prev,
       safetySettings: { ...prev.safetySettings, safetyFilterLevel: newLevel },
     }));
   };
-  const handleImagenPersonChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
+  const handleImagenPersonChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newLevel = event.target.value as ImagenPersonFilterLevel;
     handleImagenModelParamsUpdate((prev: ImagenModelParams) => ({
       ...prev,
@@ -226,26 +201,22 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
 
   // Derive UI state from config
   const isStructuredOutputActive =
-    generativeParams.generationConfig?.responseMimeType === "application/json";
+    generativeParams.generationConfig?.responseMimeType === 'application/json';
   const isFunctionCallingActive =
-    (generativeParams.toolConfig?.functionCallingConfig?.mode ===
-      FunctionCallingMode.AUTO ||
-      generativeParams.toolConfig?.functionCallingConfig?.mode ===
-        FunctionCallingMode.ANY) &&
+    (generativeParams.toolConfig?.functionCallingConfig?.mode === FunctionCallingMode.AUTO ||
+      generativeParams.toolConfig?.functionCallingConfig?.mode === FunctionCallingMode.ANY) &&
     !!generativeParams.tools?.length;
   const isGroundingWithGoogleSearchActive = !!generativeParams.tools?.some(
-    (tool) => "googleSearch" in tool,
+    (tool) => 'googleSearch' in tool,
   );
 
   return (
     <div className={styles.rightSidebarContainer}>
       {/* Generative Model Settings */}
-      {activeMode === "chat" && (
+      {activeMode === 'chat' && (
         <>
           <div>
-            <h5 className={styles.subSectionTitle}>
-              Generative Model Settings
-            </h5>
+            <h5 className={styles.subSectionTitle}>Generative Model Settings</h5>
             <div className={styles.controlGroup}>
               <label htmlFor="model-select">Model</label>
               <select
@@ -262,9 +233,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
             </div>
             <div className={styles.controlGroup}>
               <label htmlFor="temperature-slider">
-                Temperature:{" "}
-                {generativeParams.generationConfig?.temperature?.toFixed(1) ??
-                  "N/A"}
+                Temperature: {generativeParams.generationConfig?.temperature?.toFixed(1) ?? 'N/A'}
               </label>
               <input
                 type="range"
@@ -287,17 +256,12 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
           </div>
 
           <div>
-            <h5
-              className={styles.subSectionTitle}
-              style={{ marginTop: "20px" }}
-            >
+            <h5 className={styles.subSectionTitle} style={{ marginTop: '20px' }}>
               Advanced Generation
             </h5>
             <div className={styles.controlGroup}>
               <label htmlFor="topP-slider">
-                Top P:{" "}
-                {generativeParams.generationConfig?.topP?.toFixed(2) ??
-                  "N/A (Default)"}
+                Top P: {generativeParams.generationConfig?.topP?.toFixed(2) ?? 'N/A (Default)'}
               </label>
               <input
                 type="range"
@@ -311,8 +275,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
             </div>
             <div className={styles.controlGroup}>
               <label htmlFor="topK-slider">
-                Top K:{" "}
-                {generativeParams.generationConfig?.topK ?? "N/A (Default)"}
+                Top K: {generativeParams.generationConfig?.topK ?? 'N/A (Default)'}
               </label>
               <input
                 type="range"
@@ -327,18 +290,15 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
           </div>
 
           <div>
-            <h5
-              className={styles.subSectionTitle}
-              style={{ marginTop: "20px" }}
-            >
+            <h5 className={styles.subSectionTitle} style={{ marginTop: '20px' }}>
               Safety Settings
             </h5>
             {Object.values(HarmCategory).map((category) => (
               <div className={styles.controlGroup} key={category}>
                 <label htmlFor={`safety-${category}`}>
                   {category
-                    .replace("HARM_CATEGORY_", "")
-                    .replace(/_/g, " ")
+                    .replace('HARM_CATEGORY_', '')
+                    .replace(/_/g, ' ')
                     .toLowerCase()
                     .replace(/\b\w/g, (l) => l.toUpperCase())}
                 </label>
@@ -346,15 +306,12 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
                   id={`safety-${category}`}
                   value={getThresholdForCategory(category)}
                   onChange={(e) =>
-                    handleSafetySettingChange(
-                      category,
-                      e.target.value as HarmBlockThreshold,
-                    )
+                    handleSafetySettingChange(category, e.target.value as HarmBlockThreshold)
                   }
                 >
                   {Object.values(HarmBlockThreshold).map((threshold) => (
                     <option key={threshold} value={threshold}>
-                      {threshold.replace("BLOCK_", "").replace(/_/g, " ")}
+                      {threshold.replace('BLOCK_', '').replace(/_/g, ' ')}
                     </option>
                   ))}
                 </select>
@@ -365,11 +322,9 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
           <div>
             <h5 className={styles.subSectionTitle}>Tools</h5>
             <div
-              className={`${styles.toggleGroup} ${isFunctionCallingActive ? styles.disabledText : ""}`}
+              className={`${styles.toggleGroup} ${isFunctionCallingActive ? styles.disabledText : ''}`}
             >
-              <label htmlFor="structured-output-toggle">
-                Structured output (JSON)
-              </label>
+              <label htmlFor="structured-output-toggle">Structured output (JSON)</label>
               <label className={styles.switch}>
                 <input
                   type="checkbox"
@@ -377,17 +332,15 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
                   name="structured-output-toggle"
                   checked={isStructuredOutputActive}
                   onChange={handleToggleChange}
-                  disabled={
-                    isFunctionCallingActive || isGroundingWithGoogleSearchActive
-                  }
+                  disabled={isFunctionCallingActive || isGroundingWithGoogleSearchActive}
                 />
                 <span
-                  className={`${styles.slider} ${isFunctionCallingActive || isGroundingWithGoogleSearchActive ? styles.disabled : ""}`}
+                  className={`${styles.slider} ${isFunctionCallingActive || isGroundingWithGoogleSearchActive ? styles.disabled : ''}`}
                 ></span>
               </label>
             </div>
             <div
-              className={`${styles.toggleGroup} ${isStructuredOutputActive || isGroundingWithGoogleSearchActive ? styles.disabledText : ""}`}
+              className={`${styles.toggleGroup} ${isStructuredOutputActive || isGroundingWithGoogleSearchActive ? styles.disabledText : ''}`}
             >
               <label htmlFor="function-call-toggle">Function calling</label>
               <label className={styles.switch}>
@@ -397,26 +350,19 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
                   name="function-call-toggle"
                   checked={isFunctionCallingActive}
                   onChange={handleToggleChange}
-                  disabled={
-                    isStructuredOutputActive ||
-                    isGroundingWithGoogleSearchActive
-                  }
+                  disabled={isStructuredOutputActive || isGroundingWithGoogleSearchActive}
                 />
                 <span
-                  className={`${styles.slider} ${isStructuredOutputActive ? styles.disabled : ""}`}
+                  className={`${styles.slider} ${isStructuredOutputActive ? styles.disabled : ''}`}
                 ></span>
               </label>
             </div>
             <div
               className={`${styles.toggleGroup} ${
-                isStructuredOutputActive || isFunctionCallingActive
-                  ? styles.disabledText
-                  : ""
+                isStructuredOutputActive || isFunctionCallingActive ? styles.disabledText : ''
               }`}
             >
-              <label htmlFor="google-search-toggle">
-                Grounding with Google Search
-              </label>
+              <label htmlFor="google-search-toggle">Grounding with Google Search</label>
               <label className={styles.switch}>
                 <input
                   type="checkbox"
@@ -428,9 +374,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
                 />
                 <span
                   className={`${styles.slider} ${
-                    isStructuredOutputActive || isFunctionCallingActive
-                      ? styles.disabled
-                      : ""
+                    isStructuredOutputActive || isFunctionCallingActive ? styles.disabled : ''
                   }`}
                 ></span>
               </label>
@@ -440,7 +384,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
       )}
 
       {/* Imagen Settings */}
-      {activeMode === "imagenGen" && (
+      {activeMode === 'imagenGen' && (
         <div>
           <h5 className={styles.subSectionTitle}>Imagen Settings</h5>
           <div className={styles.controlGroup}>
@@ -474,7 +418,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
             <textarea
               id="imagen-negative-prompt"
               rows={2}
-              value={imagenParams.generationConfig?.negativePrompt || ""}
+              value={imagenParams.generationConfig?.negativePrompt || ''}
               onChange={handleImagenNegativePromptChange}
               className={styles.textAreaInput}
             />
@@ -483,7 +427,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
             <label htmlFor="imagen-safety-select">Safety Filter Level</label>
             <select
               id="imagen-safety-select"
-              value={imagenParams.safetySettings?.safetyFilterLevel || ""}
+              value={imagenParams.safetySettings?.safetyFilterLevel || ''}
               onChange={handleImagenSafetyChange}
             >
               <option value="" disabled>
@@ -491,7 +435,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
               </option>
               {Object.values(ImagenSafetyFilterLevel).map((level) => (
                 <option key={level} value={level}>
-                  {level.replace(/_/g, " ")}
+                  {level.replace(/_/g, ' ')}
                 </option>
               ))}
             </select>
@@ -500,7 +444,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
             <label htmlFor="imagen-person-select">Person Filter Level</label>
             <select
               id="imagen-person-select"
-              value={imagenParams.safetySettings?.personFilterLevel || ""}
+              value={imagenParams.safetySettings?.personFilterLevel || ''}
               onChange={handleImagenPersonChange}
             >
               <option value="" disabled>
@@ -508,7 +452,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
               </option>
               {Object.values(ImagenPersonFilterLevel).map((level) => (
                 <option key={level} value={level}>
-                  {level.replace(/_/g, " ")}
+                  {level.replace(/_/g, ' ')}
                 </option>
               ))}
             </select>

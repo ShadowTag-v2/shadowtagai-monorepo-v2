@@ -6,14 +6,15 @@
 
 // [START multitenant_switch_tenant_multiinstance_modular]
 // Multiple Auth instances
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+
 const firebaseApp1 = initializeApp(firebaseConfig1, 'app1_for_tenantId1');
 const firebaseApp2 = initializeApp(firebaseConfig2, 'app2_for_tenantId2');
 
 const auth1 = getAuth(firebaseApp1);
 const auth2 = getAuth(firebaseApp2);
 
-auth1.tenantId = "TENANT_ID1";
-auth2.tenantId = "TENANT_ID2";
+auth1.tenantId = 'TENANT_ID1';
+auth2.tenantId = 'TENANT_ID2';
 // [END multitenant_switch_tenant_multiinstance_modular]

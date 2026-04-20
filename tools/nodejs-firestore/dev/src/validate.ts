@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import {URL} from 'url';
-import {FieldPath} from './path';
-import {isFunction, isObject} from './util';
-import {Timestamp} from './timestamp';
+import { URL } from 'url';
+import type { FieldPath } from './path';
+import { Timestamp } from './timestamp';
+import { isFunction, isObject } from './util';
 
 /**
  * Options to allow argument omission.
@@ -186,11 +186,7 @@ export function validateHost(
       throw new Error(invalidArgumentMessage(arg, 'host'));
     }
 
-    if (
-      parsed.search !== '' ||
-      parsed.pathname !== '/' ||
-      parsed.username !== ''
-    ) {
+    if (parsed.search !== '' || parsed.pathname !== '/' || parsed.username !== '') {
       throw new Error(invalidArgumentMessage(arg, 'host'));
     }
   }
@@ -232,22 +228,15 @@ export function validateNumber(
   options?: RequiredArgumentOptions & NumericRangeOptions,
 ): void {
   const min =
-    options !== undefined && options.minValue !== undefined
-      ? options.minValue
-      : -Infinity;
-  const max =
-    options !== undefined && options.maxValue !== undefined
-      ? options.maxValue
-      : Infinity;
+    options !== undefined && options.minValue !== undefined ? options.minValue : -Infinity;
+  const max = options !== undefined && options.maxValue !== undefined ? options.maxValue : Infinity;
 
   if (!validateOptional(value, options)) {
     if (typeof value !== 'number' || isNaN(value)) {
       throw new Error(invalidArgumentMessage(arg, 'number'));
     } else if (value < min || value > max) {
       throw new Error(
-        `${formatArgumentName(
-          arg,
-        )} must be within [${min}, ${max}] inclusive, but was: ${value}`,
+        `${formatArgumentName(arg)} must be within [${min}, ${max}] inclusive, but was: ${value}`,
       );
     }
   }
@@ -268,22 +257,15 @@ export function validateInteger(
   options?: RequiredArgumentOptions & NumericRangeOptions,
 ): void {
   const min =
-    options !== undefined && options.minValue !== undefined
-      ? options.minValue
-      : -Infinity;
-  const max =
-    options !== undefined && options.maxValue !== undefined
-      ? options.maxValue
-      : Infinity;
+    options !== undefined && options.minValue !== undefined ? options.minValue : -Infinity;
+  const max = options !== undefined && options.maxValue !== undefined ? options.maxValue : Infinity;
 
   if (!validateOptional(value, options)) {
     if (typeof value !== 'number' || isNaN(value) || value % 1 !== 0) {
       throw new Error(invalidArgumentMessage(arg, 'integer'));
     } else if (value < min || value > max) {
       throw new Error(
-        `${formatArgumentName(
-          arg,
-        )} must be within [${min}, ${max}] inclusive, but was: ${value}`,
+        `${formatArgumentName(arg)} must be within [${min}, ${max}] inclusive, but was: ${value}`,
       );
     }
   }
@@ -318,10 +300,7 @@ export function validateTimestamp(
  * @param arg The argument name or argument index (for varargs methods).
  * @param expectedType The expected input type.
  */
-export function invalidArgumentMessage(
-  arg: string | number,
-  expectedType: string,
-): string {
+export function invalidArgumentMessage(arg: string | number, expectedType: string): string {
   return `${formatArgumentName(arg)} is not a valid ${expectedType}.`;
 }
 
@@ -334,13 +313,8 @@ export function invalidArgumentMessage(
  * @param options Whether the function can be omitted.
  * @returns Whether the object is omitted and is allowed to be omitted.
  */
-export function validateOptional(
-  value: unknown,
-  options?: RequiredArgumentOptions,
-): boolean {
-  return (
-    value === undefined && options !== undefined && options.optional === true
-  );
+export function validateOptional(value: unknown, options?: RequiredArgumentOptions): boolean {
+  return value === undefined && options !== undefined && options.optional === true;
 }
 
 /**
@@ -364,9 +338,7 @@ function formatPlural(num: number, str: string): string {
  * @returns Either the argument name or its index description.
  */
 function formatArgumentName(arg: string | number): string {
-  return typeof arg === 'string'
-    ? `Value for argument "${arg}"`
-    : `Element at index ${arg}`;
+  return typeof arg === 'string' ? `Value for argument "${arg}"` : `Element at index ${arg}`;
 }
 
 /**
@@ -386,8 +358,7 @@ export function validateMinNumberOfArguments(
 ): void {
   if (args.length < minSize) {
     throw new Error(
-      `Function "${funcName}()" requires at least ` +
-        `${formatPlural(minSize, 'argument')}.`,
+      `Function "${funcName}()" requires at least ` + `${formatPlural(minSize, 'argument')}.`,
     );
   }
 }
@@ -409,8 +380,7 @@ export function validateMaxNumberOfArguments(
 ): void {
   if (args.length > maxSize) {
     throw new Error(
-      `Function "${funcName}()" accepts at most ` +
-        `${formatPlural(maxSize, 'argument')}.`,
+      `Function "${funcName}()" accepts at most ` + `${formatPlural(maxSize, 'argument')}.`,
     );
   }
 }

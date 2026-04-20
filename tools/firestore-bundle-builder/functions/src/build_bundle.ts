@@ -1,18 +1,18 @@
-import { firestore } from "firebase-admin";
 import {
-  BundleBuilder,
-  Firestore,
-  Query,
+  type BundleBuilder,
+  type Firestore,
+  type Query,
   Timestamp,
-  WhereFilterOp,
-} from "@google-cloud/firestore";
+  type WhereFilterOp,
+} from '@google-cloud/firestore';
+import type { firestore } from 'firebase-admin';
 
 /**
  * Specification of a condition associated to a Firestore query.
  */
 export interface QueryConditionSpec {
   where?: [string, WhereFilterOp, any];
-  orderBy?: [string, ("asc" | "desc")?];
+  orderBy?: [string, ('asc' | 'desc')?];
   limit?: unknown;
   limitToLast?: unknown;
   offset?: unknown;
@@ -28,13 +28,13 @@ export interface ParamsSpec {
 
 export interface ParamSpec {
   type?:
-    | "string"
-    | "integer"
-    | "float"
-    | "boolean"
-    | "string-array"
-    | "integer-array"
-    | "float-array";
+    | 'string'
+    | 'integer'
+    | 'float'
+    | 'boolean'
+    | 'string-array'
+    | 'integer-array'
+    | 'float-array';
   required?: boolean;
 }
 
@@ -62,33 +62,33 @@ export interface QuerySpec {
 export function parameterize(
   value: any,
   params: ParamsSpec,
-  paramValues: { [key: string]: any }
+  paramValues: { [key: string]: any },
 ): any {
-  if (typeof value !== "string" || !value.startsWith("$")) {
+  if (typeof value !== 'string' || !value.startsWith('$')) {
     return value;
   }
 
   for (const p in params) {
-    if (value === "$" + p) {
+    if (value === '$' + p) {
       const pOpts = params[p];
-      if (pOpts.required && typeof paramValues[p] === "undefined") {
+      if (pOpts.required && typeof paramValues[p] === 'undefined') {
         throw new Error(`Required param '${p}' was missing.`);
       }
 
-      switch (pOpts.type || "string") {
-        case "integer":
+      switch (pOpts.type || 'string') {
+        case 'integer':
           return parseInt(paramValues[p], 10);
-        case "float":
+        case 'float':
           return parseFloat(paramValues[p]);
-        case "boolean":
-          return paramValues[p] === "true";
-        case "integer-array":
+        case 'boolean':
+          return paramValues[p] === 'true';
+        case 'integer-array':
           return (paramValues[p] as Array<string>).map((s) => parseInt(s));
-        case "float-array":
+        case 'float-array':
           return (paramValues[p] as Array<string>).map((s) => parseFloat(s));
-        case "string":
+        case 'string':
           return paramValues[p];
-        case "string-array":
+        case 'string-array':
           return paramValues[p];
       }
     }
@@ -100,12 +100,12 @@ export function parameterize(
 export function parameterizePath(
   path: string,
   params: ParamsSpec,
-  paramValues: { [key: string]: any }
+  paramValues: { [key: string]: any },
 ): string {
   return path
-    .split("/")
+    .split('/')
     .map((part) => parameterize(part, params, paramValues))
-    .join("/");
+    .join('/');
 }
 
 export interface BundleSpec {
@@ -151,38 +151,34 @@ export async function build(
   db: Firestore,
   bundleId: string,
   bundleSpec: BundleSpec,
-  paramValues: { [key: string]: any }
+  paramValues: { [key: string]: any },
 ): Promise<BundleBuilder> {
   const bundle = db.bundle(bundleId);
   const promises: Promise<void>[] = [];
 
   const docs = bundleSpec.docs || [];
   for (const docName of docs) {
-    const resolvedDocName = parameterizePath(
-      docName,
-      bundleSpec.params || {},
-      paramValues
-    );
-    console.debug("bundle.add [doc]:", resolvedDocName);
+    const resolvedDocName = parameterizePath(docName, bundleSpec.params || {}, paramValues);
+    console.debug('bundle.add [doc]:', resolvedDocName);
     promises.push(
       db
         .doc(resolvedDocName)
         .get()
         .then((snap) => {
           bundle.add(snap);
-        })
+        }),
     );
   }
 
   const queries = bundleSpec.queries || {};
   for (const qName in queries) {
-    console.debug("bundle.add [query]:", qName);
+    console.debug('bundle.add [query]:', qName);
     promises.push(
       buildQuery(db, queries[qName], bundleSpec.params || {}, paramValues)
         .get()
         .then((snap) => {
           bundle.add(qName, snap);
-        })
+        }),
     );
   }
 
@@ -196,14 +192,10 @@ export function buildQuery(
   db: Firestore,
   qSpec: QuerySpec,
   params: ParamsSpec,
-  paramValues: ParamValues
+  paramValues: ParamValues,
 ): Query {
-  const parameterizedPath = parameterizePath(
-    qSpec.collection,
-    params,
-    paramValues
-  );
-  let result: Query = !!qSpec.collectionGroupQuery
+  const parameterizedPath = parameterizePath(qSpec.collection, params, paramValues);
+  let result: Query = qSpec.collectionGroupQuery
     ? db.collectionGroup(parameterizedPath)
     : db.collection(parameterizedPath);
 
@@ -218,30 +210,28 @@ function handleCondition(
   ref: firestore.Query,
   c: QueryConditionSpec,
   params: ParamsSpec,
-  paramValues: { [key: string]: string }
+  paramValues: { [key: string]: string },
 ): firestore.Query {
   if (Object.keys(c).length !== 1) {
     throw new Error(
-      `Query 'conditions' may only have one key each. Found: ${JSON.stringify(
-        Object.keys(c)
-      )}`
+      `Query 'conditions' may only have one key each. Found: ${JSON.stringify(Object.keys(c))}`,
     );
   }
   if (c.where) {
     console.debug(
       `.where('${parameterize(c.where[0], params, paramValues)}','${
         c.where[1]
-      }','${parameterize(c.where[2], params, paramValues)}')`
+      }','${parameterize(c.where[2], params, paramValues)}')`,
     );
     let value = parameterize(c.where[2], params, paramValues);
     switch (c.where[1]) {
-      case "array-contains-any":
-      case "in":
-      case "not-in": {
+      case 'array-contains-any':
+      case 'in':
+      case 'not-in': {
         // Since array values cannot be an array, we need to detect whether the user has specifically chosen
         // an array of values which are strings or ints.
 
-        value = (value as string).split(",").map((value) => {
+        value = (value as string).split(',').map((value) => {
           const maybeNumber = parseFloat(value);
           if (!isNaN(maybeNumber)) {
             return maybeNumber;
@@ -261,15 +251,11 @@ function handleCondition(
       }
     }
 
-    return ref.where(
-      parameterize(c.where[0], params, paramValues),
-      c.where[1],
-      value
-    );
+    return ref.where(parameterize(c.where[0], params, paramValues), c.where[1], value);
   } else if (c.orderBy) {
     return ref.orderBy(
       parameterize(c.orderBy[0], params, paramValues),
-      parameterize(c.orderBy[1], params, paramValues)
+      parameterize(c.orderBy[1], params, paramValues),
     );
   } else if (c.limit) {
     return ref.limit(parameterize(c.limit, params, paramValues));

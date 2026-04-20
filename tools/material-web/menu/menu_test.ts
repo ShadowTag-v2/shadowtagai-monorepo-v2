@@ -8,13 +8,13 @@
 import './menu.js';
 import './sub-menu.js';
 
-import {html, render} from 'lit';
+import { html, render } from 'lit';
 
-import {createTokenTests} from '../testing/tokens.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MenuItemHarness} from './harness.js';
-import {MdMenu} from './menu.js';
-import {MdMenuItem} from './menu-item.js';
+import { MenuItemHarness } from './harness.js';
+import { MdMenu } from './menu.js';
+import { MdMenuItem } from './menu-item.js';
 
 describe('<md-menu>', () => {
   describe('.styles', () => {
@@ -86,9 +86,7 @@ describe('<md-menu>', () => {
 
     const button = root.querySelector('button')!;
     const menu = root.querySelector('md-menu')!;
-    const submenuItemHarness = new MenuItemHarness(
-      menu.querySelector('#submenu-item')!,
-    );
+    const submenuItemHarness = new MenuItemHarness(menu.querySelector('#submenu-item')!);
     menu.anchorElement = button;
     menu.show();
 

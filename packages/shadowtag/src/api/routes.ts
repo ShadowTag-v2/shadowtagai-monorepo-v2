@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { z } from "zod";
-import { TagEngine, TagQuery, TagWrite } from "../core/TagEngine";
+import { Router } from 'express';
+import { z } from 'zod';
+import type { TagEngine, TagQuery, TagWrite } from '../core/TagEngine';
 
 export function createShadowTagRouter(engine: TagEngine): Router {
   const router = Router();
@@ -8,16 +8,20 @@ export function createShadowTagRouter(engine: TagEngine): Router {
   // Zod schemas for input validation
   const tagWriteSchema = z.object({
     artifactId: z.string(),
-    tags: z.array(z.object({
-      key: z.string(),
-      value: z.union([z.string(), z.number(), z.boolean(), z.array(z.string())]),
-      confidence: z.number().optional()
-    })),
-    shadow: z.object({
-      artifactId: z.string(),
-      hash: z.string()
-    }).optional(),
-    ts: z.number().optional()
+    tags: z.array(
+      z.object({
+        key: z.string(),
+        value: z.union([z.string(), z.number(), z.boolean(), z.array(z.string())]),
+        confidence: z.number().optional(),
+      }),
+    ),
+    shadow: z
+      .object({
+        artifactId: z.string(),
+        hash: z.string(),
+      })
+      .optional(),
+    ts: z.number().optional(),
   });
 
   const tagQuerySchema = z.object({
@@ -26,10 +30,10 @@ export function createShadowTagRouter(engine: TagEngine): Router {
     not: z.record(z.string(), z.any()).optional(),
     textContains: z.string().optional(),
     limit: z.number().optional(),
-    cursor: z.string().optional()
+    cursor: z.string().optional(),
   });
 
-  router.post("/tags", async (req: any, res: any) => {
+  router.post('/tags', async (req: any, res: any) => {
     try {
       const parsed = z.array(tagWriteSchema).safeParse(req.body);
       if (!parsed.success) {
@@ -46,12 +50,12 @@ export function createShadowTagRouter(engine: TagEngine): Router {
 
       return res.status(201).json({ success: true, count: parsed.data.length });
     } catch (err: any) {
-      console.error("[ShadowTag API] /tags Error:", err);
-      return res.status(500).json({ error: "Internal Server Error" });
+      console.error('[ShadowTag API] /tags Error:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
   });
 
-  router.post("/tags/query", async (req: any, res: any) => {
+  router.post('/tags/query', async (req: any, res: any) => {
     try {
       const parsed = tagQuerySchema.safeParse(req.body);
       if (!parsed.success) {
@@ -68,8 +72,8 @@ export function createShadowTagRouter(engine: TagEngine): Router {
 
       return res.status(200).json(results);
     } catch (err: any) {
-      console.error("[ShadowTag API] /tags/query Error:", err);
-      return res.status(500).json({ error: "Internal Server Error" });
+      console.error('[ShadowTag API] /tags/query Error:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
   });
 

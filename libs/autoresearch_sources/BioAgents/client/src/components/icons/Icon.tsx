@@ -52,7 +52,7 @@ import {
   User,
   X,
   Zap,
-} from "lucide-preact";
+} from 'lucide-preact';
 
 export interface IconProps {
   name: string;
@@ -116,7 +116,7 @@ const iconMap: Record<string, any> = {
  * Icon component wrapper for Lucide icons
  * Provides consistent sizing and styling
  */
-export function Icon({ name, size = 16, className = "", strokeWidth = 2 }: IconProps) {
+export function Icon({ name, size = 16, className = '', strokeWidth = 2 }: IconProps) {
   const IconComponent = iconMap[name];
 
   if (!IconComponent) {

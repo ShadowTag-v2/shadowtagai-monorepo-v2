@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { describe, it, expect, vi, Mock } from 'vitest';
-import { GaxiosResponse } from 'gaxios';
-import { clouderrorreporting_v1beta1 } from 'googleapis';
-import { listGroupStats } from './error_reporting_api_tools.js';
+import type { GaxiosResponse } from 'gaxios';
+import type { clouderrorreporting_v1beta1 } from 'googleapis';
+import { describe, expect, it, type Mock, vi } from 'vitest';
 import { apiClientFactory } from '../../utils/api_client_factory.js';
+import { listGroupStats } from './error_reporting_api_tools.js';
 
 const TEST_PROJECT_NAME = 'projects/my-project';
 

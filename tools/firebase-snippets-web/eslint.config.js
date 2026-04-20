@@ -1,14 +1,13 @@
-
-import { defineConfig } from "eslint/config";
-import js from "@eslint/js";
+import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
   js.configs.recommended,
-	{
-		rules: {
-      "no-unused-vars": "off",
-      "no-undef": "off",
-      "no-redeclare": "off"
-		},
-	},
+  {
+    rules: {
+      'no-unused-vars': 'off',
+      'no-undef': 'off',
+      'no-redeclare': 'off',
+    },
+  },
 ]);

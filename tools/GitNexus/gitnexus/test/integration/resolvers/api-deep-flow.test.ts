@@ -9,21 +9,23 @@
  * This complements the seed-based api-impact-e2e.test.ts which tests
  * the query/tool layer. Together they cover extraction → storage → query.
  */
-import { describe, it, expect, beforeAll } from 'vitest';
+
 import path from 'path';
+import { beforeAll, describe, expect, it } from 'vitest';
 import {
-  FIXTURES, getRelationships, getNodesByLabel, getNodesByLabelFull,
-  runPipelineFromRepo, type PipelineResult,
+  FIXTURES,
+  getNodesByLabel,
+  getNodesByLabelFull,
+  getRelationships,
+  type PipelineResult,
+  runPipelineFromRepo,
 } from './helpers.js';
 
 describe('deep flow detection pipeline', () => {
   let result: PipelineResult;
 
   beforeAll(async () => {
-    result = await runPipelineFromRepo(
-      path.join(FIXTURES, 'api-e2e-test'),
-      () => {},
-    );
+    result = await runPipelineFromRepo(path.join(FIXTURES, 'api-e2e-test'), () => {});
   }, 60000);
 
   // ─── Route nodes ────────────────────────────────────────────────
@@ -38,25 +40,21 @@ describe('deep flow detection pipeline', () => {
 
   it('extracts responseKeys from NextResponse.json() success path', () => {
     const routes = getNodesByLabelFull(result, 'Route');
-    const grants = routes.find(r => r.name === '/api/grants');
+    const grants = routes.find((r) => r.name === '/api/grants');
     expect(grants).toBeDefined();
-    expect(grants!.properties.responseKeys).toEqual(
-      expect.arrayContaining(['data', 'pagination']),
-    );
+    expect(grants!.properties.responseKeys).toEqual(expect.arrayContaining(['data', 'pagination']));
   });
 
   it('extracts errorKeys from NextResponse.json() with status >= 400', () => {
     const routes = getNodesByLabelFull(result, 'Route');
-    const grants = routes.find(r => r.name === '/api/grants');
+    const grants = routes.find((r) => r.name === '/api/grants');
     expect(grants).toBeDefined();
-    expect(grants!.properties.errorKeys).toEqual(
-      expect.arrayContaining(['error', 'message']),
-    );
+    expect(grants!.properties.errorKeys).toEqual(expect.arrayContaining(['error', 'message']));
   });
 
   it('keeps success and error keys separate (no cross-contamination)', () => {
     const routes = getNodesByLabelFull(result, 'Route');
-    const grants = routes.find(r => r.name === '/api/grants');
+    const grants = routes.find((r) => r.name === '/api/grants');
     expect(grants).toBeDefined();
 
     const successKeys = new Set(grants!.properties.responseKeys ?? []);
@@ -74,7 +72,7 @@ describe('deep flow detection pipeline', () => {
 
   it('extracts middleware chain for withAuth(withRateLimit(...)) wrapper', () => {
     const routes = getNodesByLabelFull(result, 'Route');
-    const secure = routes.find(r => r.name === '/api/secure');
+    const secure = routes.find((r) => r.name === '/api/secure');
     expect(secure).toBeDefined();
     expect(secure!.properties.middleware).toBeDefined();
     expect(secure!.properties.middleware).toContain('withAuth');
@@ -83,7 +81,7 @@ describe('deep flow detection pipeline', () => {
 
   it('stores middleware in outermost-first order', () => {
     const routes = getNodesByLabelFull(result, 'Route');
-    const secure = routes.find(r => r.name === '/api/secure');
+    const secure = routes.find((r) => r.name === '/api/secure');
     expect(secure).toBeDefined();
     const mw = secure!.properties.middleware ?? [];
     const authIdx = mw.indexOf('withAuth');
@@ -99,8 +97,8 @@ describe('deep flow detection pipeline', () => {
     expect(edges.length).toBeGreaterThanOrEqual(2);
 
     // GrantsList → /api/grants
-    const grantsListEdge = edges.find(e =>
-      e.sourceFilePath.includes('GrantsList') && e.target === '/api/grants',
+    const grantsListEdge = edges.find(
+      (e) => e.sourceFilePath.includes('GrantsList') && e.target === '/api/grants',
     );
     expect(grantsListEdge).toBeDefined();
   });
@@ -109,8 +107,8 @@ describe('deep flow detection pipeline', () => {
     const edges = getRelationships(result, 'FETCHES');
 
     // GrantsList destructures { data, pagination } from the response
-    const grantsListEdge = edges.find(e =>
-      e.sourceFilePath.includes('GrantsList') && e.target === '/api/grants',
+    const grantsListEdge = edges.find(
+      (e) => e.sourceFilePath.includes('GrantsList') && e.target === '/api/grants',
     );
     expect(grantsListEdge).toBeDefined();
     expect(grantsListEdge!.rel.reason).toContain('keys:');
@@ -127,11 +125,11 @@ describe('deep flow detection pipeline', () => {
     const edges = getRelationships(result, 'FETCHES');
 
     // useMulti fetches both /api/grants and /api/secure
-    const useMultiGrants = edges.find(e =>
-      e.sourceFilePath.includes('useMulti') && e.target === '/api/grants',
+    const useMultiGrants = edges.find(
+      (e) => e.sourceFilePath.includes('useMulti') && e.target === '/api/grants',
     );
-    const useMultiSecure = edges.find(e =>
-      e.sourceFilePath.includes('useMulti') && e.target === '/api/secure',
+    const useMultiSecure = edges.find(
+      (e) => e.sourceFilePath.includes('useMulti') && e.target === '/api/secure',
     );
     expect(useMultiGrants).toBeDefined();
     expect(useMultiSecure).toBeDefined();
@@ -147,7 +145,7 @@ describe('deep flow detection pipeline', () => {
     const edges = getRelationships(result, 'HANDLES_ROUTE');
     expect(edges.length).toBeGreaterThanOrEqual(2);
 
-    const grantsHandler = edges.find(e => e.target === '/api/grants');
+    const grantsHandler = edges.find((e) => e.target === '/api/grants');
     expect(grantsHandler).toBeDefined();
     expect(grantsHandler!.sourceFilePath).toContain('app/api/grants/route.ts');
   });
@@ -156,10 +154,10 @@ describe('deep flow detection pipeline', () => {
 
   it('useGrants accesses items which is NOT in grants responseKeys (mismatch scenario)', () => {
     const routes = getNodesByLabelFull(result, 'Route');
-    const grants = routes.find(r => r.name === '/api/grants');
+    const grants = routes.find((r) => r.name === '/api/grants');
     const edges = getRelationships(result, 'FETCHES');
-    const useGrantsEdge = edges.find(e =>
-      e.sourceFilePath.includes('useGrants') && e.target === '/api/grants',
+    const useGrantsEdge = edges.find(
+      (e) => e.sourceFilePath.includes('useGrants') && e.target === '/api/grants',
     );
     expect(useGrantsEdge).toBeDefined();
 

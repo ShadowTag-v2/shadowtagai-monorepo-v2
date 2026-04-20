@@ -5,14 +5,14 @@
 // 'npm run snippets'.
 
 // [START auth_phone_recaptcha_verifier_invisible_modular]
-import { getAuth, RecaptchaVerifier } from "firebase/auth";
+import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 
 const auth = getAuth();
 window.recaptchaVerifier = new RecaptchaVerifier(auth, 'sign-in-button', {
-  'size': 'invisible',
-  'callback': (response) => {
+  size: 'invisible',
+  callback: (response) => {
     // reCAPTCHA solved, allow signInWithPhoneNumber.
     onSignInSubmit();
-  }
+  },
 });
 // [END auth_phone_recaptcha_verifier_invisible_modular]

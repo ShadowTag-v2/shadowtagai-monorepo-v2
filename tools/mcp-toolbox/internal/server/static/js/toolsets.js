@@ -12,40 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { loadTools } from "./loadTools.js";
+import { loadTools } from './loadTools.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('toolset-search-input');
-    const searchButton = document.getElementById('toolset-search-button');
-    const secondNavContent = document.getElementById('secondary-panel-content');
-    const toolDisplayArea = document.getElementById('tool-display-area');
+  const searchInput = document.getElementById('toolset-search-input');
+  const searchButton = document.getElementById('toolset-search-button');
+  const secondNavContent = document.getElementById('secondary-panel-content');
+  const toolDisplayArea = document.getElementById('tool-display-area');
 
-    if (!searchInput || !searchButton || !secondNavContent || !toolDisplayArea) {
-        console.error('Required DOM elements not found.');
-        return;
+  if (!searchInput || !searchButton || !secondNavContent || !toolDisplayArea) {
+    console.error('Required DOM elements not found.');
+    return;
+  }
+
+  // Event listener for search button click
+  searchButton.addEventListener('click', () => {
+    toolDisplayArea.innerHTML = '';
+    const toolsetName = searchInput.value.trim();
+    if (toolsetName) {
+      loadTools(secondNavContent, toolDisplayArea, toolsetName);
+    } else {
+      secondNavContent.innerHTML =
+        '<p>Please enter a toolset name to see available tools. <br><br>To view the default toolset that consists of all tools, please select the "Tools" tab.</p>';
     }
+  });
 
-    // Event listener for search button click
-    searchButton.addEventListener('click', () => {
-        toolDisplayArea.innerHTML = '';
-        const toolsetName = searchInput.value.trim();
-        if (toolsetName) {
-            loadTools(secondNavContent, toolDisplayArea, toolsetName)
-        } else {
-            secondNavContent.innerHTML = '<p>Please enter a toolset name to see available tools. <br><br>To view the default toolset that consists of all tools, please select the "Tools" tab.</p>';
-        }
-    });
-
-    // Event listener for Enter key in search input
-    searchInput.addEventListener('keypress', (event) => {
-        toolDisplayArea.innerHTML = '';
-        if (event.key === 'Enter') {
-            const toolsetName = searchInput.value.trim();
-            if (toolsetName) {
-                loadTools(secondNavContent, toolDisplayArea, toolsetName);
-            } else {
-                secondNavContent.innerHTML = '<p>Please enter a toolset name to see available tools. <br><br>To view the default toolset that consists of all tools, please select the "Tools" tab.</p>';
-            }
-        }
-    });
-})
+  // Event listener for Enter key in search input
+  searchInput.addEventListener('keypress', (event) => {
+    toolDisplayArea.innerHTML = '';
+    if (event.key === 'Enter') {
+      const toolsetName = searchInput.value.trim();
+      if (toolsetName) {
+        loadTools(secondNavContent, toolDisplayArea, toolsetName);
+      } else {
+        secondNavContent.innerHTML =
+          '<p>Please enter a toolset name to see available tools. <br><br>To view the default toolset that consists of all tools, please select the "Tools" tab.</p>';
+      }
+    }
+  });
+});

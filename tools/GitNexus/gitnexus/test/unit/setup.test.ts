@@ -1,7 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import fs from 'fs/promises';
 import os from 'os';
 import path from 'path';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const execFileMock = vi.fn((...args: any[]) => {
   const callback = args.at(-1);
@@ -93,9 +93,7 @@ describe('setupClaudeCode', () => {
     const { setupCommand } = await import('../../src/cli/setup.js');
     await setupCommand();
 
-    await expect(
-      fs.access(path.join(tempHome, '.claude.json')),
-    ).rejects.toThrow();
+    await expect(fs.access(path.join(tempHome, '.claude.json'))).rejects.toThrow();
   });
 
   it('preserves existing keys in ~/.claude.json', async () => {

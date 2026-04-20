@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START storage_delete_file_modular]
-import { getStorage, ref, deleteObject } from "firebase/storage";
+import { deleteObject, getStorage, ref } from 'firebase/storage';
 
 const storage = getStorage();
 
@@ -13,9 +13,11 @@ const storage = getStorage();
 const desertRef = ref(storage, 'images/desert.jpg');
 
 // Delete the file
-deleteObject(desertRef).then(() => {
-  // File deleted successfully
-}).catch((error) => {
-  // Uh-oh, an error occurred!
-});
+deleteObject(desertRef)
+  .then(() => {
+    // File deleted successfully
+  })
+  .catch((error) => {
+    // Uh-oh, an error occurred!
+  });
 // [END storage_delete_file_modular]

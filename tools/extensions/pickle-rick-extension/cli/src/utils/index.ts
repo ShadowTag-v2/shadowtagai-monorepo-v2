@@ -1,4 +1,4 @@
-import { RGBA, StyledText, type TextChunk, parseColor, rgbToHex } from "@opentui/core";
+import { parseColor, RGBA, rgbToHex, StyledText, type TextChunk } from '@opentui/core';
 
 export function lerpColor(c1: RGBA, c2: RGBA, t: number): RGBA {
   return RGBA.fromValues(
@@ -62,19 +62,19 @@ export function formatDuration(ms: number): string {
   const totalSeconds = Math.floor(ms / 1000);
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
-  return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}s`;
+  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}s`;
 }
 
 export function isSessionActive(status: string): boolean {
   const statusLower = status.toLowerCase();
   return (
-    !statusLower.includes("done") &&
-    !statusLower.includes("cancelled") &&
-    !statusLower.includes("error")
+    !statusLower.includes('done') &&
+    !statusLower.includes('cancelled') &&
+    !statusLower.includes('error')
   );
 }
 
-export { Clipboard } from "./clipboard.js";
+export { Clipboard } from './clipboard.js';
 
 /**
  * Capitalize provider name for display
@@ -82,14 +82,14 @@ export { Clipboard } from "./clipboard.js";
  */
 export function capitalizeProvider(name: string): string {
   const specialCases: Record<string, string> = {
-    opencode: "OpenCode",
-    gemini: "Gemini CLI",
-    claude: "Claude",
-    cursor: "Cursor",
-    codex: "Codex",
-    qwen: "Qwen",
-    droid: "Droid",
-    copilot: "Copilot",
+    opencode: 'OpenCode',
+    gemini: 'Gemini CLI',
+    claude: 'Claude',
+    cursor: 'Cursor',
+    codex: 'Codex',
+    qwen: 'Qwen',
+    droid: 'Droid',
+    copilot: 'Copilot',
   };
   return specialCases[name.toLowerCase()] || name.charAt(0).toUpperCase() + name.slice(1);
 }

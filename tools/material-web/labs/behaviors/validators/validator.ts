@@ -51,13 +51,12 @@ export abstract class Validator<State> {
    */
   getValidity(): ValidityAndMessage {
     const state = this.getCurrentState();
-    const hasStateChanged =
-      !this.prevState || !this.equals(this.prevState, state);
+    const hasStateChanged = !this.prevState || !this.equals(this.prevState, state);
     if (!hasStateChanged) {
       return this.currentValidity;
     }
 
-    const {validity, validationMessage} = this.computeValidity(state);
+    const { validity, validationMessage } = this.computeValidity(state);
     this.prevState = this.copy(state);
     this.currentValidity = {
       validationMessage,

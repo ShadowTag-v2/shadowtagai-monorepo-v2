@@ -5,12 +5,13 @@
 // 'npm run snippets'.
 
 // [START start_doc_modular]
-import { collection, doc, getDoc, query, orderBy, startAt } from "firebase/firestore";
-const citiesRef = collection(db, "cities");
+import { collection, doc, getDoc, orderBy, query, startAt } from 'firebase/firestore';
 
-const docSnap = await getDoc(doc(citiesRef, "SF"));
+const citiesRef = collection(db, 'cities');
+
+const docSnap = await getDoc(doc(citiesRef, 'SF'));
 
 // Get all cities with a population bigger than San Francisco
-const biggerThanSf = query(citiesRef, orderBy("population"), startAt(docSnap));
+const biggerThanSf = query(citiesRef, orderBy('population'), startAt(docSnap));
 // ...
 // [END start_doc_modular]

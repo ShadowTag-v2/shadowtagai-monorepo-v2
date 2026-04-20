@@ -16,18 +16,10 @@ if (window.location.hostname === 'localhost') {
   connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 }
 
-const tokenTextArea = document.getElementById(
-  'tokentext',
-)! as HTMLTextAreaElement;
-const signInButton = document.getElementById(
-  'quickstart-sign-in',
-)! as HTMLButtonElement;
-const signInStatus = document.getElementById(
-  'quickstart-sign-in-status',
-)! as HTMLSpanElement;
-const accountDetails = document.getElementById(
-  'quickstart-account-details',
-)! as HTMLDivElement;
+const tokenTextArea = document.getElementById('tokentext')! as HTMLTextAreaElement;
+const signInButton = document.getElementById('quickstart-sign-in')! as HTMLButtonElement;
+const signInStatus = document.getElementById('quickstart-sign-in-status')! as HTMLSpanElement;
+const accountDetails = document.getElementById('quickstart-account-details')! as HTMLDivElement;
 
 /**
  * Handle the sign in button press.
@@ -42,7 +34,7 @@ function toggleSignIn() {
       return;
     }
     // Sign in with custom token generated following previous instructions.
-    signInWithCustomToken(auth, token).catch(function (error) {
+    signInWithCustomToken(auth, token).catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -62,7 +54,7 @@ function toggleSignIn() {
  *    out, and that is where we update the UI.
  */
 // Listening for auth state changes.
-onAuthStateChanged(auth, function (user) {
+onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in.
     const displayName = user.displayName;

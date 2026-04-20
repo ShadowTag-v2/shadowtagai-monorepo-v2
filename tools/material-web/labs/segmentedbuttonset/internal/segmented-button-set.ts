@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html, LitElement, nothing} from 'lit';
-import {property, queryAssignedElements} from 'lit/decorators.js';
+import { html, LitElement, nothing } from 'lit';
+import { property, queryAssignedElements } from 'lit/decorators.js';
 
-import {ARIAMixinStrict} from '../../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../../internal/aria/delegate.js';
-import {SegmentedButton} from '../../segmentedbutton/internal/segmented-button.js';
+import type { ARIAMixinStrict } from '../../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../../internal/aria/delegate.js';
+import type { SegmentedButton } from '../../segmentedbutton/internal/segmented-button.js';
 
 // Separate variable needed for closure.
 const segmentedButtonSetBaseClass = mixinDelegatesAria(LitElement);
@@ -25,9 +25,9 @@ const segmentedButtonSetBaseClass = mixinDelegatesAria(LitElement);
  * interaction. --bubbles --composed
  */
 export class SegmentedButtonSet extends segmentedButtonSetBaseClass {
-  @property({type: Boolean}) multiselect = false;
+  @property({ type: Boolean }) multiselect = false;
 
-  @queryAssignedElements({flatten: true}) buttons!: SegmentedButton[];
+  @queryAssignedElements({ flatten: true }) buttons!: SegmentedButton[];
 
   getButtonDisabled(index: number): boolean {
     if (this.indexOutOfBounds(index)) return false;
@@ -98,7 +98,7 @@ export class SegmentedButtonSet extends segmentedButtonSetBaseClass {
 
   protected override render() {
     // Needed for closure conformance
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     return html`
       <span
         role="group"

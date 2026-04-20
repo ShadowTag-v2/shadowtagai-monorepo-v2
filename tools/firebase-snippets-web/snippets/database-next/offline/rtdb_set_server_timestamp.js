@@ -5,9 +5,9 @@
 // 'npm run snippets'.
 
 // [START rtdb_set_server_timestamp_modular]
-import { getDatabase, ref, onDisconnect, serverTimestamp } from "firebase/database";
+import { getDatabase, onDisconnect, ref, serverTimestamp } from 'firebase/database';
 
 const db = getDatabase();
-const userLastOnlineRef = ref(db, "users/joe/lastOnline");
+const userLastOnlineRef = ref(db, 'users/joe/lastOnline');
 onDisconnect(userLastOnlineRef).set(serverTimestamp());
 // [END rtdb_set_server_timestamp_modular]

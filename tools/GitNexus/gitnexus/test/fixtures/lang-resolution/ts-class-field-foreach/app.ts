@@ -1,5 +1,5 @@
-import { User } from './models/user';
-import { Repo } from './models/repo';
+import type { Repo } from './models/repo';
+import type { User } from './models/user';
 
 class UserService {
   private users: User[] = [];

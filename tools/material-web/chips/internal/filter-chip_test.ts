@@ -6,13 +6,13 @@
 
 // import 'jasmine'; (google3-only)
 
-import {html} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import { html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {Environment} from '../../testing/environment.js';
-import {ChipHarness} from '../harness.js';
+import { Environment } from '../../testing/environment.js';
+import { ChipHarness } from '../harness.js';
 
-import {FilterChip} from './filter-chip.js';
+import { FilterChip } from './filter-chip.js';
 
 @customElement('test-filter-chip')
 class TestFilterChip extends FilterChip {
@@ -26,19 +26,19 @@ describe('Filter chip', () => {
     const chip = new TestFilterChip();
     env.render(html`${chip}`);
     await env.waitForStability();
-    return {chip, harness: new ChipHarness(chip)};
+    return { chip, harness: new ChipHarness(chip) };
   }
 
   describe('selection', () => {
     it('should select on click', async () => {
-      const {chip, harness} = await setupTest();
+      const { chip, harness } = await setupTest();
 
       await harness.clickWithMouse();
       expect(chip.selected).withContext('chip.selected').toBeTrue();
     });
 
     it('should deselect on click', async () => {
-      const {chip, harness} = await setupTest();
+      const { chip, harness } = await setupTest();
       chip.selected = true;
 
       await harness.clickWithMouse();
@@ -46,7 +46,7 @@ describe('Filter chip', () => {
     });
 
     it('should not select on click when disabled', async () => {
-      const {chip, harness} = await setupTest();
+      const { chip, harness } = await setupTest();
       chip.disabled = true;
 
       await harness.clickWithMouse();
@@ -55,7 +55,7 @@ describe('Filter chip', () => {
 
     it('should not select on click when soft-disabled', async () => {
       // Arrange
-      const {chip, harness} = await setupTest();
+      const { chip, harness } = await setupTest();
       chip.softDisabled = true;
 
       // Act
@@ -66,7 +66,7 @@ describe('Filter chip', () => {
     });
 
     it('can prevent default', async () => {
-      const {chip, harness} = await setupTest();
+      const { chip, harness } = await setupTest();
       const handler = jasmine.createSpy();
       chip.addEventListener('selected', handler);
 
@@ -80,7 +80,7 @@ describe('Filter chip', () => {
     });
 
     it('always reverts value on preventDefault() even if selected is changed in listener', async () => {
-      const {chip, harness} = await setupTest();
+      const { chip, harness } = await setupTest();
 
       chip.addEventListener(
         'click',
@@ -88,13 +88,11 @@ describe('Filter chip', () => {
           event.preventDefault();
           chip.selected = false;
         },
-        {once: true},
+        { once: true },
       );
 
       await harness.clickWithMouse();
-      expect(chip.selected)
-        .withContext('chip.selected reverts to false')
-        .toBeFalse();
+      expect(chip.selected).withContext('chip.selected reverts to false').toBeFalse();
 
       chip.selected = true;
       chip.addEventListener(
@@ -103,19 +101,17 @@ describe('Filter chip', () => {
           event.preventDefault();
           chip.selected = false;
         },
-        {once: true},
+        { once: true },
       );
 
       await harness.clickWithMouse();
-      expect(chip.selected)
-        .withContext('chip.selected reverts to true')
-        .toBeTrue();
+      expect(chip.selected).withContext('chip.selected reverts to true').toBeTrue();
     });
   });
 
   it('should be focusable when soft-disabled', async () => {
     // Arrange
-    const {chip} = await setupTest();
+    const { chip } = await setupTest();
     chip.softDisabled = true;
     await chip.updateComplete;
 
@@ -123,15 +119,13 @@ describe('Filter chip', () => {
     chip.focus();
 
     // Assert
-    expect(document.activeElement)
-      .withContext('soft-disabled chip should be focused')
-      .toBe(chip);
+    expect(document.activeElement).withContext('soft-disabled chip should be focused').toBe(chip);
   });
 
   it('should not be clickable when soft-disabled', async () => {
     // Arrange
     const clickListener = jasmine.createSpy('clickListener');
-    const {chip, harness} = await setupTest();
+    const { chip, harness } = await setupTest();
     chip.softDisabled = true;
     chip.addEventListener('click', clickListener);
 
@@ -145,7 +139,7 @@ describe('Filter chip', () => {
   it('should use aria-disabled when soft-disabled', async () => {
     // Arrange
     // Act
-    const {chip} = await setupTest();
+    const { chip } = await setupTest();
     chip.softDisabled = true;
     await chip.updateComplete;
 

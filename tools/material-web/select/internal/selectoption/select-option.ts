@@ -8,20 +8,15 @@ import '../../../focus/md-focus-ring.js';
 import '../../../labs/item/item.js';
 import '../../../ripple/ripple.js';
 
-import {html, LitElement, nothing} from 'lit';
-import {
-  property,
-  query,
-  queryAssignedElements,
-  queryAssignedNodes,
-} from 'lit/decorators.js';
-import {ClassInfo, classMap} from 'lit/directives/class-map.js';
+import { html, LitElement, nothing } from 'lit';
+import { property, query, queryAssignedElements, queryAssignedNodes } from 'lit/decorators.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
 
-import {ARIAMixinStrict} from '../../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../../internal/aria/delegate.js';
-import {MenuItem} from '../../../menu/internal/controllers/menuItemController.js';
+import type { ARIAMixinStrict } from '../../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../../internal/aria/delegate.js';
+import type { MenuItem } from '../../../menu/internal/controllers/menuItemController.js';
 
-import {SelectOptionController} from './selectOptionController.js';
+import { SelectOptionController } from './selectOptionController.js';
 
 /**
  * The interface specific to a Select Option
@@ -61,10 +56,7 @@ const selectOptionBaseClass = mixinDelegatesAria(LitElement);
  * @fires request-deselection {Event} Requests the parent md-select to deselect
  * this element when `selected` changed to `false`. --bubbles --composed
  */
-export class SelectOptionEl
-  extends selectOptionBaseClass
-  implements SelectOption
-{
+export class SelectOptionEl extends selectOptionBaseClass implements SelectOption {
   /** @nocollapse */
   static override shadowRootOptions = {
     ...LitElement.shadowRootOptions,
@@ -74,18 +66,18 @@ export class SelectOptionEl
   /**
    * Disables the item and makes it non-selectable and non-interactive.
    */
-  @property({type: Boolean, reflect: true}) disabled = false;
+  @property({ type: Boolean, reflect: true }) disabled = false;
 
   /**
    * READONLY: self-identifies as a menu item and sets its identifying attribute
    */
-  @property({type: Boolean, attribute: 'md-menu-item', reflect: true})
+  @property({ type: Boolean, attribute: 'md-menu-item', reflect: true })
   isMenuItem = true;
 
   /**
    * Sets the item in the selected visual state when a submenu is opened.
    */
-  @property({type: Boolean}) selected = false;
+  @property({ type: Boolean }) selected = false;
   /**
    * Form value of the option.
    */
@@ -93,11 +85,11 @@ export class SelectOptionEl
 
   @query('.list-item') protected readonly listItemRoot!: HTMLElement | null;
 
-  @queryAssignedElements({slot: 'headline'})
+  @queryAssignedElements({ slot: 'headline' })
   protected readonly headlineElements!: HTMLElement[];
-  @queryAssignedElements({slot: 'supporting-text'})
+  @queryAssignedElements({ slot: 'supporting-text' })
   protected readonly supportingTextElements!: HTMLElement[];
-  @queryAssignedNodes({slot: ''})
+  @queryAssignedNodes({ slot: '' })
   protected readonly defaultElements!: Element[];
 
   type = 'option' as const;
@@ -110,7 +102,7 @@ export class SelectOptionEl
     return this.selectOptionController.typeaheadText;
   }
 
-  @property({attribute: 'typeahead-text'})
+  @property({ attribute: 'typeahead-text' })
   set typeaheadText(text: string) {
     this.selectOptionController.setTypeaheadText(text);
   }
@@ -123,7 +115,7 @@ export class SelectOptionEl
     return this.selectOptionController.displayText;
   }
 
-  @property({attribute: 'display-text'})
+  @property({ attribute: 'display-text' })
   set displayText(text: string) {
     this.selectOptionController.setDisplayText(text);
   }
@@ -203,8 +195,8 @@ export class SelectOptionEl
    */
   protected getRenderClasses(): ClassInfo {
     return {
-      'disabled': this.disabled,
-      'selected': this.selected,
+      disabled: this.disabled,
+      selected: this.selected,
     };
   }
 

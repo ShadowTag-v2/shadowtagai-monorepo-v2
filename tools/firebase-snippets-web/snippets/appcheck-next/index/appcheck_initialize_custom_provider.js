@@ -5,8 +5,8 @@
 // 'npm run snippets'.
 
 // [START appcheck_initialize_custom_provider_modular]
-import { initializeApp } from "firebase/app";
-import { initializeAppCheck } from "firebase/app-check";
+import { initializeApp } from 'firebase/app';
+import { initializeAppCheck } from 'firebase/app-check';
 
 const app = initializeApp({
   // Your firebase configuration object
@@ -17,6 +17,6 @@ const appCheck = initializeAppCheck(app, {
 
   // Optional argument. If true, the SDK automatically refreshes App Check
   // tokens as needed.
-  isTokenAutoRefreshEnabled: true
+  isTokenAutoRefreshEnabled: true,
 });
 // [END appcheck_initialize_custom_provider_modular]

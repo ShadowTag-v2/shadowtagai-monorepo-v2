@@ -7,35 +7,33 @@
 import '../../focus/md-focus-ring.js';
 import '../../ripple/ripple.js';
 
-import {html, isServer, LitElement, nothing, PropertyValues} from 'lit';
-import {property, query, state} from 'lit/decorators.js';
-import {classMap} from 'lit/directives/class-map.js';
+import { html, isServer, LitElement, nothing, type PropertyValues } from 'lit';
+import { property, query, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
-import {ARIAMixinStrict} from '../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../internal/aria/delegate.js';
+import type { ARIAMixinStrict } from '../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../internal/aria/delegate.js';
 import {
   dispatchActivationClick,
   isActivationClick,
 } from '../../internal/events/form-label-activation.js';
-import {redispatchEvent} from '../../internal/events/redispatch-event.js';
+import { redispatchEvent } from '../../internal/events/redispatch-event.js';
 import {
   createValidator,
   getValidityAnchor,
   mixinConstraintValidation,
 } from '../../labs/behaviors/constraint-validation.js';
-import {mixinElementInternals} from '../../labs/behaviors/element-internals.js';
+import { mixinElementInternals } from '../../labs/behaviors/element-internals.js';
 import {
   getFormState,
   getFormValue,
   mixinFormAssociated,
 } from '../../labs/behaviors/form-associated.js';
-import {CheckboxValidator} from '../../labs/behaviors/validators/checkbox-validator.js';
+import { CheckboxValidator } from '../../labs/behaviors/validators/checkbox-validator.js';
 
 // Separate variable needed for closure.
 const checkboxBaseClass = mixinDelegatesAria(
-  mixinConstraintValidation(
-    mixinFormAssociated(mixinElementInternals(LitElement)),
-  ),
+  mixinConstraintValidation(mixinFormAssociated(mixinElementInternals(LitElement))),
 );
 
 /**
@@ -59,14 +57,14 @@ export class Checkbox extends checkboxBaseClass {
   /**
    * Whether or not the checkbox is selected.
    */
-  @property({type: Boolean}) checked = false;
+  @property({ type: Boolean }) checked = false;
 
   /**
    * Whether or not the checkbox is indeterminate.
    *
    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox#indeterminate_state_checkboxes
    */
-  @property({type: Boolean}) indeterminate = false;
+  @property({ type: Boolean }) indeterminate = false;
 
   /**
    * When true, require the checkbox to be selected when participating in
@@ -74,7 +72,7 @@ export class Checkbox extends checkboxBaseClass {
    *
    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox#validation
    */
-  @property({type: Boolean}) required = false;
+  @property({ type: Boolean }) required = false;
 
   /**
    * The value of the checkbox that is submitted with a form when selected.
@@ -102,15 +100,10 @@ export class Checkbox extends checkboxBaseClass {
   }
 
   protected override update(changed: PropertyValues<Checkbox>) {
-    if (
-      changed.has('checked') ||
-      changed.has('disabled') ||
-      changed.has('indeterminate')
-    ) {
+    if (changed.has('checked') || changed.has('disabled') || changed.has('indeterminate')) {
       this.prevChecked = changed.get('checked') ?? this.checked;
       this.prevDisabled = changed.get('disabled') ?? this.disabled;
-      this.prevIndeterminate =
-        changed.get('indeterminate') ?? this.indeterminate;
+      this.prevIndeterminate = changed.get('indeterminate') ?? this.indeterminate;
     }
 
     super.update(changed);
@@ -124,11 +117,11 @@ export class Checkbox extends checkboxBaseClass {
     const isIndeterminate = this.indeterminate;
 
     const containerClasses = classMap({
-      'disabled': this.disabled,
-      'selected': isChecked || isIndeterminate,
-      'unselected': !isChecked && !isIndeterminate,
-      'checked': isChecked,
-      'indeterminate': isIndeterminate,
+      disabled: this.disabled,
+      selected: isChecked || isIndeterminate,
+      unselected: !isChecked && !isIndeterminate,
+      checked: isChecked,
+      indeterminate: isIndeterminate,
       'prev-unselected': prevNone,
       'prev-checked': prevChecked,
       'prev-indeterminate': prevIndeterminate,
@@ -136,7 +129,7 @@ export class Checkbox extends checkboxBaseClass {
     });
 
     // Needed for closure conformance
-    const {ariaLabel, ariaInvalid} = this as ARIAMixinStrict;
+    const { ariaLabel, ariaInvalid } = this as ARIAMixinStrict;
     // Note: <input> needs to be rendered before the <svg> for
     // form.reportValidity() to work in Chrome.
     return html`

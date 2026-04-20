@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html, LitElement, nothing, PropertyValues} from 'lit';
-import {property} from 'lit/decorators.js';
-import {classMap} from 'lit/directives/class-map.js';
+import { html, LitElement, nothing, type PropertyValues } from 'lit';
+import { property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
-import {ARIAMixinStrict} from '../../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../../internal/aria/delegate.js';
+import type { ARIAMixinStrict } from '../../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../../internal/aria/delegate.js';
 
 // Separate variable needed for closure.
 const navigationDrawerModalBaseClass = mixinDelegatesAria(LitElement);
@@ -21,14 +21,14 @@ const navigationDrawerModalBaseClass = mixinDelegatesAria(LitElement);
  * Dispatched whenever the drawer opens or closes --bubbles --composed
  */
 export class NavigationDrawerModal extends navigationDrawerModalBaseClass {
-  @property({type: Boolean}) opened = false;
+  @property({ type: Boolean }) opened = false;
   @property() pivot: 'start' | 'end' = 'end';
 
   protected override render() {
     const ariaExpanded = this.opened ? 'true' : 'false';
     const ariaHidden = !this.opened ? 'true' : 'false';
     // Needed for closure conformance
-    const {ariaLabel, ariaModal} = this as ARIAMixinStrict;
+    const { ariaLabel, ariaModal } = this as ARIAMixinStrict;
     return html`
       <div
         class="md3-navigation-drawer-modal__scrim ${this.getScrimClasses()}"
@@ -63,14 +63,12 @@ export class NavigationDrawerModal extends navigationDrawerModalBaseClass {
     });
   }
 
-  protected override updated(
-    changedProperties: PropertyValues<NavigationDrawerModal>,
-  ) {
+  protected override updated(changedProperties: PropertyValues<NavigationDrawerModal>) {
     if (changedProperties.has('opened')) {
       setTimeout(() => {
         this.dispatchEvent(
           new CustomEvent('navigation-drawer-changed', {
-            detail: {opened: this.opened},
+            detail: { opened: this.opened },
             bubbles: true,
             composed: true,
           }),

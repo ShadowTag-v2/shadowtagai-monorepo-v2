@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START storage_get_metadata_modular]
-import { getStorage, ref, getMetadata } from "firebase/storage";
+import { getMetadata, getStorage, ref } from 'firebase/storage';
 
 // Create a reference to the file whose metadata we want to retrieve
 const storage = getStorage();

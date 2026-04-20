@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { normalizeServerUrl, extractFileContents } from '../../src/services/server-connection';
 import type { GraphNode } from '../../src/core/graph/types';
+import { extractFileContents, normalizeServerUrl } from '../../src/services/server-connection';
 
 describe('normalizeServerUrl', () => {
   it('adds http:// to localhost', () => {
@@ -29,7 +29,9 @@ describe('normalizeServerUrl', () => {
   });
 
   it('preserves existing https://', () => {
-    expect(normalizeServerUrl('https://gitnexus.example.com')).toBe('https://gitnexus.example.com/api');
+    expect(normalizeServerUrl('https://gitnexus.example.com')).toBe(
+      'https://gitnexus.example.com/api',
+    );
   });
 });
 
@@ -39,7 +41,11 @@ describe('extractFileContents', () => {
       {
         id: 'File:src/index.ts',
         label: 'File',
-        properties: { name: 'index.ts', filePath: 'src/index.ts', content: 'console.log("hello")' } as any,
+        properties: {
+          name: 'index.ts',
+          filePath: 'src/index.ts',
+          content: 'console.log("hello")',
+        } as any,
       },
     ];
     const result = extractFileContents(nodes);

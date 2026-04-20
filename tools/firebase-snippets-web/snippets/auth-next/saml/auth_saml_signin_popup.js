@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_saml_signin_popup_modular]
-import { getAuth, signInWithPopup, SAMLAuthProvider } from "firebase/auth";
+import { getAuth, SAMLAuthProvider, signInWithPopup } from 'firebase/auth';
 
 const auth = getAuth();
 signInWithPopup(auth, provider)
@@ -13,7 +13,8 @@ signInWithPopup(auth, provider)
     // User is signed in.
     // Provider data available from the result.user.getIdToken()
     // or from result.user.providerData
-  }).catch((error) => {
+  })
+  .catch((error) => {
     // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;

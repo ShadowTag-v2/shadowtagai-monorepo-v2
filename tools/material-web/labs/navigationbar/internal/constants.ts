@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {NavigationTabState} from '../../navigationtab/internal/state.js';
+import type { NavigationTabState } from '../../navigationtab/internal/state.js';
 
 /**
  * MDCNavigationTabInteractionEventDetail provides details for the interaction
@@ -17,5 +17,4 @@ export interface MDCNavigationTabInteractionEventDetail {
 /**
  * NavigationTabInteractionEvent is the custom event for the interaction event.
  */
-export type NavigationTabInteractionEvent =
-  CustomEvent<MDCNavigationTabInteractionEventDetail>;
+export type NavigationTabInteractionEvent = CustomEvent<MDCNavigationTabInteractionEventDetail>;

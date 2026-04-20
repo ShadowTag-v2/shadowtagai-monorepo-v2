@@ -1,16 +1,16 @@
 export interface Task {
-    id: string;
-    title: string;
-    body?: string;
-    completed: boolean;
-    metadata?: Record<string, any>;
+  id: string;
+  title: string;
+  body?: string;
+  completed: boolean;
+  metadata?: Record<string, any>;
 }
 
 export interface TaskSource {
-    getNextTask(): Promise<Task | null>;
-    markComplete(id: string): Promise<void>;
-    countRemaining(): Promise<number>;
-    getTask(id: string): Promise<Task | null>;
+  getNextTask(): Promise<Task | null>;
+  markComplete(id: string): Promise<void>;
+  countRemaining(): Promise<number>;
+  getTask(id: string): Promise<Task | null>;
 }
 
 /**

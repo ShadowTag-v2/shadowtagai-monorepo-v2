@@ -1,5 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
-
+document.addEventListener('DOMContentLoaded', () => {
   // Setup CSS for the wrapper and the banner
   var styleTag = document.createElement('style');
   styleTag.innerHTML = `
@@ -80,7 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Create the Banner
   var banner = document.createElement('div');
   banner.className = 'theme-migration-banner';
-  banner.innerHTML = '⚠️ <strong>Archived Docs:</strong> Visit <a href="https://mcp-toolbox.dev/">mcp-toolbox.dev</a> for the latest version.';
+  banner.innerHTML =
+    '⚠️ <strong>Archived Docs:</strong> Visit <a href="https://mcp-toolbox.dev/">mcp-toolbox.dev</a> for the latest version.';
   wrapper.appendChild(banner);
 
   // Inject the wrapper into the center information column
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (contentArea) {
     contentArea.prepend(wrapper);
   } else {
-    console.warn("Could not find the main content column to inject the banner.");
+    console.warn('Could not find the main content column to inject the banner.');
   }
 
   // Calculate navbar height synchronously to correctly offset the sticky wrapper

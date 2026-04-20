@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {property} from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 
-import {SharedFab} from './shared.js';
+import { SharedFab } from './shared.js';
 
 /**
  * The variants available to non-branded FABs.
@@ -23,9 +23,9 @@ export class Fab extends SharedFab {
   protected override getRenderClasses() {
     return {
       ...super.getRenderClasses(),
-      'primary': this.variant === 'primary',
-      'secondary': this.variant === 'secondary',
-      'tertiary': this.variant === 'tertiary',
+      primary: this.variant === 'primary',
+      secondary: this.variant === 'secondary',
+      tertiary: this.variant === 'tertiary',
     };
   }
 }

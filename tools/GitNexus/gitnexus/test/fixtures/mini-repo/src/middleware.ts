@@ -1,5 +1,5 @@
-import { sanitize } from './validator';
 import { logMessage } from './logger';
+import { sanitize } from './validator';
 
 export function processRequest(input: string): string {
   const clean = sanitize(input);

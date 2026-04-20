@@ -8,19 +8,19 @@
  * CORS is restricted to localhost, private/LAN networks, and the deployed site.
  */
 
-import express from 'express';
 import cors from 'cors';
-import path from 'path';
+import express from 'express';
 import fs from 'fs/promises';
-import { loadMeta, listRegisteredRepos } from '../storage/repo-manager.js';
-import { executeQuery, closeLbug, withLbugDb } from '../core/lbug/lbug-adapter.js';
+import path from 'path';
+import type { GraphNode, GraphRelationship } from '../core/graph/types.js';
+import { closeLbug, executeQuery, withLbugDb } from '../core/lbug/lbug-adapter.js';
 import { NODE_TABLES } from '../core/lbug/schema.js';
-import { GraphNode, GraphRelationship } from '../core/graph/types.js';
 import { searchFTSFromLbug } from '../core/search/bm25-index.js';
 import { hybridSearch } from '../core/search/hybrid-search.js';
 // Embedding imports are lazy (dynamic import) to avoid loading onnxruntime-node
 // at server startup — crashes on unsupported Node ABI versions (#89)
 import { LocalBackend } from '../mcp/local/local-backend.js';
+import { listRegisteredRepos, loadMeta } from '../storage/repo-manager.js';
 import { mountMCPEndpoints } from './mcp-http.js';
 
 /**
@@ -47,13 +47,13 @@ export const isAllowedOrigin = (origin: string | undefined): boolean => {
   }
 
   if (
-    origin.startsWith('http://localhost:')
-    || origin === 'http://localhost'
-    || origin.startsWith('http://127.0.0.1:')
-    || origin === 'http://127.0.0.1'
-    || origin.startsWith('http://[::1]:')
-    || origin === 'http://[::1]'
-    || origin === 'https://gitnexus.vercel.app'
+    origin.startsWith('http://localhost:') ||
+    origin === 'http://localhost' ||
+    origin.startsWith('http://127.0.0.1:') ||
+    origin === 'http://127.0.0.1' ||
+    origin.startsWith('http://[::1]:') ||
+    origin === 'http://[::1]' ||
+    origin === 'https://gitnexus.vercel.app'
   ) {
     return true;
   }
@@ -75,7 +75,7 @@ export const isAllowedOrigin = (origin: string | undefined): boolean => {
   if (protocol !== 'http:' && protocol !== 'https:') return false;
 
   const octets = hostname.split('.').map(Number);
-  if (octets.length !== 4 || octets.some(o => !Number.isInteger(o) || o < 0 || o > 255)) {
+  if (octets.length !== 4 || octets.some((o) => !Number.isInteger(o) || o < 0 || o > 255)) {
     return false;
   }
 
@@ -91,7 +91,10 @@ export const isAllowedOrigin = (origin: string | undefined): boolean => {
   return false;
 };
 
-const buildGraph = async (): Promise<{ nodes: GraphNode[]; relationships: GraphRelationship[] }> => {
+const buildGraph = async (): Promise<{
+  nodes: GraphNode[];
+  relationships: GraphRelationship[];
+}> => {
   const nodes: GraphNode[] = [];
   for (const table of NODE_TABLES) {
     try {
@@ -137,7 +140,7 @@ const buildGraph = async (): Promise<{ nodes: GraphNode[]; relationships: GraphR
 
   const relationships: GraphRelationship[] = [];
   const relRows = await executeQuery(
-    `MATCH (a)-[r:CodeRelation]->(b) RETURN a.id AS sourceId, b.id AS targetId, r.type AS type, r.confidence AS confidence, r.reason AS reason, r.step AS step`
+    `MATCH (a)-[r:CodeRelation]->(b) RETURN a.id AS sourceId, b.id AS targetId, r.type AS type, r.confidence AS confidence, r.reason AS reason, r.step AS step`,
   );
   for (const row of relRows) {
     relationships.push({
@@ -177,15 +180,17 @@ export const createServer = async (port: number, host: string = '127.0.0.1') => 
 
   // CORS: allow localhost, private/LAN networks, and the deployed site.
   // Non-browser requests (curl, server-to-server) have no origin and are allowed.
-  app.use(cors({
-    origin: (origin, callback) => {
-      if (isAllowedOrigin(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    }
-  }));
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        if (isAllowedOrigin(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
+    }),
+  );
   app.use(express.json({ limit: '10mb' }));
 
   // Initialize MCP backend (multi-repo, shared across all MCP sessions)
@@ -197,7 +202,7 @@ export const createServer = async (port: number, host: string = '127.0.0.1') => 
   const resolveRepo = async (repoName?: string) => {
     const repos = await listRegisteredRepos();
     if (repos.length === 0) return null;
-    if (repoName) return repos.find(r => r.name === repoName) || null;
+    if (repoName) return repos.find((r) => r.name === repoName) || null;
     return repos[0]; // default to first
   };
 
@@ -205,10 +210,15 @@ export const createServer = async (port: number, host: string = '127.0.0.1') => 
   app.get('/api/repos', async (_req, res) => {
     try {
       const repos = await listRegisteredRepos();
-      res.json(repos.map(r => ({
-        name: r.name, path: r.path, indexedAt: r.indexedAt,
-        lastCommit: r.lastCommit, stats: r.stats,
-      })));
+      res.json(
+        repos.map((r) => ({
+          name: r.name,
+          path: r.path,
+          indexedAt: r.indexedAt,
+          lastCommit: r.lastCommit,
+          stats: r.stats,
+        })),
+      );
     } catch (err: any) {
       res.status(500).json({ error: err.message || 'Failed to list repos' });
     }
@@ -366,7 +376,9 @@ export const createServer = async (port: number, host: string = '127.0.0.1') => 
       }
       res.json(result);
     } catch (err: any) {
-      res.status(statusFromError(err)).json({ error: err.message || 'Failed to query process detail' });
+      res
+        .status(statusFromError(err))
+        .json({ error: err.message || 'Failed to query process detail' });
     }
   });
 
@@ -396,7 +408,9 @@ export const createServer = async (port: number, host: string = '127.0.0.1') => 
       }
       res.json(result);
     } catch (err: any) {
-      res.status(statusFromError(err)).json({ error: err.message || 'Failed to query cluster detail' });
+      res
+        .status(statusFromError(err))
+        .json({ error: err.message || 'Failed to query cluster detail' });
     }
   });
 

@@ -1,38 +1,66 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
-  NODE_TABLES,
-  REL_TABLE_NAME,
-  REL_TYPES,
+  CLASS_SCHEMA,
+  CODE_ELEMENT_SCHEMA,
+  COMMUNITY_SCHEMA,
+  CREATE_VECTOR_INDEX_QUERY,
+  EMBEDDING_SCHEMA,
   EMBEDDING_TABLE_NAME,
-  NODE_SCHEMA_QUERIES,
-  REL_SCHEMA_QUERIES,
-  SCHEMA_QUERIES,
   FILE_SCHEMA,
   FOLDER_SCHEMA,
   FUNCTION_SCHEMA,
-  CLASS_SCHEMA,
   INTERFACE_SCHEMA,
   METHOD_SCHEMA,
-  CODE_ELEMENT_SCHEMA,
-  COMMUNITY_SCHEMA,
+  NODE_SCHEMA_QUERIES,
+  NODE_TABLES,
   PROCESS_SCHEMA,
+  REL_SCHEMA_QUERIES,
+  REL_TABLE_NAME,
+  REL_TYPES,
   RELATION_SCHEMA,
-  EMBEDDING_SCHEMA,
-  CREATE_VECTOR_INDEX_QUERY,
+  SCHEMA_QUERIES,
 } from '../../src/core/lbug/schema.js';
 
 describe('LadybugDB Schema', () => {
   describe('NODE_TABLES', () => {
     it('includes all core node types', () => {
-      const core = ['File', 'Folder', 'Function', 'Class', 'Interface', 'Method', 'CodeElement', 'Community', 'Process'];
+      const core = [
+        'File',
+        'Folder',
+        'Function',
+        'Class',
+        'Interface',
+        'Method',
+        'CodeElement',
+        'Community',
+        'Process',
+      ];
       for (const t of core) {
         expect(NODE_TABLES).toContain(t);
       }
     });
 
     it('includes multi-language node types', () => {
-      const multiLang = ['Struct', 'Enum', 'Macro', 'Typedef', 'Union', 'Namespace', 'Trait', 'Impl',
-        'TypeAlias', 'Const', 'Static', 'Property', 'Record', 'Delegate', 'Annotation', 'Constructor', 'Template', 'Module'];
+      const multiLang = [
+        'Struct',
+        'Enum',
+        'Macro',
+        'Typedef',
+        'Union',
+        'Namespace',
+        'Trait',
+        'Impl',
+        'TypeAlias',
+        'Const',
+        'Static',
+        'Property',
+        'Record',
+        'Delegate',
+        'Annotation',
+        'Constructor',
+        'Template',
+        'Module',
+      ];
       for (const t of multiLang) {
         expect(NODE_TABLES).toContain(t);
       }
@@ -46,7 +74,16 @@ describe('LadybugDB Schema', () => {
 
   describe('REL_TYPES', () => {
     it('includes all expected relationship types', () => {
-      const expected = ['CONTAINS', 'DEFINES', 'IMPORTS', 'CALLS', 'EXTENDS', 'IMPLEMENTS', 'MEMBER_OF', 'STEP_IN_PROCESS'];
+      const expected = [
+        'CONTAINS',
+        'DEFINES',
+        'IMPORTS',
+        'CALLS',
+        'EXTENDS',
+        'IMPLEMENTS',
+        'MEMBER_OF',
+        'STEP_IN_PROCESS',
+      ];
       for (const t of expected) {
         expect(REL_TYPES).toContain(t);
       }
@@ -178,7 +215,9 @@ describe('LadybugDB Schema', () => {
 
     it('node schemas come before relation schemas in SCHEMA_QUERIES', () => {
       const relIndex = SCHEMA_QUERIES.indexOf(RELATION_SCHEMA);
-      const lastNodeIndex = SCHEMA_QUERIES.indexOf(NODE_SCHEMA_QUERIES[NODE_SCHEMA_QUERIES.length - 1]);
+      const lastNodeIndex = SCHEMA_QUERIES.indexOf(
+        NODE_SCHEMA_QUERIES[NODE_SCHEMA_QUERIES.length - 1],
+      );
       expect(relIndex).toBeGreaterThan(lastNodeIndex);
     });
   });

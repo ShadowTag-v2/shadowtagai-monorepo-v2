@@ -1,5 +1,5 @@
-import { LLMAdapter } from "../adapter";
-import type { LLMProvider, LLMRequest, LLMResponse, LLMTool, WebSearchResult } from "../types";
+import { LLMAdapter } from '../adapter';
+import type { LLMProvider, LLMRequest, LLMResponse, LLMTool, WebSearchResult } from '../types';
 
 interface OpenRouterRequestPayload {
   model: string;
@@ -8,7 +8,7 @@ interface OpenRouterRequestPayload {
   temperature?: number;
   plugins?: OpenRouterPlugin[];
   reasoning?: {
-    effort: "low" | "medium" | "high";
+    effort: 'low' | 'medium' | 'high';
   };
 }
 
@@ -70,16 +70,16 @@ interface OpenRouterResponse {
 
 export class OpenRouterAdapter extends LLMAdapter {
   private readonly baseUrl: string;
-  private readonly defaultReasoning?: "low" | "medium" | "high";
+  private readonly defaultReasoning?: 'low' | 'medium' | 'high';
 
   constructor(provider: LLMProvider) {
     super(provider);
 
     if (!provider.apiKey) {
-      throw new Error("OpenRouter provider requires an API key");
+      throw new Error('OpenRouter provider requires an API key');
     }
 
-    this.baseUrl = (provider.baseUrl ?? "https://openrouter.ai/api/alpha").replace(/\/$/, "");
+    this.baseUrl = (provider.baseUrl ?? 'https://openrouter.ai/api/alpha').replace(/\/$/, '');
     this.defaultReasoning = provider.reasoningEffort;
   }
 
@@ -109,7 +109,7 @@ export class OpenRouterAdapter extends LLMAdapter {
       input:
         messages.length > 0
           ? messages
-          : (request.messages[request.messages.length - 1]?.content ?? ""),
+          : (request.messages[request.messages.length - 1]?.content ?? ''),
     };
 
     if (request.maxTokens !== undefined) {
@@ -144,7 +144,7 @@ export class OpenRouterAdapter extends LLMAdapter {
     const messages: Array<{ role: string; content: string }> = [];
 
     if (request.systemInstruction) {
-      messages.push({ role: "system", content: request.systemInstruction });
+      messages.push({ role: 'system', content: request.systemInstruction });
     }
 
     request.messages.forEach((message) => {
@@ -156,7 +156,7 @@ export class OpenRouterAdapter extends LLMAdapter {
 
   private ensureWebSearchTool(request: LLMRequest): LLMRequest {
     const existingTools = Array.isArray(request.tools) ? [...request.tools] : [];
-    const hasWebSearch = existingTools.some((tool) => tool.type === "webSearch");
+    const hasWebSearch = existingTools.some((tool) => tool.type === 'webSearch');
 
     if (hasWebSearch) {
       return request;
@@ -164,25 +164,25 @@ export class OpenRouterAdapter extends LLMAdapter {
 
     return {
       ...request,
-      tools: [...existingTools, { type: "webSearch" }],
+      tools: [...existingTools, { type: 'webSearch' }],
     };
   }
 
   private async executeRequest(payload: OpenRouterRequestPayload): Promise<OpenRouterResponse> {
     const url = `${this.baseUrl}/chat/completions`; // not /responses
     const res = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${this.provider.apiKey}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-      redirect: "follow",
+      redirect: 'follow',
     });
 
     if (!res.ok) {
       // Read body once
-      const raw = await res.text().catch(() => "");
+      const raw = await res.text().catch(() => '');
       let parsed: any = null;
       try {
         parsed = raw ? JSON.parse(raw) : null;
@@ -202,7 +202,7 @@ export class OpenRouterAdapter extends LLMAdapter {
         body: parsed ?? raw,
       };
 
-      console.error("OpenRouter API error response:", errorDetails);
+      console.error('OpenRouter API error response:', errorDetails);
 
       throw new Error(
         `OpenRouter API error: ${res.status} ${res.statusText} [${errCode}] - ${errMsg}`,
@@ -214,7 +214,7 @@ export class OpenRouterAdapter extends LLMAdapter {
   }
   private extractText(response: OpenRouterResponse): string {
     if (!response) {
-      return "";
+      return '';
     }
 
     const fragments: string[] = [];
@@ -229,7 +229,7 @@ export class OpenRouterAdapter extends LLMAdapter {
       fragments,
     );
 
-    return fragments.join("\n").trim();
+    return fragments.join('\n').trim();
   }
 
   private collectTextFragments(value: unknown, fragments: string[]): void {
@@ -237,7 +237,7 @@ export class OpenRouterAdapter extends LLMAdapter {
       return;
     }
 
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       const trimmed = value.trim();
       if (trimmed) {
         fragments.push(trimmed);
@@ -250,9 +250,9 @@ export class OpenRouterAdapter extends LLMAdapter {
       return;
     }
 
-    if (typeof value === "object") {
+    if (typeof value === 'object') {
       const maybeText = (value as { text?: unknown }).text;
-      if (typeof maybeText === "string") {
+      if (typeof maybeText === 'string') {
         const trimmed = maybeText.trim();
         if (trimmed) {
           fragments.push(trimmed);
@@ -271,7 +271,7 @@ export class OpenRouterAdapter extends LLMAdapter {
     }
   }
 
-  private extractUsage(response: OpenRouterResponse): LLMResponse["usage"] {
+  private extractUsage(response: OpenRouterResponse): LLMResponse['usage'] {
     const usage = response.usage ?? response.metrics?.tokens;
     if (!usage) {
       return undefined;
@@ -303,8 +303,8 @@ export class OpenRouterAdapter extends LLMAdapter {
     const llmOutput = this.extractText(response);
     const cleanedLLMOutput = this.stripCitationSection(
       llmOutput
-        .replace(/(?:,\s*)?\[(?:\d+(?:,\s*\d+)*)\]/g, "")
-        .replace(/[ \t]{2,}/g, " ")
+        .replace(/(?:,\s*)?\[(?:\d+(?:,\s*\d+)*)\]/g, '')
+        .replace(/[ \t]{2,}/g, ' ')
         .trim(),
     );
     const webSearchResults = this.mergeWebResults(
@@ -339,20 +339,20 @@ export class OpenRouterAdapter extends LLMAdapter {
     let index = 0;
 
     pluginEntries
-      .filter((plugin) => plugin?.id === "web")
+      .filter((plugin) => plugin?.id === 'web')
       .forEach((plugin) => {
         const pluginResults = Array.isArray(plugin.results) ? plugin.results : [];
         pluginResults.forEach((result) => {
-          const url = typeof result.url === "string" ? result.url : undefined;
+          const url = typeof result.url === 'string' ? result.url : undefined;
           if (!url || seen.has(url)) {
             return;
           }
 
           seen.add(url);
           results.push({
-            title: typeof result.title === "string" ? result.title : "",
+            title: typeof result.title === 'string' ? result.title : '',
             url,
-            originalUrl: typeof result.original_url === "string" ? result.original_url : url,
+            originalUrl: typeof result.original_url === 'string' ? result.original_url : url,
             index: index++,
           });
         });
@@ -373,7 +373,7 @@ export class OpenRouterAdapter extends LLMAdapter {
           annotations
             .filter(
               (annotation) =>
-                annotation.type === "url_citation" && typeof annotation.url === "string",
+                annotation.type === 'url_citation' && typeof annotation.url === 'string',
             )
             .forEach((annotation) => {
               const url = annotation.url as string;
@@ -382,7 +382,7 @@ export class OpenRouterAdapter extends LLMAdapter {
               }
               seen.add(url);
               results.push({
-                title: typeof annotation.title === "string" ? annotation.title : "",
+                title: typeof annotation.title === 'string' ? annotation.title : '',
                 url,
                 originalUrl: url,
                 index: index++,
@@ -437,8 +437,8 @@ export class OpenRouterAdapter extends LLMAdapter {
 
   private mapToolToPlugin(tool: LLMTool): OpenRouterPlugin | null {
     switch (tool.type) {
-      case "webSearch":
-        return { id: "web", max_results: 3 };
+      case 'webSearch':
+        return { id: 'web', max_results: 3 };
       default:
         return null;
     }

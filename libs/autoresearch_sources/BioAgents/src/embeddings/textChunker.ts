@@ -1,4 +1,4 @@
-import { CONFIG } from "./config";
+import { CONFIG } from './config';
 
 export interface Chunk {
   title: string;
@@ -46,15 +46,15 @@ export class TextChunker {
       let actualEnd = end;
       if (end < text.length) {
         const boundaries = [
-          text.lastIndexOf("\n\n", end), // Paragraph break
-          text.lastIndexOf("\n", end), // Line break
-          text.lastIndexOf(". ", end), // Sentence end
-          text.lastIndexOf(" ", end), // Word boundary
+          text.lastIndexOf('\n\n', end), // Paragraph break
+          text.lastIndexOf('\n', end), // Line break
+          text.lastIndexOf('. ', end), // Sentence end
+          text.lastIndexOf(' ', end), // Word boundary
         ];
 
         const bestBoundary = boundaries.find((pos) => pos > start + this.maxChunkSize * 0.5);
         if (bestBoundary && bestBoundary > start) {
-          actualEnd = bestBoundary + (text[bestBoundary] === "." ? 2 : 1);
+          actualEnd = bestBoundary + (text[bestBoundary] === '.' ? 2 : 1);
         }
       }
 

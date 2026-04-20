@@ -16,13 +16,15 @@
 
 import chardet from 'chardet';
 import iconv from 'iconv-lite';
+
 const { decode } = iconv;
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
-import { apiClientFactory } from '../../utility/index.js';
-import { MAX_CONTENT_SIZE } from '../../utility/gcs_helpers.js';
 import { detectBufferType } from '../../utility/file_type_detector.js';
+import { MAX_CONTENT_SIZE } from '../../utility/gcs_helpers.js';
+import { apiClientFactory } from '../../utility/index.js';
 import { logger } from '../../utility/logger.js';
 
 const inputSchema = {

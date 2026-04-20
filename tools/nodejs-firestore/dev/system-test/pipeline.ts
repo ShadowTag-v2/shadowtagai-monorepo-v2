@@ -12,165 +12,156 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import type { DocumentData, DocumentReference, Pipelines } from '@google-cloud/firestore';
+import { expect, use } from 'chai';
+import * as chaiAsPromised from 'chai-as-promised';
+import { afterEach, describe, it } from 'mocha';
 import {
-  DocumentData,
-  DocumentReference,
-  Pipelines,
-} from '@google-cloud/firestore';
-
+  type CollectionReference,
+  FieldPath,
+  FieldValue,
+  Filter,
+  type Firestore,
+  GeoPoint,
+  Timestamp,
+} from '../src';
 import {
-  map,
-  array,
-  field,
-  ceil,
-  floor,
-  exp,
-  xor,
   AggregateFunction,
-  arrayGet,
-  timestampToUnixMicros,
-  timestampToUnixSeconds,
-  unixMicrosToTimestamp,
-  timestampToUnixMillis,
-  timestampSubtract,
-  timestampAdd,
-  byteLength,
-  multiply,
-  sum,
-  maximum,
-  first,
-  last,
-  arrayAgg,
-  arrayAggDistinct,
-  descending,
-  FunctionExpression,
-  minimum,
-  count,
-  countIf,
-  arrayLength,
-  stringContains,
-  charLength,
-  divide,
-  mod,
-  reverse,
-  trim,
-  ltrim,
-  rtrim,
-  stringIndexOf,
-  stringRepeat,
-  stringReplaceAll,
-  stringReplaceOne,
-  toUpper,
-  toLower,
-  vectorLength,
-  exists,
-  isAbsent,
-  ifError,
-  isError,
-  substring,
-  documentId,
-  arrayContainsAll,
-  mapRemove,
-  mapMerge,
-  unixSecondsToTimestamp,
-  unixMillisToTimestamp,
+  abs,
   add,
   and,
+  array,
+  arrayAgg,
+  arrayAggDistinct,
+  arrayConcat,
   arrayContains,
+  arrayContainsAll,
   arrayContainsAny,
-  arrayReverse,
   arrayFirst,
   arrayFirstN,
+  arrayGet,
   arrayIndexOf,
   arrayIndexOfAll,
   arrayLast,
   arrayLastIndexOf,
   arrayLastN,
+  arrayLength,
   arrayMaximum,
   arrayMaximumN,
   arrayMinimum,
   arrayMinimumN,
-  average,
-  countAll,
-  endsWith,
-  equal,
-  greaterThan,
-  like,
-  lessThan,
-  notEqual,
+  arrayReverse,
+  arraySum,
   ascending,
-  not,
-  or,
-  regexContains,
-  regexMatch,
-  regexFind,
-  regexFindAll,
-  startsWith,
-  stringConcat,
-  subtract,
-  cosineDistance,
-  dotProduct,
-  euclideanDistance,
-  mapGet,
-  mapEntries,
-  mapKeys,
-  mapSet,
-  mapValues,
-  lessThanOrEqual,
-  equalAny,
-  notEqualAny,
-  logicalMinimum,
-  logicalMaximum,
+  average,
+  byteLength,
+  ceil,
+  charLength,
+  collectionId,
+  concat,
   conditional,
   constant,
-  PipelineResult,
-  PipelineSnapshot,
-  Pipeline,
+  cosineDistance,
+  count,
+  countAll,
   countDistinct,
+  countIf,
+  currentTimestamp,
+  descending,
+  divide,
+  documentId,
+  dotProduct,
+  endsWith,
+  equal,
+  equalAny,
+  euclideanDistance,
+  exists,
+  exp,
+  FunctionExpression,
+  field,
+  first,
+  floor,
+  greaterThan,
+  ifAbsent,
+  ifError,
+  isAbsent,
+  isError,
+  isType,
+  join,
+  last,
+  length,
+  lessThan,
+  lessThanOrEqual,
+  like,
+  ln,
+  log10,
+  logicalMaximum,
+  logicalMinimum,
+  ltrim,
+  map,
+  mapEntries,
+  mapGet,
+  mapKeys,
+  mapMerge,
+  mapRemove,
+  mapSet,
+  mapValues,
+  maximum,
+  minimum,
+  mod,
+  multiply,
+  not,
+  notEqual,
+  notEqualAny,
+  or,
+  type Pipeline,
+  PipelineResult,
+  type PipelineSnapshot,
   pow,
   rand,
+  regexContains,
+  regexFind,
+  regexFindAll,
+  regexMatch,
+  reverse,
   round,
-  trunc,
-  collectionId,
-  length,
-  ln,
-  sqrt,
-  stringReverse,
-  abs,
-  log10,
-  concat,
-  ifAbsent,
-  join,
-  arraySum,
-  currentTimestamp,
-  arrayConcat,
-  type,
-  isType,
-  timestampTruncate,
+  rtrim,
   split,
+  sqrt,
+  startsWith,
+  stringConcat,
+  stringContains,
+  stringIndexOf,
+  stringRepeat,
+  stringReplaceAll,
+  stringReplaceOne,
+  stringReverse,
+  substring,
+  subtract,
+  sum,
+  timestampAdd,
+  timestampSubtract,
+  timestampToUnixMicros,
+  timestampToUnixMillis,
+  timestampToUnixSeconds,
+  timestampTruncate,
+  toLower,
+  toUpper,
+  trim,
+  trunc,
+  type,
+  unixMicrosToTimestamp,
+  unixMillisToTimestamp,
+  unixSecondsToTimestamp,
+  vectorLength,
+  xor,
   // TODO(new-expression): add new expression imports above this line
 } from '../src/pipelines';
-
-import {
-  Timestamp,
-  GeoPoint,
-  Filter,
-  FieldValue,
-  CollectionReference,
-  FieldPath,
-  Firestore,
-} from '../src';
-
-import {expect, use} from 'chai';
-import * as chaiAsPromised from 'chai-as-promised';
-
-import {afterEach, describe, it} from 'mocha';
 import '../test/util/mocha_extensions';
-import {verifyInstance} from '../test/util/helpers';
-import {getTestDb, getTestRoot} from './firestore';
-
-import {Firestore as InternalFirestore} from '../src';
-import {ServiceError} from 'google-gax';
+import type { ServiceError } from 'google-gax';
+import type { Firestore as InternalFirestore } from '../src';
+import { verifyInstance } from '../test/util/helpers';
+import { getTestDb, getTestRoot } from './firestore';
 
 use(chaiAsPromised);
 
@@ -195,20 +186,14 @@ describe.skipClassic('Pipeline class', () => {
   }
 
   function expectResults(result: PipelineSnapshot, ...docs: string[]): void;
-  function expectResults(
-    result: PipelineSnapshot,
-    ...data: DocumentData[]
-  ): void;
-  function expectResults(
-    result: PipelineSnapshot,
-    ...data: DocumentData[] | string[]
-  ): void {
+  function expectResults(result: PipelineSnapshot, ...data: DocumentData[]): void;
+  function expectResults(result: PipelineSnapshot, ...data: DocumentData[] | string[]): void {
     if (data.length > 0) {
       if (typeof data[0] === 'string') {
-        const actualIds = result.results.map(result => result.id);
+        const actualIds = result.results.map((result) => result.id);
         expect(actualIds).to.deep.equal(data);
       } else {
-        result.results.forEach(r => {
+        result.results.forEach((r) => {
           expect(r.data()).to.deep.equal(data.shift());
         });
       }
@@ -218,7 +203,7 @@ describe.skipClassic('Pipeline class', () => {
   }
 
   async function setupBookDocs(): Promise<CollectionReference<DocumentData>> {
-    const bookDocs: {[id: string]: DocumentData} = {
+    const bookDocs: { [id: string]: DocumentData } = {
       book1: {
         title: "The Hitchhiker's Guide to the Galaxy",
         author: 'Douglas Adams',
@@ -229,9 +214,9 @@ describe.skipClassic('Pipeline class', () => {
         awards: {
           hugo: true,
           nebula: false,
-          others: {unknown: {year: 1980}},
+          others: { unknown: { year: 1980 } },
         },
-        nestedField: {'level.1': {'level.2': true}},
+        nestedField: { 'level.1': { 'level.2': true } },
         embedding: FieldValue.vector([10, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
       },
       book2: {
@@ -241,7 +226,7 @@ describe.skipClassic('Pipeline class', () => {
         published: 1813,
         rating: 4.5,
         tags: ['classic', 'social commentary', 'love'],
-        awards: {none: true},
+        awards: { none: true },
         embedding: FieldValue.vector([1, 10, 1, 1, 1, 1, 1, 1, 1, 1]),
       },
       book3: {
@@ -251,7 +236,7 @@ describe.skipClassic('Pipeline class', () => {
         published: 1967,
         rating: 4.3,
         tags: ['family', 'history', 'fantasy'],
-        awards: {nobel: true, nebula: false},
+        awards: { nobel: true, nebula: false },
         embedding: FieldValue.vector([1, 1, 10, 1, 1, 1, 1, 1, 1, 1]),
       },
       book4: {
@@ -261,7 +246,7 @@ describe.skipClassic('Pipeline class', () => {
         published: 1954,
         rating: 4.7,
         tags: ['adventure', 'magic', 'epic'],
-        awards: {hugo: false, nebula: false},
+        awards: { hugo: false, nebula: false },
         remarks: null,
         cost: NaN,
         embedding: FieldValue.vector([1, 1, 1, 10, 1, 1, 1, 1, 1, 1]),
@@ -273,7 +258,7 @@ describe.skipClassic('Pipeline class', () => {
         published: 1985,
         rating: 4.1,
         tags: ['feminism', 'totalitarianism', 'resistance'],
-        awards: {'arthur c. clarke': true, 'booker prize': false},
+        awards: { 'arthur c. clarke': true, 'booker prize': false },
         embedding: FieldValue.vector([1, 1, 1, 1, 10, 1, 1, 1, 1, 1]),
       },
       book6: {
@@ -283,7 +268,7 @@ describe.skipClassic('Pipeline class', () => {
         published: 1866,
         rating: 4.3,
         tags: ['philosophy', 'crime', 'redemption'],
-        awards: {none: true},
+        awards: { none: true },
         embedding: FieldValue.vector([1, 1, 1, 1, 1, 10, 1, 1, 1, 1]),
       },
       book7: {
@@ -293,7 +278,7 @@ describe.skipClassic('Pipeline class', () => {
         published: 1960,
         rating: 4.2,
         tags: ['racism', 'injustice', 'coming-of-age'],
-        awards: {pulitzer: true},
+        awards: { pulitzer: true },
         embedding: FieldValue.vector([1, 1, 1, 1, 1, 1, 10, 1, 1, 1]),
       },
       book8: {
@@ -303,7 +288,7 @@ describe.skipClassic('Pipeline class', () => {
         published: 1949,
         rating: 4.2,
         tags: ['surveillance', 'totalitarianism', 'propaganda'],
-        awards: {prometheus: true},
+        awards: { prometheus: true },
         embedding: FieldValue.vector([1, 1, 1, 1, 1, 1, 1, 10, 1, 1]),
       },
       book9: {
@@ -313,7 +298,7 @@ describe.skipClassic('Pipeline class', () => {
         published: 1925,
         rating: 4.0,
         tags: ['wealth', 'american dream', 'love'],
-        awards: {none: true},
+        awards: { none: true },
         embedding: FieldValue.vector([1, 1, 1, 1, 1, 1, 1, 1, 10, 1]),
       },
       book10: {
@@ -323,7 +308,7 @@ describe.skipClassic('Pipeline class', () => {
         published: 1965,
         rating: 4.6,
         tags: ['politics', 'desert', 'ecology'],
-        awards: {hugo: true, nebula: true},
+        awards: { hugo: true, nebula: true },
         embedding: FieldValue.vector([1, 1, 1, 1, 1, 1, 1, 1, 1, 10]),
       },
     };
@@ -340,19 +325,12 @@ describe.skipClassic('Pipeline class', () => {
 
   describe('pipeline results', () => {
     it('empty snapshot as expected', async () => {
-      const snapshot = await firestore
-        .pipeline()
-        .collection(randomCol.path)
-        .limit(0)
-        .execute();
+      const snapshot = await firestore.pipeline().collection(randomCol.path).limit(0).execute();
       expect(snapshot.results.length).to.equal(0);
     });
 
     it('full snapshot as expected', async () => {
-      const ppl = firestore
-        .pipeline()
-        .collection(randomCol.path)
-        .sort(ascending('__name__'));
+      const ppl = firestore.pipeline().collection(randomCol.path).sort(ascending('__name__'));
       const snapshot = await ppl.execute();
       expect(snapshot.results.length).to.equal(10);
       expect(snapshot.pipeline).to.equal(ppl);
@@ -372,11 +350,7 @@ describe.skipClassic('Pipeline class', () => {
     });
 
     it('result equals works', async () => {
-      const ppl = firestore
-        .pipeline()
-        .collection(randomCol.path)
-        .sort(ascending('title'))
-        .limit(1);
+      const ppl = firestore.pipeline().collection(randomCol.path).sort(ascending('title')).limit(1);
       const snapshot1 = await ppl.execute();
       const snapshot2 = await ppl.execute();
       expect(snapshot1.results.length).to.equal(1);
@@ -417,7 +391,7 @@ describe.skipClassic('Pipeline class', () => {
 
       let snapshot = await pipeline.execute();
       expect(snapshot.results.length).to.equal(10);
-      snapshot.results.forEach(doc => {
+      snapshot.results.forEach((doc) => {
         expect(doc.createTime).to.not.be.null;
         expect(doc.updateTime).to.not.be.null;
 
@@ -433,14 +407,14 @@ describe.skipClassic('Pipeline class', () => {
       });
 
       const wb = firestore.batch();
-      snapshot.results.forEach(doc => {
-        wb.update(doc.ref!, {newField: 'value'});
+      snapshot.results.forEach((doc) => {
+        wb.update(doc.ref!, { newField: 'value' });
       });
       await wb.commit();
 
       snapshot = await pipeline.execute();
       expect(snapshot.results.length).to.equal(10);
-      snapshot.results.forEach(doc => {
+      snapshot.results.forEach((doc) => {
         expect(doc.createTime).to.not.be.null;
         expect(doc.updateTime).to.not.be.null;
         expect(doc.createTime!.toDate().valueOf()).to.be.lessThan(
@@ -480,7 +454,7 @@ describe.skipClassic('Pipeline class', () => {
 
       expect(snapshot.results.length).to.equal(8);
 
-      snapshot.results.forEach(doc => {
+      snapshot.results.forEach((doc) => {
         expect(doc.updateTime).to.be.undefined;
         expect(doc.createTime).to.be.undefined;
       });
@@ -489,10 +463,7 @@ describe.skipClassic('Pipeline class', () => {
 
   describe('pipeline explain', () => {
     it('mode: analyze, format: text', async () => {
-      const ppl = firestore
-        .pipeline()
-        .collection(randomCol.path)
-        .sort(ascending('__name__'));
+      const ppl = firestore.pipeline().collection(randomCol.path).sort(ascending('__name__'));
 
       const snapshot = await ppl.execute({
         explainOptions: {
@@ -529,10 +500,7 @@ describe.skipClassic('Pipeline class', () => {
     });
 
     it('mode: analyze, format: unspecified', async () => {
-      const ppl = firestore
-        .pipeline()
-        .collection(randomCol.path)
-        .sort(ascending('__name__'));
+      const ppl = firestore.pipeline().collection(randomCol.path).sort(ascending('__name__'));
       const snapshot = await ppl.execute({
         explainOptions: {
           mode: 'analyze',
@@ -566,10 +534,7 @@ describe.skipClassic('Pipeline class', () => {
     });
 
     it('mode: execute, format: text', async () => {
-      const ppl = firestore
-        .pipeline()
-        .collection(randomCol.path)
-        .sort(ascending('__name__'));
+      const ppl = firestore.pipeline().collection(randomCol.path).sort(ascending('__name__'));
       const snapshot = await ppl.execute({
         explainOptions: {
           mode: 'execute',
@@ -596,10 +561,7 @@ describe.skipClassic('Pipeline class', () => {
     });
 
     it('mode: unspecified, format: text', async () => {
-      const ppl = firestore
-        .pipeline()
-        .collection(randomCol.path)
-        .sort(ascending('__name__'));
+      const ppl = firestore.pipeline().collection(randomCol.path).sort(ascending('__name__'));
       const snapshot = await ppl.execute({
         explainOptions: {
           mode: undefined,
@@ -627,10 +589,7 @@ describe.skipClassic('Pipeline class', () => {
 
   describe('pipeline sources', () => {
     it('supports CollectionReference as source', async () => {
-      const snapshot = await firestore
-        .pipeline()
-        .collection(randomCol)
-        .execute();
+      const snapshot = await firestore.pipeline().collection(randomCol).execute();
       expect(snapshot.results.length).to.equal(10);
     });
 
@@ -639,17 +598,13 @@ describe.skipClassic('Pipeline class', () => {
 
       const snapshot = await firestore
         .pipeline()
-        .documents([
-          `${collName}/book1`,
-          randomCol.doc('book2'),
-          randomCol.doc('book3').path,
-        ])
+        .documents([`${collName}/book1`, randomCol.doc('book2'), randomCol.doc('book3').path])
         .execute();
       expect(snapshot.results.length).to.equal(3);
     });
 
     it('reject CollectionReference for another DB', async () => {
-      const db2 = getTestDb({databaseId: 'notDefault', projectId: 'random'});
+      const db2 = getTestDb({ databaseId: 'notDefault', projectId: 'random' });
 
       expect(() => {
         firestore.pipeline().collection(db2.collection('foo'));
@@ -659,7 +614,7 @@ describe.skipClassic('Pipeline class', () => {
     });
 
     it('reject DocumentReference for another DB', async () => {
-      const db2 = getTestDb({databaseId: 'notDefault', projectId: 'random'});
+      const db2 = getTestDb({ databaseId: 'notDefault', projectId: 'random' });
 
       expect(() => {
         firestore.pipeline().documents([db2.doc('foo/bar')]);
@@ -670,14 +625,8 @@ describe.skipClassic('Pipeline class', () => {
 
     it('supports collection group as source', async () => {
       const randomSubCollectionId = Math.random().toString(16).slice(2);
-      const doc1 = await randomCol
-        .doc('book1')
-        .collection(randomSubCollectionId)
-        .add({order: 1});
-      const doc2 = await randomCol
-        .doc('book2')
-        .collection(randomSubCollectionId)
-        .add({order: 2});
+      const doc1 = await randomCol.doc('book1').collection(randomSubCollectionId).add({ order: 1 });
+      const doc2 = await randomCol.doc('book2').collection(randomSubCollectionId).add({ order: 2 });
       const snapshot = await firestore
         .pipeline()
         .collectionGroup(randomSubCollectionId)
@@ -869,7 +818,7 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
 
       const data = snapshot.results[0].data();
-      expect(data).to.deep.equal({foo: {number: 1}});
+      expect(data).to.deep.equal({ foo: { number: 1 } });
       await customFirestore.terminate();
     });
 
@@ -886,7 +835,7 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
 
       const data = snapshot.results[0].data();
-      expect(data).to.deep.equal({foo: [1, 3]});
+      expect(data).to.deep.equal({ foo: [1, 3] });
       await customFirestore.terminate();
     });
 
@@ -896,15 +845,7 @@ describe.skipClassic('Pipeline class', () => {
         .collection(randomCol.path)
         .sort(field('rating').descending())
         .limit(1)
-        .select(
-          'title',
-          'author',
-          'genre',
-          'rating',
-          'published',
-          'tags',
-          'awards',
-        )
+        .select('title', 'author', 'genre', 'rating', 'published', 'tags', 'awards')
         .addFields(
           array([
             1,
@@ -958,7 +899,7 @@ describe.skipClassic('Pipeline class', () => {
         published: 1954,
         rating: 4.7,
         tags: ['adventure', 'magic', 'epic'],
-        awards: {hugo: false, nebula: false},
+        awards: { hugo: false, nebula: false },
         metadataArray: [
           1,
           2,
@@ -989,7 +930,7 @@ describe.skipClassic('Pipeline class', () => {
           .collection(randomCol.path)
           .aggregate(countAll().as('count'))
           .execute();
-        expectResults(snapshot, {count: 10});
+        expectResults(snapshot, { count: 10 });
 
         snapshot = await firestore
           .pipeline()
@@ -1039,7 +980,7 @@ describe.skipClassic('Pipeline class', () => {
             accumulators: [countAll().as('count')],
           })
           .execute();
-        expectResults(snapshot, {count: 10});
+        expectResults(snapshot, { count: 10 });
 
         snapshot = await firestore
           .pipeline()
@@ -1133,9 +1074,9 @@ describe.skipClassic('Pipeline class', () => {
           .execute();
         expectResults(
           snapshot,
-          {avgRating: 4.7, genre: 'Fantasy'},
-          {avgRating: 4.5, genre: 'Romance'},
-          {avgRating: 4.4, genre: 'Science Fiction'},
+          { avgRating: 4.7, genre: 'Fantasy' },
+          { avgRating: 4.5, genre: 'Romance' },
+          { avgRating: 4.4, genre: 'Science Fiction' },
         );
       });
 
@@ -1183,7 +1124,7 @@ describe.skipClassic('Pipeline class', () => {
           .collection(randomCol.path)
           .aggregate(countDistinct('genre').as('distinctGenres'))
           .execute();
-        expectResults(snapshot, {distinctGenres: 8});
+        expectResults(snapshot, { distinctGenres: 8 });
       });
     });
 
@@ -1197,16 +1138,16 @@ describe.skipClassic('Pipeline class', () => {
           .execute();
         expectResults(
           snapshot,
-          {genre: 'Dystopian', author: 'George Orwell'},
-          {genre: 'Dystopian', author: 'Margaret Atwood'},
-          {genre: 'Fantasy', author: 'J.R.R. Tolkien'},
-          {genre: 'Magical Realism', author: 'Gabriel García Márquez'},
-          {genre: 'Modernist', author: 'F. Scott Fitzgerald'},
-          {genre: 'Psychological Thriller', author: 'Fyodor Dostoevsky'},
-          {genre: 'Romance', author: 'Jane Austen'},
-          {genre: 'Science Fiction', author: 'Douglas Adams'},
-          {genre: 'Science Fiction', author: 'Frank Herbert'},
-          {genre: 'Southern Gothic', author: 'Harper Lee'},
+          { genre: 'Dystopian', author: 'George Orwell' },
+          { genre: 'Dystopian', author: 'Margaret Atwood' },
+          { genre: 'Fantasy', author: 'J.R.R. Tolkien' },
+          { genre: 'Magical Realism', author: 'Gabriel García Márquez' },
+          { genre: 'Modernist', author: 'F. Scott Fitzgerald' },
+          { genre: 'Psychological Thriller', author: 'Fyodor Dostoevsky' },
+          { genre: 'Romance', author: 'Jane Austen' },
+          { genre: 'Science Fiction', author: 'Douglas Adams' },
+          { genre: 'Science Fiction', author: 'Frank Herbert' },
+          { genre: 'Southern Gothic', author: 'Harper Lee' },
         );
       });
 
@@ -1216,24 +1157,21 @@ describe.skipClassic('Pipeline class', () => {
           .collection(randomCol.path)
           .distinct('genre', 'author')
           .sort({
-            orderings: [
-              field('genre').ascending(),
-              field('author').ascending(),
-            ],
+            orderings: [field('genre').ascending(), field('author').ascending()],
           })
           .execute();
         expectResults(
           snapshot,
-          {genre: 'Dystopian', author: 'George Orwell'},
-          {genre: 'Dystopian', author: 'Margaret Atwood'},
-          {genre: 'Fantasy', author: 'J.R.R. Tolkien'},
-          {genre: 'Magical Realism', author: 'Gabriel García Márquez'},
-          {genre: 'Modernist', author: 'F. Scott Fitzgerald'},
-          {genre: 'Psychological Thriller', author: 'Fyodor Dostoevsky'},
-          {genre: 'Romance', author: 'Jane Austen'},
-          {genre: 'Science Fiction', author: 'Douglas Adams'},
-          {genre: 'Science Fiction', author: 'Frank Herbert'},
-          {genre: 'Southern Gothic', author: 'Harper Lee'},
+          { genre: 'Dystopian', author: 'George Orwell' },
+          { genre: 'Dystopian', author: 'Margaret Atwood' },
+          { genre: 'Fantasy', author: 'J.R.R. Tolkien' },
+          { genre: 'Magical Realism', author: 'Gabriel García Márquez' },
+          { genre: 'Modernist', author: 'F. Scott Fitzgerald' },
+          { genre: 'Psychological Thriller', author: 'Fyodor Dostoevsky' },
+          { genre: 'Romance', author: 'Jane Austen' },
+          { genre: 'Science Fiction', author: 'Douglas Adams' },
+          { genre: 'Science Fiction', author: 'Frank Herbert' },
+          { genre: 'Southern Gothic', author: 'Harper Lee' },
         );
       });
     });
@@ -1252,18 +1190,18 @@ describe.skipClassic('Pipeline class', () => {
             title: "The Hitchhiker's Guide to the Galaxy",
             author: 'Douglas Adams',
           },
-          {title: 'The Great Gatsby', author: 'F. Scott Fitzgerald'},
-          {title: 'Dune', author: 'Frank Herbert'},
-          {title: 'Crime and Punishment', author: 'Fyodor Dostoevsky'},
+          { title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' },
+          { title: 'Dune', author: 'Frank Herbert' },
+          { title: 'Crime and Punishment', author: 'Fyodor Dostoevsky' },
           {
             title: 'One Hundred Years of Solitude',
             author: 'Gabriel García Márquez',
           },
-          {title: '1984', author: 'George Orwell'},
-          {title: 'To Kill a Mockingbird', author: 'Harper Lee'},
-          {title: 'The Lord of the Rings', author: 'J.R.R. Tolkien'},
-          {title: 'Pride and Prejudice', author: 'Jane Austen'},
-          {title: "The Handmaid's Tale", author: 'Margaret Atwood'},
+          { title: '1984', author: 'George Orwell' },
+          { title: 'To Kill a Mockingbird', author: 'Harper Lee' },
+          { title: 'The Lord of the Rings', author: 'J.R.R. Tolkien' },
+          { title: 'Pride and Prejudice', author: 'Jane Austen' },
+          { title: "The Handmaid's Tale", author: 'Margaret Atwood' },
         );
       });
 
@@ -1281,7 +1219,7 @@ describe.skipClassic('Pipeline class', () => {
         const snapshot = await firestore
           .pipeline()
           .collection(randomCol.path)
-          .select({selections: ['title', field('author').as('auth0r')]})
+          .select({ selections: ['title', field('author').as('auth0r')] })
           .sort(field('auth0r').ascending())
           .limit(2)
           .execute();
@@ -1291,7 +1229,7 @@ describe.skipClassic('Pipeline class', () => {
             title: "The Hitchhiker's Guide to the Galaxy",
             auth0r: 'Douglas Adams',
           },
-          {title: 'The Great Gatsby', auth0r: 'F. Scott Fitzgerald'},
+          { title: 'The Great Gatsby', auth0r: 'F. Scott Fitzgerald' },
         );
       });
     });
@@ -1317,7 +1255,7 @@ describe.skipClassic('Pipeline class', () => {
             author: 'F. Scott Fitzgerald',
             foo: 'bar',
           },
-          {title: 'Dune', author: 'Frank Herbert', foo: 'bar'},
+          { title: 'Dune', author: 'Frank Herbert', foo: 'bar' },
           {
             title: 'Crime and Punishment',
             author: 'Fyodor Dostoevsky',
@@ -1328,7 +1266,7 @@ describe.skipClassic('Pipeline class', () => {
             author: 'Gabriel García Márquez',
             foo: 'bar',
           },
-          {title: '1984', author: 'George Orwell', foo: 'bar'},
+          { title: '1984', author: 'George Orwell', foo: 'bar' },
           {
             title: 'To Kill a Mockingbird',
             author: 'Harper Lee',
@@ -1339,7 +1277,7 @@ describe.skipClassic('Pipeline class', () => {
             author: 'J.R.R. Tolkien',
             foo: 'bar',
           },
-          {title: 'Pride and Prejudice', author: 'Jane Austen', foo: 'bar'},
+          { title: 'Pride and Prejudice', author: 'Jane Austen', foo: 'bar' },
           {
             title: "The Handmaid's Tale",
             author: 'Margaret Atwood',
@@ -1381,7 +1319,7 @@ describe.skipClassic('Pipeline class', () => {
             author: 'F. Scott Fitzgerald',
             foo: 'bar',
           },
-          {title: 'Dune', author: 'Frank Herbert', foo: 'bar'},
+          { title: 'Dune', author: 'Frank Herbert', foo: 'bar' },
           {
             title: 'Crime and Punishment',
             author: 'Fyodor Dostoevsky',
@@ -1392,7 +1330,7 @@ describe.skipClassic('Pipeline class', () => {
             author: 'Gabriel García Márquez',
             foo: 'bar',
           },
-          {title: '1984', author: 'George Orwell', foo: 'bar'},
+          { title: '1984', author: 'George Orwell', foo: 'bar' },
           {
             title: 'To Kill a Mockingbird',
             author: 'Harper Lee',
@@ -1403,7 +1341,7 @@ describe.skipClassic('Pipeline class', () => {
             author: 'J.R.R. Tolkien',
             foo: 'bar',
           },
-          {title: 'Pride and Prejudice', author: 'Jane Austen', foo: 'bar'},
+          { title: 'Pride and Prejudice', author: 'Jane Austen', foo: 'bar' },
           {
             title: "The Handmaid's Tale",
             author: 'Margaret Atwood',
@@ -1430,21 +1368,21 @@ describe.skipClassic('Pipeline class', () => {
           {
             title: 'The Great Gatsby',
           },
-          {title: 'Dune'},
+          { title: 'Dune' },
           {
             title: 'Crime and Punishment',
           },
           {
             title: 'One Hundred Years of Solitude',
           },
-          {title: '1984'},
+          { title: '1984' },
           {
             title: 'To Kill a Mockingbird',
           },
           {
             title: 'The Lord of the Rings',
           },
-          {title: 'Pride and Prejudice'},
+          { title: 'Pride and Prejudice' },
           {
             title: "The Handmaid's Tale",
           },
@@ -1469,21 +1407,21 @@ describe.skipClassic('Pipeline class', () => {
           {
             title: 'The Great Gatsby',
           },
-          {title: 'Dune'},
+          { title: 'Dune' },
           {
             title: 'Crime and Punishment',
           },
           {
             title: 'One Hundred Years of Solitude',
           },
-          {title: '1984'},
+          { title: '1984' },
           {
             title: 'To Kill a Mockingbird',
           },
           {
             title: 'The Lord of the Rings',
           },
-          {title: 'Pride and Prejudice'},
+          { title: 'Pride and Prejudice' },
           {
             title: "The Handmaid's Tale",
           },
@@ -1508,21 +1446,21 @@ describe.skipClassic('Pipeline class', () => {
           {
             title: 'The Great Gatsby',
           },
-          {title: 'Dune'},
+          { title: 'Dune' },
           {
             title: 'Crime and Punishment',
           },
           {
             title: 'One Hundred Years of Solitude',
           },
-          {title: '1984'},
+          { title: '1984' },
           {
             title: 'To Kill a Mockingbird',
           },
           {
             title: 'The Lord of the Rings',
           },
-          {title: 'Pride and Prejudice'},
+          { title: 'Pride and Prejudice' },
           {
             title: "The Handmaid's Tale",
           },
@@ -1547,21 +1485,21 @@ describe.skipClassic('Pipeline class', () => {
           {
             title: 'The Great Gatsby',
           },
-          {title: 'Dune'},
+          { title: 'Dune' },
           {
             title: 'Crime and Punishment',
           },
           {
             title: 'One Hundred Years of Solitude',
           },
-          {title: '1984'},
+          { title: '1984' },
           {
             title: 'To Kill a Mockingbird',
           },
           {
             title: 'The Lord of the Rings',
           },
-          {title: 'Pride and Prejudice'},
+          { title: 'Pride and Prejudice' },
           {
             title: "The Handmaid's Tale",
           },
@@ -1604,21 +1542,17 @@ describe.skipClassic('Pipeline class', () => {
           .pipeline()
           .collection(randomCol.path)
           .where(
-            or(
-              equal('genre', 'Romance'),
-              equal('genre', 'Dystopian'),
-              equal('genre', 'Fantasy'),
-            ),
+            or(equal('genre', 'Romance'), equal('genre', 'Dystopian'), equal('genre', 'Fantasy')),
           )
           .sort(ascending('title'))
           .select('title')
           .execute();
         expectResults(
           snapshot,
-          {title: '1984'},
-          {title: 'Pride and Prejudice'},
-          {title: "The Handmaid's Tale"},
-          {title: 'The Lord of the Rings'},
+          { title: '1984' },
+          { title: 'Pride and Prejudice' },
+          { title: "The Handmaid's Tale" },
+          { title: 'The Lord of the Rings' },
         );
       });
 
@@ -1638,9 +1572,9 @@ describe.skipClassic('Pipeline class', () => {
           .execute();
         expectResults(
           snapshot,
-          {title: 'Pride and Prejudice'},
-          {title: 'The Lord of the Rings'},
-          {title: "The Handmaid's Tale"},
+          { title: 'Pride and Prejudice' },
+          { title: 'The Lord of the Rings' },
+          { title: "The Handmaid's Tale" },
         );
       });
 
@@ -1671,9 +1605,9 @@ describe.skipClassic('Pipeline class', () => {
           .execute();
         expectResults(
           snapshot,
-          {title: '1984', author: 'George Orwell'},
-          {title: 'To Kill a Mockingbird', author: 'Harper Lee'},
-          {title: 'The Lord of the Rings', author: 'J.R.R. Tolkien'},
+          { title: '1984', author: 'George Orwell' },
+          { title: 'To Kill a Mockingbird', author: 'Harper Lee' },
+          { title: 'The Lord of the Rings', author: 'J.R.R. Tolkien' },
         );
       });
 
@@ -1684,15 +1618,15 @@ describe.skipClassic('Pipeline class', () => {
           .sort({
             orderings: [field('author').ascending()],
           })
-          .offset({offset: 5})
-          .limit({limit: 3})
+          .offset({ offset: 5 })
+          .limit({ limit: 3 })
           .select('title', 'author')
           .execute();
         expectResults(
           snapshot,
-          {title: '1984', author: 'George Orwell'},
-          {title: 'To Kill a Mockingbird', author: 'Harper Lee'},
-          {title: 'The Lord of the Rings', author: 'J.R.R. Tolkien'},
+          { title: '1984', author: 'George Orwell' },
+          { title: 'To Kill a Mockingbird', author: 'Harper Lee' },
+          { title: 'The Lord of the Rings', author: 'J.R.R. Tolkien' },
         );
       });
     });
@@ -1719,9 +1653,7 @@ describe.skipClassic('Pipeline class', () => {
           expect(typeof err['stack']).to.equal('string');
           expect(err['metadata'] instanceof Object).to.be.true;
 
-          expect(err['message']).to.equal(
-            `${err.code} INVALID_ARGUMENT: ${err.details}`,
-          );
+          expect(err['message']).to.equal(`${err.code} INVALID_ARGUMENT: ${err.details}`);
         }
       });
 
@@ -1742,7 +1674,7 @@ describe.skipClassic('Pipeline class', () => {
 
           expect.fail('expected pipeline.execute() to throw');
         } catch (e: unknown) {
-          const err = e as {[k: string]: unknown};
+          const err = e as { [k: string]: unknown };
           expect(err instanceof Error).to.be.true;
 
           expect(err['code']).to.equal(8);
@@ -1751,20 +1683,17 @@ describe.skipClassic('Pipeline class', () => {
           expect(typeof err['stack']).to.equal('string');
           expect(err['metadata'] instanceof Object).to.be.true;
 
-          expect(err['message']).to.equal(
-            `${err.code} RESOURCE_EXHAUSTED: ${err.details}`,
-          );
+          expect(err['message']).to.equal(`${err.code} RESOURCE_EXHAUSTED: ${err.details}`);
 
           expect('statusDetails' in err).to.be.true;
           expect(Array.isArray(err['statusDetails'])).to.be.true;
 
           const statusDetails = err['statusDetails'] as Array<object>;
 
-          const foundExplainStats = statusDetails.find(x => {
+          const foundExplainStats = statusDetails.find((x) => {
             return (
               'type_url' in x &&
-              x['type_url'] ===
-                'type.googleapis.com/google.firestore.v1.ExplainStats'
+              x['type_url'] === 'type.googleapis.com/google.firestore.v1.ExplainStats'
             );
           });
           expect(foundExplainStats).to.not.be.undefined;
@@ -1854,10 +1783,7 @@ describe.skipClassic('Pipeline class', () => {
           .pipeline()
           .collection(randomCol.path)
           .select('title', 'author', 'rating')
-          .rawStage('aggregate', [
-            {averageRating: field('rating').average()},
-            {},
-          ])
+          .rawStage('aggregate', [{ averageRating: field('rating').average() }, {}])
           .execute();
         expectResults(snapshot, {
           averageRating: 4.3100000000000005,
@@ -1869,7 +1795,7 @@ describe.skipClassic('Pipeline class', () => {
           .pipeline()
           .collection(randomCol.path)
           .select('title', 'author', 'rating')
-          .rawStage('distinct', [{rating: field('rating')}])
+          .rawStage('distinct', [{ rating: field('rating') }])
           .sort(field('rating').descending())
           .execute();
         expectResults(
@@ -1904,11 +1830,7 @@ describe.skipClassic('Pipeline class', () => {
           .collection(randomCol)
           .rawStage(
             'find_nearest',
-            [
-              field('embedding'),
-              FieldValue.vector([10, 1, 2, 1, 1, 1, 1, 1, 1, 1]),
-              'euclidean',
-            ],
+            [field('embedding'), FieldValue.vector([10, 1, 2, 1, 1, 1, 1, 1, 1, 1]), 'euclidean'],
             {
               distance_field: field('computedDistance'),
               limit: 2,
@@ -1941,7 +1863,7 @@ describe.skipClassic('Pipeline class', () => {
         expectResults(snapshot, {
           hugo: true,
           nebula: false,
-          others: {unknown: {year: 1980}},
+          others: { unknown: { year: 1980 } },
         });
       });
 
@@ -1961,7 +1883,7 @@ describe.skipClassic('Pipeline class', () => {
           .execute();
         expectResults(snapshot, {
           foo: 'bar',
-          baz: {title: "The Hitchhiker's Guide to the Galaxy"},
+          baz: { title: "The Hitchhiker's Guide to the Galaxy" },
         });
       });
 
@@ -1970,23 +1892,19 @@ describe.skipClassic('Pipeline class', () => {
           .pipeline()
           .collection(randomCol.path)
           .where(equal('title', "The Hitchhiker's Guide to the Galaxy"))
-          .replaceWith({map: 'awards'})
+          .replaceWith({ map: 'awards' })
           .execute();
         expectResults(snapshot, {
           hugo: true,
           nebula: false,
-          others: {unknown: {year: 1980}},
+          others: { unknown: { year: 1980 } },
         });
       });
     });
 
     describe('sample stage', () => {
       it('run pipeline with sample limit of 3', async () => {
-        const snapshot = await firestore
-          .pipeline()
-          .collection(randomCol.path)
-          .sample(3)
-          .execute();
+        const snapshot = await firestore.pipeline().collection(randomCol.path).sample(3).execute();
         expect(snapshot.results.length).to.equal(3);
       });
 
@@ -1994,7 +1912,7 @@ describe.skipClassic('Pipeline class', () => {
         const snapshot = await firestore
           .pipeline()
           .collection(randomCol.path)
-          .sample({documents: 3})
+          .sample({ documents: 3 })
           .execute();
         expect(snapshot.results.length).to.equal(3);
       });
@@ -2006,7 +1924,7 @@ describe.skipClassic('Pipeline class', () => {
           const snapshot = await firestore
             .pipeline()
             .collection(randomCol.path)
-            .sample({percentage: 0.6})
+            .sample({ percentage: 0.6 })
             .execute();
 
           avgSize += snapshot.results.length;
@@ -2053,7 +1971,7 @@ describe.skipClassic('Pipeline class', () => {
         const snapshot = await firestore
           .pipeline()
           .collection(randomCol.path)
-          .union({other: firestore.pipeline().collection(randomCol.path)})
+          .union({ other: firestore.pipeline().collection(randomCol.path) })
           .sort(field(FieldPath.documentId()).ascending())
           .execute();
         expectResults(
@@ -2114,9 +2032,9 @@ describe.skipClassic('Pipeline class', () => {
             awards: {
               hugo: true,
               nebula: false,
-              others: {unknown: {year: 1980}},
+              others: { unknown: { year: 1980 } },
             },
-            nestedField: {'level.1': {'level.2': true}},
+            nestedField: { 'level.1': { 'level.2': true } },
           },
           {
             title: "The Hitchhiker's Guide to the Galaxy",
@@ -2129,9 +2047,9 @@ describe.skipClassic('Pipeline class', () => {
             awards: {
               hugo: true,
               nebula: false,
-              others: {unknown: {year: 1980}},
+              others: { unknown: { year: 1980 } },
             },
-            nestedField: {'level.1': {'level.2': true}},
+            nestedField: { 'level.1': { 'level.2': true } },
           },
           {
             title: "The Hitchhiker's Guide to the Galaxy",
@@ -2144,9 +2062,9 @@ describe.skipClassic('Pipeline class', () => {
             awards: {
               hugo: true,
               nebula: false,
-              others: {unknown: {year: 1980}},
+              others: { unknown: { year: 1980 } },
             },
-            nestedField: {'level.1': {'level.2': true}},
+            nestedField: { 'level.1': { 'level.2': true } },
           },
         );
       });
@@ -2183,9 +2101,9 @@ describe.skipClassic('Pipeline class', () => {
             awards: {
               hugo: true,
               nebula: false,
-              others: {unknown: {year: 1980}},
+              others: { unknown: { year: 1980 } },
             },
-            nestedField: {'level.1': {'level.2': true}},
+            nestedField: { 'level.1': { 'level.2': true } },
             tagsIndex: 0,
           },
           {
@@ -2199,9 +2117,9 @@ describe.skipClassic('Pipeline class', () => {
             awards: {
               hugo: true,
               nebula: false,
-              others: {unknown: {year: 1980}},
+              others: { unknown: { year: 1980 } },
             },
-            nestedField: {'level.1': {'level.2': true}},
+            nestedField: { 'level.1': { 'level.2': true } },
             tagsIndex: 1,
           },
           {
@@ -2215,9 +2133,9 @@ describe.skipClassic('Pipeline class', () => {
             awards: {
               hugo: true,
               nebula: false,
-              others: {unknown: {year: 1980}},
+              others: { unknown: { year: 1980 } },
             },
-            nestedField: {'level.1': {'level.2': true}},
+            nestedField: { 'level.1': { 'level.2': true } },
             tagsIndex: 2,
           },
         );
@@ -2254,9 +2172,9 @@ describe.skipClassic('Pipeline class', () => {
             awards: {
               hugo: true,
               nebula: false,
-              others: {unknown: {year: 1980}},
+              others: { unknown: { year: 1980 } },
             },
-            nestedField: {'level.1': {'level.2': true}},
+            nestedField: { 'level.1': { 'level.2': true } },
           },
           {
             title: "The Hitchhiker's Guide to the Galaxy",
@@ -2269,9 +2187,9 @@ describe.skipClassic('Pipeline class', () => {
             awards: {
               hugo: true,
               nebula: false,
-              others: {unknown: {year: 1980}},
+              others: { unknown: { year: 1980 } },
             },
-            nestedField: {'level.1': {'level.2': true}},
+            nestedField: { 'level.1': { 'level.2': true } },
           },
           {
             title: "The Hitchhiker's Guide to the Galaxy",
@@ -2284,9 +2202,9 @@ describe.skipClassic('Pipeline class', () => {
             awards: {
               hugo: true,
               nebula: false,
-              others: {unknown: {year: 1980}},
+              others: { unknown: { year: 1980 } },
             },
-            nestedField: {'level.1': {'level.2': true}},
+            nestedField: { 'level.1': { 'level.2': true } },
           },
         );
       });
@@ -2326,9 +2244,9 @@ describe.skipClassic('Pipeline class', () => {
             awards: {
               hugo: true,
               nebula: false,
-              others: {unknown: {year: 1980}},
+              others: { unknown: { year: 1980 } },
             },
-            nestedField: {'level.1': {'level.2': true}},
+            nestedField: { 'level.1': { 'level.2': true } },
             tagsIndex: 0,
           },
           {
@@ -2342,9 +2260,9 @@ describe.skipClassic('Pipeline class', () => {
             awards: {
               hugo: true,
               nebula: false,
-              others: {unknown: {year: 1980}},
+              others: { unknown: { year: 1980 } },
             },
-            nestedField: {'level.1': {'level.2': true}},
+            nestedField: { 'level.1': { 'level.2': true } },
             tagsIndex: 1,
           },
           {
@@ -2358,9 +2276,9 @@ describe.skipClassic('Pipeline class', () => {
             awards: {
               hugo: true,
               nebula: false,
-              others: {unknown: {year: 1980}},
+              others: { unknown: { year: 1980 } },
             },
-            nestedField: {'level.1': {'level.2': true}},
+            nestedField: { 'level.1': { 'level.2': true } },
             tagsIndex: 2,
           },
         );
@@ -2369,9 +2287,11 @@ describe.skipClassic('Pipeline class', () => {
 
     describe('findNearest stage', () => {
       it('run pipeline with findNearest', async () => {
-        const measures: Array<
-          Pipelines.FindNearestStageOptions['distanceMeasure']
-        > = ['euclidean', 'dot_product', 'cosine'];
+        const measures: Array<Pipelines.FindNearestStageOptions['distanceMeasure']> = [
+          'euclidean',
+          'dot_product',
+          'cosine',
+        ];
         for (const measure of measures) {
           const snapshot = await firestore
             .pipeline()
@@ -2434,18 +2354,16 @@ describe.skipClassic('Pipeline class', () => {
         .collection(randomCol.path)
         .select(
           'title',
-          logicalMaximum(constant(1960), field('published'), 1961).as(
-            'published-safe',
-          ),
+          logicalMaximum(constant(1960), field('published'), 1961).as('published-safe'),
         )
         .sort(field('title').ascending())
         .limit(3)
         .execute();
       expectResults(
         snapshot,
-        {title: '1984', 'published-safe': 1961},
-        {title: 'Crime and Punishment', 'published-safe': 1961},
-        {title: 'Dune', 'published-safe': 1965},
+        { title: '1984', 'published-safe': 1961 },
+        { title: 'Crime and Punishment', 'published-safe': 1961 },
+        { title: 'Dune', 'published-safe': 1965 },
       );
     });
 
@@ -2455,18 +2373,16 @@ describe.skipClassic('Pipeline class', () => {
         .collection(randomCol.path)
         .select(
           'title',
-          logicalMinimum(constant(1960), field('published'), 1961).as(
-            'published-safe',
-          ),
+          logicalMinimum(constant(1960), field('published'), 1961).as('published-safe'),
         )
         .sort(field('title').ascending())
         .limit(3)
         .execute();
       expectResults(
         snapshot,
-        {title: '1984', 'published-safe': 1949},
-        {title: 'Crime and Punishment', 'published-safe': 1866},
-        {title: 'Dune', 'published-safe': 1960},
+        { title: '1984', 'published-safe': 1949 },
+        { title: 'Crime and Punishment', 'published-safe': 1866 },
+        { title: 'Dune', 'published-safe': 1960 },
       );
     });
 
@@ -2476,11 +2392,9 @@ describe.skipClassic('Pipeline class', () => {
         .collection(randomCol.path)
         .select(
           'title',
-          conditional(
-            lessThan(field('published'), 1960),
-            constant(1960),
-            field('published'),
-          ).as('published-safe'),
+          conditional(lessThan(field('published'), 1960), constant(1960), field('published')).as(
+            'published-safe',
+          ),
           field('rating')
             .greaterThanOrEqual(4.5)
             .conditional(constant('great'), constant('good'))
@@ -2491,13 +2405,13 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
       expectResults(
         snapshot,
-        {title: '1984', 'published-safe': 1960, rating: 'good'},
+        { title: '1984', 'published-safe': 1960, rating: 'good' },
         {
           title: 'Crime and Punishment',
           'published-safe': 1960,
           rating: 'good',
         },
-        {title: 'Dune', 'published-safe': 1965, rating: 'great'},
+        { title: 'Dune', 'published-safe': 1965, rating: 'great' },
       );
     });
 
@@ -2511,8 +2425,8 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
       expectResults(
         snapshot,
-        {title: "The Hitchhiker's Guide to the Galaxy"},
-        {title: 'One Hundred Years of Solitude'},
+        { title: "The Hitchhiker's Guide to the Galaxy" },
+        { title: 'One Hundred Years of Solitude' },
       );
     });
 
@@ -2520,15 +2434,10 @@ describe.skipClassic('Pipeline class', () => {
       const snapshot = await firestore
         .pipeline()
         .collection(randomCol.path)
-        .where(
-          notEqualAny(
-            'published',
-            [1965, 1925, 1949, 1960, 1866, 1985, 1954, 1967, 1979],
-          ),
-        )
+        .where(notEqualAny('published', [1965, 1925, 1949, 1960, 1866, 1985, 1954, 1967, 1979]))
         .select('title')
         .execute();
-      expectResults(snapshot, {title: 'Pride and Prejudice'});
+      expectResults(snapshot, { title: 'Pride and Prejudice' });
     });
 
     it('arrayContains works', async () => {
@@ -2553,8 +2462,8 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
       expectResults(
         snapshot,
-        {title: "The Hitchhiker's Guide to the Galaxy"},
-        {title: 'Pride and Prejudice'},
+        { title: "The Hitchhiker's Guide to the Galaxy" },
+        { title: 'Pride and Prejudice' },
       );
     });
 
@@ -2565,7 +2474,7 @@ describe.skipClassic('Pipeline class', () => {
         .where(arrayContainsAll('tags', ['adventure', 'magic']))
         .select('title')
         .execute();
-      expectResults(snapshot, {title: 'The Lord of the Rings'});
+      expectResults(snapshot, { title: 'The Lord of the Rings' });
     });
 
     it('arrayLength works', async () => {
@@ -2583,9 +2492,7 @@ describe.skipClassic('Pipeline class', () => {
         .pipeline()
         .collection(randomCol.path)
         .sort(ascending('author'))
-        .select(
-          field('author').stringConcat(' - ', field('title')).as('bookInfo'),
-        )
+        .select(field('author').stringConcat(' - ', field('title')).as('bookInfo'))
         .limit(1)
         .execute();
       expectResults(snapshot, {
@@ -2603,10 +2510,10 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
       expectResults(
         snapshot,
-        {title: 'The Great Gatsby'},
-        {title: "The Handmaid's Tale"},
-        {title: "The Hitchhiker's Guide to the Galaxy"},
-        {title: 'The Lord of the Rings'},
+        { title: 'The Great Gatsby' },
+        { title: "The Handmaid's Tale" },
+        { title: "The Hitchhiker's Guide to the Galaxy" },
+        { title: 'The Lord of the Rings' },
       );
     });
 
@@ -2620,8 +2527,8 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
       expectResults(
         snapshot,
-        {title: "The Hitchhiker's Guide to the Galaxy"},
-        {title: 'The Great Gatsby'},
+        { title: "The Hitchhiker's Guide to the Galaxy" },
+        { title: 'The Great Gatsby' },
       );
     });
 
@@ -2635,8 +2542,8 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
       expectResults(
         snapshot,
-        {title: "The Handmaid's Tale"},
-        {title: "The Hitchhiker's Guide to the Galaxy"},
+        { title: "The Handmaid's Tale" },
+        { title: "The Hitchhiker's Guide to the Galaxy" },
       );
     });
 
@@ -2703,9 +2610,9 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
       expectResults(
         snapshot,
-        {firstWordInTitle: '1984'},
-        {firstWordInTitle: 'Crime'},
-        {firstWordInTitle: 'Dune'},
+        { firstWordInTitle: '1984' },
+        { firstWordInTitle: 'Crime' },
+        { firstWordInTitle: 'Dune' },
       );
     });
 
@@ -2720,9 +2627,9 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
       expectResults(
         snapshot,
-        {wordsInTitle: ['1984']},
-        {wordsInTitle: ['Crime', 'and', 'Punishment']},
-        {wordsInTitle: ['Dune']},
+        { wordsInTitle: ['1984'] },
+        { wordsInTitle: ['Crime', 'and', 'Punishment'] },
+        { wordsInTitle: ['Dune'] },
       );
     });
 
@@ -2778,12 +2685,12 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
       expectResults(
         snapshot,
-        {rating: 4.3, title: 'Crime and Punishment'},
+        { rating: 4.3, title: 'Crime and Punishment' },
         {
           rating: 4.3,
           title: 'One Hundred Years of Solitude',
         },
-        {rating: 4.5, title: 'Pride and Prejudice'},
+        { rating: 4.5, title: 'Pride and Prejudice' },
       );
     });
 
@@ -2802,9 +2709,9 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
       expectResults(
         snapshot,
-        {title: 'Crime and Punishment'},
-        {title: 'Dune'},
-        {title: 'Pride and Prejudice'},
+        { title: 'Crime and Punishment' },
+        { title: 'Dune' },
+        { title: 'Pride and Prejudice' },
       );
     });
 
@@ -2818,13 +2725,8 @@ describe.skipClassic('Pipeline class', () => {
           equal('rating', null).as('ratingIsNull'),
           equal('rating', NaN).as('ratingIsNaN'),
           isError(divide(constant(1), constant(0))).as('isError'),
-          ifError(divide(constant(1), constant(0)), constant('was error')).as(
-            'ifError',
-          ),
-          ifError(
-            divide(constant(1), constant(0)).greaterThan(1),
-            constant(true),
-          )
+          ifError(divide(constant(1), constant(0)), constant('was error')).as('ifError'),
+          ifError(divide(constant(1), constant(0)).greaterThan(1), constant(true))
             .not()
             .as('ifErrorBooleanExpression'),
           isAbsent('foo').as('isAbsent'),
@@ -2856,9 +2758,7 @@ describe.skipClassic('Pipeline class', () => {
           field('rating').equal(null).as('ratingIsNull'),
           field('rating').equal(NaN).as('ratingIsNaN'),
           divide(constant(1), constant(0)).isError().as('isError'),
-          divide(constant(1), constant(0))
-            .ifError(constant('was error'))
-            .as('ifError'),
+          divide(constant(1), constant(0)).ifError(constant('was error')).as('ifError'),
           divide(constant(1), constant(0))
             .greaterThan(1)
             .ifError(constant(true))
@@ -2898,9 +2798,9 @@ describe.skipClassic('Pipeline class', () => {
         {
           hugoAward: true,
           title: "The Hitchhiker's Guide to the Galaxy",
-          others: {unknown: {year: 1980}},
+          others: { unknown: { year: 1980 } },
         },
-        {hugoAward: true, title: 'Dune'},
+        { hugoAward: true, title: 'Dune' },
       );
     });
 
@@ -2909,38 +2809,36 @@ describe.skipClassic('Pipeline class', () => {
         .pipeline()
         .collection(randomCol.path)
         .limit(1)
-        .replaceWith(map({existingField: map({foo: 1})}))
+        .replaceWith(map({ existingField: map({ foo: 1 }) }))
         .addFields(
           mapSet('existingField', 'bar', 2).as('modifiedField'),
           mapSet(map({}), 'a', 1).as('simple'),
-          mapSet(map({a: 1}), 'b', 2).as('add'),
-          mapSet(map({a: 1}), 'a', 2).as('overwrite'),
-          mapSet(map({a: 1, b: 2}), 'a', 3, 'c', 4).as('multi'),
-          mapSet(map({a: 1}), 'a', field('non_existent')).as('remove'),
-          mapSet(map({a: 1}), 'b', null).as('setNull'),
-          mapSet(map({a: {b: 1}}), 'a.b', 2).as('setDotted'),
+          mapSet(map({ a: 1 }), 'b', 2).as('add'),
+          mapSet(map({ a: 1 }), 'a', 2).as('overwrite'),
+          mapSet(map({ a: 1, b: 2 }), 'a', 3, 'c', 4).as('multi'),
+          mapSet(map({ a: 1 }), 'a', field('non_existent')).as('remove'),
+          mapSet(map({ a: 1 }), 'b', null).as('setNull'),
+          mapSet(map({ a: { b: 1 } }), 'a.b', 2).as('setDotted'),
           mapSet(map({}), '', 'empty').as('setEmptyKey'),
-          mapSet(map({a: 1}), 'b', add(constant(1), constant(2))).as(
-            'setExprVal',
-          ),
-          mapSet(map({}), 'obj', map({hidden: true})).as('setNestedMap'),
+          mapSet(map({ a: 1 }), 'b', add(constant(1), constant(2))).as('setExprVal'),
+          mapSet(map({}), 'obj', map({ hidden: true })).as('setNestedMap'),
           mapSet(map({}), '~!@#$%^&*()_+', 'special').as('setSpecialChars'),
         )
         .execute();
       expectResults(snapshot, {
-        existingField: {foo: 1},
-        modifiedField: {foo: 1, bar: 2},
-        simple: {a: 1},
-        add: {a: 1, b: 2},
-        overwrite: {a: 2},
-        multi: {a: 3, b: 2, c: 4},
+        existingField: { foo: 1 },
+        modifiedField: { foo: 1, bar: 2 },
+        simple: { a: 1 },
+        add: { a: 1, b: 2 },
+        overwrite: { a: 2 },
+        multi: { a: 3, b: 2, c: 4 },
         remove: {},
-        setNull: {a: 1, b: null},
-        setDotted: {a: {b: 1}, 'a.b': 2},
-        setEmptyKey: {'': 'empty'},
-        setExprVal: {a: 1, b: 3},
-        setNestedMap: {obj: {hidden: true}},
-        setSpecialChars: {'~!@#$%^&*()_+': 'special'},
+        setNull: { a: 1, b: null },
+        setDotted: { a: { b: 1 }, 'a.b': 2 },
+        setEmptyKey: { '': 'empty' },
+        setExprVal: { a: 1, b: 3 },
+        setNestedMap: { obj: { hidden: true } },
+        setSpecialChars: { '~!@#$%^&*()_+': 'special' },
       });
     });
 
@@ -2949,12 +2847,12 @@ describe.skipClassic('Pipeline class', () => {
         .pipeline()
         .collection(randomCol.path)
         .limit(1)
-        .replaceWith(map({existingField: map({foo: 1})}))
+        .replaceWith(map({ existingField: map({ foo: 1 }) }))
         .addFields(
           mapKeys('existingField').as('existingKeys'),
-          mapKeys(map({a: 1, b: 2})).as('keys'),
+          mapKeys(map({ a: 1, b: 2 })).as('keys'),
           mapKeys(map({})).as('empty_keys'),
-          mapKeys(map({a: {nested: true}})).as('nested_keys'),
+          mapKeys(map({ a: { nested: true } })).as('nested_keys'),
         )
         .execute();
 
@@ -2970,19 +2868,19 @@ describe.skipClassic('Pipeline class', () => {
         .pipeline()
         .collection(randomCol.path)
         .limit(1)
-        .replaceWith(map({existingField: map({foo: 1})}))
+        .replaceWith(map({ existingField: map({ foo: 1 }) }))
         .addFields(
           mapValues('existingField').as('existingValues'),
-          mapValues(map({a: 1, b: 2})).as('values'),
+          mapValues(map({ a: 1, b: 2 })).as('values'),
           mapValues(map({})).as('empty_values'),
-          mapValues(map({a: {nested: true}})).as('nested_values'),
+          mapValues(map({ a: { nested: true } })).as('nested_values'),
         )
         .execute();
       const res = snapshot.results[0].data();
       expect(res.existingValues).to.have.members([1]);
       expect(res.values).to.have.members([1, 2]);
       expect(res.empty_values).to.deep.equal([]);
-      expect(res.nested_values).to.deep.include.members([{nested: true}]);
+      expect(res.nested_values).to.deep.include.members([{ nested: true }]);
     });
 
     it('test mapEntries', async () => {
@@ -2990,24 +2888,22 @@ describe.skipClassic('Pipeline class', () => {
         .pipeline()
         .collection(randomCol.path)
         .limit(1)
-        .replaceWith(map({existingField: map({foo: 1})}))
+        .replaceWith(map({ existingField: map({ foo: 1 }) }))
         .addFields(
           mapEntries('existingField').as('existingEntries'),
-          mapEntries(map({a: 1, b: 2})).as('entries'),
+          mapEntries(map({ a: 1, b: 2 })).as('entries'),
           mapEntries(map({})).as('empty_entries'),
-          mapEntries(map({a: {nested: true}})).as('nested_entries'),
+          mapEntries(map({ a: { nested: true } })).as('nested_entries'),
         )
         .execute();
       const res = snapshot.results[0].data();
-      expect(res.existingEntries).to.deep.include.members([{k: 'foo', v: 1}]);
+      expect(res.existingEntries).to.deep.include.members([{ k: 'foo', v: 1 }]);
       expect(res.entries).to.deep.include.members([
-        {k: 'a', v: 1},
-        {k: 'b', v: 2},
+        { k: 'a', v: 1 },
+        { k: 'b', v: 2 },
       ]);
       expect(res.empty_entries).to.deep.equal([]);
-      expect(res.nested_entries).to.deep.include.members([
-        {k: 'a', v: {nested: true}},
-      ]);
+      expect(res.nested_entries).to.deep.include.members([{ k: 'a', v: { nested: true } }]);
     });
 
     it('testDistanceFunctions', async () => {
@@ -3017,15 +2913,9 @@ describe.skipClassic('Pipeline class', () => {
         .pipeline()
         .collection(randomCol.path)
         .select(
-          cosineDistance(constant(sourceVector), targetVector).as(
-            'cosineDistance',
-          ),
-          dotProduct(constant(sourceVector), targetVector).as(
-            'dotProductDistance',
-          ),
-          euclideanDistance(constant(sourceVector), targetVector).as(
-            'euclideanDistance',
-          ),
+          cosineDistance(constant(sourceVector), targetVector).as('cosineDistance'),
+          dotProduct(constant(sourceVector), targetVector).as('dotProductDistance'),
+          euclideanDistance(constant(sourceVector), targetVector).as('euclideanDistance'),
         )
         .limit(1)
         .execute();
@@ -3040,15 +2930,9 @@ describe.skipClassic('Pipeline class', () => {
         .pipeline()
         .collection(randomCol.path)
         .select(
-          constant(sourceVector)
-            .cosineDistance(targetVector)
-            .as('cosineDistance'),
-          constant(sourceVector)
-            .dotProduct(targetVector)
-            .as('dotProductDistance'),
-          constant(sourceVector)
-            .euclideanDistance(targetVector)
-            .as('euclideanDistance'),
+          constant(sourceVector).cosineDistance(targetVector).as('cosineDistance'),
+          constant(sourceVector).dotProduct(targetVector).as('dotProductDistance'),
+          constant(sourceVector).euclideanDistance(targetVector).as('euclideanDistance'),
         )
         .limit(1)
         .execute();
@@ -3065,11 +2949,7 @@ describe.skipClassic('Pipeline class', () => {
         .pipeline()
         .collection(randomCol.path)
         .limit(1)
-        .select(
-          vectorLength(constant(FieldValue.vector([1, 2, 3]))).as(
-            'vectorLength',
-          ),
-        )
+        .select(vectorLength(constant(FieldValue.vector([1, 2, 3]))).as('vectorLength'))
         .execute();
       expectResults(snapshot, {
         vectorLength: 3,
@@ -3090,7 +2970,7 @@ describe.skipClassic('Pipeline class', () => {
           title: "The Hitchhiker's Guide to the Galaxy",
           'awards.hugo': true,
         },
-        {title: 'Dune', 'awards.hugo': true},
+        { title: 'Dune', 'awards.hugo': true },
       );
     });
 
@@ -3133,11 +3013,7 @@ describe.skipClassic('Pipeline class', () => {
           .collection(randomCol.path)
           .sort(descending('rating'))
           .limit(1)
-          .select(
-            new FunctionExpression('add', [field('rating'), constant(1)]).as(
-              'rating',
-            ),
-          )
+          .select(new FunctionExpression('add', [field('rating'), constant(1)]).as('rating'))
           .execute();
         expectResults(snapshot, {
           rating: 5.7,
@@ -3184,9 +3060,9 @@ describe.skipClassic('Pipeline class', () => {
           .pipeline()
           .collection(randomCol.path)
           .aggregate(
-            new AggregateFunction('count_if', [
-              field('rating').greaterThanOrEqual(4.5),
-            ]).as('countOfBest'),
+            new AggregateFunction('count_if', [field('rating').greaterThanOrEqual(4.5)]).as(
+              'countOfBest',
+            ),
           )
           .execute();
         expectResults(snapshot, {
@@ -3240,9 +3116,7 @@ describe.skipClassic('Pipeline class', () => {
         .collection(randomCol.path)
         .sort(field('rating').descending())
         .limit(1)
-        .select(
-          array([1, 2, field('genre'), multiply('rating', 10)]).as('metadata'),
-        )
+        .select(array([1, 2, field('genre'), multiply('rating', 10)]).as('metadata'))
         .execute();
       expect(snapshot.results.length).to.equal(1);
       expectResults(snapshot, {
@@ -3793,10 +3667,7 @@ describe.skipClassic('Pipeline class', () => {
             arr: [1, 2, 3, 2, 1],
           }),
         )
-        .select(
-          arrayIndexOfAll('arr', 1).as('indices1'),
-          arrayIndexOfAll('arr', 2).as('indices2'),
-        )
+        .select(arrayIndexOfAll('arr', 1).as('indices1'), arrayIndexOfAll('arr', 2).as('indices2'))
         .execute();
       expectResults(snapshotDuplicates, {
         indices1: [0, 4],
@@ -3878,7 +3749,7 @@ describe.skipClassic('Pipeline class', () => {
         .select(mapRemove('awards', 'hugo').as('awards'))
         .execute();
       expectResults(snapshot, {
-        awards: {nebula: false},
+        awards: { nebula: false },
       });
       snapshot = await firestore
         .pipeline()
@@ -3888,7 +3759,7 @@ describe.skipClassic('Pipeline class', () => {
         .select(field('awards').mapRemove('hugo').as('awards'))
         .execute();
       expectResults(snapshot, {
-        awards: {nebula: false},
+        awards: { nebula: false },
       });
     });
 
@@ -3898,20 +3769,20 @@ describe.skipClassic('Pipeline class', () => {
         .collection(randomCol.path)
         .sort(field('rating').descending())
         .limit(1)
-        .select(mapMerge('awards', {fakeAward: true}).as('awards'))
+        .select(mapMerge('awards', { fakeAward: true }).as('awards'))
         .execute();
       expectResults(snapshot, {
-        awards: {nebula: false, hugo: false, fakeAward: true},
+        awards: { nebula: false, hugo: false, fakeAward: true },
       });
       snapshot = await firestore
         .pipeline()
         .collection(randomCol.path)
         .sort(field('rating').descending())
         .limit(1)
-        .select(field('awards').mapMerge({fakeAward: true}).as('awards'))
+        .select(field('awards').mapMerge({ fakeAward: true }).as('awards'))
         .execute();
       expectResults(snapshot, {
-        awards: {nebula: false, hugo: false, fakeAward: true},
+        awards: { nebula: false, hugo: false, fakeAward: true },
       });
     });
 
@@ -3921,24 +3792,18 @@ describe.skipClassic('Pipeline class', () => {
         .collection(randomCol.path)
         .limit(1)
         .select(
-          unixSecondsToTimestamp(constant(1741380235)).as(
-            'unixSecondsToTimestamp',
+          unixSecondsToTimestamp(constant(1741380235)).as('unixSecondsToTimestamp'),
+          unixMillisToTimestamp(constant(1741380235123)).as('unixMillisToTimestamp'),
+          unixMicrosToTimestamp(constant(1741380235123456)).as('unixMicrosToTimestamp'),
+          timestampToUnixSeconds(constant(new Timestamp(1741380235, 123456789))).as(
+            'timestampToUnixSeconds',
           ),
-          unixMillisToTimestamp(constant(1741380235123)).as(
-            'unixMillisToTimestamp',
+          timestampToUnixMicros(constant(new Timestamp(1741380235, 123456789))).as(
+            'timestampToUnixMicros',
           ),
-          unixMicrosToTimestamp(constant(1741380235123456)).as(
-            'unixMicrosToTimestamp',
+          timestampToUnixMillis(constant(new Timestamp(1741380235, 123456789))).as(
+            'timestampToUnixMillis',
           ),
-          timestampToUnixSeconds(
-            constant(new Timestamp(1741380235, 123456789)),
-          ).as('timestampToUnixSeconds'),
-          timestampToUnixMicros(
-            constant(new Timestamp(1741380235, 123456789)),
-          ).as('timestampToUnixMicros'),
-          timestampToUnixMillis(
-            constant(new Timestamp(1741380235, 123456789)),
-          ).as('timestampToUnixMillis'),
         )
         .execute();
       expectResults(snapshot, {
@@ -4103,10 +3968,7 @@ describe.skipClassic('Pipeline class', () => {
         .limit(1)
         .select(field('rating').exp().as('expRating'))
         .execute();
-      expect(snapshot.results[0].get('expRating')).to.be.approximately(
-        109.94717245212352,
-        0.00001,
-      );
+      expect(snapshot.results[0].get('expRating')).to.be.approximately(109.94717245212352, 0.00001);
     });
 
     it('can compute e to the power of a numeric value with the top-level function', async () => {
@@ -4131,10 +3993,7 @@ describe.skipClassic('Pipeline class', () => {
         .limit(1)
         .select(field('rating').pow(2).as('powerRating'))
         .execute();
-      expect(snapshot.results[0].get('powerRating')).to.be.approximately(
-        17.64,
-        0.0001,
-      );
+      expect(snapshot.results[0].get('powerRating')).to.be.approximately(17.64, 0.0001);
     });
 
     it('can compute the power of a numeric value with the top-level function', async () => {
@@ -4145,10 +4004,7 @@ describe.skipClassic('Pipeline class', () => {
         .limit(1)
         .select(pow('rating', 2).as('powerRating'))
         .execute();
-      expect(snapshot.results[0].get('powerRating')).to.be.approximately(
-        17.64,
-        0.0001,
-      );
+      expect(snapshot.results[0].get('powerRating')).to.be.approximately(17.64, 0.0001);
     });
 
     it('testRand', async () => {
@@ -4604,9 +4460,7 @@ describe.skipClassic('Pipeline class', () => {
         .collection(randomCol.path)
         .where(field('title').equal("The Hitchhiker's Guide to the Galaxy"))
         .select(
-          arrayConcat('tags', ['newTag1', 'newTag2'], field('tags'), [null]).as(
-            'modifiedTags',
-          ),
+          arrayConcat('tags', ['newTag1', 'newTag2'], field('tags'), [null]).as('modifiedTags'),
         )
         .limit(1)
         .execute();
@@ -4646,7 +4500,7 @@ describe.skipClassic('Pipeline class', () => {
         .select(toUpper('author').as('uppercaseAuthor'))
         .limit(1)
         .execute();
-      expectResults(snapshot, {uppercaseAuthor: 'GEORGE ORWELL'});
+      expectResults(snapshot, { uppercaseAuthor: 'GEORGE ORWELL' });
     });
 
     it('testTrim', async () => {
@@ -4753,8 +4607,7 @@ describe.skipClassic('Pipeline class', () => {
         .limit(1)
         .execute();
       expectResults(snapshot, {
-        repeatedTitle:
-          "The Hitchhiker's Guide to the GalaxyThe Hitchhiker's Guide to the Galaxy",
+        repeatedTitle: "The Hitchhiker's Guide to the GalaxyThe Hitchhiker's Guide to the Galaxy",
         repeatedBytes: Uint8Array.from([0x01, 0x02, 0x03, 0x01, 0x02, 0x03]),
       });
     });
@@ -4777,11 +4630,9 @@ describe.skipClassic('Pipeline class', () => {
             Uint8Array.from([0x01, 0x02, 0x02]),
             Uint8Array.from([0x03, 0x03, 0x03]),
           ).as('replacedEntireByteArray'),
-          stringReplaceAll(
-            field('bytes'),
-            Uint8Array.from([0x02]),
-            Uint8Array.from([0x03]),
-          ).as('replacedMultipleBytes'),
+          stringReplaceAll(field('bytes'), Uint8Array.from([0x02]), Uint8Array.from([0x03])).as(
+            'replacedMultipleBytes',
+          ),
         )
         .limit(1)
         .execute();
@@ -4805,11 +4656,9 @@ describe.skipClassic('Pipeline class', () => {
         )
         .select(
           stringReplaceOne(field('title'), 'e', 'X').as('replacedOne'),
-          stringReplaceOne(
-            field('bytes'),
-            Uint8Array.from([0x02]),
-            Uint8Array.from([0x03]),
-          ).as('replacedOneByte'),
+          stringReplaceOne(field('bytes'), Uint8Array.from([0x02]), Uint8Array.from([0x03])).as(
+            'replacedOneByte',
+          ),
         )
         .limit(1)
         .execute();
@@ -4831,9 +4680,7 @@ describe.skipClassic('Pipeline class', () => {
         )
         .select(
           stringIndexOf(field('title'), 'Guide').as('indexOfGuide'),
-          stringIndexOf(field('bytes'), constant(Uint8Array.from([0x02]))).as(
-            'indexOfByte',
-          ),
+          stringIndexOf(field('bytes'), constant(Uint8Array.from([0x02]))).as('indexOfByte'),
         )
         .limit(1)
         .execute();
@@ -4851,7 +4698,7 @@ describe.skipClassic('Pipeline class', () => {
         .limit(1)
         .select(reverse('title').as('reverseTitle'))
         .execute();
-      expectResults(snapshot, {reverseTitle: '4891'});
+      expectResults(snapshot, { reverseTitle: '4891' });
     });
 
     it('testAbs', async () => {
@@ -4859,16 +4706,8 @@ describe.skipClassic('Pipeline class', () => {
         .pipeline()
         .collection(randomCol.path)
         .limit(1)
-        .select(
-          constant(-10).as('neg10'),
-          constant(-22.22).as('neg22'),
-          constant(1).as('pos1'),
-        )
-        .select(
-          abs('neg10').as('10'),
-          abs(field('neg22')).as('22'),
-          field('pos1').as('1'),
-        )
+        .select(constant(-10).as('neg10'), constant(-22.22).as('neg22'), constant(1).as('pos1'))
+        .select(abs('neg10').as('10'), abs(field('neg22')).as('22'), field('pos1').as('1'))
         .execute();
       expectResults(snapshot, {
         '10': 10,
@@ -4885,10 +4724,7 @@ describe.skipClassic('Pipeline class', () => {
         .limit(1)
         .select(field('rating').log10().as('log10Rating'))
         .execute();
-      expect(snapshot.results[0]!.data().log10Rating).to.be.closeTo(
-        0.672,
-        0.001,
-      );
+      expect(snapshot.results[0]!.data().log10Rating).to.be.closeTo(0.672, 0.001);
     });
 
     it('can compute the base-10 logarithm of a numeric value with the top-level function', async () => {
@@ -4899,10 +4735,7 @@ describe.skipClassic('Pipeline class', () => {
         .limit(1)
         .select(log10('rating').as('log10Rating'))
         .execute();
-      expect(snapshot.results[0]!.data().log10Rating).to.be.closeTo(
-        0.672,
-        0.001,
-      );
+      expect(snapshot.results[0]!.data().log10Rating).to.be.closeTo(0.672, 0.001);
     });
 
     it('can concat fields', async () => {
@@ -4932,9 +4765,7 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
       const now = snapshot.results[0].get('now') as Timestamp;
       expect(now).instanceof(Timestamp);
-      expect(
-        now.toDate().getUTCSeconds() - new Date().getUTCSeconds(),
-      ).lessThan(5000);
+      expect(now.toDate().getUTCSeconds() - new Date().getUTCSeconds()).lessThan(5000);
     });
 
     it('supports ifAbsent', async () => {
@@ -5015,25 +4846,16 @@ describe.skipClassic('Pipeline class', () => {
         .limit(1)
         .replaceWith(
           map({
-            timestamp: new Timestamp(
-              Date.UTC(2025, 10, 30, 1, 2, 3) / 1000,
-              456789,
-            ),
+            timestamp: new Timestamp(Date.UTC(2025, 10, 30, 1, 2, 3) / 1000, 456789),
           }),
         )
         .select(
           timestampTruncate('timestamp', 'year').as('trunc_year'),
           timestampTruncate(field('timestamp'), 'month').as('trunc_month'),
-          timestampTruncate(field('timestamp'), constant('day')).as(
-            'trunc_day',
-          ),
-          field('timestamp')
-            .timestampTruncate(constant('day'), 'MST')
-            .as('trunc_day_mst'),
+          timestampTruncate(field('timestamp'), constant('day')).as('trunc_day'),
+          field('timestamp').timestampTruncate(constant('day'), 'MST').as('trunc_day_mst'),
           field('timestamp').timestampTruncate('hour').as('trunc_hour'),
-          field('timestamp')
-            .timestampTruncate(constant('minute'))
-            .as('trunc_minute'),
+          field('timestamp').timestampTruncate(constant('minute')).as('trunc_minute'),
           field('timestamp').timestampTruncate('second').as('trunc_second'),
         )
         .execute();
@@ -5042,10 +4864,7 @@ describe.skipClassic('Pipeline class', () => {
         trunc_year: new Timestamp(Date.UTC(2025, 0) / 1000, 0),
         trunc_month: new Timestamp(Date.UTC(2025, 10) / 1000, 0),
         trunc_day: new Timestamp(Date.UTC(2025, 10, 30) / 1000, 0),
-        trunc_day_mst: new Timestamp(
-          Date.UTC(2025, 10, 29) / 1000 + 7 * 3600,
-          0,
-        ),
+        trunc_day_mst: new Timestamp(Date.UTC(2025, 10, 29) / 1000 + 7 * 3600, 0),
         trunc_hour: new Timestamp(Date.UTC(2025, 10, 30, 1) / 1000, 0),
         trunc_minute: new Timestamp(Date.UTC(2025, 10, 30, 1, 2) / 1000, 0),
         trunc_second: new Timestamp(Date.UTC(2025, 10, 30, 1, 2, 3) / 1000, 0),
@@ -5077,11 +4896,7 @@ describe.skipClassic('Pipeline class', () => {
       expectResults(results, {
         csv: ['foo', 'bar', 'baz'],
         data: ['baz', 'bar', 'foo'],
-        bytes: [
-          Uint8Array.from([0x01]),
-          Uint8Array.from([0x02]),
-          Uint8Array.from([0x03]),
-        ],
+        bytes: [Uint8Array.from([0x01]), Uint8Array.from([0x02]), Uint8Array.from([0x03])],
       });
 
       void expect(
@@ -5243,9 +5058,7 @@ describe.skipClassic('Pipeline class', () => {
      * set of books.
      * @param collectionReference
      */
-    async function addBooks(
-      collectionReference: CollectionReference,
-    ): Promise<void> {
+    async function addBooks(collectionReference: CollectionReference): Promise<void> {
       let docRef = collectionReference.doc('book11');
       addedDocs.push(docRef);
       await docRef.set({
@@ -5255,7 +5068,7 @@ describe.skipClassic('Pipeline class', () => {
         published: 2004,
         rating: 4.6,
         tags: ['historical fantasy', 'magic', 'alternate history', 'england'],
-        awards: {hugo: false, nebula: false},
+        awards: { hugo: false, nebula: false },
       });
       docRef = collectionReference.doc('book12');
       addedDocs.push(collectionReference.doc('book12'));
@@ -5265,12 +5078,7 @@ describe.skipClassic('Pipeline class', () => {
         genre: 'Satire',
         published: 1967, // Though written much earlier
         rating: 4.6,
-        tags: [
-          'russian literature',
-          'supernatural',
-          'philosophy',
-          'dark comedy',
-        ],
+        tags: ['russian literature', 'supernatural', 'philosophy', 'dark comedy'],
         awards: {},
       });
       docRef = collectionReference.doc('book13');
@@ -5282,7 +5090,7 @@ describe.skipClassic('Pipeline class', () => {
         published: 2014,
         rating: 4.6,
         tags: ['space opera', 'found family', 'character-driven', 'optimistic'],
-        awards: {hugo: false, nebula: false, kitschies: true},
+        awards: { hugo: false, nebula: false, kitschies: true },
       });
     }
 
@@ -5304,12 +5112,12 @@ describe.skipClassic('Pipeline class', () => {
 
       let snapshot = await pipeline.limit(pageSize).execute();
 
-      snapshot.results.forEach(r => console.log(JSON.stringify(r.data())));
+      snapshot.results.forEach((r) => console.log(JSON.stringify(r.data())));
 
       expectResults(
         snapshot,
-        {title: 'The Lord of the Rings', rating: 4.7},
-        {title: 'Dune', rating: 4.6},
+        { title: 'The Lord of the Rings', rating: 4.7 },
+        { title: 'Dune', rating: 4.6 },
       );
 
       const lastDoc = snapshot.results[snapshot.results.length - 1];
@@ -5328,8 +5136,8 @@ describe.skipClassic('Pipeline class', () => {
         .execute();
       expectResults(
         snapshot,
-        {title: 'Jonathan Strange & Mr Norrell', rating: 4.6},
-        {title: 'The Master and Margarita', rating: 4.6},
+        { title: 'Jonathan Strange & Mr Norrell', rating: 4.6 },
+        { title: 'The Master and Margarita', rating: 4.6 },
       );
     });
 
@@ -5342,10 +5150,7 @@ describe.skipClassic('Pipeline class', () => {
         .pipeline()
         .collection(randomCol.path)
         .select('title', 'rating', secondFilterField)
-        .sort(
-          field('rating').descending(),
-          field(secondFilterField).ascending(),
-        );
+        .sort(field('rating').descending(), field(secondFilterField).ascending());
 
       const pageSize = 2;
       let currPage = 0;
@@ -5361,7 +5166,7 @@ describe.skipClassic('Pipeline class', () => {
           title: 'The Lord of the Rings',
           rating: 4.7,
         },
-        {title: 'Dune', rating: 4.6},
+        { title: 'Dune', rating: 4.6 },
       );
 
       snapshot = await pipeline
@@ -5374,7 +5179,7 @@ describe.skipClassic('Pipeline class', () => {
           title: 'Jonathan Strange & Mr Norrell',
           rating: 4.6,
         },
-        {title: 'The Master and Margarita', rating: 4.6},
+        { title: 'The Master and Margarita', rating: 4.6 },
       );
 
       snapshot = await pipeline
@@ -5424,11 +5229,8 @@ describe.skipClassic('Pipeline class', () => {
   });
 
   describe('stream', () => {
-    it('full results as expected', done => {
-      const ppl = firestore
-        .pipeline()
-        .collection(randomCol.path)
-        .sort(ascending('__name__'));
+    it('full results as expected', (done) => {
+      const ppl = firestore.pipeline().collection(randomCol.path).sort(ascending('__name__'));
       const snapshotStream = ppl.stream();
 
       const expected = [
@@ -5446,7 +5248,7 @@ describe.skipClassic('Pipeline class', () => {
 
       let received = 0;
       snapshotStream
-        .on('data', d => {
+        .on('data', (d) => {
           expect(d).to.be.an.instanceOf(PipelineResult);
           const rslt = d as PipelineResult;
           expect(rslt.id).to.equal(expected.shift());
@@ -5458,13 +5260,13 @@ describe.skipClassic('Pipeline class', () => {
         });
     });
 
-    it('empty snapshot', done => {
+    it('empty snapshot', (done) => {
       const ppl = firestore.pipeline().collection(randomCol.path).limit(0);
       const snapshotStream = ppl.stream();
 
       let received = 0;
       snapshotStream
-        .on('data', _ => {
+        .on('data', (_) => {
           ++received;
         })
         .on('end', () => {
@@ -5473,7 +5275,7 @@ describe.skipClassic('Pipeline class', () => {
         });
     });
 
-    it('document transform', done => {
+    it('document transform', (done) => {
       const ppl = firestore
         .pipeline()
         .collection(randomCol.path)
@@ -5482,14 +5284,11 @@ describe.skipClassic('Pipeline class', () => {
         .select('title');
       const snapshotStream = ppl.stream();
 
-      const expected = [
-        {title: "The Hitchhiker's Guide to the Galaxy"},
-        {title: 'Dune'},
-      ];
+      const expected = [{ title: "The Hitchhiker's Guide to the Galaxy" }, { title: 'Dune' }];
 
       let received = 0;
       snapshotStream
-        .on('data', d => {
+        .on('data', (d) => {
           expect(d).to.be.an.instanceOf(PipelineResult);
           const rslt = d as PipelineResult;
           expect(rslt.data()).to.deep.equal(expected.shift());
@@ -5531,10 +5330,7 @@ describe.skipClassic('Query to Pipeline', () => {
     }
   }
 
-  function verifyResults(
-    actual: PipelineSnapshot,
-    ...expected: DocumentData[]
-  ): void {
+  function verifyResults(actual: PipelineSnapshot, ...expected: DocumentData[]): void {
     const results = actual.results;
     expect(results.length).to.equal(expected.length);
 
@@ -5544,22 +5340,22 @@ describe.skipClassic('Query to Pipeline', () => {
   }
 
   it('supports default query', () => {
-    return testCollectionWithDocs({1: {foo: 1}}, async (collRef, db) => {
+    return testCollectionWithDocs({ 1: { foo: 1 } }, async (collRef, db) => {
       const snapshot = await execute(db.pipeline().createFrom(collRef));
-      verifyResults(snapshot, {foo: 1});
+      verifyResults(snapshot, { foo: 1 });
     });
   });
 
   it('supports filtered query', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
+        1: { foo: 1 },
+        2: { foo: 2 },
       },
       async (collRef, db) => {
         const query1 = collRef.where('foo', '==', 1);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 1});
+        verifyResults(snapshot, { foo: 1 });
       },
     );
   });
@@ -5567,13 +5363,13 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports filtered query (with FieldPath)', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
+        1: { foo: 1 },
+        2: { foo: 2 },
       },
       async (collRef, db) => {
         const query1 = collRef.where(new FieldPath('foo'), '==', 1);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 1});
+        verifyResults(snapshot, { foo: 1 });
       },
     );
   });
@@ -5581,13 +5377,13 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports ordered query (with default order)', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
+        1: { foo: 1 },
+        2: { foo: 2 },
       },
       async (collRef, db) => {
         const query1 = collRef.orderBy('foo');
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 1}, {foo: 2});
+        verifyResults(snapshot, { foo: 1 }, { foo: 2 });
       },
     );
   });
@@ -5595,13 +5391,13 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports ordered query (with asc)', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
+        1: { foo: 1 },
+        2: { foo: 2 },
       },
       async (collRef, db) => {
         const query1 = collRef.orderBy('foo', 'asc');
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 1}, {foo: 2});
+        verifyResults(snapshot, { foo: 1 }, { foo: 2 });
       },
     );
   });
@@ -5609,13 +5405,13 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports ordered query (with desc)', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
+        1: { foo: 1 },
+        2: { foo: 2 },
       },
       async (collRef, db) => {
         const query1 = collRef.orderBy('foo', 'desc');
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 2}, {foo: 1});
+        verifyResults(snapshot, { foo: 2 }, { foo: 1 });
       },
     );
   });
@@ -5623,13 +5419,13 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports limit query', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
+        1: { foo: 1 },
+        2: { foo: 2 },
       },
       async (collRef, db) => {
         const query1 = collRef.orderBy('foo').limit(1);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 1});
+        verifyResults(snapshot, { foo: 1 });
       },
     );
   });
@@ -5637,14 +5433,14 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports limitToLast query', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
-        3: {foo: 3},
+        1: { foo: 1 },
+        2: { foo: 2 },
+        3: { foo: 3 },
       },
       async (collRef, db) => {
         const query1 = collRef.orderBy('foo').limitToLast(2);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 2}, {foo: 3});
+        verifyResults(snapshot, { foo: 2 }, { foo: 3 });
       },
     );
   });
@@ -5652,13 +5448,13 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports startAt', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
+        1: { foo: 1 },
+        2: { foo: 2 },
       },
       async (collRef, db) => {
         const query1 = collRef.orderBy('foo').startAt(2);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 2});
+        verifyResults(snapshot, { foo: 2 });
       },
     );
   });
@@ -5666,16 +5462,16 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports startAt with limitToLast', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
-        3: {foo: 3},
-        4: {foo: 4},
-        5: {foo: 5},
+        1: { foo: 1 },
+        2: { foo: 2 },
+        3: { foo: 3 },
+        4: { foo: 4 },
+        5: { foo: 5 },
       },
       async (collRef, db) => {
         const query1 = collRef.orderBy('foo').startAt(3).limitToLast(4);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 3}, {foo: 4}, {foo: 5});
+        verifyResults(snapshot, { foo: 3 }, { foo: 4 }, { foo: 5 });
       },
     );
   });
@@ -5683,16 +5479,16 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports endAt with limitToLast', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
-        3: {foo: 3},
-        4: {foo: 4},
-        5: {foo: 5},
+        1: { foo: 1 },
+        2: { foo: 2 },
+        3: { foo: 3 },
+        4: { foo: 4 },
+        5: { foo: 5 },
       },
       async (collRef, db) => {
         const query1 = collRef.orderBy('foo').endAt(3).limitToLast(2);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 2}, {foo: 3});
+        verifyResults(snapshot, { foo: 2 }, { foo: 3 });
       },
     );
   });
@@ -5700,59 +5496,51 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports startAfter (with DocumentSnapshot)', () => {
     return testCollectionWithDocs(
       {
-        1: {id: 1, foo: 1, bar: 1, baz: 1},
-        2: {id: 2, foo: 1, bar: 1, baz: 2},
-        3: {id: 3, foo: 1, bar: 1, baz: 2},
-        4: {id: 4, foo: 1, bar: 2, baz: 1},
-        5: {id: 5, foo: 1, bar: 2, baz: 2},
-        6: {id: 6, foo: 1, bar: 2, baz: 2},
-        7: {id: 7, foo: 2, bar: 1, baz: 1},
-        8: {id: 8, foo: 2, bar: 1, baz: 2},
-        9: {id: 9, foo: 2, bar: 1, baz: 2},
-        10: {id: 10, foo: 2, bar: 2, baz: 1},
-        11: {id: 11, foo: 2, bar: 2, baz: 2},
-        12: {id: 12, foo: 2, bar: 2, baz: 2},
+        1: { id: 1, foo: 1, bar: 1, baz: 1 },
+        2: { id: 2, foo: 1, bar: 1, baz: 2 },
+        3: { id: 3, foo: 1, bar: 1, baz: 2 },
+        4: { id: 4, foo: 1, bar: 2, baz: 1 },
+        5: { id: 5, foo: 1, bar: 2, baz: 2 },
+        6: { id: 6, foo: 1, bar: 2, baz: 2 },
+        7: { id: 7, foo: 2, bar: 1, baz: 1 },
+        8: { id: 8, foo: 2, bar: 1, baz: 2 },
+        9: { id: 9, foo: 2, bar: 1, baz: 2 },
+        10: { id: 10, foo: 2, bar: 2, baz: 1 },
+        11: { id: 11, foo: 2, bar: 2, baz: 2 },
+        12: { id: 12, foo: 2, bar: 2, baz: 2 },
       },
       async (collRef, db) => {
         let docRef = await collRef.doc('2').get();
-        let query1 = collRef
-          .orderBy('foo')
-          .orderBy('bar')
-          .orderBy('baz')
-          .startAfter(docRef);
+        let query1 = collRef.orderBy('foo').orderBy('bar').orderBy('baz').startAfter(docRef);
         let snapshot = await execute(db.pipeline().createFrom(query1));
         verifyResults(
           snapshot,
-          {id: 3, foo: 1, bar: 1, baz: 2},
-          {id: 4, foo: 1, bar: 2, baz: 1},
-          {id: 5, foo: 1, bar: 2, baz: 2},
-          {id: 6, foo: 1, bar: 2, baz: 2},
-          {id: 7, foo: 2, bar: 1, baz: 1},
-          {id: 8, foo: 2, bar: 1, baz: 2},
-          {id: 9, foo: 2, bar: 1, baz: 2},
-          {id: 10, foo: 2, bar: 2, baz: 1},
-          {id: 11, foo: 2, bar: 2, baz: 2},
-          {id: 12, foo: 2, bar: 2, baz: 2},
+          { id: 3, foo: 1, bar: 1, baz: 2 },
+          { id: 4, foo: 1, bar: 2, baz: 1 },
+          { id: 5, foo: 1, bar: 2, baz: 2 },
+          { id: 6, foo: 1, bar: 2, baz: 2 },
+          { id: 7, foo: 2, bar: 1, baz: 1 },
+          { id: 8, foo: 2, bar: 1, baz: 2 },
+          { id: 9, foo: 2, bar: 1, baz: 2 },
+          { id: 10, foo: 2, bar: 2, baz: 1 },
+          { id: 11, foo: 2, bar: 2, baz: 2 },
+          { id: 12, foo: 2, bar: 2, baz: 2 },
         );
 
         docRef = await collRef.doc('3').get();
-        query1 = collRef
-          .orderBy('foo')
-          .orderBy('bar')
-          .orderBy('baz')
-          .startAfter(docRef);
+        query1 = collRef.orderBy('foo').orderBy('bar').orderBy('baz').startAfter(docRef);
         snapshot = await execute(db.pipeline().createFrom(query1));
         verifyResults(
           snapshot,
-          {id: 4, foo: 1, bar: 2, baz: 1},
-          {id: 5, foo: 1, bar: 2, baz: 2},
-          {id: 6, foo: 1, bar: 2, baz: 2},
-          {id: 7, foo: 2, bar: 1, baz: 1},
-          {id: 8, foo: 2, bar: 1, baz: 2},
-          {id: 9, foo: 2, bar: 1, baz: 2},
-          {id: 10, foo: 2, bar: 2, baz: 1},
-          {id: 11, foo: 2, bar: 2, baz: 2},
-          {id: 12, foo: 2, bar: 2, baz: 2},
+          { id: 4, foo: 1, bar: 2, baz: 1 },
+          { id: 5, foo: 1, bar: 2, baz: 2 },
+          { id: 6, foo: 1, bar: 2, baz: 2 },
+          { id: 7, foo: 2, bar: 1, baz: 1 },
+          { id: 8, foo: 2, bar: 1, baz: 2 },
+          { id: 9, foo: 2, bar: 1, baz: 2 },
+          { id: 10, foo: 2, bar: 2, baz: 1 },
+          { id: 11, foo: 2, bar: 2, baz: 2 },
+          { id: 12, foo: 2, bar: 2, baz: 2 },
         );
       },
     );
@@ -5761,61 +5549,53 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports startAt (with DocumentSnapshot)', () => {
     return testCollectionWithDocs(
       {
-        1: {id: 1, foo: 1, bar: 1, baz: 1},
-        2: {id: 2, foo: 1, bar: 1, baz: 2},
-        3: {id: 3, foo: 1, bar: 1, baz: 2},
-        4: {id: 4, foo: 1, bar: 2, baz: 1},
-        5: {id: 5, foo: 1, bar: 2, baz: 2},
-        6: {id: 6, foo: 1, bar: 2, baz: 2},
-        7: {id: 7, foo: 2, bar: 1, baz: 1},
-        8: {id: 8, foo: 2, bar: 1, baz: 2},
-        9: {id: 9, foo: 2, bar: 1, baz: 2},
-        10: {id: 10, foo: 2, bar: 2, baz: 1},
-        11: {id: 11, foo: 2, bar: 2, baz: 2},
-        12: {id: 12, foo: 2, bar: 2, baz: 2},
+        1: { id: 1, foo: 1, bar: 1, baz: 1 },
+        2: { id: 2, foo: 1, bar: 1, baz: 2 },
+        3: { id: 3, foo: 1, bar: 1, baz: 2 },
+        4: { id: 4, foo: 1, bar: 2, baz: 1 },
+        5: { id: 5, foo: 1, bar: 2, baz: 2 },
+        6: { id: 6, foo: 1, bar: 2, baz: 2 },
+        7: { id: 7, foo: 2, bar: 1, baz: 1 },
+        8: { id: 8, foo: 2, bar: 1, baz: 2 },
+        9: { id: 9, foo: 2, bar: 1, baz: 2 },
+        10: { id: 10, foo: 2, bar: 2, baz: 1 },
+        11: { id: 11, foo: 2, bar: 2, baz: 2 },
+        12: { id: 12, foo: 2, bar: 2, baz: 2 },
       },
       async (collRef, db) => {
         let docRef = await collRef.doc('2').get();
-        let query1 = collRef
-          .orderBy('foo')
-          .orderBy('bar')
-          .orderBy('baz')
-          .startAt(docRef);
+        let query1 = collRef.orderBy('foo').orderBy('bar').orderBy('baz').startAt(docRef);
         let snapshot = await execute(db.pipeline().createFrom(query1));
         verifyResults(
           snapshot,
-          {id: 2, foo: 1, bar: 1, baz: 2},
-          {id: 3, foo: 1, bar: 1, baz: 2},
-          {id: 4, foo: 1, bar: 2, baz: 1},
-          {id: 5, foo: 1, bar: 2, baz: 2},
-          {id: 6, foo: 1, bar: 2, baz: 2},
-          {id: 7, foo: 2, bar: 1, baz: 1},
-          {id: 8, foo: 2, bar: 1, baz: 2},
-          {id: 9, foo: 2, bar: 1, baz: 2},
-          {id: 10, foo: 2, bar: 2, baz: 1},
-          {id: 11, foo: 2, bar: 2, baz: 2},
-          {id: 12, foo: 2, bar: 2, baz: 2},
+          { id: 2, foo: 1, bar: 1, baz: 2 },
+          { id: 3, foo: 1, bar: 1, baz: 2 },
+          { id: 4, foo: 1, bar: 2, baz: 1 },
+          { id: 5, foo: 1, bar: 2, baz: 2 },
+          { id: 6, foo: 1, bar: 2, baz: 2 },
+          { id: 7, foo: 2, bar: 1, baz: 1 },
+          { id: 8, foo: 2, bar: 1, baz: 2 },
+          { id: 9, foo: 2, bar: 1, baz: 2 },
+          { id: 10, foo: 2, bar: 2, baz: 1 },
+          { id: 11, foo: 2, bar: 2, baz: 2 },
+          { id: 12, foo: 2, bar: 2, baz: 2 },
         );
 
         docRef = await collRef.doc('3').get();
-        query1 = collRef
-          .orderBy('foo')
-          .orderBy('bar')
-          .orderBy('baz')
-          .startAt(docRef);
+        query1 = collRef.orderBy('foo').orderBy('bar').orderBy('baz').startAt(docRef);
         snapshot = await execute(db.pipeline().createFrom(query1));
         verifyResults(
           snapshot,
-          {id: 3, foo: 1, bar: 1, baz: 2},
-          {id: 4, foo: 1, bar: 2, baz: 1},
-          {id: 5, foo: 1, bar: 2, baz: 2},
-          {id: 6, foo: 1, bar: 2, baz: 2},
-          {id: 7, foo: 2, bar: 1, baz: 1},
-          {id: 8, foo: 2, bar: 1, baz: 2},
-          {id: 9, foo: 2, bar: 1, baz: 2},
-          {id: 10, foo: 2, bar: 2, baz: 1},
-          {id: 11, foo: 2, bar: 2, baz: 2},
-          {id: 12, foo: 2, bar: 2, baz: 2},
+          { id: 3, foo: 1, bar: 1, baz: 2 },
+          { id: 4, foo: 1, bar: 2, baz: 1 },
+          { id: 5, foo: 1, bar: 2, baz: 2 },
+          { id: 6, foo: 1, bar: 2, baz: 2 },
+          { id: 7, foo: 2, bar: 1, baz: 1 },
+          { id: 8, foo: 2, bar: 1, baz: 2 },
+          { id: 9, foo: 2, bar: 1, baz: 2 },
+          { id: 10, foo: 2, bar: 2, baz: 1 },
+          { id: 11, foo: 2, bar: 2, baz: 2 },
+          { id: 12, foo: 2, bar: 2, baz: 2 },
         );
       },
     );
@@ -5824,13 +5604,13 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports startAfter', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
+        1: { foo: 1 },
+        2: { foo: 2 },
       },
       async (collRef, db) => {
         const query1 = collRef.orderBy('foo').startAfter(1);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 2});
+        verifyResults(snapshot, { foo: 2 });
       },
     );
   });
@@ -5838,13 +5618,13 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports endAt', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
+        1: { foo: 1 },
+        2: { foo: 2 },
       },
       async (collRef, db) => {
         const query1 = collRef.orderBy('foo').endAt(1);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 1});
+        verifyResults(snapshot, { foo: 1 });
       },
     );
   });
@@ -5852,13 +5632,13 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports endBefore', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
+        1: { foo: 1 },
+        2: { foo: 2 },
       },
       async (collRef, db) => {
         const query1 = collRef.orderBy('foo').endBefore(2);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 1});
+        verifyResults(snapshot, { foo: 1 });
       },
     );
   });
@@ -5866,19 +5646,19 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports pagination', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
+        1: { foo: 1 },
+        2: { foo: 2 },
       },
       async (collRef, db) => {
         let query1 = collRef.orderBy('foo').limit(1);
         const pipeline1 = db.pipeline().createFrom(query1);
         let snapshot = await execute(pipeline1);
-        verifyResults(snapshot, {foo: 1});
+        verifyResults(snapshot, { foo: 1 });
 
         // Pass the document snapshot from the previous snapshot
         query1 = query1.startAfter(snapshot.results[0].get('foo'));
         snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 2});
+        verifyResults(snapshot, { foo: 2 });
       },
     );
   });
@@ -5886,25 +5666,19 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports pagination on DocumentIds', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1},
-        2: {foo: 2},
+        1: { foo: 1 },
+        2: { foo: 2 },
       },
       async (collRef, db) => {
-        let query1 = collRef
-          .orderBy('foo')
-          .orderBy(FieldPath.documentId(), 'asc')
-          .limit(1);
+        let query1 = collRef.orderBy('foo').orderBy(FieldPath.documentId(), 'asc').limit(1);
         const pipeline1 = db.pipeline().createFrom(query1);
         let snapshot = await execute(pipeline1);
-        verifyResults(snapshot, {foo: 1});
+        verifyResults(snapshot, { foo: 1 });
 
         // Pass the document snapshot from the previous snapshot
-        query1 = query1.startAfter(
-          snapshot.results[0].get('foo'),
-          snapshot.results[0].ref?.id,
-        );
+        query1 = query1.startAfter(snapshot.results[0].get('foo'), snapshot.results[0].ref?.id);
         snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 2});
+        verifyResults(snapshot, { foo: 2 });
       },
     );
   });
@@ -5913,19 +5687,15 @@ describe.skipClassic('Query to Pipeline', () => {
     return testCollectionWithDocs({}, async (collRef, db) => {
       const collectionGroupId = `${collRef.id}group`;
 
-      const fooDoc = collRef.firestore.doc(
-        `${collRef.id}/foo/${collectionGroupId}/doc1`,
-      );
-      const barDoc = collRef.firestore.doc(
-        `${collRef.id}/bar/baz/boo/${collectionGroupId}/doc2`,
-      );
-      await fooDoc.set({foo: 1});
-      await barDoc.set({bar: 1});
+      const fooDoc = collRef.firestore.doc(`${collRef.id}/foo/${collectionGroupId}/doc1`);
+      const barDoc = collRef.firestore.doc(`${collRef.id}/bar/baz/boo/${collectionGroupId}/doc2`);
+      await fooDoc.set({ foo: 1 });
+      await barDoc.set({ bar: 1 });
 
       const query1 = collRef.firestore.collectionGroup(collectionGroupId);
       const snapshot = await execute(db.pipeline().createFrom(query1));
 
-      verifyResults(snapshot, {bar: 1}, {foo: 1});
+      verifyResults(snapshot, { bar: 1 }, { foo: 1 });
     });
   });
 
@@ -5933,35 +5703,33 @@ describe.skipClassic('Query to Pipeline', () => {
     return testCollectionWithDocs({}, async (collRef, db) => {
       const docWithSpecials = collRef.doc('so!@#$%^&*()_+special');
 
-      const collectionWithSpecials = docWithSpecials.collection(
-        'so!@#$%^&*()_+special',
-      );
-      await collectionWithSpecials.add({foo: 1});
-      await collectionWithSpecials.add({foo: 2});
+      const collectionWithSpecials = docWithSpecials.collection('so!@#$%^&*()_+special');
+      await collectionWithSpecials.add({ foo: 1 });
+      await collectionWithSpecials.add({ foo: 2 });
 
       const snapshot = await execute(
         db.pipeline().createFrom(collectionWithSpecials.orderBy('foo', 'asc')),
       );
 
-      verifyResults(snapshot, {foo: 1}, {foo: 2});
+      verifyResults(snapshot, { foo: 1 }, { foo: 2 });
     });
   });
 
   it('supports multiple inequality on same field', () => {
     return testCollectionWithDocs(
       {
-        '01': {id: 1, foo: 1, bar: 1, baz: 1},
-        '02': {id: 2, foo: 1, bar: 1, baz: 2},
-        '03': {id: 3, foo: 1, bar: 1, baz: 2},
-        '04': {id: 4, foo: 1, bar: 2, baz: 1},
-        '05': {id: 5, foo: 1, bar: 2, baz: 2},
-        '06': {id: 6, foo: 1, bar: 2, baz: 2},
-        '07': {id: 7, foo: 2, bar: 1, baz: 1},
-        '08': {id: 8, foo: 2, bar: 1, baz: 2},
-        '09': {id: 9, foo: 2, bar: 1, baz: 2},
-        '10': {id: 10, foo: 2, bar: 2, baz: 1},
-        '11': {id: 11, foo: 2, bar: 2, baz: 2},
-        '12': {id: 12, foo: 2, bar: 2, baz: 2},
+        '01': { id: 1, foo: 1, bar: 1, baz: 1 },
+        '02': { id: 2, foo: 1, bar: 1, baz: 2 },
+        '03': { id: 3, foo: 1, bar: 1, baz: 2 },
+        '04': { id: 4, foo: 1, bar: 2, baz: 1 },
+        '05': { id: 5, foo: 1, bar: 2, baz: 2 },
+        '06': { id: 6, foo: 1, bar: 2, baz: 2 },
+        '07': { id: 7, foo: 2, bar: 1, baz: 1 },
+        '08': { id: 8, foo: 2, bar: 1, baz: 2 },
+        '09': { id: 9, foo: 2, bar: 1, baz: 2 },
+        '10': { id: 10, foo: 2, bar: 2, baz: 1 },
+        '11': { id: 11, foo: 2, bar: 2, baz: 2 },
+        '12': { id: 12, foo: 2, bar: 2, baz: 2 },
       },
       async (collRef, db) => {
         const query1 = collRef.where(
@@ -5970,14 +5738,14 @@ describe.skipClassic('Query to Pipeline', () => {
         const snapshot = await execute(db.pipeline().createFrom(query1));
         verifyResults(
           snapshot,
-          {id: 3, foo: 1, bar: 1, baz: 2},
-          {id: 4, foo: 1, bar: 2, baz: 1},
-          {id: 5, foo: 1, bar: 2, baz: 2},
-          {id: 6, foo: 1, bar: 2, baz: 2},
-          {id: 7, foo: 2, bar: 1, baz: 1},
-          {id: 8, foo: 2, bar: 1, baz: 2},
-          {id: 9, foo: 2, bar: 1, baz: 2},
-          {id: 10, foo: 2, bar: 2, baz: 1},
+          { id: 3, foo: 1, bar: 1, baz: 2 },
+          { id: 4, foo: 1, bar: 2, baz: 1 },
+          { id: 5, foo: 1, bar: 2, baz: 2 },
+          { id: 6, foo: 1, bar: 2, baz: 2 },
+          { id: 7, foo: 2, bar: 1, baz: 1 },
+          { id: 8, foo: 2, bar: 1, baz: 2 },
+          { id: 9, foo: 2, bar: 1, baz: 2 },
+          { id: 10, foo: 2, bar: 2, baz: 1 },
         );
       },
     );
@@ -5986,18 +5754,18 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports multiple inequality on different fields', () => {
     return testCollectionWithDocs(
       {
-        '01': {id: 1, foo: 1, bar: 1, baz: 1},
-        '02': {id: 2, foo: 1, bar: 1, baz: 2},
-        '03': {id: 3, foo: 1, bar: 1, baz: 2},
-        '04': {id: 4, foo: 1, bar: 2, baz: 1},
-        '05': {id: 5, foo: 1, bar: 2, baz: 2},
-        '06': {id: 6, foo: 1, bar: 2, baz: 2},
-        '07': {id: 7, foo: 2, bar: 1, baz: 1},
-        '08': {id: 8, foo: 2, bar: 1, baz: 2},
-        '09': {id: 9, foo: 2, bar: 1, baz: 2},
-        '10': {id: 10, foo: 2, bar: 2, baz: 1},
-        '11': {id: 11, foo: 2, bar: 2, baz: 2},
-        '12': {id: 12, foo: 2, bar: 2, baz: 2},
+        '01': { id: 1, foo: 1, bar: 1, baz: 1 },
+        '02': { id: 2, foo: 1, bar: 1, baz: 2 },
+        '03': { id: 3, foo: 1, bar: 1, baz: 2 },
+        '04': { id: 4, foo: 1, bar: 2, baz: 1 },
+        '05': { id: 5, foo: 1, bar: 2, baz: 2 },
+        '06': { id: 6, foo: 1, bar: 2, baz: 2 },
+        '07': { id: 7, foo: 2, bar: 1, baz: 1 },
+        '08': { id: 8, foo: 2, bar: 1, baz: 2 },
+        '09': { id: 9, foo: 2, bar: 1, baz: 2 },
+        '10': { id: 10, foo: 2, bar: 2, baz: 1 },
+        '11': { id: 11, foo: 2, bar: 2, baz: 2 },
+        '12': { id: 12, foo: 2, bar: 2, baz: 2 },
       },
       async (collRef, db) => {
         const query1 = collRef.where(
@@ -6006,34 +5774,32 @@ describe.skipClassic('Query to Pipeline', () => {
         const snapshot = await execute(db.pipeline().createFrom(query1));
         verifyResults(
           snapshot,
-          {id: 4, foo: 1, bar: 2, baz: 1},
-          {id: 7, foo: 2, bar: 1, baz: 1},
-          {id: 10, foo: 2, bar: 2, baz: 1},
+          { id: 4, foo: 1, bar: 2, baz: 1 },
+          { id: 7, foo: 2, bar: 1, baz: 1 },
+          { id: 10, foo: 2, bar: 2, baz: 1 },
         );
       },
     );
   });
 
   it('supports collectionGroup query', () => {
-    return testCollectionWithDocs({1: {foo: 1}}, async (collRef, db) => {
-      const snapshot = await execute(
-        db.pipeline().createFrom(db.collectionGroup(collRef.id)),
-      );
-      verifyResults(snapshot, {foo: 1});
+    return testCollectionWithDocs({ 1: { foo: 1 } }, async (collRef, db) => {
+      const snapshot = await execute(db.pipeline().createFrom(db.collectionGroup(collRef.id)));
+      verifyResults(snapshot, { foo: 1 });
     });
   });
 
   it('supports equal nan', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1, bar: NaN},
-        2: {foo: 2, bar: 1},
-        3: {foo: 3, bar: 'bar'},
+        1: { foo: 1, bar: NaN },
+        2: { foo: 2, bar: 1 },
+        3: { foo: 3, bar: 'bar' },
       },
       async (collRef, db) => {
         const query1 = collRef.where('bar', '==', NaN);
         const classicSnapshot = await query1.get();
-        const classicData = classicSnapshot.docs.map(d => d.data());
+        const classicData = classicSnapshot.docs.map((d) => d.data());
 
         const snapshot = await execute(db.pipeline().createFrom(query1));
         verifyResults(snapshot, ...classicData);
@@ -6044,15 +5810,15 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports notEqual nan', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1, bar: NaN},
-        2: {foo: 2, bar: 1},
-        3: {foo: 3, bar: 'bar'},
+        1: { foo: 1, bar: NaN },
+        2: { foo: 2, bar: 1 },
+        3: { foo: 3, bar: 'bar' },
       },
       async (collRef, db) => {
         const query1 = collRef.where('bar', '!=', NaN);
 
         const classicSnapshot = await query1.get();
-        const classicData = classicSnapshot.docs.map(d => d.data());
+        const classicData = classicSnapshot.docs.map((d) => d.data());
 
         const snapshot = await execute(db.pipeline().createFrom(query1));
         verifyResults(snapshot, ...classicData);
@@ -6063,13 +5829,13 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports equal null', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1, bar: null},
-        2: {foo: 2, bar: 1},
+        1: { foo: 1, bar: null },
+        2: { foo: 2, bar: 1 },
       },
       async (collRef, db) => {
         const query1 = collRef.where('bar', '==', null);
         const classicSnapshot = await query1.get();
-        const classicData = classicSnapshot.docs.map(d => d.data());
+        const classicData = classicSnapshot.docs.map((d) => d.data());
 
         const snapshot = await execute(db.pipeline().createFrom(query1));
         verifyResults(snapshot, ...classicData);
@@ -6080,13 +5846,13 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports notEqual null', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1, bar: null},
-        2: {foo: 2, bar: 1},
+        1: { foo: 1, bar: null },
+        2: { foo: 2, bar: 1 },
       },
       async (collRef, db) => {
         const query1 = collRef.where('bar', '!=', null);
         const classicSnapshot = await query1.get();
-        const classicData = classicSnapshot.docs.map(d => d.data());
+        const classicData = classicSnapshot.docs.map((d) => d.data());
         const snapshot = await execute(db.pipeline().createFrom(query1));
         verifyResults(snapshot, ...classicData);
       },
@@ -6096,13 +5862,13 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports notEqual', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1, bar: 0},
-        2: {foo: 2, bar: 1},
+        1: { foo: 1, bar: 0 },
+        2: { foo: 2, bar: 1 },
       },
       async (collRef, db) => {
         const query1 = collRef.where('bar', '!=', 0);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 2, bar: 1});
+        verifyResults(snapshot, { foo: 2, bar: 1 });
       },
     );
   });
@@ -6110,13 +5876,13 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports array contains', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1, bar: [0, 2, 4, 6]},
-        2: {foo: 2, bar: [1, 3, 5, 7]},
+        1: { foo: 1, bar: [0, 2, 4, 6] },
+        2: { foo: 2, bar: [1, 3, 5, 7] },
       },
       async (collRef, db) => {
         const query1 = collRef.where('bar', 'array-contains', 4);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 1, bar: [0, 2, 4, 6]});
+        verifyResults(snapshot, { foo: 1, bar: [0, 2, 4, 6] });
       },
     );
   });
@@ -6124,18 +5890,14 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports array contains any', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1, bar: [0, 2, 4, 6]},
-        2: {foo: 2, bar: [1, 3, 5, 7]},
-        3: {foo: 3, bar: [10, 20, 30, 40]},
+        1: { foo: 1, bar: [0, 2, 4, 6] },
+        2: { foo: 2, bar: [1, 3, 5, 7] },
+        3: { foo: 3, bar: [10, 20, 30, 40] },
       },
       async (collRef, db) => {
         const query1 = collRef.where('bar', 'array-contains-any', [4, 5]);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(
-          snapshot,
-          {foo: 1, bar: [0, 2, 4, 6]},
-          {foo: 2, bar: [1, 3, 5, 7]},
-        );
+        verifyResults(snapshot, { foo: 1, bar: [0, 2, 4, 6] }, { foo: 2, bar: [1, 3, 5, 7] });
       },
     );
   });
@@ -6143,14 +5905,14 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports in', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1, bar: 2},
-        2: {foo: 2},
-        3: {foo: 3, bar: 10},
+        1: { foo: 1, bar: 2 },
+        2: { foo: 2 },
+        3: { foo: 3, bar: 10 },
       },
       async (collRef, db) => {
         const query1 = collRef.where('bar', 'in', [0, 10, 20]);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 3, bar: 10});
+        verifyResults(snapshot, { foo: 3, bar: 10 });
       },
     );
   });
@@ -6158,14 +5920,14 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports in with 1', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1, bar: 2},
-        2: {foo: 2},
-        3: {foo: 3, bar: 10},
+        1: { foo: 1, bar: 2 },
+        2: { foo: 2 },
+        3: { foo: 3, bar: 10 },
       },
       async (collRef, db) => {
         const query1 = collRef.where('bar', 'in', [2]);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 1, bar: 2});
+        verifyResults(snapshot, { foo: 1, bar: 2 });
       },
     );
   });
@@ -6173,16 +5935,14 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports not in', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1, bar: 2},
-        2: {foo: 2, bar: 1},
-        3: {foo: 3, bar: 10},
+        1: { foo: 1, bar: 2 },
+        2: { foo: 2, bar: 1 },
+        3: { foo: 3, bar: 10 },
       },
       async (collRef, db) => {
-        const query1 = collRef
-          .where('bar', 'not-in', [0, 10, 20])
-          .orderBy('foo');
+        const query1 = collRef.where('bar', 'not-in', [0, 10, 20]).orderBy('foo');
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 1, bar: 2}, {foo: 2, bar: 1});
+        verifyResults(snapshot, { foo: 1, bar: 2 }, { foo: 2, bar: 1 });
       },
     );
   });
@@ -6190,14 +5950,14 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports not in with 1', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1, bar: 2},
-        2: {foo: 2},
-        3: {foo: 3, bar: 10},
+        1: { foo: 1, bar: 2 },
+        2: { foo: 2 },
+        3: { foo: 3, bar: 10 },
       },
       async (collRef, db) => {
         const query1 = collRef.where('bar', 'not-in', [2]);
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 2}, {foo: 3, bar: 10});
+        verifyResults(snapshot, { foo: 2 }, { foo: 3, bar: 10 });
       },
     );
   });
@@ -6205,21 +5965,16 @@ describe.skipClassic('Query to Pipeline', () => {
   it('supports or operator', () => {
     return testCollectionWithDocs(
       {
-        1: {foo: 1, bar: 2},
-        2: {foo: 2, bar: 0},
-        3: {foo: 3, bar: 10},
+        1: { foo: 1, bar: 2 },
+        2: { foo: 2, bar: 0 },
+        3: { foo: 3, bar: 10 },
       },
       async (collRef, db) => {
         const query1 = collRef
-          .where(
-            Filter.or(
-              Filter.where('bar', '==', 2),
-              Filter.where('foo', '==', 3),
-            ),
-          )
+          .where(Filter.or(Filter.where('bar', '==', 2), Filter.where('foo', '==', 3)))
           .orderBy('foo');
         const snapshot = await execute(db.pipeline().createFrom(query1));
-        verifyResults(snapshot, {foo: 1, bar: 2}, {foo: 3, bar: 10});
+        verifyResults(snapshot, { foo: 1, bar: 2 }, { foo: 3, bar: 10 });
       },
     );
   });

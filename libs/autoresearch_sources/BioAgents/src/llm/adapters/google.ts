@@ -1,19 +1,18 @@
 import {
-  GoogleGenAI,
-  setDefaultBaseUrls,
-  type GenerateContentResponse,
   type Content,
+  type File as GeminiFile,
+  type GenerateContentResponse,
+  GoogleGenAI,
+  type Tool as GoogleTool,
+  type GroundingChunk,
   type GroundingMetadata,
   type GroundingSupport,
-  type GroundingChunk,
-  type Tool as GoogleTool,
-  type File as GeminiFile,
-} from "@google/genai";
-
-import { LLMAdapter } from "../adapter";
-import type { LLMProvider, LLMRequest, LLMResponse, LLMTool, WebSearchResult } from "../types";
-import { hasUrlInMessages, enrichMessagesWithUrlContent } from "./utils";
-import logger from "../../utils/logger";
+  setDefaultBaseUrls,
+} from '@google/genai';
+import logger from '../../utils/logger';
+import { LLMAdapter } from '../adapter';
+import type { LLMProvider, LLMRequest, LLMResponse, LLMTool, WebSearchResult } from '../types';
+import { enrichMessagesWithUrlContent, hasUrlInMessages } from './utils';
 
 type GoogleContent = Content;
 
@@ -28,7 +27,7 @@ export class GoogleAdapter extends LLMAdapter {
     super(provider);
 
     if (!provider.apiKey) {
-      throw new Error("Google provider requires an API key");
+      throw new Error('Google provider requires an API key');
     }
 
     if (provider.baseUrl) {
@@ -58,7 +57,7 @@ export class GoogleAdapter extends LLMAdapter {
           model: parameters.model,
           hasFiles: !!request.fileUris?.length,
         },
-        "Google chat completion failed",
+        'Google chat completion failed',
       );
       throw new Error(`Google chat completion failed: ${errorMessage}`);
     }
@@ -75,13 +74,13 @@ export class GoogleAdapter extends LLMAdapter {
     try {
       const stream = await this.client.models.generateContentStream(parameters);
 
-      let fullText = "";
+      let fullText = '';
       let promptTokens = 0;
       let completionTokens = 0;
       let totalTokens = 0;
 
       for await (const chunk of stream) {
-        const delta = chunk.text || "";
+        const delta = chunk.text || '';
         if (delta) {
           fullText += delta;
           await onStreamChunk(delta, fullText);
@@ -127,7 +126,7 @@ export class GoogleAdapter extends LLMAdapter {
       return this.transformWebSearchResponse(response);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      logger.error({ error: errorMessage, model: parameters.model }, "Google web search failed");
+      logger.error({ error: errorMessage, model: parameters.model }, 'Google web search failed');
       throw new Error(`Google web search failed: ${errorMessage}`);
     }
   }
@@ -147,11 +146,11 @@ export class GoogleAdapter extends LLMAdapter {
     try {
       const stream = await this.client.models.generateContentStream(parameters);
 
-      let fullText = "";
+      let fullText = '';
       let finalResponse: GenerateContentResponse | null = null;
 
       for await (const chunk of stream) {
-        const delta = chunk.text || "";
+        const delta = chunk.text || '';
         if (delta) {
           fullText += delta;
           await onStreamChunk(delta, fullText);
@@ -204,7 +203,7 @@ export class GoogleAdapter extends LLMAdapter {
     return {
       ...request,
       messages: enrichedMessages.map((m) => ({
-        role: m.role as "system" | "user" | "assistant",
+        role: m.role as 'system' | 'user' | 'assistant',
         content: m.content,
       })),
       fileUris: request.fileUris,
@@ -221,7 +220,7 @@ export class GoogleAdapter extends LLMAdapter {
   } {
     const messages = this.buildContents(request);
     if (messages.length === 0) {
-      throw new Error("Google adapter requires at least one non-system message");
+      throw new Error('Google adapter requires at least one non-system message');
     }
 
     const config: Record<string, unknown> = {};
@@ -232,7 +231,7 @@ export class GoogleAdapter extends LLMAdapter {
     }
 
     request.messages
-      .filter((message) => message.role === "system")
+      .filter((message) => message.role === 'system')
       .forEach((message) => {
         if (message.content) {
           systemSegments.push(message.content);
@@ -240,7 +239,7 @@ export class GoogleAdapter extends LLMAdapter {
       });
 
     if (systemSegments.length > 0) {
-      config.systemInstruction = systemSegments.join("\n\n");
+      config.systemInstruction = systemSegments.join('\n\n');
     }
 
     if (request.temperature !== undefined) {
@@ -273,7 +272,7 @@ export class GoogleAdapter extends LLMAdapter {
     const tools = this.mapTools(request.tools);
 
     if (options.includeWebSearch) {
-      const hasGoogleSearchTool = tools.some((tool) => "googleSearch" in tool);
+      const hasGoogleSearchTool = tools.some((tool) => 'googleSearch' in tool);
       if (!hasGoogleSearchTool) {
         tools.push({ googleSearch: {} });
       }
@@ -292,9 +291,9 @@ export class GoogleAdapter extends LLMAdapter {
 
   private buildContents(request: LLMRequest): GoogleContent[] {
     const contents = request.messages
-      .filter((message) => message.role === "user" || message.role === "assistant")
+      .filter((message) => message.role === 'user' || message.role === 'assistant')
       .map((message) => {
-        const role = message.role === "assistant" ? "model" : "user";
+        const role = message.role === 'assistant' ? 'model' : 'user';
         const parts = this.convertContentToParts(message.content);
         return {
           role,
@@ -304,7 +303,7 @@ export class GoogleAdapter extends LLMAdapter {
 
     // If file URIs are provided, add them to the last user message
     if (request.fileUris && request.fileUris.length > 0) {
-      const lastUserMessageIndex = contents.map((c) => c.role).lastIndexOf("user");
+      const lastUserMessageIndex = contents.map((c) => c.role).lastIndexOf('user');
       if (lastUserMessageIndex >= 0) {
         const lastUserMessage = contents[lastUserMessageIndex];
         if (lastUserMessage && lastUserMessage.parts) {
@@ -318,7 +317,7 @@ export class GoogleAdapter extends LLMAdapter {
           logger.info(`Attached ${request.fileUris.length} file(s) to request`);
         }
       } else {
-        logger.warn("No user message found to attach files to");
+        logger.warn('No user message found to attach files to');
       }
     }
 
@@ -343,7 +342,7 @@ export class GoogleAdapter extends LLMAdapter {
    */
   private convertContentToParts(content: string | unknown): Array<Record<string, unknown>> {
     // If content is a simple string, return as text part
-    if (typeof content === "string") {
+    if (typeof content === 'string') {
       return [{ text: content }];
     }
 
@@ -352,37 +351,37 @@ export class GoogleAdapter extends LLMAdapter {
       const parts: Array<Record<string, unknown>> = [];
 
       for (const block of content) {
-        if (typeof block !== "object" || block === null) {
+        if (typeof block !== 'object' || block === null) {
           continue;
         }
 
         const typedBlock = block as Record<string, unknown>;
 
         // Handle text blocks
-        if (typedBlock.type === "text" && typeof typedBlock.text === "string") {
+        if (typedBlock.type === 'text' && typeof typedBlock.text === 'string') {
           parts.push({ text: typedBlock.text });
         }
         // Handle image blocks with base64 source
-        else if (typedBlock.type === "image" && typedBlock.source) {
+        else if (typedBlock.type === 'image' && typedBlock.source) {
           const source = typedBlock.source as Record<string, unknown>;
-          if (source.type === "base64" && typeof source.data === "string") {
-            const mimeType = (source.media_type as string) || "image/png";
+          if (source.type === 'base64' && typeof source.data === 'string') {
+            const mimeType = (source.media_type as string) || 'image/png';
             parts.push({
               inlineData: {
                 mimeType,
                 data: source.data,
               },
             });
-            logger.info({ mimeType }, "Converted image block to Google inlineData format");
+            logger.info({ mimeType }, 'Converted image block to Google inlineData format');
           }
         }
         // Handle image_url blocks (data URL format)
-        else if (typedBlock.type === "image_url" && typedBlock.image_url) {
+        else if (typedBlock.type === 'image_url' && typedBlock.image_url) {
           const imageUrl = typedBlock.image_url as Record<string, unknown>;
           const url = imageUrl.url as string;
 
           // Check if it's a data URL (base64 inline)
-          if (url?.startsWith("data:")) {
+          if (url?.startsWith('data:')) {
             const match = url.match(/^data:([^;]+);base64,(.+)$/);
             if (match) {
               parts.push({
@@ -391,12 +390,12 @@ export class GoogleAdapter extends LLMAdapter {
                   data: match[2],
                 },
               });
-              logger.info({ mimeType: match[1] }, "Converted data URL to Google inlineData format");
+              logger.info({ mimeType: match[1] }, 'Converted data URL to Google inlineData format');
             }
           } else {
             logger.warn(
               { url: url?.substring(0, 100) },
-              "Cannot convert external image URL to Google format - requires file upload",
+              'Cannot convert external image URL to Google format - requires file upload',
             );
           }
         }
@@ -404,7 +403,7 @@ export class GoogleAdapter extends LLMAdapter {
 
       // If we couldn't extract any parts, fall back to stringifying
       if (parts.length === 0) {
-        logger.warn("No valid parts extracted from multimodal content, falling back to string");
+        logger.warn('No valid parts extracted from multimodal content, falling back to string');
         return [{ text: JSON.stringify(content) }];
       }
 
@@ -412,12 +411,12 @@ export class GoogleAdapter extends LLMAdapter {
     }
 
     // Fallback: stringify unknown content
-    logger.warn({ contentType: typeof content }, "Unknown content type, converting to string");
+    logger.warn({ contentType: typeof content }, 'Unknown content type, converting to string');
     return [{ text: String(content) }];
   }
 
   protected transformResponse(response: GenerateContentResponse): LLMResponse {
-    let text = (response.text ?? "").trim();
+    let text = (response.text ?? '').trim();
     const usage = response.usageMetadata;
 
     // Handle code execution parts
@@ -470,7 +469,7 @@ export class GoogleAdapter extends LLMAdapter {
     webSearchResults: WebSearchResult[];
   }> {
     const candidate = response.candidates?.[0];
-    const baseText = (response.text ?? "").trim();
+    const baseText = (response.text ?? '').trim();
     const groundingMetadata = candidate?.groundingMetadata;
 
     const { textWithCitations, citedChunkIndices } = this.applyGroundingCitations(
@@ -480,8 +479,8 @@ export class GoogleAdapter extends LLMAdapter {
 
     const webSearchResults = await this.collectWebResults(groundingMetadata, citedChunkIndices);
     const cleanedLLMOutput = textWithCitations
-      .replace(/(?:,\s*)?\[(?:\d+(?:,\s*\d+)*)\]/g, "")
-      .replace(/[ \t]{2,}/g, " ")
+      .replace(/(?:,\s*)?\[(?:\d+(?:,\s*\d+)*)\]/g, '')
+      .replace(/[ \t]{2,}/g, ' ')
       .trim();
 
     return {
@@ -514,7 +513,7 @@ export class GoogleAdapter extends LLMAdapter {
       .sort((a, b) => (b.segment?.endIndex ?? 0) - (a.segment?.endIndex ?? 0))
       .forEach((support) => {
         const endIndex = support.segment?.endIndex;
-        if (typeof endIndex !== "number" || !support.groundingChunkIndices?.length) {
+        if (typeof endIndex !== 'number' || !support.groundingChunkIndices?.length) {
           return;
         }
 
@@ -530,7 +529,7 @@ export class GoogleAdapter extends LLMAdapter {
           .filter((value): value is string => Boolean(value));
 
         if (citations.length > 0) {
-          const citationString = citations.join(", ");
+          const citationString = citations.join(', ');
           updatedText =
             updatedText.slice(0, endIndex) + citationString + updatedText.slice(endIndex);
         }
@@ -570,7 +569,7 @@ export class GoogleAdapter extends LLMAdapter {
         const resolvedUrl = await this.resolveRedirectUrl(url);
 
         results.push({
-          title: chunk.web.title ?? "",
+          title: chunk.web.title ?? '',
           url: resolvedUrl,
           originalUrl: url,
           index: chunkIndex + 1,
@@ -584,12 +583,12 @@ export class GoogleAdapter extends LLMAdapter {
   private async resolveRedirectUrl(redirectUrl: string): Promise<string> {
     try {
       const response = await fetch(redirectUrl, {
-        method: "HEAD",
-        redirect: "manual",
+        method: 'HEAD',
+        redirect: 'manual',
       });
 
       if (response.status >= 300 && response.status < 400) {
-        const location = response.headers.get("location");
+        const location = response.headers.get('location');
         if (location) {
           return location;
         }
@@ -599,7 +598,7 @@ export class GoogleAdapter extends LLMAdapter {
     } catch (error) {
       logger.warn(
         { error: error instanceof Error ? error.message : String(error) },
-        "Failed to resolve redirect URL",
+        'Failed to resolve redirect URL',
       );
       return redirectUrl;
     }
@@ -617,9 +616,9 @@ export class GoogleAdapter extends LLMAdapter {
 
   private mapToolToGoogle(tool: LLMTool): Record<string, unknown> | null {
     switch (tool.type) {
-      case "webSearch":
+      case 'webSearch':
         return { googleSearch: {} };
-      case "codeExecution":
+      case 'codeExecution':
         return { codeExecution: {} };
       default:
         return null;
@@ -649,7 +648,7 @@ export class GoogleAdapter extends LLMAdapter {
       });
 
       // Wait for file to be in ACTIVE state (required before using in requests)
-      if (uploadedFile.state === "PROCESSING") {
+      if (uploadedFile.state === 'PROCESSING') {
         let retries = 0;
         const maxRetries = 10;
 
@@ -657,29 +656,29 @@ export class GoogleAdapter extends LLMAdapter {
           await new Promise((resolve) => setTimeout(resolve, 1000));
 
           if (!uploadedFile.name) {
-            throw new Error("File name is missing from upload response");
+            throw new Error('File name is missing from upload response');
           }
 
           const fileStatus = await this.client.files.get({ name: uploadedFile.name });
 
-          if (fileStatus.state === "ACTIVE") {
+          if (fileStatus.state === 'ACTIVE') {
             logger.info(`File uploaded and ready: ${fileName}`);
             return fileStatus;
-          } else if (fileStatus.state === "FAILED") {
-            throw new Error("File processing failed");
+          } else if (fileStatus.state === 'FAILED') {
+            throw new Error('File processing failed');
           }
 
           retries++;
         }
 
-        throw new Error("File processing timeout - file did not become ACTIVE");
+        throw new Error('File processing timeout - file did not become ACTIVE');
       }
 
       logger.info(`File uploaded successfully: ${fileName}`);
       return uploadedFile;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
-      logger.error({ error: errorMessage, fileName }, "Failed to upload file to Gemini");
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error({ error: errorMessage, fileName }, 'Failed to upload file to Gemini');
       throw new Error(`Failed to upload file to Gemini: ${errorMessage}`);
     }
   }

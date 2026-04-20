@@ -7,29 +7,26 @@
 import '../../focus/md-focus-ring.js';
 import '../../ripple/ripple.js';
 
-import {html, isServer, LitElement} from 'lit';
-import {property, query} from 'lit/decorators.js';
-import {classMap} from 'lit/directives/class-map.js';
+import { html, isServer, LitElement } from 'lit';
+import { property, query } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
-import {isActivationClick} from '../../internal/events/form-label-activation.js';
+import { isActivationClick } from '../../internal/events/form-label-activation.js';
 import {
   createValidator,
   getValidityAnchor,
   mixinConstraintValidation,
 } from '../../labs/behaviors/constraint-validation.js';
-import {
-  internals,
-  mixinElementInternals,
-} from '../../labs/behaviors/element-internals.js';
-import {mixinFocusable} from '../../labs/behaviors/focusable.js';
+import { internals, mixinElementInternals } from '../../labs/behaviors/element-internals.js';
+import { mixinFocusable } from '../../labs/behaviors/focusable.js';
 import {
   getFormState,
   getFormValue,
   mixinFormAssociated,
 } from '../../labs/behaviors/form-associated.js';
-import {RadioValidator} from '../../labs/behaviors/validators/radio-validator.js';
+import { RadioValidator } from '../../labs/behaviors/validators/radio-validator.js';
 
-import {SingleSelectionController} from './single-selection-controller.js';
+import { SingleSelectionController } from './single-selection-controller.js';
 
 const CHECKED = Symbol('checked');
 let maskId = 0;
@@ -55,7 +52,7 @@ export class Radio extends radioBaseClass {
   /**
    * Whether or not the radio is selected.
    */
-  @property({type: Boolean})
+  @property({ type: Boolean })
   get checked() {
     return this[CHECKED];
   }
@@ -76,7 +73,7 @@ export class Radio extends radioBaseClass {
    * Whether or not the radio is required. If any radio is required in a group,
    * all radios are implicitly required.
    */
-  @property({type: Boolean}) required = false;
+  @property({ type: Boolean }) required = false;
 
   /**
    * The element value to use in form submission when checked.
@@ -97,7 +94,7 @@ export class Radio extends radioBaseClass {
   }
 
   protected override render() {
-    const classes = {'checked': this.checked};
+    const classes = { checked: this.checked };
     return html`
       <div class="container ${classMap(classes)}" aria-hidden="true">
         <md-ripple
@@ -145,10 +142,8 @@ export class Radio extends radioBaseClass {
 
     // Per spec, clicking on a radio input always selects it.
     this.checked = true;
-    this.dispatchEvent(new Event('change', {bubbles: true}));
-    this.dispatchEvent(
-      new InputEvent('input', {bubbles: true, composed: true}),
-    );
+    this.dispatchEvent(new Event('change', { bubbles: true }));
+    this.dispatchEvent(new InputEvent('input', { bubbles: true, composed: true }));
   }
 
   private async handleKeydown(event: KeyboardEvent) {

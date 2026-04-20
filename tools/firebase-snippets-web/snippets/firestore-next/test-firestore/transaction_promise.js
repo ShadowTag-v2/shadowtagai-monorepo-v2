@@ -5,16 +5,16 @@
 // 'npm run snippets'.
 
 // [START transaction_promise_modular]
-import { doc, runTransaction } from "firebase/firestore";
+import { doc, runTransaction } from 'firebase/firestore';
 
 // Create a reference to the SF doc.
-const sfDocRef = doc(db, "cities", "SF");
+const sfDocRef = doc(db, 'cities', 'SF');
 
 try {
   const newPopulation = await runTransaction(db, async (transaction) => {
     const sfDoc = await transaction.get(sfDocRef);
     if (!sfDoc.exists()) {
-      throw "Document does not exist!";
+      throw 'Document does not exist!';
     }
 
     const newPop = sfDoc.data().population + 1;
@@ -22,11 +22,11 @@ try {
       transaction.update(sfDocRef, { population: newPop });
       return newPop;
     } else {
-      return Promise.reject("Sorry! Population is too big");
+      return Promise.reject('Sorry! Population is too big');
     }
   });
 
-  console.log("Population increased to ", newPopulation);
+  console.log('Population increased to ', newPopulation);
 } catch (e) {
   // This will be a "population is too big" error.
   console.error(e);

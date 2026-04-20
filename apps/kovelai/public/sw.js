@@ -6,10 +6,7 @@
 
 const CACHE_NAME = 'counselconduit-frames-v1';
 const FRAME_DIR = '/frames/';
-const STATIC_ASSETS = [
-  '/cinematic-landing.html',
-  '/scroll-frames.js',
-];
+const STATIC_ASSETS = ['/cinematic-landing.html', '/scroll-frames.js'];
 
 // Pre-cache static assets on install
 self.addEventListener('install', (event) => {
@@ -17,7 +14,7 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME).then((cache) => {
       console.log('[SW] Pre-caching static assets');
       return cache.addAll(STATIC_ASSETS);
-    })
+    }),
   );
   self.skipWaiting();
 });
@@ -25,13 +22,11 @@ self.addEventListener('install', (event) => {
 // Clean old caches on activate
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
-      )
-    )
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))),
+      ),
   );
   self.clients.claim();
 });
@@ -53,7 +48,7 @@ self.addEventListener('fetch', (event) => {
           }
           return response;
         });
-      })
+      }),
     );
     return;
   }
@@ -67,7 +62,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
           return response;
         })
-        .catch(() => caches.match(request))
+        .catch(() => caches.match(request)),
     );
     return;
   }

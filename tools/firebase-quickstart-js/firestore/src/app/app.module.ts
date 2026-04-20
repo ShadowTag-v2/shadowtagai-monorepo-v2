@@ -15,40 +15,38 @@
  */
 
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { RestaurantCardComponent } from './restaurant-card/restaurant-card.component';
-import { MatCardModule } from '@angular/material/card';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatToolbarModule } from "@angular/material/toolbar";
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { provideFunctions, getFunctions } from '@angular/fire/functions';
-import { provideStorage, getStorage } from '@angular/fire/storage'
-import { projectConfig } from '../environments/environment.default';
-import { HomepageComponent } from './homepage/homepage.component';
-import { RestuarantPageComponent } from './restuarant-page/restuarant-page.component';
-import { MatIconModule } from '@angular/material/icon';
-import { ReviewListComponent } from './review-list/review-list.component';
-import { MatDividerModule } from "@angular/material/divider";
-import { FilterDialogComponent } from './filter-dialog/filter-dialog.component'
-import { MatDialogModule } from '@angular/material/dialog';
-import { SubmitReviewModalComponent } from './submit-review-modal/submit-review-modal.component';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatOptionModule } from '@angular/material/core';
-import { MatInputModule } from '@angular/material/input';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material/button';
-import { connectFirestoreEmulator } from '@firebase/firestore';
+import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getFunctions, provideFunctions } from '@angular/fire/functions';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { SignInModalComponent } from './sign-in-modal/sign-in-modal.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { connectFirestoreEmulator } from '@firebase/firestore';
+import { projectConfig } from '../environments/environment.default';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
+import { HomepageComponent } from './homepage/homepage.component';
 import { DefaultHomepageFirestore, HomepageFirestore } from './homepage/hompage.service';
+import { RestaurantCardComponent } from './restaurant-card/restaurant-card.component';
+import { RestuarantPageComponent } from './restuarant-page/restuarant-page.component';
+import { ReviewListComponent } from './review-list/review-list.component';
+import { SignInModalComponent } from './sign-in-modal/sign-in-modal.component';
+import { SubmitReviewModalComponent } from './submit-review-modal/submit-review-modal.component';
 
 @NgModule({
   declarations: [
@@ -100,4 +98,4 @@ import { DefaultHomepageFirestore, HomepageFirestore } from './homepage/hompage.
   providers: [{ provide: HomepageFirestore, useClass: DefaultHomepageFirestore }],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

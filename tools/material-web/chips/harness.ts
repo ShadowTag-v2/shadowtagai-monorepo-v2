@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Harness} from '../testing/harness.js';
+import { Harness } from '../testing/harness.js';
 
-import {Chip} from './internal/chip.js';
+import type { Chip } from './internal/chip.js';
 
 /**
  * Test harness for chips.
@@ -16,12 +16,11 @@ export class ChipHarness extends Harness<Chip> {
 
   protected override async getInteractiveElement() {
     await this.element.updateComplete;
-    const {primaryId} = this.element as unknown as {primaryId: string};
+    const { primaryId } = this.element as unknown as { primaryId: string };
     const primaryAction =
-      primaryId &&
-      this.element.renderRoot.querySelector<HTMLElement>(`#${primaryId}`);
+      primaryId && this.element.renderRoot.querySelector<HTMLElement>(`#${primaryId}`);
     // Retrieve MultiActionChip's trailingAction
-    const {trailingAction} = this.element as {
+    const { trailingAction } = this.element as {
       trailingAction?: HTMLElement | null;
     };
 

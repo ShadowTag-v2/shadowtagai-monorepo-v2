@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Harness} from '../testing/harness.js';
+import { Harness } from '../testing/harness.js';
 
-import {Dialog} from './internal/dialog.js';
+import type { Dialog } from './internal/dialog.js';
 
 /**
  * Test harness for dialog.
@@ -14,8 +14,6 @@ import {Dialog} from './internal/dialog.js';
 export class DialogHarness extends Harness<Dialog> {
   override async getInteractiveElement() {
     await this.element.updateComplete;
-    return (
-      this.element.querySelector<HTMLElement>('[autocomplete]') ?? this.element
-    );
+    return this.element.querySelector<HTMLElement>('[autocomplete]') ?? this.element;
   }
 }

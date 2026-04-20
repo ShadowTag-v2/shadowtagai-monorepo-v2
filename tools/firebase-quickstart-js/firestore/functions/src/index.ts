@@ -14,60 +14,59 @@
  * limitations under the License.
  */
 
-import {
-    onDocumentWritten,
-} from "firebase-functions/v2/firestore";
-import * as logger from "firebase-functions/logger";
-import { getFirestore } from "firebase-admin/firestore";
-import { initializeApp } from "firebase-admin/app";
-
-import { Restaurant } from '../../src/types/restaurant';
-import { Rating } from '../../src/types/ratings';
 import { strict as assert } from 'assert';
+import { initializeApp } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
+import * as logger from 'firebase-functions/logger';
+import { onDocumentWritten } from 'firebase-functions/v2/firestore';
+import type { Rating } from '../../src/types/ratings';
+import type { Restaurant } from '../../src/types/restaurant';
 
 initializeApp();
 const db = getFirestore();
 
 export const updateNumRatings = onDocumentWritten(
-    "restaurants/{restaurtantID}/ratings/{ratingID}", async (event) => {
-        // Get num reviews from restaurant and compare to actual num reviews
-        const restuarantDocRef = db.doc(
-            `restaurants/${event.params.restaurtantID}`);
+  'restaurants/{restaurtantID}/ratings/{ratingID}',
+  async (event) => {
+    // Get num reviews from restaurant and compare to actual num reviews
+    const restuarantDocRef = db.doc(`restaurants/${event.params.restaurtantID}`);
 
-        logger.info(`Fetching data for restaurant ` +
-            `${event.params.restaurtantID}`);
-        const restaurantDocFromFirebase = await restuarantDocRef.get();
-        const restaurantData = restaurantDocFromFirebase.data() as Restaurant;
-        const fetchedRatingDocs = (await db.collection(
-            `restaurants/${event.params.restaurtantID}/ratings`).get()).docs
-        const actualRatings: Rating[] = fetchedRatingDocs.map(
-            rating => rating.data() as Rating);
+    logger.info(`Fetching data for restaurant ` + `${event.params.restaurtantID}`);
+    const restaurantDocFromFirebase = await restuarantDocRef.get();
+    const restaurantData = restaurantDocFromFirebase.data() as Restaurant;
+    const fetchedRatingDocs = (
+      await db.collection(`restaurants/${event.params.restaurtantID}/ratings`).get()
+    ).docs;
+    const actualRatings: Rating[] = fetchedRatingDocs.map((rating) => rating.data() as Rating);
 
-        /**
-         * In general, since the application only allows for the creation of
-         * new reviews (and not the deletion of existing reviews), we can
-         * expect that when this function is triggered the number of reviews
-         * listed in the `restaurant.numRatings` field will be strictly less
-         * than the actual length of the `ratings` sub-collection. In the case
-         * of a race condition, restuarant.numRatings will be corrected on the
-         * next write to the `ratings` collection.
-         */
-        assert(restaurantData.numRatings < actualRatings.length)
+    /**
+     * In general, since the application only allows for the creation of
+     * new reviews (and not the deletion of existing reviews), we can
+     * expect that when this function is triggered the number of reviews
+     * listed in the `restaurant.numRatings` field will be strictly less
+     * than the actual length of the `ratings` sub-collection. In the case
+     * of a race condition, restuarant.numRatings will be corrected on the
+     * next write to the `ratings` collection.
+     */
+    assert(restaurantData.numRatings < actualRatings.length);
 
-        // Calculate average review
-        const sumOfRatings = actualRatings.reduce(
-            (currentSum, currentRating) => currentSum + currentRating.rating,
-            0);
-        const newAvgRating = Math.round(sumOfRatings / actualRatings.length);
-        const newRestaurant: Restaurant = {
-            ...restaurantData,
-            avgRating: newAvgRating,
-            numRatings: actualRatings.length
-        }
+    // Calculate average review
+    const sumOfRatings = actualRatings.reduce(
+      (currentSum, currentRating) => currentSum + currentRating.rating,
+      0,
+    );
+    const newAvgRating = Math.round(sumOfRatings / actualRatings.length);
+    const newRestaurant: Restaurant = {
+      ...restaurantData,
+      avgRating: newAvgRating,
+      numRatings: actualRatings.length,
+    };
 
-        // Save result to Firestore
-        logger.info(`Saving new avgRating: ${actualRatings.length}` +
-            ` for restaurant ${event.params.restaurtantID}`)
-        return restuarantDocRef.set(newRestaurant)
-    }
-)
+    // Save result to Firestore
+    logger.info(
+      `Saving new avgRating: ${actualRatings.length}` +
+        ` for restaurant ${event.params.restaurtantID}`,
+    );
+    return restuarantDocRef.set(newRestaurant);
+  },
+);

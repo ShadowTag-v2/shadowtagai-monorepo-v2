@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_saml_provider_create_modular]
-import { SAMLAuthProvider } from "firebase/auth";
+import { SAMLAuthProvider } from 'firebase/auth';
 
-const provider = new SAMLAuthProvider("saml.myProvider");
+const provider = new SAMLAuthProvider('saml.myProvider');
 // [END auth_saml_provider_create_modular]

@@ -30,7 +30,8 @@ export function getResourceDefinitions(): ResourceDefinition[] {
     {
       uri: 'gitnexus://repos',
       name: 'All Indexed Repositories',
-      description: 'List of all indexed repos with stats. Read this first to discover available repos.',
+      description:
+        'List of all indexed repos with stats. Read this first to discover available repos.',
       mimeType: 'text/yaml',
     },
     {
@@ -100,10 +101,18 @@ function parseUri(uri: string): { repoName?: string; resourceType: string; param
     const rest = repoMatch[2];
 
     if (rest.startsWith('cluster/')) {
-      return { repoName, resourceType: 'cluster', param: decodeURIComponent(rest.replace('cluster/', '')) };
+      return {
+        repoName,
+        resourceType: 'cluster',
+        param: decodeURIComponent(rest.replace('cluster/', '')),
+      };
     }
     if (rest.startsWith('process/')) {
-      return { repoName, resourceType: 'process', param: decodeURIComponent(rest.replace('process/', '')) };
+      return {
+        repoName,
+        resourceType: 'process',
+        param: decodeURIComponent(rest.replace('process/', '')),
+      };
     }
 
     return { repoName, resourceType: rest };
@@ -198,11 +207,11 @@ async function getContextResource(backend: LocalBackend, repoName?: string): Pro
   // Check staleness
   const repoPath = repo.repoPath;
   const lastCommit = repo.lastCommit || 'HEAD';
-  const staleness = repoPath ? checkStaleness(repoPath, lastCommit) : { isStale: false, commitsBehind: 0 };
+  const staleness = repoPath
+    ? checkStaleness(repoPath, lastCommit)
+    : { isStale: false, commitsBehind: 0 };
 
-  const lines: string[] = [
-    `project: ${context.projectName}`,
-  ];
+  const lines: string[] = [`project: ${context.projectName}`];
 
   if (staleness.isStale && staleness.hint) {
     lines.push('');
@@ -261,7 +270,9 @@ async function getClustersResource(backend: LocalBackend, repoName?: string): Pr
     }
 
     if (result.clusters.length > displayLimit) {
-      lines.push(`\n# Showing top ${displayLimit} of ${result.clusters.length} modules. Use gitnexus_query for deeper search.`);
+      lines.push(
+        `\n# Showing top ${displayLimit} of ${result.clusters.length} modules. Use gitnexus_query for deeper search.`,
+      );
     }
 
     return lines.join('\n');
@@ -293,7 +304,9 @@ async function getProcessesResource(backend: LocalBackend, repoName?: string): P
     }
 
     if (result.processes.length > displayLimit) {
-      lines.push(`\n# Showing top ${displayLimit} of ${result.processes.length} processes. Use gitnexus_query for deeper search.`);
+      lines.push(
+        `\n# Showing top ${displayLimit} of ${result.processes.length} processes. Use gitnexus_query for deeper search.`,
+      );
     }
 
     return lines.join('\n');
@@ -367,7 +380,11 @@ example_queries:
 /**
  * Cluster detail resource — queries graph directly via backend.queryClusterDetail()
  */
-async function getClusterDetailResource(name: string, backend: LocalBackend, repoName?: string): Promise<string> {
+async function getClusterDetailResource(
+  name: string,
+  backend: LocalBackend,
+  repoName?: string,
+): Promise<string> {
   try {
     const result = await backend.queryClusterDetail(name, repoName);
 
@@ -409,7 +426,11 @@ async function getClusterDetailResource(name: string, backend: LocalBackend, rep
 /**
  * Process detail resource — queries graph directly via backend.queryProcessDetail()
  */
-async function getProcessDetailResource(name: string, backend: LocalBackend, repoName?: string): Promise<string> {
+async function getProcessDetailResource(
+  name: string,
+  backend: LocalBackend,
+  repoName?: string,
+): Promise<string> {
   try {
     const result = await backend.queryProcessDetail(name, repoName);
 

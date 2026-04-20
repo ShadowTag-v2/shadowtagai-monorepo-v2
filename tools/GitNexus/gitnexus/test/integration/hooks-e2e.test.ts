@@ -5,17 +5,26 @@
  * Unlike unit/hooks.test.ts which tests source code patterns and simple
  * stdin/stdout, these tests verify actual behavior with filesystem state.
  */
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+
 import { spawnSync } from 'child_process';
 import fs from 'fs';
-import path from 'path';
 import os from 'os';
-import { runHook, parseHookOutput } from '../utils/hook-test-helpers.js';
+import path from 'path';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { parseHookOutput, runHook } from '../utils/hook-test-helpers.js';
 
 // ─── Paths to both hook variants ────────────────────────────────────
 
 const CJS_HOOK = path.resolve(__dirname, '..', '..', 'hooks', 'claude', 'gitnexus-hook.cjs');
-const PLUGIN_HOOK = path.resolve(__dirname, '..', '..', '..', 'gitnexus-claude-plugin', 'hooks', 'gitnexus-hook.js');
+const PLUGIN_HOOK = path.resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  'gitnexus-claude-plugin',
+  'hooks',
+  'gitnexus-hook.js',
+);
 
 const HOOKS = [
   { name: 'CJS', path: CJS_HOOK },
@@ -75,7 +84,9 @@ describe.each(HOOKS)('hooks e2e ($name)', ({ name, path: hookPath }) => {
     it('stays silent when meta.json lastCommit matches HEAD', () => {
       // Get current HEAD
       const headResult = spawnSync('git', ['rev-parse', 'HEAD'], {
-        cwd: tmpDir, encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'],
+        cwd: tmpDir,
+        encoding: 'utf-8',
+        stdio: ['pipe', 'pipe', 'pipe'],
       });
       const head = headResult.stdout.trim();
 
@@ -100,7 +111,10 @@ describe.each(HOOKS)('hooks e2e ($name)', ({ name, path: hookPath }) => {
     it('includes --embeddings flag when previous index had embeddings', () => {
       fs.writeFileSync(
         path.join(gitNexusDir, 'meta.json'),
-        JSON.stringify({ lastCommit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', stats: { embeddings: 42 } }),
+        JSON.stringify({
+          lastCommit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+          stats: { embeddings: 42 },
+        }),
       );
 
       const result = runHook(hookPath, {
@@ -178,7 +192,13 @@ describe.each(HOOKS)('hooks e2e ($name)', ({ name, path: hookPath }) => {
         JSON.stringify({ lastCommit: 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', stats: {} }),
       );
 
-      const mutations = ['git commit -m "x"', 'git merge feature', 'git rebase main', 'git cherry-pick abc', 'git pull origin main'];
+      const mutations = [
+        'git commit -m "x"',
+        'git merge feature',
+        'git rebase main',
+        'git cherry-pick abc',
+        'git pull origin main',
+      ];
       for (const cmd of mutations) {
         const result = runHook(hookPath, {
           hook_event_name: 'PostToolUse',
@@ -267,10 +287,7 @@ describe.each(HOOKS)('hooks e2e ($name)', ({ name, path: hookPath }) => {
 
   describe('unhappy paths', () => {
     it('handles corrupted meta.json (invalid JSON) without crashing', () => {
-      fs.writeFileSync(
-        path.join(gitNexusDir, 'meta.json'),
-        'THIS IS NOT JSON {{{',
-      );
+      fs.writeFileSync(path.join(gitNexusDir, 'meta.json'), 'THIS IS NOT JSON {{{');
 
       const result = runHook(hookPath, {
         hook_event_name: 'PostToolUse',
@@ -285,10 +302,7 @@ describe.each(HOOKS)('hooks e2e ($name)', ({ name, path: hookPath }) => {
     });
 
     it('handles meta.json with missing lastCommit field', () => {
-      fs.writeFileSync(
-        path.join(gitNexusDir, 'meta.json'),
-        JSON.stringify({ stats: {} }),
-      );
+      fs.writeFileSync(path.join(gitNexusDir, 'meta.json'), JSON.stringify({ stats: {} }));
 
       const result = runHook(hookPath, {
         hook_event_name: 'PostToolUse',
@@ -379,7 +393,10 @@ describe.each(HOOKS)('hooks e2e ($name)', ({ name, path: hookPath }) => {
     afterAll(() => {
       // Clean up from the base directory
       const root = os.platform() === 'win32' ? 'C:\\' : '/tmp';
-      const base = path.join(root, path.basename(path.resolve(noGitNexusDir, '..', '..', '..', '..', '..', '..')));
+      const base = path.join(
+        root,
+        path.basename(path.resolve(noGitNexusDir, '..', '..', '..', '..', '..', '..')),
+      );
       fs.rmSync(base, { recursive: true, force: true });
     });
 

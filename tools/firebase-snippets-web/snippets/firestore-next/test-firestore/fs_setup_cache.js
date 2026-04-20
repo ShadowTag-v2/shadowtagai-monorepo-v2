@@ -5,9 +5,9 @@
 // 'npm run snippets'.
 
 // [START fs_setup_cache_modular]
-import { initializeFirestore, CACHE_SIZE_UNLIMITED } from "firebase/firestore";
+import { CACHE_SIZE_UNLIMITED, initializeFirestore } from 'firebase/firestore';
 
 const firestoreDb = initializeFirestore(app, {
-  cacheSizeBytes: CACHE_SIZE_UNLIMITED
+  cacheSizeBytes: CACHE_SIZE_UNLIMITED,
 });
 // [END fs_setup_cache_modular]

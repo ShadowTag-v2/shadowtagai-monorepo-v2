@@ -4,10 +4,10 @@ import {
   HeadObjectCommand,
   PutObjectCommand,
   S3Client,
-} from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import logger from "../../utils/logger";
-import { StorageProvider } from "../types";
+} from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import logger from '../../utils/logger';
+import { StorageProvider } from '../types';
 
 export class S3StorageProvider extends StorageProvider {
   private client: S3Client;
@@ -37,14 +37,14 @@ export class S3StorageProvider extends StorageProvider {
       // Disable SDK checksum features for S3-compatible services
       // This prevents x-amz-checksum-* headers that cause CORS/compatibility issues
       ...(isS3Compatible && {
-        requestChecksumCalculation: "WHEN_REQUIRED",
-        responseChecksumValidation: "WHEN_REQUIRED",
+        requestChecksumCalculation: 'WHEN_REQUIRED',
+        responseChecksumValidation: 'WHEN_REQUIRED',
       }),
     });
 
     if (logger) {
       logger.info(
-        `S3 Storage Provider initialized for bucket: ${this.bucket}${isS3Compatible ? " (S3-compatible mode)" : ""}`,
+        `S3 Storage Provider initialized for bucket: ${this.bucket}${isS3Compatible ? ' (S3-compatible mode)' : ''}`,
       );
     }
   }
@@ -83,7 +83,7 @@ export class S3StorageProvider extends StorageProvider {
       const response = await this.client.send(command);
 
       if (!response.Body) {
-        throw new Error("No data received from S3");
+        throw new Error('No data received from S3');
       }
 
       const byteArray = await response.Body.transformToByteArray();
@@ -98,10 +98,10 @@ export class S3StorageProvider extends StorageProvider {
             errorCode: error?.$metadata?.httpStatusCode,
             errorMessage: error?.message,
           },
-          "s3_download_failed",
+          's3_download_failed',
         );
       }
-      throw new Error(`S3 download failed: ${error?.name || "UnknownError"} - ${path}`);
+      throw new Error(`S3 download failed: ${error?.name || 'UnknownError'} - ${path}`);
     }
   }
 
@@ -122,7 +122,7 @@ export class S3StorageProvider extends StorageProvider {
       const response = await this.client.send(command);
 
       if (!response.Body) {
-        throw new Error("No data received from S3");
+        throw new Error('No data received from S3');
       }
 
       const byteArray = await response.Body.transformToByteArray();
@@ -130,7 +130,7 @@ export class S3StorageProvider extends StorageProvider {
       if (logger) {
         logger.info(
           { path, requestedRange: `${start}-${end}`, receivedBytes: byteArray.length },
-          "s3_range_download_success",
+          's3_range_download_success',
         );
       }
 
@@ -146,10 +146,10 @@ export class S3StorageProvider extends StorageProvider {
             errorCode: error?.$metadata?.httpStatusCode,
             errorMessage: error?.message,
           },
-          "s3_range_download_failed",
+          's3_range_download_failed',
         );
       }
-      throw new Error(`S3 range download failed: ${error?.name || "UnknownError"} - ${path}`);
+      throw new Error(`S3 range download failed: ${error?.name || 'UnknownError'} - ${path}`);
     }
   }
 
@@ -183,7 +183,7 @@ export class S3StorageProvider extends StorageProvider {
       await this.client.send(command);
       return true;
     } catch (error: any) {
-      if (error.name === "NotFound" || error.$metadata?.httpStatusCode === 404) {
+      if (error.name === 'NotFound' || error.$metadata?.httpStatusCode === 404) {
         return false;
       }
 
@@ -246,9 +246,9 @@ export class S3StorageProvider extends StorageProvider {
           {
             path,
             expiresIn,
-            contentLength: contentLength || "not enforced",
+            contentLength: contentLength || 'not enforced',
           },
-          "presigned_upload_url_generated",
+          'presigned_upload_url_generated',
         );
       }
 

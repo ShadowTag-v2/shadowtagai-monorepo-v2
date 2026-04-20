@@ -10,17 +10,17 @@
  *     The hook resolves the enclosing function by inspecting the previous sibling.
  */
 
-import type { SyntaxNode } from '../utils/ast-helpers.js';
-import type { NodeLabel } from '../../graph/types.js';
-import { FUNCTION_NODE_TYPES, extractFunctionName } from '../utils/ast-helpers.js';
 import { SupportedLanguages } from '../../../config/supported-languages.js';
-import { defineLanguage } from '../language-provider.js';
-import { typeConfig as dartConfig } from '../type-extractors/dart.js';
+import type { NodeLabel } from '../../graph/types.js';
 import { dartExportChecker } from '../export-detection.js';
-import { resolveDartImport } from '../import-resolvers/dart.js';
-import { DART_QUERIES } from '../tree-sitter-queries.js';
-import { createFieldExtractor } from '../field-extractors/generic.js';
 import { dartConfig as dartFieldConfig } from '../field-extractors/configs/dart.js';
+import { createFieldExtractor } from '../field-extractors/generic.js';
+import { resolveDartImport } from '../import-resolvers/dart.js';
+import { defineLanguage } from '../language-provider.js';
+import { DART_QUERIES } from '../tree-sitter-queries.js';
+import { typeConfig as dartConfig } from '../type-extractors/dart.js';
+import type { SyntaxNode } from '../utils/ast-helpers.js';
+import { extractFunctionName, FUNCTION_NODE_TYPES } from '../utils/ast-helpers.js';
 
 /**
  * Resolve the enclosing function from a `function_body` node by looking at its
@@ -31,7 +31,9 @@ import { dartConfig as dartFieldConfig } from '../field-extractors/configs/dart.
  * Delegates name extraction to the shared `extractFunctionName` which already
  * handles Dart's function_signature and method_signature node types.
  */
-const dartEnclosingFunctionFinder = (node: SyntaxNode): { funcName: string; label: NodeLabel } | null => {
+const dartEnclosingFunctionFinder = (
+  node: SyntaxNode,
+): { funcName: string; label: NodeLabel } | null => {
   if (node.type !== 'function_body') return null;
   const prev = node.previousSibling;
   if (!prev || !FUNCTION_NODE_TYPES.has(prev.type)) return null;
@@ -40,12 +42,28 @@ const dartEnclosingFunctionFinder = (node: SyntaxNode): { funcName: string; labe
 };
 
 const BUILT_INS: ReadonlySet<string> = new Set([
-  'setState', 'mounted', 'debugPrint',
-  'runApp', 'showDialog', 'showModalBottomSheet',
-  'Navigator', 'push', 'pushNamed', 'pushReplacement', 'pop', 'maybePop',
-  'ScaffoldMessenger', 'showSnackBar',
-  'deactivate', 'reassemble', 'debugDumpApp', 'debugDumpRenderTree',
-  'then', 'catchError', 'whenComplete', 'listen',
+  'setState',
+  'mounted',
+  'debugPrint',
+  'runApp',
+  'showDialog',
+  'showModalBottomSheet',
+  'Navigator',
+  'push',
+  'pushNamed',
+  'pushReplacement',
+  'pop',
+  'maybePop',
+  'ScaffoldMessenger',
+  'showSnackBar',
+  'deactivate',
+  'reassemble',
+  'debugDumpApp',
+  'debugDumpRenderTree',
+  'then',
+  'catchError',
+  'whenComplete',
+  'listen',
 ]);
 
 export const dartProvider = defineLanguage({

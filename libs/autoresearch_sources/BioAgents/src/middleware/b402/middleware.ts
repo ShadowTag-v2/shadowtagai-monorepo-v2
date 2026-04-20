@@ -1,8 +1,8 @@
-import { Elysia } from "elysia";
-import logger from "../../utils/logger";
-import { b402Config } from "./config";
-import { b402RoutePricing } from "./pricing";
-import { b402Service } from "./service";
+import { Elysia } from 'elysia';
+import logger from '../../utils/logger';
+import { b402Config } from './config';
+import { b402RoutePricing } from './pricing';
+import { b402Service } from './service';
 
 /**
  * b402 Payment Middleware
@@ -17,17 +17,17 @@ export interface B402MiddlewareOptions {
 
 export function b402Middleware(options: B402MiddlewareOptions = {}) {
   const enabled = options.enabled ?? b402Config.enabled;
-  const plugin = new Elysia({ name: "b402-middleware", scoped: false });
+  const plugin = new Elysia({ name: 'b402-middleware', scoped: false });
 
   if (!enabled) {
-    if (logger) logger.info("b402_middleware_disabled");
+    if (logger) logger.info('b402_middleware_disabled');
     return plugin;
   }
 
-  if (logger) logger.info("b402_middleware_enabled_and_active");
+  if (logger) logger.info('b402_middleware_enabled_and_active');
 
   // Use 'scoped' so this hook applies to routes in the parent that uses this plugin
-  plugin.onBeforeHandle({ as: "scoped" }, async ({ request, path, set }: any) => {
+  plugin.onBeforeHandle({ as: 'scoped' }, async ({ request, path, set }: any) => {
     // Check if request should bypass b402 (whitelisted users)
     if ((request as any).bypassB402) {
       const user = (request as any).authenticatedUser;
@@ -38,7 +38,7 @@ export function b402Middleware(options: B402MiddlewareOptions = {}) {
             authMethod: user?.authMethod,
             path,
           },
-          "b402_bypassed_for_whitelisted_user",
+          'b402_bypassed_for_whitelisted_user',
         );
       }
       return; // Skip b402 payment check entirely
@@ -54,12 +54,12 @@ export function b402Middleware(options: B402MiddlewareOptions = {}) {
 
     if (logger) logger.info(`b402 pricing found for ${path}: $${pricing.priceUSD}`);
 
-    const paymentHeader = request.headers.get("X-PAYMENT");
+    const paymentHeader = request.headers.get('X-PAYMENT');
 
     // Build full URL for resource field
     const url = new URL(request.url);
-    const forwardedProto = request.headers.get("x-forwarded-proto");
-    const protocol = forwardedProto || url.protocol.replace(":", "");
+    const forwardedProto = request.headers.get('x-forwarded-proto');
+    const protocol = forwardedProto || url.protocol.replace(':', '');
     const resourceUrl = `${protocol}://${url.host}${pricing.route}`;
 
     if (!paymentHeader) {
@@ -75,16 +75,16 @@ export function b402Middleware(options: B402MiddlewareOptions = {}) {
 
       const responseData = {
         b402Version: 1,
-        protocol: "b402",
+        protocol: 'b402',
         accepts: [requirement],
-        error: "Payment required",
+        error: 'Payment required',
       };
 
       return new Response(JSON.stringify(responseData), {
         status: 402,
         headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          "Content-Encoding": "identity",
+          'Content-Type': 'application/json; charset=utf-8',
+          'Content-Encoding': 'identity',
         },
       });
     }
@@ -97,7 +97,7 @@ export function b402Middleware(options: B402MiddlewareOptions = {}) {
           paymentHeaderLength: paymentHeader.length,
           paymentHeaderPrefix: paymentHeader.substring(0, 50),
         },
-        "b402_payment_header_received",
+        'b402_payment_header_received',
       );
     }
 
@@ -110,22 +110,22 @@ export function b402Middleware(options: B402MiddlewareOptions = {}) {
     const verification = await b402Service.verifyPayment(paymentHeader, requirement);
 
     if (!verification.isValid) {
-      if (logger) logger.warn({ path, reason: verification.invalidReason }, "b402_payment_invalid");
+      if (logger) logger.warn({ path, reason: verification.invalidReason }, 'b402_payment_invalid');
 
       set.status = 402;
 
       const responseData = {
         b402Version: 1,
-        protocol: "b402",
+        protocol: 'b402',
         accepts: [requirement],
-        error: verification.invalidReason ?? "Invalid payment",
+        error: verification.invalidReason ?? 'Invalid payment',
       };
 
       return new Response(JSON.stringify(responseData), {
         status: 402,
         headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          "Content-Encoding": "identity",
+          'Content-Type': 'application/json; charset=utf-8',
+          'Content-Encoding': 'identity',
         },
       });
     }
@@ -137,23 +137,23 @@ export function b402Middleware(options: B402MiddlewareOptions = {}) {
       if (logger)
         logger.error(
           { path, errorReason: settlement.errorReason },
-          "b402_payment_settlement_failed",
+          'b402_payment_settlement_failed',
         );
 
       set.status = 402;
 
       const responseData = {
         b402Version: 1,
-        protocol: "b402",
+        protocol: 'b402',
         accepts: [requirement],
-        error: settlement.errorReason ?? "Payment settlement failed",
+        error: settlement.errorReason ?? 'Payment settlement failed',
       };
 
       return new Response(JSON.stringify(responseData), {
         status: 402,
         headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          "Content-Encoding": "identity",
+          'Content-Type': 'application/json; charset=utf-8',
+          'Content-Encoding': 'identity',
         },
       });
     }
@@ -161,7 +161,7 @@ export function b402Middleware(options: B402MiddlewareOptions = {}) {
     if (logger) {
       logger.info(
         { path, transaction: settlement.transaction, network: settlement.network },
-        "b402_payment_settled",
+        'b402_payment_settled',
       );
     }
 
@@ -173,17 +173,17 @@ export function b402Middleware(options: B402MiddlewareOptions = {}) {
     if (settlement.transaction && settlement.network) {
       const responseData = {
         success: true,
-        protocol: "b402",
+        protocol: 'b402',
         transaction: settlement.transaction,
         network: settlement.network,
         payer: settlement.payer,
       };
-      set.headers["X-PAYMENT-RESPONSE"] = Buffer.from(JSON.stringify(responseData)).toString(
-        "base64",
+      set.headers['X-PAYMENT-RESPONSE'] = Buffer.from(JSON.stringify(responseData)).toString(
+        'base64',
       );
 
       if (logger) {
-        logger.info({ transaction: settlement.transaction }, "b402_response_header_set");
+        logger.info({ transaction: settlement.transaction }, 'b402_response_header_set');
       }
     }
 

@@ -21,14 +21,14 @@
  *   - Priority/assignment changes
  */
 
-import { Hook } from "@anthropic-ai/claude-agent-sdk";
-import { execSync } from "child_process";
-import * as fs from "fs";
-import * as path from "path";
-import * as yaml from "yaml"; // May need: npm install yaml
+import type { Hook } from '@anthropic-ai/claude-agent-sdk';
+import { execSync } from 'child_process';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as yaml from 'yaml'; // May need: npm install yaml
 
-const DEV_DOCS_DIR = ".claude/dev/active";
-const SYNC_LOG = ".claude/hooks/board-sync.log";
+const DEV_DOCS_DIR = '.claude/dev/active';
+const SYNC_LOG = '.claude/hooks/board-sync.log';
 
 interface BoardMetadata {
   board_id?: string;
@@ -49,8 +49,8 @@ interface TaskFile {
 }
 
 export const hook: Hook = {
-  name: "stop-board-sync",
-  type: "stop",
+  name: 'stop-board-sync',
+  type: 'stop',
   async execute(context) {
     // Check if dev docs directory exists
     if (!fs.existsSync(DEV_DOCS_DIR)) {
@@ -58,7 +58,7 @@ export const hook: Hook = {
     }
 
     const results: string[] = [];
-    results.push("\n=== 📊 Board Automation Sync ===\n");
+    results.push('\n=== 📊 Board Automation Sync ===\n');
 
     try {
       // Find all *-tasks.md files in active dev docs
@@ -77,15 +77,15 @@ export const hook: Hook = {
       }
 
       // Log sync results
-      logSyncResults(results.join("\n"));
+      logSyncResults(results.join('\n'));
 
       // Display summary
-      console.log(results.join("\n"));
+      console.log(results.join('\n'));
 
-      return { continue: true, message: results.join("\n") };
+      return { continue: true, message: results.join('\n') };
     } catch (e: any) {
       results.push(`⚠️  Board sync error: ${e.message}`);
-      console.log(results.join("\n"));
+      console.log(results.join('\n'));
       return { continue: true };
     }
   },
@@ -106,9 +106,9 @@ function findTaskFiles(dir: string): TaskFile[] {
     if (entry.isDirectory()) {
       // Recursively search subdirectories
       taskFiles.push(...findTaskFiles(fullPath));
-    } else if (entry.isFile() && entry.name.endsWith("-tasks.md")) {
+    } else if (entry.isFile() && entry.name.endsWith('-tasks.md')) {
       // Parse task file
-      const content = fs.readFileSync(fullPath, "utf-8");
+      const content = fs.readFileSync(fullPath, 'utf-8');
       const metadata = extractMetadata(content);
       const { completed, total } = countTasks(content);
 
@@ -140,23 +140,23 @@ function extractMetadata(content: string): BoardMetadata {
     const yamlContent = yamlMatch[1];
     const metadata: BoardMetadata = {};
 
-    const lines = yamlContent.split("\n");
+    const lines = yamlContent.split('\n');
     for (const line of lines) {
-      const [key, ...valueParts] = line.split(":");
+      const [key, ...valueParts] = line.split(':');
       if (!key || !valueParts.length) continue;
 
-      const value = valueParts.join(":").trim();
+      const value = valueParts.join(':').trim();
 
-      if (key.trim() === "board_id") metadata.board_id = value;
-      else if (key.trim() === "epic") metadata.epic = value;
-      else if (key.trim() === "priority") metadata.priority = value;
-      else if (key.trim() === "assignee") metadata.assignee = value;
-      else if (key.trim() === "status") metadata.status = value;
-      else if (key.trim() === "labels") {
+      if (key.trim() === 'board_id') metadata.board_id = value;
+      else if (key.trim() === 'epic') metadata.epic = value;
+      else if (key.trim() === 'priority') metadata.priority = value;
+      else if (key.trim() === 'assignee') metadata.assignee = value;
+      else if (key.trim() === 'status') metadata.status = value;
+      else if (key.trim() === 'labels') {
         // Parse array: [label1, label2, label3]
         const labelsMatch = value.match(/\[(.*?)\]/);
         if (labelsMatch) {
-          metadata.labels = labelsMatch[1].split(",").map((l) => l.trim());
+          metadata.labels = labelsMatch[1].split(',').map((l) => l.trim());
         }
       }
     }
@@ -182,13 +182,13 @@ function countTasks(content: string): { completed: number; total: number } {
 async function syncTaskFileToBoard(taskFile: TaskFile): Promise<string> {
   const results: string[] = [];
 
-  const taskName = path.basename(taskFile.path, "-tasks.md");
+  const taskName = path.basename(taskFile.path, '-tasks.md');
   results.push(`\n📋 Task: ${taskName}`);
 
   // Check if board metadata exists
   if (!taskFile.metadata.board_id) {
     results.push(`   ⚠️  No board_id - skipping sync`);
-    return results.join("\n");
+    return results.join('\n');
   }
 
   results.push(`   Board: ${taskFile.metadata.board_id}`);
@@ -198,18 +198,18 @@ async function syncTaskFileToBoard(taskFile: TaskFile): Promise<string> {
   }
 
   results.push(
-    `   Progress: ${taskFile.completedTasks}/${taskFile.totalTasks} (${taskFile.completionRate.toFixed(1)}%)`
+    `   Progress: ${taskFile.completedTasks}/${taskFile.totalTasks} (${taskFile.completionRate.toFixed(1)}%)`,
   );
 
   // Determine status based on completion
-  let newStatus = taskFile.metadata.status || "In Progress";
+  let newStatus = taskFile.metadata.status || 'In Progress';
 
   if (taskFile.completionRate === 0) {
-    newStatus = "To Do";
+    newStatus = 'To Do';
   } else if (taskFile.completionRate === 100) {
-    newStatus = "Done";
+    newStatus = 'Done';
   } else {
-    newStatus = "In Progress";
+    newStatus = 'In Progress';
   }
 
   // Check if status changed
@@ -248,12 +248,12 @@ async function syncTaskFileToBoard(taskFile: TaskFile): Promise<string> {
     }
   }
 
-  return results.join("\n");
+  return results.join('\n');
 }
 
 interface Checkpoint {
   phase: string;
-  status: "Pending" | "Complete";
+  status: 'Pending' | 'Complete';
   timestamp?: string;
 }
 
@@ -270,8 +270,8 @@ function extractCheckpoints(content: string): Checkpoint[] {
 
     checkpoints.push({
       phase,
-      status: timestamp !== "[Completion date/time when done]" ? "Complete" : "Pending",
-      timestamp: timestamp !== "[Completion date/time when done]" ? timestamp : undefined,
+      status: timestamp !== '[Completion date/time when done]' ? 'Complete' : 'Pending',
+      timestamp: timestamp !== '[Completion date/time when done]' ? timestamp : undefined,
     });
   }
 

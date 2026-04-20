@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { z } from "zod";
-import { promises as fs } from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { promises as fs } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { z } from 'zod';
 
 // Define memory file path using environment variable with fallback
 export const defaultMemoryPath = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
-  "memory.jsonl",
+  'memory.jsonl',
 );
 
 // Handle backward compatibility: migrate memory.json to memory.jsonl if needed
@@ -23,7 +23,7 @@ export async function ensureMemoryFilePath(): Promise<string> {
   }
 
   // No custom path set, check for backward compatibility migration
-  const oldMemoryPath = path.join(path.dirname(fileURLToPath(import.meta.url)), "memory.json");
+  const oldMemoryPath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'memory.json');
   const newMemoryPath = defaultMemoryPath;
 
   try {
@@ -36,10 +36,10 @@ export async function ensureMemoryFilePath(): Promise<string> {
     } catch {
       // Old file exists, new file doesn't - migrate
       console.error(
-        "DETECTED: Found legacy memory.json file, migrating to memory.jsonl for JSONL format compatibility",
+        'DETECTED: Found legacy memory.json file, migrating to memory.jsonl for JSONL format compatibility',
       );
       await fs.rename(oldMemoryPath, newMemoryPath);
-      console.error("COMPLETED: Successfully migrated memory.json to memory.jsonl");
+      console.error('COMPLETED: Successfully migrated memory.json to memory.jsonl');
       return newMemoryPath;
     }
   } catch {
@@ -75,19 +75,19 @@ export class KnowledgeGraphManager {
 
   private async loadGraph(): Promise<KnowledgeGraph> {
     try {
-      const data = await fs.readFile(this.memoryFilePath, "utf-8");
-      const lines = data.split("\n").filter((line) => line.trim() !== "");
+      const data = await fs.readFile(this.memoryFilePath, 'utf-8');
+      const lines = data.split('\n').filter((line) => line.trim() !== '');
       return lines.reduce(
         (graph: KnowledgeGraph, line) => {
           const item = JSON.parse(line);
-          if (item.type === "entity") {
+          if (item.type === 'entity') {
             graph.entities.push({
               name: item.name,
               entityType: item.entityType,
               observations: item.observations,
             });
           }
-          if (item.type === "relation") {
+          if (item.type === 'relation') {
             graph.relations.push({
               from: item.from,
               to: item.to,
@@ -99,7 +99,7 @@ export class KnowledgeGraphManager {
         { entities: [], relations: [] },
       );
     } catch (error) {
-      if (error instanceof Error && "code" in error && (error as any).code === "ENOENT") {
+      if (error instanceof Error && 'code' in error && (error as any).code === 'ENOENT') {
         return { entities: [], relations: [] };
       }
       throw error;
@@ -110,7 +110,7 @@ export class KnowledgeGraphManager {
     const lines = [
       ...graph.entities.map((e) =>
         JSON.stringify({
-          type: "entity",
+          type: 'entity',
           name: e.name,
           entityType: e.entityType,
           observations: e.observations,
@@ -118,14 +118,14 @@ export class KnowledgeGraphManager {
       ),
       ...graph.relations.map((r) =>
         JSON.stringify({
-          type: "relation",
+          type: 'relation',
           from: r.from,
           to: r.to,
           relationType: r.relationType,
         }),
       ),
     ];
-    await fs.writeFile(this.memoryFilePath, lines.join("\n"));
+    await fs.writeFile(this.memoryFilePath, lines.join('\n'));
   }
 
   async createEntities(entities: Entity[]): Promise<Entity[]> {
@@ -268,31 +268,31 @@ let knowledgeGraphManager: KnowledgeGraphManager;
 
 // Zod schemas for entities and relations
 const EntitySchema = z.object({
-  name: z.string().describe("The name of the entity"),
-  entityType: z.string().describe("The type of the entity"),
+  name: z.string().describe('The name of the entity'),
+  entityType: z.string().describe('The type of the entity'),
   observations: z
     .array(z.string())
-    .describe("An array of observation contents associated with the entity"),
+    .describe('An array of observation contents associated with the entity'),
 });
 
 const RelationSchema = z.object({
-  from: z.string().describe("The name of the entity where the relation starts"),
-  to: z.string().describe("The name of the entity where the relation ends"),
-  relationType: z.string().describe("The type of the relation"),
+  from: z.string().describe('The name of the entity where the relation starts'),
+  to: z.string().describe('The name of the entity where the relation ends'),
+  relationType: z.string().describe('The type of the relation'),
 });
 
 // The server instance and tools exposed to Claude
 const server = new McpServer({
-  name: "memory-server",
-  version: "0.6.3",
+  name: 'memory-server',
+  version: '0.6.3',
 });
 
 // Register create_entities tool
 server.registerTool(
-  "create_entities",
+  'create_entities',
   {
-    title: "Create Entities",
-    description: "Create multiple new entities in the knowledge graph",
+    title: 'Create Entities',
+    description: 'Create multiple new entities in the knowledge graph',
     inputSchema: {
       entities: z.array(EntitySchema),
     },
@@ -303,7 +303,7 @@ server.registerTool(
   async ({ entities }) => {
     const result = await knowledgeGraphManager.createEntities(entities);
     return {
-      content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }],
+      content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }],
       structuredContent: { entities: result },
     };
   },
@@ -311,11 +311,11 @@ server.registerTool(
 
 // Register create_relations tool
 server.registerTool(
-  "create_relations",
+  'create_relations',
   {
-    title: "Create Relations",
+    title: 'Create Relations',
     description:
-      "Create multiple new relations between entities in the knowledge graph. Relations should be in active voice",
+      'Create multiple new relations between entities in the knowledge graph. Relations should be in active voice',
     inputSchema: {
       relations: z.array(RelationSchema),
     },
@@ -326,7 +326,7 @@ server.registerTool(
   async ({ relations }) => {
     const result = await knowledgeGraphManager.createRelations(relations);
     return {
-      content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }],
+      content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }],
       structuredContent: { relations: result },
     };
   },
@@ -334,15 +334,15 @@ server.registerTool(
 
 // Register add_observations tool
 server.registerTool(
-  "add_observations",
+  'add_observations',
   {
-    title: "Add Observations",
-    description: "Add new observations to existing entities in the knowledge graph",
+    title: 'Add Observations',
+    description: 'Add new observations to existing entities in the knowledge graph',
     inputSchema: {
       observations: z.array(
         z.object({
-          entityName: z.string().describe("The name of the entity to add the observations to"),
-          contents: z.array(z.string()).describe("An array of observation contents to add"),
+          entityName: z.string().describe('The name of the entity to add the observations to'),
+          contents: z.array(z.string()).describe('An array of observation contents to add'),
         }),
       ),
     },
@@ -358,7 +358,7 @@ server.registerTool(
   async ({ observations }) => {
     const result = await knowledgeGraphManager.addObservations(observations);
     return {
-      content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }],
+      content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }],
       structuredContent: { results: result },
     };
   },
@@ -366,12 +366,12 @@ server.registerTool(
 
 // Register delete_entities tool
 server.registerTool(
-  "delete_entities",
+  'delete_entities',
   {
-    title: "Delete Entities",
-    description: "Delete multiple entities and their associated relations from the knowledge graph",
+    title: 'Delete Entities',
+    description: 'Delete multiple entities and their associated relations from the knowledge graph',
     inputSchema: {
-      entityNames: z.array(z.string()).describe("An array of entity names to delete"),
+      entityNames: z.array(z.string()).describe('An array of entity names to delete'),
     },
     outputSchema: {
       success: z.boolean(),
@@ -381,23 +381,23 @@ server.registerTool(
   async ({ entityNames }) => {
     await knowledgeGraphManager.deleteEntities(entityNames);
     return {
-      content: [{ type: "text" as const, text: "Entities deleted successfully" }],
-      structuredContent: { success: true, message: "Entities deleted successfully" },
+      content: [{ type: 'text' as const, text: 'Entities deleted successfully' }],
+      structuredContent: { success: true, message: 'Entities deleted successfully' },
     };
   },
 );
 
 // Register delete_observations tool
 server.registerTool(
-  "delete_observations",
+  'delete_observations',
   {
-    title: "Delete Observations",
-    description: "Delete specific observations from entities in the knowledge graph",
+    title: 'Delete Observations',
+    description: 'Delete specific observations from entities in the knowledge graph',
     inputSchema: {
       deletions: z.array(
         z.object({
-          entityName: z.string().describe("The name of the entity containing the observations"),
-          observations: z.array(z.string()).describe("An array of observations to delete"),
+          entityName: z.string().describe('The name of the entity containing the observations'),
+          observations: z.array(z.string()).describe('An array of observations to delete'),
         }),
       ),
     },
@@ -409,20 +409,20 @@ server.registerTool(
   async ({ deletions }) => {
     await knowledgeGraphManager.deleteObservations(deletions);
     return {
-      content: [{ type: "text" as const, text: "Observations deleted successfully" }],
-      structuredContent: { success: true, message: "Observations deleted successfully" },
+      content: [{ type: 'text' as const, text: 'Observations deleted successfully' }],
+      structuredContent: { success: true, message: 'Observations deleted successfully' },
     };
   },
 );
 
 // Register delete_relations tool
 server.registerTool(
-  "delete_relations",
+  'delete_relations',
   {
-    title: "Delete Relations",
-    description: "Delete multiple relations from the knowledge graph",
+    title: 'Delete Relations',
+    description: 'Delete multiple relations from the knowledge graph',
     inputSchema: {
-      relations: z.array(RelationSchema).describe("An array of relations to delete"),
+      relations: z.array(RelationSchema).describe('An array of relations to delete'),
     },
     outputSchema: {
       success: z.boolean(),
@@ -432,18 +432,18 @@ server.registerTool(
   async ({ relations }) => {
     await knowledgeGraphManager.deleteRelations(relations);
     return {
-      content: [{ type: "text" as const, text: "Relations deleted successfully" }],
-      structuredContent: { success: true, message: "Relations deleted successfully" },
+      content: [{ type: 'text' as const, text: 'Relations deleted successfully' }],
+      structuredContent: { success: true, message: 'Relations deleted successfully' },
     };
   },
 );
 
 // Register read_graph tool
 server.registerTool(
-  "read_graph",
+  'read_graph',
   {
-    title: "Read Graph",
-    description: "Read the entire knowledge graph",
+    title: 'Read Graph',
+    description: 'Read the entire knowledge graph',
     inputSchema: {},
     outputSchema: {
       entities: z.array(EntitySchema),
@@ -453,7 +453,7 @@ server.registerTool(
   async () => {
     const graph = await knowledgeGraphManager.readGraph();
     return {
-      content: [{ type: "text" as const, text: JSON.stringify(graph, null, 2) }],
+      content: [{ type: 'text' as const, text: JSON.stringify(graph, null, 2) }],
       structuredContent: { ...graph },
     };
   },
@@ -461,14 +461,14 @@ server.registerTool(
 
 // Register search_nodes tool
 server.registerTool(
-  "search_nodes",
+  'search_nodes',
   {
-    title: "Search Nodes",
-    description: "Search for nodes in the knowledge graph based on a query",
+    title: 'Search Nodes',
+    description: 'Search for nodes in the knowledge graph based on a query',
     inputSchema: {
       query: z
         .string()
-        .describe("The search query to match against entity names, types, and observation content"),
+        .describe('The search query to match against entity names, types, and observation content'),
     },
     outputSchema: {
       entities: z.array(EntitySchema),
@@ -478,7 +478,7 @@ server.registerTool(
   async ({ query }) => {
     const graph = await knowledgeGraphManager.searchNodes(query);
     return {
-      content: [{ type: "text" as const, text: JSON.stringify(graph, null, 2) }],
+      content: [{ type: 'text' as const, text: JSON.stringify(graph, null, 2) }],
       structuredContent: { ...graph },
     };
   },
@@ -486,12 +486,12 @@ server.registerTool(
 
 // Register open_nodes tool
 server.registerTool(
-  "open_nodes",
+  'open_nodes',
   {
-    title: "Open Nodes",
-    description: "Open specific nodes in the knowledge graph by their names",
+    title: 'Open Nodes',
+    description: 'Open specific nodes in the knowledge graph by their names',
     inputSchema: {
-      names: z.array(z.string()).describe("An array of entity names to retrieve"),
+      names: z.array(z.string()).describe('An array of entity names to retrieve'),
     },
     outputSchema: {
       entities: z.array(EntitySchema),
@@ -501,7 +501,7 @@ server.registerTool(
   async ({ names }) => {
     const graph = await knowledgeGraphManager.openNodes(names);
     return {
-      content: [{ type: "text" as const, text: JSON.stringify(graph, null, 2) }],
+      content: [{ type: 'text' as const, text: JSON.stringify(graph, null, 2) }],
       structuredContent: { ...graph },
     };
   },
@@ -516,10 +516,10 @@ async function main() {
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("Knowledge Graph MCP Server running on stdio");
+  console.error('Knowledge Graph MCP Server running on stdio');
 }
 
 main().catch((error) => {
-  console.error("Fatal error in main():", error);
+  console.error('Fatal error in main():', error);
   process.exit(1);
 });

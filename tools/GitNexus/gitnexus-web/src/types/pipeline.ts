@@ -1,8 +1,20 @@
-import { GraphNode, GraphRelationship, KnowledgeGraph } from '../core/graph/types';
-import { CommunityDetectionResult } from '../core/ingestion/community-processor';
-import { ProcessDetectionResult } from '../core/ingestion/process-processor';
+import type { GraphNode, GraphRelationship, KnowledgeGraph } from '../core/graph/types';
+import type { CommunityDetectionResult } from '../core/ingestion/community-processor';
+import type { ProcessDetectionResult } from '../core/ingestion/process-processor';
 
-export type PipelinePhase = 'idle' | 'extracting' | 'structure' | 'parsing' | 'imports' | 'calls' | 'heritage' | 'communities' | 'processes' | 'enriching' | 'complete' | 'error';
+export type PipelinePhase =
+  | 'idle'
+  | 'extracting'
+  | 'structure'
+  | 'parsing'
+  | 'imports'
+  | 'calls'
+  | 'heritage'
+  | 'communities'
+  | 'processes'
+  | 'enriching'
+  | 'complete'
+  | 'error';
 
 export interface PipelineProgress {
   phase: PipelinePhase;
@@ -42,11 +54,11 @@ export const serializePipelineResult = (result: PipelineResult): SerializablePip
 // Helper to reconstruct from serializable format (used in main thread)
 export const deserializePipelineResult = (
   serialized: SerializablePipelineResult,
-  createGraph: () => KnowledgeGraph
+  createGraph: () => KnowledgeGraph,
 ): PipelineResult => {
   const graph = createGraph();
-  serialized.nodes.forEach(node => graph.addNode(node));
-  serialized.relationships.forEach(rel => graph.addRelationship(rel));
+  serialized.nodes.forEach((node) => graph.addNode(node));
+  serialized.relationships.forEach((rel) => graph.addRelationship(rel));
 
   return {
     graph,

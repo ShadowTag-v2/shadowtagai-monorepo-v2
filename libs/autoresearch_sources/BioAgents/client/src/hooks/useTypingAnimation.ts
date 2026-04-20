@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useState } from 'preact/hooks';
 
 export interface UseTypingAnimationReturn {
   isTyping: boolean;
@@ -26,12 +26,12 @@ export function useTypingAnimation(): UseTypingAnimationReturn {
   ): Promise<void> => {
     setIsTyping(true);
 
-    const chars = text.split("");
-    let currentText = "";
+    const chars = text.split('');
+    let currentText = '';
 
     // Type 3 characters at a time for faster animation
     for (let i = 0; i < chars.length; i += 3) {
-      currentText += chars.slice(i, i + 3).join("");
+      currentText += chars.slice(i, i + 3).join('');
       onUpdate(currentText);
       await new Promise((resolve) => setTimeout(resolve, 20));
     }

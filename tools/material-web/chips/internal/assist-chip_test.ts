@@ -6,11 +6,11 @@
 
 // import 'jasmine'; (google3-only)
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Environment} from '../../testing/environment.js';
+import { Environment } from '../../testing/environment.js';
 
-import {AssistChip} from './assist-chip.js';
+import { AssistChip } from './assist-chip.js';
 
 customElements.define('test-assist-chip', AssistChip);
 
@@ -84,9 +84,7 @@ describe('Assist chip', () => {
     chip.focus();
 
     // Assert
-    expect(document.activeElement)
-      .withContext('soft-disabled chip should be focused')
-      .toBe(chip);
+    expect(document.activeElement).withContext('soft-disabled chip should be focused').toBe(chip);
   });
 
   it('should not be clickable when soft-disabled', async () => {

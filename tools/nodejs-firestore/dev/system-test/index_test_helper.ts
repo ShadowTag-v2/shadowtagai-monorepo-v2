@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-import {
-  CollectionReference,
-  DocumentReference,
-  DocumentSnapshot,
-  FieldPath,
-  Filter,
-  Firestore,
-  Query,
-  Timestamp,
-} from '../src';
-import {autoId} from '../src/util';
-
-import {
+import type {
   DocumentData,
   QuerySnapshot,
-  WithFieldValue,
   UpdateData,
+  WithFieldValue,
 } from '@google-cloud/firestore';
+import {
+  type CollectionReference,
+  type DocumentReference,
+  type DocumentSnapshot,
+  FieldPath,
+  type Filter,
+  type Firestore,
+  type Query,
+  Timestamp,
+} from '../src';
+import { autoId } from '../src/util';
 export const INDEX_TEST_COLLECTION = 'index-test-collection';
 
 /**
@@ -59,9 +58,7 @@ export class IndexTestHelper {
   }
 
   // Runs a test with specified documents in the INDEX_TEST_COLLECTION.
-  async setTestDocs(docs: {
-    [key: string]: DocumentData;
-  }): Promise<CollectionReference> {
+  async setTestDocs(docs: { [key: string]: DocumentData }): Promise<CollectionReference> {
     const testDocs = this.prepareTestDocuments(docs);
     const collectionRef = this.db.collection(INDEX_TEST_COLLECTION);
     for (const id in testDocs) {
@@ -74,13 +71,10 @@ export class IndexTestHelper {
   // Runs a test with specified documents in the INDEX_TEST_COLLECTION.
   async createTestDocs(docs: DocumentData[]): Promise<CollectionReference> {
     // convert docsArray without IDs to a map with IDs
-    const docsMap = docs.reduce<{[key: string]: DocumentData}>(
-      (result, doc) => {
-        result[autoId()] = doc;
-        return result;
-      },
-      {},
-    );
+    const docsMap = docs.reduce<{ [key: string]: DocumentData }>((result, doc) => {
+      result[autoId()] = doc;
+      return result;
+    }, {});
     return this.setTestDocs(docsMap);
   }
 
@@ -96,7 +90,7 @@ export class IndexTestHelper {
   }
 
   private toHashedIds(docs: string[]): string[] {
-    return docs.map(docId => this.toHashedId(docId));
+    return docs.map((docId) => this.toHashedId(docId));
   }
 
   // Adds test-specific fields to a document, including the testId and expiration date.
@@ -104,7 +98,8 @@ export class IndexTestHelper {
     return {
       ...doc,
       [this.TEST_ID_FIELD]: this.testId,
-      [this.TTL_FIELD]: new Timestamp( // Expire test data after 24 hours
+      [this.TTL_FIELD]: new Timestamp(
+        // Expire test data after 24 hours
         Timestamp.now().seconds + 24 * 60 * 60,
         Timestamp.now().nanoseconds,
       ),
@@ -118,16 +113,14 @@ export class IndexTestHelper {
   }
 
   // Helper method to hash document keys and add test-specific fields for the provided documents.
-  private prepareTestDocuments(docs: {[key: string]: DocumentData}): {
+  private prepareTestDocuments(docs: { [key: string]: DocumentData }): {
     [key: string]: DocumentData;
   } {
-    const result: {[key: string]: DocumentData} = {};
+    const result: { [key: string]: DocumentData } = {};
     for (const key in docs) {
       // eslint-disable-next-line no-prototype-builtins
-      if (docs.hasOwnProperty(key)) {
-        result[this.toHashedId(key)] = this.addTestSpecificFieldsToDoc(
-          docs[key],
-        );
+      if (Object.hasOwn(docs, key)) {
+        result[this.toHashedId(key)] = this.addTestSpecificFieldsToDoc(docs[key]);
       }
     }
     return result;
@@ -144,10 +137,7 @@ export class IndexTestHelper {
   }
 
   // Get document reference from a document key.
-  getDocRef<T>(
-    coll: CollectionReference<T>,
-    docId: string,
-  ): DocumentReference<T> {
+  getDocRef<T>(coll: CollectionReference<T>, docId: string): DocumentReference<T> {
     if (!docId.includes('test-id-')) {
       docId = this.toHashedId(docId);
     }
@@ -155,24 +145,14 @@ export class IndexTestHelper {
   }
 
   // Adds a document to a Firestore collection with test-specific fields.
-  addDoc<T>(
-    reference: CollectionReference<T>,
-    data: object,
-  ): Promise<DocumentReference<T>> {
-    const processedData = this.addTestSpecificFieldsToDoc(
-      data,
-    ) as WithFieldValue<T>;
+  addDoc<T>(reference: CollectionReference<T>, data: object): Promise<DocumentReference<T>> {
+    const processedData = this.addTestSpecificFieldsToDoc(data) as WithFieldValue<T>;
     return reference.add(processedData);
   }
 
   // Sets a document in Firestore with test-specific fields.
-  async setDoc<T>(
-    reference: DocumentReference<T>,
-    data: object,
-  ): Promise<void> {
-    const processedData = this.addTestSpecificFieldsToDoc(
-      data,
-    ) as WithFieldValue<T>;
+  async setDoc<T>(reference: DocumentReference<T>, data: object): Promise<void> {
+    const processedData = this.addTestSpecificFieldsToDoc(data) as WithFieldValue<T>;
     await reference.set(processedData);
   }
 
@@ -197,7 +177,7 @@ export class IndexTestHelper {
   // Retrieves multiple documents from Firestore with test-specific fields removed.
   async getDocs<T>(query_: Query<T>): Promise<QuerySnapshot<T>> {
     const querySnapshot = await this.query(query_).get();
-    querySnapshot.forEach(doc => {
+    querySnapshot.forEach((doc) => {
       this.removeTestSpecificFieldsFromDoc(doc);
     });
     return querySnapshot;

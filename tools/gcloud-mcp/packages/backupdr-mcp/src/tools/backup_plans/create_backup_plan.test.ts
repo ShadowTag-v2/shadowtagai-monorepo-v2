@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-/// <reference types="vitest/globals" />
-import { describe, it, expect, vi, Mock } from 'vitest';
-import { createBackupPlan, registerCreateBackupPlanTool } from './create_backup_plan.js';
-import { apiClientFactory } from '../../utility/api_client_factory.js';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { protos } from '@google-cloud/backupdr';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+/// <reference types="vitest/globals" />
+import { describe, expect, it, type Mock, vi } from 'vitest';
+import { apiClientFactory } from '../../utility/api_client_factory.js';
+import { createBackupPlan, registerCreateBackupPlanTool } from './create_backup_plan.js';
 
 vi.mock('../../utility/api_client_factory.js');
 vi.mock('@modelcontextprotocol/sdk/server/mcp.js');

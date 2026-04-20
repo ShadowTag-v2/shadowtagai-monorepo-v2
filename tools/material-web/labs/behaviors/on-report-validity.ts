@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {LitElement, isServer} from 'lit';
+import { isServer, type LitElement } from 'lit';
 
-import {ConstraintValidation} from './constraint-validation.js';
-import {WithElementInternals, internals} from './element-internals.js';
-import {MixinBase, MixinReturn} from './mixin.js';
+import type { ConstraintValidation } from './constraint-validation.js';
+import { internals, type WithElementInternals } from './element-internals.js';
+import type { MixinBase, MixinReturn } from './mixin.js';
 
 /**
  * A constraint validation element that has a callback for when the element
@@ -86,10 +86,7 @@ const privateCallOnReportValidity = Symbol('privateCallOnReportValidity');
 export function mixinOnReportValidity<
   T extends MixinBase<LitElement & ConstraintValidation & WithElementInternals>,
 >(base: T): MixinReturn<T, OnReportValidity> {
-  abstract class OnReportValidityElement
-    extends base
-    implements OnReportValidity
-  {
+  abstract class OnReportValidityElement extends base implements OnReportValidity {
     /**
      * Used to clean up event listeners when a new form is associated.
      */
@@ -136,7 +133,7 @@ export function mixinOnReportValidity<
               // bubbling phase.
               this[privateCallOnReportValidity](invalidEvent);
             },
-            {once: true},
+            { once: true },
           );
         },
         {
@@ -183,8 +180,7 @@ export function mixinOnReportValidity<
       // If an implementation calls invalidEvent.preventDefault() to stop the
       // platform popup from displaying, focusing is also prevented, so we need
       // to manually focus.
-      const implementationCanceledFocus =
-        !wasCanceled && invalidEvent?.defaultPrevented;
+      const implementationCanceledFocus = !wasCanceled && invalidEvent?.defaultPrevented;
       if (!implementationCanceledFocus) {
         return;
       }
@@ -278,7 +274,7 @@ function addFormReportValidListener(
         },
       );
     },
-    {signal: cleanup},
+    { signal: cleanup },
   );
 
   validateHooks.addEventListener(
@@ -292,7 +288,7 @@ function addFormReportValidListener(
 
       onControlValid();
     },
-    {signal: cleanup},
+    { signal: cleanup },
   );
 
   // The above hooks handle imperatively submitting the form, but not
@@ -381,10 +377,7 @@ function getFormValidateHooks(form: HTMLFormElement) {
  * @return True if there is no form or if the control is the form's first
  *     invalid control.
  */
-function isFirstInvalidControlInForm(
-  form: HTMLFormElement | null,
-  control: HTMLElement,
-) {
+function isFirstInvalidControlInForm(form: HTMLFormElement | null, control: HTMLElement) {
   if (!form) {
     return true;
   }

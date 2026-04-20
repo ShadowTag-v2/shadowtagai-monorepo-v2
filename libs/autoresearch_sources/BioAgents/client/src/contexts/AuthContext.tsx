@@ -1,8 +1,8 @@
-import { createContext } from "preact";
-import { useContext, useState, useEffect } from "preact/hooks";
-import type { ComponentChildren } from "preact";
+import type { ComponentChildren } from 'preact';
+import { createContext } from 'preact';
+import { useContext, useEffect, useState } from 'preact/hooks';
 
-const AUTH_TOKEN_KEY = "bioagents_auth_token";
+const AUTH_TOKEN_KEY = 'bioagents_auth_token';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -36,7 +36,7 @@ function storeToken(token: string): void {
   try {
     localStorage.setItem(AUTH_TOKEN_KEY, token);
   } catch (error) {
-    console.error("Failed to store auth token:", error);
+    console.error('Failed to store auth token:', error);
   }
 }
 
@@ -47,7 +47,7 @@ function clearStoredToken(): void {
   try {
     localStorage.removeItem(AUTH_TOKEN_KEY);
   } catch (error) {
-    console.error("Failed to clear auth token:", error);
+    console.error('Failed to clear auth token:', error);
   }
 }
 
@@ -57,7 +57,7 @@ function clearStoredToken(): void {
  */
 function decodeJWTPayload(token: string): { sub?: string } | null {
   try {
-    const parts = token.split(".");
+    const parts = token.split('.');
     if (parts.length !== 3) return null;
     const payload = JSON.parse(atob(parts[1]));
     return payload;
@@ -93,10 +93,10 @@ export function AuthProvider({ children }: { children: ComponentChildren }) {
       const headers: Record<string, string> = {};
 
       if (storedToken) {
-        headers["Authorization"] = `Bearer ${storedToken}`;
+        headers['Authorization'] = `Bearer ${storedToken}`;
       }
 
-      const response = await fetch("/api/auth/status", {
+      const response = await fetch('/api/auth/status', {
         headers,
       });
 
@@ -124,7 +124,7 @@ export function AuthProvider({ children }: { children: ComponentChildren }) {
         }
       }
     } catch (error) {
-      console.error("Failed to check auth status:", error);
+      console.error('Failed to check auth status:', error);
       setIsAuthenticated(false);
       setIsAuthRequired(false);
     } finally {
@@ -137,10 +137,10 @@ export function AuthProvider({ children }: { children: ComponentChildren }) {
    */
   const login = async (password: string): Promise<boolean> => {
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ password }),
       });
@@ -165,7 +165,7 @@ export function AuthProvider({ children }: { children: ComponentChildren }) {
       }
       return false;
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error('Login failed:', error);
       return false;
     }
   };
@@ -178,11 +178,11 @@ export function AuthProvider({ children }: { children: ComponentChildren }) {
 
     try {
       // Notify server (optional, JWT is stateless)
-      await fetch("/api/auth/logout", {
-        method: "POST",
+      await fetch('/api/auth/logout', {
+        method: 'POST',
       });
     } catch (error) {
-      console.error("Logout request failed:", error);
+      console.error('Logout request failed:', error);
     }
 
     // Clear token and state regardless of server response
@@ -226,7 +226,7 @@ export function AuthProvider({ children }: { children: ComponentChildren }) {
 export function useAuthContext(): AuthContextType {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuthContext must be used within an AuthProvider");
+    throw new Error('useAuthContext must be used within an AuthProvider');
   }
   return context;
 }

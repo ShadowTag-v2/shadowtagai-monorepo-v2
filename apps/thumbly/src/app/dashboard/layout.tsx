@@ -1,6 +1,6 @@
-import { redirect } from "next/navigation";
-import { Sparkles, Image as ImageIcon, CreditCard, LogOut } from "lucide-react";
-import Link from "next/link";
+import { CreditCard, Image as ImageIcon, LogOut, Sparkles } from 'lucide-react';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   // Pure UI Scaffold (Supabase Auth verification omitted for MVP brevity)

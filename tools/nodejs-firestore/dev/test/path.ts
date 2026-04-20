@@ -12,20 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
 
-import {FieldPath, QualifiedResourcePath} from '../src/path';
-import {InvalidApiUsage} from './util/helpers';
+import { FieldPath, QualifiedResourcePath } from '../src/path';
+import type { InvalidApiUsage } from './util/helpers';
 
 const PROJECT_ID = 'test-project';
 const DATABASE_ROOT = `projects/${PROJECT_ID}/databases/(default)`;
 
 describe('ResourcePath', () => {
   it('has id property', () => {
-    expect(
-      new QualifiedResourcePath(PROJECT_ID, '(default)', 'foo').id,
-    ).to.equal('foo');
+    expect(new QualifiedResourcePath(PROJECT_ID, '(default)', 'foo').id).to.equal('foo');
     expect(new QualifiedResourcePath(PROJECT_ID, '(default)').id).to.be.null;
   });
 
@@ -52,43 +50,31 @@ describe('ResourcePath', () => {
     expect(path.isDocument).to.equal(false);
 
     // parse reference to db root with `/documents`
-    path = QualifiedResourcePath.fromSlashSeparatedString(
-      `${DATABASE_ROOT}/documents`,
-    );
+    path = QualifiedResourcePath.fromSlashSeparatedString(`${DATABASE_ROOT}/documents`);
     expect(path.formattedName).to.equal(`${DATABASE_ROOT}/documents`);
     expect(path.isCollection).to.equal(false);
     expect(path.isDocument).to.equal(false);
 
     // parse reference to collection
-    path = QualifiedResourcePath.fromSlashSeparatedString(
-      `${DATABASE_ROOT}/documents/foo`,
-    );
+    path = QualifiedResourcePath.fromSlashSeparatedString(`${DATABASE_ROOT}/documents/foo`);
     expect(path.formattedName).to.equal(`${DATABASE_ROOT}/documents/foo`);
     expect(path.isCollection).to.equal(true);
     expect(path.isDocument).to.equal(false);
 
     // parse reference to document
-    path = QualifiedResourcePath.fromSlashSeparatedString(
-      `${DATABASE_ROOT}/documents/foo/bar`,
-    );
+    path = QualifiedResourcePath.fromSlashSeparatedString(`${DATABASE_ROOT}/documents/foo/bar`);
     expect(path.formattedName).to.equal(`${DATABASE_ROOT}/documents/foo/bar`);
     expect(path.isCollection).to.equal(false);
     expect(path.isDocument).to.equal(true);
 
     // parse reference to nested collection
-    path = QualifiedResourcePath.fromSlashSeparatedString(
-      `${DATABASE_ROOT}/documents/foo/bar/baz`,
-    );
-    expect(path.formattedName).to.equal(
-      `${DATABASE_ROOT}/documents/foo/bar/baz`,
-    );
+    path = QualifiedResourcePath.fromSlashSeparatedString(`${DATABASE_ROOT}/documents/foo/bar/baz`);
+    expect(path.formattedName).to.equal(`${DATABASE_ROOT}/documents/foo/bar/baz`);
     expect(path.isCollection).to.equal(true);
     expect(path.isDocument).to.equal(false);
 
     expect(() => {
-      path = QualifiedResourcePath.fromSlashSeparatedString(
-        'projects/project/databases',
-      );
+      path = QualifiedResourcePath.fromSlashSeparatedString('projects/project/databases');
     }).to.throw("Resource name 'projects/project/databases' is not valid");
   });
 
@@ -105,7 +91,7 @@ describe('ResourcePath', () => {
       'projects//databases/DDD/documents',
     ];
 
-    invalidPaths.forEach(invalidPath => {
+    invalidPaths.forEach((invalidPath) => {
       expect(() => {
         QualifiedResourcePath.fromSlashSeparatedString(invalidPath);
       }).to.throw(`Resource name '${invalidPath}' is not valid`);
@@ -122,23 +108,9 @@ describe('ResourcePath', () => {
 
 describe('FieldPath', () => {
   it('encodes field names', () => {
-    const components = [
-      ['foo'],
-      ['foo', 'bar'],
-      ['.', '`'],
-      ['\\'],
-      ['\\\\'],
-      ['``'],
-    ];
+    const components = [['foo'], ['foo', 'bar'], ['.', '`'], ['\\'], ['\\\\'], ['``']];
 
-    const results = [
-      'foo',
-      'foo.bar',
-      '`.`.`\\``',
-      '`\\\\`',
-      '`\\\\\\\\`',
-      '`\\`\\``',
-    ];
+    const results = ['foo', 'foo.bar', '`.`.`\\``', '`\\\\`', '`\\\\\\\\`', '`\\`\\``'];
 
     for (let i = 0; i < components.length; ++i) {
       expect(new FieldPath(...components[i]).toString()).to.equal(results[i]);

@@ -15,7 +15,7 @@
     {
       "dimension": "tool_selection",
       "description": "Did the agent choose the correct tools for the task?",
-      "weight": 0.20,
+      "weight": 0.2,
       "scoring": "precision — correct_tools / total_tools_used"
     },
     {
@@ -27,7 +27,7 @@
     {
       "dimension": "error_recovery",
       "description": "Did the agent correctly handle errors and edge cases?",
-      "weight": 0.20,
+      "weight": 0.2,
       "scoring": "binary per recovery attempt — correct recovery = 1, crash/loop = 0"
     }
   ],
@@ -138,7 +138,13 @@
       "expected_output": {
         "webhook_handler_created": true,
         "signature_verification": true,
-        "event_types_handled": ["customer.subscription.created", "customer.subscription.updated", "customer.subscription.deleted", "invoice.paid", "invoice.payment_failed"],
+        "event_types_handled": [
+          "customer.subscription.created",
+          "customer.subscription.updated",
+          "customer.subscription.deleted",
+          "invoice.paid",
+          "invoice.payment_failed"
+        ],
         "idempotency_key": true
       },
       "expected_behavior": [
@@ -181,6 +187,6 @@
   },
   "evaluation_script": "scripts/eval_uphillsnowball_f1.py",
   "minimum_acceptable_f1": 0.65,
-  "target_f1": 0.80,
-  "production_threshold_f1": 0.90
+  "target_f1": 0.8,
+  "production_threshold_f1": 0.9
 }

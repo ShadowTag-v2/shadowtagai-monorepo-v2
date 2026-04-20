@@ -6,12 +6,12 @@
  * - IMPLEMENTS: Class implements an Interface (TS only)
  */
 
-import { KnowledgeGraph } from '../graph/types';
-import { ASTCache } from './ast-cache';
-import { SymbolTable } from './symbol-table';
-import { loadParser, loadLanguage } from '../tree-sitter/parser-loader';
-import { LANGUAGE_QUERIES } from './tree-sitter-queries';
 import { generateId } from '../../lib/utils';
+import type { KnowledgeGraph } from '../graph/types';
+import { loadLanguage, loadParser } from '../tree-sitter/parser-loader';
+import type { ASTCache } from './ast-cache';
+import type { SymbolTable } from './symbol-table';
+import { LANGUAGE_QUERIES } from './tree-sitter-queries';
 import { getLanguageFromFilename } from './utils';
 
 export const processHeritage = async (
@@ -19,7 +19,7 @@ export const processHeritage = async (
   files: { path: string; content: string }[],
   astCache: ASTCache,
   symbolTable: SymbolTable,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ) => {
   const parser = await loadParser();
 
@@ -58,9 +58,9 @@ export const processHeritage = async (
     }
 
     // 4. Process heritage matches
-    matches.forEach(match => {
+    matches.forEach((match) => {
       const captureMap: Record<string, any> = {};
-      match.captures.forEach(c => {
+      match.captures.forEach((c) => {
         captureMap[c.name] = c.node;
       });
 
@@ -70,12 +70,14 @@ export const processHeritage = async (
         const parentClassName = captureMap['heritage.extends'].text;
 
         // Resolve both class IDs
-        const childId = symbolTable.lookupExact(file.path, className) ||
-                        symbolTable.lookupFuzzy(className)[0]?.nodeId ||
-                        generateId('Class', `${file.path}:${className}`);
+        const childId =
+          symbolTable.lookupExact(file.path, className) ||
+          symbolTable.lookupFuzzy(className)[0]?.nodeId ||
+          generateId('Class', `${file.path}:${className}`);
 
-        const parentId = symbolTable.lookupFuzzy(parentClassName)[0]?.nodeId ||
-                         generateId('Class', `${parentClassName}`);
+        const parentId =
+          symbolTable.lookupFuzzy(parentClassName)[0]?.nodeId ||
+          generateId('Class', `${parentClassName}`);
 
         if (childId && parentId && childId !== parentId) {
           const relId = generateId('EXTENDS', `${childId}->${parentId}`);
@@ -97,12 +99,14 @@ export const processHeritage = async (
         const interfaceName = captureMap['heritage.implements'].text;
 
         // Resolve class and interface IDs
-        const classId = symbolTable.lookupExact(file.path, className) ||
-                        symbolTable.lookupFuzzy(className)[0]?.nodeId ||
-                        generateId('Class', `${file.path}:${className}`);
+        const classId =
+          symbolTable.lookupExact(file.path, className) ||
+          symbolTable.lookupFuzzy(className)[0]?.nodeId ||
+          generateId('Class', `${file.path}:${className}`);
 
-        const interfaceId = symbolTable.lookupFuzzy(interfaceName)[0]?.nodeId ||
-                            generateId('Interface', `${interfaceName}`);
+        const interfaceId =
+          symbolTable.lookupFuzzy(interfaceName)[0]?.nodeId ||
+          generateId('Interface', `${interfaceName}`);
 
         if (classId && interfaceId) {
           const relId = generateId('IMPLEMENTS', `${classId}->${interfaceId}`);
@@ -124,12 +128,13 @@ export const processHeritage = async (
         const traitName = captureMap['heritage.trait'].text;
 
         // Resolve struct and trait IDs
-        const structId = symbolTable.lookupExact(file.path, structName) ||
-                         symbolTable.lookupFuzzy(structName)[0]?.nodeId ||
-                         generateId('Struct', `${file.path}:${structName}`);
+        const structId =
+          symbolTable.lookupExact(file.path, structName) ||
+          symbolTable.lookupFuzzy(structName)[0]?.nodeId ||
+          generateId('Struct', `${file.path}:${structName}`);
 
-        const traitId = symbolTable.lookupFuzzy(traitName)[0]?.nodeId ||
-                        generateId('Trait', `${traitName}`);
+        const traitId =
+          symbolTable.lookupFuzzy(traitName)[0]?.nodeId || generateId('Trait', `${traitName}`);
 
         if (structId && traitId) {
           const relId = generateId('IMPLEMENTS', `${structId}->${traitId}`);

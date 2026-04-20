@@ -7,9 +7,9 @@
  * - Continuation message creation
  */
 
-import { getMessagesByConversation, createMessage } from "../../db/operations";
-import type { Message } from "../../types/core";
-import logger from "../logger";
+import { createMessage, getMessagesByConversation } from '../../db/operations';
+import type { Message } from '../../types/core';
+import logger from '../logger';
 
 export type ConversationHistoryEntry = {
   question?: string;
@@ -39,7 +39,7 @@ export async function fetchConversationHistory(
         content: msg.content,
       }));
   } catch (err) {
-    logger.warn({ err }, "failed_to_fetch_conversation_history");
+    logger.warn({ err }, 'failed_to_fetch_conversation_history');
     return [];
   }
 }
@@ -65,7 +65,7 @@ export function resolveQuestionForReply(
   }
 
   // 3. Fall back to objective
-  return objectiveFallback || "";
+  return objectiveFallback || '';
 }
 
 /**
@@ -79,8 +79,8 @@ export async function createContinuationMessage(
   return createMessage({
     conversation_id: currentMessage.conversation_id,
     user_id: currentMessage.user_id,
-    question: "", // Empty = agent-initiated continuation
-    content: "", // Filled by next iteration's reply
+    question: '', // Empty = agent-initiated continuation
+    content: '', // Filled by next iteration's reply
     source: currentMessage.source,
     state_id: stateId,
   });

@@ -5,14 +5,15 @@
 // 'npm run snippets'.
 
 // [START auth_simple_link_modular]
-import { getAuth, linkWithCredential } from "firebase/auth";
+import { getAuth, linkWithCredential } from 'firebase/auth';
 
 const auth = getAuth();
 linkWithCredential(auth.currentUser, credential)
   .then((usercred) => {
     const user = usercred.user;
-    console.log("Account linking success", user);
-  }).catch((error) => {
-    console.log("Account linking error", error);
+    console.log('Account linking success', user);
+  })
+  .catch((error) => {
+    console.log('Account linking error', error);
   });
 // [END auth_simple_link_modular]

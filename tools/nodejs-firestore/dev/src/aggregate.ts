@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
-
-import {FieldPath} from './path';
-import {google} from '../protos/firestore_v1_proto_api';
+import type * as firestore from '@google-cloud/firestore';
+import { google } from '../protos/firestore_v1_proto_api';
+import { FieldPath } from './path';
 
 import IAggregation = google.firestore.v1.StructuredAggregationQuery.IAggregation;
+
 import * as assert from 'assert';
 
 /**
@@ -41,20 +41,14 @@ export class Aggregate {
     if (this.aggregateType === 'count') {
       proto.count = {};
     } else if (this.aggregateType === 'sum') {
-      assert(
-        this.fieldPath !== undefined,
-        'Missing field path for sum aggregation.',
-      );
+      assert(this.fieldPath !== undefined, 'Missing field path for sum aggregation.');
       proto.sum = {
         field: {
           fieldPath: FieldPath.fromArgument(this.fieldPath!).formattedName,
         },
       };
     } else if (this.aggregateType === 'avg') {
-      assert(
-        this.fieldPath !== undefined,
-        'Missing field path for average aggregation.',
-      );
+      assert(this.fieldPath !== undefined, 'Missing field path for average aggregation.');
       proto.avg = {
         field: {
           fieldPath: FieldPath.fromArgument(this.fieldPath!).formattedName,
@@ -111,9 +105,7 @@ export class AggregateField<T> implements firestore.AggregateField<T> {
       ((this._field === undefined && other._field === undefined) ||
         (this._field !== undefined &&
           other._field !== undefined &&
-          FieldPath.fromArgument(this._field).isEqual(
-            FieldPath.fromArgument(other._field),
-          )))
+          FieldPath.fromArgument(this._field).isEqual(FieldPath.fromArgument(other._field))))
     );
   }
 

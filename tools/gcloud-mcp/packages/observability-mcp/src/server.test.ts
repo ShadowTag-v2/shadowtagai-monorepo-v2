@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { test, expect, vi, beforeEach } from 'vitest';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { registerTools } from './tools/registration.js';
+import { beforeEach, expect, test, vi } from 'vitest';
 import { init } from './commands/init.js';
+import { registerTools } from './tools/registration.js';
 
 vi.mock('../package.json', () => ({
   default: {

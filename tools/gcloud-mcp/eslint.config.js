@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
+import prettierConfig from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
+import licenseHeader from 'eslint-plugin-license-header';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import prettierConfig from 'eslint-config-prettier';
-import licenseHeader from 'eslint-plugin-license-header';
-import importPlugin from 'eslint-plugin-import';
 
 // eslint-disable-next-line import/no-default-export
 export default tseslint.config(

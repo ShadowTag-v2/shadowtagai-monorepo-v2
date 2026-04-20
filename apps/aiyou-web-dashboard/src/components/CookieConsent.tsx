@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from 'react';
 
 export default function CookieConsent() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     // Auto-open on first load if no consent found
-    const consent = localStorage.getItem("eu-cookie-consent");
+    const consent = localStorage.getItem('eu-cookie-consent');
     if (!consent) {
       const timer = setTimeout(() => setIsOpen(true), 0);
       return () => clearTimeout(timer);
@@ -15,12 +15,12 @@ export default function CookieConsent() {
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem("eu-cookie-consent", "accepted");
+    localStorage.setItem('eu-cookie-consent', 'accepted');
     setIsOpen(false);
   };
 
   const handleDecline = () => {
-    localStorage.setItem("eu-cookie-consent", "declined");
+    localStorage.setItem('eu-cookie-consent', 'declined');
     setIsOpen(false);
   };
 
@@ -70,7 +70,7 @@ export default function CookieConsent() {
           </h3>
           <p className="text-sm text-indigo-100 leading-relaxed mb-4">
             This website uses cookies to improve user experience. By using our website you consent
-            to all cookies in accordance with our Cookie Policy.{" "}
+            to all cookies in accordance with our Cookie Policy.{' '}
             <a href="/cookie-policy" className="underline hover:text-white transition-colors">
               Read more
             </a>

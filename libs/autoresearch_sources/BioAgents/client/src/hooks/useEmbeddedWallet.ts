@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "preact/hooks";
-import { useToast } from "./useToast";
-import { useEmbeddedWalletClient } from "./useEmbeddedWalletClient";
+import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
+import { useEmbeddedWalletClient } from './useEmbeddedWalletClient';
+import { useToast } from './useToast';
 
 // Lazy import CDP hooks to avoid context errors when provider is not mounted
-let cdpHooksModule: typeof import("@coinbase/cdp-hooks") | null = null;
+let cdpHooksModule: typeof import('@coinbase/cdp-hooks') | null = null;
 
 /**
  * Safe wrapper for CDP hooks that returns null values when CDP context is not available
@@ -26,7 +26,7 @@ function useSafeCdpHooks(x402Enabled: boolean) {
     }
 
     // Dynamically import CDP hooks to avoid errors when provider is not mounted
-    import("@coinbase/cdp-hooks").then((module) => {
+    import('@coinbase/cdp-hooks').then((module) => {
       cdpHooksModule = module;
     });
   }, [x402Enabled]);
@@ -58,18 +58,18 @@ export function useEmbeddedWallet(network?: string, x402Enabled: boolean = true)
     try {
       // These hooks require CDPReactProvider context
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      const signedInResult = require("@coinbase/cdp-hooks").useIsSignedIn();
+      const signedInResult = require('@coinbase/cdp-hooks').useIsSignedIn();
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      const addressResult = require("@coinbase/cdp-hooks").useEvmAddress();
+      const addressResult = require('@coinbase/cdp-hooks').useEvmAddress();
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      const signOutResult = require("@coinbase/cdp-hooks").useSignOut();
+      const signOutResult = require('@coinbase/cdp-hooks').useSignOut();
 
       isSignedIn = signedInResult?.isSignedIn ?? false;
       evmAddress = addressResult?.evmAddress ?? null;
       signOutFn = signOutResult?.signOut ?? null;
     } catch (err) {
       // CDP hooks failed - context not available
-      console.debug("[useEmbeddedWallet] CDP hooks not available:", err);
+      console.debug('[useEmbeddedWallet] CDP hooks not available:', err);
     }
   }
 
@@ -94,16 +94,16 @@ export function useEmbeddedWallet(network?: string, x402Enabled: boolean = true)
 
   const disconnectEmbeddedWallet = useCallback(async () => {
     if (!signOutFn) {
-      console.warn("[useEmbeddedWallet] Sign out not available");
+      console.warn('[useEmbeddedWallet] Sign out not available');
       return;
     }
 
     try {
       await signOutFn();
-      toast.info("👋 Embedded Wallet Disconnected", 3000);
+      toast.info('👋 Embedded Wallet Disconnected', 3000);
     } catch (err: any) {
-      console.error("[useEmbeddedWallet] Sign out failed:", err);
-      toast.error(`❌ Failed to disconnect: ${err?.message || "Unknown error"}`, 5000);
+      console.error('[useEmbeddedWallet] Sign out failed:', err);
+      toast.error(`❌ Failed to disconnect: ${err?.message || 'Unknown error'}`, 5000);
     }
   }, [signOutFn, toast]);
 

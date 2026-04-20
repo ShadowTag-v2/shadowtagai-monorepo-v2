@@ -12,22 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-'use strict';
-
 // [START firestore_limit_to_last_query]
-const {Firestore} = require('@google-cloud/firestore');
+const { Firestore } = require('@google-cloud/firestore');
 
 // Create a new client
 const firestore = new Firestore();
 
 async function limitToLastQuery() {
   const collectionReference = firestore.collection('cities');
-  const cityDocuments = await collectionReference
-    .orderBy('name')
-    .limitToLast(2)
-    .get();
-  const cityDocumentData = cityDocuments.docs.map(d => d.data());
-  cityDocumentData.forEach(doc => {
+  const cityDocuments = await collectionReference.orderBy('name').limitToLast(2).get();
+  const cityDocumentData = cityDocuments.docs.map((d) => d.data());
+  cityDocumentData.forEach((doc) => {
     console.log(doc.name);
   });
 }

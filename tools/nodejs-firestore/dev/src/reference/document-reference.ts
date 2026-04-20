@@ -15,18 +15,15 @@
  */
 
 import * as protos from '../../protos/firestore_v1_proto_api';
+
 import api = protos.google.firestore.v1;
 
-import * as firestore from '@google-cloud/firestore';
-import Firestore, {DocumentSnapshot, WriteBatch, WriteResult} from '../index';
-import {ResourcePath, validateResourcePath} from '../path';
-import {defaultConverter} from '../types';
-import {Serializable} from '../serializer';
-import {CollectionReference} from './collection-reference';
-import {requestTag} from '../util';
-import {validateFunction, validateMinNumberOfArguments} from '../validate';
-import {DocumentWatch} from '../watch';
-import {DocumentSnapshotBuilder} from '../document';
+import type * as firestore from '@google-cloud/firestore';
+import { DocumentSnapshotBuilder } from '../document';
+import type Firestore from '../index';
+import { type DocumentSnapshot, WriteBatch, type WriteResult } from '../index';
+import { type ResourcePath, validateResourcePath } from '../path';
+import type { Serializable } from '../serializer';
 import {
   SPAN_NAME_DOC_REF_CREATE,
   SPAN_NAME_DOC_REF_DELETE,
@@ -35,6 +32,11 @@ import {
   SPAN_NAME_DOC_REF_SET,
   SPAN_NAME_DOC_REF_UPDATE,
 } from '../telemetry/trace-util';
+import { defaultConverter } from '../types';
+import { requestTag } from '../util';
+import { validateFunction, validateMinNumberOfArguments } from '../validate';
+import type { DocumentWatch } from '../watch';
+import { CollectionReference } from './collection-reference';
 
 /**
  * A DocumentReference refers to a document location in a Firestore database
@@ -47,12 +49,9 @@ import {
  * @class DocumentReference
  */
 export class DocumentReference<
-    AppModelType = firestore.DocumentData,
-    DbModelType extends firestore.DocumentData = firestore.DocumentData,
-  >
-  implements
-    Serializable,
-    firestore.DocumentReference<AppModelType, DbModelType>
+  AppModelType = firestore.DocumentData,
+  DbModelType extends firestore.DocumentData = firestore.DocumentData,
+> implements Serializable, firestore.DocumentReference<AppModelType, DbModelType>
 {
   /**
    * @private
@@ -85,8 +84,7 @@ export class DocumentReference<
   get formattedName(): string {
     const projectId = this.firestore.projectId;
     const databaseId = this.firestore.databaseId;
-    return this._path.toQualifiedResourcePath(projectId, databaseId)
-      .formattedName;
+    return this._path.toQualifiedResourcePath(projectId, databaseId).formattedName;
   }
 
   /**
@@ -206,12 +204,9 @@ export class DocumentReference<
    * ```
    */
   get(): Promise<DocumentSnapshot<AppModelType, DbModelType>> {
-    return this._firestore._traceUtil.startActiveSpan(
-      SPAN_NAME_DOC_REF_GET,
-      () => {
-        return this._firestore.getAll(this).then(([result]) => result);
-      },
-    );
+    return this._firestore._traceUtil.startActiveSpan(SPAN_NAME_DOC_REF_GET, () => {
+      return this._firestore.getAll(this).then(([result]) => result);
+    });
   }
 
   /**
@@ -260,35 +255,29 @@ export class DocumentReference<
    * ```
    */
   listCollections(): Promise<Array<CollectionReference>> {
-    return this._firestore._traceUtil.startActiveSpan(
-      SPAN_NAME_DOC_REF_LIST_COLLECTIONS,
-      () => {
-        const tag = requestTag();
-        return this.firestore.initializeIfNeeded(tag).then(() => {
-          const request: api.IListCollectionIdsRequest = {
-            parent: this.formattedName,
-          };
-          return this._firestore
-            .request<
-              api.IListCollectionIdsRequest,
-              string[]
-            >('listCollectionIds', request, tag)
-            .then(collectionIds => {
-              const collections: Array<CollectionReference> = [];
+    return this._firestore._traceUtil.startActiveSpan(SPAN_NAME_DOC_REF_LIST_COLLECTIONS, () => {
+      const tag = requestTag();
+      return this.firestore.initializeIfNeeded(tag).then(() => {
+        const request: api.IListCollectionIdsRequest = {
+          parent: this.formattedName,
+        };
+        return this._firestore
+          .request<api.IListCollectionIdsRequest, string[]>('listCollectionIds', request, tag)
+          .then((collectionIds) => {
+            const collections: Array<CollectionReference> = [];
 
-              // We can just sort this list using the default comparator since it
-              // will only contain collection ids.
-              collectionIds.sort();
+            // We can just sort this list using the default comparator since it
+            // will only contain collection ids.
+            collectionIds.sort();
 
-              for (const collectionId of collectionIds) {
-                collections.push(this.collection(collectionId));
-              }
+            for (const collectionId of collectionIds) {
+              collections.push(this.collection(collectionId));
+            }
 
-              return collections;
-            });
-        });
-      },
-    );
+            return collections;
+          });
+      });
+    });
   }
 
   /**
@@ -313,16 +302,13 @@ export class DocumentReference<
    * ```
    */
   create(data: firestore.WithFieldValue<AppModelType>): Promise<WriteResult> {
-    return this._firestore._traceUtil.startActiveSpan(
-      SPAN_NAME_DOC_REF_CREATE,
-      () => {
-        const writeBatch = new WriteBatch(this._firestore);
-        return writeBatch
-          .create(this, data)
-          .commit()
-          .then(([writeResult]) => writeResult);
-      },
-    );
+    return this._firestore._traceUtil.startActiveSpan(SPAN_NAME_DOC_REF_CREATE, () => {
+      const writeBatch = new WriteBatch(this._firestore);
+      return writeBatch
+        .create(this, data)
+        .commit()
+        .then(([writeResult]) => writeResult);
+    });
   }
 
   /**
@@ -351,16 +337,13 @@ export class DocumentReference<
    * ```
    */
   delete(precondition?: firestore.Precondition): Promise<WriteResult> {
-    return this._firestore._traceUtil.startActiveSpan(
-      SPAN_NAME_DOC_REF_DELETE,
-      () => {
-        const writeBatch = new WriteBatch(this._firestore);
-        return writeBatch
-          .delete(this, precondition)
-          .commit()
-          .then(([writeResult]) => writeResult);
-      },
-    );
+    return this._firestore._traceUtil.startActiveSpan(SPAN_NAME_DOC_REF_DELETE, () => {
+      const writeBatch = new WriteBatch(this._firestore);
+      return writeBatch
+        .delete(this, precondition)
+        .commit()
+        .then(([writeResult]) => writeResult);
+    });
   }
 
   set(
@@ -402,21 +385,15 @@ export class DocumentReference<
     data: firestore.PartialWithFieldValue<AppModelType>,
     options?: firestore.SetOptions,
   ): Promise<WriteResult> {
-    return this._firestore._traceUtil.startActiveSpan(
-      SPAN_NAME_DOC_REF_SET,
-      () => {
-        let writeBatch = new WriteBatch(this._firestore);
-        if (options) {
-          writeBatch = writeBatch.set(this, data, options);
-        } else {
-          writeBatch = writeBatch.set(
-            this,
-            data as firestore.WithFieldValue<AppModelType>,
-          );
-        }
-        return writeBatch.commit().then(([writeResult]) => writeResult);
-      },
-    );
+    return this._firestore._traceUtil.startActiveSpan(SPAN_NAME_DOC_REF_SET, () => {
+      let writeBatch = new WriteBatch(this._firestore);
+      if (options) {
+        writeBatch = writeBatch.set(this, data, options);
+      } else {
+        writeBatch = writeBatch.set(this, data as firestore.WithFieldValue<AppModelType>);
+      }
+      return writeBatch.commit().then(([writeResult]) => writeResult);
+    });
   }
 
   /**
@@ -452,27 +429,19 @@ export class DocumentReference<
    * ```
    */
   update(
-    dataOrField:
-      | firestore.UpdateData<DbModelType>
-      | string
-      | firestore.FieldPath,
-    ...preconditionOrValues: Array<
-      unknown | string | firestore.FieldPath | firestore.Precondition
-    >
+    dataOrField: firestore.UpdateData<DbModelType> | string | firestore.FieldPath,
+    ...preconditionOrValues: Array<unknown | string | firestore.FieldPath | firestore.Precondition>
   ): Promise<WriteResult> {
-    return this._firestore._traceUtil.startActiveSpan(
-      SPAN_NAME_DOC_REF_UPDATE,
-      () => {
-        // eslint-disable-next-line prefer-rest-params
-        validateMinNumberOfArguments('DocumentReference.update', arguments, 1);
+    return this._firestore._traceUtil.startActiveSpan(SPAN_NAME_DOC_REF_UPDATE, () => {
+      // eslint-disable-next-line prefer-rest-params
+      validateMinNumberOfArguments('DocumentReference.update', arguments, 1);
 
-        const writeBatch = new WriteBatch(this._firestore);
-        return writeBatch
-          .update(this, dataOrField, ...preconditionOrValues)
-          .commit()
-          .then(([writeResult]) => writeResult);
-      },
-    );
+      const writeBatch = new WriteBatch(this._firestore);
+      return writeBatch
+        .update(this, dataOrField, ...preconditionOrValues)
+        .commit()
+        .then(([writeResult]) => writeResult);
+    });
   }
 
   /**
@@ -504,16 +473,16 @@ export class DocumentReference<
    * ```
    */
   onSnapshot(
-    onNext: (
-      snapshot: firestore.DocumentSnapshot<AppModelType, DbModelType>,
-    ) => void,
+    onNext: (snapshot: firestore.DocumentSnapshot<AppModelType, DbModelType>) => void,
     onError?: (error: Error) => void,
   ): () => void {
     validateFunction('onNext', onNext);
-    validateFunction('onError', onError, {optional: true});
+    validateFunction('onError', onError, { optional: true });
 
-    const watch: DocumentWatch<AppModelType, DbModelType> =
-      new (require('../watch').DocumentWatch)(this.firestore, this);
+    const watch: DocumentWatch<AppModelType, DbModelType> = new (require('../watch').DocumentWatch)(
+      this.firestore,
+      this,
+    );
     return watch.onSnapshot((readTime, size, docs) => {
       for (const document of docs()) {
         if (document.ref.path === this.path) {
@@ -523,14 +492,8 @@ export class DocumentReference<
       }
 
       // The document is missing.
-      const ref = new DocumentReference(
-        this._firestore,
-        this._path,
-        this._converter,
-      );
-      const document = new DocumentSnapshotBuilder<AppModelType, DbModelType>(
-        ref,
-      );
+      const ref = new DocumentReference(this._firestore, this._path, this._converter);
+      const document = new DocumentSnapshotBuilder<AppModelType, DbModelType>(ref);
       document.readTime = readTime;
       onNext(document.build());
     }, onError || console.error);
@@ -543,9 +506,7 @@ export class DocumentReference<
    * @returns {boolean} true if this `DocumentReference` is equal to the provided
    * value.
    */
-  isEqual(
-    other: firestore.DocumentReference<AppModelType, DbModelType>,
-  ): boolean {
+  isEqual(other: firestore.DocumentReference<AppModelType, DbModelType>): boolean {
     return (
       this === other ||
       (other instanceof DocumentReference &&
@@ -562,17 +523,14 @@ export class DocumentReference<
    * @internal
    */
   toProto(): api.IValue {
-    return {referenceValue: this.formattedName};
+    return { referenceValue: this.formattedName };
   }
 
   withConverter<
     NewAppModelType,
     NewDbModelType extends firestore.DocumentData = firestore.DocumentData,
   >(
-    converter: firestore.FirestoreDataConverter<
-      NewAppModelType,
-      NewDbModelType
-    > | null,
+    converter: firestore.FirestoreDataConverter<NewAppModelType, NewDbModelType> | null,
   ): DocumentReference<NewAppModelType, NewDbModelType>;
   /**
    * Applies a custom data converter to this DocumentReference, allowing you to
@@ -629,10 +587,7 @@ export class DocumentReference<
     NewAppModelType,
     NewDbModelType extends firestore.DocumentData = firestore.DocumentData,
   >(
-    converter: firestore.FirestoreDataConverter<
-      NewAppModelType,
-      NewDbModelType
-    > | null,
+    converter: firestore.FirestoreDataConverter<NewAppModelType, NewDbModelType> | null,
   ): DocumentReference<NewAppModelType, NewDbModelType> {
     return new DocumentReference<NewAppModelType, NewDbModelType>(
       this.firestore,

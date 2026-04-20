@@ -5,17 +5,17 @@
 // 'npm run snippets'.
 
 // [START update_document_array_modular]
-import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
 
-const washingtonRef = doc(db, "cities", "DC");
+const washingtonRef = doc(db, 'cities', 'DC');
 
 // Atomically add a new region to the "regions" array field.
 await updateDoc(washingtonRef, {
-    regions: arrayUnion("greater_virginia")
+  regions: arrayUnion('greater_virginia'),
 });
 
 // Atomically remove a region from the "regions" array field.
 await updateDoc(washingtonRef, {
-    regions: arrayRemove("east_coast")
+  regions: arrayRemove('east_coast'),
 });
 // [END update_document_array_modular]

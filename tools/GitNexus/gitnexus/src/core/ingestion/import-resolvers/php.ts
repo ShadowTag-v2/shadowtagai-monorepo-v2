@@ -3,10 +3,10 @@
  * Handles use-statement resolution via composer.json autoload mappings.
  */
 
+import type { ComposerConfig } from '../language-config.js';
+import type { ImportResult, ResolveCtx } from './types.js';
 import type { SuffixIndex } from './utils.js';
 import { suffixResolve } from './utils.js';
-import type { ImportResult, ResolveCtx } from './types.js';
-import type { ComposerConfig } from '../language-config.js';
 
 /** Get or compute the sorted PSR-4 entries (cached after first call). */
 function getSortedPsr4(config: ComposerConfig): readonly [string, string][] {
@@ -64,9 +64,7 @@ export function resolvePhpImportInternal(
         // 2. Function/constant fallback: strip last segment (symbol name), scan namespace directory.
         //    e.g. App\Models\getUser → directory app/Models/, find first .php file in that dir.
         const lastSlash = remainder.lastIndexOf('/');
-        const nsDir = lastSlash >= 0
-          ? dirPrefix + '/' + remainder.slice(0, lastSlash)
-          : dirPrefix;
+        const nsDir = lastSlash >= 0 ? dirPrefix + '/' + remainder.slice(0, lastSlash) : dirPrefix;
 
         // Prefer SuffixIndex directory lookup (O(log n + matches)) over linear scan
         if (index) {
@@ -77,7 +75,11 @@ export function resolvePhpImportInternal(
         // Fallback: linear scan (only when SuffixIndex unavailable)
         const nsDirPrefix = nsDir.endsWith('/') ? nsDir : nsDir + '/';
         for (const f of allFiles) {
-          if (f.startsWith(nsDirPrefix) && f.endsWith('.php') && !f.slice(nsDirPrefix.length).includes('/')) {
+          if (
+            f.startsWith(nsDirPrefix) &&
+            f.endsWith('.php') &&
+            !f.slice(nsDirPrefix.length).includes('/')
+          ) {
             return f;
           }
         }
@@ -96,6 +98,13 @@ export function resolvePhpImport(
   _filePath: string,
   ctx: ResolveCtx,
 ): ImportResult {
-  const resolved = resolvePhpImportInternal(rawImportPath, ctx.configs.composerConfig, ctx.allFilePaths, ctx.normalizedFileList, ctx.allFileList, ctx.index);
+  const resolved = resolvePhpImportInternal(
+    rawImportPath,
+    ctx.configs.composerConfig,
+    ctx.allFilePaths,
+    ctx.normalizedFileList,
+    ctx.allFileList,
+    ctx.index,
+  );
   return resolved ? { kind: 'files', files: [resolved] } : null;
 }

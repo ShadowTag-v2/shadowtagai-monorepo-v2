@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { searchFTSFromLbug, type BM25SearchResult } from '../../src/core/search/bm25-index.js';
+import { describe, expect, it } from 'vitest';
+import { type BM25SearchResult, searchFTSFromLbug } from '../../src/core/search/bm25-index.js';
 
 describe('BM25 search', () => {
   describe('searchFTSFromLbug', () => {

@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-import {Settings} from '@google-cloud/firestore';
+import type { Settings } from '@google-cloud/firestore';
 
 import {
   context,
+  type Span as OpenTelemetrySpan,
   SpanStatusCode,
+  type Tracer,
+  type TracerProvider,
   trace,
-  Tracer,
-  Span as OpenTelemetrySpan,
-  TracerProvider,
 } from '@opentelemetry/api';
-
-import {Span} from './span';
+import { DEFAULT_MAX_IDLE_CHANNELS } from '../index';
+import { DEFAULT_DATABASE_ID } from '../path';
+import { FirestoreClient } from '../v1';
+import { interfaces } from '../v1/firestore_client_config.json';
+import { Span } from './span';
 import {
   ATTRIBUTE_GCP_RESOURCE_NAME,
   ATTRIBUTE_SETTINGS_PREFIX,
-  Attributes,
-  TraceUtil,
+  type Attributes,
+  type TraceUtil,
 } from './trace-util';
 
-import {interfaces} from '../v1/firestore_client_config.json';
-import {FirestoreClient} from '../v1';
-import {DEFAULT_DATABASE_ID} from '../path';
-import {DEFAULT_MAX_IDLE_CHANNELS} from '../index';
 const serviceConfig = interfaces['google.firestore.v1.Firestore'];
 
 /**
@@ -51,12 +50,11 @@ export class EnabledTraceUtil implements TraceUtil {
   tracerProvider: TracerProvider;
 
   constructor(settings: Settings) {
-    let provider: TracerProvider | undefined =
-      settings.openTelemetry?.tracerProvider;
+    let provider: TracerProvider | undefined = settings.openTelemetry?.tracerProvider;
 
     // If a TracerProvider has not been given to us, we try to use the global one.
     if (!provider) {
-      const {trace} = require('@opentelemetry/api');
+      const { trace } = require('@opentelemetry/api');
       provider = trace.getTracerProvider();
     }
 
@@ -80,25 +78,20 @@ export class EnabledTraceUtil implements TraceUtil {
     this.settingsAttributes['otel.scope.version'] = libVersion;
 
     if (settings.projectId) {
-      this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.project_id`] =
-        settings.projectId;
+      this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.project_id`] = settings.projectId;
 
       this.settingsAttributes[ATTRIBUTE_GCP_RESOURCE_NAME] =
         `//firestore.googleapis.com/projects/${settings.projectId}/databases/${databaseId}`;
     }
 
-    this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.database_id`] =
-      databaseId;
+    this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.database_id`] = databaseId;
 
-    const host =
-      settings.servicePath ?? settings.host ?? 'firestore.googleapis.com';
+    const host = settings.servicePath ?? settings.host ?? 'firestore.googleapis.com';
     const port = settings.port ?? FirestoreClient.port;
-    this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.host`] =
-      `${host}:${port}`;
+    this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.host`] = `${host}:${port}`;
 
     if (settings.preferRest !== undefined) {
-      this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.prefer_REST`] =
-        settings.preferRest;
+      this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.prefer_REST`] = settings.preferRest;
     }
 
     this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.max_idle_channels`] =
@@ -106,51 +99,41 @@ export class EnabledTraceUtil implements TraceUtil {
 
     const defaultRetrySettings = serviceConfig.retry_params.default;
     const customRetrySettings =
-      settings.clientConfig?.interfaces?.['google.firestore.v1.Firestore']?.[
-        'retry_params'
-      ]?.['default'];
-    this.settingsAttributes[
-      `${ATTRIBUTE_SETTINGS_PREFIX}.initial_retry_delay`
-    ] = this.millisToSecondString(
-      customRetrySettings?.initial_retry_delay_millis ??
-        defaultRetrySettings.initial_retry_delay_millis,
-    );
-    this.settingsAttributes[
-      `${ATTRIBUTE_SETTINGS_PREFIX}.initial_rpc_timeout`
-    ] = this.millisToSecondString(
-      customRetrySettings?.initial_rpc_timeout_millis ??
-        defaultRetrySettings.initial_rpc_timeout_millis,
-    );
+      settings.clientConfig?.interfaces?.['google.firestore.v1.Firestore']?.['retry_params']?.[
+        'default'
+      ];
+    this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.initial_retry_delay`] =
+      this.millisToSecondString(
+        customRetrySettings?.initial_retry_delay_millis ??
+          defaultRetrySettings.initial_retry_delay_millis,
+      );
+    this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.initial_rpc_timeout`] =
+      this.millisToSecondString(
+        customRetrySettings?.initial_rpc_timeout_millis ??
+          defaultRetrySettings.initial_rpc_timeout_millis,
+      );
     this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.total_timeout`] =
       this.millisToSecondString(
-        customRetrySettings?.total_timeout_millis ??
-          defaultRetrySettings.total_timeout_millis,
+        customRetrySettings?.total_timeout_millis ?? defaultRetrySettings.total_timeout_millis,
       );
     this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.max_retry_delay`] =
       this.millisToSecondString(
-        customRetrySettings?.max_retry_delay_millis ??
-          defaultRetrySettings.max_retry_delay_millis,
+        customRetrySettings?.max_retry_delay_millis ?? defaultRetrySettings.max_retry_delay_millis,
       );
     this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.max_rpc_timeout`] =
       this.millisToSecondString(
-        customRetrySettings?.max_rpc_timeout_millis ??
-          defaultRetrySettings.max_rpc_timeout_millis,
+        customRetrySettings?.max_rpc_timeout_millis ?? defaultRetrySettings.max_rpc_timeout_millis,
       );
-    this.settingsAttributes[
-      `${ATTRIBUTE_SETTINGS_PREFIX}.retry_delay_multiplier`
-    ] =
+    this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.retry_delay_multiplier`] =
       customRetrySettings?.retry_delay_multiplier.toString() ??
       defaultRetrySettings.retry_delay_multiplier.toString();
-    this.settingsAttributes[
-      `${ATTRIBUTE_SETTINGS_PREFIX}.rpc_timeout_multiplier`
-    ] =
+    this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.rpc_timeout_multiplier`] =
       customRetrySettings?.rpc_timeout_multiplier.toString() ??
       defaultRetrySettings.rpc_timeout_multiplier.toString();
   }
 
   recordProjectIdAndResourceName(projectId: string, databaseId: string): void {
-    this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.project_id`] =
-      projectId;
+    this.settingsAttributes[`${ATTRIBUTE_SETTINGS_PREFIX}.project_id`] = projectId;
     this.settingsAttributes[ATTRIBUTE_GCP_RESOURCE_NAME] =
       `//firestore.googleapis.com/projects/${projectId}/databases/${databaseId}`;
     this.currentSpan().setAttributes(this.settingsAttributes);
@@ -189,11 +172,11 @@ export class EnabledTraceUtil implements TraceUtil {
           let result = fn(new Span(otelSpan));
           if (result instanceof Promise) {
             result = result
-              .then(value => {
+              .then((value) => {
                 otelSpan.end();
                 return value;
               })
-              .catch(error => {
+              .catch((error) => {
                 this.endSpan(otelSpan, error);
                 // Returns a Promise.reject the same as the underlying function.
                 return Promise.reject(error);

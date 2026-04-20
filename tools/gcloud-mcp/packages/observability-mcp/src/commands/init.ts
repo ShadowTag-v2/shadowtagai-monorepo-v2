@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Argv, ArgumentsCamelCase, CommandModule } from 'yargs';
+import type { ArgumentsCamelCase, Argv, CommandModule } from 'yargs';
 import { initializeGeminiCLI } from './init-gemini-cli.js';
 
 interface InstallArgs {

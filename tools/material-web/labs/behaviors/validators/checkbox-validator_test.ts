@@ -6,7 +6,7 @@
 
 // import 'jasmine'; (google3-only)
 
-import {CheckboxValidator} from './checkbox-validator.js';
+import { CheckboxValidator } from './checkbox-validator.js';
 
 describe('CheckboxValidator', () => {
   it('is invalid when required and not checked', () => {
@@ -16,7 +16,7 @@ describe('CheckboxValidator', () => {
     };
 
     const validator = new CheckboxValidator(() => state);
-    const {validity, validationMessage} = validator.getValidity();
+    const { validity, validationMessage } = validator.getValidity();
     expect(validity.valueMissing).withContext('valueMissing').toBeTrue();
     expect(validationMessage).withContext('validationMessage').not.toBe('');
   });
@@ -28,7 +28,7 @@ describe('CheckboxValidator', () => {
     };
 
     const validator = new CheckboxValidator(() => state);
-    const {validity, validationMessage} = validator.getValidity();
+    const { validity, validationMessage } = validator.getValidity();
     expect(validity.valueMissing).withContext('valueMissing').toBeFalse();
     expect(validationMessage).withContext('validationMessage').toBe('');
   });
@@ -40,7 +40,7 @@ describe('CheckboxValidator', () => {
     };
 
     const validator = new CheckboxValidator(() => state);
-    const {validity, validationMessage} = validator.getValidity();
+    const { validity, validationMessage } = validator.getValidity();
     expect(validity.valueMissing).withContext('valueMissing').toBeFalse();
     expect(validationMessage).withContext('validationMessage').toBe('');
   });

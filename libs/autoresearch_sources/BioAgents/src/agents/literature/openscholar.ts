@@ -1,5 +1,5 @@
-import logger from "../../utils/logger";
-import type { LiteratureResult } from "../../utils/literature";
+import type { LiteratureResult } from '../../utils/literature';
+import logger from '../../utils/logger';
 
 interface OpenScholarChunk {
   reranker_score: number;
@@ -13,11 +13,11 @@ interface OpenScholarChunk {
  * Search OpenScholar for relevant literature
  */
 export async function searchOpenScholar(objective: string): Promise<LiteratureResult> {
-  const endpoint = process.env.OPENSCHOLAR_API_URL || "";
+  const endpoint = process.env.OPENSCHOLAR_API_URL || '';
   const apiKey = process.env.OPENSCHOLAR_API_KEY;
 
   if (!endpoint || !apiKey) {
-    throw new Error("OpenScholar API URL or API key not configured");
+    throw new Error('OpenScholar API URL or API key not configured');
   }
 
   // Fetch chunks for the objective
@@ -38,9 +38,9 @@ export async function searchOpenScholar(objective: string): Promise<LiteratureRe
             (p, idx) =>
               `${idx + 1}. ${p.title}\n   DOI: ${p.doi}\n   Excerpt: ${p.text.substring(0, 200)}...`,
           )
-          .join("\n\n")}`;
+          .join('\n\n')}`;
 
-  logger.info({ paperCount: papers.length }, "openscholar_search_completed");
+  logger.info({ paperCount: papers.length }, 'openscholar_search_completed');
 
   return {
     output,
@@ -63,16 +63,16 @@ async function fetchOpenScholarChunks(
     keep_for_rerank: 80,
     final_topk: finalTopk,
     per_paper_cap: 3,
-    boost_mode: "mul",
+    boost_mode: 'mul',
     boost_lambda: 0.1,
     max_length: 512,
   };
 
   const res = await fetch(endpoint, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      "x-api-key": apiKey,
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
     },
     body: JSON.stringify(body),
   });

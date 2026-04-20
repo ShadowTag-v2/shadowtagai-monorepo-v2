@@ -5,14 +5,16 @@
 // 'npm run snippets'.
 
 // [START auth_unlink_provider_modular]
-import { getAuth, unlink } from "firebase/auth";
+import { getAuth, unlink } from 'firebase/auth';
 
 const auth = getAuth();
-unlink(auth.currentUser, providerId).then(() => {
-  // Auth provider unlinked from account
-  // ...
-}).catch((error) => {
-  // An error happened
-  // ...
-});
+unlink(auth.currentUser, providerId)
+  .then(() => {
+    // Auth provider unlinked from account
+    // ...
+  })
+  .catch((error) => {
+    // An error happened
+    // ...
+  });
 // [END auth_unlink_provider_modular]

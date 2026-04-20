@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_github_provider_credential_modular]
-import { GithubAuthProvider } from "firebase/auth";
+import { GithubAuthProvider } from 'firebase/auth';
 
 const credential = GithubAuthProvider.credential(token);
 // [END auth_github_provider_credential_modular]

@@ -15,27 +15,26 @@
  */
 
 import * as protos from '../../protos/firestore_v1_proto_api';
+
 import api = protos.google.firestore.v1;
 
+import type * as firestore from '@google-cloud/firestore';
 import * as assert from 'assert';
 import * as deepEqual from 'fast-deep-equal';
-
-import * as firestore from '@google-cloud/firestore';
-import {Aggregate, AggregateSpec} from '../aggregate';
-import {average, count, countAll, field, sum} from '../pipelines';
-import {Pipeline} from '../pipelines';
-import {Timestamp} from '../timestamp';
-import {mapToArray, requestTag, wrapError} from '../util';
-import {ExplainMetrics, ExplainResults} from '../query-profile';
-import {logger} from '../logger';
-import {AggregateQuerySnapshot} from './aggregate-query-snapshot';
-import {Query} from './query';
-import {Readable, Transform} from 'stream';
-import {QueryResponse, QuerySnapshotResponse} from './types';
+import { type Readable, Transform } from 'stream';
+import { Aggregate, type AggregateSpec } from '../aggregate';
+import { logger } from '../logger';
+import { average, count, countAll, field, type Pipeline, sum } from '../pipelines';
+import { ExplainMetrics, ExplainResults } from '../query-profile';
 import {
   SPAN_NAME_AGGREGATION_QUERY_GET,
   SPAN_NAME_RUN_AGGREGATION_QUERY,
 } from '../telemetry/trace-util';
+import { Timestamp } from '../timestamp';
+import { mapToArray, requestTag, wrapError } from '../util';
+import { AggregateQuerySnapshot } from './aggregate-query-snapshot';
+import type { Query } from './query';
+import type { QueryResponse, QuerySnapshotResponse } from './types';
 
 /**
  * A query that calculates aggregations over an underlying query.
@@ -44,8 +43,7 @@ export class AggregateQuery<
   AggregateSpecType extends AggregateSpec,
   AppModelType = firestore.DocumentData,
   DbModelType extends firestore.DocumentData = firestore.DocumentData,
-> implements
-    firestore.AggregateQuery<AggregateSpecType, AppModelType, DbModelType>
+> implements firestore.AggregateQuery<AggregateSpecType, AppModelType, DbModelType>
 {
   private readonly clientAliasToServerAliasMap: Record<string, string> = {};
   private readonly serverAliasToClientAliasMap: Record<string, string> = {};
@@ -66,7 +64,7 @@ export class AggregateQuery<
     // The client maps the user's alias to a short form alias and send that to the server.
     let aggregationNum = 0;
     for (const clientAlias in this._aggregates) {
-      if (Object.prototype.hasOwnProperty.call(this._aggregates, clientAlias)) {
+      if (Object.hasOwn(this._aggregates, clientAlias)) {
         const serverAlias = `aggregate_${aggregationNum++}`;
         this.clientAliasToServerAliasMap[clientAlias] = serverAlias;
         this.serverAliasToClientAliasMap[serverAlias] = clientAlias;
@@ -84,13 +82,11 @@ export class AggregateQuery<
    *
    * @returns A promise that will be resolved with the results of the query.
    */
-  async get(): Promise<
-    AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>
-  > {
+  async get(): Promise<AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>> {
     return this._query._firestore._traceUtil.startActiveSpan(
       SPAN_NAME_AGGREGATION_QUERY_GET,
       async () => {
-        const {result} = await this._get();
+        const { result } = await this._get();
         return result;
       },
     );
@@ -108,9 +104,7 @@ export class AggregateQuery<
   async _get(
     transactionOrReadTime?: Uint8Array | Timestamp | api.ITransactionOptions,
   ): Promise<
-    QuerySnapshotResponse<
-      AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>
-    >
+    QuerySnapshotResponse<AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>>
   > {
     const response = await this._getResponse(transactionOrReadTime);
     if (!response.result) {
@@ -133,11 +127,7 @@ export class AggregateQuery<
   _getResponse(
     transactionOrReadTime?: Uint8Array | Timestamp | api.ITransactionOptions,
     explainOptions?: firestore.ExplainOptions,
-  ): Promise<
-    QueryResponse<
-      AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>
-    >
-  > {
+  ): Promise<QueryResponse<AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>>> {
     // Capture the error stack to preserve stack tracing across async calls.
     const stack = Error().stack!;
 
@@ -147,15 +137,13 @@ export class AggregateQuery<
       > = {};
 
       const stream = this._stream(transactionOrReadTime, explainOptions);
-      stream.on('error', err => {
+      stream.on('error', (err) => {
         reject(wrapError(err, stack));
       });
       stream.on(
         'data',
         (
-          data: QueryResponse<
-            AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>
-          >,
+          data: QueryResponse<AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>>,
         ) => {
           if (data.transaction) {
             output.transaction = data.transaction;
@@ -242,7 +230,7 @@ export class AggregateQuery<
           backendStream.resume();
           backendStream.end();
         });
-        backendStream.on('error', err => {
+        backendStream.on('error', (err) => {
           // TODO(group-by) When group-by queries are supported for aggregates
           // consider implementing retries if the stream is making progress
           // receiving results for groups. See the use of lastReceivedDocument
@@ -250,12 +238,7 @@ export class AggregateQuery<
           // Also note that explain queries should not be retried.
 
           backendStream.unpipe(stream);
-          logger(
-            'AggregateQuery._stream',
-            tag,
-            'AggregateQuery failed with stream error:',
-            err,
-          );
+          logger('AggregateQuery._stream', tag, 'AggregateQuery failed with stream error:', err);
 
           this._query._firestore._traceUtil
             .currentSpan()
@@ -268,7 +251,7 @@ export class AggregateQuery<
         backendStream.resume();
         backendStream.pipe(stream);
       })
-      .catch(e => stream.destroy(e));
+      .catch((e) => stream.destroy(e));
 
     return stream;
   }
@@ -292,9 +275,7 @@ export class AggregateQuery<
           `'${prop}' not present in server-client alias mapping.`,
         );
         if (this._aggregates[alias] === undefined) {
-          throw new Error(
-            `Unexpected alias [${prop}] in result aggregate result`,
-          );
+          throw new Error(`Unexpected alias [${prop}] in result aggregate result`);
         }
         data[alias] = serializer.decodeValue(fields[prop]);
       }
@@ -325,11 +306,7 @@ export class AggregateQuery<
             serverAlias !== null && serverAlias !== undefined,
             `'${clientAlias}' not present in client-server alias mapping.`,
           );
-          return new Aggregate(
-            serverAlias,
-            aggregate.aggregateType,
-            aggregate._field,
-          ).toProto();
+          return new Aggregate(serverAlias, aggregate.aggregateType, aggregate._field).toProto();
         }),
       },
     };
@@ -354,33 +331,26 @@ export class AggregateQuery<
    * @internal
    */
   _pipeline(): Pipeline {
-    const aggregates = mapToArray(
-      this._aggregates,
-      (aggregate, clientAlias) => {
-        if (aggregate.aggregateType === 'count') {
-          if (aggregate._field === undefined) {
-            return countAll().as(clientAlias);
-          }
-          return count(field(aggregate._field)).as(clientAlias);
-        } else if (aggregate.aggregateType === 'avg') {
-          return average(field(aggregate._field!)).as(clientAlias);
-        } else if (aggregate.aggregateType === 'sum') {
-          return sum(field(aggregate._field!)).as(clientAlias);
-        } else {
-          throw new Error(`Unknown aggregate type ${aggregate.aggregateType}`);
+    const aggregates = mapToArray(this._aggregates, (aggregate, clientAlias) => {
+      if (aggregate.aggregateType === 'count') {
+        if (aggregate._field === undefined) {
+          return countAll().as(clientAlias);
         }
-      },
-    );
+        return count(field(aggregate._field)).as(clientAlias);
+      } else if (aggregate.aggregateType === 'avg') {
+        return average(field(aggregate._field!)).as(clientAlias);
+      } else if (aggregate.aggregateType === 'sum') {
+        return sum(field(aggregate._field!)).as(clientAlias);
+      } else {
+        throw new Error(`Unknown aggregate type ${aggregate.aggregateType}`);
+      }
+    });
 
     if (aggregates.length === 0) {
-      throw new Error(
-        'Cannot convert an AggregateQuery with 0 aggregates to a Pipeline',
-      );
+      throw new Error('Cannot convert an AggregateQuery with 0 aggregates to a Pipeline');
     }
 
-    return this._query
-      ._pipeline()
-      .aggregate(aggregates[0], ...aggregates.slice(1));
+    return this._query._pipeline().aggregate(aggregates[0], ...aggregates.slice(1));
   }
 
   /**
@@ -395,13 +365,7 @@ export class AggregateQuery<
    * @returns `true` if this object is "equal" to the given object, as
    * defined above, or `false` otherwise.
    */
-  isEqual(
-    other: firestore.AggregateQuery<
-      AggregateSpecType,
-      AppModelType,
-      DbModelType
-    >,
-  ): boolean {
+  isEqual(other: firestore.AggregateQuery<AggregateSpecType, AppModelType, DbModelType>): boolean {
     if (this === other) {
       return true;
     }
@@ -424,15 +388,8 @@ export class AggregateQuery<
    */
   async explain(
     options?: firestore.ExplainOptions,
-  ): Promise<
-    ExplainResults<
-      AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>
-    >
-  > {
-    const {result, explainMetrics} = await this._getResponse(
-      undefined,
-      options || {},
-    );
+  ): Promise<ExplainResults<AggregateQuerySnapshot<AggregateSpecType, AppModelType, DbModelType>>> {
+    const { result, explainMetrics } = await this._getResponse(undefined, options || {});
     if (!explainMetrics) {
       throw new Error('No explain results');
     }

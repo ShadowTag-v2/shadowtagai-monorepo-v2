@@ -5,7 +5,13 @@
 // 'npm run snippets'.
 
 // [START multitenant_account_exists_redirect_modular]
-import { signInWithRedirect, getRedirectResult, fetchSignInMethodsForEmail, linkWithCredential } from "firebase/auth";
+import {
+  fetchSignInMethodsForEmail,
+  getRedirectResult,
+  linkWithCredential,
+  signInWithRedirect,
+} from 'firebase/auth';
+
 // Step 1.
 // User tries to sign in to SAML provider.
 auth.tenantId = 'TENANT_ID';
@@ -25,14 +31,13 @@ getRedirectResult(auth).catch((error) => {
     // previous setting was reset.
     auth.tenantId = tenantId;
     // Get sign-in methods for this email.
-    fetchSignInMethodsForEmail(auth, email)
-      .then((methods) => {
-        // Step 3.
-        // Ask the user to sign in with existing Google account.
-        if (methods[0] == 'google.com') {
-          signInWithRedirect(auth, googleProvider);
-        }
-      });
+    fetchSignInMethodsForEmail(auth, email).then((methods) => {
+      // Step 3.
+      // Ask the user to sign in with existing Google account.
+      if (methods[0] == 'google.com') {
+        signInWithRedirect(auth, googleProvider);
+      }
+    });
   }
 });
 
@@ -41,11 +46,10 @@ getRedirectResult(auth).then((result) => {
   // Step 4
   // Link the SAML AuthCredential to the existing user.
   // result.user.tenantId is 'TENANT_ID'.
-  linkWithCredential(result.user, pendingCred)
-    .then((linkResult) => {
-      // SAML account successfully linked to the existing
-      // user.
-      goToApp();
-    });
+  linkWithCredential(result.user, pendingCred).then((linkResult) => {
+    // SAML account successfully linked to the existing
+    // user.
+    goToApp();
+  });
 });
 // [END multitenant_account_exists_redirect_modular]

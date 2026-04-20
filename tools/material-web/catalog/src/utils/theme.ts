@@ -4,10 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  applyMaterialTheme,
-  themeFromSourceColor,
-} from './material-color-helpers.js';
+import { applyMaterialTheme, themeFromSourceColor } from './material-color-helpers.js';
 
 /** Color mode, either overriding light/dark or the user's preference. */
 export type ColorMode = 'light' | 'dark' | 'auto';
@@ -106,10 +103,7 @@ export function saveSeedColor(color: string) {
  * @return The last applied color mode while in "auto".
  */
 export function getLastSavedAutoColorMode() {
-  return localStorage.getItem('last-auto-color-mode') as
-    | 'light'
-    | 'dark'
-    | null;
+  return localStorage.getItem('last-auto-color-mode') as 'light' | 'dark' | null;
 }
 
 /**

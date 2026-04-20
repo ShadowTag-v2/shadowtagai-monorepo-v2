@@ -4,9 +4,9 @@
  * SDK imports (dart:*) and external packages are skipped.
  */
 
-import type { ImportResult, ResolveCtx } from './types.js';
-import { resolveStandard } from './standard.js';
 import { SupportedLanguages } from '../../../config/supported-languages.js';
+import { resolveStandard } from './standard.js';
+import type { ImportResult, ResolveCtx } from './types.js';
 
 export function resolveDartImport(
   rawImportPath: string,

@@ -1,10 +1,7 @@
 {
   "capabilities": {
     "goog:chromeOptions": {
-      "args": [
-        "--window-position=0,0",
-        "--window-size=1920,1200"
-      ]
+      "args": ["--window-position=0,0", "--window-size=1920,1200"]
     }
   },
   "extension": {

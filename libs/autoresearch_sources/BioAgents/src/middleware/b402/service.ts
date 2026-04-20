@@ -1,5 +1,5 @@
-import logger from "../../utils/logger";
-import { b402Config, networkConfig } from "./config";
+import logger from '../../utils/logger';
+import { b402Config, networkConfig } from './config';
 
 /**
  * B402 Payment Service
@@ -9,7 +9,7 @@ import { b402Config, networkConfig } from "./config";
  */
 
 export interface B402PaymentRequirement {
-  scheme: "allowance" | "exact";
+  scheme: 'allowance' | 'exact';
   network: string;
   maxAmountRequired: string;
   resource: string;
@@ -47,9 +47,9 @@ export interface PaymentSettlementResult {
  */
 export function usdToBaseUnits(amountUSD: string): string {
   // USDT on BNB Chain has 18 decimals
-  const [whole, fraction = ""] = amountUSD.split(".");
-  const normalizedFraction = (fraction + "000000000000000000").slice(0, 18);
-  return `${whole}${normalizedFraction}`.replace(/^0+/, "") || "0";
+  const [whole, fraction = ''] = amountUSD.split('.');
+  const normalizedFraction = (fraction + '000000000000000000').slice(0, 18);
+  return `${whole}${normalizedFraction}`.replace(/^0+/, '') || '0';
 }
 
 /**
@@ -58,7 +58,7 @@ export function usdToBaseUnits(amountUSD: string): string {
  */
 interface DecodedB402Payment {
   x402Version: number;
-  scheme: "allowance";
+  scheme: 'allowance';
   network: string;
   payload: {
     signature: string;
@@ -119,7 +119,7 @@ export class B402Service {
           chainId: networkConfig.chainId,
           relayerAddress: networkConfig.relayerAddress,
         },
-        "b402_service_initialized",
+        'b402_service_initialized',
       );
     }
   }
@@ -139,20 +139,20 @@ export class B402Service {
     const maxAmountRequired = usdToBaseUnits(amountUSD);
 
     return {
-      scheme: "allowance", // BNB Chain uses allowance scheme
+      scheme: 'allowance', // BNB Chain uses allowance scheme
       network: b402Config.network,
       maxAmountRequired,
       resource,
       description,
-      mimeType: "application/json",
+      mimeType: 'application/json',
       payTo: b402Config.paymentAddress as `0x${string}`,
       maxTimeoutSeconds: b402Config.defaultTimeout,
       asset: b402Config.tokenAddress,
       extra: {
         // EIP-712 domain name must match the token contract's name() return value
         // BNB Chain USDC returns "USD Coin", not "USDC"
-        name: "USD Coin",
-        version: "1",
+        name: 'USD Coin',
+        version: '1',
         facilitatorAddress: networkConfig.relayerAddress, // For allowance scheme
         relayerAddress: networkConfig.relayerAddress,
         chainId: networkConfig.chainId,
@@ -167,8 +167,8 @@ export class B402Service {
   private decodePaymentHeader(paymentHeader: string): DecodedB402Payment | null {
     try {
       // Handle both URL-safe and standard base64
-      const normalizedHeader = paymentHeader.replace(/-/g, "+").replace(/_/g, "/");
-      const json = Buffer.from(normalizedHeader, "base64").toString("utf-8");
+      const normalizedHeader = paymentHeader.replace(/-/g, '+').replace(/_/g, '/');
+      const json = Buffer.from(normalizedHeader, 'base64').toString('utf-8');
       const parsed = JSON.parse(json);
 
       // Validate required fields
@@ -181,7 +181,7 @@ export class B402Service {
       const authorization = parsed.payload.authorization;
       return {
         x402Version: this.b402Version,
-        scheme: "allowance", // BNB Chain uses allowance scheme
+        scheme: 'allowance', // BNB Chain uses allowance scheme
         network: parsed.network || b402Config.network,
         payload: {
           signature: parsed.payload.signature, // Signature is at payload level, not authorization
@@ -195,7 +195,7 @@ export class B402Service {
         },
       };
     } catch (error) {
-      if (logger) logger.error({ error }, "Failed to decode b402 payment header");
+      if (logger) logger.error({ error }, 'Failed to decode b402 payment header');
       return null;
     }
   }
@@ -210,7 +210,7 @@ export class B402Service {
       if (!decodedPayment) {
         return {
           isValid: false,
-          invalidReason: "Invalid or malformed payment header",
+          invalidReason: 'Invalid or malformed payment header',
         };
       }
 
@@ -223,7 +223,7 @@ export class B402Service {
             payTo: paymentRequirements.payTo,
             payer: decodedPayment.payload.authorization.from,
           },
-          "b402_verify_request",
+          'b402_verify_request',
         );
       }
 
@@ -240,14 +240,14 @@ export class B402Service {
           {
             facilitatorRequest: JSON.stringify(facilitatorRequest, null, 2),
           },
-          "b402_facilitator_request_debug",
+          'b402_facilitator_request_debug',
         );
       }
 
       // Call facilitator verify endpoint
       const response = await fetch(`${b402Config.facilitatorUrl}/verify`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(facilitatorRequest),
         signal: AbortSignal.timeout(30000),
       });
@@ -255,7 +255,7 @@ export class B402Service {
       const result: FacilitatorVerifyResponse = await response.json();
 
       if (logger) {
-        logger.info({ status: response.status, result }, "b402_verify_response");
+        logger.info({ status: response.status, result }, 'b402_verify_response');
       }
 
       // Handle error responses
@@ -264,7 +264,7 @@ export class B402Service {
         if (logger) {
           logger.error(
             { invalidReason: errorReason, status: response.status },
-            "b402_verify_failed",
+            'b402_verify_failed',
           );
         }
         return {
@@ -283,8 +283,8 @@ export class B402Service {
         payer: result.payer || decodedPayment.payload.authorization.from,
       };
     } catch (error: any) {
-      const message = error?.message || "Verification error";
-      if (logger) logger.error({ error }, "b402_verification_error");
+      const message = error?.message || 'Verification error';
+      if (logger) logger.error({ error }, 'b402_verification_error');
       return { isValid: false, invalidReason: message };
     }
   }
@@ -297,7 +297,7 @@ export class B402Service {
       // Decode the payment header
       const decodedPayment = this.decodePaymentHeader(paymentHeader);
       if (!decodedPayment) {
-        return { success: false, errorReason: "Invalid payment header format" };
+        return { success: false, errorReason: 'Invalid payment header format' };
       }
 
       if (logger) {
@@ -308,7 +308,7 @@ export class B402Service {
             network: b402Config.network,
             payer: decodedPayment.payload.authorization.from,
           },
-          "b402_settle_request",
+          'b402_settle_request',
         );
       }
 
@@ -321,8 +321,8 @@ export class B402Service {
 
       // Call facilitator settle endpoint
       const response = await fetch(`${b402Config.facilitatorUrl}/settle`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(facilitatorRequest),
         signal: AbortSignal.timeout(60000), // Longer timeout for settlement
       });
@@ -330,14 +330,14 @@ export class B402Service {
       const result: FacilitatorSettleResponse = await response.json();
 
       if (logger) {
-        logger.info({ status: response.status, result }, "b402_settle_response");
+        logger.info({ status: response.status, result }, 'b402_settle_response');
       }
 
       // Handle error responses
       if (!response.ok || result.error) {
         const errorReason = result.error || result.errorReason || `HTTP ${response.status}`;
         if (logger) {
-          logger.error({ errorReason, status: response.status }, "b402_settle_failed");
+          logger.error({ errorReason, status: response.status }, 'b402_settle_failed');
         }
         return {
           success: false,
@@ -355,8 +355,8 @@ export class B402Service {
         errorReason: result.errorReason,
       };
     } catch (error: any) {
-      const message = error?.message || "Settlement error";
-      if (logger) logger.error({ error }, "b402_settlement_error");
+      const message = error?.message || 'Settlement error';
+      if (logger) logger.error({ error }, 'b402_settlement_error');
       return { success: false, errorReason: message };
     }
   }
@@ -367,7 +367,7 @@ export class B402Service {
   async checkHealth(): Promise<{ ok: boolean; error?: string }> {
     try {
       const response = await fetch(`${b402Config.facilitatorUrl}/health`, {
-        method: "GET",
+        method: 'GET',
         signal: AbortSignal.timeout(5000),
       });
 
@@ -377,7 +377,7 @@ export class B402Service {
 
       return { ok: false, error: `Status: ${response.status}` };
     } catch (error: any) {
-      return { ok: false, error: error?.message || "Connection failed" };
+      return { ok: false, error: error?.message || 'Connection failed' };
     }
   }
 }

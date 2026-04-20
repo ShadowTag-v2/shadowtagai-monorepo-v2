@@ -5,10 +5,10 @@ const perf = getInstance();
 
 function intialize() {
   // [START perf_import_app]
-  const { initializeApp } = require("firebase/app");
+  const { initializeApp } = require('firebase/app');
   // [END perf_import_app]
   // [START perf_import]
-  const { getPerformance } = require("firebase/performance");
+  const { getPerformance } = require('firebase/performance');
   // [END perf_import]
 
   // [START perf_initialize_app]
@@ -30,7 +30,7 @@ function intialize() {
 
 export function getInstance() {
   // [START perf_get_instance]
-  const { getPerformance } = require("firebase/performance");
+  const { getPerformance } = require('firebase/performance');
   const perf = getPerformance();
   // [END perf_get_instance]
 
@@ -39,9 +39,9 @@ export function getInstance() {
 
 export function addCustomTrace() {
   // [START perf_add_custom_trace]
-  const { trace } = require("firebase/performance");
+  const { trace } = require('firebase/performance');
 
-  const t = trace(perf, "CUSTOM_TRACE_NAME");
+  const t = trace(perf, 'CUSTOM_TRACE_NAME');
   t.start();
 
   // Code that you want to trace
@@ -55,31 +55,31 @@ export function userTimingMarks() {
   // [START perf_user_timing_marks]
   const performance = window.performance;
 
-  performance.mark("measurementStart");
+  performance.mark('measurementStart');
 
   // Code that you want to trace
   // ...
 
-  performance.mark("measurementStop");
-  performance.measure("customTraceName", "measurementStart", "measurementStop");
+  performance.mark('measurementStop');
+  performance.measure('customTraceName', 'measurementStart', 'measurementStop');
   // [END perf_user_timing_marks]
 }
 
 export function addCustomAttributes() {
   // [START perf_add_custom_attributes]
-  const { trace } = require("firebase/performance");
+  const { trace } = require('firebase/performance');
 
-  const t = trace(perf, "test_trace");
-  t.putAttribute("experiment", "A");
+  const t = trace(perf, 'test_trace');
+  t.putAttribute('experiment', 'A');
 
   // Update scenario
-  t.putAttribute("experiment", "B");
+  t.putAttribute('experiment', 'B');
 
   // Reading scenario
-  const experimentValue = t.getAttribute("experiment");
+  const experimentValue = t.getAttribute('experiment');
 
   // Delete scenario
-  t.removeAttribute("experiment");
+  t.removeAttribute('experiment');
 
   // Read attributes
   const traceAttributes = t.getAttributes();
@@ -92,13 +92,13 @@ export function addCustomMetrics() {
   }
 
   // [START perf_add_custom_metrics]
-  const { trace } = require("firebase/performance");
+  const { trace } = require('firebase/performance');
 
   async function getInventory(inventoryIds) {
-    const t = trace(perf, "inventoryRetrieval");
+    const t = trace(perf, 'inventoryRetrieval');
 
     // Tracks the number of IDs fetched (the metric could help you to optimize in the future)
-    t.incrementMetric("numberOfIds", inventoryIds.length);
+    t.incrementMetric('numberOfIds', inventoryIds.length);
 
     // Measures the time it takes to request inventory based on the amount of inventory
     t.start();

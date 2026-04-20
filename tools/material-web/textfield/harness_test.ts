@@ -7,20 +7,18 @@
 // import 'jasmine'; (google3-only)
 import './filled-text-field.js';
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Environment} from '../testing/environment.js';
-import {Harness} from '../testing/harness.js';
+import { Environment } from '../testing/environment.js';
+import { Harness } from '../testing/harness.js';
 
-import {TextFieldHarness} from './harness.js';
+import { TextFieldHarness } from './harness.js';
 
 describe('TextFieldHarness', () => {
   const env = new Environment();
 
   async function setupTest() {
-    const root = env.render(
-      html`<md-filled-text-field></md-filled-text-field>`,
-    );
+    const root = env.render(html`<md-filled-text-field></md-filled-text-field>`);
     const instance = root.querySelector('md-filled-text-field');
     if (!instance) {
       throw new Error('Failed to query md-filled-text-field.');
@@ -42,9 +40,9 @@ describe('TextFieldHarness', () => {
       expect(keydownHandler).toHaveBeenCalledTimes(3);
       expect(keydownHandler).toHaveBeenCalledWith(jasmine.any(KeyboardEvent));
       expect(keydownHandler.calls.allArgs()).toEqual([
-        [jasmine.objectContaining({key: 'a'})],
-        [jasmine.objectContaining({key: 'b'})],
-        [jasmine.objectContaining({key: 'c'})],
+        [jasmine.objectContaining({ key: 'a' })],
+        [jasmine.objectContaining({ key: 'b' })],
+        [jasmine.objectContaining({ key: 'c' })],
       ]);
     });
 
