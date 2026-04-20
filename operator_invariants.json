@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "scope": "antigravity_local_operator_invariants",
   "purpose": "Canonical startup invariants for GitHub auth, git transport, clone/sync policy, hydration order, and sovereign compute topology.",
   "settings": {
@@ -183,6 +183,23 @@
     "script": "scripts/step_zero_cleanup.sh",
     "tools": ["ruff --fix", "vulture", "biome check"],
     "status": "OPERATIONAL (87 lines)"
+  },
+  "cloudcode_keychain_fix": {
+    "purpose": "Bypass macOS Keychain isolation fracture for Cloud Code in Antigravity IDE (non-Microsoft bundle signature)",
+    "root_cause": "macOS SecretStorage API rejects tokens from non-com.microsoft.VSCode signed binaries",
+    "fix": "Force Cloud Code to use system gcloud binary instead of internal OAuth",
+    "gcloud_path": "/opt/homebrew/share/google-cloud-sdk/bin/gcloud",
+    "workspace_settings": {
+      "cloudcode.autoDependencies": "off",
+      "cloudcode.dependencyPaths.gcloud": "/opt/homebrew/share/google-cloud-sdk/bin/gcloud"
+    },
+    "applied_to": "pnkln.code-workspace",
+    "applied_date": "2026-04-20",
+    "auth_state": {
+      "gcloud_user": "founder@shadowtagai.com",
+      "adc_path": "~/.config/gcloud/application_default_credentials.json",
+      "project": "shadowtag-omega-v4"
+    }
   },
   "session_persistence": {
     "purpose": "JSONL state persistence across agent sessions",

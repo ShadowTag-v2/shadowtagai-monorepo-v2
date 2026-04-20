@@ -137,6 +137,10 @@
     "git.detectSubmodulesLimit": 20,
     "update.mode": "manual",
     "cloudcode.enableExperiments": false,
+    "cloudcode.autoDependencies": "off",
+    "cloudcode.dependencyPaths": {
+      "gcloud": "/opt/homebrew/share/google-cloud-sdk/bin/gcloud"
+    },
     "gradle.nestedProjects": false,
     "java.gradle.enabled": false
   }
