@@ -246,3 +246,31 @@ The following stale references were identified in the source files:
 | `shadowtag-laws.md` §0 | Hardcoded `BRAIN_DIR` | Per-conversation `~/.gemini/antigravity/brain/<id>` |
 | `toolbelt.md` §0 | Hardcoded `BRAIN_DIR` | Per-conversation |
 | `live-engine.md` §Environment | `MEGA_PERMA_BRAIN` | Per-conversation |
+
+## Governance Lineage (from Cor.Brain Audit)
+
+Gap analysis of the Cor.Brain Omni-Brain Index (64 plans, 46 walkthroughs, 73 tasks = 183 historical shards) identified 5 operational patterns not previously captured:
+
+### 7. Omni-Brain Lineage Audit
+**Source:** Cor.Brain §1 "Omni-Brain Index Review"
+**Trigger:** Monthly, or when Dream Consolidation daemon detects divergence.
+**Protocol:** Inventory all historical implementation plans, walkthroughs, and task matrices. Verify each maps to a current KI, active skill, or archived bead. Flag orphaned shards for consolidation or deletion.
+**Tooling:** `mega_brain_compiler.py` generates the master index; Dream Consolidation daemon runs the nightly prune cycle.
+
+### 8. Thread Recovery / Four-Corners Audit
+**Source:** Cor.Brain "Exhaustive Four-Corners Thread Audit — Definitive Recovery"
+**Trigger:** After any agent context loss, session crash, or when KI summaries show gaps.
+**Protocol:** Exhaustively scan all conversation logs (`brain/<id>/`) for unrecovered plans, walkthroughs, and decisions. Recover actionable items into KIs. Tag recovered items with `[RECOVERED]` provenance.
+**Anti-pattern:** Never assume context persisted — verify against logs.
+
+### 9. Apex Synchronization Ceremony
+**Source:** Cor.Brain "Execution Plan: The Apex Synchronization"
+**Trigger:** End of any major work session, before `f1 gca`.
+**Protocol (5 steps):**
+1. **Index:** Verify all session artifacts are indexed in KIs
+2. **Invariants Check:** Confirm GEMINI.md + AGENTS.md immutable zones are unchanged
+3. **Janitor:** Run `scripts/finish_changes.py` (formatter + index.lock clear + staging)
+4. **Auth Push:** `git push` via GitHub App JWT (SSH primary, `scripts/auth_github_app.py`)
+5. **Pipeline Ignite:** Verify daemon fleet is running (Dream Consolidation, Loop Steward, KAIROS)
+**Integration:** Combines ROC Drill Phase 4 (Cross LD) with Session Init in reverse. The "lock" to Session Init's "unlock."
+
