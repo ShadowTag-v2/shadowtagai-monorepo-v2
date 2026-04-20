@@ -123,13 +123,13 @@ unless the user explicitly directs a control plane change:
 ## Hardened state
 
 - v9.6 canonicalized: 2026-04-20
-- Commit: `8f61a6ba23`
+- Commit: `02f2659f61`
 - CI Python: 3.13 (all 3 workflows)
 - venv primary: CPython 3.14.3
 - Firestore: 2 databases (`(default)`, `shadowtag-engine`)
 - Firestore rules: zero-trust deployed (default deny-all, admin-only access)
 - Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v9.5)
-- Semantic Kernel: .NET 11.0 Preview 2
+- Semantic Kernel: .NET 11.0 Preview 2 (UNVERIFIED — see GEMINI.md v9.6)
 - Tests: 87 unit passed (E2E skipped — live Cloud Run endpoints)
 - Lighthouse: shadowtagai P89/A100/BP100/SEO100, kovelai P89/A96/BP100/SEO100 (PageSpeed Insights verified 2026-04-20)
 - Dead code: clean (vulture + ruff — 0 violations at 80%+ confidence in gitleaks_guardian.py)
@@ -186,6 +186,12 @@ unless the user explicitly directs a control plane change:
 - Firebase Preview Channels: kovelai--staging (7d TTL)
 - Security Headers: CSP + HSTS (preload) + XFO (DENY) + CORP + COOP + Permissions-Policy — all 8 verified live
 - Multi-site Deploy: kovelai.web.app + shadowtagai.web.app + shadowtag-omega-v4.web.app — all 3 live (2026-04-20)
+- Launchd Daemons: com.pnkln.kairos (5-min) + com.pnkln.dream-consolidation (nightly 03:00) — loaded via launchctl
+- LanceDB Retriever Bridge: retriever_lancedb.py (local-first RAG, Vertex AI fallback, hybrid search)
+- Ruff Unsafe Fixes: 1 hidden fix applied (995→994 remaining, all in tools/mcp-toolbox third-party)
+- Gitleaks Production Sweep: 173 findings (all in docs/CANONICALIZATION_REPORT — third-party token samples, not real secrets)
+- Staging Channel: kovelai--staging-zjaqs7fe.web.app (7d TTL, deployed 2026-04-20)
+- Cloud Run Health: CounselConduit 200 OK, Stripe webhook endpoint LIVE (400 on invalid payload = correct)
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
