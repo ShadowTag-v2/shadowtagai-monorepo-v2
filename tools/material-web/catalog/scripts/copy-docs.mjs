@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {cp, readFile, writeFile} from 'fs/promises';
-import {dirname, join, relative} from 'path';
+import { cp, readFile, writeFile } from 'fs/promises';
+import { dirname, join, relative } from 'path';
 import tinyGlob from 'tiny-glob';
 
 /**
@@ -25,7 +25,7 @@ async function copyImages(path = '', includePath = '') {
   const desination = join('site', includePath, path, 'images');
 
   console.log(`Copying images from ${origin} to ${desination}...`);
-  await cp(origin, desination, {recursive: true}, (err) => {
+  await cp(origin, desination, { recursive: true }, (err) => {
     if (err) throw err;
   });
 
@@ -105,8 +105,10 @@ async function fileIncludeTransform(filepath, fileContents) {
     console.log(`Injecting ${includePath} file contents into ${filepath}...`);
     const includeContents = await readFile(join(fileDir, includePath), 'utf8');
 
-    fileContents = fileContents.slice(0, match.index) + includeContents +
-        fileContents.slice(match.index + matchedString.length);
+    fileContents =
+      fileContents.slice(0, match.index) +
+      includeContents +
+      fileContents.slice(match.index + matchedString.length);
   }
 
   return fileContents;
@@ -139,7 +141,6 @@ async function transformReadmes(filepaths, outdir = '', replacements = []) {
       localPath = localPath.replace(regex, replacement);
     }
 
-
     // The output path at
     // /catalog/site/components/<?local path>/<component name>.md
     const outputPath = join('site', outdir, localPath);
@@ -163,7 +164,5 @@ console.log('Images copied!');
 console.log('Transforming readmes...');
 await transformReadmes(aboutFiles, 'about');
 await transformReadmes(componentsReadmes);
-await transformReadmes(themingFiles, '', [
-  ['README', 'material-theming'],
-]);
+await transformReadmes(themingFiles, '', [['README', 'material-theming']]);
 console.log('Transformations complete!');

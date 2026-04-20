@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Environment} from '../testing/environment.js';
-import {createFormTests} from '../testing/forms.js';
-import {createTokenTests} from '../testing/tokens.js';
+import { Environment } from '../testing/environment.js';
+import { createFormTests } from '../testing/forms.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {RadioHarness} from './harness.js';
-import {MdRadio} from './radio.js';
+import { RadioHarness } from './harness.js';
+import { MdRadio } from './radio.js';
 
 const defaultRadio = html`<md-radio></md-radio>`;
 
@@ -39,7 +39,7 @@ describe('<md-radio>', () => {
   // Note, this would be better in the harness, but waiting in the test setup
   // can be flaky without access to the test `env`.
   async function simulateKeyDown(element: HTMLElement, key: string) {
-    const event = new KeyboardEvent('keydown', {key, bubbles: true});
+    const event = new KeyboardEvent('keydown', { key, bubbles: true });
     element.dispatchEvent(event);
     // We can remove the delay when FF issue addressed:
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1804576
@@ -51,7 +51,7 @@ describe('<md-radio>', () => {
     await env.waitForStability();
     const radios = Array.from(root.querySelectorAll('md-radio'));
     const harnesses = radios.map((radio) => new RadioHarness(radio));
-    return {harnesses, root};
+    return { harnesses, root };
   }
 
   describe('.styles', () => {
@@ -60,63 +60,51 @@ describe('<md-radio>', () => {
 
   describe('basic', () => {
     it('initializes as an md-radio', async () => {
-      const {harnesses} = await setupTest();
+      const { harnesses } = await setupTest();
       expect(harnesses[0].element).toBeInstanceOf(MdRadio);
     });
 
     it('clicking a radio should select it', async () => {
-      const {harnesses} = await setupTest(radioGroup);
+      const { harnesses } = await setupTest(radioGroup);
       const unselected = harnesses[1];
-      expect(unselected.element.checked)
-        .withContext('unselected checked')
-        .toBeFalse();
+      expect(unselected.element.checked).withContext('unselected checked').toBeFalse();
 
       await unselected.clickWithMouse();
-      expect(unselected.element.checked)
-        .withContext('after clicking checked')
-        .toBeTrue();
+      expect(unselected.element.checked).withContext('after clicking checked').toBeTrue();
     });
 
     it('clicking a radio can be default prevented', async () => {
-      const {harnesses} = await setupTest(radioGroup);
+      const { harnesses } = await setupTest(radioGroup);
       const unselected = harnesses[1];
-      expect(unselected.element.checked)
-        .withContext('unselected checked')
-        .toBeFalse();
+      expect(unselected.element.checked).withContext('unselected checked').toBeFalse();
 
       unselected.element.addEventListener('click', (event) => {
         event.preventDefault();
       });
 
       await unselected.clickWithMouse();
-      expect(unselected.element.checked)
-        .withContext('after clicking checked')
-        .toBeFalse();
+      expect(unselected.element.checked).withContext('after clicking checked').toBeFalse();
     });
 
     it('clicking a radio should unselect other radio which is already selected', async () => {
-      const {harnesses} = await setupTest(radioGroupPreSelected);
+      const { harnesses } = await setupTest(radioGroupPreSelected);
       const [, a2, a3] = harnesses;
       expect(a2.element.checked).withContext('already checked').toBeTrue();
 
       await a3.clickWithMouse();
       expect(a3.element.checked).withContext('new radio checked').toBeTrue();
-      expect(a2.element.checked)
-        .withContext('previous radio checked')
-        .toBeFalse();
+      expect(a2.element.checked).withContext('previous radio checked').toBeFalse();
     });
 
     it('disabled radio should not be selected when clicked', async () => {
-      const {harnesses} = await setupTest(radioGroupDisabled);
+      const { harnesses } = await setupTest(radioGroupDisabled);
       const [a1, a2] = harnesses;
 
       expect(a1.element.checked).withContext('unchecked radio').toBeFalse();
       expect(a2.element.checked).withContext('checked radio').toBeTrue();
 
       await a1.clickWithMouse();
-      expect(a1.element.checked)
-        .withContext('still unchecked radio')
-        .toBeFalse();
+      expect(a1.element.checked).withContext('still unchecked radio').toBeFalse();
 
       await a2.clickWithMouse();
       expect(a2.element.checked).withContext('still checked radio').toBeTrue();
@@ -125,31 +113,27 @@ describe('<md-radio>', () => {
 
   describe('events', () => {
     it('Should trigger change event when a radio is selected', async () => {
-      const {harnesses, root} = await setupTest(radioGroupPreSelected);
+      const { harnesses, root } = await setupTest(radioGroupPreSelected);
       const changeHandler = jasmine.createSpy('changeHandler');
       root.addEventListener('change', changeHandler);
 
       const a3 = harnesses[2];
       await a3.clickWithMouse();
 
-      expect(a3.element.checked)
-        .withContext('clicked radio checked')
-        .toBeTrue();
+      expect(a3.element.checked).withContext('clicked radio checked').toBeTrue();
       expect(changeHandler).toHaveBeenCalledTimes(1);
       expect(changeHandler).toHaveBeenCalledWith(jasmine.any(Event));
     });
 
     it('Should trigger input event when a radio is selected', async () => {
-      const {harnesses, root} = await setupTest(radioGroupPreSelected);
+      const { harnesses, root } = await setupTest(radioGroupPreSelected);
       const inputHandler = jasmine.createSpy('inputHandler');
       root.addEventListener('input', inputHandler);
 
       const a3 = harnesses[2];
       await a3.clickWithMouse();
 
-      expect(a3.element.checked)
-        .withContext('clicked radio checked')
-        .toBeTrue();
+      expect(a3.element.checked).withContext('clicked radio checked').toBeTrue();
       expect(inputHandler).toHaveBeenCalledTimes(1);
       expect(inputHandler).toHaveBeenCalledWith(jasmine.any(InputEvent));
     });
@@ -157,11 +141,9 @@ describe('<md-radio>', () => {
 
   describe('navigation', () => {
     it('Using arrow right should select the next radio button', async () => {
-      const {harnesses} = await setupTest(radioGroupPreSelected);
+      const { harnesses } = await setupTest(radioGroupPreSelected);
       const [, a2, a3] = harnesses;
-      expect(a2.element.checked)
-        .withContext('default checked radio')
-        .toBeTrue();
+      expect(a2.element.checked).withContext('default checked radio').toBeTrue();
 
       await simulateKeyDown(a2.element, 'ArrowRight');
 
@@ -170,13 +152,11 @@ describe('<md-radio>', () => {
     });
 
     it('dispatched a change event on user navigation', async () => {
-      const {harnesses, root} = await setupTest(radioGroupPreSelected);
+      const { harnesses, root } = await setupTest(radioGroupPreSelected);
       const changeHandler = jasmine.createSpy('changeHandler');
       root.addEventListener('change', changeHandler);
       const [, a2] = harnesses;
-      expect(a2.element.checked)
-        .withContext('default checked radio')
-        .toBeTrue();
+      expect(a2.element.checked).withContext('default checked radio').toBeTrue();
 
       await simulateKeyDown(a2.element, 'ArrowRight');
 
@@ -184,7 +164,7 @@ describe('<md-radio>', () => {
     });
 
     it('Using arrow right on the last radio should select the first radio in that group', async () => {
-      const {harnesses} = await setupTest(radioGroupPreSelected);
+      const { harnesses } = await setupTest(radioGroupPreSelected);
       const [a1, a2, a3, b1] = harnesses;
 
       expect(a2.element.checked).toBeTrue();
@@ -194,15 +174,13 @@ describe('<md-radio>', () => {
 
       expect(a3.element.checked).withContext('last radio checked').toBeFalse();
       expect(a1.element.checked).withContext('first radio checked').toBeTrue();
-      expect(b1.element.checked)
-        .withContext('unrelated radio checked')
-        .toBeFalse();
+      expect(b1.element.checked).withContext('unrelated radio checked').toBeFalse();
     });
   });
 
   describe('manages selection groups', () => {
     it('synchronously', async () => {
-      const {harnesses} = await setupTest(radioGroup);
+      const { harnesses } = await setupTest(radioGroup);
       const [a1, a2, b1] = harnesses;
 
       expect(a1.element.checked).withContext('initially unchecked').toBeFalse();
@@ -214,63 +192,37 @@ describe('<md-radio>', () => {
       a1.element.checked = true;
 
       expect(a1.element.checked).withContext('last radio checked').toBeTrue();
-      expect(a2.element.checked)
-        .withContext('unchecked by last radio')
-        .toBeFalse();
-      expect(b1.element.checked)
-        .withContext('unrelated radio unchecked')
-        .toBeFalse();
+      expect(a2.element.checked).withContext('unchecked by last radio').toBeFalse();
+      expect(b1.element.checked).withContext('unrelated radio unchecked').toBeFalse();
 
       // Should re-check radio
       a2.element.checked = true;
       a1.element.checked = true;
       a2.element.checked = true;
-      expect(a1.element.checked)
-        .withContext('unchecked by second radio')
-        .toBeFalse();
+      expect(a1.element.checked).withContext('unchecked by second radio').toBeFalse();
       expect(a2.element.checked).withContext('last radio checked').toBeTrue();
-      expect(b1.element.checked)
-        .withContext('unrelated radio unchecked')
-        .toBeFalse();
+      expect(b1.element.checked).withContext('unrelated radio unchecked').toBeFalse();
 
       // Should ignore unrelated radios
       a1.element.checked = true;
-      expect(a1.element.checked)
-        .withContext('related checked radio')
-        .toBeTrue();
-      expect(a2.element.checked)
-        .withContext('related unchecked radio')
-        .toBeFalse();
-      expect(b1.element.checked)
-        .withContext('unrelated unchecked radio')
-        .toBeFalse();
+      expect(a1.element.checked).withContext('related checked radio').toBeTrue();
+      expect(a2.element.checked).withContext('related unchecked radio').toBeFalse();
+      expect(b1.element.checked).withContext('unrelated unchecked radio').toBeFalse();
 
       b1.element.checked = true;
-      expect(a1.element.checked)
-        .withContext('related checked radio')
-        .toBeTrue();
-      expect(a2.element.checked)
-        .withContext('related unchecked radio')
-        .toBeFalse();
-      expect(b1.element.checked)
-        .withContext('unrelated checked radio')
-        .toBeTrue();
+      expect(a1.element.checked).withContext('related checked radio').toBeTrue();
+      expect(a2.element.checked).withContext('related unchecked radio').toBeFalse();
+      expect(b1.element.checked).withContext('unrelated checked radio').toBeTrue();
 
       a1.element.checked = false;
       b1.element.checked = false;
-      expect(a1.element.checked)
-        .withContext('related unchecked radio')
-        .toBeFalse();
-      expect(a2.element.checked)
-        .withContext('related unchecked radio')
-        .toBeFalse();
-      expect(b1.element.checked)
-        .withContext('unrelated unchecked radio')
-        .toBeFalse();
+      expect(a1.element.checked).withContext('related unchecked radio').toBeFalse();
+      expect(a2.element.checked).withContext('related unchecked radio').toBeFalse();
+      expect(b1.element.checked).withContext('unrelated unchecked radio').toBeFalse();
     });
 
     it('after updates settle', async () => {
-      const {harnesses} = await setupTest(radioGroup);
+      const { harnesses } = await setupTest(radioGroup);
       const [a1, a2, b1] = harnesses;
       const allUpdatesComplete = () =>
         Promise.all(harnesses.map((harness) => harness.element.updateComplete));
@@ -286,62 +238,36 @@ describe('<md-radio>', () => {
       await allUpdatesComplete();
 
       expect(a1.element.checked).withContext('last radio checked').toBeTrue();
-      expect(a2.element.checked)
-        .withContext('unchecked by last radio')
-        .toBeFalse();
-      expect(b1.element.checked)
-        .withContext('unrelated radio unchecked')
-        .toBeFalse();
+      expect(a2.element.checked).withContext('unchecked by last radio').toBeFalse();
+      expect(b1.element.checked).withContext('unrelated radio unchecked').toBeFalse();
 
       // Should re-check radio
       a2.element.checked = true;
       a1.element.checked = true;
       a2.element.checked = true;
       await allUpdatesComplete();
-      expect(a1.element.checked)
-        .withContext('unchecked by second radio')
-        .toBeFalse();
+      expect(a1.element.checked).withContext('unchecked by second radio').toBeFalse();
       expect(a2.element.checked).withContext('last radio checked').toBeTrue();
-      expect(b1.element.checked)
-        .withContext('unrelated radio unchecked')
-        .toBeFalse();
+      expect(b1.element.checked).withContext('unrelated radio unchecked').toBeFalse();
 
       // Should ignore unrelated radios
       a1.element.checked = true;
-      expect(a1.element.checked)
-        .withContext('related checked radio')
-        .toBeTrue();
-      expect(a2.element.checked)
-        .withContext('related unchecked radio')
-        .toBeFalse();
-      expect(b1.element.checked)
-        .withContext('unrelated unchecked radio')
-        .toBeFalse();
+      expect(a1.element.checked).withContext('related checked radio').toBeTrue();
+      expect(a2.element.checked).withContext('related unchecked radio').toBeFalse();
+      expect(b1.element.checked).withContext('unrelated unchecked radio').toBeFalse();
 
       b1.element.checked = true;
       await allUpdatesComplete();
-      expect(a1.element.checked)
-        .withContext('related checked radio')
-        .toBeTrue();
-      expect(a2.element.checked)
-        .withContext('related unchecked radio')
-        .toBeFalse();
-      expect(b1.element.checked)
-        .withContext('unrelated checked radio')
-        .toBeTrue();
+      expect(a1.element.checked).withContext('related checked radio').toBeTrue();
+      expect(a2.element.checked).withContext('related unchecked radio').toBeFalse();
+      expect(b1.element.checked).withContext('unrelated checked radio').toBeTrue();
 
       a1.element.checked = false;
       b1.element.checked = false;
       await allUpdatesComplete();
-      expect(a1.element.checked)
-        .withContext('related unchecked radio')
-        .toBeFalse();
-      expect(a2.element.checked)
-        .withContext('related unchecked radio')
-        .toBeFalse();
-      expect(b1.element.checked)
-        .withContext('unrelated unchecked radio')
-        .toBeFalse();
+      expect(a1.element.checked).withContext('related unchecked radio').toBeFalse();
+      expect(a2.element.checked).withContext('related unchecked radio').toBeFalse();
+      expect(b1.element.checked).withContext('unrelated unchecked radio').toBeFalse();
     });
 
     it('when checked before connected', async () => {
@@ -397,9 +323,7 @@ describe('<md-radio>', () => {
 
     it('in a lit repeat', async () => {
       const values = ['a1', 'a2'];
-      const repeated = values.map(
-        (value) => html`<md-radio value=${value} name="a"></md-radio>`,
-      );
+      const repeated = values.map((value) => html`<md-radio value=${value} name="a"></md-radio>`);
       const root = env.render(html`${repeated}`);
       await env.waitForStability();
       const [a1, a2] = root.querySelectorAll('md-radio');
@@ -523,9 +447,7 @@ describe('<md-radio>', () => {
             radio.checked = true;
           },
           assertReset(radio) {
-            expect(radio.checked)
-              .withContext('radio.checked after reset')
-              .toBeFalse();
+            expect(radio.checked).withContext('radio.checked after reset').toBeFalse();
           },
         },
         {
@@ -538,9 +460,7 @@ describe('<md-radio>', () => {
             radio.checked = false;
           },
           assertReset(radio) {
-            expect(radio.checked)
-              .withContext('radio.checked after reset')
-              .toBeTrue();
+            expect(radio.checked).withContext('radio.checked after reset').toBeTrue();
           },
         },
       ],
@@ -552,9 +472,7 @@ describe('<md-radio>', () => {
             <md-radio name="radio" value="Two"></md-radio>
           `,
           assertRestored(radio) {
-            expect(radio.checked)
-              .withContext('radio.checked after restore')
-              .toBeFalse();
+            expect(radio.checked).withContext('radio.checked after restore').toBeFalse();
           },
         },
         {
@@ -564,9 +482,7 @@ describe('<md-radio>', () => {
             <md-radio name="radio" value="Two"></md-radio>
           `,
           assertRestored(radio) {
-            expect(radio.checked)
-              .withContext('radio.checked after restore')
-              .toBeTrue();
+            expect(radio.checked).withContext('radio.checked after restore').toBeTrue();
           },
         },
       ],

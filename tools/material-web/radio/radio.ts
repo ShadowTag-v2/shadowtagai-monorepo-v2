@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {CSSResultOrNative} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import type { CSSResultOrNative } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {Radio} from './internal/radio.js';
-import {styles} from './internal/radio-styles.cssresult.js';
+import { Radio } from './internal/radio.js';
+import { styles } from './internal/radio-styles.cssresult.js';
 
 declare global {
   interface HTMLElementTagNameMap {

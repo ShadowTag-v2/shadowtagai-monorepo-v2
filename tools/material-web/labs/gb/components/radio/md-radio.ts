@@ -4,10 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  afterDispatch,
-  setupDispatchHooks,
-} from '@material/web/internal/events/dispatch-hooks.js';
+import { afterDispatch, setupDispatchHooks } from '@material/web/internal/events/dispatch-hooks.js';
 import {
   createValidator,
   getValidityAnchor,
@@ -17,25 +14,26 @@ import {
   internals,
   mixinElementInternals,
 } from '@material/web/labs/behaviors/element-internals.js';
-import {mixinFocusable} from '@material/web/labs/behaviors/focusable.js';
+import { mixinFocusable } from '@material/web/labs/behaviors/focusable.js';
 import {
   getFormState,
   getFormValue,
   mixinFormAssociated,
 } from '@material/web/labs/behaviors/form-associated.js';
-import {RadioValidator} from '@material/web/labs/behaviors/validators/radio-validator.js';
-import {SingleSelectionController} from '@material/web/radio/internal/single-selection-controller.js';
-import {css, CSSResultOrNative, html, isServer, LitElement} from 'lit';
-import {customElement, property, query, state} from 'lit/decorators.js';
-
-import focusRingStyles from '@material/web/labs/gb/components/focus/focus-ring.css' with {type: 'css'}; // github-only
+import { RadioValidator } from '@material/web/labs/behaviors/validators/radio-validator.js';
+import focusRingStyles from '@material/web/labs/gb/components/focus/focus-ring.css' with {
+  type: 'css',
+}; // github-only
 // import focusRingStyles from '@material/web/labs/gb/components/focus/focus-ring.cssresult.js'; // google3-only
-import rippleStyles from '@material/web/labs/gb/components/ripple/ripple.css' with {type: 'css'}; // github-only
+import rippleStyles from '@material/web/labs/gb/components/ripple/ripple.css' with { type: 'css' }; // github-only
+import { SingleSelectionController } from '@material/web/radio/internal/single-selection-controller.js';
+import { type CSSResultOrNative, css, html, isServer, LitElement } from 'lit';
+import { customElement, property, query, state } from 'lit/decorators.js';
 // import rippleStyles from '@material/web/labs/gb/components/ripple/ripple.cssresult.js'; // google3-only
-import radioStyles from './radio.css' with {type: 'css'}; // github-only
+import radioStyles from './radio.css' with { type: 'css' }; // github-only
 // import {styles as radioStyles} from './radio.cssresult.js'; // google3-only
 
-import {radio} from './radio.js';
+import { radio } from './radio.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -72,7 +70,7 @@ export class Radio extends radioBaseClass {
   /**
    * Whether or not the radio is selected.
    */
-  @property({type: Boolean})
+  @property({ type: Boolean })
   get checked() {
     return this[internals].ariaChecked === 'true';
   }
@@ -101,7 +99,7 @@ export class Radio extends radioBaseClass {
    * Whether or not the radio is required. If any radio is required in a group,
    * all radios are implicitly required.
    */
-  @property({type: Boolean}) required = false;
+  @property({ type: Boolean }) required = false;
 
   /**
    * The element value to use in form submission when checked.
@@ -135,10 +133,8 @@ export class Radio extends radioBaseClass {
         // Per spec, clicking on a radio input always selects it.
         this.checked = true;
         this.dirtyCheckedness = true;
-        this.dispatchEvent(new Event('change', {bubbles: true}));
-        this.dispatchEvent(
-          new InputEvent('input', {bubbles: true, composed: true}),
-        );
+        this.dispatchEvent(new Event('change', { bubbles: true }));
+        this.dispatchEvent(new InputEvent('input', { bubbles: true, composed: true }));
       });
     });
 

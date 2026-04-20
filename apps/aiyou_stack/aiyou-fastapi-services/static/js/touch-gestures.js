@@ -26,23 +26,23 @@ class TouchGestureHandler {
 
   init() {
     // Touch events
-    this.element.addEventListener("touchstart", this.handleTouchStart.bind(this), {
+    this.element.addEventListener('touchstart', this.handleTouchStart.bind(this), {
       passive: !this.options.preventScroll,
     });
-    this.element.addEventListener("touchmove", this.handleTouchMove.bind(this), {
+    this.element.addEventListener('touchmove', this.handleTouchMove.bind(this), {
       passive: !this.options.preventScroll,
     });
-    this.element.addEventListener("touchend", this.handleTouchEnd.bind(this), { passive: true });
-    this.element.addEventListener("touchcancel", this.handleTouchCancel.bind(this), {
+    this.element.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true });
+    this.element.addEventListener('touchcancel', this.handleTouchCancel.bind(this), {
       passive: true,
     });
 
     // Pointer events for broader device support
     if (window.PointerEvent) {
-      this.element.addEventListener("pointerdown", this.handlePointerDown.bind(this));
-      this.element.addEventListener("pointermove", this.handlePointerMove.bind(this));
-      this.element.addEventListener("pointerup", this.handlePointerUp.bind(this));
-      this.element.addEventListener("pointercancel", this.handlePointerCancel.bind(this));
+      this.element.addEventListener('pointerdown', this.handlePointerDown.bind(this));
+      this.element.addEventListener('pointermove', this.handlePointerMove.bind(this));
+      this.element.addEventListener('pointerup', this.handlePointerUp.bind(this));
+      this.element.addEventListener('pointercancel', this.handlePointerCancel.bind(this));
     }
   }
 
@@ -53,7 +53,7 @@ class TouchGestureHandler {
     this.startTime = Date.now();
     this.isSwiping = true;
 
-    this.dispatchCustomEvent("gesturestart", { x: this.startX, y: this.startY });
+    this.dispatchCustomEvent('gesturestart', { x: this.startX, y: this.startY });
   }
 
   handleTouchMove(e) {
@@ -67,7 +67,7 @@ class TouchGestureHandler {
       e.preventDefault();
     }
 
-    this.dispatchCustomEvent("gesturemove", {
+    this.dispatchCustomEvent('gesturemove', {
       x: touch.pageX,
       y: touch.pageY,
       distX: this.distX,
@@ -86,28 +86,28 @@ class TouchGestureHandler {
 
       if (Math.abs(this.distX) >= this.options.threshold && velocity >= this.options.velocity) {
         // Horizontal swipe
-        const direction = this.distX > 0 ? "right" : "left";
-        this.dispatchCustomEvent("swipe", { direction, distance: this.distX, velocity });
+        const direction = this.distX > 0 ? 'right' : 'left';
+        this.dispatchCustomEvent('swipe', { direction, distance: this.distX, velocity });
         this.dispatchCustomEvent(`swipe${direction}`, { distance: this.distX, velocity });
       } else if (Math.abs(this.distY) >= this.options.threshold) {
         // Vertical swipe
-        const direction = this.distY > 0 ? "down" : "up";
-        this.dispatchCustomEvent("swipe", { direction, distance: this.distY, velocity });
+        const direction = this.distY > 0 ? 'down' : 'up';
+        this.dispatchCustomEvent('swipe', { direction, distance: this.distY, velocity });
         this.dispatchCustomEvent(`swipe${direction}`, { distance: this.distY, velocity });
       } else {
         // Tap
-        this.dispatchCustomEvent("tap", { x: this.startX, y: this.startY });
+        this.dispatchCustomEvent('tap', { x: this.startX, y: this.startY });
       }
     } else {
       // Long press
-      this.dispatchCustomEvent("longpress", {
+      this.dispatchCustomEvent('longpress', {
         x: this.startX,
         y: this.startY,
         duration: elapsedTime,
       });
     }
 
-    this.dispatchCustomEvent("gestureend", {
+    this.dispatchCustomEvent('gestureend', {
       distX: this.distX,
       distY: this.distY,
       duration: elapsedTime,
@@ -161,16 +161,16 @@ class TouchGestureHandler {
   }
 
   destroy() {
-    this.element.removeEventListener("touchstart", this.handleTouchStart);
-    this.element.removeEventListener("touchmove", this.handleTouchMove);
-    this.element.removeEventListener("touchend", this.handleTouchEnd);
-    this.element.removeEventListener("touchcancel", this.handleTouchCancel);
+    this.element.removeEventListener('touchstart', this.handleTouchStart);
+    this.element.removeEventListener('touchmove', this.handleTouchMove);
+    this.element.removeEventListener('touchend', this.handleTouchEnd);
+    this.element.removeEventListener('touchcancel', this.handleTouchCancel);
 
     if (window.PointerEvent) {
-      this.element.removeEventListener("pointerdown", this.handlePointerDown);
-      this.element.removeEventListener("pointermove", this.handlePointerMove);
-      this.element.removeEventListener("pointerup", this.handlePointerUp);
-      this.element.removeEventListener("pointercancel", this.handlePointerCancel);
+      this.element.removeEventListener('pointerdown', this.handlePointerDown);
+      this.element.removeEventListener('pointermove', this.handlePointerMove);
+      this.element.removeEventListener('pointerup', this.handlePointerUp);
+      this.element.removeEventListener('pointercancel', this.handlePointerCancel);
     }
   }
 }
@@ -195,11 +195,11 @@ class PinchZoomHandler {
   }
 
   init() {
-    this.element.addEventListener("touchstart", this.handleTouchStart.bind(this), {
+    this.element.addEventListener('touchstart', this.handleTouchStart.bind(this), {
       passive: true,
     });
-    this.element.addEventListener("touchmove", this.handleTouchMove.bind(this), { passive: false });
-    this.element.addEventListener("touchend", this.handleTouchEnd.bind(this), { passive: true });
+    this.element.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
+    this.element.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true });
   }
 
   handleTouchStart(e) {
@@ -221,7 +221,7 @@ class PinchZoomHandler {
       Math.min(this.options.maxScale, this.scale * scaleChange),
     );
 
-    this.dispatchCustomEvent("pinch", {
+    this.dispatchCustomEvent('pinch', {
       scale: newScale,
       delta: scaleChange,
     });
@@ -255,9 +255,9 @@ class PinchZoomHandler {
   }
 
   destroy() {
-    this.element.removeEventListener("touchstart", this.handleTouchStart);
-    this.element.removeEventListener("touchmove", this.handleTouchMove);
-    this.element.removeEventListener("touchend", this.handleTouchEnd);
+    this.element.removeEventListener('touchstart', this.handleTouchStart);
+    this.element.removeEventListener('touchmove', this.handleTouchMove);
+    this.element.removeEventListener('touchend', this.handleTouchEnd);
   }
 }
 
@@ -283,11 +283,11 @@ class PullToRefreshHandler {
   }
 
   init() {
-    this.element.addEventListener("touchstart", this.handleTouchStart.bind(this), {
+    this.element.addEventListener('touchstart', this.handleTouchStart.bind(this), {
       passive: true,
     });
-    this.element.addEventListener("touchmove", this.handleTouchMove.bind(this), { passive: false });
-    this.element.addEventListener("touchend", this.handleTouchEnd.bind(this), { passive: true });
+    this.element.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
+    this.element.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true });
   }
 
   handleTouchStart(e) {
@@ -305,7 +305,7 @@ class PullToRefreshHandler {
 
     if (pullDistance > 0) {
       e.preventDefault();
-      this.dispatchCustomEvent("pullmove", { distance: pullDistance });
+      this.dispatchCustomEvent('pullmove', { distance: pullDistance });
     }
   }
 
@@ -316,13 +316,13 @@ class PullToRefreshHandler {
 
     if (pullDistance >= this.options.threshold) {
       this.isRefreshing = true;
-      this.dispatchCustomEvent("refreshstart");
+      this.dispatchCustomEvent('refreshstart');
 
       try {
         await this.onRefresh();
-        this.dispatchCustomEvent("refreshend", { success: true });
+        this.dispatchCustomEvent('refreshend', { success: true });
       } catch (error) {
-        this.dispatchCustomEvent("refreshend", { success: false, error });
+        this.dispatchCustomEvent('refreshend', { success: false, error });
       } finally {
         this.isRefreshing = false;
       }
@@ -343,14 +343,14 @@ class PullToRefreshHandler {
   }
 
   destroy() {
-    this.element.removeEventListener("touchstart", this.handleTouchStart);
-    this.element.removeEventListener("touchmove", this.handleTouchMove);
-    this.element.removeEventListener("touchend", this.handleTouchEnd);
+    this.element.removeEventListener('touchstart', this.handleTouchStart);
+    this.element.removeEventListener('touchmove', this.handleTouchMove);
+    this.element.removeEventListener('touchend', this.handleTouchEnd);
   }
 }
 
 // Export for use in modules
-if (typeof module !== "undefined" && module.exports) {
+if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     TouchGestureHandler,
     PinchZoomHandler,

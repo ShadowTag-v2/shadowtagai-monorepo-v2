@@ -8,33 +8,28 @@ import '../../elevation/elevation.js';
 import '../../focus/md-focus-ring.js';
 import '../../ripple/ripple.js';
 
-import {html, isServer, LitElement, nothing, PropertyValues} from 'lit';
-import {property, query, queryAsync, state} from 'lit/decorators.js';
-import {classMap} from 'lit/directives/class-map.js';
-import {styleMap} from 'lit/directives/style-map.js';
-import {when} from 'lit/directives/when.js';
+import { html, isServer, LitElement, nothing, type PropertyValues } from 'lit';
+import { property, query, queryAsync, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
+import { when } from 'lit/directives/when.js';
 
-import {ARIAMixinStrict} from '../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../internal/aria/delegate.js';
+import type { ARIAMixinStrict } from '../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../internal/aria/delegate.js';
 import {
   dispatchActivationClick,
   isActivationClick,
 } from '../../internal/events/form-label-activation.js';
-import {redispatchEvent} from '../../internal/events/redispatch-event.js';
-import {mixinElementInternals} from '../../labs/behaviors/element-internals.js';
-import {
-  getFormValue,
-  mixinFormAssociated,
-} from '../../labs/behaviors/form-associated.js';
-import {MdRipple} from '../../ripple/ripple.js';
+import { redispatchEvent } from '../../internal/events/redispatch-event.js';
+import { mixinElementInternals } from '../../labs/behaviors/element-internals.js';
+import { getFormValue, mixinFormAssociated } from '../../labs/behaviors/form-associated.js';
+import type { MdRipple } from '../../ripple/ripple.js';
 
 // Disable warning for classMap with destructuring
 // tslint:disable:no-implicit-dictionary-conversion
 
 // Separate variable needed for closure.
-const sliderBaseClass = mixinDelegatesAria(
-  mixinFormAssociated(mixinElementInternals(LitElement)),
-);
+const sliderBaseClass = mixinDelegatesAria(mixinFormAssociated(mixinElementInternals(LitElement)));
 
 /**
  * Slider component.
@@ -57,91 +52,91 @@ export class Slider extends sliderBaseClass {
   /**
    * The slider minimum value
    */
-  @property({type: Number}) min = 0;
+  @property({ type: Number }) min = 0;
 
   /**
    * The slider maximum value
    */
-  @property({type: Number}) max = 100;
+  @property({ type: Number }) max = 100;
 
   /**
    * The slider value displayed when range is false.
    */
-  @property({type: Number}) value?: number;
+  @property({ type: Number }) value?: number;
 
   /**
    * The slider start value displayed when range is true.
    */
-  @property({type: Number, attribute: 'value-start'}) valueStart?: number;
+  @property({ type: Number, attribute: 'value-start' }) valueStart?: number;
 
   /**
    * The slider end value displayed when range is true.
    */
-  @property({type: Number, attribute: 'value-end'}) valueEnd?: number;
+  @property({ type: Number, attribute: 'value-end' }) valueEnd?: number;
 
   /**
    * An optional label for the slider's value displayed when range is
    * false; if not set, the label is the value itself.
    */
-  @property({attribute: 'value-label'}) valueLabel = '';
+  @property({ attribute: 'value-label' }) valueLabel = '';
 
   /**
    * An optional label for the slider's start value displayed when
    * range is true; if not set, the label is the valueStart itself.
    */
-  @property({attribute: 'value-label-start'}) valueLabelStart = '';
+  @property({ attribute: 'value-label-start' }) valueLabelStart = '';
 
   /**
    * An optional label for the slider's end value displayed when
    * range is true; if not set, the label is the valueEnd itself.
    */
-  @property({attribute: 'value-label-end'}) valueLabelEnd = '';
+  @property({ attribute: 'value-label-end' }) valueLabelEnd = '';
 
   /**
    * Aria label for the slider's start handle displayed when
    * range is true.
    */
-  @property({attribute: 'aria-label-start'}) ariaLabelStart = '';
+  @property({ attribute: 'aria-label-start' }) ariaLabelStart = '';
 
   /**
    * Aria value text for the slider's start value displayed when
    * range is true.
    */
-  @property({attribute: 'aria-valuetext-start'}) ariaValueTextStart = '';
+  @property({ attribute: 'aria-valuetext-start' }) ariaValueTextStart = '';
 
   /**
    * Aria label for the slider's end handle displayed when
    * range is true.
    */
-  @property({attribute: 'aria-label-end'}) ariaLabelEnd = '';
+  @property({ attribute: 'aria-label-end' }) ariaLabelEnd = '';
 
   /**
    * Aria value text for the slider's end value displayed when
    * range is true.
    */
-  @property({attribute: 'aria-valuetext-end'}) ariaValueTextEnd = '';
+  @property({ attribute: 'aria-valuetext-end' }) ariaValueTextEnd = '';
 
   /**
    * The step between values.
    */
-  @property({type: Number}) step = 1;
+  @property({ type: Number }) step = 1;
 
   /**
    * Whether or not to show tick marks.
    */
-  @property({type: Boolean}) ticks = false;
+  @property({ type: Boolean }) ticks = false;
 
   /**
    * Whether or not to show a value label when activated.
    */
-  @property({type: Boolean}) labeled = false;
+  @property({ type: Boolean }) labeled = false;
 
   /**
    * Whether or not to show a value range. When false, the slider displays
    * a slideable handle for the value property; when true, it displays
    * slideable handles for the valueStart and valueEnd properties.
    */
-  @property({type: Boolean}) range = false;
+  @property({ type: Boolean }) range = false;
 
   /**
    * The HTML name to use in form submission for a range slider's starting
@@ -193,7 +188,7 @@ export class Slider extends sliderBaseClass {
   // why they do not need to handle both cases.
   private get renderAriaLabelStart() {
     // Needed for closure conformance
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     return (
       this.ariaLabelStart ||
       (ariaLabel && `${ariaLabel} start`) ||
@@ -203,9 +198,7 @@ export class Slider extends sliderBaseClass {
   }
 
   private get renderAriaValueTextStart() {
-    return (
-      this.ariaValueTextStart || this.valueLabelStart || String(this.valueStart)
-    );
+    return this.ariaValueTextStart || this.valueLabelStart || String(this.valueStart);
   }
 
   // Note: end aria-* properties are applied for single and range sliders, which
@@ -213,7 +206,7 @@ export class Slider extends sliderBaseClass {
   // not).
   private get renderAriaLabelEnd() {
     // Needed for closure conformance
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     if (this.range) {
       return (
         this.ariaLabelEnd ||
@@ -228,13 +221,11 @@ export class Slider extends sliderBaseClass {
 
   private get renderAriaValueTextEnd() {
     if (this.range) {
-      return (
-        this.ariaValueTextEnd || this.valueLabelEnd || String(this.valueEnd)
-      );
+      return this.ariaValueTextEnd || this.valueLabelEnd || String(this.valueEnd);
     }
 
     // Needed for conformance
-    const {ariaValueText} = this as ARIAMixinStrict;
+    const { ariaValueText } = this as ARIAMixinStrict;
     return ariaValueText || this.valueLabel || String(this.value);
   }
 
@@ -267,8 +258,7 @@ export class Slider extends sliderBaseClass {
     this.renderValueStart = changed.has('valueStart')
       ? this.valueStart
       : this.inputStart?.valueAsNumber;
-    const endValueChanged =
-      (changed.has('valueEnd') && this.range) || changed.has('value');
+    const endValueChanged = (changed.has('valueEnd') && this.range) || changed.has('value');
     this.renderValueEnd = endValueChanged
       ? this.range
         ? this.valueEnd
@@ -332,9 +322,7 @@ export class Slider extends sliderBaseClass {
   protected override render() {
     const step = this.step === 0 ? 1 : this.step;
     const range = Math.max(this.max - this.min, step);
-    const startFraction = this.range
-      ? ((this.renderValueStart ?? this.min) - this.min) / range
-      : 0;
+    const startFraction = this.range ? ((this.renderValueStart ?? this.min) - this.min) / range : 0;
     const endFraction = ((this.renderValueEnd ?? this.min) - this.min) / range;
     const containerStyles = {
       // for clipping inputs and active track.
@@ -343,13 +331,12 @@ export class Slider extends sliderBaseClass {
       // for generating tick marks
       '--_tick-count': String(range / step),
     };
-    const containerClasses = {ranged: this.range};
+    const containerClasses = { ranged: this.range };
 
     // optional label values to show in place of the value.
     const labelStart = this.valueLabelStart || String(this.renderValueStart);
     const labelEnd =
-      (this.range ? this.valueLabelEnd : this.valueLabel) ||
-      String(this.renderValueEnd);
+      (this.range ? this.valueLabelEnd : this.valueLabel) || String(this.renderValueEnd);
 
     const inputStartProps = {
       start: true,
@@ -365,7 +352,7 @@ export class Slider extends sliderBaseClass {
       value: this.renderValueEnd,
       ariaLabel: this.renderAriaLabelEnd,
       ariaValueText: this.renderAriaValueTextEnd,
-      ariaMin: this.range ? this.valueStart ?? this.min : this.min,
+      ariaMin: this.range ? (this.valueStart ?? this.min) : this.min,
       ariaMax: this.max,
     };
 
@@ -414,15 +401,7 @@ export class Slider extends sliderBaseClass {
     </div>`;
   }
 
-  private renderHandle({
-    start,
-    hover,
-    label,
-  }: {
-    start: boolean;
-    hover: boolean;
-    label: string;
-  }) {
+  private renderHandle({ start, hover, label }: { start: boolean; hover: boolean; label: string }) {
     const onTop = !this.disabled && start === this.startOnTop;
     const isOverlapping = !this.disabled && this.handlesOverlapping;
     const name = start ? 'start' : 'end';
@@ -493,10 +472,7 @@ export class Slider extends sliderBaseClass {
       aria-valuetext=${ariaValueText} />`;
   }
 
-  private async toggleRippleHover(
-    ripple: Promise<MdRipple | null>,
-    hovering: boolean,
-  ) {
+  private async toggleRippleHover(ripple: Promise<MdRipple | null>, hovering: boolean) {
     const rippleEl = await ripple;
     if (!rippleEl) {
       return;
@@ -525,8 +501,7 @@ export class Slider extends sliderBaseClass {
 
   private startAction(event: Event) {
     const target = event.target as HTMLInputElement;
-    const fixed =
-      target === this.inputStart ? this.inputEnd! : this.inputStart!;
+    const fixed = target === this.inputStart ? this.inputEnd! : this.inputStart!;
     this.action = {
       canFlip: event.type === 'pointerdown',
       flipped: false,
@@ -557,8 +532,7 @@ export class Slider extends sliderBaseClass {
     const isStart = (event.target as HTMLInputElement) === this.inputStart;
     // Since handle moves to pointer on down and there may not be a move,
     // it needs to be considered hovered..
-    this.handleStartHover =
-      !this.disabled && isStart && Boolean(this.handleStart);
+    this.handleStartHover = !this.disabled && isStart && Boolean(this.handleStart);
     this.handleEndHover = !this.disabled && !isStart && Boolean(this.handleEnd);
   }
 
@@ -567,7 +541,7 @@ export class Slider extends sliderBaseClass {
       return;
     }
 
-    const {target, values, flipped} = this.action;
+    const { target, values, flipped } = this.action;
     //  Async here for Firefox because input can be after pointerup
     //  when value is calmped.
     await new Promise(requestAnimationFrame);
@@ -578,7 +552,7 @@ export class Slider extends sliderBaseClass {
       // When action is flipped, change must be fired manually since the
       // real event target did not change.
       if (flipped && target.valueAsNumber !== values.get(target)!) {
-        target.dispatchEvent(new Event('change', {bubbles: true}));
+        target.dispatchEvent(new Event('change', { bubbles: true }));
       }
     }
     this.finishAction(event);
@@ -620,7 +594,7 @@ export class Slider extends sliderBaseClass {
       return false;
     }
 
-    const {target, fixed} = this.action;
+    const { target, fixed } = this.action;
     const isStart = target === this.inputStart;
     return isStart
       ? target.valueAsNumber > fixed.valueAsNumber
@@ -631,12 +605,12 @@ export class Slider extends sliderBaseClass {
   // start > end, avoid clamping and "flip" to use the other input
   // as the action target.
   private isActionFlipped() {
-    const {action} = this;
+    const { action } = this;
     if (!action) {
       return false;
     }
 
-    const {target, fixed, values} = action;
+    const { target, fixed, values } = action;
     if (action.canFlip) {
       const coincident = values.get(target) === values.get(fixed);
       if (coincident && this.needsClamping()) {
@@ -656,7 +630,7 @@ export class Slider extends sliderBaseClass {
       return false;
     }
 
-    const {target, fixed, values} = this.action;
+    const { target, fixed, values } = this.action;
     const changed = target.valueAsNumber !== fixed.valueAsNumber;
     target.valueAsNumber = fixed.valueAsNumber;
     fixed.valueAsNumber = values.get(fixed)!;
@@ -668,7 +642,7 @@ export class Slider extends sliderBaseClass {
     if (!this.needsClamping() || !this.action) {
       return false;
     }
-    const {target, fixed} = this.action;
+    const { target, fixed } = this.action;
     target.valueAsNumber = fixed.valueAsNumber;
     return true;
   }
@@ -715,9 +689,8 @@ export class Slider extends sliderBaseClass {
     // prevent keyboard triggered changes from dispatching for
     // clamped values; note, this only occurs for keyboard
     const changeTarget = event.target as HTMLInputElement;
-    const {target, values} = this.action ?? {};
-    const squelch =
-      target && target.valueAsNumber === values!.get(changeTarget)!;
+    const { target, values } = this.action ?? {};
+    const squelch = target && target.valueAsNumber === values!.get(changeTarget)!;
     if (!squelch) {
       redispatchEvent(this, event);
     }
@@ -752,9 +725,7 @@ export class Slider extends sliderBaseClass {
     this.value = value !== null ? Number(value) : undefined;
   }
 
-  override formStateRestoreCallback(
-    state: string | Array<[string, string]> | null,
-  ) {
+  override formStateRestoreCallback(state: string | Array<[string, string]> | null) {
     if (Array.isArray(state)) {
       const [[, valueStart], [, valueEnd]] = state;
       this.valueStart = Number(valueStart);
@@ -768,29 +739,21 @@ export class Slider extends sliderBaseClass {
   }
 }
 
-function inBounds({x, y}: PointerEvent, element?: HTMLElement | null) {
+function inBounds({ x, y }: PointerEvent, element?: HTMLElement | null) {
   if (!element) {
     return false;
   }
-  const {top, left, bottom, right} = element.getBoundingClientRect();
+  const { top, left, bottom, right } = element.getBoundingClientRect();
   return x >= left && x <= right && y >= top && y <= bottom;
 }
 
-function isOverlapping(
-  elA: Element | null | undefined,
-  elB: Element | null | undefined,
-) {
+function isOverlapping(elA: Element | null | undefined, elB: Element | null | undefined) {
   if (!(elA && elB)) {
     return false;
   }
   const a = elA.getBoundingClientRect();
   const b = elB.getBoundingClientRect();
-  return !(
-    a.top > b.bottom ||
-    a.right < b.left ||
-    a.bottom < b.top ||
-    a.left > b.right
-  );
+  return !(a.top > b.bottom || a.right < b.left || a.bottom < b.top || a.left > b.right);
 }
 
 interface Action {

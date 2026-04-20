@@ -5,52 +5,59 @@
  * and coverage analysis.
  */
 
-import { tool } from "@anthropic-ai/claude-agent-sdk";
+import { tool } from '@anthropic-ai/claude-agent-sdk';
 
 export const testRunnerTool = tool({
-  name: "run_tests",
-  description: "Execute tests with optional coverage and reporting",
+  name: 'run_tests',
+  description: 'Execute tests with optional coverage and reporting',
   parameters: {
-    type: "object",
+    type: 'object',
     properties: {
       framework: {
-        type: "string",
-        enum: ["pytest", "jest", "mocha", "unittest", "auto"],
-        description: "Test framework to use (auto-detect if not specified)",
-        default: "auto"
+        type: 'string',
+        enum: ['pytest', 'jest', 'mocha', 'unittest', 'auto'],
+        description: 'Test framework to use (auto-detect if not specified)',
+        default: 'auto',
       },
       path: {
-        type: "string",
-        description: "Path to tests (file or directory)",
-        default: "./tests"
+        type: 'string',
+        description: 'Path to tests (file or directory)',
+        default: './tests',
       },
       coverage: {
-        type: "boolean",
-        description: "Generate coverage report",
-        default: true
+        type: 'boolean',
+        description: 'Generate coverage report',
+        default: true,
       },
       verbose: {
-        type: "boolean",
-        description: "Verbose output",
-        default: false
+        type: 'boolean',
+        description: 'Verbose output',
+        default: false,
       },
       pattern: {
-        type: "string",
-        description: "Test file pattern (e.g., '*.test.js')"
+        type: 'string',
+        description: "Test file pattern (e.g., '*.test.js')",
       },
       failFast: {
-        type: "boolean",
-        description: "Stop on first failure",
-        default: false
-      }
-    }
+        type: 'boolean',
+        description: 'Stop on first failure',
+        default: false,
+      },
+    },
   },
-  execute: async ({ framework = "auto", path = "./tests", coverage = true, verbose = false, pattern, failFast = false }) => {
+  execute: async ({
+    framework = 'auto',
+    path = './tests',
+    coverage = true,
+    verbose = false,
+    pattern,
+    failFast = false,
+  }) => {
     // Implementation would execute actual tests
     // This is a template showing the expected structure
 
     const result = {
-      framework: framework === "auto" ? "jest" : framework, // Example auto-detection
+      framework: framework === 'auto' ? 'jest' : framework, // Example auto-detection
       timestamp: new Date().toISOString(),
       path,
       summary: {
@@ -58,35 +65,35 @@ export const testRunnerTool = tool({
         passed: 0,
         failed: 0,
         skipped: 0,
-        duration: "0.00s"
+        duration: '0.00s',
       },
       tests: [],
       coverage: null,
-      exitCode: 0
+      exitCode: 0,
     };
 
     // Example test results
     result.tests = [
       {
-        name: "should validate user input",
-        file: "tests/validation.test.js",
-        status: "passed",
-        duration: "0.042s"
+        name: 'should validate user input',
+        file: 'tests/validation.test.js',
+        status: 'passed',
+        duration: '0.042s',
       },
       {
-        name: "should handle authentication",
-        file: "tests/auth.test.js",
-        status: "passed",
-        duration: "0.128s"
-      }
+        name: 'should handle authentication',
+        file: 'tests/auth.test.js',
+        status: 'passed',
+        duration: '0.128s',
+      },
     ];
 
     result.summary = {
       total: result.tests.length,
-      passed: result.tests.filter(t => t.status === "passed").length,
-      failed: result.tests.filter(t => t.status === "failed").length,
-      skipped: result.tests.filter(t => t.status === "skipped").length,
-      duration: "0.17s"
+      passed: result.tests.filter((t) => t.status === 'passed').length,
+      failed: result.tests.filter((t) => t.status === 'failed').length,
+      skipped: result.tests.filter((t) => t.status === 'skipped').length,
+      duration: '0.17s',
     };
 
     // Example coverage report
@@ -98,13 +105,13 @@ export const testRunnerTool = tool({
         branches: { total: 200, covered: 160, percent: 80.0 },
         files: [
           {
-            path: "src/validation.js",
+            path: 'src/validation.js',
             lines: 95.5,
             statements: 95.5,
             functions: 100.0,
-            branches: 90.0
-          }
-        ]
+            branches: 90.0,
+          },
+        ],
       };
     }
 
@@ -118,10 +125,10 @@ export const testRunnerTool = tool({
         framework: result.framework,
         coverageEnabled: coverage,
         totalTests: result.summary.total,
-        passed: result.summary.passed === result.summary.total
-      }
+        passed: result.summary.passed === result.summary.total,
+      },
     };
-  }
+  },
 });
 
 export default testRunnerTool;

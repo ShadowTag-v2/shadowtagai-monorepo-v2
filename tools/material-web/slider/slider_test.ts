@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Environment} from '../testing/environment.js';
-import {createFormTests} from '../testing/forms.js';
-import {createTokenTests} from '../testing/tokens.js';
+import { Environment } from '../testing/environment.js';
+import { createFormTests } from '../testing/forms.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {SliderHarness} from './harness.js';
-import {MdSlider} from './slider.js';
+import { SliderHarness } from './harness.js';
+import { MdSlider } from './slider.js';
 
 interface SliderTestProps {
   range?: boolean;
@@ -37,15 +37,12 @@ function getSliderTemplate(props?: SliderTestProps) {
 describe('<md-slider>', () => {
   const env = new Environment();
 
-  async function setupTest(
-    props?: SliderTestProps,
-    template = getSliderTemplate,
-  ) {
+  async function setupTest(props?: SliderTestProps, template = getSliderTemplate) {
     const root = env.render(template(props));
     await env.waitForStability();
     const slider = root.querySelector<MdSlider>('md-slider')!;
     const harness = new SliderHarness(slider);
-    return {harness, root};
+    return { harness, root };
   }
 
   describe('.styles', () => {
@@ -54,7 +51,7 @@ describe('<md-slider>', () => {
 
   describe('rendering value', () => {
     it('updates via interaction', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       await harness.simulateValueInteraction(1);
       expect(harness.element.value).toEqual(1);
       await harness.simulateValueInteraction(9);
@@ -62,14 +59,14 @@ describe('<md-slider>', () => {
     });
 
     it('not validated when set', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       harness.element.value = -1000;
       await harness.element.updateComplete;
       expect(harness.element.value).toEqual(-1000);
     });
 
     it('validated on interaction', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       harness.element.value = -1000;
       await harness.element.updateComplete;
       expect(harness.element.value).toEqual(-1000);
@@ -78,7 +75,7 @@ describe('<md-slider>', () => {
     });
 
     it('setting min validates only after interaction', async () => {
-      const {harness} = await setupTest({value: 1});
+      const { harness } = await setupTest({ value: 1 });
       await harness.element.updateComplete;
       expect(harness.element.value).toEqual(1);
       harness.element.min = 2;
@@ -89,7 +86,7 @@ describe('<md-slider>', () => {
     });
 
     it('setting max validates only after interaction', async () => {
-      const {harness} = await setupTest({value: 9});
+      const { harness } = await setupTest({ value: 9 });
       await harness.element.updateComplete;
       expect(harness.element.value).toEqual(9);
       harness.element.max = 8;
@@ -100,7 +97,7 @@ describe('<md-slider>', () => {
     });
 
     it('setting step validates only after interaction', async () => {
-      const {harness} = await setupTest({value: 5});
+      const { harness } = await setupTest({ value: 5 });
       await harness.element.updateComplete;
       expect(harness.element.value).toEqual(5);
       harness.element.step = 2;
@@ -111,8 +108,8 @@ describe('<md-slider>', () => {
     });
 
     it('step rounds values from min', async () => {
-      const props = {value: 2, min: 1, step: 5};
-      const {harness} = await setupTest(props);
+      const props = { value: 2, min: 1, step: 5 };
+      const { harness } = await setupTest(props);
       expect(harness.element.value).toEqual(2);
       await harness.simulateValueInteraction(3);
       expect(harness.element.value).toEqual(1);
@@ -121,8 +118,8 @@ describe('<md-slider>', () => {
     });
 
     it('step can be non-integer', async () => {
-      const props = {value: 2, step: 0.1};
-      const {harness} = await setupTest(props);
+      const props = { value: 2, step: 0.1 };
+      const { harness } = await setupTest(props);
       expect(harness.element.value).toEqual(2);
       await harness.simulateValueInteraction(3.2);
       expect(harness.element.value).toEqual(3.2);
@@ -133,8 +130,8 @@ describe('<md-slider>', () => {
 
   describe('rendering valueStart/valueEnd (range = true)', () => {
     it('renders inputs and handles', async () => {
-      const props = {range: true, valueStart: 2, valueEnd: 6};
-      const {harness} = await setupTest(props);
+      const props = { range: true, valueStart: 2, valueEnd: 6 };
+      const { harness } = await setupTest(props);
       await harness.element.updateComplete;
       const inputs = harness.getInputs();
       expect(inputs[0]).not.toBeNull();
@@ -145,8 +142,8 @@ describe('<md-slider>', () => {
     });
 
     it('update via interaction', async () => {
-      const props = {range: true, valueStart: 2, valueEnd: 6};
-      const {harness} = await setupTest(props);
+      const props = { range: true, valueStart: 2, valueEnd: 6 };
+      const { harness } = await setupTest(props);
       const [endInput, startInput] = harness.getInputs();
       await harness.simulateValueInteraction(7, endInput);
       expect(harness.element.valueStart).toEqual(2);
@@ -157,8 +154,8 @@ describe('<md-slider>', () => {
     });
 
     it('not validated when set', async () => {
-      const props = {range: true, valueStart: 2, valueEnd: 6};
-      const {harness} = await setupTest(props);
+      const props = { range: true, valueStart: 2, valueEnd: 6 };
+      const { harness } = await setupTest(props);
       const testValueStart = -1000;
       const testValueEnd = -900;
       harness.element.valueStart = testValueStart;
@@ -169,8 +166,8 @@ describe('<md-slider>', () => {
     });
 
     it('validated on interaction', async () => {
-      const props = {range: true, valueStart: 2, valueEnd: 6};
-      const {harness} = await setupTest(props);
+      const props = { range: true, valueStart: 2, valueEnd: 6 };
+      const { harness } = await setupTest(props);
       const testValueStart = -1000;
       const testValueEnd = -900;
       harness.element.valueStart = testValueStart;
@@ -182,8 +179,8 @@ describe('<md-slider>', () => {
     });
 
     it('setting min validates only after interaction', async () => {
-      const props = {range: true, valueStart: 2, valueEnd: 6};
-      const {harness} = await setupTest(props);
+      const props = { range: true, valueStart: 2, valueEnd: 6 };
+      const { harness } = await setupTest(props);
       harness.element.min = 3;
       await harness.element.updateComplete;
       expect(harness.element.valueStart).toEqual(2);
@@ -195,8 +192,8 @@ describe('<md-slider>', () => {
     });
 
     it('setting max validates only after interaction', async () => {
-      const props = {range: true, valueStart: 2, valueEnd: 6};
-      const {harness} = await setupTest(props);
+      const props = { range: true, valueStart: 2, valueEnd: 6 };
+      const { harness } = await setupTest(props);
       harness.element.max = 5;
       await harness.element.updateComplete;
       expect(harness.element.valueStart).toEqual(2);
@@ -207,8 +204,8 @@ describe('<md-slider>', () => {
     });
 
     it('setting step validates only after interaction', async () => {
-      const props = {range: true, valueStart: 2, valueEnd: 6};
-      const {harness} = await setupTest(props);
+      const props = { range: true, valueStart: 2, valueEnd: 6 };
+      const { harness } = await setupTest(props);
       harness.element.step = 2;
       await harness.element.updateComplete;
       const [endInput, startInput] = harness.getInputs();
@@ -219,8 +216,8 @@ describe('<md-slider>', () => {
     });
 
     it('clamps moving start > end and end < start', async () => {
-      const props = {range: true, valueStart: 2, valueEnd: 6};
-      const {harness} = await setupTest(props);
+      const props = { range: true, valueStart: 2, valueEnd: 6 };
+      const { harness } = await setupTest(props);
       await harness.element.updateComplete;
       const [endInput, startInput] = harness.getInputs();
       await harness.simulateValueInteraction(7, startInput);
@@ -232,8 +229,8 @@ describe('<md-slider>', () => {
     });
 
     it('when starting coincident, can move start > end and end < start', async () => {
-      const props = {range: true, valueStart: 2, valueEnd: 6};
-      const {harness} = await setupTest(props);
+      const props = { range: true, valueStart: 2, valueEnd: 6 };
+      const { harness } = await setupTest(props);
       await harness.element.updateComplete;
       const [endInput, startInput] = harness.getInputs();
       await harness.simulateValueInteraction(6, startInput);
@@ -252,7 +249,7 @@ describe('<md-slider>', () => {
 
   describe('dispatches input and change events', () => {
     it('when range = false', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       await harness.element.updateComplete;
       const inputHandler = jasmine.createSpy('input');
       const changeHandler = jasmine.createSpy('change');
@@ -267,7 +264,7 @@ describe('<md-slider>', () => {
     });
 
     it('when range = true', async () => {
-      const {harness} = await setupTest({range: true});
+      const { harness } = await setupTest({ range: true });
       await harness.element.updateComplete;
       const inputHandler = jasmine.createSpy('input');
       const changeHandler = jasmine.createSpy('change');
@@ -299,7 +296,7 @@ describe('<md-slider>', () => {
 
   describe('value label', () => {
     it('shows on focus when labeled is true', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       harness.element.labeled = true;
       await harness.element.updateComplete;
       harness.element.focus();
@@ -307,14 +304,14 @@ describe('<md-slider>', () => {
     });
 
     it('does now show when labeled is false', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       await harness.element.updateComplete;
       harness.element.focus();
       expect(harness.isLabelShowing()).toBeFalse();
     });
 
     it('hides after blur', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       harness.element.labeled = true;
       await harness.element.updateComplete;
       harness.element.focus();
@@ -324,7 +321,7 @@ describe('<md-slider>', () => {
     });
 
     it('shows value label on hover', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       harness.element.labeled = true;
       await harness.element.updateComplete;
       await harness.startHover();
@@ -336,7 +333,7 @@ describe('<md-slider>', () => {
 
   describe('focus', () => {
     it('focuses on the end input by default', async () => {
-      const {harness} = await setupTest({value: 5});
+      const { harness } = await setupTest({ value: 5 });
       await harness.element.updateComplete;
       harness.element.focus();
       const input = harness.getInputs()[0];
@@ -346,13 +343,13 @@ describe('<md-slider>', () => {
 
   describe('default values', () => {
     it('defaults value to midway between min/max', async () => {
-      const {harness} = await setupTest({min: -100, max: -40});
+      const { harness } = await setupTest({ min: -100, max: -40 });
       await harness.element.updateComplete;
       expect(harness.element.value).toBe(-70);
     });
 
     it('defaults valueStart/End to equidistant between min/max', async () => {
-      const {harness} = await setupTest({range: true, min: 80, max: 100});
+      const { harness } = await setupTest({ range: true, min: 80, max: 100 });
       await harness.element.updateComplete;
       expect(harness.element.valueStart).toBe(87);
       expect(harness.element.valueEnd).toBe(93);
@@ -414,8 +411,7 @@ describe('<md-slider>', () => {
         },
         {
           name: 'single default value with min/max',
-          render: () =>
-            html`<md-slider name="slider" min="100" max="300"></md-slider>`,
+          render: () => html`<md-slider name="slider" min="100" max="300"></md-slider>`,
           assertValue(formData) {
             expect(formData.get('slider')).toBe('200');
           },
@@ -441,8 +437,7 @@ describe('<md-slider>', () => {
         },
         {
           name: 'disabled',
-          render: () =>
-            html`<md-slider name="slider" value="10" disabled></md-slider>`,
+          render: () => html`<md-slider name="slider" value="10" disabled></md-slider>`,
           assertValue(formData) {
             expect(formData)
               .withContext('should not add anything to form when disabled')
@@ -458,9 +453,7 @@ describe('<md-slider>', () => {
             slider.value = 100;
           },
           assertReset(slider) {
-            expect(slider.value)
-              .withContext('slider.value after reset')
-              .toBe(10);
+            expect(slider.value).withContext('slider.value after reset').toBe(10);
           },
         },
         {
@@ -476,12 +469,8 @@ describe('<md-slider>', () => {
             slider.valueEnd = 5;
           },
           assertReset(slider) {
-            expect(slider.valueStart)
-              .withContext('slider.valueStart after reset')
-              .toEqual(0);
-            expect(slider.valueEnd)
-              .withContext('slider.valueEnd after reset')
-              .toEqual(10);
+            expect(slider.valueStart).withContext('slider.valueStart after reset').toEqual(0);
+            expect(slider.valueEnd).withContext('slider.valueEnd after reset').toEqual(10);
           },
         },
         {
@@ -498,12 +487,8 @@ describe('<md-slider>', () => {
             slider.valueEnd = 5;
           },
           assertReset(slider) {
-            expect(slider.valueStart)
-              .withContext('slider.valueStart after reset')
-              .toEqual(0);
-            expect(slider.valueEnd)
-              .withContext('slider.valueEnd after reset')
-              .toEqual(10);
+            expect(slider.valueStart).withContext('slider.valueStart after reset').toEqual(0);
+            expect(slider.valueEnd).withContext('slider.valueEnd after reset').toEqual(10);
           },
         },
       ],
@@ -512,9 +497,7 @@ describe('<md-slider>', () => {
           name: 'restore single value',
           render: () => html`<md-slider name="checkbox" value="1"></md-slider>`,
           assertRestored(slider) {
-            expect(slider.value)
-              .withContext('slider.value after restore')
-              .toBe(1);
+            expect(slider.value).withContext('slider.value after restore').toBe(1);
           },
         },
         {
@@ -526,12 +509,8 @@ describe('<md-slider>', () => {
               value-start="0"
               value-end="10"></md-slider>`,
           assertRestored(slider) {
-            expect(slider.valueStart)
-              .withContext('slider.valueStart after restore')
-              .toEqual(0);
-            expect(slider.valueEnd)
-              .withContext('slider.valueEnd after restore')
-              .toEqual(10);
+            expect(slider.valueStart).withContext('slider.valueStart after restore').toEqual(0);
+            expect(slider.valueEnd).withContext('slider.valueEnd after restore').toEqual(10);
           },
         },
         {
@@ -544,12 +523,8 @@ describe('<md-slider>', () => {
               value-start="0"
               value-end="10"></md-slider>`,
           assertRestored(slider) {
-            expect(slider.valueStart)
-              .withContext('slider.valueStart after restore')
-              .toEqual(0);
-            expect(slider.valueEnd)
-              .withContext('slider.valueEnd after restore')
-              .toEqual(10);
+            expect(slider.valueStart).withContext('slider.valueStart after restore').toEqual(0);
+            expect(slider.valueEnd).withContext('slider.valueEnd after restore').toEqual(10);
           },
         },
       ],

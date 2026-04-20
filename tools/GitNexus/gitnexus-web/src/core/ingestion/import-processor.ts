@@ -1,10 +1,10 @@
-import { KnowledgeGraph } from '../graph/types';
-import { ASTCache } from './ast-cache';
-import { loadParser, loadLanguage } from '../tree-sitter/parser-loader';
-import { LANGUAGE_QUERIES } from './tree-sitter-queries';
 import { generateId } from '../../lib/utils';
-import { getLanguageFromFilename } from './utils';
+import type { KnowledgeGraph } from '../graph/types';
+import { loadLanguage, loadParser } from '../tree-sitter/parser-loader';
+import type { ASTCache } from './ast-cache';
 import { callRouters } from './call-routing';
+import { LANGUAGE_QUERIES } from './tree-sitter-queries';
+import { getLanguageFromFilename } from './utils';
 
 // Type: Map<FilePath, Set<ResolvedFilePath>>
 // Stores all files that a given file imports from
@@ -18,7 +18,7 @@ const resolveImportPath = (
   importPath: string,
   allFiles: Set<string>,
   allFileList: string[],
-  resolveCache: Map<string, string | null>
+  resolveCache: Map<string, string | null>,
 ): string | null => {
   const cacheKey = `${currentFile}::${importPath}`;
   if (resolveCache.has(cacheKey)) return resolveCache.get(cacheKey) ?? null;
@@ -42,21 +42,38 @@ const resolveImportPath = (
   const extensions = [
     '',
     // TypeScript/JavaScript
-    '.tsx', '.ts', '.jsx', '.js', '/index.tsx', '/index.ts', '/index.jsx', '/index.js',
+    '.tsx',
+    '.ts',
+    '.jsx',
+    '.js',
+    '/index.tsx',
+    '/index.ts',
+    '/index.jsx',
+    '/index.js',
     // Python
-    '.py', '/__init__.py',
+    '.py',
+    '/__init__.py',
     // Java
     '.java',
     // C/C++
-    '.c', '.h', '.cpp', '.hpp', '.cc', '.cxx', '.hxx', '.hh',
+    '.c',
+    '.h',
+    '.cpp',
+    '.hpp',
+    '.cc',
+    '.cxx',
+    '.hxx',
+    '.hh',
     // C#
     '.cs',
     // Go
     '.go',
     // Rust
-    '.rs', '/mod.rs',
+    '.rs',
+    '/mod.rs',
     // Ruby
-    '.rb', '.rake',
+    '.rb',
+    '.rake',
   ];
 
   if (importPath.startsWith('.')) {
@@ -77,13 +94,11 @@ const resolveImportPath = (
     return null;
   }
 
-  const pathLike = importPath.includes('/')
-    ? importPath
-    : importPath.replace(/\./g, '/');
+  const pathLike = importPath.includes('/') ? importPath : importPath.replace(/\./g, '/');
   const pathParts = pathLike.split('/').filter(Boolean);
 
   // Normalize all file paths to forward slashes for matching
-  const normalizedFileList = allFileList.map(p => p.replace(/\\/g, '/'));
+  const normalizedFileList = allFileList.map((p) => p.replace(/\\/g, '/'));
 
   for (let i = 0; i < pathParts.length; i++) {
     const suffix = pathParts.slice(i).join('/');
@@ -91,8 +106,10 @@ const resolveImportPath = (
       const suffixWithExt = suffix + ext;
       // Require path separator before match to avoid false positives like "View.java" matching "RootView.java"
       const suffixPattern = '/' + suffixWithExt;
-      const matchIdx = normalizedFileList.findIndex(filePath =>
-        filePath.endsWith(suffixPattern) || filePath.toLowerCase().endsWith(suffixPattern.toLowerCase())
+      const matchIdx = normalizedFileList.findIndex(
+        (filePath) =>
+          filePath.endsWith(suffixPattern) ||
+          filePath.toLowerCase().endsWith(suffixPattern.toLowerCase()),
       );
       if (matchIdx !== -1) {
         const match = allFileList[matchIdx];
@@ -112,13 +129,13 @@ export const processImports = async (
   files: { path: string; content: string }[],
   astCache: ASTCache,
   importMap: ImportMap,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ) => {
   // Create a Set of all file paths for fast lookup during resolution
-  const allFilePaths = new Set(files.map(f => f.path));
+  const allFilePaths = new Set(files.map((f) => f.path));
   const parser = await loadParser();
   const resolveCache = new Map<string, string | null>();
-  const allFileList = files.map(f => f.path);
+  const allFileList = files.map((f) => f.path);
 
   // Track import statistics
   let totalImportsFound = 0;
@@ -170,9 +187,9 @@ export const processImports = async (
       continue;
     }
 
-    matches.forEach(match => {
+    matches.forEach((match) => {
       const captureMap: Record<string, any> = {};
-      match.captures.forEach(c => captureMap[c.name] = c.node);
+      match.captures.forEach((c) => (captureMap[c.name] = c.node));
 
       if (captureMap['import']) {
         const sourceNode = captureMap['import.source'];
@@ -195,7 +212,7 @@ export const processImports = async (
           rawImportPath,
           allFilePaths,
           allFileList,
-          resolveCache
+          resolveCache,
         );
 
         if (resolvedPath) {
@@ -233,7 +250,11 @@ export const processImports = async (
           if (routed && routed.kind === 'import') {
             totalImportsFound++;
             const resolvedPath = resolveImportPath(
-              file.path, routed.importPath, allFilePaths, allFileList, resolveCache
+              file.path,
+              routed.importPath,
+              allFilePaths,
+              allFileList,
+              resolveCache,
             );
             if (resolvedPath) {
               const sourceId = generateId('File', file.path);
@@ -241,8 +262,12 @@ export const processImports = async (
               const relId = generateId('IMPORTS', `${file.path}->${resolvedPath}`);
               totalImportsResolved++;
               graph.addRelationship({
-                id: relId, sourceId, targetId,
-                type: 'IMPORTS', confidence: 1.0, reason: '',
+                id: relId,
+                sourceId,
+                targetId,
+                type: 'IMPORTS',
+                confidence: 1.0,
+                reason: '',
               });
               if (!importMap.has(file.path)) {
                 importMap.set(file.path, new Set());
@@ -261,6 +286,8 @@ export const processImports = async (
   }
 
   if (import.meta.env.DEV) {
-    console.log(`📊 Import processing complete: ${totalImportsResolved}/${totalImportsFound} imports resolved to graph edges`);
+    console.log(
+      `📊 Import processing complete: ${totalImportsResolved}/${totalImportsFound} imports resolved to graph edges`,
+    );
   }
 };

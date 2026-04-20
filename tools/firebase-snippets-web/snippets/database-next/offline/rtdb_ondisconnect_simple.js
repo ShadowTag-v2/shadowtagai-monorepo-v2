@@ -5,10 +5,10 @@
 // 'npm run snippets'.
 
 // [START rtdb_ondisconnect_simple_modular]
-import { getDatabase, ref, onDisconnect } from "firebase/database";
+import { getDatabase, onDisconnect, ref } from 'firebase/database';
 
 const db = getDatabase();
-const presenceRef = ref(db, "disconnectmessage");
+const presenceRef = ref(db, 'disconnectmessage');
 // Write a string when this client loses connection
-onDisconnect(presenceRef).set("I disconnected!");
+onDisconnect(presenceRef).set('I disconnected!');
 // [END rtdb_ondisconnect_simple_modular]

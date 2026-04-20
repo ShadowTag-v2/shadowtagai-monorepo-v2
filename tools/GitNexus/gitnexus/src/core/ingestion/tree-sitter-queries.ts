@@ -1,4 +1,3 @@
-
 /*
  * Tree-sitter queries for extracting code definitions.
  *

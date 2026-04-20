@@ -1,14 +1,18 @@
-import { describe, it, expect } from 'vitest';
-import { getLanguageFromFilename } from '../../src/core/ingestion/utils/language-detection.js';
-import { getProvider } from '../../src/core/ingestion/languages/index.js';
-import { SupportedLanguages } from '../../src/config/supported-languages.js';
-import { extractFunctionName } from '../../src/core/ingestion/utils/ast-helpers.js';
-import { getTreeSitterBufferSize, TREE_SITTER_BUFFER_SIZE, TREE_SITTER_MAX_BUFFER } from '../../src/core/ingestion/constants.js';
 import Parser from 'tree-sitter';
 import C from 'tree-sitter-c';
 import CPP from 'tree-sitter-cpp';
 import Python from 'tree-sitter-python';
 import TypeScript from 'tree-sitter-typescript';
+import { describe, expect, it } from 'vitest';
+import { SupportedLanguages } from '../../src/config/supported-languages.js';
+import {
+  getTreeSitterBufferSize,
+  TREE_SITTER_BUFFER_SIZE,
+  TREE_SITTER_MAX_BUFFER,
+} from '../../src/core/ingestion/constants.js';
+import { getProvider } from '../../src/core/ingestion/languages/index.js';
+import { extractFunctionName } from '../../src/core/ingestion/utils/ast-helpers.js';
+import { getLanguageFromFilename } from '../../src/core/ingestion/utils/language-detection.js';
 
 describe('getLanguageFromFilename', () => {
   describe('TypeScript', () => {
@@ -54,12 +58,9 @@ describe('getLanguageFromFilename', () => {
   });
 
   describe('C++', () => {
-    it.each(['.cpp', '.cc', '.cxx', '.h', '.hpp', '.hxx', '.hh'])(
-      'detects %s files',
-      (ext) => {
-        expect(getLanguageFromFilename(`file${ext}`)).toBe(SupportedLanguages.CPlusPlus);
-      }
-    );
+    it.each(['.cpp', '.cc', '.cxx', '.h', '.hpp', '.hxx', '.hh'])('detects %s files', (ext) => {
+      expect(getLanguageFromFilename(`file${ext}`)).toBe(SupportedLanguages.CPlusPlus);
+    });
   });
 
   describe('C#', () => {
@@ -81,12 +82,9 @@ describe('getLanguageFromFilename', () => {
   });
 
   describe('PHP', () => {
-    it.each(['.php', '.phtml', '.php3', '.php4', '.php5', '.php8'])(
-      'detects %s files',
-      (ext) => {
-        expect(getLanguageFromFilename(`file${ext}`)).toBe(SupportedLanguages.PHP);
-      }
-    );
+    it.each(['.php', '.phtml', '.php3', '.php4', '.php5', '.php8'])('detects %s files', (ext) => {
+      expect(getLanguageFromFilename(`file${ext}`)).toBe(SupportedLanguages.PHP);
+    });
   });
 
   describe('Swift', () => {
@@ -96,12 +94,9 @@ describe('getLanguageFromFilename', () => {
   });
 
   describe('Ruby', () => {
-    it.each(['.rb', '.rake', '.gemspec'])(
-      'detects %s files',
-      (ext) => {
-        expect(getLanguageFromFilename(`file${ext}`)).toBe(SupportedLanguages.Ruby);
-      }
-    );
+    it.each(['.rb', '.rake', '.gemspec'])('detects %s files', (ext) => {
+      expect(getLanguageFromFilename(`file${ext}`)).toBe(SupportedLanguages.Ruby);
+    });
 
     it('detects extensionless Rakefile', () => {
       expect(getLanguageFromFilename('Rakefile')).toBe(SupportedLanguages.Ruby);
@@ -113,21 +108,24 @@ describe('getLanguageFromFilename', () => {
   });
 
   describe('Kotlin', () => {
-    it.each(['.kt', '.kts'])(
-      'detects %s files',
-      (ext) => {
-        expect(getLanguageFromFilename(`file${ext}`)).toBe(SupportedLanguages.Kotlin);
-      }
-    );
+    it.each(['.kt', '.kts'])('detects %s files', (ext) => {
+      expect(getLanguageFromFilename(`file${ext}`)).toBe(SupportedLanguages.Kotlin);
+    });
   });
 
   describe('unsupported', () => {
-    it.each(['.scala', '.r', '.lua', '.zig', '.txt', '.md', '.json', '.yaml'])(
-      'returns null for %s files',
-      (ext) => {
-        expect(getLanguageFromFilename(`file${ext}`)).toBeNull();
-      }
-    );
+    it.each([
+      '.scala',
+      '.r',
+      '.lua',
+      '.zig',
+      '.txt',
+      '.md',
+      '.json',
+      '.yaml',
+    ])('returns null for %s files', (ext) => {
+      expect(getLanguageFromFilename(`file${ext}`)).toBeNull();
+    });
 
     it('returns null for files without extension', () => {
       expect(getLanguageFromFilename('Makefile')).toBeNull();

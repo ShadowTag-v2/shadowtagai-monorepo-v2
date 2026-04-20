@@ -21,17 +21,19 @@ import type * as gax from 'google-gax';
 import type {
   Callback,
   CallOptions,
-  Descriptors,
   ClientOptions,
-  PaginationCallback,
+  Descriptors,
   GaxCall,
-  LocationsClient,
   LocationProtos,
+  LocationsClient,
+  PaginationCallback,
 } from 'google-gax';
-import {Transform, PassThrough} from 'stream';
-import * as protos from '../../protos/firestore_v1_proto_api';
+import { PassThrough, type Transform } from 'stream';
+import type * as protos from '../../protos/firestore_v1_proto_api';
+
 import jsonProtos = require('../../protos/v1.json');
-import {loggingUtils as logging, decodeAnyProtosInArray} from 'google-gax';
+
+import { decodeAnyProtosInArray, loggingUtils as logging } from 'google-gax';
 
 /**
  * Client JSON configuration object, loaded from
@@ -39,6 +41,7 @@ import {loggingUtils as logging, decodeAnyProtosInArray} from 'google-gax';
  * This file defines retry strategy and timeouts for all API methods in this library.
  */
 import * as gapicConfig from './firestore_client_config.json';
+
 const version = require('../../../package.json').version;
 
 /**
@@ -60,7 +63,7 @@ export class FirestoreClient {
   private _gaxModule: typeof gax | typeof gax.fallback;
   private _gaxGrpc: gax.GrpcClient | gax.fallback.GrpcClient;
   private _protos: {};
-  private _defaults: {[method: string]: gax.CallSettings};
+  private _defaults: { [method: string]: gax.CallSettings };
   private _universeDomain: string;
   private _servicePath: string;
   private _log = logging.log('firestore');
@@ -73,9 +76,9 @@ export class FirestoreClient {
     batching: {},
   };
   warn: (code: string, message: string, warnType?: string) => void;
-  innerApiCalls: {[name: string]: Function};
+  innerApiCalls: { [name: string]: Function };
   locationsClient: LocationsClient;
-  firestoreStub?: Promise<{[name: string]: Function}>;
+  firestoreStub?: Promise<{ [name: string]: Function }>;
 
   /**
    * Construct an instance of FirestoreClient.
@@ -116,10 +119,7 @@ export class FirestoreClient {
    *     const client = new FirestoreClient({fallback: true}, gax);
    *     ```
    */
-  constructor(
-    opts?: ClientOptions,
-    gaxInstance?: typeof gax | typeof gax.fallback,
-  ) {
+  constructor(opts?: ClientOptions, gaxInstance?: typeof gax | typeof gax.fallback) {
     // Ensure that options include all the required fields.
     const staticMembers = this.constructor as typeof FirestoreClient;
     if (
@@ -127,31 +127,22 @@ export class FirestoreClient {
       opts?.universeDomain &&
       opts?.universe_domain !== opts?.universeDomain
     ) {
-      throw new Error(
-        'Please set either universe_domain or universeDomain, but not both.',
-      );
+      throw new Error('Please set either universe_domain or universeDomain, but not both.');
     }
     const universeDomainEnvVar =
       typeof process === 'object' && typeof process.env === 'object'
         ? process.env['GOOGLE_CLOUD_UNIVERSE_DOMAIN']
         : undefined;
     this._universeDomain =
-      opts?.universeDomain ??
-      opts?.universe_domain ??
-      universeDomainEnvVar ??
-      'googleapis.com';
+      opts?.universeDomain ?? opts?.universe_domain ?? universeDomainEnvVar ?? 'googleapis.com';
     this._servicePath = 'firestore.' + this._universeDomain;
-    const servicePath =
-      opts?.servicePath || opts?.apiEndpoint || this._servicePath;
-    this._providedCustomServicePath = !!(
-      opts?.servicePath || opts?.apiEndpoint
-    );
+    const servicePath = opts?.servicePath || opts?.apiEndpoint || this._servicePath;
+    this._providedCustomServicePath = !!(opts?.servicePath || opts?.apiEndpoint);
     const port = opts?.port || staticMembers.port;
     const clientConfig = opts?.clientConfig ?? {};
     const fallback =
-      opts?.fallback ??
-      (typeof window !== 'undefined' && typeof window?.fetch === 'function');
-    opts = Object.assign({servicePath, port, clientConfig, fallback}, opts);
+      opts?.fallback ?? (typeof window !== 'undefined' && typeof window?.fetch === 'function');
+    opts = Object.assign({ servicePath, port, clientConfig, fallback }, opts);
 
     // Request numeric enum values if REST transport is used.
     opts.numericEnums = true;
@@ -188,10 +179,7 @@ export class FirestoreClient {
     if (servicePath === this._servicePath) {
       this.auth.defaultScopes = staticMembers.scopes;
     }
-    this.locationsClient = new this._gaxModule.LocationsClient(
-      this._gaxGrpc,
-      opts,
-    );
+    this.locationsClient = new this._gaxModule.LocationsClient(this._gaxGrpc, opts);
 
     // Determine the client header string.
     const clientHeader = [`gax/${this._gaxModule.version}`, `gapic/${version}`];
@@ -215,11 +203,7 @@ export class FirestoreClient {
     // (e.g. 50 results at a time, with tokens to get subsequent
     // pages). Denote the keys used for pagination and results.
     this.descriptors.page = {
-      listDocuments: new this._gaxModule.PageDescriptor(
-        'pageToken',
-        'nextPageToken',
-        'documents',
-      ),
+      listDocuments: new this._gaxModule.PageDescriptor('pageToken', 'nextPageToken', 'documents'),
       partitionQuery: new this._gaxModule.PageDescriptor(
         'pageToken',
         'nextPageToken',
@@ -272,7 +256,7 @@ export class FirestoreClient {
       'google.firestore.v1.Firestore',
       gapicConfig as gax.ClientConfig,
       opts.clientConfig || {},
-      {'x-goog-api-client': clientHeader.join(' ')},
+      { 'x-goog-api-client': clientHeader.join(' ') },
     );
 
     // Set up a dictionary of "inner API calls"; the core implementation
@@ -305,14 +289,12 @@ export class FirestoreClient {
     // google.firestore.v1.Firestore.
     this.firestoreStub = this._gaxGrpc.createStub(
       this._opts.fallback
-        ? (this._protos as protobuf.Root).lookupService(
-            'google.firestore.v1.Firestore',
-          )
+        ? (this._protos as protobuf.Root).lookupService('google.firestore.v1.Firestore')
         : // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (this._protos as any).google.firestore.v1.Firestore,
       this._opts,
       this._providedCustomServicePath,
-    ) as Promise<{[method: string]: Function}>;
+    ) as Promise<{ [method: string]: Function }>;
 
     // Iterate over each of the methods that the service provides
     // and create an API call method for each.
@@ -337,17 +319,15 @@ export class FirestoreClient {
     ];
     for (const methodName of firestoreStubMethods) {
       const callPromise = this.firestoreStub.then(
-        stub =>
+        (stub) =>
           (...args: Array<{}>) => {
             if (this._terminated) {
               if (methodName in this.descriptors.stream) {
-                const stream = new PassThrough({objectMode: true});
+                const stream = new PassThrough({ objectMode: true });
                 setImmediate(() => {
                   stream.emit(
                     'error',
-                    new this._gaxModule.GoogleError(
-                      'The client has already been closed.',
-                    ),
+                    new this._gaxModule.GoogleError('The client has already been closed.'),
                   );
                 });
                 return stream;
@@ -363,9 +343,7 @@ export class FirestoreClient {
       );
 
       const descriptor =
-        this.descriptors.page[methodName] ||
-        this.descriptors.stream[methodName] ||
-        undefined;
+        this.descriptors.page[methodName] || this.descriptors.stream[methodName] || undefined;
       const apiCall = this._gaxModule.createApiCall(
         callPromise,
         this._defaults[methodName],
@@ -385,10 +363,7 @@ export class FirestoreClient {
    * @returns {string} The DNS address for this service.
    */
   static get servicePath() {
-    if (
-      typeof process === 'object' &&
-      typeof process.emitWarning === 'function'
-    ) {
+    if (typeof process === 'object' && typeof process.emitWarning === 'function') {
       process.emitWarning(
         'Static servicePath is deprecated, please use the instance method instead.',
         'DeprecationWarning',
@@ -403,10 +378,7 @@ export class FirestoreClient {
    * @returns {string} The DNS address for this service.
    */
   static get apiEndpoint() {
-    if (
-      typeof process === 'object' &&
-      typeof process.emitWarning === 'function'
-    ) {
+    if (typeof process === 'object' && typeof process.emitWarning === 'function') {
       process.emitWarning(
         'Static apiEndpoint is deprecated, please use the instance method instead.',
         'DeprecationWarning',
@@ -453,9 +425,7 @@ export class FirestoreClient {
    * Return the project ID used by this class.
    * @returns {Promise} A promise that resolves to string containing the project ID.
    */
-  getProjectId(
-    callback?: Callback<string, undefined, undefined>,
-  ): Promise<string> | void {
+  getProjectId(callback?: Callback<string, undefined, undefined>): Promise<string> | void {
     if (callback) {
       this.auth.getProjectId(callback);
       return;
@@ -555,11 +525,10 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('getDocument request %j', request);
@@ -588,18 +557,11 @@ export class FirestoreClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -696,11 +658,10 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        'document.name': request.document!.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      'document.name': request.document!.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('updateDocument request %j', request);
@@ -729,18 +690,11 @@ export class FirestoreClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -824,11 +778,10 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('deleteDocument request %j', request);
@@ -857,18 +810,11 @@ export class FirestoreClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -926,9 +872,7 @@ export class FirestoreClient {
       | CallOptions
       | Callback<
           protos.google.firestore.v1.IBeginTransactionResponse,
-          | protos.google.firestore.v1.IBeginTransactionRequest
-          | null
-          | undefined,
+          protos.google.firestore.v1.IBeginTransactionRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
@@ -954,20 +898,17 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        database: request.database ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      database: request.database ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('beginTransaction request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.v1.IBeginTransactionResponse,
-          | protos.google.firestore.v1.IBeginTransactionRequest
-          | null
-          | undefined,
+          protos.google.firestore.v1.IBeginTransactionRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -989,18 +930,11 @@ export class FirestoreClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -1087,11 +1021,10 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        database: request.database ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      database: request.database ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('commit request %j', request);
@@ -1120,18 +1053,11 @@ export class FirestoreClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -1214,11 +1140,10 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        database: request.database ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      database: request.database ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('rollback request %j', request);
@@ -1247,18 +1172,11 @@ export class FirestoreClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -1356,11 +1274,10 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        database: request.database ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      database: request.database ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('batchWrite request %j', request);
@@ -1389,18 +1306,11 @@ export class FirestoreClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -1496,12 +1406,11 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-        collection_id: request.collectionId?.toString() ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+      collection_id: request.collectionId?.toString() ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('createDocument request %j', request);
@@ -1530,18 +1439,11 @@ export class FirestoreClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -1598,11 +1500,10 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        database: request.database ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      database: request.database ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('batchGetDocuments stream %j', options);
@@ -1658,11 +1559,10 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('runQuery stream %j', options);
@@ -1715,12 +1615,10 @@ export class FirestoreClient {
     {
       const fieldValue = request.database;
       if (fieldValue !== undefined && fieldValue !== null) {
-        const match = fieldValue
-          .toString()
-          .match(RegExp('projects/(?<project_id>[^/]+)(?:/.*)?'));
+        const match = fieldValue.toString().match(/projects\/(?<project_id>[^/]+)(?:\/.*)?/);
         if (match) {
           const parameterValue = match.groups?.['project_id'] ?? fieldValue;
-          Object.assign(routingParameter, {project_id: parameterValue});
+          Object.assign(routingParameter, { project_id: parameterValue });
         }
       }
     }
@@ -1729,18 +1627,16 @@ export class FirestoreClient {
       if (fieldValue !== undefined && fieldValue !== null) {
         const match = fieldValue
           .toString()
-          .match(
-            RegExp('projects/[^/]+/databases/(?<database_id>[^/]+)(?:/.*)?'),
-          );
+          .match(/projects\/[^/]+\/databases\/(?<database_id>[^/]+)(?:\/.*)?/);
         if (match) {
           const parameterValue = match.groups?.['database_id'] ?? fieldValue;
-          Object.assign(routingParameter, {database_id: parameterValue});
+          Object.assign(routingParameter, { database_id: parameterValue });
         }
       }
     }
     options.otherArgs.headers['x-goog-request-params'] =
       this._gaxModule.routingHeader.fromParams(routingParameter);
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('executePipeline stream %j', options);
@@ -1808,11 +1704,10 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('runAggregationQuery stream %j', options);
@@ -1835,7 +1730,7 @@ export class FirestoreClient {
    * region_tag:firestore_v1_generated_Firestore_Write_async
    */
   write(options?: CallOptions): gax.CancellableStream {
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('write stream %j', options);
@@ -1858,7 +1753,7 @@ export class FirestoreClient {
    * region_tag:firestore_v1_generated_Firestore_Listen_async
    */
   listen(options?: CallOptions): gax.CancellableStream {
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('listen stream %j', options);
@@ -1997,12 +1892,11 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-        collection_id: request.collectionId?.toString() ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+      collection_id: request.collectionId?.toString() ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
@@ -2111,14 +2005,13 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-        collection_id: request.collectionId?.toString() ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+      collection_id: request.collectionId?.toString() ?? '',
+    });
     const defaultCallSettings = this._defaults['listDocuments'];
     const callSettings = defaultCallSettings.merge(options);
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('listDocuments stream %j', request);
@@ -2211,14 +2104,13 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-        collection_id: request.collectionId?.toString() ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+      collection_id: request.collectionId?.toString() ?? '',
+    });
     const defaultCallSettings = this._defaults['listDocuments'];
     const callSettings = defaultCallSettings.merge(options);
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('listDocuments iterate %j', request);
@@ -2353,11 +2245,10 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
@@ -2457,13 +2348,12 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
     const defaultCallSettings = this._defaults['partitionQuery'];
     const callSettings = defaultCallSettings.merge(options);
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('partitionQuery stream %j', request);
@@ -2547,13 +2437,12 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
     const defaultCallSettings = this._defaults['partitionQuery'];
     const callSettings = defaultCallSettings.merge(options);
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('partitionQuery iterate %j', request);
@@ -2629,9 +2518,7 @@ export class FirestoreClient {
       | CallOptions
       | PaginationCallback<
           protos.google.firestore.v1.IListCollectionIdsRequest,
-          | protos.google.firestore.v1.IListCollectionIdsResponse
-          | null
-          | undefined,
+          protos.google.firestore.v1.IListCollectionIdsResponse | null | undefined,
           string
         >,
     callback?: PaginationCallback<
@@ -2657,19 +2544,16 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
       | PaginationCallback<
           protos.google.firestore.v1.IListCollectionIdsRequest,
-          | protos.google.firestore.v1.IListCollectionIdsResponse
-          | null
-          | undefined,
+          protos.google.firestore.v1.IListCollectionIdsResponse | null | undefined,
           string
         >
       | undefined = callback
@@ -2732,13 +2616,12 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
     const defaultCallSettings = this._defaults['listCollectionIds'];
     const callSettings = defaultCallSettings.merge(options);
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('listCollectionIds stream %j', request);
@@ -2791,13 +2674,12 @@ export class FirestoreClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
     const defaultCallSettings = this._defaults['listCollectionIds'];
     const callSettings = defaultCallSettings.merge(options);
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('listCollectionIds iterate %j', request);
@@ -2831,16 +2713,12 @@ export class FirestoreClient {
       | gax.CallOptions
       | Callback<
           LocationProtos.google.cloud.location.ILocation,
-          | LocationProtos.google.cloud.location.IGetLocationRequest
-          | null
-          | undefined,
+          LocationProtos.google.cloud.location.IGetLocationRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       LocationProtos.google.cloud.location.ILocation,
-      | LocationProtos.google.cloud.location.IGetLocationRequest
-      | null
-      | undefined,
+      LocationProtos.google.cloud.location.IGetLocationRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<LocationProtos.google.cloud.location.ILocation> {
@@ -2893,11 +2771,11 @@ export class FirestoreClient {
    */
   close(): Promise<void> {
     if (this.firestoreStub && !this._terminated) {
-      return this.firestoreStub.then(stub => {
+      return this.firestoreStub.then((stub) => {
         this._log.info('ending gRPC channel');
         this._terminated = true;
         stub.close();
-        this.locationsClient.close().catch(err => {
+        this.locationsClient.close().catch((err) => {
           throw err;
         });
       });

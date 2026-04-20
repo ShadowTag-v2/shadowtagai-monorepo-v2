@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {animate, fadeIn, fadeOut} from '@lit-labs/motion';
-import {EASING} from '@material/web/internal/motion/animation.js';
-import {LitElement, PropertyValues, css, html, nothing} from 'lit';
-import {customElement, property, state} from 'lit/decorators.js';
+import { animate, fadeIn, fadeOut } from '@lit-labs/motion';
+import { EASING } from '@material/web/internal/motion/animation.js';
+import { css, html, LitElement, nothing, type PropertyValues } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
 
-import {drawerOpenSignal} from '../signals/drawer-open-state.js';
-import {inertContentSignal, inertSidebarSignal} from '../signals/inert.js';
-import {SignalElement} from '../signals/signal-element.js';
+import { drawerOpenSignal } from '../signals/drawer-open-state.js';
+import { inertContentSignal, inertSidebarSignal } from '../signals/inert.js';
+import { SignalElement } from '../signals/signal-element.js';
 
 /**
  * A layout element that positions the top-app-bar, the main page content, and
@@ -31,9 +31,9 @@ export class NavDrawer extends SignalElement(LitElement) {
   /**
    * Whether or not the TOC should be rendered.
    */
-  @property({type: Boolean, attribute: 'has-toc'}) hasToc = false;
+  @property({ type: Boolean, attribute: 'has-toc' }) hasToc = false;
 
-  @property({attribute: 'page-title'}) pageTitle = '';
+  @property({ attribute: 'page-title' }) pageTitle = '';
 
   private lastDrawerOpen = drawerOpenSignal.value;
 
@@ -45,17 +45,16 @@ export class NavDrawer extends SignalElement(LitElement) {
     const drawerContentOpacityDuration = showModal ? 300 : 150;
     const scrimOpacityDuration = 150;
 
-    const drawerSlideAnimationEasing = showModal
-      ? EASING.EMPHASIZED
-      : EASING.EMPHASIZED_ACCELERATE;
+    const drawerSlideAnimationEasing = showModal ? EASING.EMPHASIZED : EASING.EMPHASIZED_ACCELERATE;
 
     return html`
       <div class="root">
         <slot name="top-app-bar"></slot>
         <div class="body  ${drawerOpenSignal.value ? 'open' : ''}">
           <div class="spacer" ?inert=${inertSidebarSignal.value}>
-            ${showModal
-              ? html`<div
+            ${
+              showModal
+                ? html`<div
                   class="scrim"
                   @click=${this.onScrimClick}
                   ${animate({
@@ -67,7 +66,8 @@ export class NavDrawer extends SignalElement(LitElement) {
                     in: fadeIn,
                     out: fadeOut,
                   })}></div>`
-              : nothing}
+                : nothing
+            }
             <aside
               ?inert=${this.isCollapsible && !drawerOpenSignal.value}
               ${animate({
@@ -149,11 +149,7 @@ export class NavDrawer extends SignalElement(LitElement) {
       drawerOpenSignal.value &&
       this.isCollapsible
     ) {
-      (
-        this.querySelector(
-          'md-list.nav md-list-item[tabindex="0"]',
-        ) as HTMLElement
-      )?.focus();
+      (this.querySelector('md-list.nav md-list-item[tabindex="0"]') as HTMLElement)?.focus();
     }
   }
 

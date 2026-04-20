@@ -1,293 +1,293 @@
 {
-    // ---------------------------------------------------------
-    // 💎 ANTIGRAVITY: GOD MODE (YOLO & AGENT)
-    // ---------------------------------------------------------
-    // "YOLO Mode": Disables permission prompts for the Agent (Undocumented Feature)
-    "geminicodeassist.agentYoloMode": true,
-    // Core Agent Settings
-    "antigravity.enableAgentMode": true,
-    "chat.agent.enabled": true,
-    "inlineChat.enableV2": true,
-    "inlineChat.mode": "live",
-    "chat.edits2.enabled": true,
-    // ⚡ SPEED: Auto-accept AI edits after 0.5s and save immediately
-    "chat.editing.autoAcceptDelay": 500,
-    "chat.editing.alwaysSaveWithGeneratedChanges": true,
-    "chat.editing.confirmEditRequestRemoval": false,
-    "chat.editing.confirmEditRequestRetry": false,
-    // 🔓 AUTHORITY: Allow terminal commands without asking
-    "chat.tools.terminal.autoApprove": true,
-    "chat.tools.terminal.enableAutoApprove": true,
-    // ---------------------------------------------------------
-    // ☁️ CLOUD & AUTHENTICATION
-    // ---------------------------------------------------------
-    "cloudcode.project": "shadowtag-omega-v4",
-    "geminicodeassist.project": "shadowtag-omega-v4",
-    "google.geminicodeassist.adcPath": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
-    "google.geminicodeassist.gcloudPath": "/Users/pikeymickey/google-cloud-sdk/bin/gcloud",
-    "google.geminicodeassist.selectedProjectId": "shadowtag-omega-v4",
-    "cloudcode.releaseChannel": "stable",
-    // ---------------------------------------------------------
-    // 💾 AUTO-SAVE & FORMATTING (Hands-Free)
-    // ---------------------------------------------------------
-    "files.autoSave": "onFocusChange",
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": false,
-    // Default Formatter: Gemini Code Assist
+  // ---------------------------------------------------------
+  // 💎 ANTIGRAVITY: GOD MODE (YOLO & AGENT)
+  // ---------------------------------------------------------
+  // "YOLO Mode": Disables permission prompts for the Agent (Undocumented Feature)
+  "geminicodeassist.agentYoloMode": true,
+  // Core Agent Settings
+  "antigravity.enableAgentMode": true,
+  "chat.agent.enabled": true,
+  "inlineChat.enableV2": true,
+  "inlineChat.mode": "live",
+  "chat.edits2.enabled": true,
+  // ⚡ SPEED: Auto-accept AI edits after 0.5s and save immediately
+  "chat.editing.autoAcceptDelay": 500,
+  "chat.editing.alwaysSaveWithGeneratedChanges": true,
+  "chat.editing.confirmEditRequestRemoval": false,
+  "chat.editing.confirmEditRequestRetry": false,
+  // 🔓 AUTHORITY: Allow terminal commands without asking
+  "chat.tools.terminal.autoApprove": true,
+  "chat.tools.terminal.enableAutoApprove": true,
+  // ---------------------------------------------------------
+  // ☁️ CLOUD & AUTHENTICATION
+  // ---------------------------------------------------------
+  "cloudcode.project": "shadowtag-omega-v4",
+  "geminicodeassist.project": "shadowtag-omega-v4",
+  "google.geminicodeassist.adcPath": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
+  "google.geminicodeassist.gcloudPath": "/Users/pikeymickey/google-cloud-sdk/bin/gcloud",
+  "google.geminicodeassist.selectedProjectId": "shadowtag-omega-v4",
+  "cloudcode.releaseChannel": "stable",
+  // ---------------------------------------------------------
+  // 💾 AUTO-SAVE & FORMATTING (Hands-Free)
+  // ---------------------------------------------------------
+  "files.autoSave": "onFocusChange",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  // Default Formatter: Gemini Code Assist
+  "editor.defaultFormatter": "google.geminicodeassist",
+  // ---------------------------------------------------------
+  // 🍞 BREADCRUMBS (Deep Navigation)
+  // ---------------------------------------------------------
+  "breadcrumbs.enabled": true,
+  "breadcrumbs.filePath": "on",
+  "breadcrumbs.symbolPath": "on",
+  // ---------------------------------------------------------
+  // 📝 LANGUAGE SPECIFIC SETTINGS
+  // ---------------------------------------------------------
+  "files.associations": {
+    "*.yml": "yaml",
+    "*.yaml": "yaml",
+    "*.json": "jsonc",
+    "*.code-workspace": "jsonc",
+    "*.env": "properties"
+  },
+  // --- ☕ JAVA (High Performance) ---
+  "[java]": {
     "editor.defaultFormatter": "google.geminicodeassist",
-    // ---------------------------------------------------------
-    // 🍞 BREADCRUMBS (Deep Navigation)
-    // ---------------------------------------------------------
-    "breadcrumbs.enabled": true,
-    "breadcrumbs.filePath": "on",
-    "breadcrumbs.symbolPath": "on",
-    // ---------------------------------------------------------
-    // 📝 LANGUAGE SPECIFIC SETTINGS
-    // ---------------------------------------------------------
-    "files.associations": {
-        "*.yml": "yaml",
-        "*.yaml": "yaml",
-        "*.json": "jsonc",
-        "*.code-workspace": "jsonc",
-        "*.env": "properties"
+    "editor.source.organizeImports": true,
+    "breadcrumbs.showClasses": true,
+    "breadcrumbs.showMethods": true,
+    "breadcrumbs.showInterfaces": true
+  },
+  "java.import.maven.enabled": false,
+  "java.import.gradle.enabled": true,
+  "java.import.gradle.offline.enabled": true, // Prevents random download loops
+  // --- 🐍 PYTHON ---
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnType": true
+  },
+  // --- 📄 JSON/YAML ---
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "workbench.editor.restoreViewState": true,
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "google.geminicodeassist",
+    "editor.wordWrap": "on"
+  },
+  // ---------------------------------------------------------
+  // 🛡️ STABILITY & CRASH PREVENTION
+  // ---------------------------------------------------------
+  // Git: Manual Refresh Only (Prevents 'Extension Host Unresponsive')
+  "git.autorefresh": false,
+  "git.ignoreLimitWarning": true,
+  "git.repositoryScanMaxDepth": 2,
+  "git.autofetch": false,
+  "git.confirmSync": false,
+  // ---------------------------------------------------------
+  // 🛡️ CRASH PREVENTION (Updated with Python Fix)
+  // ---------------------------------------------------------
+  "files.watcherExclude": {
+    "**/.venv/**": false, // allow Python extension to resolve local virtualenvs
+    "**/__pycache__/**": true,
+    "**/node_modules/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/.gradle/**": true,
+    "**/.DS_Store": true
+  },
+  "search.exclude": {
+    "**/.venv": true, // <--- THE FIX
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true
+  },
+  // NPM: Smart Detection
+  "npm.autoDetect": "on",
+  "npm.exclude": "**/node_modules/**",
+  "npm.scriptExplorerAction": "run",
+  // Disable legacy task scanners
+  "gulp.autoDetect": "off",
+  "grunt.autoDetect": "off",
+  "jake.autoDetect": "off",
+  "gradle.autoDetect": "off",
+  // ---------------------------------------------------------
+  // 🐢 VISUALS (No GPU = No Flickering)
+  // ---------------------------------------------------------
+  "terminal.integrated.gpuAcceleration": "off",
+  "terminal.integrated.rendererType": "dom",
+  "editor.smoothScrolling": true,
+  "editor.fontLigatures": true,
+  // Editors: Hex for Binaries, Standard for everything else
+  "workbench.editor.defaultBinaryEditor": "hexEditor.hexedit",
+  "workbench.editorAssociations": {
+    "*.bin": "hexEditor.hexedit",
+    "*.dat": "hexEditor.hexedit",
+    "*.exe": "hexEditor.hexedit",
+    "*.o": "hexEditor.hexedit"
+  },
+  "geminicodeassist.contextExclusionFile": ".aiexclude",
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "workbench.colorTheme": "Solarized Light",
+  "workbench.trustedDomains.promptInTrustedWorkspace": true,
+  "security.workspace.trust.untrustedFiles": "newWindow",
+  "redhat.telemetry.enabled": false,
+  "extensions.ignoreRecommendations": true,
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-containers"
+  },
+  "[pip-requirements]": {},
+  "cloudcode.yaml.format.enable": true,
+  "cloudcode.yaml.format.singleQuote": true,
+  "cloudcode.yaml.trace.server": "verbose",
+  "editor.codeActions.triggerOnFocusChange": true,
+  "files.autoGuessEncoding": true,
+  "notebook.formatOnSave.enabled": true,
+  "notebook.multiCursor.enabled": true,
+  "terraform.experimentalFeatures.prefillRequiredFields": true,
+  "jupyter.interactiveWindow.notebookRepl": true,
+  "[markdown]": {
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
     },
-    // --- ☕ JAVA (High Performance) ---
-    "[java]": {
-        "editor.defaultFormatter": "google.geminicodeassist",
-        "editor.source.organizeImports": true,
-        "breadcrumbs.showClasses": true,
-        "breadcrumbs.showMethods": true,
-        "breadcrumbs.showInterfaces": true
-    },
-    "java.import.maven.enabled": false,
-    "java.import.gradle.enabled": true,
-    "java.import.gradle.offline.enabled": true, // Prevents random download loops
-    // --- 🐍 PYTHON ---
-    "[python]": {
-        "editor.defaultFormatter": "charliermarsh.ruff",
-        "editor.formatOnType": true
-    },
-    // --- 📄 JSON/YAML ---
-    "[json]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
-    },
-    "[jsonc]": {
-        "workbench.editor.restoreViewState": true,
-        "editor.defaultFormatter": "vscode.json-language-features"
-    },
-    "[yaml]": {
-        "editor.defaultFormatter": "google.geminicodeassist",
-        "editor.wordWrap": "on"
-    },
-    // ---------------------------------------------------------
-    // 🛡️ STABILITY & CRASH PREVENTION
-    // ---------------------------------------------------------
-    // Git: Manual Refresh Only (Prevents 'Extension Host Unresponsive')
-    "git.autorefresh": false,
-    "git.ignoreLimitWarning": true,
-    "git.repositoryScanMaxDepth": 2,
-    "git.autofetch": false,
-    "git.confirmSync": false,
-    // ---------------------------------------------------------
-    // 🛡️ CRASH PREVENTION (Updated with Python Fix)
-    // ---------------------------------------------------------
-    "files.watcherExclude": {
-        "**/.venv/**": false, // allow Python extension to resolve local virtualenvs
-        "**/__pycache__/**": true,
-        "**/node_modules/**": true,
-        "**/.git/objects/**": true,
-        "**/.git/subtree-cache/**": true,
-        "**/dist/**": true,
-        "**/build/**": true,
-        "**/.gradle/**": true,
-        "**/.DS_Store": true
-    },
-    "search.exclude": {
-        "**/.venv": true, // <--- THE FIX
-        "**/node_modules": true,
-        "**/dist": true,
-        "**/build": true
-    },
-    // NPM: Smart Detection
-    "npm.autoDetect": "on",
-    "npm.exclude": "**/node_modules/**",
-    "npm.scriptExplorerAction": "run",
-    // Disable legacy task scanners
-    "gulp.autoDetect": "off",
-    "grunt.autoDetect": "off",
-    "jake.autoDetect": "off",
-    "gradle.autoDetect": "off",
-    // ---------------------------------------------------------
-    // 🐢 VISUALS (No GPU = No Flickering)
-    // ---------------------------------------------------------
-    "terminal.integrated.gpuAcceleration": "off",
-    "terminal.integrated.rendererType": "dom",
-    "editor.smoothScrolling": true,
-    "editor.fontLigatures": true,
-    // Editors: Hex for Binaries, Standard for everything else
-    "workbench.editor.defaultBinaryEditor": "hexEditor.hexedit",
-    "workbench.editorAssociations": {
-        "*.bin": "hexEditor.hexedit",
-        "*.dat": "hexEditor.hexedit",
-        "*.exe": "hexEditor.hexedit",
-        "*.o": "hexEditor.hexedit"
-    },
-    "geminicodeassist.contextExclusionFile": ".aiexclude",
-    "editor.formatOnSaveMode": "modificationsIfAvailable",
-    "workbench.colorTheme": "Solarized Light",
-    "workbench.trustedDomains.promptInTrustedWorkspace": true,
-    "security.workspace.trust.untrustedFiles": "newWindow",
-    "redhat.telemetry.enabled": false,
-    "extensions.ignoreRecommendations": true,
-    "terminal.integrated.enableMultiLinePasteWarning": "never",
-    "[javascript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
-    },
-    "[dockerfile]": {
-        "editor.defaultFormatter": "ms-azuretools.vscode-containers"
-    },
-    "[pip-requirements]": {},
-    "cloudcode.yaml.format.enable": true,
-    "cloudcode.yaml.format.singleQuote": true,
-    "cloudcode.yaml.trace.server": "verbose",
-    "editor.codeActions.triggerOnFocusChange": true,
-    "files.autoGuessEncoding": true,
-    "notebook.formatOnSave.enabled": true,
-    "notebook.multiCursor.enabled": true,
-    "terraform.experimentalFeatures.prefillRequiredFields": true,
-    "jupyter.interactiveWindow.notebookRepl": true,
-    "[markdown]": {
-        "editor.unicodeHighlight.ambiguousCharacters": false,
-        "editor.unicodeHighlight.invisibleCharacters": false,
-        "diffEditor.ignoreTrimWhitespace": false,
-        "editor.wordWrap": "on",
-        "editor.quickSuggestions": {
-            "comments": "off",
-            "strings": "off",
-            "other": "off"
-        },
-        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-    },
-    "typescript.tsserver.web.projectWideIntellisense.suppressSemanticErrors": true,
-    "java.import.generatesMetadataFilesAtProjectRoot": true,
-    "window.nativeTabs": true,
-    "editor.tokenColorCustomizations": {},
-    "geminicodeassist.agentDebugMode": true,
-    "geminicodeassist.inlineSuggestions.nextEditPredictions": true,
-    "geminicodeassist.inlineSuggestions.suggestionSpeed": "Fast",
-    "geminicodeassist.chat.changeView": "Default diff view",
-    "gemini-cli.debug.logging.enabled": true,
-    // =========================================================
-    // 1. GOD MODE: PLAYGROUND & EXPERIMENTAL UNLOCKS
-    // =========================================================
-    // Forces the extension into "Nightly/Insiders" mode to unlock hidden commands
-    "geminicodeassist.updateChannel": "Insiders",
-    "geminicodeassist.verboseLogging": true,
-    "antigravity.showExperimentalFeatures": false,
-    // UNLOCKS THE AGENT MANAGER (The "Playground")
-    // Source: this.config?.isAgentsEnabled()
-    "antigravity.agents.enabled": true,
-    "antigravity.agents.maxConcurrentAgents": 5,
-    // UNLOCKS "SKILLS" (Custom Tools/Scripts)
-    // Source: this.config?.getSkillManager()?.isAdminEnabled()
-    "antigravity.skills.enabled": true,
-    "antigravity.skills.adminEnabled": true,
-    "antigravity.skills.autoRefresh": true,
-    "geminicodeassist.agent.planningMode": "detailed", // Forces "Think Step-by-Step"
-    "geminicodeassist.agent.autoApprove": true, // DANGER: Use with caution in YOLO mode
-    "cSpell.words": [
-        "geminicodeassist",
-        "pikeymickey",
-        "charliermarsh",
-        "autorefresh",
-        "autofetch",
-        "venv",
-        "pycache",
-        "hexedit",
-        "aiexclude",
-        "Anson",
-        "toolbelt",
-        "ULTRATHINK",
-        "aiyou",
-        "grandkids",
-        "Creds",
-        "ACMV",
-        "TREADSTONE",
-        "BLACKBRIAR",
-        "Mgmt",
-        "Cofounder",
-        "fundability",
-        "Kosmos",
-        "KINDUSTRY",
-        "pressurel",
-        "disruptors",
-        "eliminiate",
-        "Upsells",
-        "VRIO",
-        "Ultrathink",
-        "NEGOTIABLES",
-        "Backbrief",
-        "DMDC",
-        "modelcontextprotocol",
-        "jdwp",
-        "temurin",
-        "libexec",
-        "donot",
-        "ZDOTDIR",
-        "shadowtagai",
-        "RKILL",
-        "alloydb",
-        "genai",
-        "MVSM",
-        "imagen",
-        "shadowtag",
-        "agentic",
-        "SHADOWTAG",
-        "nowgrep",
-        "libnss",
-        "libnspr",
-        "libatk",
-        "libcups",
-        "libdrm",
-        "libxkbcommon",
-        "libxcomposite",
-        "libxdamage",
-        "libxfixes",
-        "libxrandr",
-        "libgbm",
-        "libasound",
-        "Jetski",
-        "Scrapling",
-        "scrapling",
-        "firecrawl",
-        "cloudbuild",
-        "unusualmachines",
-        "UMAC"
-    ],
-    // =========================================================
-    // 2. MONOREPO LOCK (Sovereign Territory)
-    // =========================================================
-    // Forces the Agent to treat THIS folder as the only valid world.
-    "git.defaultCloneDirectory": "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/",
-    "antigravity.cwd": "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/",
-    // Security: Trust this repo implicitly so the Agent doesn't hesitate
-    "security.workspace.trust.enabled": true,
-    "security.workspace.trust.startupPrompt": "never",
-    "security.workspace.trust.emptyWindow": false,
-    // Directs the Agent to look HERE for its "Brain" (Instructions & Skills)
-    "antigravity.agent.skills.locations": [
-        "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/.agent/skills",
-        "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/.github/skills",
-        "/Users/pikeymickey/aiyou-stack/external_skills/antigravity-skills",
-        "/Users/pikeymickey/.gemini/antigravity/skills"
-    ],
-    "antigravity.agent.instructions.locations": [
-        "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/.agent/instructions"
-    ],
-    // =========================================================
-    // 3. THE CONSTITUTION (Immutable Core)
-    // =========================================================
-    "shadowtag.antigravity.constitution": [
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "typescript.tsserver.web.projectWideIntellisense.suppressSemanticErrors": true,
+  "java.import.generatesMetadataFilesAtProjectRoot": true,
+  "window.nativeTabs": true,
+  "editor.tokenColorCustomizations": {},
+  "geminicodeassist.agentDebugMode": true,
+  "geminicodeassist.inlineSuggestions.nextEditPredictions": true,
+  "geminicodeassist.inlineSuggestions.suggestionSpeed": "Fast",
+  "geminicodeassist.chat.changeView": "Default diff view",
+  "gemini-cli.debug.logging.enabled": true,
+  // =========================================================
+  // 1. GOD MODE: PLAYGROUND & EXPERIMENTAL UNLOCKS
+  // =========================================================
+  // Forces the extension into "Nightly/Insiders" mode to unlock hidden commands
+  "geminicodeassist.updateChannel": "Insiders",
+  "geminicodeassist.verboseLogging": true,
+  "antigravity.showExperimentalFeatures": false,
+  // UNLOCKS THE AGENT MANAGER (The "Playground")
+  // Source: this.config?.isAgentsEnabled()
+  "antigravity.agents.enabled": true,
+  "antigravity.agents.maxConcurrentAgents": 5,
+  // UNLOCKS "SKILLS" (Custom Tools/Scripts)
+  // Source: this.config?.getSkillManager()?.isAdminEnabled()
+  "antigravity.skills.enabled": true,
+  "antigravity.skills.adminEnabled": true,
+  "antigravity.skills.autoRefresh": true,
+  "geminicodeassist.agent.planningMode": "detailed", // Forces "Think Step-by-Step"
+  "geminicodeassist.agent.autoApprove": true, // DANGER: Use with caution in YOLO mode
+  "cSpell.words": [
+    "geminicodeassist",
+    "pikeymickey",
+    "charliermarsh",
+    "autorefresh",
+    "autofetch",
+    "venv",
+    "pycache",
+    "hexedit",
+    "aiexclude",
+    "Anson",
+    "toolbelt",
+    "ULTRATHINK",
+    "aiyou",
+    "grandkids",
+    "Creds",
+    "ACMV",
+    "TREADSTONE",
+    "BLACKBRIAR",
+    "Mgmt",
+    "Cofounder",
+    "fundability",
+    "Kosmos",
+    "KINDUSTRY",
+    "pressurel",
+    "disruptors",
+    "eliminiate",
+    "Upsells",
+    "VRIO",
+    "Ultrathink",
+    "NEGOTIABLES",
+    "Backbrief",
+    "DMDC",
+    "modelcontextprotocol",
+    "jdwp",
+    "temurin",
+    "libexec",
+    "donot",
+    "ZDOTDIR",
+    "shadowtagai",
+    "RKILL",
+    "alloydb",
+    "genai",
+    "MVSM",
+    "imagen",
+    "shadowtag",
+    "agentic",
+    "SHADOWTAG",
+    "nowgrep",
+    "libnss",
+    "libnspr",
+    "libatk",
+    "libcups",
+    "libdrm",
+    "libxkbcommon",
+    "libxcomposite",
+    "libxdamage",
+    "libxfixes",
+    "libxrandr",
+    "libgbm",
+    "libasound",
+    "Jetski",
+    "Scrapling",
+    "scrapling",
+    "firecrawl",
+    "cloudbuild",
+    "unusualmachines",
+    "UMAC"
+  ],
+  // =========================================================
+  // 2. MONOREPO LOCK (Sovereign Territory)
+  // =========================================================
+  // Forces the Agent to treat THIS folder as the only valid world.
+  "git.defaultCloneDirectory": "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/",
+  "antigravity.cwd": "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/",
+  // Security: Trust this repo implicitly so the Agent doesn't hesitate
+  "security.workspace.trust.enabled": true,
+  "security.workspace.trust.startupPrompt": "never",
+  "security.workspace.trust.emptyWindow": false,
+  // Directs the Agent to look HERE for its "Brain" (Instructions & Skills)
+  "antigravity.agent.skills.locations": [
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/.agent/skills",
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/.github/skills",
+    "/Users/pikeymickey/aiyou-stack/external_skills/antigravity-skills",
+    "/Users/pikeymickey/.gemini/antigravity/skills"
+  ],
+  "antigravity.agent.instructions.locations": [
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/.agent/instructions"
+  ],
+  // =========================================================
+  // 3. THE CONSTITUTION (Immutable Core)
+  // =========================================================
+  "shadowtag.antigravity.constitution": [
         "1. GOD MODE ACTIVE.",
         "@.agent/workflows/live-engine.md @.agent/docs/toolbelt.md @.agent/rules/shadowtag-laws.md",
         "COMMAND: EXECUTE /live-engine",
@@ -458,267 +458,259 @@
         "Antigravity/ “The Board” is/are NEVER allowed to change constitution without first requesting specific amendments from Founder CEO Erik = THIS SHIT IS IMMUTABLE, UNTIL you find a better way. When you find that better way? You must suggest, until I hear you, and also respond affirmatively.",
         "134. STATUS: CONSTITUTION RATIFIED v2.0. MODE: LIVE FIRE (ULTRATHINK). EXECUTE.",
     ],
-    // =========================================================
-    // 4. MCP REGISTRY (The Hands - Databases Only)
-    // =========================================================
-    // *SANITIZED*: Chrome DevTools removed to prevent crash loop.
-    "antigravity.mcp.registry": {
-        "mcpServers": {
-            "alloydb": {
-                "command": "docker",
-                "args": [
-                    "run",
-                    "-i",
-                    "--rm",
-                    "-e",
-                    "GCP_PROJECT=shadowtag-omega-v4",
-                    "google/alloydb-mcp-server:latest"
-                ],
-                "env": {
-                    "DB_CONNECTION_NAME": "projects/shadowtag-omega-v4/locations/us-central1/clusters/omega-cluster/instances/primary",
-                    "ICEBERG_LAKE_MODE": "enabled"
-                }
-            },
-            "google-developer-knowledge": {
-                "serverUrl": "https://developerknowledge.googleapis.com/mcp",
-                "headers": {
-                    "X-Goog-Api-Key": "AIzaSyBAJuLUQwDtMVSM5YPHpEaRVLXwuRuH7UI"
-                }
-            },
-            "postgres": {
-                "command": "npx",
-                "args": [
-                    "-y",
-                    "@modelcontextprotocol/server-postgres",
-                    "postgresql://user:password@localhost:5432/shadowtag_db"
-                ]
-            }
-        },
-        "clientConfig": {
-            "features": {
-                "iceberg_lake_integration": true,
-                "gemini_cli_extension": true
-            }
-        }
-    },
-    // =========================================================
-    // 5. AUTOCOMPLETE & INTELLIGENCE (Performance Tuning)
-    // =========================================================
-    // Force "TreeSitter" (Smarter parsing) for all languages
-    "editor.experimental.preferTreeSitter.typescript": true,
-    "editor.experimental.preferTreeSitter.css": true,
-    "editor.experimental.preferTreeSitter.regex": true,
-    "editor.experimental.asyncTokenizationLogging": true,
-    // TypeScript / JavaScript / PHP Intelligence
-    "typescript.suggest.completeFunctionCalls": true,
-    "typescript.preferences.includePackageJsonAutoImports": "on",
-    "typescript.tsserver.experimental.enableProjectDiagnostics": true,
-    "php.suggest.basic": false, // Disable basic so Agent takes over
-    "php.validate.enable": false, // Disable basic validation
-    "java.completion.engine": "dom",
-    "java.debug.settings.jdwp.async": "on",
-    // =========================================================
-    // 6. SAFETY INTERLOCKS (Kill Switches)
-    // =========================================================
-    // Disables the features that caused your crash loops
-    "antigravity.browser.attachOnStartup": false,
-    "antigravity.browser.debug": false,
-    "geminicodeassist.debug.enableChromeDevTools": false,
-    "http.systemCertificatesNode": true,
-    "java.configuration.runtimes": [
-        {
-            "name": "JavaSE-1.8",
-            "path": "/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home"
-        },
-        {
-            "name": "JavaSE-11",
-            "path": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk/java/11"
-        },
-        {
-            "name": "JavaSE-17",
-            "path": "/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home",
-            "default": true
-        },
-        {
-            "name": "JavaSE-21",
-            "path": "/opt/homebrew/Cellar/openjdk@21/21.0.10/libexec/openjdk.jdk/Contents/Home"
-        },
-        {
-            "name": "JavaSE-25",
-            "path": "/opt/homebrew/Cellar/openjdk/25.0.2/libexec/openjdk.jdk/Contents/Home"
-        }
-    ],
-    "liveServer.settings.donotShowInfoMsg": true,
-    "terminal.integrated.profiles.osx": {
-        "bash": {
-            "path": "/opt/homebrew/bin/bash",
-            "args": [
-                "-l"
-            ]
-        },
-        "zsh": {
-            "path": "zsh",
-            "args": [
-                "-l"
-            ],
-            "env": {
-                "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/25.0.2/libexec/openjdk.jdk/Contents/Home",
-                "ZDOTDIR": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk"
-            }
-        },
-        "fish": {
-            "path": "fish",
-            "args": [
-                "-l"
-            ]
-        },
-        "tmux": {
-            "path": "tmux",
-            "icon": "terminal-tmux"
-        },
-        "pwsh": {
-            "path": "pwsh",
-            "icon": "terminal-powershell"
-        },
-        "JavaSE-1.8 LTS": {
-            "overrideName": true,
-            "env": {
-                "ZDOTDIR": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk",
-                "JAVA_HOME": "/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home"
-            },
-            "path": "zsh"
-        },
-        "JavaSE-11 LTS": {
-            "overrideName": true,
-            "env": {
-                "ZDOTDIR": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk",
-                "JAVA_HOME": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk/java/11"
-            },
-            "path": "zsh"
-        },
-        "JavaSE-17 LTS": {
-            "overrideName": true,
-            "env": {
-                "ZDOTDIR": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk",
-                "JAVA_HOME": "/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home"
-            },
-            "path": "zsh"
-        },
-        "JavaSE-21 LTS": {
-            "overrideName": true,
-            "env": {
-                "ZDOTDIR": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk",
-                "JAVA_HOME": "/opt/homebrew/Cellar/openjdk@21/21.0.10/libexec/openjdk.jdk/Contents/Home"
-            },
-            "path": "zsh"
-        },
-        "JavaSE-25 LTS": {
-            "overrideName": true,
-            "env": {
-                "ZDOTDIR": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk",
-                "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/25.0.2/libexec/openjdk.jdk/Contents/Home"
-            },
-            "path": "zsh"
-        }
-    },
-    "terminal.integrated.defaultProfile.osx": "bash",
-    "maven.terminal.customEnv": [
-        {
-            "environmentVariable": "JAVA_HOME",
-            "value": "/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home"
-        },
-        {
-            "environmentVariable": "ZDOTDIR",
-            "value": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk"
-        }
-    ],
-    "java.import.gradle.java.home": "/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home",
-    "maven.executable.path": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk/maven/latest/bin/mvn",
-    "java.import.gradle.home": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk/gradle/latest",
-    "makefile.configureOnOpen": true,
-    "windsurfPyright.disableLanguageServices": true,
-    "diffEditor.codeLens": true,
-    "terminal.integrated.allowedLinkSchemes": [
-        "file",
-        "http",
-        "https",
-        "mailto",
-        "vscode",
-        "vscode-insiders",
-        "docker-desktop"
-    ],
-    "python.defaultInterpreterPath": ".venv/bin/python3",
-    "python.terminal.useEnvFile": true,
-    "editor.defaultFoldingRangeProvider": "ms-vscode.hexeditor",
-    "[typescript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
-    },
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
-    },
-    "editor.experimental.asyncTokenizationVerification": true,
-    "editor.experimental.preferTreeSitter.ini": true,
-    "editor.experimental.treeSitterTelemetry": true,
-    "diffEditor.experimental.showMoves": true,
-    "diffEditor.experimental.useTrueInlineView": true,
-    "editor.inlineSuggest.experimental.showOnSuggestConflict": "whenSuggestListIsIncomplete",
-    "workbench.commandPalette.experimental.askChatLocation": "quickChat",
-    "workbench.experimental.cloudChanges.autoStore": "onShutdown",
-    "workbench.experimental.cloudChanges.partialMatches.enabled": true,
-    "workbench.experimental.share.enabled": true,
-    "extensions.experimental.deferredStartupFinishedActivation": true,
-    "notebook.diff.experimental.toggleInline": true,
-    "notebook.experimental.remoteSave": true,
-    "http.experimental.systemCertificatesV2": true,
-    "cSpell.experimental.enableRegexpView": true,
-    "githubPullRequests.experimental.notificationsMarkPullRequests": "markAsDone",
-    "githubPullRequests.experimental.useQuickChat": true,
-    "terraform.experimentalFeatures.validateOnSave": true,
-    "rust-analyzer.diagnostics.experimental.enable": true,
-    "js/ts.implicitProjectConfig.experimentalDecorators": true,
-    "typescript.experimental.useTsgo": true,
-    "scm.repositories.explorer": true,
-    "terminal.integrated.windowsUseConptyDll": true,
-    "notebook.stickyScroll.enabled": true,
-    "notebook.variablesView": true,
-    "go.diagnostic.vulncheck": "Imports",
-    "cloudcode.enableConfigLessExperience": true,
-    "jupyter.executionAnalysis.enabled": true,
-    "java.sharedIndexes.enabled": "on",
-    "java.jdt.ls.javac.enabled": "on",
-    "java.jdt.ls.appcds.enabled": "on",
-    "mermaid-chat.enabled": true,
-    "npm-intellisense.packageSubfoldersIntellisense": true,
-    "rust-analyzer.interpret.tests": true,
-    "python.locator": "js",
-    "boot-java.ai.mcp-server-enabled": true,
-    "[dart]": {
-        "editor.formatOnSave": true,
-        "editor.formatOnType": true,
-        "editor.rulers": [
-            80
+  // =========================================================
+  // 4. MCP REGISTRY (The Hands - Databases Only)
+  // =========================================================
+  // *SANITIZED*: Chrome DevTools removed to prevent crash loop.
+  "antigravity.mcp.registry": {
+    "mcpServers": {
+      "alloydb": {
+        "command": "docker",
+        "args": [
+          "run",
+          "-i",
+          "--rm",
+          "-e",
+          "GCP_PROJECT=shadowtag-omega-v4",
+          "google/alloydb-mcp-server:latest"
         ],
-        "editor.selectionHighlight": false,
-        "editor.tabCompletion": "onlySnippets",
-        "editor.wordBasedSuggestions": "off"
+        "env": {
+          "DB_CONNECTION_NAME": "projects/shadowtag-omega-v4/locations/us-central1/clusters/omega-cluster/instances/primary",
+          "ICEBERG_LAKE_MODE": "enabled"
+        }
+      },
+      "google-developer-knowledge": {
+        "serverUrl": "https://developerknowledge.googleapis.com/mcp",
+        "headers": {
+          "X-Goog-Api-Key": "AIzaSyBAJuLUQwDtMVSM5YPHpEaRVLXwuRuH7UI"
+        }
+      },
+      "postgres": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-postgres",
+          "postgresql://user:password@localhost:5432/shadowtag_db"
+        ]
+      }
     },
-    "go.toolsManagement.autoUpdate": true,
-    "cloudcode.updateChannel": "Insiders",
-    "markdown.updateLinksOnFileMove.enabled": "always",
-    "antigravity-plus.autoApprove.enabled": true,
-    "antigravity-plus.autoApprove.interval": 200,
-    "antigravity-plus.autoApprove.denyList": [
-        "rm -rf /",
-        "rm -rf ~",
-        "rm -rf /*",
-        "format c:",
-        "format d:",
-        "del /f /s /q c:\*",
-        "dd if=/dev/zero",
-        "mkfs",
-        ":(){:|:&};:",
-        "chmod -R 777 /",
-        "shutdown",
-        "reboot"
-    ]
+    "clientConfig": {
+      "features": {
+        "iceberg_lake_integration": true,
+        "gemini_cli_extension": true
+      }
+    }
+  },
+  // =========================================================
+  // 5. AUTOCOMPLETE & INTELLIGENCE (Performance Tuning)
+  // =========================================================
+  // Force "TreeSitter" (Smarter parsing) for all languages
+  "editor.experimental.preferTreeSitter.typescript": true,
+  "editor.experimental.preferTreeSitter.css": true,
+  "editor.experimental.preferTreeSitter.regex": true,
+  "editor.experimental.asyncTokenizationLogging": true,
+  // TypeScript / JavaScript / PHP Intelligence
+  "typescript.suggest.completeFunctionCalls": true,
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+  "php.suggest.basic": false, // Disable basic so Agent takes over
+  "php.validate.enable": false, // Disable basic validation
+  "java.completion.engine": "dom",
+  "java.debug.settings.jdwp.async": "on",
+  // =========================================================
+  // 6. SAFETY INTERLOCKS (Kill Switches)
+  // =========================================================
+  // Disables the features that caused your crash loops
+  "antigravity.browser.attachOnStartup": false,
+  "antigravity.browser.debug": false,
+  "geminicodeassist.debug.enableChromeDevTools": false,
+  "http.systemCertificatesNode": true,
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-1.8",
+      "path": "/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home"
+    },
+    {
+      "name": "JavaSE-11",
+      "path": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk/java/11"
+    },
+    {
+      "name": "JavaSE-17",
+      "path": "/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home",
+      "default": true
+    },
+    {
+      "name": "JavaSE-21",
+      "path": "/opt/homebrew/Cellar/openjdk@21/21.0.10/libexec/openjdk.jdk/Contents/Home"
+    },
+    {
+      "name": "JavaSE-25",
+      "path": "/opt/homebrew/Cellar/openjdk/25.0.2/libexec/openjdk.jdk/Contents/Home"
+    }
+  ],
+  "liveServer.settings.donotShowInfoMsg": true,
+  "terminal.integrated.profiles.osx": {
+    "bash": {
+      "path": "/opt/homebrew/bin/bash",
+      "args": ["-l"]
+    },
+    "zsh": {
+      "path": "zsh",
+      "args": ["-l"],
+      "env": {
+        "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/25.0.2/libexec/openjdk.jdk/Contents/Home",
+        "ZDOTDIR": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk"
+      }
+    },
+    "fish": {
+      "path": "fish",
+      "args": ["-l"]
+    },
+    "tmux": {
+      "path": "tmux",
+      "icon": "terminal-tmux"
+    },
+    "pwsh": {
+      "path": "pwsh",
+      "icon": "terminal-powershell"
+    },
+    "JavaSE-1.8 LTS": {
+      "overrideName": true,
+      "env": {
+        "ZDOTDIR": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk",
+        "JAVA_HOME": "/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home"
+      },
+      "path": "zsh"
+    },
+    "JavaSE-11 LTS": {
+      "overrideName": true,
+      "env": {
+        "ZDOTDIR": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk",
+        "JAVA_HOME": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk/java/11"
+      },
+      "path": "zsh"
+    },
+    "JavaSE-17 LTS": {
+      "overrideName": true,
+      "env": {
+        "ZDOTDIR": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk",
+        "JAVA_HOME": "/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home"
+      },
+      "path": "zsh"
+    },
+    "JavaSE-21 LTS": {
+      "overrideName": true,
+      "env": {
+        "ZDOTDIR": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk",
+        "JAVA_HOME": "/opt/homebrew/Cellar/openjdk@21/21.0.10/libexec/openjdk.jdk/Contents/Home"
+      },
+      "path": "zsh"
+    },
+    "JavaSE-25 LTS": {
+      "overrideName": true,
+      "env": {
+        "ZDOTDIR": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk",
+        "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/25.0.2/libexec/openjdk.jdk/Contents/Home"
+      },
+      "path": "zsh"
+    }
+  },
+  "terminal.integrated.defaultProfile.osx": "bash",
+  "maven.terminal.customEnv": [
+    {
+      "environmentVariable": "JAVA_HOME",
+      "value": "/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home"
+    },
+    {
+      "environmentVariable": "ZDOTDIR",
+      "value": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk"
+    }
+  ],
+  "java.import.gradle.java.home": "/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home",
+  "maven.executable.path": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk/maven/latest/bin/mvn",
+  "java.import.gradle.home": "/Users/pikeymickey/Library/Application Support/Antigravity/User/globalStorage/pleiades.java-extension-pack-jdk/gradle/latest",
+  "makefile.configureOnOpen": true,
+  "windsurfPyright.disableLanguageServices": true,
+  "diffEditor.codeLens": true,
+  "terminal.integrated.allowedLinkSchemes": [
+    "file",
+    "http",
+    "https",
+    "mailto",
+    "vscode",
+    "vscode-insiders",
+    "docker-desktop"
+  ],
+  "python.defaultInterpreterPath": ".venv/bin/python3",
+  "python.terminal.useEnvFile": true,
+  "editor.defaultFoldingRangeProvider": "ms-vscode.hexeditor",
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "editor.experimental.asyncTokenizationVerification": true,
+  "editor.experimental.preferTreeSitter.ini": true,
+  "editor.experimental.treeSitterTelemetry": true,
+  "diffEditor.experimental.showMoves": true,
+  "diffEditor.experimental.useTrueInlineView": true,
+  "editor.inlineSuggest.experimental.showOnSuggestConflict": "whenSuggestListIsIncomplete",
+  "workbench.commandPalette.experimental.askChatLocation": "quickChat",
+  "workbench.experimental.cloudChanges.autoStore": "onShutdown",
+  "workbench.experimental.cloudChanges.partialMatches.enabled": true,
+  "workbench.experimental.share.enabled": true,
+  "extensions.experimental.deferredStartupFinishedActivation": true,
+  "notebook.diff.experimental.toggleInline": true,
+  "notebook.experimental.remoteSave": true,
+  "http.experimental.systemCertificatesV2": true,
+  "cSpell.experimental.enableRegexpView": true,
+  "githubPullRequests.experimental.notificationsMarkPullRequests": "markAsDone",
+  "githubPullRequests.experimental.useQuickChat": true,
+  "terraform.experimentalFeatures.validateOnSave": true,
+  "rust-analyzer.diagnostics.experimental.enable": true,
+  "js/ts.implicitProjectConfig.experimentalDecorators": true,
+  "typescript.experimental.useTsgo": true,
+  "scm.repositories.explorer": true,
+  "terminal.integrated.windowsUseConptyDll": true,
+  "notebook.stickyScroll.enabled": true,
+  "notebook.variablesView": true,
+  "go.diagnostic.vulncheck": "Imports",
+  "cloudcode.enableConfigLessExperience": true,
+  "jupyter.executionAnalysis.enabled": true,
+  "java.sharedIndexes.enabled": "on",
+  "java.jdt.ls.javac.enabled": "on",
+  "java.jdt.ls.appcds.enabled": "on",
+  "mermaid-chat.enabled": true,
+  "npm-intellisense.packageSubfoldersIntellisense": true,
+  "rust-analyzer.interpret.tests": true,
+  "python.locator": "js",
+  "boot-java.ai.mcp-server-enabled": true,
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [80],
+    "editor.selectionHighlight": false,
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": "off"
+  },
+  "go.toolsManagement.autoUpdate": true,
+  "cloudcode.updateChannel": "Insiders",
+  "markdown.updateLinksOnFileMove.enabled": "always",
+  "antigravity-plus.autoApprove.enabled": true,
+  "antigravity-plus.autoApprove.interval": 200,
+  "antigravity-plus.autoApprove.denyList": [
+    "rm -rf /",
+    "rm -rf ~",
+    "rm -rf /*",
+    "format c:",
+    "format d:",
+    "del /f /s /q c:\*",
+    "dd if=/dev/zero",
+    "mkfs",
+    ":(){:|:&};:",
+    "chmod -R 777 /",
+    "shutdown",
+    "reboot"
+  ]
 }

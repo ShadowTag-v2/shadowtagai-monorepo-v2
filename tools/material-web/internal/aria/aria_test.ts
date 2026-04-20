@@ -6,20 +6,16 @@
 
 // import 'jasmine'; (google3-only)
 
-import {ARIAProperty, ariaPropertyToAttribute, isAriaAttribute} from './aria.js';
+import { type ARIAProperty, ariaPropertyToAttribute, isAriaAttribute } from './aria.js';
 
 describe('aria', () => {
   describe('isAriaAttribute()', () => {
     it('should return true for aria value attributes', () => {
-      expect(isAriaAttribute('aria-label'))
-        .withContext('aria-label input')
-        .toBeTrue();
+      expect(isAriaAttribute('aria-label')).withContext('aria-label input').toBeTrue();
     });
 
     it('should return false for aria idref attributes', () => {
-      expect(isAriaAttribute('aria-labelledby'))
-        .withContext('aria-labelledby input')
-        .toBeFalse();
+      expect(isAriaAttribute('aria-labelledby')).withContext('aria-labelledby input').toBeFalse();
     });
 
     it('should return true for role', () => {
@@ -43,9 +39,9 @@ describe('aria', () => {
     });
 
     it('should convert aria idref properties', () => {
-      expect(
-        ariaPropertyToAttribute('ariaLabelledByElements' as ARIAProperty),
-      ).toBe('aria-labelledby');
+      expect(ariaPropertyToAttribute('ariaLabelledByElements' as ARIAProperty)).toBe(
+        'aria-labelledby',
+      );
     });
   });
 });

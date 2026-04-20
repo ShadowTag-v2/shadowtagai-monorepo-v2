@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-/// <reference types="vitest/globals" />
-import { describe, it, expect, vi } from 'vitest';
-import { uploadObject, registerUploadObjectTool } from './upload_object.js';
-import { apiClientFactory } from '../../utility/index.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+/// <reference types="vitest/globals" />
+import { describe, expect, it, vi } from 'vitest';
+import { apiClientFactory } from '../../utility/index.js';
+import { registerUploadObjectTool, uploadObject } from './upload_object.js';
 
 vi.mock('../../utility/index.js');
 vi.mock('@modelcontextprotocol/sdk/server/mcp.js');

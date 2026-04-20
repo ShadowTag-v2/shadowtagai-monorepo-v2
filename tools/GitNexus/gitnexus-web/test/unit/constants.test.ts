@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import {
+  ALL_EDGE_TYPES,
+  COMMUNITY_COLORS,
+  DEFAULT_VISIBLE_EDGES,
+  DEFAULT_VISIBLE_LABELS,
+  EDGE_INFO,
+  FILTERABLE_LABELS,
+  getCommunityColor,
   NODE_COLORS,
   NODE_SIZES,
-  COMMUNITY_COLORS,
-  getCommunityColor,
-  DEFAULT_VISIBLE_LABELS,
-  FILTERABLE_LABELS,
-  ALL_EDGE_TYPES,
-  DEFAULT_VISIBLE_EDGES,
-  EDGE_INFO,
 } from '../../src/lib/constants';
 
 describe('NODE_COLORS', () => {
@@ -22,7 +22,7 @@ describe('NODE_COLORS', () => {
 
 describe('NODE_SIZES', () => {
   it('gives Project the largest size', () => {
-    const maxLabel = Object.entries(NODE_SIZES).reduce((a, b) => a[1] > b[1] ? a : b);
+    const maxLabel = Object.entries(NODE_SIZES).reduce((a, b) => (a[1] > b[1] ? a : b));
     expect(maxLabel[0]).toBe('Project');
   });
 

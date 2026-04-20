@@ -4,10 +4,11 @@
  * Tests isGitRepo, getCurrentCommit, getGitRoot, and the newly added
  * hasGitDir helper introduced for issue #384 (indexing non-git folders).
  */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import path from 'path';
-import os from 'os';
+
 import fs from 'fs';
+import os from 'os';
+import path from 'path';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // ─── hasGitDir ────────────────────────────────────────────────────────────
 //

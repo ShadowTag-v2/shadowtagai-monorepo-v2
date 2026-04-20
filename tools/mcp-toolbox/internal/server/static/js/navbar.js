@@ -18,13 +18,13 @@
  * @param {string | null} activePath The active tab from the navbar.
  */
 function renderNavbar(containerId, activePath) {
-    const navbarContainer = document.getElementById(containerId);
-    if (!navbarContainer) {
-        console.error(`Navbar container with ID "${containerId}" not found.`);
-        return;
-    }
+  const navbarContainer = document.getElementById(containerId);
+  if (!navbarContainer) {
+    console.error(`Navbar container with ID "${containerId}" not found.`);
+    return;
+  }
 
-    const navbarHTML = `
+  const navbarHTML = `
         <nav class="left-nav">
             <div class="nav-logo">
                 <img src="/ui/assets/mcptoolboxlogo.png" alt="App Logo">
@@ -38,24 +38,24 @@ function renderNavbar(containerId, activePath) {
         </nav>
     `;
 
-    navbarContainer.innerHTML = navbarHTML;
+  navbarContainer.innerHTML = navbarHTML;
 
-    const logoImage = navbarContainer.querySelector('.nav-logo img');
-    if (logoImage) {
-        logoImage.addEventListener('click', () => {
-            window.location.href = '/ui/';
-        });
-    }
+  const logoImage = navbarContainer.querySelector('.nav-logo img');
+  if (logoImage) {
+    logoImage.addEventListener('click', () => {
+      window.location.href = '/ui/';
+    });
+  }
 
-    if (activePath) {
-        const navLinks = navbarContainer.querySelectorAll('.left-nav ul li a');
-        navLinks.forEach(link => {
-            const linkPath = new URL(link.href).pathname;
-            if (linkPath === activePath) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
-            }
-        });
-    }
+  if (activePath) {
+    const navLinks = navbarContainer.querySelectorAll('.left-nav ul li a');
+    navLinks.forEach((link) => {
+      const linkPath = new URL(link.href).pathname;
+      if (linkPath === activePath) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
 }

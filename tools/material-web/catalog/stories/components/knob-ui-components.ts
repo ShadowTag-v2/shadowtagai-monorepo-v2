@@ -15,9 +15,9 @@ import '@material/web/textfield/filled-text-field.js';
 
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { StyleInfo, styleMap } from 'lit/directives/style-map.js';
+import { type StyleInfo, styleMap } from 'lit/directives/style-map.js';
 
-import { Knob, KnobUi } from '../knobs.js';
+import type { Knob, KnobUi } from '../knobs.js';
 
 /**
  * A boolean Knob UI.
@@ -181,17 +181,13 @@ export class KnobColorSelector extends LitElement {
   }
 
   click() {
-    const input = this.renderRoot!.querySelector(
-      'input,md-filled-text-field'
-    ) as HTMLElement;
+    const input = this.renderRoot!.querySelector('input,md-filled-text-field') as HTMLElement;
     input.click();
     input.focus();
   }
 
   focus() {
-    const input = this.renderRoot!.querySelector(
-      'input,md-filled-text-field'
-    ) as HTMLElement;
+    const input = this.renderRoot!.querySelector('input,md-filled-text-field') as HTMLElement;
     input.focus();
   }
 }
@@ -432,7 +428,7 @@ export function selectDropdown<T extends string>({
 export function cssCustomProperty(
   knob: Knob<string>,
   val: string,
-  containerOfRenderedStory: HTMLElement
+  containerOfRenderedStory: HTMLElement,
 ) {
   const value = knob.isUnset ? knob.defaultValue : val;
   if (value) {

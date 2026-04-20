@@ -5,7 +5,7 @@
  * and empty sections. Also replaces raw URL citations with proper [@key] syntax.
  */
 
-import logger from "../../../utils/logger";
+import logger from '../../../utils/logger';
 
 /**
  * Validate Markdown content and return cleaned version
@@ -57,7 +57,7 @@ function replaceRawUrlCitations(
 
   // Pattern 1: [https://...] — URL used as a bracketed citation
   result = result.replace(/\[?(https?:\/\/[^\s\])<>]+)\]?/g, (fullMatch, url: string) => {
-    const cleanUrl = url.replace(/[.,;:)>\]]+$/, "");
+    const cleanUrl = url.replace(/[.,;:)>\]]+$/, '');
     const citekey = urlToCitekey.get(cleanUrl);
     if (citekey && knownKeys.has(citekey)) {
       replacementCount++;
@@ -67,7 +67,7 @@ function replaceRawUrlCitations(
   });
 
   if (replacementCount > 0) {
-    logger.info({ replacementCount }, "raw_url_citations_replaced_with_citekeys");
+    logger.info({ replacementCount }, 'raw_url_citations_replaced_with_citekeys');
   }
 
   return result;
@@ -85,7 +85,7 @@ function validateCitationKeys(markdown: string, knownKeys: Set<string>): string 
 
   const cleaned = markdown.replace(bracketedPattern, (_fullMatch, inner: string) => {
     // Parse individual citations within brackets
-    const citations = inner.split(";").map((c: string) => c.trim());
+    const citations = inner.split(';').map((c: string) => c.trim());
     const validCitations: string[] = [];
 
     for (const citation of citations) {
@@ -107,16 +107,16 @@ function validateCitationKeys(markdown: string, knownKeys: Set<string>): string 
 
     if (validCitations.length === 0) {
       // All citations were unknown — remove the entire bracket
-      return "";
+      return '';
     }
 
-    return `[${validCitations.join("; ")}]`;
+    return `[${validCitations.join('; ')}]`;
   });
 
   if (unknownKeys.length > 0) {
     logger.warn(
       { unknownKeys: unknownKeys.slice(0, 20), total: unknownKeys.length },
-      "unknown_citation_keys_removed",
+      'unknown_citation_keys_removed',
     );
   }
 
@@ -129,13 +129,13 @@ function validateCitationKeys(markdown: string, knownKeys: Set<string>): string 
  */
 function checkMathBalance(markdown: string): void {
   // Remove $$ (display math) first, then check single $
-  const withoutDisplay = markdown.replace(/\$\$[^$]*\$\$/g, "");
+  const withoutDisplay = markdown.replace(/\$\$[^$]*\$\$/g, '');
 
   // Count remaining single $ (inline math delimiters)
   const dollarCount = (withoutDisplay.match(/\$/g) || []).length;
 
   if (dollarCount % 2 !== 0) {
-    logger.warn({ dollarCount }, "unbalanced_math_delimiters_detected");
+    logger.warn({ dollarCount }, 'unbalanced_math_delimiters_detected');
   }
 }
 
@@ -160,7 +160,7 @@ function checkEmptySections(markdown: string): void {
     const start = sections[i]!.startIndex;
     const end =
       i + 1 < sections.length
-        ? markdown.lastIndexOf("\n", markdown.indexOf(sections[i + 1]!.heading, start))
+        ? markdown.lastIndexOf('\n', markdown.indexOf(sections[i + 1]!.heading, start))
         : markdown.length;
 
     const content = markdown.slice(start, end).trim();
@@ -170,6 +170,6 @@ function checkEmptySections(markdown: string): void {
   }
 
   if (emptySections.length > 0) {
-    logger.warn({ emptySections }, "empty_or_short_sections_detected");
+    logger.warn({ emptySections }, 'empty_or_short_sections_detected');
   }
 }

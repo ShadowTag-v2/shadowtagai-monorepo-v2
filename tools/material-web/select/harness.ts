@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {LitElement} from 'lit';
+import type { LitElement } from 'lit';
 
-import {FieldHarness} from '../field/harness.js';
-import {Field} from '../field/internal/field.js';
-import {Harness} from '../testing/harness.js';
+import { FieldHarness } from '../field/harness.js';
+import type { Field } from '../field/internal/field.js';
+import { Harness } from '../testing/harness.js';
 
-import {Select} from './internal/select.js';
-import {SelectOptionHarness} from './internal/selectoption/harness.js';
+import type { Select } from './internal/select.js';
+import { SelectOptionHarness } from './internal/selectoption/harness.js';
 
 /**
  * Test harness for menu.
@@ -30,9 +30,7 @@ export class SelectHarness extends Harness<Select> {
 
   override async startHover() {
     const field = await this.getField();
-    const element = await new SelectFieldHardness(
-      field,
-    ).getInteractiveElement();
+    const element = await new SelectFieldHardness(field).getInteractiveElement();
     this.simulateStartHover(element);
   }
 
@@ -51,9 +49,7 @@ export class SelectHarness extends Harness<Select> {
   async clickOption(index: number) {
     const menu = this.element.renderRoot.querySelector('md-menu')!;
     if (!menu.open) {
-      console.warn(
-        'Internal menu is not open. Try calling SelectHarness.prototype.click()',
-      );
+      console.warn('Internal menu is not open. Try calling SelectHarness.prototype.click()');
     }
     (await this.getItems()[index].getInteractiveElement()).click();
   }

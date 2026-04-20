@@ -4,19 +4,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html, isServer, LitElement} from 'lit';
-import {queryAssignedElements} from 'lit/decorators.js';
+import { html, isServer, LitElement } from 'lit';
+import { queryAssignedElements } from 'lit/decorators.js';
 
-import {Chip} from './chip.js';
+import { Chip } from './chip.js';
 
 /**
  * A chip set component.
  */
 export class ChipSet extends LitElement {
   get chips() {
-    return this.childElements.filter(
-      (child): child is Chip => child instanceof Chip,
-    );
+    return this.childElements.filter((child): child is Chip => child instanceof Chip);
   }
 
   @queryAssignedElements() private readonly childElements!: HTMLElement[];
@@ -48,7 +46,7 @@ export class ChipSet extends LitElement {
       return;
     }
 
-    const {chips} = this as {chips: MaybeMultiActionChip[]};
+    const { chips } = this as { chips: MaybeMultiActionChip[] };
     // Don't try to select another chip if there aren't any.
     if (chips.length < 2) {
       return;
@@ -59,7 +57,7 @@ export class ChipSet extends LitElement {
 
     if (isHome || isEnd) {
       const index = isHome ? 0 : chips.length - 1;
-      chips[index].focus({trailing: isEnd});
+      chips[index].focus({ trailing: isEnd });
       this.updateTabIndices();
       return;
     }
@@ -72,7 +70,7 @@ export class ChipSet extends LitElement {
       // If there is not already a chip focused, select the first or last chip
       // based on the direction we're traveling.
       const nextChip = forwards ? chips[0] : chips[chips.length - 1];
-      nextChip.focus({trailing: !forwards});
+      nextChip.focus({ trailing: !forwards });
       this.updateTabIndices();
       return;
     }
@@ -106,7 +104,7 @@ export class ChipSet extends LitElement {
         continue;
       }
 
-      nextChip.focus({trailing: !forwards});
+      nextChip.focus({ trailing: !forwards });
       this.updateTabIndices();
       break;
     }
@@ -115,7 +113,7 @@ export class ChipSet extends LitElement {
   private updateTabIndices() {
     // The chip that should be focusable is either the chip that currently has
     // focus or the first chip that can be focused.
-    const {chips} = this;
+    const { chips } = this;
     let chipToFocus: Chip | undefined;
     for (const chip of chips) {
       const isChipFocusable = chip.alwaysFocusable || !chip.disabled;
@@ -143,5 +141,5 @@ export class ChipSet extends LitElement {
 }
 
 interface MaybeMultiActionChip extends Chip {
-  focus(options?: FocusOptions & {trailing?: boolean}): void;
+  focus(options?: FocusOptions & { trailing?: boolean }): void;
 }

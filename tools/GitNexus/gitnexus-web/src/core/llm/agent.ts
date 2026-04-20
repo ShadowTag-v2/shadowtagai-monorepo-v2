@@ -5,31 +5,28 @@
  * Supports Azure OpenAI and Google Gemini providers.
  */
 
-import { createReactAgent } from '@langchain/langgraph/prebuilt';
-import { SystemMessage } from '@langchain/core/messages';
-import { ChatOpenAI, AzureChatOpenAI } from '@langchain/openai';
-import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { ChatAnthropic } from '@langchain/anthropic';
-import { ChatOllama } from '@langchain/ollama';
 import type { BaseChatModel } from '@langchain/core/language_models/chat_models';
+import { SystemMessage } from '@langchain/core/messages';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { ChatOllama } from '@langchain/ollama';
+import { AzureChatOpenAI, ChatOpenAI } from '@langchain/openai';
+import { DEFAULT_OLLAMA_BASE_URL, DEFAULT_OPENROUTER_BASE_URL } from '../../config/ui-constants';
+import { buildDynamicSystemPrompt, type CodebaseContext } from './context-builder';
 import { createGraphRAGTools } from './tools';
 import type {
-  ProviderConfig,
-  OpenAIConfig,
+  AgentStreamChunk,
+  AnthropicConfig,
   AzureOpenAIConfig,
   GeminiConfig,
-  AnthropicConfig,
-  OllamaConfig,
-  OpenRouterConfig,
-  MiniMaxConfig,
   GLMConfig,
-  AgentStreamChunk,
+  MiniMaxConfig,
+  OllamaConfig,
+  OpenAIConfig,
+  OpenRouterConfig,
+  ProviderConfig,
 } from './types';
-import {
-  type CodebaseContext,
-  buildDynamicSystemPrompt,
-} from './context-builder';
-import { DEFAULT_OLLAMA_BASE_URL, DEFAULT_OPENROUTER_BASE_URL } from '../../config/ui-constants';
 
 /**
  * System prompt for the Graph RAG agent
@@ -304,7 +301,7 @@ export const createGraphRAGAgent = (
   isEmbeddingReady: () => boolean,
   isBM25Ready: () => boolean,
   fileContents: Map<string, string>,
-  codebaseContext?: CodebaseContext
+  codebaseContext?: CodebaseContext,
 ) => {
   const model = createChatModel(config);
   const tools = createGraphRAGTools(
@@ -314,7 +311,7 @@ export const createGraphRAGAgent = (
     hybridSearch,
     isEmbeddingReady,
     isBM25Ready,
-    fileContents
+    fileContents,
   );
 
   // Use dynamic prompt if context is provided, otherwise use base prompt
@@ -354,23 +351,20 @@ export interface AgentMessage {
  */
 export async function* streamAgentResponse(
   agent: ReturnType<typeof createReactAgent>,
-  messages: AgentMessage[]
+  messages: AgentMessage[],
 ): AsyncGenerator<AgentStreamChunk> {
   try {
-    const formattedMessages = messages.map(m => ({
+    const formattedMessages = messages.map((m) => ({
       role: m.role,
       content: m.content,
     }));
 
     // Use BOTH modes: 'values' for structure, 'messages' for token streaming
-    const stream = await agent.stream(
-      { messages: formattedMessages },
-      {
-        streamMode: ['values', 'messages'] as any,
-        // Allow longer tool/reasoning loops (more Cursor-like persistence)
-        recursionLimit: 50,
-      } as any
-    );
+    const stream = await agent.stream({ messages: formattedMessages }, {
+      streamMode: ['values', 'messages'] as any,
+      // Allow longer tool/reasoning loops (more Cursor-like persistence)
+      recursionLimit: 50,
+    } as any);
 
     // Track what we've yielded to avoid duplicates
     const yieldedToolCalls = new Set<string>();
@@ -403,7 +397,7 @@ export async function* streamAgentResponse(
 
       // DEBUG: Enhanced logging
       if (import.meta.env.DEV) {
-        const msgType = mode === 'messages' && data?.[0]?._getType?.() || 'n/a';
+        const msgType = (mode === 'messages' && data?.[0]?._getType?.()) || 'n/a';
         const hasContent = mode === 'messages' && data?.[0]?.content;
         const hasToolCalls = mode === 'messages' && data?.[0]?.tool_calls?.length > 0;
         console.log(`🔄 [${mode}] type:${msgType} content:${!!hasContent} tools:${hasToolCalls}`);
@@ -428,7 +422,7 @@ export async function* streamAgentResponse(
             // Content blocks format: [{type: 'text', text: '...'}, ...]
             content = rawContent
               .filter((block: any) => block.type === 'text' || typeof block === 'string')
-              .map((block: any) => typeof block === 'string' ? block : block.text || '')
+              .map((block: any) => (typeof block === 'string' ? block : block.text || ''))
               .join('');
           }
 
@@ -439,9 +433,7 @@ export async function* streamAgentResponse(
             // - Between tool calls/results: treat as reasoning
             // - After all tools are done: treat as final content
             const isReasoning =
-              !hasSeenToolCallThisTurn ||
-              toolCalls.length > 0 ||
-              pendingToolCalls > 0;
+              !hasSeenToolCallThisTurn || toolCalls.length > 0 || pendingToolCalls > 0;
             yield {
               type: isReasoning ? 'reasoning' : 'content',
               [isReasoning ? 'reasoning' : 'content']: content,
@@ -481,7 +473,8 @@ export async function* streamAgentResponse(
           const toolCallId = msg.tool_call_id || '';
           if (toolCallId && !yieldedToolResults.has(toolCallId)) {
             yieldedToolResults.add(toolCallId);
-            const result = typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content);
+            const result =
+              typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content);
             yield {
               type: 'tool_result',
               toolCall: {
@@ -533,7 +526,8 @@ export async function* streamAgentResponse(
             const toolCallId = msg.tool_call_id || '';
             if (toolCallId && !yieldedToolResults.has(toolCallId)) {
               yieldedToolResults.add(toolCallId);
-              const result = typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content);
+              const result =
+                typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content);
               yield {
                 type: 'tool_result',
                 toolCall: {
@@ -577,9 +571,9 @@ export async function* streamAgentResponse(
  */
 export const invokeAgent = async (
   agent: ReturnType<typeof createReactAgent>,
-  messages: AgentMessage[]
+  messages: AgentMessage[],
 ): Promise<string> => {
-  const formattedMessages = messages.map(m => ({
+  const formattedMessages = messages.map((m) => ({
     role: m.role,
     content: m.content,
   }));

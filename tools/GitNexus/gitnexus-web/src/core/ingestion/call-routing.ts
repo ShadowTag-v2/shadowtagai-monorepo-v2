@@ -18,10 +18,7 @@ import { SupportedLanguages } from '../../config/supported-languages';
 /** null = this call was not routed; fall through to default call handling */
 export type CallRoutingResult = RubyCallRouting | null;
 
-export type CallRouter = (
-  calledName: string,
-  callNode: any,
-) => CallRoutingResult;
+export type CallRouter = (calledName: string, callNode: any) => CallRoutingResult;
 
 /** No-op router: returns null for every call (passthrough to normal processing) */
 const noRouting: CallRouter = () => null;
@@ -112,7 +109,10 @@ export function routeRubyCall(calledName: string, callNode: any): RubyCallRoutin
     while (current && ++depth <= MAX_PARENT_DEPTH) {
       if (current.type === 'class' || current.type === 'module') {
         const nameNode = current.childForFieldName?.('name');
-        if (nameNode) { enclosingClass = nameNode.text; break; }
+        if (nameNode) {
+          enclosingClass = nameNode.text;
+          break;
+        }
       }
       current = current.parent;
     }
@@ -120,19 +120,27 @@ export function routeRubyCall(calledName: string, callNode: any): RubyCallRoutin
 
     const items: RubyHeritageItem[] = [];
     const argList = callNode.childForFieldName?.('arguments');
-    for (const arg of (argList?.children ?? [])) {
+    for (const arg of argList?.children ?? []) {
       if (arg.type === 'constant' || arg.type === 'scope_resolution') {
-        items.push({ enclosingClass, mixinName: arg.text, heritageKind: calledName as 'include' | 'extend' | 'prepend' });
+        items.push({
+          enclosingClass,
+          mixinName: arg.text,
+          heritageKind: calledName as 'include' | 'extend' | 'prepend',
+        });
       }
     }
     return items.length > 0 ? { kind: 'heritage', items } : SKIP_RESULT;
   }
 
   // ── attr_accessor / attr_reader / attr_writer → property definitions ───
-  if (calledName === 'attr_accessor' || calledName === 'attr_reader' || calledName === 'attr_writer') {
+  if (
+    calledName === 'attr_accessor' ||
+    calledName === 'attr_reader' ||
+    calledName === 'attr_writer'
+  ) {
     const items: RubyPropertyItem[] = [];
     const argList = callNode.childForFieldName?.('arguments');
-    for (const arg of (argList?.children ?? [])) {
+    for (const arg of argList?.children ?? []) {
       if (arg.type === 'simple_symbol') {
         items.push({
           propName: arg.text.startsWith(':') ? arg.text.slice(1) : arg.text,

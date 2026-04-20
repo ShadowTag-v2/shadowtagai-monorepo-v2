@@ -8,11 +8,16 @@
  * BaseFieldExtractor whose behaviour is entirely driven by FieldExtractionConfig.
  */
 
-import type { SyntaxNode } from '../utils/ast-helpers.js';
-import { SupportedLanguages } from '../../../config/supported-languages.js';
-import { BaseFieldExtractor } from '../field-extractor.js';
+import type { SupportedLanguages } from '../../../config/supported-languages.js';
 import type { FieldExtractor } from '../field-extractor.js';
-import type { FieldExtractorContext, ExtractedFields, FieldInfo, FieldVisibility } from '../field-types.js';
+import { BaseFieldExtractor } from '../field-extractor.js';
+import type {
+  ExtractedFields,
+  FieldExtractorContext,
+  FieldInfo,
+  FieldVisibility,
+} from '../field-types.js';
+import type { SyntaxNode } from '../utils/ast-helpers.js';
 
 // ---------------------------------------------------------------------------
 // Config interface
@@ -142,10 +147,7 @@ export function createFieldExtractor(config: FieldExtractionConfig): FieldExtrac
       }
     }
 
-    private extractSingleField(
-      node: SyntaxNode,
-      context: FieldExtractorContext,
-    ): FieldInfo | null {
+    private extractSingleField(node: SyntaxNode, context: FieldExtractorContext): FieldInfo | null {
       const name = config.extractName(node);
       if (!name) return null;
       return this.buildField(node, name, context);

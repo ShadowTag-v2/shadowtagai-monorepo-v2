@@ -5,5 +5,5 @@
  */
 
 // Export everything from preact/compat as if it were React
-export * from "preact/compat";
-export { default } from "preact/compat";
+export * from 'preact/compat';
+export { default } from 'preact/compat';

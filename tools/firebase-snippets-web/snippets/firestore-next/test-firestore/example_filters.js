@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START example_filters_modular]
-const stateQuery = query(citiesRef, where("state", "==", "CA"));
-const populationQuery = query(citiesRef, where("population", "<", 100000));
-const nameQuery = query(citiesRef, where("name", ">=", "San Francisco"));
+const stateQuery = query(citiesRef, where('state', '==', 'CA'));
+const populationQuery = query(citiesRef, where('population', '<', 100000));
+const nameQuery = query(citiesRef, where('name', '>=', 'San Francisco'));
 // [END example_filters_modular]

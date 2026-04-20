@@ -1,5 +1,5 @@
-import OpenAI from "openai";
-import { CONFIG } from "./config";
+import OpenAI from 'openai';
+import { CONFIG } from './config';
 
 export interface EmbeddingProvider {
   generateEmbedding(text: string): Promise<number[]>;
@@ -19,7 +19,7 @@ export class OpenAIEmbeddingProvider implements EmbeddingProvider {
     const response = await this.client.embeddings.create({
       model: CONFIG.TEXT_EMBEDDING_MODEL,
       input: text,
-      encoding_format: "float",
+      encoding_format: 'float',
     });
 
     return response.data[0]?.embedding ?? [];

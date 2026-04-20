@@ -6,9 +6,9 @@
 
 import * as fs from 'fs/promises';
 
-import {MarkdownTable} from '../analyzer/markdown-tree-builder.js';
-import {COMPONENT_CUSTOM_ELEMENTS} from '../component-custom-elements.js';
-import {Bundle, Size, getBundleSize} from './bundle-size.js';
+import { MarkdownTable } from '../analyzer/markdown-tree-builder.js';
+import { COMPONENT_CUSTOM_ELEMENTS } from '../component-custom-elements.js';
+import { type Bundle, getBundleSize, type Size } from './bundle-size.js';
 
 // The bundles to track sizes for.
 
@@ -21,34 +21,30 @@ const bundles: Bundle[] = [
     name: 'common',
     inputs: ['common.js'],
   },
-  ...(
-    Object.keys(COMPONENT_CUSTOM_ELEMENTS) as Array<
-      keyof typeof COMPONENT_CUSTOM_ELEMENTS
-    >
-  ).map((component) => {
-    const tsCustomElementPaths = COMPONENT_CUSTOM_ELEMENTS[component];
-    const jsCustomElementPaths = tsCustomElementPaths.map((tsPath) =>
-      tsPath.replace(/\.ts$/, '.js'),
-    );
+  ...(Object.keys(COMPONENT_CUSTOM_ELEMENTS) as Array<keyof typeof COMPONENT_CUSTOM_ELEMENTS>).map(
+    (component) => {
+      const tsCustomElementPaths = COMPONENT_CUSTOM_ELEMENTS[component];
+      const jsCustomElementPaths = tsCustomElementPaths.map((tsPath) =>
+        tsPath.replace(/\.ts$/, '.js'),
+      );
 
-    return {
-      name: component,
-      inputs: jsCustomElementPaths,
-    };
-  }),
+      return {
+        name: component,
+        inputs: jsCustomElementPaths,
+      };
+    },
+  ),
 ];
 
 // Compute bundle sizes.
 
-const bundleSizes = await Promise.all(
-  bundles.map((bundle) => getBundleSize(bundle)),
-);
+const bundleSizes = await Promise.all(bundles.map((bundle) => getBundleSize(bundle)));
 
 // Create a markdown table with size data.
 
 const columns = ['Component', 'gzip', 'minified', '*% CSS*', 'Import'];
 const rows: string[][] = [];
-for (const {name, size, inputs} of bundleSizes) {
+for (const { name, size, inputs } of bundleSizes) {
   rows.push([
     `**${camelToSentenceCase(name)}**`,
     `**${bytesToString(size.gzip)}**`,
@@ -79,7 +75,7 @@ for (const row of rows) {
 
 // Update markdown file.
 
-const markdownContent = await fs.readFile('docs/size.md', {encoding: 'utf8'});
+const markdownContent = await fs.readFile('docs/size.md', { encoding: 'utf8' });
 const updateTrackingStart = '<!-- MWC_UPDATE_TRACKING_START -->';
 const updateTrackingEnd = '<!-- MWC_UPDATE_TRACKING_END -->';
 

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+import { Storage } from '@google-cloud/storage';
 import { execSync } from 'child_process';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { Storage } from '@google-cloud/storage';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 // Helper function to execute a Gemini CLI command
 const runGeminiCommand = (prompt: string): string => {

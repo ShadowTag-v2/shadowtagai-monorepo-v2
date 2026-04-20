@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_facebook_signin_credential_modular]
-import { getAuth, signInWithCredential, FacebookAuthProvider } from "firebase/auth";
+import { FacebookAuthProvider, getAuth, signInWithCredential } from 'firebase/auth';
 
 // Sign in with the credential from the Facebook user.
 const auth = getAuth();

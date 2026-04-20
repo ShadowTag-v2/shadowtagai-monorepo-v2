@@ -19,16 +19,10 @@ if (window.location.hostname === 'localhost') {
   connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 }
 
-const signInButton = document.getElementById(
-  'quickstart-sign-in',
-)! as HTMLButtonElement;
+const signInButton = document.getElementById('quickstart-sign-in')! as HTMLButtonElement;
 const emailInput = document.getElementById('email')! as HTMLInputElement;
-const signInStatus = document.getElementById(
-  'quickstart-sign-in-status',
-)! as HTMLSpanElement;
-const accountDetails = document.getElementById(
-  'quickstart-account-details',
-)! as HTMLDivElement;
+const signInStatus = document.getElementById('quickstart-sign-in-status')! as HTMLSpanElement;
+const accountDetails = document.getElementById('quickstart-account-details')! as HTMLDivElement;
 
 /**
  * Handles the sign in button press.
@@ -38,7 +32,7 @@ function toggleSignIn() {
   signInButton.disabled = true;
 
   if (auth.currentUser) {
-    signOut(auth).catch(function (error) {
+    signOut(auth).catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -55,20 +49,16 @@ function toggleSignIn() {
     };
 
     sendSignInLinkToEmail(auth, email, actionCodeSettings)
-      .then(function () {
+      .then(() => {
         // Save the email locally so you don’t need to ask the user for it again if they open
         // the link on the same device.
         window.localStorage.setItem('emailForSignIn', email);
         // The link was successfully sent. Inform the user.
-        alert(
-          'An email was sent to ' +
-            email +
-            '. Please use the link in the email to sign-in.',
-        );
+        alert('An email was sent to ' + email + '. Please use the link in the email to sign-in.');
         // Re-enable the sign-in button.
         signInButton.disabled = false;
       })
-      .catch(function (error) {
+      .catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -109,13 +99,9 @@ function handleSignIn() {
     if (email) {
       // The client SDK will parse the code from the link for you.
       signInWithEmailLink(auth, email, window.location.href)
-        .then(function (result) {
+        .then((result) => {
           // Clear the URL to remove the sign-in link parameters.
-          window.history.replaceState(
-            {},
-            document.title,
-            window.location.href.split('?')[0],
-          );
+          window.history.replaceState({}, document.title, window.location.href.split('?')[0]);
           // Clear email from storage.
           window.localStorage.removeItem('emailForSignIn');
           // Signed-in user's information.
@@ -124,7 +110,7 @@ function handleSignIn() {
           const isNewUser = additionalUserInfo?.isNewUser;
           console.log(result);
         })
-        .catch(function (error) {
+        .catch((error) => {
           // Handle Errors here.
           const errorCode = error.code;
           const errorMessage = error.message;
@@ -142,7 +128,7 @@ emailInput.value = email ?? '';
 handleSignIn();
 
 // Listening for auth state changes.
-onAuthStateChanged(auth, function (user) {
+onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in.
     const displayName = user.displayName;

@@ -6,11 +6,8 @@
 
 import '@material/web/switch/switch.js';
 
-import {
-  labelStyles,
-  MaterialStoryInit,
-} from './material-collection.js';
-import {css, html} from 'lit';
+import { css, html } from 'lit';
+import { labelStyles, type MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for Switch stories. */
 export interface StoryKnobs {

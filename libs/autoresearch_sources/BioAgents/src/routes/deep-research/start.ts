@@ -1,15 +1,15 @@
-import { Elysia } from "elysia";
-import { analysisAgent } from "../../agents/analysis";
-import { continueResearchAgent } from "../../agents/continueResearch";
-import { discoveryAgent } from "../../agents/discovery";
-import { fileUploadAgent } from "../../agents/fileUpload";
-import { hypothesisAgent } from "../../agents/hypothesis";
-import { literatureAgent } from "../../agents/literature";
-import { initKnowledgeBase } from "../../agents/literature/knowledge";
-import { planningAgent } from "../../agents/planning";
-import { reflectionAgent } from "../../agents/reflection";
-import { replyAgent } from "../../agents/reply";
-import { getClarificationSessionForUser, linkSessionToConversation } from "../../db/clarification";
+import { Elysia } from 'elysia';
+import { analysisAgent } from '../../agents/analysis';
+import { continueResearchAgent } from '../../agents/continueResearch';
+import { discoveryAgent } from '../../agents/discovery';
+import { fileUploadAgent } from '../../agents/fileUpload';
+import { hypothesisAgent } from '../../agents/hypothesis';
+import { literatureAgent } from '../../agents/literature';
+import { initKnowledgeBase } from '../../agents/literature/knowledge';
+import { planningAgent } from '../../agents/planning';
+import { reflectionAgent } from '../../agents/reflection';
+import { replyAgent } from '../../agents/reply';
+import { getClarificationSessionForUser, linkSessionToConversation } from '../../db/clarification';
 import {
   getConversationState,
   getMessagesByConversation,
@@ -17,11 +17,11 @@ import {
   updateConversationState,
   updateMessage,
   updateState,
-} from "../../db/operations";
-import { authResolver } from "../../middleware/authResolver";
-import { rateLimitMiddleware } from "../../middleware/rateLimiter";
-import { ensureUserAndConversation, setupConversationData } from "../../services/chat/setup";
-import { createMessageRecord } from "../../services/chat/tools";
+} from '../../db/operations';
+import { authResolver } from '../../middleware/authResolver';
+import { rateLimitMiddleware } from '../../middleware/rateLimiter';
+import { ensureUserAndConversation, setupConversationData } from '../../services/chat/setup';
+import { createMessageRecord } from '../../services/chat/tools';
 import {
   acquireStartMutex,
   getActiveRunForDedupFromValues,
@@ -31,20 +31,20 @@ import {
   releaseStartMutex,
   touchRun,
   updateRunJobId,
-} from "../../services/deep-research/run-guard";
-import { isJobQueueEnabled } from "../../services/queue/connection";
-import { notifyMessageUpdated, notifyStateUpdated } from "../../services/queue/notify";
-import { getDeepResearchQueue } from "../../services/queue/queues";
-import type { AuthContext } from "../../types/auth";
-import type { ConversationState, OnPollUpdate, PlanTask, State } from "../../types/core";
+} from '../../services/deep-research/run-guard';
+import { isJobQueueEnabled } from '../../services/queue/connection';
+import { notifyMessageUpdated, notifyStateUpdated } from '../../services/queue/notify';
+import { getDeepResearchQueue } from '../../services/queue/queues';
+import type { AuthContext } from '../../types/auth';
+import type { ConversationState, OnPollUpdate, PlanTask, State } from '../../types/core';
 import {
   calculateSessionStartLevel,
   createContinuationMessage,
   getSessionCompletedTasks,
-} from "../../utils/deep-research/continuation-utils";
-import { getDiscoveryRunConfig } from "../../utils/discovery";
-import logger from "../../utils/logger";
-import { generateUUID } from "../../utils/uuid";
+} from '../../utils/deep-research/continuation-utils';
+import { getDiscoveryRunConfig } from '../../utils/discovery';
+import logger from '../../utils/logger';
+import { generateUUID } from '../../utils/uuid';
 
 initKnowledgeBase();
 
@@ -55,7 +55,7 @@ type DeepResearchStartResponse = {
   messageId: string | null;
   conversationId: string;
   userId: string; // Important: Return userId so external platforms can check status
-  status: "processing";
+  status: 'processing';
   pollUrl?: string; // Full URL for x402 users to check status
   deduplicated?: true;
   error?: string;
@@ -69,7 +69,7 @@ type DeepResearchQueuedResponse = {
   messageId: string;
   conversationId: string;
   userId: string;
-  status: "queued";
+  status: 'queued';
   pollUrl: string;
   deduplicated?: true;
 };
@@ -84,8 +84,8 @@ function buildDeepResearchPollUrl(
   }
 
   const url = new URL(request.url);
-  const forwardedProto = request.headers.get("x-forwarded-proto");
-  const protocol = forwardedProto || url.protocol.replace(":", "");
+  const forwardedProto = request.headers.get('x-forwarded-proto');
+  const protocol = forwardedProto || url.protocol.replace(':', '');
   return `${protocol}://${url.host}/api/deep-research/status/${messageId}`;
 }
 
@@ -104,18 +104,18 @@ export const deepResearchStartRoute = new Elysia().guard(
       authResolver({
         required: true, // Always require auth - no environment-based bypass
       }),
-      rateLimitMiddleware("deep-research"),
+      rateLimitMiddleware('deep-research'),
     ],
   },
   (app) =>
     app
-      .get("/api/deep-research/start", async () => {
+      .get('/api/deep-research/start', async () => {
         return {
-          message: "This endpoint requires POST method.",
-          apiDocumentation: "https://your-docs-url.com/api",
+          message: 'This endpoint requires POST method.',
+          apiDocumentation: 'https://your-docs-url.com/api',
         };
       })
-      .post("/api/deep-research/start", deepResearchStartHandler),
+      .post('/api/deep-research/start', deepResearchStartHandler),
 );
 
 /**
@@ -133,7 +133,7 @@ export async function deepResearchStartHandler(ctx: any) {
     set.status = 400;
     return {
       ok: false,
-      error: "Missing required field: message",
+      error: 'Missing required field: message',
     };
   }
 
@@ -141,18 +141,18 @@ export async function deepResearchStartHandler(ctx: any) {
   // Auth context handles: x402 payment > JWT token > API key > body.userId > anonymous
   const auth = (request as any).auth as AuthContext | undefined;
   let userId = auth?.userId || generateUUID();
-  const source = auth?.method === "x402" ? "x402" : "api";
-  const isX402User = auth?.method === "x402";
+  const source = auth?.method === 'x402' ? 'x402' : 'api';
+  const isX402User = auth?.method === 'x402';
 
   logger.info(
     {
       userId,
-      authMethod: auth?.method || "unknown",
+      authMethod: auth?.method || 'unknown',
       verified: auth?.verified || false,
       source,
       externalId: auth?.externalId,
     },
-    "deep_research_user_identified_via_auth",
+    'deep_research_user_identified_via_auth',
   );
 
   // For x402 users, ensure wallet user record exists and use the actual user ID
@@ -168,7 +168,7 @@ export async function deepResearchStartHandler(ctx: any) {
         wallet: auth.externalId,
         isNewUser: isNew,
       },
-      "x402_user_record_ensured",
+      'x402_user_record_ensured',
     );
   }
 
@@ -177,13 +177,13 @@ export async function deepResearchStartHandler(ctx: any) {
   if (!conversationId) {
     conversationId = generateUUID();
     if (logger) {
-      logger.info({ conversationId, userId }, "auto_generated_conversation_id");
+      logger.info({ conversationId, userId }, 'auto_generated_conversation_id');
     }
   }
 
   // Extract researchMode from request (will be reconciled with conversation state later)
   // Modes: 'semi-autonomous' (default), 'fully-autonomous', 'steering'
-  type ResearchMode = "semi-autonomous" | "fully-autonomous" | "steering";
+  type ResearchMode = 'semi-autonomous' | 'fully-autonomous' | 'steering';
   const requestedResearchMode: ResearchMode | undefined = parsedBody.researchMode;
 
   // Extract clarificationSessionId from request (optional)
@@ -209,9 +209,9 @@ export async function deepResearchStartHandler(ctx: any) {
         message: message,
         fileCount: files.length,
         requestedResearchMode,
-        routeType: "deep-research-v2-start",
+        routeType: 'deep-research-v2-start',
       },
-      "deep_research_start_request_received",
+      'deep_research_start_request_received',
     );
   }
 
@@ -222,7 +222,7 @@ export async function deepResearchStartHandler(ctx: any) {
   });
   if (!setupResult.success) {
     set.status = 500;
-    return { ok: false, error: setupResult.error || "Setup failed" };
+    return { ok: false, error: setupResult.error || 'Setup failed' };
   }
 
   // Setup conversation data
@@ -236,13 +236,13 @@ export async function deepResearchStartHandler(ctx: any) {
   );
   if (!dataSetup.success) {
     set.status = 500;
-    return { ok: false, error: dataSetup.error || "Data setup failed" };
+    return { ok: false, error: dataSetup.error || 'Data setup failed' };
   }
 
   const { conversationStateRecord, stateRecord } = dataSetup.data!;
   const queueEnabled = isJobQueueEnabled();
-  const runMode: "queue" | "in-process" = queueEnabled ? "queue" : "in-process";
-  let researchMode: ResearchMode = "semi-autonomous";
+  const runMode: 'queue' | 'in-process' = queueEnabled ? 'queue' : 'in-process';
+  let researchMode: ResearchMode = 'semi-autonomous';
   let createdMessage: any | null = null;
   let runMarkedStarted = false;
 
@@ -253,17 +253,17 @@ export async function deepResearchStartHandler(ctx: any) {
       conversationId,
       conversationStateId: conversationStateRecord.id,
       stateId: stateRecord.id,
-      messagePreview: message.length > 200 ? message.substring(0, 200) + "..." : message,
+      messagePreview: message.length > 200 ? message.substring(0, 200) + '...' : message,
       messageLength: message.length,
     },
-    "deep_research_state_initialized",
+    'deep_research_state_initialized',
   );
 
   const startMutex = await acquireStartMutex(conversationStateRecord.id);
   if (!startMutex.acquired && !startMutex.fallback) {
     logger.warn(
       { conversationStateId: conversationStateRecord.id },
-      "deep_research_start_proceeding_without_mutex",
+      'deep_research_start_proceeding_without_mutex',
     );
   }
 
@@ -286,16 +286,16 @@ export async function deepResearchStartHandler(ctx: any) {
           activeJobId: activeRun.jobId,
           activeRunMode: activeRun.mode,
         },
-        "deep_research_start_deduplicated_active_run",
+        'deep_research_start_deduplicated_active_run',
       );
 
-      if (activeRun.mode === "queue") {
+      if (activeRun.mode === 'queue') {
         const dedupeResponse: DeepResearchQueuedResponse = {
           ...(activeRun.jobId ? { jobId: activeRun.jobId } : {}),
           messageId: activeRun.messageId,
           conversationId,
           userId,
-          status: "queued",
+          status: 'queued',
           pollUrl,
           deduplicated: true,
         };
@@ -303,7 +303,7 @@ export async function deepResearchStartHandler(ctx: any) {
         return new Response(JSON.stringify(dedupeResponse), {
           status: 202,
           headers: {
-            "Content-Type": "application/json; charset=utf-8",
+            'Content-Type': 'application/json; charset=utf-8',
           },
         });
       }
@@ -312,7 +312,7 @@ export async function deepResearchStartHandler(ctx: any) {
         messageId: activeRun.messageId,
         conversationId,
         userId,
-        status: "processing",
+        status: 'processing',
         pollUrl,
         deduplicated: true,
       };
@@ -320,7 +320,7 @@ export async function deepResearchStartHandler(ctx: any) {
       return new Response(JSON.stringify(dedupeResponse), {
         status: 202,
         headers: {
-          "Content-Type": "application/json; charset=utf-8",
+          'Content-Type': 'application/json; charset=utf-8',
         },
       });
     }
@@ -328,7 +328,7 @@ export async function deepResearchStartHandler(ctx: any) {
     if (isStaleRun(conversationStateRecord.values.deepResearchRun)) {
       await markRunFinished({
         conversationStateId: conversationStateRecord.id,
-        result: "stale_recovered",
+        result: 'stale_recovered',
       });
 
       const refreshedConversationStateRecord = await getConversationState(
@@ -343,13 +343,13 @@ export async function deepResearchStartHandler(ctx: any) {
           conversationId,
           conversationStateId: conversationStateRecord.id,
         },
-        "deep_research_stale_run_recovered",
+        'deep_research_stale_run_recovered',
       );
     }
 
     // Reconcile researchMode: request takes priority, then existing state, then default
     researchMode =
-      requestedResearchMode || conversationStateRecord.values.researchMode || "semi-autonomous";
+      requestedResearchMode || conversationStateRecord.values.researchMode || 'semi-autonomous';
 
     // Save researchMode to conversation state (allows it to change per request)
     conversationStateRecord.values.researchMode = researchMode;
@@ -360,7 +360,7 @@ export async function deepResearchStartHandler(ctx: any) {
         requestedResearchMode,
         stateResearchMode: conversationStateRecord.values.researchMode,
       },
-      "research_mode_resolved",
+      'research_mode_resolved',
     );
 
     // Persist researchMode before run starts so dedupe/continuations see latest mode immediately.
@@ -370,7 +370,7 @@ export async function deepResearchStartHandler(ctx: any) {
     // CLARIFICATION CONTEXT: Process approved plan from clarification session
     // =========================================================================
     if (clarificationSessionId) {
-      logger.info({ clarificationSessionId, userId }, "processing_clarification_session");
+      logger.info({ clarificationSessionId, userId }, 'processing_clarification_session');
 
       // Get and validate clarification session
       const clarificationSession = await getClarificationSessionForUser(
@@ -382,11 +382,11 @@ export async function deepResearchStartHandler(ctx: any) {
         set.status = 404;
         return {
           ok: false,
-          error: "Clarification session not found or access denied",
+          error: 'Clarification session not found or access denied',
         };
       }
 
-      if (clarificationSession.status !== "plan_approved") {
+      if (clarificationSession.status !== 'plan_approved') {
         set.status = 400;
         return {
           ok: false,
@@ -398,7 +398,7 @@ export async function deepResearchStartHandler(ctx: any) {
         set.status = 400;
         return {
           ok: false,
-          error: "Clarification session has no approved plan",
+          error: 'Clarification session has no approved plan',
         };
       }
 
@@ -407,7 +407,7 @@ export async function deepResearchStartHandler(ctx: any) {
         const answer = clarificationSession.answers.find((a) => a.questionIndex === i);
         return {
           question: q.question,
-          answer: answer?.answer || "",
+          answer: answer?.answer || '',
         };
       });
 
@@ -433,7 +433,7 @@ export async function deepResearchStartHandler(ctx: any) {
           initialTaskCount: clarificationSession.plan.initialTasks.length,
           taskTypes: clarificationSession.plan.initialTasks.map((t) => t.type),
         },
-        "clarification_context_with_initial_tasks_stored",
+        'clarification_context_with_initial_tasks_stored',
       );
 
       // Link clarification session to conversation
@@ -448,7 +448,7 @@ export async function deepResearchStartHandler(ctx: any) {
           conversationId,
           qaCount: questionsAndAnswers.length,
         },
-        "clarification_context_added_to_conversation",
+        'clarification_context_added_to_conversation',
       );
     }
 
@@ -466,7 +466,7 @@ export async function deepResearchStartHandler(ctx: any) {
       set.status = 500;
       return {
         ok: false,
-        error: messageResult.error || "Message creation failed",
+        error: messageResult.error || 'Message creation failed',
       };
     }
 
@@ -487,7 +487,7 @@ export async function deepResearchStartHandler(ctx: any) {
     set.status = 500;
     return {
       ok: false,
-      error: "Failed to initialize deep research run",
+      error: 'Failed to initialize deep research run',
     };
   }
 
@@ -499,7 +499,7 @@ export async function deepResearchStartHandler(ctx: any) {
       // QUEUE MODE: Enqueue job and return immediately
       logger.info(
         { messageId: createdMessage.id, conversationId },
-        "deep_research_using_queue_mode",
+        'deep_research_using_queue_mode',
       );
 
       // Process files synchronously before enqueuing (files can't be serialized)
@@ -509,7 +509,7 @@ export async function deepResearchStartHandler(ctx: any) {
           values: conversationStateRecord.values,
         };
 
-        logger.info({ fileCount: files.length }, "processing_file_uploads_before_queue");
+        logger.info({ fileCount: files.length }, 'processing_file_uploads_before_queue');
 
         await fileUploadAgent({
           conversationState,
@@ -529,7 +529,7 @@ export async function deepResearchStartHandler(ctx: any) {
           messageId: createdMessage.id,
           rootMessageId: createdMessage.id,
           message,
-          authMethod: auth?.method || "anonymous",
+          authMethod: auth?.method || 'anonymous',
           stateId: stateRecord.id,
           conversationStateId: conversationStateRecord.id,
           requestedAt: new Date().toISOString(),
@@ -559,7 +559,7 @@ export async function deepResearchStartHandler(ctx: any) {
             messageId: createdMessage.id,
             jobId: job.id,
           },
-          "deep_research_run_job_id_update_failed",
+          'deep_research_run_job_id_update_failed',
         );
       }
 
@@ -569,7 +569,7 @@ export async function deepResearchStartHandler(ctx: any) {
           messageId: createdMessage.id,
           conversationId,
         },
-        "deep_research_job_enqueued",
+        'deep_research_job_enqueued',
       );
 
       const pollUrl = buildDeepResearchPollUrl(request, createdMessage.id, isX402User);
@@ -579,14 +579,14 @@ export async function deepResearchStartHandler(ctx: any) {
         messageId: createdMessage.id,
         conversationId,
         userId,
-        status: "queued",
+        status: 'queued',
         pollUrl,
       };
 
       return new Response(JSON.stringify(response), {
         status: 202, // Accepted
         headers: {
-          "Content-Type": "application/json; charset=utf-8",
+          'Content-Type': 'application/json; charset=utf-8',
         },
       });
     } catch (err) {
@@ -594,15 +594,15 @@ export async function deepResearchStartHandler(ctx: any) {
         try {
           await markRunFinished({
             conversationStateId: conversationStateRecord.id,
-            result: "failed",
-            error: err instanceof Error ? err.message : "Unknown error",
+            result: 'failed',
+            error: err instanceof Error ? err.message : 'Unknown error',
             rootMessageId: createdMessage.id,
             stateId: stateRecord.id,
           });
         } catch (error) {
           logger.warn(
             { error, conversationStateId: conversationStateRecord.id },
-            "deep_research_run_finish_mark_failed_on_queue_error",
+            'deep_research_run_finish_mark_failed_on_queue_error',
           );
         }
       }
@@ -615,7 +615,7 @@ export async function deepResearchStartHandler(ctx: any) {
   // =========================================================================
   logger.info(
     { messageId: createdMessage.id, conversationId },
-    "deep_research_using_in_process_mode",
+    'deep_research_using_in_process_mode',
   );
 
   // Return immediately with message ID
@@ -629,7 +629,7 @@ export async function deepResearchStartHandler(ctx: any) {
     messageId: createdMessage.id,
     conversationId,
     userId, // Important for x402 users who may not have provided one
-    status: "processing",
+    status: 'processing',
     ...(statusPollUrl && { pollUrl: statusPollUrl }),
   };
 
@@ -645,22 +645,22 @@ export async function deepResearchStartHandler(ctx: any) {
       rootMessageId: createdMessage.id,
       conversationStateId: conversationStateRecord.id,
     }).catch((err) => {
-      logger.error({ err, messageId: createdMessage.id }, "deep_research_background_failed");
+      logger.error({ err, messageId: createdMessage.id }, 'deep_research_background_failed');
     });
   } catch (err) {
     if (runMarkedStarted) {
       try {
         await markRunFinished({
           conversationStateId: conversationStateRecord.id,
-          result: "failed",
-          error: err instanceof Error ? err.message : "Unknown error",
+          result: 'failed',
+          error: err instanceof Error ? err.message : 'Unknown error',
           rootMessageId: createdMessage.id,
           stateId: stateRecord.id,
         });
       } catch (error) {
         logger.warn(
           { error, conversationStateId: conversationStateRecord.id },
-          "deep_research_run_finish_mark_failed_on_background_start_error",
+          'deep_research_run_finish_mark_failed_on_background_start_error',
         );
       }
     }
@@ -668,7 +668,7 @@ export async function deepResearchStartHandler(ctx: any) {
   }
 
   if (logger) {
-    logger.info({ messageId: createdMessage.id, conversationId }, "deep_research_started");
+    logger.info({ messageId: createdMessage.id, conversationId }, 'deep_research_started');
   }
 
   return response;
@@ -687,7 +687,7 @@ async function runDeepResearch(params: {
   conversationStateRecord: any;
   createdMessage: any;
   files: File[];
-  researchMode?: "semi-autonomous" | "fully-autonomous" | "steering";
+  researchMode?: 'semi-autonomous' | 'fully-autonomous' | 'steering';
   rootMessageId: string;
   conversationStateId: string;
 }) {
@@ -696,7 +696,7 @@ async function runDeepResearch(params: {
     conversationStateRecord,
     createdMessage,
     files,
-    researchMode = "semi-autonomous",
+    researchMode = 'semi-autonomous',
     rootMessageId,
     conversationStateId,
   } = params;
@@ -725,7 +725,7 @@ async function runDeepResearch(params: {
       const fileResult = await fileUploadAgent({
         conversationState,
         files,
-        userId: state.values.userId || "unknown",
+        userId: state.values.userId || 'unknown',
       });
 
       logger.info(
@@ -734,7 +734,7 @@ async function runDeepResearch(params: {
           errors: fileResult.errors,
           fileCount: files.length,
         },
-        "file_upload_agent_result",
+        'file_upload_agent_result',
       );
     }
 
@@ -743,11 +743,11 @@ async function runDeepResearch(params: {
     // Continues until: research is done, max iterations reached, or agent decides to ask user
     // =========================================================================
     const maxAutoIterations =
-      researchMode === "steering"
+      researchMode === 'steering'
         ? 1 // Steering mode: single iteration, always ask user
-        : researchMode === "fully-autonomous"
+        : researchMode === 'fully-autonomous'
           ? 20 // Fully autonomous: hard cap
-          : parseInt(process.env.MAX_AUTO_ITERATIONS || "5"); // Semi-autonomous: configurable
+          : parseInt(process.env.MAX_AUTO_ITERATIONS || '5'); // Semi-autonomous: configurable
 
     let iterationCount = 0;
     let shouldContinueLoop = true;
@@ -755,8 +755,8 @@ async function runDeepResearch(params: {
     // Variables that need to be accessible after the loop for reply generation
     let tasksToExecute: PlanTask[] = [];
     let hypothesisResult: { hypothesis: string; mode: string } = {
-      hypothesis: "",
-      mode: "create",
+      hypothesis: '',
+      mode: 'create',
     };
 
     // Track the current message being updated (changes when auto-continuing)
@@ -768,7 +768,7 @@ async function runDeepResearch(params: {
     // Track starting level for this user interaction (to gather all tasks across continuations)
     const sessionStartLevel = calculateSessionStartLevel(conversationState.values.currentLevel);
 
-    logger.info({ researchMode, maxAutoIterations }, "starting_autonomous_research_loop");
+    logger.info({ researchMode, maxAutoIterations }, 'starting_autonomous_research_loop');
 
     while (shouldContinueLoop && iterationCount < maxAutoIterations) {
       try {
@@ -780,13 +780,13 @@ async function runDeepResearch(params: {
       } catch (error) {
         logger.warn(
           { error, conversationStateId, rootMessageId },
-          "deep_research_run_heartbeat_failed_at_iteration_start",
+          'deep_research_run_heartbeat_failed_at_iteration_start',
         );
       }
 
       iterationCount++;
       const iterationStartTime = Date.now();
-      logger.info({ iterationCount, maxAutoIterations }, "starting_iteration");
+      logger.info({ iterationCount, maxAutoIterations }, 'starting_iteration');
 
       // Get current level - if skipPlanning, use existing; otherwise run planning agent
       let newLevel: number;
@@ -796,10 +796,10 @@ async function runDeepResearch(params: {
         // CONTINUATION: Tasks already promoted, just get current level
         const currentPlan = conversationState.values.plan || [];
         newLevel = currentPlan.length > 0 ? Math.max(...currentPlan.map((t) => t.level || 0)) : 0;
-        currentObjective = conversationState.values.currentObjective || "";
+        currentObjective = conversationState.values.currentObjective || '';
         skipPlanning = false; // Reset for next iteration
 
-        logger.info({ newLevel, currentObjective }, "continuation_using_promoted_tasks");
+        logger.info({ newLevel, currentObjective }, 'continuation_using_promoted_tasks');
       } else if (
         iterationCount === 1 &&
         conversationState.values.clarificationContext?.initialTasks?.length
@@ -814,7 +814,7 @@ async function runDeepResearch(params: {
             taskCount: initialTasks.length,
             uploadedDatasetCount: uploadedDatasets.length,
           },
-          "using_clarification_initial_tasks",
+          'using_clarification_initial_tasks',
         );
 
         // Get current plan or initialize empty
@@ -828,7 +828,7 @@ async function runDeepResearch(params: {
         // Resolve datasetFilenames to actual dataset objects from uploadedDatasets
         newLevel = maxLevel + 1;
         const newTasks = initialTasks.map((task) => {
-          const taskId = task.type === "ANALYSIS" ? `ana-${newLevel}` : `lit-${newLevel}`;
+          const taskId = task.type === 'ANALYSIS' ? `ana-${newLevel}` : `lit-${newLevel}`;
 
           // Resolve datasetFilenames to full dataset objects
           const resolvedDatasets = (task.datasetFilenames || [])
@@ -840,7 +840,7 @@ async function runDeepResearch(params: {
                     filename,
                     availableDatasets: uploadedDatasets.map((d) => d.filename),
                   },
-                  "clarification_dataset_not_found",
+                  'clarification_dataset_not_found',
                 );
                 return null;
               }
@@ -895,22 +895,22 @@ async function runDeepResearch(params: {
 
           logger.info(
             { newLevel, taskCount: newTasks.length, currentObjective },
-            "clarification_tasks_promoted_to_plan",
+            'clarification_tasks_promoted_to_plan',
           );
         }
       } else {
         // INITIAL: Execute planning agent
         logger.info(
           { suggestedNextSteps: conversationState.values.suggestedNextSteps },
-          "current_suggested_next_steps",
+          'current_suggested_next_steps',
         );
 
         const deepResearchPlanningResult = await planningAgent({
           state,
           conversationState,
           message: createdMessage,
-          mode: "initial",
-          usageType: "deep-research",
+          mode: 'initial',
+          usageType: 'deep-research',
           researchMode,
         });
 
@@ -918,7 +918,7 @@ async function runDeepResearch(params: {
         currentObjective = deepResearchPlanningResult.currentObjective;
 
         if (!plan || !currentObjective) {
-          throw new Error("Plan or current objective not found");
+          throw new Error('Plan or current objective not found');
         }
 
         // Clear previous suggestions since we're starting a new iteration
@@ -934,7 +934,7 @@ async function runDeepResearch(params: {
         // Add new tasks with appropriate level and assign IDs
         newLevel = maxLevel + 1;
         const newTasks = plan.map((task: PlanTask) => {
-          const taskId = task.type === "ANALYSIS" ? `ana-${newLevel}` : `lit-${newLevel}`;
+          const taskId = task.type === 'ANALYSIS' ? `ana-${newLevel}` : `lit-${newLevel}`;
           return {
             ...task,
             id: taskId,
@@ -966,7 +966,7 @@ async function runDeepResearch(params: {
 
           logger.info(
             { newLevel, newTasks, newObjective: currentObjective },
-            "new_tasks_added_to_plan",
+            'new_tasks_added_to_plan',
           );
         }
       }
@@ -1002,19 +1002,19 @@ async function runDeepResearch(params: {
           }
         };
 
-        if (task.type === "LITERATURE") {
+        if (task.type === 'LITERATURE') {
           // Set start timestamp
           task.start = new Date().toISOString();
-          task.output = "";
+          task.output = '';
 
           if (conversationState.id) {
             await writeStateSerialized();
           }
 
-          logger.info({ taskObjective: task.objective }, "executing_literature_task");
+          logger.info({ taskObjective: task.objective }, 'executing_literature_task');
 
           const primaryLiteratureType =
-            process.env.PRIMARY_LITERATURE_AGENT?.toUpperCase() === "BIO" ? "BIOLITDEEP" : "EDISON";
+            process.env.PRIMARY_LITERATURE_AGENT?.toUpperCase() === 'BIO' ? 'BIOLITDEEP' : 'EDISON';
 
           // Build list of literature promises based on configured sources
           const literaturePromises: Promise<void>[] = [];
@@ -1023,18 +1023,18 @@ async function runDeepResearch(params: {
           if (process.env.OPENSCHOLAR_API_URL) {
             const openScholarPromise = literatureAgent({
               objective: task.objective,
-              type: "OPENSCHOLAR",
+              type: 'OPENSCHOLAR',
             }).then(async (result) => {
               if (result.count && result.count > 0) {
                 task.output += `${result.output}\n\n`;
               }
               if (conversationState.id) {
                 await writeStateSerialized();
-                logger.info({ count: result.count }, "openscholar_completed");
+                logger.info({ count: result.count }, 'openscholar_completed');
               }
               logger.info(
                 { outputLength: result.output.length, count: result.count },
-                "openscholar_result_received",
+                'openscholar_result_received',
               );
             });
             literaturePromises.push(openScholarPromise);
@@ -1057,7 +1057,7 @@ async function runDeepResearch(params: {
             }
             logger.info(
               { outputLength: result.output.length, jobId: result.jobId },
-              "primary_literature_result_received",
+              'primary_literature_result_received',
             );
           });
           literaturePromises.push(primaryLiteraturePromise);
@@ -1066,18 +1066,18 @@ async function runDeepResearch(params: {
           if (process.env.KNOWLEDGE_DOCS_PATH) {
             const knowledgePromise = literatureAgent({
               objective: task.objective,
-              type: "KNOWLEDGE",
+              type: 'KNOWLEDGE',
             }).then(async (result) => {
               if (result.count && result.count > 0) {
                 task.output += `${result.output}\n\n`;
               }
               if (conversationState.id) {
                 await writeStateSerialized();
-                logger.info({ count: result.count }, "knowledge_completed");
+                logger.info({ count: result.count }, 'knowledge_completed');
               }
               logger.info(
                 { outputLength: result.output.length, count: result.count },
-                "knowledge_result_received",
+                'knowledge_result_received',
               );
             });
             literaturePromises.push(knowledgePromise);
@@ -1090,12 +1090,12 @@ async function runDeepResearch(params: {
           task.end = new Date().toISOString();
           if (conversationState.id) {
             await writeStateSerialized();
-            logger.info("task_completed");
+            logger.info('task_completed');
           }
-        } else if (task.type === "ANALYSIS") {
+        } else if (task.type === 'ANALYSIS') {
           // Set start timestamp
           task.start = new Date().toISOString();
-          task.output = "";
+          task.output = '';
 
           if (conversationState.id) {
             await writeStateSerialized();
@@ -1106,7 +1106,7 @@ async function runDeepResearch(params: {
               taskObjective: task.objective,
               datasets: task.datasets.map((d) => `${d.filename} (${d.id})`),
             },
-            "executing_analysis_task",
+            'executing_analysis_task',
           );
 
           // Run Edison analysis
@@ -1116,12 +1116,12 @@ async function runDeepResearch(params: {
 
             let analysisResult;
             if (MOCK_ANALYSIS) {
-              logger.info("using_mock_analysis_for_testing");
+              logger.info('using_mock_analysis_for_testing');
               analysisResult = {
                 objective: task.objective,
                 output: `## Differential Gene Expression Analysis: Caloric Restriction vs Control
 
-**Datasets Analyzed:** ${task.datasets.map((d) => d.filename).join(", ")}
+**Datasets Analyzed:** ${task.datasets.map((d) => d.filename).join(', ')}
 
 ### Analysis Approach
 Performed differential expression analysis comparing caloric restriction (CR) vs control groups using normalized read counts. Statistical significance assessed using t-tests with multiple testing correction (FDR < 0.05).
@@ -1186,7 +1186,7 @@ These molecular changes align with established longevity pathways (Converging nu
               };
             } else {
               const type =
-                process.env.PRIMARY_ANALYSIS_AGENT?.toUpperCase() === "BIO" ? "BIO" : "EDISON";
+                process.env.PRIMARY_ANALYSIS_AGENT?.toUpperCase() === 'BIO' ? 'BIO' : 'EDISON';
               const conversationStateId = conversationState.id!; // Use conversation_state ID to match upload path
               analysisResult = await analysisAgent({
                 objective: task.objective,
@@ -1204,19 +1204,19 @@ These molecular changes align with established longevity pathways (Converging nu
 
             if (conversationState.id) {
               await writeStateSerialized();
-              logger.info({ jobId: analysisResult.jobId }, "analysis_completed");
+              logger.info({ jobId: analysisResult.jobId }, 'analysis_completed');
             }
 
-            logger.info({ outputLength: analysisResult.output.length }, "analysis_result_received");
+            logger.info({ outputLength: analysisResult.output.length }, 'analysis_result_received');
           } catch (error) {
             const errorMsg =
               error instanceof Error
                 ? error.message
-                : typeof error === "object" && error !== null
+                : typeof error === 'object' && error !== null
                   ? JSON.stringify(error)
                   : String(error);
             task.output = `Analysis failed: ${errorMsg}`;
-            logger.error({ error, taskObjective: task.objective }, "analysis_failed");
+            logger.error({ error, taskObjective: task.objective }, 'analysis_failed');
           }
 
           // Set end timestamp
@@ -1231,7 +1231,7 @@ These molecular changes align with established longevity pathways (Converging nu
       await Promise.all(taskPromises);
 
       // Step 3: Generate/update hypothesis based on completed tasks
-      logger.info("generating_hypothesis_from_completed_tasks");
+      logger.info('generating_hypothesis_from_completed_tasks');
 
       hypothesisResult = await hypothesisAgent({
         objective: currentObjective,
@@ -1249,12 +1249,12 @@ These molecular changes align with established longevity pathways (Converging nu
             mode: hypothesisResult.mode,
             hypothesis: hypothesisResult.hypothesis,
           },
-          "hypothesis_updated_in_state",
+          'hypothesis_updated_in_state',
         );
       }
 
       // Step 4: Run reflection and discovery agents in parallel
-      logger.info("running_reflection_and_discovery_agents");
+      logger.info('running_reflection_and_discovery_agents');
 
       // Determine if we should run discovery and which tasks to consider
       let shouldRunDiscovery = false;
@@ -1308,7 +1308,7 @@ These molecular changes align with established longevity pathways (Converging nu
           {
             discoveryCount: discoveryResult.discoveries.length,
           },
-          "discoveries_updated",
+          'discoveries_updated',
         );
       }
 
@@ -1320,12 +1320,12 @@ These molecular changes align with established longevity pathways (Converging nu
             discoveries: conversationState.values.discoveries?.length || 0,
             currentObjective: reflectionResult.currentObjective,
           },
-          "world_state_updated_via_reflection_and_discovery",
+          'world_state_updated_via_reflection_and_discovery',
         );
       }
 
       // Step 5: Run planning agent in "next" mode to plan next iteration
-      logger.info("running_next_planning_for_future_iteration");
+      logger.info('running_next_planning_for_future_iteration');
 
       // Clear old suggestions before generating new ones (ensures fresh planning)
       conversationState.values.suggestedNextSteps = [];
@@ -1334,8 +1334,8 @@ These molecular changes align with established longevity pathways (Converging nu
         state,
         conversationState,
         message: createdMessage,
-        mode: "next",
-        usageType: "deep-research",
+        mode: 'next',
+        usageType: 'deep-research',
         researchMode,
       });
 
@@ -1355,15 +1355,15 @@ These molecular changes align with established longevity pathways (Converging nu
             {
               nextPlanningSteps: nextPlanningResult.plan.map(
                 (t) =>
-                  `${t.type} task: ${t.objective} datasets: ${t.datasets.map((d) => `${d.filename} (${d.description})`).join(", ")}`,
+                  `${t.type} task: ${t.objective} datasets: ${t.datasets.map((d) => `${d.filename} (${d.description})`).join(', ')}`,
               ),
               nextObjective: nextPlanningResult.currentObjective,
             },
-            "next_iteration_suggestions_saved",
+            'next_iteration_suggestions_saved',
           );
         }
       } else {
-        logger.info("no_next_iteration_tasks_suggested_research_complete_or_awaiting_feedback");
+        logger.info('no_next_iteration_tasks_suggested_research_complete_or_awaiting_feedback');
         // No suggested next steps means research is complete - exit loop
         shouldContinueLoop = false;
       }
@@ -1398,7 +1398,7 @@ These molecular changes align with established longevity pathways (Converging nu
             triggerReason: continueResult.triggerReason,
             iterationCount,
           },
-          "continue_research_decision",
+          'continue_research_decision',
         );
 
         if (continueResult.shouldContinue) {
@@ -1408,7 +1408,7 @@ These molecular changes align with established longevity pathways (Converging nu
           shouldContinueLoop = false;
           logger.info(
             { triggerReason: continueResult.triggerReason, iterationCount },
-            "stopping_for_user_feedback",
+            'stopping_for_user_feedback',
           );
         }
       } else {
@@ -1422,7 +1422,7 @@ These molecular changes align with established longevity pathways (Converging nu
       // =========================================================================
       logger.info(
         { iterationCount, messageId: currentMessage.id, isFinal },
-        "generating_reply_for_iteration",
+        'generating_reply_for_iteration',
       );
 
       // Get completed tasks from this session, limited to last 3 levels max
@@ -1440,7 +1440,7 @@ These molecular changes align with established longevity pathways (Converging nu
           newLevel,
           totalPlanTasks: (conversationState.values.plan || []).length,
         },
-        "reply_tasks_filtered",
+        'reply_tasks_filtered',
       );
 
       const replyResult = await replyAgent({
@@ -1466,7 +1466,7 @@ These molecular changes align with established longevity pathways (Converging nu
           iterationCount,
           contentLength: replyResult.reply.length,
         },
-        "iteration_reply_saved",
+        'iteration_reply_saved',
       );
 
       // Notify client that message is ready
@@ -1485,7 +1485,7 @@ These molecular changes align with established longevity pathways (Converging nu
       } catch (error) {
         logger.warn(
           { error, conversationStateId, rootMessageId },
-          "deep_research_run_heartbeat_failed_after_iteration_reply",
+          'deep_research_run_heartbeat_failed_after_iteration_reply',
         );
       }
 
@@ -1496,7 +1496,7 @@ These molecular changes align with established longevity pathways (Converging nu
         // CONTINUE: Promote suggestedNextSteps to plan for next iteration
         skipPlanning = true; // Skip planning in next iteration - use promoted tasks
 
-        logger.info({ iterationCount }, "auto_continuing_to_next_iteration");
+        logger.info({ iterationCount }, 'auto_continuing_to_next_iteration');
 
         // Get current max level
         const currentPlan = conversationState.values.plan || [];
@@ -1506,7 +1506,7 @@ These molecular changes align with established longevity pathways (Converging nu
 
         // Promote suggested steps to plan with new level and IDs
         const promotedTasks = conversationState.values.suggestedNextSteps.map((task: PlanTask) => {
-          const taskId = task.type === "ANALYSIS" ? `ana-${nextLevel}` : `lit-${nextLevel}`;
+          const taskId = task.type === 'ANALYSIS' ? `ana-${nextLevel}` : `lit-${nextLevel}`;
           return {
             ...task,
             id: taskId,
@@ -1529,7 +1529,7 @@ These molecular changes align with established longevity pathways (Converging nu
               nextLevel,
               promotedTaskCount: promotedTasks.length,
             },
-            "suggested_steps_promoted_to_plan",
+            'suggested_steps_promoted_to_plan',
           );
         }
 
@@ -1543,7 +1543,7 @@ These molecular changes align with established longevity pathways (Converging nu
             previousMessageId: currentMessage.id,
             iterationCount: iterationCount + 1,
           },
-          "created_agent_continuation_message",
+          'created_agent_continuation_message',
         );
 
         // Update currentMessage to point to the new message for next iteration
@@ -1556,7 +1556,7 @@ These molecular changes align with established longevity pathways (Converging nu
     // =========================================================================
     logger.info(
       { totalIterations: iterationCount, finalMessageId: currentMessage.id },
-      "autonomous_loop_completed",
+      'autonomous_loop_completed',
     );
 
     logger.info(
@@ -1566,44 +1566,44 @@ These molecular changes align with established longevity pathways (Converging nu
         conversationId: createdMessage.conversation_id,
         totalIterations: iterationCount,
       },
-      "deep_research_completed",
+      'deep_research_completed',
     );
 
     try {
       await markRunFinished({
         conversationStateId,
-        result: "completed",
+        result: 'completed',
         rootMessageId,
         stateId: stateRecord.id,
       });
     } catch (error) {
       logger.warn(
         { error, conversationStateId, rootMessageId },
-        "deep_research_run_finish_mark_failed_on_success",
+        'deep_research_run_finish_mark_failed_on_success',
       );
     }
   } catch (err) {
-    logger.error({ err, messageId: createdMessage.id }, "deep_research_execution_failed");
+    logger.error({ err, messageId: createdMessage.id }, 'deep_research_execution_failed');
 
     // Update state to mark as failed
     await updateState(stateRecord.id, {
       ...stateRecord.values,
-      error: err instanceof Error ? err.message : "Unknown error",
-      status: "failed",
+      error: err instanceof Error ? err.message : 'Unknown error',
+      status: 'failed',
     });
 
     try {
       await markRunFinished({
         conversationStateId,
-        result: "failed",
-        error: err instanceof Error ? err.message : "Unknown error",
+        result: 'failed',
+        error: err instanceof Error ? err.message : 'Unknown error',
         rootMessageId,
         stateId: stateRecord.id,
       });
     } catch (error) {
       logger.warn(
         { error, conversationStateId, rootMessageId },
-        "deep_research_run_finish_mark_failed_on_failure",
+        'deep_research_run_finish_mark_failed_on_failure',
       );
     }
   }

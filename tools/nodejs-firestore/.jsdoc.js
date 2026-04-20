@@ -16,8 +16,6 @@
 // ** https://github.com/googleapis/gapic-generator-typescript **
 // ** All changes to this file may be overwritten. **
 
-'use strict';
-
 module.exports = {
   opts: {
     readme: './README.md',
@@ -25,19 +23,13 @@ module.exports = {
     template: './node_modules/jsdoc-fresh',
     recurse: true,
     verbose: true,
-    destination: './docs/'
+    destination: './docs/',
   },
-  plugins: [
-    'plugins/markdown',
-    'jsdoc-region-tag'
-  ],
+  plugins: ['plugins/markdown', 'jsdoc-region-tag'],
   source: {
     excludePattern: '(^|\\/|\\\\)[._]',
-    include: [
-      'build/src',
-      'build/protos'
-    ],
-    includePattern: '\\.js$'
+    include: ['build/src', 'build/protos'],
+    includePattern: '\\.js$',
   },
   templates: {
     copyright: 'Copyright 2025 Google LLC',
@@ -46,10 +38,10 @@ module.exports = {
     systemName: '@google-cloud/firestore',
     theme: 'lumen',
     default: {
-      outputSourceFiles: false
-    }
+      outputSourceFiles: false,
+    },
   },
   markdown: {
-    idInHeadings: true
-  }
+    idInHeadings: true,
+  },
 };

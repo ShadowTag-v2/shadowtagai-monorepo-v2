@@ -6,7 +6,7 @@
       "@/components/*": ["src/components/*"],
       "@/assets/*": ["assets/*"],
       "@/pages/*": ["src/pages/*"],
-      "@/layout/*": ["src/layout/*"],
+      "@/layout/*": ["src/layout/*"]
     },
     "target": "es2020",
     "lib": ["dom", "dom.iterable", "esnext"],

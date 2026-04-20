@@ -7,33 +7,30 @@
 import './material-collection.js';
 import './index.js';
 
+import { boolInput, Knob, selectDropdown } from './index.js';
 import {
-  KnobTypesToKnobs,
+  type KnobTypesToKnobs,
   MaterialCollection,
   materialInitsToStoryInits,
   setUpDemo,
 } from './material-collection.js';
-import {boolInput, Knob, selectDropdown} from './index.js';
 
-import {stories, StoryKnobs} from './stories.js';
+import { type StoryKnobs, stories } from './stories.js';
 
-const collection = new MaterialCollection<KnobTypesToKnobs<StoryKnobs>>(
-  'Card',
-  [
-    new Knob('color', {
-      ui: selectDropdown({
-        options: [
-          {value: 'filled', label: 'Filled'},
-          {value: 'outlined', label: 'Outlined'},
-          {value: 'elevated', label: 'Elevated'},
-        ],
-      }),
+const collection = new MaterialCollection<KnobTypesToKnobs<StoryKnobs>>('Card', [
+  new Knob('color', {
+    ui: selectDropdown({
+      options: [
+        { value: 'filled', label: 'Filled' },
+        { value: 'outlined', label: 'Outlined' },
+        { value: 'elevated', label: 'Elevated' },
+      ],
     }),
-    new Knob('disabled', {ui: boolInput()}),
-    new Knob('interactive', {ui: boolInput()}),
-  ],
-);
+  }),
+  new Knob('disabled', { ui: boolInput() }),
+  new Knob('interactive', { ui: boolInput() }),
+]);
 
 collection.addStories(...materialInitsToStoryInits(stories));
 
-setUpDemo(collection, {fonts: 'roboto', icons: 'material-symbols'});
+setUpDemo(collection, { fonts: 'roboto', icons: 'material-symbols' });

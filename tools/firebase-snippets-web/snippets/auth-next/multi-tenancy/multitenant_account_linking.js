@@ -5,7 +5,14 @@
 // 'npm run snippets'.
 
 // [START multitenant_account_linking_modular]
-import { signInWithPopup, EmailAuthProvider, linkWithCredential, SAMLAuthProvider, signInWithCredential } from "firebase/auth";
+import {
+  EmailAuthProvider,
+  linkWithCredential,
+  SAMLAuthProvider,
+  signInWithCredential,
+  signInWithPopup,
+} from 'firebase/auth';
+
 // Switch to TENANT_ID1
 auth.tenantId = 'TENANT_ID1';
 
@@ -14,8 +21,7 @@ signInWithPopup(auth, provider)
   .then((userCredential) => {
     // Existing user with e.g. SAML provider.
     const prevUser = userCredential.user;
-    const emailCredential =
-      EmailAuthProvider.credential(email, password);
+    const emailCredential = EmailAuthProvider.credential(email, password);
     return linkWithCredential(prevUser, emailCredential)
       .then((linkResult) => {
         // Sign in with the newly linked credential

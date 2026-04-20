@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import "../src/polyfill.js";
+import '../src/polyfill.js';
 
-import path from "node:path";
-import { it } from "node:test";
+import path from 'node:path';
+import { it } from 'node:test';
 
 if (!it.snapshot) {
   it.snapshot = {
@@ -24,8 +24,8 @@ if (!it.snapshot) {
 it.snapshot.setResolveSnapshotPath((testPath) => {
   // By default the snapshots go into the build directory, but we want them
   // in the tests/ directory.
-  const correctPath = testPath?.replace(path.join("build", "tests"), "tests");
-  return correctPath + ".snapshot";
+  const correctPath = testPath?.replace(path.join('build', 'tests'), 'tests');
+  return correctPath + '.snapshot';
 });
 
 // The default serializer is JSON.stringify which outputs a very hard to read

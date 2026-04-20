@@ -35,7 +35,11 @@ async function main() {
   const extensionDir =
     process.env.EXTENSION_DIR || path.join(os.homedir(), '.gemini/extensions/pickle-rick');
 
-  const stateFile = resolveStateFilePath(extensionDir, process.cwd(), process.env.PICKLE_STATE_FILE);
+  const stateFile = resolveStateFilePath(
+    extensionDir,
+    process.cwd(),
+    process.env.PICKLE_STATE_FILE,
+  );
   if (!stateFile) {
     console.log(JSON.stringify({ decision: 'allow' }));
     return;
@@ -50,7 +54,10 @@ async function main() {
   }
 
   if (!isSamePathOrDescendant(process.cwd(), state.working_dir)) {
-    log('INFO', `Skipped due to cwd mismatch. cwd=${process.cwd()} working_dir=${state.working_dir}`);
+    log(
+      'INFO',
+      `Skipped due to cwd mismatch. cwd=${process.cwd()} working_dir=${state.working_dir}`,
+    );
     console.log(JSON.stringify({ decision: 'allow' }));
     return;
   }
@@ -80,7 +87,7 @@ async function main() {
       continue: false,
       reason,
       stopReason: reason,
-    })
+    }),
   );
 }
 

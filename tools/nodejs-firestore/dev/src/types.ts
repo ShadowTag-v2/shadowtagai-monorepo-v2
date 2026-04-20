@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import {
+import type {
+  DocumentData,
   FirestoreDataConverter,
   QueryDocumentSnapshot,
-  DocumentData,
   WithFieldValue,
 } from '@google-cloud/firestore';
 
-import {CallOptions} from 'google-gax';
-import {Duplex} from 'stream';
+import type { CallOptions } from 'google-gax';
+import type { Duplex } from 'stream';
 
-import {google} from '../protos/firestore_v1_proto_api';
-import {FieldPath} from './path';
+import { google } from '../protos/firestore_v1_proto_api';
+import type { FieldPath } from './path';
 
 import api = google.firestore.v1;
 
@@ -60,19 +60,10 @@ export interface GapicClient {
     request: api.IRollbackRequest,
     options?: CallOptions,
   ): Promise<[google.protobuf.IEmpty, unknown, unknown]>;
-  batchGetDocuments(
-    request?: api.IBatchGetDocumentsRequest,
-    options?: CallOptions,
-  ): Duplex;
-  executePipeline(
-    request?: api.IExecutePipelineRequest,
-    options?: CallOptions,
-  ): Duplex;
+  batchGetDocuments(request?: api.IBatchGetDocumentsRequest, options?: CallOptions): Duplex;
+  executePipeline(request?: api.IExecutePipelineRequest, options?: CallOptions): Duplex;
   runQuery(request?: api.IRunQueryRequest, options?: CallOptions): Duplex;
-  runAggregationQuery(
-    request?: api.IRunAggregationQueryRequest,
-    options?: CallOptions,
-  ): Duplex;
+  runAggregationQuery(request?: api.IRunAggregationQueryRequest, options?: CallOptions): Duplex;
   listDocuments(
     request: api.IListDocumentsRequest,
     options?: CallOptions,
@@ -82,10 +73,7 @@ export interface GapicClient {
     options?: CallOptions,
   ): Promise<[string[], unknown, unknown]>;
   listen(options?: CallOptions): Duplex;
-  partitionQueryStream(
-    request?: api.IPartitionQueryRequest,
-    options?: CallOptions,
-  ): Duplex;
+  partitionQueryStream(request?: api.IPartitionQueryRequest, options?: CallOptions): Duplex;
   close(): Promise<void>;
 }
 
@@ -145,10 +133,7 @@ export function defaultConverter<
   AppModelType,
   DbModelType extends DocumentData,
 >(): FirestoreDataConverter<AppModelType, DbModelType> {
-  return defaultConverterObj as FirestoreDataConverter<
-    AppModelType,
-    DbModelType
-  >;
+  return defaultConverterObj as FirestoreDataConverter<AppModelType, DbModelType>;
 }
 
 /**

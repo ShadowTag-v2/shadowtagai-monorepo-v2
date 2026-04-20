@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Environment} from '../testing/environment.js';
-import {createTokenTests} from '../testing/tokens.js';
+import { Environment } from '../testing/environment.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdDialog} from './dialog.js';
-import {DialogHarness} from './harness.js';
+import { MdDialog } from './dialog.js';
+import { DialogHarness } from './harness.js';
 
 describe('<md-dialog>', () => {
   const env = new Environment();
@@ -51,7 +51,7 @@ describe('<md-dialog>', () => {
       throw new Error('Failed to query rendered autofocus element.');
     }
 
-    return {harness, root, dialogElement, contentElement, focusElement};
+    return { harness, root, dialogElement, contentElement, focusElement };
   }
 
   describe('.styles', () => {
@@ -60,7 +60,7 @@ describe('<md-dialog>', () => {
 
   describe('basic', () => {
     it('open property calls show() and close()', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       spyOn(harness.element, 'show');
       spyOn(harness.element, 'close');
 
@@ -74,7 +74,7 @@ describe('<md-dialog>', () => {
     });
 
     it('renders open state by calling show()/close()', async () => {
-      const {harness, dialogElement} = await setupTest();
+      const { harness, dialogElement } = await setupTest();
       await harness.element.show();
       expect(dialogElement.open).toBeTrue();
       await harness.element.close();
@@ -82,7 +82,7 @@ describe('<md-dialog>', () => {
     });
 
     it('fires open/close events', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       const openHandler = jasmine.createSpy('openHandler');
       const openedHandler = jasmine.createSpy('openedHandler');
       const closeHandler = jasmine.createSpy('closeHandler');
@@ -105,7 +105,7 @@ describe('<md-dialog>', () => {
     });
 
     it('closes when element with action is clicked', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       await harness.element.show();
       const closedPromise = new Promise<void>((resolve) => {
         harness.element.addEventListener(
@@ -113,20 +113,18 @@ describe('<md-dialog>', () => {
           () => {
             resolve();
           },
-          {once: true},
+          { once: true },
         );
       });
 
-      harness.element
-        .querySelector<HTMLButtonElement>('[value="button"]')!
-        .click();
+      harness.element.querySelector<HTMLButtonElement>('[value="button"]')!.click();
       await closedPromise;
       expect(harness.element.open).toBeFalse();
       expect(harness.element.returnValue).toBe('button');
     });
 
     it('closes with click outside dialog', async () => {
-      const {harness, dialogElement, contentElement} = await setupTest();
+      const { harness, dialogElement, contentElement } = await setupTest();
       const isClosing = jasmine.createSpy('isClosing');
       harness.element.addEventListener('close', isClosing);
       await harness.element.show();
@@ -138,7 +136,7 @@ describe('<md-dialog>', () => {
     });
 
     it('focuses element with autofocus when shown and previously focused element when closed', async () => {
-      const {harness, focusElement} = await setupTest();
+      const { harness, focusElement } = await setupTest();
       const button = document.createElement('button');
       document.body.append(button);
       button.focus();
@@ -152,7 +150,7 @@ describe('<md-dialog>', () => {
   });
 
   it('should set returnValue during the close event', async () => {
-    const {harness} = await setupTest();
+    const { harness } = await setupTest();
 
     let returnValueDuringClose = '';
     harness.element.addEventListener('close', () => {
@@ -168,7 +166,7 @@ describe('<md-dialog>', () => {
   });
 
   it('should not change returnValue if close event is canceled', async () => {
-    const {harness} = await setupTest();
+    const { harness } = await setupTest();
 
     harness.element.addEventListener('close', (event) => {
       event.preventDefault();
@@ -195,9 +193,7 @@ describe('<md-dialog>', () => {
     const root = env.render(html``);
     root.appendChild(dialog);
     await env.waitForStability();
-    expect(openListener)
-      .withContext('opens after connecting')
-      .toHaveBeenCalled();
+    expect(openListener).withContext('opens after connecting').toHaveBeenCalled();
   });
 
   it('should not open on connected if opened, but closed before connected to DOM', async () => {
@@ -227,14 +223,12 @@ describe('<md-dialog>', () => {
     dialog.open = false;
     await env.waitForStability();
     expect(openListener)
-      .withContext(
-        'should not open on connected since close was called before open could complete',
-      )
+      .withContext('should not open on connected since close was called before open could complete')
       .not.toHaveBeenCalled();
   });
 
   it('should not dispatch close if closed while disconnected', async () => {
-    const {harness, root} = await setupTest();
+    const { harness, root } = await setupTest();
     await harness.element.show();
 
     const closeListener = jasmine.createSpy('closeListener');

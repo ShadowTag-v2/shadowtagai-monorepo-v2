@@ -1,4 +1,4 @@
-import { getUser, fetchUserAsync } from './service';
+import { fetchUserAsync, getUser } from './service';
 
 function processUser() {
   const user = getUser('alice');

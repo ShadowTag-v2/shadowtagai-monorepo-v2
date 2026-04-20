@@ -5,18 +5,18 @@
 // 'npm run snippets'.
 
 // [START app_multi_project_init_options_modular]
-import { initializeApp, getApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
-import { getFirestore } from "firebase/firestore";
+import { getApp, initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 // Initialize Firebase with a default Firebase project
 initializeApp(firebaseConfig);
 
 // Initialize Firebase with a second Firebase project
-const otherProject = initializeApp(otherProjectFirebaseConfig, "other");
+const otherProject = initializeApp(otherProjectFirebaseConfig, 'other');
 
-console.log(getApp().name);  // "[DEFAULT]"
-console.log(otherProject.name);    // "otherProject"
+console.log(getApp().name); // "[DEFAULT]"
+console.log(otherProject.name); // "otherProject"
 
 // Use the shorthand notation to access the default project's Firebase services
 const defaultStorage = getStorage();

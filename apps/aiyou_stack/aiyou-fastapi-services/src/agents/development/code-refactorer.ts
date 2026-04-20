@@ -10,20 +10,20 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from "../../types/agent.types";
-import { BaseAgent } from "../../utils/base-agent";
+} from '../../types/agent.types';
+import { BaseAgent } from '../../utils/base-agent';
 
 export class CodeRefactorerAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: "code-refactorer",
-    name: "Code Refactorer",
-    category: "development",
-    description: "Cleans up that code you wrote at 3am. Makes it readable, fast, and maintainable.",
-    tagline: "Code quality and maintainability improvements",
-    capabilities: ["analysis", "implementation", "optimization"],
-    tags: ["refactoring", "clean-code", "readability", "maintainability", "code-quality"],
-    difficulty: "intermediate",
-    estimatedTime: "1-3 hours",
+    id: 'code-refactorer',
+    name: 'Code Refactorer',
+    category: 'development',
+    description: 'Cleans up that code you wrote at 3am. Makes it readable, fast, and maintainable.',
+    tagline: 'Code quality and maintainability improvements',
+    capabilities: ['analysis', 'implementation', 'optimization'],
+    tags: ['refactoring', 'clean-code', 'readability', 'maintainability', 'code-quality'],
+    difficulty: 'intermediate',
+    estimatedTime: '1-3 hours',
   };
 
   prompt: AgentPromptTemplate = {
@@ -47,37 +47,37 @@ Make code self-documenting. If it needs a comment to explain, refactor it to be 
   };
 
   tools: AgentTools = {
-    required: ["Glob", "Read", "Grep", "Edit"],
-    optional: ["Bash"],
+    required: ['Glob', 'Read', 'Grep', 'Edit'],
+    optional: ['Bash'],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: "Code Smell Detection",
-        description: "Identify code smells and anti-patterns",
-        action: "Scan for long methods, duplication, complexity",
+        name: 'Code Smell Detection',
+        description: 'Identify code smells and anti-patterns',
+        action: 'Scan for long methods, duplication, complexity',
       },
       {
-        name: "Prioritization",
-        description: "Rank refactoring opportunities by impact",
-        action: "Score by maintainability impact",
+        name: 'Prioritization',
+        description: 'Rank refactoring opportunities by impact',
+        action: 'Score by maintainability impact',
       },
       {
-        name: "Refactoring",
-        description: "Apply clean code transformations",
-        action: "Extract, rename, simplify, eliminate duplication",
+        name: 'Refactoring',
+        description: 'Apply clean code transformations',
+        action: 'Extract, rename, simplify, eliminate duplication',
       },
       {
-        name: "Validation",
-        description: "Ensure functionality preserved",
-        action: "Run tests and verify behavior",
+        name: 'Validation',
+        description: 'Ensure functionality preserved',
+        action: 'Run tests and verify behavior',
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow["steps"][0],
+    step: AgentWorkflow['steps'][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

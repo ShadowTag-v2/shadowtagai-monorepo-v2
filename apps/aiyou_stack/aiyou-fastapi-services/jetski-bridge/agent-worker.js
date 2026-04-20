@@ -22,7 +22,7 @@ const model = vertexAI.getGenerativeModel({ model: 'gemini-1.5-pro-preview-0409'
 
 // --- MAIN LOOP ---
 async function startWorker() {
-  console.log("🚀 Agent Worker Started. Waiting for tasks...");
+  console.log('🚀 Agent Worker Started. Waiting for tasks...');
 
   // Listen to the 'tasks' collection for status = 'queued'
   const taskCollection = firestore.collection('agent_tasks');
@@ -38,8 +38,12 @@ async function startWorker() {
     try {
       await firestore.runTransaction(async (t) => {
         const freshDoc = await t.get(doc.ref);
-        if (freshDoc.data().status !== 'queued') throw "Already taken";
-        t.update(doc.ref, { status: 'processing', workerId: process.env.HOSTNAME || 'local-worker', startTime: new Date() });
+        if (freshDoc.data().status !== 'queued') throw 'Already taken';
+        t.update(doc.ref, {
+          status: 'processing',
+          workerId: process.env.HOSTNAME || 'local-worker',
+          startTime: new Date(),
+        });
       });
     } catch (e) {
       return; // Another worker grabbed it
@@ -62,7 +66,6 @@ async function startWorker() {
         a2ui_render: generateA2UI(doc.id, resultData, storagePath) # A2UI Output
       });
       console.log(`✅ Task ${doc.id} Complete.`);
-
     } catch (err) {
       console.error(`❌ Task Failed:`, err);
       await doc.ref.update({ status: 'failed', error: err.message });
@@ -79,14 +82,15 @@ async function runAgentTask(goal) {
     // A. Get State from Browser (via Bridge)
     // We assume the bridge has a /snapshot endpoint, or we ask it to execute extraction
     try {
-        const screenshotResp = await axios.post(BRIDGE_URL, {
-          action: "exec",
-          payload: { code: "await chrome.tabs.captureVisibleTab(null, {format: 'png'})" }
-        });
-        var base64Image = screenshotResp.data.result; // The Bridge returns the raw result
+      const screenshotResp = await axios.post(BRIDGE_URL, {
+        action: 'exec',
+        payload: { code: "await chrome.tabs.captureVisibleTab(null, {format: 'png'})" },
+      });
+      var base64Image = screenshotResp.data.result; // The Bridge returns the raw result
     } catch (e) {
-        console.warn("Bridge snapshot failed (is it running?), using Mock Image");
-        var base64Image = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
+      console.warn('Bridge snapshot failed (is it running?), using Mock Image');
+      var base64Image =
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
     }
 
     // B. Ask Gemini (Vertex AI)
@@ -104,7 +108,12 @@ async function runAgentTask(goal) {
     `;
 
     const req = {
-      contents: [{ role: 'user', parts: [{ text: prompt }, { inlineData: { mimeType: 'image/png', data: base64Image } }] }]
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: prompt }, { inlineData: { mimeType: 'image/png', data: base64Image } }],
+        },
+      ],
     };
 
     const streamingResp = await model.generateContentStream(req);
@@ -127,26 +136,28 @@ async function runAgentTask(goal) {
     let bridgePayload = {};
 
     if (decision.action === 'navigate') {
-        bridgePayload = { action: "navigate", payload: { url: decision.params.url }};
+      bridgePayload = { action: 'navigate', payload: { url: decision.params.url } };
     } else if (decision.action === 'click') {
-        bridgePayload = {
-            action: "exec",
-            payload: { code: `document.querySelector('${decision.params.selector}').click()` }
-        };
+      bridgePayload = {
+        action: 'exec',
+        payload: { code: `document.querySelector('${decision.params.selector}').click()` },
+      };
     } else if (decision.action === 'type') {
-        bridgePayload = {
-            action: "exec",
-            payload: { code: `document.querySelector('${decision.params.selector}').value = '${decision.params.text}'` }
-        };
+      bridgePayload = {
+        action: 'exec',
+        payload: {
+          code: `document.querySelector('${decision.params.selector}').value = '${decision.params.text}'`,
+        },
+      };
     }
 
     await axios.post(BRIDGE_URL, bridgePayload);
 
     // Wait for page load/interaction
-    await new Promise(r => setTimeout(r, 4000));
+    await new Promise((r) => setTimeout(r, 4000));
     step++;
   }
-  throw new Error("Max steps reached without result");
+  throw new Error('Max steps reached without result');
 }
 
 // --- THE DATA ENGINEER ---
@@ -163,7 +174,7 @@ async function persistData(taskId, dataObj) {
 
   // 2. Upload to DATA LAKE (Cold/Analytical)
   const date = new Date();
-  const partition = `year=${date.getFullYear()}/month=${date.getMonth()+1}/day=${date.getDate()}`;
+  const partition = `year=${date.getFullYear()}/month=${date.getMonth() + 1}/day=${date.getDate()}`;
   const gcsPath = `raw_data/${partition}/${fileName}`;
 
   await storage.bucket(LAKE_BUCKET).upload(localPath, {
@@ -172,9 +183,9 @@ async function persistData(taskId, dataObj) {
       contentType: 'application/json',
       metadata: {
         taskId: taskId,
-        source: 'agent-v1'
-      }
-    }
+        source: 'agent-v1',
+      },
+    },
   });
 
   console.log(`🌊 Uploaded to Lake: gs://${LAKE_BUCKET}/${gcsPath}`);
@@ -184,23 +195,23 @@ async function persistData(taskId, dataObj) {
 // --- A2UI GENERATOR ---
 function generateA2UI(taskId, dataObj, storagePath) {
   return {
-    "component": "Panel",
-    "title": "Extraction Complete",
-    "children": [
+    component: 'Panel',
+    title: 'Extraction Complete',
+    children: [
       {
-        "component": "InteractiveChart",
-        "type": "summary",
-        "data": { "value": dataObj.total || 0, "label": "Total Value" }
+        component: 'InteractiveChart',
+        type: 'summary',
+        data: { value: dataObj.total || 0, label: 'Total Value' },
       },
       {
-        "component": "DynamicForm",
-        "fields": [
-            { "label": "Source", "value": dataObj.vendor || "Unknown", "readonly": true },
-            { "label": "Date", "value": new Date().toISOString(), "readonly": true },
-            { "label": "GCS Link", "value": storagePath, "type": "link", "readonly": true }
-        ]
-      }
-    ]
+        component: 'DynamicForm',
+        fields: [
+          { label: 'Source', value: dataObj.vendor || 'Unknown', readonly: true },
+          { label: 'Date', value: new Date().toISOString(), readonly: true },
+          { label: 'GCS Link', value: storagePath, type: 'link', readonly: true },
+        ],
+      },
+    ],
   };
 }
 

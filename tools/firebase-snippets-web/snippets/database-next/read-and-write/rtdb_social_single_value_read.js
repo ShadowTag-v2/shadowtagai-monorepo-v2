@@ -4,9 +4,9 @@
 // To update the snippets in this file, edit the source and then run
 // 'npm run snippets'.
 
+import { getAuth } from 'firebase/auth';
 // [START rtdb_social_single_value_read_modular]
-import { getDatabase, ref, onValue } from "firebase/database";
-import { getAuth } from "firebase/auth";
+import { getDatabase, onValue, ref } from 'firebase/database';
 
 const db = getDatabase();
 const auth = getAuth();

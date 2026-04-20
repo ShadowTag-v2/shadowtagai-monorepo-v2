@@ -5,15 +5,17 @@
 // 'npm run snippets'.
 
 // [START send_email_verification_modular]
-import { getAuth, sendEmailVerification } from "firebase/auth";
+import { getAuth, sendEmailVerification } from 'firebase/auth';
 
 const auth = getAuth();
 const user = auth.currentUser;
 
-sendEmailVerification(user).then(() => {
-  // Email sent.
-}).catch((error) => {
-  // An error ocurred
-  // ...
-});
+sendEmailVerification(user)
+  .then(() => {
+    // Email sent.
+  })
+  .catch((error) => {
+    // An error ocurred
+    // ...
+  });
 // [END send_email_verification_modular]

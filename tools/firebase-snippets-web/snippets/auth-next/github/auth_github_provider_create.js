@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_github_provider_create_modular]
-import { GithubAuthProvider } from "firebase/auth";
+import { GithubAuthProvider } from 'firebase/auth';
 
 const provider = new GithubAuthProvider();
 // [END auth_github_provider_create_modular]

@@ -1,15 +1,14 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { signInWithRedirect, GoogleAuthProvider, signOut, User } from 'firebase/auth';
-import { AuthContext } from '@/lib/firebase';
-import { Link } from 'react-router-dom';
-import { handleAuthStateChange } from '@/lib/MovieService';
+import { GoogleAuthProvider, signInWithRedirect, signOut, type User } from 'firebase/auth';
+import React, { useContext, useEffect, useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import firebaseLogo from '@/assets/firebase_logo.svg';
+import { AuthContext } from '@/lib/firebase';
+import { handleAuthStateChange } from '@/lib/MovieService';
 
 export default function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const auth = useContext(AuthContext);
-
 
   useEffect(() => {
     const unsubscribe = handleAuthStateChange(auth, setUser);
@@ -37,7 +36,10 @@ export default function Navbar() {
             Vector Search
           </Link>
         </div>
-        <Link to="/advancedsearch" className="flex items-center text-gray-200 hover:text-white mx-auto">
+        <Link
+          to="/advancedsearch"
+          className="flex items-center text-gray-200 hover:text-white mx-auto"
+        >
           <FaSearch className="mr-2" />
           Advanced Search
         </Link>

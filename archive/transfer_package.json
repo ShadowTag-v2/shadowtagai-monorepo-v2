@@ -29,11 +29,7 @@
         "phase_2": "20 customers, $35K MRR",
         "phase_3": "60 customers, $120K MRR"
       },
-      "critical_frameworks": [
-        "ATP 5-19",
-        "SOPs A-D",
-        "Boy Scout Rule"
-      ]
+      "critical_frameworks": ["ATP 5-19", "SOPs A-D", "Boy Scout Rule"]
     },
     "business_metrics": {
       "mrr_target": 120000,

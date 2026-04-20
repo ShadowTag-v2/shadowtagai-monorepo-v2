@@ -5,11 +5,11 @@
 // 'npm run snippets'.
 
 // [START storage_emulator_connect_modular]
-import { getStorage, connectStorageEmulator } from "firebase/storage";
+import { connectStorageEmulator, getStorage } from 'firebase/storage';
 
 const storage = getStorage();
-if (location.hostname === "localhost") {
+if (location.hostname === 'localhost') {
   // Point to the Storage emulator running on localhost.
-  connectStorageEmulator(storage, "127.0.0.1", 9199);
+  connectStorageEmulator(storage, '127.0.0.1', 9199);
 }
 // [END storage_emulator_connect_modular]

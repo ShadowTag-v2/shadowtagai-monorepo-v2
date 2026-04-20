@@ -1,14 +1,14 @@
-import { z } from "zod";
+import { completable } from '@modelcontextprotocol/sdk/server/completable.js';
 import {
   type CompleteResourceTemplateCallback,
   type McpServer,
   ResourceTemplate,
-} from "@modelcontextprotocol/sdk/server/mcp.js";
-import { completable } from "@modelcontextprotocol/sdk/server/completable.js";
+} from '@modelcontextprotocol/sdk/server/mcp.js';
+import { z } from 'zod';
 
 // Resource types
-export const RESOURCE_TYPE_TEXT = "Text" as const;
-export const RESOURCE_TYPE_BLOB = "Blob" as const;
+export const RESOURCE_TYPE_TEXT = 'Text' as const;
+export const RESOURCE_TYPE_BLOB = 'Blob' as const;
 export const RESOURCE_TYPES: string[] = [RESOURCE_TYPE_TEXT, RESOURCE_TYPE_BLOB];
 
 /**
@@ -22,7 +22,7 @@ export const RESOURCE_TYPES: string[] = [RESOURCE_TYPE_TEXT, RESOURCE_TYPE_BLOB]
  * The completion logic matches the input against available resource types.
  */
 export const resourceTypeCompleter = completable(
-  z.string().describe("Type of resource to fetch"),
+  z.string().describe('Type of resource to fetch'),
   (value: string) => {
     return RESOURCE_TYPES.filter((t) => t.startsWith(value));
   },
@@ -45,7 +45,7 @@ export const resourceTypeCompleter = completable(
  * This helps validate and suggest appropriate resource IDs.
  */
 export const resourceIdForPromptCompleter = completable(
-  z.string().describe("ID of the text resource to fetch"),
+  z.string().describe('ID of the text resource to fetch'),
   (value: string) => {
     const resourceId = Number(value);
     return Number.isInteger(resourceId) && resourceId > 0 ? [value] : [];
@@ -69,7 +69,7 @@ export const resourceIdForResourceTemplateCompleter: CompleteResourceTemplateCal
   return Number.isInteger(resourceId) && resourceId > 0 ? [value] : [];
 };
 
-const uriBase: string = "demo://resource/dynamic";
+const uriBase: string = 'demo://resource/dynamic';
 const textUriBase: string = `${uriBase}/text`;
 const blobUriBase: string = `${uriBase}/blob`;
 const textUriTemplate: string = `${textUriBase}/{resourceId}`;
@@ -85,7 +85,7 @@ export const textResource = (uri: URL, resourceId: number) => {
   const timestamp = new Date().toLocaleTimeString();
   return {
     uri: uri.toString(),
-    mimeType: "text/plain",
+    mimeType: 'text/plain',
     text: `Resource ${resourceId}: This is a plaintext resource created at ${timestamp}`,
   };
 };
@@ -100,10 +100,10 @@ export const blobResource = (uri: URL, resourceId: number) => {
   const timestamp = new Date().toLocaleTimeString();
   const resourceText = Buffer.from(
     `Resource ${resourceId}: This is a base64 blob created at ${timestamp}`,
-  ).toString("base64");
+  ).toString('base64');
   return {
     uri: uri.toString(),
-    mimeType: "text/plain",
+    mimeType: 'text/plain',
     blob: resourceText,
   };
 };
@@ -137,7 +137,7 @@ const parseResourceId = (uri: URL, variables: Record<string, unknown>) => {
   if (uri.toString().startsWith(textUriBase) && uri.toString().startsWith(blobUriBase)) {
     throw new Error(uriError);
   } else {
-    const idxStr = String((variables as any).resourceId ?? "");
+    const idxStr = String((variables as any).resourceId ?? '');
     const idx = Number(idxStr);
     if (Number.isFinite(idx) && Number.isInteger(idx) && idx > 0) {
       return idx;
@@ -164,15 +164,15 @@ const parseResourceId = (uri: URL, variables: Record<string, unknown>) => {
 export const registerResourceTemplates = (server: McpServer) => {
   // Register the text resource template
   server.registerResource(
-    "Dynamic Text Resource",
+    'Dynamic Text Resource',
     new ResourceTemplate(textUriTemplate, {
       list: undefined,
       complete: { resourceId: resourceIdForResourceTemplateCompleter },
     }),
     {
-      mimeType: "text/plain",
+      mimeType: 'text/plain',
       description:
-        "Plaintext dynamic resource fabricated from the {resourceId} variable, which must be an integer.",
+        'Plaintext dynamic resource fabricated from the {resourceId} variable, which must be an integer.',
     },
     async (uri, variables) => {
       const resourceId = parseResourceId(uri, variables);
@@ -184,15 +184,15 @@ export const registerResourceTemplates = (server: McpServer) => {
 
   // Register the blob resource template
   server.registerResource(
-    "Dynamic Blob Resource",
+    'Dynamic Blob Resource',
     new ResourceTemplate(blobUriTemplate, {
       list: undefined,
       complete: { resourceId: resourceIdForResourceTemplateCompleter },
     }),
     {
-      mimeType: "application/octet-stream",
+      mimeType: 'application/octet-stream',
       description:
-        "Binary (base64) dynamic resource fabricated from the {resourceId} variable, which must be an integer.",
+        'Binary (base64) dynamic resource fabricated from the {resourceId} variable, which must be an integer.',
     },
     async (uri, variables) => {
       const resourceId = parseResourceId(uri, variables);

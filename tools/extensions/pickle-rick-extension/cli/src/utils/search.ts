@@ -1,5 +1,5 @@
-import { readdir } from "node:fs/promises";
-import { join } from "node:path";
+import { readdir } from 'node:fs/promises';
+import { join } from 'node:path';
 
 export interface SearchOptions {
   limit?: number;
@@ -24,7 +24,7 @@ export function fuzzyScore(text: string, query: string): number {
   if (target.includes(pattern)) {
     score += 100;
     // Bonus for matching at start of path segment
-    if (target.startsWith(pattern) || target.includes("/" + pattern)) {
+    if (target.startsWith(pattern) || target.includes('/' + pattern)) {
       score += 50;
     }
   }
@@ -35,7 +35,7 @@ export function fuzzyScore(text: string, query: string): number {
       queryIdx++;
       if (queryIdx === 1) {
         // Bonus for matching first char at start of segment
-        if (i === 0 || target[i-1] === "/" || target[i-1] === "_" || target[i-1] === "-") {
+        if (i === 0 || target[i - 1] === '/' || target[i - 1] === '_' || target[i - 1] === '-') {
           score += 10;
         }
       }
@@ -52,11 +52,15 @@ export function fuzzyMatch(text: string, query: string): boolean {
 export async function recursiveSearch(
   dir: string,
   query: string,
-  options: SearchOptions = {}
+  options: SearchOptions = {},
 ): Promise<SearchResult> {
-  const { limit = 20000, timeoutMs = 250, ignore = ["node_modules", ".git", "dist", ".DS_Store"] } = options;
+  const {
+    limit = 20000,
+    timeoutMs = 250,
+    ignore = ['node_modules', '.git', 'dist', '.DS_Store'],
+  } = options;
   const start = Date.now();
-  const results: { path: string, score: number }[] = [];
+  const results: { path: string; score: number }[] = [];
   let fileCount = 0;
   let truncated = false;
 
@@ -78,7 +82,7 @@ export async function recursiveSearch(
           await walk(fullPath);
         } else {
           fileCount++;
-          const relativePath = fullPath.replace(dir + "/", "");
+          const relativePath = fullPath.replace(dir + '/', '');
           const score = fuzzyScore(relativePath, query);
           if (score > 0) {
             results.push({ path: fullPath, score });
@@ -99,5 +103,5 @@ export async function recursiveSearch(
   // Sort by score descending
   results.sort((a, b) => b.score - a.score);
 
-  return { files: results.map(r => r.path), truncated };
+  return { files: results.map((r) => r.path), truncated };
 }

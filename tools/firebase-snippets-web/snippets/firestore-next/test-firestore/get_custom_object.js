@@ -5,9 +5,9 @@
 // 'npm run snippets'.
 
 // [START get_custom_object_modular]
-import { doc, getDoc} from "firebase/firestore";
+import { doc, getDoc } from 'firebase/firestore';
 
-const ref = doc(db, "cities", "LA").withConverter(cityConverter);
+const ref = doc(db, 'cities', 'LA').withConverter(cityConverter);
 const docSnap = await getDoc(ref);
 if (docSnap.exists()) {
   // Convert to City object
@@ -15,6 +15,6 @@ if (docSnap.exists()) {
   // Use a City instance method
   console.log(city.toString());
 } else {
-  console.log("No such document!");
+  console.log('No such document!');
 }
 // [END get_custom_object_modular]

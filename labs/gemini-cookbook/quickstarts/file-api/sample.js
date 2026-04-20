@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const dotenv = require("dotenv");
-const fs = require("fs");
-const { google } = require("googleapis");
-const mime = require("mime-types");
-const path = require("path");
+const dotenv = require('dotenv');
+const fs = require('fs');
+const { google } = require('googleapis');
+const mime = require('mime-types');
+const path = require('path');
 
 // Load environment variables from .env file
-dotenv.config({ path: ".env" });
+dotenv.config({ path: '.env' });
 const API_KEY = process.env.GOOGLE_API_KEY;
 const GENAI_DISCOVERY_URL = `https://generativelanguage.googleapis.com/$discovery/rest?version=v1beta&key=${API_KEY}`;
 
@@ -44,18 +44,15 @@ async function run(filePath, fileDisplayName) {
     });
     const file = createFileResponse.data.file;
     const fileUri = file.uri;
-    console.log("Uploaded file: " + fileUri);
+    console.log('Uploaded file: ' + fileUri);
 
     // Make Gemini API LLM call
-    const prompt = "Describe the image with a creative description";
-    const model = "models/gemini-2.5-flash";
+    const prompt = 'Describe the image with a creative description';
+    const model = 'models/gemini-2.5-flash';
     const contents = {
-      contents:[
+      contents: [
         {
-          parts:[
-            { text: prompt },
-            { file_data: { file_uri: fileUri, mime_type: file.mimeType } },
-          ],
+          parts: [{ text: prompt }, { file_data: { file_uri: fileUri, mime_type: file.mimeType } }],
         },
       ],
     };
@@ -70,6 +67,6 @@ async function run(filePath, fileDisplayName) {
   }
 }
 
-const filePath = path.join("sample_data", "gemini_logo.png");
-const fileDisplayName = "Gemini logo";
+const filePath = path.join('sample_data', 'gemini_logo.png');
+const fileDisplayName = 'Gemini logo';
 run(filePath, fileDisplayName);

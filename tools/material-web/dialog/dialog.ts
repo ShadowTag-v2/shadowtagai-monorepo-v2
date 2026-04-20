@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {CSSResultOrNative} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import type { CSSResultOrNative } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {Dialog} from './internal/dialog.js';
-import {styles} from './internal/dialog-styles.cssresult.js';
+import { Dialog } from './internal/dialog.js';
+import { styles } from './internal/dialog-styles.cssresult.js';
 
 declare global {
   interface HTMLElementTagNameMap {

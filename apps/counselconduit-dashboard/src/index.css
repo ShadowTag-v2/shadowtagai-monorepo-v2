@@ -113,8 +113,13 @@ body::before {
   z-index: 1;
 }
 
-a { color: var(--accent-cyan); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a {
+  color: var(--accent-cyan);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
 
 /* ── Layout ─────────────────────────────────────────────────────────────── */
 .app-layout {
@@ -238,8 +243,13 @@ a:hover { text-decoration: underline; }
 }
 
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 /* ── Main Content ───────────────────────────────────────────────────────── */
@@ -322,10 +332,18 @@ a:hover { text-decoration: underline; }
   height: 2px;
 }
 
-.stat-card.gold::before { background: linear-gradient(90deg, transparent, var(--accent-gold), transparent); }
-.stat-card.cyan::before { background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent); }
-.stat-card.violet::before { background: linear-gradient(90deg, transparent, var(--accent-violet), transparent); }
-.stat-card.green::before { background: linear-gradient(90deg, transparent, var(--success), transparent); }
+.stat-card.gold::before {
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+}
+.stat-card.cyan::before {
+  background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+}
+.stat-card.violet::before {
+  background: linear-gradient(90deg, transparent, var(--accent-violet), transparent);
+}
+.stat-card.green::before {
+  background: linear-gradient(90deg, transparent, var(--success), transparent);
+}
 
 .stat-value {
   font-size: 2rem;
@@ -335,10 +353,18 @@ a:hover { text-decoration: underline; }
   margin-bottom: var(--space-xs);
 }
 
-.stat-card.gold .stat-value { color: var(--accent-gold); }
-.stat-card.cyan .stat-value { color: var(--accent-cyan); }
-.stat-card.violet .stat-value { color: var(--accent-violet); }
-.stat-card.green .stat-value { color: var(--success); }
+.stat-card.gold .stat-value {
+  color: var(--accent-gold);
+}
+.stat-card.cyan .stat-value {
+  color: var(--accent-cyan);
+}
+.stat-card.violet .stat-value {
+  color: var(--accent-violet);
+}
+.stat-card.green .stat-value {
+  color: var(--success);
+}
 
 .stat-label {
   font-size: 0.73rem;
@@ -443,9 +469,15 @@ a:hover { text-decoration: underline; }
   margin-bottom: var(--space-xs);
 }
 
-.transcript-role.client { color: var(--accent-cyan); }
-.transcript-role.attorney { color: var(--accent-gold); }
-.transcript-role.ai { color: var(--accent-violet); }
+.transcript-role.client {
+  color: var(--accent-cyan);
+}
+.transcript-role.attorney {
+  color: var(--accent-gold);
+}
+.transcript-role.ai {
+  color: var(--accent-violet);
+}
 
 .transcript-text {
   font-size: 0.87rem;
@@ -485,7 +517,9 @@ a:hover { text-decoration: underline; }
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-.receipt-field:last-child { border-bottom: none; }
+.receipt-field:last-child {
+  border-bottom: none;
+}
 
 .receipt-label {
   font-size: 0.73rem;
@@ -515,7 +549,9 @@ a:hover { text-decoration: underline; }
   border-bottom: 1px solid var(--bg-glass-border);
 }
 
-.oracle-memo h3:first-child { margin-top: 0; }
+.oracle-memo h3:first-child {
+  margin-top: 0;
+}
 
 .memo-citation {
   font-family: var(--font-mono);
@@ -685,18 +721,34 @@ a:hover { text-decoration: underline; }
 
 /* ── Animations ─────────────────────────────────────────────────────────── */
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }
 
 .animate-fade-in {

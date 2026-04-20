@@ -8,14 +8,14 @@ import '../../../focus/md-focus-ring.js';
 import '../../../ripple/ripple.js';
 import '../../badge/badge.js';
 
-import {html, LitElement, nothing, PropertyValues} from 'lit';
-import {property, query} from 'lit/decorators.js';
-import {classMap} from 'lit/directives/class-map.js';
+import { html, LitElement, nothing, type PropertyValues } from 'lit';
+import { property, query } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
-import {ARIAMixinStrict} from '../../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../../internal/aria/delegate.js';
+import type { ARIAMixinStrict } from '../../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../../internal/aria/delegate.js';
 
-import {NavigationTabState} from './state.js';
+import type { NavigationTabState } from './state.js';
 
 // Separate variable needed for closure.
 const navigationTabBaseClass = mixinDelegatesAria(LitElement);
@@ -29,23 +29,20 @@ const navigationTabBaseClass = mixinDelegatesAria(LitElement);
  * @fires navigation-tab-interaction {CustomEvent<{state: MdNavigationTab}>}
  * Dispatched when the navigation tab has been clicked. --bubbles --composed
  */
-export class NavigationTab
-  extends navigationTabBaseClass
-  implements NavigationTabState
-{
-  @property({type: Boolean}) disabled = false;
-  @property({type: Boolean, reflect: true}) active = false;
-  @property({type: Boolean, attribute: 'hide-inactive-label'})
+export class NavigationTab extends navigationTabBaseClass implements NavigationTabState {
+  @property({ type: Boolean }) disabled = false;
+  @property({ type: Boolean, reflect: true }) active = false;
+  @property({ type: Boolean, attribute: 'hide-inactive-label' })
   hideInactiveLabel = false;
   @property() label?: string;
-  @property({attribute: 'badge-value'}) badgeValue = '';
-  @property({type: Boolean, attribute: 'show-badge'}) showBadge = false;
+  @property({ attribute: 'badge-value' }) badgeValue = '';
+  @property({ type: Boolean, attribute: 'show-badge' }) showBadge = false;
 
   @query('button') buttonElement!: HTMLElement | null;
 
   protected override render() {
     // Needed for closure conformance
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     return html` <button
       class="md3-navigation-tab ${classMap(this.getRenderClasses())}"
       role="tab"
@@ -77,14 +74,12 @@ export class NavigationTab
   }
 
   private renderBadge() {
-    return this.showBadge
-      ? html`<md-badge .value="${this.badgeValue}"></md-badge>`
-      : nothing;
+    return this.showBadge ? html`<md-badge .value="${this.badgeValue}"></md-badge>` : nothing;
   }
 
   private renderLabel() {
     // Needed for closure conformance
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     const ariaHidden = ariaLabel ? 'true' : 'false';
     return !this.label
       ? nothing
@@ -122,7 +117,7 @@ export class NavigationTab
     // b/269772145 - connect to ripple
     this.dispatchEvent(
       new CustomEvent('navigation-tab-interaction', {
-        detail: {state: this},
+        detail: { state: this },
         bubbles: true,
         composed: true,
       }),

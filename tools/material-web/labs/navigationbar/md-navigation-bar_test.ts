@@ -4,16 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html} from 'lit';
-import {customElement} from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
+import { html } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
-import {Environment} from '../../testing/environment.js';
-import {NavigationTabHarness} from '../navigationtab/harness.js';
-import {MdNavigationTab} from '../navigationtab/navigation-tab.js';
+import { Environment } from '../../testing/environment.js';
+import { NavigationTabHarness } from '../navigationtab/harness.js';
+import { MdNavigationTab } from '../navigationtab/navigation-tab.js';
 
-import {NavigationBarHarness} from './harness.js';
-import {MdNavigationBar} from './navigation-bar.js';
+import { NavigationBarHarness } from './harness.js';
+import { MdNavigationBar } from './navigation-bar.js';
 
 @customElement('md-test-navigation-bar')
 class TestMdNavigationBar extends MdNavigationBar {}
@@ -64,9 +64,7 @@ describe('md-navigation-bar', () => {
   const env = new Environment();
 
   async function setupTest(template = defaultNavBar) {
-    const element = env
-      .render(template)
-      .querySelector('md-test-navigation-bar');
+    const element = env.render(template).querySelector('md-test-navigation-bar');
     if (!element) {
       throw new Error('Could not query rendered <md-test-navigation-bar>.');
     }
@@ -80,10 +78,8 @@ describe('md-navigation-bar', () => {
 
   describe('basic', () => {
     it('initializes as a md-navigation-bar', async () => {
-      const {harness} = await setupTest();
-      const navBarBase = harness.element.shadowRoot!.querySelector(
-        '.md3-navigation-bar',
-      )!;
+      const { harness } = await setupTest();
+      const navBarBase = harness.element.shadowRoot!.querySelector('.md3-navigation-bar')!;
       expect(harness.element).toBeInstanceOf(MdNavigationBar);
       expect(harness.element.activeIndex).toEqual(0);
       expect(harness.element.hideInactiveLabels).toBeFalse();
@@ -93,49 +89,33 @@ describe('md-navigation-bar', () => {
 
   describe('activeIndex', () => {
     it('on change emits activated event', async () => {
-      const {harness} = await setupTest(
-        navBarWithNavTabsElement({activeIndex: 1}),
-      );
+      const { harness } = await setupTest(navBarWithNavTabsElement({ activeIndex: 1 }));
       const activatedHandler = jasmine.createSpy();
-      harness.element.addEventListener(
-        'navigation-bar-activated',
-        activatedHandler,
-      );
+      harness.element.addEventListener('navigation-bar-activated', activatedHandler);
       harness.element.activeIndex = 0;
       await env.waitForStability();
       expect(activatedHandler).toHaveBeenCalled();
     });
 
     it('activated event detail contains the tab and activeIndex', async () => {
-      const {harness} = await setupTest(
-        navBarWithNavTabsElement({activeIndex: 1}),
-      );
-      const navigationBarActivatedSpy = jasmine.createSpy(
-        'navigationBarActivated',
-      );
-      harness.element.addEventListener(
-        'navigation-bar-activated',
-        navigationBarActivatedSpy,
-      );
+      const { harness } = await setupTest(navBarWithNavTabsElement({ activeIndex: 1 }));
+      const navigationBarActivatedSpy = jasmine.createSpy('navigationBarActivated');
+      harness.element.addEventListener('navigation-bar-activated', navigationBarActivatedSpy);
 
       const tab = harness.element.tabs[0];
       harness.element.activeIndex = 0;
 
       await env.waitForStability();
-      expect(navigationBarActivatedSpy).toHaveBeenCalledWith(
-        jasmine.any(CustomEvent),
-      );
+      expect(navigationBarActivatedSpy).toHaveBeenCalledWith(jasmine.any(CustomEvent));
       expect(navigationBarActivatedSpy).toHaveBeenCalledWith(
         jasmine.objectContaining({
-          detail: jasmine.objectContaining({tab, activeIndex: 0}),
+          detail: jasmine.objectContaining({ tab, activeIndex: 0 }),
         }),
       );
     });
 
     it('#handleNavigationTabInteraction () updates on navigation tab click', async () => {
-      const {harness} = await setupTest(
-        navBarWithNavTabsElement({activeIndex: 1}),
-      );
+      const { harness } = await setupTest(navBarWithNavTabsElement({ activeIndex: 1 }));
       const tab1Harness = new NavigationTabHarness(harness.element.tabs[0]);
       const tab2Harness = new NavigationTabHarness(harness.element.tabs[1]);
 
@@ -146,9 +126,7 @@ describe('md-navigation-bar', () => {
     });
 
     it('#onActiveIndexChange() sets tab at activeIndex to active', async () => {
-      const {harness} = await setupTest(
-        navBarWithNavTabsElement({activeIndex: 1}),
-      );
+      const { harness } = await setupTest(navBarWithNavTabsElement({ activeIndex: 1 }));
       const tab = harness.element.tabs[0];
       expect(tab.active).toBeFalse();
       harness.element.activeIndex = 0;
@@ -158,9 +136,7 @@ describe('md-navigation-bar', () => {
     });
 
     it('#onActiveIndexChange() sets previously active tab to inactive', async () => {
-      const {harness} = await setupTest(
-        navBarWithNavTabsElement({activeIndex: 1}),
-      );
+      const { harness } = await setupTest(navBarWithNavTabsElement({ activeIndex: 1 }));
       const tab = harness.element.tabs[1];
       expect(tab.active).toBeTrue();
       harness.element.activeIndex = 0;
@@ -172,9 +148,7 @@ describe('md-navigation-bar', () => {
 
   describe('hideInactiveLabels', () => {
     it('#onHideInactiveLabelsChange() affects navigation tabs hideInactiveLabel state', async () => {
-      const {harness} = await setupTest(
-        navBarWithNavTabsElement({hideInactiveLabels: true}),
-      );
+      const { harness } = await setupTest(navBarWithNavTabsElement({ hideInactiveLabels: true }));
       const tab1 = harness.element.tabs[0];
       const tab2 = harness.element.tabs[1];
       expect(tab1.hideInactiveLabel).toBeTrue();
@@ -189,22 +163,17 @@ describe('md-navigation-bar', () => {
 
   describe('aria-label', () => {
     it('sets the root aria-label property', async () => {
-      const {harness} = await setupTest(
-        navBarWithNavTabsElement({ariaLabel: 'foo'}),
-      );
-      const navBarBase = harness.element.shadowRoot!.querySelector(
-        '.md3-navigation-bar',
-      )!;
+      const { harness } = await setupTest(navBarWithNavTabsElement({ ariaLabel: 'foo' }));
+      const navBarBase = harness.element.shadowRoot!.querySelector('.md3-navigation-bar')!;
       expect(navBarBase.getAttribute('aria-label')).toEqual('foo');
     });
   });
 
   describe('#onTabsChange()', () => {
     it(
-      "syncs tabs' hideInactiveLabel state with the navigation bar's " +
-        'hideInactiveLabels state',
+      "syncs tabs' hideInactiveLabel state with the navigation bar's " + 'hideInactiveLabels state',
       async () => {
-        const {harness} = await setupTest(navBarWithIncorrectTabsElement);
+        const { harness } = await setupTest(navBarWithIncorrectTabsElement);
         const tab1 = harness.element.tabs[0];
         const tab2 = harness.element.tabs[1];
         expect(harness.element.hideInactiveLabels).toBeFalse();
@@ -214,7 +183,7 @@ describe('md-navigation-bar', () => {
     );
 
     it("syncs tabs' active state with the navigation bar's activeIndex state", async () => {
-      const {harness} = await setupTest(navBarWithIncorrectTabsElement);
+      const { harness } = await setupTest(navBarWithIncorrectTabsElement);
       const tab1 = harness.element.tabs[0];
       const tab2 = harness.element.tabs[1];
       expect(harness.element.activeIndex).toBe(0);
@@ -230,9 +199,7 @@ describe('md-navigation-bar', () => {
     let tab2: HTMLElement;
 
     beforeEach(async () => {
-      const {harness} = await setupTest(
-        navBarWithNavTabsElement({activeIndex: 0}),
-      );
+      const { harness } = await setupTest(navBarWithNavTabsElement({ activeIndex: 0 }));
       element = harness.element;
       bar = harness.element.shadowRoot!.querySelector('.md3-navigation-bar')!;
       tab1 = harness.element.children[0] as HTMLElement;
@@ -276,7 +243,7 @@ describe('md-navigation-bar', () => {
     });
 
     it('(Home) sets focus on the first tab', () => {
-      const event = new KeyboardEvent('keydown', {key: 'Home', bubbles: true});
+      const event = new KeyboardEvent('keydown', { key: 'Home', bubbles: true });
       tab2.focus();
       expect(tab1.matches(':focus-within')).toBeFalse();
       bar.dispatchEvent(event);
@@ -284,7 +251,7 @@ describe('md-navigation-bar', () => {
     });
 
     it('(End) sets focus on the last tab', () => {
-      const event = new KeyboardEvent('keydown', {key: 'End', bubbles: true});
+      const event = new KeyboardEvent('keydown', { key: 'End', bubbles: true });
       bar.dispatchEvent(event);
       expect(tab2.matches(':focus-within')).toBeTrue();
     });
@@ -294,14 +261,14 @@ describe('md-navigation-bar', () => {
       const key = 'ArrowLeft';
 
       it(`sets focus on previous tab`, () => {
-        const event = new KeyboardEvent('keydown', {key, bubbles: true});
+        const event = new KeyboardEvent('keydown', { key, bubbles: true });
         tab2.focus();
         bar.dispatchEvent(event);
         expect(tab1.matches(':focus-within')).toBeTrue();
       });
 
       it(`sets focus to last tab when focus is on the first tab`, () => {
-        const event = new KeyboardEvent('keydown', {key, bubbles: true});
+        const event = new KeyboardEvent('keydown', { key, bubbles: true });
         tab1.focus();
         bar.dispatchEvent(event);
         expect(tab2.matches(':focus-within')).toBeTrue();
@@ -309,7 +276,7 @@ describe('md-navigation-bar', () => {
 
       it(`sets focus on next tab in RTL`, () => {
         document.body.style.direction = 'rtl';
-        const event = new KeyboardEvent('keydown', {key, bubbles: true});
+        const event = new KeyboardEvent('keydown', { key, bubbles: true });
         tab1.focus();
         bar.dispatchEvent(event);
         expect(tab2.matches(':focus-within')).toBeTrue();
@@ -321,14 +288,14 @@ describe('md-navigation-bar', () => {
       const key = 'ArrowRight';
 
       it(`sets focus on next tab`, () => {
-        const event = new KeyboardEvent('keydown', {key, bubbles: true});
+        const event = new KeyboardEvent('keydown', { key, bubbles: true });
         tab1.focus();
         bar.dispatchEvent(event);
         expect(tab2.matches(':focus-within')).toBeTrue();
       });
 
       it(`sets focus to first tab when focus is on the last tab`, () => {
-        const event = new KeyboardEvent('keydown', {key, bubbles: true});
+        const event = new KeyboardEvent('keydown', { key, bubbles: true });
         tab2.focus();
         bar.dispatchEvent(event);
         expect(tab1.matches(':focus-within')).toBeTrue();
@@ -336,7 +303,7 @@ describe('md-navigation-bar', () => {
 
       it(`sets focus on previous tab in RTL`, () => {
         document.body.style.direction = 'rtl';
-        const event = new KeyboardEvent('keydown', {key, bubbles: true});
+        const event = new KeyboardEvent('keydown', { key, bubbles: true });
         tab2.focus();
         bar.dispatchEvent(event);
         expect(tab1.matches(':focus-within')).toBeTrue();

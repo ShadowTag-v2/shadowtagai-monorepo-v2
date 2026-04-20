@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {ElementWithHarness, Harness} from '../testing/harness.js';
+import { type ElementWithHarness, Harness } from '../testing/harness.js';
 
-import {Tab} from './internal/tab.js';
-import {Tabs} from './internal/tabs.js';
+import type { Tab } from './internal/tab.js';
+import type { Tabs } from './internal/tabs.js';
 
 /**
  * Test harness for Tab.
@@ -48,8 +48,8 @@ export class TabsHarness extends Harness<Tabs> {
     }
 
     const selectedItemHarness =
-      ((this.element.activeTab as ElementWithHarness<Tab>)
-        .harness as TabHarness) ?? new TabHarness(this.element.activeTab);
+      ((this.element.activeTab as ElementWithHarness<Tab>).harness as TabHarness) ??
+      new TabHarness(this.element.activeTab);
     return await selectedItemHarness.getInteractiveElement();
   }
 

@@ -1,4 +1,11 @@
-export type PickleStep = 'prd' | 'breakdown' | 'research' | 'plan' | 'implement' | 'refactor' | 'done';
+export type PickleStep =
+  | 'prd'
+  | 'breakdown'
+  | 'research'
+  | 'plan'
+  | 'implement'
+  | 'refactor'
+  | 'done';
 
 export interface State {
   active: boolean;

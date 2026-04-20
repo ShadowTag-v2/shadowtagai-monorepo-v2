@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { RestuarantPageComponent } from './restuarant-page.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { projectConfig } from 'src/environments/environment.default';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { RouterTestingModule } from '@angular/router/testing';
+import { projectConfig } from 'src/environments/environment.default';
+import { RestuarantPageComponent } from './restuarant-page.component';
 
 describe('RestuarantPageComponent', () => {
   let component: RestuarantPageComponent;
@@ -30,16 +34,18 @@ describe('RestuarantPageComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule,
+      imports: [
+        RouterTestingModule,
         MatDialogModule,
         provideFirebaseApp(() => initializeApp(projectConfig)),
         provideFirestore(() => getFirestore()),
-        provideAuth(() => getAuth())],
+        provideAuth(() => getAuth()),
+      ],
       declarations: [RestuarantPageComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: {} },
-      ]
+      ],
     });
     fixture = TestBed.createComponent(RestuarantPageComponent);
     component = fixture.componentInstance;

@@ -7,10 +7,7 @@
 /** Overrides the browsers native animate to make them run in 1ms */
 export function installSkipWebAnimations() {
   const nativeAnimate = Element.prototype.animate;
-  function patchedAnimate(
-    this: Element,
-    ...args: Parameters<typeof nativeAnimate>
-  ) {
+  function patchedAnimate(this: Element, ...args: Parameters<typeof nativeAnimate>) {
     const animation = nativeAnimate.apply(this, args);
     if (animation.effect) {
       animation.effect.updateTiming({

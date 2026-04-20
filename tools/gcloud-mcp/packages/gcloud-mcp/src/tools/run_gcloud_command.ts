@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { GcloudExecutable } from '../gcloud.js';
-import { AccessControlList } from '../denylist.js';
-import { findSuggestedAlternativeCommand } from '../suggest.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
+import type { AccessControlList } from '../denylist.js';
+import type { GcloudExecutable } from '../gcloud.js';
+import { findSuggestedAlternativeCommand } from '../suggest.js';
 import { log } from '../utility/logger.js';
 
 const suggestionErrorMessage = (suggestedCommand: string) =>

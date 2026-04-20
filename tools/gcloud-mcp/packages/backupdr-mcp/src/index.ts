@@ -16,14 +16,14 @@
  * limitations under the License.
  */
 
-import { McpServer, RegisteredTool } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer, type RegisteredTool } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import pkg from '../package.json' with { type: 'json' };
-import yargs, { ArgumentsCamelCase, CommandModule } from 'yargs';
+import yargs, { type ArgumentsCamelCase, type CommandModule } from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import pkg from '../package.json' with { type: 'json' };
 import { init } from './commands/init.js';
-import { log } from './utility/logger.js';
 import { allTools } from './tools/index.js';
+import { log } from './utility/logger.js';
 
 enum AccessLevel {
   READ_ONLY = 'READ_ONLY',

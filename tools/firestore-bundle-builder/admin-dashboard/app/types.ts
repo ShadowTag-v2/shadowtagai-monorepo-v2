@@ -1,4 +1,4 @@
-import type { firestore } from "firebase-admin";
+import type { firestore } from 'firebase-admin';
 
 export type Bundle = {
   // Document id.

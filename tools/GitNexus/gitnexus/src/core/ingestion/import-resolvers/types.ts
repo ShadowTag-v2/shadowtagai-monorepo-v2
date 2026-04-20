@@ -4,8 +4,13 @@
  * Extracted from import-resolution.ts to co-locate types with their consumers.
  */
 
-import type { TsconfigPaths, GoModuleConfig, CSharpProjectConfig, ComposerConfig } from '../language-config.js';
-import type { SwiftPackageConfig } from '../language-config.js';
+import type {
+  ComposerConfig,
+  CSharpProjectConfig,
+  GoModuleConfig,
+  SwiftPackageConfig,
+  TsconfigPaths,
+} from '../language-config.js';
 import type { SuffixIndex } from './utils.js';
 
 /**

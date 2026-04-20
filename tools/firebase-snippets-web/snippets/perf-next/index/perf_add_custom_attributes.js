@@ -5,19 +5,19 @@
 // 'npm run snippets'.
 
 // [START perf_add_custom_attributes_modular]
-import { trace } from "firebase/performance";
+import { trace } from 'firebase/performance';
 
-const t = trace(perf, "test_trace");
-t.putAttribute("experiment", "A");
+const t = trace(perf, 'test_trace');
+t.putAttribute('experiment', 'A');
 
 // Update scenario
-t.putAttribute("experiment", "B");
+t.putAttribute('experiment', 'B');
 
 // Reading scenario
-const experimentValue = t.getAttribute("experiment");
+const experimentValue = t.getAttribute('experiment');
 
 // Delete scenario
-t.removeAttribute("experiment");
+t.removeAttribute('experiment');
 
 // Read attributes
 const traceAttributes = t.getAttributes();

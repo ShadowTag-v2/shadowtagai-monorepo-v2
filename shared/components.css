@@ -167,12 +167,12 @@
 .pricing-card:hover {
   border-color: #c9a14a;
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
 .pricing-card.featured {
   border-color: #c9a14a;
-  background: linear-gradient(180deg, rgba(201,161,74,0.08) 0%, #12161f 100%);
+  background: linear-gradient(180deg, rgba(201, 161, 74, 0.08) 0%, #12161f 100%);
 }
 
 .pricing-card.featured::before {

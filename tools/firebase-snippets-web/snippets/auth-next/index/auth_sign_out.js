@@ -5,12 +5,14 @@
 // 'npm run snippets'.
 
 // [START auth_sign_out_modular]
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut } from 'firebase/auth';
 
 const auth = getAuth();
-signOut(auth).then(() => {
-  // Sign-out successful.
-}).catch((error) => {
-  // An error happened.
-});
+signOut(auth)
+  .then(() => {
+    // Sign-out successful.
+  })
+  .catch((error) => {
+    // An error happened.
+  });
 // [END auth_sign_out_modular]

@@ -5,8 +5,12 @@
  * For MCP, we only need to compute query embeddings, not batch embed.
  */
 
-import { pipeline, env, type FeatureExtractionPipeline } from '@huggingface/transformers';
-import { isHttpMode, getHttpDimensions, httpEmbedQuery } from '../../core/embeddings/http-client.js';
+import { env, type FeatureExtractionPipeline, pipeline } from '@huggingface/transformers';
+import {
+  getHttpDimensions,
+  httpEmbedQuery,
+  isHttpMode,
+} from '../../core/embeddings/http-client.js';
 
 // Model config
 const MODEL_ID = 'Snowflake/snowflake-arctic-embed-xs';
@@ -55,14 +59,10 @@ export const initEmbedder = async (): Promise<FeatureExtractionPipeline> => {
           process.stdout.write = (() => true) as any;
           process.stderr.write = (() => true) as any;
           try {
-            embedderInstance = await (pipeline as any)(
-              'feature-extraction',
-              MODEL_ID,
-              {
-                device: device,
-                dtype: 'fp32',
-              }
-            );
+            embedderInstance = await (pipeline as any)('feature-extraction', MODEL_ID, {
+              device: device,
+              dtype: 'fp32',
+            });
           } finally {
             process.stdout.write = origStdout;
             process.stderr.write = origStderr;

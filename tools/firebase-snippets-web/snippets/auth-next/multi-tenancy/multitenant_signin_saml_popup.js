@@ -5,7 +5,8 @@
 // 'npm run snippets'.
 
 // [START multitenant_signin_saml_popup_modular]
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup } from 'firebase/auth';
+
 // Switch to TENANT_ID1.
 auth.tenantId = 'TENANT_ID1';
 

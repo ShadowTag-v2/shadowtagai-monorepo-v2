@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {cp} from 'fs/promises';
-import {join, parse} from 'path';
+import { cp } from 'fs/promises';
+import { join, parse } from 'path';
 import tinyGlob from 'tiny-glob';
 
 // Glob(s) from which to copy story files
@@ -22,7 +22,7 @@ const parsedDirectories = directories.map((entry) => {
   console.log(`Copying ${entry} to ${destination}`);
 
   // recursively copy the files
-  return cp(entry, destination, {recursive: true}, (err) => {
+  return cp(entry, destination, { recursive: true }, (err) => {
     if (err) throw err;
   });
 });

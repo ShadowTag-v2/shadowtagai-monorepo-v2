@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-'use strict';
-
 // [START firestore_quickstart]
-const {Firestore} = require('@google-cloud/firestore');
+const { Firestore } = require('@google-cloud/firestore');
 
 // Create a new client
 const firestore = new Firestore();

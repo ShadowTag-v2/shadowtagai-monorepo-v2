@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
-import {google} from '../protos/firestore_v1_proto_api';
-import {Serializer} from './serializer';
+import type * as firestore from '@google-cloud/firestore';
+import { google } from '../protos/firestore_v1_proto_api';
+import type { Serializer } from './serializer';
+
 import IPlanSummary = google.firestore.v1.IPlanSummary;
 import IExecutionStats = google.firestore.v1.IExecutionStats;
 import IExplainMetrics = google.firestore.v1.IExplainMetrics;
@@ -37,10 +38,7 @@ export class PlanSummary implements firestore.PlanSummary {
    * @private
    * @internal
    */
-  static _fromProto(
-    plan: IPlanSummary | null | undefined,
-    serializer: Serializer,
-  ): PlanSummary {
+  static _fromProto(plan: IPlanSummary | null | undefined, serializer: Serializer): PlanSummary {
     const indexes: Record<string, unknown>[] = [];
     if (plan && plan.indexesUsed) {
       for (const index of plan.indexesUsed) {
@@ -110,10 +108,7 @@ export class ExplainMetrics implements firestore.ExplainMetrics {
    * @private
    * @internal
    */
-  static _fromProto(
-    metrics: IExplainMetrics,
-    serializer: Serializer,
-  ): ExplainMetrics {
+  static _fromProto(metrics: IExplainMetrics, serializer: Serializer): ExplainMetrics {
     return new ExplainMetrics(
       PlanSummary._fromProto(metrics.planSummary, serializer),
       ExecutionStats._fromProto(metrics.executionStats, serializer),

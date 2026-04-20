@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_facebook_provider_create_modular]
-import { FacebookAuthProvider } from "firebase/auth";
+import { FacebookAuthProvider } from 'firebase/auth';
 
 const provider = new FacebookAuthProvider();
 // [END auth_facebook_provider_create_modular]

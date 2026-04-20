@@ -6,7 +6,7 @@
 
 // import 'jasmine'; (google3-only)
 
-import {CSSResultOrNative} from 'lit';
+import type { CSSResultOrNative } from 'lit';
 
 /**
  * Create tests for `MdComponent.styles` that checks for undefined or unused
@@ -95,9 +95,7 @@ export function getUnusedTokens(styles: CSSResultOrNative[]) {
   return unusedTokens;
 }
 
-function getDefinedTokensFromRule(
-  rule: CSSRule | CSSStyleSheet | CSSStyleRule,
-): Set<string> {
+function getDefinedTokensFromRule(rule: CSSRule | CSSStyleSheet | CSSStyleRule): Set<string> {
   let defined = new Set<string>();
   if ('cssRules' in rule) {
     // Rule is either a CSSStyleSheet, CSSKeyframesRule, or one of the
@@ -118,9 +116,7 @@ function getDefinedTokensFromRule(
   return defined;
 }
 
-function getUsedTokensFromRule(
-  rule: CSSRule | CSSStyleSheet | CSSStyleRule,
-): Set<string> {
+function getUsedTokensFromRule(rule: CSSRule | CSSStyleSheet | CSSStyleRule): Set<string> {
   let used = new Set<string>();
   if ('cssRules' in rule) {
     // Rule is either a CSSStyleSheet, CSSKeyframesRule, or one of the

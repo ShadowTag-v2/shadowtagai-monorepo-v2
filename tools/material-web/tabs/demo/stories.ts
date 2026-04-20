@@ -10,11 +10,11 @@ import '@material/web/tabs/primary-tab.js';
 import '@material/web/tabs/secondary-tab.js';
 import '@material/web/tabs/tabs.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {MdTabs} from '@material/web/tabs/tabs.js';
-import {styles as typescaleStyles} from '@material/web/typography/md-typescale-styles.cssresult.js';
-import {css, html, nothing} from 'lit';
-import {ref} from 'lit/directives/ref.js';
+import type { MdTabs } from '@material/web/tabs/tabs.js';
+import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.cssresult.js';
+import { css, html, nothing } from 'lit';
+import { ref } from 'lit/directives/ref.js';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for Tabs stories. */
 export interface StoryKnobs {
@@ -510,9 +510,7 @@ const dynamic: MaterialStoryInit<StoryKnobs> = {
     const inlineIcon = knobs.inlineIcon;
 
     function getTabs(event: Event) {
-      return (
-        (event.target! as Element).getRootNode() as ShadowRoot
-      ).querySelector('md-tabs')!;
+      return ((event.target! as Element).getRootNode() as ShadowRoot).querySelector('md-tabs')!;
     }
 
     function addTab(event: Event) {
@@ -610,11 +608,4 @@ function setupTabPanels() {
 }
 
 /** Tabs stories. */
-export const stories = [
-  primary,
-  secondary,
-  scrolling,
-  custom,
-  primaryAndSecondary,
-  dynamic,
-];
+export const stories = [primary, secondary, scrolling, custom, primaryAndSecondary, dynamic];

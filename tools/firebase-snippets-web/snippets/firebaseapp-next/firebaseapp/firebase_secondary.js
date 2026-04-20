@@ -6,7 +6,7 @@
 
 // [START firebase_secondary_modular]
 // Initialize another app with a different config
-const secondaryApp = initializeApp(secondaryAppConfig, "secondary");
+const secondaryApp = initializeApp(secondaryAppConfig, 'secondary');
 // Access services, such as the Realtime Database
 // getDatabase(secondaryApp)
 // [END firebase_secondary_modular]

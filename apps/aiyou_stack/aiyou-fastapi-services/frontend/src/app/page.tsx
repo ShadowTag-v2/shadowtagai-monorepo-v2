@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Users, Activity, DollarSign, CheckCircle, TrendingUp, Zap } from "lucide-react";
-import { formatNumber, formatCurrency } from "@/lib/utils";
+import { Activity, CheckCircle, DollarSign, TrendingUp, Users, Zap } from 'lucide-react';
+import { formatCurrency, formatNumber } from '@/lib/utils';
 
 // Mock data until backend endpoints are ready
 const mockSwarmStats = {
@@ -18,12 +18,12 @@ const mockSwarmStats = {
 };
 
 const mockAgentActivity = [
-  { hour: "00:00", tasks: 320 },
-  { hour: "04:00", tasks: 280 },
-  { hour: "08:00", tasks: 890 },
-  { hour: "12:00", tasks: 1200 },
-  { hour: "16:00", tasks: 950 },
-  { hour: "20:00", tasks: 420 },
+  { hour: '00:00', tasks: 320 },
+  { hour: '04:00', tasks: 280 },
+  { hour: '08:00', tasks: 890 },
+  { hour: '12:00', tasks: 1200 },
+  { hour: '16:00', tasks: 950 },
+  { hour: '20:00', tasks: 420 },
 ];
 
 function StatCard({
@@ -31,7 +31,7 @@ function StatCard({
   value,
   icon: Icon,
   trend,
-  color = "indigo",
+  color = 'indigo',
 }: {
   title: string;
   value: string | number;
@@ -40,10 +40,10 @@ function StatCard({
   color?: string;
 }) {
   const colorClasses = {
-    indigo: "bg-indigo-50 text-indigo-600",
-    green: "bg-green-50 text-green-600",
-    purple: "bg-purple-50 text-purple-600",
-    amber: "bg-amber-50 text-amber-600",
+    indigo: 'bg-indigo-50 text-indigo-600',
+    green: 'bg-green-50 text-green-600',
+    purple: 'bg-purple-50 text-purple-600',
+    amber: 'bg-amber-50 text-amber-600',
   };
 
   return (
@@ -76,7 +76,7 @@ function ShiftIndicator({ shifts }: { shifts: typeof mockSwarmStats.shifts }) {
           <div key={shift.shift_id} className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div
-                className={`w-3 h-3 rounded-full ${shift.active ? "bg-green-500" : "bg-slate-300"}`}
+                className={`w-3 h-3 rounded-full ${shift.active ? 'bg-green-500' : 'bg-slate-300'}`}
               />
               <span className="text-sm">
                 Shift {shift.shift_id} ({shift.start_hour}:00 - {shift.end_hour}:00)
@@ -93,9 +93,9 @@ function ShiftIndicator({ shifts }: { shifts: typeof mockSwarmStats.shifts }) {
 function TierDistribution({ distribution }: { distribution: Record<string, number> }) {
   const total = Object.values(distribution).reduce((a, b) => a + b, 0);
   const colors = {
-    FREE: "bg-slate-400",
-    FLASH: "bg-amber-400",
-    PRO: "bg-purple-500",
+    FREE: 'bg-slate-400',
+    FLASH: 'bg-amber-400',
+    PRO: 'bg-purple-500',
   };
 
   return (

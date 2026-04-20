@@ -10,16 +10,16 @@
  * Format: { timestamp, files: [{ path, repo, operation, tool }] }
  */
 
-import { Hook } from "@anthropic-ai/claude-agent-sdk";
-import * as fs from "fs";
-import * as path from "path";
+import type { Hook } from '@anthropic-ai/claude-agent-sdk';
+import * as fs from 'fs';
+import * as path from 'path';
 
-const TRACKED_TOOLS = ["Edit", "Write", "MultiEdit", "NotebookEdit"];
-const OUTPUT_FILE = ".claude/hooks/edited-files.json";
+const TRACKED_TOOLS = ['Edit', 'Write', 'MultiEdit', 'NotebookEdit'];
+const OUTPUT_FILE = '.claude/hooks/edited-files.json';
 
 export const hook: Hook = {
-  name: "post-tool-use-file-tracker",
-  type: "post-tool-use",
+  name: 'post-tool-use-file-tracker',
+  type: 'post-tool-use',
   async execute(context) {
     const { tool, parameters } = context;
 
@@ -41,13 +41,13 @@ export const hook: Hook = {
     }
 
     // Determine repository (simplified - assumes single repo for now)
-    const repo = "ShadowTag-v2-fastapi-services";
+    const repo = 'ShadowTag-v2-fastapi-services';
 
     // Load existing edit log
     let editLog: any = { files: [] };
     if (fs.existsSync(OUTPUT_FILE)) {
       try {
-        editLog = JSON.parse(fs.readFileSync(OUTPUT_FILE, "utf-8"));
+        editLog = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf-8'));
       } catch (e) {
         // If parsing fails, start fresh
         editLog = { files: [] };

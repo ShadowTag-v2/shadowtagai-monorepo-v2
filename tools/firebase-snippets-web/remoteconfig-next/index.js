@@ -3,7 +3,7 @@
 
 function getInstance() {
   // [START rc_get_instance]
-  const { getRemoteConfig } = require("firebase/remote-config");
+  const { getRemoteConfig } = require('firebase/remote-config');
 
   const remoteConfig = getRemoteConfig();
   // [END rc_get_instance]
@@ -23,7 +23,7 @@ function setDefaultValues() {
   const remoteConfig = getInstance();
   // [START rc_set_default_values]
   remoteConfig.defaultConfig = {
-    "welcome_message": "Welcome"
+    welcome_message: 'Welcome',
   };
   // [END rc_set_default_values]
 }
@@ -31,16 +31,16 @@ function setDefaultValues() {
 function getValues() {
   const remoteConfig = getInstance();
   // [START rc_get_values]
-  const { getValue } = require("firebase/remote-config");
+  const { getValue } = require('firebase/remote-config');
 
-  const val = getValue(remoteConfig, "welcome_messsage");
+  const val = getValue(remoteConfig, 'welcome_messsage');
   // [END rc_get_values]
 }
 
 function fetchConfigCallback() {
   const remoteConfig = getInstance();
   // [START rc_fetch_config_callback]
-  const { fetchAndActivate } = require("firebase/remote-config");
+  const { fetchAndActivate } = require('firebase/remote-config');
 
   fetchAndActivate(remoteConfig)
     .then(() => {

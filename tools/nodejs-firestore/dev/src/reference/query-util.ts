@@ -14,32 +14,26 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
-import {GoogleError} from 'google-gax';
-import {Duplex, Transform} from 'stream';
-
-import {Serializer} from '../serializer';
-import {Timestamp} from '../timestamp';
-import {DocumentSnapshotBuilder, QueryDocumentSnapshot} from '../document';
-import {
-  Deferred,
-  getTotalTimeout,
-  isPermanentRpcError,
-  requestTag,
-  wrapError,
-} from '../util';
-import {DocumentChange} from '../document-change';
-import {ExplainMetrics} from '../query-profile';
-import {logger} from '../logger';
-import {VectorQuery} from './vector-query';
-import {Query} from './query';
-import Firestore from '../index';
-import {QueryOptions} from './query-options';
-import {LimitType, QueryResponse, QueryStreamElement} from './types';
-import {NOOP_MESSAGE} from './constants';
-
+import type * as firestore from '@google-cloud/firestore';
+import type { GoogleError } from 'google-gax';
+import { type Duplex, Transform } from 'stream';
 import * as protos from '../../protos/firestore_v1_proto_api';
+import { DocumentSnapshotBuilder, type QueryDocumentSnapshot } from '../document';
+import { DocumentChange } from '../document-change';
+import type Firestore from '../index';
+import { logger } from '../logger';
+import { ExplainMetrics } from '../query-profile';
+import type { Serializer } from '../serializer';
+import { Timestamp } from '../timestamp';
+import { Deferred, getTotalTimeout, isPermanentRpcError, requestTag, wrapError } from '../util';
+import { NOOP_MESSAGE } from './constants';
+import type { Query } from './query';
+import type { QueryOptions } from './query-options';
+import { LimitType, type QueryResponse, type QueryStreamElement } from './types';
+import { VectorQuery } from './vector-query';
+
 import api = protos.google.firestore.v1;
+
 import {
   ATTRIBUTE_KEY_IS_RETRY_WITH_CURSOR,
   ATTRIBUTE_KEY_IS_TRANSACTIONAL,
@@ -49,9 +43,7 @@ import {
 export class QueryUtil<
   AppModelType,
   DbModelType extends firestore.DocumentData,
-  Template extends
-    | Query<AppModelType, DbModelType>
-    | VectorQuery<AppModelType, DbModelType>,
+  Template extends Query<AppModelType, DbModelType> | VectorQuery<AppModelType, DbModelType>,
 > {
   constructor(
     /** @private */
@@ -77,13 +69,8 @@ export class QueryUtil<
         readTime?: Timestamp;
       } = {};
 
-      this._stream(
-        query,
-        transactionOrReadTime,
-        retryWithCursor,
-        explainOptions,
-      )
-        .on('error', err => {
+      this._stream(query, transactionOrReadTime, retryWithCursor, explainOptions)
+        .on('error', (err) => {
           reject(wrapError(err, stack));
         })
         .on('data', (data: QueryStreamElement<AppModelType, DbModelType>) => {
@@ -116,9 +103,7 @@ export class QueryUtil<
                 docs.length,
                 () => docs,
                 () => {
-                  const changes: Array<
-                    DocumentChange<AppModelType, DbModelType>
-                  > = [];
+                  const changes: Array<DocumentChange<AppModelType, DbModelType>> = [];
                   for (let i = 0; i < docs.length; ++i) {
                     changes.push(new DocumentChange('added', docs[i], -1, i));
                   }
@@ -167,7 +152,7 @@ export class QueryUtil<
     });
 
     responseStream.pipe(transform);
-    responseStream.on('error', e => transform.destroy(e));
+    responseStream.on('error', (e) => transform.destroy(e));
     return transform;
   }
 
@@ -183,19 +168,12 @@ export class QueryUtil<
     const methodName = 'runQuery';
 
     let numDocumentsReceived = 0;
-    let lastReceivedDocument: QueryDocumentSnapshot<
-      AppModelType,
-      DbModelType
-    > | null = null;
+    let lastReceivedDocument: QueryDocumentSnapshot<AppModelType, DbModelType> | null = null;
 
     let backendStream: Duplex;
     const stream = new Transform({
       objectMode: true,
-      transform: (
-        proto: api.RunQueryResponse | typeof NOOP_MESSAGE,
-        enc,
-        callback,
-      ) => {
+      transform: (proto: api.RunQueryResponse | typeof NOOP_MESSAGE, enc, callback) => {
         if (proto === NOOP_MESSAGE) {
           callback(undefined);
           return;
@@ -213,14 +191,10 @@ export class QueryUtil<
         }
 
         if (proto.document) {
-          const document = this._firestore.snapshot_(
-            proto.document,
-            proto.readTime!,
+          const document = this._firestore.snapshot_(proto.document, proto.readTime!);
+          const finalDoc = new DocumentSnapshotBuilder<AppModelType, DbModelType>(
+            document.ref.withConverter(this._queryOptions.converter),
           );
-          const finalDoc = new DocumentSnapshotBuilder<
-            AppModelType,
-            DbModelType
-          >(document.ref.withConverter(this._queryOptions.converter));
           // Recreate the QueryDocumentSnapshot with the DocumentReference
           // containing the original converter.
           finalDoc.fieldsProto = document._fieldsProto;
@@ -235,10 +209,7 @@ export class QueryUtil<
         }
 
         if (proto.explainMetrics) {
-          output.explainMetrics = ExplainMetrics._fromProto(
-            proto.explainMetrics,
-            this._serializer,
-          );
+          output.explainMetrics = ExplainMetrics._fromProto(proto.explainMetrics, this._serializer);
         }
 
         ++numDocumentsReceived;
@@ -248,9 +219,7 @@ export class QueryUtil<
           logger('QueryUtil._stream', tag, 'Trigger Logical Termination.');
           this._firestore._traceUtil
             .currentSpan()
-            .addEvent(
-              `Firestore.${methodName}: Received RunQueryResponse.Done.`,
-            );
+            .addEvent(`Firestore.${methodName}: Received RunQueryResponse.Done.`);
           backendStream.unpipe(stream);
           backendStream.resume();
           backendStream.end();
@@ -272,12 +241,10 @@ export class QueryUtil<
         do {
           streamActive = new Deferred<boolean>();
 
-          this._firestore._traceUtil
-            .currentSpan()
-            .addEvent(SPAN_NAME_RUN_QUERY, {
-              [ATTRIBUTE_KEY_IS_TRANSACTIONAL]: !!request.transaction,
-              [ATTRIBUTE_KEY_IS_RETRY_WITH_CURSOR]: isRetryRequestWithCursor,
-            });
+          this._firestore._traceUtil.currentSpan().addEvent(SPAN_NAME_RUN_QUERY, {
+            [ATTRIBUTE_KEY_IS_TRANSACTIONAL]: !!request.transaction,
+            [ATTRIBUTE_KEY_IS_RETRY_WITH_CURSOR]: isRetryRequestWithCursor,
+          });
 
           backendStream = await this._firestore.requestStream(
             methodName,
@@ -285,7 +252,7 @@ export class QueryUtil<
             request,
             tag,
           );
-          backendStream.on('error', err => {
+          backendStream.on('error', (err) => {
             backendStream.unpipe(stream);
 
             // If a non-transactional query failed, attempt to restart.
@@ -297,12 +264,7 @@ export class QueryUtil<
               !transactionOrReadTime &&
               !this._isPermanentRpcError(err, methodName)
             ) {
-              logger(
-                'QueryUtil._stream',
-                tag,
-                'Query failed with retryable stream error:',
-                err,
-              );
+              logger('QueryUtil._stream', tag, 'Query failed with retryable stream error:', err);
 
               this._firestore._traceUtil
                 .currentSpan()
@@ -325,9 +287,7 @@ export class QueryUtil<
                   streamActive.resolve(/* active= */ false);
                 } else if (lastReceivedDocument && retryWithCursor) {
                   if (query instanceof VectorQuery) {
-                    throw new Error(
-                      'Unimplemented: Vector query does not support cursors yet.',
-                    );
+                    throw new Error('Unimplemented: Vector query does not support cursors yet.');
                   }
 
                   logger(
@@ -347,8 +307,7 @@ export class QueryUtil<
                   if (!this._queryOptions.limit) {
                     newQuery = query;
                   } else {
-                    const newLimit =
-                      this._queryOptions.limit - numDocumentsReceived;
+                    const newLimit = this._queryOptions.limit - numDocumentsReceived;
                     if (
                       this._queryOptions.limitType === undefined ||
                       this._queryOptions.limitType === LimitType.First
@@ -364,9 +323,7 @@ export class QueryUtil<
                       .startAfter(lastReceivedDocument)
                       .toProto(lastReceivedDocument.readTime);
                   } else {
-                    request = newQuery
-                      .startAfter(lastReceivedDocument)
-                      .toProto();
+                    request = newQuery.startAfter(lastReceivedDocument).toProto();
                   }
 
                   // Set lastReceivedDocument to null before each retry attempt to ensure the retry makes progress
@@ -385,18 +342,11 @@ export class QueryUtil<
                 }
               });
             } else {
-              logger(
-                'QueryUtil._stream',
-                tag,
-                'Query failed with stream error:',
-                err,
-              );
+              logger('QueryUtil._stream', tag, 'Query failed with stream error:', err);
 
-              this._firestore._traceUtil
-                .currentSpan()
-                .addEvent(`${SPAN_NAME_RUN_QUERY}: Error.`, {
-                  'error.message': err.message,
-                });
+              this._firestore._traceUtil.currentSpan().addEvent(`${SPAN_NAME_RUN_QUERY}: Error.`, {
+                'error.message': err.message,
+              });
 
               stream.destroy(err);
               streamActive.resolve(/* active= */ false);
@@ -409,7 +359,7 @@ export class QueryUtil<
           backendStream.pipe(stream);
         } while (await streamActive.promise);
       })
-      .catch(e => stream.destroy(e));
+      .catch((e) => stream.destroy(e));
 
     return stream;
   }

@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { wrapText, formatTime } from './pickle-utils.js';
+import { describe, expect, it } from 'vitest';
+import { formatTime, wrapText } from './pickle-utils.js';
 
 describe('pickle_utils', () => {
   describe('wrapText', () => {

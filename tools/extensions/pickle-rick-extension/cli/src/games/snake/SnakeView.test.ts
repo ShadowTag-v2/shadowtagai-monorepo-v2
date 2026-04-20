@@ -1,16 +1,16 @@
-import { expect, test, describe, mock, beforeEach } from "bun:test";
-import { createMockRenderer } from "../../ui/mock-factory.ts";
+import { beforeEach, describe, expect, mock, test } from 'bun:test';
+import { createMockRenderer } from '../../ui/mock-factory.ts';
 
-import { launchSnake } from "./SnakeView.js";
+import { launchSnake } from './SnakeView.js';
 
-describe("SnakeView", () => {
+describe('SnakeView', () => {
   let mockRenderer: any;
 
   beforeEach(() => {
     mockRenderer = createMockRenderer();
   });
 
-  test("should launch snake", () => {
+  test('should launch snake', () => {
     const onExit = mock(() => {});
     const options = {};
     // This will probably fail if it tries to run the game loop,

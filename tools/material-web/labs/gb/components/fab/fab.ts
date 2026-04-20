@@ -4,19 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {focusRingClasses} from '@material/web/labs/gb/components/focus/focus-ring.js';
-import {
-  rippleClasses,
-  setupRipple,
-} from '@material/web/labs/gb/components/ripple/ripple.js';
-import {PSEUDO_CLASSES} from '@material/web/labs/gb/components/shared/pseudo-classes.js';
+import { focusRingClasses } from '@material/web/labs/gb/components/focus/focus-ring.js';
+import { rippleClasses, setupRipple } from '@material/web/labs/gb/components/ripple/ripple.js';
+import { PSEUDO_CLASSES } from '@material/web/labs/gb/components/shared/pseudo-classes.js';
 import {
   AsyncDirective,
-  AttributePart,
+  type AttributePart,
+  type DirectiveParameters,
   directive,
-  DirectiveParameters,
 } from 'lit/async-directive.js';
-import {classMap, type ClassInfo} from 'lit/directives/class-map.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
 
 /** Fab color configuration types. */
 export type FabColor =
@@ -91,11 +88,9 @@ export function fabClasses({
     ...focusRingClasses(),
     [FAB_CLASSES.fab]: true,
     [FAB_CLASSES.fabPrimary]: color === FAB_COLORS.primary,
-    [FAB_CLASSES.fabPrimaryContainer]:
-      color === FAB_COLORS.primaryContainer || !color,
+    [FAB_CLASSES.fabPrimaryContainer]: color === FAB_COLORS.primaryContainer || !color,
     [FAB_CLASSES.fabSecondary]: color === FAB_COLORS.secondary,
-    [FAB_CLASSES.fabSecondaryContainer]:
-      color === FAB_COLORS.secondaryContainer,
+    [FAB_CLASSES.fabSecondaryContainer]: color === FAB_COLORS.secondaryContainer,
     [FAB_CLASSES.fabTertiary]: color === FAB_COLORS.tertiary,
     [FAB_CLASSES.fabTertiaryContainer]: color === FAB_COLORS.tertiaryContainer,
     [FAB_CLASSES.fabMd]: size === FAB_SIZES.md,
@@ -111,10 +106,7 @@ export function fabClasses({
  * @param fab The element on which to set up fab functionality.
  * @param opts Setup options, supports a cleanup `signal`.
  */
-export function setupFab(
-  fab: HTMLElement,
-  opts?: {signal?: AbortSignal},
-): void {
+export function setupFab(fab: HTMLElement, opts?: { signal?: AbortSignal }): void {
   setupRipple(fab, opts);
 }
 
@@ -135,10 +127,7 @@ class FabDirective extends AsyncDirective {
     });
   }
 
-  override update(
-    {element}: AttributePart,
-    [state]: DirectiveParameters<this>,
-  ) {
+  override update({ element }: AttributePart, [state]: DirectiveParameters<this>) {
     if (this.isConnected && element !== this.element) {
       this.element = element as HTMLElement;
       this.disconnected();
@@ -155,7 +144,7 @@ class FabDirective extends AsyncDirective {
   protected override reconnected() {
     if (this.element) {
       this.cleanup = new AbortController();
-      setupFab(this.element, {signal: this.cleanup.signal});
+      setupFab(this.element, { signal: this.cleanup.signal });
     }
   }
 }

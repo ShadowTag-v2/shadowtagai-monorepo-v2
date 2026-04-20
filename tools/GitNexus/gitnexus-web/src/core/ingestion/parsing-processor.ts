@@ -1,9 +1,9 @@
-import { KnowledgeGraph, GraphNode, GraphRelationship } from '../graph/types';
-import { loadParser, loadLanguage } from '../tree-sitter/parser-loader';
-import { LANGUAGE_QUERIES } from './tree-sitter-queries';
 import { generateId } from '../../lib/utils';
-import { SymbolTable } from './symbol-table';
-import { ASTCache } from './ast-cache';
+import type { GraphNode, GraphRelationship, KnowledgeGraph } from '../graph/types';
+import { loadLanguage, loadParser } from '../tree-sitter/parser-loader';
+import type { ASTCache } from './ast-cache';
+import type { SymbolTable } from './symbol-table';
+import { LANGUAGE_QUERIES } from './tree-sitter-queries';
 import { getLanguageFromFilename } from './utils';
 
 export type FileProgressCallback = (current: number, total: number, filePath: string) => void;
@@ -30,9 +30,11 @@ const isNodeExported = (node: any, name: string, language: string): boolean => {
     case 'typescript':
       while (current) {
         const type = current.type;
-        if (type === 'export_statement' ||
-            type === 'export_specifier' ||
-            type === 'lexical_declaration' && current.parent?.type === 'export_statement') {
+        if (
+          type === 'export_statement' ||
+          type === 'export_specifier' ||
+          (type === 'lexical_declaration' && current.parent?.type === 'export_statement')
+        ) {
           return true;
         }
         // Also check if text starts with 'export '
@@ -83,11 +85,12 @@ const isNodeExported = (node: any, name: string, language: string): boolean => {
       return false;
 
     // Go: Uppercase first letter = exported
-    case 'go':
+    case 'go': {
       if (name.length === 0) return false;
       const first = name[0];
       // Must be uppercase letter (not a number or symbol)
       return first === first.toUpperCase() && first !== first.toLowerCase();
+    }
 
     // Rust: Check for 'pub' visibility modifier
     case 'rust':
@@ -123,9 +126,8 @@ export const processParsing = async (
   files: { path: string; content: string }[],
   symbolTable: SymbolTable,
   astCache: ASTCache,
-  onFileProgress?: FileProgressCallback
+  onFileProgress?: FileProgressCallback,
 ) => {
-
   const parser = await loadParser();
   const total = files.length;
 
@@ -166,10 +168,10 @@ export const processParsing = async (
     }
 
     // 6. Process every match found
-    matches.forEach(match => {
+    matches.forEach((match) => {
       const captureMap: Record<string, any> = {};
 
-      match.captures.forEach(c => {
+      match.captures.forEach((c) => {
         captureMap[c.name] = c.node;
       });
 
@@ -235,7 +237,7 @@ export const processParsing = async (
           endLine: nameNode.endPosition.row,
           language: language,
           isExported: isNodeExported(nameNode, nodeName, language),
-        }
+        },
       };
 
       graph.addNode(node);

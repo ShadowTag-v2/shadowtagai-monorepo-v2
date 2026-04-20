@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Settings, Bell, Shield, Zap, Database, Globe } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Bell, Database, Globe, Settings, Shield, Zap } from 'lucide-react';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface SettingToggle {
   id: string;
@@ -14,60 +14,60 @@ interface SettingToggle {
 
 const initialSettings: SettingToggle[] = [
   {
-    id: "realtime",
-    name: "Real-time Updates",
-    description: "Enable live dashboard updates via WebSocket",
+    id: 'realtime',
+    name: 'Real-time Updates',
+    description: 'Enable live dashboard updates via WebSocket',
     enabled: true,
-    category: "Performance",
+    category: 'Performance',
   },
   {
-    id: "notifications",
-    name: "Desktop Notifications",
-    description: "Show notifications for important events",
+    id: 'notifications',
+    name: 'Desktop Notifications',
+    description: 'Show notifications for important events',
     enabled: false,
-    category: "Notifications",
+    category: 'Notifications',
   },
   {
-    id: "email_alerts",
-    name: "Email Alerts",
-    description: "Send email for critical quality gate failures",
+    id: 'email_alerts',
+    name: 'Email Alerts',
+    description: 'Send email for critical quality gate failures',
     enabled: true,
-    category: "Notifications",
+    category: 'Notifications',
   },
   {
-    id: "auto_scale",
-    name: "Auto-scale Agents",
-    description: "Automatically adjust agent count based on load",
+    id: 'auto_scale',
+    name: 'Auto-scale Agents',
+    description: 'Automatically adjust agent count based on load',
     enabled: true,
-    category: "Swarm",
+    category: 'Swarm',
   },
   {
-    id: "pro_priority",
-    name: "PRO Tier Priority",
-    description: "Prioritize PRO tier agents for complex tasks",
+    id: 'pro_priority',
+    name: 'PRO Tier Priority',
+    description: 'Prioritize PRO tier agents for complex tasks',
     enabled: true,
-    category: "Swarm",
+    category: 'Swarm',
   },
   {
-    id: "dead_mans_switch",
+    id: 'dead_mans_switch',
     name: "Dead Man's Switch",
-    description: "Automatic safety shutdown if no activity for 24h",
+    description: 'Automatic safety shutdown if no activity for 24h',
     enabled: true,
-    category: "Security",
+    category: 'Security',
   },
   {
-    id: "audit_logging",
-    name: "Audit Logging",
-    description: "Log all agent actions for compliance",
+    id: 'audit_logging',
+    name: 'Audit Logging',
+    description: 'Log all agent actions for compliance',
     enabled: true,
-    category: "Security",
+    category: 'Security',
   },
   {
-    id: "api_caching",
-    name: "API Response Caching",
-    description: "Cache API responses to improve performance",
+    id: 'api_caching',
+    name: 'API Response Caching',
+    description: 'Cache API responses to improve performance',
     enabled: false,
-    category: "Performance",
+    category: 'Performance',
   },
 ];
 
@@ -76,14 +76,14 @@ function Toggle({ enabled, onToggle }: { enabled: boolean; onToggle: () => void 
     <button
       onClick={onToggle}
       className={cn(
-        "relative w-12 h-6 rounded-full transition-colors",
-        enabled ? "bg-shadowtag_v4-primary" : "bg-slate-200",
+        'relative w-12 h-6 rounded-full transition-colors',
+        enabled ? 'bg-shadowtag_v4-primary' : 'bg-slate-200',
       )}
     >
       <span
         className={cn(
-          "absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform",
-          enabled && "translate-x-6",
+          'absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform',
+          enabled && 'translate-x-6',
         )}
       />
     </button>

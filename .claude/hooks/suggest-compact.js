@@ -11,11 +11,7 @@ const path = require('path');
 
 const THRESHOLD = parseInt(process.env.COMPACT_THRESHOLD || '50', 10);
 const REMINDER_INTERVAL = 25;
-const STATE_FILE = path.join(
-  process.env.HOME || '/tmp',
-  '.claude',
-  '.compact-state.json'
-);
+const STATE_FILE = path.join(process.env.HOME || '/tmp', '.claude', '.compact-state.json');
 
 function loadState() {
   try {
@@ -75,10 +71,7 @@ function main() {
   if (state.toolCalls >= THRESHOLD) {
     const callsSinceLastSuggestion = state.toolCalls - state.lastSuggested;
 
-    if (
-      state.lastSuggested === 0 ||
-      callsSinceLastSuggestion >= REMINDER_INTERVAL
-    ) {
+    if (state.lastSuggested === 0 || callsSinceLastSuggestion >= REMINDER_INTERVAL) {
       state.lastSuggested = state.toolCalls;
       saveState(state);
 

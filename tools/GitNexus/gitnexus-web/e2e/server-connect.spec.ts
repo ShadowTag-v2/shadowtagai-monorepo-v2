@@ -1,4 +1,4 @@
-import { test, expect, type TestInfo } from '@playwright/test';
+import { expect, type TestInfo, test } from '@playwright/test';
 
 /**
  * E2E tests for the GitNexus web UI.
@@ -20,11 +20,17 @@ test.beforeAll(async () => {
       fetch(`${BACKEND_URL}/api/repos`),
       fetch(FRONTEND_URL),
     ]);
-    if (backendRes.status === 'rejected' || (backendRes.status === 'fulfilled' && !backendRes.value.ok)) {
+    if (
+      backendRes.status === 'rejected' ||
+      (backendRes.status === 'fulfilled' && !backendRes.value.ok)
+    ) {
       test.skip(true, 'gitnexus serve not available on :4747');
       return;
     }
-    if (frontendRes.status === 'rejected' || (frontendRes.status === 'fulfilled' && !frontendRes.value.ok)) {
+    if (
+      frontendRes.status === 'rejected' ||
+      (frontendRes.status === 'fulfilled' && !frontendRes.value.ok)
+    ) {
       test.skip(true, 'Vite dev server not available on :5173');
       return;
     }
@@ -97,7 +103,9 @@ test.describe('Processes Panel', () => {
     await page.getByText('Processes').click();
 
     // Should show process count — wait for data-testid instead of fixed timeout
-    await expect(page.locator('[data-testid="process-list-loaded"]')).toBeVisible({ timeout: 15_000 });
+    await expect(page.locator('[data-testid="process-list-loaded"]')).toBeVisible({
+      timeout: 15_000,
+    });
     await page.screenshot({ path: testInfo.outputPath('processes-panel.png'), fullPage: true });
 
     // Hover first process item to reveal View button, then click it
@@ -110,7 +118,10 @@ test.describe('Processes Panel', () => {
     await viewBtn.click();
     // Wait for modal to appear
     await expect(page.locator('[data-testid="process-modal"]')).toBeVisible({ timeout: 5_000 });
-    await page.screenshot({ path: testInfo.outputPath('process-view-clicked.png'), fullPage: true });
+    await page.screenshot({
+      path: testInfo.outputPath('process-view-clicked.png'),
+      fullPage: true,
+    });
   });
 
   test('lightbulb highlights nodes in graph', async ({ page }, testInfo) => {
@@ -118,7 +129,9 @@ test.describe('Processes Panel', () => {
 
     await page.getByRole('button', { name: 'Nexus AI' }).click();
     await page.getByText('Processes').click();
-    await expect(page.locator('[data-testid="process-list-loaded"]')).toBeVisible({ timeout: 15_000 });
+    await expect(page.locator('[data-testid="process-list-loaded"]')).toBeVisible({
+      timeout: 15_000,
+    });
 
     await page.screenshot({ path: testInfo.outputPath('before-highlight.png'), fullPage: true });
 
@@ -152,14 +165,18 @@ test.describe('Turn Off All Highlights', () => {
 
     // Wait for highlight toggle to show "Turn off" (indicates highlights are active)
     const highlightToggle = page.locator('[data-testid="ai-highlights-toggle"]');
-    await expect(highlightToggle).toHaveAttribute('title', 'Turn off all highlights', { timeout: 5_000 });
+    await expect(highlightToggle).toHaveAttribute('title', 'Turn off all highlights', {
+      timeout: 5_000,
+    });
     await page.screenshot({ path: testInfo.outputPath('node-selected.png'), fullPage: true });
 
     // Click the toggle to clear all highlights
     await highlightToggle.click();
 
     // Verify highlights are now off — button title changes to "Turn on"
-    await expect(highlightToggle).toHaveAttribute('title', 'Turn on AI highlights', { timeout: 5_000 });
+    await expect(highlightToggle).toHaveAttribute('title', 'Turn on AI highlights', {
+      timeout: 5_000,
+    });
     await page.screenshot({ path: testInfo.outputPath('highlights-cleared.png'), fullPage: true });
   });
 });

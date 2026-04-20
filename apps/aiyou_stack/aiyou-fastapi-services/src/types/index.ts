@@ -3,10 +3,10 @@
  */
 
 export enum Mode {
-  THINK = "think",
-  BUILD = "build",
-  SCALE = "scale",
-  RESEARCH = "research", // Multi-source research orchestration
+  THINK = 'think',
+  BUILD = 'build',
+  SCALE = 'scale',
+  RESEARCH = 'research', // Multi-source research orchestration
 }
 
 export interface UserRequest {
@@ -65,12 +65,12 @@ export interface SinglePointOfTruth {
   requirements: string[];
   constraints: string[];
   successCriteria: string[];
-  source: "supergrok" | "claude" | "system";
+  source: 'supergrok' | 'claude' | 'system';
   createdAt: string;
 }
 
 export interface HealthStatus {
-  status: "healthy" | "degraded" | "unhealthy";
+  status: 'healthy' | 'degraded' | 'unhealthy';
   uptime: number;
   version: string;
   vertexConnected: boolean;
@@ -91,7 +91,7 @@ export interface MonteCarloResult {
 }
 
 export interface BusinessJudgmentAnalysis {
-  decision: "APPROVE" | "REJECT" | "DEFER";
+  decision: 'APPROVE' | 'REJECT' | 'DEFER';
   roiExpected: number;
   ltvCacRatio: number;
   paybackMonths: number;

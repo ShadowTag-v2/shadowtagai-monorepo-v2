@@ -1,18 +1,18 @@
-import { Elysia } from "elysia";
-import { getMessage, getState } from "../../db/operations";
-import { authResolver } from "../../middleware/authResolver";
+import { Elysia } from 'elysia';
+import { getMessage, getState } from '../../db/operations';
+import { authResolver } from '../../middleware/authResolver';
 import {
   acquireStartMutex,
   getActiveRunForDedup,
   markRunFinished,
   markRunStarted,
   releaseStartMutex,
-} from "../../services/deep-research/run-guard";
-import type { AuthContext } from "../../types/auth";
-import logger from "../../utils/logger";
+} from '../../services/deep-research/run-guard';
+import type { AuthContext } from '../../types/auth';
+import logger from '../../utils/logger';
 
 type DeepResearchStatusResponse = {
-  status: "processing" | "completed" | "failed";
+  status: 'processing' | 'completed' | 'failed';
   messageId: string;
   conversationId: string;
   result?: {
@@ -49,8 +49,8 @@ export const deepResearchStatusRoute = new Elysia().guard(
   },
   (app) =>
     app
-      .get("/api/deep-research/status/:messageId", deepResearchStatusHandler)
-      .post("/api/deep-research/retry/:jobId", deepResearchRetryHandler),
+      .get('/api/deep-research/status/:messageId', deepResearchStatusHandler)
+      .post('/api/deep-research/retry/:jobId', deepResearchRetryHandler),
 );
 
 /**
@@ -68,8 +68,8 @@ export async function deepResearchStatusHandler(ctx: any) {
     set.status = 401;
     return {
       ok: false,
-      error: "Authentication required",
-      message: "Please provide a valid JWT or API key",
+      error: 'Authentication required',
+      message: 'Please provide a valid JWT or API key',
     };
   }
 
@@ -79,7 +79,7 @@ export async function deepResearchStatusHandler(ctx: any) {
     set.status = 400;
     return {
       ok: false,
-      error: "Missing required parameter: messageId",
+      error: 'Missing required parameter: messageId',
     };
   }
 
@@ -90,7 +90,7 @@ export async function deepResearchStatusHandler(ctx: any) {
       authMethod: auth.method,
       verified: auth.verified,
     },
-    "deep_research_status_check",
+    'deep_research_status_check',
   );
 
   try {
@@ -100,7 +100,7 @@ export async function deepResearchStatusHandler(ctx: any) {
       set.status = 404;
       return {
         ok: false,
-        error: "Message not found",
+        error: 'Message not found',
       };
     }
 
@@ -108,12 +108,12 @@ export async function deepResearchStatusHandler(ctx: any) {
     if (message.user_id !== userId) {
       logger.warn(
         { messageId, requestedBy: userId, ownedBy: message.user_id },
-        "deep_research_status_ownership_mismatch",
+        'deep_research_status_ownership_mismatch',
       );
       set.status = 403;
       return {
         ok: false,
-        error: "Access denied: message belongs to another user",
+        error: 'Access denied: message belongs to another user',
       };
     }
 
@@ -123,7 +123,7 @@ export async function deepResearchStatusHandler(ctx: any) {
       set.status = 500;
       return {
         ok: false,
-        error: "Message has no associated state",
+        error: 'Message has no associated state',
       };
     }
 
@@ -132,7 +132,7 @@ export async function deepResearchStatusHandler(ctx: any) {
       set.status = 404;
       return {
         ok: false,
-        error: "State not found",
+        error: 'State not found',
       };
     }
 
@@ -141,12 +141,12 @@ export async function deepResearchStatusHandler(ctx: any) {
     const steps = stateValues.steps || {};
 
     // Check if there's an error
-    if (stateValues.status === "failed" || stateValues.error) {
+    if (stateValues.status === 'failed' || stateValues.error) {
       const response: DeepResearchStatusResponse = {
-        status: "failed",
+        status: 'failed',
         messageId,
         conversationId: message.conversation_id,
-        error: stateValues.error || "Deep research failed",
+        error: stateValues.error || 'Deep research failed',
       };
       return response;
     }
@@ -175,7 +175,7 @@ export async function deepResearchStatusHandler(ctx: any) {
       ];
 
       const response: DeepResearchStatusResponse = {
-        status: "completed",
+        status: 'completed',
         messageId,
         conversationId: message.conversation_id,
         result: {
@@ -195,7 +195,7 @@ export async function deepResearchStatusHandler(ctx: any) {
     );
 
     const response: DeepResearchStatusResponse = {
-      status: "processing",
+      status: 'processing',
       messageId,
       conversationId: message.conversation_id,
       progress: {
@@ -206,11 +206,11 @@ export async function deepResearchStatusHandler(ctx: any) {
 
     return response;
   } catch (err) {
-    logger.error({ err, messageId }, "deep_research_status_check_failed");
+    logger.error({ err, messageId }, 'deep_research_status_check_failed');
     set.status = 500;
     return {
       ok: false,
-      error: "Failed to check deep research status",
+      error: 'Failed to check deep research status',
     };
   }
 }
@@ -232,24 +232,24 @@ async function deepResearchRetryHandler(ctx: any) {
     set.status = 401;
     return {
       ok: false,
-      error: "Authentication required",
-      message: "Please provide a valid JWT or API key",
+      error: 'Authentication required',
+      message: 'Please provide a valid JWT or API key',
     };
   }
 
   const userId = auth.userId;
 
-  const { isJobQueueEnabled } = await import("../../services/queue/connection");
+  const { isJobQueueEnabled } = await import('../../services/queue/connection');
 
   if (!isJobQueueEnabled()) {
     set.status = 404;
     return {
-      error: "Job queue not enabled",
-      message: "Retry endpoint only available when USE_JOB_QUEUE=true",
+      error: 'Job queue not enabled',
+      message: 'Retry endpoint only available when USE_JOB_QUEUE=true',
     };
   }
 
-  const { getDeepResearchQueue } = await import("../../services/queue/queues");
+  const { getDeepResearchQueue } = await import('../../services/queue/queues');
   const deepResearchQueue = getDeepResearchQueue();
 
   const job = await deepResearchQueue.getJob(jobId);
@@ -258,7 +258,7 @@ async function deepResearchRetryHandler(ctx: any) {
     set.status = 404;
     return {
       ok: false,
-      error: "Job not found",
+      error: 'Job not found',
     };
   }
 
@@ -266,24 +266,24 @@ async function deepResearchRetryHandler(ctx: any) {
   if (job.data.userId !== userId) {
     logger.warn(
       { jobId, requestedBy: userId, ownedBy: job.data.userId },
-      "deep_research_retry_ownership_mismatch",
+      'deep_research_retry_ownership_mismatch',
     );
     set.status = 403;
     return {
       ok: false,
-      error: "Access denied: job belongs to another user",
+      error: 'Access denied: job belongs to another user',
     };
   }
 
   const state = await job.getState();
 
   // Only allow retry for failed jobs
-  if (state !== "failed") {
+  if (state !== 'failed') {
     set.status = 400;
     return {
       ok: false,
       error: `Cannot retry job in state '${state}'`,
-      message: "Only failed jobs can be manually retried",
+      message: 'Only failed jobs can be manually retried',
     };
   }
 
@@ -295,13 +295,13 @@ async function deepResearchRetryHandler(ctx: any) {
     set.status = 500;
     return {
       ok: false,
-      error: "Job missing conversation run metadata for retry",
+      error: 'Job missing conversation run metadata for retry',
     };
   }
 
   const startMutex = await acquireStartMutex(conversationStateId);
   if (!startMutex.acquired && !startMutex.fallback) {
-    logger.warn({ jobId, conversationStateId }, "deep_research_retry_proceeding_without_mutex");
+    logger.warn({ jobId, conversationStateId }, 'deep_research_retry_proceeding_without_mutex');
   }
 
   try {
@@ -310,7 +310,7 @@ async function deepResearchRetryHandler(ctx: any) {
       set.status = 409;
       return {
         ok: false,
-        error: "Deep research is already running for this conversation",
+        error: 'Deep research is already running for this conversation',
         messageId: activeRun.messageId,
         jobId: activeRun.jobId,
       };
@@ -320,7 +320,7 @@ async function deepResearchRetryHandler(ctx: any) {
       conversationStateId,
       rootMessageId,
       stateId,
-      mode: "queue",
+      mode: 'queue',
       jobId: job.id!,
     });
   } finally {
@@ -337,37 +337,37 @@ async function deepResearchRetryHandler(ctx: any) {
         userId,
         previousAttempts: job.attemptsMade,
       },
-      "deep_research_job_manually_retried",
+      'deep_research_job_manually_retried',
     );
 
     return {
       ok: true,
       jobId,
-      status: "retrying",
-      message: "Job has been queued for retry",
+      status: 'retrying',
+      message: 'Job has been queued for retry',
       previousAttempts: job.attemptsMade,
     };
   } catch (error) {
     try {
       await markRunFinished({
         conversationStateId,
-        result: "failed",
-        error: error instanceof Error ? error.message : "Unknown error",
+        result: 'failed',
+        error: error instanceof Error ? error.message : 'Unknown error',
         rootMessageId,
         stateId,
       });
     } catch (finishError) {
       logger.warn(
         { finishError, conversationStateId, rootMessageId, stateId },
-        "deep_research_retry_finish_mark_failed_on_retry_error",
+        'deep_research_retry_finish_mark_failed_on_retry_error',
       );
     }
 
-    logger.error({ error, jobId }, "deep_research_manual_retry_failed");
+    logger.error({ error, jobId }, 'deep_research_manual_retry_failed');
     set.status = 500;
     return {
       ok: false,
-      error: "Failed to retry job",
+      error: 'Failed to retry job',
     };
   }
 }

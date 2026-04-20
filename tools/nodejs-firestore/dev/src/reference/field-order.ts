@@ -15,9 +15,10 @@
  */
 
 import * as protos from '../../protos/firestore_v1_proto_api';
+
 import api = protos.google.firestore.v1;
 
-import {FieldPath} from '../path';
+import type { FieldPath } from '../path';
 
 /**
  * A Query order-by field.

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html, LitElement} from 'lit';
+import { html, LitElement } from 'lit';
 
 /**
  * A component for elevation.

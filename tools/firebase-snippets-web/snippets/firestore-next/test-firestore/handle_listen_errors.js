@@ -5,14 +5,15 @@
 // 'npm run snippets'.
 
 // [START handle_listen_errors_modular]
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot } from 'firebase/firestore';
 
 const unsubscribe = onSnapshot(
-  collection(db, "cities"),
+  collection(db, 'cities'),
   (snapshot) => {
     // ...
   },
   (error) => {
     // ...
-  });
+  },
+);
 // [END handle_listen_errors_modular]

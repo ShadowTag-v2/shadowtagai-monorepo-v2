@@ -20,7 +20,7 @@ export class ChangeColorEvent extends Event {
    * @param color The new source color to apply.
    */
   constructor(public color: string) {
-    super('change-color', {bubbles: true, composed: true});
+    super('change-color', { bubbles: true, composed: true });
   }
 }
 
@@ -33,7 +33,7 @@ export class ChangeDarkModeEvent extends Event {
    * @param mode The new color mode to apply.
    */
   constructor(public mode: 'light' | 'dark' | 'auto') {
-    super('change-mode', {bubbles: true, composed: true});
+    super('change-mode', { bubbles: true, composed: true });
   }
 }
 

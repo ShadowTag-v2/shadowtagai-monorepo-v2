@@ -16,27 +16,18 @@
 // ** https://github.com/googleapis/gapic-generator-typescript **
 // ** All changes to this file may be overwritten. **
 
-import * as protos from '../protos/firestore_admin_v1_proto_api';
 import * as assert from 'assert';
+import { LocationProtos, type LROperation, operationsProtos, protobuf } from 'google-gax';
+import { describe, it } from 'mocha';
+import type { SinonStub } from 'sinon';
 import * as sinon from 'sinon';
-import {SinonStub} from 'sinon';
-import {describe, it} from 'mocha';
+import { PassThrough } from 'stream';
+import * as protos from '../protos/firestore_admin_v1_proto_api';
 import * as firestoreadminModule from '../src/v1';
-
-import {PassThrough} from 'stream';
-
-import {
-  protobuf,
-  LROperation,
-  operationsProtos,
-  LocationProtos,
-} from 'google-gax';
 
 // Dynamically loaded proto JSON is needed to get the type information
 // to fill in default values for request objects
-const root = protobuf.Root.fromJSON(
-  require('../protos/admin_v1.json'),
-).resolveAll();
+const root = protobuf.Root.fromJSON(require('../protos/admin_v1.json')).resolveAll();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getTypeDefaultValue(typeName: string, fields: string[]) {
@@ -48,27 +39,19 @@ function getTypeDefaultValue(typeName: string, fields: string[]) {
 }
 
 function generateSampleMessage<T extends object>(instance: T) {
-  const filledObject = (
-    instance.constructor as typeof protobuf.Message
-  ).toObject(instance as protobuf.Message<T>, {defaults: true});
-  return (instance.constructor as typeof protobuf.Message).fromObject(
-    filledObject,
-  ) as T;
+  const filledObject = (instance.constructor as typeof protobuf.Message).toObject(
+    instance as protobuf.Message<T>,
+    { defaults: true },
+  );
+  return (instance.constructor as typeof protobuf.Message).fromObject(filledObject) as T;
 }
 
 function stubSimpleCall<ResponseType>(response?: ResponseType, error?: Error) {
-  return error
-    ? sinon.stub().rejects(error)
-    : sinon.stub().resolves([response]);
+  return error ? sinon.stub().rejects(error) : sinon.stub().resolves([response]);
 }
 
-function stubSimpleCallWithCallback<ResponseType>(
-  response?: ResponseType,
-  error?: Error,
-) {
-  return error
-    ? sinon.stub().callsArgWith(2, error)
-    : sinon.stub().callsArgWith(2, null, response);
+function stubSimpleCallWithCallback<ResponseType>(response?: ResponseType, error?: Error) {
+  return error ? sinon.stub().callsArgWith(2, error) : sinon.stub().callsArgWith(2, null, response);
 }
 
 function stubLongRunningCall<ResponseType>(
@@ -76,15 +59,11 @@ function stubLongRunningCall<ResponseType>(
   callError?: Error,
   lroError?: Error,
 ) {
-  const innerStub = lroError
-    ? sinon.stub().rejects(lroError)
-    : sinon.stub().resolves([response]);
+  const innerStub = lroError ? sinon.stub().rejects(lroError) : sinon.stub().resolves([response]);
   const mockOperation = {
     promise: innerStub,
   };
-  return callError
-    ? sinon.stub().rejects(callError)
-    : sinon.stub().resolves([mockOperation]);
+  return callError ? sinon.stub().rejects(callError) : sinon.stub().resolves([mockOperation]);
 }
 
 function stubLongRunningCallWithCallback<ResponseType>(
@@ -92,9 +71,7 @@ function stubLongRunningCallWithCallback<ResponseType>(
   callError?: Error,
   lroError?: Error,
 ) {
-  const innerStub = lroError
-    ? sinon.stub().rejects(lroError)
-    : sinon.stub().resolves([response]);
+  const innerStub = lroError ? sinon.stub().rejects(lroError) : sinon.stub().resolves([response]);
   const mockOperation = {
     promise: innerStub,
   };
@@ -103,19 +80,14 @@ function stubLongRunningCallWithCallback<ResponseType>(
     : sinon.stub().callsArgWith(2, null, mockOperation);
 }
 
-function stubPageStreamingCall<ResponseType>(
-  responses?: ResponseType[],
-  error?: Error,
-) {
+function stubPageStreamingCall<ResponseType>(responses?: ResponseType[], error?: Error) {
   const pagingStub = sinon.stub();
   if (responses) {
     for (let i = 0; i < responses.length; ++i) {
       pagingStub.onCall(i).callsArgWith(2, null, responses[i]);
     }
   }
-  const transformStub = error
-    ? sinon.stub().callsArgWith(2, error)
-    : pagingStub;
+  const transformStub = error ? sinon.stub().callsArgWith(2, error) : pagingStub;
   const mockStream = new PassThrough({
     objectMode: true,
     transform: transformStub,
@@ -141,10 +113,7 @@ function stubPageStreamingCall<ResponseType>(
   return sinon.stub().returns(mockStream);
 }
 
-function stubAsyncIterationCall<ResponseType>(
-  responses?: ResponseType[],
-  error?: Error,
-) {
+function stubAsyncIterationCall<ResponseType>(responses?: ResponseType[], error?: Error) {
   let counter = 0;
   const asyncIterable = {
     [Symbol.asyncIterator]() {
@@ -154,9 +123,9 @@ function stubAsyncIterationCall<ResponseType>(
             return Promise.reject(error);
           }
           if (counter >= responses!.length) {
-            return Promise.resolve({done: true, value: undefined});
+            return Promise.resolve({ done: true, value: undefined });
           }
-          return Promise.resolve({done: false, value: responses![counter++]});
+          return Promise.resolve({ done: false, value: responses![counter++] });
         },
       };
     },
@@ -178,14 +147,10 @@ describe('v1.FirestoreAdminClient', () => {
       assert.strictEqual(universeDomain, 'googleapis.com');
     });
 
-    if (
-      typeof process === 'object' &&
-      typeof process.emitWarning === 'function'
-    ) {
+    if (typeof process === 'object' && typeof process.emitWarning === 'function') {
       it('throws DeprecationWarning if static servicePath is used', () => {
         const stub = sinon.stub(process, 'emitWarning');
-        const servicePath =
-          firestoreadminModule.FirestoreAdminClient.servicePath;
+        const servicePath = firestoreadminModule.FirestoreAdminClient.servicePath;
         assert.strictEqual(servicePath, 'firestore.googleapis.com');
         assert(stub.called);
         stub.restore();
@@ -193,8 +158,7 @@ describe('v1.FirestoreAdminClient', () => {
 
       it('throws DeprecationWarning if static apiEndpoint is used', () => {
         const stub = sinon.stub(process, 'emitWarning');
-        const apiEndpoint =
-          firestoreadminModule.FirestoreAdminClient.apiEndpoint;
+        const apiEndpoint = firestoreadminModule.FirestoreAdminClient.apiEndpoint;
         assert.strictEqual(apiEndpoint, 'firestore.googleapis.com');
         assert(stub.called);
         stub.restore();
@@ -276,7 +240,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('has initialize method and supports deferred initialization', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       assert.strictEqual(client.firestoreAdminStub, undefined);
@@ -284,12 +248,12 @@ describe('v1.FirestoreAdminClient', () => {
       assert(client.firestoreAdminStub);
     });
 
-    it('has close method for the initialized client', done => {
+    it('has close method for the initialized client', (done) => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
-      client.initialize().catch(err => {
+      client.initialize().catch((err) => {
         throw err;
       });
       assert(client.firestoreAdminStub);
@@ -298,14 +262,14 @@ describe('v1.FirestoreAdminClient', () => {
         .then(() => {
           done();
         })
-        .catch(err => {
+        .catch((err) => {
           throw err;
         });
     });
 
-    it('has close method for the non-initialized client', done => {
+    it('has close method for the non-initialized client', (done) => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       assert.strictEqual(client.firestoreAdminStub, undefined);
@@ -314,7 +278,7 @@ describe('v1.FirestoreAdminClient', () => {
         .then(() => {
           done();
         })
-        .catch(err => {
+        .catch((err) => {
           throw err;
         });
     });
@@ -322,7 +286,7 @@ describe('v1.FirestoreAdminClient', () => {
     it('has getProjectId method', async () => {
       const fakeProjectId = 'fake-project-id';
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       client.auth.getProjectId = sinon.stub().resolves(fakeProjectId);
@@ -334,12 +298,10 @@ describe('v1.FirestoreAdminClient', () => {
     it('has getProjectId method with callback', async () => {
       const fakeProjectId = 'fake-project-id';
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
-      client.auth.getProjectId = sinon
-        .stub()
-        .callsArgWith(0, null, fakeProjectId);
+      client.auth.getProjectId = sinon.stub().callsArgWith(0, null, fakeProjectId);
       const promise = new Promise((resolve, reject) => {
         client.getProjectId((err?: Error | null, projectId?: string | null) => {
           if (err) {
@@ -357,62 +319,45 @@ describe('v1.FirestoreAdminClient', () => {
   describe('getIndex', () => {
     it('invokes getIndex without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.firestore.admin.v1.GetIndexRequest(),
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetIndexRequest',
-        ['name'],
-      );
+      const request = generateSampleMessage(new protos.google.firestore.admin.v1.GetIndexRequest());
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetIndexRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.firestore.admin.v1.Index(),
-      );
+      const expectedResponse = generateSampleMessage(new protos.google.firestore.admin.v1.Index());
       client.innerApiCalls.getIndex = stubSimpleCall(expectedResponse);
       const [response] = await client.getIndex(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getIndex as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getIndex as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getIndex as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getIndex as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getIndex without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.firestore.admin.v1.GetIndexRequest(),
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetIndexRequest',
-        ['name'],
-      );
+      const request = generateSampleMessage(new protos.google.firestore.admin.v1.GetIndexRequest());
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetIndexRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.firestore.admin.v1.Index(),
-      );
-      client.innerApiCalls.getIndex =
-        stubSimpleCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.firestore.admin.v1.Index());
+      client.innerApiCalls.getIndex = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.getIndex(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.firestore.admin.v1.IIndex | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.firestore.admin.v1.IIndex | null) => {
             if (err) {
               reject(err);
             } else {
@@ -423,60 +368,48 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getIndex as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getIndex as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getIndex as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getIndex as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getIndex with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.firestore.admin.v1.GetIndexRequest(),
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetIndexRequest',
-        ['name'],
-      );
+      const request = generateSampleMessage(new protos.google.firestore.admin.v1.GetIndexRequest());
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetIndexRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
       client.innerApiCalls.getIndex = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.getIndex(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.getIndex as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getIndex as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getIndex as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getIndex as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getIndex with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.firestore.admin.v1.GetIndexRequest(),
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetIndexRequest',
-        ['name'],
-      );
+      const request = generateSampleMessage(new protos.google.firestore.admin.v1.GetIndexRequest());
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetIndexRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.getIndex(request), expectedError);
@@ -486,62 +419,49 @@ describe('v1.FirestoreAdminClient', () => {
   describe('deleteIndex', () => {
     it('invokes deleteIndex without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.DeleteIndexRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.DeleteIndexRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.DeleteIndexRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.protobuf.Empty(),
-      );
+      const expectedResponse = generateSampleMessage(new protos.google.protobuf.Empty());
       client.innerApiCalls.deleteIndex = stubSimpleCall(expectedResponse);
       const [response] = await client.deleteIndex(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteIndex as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteIndex as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteIndex as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.deleteIndex as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes deleteIndex without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.DeleteIndexRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.DeleteIndexRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.DeleteIndexRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.protobuf.Empty(),
-      );
-      client.innerApiCalls.deleteIndex =
-        stubSimpleCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.protobuf.Empty());
+      client.innerApiCalls.deleteIndex = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.deleteIndex(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.protobuf.IEmpty | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.protobuf.IEmpty | null) => {
             if (err) {
               reject(err);
             } else {
@@ -552,63 +472,52 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteIndex as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteIndex as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteIndex as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.deleteIndex as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes deleteIndex with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.DeleteIndexRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.DeleteIndexRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.DeleteIndexRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.deleteIndex = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.deleteIndex = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.deleteIndex(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.deleteIndex as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteIndex as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteIndex as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.deleteIndex as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes deleteIndex with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.DeleteIndexRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.DeleteIndexRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.DeleteIndexRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.deleteIndex(request), expectedError);
@@ -618,62 +527,45 @@ describe('v1.FirestoreAdminClient', () => {
   describe('getField', () => {
     it('invokes getField without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.firestore.admin.v1.GetFieldRequest(),
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetFieldRequest',
-        ['name'],
-      );
+      const request = generateSampleMessage(new protos.google.firestore.admin.v1.GetFieldRequest());
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetFieldRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.firestore.admin.v1.Field(),
-      );
+      const expectedResponse = generateSampleMessage(new protos.google.firestore.admin.v1.Field());
       client.innerApiCalls.getField = stubSimpleCall(expectedResponse);
       const [response] = await client.getField(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getField as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getField as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getField as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getField as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getField without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.firestore.admin.v1.GetFieldRequest(),
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetFieldRequest',
-        ['name'],
-      );
+      const request = generateSampleMessage(new protos.google.firestore.admin.v1.GetFieldRequest());
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetFieldRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.firestore.admin.v1.Field(),
-      );
-      client.innerApiCalls.getField =
-        stubSimpleCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.firestore.admin.v1.Field());
+      client.innerApiCalls.getField = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.getField(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.firestore.admin.v1.IField | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.firestore.admin.v1.IField | null) => {
             if (err) {
               reject(err);
             } else {
@@ -684,60 +576,48 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getField as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getField as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getField as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getField as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getField with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.firestore.admin.v1.GetFieldRequest(),
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetFieldRequest',
-        ['name'],
-      );
+      const request = generateSampleMessage(new protos.google.firestore.admin.v1.GetFieldRequest());
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetFieldRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
       client.innerApiCalls.getField = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.getField(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.getField as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getField as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getField as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getField as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getField with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      const request = generateSampleMessage(
-        new protos.google.firestore.admin.v1.GetFieldRequest(),
-      );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetFieldRequest',
-        ['name'],
-      );
+      const request = generateSampleMessage(new protos.google.firestore.admin.v1.GetFieldRequest());
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetFieldRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.getField(request), expectedError);
@@ -747,17 +627,16 @@ describe('v1.FirestoreAdminClient', () => {
   describe('getDatabase', () => {
     it('invokes getDatabase without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.GetDatabaseRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetDatabaseRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetDatabaseRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedResponse = generateSampleMessage(
@@ -766,43 +645,35 @@ describe('v1.FirestoreAdminClient', () => {
       client.innerApiCalls.getDatabase = stubSimpleCall(expectedResponse);
       const [response] = await client.getDatabase(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getDatabase as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getDatabase without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.GetDatabaseRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetDatabaseRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetDatabaseRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.Database(),
       );
-      client.innerApiCalls.getDatabase =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.getDatabase = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.getDatabase(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.firestore.admin.v1.IDatabase | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.firestore.admin.v1.IDatabase | null) => {
             if (err) {
               reject(err);
             } else {
@@ -813,63 +684,52 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getDatabase as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getDatabase with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.GetDatabaseRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetDatabaseRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetDatabaseRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.getDatabase = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.getDatabase = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.getDatabase(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.getDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getDatabase as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getDatabase with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.GetDatabaseRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetDatabaseRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetDatabaseRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.getDatabase(request), expectedError);
@@ -879,17 +739,16 @@ describe('v1.FirestoreAdminClient', () => {
   describe('listDatabases', () => {
     it('invokes listDatabases without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListDatabasesRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListDatabasesRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListDatabasesRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = generateSampleMessage(
@@ -898,36 +757,31 @@ describe('v1.FirestoreAdminClient', () => {
       client.innerApiCalls.listDatabases = stubSimpleCall(expectedResponse);
       const [response] = await client.listDatabases(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listDatabases as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listDatabases as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listDatabases as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listDatabases as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listDatabases without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListDatabasesRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListDatabasesRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListDatabasesRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListDatabasesResponse(),
       );
-      client.innerApiCalls.listDatabases =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.listDatabases = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.listDatabases(
           request,
@@ -945,63 +799,52 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listDatabases as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listDatabases as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listDatabases as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listDatabases as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listDatabases with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListDatabasesRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListDatabasesRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListDatabasesRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.listDatabases = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.listDatabases = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.listDatabases(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.listDatabases as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listDatabases as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listDatabases as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listDatabases as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listDatabases with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListDatabasesRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListDatabasesRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListDatabasesRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.listDatabases(request), expectedError);
@@ -1011,7 +854,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('createUserCreds', () => {
     it('invokes createUserCreds without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1030,19 +873,17 @@ describe('v1.FirestoreAdminClient', () => {
       client.innerApiCalls.createUserCreds = stubSimpleCall(expectedResponse);
       const [response] = await client.createUserCreds(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.createUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.createUserCreds as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes createUserCreds without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1058,15 +899,11 @@ describe('v1.FirestoreAdminClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.UserCreds(),
       );
-      client.innerApiCalls.createUserCreds =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.createUserCreds = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.createUserCreds(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.firestore.admin.v1.IUserCreds | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.firestore.admin.v1.IUserCreds | null) => {
             if (err) {
               reject(err);
             } else {
@@ -1077,19 +914,17 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.createUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.createUserCreds as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes createUserCreds with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1103,24 +938,19 @@ describe('v1.FirestoreAdminClient', () => {
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.createUserCreds = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.createUserCreds = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.createUserCreds(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.createUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.createUserCreds as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes createUserCreds with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1133,7 +963,7 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.parent = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.createUserCreds(request), expectedError);
@@ -1143,17 +973,16 @@ describe('v1.FirestoreAdminClient', () => {
   describe('getUserCreds', () => {
     it('invokes getUserCreds without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.GetUserCredsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetUserCredsRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetUserCredsRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedResponse = generateSampleMessage(
@@ -1162,43 +991,35 @@ describe('v1.FirestoreAdminClient', () => {
       client.innerApiCalls.getUserCreds = stubSimpleCall(expectedResponse);
       const [response] = await client.getUserCreds(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getUserCreds as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getUserCreds without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.GetUserCredsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetUserCredsRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetUserCredsRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.UserCreds(),
       );
-      client.innerApiCalls.getUserCreds =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.getUserCreds = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.getUserCreds(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.firestore.admin.v1.IUserCreds | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.firestore.admin.v1.IUserCreds | null) => {
             if (err) {
               reject(err);
             } else {
@@ -1209,63 +1030,52 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getUserCreds as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getUserCreds with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.GetUserCredsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetUserCredsRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetUserCredsRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.getUserCreds = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.getUserCreds = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.getUserCreds(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.getUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getUserCreds as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getUserCreds with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.GetUserCredsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetUserCredsRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetUserCredsRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.getUserCreds(request), expectedError);
@@ -1275,17 +1085,16 @@ describe('v1.FirestoreAdminClient', () => {
   describe('listUserCreds', () => {
     it('invokes listUserCreds without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListUserCredsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListUserCredsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListUserCredsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = generateSampleMessage(
@@ -1294,36 +1103,31 @@ describe('v1.FirestoreAdminClient', () => {
       client.innerApiCalls.listUserCreds = stubSimpleCall(expectedResponse);
       const [response] = await client.listUserCreds(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listUserCreds as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listUserCreds without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListUserCredsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListUserCredsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListUserCredsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListUserCredsResponse(),
       );
-      client.innerApiCalls.listUserCreds =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.listUserCreds = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.listUserCreds(
           request,
@@ -1341,63 +1145,52 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listUserCreds as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listUserCreds with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListUserCredsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListUserCredsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListUserCredsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.listUserCreds = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.listUserCreds = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.listUserCreds(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.listUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listUserCreds as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listUserCreds with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListUserCredsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListUserCredsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListUserCredsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.listUserCreds(request), expectedError);
@@ -1407,7 +1200,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('enableUserCreds', () => {
     it('invokes enableUserCreds without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1426,19 +1219,17 @@ describe('v1.FirestoreAdminClient', () => {
       client.innerApiCalls.enableUserCreds = stubSimpleCall(expectedResponse);
       const [response] = await client.enableUserCreds(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.enableUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.enableUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.enableUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.enableUserCreds as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes enableUserCreds without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1454,15 +1245,11 @@ describe('v1.FirestoreAdminClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.UserCreds(),
       );
-      client.innerApiCalls.enableUserCreds =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.enableUserCreds = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.enableUserCreds(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.firestore.admin.v1.IUserCreds | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.firestore.admin.v1.IUserCreds | null) => {
             if (err) {
               reject(err);
             } else {
@@ -1473,19 +1260,17 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.enableUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.enableUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.enableUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.enableUserCreds as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes enableUserCreds with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1499,24 +1284,19 @@ describe('v1.FirestoreAdminClient', () => {
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.enableUserCreds = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.enableUserCreds = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.enableUserCreds(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.enableUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.enableUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.enableUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.enableUserCreds as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes enableUserCreds with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1529,7 +1309,7 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.enableUserCreds(request), expectedError);
@@ -1539,7 +1319,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('disableUserCreds', () => {
     it('invokes disableUserCreds without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1558,9 +1338,7 @@ describe('v1.FirestoreAdminClient', () => {
       client.innerApiCalls.disableUserCreds = stubSimpleCall(expectedResponse);
       const [response] = await client.disableUserCreds(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.disableUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.disableUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.disableUserCreds as SinonStub
@@ -1570,7 +1348,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes disableUserCreds without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1586,15 +1364,11 @@ describe('v1.FirestoreAdminClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.UserCreds(),
       );
-      client.innerApiCalls.disableUserCreds =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.disableUserCreds = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.disableUserCreds(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.firestore.admin.v1.IUserCreds | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.firestore.admin.v1.IUserCreds | null) => {
             if (err) {
               reject(err);
             } else {
@@ -1605,9 +1379,7 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.disableUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.disableUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.disableUserCreds as SinonStub
@@ -1617,7 +1389,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes disableUserCreds with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1631,14 +1403,9 @@ describe('v1.FirestoreAdminClient', () => {
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.disableUserCreds = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.disableUserCreds = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.disableUserCreds(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.disableUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.disableUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.disableUserCreds as SinonStub
@@ -1648,7 +1415,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes disableUserCreds with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1661,7 +1428,7 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.disableUserCreds(request), expectedError);
@@ -1671,7 +1438,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('resetUserPassword', () => {
     it('invokes resetUserPassword without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1690,9 +1457,8 @@ describe('v1.FirestoreAdminClient', () => {
       client.innerApiCalls.resetUserPassword = stubSimpleCall(expectedResponse);
       const [response] = await client.resetUserPassword(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.resetUserPassword as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.resetUserPassword as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.resetUserPassword as SinonStub
@@ -1702,7 +1468,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes resetUserPassword without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1718,15 +1484,11 @@ describe('v1.FirestoreAdminClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.UserCreds(),
       );
-      client.innerApiCalls.resetUserPassword =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.resetUserPassword = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.resetUserPassword(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.firestore.admin.v1.IUserCreds | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.firestore.admin.v1.IUserCreds | null) => {
             if (err) {
               reject(err);
             } else {
@@ -1737,9 +1499,8 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.resetUserPassword as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.resetUserPassword as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.resetUserPassword as SinonStub
@@ -1749,7 +1510,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes resetUserPassword with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1763,14 +1524,10 @@ describe('v1.FirestoreAdminClient', () => {
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.resetUserPassword = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.resetUserPassword = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.resetUserPassword(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.resetUserPassword as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.resetUserPassword as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.resetUserPassword as SinonStub
@@ -1780,7 +1537,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes resetUserPassword with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1793,7 +1550,7 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.resetUserPassword(request), expectedError);
@@ -1803,7 +1560,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('deleteUserCreds', () => {
     it('invokes deleteUserCreds without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1816,25 +1573,21 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.protobuf.Empty(),
-      );
+      const expectedResponse = generateSampleMessage(new protos.google.protobuf.Empty());
       client.innerApiCalls.deleteUserCreds = stubSimpleCall(expectedResponse);
       const [response] = await client.deleteUserCreds(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.deleteUserCreds as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes deleteUserCreds without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1847,18 +1600,12 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.protobuf.Empty(),
-      );
-      client.innerApiCalls.deleteUserCreds =
-        stubSimpleCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.protobuf.Empty());
+      client.innerApiCalls.deleteUserCreds = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.deleteUserCreds(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.protobuf.IEmpty | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.protobuf.IEmpty | null) => {
             if (err) {
               reject(err);
             } else {
@@ -1869,19 +1616,17 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.deleteUserCreds as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes deleteUserCreds with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1895,24 +1640,19 @@ describe('v1.FirestoreAdminClient', () => {
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.deleteUserCreds = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.deleteUserCreds = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.deleteUserCreds(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.deleteUserCreds as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteUserCreds as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteUserCreds as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.deleteUserCreds as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes deleteUserCreds with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -1925,7 +1665,7 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.deleteUserCreds(request), expectedError);
@@ -1935,62 +1675,49 @@ describe('v1.FirestoreAdminClient', () => {
   describe('getBackup', () => {
     it('invokes getBackup without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.GetBackupRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetBackupRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetBackupRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.firestore.admin.v1.Backup(),
-      );
+      const expectedResponse = generateSampleMessage(new protos.google.firestore.admin.v1.Backup());
       client.innerApiCalls.getBackup = stubSimpleCall(expectedResponse);
       const [response] = await client.getBackup(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getBackup as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getBackup as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getBackup as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getBackup as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getBackup without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.GetBackupRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetBackupRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetBackupRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.firestore.admin.v1.Backup(),
-      );
-      client.innerApiCalls.getBackup =
-        stubSimpleCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.firestore.admin.v1.Backup());
+      client.innerApiCalls.getBackup = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.getBackup(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.firestore.admin.v1.IBackup | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.firestore.admin.v1.IBackup | null) => {
             if (err) {
               reject(err);
             } else {
@@ -2001,60 +1728,52 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getBackup as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getBackup as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getBackup as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getBackup as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getBackup with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.GetBackupRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetBackupRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetBackupRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
       client.innerApiCalls.getBackup = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.getBackup(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.getBackup as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getBackup as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.getBackup as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.getBackup as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes getBackup with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.GetBackupRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.GetBackupRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.GetBackupRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.getBackup(request), expectedError);
@@ -2064,17 +1783,16 @@ describe('v1.FirestoreAdminClient', () => {
   describe('listBackups', () => {
     it('invokes listBackups without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListBackupsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListBackupsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListBackupsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = generateSampleMessage(
@@ -2083,36 +1801,31 @@ describe('v1.FirestoreAdminClient', () => {
       client.innerApiCalls.listBackups = stubSimpleCall(expectedResponse);
       const [response] = await client.listBackups(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listBackups as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listBackups as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listBackups as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listBackups as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listBackups without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListBackupsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListBackupsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListBackupsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListBackupsResponse(),
       );
-      client.innerApiCalls.listBackups =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.listBackups = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.listBackups(
           request,
@@ -2130,63 +1843,52 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listBackups as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listBackups as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listBackups as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listBackups as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listBackups with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListBackupsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListBackupsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListBackupsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.listBackups = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.listBackups = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.listBackups(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.listBackups as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listBackups as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listBackups as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listBackups as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listBackups with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListBackupsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListBackupsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListBackupsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.listBackups(request), expectedError);
@@ -2196,62 +1898,49 @@ describe('v1.FirestoreAdminClient', () => {
   describe('deleteBackup', () => {
     it('invokes deleteBackup without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.DeleteBackupRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.DeleteBackupRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.DeleteBackupRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.protobuf.Empty(),
-      );
+      const expectedResponse = generateSampleMessage(new protos.google.protobuf.Empty());
       client.innerApiCalls.deleteBackup = stubSimpleCall(expectedResponse);
       const [response] = await client.deleteBackup(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteBackup as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteBackup as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteBackup as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.deleteBackup as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes deleteBackup without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.DeleteBackupRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.DeleteBackupRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.DeleteBackupRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.protobuf.Empty(),
-      );
-      client.innerApiCalls.deleteBackup =
-        stubSimpleCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.protobuf.Empty());
+      client.innerApiCalls.deleteBackup = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.deleteBackup(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.protobuf.IEmpty | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.protobuf.IEmpty | null) => {
             if (err) {
               reject(err);
             } else {
@@ -2262,63 +1951,52 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteBackup as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteBackup as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteBackup as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.deleteBackup as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes deleteBackup with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.DeleteBackupRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.DeleteBackupRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.DeleteBackupRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.deleteBackup = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.deleteBackup = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.deleteBackup(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.deleteBackup as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteBackup as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteBackup as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.deleteBackup as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes deleteBackup with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.DeleteBackupRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.DeleteBackupRequest',
-        ['name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.DeleteBackupRequest', [
+        'name',
+      ]);
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.deleteBackup(request), expectedError);
@@ -2328,7 +2006,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('createBackupSchedule', () => {
     it('invokes createBackupSchedule without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2344,13 +2022,11 @@ describe('v1.FirestoreAdminClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.BackupSchedule(),
       );
-      client.innerApiCalls.createBackupSchedule =
-        stubSimpleCall(expectedResponse);
+      client.innerApiCalls.createBackupSchedule = stubSimpleCall(expectedResponse);
       const [response] = await client.createBackupSchedule(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.createBackupSchedule as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createBackupSchedule as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.createBackupSchedule as SinonStub
@@ -2360,7 +2036,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes createBackupSchedule without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2376,8 +2052,7 @@ describe('v1.FirestoreAdminClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.BackupSchedule(),
       );
-      client.innerApiCalls.createBackupSchedule =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.createBackupSchedule = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.createBackupSchedule(
           request,
@@ -2395,9 +2070,8 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.createBackupSchedule as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createBackupSchedule as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.createBackupSchedule as SinonStub
@@ -2407,7 +2081,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes createBackupSchedule with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2421,14 +2095,10 @@ describe('v1.FirestoreAdminClient', () => {
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.createBackupSchedule = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.createBackupSchedule = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.createBackupSchedule(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.createBackupSchedule as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createBackupSchedule as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.createBackupSchedule as SinonStub
@@ -2438,7 +2108,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes createBackupSchedule with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2451,7 +2121,7 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.parent = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.createBackupSchedule(request), expectedError);
@@ -2461,7 +2131,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('getBackupSchedule', () => {
     it('invokes getBackupSchedule without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2480,9 +2150,8 @@ describe('v1.FirestoreAdminClient', () => {
       client.innerApiCalls.getBackupSchedule = stubSimpleCall(expectedResponse);
       const [response] = await client.getBackupSchedule(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getBackupSchedule as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getBackupSchedule as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.getBackupSchedule as SinonStub
@@ -2492,7 +2161,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes getBackupSchedule without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2508,8 +2177,7 @@ describe('v1.FirestoreAdminClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.BackupSchedule(),
       );
-      client.innerApiCalls.getBackupSchedule =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.getBackupSchedule = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.getBackupSchedule(
           request,
@@ -2527,9 +2195,8 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.getBackupSchedule as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getBackupSchedule as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.getBackupSchedule as SinonStub
@@ -2539,7 +2206,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes getBackupSchedule with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2553,14 +2220,10 @@ describe('v1.FirestoreAdminClient', () => {
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.getBackupSchedule = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.getBackupSchedule = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.getBackupSchedule(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.getBackupSchedule as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.getBackupSchedule as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.getBackupSchedule as SinonStub
@@ -2570,7 +2233,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes getBackupSchedule with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2583,7 +2246,7 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.getBackupSchedule(request), expectedError);
@@ -2593,7 +2256,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('listBackupSchedules', () => {
     it('invokes listBackupSchedules without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2609,13 +2272,11 @@ describe('v1.FirestoreAdminClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListBackupSchedulesResponse(),
       );
-      client.innerApiCalls.listBackupSchedules =
-        stubSimpleCall(expectedResponse);
+      client.innerApiCalls.listBackupSchedules = stubSimpleCall(expectedResponse);
       const [response] = await client.listBackupSchedules(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listBackupSchedules as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listBackupSchedules as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.listBackupSchedules as SinonStub
@@ -2625,7 +2286,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes listBackupSchedules without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2641,8 +2302,7 @@ describe('v1.FirestoreAdminClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListBackupSchedulesResponse(),
       );
-      client.innerApiCalls.listBackupSchedules =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.listBackupSchedules = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.listBackupSchedules(
           request,
@@ -2660,9 +2320,8 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listBackupSchedules as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listBackupSchedules as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.listBackupSchedules as SinonStub
@@ -2672,7 +2331,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes listBackupSchedules with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2686,14 +2345,10 @@ describe('v1.FirestoreAdminClient', () => {
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.listBackupSchedules = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.listBackupSchedules = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.listBackupSchedules(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.listBackupSchedules as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listBackupSchedules as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.listBackupSchedules as SinonStub
@@ -2703,7 +2358,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes listBackupSchedules with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2716,7 +2371,7 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.parent = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.listBackupSchedules(request), expectedError);
@@ -2726,7 +2381,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('updateBackupSchedule', () => {
     it('invokes updateBackupSchedule without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2743,13 +2398,11 @@ describe('v1.FirestoreAdminClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.BackupSchedule(),
       );
-      client.innerApiCalls.updateBackupSchedule =
-        stubSimpleCall(expectedResponse);
+      client.innerApiCalls.updateBackupSchedule = stubSimpleCall(expectedResponse);
       const [response] = await client.updateBackupSchedule(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.updateBackupSchedule as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.updateBackupSchedule as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.updateBackupSchedule as SinonStub
@@ -2759,7 +2412,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes updateBackupSchedule without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2776,8 +2429,7 @@ describe('v1.FirestoreAdminClient', () => {
       const expectedResponse = generateSampleMessage(
         new protos.google.firestore.admin.v1.BackupSchedule(),
       );
-      client.innerApiCalls.updateBackupSchedule =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.updateBackupSchedule = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.updateBackupSchedule(
           request,
@@ -2795,9 +2447,8 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.updateBackupSchedule as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.updateBackupSchedule as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.updateBackupSchedule as SinonStub
@@ -2807,7 +2458,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes updateBackupSchedule with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2822,14 +2473,10 @@ describe('v1.FirestoreAdminClient', () => {
       request.backupSchedule.name = defaultValue1;
       const expectedHeaderRequestParams = `backup_schedule.name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.updateBackupSchedule = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.updateBackupSchedule = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.updateBackupSchedule(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.updateBackupSchedule as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.updateBackupSchedule as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.updateBackupSchedule as SinonStub
@@ -2839,7 +2486,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes updateBackupSchedule with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2853,7 +2500,7 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.backupSchedule.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.updateBackupSchedule(request), expectedError);
@@ -2863,7 +2510,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('deleteBackupSchedule', () => {
     it('invokes deleteBackupSchedule without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2876,16 +2523,12 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.protobuf.Empty(),
-      );
-      client.innerApiCalls.deleteBackupSchedule =
-        stubSimpleCall(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.protobuf.Empty());
+      client.innerApiCalls.deleteBackupSchedule = stubSimpleCall(expectedResponse);
       const [response] = await client.deleteBackupSchedule(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteBackupSchedule as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteBackupSchedule as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.deleteBackupSchedule as SinonStub
@@ -2895,7 +2538,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes deleteBackupSchedule without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2908,18 +2551,12 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.protobuf.Empty(),
-      );
-      client.innerApiCalls.deleteBackupSchedule =
-        stubSimpleCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.protobuf.Empty());
+      client.innerApiCalls.deleteBackupSchedule = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.deleteBackupSchedule(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.protobuf.IEmpty | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.protobuf.IEmpty | null) => {
             if (err) {
               reject(err);
             } else {
@@ -2930,9 +2567,8 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteBackupSchedule as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteBackupSchedule as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.deleteBackupSchedule as SinonStub
@@ -2942,7 +2578,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes deleteBackupSchedule with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2956,14 +2592,10 @@ describe('v1.FirestoreAdminClient', () => {
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.deleteBackupSchedule = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.deleteBackupSchedule = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.deleteBackupSchedule(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.deleteBackupSchedule as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteBackupSchedule as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.deleteBackupSchedule as SinonStub
@@ -2973,7 +2605,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes deleteBackupSchedule with closed client', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -2986,7 +2618,7 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedError = new Error('The client has already been closed.');
-      client.close().catch(err => {
+      client.close().catch((err) => {
         throw err;
       });
       await assert.rejects(client.deleteBackupSchedule(request), expectedError);
@@ -2996,56 +2628,46 @@ describe('v1.FirestoreAdminClient', () => {
   describe('createIndex', () => {
     it('invokes createIndex without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.CreateIndexRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.CreateIndexRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.CreateIndexRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
       client.innerApiCalls.createIndex = stubLongRunningCall(expectedResponse);
       const [operation] = await client.createIndex(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.createIndex as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createIndex as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createIndex as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.createIndex as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes createIndex without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.CreateIndexRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.CreateIndexRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.CreateIndexRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.createIndex =
-        stubLongRunningCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.createIndex = stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.createIndex(
           request,
@@ -3070,83 +2692,65 @@ describe('v1.FirestoreAdminClient', () => {
       >;
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.createIndex as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createIndex as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createIndex as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.createIndex as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes createIndex with call error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.CreateIndexRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.CreateIndexRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.CreateIndexRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.createIndex = stubLongRunningCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.createIndex = stubLongRunningCall(undefined, expectedError);
       await assert.rejects(client.createIndex(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.createIndex as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createIndex as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createIndex as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.createIndex as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes createIndex with LRO error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.CreateIndexRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.CreateIndexRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.CreateIndexRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.createIndex = stubLongRunningCall(
-        undefined,
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.createIndex = stubLongRunningCall(undefined, undefined, expectedError);
       const [operation] = await client.createIndex(request);
       await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.createIndex as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createIndex as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createIndex as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.createIndex as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes checkCreateIndexProgress without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3154,13 +2758,11 @@ describe('v1.FirestoreAdminClient', () => {
         new operationsProtos.google.longrunning.Operation(),
       );
       expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
+      expectedResponse.response = { type_url: 'url', value: Buffer.from('') };
+      expectedResponse.metadata = { type_url: 'url', value: Buffer.from('') };
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkCreateIndexProgress(
-        expectedResponse.name,
-      );
+      const decodedOperation = await client.checkCreateIndexProgress(expectedResponse.name);
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
       assert(decodedOperation.metadata);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
@@ -3168,16 +2770,13 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes checkCreateIndexProgress with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const expectedError = new Error('expected');
 
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.operationsClient.getOperation = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.checkCreateIndexProgress(''), expectedError);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
@@ -3186,7 +2785,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('updateField', () => {
     it('invokes updateField without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3194,32 +2793,27 @@ describe('v1.FirestoreAdminClient', () => {
         new protos.google.firestore.admin.v1.UpdateFieldRequest(),
       );
       request.field ??= {};
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.UpdateFieldRequest',
-        ['field', 'name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.UpdateFieldRequest', [
+        'field',
+        'name',
+      ]);
       request.field.name = defaultValue1;
       const expectedHeaderRequestParams = `field.name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
       client.innerApiCalls.updateField = stubLongRunningCall(expectedResponse);
       const [operation] = await client.updateField(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.updateField as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.updateField as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.updateField as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.updateField as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes updateField without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3227,17 +2821,14 @@ describe('v1.FirestoreAdminClient', () => {
         new protos.google.firestore.admin.v1.UpdateFieldRequest(),
       );
       request.field ??= {};
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.UpdateFieldRequest',
-        ['field', 'name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.UpdateFieldRequest', [
+        'field',
+        'name',
+      ]);
       request.field.name = defaultValue1;
       const expectedHeaderRequestParams = `field.name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.updateField =
-        stubLongRunningCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.updateField = stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.updateField(
           request,
@@ -3262,19 +2853,16 @@ describe('v1.FirestoreAdminClient', () => {
       >;
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.updateField as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.updateField as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.updateField as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.updateField as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes updateField with call error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3282,31 +2870,25 @@ describe('v1.FirestoreAdminClient', () => {
         new protos.google.firestore.admin.v1.UpdateFieldRequest(),
       );
       request.field ??= {};
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.UpdateFieldRequest',
-        ['field', 'name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.UpdateFieldRequest', [
+        'field',
+        'name',
+      ]);
       request.field.name = defaultValue1;
       const expectedHeaderRequestParams = `field.name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.updateField = stubLongRunningCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.updateField = stubLongRunningCall(undefined, expectedError);
       await assert.rejects(client.updateField(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.updateField as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.updateField as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.updateField as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.updateField as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes updateField with LRO error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3314,33 +2896,26 @@ describe('v1.FirestoreAdminClient', () => {
         new protos.google.firestore.admin.v1.UpdateFieldRequest(),
       );
       request.field ??= {};
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.UpdateFieldRequest',
-        ['field', 'name'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.UpdateFieldRequest', [
+        'field',
+        'name',
+      ]);
       request.field.name = defaultValue1;
       const expectedHeaderRequestParams = `field.name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.updateField = stubLongRunningCall(
-        undefined,
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.updateField = stubLongRunningCall(undefined, undefined, expectedError);
       const [operation] = await client.updateField(request);
       await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.updateField as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.updateField as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.updateField as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.updateField as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes checkUpdateFieldProgress without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3348,13 +2923,11 @@ describe('v1.FirestoreAdminClient', () => {
         new operationsProtos.google.longrunning.Operation(),
       );
       expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
+      expectedResponse.response = { type_url: 'url', value: Buffer.from('') };
+      expectedResponse.metadata = { type_url: 'url', value: Buffer.from('') };
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkUpdateFieldProgress(
-        expectedResponse.name,
-      );
+      const decodedOperation = await client.checkUpdateFieldProgress(expectedResponse.name);
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
       assert(decodedOperation.metadata);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
@@ -3362,16 +2935,13 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes checkUpdateFieldProgress with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const expectedError = new Error('expected');
 
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.operationsClient.getOperation = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.checkUpdateFieldProgress(''), expectedError);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
@@ -3380,7 +2950,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('exportDocuments', () => {
     it('invokes exportDocuments without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3393,27 +2963,22 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.exportDocuments =
-        stubLongRunningCall(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.exportDocuments = stubLongRunningCall(expectedResponse);
       const [operation] = await client.exportDocuments(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.exportDocuments as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.exportDocuments as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.exportDocuments as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.exportDocuments as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes exportDocuments without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3426,11 +2991,8 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.exportDocuments =
-        stubLongRunningCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.exportDocuments = stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.exportDocuments(
           request,
@@ -3455,19 +3017,17 @@ describe('v1.FirestoreAdminClient', () => {
       >;
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.exportDocuments as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.exportDocuments as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.exportDocuments as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.exportDocuments as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes exportDocuments with call error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3481,24 +3041,19 @@ describe('v1.FirestoreAdminClient', () => {
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.exportDocuments = stubLongRunningCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.exportDocuments = stubLongRunningCall(undefined, expectedError);
       await assert.rejects(client.exportDocuments(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.exportDocuments as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.exportDocuments as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.exportDocuments as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.exportDocuments as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes exportDocuments with LRO error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3519,19 +3074,17 @@ describe('v1.FirestoreAdminClient', () => {
       );
       const [operation] = await client.exportDocuments(request);
       await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.exportDocuments as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.exportDocuments as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.exportDocuments as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.exportDocuments as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes checkExportDocumentsProgress without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3539,13 +3092,11 @@ describe('v1.FirestoreAdminClient', () => {
         new operationsProtos.google.longrunning.Operation(),
       );
       expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
+      expectedResponse.response = { type_url: 'url', value: Buffer.from('') };
+      expectedResponse.metadata = { type_url: 'url', value: Buffer.from('') };
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkExportDocumentsProgress(
-        expectedResponse.name,
-      );
+      const decodedOperation = await client.checkExportDocumentsProgress(expectedResponse.name);
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
       assert(decodedOperation.metadata);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
@@ -3553,20 +3104,14 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes checkExportDocumentsProgress with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const expectedError = new Error('expected');
 
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
-      await assert.rejects(
-        client.checkExportDocumentsProgress(''),
-        expectedError,
-      );
+      client.operationsClient.getOperation = stubSimpleCall(undefined, expectedError);
+      await assert.rejects(client.checkExportDocumentsProgress(''), expectedError);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
   });
@@ -3574,7 +3119,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('importDocuments', () => {
     it('invokes importDocuments without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3587,27 +3132,22 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.importDocuments =
-        stubLongRunningCall(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.importDocuments = stubLongRunningCall(expectedResponse);
       const [operation] = await client.importDocuments(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.importDocuments as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.importDocuments as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.importDocuments as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.importDocuments as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes importDocuments without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3620,11 +3160,8 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.importDocuments =
-        stubLongRunningCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.importDocuments = stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.importDocuments(
           request,
@@ -3649,19 +3186,17 @@ describe('v1.FirestoreAdminClient', () => {
       >;
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.importDocuments as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.importDocuments as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.importDocuments as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.importDocuments as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes importDocuments with call error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3675,24 +3210,19 @@ describe('v1.FirestoreAdminClient', () => {
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.importDocuments = stubLongRunningCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.importDocuments = stubLongRunningCall(undefined, expectedError);
       await assert.rejects(client.importDocuments(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.importDocuments as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.importDocuments as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.importDocuments as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.importDocuments as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes importDocuments with LRO error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3713,19 +3243,17 @@ describe('v1.FirestoreAdminClient', () => {
       );
       const [operation] = await client.importDocuments(request);
       await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.importDocuments as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.importDocuments as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.importDocuments as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.importDocuments as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes checkImportDocumentsProgress without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3733,13 +3261,11 @@ describe('v1.FirestoreAdminClient', () => {
         new operationsProtos.google.longrunning.Operation(),
       );
       expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
+      expectedResponse.response = { type_url: 'url', value: Buffer.from('') };
+      expectedResponse.metadata = { type_url: 'url', value: Buffer.from('') };
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkImportDocumentsProgress(
-        expectedResponse.name,
-      );
+      const decodedOperation = await client.checkImportDocumentsProgress(expectedResponse.name);
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
       assert(decodedOperation.metadata);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
@@ -3747,20 +3273,14 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes checkImportDocumentsProgress with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const expectedError = new Error('expected');
 
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
-      await assert.rejects(
-        client.checkImportDocumentsProgress(''),
-        expectedError,
-      );
+      client.operationsClient.getOperation = stubSimpleCall(undefined, expectedError);
+      await assert.rejects(client.checkImportDocumentsProgress(''), expectedError);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
   });
@@ -3768,7 +3288,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('bulkDeleteDocuments', () => {
     it('invokes bulkDeleteDocuments without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3781,17 +3301,13 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.bulkDeleteDocuments =
-        stubLongRunningCall(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.bulkDeleteDocuments = stubLongRunningCall(expectedResponse);
       const [operation] = await client.bulkDeleteDocuments(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.bulkDeleteDocuments as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.bulkDeleteDocuments as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.bulkDeleteDocuments as SinonStub
@@ -3801,7 +3317,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes bulkDeleteDocuments without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3814,11 +3330,8 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.bulkDeleteDocuments =
-        stubLongRunningCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.bulkDeleteDocuments = stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.bulkDeleteDocuments(
           request,
@@ -3843,9 +3356,8 @@ describe('v1.FirestoreAdminClient', () => {
       >;
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.bulkDeleteDocuments as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.bulkDeleteDocuments as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.bulkDeleteDocuments as SinonStub
@@ -3855,7 +3367,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes bulkDeleteDocuments with call error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3869,14 +3381,10 @@ describe('v1.FirestoreAdminClient', () => {
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.bulkDeleteDocuments = stubLongRunningCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.bulkDeleteDocuments = stubLongRunningCall(undefined, expectedError);
       await assert.rejects(client.bulkDeleteDocuments(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.bulkDeleteDocuments as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.bulkDeleteDocuments as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.bulkDeleteDocuments as SinonStub
@@ -3886,7 +3394,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes bulkDeleteDocuments with LRO error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3907,9 +3415,8 @@ describe('v1.FirestoreAdminClient', () => {
       );
       const [operation] = await client.bulkDeleteDocuments(request);
       await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.bulkDeleteDocuments as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.bulkDeleteDocuments as SinonStub).getCall(0)
+        .args[0];
       assert.deepStrictEqual(actualRequest, request);
       const actualHeaderRequestParams = (
         client.innerApiCalls.bulkDeleteDocuments as SinonStub
@@ -3919,7 +3426,7 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes checkBulkDeleteDocumentsProgress without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3927,13 +3434,11 @@ describe('v1.FirestoreAdminClient', () => {
         new operationsProtos.google.longrunning.Operation(),
       );
       expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
+      expectedResponse.response = { type_url: 'url', value: Buffer.from('') };
+      expectedResponse.metadata = { type_url: 'url', value: Buffer.from('') };
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkBulkDeleteDocumentsProgress(
-        expectedResponse.name,
-      );
+      const decodedOperation = await client.checkBulkDeleteDocumentsProgress(expectedResponse.name);
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
       assert(decodedOperation.metadata);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
@@ -3941,20 +3446,14 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes checkBulkDeleteDocumentsProgress with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const expectedError = new Error('expected');
 
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
-      await assert.rejects(
-        client.checkBulkDeleteDocumentsProgress(''),
-        expectedError,
-      );
+      client.operationsClient.getOperation = stubSimpleCall(undefined, expectedError);
+      await assert.rejects(client.checkBulkDeleteDocumentsProgress(''), expectedError);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
   });
@@ -3962,7 +3461,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('createDatabase', () => {
     it('invokes createDatabase without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -3975,27 +3474,22 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.createDatabase =
-        stubLongRunningCall(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.createDatabase = stubLongRunningCall(expectedResponse);
       const [operation] = await client.createDatabase(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.createDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.createDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes createDatabase without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4008,11 +3502,8 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.createDatabase =
-        stubLongRunningCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.createDatabase = stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.createDatabase(
           request,
@@ -4037,19 +3528,17 @@ describe('v1.FirestoreAdminClient', () => {
       >;
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.createDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.createDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes createDatabase with call error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4063,24 +3552,19 @@ describe('v1.FirestoreAdminClient', () => {
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.createDatabase = stubLongRunningCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.createDatabase = stubLongRunningCall(undefined, expectedError);
       await assert.rejects(client.createDatabase(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.createDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.createDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes createDatabase with LRO error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4101,19 +3585,17 @@ describe('v1.FirestoreAdminClient', () => {
       );
       const [operation] = await client.createDatabase(request);
       await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.createDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.createDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.createDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.createDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes checkCreateDatabaseProgress without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4121,13 +3603,11 @@ describe('v1.FirestoreAdminClient', () => {
         new operationsProtos.google.longrunning.Operation(),
       );
       expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
+      expectedResponse.response = { type_url: 'url', value: Buffer.from('') };
+      expectedResponse.metadata = { type_url: 'url', value: Buffer.from('') };
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkCreateDatabaseProgress(
-        expectedResponse.name,
-      );
+      const decodedOperation = await client.checkCreateDatabaseProgress(expectedResponse.name);
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
       assert(decodedOperation.metadata);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
@@ -4135,20 +3615,14 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes checkCreateDatabaseProgress with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const expectedError = new Error('expected');
 
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
-      await assert.rejects(
-        client.checkCreateDatabaseProgress(''),
-        expectedError,
-      );
+      client.operationsClient.getOperation = stubSimpleCall(undefined, expectedError);
+      await assert.rejects(client.checkCreateDatabaseProgress(''), expectedError);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
   });
@@ -4156,7 +3630,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('updateDatabase', () => {
     it('invokes updateDatabase without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4170,27 +3644,22 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.database.name = defaultValue1;
       const expectedHeaderRequestParams = `database.name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.updateDatabase =
-        stubLongRunningCall(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.updateDatabase = stubLongRunningCall(expectedResponse);
       const [operation] = await client.updateDatabase(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.updateDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.updateDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.updateDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.updateDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes updateDatabase without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4204,11 +3673,8 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.database.name = defaultValue1;
       const expectedHeaderRequestParams = `database.name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.updateDatabase =
-        stubLongRunningCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.updateDatabase = stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.updateDatabase(
           request,
@@ -4233,19 +3699,17 @@ describe('v1.FirestoreAdminClient', () => {
       >;
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.updateDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.updateDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.updateDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.updateDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes updateDatabase with call error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4260,24 +3724,19 @@ describe('v1.FirestoreAdminClient', () => {
       request.database.name = defaultValue1;
       const expectedHeaderRequestParams = `database.name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.updateDatabase = stubLongRunningCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.updateDatabase = stubLongRunningCall(undefined, expectedError);
       await assert.rejects(client.updateDatabase(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.updateDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.updateDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.updateDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.updateDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes updateDatabase with LRO error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4299,19 +3758,17 @@ describe('v1.FirestoreAdminClient', () => {
       );
       const [operation] = await client.updateDatabase(request);
       await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.updateDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.updateDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.updateDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.updateDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes checkUpdateDatabaseProgress without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4319,13 +3776,11 @@ describe('v1.FirestoreAdminClient', () => {
         new operationsProtos.google.longrunning.Operation(),
       );
       expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
+      expectedResponse.response = { type_url: 'url', value: Buffer.from('') };
+      expectedResponse.metadata = { type_url: 'url', value: Buffer.from('') };
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkUpdateDatabaseProgress(
-        expectedResponse.name,
-      );
+      const decodedOperation = await client.checkUpdateDatabaseProgress(expectedResponse.name);
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
       assert(decodedOperation.metadata);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
@@ -4333,20 +3788,14 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes checkUpdateDatabaseProgress with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const expectedError = new Error('expected');
 
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
-      await assert.rejects(
-        client.checkUpdateDatabaseProgress(''),
-        expectedError,
-      );
+      client.operationsClient.getOperation = stubSimpleCall(undefined, expectedError);
+      await assert.rejects(client.checkUpdateDatabaseProgress(''), expectedError);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
   });
@@ -4354,7 +3803,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('deleteDatabase', () => {
     it('invokes deleteDatabase without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4367,27 +3816,22 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.deleteDatabase =
-        stubLongRunningCall(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.deleteDatabase = stubLongRunningCall(expectedResponse);
       const [operation] = await client.deleteDatabase(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.deleteDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes deleteDatabase without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4400,11 +3844,8 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.deleteDatabase =
-        stubLongRunningCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.deleteDatabase = stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.deleteDatabase(
           request,
@@ -4429,19 +3870,17 @@ describe('v1.FirestoreAdminClient', () => {
       >;
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.deleteDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.deleteDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes deleteDatabase with call error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4455,24 +3894,19 @@ describe('v1.FirestoreAdminClient', () => {
       request.name = defaultValue1;
       const expectedHeaderRequestParams = `name=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.deleteDatabase = stubLongRunningCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.deleteDatabase = stubLongRunningCall(undefined, expectedError);
       await assert.rejects(client.deleteDatabase(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.deleteDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.deleteDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes deleteDatabase with LRO error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4493,19 +3927,17 @@ describe('v1.FirestoreAdminClient', () => {
       );
       const [operation] = await client.deleteDatabase(request);
       await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.deleteDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.deleteDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.deleteDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.deleteDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes checkDeleteDatabaseProgress without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4513,13 +3945,11 @@ describe('v1.FirestoreAdminClient', () => {
         new operationsProtos.google.longrunning.Operation(),
       );
       expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
+      expectedResponse.response = { type_url: 'url', value: Buffer.from('') };
+      expectedResponse.metadata = { type_url: 'url', value: Buffer.from('') };
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkDeleteDatabaseProgress(
-        expectedResponse.name,
-      );
+      const decodedOperation = await client.checkDeleteDatabaseProgress(expectedResponse.name);
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
       assert(decodedOperation.metadata);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
@@ -4527,20 +3957,14 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes checkDeleteDatabaseProgress with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const expectedError = new Error('expected');
 
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
-      await assert.rejects(
-        client.checkDeleteDatabaseProgress(''),
-        expectedError,
-      );
+      client.operationsClient.getOperation = stubSimpleCall(undefined, expectedError);
+      await assert.rejects(client.checkDeleteDatabaseProgress(''), expectedError);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
   });
@@ -4548,7 +3972,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('restoreDatabase', () => {
     it('invokes restoreDatabase without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4561,27 +3985,22 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.restoreDatabase =
-        stubLongRunningCall(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.restoreDatabase = stubLongRunningCall(expectedResponse);
       const [operation] = await client.restoreDatabase(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.restoreDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.restoreDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.restoreDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.restoreDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes restoreDatabase without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4594,11 +4013,8 @@ describe('v1.FirestoreAdminClient', () => {
       );
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.restoreDatabase =
-        stubLongRunningCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.restoreDatabase = stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.restoreDatabase(
           request,
@@ -4623,19 +4039,17 @@ describe('v1.FirestoreAdminClient', () => {
       >;
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.restoreDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.restoreDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.restoreDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.restoreDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes restoreDatabase with call error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4649,24 +4063,19 @@ describe('v1.FirestoreAdminClient', () => {
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.restoreDatabase = stubLongRunningCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.restoreDatabase = stubLongRunningCall(undefined, expectedError);
       await assert.rejects(client.restoreDatabase(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.restoreDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.restoreDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.restoreDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.restoreDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes restoreDatabase with LRO error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4687,19 +4096,17 @@ describe('v1.FirestoreAdminClient', () => {
       );
       const [operation] = await client.restoreDatabase(request);
       await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.restoreDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.restoreDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.restoreDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.restoreDatabase as SinonStub).getCall(
+        0,
+      ).args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes checkRestoreDatabaseProgress without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4707,13 +4114,11 @@ describe('v1.FirestoreAdminClient', () => {
         new operationsProtos.google.longrunning.Operation(),
       );
       expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
+      expectedResponse.response = { type_url: 'url', value: Buffer.from('') };
+      expectedResponse.metadata = { type_url: 'url', value: Buffer.from('') };
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkRestoreDatabaseProgress(
-        expectedResponse.name,
-      );
+      const decodedOperation = await client.checkRestoreDatabaseProgress(expectedResponse.name);
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
       assert(decodedOperation.metadata);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
@@ -4721,20 +4126,14 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes checkRestoreDatabaseProgress with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const expectedError = new Error('expected');
 
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
-      await assert.rejects(
-        client.checkRestoreDatabaseProgress(''),
-        expectedError,
-      );
+      client.operationsClient.getOperation = stubSimpleCall(undefined, expectedError);
+      await assert.rejects(client.checkRestoreDatabaseProgress(''), expectedError);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
   });
@@ -4742,7 +4141,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('cloneDatabase', () => {
     it('invokes cloneDatabase without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4753,27 +4152,21 @@ describe('v1.FirestoreAdminClient', () => {
       // path template: projects/*/databases/{database_id=*}/**
       request.pitrSnapshot.database = 'projects/value/databases/value/value';
       const expectedHeaderRequestParams = 'database_id=value';
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.cloneDatabase =
-        stubLongRunningCall(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.cloneDatabase = stubLongRunningCall(expectedResponse);
       const [operation] = await client.cloneDatabase(request);
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.cloneDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.cloneDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.cloneDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.cloneDatabase as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes cloneDatabase without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4784,11 +4177,8 @@ describe('v1.FirestoreAdminClient', () => {
       // path template: projects/*/databases/{database_id=*}/**
       request.pitrSnapshot.database = 'projects/value/databases/value/value';
       const expectedHeaderRequestParams = 'database_id=value';
-      const expectedResponse = generateSampleMessage(
-        new protos.google.longrunning.Operation(),
-      );
-      client.innerApiCalls.cloneDatabase =
-        stubLongRunningCallWithCallback(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.longrunning.Operation());
+      client.innerApiCalls.cloneDatabase = stubLongRunningCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.cloneDatabase(
           request,
@@ -4813,19 +4203,16 @@ describe('v1.FirestoreAdminClient', () => {
       >;
       const [response] = await operation.promise();
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.cloneDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.cloneDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.cloneDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.cloneDatabase as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes cloneDatabase with call error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4837,24 +4224,18 @@ describe('v1.FirestoreAdminClient', () => {
       request.pitrSnapshot.database = 'projects/value/databases/value/value';
       const expectedHeaderRequestParams = 'database_id=value';
       const expectedError = new Error('expected');
-      client.innerApiCalls.cloneDatabase = stubLongRunningCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.cloneDatabase = stubLongRunningCall(undefined, expectedError);
       await assert.rejects(client.cloneDatabase(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.cloneDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.cloneDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.cloneDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.cloneDatabase as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes cloneDatabase with LRO error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4866,26 +4247,19 @@ describe('v1.FirestoreAdminClient', () => {
       request.pitrSnapshot.database = 'projects/value/databases/value/value';
       const expectedHeaderRequestParams = 'database_id=value';
       const expectedError = new Error('expected');
-      client.innerApiCalls.cloneDatabase = stubLongRunningCall(
-        undefined,
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.cloneDatabase = stubLongRunningCall(undefined, undefined, expectedError);
       const [operation] = await client.cloneDatabase(request);
       await assert.rejects(operation.promise(), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.cloneDatabase as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.cloneDatabase as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.cloneDatabase as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.cloneDatabase as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes checkCloneDatabaseProgress without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -4893,13 +4267,11 @@ describe('v1.FirestoreAdminClient', () => {
         new operationsProtos.google.longrunning.Operation(),
       );
       expectedResponse.name = 'test';
-      expectedResponse.response = {type_url: 'url', value: Buffer.from('')};
-      expectedResponse.metadata = {type_url: 'url', value: Buffer.from('')};
+      expectedResponse.response = { type_url: 'url', value: Buffer.from('') };
+      expectedResponse.metadata = { type_url: 'url', value: Buffer.from('') };
 
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
-      const decodedOperation = await client.checkCloneDatabaseProgress(
-        expectedResponse.name,
-      );
+      const decodedOperation = await client.checkCloneDatabaseProgress(expectedResponse.name);
       assert.deepStrictEqual(decodedOperation.name, expectedResponse.name);
       assert(decodedOperation.metadata);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
@@ -4907,20 +4279,14 @@ describe('v1.FirestoreAdminClient', () => {
 
     it('invokes checkCloneDatabaseProgress with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const expectedError = new Error('expected');
 
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
-      await assert.rejects(
-        client.checkCloneDatabaseProgress(''),
-        expectedError,
-      );
+      client.operationsClient.getOperation = stubSimpleCall(undefined, expectedError);
+      await assert.rejects(client.checkCloneDatabaseProgress(''), expectedError);
       assert((client.operationsClient.getOperation as SinonStub).getCall(0));
     });
   });
@@ -4928,17 +4294,16 @@ describe('v1.FirestoreAdminClient', () => {
   describe('listIndexes', () => {
     it('invokes listIndexes without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListIndexesRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListIndexesRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListIndexesRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = [
@@ -4949,29 +4314,25 @@ describe('v1.FirestoreAdminClient', () => {
       client.innerApiCalls.listIndexes = stubSimpleCall(expectedResponse);
       const [response] = await client.listIndexes(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listIndexes as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listIndexes as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listIndexes as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listIndexes as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listIndexes without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListIndexesRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListIndexesRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListIndexesRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = [
@@ -4979,15 +4340,11 @@ describe('v1.FirestoreAdminClient', () => {
         generateSampleMessage(new protos.google.firestore.admin.v1.Index()),
         generateSampleMessage(new protos.google.firestore.admin.v1.Index()),
       ];
-      client.innerApiCalls.listIndexes =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.listIndexes = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.listIndexes(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.firestore.admin.v1.IIndex[] | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.firestore.admin.v1.IIndex[] | null) => {
             if (err) {
               reject(err);
             } else {
@@ -4998,60 +4355,49 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listIndexes as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listIndexes as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listIndexes as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listIndexes as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listIndexes with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListIndexesRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListIndexesRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListIndexesRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.listIndexes = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.listIndexes = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.listIndexes(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.listIndexes as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listIndexes as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listIndexes as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listIndexes as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listIndexesStream without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListIndexesRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListIndexesRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListIndexesRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = [
@@ -5059,17 +4405,13 @@ describe('v1.FirestoreAdminClient', () => {
         generateSampleMessage(new protos.google.firestore.admin.v1.Index()),
         generateSampleMessage(new protos.google.firestore.admin.v1.Index()),
       ];
-      client.descriptors.page.listIndexes.createStream =
-        stubPageStreamingCall(expectedResponse);
+      client.descriptors.page.listIndexes.createStream = stubPageStreamingCall(expectedResponse);
       const stream = client.listIndexesStream(request);
       const promise = new Promise((resolve, reject) => {
         const responses: protos.google.firestore.admin.v1.Index[] = [];
-        stream.on(
-          'data',
-          (response: protos.google.firestore.admin.v1.Index) => {
-            responses.push(response);
-          },
-        );
+        stream.on('data', (response: protos.google.firestore.admin.v1.Index) => {
+          responses.push(response);
+        });
         stream.on('end', () => {
           resolve(responses);
         });
@@ -5087,25 +4429,22 @@ describe('v1.FirestoreAdminClient', () => {
       assert(
         (client.descriptors.page.listIndexes.createStream as SinonStub)
           .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams),
+          .args[2].otherArgs.headers['x-goog-request-params'].includes(expectedHeaderRequestParams),
       );
     });
 
     it('invokes listIndexesStream with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListIndexesRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListIndexesRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListIndexesRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
@@ -5116,12 +4455,9 @@ describe('v1.FirestoreAdminClient', () => {
       const stream = client.listIndexesStream(request);
       const promise = new Promise((resolve, reject) => {
         const responses: protos.google.firestore.admin.v1.Index[] = [];
-        stream.on(
-          'data',
-          (response: protos.google.firestore.admin.v1.Index) => {
-            responses.push(response);
-          },
-        );
+        stream.on('data', (response: protos.google.firestore.admin.v1.Index) => {
+          responses.push(response);
+        });
         stream.on('end', () => {
           resolve(responses);
         });
@@ -5138,25 +4474,22 @@ describe('v1.FirestoreAdminClient', () => {
       assert(
         (client.descriptors.page.listIndexes.createStream as SinonStub)
           .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams),
+          .args[2].otherArgs.headers['x-goog-request-params'].includes(expectedHeaderRequestParams),
       );
     });
 
     it('uses async iteration with listIndexes without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListIndexesRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListIndexesRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListIndexesRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = [
@@ -5164,8 +4497,7 @@ describe('v1.FirestoreAdminClient', () => {
         generateSampleMessage(new protos.google.firestore.admin.v1.Index()),
         generateSampleMessage(new protos.google.firestore.admin.v1.Index()),
       ];
-      client.descriptors.page.listIndexes.asyncIterate =
-        stubAsyncIterationCall(expectedResponse);
+      client.descriptors.page.listIndexes.asyncIterate = stubAsyncIterationCall(expectedResponse);
       const responses: protos.google.firestore.admin.v1.IIndex[] = [];
       const iterable = client.listIndexesAsync(request);
       for await (const resource of iterable) {
@@ -5173,33 +4505,28 @@ describe('v1.FirestoreAdminClient', () => {
       }
       assert.deepStrictEqual(responses, expectedResponse);
       assert.deepStrictEqual(
-        (client.descriptors.page.listIndexes.asyncIterate as SinonStub).getCall(
-          0,
-        ).args[1],
+        (client.descriptors.page.listIndexes.asyncIterate as SinonStub).getCall(0).args[1],
         request,
       );
       assert(
         (client.descriptors.page.listIndexes.asyncIterate as SinonStub)
           .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams),
+          .args[2].otherArgs.headers['x-goog-request-params'].includes(expectedHeaderRequestParams),
       );
     });
 
     it('uses async iteration with listIndexes with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListIndexesRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListIndexesRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListIndexesRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
@@ -5215,17 +4542,13 @@ describe('v1.FirestoreAdminClient', () => {
         }
       });
       assert.deepStrictEqual(
-        (client.descriptors.page.listIndexes.asyncIterate as SinonStub).getCall(
-          0,
-        ).args[1],
+        (client.descriptors.page.listIndexes.asyncIterate as SinonStub).getCall(0).args[1],
         request,
       );
       assert(
         (client.descriptors.page.listIndexes.asyncIterate as SinonStub)
           .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams),
+          .args[2].otherArgs.headers['x-goog-request-params'].includes(expectedHeaderRequestParams),
       );
     });
   });
@@ -5233,17 +4556,16 @@ describe('v1.FirestoreAdminClient', () => {
   describe('listFields', () => {
     it('invokes listFields without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListFieldsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListFieldsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListFieldsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = [
@@ -5254,29 +4576,25 @@ describe('v1.FirestoreAdminClient', () => {
       client.innerApiCalls.listFields = stubSimpleCall(expectedResponse);
       const [response] = await client.listFields(request);
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listFields as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listFields as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listFields as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listFields as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listFields without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListFieldsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListFieldsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListFieldsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = [
@@ -5284,15 +4602,11 @@ describe('v1.FirestoreAdminClient', () => {
         generateSampleMessage(new protos.google.firestore.admin.v1.Field()),
         generateSampleMessage(new protos.google.firestore.admin.v1.Field()),
       ];
-      client.innerApiCalls.listFields =
-        stubSimpleCallWithCallback(expectedResponse);
+      client.innerApiCalls.listFields = stubSimpleCallWithCallback(expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.listFields(
           request,
-          (
-            err?: Error | null,
-            result?: protos.google.firestore.admin.v1.IField[] | null,
-          ) => {
+          (err?: Error | null, result?: protos.google.firestore.admin.v1.IField[] | null) => {
             if (err) {
               reject(err);
             } else {
@@ -5303,60 +4617,49 @@ describe('v1.FirestoreAdminClient', () => {
       });
       const response = await promise;
       assert.deepStrictEqual(response, expectedResponse);
-      const actualRequest = (
-        client.innerApiCalls.listFields as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listFields as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listFields as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listFields as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listFields with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListFieldsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListFieldsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListFieldsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
-      client.innerApiCalls.listFields = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.innerApiCalls.listFields = stubSimpleCall(undefined, expectedError);
       await assert.rejects(client.listFields(request), expectedError);
-      const actualRequest = (
-        client.innerApiCalls.listFields as SinonStub
-      ).getCall(0).args[0];
+      const actualRequest = (client.innerApiCalls.listFields as SinonStub).getCall(0).args[0];
       assert.deepStrictEqual(actualRequest, request);
-      const actualHeaderRequestParams = (
-        client.innerApiCalls.listFields as SinonStub
-      ).getCall(0).args[1].otherArgs.headers['x-goog-request-params'];
+      const actualHeaderRequestParams = (client.innerApiCalls.listFields as SinonStub).getCall(0)
+        .args[1].otherArgs.headers['x-goog-request-params'];
       assert(actualHeaderRequestParams.includes(expectedHeaderRequestParams));
     });
 
     it('invokes listFieldsStream without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListFieldsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListFieldsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListFieldsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = [
@@ -5364,17 +4667,13 @@ describe('v1.FirestoreAdminClient', () => {
         generateSampleMessage(new protos.google.firestore.admin.v1.Field()),
         generateSampleMessage(new protos.google.firestore.admin.v1.Field()),
       ];
-      client.descriptors.page.listFields.createStream =
-        stubPageStreamingCall(expectedResponse);
+      client.descriptors.page.listFields.createStream = stubPageStreamingCall(expectedResponse);
       const stream = client.listFieldsStream(request);
       const promise = new Promise((resolve, reject) => {
         const responses: protos.google.firestore.admin.v1.Field[] = [];
-        stream.on(
-          'data',
-          (response: protos.google.firestore.admin.v1.Field) => {
-            responses.push(response);
-          },
-        );
+        stream.on('data', (response: protos.google.firestore.admin.v1.Field) => {
+          responses.push(response);
+        });
         stream.on('end', () => {
           resolve(responses);
         });
@@ -5392,25 +4691,22 @@ describe('v1.FirestoreAdminClient', () => {
       assert(
         (client.descriptors.page.listFields.createStream as SinonStub)
           .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams),
+          .args[2].otherArgs.headers['x-goog-request-params'].includes(expectedHeaderRequestParams),
       );
     });
 
     it('invokes listFieldsStream with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListFieldsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListFieldsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListFieldsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
@@ -5421,12 +4717,9 @@ describe('v1.FirestoreAdminClient', () => {
       const stream = client.listFieldsStream(request);
       const promise = new Promise((resolve, reject) => {
         const responses: protos.google.firestore.admin.v1.Field[] = [];
-        stream.on(
-          'data',
-          (response: protos.google.firestore.admin.v1.Field) => {
-            responses.push(response);
-          },
-        );
+        stream.on('data', (response: protos.google.firestore.admin.v1.Field) => {
+          responses.push(response);
+        });
         stream.on('end', () => {
           resolve(responses);
         });
@@ -5443,25 +4736,22 @@ describe('v1.FirestoreAdminClient', () => {
       assert(
         (client.descriptors.page.listFields.createStream as SinonStub)
           .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams),
+          .args[2].otherArgs.headers['x-goog-request-params'].includes(expectedHeaderRequestParams),
       );
     });
 
     it('uses async iteration with listFields without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListFieldsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListFieldsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListFieldsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedResponse = [
@@ -5469,8 +4759,7 @@ describe('v1.FirestoreAdminClient', () => {
         generateSampleMessage(new protos.google.firestore.admin.v1.Field()),
         generateSampleMessage(new protos.google.firestore.admin.v1.Field()),
       ];
-      client.descriptors.page.listFields.asyncIterate =
-        stubAsyncIterationCall(expectedResponse);
+      client.descriptors.page.listFields.asyncIterate = stubAsyncIterationCall(expectedResponse);
       const responses: protos.google.firestore.admin.v1.IField[] = [];
       const iterable = client.listFieldsAsync(request);
       for await (const resource of iterable) {
@@ -5478,33 +4767,28 @@ describe('v1.FirestoreAdminClient', () => {
       }
       assert.deepStrictEqual(responses, expectedResponse);
       assert.deepStrictEqual(
-        (client.descriptors.page.listFields.asyncIterate as SinonStub).getCall(
-          0,
-        ).args[1],
+        (client.descriptors.page.listFields.asyncIterate as SinonStub).getCall(0).args[1],
         request,
       );
       assert(
         (client.descriptors.page.listFields.asyncIterate as SinonStub)
           .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams),
+          .args[2].otherArgs.headers['x-goog-request-params'].includes(expectedHeaderRequestParams),
       );
     });
 
     it('uses async iteration with listFields with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new protos.google.firestore.admin.v1.ListFieldsRequest(),
       );
-      const defaultValue1 = getTypeDefaultValue(
-        '.google.firestore.admin.v1.ListFieldsRequest',
-        ['parent'],
-      );
+      const defaultValue1 = getTypeDefaultValue('.google.firestore.admin.v1.ListFieldsRequest', [
+        'parent',
+      ]);
       request.parent = defaultValue1;
       const expectedHeaderRequestParams = `parent=${defaultValue1 ?? ''}`;
       const expectedError = new Error('expected');
@@ -5520,24 +4804,20 @@ describe('v1.FirestoreAdminClient', () => {
         }
       });
       assert.deepStrictEqual(
-        (client.descriptors.page.listFields.asyncIterate as SinonStub).getCall(
-          0,
-        ).args[1],
+        (client.descriptors.page.listFields.asyncIterate as SinonStub).getCall(0).args[1],
         request,
       );
       assert(
         (client.descriptors.page.listFields.asyncIterate as SinonStub)
           .getCall(0)
-          .args[2].otherArgs.headers[
-            'x-goog-request-params'
-          ].includes(expectedHeaderRequestParams),
+          .args[2].otherArgs.headers['x-goog-request-params'].includes(expectedHeaderRequestParams),
       );
     });
   });
   describe('getLocation', () => {
     it('invokes getLocation without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -5567,7 +4847,7 @@ describe('v1.FirestoreAdminClient', () => {
     });
     it('invokes getLocation without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -5586,17 +4866,12 @@ describe('v1.FirestoreAdminClient', () => {
       const expectedResponse = generateSampleMessage(
         new LocationProtos.google.cloud.location.Location(),
       );
-      client.locationsClient.getLocation = sinon
-        .stub()
-        .callsArgWith(2, null, expectedResponse);
+      client.locationsClient.getLocation = sinon.stub().callsArgWith(2, null, expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.getLocation(
           request,
           expectedOptions,
-          (
-            err?: Error | null,
-            result?: LocationProtos.google.cloud.location.ILocation | null,
-          ) => {
+          (err?: Error | null, result?: LocationProtos.google.cloud.location.ILocation | null) => {
             if (err) {
               reject(err);
             } else {
@@ -5611,7 +4886,7 @@ describe('v1.FirestoreAdminClient', () => {
     });
     it('invokes getLocation with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -5628,14 +4903,8 @@ describe('v1.FirestoreAdminClient', () => {
         },
       };
       const expectedError = new Error('expected');
-      client.locationsClient.getLocation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
-      await assert.rejects(
-        client.getLocation(request, expectedOptions),
-        expectedError,
-      );
+      client.locationsClient.getLocation = stubSimpleCall(undefined, expectedError);
+      await assert.rejects(client.getLocation(request, expectedOptions), expectedError);
       assert(
         (client.locationsClient.getLocation as SinonStub)
           .getCall(0)
@@ -5646,7 +4915,7 @@ describe('v1.FirestoreAdminClient', () => {
   describe('listLocationsAsync', () => {
     it('uses async iteration with listLocations without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -5656,15 +4925,9 @@ describe('v1.FirestoreAdminClient', () => {
       request.name = '';
       const expectedHeaderRequestParams = 'name=';
       const expectedResponse = [
-        generateSampleMessage(
-          new LocationProtos.google.cloud.location.Location(),
-        ),
-        generateSampleMessage(
-          new LocationProtos.google.cloud.location.Location(),
-        ),
-        generateSampleMessage(
-          new LocationProtos.google.cloud.location.Location(),
-        ),
+        generateSampleMessage(new LocationProtos.google.cloud.location.Location()),
+        generateSampleMessage(new LocationProtos.google.cloud.location.Location()),
+        generateSampleMessage(new LocationProtos.google.cloud.location.Location()),
       ];
       client.locationsClient.descriptors.page.listLocations.asyncIterate =
         stubAsyncIterationCall(expectedResponse);
@@ -5675,26 +4938,19 @@ describe('v1.FirestoreAdminClient', () => {
       }
       assert.deepStrictEqual(responses, expectedResponse);
       assert.deepStrictEqual(
-        (
-          client.locationsClient.descriptors.page.listLocations
-            .asyncIterate as SinonStub
-        ).getCall(0).args[1],
+        (client.locationsClient.descriptors.page.listLocations.asyncIterate as SinonStub).getCall(0)
+          .args[1],
         request,
       );
       assert(
-        (
-          client.locationsClient.descriptors.page.listLocations
-            .asyncIterate as SinonStub
-        )
+        (client.locationsClient.descriptors.page.listLocations.asyncIterate as SinonStub)
           .getCall(0)
-          .args[2].otherArgs.headers['x-goog-request-params'].includes(
-            expectedHeaderRequestParams,
-          ),
+          .args[2].otherArgs.headers['x-goog-request-params'].includes(expectedHeaderRequestParams),
       );
     });
     it('uses async iteration with listLocations with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -5704,8 +4960,10 @@ describe('v1.FirestoreAdminClient', () => {
       request.name = '';
       const expectedHeaderRequestParams = 'name=';
       const expectedError = new Error('expected');
-      client.locationsClient.descriptors.page.listLocations.asyncIterate =
-        stubAsyncIterationCall(undefined, expectedError);
+      client.locationsClient.descriptors.page.listLocations.asyncIterate = stubAsyncIterationCall(
+        undefined,
+        expectedError,
+      );
       const iterable = client.listLocationsAsync(request);
       await assert.rejects(async () => {
         const responses: LocationProtos.google.cloud.location.ILocation[] = [];
@@ -5714,28 +4972,21 @@ describe('v1.FirestoreAdminClient', () => {
         }
       });
       assert.deepStrictEqual(
-        (
-          client.locationsClient.descriptors.page.listLocations
-            .asyncIterate as SinonStub
-        ).getCall(0).args[1],
+        (client.locationsClient.descriptors.page.listLocations.asyncIterate as SinonStub).getCall(0)
+          .args[1],
         request,
       );
       assert(
-        (
-          client.locationsClient.descriptors.page.listLocations
-            .asyncIterate as SinonStub
-        )
+        (client.locationsClient.descriptors.page.listLocations.asyncIterate as SinonStub)
           .getCall(0)
-          .args[2].otherArgs.headers['x-goog-request-params'].includes(
-            expectedHeaderRequestParams,
-          ),
+          .args[2].otherArgs.headers['x-goog-request-params'].includes(expectedHeaderRequestParams),
       );
     });
   });
   describe('getOperation', () => {
     it('invokes getOperation without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -5748,15 +4999,11 @@ describe('v1.FirestoreAdminClient', () => {
       client.operationsClient.getOperation = stubSimpleCall(expectedResponse);
       const response = await client.getOperation(request);
       assert.deepStrictEqual(response, [expectedResponse]);
-      assert(
-        (client.operationsClient.getOperation as SinonStub)
-          .getCall(0)
-          .calledWith(request),
-      );
+      assert((client.operationsClient.getOperation as SinonStub).getCall(0).calledWith(request));
     });
     it('invokes getOperation without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       const request = generateSampleMessage(
@@ -5765,18 +5012,13 @@ describe('v1.FirestoreAdminClient', () => {
       const expectedResponse = generateSampleMessage(
         new operationsProtos.google.longrunning.Operation(),
       );
-      client.operationsClient.getOperation = sinon
-        .stub()
-        .callsArgWith(2, null, expectedResponse);
+      client.operationsClient.getOperation = sinon.stub().callsArgWith(2, null, expectedResponse);
       const promise = new Promise((resolve, reject) => {
         client.operationsClient
           .getOperation(
             request,
             undefined,
-            (
-              err?: Error | null,
-              result?: operationsProtos.google.longrunning.Operation | null,
-            ) => {
+            (err?: Error | null, result?: operationsProtos.google.longrunning.Operation | null) => {
               if (err) {
                 reject(err);
               } else {
@@ -5784,7 +5026,7 @@ describe('v1.FirestoreAdminClient', () => {
               }
             },
           )
-          .catch(err => {
+          .catch((err) => {
             throw err;
           });
       });
@@ -5794,61 +5036,45 @@ describe('v1.FirestoreAdminClient', () => {
     });
     it('invokes getOperation with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.GetOperationRequest(),
       );
       const expectedError = new Error('expected');
-      client.operationsClient.getOperation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.operationsClient.getOperation = stubSimpleCall(undefined, expectedError);
       await assert.rejects(async () => {
         await client.getOperation(request);
       }, expectedError);
-      assert(
-        (client.operationsClient.getOperation as SinonStub)
-          .getCall(0)
-          .calledWith(request),
-      );
+      assert((client.operationsClient.getOperation as SinonStub).getCall(0).calledWith(request));
     });
   });
   describe('cancelOperation', () => {
     it('invokes cancelOperation without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.CancelOperationRequest(),
       );
-      const expectedResponse = generateSampleMessage(
-        new protos.google.protobuf.Empty(),
-      );
-      client.operationsClient.cancelOperation =
-        stubSimpleCall(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.protobuf.Empty());
+      client.operationsClient.cancelOperation = stubSimpleCall(expectedResponse);
       const response = await client.cancelOperation(request);
       assert.deepStrictEqual(response, [expectedResponse]);
-      assert(
-        (client.operationsClient.cancelOperation as SinonStub)
-          .getCall(0)
-          .calledWith(request),
-      );
+      assert((client.operationsClient.cancelOperation as SinonStub).getCall(0).calledWith(request));
     });
     it('invokes cancelOperation without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.CancelOperationRequest(),
       );
-      const expectedResponse = generateSampleMessage(
-        new protos.google.protobuf.Empty(),
-      );
+      const expectedResponse = generateSampleMessage(new protos.google.protobuf.Empty());
       client.operationsClient.cancelOperation = sinon
         .stub()
         .callsArgWith(2, null, expectedResponse);
@@ -5857,10 +5083,7 @@ describe('v1.FirestoreAdminClient', () => {
           .cancelOperation(
             request,
             undefined,
-            (
-              err?: Error | null,
-              result?: protos.google.protobuf.Empty | null,
-            ) => {
+            (err?: Error | null, result?: protos.google.protobuf.Empty | null) => {
               if (err) {
                 reject(err);
               } else {
@@ -5868,7 +5091,7 @@ describe('v1.FirestoreAdminClient', () => {
               }
             },
           )
-          .catch(err => {
+          .catch((err) => {
             throw err;
           });
       });
@@ -5878,61 +5101,45 @@ describe('v1.FirestoreAdminClient', () => {
     });
     it('invokes cancelOperation with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.CancelOperationRequest(),
       );
       const expectedError = new Error('expected');
-      client.operationsClient.cancelOperation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.operationsClient.cancelOperation = stubSimpleCall(undefined, expectedError);
       await assert.rejects(async () => {
         await client.cancelOperation(request);
       }, expectedError);
-      assert(
-        (client.operationsClient.cancelOperation as SinonStub)
-          .getCall(0)
-          .calledWith(request),
-      );
+      assert((client.operationsClient.cancelOperation as SinonStub).getCall(0).calledWith(request));
     });
   });
   describe('deleteOperation', () => {
     it('invokes deleteOperation without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.DeleteOperationRequest(),
       );
-      const expectedResponse = generateSampleMessage(
-        new protos.google.protobuf.Empty(),
-      );
-      client.operationsClient.deleteOperation =
-        stubSimpleCall(expectedResponse);
+      const expectedResponse = generateSampleMessage(new protos.google.protobuf.Empty());
+      client.operationsClient.deleteOperation = stubSimpleCall(expectedResponse);
       const response = await client.deleteOperation(request);
       assert.deepStrictEqual(response, [expectedResponse]);
-      assert(
-        (client.operationsClient.deleteOperation as SinonStub)
-          .getCall(0)
-          .calledWith(request),
-      );
+      assert((client.operationsClient.deleteOperation as SinonStub).getCall(0).calledWith(request));
     });
     it('invokes deleteOperation without error using callback', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.DeleteOperationRequest(),
       );
-      const expectedResponse = generateSampleMessage(
-        new protos.google.protobuf.Empty(),
-      );
+      const expectedResponse = generateSampleMessage(new protos.google.protobuf.Empty());
       client.operationsClient.deleteOperation = sinon
         .stub()
         .callsArgWith(2, null, expectedResponse);
@@ -5941,10 +5148,7 @@ describe('v1.FirestoreAdminClient', () => {
           .deleteOperation(
             request,
             undefined,
-            (
-              err?: Error | null,
-              result?: protos.google.protobuf.Empty | null,
-            ) => {
+            (err?: Error | null, result?: protos.google.protobuf.Empty | null) => {
               if (err) {
                 reject(err);
               } else {
@@ -5952,7 +5156,7 @@ describe('v1.FirestoreAdminClient', () => {
               }
             },
           )
-          .catch(err => {
+          .catch((err) => {
             throw err;
           });
       });
@@ -5962,46 +5166,33 @@ describe('v1.FirestoreAdminClient', () => {
     });
     it('invokes deleteOperation with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.DeleteOperationRequest(),
       );
       const expectedError = new Error('expected');
-      client.operationsClient.deleteOperation = stubSimpleCall(
-        undefined,
-        expectedError,
-      );
+      client.operationsClient.deleteOperation = stubSimpleCall(undefined, expectedError);
       await assert.rejects(async () => {
         await client.deleteOperation(request);
       }, expectedError);
-      assert(
-        (client.operationsClient.deleteOperation as SinonStub)
-          .getCall(0)
-          .calledWith(request),
-      );
+      assert((client.operationsClient.deleteOperation as SinonStub).getCall(0).calledWith(request));
     });
   });
   describe('listOperationsAsync', () => {
     it('uses async iteration with listOperations without error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       const request = generateSampleMessage(
         new operationsProtos.google.longrunning.ListOperationsRequest(),
       );
       const expectedResponse = [
-        generateSampleMessage(
-          new operationsProtos.google.longrunning.ListOperationsResponse(),
-        ),
-        generateSampleMessage(
-          new operationsProtos.google.longrunning.ListOperationsResponse(),
-        ),
-        generateSampleMessage(
-          new operationsProtos.google.longrunning.ListOperationsResponse(),
-        ),
+        generateSampleMessage(new operationsProtos.google.longrunning.ListOperationsResponse()),
+        generateSampleMessage(new operationsProtos.google.longrunning.ListOperationsResponse()),
+        generateSampleMessage(new operationsProtos.google.longrunning.ListOperationsResponse()),
       ];
       client.operationsClient.descriptor.listOperations.asyncIterate =
         stubAsyncIterationCall(expectedResponse);
@@ -6012,16 +5203,14 @@ describe('v1.FirestoreAdminClient', () => {
       }
       assert.deepStrictEqual(responses, expectedResponse);
       assert.deepStrictEqual(
-        (
-          client.operationsClient.descriptor.listOperations
-            .asyncIterate as SinonStub
-        ).getCall(0).args[1],
+        (client.operationsClient.descriptor.listOperations.asyncIterate as SinonStub).getCall(0)
+          .args[1],
         request,
       );
     });
     it('uses async iteration with listOperations with error', async () => {
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
@@ -6029,8 +5218,10 @@ describe('v1.FirestoreAdminClient', () => {
         new operationsProtos.google.longrunning.ListOperationsRequest(),
       );
       const expectedError = new Error('expected');
-      client.operationsClient.descriptor.listOperations.asyncIterate =
-        stubAsyncIterationCall(undefined, expectedError);
+      client.operationsClient.descriptor.listOperations.asyncIterate = stubAsyncIterationCall(
+        undefined,
+        expectedError,
+      );
       const iterable = client.operationsClient.listOperationsAsync(request);
       await assert.rejects(async () => {
         const responses: operationsProtos.google.longrunning.IOperation[] = [];
@@ -6039,10 +5230,8 @@ describe('v1.FirestoreAdminClient', () => {
         }
       });
       assert.deepStrictEqual(
-        (
-          client.operationsClient.descriptor.listOperations
-            .asyncIterate as SinonStub
-        ).getCall(0).args[1],
+        (client.operationsClient.descriptor.listOperations.asyncIterate as SinonStub).getCall(0)
+          .args[1],
         request,
       );
     });
@@ -6057,23 +5246,15 @@ describe('v1.FirestoreAdminClient', () => {
         backup: 'backupValue',
       };
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      client.pathTemplates.backupPathTemplate.render = sinon
-        .stub()
-        .returns(fakePath);
-      client.pathTemplates.backupPathTemplate.match = sinon
-        .stub()
-        .returns(expectedParameters);
+      client.pathTemplates.backupPathTemplate.render = sinon.stub().returns(fakePath);
+      client.pathTemplates.backupPathTemplate.match = sinon.stub().returns(expectedParameters);
 
       it('backupPath', () => {
-        const result = client.backupPath(
-          'projectValue',
-          'locationValue',
-          'backupValue',
-        );
+        const result = client.backupPath('projectValue', 'locationValue', 'backupValue');
         assert.strictEqual(result, fakePath);
         assert(
           (client.pathTemplates.backupPathTemplate.render as SinonStub)
@@ -6121,13 +5302,11 @@ describe('v1.FirestoreAdminClient', () => {
         backup_schedule: 'backupScheduleValue',
       };
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      client.pathTemplates.backupSchedulePathTemplate.render = sinon
-        .stub()
-        .returns(fakePath);
+      client.pathTemplates.backupSchedulePathTemplate.render = sinon.stub().returns(fakePath);
       client.pathTemplates.backupSchedulePathTemplate.match = sinon
         .stub()
         .returns(expectedParameters);
@@ -6167,8 +5346,7 @@ describe('v1.FirestoreAdminClient', () => {
       });
 
       it('matchBackupScheduleFromBackupScheduleName', () => {
-        const result =
-          client.matchBackupScheduleFromBackupScheduleName(fakePath);
+        const result = client.matchBackupScheduleFromBackupScheduleName(fakePath);
         assert.strictEqual(result, 'backupScheduleValue');
         assert(
           (client.pathTemplates.backupSchedulePathTemplate.match as SinonStub)
@@ -6186,13 +5364,11 @@ describe('v1.FirestoreAdminClient', () => {
         collection: 'collectionValue',
       };
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      client.pathTemplates.collectionGroupPathTemplate.render = sinon
-        .stub()
-        .returns(fakePath);
+      client.pathTemplates.collectionGroupPathTemplate.render = sinon.stub().returns(fakePath);
       client.pathTemplates.collectionGroupPathTemplate.match = sinon
         .stub()
         .returns(expectedParameters);
@@ -6249,16 +5425,12 @@ describe('v1.FirestoreAdminClient', () => {
         database: 'databaseValue',
       };
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      client.pathTemplates.databasePathTemplate.render = sinon
-        .stub()
-        .returns(fakePath);
-      client.pathTemplates.databasePathTemplate.match = sinon
-        .stub()
-        .returns(expectedParameters);
+      client.pathTemplates.databasePathTemplate.render = sinon.stub().returns(fakePath);
+      client.pathTemplates.databasePathTemplate.match = sinon.stub().returns(expectedParameters);
 
       it('databasePath', () => {
         const result = client.databasePath('projectValue', 'databaseValue');
@@ -6300,16 +5472,12 @@ describe('v1.FirestoreAdminClient', () => {
         field: 'fieldValue',
       };
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      client.pathTemplates.fieldPathTemplate.render = sinon
-        .stub()
-        .returns(fakePath);
-      client.pathTemplates.fieldPathTemplate.match = sinon
-        .stub()
-        .returns(expectedParameters);
+      client.pathTemplates.fieldPathTemplate.render = sinon.stub().returns(fakePath);
+      client.pathTemplates.fieldPathTemplate.match = sinon.stub().returns(expectedParameters);
 
       it('fieldPath', () => {
         const result = client.fieldPath(
@@ -6376,16 +5544,12 @@ describe('v1.FirestoreAdminClient', () => {
         index: 'indexValue',
       };
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      client.pathTemplates.indexPathTemplate.render = sinon
-        .stub()
-        .returns(fakePath);
-      client.pathTemplates.indexPathTemplate.match = sinon
-        .stub()
-        .returns(expectedParameters);
+      client.pathTemplates.indexPathTemplate.render = sinon.stub().returns(fakePath);
+      client.pathTemplates.indexPathTemplate.match = sinon.stub().returns(expectedParameters);
 
       it('indexPath', () => {
         const result = client.indexPath(
@@ -6450,16 +5614,12 @@ describe('v1.FirestoreAdminClient', () => {
         location: 'locationValue',
       };
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      client.pathTemplates.locationPathTemplate.render = sinon
-        .stub()
-        .returns(fakePath);
-      client.pathTemplates.locationPathTemplate.match = sinon
-        .stub()
-        .returns(expectedParameters);
+      client.pathTemplates.locationPathTemplate.render = sinon.stub().returns(fakePath);
+      client.pathTemplates.locationPathTemplate.match = sinon.stub().returns(expectedParameters);
 
       it('locationPath', () => {
         const result = client.locationPath('projectValue', 'locationValue');
@@ -6498,16 +5658,12 @@ describe('v1.FirestoreAdminClient', () => {
         project: 'projectValue',
       };
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      client.pathTemplates.projectPathTemplate.render = sinon
-        .stub()
-        .returns(fakePath);
-      client.pathTemplates.projectPathTemplate.match = sinon
-        .stub()
-        .returns(expectedParameters);
+      client.pathTemplates.projectPathTemplate.render = sinon.stub().returns(fakePath);
+      client.pathTemplates.projectPathTemplate.match = sinon.stub().returns(expectedParameters);
 
       it('projectPath', () => {
         const result = client.projectPath('projectValue');
@@ -6538,23 +5694,15 @@ describe('v1.FirestoreAdminClient', () => {
         user_creds: 'userCredsValue',
       };
       const client = new firestoreadminModule.FirestoreAdminClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        credentials: { client_email: 'bogus', private_key: 'bogus' },
         projectId: 'bogus',
       });
       await client.initialize();
-      client.pathTemplates.userCredsPathTemplate.render = sinon
-        .stub()
-        .returns(fakePath);
-      client.pathTemplates.userCredsPathTemplate.match = sinon
-        .stub()
-        .returns(expectedParameters);
+      client.pathTemplates.userCredsPathTemplate.render = sinon.stub().returns(fakePath);
+      client.pathTemplates.userCredsPathTemplate.match = sinon.stub().returns(expectedParameters);
 
       it('userCredsPath', () => {
-        const result = client.userCredsPath(
-          'projectValue',
-          'databaseValue',
-          'userCredsValue',
-        );
+        const result = client.userCredsPath('projectValue', 'databaseValue', 'userCredsValue');
         assert.strictEqual(result, fakePath);
         assert(
           (client.pathTemplates.userCredsPathTemplate.render as SinonStub)

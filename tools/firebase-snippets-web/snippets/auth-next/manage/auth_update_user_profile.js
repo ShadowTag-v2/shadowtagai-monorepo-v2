@@ -5,15 +5,19 @@
 // 'npm run snippets'.
 
 // [START auth_update_user_profile_modular]
-import { getAuth, updateProfile } from "firebase/auth";
+import { getAuth, updateProfile } from 'firebase/auth';
+
 const auth = getAuth();
 updateProfile(auth.currentUser, {
-  displayName: "Jane Q. User", photoURL: "https://example.com/jane-q-user/profile.jpg"
-}).then(() => {
-  // Profile updated!
-  // ...
-}).catch((error) => {
-  // An error occurred
-  // ...
-});
+  displayName: 'Jane Q. User',
+  photoURL: 'https://example.com/jane-q-user/profile.jpg',
+})
+  .then(() => {
+    // Profile updated!
+    // ...
+  })
+  .catch((error) => {
+    // An error occurred
+    // ...
+  });
 // [END auth_update_user_profile_modular]

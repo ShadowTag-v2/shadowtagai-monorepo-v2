@@ -15,12 +15,12 @@
  */
 
 export interface Restaurant {
-    id: string;
-    avgRating: number;
-    category: string;
-    city: string;
-    name: string;
-    numRatings: number;
-    photo: string;
-    price: number;
+  id: string;
+  avgRating: number;
+  category: string;
+  city: string;
+  name: string;
+  numRatings: number;
+  photo: string;
+  price: number;
 }

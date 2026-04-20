@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { useCopilotContext } from "@copilotkit/react-core"; // v1.x hook
+import { useCopilotContext } from '@copilotkit/react-core'; // v1.x hook
+import React, { useEffect, useState } from 'react';
 
 export function AgentDebugger() {
   const [events, setEvents] = useState<any[]>([]);
@@ -31,10 +31,10 @@ function GenericEventCard({ event }: { event: unknown }) {
   const timestamp = new Date().toISOString();
 
   const getTypeColor = (type: string) => {
-    if (type.includes("TEXT")) return "text-blue-400";
-    if (type.includes("TOOL")) return "text-purple-400";
-    if (type.includes("STATE")) return "text-yellow-400";
-    return "text-gray-300";
+    if (type.includes('TEXT')) return 'text-blue-400';
+    if (type.includes('TOOL')) return 'text-purple-400';
+    if (type.includes('STATE')) return 'text-yellow-400';
+    return 'text-gray-300';
   };
 
   return (

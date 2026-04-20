@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
   /* Dark Luxury UI Palette */
@@ -31,7 +31,7 @@
 }
 
 body {
-  font-family: "Inter", -apple-system, sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
   background-color: var(--bg-dark);
   color: var(--text-primary);
   line-height: 1.5;
@@ -319,7 +319,7 @@ body {
   font-size: 0.78rem;
   color: var(--text-secondary);
   margin-top: 0.2rem;
-  font-family: "Courier New", monospace;
+  font-family: 'Courier New', monospace;
 }
 .confidence-pip {
   padding: 0.2rem 0.55rem;
@@ -476,7 +476,7 @@ body {
 .docket-citation {
   font-size: 0.78rem;
   color: var(--text-secondary);
-  font-family: "Courier New", monospace;
+  font-family: 'Courier New', monospace;
   text-align: right;
 }
 

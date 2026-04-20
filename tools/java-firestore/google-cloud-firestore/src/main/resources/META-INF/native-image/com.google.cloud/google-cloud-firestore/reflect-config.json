@@ -4,7 +4,7 @@
     "queryAllDeclaredConstructors": true,
     "queryAllPublicConstructors": true,
     "queryAllDeclaredMethods": true,
-    "allPublicMethods":true,
+    "allPublicMethods": true,
     "allDeclaredClasses": true,
     "allPublicClasses": true
   },
@@ -13,7 +13,7 @@
     "queryAllDeclaredConstructors": true,
     "queryAllPublicConstructors": true,
     "queryAllDeclaredMethods": true,
-    "allPublicMethods":true,
+    "allPublicMethods": true,
     "allDeclaredClasses": true,
     "allPublicClasses": true
   },
@@ -22,7 +22,7 @@
     "queryAllDeclaredConstructors": true,
     "queryAllPublicConstructors": true,
     "queryAllDeclaredMethods": true,
-    "allPublicMethods":true,
+    "allPublicMethods": true,
     "allDeclaredClasses": true,
     "allPublicClasses": true
   },
@@ -31,7 +31,7 @@
     "queryAllDeclaredConstructors": true,
     "queryAllPublicConstructors": true,
     "queryAllDeclaredMethods": true,
-    "allPublicMethods":true,
+    "allPublicMethods": true,
     "allDeclaredClasses": true,
     "allPublicClasses": true
   },
@@ -40,7 +40,7 @@
     "queryAllDeclaredConstructors": true,
     "queryAllPublicConstructors": true,
     "queryAllDeclaredMethods": true,
-    "allPublicMethods":true,
+    "allPublicMethods": true,
     "allDeclaredClasses": true,
     "allPublicClasses": true
   },
@@ -49,7 +49,7 @@
     "queryAllDeclaredConstructors": true,
     "queryAllPublicConstructors": true,
     "queryAllDeclaredMethods": true,
-    "allPublicMethods":true,
+    "allPublicMethods": true,
     "allDeclaredClasses": true,
     "allPublicClasses": true
   },
@@ -58,7 +58,7 @@
     "queryAllDeclaredConstructors": true,
     "queryAllPublicConstructors": true,
     "queryAllDeclaredMethods": true,
-    "allPublicMethods":true,
+    "allPublicMethods": true,
     "allDeclaredClasses": true,
     "allPublicClasses": true
   },
@@ -67,7 +67,7 @@
     "queryAllDeclaredConstructors": true,
     "queryAllPublicConstructors": true,
     "queryAllDeclaredMethods": true,
-    "allPublicMethods":true,
+    "allPublicMethods": true,
     "allDeclaredClasses": true,
     "allPublicClasses": true
   },
@@ -76,7 +76,7 @@
     "queryAllDeclaredConstructors": true,
     "queryAllPublicConstructors": true,
     "queryAllDeclaredMethods": true,
-    "allPublicMethods":true,
+    "allPublicMethods": true,
     "allDeclaredClasses": true,
     "allPublicClasses": true
   },
@@ -85,7 +85,7 @@
     "queryAllDeclaredConstructors": true,
     "queryAllPublicConstructors": true,
     "queryAllDeclaredMethods": true,
-    "allPublicMethods":true,
+    "allPublicMethods": true,
     "allDeclaredClasses": true,
     "allPublicClasses": true
   },
@@ -94,7 +94,7 @@
     "queryAllDeclaredConstructors": true,
     "queryAllPublicConstructors": true,
     "queryAllDeclaredMethods": true,
-    "allPublicMethods":true,
+    "allPublicMethods": true,
     "allDeclaredClasses": true,
     "allPublicClasses": true
   },
@@ -103,7 +103,7 @@
     "queryAllDeclaredConstructors": true,
     "queryAllPublicConstructors": true,
     "queryAllDeclaredMethods": true,
-    "allPublicMethods":true,
+    "allPublicMethods": true,
     "allDeclaredClasses": true,
     "allPublicClasses": true
   }

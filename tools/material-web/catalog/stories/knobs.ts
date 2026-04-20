@@ -6,7 +6,7 @@
 
 /* Slimmed down version of Lit stories knobs but using md-* components */
 
-import {html, TemplateResult} from 'lit';
+import { html, type TemplateResult } from 'lit';
 
 export * from './components/knob-ui-components.js';
 
@@ -43,7 +43,7 @@ export class Knob<T, Name extends string = string> extends EventTarget {
   private readonly onChange = (updatedVal: T, resetting = false) => {
     this.latestValue = updatedVal;
     this.dirty = !resetting;
-    this.dispatchEvent(new CustomEvent<T>('changed', {detail: updatedVal}));
+    this.dispatchEvent(new CustomEvent<T>('changed', { detail: updatedVal }));
     if (this.wiring !== undefined) {
       for (const container of this.renderedStoryContainers) {
         this.wiring(this, updatedVal, container);
@@ -53,11 +53,12 @@ export class Knob<T, Name extends string = string> extends EventTarget {
   private readonly onReset = () => {
     this.reset();
   };
-  private readonly renderedStoryContainers = new Set<
-    HTMLElement | DocumentFragment
-  >();
+  private readonly renderedStoryContainers = new Set<HTMLElement | DocumentFragment>();
 
-  constructor(readonly name: Name, init: KnobInit<T>) {
+  constructor(
+    readonly name: Name,
+    init: KnobInit<T>,
+  ) {
     super();
     this.defaultValue = init.defaultValue;
     this.latestValue = this.defaultValue;
@@ -86,16 +87,13 @@ export class Knob<T, Name extends string = string> extends EventTarget {
     if (!this.wiring) {
       return;
     }
-    const alreadyWired = this.renderedStoryContainers.has(
-      containerOfRenderedStory,
-    );
+    const alreadyWired = this.renderedStoryContainers.has(containerOfRenderedStory);
     if (!alreadyWired) {
       this.renderedStoryContainers.add(containerOfRenderedStory);
       // Ensure default values are wired correctly.
       if (
         this.dirty ||
-        (this.latestValue !== undefined &&
-          this.latestValue === this.defaultValue)
+        (this.latestValue !== undefined && this.latestValue === this.defaultValue)
       ) {
         this.wiring?.(this, this.latestValue!, containerOfRenderedStory);
       }
@@ -143,17 +141,11 @@ type KnobKeys<Knobs extends PolymorphicArrayOfKnobs> = Knobs[number]['name'];
  *
  * This type operator would return `number`.
  */
-type TypeOfKnobWithName<
-  Knobs extends PolymorphicArrayOfKnobs,
-  SearchName extends string,
-> = Extract<Knobs[number], {name: SearchName}> extends Knob<infer U>
-  ? U | undefined
-  : never;
+type TypeOfKnobWithName<Knobs extends PolymorphicArrayOfKnobs, SearchName extends string> =
+  Extract<Knobs[number], { name: SearchName }> extends Knob<infer U> ? U | undefined : never;
 
 /** A helper class for getting the latest value for a knob by name. */
-export class KnobValues<
-  Knobs extends PolymorphicArrayOfKnobs,
-> extends EventTarget {
+export class KnobValues<Knobs extends PolymorphicArrayOfKnobs> extends EventTarget {
   private readonly byName: ReadonlyMap<string, Knob<unknown>>;
 
   constructor(knobsArray: PolymorphicArrayOfKnobs) {
@@ -161,15 +153,11 @@ export class KnobValues<
     const byName = new Map<string, Knob<unknown>>();
     for (const knob of knobsArray) {
       if (byName.has(knob.name)) {
-        throw new Error(
-          `More than one knob with name '${knob.name}' given to a story.`,
-        );
+        throw new Error(`More than one knob with name '${knob.name}' given to a story.`);
       }
       byName.set(knob.name, knob);
       knob.addEventListener('changed', (e) => {
-        this.dispatchEvent(
-          new CustomEvent('changed', {detail: {knobName: knob.name}}),
-        );
+        this.dispatchEvent(new CustomEvent('changed', { detail: { knobName: knob.name } }));
       });
     }
     this.byName = byName;
@@ -178,10 +166,7 @@ export class KnobValues<
   get<SearchName extends KnobKeys<Knobs>>(
     knobName: SearchName,
   ): TypeOfKnobWithName<Knobs, SearchName> {
-    return this.byName.get(knobName)?.latestValue as TypeOfKnobWithName<
-      Knobs,
-      SearchName
-    >;
+    return this.byName.get(knobName)?.latestValue as TypeOfKnobWithName<Knobs, SearchName>;
   }
 
   set<SearchName extends KnobKeys<Knobs>>(
@@ -274,11 +259,7 @@ export interface KnobUi<T> {
    *     and wiring may treat this case differently (e.g. restoring a value
    *     to the value it had before the wiring set it the first time).
    */
-  render(
-    knob: Knob<T>,
-    onChange: (val: T) => void,
-    onReset: () => void,
-  ): TemplateResult;
+  render(knob: Knob<T>, onChange: (val: T) => void, onReset: () => void): TemplateResult;
 }
 
 /**
@@ -291,10 +272,8 @@ export interface KnobUi<T> {
  * For example, a knob that updates a css custom property can be automatically
  * wired up by just applying styles to the containerOfRenderedStory.
  */
-export interface KnobWiring<T> {
-  (
-    knob: Knob<T>,
-    val: T,
-    containerOfRenderedStory: HTMLElement | DocumentFragment,
-  ): void;
-}
+export type KnobWiring<T> = (
+  knob: Knob<T>,
+  val: T,
+  containerOfRenderedStory: HTMLElement | DocumentFragment,
+) => void;

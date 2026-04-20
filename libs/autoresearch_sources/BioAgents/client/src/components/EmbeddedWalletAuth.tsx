@@ -1,9 +1,11 @@
-import { useState } from "preact/hooks";
-import { useIsSignedIn } from "@coinbase/cdp-hooks";
-import { useSignInWithEmail } from "@coinbase/cdp-hooks";
-import { useVerifyEmailOTP } from "@coinbase/cdp-hooks";
-import { useEvmAddress } from "@coinbase/cdp-hooks";
-import { useSignOut } from "@coinbase/cdp-hooks";
+import {
+  useEvmAddress,
+  useIsSignedIn,
+  useSignInWithEmail,
+  useSignOut,
+  useVerifyEmailOTP,
+} from '@coinbase/cdp-hooks';
+import { useState } from 'preact/hooks';
 
 interface EmbeddedWalletAuthProps {
   onWalletConnected?: (address: string) => void;
@@ -17,8 +19,8 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
   const { signOut } = useSignOut();
   const { evmAddress } = useEvmAddress();
 
-  const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
+  const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
   const [flowId, setFlowId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -35,8 +37,8 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
       const result = await signInWithEmail({ email });
       setFlowId(result.flowId);
     } catch (err: any) {
-      console.error("Sign in failed:", err);
-      setError(err?.message || "Failed to send verification code. Please try again.");
+      console.error('Sign in failed:', err);
+      setError(err?.message || 'Failed to send verification code. Please try again.');
     } finally {
       setIsSigningIn(false);
     }
@@ -50,7 +52,7 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
     setIsVerifying(true);
     try {
       const { user } = await verifyEmailOTP({ flowId, otp });
-      console.log("Signed in!", user);
+      console.log('Signed in!', user);
 
       const address = user.evmAccounts?.[0];
       if (address && onWalletConnected) {
@@ -58,11 +60,11 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
       }
 
       setFlowId(null);
-      setOtp("");
-      setEmail("");
+      setOtp('');
+      setEmail('');
     } catch (err: any) {
-      console.error("OTP verification failed:", err);
-      setError(err?.message || "Invalid verification code. Please try again.");
+      console.error('OTP verification failed:', err);
+      setError(err?.message || 'Invalid verification code. Please try again.');
     } finally {
       setIsVerifying(false);
     }
@@ -72,18 +74,18 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
     try {
       await signOut();
       setFlowId(null);
-      setOtp("");
-      setEmail("");
+      setOtp('');
+      setEmail('');
       setError(null);
     } catch (err: any) {
-      console.error("Sign out failed:", err);
-      setError(err?.message || "Failed to sign out.");
+      console.error('Sign out failed:', err);
+      setError(err?.message || 'Failed to sign out.');
     }
   };
 
   const handleBack = () => {
     setFlowId(null);
-    setOtp("");
+    setOtp('');
     setError(null);
   };
 
@@ -99,50 +101,50 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
     return (
       <div
         style={{
-          background: "rgba(16, 185, 129, 0.08)",
-          borderRadius: "12px",
-          padding: "12px 16px",
-          border: "1px solid rgba(16, 185, 129, 0.2)",
-          animation: "slideIn 0.3s ease-out",
+          background: 'rgba(16, 185, 129, 0.08)',
+          borderRadius: '12px',
+          padding: '12px 16px',
+          border: '1px solid rgba(16, 185, 129, 0.2)',
+          animation: 'slideIn 0.3s ease-out',
         }}
       >
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "12px",
-            flexWrap: "wrap",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '12px',
+            flexWrap: 'wrap',
           }}
         >
           {/* Status and Address */}
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0 }}>
             <div
               style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: "#10b981",
-                boxShadow: "0 0 8px rgba(16, 185, 129, 0.8)",
-                animation: "pulse 2s ease-in-out infinite",
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: '#10b981',
+                boxShadow: '0 0 8px rgba(16, 185, 129, 0.8)',
+                animation: 'pulse 2s ease-in-out infinite',
                 flexShrink: 0,
               }}
             />
             <div style={{ flex: 1, minWidth: 0 }}>
               <div
-                style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "2px" }}
+                style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}
               >
-                <span style={{ fontSize: "12px", color: "#a1a1a1" }}>Wallet Connected</span>
+                <span style={{ fontSize: '12px', color: '#a1a1a1' }}>Wallet Connected</span>
                 {usdcBalance && (
                   <span
                     style={{
-                      fontSize: "12px",
-                      color: "#10b981",
+                      fontSize: '12px',
+                      color: '#10b981',
                       fontWeight: 700,
-                      padding: "2px 8px",
-                      background: "rgba(16, 185, 129, 0.1)",
-                      borderRadius: "4px",
-                      border: "1px solid rgba(16, 185, 129, 0.2)",
+                      padding: '2px 8px',
+                      background: 'rgba(16, 185, 129, 0.1)',
+                      borderRadius: '4px',
+                      border: '1px solid rgba(16, 185, 129, 0.2)',
                     }}
                   >
                     ${usdcBalance} USDC
@@ -151,12 +153,12 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
               </div>
               <div
                 style={{
-                  fontSize: "14px",
-                  color: "#ffffff",
+                  fontSize: '14px',
+                  color: '#ffffff',
                   fontWeight: 600,
-                  fontFamily: "monospace",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
+                  fontFamily: 'monospace',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
                 }}
               >
                 {evmAddress.slice(0, 8)}...{evmAddress.slice(-6)}
@@ -165,32 +167,32 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
           </div>
 
           {/* Actions */}
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
             <button
               type="button"
               onClick={handleCopyAddress}
               style={{
-                background: copied ? "rgba(16, 185, 129, 0.2)" : "rgba(16, 185, 129, 0.1)",
-                border: "1px solid rgba(16, 185, 129, 0.2)",
-                color: "#10b981",
-                padding: "6px 12px",
-                borderRadius: "6px",
-                cursor: "pointer",
-                fontSize: "12px",
+                background: copied ? 'rgba(16, 185, 129, 0.2)' : 'rgba(16, 185, 129, 0.1)',
+                border: '1px solid rgba(16, 185, 129, 0.2)',
+                color: '#10b981',
+                padding: '6px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '12px',
                 fontWeight: 600,
-                transition: "all 0.2s ease",
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
               }}
               onMouseOver={(e) => {
                 if (!copied) {
-                  e.currentTarget.style.background = "rgba(16, 185, 129, 0.15)";
+                  e.currentTarget.style.background = 'rgba(16, 185, 129, 0.15)';
                 }
               }}
               onMouseOut={(e) => {
                 if (!copied) {
-                  e.currentTarget.style.background = "rgba(16, 185, 129, 0.1)";
+                  e.currentTarget.style.background = 'rgba(16, 185, 129, 0.1)';
                 }
               }}
             >
@@ -233,23 +235,23 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
               type="button"
               onClick={handleSignOut}
               style={{
-                background: "rgba(255, 255, 255, 0.05)",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                color: "#a1a1a1",
-                padding: "6px 12px",
-                borderRadius: "6px",
-                cursor: "pointer",
-                fontSize: "12px",
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#a1a1a1',
+                padding: '6px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '12px',
                 fontWeight: 600,
-                transition: "all 0.2s ease",
+                transition: 'all 0.2s ease',
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
-                e.currentTarget.style.color = "#ffffff";
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.color = '#ffffff';
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
-                e.currentTarget.style.color = "#a1a1a1";
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.color = '#a1a1a1';
               }}
             >
               Sign Out
@@ -286,25 +288,25 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
     return (
       <div
         style={{
-          background: "#0a0a0a",
-          borderRadius: "16px",
-          padding: "32px",
-          border: "1px solid #262626",
-          animation: "slideIn 0.3s ease-out",
+          background: '#0a0a0a',
+          borderRadius: '16px',
+          padding: '32px',
+          border: '1px solid #262626',
+          animation: 'slideIn 0.3s ease-out',
         }}
       >
-        <div style={{ textAlign: "center", marginBottom: "28px" }}>
+        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
           <div
             style={{
-              width: "56px",
-              height: "56px",
-              borderRadius: "50%",
-              background: "rgba(16, 185, 129, 0.1)",
-              border: "1px solid rgba(16, 185, 129, 0.2)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              margin: "0 auto 16px",
+              width: '56px',
+              height: '56px',
+              borderRadius: '50%',
+              background: 'rgba(16, 185, 129, 0.1)',
+              border: '1px solid rgba(16, 185, 129, 0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 16px',
             }}
           >
             <svg
@@ -321,26 +323,26 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
               <polyline points="22,6 12,13 2,6"></polyline>
             </svg>
           </div>
-          <h3 style={{ margin: "0 0 8px 0", fontSize: "24px", color: "#ffffff", fontWeight: 700 }}>
+          <h3 style={{ margin: '0 0 8px 0', fontSize: '24px', color: '#ffffff', fontWeight: 700 }}>
             Check Your Email
           </h3>
-          <p style={{ margin: "0 0 4px 0", fontSize: "14px", color: "#a1a1a1", lineHeight: "1.5" }}>
+          <p style={{ margin: '0 0 4px 0', fontSize: '14px', color: '#a1a1a1', lineHeight: '1.5' }}>
             We sent a 6-digit verification code to
           </p>
-          <p style={{ margin: 0, fontSize: "14px", color: "#10b981", fontWeight: 600 }}>{email}</p>
+          <p style={{ margin: 0, fontSize: '14px', color: '#10b981', fontWeight: 600 }}>{email}</p>
         </div>
 
         <form onSubmit={handleOtpSubmit}>
-          <div style={{ marginBottom: "20px" }}>
+          <div style={{ marginBottom: '20px' }}>
             <label
               style={{
-                display: "block",
-                fontSize: "12px",
+                display: 'block',
+                fontSize: '12px',
                 fontWeight: 600,
-                color: "#707070",
-                marginBottom: "8px",
-                letterSpacing: "0.5px",
-                textTransform: "uppercase",
+                color: '#707070',
+                marginBottom: '8px',
+                letterSpacing: '0.5px',
+                textTransform: 'uppercase',
               }}
             >
               Verification Code
@@ -354,27 +356,27 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
               autoFocus
               disabled={isVerifying}
               style={{
-                width: "100%",
-                padding: "16px",
-                borderRadius: "12px",
-                border: otp.length === 6 ? "2px solid #10b981" : "2px solid #262626",
-                fontSize: "20px",
+                width: '100%',
+                padding: '16px',
+                borderRadius: '12px',
+                border: otp.length === 6 ? '2px solid #10b981' : '2px solid #262626',
+                fontSize: '20px',
                 fontWeight: 700,
-                fontFamily: "monospace",
-                textAlign: "center",
-                letterSpacing: "8px",
-                background: "#141414",
-                color: "#ffffff",
-                outline: "none",
-                transition: "all 0.2s ease",
-                boxShadow: otp.length === 6 ? "0 0 0 4px rgba(16, 185, 129, 0.1)" : "none",
+                fontFamily: 'monospace',
+                textAlign: 'center',
+                letterSpacing: '8px',
+                background: '#141414',
+                color: '#ffffff',
+                outline: 'none',
+                transition: 'all 0.2s ease',
+                boxShadow: otp.length === 6 ? '0 0 0 4px rgba(16, 185, 129, 0.1)' : 'none',
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = "#10b981";
+                e.currentTarget.style.borderColor = '#10b981';
               }}
               onBlur={(e) => {
                 if (otp.length !== 6) {
-                  e.currentTarget.style.borderColor = "#262626";
+                  e.currentTarget.style.borderColor = '#262626';
                 }
               }}
             />
@@ -383,17 +385,17 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
           {error && (
             <div
               style={{
-                padding: "12px 16px",
-                borderRadius: "10px",
-                background: "rgba(239, 68, 68, 0.1)",
-                border: "1px solid rgba(239, 68, 68, 0.2)",
-                color: "#ef4444",
-                fontSize: "13px",
-                marginBottom: "20px",
-                display: "flex",
-                alignItems: "flex-start",
-                gap: "10px",
-                animation: "slideIn 0.2s ease-out",
+                padding: '12px 16px',
+                borderRadius: '10px',
+                background: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.2)',
+                color: '#ef4444',
+                fontSize: '13px',
+                marginBottom: '20px',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '10px',
+                animation: 'slideIn 0.2s ease-out',
               }}
             >
               <svg
@@ -405,7 +407,7 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                style={{ flexShrink: 0, marginTop: "1px" }}
+                style={{ flexShrink: 0, marginTop: '1px' }}
               >
                 <circle cx="12" cy="12" r="10"></circle>
                 <line x1="12" y1="8" x2="12" y2="12"></line>
@@ -415,34 +417,34 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
             </div>
           )}
 
-          <div style={{ display: "flex", gap: "12px" }}>
+          <div style={{ display: 'flex', gap: '12px' }}>
             <button
               type="button"
               onClick={handleBack}
               disabled={isVerifying}
               style={{
-                flex: "1",
-                padding: "14px 20px",
-                borderRadius: "10px",
-                border: "1px solid #262626",
-                background: "#141414",
-                color: "#a1a1a1",
-                cursor: isVerifying ? "not-allowed" : "pointer",
+                flex: '1',
+                padding: '14px 20px',
+                borderRadius: '10px',
+                border: '1px solid #262626',
+                background: '#141414',
+                color: '#a1a1a1',
+                cursor: isVerifying ? 'not-allowed' : 'pointer',
                 opacity: isVerifying ? 0.5 : 1,
-                fontSize: "14px",
+                fontSize: '14px',
                 fontWeight: 600,
-                transition: "all 0.2s ease",
+                transition: 'all 0.2s ease',
               }}
               onMouseOver={(e) => {
                 if (!isVerifying) {
-                  e.currentTarget.style.background = "#1a1a1a";
-                  e.currentTarget.style.color = "#ffffff";
+                  e.currentTarget.style.background = '#1a1a1a';
+                  e.currentTarget.style.color = '#ffffff';
                 }
               }}
               onMouseOut={(e) => {
                 if (!isVerifying) {
-                  e.currentTarget.style.background = "#141414";
-                  e.currentTarget.style.color = "#a1a1a1";
+                  e.currentTarget.style.background = '#141414';
+                  e.currentTarget.style.color = '#a1a1a1';
                 }
               }}
             >
@@ -452,51 +454,51 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
               type="submit"
               disabled={isVerifying || !otp || otp.length !== 6}
               style={{
-                flex: "2",
-                padding: "14px 20px",
-                borderRadius: "10px",
-                border: "none",
-                background: isVerifying || !otp || otp.length !== 6 ? "#262626" : "#10b981",
-                color: isVerifying || !otp || otp.length !== 6 ? "#707070" : "#000000",
-                cursor: isVerifying || !otp || otp.length !== 6 ? "not-allowed" : "pointer",
-                fontSize: "14px",
+                flex: '2',
+                padding: '14px 20px',
+                borderRadius: '10px',
+                border: 'none',
+                background: isVerifying || !otp || otp.length !== 6 ? '#262626' : '#10b981',
+                color: isVerifying || !otp || otp.length !== 6 ? '#707070' : '#000000',
+                cursor: isVerifying || !otp || otp.length !== 6 ? 'not-allowed' : 'pointer',
+                fontSize: '14px',
                 fontWeight: 700,
-                transition: "all 0.2s ease",
+                transition: 'all 0.2s ease',
                 boxShadow:
                   isVerifying || !otp || otp.length !== 6
-                    ? "none"
-                    : "0 4px 16px rgba(16, 185, 129, 0.3)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
+                    ? 'none'
+                    : '0 4px 16px rgba(16, 185, 129, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
               }}
               onMouseOver={(e) => {
                 if (!isVerifying && otp && otp.length === 6) {
-                  e.currentTarget.style.transform = "translateY(-1px)";
-                  e.currentTarget.style.boxShadow = "0 6px 20px rgba(16, 185, 129, 0.4)";
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
                 }
               }}
               onMouseOut={(e) => {
                 if (!isVerifying && otp && otp.length === 6) {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(16, 185, 129, 0.3)";
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(16, 185, 129, 0.3)';
                 }
               }}
             >
               {isVerifying && (
                 <div
                   style={{
-                    width: "16px",
-                    height: "16px",
-                    border: "2px solid rgba(0, 0, 0, 0.3)",
-                    borderTopColor: "#000000",
-                    borderRadius: "50%",
-                    animation: "spin 0.6s linear infinite",
+                    width: '16px',
+                    height: '16px',
+                    border: '2px solid rgba(0, 0, 0, 0.3)',
+                    borderTopColor: '#000000',
+                    borderRadius: '50%',
+                    animation: 'spin 0.6s linear infinite',
                   }}
                 />
               )}
-              {isVerifying ? "Verifying..." : "Verify Code"}
+              {isVerifying ? 'Verifying...' : 'Verify Code'}
             </button>
           </div>
         </form>
@@ -526,25 +528,25 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
   return (
     <div
       style={{
-        background: "#0a0a0a",
-        borderRadius: "16px",
-        padding: "32px",
-        border: "1px solid #262626",
-        animation: "slideIn 0.3s ease-out",
+        background: '#0a0a0a',
+        borderRadius: '16px',
+        padding: '32px',
+        border: '1px solid #262626',
+        animation: 'slideIn 0.3s ease-out',
       }}
     >
-      <div style={{ textAlign: "center", marginBottom: "32px" }}>
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
         <div
           style={{
-            width: "64px",
-            height: "64px",
-            borderRadius: "16px",
-            background: "rgba(16, 185, 129, 0.1)",
-            border: "1px solid rgba(16, 185, 129, 0.2)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "0 auto 20px",
+            width: '64px',
+            height: '64px',
+            borderRadius: '16px',
+            background: 'rgba(16, 185, 129, 0.1)',
+            border: '1px solid rgba(16, 185, 129, 0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 20px',
           }}
         >
           <svg
@@ -563,34 +565,34 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
         </div>
         <h3
           style={{
-            margin: "0 0 8px 0",
-            fontSize: "26px",
-            color: "#ffffff",
+            margin: '0 0 8px 0',
+            fontSize: '26px',
+            color: '#ffffff',
             fontWeight: 700,
-            letterSpacing: "-0.5px",
+            letterSpacing: '-0.5px',
           }}
         >
           Welcome to BioAgents
         </h3>
-        <p style={{ margin: "0 0 4px 0", fontSize: "14px", color: "#a1a1a1", lineHeight: "1.6" }}>
+        <p style={{ margin: '0 0 4px 0', fontSize: '14px', color: '#a1a1a1', lineHeight: '1.6' }}>
           Create your secure wallet with just your email
         </p>
-        <p style={{ margin: 0, fontSize: "13px", color: "#707070" }}>
+        <p style={{ margin: 0, fontSize: '13px', color: '#707070' }}>
           No extensions • No seed phrases • 100% self-custodial
         </p>
       </div>
 
       <form onSubmit={handleEmailSubmit}>
-        <div style={{ marginBottom: "20px" }}>
+        <div style={{ marginBottom: '20px' }}>
           <label
             style={{
-              display: "block",
-              fontSize: "12px",
+              display: 'block',
+              fontSize: '12px',
               fontWeight: 600,
-              color: "#707070",
-              marginBottom: "8px",
-              letterSpacing: "0.5px",
-              textTransform: "uppercase",
+              color: '#707070',
+              marginBottom: '8px',
+              letterSpacing: '0.5px',
+              textTransform: 'uppercase',
             }}
           >
             Email Address
@@ -604,23 +606,23 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
             disabled={isSigningIn}
             autoFocus
             style={{
-              width: "100%",
-              padding: "14px 16px",
-              borderRadius: "10px",
-              border: "2px solid #262626",
-              fontSize: "15px",
-              background: "#141414",
-              color: "#ffffff",
-              outline: "none",
-              transition: "all 0.2s ease",
+              width: '100%',
+              padding: '14px 16px',
+              borderRadius: '10px',
+              border: '2px solid #262626',
+              fontSize: '15px',
+              background: '#141414',
+              color: '#ffffff',
+              outline: 'none',
+              transition: 'all 0.2s ease',
             }}
             onFocus={(e) => {
-              e.currentTarget.style.borderColor = "#10b981";
-              e.currentTarget.style.boxShadow = "0 0 0 4px rgba(16, 185, 129, 0.1)";
+              e.currentTarget.style.borderColor = '#10b981';
+              e.currentTarget.style.boxShadow = '0 0 0 4px rgba(16, 185, 129, 0.1)';
             }}
             onBlur={(e) => {
-              e.currentTarget.style.borderColor = "#262626";
-              e.currentTarget.style.boxShadow = "none";
+              e.currentTarget.style.borderColor = '#262626';
+              e.currentTarget.style.boxShadow = 'none';
             }}
           />
         </div>
@@ -628,17 +630,17 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
         {error && (
           <div
             style={{
-              padding: "12px 16px",
-              borderRadius: "10px",
-              background: "rgba(239, 68, 68, 0.1)",
-              border: "1px solid rgba(239, 68, 68, 0.2)",
-              color: "#ef4444",
-              fontSize: "13px",
-              marginBottom: "20px",
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "10px",
-              animation: "slideIn 0.2s ease-out",
+              padding: '12px 16px',
+              borderRadius: '10px',
+              background: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.2)',
+              color: '#ef4444',
+              fontSize: '13px',
+              marginBottom: '20px',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '10px',
+              animation: 'slideIn 0.2s ease-out',
             }}
           >
             <svg
@@ -650,7 +652,7 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{ flexShrink: 0, marginTop: "1px" }}
+              style={{ flexShrink: 0, marginTop: '1px' }}
             >
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="12" y1="8" x2="12" y2="12"></line>
@@ -664,48 +666,48 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
           type="submit"
           disabled={isSigningIn || !email}
           style={{
-            width: "100%",
-            padding: "14px 20px",
-            borderRadius: "10px",
-            border: "none",
-            background: isSigningIn || !email ? "#262626" : "#10b981",
-            color: isSigningIn || !email ? "#707070" : "#000000",
-            cursor: isSigningIn || !email ? "not-allowed" : "pointer",
-            fontSize: "15px",
+            width: '100%',
+            padding: '14px 20px',
+            borderRadius: '10px',
+            border: 'none',
+            background: isSigningIn || !email ? '#262626' : '#10b981',
+            color: isSigningIn || !email ? '#707070' : '#000000',
+            cursor: isSigningIn || !email ? 'not-allowed' : 'pointer',
+            fontSize: '15px',
             fontWeight: 700,
-            transition: "all 0.2s ease",
-            boxShadow: isSigningIn || !email ? "none" : "0 4px 16px rgba(16, 185, 129, 0.3)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "10px",
+            transition: 'all 0.2s ease',
+            boxShadow: isSigningIn || !email ? 'none' : '0 4px 16px rgba(16, 185, 129, 0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
           }}
           onMouseOver={(e) => {
             if (!isSigningIn && email) {
-              e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow = "0 6px 20px rgba(16, 185, 129, 0.4)";
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
             }
           }}
           onMouseOut={(e) => {
             if (!isSigningIn && email) {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 4px 16px rgba(16, 185, 129, 0.3)";
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px rgba(16, 185, 129, 0.3)';
             }
           }}
         >
           {isSigningIn && (
             <div
               style={{
-                width: "18px",
-                height: "18px",
-                border: "2px solid rgba(0, 0, 0, 0.3)",
-                borderTopColor: "#000000",
-                borderRadius: "50%",
-                animation: "spin 0.6s linear infinite",
+                width: '18px',
+                height: '18px',
+                border: '2px solid rgba(0, 0, 0, 0.3)',
+                borderTopColor: '#000000',
+                borderRadius: '50%',
+                animation: 'spin 0.6s linear infinite',
               }}
             />
           )}
-          {isSigningIn ? "Sending Code..." : "Continue with Email"}
+          {isSigningIn ? 'Sending Code...' : 'Continue with Email'}
           {!isSigningIn && (
             <svg
               width="18"
@@ -726,26 +728,26 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
 
       <div
         style={{
-          marginTop: "24px",
-          padding: "16px",
-          background: "rgba(16, 185, 129, 0.05)",
-          borderRadius: "12px",
-          border: "1px solid rgba(16, 185, 129, 0.1)",
+          marginTop: '24px',
+          padding: '16px',
+          background: 'rgba(16, 185, 129, 0.05)',
+          borderRadius: '12px',
+          border: '1px solid rgba(16, 185, 129, 0.1)',
         }}
       >
-        <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
           <div
             style={{
-              width: "20px",
-              height: "20px",
-              borderRadius: "50%",
-              background: "rgba(16, 185, 129, 0.1)",
-              border: "1px solid rgba(16, 185, 129, 0.2)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              width: '20px',
+              height: '20px',
+              borderRadius: '50%',
+              background: 'rgba(16, 185, 129, 0.1)',
+              border: '1px solid rgba(16, 185, 129, 0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               flexShrink: 0,
-              marginTop: "2px",
+              marginTop: '2px',
             }}
           >
             <svg
@@ -762,10 +764,10 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
             </svg>
           </div>
           <div style={{ flex: 1 }}>
-            <p style={{ margin: "0 0 4px 0", fontSize: "13px", fontWeight: 600, color: "#ffffff" }}>
+            <p style={{ margin: '0 0 4px 0', fontSize: '13px', fontWeight: 600, color: '#ffffff' }}>
               Secure & Self-Custodial
             </p>
-            <p style={{ margin: 0, fontSize: "12px", color: "#a1a1a1", lineHeight: "1.5" }}>
+            <p style={{ margin: 0, fontSize: '12px', color: '#a1a1a1', lineHeight: '1.5' }}>
               Your wallet is secured by your email. Only you have access to your funds. We never
               store your private keys.
             </p>

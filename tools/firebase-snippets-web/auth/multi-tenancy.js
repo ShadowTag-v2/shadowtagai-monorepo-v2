@@ -1,12 +1,12 @@
 // These samples are intended for Web so this import would normally be
 // done in HTML however using modules here is more convenient for
 // ensuring sample correctness offline.
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 function setTenant() {
   // [START multitenant_set_tenant]
-  const tenantId = "TENANT_ID1";
+  const tenantId = 'TENANT_ID1';
   firebase.auth().tenantId = tenantId;
   // [END multitenant_set_tenant]
 }
@@ -15,9 +15,9 @@ function switchTenantSingleAuth() {
   // [START multitenant_switch_tenant]
   // One Auth instance
   // Switch to tenant1
-  firebase.auth().tenantId = "TENANT_ID1";
+  firebase.auth().tenantId = 'TENANT_ID1';
   // Switch to tenant2
-  firebase.auth().tenantId = "TENANT_ID2";
+  firebase.auth().tenantId = 'TENANT_ID2';
   // Switch back to project level IdPs
   firebase.auth().tenantId = null;
   // [END multitenant_switch_tenant]
@@ -32,8 +32,8 @@ function switchTenantMultiAuth(config) {
   const auth1 = firebase.app('app1').auth();
   const auth2 = firebase.app('app2').auth();
 
-  auth1.tenantId = "TENANT_ID1";
-  auth2.tenantId = "TENANT_ID2";
+  auth1.tenantId = 'TENANT_ID1';
+  auth2.tenantId = 'TENANT_ID2';
   // [END multitenant_switch_tenant_multiinstance]
 }
 
@@ -43,7 +43,9 @@ function passwordSignInWithTenantDemo(email, password) {
   firebase.auth().tenantId = 'TENANT_ID1';
 
   // Sign in with tenant
-  firebase.auth().signInWithEmailAndPassword(email, password)
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
     .then((result) => {
       const user = result.user;
       // user.tenantId is set to 'TENANT_ID1'.
@@ -69,24 +71,29 @@ function signUpWithTenant(email, password) {
   // [START multitenant_signup_password]
   firebase.auth().tenantId = 'TENANT_ID';
 
-  firebase.auth().createUserWithEmailAndPassword(email, password)
+  firebase
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
     .then((result) => {
       // result.user.tenantId is 'TENANT_ID'.
-    }).catch((error) => {
+    })
+    .catch((error) => {
       // Handle error.
     });
   // [END multitenant_signup_password]
 }
 
-
 function passwordSignInWithTenant(email, password) {
   // [START multitenant_signin_password]
   firebase.auth().tenantId = 'TENANT_ID';
 
-  firebase.auth().signInWithEmailAndPassword(email, password)
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
     .then((result) => {
       // result.user.tenantId is 'TENANT_ID'.
-    }).catch((error) => {
+    })
+    .catch((error) => {
       // Handle error.
     });
   // [END multitenant_signin_password]
@@ -98,7 +105,9 @@ function samlSignInPopupTenant(provider) {
   firebase.auth().tenantId = 'TENANT_ID1';
 
   // Sign-in with popup.
-  firebase.auth().signInWithPopup(provider)
+  firebase
+    .auth()
+    .signInWithPopup(provider)
     .then((result) => {
       // User is signed in.
       // tenant ID is available in result.user.tenantId.
@@ -121,7 +130,9 @@ function samlSignInRedirectTenant(provider) {
   // After the user completes sign-in and returns to the app, you can get
   // the sign-in result by calling getRedirectResult. However, if they sign out
   // and sign in again with an IdP, no tenant is used.
-  firebase.auth().getRedirectResult()
+  firebase
+    .auth()
+    .getRedirectResult()
     .then((result) => {
       // User is signed in.
       // The tenant ID available in result.user.tenantId.
@@ -138,7 +149,9 @@ function sendSignInLinkToEmailTenant(email, actionCodeSettings) {
   // Switch to TENANT_ID1
   firebase.auth().tenantId = 'TENANT_ID1';
 
-  firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
+  firebase
+    .auth()
+    .sendSignInLinkToEmail(email, actionCodeSettings)
     .then(() => {
       // The link was successfully sent. Inform the user.
       // Save the email locally so you don't need to ask the user for it again
@@ -164,7 +177,9 @@ function signInWithEmailLinkTenant() {
       // attacks, ask the user to provide the associated email again. For example:
       email = window.prompt('Please provide your email for confirmation');
     }
-    firebase.auth().signInWithEmailLink(email, window.location.href)
+    firebase
+      .auth()
+      .signInWithEmailLink(email, window.location.href)
       .then((result) => {
         // User is signed in.
         // tenant ID available in result.user.tenantId.
@@ -180,7 +195,8 @@ function createCustomTokenTenant(admin, uid) {
   const tenantAuth = tenantManager.authForTenant('TENANT_ID1');
 
   // Create a custom token in the usual manner
-  tenantAuth.createCustomToken(uid)
+  tenantAuth
+    .createCustomToken(uid)
     .then((customToken) => {
       // Send token back to client
     })
@@ -194,7 +210,9 @@ function signInWithCustomTokenTenant(token) {
   // [START multitenant_signin_custom_token]
   firebase.auth().tenantId = 'TENANT_ID1';
 
-  firebase.auth().signInWithCustomToken(token)
+  firebase
+    .auth()
+    .signInWithCustomToken(token)
     .catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
@@ -210,12 +228,13 @@ function linkAccountTenant(provider, email, password) {
   firebase.auth().tenantId = 'TENANT_ID1';
 
   // Sign-in with popup
-  firebase.auth().signInWithPopup(provider)
+  firebase
+    .auth()
+    .signInWithPopup(provider)
     .then((result) => {
       // Existing user with e.g. SAML provider.
       const user = result.user;
-      const emailCredential =
-        firebase.auth.EmailAuthProvider.credential(email, password);
+      const emailCredential = firebase.auth.EmailAuthProvider.credential(email, password);
       return user.linkWithCredential(emailCredential);
     })
     .then((linkResult) => {
@@ -229,7 +248,9 @@ function accountExistsPopupTenant(samlProvider, googleProvider, goToApp) {
   // Step 1.
   // User tries to sign in to the SAML provider in that tenant.
   firebase.auth().tenantId = 'TENANT_ID';
-  firebase.auth().signInWithPopup(samlProvider)
+  firebase
+    .auth()
+    .signInWithPopup(samlProvider)
     .catch((error) => {
       // An error happened.
       if (error.code === 'auth/account-exists-with-different-credential') {
@@ -241,21 +262,24 @@ function accountExistsPopupTenant(samlProvider, googleProvider, goToApp) {
         // The provider account's email address.
         const email = error.email;
         // Get sign-in methods for this email.
-        firebase.auth().fetchSignInMethodsForEmail(email)
+        firebase
+          .auth()
+          .fetchSignInMethodsForEmail(email)
           .then((methods) => {
             // Step 3.
             // Ask the user to sign in with existing Google account.
             if (methods[0] == 'google.com') {
-              firebase.auth().signInWithPopup(googleProvider)
+              firebase
+                .auth()
+                .signInWithPopup(googleProvider)
                 .then((result) => {
                   // Step 4
                   // Link the SAML AuthCredential to the existing user.
-                  result.user.linkWithCredential(pendingCred)
-                    .then((linkResult) => {
-                      // SAML account successfully linked to the existing
-                      // user.
-                      goToApp();
-                    });
+                  result.user.linkWithCredential(pendingCred).then((linkResult) => {
+                    // SAML account successfully linked to the existing
+                    // user.
+                    goToApp();
+                  });
                 });
             }
           });
@@ -272,41 +296,48 @@ function accountExistsRedirectTenant(samlProvider, googleProvider, goToApp) {
   firebase.auth().signInWithRedirect(samlProvider);
   var pendingCred;
   // Redirect back from SAML IDP. auth.tenantId is null after redirecting.
-  firebase.auth().getRedirectResult().catch((error) => {
-    if (error.code === 'auth/account-exists-with-different-credential') {
-      // Step 2.
-      // User's email already exists.
-      const tenantId = error.tenantId;
-      // The pending SAML credential.
-      pendingCred = error.credential;
-      // The provider account's email address.
-      const email = error.email;
-      // Need to set the tenant ID again as the page was reloaded and the
-      // previous setting was reset.
-      firebase.auth().tenantId = tenantId;
-      // Get sign-in methods for this email.
-      firebase.auth().fetchSignInMethodsForEmail(email)
-        .then((methods) => {
-          // Step 3.
-          // Ask the user to sign in with existing Google account.
-          if (methods[0] == 'google.com') {
-            firebase.auth().signInWithRedirect(googleProvider);
-          }
-        });
-    }
-  });
+  firebase
+    .auth()
+    .getRedirectResult()
+    .catch((error) => {
+      if (error.code === 'auth/account-exists-with-different-credential') {
+        // Step 2.
+        // User's email already exists.
+        const tenantId = error.tenantId;
+        // The pending SAML credential.
+        pendingCred = error.credential;
+        // The provider account's email address.
+        const email = error.email;
+        // Need to set the tenant ID again as the page was reloaded and the
+        // previous setting was reset.
+        firebase.auth().tenantId = tenantId;
+        // Get sign-in methods for this email.
+        firebase
+          .auth()
+          .fetchSignInMethodsForEmail(email)
+          .then((methods) => {
+            // Step 3.
+            // Ask the user to sign in with existing Google account.
+            if (methods[0] == 'google.com') {
+              firebase.auth().signInWithRedirect(googleProvider);
+            }
+          });
+      }
+    });
 
   // Redirect back from Google. auth.tenantId is null after redirecting.
-  firebase.auth().getRedirectResult().then((result) => {
-    // Step 4
-    // Link the SAML AuthCredential to the existing user.
-    // result.user.tenantId is 'TENANT_ID'.
-    result.user.linkWithCredential(pendingCred)
-      .then((linkResult) => {
+  firebase
+    .auth()
+    .getRedirectResult()
+    .then((result) => {
+      // Step 4
+      // Link the SAML AuthCredential to the existing user.
+      // result.user.tenantId is 'TENANT_ID'.
+      result.user.linkWithCredential(pendingCred).then((linkResult) => {
         // SAML account successfully linked to the existing
         // user.
         goToApp();
       });
-  });
+    });
   // [END multitenant_account_exists_redirect]
 }

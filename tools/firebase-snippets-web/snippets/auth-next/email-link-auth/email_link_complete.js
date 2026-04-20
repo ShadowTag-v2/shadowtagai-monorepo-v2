@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START email_link_complete_modular]
-import { getAuth, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
+import { getAuth, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
 
 // Confirm the link is a sign-in with email link.
 const auth = getAuth();

@@ -3,23 +3,23 @@
  * Specialized agents for prompt adaptation, analysis, and optimization
  */
 import {
-  BaseAgent,
-  type AgentMetadata,
   AgentCategory,
   type AgentContext,
   type AgentExecutionResult,
-} from "./base";
+  type AgentMetadata,
+  BaseAgent,
+} from './base';
 
 export class PromptAdaptation extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "Prompt Adaptation Specialist",
+      name: 'Prompt Adaptation Specialist',
       description:
-        "Transforms prompts between use cases (e.g., Judge #6 → Gemini Ingestion Layer). Maintains structure while tailoring metrics, architecture, and domain focus.",
+        'Transforms prompts between use cases (e.g., Judge #6 → Gemini Ingestion Layer). Maintains structure while tailoring metrics, architecture, and domain focus.',
       category: AgentCategory.AI_INNOVATION,
-      icon: "🔄",
-      version: "1.0.0",
-      tags: ["prompt-engineering", "adaptation", "transformation", "reusability"],
+      icon: '🔄',
+      version: '1.0.0',
+      tags: ['prompt-engineering', 'adaptation', 'transformation', 'reusability'],
     };
   }
 
@@ -84,13 +84,13 @@ Output Format:
 export class GeminiPromptOptimizer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "Gemini Prompt Optimizer",
+      name: 'Gemini Prompt Optimizer',
       description:
         "Optimizes prompts for Gemini 2.0 Pro's strengths: multimodal analysis, extended thinking, natural language understanding, and production-grade outputs.",
       category: AgentCategory.VERTEX_AI,
-      icon: "💎",
-      version: "1.0.0",
-      tags: ["gemini", "optimization", "prompt-engineering", "google-ai"],
+      icon: '💎',
+      version: '1.0.0',
+      tags: ['gemini', 'optimization', 'prompt-engineering', 'google-ai'],
     };
   }
 
@@ -167,13 +167,13 @@ Output Format:
 export class PNKLNStackAnalyzer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "PNKLN Stack Analyzer",
+      name: 'PNKLN Stack Analyzer',
       description:
-        "Specialized in analyzing PNKLN Core Stack™ components: ingestion layers, validation systems, intelligence pipelines, and cross-component integration.",
+        'Specialized in analyzing PNKLN Core Stack™ components: ingestion layers, validation systems, intelligence pipelines, and cross-component integration.',
       category: AgentCategory.VERTEX_AI,
-      icon: "🏗️",
-      version: "1.0.0",
-      tags: ["pnkln", "stack-analysis", "integration", "intelligence-pipeline"],
+      icon: '🏗️',
+      version: '1.0.0',
+      tags: ['pnkln', 'stack-analysis', 'integration', 'intelligence-pipeline'],
     };
   }
 
@@ -291,13 +291,13 @@ Output Format:
 export class PromptQualityAuditor extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "Prompt Quality Auditor",
+      name: 'Prompt Quality Auditor',
       description:
-        "Audits prompts for production readiness, structural completeness, clarity, testability, and alignment with best practices from the Master Agent Framework.",
+        'Audits prompts for production readiness, structural completeness, clarity, testability, and alignment with best practices from the Master Agent Framework.',
       category: AgentCategory.QUALITY_TESTING,
-      icon: "🔍",
-      version: "1.0.0",
-      tags: ["quality", "audit", "prompt-engineering", "validation"],
+      icon: '🔍',
+      version: '1.0.0',
+      tags: ['quality', 'audit', 'prompt-engineering', 'validation'],
     };
   }
 
@@ -401,13 +401,13 @@ Output Format:
 export class EthicalCrawlerAuditor extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "Ethical Crawler Auditor",
+      name: 'Ethical Crawler Auditor',
       description:
-        "Audits crawling systems for robots.txt compliance, rate limiting, transparency, attribution, and legal risk mitigation in intelligence gathering pipelines.",
+        'Audits crawling systems for robots.txt compliance, rate limiting, transparency, attribution, and legal risk mitigation in intelligence gathering pipelines.',
       category: AgentCategory.BUSINESS_ANALYTICS,
-      icon: "⚖️",
-      version: "1.0.0",
-      tags: ["ethics", "compliance", "crawling", "legal", "web-scraping"],
+      icon: '⚖️',
+      version: '1.0.0',
+      tags: ['ethics', 'compliance', 'crawling', 'legal', 'web-scraping'],
     };
   }
 

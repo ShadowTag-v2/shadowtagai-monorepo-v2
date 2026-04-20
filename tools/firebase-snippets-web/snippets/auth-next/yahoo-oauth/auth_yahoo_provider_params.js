@@ -9,6 +9,6 @@ provider.setCustomParameters({
   // Prompt user to re-authenticate to Yahoo.
   prompt: 'login',
   // Localize to French.
-  language: 'fr'
+  language: 'fr',
 });
 // [END auth_yahoo_provider_params_modular]

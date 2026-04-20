@@ -6,11 +6,11 @@
 
 // import 'jasmine'; (google3-only)
 
-import {LitElement} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import { LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {hasState, mixinCustomStateSet, toggleState} from './custom-state-set.js';
-import {internals, mixinElementInternals} from './element-internals.js';
+import { hasState, mixinCustomStateSet, toggleState } from './custom-state-set.js';
+import { internals, mixinElementInternals } from './element-internals.js';
 
 // A more reliable test would use `forceElementInternalsPolyfill()` from
 // `element-internals-polyfill`, but our GitHub test build doesn't
@@ -45,9 +45,7 @@ class PolyfilledCustomStateSet {
 }
 
 @customElement('test-custom-state-set')
-class TestCustomStateSet extends mixinCustomStateSet(
-  mixinElementInternals(LitElement),
-) {
+class TestCustomStateSet extends mixinCustomStateSet(mixinElementInternals(LitElement)) {
   static testWithPolyfill = false;
 
   constructor() {
@@ -63,9 +61,7 @@ class TestCustomStateSet extends mixinCustomStateSet(
 }
 
 for (const testWithPolyfill of [false, true]) {
-  const describeSuffix = testWithPolyfill
-    ? ' (with element-internals-polyfill)'
-    : '';
+  const describeSuffix = testWithPolyfill ? ' (with element-internals-polyfill)' : '';
 
   describe(`mixinCustomStateSet()${describeSuffix}`, () => {
     beforeAll(() => {
@@ -78,9 +74,7 @@ for (const testWithPolyfill of [false, true]) {
         const element = new TestCustomStateSet();
 
         // Assert
-        expect(element[hasState]('foo'))
-          .withContext("[hasState]('foo')")
-          .toBeFalse();
+        expect(element[hasState]('foo')).withContext("[hasState]('foo')").toBeFalse();
       });
 
       it('returns true when the state is active', () => {
@@ -91,9 +85,7 @@ for (const testWithPolyfill of [false, true]) {
         element[toggleState]('foo', true);
 
         // Assert
-        expect(element[hasState]('foo'))
-          .withContext("[hasState]('foo')")
-          .toBeTrue();
+        expect(element[hasState]('foo')).withContext("[hasState]('foo')").toBeTrue();
       });
 
       it('returns false when the state is deactivated', () => {
@@ -105,16 +97,12 @@ for (const testWithPolyfill of [false, true]) {
         element[toggleState]('foo', false);
 
         // Assert
-        expect(element[hasState]('foo'))
-          .withContext("[hasState]('foo')")
-          .toBeFalse();
+        expect(element[hasState]('foo')).withContext("[hasState]('foo')").toBeFalse();
       });
     });
 
     describe('[toggleState]()', () => {
-      const fooStateSelector = testWithPolyfill
-        ? `[state--foo]`
-        : ':state(foo)';
+      const fooStateSelector = testWithPolyfill ? `[state--foo]` : ':state(foo)';
 
       it(`matches '${fooStateSelector}' when the state is active`, () => {
         // Arrange

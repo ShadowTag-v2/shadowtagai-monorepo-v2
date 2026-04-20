@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Attributes, TraceUtil} from './trace-util';
-import {Span} from './span';
+
+import { Span } from './span';
+import type { Attributes, TraceUtil } from './trace-util';
 
 /**
  * @private

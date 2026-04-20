@@ -6,13 +6,13 @@
 
 // import 'jasmine'; (google3-only)
 
-import {html, LitElement, nothing, TemplateResult} from 'lit';
-import {customElement, property, queryAsync} from 'lit/decorators.js';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
+import { customElement, property, queryAsync } from 'lit/decorators.js';
 
-import {Environment} from '../../testing/environment.js';
+import { Environment } from '../../testing/environment.js';
 
-import {ARIAMixinStrict} from './aria.js';
-import {mixinDelegatesAria} from './delegate.js';
+import type { ARIAMixinStrict } from './aria.js';
+import { mixinDelegatesAria } from './delegate.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -26,7 +26,7 @@ const delegatesAriaElementBaseClass = mixinDelegatesAria(LitElement);
 @customElement('test-delegates-aria')
 class DelegatesAriaElement extends delegatesAriaElementBaseClass {
   @queryAsync('button') readonly delegate!: Promise<HTMLElement | null>;
-  @property({attribute: 'lit-attribute'}) litAttribute = '';
+  @property({ attribute: 'lit-attribute' }) litAttribute = '';
 
   protected override render() {
     return html`<button
@@ -46,13 +46,8 @@ describe('mixinDelegatesAria()', () => {
   // unreliable when testing what the screen reader sees. This function returns
   // the "real" attribute value as read from the element's `outerHTML`,
   // bypassing any patched methods or properties.
-  function getOuterHTMLAttribute(
-    element: Element,
-    attribute: string,
-  ): string | null {
-    const match = element.outerHTML.match(
-      new RegExp(`\\s${attribute}="([^"]*)"`),
-    );
+  function getOuterHTMLAttribute(element: Element, attribute: string): string | null {
+    const match = element.outerHTML.match(new RegExp(`\\s${attribute}="([^"]*)"`));
     return match ? match[1] : null;
   }
 
@@ -66,12 +61,10 @@ describe('mixinDelegatesAria()', () => {
     await host.updateComplete;
     const delegate = await host.delegate;
     if (!delegate) {
-      throw new Error(
-        "Could not query <test-delegates-aria>'s rendered delegate element.",
-      );
+      throw new Error("Could not query <test-delegates-aria>'s rendered delegate element.");
     }
 
-    return {host, delegate};
+    return { host, delegate };
   }
 
   // We test two attributes: 'aria-label' and 'role'. We explicitly test 'role'
@@ -81,14 +74,12 @@ describe('mixinDelegatesAria()', () => {
     it('rendering aria-label attribute', async () => {
       // Arrange
       // Act
-      const {host, delegate} = await setupTest(
+      const { host, delegate } = await setupTest(
         html`<test-delegates-aria aria-label="foo"></test-delegates-aria>`,
       );
 
       // Assert
-      expect(getOuterHTMLAttribute(host, 'aria-label'))
-        .withContext('host aria-label')
-        .toBeNull();
+      expect(getOuterHTMLAttribute(host, 'aria-label')).withContext('host aria-label').toBeNull();
       expect(getOuterHTMLAttribute(delegate, 'aria-label'))
         .withContext('delegate aria-label')
         .toBe('foo');
@@ -97,17 +88,13 @@ describe('mixinDelegatesAria()', () => {
     it('rendering role attribute', async () => {
       // Arrange
       // Act
-      const {host, delegate} = await setupTest(
+      const { host, delegate } = await setupTest(
         html`<test-delegates-aria role="link"></test-delegates-aria>`,
       );
 
       // Assert
-      expect(getOuterHTMLAttribute(host, 'role'))
-        .withContext('host role')
-        .toBeNull();
-      expect(getOuterHTMLAttribute(delegate, 'role'))
-        .withContext('delegate role')
-        .toBe('link');
+      expect(getOuterHTMLAttribute(host, 'role')).withContext('host role').toBeNull();
+      expect(getOuterHTMLAttribute(delegate, 'role')).withContext('delegate role').toBe('link');
     });
 
     // Test rendering multiple attributes to stress test the logic in
@@ -116,16 +103,14 @@ describe('mixinDelegatesAria()', () => {
     it('rendering aria and non-aria attributes at the same time', async () => {
       // Arrange
       // Act
-      const {host, delegate} = await setupTest(
+      const { host, delegate } = await setupTest(
         html`<test-delegates-aria
           aria-label="foo"
           lit-attribute="bar"></test-delegates-aria>`,
       );
 
       // Assert
-      expect(getOuterHTMLAttribute(host, 'aria-label'))
-        .withContext('host aria-label')
-        .toBeNull();
+      expect(getOuterHTMLAttribute(host, 'aria-label')).withContext('host aria-label').toBeNull();
       expect(getOuterHTMLAttribute(delegate, 'aria-label'))
         .withContext('delegate aria-label')
         .toBe('foo');
@@ -137,16 +122,14 @@ describe('mixinDelegatesAria()', () => {
     it('rendering multiple aria attributes at the same time', async () => {
       // Arrange
       // Act
-      const {host, delegate} = await setupTest(
+      const { host, delegate } = await setupTest(
         html`<test-delegates-aria
           aria-label="foo"
           aria-haspopup="true"></test-delegates-aria>`,
       );
 
       // Assert
-      expect(getOuterHTMLAttribute(host, 'aria-label'))
-        .withContext('host aria-label')
-        .toBeNull();
+      expect(getOuterHTMLAttribute(host, 'aria-label')).withContext('host aria-label').toBeNull();
       expect(getOuterHTMLAttribute(host, 'aria-haspopup'))
         .withContext('host aria-haspopup')
         .toBeNull();
@@ -160,18 +143,14 @@ describe('mixinDelegatesAria()', () => {
 
     it("calling host.setAttribute('aria-label')", async () => {
       // Arrange
-      const {host, delegate} = await setupTest(
-        html`<test-delegates-aria></test-delegates-aria>`,
-      );
+      const { host, delegate } = await setupTest(html`<test-delegates-aria></test-delegates-aria>`);
 
       // Act
       host.setAttribute('aria-label', 'foo');
       await host.updateComplete;
 
       // Assert
-      expect(getOuterHTMLAttribute(host, 'aria-label'))
-        .withContext('host aria-label')
-        .toBeNull();
+      expect(getOuterHTMLAttribute(host, 'aria-label')).withContext('host aria-label').toBeNull();
       expect(getOuterHTMLAttribute(delegate, 'aria-label'))
         .withContext('delegate aria-label')
         .toBe('foo');
@@ -179,37 +158,27 @@ describe('mixinDelegatesAria()', () => {
 
     it("calling host.setAttribute('role')", async () => {
       // Arrange
-      const {host, delegate} = await setupTest(
-        html`<test-delegates-aria></test-delegates-aria>`,
-      );
+      const { host, delegate } = await setupTest(html`<test-delegates-aria></test-delegates-aria>`);
 
       // Act
       host.setAttribute('role', 'link');
       await host.updateComplete;
 
       // Assert
-      expect(getOuterHTMLAttribute(host, 'role'))
-        .withContext('host role')
-        .toBeNull();
-      expect(getOuterHTMLAttribute(delegate, 'role'))
-        .withContext('delegate role')
-        .toBe('link');
+      expect(getOuterHTMLAttribute(host, 'role')).withContext('host role').toBeNull();
+      expect(getOuterHTMLAttribute(delegate, 'role')).withContext('delegate role').toBe('link');
     });
 
     it('setting host.ariaLabel to a string', async () => {
       // Arrange
-      const {host, delegate} = await setupTest(
-        html`<test-delegates-aria></test-delegates-aria>`,
-      );
+      const { host, delegate } = await setupTest(html`<test-delegates-aria></test-delegates-aria>`);
 
       // Act
       host.ariaLabel = 'foo';
       await host.updateComplete;
 
       // Assert
-      expect(getOuterHTMLAttribute(host, 'aria-label'))
-        .withContext('host aria-label')
-        .toBeNull();
+      expect(getOuterHTMLAttribute(host, 'aria-label')).withContext('host aria-label').toBeNull();
       expect(getOuterHTMLAttribute(delegate, 'aria-label'))
         .withContext('delegate aria-label')
         .toBe('foo');
@@ -217,28 +186,22 @@ describe('mixinDelegatesAria()', () => {
 
     it('setting host.role to a string', async () => {
       // Arrange
-      const {host, delegate} = await setupTest(
-        html`<test-delegates-aria></test-delegates-aria>`,
-      );
+      const { host, delegate } = await setupTest(html`<test-delegates-aria></test-delegates-aria>`);
 
       // Act
       host.role = 'link';
       await host.updateComplete;
 
       // Assert
-      expect(getOuterHTMLAttribute(host, 'role'))
-        .withContext('host role')
-        .toBeNull();
-      expect(getOuterHTMLAttribute(delegate, 'role'))
-        .withContext('delegate role')
-        .toBe('link');
+      expect(getOuterHTMLAttribute(host, 'role')).withContext('host role').toBeNull();
+      expect(getOuterHTMLAttribute(delegate, 'role')).withContext('delegate role').toBe('link');
     });
   });
 
   describe('returns the correct aria attribute value when: ', () => {
     it('calling host.getAttribute("aria-label")', async () => {
       // Arrange
-      const {host} = await setupTest(
+      const { host } = await setupTest(
         html`<test-delegates-aria aria-label="foo"></test-delegates-aria>`,
       );
 
@@ -246,14 +209,12 @@ describe('mixinDelegatesAria()', () => {
       const getAttributeResult = host.getAttribute('aria-label');
 
       // Assert
-      expect(getAttributeResult)
-        .withContext('host.getAttribute() value')
-        .toEqual('foo');
+      expect(getAttributeResult).withContext('host.getAttribute() value').toEqual('foo');
     });
 
     it('calling host.getAttribute("role")', async () => {
       // Arrange
-      const {host} = await setupTest(
+      const { host } = await setupTest(
         html`<test-delegates-aria role="link"></test-delegates-aria>`,
       );
 
@@ -261,14 +222,12 @@ describe('mixinDelegatesAria()', () => {
       const getAttributeResult = host.getAttribute('role');
 
       // Assert
-      expect(getAttributeResult)
-        .withContext('host.getAttribute() value')
-        .toEqual('link');
+      expect(getAttributeResult).withContext('host.getAttribute() value').toEqual('link');
     });
 
     it('getting host.ariaLabel', async () => {
       // Arrange
-      const {host} = await setupTest(
+      const { host } = await setupTest(
         html`<test-delegates-aria aria-label="foo"></test-delegates-aria>`,
       );
 
@@ -281,7 +240,7 @@ describe('mixinDelegatesAria()', () => {
 
     it('getting host.role', async () => {
       // Arrange
-      const {host} = await setupTest(
+      const { host } = await setupTest(
         html`<test-delegates-aria role="link"></test-delegates-aria>`,
       );
 
@@ -296,7 +255,7 @@ describe('mixinDelegatesAria()', () => {
   describe('removes the delegated aria attribute when: ', () => {
     it("calling host.removeAttribute('aria-label')", async () => {
       // Arrange
-      const {host, delegate} = await setupTest(
+      const { host, delegate } = await setupTest(
         html`<test-delegates-aria aria-label="foo"></test-delegates-aria>`,
       );
 
@@ -305,9 +264,7 @@ describe('mixinDelegatesAria()', () => {
       await host.updateComplete;
 
       // Assert
-      expect(getOuterHTMLAttribute(host, 'aria-label'))
-        .withContext('host aria-label')
-        .toBeNull();
+      expect(getOuterHTMLAttribute(host, 'aria-label')).withContext('host aria-label').toBeNull();
       expect(getOuterHTMLAttribute(delegate, 'aria-label'))
         .withContext('delegate aria-label')
         .toBeNull();
@@ -315,7 +272,7 @@ describe('mixinDelegatesAria()', () => {
 
     it("calling host.removeAttribute('role')", async () => {
       // Arrange
-      const {host, delegate} = await setupTest(
+      const { host, delegate } = await setupTest(
         html`<test-delegates-aria role="link"></test-delegates-aria>`,
       );
 
@@ -324,17 +281,13 @@ describe('mixinDelegatesAria()', () => {
       await host.updateComplete;
 
       // Assert
-      expect(getOuterHTMLAttribute(host, 'role'))
-        .withContext('host role')
-        .toBeNull();
-      expect(getOuterHTMLAttribute(delegate, 'role'))
-        .withContext('delegate role')
-        .toBeNull();
+      expect(getOuterHTMLAttribute(host, 'role')).withContext('host role').toBeNull();
+      expect(getOuterHTMLAttribute(delegate, 'role')).withContext('delegate role').toBeNull();
     });
 
     it('setting host.ariaLabel to null', async () => {
       // Arrange
-      const {host, delegate} = await setupTest(
+      const { host, delegate } = await setupTest(
         html`<test-delegates-aria aria-label="foo"></test-delegates-aria>`,
       );
 
@@ -343,9 +296,7 @@ describe('mixinDelegatesAria()', () => {
       await host.updateComplete;
 
       // Assert
-      expect(getOuterHTMLAttribute(host, 'aria-label'))
-        .withContext('host aria-label')
-        .toBeNull();
+      expect(getOuterHTMLAttribute(host, 'aria-label')).withContext('host aria-label').toBeNull();
       expect(getOuterHTMLAttribute(delegate, 'aria-label'))
         .withContext('delegate aria-label')
         .toBeNull();
@@ -353,7 +304,7 @@ describe('mixinDelegatesAria()', () => {
 
     it('setting host.role to null', async () => {
       // Arrange
-      const {host, delegate} = await setupTest(
+      const { host, delegate } = await setupTest(
         html`<test-delegates-aria role="link"></test-delegates-aria>`,
       );
 
@@ -362,18 +313,14 @@ describe('mixinDelegatesAria()', () => {
       await host.updateComplete;
 
       // Assert
-      expect(getOuterHTMLAttribute(host, 'role'))
-        .withContext('host role')
-        .toBeNull();
-      expect(getOuterHTMLAttribute(delegate, 'role'))
-        .withContext('delegate role')
-        .toBeNull();
+      expect(getOuterHTMLAttribute(host, 'role')).withContext('host role').toBeNull();
+      expect(getOuterHTMLAttribute(delegate, 'role')).withContext('delegate role').toBeNull();
     });
   });
 
   it('does not change behavior of setting non-aria attributes', async () => {
     // Arrange
-    const {host} = await setupTest(
+    const { host } = await setupTest(
       html`<test-delegates-aria aria-label="foo"></test-delegates-aria>`,
     );
 
@@ -392,7 +339,7 @@ describe('mixinDelegatesAria()', () => {
 
   it('does not change behavior of LitElement @property() attributes', async () => {
     // Arrange
-    const {host, delegate} = await setupTest(
+    const { host, delegate } = await setupTest(
       html`<test-delegates-aria aria-label="foo"></test-delegates-aria>`,
     );
 

@@ -6,14 +6,14 @@
 
 // import 'jasmine'; (google3-only)
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Environment} from '../testing/environment.js';
-import {createFormTests} from '../testing/forms.js';
-import {createTokenTests} from '../testing/tokens.js';
+import { Environment } from '../testing/environment.js';
+import { createFormTests } from '../testing/forms.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {SwitchHarness} from './harness.js';
-import {MdSwitch} from './switch.js';
+import { SwitchHarness } from './harness.js';
+import { MdSwitch } from './switch.js';
 
 describe('<md-switch>', () => {
   const env = new Environment();
@@ -64,8 +64,7 @@ describe('<md-switch>', () => {
         },
         {
           name: 'disabled',
-          render: () =>
-            html`<md-switch name="switch" selected disabled></md-switch>`,
+          render: () => html`<md-switch name="switch" selected disabled></md-switch>`,
           assertValue(formData) {
             expect(formData)
               .withContext('should not add anything to form when disabled')
@@ -81,9 +80,7 @@ describe('<md-switch>', () => {
             control.selected = true;
           },
           assertReset(control) {
-            expect(control.selected)
-              .withContext('control.selected after reset')
-              .toBeFalse();
+            expect(control.selected).withContext('control.selected after reset').toBeFalse();
           },
         },
         {
@@ -93,9 +90,7 @@ describe('<md-switch>', () => {
             control.selected = false;
           },
           assertReset(control) {
-            expect(control.selected)
-              .withContext('control.selected after reset')
-              .toBeTrue();
+            expect(control.selected).withContext('control.selected after reset').toBeTrue();
           },
         },
       ],
@@ -104,18 +99,14 @@ describe('<md-switch>', () => {
           name: 'restore unselected',
           render: () => html`<md-switch name="switch"></md-switch>`,
           assertRestored(control) {
-            expect(control.selected)
-              .withContext('control.selected after restore')
-              .toBeFalse();
+            expect(control.selected).withContext('control.selected after restore').toBeFalse();
           },
         },
         {
           name: 'restore selected',
           render: () => html`<md-switch name="switch" selected></md-switch>`,
           assertRestored(control) {
-            expect(control.selected)
-              .withContext('control.selected after restore')
-              .toBeTrue();
+            expect(control.selected).withContext('control.selected after restore').toBeTrue();
           },
         },
       ],
@@ -137,9 +128,7 @@ describe('<md-switch>', () => {
       await harness.element.updateComplete;
 
       // Assert
-      expect(harness.element.selected)
-        .withContext('switch is selected after Enter')
-        .toBeTrue();
+      expect(harness.element.selected).withContext('switch is selected after Enter').toBeTrue();
     });
 
     it('should toggle the switch off', async () => {
@@ -152,9 +141,7 @@ describe('<md-switch>', () => {
       await harness.element.updateComplete;
 
       // Assert
-      expect(harness.element.selected)
-        .withContext('switch is unselected after Enter')
-        .toBeFalse();
+      expect(harness.element.selected).withContext('switch is unselected after Enter').toBeFalse();
     });
 
     it('should not toggle the switch when disabled', async () => {

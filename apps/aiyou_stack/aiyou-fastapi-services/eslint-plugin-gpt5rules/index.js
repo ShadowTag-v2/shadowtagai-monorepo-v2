@@ -1,18 +1,18 @@
-"use strict";
+'use strict';
 
 module.exports = {
   rules: {
-    "no-dynamic-imports": (context) => ({
+    'no-dynamic-imports': (context) => ({
       ImportExpression(node) {
-        context.report({ node, message: "Dynamic import forbidden. Use static imports." });
+        context.report({ node, message: 'Dynamic import forbidden. Use static imports.' });
       },
     }),
-    "no-any-cast": (context) => ({
+    'no-any-cast': (context) => ({
       TSAnyKeyword(node) {
-        context.report({ node, message: "Avoid `any`. Use explicit, safe types." });
+        context.report({ node, message: 'Avoid `any`. Use explicit, safe types.' });
       },
     }),
-    "no-extra-trycatch": (context) => ({
+    'no-extra-trycatch': (context) => ({
       TryStatement(node) {
         // Lightweight heuristic: flag blanket try/catch without specific handling
         const hasEmptyCatch =
@@ -21,7 +21,7 @@ module.exports = {
         if (hasEmptyCatch) {
           context.report({
             node,
-            message: "Remove unnecessary try/catch or handle specific errors at the call site.",
+            message: 'Remove unnecessary try/catch or handle specific errors at the call site.',
           });
         }
       },

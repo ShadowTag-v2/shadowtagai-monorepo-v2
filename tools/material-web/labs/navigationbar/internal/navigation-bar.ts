@@ -6,16 +6,16 @@
 
 import '../../../elevation/elevation.js';
 
-import {html, LitElement, nothing, PropertyValues} from 'lit';
-import {property, queryAssignedElements} from 'lit/decorators.js';
+import { html, LitElement, nothing, type PropertyValues } from 'lit';
+import { property, queryAssignedElements } from 'lit/decorators.js';
 
-import {ARIAMixinStrict} from '../../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../../internal/aria/delegate.js';
-import {isRtl} from '../../../internal/controller/is-rtl.js';
-import {NavigationTab} from '../../navigationtab/internal/navigation-tab.js';
+import type { ARIAMixinStrict } from '../../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../../internal/aria/delegate.js';
+import { isRtl } from '../../../internal/controller/is-rtl.js';
+import type { NavigationTab } from '../../navigationtab/internal/navigation-tab.js';
 
-import {NavigationTabInteractionEvent} from './constants.js';
-import {NavigationBarState} from './state.js';
+import type { NavigationTabInteractionEvent } from './constants.js';
+import type { NavigationBarState } from './state.js';
 
 // Separate variable needed for closure.
 const navigationBarBaseClass = mixinDelegatesAria(LitElement);
@@ -26,23 +26,20 @@ const navigationBarBaseClass = mixinDelegatesAria(LitElement);
  * @fires navigation-bar-activated {CustomEvent<tab: NavigationTab, activeIndex: number>}
  * Dispatched whenever the `activeIndex` changes. --bubbles --composed
  */
-export class NavigationBar
-  extends navigationBarBaseClass
-  implements NavigationBarState
-{
-  @property({type: Number, attribute: 'active-index'}) activeIndex = 0;
+export class NavigationBar extends navigationBarBaseClass implements NavigationBarState {
+  @property({ type: Number, attribute: 'active-index' }) activeIndex = 0;
 
-  @property({type: Boolean, attribute: 'hide-inactive-labels'})
+  @property({ type: Boolean, attribute: 'hide-inactive-labels' })
   hideInactiveLabels = false;
 
   tabs: NavigationTab[] = [];
 
-  @queryAssignedElements({flatten: true})
+  @queryAssignedElements({ flatten: true })
   private readonly tabsElement!: NavigationTab[];
 
   protected override render() {
     // Needed for closure conformance
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     return html`<div
       class="md3-navigation-bar"
       role="tablist"
@@ -128,8 +125,7 @@ export class NavigationBar
       return;
     }
 
-    const toNextTab =
-      (key === 'ArrowRight' && !isRTL) || (key === 'ArrowLeft' && isRTL);
+    const toNextTab = (key === 'ArrowRight' && !isRTL) || (key === 'ArrowLeft' && isRTL);
     if (toNextTab && focusedTabIndex === maxIndex) {
       this.tabs[0].focus();
       return;
@@ -139,8 +135,7 @@ export class NavigationBar
       return;
     }
 
-    const toPreviousTab =
-      (key === 'ArrowLeft' && !isRTL) || (key === 'ArrowRight' && isRTL);
+    const toPreviousTab = (key === 'ArrowLeft' && !isRTL) || (key === 'ArrowRight' && isRTL);
     if (toPreviousTab && focusedTabIndex === 0) {
       this.tabs[maxIndex].focus();
       return;

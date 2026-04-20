@@ -4,29 +4,29 @@
  */
 
 import {
-  getConversationState,
-  updateConversationState,
   createConversation,
   createConversationState,
   createUser,
-} from "../../db/operations";
+  getConversationState,
+  updateConversationState,
+} from '../../db/operations';
 import {
   getFileUploadPath,
-  getStorageProvider,
   getMimeTypeFromFilename,
+  getStorageProvider,
   getUploadPath,
-} from "../../storage";
-import logger from "../../utils/logger";
-import { generateUUID } from "../../utils/uuid";
-import { isJobQueueEnabled } from "../queue/connection";
-import { generateFileDescription, parseFilePreview } from "./description";
+} from '../../storage';
+import logger from '../../utils/logger';
+import { generateUUID } from '../../utils/uuid';
+import { isJobQueueEnabled } from '../queue/connection';
+import { generateFileDescription, parseFilePreview } from './description';
 import {
   createFileStatus,
-  getFileStatus,
-  updateFileStatus,
   deleteFileStatus,
   type FileStatusRecord,
-} from "./status";
+  getFileStatus,
+  updateFileStatus,
+} from './status';
 
 // Preview size for description generation (4KB)
 const PREVIEW_SIZE = 4 * 1024;
@@ -58,7 +58,7 @@ export interface ConfirmUploadParams {
 
 export interface ConfirmUploadResult {
   fileId: string;
-  status: "ready" | "processing";
+  status: 'ready' | 'processing';
   filename: string;
   size: number;
   description?: string;
@@ -75,7 +75,7 @@ export async function requestUploadUrl(
   params: RequestUploadUrlParams,
 ): Promise<RequestUploadUrlResult> {
   const { filename, contentType, size, userId } = params;
-  let conversationId: string = params.conversationId || "";
+  let conversationId: string = params.conversationId || '';
 
   // Server-side size validation - reject before generating URL
   if (size > MAX_UPLOAD_SIZE_BYTES) {
@@ -85,19 +85,19 @@ export async function requestUploadUrl(
   }
 
   if (size <= 0) {
-    throw new Error("Invalid file size");
+    throw new Error('Invalid file size');
   }
 
   const storageProvider = getStorageProvider();
   if (!storageProvider) {
-    throw new Error("Storage provider not configured");
+    throw new Error('Storage provider not configured');
   }
 
   // Create conversation if not provided
   let conversationStateId: string;
   if (!conversationId) {
     // Create new conversation and state
-    const newState = await createConversationState({ values: { objective: "" } });
+    const newState = await createConversationState({ values: { objective: '' } });
     conversationStateId = newState.id!;
 
     const newConversation = await createConversation({
@@ -106,10 +106,10 @@ export async function requestUploadUrl(
     });
     conversationId = newConversation.id!;
 
-    logger.info({ conversationId, conversationStateId }, "created_new_conversation_for_upload");
+    logger.info({ conversationId, conversationStateId }, 'created_new_conversation_for_upload');
   } else {
     // Try to get existing conversation
-    const { getConversation, updateConversation } = await import("../../db/operations");
+    const { getConversation, updateConversation } = await import('../../db/operations');
     let conversation;
     try {
       conversation = await getConversation(conversationId);
@@ -120,7 +120,7 @@ export async function requestUploadUrl(
 
     if (!conversation) {
       // Create the conversation with the provided ID
-      logger.info({ conversationId, userId }, "conversation_not_found_creating_for_upload");
+      logger.info({ conversationId, userId }, 'conversation_not_found_creating_for_upload');
 
       // First ensure user exists (required for foreign key constraint)
       try {
@@ -130,18 +130,18 @@ export async function requestUploadUrl(
           email: `${userId}@temp.local`,
         });
         if (user) {
-          logger.info({ userId }, "user_created_for_upload");
+          logger.info({ userId }, 'user_created_for_upload');
         }
       } catch (err: any) {
         // User might already exist - that's fine
-        if (err.code !== "23505") {
-          logger.error({ err, userId }, "create_user_failed_for_upload");
+        if (err.code !== '23505') {
+          logger.error({ err, userId }, 'create_user_failed_for_upload');
           throw err;
         }
       }
 
       // Create conversation state and conversation
-      const newState = await createConversationState({ values: { objective: "" } });
+      const newState = await createConversationState({ values: { objective: '' } });
       conversationStateId = newState.id!;
 
       await createConversation({
@@ -150,17 +150,17 @@ export async function requestUploadUrl(
         conversation_state_id: conversationStateId,
       });
 
-      logger.info({ conversationId, conversationStateId }, "created_conversation_for_upload");
+      logger.info({ conversationId, conversationStateId }, 'created_conversation_for_upload');
     } else {
       // Verify ownership
       if (conversation.user_id !== userId) {
-        throw new Error("Unauthorized: conversation belongs to different user");
+        throw new Error('Unauthorized: conversation belongs to different user');
       }
-      conversationStateId = conversation.conversation_state_id || "";
+      conversationStateId = conversation.conversation_state_id || '';
 
       // If no state exists, create one
       if (!conversationStateId) {
-        const newState = await createConversationState({ values: { objective: "" } });
+        const newState = await createConversationState({ values: { objective: '' } });
         conversationStateId = newState.id!;
         await updateConversation(conversationId, {
           conversation_state_id: conversationStateId,
@@ -199,7 +199,7 @@ export async function requestUploadUrl(
     size,
   });
 
-  logger.info({ fileId, filename, s3Key, conversationId }, "upload_url_generated");
+  logger.info({ fileId, filename, s3Key, conversationId }, 'upload_url_generated');
 
   return {
     fileId,
@@ -219,66 +219,66 @@ export async function requestUploadUrl(
 export async function confirmUpload(params: ConfirmUploadParams): Promise<ConfirmUploadResult> {
   const { fileId, userId } = params;
 
-  logger.info({ fileId, userId }, "confirm_upload_started");
+  logger.info({ fileId, userId }, 'confirm_upload_started');
 
   // Get file status
   const status = await getFileStatus(fileId);
   if (!status) {
-    logger.error({ fileId }, "confirm_file_status_not_found");
+    logger.error({ fileId }, 'confirm_file_status_not_found');
     throw new Error(`File not found: ${fileId}`);
   }
 
   logger.info(
     { fileId, statusUserId: status.userId, requestUserId: userId },
-    "confirm_status_found",
+    'confirm_status_found',
   );
 
   if (status.userId !== userId) {
     logger.error(
       { fileId, statusUserId: status.userId, requestUserId: userId },
-      "confirm_user_mismatch",
+      'confirm_user_mismatch',
     );
-    throw new Error("Unauthorized: file belongs to different user");
+    throw new Error('Unauthorized: file belongs to different user');
   }
 
-  if (status.status !== "pending") {
-    logger.error({ fileId, currentStatus: status.status }, "confirm_invalid_status");
+  if (status.status !== 'pending') {
+    logger.error({ fileId, currentStatus: status.status }, 'confirm_invalid_status');
     throw new Error(`Invalid file status: ${status.status}. Expected: pending`);
   }
 
   // Verify file exists in S3
   const storageProvider = getStorageProvider();
   if (!storageProvider) {
-    logger.error({ fileId }, "confirm_no_storage_provider");
-    throw new Error("Storage provider not configured");
+    logger.error({ fileId }, 'confirm_no_storage_provider');
+    throw new Error('Storage provider not configured');
   }
 
-  logger.info({ fileId, s3Key: status.s3Key }, "confirm_checking_s3_exists");
+  logger.info({ fileId, s3Key: status.s3Key }, 'confirm_checking_s3_exists');
 
   const exists = await storageProvider.exists(status.s3Key);
   if (!exists) {
-    logger.error({ fileId, s3Key: status.s3Key }, "confirm_file_not_in_s3");
-    throw new Error("File not found in storage. Upload may not be complete.");
+    logger.error({ fileId, s3Key: status.s3Key }, 'confirm_file_not_in_s3');
+    throw new Error('File not found in storage. Upload may not be complete.');
   }
 
-  logger.info({ fileId }, "confirm_s3_check_passed");
+  logger.info({ fileId }, 'confirm_s3_check_passed');
 
   // Update status to uploaded
-  await updateFileStatus(fileId, { status: "uploaded" });
+  await updateFileStatus(fileId, { status: 'uploaded' });
 
   // Check if queue mode
   if (isJobQueueEnabled()) {
     // Queue mode: Enqueue processing job
-    const { enqueueFileProcess } = await import("./queue");
+    const { enqueueFileProcess } = await import('./queue');
     const jobId = await enqueueFileProcess(status);
 
-    await updateFileStatus(fileId, { status: "processing", jobId });
+    await updateFileStatus(fileId, { status: 'processing', jobId });
 
-    logger.info({ fileId, jobId }, "file_process_job_enqueued");
+    logger.info({ fileId, jobId }, 'file_process_job_enqueued');
 
     return {
       fileId,
-      status: "processing",
+      status: 'processing',
       filename: status.filename,
       size: status.size,
       jobId,
@@ -289,7 +289,7 @@ export async function confirmUpload(params: ConfirmUploadParams): Promise<Confir
 
     return {
       fileId,
-      status: "ready",
+      status: 'ready',
       filename: status.filename,
       size: status.size,
       description: result.description,
@@ -304,27 +304,27 @@ export async function confirmUpload(params: ConfirmUploadParams): Promise<Confir
 export async function processFile(status: FileStatusRecord): Promise<{ description: string }> {
   const { fileId, s3Key, filename, contentType, conversationStateId, size } = status;
 
-  logger.info({ fileId, filename, size }, "processing_file");
+  logger.info({ fileId, filename, size }, 'processing_file');
 
   const storageProvider = getStorageProvider();
   if (!storageProvider) {
-    throw new Error("Storage provider not configured");
+    throw new Error('Storage provider not configured');
   }
 
-  const ext = filename.split(".").pop()?.toLowerCase();
-  const isPDF = ext === "pdf" || contentType === "application/pdf";
-  const isImage = contentType.startsWith("image/");
-  const isExcel = ["xlsx", "xls"].includes(ext || "");
+  const ext = filename.split('.').pop()?.toLowerCase();
+  const isPDF = ext === 'pdf' || contentType === 'application/pdf';
+  const isImage = contentType.startsWith('image/');
+  const isExcel = ['xlsx', 'xls'].includes(ext || '');
   const isText =
-    contentType.startsWith("text/") ||
-    ["csv", "json", "md", "txt", "tsv", "xml", "yaml", "yml"].includes(ext || "");
+    contentType.startsWith('text/') ||
+    ['csv', 'json', 'md', 'txt', 'tsv', 'xml', 'yaml', 'yml'].includes(ext || '');
 
   // Download full file for types that need complete content
   // - PDFs: need full file for text extraction
   // - Images: need full file for OCR
   // - Excel: need full file for sheet extraction
   // - Text files: need full content for analysis
-  let preview = "";
+  let preview = '';
   try {
     let previewBuffer: Buffer;
     const needsFullFile = isPDF || isImage || isExcel || isText;
@@ -333,25 +333,25 @@ export async function processFile(status: FileStatusRecord): Promise<{ descripti
       // Limit based on file type to prevent memory issues
       const maxFileSize = isPDF || isImage || isExcel ? 50 * 1024 * 1024 : 10 * 1024 * 1024; // 50MB for PDF/image/Excel, 10MB for text
       if (size > maxFileSize) {
-        logger.warn({ fileId, filename, size, maxFileSize }, "file_too_large_for_full_download");
+        logger.warn({ fileId, filename, size, maxFileSize }, 'file_too_large_for_full_download');
         previewBuffer = await storageProvider.downloadRange(s3Key, 0, maxFileSize - 1);
       } else {
         previewBuffer = await storageProvider.download(s3Key);
       }
-      const fileType = isPDF ? "pdf" : isImage ? "image" : "text";
+      const fileType = isPDF ? 'pdf' : isImage ? 'image' : 'text';
       logger.info(
         { fileId, filename, downloadedBytes: previewBuffer.length, type: fileType },
-        "full_file_downloaded",
+        'full_file_downloaded',
       );
     } else {
       // For unknown/binary files, just download preview
       previewBuffer = await storageProvider.downloadRange(s3Key, 0, PREVIEW_SIZE - 1);
-      logger.info({ fileId, filename, previewBytes: previewBuffer.length }, "preview_downloaded");
+      logger.info({ fileId, filename, previewBytes: previewBuffer.length }, 'preview_downloaded');
     }
 
     preview = await parseFilePreview(previewBuffer, filename, contentType);
   } catch (error) {
-    logger.warn({ fileId, error }, "failed_to_download_file");
+    logger.warn({ fileId, error }, 'failed_to_download_file');
     preview = `[File: ${filename}]`;
   }
 
@@ -365,7 +365,7 @@ export async function processFile(status: FileStatusRecord): Promise<{ descripti
       filename,
       previewLength: preview.length,
     },
-    "file_processed_for_storage",
+    'file_processed_for_storage',
   );
 
   // Update conversation state (no content - deep research accesses files via S3)
@@ -378,9 +378,9 @@ export async function processFile(status: FileStatusRecord): Promise<{ descripti
   });
 
   // Update status to ready
-  await updateFileStatus(fileId, { status: "ready", description });
+  await updateFileStatus(fileId, { status: 'ready', description });
 
-  logger.info({ fileId, filename, description }, "file_processed");
+  logger.info({ fileId, filename, description }, 'file_processed');
 
   return { description };
 }
@@ -393,7 +393,7 @@ async function addFileToConversationState(
   conversationStateId: string,
   file: { id: string; filename: string; description: string; path: string; content?: string },
 ): Promise<void> {
-  const { isJobQueueEnabled } = await import("../queue/connection");
+  const { isJobQueueEnabled } = await import('../queue/connection');
 
   if (isJobQueueEnabled()) {
     // Use Redis lock for concurrent safety
@@ -411,7 +411,7 @@ async function addFileWithLock(
   conversationStateId: string,
   file: { id: string; filename: string; description: string; path: string; content?: string },
 ): Promise<void> {
-  const { getBullMQConnection } = await import("../queue/connection");
+  const { getBullMQConnection } = await import('../queue/connection');
   const redis = getBullMQConnection();
 
   const lockKey = `lock:conversation_state:${conversationStateId}`;
@@ -421,7 +421,7 @@ async function addFileWithLock(
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     // Try to acquire lock using SET NX (only set if not exists)
-    const acquired = await redis.set(lockKey, "1", "EX", lockTTL, "NX");
+    const acquired = await redis.set(lockKey, '1', 'EX', lockTTL, 'NX');
 
     if (acquired) {
       try {
@@ -435,7 +435,7 @@ async function addFileWithLock(
     }
 
     // Lock not acquired, wait and retry
-    logger.debug({ conversationStateId, fileId: file.id, attempt }, "file_add_waiting_for_lock");
+    logger.debug({ conversationStateId, fileId: file.id, attempt }, 'file_add_waiting_for_lock');
     await new Promise((resolve) => setTimeout(resolve, retryDelay * (attempt + 1)));
   }
 
@@ -462,7 +462,7 @@ async function addFileDirectly(
   if (existingDatasets.some((f: any) => f.id === file.id)) {
     logger.info(
       { conversationStateId, fileId: file.id, filename: file.filename },
-      "file_already_in_conversation_state_skipping",
+      'file_already_in_conversation_state_skipping',
     );
     return;
   }
@@ -481,7 +481,7 @@ async function addFileDirectly(
 
   logger.info(
     { conversationStateId, fileId: file.id, filename: file.filename },
-    "file_added_to_conversation_state",
+    'file_added_to_conversation_state',
   );
 }
 
@@ -516,7 +516,7 @@ export async function deleteFile(fileId: string, userId: string): Promise<void> 
   }
 
   if (status.userId !== userId) {
-    throw new Error("Unauthorized: file belongs to different user");
+    throw new Error('Unauthorized: file belongs to different user');
   }
 
   const storageProvider = getStorageProvider();
@@ -525,9 +525,9 @@ export async function deleteFile(fileId: string, userId: string): Promise<void> 
   if (storageProvider) {
     try {
       await storageProvider.delete(status.s3Key);
-      logger.info({ fileId, s3Key: status.s3Key }, "file_deleted_from_s3");
+      logger.info({ fileId, s3Key: status.s3Key }, 'file_deleted_from_s3');
     } catch (error) {
-      logger.warn({ fileId, error }, "failed_to_delete_file_from_s3");
+      logger.warn({ fileId, error }, 'failed_to_delete_file_from_s3');
     }
   }
 
@@ -543,11 +543,11 @@ export async function deleteFile(fileId: string, userId: string): Promise<void> 
       );
     }
   } catch (error) {
-    logger.warn({ fileId, error }, "failed_to_remove_file_from_state");
+    logger.warn({ fileId, error }, 'failed_to_remove_file_from_state');
   }
 
   // Delete status record
   await deleteFileStatus(fileId);
 
-  logger.info({ fileId }, "file_deleted");
+  logger.info({ fileId }, 'file_deleted');
 }

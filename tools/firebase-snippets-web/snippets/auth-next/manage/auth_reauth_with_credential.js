@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_reauth_with_credential_modular]
-import { getAuth, reauthenticateWithCredential } from "firebase/auth";
+import { getAuth, reauthenticateWithCredential } from 'firebase/auth';
 
 const auth = getAuth();
 const user = auth.currentUser;
@@ -13,10 +13,12 @@ const user = auth.currentUser;
 // TODO(you): prompt the user to re-provide their sign-in credentials
 const credential = promptForCredentials();
 
-reauthenticateWithCredential(user, credential).then(() => {
-  // User re-authenticated.
-}).catch((error) => {
-  // An error ocurred
-  // ...
-});
+reauthenticateWithCredential(user, credential)
+  .then(() => {
+    // User re-authenticated.
+  })
+  .catch((error) => {
+    // An error ocurred
+    // ...
+  });
 // [END auth_reauth_with_credential_modular]

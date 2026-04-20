@@ -6,7 +6,7 @@
    <div w3-include-html="{{ .Site.Params.releases_url }}" w3-include-html-default='<a class="dropdown-item" href="{{ .Site.Params.global_logo_url }}dev/">dev</a>'></div>
 
    <script>
-      w3.includeHTML(function() {
+      w3.includeHTML(() => {
       const basePath = "{{ site.BaseURL | relURL }}";
 
       function stripBase(path) {
@@ -15,7 +15,7 @@
           return path.replace(/^\//, '');
       }
 
-      document.getElementById('version-dropdown-menu').addEventListener('click', function(e) {
+      document.getElementById('version-dropdown-menu').addEventListener('click', (e) => {
         const link = e.target.closest('a.dropdown-item');
         if (!link) return;
         e.preventDefault();
@@ -23,7 +23,7 @@
         let targetPath = link.pathname;
         if (!targetPath.endsWith('/')) targetPath += '/';
 
-        let cleanCurrentPath = stripBase(window.location.pathname);
+        const cleanCurrentPath = stripBase(window.location.pathname);
         const allLinks = document.querySelectorAll('#version-dropdown-menu a.dropdown-item');
         let currentVersionPrefix = "";
 

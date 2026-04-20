@@ -5,13 +5,13 @@
 
 import type {
   Agent,
+  AgentExecutionContext,
   AgentMetadata,
   AgentPromptTemplate,
+  AgentResult,
   AgentTools,
   AgentWorkflow,
-  AgentExecutionContext,
-  AgentResult,
-} from "../types/agent.types";
+} from '../types/agent.types';
 
 export abstract class BaseAgent implements Agent {
   abstract metadata: AgentMetadata;
@@ -23,7 +23,7 @@ export abstract class BaseAgent implements Agent {
     const startTime = Date.now();
     const result: AgentResult = {
       success: false,
-      output: "",
+      output: '',
       artifacts: {
         filesCreated: [],
         filesModified: [],
@@ -66,8 +66,8 @@ export abstract class BaseAgent implements Agent {
     } catch (error) {
       result.success = false;
       result.errors!.push({
-        code: "EXECUTION_FAILED",
-        message: error instanceof Error ? error.message : "Unknown error",
+        code: 'EXECUTION_FAILED',
+        message: error instanceof Error ? error.message : 'Unknown error',
         details: error,
       });
     } finally {
@@ -78,21 +78,21 @@ export abstract class BaseAgent implements Agent {
   }
 
   protected abstract executeStep(
-    step: AgentWorkflow["steps"][0],
+    step: AgentWorkflow['steps'][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void>;
 
   protected validateContext(context: AgentExecutionContext): void {
     if (!context.projectPath) {
-      throw new Error("Project path is required");
+      throw new Error('Project path is required');
     }
     if (!context.userQuery) {
-      throw new Error("User query is required");
+      throw new Error('User query is required');
     }
   }
 
-  protected canContinueOnError(step: AgentWorkflow["steps"][0], error: unknown): boolean {
+  protected canContinueOnError(step: AgentWorkflow['steps'][0], error: unknown): boolean {
     // Override in subclasses to define error handling strategy
     return false;
   }
@@ -101,9 +101,9 @@ export abstract class BaseAgent implements Agent {
     let output = `Agent: ${this.metadata.name}\n\n`;
 
     if (result.success) {
-      output += "✅ Execution completed successfully\n\n";
+      output += '✅ Execution completed successfully\n\n';
     } else {
-      output += "❌ Execution completed with errors\n\n";
+      output += '❌ Execution completed with errors\n\n';
     }
 
     output += `Steps completed: ${result.metrics!.stepsCompleted}/${this.workflow.steps.length}\n`;
@@ -120,14 +120,14 @@ export abstract class BaseAgent implements Agent {
     }
 
     if (result.errors?.length) {
-      output += "\n⚠️  Errors:\n";
+      output += '\n⚠️  Errors:\n';
       result.errors.forEach((error, index) => {
         output += `${index + 1}. [${error.code}] ${error.message}\n`;
       });
     }
 
     if (result.recommendations?.length) {
-      output += "\n💡 Recommendations:\n";
+      output += '\n💡 Recommendations:\n';
       result.recommendations.forEach((rec, index) => {
         output += `${index + 1}. ${rec}\n`;
       });

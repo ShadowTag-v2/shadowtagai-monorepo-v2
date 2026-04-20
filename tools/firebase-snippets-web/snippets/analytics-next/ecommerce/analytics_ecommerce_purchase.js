@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START analytics_ecommerce_purchase_modular]
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 // Prepare ecommerce bundle
 const params10 = {
@@ -16,7 +16,7 @@ const params10 = {
   tax: 2.85,
   shipping: 5.34,
   coupon: 'SUMMER_FUN',
-  items: [item_jeggings]
+  items: [item_jeggings],
 };
 
 // Log event

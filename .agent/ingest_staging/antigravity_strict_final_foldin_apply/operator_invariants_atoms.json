@@ -11,11 +11,7 @@
       "validity": "active",
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json",
-      "tags": [
-        "github",
-        "control-plane",
-        "canonical"
-      ]
+      "tags": ["github", "control-plane", "canonical"]
     },
     {
       "atom_kind": "preference",
@@ -26,11 +22,7 @@
       "validity": "active",
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json",
-      "tags": [
-        "git",
-        "auth",
-        "canonical"
-      ]
+      "tags": ["git", "auth", "canonical"]
     },
     {
       "atom_kind": "rule",
@@ -41,11 +33,7 @@
       "validity": "active",
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json",
-      "tags": [
-        "git",
-        "github",
-        "repair"
-      ]
+      "tags": ["git", "github", "repair"]
     },
     {
       "atom_kind": "rule",
@@ -56,11 +44,7 @@
       "validity": "active",
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json",
-      "tags": [
-        "startup",
-        "memory",
-        "canonical"
-      ]
+      "tags": ["startup", "memory", "canonical"]
     },
     {
       "atom_kind": "rule",
@@ -71,11 +55,7 @@
       "validity": "active",
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json",
-      "tags": [
-        "startup",
-        "authority",
-        "canonical"
-      ]
+      "tags": ["startup", "authority", "canonical"]
     },
     {
       "atom_kind": "rule",
@@ -86,11 +66,7 @@
       "validity": "active",
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json",
-      "tags": [
-        "startup",
-        "git",
-        "github"
-      ]
+      "tags": ["startup", "git", "github"]
     },
     {
       "atom_kind": "preference",
@@ -101,10 +77,7 @@
       "validity": "active",
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json",
-      "tags": [
-        "clones",
-        "indexing"
-      ]
+      "tags": ["clones", "indexing"]
     },
     {
       "atom_kind": "preference",
@@ -115,10 +88,7 @@
       "validity": "active",
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json",
-      "tags": [
-        "github-app",
-        "truth"
-      ]
+      "tags": ["github-app", "truth"]
     },
     {
       "atom_kind": "preference",
@@ -129,10 +99,7 @@
       "validity": "active",
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json",
-      "tags": [
-        "monorepo",
-        "workspace"
-      ]
+      "tags": ["monorepo", "workspace"]
     },
     {
       "atom_kind": "preference",
@@ -143,11 +110,7 @@
       "validity": "active",
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json",
-      "tags": [
-        "git",
-        "remote",
-        "monorepo"
-      ]
+      "tags": ["git", "remote", "monorepo"]
     }
   ]
 }

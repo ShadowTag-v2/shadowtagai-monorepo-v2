@@ -11,9 +11,9 @@ import '@material/web/iconbutton/icon-button.js';
 import '@material/web/textfield/filled-text-field.js';
 import '@material/web/textfield/outlined-text-field.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {MdFilledTextField} from '@material/web/textfield/filled-text-field.js';
-import {css, html, nothing} from 'lit';
+import type { MdFilledTextField } from '@material/web/textfield/filled-text-field.js';
+import { css, html, nothing } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for Textfield stories. */
 export interface StoryKnobs {
@@ -60,8 +60,7 @@ const textfields: MaterialStoryInit<StoryKnobs> = {
           placeholder=${knobs.placeholder || nothing}
           prefix-text=${knobs.prefixText || nothing}
           suffix-text=${knobs.suffixText || nothing}
-          supporting-text=${knobs.supportingText ||
-          nothing}></md-filled-text-field>
+          supporting-text=${knobs.supportingText || nothing}></md-filled-text-field>
 
         <md-outlined-text-field
           ?disabled=${knobs.disabled}
@@ -69,8 +68,7 @@ const textfields: MaterialStoryInit<StoryKnobs> = {
           placeholder=${knobs.placeholder || nothing}
           prefix-text=${knobs.prefixText || nothing}
           suffix-text=${knobs.suffixText || nothing}
-          supporting-text=${knobs.supportingText ||
-          nothing}></md-outlined-text-field>
+          supporting-text=${knobs.supportingText || nothing}></md-outlined-text-field>
       </div>
     `;
   },
@@ -87,16 +85,14 @@ const textareas: MaterialStoryInit<StoryKnobs> = {
           ?disabled=${knobs.disabled}
           label=${knobs.label || nothing}
           placeholder=${knobs.placeholder || nothing}
-          supporting-text=${knobs.supportingText ||
-          nothing}></md-filled-text-field>
+          supporting-text=${knobs.supportingText || nothing}></md-filled-text-field>
 
         <md-outlined-text-field
           type="textarea"
           ?disabled=${knobs.disabled}
           label=${knobs.label || nothing}
           placeholder=${knobs.placeholder || nothing}
-          supporting-text=${knobs.supportingText ||
-          nothing}></md-outlined-text-field>
+          supporting-text=${knobs.supportingText || nothing}></md-outlined-text-field>
       </div>
     `;
   },

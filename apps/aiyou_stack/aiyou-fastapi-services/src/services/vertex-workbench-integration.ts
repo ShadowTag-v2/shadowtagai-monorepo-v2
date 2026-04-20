@@ -1,6 +1,6 @@
-import { type GenerativeModel, VertexAI } from "@google-cloud/vertexai";
-import type { VertexWorkbenchConfig } from "../types/design-system";
-import { logger } from "../utils/logger";
+import { type GenerativeModel, VertexAI } from '@google-cloud/vertexai';
+import type { VertexWorkbenchConfig } from '../types/design-system';
+import { logger } from '../utils/logger';
 
 /**
  * Integration with Google Cloud Vertex AI Workbench
@@ -42,7 +42,7 @@ export class VertexWorkbenchIntegration {
     const prompt = `As a design system expert, create a detailed design specification for a ${componentName} component.
 
 Framework: ${context.framework}
-${context.requirements ? `Requirements:\n${context.requirements.map((r) => `- ${r}`).join("\n")}` : ""}
+${context.requirements ? `Requirements:\n${context.requirements.map((r) => `- ${r}`).join('\n')}` : ''}
 
 Provide:
 1. Component purpose and use cases
@@ -58,9 +58,9 @@ Format the response as structured JSON.`;
     try {
       const result = await this.model.generateContent(prompt);
       const response = result.response;
-      return response.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      return response.candidates?.[0]?.content?.parts?.[0]?.text || '';
     } catch (error) {
-      logger.error("Vertex AI generation error:", error);
+      logger.error('Vertex AI generation error:', error);
       throw new Error(`Failed to generate component design: ${error}`);
     }
   }
@@ -76,10 +76,10 @@ Format the response as structured JSON.`;
   }): Promise<any> {
     const prompt = `Generate a comprehensive design token system based on these brand guidelines:
 
-${brandGuidelines.primaryColor ? `Primary Color: ${brandGuidelines.primaryColor}` : ""}
-${brandGuidelines.secondaryColor ? `Secondary Color: ${brandGuidelines.secondaryColor}` : ""}
-${brandGuidelines.brandPersonality ? `Brand Personality: ${brandGuidelines.brandPersonality.join(", ")}` : ""}
-${brandGuidelines.targetAudience ? `Target Audience: ${brandGuidelines.targetAudience}` : ""}
+${brandGuidelines.primaryColor ? `Primary Color: ${brandGuidelines.primaryColor}` : ''}
+${brandGuidelines.secondaryColor ? `Secondary Color: ${brandGuidelines.secondaryColor}` : ''}
+${brandGuidelines.brandPersonality ? `Brand Personality: ${brandGuidelines.brandPersonality.join(', ')}` : ''}
+${brandGuidelines.targetAudience ? `Target Audience: ${brandGuidelines.targetAudience}` : ''}
 
 Create design tokens for:
 1. Color palette (primary, secondary, neutral, semantic)
@@ -100,7 +100,7 @@ Return as JSON matching this structure:
 
     try {
       const result = await this.model.generateContent(prompt);
-      const response = result.response.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      const response = result.response.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
       // Extract JSON from response
       const jsonMatch = response.match(/\{[\s\S]*\}/);
@@ -108,9 +108,9 @@ Return as JSON matching this structure:
         return JSON.parse(jsonMatch[0]);
       }
 
-      throw new Error("Failed to parse design tokens from response");
+      throw new Error('Failed to parse design tokens from response');
     } catch (error) {
-      logger.error("Design token generation error:", error);
+      logger.error('Design token generation error:', error);
       throw error;
     }
   }
@@ -143,7 +143,7 @@ Return as JSON.`;
 
     try {
       const result = await this.model.generateContent(prompt);
-      const response = result.response.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      const response = result.response.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
       const jsonMatch = response.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -152,11 +152,11 @@ Return as JSON.`;
 
       return {
         consistencyScore: 0,
-        issues: ["Failed to analyze"],
+        issues: ['Failed to analyze'],
         suggestions: [],
       };
     } catch (error) {
-      logger.error("Design system analysis error:", error);
+      logger.error('Design system analysis error:', error);
       throw error;
     }
   }
@@ -174,7 +174,7 @@ Return as JSON.`;
 Props:
 ${JSON.stringify(component.props, null, 2)}
 
-${component.examples ? `Examples:\n${component.examples.join("\n\n")}` : ""}
+${component.examples ? `Examples:\n${component.examples.join('\n\n')}` : ''}
 
 Include:
 1. Component overview
@@ -189,9 +189,9 @@ Format as Markdown.`;
 
     try {
       const result = await this.model.generateContent(prompt);
-      return result.response.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      return result.response.candidates?.[0]?.content?.parts?.[0]?.text || '';
     } catch (error) {
-      logger.error("Documentation generation error:", error);
+      logger.error('Documentation generation error:', error);
       throw error;
     }
   }
@@ -206,7 +206,7 @@ Format as Markdown.`;
   }): Promise<string> {
     const prompt = `Create a comprehensive style guide for the "${designSystem.name}" design system.
 
-Components: ${designSystem.components.join(", ")}
+Components: ${designSystem.components.join(', ')}
 
 Include:
 1. Introduction and design philosophy
@@ -223,9 +223,9 @@ Format as professional Markdown suitable for documentation sites.`;
 
     try {
       const result = await this.model.generateContent(prompt);
-      return result.response.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      return result.response.candidates?.[0]?.content?.parts?.[0]?.text || '';
     } catch (error) {
-      logger.error("Style guide generation error:", error);
+      logger.error('Style guide generation error:', error);
       throw error;
     }
   }
@@ -256,7 +256,7 @@ Return as JSON array.`;
 
     try {
       const result = await this.model.generateContent(prompt);
-      const response = result.response.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      const response = result.response.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
       const jsonMatch = response.match(/\[[\s\S]*\]/);
       if (jsonMatch) {
@@ -265,7 +265,7 @@ Return as JSON array.`;
 
       return [];
     } catch (error) {
-      logger.error("Variant generation error:", error);
+      logger.error('Variant generation error:', error);
       throw error;
     }
   }
@@ -275,7 +275,7 @@ Return as JSON array.`;
    */
   async batchGenerate(
     requests: Array<{
-      type: "component" | "tokens" | "documentation";
+      type: 'component' | 'tokens' | 'documentation';
       data: unknown;
     }>,
   ): Promise<any[]> {
@@ -283,11 +283,11 @@ Return as JSON array.`;
       requests.map(async (request) => {
         try {
           switch (request.type) {
-            case "component":
+            case 'component':
               return await this.generateComponentDesign(request.data.name, request.data.context);
-            case "tokens":
+            case 'tokens':
               return await this.generateDesignTokens(request.data);
-            case "documentation":
+            case 'documentation':
               return await this.generateComponentDocumentation(request.data);
             default:
               throw new Error(`Unknown request type: ${request.type}`);
@@ -307,10 +307,10 @@ Return as JSON array.`;
    */
   async healthCheck(): Promise<boolean> {
     try {
-      const result = await this.model.generateContent("Test");
+      const result = await this.model.generateContent('Test');
       return !!result.response;
     } catch (error) {
-      logger.error("Vertex AI health check failed:", error);
+      logger.error('Vertex AI health check failed:', error);
       return false;
     }
   }

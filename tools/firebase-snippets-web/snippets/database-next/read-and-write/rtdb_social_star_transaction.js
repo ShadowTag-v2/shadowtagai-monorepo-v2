@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START rtdb_social_star_transaction_modular]
-import { getDatabase, ref, runTransaction } from "firebase/database";
+import { getDatabase, ref, runTransaction } from 'firebase/database';
 
 function toggleStar(uid) {
   const db = getDatabase();

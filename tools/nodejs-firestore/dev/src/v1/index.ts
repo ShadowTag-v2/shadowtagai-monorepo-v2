@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {FirestoreAdminClient} from './firestore_admin_client';
-import {FirestoreClient} from './firestore_client';
+import { FirestoreAdminClient } from './firestore_admin_client';
+import { FirestoreClient } from './firestore_client';
 
-export {FirestoreClient, FirestoreAdminClient};
+export { FirestoreClient, FirestoreAdminClient };
 
 // Doing something really horrible for reverse compatibility with original JavaScript exports
 const existingExports = module.exports;

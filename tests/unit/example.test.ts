@@ -4,15 +4,15 @@
  * Demonstrates comprehensive unit testing patterns
  */
 
-import { describe, it, expect, beforeEach } from '@jest/globals';
+import { beforeEach, describe, expect, it } from '@jest/globals';
 import {
   add,
-  multiply,
+  Calculator,
   divide,
   fetchUser,
-  Calculator,
-  isValidEmail,
   formatDate,
+  isValidEmail,
+  multiply,
 } from '../../src/example';
 
 describe('Math Functions', () => {

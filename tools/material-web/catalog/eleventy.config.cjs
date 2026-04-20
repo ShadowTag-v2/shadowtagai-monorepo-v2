@@ -26,7 +26,7 @@ const jsDir = DEV ? 'lib' : 'build';
 // where to output 11ty output
 const outputFolder = DEV ? '_dev' : '_prod';
 
-module.exports = function (eleventyConfig) {
+module.exports = (eleventyConfig) => {
   // copy folders to the 11ty output folder
   eleventyConfig
     .addPassthroughCopy({ [`${jsDir}/`]: 'js/' })

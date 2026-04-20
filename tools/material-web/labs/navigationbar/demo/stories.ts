@@ -8,8 +8,8 @@ import '@material/web/icon/icon.js';
 import '@material/web/labs/navigationbar/navigation-bar.js';
 import '@material/web/labs/navigationtab/navigation-tab.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {css, html} from 'lit';
+import { css, html } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for nav bar stories. */
 export interface StoryKnobs {
@@ -30,7 +30,7 @@ const standard: MaterialStoryInit<StoryKnobs> = {
     }
   `,
   render(knobs) {
-    const {hideInactiveLabels, label, showBadge, badgeValue} = knobs;
+    const { hideInactiveLabels, label, showBadge, badgeValue } = knobs;
     return html` <div style="width:400px">
       <md-navigation-bar
         activeIndex="1"

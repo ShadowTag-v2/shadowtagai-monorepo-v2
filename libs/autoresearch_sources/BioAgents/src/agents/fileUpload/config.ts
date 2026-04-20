@@ -1,13 +1,13 @@
-import type { FileTypeConfig } from "./types";
 import {
-  parseExcel,
   parseCSV,
-  parseMarkdown,
-  parseJSON,
-  parseText,
-  parsePDF,
+  parseExcel,
   parseImage,
-} from "./parsers";
+  parseJSON,
+  parseMarkdown,
+  parsePDF,
+  parseText,
+} from './parsers';
+import type { FileTypeConfig } from './types';
 
 /**
  * Configuration for supported file types
@@ -15,39 +15,39 @@ import {
  */
 export const FILE_TYPES: FileTypeConfig[] = [
   {
-    extensions: [".xlsx", ".xls"],
-    mimeTypes: ["spreadsheet", "excel", "vnd.openxmlformats", "vnd.ms-excel"],
+    extensions: ['.xlsx', '.xls'],
+    mimeTypes: ['spreadsheet', 'excel', 'vnd.openxmlformats', 'vnd.ms-excel'],
     parser: parseExcel,
   },
   {
-    extensions: [".csv"],
-    mimeTypes: ["text/csv", "csv"],
+    extensions: ['.csv'],
+    mimeTypes: ['text/csv', 'csv'],
     parser: parseCSV,
   },
   {
-    extensions: [".md"],
-    mimeTypes: ["text/markdown", "markdown"],
+    extensions: ['.md'],
+    mimeTypes: ['text/markdown', 'markdown'],
     parser: parseMarkdown,
   },
   {
-    extensions: [".json"],
-    mimeTypes: ["application/json", "json"],
+    extensions: ['.json'],
+    mimeTypes: ['application/json', 'json'],
     parser: parseJSON,
   },
   {
-    extensions: [".txt"],
-    mimeTypes: ["text/plain"],
+    extensions: ['.txt'],
+    mimeTypes: ['text/plain'],
     parser: parseText,
   },
   {
-    extensions: [".pdf"],
-    mimeTypes: ["application/pdf", "pdf"],
+    extensions: ['.pdf'],
+    mimeTypes: ['application/pdf', 'pdf'],
     parser: parsePDF,
   },
   {
-    extensions: [".png", ".jpg", ".jpeg", ".webp"],
-    mimeTypes: ["image/png", "image/jpeg", "image/jpg", "image/webp"],
-    parser: (buffer: Buffer, filename: string) => parseImage(buffer, filename, ""),
+    extensions: ['.png', '.jpg', '.jpeg', '.webp'],
+    mimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'],
+    parser: (buffer: Buffer, filename: string) => parseImage(buffer, filename, ''),
   },
 ];
 

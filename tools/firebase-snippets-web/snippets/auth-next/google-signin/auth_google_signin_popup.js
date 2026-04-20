@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_google_signin_popup_modular]
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 
 const auth = getAuth();
 signInWithPopup(auth, provider)
@@ -17,7 +17,8 @@ signInWithPopup(auth, provider)
     const user = result.user;
     // IdP data available using getAdditionalUserInfo(result)
     // ...
-  }).catch((error) => {
+  })
+  .catch((error) => {
     // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;

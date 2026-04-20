@@ -10,21 +10,21 @@ import type {
   AgentResult,
   AgentTools,
   AgentWorkflow,
-} from "../../types/agent.types";
-import { BaseAgent } from "../../utils/base-agent";
+} from '../../types/agent.types';
+import { BaseAgent } from '../../utils/base-agent';
 
 export class AccessibilityProAgent extends BaseAgent {
   metadata: AgentMetadata = {
-    id: "accessibility-pro",
-    name: "Accessibility Pro",
-    category: "development",
+    id: 'accessibility-pro',
+    name: 'Accessibility Pro',
+    category: 'development',
     description:
-      "Makes your app work for everyone. Screen readers, keyboard nav, WCAG compliance without the pain.",
-    tagline: "Accessibility and WCAG compliance",
-    capabilities: ["analysis", "implementation"],
-    tags: ["accessibility", "a11y", "wcag", "screen-reader", "keyboard-nav"],
-    difficulty: "intermediate",
-    estimatedTime: "2-3 hours",
+      'Makes your app work for everyone. Screen readers, keyboard nav, WCAG compliance without the pain.',
+    tagline: 'Accessibility and WCAG compliance',
+    capabilities: ['analysis', 'implementation'],
+    tags: ['accessibility', 'a11y', 'wcag', 'screen-reader', 'keyboard-nav'],
+    difficulty: 'intermediate',
+    estimatedTime: '2-3 hours',
   };
 
   prompt: AgentPromptTemplate = {
@@ -51,42 +51,42 @@ Make the web usable for everyone, not just the able-bodied.`,
   };
 
   tools: AgentTools = {
-    required: ["Glob", "Read", "Grep", "Edit"],
-    optional: ["Write", "Bash"],
+    required: ['Glob', 'Read', 'Grep', 'Edit'],
+    optional: ['Write', 'Bash'],
   };
 
   workflow: AgentWorkflow = {
     steps: [
       {
-        name: "Accessibility Audit",
-        description: "Audit current accessibility compliance",
-        action: "Scan for WCAG violations",
+        name: 'Accessibility Audit',
+        description: 'Audit current accessibility compliance',
+        action: 'Scan for WCAG violations',
       },
       {
-        name: "Semantic HTML",
-        description: "Improve semantic structure",
-        action: "Replace divs with semantic elements",
+        name: 'Semantic HTML',
+        description: 'Improve semantic structure',
+        action: 'Replace divs with semantic elements',
       },
       {
-        name: "ARIA Enhancement",
-        description: "Add ARIA labels and roles",
-        action: "Improve screen reader experience",
+        name: 'ARIA Enhancement',
+        description: 'Add ARIA labels and roles',
+        action: 'Improve screen reader experience',
       },
       {
-        name: "Keyboard Navigation",
-        description: "Implement keyboard accessibility",
-        action: "Add focus management, skip links",
+        name: 'Keyboard Navigation',
+        description: 'Implement keyboard accessibility',
+        action: 'Add focus management, skip links',
       },
       {
-        name: "Testing",
-        description: "Test with assistive technologies",
-        action: "Verify with screen readers and keyboard",
+        name: 'Testing',
+        description: 'Test with assistive technologies',
+        action: 'Verify with screen readers and keyboard',
       },
     ],
   };
 
   protected async executeStep(
-    step: AgentWorkflow["steps"][0],
+    step: AgentWorkflow['steps'][0],
     context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {

@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Environment} from '../../testing/environment.js';
-import {CheckboxHarness} from '../harness.js';
+import { Environment } from '../../testing/environment.js';
+import { CheckboxHarness } from '../harness.js';
 
-import {Checkbox} from './checkbox.js';
+import { Checkbox } from './checkbox.js';
 
 customElements.define('md-test-checkbox', Checkbox);
 
@@ -22,9 +22,7 @@ declare global {
 describe('checkbox', () => {
   const env = new Environment();
 
-  async function setupTest(
-    template = html`<md-test-checkbox></md-test-checkbox>`,
-  ) {
+  async function setupTest(template = html`<md-test-checkbox></md-test-checkbox>`) {
     const element = env.render(template).querySelector('md-test-checkbox');
     if (!element) {
       throw new Error('Could not query rendered <md-test-checkbox>.');
@@ -44,7 +42,7 @@ describe('checkbox', () => {
 
   describe('basic', () => {
     it('initializes as a checkbox', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       expect(harness.element).toBeInstanceOf(Checkbox);
       expect(harness.element.checked).toEqual(false);
       expect(harness.element.indeterminate).toEqual(false);
@@ -53,14 +51,14 @@ describe('checkbox', () => {
     });
 
     it('user input updates checked state', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       await harness.clickWithMouse();
       await env.waitForStability();
       expect(harness.element.checked).toEqual(true);
     });
 
     it('should trigger changed event when checkbox is selected', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       const changeHandler = jasmine.createSpy('changeHandler');
       harness.element.addEventListener('change', changeHandler);
 
@@ -72,7 +70,7 @@ describe('checkbox', () => {
     });
 
     it('should trigger input event when checkbox is selected', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       const inputHandler = jasmine.createSpy('inputHandler');
       harness.element.addEventListener('input', inputHandler);
 
@@ -84,45 +82,37 @@ describe('checkbox', () => {
     });
 
     it('checkbox state is updated during input event listeners', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       let state = false;
-      const inputHandler = jasmine
-        .createSpy('inputHandler')
-        .and.callFake(() => {
-          state = harness.element.checked;
-        });
+      const inputHandler = jasmine.createSpy('inputHandler').and.callFake(() => {
+        state = harness.element.checked;
+      });
 
       harness.element.addEventListener('input', inputHandler);
 
       await harness.clickWithMouse();
       expect(inputHandler).withContext('input listener').toHaveBeenCalled();
-      expect(state)
-        .withContext('checkbox.checked during input listener')
-        .toBeTrue();
+      expect(state).withContext('checkbox.checked during input listener').toBeTrue();
     });
 
     it('checkbox state is updated during change event listeners', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       let state = false;
-      const changeHandler = jasmine
-        .createSpy('changeHandler')
-        .and.callFake(() => {
-          state = harness.element.checked;
-        });
+      const changeHandler = jasmine.createSpy('changeHandler').and.callFake(() => {
+        state = harness.element.checked;
+      });
 
       harness.element.addEventListener('change', changeHandler);
 
       await harness.clickWithMouse();
       expect(changeHandler).withContext('change listener').toHaveBeenCalled();
-      expect(state)
-        .withContext('checkbox.checked during change listener')
-        .toBeTrue();
+      expect(state).withContext('checkbox.checked during change listener').toBeTrue();
     });
   });
 
   describe('checked', () => {
     it('get/set updates the checked property on the native checkbox element', async () => {
-      const {harness, input} = await setupTest();
+      const { harness, input } = await setupTest();
       harness.element.checked = true;
       await env.waitForStability();
       expect(input.checked).toEqual(true);
@@ -132,7 +122,7 @@ describe('checkbox', () => {
     });
 
     it('get/set updates the checked property after user updates checked state', async () => {
-      const {harness, input} = await setupTest();
+      const { harness, input } = await setupTest();
 
       // Simulate user interaction setting checked to true.
       await harness.clickWithMouse();
@@ -156,7 +146,7 @@ describe('checkbox', () => {
 
   describe('indeterminate', () => {
     it('get/set updates the indeterminate property on the native checkbox element', async () => {
-      const {harness, input} = await setupTest();
+      const { harness, input } = await setupTest();
       harness.element.indeterminate = true;
       await env.waitForStability();
 
@@ -173,7 +163,7 @@ describe('checkbox', () => {
 
   describe('disabled', () => {
     it('get/set updates the disabled property on the native checkbox element', async () => {
-      const {harness, input} = await setupTest();
+      const { harness, input } = await setupTest();
       harness.element.disabled = true;
       await env.waitForStability();
 
@@ -196,13 +186,13 @@ describe('checkbox', () => {
     }
 
     it('does not submit if not checked', async () => {
-      const {harness} = await setupFormTest({name: 'foo'});
+      const { harness } = await setupFormTest({ name: 'foo' });
       const formData = await harness.submitForm();
       expect(formData.get('foo')).toBeNull();
     });
 
     it('does not submit if disabled', async () => {
-      const {harness} = await setupFormTest({
+      const { harness } = await setupFormTest({
         name: 'foo',
         checked: true,
         disabled: true,
@@ -212,14 +202,14 @@ describe('checkbox', () => {
     });
 
     it('does not submit if name is not provided', async () => {
-      const {harness} = await setupFormTest({checked: true});
+      const { harness } = await setupFormTest({ checked: true });
       const formData = await harness.submitForm();
       const keys = Array.from(formData.keys());
       expect(keys.length).toEqual(0);
     });
 
     it('submits under correct conditions', async () => {
-      const {harness} = await setupFormTest({
+      const { harness } = await setupFormTest({
         name: 'foo',
         checked: true,
         value: 'bar',
@@ -239,12 +229,12 @@ describe('checkbox', () => {
       const label = (
         test.harness.element.getRootNode() as HTMLElement
       ).querySelector<HTMLLabelElement>('label')!;
-      return {...test, label};
+      return { ...test, label };
     }
 
     it('toggles when label is clicked', async () => {
       const {
-        harness: {element},
+        harness: { element },
         label,
       } = await setupLabelTest();
       label.click();
@@ -258,7 +248,7 @@ describe('checkbox', () => {
 
   describe('validation', () => {
     it('should set valueMissing when required and not selected', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       harness.element.required = true;
 
       expect(harness.element.validity.valueMissing)
@@ -267,7 +257,7 @@ describe('checkbox', () => {
     });
 
     it('should not set valueMissing when required and checked', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       harness.element.required = true;
       harness.element.checked = true;
 
@@ -277,7 +267,7 @@ describe('checkbox', () => {
     });
 
     it('should set valueMissing when required and indeterminate', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       harness.element.required = true;
       harness.element.indeterminate = true;
 

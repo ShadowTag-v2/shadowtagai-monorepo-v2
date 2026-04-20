@@ -1,8 +1,8 @@
-import { Elysia } from "elysia";
-import { x402Middleware } from "../../middleware/x402/middleware";
-import { create402Response } from "../../middleware/x402/service";
-import { authResolver } from "../../middleware/authResolver";
-import { chatHandler } from "../chat";
+import { Elysia } from 'elysia';
+import { authResolver } from '../../middleware/authResolver';
+import { x402Middleware } from '../../middleware/x402/middleware';
+import { create402Response } from '../../middleware/x402/service';
+import { chatHandler } from '../chat';
 
 /**
  * x402 V2 Chat Route - Payment-gated chat endpoint
@@ -18,19 +18,19 @@ import { chatHandler } from "../chat";
 
 export const x402ChatRoute = new Elysia()
   // GET endpoint for discovery - returns 402 with schema
-  .get("/api/x402/chat", async ({ request }) => {
-    return create402Response(request, "/api/x402/chat");
+  .get('/api/x402/chat', async ({ request }) => {
+    return create402Response(request, '/api/x402/chat');
   })
   // POST endpoint with payment validation
   .use(x402Middleware())
   .onBeforeHandle(authResolver({ required: false }))
-  .post("/api/x402/chat", async (ctx: any) => {
+  .post('/api/x402/chat', async (ctx: any) => {
     const { body, request } = ctx;
     const x402Settlement = (request as any).x402Settlement;
 
     // If no valid payment settlement, return 402
     if (!x402Settlement) {
-      return create402Response(request, "/api/x402/chat");
+      return create402Response(request, '/api/x402/chat');
     }
 
     // Handle test requests (valid payment but no message)

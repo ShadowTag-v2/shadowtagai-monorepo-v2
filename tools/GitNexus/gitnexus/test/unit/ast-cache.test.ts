@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { createASTCache, type ASTCache } from '../../src/core/ingestion/ast-cache.js';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { type ASTCache, createASTCache } from '../../src/core/ingestion/ast-cache.js';
 
 // Create a minimal mock tree object (mimics Parser.Tree interface)
 function mockTree(id: string): any {

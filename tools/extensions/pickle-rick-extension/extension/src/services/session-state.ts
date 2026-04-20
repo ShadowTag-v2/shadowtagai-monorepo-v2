@@ -73,7 +73,7 @@ export function setSessionForCwd(
   extensionRoot: string,
   cwd: string,
   sessionPath: string,
-  workingDir?: string
+  workingDir?: string,
 ): void {
   const map = loadSessionsMap(extensionRoot);
   const normalizedSessionPath = normalizePath(sessionPath);
@@ -173,7 +173,7 @@ export function findLatestSessionForCwd(extensionRoot: string, cwd: string): str
 export function resolveStateFilePath(
   extensionRoot: string,
   cwd: string,
-  stateFileOverride?: string
+  stateFileOverride?: string,
 ): string | null {
   if (stateFileOverride) {
     const candidate = normalizePath(stateFileOverride);
@@ -212,14 +212,15 @@ export function readStateFile(stateFile: string): State | null {
       max_time_minutes: toInt(raw.max_time_minutes, 0),
       worker_timeout_seconds: toInt(raw.worker_timeout_seconds, 1200),
       start_time_epoch: toInt(raw.start_time_epoch, Math.floor(Date.now() / 1000)),
-      completion_promise:
-        raw.completion_promise == null ? null : String(raw.completion_promise),
+      completion_promise: raw.completion_promise == null ? null : String(raw.completion_promise),
       original_prompt: typeof raw.original_prompt === 'string' ? raw.original_prompt : '',
       current_ticket: raw.current_ticket == null ? null : String(raw.current_ticket),
       history: Array.isArray(raw.history) ? raw.history : [],
       started_at: typeof raw.started_at === 'string' ? raw.started_at : new Date().toISOString(),
       session_dir:
-        typeof raw.session_dir === 'string' ? raw.session_dir : path.dirname(normalizePath(stateFile)),
+        typeof raw.session_dir === 'string'
+          ? raw.session_dir
+          : path.dirname(normalizePath(stateFile)),
       jar_complete: raw.jar_complete === true,
       worker: raw.worker === true,
     };

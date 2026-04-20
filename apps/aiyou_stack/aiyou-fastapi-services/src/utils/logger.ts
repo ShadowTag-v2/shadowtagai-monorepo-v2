@@ -1,4 +1,4 @@
-import winston from "winston";
+import winston from 'winston';
 
 const { combine, timestamp, printf, colorize, errors } = winston.format;
 
@@ -9,8 +9,8 @@ const logFormat = printf(({ level, message, timestamp, stack }) => {
 
 // Create logger instance
 export const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || "info",
-  format: combine(errors({ stack: true }), timestamp({ format: "YYYY-MM-DD HH:mm:ss" }), logFormat),
+  level: process.env.LOG_LEVEL || 'info',
+  format: combine(errors({ stack: true }), timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), logFormat),
   transports: [
     // Console transport with colors
     new winston.transports.Console({
@@ -18,12 +18,12 @@ export const logger = winston.createLogger({
     }),
     // File transport for errors
     new winston.transports.File({
-      filename: "logs/error.log",
-      level: "error",
+      filename: 'logs/error.log',
+      level: 'error',
     }),
     // File transport for all logs
     new winston.transports.File({
-      filename: "logs/combined.log",
+      filename: 'logs/combined.log',
     }),
   ],
 });

@@ -1,31 +1,31 @@
-import { z } from "zod";
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CreateTaskResult } from '@modelcontextprotocol/sdk/experimental/tasks';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import {
   type CallToolResult,
-  type GetTaskResult,
-  type Task,
   type ElicitResult,
   ElicitResultSchema,
-} from "@modelcontextprotocol/sdk/types.js";
-import type { CreateTaskResult } from "@modelcontextprotocol/sdk/experimental/tasks";
+  type GetTaskResult,
+  type Task,
+} from '@modelcontextprotocol/sdk/types.js';
+import { z } from 'zod';
 
 // Tool input schema
 const SimulateResearchQuerySchema = z.object({
-  topic: z.string().describe("The research topic to investigate"),
+  topic: z.string().describe('The research topic to investigate'),
   ambiguous: z
     .boolean()
     .default(false)
     .describe(
-      "Simulate an ambiguous query that requires clarification (triggers input_required status)",
+      'Simulate an ambiguous query that requires clarification (triggers input_required status)',
     ),
 });
 
 // Research stages
 const STAGES = [
-  "Gathering sources",
-  "Analyzing content",
-  "Synthesizing findings",
-  "Generating report",
+  'Gathering sources',
+  'Analyzing content',
+  'Synthesizing findings',
+  'Generating report',
 ];
 
 // Duration per stage in milliseconds
@@ -57,10 +57,10 @@ async function runResearchProcess(
   taskId: string,
   args: z.infer<typeof SimulateResearchQuerySchema>,
   taskStore: {
-    updateTaskStatus: (taskId: string, status: Task["status"], message?: string) => Promise<void>;
+    updateTaskStatus: (taskId: string, status: Task['status'], message?: string) => Promise<void>;
     storeTaskResult: (
       taskId: string,
-      status: "completed" | "failed",
+      status: 'completed' | 'failed',
       result: CallToolResult,
     ) => Promise<void>;
   },
@@ -78,14 +78,14 @@ async function runResearchProcess(
     if (state.completed) return;
 
     // Update status message for current stage
-    await taskStore.updateTaskStatus(taskId, "working", `${STAGES[i]}...`);
+    await taskStore.updateTaskStatus(taskId, 'working', `${STAGES[i]}...`);
 
     // At synthesis stage (index 2), check if clarification is needed
     if (i === 2 && state.ambiguous && !state.clarification) {
       // Update status to show we're requesting input (spec SHOULD)
       await taskStore.updateTaskStatus(
         taskId,
-        "input_required",
+        'input_required',
         `Found multiple interpretations for "${state.topic}". Requesting clarification...`,
       );
 
@@ -93,20 +93,20 @@ async function runResearchProcess(
         // Try elicitation via sendRequest (works on STDIO, fails on HTTP)
         const elicitResult: ElicitResult = await sendRequest(
           {
-            method: "elicitation/create",
+            method: 'elicitation/create',
             params: {
               message: `The research query "${state.topic}" could have multiple interpretations. Please clarify what you're looking for:`,
               requestedSchema: {
-                type: "object",
+                type: 'object',
                 properties: {
                   interpretation: {
-                    type: "string",
-                    title: "Clarification",
-                    description: "Which interpretation of the topic do you mean?",
+                    type: 'string',
+                    title: 'Clarification',
+                    description: 'Which interpretation of the topic do you mean?',
                     oneOf: getInterpretationsForTopic(state.topic),
                   },
                 },
-                required: ["interpretation"],
+                required: ['interpretation'],
               },
             },
           },
@@ -114,14 +114,14 @@ async function runResearchProcess(
         );
 
         // Process elicitation response
-        if (elicitResult.action === "accept" && elicitResult.content) {
+        if (elicitResult.action === 'accept' && elicitResult.content) {
           state.clarification =
             (elicitResult.content as { interpretation?: string }).interpretation ||
-            "User accepted without selection";
-        } else if (elicitResult.action === "decline") {
-          state.clarification = "User declined - using default interpretation";
+            'User accepted without selection';
+        } else if (elicitResult.action === 'decline') {
+          state.clarification = 'User declined - using default interpretation';
         } else {
-          state.clarification = "User cancelled - using default interpretation";
+          state.clarification = 'User cancelled - using default interpretation';
         }
       } catch (error) {
         // Elicitation failed (likely HTTP transport without streaming support)
@@ -130,13 +130,13 @@ async function runResearchProcess(
           `Elicitation failed for task ${taskId} (HTTP transport?):`,
           error instanceof Error ? error.message : String(error),
         );
-        state.clarification = "technical (default - elicitation unavailable on HTTP)";
+        state.clarification = 'technical (default - elicitation unavailable on HTTP)';
       }
 
       // Resume with working status (spec SHOULD)
       await taskStore.updateTaskStatus(
         taskId,
-        "working",
+        'working',
         `Continuing with interpretation: "${state.clarification}"...`,
       );
 
@@ -152,7 +152,7 @@ async function runResearchProcess(
   const result = generateResearchReport(state);
   state.result = result;
 
-  await taskStore.storeTaskResult(taskId, "completed", result);
+  await taskStore.storeTaskResult(taskId, 'completed', result);
 }
 
 /**
@@ -165,11 +165,11 @@ function generateResearchReport(state: ResearchState): CallToolResult {
 
 ## Research Parameters
 - **Topic**: ${state.topic}
-${state.clarification ? `- **Clarification**: ${state.clarification}` : ""}
+${state.clarification ? `- **Clarification**: ${state.clarification}` : ''}
 
 ## Synthesis
 This research query was processed through ${STAGES.length} stages:
-${STAGES.map((s, i) => `- Stage ${i + 1}: ${s} ✓`).join("\n")}
+${STAGES.map((s, i) => `- Stage ${i + 1}: ${s} ✓`).join('\n')}
 
 ---
 
@@ -181,7 +181,7 @@ This tool demonstrates MCP's task-based execution pattern for long-running opera
 1. \`tools/call\` with \`task\` parameter → Server returns \`CreateTaskResult\` (not the final result)
 2. Client polls \`tasks/get\` → Server returns current status and \`statusMessage\`
 3. Status progressed: \`working\` → ${
-    state.clarification ? `\`input_required\` → \`working\` → ` : ""
+    state.clarification ? `\`input_required\` → \`working\` → ` : ''
   }\`completed\`
 4. Client calls \`tasks/result\` → Server returns this final result
 
@@ -191,7 +191,7 @@ ${
 When the query was ambiguous, the server sent an \`elicitation/create\` request
 to the client. The task status changed to \`input_required\` while awaiting user input.
 ${
-  state.clarification.includes("unavailable on HTTP")
+  state.clarification.includes('unavailable on HTTP')
     ? `
 **Note:** Elicitation was skipped because this server is running over HTTP transport.
 The current SDK's \`sendRequest\` only works over STDIO. Full HTTP elicitation support
@@ -200,7 +200,7 @@ requires SDK PR #1210's streaming \`elicitInputStream\` API.
     : `After receiving clarification ("${state.clarification}"), the task resumed processing and completed.`
 }
 `
-    : ""
+    : ''
 }
 **Key Concepts:**
 - Tasks enable "call now, fetch later" patterns
@@ -215,7 +215,7 @@ requires SDK PR #1210's streaming \`elicitInputStream\` API.
   return {
     content: [
       {
-        type: "text",
+        type: 'text',
         text: report,
       },
     ],
@@ -237,15 +237,15 @@ export const registerSimulateResearchQueryTool = (server: McpServer) => {
   const clientSupportsElicitation: boolean = clientCapabilities.elicitation !== undefined;
 
   server.experimental.tasks.registerToolTask(
-    "simulate-research-query",
+    'simulate-research-query',
     {
-      title: "Simulate Research Query",
+      title: 'Simulate Research Query',
       description:
-        "Simulates a deep research operation that gathers, analyzes, and synthesizes information. " +
-        "Demonstrates MCP task-based operations with progress through multiple stages. " +
+        'Simulates a deep research operation that gathers, analyzes, and synthesizes information. ' +
+        'Demonstrates MCP task-based operations with progress through multiple stages. ' +
         "If 'ambiguous' is true and client supports elicitation, sends an elicitation request for clarification.",
       inputSchema: SimulateResearchQuerySchema,
-      execution: { taskSupport: "required" },
+      execution: { taskSupport: 'required' },
     },
     {
       /**
@@ -275,7 +275,7 @@ export const registerSimulateResearchQueryTool = (server: McpServer) => {
           (error) => {
             console.error(`Research task ${task.taskId} failed:`, error);
             extra.taskStore
-              .updateTaskStatus(task.taskId, "failed", String(error))
+              .updateTaskStatus(task.taskId, 'failed', String(error))
               .catch(console.error);
           },
         );
@@ -314,18 +314,18 @@ function getInterpretationsForTopic(topic: string): Array<{ const: string; title
   const lowerTopic = topic.toLowerCase();
 
   // Example: contextual interpretations for "python"
-  if (lowerTopic.includes("python")) {
+  if (lowerTopic.includes('python')) {
     return [
-      { const: "programming", title: "Python programming language" },
-      { const: "snake", title: "Python snake species" },
-      { const: "comedy", title: "Monty Python comedy group" },
+      { const: 'programming', title: 'Python programming language' },
+      { const: 'snake', title: 'Python snake species' },
+      { const: 'comedy', title: 'Monty Python comedy group' },
     ];
   }
 
   // Default generic interpretations
   return [
-    { const: "technical", title: "Technical/scientific perspective" },
-    { const: "historical", title: "Historical perspective" },
-    { const: "current", title: "Current events/news perspective" },
+    { const: 'technical', title: 'Technical/scientific perspective' },
+    { const: 'historical', title: 'Historical perspective' },
+    { const: 'current', title: 'Current events/news perspective' },
   ];
 }

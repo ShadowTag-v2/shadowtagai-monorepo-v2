@@ -16,11 +16,11 @@
  * 4. Anonymous (if mode=none or auth not required)
  */
 
-import { extractBearerToken, verifyJWT } from "../services/jwt";
-import type { AuthContext, AuthResolverOptions } from "../types/auth";
-import { getAuthConfig } from "../types/auth";
-import logger from "../utils/logger";
-import { generateUUID, walletAddressToUUID } from "../utils/uuid";
+import { extractBearerToken, verifyJWT } from '../services/jwt';
+import type { AuthContext, AuthResolverOptions } from '../types/auth';
+import { getAuthConfig } from '../types/auth';
+import logger from '../utils/logger';
+import { generateUUID, walletAddressToUUID } from '../utils/uuid';
 
 /**
  * Constant-time string comparison to prevent timing attacks
@@ -49,14 +49,14 @@ function constantTimeCompare(a: string, b: string): boolean {
  */
 function resolveProvidedUserId(request: Request, body?: any): string {
   // 1. Check X-User-Id header (useful for GET requests that have no body)
-  const headerUserId = request.headers.get("X-User-Id");
-  if (headerUserId && typeof headerUserId === "string" && headerUserId.length > 0) {
+  const headerUserId = request.headers.get('X-User-Id');
+  if (headerUserId && typeof headerUserId === 'string' && headerUserId.length > 0) {
     return headerUserId;
   }
 
   // 2. Check body.userId
   const bodyUserId = body?.userId;
-  if (bodyUserId && typeof bodyUserId === "string" && bodyUserId.length > 0) {
+  if (bodyUserId && typeof bodyUserId === 'string' && bodyUserId.length > 0) {
     return bodyUserId;
   }
 
@@ -71,8 +71,8 @@ function isValidApiKey(request: Request): boolean {
   const secret = process.env.BIOAGENTS_SECRET;
   if (!secret) return false;
 
-  const authHeader = request.headers.get("Authorization");
-  const apiKeyHeader = request.headers.get("X-API-Key");
+  const authHeader = request.headers.get('Authorization');
+  const apiKeyHeader = request.headers.get('X-API-Key');
 
   // Check X-API-Key header first (explicit API key)
   if (apiKeyHeader) {
@@ -80,10 +80,10 @@ function isValidApiKey(request: Request): boolean {
   }
 
   // Check Authorization header - but only if it's the raw secret, not a JWT
-  if (authHeader?.startsWith("Bearer ")) {
+  if (authHeader?.startsWith('Bearer ')) {
     const token = authHeader.slice(7);
     // If it looks like a JWT (has dots), don't treat as API key
-    if (token.includes(".")) {
+    if (token.includes('.')) {
       return false;
     }
     return constantTimeCompare(token, secret);
@@ -136,7 +136,7 @@ export function authResolver(options: AuthResolverOptions = {}) {
         required,
         hasX402Settlement: !!(request as any).x402Settlement,
       },
-      "auth_resolver_start",
+      'auth_resolver_start',
     );
 
     // =====================================================
@@ -149,7 +149,7 @@ export function authResolver(options: AuthResolverOptions = {}) {
       const userId = walletAddressToUUID(x402Settlement.payer);
       auth = {
         userId,
-        method: "x402",
+        method: 'x402',
         verified: true,
         externalId: x402Settlement.payer,
       };
@@ -158,9 +158,9 @@ export function authResolver(options: AuthResolverOptions = {}) {
         {
           userId,
           wallet: x402Settlement.payer,
-          method: "x402",
+          method: 'x402',
         },
-        "auth_resolved_x402",
+        'auth_resolved_x402',
       );
     }
 
@@ -171,11 +171,11 @@ export function authResolver(options: AuthResolverOptions = {}) {
     // - AUTH_MODE=jwt (primary JWT mode)
     // - Or when a JWT-like token is provided (allows JWT+x402 hybrid)
     if (!auth) {
-      const authHeader = request.headers.get("Authorization");
+      const authHeader = request.headers.get('Authorization');
       const token = extractBearerToken(authHeader);
 
       // Only verify if it looks like a JWT (has dots) or if we're in JWT mode
-      const shouldVerifyJwt = token && (config.mode === "jwt" || token.includes("."));
+      const shouldVerifyJwt = token && (config.mode === 'jwt' || token.includes('.'));
 
       if (shouldVerifyJwt && token) {
         const result = await verifyJWT(token);
@@ -183,7 +183,7 @@ export function authResolver(options: AuthResolverOptions = {}) {
         if (result.valid && result.payload) {
           auth = {
             userId: result.payload.sub,
-            method: "jwt",
+            method: 'jwt',
             verified: true,
             email: result.payload.email,
             orgId: result.payload.orgId,
@@ -193,29 +193,29 @@ export function authResolver(options: AuthResolverOptions = {}) {
           logger?.info(
             {
               userId: auth.userId,
-              method: "jwt",
+              method: 'jwt',
               hasEmail: !!auth.email,
               hasOrgId: !!auth.orgId,
             },
-            "auth_resolved_jwt",
+            'auth_resolved_jwt',
           );
-        } else if (config.mode === "jwt") {
+        } else if (config.mode === 'jwt') {
           // JWT provided but invalid - only reject in strict JWT mode
           logger?.warn(
             {
               error: result.error,
               path,
             },
-            "auth_jwt_invalid",
+            'auth_jwt_invalid',
           );
 
           // In JWT mode, invalid JWT = reject (don't fall through)
           if (required) {
             set.status = 401;
             return {
-              error: "Invalid authentication",
-              message: result.error || "JWT verification failed",
-              hint: "Provide a valid JWT signed with BIOAGENTS_SECRET",
+              error: 'Invalid authentication',
+              message: result.error || 'JWT verification failed',
+              hint: 'Provide a valid JWT signed with BIOAGENTS_SECRET',
             };
           }
         }
@@ -233,37 +233,37 @@ export function authResolver(options: AuthResolverOptions = {}) {
 
       auth = {
         userId,
-        method: "api_key",
+        method: 'api_key',
         verified: false, // Caller-provided userId, not cryptographic
       };
 
       logger?.info(
         {
           userId,
-          method: "api_key",
+          method: 'api_key',
         },
-        "auth_resolved_api_key",
+        'auth_resolved_api_key',
       );
     }
 
     // =====================================================
     // Priority 4: None Mode (Development)
     // =====================================================
-    if (!auth && config.mode === "none") {
+    if (!auth && config.mode === 'none') {
       const userId = resolveProvidedUserId(request, body);
 
       auth = {
         userId,
-        method: "anonymous",
+        method: 'anonymous',
         verified: false,
       };
 
       logger?.info(
         {
           userId,
-          method: "anonymous",
+          method: 'anonymous',
         },
-        "auth_resolved_anonymous",
+        'auth_resolved_anonymous',
       );
     }
 
@@ -277,22 +277,22 @@ export function authResolver(options: AuthResolverOptions = {}) {
             path,
             mode: config.mode,
           },
-          "auth_required_but_missing",
+          'auth_required_but_missing',
         );
 
         set.status = 401;
 
         // Provide helpful error based on mode
-        if (config.mode === "jwt") {
+        if (config.mode === 'jwt') {
           return {
-            error: "Authentication required",
-            message: "Valid JWT required",
+            error: 'Authentication required',
+            message: 'Valid JWT required',
             hint: "Include 'Authorization: Bearer <jwt>' header with a JWT signed using BIOAGENTS_SECRET",
           };
         } else {
           return {
-            error: "Authentication required",
-            hint: "Configure AUTH_MODE or provide valid credentials",
+            error: 'Authentication required',
+            hint: 'Configure AUTH_MODE or provide valid credentials',
           };
         }
       }
@@ -300,16 +300,16 @@ export function authResolver(options: AuthResolverOptions = {}) {
       // Not required - create anonymous auth
       auth = {
         userId: generateUUID(),
-        method: "anonymous",
+        method: 'anonymous',
         verified: false,
       };
 
       logger?.info(
         {
           userId: auth.userId,
-          method: "anonymous",
+          method: 'anonymous',
         },
-        "auth_resolved_anonymous_fallback",
+        'auth_resolved_anonymous_fallback',
       );
     }
 
@@ -323,7 +323,7 @@ export function authResolver(options: AuthResolverOptions = {}) {
         verified: auth.verified,
         path,
       },
-      "auth_resolver_complete",
+      'auth_resolver_complete',
     );
   };
 }
@@ -364,12 +364,12 @@ export async function resolveAuth(
     return {
       authenticated: true,
       userId: walletAddressToUUID(x402Settlement.payer),
-      method: "x402",
+      method: 'x402',
     };
   }
 
   // Check JWT
-  const authHeader = request.headers.get("Authorization");
+  const authHeader = request.headers.get('Authorization');
   const token = extractBearerToken(authHeader);
 
   if (token) {
@@ -378,7 +378,7 @@ export async function resolveAuth(
       return {
         authenticated: true,
         userId: result.payload.sub,
-        method: "jwt",
+        method: 'jwt',
       };
     }
   }
@@ -388,16 +388,16 @@ export async function resolveAuth(
     return {
       authenticated: true,
       userId: resolveProvidedUserId(request, body),
-      method: "api_key",
+      method: 'api_key',
     };
   }
 
   // Check if auth is required
-  if (config.mode === "none") {
+  if (config.mode === 'none') {
     return {
       authenticated: true,
       userId: resolveProvidedUserId(request, body),
-      method: "anonymous",
+      method: 'anonymous',
     };
   }
 

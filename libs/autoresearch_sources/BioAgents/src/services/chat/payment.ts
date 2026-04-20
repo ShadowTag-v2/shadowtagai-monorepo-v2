@@ -1,9 +1,9 @@
-import { createPayment, updateX402External } from "../../db/x402Operations";
-import type { X402ExternalRecord } from "../../db/x402Operations";
-import logger from "../../utils/logger";
-import { x402Config } from "../../middleware/x402/config";
-import { routePricing } from "../../middleware/x402/pricing";
-import { usdToBaseUnits } from "../../middleware/x402/service";
+import type { X402ExternalRecord } from '../../db/x402Operations';
+import { createPayment, updateX402External } from '../../db/x402Operations';
+import { x402Config } from '../../middleware/x402/config';
+import { routePricing } from '../../middleware/x402/pricing';
+import { usdToBaseUnits } from '../../middleware/x402/service';
+import logger from '../../utils/logger';
 
 export interface PaymentRecordingParams {
   isExternal: boolean;
@@ -25,7 +25,7 @@ export function calculateTotalCost(): number {
   // Use route-based flat pricing (simple, predictable)
   // Currently using $0.01 per request from routePricing in src/x402/pricing.ts
   // Tool-based dynamic pricing will be implemented later
-  const chatRoutePricing = routePricing.find((entry) => "/api/chat".startsWith(entry.route));
+  const chatRoutePricing = routePricing.find((entry) => '/api/chat'.startsWith(entry.route));
   return chatRoutePricing ? parseFloat(chatRoutePricing.priceUSD) : 0.01;
 }
 
@@ -69,7 +69,7 @@ export async function recordPayment(params: PaymentRecordingParams): Promise<voi
           asset: x402Config.asset,
           network: x402Config.network,
           network_id: paymentSettlement.networkId,
-          payment_status: "settled",
+          payment_status: 'settled',
           payment_header: paymentHeader ? { raw: paymentHeader } : null,
           payment_requirements: paymentRequirement ?? null,
           response_time: responseTime,
@@ -80,7 +80,7 @@ export async function recordPayment(params: PaymentRecordingParams): Promise<voi
               x402ExternalId: x402ExternalRecord.id,
               txHash: paymentSettlement.txHash,
             },
-            "x402_external_payment_recorded",
+            'x402_external_payment_recorded',
           );
         }
       }
@@ -97,14 +97,14 @@ export async function recordPayment(params: PaymentRecordingParams): Promise<voi
         tools_used: providers ?? [],
         tx_hash: paymentSettlement.txHash,
         network_id: paymentSettlement.networkId,
-        payment_status: "settled",
+        payment_status: 'settled',
         payment_header: paymentHeader ? { raw: paymentHeader } : null,
         payment_requirements: paymentRequirement ?? null,
       });
     }
   } catch (err) {
     if (logger) {
-      logger.error({ err }, "x402_payment_record_failed");
+      logger.error({ err }, 'x402_payment_record_failed');
     }
   }
 }

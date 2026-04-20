@@ -1,5 +1,5 @@
-import type { SymbolTable, SymbolDefinition } from './symbol-table.js';
 import type { NamedImportMap } from './import-processor.js';
+import type { SymbolDefinition, SymbolTable } from './symbol-table.js';
 
 /**
  * Walk a named-binding re-export chain through NamedImportMap.
@@ -39,9 +39,10 @@ export function walkBindingChain(
     visited.add(key);
 
     const targetName = binding.exportedName;
-    const resolvedDefs = targetName !== lookupName || depth > 0
-      ? symbolTable.lookupFuzzy(targetName).filter(def => def.filePath === binding.sourcePath)
-      : allDefs.filter(def => def.filePath === binding.sourcePath);
+    const resolvedDefs =
+      targetName !== lookupName || depth > 0
+        ? symbolTable.lookupFuzzy(targetName).filter((def) => def.filePath === binding.sourcePath)
+        : allDefs.filter((def) => def.filePath === binding.sourcePath);
 
     if (resolvedDefs.length > 0) return resolvedDefs;
 

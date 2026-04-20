@@ -12,29 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
 
 function isModuleLoaded(moduleName: string) {
   return !!Object.keys(require.cache).find(
-    path => path.indexOf(`node_modules/${moduleName}`) !== -1,
+    (path) => path.indexOf(`node_modules/${moduleName}`) !== -1,
   );
 }
 
 describe('Index.js', () => {
-  (isModuleLoaded('google-gax') ? it.skip : it)(
-    'does not load google-gax',
-    () => {
-      require('../src/index');
-      expect(isModuleLoaded('google-gax')).to.be.false;
-    },
-  );
+  (isModuleLoaded('google-gax') ? it.skip : it)('does not load google-gax', () => {
+    require('../src/index');
+    expect(isModuleLoaded('google-gax')).to.be.false;
+  });
 
-  (isModuleLoaded('protobufjs') ? it.skip : it)(
-    'does not load protobufjs',
-    () => {
-      require('../src/index');
-      expect(isModuleLoaded('protobufjs')).to.be.false;
-    },
-  );
+  (isModuleLoaded('protobufjs') ? it.skip : it)('does not load protobufjs', () => {
+    require('../src/index');
+    expect(isModuleLoaded('protobufjs')).to.be.false;
+  });
 });

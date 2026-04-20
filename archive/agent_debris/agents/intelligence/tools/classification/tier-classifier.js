@@ -11,16 +11,16 @@
  * Part of PNKLN Core Stack™ Intelligence Layer
  */
 
-import { tool } from "@anthropic-ai/claude-agent-sdk";
+import { tool } from '@anthropic-ai/claude-agent-sdk';
 
 /**
  * Classification criteria weights
  */
 const CRITERIA_WEIGHTS = {
-  relevance: 0.35,      // How relevant to user interests
-  timeliness: 0.25,     // How recent and time-sensitive
-  credibility: 0.25,    // Source credibility and verification
-  completeness: 0.15    // Data completeness and quality
+  relevance: 0.35, // How relevant to user interests
+  timeliness: 0.25, // How recent and time-sensitive
+  credibility: 0.25, // Source credibility and verification
+  completeness: 0.15, // Data completeness and quality
 };
 
 /**
@@ -43,12 +43,12 @@ function calculateTimelinessScore(timestamp) {
  * Calculate completeness score
  */
 function calculateCompletenessScore(item, requiredFields = []) {
-  const defaultRequired = ["title", "source", "timestamp", "content"];
+  const defaultRequired = ['title', 'source', 'timestamp', 'content'];
   const fields = requiredFields.length > 0 ? requiredFields : defaultRequired;
 
-  const presentFields = fields.filter(field => {
+  const presentFields = fields.filter((field) => {
     const value = item[field];
-    return value !== null && value !== undefined && value !== "";
+    return value !== null && value !== undefined && value !== '';
   });
 
   const baseScore = presentFields.length / fields.length;
@@ -68,40 +68,40 @@ function calculateCompletenessScore(item, requiredFields = []) {
  */
 const SOURCE_CREDIBILITY = {
   // News sources
-  "reuters": 0.95,
-  "ap": 0.95,
-  "bbc": 0.90,
-  "npr": 0.90,
-  "wsj": 0.85,
-  "nytimes": 0.85,
-  "washingtonpost": 0.85,
-  "ft": 0.85,
-  "bloomberg": 0.85,
-  "cnn": 0.75,
-  "foxnews": 0.70,
+  reuters: 0.95,
+  ap: 0.95,
+  bbc: 0.9,
+  npr: 0.9,
+  wsj: 0.85,
+  nytimes: 0.85,
+  washingtonpost: 0.85,
+  ft: 0.85,
+  bloomberg: 0.85,
+  cnn: 0.75,
+  foxnews: 0.7,
 
   // Social media (generally lower)
-  "twitter": 0.50,
-  "reddit": 0.45,
-  "facebook": 0.40,
+  twitter: 0.5,
+  reddit: 0.45,
+  facebook: 0.4,
 
   // Video platforms
-  "youtube": 0.55,
+  youtube: 0.55,
 
   // Academic/Research
-  "arxiv": 0.90,
-  "scholar.google": 0.95,
-  "pubmed": 0.95,
+  arxiv: 0.9,
+  'scholar.google': 0.95,
+  pubmed: 0.95,
 
   // Default for unknown sources
-  "unknown": 0.50
+  unknown: 0.5,
 };
 
 /**
  * Get source credibility score
  */
 function getSourceCredibility(source) {
-  const sourceLower = (source || "").toLowerCase();
+  const sourceLower = (source || '').toLowerCase();
 
   for (const [key, score] of Object.entries(SOURCE_CREDIBILITY)) {
     if (sourceLower.includes(key)) {
@@ -121,7 +121,7 @@ async function assessRelevanceWithGemini(item, userInterests = [], geminiClient)
 
   if (!userInterests || userInterests.length === 0) {
     // No interests specified, use content-based scoring
-    const contentLength = (item.content || "").length;
+    const contentLength = (item.content || '').length;
     const hasTitle = !!item.title;
     const hasKeywords = !!item.keywords;
 
@@ -134,10 +134,9 @@ async function assessRelevanceWithGemini(item, userInterests = [], geminiClient)
   }
 
   // Check keyword overlap
-  const content = `${item.title || ""} ${item.content || ""} ${item.description || ""}`.toLowerCase();
-  const matches = userInterests.filter(interest =>
-    content.includes(interest.toLowerCase())
-  );
+  const content =
+    `${item.title || ''} ${item.content || ''} ${item.description || ''}`.toLowerCase();
+  const matches = userInterests.filter((interest) => content.includes(interest.toLowerCase()));
 
   return Math.min(1.0, matches.length / userInterests.length + 0.3);
 }
@@ -153,52 +152,53 @@ function calculateTier(scores) {
     scores.completeness * CRITERIA_WEIGHTS.completeness;
 
   if (composite >= 0.75) return 1;
-  if (composite >= 0.50) return 2;
+  if (composite >= 0.5) return 2;
   return 3;
 }
 
 export const tierClassifierTool = tool({
-  name: "tier_classifier",
-  description: "Classify intelligence data into quality tiers (1=high, 2=medium, 3=low) based on relevance, timeliness, credibility, and completeness",
+  name: 'tier_classifier',
+  description:
+    'Classify intelligence data into quality tiers (1=high, 2=medium, 3=low) based on relevance, timeliness, credibility, and completeness',
   parameters: {
-    type: "object",
+    type: 'object',
     properties: {
       items: {
-        type: "array",
+        type: 'array',
         items: {
-          type: "object",
-          description: "Data items to classify"
+          type: 'object',
+          description: 'Data items to classify',
         },
-        description: "Array of items to classify"
+        description: 'Array of items to classify',
       },
       userInterests: {
-        type: "array",
-        items: { type: "string" },
-        description: "User interests for relevance scoring (keywords/topics)"
+        type: 'array',
+        items: { type: 'string' },
+        description: 'User interests for relevance scoring (keywords/topics)',
       },
       requiredFields: {
-        type: "array",
-        items: { type: "string" },
-        description: "Required fields for completeness check",
-        default: ["title", "source", "timestamp", "content"]
+        type: 'array',
+        items: { type: 'string' },
+        description: 'Required fields for completeness check',
+        default: ['title', 'source', 'timestamp', 'content'],
       },
       targetDistribution: {
-        type: "object",
+        type: 'object',
         properties: {
-          tier1: { type: "number" },
-          tier2: { type: "number" },
-          tier3: { type: "number" }
+          tier1: { type: 'number' },
+          tier2: { type: 'number' },
+          tier3: { type: 'number' },
         },
-        description: "Target tier distribution (default: 20/50/30)"
-      }
+        description: 'Target tier distribution (default: 20/50/30)',
+      },
     },
-    required: ["items"]
+    required: ['items'],
   },
   execute: async ({
     items,
     userInterests = [],
-    requiredFields = ["title", "source", "timestamp", "content"],
-    targetDistribution = { tier1: 0.20, tier2: 0.50, tier3: 0.30 }
+    requiredFields = ['title', 'source', 'timestamp', 'content'],
+    targetDistribution = { tier1: 0.2, tier2: 0.5, tier3: 0.3 },
   }) => {
     const result = {
       timestamp: new Date().toISOString(),
@@ -207,15 +207,15 @@ export const tierClassifierTool = tool({
       distribution: {
         tier1: 0,
         tier2: 0,
-        tier3: 0
+        tier3: 0,
       },
       statistics: {
         avgRelevance: 0,
         avgTimeliness: 0,
         avgCredibility: 0,
         avgCompleteness: 0,
-        avgComposite: 0
-      }
+        avgComposite: 0,
+      },
     };
 
     const scores = [];
@@ -225,8 +225,8 @@ export const tierClassifierTool = tool({
       const itemScores = {
         relevance: await assessRelevanceWithGemini(item, userInterests),
         timeliness: calculateTimelinessScore(item.timestamp || new Date().toISOString()),
-        credibility: getSourceCredibility(item.source || "unknown"),
-        completeness: calculateCompletenessScore(item, requiredFields)
+        credibility: getSourceCredibility(item.source || 'unknown'),
+        completeness: calculateCompletenessScore(item, requiredFields),
       };
 
       const tier = calculateTier(itemScores);
@@ -242,7 +242,7 @@ export const tierClassifierTool = tool({
         ...item,
         tier,
         scores: itemScores,
-        composite
+        composite,
       });
 
       result.distribution[`tier${tier}`]++;
@@ -255,22 +255,22 @@ export const tierClassifierTool = tool({
         avgTimeliness: scores.reduce((sum, s) => sum + s.timeliness, 0) / scores.length,
         avgCredibility: scores.reduce((sum, s) => sum + s.credibility, 0) / scores.length,
         avgCompleteness: scores.reduce((sum, s) => sum + s.completeness, 0) / scores.length,
-        avgComposite: scores.reduce((sum, s) => sum + s.composite, 0) / scores.length
+        avgComposite: scores.reduce((sum, s) => sum + s.composite, 0) / scores.length,
       };
     }
 
     // Calculate distribution percentages
     result.distributionPercent = {
-      tier1: (result.distribution.tier1 / items.length * 100).toFixed(1) + "%",
-      tier2: (result.distribution.tier2 / items.length * 100).toFixed(1) + "%",
-      tier3: (result.distribution.tier3 / items.length * 100).toFixed(1) + "%"
+      tier1: ((result.distribution.tier1 / items.length) * 100).toFixed(1) + '%',
+      tier2: ((result.distribution.tier2 / items.length) * 100).toFixed(1) + '%',
+      tier3: ((result.distribution.tier3 / items.length) * 100).toFixed(1) + '%',
     };
 
     // Check against target distribution
     result.distributionHealth = {
-      tier1: Math.abs((result.distribution.tier1 / items.length) - targetDistribution.tier1) < 0.1,
-      tier2: Math.abs((result.distribution.tier2 / items.length) - targetDistribution.tier2) < 0.1,
-      tier3: Math.abs((result.distribution.tier3 / items.length) - targetDistribution.tier3) < 0.1
+      tier1: Math.abs(result.distribution.tier1 / items.length - targetDistribution.tier1) < 0.1,
+      tier2: Math.abs(result.distribution.tier2 / items.length - targetDistribution.tier2) < 0.1,
+      tier3: Math.abs(result.distribution.tier3 / items.length - targetDistribution.tier3) < 0.1,
     };
 
     return {
@@ -282,10 +282,10 @@ export const tierClassifierTool = tool({
         tier2Count: result.distribution.tier2,
         tier3Count: result.distribution.tier3,
         avgComposite: result.statistics.avgComposite.toFixed(3),
-        distributionHealthy: Object.values(result.distributionHealth).every(v => v)
-      }
+        distributionHealthy: Object.values(result.distributionHealth).every((v) => v),
+      },
     };
-  }
+  },
 });
 
 export default tierClassifierTool;

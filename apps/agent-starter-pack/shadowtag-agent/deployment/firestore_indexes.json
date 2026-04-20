@@ -3,9 +3,7 @@
     {
       "collectionGroup": "uphillsnowball_intakes",
       "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "timestamp", "order": "DESCENDING" }
-      ]
+      "fields": [{ "fieldPath": "timestamp", "order": "DESCENDING" }]
     },
     {
       "collectionGroup": "uphillsnowball_intakes",
@@ -18,16 +16,12 @@
     {
       "collectionGroup": "uphillsnowball_screenings",
       "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "timestamp", "order": "DESCENDING" }
-      ]
+      "fields": [{ "fieldPath": "timestamp", "order": "DESCENDING" }]
     },
     {
       "collectionGroup": "uphillsnowball_analyses",
       "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "timestamp", "order": "DESCENDING" }
-      ]
+      "fields": [{ "fieldPath": "timestamp", "order": "DESCENDING" }]
     },
     {
       "collectionGroup": "uphillsnowball_billing",
@@ -40,9 +34,7 @@
     {
       "collectionGroup": "uphillsnowball_billing",
       "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "timestamp", "order": "DESCENDING" }
-      ]
+      "fields": [{ "fieldPath": "timestamp", "order": "DESCENDING" }]
     }
   ],
   "fieldOverrides": []

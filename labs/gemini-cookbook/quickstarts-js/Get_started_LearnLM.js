@@ -76,7 +76,7 @@ ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 */
 
 // [CODE STARTS]
-module = await import("https://esm.sh/@google/genai@1.4.0");
+module = await import('https://esm.sh/@google/genai@1.4.0');
 GoogleGenAI = module.GoogleGenAI;
 ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 // [CODE ENDS]
@@ -88,7 +88,7 @@ The system instruction is the primary way you tell LearnLM what kind of tutor to
 */
 
 // [CODE STARTS]
-LEARNLM_MODEL_ID = "learnlm-2.0-flash-experimental";
+LEARNLM_MODEL_ID = 'learnlm-2.0-flash-experimental';
 // [CODE ENDS]
 
 /* Markdown (render)
@@ -248,8 +248,7 @@ Let's start a new chat session with LearnLM using this instruction to explore a 
 */
 
 // [CODE STARTS]
-prompt =
-  "Explain the significance of Interconnectedness of Emotion & Cognition";
+prompt = 'Explain the significance of Interconnectedness of Emotion & Cognition';
 
 chat = ai.chats.create({
   model: LEARNLM_MODEL_ID,

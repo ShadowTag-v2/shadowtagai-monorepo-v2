@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/installations";
+import firebase from 'firebase/app';
+import 'firebase/installations';
 
 async function deleteInstallation() {
   try {
@@ -25,8 +25,7 @@ async function getInstallationId() {
 async function getAuthenticationToken() {
   try {
     // [START get_auth_token]
-    const installationToken = await firebase.installations()
-        .getToken(/* forceRefresh */ true);
+    const installationToken = await firebase.installations().getToken(/* forceRefresh */ true);
     console.log(installationToken);
     // [END get_auth_token]
   } catch (err) {

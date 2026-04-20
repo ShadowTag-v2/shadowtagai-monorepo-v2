@@ -6,14 +6,14 @@
 
 // import 'jasmine'; (google3-only)
 
-import {html, render} from 'lit';
+import { html, render } from 'lit';
 
-import {Environment} from '../testing/environment.js';
-import {createTokenTests} from '../testing/tokens.js';
+import { Environment } from '../testing/environment.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdBrandedFab} from './branded-fab.js';
-import {MdFab} from './fab.js';
-import {FabHarness} from './harness.js';
+import { MdBrandedFab } from './branded-fab.js';
+import { MdFab } from './fab.js';
+import { FabHarness } from './harness.js';
 
 describe('<md-fab>', () => {
   const env = new Environment();
@@ -42,7 +42,7 @@ describe('<md-fab>', () => {
 
   describe('basic', () => {
     it('initializes as an md-fab', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       expect(harness.element).toBeInstanceOf(MdFab);
       expect(harness.element.lowered).toEqual(false);
       expect(harness.element.label).toEqual('');
@@ -53,7 +53,7 @@ describe('<md-fab>', () => {
 
     describe('variants', () => {
       it('variant classes are set', async () => {
-        const {harness, button} = await setupTest();
+        const { harness, button } = await setupTest();
         harness.element.variant = 'primary';
         await env.waitForStability();
 
@@ -77,7 +77,7 @@ describe('<md-fab>', () => {
       });
 
       it('size classes are set', async () => {
-        const {harness, button} = await setupTest();
+        const { harness, button } = await setupTest();
         harness.element.size = 'small';
         await env.waitForStability();
 
@@ -93,7 +93,7 @@ describe('<md-fab>', () => {
     });
 
     it('size classes are not set when extended', async () => {
-      const {harness, button} = await setupTest();
+      const { harness, button } = await setupTest();
       harness.element.size = 'small';
       await env.waitForStability();
 
@@ -115,7 +115,7 @@ describe('<md-fab>', () => {
 
   describe('lowered', () => {
     it('sets the correct classes', async () => {
-      const {harness, button} = await setupTest();
+      const { harness, button } = await setupTest();
       harness.element.lowered = true;
       await env.waitForStability();
 
@@ -125,7 +125,7 @@ describe('<md-fab>', () => {
 
   describe('icon', () => {
     it('node with `slot=icon` will serve as the fab icon', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       render(html`<i slot="icon">star</i>`, harness.element);
       const icon = harness.element.querySelector<HTMLElement>('[slot="icon"]')!;
       expect(icon.textContent!.trim()).toEqual('star');
@@ -134,7 +134,7 @@ describe('<md-fab>', () => {
 
   describe('label', () => {
     it('displays label text', async () => {
-      const {harness, button} = await setupTest();
+      const { harness, button } = await setupTest();
       harness.element.label = 'foo';
       await env.waitForStability();
 
@@ -143,7 +143,7 @@ describe('<md-fab>', () => {
     });
 
     it('serves as `aria-label` of native button', async () => {
-      const {harness, button} = await setupTest();
+      const { harness, button } = await setupTest();
       harness.element.ariaLabel = 'foo';
       await env.waitForStability();
 
@@ -181,7 +181,7 @@ describe('<md-branded-fab>', () => {
 
   describe('variants', () => {
     it('variant classes are not set', async () => {
-      const {harness, button} = await setupTest();
+      const { harness, button } = await setupTest();
       harness.element.variant = 'primary';
       await env.waitForStability();
 
@@ -205,7 +205,7 @@ describe('<md-branded-fab>', () => {
     });
 
     it('small size classes are not set', async () => {
-      const {harness, button} = await setupTest();
+      const { harness, button } = await setupTest();
       harness.element.size = 'small';
       await env.waitForStability();
 
@@ -216,7 +216,7 @@ describe('<md-branded-fab>', () => {
 
   describe('accessibility', () => {
     it('sets aria-hidden on the icon slot when aria-label is set', async () => {
-      const {button, harness} = await setupTest();
+      const { button, harness } = await setupTest();
       await env.waitForStability();
 
       const iconSlot = button.querySelector('slot[name="icon"]')!;
@@ -233,7 +233,7 @@ describe('<md-branded-fab>', () => {
     });
 
     it('sets aria-hidden on the icon slot when label is set', async () => {
-      const {button, harness} = await setupTest();
+      const { button, harness } = await setupTest();
       await env.waitForStability();
       const element = harness.element;
 

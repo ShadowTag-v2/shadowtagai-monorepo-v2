@@ -12,13 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-'use strict';
-
 /* eslint-disable n/no-missing-require */
 
 // [START firestore_pipelines_quickstart]
-const {Firestore} = require('@google-cloud/firestore');
-const {field} = require('@google-cloud/firestore/pipelines');
+const { Firestore } = require('@google-cloud/firestore');
+const { field } = require('@google-cloud/firestore/pipelines');
 
 // Create a new client
 const firestore = new Firestore();
@@ -50,7 +48,7 @@ async function quickstartPipelines() {
 
   // Iterate over each result in the PipelineSnapshot, printing the
   // post to the console.
-  pipelineSnapshot.results.forEach(pipelineResult => {
+  pipelineSnapshot.results.forEach((pipelineResult) => {
     console.log(pipelineResult.data());
   });
 }

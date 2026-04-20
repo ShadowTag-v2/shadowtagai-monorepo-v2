@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
+import type * as firestore from '@google-cloud/firestore';
 
-import {google} from '../protos/firestore_v1_proto_api';
-import {compareUtf8Strings, primitiveComparator} from './order';
+import { google } from '../protos/firestore_v1_proto_api';
+import { compareUtf8Strings, primitiveComparator } from './order';
 
-import {isObject} from './util';
+import { isObject } from './util';
 import {
   customObjectMessage,
   invalidArgumentMessage,
@@ -162,10 +162,7 @@ abstract class Path<T> {
   compareTo(other: Path<T>): number {
     const len = Math.min(this.segments.length, other.segments.length);
     for (let i = 0; i < len; i++) {
-      const comparison = this.compareSegments(
-        this.segments[i],
-        other.segments[i],
-      );
+      const comparison = this.compareSegments(this.segments[i], other.segments[i]);
       if (comparison !== 0) {
         return comparison;
       }
@@ -185,10 +182,7 @@ abstract class Path<T> {
       return 1;
     } else if (isLhsNumeric && isRhsNumeric) {
       // both numeric
-      return this.compareNumbers(
-        this.extractNumericId(lhs),
-        this.extractNumericId(rhs),
-      );
+      return this.compareNumbers(this.extractNumericId(lhs), this.extractNumericId(rhs));
     } else {
       // both non-numeric
       return compareUtf8Strings(lhs, rhs);
@@ -378,7 +372,7 @@ export class ResourcePath extends Path<ResourcePath> {
   split(relativePath: string): string[] {
     // We may have an empty segment at the beginning or end if they had a
     // leading or trailing slash (which we allow).
-    return relativePath.split('/').filter(segment => segment.length > 0);
+    return relativePath.split('/').filter((segment) => segment.length > 0);
   }
 
   /**
@@ -389,10 +383,7 @@ export class ResourcePath extends Path<ResourcePath> {
    * @param projectId The project ID of the current Firestore project.
    * @returns A fully-qualified resource path pointing to the same element.
    */
-  toQualifiedResourcePath(
-    projectId: string,
-    databaseId: string,
-  ): QualifiedResourcePath {
+  toQualifiedResourcePath(projectId: string, databaseId: string): QualifiedResourcePath {
     return new QualifiedResourcePath(projectId, databaseId, ...this.segments);
   }
 }
@@ -521,11 +512,7 @@ export class QualifiedResourcePath extends ResourcePath {
    * @returns The newly created QualifiedResourcePath.
    */
   construct(segments: string[]): QualifiedResourcePath {
-    return new QualifiedResourcePath(
-      this.projectId,
-      this.databaseId,
-      ...segments,
-    );
+    return new QualifiedResourcePath(this.projectId, this.databaseId, ...segments);
   }
 
   /**
@@ -589,26 +576,15 @@ export class QualifiedResourcePath extends ResourcePath {
  * @param resourcePath The path to validate.
  * @throws if the string can't be used as a resource path.
  */
-export function validateResourcePath(
-  arg: string | number,
-  resourcePath: string,
-): void {
+export function validateResourcePath(arg: string | number, resourcePath: string): void {
   if (typeof resourcePath !== 'string' || resourcePath === '') {
     throw new Error(
-      `${invalidArgumentMessage(
-        arg,
-        'resource path',
-      )} Path must be a non-empty string.`,
+      `${invalidArgumentMessage(arg, 'resource path')} Path must be a non-empty string.`,
     );
   }
 
   if (resourcePath.indexOf('//') >= 0) {
-    throw new Error(
-      `${invalidArgumentMessage(
-        arg,
-        'resource path',
-      )} Paths must not contain //.`,
-    );
+    throw new Error(`${invalidArgumentMessage(arg, 'resource path')} Paths must not contain //.`);
   }
 }
 
@@ -723,7 +699,7 @@ export class FieldPath extends Path<FieldPath> implements firestore.FieldPath {
    */
   get formattedName(): string {
     return this.segments
-      .map(str => {
+      .map((str) => {
         return UNESCAPED_FIELD_NAME_RE.test(str)
           ? str
           : '`' + str.replace(/\\/g, '\\\\').replace(/`/g, '\\`') + '`';
@@ -839,10 +815,7 @@ export function validateFieldPath(
   }
 
   if (fieldPath === undefined) {
-    throw new Error(
-      invalidArgumentMessage(arg, 'field path') +
-        ' The path cannot be omitted.',
-    );
+    throw new Error(invalidArgumentMessage(arg, 'field path') + ' The path cannot be omitted.');
   }
 
   if (isObject(fieldPath) && fieldPath.constructor.name === 'FieldPath') {
@@ -860,19 +833,13 @@ export function validateFieldPath(
 
   if (fieldPath.indexOf('..') >= 0) {
     throw new Error(
-      `${invalidArgumentMessage(
-        arg,
-        'field path',
-      )} Paths must not contain ".." in them.`,
+      `${invalidArgumentMessage(arg, 'field path')} Paths must not contain ".." in them.`,
     );
   }
 
   if (fieldPath.startsWith('.') || fieldPath.endsWith('.')) {
     throw new Error(
-      `${invalidArgumentMessage(
-        arg,
-        'field path',
-      )} Paths must not start or end with ".".`,
+      `${invalidArgumentMessage(arg, 'field path')} Paths must not start or end with ".".`,
     );
   }
 

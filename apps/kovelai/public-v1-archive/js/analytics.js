@@ -5,7 +5,7 @@
  */
 
 // 1. GA4 Event Stream Stub
-window.trackEvent = function(eventName, eventParams) {
+window.trackEvent = (eventName, eventParams) => {
   if (typeof window.gtag === 'function') {
     window.gtag('event', eventName, eventParams);
   } else {
@@ -15,11 +15,11 @@ window.trackEvent = function(eventName, eventParams) {
 
 // 2. A/B Testing Framework (Cookie-based)
 window.FeatureFlagEngine = {
-  getVariant: function(experimentName) {
+  getVariant: (experimentName) => {
     const cookies = document.cookie.split(';');
-    for (let c of cookies) {
-        let [name, val] = c.split('=');
-        if (name.trim() === `ab_${experimentName}`) return val;
+    for (const c of cookies) {
+      const [name, val] = c.split('=');
+      if (name.trim() === `ab_${experimentName}`) return val;
     }
     // Default assignment if no cookie
     const variants = ['variant_a', 'variant_b'];
@@ -28,18 +28,18 @@ window.FeatureFlagEngine = {
     return chosen;
   },
 
-  trackExperimentExposure: function(experimentName) {
+  trackExperimentExposure: function (experimentName) {
     const variant = this.getVariant(experimentName);
     window.trackEvent('experiment_impression', {
       experiment_name: experimentName,
-      variant_name: variant
+      variant_name: variant,
     });
-  }
+  },
 };
 
 // 3. Video Engagement Tracking
 window.VideoEngagementTracker = {
-  init: function(videoId) {
+  init: (videoId) => {
     const video = document.getElementById(videoId);
     if (!video) return;
 
@@ -47,20 +47,20 @@ window.VideoEngagementTracker = {
       window.trackEvent('video_start', { video_title: videoId });
     });
 
-    let breakpoints = [0.25, 0.50, 0.75, 1.0];
-    let reached = new Set();
+    const breakpoints = [0.25, 0.5, 0.75, 1.0];
+    const reached = new Set();
 
     video.addEventListener('timeupdate', () => {
-      let progress = video.currentTime / video.duration;
-      for (let bp of breakpoints) {
+      const progress = video.currentTime / video.duration;
+      for (const bp of breakpoints) {
         if (progress >= bp && !reached.has(bp)) {
           reached.add(bp);
           window.trackEvent('video_progress', {
             video_title: videoId,
-            percent: bp * 100
+            percent: bp * 100,
           });
         }
       }
     });
-  }
+  },
 };

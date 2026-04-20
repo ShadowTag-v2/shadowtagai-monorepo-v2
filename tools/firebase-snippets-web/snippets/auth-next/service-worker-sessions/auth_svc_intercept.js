@@ -15,20 +15,21 @@ const getOriginFromUrl = (url) => {
 
 // Get underlying body if available. Works for text and json bodies.
 const getBodyContent = (req) => {
-  return Promise.resolve().then(() => {
-    if (req.method !== 'GET') {
-      if (req.headers.get('Content-Type').indexOf('json') !== -1) {
-        return req.json()
-          .then((json) => {
+  return Promise.resolve()
+    .then(() => {
+      if (req.method !== 'GET') {
+        if (req.headers.get('Content-Type').indexOf('json') !== -1) {
+          return req.json().then((json) => {
             return JSON.stringify(json);
           });
-      } else {
-        return req.text();
+        } else {
+          return req.text();
+        }
       }
-    }
-  }).catch((error) => {
-    // Ignore error.
-  });
+    })
+    .catch((error) => {
+      // Ignore error.
+    });
 };
 
 self.addEventListener('fetch', (event) => {
@@ -39,10 +40,11 @@ self.addEventListener('fetch', (event) => {
     let req = evt.request;
     let processRequestPromise = Promise.resolve();
     // For same origin https requests, append idToken to header.
-    if (self.location.origin == getOriginFromUrl(evt.request.url) &&
-        (self.location.protocol == 'https:' ||
-         self.location.hostname == 'localhost') &&
-        idToken) {
+    if (
+      self.location.origin == getOriginFromUrl(evt.request.url) &&
+      (self.location.protocol == 'https:' || self.location.hostname == 'localhost') &&
+      idToken
+    ) {
       // Clone headers as request headers are immutable.
       const headers = new Headers();
       req.headers.forEach((val, key) => {

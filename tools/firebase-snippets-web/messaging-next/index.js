@@ -3,7 +3,7 @@
 
 function getMessagingObject() {
   // [START messaging_get_messaging_object]
-  const { getMessaging } = require("firebase/messaging");
+  const { getMessaging } = require('firebase/messaging');
 
   const messaging = getMessaging();
   // [END messaging_get_messaging_object]
@@ -15,7 +15,7 @@ function receiveMessage() {
   // - a message is received while the app has focus
   // - the user clicks on an app notification created by a service worker
   //   `messaging.onBackgroundMessage` handler.
-  const { getMessaging, onMessage } = require("firebase/messaging");
+  const { getMessaging, onMessage } = require('firebase/messaging');
 
   const messaging = getMessaging();
   onMessage(messaging, (payload) => {
@@ -27,24 +27,26 @@ function receiveMessage() {
 
 function getToken() {
   // [START messaging_get_token]
-  const { getMessaging, getToken } = require("firebase/messaging");
+  const { getMessaging, getToken } = require('firebase/messaging');
 
   // Get registration token. Initially this makes a network call, once retrieved
   // subsequent calls to getToken will return from cache.
   const messaging = getMessaging();
-  getToken(messaging, { vapidKey: '<YOUR_PUBLIC_VAPID_KEY_HERE>' }).then((currentToken) => {
-    if (currentToken) {
-      // Send the token to your server and update the UI if necessary
+  getToken(messaging, { vapidKey: '<YOUR_PUBLIC_VAPID_KEY_HERE>' })
+    .then((currentToken) => {
+      if (currentToken) {
+        // Send the token to your server and update the UI if necessary
+        // ...
+      } else {
+        // Show permission request UI
+        console.log('No registration token available. Request permission to generate one.');
+        // ...
+      }
+    })
+    .catch((err) => {
+      console.log('An error occurred while retrieving token. ', err);
       // ...
-    } else {
-      // Show permission request UI
-      console.log('No registration token available. Request permission to generate one.');
-      // ...
-    }
-  }).catch((err) => {
-    console.log('An error occurred while retrieving token. ', err);
-    // ...
-  });
+    });
   // [END messaging_get_token]
 }
 
@@ -64,14 +66,16 @@ function requestPermission() {
 
 function deleteToken() {
   // [START messaging_delete_token]
-  const { getMessaging, deleteToken } = require("firebase/messaging");
+  const { getMessaging, deleteToken } = require('firebase/messaging');
 
   const messaging = getMessaging();
-  deleteToken(messaging).then(() => {
-    console.log('Token deleted.');
-    // ...
-  }).catch((err) => {
-    console.log('Unable to delete token. ', err);
-  });
+  deleteToken(messaging)
+    .then(() => {
+      console.log('Token deleted.');
+      // ...
+    })
+    .catch((err) => {
+      console.log('Unable to delete token. ', err);
+    });
   // [END messaging_delete_token]
 }

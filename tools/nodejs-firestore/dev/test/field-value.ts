@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
 
-import {FieldValue} from '../src';
+import { FieldValue } from '../src';
 import {
-  ApiOverride,
+  type ApiOverride,
   arrayTransform,
   createInstance,
   document,
+  type InvalidApiUsage,
   incrementTransform,
-  InvalidApiUsage,
   requestEquals,
   response,
   serverTimestamp,
@@ -32,44 +32,40 @@ import {
 
 function genericFieldValueTests(methodName: string, sentinel: FieldValue) {
   it("can't be used inside arrays", () => {
-    return createInstance().then(firestore => {
+    return createInstance().then((firestore) => {
       const docRef = firestore.doc('coll/doc');
-      const expectedErr = new RegExp(
-        `${methodName}\\(\\) cannot be used inside of an array`,
-      );
-      expect(() => docRef.set({a: [sentinel]})).to.throw(expectedErr);
-      expect(() => docRef.set({a: {b: [sentinel]}})).to.throw(expectedErr);
+      const expectedErr = new RegExp(`${methodName}\\(\\) cannot be used inside of an array`);
+      expect(() => docRef.set({ a: [sentinel] })).to.throw(expectedErr);
+      expect(() => docRef.set({ a: { b: [sentinel] } })).to.throw(expectedErr);
       expect(() =>
         docRef.set({
-          a: [{b: sentinel}],
+          a: [{ b: sentinel }],
         }),
       ).to.throw(expectedErr);
-      expect(() => docRef.set({a: {b: {c: [sentinel]}}})).to.throw(expectedErr);
+      expect(() => docRef.set({ a: { b: { c: [sentinel] } } })).to.throw(expectedErr);
     });
   });
 
   it("can't be used inside arrayUnion()", () => {
-    return createInstance().then(firestore => {
+    return createInstance().then((firestore) => {
       const docRef = firestore.doc('collectionId/documentId');
-      expect(() => docRef.set({foo: FieldValue.arrayUnion(sentinel)})).to.throw(
+      expect(() => docRef.set({ foo: FieldValue.arrayUnion(sentinel) })).to.throw(
         `Element at index 0 is not a valid array element. ${methodName}() cannot be used inside of an array.`,
       );
     });
   });
 
   it("can't be used inside arrayRemove()", () => {
-    return createInstance().then(firestore => {
+    return createInstance().then((firestore) => {
       const docRef = firestore.doc('collectionId/documentId');
-      expect(() =>
-        docRef.set({foo: FieldValue.arrayRemove(sentinel)}),
-      ).to.throw(
+      expect(() => docRef.set({ foo: FieldValue.arrayRemove(sentinel) })).to.throw(
         `Element at index 0 is not a valid array element. ${methodName}() cannot be used inside of an array.`,
       );
     });
   });
 
   it("can't be used with queries", () => {
-    return createInstance().then(firestore => {
+    return createInstance().then((firestore) => {
       const collRef = firestore.collection('coll');
       expect(() => collRef.where('a', '==', sentinel)).to.throw(
         `Value for argument "value" is not a valid query constraint. ${methodName}() can only be used in set(), create() or update().`,
@@ -98,7 +94,7 @@ describe('FieldValue.arrayUnion()', () => {
 
   it('can be used with set()', () => {
     const overrides: ApiOverride = {
-      commit: request => {
+      commit: (request) => {
         const expectedRequest = set({
           document: document('documentId', 'foo', 'bar'),
           transforms: [
@@ -113,21 +109,20 @@ describe('FieldValue.arrayUnion()', () => {
       },
     };
 
-    return createInstance(overrides).then(firestore => {
+    return createInstance(overrides).then((firestore) => {
       return firestore.doc('collectionId/documentId').set({
         foo: 'bar',
         field: FieldValue.arrayUnion('foo', 'bar'),
-        map: {field: FieldValue.arrayUnion('foo', 'bar')},
+        map: { field: FieldValue.arrayUnion('foo', 'bar') },
       });
     });
   });
 
   it('must not contain directly nested arrays', () => {
-    return createInstance().then(firestore => {
+    return createInstance().then((firestore) => {
       const docRef = firestore.doc('collectionId/documentId');
-      expect(() => docRef.set({foo: FieldValue.arrayUnion([])})).to.throw(
-        'Element at index 0 is not a valid array element. Nested arrays are ' +
-          'not supported.',
+      expect(() => docRef.set({ foo: FieldValue.arrayUnion([]) })).to.throw(
+        'Element at index 0 is not a valid array element. Nested arrays are ' + 'not supported.',
       );
     });
   });
@@ -143,14 +138,12 @@ describe('FieldValue.increment()', () => {
   });
 
   it('validates that operand is number', () => {
-    return createInstance().then(firestore => {
+    return createInstance().then((firestore) => {
       expect(() => {
         return firestore.doc('collectionId/documentId').set({
           foo: FieldValue.increment('foo' as InvalidApiUsage),
         });
-      }).to.throw(
-        'Value for argument "FieldValue.increment()" is not a valid number',
-      );
+      }).to.throw('Value for argument "FieldValue.increment()" is not a valid number');
     });
   });
 
@@ -164,24 +157,21 @@ describe('FieldValue.increment()', () => {
 
   it('can be used with set()', () => {
     const overrides: ApiOverride = {
-      commit: request => {
+      commit: (request) => {
         const expectedRequest = set({
           document: document('documentId', 'foo', 'bar'),
-          transforms: [
-            incrementTransform('field', 42),
-            incrementTransform('map.field', 13.37),
-          ],
+          transforms: [incrementTransform('field', 42), incrementTransform('map.field', 13.37)],
         });
         requestEquals(request, expectedRequest);
         return response(writeResult(1));
       },
     };
 
-    return createInstance(overrides).then(firestore => {
+    return createInstance(overrides).then((firestore) => {
       return firestore.doc('collectionId/documentId').set({
         foo: 'bar',
         field: FieldValue.increment(42),
-        map: {field: FieldValue.increment(13.37)},
+        map: { field: FieldValue.increment(13.37) },
       });
     });
   });
@@ -206,7 +196,7 @@ describe('FieldValue.arrayRemove()', () => {
 
   it('can be used with set()', () => {
     const overrides: ApiOverride = {
-      commit: request => {
+      commit: (request) => {
         const expectedRequest = set({
           document: document('documentId', 'foo', 'bar'),
           transforms: [
@@ -220,29 +210,25 @@ describe('FieldValue.arrayRemove()', () => {
       },
     };
 
-    return createInstance(overrides).then(firestore => {
+    return createInstance(overrides).then((firestore) => {
       return firestore.doc('collectionId/documentId').set({
         foo: 'bar',
         field: FieldValue.arrayRemove('foo', 'bar'),
-        map: {field: FieldValue.arrayRemove('foo', 'bar')},
+        map: { field: FieldValue.arrayRemove('foo', 'bar') },
       });
     });
   });
 
   it('must not contain directly nested arrays', () => {
-    return createInstance().then(firestore => {
+    return createInstance().then((firestore) => {
       const docRef = firestore.doc('collectionId/documentId');
-      expect(() => docRef.set({foo: FieldValue.arrayRemove([])})).to.throw(
-        'Element at index 0 is not a valid array element. Nested arrays are ' +
-          'not supported.',
+      expect(() => docRef.set({ foo: FieldValue.arrayRemove([]) })).to.throw(
+        'Element at index 0 is not a valid array element. Nested arrays are ' + 'not supported.',
       );
     });
   });
 
-  genericFieldValueTests(
-    'FieldValue.arrayRemove',
-    FieldValue.arrayRemove('foo'),
-  );
+  genericFieldValueTests('FieldValue.arrayRemove', FieldValue.arrayRemove('foo'));
 });
 
 describe('FieldValue.serverTimestamp()', () => {
@@ -254,7 +240,7 @@ describe('FieldValue.serverTimestamp()', () => {
 
   it('can be used with set()', () => {
     const overrides: ApiOverride = {
-      commit: request => {
+      commit: (request) => {
         const expectedRequest = set({
           document: document('documentId', 'foo', 'bar'),
           transforms: [serverTimestamp('field'), serverTimestamp('map.field')],
@@ -265,17 +251,14 @@ describe('FieldValue.serverTimestamp()', () => {
       },
     };
 
-    return createInstance(overrides).then(firestore => {
+    return createInstance(overrides).then((firestore) => {
       return firestore.doc('collectionId/documentId').set({
         foo: 'bar',
         field: FieldValue.serverTimestamp(),
-        map: {field: FieldValue.serverTimestamp()},
+        map: { field: FieldValue.serverTimestamp() },
       });
     });
   });
 
-  genericFieldValueTests(
-    'FieldValue.serverTimestamp',
-    FieldValue.serverTimestamp(),
-  );
+  genericFieldValueTests('FieldValue.serverTimestamp', FieldValue.serverTimestamp());
 });

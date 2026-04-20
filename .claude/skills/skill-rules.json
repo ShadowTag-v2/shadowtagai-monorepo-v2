@@ -83,19 +83,8 @@
       ]
     },
     "fileTriggers": {
-      "pathPatterns": [
-        "**/ARCHITECTURE.md",
-        "**/PLAN.md",
-        "**/dev/active/**/*",
-        "**/CLAUDE.md"
-      ],
-      "contentPatterns": [
-        "## Architecture",
-        "## Plan",
-        "Monte Carlo",
-        "ROI",
-        "LTV:CAC"
-      ]
+      "pathPatterns": ["**/ARCHITECTURE.md", "**/PLAN.md", "**/dev/active/**/*", "**/CLAUDE.md"],
+      "contentPatterns": ["## Architecture", "## Plan", "Monte Carlo", "ROI", "LTV:CAC"]
     }
   },
 
@@ -209,12 +198,7 @@
       ]
     },
     "fileTriggers": {
-      "pathPatterns": [
-        "**/ai-assist/**/*",
-        "**/llm/**/*",
-        "**/providers/**/*",
-        "**/router/**/*"
-      ],
+      "pathPatterns": ["**/ai-assist/**/*", "**/llm/**/*", "**/providers/**/*", "**/router/**/*"],
       "contentPatterns": [
         "OpenAI",
         "Anthropic",
@@ -305,17 +289,8 @@
       ]
     },
     "fileTriggers": {
-      "pathPatterns": [
-        "**/ARCHITECTURE.md",
-        "**/DESIGN.md",
-        "**/PLAN.md"
-      ],
-      "contentPatterns": [
-        "## Ultrathink",
-        "Steve Jobs",
-        "Reality Distortion",
-        "Insanely Great"
-      ]
+      "pathPatterns": ["**/ARCHITECTURE.md", "**/DESIGN.md", "**/PLAN.md"],
+      "contentPatterns": ["## Ultrathink", "Steve Jobs", "Reality Distortion", "Insanely Great"]
     }
   },
 
@@ -343,18 +318,8 @@
       ]
     },
     "fileTriggers": {
-      "pathPatterns": [
-        "**/requirements/**/*",
-        "**/specs/**/*",
-        "**/PLAN.md"
-      ],
-      "contentPatterns": [
-        "## Verb Analysis",
-        "Action Verbs",
-        "RECEIVES",
-        "VALIDATES",
-        "TRANSFORMS"
-      ]
+      "pathPatterns": ["**/requirements/**/*", "**/specs/**/*", "**/PLAN.md"],
+      "contentPatterns": ["## Verb Analysis", "Action Verbs", "RECEIVES", "VALIDATES", "TRANSFORMS"]
     }
   },
 
@@ -381,11 +346,7 @@
     },
     "fileTriggers": {
       "pathPatterns": [],
-      "contentPatterns": [
-        "Step 1:",
-        "Let's think step by step",
-        "Therefore"
-      ]
+      "contentPatterns": ["Step 1:", "Let's think step by step", "Therefore"]
     }
   },
 
@@ -415,13 +376,7 @@
     },
     "fileTriggers": {
       "pathPatterns": [],
-      "contentPatterns": [
-        "## Approach A",
-        "## Option 1",
-        "Pros:",
-        "Cons:",
-        "Selected:"
-      ]
+      "contentPatterns": ["## Approach A", "## Option 1", "Pros:", "Cons:", "Selected:"]
     }
   },
 
@@ -449,12 +404,7 @@
     },
     "fileTriggers": {
       "pathPatterns": [],
-      "contentPatterns": [
-        "Expert 1:",
-        "Alice:",
-        "Consensus:",
-        "Panel Discussion"
-      ]
+      "contentPatterns": ["Expert 1:", "Alice:", "Consensus:", "Panel Discussion"]
     }
   },
 
@@ -483,13 +433,7 @@
     },
     "fileTriggers": {
       "pathPatterns": [],
-      "contentPatterns": [
-        "## REFLECT",
-        "## CRITIQUE",
-        "## REFINE",
-        "Agent 1:",
-        "\\\\boxed{"
-      ]
+      "contentPatterns": ["## REFLECT", "## CRITIQUE", "## REFINE", "Agent 1:", "\\\\boxed{"]
     }
   },
 
@@ -516,18 +460,8 @@
       ]
     },
     "fileTriggers": {
-      "pathPatterns": [
-        "**/prompts/**/*",
-        "**/templates/**/*"
-      ],
-      "contentPatterns": [
-        "Role:",
-        "Task:",
-        "Format:",
-        "Before:",
-        "After:",
-        "Bridge:"
-      ]
+      "pathPatterns": ["**/prompts/**/*", "**/templates/**/*"],
+      "contentPatterns": ["Role:", "Task:", "Format:", "Before:", "After:", "Bridge:"]
     }
   }
 }

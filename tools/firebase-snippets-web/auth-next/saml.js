@@ -3,15 +3,15 @@
 
 function samlProvider() {
   // [START auth_saml_provider_create]
-  const { SAMLAuthProvider } = require("firebase/auth");
+  const { SAMLAuthProvider } = require('firebase/auth');
 
-  const provider = new SAMLAuthProvider("saml.myProvider");
+  const provider = new SAMLAuthProvider('saml.myProvider');
   // [END auth_saml_provider_create]
 }
 
 function samlSignInPopup(provider) {
   // [START auth_saml_signin_popup]
-  const { getAuth, signInWithPopup, SAMLAuthProvider } = require("firebase/auth");
+  const { getAuth, signInWithPopup, SAMLAuthProvider } = require('firebase/auth');
 
   const auth = getAuth();
   signInWithPopup(auth, provider)
@@ -19,7 +19,8 @@ function samlSignInPopup(provider) {
       // User is signed in.
       // Provider data available from the result.user.getIdToken()
       // or from result.user.providerData
-    }).catch((error) => {
+    })
+    .catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -35,7 +36,7 @@ function samlSignInPopup(provider) {
 
 function samlSignInRedirect(provider) {
   // [START auth_saml_signin_redirect]
-  const { getAuth, signInWithRedirect } = require("firebase/auth");
+  const { getAuth, signInWithRedirect } = require('firebase/auth');
 
   const auth = getAuth();
   signInWithRedirect(auth, provider);
@@ -44,7 +45,7 @@ function samlSignInRedirect(provider) {
 
 function samlSignInRedirectResult(provider) {
   // [START auth_saml_signin_redirect_result]
-  const { getAuth, getRedirectResult, SAMLAuthProvider } = require("firebase/auth");
+  const { getAuth, getRedirectResult, SAMLAuthProvider } = require('firebase/auth');
 
   const auth = getAuth();
   getRedirectResult(auth)

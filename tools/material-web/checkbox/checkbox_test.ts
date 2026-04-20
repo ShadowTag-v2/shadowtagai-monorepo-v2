@@ -6,12 +6,12 @@
 
 // import 'jasmine'; (google3-only)
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {createFormTests} from '../testing/forms.js';
-import {createTokenTests} from '../testing/tokens.js';
+import { createFormTests } from '../testing/forms.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdCheckbox} from './checkbox.js';
+import { MdCheckbox } from './checkbox.js';
 
 describe('<md-checkbox>', () => {
   describe('.styles', () => {
@@ -42,8 +42,7 @@ describe('<md-checkbox>', () => {
         },
         {
           name: 'checked default value',
-          render: () =>
-            html`<md-checkbox name="checkbox" checked></md-checkbox>`,
+          render: () => html`<md-checkbox name="checkbox" checked></md-checkbox>`,
           assertValue(formData) {
             expect(formData.get('checkbox')).toBe('on');
           },
@@ -74,8 +73,7 @@ describe('<md-checkbox>', () => {
         },
         {
           name: 'disabled',
-          render: () =>
-            html`<md-checkbox name="checkbox" checked disabled></md-checkbox>`,
+          render: () => html`<md-checkbox name="checkbox" checked disabled></md-checkbox>`,
           assertValue(formData) {
             expect(formData)
               .withContext('should not add anything to form when disabled')
@@ -91,28 +89,22 @@ describe('<md-checkbox>', () => {
             checkbox.checked = true;
           },
           assertReset(checkbox) {
-            expect(checkbox.checked)
-              .withContext('checkbox.checked after reset')
-              .toBeFalse();
+            expect(checkbox.checked).withContext('checkbox.checked after reset').toBeFalse();
           },
         },
         {
           name: 'reset to checked',
-          render: () =>
-            html`<md-checkbox name="checkbox" checked></md-checkbox>`,
+          render: () => html`<md-checkbox name="checkbox" checked></md-checkbox>`,
           change(checkbox) {
             checkbox.checked = false;
           },
           assertReset(checkbox) {
-            expect(checkbox.checked)
-              .withContext('checkbox.checked after reset')
-              .toBeTrue();
+            expect(checkbox.checked).withContext('checkbox.checked after reset').toBeTrue();
           },
         },
         {
           name: 'reset to indeterminate',
-          render: () =>
-            html`<md-checkbox name="checkbox" indeterminate></md-checkbox>`,
+          render: () => html`<md-checkbox name="checkbox" indeterminate></md-checkbox>`,
           change(checkbox) {
             checkbox.indeterminate = false;
           },
@@ -128,25 +120,19 @@ describe('<md-checkbox>', () => {
           name: 'restore unchecked',
           render: () => html`<md-checkbox name="checkbox"></md-checkbox>`,
           assertRestored(checkbox) {
-            expect(checkbox.checked)
-              .withContext('checkbox.checked after restore')
-              .toBeFalse();
+            expect(checkbox.checked).withContext('checkbox.checked after restore').toBeFalse();
           },
         },
         {
           name: 'restore checked',
-          render: () =>
-            html`<md-checkbox name="checkbox" checked></md-checkbox>`,
+          render: () => html`<md-checkbox name="checkbox" checked></md-checkbox>`,
           assertRestored(checkbox) {
-            expect(checkbox.checked)
-              .withContext('checkbox.checked after restore')
-              .toBeTrue();
+            expect(checkbox.checked).withContext('checkbox.checked after restore').toBeTrue();
           },
         },
         {
           name: 'restore indeterminate',
-          render: () =>
-            html`<md-checkbox name="checkbox" indeterminate></md-checkbox>`,
+          render: () => html`<md-checkbox name="checkbox" indeterminate></md-checkbox>`,
           assertRestored(checkbox) {
             expect(checkbox.indeterminate)
               .withContext('checkbox.indeterminate should not be restored')

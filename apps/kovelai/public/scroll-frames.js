@@ -16,9 +16,7 @@
  *   3. Drop this script on any page with <canvas id="scroll-canvas">
  */
 
-(function () {
-  'use strict';
-
+(() => {
   // ── Configuration ──
   const CONFIG = {
     frameDir: 'frames/hero_drift_0',
@@ -27,9 +25,9 @@
     totalFrames: 80,
     frameDigits: 4,
     lazyThreshold: 0.05,
-    enableWebP: true,
+    enableWebP: false, // PNG only — ffmpeg webp encoder not available
     enableRetina: true,
-    videoFallbackSrc: 'labs/uphillsnowball/external_payloads/veo_output/hero_drift_0.mp4',
+    videoFallbackSrc: '/videos/hero-drift-compressed.mp4',
     lowPowerThreshold: 4, // CPU cores threshold for fallback
   };
 
@@ -110,7 +108,9 @@
     if (!progressBar) return;
     progressBar.style.width = `${pct}%`;
     if (pct >= 100) {
-      setTimeout(() => { progressBar.style.opacity = '0'; }, 800);
+      setTimeout(() => {
+        progressBar.style.opacity = '0';
+      }, 800);
     }
   }
 
@@ -145,7 +145,9 @@
         images[i].addEventListener('error', () => {
           // Fallback: if WebP fails, try PNG
           if (CONFIG.enableWebP && images[i].src.includes('.webp')) {
-            const pngUrl = images[i].src.replace(CONFIG.webpDir, CONFIG.frameDir).replace('.webp', '.png');
+            const pngUrl = images[i].src
+              .replace(CONFIG.webpDir, CONFIG.frameDir)
+              .replace('.webp', '.png');
             images[i].src = pngUrl;
           }
         });
@@ -162,7 +164,7 @@
   // ── Canvas sizing with retina support (#19) ──
   function resizeCanvas() {
     if (!canvas) return;
-    const dpr = CONFIG.enableRetina ? (window.devicePixelRatio || 1) : 1;
+    const dpr = CONFIG.enableRetina ? window.devicePixelRatio || 1 : 1;
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
     canvas.style.width = '100%';
@@ -175,14 +177,17 @@
   function drawFrame(index) {
     if (!ctx || !images[index] || !images[index].complete || !images[index].naturalWidth) return;
     const img = images[index];
-    const dpr = CONFIG.enableRetina ? (window.devicePixelRatio || 1) : 1;
+    const dpr = CONFIG.enableRetina ? window.devicePixelRatio || 1 : 1;
     const cw = canvas.width / dpr;
     const ch = canvas.height / dpr;
 
     // Cover-fit
     const canvasAspect = cw / ch;
     const imgAspect = img.naturalWidth / img.naturalHeight;
-    let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+    let sx = 0,
+      sy = 0,
+      sw = img.naturalWidth,
+      sh = img.naturalHeight;
 
     if (imgAspect > canvasAspect) {
       sw = img.naturalHeight * canvasAspect;
@@ -227,7 +232,7 @@
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' },
     );
 
     document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
@@ -236,7 +241,8 @@
   // ── Register Service Worker (#8) ──
   function registerSW() {
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
+      navigator.serviceWorker
+        .register('/sw.js')
         .then((reg) => console.log('[SW] Registered:', reg.scope))
         .catch((err) => console.warn('[SW] Registration failed:', err));
     }

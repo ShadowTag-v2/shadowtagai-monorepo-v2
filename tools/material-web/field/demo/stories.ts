@@ -8,9 +8,9 @@ import '@material/web/field/filled-field.js';
 import '@material/web/field/outlined-field.js';
 import '@material/web/icon/icon.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {css, html, nothing} from 'lit';
-import {styleMap} from 'lit/directives/style-map.js';
+import { css, html, nothing } from 'lit';
+import { styleMap } from 'lit/directives/style-map.js';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for field stories. */
 export interface StoryKnobs {
@@ -65,7 +65,7 @@ const filled: MaterialStoryInit<StoryKnobs> = {
       ? html`<textarea rows="1" ?disabled=${disabled}></textarea>`
       : html`<input ?disabled=${disabled} />`;
 
-    const styles = {resize: resizable ? 'both' : null};
+    const styles = { resize: resizable ? 'both' : null };
     return html`
       <md-filled-field
         style=${styleMap(styles)}
@@ -116,7 +116,7 @@ const outlined: MaterialStoryInit<StoryKnobs> = {
           aria-describedby="description"></textarea>`
       : html`<input ?disabled=${disabled} aria-describedby="description" />`;
 
-    const styles = {resize: resizable ? 'both' : null};
+    const styles = { resize: resizable ? 'both' : null };
     return html`
       <md-outlined-field
         style=${styleMap(styles)}

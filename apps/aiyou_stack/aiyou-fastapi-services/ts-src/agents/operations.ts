@@ -2,23 +2,23 @@
  * Operations Agents for Vertex AI Workbench
  */
 import {
-  BaseAgent,
-  type AgentMetadata,
   AgentCategory,
   type AgentContext,
   type AgentExecutionResult,
-} from "./base";
+  type AgentMetadata,
+  BaseAgent,
+} from './base';
 
 export class DeploymentWizard extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "Deployment Wizard",
+      name: 'Deployment Wizard',
       description:
-        "Sets up CI/CD that actually works. Push to main, deploy to production. No more manual steps.",
+        'Sets up CI/CD that actually works. Push to main, deploy to production. No more manual steps.',
       category: AgentCategory.OPERATIONS,
-      icon: "🚀",
-      version: "1.0.0",
-      tags: ["cicd", "deployment", "automation", "devops", "pipelines"],
+      icon: '🚀',
+      version: '1.0.0',
+      tags: ['cicd', 'deployment', 'automation', 'devops', 'pipelines'],
     };
   }
 
@@ -52,13 +52,13 @@ Manual deployments are error-prone and slow. Automate everything from commit to 
 export class InfrastructureBuilder extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "Infrastructure Builder",
+      name: 'Infrastructure Builder',
       description:
         "Designs cloud architecture that scales and doesn't bankrupt you. Terraform included.",
       category: AgentCategory.OPERATIONS,
-      icon: "☁️",
-      version: "1.0.0",
-      tags: ["infrastructure", "cloud", "terraform", "iac", "aws", "gcp"],
+      icon: '☁️',
+      version: '1.0.0',
+      tags: ['infrastructure', 'cloud', 'terraform', 'iac', 'aws', 'gcp'],
     };
   }
 
@@ -92,13 +92,13 @@ Build infrastructure that scales automatically and costs predictably. Use code, 
 export class MonitoringExpert extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "Monitoring Expert",
+      name: 'Monitoring Expert',
       description:
-        "Knows when your app breaks before users complain. Sets up alerts, logs, and dashboards.",
+        'Knows when your app breaks before users complain. Sets up alerts, logs, and dashboards.',
       category: AgentCategory.OPERATIONS,
-      icon: "📈",
-      version: "1.0.0",
-      tags: ["monitoring", "observability", "logging", "metrics", "alerts"],
+      icon: '📈',
+      version: '1.0.0',
+      tags: ['monitoring', 'observability', 'logging', 'metrics', 'alerts'],
     };
   }
 
@@ -132,13 +132,13 @@ You can't fix what you can't see. Monitor everything, alert on what matters.`;
 export class ReleaseManager extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "Release Manager",
+      name: 'Release Manager',
       description:
-        "Handles deployments without downtime. Feature flags, rollbacks, and smooth releases.",
+        'Handles deployments without downtime. Feature flags, rollbacks, and smooth releases.',
       category: AgentCategory.OPERATIONS,
-      icon: "📦",
-      version: "1.0.0",
-      tags: ["release", "deployment", "feature-flags", "rollback", "versioning"],
+      icon: '📦',
+      version: '1.0.0',
+      tags: ['release', 'deployment', 'feature-flags', 'rollback', 'versioning'],
     };
   }
 
@@ -172,13 +172,13 @@ Deploy fearlessly. Good release processes make shipping fast and safe.`;
 export class CostOptimizer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "Cost Optimizer",
+      name: 'Cost Optimizer',
       description:
-        "Cuts your AWS bill by 50%. Finds waste, right-sizes everything, implements auto-scaling.",
+        'Cuts your AWS bill by 50%. Finds waste, right-sizes everything, implements auto-scaling.',
       category: AgentCategory.OPERATIONS,
-      icon: "💵",
-      version: "1.0.0",
-      tags: ["cost", "optimization", "cloud", "finops", "efficiency"],
+      icon: '💵',
+      version: '1.0.0',
+      tags: ['cost', 'optimization', 'cloud', 'finops', 'efficiency'],
     };
   }
 

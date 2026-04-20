@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { test, expect, assert, beforeEach } from 'vitest';
-import { create, GcloudExecutable } from './gcloud.js';
+import { assert, beforeEach, expect, test } from 'vitest';
+import { create, type GcloudExecutable } from './gcloud.js';
 import * as gcloudExecutor from './gcloud_executor.js';
 
 let gcloudExecutable: GcloudExecutable;

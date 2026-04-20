@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {LitElement} from 'lit';
+import type { LitElement } from 'lit';
 
-import {internals, WithElementInternals} from './element-internals.js';
-import {MixinBase, MixinReturn} from './mixin.js';
+import { internals, type WithElementInternals } from './element-internals.js';
+import type { MixinBase, MixinReturn } from './mixin.js';
 
 /**
  * A unique symbol used to check if an element's `CustomStateSet` has a state.
@@ -115,13 +115,10 @@ const privateGetStateIdentifier = Symbol('privateGetStateIdentifier');
  * @return The provided class with `[hasState]()` and `[toggleState]()`
  *     functions mixed in.
  */
-export function mixinCustomStateSet<
-  T extends MixinBase<LitElement & WithElementInternals>,
->(base: T): MixinReturn<T, WithCustomStateSet> {
-  abstract class WithCustomStateSetElement
-    extends base
-    implements WithCustomStateSet
-  {
+export function mixinCustomStateSet<T extends MixinBase<LitElement & WithElementInternals>>(
+  base: T,
+): MixinReturn<T, WithCustomStateSet> {
+  abstract class WithCustomStateSetElement extends base implements WithCustomStateSet {
     [hasState](state: string) {
       state = this[privateGetStateIdentifier](state);
       return this[internals].states.has(state);

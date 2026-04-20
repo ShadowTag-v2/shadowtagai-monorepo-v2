@@ -7,33 +7,28 @@
 import './material-collection.js';
 import './index.js';
 
-import {FabSize} from '@material/web/fab/fab.js';
+import type { FabSize } from '@material/web/fab/fab.js';
+import { boolInput, Knob, selectDropdown, textInput } from './index.js';
 import {
-  KnobTypesToKnobs,
+  type KnobTypesToKnobs,
   MaterialCollection,
   materialInitsToStoryInits,
   setUpDemo,
 } from './material-collection.js';
-import {
-  boolInput,
-  Knob,
-  selectDropdown,
-  textInput,
-} from './index.js';
 
-import {stories, StoryKnobs} from './stories.js';
+import { type StoryKnobs, stories } from './stories.js';
 
 const collection = new MaterialCollection<KnobTypesToKnobs<StoryKnobs>>('FAB', [
-  new Knob('icon', {defaultValue: 'edit', ui: textInput()}),
-  new Knob('label', {defaultValue: '', ui: textInput()}),
-  new Knob('lowered', {defaultValue: false, ui: boolInput()}),
+  new Knob('icon', { defaultValue: 'edit', ui: textInput() }),
+  new Knob('label', { defaultValue: '', ui: textInput() }),
+  new Knob('lowered', { defaultValue: false, ui: boolInput() }),
   new Knob('size', {
     defaultValue: 'medium' as FabSize,
     ui: selectDropdown<FabSize>({
       options: [
-        {label: 'medium', value: 'medium'},
-        {label: 'small', value: 'small'},
-        {label: 'large', value: 'large'},
+        { label: 'medium', value: 'medium' },
+        { label: 'small', value: 'small' },
+        { label: 'large', value: 'large' },
       ],
     }),
   }),
@@ -41,4 +36,4 @@ const collection = new MaterialCollection<KnobTypesToKnobs<StoryKnobs>>('FAB', [
 
 collection.addStories(...materialInitsToStoryInits(stories));
 
-setUpDemo(collection, {icons: 'material-symbols'});
+setUpDemo(collection, { icons: 'material-symbols' });

@@ -3,4 +3,4 @@
  * Invariant #92: libs/ui/ is the CANONICAL shared frontend library.
  */
 
-export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from './Button';
+export { Button, type ButtonProps, type ButtonSize, type ButtonVariant } from './Button';

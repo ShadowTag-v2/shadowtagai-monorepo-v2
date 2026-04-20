@@ -8,17 +8,15 @@ import './material-collection.js';
 import './index.js';
 
 import {
-  KnobTypesToKnobs,
+  type KnobTypesToKnobs,
   MaterialCollection,
   materialInitsToStoryInits,
   setUpDemo,
 } from './material-collection.js';
 
-import {stories, StoryKnobs} from './stories.js';
+import { type StoryKnobs, stories } from './stories.js';
 
-const collection = new MaterialCollection<KnobTypesToKnobs<StoryKnobs>>(
-  'Divider',
-);
+const collection = new MaterialCollection<KnobTypesToKnobs<StoryKnobs>>('Divider');
 
 collection.addStories(...materialInitsToStoryInits(stories));
 

@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {MaterialStoryInit} from './material-collection.js';
-import {ripple} from '@material/web/labs/gb/components/ripple/ripple.js';
-import {styles as rippleStyles} from '@material/web/labs/gb/components/ripple/ripple.cssresult.js';
-import {css, html} from 'lit';
+import { styles as rippleStyles } from '@material/web/labs/gb/components/ripple/ripple.cssresult.js';
+import { ripple } from '@material/web/labs/gb/components/ripple/ripple.js';
+import { css, html } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for ripple stories. */
-export interface StoryKnobs {}
+export type StoryKnobs = {};
 
 const styles = [
   rippleStyles,

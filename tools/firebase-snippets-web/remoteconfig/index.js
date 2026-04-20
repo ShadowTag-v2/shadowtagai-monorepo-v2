@@ -1,5 +1,5 @@
-import firebase from "firebase";
-import "firebase/remote-config";
+import firebase from 'firebase';
+import 'firebase/remote-config';
 
 function getInstance() {
   // [START rc_get_instance]
@@ -18,7 +18,7 @@ function setDefaultValues() {
   const remoteConfig = firebase.remoteConfig();
   // [START rc_set_default_values]
   remoteConfig.defaultConfig = {
-    "welcome_message": "Welcome"
+    welcome_message: 'Welcome',
   };
   // [END rc_set_default_values]
 }
@@ -26,14 +26,15 @@ function setDefaultValues() {
 function getValues() {
   const remoteConfig = firebase.remoteConfig();
   // [START rc_get_values]
-  const val = remoteConfig.getValue("welcome_messsage");
+  const val = remoteConfig.getValue('welcome_messsage');
   // [END rc_get_values]
 }
 
 function fetchConfigCallback() {
   const remoteConfig = firebase.remoteConfig();
   // [START rc_fetch_config_callback]
-  remoteConfig.fetchAndActivate()
+  remoteConfig
+    .fetchAndActivate()
     .then(() => {
       // ...
     })

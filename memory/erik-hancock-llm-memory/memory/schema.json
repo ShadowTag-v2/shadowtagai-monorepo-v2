@@ -20,7 +20,7 @@
     }
   },
   "llm_allocation": {
-    "gemini": 0.40,
+    "gemini": 0.4,
     "claude": 0.35,
     "gpt5": 0.15,
     "perplexity": 0.05,

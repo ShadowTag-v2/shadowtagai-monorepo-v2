@@ -6,9 +6,9 @@
 
 // import 'jasmine'; (google3-only)
 
-import {createTokenTests} from '../testing/tokens.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdFocusRing} from './md-focus-ring.js';
+import { MdFocusRing } from './md-focus-ring.js';
 
 describe('<md-focus-ring>', () => {
   describe('.styles', () => {

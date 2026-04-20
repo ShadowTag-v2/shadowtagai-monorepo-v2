@@ -48,13 +48,7 @@ function handleGenerateClick() {
   const sHeader = JSON.stringify(oHeader);
   const sPayload = JSON.stringify(oPayload);
 
-  const sJWT = KJUR.jws.JWS.sign(
-    null,
-    sHeader,
-    sPayload,
-    sPKCS8PEM,
-    'notasecret',
-  );
+  const sJWT = KJUR.jws.JWS.sign(null, sHeader, sPayload, sPKCS8PEM, 'notasecret');
 
   const tokenBox = document.getElementById('tokenbox')! as HTMLParagraphElement;
   tokenBox.textContent = sJWT;
@@ -64,9 +58,7 @@ function handleGenerateClick() {
     '<a href="../customauth.html#token=' +
     sJWT +
     '">Use this token in the web custom auth example</a>';
-  const linkToTokenBox = document.getElementById(
-    'linktokenbox',
-  )! as HTMLParagraphElement;
+  const linkToTokenBox = document.getElementById('linktokenbox')! as HTMLParagraphElement;
   linkToTokenBox.innerHTML = link;
 }
 
@@ -85,7 +77,7 @@ function handleFileSelect(evt: Event) {
 
 function loadJson(f: File) {
   const reader = new FileReader();
-  reader.onload = function () {
+  reader.onload = () => {
     const data = JSON.parse(reader.result?.toString()!);
     console.log(data);
     if (data.type && data.type === 'service_account') {

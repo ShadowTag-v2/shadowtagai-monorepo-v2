@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START storage_download_via_url_modular]
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
 const storage = getStorage();
 getDownloadURL(ref(storage, 'images/stars.jpg'))

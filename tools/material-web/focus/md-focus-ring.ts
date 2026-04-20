@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {CSSResultOrNative} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import type { CSSResultOrNative } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {FocusRing} from './internal/focus-ring.js';
-import {styles} from './internal/focus-ring-styles.cssresult.js';
+import { FocusRing } from './internal/focus-ring.js';
+import { styles } from './internal/focus-ring-styles.cssresult.js';
 
 declare global {
   interface HTMLElementTagNameMap {

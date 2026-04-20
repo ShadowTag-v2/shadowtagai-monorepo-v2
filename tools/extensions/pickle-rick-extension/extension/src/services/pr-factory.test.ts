@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as fs from 'node:fs';
-import { createPR } from './pr-factory.js';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { run_cmd } from './pickle-utils.js';
+import { createPR } from './pr-factory.js';
 
 vi.mock('node:fs');
 vi.mock('./pickle-utils.js', () => ({
@@ -30,7 +30,7 @@ describe('pr_factory', () => {
 
     expect(run_cmd).toHaveBeenCalledWith(
       expect.arrayContaining(['gh', 'pr', 'create']),
-      expect.objectContaining({ cwd: '/repo' })
+      expect.objectContaining({ cwd: '/repo' }),
     );
     expect(result).toBe('https://github.com/pr/1');
   });

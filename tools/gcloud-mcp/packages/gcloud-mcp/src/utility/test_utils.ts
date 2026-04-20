@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ChildProcess } from 'child_process';
+import type { ChildProcess } from 'child_process';
 import { EventEmitter } from 'events';
 import { Readable, Writable } from 'stream';
 

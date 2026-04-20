@@ -10,14 +10,13 @@
  * else related to code styles.
  */
 
- :root {
+:root {
   --__code-block-font-size: var(--catalog-body-m-font-size);
   --playground-highlight-color: var(--md-sys-color-primary);
   --playground-code-font-size: var(--__code-block-font-size);
   --playground-code-background: var(--md-sys-color-surface-variant);
   --playground-code-default-color: var(--md-sys-color-on-surface-variant);
-  --playground-code-font-family: 'Google Sans Mono', Menlo, Monaco,
-    'Courier New', monospace;
+  --playground-code-font-family: 'Google Sans Mono', Menlo, Monaco, 'Courier New', monospace;
   --playground-code-callee-color: var(--md-sys-color-primary);
   --playground-code-comment-color: var(--md-sys-color-on-surface-dim);
   --playground-code-operator-color: var(--md-sys-color-on-surface);
@@ -36,15 +35,13 @@
   --playground-code-linenumber-color: var(--md-sys-color-outline);
   --playground-code-qualifier-color: var(--md-sys-color-tertiary);
   --playground-code-cursor-color: var(--md-sys-color-on-surface-variant);
-  --playground-preview-toolbar-background: var(
-    --md-sys-color-surface-container-high
-  );
+  --playground-preview-toolbar-background: var(--md-sys-color-surface-container-high);
   --playground-preview-toolbar-foreground-color: var(--md-sys-color-on-surface);
 
   /* perfect circle of one line is (padding-block * 2 + (line-height: 1.5x font size)) / 2 */
   --catalog-code-block-border-radius: calc(
     (2 * var(--__code-block-font-size) + 1.5 * var(--__code-block-font-size)) /
-      2
+    2
   );
 }
 

@@ -8,11 +8,7 @@
   "shift": "shift_2",
   "knowledge_graph": {
     "role": "generalist",
-    "tasks": [
-      "git",
-      "deploy",
-      "monitor"
-    ]
+    "tasks": ["git", "deploy", "monitor"]
   },
   "task_history": [],
   "preferred_llm": "grok-beta"

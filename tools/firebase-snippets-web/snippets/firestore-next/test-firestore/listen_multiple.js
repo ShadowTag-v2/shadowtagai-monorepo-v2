@@ -5,14 +5,14 @@
 // 'npm run snippets'.
 
 // [START listen_multiple_modular]
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
 
-const q = query(collection(db, "cities"), where("state", "==", "CA"));
+const q = query(collection(db, 'cities'), where('state', '==', 'CA'));
 const unsubscribe = onSnapshot(q, (querySnapshot) => {
   const cities = [];
   querySnapshot.forEach((doc) => {
-      cities.push(doc.data().name);
+    cities.push(doc.data().name);
   });
-  console.log("Current cities in CA: ", cities.join(", "));
+  console.log('Current cities in CA: ', cities.join(', '));
 });
 // [END listen_multiple_modular]

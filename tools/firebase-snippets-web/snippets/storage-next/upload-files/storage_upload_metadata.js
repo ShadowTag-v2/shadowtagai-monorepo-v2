@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START storage_upload_metadata_modular]
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
 
 const storage = getStorage();
 const storageRef = ref(storage, 'images/mountains.jpg');

@@ -1,30 +1,30 @@
-import { useState } from "preact/hooks";
+import { useState } from 'preact/hooks';
 
 export function LoginScreen({ onLogin }) {
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!password.trim()) {
-      setError("Please enter a password");
+      setError('Please enter a password');
       return;
     }
 
     setIsLoading(true);
-    setError("");
+    setError('');
 
     try {
       const isValid = await onLogin(password);
       if (!isValid) {
-        setError("Invalid password");
-        setPassword("");
+        setError('Invalid password');
+        setPassword('');
       }
     } catch (err) {
-      setError("An error occurred. Please try again.");
-      setPassword("");
+      setError('An error occurred. Please try again.');
+      setPassword('');
     } finally {
       setIsLoading(false);
     }
@@ -67,7 +67,7 @@ export function LoginScreen({ onLogin }) {
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
-                setError("");
+                setError('');
               }}
               placeholder="Enter password"
               className="login-input"
@@ -78,7 +78,7 @@ export function LoginScreen({ onLogin }) {
           {error && <div className="login-error">{error}</div>}
 
           <button type="submit" className="login-button" disabled={isLoading}>
-            {isLoading ? "Verifying..." : "Access UI"}
+            {isLoading ? 'Verifying...' : 'Access UI'}
           </button>
         </form>
 

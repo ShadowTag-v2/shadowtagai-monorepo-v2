@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {signal} from './signal-element.js';
+import { signal } from './signal-element.js';
 
 /**
  * Whether or not the site content should be inert (sidebar is still

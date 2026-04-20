@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { randomUUID } from 'crypto';
 
 /**
  * Generates a UUID v4 (RFC 4122 compliant)
@@ -61,6 +61,6 @@ export function walletAddressToUUID(walletAddress: string): string {
   hashBytes[8] = (hashBytes[8] & 0x3f) | 0x80; // Variant
 
   // Convert to UUID format
-  const hex = hashBytes.map((b: any) => b.toString(16).padStart(2, "0")).join("");
+  const hex = hashBytes.map((b: any) => b.toString(16).padStart(2, '0')).join('');
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }

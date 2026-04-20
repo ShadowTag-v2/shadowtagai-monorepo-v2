@@ -4,13 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {ReactiveController, ReactiveControllerHost} from 'lit';
+import type { ReactiveController, ReactiveControllerHost } from 'lit';
 
-import {
-  CloseReason,
-  createDefaultCloseMenuEvent,
-  isClosableKey,
-} from './shared.js';
+import { CloseReason, createDefaultCloseMenuEvent, isClosableKey } from './shared.js';
 
 /**
  * Interface specific to menu item and not HTMLElement.
@@ -149,10 +145,7 @@ export class MenuItemController implements ReactiveController {
     //supporting-text slot's text content
     if (textParts.length === 0) {
       this.getSupportingTextElements().forEach((supportingTextElement) => {
-        if (
-          supportingTextElement.textContent &&
-          supportingTextElement.textContent.trim()
-        ) {
+        if (supportingTextElement.textContent && supportingTextElement.textContent.trim()) {
           textParts.push(supportingTextElement.textContent.trim());
         }
       });

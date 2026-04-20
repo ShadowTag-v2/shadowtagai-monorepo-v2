@@ -6,9 +6,9 @@
 
 // import 'jasmine'; (google3-only)
 
-import {createTokenTests} from '../testing/tokens.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdListItem} from './list-item.js';
+import { MdListItem } from './list-item.js';
 
 describe('<md-list-item>', () => {
   describe('.styles', () => {

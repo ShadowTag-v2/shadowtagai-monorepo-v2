@@ -1,4 +1,4 @@
-import { Modal } from "./ui/Modal";
+import { Modal } from './ui/Modal';
 
 interface PaymentConfirmationModalProps {
   isOpen: boolean;
@@ -17,29 +17,29 @@ export function PaymentConfirmationModal({
   onConfirm,
   onCancel,
 }: PaymentConfirmationModalProps) {
-  const isTestnet = network.includes("sepolia");
+  const isTestnet = network.includes('sepolia');
 
   return (
     <Modal isOpen={isOpen} onClose={onCancel} maxWidth="450px">
       <div
         style={{
-          padding: "24px",
-          background: "#0a0a0a",
-          borderRadius: "12px",
+          padding: '24px',
+          background: '#0a0a0a',
+          borderRadius: '12px',
         }}
       >
         {/* Header */}
-        <div style={{ marginBottom: "24px", textAlign: "center" }}>
+        <div style={{ marginBottom: '24px', textAlign: 'center' }}>
           <div
             style={{
-              width: "64px",
-              height: "64px",
-              margin: "0 auto 16px",
-              borderRadius: "50%",
-              background: "rgba(16, 185, 129, 0.1)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              width: '64px',
+              height: '64px',
+              margin: '0 auto 16px',
+              borderRadius: '50%',
+              background: 'rgba(16, 185, 129, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             <svg
@@ -58,10 +58,10 @@ export function PaymentConfirmationModal({
           </div>
           <h2
             style={{
-              margin: "0 0 8px 0",
-              fontSize: "20px",
+              margin: '0 0 8px 0',
+              fontSize: '20px',
               fontWeight: 600,
-              color: "#ffffff",
+              color: '#ffffff',
             }}
           >
             Confirm Payment
@@ -69,8 +69,8 @@ export function PaymentConfirmationModal({
           <p
             style={{
               margin: 0,
-              fontSize: "14px",
-              color: "#a1a1a1",
+              fontSize: '14px',
+              color: '#a1a1a1',
             }}
           >
             Please review the transaction details before proceeding
@@ -80,29 +80,29 @@ export function PaymentConfirmationModal({
         {/* Payment Details */}
         <div
           style={{
-            background: "#262626",
-            borderRadius: "8px",
-            padding: "16px",
-            marginBottom: "24px",
+            background: '#262626',
+            borderRadius: '8px',
+            padding: '16px',
+            marginBottom: '24px',
           }}
         >
-          <div style={{ marginBottom: "12px" }}>
-            <div style={{ fontSize: "12px", color: "#a1a1a1", marginBottom: "4px" }}>Amount</div>
-            <div style={{ fontSize: "24px", fontWeight: 600, color: "#10b981" }}>
+          <div style={{ marginBottom: '12px' }}>
+            <div style={{ fontSize: '12px', color: '#a1a1a1', marginBottom: '4px' }}>Amount</div>
+            <div style={{ fontSize: '24px', fontWeight: 600, color: '#10b981' }}>
               ${amount} {currency}
             </div>
           </div>
 
-          <div style={{ borderTop: "1px solid #404040", paddingTop: "12px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-              <span style={{ fontSize: "13px", color: "#a1a1a1" }}>Network</span>
-              <span style={{ fontSize: "13px", color: "#ffffff", fontFamily: "monospace" }}>
-                {network === "base-sepolia" ? "Base Sepolia" : "Base"}
+          <div style={{ borderTop: '1px solid #404040', paddingTop: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '13px', color: '#a1a1a1' }}>Network</span>
+              <span style={{ fontSize: '13px', color: '#ffffff', fontFamily: 'monospace' }}>
+                {network === 'base-sepolia' ? 'Base Sepolia' : 'Base'}
               </span>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ fontSize: "13px", color: "#a1a1a1" }}>Type</span>
-              <span style={{ fontSize: "13px", color: "#ffffff" }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: '13px', color: '#a1a1a1' }}>Type</span>
+              <span style={{ fontSize: '13px', color: '#ffffff' }}>
                 Gasless Transfer (EIP-3009)
               </span>
             </div>
@@ -111,14 +111,14 @@ export function PaymentConfirmationModal({
           {isTestnet && (
             <div
               style={{
-                marginTop: "12px",
-                padding: "8px 12px",
-                background: "rgba(251, 146, 60, 0.1)",
-                borderRadius: "6px",
-                border: "1px solid rgba(251, 146, 60, 0.2)",
+                marginTop: '12px',
+                padding: '8px 12px',
+                background: 'rgba(251, 146, 60, 0.1)',
+                borderRadius: '6px',
+                border: '1px solid rgba(251, 146, 60, 0.2)',
               }}
             >
-              <div style={{ fontSize: "12px", color: "#fb923c" }}>
+              <div style={{ fontSize: '12px', color: '#fb923c' }}>
                 ⚠️ Testnet Transaction - No real funds will be used
               </div>
             </div>
@@ -126,26 +126,26 @@ export function PaymentConfirmationModal({
         </div>
 
         {/* Action Buttons */}
-        <div style={{ display: "flex", gap: "12px" }}>
+        <div style={{ display: 'flex', gap: '12px' }}>
           <button
             onClick={onCancel}
             style={{
               flex: 1,
-              padding: "12px",
-              background: "#262626",
-              border: "1px solid #404040",
-              borderRadius: "8px",
-              color: "#ffffff",
-              fontSize: "14px",
+              padding: '12px',
+              background: '#262626',
+              border: '1px solid #404040',
+              borderRadius: '8px',
+              color: '#ffffff',
+              fontSize: '14px',
               fontWeight: 600,
-              cursor: "pointer",
-              transition: "all 0.2s ease",
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.background = "#404040";
+              e.currentTarget.style.background = '#404040';
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.background = "#262626";
+              e.currentTarget.style.background = '#262626';
             }}
           >
             Cancel
@@ -154,24 +154,24 @@ export function PaymentConfirmationModal({
             onClick={onConfirm}
             style={{
               flex: 1,
-              padding: "12px",
-              background: "#10b981",
-              border: "none",
-              borderRadius: "8px",
-              color: "#000000",
-              fontSize: "14px",
+              padding: '12px',
+              background: '#10b981',
+              border: 'none',
+              borderRadius: '8px',
+              color: '#000000',
+              fontSize: '14px',
               fontWeight: 600,
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-              boxShadow: "0 4px 12px rgba(16, 185, 129, 0.3)",
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.transform = "translateY(-1px)";
-              e.currentTarget.style.boxShadow = "0 6px 16px rgba(16, 185, 129, 0.4)";
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.boxShadow = '0 6px 16px rgba(16, 185, 129, 0.4)';
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 4px 12px rgba(16, 185, 129, 0.3)";
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.3)';
             }}
           >
             Confirm Payment

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Span} from './span';
+import type { Span } from './span';
 
 /**
  * @private
@@ -48,17 +48,14 @@ export const SPAN_NAME_DOC_REF_SET = 'DocumentReference.Set';
 export const SPAN_NAME_DOC_REF_UPDATE = 'DocumentReference.Update';
 export const SPAN_NAME_DOC_REF_DELETE = 'DocumentReference.Delete';
 export const SPAN_NAME_DOC_REF_GET = 'DocumentReference.Get';
-export const SPAN_NAME_DOC_REF_LIST_COLLECTIONS =
-  'DocumentReference.ListCollections';
+export const SPAN_NAME_DOC_REF_LIST_COLLECTIONS = 'DocumentReference.ListCollections';
 export const SPAN_NAME_COL_REF_ADD = 'CollectionReference.Add';
-export const SPAN_NAME_COL_REF_LIST_DOCUMENTS =
-  'CollectionReference.ListDocuments';
+export const SPAN_NAME_COL_REF_LIST_DOCUMENTS = 'CollectionReference.ListDocuments';
 export const SPAN_NAME_QUERY_GET = 'Query.Get';
 export const SPAN_NAME_AGGREGATION_QUERY_GET = 'AggregationQuery.Get';
 export const SPAN_NAME_TRANSACTION_RUN = 'Transaction.Run';
 export const SPAN_NAME_TRANSACTION_GET_QUERY = 'Transaction.Get.Query';
-export const SPAN_NAME_TRANSACTION_GET_AGGREGATION_QUERY =
-  'Transaction.Get.AggregationQuery';
+export const SPAN_NAME_TRANSACTION_GET_AGGREGATION_QUERY = 'Transaction.Get.AggregationQuery';
 export const SPAN_NAME_TRANSACTION_GET_DOCUMENT = 'Transaction.Get.Document';
 export const SPAN_NAME_TRANSACTION_GET_DOCUMENTS = 'Transaction.Get.Documents';
 export const SPAN_NAME_TRANSACTION_ROLLBACK = 'Transaction.Rollback';

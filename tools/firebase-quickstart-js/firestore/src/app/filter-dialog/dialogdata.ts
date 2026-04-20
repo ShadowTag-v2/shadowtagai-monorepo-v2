@@ -14,85 +14,84 @@
  * limitations under the License.
  */
 
-
 // TODO(abradham): Move to separate file to make accessible for emulators
 export interface DialogData {
-    sortBy: 'Rating' | 'Reviews';
-    category: string;
-    city: string;
-    price: number;
+  sortBy: 'Rating' | 'Reviews';
+  category: string;
+  city: string;
+  price: number;
 }
 
 export const DEFAULT_SORT_DATA: DialogData = {
-    sortBy: 'Rating',
-    category: 'Any',
-    city: 'Any',
-    price: -1
-}
+  sortBy: 'Rating',
+  category: 'Any',
+  city: 'Any',
+  price: -1,
+};
 
 export const filterCities = [
-    'Any',
-    'Albuquerque',
-    'Arlington',
-    'Atlanta',
-    'Austin',
-    'Baltimore',
-    'Boston',
-    'Charlotte',
-    'Chicago',
-    'Cleveland',
-    'Colorado Springs',
-    'Columbus',
-    'Dallas',
-    'Denver',
-    'Detroit',
-    'El Paso',
-    'Fort Worth',
-    'Fresno',
-    'Houston',
-    'Indianapolis',
-    'Jacksonville',
-    'Kansas City',
-    'Las Vegas',
-    'Long Island',
-    'Los Angeles',
-    'Louisville',
-    'Memphis',
-    'Mesa',
-    'Miami',
-    'Milwaukee',
-    'Nashville',
-    'New York',
-    'Oakland',
-    'Oklahoma',
-    'Omaha',
-    'Philadelphia',
-    'Phoenix',
-    'Portland',
-    'Raleigh',
-    'Sacramento',
-    'San Antonio',
-    'San Diego',
-    'San Francisco',
-    'San Jose',
-    'Tucson',
-    'Tulsa',
-    'Virginia Beach',
-    'Washington'
-]
+  'Any',
+  'Albuquerque',
+  'Arlington',
+  'Atlanta',
+  'Austin',
+  'Baltimore',
+  'Boston',
+  'Charlotte',
+  'Chicago',
+  'Cleveland',
+  'Colorado Springs',
+  'Columbus',
+  'Dallas',
+  'Denver',
+  'Detroit',
+  'El Paso',
+  'Fort Worth',
+  'Fresno',
+  'Houston',
+  'Indianapolis',
+  'Jacksonville',
+  'Kansas City',
+  'Las Vegas',
+  'Long Island',
+  'Los Angeles',
+  'Louisville',
+  'Memphis',
+  'Mesa',
+  'Miami',
+  'Milwaukee',
+  'Nashville',
+  'New York',
+  'Oakland',
+  'Oklahoma',
+  'Omaha',
+  'Philadelphia',
+  'Phoenix',
+  'Portland',
+  'Raleigh',
+  'Sacramento',
+  'San Antonio',
+  'San Diego',
+  'San Francisco',
+  'San Jose',
+  'Tucson',
+  'Tulsa',
+  'Virginia Beach',
+  'Washington',
+];
 
 export const filterCategories = [
-    'Any',
-    'Brunch',
-    'Burgers',
-    'Coffee',
-    'Deli',
-    'Dim Sum',
-    'Indian',
-    'Italian',
-    'Mediterranean',
-    'Mexican',
-    'Pizza',
-    'Ramen',
-    'Sushi'
-]
+  'Any',
+  'Brunch',
+  'Burgers',
+  'Coffee',
+  'Deli',
+  'Dim Sum',
+  'Indian',
+  'Italian',
+  'Mediterranean',
+  'Mexican',
+  'Pizza',
+  'Ramen',
+  'Sushi',
+];

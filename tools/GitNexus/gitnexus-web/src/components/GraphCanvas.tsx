@@ -1,11 +1,26 @@
-import { useEffect, useCallback, useMemo, useState, forwardRef, useImperativeHandle } from 'react';
-import { ZoomIn, ZoomOut, Maximize2, Focus, RotateCcw, Play, Pause, Lightbulb, LightbulbOff } from '@/lib/lucide-icons';
-import { useSigma } from '../hooks/useSigma';
-import { useAppState } from '../hooks/useAppState';
-import { knowledgeGraphToGraphology, filterGraphByDepth, SigmaNodeAttributes, SigmaEdgeAttributes } from '../lib/graph-adapter';
+import type Graph from 'graphology';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import {
+  Focus,
+  Lightbulb,
+  LightbulbOff,
+  Maximize2,
+  Pause,
+  Play,
+  RotateCcw,
+  ZoomIn,
+  ZoomOut,
+} from '@/lib/lucide-icons';
 import type { GraphNode } from '../core/graph/types';
+import { useAppState } from '../hooks/useAppState';
+import { useSigma } from '../hooks/useSigma';
+import {
+  filterGraphByDepth,
+  knowledgeGraphToGraphology,
+  type SigmaEdgeAttributes,
+  type SigmaNodeAttributes,
+} from '../lib/graph-adapter';
 import { QueryFAB } from './QueryFAB';
-import Graph from 'graphology';
 
 export interface GraphCanvasHandle {
   focusNode: (nodeId: string) => void;
@@ -41,7 +56,12 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle>((_, ref) => {
     for (const id of aiToolHighlightedNodeIds) next.add(id);
     // Note: blast radius nodes are handled separately with red color
     return next;
-  }, [highlightedNodeIds, aiCitationHighlightedNodeIds, aiToolHighlightedNodeIds, isAIHighlightsEnabled]);
+  }, [
+    highlightedNodeIds,
+    aiCitationHighlightedNodeIds,
+    aiToolHighlightedNodeIds,
+    isAIHighlightsEnabled,
+  ]);
 
   // Blast radius nodes (only when AI highlights enabled)
   const effectiveBlastRadiusNodeIds = useMemo(() => {
@@ -57,26 +77,32 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle>((_, ref) => {
 
   const nodeById = useMemo(() => {
     if (!graph) return new Map<string, GraphNode>();
-    return new Map(graph.nodes.map(n => [n.id, n]));
+    return new Map(graph.nodes.map((n) => [n.id, n]));
   }, [graph]);
 
-  const handleNodeClick = useCallback((nodeId: string) => {
-    if (!graph) return;
-    const node = nodeById.get(nodeId);
-    if (node) {
-      setSelectedNode(node);
-      openCodePanel();
-    }
-  }, [graph, nodeById, setSelectedNode, openCodePanel]);
+  const handleNodeClick = useCallback(
+    (nodeId: string) => {
+      if (!graph) return;
+      const node = nodeById.get(nodeId);
+      if (node) {
+        setSelectedNode(node);
+        openCodePanel();
+      }
+    },
+    [graph, nodeById, setSelectedNode, openCodePanel],
+  );
 
-  const handleNodeHover = useCallback((nodeId: string | null) => {
-    if (!nodeId || !graph) {
-      setHoveredNodeName(null);
-      return;
-    }
-    const node = nodeById.get(nodeId);
-    setHoveredNodeName(node ? node.properties.name : null);
-  }, [graph, nodeById]);
+  const handleNodeHover = useCallback(
+    (nodeId: string | null) => {
+      if (!nodeId || !graph) {
+        setHoveredNodeName(null);
+        return;
+      }
+      const node = nodeById.get(nodeId);
+      setHoveredNodeName(node ? node.properties.name : null);
+    },
+    [graph, nodeById],
+  );
 
   const handleStageClick = useCallback(() => {
     setSelectedNode(null);
@@ -91,7 +117,14 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle>((_, ref) => {
       setSigmaSelectedNode(null);
     }
     toggleAIHighlights();
-  }, [isAIHighlightsEnabled, clearAIToolHighlights, clearAICitationHighlights, clearBlastRadius, setSelectedNode, toggleAIHighlights]);
+  }, [
+    isAIHighlightsEnabled,
+    clearAIToolHighlights,
+    clearAICitationHighlights,
+    clearBlastRadius,
+    setSelectedNode,
+    toggleAIHighlights,
+  ]);
 
   const {
     containerRef,
@@ -117,19 +150,23 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle>((_, ref) => {
   });
 
   // Expose focusNode to parent via ref
-  useImperativeHandle(ref, () => ({
-    focusNode: (nodeId: string) => {
-      // Also update app state so the selection syncs properly
-      if (graph) {
-        const node = nodeById.get(nodeId);
-        if (node) {
-          setSelectedNode(node);
-          openCodePanel();
+  useImperativeHandle(
+    ref,
+    () => ({
+      focusNode: (nodeId: string) => {
+        // Also update app state so the selection syncs properly
+        if (graph) {
+          const node = nodeById.get(nodeId);
+          if (node) {
+            setSelectedNode(node);
+            openCodePanel();
+          }
         }
-      }
-      focusNode(nodeId);
-    }
-  }), [focusNode, graph, nodeById, setSelectedNode, openCodePanel]);
+        focusNode(nodeId);
+      },
+    }),
+    [focusNode, graph, nodeById, setSelectedNode, openCodePanel],
+  );
 
   // Update Sigma graph when KnowledgeGraph changes
   useEffect(() => {
@@ -138,7 +175,7 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle>((_, ref) => {
     // Build communityMemberships map from MEMBER_OF relationships
     // MEMBER_OF edges: nodeId -> communityId (stored as targetId)
     const communityMemberships = new Map<string, number>();
-    graph.relationships.forEach(rel => {
+    graph.relationships.forEach((rel) => {
       if (rel.type === 'MEMBER_OF') {
         // Find the community node to get its index
         const communityNode = nodeById.get(rel.targetId);
@@ -165,7 +202,7 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle>((_, ref) => {
 
     filterGraphByDepth(sigmaGraph, appSelectedNode?.id || null, depthFilter, visibleLabels);
     sigma.refresh();
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- sigmaRef identity never changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- sigmaRef identity never changes
   }, [visibleLabels, depthFilter, appSelectedNode]);
 
   // Sync app selected node with sigma
@@ -201,7 +238,7 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle>((_, ref) => {
             background: `
               radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.03) 0%, transparent 70%),
               linear-gradient(to bottom, #06060a, #0a0a10)
-            `
+            `,
           }}
         />
       </div>
@@ -226,9 +263,7 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle>((_, ref) => {
           <span className="font-mono text-sm text-text-primary">
             {appSelectedNode.properties.name}
           </span>
-          <span className="text-xs text-text-muted">
-            ({appSelectedNode.label})
-          </span>
+          <span className="text-xs text-text-muted">({appSelectedNode.label})</span>
           <button
             onClick={handleClearSelection}
             className="ml-2 px-2 py-0.5 text-xs text-text-secondary hover:text-text-primary hover:bg-white/10 rounded transition-colors"
@@ -295,18 +330,15 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle>((_, ref) => {
           onClick={isLayoutRunning ? stopLayout : startLayout}
           className={`
             w-9 h-9 flex items-center justify-center border rounded-md transition-all
-            ${isLayoutRunning
-              ? 'bg-accent border-accent text-white shadow-glow animate-pulse'
-              : 'bg-elevated border-border-subtle text-text-secondary hover:bg-hover hover:text-text-primary'
+            ${
+              isLayoutRunning
+                ? 'bg-accent border-accent text-white shadow-glow animate-pulse'
+                : 'bg-elevated border-border-subtle text-text-secondary hover:bg-hover hover:text-text-primary'
             }
           `}
           title={isLayoutRunning ? 'Stop Layout' : 'Run Layout Again'}
         >
-          {isLayoutRunning ? (
-            <Pause className="w-4 h-4" />
-          ) : (
-            <Play className="w-4 h-4" />
-          )}
+          {isLayoutRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
         </button>
       </div>
 
@@ -333,7 +365,11 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle>((_, ref) => {
           title={isAIHighlightsEnabled ? 'Turn off all highlights' : 'Turn on AI highlights'}
           data-testid="ai-highlights-toggle"
         >
-          {isAIHighlightsEnabled ? <Lightbulb className="w-4 h-4" /> : <LightbulbOff className="w-4 h-4" />}
+          {isAIHighlightsEnabled ? (
+            <Lightbulb className="w-4 h-4" />
+          ) : (
+            <LightbulbOff className="w-4 h-4" />
+          )}
         </button>
       </div>
     </div>

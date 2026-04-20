@@ -6,9 +6,9 @@
 
 // import 'jasmine'; (google3-only)
 
-import {createTokenTests} from '../../testing/tokens.js';
+import { createTokenTests } from '../../testing/tokens.js';
 
-import {MdBadge} from './badge.js';
+import { MdBadge } from './badge.js';
 
 describe('<md-badge>', () => {
   describe('.styles', () => {

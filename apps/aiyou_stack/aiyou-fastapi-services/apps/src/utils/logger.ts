@@ -2,8 +2,8 @@
  * Structured logging with GCP Cloud Logging integration
  */
 
-import winston from "winston";
-import { LoggingWinston } from "@google-cloud/logging-winston";
+import { LoggingWinston } from '@google-cloud/logging-winston';
+import winston from 'winston';
 
 const loggingWinston = new LoggingWinston({
   projectId: process.env.ANTHROPIC_VERTEX_PROJECT_ID,
@@ -11,15 +11,15 @@ const loggingWinston = new LoggingWinston({
 });
 
 export const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || "info",
+  level: process.env.LOG_LEVEL || 'info',
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.errors({ stack: true }),
     winston.format.json(),
   ),
   defaultMeta: {
-    service: "shadowtagai-orchestrator",
-    environment: process.env.NODE_ENV || "development",
+    service: 'shadowtagai-orchestrator',
+    environment: process.env.NODE_ENV || 'development',
   },
   transports: [
     // Console for local development
@@ -27,7 +27,7 @@ export const logger = winston.createLogger({
       format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
     }),
     // GCP Cloud Logging for production
-    ...(process.env.NODE_ENV === "production" ? [loggingWinston] : []),
+    ...(process.env.NODE_ENV === 'production' ? [loggingWinston] : []),
   ],
 });
 

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { Mock, beforeEach, describe, expect, test, vi } from 'vitest';
-import * as gcloud from '../gcloud.js';
-import { createRunGcloudCommand } from './run_gcloud_command.js';
-import { McpConfig } from '../index.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { beforeEach, describe, expect, type Mock, test, vi } from 'vitest';
 import { createAccessControlList } from '../denylist.js';
+import type * as gcloud from '../gcloud.js';
+import type { McpConfig } from '../index.js';
+import { createRunGcloudCommand } from './run_gcloud_command.js';
 
 vi.mock('../gcloud.js');
 vi.mock('child_process');

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {logger} from './logger';
+import { logger } from './logger';
 
 /*
  * @module firestore/backoff
@@ -58,8 +58,7 @@ export const MAX_RETRY_ATTEMPTS = 10;
 /*!
  * The timeout handler used by `ExponentialBackoff` and `BulkWriter`.
  */
-export let delayExecution: (f: () => void, ms: number) => NodeJS.Timeout =
-  setTimeout;
+export let delayExecution: (f: () => void, ms: number) => NodeJS.Timeout = setTimeout;
 
 /**
  * Allows overriding of the timeout handler used by the exponential backoff
@@ -71,9 +70,7 @@ export let delayExecution: (f: () => void, ms: number) => NodeJS.Timeout =
  * @internal
  * @param {function} handler A handler than matches the API of `setTimeout()`.
  */
-export function setTimeoutHandler(
-  handler: (f: () => void, ms: number) => void,
-): void {
+export function setTimeoutHandler(handler: (f: () => void, ms: number) => void): void {
   delayExecution = (f: () => void, ms: number) => {
     handler(f, ms);
     const timeout: NodeJS.Timeout = {
@@ -205,17 +202,11 @@ export class ExponentialBackoff {
         ? options.initialDelayMs
         : DEFAULT_BACKOFF_INITIAL_DELAY_MS;
     this.backoffFactor =
-      options.backoffFactor !== undefined
-        ? options.backoffFactor
-        : DEFAULT_BACKOFF_FACTOR;
+      options.backoffFactor !== undefined ? options.backoffFactor : DEFAULT_BACKOFF_FACTOR;
     this.maxDelayMs =
-      options.maxDelayMs !== undefined
-        ? options.maxDelayMs
-        : DEFAULT_BACKOFF_MAX_DELAY_MS;
+      options.maxDelayMs !== undefined ? options.maxDelayMs : DEFAULT_BACKOFF_MAX_DELAY_MS;
     this.jitterFactor =
-      options.jitterFactor !== undefined
-        ? options.jitterFactor
-        : DEFAULT_JITTER_FACTOR;
+      options.jitterFactor !== undefined ? options.jitterFactor : DEFAULT_JITTER_FACTOR;
   }
 
   /**
@@ -254,15 +245,11 @@ export class ExponentialBackoff {
    */
   backoffAndWait(): Promise<void> {
     if (this.awaitingBackoffCompletion) {
-      return Promise.reject(
-        new Error('A backoff operation is already in progress.'),
-      );
+      return Promise.reject(new Error('A backoff operation is already in progress.'));
     }
 
     if (this.retryCount > MAX_RETRY_ATTEMPTS) {
-      return Promise.reject(
-        new Error('Exceeded maximum number of retries allowed.'),
-      );
+      return Promise.reject(new Error('Exceeded maximum number of retries allowed.'));
     }
     // First schedule using the current base (which may be 0 and should be
     // honored as such).
@@ -271,8 +258,7 @@ export class ExponentialBackoff {
       logger(
         'ExponentialBackoff.backoffAndWait',
         null,
-        `Backing off for ${delayWithJitterMs} ms ` +
-          `(base delay: ${this.currentBaseMs} ms)`,
+        `Backing off for ${delayWithJitterMs} ms ` + `(base delay: ${this.currentBaseMs} ms)`,
       );
     }
 
@@ -283,7 +269,7 @@ export class ExponentialBackoff {
     this.currentBaseMs = Math.min(this.currentBaseMs, this.maxDelayMs);
     this._retryCount += 1;
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.awaitingBackoffCompletion = true;
 
       delayExecution(() => {

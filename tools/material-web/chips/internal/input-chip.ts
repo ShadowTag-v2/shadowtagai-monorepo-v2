@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html, nothing} from 'lit';
-import {property, query} from 'lit/decorators.js';
+import { html, nothing } from 'lit';
+import { property, query } from 'lit/decorators.js';
 
-import {ARIAMixinStrict} from '../../internal/aria/aria.js';
+import type { ARIAMixinStrict } from '../../internal/aria/aria.js';
 
-import {MultiActionChip} from './multi-action-chip.js';
-import {renderRemoveButton} from './trailing-icons.js';
+import { MultiActionChip } from './multi-action-chip.js';
+import { renderRemoveButton } from './trailing-icons.js';
 
 /**
  * An input chip component.
@@ -18,11 +18,11 @@ import {renderRemoveButton} from './trailing-icons.js';
  * @fires remove {Event} Dispatched when the remove button is clicked.
  */
 export class InputChip extends MultiActionChip {
-  @property({type: Boolean}) avatar = false;
+  @property({ type: Boolean }) avatar = false;
   @property() href = '';
   @property() target: '_blank' | '_parent' | '_self' | '_top' | '' = '';
-  @property({type: Boolean, attribute: 'remove-only'}) removeOnly = false;
-  @property({type: Boolean, reflect: true}) selected = false;
+  @property({ type: Boolean, attribute: 'remove-only' }) removeOnly = false;
+  @property({ type: Boolean, reflect: true }) selected = false;
 
   protected get primaryId() {
     if (this.href) {
@@ -67,7 +67,7 @@ export class InputChip extends MultiActionChip {
   }
 
   protected override renderPrimaryAction(content: unknown) {
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     if (this.href) {
       return html`
         <a

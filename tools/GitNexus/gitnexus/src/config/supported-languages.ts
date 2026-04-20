@@ -28,20 +28,20 @@
  * 7. Run full test suite
  */
 export enum SupportedLanguages {
-    JavaScript = 'javascript',
-    TypeScript = 'typescript',
-    Python = 'python',
-    Java = 'java',
-    C = 'c',
-    CPlusPlus = 'cpp',
-    CSharp = 'csharp',
-    Go = 'go',
-    Ruby = 'ruby',
-    Rust = 'rust',
-    PHP = 'php',
-    Kotlin = 'kotlin',
-    Swift = 'swift',
-    Dart = 'dart',
-    /** Standalone regex processor — no tree-sitter, no LanguageProvider. */
-    Cobol = 'cobol',
+  JavaScript = 'javascript',
+  TypeScript = 'typescript',
+  Python = 'python',
+  Java = 'java',
+  C = 'c',
+  CPlusPlus = 'cpp',
+  CSharp = 'csharp',
+  Go = 'go',
+  Ruby = 'ruby',
+  Rust = 'rust',
+  PHP = 'php',
+  Kotlin = 'kotlin',
+  Swift = 'swift',
+  Dart = 'dart',
+  /** Standalone regex processor — no tree-sitter, no LanguageProvider. */
+  Cobol = 'cobol',
 }

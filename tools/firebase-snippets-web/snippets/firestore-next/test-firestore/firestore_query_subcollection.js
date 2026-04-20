@@ -5,11 +5,12 @@
 // 'npm run snippets'.
 
 // [START firestore_query_subcollection_modular]
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from 'firebase/firestore';
+
 // Query a reference to a subcollection
-const querySnapshot = await getDocs(collection(db, "cities", "SF", "landmarks"));
+const querySnapshot = await getDocs(collection(db, 'cities', 'SF', 'landmarks'));
 querySnapshot.forEach((doc) => {
   // doc.data() is never undefined for query doc snapshots
-  console.log(doc.id, " => ", doc.data());
+  console.log(doc.id, ' => ', doc.data());
 });
 // [END firestore_query_subcollection_modular]

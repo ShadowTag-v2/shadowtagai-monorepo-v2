@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {css, html, LitElement} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import { css, html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
 /**
  * A layout element that lays out the

@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Brain, Search, FileText, AlertCircle, CheckCircle, Clock } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { AlertCircle, Brain, CheckCircle, Clock, FileText, Search } from 'lucide-react';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface IntelReport {
   id: string;
   title: string;
   summary: string;
   confidence: number;
-  status: "complete" | "processing" | "pending";
+  status: 'complete' | 'processing' | 'pending';
   sources: number;
   created_at: string;
   category: string;
@@ -17,61 +17,61 @@ interface IntelReport {
 
 const mockReports: IntelReport[] = [
   {
-    id: "1",
-    title: "Market Analysis: AI Infrastructure Q4 2024",
+    id: '1',
+    title: 'Market Analysis: AI Infrastructure Q4 2024',
     summary:
-      "Comprehensive analysis of AI infrastructure investments and trends. Key findings indicate 45% growth in cloud GPU deployments.",
+      'Comprehensive analysis of AI infrastructure investments and trends. Key findings indicate 45% growth in cloud GPU deployments.',
     confidence: 0.92,
-    status: "complete",
+    status: 'complete',
     sources: 24,
-    created_at: "2024-01-15T10:30:00Z",
-    category: "Market Research",
+    created_at: '2024-01-15T10:30:00Z',
+    category: 'Market Research',
   },
   {
-    id: "2",
-    title: "Competitor Intelligence: LLM Providers",
+    id: '2',
+    title: 'Competitor Intelligence: LLM Providers',
     summary:
-      "Analysis of major LLM providers including pricing strategies, model capabilities, and market positioning.",
+      'Analysis of major LLM providers including pricing strategies, model capabilities, and market positioning.',
     confidence: 0.87,
-    status: "complete",
+    status: 'complete',
     sources: 18,
-    created_at: "2024-01-14T14:20:00Z",
-    category: "Competitive Analysis",
+    created_at: '2024-01-14T14:20:00Z',
+    category: 'Competitive Analysis',
   },
   {
-    id: "3",
-    title: "Technical Deep Dive: PSO Optimization",
+    id: '3',
+    title: 'Technical Deep Dive: PSO Optimization',
     summary:
-      "Research into particle swarm optimization techniques for neural network weight optimization.",
+      'Research into particle swarm optimization techniques for neural network weight optimization.',
     confidence: 0.78,
-    status: "processing",
+    status: 'processing',
     sources: 12,
-    created_at: "2024-01-15T16:45:00Z",
-    category: "Technical Research",
+    created_at: '2024-01-15T16:45:00Z',
+    category: 'Technical Research',
   },
   {
-    id: "4",
-    title: "Revenue Optimization Opportunities",
+    id: '4',
+    title: 'Revenue Optimization Opportunities',
     summary:
-      "Identifying new revenue streams and optimization opportunities in the current product lineup.",
+      'Identifying new revenue streams and optimization opportunities in the current product lineup.',
     confidence: 0.65,
-    status: "pending",
+    status: 'pending',
     sources: 8,
-    created_at: "2024-01-15T18:00:00Z",
-    category: "Business Strategy",
+    created_at: '2024-01-15T18:00:00Z',
+    category: 'Business Strategy',
   },
 ];
 
 function ConfidenceBadge({ confidence }: { confidence: number }) {
-  const color = confidence >= 0.85 ? "green" : confidence >= 0.7 ? "amber" : "red";
+  const color = confidence >= 0.85 ? 'green' : confidence >= 0.7 ? 'amber' : 'red';
   const colorClasses = {
-    green: "bg-green-100 text-green-700",
-    amber: "bg-amber-100 text-amber-700",
-    red: "bg-red-100 text-red-700",
+    green: 'bg-green-100 text-green-700',
+    amber: 'bg-amber-100 text-amber-700',
+    red: 'bg-red-100 text-red-700',
   };
 
   return (
-    <span className={cn("px-2 py-1 rounded-full text-xs font-medium", colorClasses[color])}>
+    <span className={cn('px-2 py-1 rounded-full text-xs font-medium', colorClasses[color])}>
       {(confidence * 100).toFixed(0)}% confidence
     </span>
   );
@@ -79,9 +79,9 @@ function ConfidenceBadge({ confidence }: { confidence: number }) {
 
 function StatusIcon({ status }: { status: string }) {
   switch (status) {
-    case "complete":
+    case 'complete':
       return <CheckCircle className="h-5 w-5 text-green-500" />;
-    case "processing":
+    case 'processing':
       return <Clock className="h-5 w-5 text-amber-500 animate-pulse" />;
     default:
       return <AlertCircle className="h-5 w-5 text-slate-400" />;
@@ -89,7 +89,7 @@ function StatusIcon({ status }: { status: string }) {
 }
 
 export default function IntelPage() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const categories = [...new Set(mockReports.map((r) => r.category))];
@@ -128,10 +128,10 @@ export default function IntelPage() {
           <button
             onClick={() => setSelectedCategory(null)}
             className={cn(
-              "px-3 py-2 rounded-lg text-sm transition-colors",
+              'px-3 py-2 rounded-lg text-sm transition-colors',
               !selectedCategory
-                ? "bg-shadowtag_v4-primary text-white"
-                : "bg-slate-100 hover:bg-slate-200",
+                ? 'bg-shadowtag_v4-primary text-white'
+                : 'bg-slate-100 hover:bg-slate-200',
             )}
           >
             All
@@ -141,10 +141,10 @@ export default function IntelPage() {
               key={cat}
               onClick={() => setSelectedCategory(cat)}
               className={cn(
-                "px-3 py-2 rounded-lg text-sm transition-colors",
+                'px-3 py-2 rounded-lg text-sm transition-colors',
                 selectedCategory === cat
-                  ? "bg-shadowtag_v4-primary text-white"
-                  : "bg-slate-100 hover:bg-slate-200",
+                  ? 'bg-shadowtag_v4-primary text-white'
+                  : 'bg-slate-100 hover:bg-slate-200',
               )}
             >
               {cat}
@@ -161,7 +161,7 @@ export default function IntelPage() {
         </div>
         <div className="bg-white rounded-xl p-4 border border-slate-100">
           <p className="text-2xl font-bold">
-            {mockReports.filter((r) => r.status === "complete").length}
+            {mockReports.filter((r) => r.status === 'complete').length}
           </p>
           <p className="text-sm text-slate-500">Completed</p>
         </div>

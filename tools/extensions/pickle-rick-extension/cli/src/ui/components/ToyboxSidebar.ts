@@ -1,17 +1,17 @@
 import {
   BoxRenderable,
-  MouseEvent,
-  CliRenderer,
-  TextRenderable,
-  TextAttributes,
-  ScrollBoxRenderable,
+  type CliRenderer,
   createTimeline,
-} from "@opentui/core";
-import { THEME } from "../theme.js";
-import { formatDuration } from "../../utils/index.js";
-import { launchSnake } from "../../games/snake/SnakeView.js";
-import { sessionTracker, type TrackedSession } from "../../utils/session-tracker.js";
-import { loadState } from "../../services/config/state.js";
+  type MouseEvent,
+  ScrollBoxRenderable,
+  TextAttributes,
+  TextRenderable,
+} from '@opentui/core';
+import { launchSnake } from '../../games/snake/SnakeView.js';
+import { loadState } from '../../services/config/state.js';
+import { formatDuration } from '../../utils/index.js';
+import { sessionTracker, type TrackedSession } from '../../utils/session-tracker.js';
+import { THEME } from '../theme.js';
 
 export class ToyboxSidebar {
   public root: BoxRenderable;
@@ -26,22 +26,22 @@ export class ToyboxSidebar {
   constructor(renderer: CliRenderer) {
     this.renderer = renderer;
     this.root = new BoxRenderable(renderer, {
-      id: "toybox-sidebar-root",
+      id: 'toybox-sidebar-root',
       width: 45,
-      height: "100%",
-      position: "absolute",
+      height: '100%',
+      position: 'absolute',
       right: -45, // Start off-screen
-      flexDirection: "column",
+      flexDirection: 'column',
       backgroundColor: THEME.bg,
       visible: false,
       zIndex: 25000,
-      border: ["left"],
+      border: ['left'],
       borderColor: THEME.darkAccent,
     });
 
     this.content = new ScrollBoxRenderable(renderer, {
-      id: "toybox-sidebar-content",
-      width: "100%",
+      id: 'toybox-sidebar-content',
+      width: '100%',
       flexGrow: 1,
       scrollY: true,
       scrollX: false,
@@ -55,21 +55,21 @@ export class ToyboxSidebar {
 
     // Header
     const header = new BoxRenderable(renderer, {
-      id: "toybox-sidebar-header",
-      width: "100%",
+      id: 'toybox-sidebar-header',
+      width: '100%',
       height: 3,
-      flexDirection: "column",
-      justifyContent: "center",
+      flexDirection: 'column',
+      justifyContent: 'center',
       paddingLeft: 2,
       paddingRight: 2,
-      border: ["bottom"],
+      border: ['bottom'],
       borderColor: THEME.darkAccent,
       flexShrink: 0,
     });
 
     this.titleText = new TextRenderable(renderer, {
-      id: "toybox-sidebar-title",
-      content: "Sessions",
+      id: 'toybox-sidebar-title',
+      content: 'Sessions',
       fg: THEME.accent,
       attributes: TextAttributes.BOLD,
     });
@@ -84,7 +84,7 @@ export class ToyboxSidebar {
 
   private setupMouseHandlers() {
     this.root.onMouse = (event: MouseEvent) => {
-      if ((event.type as any) === "click") {
+      if ((event.type as any) === 'click') {
         // Allow clicking through to content
         return;
       }
@@ -101,7 +101,7 @@ export class ToyboxSidebar {
     createTimeline().add(this.root, {
       right: 0,
       duration: 200,
-      ease: "outQuad",
+      ease: 'outQuad',
       onUpdate: () => this.renderer.requestRender(),
     });
 
@@ -118,7 +118,7 @@ export class ToyboxSidebar {
     createTimeline().add(this.root, {
       right: -45,
       duration: 200,
-      ease: "inQuad",
+      ease: 'inQuad',
       onUpdate: () => this.renderer.requestRender(),
       onComplete: () => {
         this.isVisible = false;
@@ -175,10 +175,10 @@ export class ToyboxSidebar {
 
       if (trackedSessions.length === 0) {
         const emptyState = new TextRenderable(this.renderer, {
-          id: "empty-sessions",
-          content: "No active sessions",
+          id: 'empty-sessions',
+          content: 'No active sessions',
           fg: THEME.dim,
-          alignSelf: "center",
+          alignSelf: 'center',
           marginTop: 1,
         });
         this.content.add(emptyState);
@@ -190,11 +190,12 @@ export class ToyboxSidebar {
         trackedSessions.map(async (trackedSession) => {
           const state = await loadState(trackedSession.sessionDir);
           // Always prefer fresh state from disk over cached status
-          const status = state && state.active && state.step !== "done"
-            ? `${state.step.toUpperCase()} (Iteration ${state.iteration})`
-            : state?.step === "done"
-              ? "Done"
-              : trackedSession.status ?? "Starting...";
+          const status =
+            state && state.active && state.step !== 'done'
+              ? `${state.step.toUpperCase()} (Iteration ${state.iteration})`
+              : state?.step === 'done'
+                ? 'Done'
+                : (trackedSession.status ?? 'Starting...');
           const iteration = state?.iteration ?? trackedSession.iteration ?? 0;
 
           return {
@@ -202,7 +203,7 @@ export class ToyboxSidebar {
             status,
             iteration,
           };
-        })
+        }),
       );
 
       // Create session cards
@@ -211,50 +212,52 @@ export class ToyboxSidebar {
         const sessionCard = this.createSessionCard(session, i);
         this.content.add(sessionCard);
       }
-
     } catch (error) {
       const errorText = new TextRenderable(this.renderer, {
-        id: "error-text",
-        content: "Failed to load sessions",
-        fg: "#ff6b6b",
-        alignSelf: "center",
+        id: 'error-text',
+        content: 'Failed to load sessions',
+        fg: '#ff6b6b',
+        alignSelf: 'center',
         marginTop: 2,
       });
       this.content.add(errorText);
     }
   }
 
-  private createSessionCard(session: TrackedSession & { status: string }, index: number): BoxRenderable {
+  private createSessionCard(
+    session: TrackedSession & { status: string },
+    index: number,
+  ): BoxRenderable {
     const shortId = session.id.substring(0, 8);
     const cardId = `${index}-${shortId}`;
 
     const card = new BoxRenderable(this.renderer, {
       id: `session-card-${cardId}`,
-      width: "100%",
-      flexDirection: "column",
+      width: '100%',
+      flexDirection: 'column',
       paddingLeft: 2,
       paddingRight: 2,
       paddingTop: 1,
       paddingBottom: 1,
-      border: ["bottom"],
+      border: ['bottom'],
       borderColor: THEME.darkAccent,
     });
 
     // Status indicator and title
     const statusRow = new BoxRenderable(this.renderer, {
       id: `status-row-${cardId}`,
-      width: "100%",
-      flexDirection: "row",
-      justifyContent: "space-between",
+      width: '100%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
       marginBottom: 1,
     });
 
-    const isActive = session.status.toLowerCase() !== "done";
+    const isActive = session.status.toLowerCase() !== 'done';
     const statusColor = isActive ? THEME.green : THEME.accent;
 
     const statusIndicator = new TextRenderable(this.renderer, {
       id: `status-indicator-${cardId}`,
-      content: isActive ? "🟢" : "✅",
+      content: isActive ? '🟢' : '✅',
       fg: statusColor,
     });
 
@@ -263,31 +266,28 @@ export class ToyboxSidebar {
       content: session.status.toUpperCase(),
       fg: statusColor,
       attributes: TextAttributes.BOLD,
-
     });
 
     statusRow.add(statusIndicator);
     statusRow.add(statusText);
 
     // Session prompt (truncated)
-    const promptText = session.prompt.length > 50
-      ? session.prompt.substring(0, 47) + "..."
-      : session.prompt;
+    const promptText =
+      session.prompt.length > 50 ? session.prompt.substring(0, 47) + '...' : session.prompt;
 
     const promptRenderable = new TextRenderable(this.renderer, {
       id: `prompt-${cardId}`,
       content: promptText,
       fg: THEME.text,
       marginBottom: 1,
-
     });
 
     // Session metadata
     const metaRow = new BoxRenderable(this.renderer, {
       id: `meta-row-${cardId}`,
-      width: "100%",
-      flexDirection: "row",
-      justifyContent: "space-between",
+      width: '100%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     });
 
     const timeAgo = formatDuration(Date.now() - session.createdAt);
@@ -296,7 +296,6 @@ export class ToyboxSidebar {
       id: `time-${cardId}`,
       content: `Started ${timeAgo} ago`,
       fg: THEME.dim,
-
     });
 
     const sessionIdText = new TextRenderable(this.renderer, {
@@ -315,10 +314,10 @@ export class ToyboxSidebar {
     // Add hover effect
     card.onMouse = (event: MouseEvent) => {
       switch (event.type) {
-        case "over":
-          card.backgroundColor = "#2d372d";
+        case 'over':
+          card.backgroundColor = '#2d372d';
           break;
-        case "out":
+        case 'out':
           card.backgroundColor = THEME.bg;
           break;
       }

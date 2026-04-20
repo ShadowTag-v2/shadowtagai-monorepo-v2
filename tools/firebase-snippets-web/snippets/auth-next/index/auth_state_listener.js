@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_state_listener_modular]
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const auth = getAuth();
 onAuthStateChanged(auth, (user) => {

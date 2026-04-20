@@ -3,8 +3,8 @@
  * Enqueues file processing jobs for queue mode
  */
 
-import logger from "../../utils/logger";
-import type { FileStatusRecord } from "./status";
+import logger from '../../utils/logger';
+import type { FileStatusRecord } from './status';
 
 export interface FileProcessJobData {
   fileId: string;
@@ -22,11 +22,11 @@ export interface FileProcessJobData {
  * @returns Job ID
  */
 export async function enqueueFileProcess(status: FileStatusRecord): Promise<string> {
-  const { getFileProcessQueue } = await import("../queue/queues");
+  const { getFileProcessQueue } = await import('../queue/queues');
   const queue = getFileProcessQueue();
 
   if (!queue) {
-    throw new Error("File process queue not available");
+    throw new Error('File process queue not available');
   }
 
   const jobData: FileProcessJobData = {
@@ -44,7 +44,7 @@ export async function enqueueFileProcess(status: FileStatusRecord): Promise<stri
     jobId: status.fileId,
   });
 
-  logger.info({ fileId: status.fileId, jobId: job.id }, "file_process_job_added");
+  logger.info({ fileId: status.fileId, jobId: job.id }, 'file_process_job_added');
 
   return job.id || status.fileId;
 }

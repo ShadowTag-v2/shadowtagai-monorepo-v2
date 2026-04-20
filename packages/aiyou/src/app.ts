@@ -1,12 +1,11 @@
-import express from "express";
-import cors from "cors";
-import { Pool } from "pg";
-import dotenv from "dotenv";
-
-import { PgTagEngine } from "@shadowtag/core/PgTagEngine";
-import { PgRagGraph } from "./graph/PgRagGraph";
-import { createShadowTagRouter } from "@shadowtag/api/routes";
+import { createShadowTagRouter } from '@shadowtag/api/routes';
+import { PgTagEngine } from '@shadowtag/core/PgTagEngine';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import { Pool } from 'pg';
 import { createShadowTag-v2Router } from "./api/routes";
+import { PgRagGraph } from './graph/PgRagGraph';
 
 // Load environment variables (e.g. database URL)
 dotenv.config();
@@ -22,14 +21,15 @@ export async function buildApp() {
   app.use(express.json());
 
   // Healthcheck
-  app.get("/health", (req, res) => {
-    res.status(200).json({ status: "ok", service: "ShadowTag-v2-core" });
+  app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok', service: 'ShadowTag-v2-core' });
   });
 
   // DB Initialization
   const pool = new Pool({
     // Standard PG env vars (PGHOST, PGUSER, PGPASSWORD, PGDATABASE, PGPORT)
-    connectionString: process.env.DATABASE_URL || "postgres://testuser:testpassword@localhost:5432/shadowtag_test"
+    connectionString:
+      process.env.DATABASE_URL || 'postgres://testuser:testpassword@localhost:5432/shadowtag_test',
   });
 
   // Domain Engines
@@ -42,8 +42,8 @@ export async function buildApp() {
   await ragGraph.ensureSchema();
 
   // Mount API Routers
-  app.use("/api/v1/shadowtag", createShadowTagRouter(tagEngine));
-  app.use("/api/v1/ShadowTag-v2", createShadowTag-v2Router(ragGraph));
+  app.use('/api/v1/shadowtag', createShadowTagRouter(tagEngine));
+  app.use('/api/v1/ShadowTag-v2', createShadowTag - v2Router(ragGraph));
 
   return { app, pool };
 }
@@ -58,7 +58,7 @@ if (require.main === module) {
       });
     })
     .catch((err) => {
-      console.error("[ShadowTag-v2 Server] Failed to build app:", err);
+      console.error('[ShadowTag-v2 Server] Failed to build app:', err);
       process.exit(1);
     });
 }

@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-import { Component, Inject, ViewEncapsulation, inject } from "@angular/core";
+import { Component, Inject, inject, ViewEncapsulation } from '@angular/core';
 import {
   Auth,
-  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-} from "@angular/fire/auth";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-
+  signInWithEmailAndPassword,
+} from '@angular/fire/auth';
+import { MAT_DIALOG_DATA, type MatDialogRef } from '@angular/material/dialog';
 
 export interface SignInOptions {
   isCreatingAccount: boolean;
 }
 
 @Component({
-  selector: "app-sign-in-modal",
-  templateUrl: "./sign-in-modal.component.html",
-  styleUrls: ["./sign-in-modal.component.css"],
+  selector: 'app-sign-in-modal',
+  templateUrl: './sign-in-modal.component.html',
+  styleUrls: ['./sign-in-modal.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
 
@@ -43,8 +42,8 @@ export interface SignInOptions {
  */
 export class SignInModalComponent {
   private auth = inject(Auth);
-  userEmail: string = "";
-  userPassword: string = "";
+  userEmail: string = '';
+  userPassword: string = '';
   failedSignIn: boolean = false;
 
   constructor(
@@ -68,11 +67,7 @@ export class SignInModalComponent {
 
   async createNewUserAccount() {
     try {
-      await createUserWithEmailAndPassword(
-        this.auth,
-        this.userEmail,
-        this.userPassword
-      );
+      await createUserWithEmailAndPassword(this.auth, this.userEmail, this.userPassword);
       this.dialogRef.close();
     } catch (err) {
       this.failedSignIn = true;
@@ -81,11 +76,7 @@ export class SignInModalComponent {
 
   async signInWithUserInfo() {
     try {
-      await signInWithEmailAndPassword(
-        this.auth,
-        this.userEmail,
-        this.userPassword
-      );
+      await signInWithEmailAndPassword(this.auth, this.userEmail, this.userPassword);
       this.dialogRef.close();
     } catch (err) {
       this.failedSignIn = true;

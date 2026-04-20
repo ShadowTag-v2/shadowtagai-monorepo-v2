@@ -8,15 +8,15 @@ import '@material/web/focus/md-focus-ring.js';
 import '@material/web/icon/icon.js';
 import '@material/web/iconbutton/icon-button.js';
 
-import type {MdIconButton} from '@material/web/iconbutton/icon-button.js';
-import {css, html, LitElement} from 'lit';
-import {customElement, query, state} from 'lit/decorators.js';
-import {live} from 'lit/directives/live.js';
+import type { MdIconButton } from '@material/web/iconbutton/icon-button.js';
+import { css, html, LitElement } from 'lit';
+import { customElement, query, state } from 'lit/decorators.js';
+import { live } from 'lit/directives/live.js';
 
-import {drawerOpenSignal} from '../signals/drawer-open-state.js';
-import {inertContentSignal, inertSidebarSignal} from '../signals/inert.js';
-import {SignalElement} from '../signals/signal-element.js';
-import {materialDesign} from '../svg/material-design-logo.js';
+import { drawerOpenSignal } from '../signals/drawer-open-state.js';
+import { inertContentSignal, inertSidebarSignal } from '../signals/inert.js';
+import { SignalElement } from '../signals/signal-element.js';
+import { materialDesign } from '../svg/material-design-logo.js';
 
 /**
  * Top app bar of the catalog.
@@ -40,9 +40,7 @@ export class TopAppBar extends SignalElement(LitElement) {
               aria-label-selected="open navigation menu"
               aria-label="close navigation menu"
               aria-expanded=${drawerOpenSignal.value ? 'false' : 'true'}
-              title="${!drawerOpenSignal.value
-                ? 'Open'
-                : 'Close'} navigation menu"
+              title="${!drawerOpenSignal.value ? 'Open' : 'Close'} navigation menu"
               .selected=${live(!drawerOpenSignal.value)}
               @input=${this.onMenuIconToggle}>
               <md-icon slot="selected">menu</md-icon>

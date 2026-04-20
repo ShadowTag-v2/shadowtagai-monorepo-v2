@@ -3,21 +3,21 @@
 
 function twitterProvider() {
   // [START auth_twitter_provider_create]
-  const { TwitterAuthProvider } = require("firebase/auth");
+  const { TwitterAuthProvider } = require('firebase/auth');
 
   const provider = new TwitterAuthProvider();
   // [END auth_twitter_provider_create]
 
   // [START auth_twitter_provider_params]
   provider.setCustomParameters({
-    'lang': 'es'
+    lang: 'es',
   });
   // [END auth_twitter_provider_params]
 }
 
 function twitterSignInPopup(provider) {
   // [START auth_twitter_signin_popup]
-  const { getAuth, signInWithPopup, TwitterAuthProvider } = require("firebase/auth");
+  const { getAuth, signInWithPopup, TwitterAuthProvider } = require('firebase/auth');
 
   const auth = getAuth();
   signInWithPopup(auth, provider)
@@ -32,7 +32,8 @@ function twitterSignInPopup(provider) {
       const user = result.user;
       // IdP data available using getAdditionalUserInfo(result)
       // ...
-    }).catch((error) => {
+    })
+    .catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -47,7 +48,7 @@ function twitterSignInPopup(provider) {
 
 function twitterSignInRedirectResult() {
   // [START auth_twitter_signin_redirect_result]
-  const { getAuth, getRedirectResult, TwitterAuthProvider } = require("firebase/auth");
+  const { getAuth, getRedirectResult, TwitterAuthProvider } = require('firebase/auth');
 
   const auth = getAuth();
   getRedirectResult(auth)
@@ -63,7 +64,8 @@ function twitterSignInRedirectResult() {
       const user = result.user;
       // IdP data available using getAdditionalUserInfo(result)
       // ...
-    }).catch((error) => {
+    })
+    .catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -78,7 +80,7 @@ function twitterSignInRedirectResult() {
 
 function twitterProviderCredential(accessToken, secret) {
   // [START auth_twitter_provider_credential]
-  const { TwitterAuthProvider } = require("firebase/auth");
+  const { TwitterAuthProvider } = require('firebase/auth');
 
   const credential = TwitterAuthProvider.credential(accessToken, secret);
   // [END auth_twitter_provider_credential]

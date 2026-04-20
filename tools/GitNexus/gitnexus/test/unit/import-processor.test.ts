@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { buildImportResolutionContext } from '../../src/core/ingestion/import-processor.js';
 import type { ImportResolutionContext } from '../../src/core/ingestion/import-resolvers/types.js';
 import { createResolutionContext } from '../../src/core/ingestion/resolution-context.js';

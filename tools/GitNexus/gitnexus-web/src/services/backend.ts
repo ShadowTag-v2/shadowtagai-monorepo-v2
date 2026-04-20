@@ -88,11 +88,7 @@ const assertOk = async (response: Response): Promise<void> => {
  */
 export const probeBackend = async (): Promise<boolean> => {
   try {
-    const response = await fetchWithTimeout(
-      `${backendUrl}/api/repos`,
-      {},
-      PROBE_TIMEOUT_MS,
-    );
+    const response = await fetchWithTimeout(`${backendUrl}/api/repos`, {}, PROBE_TIMEOUT_MS);
     return response.status === 200;
   } catch {
     return false;
@@ -128,10 +124,7 @@ export const fetchGraph = async (
  * Execute a raw Cypher query against the repository's graph.
  * Unwraps the `{ result }` wrapper returned by the server.
  */
-export const runCypherQuery = async (
-  repo: string,
-  cypher: string,
-): Promise<unknown[]> => {
+export const runCypherQuery = async (repo: string, cypher: string): Promise<unknown[]> => {
   const response = await fetchWithTimeout(`${backendUrl}/api/query`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -149,11 +142,7 @@ export const runCypherQuery = async (
 /**
  * Run a semantic search across the repository's graph.
  */
-export const runSearch = async (
-  repo: string,
-  query: string,
-  limit?: number,
-): Promise<unknown> => {
+export const runSearch = async (repo: string, query: string, limit?: number): Promise<unknown> => {
   const response = await fetchWithTimeout(`${backendUrl}/api/search`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -166,10 +155,7 @@ export const runSearch = async (
 /**
  * Fetch the source content of a file in a repository.
  */
-export const fetchFileContent = async (
-  repo: string,
-  filePath: string,
-): Promise<string> => {
+export const fetchFileContent = async (repo: string, filePath: string): Promise<string> => {
   const response = await fetchWithTimeout(
     `${backendUrl}/api/file?repo=${encodeURIComponent(repo)}&path=${encodeURIComponent(filePath)}`,
   );
@@ -193,10 +179,7 @@ export const fetchProcesses = async (repo: string): Promise<unknown> => {
 /**
  * Fetch the detailed step-by-step trace for a single process.
  */
-export const fetchProcessDetail = async (
-  repo: string,
-  name: string,
-): Promise<unknown> => {
+export const fetchProcessDetail = async (repo: string, name: string): Promise<unknown> => {
   const response = await fetchWithTimeout(
     `${backendUrl}/api/process?repo=${encodeURIComponent(repo)}&name=${encodeURIComponent(name)}`,
   );
@@ -218,10 +201,7 @@ export const fetchClusters = async (repo: string): Promise<unknown> => {
 /**
  * Fetch the members of a single cluster.
  */
-export const fetchClusterDetail = async (
-  repo: string,
-  name: string,
-): Promise<unknown> => {
+export const fetchClusterDetail = async (repo: string, name: string): Promise<unknown> => {
   const response = await fetchWithTimeout(
     `${backendUrl}/api/cluster?repo=${encodeURIComponent(repo)}&name=${encodeURIComponent(name)}`,
   );

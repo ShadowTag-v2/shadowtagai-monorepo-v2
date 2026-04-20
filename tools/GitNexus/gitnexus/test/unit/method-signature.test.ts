@@ -1,14 +1,14 @@
-import { describe, it, expect } from 'vitest';
-import { extractMethodSignature } from '../../src/core/ingestion/utils/ast-helpers.js';
 import Parser from 'tree-sitter';
-import TypeScript from 'tree-sitter-typescript';
-import Python from 'tree-sitter-python';
-import Java from 'tree-sitter-java';
 import CSharp from 'tree-sitter-c-sharp';
-import Kotlin from 'tree-sitter-kotlin';
 import CPP from 'tree-sitter-cpp';
 import Go from 'tree-sitter-go';
+import Java from 'tree-sitter-java';
+import Kotlin from 'tree-sitter-kotlin';
+import Python from 'tree-sitter-python';
 import Rust from 'tree-sitter-rust';
+import TypeScript from 'tree-sitter-typescript';
+import { describe, expect, it } from 'vitest';
+import { extractMethodSignature } from '../../src/core/ingestion/utils/ast-helpers.js';
 
 describe('extractMethodSignature', () => {
   const parser = new Parser();
@@ -326,7 +326,7 @@ User* lookup(string name) { return nullptr; }`;
       const code = `package main
 func add(a int, b int) int { return a + b }`;
       const tree = parser.parse(code);
-      const funcNode = tree.rootNode.namedChildren.find(c => c.type === 'function_declaration')!;
+      const funcNode = tree.rootNode.namedChildren.find((c) => c.type === 'function_declaration')!;
 
       const sig = extractMethodSignature(funcNode);
       expect(sig.parameterCount).toBe(2);
@@ -338,7 +338,7 @@ func add(a int, b int) int { return a + b }`;
       const code = `package main
 func parse(s string) (string, error) { return s, nil }`;
       const tree = parser.parse(code);
-      const funcNode = tree.rootNode.namedChildren.find(c => c.type === 'function_declaration')!;
+      const funcNode = tree.rootNode.namedChildren.find((c) => c.type === 'function_declaration')!;
 
       const sig = extractMethodSignature(funcNode);
       expect(sig.parameterCount).toBe(1);
@@ -350,7 +350,7 @@ func parse(s string) (string, error) { return s, nil }`;
       const code = `package main
 func doSomething(x int) { }`;
       const tree = parser.parse(code);
-      const funcNode = tree.rootNode.namedChildren.find(c => c.type === 'function_declaration')!;
+      const funcNode = tree.rootNode.namedChildren.find((c) => c.type === 'function_declaration')!;
 
       const sig = extractMethodSignature(funcNode);
       expect(sig.parameterCount).toBe(1);
@@ -362,7 +362,7 @@ func doSomething(x int) { }`;
       const code = `package main
 func log(args ...string) int { return 0 }`;
       const tree = parser.parse(code);
-      const funcNode = tree.rootNode.namedChildren.find(c => c.type === 'function_declaration')!;
+      const funcNode = tree.rootNode.namedChildren.find((c) => c.type === 'function_declaration')!;
 
       const sig = extractMethodSignature(funcNode);
       expect(sig.parameterCount).toBeUndefined();

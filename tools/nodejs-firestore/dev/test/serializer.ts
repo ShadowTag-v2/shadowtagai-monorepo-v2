@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {it} from 'mocha';
-import {expect} from 'chai';
+import { expect } from 'chai';
+import { it } from 'mocha';
+import type { SinonStubbedInstance } from 'sinon';
 import * as sinon from 'sinon';
-import {validateUserInput, Serializer} from '../src/serializer';
-import {DocumentReference, Firestore} from '../src';
-import {SinonStubbedInstance} from 'sinon';
+import type { DocumentReference, Firestore } from '../src';
+import { Serializer, validateUserInput } from '../src/serializer';
 
 describe('validateUserInput', () => {
   it('validates the depth of nested objects and arrays - 20', () => {
@@ -187,7 +187,7 @@ describe('validateUserInput', () => {
                       i: {
                         j: {
                           k: {
-                            l: {m: {n: {o: {p: {q: {r: {s: {t: {u: 1}}}}}}}}},
+                            l: { m: { n: { o: { p: { q: { r: { s: { t: { u: 1 } } } } } } } } },
                           },
                         },
                       },
@@ -223,7 +223,7 @@ describe('validateUserInput', () => {
                         j: {
                           k: {
                             l: {
-                              m: {n: {o: {p: {q: {r: {s: {t: {u: {v: 1}}}}}}}}},
+                              m: { n: { o: { p: { q: { r: { s: { t: { u: { v: 1 } } } } } } } } },
                             },
                           },
                         },

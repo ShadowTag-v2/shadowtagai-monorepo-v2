@@ -18,32 +18,32 @@
  *   ~$0.01-0.05 per test run (depends on LLM)
  */
 
-const { HyperAgent } = require("@hyperbrowser/agent");
+const { HyperAgent } = require('@hyperbrowser/agent');
 
 // Determine which provider to use based on available env vars
 function getLLMConfig() {
   if (process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY) {
     return {
-      provider: "gemini",
-      model: "gemini-2.0-flash-exp", // Cheapest, fastest
+      provider: 'gemini',
+      model: 'gemini-2.0-flash-exp', // Cheapest, fastest
       apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY,
     };
   }
   if (process.env.OPENAI_API_KEY) {
     return {
-      provider: "openai",
-      model: "gpt-4o-mini", // Cheapest OpenAI
+      provider: 'openai',
+      model: 'gpt-4o-mini', // Cheapest OpenAI
       apiKey: process.env.OPENAI_API_KEY,
     };
   }
   if (process.env.ANTHROPIC_API_KEY) {
     return {
-      provider: "anthropic",
-      model: "claude-3-haiku-20240307", // Cheapest Claude
+      provider: 'anthropic',
+      model: 'claude-3-haiku-20240307', // Cheapest Claude
       apiKey: process.env.ANTHROPIC_API_KEY,
     };
   }
-  throw new Error("No LLM API key found. Set GEMINI_API_KEY, OPENAI_API_KEY, or ANTHROPIC_API_KEY");
+  throw new Error('No LLM API key found. Set GEMINI_API_KEY, OPENAI_API_KEY, or ANTHROPIC_API_KEY');
 }
 
 async function runTests() {
@@ -69,18 +69,18 @@ async function runTests() {
     // ─────────────────────────────────────────────────────────────
     // TEST 1: Bot Detection (SannySoft)
     // ─────────────────────────────────────────────────────────────
-    console.log("[TEST 1] Bot Detection Check (bot.sannysoft.com)...");
+    console.log('[TEST 1] Bot Detection Check (bot.sannysoft.com)...');
     const t1Start = Date.now();
 
     const botTest = await agent.executeTask(
-      "Go to https://bot.sannysoft.com and wait for tests to complete. " +
+      'Go to https://bot.sannysoft.com and wait for tests to complete. ' +
         "Return a JSON object with keys 'passed' and 'failed', each containing " +
-        "an array of test names that passed or failed.",
+        'an array of test names that passed or failed.',
     );
 
     const t1Time = Date.now() - t1Start;
     results.tests.push({
-      name: "Bot Detection",
+      name: 'Bot Detection',
       time: t1Time,
       result: botTest.output || botTest,
     });
@@ -89,19 +89,19 @@ async function runTests() {
     // ─────────────────────────────────────────────────────────────
     // TEST 2: Structured Extraction
     // ─────────────────────────────────────────────────────────────
-    console.log("[TEST 2] Structured Data Extraction (Hacker News)...");
+    console.log('[TEST 2] Structured Data Extraction (Hacker News)...');
     const t2Start = Date.now();
 
     const page = await agent.newPage();
-    await page.goto("https://news.ycombinator.com");
+    await page.goto('https://news.ycombinator.com');
 
     const hnData = await page.extract(
-      "Extract the top 5 story titles and their point counts as JSON array",
+      'Extract the top 5 story titles and their point counts as JSON array',
     );
 
     const t2Time = Date.now() - t2Start;
     results.tests.push({
-      name: "Data Extraction",
+      name: 'Data Extraction',
       time: t2Time,
       result: hnData.output || hnData,
     });
@@ -110,17 +110,17 @@ async function runTests() {
     // ─────────────────────────────────────────────────────────────
     // TEST 3: Multi-Step Task
     // ─────────────────────────────────────────────────────────────
-    console.log("[TEST 3] Multi-Step Navigation...");
+    console.log('[TEST 3] Multi-Step Navigation...');
     const t3Start = Date.now();
 
     const multiStep = await agent.executeTask(
       "Go to https://example.com, click the 'More information...' link, " +
-        "and tell me what domain the link points to.",
+        'and tell me what domain the link points to.',
     );
 
     const t3Time = Date.now() - t3Start;
     results.tests.push({
-      name: "Multi-Step",
+      name: 'Multi-Step',
       time: t3Time,
       result: multiStep.output || multiStep,
     });
@@ -141,10 +141,10 @@ async function runTests() {
     results.tests.forEach((t, i) => {
       console.log(`\n  [${i + 1}] ${t.name} (${t.time}ms):`);
       const output =
-        typeof t.result === "string"
+        typeof t.result === 'string'
           ? t.result.substring(0, 500)
           : JSON.stringify(t.result, null, 2).substring(0, 500);
-      console.log(`      ${output.replace(/\n/g, "\n      ")}`);
+      console.log(`      ${output.replace(/\n/g, '\n      ')}`);
     });
 
     console.log(`\n═══════════════════════════════════════════════════════════════`);
@@ -164,7 +164,7 @@ async function runTests() {
     console.log(`  NOT for: Real-time (<100ms), Judge #6 SLA paths`);
     console.log(`═══════════════════════════════════════════════════════════════\n`);
   } catch (error) {
-    console.error("\n❌ TEST FAILED:", error.message);
+    console.error('\n❌ TEST FAILED:', error.message);
     console.error(error.stack);
   } finally {
     await agent.closeAgent();

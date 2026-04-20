@@ -1,14 +1,16 @@
 // These samples are intended for Web so this import would normally be
 // done in HTML however using modules here is more convenient for
 // ensuring sample correctness offline.
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 function signInWithEmailPassword() {
-  var email = "test@example.com";
-  var password = "hunter2";
+  var email = 'test@example.com';
+  var password = 'hunter2';
   // [START auth_signin_password]
-  firebase.auth().signInWithEmailAndPassword(email, password)
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
       // Signed in
       var user = userCredential.user;
@@ -22,10 +24,12 @@ function signInWithEmailPassword() {
 }
 
 function signUpWithEmailPassword() {
-  var email = "test@example.com";
-  var password = "hunter2";
+  var email = 'test@example.com';
+  var password = 'hunter2';
   // [START auth_signup_password]
-  firebase.auth().createUserWithEmailAndPassword(email, password)
+  firebase
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
       // Signed in
       var user = userCredential.user;
@@ -41,7 +45,9 @@ function signUpWithEmailPassword() {
 
 function sendEmailVerification() {
   // [START auth_send_email_verification]
-  firebase.auth().currentUser.sendEmailVerification()
+  firebase
+    .auth()
+    .currentUser.sendEmailVerification()
     .then(() => {
       // Email verification sent!
       // ...
@@ -50,9 +56,11 @@ function sendEmailVerification() {
 }
 
 function sendPasswordReset() {
-  const email = "sam@example.com";
+  const email = 'sam@example.com';
   // [START auth_send_password_reset]
-  firebase.auth().sendPasswordResetEmail(email)
+  firebase
+    .auth()
+    .sendPasswordResetEmail(email)
     .then(() => {
       // Password reset email sent!
       // ..

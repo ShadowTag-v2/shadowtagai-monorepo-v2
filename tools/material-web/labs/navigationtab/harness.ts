@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Harness} from '../../testing/harness.js';
+import { Harness } from '../../testing/harness.js';
 
-import {NavigationTab} from './internal/navigation-tab.js';
+import type { NavigationTab } from './internal/navigation-tab.js';
 
 /**
  * Test harness for navigation tab elements.
@@ -14,8 +14,6 @@ import {NavigationTab} from './internal/navigation-tab.js';
 export class NavigationTabHarness extends Harness<NavigationTab> {
   override async getInteractiveElement() {
     await this.element.updateComplete;
-    return this.element.renderRoot.querySelector(
-      '.md3-navigation-tab',
-    ) as HTMLElement;
+    return this.element.renderRoot.querySelector('.md3-navigation-tab') as HTMLElement;
   }
 }

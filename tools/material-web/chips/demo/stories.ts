@@ -11,9 +11,9 @@ import '@material/web/chips/input-chip.js';
 import '@material/web/chips/suggestion-chip.js';
 import '@material/web/icon/icon.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {css, html, svg} from 'lit';
-import {classMap} from 'lit/directives/class-map.js';
+import { css, html, svg } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for chips stories. */
 export interface StoryKnobs {
@@ -46,8 +46,8 @@ const styles = css`
 const assist: MaterialStoryInit<StoryKnobs> = {
   name: 'Assist chips',
   styles,
-  render({label, elevated, disabled, scrolling}) {
-    const classes = {'scrolling': scrolling};
+  render({ label, elevated, disabled, scrolling }) {
+    const classes = { scrolling: scrolling };
     return html`
       <md-chip-set class=${classMap(classes)} aria-label="Assist chips">
         <md-assist-chip ?disabled=${disabled} ?elevated=${elevated}>
@@ -74,8 +74,8 @@ const assist: MaterialStoryInit<StoryKnobs> = {
 const filters: MaterialStoryInit<StoryKnobs> = {
   name: 'Filter chips',
   styles,
-  render({label, elevated, disabled, scrolling}) {
-    const classes = {'scrolling': scrolling};
+  render({ label, elevated, disabled, scrolling }) {
+    const classes = { scrolling: scrolling };
     return html`
       <md-chip-set class=${classMap(classes)} aria-label="Filter chips">
         <md-filter-chip ?disabled=${disabled} ?elevated=${elevated}>
@@ -103,8 +103,8 @@ const filters: MaterialStoryInit<StoryKnobs> = {
 const inputs: MaterialStoryInit<StoryKnobs> = {
   name: 'Input chips',
   styles,
-  render({label, disabled, scrolling}) {
-    const classes = {'scrolling': scrolling};
+  render({ label, disabled, scrolling }) {
+    const classes = { scrolling: scrolling };
     return html`
       <md-chip-set class=${classMap(classes)} aria-label="Input chips">
         <md-input-chip ?disabled=${disabled}>
@@ -137,8 +137,8 @@ const inputs: MaterialStoryInit<StoryKnobs> = {
 const suggestions: MaterialStoryInit<StoryKnobs> = {
   name: 'Suggestion chips',
   styles,
-  render({label, elevated, disabled, scrolling}) {
-    const classes = {'scrolling': scrolling};
+  render({ label, elevated, disabled, scrolling }) {
+    const classes = { scrolling: scrolling };
     return html`
       <md-chip-set class=${classMap(classes)} aria-label="Suggestion chips">
         <md-suggestion-chip ?disabled=${disabled} ?elevated=${elevated}>

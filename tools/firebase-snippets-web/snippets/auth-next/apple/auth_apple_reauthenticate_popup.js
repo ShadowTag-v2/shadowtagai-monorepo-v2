@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_apple_reauthenticate_popup_modular]
-import { getAuth, reauthenticateWithPopup, OAuthProvider } from "firebase/auth";
+import { getAuth, OAuthProvider, reauthenticateWithPopup } from 'firebase/auth';
 
 // Result from Redirect auth flow.
 const auth = getAuth();

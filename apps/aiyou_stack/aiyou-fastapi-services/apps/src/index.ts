@@ -6,43 +6,39 @@
 
 // Agents
 export { SystemArchitect, systemArchitect } from './agents/system-architect';
-
+export type { AgentConfig } from './config/agent-config';
+export { DEFAULT_AGENT_CONFIG, getAgentConfig } from './config/agent-config';
+// Configuration
+export { SYSTEM_PROMPTS } from './config/system-prompts';
 // Tools
 export { architectureMcpServer } from './tools/architecture-tools';
 
-// Configuration
-export { SYSTEM_PROMPTS } from './config/system-prompts';
-export { getAgentConfig, DEFAULT_AGENT_CONFIG } from './config/agent-config';
-export type { AgentConfig } from './config/agent-config';
- * Claude Code Agents - Main Entry Point
- * Comprehensive agent system for development workflows
+* Claude Code Agents - Main Entry Point
+ * Comprehensive agent system
+for development workflows
  */
 
 // Export types
 export * from './types/agent.types';
-export * from './types/pnkln.types';
 
-// Export base agent
-export { BaseAgent } from './utils/base-agent';
-
+export * as AIInnovation from './agents/ai-innovation';
+export * as BusinessAnalytics from './agents/business-analytics';
+export * as DesignUX from './agents/design-ux';
+export * as Development from './agents/development';
+export * as Operations from './agents/operations';
+export * as PNKLNStack from './agents/pnkln-stack';
 // Export all agent categories
 export * as ProductStrategy from './agents/product-strategy';
-export * as Development from './agents/development';
-export * as DesignUX from './agents/design-ux';
 export * as QualityTesting from './agents/quality-testing';
-export * as Operations from './agents/operations';
-export * as BusinessAnalytics from './agents/business-analytics';
-export * as AIInnovation from './agents/ai-innovation';
-export * as PNKLNStack from './agents/pnkln-stack';
-
 // Export registry
 export { AgentRegistry, agentRegistry } from './agents/registry';
-
 // Export configuration
 export { AgentConfig } from './config/agent-config';
-
 // Export PNKLN frameworks
 export { masterPromptFramework } from './prompts/frameworks/master-prompt-framework';
+export * from './types/pnkln.types';
+// Export base agent
+export { BaseAgent } from './utils/base-agent';
 
 /**
  * Get an agent by ID

@@ -6,19 +6,14 @@
 
 // import 'jasmine'; (google3-only)
 
-import {
-  dispatchActivationClick,
-  isActivationClick,
-} from './form-label-activation.js';
+import { dispatchActivationClick, isActivationClick } from './form-label-activation.js';
 
 describe('label events', () => {
   let instance: HTMLDivElement;
 
   beforeEach(() => {
     instance = document.createElement('div');
-    instance
-      .attachShadow({mode: 'open'})
-      .append(document.createElement('slot'));
+    instance.attachShadow({ mode: 'open' }).append(document.createElement('slot'));
     // To have event.target set correctly, the EventTarget instance must be
     // attached to the DOM.
     document.body.appendChild(instance);
@@ -33,9 +28,7 @@ describe('label events', () => {
       const listener = jasmine.createSpy('listener', isActivationClick);
       listener.and.callThrough();
       instance.addEventListener('click', listener);
-      instance.dispatchEvent(
-        new MouseEvent('click', {bubbles: true, composed: true}),
-      );
+      instance.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
       expect(listener).toHaveBeenCalledTimes(1);
       expect(listener.calls.mostRecent().returnValue).toBe(true);
     });
@@ -46,9 +39,7 @@ describe('label events', () => {
       instance.addEventListener('click', listener);
       const innerEl = document.createElement('div');
       instance.shadowRoot!.append(innerEl);
-      innerEl.dispatchEvent(
-        new MouseEvent('click', {bubbles: true, composed: true}),
-      );
+      innerEl.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
       expect(listener).toHaveBeenCalledTimes(1);
       expect(listener.calls.mostRecent().returnValue).toBe(false);
     });
@@ -60,9 +51,7 @@ describe('label events', () => {
       const slottedEl = document.createElement('div');
       instance.append(slottedEl);
 
-      slottedEl.dispatchEvent(
-        new MouseEvent('click', {bubbles: true, composed: true}),
-      );
+      slottedEl.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
       expect(listener).toHaveBeenCalledTimes(1);
       expect(listener.calls.mostRecent().returnValue).toBe(false);
     });

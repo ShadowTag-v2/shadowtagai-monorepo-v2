@@ -5,19 +5,19 @@
 // 'npm run snippets'.
 
 // [START update_document_nested_modular]
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
 
 // Create an initial document to update.
-const frankDocRef = doc(db, "users", "frank");
+const frankDocRef = doc(db, 'users', 'frank');
 await setDoc(frankDocRef, {
-    name: "Frank",
-    favorites: { food: "Pizza", color: "Blue", subject: "recess" },
-    age: 12
+  name: 'Frank',
+  favorites: { food: 'Pizza', color: 'Blue', subject: 'recess' },
+  age: 12,
 });
 
 // To update age and favorite color:
 await updateDoc(frankDocRef, {
-    "age": 13,
-    "favorites.color": "Red"
+  age: 13,
+  'favorites.color': 'Red',
 });
 // [END update_document_nested_modular]

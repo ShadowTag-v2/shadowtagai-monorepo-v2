@@ -11,10 +11,10 @@ import '@material/web/menu/menu.js';
 import '@material/web/menu/menu-item.js';
 import '@material/web/menu/sub-menu.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {CloseMenuEvent} from '@material/web/menu/internal/controllers/shared.js';
-import {Corner, FocusState, MdMenu, MenuItem} from '@material/web/menu/menu.js';
-import {css, html} from 'lit';
+import type { CloseMenuEvent } from '@material/web/menu/internal/controllers/shared.js';
+import type { Corner, FocusState, MdMenu, MenuItem } from '@material/web/menu/menu.js';
+import { css, html } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for Menu stories. */
 export interface StoryKnobs {
@@ -100,9 +100,7 @@ const standard: MaterialStoryInit<StoryKnobs> = {
     return html`
       <div class="root">
         <div
-          style="${knobs.positioning === 'document'
-            ? ''
-            : 'position:relative;'}">
+          style="${knobs.positioning === 'document' ? '' : 'position:relative;'}">
           <md-filled-button
             @click=${toggleMenu}
             @keydown=${toggleMenu}
@@ -164,17 +162,13 @@ const linkable: MaterialStoryInit<StoryKnobs> = {
           <div slot="headline">${name}</div>
           <md-icon slot="end"> ${knobs['link icon']} </md-icon>
         </md-menu-item>
-        ${index === 2
-          ? html`<md-divider role="separator" tabindex="-1"></md-divider>`
-          : ''}`;
+        ${index === 2 ? html`<md-divider role="separator" tabindex="-1"></md-divider>` : ''}`;
     });
 
     return html`
       <div class="root">
         <div
-          style="${knobs.positioning === 'document'
-            ? ''
-            : 'position:relative;'}">
+          style="${knobs.positioning === 'document' ? '' : 'position:relative;'}">
           <md-filled-button
             @click=${toggleMenu}
             @keydown=${toggleMenu}
@@ -309,9 +303,7 @@ const submenu: MaterialStoryInit<StoryKnobs> = {
     return html`
       <div class="root">
         <div
-          style="${knobs.positioning === 'document'
-            ? ''
-            : 'position:relative;'}">
+          style="${knobs.positioning === 'document' ? '' : 'position:relative;'}">
           <md-filled-button
             @click=${toggleMenu}
             @keydown=${toggleMenu}
@@ -427,9 +419,7 @@ function toggleMenu(event: Event | KeyboardEvent) {
   const menu = root.querySelector('#menu') as MdMenu;
 
   // determine if is keyboard event
-  const isKeyboardEvent = (
-    event: KeyboardEvent | Event,
-  ): event is KeyboardEvent => {
+  const isKeyboardEvent = (event: KeyboardEvent | Event): event is KeyboardEvent => {
     return (event as KeyboardEvent).key !== undefined;
   };
   const isKeyboard = isKeyboardEvent(event);
@@ -471,7 +461,9 @@ function displayCloseEvent(event: CloseMenuEvent) {
   detail: {
     initiator: ${stringifyItem(event.detail.initiator)},
     itemPath: [
-      ${event.detail.itemPath.map((item) => stringifyItem(item)).join(`,
+      ${event.detail.itemPath
+        .map((item) => stringifyItem(item))
+        .join(`,
       `)}
     ],
   },

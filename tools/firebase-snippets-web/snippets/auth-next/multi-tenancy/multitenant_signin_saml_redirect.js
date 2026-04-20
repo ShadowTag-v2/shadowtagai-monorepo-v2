@@ -5,7 +5,8 @@
 // 'npm run snippets'.
 
 // [START multitenant_signin_saml_redirect_modular]
-import { signInWithRedirect, getRedirectResult } from "firebase/auth";
+import { getRedirectResult, signInWithRedirect } from 'firebase/auth';
+
 // Switch to TENANT_ID1.
 auth.tenantId = 'TENANT_ID1';
 

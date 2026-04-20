@@ -5,13 +5,16 @@
 // 'npm run snippets'.
 
 // [START auth_update_user_email_modular]
-import { getAuth, updateEmail } from "firebase/auth";
+import { getAuth, updateEmail } from 'firebase/auth';
+
 const auth = getAuth();
-updateEmail(auth.currentUser, "user@example.com").then(() => {
-  // Email updated!
-  // ...
-}).catch((error) => {
-  // An error occurred
-  // ...
-});
+updateEmail(auth.currentUser, 'user@example.com')
+  .then(() => {
+    // Email updated!
+    // ...
+  })
+  .catch((error) => {
+    // An error occurred
+    // ...
+  });
 // [END auth_update_user_email_modular]

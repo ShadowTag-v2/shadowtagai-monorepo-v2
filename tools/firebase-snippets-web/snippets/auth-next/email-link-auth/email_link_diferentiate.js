@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START email_link_diferentiate_modular]
-import { getAuth, fetchSignInMethodsForEmail, EmailAuthProvider} from "firebase/auth";
+import { EmailAuthProvider, fetchSignInMethodsForEmail, getAuth } from 'firebase/auth';
 
 // After asking the user for their email.
 const email = window.prompt('Please provide your email');

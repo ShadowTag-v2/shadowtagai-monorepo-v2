@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START storage_create_ref_modular]
-import { getStorage, ref } from "firebase/storage";
+import { getStorage, ref } from 'firebase/storage';
 
 // Get a reference to the storage service, which is used to create references in your storage bucket
 const storage = getStorage();

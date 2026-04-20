@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import { html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {Environment} from '../../testing/environment.js';
-import {Harness} from '../../testing/harness.js';
+import { Environment } from '../../testing/environment.js';
+import { Harness } from '../../testing/harness.js';
 
-import {Ripple} from './ripple.js';
+import { Ripple } from './ripple.js';
 
 enum RippleStateClasses {
   HOVERED = 'hovered',
@@ -66,12 +66,12 @@ describe('Ripple', () => {
 
   describe('basic', () => {
     it('initializes as a test-ripple', async () => {
-      const {instance} = await setupTest();
+      const { instance } = await setupTest();
       expect(instance).toBeInstanceOf(TestRipple);
     });
 
     it('sets pressed class on begin press', async () => {
-      const {harness, surface} = await setupTest();
+      const { harness, surface } = await setupTest();
       await harness.startTap();
       jasmine.clock().tick(150); // touch delay
       await env.waitForStability();
@@ -80,7 +80,7 @@ describe('Ripple', () => {
     });
 
     it('removes pressed class on end press', async () => {
-      const {harness, surface} = await setupTest();
+      const { harness, surface } = await setupTest();
       await harness.startTap();
       jasmine.clock().tick(150); // touch delay
       await harness.endTap();
@@ -92,7 +92,7 @@ describe('Ripple', () => {
     });
 
     it('sets hover class on pointer enter', async () => {
-      const {harness, surface} = await setupTest();
+      const { harness, surface } = await setupTest();
       await harness.startHover();
       await env.waitForStability();
 
@@ -100,7 +100,7 @@ describe('Ripple', () => {
     });
 
     it('removes hover class on pointer leave', async () => {
-      const {harness, surface} = await setupTest();
+      const { harness, surface } = await setupTest();
       await harness.startHover();
       await env.waitForStability();
       await harness.endHover();
@@ -110,7 +110,7 @@ describe('Ripple', () => {
     });
 
     it('stops hovering when disabled', async () => {
-      const {instance, harness, surface} = await setupTest();
+      const { instance, harness, surface } = await setupTest();
       await harness.startHover();
       await env.waitForStability();
       instance.disabled = true;
@@ -120,7 +120,7 @@ describe('Ripple', () => {
     });
 
     it('responds to keyboard click after mouse click', async () => {
-      const {instance, harness} = await setupTest();
+      const { instance, harness } = await setupTest();
       const STATE_INACTIVE = 0;
       await harness.clickWithMouse();
       await env.waitForStability();

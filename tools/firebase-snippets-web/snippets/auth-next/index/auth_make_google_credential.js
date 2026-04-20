@@ -5,8 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_make_google_credential_modular]
-import { GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider } from 'firebase/auth';
 
-const credential = GoogleAuthProvider.credential(
-  googleUser.getAuthResponse().id_token);
+const credential = GoogleAuthProvider.credential(googleUser.getAuthResponse().id_token);
 // [END auth_make_google_credential_modular]

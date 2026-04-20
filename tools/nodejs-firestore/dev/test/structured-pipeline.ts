@@ -15,14 +15,16 @@
  * limitations under the License.
  */
 
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as sinon from 'sinon';
-import {ProtoSerializable, Serializer} from '../src/serializer';
-import {google} from '../protos/firestore_v1_proto_api';
+import { google } from '../protos/firestore_v1_proto_api';
+import { type ProtoSerializable, Serializer } from '../src/serializer';
+
 import IPipeline = google.firestore.v1.IPipeline;
-import {StructuredPipeline} from '../src/pipelines/structured-pipeline';
-import {createInstance} from './util/helpers';
-import {Firestore} from '../src';
+
+import type { Firestore } from '../src';
+import { StructuredPipeline } from '../src/pipelines/structured-pipeline';
+import { createInstance } from './util/helpers';
 
 describe('StructuredPipeline', () => {
   let db: Firestore | undefined;
@@ -141,7 +143,7 @@ describe('StructuredPipeline', () => {
         foo: {
           mapValue: {
             fields: {
-              bar: {stringValue: 'baz'},
+              bar: { stringValue: 'baz' },
             },
           },
         },

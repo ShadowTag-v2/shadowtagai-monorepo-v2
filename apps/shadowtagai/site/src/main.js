@@ -3,11 +3,15 @@ import './style.css';
 // ═══ SCROLL PROGRESS ═══
 const scrollProgress = document.getElementById('scrollProgress');
 if (scrollProgress) {
-  window.addEventListener('scroll', () => {
-    const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-    scrollProgress.style.transform = `scaleX(${Math.min(pct, 1)})`;
-    scrollProgress.style.width = '100%';
-  }, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+      scrollProgress.style.transform = `scaleX(${Math.min(pct, 1)})`;
+      scrollProgress.style.width = '100%';
+    },
+    { passive: true },
+  );
 }
 
 // ═══ CSS PARTICLE FIELD ═══
@@ -27,10 +31,15 @@ if (particleContainer) {
 // ═══ REVEAL ON SCROLL ═══
 const reveals = document.querySelectorAll('.reveal');
 if (reveals.length) {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    },
+    { threshold: 0.1 },
+  );
+  reveals.forEach((el) => observer.observe(el));
 }
 
 // ═══ CONTACT MODAL ═══
@@ -38,10 +47,16 @@ const modal = document.getElementById('contactModal');
 const toast = document.getElementById('toast');
 
 window.openContactModal = () => {
-  if (modal) { modal.classList.add('active'); modal.setAttribute('aria-hidden', 'false'); }
+  if (modal) {
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+  }
 };
 window.closeContactModal = () => {
-  if (modal) { modal.classList.remove('active'); modal.setAttribute('aria-hidden', 'true'); }
+  if (modal) {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+  }
 };
 if (modal) {
   modal.addEventListener('click', (e) => {
@@ -63,18 +78,23 @@ if (form) {
         setTimeout(() => toast.classList.remove('show'), 4000);
       }
       form.reset();
-    } catch (err) { /* silent */ }
+    } catch (err) {
+      /* silent */
+    }
   });
 }
 
 // ═══ NAV SCROLL EFFECT ═══
 const nav = document.querySelector('.nav');
 if (nav) {
-  window.addEventListener('scroll', () => {
-    nav.style.background = window.scrollY > 50
-      ? 'rgba(15, 19, 31, 0.98)'
-      : 'rgba(15, 19, 31, 0.85)';
-  }, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      nav.style.background =
+        window.scrollY > 50 ? 'rgba(15, 19, 31, 0.98)' : 'rgba(15, 19, 31, 0.85)';
+    },
+    { passive: true },
+  );
 }
 
 // ═══ MOBILE NAV ═══

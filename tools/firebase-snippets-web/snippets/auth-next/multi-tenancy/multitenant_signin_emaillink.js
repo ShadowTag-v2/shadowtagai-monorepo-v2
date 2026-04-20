@@ -5,7 +5,8 @@
 // 'npm run snippets'.
 
 // [START multitenant_signin_emaillink_modular]
-import { isSignInWithEmailLink, parseActionCodeURL, signInWithEmailLink } from "firebase/auth";
+import { isSignInWithEmailLink, parseActionCodeURL, signInWithEmailLink } from 'firebase/auth';
+
 if (isSignInWithEmailLink(auth, window.location.href)) {
   const actionCodeUrl = parseActionCodeURL(window.location.href);
   if (actionCodeUrl.tenantId) {
@@ -18,12 +19,11 @@ if (isSignInWithEmailLink(auth, window.location.href)) {
     email = window.prompt('Please provide your email for confirmation');
   }
   // The client SDK will parse the code from the link for you.
-  signInWithEmailLink(auth, email, window.location.href)
-    .then((result) => {
-      // User is signed in.
-      // tenant ID available in result.user.tenantId.
-      // Clear email from storage.
-      window.localStorage.removeItem('emailForSignIn');
-    });
+  signInWithEmailLink(auth, email, window.location.href).then((result) => {
+    // User is signed in.
+    // tenant ID available in result.user.tenantId.
+    // Clear email from storage.
+    window.localStorage.removeItem('emailForSignIn');
+  });
 }
 // [END multitenant_signin_emaillink_modular]

@@ -1,4 +1,4 @@
-import { getServiceClient } from "./client";
+import { getServiceClient } from './client';
 
 // Use service client to bypass RLS - auth is verified by middleware
 const supabase = getServiceClient();
@@ -15,7 +15,7 @@ export interface X402PaymentRecord {
   tools_used?: string[];
   tx_hash?: string;
   network_id?: string;
-  payment_status: "pending" | "verified" | "settled" | "failed";
+  payment_status: 'pending' | 'verified' | 'settled' | 'failed';
   payment_header?: Record<string, unknown> | null;
   payment_requirements?: Record<string, unknown> | null;
   error_message?: string | null;
@@ -25,7 +25,7 @@ export interface X402PaymentRecord {
 }
 
 export async function createPayment(payment: X402PaymentRecord): Promise<X402PaymentRecord> {
-  const { data, error } = await supabase.from("x402_payments").insert(payment).select().single();
+  const { data, error } = await supabase.from('x402_payments').insert(payment).select().single();
 
   if (error) throw error;
   return data;
@@ -36,9 +36,9 @@ export async function updatePayment(
   updates: Partial<X402PaymentRecord>,
 ): Promise<X402PaymentRecord> {
   const { data, error } = await supabase
-    .from("x402_payments")
+    .from('x402_payments')
     .update(updates)
-    .eq("id", id)
+    .eq('id', id)
     .select()
     .single();
 
@@ -51,10 +51,10 @@ export async function getPaymentsByUser(
   limit?: number,
 ): Promise<X402PaymentRecord[]> {
   let query = supabase
-    .from("x402_payments")
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    .from('x402_payments')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
 
   if (limit) {
     query = query.limit(limit);
@@ -67,9 +67,9 @@ export async function getPaymentsByUser(
 
 export async function getUserPaymentStats(userId: string) {
   const { data, error } = await supabase
-    .from("user_payment_stats")
-    .select("*")
-    .eq("user_id", userId)
+    .from('user_payment_stats')
+    .select('*')
+    .eq('user_id', userId)
     .single();
 
   if (error) throw error;
@@ -90,7 +90,7 @@ export interface X402ExternalRecord {
   asset?: string;
   network?: string;
   network_id?: string;
-  payment_status?: "pending" | "verified" | "settled" | "failed";
+  payment_status?: 'pending' | 'verified' | 'settled' | 'failed';
   payment_header?: Record<string, unknown> | null;
   payment_requirements?: Record<string, unknown> | null;
   request_metadata?: Record<string, unknown>; // stores providedUserId, fileInfo, etc.
@@ -100,7 +100,7 @@ export interface X402ExternalRecord {
 }
 
 export async function createX402External(record: X402ExternalRecord): Promise<X402ExternalRecord> {
-  const { data, error } = await supabase.from("x402_external").insert(record).select().single();
+  const { data, error } = await supabase.from('x402_external').insert(record).select().single();
 
   if (error) throw error;
   return data;
@@ -111,9 +111,9 @@ export async function updateX402External(
   updates: Partial<X402ExternalRecord>,
 ): Promise<X402ExternalRecord> {
   const { data, error } = await supabase
-    .from("x402_external")
+    .from('x402_external')
     .update(updates)
-    .eq("id", id)
+    .eq('id', id)
     .select()
     .single();
 
@@ -126,10 +126,10 @@ export async function getX402ExternalByConversationId(
   limit?: number,
 ): Promise<X402ExternalRecord[]> {
   let query = supabase
-    .from("x402_external")
-    .select("*")
-    .eq("conversation_id", conversationId)
-    .order("created_at", { ascending: false });
+    .from('x402_external')
+    .select('*')
+    .eq('conversation_id', conversationId)
+    .order('created_at', { ascending: false });
 
   if (limit) {
     query = query.limit(limit);

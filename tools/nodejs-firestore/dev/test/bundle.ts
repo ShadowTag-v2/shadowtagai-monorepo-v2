@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as extend from 'extend';
-import {afterEach, beforeEach, describe, it} from 'mocha';
-import {firestore, google} from '../protos/firestore_v1_proto_api';
-import {Firestore, QuerySnapshot, Timestamp} from '../src';
+import { afterEach, beforeEach, describe, it } from 'mocha';
+import { firestore, google } from '../protos/firestore_v1_proto_api';
+import { type Firestore, QuerySnapshot, Timestamp } from '../src';
 import {
   bundleToElementArray,
   createInstance,
@@ -52,7 +52,7 @@ describe('Bundle Builder', () => {
   let firestore: Firestore;
 
   beforeEach(() => {
-    return createInstance().then(firestoreInstance => {
+    return createInstance().then((firestoreInstance) => {
       firestore = firestoreInstance;
     });
   });
@@ -61,13 +61,12 @@ describe('Bundle Builder', () => {
 
   // Tests the testing helper function bundleToElementArray works as expected.
   it('succeeds to read length prefixed json with testing function', async () => {
-    const bundleString =
-      '20{"a":"string value"}9{"b":123}26{"c":{"d":"nested value"}}';
+    const bundleString = '20{"a":"string value"}9{"b":123}26{"c":{"d":"nested value"}}';
     const elements = await bundleToElementArray(Buffer.from(bundleString));
     expect(elements).to.deep.equal([
-      {a: 'string value'},
-      {b: 123},
-      {c: {d: 'nested value'}},
+      { a: 'string value' },
+      { b: 123 },
+      { c: { d: 'nested value' } },
     ]);
   });
 
@@ -76,7 +75,7 @@ describe('Bundle Builder', () => {
     const snap1 = firestore.snapshot_(
       {
         name: `${DATABASE_ROOT}/documents/collectionId/doc1`,
-        fields: {foo: {stringValue: 'value'}, bar: {integerValue: '42'}},
+        fields: { foo: { stringValue: 'value' }, bar: { integerValue: '42' } },
         createTime: '1970-01-01T00:00:01.002Z',
         updateTime: '1970-01-01T00:00:03.000004Z',
       },
@@ -88,7 +87,7 @@ describe('Bundle Builder', () => {
     const snap2 = firestore.snapshot_(
       {
         name: `${DATABASE_ROOT}/documents/collectionId/doc1`,
-        fields: {foo: {stringValue: 'value'}, bar: {integerValue: '-42'}},
+        fields: { foo: { stringValue: 'value' }, bar: { integerValue: '-42' } },
         createTime: '1970-01-01T00:00:01.002Z',
         updateTime: '1970-01-01T00:00:03.000004Z',
       },
@@ -126,7 +125,7 @@ describe('Bundle Builder', () => {
     const snap = firestore.snapshot_(
       {
         name: `${DATABASE_ROOT}/documents/collectionId/doc1`,
-        fields: {foo: {stringValue: 'value'}},
+        fields: { foo: { stringValue: 'value' } },
         createTime: '1970-01-01T00:00:01.002Z',
         updateTime: '1970-01-01T00:00:03.000004Z',
       },
@@ -134,9 +133,7 @@ describe('Bundle Builder', () => {
       '2020-01-01T00:00:05.000000006Z',
       'json',
     );
-    const query = firestore
-      .collection('collectionId')
-      .where('value', '==', 'string');
+    const query = firestore.collection('collectionId').where('value', '==', 'string');
     const querySnapshot = new QuerySnapshot(
       query,
       snap.readTime,
@@ -169,12 +166,8 @@ describe('Bundle Builder', () => {
     );
 
     // Verify named query
-    const namedQuery = elements.find(
-      e => e.namedQuery?.name === 'test-query',
-    )!.namedQuery;
-    const newNamedQuery = elements.find(
-      e => e.namedQuery?.name === 'test-query-new',
-    )!.namedQuery;
+    const namedQuery = elements.find((e) => e.namedQuery?.name === 'test-query')!.namedQuery;
+    const newNamedQuery = elements.find((e) => e.namedQuery?.name === 'test-query-new')!.namedQuery;
     expect(namedQuery).to.deep.equal({
       name: 'test-query',
       readTime: snap.readTime.toProto().timestampValue,
@@ -218,7 +211,7 @@ describe('Bundle Builder', () => {
     const snap1 = firestore.snapshot_(
       {
         name: `${DATABASE_ROOT}/documents/collectionId/doc1`,
-        fields: {foo: {stringValue: 'value'}, bar: {integerValue: '42'}},
+        fields: { foo: { stringValue: 'value' }, bar: { integerValue: '42' } },
         createTime: '1970-01-01T00:00:01.002Z',
         updateTime: '1970-01-01T00:00:03.000004Z',
       },
@@ -254,7 +247,7 @@ describe('Bundle Builder', () => {
     const snap2 = firestore.snapshot_(
       {
         name: `${DATABASE_ROOT}/documents/collectionId/doc2`,
-        fields: {foo: {stringValue: 'value'}, bar: {integerValue: '-42'}},
+        fields: { foo: { stringValue: 'value' }, bar: { integerValue: '-42' } },
         createTime: '1970-01-01T00:00:01.002Z',
         updateTime: '1970-01-01T00:00:03.000004Z',
       },
@@ -295,12 +288,7 @@ describe('Bundle Builder', () => {
     expect(elements.length).to.equal(1);
 
     const meta = (elements[0] as IBundleElement).metadata;
-    verifyMetadata(
-      meta!,
-      new Timestamp(0, 0).toProto().timestampValue!,
-      0,
-      true,
-    );
+    verifyMetadata(meta!, new Timestamp(0, 0).toProto().timestampValue!, 0, true);
   });
 
   it('handles identical document id from different collections', async () => {
@@ -308,7 +296,7 @@ describe('Bundle Builder', () => {
     const snap1 = firestore.snapshot_(
       {
         name: `${DATABASE_ROOT}/documents/collectionId_A/doc1`,
-        fields: {foo: {stringValue: 'value'}, bar: {integerValue: '42'}},
+        fields: { foo: { stringValue: 'value' }, bar: { integerValue: '42' } },
         createTime: '1970-01-01T00:00:01.002Z',
         updateTime: '1970-01-01T00:00:03.000004Z',
       },
@@ -320,7 +308,7 @@ describe('Bundle Builder', () => {
     const snap2 = firestore.snapshot_(
       {
         name: `${DATABASE_ROOT}/documents/collectionId_B/doc1`,
-        fields: {foo: {stringValue: 'value'}, bar: {integerValue: '-42'}},
+        fields: { foo: { stringValue: 'value' }, bar: { integerValue: '-42' } },
         createTime: '1970-01-01T00:00:01.002Z',
         updateTime: '1970-01-01T00:00:03.000004Z',
       },
@@ -368,21 +356,18 @@ describe('Bundle Builder using BigInt', () => {
   let firestore: Firestore;
 
   beforeEach(() => {
-    return createInstance(undefined, {useBigInt: true}).then(
-      firestoreInstance => {
-        firestore = firestoreInstance;
-      },
-    );
+    return createInstance(undefined, { useBigInt: true }).then((firestoreInstance) => {
+      firestore = firestoreInstance;
+    });
   });
 
   it('succeeds with document snapshots with BigInt field', async () => {
     const bundle = firestore.bundle(TEST_BUNDLE_ID);
-    const bigIntValue =
-      BigInt(Number.MAX_SAFE_INTEGER) + BigInt(Number.MAX_SAFE_INTEGER);
+    const bigIntValue = BigInt(Number.MAX_SAFE_INTEGER) + BigInt(Number.MAX_SAFE_INTEGER);
     const snap = firestore.snapshot_(
       {
         name: `${DATABASE_ROOT}/documents/collectionId/doc1`,
-        fields: {foo: {integerValue: bigIntValue.toString()}},
+        fields: { foo: { integerValue: bigIntValue.toString() } },
         createTime: '1970-01-01T00:00:01.002Z',
         updateTime: '1970-01-01T00:00:03.000004Z',
       },
@@ -397,7 +382,7 @@ describe('Bundle Builder using BigInt', () => {
     // The point is to make sure BigInt gets encoded correctly into a string without losing
     // precision.
     expect(elements[2].document?.fields).to.deep.equal({
-      foo: {integerValue: bigIntValue.toString()},
+      foo: { integerValue: bigIntValue.toString() },
     });
   });
 

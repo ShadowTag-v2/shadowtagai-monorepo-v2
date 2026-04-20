@@ -10,7 +10,8 @@ const tenantManager = admin.auth().tenantManager();
 const tenantAuth = tenantManager.authForTenant('TENANT_ID1');
 
 // Create a custom token in the usual manner
-tenantAuth.createCustomToken(uid)
+tenantAuth
+  .createCustomToken(uid)
   .then((customToken) => {
     // Send token back to client
   })

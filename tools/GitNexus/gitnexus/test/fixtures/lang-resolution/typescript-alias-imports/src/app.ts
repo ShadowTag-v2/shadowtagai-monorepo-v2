@@ -1,4 +1,4 @@
-import { User as U, Repo as R } from './models';
+import { Repo as R, User as U } from './models';
 
 export function main() {
   const u = new U('alice');

@@ -1,4 +1,4 @@
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore } from 'firebase-admin/firestore';
 
 /**
  * Ensures idempotency using Firestore transactions.
@@ -8,34 +8,36 @@ import { getFirestore } from "firebase-admin/firestore";
  * @param operationName - Context string to group keys in the database.
  * @returns boolean - True if operation is fresh and should proceed. False if already completed.
  */
-export async function checkIdempotency(idempotencyKey: string, operationName: string): Promise<boolean> {
-    const db = getFirestore();
-    const docRef = db.collection('system_idempotency_keys').doc(`${operationName}_${idempotencyKey}`);
+export async function checkIdempotency(
+  idempotencyKey: string,
+  operationName: string,
+): Promise<boolean> {
+  const db = getFirestore();
+  const docRef = db.collection('system_idempotency_keys').doc(`${operationName}_${idempotencyKey}`);
 
-    try {
-        const isFresh = await db.runTransaction(async (transaction) => {
-            const doc = await transaction.get(docRef);
+  try {
+    const isFresh = await db.runTransaction(async (transaction) => {
+      const doc = await transaction.get(docRef);
 
-            if (doc.exists) {
-                // Key already exists, this is a duplicate request
-                return false;
-            }
+      if (doc.exists) {
+        // Key already exists, this is a duplicate request
+        return false;
+      }
 
-            // Lock the key so subsequent immediate parallel requests fail
-            transaction.set(docRef, {
-                createdAt: new Date(),
-                operation: operationName,
-                status: 'LOCK_ACQUIRED'
-            });
+      // Lock the key so subsequent immediate parallel requests fail
+      transaction.set(docRef, {
+        createdAt: new Date(),
+        operation: operationName,
+        status: 'LOCK_ACQUIRED',
+      });
 
-            return true;
-        });
+      return true;
+    });
 
-        return isFresh;
-
-    } catch (e) {
-        console.error(`[Idempotency Firewall] Error checking key ${idempotencyKey}:`, e);
-        // Fail-safe open on DB error, or modify depending on risk tolerance
-        return true;
-    }
+    return isFresh;
+  } catch (e) {
+    console.error(`[Idempotency Firewall] Error checking key ${idempotencyKey}:`, e);
+    // Fail-safe open on DB error, or modify depending on risk tolerance
+    return true;
+  }
 }

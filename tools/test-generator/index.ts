@@ -256,4 +256,4 @@ if (require.main === module) {
   });
 }
 
-export { TestGeneratorOptions, TEST_GENERATOR_PROMPT };
+export { type TestGeneratorOptions, TEST_GENERATOR_PROMPT };

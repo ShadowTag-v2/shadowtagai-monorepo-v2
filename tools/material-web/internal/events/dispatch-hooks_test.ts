@@ -6,7 +6,7 @@
 
 // import 'jasmine'; (google3-only)
 
-import {afterDispatch, setupDispatchHooks} from './dispatch-hooks.js';
+import { afterDispatch, setupDispatchHooks } from './dispatch-hooks.js';
 
 describe('dispatch hooks', () => {
   let element: HTMLDivElement;
@@ -41,7 +41,7 @@ describe('dispatch hooks', () => {
     });
 
     it('triggers internal event listeners when a composed element is the source of the event', () => {
-      const shadowRoot = element.attachShadow({mode: 'open'});
+      const shadowRoot = element.attachShadow({ mode: 'open' });
       const composedElement = document.createElement('button');
       shadowRoot.appendChild(composedElement);
       const innerClickListener = jasmine.createSpy('innerClickListener');
@@ -50,13 +50,11 @@ describe('dispatch hooks', () => {
       setupDispatchHooks(element, 'click');
       composedElement.click();
 
-      expect(innerClickListener)
-        .withContext('innerClickListener')
-        .toHaveBeenCalledTimes(1);
+      expect(innerClickListener).withContext('innerClickListener').toHaveBeenCalledTimes(1);
     });
 
     it('should not trigger activation behavior for clicks coming from inner <a> elements', () => {
-      const shadowRoot = element.attachShadow({mode: 'open'});
+      const shadowRoot = element.attachShadow({ mode: 'open' });
       const anchorElement = document.createElement('a');
       anchorElement.href = '#';
       shadowRoot.appendChild(anchorElement);
@@ -71,9 +69,7 @@ describe('dispatch hooks', () => {
 
       anchorElement.dispatchEvent(clickEvent);
 
-      expect(clickEvent.defaultPrevented)
-        .withContext('clickEvent.defaultPrevented')
-        .toBeTrue();
+      expect(clickEvent.defaultPrevented).withContext('clickEvent.defaultPrevented').toBeTrue();
     });
   });
 
@@ -82,18 +78,14 @@ describe('dispatch hooks', () => {
       setupDispatchHooks(element, 'click');
 
       const afterDispatchCallback = jasmine.createSpy('afterDispatchCallback');
-      const clickListener = jasmine
-        .createSpy('clickListener')
-        .and.callFake((event: Event) => {
-          afterDispatch(event, afterDispatchCallback);
-        });
+      const clickListener = jasmine.createSpy('clickListener').and.callFake((event: Event) => {
+        afterDispatch(event, afterDispatchCallback);
+      });
 
       element.addEventListener('click', clickListener);
       element.click();
 
-      expect(clickListener)
-        .withContext('clickListener')
-        .toHaveBeenCalledTimes(1);
+      expect(clickListener).withContext('clickListener').toHaveBeenCalledTimes(1);
       expect(afterDispatchCallback)
         .withContext('afterDispatch() callback')
         .toHaveBeenCalledTimes(1);
@@ -102,16 +94,12 @@ describe('dispatch hooks', () => {
     it('supports multiple afterDispatch listeners', () => {
       setupDispatchHooks(element, 'click');
 
-      const firstAfterDispatchCallback = jasmine.createSpy(
-        'firstAfterDispatchCallback',
-      );
+      const firstAfterDispatchCallback = jasmine.createSpy('firstAfterDispatchCallback');
       element.addEventListener('click', (event) => {
         afterDispatch(event, firstAfterDispatchCallback);
       });
 
-      const secondAfterDispatchCallback = jasmine.createSpy(
-        'secondAfterDispatchCallback',
-      );
+      const secondAfterDispatchCallback = jasmine.createSpy('secondAfterDispatchCallback');
       element.addEventListener('click', (event) => {
         afterDispatch(event, secondAfterDispatchCallback);
       });
@@ -130,18 +118,14 @@ describe('dispatch hooks', () => {
       setupDispatchHooks(element, 'click');
 
       const afterDispatchCallback = jasmine.createSpy('afterDispatchCallback');
-      const clickListener = jasmine
-        .createSpy('clickListener')
-        .and.callFake((event: Event) => {
-          afterDispatch(event, afterDispatchCallback);
-        });
+      const clickListener = jasmine.createSpy('clickListener').and.callFake((event: Event) => {
+        afterDispatch(event, afterDispatchCallback);
+      });
 
       element.addEventListener('click', clickListener);
       element.click();
 
-      expect(clickListener)
-        .withContext('clickListener')
-        .toHaveBeenCalledTimes(1);
+      expect(clickListener).withContext('clickListener').toHaveBeenCalledTimes(1);
       expect(afterDispatchCallback)
         .withContext('afterDispatch() callback')
         .toHaveBeenCalledTimes(1);
@@ -182,9 +166,7 @@ describe('dispatch hooks', () => {
       });
 
       element.click();
-      expect(errorThrown)
-        .withContext('error thrown calling afterDispatch()')
-        .toBeInstanceOf(Error);
+      expect(errorThrown).withContext('error thrown calling afterDispatch()').toBeInstanceOf(Error);
 
       expect((errorThrown as Error).message)
         .withContext('errorThrown.message')
@@ -196,18 +178,14 @@ describe('dispatch hooks', () => {
       setupDispatchHooks(element, 'click');
 
       const afterDispatchCallback = jasmine.createSpy('afterDispatchCallback');
-      const clickListener = jasmine
-        .createSpy('clickListener')
-        .and.callFake((event: Event) => {
-          afterDispatch(event, afterDispatchCallback);
-        });
+      const clickListener = jasmine.createSpy('clickListener').and.callFake((event: Event) => {
+        afterDispatch(event, afterDispatchCallback);
+      });
 
       element.addEventListener('click', clickListener);
       element.click();
 
-      expect(clickListener)
-        .withContext('clickListener')
-        .toHaveBeenCalledTimes(1);
+      expect(clickListener).withContext('clickListener').toHaveBeenCalledTimes(1);
       expect(afterDispatchCallback)
         .withContext('afterDispatch() callback')
         .toHaveBeenCalledTimes(1);

@@ -6,7 +6,7 @@
 
 // import 'jasmine'; (google3-only)
 
-import {RadioValidator} from './radio-validator.js';
+import { RadioValidator } from './radio-validator.js';
 
 describe('RadioValidator', () => {
   it('is invalid when required and no radios are checked', () => {
@@ -26,7 +26,7 @@ describe('RadioValidator', () => {
     ] as const;
 
     const validator = new RadioValidator(() => states);
-    const {validity, validationMessage} = validator.getValidity();
+    const { validity, validationMessage } = validator.getValidity();
     expect(validity.valueMissing).withContext('valueMissing').toBeTrue();
     expect(validationMessage).withContext('validationMessage').not.toBe('');
   });
@@ -48,7 +48,7 @@ describe('RadioValidator', () => {
     ] as const;
 
     const validator = new RadioValidator(() => states);
-    const {validity, validationMessage} = validator.getValidity();
+    const { validity, validationMessage } = validator.getValidity();
     expect(validity.valueMissing).withContext('valueMissing').toBeTrue();
     expect(validationMessage).withContext('validationMessage').not.toBe('');
   });
@@ -70,7 +70,7 @@ describe('RadioValidator', () => {
     ] as const;
 
     const validator = new RadioValidator(() => states);
-    const {validity, validationMessage} = validator.getValidity();
+    const { validity, validationMessage } = validator.getValidity();
     expect(validity.valueMissing).withContext('valueMissing').toBeFalse();
     expect(validationMessage).withContext('validationMessage').toBe('');
   });
@@ -92,7 +92,7 @@ describe('RadioValidator', () => {
     ] as const;
 
     const validator = new RadioValidator(() => states);
-    const {validity, validationMessage} = validator.getValidity();
+    const { validity, validationMessage } = validator.getValidity();
     expect(validity.valueMissing).withContext('valueMissing').toBeFalse();
     expect(validationMessage).withContext('validationMessage').toBe('');
   });
@@ -114,7 +114,7 @@ describe('RadioValidator', () => {
     ] as const;
 
     const validator = new RadioValidator(() => states);
-    const {validity, validationMessage} = validator.getValidity();
+    const { validity, validationMessage } = validator.getValidity();
     expect(validity.valueMissing).withContext('valueMissing').toBeFalse();
     expect(validationMessage).withContext('validationMessage').toBe('');
   });

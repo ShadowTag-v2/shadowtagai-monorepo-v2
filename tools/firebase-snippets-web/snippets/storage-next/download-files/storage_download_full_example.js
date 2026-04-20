@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START storage_download_full_example_modular]
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
 // Create a reference to the file we want to download
 const storage = getStorage();

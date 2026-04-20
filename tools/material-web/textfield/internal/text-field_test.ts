@@ -7,16 +7,16 @@
 // import 'jasmine'; (google3-only)
 import '../../field/filled-field.js';
 
-import {html, render} from 'lit';
-import {customElement} from 'lit/decorators.js';
-import {literal} from 'lit/static-html.js';
+import { html, render } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { literal } from 'lit/static-html.js';
 
-import {Environment} from '../../testing/environment.js';
-import {createFormTests} from '../../testing/forms.js';
-import {Harness} from '../../testing/harness.js';
-import {TextFieldHarness} from '../harness.js';
+import { Environment } from '../../testing/environment.js';
+import { createFormTests } from '../../testing/forms.js';
+import { Harness } from '../../testing/harness.js';
+import { TextFieldHarness } from '../harness.js';
 
-import {TextField} from './text-field.js';
+import { TextField } from './text-field.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -30,10 +30,7 @@ class TestTextField extends TextField {
 
   async getHasError() {
     await this.updateComplete;
-    return (
-      this.renderRoot.querySelector('input')?.getAttribute('aria-invalid') ===
-      'true'
-    );
+    return this.renderRoot.querySelector('input')?.getAttribute('aria-invalid') === 'true';
   }
 
   async getErrorTextValue() {
@@ -45,9 +42,7 @@ class TestTextField extends TextField {
 describe('TextField', () => {
   const env = new Environment();
 
-  async function setupTest(
-    template = html`<md-test-text-field></md-test-text-field>`,
-  ) {
+  async function setupTest(template = html`<md-test-text-field></md-test-text-field>`) {
     // Variant type does not matter for shared tests
     const element = env.render(template).querySelector('md-test-text-field');
     if (!element) {
@@ -69,7 +64,7 @@ describe('TextField', () => {
 
   describe('focusing the input', () => {
     it('should call focus the input on click', async () => {
-      const {harness, input} = await setupTest();
+      const { harness, input } = await setupTest();
 
       await harness.clickWithMouse();
 
@@ -77,7 +72,7 @@ describe('TextField', () => {
     });
 
     it('should NOT focus the input when elements inside text field are clicked', async () => {
-      const {harness, input} = await setupTest();
+      const { harness, input } = await setupTest();
       // Add a trailing icon button to click on
       render(html`<button slot="trailing-icon">X</button>`, harness.element);
       const button = harness.element.querySelector('button');
@@ -90,19 +85,17 @@ describe('TextField', () => {
     });
 
     it('should not focus the input when disabled', async () => {
-      const {harness, input} = await setupTest();
+      const { harness, input } = await setupTest();
       harness.element.disabled = true;
       await env.waitForStability();
 
       harness.element.focus();
 
-      expect(input.matches(':focus'))
-        .withContext('not input:focus')
-        .toBeFalse();
+      expect(input.matches(':focus')).withContext('not input:focus').toBeFalse();
     });
 
     it('focus() should focus input', async () => {
-      const {harness, input} = await setupTest();
+      const { harness, input } = await setupTest();
 
       harness.element.focus();
 
@@ -110,20 +103,18 @@ describe('TextField', () => {
     });
 
     it('blur() should blur input', async () => {
-      const {harness, input} = await setupTest();
+      const { harness, input } = await setupTest();
 
       harness.element.focus();
       harness.element.blur();
 
-      expect(input.matches(':focus'))
-        .withContext('not input:focus')
-        .toBeFalse();
+      expect(input.matches(':focus')).withContext('not input:focus').toBeFalse();
     });
   });
 
   describe('input events', () => {
     it('should update the text field value', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
 
       await harness.inputValue('Value');
 
@@ -131,7 +122,7 @@ describe('TextField', () => {
     });
 
     it('should redispatch input events', async () => {
-      const {harness, input} = await setupTest();
+      const { harness, input } = await setupTest();
       const inputHandler = jasmine.createSpy('inputHandler');
       harness.element.addEventListener('input', inputHandler);
 
@@ -147,7 +138,7 @@ describe('TextField', () => {
 
   describe('resetting the input', () => {
     it('should set value back to default value', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       harness.element.setAttribute('value', 'Default');
       await env.waitForStability();
 
@@ -161,7 +152,7 @@ describe('TextField', () => {
     });
 
     it('should set value to empty string if there is no default', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
 
       await harness.inputValue('Value');
       harness.element.reset();
@@ -172,7 +163,7 @@ describe('TextField', () => {
 
   describe('default value', () => {
     it('should update `value` before user input', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
 
       harness.element.setAttribute('value', 'Default');
       await env.waitForStability();
@@ -181,7 +172,7 @@ describe('TextField', () => {
     });
 
     it('should update `value` multiple times', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
 
       harness.element.setAttribute('value', 'First default');
       await env.waitForStability();
@@ -192,7 +183,7 @@ describe('TextField', () => {
     });
 
     it('should NOT update `value` after user input', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
 
       harness.element.setAttribute('value', 'First default');
       await env.waitForStability();
@@ -206,7 +197,7 @@ describe('TextField', () => {
     });
 
     it('should render `value` instead of default value attribute when `value` changes', async () => {
-      const {harness, input} = await setupTest();
+      const { harness, input } = await setupTest();
 
       harness.element.setAttribute('value', 'Default');
       await env.waitForStability();
@@ -225,7 +216,7 @@ describe('TextField', () => {
 
   describe('valueAsDate', () => {
     it('should get input.valueAsDate', async () => {
-      const {testElement, input} = await setupTest();
+      const { testElement, input } = await setupTest();
       const spy = spyOnProperty(input, 'valueAsDate', 'get').and.callThrough();
 
       expect(testElement.valueAsDate).toBe(null);
@@ -234,7 +225,7 @@ describe('TextField', () => {
     });
 
     it('should set input.valueAsDate', async () => {
-      const {testElement, input} = await setupTest();
+      const { testElement, input } = await setupTest();
       testElement.type = 'date';
       await env.waitForStability();
       const spy = spyOnProperty(input, 'valueAsDate', 'set').and.callThrough();
@@ -246,7 +237,7 @@ describe('TextField', () => {
     });
 
     it('should set value to string version of date', async () => {
-      const {testElement} = await setupTest();
+      const { testElement } = await setupTest();
       testElement.type = 'date';
       await env.waitForStability();
 
@@ -259,12 +250,8 @@ describe('TextField', () => {
 
   describe('valueAsNumber', () => {
     it('should get input.valueAsNumber', async () => {
-      const {testElement, input} = await setupTest();
-      const spy = spyOnProperty(
-        input,
-        'valueAsNumber',
-        'get',
-      ).and.callThrough();
+      const { testElement, input } = await setupTest();
+      const spy = spyOnProperty(input, 'valueAsNumber', 'get').and.callThrough();
 
       expect(testElement.valueAsNumber).toEqual(NaN);
 
@@ -272,14 +259,10 @@ describe('TextField', () => {
     });
 
     it('should set input.valueAsNumber', async () => {
-      const {testElement, input} = await setupTest();
+      const { testElement, input } = await setupTest();
       testElement.type = 'number';
       await env.waitForStability();
-      const spy = spyOnProperty(
-        input,
-        'valueAsNumber',
-        'set',
-      ).and.callThrough();
+      const spy = spyOnProperty(input, 'valueAsNumber', 'set').and.callThrough();
 
       testElement.valueAsNumber = 100;
 
@@ -287,7 +270,7 @@ describe('TextField', () => {
     });
 
     it('should set value to string version of number', async () => {
-      const {testElement} = await setupTest();
+      const { testElement } = await setupTest();
       testElement.type = 'number';
       await env.waitForStability();
 
@@ -300,20 +283,20 @@ describe('TextField', () => {
   describe('native validation', () => {
     describe('checkValidity()', () => {
       it('should return true if the text field is valid', async () => {
-        const {testElement} = await setupTest();
+        const { testElement } = await setupTest();
 
         expect(testElement.checkValidity()).toBeTrue();
       });
 
       it('should return false if the text field is invalid', async () => {
-        const {testElement} = await setupTest();
+        const { testElement } = await setupTest();
         testElement.required = true;
 
         expect(testElement.checkValidity()).toBeFalse();
       });
 
       it('should not dispatch an invalid event when valid', async () => {
-        const {testElement} = await setupTest();
+        const { testElement } = await setupTest();
         const invalidHandler = jasmine.createSpy('invalidHandler');
         testElement.addEventListener('invalid', invalidHandler);
 
@@ -323,7 +306,7 @@ describe('TextField', () => {
       });
 
       it('should dispatch an invalid event when invalid', async () => {
-        const {testElement} = await setupTest();
+        const { testElement } = await setupTest();
         const invalidHandler = jasmine.createSpy('invalidHandler');
         testElement.addEventListener('invalid', invalidHandler);
         testElement.required = true;
@@ -334,7 +317,7 @@ describe('TextField', () => {
       });
 
       it('should return validity during input event', async () => {
-        const {testElement, harness} = await setupTest();
+        const { testElement, harness } = await setupTest();
 
         testElement.required = true;
         await harness.inputValue('Value');
@@ -352,7 +335,7 @@ describe('TextField', () => {
       });
 
       it('should return validity during change event', async () => {
-        const {testElement, harness} = await setupTest();
+        const { testElement, harness } = await setupTest();
         testElement.required = true;
 
         await harness.inputValue('Value');
@@ -364,7 +347,7 @@ describe('TextField', () => {
           () => {
             isValidDuringChange = testElement.validity.valid;
           },
-          {once: true},
+          { once: true },
         );
 
         await harness.deleteValue();
@@ -378,7 +361,7 @@ describe('TextField', () => {
 
     describe('reportValidity()', () => {
       it('should return true when valid and set error to false', async () => {
-        const {testElement} = await setupTest();
+        const { testElement } = await setupTest();
 
         const valid = testElement.reportValidity();
 
@@ -389,7 +372,7 @@ describe('TextField', () => {
       });
 
       it('should return false when invalid and set error to true', async () => {
-        const {testElement} = await setupTest();
+        const { testElement } = await setupTest();
         testElement.required = true;
 
         const valid = testElement.reportValidity();
@@ -401,7 +384,7 @@ describe('TextField', () => {
       });
 
       it('should update error text to validationMessage', async () => {
-        const {testElement} = await setupTest();
+        const { testElement } = await setupTest();
         const errorMessage = 'Error message';
         testElement.setCustomValidity(errorMessage);
 
@@ -412,7 +395,7 @@ describe('TextField', () => {
       });
 
       it('should not update error or error text if invalid event is canceled', async () => {
-        const {testElement} = await setupTest();
+        const { testElement } = await setupTest();
         testElement.addEventListener('invalid', (e) => {
           e.preventDefault();
         });
@@ -429,7 +412,7 @@ describe('TextField', () => {
       });
 
       it('should be overridden by error and errorText', async () => {
-        const {testElement} = await setupTest();
+        const { testElement } = await setupTest();
         testElement.error = true;
         const errorMessage = 'Error message';
         testElement.errorText = errorMessage;
@@ -445,7 +428,7 @@ describe('TextField', () => {
 
     describe('setCustomValidity()', () => {
       it('should set a custom validationMessage', async () => {
-        const {testElement} = await setupTest();
+        const { testElement } = await setupTest();
 
         const errorMessage = 'Error message';
         testElement.setCustomValidity(errorMessage);
@@ -457,31 +440,23 @@ describe('TextField', () => {
 
     describe('minLength and maxLength', () => {
       it('should set attribute on input', async () => {
-        const {testElement, input} = await setupTest();
+        const { testElement, input } = await setupTest();
         testElement.minLength = 2;
         testElement.maxLength = 5;
         await env.waitForStability();
 
-        expect(input.getAttribute('minLength'))
-          .withContext('minLength')
-          .toEqual('2');
-        expect(input.getAttribute('maxLength'))
-          .withContext('maxLength')
-          .toEqual('5');
+        expect(input.getAttribute('minLength')).withContext('minLength').toEqual('2');
+        expect(input.getAttribute('maxLength')).withContext('maxLength').toEqual('5');
       });
 
       it('should not set attribute if value is -1', async () => {
-        const {testElement, input} = await setupTest();
+        const { testElement, input } = await setupTest();
         testElement.minLength = 2;
         testElement.maxLength = 5;
         await env.waitForStability();
 
-        expect(input.hasAttribute('minlength'))
-          .withContext('should have minlength')
-          .toBeTrue();
-        expect(input.hasAttribute('maxlength'))
-          .withContext('should have maxlength')
-          .toBeTrue();
+        expect(input.hasAttribute('minlength')).withContext('should have minlength').toBeTrue();
+        expect(input.hasAttribute('maxlength')).withContext('should have maxlength').toBeTrue();
 
         testElement.minLength = -1;
         testElement.maxLength = -1;
@@ -498,7 +473,7 @@ describe('TextField', () => {
 
     describe('min, max, and step', () => {
       it('should set attribute on input', async () => {
-        const {testElement, input} = await setupTest();
+        const { testElement, input } = await setupTest();
         testElement.type = 'number';
         testElement.min = '2';
         testElement.max = '5';
@@ -511,73 +486,55 @@ describe('TextField', () => {
       });
 
       it('should not set attribute if value is empty', async () => {
-        const {testElement, input} = await setupTest();
+        const { testElement, input } = await setupTest();
         testElement.type = 'number';
         testElement.min = '2';
         testElement.max = '5';
         testElement.step = '1';
         await env.waitForStability();
 
-        expect(input.hasAttribute('min'))
-          .withContext('should have min')
-          .toBeTrue();
-        expect(input.hasAttribute('max'))
-          .withContext('should have max')
-          .toBeTrue();
-        expect(input.hasAttribute('step'))
-          .withContext('should have step')
-          .toBeTrue();
+        expect(input.hasAttribute('min')).withContext('should have min').toBeTrue();
+        expect(input.hasAttribute('max')).withContext('should have max').toBeTrue();
+        expect(input.hasAttribute('step')).withContext('should have step').toBeTrue();
 
         testElement.min = '';
         testElement.max = '';
         testElement.step = '';
         await env.waitForStability();
 
-        expect(input.hasAttribute('min'))
-          .withContext('should not have min')
-          .toBeFalse();
-        expect(input.hasAttribute('max'))
-          .withContext('should not have max')
-          .toBeFalse();
-        expect(input.hasAttribute('step'))
-          .withContext('should not have step')
-          .toBeFalse();
+        expect(input.hasAttribute('min')).withContext('should not have min').toBeFalse();
+        expect(input.hasAttribute('max')).withContext('should not have max').toBeFalse();
+        expect(input.hasAttribute('step')).withContext('should not have step').toBeFalse();
       });
     });
 
     describe('pattern', () => {
       it('should set attribute on input', async () => {
-        const {testElement, input} = await setupTest();
+        const { testElement, input } = await setupTest();
         testElement.pattern = 'foo';
         await env.waitForStability();
 
-        expect(input.getAttribute('pattern'))
-          .withContext('pattern')
-          .toEqual('foo');
+        expect(input.getAttribute('pattern')).withContext('pattern').toEqual('foo');
       });
 
       it('should not set attribute if value is empty', async () => {
-        const {testElement, input} = await setupTest();
+        const { testElement, input } = await setupTest();
         testElement.pattern = 'foo';
         await env.waitForStability();
 
-        expect(input.hasAttribute('pattern'))
-          .withContext('should have pattern')
-          .toBeTrue();
+        expect(input.hasAttribute('pattern')).withContext('should have pattern').toBeTrue();
 
         testElement.pattern = '';
         await env.waitForStability();
 
-        expect(input.hasAttribute('pattern'))
-          .withContext('should not have pattern')
-          .toBeFalse();
+        expect(input.hasAttribute('pattern')).withContext('should not have pattern').toBeFalse();
       });
     });
   });
 
   describe('stepUp()', () => {
     it('should increment the value by `step`', async () => {
-      const {testElement} = await setupTest();
+      const { testElement } = await setupTest();
       testElement.type = 'number';
       testElement.valueAsNumber = 10;
       testElement.step = '5';
@@ -590,7 +547,7 @@ describe('TextField', () => {
 
   describe('stepDown()', () => {
     it('should decrement the value by `step`', async () => {
-      const {testElement} = await setupTest();
+      const { testElement } = await setupTest();
       testElement.type = 'number';
       testElement.valueAsNumber = 10;
       testElement.step = '5';
@@ -607,8 +564,7 @@ describe('TextField', () => {
       valueTests: [
         {
           name: 'unnamed',
-          render: () =>
-            html`<md-test-text-field value="Value"></md-test-text-field>`,
+          render: () => html`<md-test-text-field value="Value"></md-test-text-field>`,
           assertValue(formData) {
             expect(formData)
               .withContext('should not add anything to form without a name')
@@ -617,8 +573,7 @@ describe('TextField', () => {
         },
         {
           name: 'should add empty value',
-          render: () =>
-            html`<md-test-text-field name="input"></md-test-text-field>`,
+          render: () => html`<md-test-text-field name="input"></md-test-text-field>`,
           assertValue(formData) {
             expect(formData.get('input')).toBe('');
           },
@@ -650,15 +605,12 @@ describe('TextField', () => {
       resetTests: [
         {
           name: 'reset to empty value',
-          render: () =>
-            html`<md-test-text-field name="input"></md-test-text-field>`,
+          render: () => html`<md-test-text-field name="input"></md-test-text-field>`,
           change(textField) {
             textField.value = 'Value';
           },
           assertReset(textField) {
-            expect(textField.value)
-              .withContext('textField.value after reset')
-              .toBe('');
+            expect(textField.value).withContext('textField.value after reset').toBe('');
           },
         },
         {
@@ -671,9 +623,7 @@ describe('TextField', () => {
             textField.value = 'Second';
           },
           assertReset(textField) {
-            expect(textField.value)
-              .withContext('textField.value after reset')
-              .toBe('First');
+            expect(textField.value).withContext('textField.value after reset').toBe('First');
           },
         },
       ],
@@ -685,9 +635,7 @@ describe('TextField', () => {
               name="input"
               value="Value"></md-test-text-field>`,
           assertRestored(textField) {
-            expect(textField.value)
-              .withContext('textField.value after restore')
-              .toBe('Value');
+            expect(textField.value).withContext('textField.value after restore').toBe('Value');
           },
         },
       ],

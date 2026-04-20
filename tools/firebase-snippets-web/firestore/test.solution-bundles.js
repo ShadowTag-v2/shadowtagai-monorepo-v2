@@ -1,8 +1,8 @@
 // [START fs_bundle_load]
 // If you are using module bundlers.
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/firestore/bundle"; // This line enables bundle loading as a side effect.
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/firestore/bundle'; // This line enables bundle loading as a side effect.
 
 // [START_EXCLUDE]
 /**
@@ -29,20 +29,20 @@ async function fetchFromBundle() {
 }
 // [END fs_bundle_load]
 
-describe("firestore-solution-bundles", () => {
-    before(() => {
-        var config = {
-            apiKey: "AIzaSyArvVh6VSdXicubcvIyuB-GZs8ua0m0DTI",
-            authDomain: "firestorequickstarts.firebaseapp.com",
-            projectId: "firestorequickstarts",
-        };
-        var app = firebase.initializeApp(config, "solution-bundles");
-        db = firebase.firestore(app);
-    });
+describe('firestore-solution-bundles', () => {
+  before(() => {
+    var config = {
+      apiKey: 'AIzaSyArvVh6VSdXicubcvIyuB-GZs8ua0m0DTI',
+      authDomain: 'firestorequickstarts.firebaseapp.com',
+      projectId: 'firestorequickstarts',
+    };
+    var app = firebase.initializeApp(config, 'solution-bundles');
+    db = firebase.firestore(app);
+  });
 
-    describe("solution-bundles", () => {
-      it("should fetch a bundle", (done) => {
-        fetchFromBundle().finally(done);
-      });
+  describe('solution-bundles', () => {
+    it('should fetch a bundle', (done) => {
+      fetchFromBundle().finally(done);
     });
+  });
 });

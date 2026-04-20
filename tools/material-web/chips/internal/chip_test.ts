@@ -6,13 +6,13 @@
 
 // import 'jasmine'; (google3-only)
 
-import {html} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import { html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {Environment} from '../../testing/environment.js';
-import {ChipHarness} from '../harness.js';
+import { Environment } from '../../testing/environment.js';
+import { ChipHarness } from '../harness.js';
 
-import {Chip} from './chip.js';
+import { Chip } from './chip.js';
 
 @customElement('test-chip')
 class TestChip extends Chip {
@@ -30,11 +30,11 @@ describe('Chip', () => {
     const chip = new TestChip();
     env.render(html`${chip}`);
     await env.waitForStability();
-    return {chip, harness: new ChipHarness(chip)};
+    return { chip, harness: new ChipHarness(chip) };
   }
 
   it('should dispatch `update-focus` for chip set when disabled changes', async () => {
-    const {chip} = await setupTest();
+    const { chip } = await setupTest();
     const updateFocusListener = jasmine.createSpy('updateFocusListener');
     chip.addEventListener('update-focus', updateFocusListener);
 

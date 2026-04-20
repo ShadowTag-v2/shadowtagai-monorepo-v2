@@ -6,7 +6,7 @@
  */
 
 import fs from 'fs/promises';
-import { findRepo, unregisterRepo, listRegisteredRepos } from '../storage/repo-manager.js';
+import { findRepo, listRegisteredRepos, unregisterRepo } from '../storage/repo-manager.js';
 
 export const cleanCommand = async (options?: { force?: boolean; all?: boolean }) => {
   // --all flag: clean all indexed repos

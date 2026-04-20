@@ -5,15 +5,20 @@
  * Usage: gitnexus wiki [path] [options]
  */
 
+import { execFileSync, execSync } from 'child_process';
+import cliProgress from 'cli-progress';
 import path from 'path';
 import readline from 'readline';
-import { execSync, execFileSync } from 'child_process';
-import cliProgress from 'cli-progress';
-import { getGitRoot, isGitRepo } from '../storage/git.js';
-import { getStoragePaths, loadMeta, loadCLIConfig, saveCLIConfig } from '../storage/repo-manager.js';
-import { WikiGenerator, type WikiOptions } from '../core/wiki/generator.js';
-import { resolveLLMConfig, type LLMProvider } from '../core/wiki/llm-client.js';
 import { detectCursorCLI } from '../core/wiki/cursor-client.js';
+import { WikiGenerator, type WikiOptions } from '../core/wiki/generator.js';
+import { type LLMProvider, resolveLLMConfig } from '../core/wiki/llm-client.js';
+import { getGitRoot, isGitRepo } from '../storage/git.js';
+import {
+  getStoragePaths,
+  loadCLIConfig,
+  loadMeta,
+  saveCLIConfig,
+} from '../storage/repo-manager.js';
 
 export interface WikiCommandOptions {
   force?: boolean;
@@ -78,10 +83,7 @@ function prompt(question: string, hide = false): Promise<string> {
   });
 }
 
-export const wikiCommand = async (
-  inputPath?: string,
-  options?: WikiCommandOptions,
-) => {
+export const wikiCommand = async (inputPath?: string, options?: WikiCommandOptions) => {
   // Set verbose mode globally for cursor-client to pick up
   if (options?.verbose) {
     process.env.GITNEXUS_VERBOSE = '1';
@@ -141,8 +143,16 @@ export const wikiCommand = async (
   }
 
   const savedConfig = await loadCLIConfig();
-  const hasSavedConfig = !!(savedConfig.provider === 'cursor' || (savedConfig.apiKey && savedConfig.baseUrl));
-  const hasCLIOverrides = !!(options?.apiKey || options?.model || options?.baseUrl || options?.provider);
+  const hasSavedConfig = !!(
+    savedConfig.provider === 'cursor' ||
+    (savedConfig.apiKey && savedConfig.baseUrl)
+  );
+  const hasCLIOverrides = !!(
+    options?.apiKey ||
+    options?.model ||
+    options?.baseUrl ||
+    options?.provider
+  );
 
   let llmConfig = await resolveLLMConfig({
     model: options?.model,
@@ -165,7 +175,7 @@ export const wikiCommand = async (
       }
       // Non-interactive with env var or cursor — just use it
     } else {
-      console.log('  No LLM configured. Let\'s set it up.\n');
+      console.log("  No LLM configured. Let's set it up.\n");
       console.log('  Supports OpenAI, OpenRouter, any OpenAI-compatible API, or Cursor CLI.\n');
 
       // Check if Cursor CLI is available
@@ -255,16 +265,19 @@ export const wikiCommand = async (
   }
 
   // ── Setup progress bar with elapsed timer ──────────────────────────
-  const bar = new cliProgress.SingleBar({
-    format: '  {bar} {percentage}% | {phase}',
-    barCompleteChar: '\u2588',
-    barIncompleteChar: '\u2591',
-    hideCursor: true,
-    barGlue: '',
-    autopadding: true,
-    clearOnComplete: false,
-    stopOnComplete: false,
-  }, cliProgress.Presets.shades_grey);
+  const bar = new cliProgress.SingleBar(
+    {
+      format: '  {bar} {percentage}% | {phase}',
+      barCompleteChar: '\u2588',
+      barIncompleteChar: '\u2591',
+      hideCursor: true,
+      barGlue: '',
+      autopadding: true,
+      clearOnComplete: false,
+      stopOnComplete: false,
+    },
+    cliProgress.Presets.shades_grey,
+  );
 
   bar.start(100, 0, { phase: 'Initializing...' });
 
@@ -327,7 +340,12 @@ export const wikiCommand = async (
           const prefix = '  '.repeat(indent + 2);
           const fileCount = node.files?.length || 0;
           const childCount = node.children?.length || 0;
-          const suffix = fileCount > 0 ? ` (${fileCount} files)` : childCount > 0 ? ` (${childCount} children)` : '';
+          const suffix =
+            fileCount > 0
+              ? ` (${fileCount} files)`
+              : childCount > 0
+                ? ` (${childCount} children)`
+                : '';
           console.log(`${prefix}- ${node.name}${suffix}`);
           if (node.children && node.children.length > 0) {
             printTree(node.children, indent + 1);
@@ -454,13 +472,19 @@ export const wikiCommand = async (
       console.log(`\n  LLM Error: ${err.message}\n`);
 
       // Offer to reconfigure on auth-related failures
-      const isAuthError = err.message?.includes('401') || err.message?.includes('403')
-        || err.message?.includes('502') || err.message?.includes('authenticate')
-        || err.message?.includes('Unauthorized');
+      const isAuthError =
+        err.message?.includes('401') ||
+        err.message?.includes('403') ||
+        err.message?.includes('502') ||
+        err.message?.includes('authenticate') ||
+        err.message?.includes('Unauthorized');
       if (isAuthError && process.stdin.isTTY) {
         const answer = await new Promise<string>((resolve) => {
           const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-          rl.question('  Reconfigure LLM settings? (Y/n): ', (ans) => { rl.close(); resolve(ans.trim().toLowerCase()); });
+          rl.question('  Reconfigure LLM settings? (Y/n): ', (ans) => {
+            rl.close();
+            resolve(ans.trim().toLowerCase());
+          });
         });
         if (!answer || answer === 'y' || answer === 'yes') {
           // Clear saved config so next run triggers interactive setup
@@ -491,15 +515,15 @@ function hasGhCLI(): boolean {
 
 function publishGist(htmlPath: string): { url: string; rawUrl: string } | null {
   try {
-    const output = execFileSync('gh', [
-      'gist', 'create', htmlPath,
-      '--desc', 'Repository Wiki — generated by GitNexus',
-      '--public',
-    ], { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }).trim();
+    const output = execFileSync(
+      'gh',
+      ['gist', 'create', htmlPath, '--desc', 'Repository Wiki — generated by GitNexus', '--public'],
+      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] },
+    ).trim();
 
     // gh gist create prints the gist URL as the last line
     const lines = output.split('\n');
-    const gistUrl = lines.find(l => l.includes('gist.github.com')) || lines[lines.length - 1];
+    const gistUrl = lines.find((l) => l.includes('gist.github.com')) || lines[lines.length - 1];
 
     if (!gistUrl || !gistUrl.includes('gist.github.com')) return null;
 

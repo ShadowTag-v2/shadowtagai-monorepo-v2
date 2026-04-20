@@ -23,7 +23,7 @@ async function addHash(done) {
   await updateDoc(londonRef, {
     geohash: hash,
     lat: lat,
-    lng: lng
+    lng: lng,
   });
   // [END fs_geo_add_hash]
   done();
@@ -43,15 +43,11 @@ async function queryHashes(done) {
   // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
   // a separate query for each pair. There can be up to 9 pairs of bounds
   // depending on overlap, but in most cases there are 4.
-  // @ts-ignore
+  // @ts-expect-error
   const bounds = geofire.geohashQueryBounds(center, radiusInM);
   const promises = [];
   for (const b of bounds) {
-    const q = query(
-      collection(db, 'cities'),
-      orderBy('geohash'),
-      startAt(b[0]),
-      endAt(b[1]));
+    const q = query(collection(db, 'cities'), orderBy('geohash'), startAt(b[0]), endAt(b[1]));
 
     promises.push(getDocs(q));
   }
@@ -67,7 +63,7 @@ async function queryHashes(done) {
 
       // We have to filter out a few false positives due to GeoHash
       // accuracy, but most will match
-      // @ts-ignore
+      // @ts-expect-error
       const distanceInKm = geofire.distanceBetween([lat, lng], center);
       const distanceInM = distanceInKm * 1000;
       if (distanceInM <= radiusInM) {
@@ -79,27 +75,27 @@ async function queryHashes(done) {
   done(matchingDocs);
 }
 
-describe("firestore-solution-geoqueries", () => {
-    before(() => {
-      const { initializeApp } = require("firebase/app");
-      const { getFirestore} = require("firebase/firestore");
+describe('firestore-solution-geoqueries', () => {
+  before(() => {
+    const { initializeApp } = require('firebase/app');
+    const { getFirestore } = require('firebase/firestore');
 
-      const config = {
-          apiKey: "AIzaSyArvVh6VSdXicubcvIyuB-GZs8ua0m0DTI",
-          authDomain: "firestorequickstarts.firebaseapp.com",
-          projectId: "firestorequickstarts",
-      };
-      const app = initializeApp(config, "solution-geoqueries");
-      db = getFirestore(app);
+    const config = {
+      apiKey: 'AIzaSyArvVh6VSdXicubcvIyuB-GZs8ua0m0DTI',
+      authDomain: 'firestorequickstarts.firebaseapp.com',
+      projectId: 'firestorequickstarts',
+    };
+    const app = initializeApp(config, 'solution-geoqueries');
+    db = getFirestore(app);
+  });
+
+  describe('solution-geoqueries', () => {
+    it('should add a hash to a doc', (done) => {
+      addHash(done);
     });
 
-    describe("solution-geoqueries", () => {
-      it("should add a hash to a doc", (done) => {
-        addHash(done);
-      });
-
-      it("should query hashes", (done) => {
-        queryHashes(done);
-      });
+    it('should query hashes', (done) => {
+      queryHashes(done);
     });
+  });
 });

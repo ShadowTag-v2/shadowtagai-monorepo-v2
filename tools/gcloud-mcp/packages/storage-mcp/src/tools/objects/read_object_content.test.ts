@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-/// <reference types="vitest/globals" />
-import { describe, it, expect, vi, Mock } from 'vitest';
-import { readObjectContent, registerReadObjectContentTool } from './read_object_content.js';
-import { apiClientFactory } from '../../utility/index.js';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import chardet from 'chardet';
+/// <reference types="vitest/globals" />
+import { describe, expect, it, type Mock, vi } from 'vitest';
+import { apiClientFactory } from '../../utility/index.js';
+import { readObjectContent, registerReadObjectContentTool } from './read_object_content.js';
 
 vi.mock('chardet');
 vi.mock('../../utility/index.js');

@@ -6,13 +6,13 @@
 
 // import 'jasmine'; (google3-only)
 
-import {html, LitElement} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import { html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {mixinElementInternals} from '../../labs/behaviors/element-internals.js';
-import {Environment} from '../../testing/environment.js';
-import {Harness} from '../../testing/harness.js';
-import {mixinFormSubmitter} from './form-submitter.js';
+import { mixinElementInternals } from '../../labs/behaviors/element-internals.js';
+import { Environment } from '../../testing/environment.js';
+import { Harness } from '../../testing/harness.js';
+import { mixinFormSubmitter } from './form-submitter.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -21,9 +21,7 @@ declare global {
 }
 
 @customElement('test-form-submitter-button')
-class FormSubmitterButton extends mixinFormSubmitter(
-  mixinElementInternals(LitElement),
-) {
+class FormSubmitterButton extends mixinFormSubmitter(mixinElementInternals(LitElement)) {
   static formAssociated = true;
 }
 
@@ -47,16 +45,16 @@ describe('setupFormSubmitter()', () => {
 
     await env.waitForStability();
 
-    return {harness: new Harness(submitter), form};
+    return { harness: new Harness(submitter), form };
   }
 
   it('button is submit type by default', async () => {
-    const {harness} = await setupTest();
+    const { harness } = await setupTest();
     expect(harness.element.type).toBe('submit');
   });
 
   it('button with type submit can submit a form', async () => {
-    const {harness, form} = await setupTest();
+    const { harness, form } = await setupTest();
     harness.element.type = 'submit';
 
     spyOn(form, 'requestSubmit');
@@ -70,7 +68,7 @@ describe('setupFormSubmitter()', () => {
   });
 
   it('button with type reset can reset a form', async () => {
-    const {harness, form} = await setupTest();
+    const { harness, form } = await setupTest();
     harness.element.type = 'reset';
 
     spyOn(form, 'requestSubmit');
@@ -84,7 +82,7 @@ describe('setupFormSubmitter()', () => {
   });
 
   it('submit can be cancelled with preventDefault', async () => {
-    const {harness, form} = await setupTest();
+    const { harness, form } = await setupTest();
     harness.element.type = 'submit';
 
     spyOn(form, 'requestSubmit');
@@ -94,7 +92,7 @@ describe('setupFormSubmitter()', () => {
       (event: Event) => {
         event.preventDefault();
       },
-      {once: true},
+      { once: true },
     );
 
     await harness.clickWithMouse();
@@ -105,12 +103,10 @@ describe('setupFormSubmitter()', () => {
   });
 
   it('should set the button as the SubmitEvent submitter', async () => {
-    const {harness, form} = await setupTest();
-    const submitListener = jasmine
-      .createSpy('submitListener')
-      .and.callFake((event: Event) => {
-        event.preventDefault();
-      });
+    const { harness, form } = await setupTest();
+    const submitListener = jasmine.createSpy('submitListener').and.callFake((event: Event) => {
+      event.preventDefault();
+    });
 
     form.addEventListener('submit', submitListener);
 
@@ -120,13 +116,11 @@ describe('setupFormSubmitter()', () => {
 
     expect(submitListener).toHaveBeenCalled();
     const event = submitListener.calls.argsFor(0)[0] as SubmitEvent;
-    expect(event.submitter)
-      .withContext('event.submitter')
-      .toBe(harness.element);
+    expect(event.submitter).withContext('event.submitter').toBe(harness.element);
   });
 
   it('should add name/value to form data when present', async () => {
-    const {harness, form} = await setupTest();
+    const { harness, form } = await setupTest();
     form.addEventListener('submit', (event) => {
       event.preventDefault();
     });

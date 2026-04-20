@@ -1,4 +1,4 @@
-const scraper = require("scrape-tiktok");
+const scraper = require('scrape-tiktok');
 
 async function scrapeURL(url) {
   try {
@@ -14,7 +14,7 @@ async function scrapeURL(url) {
 
 const args = process.argv.slice(2);
 if (args.length === 0) {
-  console.error(JSON.stringify({ error: "No URL provided" }));
+  console.error(JSON.stringify({ error: 'No URL provided' }));
   process.exit(1);
 }
 

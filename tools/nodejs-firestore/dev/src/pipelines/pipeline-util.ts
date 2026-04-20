@@ -13,31 +13,27 @@
 // limitations under the License.
 
 import type * as firestore from '@google-cloud/firestore';
-import {GoogleError} from 'google-gax';
-import {Duplex, Transform} from 'stream';
-import {google} from '../../protos/firestore_v1_proto_api';
-
+import type { GoogleError } from 'google-gax';
+import { type Duplex, Transform } from 'stream';
+import type { google } from '../../protos/firestore_v1_proto_api';
 import * as protos from '../../protos/firestore_v1_proto_api';
 import './expression';
-import Firestore, {
+import type Firestore from '../index';
+import {
   CollectionReference,
   DocumentReference,
   FieldValue,
   Timestamp,
   VectorValue,
 } from '../index';
-import {logger} from '../logger';
-import {FieldPath, QualifiedResourcePath} from '../path';
-import {CompositeFilterInternal} from '../reference/composite-filter-internal';
-import {NOOP_MESSAGE} from '../reference/constants';
-import {FieldFilterInternal} from '../reference/field-filter-internal';
-import {FilterInternal} from '../reference/filter-internal';
-import {
-  PipelineResponse,
-  PipelineStreamElement,
-  QueryCursor,
-} from '../reference/types';
-import {Serializer} from '../serializer';
+import { logger } from '../logger';
+import { FieldPath, QualifiedResourcePath } from '../path';
+import { CompositeFilterInternal } from '../reference/composite-filter-internal';
+import { NOOP_MESSAGE } from '../reference/constants';
+import { FieldFilterInternal } from '../reference/field-filter-internal';
+import type { FilterInternal } from '../reference/filter-internal';
+import type { PipelineResponse, PipelineStreamElement, QueryCursor } from '../reference/types';
+import type { Serializer } from '../serializer';
 import {
   Deferred,
   getTotalTimeout,
@@ -47,27 +43,29 @@ import {
   requestTag,
   wrapError,
 } from '../util';
+
 import api = protos.google.firestore.v1;
 
 import {
-  Expression,
-  BooleanExpression,
+  AggregateFunction,
   and,
-  or,
-  field as createField,
-  constant,
-  map,
   array,
+  BooleanExpression,
   Constant,
+  constant,
+  field as createField,
+  Expression,
+  Field,
   field,
-  Ordering,
   greaterThan,
   lessThan,
-  Field,
-  AggregateFunction,
+  map,
+  Ordering,
+  or,
 } from './expression';
-import {Pipeline, PipelineResult, ExplainStats} from './pipelines';
-import {StructuredPipeline} from './structured-pipeline';
+import { ExplainStats, Pipeline, PipelineResult } from './pipelines';
+import type { StructuredPipeline } from './structured-pipeline';
+
 import Selectable = FirebaseFirestore.Pipelines.Selectable;
 
 /**
@@ -96,11 +94,8 @@ export class ExecutionUtil {
       const result: Array<PipelineResult> = [];
       const output: PipelineResponse = {};
 
-      const stream: NodeJS.EventEmitter = this._stream(
-        structuredPipeline,
-        transactionOrReadTime,
-      );
-      stream.on('error', err => {
+      const stream: NodeJS.EventEmitter = this._stream(structuredPipeline, transactionOrReadTime);
+      stream.on('error', (err) => {
         reject(wrapError(err, stack));
       });
       stream.on('data', (data: PipelineStreamElement[]) => {
@@ -144,14 +139,11 @@ export class ExecutionUtil {
     structuredPipeline: StructuredPipeline,
     transactionOrReadTime?: Uint8Array | Timestamp | api.ITransactionOptions,
   ): NodeJS.ReadableStream {
-    const responseStream = this._stream(
-      structuredPipeline,
-      transactionOrReadTime,
-    );
+    const responseStream = this._stream(structuredPipeline, transactionOrReadTime);
     const transform = new Transform({
       objectMode: true,
       transform(chunk: Array<PipelineStreamElement>, encoding, callback) {
-        chunk.forEach(item => {
+        chunk.forEach((item) => {
           if (item.result) {
             this.push(item.result);
           }
@@ -161,7 +153,7 @@ export class ExecutionUtil {
     });
 
     responseStream.pipe(transform);
-    responseStream.on('error', e => transform.destroy(e));
+    responseStream.on('error', (e) => transform.destroy(e));
     return transform;
   }
 
@@ -174,11 +166,7 @@ export class ExecutionUtil {
     let backendStream: Duplex;
     const stream = new Transform({
       objectMode: true,
-      transform: (
-        proto: api.ExecutePipelineResponse | typeof NOOP_MESSAGE,
-        enc,
-        callback,
-      ) => {
+      transform: (proto: api.ExecutePipelineResponse | typeof NOOP_MESSAGE, enc, callback) => {
         if (proto === NOOP_MESSAGE) {
           callback(undefined);
           return;
@@ -194,7 +182,7 @@ export class ExecutionUtil {
           }
           callback(undefined, [output]);
         } else {
-          let output: PipelineStreamElement[] = proto.results.map(result => {
+          let output: PipelineStreamElement[] = proto.results.map((result) => {
             const output: PipelineStreamElement = {};
             if (proto.transaction?.length) {
               output.transaction = proto.transaction;
@@ -223,12 +211,8 @@ export class ExecutionUtil {
               result.fields || {},
               ref,
               Timestamp.fromProto(proto.executionTime!),
-              result.createTime
-                ? Timestamp.fromProto(result.createTime!)
-                : undefined,
-              result.updateTime
-                ? Timestamp.fromProto(result.updateTime!)
-                : undefined,
+              result.createTime ? Timestamp.fromProto(result.createTime!) : undefined,
+              result.updateTime ? Timestamp.fromProto(result.updateTime!) : undefined,
             );
             return output;
           });
@@ -247,10 +231,7 @@ export class ExecutionUtil {
       },
     });
 
-    Promise.all([
-      this._firestore.initializeIfNeeded(tag),
-      ExplainStats._ensureMessageTypesLoaded(),
-    ])
+    Promise.all([this._firestore.initializeIfNeeded(tag), ExplainStats._ensureMessageTypesLoaded()])
       .then(async () => {
         // `toProto()` might throw an exception. We rely on the behavior of an
         // async function to convert this exception into the rejected Promise we
@@ -278,15 +259,10 @@ export class ExecutionUtil {
             request,
             tag,
           );
-          backendStream.on('error', err => {
+          backendStream.on('error', (err) => {
             backendStream.unpipe(stream);
 
-            logger(
-              'PipelineUtil._stream',
-              tag,
-              'Pipeline failed with stream error:',
-              err,
-            );
+            logger('PipelineUtil._stream', tag, 'Pipeline failed with stream error:', err);
             stream.destroy(err);
             streamActive.resolve(/* active= */ false);
           });
@@ -297,13 +273,8 @@ export class ExecutionUtil {
           backendStream.pipe(stream);
         } while (await streamActive.promise);
       })
-      .catch(e => {
-        logger(
-          'PipelineUtil._stream',
-          tag,
-          'Pipeline failed with stream error:',
-          e,
-        );
+      .catch((e) => {
+        logger('PipelineUtil._stream', tag, 'Pipeline failed with stream error:', e);
         stream.destroy(e);
       });
 
@@ -317,9 +288,7 @@ function isITimestamp(obj: unknown): obj is google.protobuf.ITimestamp {
   }
   if (
     'seconds' in obj &&
-    (obj.seconds === null ||
-      typeof obj.seconds === 'number' ||
-      typeof obj.seconds === 'string') &&
+    (obj.seconds === null || typeof obj.seconds === 'number' || typeof obj.seconds === 'string') &&
     'nanos' in obj &&
     (obj.nanos === null || typeof obj.nanos === 'number')
   ) {
@@ -397,38 +366,27 @@ export function isFirestoreValue(obj: unknown): obj is api.IValue {
 
   // Check optional properties and their types
   if (
-    ('nullValue' in obj &&
-      (obj.nullValue === null || obj.nullValue === 'NULL_VALUE')) ||
+    ('nullValue' in obj && (obj.nullValue === null || obj.nullValue === 'NULL_VALUE')) ||
     ('booleanValue' in obj &&
       (obj.booleanValue === null || typeof obj.booleanValue === 'boolean')) ||
     ('integerValue' in obj &&
       (obj.integerValue === null ||
         typeof obj.integerValue === 'number' ||
         typeof obj.integerValue === 'string')) ||
-    ('doubleValue' in obj &&
-      (obj.doubleValue === null || typeof obj.doubleValue === 'number')) ||
+    ('doubleValue' in obj && (obj.doubleValue === null || typeof obj.doubleValue === 'number')) ||
     ('timestampValue' in obj &&
       (obj.timestampValue === null || isITimestamp(obj.timestampValue))) ||
-    ('stringValue' in obj &&
-      (obj.stringValue === null || typeof obj.stringValue === 'string')) ||
-    ('bytesValue' in obj &&
-      (obj.bytesValue === null || obj.bytesValue instanceof Uint8Array)) ||
+    ('stringValue' in obj && (obj.stringValue === null || typeof obj.stringValue === 'string')) ||
+    ('bytesValue' in obj && (obj.bytesValue === null || obj.bytesValue instanceof Uint8Array)) ||
     ('referenceValue' in obj &&
-      (obj.referenceValue === null ||
-        typeof obj.referenceValue === 'string')) ||
-    ('geoPointValue' in obj &&
-      (obj.geoPointValue === null || isILatLng(obj.geoPointValue))) ||
-    ('arrayValue' in obj &&
-      (obj.arrayValue === null || isIArrayValue(obj.arrayValue))) ||
-    ('mapValue' in obj &&
-      (obj.mapValue === null || isIMapValue(obj.mapValue))) ||
+      (obj.referenceValue === null || typeof obj.referenceValue === 'string')) ||
+    ('geoPointValue' in obj && (obj.geoPointValue === null || isILatLng(obj.geoPointValue))) ||
+    ('arrayValue' in obj && (obj.arrayValue === null || isIArrayValue(obj.arrayValue))) ||
+    ('mapValue' in obj && (obj.mapValue === null || isIMapValue(obj.mapValue))) ||
     ('fieldReferenceValue' in obj &&
-      (obj.fieldReferenceValue === null ||
-        typeof obj.fieldReferenceValue === 'string')) ||
-    ('functionValue' in obj &&
-      (obj.functionValue === null || isIFunction(obj.functionValue))) ||
-    ('pipelineValue' in obj &&
-      (obj.pipelineValue === null || isIPipeline(obj.pipelineValue)))
+      (obj.fieldReferenceValue === null || typeof obj.fieldReferenceValue === 'string')) ||
+    ('functionValue' in obj && (obj.functionValue === null || isIFunction(obj.functionValue))) ||
+    ('pipelineValue' in obj && (obj.pipelineValue === null || isIPipeline(obj.pipelineValue)))
   ) {
     return true;
   }
@@ -443,7 +401,7 @@ export function whereConditionsFromCursor(
 ): BooleanExpression {
   // The filterFunc is either greater than or less than
   const filterFunc = position === 'before' ? lessThan : greaterThan;
-  const cursors = cursor.values.map(value => Constant._fromProto(value));
+  const cursors = cursor.values.map((value) => Constant._fromProto(value));
   const size = cursors.length;
 
   let field = orderings[size - 1].expr;
@@ -451,16 +409,10 @@ export function whereConditionsFromCursor(
 
   // Add condition for last bound
   let condition: BooleanExpression = filterFunc(field, value);
-  if (
-    (position === 'after' && cursor.before) ||
-    (position === 'before' && !cursor.before)
-  ) {
+  if ((position === 'after' && cursor.before) || (position === 'before' && !cursor.before)) {
     // When the cursor bound is inclusive, then the last bound
     // can be equal to the value, otherwise it's not equal
-    condition = or(
-      condition,
-      field.equal(value) as unknown as BooleanExpression,
-    );
+    condition = or(condition, field.equal(value) as unknown as BooleanExpression);
   }
 
   // Iterate backwards over the remaining bounds, adding
@@ -483,11 +435,7 @@ export function whereConditionsFromCursor(
 
 export function reverseOrderings(orderings: Ordering[]): Ordering[] {
   return orderings.map(
-    o =>
-      new Ordering(
-        o.expr,
-        o.direction === 'ascending' ? 'descending' : 'ascending',
-      ),
+    (o) => new Ordering(o.expr, o.direction === 'ascending' ? 'descending' : 'ascending'),
   );
 }
 
@@ -499,9 +447,7 @@ export function toPipelineBooleanExpr(
     const field = createField(f.field);
 
     // Comparison filters
-    const value = isFirestoreValue(f.value)
-      ? f.value
-      : serializer.encodeValue(f.value);
+    const value = isFirestoreValue(f.value) ? f.value : serializer.encodeValue(f.value);
     switch (f.op) {
       case 'LESS_THAN':
         return and(field.exists(), field.lessThan(value));
@@ -518,15 +464,15 @@ export function toPipelineBooleanExpr(
       case 'ARRAY_CONTAINS':
         return and(field.exists(), field.arrayContains(value));
       case 'IN': {
-        const values = value?.arrayValue?.values?.map(val => constant(val));
+        const values = value?.arrayValue?.values?.map((val) => constant(val));
         return and(field.exists(), field.equalAny(values!));
       }
       case 'ARRAY_CONTAINS_ANY': {
-        const values = value?.arrayValue?.values?.map(val => constant(val));
+        const values = value?.arrayValue?.values?.map((val) => constant(val));
         return and(field.exists(), field.arrayContainsAny(values!));
       }
       case 'NOT_IN': {
-        const values = value?.arrayValue?.values?.map(val => constant(val));
+        const values = value?.arrayValue?.values?.map((val) => constant(val));
         // In Enterprise DB's NOT_IN will match a field that does not exist,
         // therefore we do not want an existence filter for the NOT_IN conversion
         // so the Query and Pipeline behavior are consistent in Enterprise.
@@ -536,23 +482,17 @@ export function toPipelineBooleanExpr(
   } else if (f instanceof CompositeFilterInternal) {
     switch (f._getOperator()) {
       case 'AND': {
-        const conditions = f
-          .getFilters()
-          .map(f => toPipelineBooleanExpr(f, serializer));
+        const conditions = f.getFilters().map((f) => toPipelineBooleanExpr(f, serializer));
         return and(conditions[0], conditions[1], ...conditions.slice(2));
       }
       case 'OR': {
-        const conditions = f
-          .getFilters()
-          .map(f => toPipelineBooleanExpr(f, serializer));
+        const conditions = f.getFilters().map((f) => toPipelineBooleanExpr(f, serializer));
         return or(conditions[0], conditions[1], ...conditions.slice(2));
       }
     }
   }
 
-  throw new Error(
-    `Failed to convert filter to pipeline conditions: ${f.toProto()}`,
-  );
+  throw new Error(`Failed to convert filter to pipeline conditions: ${f.toProto()}`);
 }
 
 export function isString(val: unknown): val is string {
@@ -563,43 +503,29 @@ export function isNumber(val: unknown): val is number {
   return typeof val === 'number';
 }
 
-export function isSelectable(
-  val: unknown,
-): val is firestore.Pipelines.Selectable {
+export function isSelectable(val: unknown): val is firestore.Pipelines.Selectable {
   const candidate = val as firestore.Pipelines.Selectable;
-  return (
-    candidate.selectable &&
-    isString(candidate._alias) &&
-    isExpr(candidate._expr)
-  );
+  return candidate.selectable && isString(candidate._alias) && isExpr(candidate._expr);
 }
 
 export function isOrdering(val: unknown): val is firestore.Pipelines.Ordering {
   const candidate = val as firestore.Pipelines.Ordering;
   return (
     isExpr(candidate.expr) &&
-    (candidate.direction === 'ascending' ||
-      candidate.direction === 'descending')
+    (candidate.direction === 'ascending' || candidate.direction === 'descending')
   );
 }
 
-export function isAliasedAggregate(
-  val: unknown,
-): val is firestore.Pipelines.AliasedAggregate {
+export function isAliasedAggregate(val: unknown): val is firestore.Pipelines.AliasedAggregate {
   const candidate = val as firestore.Pipelines.AliasedAggregate;
-  return (
-    isString(candidate._alias) &&
-    candidate._aggregate instanceof AggregateFunction
-  );
+  return isString(candidate._alias) && candidate._aggregate instanceof AggregateFunction;
 }
 
 export function isExpr(val: unknown): val is firestore.Pipelines.Expression {
   return val instanceof Expression;
 }
 
-export function isBooleanExpr(
-  val: unknown,
-): val is firestore.Pipelines.BooleanExpression {
+export function isBooleanExpr(val: unknown): val is firestore.Pipelines.BooleanExpression {
   return val instanceof BooleanExpression;
 }
 
@@ -611,9 +537,7 @@ export function isPipeline(val: unknown): val is firestore.Pipelines.Pipeline {
   return val instanceof Pipeline;
 }
 
-export function isCollectionReference(
-  val: unknown,
-): val is firestore.CollectionReference {
+export function isCollectionReference(val: unknown): val is firestore.CollectionReference {
   return val instanceof CollectionReference;
 }
 
@@ -653,9 +577,7 @@ export function valueToDefaultExpr(value: unknown): Expression {
  * @internal
  * @param value
  */
-export function vectorToExpr(
-  value: firestore.VectorValue | number[] | Expression,
-): Expression {
+export function vectorToExpr(value: firestore.VectorValue | number[] | Expression): Expression {
   if (value instanceof Expression) {
     return value;
   } else if (value instanceof VectorValue) {
@@ -749,10 +671,7 @@ export function aliasedAggregateToMap(
   aliasedAggregatees: firestore.Pipelines.AliasedAggregate[],
 ): Map<string, AggregateFunction> {
   return aliasedAggregatees.reduce(
-    (
-      map: Map<string, AggregateFunction>,
-      selectable: firestore.Pipelines.AliasedAggregate,
-    ) => {
+    (map: Map<string, AggregateFunction>, selectable: firestore.Pipelines.AliasedAggregate) => {
       if (map.get(selectable._alias) !== undefined) {
         throw new Error(`Duplicate alias or field '${selectable._alias}'`);
       }

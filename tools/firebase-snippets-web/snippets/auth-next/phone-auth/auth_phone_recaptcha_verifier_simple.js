@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_phone_recaptcha_verifier_simple_modular]
-import { getAuth, RecaptchaVerifier } from "firebase/auth";
+import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 
 const auth = getAuth();
 window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {});

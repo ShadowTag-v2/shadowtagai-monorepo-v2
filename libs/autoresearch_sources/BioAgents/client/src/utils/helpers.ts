@@ -10,7 +10,7 @@ export async function walletAddressToUUIDAsync(walletAddress: string): Promise<s
   // Hash the wallet address using SHA-256
   const encoder = new TextEncoder();
   const data = encoder.encode(normalized);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
   const hashArray = new Uint8Array(hashBuffer);
 
   // Take first 16 bytes and format as UUID v5 style
@@ -21,7 +21,7 @@ export async function walletAddressToUUIDAsync(walletAddress: string): Promise<s
   uuid[8] = (uuid[8] & 0x3f) | 0x80; // Variant
 
   // Convert to UUID format
-  const hex = Array.from(uuid, (byte) => byte.toString(16).padStart(2, "0")).join("");
+  const hex = Array.from(uuid, (byte) => byte.toString(16).padStart(2, '0')).join('');
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
@@ -68,7 +68,7 @@ export function walletAddressToUUID(walletAddress: string): string {
   hashBytes[8] = (hashBytes[8] & 0x3f) | 0x80; // Variant
 
   // Convert to UUID format
-  const hex = hashBytes.map((b) => b.toString(16).padStart(2, "0")).join("");
+  const hex = hashBytes.map((b) => b.toString(16).padStart(2, '0')).join('');
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
@@ -78,12 +78,12 @@ export function walletAddressToUUID(walletAddress: string): string {
  */
 export function generateConversationId(): string {
   // Modern browsers support crypto.randomUUID()
-  if (typeof window !== "undefined" && window.crypto?.randomUUID) {
+  if (typeof window !== 'undefined' && window.crypto?.randomUUID) {
     return window.crypto.randomUUID();
   }
 
   // Fallback: Use crypto.getRandomValues for better randomness
-  if (typeof window !== "undefined" && window.crypto?.getRandomValues) {
+  if (typeof window !== 'undefined' && window.crypto?.getRandomValues) {
     const array = new Uint8Array(16);
     window.crypto.getRandomValues(array);
 
@@ -92,15 +92,15 @@ export function generateConversationId(): string {
     array[8] = (array[8] & 0x3f) | 0x80;
 
     // Convert to UUID format
-    const hex = Array.from(array, (byte) => byte.toString(16).padStart(2, "0")).join("");
+    const hex = Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join('');
     return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
   }
 
   // Last resort fallback for very old browsers (not cryptographically secure)
-  console.warn("Using non-secure random UUID generation");
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+  console.warn('Using non-secure random UUID generation');
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
-    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }

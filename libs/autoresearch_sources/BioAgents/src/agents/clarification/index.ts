@@ -13,10 +13,10 @@ import type {
   ClarificationAnswer,
   ClarificationPlan,
   ClarificationQuestion,
-} from "../../types/clarification";
-import logger from "../../utils/logger";
-import { generatePlanFromContext, regeneratePlanFromFeedback } from "./plan";
-import { generateQuestions, type DatasetInfo } from "./utils";
+} from '../../types/clarification';
+import logger from '../../utils/logger';
+import { generatePlanFromContext, regeneratePlanFromFeedback } from './plan';
+import { type DatasetInfo, generateQuestions } from './utils';
 
 export type ClarificationQuestionsResult = {
   questions: ClarificationQuestion[];
@@ -57,7 +57,7 @@ export async function clarificationQuestionsAgent(input: {
       queryPreview: query.substring(0, 100),
       datasetCount: datasets?.length || 0,
     },
-    "clarification_questions_agent_started",
+    'clarification_questions_agent_started',
   );
 
   try {
@@ -71,7 +71,7 @@ export async function clarificationQuestionsAgent(input: {
         categories: result.questions.map((q) => q.category),
         reasoning: result.reasoning,
       },
-      "clarification_questions_agent_completed",
+      'clarification_questions_agent_completed',
     );
 
     return {
@@ -81,7 +81,7 @@ export async function clarificationQuestionsAgent(input: {
       end,
     };
   } catch (error) {
-    logger.error({ error, query }, "clarification_questions_agent_failed");
+    logger.error({ error, query }, 'clarification_questions_agent_failed');
     throw error;
   }
 }
@@ -113,7 +113,7 @@ export async function clarificationPlanAgent(input: {
       answerCount: answers.length,
       datasetCount: datasets?.length || 0,
     },
-    "clarification_plan_agent_started",
+    'clarification_plan_agent_started',
   );
 
   try {
@@ -131,7 +131,7 @@ export async function clarificationPlanAgent(input: {
         objective: plan.objective.substring(0, 100),
         taskCount: plan.initialTasks.length,
       },
-      "clarification_plan_agent_completed",
+      'clarification_plan_agent_completed',
     );
 
     return {
@@ -140,7 +140,7 @@ export async function clarificationPlanAgent(input: {
       end,
     };
   } catch (error) {
-    logger.error({ error, query }, "clarification_plan_agent_failed");
+    logger.error({ error, query }, 'clarification_plan_agent_failed');
     throw error;
   }
 }
@@ -169,7 +169,7 @@ export async function clarificationPlanRegenerateAgent(input: {
       previousTaskCount: previousPlan.initialTasks.length,
       datasetCount: datasets?.length || 0,
     },
-    "clarification_plan_regenerate_agent_started",
+    'clarification_plan_regenerate_agent_started',
   );
 
   try {
@@ -189,7 +189,7 @@ export async function clarificationPlanRegenerateAgent(input: {
         objective: plan.objective.substring(0, 100),
         taskCount: plan.initialTasks.length,
       },
-      "clarification_plan_regenerate_agent_completed",
+      'clarification_plan_regenerate_agent_completed',
     );
 
     return {
@@ -198,11 +198,11 @@ export async function clarificationPlanRegenerateAgent(input: {
       end,
     };
   } catch (error) {
-    logger.error({ error, query, feedback }, "clarification_plan_regenerate_agent_failed");
+    logger.error({ error, query, feedback }, 'clarification_plan_regenerate_agent_failed');
     throw error;
   }
 }
 
+export { generatePlanFromContext, regeneratePlanFromFeedback } from './plan';
 // Re-export types and utilities
-export { generateQuestions } from "./utils";
-export { generatePlanFromContext, regeneratePlanFromFeedback } from "./plan";
+export { generateQuestions } from './utils';

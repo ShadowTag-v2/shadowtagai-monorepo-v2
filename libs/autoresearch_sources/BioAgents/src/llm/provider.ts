@@ -1,12 +1,12 @@
-import { createTokenUsage } from "../db/operations";
-import logger from "../utils/logger";
-import type { LLMAdapter } from "./adapter";
-import { AnthropicAdapter } from "./adapters/anthropic";
-import { GoogleAdapter } from "./adapters/google";
-import { OpenAIAdapter } from "./adapters/openai";
-import { OpenRouterAdapter } from "./adapters/openrouter";
-import { withRetry } from "./retry";
-import type { LLMProvider, LLMRequest, LLMResponse, WebSearchResponse } from "./types";
+import { createTokenUsage } from '../db/operations';
+import logger from '../utils/logger';
+import type { LLMAdapter } from './adapter';
+import { AnthropicAdapter } from './adapters/anthropic';
+import { GoogleAdapter } from './adapters/google';
+import { OpenAIAdapter } from './adapters/openai';
+import { OpenRouterAdapter } from './adapters/openrouter';
+import { withRetry } from './retry';
+import type { LLMProvider, LLMRequest, LLMResponse, WebSearchResponse } from './types';
 
 export class LLM {
   private adapter: LLMAdapter;
@@ -30,7 +30,7 @@ export class LLM {
       );
 
       const duration = Date.now() - startTime;
-      (this.adapter as any).logDuration("createChatCompletion", duration);
+      (this.adapter as any).logDuration('createChatCompletion', duration);
       this.trackTokenUsage(result, request, duration);
       this.checkFinishReason(result, request);
       return result;
@@ -53,7 +53,7 @@ export class LLM {
     const fallbackApiKey = this.getFallbackApiKey(fallbackProvider);
 
     if (!fallbackApiKey) {
-      logger.error({ fallbackProvider }, "llm_fallback_api_key_not_configured");
+      logger.error({ fallbackProvider }, 'llm_fallback_api_key_not_configured');
       throw error.originalError;
     }
 
@@ -64,11 +64,11 @@ export class LLM {
         fallbackModel,
         originalModel: request.model,
       },
-      "llm_attempting_fallback",
+      'llm_attempting_fallback',
     );
 
     const fallbackLLMProvider: LLMProvider = {
-      name: fallbackProvider as LLMProvider["name"],
+      name: fallbackProvider as LLMProvider['name'],
       apiKey: fallbackApiKey,
     };
     const fallbackAdapter = this.createAdapter(fallbackLLMProvider);
@@ -82,11 +82,11 @@ export class LLM {
     try {
       const result = await fallbackAdapter.createChatCompletion(fallbackRequest);
       const duration = Date.now() - startTime;
-      (fallbackAdapter as any).logDuration("createChatCompletion (fallback)", duration);
+      (fallbackAdapter as any).logDuration('createChatCompletion (fallback)', duration);
       this.trackTokenUsage(result, fallbackRequest, duration, fallbackProvider);
       this.checkFinishReason(result, fallbackRequest);
 
-      logger.info({ fallbackProvider, fallbackModel }, "llm_fallback_success");
+      logger.info({ fallbackProvider, fallbackModel }, 'llm_fallback_success');
       return result;
     } catch (fallbackError) {
       logger.error(
@@ -96,7 +96,7 @@ export class LLM {
           fallbackError:
             fallbackError instanceof Error ? fallbackError.message : String(fallbackError),
         },
-        "llm_fallback_failed",
+        'llm_fallback_failed',
       );
       // Throw the original error since fallback also failed
       throw error.originalError;
@@ -114,7 +114,7 @@ export class LLM {
       );
 
       const duration = Date.now() - startTime;
-      (this.adapter as any).logDuration("createChatCompletionWebSearch", duration);
+      (this.adapter as any).logDuration('createChatCompletionWebSearch', duration);
       return result;
     } catch (error: any) {
       // Check if we need to try fallback provider
@@ -135,7 +135,7 @@ export class LLM {
     const fallbackApiKey = this.getFallbackApiKey(fallbackProvider);
 
     if (!fallbackApiKey) {
-      logger.error({ fallbackProvider }, "llm_fallback_api_key_not_configured");
+      logger.error({ fallbackProvider }, 'llm_fallback_api_key_not_configured');
       throw error.originalError;
     }
 
@@ -145,11 +145,11 @@ export class LLM {
         fallbackProvider,
         fallbackModel,
       },
-      "llm_attempting_fallback_websearch",
+      'llm_attempting_fallback_websearch',
     );
 
     const fallbackLLMProvider: LLMProvider = {
-      name: fallbackProvider as LLMProvider["name"],
+      name: fallbackProvider as LLMProvider['name'],
       apiKey: fallbackApiKey,
     };
     const fallbackAdapter = this.createAdapter(fallbackLLMProvider);
@@ -162,9 +162,9 @@ export class LLM {
     try {
       const result = await fallbackAdapter.createChatCompletionWebSearch(fallbackRequest);
       const duration = Date.now() - startTime;
-      (fallbackAdapter as any).logDuration("createChatCompletionWebSearch (fallback)", duration);
+      (fallbackAdapter as any).logDuration('createChatCompletionWebSearch (fallback)', duration);
 
-      logger.info({ fallbackProvider, fallbackModel }, "llm_fallback_websearch_success");
+      logger.info({ fallbackProvider, fallbackModel }, 'llm_fallback_websearch_success');
       return result;
     } catch (fallbackError) {
       logger.error(
@@ -174,7 +174,7 @@ export class LLM {
           fallbackError:
             fallbackError instanceof Error ? fallbackError.message : String(fallbackError),
         },
-        "llm_fallback_websearch_failed",
+        'llm_fallback_websearch_failed',
       );
       throw error.originalError;
     }
@@ -187,9 +187,9 @@ export class LLM {
 
   // Normal finish reasons by provider (case-insensitive comparison)
   private static readonly NORMAL_FINISH_REASONS = new Set([
-    "stop", // OpenAI, OpenRouter
-    "end_turn", // Anthropic
-    "STOP", // Google
+    'stop', // OpenAI, OpenRouter
+    'end_turn', // Anthropic
+    'STOP', // Google
   ]);
 
   private checkFinishReason(result: LLMResponse, request: LLMRequest): void {
@@ -198,7 +198,7 @@ export class LLM {
     const isNormal = LLM.NORMAL_FINISH_REASONS.has(result.finishReason);
     if (!isNormal) {
       // Get the last user message as the prompt preview
-      const lastUserMessage = [...request.messages].reverse().find((m) => m.role === "user");
+      const lastUserMessage = [...request.messages].reverse().find((m) => m.role === 'user');
       const promptPreview = lastUserMessage?.content?.slice(0, 500);
 
       logger.warn(
@@ -212,7 +212,7 @@ export class LLM {
           promptPreview,
           promptLength: lastUserMessage?.content?.length,
         },
-        "llm_response_truncated_or_abnormal_finish",
+        'llm_response_truncated_or_abnormal_finish',
       );
     }
   }
@@ -237,7 +237,7 @@ export class LLM {
       }).catch((err) => {
         logger.warn(
           { err, messageId: request.messageId, paperId: request.paperId },
-          "failed_to_save_token_usage_to_db",
+          'failed_to_save_token_usage_to_db',
         );
       });
     }
@@ -245,13 +245,13 @@ export class LLM {
 
   private createAdapter(provider: LLMProvider): LLMAdapter {
     switch (provider.name) {
-      case "openai":
+      case 'openai':
         return new OpenAIAdapter(provider);
-      case "google":
+      case 'google':
         return new GoogleAdapter(provider);
-      case "anthropic":
+      case 'anthropic':
         return new AnthropicAdapter(provider);
-      case "openrouter":
+      case 'openrouter':
         return new OpenRouterAdapter(provider);
       default:
         throw new Error(`Unsupported provider: ${provider.name}`);

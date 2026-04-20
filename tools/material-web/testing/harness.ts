@@ -15,9 +15,8 @@ import {
  *
  * @template H The harness type.
  */
-export type HarnessElement<H extends Harness> = H extends Harness<infer E>
-  ? ElementWithHarness<E, H>
-  : never;
+export type HarnessElement<H extends Harness> =
+  H extends Harness<infer E> ? ElementWithHarness<E, H> : never;
 
 /**
  * Harnesses will attach themselves to their element for convenience.
@@ -47,9 +46,7 @@ export type ElementWithHarness<
  * @param element The element to check.
  * @return True if the element has a harness property.
  */
-export function isElementWithHarness(
-  element: Element,
-): element is ElementWithHarness {
+export function isElementWithHarness(element: Element): element is ElementWithHarness {
   return (element as unknown as ElementWithHarness).harness instanceof Harness;
 }
 
@@ -180,7 +177,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
    */
   async rightClickWithMouse() {
     const element = await this.getInteractiveElement();
-    const rightMouseButton = {button: 2, buttons: 2};
+    const rightMouseButton = { button: 2, buttons: 2 };
     await this.startClickWithMouse(rightMouseButton);
     // Note: contextmenu right clicks do not generate the up events
     this.simulateContextmenu(element, rightMouseButton);
@@ -339,7 +336,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
         return false;
       };
 
-      form.addEventListener('submit', submitListener, {once: true});
+      form.addEventListener('submit', submitListener, { once: true });
       form.requestSubmit();
     });
   }
@@ -378,10 +375,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
     }
 
     transformPseudoClasses(root.styleSheets, this.transformPseudoClasses);
-    transformPseudoClasses(
-      root.adoptedStyleSheets || [],
-      this.transformPseudoClasses,
-    );
+    transformPseudoClasses(root.adoptedStyleSheets || [], this.transformPseudoClasses);
     element.classList.add(getTransformedPseudoClass(pseudoClass));
     this.patchForTransformedPseudoClasses(element);
   }
@@ -419,10 +413,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
    * @param element The element to generate an event for.
    * @param init Additional event options.
    */
-  protected simulateContextmenu(
-    element: HTMLElement,
-    init: MouseEventInit = {},
-  ) {
+  protected simulateContextmenu(element: HTMLElement, init: MouseEventInit = {}) {
     element.dispatchEvent(
       new MouseEvent('contextmenu', {
         ...this.createMouseEventInit(element),
@@ -457,10 +448,8 @@ export class Harness<E extends HTMLElement = HTMLElement> {
     this.forEachNodeFrom(element, (el) => {
       this.addPseudoClass(el, ':focus-within');
     });
-    element.dispatchEvent(new FocusEvent('focus', {composed: true}));
-    element.dispatchEvent(
-      new FocusEvent('focusin', {bubbles: true, composed: true}),
-    );
+    element.dispatchEvent(new FocusEvent('focus', { composed: true }));
+    element.dispatchEvent(new FocusEvent('focusin', { bubbles: true, composed: true }));
   }
 
   /**
@@ -474,10 +463,8 @@ export class Harness<E extends HTMLElement = HTMLElement> {
     this.forEachNodeFrom(element, (el) => {
       this.removePseudoClass(el, ':focus-within');
     });
-    element.dispatchEvent(new FocusEvent('blur', {composed: true}));
-    element.dispatchEvent(
-      new FocusEvent('focusout', {bubbles: true, composed: true}),
-    );
+    element.dispatchEvent(new FocusEvent('blur', { composed: true }));
+    element.dispatchEvent(new FocusEvent('focusout', { bubbles: true, composed: true }));
   }
 
   /**
@@ -486,10 +473,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
    * @param element The element to hover over.
    * @param init Additional event options.
    */
-  protected simulateStartHover(
-    element: HTMLElement,
-    init: PointerEventInit = {},
-  ) {
+  protected simulateStartHover(element: HTMLElement, init: PointerEventInit = {}) {
     this.forEachNodeFrom(element, (el) => {
       this.addPseudoClass(el, ':hover');
     });
@@ -528,10 +512,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
    * @param element The element to stop hovering over.
    * @param init Additional event options.
    */
-  protected simulateEndHover(
-    element: HTMLElement,
-    init: PointerEventInit = {},
-  ) {
+  protected simulateEndHover(element: HTMLElement, init: PointerEventInit = {}) {
     this.forEachNodeFrom(element, (el) => {
       this.removePseudoClass(el, ':hover');
     });
@@ -570,10 +551,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
    * @param element The element to press with a mouse.
    * @param init Additional event options.
    */
-  protected simulateMousePress(
-    element: HTMLElement,
-    init: PointerEventInit = {},
-  ) {
+  protected simulateMousePress(element: HTMLElement, init: PointerEventInit = {}) {
     this.addPseudoClass(element, ':active');
     this.forEachNodeFrom(element, (el) => {
       this.addPseudoClass(el, ':active');
@@ -597,10 +575,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
    * @param element The element to release pressing from.
    * @param init Additional event options.
    */
-  protected simulateMouseRelease(
-    element: HTMLElement,
-    init: PointerEventInit = {},
-  ) {
+  protected simulateMouseRelease(element: HTMLElement, init: PointerEventInit = {}) {
     this.removePseudoClass(element, ':active');
     this.forEachNodeFrom(element, (el) => {
       this.removePseudoClass(el, ':active');
@@ -683,9 +658,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
     // Firefox does not support TouchEvent constructor
     if (window.TouchEvent) {
       const touch = this.createTouch(element);
-      element.dispatchEvent(
-        new TouchEvent('touchend', {changedTouches: [touch], ...touchInit}),
-      );
+      element.dispatchEvent(new TouchEvent('touchend', { changedTouches: [touch], ...touchInit }));
     }
   }
 
@@ -717,7 +690,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
     if (window.TouchEvent) {
       const touch = this.createTouch(element);
       element.dispatchEvent(
-        new TouchEvent('touchcancel', {changedTouches: [touch], ...touchInit}),
+        new TouchEvent('touchcancel', { changedTouches: [touch], ...touchInit }),
       );
     }
   }
@@ -729,11 +702,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
    * @param key The key to press.
    * @param init Additional event options.
    */
-  protected simulateKeypress(
-    element: EventTarget,
-    key: string,
-    init: KeyboardEventInit = {},
-  ) {
+  protected simulateKeypress(element: EventTarget, key: string, init: KeyboardEventInit = {}) {
     this.simulateKeydown(element, key, init);
     this.simulateKeyup(element, key, init);
   }
@@ -745,11 +714,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
    * @param key The key to press.
    * @param init Additional event options.
    */
-  protected simulateKeydown(
-    element: EventTarget,
-    key: string,
-    init: KeyboardEventInit = {},
-  ) {
+  protected simulateKeydown(element: EventTarget, key: string, init: KeyboardEventInit = {}) {
     element.dispatchEvent(
       new KeyboardEvent('keydown', {
         ...init,
@@ -768,11 +733,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
    * @param key The key to release.
    * @param init Additional keyboard options.
    */
-  protected simulateKeyup(
-    element: EventTarget,
-    key: string,
-    init: KeyboardEventInit = {},
-  ) {
+  protected simulateKeyup(element: EventTarget, key: string, init: KeyboardEventInit = {}) {
     element.dispatchEvent(
       new KeyboardEvent('keyup', {
         ...init,
@@ -863,8 +824,7 @@ export class Harness<E extends HTMLElement = HTMLElement> {
       if (nextNode instanceof HTMLElement && nextNode.shadowRoot) {
         const slot = currentNode.getAttribute('slot');
         const slotSelector = slot ? `slot[name=${slot}]` : 'slot:not([name])';
-        const slotElement =
-          nextNode.shadowRoot.querySelector<HTMLSlotElement>(slotSelector);
+        const slotElement = nextNode.shadowRoot.querySelector<HTMLSlotElement>(slotSelector);
         if (slotElement) {
           this.forEachNodeFrom(slotElement, callback, nextNode);
         }

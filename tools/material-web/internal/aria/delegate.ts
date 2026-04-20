@@ -4,19 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {LitElement, ReactiveElement, isServer} from 'lit';
+import { isServer, type LitElement, type ReactiveElement } from 'lit';
 
-import {MixinBase, MixinReturn} from '../../labs/behaviors/mixin.js';
-import {
-  ARIA_PROPERTIES,
-  ariaPropertyToAttribute,
-  isAriaAttribute,
-} from './aria.js';
+import type { MixinBase, MixinReturn } from '../../labs/behaviors/mixin.js';
+import { ARIA_PROPERTIES, ariaPropertyToAttribute, isAriaAttribute } from './aria.js';
 
 // Private symbols
-const privateIgnoreAttributeChangesFor = Symbol(
-  'privateIgnoreAttributeChangesFor',
-);
+const privateIgnoreAttributeChangesFor = Symbol('privateIgnoreAttributeChangesFor');
 
 /**
  * Mixes in aria delegation for elements that delegate focus and aria to inner
@@ -64,9 +58,7 @@ const privateIgnoreAttributeChangesFor = Symbol(
  * @param base The class to mix functionality into.
  * @return The provided class with aria delegation mixed in.
  */
-export function mixinDelegatesAria<T extends MixinBase<LitElement>>(
-  base: T,
-): MixinReturn<T> {
+export function mixinDelegatesAria<T extends MixinBase<LitElement>>(base: T): MixinReturn<T> {
   if (isServer) {
     // Don't shift attributes when running with lit-ssr. The SSR renderer
     // implements a subset of DOM APIs, including the methods this mixin
@@ -129,9 +121,7 @@ export function mixinDelegatesAria<T extends MixinBase<LitElement>>(
     }
   }
 
-  setupDelegatesAriaProperties(
-    WithDelegatesAriaElement as unknown as typeof ReactiveElement,
-  );
+  setupDelegatesAriaProperties(WithDelegatesAriaElement as unknown as typeof ReactiveElement);
 
   return WithDelegatesAriaElement;
 }
@@ -200,7 +190,5 @@ function ariaAttributeToDataAttribute(ariaAttribute: string) {
 
 function ariaAttributeToDataProperty(ariaAttribute: string) {
   // aria-haspopup -> dataset.ariaHaspopup
-  return ariaAttribute.replace(/-\w/, (dashLetter) =>
-    dashLetter[1].toUpperCase(),
-  );
+  return ariaAttribute.replace(/-\w/, (dashLetter) => dashLetter[1].toUpperCase());
 }

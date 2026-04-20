@@ -27,7 +27,7 @@ export function extractUrlsFromMessages(
   if (matches) {
     matches.forEach((url) => {
       // Clean up URL (remove trailing punctuation)
-      const cleanUrl = url.replace(/[.,;:!?)]+$/, "");
+      const cleanUrl = url.replace(/[.,;:!?)]+$/, '');
       urls.add(cleanUrl);
     });
   }
@@ -61,9 +61,9 @@ export async function fetchStaticContent(url: string): Promise<string | null> {
     const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
     const response = await fetch(url, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; LLMBot/1.0)",
+        'User-Agent': 'Mozilla/5.0 (compatible; LLMBot/1.0)',
       },
       signal: controller.signal,
     });
@@ -74,10 +74,10 @@ export async function fetchStaticContent(url: string): Promise<string | null> {
       return null;
     }
 
-    const contentType = response.headers.get("content-type") || "";
+    const contentType = response.headers.get('content-type') || '';
 
     // Only process HTML and text content
-    if (!contentType.includes("text/html") && !contentType.includes("text/plain")) {
+    if (!contentType.includes('text/html') && !contentType.includes('text/plain')) {
       return null;
     }
 
@@ -99,22 +99,22 @@ export async function fetchStaticContent(url: string): Promise<string | null> {
  */
 export function extractTextFromHtml(html: string): string {
   // Remove script and style tags
-  let text = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
-  text = text.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "");
+  let text = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+  text = text.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
 
   // Remove HTML tags
-  text = text.replace(/<[^>]+>/g, " ");
+  text = text.replace(/<[^>]+>/g, ' ');
 
   // Decode HTML entities
-  text = text.replace(/&nbsp;/g, " ");
-  text = text.replace(/&amp;/g, "&");
-  text = text.replace(/&lt;/g, "<");
-  text = text.replace(/&gt;/g, ">");
+  text = text.replace(/&nbsp;/g, ' ');
+  text = text.replace(/&amp;/g, '&');
+  text = text.replace(/&lt;/g, '<');
+  text = text.replace(/&gt;/g, '>');
   text = text.replace(/&quot;/g, '"');
   text = text.replace(/&#39;/g, "'");
 
   // Clean up whitespace
-  text = text.replace(/\s+/g, " ").trim();
+  text = text.replace(/\s+/g, ' ').trim();
 
   return text;
 }
@@ -159,13 +159,13 @@ export async function enrichMessagesWithUrlContent(
     }
   });
 
-  const enrichmentMessage = enrichmentParts.join("\n\n---\n\n");
+  const enrichmentMessage = enrichmentParts.join('\n\n---\n\n');
 
   // Insert enrichment before the last message (which is typically the user's question)
   if (messages.length === 0) {
     return [
       {
-        role: "user",
+        role: 'user',
         content: enrichmentMessage,
       },
     ];
@@ -177,7 +177,7 @@ export async function enrichMessagesWithUrlContent(
   return [
     ...allButLast,
     {
-      role: "user",
+      role: 'user',
       content: enrichmentMessage,
     },
     lastMessage,

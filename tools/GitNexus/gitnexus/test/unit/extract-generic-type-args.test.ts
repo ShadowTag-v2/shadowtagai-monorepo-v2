@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { extractGenericTypeArgs } from '../../src/core/ingestion/type-extractors/shared.js';
 import type { SyntaxNode } from '../../src/core/ingestion/utils/ast-helpers.js';
 
@@ -40,9 +40,7 @@ function genericType(
 
   const baseNode = mockNode('type_identifier', { text: baseName });
 
-  let argChildren = typeArgNames.map((name) =>
-    mockNode('type_identifier', { text: name }),
-  );
+  let argChildren = typeArgNames.map((name) => mockNode('type_identifier', { text: name }));
 
   // Kotlin wraps each arg in type_projection > user_type > type_identifier
   if (opts?.wrapInProjection) {

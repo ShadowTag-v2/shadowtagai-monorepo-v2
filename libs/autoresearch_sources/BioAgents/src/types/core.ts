@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const MessageSchema = z.object({
   id: z.string().uuid().optional(),
@@ -41,7 +41,7 @@ export type PlanTask = {
     description: string;
     path?: string;
   }>;
-  type: "LITERATURE" | "ANALYSIS";
+  type: 'LITERATURE' | 'ANALYSIS';
   level?: number;
   start?: string;
   end?: string;
@@ -58,12 +58,12 @@ export interface ConversationStateValues extends StateValues {
     isRunning: boolean;
     rootMessageId: string;
     stateId: string;
-    mode: "queue" | "in-process";
+    mode: 'queue' | 'in-process';
     jobId?: string;
     startedAt: string;
     lastHeartbeatAt: string;
     expiresAt: string;
-    lastResult?: "completed" | "failed" | "stale_recovered";
+    lastResult?: 'completed' | 'failed' | 'stale_recovered';
     lastError?: string;
     endedAt?: string;
   };
@@ -80,7 +80,7 @@ export interface ConversationStateValues extends StateValues {
   discoveries?: Discovery[]; // Structured scientific discoveries (only in deep research mode)
   plan?: Array<PlanTask>; // Actual plan being executed or already executed
   suggestedNextSteps?: Array<PlanTask>; // Suggestions for next iteration (from "next" planning mode)
-  researchMode?: "semi-autonomous" | "fully-autonomous" | "steering"; // Research iteration mode (can change per request)
+  researchMode?: 'semi-autonomous' | 'fully-autonomous' | 'steering'; // Research iteration mode (can change per request)
   uploadedDatasets?: Array<{
     filename: string;
     id: string;
@@ -100,7 +100,7 @@ export interface ConversationStateValues extends StateValues {
     }>;
     initialTasks?: Array<{
       objective: string;
-      type: "LITERATURE" | "ANALYSIS";
+      type: 'LITERATURE' | 'ANALYSIS';
       datasetFilenames: string[]; // Filenames to match against uploadedDatasets
     }>; // Tasks for first iteration (used once, then cleared)
   };
@@ -136,11 +136,11 @@ export type Tool = {
   payment?: {
     required: boolean;
     priceUSD: string;
-    tier: "free" | "basic" | "premium";
+    tier: 'free' | 'basic' | 'premium';
   };
 };
 
-export type LLMProvider = "google" | "openai" | "anthropic" | "openrouter";
+export type LLMProvider = 'google' | 'openai' | 'anthropic' | 'openrouter';
 
 export type Paper = {
   doi: string;
@@ -160,7 +160,7 @@ export type UploadedFile = {
 export type AnalysisArtifact = {
   id: string;
   description: string;
-  type: "FILE" | "FOLDER";
+  type: 'FILE' | 'FOLDER';
   content?: string;
   name: string;
   path?: string;

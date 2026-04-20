@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { FileMetadata } from '@google-cloud/storage';
+import type { FileMetadata } from '@google-cloud/storage';
 import mime from 'mime';
 
 // The maximum size of a file that can be read into memory, in bytes.

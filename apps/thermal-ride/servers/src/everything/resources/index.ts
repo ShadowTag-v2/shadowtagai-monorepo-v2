@@ -1,9 +1,9 @@
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { registerResourceTemplates } from "./templates.js";
-import { registerFileResources } from "./files.js";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-import { readFileSync } from "fs";
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { readFileSync } from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+import { registerFileResources } from './files.js';
+import { registerResourceTemplates } from './templates.js';
 
 /**
  * Register the resources with the MCP server.
@@ -24,13 +24,13 @@ export const registerResources = (server: McpServer) => {
 export function readInstructions(): string {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
-  const filePath = join(__dirname, "..", "docs", "instructions.md");
+  const filePath = join(__dirname, '..', 'docs', 'instructions.md');
   let instructions;
 
   try {
-    instructions = readFileSync(filePath, "utf-8");
+    instructions = readFileSync(filePath, 'utf-8');
   } catch (e) {
-    instructions = "Server instructions not loaded: " + e;
+    instructions = 'Server instructions not loaded: ' + e;
   }
   return instructions;
 }

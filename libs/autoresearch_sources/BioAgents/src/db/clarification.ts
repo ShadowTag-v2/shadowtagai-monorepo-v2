@@ -12,9 +12,9 @@ import type {
   ClarificationSession,
   ClarificationStatus,
   PlanFeedbackEntry,
-} from "../types/clarification";
-import logger from "../utils/logger";
-import { getServiceClient } from "./client";
+} from '../types/clarification';
+import logger from '../utils/logger';
+import { getServiceClient } from './client';
 
 // Use service client to bypass RLS - auth is verified by middleware
 const supabase = getServiceClient();
@@ -30,12 +30,12 @@ export async function createClarificationSession(input: {
   const { userId, initialQuery, questions } = input;
 
   const { data, error } = await supabase
-    .from("clarification_sessions")
+    .from('clarification_sessions')
     .insert({
       user_id: userId,
       initial_query: initialQuery,
       questions: questions,
-      status: "questions_generated" as ClarificationStatus,
+      status: 'questions_generated' as ClarificationStatus,
     })
     .select()
     .single();
@@ -43,7 +43,7 @@ export async function createClarificationSession(input: {
   if (error) {
     logger.error(
       { error, userId },
-      "[createClarificationSession] Error creating clarification session",
+      '[createClarificationSession] Error creating clarification session',
     );
     throw error;
   }
@@ -58,19 +58,19 @@ export async function getClarificationSession(
   sessionId: string,
 ): Promise<ClarificationSession | null> {
   const { data, error } = await supabase
-    .from("clarification_sessions")
-    .select("*")
-    .eq("id", sessionId)
+    .from('clarification_sessions')
+    .select('*')
+    .eq('id', sessionId)
     .single();
 
   if (error) {
-    if (error.code === "PGRST116") {
+    if (error.code === 'PGRST116') {
       // Not found
       return null;
     }
     logger.error(
       { error, sessionId },
-      "[getClarificationSession] Error getting clarification session",
+      '[getClarificationSession] Error getting clarification session',
     );
     throw error;
   }
@@ -86,20 +86,20 @@ export async function getClarificationSessionForUser(
   userId: string,
 ): Promise<ClarificationSession | null> {
   const { data, error } = await supabase
-    .from("clarification_sessions")
-    .select("*")
-    .eq("id", sessionId)
-    .eq("user_id", userId)
+    .from('clarification_sessions')
+    .select('*')
+    .eq('id', sessionId)
+    .eq('user_id', userId)
     .single();
 
   if (error) {
-    if (error.code === "PGRST116") {
+    if (error.code === 'PGRST116') {
       // Not found
       return null;
     }
     logger.error(
       { error, sessionId, userId },
-      "[getClarificationSessionForUser] Error getting clarification session",
+      '[getClarificationSessionForUser] Error getting clarification session',
     );
     throw error;
   }
@@ -115,17 +115,17 @@ export async function submitClarificationAnswers(
   answers: ClarificationAnswer[],
 ): Promise<ClarificationSession> {
   const { data, error } = await supabase
-    .from("clarification_sessions")
+    .from('clarification_sessions')
     .update({
       answers: answers,
-      status: "answers_submitted" as ClarificationStatus,
+      status: 'answers_submitted' as ClarificationStatus,
     })
-    .eq("id", sessionId)
+    .eq('id', sessionId)
     .select()
     .single();
 
   if (error) {
-    logger.error({ error, sessionId }, "[submitClarificationAnswers] Error submitting answers");
+    logger.error({ error, sessionId }, '[submitClarificationAnswers] Error submitting answers');
     throw error;
   }
 
@@ -140,17 +140,17 @@ export async function setClarificationPlan(
   plan: ClarificationPlan,
 ): Promise<ClarificationSession> {
   const { data, error } = await supabase
-    .from("clarification_sessions")
+    .from('clarification_sessions')
     .update({
       plan: plan,
-      status: "plan_generated" as ClarificationStatus,
+      status: 'plan_generated' as ClarificationStatus,
     })
-    .eq("id", sessionId)
+    .eq('id', sessionId)
     .select()
     .single();
 
   if (error) {
-    logger.error({ error, sessionId }, "[setClarificationPlan] Error setting plan");
+    logger.error({ error, sessionId }, '[setClarificationPlan] Error setting plan');
     throw error;
   }
 
@@ -187,22 +187,22 @@ export async function addPlanFeedback(input: {
   const updatedFeedback = [...(session.plan_feedback || []), newFeedbackEntry];
 
   // Determine new status and plan
-  const newStatus: ClarificationStatus = approved ? "plan_approved" : "plan_generated";
+  const newStatus: ClarificationStatus = approved ? 'plan_approved' : 'plan_generated';
   const newPlan = regeneratedPlan || session.plan;
 
   const { data, error } = await supabase
-    .from("clarification_sessions")
+    .from('clarification_sessions')
     .update({
       plan_feedback: updatedFeedback,
       plan: newPlan,
       status: newStatus,
     })
-    .eq("id", sessionId)
+    .eq('id', sessionId)
     .select()
     .single();
 
   if (error) {
-    logger.error({ error, sessionId }, "[addPlanFeedback] Error adding plan feedback");
+    logger.error({ error, sessionId }, '[addPlanFeedback] Error adding plan feedback');
     throw error;
   }
 
@@ -214,16 +214,16 @@ export async function addPlanFeedback(input: {
  */
 export async function approveClarificationPlan(sessionId: string): Promise<ClarificationSession> {
   const { data, error } = await supabase
-    .from("clarification_sessions")
+    .from('clarification_sessions')
     .update({
-      status: "plan_approved" as ClarificationStatus,
+      status: 'plan_approved' as ClarificationStatus,
     })
-    .eq("id", sessionId)
+    .eq('id', sessionId)
     .select()
     .single();
 
   if (error) {
-    logger.error({ error, sessionId }, "[approveClarificationPlan] Error approving plan");
+    logger.error({ error, sessionId }, '[approveClarificationPlan] Error approving plan');
     throw error;
   }
 
@@ -239,18 +239,18 @@ export async function linkSessionToConversation(
   conversationId: string,
 ): Promise<ClarificationSession> {
   const { data, error } = await supabase
-    .from("clarification_sessions")
+    .from('clarification_sessions')
     .update({
       conversation_id: conversationId,
     })
-    .eq("id", sessionId)
+    .eq('id', sessionId)
     .select()
     .single();
 
   if (error) {
     logger.error(
       { error, sessionId, conversationId },
-      "[linkSessionToConversation] Error linking session to conversation",
+      '[linkSessionToConversation] Error linking session to conversation',
     );
     throw error;
   }
@@ -265,16 +265,16 @@ export async function abandonClarificationSession(
   sessionId: string,
 ): Promise<ClarificationSession> {
   const { data, error } = await supabase
-    .from("clarification_sessions")
+    .from('clarification_sessions')
     .update({
-      status: "abandoned" as ClarificationStatus,
+      status: 'abandoned' as ClarificationStatus,
     })
-    .eq("id", sessionId)
+    .eq('id', sessionId)
     .select()
     .single();
 
   if (error) {
-    logger.error({ error, sessionId }, "[abandonClarificationSession] Error abandoning session");
+    logger.error({ error, sessionId }, '[abandonClarificationSession] Error abandoning session');
     throw error;
   }
 
@@ -289,14 +289,14 @@ export async function getUserClarificationSessions(
   limit: number = 10,
 ): Promise<ClarificationSession[]> {
   const { data, error } = await supabase
-    .from("clarification_sessions")
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
+    .from('clarification_sessions')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
     .limit(limit);
 
   if (error) {
-    logger.error({ error, userId }, "[getUserClarificationSessions] Error getting user sessions");
+    logger.error({ error, userId }, '[getUserClarificationSessions] Error getting user sessions');
     throw error;
   }
 

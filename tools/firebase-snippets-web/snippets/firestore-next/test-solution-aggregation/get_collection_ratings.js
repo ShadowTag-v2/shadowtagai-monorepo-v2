@@ -5,8 +5,8 @@
 // 'npm run snippets'.
 
 // [START get_collection_ratings_modular]
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from 'firebase/firestore';
 
-const ratingsRef = collection(db, "restaurants", "arinell-pizza", "ratings");
+const ratingsRef = collection(db, 'restaurants', 'arinell-pizza', 'ratings');
 const ratingsDocs = await getDocs(ratingsRef);
 // [END get_collection_ratings_modular]

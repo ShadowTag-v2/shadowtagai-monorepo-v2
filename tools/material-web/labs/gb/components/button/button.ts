@@ -4,23 +4,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  afterDispatch,
-  setupDispatchHooks,
-} from '@material/web/internal/events/dispatch-hooks.js';
-import {focusRingClasses} from '@material/web/labs/gb/components/focus/focus-ring.js';
-import {
-  rippleClasses,
-  setupRipple,
-} from '@material/web/labs/gb/components/ripple/ripple.js';
-import {PSEUDO_CLASSES} from '@material/web/labs/gb/components/shared/pseudo-classes.js';
+import { afterDispatch, setupDispatchHooks } from '@material/web/internal/events/dispatch-hooks.js';
+import { focusRingClasses } from '@material/web/labs/gb/components/focus/focus-ring.js';
+import { rippleClasses, setupRipple } from '@material/web/labs/gb/components/ripple/ripple.js';
+import { PSEUDO_CLASSES } from '@material/web/labs/gb/components/shared/pseudo-classes.js';
 import {
   AsyncDirective,
-  AttributePart,
+  type AttributePart,
+  type DirectiveParameters,
   directive,
-  DirectiveParameters,
 } from 'lit/async-directive.js';
-import {classMap, type ClassInfo} from 'lit/directives/class-map.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
 
 /** Button color configuration types. */
 export type ButtonColor = 'filled' | 'elevated' | 'tonal' | 'outlined' | 'text';
@@ -124,10 +118,7 @@ export function buttonClasses({
  * @param button The element on which to set up button functionality.
  * @param opts Setup options, supports a cleanup `signal`.
  */
-export function setupButton(
-  button: HTMLElement,
-  opts?: {signal?: AbortSignal},
-): void {
+export function setupButton(button: HTMLElement, opts?: { signal?: AbortSignal }): void {
   setupDispatchHooks(button, 'click');
   setupRipple(button, opts);
   button.addEventListener(
@@ -137,9 +128,7 @@ export function setupButton(
       // event listeners as well as prevent the default action. This is because
       // the underlying element may not actually be `:disabled`, such as an
       // anchor tag or a soft-disabled button.
-      if (
-        button.matches(`.${BUTTON_CLASSES.disabled},[aria-disabled="true"]`)
-      ) {
+      if (button.matches(`.${BUTTON_CLASSES.disabled},[aria-disabled="true"]`)) {
         event.stopImmediatePropagation();
         event.preventDefault();
         return;
@@ -148,9 +137,7 @@ export function setupButton(
       afterDispatch(event, () => {
         const isToggle =
           button.hasAttribute('aria-pressed') ||
-          button.matches(
-            `.${BUTTON_CLASSES.btnSelected},.${BUTTON_CLASSES.btnUnselected}`,
-          );
+          button.matches(`.${BUTTON_CLASSES.btnSelected},.${BUTTON_CLASSES.btnUnselected}`);
         if (event.defaultPrevented || !isToggle) {
           return;
         }
@@ -158,10 +145,8 @@ export function setupButton(
         const isPressed = button.ariaPressed === 'true';
         button.ariaPressed = String(!isPressed);
         // Mimic native browser input and change event behavior.
-        button.dispatchEvent(
-          new InputEvent('input', {bubbles: true, composed: true}),
-        );
-        button.dispatchEvent(new Event('change', {bubbles: true}));
+        button.dispatchEvent(new InputEvent('input', { bubbles: true, composed: true }));
+        button.dispatchEvent(new Event('change', { bubbles: true }));
       });
     },
     opts,
@@ -185,10 +170,7 @@ class ButtonDirective extends AsyncDirective {
     });
   }
 
-  override update(
-    {element}: AttributePart,
-    [state]: DirectiveParameters<this>,
-  ) {
+  override update({ element }: AttributePart, [state]: DirectiveParameters<this>) {
     if (this.isConnected && element !== this.element) {
       this.element = element as HTMLElement;
       this.disconnected();
@@ -205,7 +187,7 @@ class ButtonDirective extends AsyncDirective {
   protected override reconnected() {
     if (this.element) {
       this.cleanup = new AbortController();
-      setupButton(this.element, {signal: this.cleanup.signal});
+      setupButton(this.element, { signal: this.cleanup.signal });
     }
   }
 }

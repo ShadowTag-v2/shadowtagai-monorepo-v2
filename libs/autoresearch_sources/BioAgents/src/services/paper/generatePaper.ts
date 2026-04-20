@@ -11,33 +11,33 @@
  * 7. Upload PDF + .tex to storage
  */
 
-import { randomUUID } from "crypto";
-import * as fs from "fs";
-import * as os from "os";
-import * as path from "path";
-import { getServiceClient } from "../../db/client";
-import { getConversation, getConversationState, getUser } from "../../db/operations";
-import { LLM } from "../../llm/provider";
-import { getStorageProvider } from "../../storage";
-import type { ConversationStateValues, Discovery, PlanTask } from "../../types/core";
-import logger from "../../utils/logger";
-import type { PaperGenerationStage } from "../queue/types";
-import { fetchAndWriteBibtex } from "./bib/fetchBibtex";
-import { extractCitationKeys } from "./bib/extractKeys";
-import type { CitationKeyInfo } from "./bib/extractKeys";
-import { pandocConvert } from "./convert/pandocConvert";
-import { assembleMarkdown } from "./markdown/assembleMarkdown";
-import { validateMarkdown } from "./markdown/validateMarkdown";
+import { randomUUID } from 'crypto';
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+import { getServiceClient } from '../../db/client';
+import { getConversation, getConversationState, getUser } from '../../db/operations';
+import { LLM } from '../../llm/provider';
+import { getStorageProvider } from '../../storage';
+import type { ConversationStateValues, Discovery, PlanTask } from '../../types/core';
+import logger from '../../utils/logger';
+import type { PaperGenerationStage } from '../queue/types';
+import type { CitationKeyInfo } from './bib/extractKeys';
+import { extractCitationKeys } from './bib/extractKeys';
+import type { ExtractedRef } from './bib/extractRefs';
+import { deduplicateRefs, extractReferences } from './bib/extractRefs';
+import { fetchAndWriteBibtex } from './bib/fetchBibtex';
+import { pandocConvert } from './convert/pandocConvert';
+import { assembleMarkdown } from './markdown/assembleMarkdown';
+import { validateMarkdown } from './markdown/validateMarkdown';
 import {
   generateBackgroundPrompt,
   generateDiscoverySectionPrompt,
   generateFrontMatterPrompt,
-} from "./prompts";
-import type { DiscoverySection, FigureInfo, PaperGenerationResult, PaperMetadata } from "./types";
-import { downloadDiscoveryFigures } from "./utils/artifacts";
-import { compileLatexToPDF, extractLastLines } from "./utils/compile";
-import { extractReferences, deduplicateRefs } from "./bib/extractRefs";
-import type { ExtractedRef } from "./bib/extractRefs";
+} from './prompts';
+import type { DiscoverySection, FigureInfo, PaperGenerationResult, PaperMetadata } from './types';
+import { downloadDiscoveryFigures } from './utils/artifacts';
+import { compileLatexToPDF, extractLastLines } from './utils/compile';
 
 // Use service client to bypass RLS - auth is verified before calling this service
 const supabase = getServiceClient();
@@ -61,10 +61,10 @@ export async function generatePaperFromConversation(
   existingPaperId?: string,
   onProgress?: ProgressCallback,
 ): Promise<PaperGenerationResult> {
-  logger.info({ conversationId, userId, existingPaperId }, "paper_generation_started");
+  logger.info({ conversationId, userId, existingPaperId }, 'paper_generation_started');
 
   // --- 1. Validate & authenticate ---
-  await onProgress?.("validating");
+  await onProgress?.('validating');
 
   const conversation = await getConversation(conversationId);
   if (!conversation) {
@@ -94,9 +94,9 @@ export async function generatePaperFromConversation(
   // Generate authors string
   const isRealEmail =
     userEmail &&
-    !userEmail.endsWith("@x402.local") &&
-    !userEmail.endsWith("@temp.local") &&
-    userEmail.includes("@");
+    !userEmail.endsWith('@x402.local') &&
+    !userEmail.endsWith('@temp.local') &&
+    userEmail.includes('@');
 
   const agentName = process.env.AGENT_NAME;
   const agentEmail = process.env.AGENT_EMAIL;
@@ -110,37 +110,37 @@ export async function generatePaperFromConversation(
   } else if (agentAuthor) {
     authors = agentAuthor;
   } else {
-    authors = "Anonymous";
+    authors = 'Anonymous';
   }
 
-  logger.info({ userId, hasEmail: !!userEmail, isRealEmail, authors }, "paper_authors_determined");
+  logger.info({ userId, hasEmail: !!userEmail, isRealEmail, authors }, 'paper_authors_determined');
 
   // --- 2. Setup workspace ---
   const paperId = existingPaperId || randomUUID();
   const pdfPath = `user/${userId}/conversation/${conversationId}/papers/${paperId}/paper.pdf`;
 
   if (!existingPaperId) {
-    const { error: insertError } = await supabase.from("paper").insert({
+    const { error: insertError } = await supabase.from('paper').insert({
       id: paperId,
       user_id: userId,
       conversation_id: conversationId,
       pdf_path: pdfPath,
-      status: "processing",
+      status: 'processing',
     });
 
     if (insertError) {
-      logger.error({ insertError }, "failed_to_create_paper_record");
+      logger.error({ insertError }, 'failed_to_create_paper_record');
       throw new Error(`Failed to create paper record: ${insertError.message}`);
     }
 
-    logger.info({ paperId }, "paper_record_created");
+    logger.info({ paperId }, 'paper_record_created');
   } else {
-    logger.info({ paperId: existingPaperId }, "using_existing_paper_record");
+    logger.info({ paperId: existingPaperId }, 'using_existing_paper_record');
   }
 
-  const workDir = path.join(os.tmpdir(), "paper", paperId);
-  const latexDir = path.join(workDir, "latex");
-  const figuresDir = path.join(latexDir, "figures");
+  const workDir = path.join(os.tmpdir(), 'paper', paperId);
+  const latexDir = path.join(workDir, 'latex');
+  const figuresDir = path.join(latexDir, 'figures');
 
   fs.mkdirSync(workDir, { recursive: true });
   fs.mkdirSync(latexDir, { recursive: true });
@@ -164,7 +164,7 @@ export async function generatePaperFromConversation(
       .filter((task): task is PlanTask => task !== undefined);
 
     // --- 4. Collect all references (DOIs + URLs) from evidence tasks ---
-    await onProgress?.("bibliography");
+    await onProgress?.('bibliography');
 
     const allRefs: ExtractedRef[] = [];
     for (const task of evidenceTasks) {
@@ -177,24 +177,24 @@ export async function generatePaperFromConversation(
     logger.info(
       {
         totalRefs: uniqueRefs.length,
-        doiCount: uniqueRefs.filter((r) => r.type === "doi").length,
-        urlCount: uniqueRefs.filter((r) => r.type !== "doi").length,
+        doiCount: uniqueRefs.filter((r) => r.type === 'doi').length,
+        urlCount: uniqueRefs.filter((r) => r.type !== 'doi').length,
       },
-      "collected_refs_from_evidence",
+      'collected_refs_from_evidence',
     );
 
     // --- 5. Fetch BibTeX → refs.bib ---
-    const bibPath = path.join(latexDir, "refs.bib");
+    const bibPath = path.join(latexDir, 'refs.bib');
     const { entries: bibEntries } = await fetchAndWriteBibtex(uniqueRefs, bibPath);
 
     // --- 6. Extract citation keys from entries ---
     const availableKeys = extractCitationKeys(bibEntries);
     const knownKeySet = new Set(bibEntries.map((e) => e.citekey));
 
-    logger.info({ keyCount: availableKeys.length }, "citation_keys_extracted");
+    logger.info({ keyCount: availableKeys.length }, 'citation_keys_extracted');
 
     // --- 7. LLM Call 1: Front matter ---
-    await onProgress?.("metadata");
+    await onProgress?.('metadata');
 
     const metadata = await generatePaperMetadata(
       state,
@@ -205,7 +205,7 @@ export async function generatePaperFromConversation(
     );
 
     // --- 8. Download figures ---
-    await onProgress?.("figures");
+    await onProgress?.('figures');
 
     const allFigures: Map<number, FigureInfo[]> = new Map();
     for (let i = 0; i < discoveryContexts.length; i++) {
@@ -221,7 +221,7 @@ export async function generatePaperFromConversation(
     }
 
     // --- 9 & 10. LLM Calls: Background + Discovery sections ---
-    await onProgress?.("discoveries");
+    await onProgress?.('discoveries');
 
     const discoverySections = await generateDiscoverySectionsParallel(
       discoveryContexts,
@@ -233,7 +233,7 @@ export async function generatePaperFromConversation(
     );
 
     // --- 11. Assemble Markdown document ---
-    await onProgress?.("latex_assembly");
+    await onProgress?.('latex_assembly');
 
     const mdPath = assembleMarkdown({
       title: metadata.title,
@@ -244,7 +244,7 @@ export async function generatePaperFromConversation(
       discoverySections,
       keyInsights: metadata.keyInsights,
       summaryOfDiscoveries: metadata.summaryOfDiscoveries,
-      bibFilename: "refs.bib",
+      bibFilename: 'refs.bib',
       outputDir: latexDir,
     });
 
@@ -258,7 +258,7 @@ export async function generatePaperFromConversation(
     }
     // Also map DOI URLs
     for (const ref of uniqueRefs) {
-      if (ref.type === "doi") {
+      if (ref.type === 'doi') {
         const matchingEntry = bibEntries.find((e) => e.doi && e.doi === ref.id);
         if (matchingEntry) {
           urlToCitekey.set(ref.url, matchingEntry.citekey);
@@ -268,67 +268,67 @@ export async function generatePaperFromConversation(
       }
     }
 
-    let mdContent = fs.readFileSync(mdPath, "utf-8");
+    let mdContent = fs.readFileSync(mdPath, 'utf-8');
     mdContent = validateMarkdown(mdContent, knownKeySet, urlToCitekey);
-    fs.writeFileSync(mdPath, mdContent, "utf-8");
+    fs.writeFileSync(mdPath, mdContent, 'utf-8');
 
     // --- 13. Pandoc convert → .tex ---
     const texPath = await pandocConvert(mdPath, bibPath, latexDir);
 
-    logger.info({ texPath }, "pandoc_produced_tex");
+    logger.info({ texPath }, 'pandoc_produced_tex');
 
     // --- 14. Compile LaTeX → PDF ---
-    await onProgress?.("compilation");
+    await onProgress?.('compilation');
 
-    logger.info("compiling_latex");
+    logger.info('compiling_latex');
     const compileResult = await compileLatexToPDF(workDir);
 
     if (!compileResult.success || !compileResult.pdfPath) {
       const errorLogs = extractLastLines(compileResult.logs, 200);
-      logger.error({ errorLogs }, "latex_compilation_failed");
+      logger.error({ errorLogs }, 'latex_compilation_failed');
 
       if (!existingPaperId) {
-        await supabase.from("paper").delete().eq("id", paperId);
+        await supabase.from('paper').delete().eq('id', paperId);
       }
       throw new Error(`LaTeX compilation failed:\n${errorLogs}`);
     }
 
     // --- 15. Upload & return ---
-    await onProgress?.("upload");
+    await onProgress?.('upload');
 
     const storage = getStorageProvider();
     if (!storage) {
-      throw new Error("Storage provider not available");
+      throw new Error('Storage provider not available');
     }
 
     const pdfBuffer = fs.readFileSync(compileResult.pdfPath);
-    await storage.upload(pdfPath, pdfBuffer, "application/pdf");
+    await storage.upload(pdfPath, pdfBuffer, 'application/pdf');
 
-    const mainTexContent = fs.readFileSync(texPath, "utf-8");
+    const mainTexContent = fs.readFileSync(texPath, 'utf-8');
     const rawLatexPath = `user/${userId}/conversation/${conversationId}/papers/${paperId}/main.tex`;
-    const rawLatexBuffer = Buffer.from(mainTexContent, "utf-8");
-    await storage.upload(rawLatexPath, rawLatexBuffer, "text/plain");
+    const rawLatexBuffer = Buffer.from(mainTexContent, 'utf-8');
+    await storage.upload(rawLatexPath, rawLatexBuffer, 'text/plain');
 
     const pdfUrl = await storage.getPresignedUrl(pdfPath, 3600);
     const rawLatexUrl = await storage.getPresignedUrl(rawLatexPath, 3600);
 
     // --- Cleanup ---
-    await onProgress?.("cleanup");
+    await onProgress?.('cleanup');
 
     cleanupWorkDir(workDir);
 
     if (!existingPaperId) {
       const { error: updateError } = await supabase
-        .from("paper")
-        .update({ status: "completed" })
-        .eq("id", paperId);
+        .from('paper')
+        .update({ status: 'completed' })
+        .eq('id', paperId);
 
       if (updateError) {
-        logger.warn({ updateError, paperId }, "failed_to_update_paper_status");
+        logger.warn({ updateError, paperId }, 'failed_to_update_paper_status');
       }
     }
 
-    logger.info({ paperId }, "paper_generation_completed");
+    logger.info({ paperId }, 'paper_generation_completed');
 
     return {
       paperId,
@@ -342,7 +342,7 @@ export async function generatePaperFromConversation(
     cleanupWorkDir(workDir);
 
     if (!existingPaperId) {
-      await supabase.from("paper").delete().eq("id", paperId);
+      await supabase.from('paper').delete().eq('id', paperId);
     }
 
     logger.error(
@@ -351,7 +351,7 @@ export async function generatePaperFromConversation(
         stack: error instanceof Error ? error.stack : undefined,
         conversationId,
       },
-      "paper_generation_failed",
+      'paper_generation_failed',
     );
     throw error;
   }
@@ -384,7 +384,7 @@ function indexTasksByJobId(state: ConversationStateValues): Map<string, PlanTask
  */
 function isValidJobId(jobId: string | undefined | null): jobId is string {
   if (!jobId) return false;
-  const invalid = ["N/A", "undefined", "null", ""];
+  const invalid = ['N/A', 'undefined', 'null', ''];
   return !invalid.includes(jobId.trim());
 }
 
@@ -431,7 +431,7 @@ function mapDiscoveriesToTasks(
     if (hasInvalidJobIds) {
       logger.warn(
         { discoveryIndex: index + 1, validJobIds: allJobIds },
-        "discovery_has_invalid_job_ids_including_all_tasks",
+        'discovery_has_invalid_job_ids_including_all_tasks',
       );
       const taskIds = new Set(allowedTasks.map((t) => t.jobId || t.id));
       for (const task of allTasks) {
@@ -442,7 +442,7 @@ function mapDiscoveriesToTasks(
     }
 
     if (allowedTasks.length === 0) {
-      logger.warn({ discoveryIndex: index + 1 }, "discovery_no_valid_tasks_using_all");
+      logger.warn({ discoveryIndex: index + 1 }, 'discovery_no_valid_tasks_using_all');
       return { discovery, index, allowedTasks: allTasks };
     }
 
@@ -460,15 +460,15 @@ async function generatePaperMetadata(
   availableKeys: CitationKeyInfo[],
   paperId?: string,
 ): Promise<PaperMetadata> {
-  logger.info("generating_paper_front_matter");
+  logger.info('generating_paper_front_matter');
 
-  const LLM_PROVIDER = (process.env.PAPER_GEN_LLM_PROVIDER || "openai") as any;
-  const LLM_MODEL = process.env.PAPER_GEN_LLM_MODEL || "gpt-4o";
+  const LLM_PROVIDER = (process.env.PAPER_GEN_LLM_PROVIDER || 'openai') as any;
+  const LLM_MODEL = process.env.PAPER_GEN_LLM_MODEL || 'gpt-4o';
   const apiKey =
     process.env[`${LLM_PROVIDER.toUpperCase()}_API_KEY`] ||
     process.env.ANTHROPIC_API_KEY ||
     process.env.OPENAI_API_KEY ||
-    "";
+    '';
 
   if (!apiKey) {
     throw new Error(`API key not configured for paper generation LLM provider: ${LLM_PROVIDER}`);
@@ -490,7 +490,7 @@ async function generatePaperMetadata(
     frontMatterPrompt,
     LLM_MODEL,
     3000,
-    "front matter",
+    'front matter',
     (parsed) => !!(parsed.title && parsed.abstract && parsed.researchSnapshot),
     paperId,
   );
@@ -501,12 +501,12 @@ async function generatePaperMetadata(
     !frontMatterParsed.researchSnapshot
   ) {
     throw new Error(
-      `Missing fields in front matter response. Keys found: ${Object.keys(frontMatterParsed).join(", ")}`,
+      `Missing fields in front matter response. Keys found: ${Object.keys(frontMatterParsed).join(', ')}`,
     );
   }
 
   // Generate background section (with citations) — retry once on parse failure
-  logger.info("generating_background_section");
+  logger.info('generating_background_section');
   const backgroundPrompt = generateBackgroundPrompt(state, evidenceTasks, availableKeys);
   const backgroundParsed = await callLLMWithRetry<{
     background?: string;
@@ -515,14 +515,14 @@ async function generatePaperMetadata(
     backgroundPrompt,
     LLM_MODEL,
     5000,
-    "background",
+    'background',
     (parsed) => !!parsed.background,
     paperId,
   );
 
   if (!backgroundParsed.background) {
     throw new Error(
-      `Missing background field in response. Keys found: ${Object.keys(backgroundParsed).join(", ")}`,
+      `Missing background field in response. Keys found: ${Object.keys(backgroundParsed).join(', ')}`,
     );
   }
 
@@ -534,9 +534,9 @@ async function generatePaperMetadata(
       const discoveryTitle = d.title || `Discovery ${i + 1}`;
       return `**Discovery ${i + 1} - ${discoveryTitle}:** ${d.claim}`;
     }) || [];
-  const summaryOfDiscoveries = summaryItems.join("\n\n");
+  const summaryOfDiscoveries = summaryItems.join('\n\n');
 
-  logger.info("paper_front_matter_generated");
+  logger.info('paper_front_matter_generated');
 
   return {
     title: frontMatterParsed.title,
@@ -613,7 +613,7 @@ async function generateDiscoverySection(
       totalTaskOutputChars,
       taskOutputStats,
     },
-    "generating_discovery_section",
+    'generating_discovery_section',
   );
 
   let prompt = generateDiscoverySectionPrompt(
@@ -630,16 +630,16 @@ async function generateDiscoverySection(
       promptLength: prompt.length,
       promptLengthKB: Math.round(prompt.length / 1024),
     },
-    "discovery_prompt_generated",
+    'discovery_prompt_generated',
   );
 
-  const LLM_PROVIDER = (process.env.PAPER_GEN_LLM_PROVIDER || "openai") as any;
-  const LLM_MODEL = process.env.PAPER_GEN_LLM_MODEL || "gpt-4o";
+  const LLM_PROVIDER = (process.env.PAPER_GEN_LLM_PROVIDER || 'openai') as any;
+  const LLM_MODEL = process.env.PAPER_GEN_LLM_MODEL || 'gpt-4o';
   const apiKey =
     process.env[`${LLM_PROVIDER.toUpperCase()}_API_KEY`] ||
     process.env.ANTHROPIC_API_KEY ||
     process.env.OPENAI_API_KEY ||
-    "";
+    '';
 
   if (!apiKey) {
     throw new Error(`API key not configured for paper generation LLM provider: ${LLM_PROVIDER}`);
@@ -658,7 +658,7 @@ async function generateDiscoverySection(
       // Build message content with images for vision-capable models
       let messageContent: any;
 
-      if (LLM_PROVIDER === "anthropic" && figures.length > 0) {
+      if (LLM_PROVIDER === 'anthropic' && figures.length > 0) {
         const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
         const MAX_IMAGES_PER_REQUEST = 100;
 
@@ -690,7 +690,7 @@ async function generateDiscoverySection(
                 continue;
               }
 
-              const base64Image = imageBuffer.toString("base64");
+              const base64Image = imageBuffer.toString('base64');
               const mediaType = getImageMediaType(figure.filename);
 
               figureSizes.push({
@@ -701,21 +701,21 @@ async function generateDiscoverySection(
               imageCount++;
 
               contentBlocks.push({
-                type: "image",
+                type: 'image',
                 source: {
-                  type: "base64",
+                  type: 'base64',
                   media_type: mediaType,
                   data: base64Image,
                 },
               });
             }
           } catch (error) {
-            logger.warn({ figure: figure.filename, error }, "failed_to_encode_image");
+            logger.warn({ figure: figure.filename, error }, 'failed_to_encode_image');
           }
         }
 
         if (skippedFigures.length > 0) {
-          logger.warn({ skippedFigures }, "figures_skipped_due_to_limits");
+          logger.warn({ skippedFigures }, 'figures_skipped_due_to_limits');
         }
 
         logger.info(
@@ -726,11 +726,11 @@ async function generateDiscoverySection(
             totalImageSizeKB: Math.round(totalImageSizeBytes / 1024),
             totalImageSizeMB: (totalImageSizeBytes / (1024 * 1024)).toFixed(2),
           },
-          "discovery_figures_encoded_for_llm",
+          'discovery_figures_encoded_for_llm',
         );
 
         contentBlocks.push({
-          type: "text",
+          type: 'text',
           text: prompt,
         });
 
@@ -742,16 +742,16 @@ async function generateDiscoverySection(
       const llmStartTime = Date.now();
 
       const response = await llm.createChatCompletion({
-        messages: [{ role: "user", content: messageContent }],
+        messages: [{ role: 'user', content: messageContent }],
         model: LLM_MODEL,
         temperature: 0.3,
         maxTokens: 8000,
         paperId,
-        usageType: "paper-generation",
+        usageType: 'paper-generation',
       });
 
       const llmDurationMs = Date.now() - llmStartTime;
-      const content = response.content || "";
+      const content = response.content || '';
 
       logger.info(
         {
@@ -761,7 +761,7 @@ async function generateDiscoverySection(
           responseLength: content.length,
           responseLengthKB: Math.round(content.length / 1024),
         },
-        "discovery_llm_call_completed",
+        'discovery_llm_call_completed',
       );
 
       // Parse JSON response
@@ -779,7 +779,7 @@ async function generateDiscoverySection(
 
       if (!parsed.sectionMarkdown) {
         throw new Error(
-          `Missing sectionMarkdown in response. Keys found: ${Object.keys(parsed).join(", ")}`,
+          `Missing sectionMarkdown in response. Keys found: ${Object.keys(parsed).join(', ')}`,
         );
       }
 
@@ -790,7 +790,7 @@ async function generateDiscoverySection(
       };
     } catch (error) {
       attempt++;
-      logger.warn({ attempt, error, discoveryIndex }, "failed_to_generate_discovery_section");
+      logger.warn({ attempt, error, discoveryIndex }, 'failed_to_generate_discovery_section');
 
       if (attempt >= maxAttempts) {
         throw new Error(
@@ -799,11 +799,11 @@ async function generateDiscoverySection(
       }
 
       prompt +=
-        "\n\nThe previous response was invalid. Return ONLY valid JSON with sectionMarkdown and usedDois fields. No markdown code blocks.";
+        '\n\nThe previous response was invalid. Return ONLY valid JSON with sectionMarkdown and usedDois fields. No markdown code blocks.';
     }
   }
 
-  throw new Error("Unreachable");
+  throw new Error('Unreachable');
 }
 
 /**
@@ -823,15 +823,15 @@ async function callLLMWithRetry<T extends Record<string, any>>(
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const response = await llm.createChatCompletion({
-      messages: [{ role: "user", content: currentPrompt }],
+      messages: [{ role: 'user', content: currentPrompt }],
       model,
       temperature: 0.3,
       maxTokens,
       paperId,
-      usageType: "paper-generation",
+      usageType: 'paper-generation',
     });
 
-    const content = response.content || "";
+    const content = response.content || '';
 
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
@@ -844,25 +844,25 @@ async function callLLMWithRetry<T extends Record<string, any>>(
       const parsed = JSON.parse(jsonMatch[0]) as T;
 
       if (!validate(parsed)) {
-        throw new Error(`Invalid ${label} response. Keys found: ${Object.keys(parsed).join(", ")}`);
+        throw new Error(`Invalid ${label} response. Keys found: ${Object.keys(parsed).join(', ')}`);
       }
 
       return parsed;
     } catch (error) {
       logger.warn(
         { attempt, label, error: error instanceof Error ? error.message : String(error) },
-        "llm_json_parse_failed",
+        'llm_json_parse_failed',
       );
 
       if (attempt >= maxAttempts) throw error;
 
       currentPrompt =
         prompt +
-        "\n\nThe previous response was invalid. Return ONLY valid JSON with no markdown code blocks or extra text.";
+        '\n\nThe previous response was invalid. Return ONLY valid JSON with no markdown code blocks or extra text.';
     }
   }
 
-  throw new Error("Unreachable");
+  throw new Error('Unreachable');
 }
 
 /**
@@ -872,10 +872,10 @@ function cleanupWorkDir(workDir: string): void {
   try {
     if (fs.existsSync(workDir)) {
       fs.rmSync(workDir, { recursive: true, force: true });
-      logger.info({ workDir }, "temp_dir_cleaned");
+      logger.info({ workDir }, 'temp_dir_cleaned');
     }
   } catch (error) {
-    logger.warn({ workDir, error }, "failed_to_cleanup_temp_dir");
+    logger.warn({ workDir, error }, 'failed_to_cleanup_temp_dir');
   }
 }
 
@@ -883,18 +883,18 @@ function cleanupWorkDir(workDir: string): void {
  * Get image media type from filename
  */
 function getImageMediaType(filename: string): string {
-  const ext = filename.split(".").pop()?.toLowerCase();
+  const ext = filename.split('.').pop()?.toLowerCase();
   switch (ext) {
-    case "png":
-      return "image/png";
-    case "jpg":
-    case "jpeg":
-      return "image/jpeg";
-    case "gif":
-      return "image/gif";
-    case "webp":
-      return "image/webp";
+    case 'png':
+      return 'image/png';
+    case 'jpg':
+    case 'jpeg':
+      return 'image/jpeg';
+    case 'gif':
+      return 'image/gif';
+    case 'webp':
+      return 'image/webp';
     default:
-      return "image/png";
+      return 'image/png';
   }
 }

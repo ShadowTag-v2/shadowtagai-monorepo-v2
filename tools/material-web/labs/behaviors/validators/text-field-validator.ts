@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Validator} from './validator.js';
+import { Validator } from './validator.js';
 
 /**
  * Constraint validation for a text field.
@@ -112,7 +112,7 @@ export class TextFieldValidator extends Validator<TextFieldState> {
   private inputControl?: HTMLInputElement;
   private textAreaControl?: HTMLTextAreaElement;
 
-  protected override computeValidity({state, renderedControl}: TextFieldState) {
+  protected override computeValidity({ state, renderedControl }: TextFieldState) {
     let inputOrTextArea = renderedControl;
     if (isInputState(state) && !inputOrTextArea) {
       // Get cached <input> or create it.
@@ -121,16 +121,13 @@ export class TextFieldValidator extends Validator<TextFieldState> {
       this.inputControl = inputOrTextArea;
     } else if (!inputOrTextArea) {
       // Get cached <textarea> or create it.
-      inputOrTextArea =
-        this.textAreaControl || document.createElement('textarea');
+      inputOrTextArea = this.textAreaControl || document.createElement('textarea');
       // Cache the <textarea> to re-use it next time.
       this.textAreaControl = inputOrTextArea;
     }
 
     // Set this variable so we can check it for input-specific properties.
-    const input = isInputState(state)
-      ? (inputOrTextArea as HTMLInputElement)
-      : null;
+    const input = isInputState(state) ? (inputOrTextArea as HTMLInputElement) : null;
 
     // Set input's "type" first, since this can change the other properties
     if (input) {
@@ -207,10 +204,7 @@ export class TextFieldValidator extends Validator<TextFieldState> {
     };
   }
 
-  protected override equals(
-    {state: prev}: TextFieldState,
-    {state: next}: TextFieldState,
-  ) {
+  protected override equals({ state: prev }: TextFieldState, { state: next }: TextFieldState) {
     // Check shared input and textarea properties
     const inputOrTextAreaEqual =
       prev.type === next.type &&
@@ -234,19 +228,17 @@ export class TextFieldValidator extends Validator<TextFieldState> {
     );
   }
 
-  protected override copy({state}: TextFieldState): TextFieldState {
+  protected override copy({ state }: TextFieldState): TextFieldState {
     // Don't hold a reference to the rendered control when copying since we
     // don't use it when checking if the state changed.
     return {
-      state: isInputState(state)
-        ? this.copyInput(state)
-        : this.copyTextArea(state),
+      state: isInputState(state) ? this.copyInput(state) : this.copyTextArea(state),
       renderedControl: null,
     };
   }
 
   private copyInput(state: InputState): InputState {
-    const {type, pattern, min, max, step} = state;
+    const { type, pattern, min, max, step } = state;
     return {
       ...this.copySharedState(state),
       type,
@@ -270,7 +262,7 @@ export class TextFieldValidator extends Validator<TextFieldState> {
     minLength,
     maxLength,
   }: SharedInputAndTextAreaState): SharedInputAndTextAreaState {
-    return {value, required, minLength, maxLength};
+    return { value, required, minLength, maxLength };
   }
 }
 

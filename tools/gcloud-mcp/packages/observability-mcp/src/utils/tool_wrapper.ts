@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 
 export const MAX_CHAR_LIMIT = 100000;
 

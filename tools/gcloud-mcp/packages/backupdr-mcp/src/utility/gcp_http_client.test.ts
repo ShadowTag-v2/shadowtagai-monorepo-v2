@@ -16,10 +16,10 @@
 
 /// <reference types="vitest/globals" />
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { GoogleCloudHTTPClient } from './gcp_http_client.js';
 import { GoogleAuth } from 'google-auth-library';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { apiClientFactory } from './api_client_factory.js';
+import { GoogleCloudHTTPClient } from './gcp_http_client.js';
 
 // Mock GoogleAuth
 vi.mock('google-auth-library');

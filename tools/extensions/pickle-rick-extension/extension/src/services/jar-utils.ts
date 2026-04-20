@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import * as fs from 'fs';
-import * as path from 'path';
 import * as os from 'os';
-import { run_cmd, Style, getExtensionRoot } from './pickle-utils.js';
+import * as path from 'path';
+import { getExtensionRoot, run_cmd, Style } from './pickle-utils.js';
 
 function getBranch(repoPath: string): string {
   try {

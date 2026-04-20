@@ -8,8 +8,9 @@
 
 import * as fs from 'fs';
 import * as util from 'util';
+
 function generateMetaFile(inputFilePath: string, outputFilePath: string) {
-  const content = fs.readFileSync(inputFilePath, {encoding: 'utf8'});
+  const content = fs.readFileSync(inputFilePath, { encoding: 'utf8' });
   const metaVars: string[] = [];
 
   // Regex to match variable declarations: $name: value;
@@ -43,10 +44,10 @@ ${metaVars.join('\n')}
   );
 }
 
-const {values, positionals} = util.parseArgs({
+const { values, positionals } = util.parseArgs({
   allowPositionals: true,
   options: {
-    outputs: {type: 'string'},
+    outputs: { type: 'string' },
   },
 });
 
@@ -67,9 +68,7 @@ if (outputs.length === 0) {
   }
 }
 if (inputs.length !== outputs.length) {
-  throw new Error(
-    `Inputs and outputs length mismatch: ${inputs.length} vs ${outputs.length}`,
-  );
+  throw new Error(`Inputs and outputs length mismatch: ${inputs.length} vs ${outputs.length}`);
 }
 
 for (let i = 0; i < inputs.length; i++) {

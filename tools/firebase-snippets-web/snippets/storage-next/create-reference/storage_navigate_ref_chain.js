@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START storage_navigate_ref_chain_modular]
-import { getStorage, ref } from "firebase/storage";
+import { getStorage, ref } from 'firebase/storage';
 
 const storage = getStorage();
 const spaceRef = ref(storage, 'images/space.jpg');

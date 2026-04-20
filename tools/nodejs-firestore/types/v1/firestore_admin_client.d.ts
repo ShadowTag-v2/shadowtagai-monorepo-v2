@@ -25,7 +25,7 @@ import type {
   LocationsClient,
   LocationProtos,
 } from 'google-gax';
-import {Transform} from 'stream';
+import { Transform } from 'stream';
 import * as protos from '../protos/firestore_admin_v1_proto_api';
 /**
  *  The Cloud Firestore Admin API.
@@ -122,10 +122,7 @@ export declare class FirestoreAdminClient {
    *     const client = new FirestoreAdminClient({fallback: true}, gax);
    *     ```
    */
-  constructor(
-    opts?: ClientOptions,
-    gaxInstance?: typeof gax | typeof gax.fallback,
-  );
+  constructor(opts?: ClientOptions, gaxInstance?: typeof gax | typeof gax.fallback);
   /**
    * Initialize the client.
    * Performs asynchronous operations (such as authentication) and prepares the client.
@@ -581,9 +578,7 @@ export declare class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.ICreateBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.ICreateBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -591,9 +586,7 @@ export declare class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.ICreateBackupScheduleRequest,
     callback: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.ICreateBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.ICreateBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -631,9 +624,7 @@ export declare class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.IGetBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IGetBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -641,9 +632,7 @@ export declare class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.IGetBackupScheduleRequest,
     callback: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.IGetBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IGetBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -680,9 +669,7 @@ export declare class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.firestore.admin.v1.IListBackupSchedulesResponse,
-      | protos.google.firestore.admin.v1.IListBackupSchedulesRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IListBackupSchedulesRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -690,9 +677,7 @@ export declare class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.IListBackupSchedulesRequest,
     callback: Callback<
       protos.google.firestore.admin.v1.IListBackupSchedulesResponse,
-      | protos.google.firestore.admin.v1.IListBackupSchedulesRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IListBackupSchedulesRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -729,9 +714,7 @@ export declare class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -739,9 +722,7 @@ export declare class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest,
     callback: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -779,9 +760,7 @@ export declare class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.protobuf.IEmpty,
-      | protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -789,9 +768,7 @@ export declare class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest,
     callback: Callback<
       protos.google.protobuf.IEmpty,
-      | protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -1906,16 +1883,12 @@ export declare class FirestoreAdminClient {
       | gax.CallOptions
       | Callback<
           LocationProtos.google.cloud.location.ILocation,
-          | LocationProtos.google.cloud.location.IGetLocationRequest
-          | null
-          | undefined,
+          LocationProtos.google.cloud.location.IGetLocationRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       LocationProtos.google.cloud.location.ILocation,
-      | LocationProtos.google.cloud.location.IGetLocationRequest
-      | null
-      | undefined,
+      LocationProtos.google.cloud.location.IGetLocationRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<LocationProtos.google.cloud.location.ILocation>;
@@ -2160,11 +2133,7 @@ export declare class FirestoreAdminClient {
    * @param {string} backup_schedule
    * @returns {string} Resource name string.
    */
-  backupSchedulePath(
-    project: string,
-    database: string,
-    backupSchedule: string,
-  ): string;
+  backupSchedulePath(project: string, database: string, backupSchedule: string): string;
   /**
    * Parse the project from BackupSchedule resource.
    *
@@ -2172,9 +2141,7 @@ export declare class FirestoreAdminClient {
    *   A fully-qualified path representing BackupSchedule resource.
    * @returns {string} A string representing the project.
    */
-  matchProjectFromBackupScheduleName(
-    backupScheduleName: string,
-  ): string | number;
+  matchProjectFromBackupScheduleName(backupScheduleName: string): string | number;
   /**
    * Parse the database from BackupSchedule resource.
    *
@@ -2182,9 +2149,7 @@ export declare class FirestoreAdminClient {
    *   A fully-qualified path representing BackupSchedule resource.
    * @returns {string} A string representing the database.
    */
-  matchDatabaseFromBackupScheduleName(
-    backupScheduleName: string,
-  ): string | number;
+  matchDatabaseFromBackupScheduleName(backupScheduleName: string): string | number;
   /**
    * Parse the backup_schedule from BackupSchedule resource.
    *
@@ -2192,9 +2157,7 @@ export declare class FirestoreAdminClient {
    *   A fully-qualified path representing BackupSchedule resource.
    * @returns {string} A string representing the backup_schedule.
    */
-  matchBackupScheduleFromBackupScheduleName(
-    backupScheduleName: string,
-  ): string | number;
+  matchBackupScheduleFromBackupScheduleName(backupScheduleName: string): string | number;
   /**
    * Return a fully-qualified collectionGroup resource name string.
    *
@@ -2203,11 +2166,7 @@ export declare class FirestoreAdminClient {
    * @param {string} collection
    * @returns {string} Resource name string.
    */
-  collectionGroupPath(
-    project: string,
-    database: string,
-    collection: string,
-  ): string;
+  collectionGroupPath(project: string, database: string, collection: string): string;
   /**
    * Parse the project from CollectionGroup resource.
    *
@@ -2215,9 +2174,7 @@ export declare class FirestoreAdminClient {
    *   A fully-qualified path representing CollectionGroup resource.
    * @returns {string} A string representing the project.
    */
-  matchProjectFromCollectionGroupName(
-    collectionGroupName: string,
-  ): string | number;
+  matchProjectFromCollectionGroupName(collectionGroupName: string): string | number;
   /**
    * Parse the database from CollectionGroup resource.
    *
@@ -2225,9 +2182,7 @@ export declare class FirestoreAdminClient {
    *   A fully-qualified path representing CollectionGroup resource.
    * @returns {string} A string representing the database.
    */
-  matchDatabaseFromCollectionGroupName(
-    collectionGroupName: string,
-  ): string | number;
+  matchDatabaseFromCollectionGroupName(collectionGroupName: string): string | number;
   /**
    * Parse the collection from CollectionGroup resource.
    *
@@ -2235,9 +2190,7 @@ export declare class FirestoreAdminClient {
    *   A fully-qualified path representing CollectionGroup resource.
    * @returns {string} A string representing the collection.
    */
-  matchCollectionFromCollectionGroupName(
-    collectionGroupName: string,
-  ): string | number;
+  matchCollectionFromCollectionGroupName(collectionGroupName: string): string | number;
   /**
    * Return a fully-qualified database resource name string.
    *
@@ -2271,12 +2224,7 @@ export declare class FirestoreAdminClient {
    * @param {string} field
    * @returns {string} Resource name string.
    */
-  fieldPath(
-    project: string,
-    database: string,
-    collection: string,
-    field: string,
-  ): string;
+  fieldPath(project: string, database: string, collection: string, field: string): string;
   /**
    * Parse the project from Field resource.
    *
@@ -2318,12 +2266,7 @@ export declare class FirestoreAdminClient {
    * @param {string} index
    * @returns {string} Resource name string.
    */
-  indexPath(
-    project: string,
-    database: string,
-    collection: string,
-    index: string,
-  ): string;
+  indexPath(project: string, database: string, collection: string, index: string): string;
   /**
    * Parse the project from Index resource.
    *

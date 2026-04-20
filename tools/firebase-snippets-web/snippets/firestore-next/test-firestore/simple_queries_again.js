@@ -5,8 +5,9 @@
 // 'npm run snippets'.
 
 // [START simple_queries_again_modular]
-import { collection, query, where } from "firebase/firestore";
-const citiesRef = collection(db, "cities");
+import { collection, query, where } from 'firebase/firestore';
 
-const q = query(citiesRef, where("capital", "==", true));
+const citiesRef = collection(db, 'cities');
+
+const q = query(citiesRef, where('capital', '==', true));
 // [END simple_queries_again_modular]

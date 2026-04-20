@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { test, expect, vi, beforeEach } from 'vitest';
-import { initializeGeminiCLI } from './init-gemini-cli.js';
+import os from 'os';
 import { join } from 'path';
+import { beforeEach, expect, test, vi } from 'vitest';
 import pkg from '../../package.json' with { type: 'json' };
 import { log } from '../utility/logger.js';
-import os from 'os';
+import { initializeGeminiCLI } from './init-gemini-cli.js';
 
 vi.mock('../utility/logger.js', () => ({
   log: {

@@ -1,13 +1,13 @@
 import {
   BoxRenderable,
-  TextRenderable,
-  TextAttributes,
-  CliRenderer,
-  MouseEvent,
+  type CliRenderer,
   createTimeline,
+  type MouseEvent,
   RGBA,
-} from "@opentui/core";
-import { THEME } from "../theme.js";
+  TextAttributes,
+  TextRenderable,
+} from '@opentui/core';
+import { THEME } from '../theme.js';
 
 export interface DialogOption {
   title: string;
@@ -35,28 +35,28 @@ export class Dialog {
 
     // Background overlay
     this.overlay = new BoxRenderable(renderer, {
-      id: "dialog-overlay",
-      width: "100%",
-      height: "100%",
-      position: "absolute",
+      id: 'dialog-overlay',
+      width: '100%',
+      height: '100%',
+      position: 'absolute',
       left: 0,
       top: 0,
       backgroundColor: RGBA.fromInts(0, 0, 0, 175), // Increased opacity by 10% (150 -> 175)
       visible: false,
       opacity: 0,
       zIndex: 20000,
-      justifyContent: "center",
-      alignItems: "center",
+      justifyContent: 'center',
+      alignItems: 'center',
     });
 
     // Dialog panel
     this.dialogPanel = new BoxRenderable(renderer, {
-      id: "dialog-panel",
+      id: 'dialog-panel',
       width: 90,
-      maxWidth: "92%",
-      height: "70%", // Slightly taller for consistent centering
-      maxHeight: "80%",
-      flexDirection: "column",
+      maxWidth: '92%',
+      height: '70%', // Slightly taller for consistent centering
+      maxHeight: '80%',
+      flexDirection: 'column',
       backgroundColor: THEME.bg,
       paddingLeft: 1,
       paddingRight: 1,
@@ -69,28 +69,28 @@ export class Dialog {
     this.root = this.overlay;
 
     this.titleText = new TextRenderable(renderer, {
-      id: "dialog-title",
+      id: 'dialog-title',
       content: title,
       fg: THEME.white,
       attributes: TextAttributes.BOLD,
       marginBottom: 1,
-      width: "100%",
+      width: '100%',
     });
     this.dialogPanel.add(this.titleText);
 
     // Create a main container that will hold content and options
     const mainContainer = new BoxRenderable(renderer, {
-      id: "dialog-main-container",
-      width: "100%",
+      id: 'dialog-main-container',
+      width: '100%',
       flexGrow: 1,
-      flexDirection: "column",
+      flexDirection: 'column',
     });
 
     this.content = new BoxRenderable(renderer, {
-      id: "dialog-content",
-      width: "100%",
+      id: 'dialog-content',
+      width: '100%',
       flexGrow: 1,
-      flexDirection: "column",
+      flexDirection: 'column',
       backgroundColor: THEME.bg,
       paddingLeft: 1,
       paddingRight: 1,
@@ -98,9 +98,9 @@ export class Dialog {
     mainContainer.add(this.content);
 
     this.optionsContainer = new BoxRenderable(renderer, {
-      id: "dialog-options",
-      width: "100%",
-      flexDirection: "column",
+      id: 'dialog-options',
+      width: '100%',
+      flexDirection: 'column',
       marginTop: 1,
       paddingTop: 1,
       flexShrink: 0, // Prevent options from shrinking
@@ -114,31 +114,31 @@ export class Dialog {
 
   private setupCloseButton() {
     const closeButton = new BoxRenderable(this.renderer, {
-      id: "dialog-close",
+      id: 'dialog-close',
       width: 5,
       height: 1,
-      position: "absolute",
+      position: 'absolute',
       right: 1,
       top: 1,
       zIndex: 20001,
-      justifyContent: "center",
-      alignItems: "center",
+      justifyContent: 'center',
+      alignItems: 'center',
     });
 
     const closeText = new TextRenderable(this.renderer, {
-      id: "dialog-close-text",
-      content: "[X]",
+      id: 'dialog-close-text',
+      content: '[X]',
       fg: THEME.dim,
     });
     closeButton.add(closeText);
 
     closeButton.onMouse = (e: MouseEvent) => {
-      if ((e.type as any) === "click" || e.type === "up") {
+      if ((e.type as any) === 'click' || e.type === 'up') {
         this.hide();
-      } else if (e.type === "over") {
+      } else if (e.type === 'over') {
         closeText.fg = THEME.accent;
         this.renderer.requestRender();
-      } else if (e.type === "out") {
+      } else if (e.type === 'out') {
         closeText.fg = THEME.dim;
         this.renderer.requestRender();
       }
@@ -149,14 +149,14 @@ export class Dialog {
 
   public setOptions(options: DialogOption[]) {
     this.options = options;
-    const childIds = this.optionsContainer.getChildren().map(c => c.id);
-    childIds.forEach(id => this.optionsContainer.remove(id));
+    const childIds = this.optionsContainer.getChildren().map((c) => c.id);
+    childIds.forEach((id) => this.optionsContainer.remove(id));
 
     options.forEach((option, index) => {
       const optionRow = new BoxRenderable(this.renderer, {
         id: `dialog-option-${index}`,
-        width: "100%",
-        flexDirection: "row",
+        width: '100%',
+        flexDirection: 'row',
         gap: 1,
         marginBottom: 1,
         paddingLeft: 1,
@@ -174,7 +174,7 @@ export class Dialog {
       // Description in muted color
       const descText = new TextRenderable(this.renderer, {
         id: `dialog-option-desc-${index}`,
-        content: option.description || "",
+        content: option.description || '',
         fg: THEME.dim,
       });
 
@@ -184,13 +184,13 @@ export class Dialog {
       }
 
       optionRow.onMouse = (e: MouseEvent) => {
-        if ((e.type as any) === "click" || e.type === "up") {
+        if ((e.type as any) === 'click' || e.type === 'up') {
           option.onSelect(this);
-        } else if (e.type === "over") {
+        } else if (e.type === 'over') {
           titleText.fg = THEME.accent;
           optionRow.backgroundColor = THEME.darkAccent;
           this.renderer.requestRender();
-        } else if (e.type === "out") {
+        } else if (e.type === 'out') {
           titleText.fg = THEME.accent;
           optionRow.backgroundColor = undefined;
           this.renderer.requestRender();
@@ -213,7 +213,7 @@ export class Dialog {
     createTimeline().add(this.overlay, {
       opacity: 1,
       duration: 300,
-      ease: "outQuad",
+      ease: 'outQuad',
     });
 
     this.onShow?.();
@@ -231,8 +231,8 @@ export class Dialog {
   public clear() {
     this.hide();
     this.options = [];
-    const childIds = this.optionsContainer.getChildren().map(c => c.id);
-    childIds.forEach(id => this.optionsContainer.remove(id));
+    const childIds = this.optionsContainer.getChildren().map((c) => c.id);
+    childIds.forEach((id) => this.optionsContainer.remove(id));
   }
 
   public isOpen(): boolean {

@@ -5,21 +5,21 @@
  * All API keys are stored locally - never sent to any server except the LLM provider.
  */
 
+import { DEFAULT_OLLAMA_BASE_URL, DEFAULT_OPENROUTER_BASE_URL } from '../../config/ui-constants';
 import {
-  LLMSettings,
+  type AnthropicConfig,
+  type AzureOpenAIConfig,
   DEFAULT_LLM_SETTINGS,
-  LLMProvider,
-  OpenAIConfig,
-  AzureOpenAIConfig,
-  GeminiConfig,
-  AnthropicConfig,
-  OllamaConfig,
-  OpenRouterConfig,
-  MiniMaxConfig,
-  GLMConfig,
-  ProviderConfig,
+  type GeminiConfig,
+  type GLMConfig,
+  type LLMProvider,
+  type LLMSettings,
+  type MiniMaxConfig,
+  type OllamaConfig,
+  type OpenAIConfig,
+  type OpenRouterConfig,
+  type ProviderConfig,
 } from './types';
-import { DEFAULT_OPENROUTER_BASE_URL, DEFAULT_OLLAMA_BASE_URL } from '../../config/ui-constants';
 
 const STORAGE_KEY = 'gitnexus-llm-settings';
 
@@ -127,16 +127,24 @@ export const saveSettings = (settings: LLMSettings): void => {
 export const updateProviderSettings = <T extends LLMProvider>(
   provider: T,
   updates: Partial<
-    T extends 'openai' ? Partial<Omit<OpenAIConfig, 'provider'>> :
-    T extends 'azure-openai' ? Partial<Omit<AzureOpenAIConfig, 'provider'>> :
-    T extends 'gemini' ? Partial<Omit<GeminiConfig, 'provider'>> :
-    T extends 'anthropic' ? Partial<Omit<AnthropicConfig, 'provider'>> :
-    T extends 'ollama' ? Partial<Omit<OllamaConfig, 'provider'>> :
-    T extends 'openrouter' ? Partial<Omit<OpenRouterConfig, 'provider'>> :
-    T extends 'minimax' ? Partial<Omit<MiniMaxConfig, 'provider'>> :
-    T extends 'glm' ? Partial<Omit<GLMConfig, 'provider'>> :
-    never
-  >
+    T extends 'openai'
+      ? Partial<Omit<OpenAIConfig, 'provider'>>
+      : T extends 'azure-openai'
+        ? Partial<Omit<AzureOpenAIConfig, 'provider'>>
+        : T extends 'gemini'
+          ? Partial<Omit<GeminiConfig, 'provider'>>
+          : T extends 'anthropic'
+            ? Partial<Omit<AnthropicConfig, 'provider'>>
+            : T extends 'ollama'
+              ? Partial<Omit<OllamaConfig, 'provider'>>
+              : T extends 'openrouter'
+                ? Partial<Omit<OpenRouterConfig, 'provider'>>
+                : T extends 'minimax'
+                  ? Partial<Omit<MiniMaxConfig, 'provider'>>
+                  : T extends 'glm'
+                    ? Partial<Omit<GLMConfig, 'provider'>>
+                    : never
+  >,
 ): LLMSettings => {
   const current = loadSettings();
 
@@ -377,7 +385,12 @@ export const getAvailableModels = (provider: LLMProvider): string[] => {
     case 'gemini':
       return ['gemini-2.0-flash', 'gemini-1.5-pro', 'gemini-1.5-flash', 'gemini-1.0-pro'];
     case 'anthropic':
-      return ['claude-sonnet-4-20250514', 'claude-3-5-sonnet-20241022', 'claude-3-5-haiku-20241022', 'claude-3-opus-20240229'];
+      return [
+        'claude-sonnet-4-20250514',
+        'claude-3-5-sonnet-20241022',
+        'claude-3-5-haiku-20241022',
+        'claude-3-opus-20240229',
+      ];
     case 'ollama':
       return ['llama3.2', 'llama3.1', 'mistral', 'codellama', 'deepseek-coder'];
     case 'minimax':

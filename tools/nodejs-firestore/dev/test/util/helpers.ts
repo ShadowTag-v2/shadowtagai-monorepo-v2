@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
+import type {
   DocumentData,
-  Settings,
-  SetOptions,
   PartialWithFieldValue,
+  SetOptions,
+  Settings,
 } from '@google-cloud/firestore';
 
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as extend from 'extend';
-import {JSONStreamIterator} from 'length-prefixed-json-stream';
-import {Duplex, PassThrough} from 'stream';
+import type { grpc } from 'google-gax';
+import { JSONStreamIterator } from 'length-prefixed-json-stream';
+import { type Duplex, PassThrough } from 'stream';
 import * as through2 from 'through2';
-import {firestore} from '../../protos/firestore_v1_proto_api';
-import type {grpc} from 'google-gax';
+import type { firestore } from '../../protos/firestore_v1_proto_api';
 import * as proto from '../../protos/firestore_v1_proto_api';
+import { Firestore, type QueryDocumentSnapshot } from '../../src';
+import { ClientPool } from '../../src/pool';
+import type { GapicClient } from '../../src/types';
 import * as v1 from '../../src/v1';
-import {Firestore, QueryDocumentSnapshot} from '../../src';
-import {ClientPool} from '../../src/pool';
-import {GapicClient} from '../../src/types';
 
 import api = proto.google.firestore.v1;
 
@@ -65,7 +65,7 @@ export function createInstance(
   firestoreSettings?: Settings,
 ): Promise<Firestore> {
   const initializationOptions = {
-    ...{projectId: PROJECT_ID, sslCreds: SSL_CREDENTIALS!},
+    ...{ projectId: PROJECT_ID, sslCreds: SSL_CREDENTIALS! },
     ...firestoreSettings,
   };
 
@@ -101,11 +101,7 @@ export function verifyInstance(firestore: Firestore): Promise<void> {
         if (opCount === 0) {
           resolve();
         } else {
-          reject(
-            new Error(
-              `Firestore has ${opCount} unfinished operations executing.`,
-            ),
-          );
+          reject(new Error(`Firestore has ${opCount} unfinished operations executing.`));
         }
       }, 10);
     }
@@ -122,7 +118,7 @@ function write(
   const update = Object.assign({}, document);
   delete update.updateTime;
   delete update.createTime;
-  writes.push({update});
+  writes.push({ update });
 
   if (mask) {
     writes[0].updateMask = mask;
@@ -136,11 +132,11 @@ function write(
     writes[0].currentDocument = precondition;
   }
 
-  return {writes};
+  return { writes };
 }
 
 export function updateMask(...fieldPaths: string[]): api.IDocumentMask {
-  return fieldPaths.length === 0 ? {} : {fieldPaths};
+  return fieldPaths.length === 0 ? {} : { fieldPaths };
 }
 
 export function set(opts: {
@@ -148,12 +144,7 @@ export function set(opts: {
   transforms?: api.DocumentTransform.IFieldTransform[];
   mask?: api.IDocumentMask;
 }): api.ICommitRequest {
-  return write(
-    opts.document,
-    opts.mask || null,
-    opts.transforms || null,
-    /* precondition= */ null,
-  );
+  return write(opts.document, opts.mask || null, opts.transforms || null, /* precondition= */ null);
 }
 
 export function update(opts: {
@@ -162,7 +153,7 @@ export function update(opts: {
   mask?: api.IDocumentMask;
   precondition?: api.IPrecondition;
 }): api.ICommitRequest {
-  const precondition = opts.precondition || {exists: true};
+  const precondition = opts.precondition || { exists: true };
   const mask = opts.mask || updateMask();
   return write(opts.document, mask, opts.transforms || null, precondition);
 }
@@ -188,37 +179,30 @@ function value(value: string | api.IValue): api.IValue {
 }
 
 export function retrieve(id: string): api.IBatchGetDocumentsRequest {
-  return {documents: [`${DATABASE_ROOT}/documents/collectionId/${id}`]};
+  return { documents: [`${DATABASE_ROOT}/documents/collectionId/${id}`] };
 }
 
-export function remove(
-  id: string,
-  precondition?: api.IPrecondition,
-): api.ICommitRequest {
-  const writes: api.IWrite[] = [
-    {delete: `${DATABASE_ROOT}/documents/collectionId/${id}`},
-  ];
+export function remove(id: string, precondition?: api.IPrecondition): api.ICommitRequest {
+  const writes: api.IWrite[] = [{ delete: `${DATABASE_ROOT}/documents/collectionId/${id}` }];
 
   if (precondition) {
     writes[0].currentDocument = precondition;
   }
 
-  return {writes};
+  return { writes };
 }
 
-export function found(
-  dataOrId: api.IDocument | string,
-): api.IBatchGetDocumentsResponse {
+export function found(dataOrId: api.IDocument | string): api.IBatchGetDocumentsResponse {
   return {
     found: typeof dataOrId === 'string' ? document(dataOrId) : dataOrId,
-    readTime: {seconds: 5, nanos: 6},
+    readTime: { seconds: 5, nanos: 6 },
   };
 }
 
 export function missing(id: string): api.IBatchGetDocumentsResponse {
   return {
     missing: `${DATABASE_ROOT}/documents/collectionId/${id}`,
-    readTime: {seconds: 5, nanos: 6},
+    readTime: { seconds: 5, nanos: 6 },
   };
 }
 
@@ -231,8 +215,8 @@ export function document(
   const document: api.IDocument = {
     name: `${DATABASE_ROOT}/documents/collectionId/${id}`,
     fields: {},
-    createTime: {seconds: 1, nanos: 2},
-    updateTime: {seconds: 3, nanos: 4},
+    createTime: { seconds: 1, nanos: 2 },
+    updateTime: { seconds: 3, nanos: 4 },
   };
 
   if (field !== undefined) {
@@ -255,10 +239,8 @@ export function document(
   return document;
 }
 
-export function serverTimestamp(
-  field: string,
-): api.DocumentTransform.IFieldTransform {
-  return {fieldPath: field, setToServerValue: 'REQUEST_TIME'};
+export function serverTimestamp(field: string): api.DocumentTransform.IFieldTransform {
+  return { fieldPath: field, setToServerValue: 'REQUEST_TIME' };
 }
 
 export function incrementTransform(
@@ -267,7 +249,7 @@ export function incrementTransform(
 ): api.DocumentTransform.IFieldTransform {
   return {
     fieldPath: field,
-    increment: Number.isInteger(n) ? {integerValue: n} : {doubleValue: n},
+    increment: Number.isInteger(n) ? { integerValue: n } : { doubleValue: n },
   };
 }
 
@@ -280,7 +262,7 @@ export function arrayTransform(
     fieldPath: field,
   };
 
-  fieldTransform[transform] = {values: values.map(val => value(val))};
+  fieldTransform[transform] = { values: values.map((val) => value(val)) };
 
   return fieldTransform;
 }
@@ -309,17 +291,14 @@ export function writeResult(count: number): api.IWriteResponse {
   return response;
 }
 
-export function requestEquals(
-  actual: object | undefined,
-  expected: object,
-): void {
+export function requestEquals(actual: object | undefined, expected: object): void {
   expect(actual).to.not.be.undefined;
 
   // 'extend' removes undefined fields in the request object. The backend
   // ignores these fields, but we need to manually strip them before we compare
   // the expected and the actual request.
   actual = extend(true, {}, actual);
-  const proto = Object.assign({database: DATABASE_ROOT}, expected);
+  const proto = Object.assign({ database: DATABASE_ROOT }, expected);
   expect(actual).to.deep.eq(proto);
 }
 
@@ -343,8 +322,8 @@ export function stream<T>(...elements: Array<T | Error>): Duplex {
 /**
  * Query streams with no results always at least emit a read time.
  */
-export function emptyQueryStream(readTime = {seconds: 5, nanos: 6}) {
-  return stream({readTime});
+export function emptyQueryStream(readTime = { seconds: 5, nanos: 6 }) {
+  return stream({ readTime });
 }
 
 export function streamWithoutEnd<T>(...elements: Array<T | Error>): Duplex {
@@ -382,7 +361,7 @@ export class Post {
 /** Converts Post objects to and from Firestore in tests. */
 export const postConverter = {
   toFirestore(post: Post): DocumentData {
-    return {title: post.title, author: post.author};
+    return { title: post.title, author: post.author };
   },
   fromFirestore(snapshot: QueryDocumentSnapshot): Post {
     const data = snapshot.data();
@@ -391,10 +370,7 @@ export const postConverter = {
 };
 
 export const postConverterMerge = {
-  toFirestore(
-    post: PartialWithFieldValue<Post>,
-    options?: SetOptions,
-  ): DocumentData {
+  toFirestore(post: PartialWithFieldValue<Post>, options?: SetOptions): DocumentData {
     if (options) {
       expect(post).to.not.be.an.instanceOf(Post);
     } else {
@@ -446,7 +422,7 @@ export async function collect<T, TReturn, TNext>(
   const values: Array<T> = [];
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const {done, value} = await iterator.next();
+    const { done, value } = await iterator.next();
     if (done) {
       break;
     }
@@ -462,10 +438,7 @@ export async function collect<T, TReturn, TNext>(
  * @returns `true` if preferRest is enabled via the environment variable `FIRESTORE_PREFER_REST`.
  */
 export function isPreferRest(): boolean {
-  return (
-    process.env.FIRESTORE_PREFER_REST === '1' ||
-    process.env.FIRESTORE_PREFER_REST === 'true'
-  );
+  return process.env.FIRESTORE_PREFER_REST === '1' || process.env.FIRESTORE_PREFER_REST === 'true';
 }
 
 /**

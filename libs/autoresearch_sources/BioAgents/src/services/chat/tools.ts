@@ -1,5 +1,5 @@
-import { createMessage, updateMessage } from "../../db/operations";
-import logger from "../../utils/logger";
+import { createMessage, updateMessage } from '../../db/operations';
+import logger from '../../utils/logger';
 
 export interface MessageCreationParams {
   conversationId: string;
@@ -33,20 +33,20 @@ export async function createMessageRecord(
       conversation_id: conversationId,
       user_id: userId,
       question: message,
-      content: "",
+      content: '',
       source,
       state_id: stateId,
       files: fileMetadata,
     });
 
     if (logger) {
-      logger.info({ messageId: createdMessage.id }, "message_created");
+      logger.info({ messageId: createdMessage.id }, 'message_created');
     }
 
     return { success: true, message: createdMessage };
   } catch (err) {
-    if (logger) logger.error({ err }, "create_message_failed");
-    return { success: false, error: "Failed to create message" };
+    if (logger) logger.error({ err }, 'create_message_failed');
+    return { success: false, error: 'Failed to create message' };
   }
 }
 
@@ -62,6 +62,6 @@ export async function updateMessageResponseTime(
       response_time: responseTime,
     });
   } catch (err) {
-    if (logger) logger.error({ err }, "failed_to_update_response_time");
+    if (logger) logger.error({ err }, 'failed_to_update_response_time');
   }
 }

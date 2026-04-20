@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
 import { execSync } from 'child_process';
-import path from 'path';
-import os from 'os';
 import fs from 'fs';
+import os from 'os';
+import path from 'path';
+import { describe, expect, it } from 'vitest';
 
 describe('--skip-git CLI flag', () => {
   it('Commander maps --skip-git to options.skipGit (not --no-git inversion)', () => {

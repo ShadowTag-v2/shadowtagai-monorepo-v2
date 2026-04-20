@@ -1,9 +1,9 @@
+import { onAuthStateChanged, type User } from 'firebase/auth';
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { onAuthStateChanged, User } from 'firebase/auth';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '@/lib/firebase';
-import NotFound from './NotFound';
 import { handleGetActorById } from '@/lib/MovieService';
+import NotFound from './NotFound';
 
 export default function ActorPage() {
   const navigate = useNavigate();
@@ -46,7 +46,11 @@ export default function ActorPage() {
   return actor ? (
     <div className="container mx-auto p-4 bg-gray-900 min-h-screen text-white">
       <div className="flex flex-col md:flex-row mb-8">
-        <img className="w-full md:w-1/3 object-cover rounded-lg shadow-md" src={actor.imageUrl} alt={actor.name} />
+        <img
+          className="w-full md:w-1/3 object-cover rounded-lg shadow-md"
+          src={actor.imageUrl}
+          alt={actor.name}
+        />
         <div className="md:ml-8 mt-4 md:mt-0 flex-1">
           <h1 className="text-5xl font-bold mb-2">{actor.name}</h1>
         </div>
@@ -64,7 +68,12 @@ export default function ActorPage() {
                   <p className="text-sm text-gray-400">{movie.genre}</p>
                   <div className="flex flex-wrap gap-1 mt-2">
                     {movie.tags?.map((tag, index) => (
-                      <span key={index} className="bg-gray-700 text-white px-2 py-1 rounded-full text-xs">{tag}</span>
+                      <span
+                        key={index}
+                        className="bg-gray-700 text-white px-2 py-1 rounded-full text-xs"
+                      >
+                        {tag}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -86,7 +95,12 @@ export default function ActorPage() {
                   <p className="text-sm text-gray-400">{movie.genre}</p>
                   <div className="flex flex-wrap gap-1 mt-2">
                     {movie.tags?.map((tag, index) => (
-                      <span key={index} className="bg-gray-700 text-white px-2 py-1 rounded-full text-xs">{tag}</span>
+                      <span
+                        key={index}
+                        className="bg-gray-700 text-white px-2 py-1 rounded-full text-xs"
+                      >
+                        {tag}
+                      </span>
                     ))}
                   </div>
                 </div>

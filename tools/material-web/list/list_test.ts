@@ -8,14 +8,14 @@
 import './list.js';
 import './list-item.js';
 
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Environment} from '../testing/environment.js';
-import {createTokenTests} from '../testing/tokens.js';
+import { Environment } from '../testing/environment.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {ListHarness, ListItemHarness} from './harness.js';
-import {MdList} from './list.js';
-import {MdListItem} from './list-item.js';
+import { ListHarness, ListItemHarness } from './harness.js';
+import { MdList } from './list.js';
+import { MdListItem } from './list-item.js';
 
 describe('<md-list>', () => {
   const env = new Environment();
@@ -34,9 +34,7 @@ describe('<md-list>', () => {
 
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -61,9 +59,7 @@ describe('<md-list>', () => {
 
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -88,9 +84,7 @@ describe('<md-list>', () => {
 
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -115,9 +109,7 @@ describe('<md-list>', () => {
 
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -141,9 +133,7 @@ describe('<md-list>', () => {
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -188,9 +178,7 @@ describe('<md-list>', () => {
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -234,9 +222,7 @@ describe('<md-list>', () => {
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -261,9 +247,7 @@ describe('<md-list>', () => {
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -287,9 +271,7 @@ describe('<md-list>', () => {
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -313,9 +295,7 @@ describe('<md-list>', () => {
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -361,9 +341,7 @@ describe('<md-list>', () => {
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -407,9 +385,7 @@ describe('<md-list>', () => {
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -434,9 +410,7 @@ describe('<md-list>', () => {
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -461,9 +435,7 @@ describe('<md-list>', () => {
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -488,9 +460,7 @@ describe('<md-list>', () => {
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -515,9 +485,7 @@ describe('<md-list>', () => {
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -542,9 +510,7 @@ describe('<md-list>', () => {
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
       const listHarness = new ListHarness(listEl);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -567,9 +533,7 @@ describe('<md-list>', () => {
         <md-list-item type="button" tabindex="-1"></md-list-item>
         <md-list-item type="button" tabindex="0"></md-list-item>
       </md-list>`);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -595,9 +559,7 @@ describe('<md-list>', () => {
         <md-list-item type="button"></md-list-item>
         <md-list-item type="button"></md-list-item>
       </md-list>`);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -613,9 +575,7 @@ describe('<md-list>', () => {
         <md-list-item type="button"></md-list-item>
         <md-list-item type="button"></md-list-item>
       </md-list>`);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -631,9 +591,7 @@ describe('<md-list>', () => {
         <md-list-item type="button" tabindex="-1"></md-list-item>
         <md-list-item type="button" tabindex="-1"></md-list-item>
       </md-list>`);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -649,9 +607,7 @@ describe('<md-list>', () => {
         <md-list-item type="button" tabindex="2"></md-list-item>
         <md-list-item type="button" tabindex="1"></md-list-item>
       </md-list>`);
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -668,9 +624,7 @@ describe('<md-list>', () => {
         <md-list-item type="button" tabindex="-1"></md-list-item>
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -695,9 +649,7 @@ describe('<md-list>', () => {
         <md-list-item type="button" tabindex="0"></md-list-item>
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -734,9 +686,7 @@ describe('<md-list>', () => {
         <md-list-item type="button"></md-list-item>
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -780,9 +730,7 @@ describe('<md-list>', () => {
         <md-list-item type="button" tabindex="-1"></md-list-item>
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -807,9 +755,7 @@ describe('<md-list>', () => {
         <md-list-item type="button"></md-list-item>
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -847,9 +793,7 @@ describe('<md-list>', () => {
         <md-list-item type="button" tabindex="0"></md-list-item>
       </md-list>`);
       const listEl = root.querySelector('md-list')!;
-      const [first, second, third] = Array.from(
-        root.querySelectorAll('md-list-item'),
-      );
+      const [first, second, third] = Array.from(root.querySelectorAll('md-list-item'));
 
       await env.waitForStability();
 
@@ -892,9 +836,7 @@ describe('<md-list>', () => {
       const root = env.render(html`<md-list></md-list>`);
       const listEl = root.querySelector('md-list')!;
       await env.waitForStability();
-      const internals = (
-        listEl as unknown as {internals: {role: string | null}}
-      ).internals;
+      const internals = (listEl as unknown as { internals: { role: string | null } }).internals;
 
       expect(internals.role).toEqual('list');
     });
@@ -943,9 +885,7 @@ describe('<md-list-item>', () => {
 
     await env.waitForStability();
 
-    const internalRoot = listItem.renderRoot.querySelector(
-      '#item',
-    ) as HTMLElement;
+    const internalRoot = listItem.renderRoot.querySelector('#item') as HTMLElement;
 
     expect(internalRoot.tabIndex).toBe(0);
 
@@ -990,33 +930,25 @@ describe('<md-list-item> link', () => {
   });
 
   it('setting href renders an anchor tag', async () => {
-    const root = env.render(
-      html`<md-list-item href="https://google.com"></md-list-item>`,
-    );
+    const root = env.render(html`<md-list-item href="https://google.com"></md-list-item>`);
 
     const listItem = root.querySelector('md-list-item')!;
 
     await env.waitForStability();
 
-    const internalRoot = listItem.renderRoot.querySelector(
-      '#item',
-    ) as HTMLElement;
+    const internalRoot = listItem.renderRoot.querySelector('#item') as HTMLElement;
 
     expect(internalRoot.tagName).toBe('A');
   });
 
   it('setting target without href renders nothing', async () => {
-    const root = env.render(
-      html`<md-list-item target="_blank"></md-list-item>`,
-    );
+    const root = env.render(html`<md-list-item target="_blank"></md-list-item>`);
 
     const listItem = root.querySelector('md-list-item')!;
 
     await env.waitForStability();
 
-    const internalRoot = listItem.renderRoot.querySelector(
-      '#item',
-    ) as HTMLElement;
+    const internalRoot = listItem.renderRoot.querySelector('#item') as HTMLElement;
 
     expect(internalRoot.hasAttribute('target')).toBe(false);
   });

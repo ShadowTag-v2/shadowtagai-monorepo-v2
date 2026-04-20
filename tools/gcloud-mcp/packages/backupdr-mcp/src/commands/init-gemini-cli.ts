@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { mkdir, readFile, writeFile, access } from 'fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { access, mkdir, readFile, writeFile } from 'fs/promises';
+import os from 'os';
 import { join } from 'path';
 import pkg from '../../package.json' with { type: 'json' };
 import { log } from '../utility/logger.js';
-import os from 'os';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 export const initializeGeminiCLI = async (
   local = false,

@@ -8,18 +8,28 @@
  * - isWriteQuery wrapper
  * - isTestFilePath patterns
  */
-import { describe, it, expect } from 'vitest';
-import {
-  VALID_RELATION_TYPES,
-  VALID_NODE_LABELS,
-  isTestFilePath,
-} from '../../src/mcp/local/local-backend.js';
+import { describe, expect, it } from 'vitest';
 import { CYPHER_WRITE_RE, isWriteQuery } from '../../src/mcp/core/lbug-adapter.js';
+import {
+  isTestFilePath,
+  VALID_NODE_LABELS,
+  VALID_RELATION_TYPES,
+} from '../../src/mcp/local/local-backend.js';
 
 // ─── Write-operation blocking (CYPHER_WRITE_RE) ──────────────────────
 
 describe('CYPHER_WRITE_RE', () => {
-  const writeKeywords = ['CREATE', 'DELETE', 'SET', 'MERGE', 'REMOVE', 'DROP', 'ALTER', 'COPY', 'DETACH'];
+  const writeKeywords = [
+    'CREATE',
+    'DELETE',
+    'SET',
+    'MERGE',
+    'REMOVE',
+    'DROP',
+    'ALTER',
+    'COPY',
+    'DETACH',
+  ];
 
   for (const keyword of writeKeywords) {
     it(`matches "${keyword}" (uppercase)`, () => {
@@ -97,7 +107,21 @@ describe('isWriteQuery', () => {
 describe('VALID_RELATION_TYPES', () => {
   it('contains all expected relation types', () => {
     expect(VALID_RELATION_TYPES.size).toBe(13);
-    for (const t of ['CALLS', 'IMPORTS', 'EXTENDS', 'IMPLEMENTS', 'HAS_METHOD', 'HAS_PROPERTY', 'OVERRIDES', 'ACCESSES', 'HANDLES_ROUTE', 'FETCHES', 'HANDLES_TOOL', 'ENTRY_POINT_OF', 'WRAPS']) {
+    for (const t of [
+      'CALLS',
+      'IMPORTS',
+      'EXTENDS',
+      'IMPLEMENTS',
+      'HAS_METHOD',
+      'HAS_PROPERTY',
+      'OVERRIDES',
+      'ACCESSES',
+      'HANDLES_ROUTE',
+      'FETCHES',
+      'HANDLES_TOOL',
+      'ENTRY_POINT_OF',
+      'WRAPS',
+    ]) {
       expect(VALID_RELATION_TYPES.has(t)).toBe(true);
     }
   });
@@ -114,7 +138,15 @@ describe('VALID_RELATION_TYPES', () => {
 
 describe('VALID_NODE_LABELS', () => {
   it('contains core node types', () => {
-    for (const label of ['File', 'Folder', 'Function', 'Class', 'Interface', 'Method', 'CodeElement']) {
+    for (const label of [
+      'File',
+      'Folder',
+      'Function',
+      'Class',
+      'Interface',
+      'Method',
+      'CodeElement',
+    ]) {
       expect(VALID_NODE_LABELS.has(label)).toBe(true);
     }
   });

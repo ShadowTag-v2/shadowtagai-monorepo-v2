@@ -1,10 +1,9 @@
-import { Composition } from "remotion";
-import { Sequence } from "remotion";
-import { fade } from "@remotion/transitions/fade";
-import { slide } from "@remotion/transitions/slide";
-import { TransitionSeries } from "@remotion/transitions";
-import { ScreenSlide } from "./ScreenSlide";
-import screensManifest from "../screens.json";
+import { TransitionSeries } from '@remotion/transitions';
+import { fade } from '@remotion/transitions/fade';
+import { slide } from '@remotion/transitions/slide';
+import { Composition, Sequence } from 'remotion';
+import screensManifest from '../screens.json';
+import { ScreenSlide } from './ScreenSlide';
 
 // Calculate total duration in frames
 const calculateDuration = () => {
@@ -22,9 +21,9 @@ export const WalkthroughComposition: React.FC = () => {
 
         // Select transition based on screen config
         const transition =
-          screen.transitionType === "slide"
+          screen.transitionType === 'slide'
             ? slide()
-            : screen.transitionType === "zoom"
+            : screen.transitionType === 'zoom'
               ? fade() // Can customize with zoom effect
               : fade();
 

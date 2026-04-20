@@ -16,9 +16,9 @@
  * Pattern follows detectCrossProgamContracts() in pipeline.ts.
  */
 
-import { parseJcl, type JclParseResults } from './jcl-parser.js';
-import type { KnowledgeGraph } from '../../graph/types.js';
 import { generateId } from '../../../lib/utils.js';
+import type { KnowledgeGraph } from '../../graph/types.js';
+import { type JclParseResults, parseJcl } from './jcl-parser.js';
 
 export interface JclProcessResult {
   jobCount: number;
@@ -47,7 +47,7 @@ export function processJclFiles(
 
   // Collect all Module names for step -> program linking
   const moduleNames = new Map<string, string>(); // uppercase name -> node id
-  graph.forEachNode(node => {
+  graph.forEachNode((node) => {
     if (node.label === 'Module') {
       const nodeName = node.properties.name;
       if (typeof nodeName === 'string') {

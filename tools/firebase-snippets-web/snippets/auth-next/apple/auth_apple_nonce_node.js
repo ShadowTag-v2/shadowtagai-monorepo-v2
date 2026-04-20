@@ -5,14 +5,14 @@
 // 'npm run snippets'.
 
 // [START auth_apple_nonce_node_modular]
-const crypto = require("crypto");
-const string_decoder = require("string_decoder");
+const crypto = require('crypto');
+const string_decoder = require('string_decoder');
 
 // Generate a new random string for each sign-in
 const generateNonce = (length) => {
-  const decoder = new string_decoder.StringDecoder("ascii");
+  const decoder = new string_decoder.StringDecoder('ascii');
   const buf = Buffer.alloc(length);
-  let nonce = "";
+  let nonce = '';
   while (nonce.length < length) {
     crypto.randomFillSync(buf);
     nonce = decoder.write(buf);
@@ -23,6 +23,5 @@ const generateNonce = (length) => {
 const unhashedNonce = generateNonce(10);
 
 // SHA256-hashed nonce in hex
-const hashedNonceHex = crypto.createHash('sha256')
-  .update(unhashedNonce).digest().toString('hex');
+const hashedNonceHex = crypto.createHash('sha256').update(unhashedNonce).digest().toString('hex');
 // [END auth_apple_nonce_node_modular]

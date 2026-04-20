@@ -15,8 +15,8 @@
  */
 
 import { Component, Input } from '@angular/core';
-import { Restaurant } from '../../types/restaurant';
-import { Router } from '@angular/router';
+import type { Router } from '@angular/router';
+import type { Restaurant } from '../../types/restaurant';
 
 @Component({
   selector: 'app-restaurant-card',
@@ -28,7 +28,7 @@ export class RestaurantCardComponent {
     if (this.restuarant) {
       this.router.navigate(['/restaurant', this.restuarant.id]);
     }
-  }
+  };
   @Input() restuarant: Restaurant | null = null;
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 }
