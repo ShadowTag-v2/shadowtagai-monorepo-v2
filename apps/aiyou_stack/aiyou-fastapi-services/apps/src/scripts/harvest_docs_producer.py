@@ -55,7 +55,7 @@ def produce_documents(producer: KafkaProducer, topic: str, batch_size: int, limi
         }
 
         try:
-            future = producer.send(topic, doc)
+            producer.send(topic, doc)
             # Block for result to catch immediate errors (optional, reduces throughput but safer for critical data)
             # future.get(timeout=10)
 

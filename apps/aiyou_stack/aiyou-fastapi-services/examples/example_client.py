@@ -134,15 +134,15 @@ async def main():
 
     # 2. Create a scheduled job
     print("\n2. Creating scheduled job...")
-    job = await create_scheduled_job(workflow["id"])
+    await create_scheduled_job(workflow["id"])
 
     # 3. Create an event trigger
     print("\n3. Creating event trigger...")
-    trigger = await create_event_trigger(workflow["id"])
+    await create_event_trigger(workflow["id"])
 
     # 4. Execute workflow manually
     print("\n4. Executing workflow manually...")
-    execution = await execute_workflow(workflow["id"])
+    await execute_workflow(workflow["id"])
 
     # Wait a bit for execution to complete
     await asyncio.sleep(2)

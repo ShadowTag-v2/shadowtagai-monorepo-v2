@@ -281,7 +281,7 @@ async def _async_single_round_vote(state: GovernanceState) -> GovernanceState:
 
     try:
         assessment_result = state.assessment.assessment_result
-        intent = assessment_result.get("purpose", {}).get("intent", "Unknown action")
+        assessment_result.get("purpose", {}).get("intent", "Unknown action")
         risk_level = assessment_result.get("risk_level", "MEDIUM")
         brakes = assessment_result.get("brakes", [])
 

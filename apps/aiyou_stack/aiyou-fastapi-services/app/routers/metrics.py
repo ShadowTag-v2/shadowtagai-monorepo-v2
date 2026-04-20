@@ -131,10 +131,9 @@ async def get_cost_metrics(period: str = "daily"):
 
     if period == "monthly":
         total = settings.INGESTION_MONTHLY_BUDGET * 0.996  # 99.6% utilization
-        daily_avg = total / 30
+        total / 30
     else:
         total = 2.57
-        daily_avg = total
 
     return CostMetrics(
         period=period,

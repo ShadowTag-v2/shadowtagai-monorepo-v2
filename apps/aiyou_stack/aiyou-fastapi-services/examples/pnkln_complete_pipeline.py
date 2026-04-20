@@ -36,12 +36,12 @@ class PNKLNPipelineDemo:
 
         # Step 2: Run ingestion
         print("Step 2: Running Gemini Ingestion Layer...")
-        ingestion_metrics = await self.run_ingestion()
+        await self.run_ingestion()
         print()
 
         # Step 3: Validate ingested items
         print("Step 3: Running Judge #6 validation...")
-        validation_metrics = await self.run_validation()
+        await self.run_validation()
         print()
 
         # Step 4: Check quality gates

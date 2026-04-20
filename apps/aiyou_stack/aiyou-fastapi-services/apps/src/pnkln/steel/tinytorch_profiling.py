@@ -87,7 +87,6 @@ class Profiler:
 
             elif "Sequential" in model_name or hasattr(model, "layers"):
                 # Sequential model or model with layers: sum FLOPs of all layers
-                current_shape = input_shape
                 if hasattr(model, "layers"):
                     for _layer in model.layers:
                         # Recursive call would be ideal, but for now simple sum if possible

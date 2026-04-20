@@ -40,7 +40,7 @@ class SourceCoverageAnalyzer:
     def get_tier_distribution(self) -> dict[str, float]:
         """Simulates Tier Classification (T1/T2/T3)."""
         # Mock logic based on source types
-        total = sum(self.sources.values()) or 1
+        sum(self.sources.values()) or 1
         return {
             "Tier 1 (High Value)": 25.0,  # Target >= 20%
             "Tier 2 (Medium Value)": 45.0,

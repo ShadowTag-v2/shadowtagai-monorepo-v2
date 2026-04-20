@@ -558,7 +558,7 @@ class RSTASquadron:
         security_votes = await self._execute_security_voting(task, recon_results, security_task)
 
         # Phase 5: COMMAND - consensus decision (ATP 2-3)
-        command_agents = self.get_section_agents("command")
+        self.get_section_agents("command")
         final_decision = self._reach_consensus(security_votes, threshold)
 
         return {

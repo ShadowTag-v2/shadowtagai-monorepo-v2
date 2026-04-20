@@ -1,5 +1,6 @@
 import json
-from ..utils.db import sqlite_conn, pg_conn
+
+from ..utils.db import pg_conn, sqlite_conn
 
 
 def sync_doc_registry(sqlite_db: str, pg_dsn: str, repo_id: str):

@@ -168,7 +168,6 @@ def run_demo():
     gpt = GPT(vocab_size=vocab_size, embed_dim=16, num_layers=1, num_heads=2)
 
     # Tokenize input
-    text = "hello"
     # Need to map chars to indices < vocab_size
     # For demo, just use random valid tokens
     tokens_tensor = Tensor(np.random.randint(0, vocab_size, (1, 5)))

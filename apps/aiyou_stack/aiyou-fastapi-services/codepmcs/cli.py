@@ -71,7 +71,7 @@ def parse_args():
     full_parser.add_argument("path", nargs="?", default=".", help="Repository path")
 
     # Status command
-    status_parser = subparsers.add_parser("status", help="Check CodePMCS status")
+    subparsers.add_parser("status", help="Check CodePMCS status")
 
     return parser.parse_args()
 

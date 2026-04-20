@@ -90,7 +90,7 @@ async def simulate_ar_session():
     print("   Update interval: 5 seconds")
     print()
 
-    session_start = datetime.utcnow()
+    datetime.utcnow()
     update_count = 0
     total_updates = 60  # 5 minutes * 12 updates/minute
 
@@ -123,7 +123,7 @@ async def simulate_ar_session():
             eye_closure = 0.0  # Eyes open
 
         # Process blink
-        blink_reading = sensor_fusion.blink_detector.process_frame(eye_closure, datetime.utcnow())
+        sensor_fusion.blink_detector.process_frame(eye_closure, datetime.utcnow())
 
         # Pupil diameter: Decreases with mental fatigue
         baseline_pupil = 3.5  # mm

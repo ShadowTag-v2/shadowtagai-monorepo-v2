@@ -282,8 +282,8 @@ class ThreadScraperAgent:
     async def _parse_thread(self, tweet: dict) -> ScrapedThread | None:
         """Parse a tweet into a thread structure."""
         # Check if this is a thread (has multiple replies from same author)
-        conversation_id = tweet.get("conversation_id")
-        author_id = tweet.get("author_id")
+        tweet.get("conversation_id")
+        tweet.get("author_id")
 
         # For now, treat single tweets as single-post threads
         # Full thread retrieval would require additional API calls

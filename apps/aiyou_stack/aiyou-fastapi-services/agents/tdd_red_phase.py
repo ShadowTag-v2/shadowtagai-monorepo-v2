@@ -281,7 +281,6 @@ class Test{self._to_class_name(spec)}:
         func_source = "\n".join(source_lines[node.lineno - 1 : node.end_lineno])
         has_arrange = "# Arrange" in func_source or "# Setup" in func_source
         has_act = "# Act" in func_source
-        has_assert = "# Assert" in func_source or "assert" in func_source
 
         if not (has_arrange or has_act):
             violations.append(

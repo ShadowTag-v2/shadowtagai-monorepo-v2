@@ -146,7 +146,7 @@ def swarm_vote_mmlu(question: str, choices: list[str]) -> tuple[int, float, str]
     else:
         method = "heuristic"
 
-    latency_ms = (time.perf_counter() - start_time) * 1000
+    (time.perf_counter() - start_time) * 1000
 
     return winner, confidence, method
 

@@ -13,18 +13,18 @@ import logging
 
 try:
     from apps.counselconduit.api.email_templates import (
-        WELCOME_EMAIL,
-        PAYMENT_SUCCESS_EMAIL,
         PAYMENT_FAILED_EMAIL,
+        PAYMENT_SUCCESS_EMAIL,
+        WELCOME_EMAIL,
     )
     from apps.counselconduit.api.workspace_alerts import (
         alert_payment_failure as alert_payment_failed,
     )
 except ImportError:
     from api.email_templates import (  # type: ignore[no-redef]
-        WELCOME_EMAIL,
-        PAYMENT_SUCCESS_EMAIL,
         PAYMENT_FAILED_EMAIL,
+        PAYMENT_SUCCESS_EMAIL,
+        WELCOME_EMAIL,
     )
     from api.workspace_alerts import (  # type: ignore[no-redef]
         alert_payment_failure as alert_payment_failed,

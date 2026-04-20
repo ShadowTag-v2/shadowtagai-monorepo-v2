@@ -43,7 +43,7 @@ class TestLatencyBenchmarks:
     def test_kernel_chain_latency(self, orchestrator):
         """Test kernel chain latency (target: <35ms)."""
         start = time.time()
-        result = orchestrator.execute(
+        orchestrator.execute(
             "Analyze decision context for ATP 5-19 violations: $2M unauthorized purchase",
         )
         latency_ms = (time.time() - start) * 1000
@@ -54,7 +54,7 @@ class TestLatencyBenchmarks:
     def test_debate_latency(self, orchestrator):
         """Test multi-agent debate latency."""
         start = time.time()
-        result = orchestrator.execute(
+        orchestrator.execute(
             "Have 3 experts debate: Should we prioritize speed or accuracy?",
         )
         latency_ms = (time.time() - start) * 1000
@@ -72,7 +72,7 @@ class TestLatencyBenchmarks:
         for i in range(num_runs):
             start = time.time()
             try:
-                result = orchestrator.execute(f"Analyze decision #{i + 1} for compliance")
+                orchestrator.execute(f"Analyze decision #{i + 1} for compliance")
                 latency_ms = (time.time() - start) * 1000
                 latencies.append(latency_ms)
                 print(f"  Run {i + 1}: {latency_ms:.2f}ms")
@@ -143,7 +143,7 @@ class TestAccuracyBenchmarks:
         passed = 0
         for case in test_cases:
             try:
-                result = orchestrator.execute(case)
+                orchestrator.execute(case)
                 passed += 1
                 print(f"  '{case[:40]}...': ✅ PASS")
             except Exception as e:
@@ -184,7 +184,7 @@ class TestSelfEvolution:
         ]
 
         for i, prompt in enumerate(prompts, 1):
-            result = orchestrator.execute(f'Evaluate quality of: "{prompt}"')
+            orchestrator.execute(f'Evaluate quality of: "{prompt}"')
             print(f"  Iteration {i}: {prompt}")
 
         print("\nContinuous Improvement: ✅ (prompts get progressively better)")

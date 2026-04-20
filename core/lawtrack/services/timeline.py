@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
 import datetime
+
+from fastapi import APIRouter
+from pydantic import BaseModel
 
 router = APIRouter()
 

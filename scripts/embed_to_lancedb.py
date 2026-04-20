@@ -19,7 +19,6 @@ import pyarrow as pa
 from dotenv import load_dotenv
 from google import genai
 
-
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")

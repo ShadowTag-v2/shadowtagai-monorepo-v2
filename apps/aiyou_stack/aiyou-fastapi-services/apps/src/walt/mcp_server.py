@@ -546,7 +546,7 @@ class ToolExecutor:
     async def _run_workflow(self, page: Page, args: dict) -> tuple[bool, Any, str | None]:
         """Run agentic workflow (placeholder - requires LLM integration)"""
         workflow_description = args["workflow_description"]
-        max_steps = args.get("max_steps", 10)
+        args.get("max_steps", 10)
 
         # TODO: Integrate with LLM for decision-making
         # For now, return mock result

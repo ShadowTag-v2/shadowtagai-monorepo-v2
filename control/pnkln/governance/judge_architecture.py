@@ -26,7 +26,6 @@ from enum import Enum
 from typing import Any
 
 import numpy as np
-
 from src.kosmos.doctrine import (
     BattleDrillRouter,
     DrillTrigger,

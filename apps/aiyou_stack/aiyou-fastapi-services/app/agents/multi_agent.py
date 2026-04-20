@@ -169,7 +169,6 @@ class MultiAgentSystem:
         # Update agent ratings based on argument quality
         for participant in participants:
             # Simplified - would use actual argument quality scoring
-            score = 0.6  # Neutral baseline
             self.agents[participant.agent_id]["tasks_completed"] += 1
 
         return {

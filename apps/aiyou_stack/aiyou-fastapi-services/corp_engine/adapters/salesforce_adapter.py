@@ -621,10 +621,6 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
 
         url = f"{self._instance_url}{endpoint}"
 
-        headers = {
-            "Authorization": f"Bearer {self._access_token}",
-            "Content-Type": content_type,
-        }
 
         # Placeholder - actual HTTP call would go here
         logger.debug(f"Salesforce API: {method} {url}")
@@ -635,11 +631,6 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
         """Request OAuth2 access token"""
         token_url = f"{self.sf_config.instance_url}/services/oauth2/token"
 
-        payload = {
-            "grant_type": "client_credentials",
-            "client_id": self.sf_config.consumer_key,
-            "client_secret": consumer_secret,
-        }
 
         # Placeholder - actual HTTP call would go here
         logger.debug(f"Requesting token from {token_url}")

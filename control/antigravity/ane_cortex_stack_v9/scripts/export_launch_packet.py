@@ -1,10 +1,11 @@
-from service.app.config import load_settings
+import json
+from pathlib import Path
+
 from service.app.adapters.authority_state import AuthorityState
 from service.app.adapters.memory_atoms import search_atoms
 from service.app.adapters.monorepo_truth import load_monorepo_truth
+from service.app.config import load_settings
 from service.app.utils.db import pg_conn
-from pathlib import Path
-import json
 
 s = load_settings()
 authority = AuthorityState(s.authority_state_path).read()

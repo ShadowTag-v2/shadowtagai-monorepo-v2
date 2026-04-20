@@ -206,7 +206,7 @@ class MaxPool2dBackward(Function):
                         h_start = i * self.stride
                         w_start = j * self.stride
                         patch = padded_input[b, c, h_start : h_start + k_h, w_start : w_start + k_w]
-                        max_val = np.max(patch)
+                        np.max(patch)
                         # Find argmax. If multiple, only first gets grad
                         idx = np.unravel_index(np.argmax(patch), patch.shape)
                         grad_input_padded[b, c, h_start + idx[0], w_start + idx[1]] += grad_output[

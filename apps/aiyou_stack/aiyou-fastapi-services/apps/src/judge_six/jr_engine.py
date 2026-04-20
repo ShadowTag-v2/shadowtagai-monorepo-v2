@@ -24,7 +24,7 @@ class JREngine:
 
     def validate(self, action: Action, policy_id: str | None = None) -> JRVerdict:
         """Run full JR validation pipeline"""
-        start_time = time.time()
+        time.time()
 
         # 1. Validate Purpose
         purpose = self.purpose_validator.validate(action)

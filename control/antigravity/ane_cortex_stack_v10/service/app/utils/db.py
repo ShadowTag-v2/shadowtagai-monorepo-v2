@@ -1,6 +1,7 @@
 import sqlite3
-import psycopg2
 from contextlib import contextmanager
+
+import psycopg2
 
 
 @contextmanager

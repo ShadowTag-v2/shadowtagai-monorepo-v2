@@ -1,8 +1,10 @@
 from __future__ import annotations
+
 from typing import Any
-from ..config import load_settings
+
 from ..adapters.json_memory import JsonMemoryStore
 from ..adapters.memory_atoms import insert_atom
+from ..config import load_settings
 
 RULE_HINTS = {
     "formatter": ("rule", "standards", "formatter"),

@@ -20,7 +20,7 @@ async def stripe_webhook(request: Request):
     """Listens for Stripe 'checkout.session.completed' events.
     Triggers NFT Minting upon success.
     """
-    payload = await request.body()
+    await request.body()
     sig_header = request.headers.get("stripe-signature")
 
     # Verify Signature (Mock logic)

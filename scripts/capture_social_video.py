@@ -5,6 +5,7 @@
 # ///
 import asyncio
 import os
+
 from playwright.async_api import async_playwright
 
 VARIANTS = {0: "control", 1: "var_A", 2: "var_B"}

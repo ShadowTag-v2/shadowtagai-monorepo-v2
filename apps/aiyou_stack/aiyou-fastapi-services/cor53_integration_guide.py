@@ -629,7 +629,7 @@ def main():
 
     # Initialize COR.53
     print("\nInitializing COR.53 pipeline...")
-    cor = initialize_cor53()
+    initialize_cor53()
 
     # Run examples
     example_healthcare_gtm()
