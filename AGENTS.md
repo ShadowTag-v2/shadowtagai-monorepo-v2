@@ -123,7 +123,7 @@ unless the user explicitly directs a control plane change:
 ## Hardened state
 
 - v9.7 canonicalized: 2026-04-20
-- Commit: `c220ff2234`
+- Commit: `58d3972e63`
 - CI Python: 3.13 (all 3 workflows)
 - venv primary: CPython 3.14.3
 - Firestore: 2 databases (`(default)`, `shadowtag-engine`) — CANONICAL database layer (Supabase evaluated and rejected; see Firestore-vs-Supabase verdict below)

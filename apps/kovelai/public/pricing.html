@@ -7,7 +7,6 @@
   <meta name="description" content="KovelAI pricing plans for law firms. From solo practitioners to enterprise."/>
   <link rel="canonical" href="https://kovelai.com/pricing"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/shared/components.css"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: #0a0d14; color: #e4e8f7; min-height: 100vh; }
@@ -111,7 +110,7 @@
   <script src="https://js.stripe.com/v3/"></script>
   <script>
     // Stripe publishable key (frontend-safe)
-    const stripe = Stripe('pklive_51Syh9JEHnWpykeMix1QOpvIGqGYYMEXJhC0CHdCKQ1OAnQM6aSoE0Qk9e4axIf07r7b4ZaEQNU0izDO6F9ACZlNV00vF4W4mS2');
+    const stripe = Stripe('pk_live_51Syh9JEHnWpykeMix1QOpvIGqGYYMEXJhC0CHdCKQ1OAnQM6aSoE0Qk9e4axIf07r7b4ZaEQNU0izDO6F9ACZlNV00vF4W4mS2');
     const API_BASE = window.location.hostname === 'localhost'
       ? 'http://localhost:8080'
       : 'https://counselconduit-api.run.app';
