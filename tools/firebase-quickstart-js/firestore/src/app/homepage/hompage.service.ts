@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
-    Firestore,
-    QueryConstraint,
-    collection,
-    collectionData,
-    query
-} from "@angular/fire/firestore";
-import { Observable } from "rxjs";
-import { Restaurant } from "types/restaurant";
-
+  collection,
+  collectionData,
+  type Firestore,
+  type QueryConstraint,
+  query,
+} from '@angular/fire/firestore';
+import type { Observable } from 'rxjs';
+import type { Restaurant } from 'types/restaurant';
 
 /**
  * The `HomepageFirestore` service class provides functionality that allows
@@ -48,30 +47,29 @@ import { Restaurant } from "types/restaurant";
 
 @Injectable()
 export abstract class HomepageFirestore {
-    abstract getRestaurantCollectionData(): Observable<Restaurant[]>;
+  abstract getRestaurantCollectionData(): Observable<Restaurant[]>;
 
-    abstract getRestaurantsGivenConstraints(constraints: QueryConstraint[]):
-        Observable<Restaurant[]>;
+  abstract getRestaurantsGivenConstraints(constraints: QueryConstraint[]): Observable<Restaurant[]>;
 }
-
 
 @Injectable()
 export class DefaultHomepageFirestore extends HomepageFirestore {
-    store: Firestore;
-    constructor(store: Firestore) {
-        super();
-        this.store = store;
-    }
-    override getRestaurantCollectionData(): Observable<Restaurant[]> {
-        const restaurantsCollectionRef = collection(this.store, 'restaurants');
-        return collectionData(restaurantsCollectionRef,
-            { idField: 'id' }) as Observable<Restaurant[]>;
-    }
+  store: Firestore;
+  constructor(store: Firestore) {
+    super();
+    this.store = store;
+  }
+  override getRestaurantCollectionData(): Observable<Restaurant[]> {
+    const restaurantsCollectionRef = collection(this.store, 'restaurants');
+    return collectionData(restaurantsCollectionRef, { idField: 'id' }) as Observable<Restaurant[]>;
+  }
 
-    override getRestaurantsGivenConstraints(
-        constraints: QueryConstraint[]): Observable<Restaurant[]> {
-        const restaurantsCollectionRef = collection(this.store, 'restaurants');
-        return collectionData(query(restaurantsCollectionRef, ...constraints),
-            { idField: 'id' }) as Observable<Restaurant[]>;
-    }
+  override getRestaurantsGivenConstraints(
+    constraints: QueryConstraint[],
+  ): Observable<Restaurant[]> {
+    const restaurantsCollectionRef = collection(this.store, 'restaurants');
+    return collectionData(query(restaurantsCollectionRef, ...constraints), {
+      idField: 'id',
+    }) as Observable<Restaurant[]>;
+  }
 }

@@ -1,28 +1,34 @@
-import Parser from 'tree-sitter';
-import JavaScript from 'tree-sitter-javascript';
-import TypeScript from 'tree-sitter-typescript';
-import Python from 'tree-sitter-python';
-import Java from 'tree-sitter-java';
-import C from 'tree-sitter-c';
-import CPP from 'tree-sitter-cpp';
-import CSharp from 'tree-sitter-c-sharp';
-import Go from 'tree-sitter-go';
-import Rust from 'tree-sitter-rust';
-import PHP from 'tree-sitter-php';
-import Ruby from 'tree-sitter-ruby';
 import { createRequire } from 'node:module';
+import Parser from 'tree-sitter';
+import C from 'tree-sitter-c';
+import CSharp from 'tree-sitter-c-sharp';
+import CPP from 'tree-sitter-cpp';
+import Go from 'tree-sitter-go';
+import Java from 'tree-sitter-java';
+import JavaScript from 'tree-sitter-javascript';
+import PHP from 'tree-sitter-php';
+import Python from 'tree-sitter-python';
+import Ruby from 'tree-sitter-ruby';
+import Rust from 'tree-sitter-rust';
+import TypeScript from 'tree-sitter-typescript';
 import { SupportedLanguages } from '../../config/supported-languages.js';
 
 // tree-sitter-swift and tree-sitter-dart are optionalDependencies — may not be installed
 const _require = createRequire(import.meta.url);
 let Swift: any = null;
-try { Swift = _require('tree-sitter-swift'); } catch {}
+try {
+  Swift = _require('tree-sitter-swift');
+} catch {}
 let Dart: any = null;
-try { Dart = _require('tree-sitter-dart'); } catch {}
+try {
+  Dart = _require('tree-sitter-dart');
+} catch {}
 
 // tree-sitter-kotlin is an optionalDependency — may not be installed
 let Kotlin: any = null;
-try { Kotlin = _require('tree-sitter-kotlin'); } catch {}
+try {
+  Kotlin = _require('tree-sitter-kotlin');
+} catch {}
 
 let parser: Parser | null = null;
 
@@ -53,11 +59,15 @@ export const loadParser = async (): Promise<Parser> => {
   return parser;
 };
 
-export const loadLanguage = async (language: SupportedLanguages, filePath?: string): Promise<void> => {
+export const loadLanguage = async (
+  language: SupportedLanguages,
+  filePath?: string,
+): Promise<void> => {
   if (!parser) await loadParser();
-  const key = language === SupportedLanguages.TypeScript && filePath?.endsWith('.tsx')
-    ? `${language}:tsx`
-    : language;
+  const key =
+    language === SupportedLanguages.TypeScript && filePath?.endsWith('.tsx')
+      ? `${language}:tsx`
+      : language;
 
   const lang = languageMap[key];
   if (!lang) {

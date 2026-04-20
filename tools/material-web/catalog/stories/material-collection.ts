@@ -6,12 +6,12 @@
 
 /* Slimmed down version of material-collection */
 
-import {css, CSSResult, html, TemplateResult} from 'lit';
+import { type CSSResult, css, html, type TemplateResult } from 'lit';
 
-import {Knob, KnobUi, KnobValues} from './knobs.js';
-import {LitCollection, LitStoryInit} from './story.js';
+import type { Knob, KnobUi, KnobValues } from './knobs.js';
+import type { LitCollection, LitStoryInit } from './story.js';
 
-export {LitCollection as MaterialCollection} from './story.js';
+export { LitCollection as MaterialCollection } from './story.js';
 
 /**
  * Material styling for labels.
@@ -53,7 +53,7 @@ export function title(): KnobUi<void> {
  */
 export type KnobTypesToKnobs<
   // tslint:disable-next-line:no-any No way to represent this type clearly.
-  T extends {[name: string]: any},
+  T extends { [name: string]: any },
   Names extends Extract<keyof T, string> = Extract<keyof T, string>,
   // tslint:disable-next-line:no-any We need to "map" the union type to knobs.
 > = ReadonlyArray<Names extends any ? Knob<T[Names], Names> : never>;
@@ -83,7 +83,7 @@ export type KnobTypesToKnobs<
  * ```
  */
 // tslint:disable-next-line:no-any No way to represent this type clearly.
-export interface MaterialStoryInit<T extends {[name: string]: any}> {
+export interface MaterialStoryInit<T extends { [name: string]: any }> {
   name: string;
   render: (knobs: T) => TemplateResult | Promise<TemplateResult>;
   styles?: CSSResult | CSSResult[];
@@ -93,7 +93,7 @@ export interface MaterialStoryInit<T extends {[name: string]: any}> {
  * Converts an array of `MaterialStoryInit`s to a `LitStoryInit`.
  */
 // tslint:disable-next-line:no-any No way to represent this type clearly.
-export function materialInitsToStoryInits<T extends {[name: string]: any}>(
+export function materialInitsToStoryInits<T extends { [name: string]: any }>(
   inits: Array<MaterialStoryInit<T>>,
 ): Array<LitStoryInit<KnobValues<KnobTypesToKnobs<T>>>> {
   return inits.map((init) => {

@@ -15,9 +15,6 @@
       "session_01SUmR9isujbtwZWBWTTXE2M",
       "session_01R3jPRVciPQHsuwH5oPwmtG"
     ],
-    "INGESTION_PIPELINE": [
-      "session_011CUvsuEDuwJEAt6VWsLTpG",
-      "session_011CUvtHaAb221SdJX3iaGE4"
-    ]
+    "INGESTION_PIPELINE": ["session_011CUvsuEDuwJEAt6VWsLTpG", "session_011CUvtHaAb221SdJX3iaGE4"]
   }
 }

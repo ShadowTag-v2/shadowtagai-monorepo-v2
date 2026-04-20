@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START in_filter_modular]
-import { query, where } from "firebase/firestore";
+import { query, where } from 'firebase/firestore';
 
 const q = query(citiesRef, where('country', 'in', ['USA', 'Japan']));
 // [END in_filter_modular]

@@ -1,12 +1,12 @@
-import { sql } from "drizzle-orm";
+import { sql } from 'drizzle-orm';
 
-import { testDb, disconnect } from "./src/db/db.js";
+import { disconnect, testDb } from './src/db/db.js';
 
 async function resetTestDatabase() {
   const db = testDb;
 
   if (!db) {
-    console.log("No database connection available, skipping database reset");
+    console.log('No database connection available, skipping database reset');
     return;
   }
 
@@ -24,9 +24,9 @@ async function resetTestDatabase() {
       await db.execute(sql`TRUNCATE TABLE "${sql.raw(tableName)}" CASCADE;`);
     }
 
-    console.log(`[${process.env.DATABASE_URL}] TRUNCATE ${tableNames.join(", ")}`);
+    console.log(`[${process.env.DATABASE_URL}] TRUNCATE ${tableNames.join(', ')}`);
   } catch (error) {
-    console.error("Error resetting database:", error);
+    console.error('Error resetting database:', error);
     throw error;
   }
 }

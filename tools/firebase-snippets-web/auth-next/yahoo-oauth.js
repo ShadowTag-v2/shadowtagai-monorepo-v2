@@ -5,7 +5,7 @@
 
 function yahooProvider() {
   // [START auth_yahoo_provider_create]
-  const { OAuthProvider } = require("firebase/auth");
+  const { OAuthProvider } = require('firebase/auth');
 
   const provider = new OAuthProvider('yahoo.com');
   // [END auth_yahoo_provider_create]
@@ -23,14 +23,14 @@ function yahooProvider() {
     // Prompt user to re-authenticate to Yahoo.
     prompt: 'login',
     // Localize to French.
-    language: 'fr'
+    language: 'fr',
   });
   // [END auth_yahoo_provider_params]
 }
 
 function yahooSignInPopup(provider) {
   // [START auth_yahoo_signin_popup]
-  const { getAuth, signInWithPopup, OAuthProvider } = require("firebase/auth");
+  const { getAuth, signInWithPopup, OAuthProvider } = require('firebase/auth');
 
   const auth = getAuth();
   signInWithPopup(auth, provider)
@@ -51,7 +51,7 @@ function yahooSignInPopup(provider) {
 
 function yahooSignInRedirect(provider) {
   // [START auth_yahoo_signin_redirect]
-  const { getAuth, signInWithRedirect } = require("firebase/auth");
+  const { getAuth, signInWithRedirect } = require('firebase/auth');
 
   const auth = getAuth();
   signInWithRedirect(auth, provider);
@@ -60,7 +60,7 @@ function yahooSignInRedirect(provider) {
 
 function yahooSigninRedirectResult() {
   // [START auth_yahoo_signin_redirect_result]
-  const { getAuth, getRedirectResult, OAuthProvider } = require("firebase/auth");
+  const { getAuth, getRedirectResult, OAuthProvider } = require('firebase/auth');
 
   const auth = getAuth();
   getRedirectResult(auth)
@@ -81,46 +81,46 @@ function yahooSigninRedirectResult() {
 
 function yahooLinkPopup() {
   // [START auth_yahoo_link_popup]
-  const { getAuth, linkWithPopup, OAuthProvider } = require("firebase/auth");
+  const { getAuth, linkWithPopup, OAuthProvider } = require('firebase/auth');
 
   const provider = new OAuthProvider('yahoo.com');
   const auth = getAuth();
   linkWithPopup(auth.currentUser, provider)
-      .then((result) => {
-        // Yahoo credential is linked to the current user.
-        // IdP data available in result.additionalUserInfo.profile.
+    .then((result) => {
+      // Yahoo credential is linked to the current user.
+      // IdP data available in result.additionalUserInfo.profile.
 
-        // Get the OAuth access token and ID Token
-        const credential = OAuthProvider.credentialFromResult(result);
-        const accessToken = credential.accessToken;
-        const idToken = credential.idToken;
-      })
-      .catch((error) => {
-        // Handle error.
-      });
+      // Get the OAuth access token and ID Token
+      const credential = OAuthProvider.credentialFromResult(result);
+      const accessToken = credential.accessToken;
+      const idToken = credential.idToken;
+    })
+    .catch((error) => {
+      // Handle error.
+    });
   // [END auth_yahoo_link_popup]
 }
 
 function yahooReauthPopup() {
   // [START auth_yahoo_reauth_popup]
-  const { getAuth, reauthenticateWithPopup, OAuthProvider } = require("firebase/auth");
+  const { getAuth, reauthenticateWithPopup, OAuthProvider } = require('firebase/auth');
 
   const provider = new OAuthProvider('yahoo.com');
   const auth = getAuth();
   reauthenticateWithPopup(auth.currentUser, provider)
-      .then((result) => {
-        // User is re-authenticated with fresh tokens minted and
-        // should be able to perform sensitive operations like account
-        // deletion and email or password update.
-        // IdP data available in result.additionalUserInfo.profile.
+    .then((result) => {
+      // User is re-authenticated with fresh tokens minted and
+      // should be able to perform sensitive operations like account
+      // deletion and email or password update.
+      // IdP data available in result.additionalUserInfo.profile.
 
-        // Get the OAuth access token and ID Token
-        const credential = OAuthProvider.credentialFromResult(result);
-        const accessToken = credential.accessToken;
-        const idToken = credential.idToken;
-      })
-      .catch((error) => {
-        // Handle error.
-      });
+      // Get the OAuth access token and ID Token
+      const credential = OAuthProvider.credentialFromResult(result);
+      const accessToken = credential.accessToken;
+      const idToken = credential.idToken;
+    })
+    .catch((error) => {
+      // Handle error.
+    });
   // [END auth_yahoo_reauth_popup]
 }

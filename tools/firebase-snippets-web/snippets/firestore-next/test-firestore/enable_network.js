@@ -5,11 +5,11 @@
 // 'npm run snippets'.
 
 // [START enable_network_modular]
-import { enableNetwork } from "firebase/firestore";
+import { enableNetwork } from 'firebase/firestore';
 
 await enableNetwork(db);
 // Do online actions
 // [START_EXCLUDE]
-console.log("Network enabled!");
+console.log('Network enabled!');
 // [END_EXCLUDE]
 // [END enable_network_modular]

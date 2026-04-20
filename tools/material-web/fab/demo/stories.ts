@@ -8,12 +8,9 @@ import '@material/web/fab/branded-fab.js';
 import '@material/web/fab/fab.js';
 import '@material/web/icon/icon.js';
 
-import {FabSize} from '@material/web/fab/fab.js';
-import {
-  labelStyles,
-  MaterialStoryInit,
-} from './material-collection.js';
-import {css, html, nothing} from 'lit';
+import type { FabSize } from '@material/web/fab/fab.js';
+import { css, html, nothing } from 'lit';
+import { labelStyles, type MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for fab stories. */
 export interface StoryKnobs {
@@ -39,7 +36,7 @@ const styles = css`
 const standard: MaterialStoryInit<StoryKnobs> = {
   name: 'Floating action buttons',
   styles: [labelStyles, styles],
-  render({icon, label, lowered, size}) {
+  render({ icon, label, lowered, size }) {
     return html`
       <div class="row">
         <label>

@@ -5,7 +5,13 @@
 // 'npm run snippets'.
 
 // [START auth_google_callback_modular]
-import { getAuth, onAuthStateChanged, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  onAuthStateChanged,
+  signInWithCredential,
+} from 'firebase/auth';
+
 const auth = getAuth();
 
 function onSignIn(googleUser) {
@@ -16,8 +22,7 @@ function onSignIn(googleUser) {
     // Check if we are already signed-in Firebase with the correct user.
     if (!isUserEqual(googleUser, firebaseUser)) {
       // Build Firebase credential with the Google ID token.
-      const credential = GoogleAuthProvider.credential(
-          googleUser.getAuthResponse().id_token);
+      const credential = GoogleAuthProvider.credential(googleUser.getAuthResponse().id_token);
 
       // Sign in with credential from the Google user.
       signInWithCredential(auth, credential).catch((error) => {

@@ -1,13 +1,13 @@
-import { Elysia } from "elysia";
-import { LLM } from "../llm/provider";
-import { authResolver } from "../middleware/authResolver";
-import { rateLimitMiddleware } from "../middleware/rateLimiter";
-import type { AuthContext } from "../types/auth";
-import { ensureUserAndConversation, setupConversationData } from "../services/chat/setup";
-import { createMessageRecord, updateMessageResponseTime } from "../services/chat/tools";
-import type { ConversationState, PlanTask, State } from "../types/core";
-import logger from "../utils/logger";
-import { generateUUID } from "../utils/uuid";
+import { Elysia } from 'elysia';
+import { LLM } from '../llm/provider';
+import { authResolver } from '../middleware/authResolver';
+import { rateLimitMiddleware } from '../middleware/rateLimiter';
+import { ensureUserAndConversation, setupConversationData } from '../services/chat/setup';
+import { createMessageRecord, updateMessageResponseTime } from '../services/chat/tools';
+import type { AuthContext } from '../types/auth';
+import type { ConversationState, PlanTask, State } from '../types/core';
+import logger from '../utils/logger';
+import { generateUUID } from '../utils/uuid';
 
 /**
  * Response type for synchronous chat (in-process mode)
@@ -25,7 +25,7 @@ type ChatQueuedResponse = {
   messageId: string;
   conversationId: string;
   userId: string;
-  status: "queued";
+  status: 'queued';
   pollUrl: string;
 };
 
@@ -40,27 +40,27 @@ type ChatQueuedResponse = {
 export const chatRoute = new Elysia()
   // Job status endpoint - outside auth guard since job ID is unguessable UUID
   // This allows polling without auth, useful for webhooks and external monitoring
-  .get("/api/chat/status/:jobId", chatStatusHandler)
+  .get('/api/chat/status/:jobId', chatStatusHandler)
   .guard(
     {
       beforeHandle: [
         authResolver({
           required: true, // Always require auth - no environment-based bypass
         }),
-        rateLimitMiddleware("chat"),
+        rateLimitMiddleware('chat'),
       ],
     },
     (app) =>
       app
-        .get("/api/chat", async () => {
+        .get('/api/chat', async () => {
           return {
-            message: "This endpoint requires POST method.",
-            apiDocumentation: "https://your-docs-url.com/api",
+            message: 'This endpoint requires POST method.',
+            apiDocumentation: 'https://your-docs-url.com/api',
           };
         })
-        .post("/api/chat", chatHandler)
+        .post('/api/chat', chatHandler)
         // Manual retry endpoint for failed jobs
-        .post("/api/chat/retry/:jobId", chatRetryHandler),
+        .post('/api/chat/retry/:jobId', chatRetryHandler),
   );
 
 /**
@@ -70,39 +70,39 @@ async function chatStatusHandler(ctx: any) {
   const { params, set } = ctx;
   const { jobId } = params;
 
-  const { isJobQueueEnabled } = await import("../services/queue/connection");
+  const { isJobQueueEnabled } = await import('../services/queue/connection');
 
   if (!isJobQueueEnabled()) {
     set.status = 404;
     return {
-      error: "Job queue not enabled",
-      message: "Status endpoint only available when USE_JOB_QUEUE=true",
+      error: 'Job queue not enabled',
+      message: 'Status endpoint only available when USE_JOB_QUEUE=true',
     };
   }
 
-  const { getChatQueue } = await import("../services/queue/queues");
+  const { getChatQueue } = await import('../services/queue/queues');
   const chatQueue = getChatQueue();
 
   const job = await chatQueue.getJob(jobId);
 
   if (!job) {
     set.status = 404;
-    return { status: "not_found" };
+    return { status: 'not_found' };
   }
 
   const state = await job.getState();
   const progress = job.progress as { stage?: string; percent?: number };
 
-  if (state === "completed") {
+  if (state === 'completed') {
     return {
-      status: "completed",
+      status: 'completed',
       result: job.returnvalue,
     };
   }
 
-  if (state === "failed") {
+  if (state === 'failed') {
     return {
-      status: "failed",
+      status: 'failed',
       error: job.failedReason,
       attemptsMade: job.attemptsMade,
     };
@@ -130,24 +130,24 @@ async function chatRetryHandler(ctx: any) {
     set.status = 401;
     return {
       ok: false,
-      error: "Authentication required",
-      message: "Please provide a valid JWT or API key",
+      error: 'Authentication required',
+      message: 'Please provide a valid JWT or API key',
     };
   }
 
   const userId = auth.userId;
 
-  const { isJobQueueEnabled } = await import("../services/queue/connection");
+  const { isJobQueueEnabled } = await import('../services/queue/connection');
 
   if (!isJobQueueEnabled()) {
     set.status = 404;
     return {
-      error: "Job queue not enabled",
-      message: "Retry endpoint only available when USE_JOB_QUEUE=true",
+      error: 'Job queue not enabled',
+      message: 'Retry endpoint only available when USE_JOB_QUEUE=true',
     };
   }
 
-  const { getChatQueue } = await import("../services/queue/queues");
+  const { getChatQueue } = await import('../services/queue/queues');
   const chatQueue = getChatQueue();
 
   const job = await chatQueue.getJob(jobId);
@@ -156,7 +156,7 @@ async function chatRetryHandler(ctx: any) {
     set.status = 404;
     return {
       ok: false,
-      error: "Job not found",
+      error: 'Job not found',
     };
   }
 
@@ -164,24 +164,24 @@ async function chatRetryHandler(ctx: any) {
   if (job.data.userId !== userId) {
     logger.warn(
       { jobId, requestedBy: userId, ownedBy: job.data.userId },
-      "chat_retry_ownership_mismatch",
+      'chat_retry_ownership_mismatch',
     );
     set.status = 403;
     return {
       ok: false,
-      error: "Access denied: job belongs to another user",
+      error: 'Access denied: job belongs to another user',
     };
   }
 
   const state = await job.getState();
 
   // Only allow retry for failed jobs
-  if (state !== "failed") {
+  if (state !== 'failed') {
     set.status = 400;
     return {
       ok: false,
       error: `Cannot retry job in state '${state}'`,
-      message: "Only failed jobs can be manually retried",
+      message: 'Only failed jobs can be manually retried',
     };
   }
 
@@ -195,23 +195,23 @@ async function chatRetryHandler(ctx: any) {
         userId,
         previousAttempts: job.attemptsMade,
       },
-      "job_manually_retried",
+      'job_manually_retried',
     );
 
     return {
       ok: true,
       jobId,
-      status: "retrying",
-      message: "Job has been queued for retry",
+      status: 'retrying',
+      message: 'Job has been queued for retry',
       previousAttempts: job.attemptsMade,
     };
   } catch (error) {
-    logger.error({ error, jobId }, "manual_retry_failed");
+    logger.error({ error, jobId }, 'manual_retry_failed');
     set.status = 500;
     return {
       ok: false,
-      error: "Failed to retry job",
-      message: error instanceof Error ? error.message : "Unknown error",
+      error: 'Failed to retry job',
+      message: error instanceof Error ? error.message : 'Unknown error',
     };
   }
 }
@@ -224,11 +224,11 @@ async function requiresHypothesis(
   literatureResults: string,
   messageId?: string, // For token usage tracking
 ): Promise<boolean> {
-  const PLANNING_LLM_PROVIDER = process.env.PLANNING_LLM_PROVIDER || "google";
+  const PLANNING_LLM_PROVIDER = process.env.PLANNING_LLM_PROVIDER || 'google';
   const apiKey = process.env[`${PLANNING_LLM_PROVIDER.toUpperCase()}_API_KEY`];
 
   if (!apiKey) {
-    logger.warn("LLM API key not configured, defaulting to no hypothesis");
+    logger.warn('LLM API key not configured, defaulting to no hypothesis');
     return false;
   }
 
@@ -238,7 +238,7 @@ async function requiresHypothesis(
       literatureResultsLength: literatureResults.length,
       provider: PLANNING_LLM_PROVIDER,
     },
-    "checking_hypothesis_requirement",
+    'checking_hypothesis_requirement',
   );
 
   const llmProvider = new LLM({
@@ -267,16 +267,16 @@ Respond with ONLY "YES" if a hypothesis is needed, or "NO" if it's not needed.`;
 
   try {
     const response = await llmProvider.createChatCompletion({
-      model: process.env.PLANNING_LLM_MODEL || "gemini-2.5-flash",
+      model: process.env.PLANNING_LLM_MODEL || 'gemini-2.5-flash',
       messages: [
         {
-          role: "user" as const,
+          role: 'user' as const,
           content: prompt,
         },
       ],
       maxTokens: 10,
       messageId,
-      usageType: "chat",
+      usageType: 'chat',
     });
 
     const answer = response.content.trim().toUpperCase();
@@ -284,14 +284,14 @@ Respond with ONLY "YES" if a hypothesis is needed, or "NO" if it's not needed.`;
       {
         answer,
         questionLength: question.length,
-        decision: answer === "YES" ? "hypothesis_required" : "hypothesis_not_required",
+        decision: answer === 'YES' ? 'hypothesis_required' : 'hypothesis_not_required',
       },
-      "hypothesis_requirement_check_completed",
+      'hypothesis_requirement_check_completed',
     );
 
-    return answer === "YES";
+    return answer === 'YES';
   } catch (err) {
-    logger.error({ err }, "hypothesis_check_failed");
+    logger.error({ err }, 'hypothesis_check_failed');
     return false; // Default to no hypothesis on error
   }
 }
@@ -321,20 +321,20 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
 
     logger.info(
       {
-        contentType: request.headers.get("content-type"),
+        contentType: request.headers.get('content-type'),
         bodyKeys: body ? Object.keys(body).slice(0, 10) : [],
       },
-      "chat_route_entry",
+      'chat_route_entry',
     );
 
     // Extract message (REQUIRED)
     const message = parsedBody.message;
     if (!message) {
-      logger.warn({ bodyKeys: Object.keys(parsedBody) }, "missing_message_field");
+      logger.warn({ bodyKeys: Object.keys(parsedBody) }, 'missing_message_field');
       set.status = 400;
       return {
         ok: false,
-        error: "Missing required field: message",
+        error: 'Missing required field: message',
       };
     }
 
@@ -342,24 +342,24 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
     // Auth context handles: x402 wallet > JWT token > API key > body.userId > anonymous
     const auth = (request as any).auth as AuthContext | undefined;
     let userId = auth?.userId || generateUUID();
-    const source = auth?.method === "x402" ? "x402" : "api";
-    const isX402User = auth?.method === "x402";
+    const source = auth?.method === 'x402' ? 'x402' : 'api';
+    const isX402User = auth?.method === 'x402';
 
     logger.info(
       {
         userId,
-        authMethod: auth?.method || "unknown",
+        authMethod: auth?.method || 'unknown',
         verified: auth?.verified || false,
         source,
         externalId: auth?.externalId,
       },
-      "user_identified_via_auth",
+      'user_identified_via_auth',
     );
 
     // For x402 users, ensure wallet user record exists and use the actual user ID
     // Skip when skipStorage is true (stateless mode)
     if (isX402User && auth?.externalId && !skipStorage) {
-      const { getOrCreateUserByWallet } = await import("../db/operations");
+      const { getOrCreateUserByWallet } = await import('../db/operations');
       const { user, isNew } = await getOrCreateUserByWallet(auth.externalId);
 
       // Use the actual database user ID (may differ from auth.userId)
@@ -371,7 +371,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           wallet: auth.externalId,
           isNewUser: isNew,
         },
-        "x402_user_record_ensured",
+        'x402_user_record_ensured',
       );
     }
 
@@ -379,7 +379,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
     let conversationId = parsedBody.conversationId;
     if (!conversationId) {
       conversationId = generateUUID();
-      logger.info({ conversationId, userId }, "auto_generated_conversation_id");
+      logger.info({ conversationId, userId }, 'auto_generated_conversation_id');
     }
 
     // Extract files from parsed body
@@ -401,9 +401,9 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         message,
         messageLength: message.length,
         fileCount: files.length,
-        routeType: "chat-v2",
+        routeType: 'chat-v2',
       },
-      "chat_request_received",
+      'chat_request_received',
     );
 
     // Variables for DB records (or ephemeral equivalents)
@@ -413,13 +413,13 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
 
     if (skipStorage) {
       // Stateless mode: create ephemeral records (no DB operations)
-      logger.info({ userId, conversationId }, "skip_storage_mode_using_ephemeral_records");
+      logger.info({ userId, conversationId }, 'skip_storage_mode_using_ephemeral_records');
 
       const ephemeralMessageId = generateUUID();
       conversationStateRecord = {
         id: generateUUID(),
         values: {
-          objective: "",
+          objective: '',
           keyInsights: [],
           discoveries: [],
           uploadedDatasets: [],
@@ -443,13 +443,13 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
       if (!setupResult.success) {
         logger.error(
           { error: setupResult.error, userId, conversationId },
-          "user_conversation_setup_failed",
+          'user_conversation_setup_failed',
         );
         set.status = 500;
-        return { ok: false, error: setupResult.error || "Setup failed" };
+        return { ok: false, error: setupResult.error || 'Setup failed' };
       }
 
-      logger.info({ userId, conversationId }, "user_conversation_setup_completed");
+      logger.info({ userId, conversationId }, 'user_conversation_setup_completed');
 
       // Setup conversation data
       const dataSetup = await setupConversationData(
@@ -461,9 +461,9 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         files.length,
       );
       if (!dataSetup.success) {
-        logger.error({ error: dataSetup.error, conversationId }, "conversation_data_setup_failed");
+        logger.error({ error: dataSetup.error, conversationId }, 'conversation_data_setup_failed');
         set.status = 500;
-        return { ok: false, error: dataSetup.error || "Data setup failed" };
+        return { ok: false, error: dataSetup.error || 'Data setup failed' };
       }
 
       conversationStateRecord = dataSetup.data!.conversationStateRecord;
@@ -474,7 +474,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           conversationStateId: conversationStateRecord.id,
           stateId: stateRecord.id,
         },
-        "conversation_data_setup_completed",
+        'conversation_data_setup_completed',
       );
 
       // Create message record
@@ -488,11 +488,11 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         isExternal: false,
       });
       if (!messageResult.success) {
-        logger.error({ error: messageResult.error, conversationId }, "message_creation_failed");
+        logger.error({ error: messageResult.error, conversationId }, 'message_creation_failed');
         set.status = 500;
         return {
           ok: false,
-          error: messageResult.error || "Message creation failed",
+          error: messageResult.error || 'Message creation failed',
         };
       }
 
@@ -505,17 +505,17 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         conversationId: createdMessage.conversation_id,
         question: createdMessage.question,
       },
-      "message_record_created",
+      'message_record_created',
     );
 
     // =========================================================================
     // DUAL MODE: Check if job queue is enabled
     // =========================================================================
-    const { isJobQueueEnabled } = await import("../services/queue/connection");
+    const { isJobQueueEnabled } = await import('../services/queue/connection');
 
     if (isJobQueueEnabled()) {
       // QUEUE MODE: Enqueue job and return immediately
-      logger.info({ messageId: createdMessage.id, conversationId }, "chat_using_queue_mode");
+      logger.info({ messageId: createdMessage.id, conversationId }, 'chat_using_queue_mode');
 
       // Process files synchronously before enqueuing (files can't be serialized)
       if (files.length > 0) {
@@ -524,9 +524,9 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           values: conversationStateRecord.values,
         };
 
-        const { fileUploadAgent } = await import("../agents/fileUpload");
+        const { fileUploadAgent } = await import('../agents/fileUpload');
 
-        logger.info({ fileCount: files.length }, "processing_file_uploads_before_queue");
+        logger.info({ fileCount: files.length }, 'processing_file_uploads_before_queue');
 
         await fileUploadAgent({
           conversationState,
@@ -536,7 +536,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
       }
 
       // Enqueue the job
-      const { getChatQueue } = await import("../services/queue/queues");
+      const { getChatQueue } = await import('../services/queue/queues');
       const chatQueue = getChatQueue();
 
       const job = await chatQueue.add(
@@ -546,7 +546,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           conversationId,
           messageId: createdMessage.id,
           message,
-          authMethod: auth?.method || "anonymous",
+          authMethod: auth?.method || 'anonymous',
           requestedAt: new Date().toISOString(),
         },
         {
@@ -560,15 +560,15 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           messageId: createdMessage.id,
           conversationId,
         },
-        "chat_job_enqueued",
+        'chat_job_enqueued',
       );
 
       // Build pollUrl - use full URL for x402 users (external API consumers)
       let pollUrl = `/api/chat/status/${job.id}`;
       if (isX402User) {
         const url = new URL(request.url);
-        const forwardedProto = request.headers.get("x-forwarded-proto");
-        const protocol = forwardedProto || url.protocol.replace(":", "");
+        const forwardedProto = request.headers.get('x-forwarded-proto');
+        const protocol = forwardedProto || url.protocol.replace(':', '');
         pollUrl = `${protocol}://${url.host}/api/chat/status/${job.id}`;
       }
 
@@ -577,14 +577,14 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         messageId: createdMessage.id,
         conversationId,
         userId,
-        status: "queued",
+        status: 'queued',
         pollUrl,
       };
 
       return new Response(JSON.stringify(response), {
         status: 202, // Accepted
         headers: {
-          "Content-Type": "application/json; charset=utf-8",
+          'Content-Type': 'application/json; charset=utf-8',
         },
       });
     }
@@ -592,7 +592,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
     // =========================================================================
     // IN-PROCESS MODE: Execute directly (existing behavior)
     // =========================================================================
-    logger.info({ messageId: createdMessage.id, conversationId }, "chat_using_in_process_mode");
+    logger.info({ messageId: createdMessage.id, conversationId }, 'chat_using_in_process_mode');
 
     // Initialize state
     const state: State = {
@@ -618,19 +618,19 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         existingHypothesis: !!conversationState.values.currentHypothesis,
         keyInsightsCount: conversationState.values.keyInsights?.length || 0,
       },
-      "state_initialized",
+      'state_initialized',
     );
 
     // Step 1: Process files if any
     if (files.length > 0) {
-      const { fileUploadAgent } = await import("../agents/fileUpload");
+      const { fileUploadAgent } = await import('../agents/fileUpload');
 
-      logger.info({ fileCount: files.length }, "processing_file_uploads");
+      logger.info({ fileCount: files.length }, 'processing_file_uploads');
 
       const fileResult = await fileUploadAgent({
         conversationState,
         files,
-        userId: state.values.userId || "unknown",
+        userId: state.values.userId || 'unknown',
       });
 
       logger.info(
@@ -639,7 +639,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           errors: fileResult.errors,
           fileCount: files.length,
         },
-        "file_upload_agent_completed",
+        'file_upload_agent_completed',
       );
     }
 
@@ -649,17 +649,17 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         message: createdMessage.question,
         existingPlan: conversationState.values.plan?.length || 0,
       },
-      "starting_planning_agent",
+      'starting_planning_agent',
     );
 
-    const { planningAgent } = await import("../agents/planning");
+    const { planningAgent } = await import('../agents/planning');
 
     const planningResult = await planningAgent({
       state,
       conversationState,
       message: createdMessage,
-      mode: "initial",
-      usageType: "chat",
+      mode: 'initial',
+      usageType: 'chat',
     });
 
     const plan = planningResult.plan;
@@ -671,11 +671,11 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         taskTypes: plan.map((t) => t.type),
         taskObjectives: plan.map((t) => t.objective),
       },
-      "planning_agent_completed",
+      'planning_agent_completed',
     );
 
     // Filter to only LITERATURE tasks (no ANALYSIS for regular chat)
-    const literatureTasks = plan.filter((task) => task.type === "LITERATURE");
+    const literatureTasks = plan.filter((task) => task.type === 'LITERATURE');
 
     logger.info(
       {
@@ -687,22 +687,22 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           objective: t.objective,
         })),
       },
-      "tasks_filtered_literature_only",
+      'tasks_filtered_literature_only',
     );
 
     if (literatureTasks.length === 0) {
-      logger.info("no_literature_tasks_planned_skipping_to_reply");
+      logger.info('no_literature_tasks_planned_skipping_to_reply');
     }
 
     // Step 3: Execute literature tasks (OPENSCHOLAR, KNOWLEDGE - no EDISON)
-    const { literatureAgent } = await import("../agents/literature");
-    const { updateConversationState } = await import("../db/operations");
+    const { literatureAgent } = await import('../agents/literature');
+    const { updateConversationState } = await import('../db/operations');
 
     const completedTasks: PlanTask[] = [];
 
     for (const task of literatureTasks) {
       task.start = new Date().toISOString();
-      task.output = "";
+      task.output = '';
 
       logger.info(
         {
@@ -710,10 +710,10 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           taskType: task.type,
           taskStart: task.start,
         },
-        "executing_literature_task",
+        'executing_literature_task',
       );
 
-      const useBioLiterature = process.env.PRIMARY_LITERATURE_AGENT?.toUpperCase() === "BIO";
+      const useBioLiterature = process.env.PRIMARY_LITERATURE_AGENT?.toUpperCase() === 'BIO';
 
       // Build list of literature promises based on configured sources
       const literaturePromises: Promise<void>[] = [];
@@ -722,7 +722,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
       if (process.env.OPENSCHOLAR_API_URL) {
         const openScholarPromise = literatureAgent({
           objective: task.objective,
-          type: "OPENSCHOLAR",
+          type: 'OPENSCHOLAR',
         }).then((result) => {
           if (result.count && result.count > 0) {
             task.output += `${result.output}\n\n`;
@@ -734,7 +734,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
               count: result.count,
               outputPreview: result.output.substring(0, 200),
             },
-            "openscholar_completed",
+            'openscholar_completed',
           );
         });
         literaturePromises.push(openScholarPromise);
@@ -744,7 +744,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
       if (useBioLiterature) {
         const bioLiteraturePromise = literatureAgent({
           objective: task.objective,
-          type: "BIOLIT",
+          type: 'BIOLIT',
         }).then((result) => {
           task.output += `${result.output}\n\n`;
           logger.info(
@@ -753,7 +753,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
               outputLength: result.output.length,
               outputPreview: result.output.substring(0, 200),
             },
-            "bioliterature_completed",
+            'bioliterature_completed',
           );
         });
         literaturePromises.push(bioLiteraturePromise);
@@ -763,7 +763,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
       if (process.env.KNOWLEDGE_DOCS_PATH) {
         const knowledgePromise = literatureAgent({
           objective: task.objective,
-          type: "KNOWLEDGE",
+          type: 'KNOWLEDGE',
         }).then((result) => {
           if (result.count && result.count > 0) {
             task.output += `${result.output}\n\n`;
@@ -774,7 +774,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
               outputLength: result.output.length,
               count: result.count,
             },
-            "knowledge_completed",
+            'knowledge_completed',
           );
         });
         literaturePromises.push(knowledgePromise);
@@ -793,7 +793,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           taskEnd: task.end,
           outputLength: task.output?.length || 0,
         },
-        "literature_task_completed",
+        'literature_task_completed',
       );
     }
 
@@ -802,11 +802,11 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         completedTasksCount: completedTasks.length,
         totalOutputLength: completedTasks.reduce((sum, t) => sum + (t.output?.length || 0), 0),
       },
-      "all_literature_tasks_completed",
+      'all_literature_tasks_completed',
     );
 
     // Step 4: Check if hypothesis is needed
-    const allLiteratureOutput = completedTasks.map((t) => t.output).join("\n\n");
+    const allLiteratureOutput = completedTasks.map((t) => t.output).join('\n\n');
 
     logger.info(
       {
@@ -814,7 +814,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         literatureOutputLength: allLiteratureOutput.length,
         completedTasksCount: completedTasks.length,
       },
-      "checking_if_hypothesis_required",
+      'checking_if_hypothesis_required',
     );
 
     const needsHypothesis = await requiresHypothesis(
@@ -829,7 +829,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         question: message,
         completedTasksCount: completedTasks.length,
       },
-      "hypothesis_requirement_determined",
+      'hypothesis_requirement_determined',
     );
 
     let hypothesisText: string | undefined;
@@ -842,10 +842,10 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           completedTasksCount: completedTasks.length,
           existingHypothesis: conversationState.values.currentHypothesis,
         },
-        "starting_hypothesis_generation",
+        'starting_hypothesis_generation',
       );
 
-      const { hypothesisAgent } = await import("../agents/hypothesis");
+      const { hypothesisAgent } = await import('../agents/hypothesis');
 
       const hypothesisResult = await hypothesisAgent({
         objective: planningResult.currentObjective,
@@ -863,7 +863,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           hypothesisLength: hypothesisText.length,
           hypothesisPreview: hypothesisText.substring(0, 200),
         },
-        "hypothesis_generated",
+        'hypothesis_generated',
       );
 
       if (conversationState.id && !skipStorage) {
@@ -873,7 +873,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
             conversationStateId: conversationState.id,
             mode: hypothesisResult.mode,
           },
-          "hypothesis_saved_to_conversation_state",
+          'hypothesis_saved_to_conversation_state',
         );
       }
 
@@ -883,10 +883,10 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           completedTasksCount: completedTasks.length,
           hypothesisLength: hypothesisText.length,
         },
-        "starting_reflection_agent",
+        'starting_reflection_agent',
       );
 
-      const { reflectionAgent } = await import("../agents/reflection");
+      const { reflectionAgent } = await import('../agents/reflection');
 
       const reflectionResult = await reflectionAgent({
         conversationState,
@@ -904,7 +904,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           keyInsights: reflectionResult.keyInsights,
           discoveries: reflectionResult.discoveries,
         },
-        "reflection_agent_completed",
+        'reflection_agent_completed',
       );
 
       // Update conversation state with reflection results
@@ -921,7 +921,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
             keyInsightsCount: reflectionResult.keyInsights.length,
             discoveriesCount: reflectionResult.discoveries.length,
           },
-          "reflection_results_saved_to_conversation_state",
+          'reflection_results_saved_to_conversation_state',
         );
       }
     } else {
@@ -929,9 +929,9 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         {
           needsHypothesis,
           completedTasksCount: completedTasks.length,
-          reason: !needsHypothesis ? "question_does_not_require_hypothesis" : "no_completed_tasks",
+          reason: !needsHypothesis ? 'question_does_not_require_hypothesis' : 'no_completed_tasks',
         },
-        "skipping_hypothesis_and_reflection",
+        'skipping_hypothesis_and_reflection',
       );
     }
 
@@ -943,10 +943,10 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         keyInsightsCount: conversationState.values.keyInsights?.length || 0,
         uploadedDatasetsCount: conversationState.values.uploadedDatasets?.length || 0,
       },
-      "starting_chat_reply_generation",
+      'starting_chat_reply_generation',
     );
 
-    const { generateChatReply } = await import("../agents/reply/utils");
+    const { generateChatReply } = await import('../agents/reply/utils');
 
     const replyText = await generateChatReply(
       message,
@@ -963,7 +963,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
       {
         maxTokens: 1024,
         messageId: createdMessage.id,
-        usageType: "chat",
+        usageType: 'chat',
       },
     );
 
@@ -972,7 +972,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         replyLength: replyText.length,
         replyPreview: replyText.substring(0, 200),
       },
-      "chat_reply_generated",
+      'chat_reply_generated',
     );
 
     const response: ChatV2Response = {
@@ -986,14 +986,14 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
     // Save to DB only if not in skipStorage mode
     if (!skipStorage) {
       // Save the response to the message's content field
-      const { updateMessage } = await import("../db/operations");
+      const { updateMessage } = await import('../db/operations');
       await updateMessage(createdMessage.id, {
         content: replyText,
       });
 
       logger.info(
         { messageId: createdMessage.id, contentLength: replyText.length },
-        "message_content_saved",
+        'message_content_saved',
       );
 
       await updateMessageResponseTime(createdMessage.id, responseTime);
@@ -1004,7 +1004,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           responseTime,
           responseTimeSec: (responseTime / 1000).toFixed(2),
         },
-        "response_time_recorded",
+        'response_time_recorded',
       );
     } else {
       logger.info(
@@ -1012,7 +1012,7 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
           responseTime,
           responseTimeSec: (responseTime / 1000).toFixed(2),
         },
-        "skip_storage_mode_response_not_saved",
+        'skip_storage_mode_response_not_saved',
       );
     }
 
@@ -1026,15 +1026,15 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         needsHypothesis,
         completedTasksCount: completedTasks.length,
       },
-      "chat_completed_successfully",
+      'chat_completed_successfully',
     );
 
     // Return response
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
-        "Content-Encoding": "identity",
+        'Content-Type': 'application/json; charset=utf-8',
+        'Content-Encoding': 'identity',
       },
     });
   } catch (error: any) {
@@ -1044,14 +1044,14 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         stack: error.stack,
         name: error.name,
       },
-      "chat_unhandled_error",
+      'chat_unhandled_error',
     );
 
     const { set } = ctx;
     set.status = 500;
     return {
       ok: false,
-      error: error.message || "Internal server error",
+      error: error.message || 'Internal server error',
     };
   }
 }

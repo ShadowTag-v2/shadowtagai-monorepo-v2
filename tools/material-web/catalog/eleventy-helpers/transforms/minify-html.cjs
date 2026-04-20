@@ -14,7 +14,7 @@ const htmlMinifier = require('html-minifier');
  * @param isDev {boolean} Whether or not the build is in development mode.
  */
 function minifyHTML(eleventyConfig, isDev) {
-  eleventyConfig.addTransform('htmlMinify', function (content, outputPath) {
+  eleventyConfig.addTransform('htmlMinify', (content, outputPath) => {
     // return the normal content in dev moe.
     if (isDev || !outputPath.endsWith('.html')) {
       return content;

@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {CSSResultOrNative} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import type { CSSResultOrNative } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {LinearProgress} from './internal/linear-progress.js';
-import {styles} from './internal/linear-progress-styles.cssresult.js';
+import { LinearProgress } from './internal/linear-progress.js';
+import { styles } from './internal/linear-progress-styles.cssresult.js';
 
 declare global {
   interface HTMLElementTagNameMap {

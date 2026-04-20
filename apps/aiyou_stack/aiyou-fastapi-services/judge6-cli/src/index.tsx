@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 /**
  * Judge #6 CLI - Zero-Flicker TUI
  *
@@ -6,17 +7,17 @@
  * Inspired by Google's Gemini CLI terminal rendering improvements.
  */
 
-import React from "react";
-import { render } from "ink";
-import { DecisionReview } from "./components/DecisionReview.js";
+import { render } from 'ink';
+import React from 'react';
+import { DecisionReview } from './components/DecisionReview.js';
 
 // Parse command-line arguments
 const args = process.argv.slice(2);
-const apiUrlArg = args.find((arg) => arg.startsWith("--api-url="));
-const apiUrl = apiUrlArg ? apiUrlArg.split("=")[1] : "http://localhost:8000";
+const apiUrlArg = args.find((arg) => arg.startsWith('--api-url='));
+const apiUrl = apiUrlArg ? apiUrlArg.split('=')[1] : 'http://localhost:8000';
 
 // Show help
-if (args.includes("--help") || args.includes("-h")) {
+if (args.includes('--help') || args.includes('-h')) {
   console.log(`
 Judge #6 CLI - Decision Validation Tool
 
@@ -64,8 +65,8 @@ MORE INFO:
 }
 
 // Show version
-if (args.includes("--version") || args.includes("-v")) {
-  console.log("Judge #6 CLI v2.0.0");
+if (args.includes('--version') || args.includes('-v')) {
+  console.log('Judge #6 CLI v2.0.0');
   process.exit(0);
 }
 

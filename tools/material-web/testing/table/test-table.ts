@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {CSSResultOrNative} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import type { CSSResultOrNative } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {TestTable} from './internal/test-table.js';
-import {styles as testTableStyles} from './internal/test-table-styles.cssresult.js';
+import { TestTable } from './internal/test-table.js';
+import { styles as testTableStyles } from './internal/test-table-styles.cssresult.js';
 
-export {type TestTableTemplate} from './internal/test-table.js';
+export type { TestTableTemplate } from './internal/test-table.js';
 
 declare global {
   interface HTMLElementTagNameMap {

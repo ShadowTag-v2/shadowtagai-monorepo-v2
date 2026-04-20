@@ -6,8 +6,8 @@
 
 // import 'jasmine'; (google3-only)
 
-import {AssistChip} from './assist-chip.js';
-import {SuggestionChip} from './suggestion-chip.js';
+import { AssistChip } from './assist-chip.js';
+import { SuggestionChip } from './suggestion-chip.js';
 
 customElements.define('test-suggestion-chip', SuggestionChip);
 

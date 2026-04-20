@@ -5,21 +5,21 @@
  * Generates LaTeX papers from Deep Research conversations and compiles them to PDF.
  */
 
-import { Worker, type Job } from "bullmq";
-import { getBullMQConnection } from "../connection";
+import { type Job, Worker } from 'bullmq';
+import logger from '../../../utils/logger';
+import { getBullMQConnection } from '../connection';
 import {
-  notifyPaperStarted,
-  notifyPaperProgress,
   notifyPaperCompleted,
   notifyPaperFailed,
-} from "../notify";
+  notifyPaperProgress,
+  notifyPaperStarted,
+} from '../notify';
 import type {
+  JobProgress,
   PaperGenerationJobData,
   PaperGenerationJobResult,
   PaperGenerationStage,
-  JobProgress,
-} from "../types";
-import logger from "../../../utils/logger";
+} from '../types';
 
 /**
  * Progress stage percentages
@@ -45,14 +45,14 @@ async function processPaperGenerationJob(
   const startTime = Date.now();
   const { paperId, userId, conversationId } = job.data;
 
-  logger.info({ jobId: job.id, paperId, conversationId }, "paper_generation_job_started");
+  logger.info({ jobId: job.id, paperId, conversationId }, 'paper_generation_job_started');
 
   // Update paper status in DB to 'processing'
   // Use service client to bypass RLS - worker has no JWT context
-  const { getServiceClient } = await import("../../../db/client");
+  const { getServiceClient } = await import('../../../db/client');
   const supabase = getServiceClient();
 
-  await supabase.from("paper").update({ status: "processing", job_id: job.id }).eq("id", paperId);
+  await supabase.from('paper').update({ status: 'processing', job_id: job.id }).eq('id', paperId);
 
   // Notify: Job started
   await notifyPaperStarted(job.id!, conversationId, paperId);
@@ -65,13 +65,13 @@ async function processPaperGenerationJob(
       await notifyPaperProgress(job.id!, conversationId, paperId, stage, percent);
 
       // Update progress in DB
-      await supabase.from("paper").update({ progress: { stage, percent } }).eq("id", paperId);
+      await supabase.from('paper').update({ progress: { stage, percent } }).eq('id', paperId);
 
-      logger.info({ jobId: job.id, paperId, stage, percent }, "paper_generation_progress");
+      logger.info({ jobId: job.id, paperId, stage, percent }, 'paper_generation_progress');
     };
 
     // Import and call the paper generation service
-    const { generatePaperFromConversation } = await import("../../../services/paper/generatePaper");
+    const { generatePaperFromConversation } = await import('../../../services/paper/generatePaper');
 
     const result = await generatePaperFromConversation(
       conversationId,
@@ -82,17 +82,17 @@ async function processPaperGenerationJob(
 
     // Update paper status in DB to 'completed'
     await supabase
-      .from("paper")
+      .from('paper')
       .update({
-        status: "completed",
-        progress: { stage: "cleanup", percent: 100 },
+        status: 'completed',
+        progress: { stage: 'cleanup', percent: 100 },
         pdf_path: result.pdfPath,
       })
-      .eq("id", paperId);
+      .eq('id', paperId);
 
     const responseTime = Date.now() - startTime;
 
-    logger.info({ jobId: job.id, paperId, responseTime }, "paper_generation_job_completed");
+    logger.info({ jobId: job.id, paperId, responseTime }, 'paper_generation_job_completed');
 
     // Notify: Job completed
     await notifyPaperCompleted(job.id!, conversationId, paperId);
@@ -103,19 +103,19 @@ async function processPaperGenerationJob(
       pdfPath: result.pdfPath,
       pdfUrl: result.pdfUrl,
       rawLatexUrl: result.rawLatexUrl,
-      status: "completed",
+      status: 'completed',
       responseTime,
     };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
 
-    logger.error({ jobId: job.id, paperId, error: errorMessage }, "paper_generation_job_failed");
+    logger.error({ jobId: job.id, paperId, error: errorMessage }, 'paper_generation_job_failed');
 
     // Update paper status in DB to 'failed'
     await supabase
-      .from("paper")
-      .update({ status: "failed", error: errorMessage })
-      .eq("id", paperId);
+      .from('paper')
+      .update({ status: 'failed', error: errorMessage })
+      .eq('id', paperId);
 
     // Notify: Job failed
     await notifyPaperFailed(job.id!, conversationId, paperId, errorMessage);
@@ -128,10 +128,10 @@ async function processPaperGenerationJob(
  * Start the paper generation worker
  */
 export function startPaperGenerationWorker(): Worker {
-  const concurrency = parseInt(process.env.PAPER_GENERATION_CONCURRENCY || "1");
+  const concurrency = parseInt(process.env.PAPER_GENERATION_CONCURRENCY || '1');
 
   const worker = new Worker<PaperGenerationJobData, PaperGenerationJobResult>(
-    "paper-generation",
+    'paper-generation',
     processPaperGenerationJob,
     {
       connection: getBullMQConnection(),
@@ -144,28 +144,28 @@ export function startPaperGenerationWorker(): Worker {
     },
   );
 
-  worker.on("completed", (job, result) => {
+  worker.on('completed', (job, result) => {
     logger.info(
       { jobId: job.id, paperId: result.paperId, responseTime: result.responseTime },
-      "paper_generation_worker_job_completed",
+      'paper_generation_worker_job_completed',
     );
   });
 
-  worker.on("failed", (job, error) => {
+  worker.on('failed', (job, error) => {
     logger.error(
       {
         jobId: job?.id,
         error: error.message,
       },
-      "paper_generation_worker_job_failed",
+      'paper_generation_worker_job_failed',
     );
   });
 
-  worker.on("stalled", (jobId) => {
-    logger.warn({ jobId }, "paper_generation_worker_job_stalled");
+  worker.on('stalled', (jobId) => {
+    logger.warn({ jobId }, 'paper_generation_worker_job_stalled');
   });
 
-  logger.info({ concurrency }, "paper_generation_worker_started");
+  logger.info({ concurrency }, 'paper_generation_worker_started');
 
   return worker;
 }

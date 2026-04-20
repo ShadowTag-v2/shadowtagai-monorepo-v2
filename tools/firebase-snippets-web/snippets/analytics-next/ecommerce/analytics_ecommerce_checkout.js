@@ -5,14 +5,14 @@
 // 'npm run snippets'.
 
 // [START analytics_ecommerce_checkout_modular]
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 // Prepare ecommerce params
 const params7 = {
   currency: 'USD',
   value: 14.98, // Total Revenue
   coupon: 'SUMMER_FUN',
-  items: [item_jeggings]
+  items: [item_jeggings],
 };
 
 // Log event

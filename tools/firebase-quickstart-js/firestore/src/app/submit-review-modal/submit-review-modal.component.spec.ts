@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { SubmitReviewModalComponent } from './submit-review-modal.component';
-
-import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { projectConfig } from 'src/environments/environment.default';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { projectConfig } from 'src/environments/environment.default';
+import { SubmitReviewModalComponent } from './submit-review-modal.component';
 
 describe('SubmitReviewModalComponent', () => {
   let component: SubmitReviewModalComponent;
@@ -31,15 +28,17 @@ describe('SubmitReviewModalComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MatDialogModule,
+      imports: [
+        MatDialogModule,
         provideFirebaseApp(() => initializeApp(projectConfig)),
         provideFirestore(() => getFirestore()),
-        provideAuth(() => getAuth())],
+        provideAuth(() => getAuth()),
+      ],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: MatDialogRef, useValue: {} }
+        { provide: MatDialogRef, useValue: {} },
       ],
-      declarations: [SubmitReviewModalComponent]
+      declarations: [SubmitReviewModalComponent],
     });
     fixture = TestBed.createComponent(SubmitReviewModalComponent);
     component = fixture.componentInstance;

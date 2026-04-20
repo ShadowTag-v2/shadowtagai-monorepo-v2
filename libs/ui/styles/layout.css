@@ -163,12 +163,20 @@
   gap: 24px;
 }
 
-.st-grid--2 { grid-template-columns: repeat(2, 1fr); }
-.st-grid--3 { grid-template-columns: repeat(3, 1fr); }
-.st-grid--4 { grid-template-columns: repeat(4, 1fr); }
+.st-grid--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.st-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.st-grid--4 {
+  grid-template-columns: repeat(4, 1fr);
+}
 
 @media (max-width: 1024px) {
-  .st-grid--4 { grid-template-columns: repeat(2, 1fr); }
+  .st-grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {

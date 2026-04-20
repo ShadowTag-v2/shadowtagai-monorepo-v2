@@ -54,7 +54,7 @@ export interface CodebaseContext {
  */
 export async function getCodebaseStats(
   executeQuery: (cypher: string) => Promise<any[]>,
-  projectName: string
+  projectName: string,
 ): Promise<CodebaseStats> {
   try {
     // Count each node type
@@ -100,13 +100,12 @@ export async function getCodebaseStats(
   }
 }
 
-
 /**
  * Find hotspots - nodes with the most connections
  */
 export async function getHotspots(
   executeQuery: (cypher: string) => Promise<any[]>,
-  limit: number = 8
+  limit: number = 8,
 ): Promise<Hotspot[]> {
   try {
     // Find nodes with most edges (both directions)
@@ -121,22 +120,24 @@ export async function getHotspots(
 
     const results = await executeQuery(query);
 
-    return results.map(row => {
-      if (Array.isArray(row)) {
+    return results
+      .map((row) => {
+        if (Array.isArray(row)) {
+          return {
+            name: row[0],
+            type: row[1],
+            filePath: row[2],
+            connections: row[3],
+          };
+        }
         return {
-          name: row[0],
-          type: row[1],
-          filePath: row[2],
-          connections: row[3],
+          name: row.name,
+          type: row.type,
+          filePath: row.filePath,
+          connections: row.connections,
         };
-      }
-      return {
-        name: row.name,
-        type: row.type,
-        filePath: row.filePath,
-        connections: row.connections,
-      };
-    }).filter(h => h.name && h.type);
+      })
+      .filter((h) => h.name && h.type);
   } catch (error) {
     console.error('Failed to get hotspots:', error);
     return [];
@@ -149,17 +150,19 @@ export async function getHotspots(
  */
 export async function getFolderTree(
   executeQuery: (cypher: string) => Promise<any[]>,
-  maxDepth: number = 10
+  maxDepth: number = 10,
 ): Promise<string> {
   try {
     // Get all file paths
     const query = 'MATCH (f:File) RETURN f.filePath AS path ORDER BY path';
     const results = await executeQuery(query);
 
-    const paths = results.map(row => {
-      if (Array.isArray(row)) return row[0];
-      return row.path;
-    }).filter(Boolean);
+    const paths = results
+      .map((row) => {
+        if (Array.isArray(row)) return row[0];
+        return row.path;
+      })
+      .filter(Boolean);
 
     if (paths.length === 0) return '';
 
@@ -294,11 +297,7 @@ function buildTreeFromPaths(paths: string[], maxDepth: number): Map<string, any>
 /**
  * Format tree as ASCII (like VS Code sidebar)
  */
-function formatTreeAsAscii(
-  tree: Map<string, any>,
-  prefix: string,
-  isLast: boolean = true
-): string {
+function formatTreeAsAscii(tree: Map<string, any>, prefix: string, isLast: boolean = true): string {
   const lines: string[] = [];
   const entries = Array.from(tree.entries());
 
@@ -353,7 +352,7 @@ function countItems(tree: Map<string, any>): number {
  */
 export async function buildCodebaseContext(
   executeQuery: (cypher: string) => Promise<any[]>,
-  projectName: string
+  projectName: string,
 ): Promise<CodebaseContext> {
   // Run all queries in parallel for speed
   const [stats, hotspots, folderTree] = await Promise.all([
@@ -392,7 +391,7 @@ export function formatContextForPrompt(context: CodebaseContext): string {
   // Hotspots
   if (hotspots.length > 0) {
     lines.push('**Hotspots** (most connected):');
-    hotspots.slice(0, 5).forEach(h => {
+    hotspots.slice(0, 5).forEach((h) => {
       lines.push(`- \`${h.name}\` (${h.type}) — ${h.connections} edges`);
     });
     lines.push('');
@@ -414,10 +413,7 @@ export function formatContextForPrompt(context: CodebaseContext): string {
  * Build the complete dynamic system prompt
  * Context is appended at the END so core instructions remain at the top
  */
-export function buildDynamicSystemPrompt(
-  basePrompt: string,
-  context: CodebaseContext
-): string {
+export function buildDynamicSystemPrompt(basePrompt: string, context: CodebaseContext): string {
   const contextSection = formatContextForPrompt(context);
 
   // Append context at the END - keeps core instructions at top for better adherence

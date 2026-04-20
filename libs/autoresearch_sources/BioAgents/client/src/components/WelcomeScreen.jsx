@@ -1,36 +1,36 @@
-import { Icon } from "./icons/Icon";
+import { Icon } from './icons/Icon';
 
 export function WelcomeScreen({ onExampleClick }) {
   const examples = [
     {
-      icon: "dna",
-      title: "Gene Editing",
-      text: "What are the latest findings on CRISPR gene editing?",
+      icon: 'dna',
+      title: 'Gene Editing',
+      text: 'What are the latest findings on CRISPR gene editing?',
     },
     {
-      icon: "microscope",
-      title: "Protein Biology",
-      text: "Explain protein folding mechanisms",
+      icon: 'microscope',
+      title: 'Protein Biology',
+      text: 'Explain protein folding mechanisms',
     },
     {
-      icon: "activity",
-      title: "Cancer Research",
-      text: "Search for papers on cancer immunotherapy",
+      icon: 'activity',
+      title: 'Cancer Research',
+      text: 'Search for papers on cancer immunotherapy',
     },
     {
-      icon: "syringe",
-      title: "Vaccine Technology",
-      text: "How does mRNA vaccine technology work?",
+      icon: 'syringe',
+      title: 'Vaccine Technology',
+      text: 'How does mRNA vaccine technology work?',
     },
     {
-      icon: "pill",
-      title: "Drug Discovery",
-      text: "Find recent breakthroughs in AI-driven drug discovery",
+      icon: 'pill',
+      title: 'Drug Discovery',
+      text: 'Find recent breakthroughs in AI-driven drug discovery',
     },
     {
-      icon: "flask",
-      title: "Genomics",
-      text: "What are the applications of single-cell sequencing?",
+      icon: 'flask',
+      title: 'Genomics',
+      text: 'What are the applications of single-cell sequencing?',
     },
   ];
 

@@ -5,12 +5,9 @@
 // 'npm run snippets'.
 
 // [START listen_with_metadata_modular]
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from 'firebase/firestore';
 
-const unsub = onSnapshot(
-  doc(db, "cities", "SF"),
-  { includeMetadataChanges: true },
-  (doc) => {
-    // ...
-  });
+const unsub = onSnapshot(doc(db, 'cities', 'SF'), { includeMetadataChanges: true }, (doc) => {
+  // ...
+});
 // [END listen_with_metadata_modular]

@@ -1,5 +1,5 @@
-import { AuthProvider } from '@/lib/firebase';
 import Navbar from '@/components/navbar';
+import { AuthProvider } from '@/lib/firebase';
 import '@/index.css';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

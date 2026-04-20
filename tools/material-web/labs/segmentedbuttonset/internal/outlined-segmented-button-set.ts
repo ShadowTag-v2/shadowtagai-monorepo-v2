@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {SegmentedButtonSet} from './segmented-button-set.js';
+import { SegmentedButtonSet } from './segmented-button-set.js';
 
 /**
  * b/265346443 - add docs

@@ -1,15 +1,15 @@
-import character from "../../character";
-import { LLM } from "../../llm/provider";
-import { getUploadPath } from "../../storage";
-import type { ConversationState, Message, PlanTask, State } from "../../types/core";
-import logger from "../../utils/logger";
-import { extractPlanningResult } from "../../utils/planningJsonExtractor";
-import { formatFileSize } from "../fileUpload/utils";
+import character from '../../character';
+import { LLM } from '../../llm/provider';
+import { getUploadPath } from '../../storage';
+import type { ConversationState, Message, PlanTask, State } from '../../types/core';
+import logger from '../../utils/logger';
+import { extractPlanningResult } from '../../utils/planningJsonExtractor';
+import { formatFileSize } from '../fileUpload/utils';
 import {
   INITIAL_PLANNING_NO_PLAN_PROMPT,
   INITIAL_PLANNING_PROMPT,
   NEXT_PLANNING_PROMPT,
-} from "./prompts";
+} from './prompts';
 
 /**
  * Resolve dataset paths for planned tasks
@@ -46,8 +46,8 @@ export type PlanningResult = {
   plan: Array<PlanTask>;
 };
 
-export type PlanningMode = "initial" | "next";
-export type ResearchMode = "semi-autonomous" | "fully-autonomous" | "steering";
+export type PlanningMode = 'initial' | 'next';
+export type ResearchMode = 'semi-autonomous' | 'fully-autonomous' | 'steering';
 
 /**
  * Planning agent for deep research
@@ -58,7 +58,7 @@ export type ResearchMode = "semi-autonomous" | "fully-autonomous" | "steering";
  *              If no plan exists yet, creates an initial literature search plan
  * - "next": Updates plan for next iteration after reflection (used after hypothesis + reflection)
  */
-export type TokenUsageType = "chat" | "deep-research" | "paper-generation";
+export type TokenUsageType = 'chat' | 'deep-research' | 'paper-generation';
 
 export async function planningAgent(input: {
   state: State;
@@ -72,9 +72,9 @@ export async function planningAgent(input: {
     state,
     conversationState,
     message,
-    mode = "initial",
+    mode = 'initial',
     usageType,
-    researchMode = "semi-autonomous",
+    researchMode = 'semi-autonomous',
   } = input;
 
   // Check if plan is empty (indicates first planning or fresh start)
@@ -83,8 +83,8 @@ export async function planningAgent(input: {
   let result: PlanningResult;
 
   // If no existing plan and initial mode, use LLM with no-plan prompt
-  if (!hasPlan && mode === "initial") {
-    logger.info("No existing plan found, using LLM for initial planning");
+  if (!hasPlan && mode === 'initial') {
+    logger.info('No existing plan found, using LLM for initial planning');
     result = await generateInitialPlan(message, conversationState, usageType, researchMode);
   } else {
     // Otherwise, use LLM to plan based on current state
@@ -102,17 +102,17 @@ export async function planningAgent(input: {
  */
 function getResearchModeGuidance(researchMode: ResearchMode): string {
   switch (researchMode) {
-    case "steering":
+    case 'steering':
       return `RESEARCH MODE: STEERING
 - User will review outputs after this iteration, so plan focused, self-contained tasks
 - Each task should produce clear, actionable results the user can evaluate`;
-    case "fully-autonomous":
+    case 'fully-autonomous':
       return `RESEARCH MODE: FULLY AUTONOMOUS
 - System will continue iterating automatically, so plan comprehensive tasks
 - You can plan foundational work that subsequent iterations will build upon
 - Feel free to explore broader scope - future iterations can refine and follow up`;
     default: // semi-autonomous
-      return "RESEARCH MODE: SEMI-AUTONOMOUS: No specific guidance for semi-autonomous mode"; // Prompts are written for semi-autonomous by default
+      return 'RESEARCH MODE: SEMI-AUTONOMOUS: No specific guidance for semi-autonomous mode'; // Prompts are written for semi-autonomous by default
   }
 }
 
@@ -124,9 +124,9 @@ async function generateInitialPlan(
   message: Message,
   conversationState: ConversationState,
   usageType?: TokenUsageType,
-  researchMode: ResearchMode = "semi-autonomous",
+  researchMode: ResearchMode = 'semi-autonomous',
 ): Promise<PlanningResult> {
-  const PLANNING_LLM_PROVIDER = process.env.PLANNING_LLM_PROVIDER || "google";
+  const PLANNING_LLM_PROVIDER = process.env.PLANNING_LLM_PROVIDER || 'google';
   const planningApiKey = process.env[`${PLANNING_LLM_PROVIDER.toUpperCase()}_API_KEY`];
 
   if (!planningApiKey) {
@@ -143,15 +143,15 @@ async function generateInitialPlan(
   const conversationId = conversationState.values.conversationId || message.conversation_id;
   const context = await buildContextFromState(conversationState, conversationId);
 
-  const planningPrompt = INITIAL_PLANNING_NO_PLAN_PROMPT.replace("{context}", context)
-    .replace("{userMessage}", message.question)
-    .replace("{researchModeGuidance}", getResearchModeGuidance(researchMode));
+  const planningPrompt = INITIAL_PLANNING_NO_PLAN_PROMPT.replace('{context}', context)
+    .replace('{userMessage}', message.question)
+    .replace('{researchModeGuidance}', getResearchModeGuidance(researchMode));
 
   const response = await llmProvider.createChatCompletion({
-    model: process.env.PLANNING_LLM_MODEL || "gemini-2.5-pro",
+    model: process.env.PLANNING_LLM_MODEL || 'gemini-2.5-pro',
     messages: [
       {
-        role: "user" as const,
+        role: 'user' as const,
         content: planningPrompt,
       },
     ],
@@ -169,14 +169,14 @@ async function generateInitialPlan(
 
   logger.info(
     {
-      mode: "initial_no_plan",
+      mode: 'initial_no_plan',
       currentObjective: result.currentObjective,
       plan: result.plan.map(
         (t) =>
-          `${t.type} task: ${t.objective} datasets: ${t.datasets?.map((d) => `${d.filename} (${d.description})`).join(", ") || "none"}`,
+          `${t.type} task: ${t.objective} datasets: ${t.datasets?.map((d) => `${d.filename} (${d.description})`).join(', ') || 'none'}`,
       ),
     },
-    "initial_plan_generated",
+    'initial_plan_generated',
   );
 
   return result;
@@ -189,11 +189,11 @@ async function generatePlan(
   state: State,
   conversationState: ConversationState,
   message: Message,
-  mode: PlanningMode = "initial",
+  mode: PlanningMode = 'initial',
   usageType?: TokenUsageType,
-  researchMode: ResearchMode = "semi-autonomous",
+  researchMode: ResearchMode = 'semi-autonomous',
 ): Promise<PlanningResult> {
-  const PLANNING_LLM_PROVIDER = process.env.PLANNING_LLM_PROVIDER || "google";
+  const PLANNING_LLM_PROVIDER = process.env.PLANNING_LLM_PROVIDER || 'google';
   const planningApiKey = process.env[`${PLANNING_LLM_PROVIDER.toUpperCase()}_API_KEY`];
 
   if (!planningApiKey) {
@@ -211,19 +211,19 @@ async function generatePlan(
   const context = await buildContextFromState(conversationState, conversationId);
 
   // Select prompt based on mode
-  const promptTemplate = mode === "initial" ? INITIAL_PLANNING_PROMPT : NEXT_PLANNING_PROMPT;
+  const promptTemplate = mode === 'initial' ? INITIAL_PLANNING_PROMPT : NEXT_PLANNING_PROMPT;
 
   // Replace placeholders
   const planningPrompt = promptTemplate
-    .replace("{context}", context)
-    .replace("{userMessage}", message.question)
-    .replace("{researchModeGuidance}", getResearchModeGuidance(researchMode));
+    .replace('{context}', context)
+    .replace('{userMessage}', message.question)
+    .replace('{researchModeGuidance}', getResearchModeGuidance(researchMode));
 
   const response = await llmProvider.createChatCompletion({
-    model: process.env.PLANNING_LLM_MODEL || "gemini-2.5-pro",
+    model: process.env.PLANNING_LLM_MODEL || 'gemini-2.5-pro',
     messages: [
       {
-        role: "user" as const,
+        role: 'user' as const,
         content: planningPrompt,
       },
     ],
@@ -245,10 +245,10 @@ async function generatePlan(
       currentObjective: result.currentObjective,
       plan: result.plan.map(
         (t) =>
-          `${t.type} task: ${t.objective} datasets: ${t.datasets?.map((d) => `${d.filename} (${d.description})`).join(", ") || "none"}`,
+          `${t.type} task: ${t.objective} datasets: ${t.datasets?.map((d) => `${d.filename} (${d.description})`).join(', ') || 'none'}`,
       ),
     },
-    "plan_generated",
+    'plan_generated',
   );
 
   return result;
@@ -278,27 +278,27 @@ async function buildContextFromState(
     const clarCtx = conversationState.values.clarificationContext;
 
     const clarificationParts: string[] = [
-      "Pre-Research Clarifications (initial user guidance, may be overridden by later messages - less important as research level increases):",
-      "",
+      'Pre-Research Clarifications (initial user guidance, may be overridden by later messages - less important as research level increases):',
+      '',
       `Refined Objective: ${clarCtx.refinedObjective}`,
     ];
 
     // Add Q&A pairs
     if (clarCtx.questionsAndAnswers.length > 0) {
-      clarificationParts.push("");
+      clarificationParts.push('');
       clarCtx.questionsAndAnswers.forEach((qa, i) => {
         clarificationParts.push(`Q${i + 1}: ${qa.question}`);
         clarificationParts.push(`A${i + 1}: ${qa.answer}`);
       });
     }
 
-    contextParts.push(clarificationParts.join("\n"));
+    contextParts.push(clarificationParts.join('\n'));
   }
 
   // Add recent conversation history if available
   if (conversationId) {
     try {
-      const { getMessagesByConversation } = await import("../../db/operations");
+      const { getMessagesByConversation } = await import('../../db/operations');
       // Fetch 4 messages, then skip the first one (current message)
       const allMessages = await getMessagesByConversation(conversationId, 4);
 
@@ -323,13 +323,13 @@ async function buildContextFromState(
               parts.push(`Assistant: ${msg.summary}`);
             } else if (msg.content) {
               const content =
-                msg.content.length > 300 ? msg.content.substring(0, 300) + "..." : msg.content;
+                msg.content.length > 300 ? msg.content.substring(0, 300) + '...' : msg.content;
               parts.push(`Assistant: ${content}`);
             }
 
-            return parts.join("\n");
+            return parts.join('\n');
           })
-          .join("\n\n");
+          .join('\n\n');
 
         if (conversationHistory) {
           contextParts.push(
@@ -338,7 +338,7 @@ async function buildContextFromState(
         }
       }
     } catch (error) {
-      logger.warn({ error }, "Failed to fetch conversation history for planning");
+      logger.warn({ error }, 'Failed to fetch conversation history for planning');
     }
   }
 
@@ -367,7 +367,7 @@ async function buildContextFromState(
 
   if (conversationState.values.keyInsights?.length) {
     contextParts.push(
-      `Key Insights:\n${conversationState.values.keyInsights.map((insight, i) => `  ${i + 1}. ${insight}`).join("\n")}`,
+      `Key Insights:\n${conversationState.values.keyInsights.map((insight, i) => `  ${i + 1}. ${insight}`).join('\n')}`,
     );
   }
 
@@ -384,7 +384,7 @@ async function buildContextFromState(
         }
         return text;
       })
-      .join("\n\n");
+      .join('\n\n');
 
     contextParts.push(`Discoveries:\n${discoveriesText}`);
   }
@@ -393,17 +393,17 @@ async function buildContextFromState(
     contextParts.push(
       `Uploaded Datasets:\n${conversationState.values.uploadedDatasets
         .map((ds) => {
-          const sizeStr = ds.size ? ` [${formatFileSize(ds.size)}]` : "";
+          const sizeStr = ds.size ? ` [${formatFileSize(ds.size)}]` : '';
           return `  - ${ds.filename}${sizeStr} (ID: ${ds.id}): ${ds.description}`;
         })
-        .join("\n")}`,
+        .join('\n')}`,
     );
   }
 
   // Add artifacts from completed analysis tasks
   const completedAnalysisTasks =
     conversationState.values.plan?.filter(
-      (task) => task.type === "ANALYSIS" && task.end && task.artifacts?.length,
+      (task) => task.type === 'ANALYSIS' && task.end && task.artifacts?.length,
     ) || [];
 
   if (completedAnalysisTasks.length > 0) {
@@ -413,7 +413,7 @@ async function buildContextFromState(
           return `  - ${artifact.name} (id: ${artifact.id}) [from ${task.id}]: ${artifact.description}`;
         }),
       )
-      .join("\n");
+      .join('\n');
 
     contextParts.push(`Available Artifacts (from completed analysis tasks):\n${artifactsText}`);
   }
@@ -424,14 +424,14 @@ async function buildContextFromState(
       .map((task, i) => {
         let taskText = `  ${i + 1}. [${task.type}] ${task.objective}`;
         if (task.datasets?.length) {
-          taskText += `\n     Datasets: ${task.datasets.map((d) => `${d.filename} (${d.id})`).join(", ")}`;
+          taskText += `\n     Datasets: ${task.datasets.map((d) => `${d.filename} (${d.id})`).join(', ')}`;
         }
         return taskText;
       })
-      .join("\n");
+      .join('\n');
 
     contextParts.push(`Suggested Next Steps (from previous iteration):\n${suggestionsText}`);
   }
 
-  return contextParts.length > 0 ? contextParts.join("\n") : "No previous results available";
+  return contextParts.length > 0 ? contextParts.join('\n') : 'No previous results available';
 }

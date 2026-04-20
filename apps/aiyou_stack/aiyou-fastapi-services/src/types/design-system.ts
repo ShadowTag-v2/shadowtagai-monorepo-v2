@@ -1,10 +1,10 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 // Design Token Schemas
 export const ColorTokenSchema = z.object({
   name: z.string(),
   value: z.string(),
-  category: z.enum(["primary", "secondary", "neutral", "semantic", "extended"]),
+  category: z.enum(['primary', 'secondary', 'neutral', 'semantic', 'extended']),
   description: z.string().optional(),
 });
 
@@ -35,7 +35,7 @@ export const DesignTokensSchema = z.object({
 // Component Schemas
 export const ComponentSchema = z.object({
   name: z.string(),
-  category: z.enum(["layout", "input", "display", "feedback", "navigation", "overlay"]),
+  category: z.enum(['layout', 'input', 'display', 'feedback', 'navigation', 'overlay']),
   description: z.string(),
   props: z.array(
     z.object({
@@ -59,7 +59,7 @@ export const ComponentSchema = z.object({
 export const ComponentLibrarySchema = z.object({
   name: z.string(),
   version: z.string(),
-  framework: z.enum(["react", "vue", "angular", "svelte", "web-components"]),
+  framework: z.enum(['react', 'vue', 'angular', 'svelte', 'web-components']),
   components: z.array(ComponentSchema),
   designTokens: DesignTokensSchema,
   styleGuide: z
@@ -74,7 +74,7 @@ export const ComponentLibrarySchema = z.object({
 // Request/Response Schemas
 export const DesignSystemRequestSchema = z.object({
   projectName: z.string(),
-  framework: z.enum(["react", "vue", "angular", "svelte", "web-components"]),
+  framework: z.enum(['react', 'vue', 'angular', 'svelte', 'web-components']),
   theme: z
     .object({
       primaryColor: z.string().optional(),
@@ -95,8 +95,8 @@ export const DesignSystemRequestSchema = z.object({
 
 export const VertexWorkbenchConfigSchema = z.object({
   projectId: z.string(),
-  location: z.string().default("us-central1"),
-  modelName: z.string().default("gemini-pro"),
+  location: z.string().default('us-central1'),
+  modelName: z.string().default('gemini-pro'),
   credentials: z.string().optional(),
 });
 
@@ -119,7 +119,7 @@ export interface AgentConfig {
 }
 
 export interface DesignSystemBuilderConfig extends AgentConfig {
-  defaultFramework: ComponentLibrary["framework"];
+  defaultFramework: ComponentLibrary['framework'];
   outputPath: string;
   vertexConfig?: VertexWorkbenchConfig;
 }

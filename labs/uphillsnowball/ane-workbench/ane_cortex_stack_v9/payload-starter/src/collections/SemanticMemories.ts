@@ -7,4 +7,4 @@ export default {
     { name: 'kind', type: 'text' },
     { name: 'evidence', type: 'json' },
   ],
-}
+};

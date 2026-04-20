@@ -20,8 +20,6 @@
  */
 
 const ScrollAnimator = (() => {
-  'use strict';
-
   let canvas = null;
   let ctx = null;
   let frames = [];
@@ -128,10 +126,7 @@ const ScrollAnimator = (() => {
     const maxScroll = scrollHeight;
     const scrollTop = window.scrollY || window.pageYOffset;
     const scrollFraction = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
-    const frameIndex = Math.min(
-      Math.floor(scrollFraction * totalFrames),
-      totalFrames - 1
-    );
+    const frameIndex = Math.min(Math.floor(scrollFraction * totalFrames), totalFrames - 1);
 
     if (frameIndex === currentFrame) return;
     currentFrame = frameIndex;

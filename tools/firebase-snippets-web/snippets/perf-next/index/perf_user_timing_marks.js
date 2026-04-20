@@ -7,11 +7,11 @@
 // [START perf_user_timing_marks_modular]
 const performance = window.performance;
 
-performance.mark("measurementStart");
+performance.mark('measurementStart');
 
 // Code that you want to trace
 // ...
 
-performance.mark("measurementStop");
-performance.measure("customTraceName", "measurementStart", "measurementStop");
+performance.mark('measurementStop');
+performance.measure('customTraceName', 'measurementStart', 'measurementStop');
 // [END perf_user_timing_marks_modular]

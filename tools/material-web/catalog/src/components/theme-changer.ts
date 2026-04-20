@@ -11,21 +11,17 @@ import '@material/web/labs/segmentedbuttonset/outlined-segmented-button-set.js';
 import './copy-code-button.js';
 import './hct-slider.js';
 
-import type {MdOutlinedSegmentedButton} from '@material/web/labs/segmentedbutton/outlined-segmented-button.js';
-import {css, html, LitElement} from 'lit';
-import {customElement, query, queryAll, state} from 'lit/decorators.js';
-import {live} from 'lit/directives/live.js';
+import type { MdOutlinedSegmentedButton } from '@material/web/labs/segmentedbutton/outlined-segmented-button.js';
+import { css, html, LitElement } from 'lit';
+import { customElement, query, queryAll, state } from 'lit/decorators.js';
+import { live } from 'lit/directives/live.js';
 
-import {ChangeColorEvent, ChangeDarkModeEvent} from '../types/color-events.js';
-import {hctFromHex, hexFromHct} from '../utils/material-color-helpers.js';
-import type {ColorMode} from '../utils/theme.js';
-import {
-  getCurrentMode,
-  getCurrentSeedColor,
-  getCurrentThemeString,
-} from '../utils/theme.js';
+import { ChangeColorEvent, ChangeDarkModeEvent } from '../types/color-events.js';
+import { hctFromHex, hexFromHct } from '../utils/material-color-helpers.js';
+import type { ColorMode } from '../utils/theme.js';
+import { getCurrentMode, getCurrentSeedColor, getCurrentThemeString } from '../utils/theme.js';
 
-import type {HCTSlider} from './hct-slider.js';
+import type { HCTSlider } from './hct-slider.js';
 
 /**
  * A small set of controls that allows the user to change the theme and preview
@@ -210,7 +206,7 @@ export class ThemeChanger extends LitElement {
       index: number;
     }>,
   ) {
-    const {button} = e.detail;
+    const { button } = e.detail;
     const value = button.dataset.value as ColorMode;
     this.selectedColorMode = value;
     this.dispatchEvent(new ChangeDarkModeEvent(value));

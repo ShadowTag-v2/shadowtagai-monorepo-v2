@@ -7,15 +7,16 @@
  *
  * The dbPath is shared with test files via vitest's provide/inject API.
  */
-import path from 'path';
+
 import lbug from '@ladybugdb/core';
+import path from 'path';
 import type { GlobalSetupContext } from 'vitest/node';
-import { createTempDir } from './helpers/test-db.js';
 import {
+  EMBEDDING_SCHEMA,
   NODE_SCHEMA_QUERIES,
   REL_SCHEMA_QUERIES,
-  EMBEDDING_SCHEMA,
 } from '../src/core/lbug/schema.js';
+import { createTempDir } from './helpers/test-db.js';
 
 export default async function setup({ provide }: GlobalSetupContext) {
   const tmpHandle = await createTempDir('gitnexus-shared-');

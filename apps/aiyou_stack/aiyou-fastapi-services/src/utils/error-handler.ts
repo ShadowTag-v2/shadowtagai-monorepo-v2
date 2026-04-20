@@ -1,6 +1,6 @@
-import type { NextFunction, Request, Response } from "express";
-import { ZodError } from "zod";
-import { logger } from "./logger";
+import type { NextFunction, Request, Response } from 'express';
+import { ZodError } from 'zod';
+import { logger } from './logger';
 
 export class AppError extends Error {
   constructor(
@@ -14,14 +14,14 @@ export class AppError extends Error {
 }
 
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-  logger.error("Error occurred:", err);
+  logger.error('Error occurred:', err);
 
   // Zod validation error
   if (err instanceof ZodError) {
     return res.status(400).json({
-      error: "Validation Error",
+      error: 'Validation Error',
       details: err.errors.map((e) => ({
-        path: e.path.join("."),
+        path: e.path.join('.'),
         message: e.message,
       })),
     });
@@ -37,8 +37,8 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
 
   // Unknown error
   return res.status(500).json({
-    error: "Internal Server Error",
-    message: process.env.NODE_ENV === "development" ? err.message : "Something went wrong",
+    error: 'Internal Server Error',
+    message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong',
   });
 };
 

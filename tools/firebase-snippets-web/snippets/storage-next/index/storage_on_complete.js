@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START storage_on_complete_modular]
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 
 const storage = getStorage();
 const imageRef = ref(storage, 'images/' + file.name);
@@ -18,7 +18,8 @@ uploadBytesResumable(imageRef, file, metadata)
       console.log('File available at', url);
       // ...
     });
-  }).catch((error) => {
+  })
+  .catch((error) => {
     console.error('Upload failed', error);
     // ...
   });

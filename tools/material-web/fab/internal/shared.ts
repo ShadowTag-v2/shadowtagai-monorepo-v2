@@ -8,12 +8,12 @@ import '../../elevation/elevation.js';
 import '../../focus/md-focus-ring.js';
 import '../../ripple/ripple.js';
 
-import {html, LitElement, nothing} from 'lit';
-import {property} from 'lit/decorators.js';
-import {classMap} from 'lit/directives/class-map.js';
+import { html, LitElement, nothing } from 'lit';
+import { property } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
-import {ARIAMixinStrict} from '../../internal/aria/aria.js';
-import {mixinDelegatesAria} from '../../internal/aria/delegate.js';
+import type { ARIAMixinStrict } from '../../internal/aria/aria.js';
+import { mixinDelegatesAria } from '../../internal/aria/delegate.js';
 
 /**
  * Sizes variants available to non-extended FABs.
@@ -37,7 +37,7 @@ export abstract class SharedFab extends fabBaseClass {
    * NOTE: Branded FABs cannot be sized to `small`, and Extended FABs do not
    * have different sizes.
    */
-  @property({reflect: true}) size: FabSize = 'medium';
+  @property({ reflect: true }) size: FabSize = 'medium';
 
   /**
    * The text to display on the FAB.
@@ -47,11 +47,11 @@ export abstract class SharedFab extends fabBaseClass {
   /**
    * Lowers the FAB's elevation.
    */
-  @property({type: Boolean}) lowered = false;
+  @property({ type: Boolean }) lowered = false;
 
   protected override render() {
     // Needed for closure conformance
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     return html`
       <button
         class="fab ${classMap(this.getRenderClasses())}"
@@ -67,10 +67,10 @@ export abstract class SharedFab extends fabBaseClass {
   protected getRenderClasses() {
     const isExtended = !!this.label;
     return {
-      'lowered': this.lowered,
-      'small': this.size === 'small' && !isExtended,
-      'large': this.size === 'large' && !isExtended,
-      'extended': isExtended,
+      lowered: this.lowered,
+      small: this.size === 'small' && !isExtended,
+      large: this.size === 'large' && !isExtended,
+      extended: isExtended,
     };
   }
 
@@ -83,13 +83,11 @@ export abstract class SharedFab extends fabBaseClass {
   }
 
   private renderIcon() {
-    const {ariaLabel} = this as ARIAMixinStrict;
+    const { ariaLabel } = this as ARIAMixinStrict;
     return html`<span class="icon">
       <slot
         name="icon"
-        aria-hidden=${ariaLabel || this.label
-          ? 'true'
-          : (nothing as unknown as 'false')}>
+        aria-hidden=${ariaLabel || this.label ? 'true' : (nothing as unknown as 'false')}>
         <span></span>
       </slot>
     </span>`;

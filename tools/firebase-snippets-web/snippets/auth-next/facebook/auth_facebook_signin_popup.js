@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_facebook_signin_popup_modular]
-import { getAuth, signInWithPopup, FacebookAuthProvider } from "firebase/auth";
+import { FacebookAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 
 const auth = getAuth();
 signInWithPopup(auth, provider)

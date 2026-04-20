@@ -121,9 +121,7 @@
                       },
                       "oneofs": {
                         "_freeTier": {
-                          "oneof": [
-                            "freeTier"
-                          ]
+                          "oneof": ["freeTier"]
                         }
                       },
                       "fields": {
@@ -312,9 +310,7 @@
                         "SourceInfo": {
                           "oneofs": {
                             "source": {
-                              "oneof": [
-                                "backup"
-                              ]
+                              "oneof": ["backup"]
                             }
                           },
                           "fields": {
@@ -532,11 +528,7 @@
                         "IndexField": {
                           "oneofs": {
                             "valueMode": {
-                              "oneof": [
-                                "order",
-                                "arrayConfig",
-                                "vectorConfig"
-                              ]
+                              "oneof": ["order", "arrayConfig", "vectorConfig"]
                             }
                           },
                           "fields": {
@@ -574,9 +566,7 @@
                             "VectorConfig": {
                               "oneofs": {
                                 "type": {
-                                  "oneof": [
-                                    "flat"
-                                  ]
+                                  "oneof": ["flat"]
                                 }
                               },
                               "fields": {
@@ -2335,10 +2325,7 @@
                       },
                       "oneofs": {
                         "recurrence": {
-                          "oneof": [
-                            "dailyRecurrence",
-                            "weeklyRecurrence"
-                          ]
+                          "oneof": ["dailyRecurrence", "weeklyRecurrence"]
                         }
                       },
                       "fields": {
@@ -2397,9 +2384,7 @@
                       },
                       "oneofs": {
                         "UserCredsIdentity": {
-                          "oneof": [
-                            "resourceIdentity"
-                          ]
+                          "oneof": ["resourceIdentity"]
                         }
                       },
                       "fields": {
@@ -2602,14 +2587,7 @@
             "HttpRule": {
               "oneofs": {
                 "pattern": {
-                  "oneof": [
-                    "get",
-                    "put",
-                    "post",
-                    "delete",
-                    "patch",
-                    "custom"
-                  ]
+                  "oneof": ["get", "put", "post", "delete", "patch", "custom"]
                 }
               },
               "fields": {
@@ -3257,12 +3235,7 @@
                   }
                 }
               },
-              "extensions": [
-                [
-                  1000,
-                  536870911
-                ]
-              ],
+              "extensions": [[1000, 536870911]],
               "nested": {
                 "Declaration": {
                   "fields": {
@@ -3287,12 +3260,7 @@
                       "id": 6
                     }
                   },
-                  "reserved": [
-                    [
-                      4,
-                      4
-                    ]
-                  ]
+                  "reserved": [[4, 4]]
                 },
                 "VerificationState": {
                   "values": {
@@ -3623,22 +3591,8 @@
                   "id": 999
                 }
               },
-              "extensions": [
-                [
-                  1000,
-                  536870911
-                ]
-              ],
-              "reserved": [
-                [
-                  42,
-                  42
-                ],
-                [
-                  38,
-                  38
-                ]
-              ],
+              "extensions": [[1000, 536870911]],
+              "reserved": [[42, 42], [38, 38]],
               "nested": {
                 "OptimizeMode": {
                   "values": {
@@ -3694,34 +3648,8 @@
                   "id": 999
                 }
               },
-              "extensions": [
-                [
-                  1000,
-                  536870911
-                ]
-              ],
-              "reserved": [
-                [
-                  4,
-                  4
-                ],
-                [
-                  5,
-                  5
-                ],
-                [
-                  6,
-                  6
-                ],
-                [
-                  8,
-                  8
-                ],
-                [
-                  9,
-                  9
-                ]
-              ]
+              "extensions": [[1000, 536870911]],
+              "reserved": [[4, 4], [5, 5], [6, 6], [8, 8], [9, 9]]
             },
             "FieldOptions": {
               "edition": "proto2",
@@ -3803,22 +3731,8 @@
                   "id": 999
                 }
               },
-              "extensions": [
-                [
-                  1000,
-                  536870911
-                ]
-              ],
-              "reserved": [
-                [
-                  4,
-                  4
-                ],
-                [
-                  18,
-                  18
-                ]
-              ],
+              "extensions": [[1000, 536870911]],
+              "reserved": [[4, 4], [18, 18]],
               "nested": {
                 "CType": {
                   "values": {
@@ -3882,12 +3796,7 @@
                   "id": 999
                 }
               },
-              "extensions": [
-                [
-                  1000,
-                  536870911
-                ]
-              ]
+              "extensions": [[1000, 536870911]]
             },
             "EnumOptions": {
               "edition": "proto2",
@@ -3920,18 +3829,8 @@
                   "id": 999
                 }
               },
-              "extensions": [
-                [
-                  1000,
-                  536870911
-                ]
-              ],
-              "reserved": [
-                [
-                  5,
-                  5
-                ]
-              ]
+              "extensions": [[1000, 536870911]],
+              "reserved": [[5, 5]]
             },
             "EnumValueOptions": {
               "edition": "proto2",
@@ -3960,12 +3859,7 @@
                   "id": 999
                 }
               },
-              "extensions": [
-                [
-                  1000,
-                  536870911
-                ]
-              ]
+              "extensions": [[1000, 536870911]]
             },
             "ServiceOptions": {
               "edition": "proto2",
@@ -3987,12 +3881,7 @@
                   "id": 999
                 }
               },
-              "extensions": [
-                [
-                  1000,
-                  536870911
-                ]
-              ]
+              "extensions": [[1000, 536870911]]
             },
             "MethodOptions": {
               "edition": "proto2",
@@ -4021,12 +3910,7 @@
                   "id": 999
                 }
               },
-              "extensions": [
-                [
-                  1000,
-                  536870911
-                ]
-              ],
+              "extensions": [[1000, 536870911]],
               "nested": {
                 "IdempotencyLevel": {
                   "values": {
@@ -4152,33 +4036,13 @@
                 }
               },
               "extensions": [
-                [
-                  1000,
-                  1000
-                ],
-                [
-                  1001,
-                  1001
-                ],
-                [
-                  1002,
-                  1002
-                ],
-                [
-                  9995,
-                  9999
-                ],
-                [
-                  10000,
-                  10000
-                ]
+                [1000, 1000],
+                [1001, 1001],
+                [1002, 1002],
+                [9995, 9999],
+                [10000, 10000]
               ],
-              "reserved": [
-                [
-                  999,
-                  999
-                ]
-              ],
+              "reserved": [[999, 999]],
               "nested": {
                 "FieldPresence": {
                   "values": {
@@ -4676,10 +4540,7 @@
             "Operation": {
               "oneofs": {
                 "result": {
-                  "oneof": [
-                    "error",
-                    "response"
-                  ]
+                  "oneof": ["error", "response"]
                 }
               },
               "fields": {

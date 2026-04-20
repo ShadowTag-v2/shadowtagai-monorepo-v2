@@ -1,58 +1,58 @@
-"use client";
+'use client';
 
-import { ShieldCheck, CheckCircle, XCircle, AlertTriangle, TrendingUp, Target } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { AlertTriangle, CheckCircle, ShieldCheck, Target, TrendingUp, XCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface QualityGate {
   name: string;
   current: number | string;
   target: number | string;
-  status: "pass" | "fail" | "warning";
+  status: 'pass' | 'fail' | 'warning';
   description: string;
 }
 
 const qualityGates: QualityGate[] = [
   {
-    name: "IQ Lock",
+    name: 'IQ Lock',
     current: 163,
     target: 160,
-    status: "pass",
-    description: "Minimum intelligence quotient score for agent outputs",
+    status: 'pass',
+    description: 'Minimum intelligence quotient score for agent outputs',
   },
   {
-    name: "ROI Ratio",
+    name: 'ROI Ratio',
     current: 3.4,
     target: 3.0,
-    status: "pass",
-    description: "Return on investment must exceed 3x cost",
+    status: 'pass',
+    description: 'Return on investment must exceed 3x cost',
   },
   {
-    name: "LTV:CAC Ratio",
+    name: 'LTV:CAC Ratio',
     current: 4.2,
     target: 4.0,
-    status: "pass",
-    description: "Lifetime value to customer acquisition cost ratio",
+    status: 'pass',
+    description: 'Lifetime value to customer acquisition cost ratio',
   },
   {
-    name: "SonarQube Score",
-    current: "A",
-    target: "B",
-    status: "pass",
-    description: "Code quality score from static analysis",
+    name: 'SonarQube Score',
+    current: 'A',
+    target: 'B',
+    status: 'pass',
+    description: 'Code quality score from static analysis',
   },
   {
-    name: "Test Coverage",
+    name: 'Test Coverage',
     current: 78,
     target: 80,
-    status: "warning",
-    description: "Percentage of code covered by tests",
+    status: 'warning',
+    description: 'Percentage of code covered by tests',
   },
   {
-    name: "Security Score",
+    name: 'Security Score',
     current: 94,
     target: 90,
-    status: "pass",
-    description: "OWASP security compliance score",
+    status: 'pass',
+    description: 'OWASP security compliance score',
   },
 ];
 
@@ -64,26 +64,26 @@ interface CodeMetric {
 }
 
 const codeMetrics: CodeMetric[] = [
-  { name: "Lines of Code", value: "45.2K", change: 2.3 },
-  { name: "Duplications", value: "1.2%", change: -0.5 },
-  { name: "Tech Debt", value: "2.4h", change: -1.2 },
-  { name: "Bugs", value: 0, change: 0 },
-  { name: "Vulnerabilities", value: 0, change: 0 },
-  { name: "Code Smells", value: 12, change: -3 },
+  { name: 'Lines of Code', value: '45.2K', change: 2.3 },
+  { name: 'Duplications', value: '1.2%', change: -0.5 },
+  { name: 'Tech Debt', value: '2.4h', change: -1.2 },
+  { name: 'Bugs', value: 0, change: 0 },
+  { name: 'Vulnerabilities', value: 0, change: 0 },
+  { name: 'Code Smells', value: 12, change: -3 },
 ];
 
-function StatusBadge({ status }: { status: "pass" | "fail" | "warning" }) {
+function StatusBadge({ status }: { status: 'pass' | 'fail' | 'warning' }) {
   const config = {
-    pass: { icon: CheckCircle, bg: "bg-green-100", text: "text-green-700", label: "PASS" },
-    fail: { icon: XCircle, bg: "bg-red-100", text: "text-red-700", label: "FAIL" },
-    warning: { icon: AlertTriangle, bg: "bg-amber-100", text: "text-amber-700", label: "WARNING" },
+    pass: { icon: CheckCircle, bg: 'bg-green-100', text: 'text-green-700', label: 'PASS' },
+    fail: { icon: XCircle, bg: 'bg-red-100', text: 'text-red-700', label: 'FAIL' },
+    warning: { icon: AlertTriangle, bg: 'bg-amber-100', text: 'text-amber-700', label: 'WARNING' },
   };
 
   const { icon: Icon, bg, text, label } = config[status];
 
   return (
     <span
-      className={cn("flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium", bg, text)}
+      className={cn('flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium', bg, text)}
     >
       <Icon className="h-3 w-3" />
       {label}
@@ -119,11 +119,11 @@ function MetricCard({ metric }: { metric: CodeMetric }) {
         {!isNeutral && (
           <span
             className={cn(
-              "text-xs flex items-center gap-1",
-              isPositive ? "text-red-500" : "text-green-500",
+              'text-xs flex items-center gap-1',
+              isPositive ? 'text-red-500' : 'text-green-500',
             )}
           >
-            <TrendingUp className={cn("h-3 w-3", !isPositive && "rotate-180")} />
+            <TrendingUp className={cn('h-3 w-3', !isPositive && 'rotate-180')} />
             {Math.abs(metric.change)}%
           </span>
         )}
@@ -133,7 +133,7 @@ function MetricCard({ metric }: { metric: CodeMetric }) {
 }
 
 export default function QualityPage() {
-  const passCount = qualityGates.filter((g) => g.status === "pass").length;
+  const passCount = qualityGates.filter((g) => g.status === 'pass').length;
   const totalGates = qualityGates.length;
   const overallScore = (passCount / totalGates) * 100;
 
@@ -188,21 +188,21 @@ export default function QualityPage() {
         <h2 className="text-lg font-semibold mb-4">Recent Quality Checks</h2>
         <div className="space-y-3">
           {[
-            { time: "5 mins ago", action: "PR #234 passed all gates", status: "pass" },
-            { time: "1 hour ago", action: "Security scan completed", status: "pass" },
+            { time: '5 mins ago', action: 'PR #234 passed all gates', status: 'pass' },
+            { time: '1 hour ago', action: 'Security scan completed', status: 'pass' },
             {
-              time: "2 hours ago",
-              action: "Test coverage dropped below threshold",
-              status: "warning",
+              time: '2 hours ago',
+              action: 'Test coverage dropped below threshold',
+              status: 'warning',
             },
-            { time: "4 hours ago", action: "Code quality analysis completed", status: "pass" },
+            { time: '4 hours ago', action: 'Code quality analysis completed', status: 'pass' },
           ].map((item, i) => (
             <div
               key={i}
               className="flex items-center justify-between py-2 border-b border-slate-100 last:border-0"
             >
               <div className="flex items-center gap-3">
-                {item.status === "pass" ? (
+                {item.status === 'pass' ? (
                   <CheckCircle className="h-5 w-5 text-green-500" />
                 ) : (
                   <AlertTriangle className="h-5 w-5 text-amber-500" />

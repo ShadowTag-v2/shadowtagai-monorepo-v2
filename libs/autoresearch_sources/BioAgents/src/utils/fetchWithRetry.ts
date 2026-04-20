@@ -1,4 +1,4 @@
-import logger from "./logger";
+import logger from './logger';
 
 export interface FetchRetryOptions {
   maxRetries?: number;
@@ -12,9 +12,9 @@ const RETRYABLE_STATUS_CODES = new Set([429, 500, 502, 503, 504]);
 function isRetryable(error: unknown): boolean {
   if (!(error instanceof Error)) return false;
   const msg = `${error.name} ${error.message}`.toLowerCase();
-  const code = ((error as NodeJS.ErrnoException).code || "").toLowerCase();
+  const code = ((error as NodeJS.ErrnoException).code || '').toLowerCase();
   return /econnre|enotfound|etimedout|socket|network|fetch failed|abort|unable to connect|connectionrefused/i.test(
-    msg + " " + code,
+    msg + ' ' + code,
   );
 }
 
@@ -38,7 +38,7 @@ export async function fetchWithRetry(
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     if (attempt > 0) {
       const wait = Math.min(initialDelayMs * 2 ** (attempt - 1), maxDelayMs);
-      logger.debug({ attempt, wait }, "fetch_retry_waiting");
+      logger.debug({ attempt, wait }, 'fetch_retry_waiting');
       await delay(wait);
     }
 

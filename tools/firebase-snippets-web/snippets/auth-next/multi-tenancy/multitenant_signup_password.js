@@ -5,14 +5,16 @@
 // 'npm run snippets'.
 
 // [START multitenant_signup_password_modular]
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
 auth.tenantId = 'TENANT_ID';
 
 createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // User is signed in.
     // userCredential.user.tenantId is 'TENANT_ID'.
-  }).catch((error) => {
+  })
+  .catch((error) => {
     // Handle / display error.
     // ...
   });

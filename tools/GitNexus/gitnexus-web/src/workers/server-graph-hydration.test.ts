@@ -1,7 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import type { SerializablePipelineResult } from '../types/pipeline';
-import { buildPipelineResultFromSerialized, hydrateSerializedServerGraph } from './server-graph-hydration';
+import {
+  buildPipelineResultFromSerialized,
+  hydrateSerializedServerGraph,
+} from './server-graph-hydration';
 
 describe('server graph hydration helpers', () => {
   const serialized: SerializablePipelineResult = {

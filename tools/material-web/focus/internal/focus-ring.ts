@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {isServer, LitElement, PropertyValues} from 'lit';
-import {property} from 'lit/decorators.js';
+import { isServer, LitElement, type PropertyValues } from 'lit';
+import { property } from 'lit/decorators.js';
 
 import {
-  Attachable,
+  type Attachable,
   AttachableController,
 } from '../../internal/controller/attachable-controller.js';
 
@@ -26,12 +26,12 @@ export class FocusRing extends LitElement implements Attachable {
   /**
    * Makes the focus ring visible.
    */
-  @property({type: Boolean, reflect: true}) visible = false;
+  @property({ type: Boolean, reflect: true }) visible = false;
 
   /**
    * Makes the focus ring animate inwards instead of outwards.
    */
-  @property({type: Boolean, reflect: true}) inward = false;
+  @property({ type: Boolean, reflect: true }) inward = false;
 
   get htmlFor() {
     return this.attachableController.htmlFor;

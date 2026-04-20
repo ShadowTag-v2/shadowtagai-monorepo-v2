@@ -7,11 +7,10 @@
 // [START post_with_map_advanced_modular]
 // The value of each entry in 'categories' is a unix timestamp
 {
-  title: "My great post",
-  categories: {
-    technology: 1502144665,
-    opinion: 1502144665,
+  title: 'My great post', categories;
+  :
+  technology: 1502144665, opinion;
+  : 1502144665,
     cats: 1502144665
-  }
 }
 // [END post_with_map_advanced_modular]

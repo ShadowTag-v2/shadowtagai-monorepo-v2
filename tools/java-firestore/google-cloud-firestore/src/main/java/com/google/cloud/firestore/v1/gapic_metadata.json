@@ -35,7 +35,12 @@
               "methods": ["getDocument", "getDocumentCallable"]
             },
             "ListCollectionIds": {
-              "methods": ["listCollectionIds", "listCollectionIds", "listCollectionIdsPagedCallable", "listCollectionIdsCallable"]
+              "methods": [
+                "listCollectionIds",
+                "listCollectionIds",
+                "listCollectionIdsPagedCallable",
+                "listCollectionIdsCallable"
+              ]
             },
             "ListDocuments": {
               "methods": ["listDocuments", "listDocumentsPagedCallable", "listDocumentsCallable"]

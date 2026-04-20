@@ -3,15 +3,8 @@
     "google.firestore.admin.v1.FirestoreAdmin": {
       "retry_codes": {
         "non_idempotent": [],
-        "idempotent": [
-          "DEADLINE_EXCEEDED",
-          "UNAVAILABLE"
-        ],
-        "deadline_exceeded_internal_unavailable": [
-          "DEADLINE_EXCEEDED",
-          "INTERNAL",
-          "UNAVAILABLE"
-        ]
+        "idempotent": ["DEADLINE_EXCEEDED", "UNAVAILABLE"],
+        "deadline_exceeded_internal_unavailable": ["DEADLINE_EXCEEDED", "INTERNAL", "UNAVAILABLE"]
       },
       "retry_params": {
         "default": {

@@ -1,8 +1,8 @@
+import { fileURLToPath } from 'node:url';
 import { execSync, spawn } from 'child_process';
 import * as fs from 'fs';
-import * as path from 'path';
 import * as os from 'os';
-import { fileURLToPath } from 'node:url';
+import * as path from 'path';
 
 export const Style = {
   GREEN: '\x1b[32m',
@@ -49,7 +49,7 @@ export function printMinimalPanel(
   title: string,
   fields: Record<string, string | number | boolean | null | undefined>,
   colorName: StyleColor = 'GREEN',
-  icon: string = '🥒'
+  icon: string = '🥒',
 ) {
   const width = getWidth();
   const c = Style[colorName] || Style.GREEN;
@@ -74,7 +74,7 @@ export function printMinimalPanel(
     const wrappedVal = wrapText(String(value), valWidth);
 
     process.stdout.write(
-      `  ${d}${key + ':'}${' '.repeat(maxKeyLen - key.length - 1)}${r} ${wrappedVal[0]}\n`
+      `  ${d}${key + ':'}${' '.repeat(maxKeyLen - key.length - 1)}${r} ${wrappedVal[0]}\n`,
     );
     for (let i = 1; i < wrappedVal.length; i++) {
       process.stdout.write(`  ${' '.repeat(maxKeyLen)} ${wrappedVal[i]}\n`);
@@ -106,7 +106,7 @@ export interface ShellError extends Error {
 
 export function run_cmd(
   cmd: string | string[],
-  options: { cwd?: string; check?: boolean; capture?: boolean } = {}
+  options: { cwd?: string; check?: boolean; capture?: boolean } = {},
 ): string {
   const { cwd, check = true, capture = true } = options;
   const command = Array.isArray(cmd) ? cmd.join(' ') : cmd;
@@ -121,7 +121,7 @@ export function run_cmd(
     const err = error as ShellError;
     if (check)
       throw new Error(
-        `Command failed: ${command}\nError: ${err.stderr?.toString() || err.message}`
+        `Command failed: ${command}\nError: ${err.stderr?.toString() || err.message}`,
       );
     return err.stdout?.toString().trim() || '';
   }
@@ -129,7 +129,7 @@ export function run_cmd(
 
 export async function spawn_cmd(
   cmd: string[],
-  options: { cwd?: string; onData?: (data: string) => void } = {}
+  options: { cwd?: string; onData?: (data: string) => void } = {},
 ): Promise<number> {
   return new Promise((resolve) => {
     const proc = spawn(cmd[0], cmd.slice(1), {

@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START analytics_ecommerce_promotions_modular]
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 // Prepare ecommerce params
 const params12 = {
@@ -14,7 +14,7 @@ const params12 = {
   creative_name: 'summer2020_promo.jpg',
   creative_slot: 'featured_app_1',
   location_id: 'HERO_BANNER',
-  items: [item_jeggings]
+  items: [item_jeggings],
 };
 
 // Log event when a promotion is displayed

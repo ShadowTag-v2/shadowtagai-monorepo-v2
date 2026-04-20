@@ -1,4 +1,4 @@
-import { AgentDebugger } from "../components/AgentDebugger";
+import { AgentDebugger } from '../components/AgentDebugger';
 
 export default function Home() {
   return (

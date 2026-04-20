@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html, LitElement} from 'lit';
-import {property, queryAll} from 'lit/decorators.js';
+import { html, LitElement } from 'lit';
+import { property, queryAll } from 'lit/decorators.js';
 
 /**
  * An item layout component.
@@ -18,7 +18,7 @@ export class Item extends LitElement {
    * Content. This attribute is not needed for single line items or items with
    * three or more lines.
    */
-  @property({type: Boolean, reflect: true}) multiline = false;
+  @property({ type: Boolean, reflect: true }) multiline = false;
 
   @queryAll('.text slot') private readonly textSlots!: HTMLSlotElement[];
 
@@ -62,13 +62,12 @@ export class Item extends LitElement {
 }
 
 function slotHasContent(slot: HTMLSlotElement) {
-  for (const node of slot.assignedNodes({flatten: true})) {
+  for (const node of slot.assignedNodes({ flatten: true })) {
     // Assume there's content if there's an element slotted in
     const isElement = node.nodeType === Node.ELEMENT_NODE;
     // If there's only text nodes for the default slot, check if there's
     // non-whitespace.
-    const isTextWithContent =
-      node.nodeType === Node.TEXT_NODE && node.textContent?.match(/\S/);
+    const isTextWithContent = node.nodeType === Node.TEXT_NODE && node.textContent?.match(/\S/);
     if (isElement || isTextWithContent) {
       return true;
     }

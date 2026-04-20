@@ -1,4 +1,4 @@
-import { query } from "@anthropic-ai/claude-agent-sdk";
+import { query } from '@anthropic-ai/claude-agent-sdk';
 
 interface SkillResult {
   type: string;
@@ -46,8 +46,8 @@ export async function callAnthropicWithSkills(prompt: string): Promise<SkillResu
   for await (const message of query({
     prompt,
     options: {
-      settingSources: ["project"], // Load Skills from filesystem
-      allowedTools: ["Skill", "Read", "Grep", "Bash"], // Enable Skill tool
+      settingSources: ['project'], // Load Skills from filesystem
+      allowedTools: ['Skill', 'Read', 'Grep', 'Bash'], // Enable Skill tool
     },
   })) {
     // Store each message, the last one will be the result
@@ -55,7 +55,7 @@ export async function callAnthropicWithSkills(prompt: string): Promise<SkillResu
   }
 
   // Return the final result message with all metadata
-  if (lastMessage?.type === "result") {
+  if (lastMessage?.type === 'result') {
     return lastMessage as SkillResult;
   }
 

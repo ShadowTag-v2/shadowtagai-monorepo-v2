@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { triggerBackup, registerTriggerBackupTool } from './trigger_backup.js';
+import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
 import { apiClientFactory } from '../../utility/api_client_factory.js';
+import { registerTriggerBackupTool, triggerBackup } from './trigger_backup.js';
 
 vi.mock('../../utility/api_client_factory.js', () => ({
   apiClientFactory: {

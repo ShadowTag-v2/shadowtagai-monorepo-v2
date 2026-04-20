@@ -5,7 +5,15 @@
 // 'npm run snippets'.
 
 // [START rtdb_sample_presence_app_modular]
-import { getDatabase, ref, onValue, push, onDisconnect, set, serverTimestamp } from "firebase/database";
+import {
+  getDatabase,
+  onDisconnect,
+  onValue,
+  push,
+  ref,
+  serverTimestamp,
+  set,
+} from 'firebase/database';
 
 // Since I can connect from multiple devices or browser tabs, we store each connection instance separately
 // any time that connectionsRef's value is null (i.e. has no children) I am offline

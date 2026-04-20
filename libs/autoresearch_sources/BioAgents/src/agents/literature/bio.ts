@@ -1,10 +1,10 @@
-import type { BioLiteratureMode } from ".";
-import type { OnPollUpdate } from "../../types/core";
-import { fetchWithRetry } from "../../utils/fetchWithRetry";
-import logger from "../../utils/logger";
+import type { OnPollUpdate } from '../../types/core';
+import { fetchWithRetry } from '../../utils/fetchWithRetry';
+import logger from '../../utils/logger';
+import type { BioLiteratureMode } from '.';
 
 const BIO_LIT_AGENT_API_URL = process.env.BIO_LIT_AGENT_API_URL;
-const BIO_LIT_AGENT_API_KEY = process.env.BIO_LIT_AGENT_API_KEY || "";
+const BIO_LIT_AGENT_API_KEY = process.env.BIO_LIT_AGENT_API_KEY || '';
 
 type BioReference = {
   id?: number | string;
@@ -55,20 +55,20 @@ function extractAnswer(data: BioLiteratureResponse): string {
   const nestedResponse = data.output?.response;
 
   const directFormatted =
-    typeof directResponse?.formatted_answer === "string"
+    typeof directResponse?.formatted_answer === 'string'
       ? directResponse.formatted_answer.trim()
-      : "";
+      : '';
   const directAnswer =
-    typeof directResponse?.answer === "string" ? directResponse.answer.trim() : "";
+    typeof directResponse?.answer === 'string' ? directResponse.answer.trim() : '';
   const nestedFormatted =
-    typeof nestedResponse?.formatted_answer === "string"
+    typeof nestedResponse?.formatted_answer === 'string'
       ? nestedResponse.formatted_answer.trim()
-      : "";
+      : '';
   const nestedAnswer =
-    typeof nestedResponse?.answer === "string" ? nestedResponse.answer.trim() : "";
+    typeof nestedResponse?.answer === 'string' ? nestedResponse.answer.trim() : '';
   const dataFormatted =
-    typeof data.formatted_answer === "string" ? data.formatted_answer.trim() : "";
-  const dataAnswer = typeof data.answer === "string" ? data.answer.trim() : "";
+    typeof data.formatted_answer === 'string' ? data.formatted_answer.trim() : '';
+  const dataAnswer = typeof data.answer === 'string' ? data.answer.trim() : '';
 
   const answer =
     directFormatted ||
@@ -77,7 +77,7 @@ function extractAnswer(data: BioLiteratureResponse): string {
     nestedAnswer ||
     dataFormatted ||
     dataAnswer ||
-    "";
+    '';
 
   // this is debugging purposes
   logger.debug(
@@ -92,7 +92,7 @@ function extractAnswer(data: BioLiteratureResponse): string {
       hasResponse: Boolean(directResponse),
       hasNestedResponse: Boolean(nestedResponse),
     },
-    "bioliterature_extract_answer_debug",
+    'bioliterature_extract_answer_debug',
   );
 
   return answer;
@@ -122,7 +122,7 @@ async function pollBioLiteratureJob(
   jobId: string,
   onPollUpdate?: OnPollUpdate,
 ): Promise<BioLiteratureResponse> {
-  const timeoutMinutes = parseInt(process.env.BIO_LITERATURE_TASK_TIMEOUT_MINUTES || "60", 10);
+  const timeoutMinutes = parseInt(process.env.BIO_LITERATURE_TASK_TIMEOUT_MINUTES || '60', 10);
   const MAX_WAIT_TIME = timeoutMinutes * 60 * 1000;
   const POLL_INTERVAL = 10000; // 10 seconds
   const startTime = Date.now();
@@ -135,15 +135,15 @@ async function pollBioLiteratureJob(
     const { response } = await fetchWithRetry(
       `${baseUrl}/query/jobs/${jobId}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
-          "X-API-Key": apiKey,
+          'Content-Type': 'application/json',
+          'X-API-Key': apiKey,
         },
       },
       {
         onRetry: (attempt, error) =>
-          logger.warn({ attempt, jobId, error: error.message }, "bioliterature_poll_retry"),
+          logger.warn({ attempt, jobId, error: error.message }, 'bioliterature_poll_retry'),
       },
     );
 
@@ -157,7 +157,7 @@ async function pollBioLiteratureJob(
       jobData.status ||
         (jobData as { job_status?: string }).job_status ||
         (jobData as { state?: string }).state ||
-        "",
+        '',
     ).toLowerCase();
 
     const answer = extractAnswer(jobData);
@@ -168,28 +168,28 @@ async function pollBioLiteratureJob(
       try {
         await onPollUpdate({ reasoning });
       } catch (err) {
-        logger.warn({ err, jobId }, "bioliterature_on_poll_update_failed");
+        logger.warn({ err, jobId }, 'bioliterature_on_poll_update_failed');
       }
     }
 
     logger.debug(
       { jobId, status, hasAnswer: Boolean(answer), hasReasoning: Boolean(reasoning) },
-      "bioliterature_deep_poll",
+      'bioliterature_deep_poll',
     );
 
-    if (status === "failed" || status === "error") {
+    if (status === 'failed' || status === 'error') {
       throw new Error(`BioLiterature job ${jobId} failed`);
     }
 
     // Treat either a completed status or the presence of an answer as a signal to stop polling
     if (
       answer ||
-      status === "completed" ||
-      status === "succeeded" ||
-      status === "success" ||
-      status === "finished" ||
-      status === "done" ||
-      status === "ready"
+      status === 'completed' ||
+      status === 'succeeded' ||
+      status === 'success' ||
+      status === 'finished' ||
+      status === 'done' ||
+      status === 'ready'
     ) {
       return jobData;
     }
@@ -200,38 +200,38 @@ async function pollBioLiteratureJob(
 
 export async function searchBioLiterature(
   objective: string,
-  mode: BioLiteratureMode = "deep",
+  mode: BioLiteratureMode = 'deep',
   onPollUpdate?: OnPollUpdate,
 ): Promise<{ output: string; jobId?: string; reasoning?: string[] }> {
   logger.info({ BIO_LIT_AGENT_API_KEY, BIO_LIT_AGENT_API_URL });
   if (!BIO_LIT_AGENT_API_URL || !BIO_LIT_AGENT_API_KEY) {
-    throw new Error("BioLiterature API URL or API key not configured");
+    throw new Error('BioLiterature API URL or API key not configured');
   }
 
-  logger.info({ objective }, "starting_bioliterature_search");
+  logger.info({ objective }, 'starting_bioliterature_search');
 
-  const baseUrl = BIO_LIT_AGENT_API_URL.replace(/\/$/, "");
+  const baseUrl = BIO_LIT_AGENT_API_URL.replace(/\/$/, '');
   const endpoint = `${baseUrl}/query`;
 
   const { response } = await fetchWithRetry(
     endpoint,
     {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-API-Key": BIO_LIT_AGENT_API_KEY,
+        'Content-Type': 'application/json',
+        'X-API-Key': BIO_LIT_AGENT_API_KEY,
       },
       body: JSON.stringify({
         question: objective,
         max_results: 20,
         per_source_limit: 5,
-        sources: ["arxiv", "pubmed", "clinical-trials"],
+        sources: ['arxiv', 'pubmed', 'clinical-trials'],
         mode,
       }),
     },
     {
       onRetry: (attempt, error) =>
-        logger.warn({ attempt, objective, error: error.message }, "bioliterature_search_retry"),
+        logger.warn({ attempt, objective, error: error.message }, 'bioliterature_search_retry'),
     },
   );
 
@@ -244,16 +244,16 @@ export async function searchBioLiterature(
   let finalData: BioLiteratureResponse = initialData;
   let jobId: string | undefined;
 
-  if (mode === "deep") {
+  if (mode === 'deep') {
     jobId = initialData.job_id ?? (initialData as { jobId?: string }).jobId;
 
-    logger.info({ jobId }, "bioliterature_job_id");
+    logger.info({ jobId }, 'bioliterature_job_id');
 
     if (jobId) {
-      logger.info({ jobId }, "bioliterature_deep_job_created");
+      logger.info({ jobId }, 'bioliterature_deep_job_created');
       finalData = await pollBioLiteratureJob(baseUrl, BIO_LIT_AGENT_API_KEY, jobId, onPollUpdate);
     } else {
-      logger.warn({ mode }, "bioliterature_deep_missing_job_id_using_direct_response");
+      logger.warn({ mode }, 'bioliterature_deep_missing_job_id_using_direct_response');
     }
   }
 
@@ -270,12 +270,12 @@ export async function searchBioLiterature(
       mode,
       jobId,
     },
-    "bioliterature_search_completed",
+    'bioliterature_search_completed',
   );
 
   if (!answer) {
     return {
-      output: "No answer received from BioLiterature API",
+      output: 'No answer received from BioLiterature API',
       jobId,
       reasoning: finalReasoning,
     };

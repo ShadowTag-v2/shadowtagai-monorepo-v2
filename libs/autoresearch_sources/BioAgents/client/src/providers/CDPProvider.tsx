@@ -1,5 +1,5 @@
-import type { ComponentChildren } from "preact";
-import { CDPReactProvider } from "@coinbase/cdp-react";
+import { CDPReactProvider } from '@coinbase/cdp-react';
+import type { ComponentChildren } from 'preact';
 
 interface CDPProviderProps {
   children: ComponentChildren;
@@ -14,10 +14,10 @@ interface CDPProviderProps {
 export function CDPProvider({ children }: CDPProviderProps) {
   const projectId = import.meta.env.CDP_PROJECT_ID;
 
-  if (!projectId || projectId === "your-project-id-here") {
+  if (!projectId || projectId === 'your-project-id-here') {
     console.warn(
-      "CDP_PROJECT_ID not configured. Please set it in your .env file.\n" +
-        "Get your project ID from https://portal.cdp.coinbase.com/products/embedded-wallets",
+      'CDP_PROJECT_ID not configured. Please set it in your .env file.\n' +
+        'Get your project ID from https://portal.cdp.coinbase.com/products/embedded-wallets',
     );
     // Return children without CDP provider if not configured
     return <>{children}</>;
@@ -30,13 +30,13 @@ export function CDPProvider({ children }: CDPProviderProps) {
         ethereum: {
           // Create an EOA (Externally Owned Account) on login
           // You can also use "smart" for smart contract wallets
-          createOnLogin: "eoa",
+          createOnLogin: 'eoa',
         },
         // Enable Solana support if needed
         // solana: {
         //   createOnLogin: true
         // },
-        appName: "BioAgents AgentKit",
+        appName: 'BioAgents AgentKit',
       }}
     >
       {children}

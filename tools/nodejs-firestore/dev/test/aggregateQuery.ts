@@ -12,19 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {afterEach, beforeEach, it} from 'mocha';
-import {
-  ApiOverride,
-  createInstance,
-  stream,
-  verifyInstance,
-} from './util/helpers';
-import {Firestore, Query, Timestamp} from '../src';
-import {expect, use} from 'chai';
-import {google} from '../protos/firestore_v1_proto_api';
+import { expect, use } from 'chai';
+import { afterEach, beforeEach, it } from 'mocha';
+import { google } from '../protos/firestore_v1_proto_api';
+import { type Firestore, type Query, Timestamp } from '../src';
+import { type ApiOverride, createInstance, stream, verifyInstance } from './util/helpers';
+
 import api = google.firestore.v1;
+
 import * as chaiAsPromised from 'chai-as-promised';
-import {setTimeoutHandler} from '../src/backoff';
+import { setTimeoutHandler } from '../src/backoff';
+
 use(chaiAsPromised);
 
 describe('aggregate query interface', () => {
@@ -32,7 +30,7 @@ describe('aggregate query interface', () => {
 
   beforeEach(() => {
     setTimeoutHandler(setImmediate);
-    return createInstance().then(firestoreInstance => {
+    return createInstance().then((firestoreInstance) => {
       firestore = firestoreInstance;
     });
   });
@@ -64,14 +62,8 @@ describe('aggregate query interface', () => {
     };
 
     queryEquals(
-      [
-        queryA.orderBy('foo').endBefore('a'),
-        queryB.orderBy('foo').endBefore('a'),
-      ],
-      [
-        queryA.orderBy('foo').endBefore('b'),
-        queryB.orderBy('bar').endBefore('a'),
-      ],
+      [queryA.orderBy('foo').endBefore('a'), queryB.orderBy('foo').endBefore('a')],
+      [queryA.orderBy('foo').endBefore('b'), queryB.orderBy('bar').endBefore('a')],
     );
   });
 
@@ -81,10 +73,10 @@ describe('aggregate query interface', () => {
     const result: api.IRunAggregationQueryResponse = {
       result: {
         aggregateFields: {
-          aggregate_0: {integerValue: '99'},
+          aggregate_0: { integerValue: '99' },
         },
       },
-      readTime: {seconds: 5, nanos: 6},
+      readTime: { seconds: 5, nanos: 6 },
     };
     const overrides: ApiOverride = {
       runAggregationQuery: () => stream(result),
@@ -93,7 +85,7 @@ describe('aggregate query interface', () => {
     firestore = await createInstance(overrides);
 
     const query = firestore.collection('collectionId').count();
-    return query.get().then(results => {
+    return query.get().then((results) => {
       expect(results.data().count).to.be.equal(99);
       expect(results.readTime.isEqual(new Timestamp(5, 6))).to.be.true;
       expect(results.query).to.be.equal(query);
@@ -114,7 +106,7 @@ describe('aggregate query interface', () => {
       .then(() => {
         throw new Error('Unexpected success in Promise');
       })
-      .catch(err => {
+      .catch((err) => {
         expect(err.message).to.equal('Expected error');
         expect(attempts).to.equal(1);
       });
@@ -136,7 +128,7 @@ describe('aggregate query interface', () => {
       .then(() => {
         throw new Error('Unexpected success in Promise');
       })
-      .catch(err => {
+      .catch((err) => {
         expect(err.message).to.equal('Expected error');
         expect(attempts).to.equal(5);
       });
@@ -147,7 +139,7 @@ describe('aggregate query interface', () => {
     const overrides: ApiOverride = {
       runAggregationQuery: () => {
         ++attempts;
-        return stream({readTime: {seconds: 5, nanos: 6}});
+        return stream({ readTime: { seconds: 5, nanos: 6 } });
       },
     };
     firestore = await createInstance(overrides);
@@ -158,7 +150,7 @@ describe('aggregate query interface', () => {
       .then(() => {
         throw new Error('Unexpected success in Promise');
       })
-      .catch(err => {
+      .catch((err) => {
         expect(err.message).to.equal('No AggregateQuery results');
         expect(attempts).to.equal(1);
       });

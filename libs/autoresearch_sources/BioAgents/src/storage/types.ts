@@ -2,9 +2,9 @@
  * Storage Provider Interface
  * Defines the contract for file storage backends (S3, Azure, etc.)
  */
-import { base } from "viem/chains";
-import { getConversationBasePath, getUploadPath } from "../storage";
-import logger from "../utils/logger";
+import { base } from 'viem/chains';
+import { getConversationBasePath, getUploadPath } from '../storage';
+import logger from '../utils/logger';
 
 export abstract class StorageProvider {
   /**
@@ -82,13 +82,13 @@ export abstract class StorageProvider {
   ): Promise<Buffer> {
     const basePath = getConversationBasePath(userId, conversationStateId);
     if (relativePath.startsWith(basePath)) {
-      logger.info({ relativePath }, "fetching_file_by_relative_path_already_full_path");
+      logger.info({ relativePath }, 'fetching_file_by_relative_path_already_full_path');
       return await this.download(relativePath);
     }
 
     const fullPath = `${basePath}/${relativePath}`;
 
-    logger.info({ relativePath, fullPath }, "fetching_file_by_relative_path");
+    logger.info({ relativePath, fullPath }, 'fetching_file_by_relative_path');
 
     return await this.download(fullPath);
   }
@@ -110,14 +110,14 @@ export abstract class StorageProvider {
     const basePath = getConversationBasePath(userId, conversationStateId);
     const fullPath = `${basePath}/${relativePath}`;
 
-    logger.info({ relativePath, fullPath }, "generating_presigned_url");
+    logger.info({ relativePath, fullPath }, 'generating_presigned_url');
 
     return await this.getPresignedUrl(fullPath, expiresIn);
   }
 }
 
 export interface StorageConfig {
-  provider: "s3";
+  provider: 's3';
   s3?: {
     accessKeyId: string;
     secretAccessKey: string;

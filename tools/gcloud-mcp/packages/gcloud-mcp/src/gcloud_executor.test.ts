@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi, MockInstance } from 'vitest';
+import type { ChildProcess } from 'child_process';
 import * as child_process from 'child_process';
-import { ChildProcess } from 'child_process';
+import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest';
 import { findExecutable, isAvailable, isWindows } from './gcloud_executor.js';
+import { createMockChildProcess, FakeChildProcess } from './utility/test_utils.js';
 import * as windows_gcloud_utils from './windows_gcloud_utils.js';
-import { FakeChildProcess, createMockChildProcess } from './utility/test_utils.js';
 
 vi.mock('child_process');
 vi.mock('./windows_gcloud_utils');

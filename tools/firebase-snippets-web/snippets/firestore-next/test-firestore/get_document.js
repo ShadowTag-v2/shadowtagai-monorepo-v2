@@ -5,15 +5,15 @@
 // 'npm run snippets'.
 
 // [START get_document_modular]
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from 'firebase/firestore';
 
-const docRef = doc(db, "cities", "SF");
+const docRef = doc(db, 'cities', 'SF');
 const docSnap = await getDoc(docRef);
 
 if (docSnap.exists()) {
-  console.log("Document data:", docSnap.data());
+  console.log('Document data:', docSnap.data());
 } else {
   // docSnap.data() will be undefined in this case
-  console.log("No such document!");
+  console.log('No such document!');
 }
 // [END get_document_modular]

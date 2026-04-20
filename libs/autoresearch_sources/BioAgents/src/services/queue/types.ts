@@ -5,7 +5,7 @@
  * Job data must be serializable (no File objects, only IDs/references).
  */
 
-import type { AuthMethod } from "../../types/auth";
+import type { AuthMethod } from '../../types/auth';
 
 /**
  * Job data for chat queue
@@ -58,7 +58,7 @@ export interface DeepResearchJobData {
   // 'semi-autonomous' (default): Uses MAX_AUTO_ITERATIONS env var (default 5)
   // 'fully-autonomous': Continues until research is done or hard cap of 20 iterations
   // 'steering': Single iteration only, always asks user for feedback
-  researchMode?: "semi-autonomous" | "fully-autonomous" | "steering";
+  researchMode?: 'semi-autonomous' | 'fully-autonomous' | 'steering';
 
   // Iteration tracking (for job chaining)
   iterationNumber: number; // 1, 2, 3... (starts at 1)
@@ -90,7 +90,7 @@ export interface ChatJobResult {
  */
 export interface DeepResearchJobResult {
   messageId: string;
-  status: "completed" | "failed";
+  status: 'completed' | 'failed';
   responseTime: number;
 }
 
@@ -138,7 +138,7 @@ export interface PaperGenerationJobResult {
   pdfPath: string;
   pdfUrl?: string;
   rawLatexUrl?: string;
-  status: "completed" | "failed";
+  status: 'completed' | 'failed';
   error?: string;
   responseTime: number;
 }
@@ -147,32 +147,32 @@ export interface PaperGenerationJobResult {
  * Paper generation progress stages
  */
 export type PaperGenerationStage =
-  | "validating"
-  | "metadata"
-  | "figures"
-  | "discoveries"
-  | "bibliography"
-  | "latex_assembly"
-  | "compilation"
-  | "upload"
-  | "cleanup";
+  | 'validating'
+  | 'metadata'
+  | 'figures'
+  | 'discoveries'
+  | 'bibliography'
+  | 'latex_assembly'
+  | 'compilation'
+  | 'upload'
+  | 'cleanup';
 
 /**
  * Notification types sent via Redis Pub/Sub
  */
 export type NotificationType =
-  | "job:started"
-  | "job:progress"
-  | "job:completed"
-  | "job:failed"
-  | "message:updated"
-  | "state:updated"
-  | "file:ready"
-  | "file:error"
-  | "paper:started"
-  | "paper:progress"
-  | "paper:completed"
-  | "paper:failed";
+  | 'job:started'
+  | 'job:progress'
+  | 'job:completed'
+  | 'job:failed'
+  | 'message:updated'
+  | 'state:updated'
+  | 'file:ready'
+  | 'file:error'
+  | 'paper:started'
+  | 'paper:progress'
+  | 'paper:completed'
+  | 'paper:failed';
 
 /**
  * Notification payload structure

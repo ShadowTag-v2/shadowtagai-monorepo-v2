@@ -233,12 +233,7 @@ export function activateNextItem<Item extends ListItem>(
   wrap = true,
 ): Item | null {
   if (activeItemRecord) {
-    const next = getNextItem(
-      items,
-      activeItemRecord.index,
-      isActivatable,
-      wrap,
-    );
+    const next = getNextItem(items, activeItemRecord.index, isActivatable, wrap);
 
     if (next) {
       next.tabIndex = 0;
@@ -262,12 +257,7 @@ export function activatePreviousItem<Item extends ListItem>(
   wrap = true,
 ): Item | null {
   if (activeItemRecord) {
-    const prev = getPrevItem(
-      items,
-      activeItemRecord.index,
-      isActivatable,
-      wrap,
-    );
+    const prev = getPrevItem(items, activeItemRecord.index, isActivatable, wrap);
     if (prev) {
       prev.tabIndex = 0;
       prev.focus();
@@ -283,16 +273,14 @@ export function activatePreviousItem<Item extends ListItem>(
  * items.
  */
 export function createDeactivateItemsEvent() {
-  return new Event('deactivate-items', {bubbles: true, composed: true});
+  return new Event('deactivate-items', { bubbles: true, composed: true });
 }
 
 /**
  * The type of the event that requests the parent md-list to deactivate all
  * other items.
  */
-export type DeactivateItemsEvent = ReturnType<
-  typeof createDeactivateItemsEvent
->;
+export type DeactivateItemsEvent = ReturnType<typeof createDeactivateItemsEvent>;
 
 /**
  * Creates an event that requests the menu to set `tabindex=0` on the item and
@@ -303,15 +291,13 @@ export type DeactivateItemsEvent = ReturnType<
  * possible.
  */
 export function createRequestActivationEvent() {
-  return new Event('request-activation', {bubbles: true, composed: true});
+  return new Event('request-activation', { bubbles: true, composed: true });
 }
 
 /**
  * The type of the event that requests the list activates and focuses the item.
  */
-export type RequestActivationEvent = ReturnType<
-  typeof createRequestActivationEvent
->;
+export type RequestActivationEvent = ReturnType<typeof createRequestActivationEvent>;
 
 /**
  * The default `isActivatable` function, which checks if an item is not

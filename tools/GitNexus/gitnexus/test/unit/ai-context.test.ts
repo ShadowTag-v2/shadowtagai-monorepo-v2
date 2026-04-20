@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
 import fs from 'fs/promises';
-import path from 'path';
 import os from 'os';
+import path from 'path';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { generateAIContextFiles } from '../../src/cli/ai-context.js';
 
 describe('generateAIContextFiles', () => {
@@ -17,7 +17,9 @@ describe('generateAIContextFiles', () => {
   afterAll(async () => {
     try {
       await fs.rm(tmpDir, { recursive: true, force: true });
-    } catch { /* best-effort */ }
+    } catch {
+      /* best-effort */
+    }
   });
 
   it('generates context files', async () => {

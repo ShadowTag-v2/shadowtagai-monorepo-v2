@@ -1,8 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import {
-  ConfirmationResult,
-  RecaptchaVerifier,
+  type ConfirmationResult,
   getAuth,
+  RecaptchaVerifier,
   signInWithPhoneNumber,
 } from 'firebase/auth';
 import { firebaseConfig } from './config';
@@ -29,12 +29,8 @@ declare const grecaptcha: any;
 // reCAPTCHA verification does not work with the Firebase emulator.
 // Hence, we do not connect to the emulator in this example.
 
-const phoneNumberInput = document.getElementById(
-  'phone-number',
-) as HTMLInputElement;
-const signInButton = document.getElementById(
-  'sign-in-button',
-) as HTMLButtonElement;
+const phoneNumberInput = document.getElementById('phone-number') as HTMLInputElement;
+const signInButton = document.getElementById('sign-in-button') as HTMLButtonElement;
 const signInForm = document.getElementById('sign-in-form') as HTMLFormElement;
 
 /**
@@ -48,27 +44,22 @@ function onSignInSubmit(e: Event) {
     const phoneNumber = getPhoneNumberFromUserInput();
     const appVerifier = window.recaptchaVerifier!;
     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-      .then(function (confirmationResult) {
+      .then((confirmationResult) => {
         window.signingIn = false;
         updateSignInButtonUI();
         resetRecaptcha();
         // SMS sent. Prompt user to type the code from the message, then sign the
         // user in with confirmationResult.confirm(code).
-        const code = window.prompt(
-          'Enter the verification code you received by SMS',
-        );
+        const code = window.prompt('Enter the verification code you received by SMS');
         if (code) {
           confirmationResult
             .confirm(code)
-            .then(function () {
+            .then(() => {
               window.close();
             })
-            .catch(function (error) {
+            .catch((error) => {
               // User couldn't sign in (bad verification code?)
-              console.error(
-                'Error while checking the verification code',
-                error,
-              );
+              console.error('Error while checking the verification code', error);
               window.alert(
                 'Error while checking the verification code:\n\n' +
                   error.code +
@@ -78,15 +69,12 @@ function onSignInSubmit(e: Event) {
             });
         }
       })
-      .catch(function (error) {
+      .catch((error) => {
         // Error; SMS not sent
         window.signingIn = false;
         console.error('Error during signInWithPhoneNumber', error);
         window.alert(
-          'Error during signInWithPhoneNumber:\n\n' +
-            error.code +
-            '\n\n' +
-            error.message,
+          'Error during signInWithPhoneNumber:\n\n' + error.code + '\n\n' + error.message,
         );
         updateSignInButtonUI();
         resetRecaptcha();
@@ -105,7 +93,7 @@ function getPhoneNumberFromUserInput() {
  * Returns true if the phone number is valid.
  */
 function isPhoneNumberValid() {
-  const pattern = /^\+[0-9\s\-\(\)]+$/;
+  const pattern = /^\+[0-9\s\-()]+$/;
   const phoneNumber = getPhoneNumberFromUserInput();
   return phoneNumber.search(pattern) !== -1;
 }

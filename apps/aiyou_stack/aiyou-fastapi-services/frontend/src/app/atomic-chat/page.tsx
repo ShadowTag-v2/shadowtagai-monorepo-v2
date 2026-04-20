@@ -1,37 +1,37 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, Sparkles, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Bot, Loader2, Send, Sparkles, User } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface Message {
   id: string;
-  role: "user" | "assistant";
+  role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
   agent?: string;
-  tier?: "FREE" | "FLASH" | "PRO";
+  tier?: 'FREE' | 'FLASH' | 'PRO';
 }
 
 const initialMessages: Message[] = [
   {
-    id: "1",
-    role: "assistant",
+    id: '1',
+    role: 'assistant',
     content: "Hello! I'm connected to the Autoresearch swarm. How can I help you today?",
     timestamp: new Date(),
-    agent: "FM-DISPATCH",
-    tier: "PRO",
+    agent: 'FM-DISPATCH',
+    tier: 'PRO',
   },
 ];
 
 export default function AtomicChat() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -44,23 +44,23 @@ export default function AtomicChat() {
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      role: "user",
+      role: 'user',
       content: input,
       timestamp: new Date(),
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    setInput("");
+    setInput('');
     setIsLoading(true);
 
     // Simulate Autoresearch response
     setTimeout(() => {
-      const agents = ["FM-ANALYST", "FM-RESEARCHER", "FM-WRITER"];
-      const tiers: ("FREE" | "FLASH" | "PRO")[] = ["FREE", "FLASH", "PRO"];
+      const agents = ['FM-ANALYST', 'FM-RESEARCHER', 'FM-WRITER'];
+      const tiers: ('FREE' | 'FLASH' | 'PRO')[] = ['FREE', 'FLASH', 'PRO'];
 
       const response: Message = {
         id: (Date.now() + 1).toString(),
-        role: "assistant",
+        role: 'assistant',
         content: `I've processed your request through the swarm. Based on the query "${input.slice(0, 50)}...", here's what the agents found:\n\n1. **Analysis**: Your request has been routed to the appropriate specialists.\n2. **Processing**: Multiple agents collaborated on this response.\n3. **Confidence**: High (validated by 3 independent agents)\n\nWould you like me to elaborate on any specific aspect?`,
         timestamp: new Date(),
         agent: agents[Math.floor(Math.random() * agents.length)],
@@ -74,12 +74,12 @@ export default function AtomicChat() {
 
   const getTierColor = (tier?: string) => {
     switch (tier) {
-      case "PRO":
-        return "text-purple-500";
-      case "FLASH":
-        return "text-amber-500";
+      case 'PRO':
+        return 'text-purple-500';
+      case 'FLASH':
+        return 'text-amber-500';
       default:
-        return "text-slate-400";
+        return 'text-slate-400';
     }
   };
 
@@ -97,11 +97,11 @@ export default function AtomicChat() {
             <div
               key={message.id}
               className={cn(
-                "flex gap-3",
-                message.role === "user" ? "justify-end" : "justify-start",
+                'flex gap-3',
+                message.role === 'user' ? 'justify-end' : 'justify-start',
               )}
             >
-              {message.role === "assistant" && (
+              {message.role === 'assistant' && (
                 <div className="w-8 h-8 rounded-full bg-shadowtag_v4-primary flex items-center justify-center flex-shrink-0">
                   <Bot className="h-4 w-4 text-white" />
                 </div>
@@ -109,11 +109,11 @@ export default function AtomicChat() {
 
               <div
                 className={cn(
-                  "max-w-[70%] rounded-2xl px-4 py-3",
-                  message.role === "user" ? "bg-shadowtag_v4-primary text-white" : "bg-slate-100",
+                  'max-w-[70%] rounded-2xl px-4 py-3',
+                  message.role === 'user' ? 'bg-shadowtag_v4-primary text-white' : 'bg-slate-100',
                 )}
               >
-                {message.role === "assistant" && message.agent && (
+                {message.role === 'assistant' && message.agent && (
                   <div className="flex items-center gap-2 text-xs mb-2">
                     <span className={getTierColor(message.tier)}>{message.tier}</span>
                     <span className="text-slate-500">{message.agent}</span>
@@ -122,15 +122,15 @@ export default function AtomicChat() {
                 <p className="whitespace-pre-wrap">{message.content}</p>
                 <p
                   className={cn(
-                    "text-xs mt-2",
-                    message.role === "user" ? "text-indigo-200" : "text-slate-400",
+                    'text-xs mt-2',
+                    message.role === 'user' ? 'text-indigo-200' : 'text-slate-400',
                   )}
                 >
                   {message.timestamp.toLocaleTimeString()}
                 </p>
               </div>
 
-              {message.role === "user" && (
+              {message.role === 'user' && (
                 <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center flex-shrink-0">
                   <User className="h-4 w-4 text-slate-600" />
                 </div>

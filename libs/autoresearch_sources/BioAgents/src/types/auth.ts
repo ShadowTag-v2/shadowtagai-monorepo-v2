@@ -10,13 +10,13 @@
 /**
  * Authentication methods supported by the framework
  */
-export type AuthMethod = "jwt" | "x402" | "api_key" | "anonymous";
+export type AuthMethod = 'jwt' | 'x402' | 'api_key' | 'anonymous';
 
 /**
  * Auth modes that can be configured via AUTH_MODE env var
  * Note: x402 is controlled separately via X402_ENABLED flag
  */
-export type AuthMode = "none" | "jwt";
+export type AuthMode = 'none' | 'jwt';
 
 /**
  * Authentication context attached to requests
@@ -133,10 +133,10 @@ export interface AuthConfig {
  * Get auth configuration from environment
  */
 export function getAuthConfig(): AuthConfig {
-  const mode = (process.env.AUTH_MODE as AuthMode) || "none";
+  const mode = (process.env.AUTH_MODE as AuthMode) || 'none';
   const hasSecret = !!process.env.BIOAGENTS_SECRET;
-  const x402Enabled = process.env.X402_ENABLED === "true";
-  const maxJwtExpiration = parseInt(process.env.MAX_JWT_EXPIRATION || "3600", 10); // 1h default
+  const x402Enabled = process.env.X402_ENABLED === 'true';
+  const maxJwtExpiration = parseInt(process.env.MAX_JWT_EXPIRATION || '3600', 10); // 1h default
 
   return {
     mode,

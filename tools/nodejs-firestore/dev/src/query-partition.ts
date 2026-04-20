@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
+import type * as firestore from '@google-cloud/firestore';
 import * as protos from '../protos/firestore_v1_proto_api';
-
-import {FieldOrder} from './reference/field-order';
-import {Query} from './reference/query';
-import {QueryOptions} from './reference/query-options';
-import {FieldPath} from './path';
-import {Serializer} from './serializer';
-import {Firestore} from './index';
+import type { Firestore } from './index';
+import { FieldPath } from './path';
+import { FieldOrder } from './reference/field-order';
+import { Query } from './reference/query';
+import { QueryOptions } from './reference/query-options';
+import { Serializer } from './serializer';
 
 import api = protos.google.firestore.v1;
 
@@ -47,10 +46,7 @@ export class QueryPartition<
   constructor(
     private readonly _firestore: Firestore,
     private readonly _collectionId: string,
-    private readonly _converter: firestore.FirestoreDataConverter<
-      AppModelType,
-      DbModelType
-    >,
+    private readonly _converter: firestore.FirestoreDataConverter<AppModelType, DbModelType>,
     private readonly _startAt: api.IValue[] | undefined,
     private readonly _endBefore: api.IValue[] | undefined,
   ) {
@@ -85,9 +81,7 @@ export class QueryPartition<
    */
   get startAt(): unknown[] | undefined {
     if (this._startAt && !this._memoizedStartAt) {
-      this._memoizedStartAt = this._startAt.map(v =>
-        this._serializer.decodeValue(v),
-      );
+      this._memoizedStartAt = this._startAt.map((v) => this._serializer.decodeValue(v));
     }
 
     return this._memoizedStartAt;
@@ -121,9 +115,7 @@ export class QueryPartition<
    */
   get endBefore(): unknown[] | undefined {
     if (this._endBefore && !this._memoizedEndBefore) {
-      this._memoizedEndBefore = this._endBefore.map(v =>
-        this._serializer.decodeValue(v),
-      );
+      this._memoizedEndBefore = this._endBefore.map((v) => this._serializer.decodeValue(v));
     }
 
     return this._memoizedEndBefore;
@@ -149,21 +141,18 @@ export class QueryPartition<
     // Since the api.Value to JavaScript type conversion can be lossy (unless
     // `useBigInt` is used), we pass the original protobuf representation to the
     // created query.
-    let queryOptions = QueryOptions.forCollectionGroupQuery(
-      this._collectionId,
-      this._converter,
-    );
+    let queryOptions = QueryOptions.forCollectionGroupQuery(this._collectionId, this._converter);
     queryOptions = queryOptions.with({
       fieldOrders: [new FieldOrder(FieldPath.documentId())],
     });
     if (this._startAt !== undefined) {
       queryOptions = queryOptions.with({
-        startAt: {before: true, values: this._startAt},
+        startAt: { before: true, values: this._startAt },
       });
     }
     if (this._endBefore !== undefined) {
       queryOptions = queryOptions.with({
-        endAt: {before: true, values: this._endBefore},
+        endAt: { before: true, values: this._endBefore },
       });
     }
     return new Query(this._firestore, queryOptions);

@@ -10,9 +10,9 @@ import '@material/web/iconbutton/filled-tonal-icon-button.js';
 import '@material/web/iconbutton/icon-button.js';
 import '@material/web/iconbutton/outlined-icon-button.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {styles as typescaleStyles} from '@material/web/typography/md-typescale-styles.cssresult.js';
-import {css, html} from 'lit';
+import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.cssresult.js';
+import { css, html } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for icon button stories. */
 export interface StoryKnobs {
@@ -45,7 +45,7 @@ const styles = [
 const buttons: MaterialStoryInit<StoryKnobs> = {
   name: 'Icon button variants',
   styles,
-  render({icon, disabled, softDisabled}) {
+  render({ icon, disabled, softDisabled }) {
     return html`
       <div class="row md-typescale-body-medium">
         <div class="column">
@@ -95,7 +95,7 @@ const buttons: MaterialStoryInit<StoryKnobs> = {
 const toggles: MaterialStoryInit<StoryKnobs> = {
   name: 'Toggle icon buttons',
   styles,
-  render({icon, selectedIcon, disabled, softDisabled}) {
+  render({ icon, selectedIcon, disabled, softDisabled }) {
     return html`
       <div class="row">
         <div class="column">
@@ -159,7 +159,7 @@ const toggles: MaterialStoryInit<StoryKnobs> = {
 const links: MaterialStoryInit<StoryKnobs> = {
   name: 'Links',
   styles,
-  render({icon}) {
+  render({ icon }) {
     return html`
       <div class="row">
         <div class="column">

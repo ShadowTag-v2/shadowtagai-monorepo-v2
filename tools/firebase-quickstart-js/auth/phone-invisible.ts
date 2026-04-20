@@ -1,9 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import {
-  ConfirmationResult,
-  RecaptchaVerifier,
+  type ConfirmationResult,
   getAuth,
   onAuthStateChanged,
+  RecaptchaVerifier,
   signInWithPhoneNumber,
   signOut,
 } from 'firebase/auth';
@@ -31,31 +31,15 @@ declare const window: CustomWindow;
 // Comes from Google reCAPTCHA V3 script included in the HTML file
 declare const grecaptcha: any;
 
-const phoneNumberInput = document.getElementById(
-  'phone-number',
-)! as HTMLInputElement;
-const signInButton = document.getElementById(
-  'sign-in-button',
-)! as HTMLButtonElement;
+const phoneNumberInput = document.getElementById('phone-number')! as HTMLInputElement;
+const signInButton = document.getElementById('sign-in-button')! as HTMLButtonElement;
 const signInForm = document.getElementById('sign-in-form')! as HTMLFormElement;
-const signOutButton = document.getElementById(
-  'sign-out-button',
-)! as HTMLButtonElement;
-const verificationCodeForm = document.getElementById(
-  'verification-code-form',
-)! as HTMLFormElement;
-const verificationCodeInput = document.getElementById(
-  'verification-code',
-)! as HTMLInputElement;
-const verifyCodeButton = document.getElementById(
-  'verify-code-button',
-)! as HTMLButtonElement;
-const signInStatus = document.getElementById(
-  'sign-in-status',
-)! as HTMLSpanElement;
-const accountDetails = document.getElementById(
-  'account-details',
-)! as HTMLDivElement;
+const signOutButton = document.getElementById('sign-out-button')! as HTMLButtonElement;
+const verificationCodeForm = document.getElementById('verification-code-form')! as HTMLFormElement;
+const verificationCodeInput = document.getElementById('verification-code')! as HTMLInputElement;
+const verifyCodeButton = document.getElementById('verify-code-button')! as HTMLButtonElement;
+const signInStatus = document.getElementById('sign-in-status')! as HTMLSpanElement;
+const accountDetails = document.getElementById('account-details')! as HTMLDivElement;
 const cancelVerifyCodeButton = document.getElementById(
   'cancel-verify-code-button',
 )! as HTMLButtonElement;
@@ -70,7 +54,7 @@ function onSignInSubmit() {
     const phoneNumber = getPhoneNumberFromUserInput();
     const appVerifier = window.recaptchaVerifier;
     signInWithPhoneNumber(auth, phoneNumber, appVerifier!)
-      .then(function (confirmationResult) {
+      .then((confirmationResult) => {
         // SMS sent. Prompt user to type the code from the message, then sign the
         // user in with confirmationResult.confirm(code).
         window.confirmationResult = confirmationResult;
@@ -80,14 +64,11 @@ function onSignInSubmit() {
         updateVerifyCodeButtonUI();
         updateSignInFormUI();
       })
-      .catch(function (error) {
+      .catch((error) => {
         // Error; SMS not sent
         console.error('Error during signInWithPhoneNumber', error);
         window.alert(
-          'Error during signInWithPhoneNumber:\n\n' +
-            error.code +
-            '\n\n' +
-            error.message,
+          'Error during signInWithPhoneNumber:\n\n' + error.code + '\n\n' + error.message,
         );
         window.signingIn = false;
         updateSignInFormUI();
@@ -101,27 +82,24 @@ function onSignInSubmit() {
  */
 function onVerifyCodeSubmit(e: Event) {
   e.preventDefault();
-  if (!!getCodeFromUserInput()) {
+  if (getCodeFromUserInput()) {
     window.verifyingCode = true;
     updateVerifyCodeButtonUI();
     const code = getCodeFromUserInput();
     window
       .confirmationResult!.confirm(code)
-      .then(function (result) {
+      .then((result) => {
         // User signed in successfully.
         const user = result.user;
         window.verifyingCode = false;
         window.confirmationResult = null;
         updateVerificationCodeFormUI();
       })
-      .catch(function (error) {
+      .catch((error) => {
         // User couldn't sign in (bad verification code?)
         console.error('Error while checking the verification code', error);
         window.alert(
-          'Error while checking the verification code:\n\n' +
-            error.code +
-            '\n\n' +
-            error.message,
+          'Error while checking the verification code:\n\n' + error.code + '\n\n' + error.message,
         );
         window.verifyingCode = false;
         updateSignInButtonUI();
@@ -165,7 +143,7 @@ function getPhoneNumberFromUserInput() {
  * Returns true if the phone number is valid.
  */
 function isPhoneNumberValid() {
-  const pattern = /^\+[0-9\s\-\(\)]+$/;
+  const pattern = /^\+[0-9\s\-()]+$/;
   const phoneNumber = getPhoneNumberFromUserInput();
   return phoneNumber.search(pattern) !== -1;
 }
@@ -174,10 +152,7 @@ function isPhoneNumberValid() {
  * Re-initializes the ReCaptacha widget.
  */
 function resetReCaptcha() {
-  if (
-    typeof grecaptcha !== 'undefined' &&
-    typeof window.recaptchaWidgetId !== 'undefined'
-  ) {
+  if (typeof grecaptcha !== 'undefined' && typeof window.recaptchaWidgetId !== 'undefined') {
     grecaptcha.reset(window.recaptchaWidgetId);
   }
 }
@@ -245,7 +220,7 @@ function updateSignedInUserStatusUI() {
 }
 
 // Listening for auth state changes.
-onAuthStateChanged(auth, function (user) {
+onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in.
     const uid = user.uid;
@@ -275,13 +250,13 @@ cancelVerifyCodeButton.addEventListener('click', cancelVerification);
 
 window.recaptchaVerifier = new RecaptchaVerifier(auth, 'sign-in-button', {
   size: 'invisible',
-  callback: function (_response: any) {
+  callback: (_response: any) => {
     // reCAPTCHA solved, allow signInWithPhoneNumber.
     onSignInSubmit();
   },
 });
 
-window.recaptchaVerifier!.render().then(function (widgetId) {
+window.recaptchaVerifier!.render().then((widgetId) => {
   window.recaptchaWidgetId = widgetId;
   updateSignInButtonUI();
 });

@@ -1,8 +1,8 @@
 // These samples are intended for Web so this import would normally be
 // done in HTML however using modules here is more convenient for
 // ensuring sample correctness offline.
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 function githubProvider() {
   // [START auth_github_provider_create]
@@ -15,7 +15,7 @@ function githubProvider() {
 
   // [START auth_github_provider_params]
   provider.setCustomParameters({
-    'allow_signup': 'false'
+    allow_signup: 'false',
   });
   // [END auth_github_provider_params]
 }
@@ -41,8 +41,9 @@ function githubSignInPopup(provider) {
       // The signed-in user info.
       var user = result.user;
       // IdP data available in result.additionalUserInfo.profile.
-        // ...
-    }).catch((error) => {
+      // ...
+    })
+    .catch((error) => {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -57,7 +58,8 @@ function githubSignInPopup(provider) {
 
 function githubSignInRedirectResult() {
   // [START auth_github_signin_redirect_result]
-  firebase.auth()
+  firebase
+    .auth()
     .getRedirectResult()
     .then((result) => {
       if (result.credential) {
@@ -72,8 +74,9 @@ function githubSignInRedirectResult() {
       // The signed-in user info.
       var user = result.user;
       // IdP data available in result.additionalUserInfo.profile.
-        // ...
-    }).catch((error) => {
+      // ...
+    })
+    .catch((error) => {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;

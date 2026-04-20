@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {CSSResultOrNative} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import type { CSSResultOrNative } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {styles} from '../menu/internal/menuitem/menu-item-styles.cssresult.js';
+import { styles } from '../menu/internal/menuitem/menu-item-styles.cssresult.js';
 
-import {SelectOptionEl} from './internal/selectoption/select-option.js';
+import { SelectOptionEl } from './internal/selectoption/select-option.js';
 
-export {type SelectOption} from './internal/selectoption/select-option.js';
+export type { SelectOption } from './internal/selectoption/select-option.js';
 
 declare global {
   interface HTMLElementTagNameMap {

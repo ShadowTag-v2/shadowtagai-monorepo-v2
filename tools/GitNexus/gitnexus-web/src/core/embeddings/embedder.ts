@@ -7,7 +7,7 @@
  * Uses snowflake-arctic-embed-xs by default (22M params, 384 dims, ~90MB)
  */
 
-import { pipeline, env, type FeatureExtractionPipeline } from '@huggingface/transformers';
+import { env, type FeatureExtractionPipeline, pipeline } from '@huggingface/transformers';
 import { DEFAULT_EMBEDDING_CONFIG, type EmbeddingConfig, type ModelProgress } from './types';
 
 // Module-level state for singleton pattern
@@ -75,7 +75,7 @@ export const getCurrentDevice = (): 'webgpu' | 'wasm' | null => currentDevice;
 export const initEmbedder = async (
   onProgress?: ModelProgressCallback,
   config: Partial<EmbeddingConfig> = {},
-  forceDevice?: 'webgpu' | 'wasm'
+  forceDevice?: 'webgpu' | 'wasm',
 ): Promise<FeatureExtractionPipeline> => {
   // Return existing instance if available
   if (embedderInstance) {
@@ -101,16 +101,18 @@ export const initEmbedder = async (
         console.log(`🧠 Loading embedding model: ${finalConfig.modelId}`);
       }
 
-      const progressCallback = onProgress ? (data: any) => {
-        const progress: ModelProgress = {
-          status: data.status || 'progress',
-          file: data.file,
-          progress: data.progress,
-          loaded: data.loaded,
-          total: data.total,
-        };
-        onProgress(progress);
-      } : undefined;
+      const progressCallback = onProgress
+        ? (data: any) => {
+            const progress: ModelProgress = {
+              status: data.status || 'progress',
+              file: data.file,
+              progress: data.progress,
+              loaded: data.loaded,
+              total: data.total,
+            };
+            onProgress(progress);
+          }
+        : undefined;
 
       // If WebGPU is requested (default), check availability first
       if (requestedDevice === 'webgpu') {
@@ -136,15 +138,11 @@ export const initEmbedder = async (
           }
 
           // Type assertion needed due to complex union types in transformers.js
-          embedderInstance = await (pipeline as any)(
-            'feature-extraction',
-            finalConfig.modelId,
-            {
-              device: 'webgpu',
-              dtype: 'fp32',
-              progress_callback: progressCallback,
-            }
-          );
+          embedderInstance = await (pipeline as any)('feature-extraction', finalConfig.modelId, {
+            device: 'webgpu',
+            dtype: 'fp32',
+            progress_callback: progressCallback,
+          });
           currentDevice = 'webgpu';
 
           if (import.meta.env.DEV) {
@@ -166,15 +164,11 @@ export const initEmbedder = async (
         }
 
         // Type assertion needed due to complex union types in transformers.js
-        embedderInstance = await (pipeline as any)(
-          'feature-extraction',
-          finalConfig.modelId,
-          {
-            device: 'wasm', // WASM-based CPU execution
-            dtype: 'fp32',
-            progress_callback: progressCallback,
-          }
-        );
+        embedderInstance = await (pipeline as any)('feature-extraction', finalConfig.modelId, {
+          device: 'wasm', // WASM-based CPU execution
+          dtype: 'fp32',
+          progress_callback: progressCallback,
+        });
         currentDevice = 'wasm';
 
         if (import.meta.env.DEV) {

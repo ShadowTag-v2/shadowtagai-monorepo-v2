@@ -4,32 +4,33 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {ARIAMixinStrict} from '@material/web/internal/aria/aria.js';
-import {mixinDelegatesAria} from '@material/web/internal/aria/delegate.js';
-import {redispatchEvent} from '@material/web/internal/events/redispatch-event.js';
+import type { ARIAMixinStrict } from '@material/web/internal/aria/aria.js';
+import { mixinDelegatesAria } from '@material/web/internal/aria/delegate.js';
+import { redispatchEvent } from '@material/web/internal/events/redispatch-event.js';
 import {
   createValidator,
   getValidityAnchor,
   mixinConstraintValidation,
 } from '@material/web/labs/behaviors/constraint-validation.js';
-import {mixinElementInternals} from '@material/web/labs/behaviors/element-internals.js';
+import { mixinElementInternals } from '@material/web/labs/behaviors/element-internals.js';
 import {
   getFormState,
   getFormValue,
   mixinFormAssociated,
 } from '@material/web/labs/behaviors/form-associated.js';
-import {CheckboxValidator} from '@material/web/labs/behaviors/validators/checkbox-validator.js';
-import {css, CSSResultOrNative, html, LitElement, nothing} from 'lit';
-import {customElement, property, query} from 'lit/decorators.js';
-
-import focusRingStyles from '@material/web/labs/gb/components/focus/focus-ring.css' with {type: 'css'}; // github-only
+import { CheckboxValidator } from '@material/web/labs/behaviors/validators/checkbox-validator.js';
+import focusRingStyles from '@material/web/labs/gb/components/focus/focus-ring.css' with {
+  type: 'css',
+}; // github-only
 // import focusRingStyles from '@material/web/labs/gb/components/focus/focus-ring.cssresult.js'; // google3-only
-import rippleStyles from '@material/web/labs/gb/components/ripple/ripple.css' with {type: 'css'}; // github-only
+import rippleStyles from '@material/web/labs/gb/components/ripple/ripple.css' with { type: 'css' }; // github-only
+import { type CSSResultOrNative, css, html, LitElement, nothing } from 'lit';
+import { customElement, property, query } from 'lit/decorators.js';
 // import rippleStyles from '@material/web/labs/gb/components/ripple/ripple.cssresult.js'; // google3-only
-import checkboxStyles from './checkbox.css' with {type: 'css'}; // github-only
+import checkboxStyles from './checkbox.css' with { type: 'css' }; // github-only
 // import checkboxStyles from './checkbox.cssresult.js'; // google3-only
 
-import {checkbox} from './checkbox.js';
+import { checkbox } from './checkbox.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -40,9 +41,7 @@ declare global {
 
 // Separate variable needed for closure.
 const baseClass = mixinDelegatesAria(
-  mixinConstraintValidation(
-    mixinFormAssociated(mixinElementInternals(LitElement)),
-  ),
+  mixinConstraintValidation(mixinFormAssociated(mixinElementInternals(LitElement))),
 );
 
 /**
@@ -73,12 +72,12 @@ export class Checkbox extends baseClass {
   /**
    * Whether or not the checkbox is invalid.
    */
-  @property({type: Boolean}) error = false;
+  @property({ type: Boolean }) error = false;
 
   /**
    * Whether or not the checkbox is selected.
    */
-  @property({type: Boolean}) checked = false;
+  @property({ type: Boolean }) checked = false;
 
   /**
    * The default checked state of the checkbox.
@@ -95,7 +94,7 @@ export class Checkbox extends baseClass {
    *
    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox#indeterminate_state_checkboxes
    */
-  @property({type: Boolean}) indeterminate = false;
+  @property({ type: Boolean }) indeterminate = false;
 
   /**
    * When true, require the checkbox to be selected when participating in
@@ -103,7 +102,7 @@ export class Checkbox extends baseClass {
    *
    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox#validation
    */
-  @property({type: Boolean}) required = false;
+  @property({ type: Boolean }) required = false;
 
   /**
    * The value of the checkbox that is submitted with a form when selected.
@@ -125,11 +124,11 @@ export class Checkbox extends baseClass {
 
   protected override render() {
     // Needed for closure conformance
-    const {ariaLabel, ariaInvalid} = this as ARIAMixinStrict;
+    const { ariaLabel, ariaInvalid } = this as ARIAMixinStrict;
     return html`
       <input
         part="checkbox"
-        class="${checkbox({invalid: this.error})}"
+        class="${checkbox({ invalid: this.error })}"
         type="checkbox"
         aria-checked=${this.indeterminate ? 'mixed' : nothing}
         aria-label=${ariaLabel || nothing}

@@ -1,5 +1,5 @@
-import type { PlanTask } from "../types/core";
-import logger from "./logger";
+import type { PlanTask } from '../types/core';
+import logger from './logger';
 
 type DiscoveryRunConfig = {
   shouldRunDiscovery: boolean;
@@ -27,7 +27,7 @@ export function getDiscoveryRunConfig(
   const hasEnoughMessages = messageCount >= DISCOVERY_MESSAGE_COUNT;
 
   if (!hasEnoughMessages) {
-    logger.info({ messageCount }, "skipping_discovery_insufficient_messages");
+    logger.info({ messageCount }, 'skipping_discovery_insufficient_messages');
     return {
       shouldRunDiscovery: false,
       tasksToConsider: [],
@@ -52,7 +52,7 @@ export function getDiscoveryRunConfig(
         taskCount: tasksToConsider.length,
         tasksWithOutput: 0,
       },
-      "skipping_discovery_no_task_outputs",
+      'skipping_discovery_no_task_outputs',
     );
     return {
       shouldRunDiscovery: false,
@@ -63,11 +63,11 @@ export function getDiscoveryRunConfig(
   logger.info(
     {
       taskCount: tasksWithOutput.length,
-      analysisTasks: tasksWithOutput.filter((t) => t.type === "ANALYSIS").length,
-      literatureTasks: tasksWithOutput.filter((t) => t.type === "LITERATURE").length,
+      analysisTasks: tasksWithOutput.filter((t) => t.type === 'ANALYSIS').length,
+      literatureTasks: tasksWithOutput.filter((t) => t.type === 'LITERATURE').length,
       isFirstRun: messageCount === DISCOVERY_MESSAGE_COUNT,
     },
-    "discovery_run_configured",
+    'discovery_run_configured',
   );
 
   return {

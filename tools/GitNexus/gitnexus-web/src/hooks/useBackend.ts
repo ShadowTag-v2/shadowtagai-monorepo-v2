@@ -1,12 +1,12 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import {
-  probeBackend,
-  fetchRepos,
-  setBackendUrl as setServiceUrl,
-  getBackendUrl,
-  type BackendRepo,
-} from '../services/backend';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { BACKEND_URL_DEBOUNCE_MS, DEFAULT_BACKEND_URL } from '../config/ui-constants';
+import {
+  type BackendRepo,
+  fetchRepos,
+  getBackendUrl,
+  probeBackend,
+  setBackendUrl as setServiceUrl,
+} from '../services/backend';
 
 // ── localStorage keys ────────────────────────────────────────────────────────
 

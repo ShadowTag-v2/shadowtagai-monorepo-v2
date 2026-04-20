@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeAll } from 'vitest';
 import fs from 'fs';
 import path from 'path';
-import { loadParser, loadLanguage } from '../../src/core/tree-sitter/parser-loader.js';
+import Parser from 'tree-sitter';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { SupportedLanguages } from '../../src/config/supported-languages.js';
 import { getProvider } from '../../src/core/ingestion/languages/index.js';
 import { getLanguageFromFilename } from '../../src/core/ingestion/utils/language-detection.js';
-import Parser from 'tree-sitter';
+import { loadLanguage, loadParser } from '../../src/core/tree-sitter/parser-loader.js';
 
 const fixturesDir = path.resolve(__dirname, '..', 'fixtures', 'sample-code');
 
@@ -25,8 +25,10 @@ function extractDefinitions(matches: any[]) {
   const defs: { type: string; name: string }[] = [];
   for (const match of matches) {
     for (const capture of match.captures) {
-      if (capture.name === 'name' && match.captures.some((c: any) =>
-        c.name.startsWith('definition.'))) {
+      if (
+        capture.name === 'name' &&
+        match.captures.some((c: any) => c.name.startsWith('definition.'))
+      ) {
         const defType = match.captures.find((c: any) => c.name.startsWith('definition.'))!.name;
         defs.push({ type: defType, name: capture.node.text });
       }
@@ -50,7 +52,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const { matches } = parseAndQuery(parser, content, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
 
-      const defTypes = defs.map(d => d.type);
+      const defTypes = defs.map((d) => d.type);
       expect(defTypes).toContain('definition.class');
       expect(defTypes).toContain('definition.function');
     });
@@ -66,7 +68,7 @@ describe('Tree-sitter multi-language parsing', () => {
 
       expect(defs.length).toBeGreaterThan(0);
       // Should detect Counter class and Button/useCounter functions
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('Counter');
     });
   });
@@ -80,7 +82,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const defs = extractDefinitions(matches);
 
       expect(defs.length).toBeGreaterThan(0);
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('EventEmitter');
       expect(names).toContain('createLogger');
     });
@@ -94,7 +96,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const { matches } = parseAndQuery(parser, content, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
 
-      const defTypes = defs.map(d => d.type);
+      const defTypes = defs.map((d) => d.type);
       expect(defTypes).toContain('definition.class');
       expect(defTypes).toContain('definition.function');
     });
@@ -109,7 +111,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const defs = extractDefinitions(matches);
 
       expect(defs.length).toBeGreaterThan(0);
-      const defTypes = defs.map(d => d.type);
+      const defTypes = defs.map((d) => d.type);
       expect(defTypes).toContain('definition.class');
       expect(defTypes).toContain('definition.method');
     });
@@ -124,7 +126,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const defs = extractDefinitions(matches);
 
       expect(defs.length).toBeGreaterThan(0);
-      const defTypes = defs.map(d => d.type);
+      const defTypes = defs.map((d) => d.type);
       expect(defTypes).toContain('definition.function');
     });
   });
@@ -138,9 +140,9 @@ describe('Tree-sitter multi-language parsing', () => {
       const defs = extractDefinitions(matches);
 
       expect(defs.length).toBeGreaterThan(0);
-      const defTypes = defs.map(d => d.type);
+      const defTypes = defs.map((d) => d.type);
       expect(defTypes).toContain('definition.function');
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('add');
       expect(names).toContain('internal_helper');
       expect(names).toContain('print_message');
@@ -152,7 +154,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const provider = getProvider(SupportedLanguages.C);
       const { matches } = parseAndQuery(parser, code, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('get_ptr');
       expect(names).toContain('get_strs');
     });
@@ -163,7 +165,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const provider = getProvider(SupportedLanguages.C);
       const { matches } = parseAndQuery(parser, code, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('MAX_SIZE');
       expect(names).toContain('uint');
       expect(names).toContain('Point');
@@ -179,9 +181,9 @@ describe('Tree-sitter multi-language parsing', () => {
       const defs = extractDefinitions(matches);
 
       expect(defs.length).toBeGreaterThan(0);
-      const defTypes = defs.map(d => d.type);
+      const defTypes = defs.map((d) => d.type);
       expect(defTypes).toContain('definition.class');
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('UserManager');
       expect(names).toContain('helperFunction');
     });
@@ -192,7 +194,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const provider = getProvider(SupportedLanguages.CPlusPlus);
       const { matches } = parseAndQuery(parser, code, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('create');
       expect(names).toContain('getNames');
     });
@@ -203,7 +205,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const provider = getProvider(SupportedLanguages.CPlusPlus);
       const { matches } = parseAndQuery(parser, code, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('at');
     });
 
@@ -213,7 +215,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const provider = getProvider(SupportedLanguages.CPlusPlus);
       const { matches } = parseAndQuery(parser, code, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('~MyClass');
     });
 
@@ -223,7 +225,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const provider = getProvider(SupportedLanguages.CPlusPlus);
       const { matches } = parseAndQuery(parser, code, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('Container');
     });
 
@@ -233,7 +235,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const provider = getProvider(SupportedLanguages.CPlusPlus);
       const { matches } = parseAndQuery(parser, code, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('utils');
       expect(names).toContain('helper');
     });
@@ -248,11 +250,11 @@ describe('Tree-sitter multi-language parsing', () => {
       const defs = extractDefinitions(matches);
 
       expect(defs.length).toBeGreaterThan(0);
-      const defTypes = defs.map(d => d.type);
+      const defTypes = defs.map((d) => d.type);
       expect(defTypes).toContain('definition.class');
       expect(defTypes).toContain('definition.method');
       expect(defTypes).toContain('definition.namespace');
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('Calculator');
       expect(names).toContain('Add');
     });
@@ -263,7 +265,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const provider = getProvider(SupportedLanguages.CSharp);
       const { matches } = parseAndQuery(parser, content, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('ICalculator');
       expect(names).toContain('Operation');
       expect(names).toContain('CalculationResult');
@@ -276,7 +278,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const provider = getProvider(SupportedLanguages.CSharp);
       const { matches } = parseAndQuery(parser, code, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('MyApp');
       expect(names).toContain('Program');
     });
@@ -287,7 +289,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const provider = getProvider(SupportedLanguages.CSharp);
       const { matches } = parseAndQuery(parser, content, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
-      const defTypes = defs.map(d => d.type);
+      const defTypes = defs.map((d) => d.type);
       expect(defTypes).toContain('definition.constructor');
       expect(defTypes).toContain('definition.property');
     });
@@ -302,9 +304,9 @@ describe('Tree-sitter multi-language parsing', () => {
       const defs = extractDefinitions(matches);
 
       expect(defs.length).toBeGreaterThan(0);
-      const defTypes = defs.map(d => d.type);
+      const defTypes = defs.map((d) => d.type);
       expect(defTypes).toContain('definition.function');
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('public_function');
       expect(names).toContain('private_function');
       expect(names).toContain('Config');
@@ -316,9 +318,9 @@ describe('Tree-sitter multi-language parsing', () => {
       const provider = getProvider(SupportedLanguages.Rust);
       const { matches } = parseAndQuery(parser, content, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
-      const defTypes = defs.map(d => d.type);
+      const defTypes = defs.map((d) => d.type);
       expect(defTypes).toContain('definition.impl');
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('new');
     });
 
@@ -328,7 +330,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const provider = getProvider(SupportedLanguages.Rust);
       const { matches } = parseAndQuery(parser, code, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('Vec');
     });
 
@@ -356,7 +358,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const provider = getProvider(SupportedLanguages.Rust);
       const { matches } = parseAndQuery(parser, code, provider.treeSitterQueries);
       const defs = extractDefinitions(matches);
-      const names = defs.map(d => d.name);
+      const names = defs.map((d) => d.name);
       expect(names).toContain('utils');
       expect(names).toContain('MAX');
       expect(names).toContain('INSTANCE');
@@ -372,7 +374,7 @@ describe('Tree-sitter multi-language parsing', () => {
       const defs = extractDefinitions(matches);
 
       expect(defs.length).toBeGreaterThan(0);
-      const defTypes = defs.map(d => d.type);
+      const defTypes = defs.map((d) => d.type);
       expect(defTypes).toContain('definition.class');
     });
   });
@@ -435,15 +437,15 @@ describe('Tree-sitter multi-language parsing', () => {
       if (!(await loadDartOrSkip())) return;
       const { matches } = parseAndQuery(parser, readFixture('simple.dart'), dartQueries());
       const defs = extractDefinitions(matches);
-      const defTypes = defs.map(d => d.type);
-      const defNames = defs.map(d => d.name);
+      const defTypes = defs.map((d) => d.type);
+      const defNames = defs.map((d) => d.name);
 
       expect(defTypes).toContain('definition.class');
       expect(defTypes).toContain('definition.function');
       expect(defTypes).toContain('definition.method');
       expect(defTypes).toContain('definition.enum');
-      expect(defTypes).toContain('definition.trait');    // mixin
-      expect(defTypes).toContain('definition.type');     // typedef
+      expect(defTypes).toContain('definition.trait'); // mixin
+      expect(defTypes).toContain('definition.type'); // typedef
       expect(defTypes).toContain('definition.constructor');
       expect(defTypes).toContain('definition.property'); // getter/setter
 
@@ -460,10 +462,10 @@ describe('Tree-sitter multi-language parsing', () => {
       if (!(await loadDartOrSkip())) return;
       const { matches } = parseAndQuery(parser, readFixture('simple.dart'), dartQueries());
       const defs = extractDefinitions(matches);
-      const constructors = defs.filter(d => d.type === 'definition.constructor');
+      const constructors = defs.filter((d) => d.type === 'definition.constructor');
       expect(constructors.length).toBeGreaterThan(0);
       // factory Dog.unknown() should capture 'unknown', not 'Dog'
-      const constructorNames = constructors.map(c => c.name);
+      const constructorNames = constructors.map((c) => c.name);
       expect(constructorNames).toContain('unknown');
       expect(constructorNames).not.toContain('Dog');
     });
@@ -472,17 +474,17 @@ describe('Tree-sitter multi-language parsing', () => {
       if (!(await loadDartOrSkip())) return;
       const { matches } = parseAndQuery(parser, readFixture('simple.dart'), dartQueries());
       const defs = extractDefinitions(matches);
-      const props = defs.filter(d => d.type === 'definition.property');
-      expect(props.map(p => p.name)).toContain('info');     // getter
-      expect(props.map(p => p.name)).toContain('nickname');  // setter
+      const props = defs.filter((d) => d.type === 'definition.property');
+      expect(props.map((p) => p.name)).toContain('info'); // getter
+      expect(props.map((p) => p.name)).toContain('nickname'); // setter
     });
 
     it('captures typedef names without duplicates', async () => {
       if (!(await loadDartOrSkip())) return;
       const { matches } = parseAndQuery(parser, readFixture('simple.dart'), dartQueries());
       const defs = extractDefinitions(matches);
-      const typedefs = defs.filter(d => d.type === 'definition.type');
-      const typedefNames = typedefs.map(d => d.name);
+      const typedefs = defs.filter((d) => d.type === 'definition.type');
+      const typedefNames = typedefs.map((d) => d.name);
       expect(typedefNames).toContain('JsonMap');
       expect(typedefNames).toContain('Callback');
       // Should not capture RHS types as names
@@ -497,8 +499,12 @@ describe('Tree-sitter multi-language parsing', () => {
       const { matches } = parseAndQuery(parser, readFixture('simple.dart'), dartQueries());
       const defs = extractDefinitions(matches);
       const { dartExportChecker } = await import('../../src/core/ingestion/export-detection.js');
-      const publicNames = defs.filter(d => dartExportChecker(null as any, d.name)).map(d => d.name);
-      const privateNames = defs.filter(d => !dartExportChecker(null as any, d.name)).map(d => d.name);
+      const publicNames = defs
+        .filter((d) => dartExportChecker(null as any, d.name))
+        .map((d) => d.name);
+      const privateNames = defs
+        .filter((d) => !dartExportChecker(null as any, d.name))
+        .map((d) => d.name);
 
       expect(publicNames).toContain('Animal');
       expect(publicNames).toContain('greet');
@@ -545,17 +551,23 @@ describe('Tree-sitter multi-language parsing', () => {
         const captures: Record<string, string> = {};
         for (const c of match.captures) captures[c.name] = c.node.text;
         if (captures['heritage.extends']) {
-          heritage.push({ class: captures['heritage.class'], parent: captures['heritage.extends'] });
+          heritage.push({
+            class: captures['heritage.class'],
+            parent: captures['heritage.extends'],
+          });
         }
         if (captures['heritage.implements']) {
-          heritage.push({ class: captures['heritage.class'], parent: captures['heritage.implements'] });
+          heritage.push({
+            class: captures['heritage.class'],
+            parent: captures['heritage.implements'],
+          });
         }
         if (captures['heritage.trait']) {
           heritage.push({ class: captures['heritage.class'], parent: captures['heritage.trait'] });
         }
       }
 
-      const pairs = heritage.map(h => `${h.class}->${h.parent}`);
+      const pairs = heritage.map((h) => `${h.class}->${h.parent}`);
       expect(pairs).toContain('Dog->Animal');
       expect(pairs).toContain('Dog->Describable');
       expect(pairs).toContain('Duck->Animal');
@@ -609,7 +621,9 @@ describe('Tree-sitter multi-language parsing', () => {
     // ── Framework detection (path-based) ───────────────────────────────
 
     it('detects Flutter framework from file paths', async () => {
-      const { detectFrameworkFromPath } = await import('../../src/core/ingestion/framework-detection.js');
+      const { detectFrameworkFromPath } = await import(
+        '../../src/core/ingestion/framework-detection.js'
+      );
 
       expect(detectFrameworkFromPath('lib/main.dart')?.framework).toBe('flutter');
       expect(detectFrameworkFromPath('lib/app.dart')?.framework).toBe('flutter');

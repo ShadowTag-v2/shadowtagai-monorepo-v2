@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 /// <reference types="vitest/globals" />
-import { describe, it, expect, vi, Mock, beforeEach } from 'vitest';
-import { restoreBackup, registerRestoreBackupTool } from './restore_backup.js';
+import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
 import { apiClientFactory } from '../../utility/api_client_factory.js';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { registerRestoreBackupTool, restoreBackup } from './restore_backup.js';
 
 vi.mock('../../utility/api_client_factory.js');
 vi.mock('@modelcontextprotocol/sdk/server/mcp.js');

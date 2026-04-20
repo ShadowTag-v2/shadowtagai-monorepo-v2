@@ -19,7 +19,7 @@ export function createMock<T extends (...args: any[]) => any>(): jest.MockedFunc
 export async function waitFor(
   condition: () => boolean | Promise<boolean>,
   timeout: number = 5000,
-  interval: number = 100
+  interval: number = 100,
 ): Promise<void> {
   const startTime = Date.now();
 
@@ -37,16 +37,13 @@ export async function waitFor(
  * Sleep utility for async tests
  */
 export function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
  * Creates a spy on an object method
  */
-export function createSpy<T extends object, K extends keyof T>(
-  obj: T,
-  method: K
-): jest.Spied<any> {
+export function createSpy<T extends object, K extends keyof T>(obj: T, method: K): jest.Spied<any> {
   return jest.spyOn(obj, method as any);
 }
 
@@ -55,7 +52,9 @@ export function createSpy<T extends object, K extends keyof T>(
  */
 export const testData = {
   randomString: (length: number = 10): string => {
-    return Math.random().toString(36).substring(2, length + 2);
+    return Math.random()
+      .toString(36)
+      .substring(2, length + 2);
   },
 
   randomNumber: (min: number = 0, max: number = 100): number => {
@@ -125,7 +124,9 @@ export const assertions = {
     if (expected) {
       if (typeof expected === 'string') {
         if (!error.message.includes(expected)) {
-          throw new Error(`Expected error message to include "${expected}", got "${error.message}"`);
+          throw new Error(
+            `Expected error message to include "${expected}", got "${error.message}"`,
+          );
         }
       } else {
         if (!expected.test(error.message)) {
@@ -235,16 +236,11 @@ export const performance = {
   /**
    * Asserts execution time is within threshold
    */
-  async assertTiming<T>(
-    fn: () => Promise<T>,
-    maxDuration: number
-  ): Promise<T> {
+  async assertTiming<T>(fn: () => Promise<T>, maxDuration: number): Promise<T> {
     const { result, duration } = await this.measure(fn);
 
     if (duration > maxDuration) {
-      throw new Error(
-        `Operation took ${duration}ms, expected less than ${maxDuration}ms`
-      );
+      throw new Error(`Operation took ${duration}ms, expected less than ${maxDuration}ms`);
     }
 
     return result;
@@ -297,6 +293,6 @@ export const consoleSpy = {
    * Restores console output
    */
   restore(spies: jest.Spied<any>[]): void {
-    spies.forEach(spy => spy.mockRestore());
+    spies.forEach((spy) => spy.mockRestore());
   },
 };

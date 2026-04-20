@@ -1,7 +1,7 @@
-import { Pool } from "pg";
-import { ArtifactId } from "@shared/types";
-import { TagEngine } from "@shadowtag/core/TagEngine";
-import { RagGraph, InsertDoc, RetrieveQuery, RetrieveHit, Edge } from "./RagGraph";
+import type { TagEngine } from '@shadowtag/core/TagEngine';
+import { ArtifactId } from '@shared/types';
+import type { Pool } from 'pg';
+import type { Edge, InsertDoc, RagGraph, RetrieveHit, RetrieveQuery } from './RagGraph';
 
 /**
  * PgRagGraph
@@ -15,7 +15,7 @@ import { RagGraph, InsertDoc, RetrieveQuery, RetrieveHit, Edge } from "./RagGrap
 export class PgRagGraph implements RagGraph {
   constructor(
     private pool: Pool,
-    private tagEngine: TagEngine
+    private tagEngine: TagEngine,
   ) {}
 
   /**
@@ -40,12 +40,12 @@ export class PgRagGraph implements RagGraph {
     // 1. Tag the document on the truth layer
     await this.tagEngine.put({
       artifactId: doc.artifactId,
-      tags: Object.entries(doc.tags || {}).map(([key, value]) => ({ key, value }))
+      tags: Object.entries(doc.tags || {}).map(([key, value]) => ({ key, value })),
     });
 
     // 2. Upsert vector + text payload
     if (doc.embed && doc.embed instanceof Float32Array) {
-      const vectorString = `[${doc.embed.join(",")}]`;
+      const vectorString = `[${doc.embed.join(',')}]`;
       const query = `
         INSERT INTO document_embeddings (artifact_id, text_content, embedding)
         VALUES ($1, $2, $3::vector)
@@ -68,7 +68,7 @@ export class PgRagGraph implements RagGraph {
     let allowedIds: string[] | null = null;
     if (query.filter && Object.keys(query.filter).length > 0) {
       const preFilter = await this.tagEngine.query({ allOf: query.filter, limit: 10000 });
-      allowedIds = preFilter.items.map(i => i.artifactId);
+      allowedIds = preFilter.items.map((i) => i.artifactId);
 
       // If filters are applied but yield zero matches, early return.
       if (allowedIds.length === 0) return [];
@@ -80,7 +80,7 @@ export class PgRagGraph implements RagGraph {
     // E.g., const embedVector = await externalEmbed(query.q);
 
     // For scaffolding the pgvector call structure (simulated vector):
-    const mockVectorString = `[${new Array(1536).fill(0.01).join(",")}]`;
+    const mockVectorString = `[${new Array(1536).fill(0.01).join(',')}]`;
 
     // 2. Fetch via pgvector (cosine distance filtering)
     let sql = `
@@ -107,14 +107,14 @@ export class PgRagGraph implements RagGraph {
 
       const tagSet: Record<string, any> = {};
       if (tagDoc) {
-        tagDoc.tags.forEach(t => tagSet[t.key] = t.value);
+        tagDoc.tags.forEach((t) => (tagSet[t.key] = t.value));
       }
 
       hits.push({
         artifactId: row.artifact_id,
         snippet: row.text_content,
         score: parseFloat(row.score),
-        tags: tagSet
+        tags: tagSet,
       });
     }
 

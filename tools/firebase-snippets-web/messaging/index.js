@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/messaging";
+import firebase from 'firebase/app';
+import 'firebase/messaging';
 
 function getMessagingObject() {
   // [START messaging_get_messaging_object]
@@ -26,19 +26,22 @@ function getToken() {
   // [START messaging_get_token]
   // Get registration token. Initially this makes a network call, once retrieved
   // subsequent calls to getToken will return from cache.
-  messaging.getToken({ vapidKey: '<YOUR_PUBLIC_VAPID_KEY_HERE>' }).then((currentToken) => {
-    if (currentToken) {
-      // Send the token to your server and update the UI if necessary
+  messaging
+    .getToken({ vapidKey: '<YOUR_PUBLIC_VAPID_KEY_HERE>' })
+    .then((currentToken) => {
+      if (currentToken) {
+        // Send the token to your server and update the UI if necessary
+        // ...
+      } else {
+        // Show permission request UI
+        console.log('No registration token available. Request permission to generate one.');
+        // ...
+      }
+    })
+    .catch((err) => {
+      console.log('An error occurred while retrieving token. ', err);
       // ...
-    } else {
-      // Show permission request UI
-      console.log('No registration token available. Request permission to generate one.');
-      // ...
-    }
-  }).catch((err) => {
-    console.log('An error occurred while retrieving token. ', err);
-    // ...
-  });
+    });
   // [END messaging_get_token]
 }
 
@@ -60,11 +63,14 @@ function deleteToken() {
   const messaging = firebase.messaging();
 
   // [START messaging_delete_token]
-  messaging.deleteToken().then(() => {
-    console.log('Token deleted.');
-    // ...
-  }).catch((err) => {
-    console.log('Unable to delete token. ', err);
-  });
+  messaging
+    .deleteToken()
+    .then(() => {
+      console.log('Token deleted.');
+      // ...
+    })
+    .catch((err) => {
+      console.log('Unable to delete token. ', err);
+    });
   // [END messaging_delete_token]
 }

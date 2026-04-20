@@ -50,7 +50,7 @@
   "qualityMetrics": {
     "relevance": {
       "threshold": 0.75,
-      "tier1Target": 0.90
+      "tier1Target": 0.9
     },
     "timeliness": {
       "maxAge": "24h",
@@ -62,7 +62,7 @@
     },
     "sourceBalance": {
       "minSources": 5,
-      "maxSourcePercent": 0.40
+      "maxSourcePercent": 0.4
     }
   },
   "tools": [
@@ -89,7 +89,7 @@
       "path": "./tools/validation/judge-six-validator.js",
       "config": {
         "strictMode": false,
-        "confidenceThreshold": 0.60
+        "confidenceThreshold": 0.6
       }
     },
     {
@@ -98,9 +98,9 @@
       "config": {
         "model": "gemini-2.0-pro",
         "tierDistribution": {
-          "tier1": 0.20,
-          "tier2": 0.50,
-          "tier3": 0.30
+          "tier1": 0.2,
+          "tier2": 0.5,
+          "tier3": 0.3
         }
       }
     }
@@ -188,12 +188,7 @@
   "integration": {
     "pnklnStack": {
       "namespace": "intelligence",
-      "calledBy": [
-        "analysis-service",
-        "alerting-service",
-        "reporting-service",
-        "briefing-service"
-      ],
+      "calledBy": ["analysis-service", "alerting-service", "reporting-service", "briefing-service"],
       "calls": [],
       "dataFormat": "json",
       "deliveryFormat": "am-briefing"

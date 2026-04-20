@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {css, CSSResultOrNative, html, LitElement} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import { type CSSResultOrNative, css, html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
-import dividerStyles from './divider.css' with {type: 'css'}; // github-only
+import dividerStyles from './divider.css' with { type: 'css' }; // github-only
 // import {styles as dividerStyles} from './divider.cssresult.js'; // google3-only
 
-import {divider} from './divider.js';
+import { divider } from './divider.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -45,7 +45,7 @@ export class Divider extends LitElement {
   /**
    * Whether or not the divider is vertical.
    */
-  @property({type: Boolean, reflect: true}) vertical = false;
+  @property({ type: Boolean, reflect: true }) vertical = false;
 
   protected override render() {
     return html`<div part="divider" class="${divider(this)}"></div>`;

@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_svc_get_idtoken_modular]
-import { getAuth, getIdToken } from "firebase/auth";
+import { getAuth, getIdToken } from 'firebase/auth';
 
 const auth = getAuth();
 getIdToken(auth.currentUser)

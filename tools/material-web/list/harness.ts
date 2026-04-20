@@ -4,27 +4,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Harness} from '../testing/harness.js';
+import { Harness } from '../testing/harness.js';
 
-import {List} from './internal/list.js';
-import {ListItemHarness} from './internal/listitem/harness.js';
-import {ListItemEl} from './internal/listitem/list-item.js';
+import type { List } from './internal/list.js';
+import { ListItemHarness } from './internal/listitem/harness.js';
+import type { ListItemEl } from './internal/listitem/list-item.js';
 
-export {ListItemHarness} from './internal/listitem/harness.js';
+export { ListItemHarness } from './internal/listitem/harness.js';
 
 const NAVIGABLE_KEYS = {
-  'ArrowDown': 'ArrowDown',
-  'ArrowUp': 'ArrowUp',
-  'Home': 'Home',
-  'End': 'End',
+  ArrowDown: 'ArrowDown',
+  ArrowUp: 'ArrowUp',
+  Home: 'Home',
+  End: 'End',
 } as const;
 
 /**
  * Keys that are handled by MdList. Keys not included in this are not handled by
  * MdList and should be dispatched by yourself.
  */
-export type HandledListKeys =
-  (typeof NAVIGABLE_KEYS)[keyof typeof NAVIGABLE_KEYS];
+export type HandledListKeys = (typeof NAVIGABLE_KEYS)[keyof typeof NAVIGABLE_KEYS];
 
 /**
  * Test harness for list.
@@ -40,9 +39,7 @@ export class ListHarness extends Harness<List> {
 
   /** @return List item harnesses. */
   getItems() {
-    return this.element.items.map(
-      (item) => new ListItemHarness(item as ListItemEl),
-    );
+    return this.element.items.map((item) => new ListItemHarness(item as ListItemEl));
   }
 
   /**
@@ -52,7 +49,7 @@ export class ListHarness extends Harness<List> {
    * @param key The key to dispatch on the list.
    */
   async pressHandledKey<T extends string = HandledListKeys>(key: T) {
-    await this.keypress(key, {code: key});
+    await this.keypress(key, { code: key });
   }
 
   /**
@@ -61,7 +58,7 @@ export class ListHarness extends Harness<List> {
    * @param key The key to dispatch on the list.
    */
   override async keypress(key: string, init = {} as KeyboardEventInit) {
-    init = {code: key, ...init};
+    init = { code: key, ...init };
     await super.keypress(key, init);
   }
 }

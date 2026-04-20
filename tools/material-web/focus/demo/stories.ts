@@ -6,8 +6,8 @@
 
 import '@material/web/focus/md-focus-ring.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {css, html} from 'lit';
+import { css, html } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for focus ring stories. */
 export interface StoryKnobs {
@@ -43,7 +43,7 @@ const standard: MaterialStoryInit<StoryKnobs> = {
       background: var(--md-sys-color-surface-variant);
     }
   `,
-  render({inward}) {
+  render({ inward }) {
     return html`
       <button aria-label="A button with a focus ring">
         <md-focus-ring ?inward=${inward}></md-focus-ring>
@@ -114,7 +114,7 @@ const multiAction: MaterialStoryInit<StoryKnobs> = {
       position: absolute;
     }
   `,
-  render({inward}) {
+  render({ inward }) {
     return html`
       <div role="list">
         <md-focus-ring for="primary" ?inward=${inward}></md-focus-ring>

@@ -6,8 +6,8 @@
  */
 
 import { execSync } from 'child_process';
-import { existsSync, copyFileSync, mkdirSync } from 'fs';
-import { join, dirname } from 'path';
+import { copyFileSync, existsSync, mkdirSync } from 'fs';
+import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -20,7 +20,7 @@ const colors = {
   green: '\x1b[32m',
   blue: '\x1b[34m',
   yellow: '\x1b[33m',
-  red: '\x1b[31m'
+  red: '\x1b[31m',
 };
 
 function log(message, color = 'reset') {
@@ -32,7 +32,7 @@ function execCommand(command, cwd) {
     execSync(command, {
       cwd,
       stdio: 'inherit',
-      shell: true
+      shell: true,
     });
     return true;
   } catch (error) {
@@ -128,7 +128,7 @@ async function main() {
   log('Happy coding! 🎉', 'green');
 }
 
-main().catch(error => {
+main().catch((error) => {
   log(`❌ Setup failed: ${error.message}`, 'red');
   process.exit(1);
 });

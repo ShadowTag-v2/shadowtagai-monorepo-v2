@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { vi, describe, it, expect, afterEach } from 'vitest';
-import { init } from './init.js';
-import { initializeGeminiCLI } from './init-gemini-cli.js';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import * as gcloud from '../gcloud_executor.js';
 import { log } from '../utility/logger.js';
+import { init } from './init.js';
+import { initializeGeminiCLI } from './init-gemini-cli.js';
 
 vi.mock('../gcloud_executor.js', () => ({
   isAvailable: vi.fn(),

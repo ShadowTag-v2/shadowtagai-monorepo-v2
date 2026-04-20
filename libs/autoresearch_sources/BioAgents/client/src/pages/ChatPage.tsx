@@ -1,19 +1,17 @@
-import { useCallback, useEffect, useState, useRef } from "preact/hooks";
-import { route } from "preact-router";
+import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
+import { route } from 'preact-router';
 
-import { ChatInput } from "../components/ChatInput";
-import { EmbeddedWalletAuth } from "../components/EmbeddedWalletAuth";
-import { ErrorMessage } from "../components/ErrorMessage";
-import { Message } from "../components/Message";
-import { PaymentConfirmationModal } from "../components/PaymentConfirmationModal";
-import { ResearchStatePanel } from "../components/research";
-import { Sidebar } from "../components/Sidebar";
-import { ToastContainer } from "../components/Toast";
-import { TypingIndicator } from "../components/TypingIndicator";
-import { Modal } from "../components/ui/Modal";
-import { WelcomeScreen } from "../components/WelcomeScreen";
-import { ConversationProvider } from "../providers/ConversationProvider";
-
+import { ChatInput } from '../components/ChatInput';
+import { EmbeddedWalletAuth } from '../components/EmbeddedWalletAuth';
+import { ErrorMessage } from '../components/ErrorMessage';
+import { Message } from '../components/Message';
+import { PaymentConfirmationModal } from '../components/PaymentConfirmationModal';
+import { ResearchStatePanel } from '../components/research';
+import { Sidebar } from '../components/Sidebar';
+import { ToastContainer } from '../components/Toast';
+import { TypingIndicator } from '../components/TypingIndicator';
+import { Modal } from '../components/ui/Modal';
+import { WelcomeScreen } from '../components/WelcomeScreen';
 // Custom hooks
 import {
   useAuth,
@@ -27,11 +25,12 @@ import {
   useToast,
   useWebSocket,
   useX402Payment,
-} from "../hooks";
-import { getMessagesByConversation } from "../lib/supabase";
+} from '../hooks';
+import { getMessagesByConversation } from '../lib/supabase';
+import { ConversationProvider } from '../providers/ConversationProvider';
 
 // Utils
-import { generateConversationId, walletAddressToUUID } from "../utils/helpers";
+import { generateConversationId, walletAddressToUUID } from '../utils/helpers';
 
 interface ChatPageProps {
   path?: string;
@@ -70,10 +69,10 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
   // Fallback user ID for when auth is not required
   // Uses localStorage to persist across sessions
   const getFallbackUserId = () => {
-    const stored = localStorage.getItem("dev_user_id");
+    const stored = localStorage.getItem('dev_user_id');
     if (stored) return stored;
     const newId = generateConversationId();
-    localStorage.setItem("dev_user_id", newId);
+    localStorage.setItem('dev_user_id', newId);
     return newId;
   };
 
@@ -124,11 +123,11 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
       const sessionExists = sessions.some((s) => s.id === urlSessionId);
 
       if (sessionExists && urlSessionId !== currentSessionId) {
-        console.log("[ChatPage] Switching to URL session:", urlSessionId);
+        console.log('[ChatPage] Switching to URL session:', urlSessionId);
         switchSession(urlSessionId);
       } else if (!sessionExists) {
         // Session doesn't exist - redirect to /chat
-        console.log("[ChatPage] URL session not found, redirecting to /chat");
+        console.log('[ChatPage] URL session not found, redirecting to /chat');
         route(`/chat`, true);
       }
     } else if (!freshSessionCreated) {
@@ -136,7 +135,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
       // Check if current session has messages - if so, create new one
       const currentHasMessages = currentSession?.messages?.length > 0;
       if (currentHasMessages) {
-        console.log("[ChatPage] At /chat with messages in current session, creating new session");
+        console.log('[ChatPage] At /chat with messages in current session, creating new session');
         createNewSession();
         setFreshSessionCreated(true);
       }
@@ -219,7 +218,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
             addMessage({
               id: Date.now(),
               dbMessageId: messageId,
-              role: "assistant" as const,
+              role: 'assistant' as const,
               content: updatedMsg.content,
               timestamp: new Date(),
             });
@@ -232,7 +231,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
           setPendingMessageData(null);
         }
       } catch (err) {
-        console.error("[ChatPage] WebSocket handler error:", err);
+        console.error('[ChatPage] WebSocket handler error:', err);
       }
     },
     [addMessage, tryMarkAsProcessed],
@@ -242,7 +241,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
   const handleStateUpdated = useCallback(
     async (_stateId: string, conversationId: string) => {
       if (conversationId !== currentSessionIdRef.current) return;
-      console.log("[ChatPage] WebSocket: State updated, triggering refetch");
+      console.log('[ChatPage] WebSocket: State updated, triggering refetch');
       await refetchConversationState();
     },
     [refetchConversationState],
@@ -295,7 +294,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
   const { containerRef, scrollToBottom } = useAutoScroll([currentSession.messages]);
 
   // Input state
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
 
   // Mobile sidebar state
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -318,7 +317,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
   const [isResearchPanelExpanded, setIsResearchPanelExpanded] = useState(false);
 
   // Conversation mode tracking (per conversation)
-  const [conversationModes, setConversationModes] = useState<Record<string, "normal" | "deep">>({});
+  const [conversationModes, setConversationModes] = useState<Record<string, 'normal' | 'deep'>>({});
 
   const messages = currentSession.messages;
 
@@ -372,12 +371,12 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
   // If conversation has messages but no research state, it's a normal chat
   // If it has research state, it's deep research
   // If no messages yet, return undefined (new conversation)
-  const detectedMode: "normal" | "deep" | undefined =
+  const detectedMode: 'normal' | 'deep' | undefined =
     messages.length === 0
       ? undefined // New conversation - let user choose
       : hasActiveDeepResearch
-        ? "deep" // Has research state - deep research
-        : "normal"; // Has messages but no research - normal chat
+        ? 'deep' // Has research state - deep research
+        : 'normal'; // Has messages but no research - normal chat
 
   // Get current conversation mode (explicit > detected > default to deep for new)
   const currentConversationMode = conversationModes[currentSessionId] || detectedMode;
@@ -416,8 +415,8 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
     if (!isDeepResearch || !isCurrentConversationLoading) return;
 
     const lastMessage = messages[messages.length - 1];
-    if (lastMessage && lastMessage.role === "assistant") {
-      console.log("[ChatPage] Deep research completed - assistant message detected");
+    if (lastMessage && lastMessage.role === 'assistant') {
+      console.log('[ChatPage] Deep research completed - assistant message detected');
       setIsDeepResearch(false);
       setLoadingConversationId(null);
       setLoadingMessageId(null);
@@ -439,10 +438,10 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
       const allStepsComplete = Object.values(steps).every((step: any) => step.end);
 
       if (allStepsComplete) {
-        console.log("[ChatPage] Deep research complete, finalizing message");
+        console.log('[ChatPage] Deep research complete, finalizing message');
 
         const lastMessage = messages[messages.length - 1];
-        if (lastMessage?.role === "assistant" && lastMessage?.content === finalResponse) {
+        if (lastMessage?.role === 'assistant' && lastMessage?.content === finalResponse) {
           return;
         }
 
@@ -454,7 +453,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
 
         addMessage({
           id: Date.now(),
-          role: "assistant" as const,
+          role: 'assistant' as const,
           content: finalResponse,
           timestamp: new Date(),
           thinkingState: capturedState,
@@ -487,7 +486,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
     // If suggestedNextSteps just appeared (went from 0 to >0), research completed
     if (currentStepsCount > 0 && prevCount === 0) {
       console.log(
-        "[ChatPage] Research completed - suggestedNextSteps appeared, refreshing messages",
+        '[ChatPage] Research completed - suggestedNextSteps appeared, refreshing messages',
       );
 
       // Refetch messages from DB to get the response
@@ -524,11 +523,11 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
         if (targetMsg?.content && mounted) {
           // Atomic check-and-mark to prevent duplicates
           if (tryMarkAsProcessed(messageId, targetMsg.content)) {
-            console.log("[ChatPage] Poll: Found message content, adding to UI:", messageId);
+            console.log('[ChatPage] Poll: Found message content, adding to UI:', messageId);
             addMessage({
               id: Date.now(),
               dbMessageId: messageId,
-              role: "assistant" as const,
+              role: 'assistant' as const,
               content: targetMsg.content,
               timestamp: new Date(),
             });
@@ -541,7 +540,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
           setPendingMessageData(null);
         }
       } catch (err) {
-        console.error("[ChatPage] Poll error:", err);
+        console.error('[ChatPage] Poll error:', err);
       }
     };
 
@@ -567,14 +566,14 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
     if (!currentSessionId || !userId) return;
     if (messages.length === 0) return;
 
-    const assistantMessages = messages.filter((m) => m.role === "assistant");
+    const assistantMessages = messages.filter((m) => m.role === 'assistant');
     const messagesNeedingStates = assistantMessages.filter((m) => !m.thinkingState);
 
     if (messagesNeedingStates.length === 0) return;
 
     async function fetchAndAttachStates() {
       try {
-        const { getStatesByConversation } = await import("../lib/supabase");
+        const { getStatesByConversation } = await import('../lib/supabase');
         const states = await getStatesByConversation(currentSessionId);
 
         if (!states || states.length === 0) return false;
@@ -590,7 +589,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
         let attachedCount = 0;
         updateSessionMessages(currentSessionId, (prev) =>
           prev.map((msg) => {
-            if (msg.role !== "assistant" || msg.thinkingState) return msg;
+            if (msg.role !== 'assistant' || msg.thinkingState) return msg;
 
             let state = msg.dbMessageId ? stateByMessageId.get(msg.dbMessageId) : null;
 
@@ -617,7 +616,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
 
         return attachedCount > 0;
       } catch (err) {
-        console.error("[ChatPage] Error fetching states:", err);
+        console.error('[ChatPage] Error fetching states:', err);
         return false;
       }
     }
@@ -635,7 +634,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
   /**
    * Handle sending a message
    */
-  const handleSend = async (mode: string = "normal") => {
+  const handleSend = async (mode: string = 'normal') => {
     const trimmedInput = inputValue.trim();
     const hasFiles = selectedFiles.length > 0;
 
@@ -647,7 +646,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
       ? selectedFiles.length === 1
         ? `[Attached: ${selectedFiles[0].name}]`
         : `[Attached ${selectedFiles.length} files]`
-      : "";
+      : '';
 
     const filesToUpload = [...selectedFiles];
     const messageContent = trimmedInput || fileText;
@@ -657,12 +656,12 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
 
     setPendingMessageData({ content: messageContent, fileMetadata });
 
-    setInputValue("");
+    setInputValue('');
     clearFile();
 
     const userMessage = {
       id: Date.now(),
-      role: "user" as const,
+      role: 'user' as const,
       content: messageContent,
       timestamp: new Date(),
       files: fileMetadata,
@@ -672,7 +671,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
 
     const isFirstMessage = messages.length === 0;
     if (isFirstMessage) {
-      const title = trimmedInput || filesToUpload[0]?.name || "New conversation";
+      const title = trimmedInput || filesToUpload[0]?.name || 'New conversation';
       updateSessionTitle(currentSessionId, title);
       // Update URL to include session ID when first message is sent
       if (!urlSessionId) {
@@ -681,7 +680,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
       // Persist the mode for this conversation
       setConversationModes((prev) => ({
         ...prev,
-        [currentSessionId]: mode as "normal" | "deep",
+        [currentSessionId]: mode as 'normal' | 'deep',
       }));
     }
 
@@ -697,12 +696,12 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
         );
 
         if (uploadResults.length === 0) {
-          throw new Error("Failed to upload files. Please try again.");
+          throw new Error('Failed to upload files. Please try again.');
         }
 
-        const failedUploads = uploadResults.filter((f) => f.status === "error");
+        const failedUploads = uploadResults.filter((f) => f.status === 'error');
         if (failedUploads.length > 0) {
-          const failedNames = failedUploads.map((f) => f.filename).join(", ");
+          const failedNames = failedUploads.map((f) => f.filename).join(', ');
           throw new Error(`Failed to upload: ${failedNames}`);
         }
 
@@ -713,7 +712,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
       }
 
       console.log(`[ChatPage] Calling sendMessage... (${new Date().toISOString()})`);
-      if (mode === "deep") {
+      if (mode === 'deep') {
         const response = await sendDeepResearchMessage({
           message: trimmedInput,
           conversationId: currentSessionId,
@@ -721,23 +720,23 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
           walletClient: x402Enabled ? embeddedWalletClient : null,
         });
 
-        if (response.status === "rejected") {
+        if (response.status === 'rejected') {
           addMessage({
             id: Date.now(),
-            role: "assistant" as const,
+            role: 'assistant' as const,
             content:
-              response.error || "Deep research request was rejected. Please check the format.",
+              response.error || 'Deep research request was rejected. Please check the format.',
             timestamp: new Date(),
           });
           scrollToBottom();
           setLoadingConversationId(null);
           setLoadingMessageId(null);
           setPendingMessageData(null);
-        } else if (response.status === "processing") {
-          if (response.error === "PAYMENT_REQUIRED") {
-            console.log("[ChatPage] Deep research payment required - modal will show");
+        } else if (response.status === 'processing') {
+          if (response.error === 'PAYMENT_REQUIRED') {
+            console.log('[ChatPage] Deep research payment required - modal will show');
           } else {
-            console.log("[ChatPage] Deep research started, messageId:", response.messageId);
+            console.log('[ChatPage] Deep research started, messageId:', response.messageId);
             setLoadingMessageId(response.messageId);
             setIsDeepResearch(true);
             setPendingMessageData(null);
@@ -758,7 +757,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
             addMessage({
               id: Date.now() + 1,
               dbMessageId: response.messageId,
-              role: "assistant" as const,
+              role: 'assistant' as const,
               content: response.text,
               timestamp: new Date(),
             });
@@ -772,7 +771,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
         }
       }
     } catch (err: any) {
-      console.error("Chat error:", err);
+      console.error('Chat error:', err);
       if (err?.isPaymentConfirmation) return;
 
       removeMessage(userMessage.id);
@@ -781,7 +780,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
       setLoadingConversationId(null);
       setLoadingMessageId(null);
 
-      if (err.message?.includes("upload") || err.message?.includes("Upload")) {
+      if (err.message?.includes('upload') || err.message?.includes('Upload')) {
         toast.error(`File upload failed: ${err.message}`, 6000);
       }
     }
@@ -805,12 +804,12 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
     return (
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
-          background: "var(--bg-primary, #0a0a0a)",
-          color: "var(--text-secondary, #a1a1a1)",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
+          background: 'var(--bg-primary, #0a0a0a)',
+          color: 'var(--text-secondary, #a1a1a1)',
         }}
       >
         Loading...
@@ -863,36 +862,36 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
           </button>
 
           {x402Enabled && !isEmbeddedWalletConnected && (
-            <div style={{ margin: "0.75rem 0", padding: "0 2rem" }}>
+            <div style={{ margin: '0.75rem 0', padding: '0 2rem' }}>
               <div
                 style={{
-                  padding: "0.75rem 1rem",
-                  background: "#0a0a0a",
-                  borderRadius: "12px",
-                  border: "1px solid #262626",
+                  padding: '0.75rem 1rem',
+                  background: '#0a0a0a',
+                  borderRadius: '12px',
+                  border: '1px solid #262626',
                 }}
               >
                 <div
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: "12px",
-                    flexWrap: "wrap",
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '12px',
+                    flexWrap: 'wrap',
                   }}
                 >
                   <div style={{ flex: 1 }}>
                     <p
                       style={{
-                        margin: "0 0 4px 0",
-                        fontSize: "14px",
+                        margin: '0 0 4px 0',
+                        fontSize: '14px',
                         fontWeight: 600,
-                        color: "#ffffff",
+                        color: '#ffffff',
                       }}
                     >
                       Connect Your Wallet
                     </p>
-                    <p style={{ margin: 0, fontSize: "13px", color: "#a1a1a1" }}>
+                    <p style={{ margin: 0, fontSize: '13px', color: '#a1a1a1' }}>
                       Create a secure wallet to access paid features
                     </p>
                   </div>
@@ -900,20 +899,20 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
                     type="button"
                     onClick={() => setIsWalletModalOpen(true)}
                     style={{
-                      background: "#10b981",
-                      border: "none",
-                      color: "#000000",
-                      padding: "10px 20px",
-                      borderRadius: "8px",
-                      cursor: "pointer",
-                      fontSize: "14px",
+                      background: '#10b981',
+                      border: 'none',
+                      color: '#000000',
+                      padding: '10px 20px',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontSize: '14px',
                       fontWeight: 600,
-                      transition: "all 0.2s ease",
-                      boxShadow: "0 4px 12px rgba(16, 185, 129, 0.3)",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      whiteSpace: "nowrap",
+                      transition: 'all 0.2s ease',
+                      boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      whiteSpace: 'nowrap',
                     }}
                   >
                     <svg
@@ -937,13 +936,13 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
           )}
 
           {x402Enabled && isEmbeddedWalletConnected && embeddedWalletAddress && (
-            <div style={{ margin: "0.75rem 0", padding: "0 2rem" }}>
+            <div style={{ margin: '0.75rem 0', padding: '0 2rem' }}>
               <EmbeddedWalletAuth usdcBalance={usdcBalance} />
             </div>
           )}
 
           {x402Enabled && x402Error && (
-            <div style={{ marginBottom: "1rem", color: "#b91c1c", fontSize: "0.85rem" }}>
+            <div style={{ marginBottom: '1rem', color: '#b91c1c', fontSize: '0.85rem' }}>
               {x402Error}
             </div>
           )}
@@ -951,21 +950,21 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
           {x402Enabled && walletAddress && hasInsufficientBalance && (
             <div
               style={{
-                margin: "0.75rem 0",
-                padding: "0.75rem 1rem",
-                borderRadius: "8px",
-                background: "rgba(251, 146, 60, 0.15)",
-                border: "1px solid rgba(251, 146, 60, 0.35)",
-                color: "var(--text-primary)",
+                margin: '0.75rem 0',
+                padding: '0.75rem 1rem',
+                borderRadius: '8px',
+                background: 'rgba(251, 146, 60, 0.15)',
+                border: '1px solid rgba(251, 146, 60, 0.35)',
+                color: 'var(--text-primary)',
               }}
               role="alert"
             >
-              <strong style={{ display: "block", marginBottom: "0.25rem", color: "#ea580c" }}>
+              <strong style={{ display: 'block', marginBottom: '0.25rem', color: '#ea580c' }}>
                 Warning: Insufficient USDC Balance
               </strong>
-              <span style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.9rem" }}>
+              <span style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>
                 You need at least $0.10 USDC to make payments. Your current balance is $
-                {usdcBalance || "0.00"} USDC.
+                {usdcBalance || '0.00'} USDC.
               </span>
             </div>
           )}
@@ -973,32 +972,32 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
           {paymentTxHash && (
             <div
               style={{
-                margin: "0.75rem 0",
-                padding: "0.75rem 1rem",
-                borderRadius: "8px",
-                background: "rgba(34, 197, 94, 0.15)",
-                border: "1px solid rgba(34, 197, 94, 0.35)",
-                color: "var(--text-primary)",
+                margin: '0.75rem 0',
+                padding: '0.75rem 1rem',
+                borderRadius: '8px',
+                background: 'rgba(34, 197, 94, 0.15)',
+                border: '1px solid rgba(34, 197, 94, 0.35)',
+                color: 'var(--text-primary)',
               }}
               role="alert"
             >
-              <strong style={{ display: "block", marginBottom: "0.25rem", color: "#16a34a" }}>
+              <strong style={{ display: 'block', marginBottom: '0.25rem', color: '#16a34a' }}>
                 Payment Successful
               </strong>
               <div
                 style={{
-                  fontSize: "0.85rem",
-                  color: "var(--text-secondary)",
-                  wordBreak: "break-all",
+                  fontSize: '0.85rem',
+                  color: 'var(--text-secondary)',
+                  wordBreak: 'break-all',
                 }}
               >
                 <div>
-                  <strong>Transaction:</strong>{" "}
+                  <strong>Transaction:</strong>{' '}
                   <a
                     href={`https://sepolia.basescan.org/tx/${paymentTxHash}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: "#0052ff", textDecoration: "underline" }}
+                    style={{ color: '#0052ff', textDecoration: 'underline' }}
                   >
                     {paymentTxHash.slice(0, 10)}...{paymentTxHash.slice(-8)}
                   </a>
@@ -1011,7 +1010,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
 
           <div className="chat-container" ref={containerRef}>
             {isLoadingSessions ? (
-              <div style={{ textAlign: "center", padding: "2rem", color: "var(--text-secondary)" }}>
+              <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>
                 Loading conversations...
               </div>
             ) : (
@@ -1045,7 +1044,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
             onChange={setInputValue}
             onSend={handleSend}
             disabled={isCurrentConversationLoading || isUploading}
-            placeholder={isUploading ? "Uploading files..." : "Type your message..."}
+            placeholder={isUploading ? 'Uploading files...' : 'Type your message...'}
             selectedFile={selectedFile}
             selectedFiles={selectedFiles}
             onFileSelect={(fileOrFiles: File | File[]) => {
@@ -1057,7 +1056,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
             }}
             onFileRemove={removeFile}
             conversationMode={currentConversationMode}
-            onModeChange={(newMode: "normal" | "deep") => {
+            onModeChange={(newMode: 'normal' | 'deep') => {
               setConversationModes((prev) => ({
                 ...prev,
                 [currentSessionId]: newMode,
@@ -1091,19 +1090,19 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
 
             setLoadingConversationId(currentSessionId);
 
-            if (pendingPaymentType === "deep-research") {
+            if (pendingPaymentType === 'deep-research') {
               setTimeout(() => scrollToBottom(), 50);
               const response = await confirmDeepResearchPayment();
 
-              if (response && response.status === "processing") {
+              if (response && response.status === 'processing') {
                 setLoadingMessageId(response.messageId);
                 setIsDeepResearch(true);
                 setPendingMessageData(null);
-              } else if (response?.status === "rejected") {
+              } else if (response?.status === 'rejected') {
                 addMessage({
                   id: Date.now(),
-                  role: "assistant" as const,
-                  content: response.error || "Deep research request was rejected.",
+                  role: 'assistant' as const,
+                  content: response.error || 'Deep research request was rejected.',
                   timestamp: new Date(),
                 });
                 scrollToBottom();

@@ -2,23 +2,23 @@
  * Quality & Testing Agents for Vertex AI Workbench
  */
 import {
-  BaseAgent,
-  type AgentMetadata,
   AgentCategory,
   type AgentContext,
   type AgentExecutionResult,
-} from "./base";
+  type AgentMetadata,
+  BaseAgent,
+} from './base';
 
 export class TestGenerator extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "Test Generator",
+      name: 'Test Generator',
       description:
         "Writes the tests you've been avoiding. Unit, integration, E2E - catches bugs before users do.",
       category: AgentCategory.QUALITY_TESTING,
-      icon: "🧪",
-      version: "1.0.0",
-      tags: ["testing", "unit-tests", "integration", "e2e", "quality"],
+      icon: '🧪',
+      version: '1.0.0',
+      tags: ['testing', 'unit-tests', 'integration', 'e2e', 'quality'],
     };
   }
 
@@ -52,13 +52,13 @@ Untested code is broken code waiting to happen. Test early, test often, test eve
 export class SecurityScanner extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "Security Scanner",
+      name: 'Security Scanner',
       description:
-        "Finds vulnerabilities before hackers do. Implements auth, validation, and data protection.",
+        'Finds vulnerabilities before hackers do. Implements auth, validation, and data protection.',
       category: AgentCategory.QUALITY_TESTING,
-      icon: "🔒",
-      version: "1.0.0",
-      tags: ["security", "vulnerabilities", "authentication", "encryption", "owasp"],
+      icon: '🔒',
+      version: '1.0.0',
+      tags: ['security', 'vulnerabilities', 'authentication', 'encryption', 'owasp'],
     };
   }
 
@@ -94,13 +94,13 @@ Security is not a feature - it's a requirement. Prevent attacks before they happ
 export class CodeReviewer extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "Code Reviewer",
+      name: 'Code Reviewer',
       description:
-        "Reviews your code like a senior engineer. Catches bugs, suggests improvements, ensures quality.",
+        'Reviews your code like a senior engineer. Catches bugs, suggests improvements, ensures quality.',
       category: AgentCategory.QUALITY_TESTING,
-      icon: "👀",
-      version: "1.0.0",
-      tags: ["code-review", "quality", "best-practices", "mentoring"],
+      icon: '👀',
+      version: '1.0.0',
+      tags: ['code-review', 'quality', 'best-practices', 'mentoring'],
     };
   }
 
@@ -135,12 +135,12 @@ Be thorough but constructive. Help developers grow while maintaining quality sta
 export class LoadTester extends BaseAgent {
   getMetadata(): AgentMetadata {
     return {
-      name: "Load Tester",
-      description: "Simulates 10,000 users hitting your app. Finds breaking points and fixes them.",
+      name: 'Load Tester',
+      description: 'Simulates 10,000 users hitting your app. Finds breaking points and fixes them.',
       category: AgentCategory.QUALITY_TESTING,
-      icon: "📊",
-      version: "1.0.0",
-      tags: ["load-testing", "performance", "stress-testing", "scalability"],
+      icon: '📊',
+      version: '1.0.0',
+      tags: ['load-testing', 'performance', 'stress-testing', 'scalability'],
     };
   }
 

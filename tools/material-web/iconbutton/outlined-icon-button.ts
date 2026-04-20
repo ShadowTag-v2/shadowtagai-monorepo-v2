@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {CSSResultOrNative} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import type { CSSResultOrNative } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {IconButton} from './internal/icon-button.js';
-import {styles} from './internal/outlined-styles.cssresult.js';
-import {styles as sharedStyles} from './internal/shared-styles.cssresult.js';
+import { IconButton } from './internal/icon-button.js';
+import { styles } from './internal/outlined-styles.cssresult.js';
+import { styles as sharedStyles } from './internal/shared-styles.cssresult.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -42,7 +42,7 @@ export class MdOutlinedIconButton extends IconButton {
   protected override getRenderClasses() {
     return {
       ...super.getRenderClasses(),
-      'outlined': true,
+      outlined: true,
     };
   }
 }

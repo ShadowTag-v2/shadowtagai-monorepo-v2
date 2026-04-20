@@ -5,21 +5,21 @@
 // 'npm run snippets'.
 
 // [START auth_yahoo_link_popup_modular]
-import { getAuth, linkWithPopup, OAuthProvider } from "firebase/auth";
+import { getAuth, linkWithPopup, OAuthProvider } from 'firebase/auth';
 
 const provider = new OAuthProvider('yahoo.com');
 const auth = getAuth();
 linkWithPopup(auth.currentUser, provider)
-    .then((result) => {
-      // Yahoo credential is linked to the current user.
-      // IdP data available in result.additionalUserInfo.profile.
+  .then((result) => {
+    // Yahoo credential is linked to the current user.
+    // IdP data available in result.additionalUserInfo.profile.
 
-      // Get the OAuth access token and ID Token
-      const credential = OAuthProvider.credentialFromResult(result);
-      const accessToken = credential.accessToken;
-      const idToken = credential.idToken;
-    })
-    .catch((error) => {
-      // Handle error.
-    });
+    // Get the OAuth access token and ID Token
+    const credential = OAuthProvider.credentialFromResult(result);
+    const accessToken = credential.accessToken;
+    const idToken = credential.idToken;
+  })
+  .catch((error) => {
+    // Handle error.
+  });
 // [END auth_yahoo_link_popup_modular]

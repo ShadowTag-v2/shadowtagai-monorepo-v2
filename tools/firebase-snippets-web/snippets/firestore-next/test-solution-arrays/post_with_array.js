@@ -7,8 +7,8 @@
 // [START post_with_array_modular]
 // Sample document in the 'posts' collection.
 {
-    title: "My great post",
-    categories: [
+  title: 'My great post', categories;
+  : [
         "technology",
         "opinion",
         "cats"

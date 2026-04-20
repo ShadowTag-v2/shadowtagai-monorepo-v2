@@ -1,20 +1,20 @@
-import { expect, test, describe, beforeEach, mock } from "bun:test";
-import { GameSidebarManager } from "./GameSidebarManager.js";
+import { beforeEach, describe, expect, mock, test } from 'bun:test';
+import { GameSidebarManager } from './GameSidebarManager.js';
 
 // Mock ToyboxSidebar
-mock.module("../ui/components/ToyboxSidebar.js", () => {
+mock.module('../ui/components/ToyboxSidebar.js', () => {
   return {
     ToyboxSidebar: class {
-      root = { id: "toybox-sidebar" };
+      root = { id: 'toybox-sidebar' };
       isOpen = mock(() => false);
       show = mock(() => {});
       hide = mock(() => {});
       constructor() {}
-    }
+    },
   };
 });
 
-describe("GameSidebarManager", () => {
+describe('GameSidebarManager', () => {
   let mockRenderer: any;
   let manager: GameSidebarManager;
 
@@ -23,20 +23,20 @@ describe("GameSidebarManager", () => {
       root: {
         add: mock(() => {}),
         remove: mock(() => {}),
-      }
+      },
     };
     manager = new GameSidebarManager(mockRenderer);
   });
 
-  test("should be disabled by default", () => {
+  test('should be disabled by default', () => {
     expect(manager.isOpen()).toBe(false);
   });
 
-  test("should handle Ctrl+S to toggle sidebar when enabled", () => {
+  test('should handle Ctrl+S to toggle sidebar when enabled', () => {
     manager.enable();
 
     // First press: Open
-    const handled1 = manager.handleKey({ name: "s", ctrl: true } as any);
+    const handled1 = manager.handleKey({ name: 's', ctrl: true } as any);
     expect(handled1).toBe(true);
     expect(mockRenderer.root.add).toHaveBeenCalled(); // Should add sidebar to root
 
@@ -45,14 +45,14 @@ describe("GameSidebarManager", () => {
     // but verifying root.add proves instantiation.
   });
 
-  test("should ignore keys when disabled", () => {
+  test('should ignore keys when disabled', () => {
     manager.disable();
-    const handled = manager.handleKey({ name: "s", ctrl: true } as any);
+    const handled = manager.handleKey({ name: 's', ctrl: true } as any);
     expect(handled).toBe(false);
     expect(mockRenderer.root.add).not.toHaveBeenCalled();
   });
 
-  test("should hide sidebar on disable", () => {
+  test('should hide sidebar on disable', () => {
     manager.enable();
     manager.toggleSidebar(); // Create and show
 

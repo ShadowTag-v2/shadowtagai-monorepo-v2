@@ -1,8 +1,8 @@
 // These samples are intended for Web so this import would normally be
 // done in HTML however using modules here is more convenient for
 // ensuring sample correctness offline.
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 function samlProvider() {
   // [START auth_saml_provider_create]
@@ -12,7 +12,9 @@ function samlProvider() {
 
 function samlSignInPopup(provider) {
   // [START auth_saml_signin_popup]
-  firebase.auth().signInWithPopup(provider)
+  firebase
+    .auth()
+    .signInWithPopup(provider)
     .then((result) => {
       // User is signed in.
       // Identity provider data available in result.additionalUserInfo.profile,
@@ -36,7 +38,9 @@ function samlSignInRedirect(provider) {
 
 function samlSignInRedirectResult(provider) {
   // [START auth_saml_signin_redirect_result]
-  firebase.auth().getRedirectResult()
+  firebase
+    .auth()
+    .getRedirectResult()
     .then((result) => {
       // User is signed in.
       // Provider data available in result.additionalUserInfo.profile,
@@ -44,7 +48,8 @@ function samlSignInRedirectResult(provider) {
       // as an object in the firebase.sign_in_attributes custom claim
       // This is also available from result.user.getIdTokenResult()
       // idTokenResult.claims.firebase.sign_in_attributes.
-    }).catch((error) => {
+    })
+    .catch((error) => {
       // Handle / display error.
       // ...
     });

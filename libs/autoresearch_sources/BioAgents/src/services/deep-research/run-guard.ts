@@ -1,8 +1,8 @@
-import { getConversationState, updateConversationState } from "../../db/operations";
-import { getBullMQConnection } from "../queue/connection";
-import logger from "../../utils/logger";
-import { generateUUID } from "../../utils/uuid";
-import type { ConversationStateValues } from "../../types/core";
+import { getConversationState, updateConversationState } from '../../db/operations';
+import type { ConversationStateValues } from '../../types/core';
+import logger from '../../utils/logger';
+import { generateUUID } from '../../utils/uuid';
+import { getBullMQConnection } from '../queue/connection';
 
 const START_MUTEX_TTL_SECONDS = 15;
 const START_MUTEX_RETRY_DELAY_MS = 100;
@@ -10,12 +10,12 @@ const START_MUTEX_MAX_RETRIES = 20;
 
 const RUN_STALE_MS = 4 * 60 * 60 * 1000; // 4 hours for 1 iteration to become stale
 
-type DeepResearchRun = NonNullable<ConversationStateValues["deepResearchRun"]>;
+type DeepResearchRun = NonNullable<ConversationStateValues['deepResearchRun']>;
 
 export type ActiveRunDedupInfo = {
   messageId: string;
   stateId: string;
-  mode: "queue" | "in-process";
+  mode: 'queue' | 'in-process';
   jobId?: string;
   startedAt: string;
   lastHeartbeatAt: string;
@@ -34,7 +34,7 @@ export async function acquireStartMutex(conversationStateId: string): Promise<St
   const token = generateUUID();
 
   // In non-queue mode with no Redis config, skip mutex and fall back to best-effort DB checks.
-  if (process.env.USE_JOB_QUEUE !== "true" && !process.env.REDIS_URL && !process.env.REDIS_HOST) {
+  if (process.env.USE_JOB_QUEUE !== 'true' && !process.env.REDIS_URL && !process.env.REDIS_HOST) {
     return { key, token, acquired: false, fallback: true };
   }
 
@@ -42,8 +42,8 @@ export async function acquireStartMutex(conversationStateId: string): Promise<St
     const redis = getBullMQConnection();
 
     for (let attempt = 0; attempt <= START_MUTEX_MAX_RETRIES; attempt++) {
-      const acquired = await redis.set(key, token, "EX", START_MUTEX_TTL_SECONDS, "NX");
-      if (acquired === "OK") {
+      const acquired = await redis.set(key, token, 'EX', START_MUTEX_TTL_SECONDS, 'NX');
+      if (acquired === 'OK') {
         return { key, token, acquired: true, fallback: false };
       }
 
@@ -56,12 +56,12 @@ export async function acquireStartMutex(conversationStateId: string): Promise<St
 
     logger.warn(
       { conversationStateId, key, retries: START_MUTEX_MAX_RETRIES },
-      "deep_research_start_mutex_not_acquired",
+      'deep_research_start_mutex_not_acquired',
     );
 
     return { key, token, acquired: false, fallback: false };
   } catch (error) {
-    logger.warn({ error, conversationStateId }, "deep_research_start_mutex_unavailable_fallback");
+    logger.warn({ error, conversationStateId }, 'deep_research_start_mutex_unavailable_fallback');
     return { key, token, acquired: false, fallback: true };
   }
 }
@@ -78,7 +78,7 @@ export async function releaseStartMutex(lock: StartMutexLock): Promise<void> {
       lock.token,
     );
   } catch (error) {
-    logger.warn({ error, key: lock.key }, "deep_research_start_mutex_release_failed");
+    logger.warn({ error, key: lock.key }, 'deep_research_start_mutex_release_failed');
   }
 }
 
@@ -98,7 +98,7 @@ function getHeartbeatAndExpiry(run: DeepResearchRun): {
 }
 
 export function isStaleRun(
-  run?: ConversationStateValues["deepResearchRun"],
+  run?: ConversationStateValues['deepResearchRun'],
   nowMs: number = Date.now(),
 ): boolean {
   if (!run?.isRunning) return false;
@@ -122,7 +122,7 @@ export function isStaleRun(
 }
 
 export function isActiveRun(
-  run?: ConversationStateValues["deepResearchRun"],
+  run?: ConversationStateValues['deepResearchRun'],
   nowMs: number = Date.now(),
 ): run is DeepResearchRun {
   return !!run?.isRunning && !isStaleRun(run, nowMs);
@@ -132,7 +132,7 @@ export function getActiveRunForDedupFromValues(
   values: any,
   nowMs: number = Date.now(),
 ): ActiveRunDedupInfo | null {
-  const run = values?.deepResearchRun as ConversationStateValues["deepResearchRun"];
+  const run = values?.deepResearchRun as ConversationStateValues['deepResearchRun'];
   if (!isActiveRun(run, nowMs)) return null;
   if (!run.rootMessageId || !run.stateId || !run.mode) return null;
 
@@ -169,7 +169,7 @@ export async function markRunStarted(params: {
   conversationStateId: string;
   rootMessageId: string;
   stateId: string;
-  mode: "queue" | "in-process";
+  mode: 'queue' | 'in-process';
   jobId?: string;
 }): Promise<DeepResearchRun> {
   const { conversationStateId, rootMessageId, stateId, mode, jobId } = params;
@@ -202,7 +202,7 @@ export async function touchRun(params: {
   const { conversationStateId, rootMessageId, stateId } = params;
   const record = await getConversationState(conversationStateId);
   const values = { ...(record?.values || {}) };
-  const run = values.deepResearchRun as ConversationStateValues["deepResearchRun"];
+  const run = values.deepResearchRun as ConversationStateValues['deepResearchRun'];
 
   if (!run?.isRunning) return false;
   if (rootMessageId && run.rootMessageId !== rootMessageId) return false;
@@ -230,7 +230,7 @@ export async function updateRunJobId(params: {
   const { conversationStateId, jobId, rootMessageId, stateId } = params;
   const record = await getConversationState(conversationStateId);
   const values = { ...(record?.values || {}) };
-  const run = values.deepResearchRun as ConversationStateValues["deepResearchRun"];
+  const run = values.deepResearchRun as ConversationStateValues['deepResearchRun'];
 
   if (!run?.isRunning) return false;
   if (rootMessageId && run.rootMessageId !== rootMessageId) return false;
@@ -252,7 +252,7 @@ export async function updateRunJobId(params: {
 
 export async function markRunFinished(params: {
   conversationStateId: string;
-  result: "completed" | "failed" | "stale_recovered";
+  result: 'completed' | 'failed' | 'stale_recovered';
   error?: string;
   rootMessageId?: string;
   stateId?: string;
@@ -269,7 +269,7 @@ export async function markRunFinished(params: {
   if (!record) return false;
 
   const values = { ...(record.values || {}) };
-  const run = values.deepResearchRun as ConversationStateValues["deepResearchRun"];
+  const run = values.deepResearchRun as ConversationStateValues['deepResearchRun'];
   if (!run) return false;
 
   if (expectedRootMessageId && run.rootMessageId !== expectedRootMessageId) {

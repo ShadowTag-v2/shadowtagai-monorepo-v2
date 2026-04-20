@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START analytics_set_user_properties_modular]
-import { getAnalytics, setUserProperties } from "firebase/analytics";
+import { getAnalytics, setUserProperties } from 'firebase/analytics';
 
 const analytics = getAnalytics();
 setUserProperties(analytics, { favorite_food: 'apples' });

@@ -8,8 +8,8 @@
  * Calculates the sum of two numbers
  */
 export function add(a: number, b: number): number {
-  if (typeof a !== "number" || typeof b !== "number") {
-    throw new Error("Both arguments must be numbers");
+  if (typeof a !== 'number' || typeof b !== 'number') {
+    throw new Error('Both arguments must be numbers');
   }
   return a + b;
 }
@@ -18,8 +18,8 @@ export function add(a: number, b: number): number {
  * Calculates the product of two numbers
  */
 export function multiply(a: number, b: number): number {
-  if (typeof a !== "number" || typeof b !== "number") {
-    throw new Error("Both arguments must be numbers");
+  if (typeof a !== 'number' || typeof b !== 'number') {
+    throw new Error('Both arguments must be numbers');
   }
   return a * b;
 }
@@ -28,11 +28,11 @@ export function multiply(a: number, b: number): number {
  * Divides two numbers
  */
 export function divide(a: number, b: number): number {
-  if (typeof a !== "number" || typeof b !== "number") {
-    throw new Error("Both arguments must be numbers");
+  if (typeof a !== 'number' || typeof b !== 'number') {
+    throw new Error('Both arguments must be numbers');
   }
   if (b === 0) {
-    throw new Error("Cannot divide by zero");
+    throw new Error('Cannot divide by zero');
   }
   return a / b;
 }
@@ -42,7 +42,7 @@ export function divide(a: number, b: number): number {
  */
 export async function fetchUser(id: string): Promise<{ id: string; name: string }> {
   if (!id) {
-    throw new Error("User ID is required");
+    throw new Error('User ID is required');
   }
 
   // Simulate API call
@@ -85,7 +85,7 @@ export class Calculator {
  * Validates email format
  */
 export function isValidEmail(email: string): boolean {
-  if (!email || typeof email !== "string") {
+  if (!email || typeof email !== 'string') {
     return false;
   }
 
@@ -96,12 +96,12 @@ export function isValidEmail(email: string): boolean {
 /**
  * Formats a date to a readable string
  */
-export function formatDate(date: Date, format: "short" | "long" = "short"): string {
+export function formatDate(date: Date, format: 'short' | 'long' = 'short'): string {
   if (!(date instanceof Date) || isNaN(date.getTime())) {
-    throw new Error("Invalid date");
+    throw new Error('Invalid date');
   }
 
-  if (format === "short") {
+  if (format === 'short') {
     return date.toLocaleDateString();
   } else {
     return date.toLocaleString();

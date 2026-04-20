@@ -1,10 +1,10 @@
-import OpenAI from "openai";
+import OpenAI from 'openai';
 import type {
   ChatCompletion,
   ChatCompletionCreateParamsNonStreaming,
   ChatCompletionMessageParam,
   ChatCompletionTool,
-} from "openai/resources/chat/completions";
+} from 'openai/resources/chat/completions';
 import type {
   Response as OpenAIResponse,
   Tool as OpenAITool,
@@ -12,9 +12,9 @@ import type {
   ResponseOutputMessage,
   ResponseOutputText,
   ResponseCreateParamsNonStreaming as ResponsesCreateParams,
-} from "openai/resources/responses/responses";
-import { LLMAdapter } from "../adapter";
-import type { LLMProvider, LLMRequest, LLMResponse, LLMTool, WebSearchResult } from "../types";
+} from 'openai/resources/responses/responses';
+import { LLMAdapter } from '../adapter';
+import type { LLMProvider, LLMRequest, LLMResponse, LLMTool, WebSearchResult } from '../types';
 
 export class OpenAIAdapter extends LLMAdapter {
   private client: OpenAI;
@@ -23,7 +23,7 @@ export class OpenAIAdapter extends LLMAdapter {
     super(provider);
 
     if (!provider.apiKey) {
-      throw new Error("OpenAI provider requires an API key");
+      throw new Error('OpenAI provider requires an API key');
     }
 
     const clientOptions: ConstructorParameters<typeof OpenAI>[0] = {
@@ -71,12 +71,12 @@ export class OpenAIAdapter extends LLMAdapter {
         stream: true,
       });
 
-      let fullText = "";
+      let fullText = '';
       let promptTokens = 0;
       let completionTokens = 0;
 
       for await (const chunk of stream) {
-        const delta = chunk.choices[0]?.delta?.content || "";
+        const delta = chunk.choices[0]?.delta?.content || '';
         if (delta) {
           fullText += delta;
           await onStreamChunk(delta, fullText);
@@ -118,7 +118,7 @@ export class OpenAIAdapter extends LLMAdapter {
       input,
       instructions: request.systemInstruction ?? undefined,
       tools,
-      tool_choice: "auto",
+      tool_choice: 'auto',
       max_output_tokens: request.maxTokens ?? undefined,
       include: this.getWebSearchInclude(),
     } as ResponsesCreateParams;
@@ -153,15 +153,15 @@ export class OpenAIAdapter extends LLMAdapter {
         stream: true,
       } as ResponseCreateParamsStreaming);
 
-      let fullText = "";
+      let fullText = '';
       let finalResponse: OpenAIResponse | null = null;
 
       for await (const event of stream) {
         const eventType = (event as any).type;
 
         // Listen for text delta events (streaming text chunks)
-        if (eventType === "response.output_text.delta") {
-          const delta = (event as any).delta || "";
+        if (eventType === 'response.output_text.delta') {
+          const delta = (event as any).delta || '';
           if (delta) {
             fullText += delta;
             await onStreamChunk(delta, fullText);
@@ -169,7 +169,7 @@ export class OpenAIAdapter extends LLMAdapter {
         }
 
         // Capture final response for web search results
-        if (eventType === "response.completed" || eventType === "response.incomplete") {
+        if (eventType === 'response.completed' || eventType === 'response.incomplete') {
           finalResponse = (event as any).response;
         }
       }
@@ -205,8 +205,8 @@ export class OpenAIAdapter extends LLMAdapter {
 
     const messages: ChatCompletionMessageParam[] = request.systemInstruction
       ? [
-          { role: "system", content: request.systemInstruction },
-          ...baseMessages.filter((msg) => msg.role !== "system"),
+          { role: 'system', content: request.systemInstruction },
+          ...baseMessages.filter((msg) => msg.role !== 'system'),
         ]
       : baseMessages;
 
@@ -243,28 +243,28 @@ export class OpenAIAdapter extends LLMAdapter {
    */
   private mapThinkingBudgetToReasoningEffort(
     thinkingBudget: number | undefined,
-  ): "none" | "low" | "medium" | "high" | "xhigh" | undefined {
+  ): 'none' | 'low' | 'medium' | 'high' | 'xhigh' | undefined {
     if (thinkingBudget === undefined) {
       return undefined; // Don't set reasoning param, use model default
     }
     if (thinkingBudget === 0) {
-      return "none";
+      return 'none';
     }
     if (thinkingBudget <= 2000) {
-      return "low";
+      return 'low';
     }
     if (thinkingBudget <= 4000) {
-      return "medium";
+      return 'medium';
     }
     if (thinkingBudget <= 8000) {
-      return "high";
+      return 'high';
     }
-    return "xhigh";
+    return 'xhigh';
   }
 
   protected transformResponse(response: ChatCompletion): LLMResponse {
     return {
-      content: response.choices[0]?.message?.content || "",
+      content: response.choices[0]?.message?.content || '',
       usage: response.usage
         ? {
             promptTokens: response.usage.prompt_tokens,
@@ -276,17 +276,17 @@ export class OpenAIAdapter extends LLMAdapter {
     };
   }
 
-  private buildResponsesInput(request: LLMRequest): ResponsesCreateParams["input"] {
+  private buildResponsesInput(request: LLMRequest): ResponsesCreateParams['input'] {
     const messages = request.messages
-      .filter((message) => message.role !== "system")
+      .filter((message) => message.role !== 'system')
       .map((message) => ({
         role: message.role,
         content: message.content,
-        type: "message" as const,
+        type: 'message' as const,
       }));
 
     if (messages.length === 0) {
-      return "";
+      return '';
     }
 
     return messages;
@@ -310,9 +310,9 @@ export class OpenAIAdapter extends LLMAdapter {
       : [];
 
     // @ts-expect-error
-    if (!mappedTools.some((tool) => tool.type === "web_search")) {
+    if (!mappedTools.some((tool) => tool.type === 'web_search')) {
       // @ts-expect-error
-      mappedTools.push({ type: "web_search" } as OpenAITool);
+      mappedTools.push({ type: 'web_search' } as OpenAITool);
     }
 
     return mappedTools;
@@ -320,7 +320,7 @@ export class OpenAIAdapter extends LLMAdapter {
 
   private mapToolToOpenAIChat(tool: LLMTool): ChatCompletionTool | null {
     switch (tool.type) {
-      case "webSearch":
+      case 'webSearch':
         return null; // unsupported in chat completions
       default:
         return null;
@@ -329,16 +329,16 @@ export class OpenAIAdapter extends LLMAdapter {
 
   private mapToolToOpenAIResponses(tool: LLMTool): OpenAITool | null {
     switch (tool.type) {
-      case "webSearch":
+      case 'webSearch':
         // @ts-expect-error
-        return { type: "web_search" } as OpenAITool;
+        return { type: 'web_search' } as OpenAITool;
       default:
         return null;
     }
   }
 
-  private getWebSearchInclude(): ResponsesCreateParams["include"] {
-    return ["web_search_call.action.sources"] as unknown as ResponsesCreateParams["include"];
+  private getWebSearchInclude(): ResponsesCreateParams['include'] {
+    return ['web_search_call.action.sources'] as unknown as ResponsesCreateParams['include'];
   }
 
   private transformWebSearchResponse(response: OpenAIResponse): {
@@ -367,7 +367,7 @@ export class OpenAIAdapter extends LLMAdapter {
     >;
   } {
     const messages = (response.output ?? []).filter(
-      (item): item is ResponseOutputMessage => item.type === "message",
+      (item): item is ResponseOutputMessage => item.type === 'message',
     );
 
     const citations: Array<
@@ -376,20 +376,20 @@ export class OpenAIAdapter extends LLMAdapter {
         globalEnd: number;
       }
     > = [];
-    let llmOutput = "";
+    let llmOutput = '';
     let offset = 0;
 
     messages.forEach((message) => {
       message.content
-        .filter((part): part is ResponseOutputText => part.type === "output_text")
+        .filter((part): part is ResponseOutputText => part.type === 'output_text')
         .forEach((part) => {
-          const textSegment = part.text ?? "";
+          const textSegment = part.text ?? '';
           llmOutput += textSegment;
 
           (part.annotations ?? [])
             .filter(
               (annotation): annotation is ResponseOutputText.URLCitation =>
-                annotation.type === "url_citation",
+                annotation.type === 'url_citation',
             )
             .forEach((annotation) => {
               citations.push({
@@ -448,7 +448,7 @@ export class OpenAIAdapter extends LLMAdapter {
       const source = sourcesMap.get(url) ?? sourcesMap.get(normalizedUrl);
 
       results.push({
-        title: source?.title ?? citation.title ?? "",
+        title: source?.title ?? citation.title ?? '',
         url: source?.url ?? url,
         originalUrl: source?.originalUrl ?? url,
         index: index++,
@@ -469,7 +469,7 @@ export class OpenAIAdapter extends LLMAdapter {
     );
 
     return fallbackSources.map((source, fallbackIndex) => ({
-      title: source.title ?? "",
+      title: source.title ?? '',
       url: source.url,
       originalUrl: source.originalUrl,
       index: fallbackIndex,
@@ -482,7 +482,7 @@ export class OpenAIAdapter extends LLMAdapter {
     const map = new Map<string, { title?: string; url: string; originalUrl: string }>();
 
     (response.output ?? []).forEach((item) => {
-      if (item.type !== "web_search_call") return;
+      if (item.type !== 'web_search_call') return;
 
       const action = (item as unknown as { action?: { sources?: unknown }; sources?: unknown })
         .action;
@@ -492,7 +492,7 @@ export class OpenAIAdapter extends LLMAdapter {
       if (!Array.isArray(rawSources)) return;
 
       rawSources.forEach((rawSource) => {
-        if (typeof rawSource !== "object" || rawSource === null) return;
+        if (typeof rawSource !== 'object' || rawSource === null) return;
 
         const source = rawSource as {
           title?: unknown;
@@ -500,15 +500,15 @@ export class OpenAIAdapter extends LLMAdapter {
           original_url?: unknown;
         };
 
-        if (typeof source.url !== "string" || !source.url) return;
+        if (typeof source.url !== 'string' || !source.url) return;
 
         const normalizedUrl = this.normalizeUrl(source.url);
         const originalUrl =
-          typeof source.original_url === "string" && source.original_url
+          typeof source.original_url === 'string' && source.original_url
             ? source.original_url
             : source.url;
         const entry = {
-          title: typeof source.title === "string" ? source.title : undefined,
+          title: typeof source.title === 'string' ? source.title : undefined,
           url: source.url,
           originalUrl,
         };
@@ -528,10 +528,10 @@ export class OpenAIAdapter extends LLMAdapter {
   private normalizeUrl(url: string): string {
     try {
       const parsed = new URL(url);
-      parsed.hash = "";
+      parsed.hash = '';
       parsed.searchParams.sort();
       const pathname =
-        parsed.pathname.endsWith("/") && parsed.pathname.length > 1
+        parsed.pathname.endsWith('/') && parsed.pathname.length > 1
           ? parsed.pathname.slice(0, -1)
           : parsed.pathname;
       parsed.pathname = pathname;

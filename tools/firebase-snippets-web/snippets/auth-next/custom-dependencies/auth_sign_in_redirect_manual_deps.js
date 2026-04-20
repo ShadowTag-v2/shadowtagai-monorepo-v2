@@ -4,11 +4,20 @@
 // To update the snippets in this file, edit the source and then run
 // 'npm run snippets'.
 
+import { initializeApp } from 'firebase/app';
 // [START auth_sign_in_redirect_manual_deps_modular]
-import {initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, indexedDBLocalPersistence, signInWithRedirect, GoogleAuthProvider} from "firebase/auth";
-import {initializeApp} from "firebase/app";
+import {
+  browserLocalPersistence,
+  browserPopupRedirectResolver,
+  GoogleAuthProvider,
+  indexedDBLocalPersistence,
+  initializeAuth,
+  signInWithRedirect,
+} from 'firebase/auth';
 
-const app = initializeApp({/** Your app config */});
+const app = initializeApp({
+  /** Your app config */
+});
 const auth = initializeAuth(app, {
   persistence: [indexedDBLocalPersistence, browserLocalPersistence],
 });

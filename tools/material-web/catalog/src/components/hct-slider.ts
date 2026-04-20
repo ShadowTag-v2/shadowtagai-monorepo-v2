@@ -6,12 +6,12 @@
 
 import '@material/web/slider/slider.js';
 
-import type {MdSlider} from '@material/web/slider/slider.js';
-import {css, html, LitElement} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
-import {styleMap} from 'lit/directives/style-map.js';
+import type { MdSlider } from '@material/web/slider/slider.js';
+import { css, html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
-import {hctFromHex, hexFromHct} from '../utils/material-color-helpers.js';
+import { hctFromHex, hexFromHct } from '../utils/material-color-helpers.js';
 
 /**
  * A tuple denoting an inclusive value range.
@@ -32,23 +32,23 @@ export class HCTSlider extends LitElement {
   /**
    * The visiable and accessible label for the control.
    */
-  @property({type: String}) label = '';
+  @property({ type: String }) label = '';
 
   /**
    * The value of the slider.
    */
-  @property({type: Number}) value = 0;
+  @property({ type: Number }) value = 0;
 
   /**
    * The color from which to base the preview gradient (really only useful for
    * chroma).
    */
-  @property({type: String}) color = '';
+  @property({ type: String }) color = '';
 
   /**
    * The type of HCT slider to display
    */
-  @property({type: String}) type: 'hue' | 'chroma' | 'tone' = 'hue';
+  @property({ type: String }) type: 'hue' | 'chroma' | 'tone' = 'hue';
 
   override render() {
     let range = HUE_RANGE;

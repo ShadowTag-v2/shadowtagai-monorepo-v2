@@ -11,8 +11,8 @@
  * Part of PNKLN Core Stack™ Intelligence Layer
  */
 
-import { tool } from "@anthropic-ai/claude-agent-sdk";
-import ethicalCrawlerTool from "./ethical-crawler.js";
+import { tool } from '@anthropic-ai/claude-agent-sdk';
+import ethicalCrawlerTool from './ethical-crawler.js';
 
 /**
  * Source-specific ingestion handlers
@@ -23,16 +23,16 @@ const sourceHandlers = {
     const { apiKey, channelId, maxResults = 50, publishedAfter } = config;
 
     const params = new URLSearchParams({
-      part: "snippet,contentDetails,statistics",
+      part: 'snippet,contentDetails,statistics',
       channelId,
       maxResults,
-      order: "date",
-      type: "video",
-      key: apiKey
+      order: 'date',
+      type: 'video',
+      key: apiKey,
     });
 
     if (publishedAfter) {
-      params.append("publishedAfter", publishedAfter);
+      params.append('publishedAfter', publishedAfter);
     }
 
     const url = `https://www.googleapis.com/youtube/v3/search?${params}`;
@@ -42,13 +42,13 @@ const sourceHandlers = {
       const data = await response.json();
 
       return {
-        source: "youtube",
+        source: 'youtube',
         items: data.items || [],
         metadata: {
           totalResults: data.pageInfo?.totalResults || 0,
           resultsPerPage: data.pageInfo?.resultsPerPage || 0,
-          nextPageToken: data.nextPageToken
-        }
+          nextPageToken: data.nextPageToken,
+        },
       };
     } catch (error) {
       throw new Error(`YouTube ingestion failed: ${error.message}`);
@@ -62,13 +62,13 @@ const sourceHandlers = {
     const params = new URLSearchParams({
       query,
       max_results: maxResults,
-      "tweet.fields": "created_at,author_id,public_metrics,entities",
-      "user.fields": "username,verified",
-      expansions: "author_id"
+      'tweet.fields': 'created_at,author_id,public_metrics,entities',
+      'user.fields': 'username,verified',
+      expansions: 'author_id',
     });
 
     if (startTime) {
-      params.append("start_time", startTime);
+      params.append('start_time', startTime);
     }
 
     const url = `https://api.twitter.com/2/tweets/search/recent?${params}`;
@@ -76,20 +76,20 @@ const sourceHandlers = {
     try {
       const response = await fetch(url, {
         headers: {
-          "Authorization": `Bearer ${bearerToken}`,
-          "User-Agent": "PNKLN-Intelligence-Bot/1.0"
-        }
+          Authorization: `Bearer ${bearerToken}`,
+          'User-Agent': 'PNKLN-Intelligence-Bot/1.0',
+        },
       });
 
       const data = await response.json();
 
       return {
-        source: "twitter",
+        source: 'twitter',
         items: data.data || [],
         metadata: {
           resultCount: data.meta?.result_count || 0,
-          nextToken: data.meta?.next_token
-        }
+          nextToken: data.meta?.next_token,
+        },
       };
     } catch (error) {
       throw new Error(`Twitter ingestion failed: ${error.message}`);
@@ -98,28 +98,28 @@ const sourceHandlers = {
 
   reddit: async (config) => {
     // Reddit API integration
-    const { subreddit, limit = 100, timeframe = "day" } = config;
+    const { subreddit, limit = 100, timeframe = 'day' } = config;
 
     const url = `https://www.reddit.com/r/${subreddit}/top.json?t=${timeframe}&limit=${limit}`;
 
     try {
       const response = await fetch(url, {
         headers: {
-          "User-Agent": "PNKLN-Intelligence-Bot/1.0 (+https://pnkln.ai/bot)"
-        }
+          'User-Agent': 'PNKLN-Intelligence-Bot/1.0 (+https://pnkln.ai/bot)',
+        },
       });
 
       const data = await response.json();
       const posts = data.data?.children || [];
 
       return {
-        source: "reddit",
-        items: posts.map(p => p.data),
+        source: 'reddit',
+        items: posts.map((p) => p.data),
         metadata: {
           subreddit,
           timeframe,
-          count: posts.length
-        }
+          count: posts.length,
+        },
       };
     } catch (error) {
       throw new Error(`Reddit ingestion failed: ${error.message}`);
@@ -134,7 +134,7 @@ const sourceHandlers = {
       // Use ethical crawler for RSS feeds
       const crawlResult = await ethicalCrawlerTool.execute({
         url: feedUrl,
-        respectRobots: true
+        respectRobots: true,
       });
 
       if (!crawlResult.success) {
@@ -159,17 +159,17 @@ const sourceHandlers = {
           title: titleMatch ? titleMatch[1] : null,
           link: linkMatch ? linkMatch[1] : null,
           description: descMatch ? descMatch[1] : null,
-          pubDate: pubDateMatch ? pubDateMatch[1] : null
+          pubDate: pubDateMatch ? pubDateMatch[1] : null,
         });
       }
 
       return {
-        source: "rss",
+        source: 'rss',
         items,
         metadata: {
           feedUrl,
-          count: items.length
-        }
+          count: items.length,
+        },
       };
     } catch (error) {
       throw new Error(`RSS ingestion failed: ${error.message}`);
@@ -178,7 +178,7 @@ const sourceHandlers = {
 
   news: async (config) => {
     // News API or web scraping
-    const { apiKey, query, sources, language = "en", pageSize = 100 } = config;
+    const { apiKey, query, sources, language = 'en', pageSize = 100 } = config;
 
     if (apiKey) {
       // Use News API
@@ -186,11 +186,11 @@ const sourceHandlers = {
         q: query,
         language,
         pageSize,
-        apiKey
+        apiKey,
       });
 
       if (sources) {
-        params.append("sources", sources);
+        params.append('sources', sources);
       }
 
       const url = `https://newsapi.org/v2/everything?${params}`;
@@ -200,70 +200,71 @@ const sourceHandlers = {
         const data = await response.json();
 
         return {
-          source: "news",
+          source: 'news',
           items: data.articles || [],
           metadata: {
             totalResults: data.totalResults || 0,
-            status: data.status
-          }
+            status: data.status,
+          },
         };
       } catch (error) {
         throw new Error(`News API ingestion failed: ${error.message}`);
       }
     } else {
       // Fallback to ethical web scraping
-      throw new Error("News scraping requires ethical crawler implementation");
+      throw new Error('News scraping requires ethical crawler implementation');
     }
-  }
+  },
 };
 
 export const multiSourceIngestTool = tool({
-  name: "multi_source_ingest",
-  description: "Ingest data from multiple sources (YouTube, Twitter, News, Reddit, RSS) with ethical crawling",
+  name: 'multi_source_ingest',
+  description:
+    'Ingest data from multiple sources (YouTube, Twitter, News, Reddit, RSS) with ethical crawling',
   parameters: {
-    type: "object",
+    type: 'object',
     properties: {
       sources: {
-        type: "array",
+        type: 'array',
         items: {
-          type: "object",
+          type: 'object',
           properties: {
             type: {
-              type: "string",
-              enum: ["youtube", "twitter", "reddit", "rss", "news"]
+              type: 'string',
+              enum: ['youtube', 'twitter', 'reddit', 'rss', 'news'],
             },
             config: {
-              type: "object",
-              description: "Source-specific configuration"
-            }
+              type: 'object',
+              description: 'Source-specific configuration',
+            },
           },
-          required: ["type", "config"]
+          required: ['type', 'config'],
         },
-        description: "Array of sources to ingest from"
+        description: 'Array of sources to ingest from',
       },
       timeWindow: {
-        type: "string",
+        type: 'string',
         description: "Time window for data collection (e.g., '24h', '7d')",
-        default: "24h"
+        default: '24h',
       },
       maxItemsPerSource: {
-        type: "number",
-        description: "Maximum items to collect per source",
-        default: 100
+        type: 'number',
+        description: 'Maximum items to collect per source',
+        default: 100,
       },
       deduplication: {
-        type: "boolean",
-        description: "Enable deduplication across sources",
-        default: true
-      }
+        type: 'boolean',
+        description: 'Enable deduplication across sources',
+        default: true,
+      },
     },
-    required: ["sources"]
+    required: ['sources'],
   },
   execute: async ({
     sources,
-    timeWindow = "24h",
+    timeWindow = '24h',
     maxItemsPerSource = 100,
-    deduplication = true
+    deduplication = true,
   }) => {
     const result = {
       timestamp: new Date().toISOString(),
@@ -272,8 +273,8 @@ export const multiSourceIngestTool = tool({
       summary: {
         totalItems: 0,
         bySource: {},
-        errors: []
-      }
+        errors: [],
+      },
     };
 
     // Process each source
@@ -290,7 +291,7 @@ export const multiSourceIngestTool = tool({
         const configWithLimit = {
           ...config,
           maxResults: config.maxResults || maxItemsPerSource,
-          limit: config.limit || maxItemsPerSource
+          limit: config.limit || maxItemsPerSource,
         };
 
         // Execute source-specific handler
@@ -299,30 +300,29 @@ export const multiSourceIngestTool = tool({
         result.sources.push({
           type,
           success: true,
-          ...sourceResult
+          ...sourceResult,
         });
 
         result.summary.bySource[type] = sourceResult.items.length;
         result.summary.totalItems += sourceResult.items.length;
-
       } catch (error) {
         result.sources.push({
           type,
           success: false,
           error: error.message,
-          items: []
+          items: [],
         });
 
         result.summary.errors.push({
           source: type,
-          error: error.message
+          error: error.message,
         });
       }
     }
 
     // Deduplication (simple title-based for demo)
     if (deduplication && result.sources.length > 1) {
-      const allItems = result.sources.flatMap(s => s.items || []);
+      const allItems = result.sources.flatMap((s) => s.items || []);
       const seen = new Set();
       const uniqueItems = [];
 
@@ -344,12 +344,12 @@ export const multiSourceIngestTool = tool({
       data: result,
       metadata: {
         totalSources: sources.length,
-        successfulSources: result.sources.filter(s => s.success).length,
+        successfulSources: result.sources.filter((s) => s.success).length,
         totalItems: result.summary.totalItems,
-        errors: result.summary.errors.length
-      }
+        errors: result.summary.errors.length,
+      },
     };
-  }
+  },
 });
 
 export default multiSourceIngestTool;

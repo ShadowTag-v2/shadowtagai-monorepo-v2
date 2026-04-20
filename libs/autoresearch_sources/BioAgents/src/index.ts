@@ -1,33 +1,32 @@
 // Must be first - polyfills for pdf-parse/pdfjs-dist
-import "./utils/canvas-polyfill";
+import './utils/canvas-polyfill';
 
-import { cors } from "@elysiajs/cors";
-import { Elysia } from "elysia";
-import { artifactsRoute } from "./routes/artifacts";
-import { authRoute } from "./routes/auth";
-import { chatRoute } from "./routes/chat";
-import { clarificationRoute } from "./routes/clarification";
-import { deepResearchStartRoute } from "./routes/deep-research/start";
-import { deepResearchStatusRoute } from "./routes/deep-research/status";
-import { deepResearchPaperRoute } from "./routes/deep-research/paper";
-import { deepResearchBranchRoute } from "./routes/deep-research/branch";
-import { filesRoute } from "./routes/files";
-import { x402Route } from "./routes/x402";
-import { x402ChatRoute } from "./routes/x402/chat";
-import { x402DeepResearchRoute } from "./routes/x402/deep-research";
-import { x402IndividualAgentsRoute } from "./routes/x402/agents";
-import { initializeX402Service } from "./middleware/x402/service";
-import { b402Route } from "./routes/b402";
-import { b402ChatRoute } from "./routes/b402/chat";
-import { b402DeepResearchRoute } from "./routes/b402/deep-research";
-import logger from "./utils/logger";
-
+import { cors } from '@elysiajs/cors';
+import { Elysia } from 'elysia';
+import { initializeX402Service } from './middleware/x402/service';
+import { adminJobsRoute } from './routes/admin/jobs';
+import { createQueueDashboard } from './routes/admin/queue-dashboard';
+import { artifactsRoute } from './routes/artifacts';
+import { authRoute } from './routes/auth';
+import { b402Route } from './routes/b402';
+import { b402ChatRoute } from './routes/b402/chat';
+import { b402DeepResearchRoute } from './routes/b402/deep-research';
+import { chatRoute } from './routes/chat';
+import { clarificationRoute } from './routes/clarification';
+import { deepResearchBranchRoute } from './routes/deep-research/branch';
+import { deepResearchPaperRoute } from './routes/deep-research/paper';
+import { deepResearchStartRoute } from './routes/deep-research/start';
+import { deepResearchStatusRoute } from './routes/deep-research/status';
+import { filesRoute } from './routes/files';
+import { x402Route } from './routes/x402';
+import { x402IndividualAgentsRoute } from './routes/x402/agents';
+import { x402ChatRoute } from './routes/x402/chat';
+import { x402DeepResearchRoute } from './routes/x402/deep-research';
 // BullMQ Queue imports (conditional)
-import { isJobQueueEnabled, closeConnections } from "./services/queue/connection";
-import { websocketHandler, cleanupDeadConnections } from "./services/websocket/handler";
-import { startRedisSubscription, stopRedisSubscription } from "./services/websocket/subscribe";
-import { createQueueDashboard } from "./routes/admin/queue-dashboard";
-import { adminJobsRoute } from "./routes/admin/jobs";
+import { closeConnections, isJobQueueEnabled } from './services/queue/connection';
+import { cleanupDeadConnections, websocketHandler } from './services/websocket/handler';
+import { startRedisSubscription, stopRedisSubscription } from './services/websocket/subscribe';
+import logger from './utils/logger';
 
 // ============================================================================
 // CORS Configuration - Security Critical
@@ -35,26 +34,26 @@ import { adminJobsRoute } from "./routes/admin/jobs";
 // Set ALLOWED_ORIGINS env var in production: comma-separated list of allowed origins
 // Example: ALLOWED_ORIGINS=https://bioagent-platform.bioagents.dev,https://app.bioagents.xyz
 const DEFAULT_ALLOWED_ORIGINS = [
-  "http://localhost:3000",
-  "http://localhost:5173",
-  "http://127.0.0.1:3000",
-  "http://127.0.0.1:5173",
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'http://127.0.0.1:3000',
+  'http://127.0.0.1:5173',
 ];
 
 const ALLOWED_ORIGINS: string[] = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",")
+  ? process.env.ALLOWED_ORIGINS.split(',')
       .map((o) => o.trim())
       .filter(Boolean)
   : DEFAULT_ALLOWED_ORIGINS;
 
 // Log CORS configuration on startup
-if (process.env.NODE_ENV === "production" && !process.env.ALLOWED_ORIGINS) {
+if (process.env.NODE_ENV === 'production' && !process.env.ALLOWED_ORIGINS) {
   logger.warn(
     { defaultOrigins: DEFAULT_ALLOWED_ORIGINS },
-    "cors_security_warning: ALLOWED_ORIGINS not set in production - using localhost defaults only. Set ALLOWED_ORIGINS env var for production domains.",
+    'cors_security_warning: ALLOWED_ORIGINS not set in production - using localhost defaults only. Set ALLOWED_ORIGINS env var for production domains.',
   );
 } else {
-  logger.info({ allowedOrigins: ALLOWED_ORIGINS }, "cors_configuration");
+  logger.info({ allowedOrigins: ALLOWED_ORIGINS }, 'cors_configuration');
 }
 
 /**
@@ -64,7 +63,7 @@ if (process.env.NODE_ENV === "production" && !process.env.ALLOWED_ORIGINS) {
  * - Rejects and logs requests from unknown origins
  */
 function validateCorsOrigin(request: Request): boolean {
-  const origin = request.headers.get("origin");
+  const origin = request.headers.get('origin');
 
   // Allow requests with no origin (same-origin, curl, server-to-server)
   if (!origin) {
@@ -77,7 +76,7 @@ function validateCorsOrigin(request: Request): boolean {
   }
 
   // Log rejected origin for security monitoring
-  logger.warn({ origin, allowedOrigins: ALLOWED_ORIGINS }, "cors_origin_rejected");
+  logger.warn({ origin, allowedOrigins: ALLOWED_ORIGINS }, 'cors_origin_rejected');
   return false;
 }
 
@@ -90,18 +89,18 @@ const app = new Elysia()
       origin: validateCorsOrigin,
       credentials: true,
       allowedHeaders: [
-        "Content-Type",
-        "Authorization",
-        "X-API-Key",
-        "X-Requested-With",
-        "X-PAYMENT", // x402 v1 payment proof header (b402 compatibility)
-        "PAYMENT-SIGNATURE", // x402 v2 payment proof header
+        'Content-Type',
+        'Authorization',
+        'X-API-Key',
+        'X-Requested-With',
+        'X-PAYMENT', // x402 v1 payment proof header (b402 compatibility)
+        'PAYMENT-SIGNATURE', // x402 v2 payment proof header
       ],
       exposeHeaders: [
-        "Content-Type",
-        "X-PAYMENT-RESPONSE", // x402 v1 settlement response (b402 compatibility)
-        "PAYMENT-RESPONSE", // x402 v2 settlement response header
-        "PAYMENT-REQUIRED", // x402 v2 payment required header
+        'Content-Type',
+        'X-PAYMENT-RESPONSE', // x402 v1 settlement response (b402 compatibility)
+        'PAYMENT-RESPONSE', // x402 v2 settlement response header
+        'PAYMENT-REQUIRED', // x402 v2 payment required header
       ],
       maxAge: 86400, // Cache preflight for 24 hours
     }),
@@ -112,34 +111,34 @@ const app = new Elysia()
   // ============================================================================
   .onBeforeHandle(({ set }) => {
     // Prevent MIME-type sniffing attacks
-    set.headers["X-Content-Type-Options"] = "nosniff";
+    set.headers['X-Content-Type-Options'] = 'nosniff';
 
     // Prevent clickjacking (iframe embedding)
-    set.headers["X-Frame-Options"] = "DENY";
+    set.headers['X-Frame-Options'] = 'DENY';
 
     // Enable browser XSS filter (legacy browsers)
-    set.headers["X-XSS-Protection"] = "1; mode=block";
+    set.headers['X-XSS-Protection'] = '1; mode=block';
 
     // Control referrer information leakage
-    set.headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+    set.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin';
 
     // Disable unnecessary browser features
-    set.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()";
+    set.headers['Permissions-Policy'] = 'geolocation=(), microphone=(), camera=()';
 
     // Force HTTPS in production (only enable if you have valid SSL)
-    if (process.env.NODE_ENV === "production") {
-      set.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+    if (process.env.NODE_ENV === 'production') {
+      set.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';
     }
   })
 
   // Basic request logging
   .onRequest(({ request }) => {
     if (!logger) return;
-    logger.info({ method: request.method, url: request.url }, "incoming_request");
+    logger.info({ method: request.method, url: request.url }, 'incoming_request');
   })
   .onError(({ code, error }) => {
     if (!logger) return;
-    logger.error({ code, err: error }, "unhandled_error");
+    logger.error({ code, err: error }, 'unhandled_error');
   })
 
   // Mount auth routes (no protection needed for auth endpoints)
@@ -150,15 +149,15 @@ const app = new Elysia()
   // This allows the login UI to render properly
 
   // Serve the Preact UI (from client/dist) with SEO metadata injection
-  .get("/", async () => {
-    const htmlFile = Bun.file("client/dist/index.html");
+  .get('/', async () => {
+    const htmlFile = Bun.file('client/dist/index.html');
     let htmlContent = await htmlFile.text();
 
     // Inject SEO metadata from environment variables
-    const seoTitle = process.env.SEO_TITLE || "BioAgents Chat";
-    const seoDescription = process.env.SEO_DESCRIPTION || "AI-powered chat interface";
-    const faviconUrl = process.env.FAVICON_URL || "/favicon.ico";
-    const ogImageUrl = process.env.OG_IMAGE_URL || "https://bioagents.xyz/og-image.png";
+    const seoTitle = process.env.SEO_TITLE || 'BioAgents Chat';
+    const seoDescription = process.env.SEO_DESCRIPTION || 'AI-powered chat interface';
+    const faviconUrl = process.env.FAVICON_URL || '/favicon.ico';
+    const ogImageUrl = process.env.OG_IMAGE_URL || 'https://bioagents.xyz/og-image.png';
 
     htmlContent = htmlContent
       .replace(/\{\{SEO_TITLE\}\}/g, seoTitle)
@@ -168,46 +167,46 @@ const app = new Elysia()
 
     return new Response(htmlContent, {
       headers: {
-        "Content-Type": "text/html",
+        'Content-Type': 'text/html',
       },
     });
   })
 
   // Serve the bundled Preact app JS file
-  .get("/index.js", () => {
-    return new Response(Bun.file("client/dist/index.js"), {
+  .get('/index.js', () => {
+    return new Response(Bun.file('client/dist/index.js'), {
       headers: {
-        "Content-Type": "application/javascript",
+        'Content-Type': 'application/javascript',
       },
     });
   })
 
   // Serve the bundled CSS file
-  .get("/index.css", () => {
-    return new Response(Bun.file("client/dist/index.css"), {
+  .get('/index.css', () => {
+    return new Response(Bun.file('client/dist/index.css'), {
       headers: {
-        "Content-Type": "text/css",
+        'Content-Type': 'text/css',
       },
     });
   })
 
   // Serve source map for debugging
-  .get("/index.js.map", () => {
-    return new Response(Bun.file("client/dist/index.js.map"), {
+  .get('/index.js.map', () => {
+    return new Response(Bun.file('client/dist/index.js.map'), {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
   })
 
   // Handle favicon (prevent 404 errors)
-  .get("/favicon.ico", () => {
+  .get('/favicon.ico', () => {
     return new Response(null, { status: 204 });
   })
 
   // Health check endpoint with optional queue/Redis status
-  .get("/api/health", async () => {
-    if (logger) logger.info("Health check endpoint hit");
+  .get('/api/health', async () => {
+    if (logger) logger.info('Health check endpoint hit');
 
     const health: {
       status: string;
@@ -217,26 +216,26 @@ const app = new Elysia()
         redis?: string;
       };
     } = {
-      status: "ok",
+      status: 'ok',
       timestamp: new Date().toISOString(),
     };
 
     // Add job queue status if enabled
     if (isJobQueueEnabled()) {
       try {
-        const { getBullMQConnection } = await import("./services/queue/connection");
+        const { getBullMQConnection } = await import('./services/queue/connection');
         const redis = getBullMQConnection();
         await redis.ping();
         health.jobQueue = {
           enabled: true,
-          redis: "connected",
+          redis: 'connected',
         };
       } catch (error) {
         health.jobQueue = {
           enabled: true,
-          redis: "disconnected",
+          redis: 'disconnected',
         };
-        health.status = "degraded";
+        health.status = 'degraded';
       }
     } else {
       health.jobQueue = {
@@ -248,10 +247,10 @@ const app = new Elysia()
   })
 
   // Suppress Chrome DevTools 404 error
-  .get("/.well-known/appspecific/com.chrome.devtools.json", () => {
+  .get('/.well-known/appspecific/com.chrome.devtools.json', () => {
     return new Response(JSON.stringify({}), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
   })
 
@@ -280,7 +279,7 @@ const app = new Elysia()
 const queueDashboard = createQueueDashboard();
 if (queueDashboard) {
   // Add basic auth protection for admin routes if ADMIN_PASSWORD is set
-  const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
+  const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
   const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
   if (ADMIN_PASSWORD) {
@@ -288,44 +287,44 @@ if (queueDashboard) {
       const url = new URL(request.url);
 
       // Only protect /admin/* routes
-      if (!url.pathname.startsWith("/admin")) {
+      if (!url.pathname.startsWith('/admin')) {
         return;
       }
 
-      const authHeader = request.headers.get("Authorization");
+      const authHeader = request.headers.get('Authorization');
 
       // Check for valid basic auth
-      if (!authHeader || !authHeader.startsWith("Basic ")) {
+      if (!authHeader || !authHeader.startsWith('Basic ')) {
         set.status = 401;
-        set.headers["WWW-Authenticate"] = 'Basic realm="Admin Dashboard"';
-        return new Response("Unauthorized", { status: 401 });
+        set.headers['WWW-Authenticate'] = 'Basic realm="Admin Dashboard"';
+        return new Response('Unauthorized', { status: 401 });
       }
 
       try {
         const base64Credentials = authHeader.slice(6);
         const credentials = atob(base64Credentials);
-        const [username, password] = credentials.split(":");
+        const [username, password] = credentials.split(':');
 
         if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
-          logger.warn({ path: url.pathname }, "admin_dashboard_invalid_credentials");
+          logger.warn({ path: url.pathname }, 'admin_dashboard_invalid_credentials');
           set.status = 401;
-          set.headers["WWW-Authenticate"] = 'Basic realm="Admin Dashboard"';
-          return new Response("Unauthorized", { status: 401 });
+          set.headers['WWW-Authenticate'] = 'Basic realm="Admin Dashboard"';
+          return new Response('Unauthorized', { status: 401 });
         }
       } catch {
         set.status = 401;
-        set.headers["WWW-Authenticate"] = 'Basic realm="Admin Dashboard"';
-        return new Response("Unauthorized", { status: 401 });
+        set.headers['WWW-Authenticate'] = 'Basic realm="Admin Dashboard"';
+        return new Response('Unauthorized', { status: 401 });
       }
     });
     logger.info(
-      { path: "/admin/queues", authEnabled: true },
-      "bull_board_dashboard_mounted_with_auth",
+      { path: '/admin/queues', authEnabled: true },
+      'bull_board_dashboard_mounted_with_auth',
     );
   } else {
     logger.info(
-      { path: "/admin/queues", authEnabled: false },
-      "bull_board_dashboard_mounted_no_auth",
+      { path: '/admin/queues', authEnabled: false },
+      'bull_board_dashboard_mounted_no_auth',
     );
   }
 
@@ -341,22 +340,22 @@ app
   // This handles routes like /chat, /settings, etc. and serves the main UI
   // The client-side router will handle the actual routing
   // Excludes /api/* and /admin/* paths
-  .get("*", async ({ request }) => {
+  .get('*', async ({ request }) => {
     const url = new URL(request.url);
 
     // Don't intercept /admin/* routes (Bull Board)
-    if (url.pathname.startsWith("/admin")) {
-      return new Response("Not Found", { status: 404 });
+    if (url.pathname.startsWith('/admin')) {
+      return new Response('Not Found', { status: 404 });
     }
 
-    const htmlFile = Bun.file("client/dist/index.html");
+    const htmlFile = Bun.file('client/dist/index.html');
     let htmlContent = await htmlFile.text();
 
     // Inject SEO metadata from environment variables
-    const seoTitle = process.env.SEO_TITLE || "BioAgents Chat";
-    const seoDescription = process.env.SEO_DESCRIPTION || "AI-powered chat interface";
-    const faviconUrl = process.env.FAVICON_URL || "/favicon.ico";
-    const ogImageUrl = process.env.OG_IMAGE_URL || "https://bioagents.xyz/og-image.png";
+    const seoTitle = process.env.SEO_TITLE || 'BioAgents Chat';
+    const seoDescription = process.env.SEO_DESCRIPTION || 'AI-powered chat interface';
+    const faviconUrl = process.env.FAVICON_URL || '/favicon.ico';
+    const ogImageUrl = process.env.OG_IMAGE_URL || 'https://bioagents.xyz/og-image.png';
 
     htmlContent = htmlContent
       .replace(/\{\{SEO_TITLE\}\}/g, seoTitle)
@@ -366,16 +365,16 @@ app
 
     return new Response(htmlContent, {
       headers: {
-        "Content-Type": "text/html",
+        'Content-Type': 'text/html',
       },
     });
   });
 
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
-const hostname = process.env.HOST || "0.0.0.0"; // Bind to all interfaces for Docker/Coolify
+const hostname = process.env.HOST || '0.0.0.0'; // Bind to all interfaces for Docker/Coolify
 
 // Log startup configuration
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.NODE_ENV === 'production';
 const hasSecret = !!process.env.BIOAGENTS_SECRET;
 
 app.listen(
@@ -385,23 +384,23 @@ app.listen(
   },
   async () => {
     if (logger) {
-      logger.info({ url: `http://${hostname}:${port}` }, "server_listening");
+      logger.info({ url: `http://${hostname}:${port}` }, 'server_listening');
       logger.info(
         {
-          nodeEnv: process.env.NODE_ENV || "development",
+          nodeEnv: process.env.NODE_ENV || 'development',
           isProduction,
           authRequired: isProduction,
           secretConfigured: hasSecret,
           jobQueueEnabled: isJobQueueEnabled(),
         },
-        "auth_configuration",
+        'auth_configuration',
       );
     } else {
       console.log(`Server listening on http://${hostname}:${port}`);
       console.log(
         `Auth config: NODE_ENV=${process.env.NODE_ENV}, production=${isProduction}, secretConfigured=${hasSecret}`,
       );
-      console.log(`Job queue: ${isJobQueueEnabled() ? "enabled" : "disabled"}`);
+      console.log(`Job queue: ${isJobQueueEnabled() ? 'enabled' : 'disabled'}`);
     }
 
     // Initialize x402 payment service (validates CDP auth if configured)
@@ -409,9 +408,9 @@ app.listen(
       await initializeX402Service();
     } catch (error) {
       if (logger) {
-        logger.error({ error }, "x402_initialization_failed");
+        logger.error({ error }, 'x402_initialization_failed');
       } else {
-        console.error("x402 initialization failed:", error);
+        console.error('x402 initialization failed:', error);
       }
       // Don't exit - server can still run, just x402 payments will fail
     }
@@ -421,15 +420,15 @@ app.listen(
       try {
         await startRedisSubscription();
         if (logger) {
-          logger.info("websocket_redis_subscription_started");
+          logger.info('websocket_redis_subscription_started');
         } else {
-          console.log("WebSocket Redis subscription started");
+          console.log('WebSocket Redis subscription started');
         }
       } catch (error) {
         if (logger) {
-          logger.error({ error }, "websocket_redis_subscription_failed");
+          logger.error({ error }, 'websocket_redis_subscription_failed');
         } else {
-          console.error("Failed to start WebSocket Redis subscription:", error);
+          console.error('Failed to start WebSocket Redis subscription:', error);
         }
       }
 
@@ -444,7 +443,7 @@ app.listen(
 // Graceful shutdown handler
 async function gracefulShutdown(signal: string) {
   if (logger) {
-    logger.info({ signal }, "graceful_shutdown_initiated");
+    logger.info({ signal }, 'graceful_shutdown_initiated');
   } else {
     console.log(`\nReceived ${signal}, shutting down gracefully...`);
   }
@@ -455,23 +454,23 @@ async function gracefulShutdown(signal: string) {
       await stopRedisSubscription();
       await closeConnections();
       if (logger) {
-        logger.info("redis_connections_closed");
+        logger.info('redis_connections_closed');
       } else {
-        console.log("Redis connections closed");
+        console.log('Redis connections closed');
       }
     }
 
     process.exit(0);
   } catch (error) {
     if (logger) {
-      logger.error({ error }, "graceful_shutdown_error");
+      logger.error({ error }, 'graceful_shutdown_error');
     } else {
-      console.error("Error during shutdown:", error);
+      console.error('Error during shutdown:', error);
     }
     process.exit(1);
   }
 }
 
 // Register shutdown handlers
-process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
-process.on("SIGINT", () => gracefulShutdown("SIGINT"));
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));

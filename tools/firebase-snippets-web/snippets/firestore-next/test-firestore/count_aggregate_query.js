@@ -5,8 +5,8 @@
 // 'npm run snippets'.
 
 // [START count_aggregate_query_modular]
-const coll = collection(db, "cities");
-const q = query(coll, where("state", "==", "CA"));
+const coll = collection(db, 'cities');
+const q = query(coll, where('state', '==', 'CA'));
 const snapshot = await getCountFromServer(q);
 console.log('count: ', snapshot.data().count);
 // [END count_aggregate_query_modular]

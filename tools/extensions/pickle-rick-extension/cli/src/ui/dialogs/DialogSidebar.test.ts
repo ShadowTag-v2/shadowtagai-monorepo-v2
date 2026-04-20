@@ -1,6 +1,6 @@
-import { mock, expect, test, describe, beforeEach } from "bun:test";
-import { createMockRenderer, createMockSession, type MockRenderer } from "./test-utils.ts";
-import type { CliRenderer } from "@opentui/core";
+import { beforeEach, describe, expect, mock, test } from 'bun:test';
+import type { CliRenderer } from '@opentui/core';
+import { createMockRenderer, createMockSession, type MockRenderer } from './test-utils.ts';
 
 const mockDashboardDialog = {
   update: mock(() => {}),
@@ -11,13 +11,15 @@ const mockDashboardDialog = {
   destroy: mock(() => {}),
 };
 
-mock.module("./DashboardDialog.js", () => ({
+mock.module('./DashboardDialog.js', () => ({
   DashboardDialog: class {
-    constructor() { return mockDashboardDialog; }
-  }
+    constructor() {
+      return mockDashboardDialog;
+    }
+  },
 }));
 
-describe("DialogSidebar", () => {
+describe('DialogSidebar', () => {
   let mockRenderer: MockRenderer;
 
   beforeEach(() => {
@@ -29,18 +31,18 @@ describe("DialogSidebar", () => {
     mockDashboardDialog.hide.mockClear();
   });
 
-  test("should delegate to DashboardDialog", async () => {
-    const { DialogSidebar } = await import("./DialogSidebar.ts");
+  test('should delegate to DashboardDialog', async () => {
+    const { DialogSidebar } = await import('./DialogSidebar.ts');
     const ds = new DialogSidebar(mockRenderer as unknown as CliRenderer);
 
-    const mockSession = createMockSession({ id: "test" });
+    const mockSession = createMockSession({ id: 'test' });
     ds.update(mockSession);
 
     expect(mockDashboardDialog.update).toHaveBeenCalledWith(mockSession);
   });
 
-  test("should handle show/hide", async () => {
-    const { DialogSidebar } = await import("./DialogSidebar.ts");
+  test('should handle show/hide', async () => {
+    const { DialogSidebar } = await import('./DialogSidebar.ts');
     const ds = new DialogSidebar(mockRenderer as unknown as CliRenderer);
 
     ds.show();
@@ -50,8 +52,8 @@ describe("DialogSidebar", () => {
     expect(mockDashboardDialog.hide).toHaveBeenCalled();
   });
 
-  test("should check isOpen", async () => {
-    const { DialogSidebar } = await import("./DialogSidebar.ts");
+  test('should check isOpen', async () => {
+    const { DialogSidebar } = await import('./DialogSidebar.ts');
     const ds = new DialogSidebar(mockRenderer as unknown as CliRenderer);
 
     mockDashboardDialog.isOpen.mockReturnValue(true);

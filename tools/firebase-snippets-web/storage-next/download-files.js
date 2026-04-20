@@ -3,7 +3,7 @@
 
 function downloadCreateRef() {
   // [START storage_download_create_ref]
-  const { getStorage, ref } = require("firebase/storage");
+  const { getStorage, ref } = require('firebase/storage');
 
   // Create a reference with an initial file path and name
   const storage = getStorage();
@@ -14,13 +14,16 @@ function downloadCreateRef() {
 
   // Create a reference from an HTTPS URL
   // Note that in the URL, characters are URL escaped!
-  const httpsReference = ref(storage, 'https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg');
+  const httpsReference = ref(
+    storage,
+    'https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg',
+  );
   // [END storage_download_create_ref]
 }
 
 function downloadViaUrl() {
   // [START storage_download_via_url]
-  const { getStorage, ref, getDownloadURL } = require("firebase/storage");
+  const { getStorage, ref, getDownloadURL } = require('firebase/storage');
 
   const storage = getStorage();
   getDownloadURL(ref(storage, 'images/stars.jpg'))
@@ -48,7 +51,7 @@ function downloadViaUrl() {
 
 function downloadFullExample() {
   // [START storage_download_full_example]
-  const { getStorage, ref, getDownloadURL } = require("firebase/storage");
+  const { getStorage, ref, getDownloadURL } = require('firebase/storage');
 
   // Create a reference to the file we want to download
   const storage = getStorage();

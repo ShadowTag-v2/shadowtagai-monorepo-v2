@@ -1,6 +1,6 @@
-import { Suspense, useEffect, useRef, useState, lazy } from 'react';
-import mermaid from 'mermaid';
 import DOMPurify from 'dompurify';
+import mermaid from 'mermaid';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { AlertTriangle, Maximize2 } from '@/lib/lucide-icons';
 import type { ProcessData } from '../lib/mermaid-generator';
 
@@ -71,7 +71,10 @@ export const MermaidDiagram = ({ code }: MermaidDiagramProps) => {
 
         // Render the diagram
         const { svg: renderedSvg } = await mermaid.render(id, code.trim());
-        const sanitizedSvg = DOMPurify.sanitize(renderedSvg, { USE_PROFILES: { svg: true, svgFilters: true }, ADD_TAGS: ['foreignObject'] });
+        const sanitizedSvg = DOMPurify.sanitize(renderedSvg, {
+          USE_PROFILES: { svg: true, svgFilters: true },
+          ADD_TAGS: ['foreignObject'],
+        });
         setSvg(sanitizedSvg);
         setError(null);
       } catch (err) {
@@ -93,15 +96,17 @@ export const MermaidDiagram = ({ code }: MermaidDiagramProps) => {
   }, [code]);
 
   // Create a pseudo ProcessData for the modal (with custom rawMermaid property)
-  const processData: any = showModal ? {
-    id: 'ai-generated',
-    label: 'AI Generated Diagram',
-    processType: 'intra_community',
-    steps: [], // Empty - we'll render raw mermaid
-    edges: [],
-    clusters: [],
-    rawMermaid: code, // Pass raw mermaid code
-  } : null;
+  const processData: any = showModal
+    ? {
+        id: 'ai-generated',
+        label: 'AI Generated Diagram',
+        processType: 'intra_community',
+        steps: [], // Empty - we'll render raw mermaid
+        edges: [],
+        clusters: [],
+        rawMermaid: code, // Pass raw mermaid code
+      }
+    : null;
 
   if (error) {
     return (
@@ -145,22 +150,20 @@ export const MermaidDiagram = ({ code }: MermaidDiagramProps) => {
           <div
             ref={containerRef}
             className="flex items-center justify-center p-4 overflow-auto max-h-[400px]"
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(svg, { USE_PROFILES: { svg: true, svgFilters: true }, ADD_TAGS: ['foreignObject'] }) }}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(svg, {
+                USE_PROFILES: { svg: true, svgFilters: true },
+                ADD_TAGS: ['foreignObject'],
+              }),
+            }}
           />
         </div>
       </div>
 
       {/* Use ProcessFlowModal for expansion */}
       {showModal && processData && (
-        <Suspense
-          fallback={
-            <div className="p-4 text-sm text-text-muted">Loading diagram…</div>
-          }
-        >
-          <ProcessFlowModal
-            process={processData}
-            onClose={() => setShowModal(false)}
-          />
+        <Suspense fallback={<div className="p-4 text-sm text-text-muted">Loading diagram…</div>}>
+          <ProcessFlowModal process={processData} onClose={() => setShowModal(false)} />
         </Suspense>
       )}
     </>

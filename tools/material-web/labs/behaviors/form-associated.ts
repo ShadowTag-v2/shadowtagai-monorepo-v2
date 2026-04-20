@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {LitElement, PropertyDeclaration} from 'lit';
-import {property} from 'lit/decorators.js';
+import type { LitElement, PropertyDeclaration } from 'lit';
+import { property } from 'lit/decorators.js';
 
-import {internals, WithElementInternals} from './element-internals.js';
-import {MixinBase, MixinReturn} from './mixin.js';
+import { internals, type WithElementInternals } from './element-internals.js';
+import type { MixinBase, MixinReturn } from './mixin.js';
 
 /**
  * A form-associated element.
@@ -92,10 +92,7 @@ export interface FormAssociated {
    * @param reason The reason state was restored, either `'restore'` or
    *   `'autocomplete'`.
    */
-  formStateRestoreCallback?(
-    state: FormRestoreState | null,
-    reason: FormRestoreReason,
-  ): void;
+  formStateRestoreCallback?(state: FormRestoreState | null, reason: FormRestoreReason): void;
 
   /**
    * An optional callback for when the associated form changes.
@@ -203,9 +200,9 @@ export const getFormState = Symbol('getFormState');
  *     `mixinElementInternals()`.
  * @return The provided class with `FormAssociated` mixed in.
  */
-export function mixinFormAssociated<
-  T extends MixinBase<LitElement & WithElementInternals>,
->(base: T): MixinReturn<T & FormAssociatedConstructor, FormAssociated> {
+export function mixinFormAssociated<T extends MixinBase<LitElement & WithElementInternals>>(
+  base: T,
+): MixinReturn<T & FormAssociatedConstructor, FormAssociated> {
   abstract class FormAssociatedElement extends base implements FormAssociated {
     /** @nocollapse */
     static readonly formAssociated = true;
@@ -224,7 +221,7 @@ export function mixinFormAssociated<
     // We don't use Lit's default getter/setter (`noAccessor: true`) because
     // the attributes need to be updated synchronously to work with synchronous
     // form APIs, and Lit updates attributes async by default.
-    @property({noAccessor: true})
+    @property({ noAccessor: true })
     get name() {
       return this.getAttribute('name') ?? '';
     }
@@ -235,7 +232,7 @@ export function mixinFormAssociated<
       // in `attributeChangedCallback()`.
     }
 
-    @property({type: Boolean, noAccessor: true})
+    @property({ type: Boolean, noAccessor: true })
     get disabled() {
       return this.hasAttribute('disabled');
     }
@@ -247,11 +244,7 @@ export function mixinFormAssociated<
       // in `attributeChangedCallback()`.
     }
 
-    override attributeChangedCallback(
-      name: string,
-      old: string | null,
-      value: string | null,
-    ) {
+    override attributeChangedCallback(name: string, old: string | null, value: string | null) {
       // Manually `requestUpdate()` for `name` and `disabled` when their
       // attribute or property changes.
       // The properties update their attributes, so this callback is invoked
@@ -271,11 +264,7 @@ export function mixinFormAssociated<
       super.attributeChangedCallback(name, old, value);
     }
 
-    override requestUpdate(
-      name?: PropertyKey,
-      oldValue?: unknown,
-      options?: PropertyDeclaration,
-    ) {
+    override requestUpdate(name?: PropertyKey, oldValue?: unknown, options?: PropertyDeclaration) {
       super.requestUpdate(name, oldValue, options);
       // If any properties change, update the form value, which may have changed
       // as well.
@@ -311,10 +300,7 @@ export type FormValue = File | string | FormData;
  * state is a `FormData` object, its entry list of name and values will be
  * provided.
  */
-export type FormRestoreState =
-  | File
-  | string
-  | Array<[string, FormDataEntryValue]>;
+export type FormRestoreState = File | string | Array<[string, FormDataEntryValue]>;
 
 /**
  * The reason a form component is being restored for, either `'restore'` for

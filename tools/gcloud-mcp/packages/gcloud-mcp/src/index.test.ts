@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { test, expect, vi, beforeEach } from 'vitest';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import * as gcloud from './gcloud.js';
-import * as gcloud_executor from './gcloud_executor.js';
-import { init } from './commands/init.js';
 import fs from 'fs';
 import path from 'path';
+import { beforeEach, expect, test, vi } from 'vitest';
+import { init } from './commands/init.js';
+import * as gcloud from './gcloud.js';
+import * as gcloud_executor from './gcloud_executor.js';
 
 vi.mock('../package.json', () => ({
   default: {

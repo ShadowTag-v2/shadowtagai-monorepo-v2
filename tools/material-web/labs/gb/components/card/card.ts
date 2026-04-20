@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {FOCUS_RING_CLASSES} from '@material/web/labs/gb/components/focus/focus-ring.js';
-import {PSEUDO_CLASSES} from '@material/web/labs/gb/components/shared/pseudo-classes.js';
-import {Directive, directive} from 'lit/directive.js';
-import {classMap, type ClassInfo} from 'lit/directives/class-map.js';
+import { FOCUS_RING_CLASSES } from '@material/web/labs/gb/components/focus/focus-ring.js';
+import { PSEUDO_CLASSES } from '@material/web/labs/gb/components/shared/pseudo-classes.js';
+import { Directive, directive } from 'lit/directive.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
 
 /** Card color configuration types. */
 export type CardColor = 'elevated' | 'filled' | 'outlined';

@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {LitElement, render, TemplateResult} from 'lit';
-import {property} from 'lit/decorators.js';
-import {guard} from 'lit/directives/guard.js';
-import {html, literal} from 'lit/static-html.js';
+import { LitElement, render, type TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import { guard } from 'lit/directives/guard.js';
+import { html, type literal } from 'lit/static-html.js';
 
 /** Test table interface. */
 export interface TestTableTemplate<S extends string = string> {
@@ -28,12 +28,12 @@ export interface TestTableTemplate<S extends string = string> {
  */
 export class TestTable<S extends string = string> extends LitElement {
   /** @nocollapse */
-  static override shadowRootOptions: ShadowRootInit = {mode: 'open'};
+  static override shadowRootOptions: ShadowRootInit = { mode: 'open' };
 
   @property() override title = 'Title';
-  @property({type: Array}) states: S[] = [];
-  @property({type: Array}) templates: Array<TestTableTemplate<S>> = [];
-  @property({type: Boolean, reflect: true}) dark = false;
+  @property({ type: Array }) states: S[] = [];
+  @property({ type: Array }) templates: Array<TestTableTemplate<S>> = [];
+  @property({ type: Boolean, reflect: true }) dark = false;
 
   protected override render() {
     return html`

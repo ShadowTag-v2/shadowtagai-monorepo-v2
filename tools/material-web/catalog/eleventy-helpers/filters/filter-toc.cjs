@@ -19,11 +19,9 @@
  * @param eleventyConfig The 11ty config in which to attach this filter.
  */
 function filterToc(eleventyConfig) {
-  eleventyConfig.addFilter('filterToc', function (text) {
+  eleventyConfig.addFilter('filterToc', (text) => {
     const mdTagName = /<(md-.+?)>/g;
-    return text.replace(mdTagName, function (match, tagName) {
-      return `&lt;${tagName}&gt;`;
-    });
+    return text.replace(mdTagName, (match, tagName) => `&lt;${tagName}&gt;`);
   });
 }
 

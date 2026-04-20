@@ -21,19 +21,21 @@ import type * as gax from 'google-gax';
 import type {
   Callback,
   CallOptions,
-  Descriptors,
   ClientOptions,
+  Descriptors,
+  GaxCall,
   GrpcClientOptions,
+  LocationProtos,
+  LocationsClient,
   LROperation,
   PaginationCallback,
-  GaxCall,
-  LocationsClient,
-  LocationProtos,
 } from 'google-gax';
-import {Transform} from 'stream';
-import * as protos from '../../protos/firestore_admin_v1_proto_api';
+import type { Transform } from 'stream';
+import type * as protos from '../../protos/firestore_admin_v1_proto_api';
+
 import jsonProtos = require('../../protos/admin_v1.json');
-import {loggingUtils as logging, decodeAnyProtosInArray} from 'google-gax';
+
+import { decodeAnyProtosInArray, loggingUtils as logging } from 'google-gax';
 
 /**
  * Client JSON configuration object, loaded from
@@ -41,6 +43,7 @@ import {loggingUtils as logging, decodeAnyProtosInArray} from 'google-gax';
  * This file defines retry strategy and timeouts for all API methods in this library.
  */
 import * as gapicConfig from './firestore_admin_client_config.json';
+
 const version = require('../../../package.json').version;
 
 /**
@@ -82,7 +85,7 @@ export class FirestoreAdminClient {
   private _gaxModule: typeof gax | typeof gax.fallback;
   private _gaxGrpc: gax.GrpcClient | gax.fallback.GrpcClient;
   private _protos: {};
-  private _defaults: {[method: string]: gax.CallSettings};
+  private _defaults: { [method: string]: gax.CallSettings };
   private _universeDomain: string;
   private _servicePath: string;
   private _log = logging.log('firestore-admin');
@@ -95,11 +98,11 @@ export class FirestoreAdminClient {
     batching: {},
   };
   warn: (code: string, message: string, warnType?: string) => void;
-  innerApiCalls: {[name: string]: Function};
+  innerApiCalls: { [name: string]: Function };
   locationsClient: LocationsClient;
-  pathTemplates: {[name: string]: gax.PathTemplate};
+  pathTemplates: { [name: string]: gax.PathTemplate };
   operationsClient: gax.OperationsClient;
-  firestoreAdminStub?: Promise<{[name: string]: Function}>;
+  firestoreAdminStub?: Promise<{ [name: string]: Function }>;
 
   /**
    * Construct an instance of FirestoreAdminClient.
@@ -140,10 +143,7 @@ export class FirestoreAdminClient {
    *     const client = new FirestoreAdminClient({fallback: true}, gax);
    *     ```
    */
-  constructor(
-    opts?: ClientOptions,
-    gaxInstance?: typeof gax | typeof gax.fallback,
-  ) {
+  constructor(opts?: ClientOptions, gaxInstance?: typeof gax | typeof gax.fallback) {
     // Ensure that options include all the required fields.
     const staticMembers = this.constructor as typeof FirestoreAdminClient;
     if (
@@ -151,31 +151,22 @@ export class FirestoreAdminClient {
       opts?.universeDomain &&
       opts?.universe_domain !== opts?.universeDomain
     ) {
-      throw new Error(
-        'Please set either universe_domain or universeDomain, but not both.',
-      );
+      throw new Error('Please set either universe_domain or universeDomain, but not both.');
     }
     const universeDomainEnvVar =
       typeof process === 'object' && typeof process.env === 'object'
         ? process.env['GOOGLE_CLOUD_UNIVERSE_DOMAIN']
         : undefined;
     this._universeDomain =
-      opts?.universeDomain ??
-      opts?.universe_domain ??
-      universeDomainEnvVar ??
-      'googleapis.com';
+      opts?.universeDomain ?? opts?.universe_domain ?? universeDomainEnvVar ?? 'googleapis.com';
     this._servicePath = 'firestore.' + this._universeDomain;
-    const servicePath =
-      opts?.servicePath || opts?.apiEndpoint || this._servicePath;
-    this._providedCustomServicePath = !!(
-      opts?.servicePath || opts?.apiEndpoint
-    );
+    const servicePath = opts?.servicePath || opts?.apiEndpoint || this._servicePath;
+    this._providedCustomServicePath = !!(opts?.servicePath || opts?.apiEndpoint);
     const port = opts?.port || staticMembers.port;
     const clientConfig = opts?.clientConfig ?? {};
     const fallback =
-      opts?.fallback ??
-      (typeof window !== 'undefined' && typeof window?.fetch === 'function');
-    opts = Object.assign({servicePath, port, clientConfig, fallback}, opts);
+      opts?.fallback ?? (typeof window !== 'undefined' && typeof window?.fetch === 'function');
+    opts = Object.assign({ servicePath, port, clientConfig, fallback }, opts);
 
     // Request numeric enum values if REST transport is used.
     opts.numericEnums = true;
@@ -212,10 +203,7 @@ export class FirestoreAdminClient {
     if (servicePath === this._servicePath) {
       this.auth.defaultScopes = staticMembers.scopes;
     }
-    this.locationsClient = new this._gaxModule.LocationsClient(
-      this._gaxGrpc,
-      opts,
-    );
+    this.locationsClient = new this._gaxModule.LocationsClient(this._gaxGrpc, opts);
 
     // Determine the client header string.
     const clientHeader = [`gax/${this._gaxModule.version}`, `gapic/${version}`];
@@ -260,9 +248,7 @@ export class FirestoreAdminClient {
       locationPathTemplate: new this._gaxModule.PathTemplate(
         'projects/{project}/locations/{location}',
       ),
-      projectPathTemplate: new this._gaxModule.PathTemplate(
-        'projects/{project}',
-      ),
+      projectPathTemplate: new this._gaxModule.PathTemplate('projects/{project}'),
       userCredsPathTemplate: new this._gaxModule.PathTemplate(
         'projects/{project}/databases/{database}/userCreds/{user_creds}',
       ),
@@ -272,16 +258,8 @@ export class FirestoreAdminClient {
     // (e.g. 50 results at a time, with tokens to get subsequent
     // pages). Denote the keys used for pagination and results.
     this.descriptors.page = {
-      listIndexes: new this._gaxModule.PageDescriptor(
-        'pageToken',
-        'nextPageToken',
-        'indexes',
-      ),
-      listFields: new this._gaxModule.PageDescriptor(
-        'pageToken',
-        'nextPageToken',
-        'fields',
-      ),
+      listIndexes: new this._gaxModule.PageDescriptor('pageToken', 'nextPageToken', 'indexes'),
+      listFields: new this._gaxModule.PageDescriptor('pageToken', 'nextPageToken', 'fields'),
     };
 
     const protoFilesRoot = this._gaxModule.protobufFromJSON(jsonProtos);
@@ -314,9 +292,7 @@ export class FirestoreAdminClient {
         },
       ];
     }
-    this.operationsClient = this._gaxModule
-      .lro(lroOptions)
-      .operationsClient(opts);
+    this.operationsClient = this._gaxModule.lro(lroOptions).operationsClient(opts);
     const createIndexResponse = protoFilesRoot.lookup(
       '.google.firestore.admin.v1.Index',
     ) as gax.protobuf.Type;
@@ -436,7 +412,7 @@ export class FirestoreAdminClient {
       'google.firestore.admin.v1.FirestoreAdmin',
       gapicConfig as gax.ClientConfig,
       opts.clientConfig || {},
-      {'x-goog-api-client': clientHeader.join(' ')},
+      { 'x-goog-api-client': clientHeader.join(' ') },
     );
 
     // Set up a dictionary of "inner API calls"; the core implementation
@@ -469,14 +445,12 @@ export class FirestoreAdminClient {
     // google.firestore.admin.v1.FirestoreAdmin.
     this.firestoreAdminStub = this._gaxGrpc.createStub(
       this._opts.fallback
-        ? (this._protos as protobuf.Root).lookupService(
-            'google.firestore.admin.v1.FirestoreAdmin',
-          )
+        ? (this._protos as protobuf.Root).lookupService('google.firestore.admin.v1.FirestoreAdmin')
         : // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (this._protos as any).google.firestore.admin.v1.FirestoreAdmin,
       this._opts,
       this._providedCustomServicePath,
-    ) as Promise<{[method: string]: Function}>;
+    ) as Promise<{ [method: string]: Function }>;
 
     // Iterate over each of the methods that the service provides
     // and create an API call method for each.
@@ -516,7 +490,7 @@ export class FirestoreAdminClient {
     ];
     for (const methodName of firestoreAdminStubMethods) {
       const callPromise = this.firestoreAdminStub.then(
-        stub =>
+        (stub) =>
           (...args: Array<{}>) => {
             if (this._terminated) {
               return Promise.reject('The client has already been closed.');
@@ -530,9 +504,7 @@ export class FirestoreAdminClient {
       );
 
       const descriptor =
-        this.descriptors.page[methodName] ||
-        this.descriptors.longrunning[methodName] ||
-        undefined;
+        this.descriptors.page[methodName] || this.descriptors.longrunning[methodName] || undefined;
       const apiCall = this._gaxModule.createApiCall(
         callPromise,
         this._defaults[methodName],
@@ -552,10 +524,7 @@ export class FirestoreAdminClient {
    * @returns {string} The DNS address for this service.
    */
   static get servicePath() {
-    if (
-      typeof process === 'object' &&
-      typeof process.emitWarning === 'function'
-    ) {
+    if (typeof process === 'object' && typeof process.emitWarning === 'function') {
       process.emitWarning(
         'Static servicePath is deprecated, please use the instance method instead.',
         'DeprecationWarning',
@@ -570,10 +539,7 @@ export class FirestoreAdminClient {
    * @returns {string} The DNS address for this service.
    */
   static get apiEndpoint() {
-    if (
-      typeof process === 'object' &&
-      typeof process.emitWarning === 'function'
-    ) {
+    if (typeof process === 'object' && typeof process.emitWarning === 'function') {
       process.emitWarning(
         'Static apiEndpoint is deprecated, please use the instance method instead.',
         'DeprecationWarning',
@@ -620,9 +586,7 @@ export class FirestoreAdminClient {
    * Return the project ID used by this class.
    * @returns {Promise} A promise that resolves to string containing the project ID.
    */
-  getProjectId(
-    callback?: Callback<string, undefined, undefined>,
-  ): Promise<string> | void {
+  getProjectId(callback?: Callback<string, undefined, undefined>): Promise<string> | void {
     if (callback) {
       this.auth.getProjectId(callback);
       return;
@@ -709,11 +673,10 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('getIndex request %j', request);
@@ -742,18 +705,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -808,9 +764,7 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.protobuf.IEmpty,
-          | protos.google.firestore.admin.v1.IDeleteIndexRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IDeleteIndexRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
@@ -836,20 +790,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('deleteIndex request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.protobuf.IEmpty,
-          | protos.google.firestore.admin.v1.IDeleteIndexRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IDeleteIndexRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -871,18 +822,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -963,11 +907,10 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('getField request %j', request);
@@ -996,18 +939,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -1062,9 +998,7 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.firestore.admin.v1.IDatabase,
-          | protos.google.firestore.admin.v1.IGetDatabaseRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IGetDatabaseRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
@@ -1090,20 +1024,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('getDatabase request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.admin.v1.IDatabase,
-          | protos.google.firestore.admin.v1.IGetDatabaseRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IGetDatabaseRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -1125,18 +1056,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -1193,9 +1117,7 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.firestore.admin.v1.IListDatabasesResponse,
-          | protos.google.firestore.admin.v1.IListDatabasesRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IListDatabasesRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
@@ -1221,20 +1143,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('listDatabases request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.admin.v1.IListDatabasesResponse,
-          | protos.google.firestore.admin.v1.IListDatabasesRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IListDatabasesRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -1256,18 +1175,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -1313,9 +1225,7 @@ export class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.firestore.admin.v1.IUserCreds,
-      | protos.google.firestore.admin.v1.ICreateUserCredsRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.ICreateUserCredsRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -1323,9 +1233,7 @@ export class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.ICreateUserCredsRequest,
     callback: Callback<
       protos.google.firestore.admin.v1.IUserCreds,
-      | protos.google.firestore.admin.v1.ICreateUserCredsRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.ICreateUserCredsRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -1335,16 +1243,12 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.firestore.admin.v1.IUserCreds,
-          | protos.google.firestore.admin.v1.ICreateUserCredsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.ICreateUserCredsRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       protos.google.firestore.admin.v1.IUserCreds,
-      | protos.google.firestore.admin.v1.ICreateUserCredsRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.ICreateUserCredsRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<
@@ -1365,20 +1269,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('createUserCreds request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.admin.v1.IUserCreds,
-          | protos.google.firestore.admin.v1.ICreateUserCredsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.ICreateUserCredsRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -1400,18 +1301,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -1467,9 +1361,7 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.firestore.admin.v1.IUserCreds,
-          | protos.google.firestore.admin.v1.IGetUserCredsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IGetUserCredsRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
@@ -1495,20 +1387,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('getUserCreds request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.admin.v1.IUserCreds,
-          | protos.google.firestore.admin.v1.IGetUserCredsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IGetUserCredsRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -1530,18 +1419,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -1597,9 +1479,7 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.firestore.admin.v1.IListUserCredsResponse,
-          | protos.google.firestore.admin.v1.IListUserCredsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IListUserCredsRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
@@ -1625,20 +1505,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('listUserCreds request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.admin.v1.IListUserCredsResponse,
-          | protos.google.firestore.admin.v1.IListUserCredsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IListUserCredsRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -1660,18 +1537,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -1708,9 +1578,7 @@ export class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.firestore.admin.v1.IUserCreds,
-      | protos.google.firestore.admin.v1.IEnableUserCredsRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IEnableUserCredsRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -1718,9 +1586,7 @@ export class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.IEnableUserCredsRequest,
     callback: Callback<
       protos.google.firestore.admin.v1.IUserCreds,
-      | protos.google.firestore.admin.v1.IEnableUserCredsRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IEnableUserCredsRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -1730,16 +1596,12 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.firestore.admin.v1.IUserCreds,
-          | protos.google.firestore.admin.v1.IEnableUserCredsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IEnableUserCredsRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       protos.google.firestore.admin.v1.IUserCreds,
-      | protos.google.firestore.admin.v1.IEnableUserCredsRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IEnableUserCredsRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<
@@ -1760,20 +1622,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('enableUserCreds request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.admin.v1.IUserCreds,
-          | protos.google.firestore.admin.v1.IEnableUserCredsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IEnableUserCredsRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -1795,18 +1654,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -1843,9 +1695,7 @@ export class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.firestore.admin.v1.IUserCreds,
-      | protos.google.firestore.admin.v1.IDisableUserCredsRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IDisableUserCredsRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -1853,9 +1703,7 @@ export class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.IDisableUserCredsRequest,
     callback: Callback<
       protos.google.firestore.admin.v1.IUserCreds,
-      | protos.google.firestore.admin.v1.IDisableUserCredsRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IDisableUserCredsRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -1865,16 +1713,12 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.firestore.admin.v1.IUserCreds,
-          | protos.google.firestore.admin.v1.IDisableUserCredsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IDisableUserCredsRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       protos.google.firestore.admin.v1.IUserCreds,
-      | protos.google.firestore.admin.v1.IDisableUserCredsRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IDisableUserCredsRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<
@@ -1895,20 +1739,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('disableUserCreds request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.admin.v1.IUserCreds,
-          | protos.google.firestore.admin.v1.IDisableUserCredsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IDisableUserCredsRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -1930,18 +1771,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -1978,9 +1812,7 @@ export class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.firestore.admin.v1.IUserCreds,
-      | protos.google.firestore.admin.v1.IResetUserPasswordRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IResetUserPasswordRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -1988,9 +1820,7 @@ export class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.IResetUserPasswordRequest,
     callback: Callback<
       protos.google.firestore.admin.v1.IUserCreds,
-      | protos.google.firestore.admin.v1.IResetUserPasswordRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IResetUserPasswordRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -2000,16 +1830,12 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.firestore.admin.v1.IUserCreds,
-          | protos.google.firestore.admin.v1.IResetUserPasswordRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IResetUserPasswordRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       protos.google.firestore.admin.v1.IUserCreds,
-      | protos.google.firestore.admin.v1.IResetUserPasswordRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IResetUserPasswordRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<
@@ -2030,20 +1856,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('resetUserPassword request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.admin.v1.IUserCreds,
-          | protos.google.firestore.admin.v1.IResetUserPasswordRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IResetUserPasswordRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -2057,10 +1880,7 @@ export class FirestoreAdminClient {
       ?.then(
         ([response, options, rawResponse]: [
           protos.google.firestore.admin.v1.IUserCreds,
-          (
-            | protos.google.firestore.admin.v1.IResetUserPasswordRequest
-            | undefined
-          ),
+          protos.google.firestore.admin.v1.IResetUserPasswordRequest | undefined,
           {} | undefined,
         ]) => {
           this._log.info('resetUserPassword response %j', response);
@@ -2068,18 +1888,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -2116,9 +1929,7 @@ export class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.protobuf.IEmpty,
-      | protos.google.firestore.admin.v1.IDeleteUserCredsRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IDeleteUserCredsRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -2126,9 +1937,7 @@ export class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.IDeleteUserCredsRequest,
     callback: Callback<
       protos.google.protobuf.IEmpty,
-      | protos.google.firestore.admin.v1.IDeleteUserCredsRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IDeleteUserCredsRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -2138,16 +1947,12 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.protobuf.IEmpty,
-          | protos.google.firestore.admin.v1.IDeleteUserCredsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IDeleteUserCredsRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       protos.google.protobuf.IEmpty,
-      | protos.google.firestore.admin.v1.IDeleteUserCredsRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IDeleteUserCredsRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<
@@ -2168,20 +1973,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('deleteUserCreds request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.protobuf.IEmpty,
-          | protos.google.firestore.admin.v1.IDeleteUserCredsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IDeleteUserCredsRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -2203,18 +2005,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -2296,11 +2091,10 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('getBackup request %j', request);
@@ -2329,18 +2123,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -2412,9 +2199,7 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.firestore.admin.v1.IListBackupsResponse,
-          | protos.google.firestore.admin.v1.IListBackupsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IListBackupsRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
@@ -2440,20 +2225,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('listBackups request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.admin.v1.IListBackupsResponse,
-          | protos.google.firestore.admin.v1.IListBackupsRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IListBackupsRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -2475,18 +2257,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -2542,9 +2317,7 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.protobuf.IEmpty,
-          | protos.google.firestore.admin.v1.IDeleteBackupRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IDeleteBackupRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
@@ -2570,20 +2343,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('deleteBackup request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.protobuf.IEmpty,
-          | protos.google.firestore.admin.v1.IDeleteBackupRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IDeleteBackupRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -2605,18 +2375,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -2658,9 +2421,7 @@ export class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.ICreateBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.ICreateBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -2668,9 +2429,7 @@ export class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.ICreateBackupScheduleRequest,
     callback: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.ICreateBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.ICreateBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -2680,16 +2439,12 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.firestore.admin.v1.IBackupSchedule,
-          | protos.google.firestore.admin.v1.ICreateBackupScheduleRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.ICreateBackupScheduleRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.ICreateBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.ICreateBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<
@@ -2710,20 +2465,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('createBackupSchedule request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.admin.v1.IBackupSchedule,
-          | protos.google.firestore.admin.v1.ICreateBackupScheduleRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.ICreateBackupScheduleRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -2737,10 +2489,7 @@ export class FirestoreAdminClient {
       ?.then(
         ([response, options, rawResponse]: [
           protos.google.firestore.admin.v1.IBackupSchedule,
-          (
-            | protos.google.firestore.admin.v1.ICreateBackupScheduleRequest
-            | undefined
-          ),
+          protos.google.firestore.admin.v1.ICreateBackupScheduleRequest | undefined,
           {} | undefined,
         ]) => {
           this._log.info('createBackupSchedule response %j', response);
@@ -2748,18 +2497,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -2798,9 +2540,7 @@ export class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.IGetBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IGetBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -2808,9 +2548,7 @@ export class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.IGetBackupScheduleRequest,
     callback: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.IGetBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IGetBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -2820,16 +2558,12 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.firestore.admin.v1.IBackupSchedule,
-          | protos.google.firestore.admin.v1.IGetBackupScheduleRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IGetBackupScheduleRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.IGetBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IGetBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<
@@ -2850,20 +2584,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('getBackupSchedule request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.admin.v1.IBackupSchedule,
-          | protos.google.firestore.admin.v1.IGetBackupScheduleRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IGetBackupScheduleRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -2877,10 +2608,7 @@ export class FirestoreAdminClient {
       ?.then(
         ([response, options, rawResponse]: [
           protos.google.firestore.admin.v1.IBackupSchedule,
-          (
-            | protos.google.firestore.admin.v1.IGetBackupScheduleRequest
-            | undefined
-          ),
+          protos.google.firestore.admin.v1.IGetBackupScheduleRequest | undefined,
           {} | undefined,
         ]) => {
           this._log.info('getBackupSchedule response %j', response);
@@ -2888,18 +2616,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -2937,9 +2658,7 @@ export class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.firestore.admin.v1.IListBackupSchedulesResponse,
-      | protos.google.firestore.admin.v1.IListBackupSchedulesRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IListBackupSchedulesRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -2947,9 +2666,7 @@ export class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.IListBackupSchedulesRequest,
     callback: Callback<
       protos.google.firestore.admin.v1.IListBackupSchedulesResponse,
-      | protos.google.firestore.admin.v1.IListBackupSchedulesRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IListBackupSchedulesRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -2959,16 +2676,12 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.firestore.admin.v1.IListBackupSchedulesResponse,
-          | protos.google.firestore.admin.v1.IListBackupSchedulesRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IListBackupSchedulesRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       protos.google.firestore.admin.v1.IListBackupSchedulesResponse,
-      | protos.google.firestore.admin.v1.IListBackupSchedulesRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IListBackupSchedulesRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<
@@ -2989,20 +2702,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('listBackupSchedules request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.admin.v1.IListBackupSchedulesResponse,
-          | protos.google.firestore.admin.v1.IListBackupSchedulesRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IListBackupSchedulesRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -3016,10 +2726,7 @@ export class FirestoreAdminClient {
       ?.then(
         ([response, options, rawResponse]: [
           protos.google.firestore.admin.v1.IListBackupSchedulesResponse,
-          (
-            | protos.google.firestore.admin.v1.IListBackupSchedulesRequest
-            | undefined
-          ),
+          protos.google.firestore.admin.v1.IListBackupSchedulesRequest | undefined,
           {} | undefined,
         ]) => {
           this._log.info('listBackupSchedules response %j', response);
@@ -3027,18 +2734,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -3076,9 +2776,7 @@ export class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -3086,9 +2784,7 @@ export class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest,
     callback: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -3098,16 +2794,12 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.firestore.admin.v1.IBackupSchedule,
-          | protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       protos.google.firestore.admin.v1.IBackupSchedule,
-      | protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<
@@ -3128,20 +2820,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        'backup_schedule.name': request.backupSchedule!.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      'backup_schedule.name': request.backupSchedule!.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('updateBackupSchedule request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.firestore.admin.v1.IBackupSchedule,
-          | protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -3155,10 +2844,7 @@ export class FirestoreAdminClient {
       ?.then(
         ([response, options, rawResponse]: [
           protos.google.firestore.admin.v1.IBackupSchedule,
-          (
-            | protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest
-            | undefined
-          ),
+          protos.google.firestore.admin.v1.IUpdateBackupScheduleRequest | undefined,
           {} | undefined,
         ]) => {
           this._log.info('updateBackupSchedule response %j', response);
@@ -3166,18 +2852,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -3216,9 +2895,7 @@ export class FirestoreAdminClient {
     options: CallOptions,
     callback: Callback<
       protos.google.protobuf.IEmpty,
-      | protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -3226,9 +2903,7 @@ export class FirestoreAdminClient {
     request: protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest,
     callback: Callback<
       protos.google.protobuf.IEmpty,
-      | protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): void;
@@ -3238,16 +2913,12 @@ export class FirestoreAdminClient {
       | CallOptions
       | Callback<
           protos.google.protobuf.IEmpty,
-          | protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       protos.google.protobuf.IEmpty,
-      | protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest
-      | null
-      | undefined,
+      protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<
@@ -3268,20 +2939,17 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('deleteBackupSchedule request %j', request);
     const wrappedCallback:
       | Callback<
           protos.google.protobuf.IEmpty,
-          | protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest | null | undefined,
           {} | null | undefined
         >
       | undefined = callback
@@ -3295,10 +2963,7 @@ export class FirestoreAdminClient {
       ?.then(
         ([response, options, rawResponse]: [
           protos.google.protobuf.IEmpty,
-          (
-            | protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest
-            | undefined
-          ),
+          protos.google.firestore.admin.v1.IDeleteBackupScheduleRequest | undefined,
           {} | undefined,
         ]) => {
           this._log.info('deleteBackupSchedule response %j', response);
@@ -3306,18 +2971,11 @@ export class FirestoreAdminClient {
         },
       )
       .catch((error: any) => {
-        if (
-          error &&
-          'statusDetails' in error &&
-          error.statusDetails instanceof Array
-        ) {
+        if (error && 'statusDetails' in error && error.statusDetails instanceof Array) {
           const protos = this._gaxModule.protobuf.Root.fromJSON(
             jsonProtos,
           ) as unknown as gax.protobuf.Type;
-          error.statusDetails = decodeAnyProtosInArray(
-            error.statusDetails,
-            protos,
-          );
+          error.statusDetails = decodeAnyProtosInArray(error.statusDetails, protos);
         }
         throw error;
       });
@@ -3425,11 +3083,10 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
@@ -3484,10 +3141,9 @@ export class FirestoreAdminClient {
     >
   > {
     this._log.info('createIndex long-running');
-    const request =
-      new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest(
-        {name},
-      );
+    const request = new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest({
+      name,
+    });
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
@@ -3612,11 +3268,10 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        'field.name': request.field!.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      'field.name': request.field!.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
@@ -3671,10 +3326,9 @@ export class FirestoreAdminClient {
     >
   > {
     this._log.info('updateField long-running');
-    const request =
-      new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest(
-        {name},
-      );
+    const request = new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest({
+      name,
+    });
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
@@ -3819,11 +3473,10 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
@@ -3878,10 +3531,9 @@ export class FirestoreAdminClient {
     >
   > {
     this._log.info('exportDocuments long-running');
-    const request =
-      new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest(
-        {name},
-      );
+    const request = new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest({
+      name,
+    });
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
@@ -4009,11 +3661,10 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
@@ -4068,10 +3719,9 @@ export class FirestoreAdminClient {
     >
   > {
     this._log.info('importDocuments long-running');
-    const request =
-      new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest(
-        {name},
-      );
+    const request = new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest({
+      name,
+    });
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
@@ -4202,11 +3852,10 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
@@ -4261,10 +3910,9 @@ export class FirestoreAdminClient {
     >
   > {
     this._log.info('bulkDeleteDocuments long-running');
-    const request =
-      new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest(
-        {name},
-      );
+    const request = new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest({
+      name,
+    });
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
@@ -4383,11 +4031,10 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
@@ -4442,10 +4089,9 @@ export class FirestoreAdminClient {
     >
   > {
     this._log.info('createDatabase long-running');
-    const request =
-      new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest(
-        {name},
-      );
+    const request = new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest({
+      name,
+    });
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
@@ -4554,11 +4200,10 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        'database.name': request.database!.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      'database.name': request.database!.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
@@ -4613,10 +4258,9 @@ export class FirestoreAdminClient {
     >
   > {
     this._log.info('updateDatabase long-running');
-    const request =
-      new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest(
-        {name},
-      );
+    const request = new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest({
+      name,
+    });
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
@@ -4728,11 +4372,10 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
@@ -4787,10 +4430,9 @@ export class FirestoreAdminClient {
     >
   > {
     this._log.info('deleteDatabase long-running');
-    const request =
-      new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest(
-        {name},
-      );
+    const request = new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest({
+      name,
+    });
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
@@ -4943,11 +4585,10 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
@@ -5002,10 +4643,9 @@ export class FirestoreAdminClient {
     >
   > {
     this._log.info('restoreDatabase long-running');
-    const request =
-      new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest(
-        {name},
-      );
+    const request = new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest({
+      name,
+    });
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
@@ -5160,12 +4800,10 @@ export class FirestoreAdminClient {
     {
       const fieldValue = request.pitrSnapshot?.database;
       if (fieldValue !== undefined && fieldValue !== null) {
-        const match = fieldValue
-          .toString()
-          .match(RegExp('projects/(?<project_id>[^/]+)(?:/.*)?'));
+        const match = fieldValue.toString().match(/projects\/(?<project_id>[^/]+)(?:\/.*)?/);
         if (match) {
           const parameterValue = match.groups?.['project_id'] ?? fieldValue;
-          Object.assign(routingParameter, {project_id: parameterValue});
+          Object.assign(routingParameter, { project_id: parameterValue });
         }
       }
     }
@@ -5174,18 +4812,16 @@ export class FirestoreAdminClient {
       if (fieldValue !== undefined && fieldValue !== null) {
         const match = fieldValue
           .toString()
-          .match(
-            RegExp('projects/[^/]+/databases/(?<database_id>[^/]+)(?:/.*)?'),
-          );
+          .match(/projects\/[^/]+\/databases\/(?<database_id>[^/]+)(?:\/.*)?/);
         if (match) {
           const parameterValue = match.groups?.['database_id'] ?? fieldValue;
-          Object.assign(routingParameter, {database_id: parameterValue});
+          Object.assign(routingParameter, { database_id: parameterValue });
         }
       }
     }
     options.otherArgs.headers['x-goog-request-params'] =
       this._gaxModule.routingHeader.fromParams(routingParameter);
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
@@ -5240,10 +4876,9 @@ export class FirestoreAdminClient {
     >
   > {
     this._log.info('cloneDatabase long-running');
-    const request =
-      new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest(
-        {name},
-      );
+    const request = new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest({
+      name,
+    });
     const [operation] = await this.operationsClient.getOperation(request);
     const decodeOperation = new this._gaxModule.Operation(
       operation,
@@ -5316,9 +4951,7 @@ export class FirestoreAdminClient {
       | CallOptions
       | PaginationCallback<
           protos.google.firestore.admin.v1.IListIndexesRequest,
-          | protos.google.firestore.admin.v1.IListIndexesResponse
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IListIndexesResponse | null | undefined,
           protos.google.firestore.admin.v1.IIndex
         >,
     callback?: PaginationCallback<
@@ -5344,19 +4977,16 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
       | PaginationCallback<
           protos.google.firestore.admin.v1.IListIndexesRequest,
-          | protos.google.firestore.admin.v1.IListIndexesResponse
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IListIndexesResponse | null | undefined,
           protos.google.firestore.admin.v1.IIndex
         >
       | undefined = callback
@@ -5414,13 +5044,12 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
     const defaultCallSettings = this._defaults['listIndexes'];
     const callSettings = defaultCallSettings.merge(options);
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('listIndexes stream %j', request);
@@ -5468,13 +5097,12 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
     const defaultCallSettings = this._defaults['listIndexes'];
     const callSettings = defaultCallSettings.merge(options);
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('listIndexes iterate %j', request);
@@ -5559,9 +5187,7 @@ export class FirestoreAdminClient {
       | CallOptions
       | PaginationCallback<
           protos.google.firestore.admin.v1.IListFieldsRequest,
-          | protos.google.firestore.admin.v1.IListFieldsResponse
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IListFieldsResponse | null | undefined,
           protos.google.firestore.admin.v1.IField
         >,
     callback?: PaginationCallback<
@@ -5587,19 +5213,16 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
-    this.initialize().catch(err => {
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
+    this.initialize().catch((err) => {
       throw err;
     });
     const wrappedCallback:
       | PaginationCallback<
           protos.google.firestore.admin.v1.IListFieldsRequest,
-          | protos.google.firestore.admin.v1.IListFieldsResponse
-          | null
-          | undefined,
+          protos.google.firestore.admin.v1.IListFieldsResponse | null | undefined,
           protos.google.firestore.admin.v1.IField
         >
       | undefined = callback
@@ -5663,13 +5286,12 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
     const defaultCallSettings = this._defaults['listFields'];
     const callSettings = defaultCallSettings.merge(options);
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('listFields stream %j', request);
@@ -5723,13 +5345,12 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        parent: request.parent ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      parent: request.parent ?? '',
+    });
     const defaultCallSettings = this._defaults['listFields'];
     const callSettings = defaultCallSettings.merge(options);
-    this.initialize().catch(err => {
+    this.initialize().catch((err) => {
       throw err;
     });
     this._log.info('listFields iterate %j', request);
@@ -5763,16 +5384,12 @@ export class FirestoreAdminClient {
       | gax.CallOptions
       | Callback<
           LocationProtos.google.cloud.location.ILocation,
-          | LocationProtos.google.cloud.location.IGetLocationRequest
-          | null
-          | undefined,
+          LocationProtos.google.cloud.location.IGetLocationRequest | null | undefined,
           {} | null | undefined
         >,
     callback?: Callback<
       LocationProtos.google.cloud.location.ILocation,
-      | LocationProtos.google.cloud.location.IGetLocationRequest
-      | null
-      | undefined,
+      LocationProtos.google.cloud.location.IGetLocationRequest | null | undefined,
       {} | null | undefined
     >,
   ): Promise<LocationProtos.google.cloud.location.ILocation> {
@@ -5872,10 +5489,9 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
     return this.operationsClient.getOperation(request, options, callback);
   }
   /**
@@ -5915,10 +5531,9 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
     return this.operationsClient.listOperationsAsync(request, options);
   }
   /**
@@ -5977,10 +5592,9 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
     return this.operationsClient.cancelOperation(request, options, callback);
   }
 
@@ -6034,10 +5648,9 @@ export class FirestoreAdminClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers['x-goog-request-params'] =
-      this._gaxModule.routingHeader.fromParams({
-        name: request.name ?? '',
-      });
+    options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+      name: request.name ?? '',
+    });
     return this.operationsClient.deleteOperation(request, options, callback);
   }
 
@@ -6102,11 +5715,7 @@ export class FirestoreAdminClient {
    * @param {string} backup_schedule
    * @returns {string} Resource name string.
    */
-  backupSchedulePath(
-    project: string,
-    database: string,
-    backupSchedule: string,
-  ) {
+  backupSchedulePath(project: string, database: string, backupSchedule: string) {
     return this.pathTemplates.backupSchedulePathTemplate.render({
       project: project,
       database: database,
@@ -6122,9 +5731,7 @@ export class FirestoreAdminClient {
    * @returns {string} A string representing the project.
    */
   matchProjectFromBackupScheduleName(backupScheduleName: string) {
-    return this.pathTemplates.backupSchedulePathTemplate.match(
-      backupScheduleName,
-    ).project;
+    return this.pathTemplates.backupSchedulePathTemplate.match(backupScheduleName).project;
   }
 
   /**
@@ -6135,9 +5742,7 @@ export class FirestoreAdminClient {
    * @returns {string} A string representing the database.
    */
   matchDatabaseFromBackupScheduleName(backupScheduleName: string) {
-    return this.pathTemplates.backupSchedulePathTemplate.match(
-      backupScheduleName,
-    ).database;
+    return this.pathTemplates.backupSchedulePathTemplate.match(backupScheduleName).database;
   }
 
   /**
@@ -6148,9 +5753,7 @@ export class FirestoreAdminClient {
    * @returns {string} A string representing the backup_schedule.
    */
   matchBackupScheduleFromBackupScheduleName(backupScheduleName: string) {
-    return this.pathTemplates.backupSchedulePathTemplate.match(
-      backupScheduleName,
-    ).backup_schedule;
+    return this.pathTemplates.backupSchedulePathTemplate.match(backupScheduleName).backup_schedule;
   }
 
   /**
@@ -6177,9 +5780,7 @@ export class FirestoreAdminClient {
    * @returns {string} A string representing the project.
    */
   matchProjectFromCollectionGroupName(collectionGroupName: string) {
-    return this.pathTemplates.collectionGroupPathTemplate.match(
-      collectionGroupName,
-    ).project;
+    return this.pathTemplates.collectionGroupPathTemplate.match(collectionGroupName).project;
   }
 
   /**
@@ -6190,9 +5791,7 @@ export class FirestoreAdminClient {
    * @returns {string} A string representing the database.
    */
   matchDatabaseFromCollectionGroupName(collectionGroupName: string) {
-    return this.pathTemplates.collectionGroupPathTemplate.match(
-      collectionGroupName,
-    ).database;
+    return this.pathTemplates.collectionGroupPathTemplate.match(collectionGroupName).database;
   }
 
   /**
@@ -6203,9 +5802,7 @@ export class FirestoreAdminClient {
    * @returns {string} A string representing the collection.
    */
   matchCollectionFromCollectionGroupName(collectionGroupName: string) {
-    return this.pathTemplates.collectionGroupPathTemplate.match(
-      collectionGroupName,
-    ).collection;
+    return this.pathTemplates.collectionGroupPathTemplate.match(collectionGroupName).collection;
   }
 
   /**
@@ -6253,12 +5850,7 @@ export class FirestoreAdminClient {
    * @param {string} field
    * @returns {string} Resource name string.
    */
-  fieldPath(
-    project: string,
-    database: string,
-    collection: string,
-    field: string,
-  ) {
+  fieldPath(project: string, database: string, collection: string, field: string) {
     return this.pathTemplates.fieldPathTemplate.render({
       project: project,
       database: database,
@@ -6320,12 +5912,7 @@ export class FirestoreAdminClient {
    * @param {string} index
    * @returns {string} Resource name string.
    */
-  indexPath(
-    project: string,
-    database: string,
-    collection: string,
-    index: string,
-  ) {
+  indexPath(project: string, database: string, collection: string, index: string) {
     return this.pathTemplates.indexPathTemplate.render({
       project: project,
       database: database,
@@ -6461,8 +6048,7 @@ export class FirestoreAdminClient {
    * @returns {string} A string representing the project.
    */
   matchProjectFromUserCredsName(userCredsName: string) {
-    return this.pathTemplates.userCredsPathTemplate.match(userCredsName)
-      .project;
+    return this.pathTemplates.userCredsPathTemplate.match(userCredsName).project;
   }
 
   /**
@@ -6473,8 +6059,7 @@ export class FirestoreAdminClient {
    * @returns {string} A string representing the database.
    */
   matchDatabaseFromUserCredsName(userCredsName: string) {
-    return this.pathTemplates.userCredsPathTemplate.match(userCredsName)
-      .database;
+    return this.pathTemplates.userCredsPathTemplate.match(userCredsName).database;
   }
 
   /**
@@ -6485,8 +6070,7 @@ export class FirestoreAdminClient {
    * @returns {string} A string representing the user_creds.
    */
   matchUserCredsFromUserCredsName(userCredsName: string) {
-    return this.pathTemplates.userCredsPathTemplate.match(userCredsName)
-      .user_creds;
+    return this.pathTemplates.userCredsPathTemplate.match(userCredsName).user_creds;
   }
 
   /**
@@ -6497,11 +6081,11 @@ export class FirestoreAdminClient {
    */
   close(): Promise<void> {
     if (this.firestoreAdminStub && !this._terminated) {
-      return this.firestoreAdminStub.then(stub => {
+      return this.firestoreAdminStub.then((stub) => {
         this._log.info('ending gRPC channel');
         this._terminated = true;
         stub.close();
-        this.locationsClient.close().catch(err => {
+        this.locationsClient.close().catch((err) => {
           throw err;
         });
         void this.operationsClient.close();

@@ -9,8 +9,8 @@ import '@material/web/select/filled-select.js';
 import '@material/web/select/outlined-select.js';
 import '@material/web/select/select-option.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {html, nothing} from 'lit';
+import { html, nothing } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for select stories. */
 export interface StoryKnobs {
@@ -79,9 +79,7 @@ const selects: MaterialStoryInit<StoryKnobs> = {
 };
 
 function renderIcon(iconName: string, slot: 'leading-icon' | 'trailing-icon') {
-  return iconName
-    ? html`<md-icon slot=${slot}><span>${iconName}</span></md-icon>`
-    : nothing;
+  return iconName ? html`<md-icon slot=${slot}><span>${iconName}</span></md-icon>` : nothing;
 }
 
 function renderItems() {

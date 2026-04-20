@@ -55,12 +55,12 @@ ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 */
 
 // [CODE STARTS]
-module = await import("https://esm.sh/@google/genai@1.30.0");
+module = await import('https://esm.sh/@google/genai@1.30.0');
 GoogleGenAI = module.GoogleGenAI;
 ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-MODEL_ID = "gemini-2.5-flash-image";
-PRO_MODEL_ID = "gemini-3-pro-image-preview";
+MODEL_ID = 'gemini-2.5-flash-image';
+PRO_MODEL_ID = 'gemini-3-pro-image-preview';
 // [CODE ENDS]
 
 /* Markdown (render)
@@ -75,7 +75,7 @@ You can set the `responseModalities` to indicate to the model that you are expec
 Modality = module.Modality;
 
 prompt =
-  "Create a photorealistic image of a siamese cat with a green left eye and a blue right one and red patches on his face and a black and pink nose";
+  'Create a photorealistic image of a siamese cat with a green left eye and a blue right one and red patches on his face and a black and pink nose';
 
 response = await ai.models.generateContent({
   model: MODEL_ID,
@@ -109,7 +109,7 @@ You can also do image editing, simply pass the original image as part of the pro
 
 // [CODE STARTS]
 textPrompt =
-  "Create a side view picture of that cat, in a tropical forest, eating a nano-banana, under the stars";
+  'Create a side view picture of that cat, in a tropical forest, eating a nano-banana, under the stars';
 
 response = await ai.models.generateContent({
   model: MODEL_ID,
@@ -118,7 +118,7 @@ response = await ai.models.generateContent({
     {
       inlineData: {
         data: catImage,
-        mimeType: "image/png",
+        mimeType: 'image/png',
       },
     },
   ],
@@ -153,7 +153,7 @@ To do so, add an `aspectRatio` value to the `imageConfig`.
 
 // [CODE STARTS]
 textPrompt =
-  "Now the cat should keep the same attitude, but be well dressed in fancy restaurant and eat a fancy nano banana.";
+  'Now the cat should keep the same attitude, but be well dressed in fancy restaurant and eat a fancy nano banana.';
 
 response = await ai.models.generateContent({
   model: MODEL_ID,
@@ -162,14 +162,14 @@ response = await ai.models.generateContent({
     {
       inlineData: {
         data: catImage,
-        mimeType: "image/png",
+        mimeType: 'image/png',
       },
     },
   ],
   config: {
     responseModalities: [Modality.IMAGE],
     imageConfig: {
-      aspectRatio: "16:9",
+      aspectRatio: '16:9',
     },
   },
 });
@@ -199,7 +199,7 @@ So far you've only generated one image per call, but you can request way more th
 
 // [CODE STARTS]
 prompt =
-  "Create a beautifully entertaining 8 part story with 8 images with two blue characters and their adventures in the 1960s music scene. The story is thrilling throughout with emotional highs and lows and ending on a great twist and high note. Do not include any words or text on the images but tell the story purely through the imagery itself.";
+  'Create a beautifully entertaining 8 part story with 8 images with two blue characters and their adventures in the 1960s music scene. The story is thrilling throughout with emotional highs and lows and ending on a great twist and high note. Do not include any words or text on the images but tell the story purely through the imagery itself.';
 
 response = await ai.models.generateContent({
   model: MODEL_ID,
@@ -262,8 +262,7 @@ Here is an image of a plastic toy fox figurine in a kid&#x27;s bedroom, with acc
 */
 
 // [CODE STARTS]
-message =
-  "Add a blue planet on the figuring's helmet or hat (add one if needed)";
+message = "Add a blue planet on the figuring's helmet or hat (add one if needed)";
 
 response = await chat.sendMessage({ message: message });
 
@@ -287,7 +286,7 @@ Here&#x27;s the toy fox figurine with a blue planet on its helmet:
 */
 
 // [CODE STARTS]
-message = "Move that figurine on a beach";
+message = 'Move that figurine on a beach';
 
 response = await chat.sendMessage({ message: message });
 
@@ -311,7 +310,7 @@ Here&#x27;s the figurine on a beach!
 */
 
 // [CODE STARTS]
-message = "Now it should be base-jumping from a spaceship with a wingsuit";
+message = 'Now it should be base-jumping from a spaceship with a wingsuit';
 
 response = await chat.sendMessage({ message });
 
@@ -335,7 +334,7 @@ Here&#x27;s your fox figurine base-jumping from a spaceship in a wingsuit!
 */
 
 // [CODE STARTS]
-message = "Cooking a barbecue with an apron";
+message = 'Cooking a barbecue with an apron';
 
 response = await chat.sendMessage({ message });
 
@@ -357,7 +356,7 @@ for (const part of response.candidates[0].content.parts) {
 */
 
 // [CODE STARTS]
-message = "What about chilling in a spa?";
+message = 'What about chilling in a spa?';
 
 response = await chat.sendMessage({ message });
 
@@ -384,8 +383,7 @@ You can also mix multiple images (up to 3 with nano-banana, 14 with pro), either
 */
 
 // [CODE STARTS]
-textPrompt =
-  "Create a picture of that figurine riding that cat in a fantasy world.";
+textPrompt = 'Create a picture of that figurine riding that cat in a fantasy world.';
 
 response = await ai.models.generateContent({
   model: MODEL_ID,
@@ -394,13 +392,13 @@ response = await ai.models.generateContent({
     {
       inlineData: {
         data: catImage,
-        mimeType: "image/png",
+        mimeType: 'image/png',
       },
     },
     {
       inlineData: {
         data: foxFigurineImage,
-        mimeType: "image/png",
+        mimeType: 'image/png',
       },
     },
   ],
@@ -438,7 +436,7 @@ Let's do a request with `includeThoughts: true`.
 */
 
 // [CODE STARTS]
-prompt = "Create an unusual but realistic image that might go viral";
+prompt = 'Create an unusual but realistic image that might go viral';
 
 response = await ai.models.generateContent({
   model: PRO_MODEL_ID,
@@ -446,7 +444,7 @@ response = await ai.models.generateContent({
   config: {
     responseModalities: [Modality.TEXT, Modality.IMAGE],
     imageConfig: {
-      aspectRatio: "16:9",
+      aspectRatio: '16:9',
     },
     thinkingConfig: {
       includeThoughts: true,
@@ -457,9 +455,9 @@ response = await ai.models.generateContent({
 // Display thoughts and images
 for (const part of response.candidates[0].content.parts) {
   if (part.thought) {
-    console.log("THOUGHTS:", part.text);
+    console.log('THOUGHTS:', part.text);
   } else if (part.text) {
-    console.log("RESPONSE:", part.text);
+    console.log('RESPONSE:', part.text);
   } else if (part.inlineData) {
     console.image(part.inlineData.data);
   }
@@ -496,7 +494,7 @@ This signature is used by the model when you want to do chat/multi-turn discussi
 // [CODE STARTS]
 for (const part of response.candidates[0].content.parts) {
   if (part.thoughtSignature) {
-    console.log("Signature present:", part.thoughtSignature);
+    console.log('Signature present:', part.thoughtSignature);
   }
 }
 // [CODE ENDS]
@@ -513,7 +511,7 @@ Note that it only ground using the text results and not the images that could be
 
 // [CODE STARTS]
 prompt =
-  "Visualize the current weather forecast for the next 5 days in Tokyo as a clean, modern weather chart. add a visual on what i should wear each day";
+  'Visualize the current weather forecast for the next 5 days in Tokyo as a clean, modern weather chart. add a visual on what i should wear each day';
 
 response = await ai.models.generateContent({
   model: PRO_MODEL_ID,
@@ -521,7 +519,7 @@ response = await ai.models.generateContent({
   config: {
     responseModalities: [Modality.TEXT, Modality.IMAGE],
     imageConfig: {
-      aspectRatio: "16:9",
+      aspectRatio: '16:9',
     },
     tools: [{ googleSearch: {} }],
   },
@@ -537,9 +535,7 @@ for (const part of response.candidates[0].content.parts) {
 }
 
 // Display grounding metadata
-console.log(
-  response.candidates[0].groundingMetadata.searchEntryPoint.renderedContent,
-);
+console.log(response.candidates[0].groundingMetadata.searchEntryPoint.renderedContent);
 // [CODE ENDS]
 
 /* Output Sample
@@ -577,7 +573,7 @@ The pro model can generate 1K, 2K or 4K images.
 */
 
 // [CODE STARTS]
-prompt = "A photo of an oak tree experiencing every season";
+prompt = 'A photo of an oak tree experiencing every season';
 
 response = await ai.models.generateContent({
   model: PRO_MODEL_ID,
@@ -585,8 +581,8 @@ response = await ai.models.generateContent({
   config: {
     responseModalities: [Modality.TEXT, Modality.IMAGE],
     imageConfig: {
-      aspectRatio: "1:1",
-      imageSize: "4K",
+      aspectRatio: '1:1',
+      imageSize: '4K',
     },
   },
 });
@@ -628,7 +624,7 @@ message =
 response = await chat.sendMessage({
   message: message,
   config: {
-    imageConfig: { aspectRatio: "16:9" },
+    imageConfig: { aspectRatio: '16:9' },
   },
 });
 
@@ -649,13 +645,12 @@ for (const part of response.candidates[0].content.parts) {
 */
 
 // [CODE STARTS]
-message =
-  "Translate this infographic in Japanese, keeping everything else the same";
+message = 'Translate this infographic in Japanese, keeping everything else the same';
 
 response = await chat.sendMessage({
   message: message,
   config: {
-    imageConfig: { imageSize: "2K" },
+    imageConfig: { imageSize: '2K' },
   },
 });
 
@@ -684,30 +679,26 @@ async function fetchImage(url) {
   const blob = await response.blob();
   return new Promise((resolve) => {
     const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result.split(",")[1]);
+    reader.onloadend = () => resolve(reader.result.split(',')[1]);
     reader.readAsDataURL(blob);
   });
 }
 
 // Fetch the images
 sweets = await fetchImage(
-  "https://storage.googleapis.com/generativeai-downloads/images/sweets.png",
+  'https://storage.googleapis.com/generativeai-downloads/images/sweets.png',
 );
-car = await fetchImage(
-  "https://storage.googleapis.com/generativeai-downloads/images/car.png",
-);
+car = await fetchImage('https://storage.googleapis.com/generativeai-downloads/images/car.png');
 rabbit = await fetchImage(
-  "https://storage.googleapis.com/generativeai-downloads/images/rabbit.png",
+  'https://storage.googleapis.com/generativeai-downloads/images/rabbit.png',
 );
 spartan = await fetchImage(
-  "https://storage.googleapis.com/generativeai-downloads/images/spartan.png",
+  'https://storage.googleapis.com/generativeai-downloads/images/spartan.png',
 );
 cactus = await fetchImage(
-  "https://storage.googleapis.com/generativeai-downloads/images/cactus.png",
+  'https://storage.googleapis.com/generativeai-downloads/images/cactus.png',
 );
-cards = await fetchImage(
-  "https://storage.googleapis.com/generativeai-downloads/images/cards.png",
-);
+cards = await fetchImage('https://storage.googleapis.com/generativeai-downloads/images/cards.png');
 
 textPrompt =
   "Create a marketing photoshoot of those items from my daughter's bedroom. Focus on the items and ignore their backgrounds.";
@@ -716,18 +707,18 @@ response = await ai.models.generateContent({
   model: PRO_MODEL_ID,
   contents: [
     { text: textPrompt },
-    { inlineData: { data: sweets, mimeType: "image/png" } },
-    { inlineData: { data: car, mimeType: "image/png" } },
-    { inlineData: { data: rabbit, mimeType: "image/png" } },
-    { inlineData: { data: spartan, mimeType: "image/png" } },
-    { inlineData: { data: cactus, mimeType: "image/png" } },
-    { inlineData: { data: cards, mimeType: "image/png" } },
+    { inlineData: { data: sweets, mimeType: 'image/png' } },
+    { inlineData: { data: car, mimeType: 'image/png' } },
+    { inlineData: { data: rabbit, mimeType: 'image/png' } },
+    { inlineData: { data: spartan, mimeType: 'image/png' } },
+    { inlineData: { data: cactus, mimeType: 'image/png' } },
+    { inlineData: { data: cards, mimeType: 'image/png' } },
   ],
   config: {
     responseModalities: [Modality.TEXT, Modality.IMAGE],
     imageConfig: {
-      aspectRatio: "5:4",
-      imageSize: "1K",
+      aspectRatio: '5:4',
+      imageSize: '1K',
     },
   },
 });
@@ -752,14 +743,11 @@ for (const part of response.candidates[0].content.parts) {
 
 // [CODE STARTS]
 textPrompt =
-  "Create a photograph of the person in this image as if they were living in the 1980s. The photograph should capture the distinct fashion, hairstyles, and overall atmosphere of that time period.";
+  'Create a photograph of the person in this image as if they were living in the 1980s. The photograph should capture the distinct fashion, hairstyles, and overall atmosphere of that time period.';
 
 response = await ai.models.generateContent({
   model: MODEL_ID,
-  contents: [
-    { text: textPrompt },
-    { inlineData: { data: catImage, mimeType: "image/png" } },
-  ],
+  contents: [{ text: textPrompt }, { inlineData: { data: catImage, mimeType: 'image/png' } }],
 });
 
 for (const part of response.candidates[0].content.parts) {
@@ -783,14 +771,11 @@ for (const part of response.candidates[0].content.parts) {
 
 // [CODE STARTS]
 textPrompt =
-  "create a 1/7 scale commercialized figurine of the characters in the picture, in a realistic style, in a real environment. The figurine is placed on a computer desk. The figurine has a round transparent acrylic base, with no text on the base. The content on the computer screen is a 3D modeling process of this figurine. Next to the computer screen is a toy packaging box, designed in a style reminiscent of high-quality collectible figures, printed with original artwork. The packaging features two-dimensional flat illustrations.";
+  'create a 1/7 scale commercialized figurine of the characters in the picture, in a realistic style, in a real environment. The figurine is placed on a computer desk. The figurine has a round transparent acrylic base, with no text on the base. The content on the computer screen is a 3D modeling process of this figurine. Next to the computer screen is a toy packaging box, designed in a style reminiscent of high-quality collectible figures, printed with original artwork. The packaging features two-dimensional flat illustrations.';
 
 response = await ai.models.generateContent({
   model: MODEL_ID,
-  contents: [
-    { text: textPrompt },
-    { inlineData: { data: cat80s, mimeType: "image/png" } },
-  ],
+  contents: [{ text: textPrompt }, { inlineData: { data: cat80s, mimeType: 'image/png' } }],
 });
 
 for (const part of response.candidates[0].content.parts) {
@@ -815,10 +800,7 @@ textPrompt =
 
 response = await ai.models.generateContent({
   model: MODEL_ID,
-  contents: [
-    { text: textPrompt },
-    { inlineData: { data: cat80s, mimeType: "image/png" } },
-  ],
+  contents: [{ text: textPrompt }, { inlineData: { data: cat80s, mimeType: 'image/png' } }],
 });
 
 for (const part of response.candidates[0].content.parts) {
@@ -838,18 +820,15 @@ for (const part of response.candidates[0].content.parts) {
 */
 
 // [CODE STARTS]
-textPrompt = "Restore and colorize this image from 1932.";
+textPrompt = 'Restore and colorize this image from 1932.';
 
 bwImage = await fetchImage(
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Lunch_atop_a_Skyscraper_-_Charles_Clyde_Ebbets.jpg/1374px-Lunch_atop_a_Skyscraper_-_Charles_Clyde_Ebbets.jpg",
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Lunch_atop_a_Skyscraper_-_Charles_Clyde_Ebbets.jpg/1374px-Lunch_atop_a_Skyscraper_-_Charles_Clyde_Ebbets.jpg',
 );
 
 response = await ai.models.generateContent({
   model: MODEL_ID,
-  contents: [
-    { text: textPrompt },
-    { inlineData: { data: bwImage, mimeType: "image/jpeg" } },
-  ],
+  contents: [{ text: textPrompt }, { inlineData: { data: bwImage, mimeType: 'image/jpeg' } }],
 });
 
 for (const part of response.candidates[0].content.parts) {
@@ -869,18 +848,15 @@ for (const part of response.candidates[0].content.parts) {
 */
 
 // [CODE STARTS]
-textPrompt = "Show me what we see from the red arrow";
+textPrompt = 'Show me what we see from the red arrow';
 
 mapImage = await fetchImage(
-  "https://storage.googleapis.com/generativeai-downloads/images/Mont_St_Michel.png",
+  'https://storage.googleapis.com/generativeai-downloads/images/Mont_St_Michel.png',
 );
 
 response = await ai.models.generateContent({
   model: MODEL_ID,
-  contents: [
-    { text: textPrompt },
-    { inlineData: { data: mapImage, mimeType: "image/png" } },
-  ],
+  contents: [{ text: textPrompt }, { inlineData: { data: mapImage, mimeType: 'image/png' } }],
 });
 
 for (const part of response.candidates[0].content.parts) {
@@ -901,14 +877,11 @@ for (const part of response.candidates[0].content.parts) {
 
 // [CODE STARTS]
 textPrompt =
-  "Take this location and make the landmark an isometric image (building only), in the style of the game Theme Park.";
+  'Take this location and make the landmark an isometric image (building only), in the style of the game Theme Park.';
 
 response = await ai.models.generateContent({
   model: MODEL_ID,
-  contents: [
-    { text: textPrompt },
-    { inlineData: { data: mapImage, mimeType: "image/png" } },
-  ],
+  contents: [{ text: textPrompt }, { inlineData: { data: mapImage, mimeType: 'image/png' } }],
 });
 
 for (const part of response.candidates[0].content.parts) {
@@ -929,13 +902,13 @@ for (const part of response.candidates[0].content.parts) {
 
 // [CODE STARTS]
 textPrompt =
-  "Search the web then generate an image of isometric perspective, detailed pixel art that shows the career of Guillaume Vernade";
+  'Search the web then generate an image of isometric perspective, detailed pixel art that shows the career of Guillaume Vernade';
 
 response = await ai.models.generateContent({
   model: PRO_MODEL_ID,
   contents: [{ text: textPrompt }],
   config: {
-    imageConfig: { aspectRatio: "16:9" },
+    imageConfig: { aspectRatio: '16:9' },
     tools: [{ googleSearch: {} }],
   },
 });
@@ -959,13 +932,13 @@ for (const part of response.candidates[0].content.parts) {
 
 // [CODE STARTS]
 textPrompt =
-  "Show me an infographic about how sonnets work, using a sonnet about bananas written in it, along with a lengthy literary analysis of the poem. good vintage aesthetics";
+  'Show me an infographic about how sonnets work, using a sonnet about bananas written in it, along with a lengthy literary analysis of the poem. good vintage aesthetics';
 
 response = await ai.models.generateContent({
   model: PRO_MODEL_ID,
   contents: [{ text: textPrompt }],
   config: {
-    imageConfig: { aspectRatio: "16:9" },
+    imageConfig: { aspectRatio: '16:9' },
   },
 });
 
@@ -994,7 +967,7 @@ response = await ai.models.generateContent({
   model: PRO_MODEL_ID,
   contents: [{ text: textPrompt }],
   config: {
-    imageConfig: { aspectRatio: "16:9" },
+    imageConfig: { aspectRatio: '16:9' },
   },
 });
 
@@ -1022,7 +995,7 @@ textPrompt =
 chat = ai.chats.create({
   model: PRO_MODEL_ID,
   config: {
-    imageConfig: { aspectRatio: "16:9" },
+    imageConfig: { aspectRatio: '16:9' },
     tools: [{ googleSearch: {} }],
   },
 });
@@ -1043,7 +1016,7 @@ for (const part of response.candidates[0].content.parts) {
 */
 
 // [CODE STARTS]
-otherStyle = "Now do a new version with generic building blocks";
+otherStyle = 'Now do a new version with generic building blocks';
 response = await chat.sendMessage({ message: otherStyle });
 
 for (const part of response.candidates[0].content.parts) {
@@ -1060,7 +1033,7 @@ for (const part of response.candidates[0].content.parts) {
 */
 
 // [CODE STARTS]
-otherStyle = "What about a crochet version?";
+otherStyle = 'What about a crochet version?';
 response = await chat.sendMessage({ message: otherStyle });
 
 for (const part of response.candidates[0].content.parts) {

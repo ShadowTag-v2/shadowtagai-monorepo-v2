@@ -1,6 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
-@import "./buttons.css";
-@import "./research.css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import './buttons.css';
+@import './research.css';
 
 * {
   margin: 0;
@@ -32,7 +32,7 @@
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   height: 100vh;
   overflow: hidden;
   background: var(--bg-primary);
@@ -209,7 +209,7 @@ body {
   color: var(--text-primary);
   font-size: 14px;
   font-weight: 500;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   letter-spacing: -0.01em;
   transition: all 0.2s;
 }
@@ -238,7 +238,7 @@ body {
   cursor: pointer;
   color: var(--text-tertiary);
   font-size: 14px;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 400;
   letter-spacing: -0.01em;
   transition: all 0.15s;
@@ -280,7 +280,7 @@ body {
 
 .sessions-list-header {
   font-size: 11px;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 600;
   color: var(--text-tertiary);
   text-transform: capitalize;
@@ -318,7 +318,7 @@ body {
 }
 
 .session-item.active::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 50%;
@@ -354,7 +354,7 @@ body {
 
 .session-title {
   font-size: 13px;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 400;
   letter-spacing: -0.01em;
   color: var(--text-secondary);
@@ -426,7 +426,7 @@ body {
   cursor: pointer;
   color: var(--text-tertiary);
   font-size: 14px;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 400;
   letter-spacing: -0.01em;
   transition: all 0.15s;
@@ -614,7 +614,7 @@ body {
   cursor: pointer;
   color: var(--text-secondary);
   transition: all 0.2s ease;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .message-action-icon-btn:hover {
@@ -685,7 +685,7 @@ body {
   padding: 3px 6px;
   border-radius: 6px;
   font-family:
-    "JetBrains Mono", "Fira Code", "SF Mono", "Monaco", "Cascadia Code", "Courier New", monospace;
+    'JetBrains Mono', 'Fira Code', 'SF Mono', 'Monaco', 'Cascadia Code', 'Courier New', monospace;
   font-size: 13px;
   color: var(--accent-color);
   border: 1px solid var(--border-color);
@@ -994,7 +994,7 @@ body {
 }
 
 .example-prompt::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -1145,7 +1145,7 @@ body {
   border-radius: 10px;
   color: var(--text-primary);
   font-size: 15px;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   letter-spacing: -0.01em;
   transition: all 0.2s ease;
   outline: none;
@@ -1181,7 +1181,7 @@ body {
   border-radius: 10px;
   font-size: 15px;
   font-weight: 600;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   letter-spacing: -0.01em;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1242,7 +1242,7 @@ textarea {
   resize: none;
   font-size: 14px;
   line-height: 22px;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 400;
   letter-spacing: -0.01em;
   outline: none;
@@ -1278,7 +1278,7 @@ textarea::placeholder {
   border-radius: 8px;
   color: var(--text-secondary);
   font-size: 13px;
-  font-family: "Inter", inherit;
+  font-family: 'Inter', inherit;
   font-weight: 500;
   letter-spacing: -0.01em;
   cursor: pointer;
@@ -1338,7 +1338,7 @@ textarea::placeholder {
   border-radius: 6px;
   color: var(--text-secondary);
   font-size: 12px;
-  font-family: "Inter", inherit;
+  font-family: 'Inter', inherit;
   font-weight: 500;
   letter-spacing: -0.01em;
   cursor: pointer;
@@ -1401,7 +1401,7 @@ textarea::placeholder {
   border-radius: 8px;
   color: var(--text-primary);
   font-size: 13px;
-  font-family: "Inter", inherit;
+  font-family: 'Inter', inherit;
   font-weight: 500;
   letter-spacing: -0.01em;
   cursor: pointer;
@@ -2009,7 +2009,7 @@ textarea::placeholder {
 .thinking-steps-time {
   font-size: 11px;
   color: var(--text-tertiary);
-  font-family: "JetBrains Mono", "Fira Code", "SF Mono", "Monaco", "Cascadia Code", monospace;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
   font-weight: 500;
 }
 
@@ -2125,7 +2125,7 @@ textarea::placeholder {
 .thinking-step-duration {
   font-size: 11px;
   color: var(--text-secondary);
-  font-family: "JetBrains Mono", "Fira Code", "SF Mono", "Monaco", "Cascadia Code", monospace;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -2463,7 +2463,7 @@ textarea::placeholder {
 
 .thinking-step-duration-inline {
   color: var(--text-tertiary);
-  font-family: "JetBrains Mono", "Fira Code", "SF Mono", "Monaco", "Cascadia Code", monospace;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
   font-size: 11px;
   white-space: nowrap;
 }
@@ -2533,7 +2533,7 @@ textarea::placeholder {
 }
 
 .citation-hover-preview::before {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -6px;
   left: 50%;
@@ -2545,7 +2545,7 @@ textarea::placeholder {
   border-top: 6px solid rgba(24, 24, 27, 0.98);
 }
 
-.citation-hover-preview[data-placement="below"]::before {
+.citation-hover-preview[data-placement='below']::before {
   top: -6px;
   bottom: auto;
   border-top: none;

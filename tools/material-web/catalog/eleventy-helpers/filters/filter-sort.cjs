@@ -26,12 +26,12 @@
  *
  * @param eleventyConfig The 11ty config in which to attach this filter.
  */
-function filterSort (eleventyConfig) {
-  eleventyConfig.addFilter("filtersort", function(arr, attr) {
+function filterSort(eleventyConfig) {
+  eleventyConfig.addFilter('filtersort', (arr, attr) => {
     // get the parts of the attribute to look up
-    const attrParts = attr.split(".");
+    const attrParts = attr.split('.');
 
-    const array = arr.filter(item => {
+    const array = arr.filter((item) => {
       let value = item;
 
       // get the deep attribute
@@ -63,6 +63,6 @@ function filterSort (eleventyConfig) {
 
     return array;
   });
-};
+}
 
 module.exports = filterSort;

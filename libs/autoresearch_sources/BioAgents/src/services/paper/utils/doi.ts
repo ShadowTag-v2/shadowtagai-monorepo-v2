@@ -9,10 +9,10 @@ export function normalizeDOI(doi: string): string {
   return doi
     .toLowerCase()
     .trim()
-    .replace(/\\_/g, "_") // Unescape LaTeX-escaped underscores
-    .replace(/\\&/g, "&") // Unescape LaTeX-escaped ampersands
-    .replace(/\\%/g, "%") // Unescape LaTeX-escaped percent signs
-    .replace(/[.,;:]+$/, ""); // Remove trailing punctuation
+    .replace(/\\_/g, '_') // Unescape LaTeX-escaped underscores
+    .replace(/\\&/g, '&') // Unescape LaTeX-escaped ampersands
+    .replace(/\\%/g, '%') // Unescape LaTeX-escaped percent signs
+    .replace(/[.,;:]+$/, ''); // Remove trailing punctuation
 }
 
 /**
@@ -21,7 +21,7 @@ export function normalizeDOI(doi: string): string {
  */
 export function doiToCitekey(doi: string): string {
   const normalized = normalizeDOI(doi);
-  return "doi_" + normalized.replace(/[^a-z0-9]/g, "_");
+  return 'doi_' + normalized.replace(/[^a-z0-9]/g, '_');
 }
 
 /**

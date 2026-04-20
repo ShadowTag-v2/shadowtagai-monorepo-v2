@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, beforeAll, afterAll, expect } from 'vitest';
 import { exec, execSync } from 'node:child_process';
 import { promisify } from 'node:util';
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { expectSuccess, triggerBackupForAssociation } from './helpers.js';
 
 const execAsync = promisify(exec);
-import { createBackupVault } from '../../src/tools/backup_vaults/create_backup_vault.js';
-import { getBackupVault } from '../../src/tools/backup_vaults/get_backup_vault.js';
-import { createBackupPlan } from '../../src/tools/backup_plans/create_backup_plan.js';
-import { deleteBackupPlan } from '../../src/tools/backup_plans/delete_backup_plan.js';
+
 import { createBackupPlanAssociation } from '../../src/tools/backup_plan_associations/create_backup_plan_association.js';
 import { deleteBackupPlanAssociation } from '../../src/tools/backup_plan_associations/delete_backup_plan_association.js';
-import { listDataSources } from '../../src/tools/datasources/list_datasources.js';
-import { listBackups } from '../../src/tools/backups/list_backups.js';
-import { restoreBackup } from '../../src/tools/backups/restore_backup.js';
-import { getOperation } from '../../src/tools/backups/get_operation.js';
+import { createBackupPlan } from '../../src/tools/backup_plans/create_backup_plan.js';
+import { deleteBackupPlan } from '../../src/tools/backup_plans/delete_backup_plan.js';
+import { createBackupVault } from '../../src/tools/backup_vaults/create_backup_vault.js';
+import { getBackupVault } from '../../src/tools/backup_vaults/get_backup_vault.js';
 import { csqlRestore } from '../../src/tools/backups/csql_restore.js';
 import { getCsqlOperation } from '../../src/tools/backups/get_csql_operation.js';
+import { getOperation } from '../../src/tools/backups/get_operation.js';
+import { listBackups } from '../../src/tools/backups/list_backups.js';
+import { restoreBackup } from '../../src/tools/backups/restore_backup.js';
+import { listDataSources } from '../../src/tools/datasources/list_datasources.js';
 
 const projectId = process.env['GOOGLE_CLOUD_PROJECT'] || process.env['GCP_PROJECT_ID'];
 const location = 'us-central1';
@@ -241,358 +242,345 @@ describe('BackupDR Full Workflow Integration Test', () => {
     await Promise.all(cleanupTasks);
   }, 2400000);
 
-  it.concurrent(
-    'should execute the full backup and restore workflow for a VM',
-    async () => {
-      // 2. Create Backup Plan
-      await expectSuccess(
-        createBackupPlan({
-          project_id: projectId,
-          location,
-          backup_plan_name: planName,
-          backup_vault: fullVaultName,
-          resource_type: resourceType,
-          backup_rules: [
-            {
-              rule_id: ruleId,
-              retention_days: 1,
-              backup_schedule: {
-                standard_schedule: {
-                  recurrence_type: 'DAILY',
-                  time_zone: 'UTC',
-                  backup_window: { start_hour_of_day: 0, end_hour_of_day: 6 },
-                },
+  it.concurrent('should execute the full backup and restore workflow for a VM', async () => {
+    // 2. Create Backup Plan
+    await expectSuccess(
+      createBackupPlan({
+        project_id: projectId,
+        location,
+        backup_plan_name: planName,
+        backup_vault: fullVaultName,
+        resource_type: resourceType,
+        backup_rules: [
+          {
+            rule_id: ruleId,
+            retention_days: 1,
+            backup_schedule: {
+              standard_schedule: {
+                recurrence_type: 'DAILY',
+                time_zone: 'UTC',
+                backup_window: { start_hour_of_day: 0, end_hour_of_day: 6 },
               },
             },
-          ],
-        }),
-      );
+          },
+        ],
+      }),
+    );
 
-      // 3. Create Backup Plan Association
-      await expectSuccess(
-        createBackupPlanAssociation({
-          project_id: projectId,
-          location,
-          backup_plan_association_id: assocId,
-          resource: targetResource,
-          backup_plan: fullPlanName,
-          resource_type: resourceType,
-        }),
-      );
-
-      // 4. Trigger Backup
-      const triggerResult = (await triggerBackupForAssociation(
-        projectId,
+    // 3. Create Backup Plan Association
+    await expectSuccess(
+      createBackupPlanAssociation({
+        project_id: projectId,
         location,
-        assocId,
-        ruleId,
-      )) as any;
-      expect(triggerResult.name).toBeDefined(); // Operation name
+        backup_plan_association_id: assocId,
+        resource: targetResource,
+        backup_plan: fullPlanName,
+        resource_type: resourceType,
+      }),
+    );
 
-      // Wait for the trigger backup operation to complete
-      await waitForOperation(triggerResult.name);
+    // 4. Trigger Backup
+    const triggerResult = (await triggerBackupForAssociation(
+      projectId,
+      location,
+      assocId,
+      ruleId,
+    )) as any;
+    expect(triggerResult.name).toBeDefined(); // Operation name
 
-      // 5. Check Data Sources
-      let dataSources: any[] = [];
-      let dataSourceId = '';
-      for (let i = 0; i < 20; i++) {
-        dataSources = (await expectSuccess(
-          listDataSources({
-            project_id: projectId,
-            location,
-            backup_vault_name: vaultName,
-          }),
-        )) as any[];
+    // Wait for the trigger backup operation to complete
+    await waitForOperation(triggerResult.name);
 
-        const ds = dataSources.find((d) => {
-          const resName = d.dataSourceGcpResource?.gcpResourcename;
-          const propsName = d.dataSourceGcpResource?.computeInstanceDatasourceProperties?.name;
-          return resName === targetResource || propsName === targetResource;
-        });
-
-        if (ds) {
-          dataSourceId = ds.name.split('/').pop();
-          break;
-        }
-        await new Promise((resolve) => setTimeout(resolve, 20000));
-      }
-      expect(
-        dataSourceId,
-        `Data source for ${targetResource} was not found after polling`,
-      ).not.toBe('');
-
-      // 6. Check Backup
-      let backups: any[] = [];
-      for (let i = 0; i < 20; i++) {
-        backups = (await expectSuccess(
-          listBackups({
-            project_id: projectId,
-            location,
-            backup_vault_name: vaultName,
-            datasource_name: dataSourceId,
-          }),
-        )) as any[];
-        if (backups.length > 0) break;
-        await new Promise((resolve) => setTimeout(resolve, 30000));
-      }
-      expect(backups.length).toBeGreaterThan(0);
-      const backup = backups[0];
-
-      // 7. Restore Backup
-      console.log(`Restoring VM backup to: ${restoreInstanceName}`);
-      const restoreResult = (await expectSuccess(
-        restoreBackup({
-          name: backup.name,
-          computeInstanceTargetEnvironment: {
-            project: projectId,
-            zone,
-          },
-          computeInstanceRestoreProperties: {
-            name: restoreInstanceName,
-          },
-        }),
-      )) as any;
-      expect(restoreResult.name).toBeDefined();
-    },
-    1200000,
-  );
-
-  it.concurrent(
-    'should execute the full backup and restore workflow for a Disk',
-    async () => {
-      const diskPlanName = `disk-${planName}`;
-      const fullDiskPlanName = `projects/${projectId}/locations/${location}/backupPlans/${diskPlanName}`;
-      const diskAssocId = `disk-${assocId}`;
-
-      // 1. Create Backup Plan
-      await expectSuccess(
-        createBackupPlan({
+    // 5. Check Data Sources
+    let dataSources: any[] = [];
+    let dataSourceId = '';
+    for (let i = 0; i < 20; i++) {
+      dataSources = (await expectSuccess(
+        listDataSources({
           project_id: projectId,
           location,
-          backup_plan_name: diskPlanName,
-          backup_vault: fullVaultName,
-          resource_type: diskResourceType,
-          backup_rules: [
-            {
-              rule_id: ruleId,
-              retention_days: 1,
-              backup_schedule: {
-                standard_schedule: {
-                  recurrence_type: 'DAILY',
-                  time_zone: 'UTC',
-                  backup_window: { start_hour_of_day: 0, end_hour_of_day: 6 },
-                },
-              },
-            },
-          ],
+          backup_vault_name: vaultName,
         }),
-      );
+      )) as any[];
 
-      // 2. Create Backup Plan Association
-      await expectSuccess(
-        createBackupPlanAssociation({
+      const ds = dataSources.find((d) => {
+        const resName = d.dataSourceGcpResource?.gcpResourcename;
+        const propsName = d.dataSourceGcpResource?.computeInstanceDatasourceProperties?.name;
+        return resName === targetResource || propsName === targetResource;
+      });
+
+      if (ds) {
+        dataSourceId = ds.name.split('/').pop();
+        break;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 20000));
+    }
+    expect(dataSourceId, `Data source for ${targetResource} was not found after polling`).not.toBe(
+      '',
+    );
+
+    // 6. Check Backup
+    let backups: any[] = [];
+    for (let i = 0; i < 20; i++) {
+      backups = (await expectSuccess(
+        listBackups({
           project_id: projectId,
           location,
-          backup_plan_association_id: diskAssocId,
-          resource: targetDiskResource,
-          backup_plan: fullDiskPlanName,
-          resource_type: diskResourceType,
+          backup_vault_name: vaultName,
+          datasource_name: dataSourceId,
         }),
-      );
+      )) as any[];
+      if (backups.length > 0) break;
+      await new Promise((resolve) => setTimeout(resolve, 30000));
+    }
+    expect(backups.length).toBeGreaterThan(0);
+    const backup = backups[0];
 
-      // 3. Trigger Backup
-      const triggerResult = (await triggerBackupForAssociation(
-        projectId,
-        location,
-        diskAssocId,
-        ruleId,
-      )) as any;
-      expect(triggerResult.name).toBeDefined();
-
-      // Wait for the trigger backup operation to complete
-      await waitForOperation(triggerResult.name);
-
-      // 4. Check Data Sources
-      let dataSources: any[] = [];
-      let dataSourceId = '';
-      for (let i = 0; i < 20; i++) {
-        dataSources = (await expectSuccess(
-          listDataSources({
-            project_id: projectId,
-            location,
-            backup_vault_name: vaultName,
-          }),
-        )) as any[];
-
-        const ds = dataSources.find((d) => {
-          const resName = d.dataSourceGcpResource?.gcpResourcename;
-          const propsName = d.dataSourceGcpResource?.diskDatasourceProperties?.name;
-          return resName === targetDiskResource || propsName === targetDiskResource;
-        });
-
-        if (ds) {
-          dataSourceId = ds.name.split('/').pop();
-          break;
-        }
-        await new Promise((resolve) => setTimeout(resolve, 20000));
-      }
-      expect(
-        dataSourceId,
-        `Data source for ${targetDiskResource} was not found after polling`,
-      ).not.toBe('');
-
-      // 5. Check Backup
-      let backups: any[] = [];
-      for (let i = 0; i < 20; i++) {
-        backups = (await expectSuccess(
-          listBackups({
-            project_id: projectId,
-            location,
-            backup_vault_name: vaultName,
-            datasource_name: dataSourceId,
-          }),
-        )) as any[];
-        if (backups.length > 0) break;
-        await new Promise((resolve) => setTimeout(resolve, 30000));
-      }
-      expect(backups.length).toBeGreaterThan(0);
-      const backup = backups[0];
-
-      // 6. Restore Backup
-      console.log(`Restoring Disk backup to: ${restoreDiskName}`);
-      const restoreResult = (await expectSuccess(
-        restoreBackup({
-          name: backup.name,
-          diskTargetEnvironment: {
-            project: projectId,
-            zone,
-          },
-          diskRestoreProperties: {
-            name: restoreDiskName,
-          },
-        }),
-      )) as any;
-      expect(restoreResult.name).toBeDefined();
-    },
-    1200000,
-  );
-
-  it.concurrent(
-    'should execute the full backup and restore workflow for a Cloud SQL instance',
-    async () => {
-      const csqlPlanName = `csql-${planName}`;
-      const fullCsqlPlanName = `projects/${projectId}/locations/${location}/backupPlans/${csqlPlanName}`;
-      const csqlAssocId = `csql-${assocId}`;
-
-      // 1. Create Backup Plan
-      await expectSuccess(
-        createBackupPlan({
-          project_id: projectId,
-          location,
-          backup_plan_name: csqlPlanName,
-          backup_vault: fullVaultName,
-          resource_type: csqlResourceType,
-          backup_rules: [
-            {
-              rule_id: ruleId,
-              retention_days: 1,
-              backup_schedule: {
-                standard_schedule: {
-                  recurrence_type: 'DAILY',
-                  time_zone: 'UTC',
-                  backup_window: { start_hour_of_day: 0, end_hour_of_day: 6 },
-                },
-              },
-            },
-          ],
-        }),
-      );
-
-      // 2. Create Backup Plan Association
-      await expectSuccess(
-        createBackupPlanAssociation({
-          project_id: projectId,
-          location,
-          backup_plan_association_id: csqlAssocId,
-          resource: targetCsqlResource,
-          backup_plan: fullCsqlPlanName,
-          resource_type: csqlResourceType,
-        }),
-      );
-
-      // 3. Trigger Backup
-      const triggerResult = (await triggerBackupForAssociation(
-        projectId,
-        location,
-        csqlAssocId,
-        ruleId,
-      )) as any;
-      expect(triggerResult.name).toBeDefined();
-
-      // Wait for the trigger backup operation to complete
-      await waitForOperation(triggerResult.name);
-
-      // 4. Check Data Sources
-      let dataSources: any[] = [];
-      let dataSourceId = '';
-      for (let i = 0; i < 20; i++) {
-        dataSources = (await expectSuccess(
-          listDataSources({
-            project_id: projectId,
-            location,
-            backup_vault_name: vaultName,
-          }),
-        )) as any[];
-
-        const ds = dataSources.find((d) => {
-          const resName = d.dataSourceGcpResource?.gcpResourcename;
-          const propsName = d.dataSourceGcpResource?.cloudSqlInstanceDatasourceProperties?.name;
-          // Cloud SQL might have different property name or just use gcpResourcename
-          return resName === targetCsqlResource || propsName === targetCsqlResource;
-        });
-
-        if (ds) {
-          dataSourceId = ds.name.split('/').pop();
-          break;
-        }
-        await new Promise((resolve) => setTimeout(resolve, 20000));
-      }
-      expect(
-        dataSourceId,
-        `Data source for ${targetCsqlResource} was not found after polling`,
-      ).not.toBe('');
-
-      // 5. Check Backup
-      let backups: any[] = [];
-      for (let i = 0; i < 20; i++) {
-        backups = (await expectSuccess(
-          listBackups({
-            project_id: projectId,
-            location,
-            backup_vault_name: vaultName,
-            datasource_name: dataSourceId,
-          }),
-        )) as any[];
-        if (backups.length > 0) break;
-        await new Promise((resolve) => setTimeout(resolve, 30000));
-      }
-      expect(backups.length).toBeGreaterThan(0);
-      const backup = backups[0];
-
-      // 6. Restore Backup
-      console.log(`Restoring CSQL backup to: ${restoreCsqlName}`);
-      const restoreResult = (await expectSuccess(
-        csqlRestore({
+    // 7. Restore Backup
+    console.log(`Restoring VM backup to: ${restoreInstanceName}`);
+    const restoreResult = (await expectSuccess(
+      restoreBackup({
+        name: backup.name,
+        computeInstanceTargetEnvironment: {
           project: projectId,
-          restore_instance_name: restoreCsqlName,
-          backupdr_backup_name: backup.name,
-        }),
-      )) as any;
-      expect(restoreResult.name).toBeDefined();
+          zone,
+        },
+        computeInstanceRestoreProperties: {
+          name: restoreInstanceName,
+        },
+      }),
+    )) as any;
+    expect(restoreResult.name).toBeDefined();
+  }, 1200000);
 
-      // Wait for Cloud SQL restore operation to complete
-      await waitForCsqlOperation(projectId, restoreResult.name);
-    },
-    2400000,
-  );
+  it.concurrent('should execute the full backup and restore workflow for a Disk', async () => {
+    const diskPlanName = `disk-${planName}`;
+    const fullDiskPlanName = `projects/${projectId}/locations/${location}/backupPlans/${diskPlanName}`;
+    const diskAssocId = `disk-${assocId}`;
+
+    // 1. Create Backup Plan
+    await expectSuccess(
+      createBackupPlan({
+        project_id: projectId,
+        location,
+        backup_plan_name: diskPlanName,
+        backup_vault: fullVaultName,
+        resource_type: diskResourceType,
+        backup_rules: [
+          {
+            rule_id: ruleId,
+            retention_days: 1,
+            backup_schedule: {
+              standard_schedule: {
+                recurrence_type: 'DAILY',
+                time_zone: 'UTC',
+                backup_window: { start_hour_of_day: 0, end_hour_of_day: 6 },
+              },
+            },
+          },
+        ],
+      }),
+    );
+
+    // 2. Create Backup Plan Association
+    await expectSuccess(
+      createBackupPlanAssociation({
+        project_id: projectId,
+        location,
+        backup_plan_association_id: diskAssocId,
+        resource: targetDiskResource,
+        backup_plan: fullDiskPlanName,
+        resource_type: diskResourceType,
+      }),
+    );
+
+    // 3. Trigger Backup
+    const triggerResult = (await triggerBackupForAssociation(
+      projectId,
+      location,
+      diskAssocId,
+      ruleId,
+    )) as any;
+    expect(triggerResult.name).toBeDefined();
+
+    // Wait for the trigger backup operation to complete
+    await waitForOperation(triggerResult.name);
+
+    // 4. Check Data Sources
+    let dataSources: any[] = [];
+    let dataSourceId = '';
+    for (let i = 0; i < 20; i++) {
+      dataSources = (await expectSuccess(
+        listDataSources({
+          project_id: projectId,
+          location,
+          backup_vault_name: vaultName,
+        }),
+      )) as any[];
+
+      const ds = dataSources.find((d) => {
+        const resName = d.dataSourceGcpResource?.gcpResourcename;
+        const propsName = d.dataSourceGcpResource?.diskDatasourceProperties?.name;
+        return resName === targetDiskResource || propsName === targetDiskResource;
+      });
+
+      if (ds) {
+        dataSourceId = ds.name.split('/').pop();
+        break;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 20000));
+    }
+    expect(
+      dataSourceId,
+      `Data source for ${targetDiskResource} was not found after polling`,
+    ).not.toBe('');
+
+    // 5. Check Backup
+    let backups: any[] = [];
+    for (let i = 0; i < 20; i++) {
+      backups = (await expectSuccess(
+        listBackups({
+          project_id: projectId,
+          location,
+          backup_vault_name: vaultName,
+          datasource_name: dataSourceId,
+        }),
+      )) as any[];
+      if (backups.length > 0) break;
+      await new Promise((resolve) => setTimeout(resolve, 30000));
+    }
+    expect(backups.length).toBeGreaterThan(0);
+    const backup = backups[0];
+
+    // 6. Restore Backup
+    console.log(`Restoring Disk backup to: ${restoreDiskName}`);
+    const restoreResult = (await expectSuccess(
+      restoreBackup({
+        name: backup.name,
+        diskTargetEnvironment: {
+          project: projectId,
+          zone,
+        },
+        diskRestoreProperties: {
+          name: restoreDiskName,
+        },
+      }),
+    )) as any;
+    expect(restoreResult.name).toBeDefined();
+  }, 1200000);
+
+  it.concurrent('should execute the full backup and restore workflow for a Cloud SQL instance', async () => {
+    const csqlPlanName = `csql-${planName}`;
+    const fullCsqlPlanName = `projects/${projectId}/locations/${location}/backupPlans/${csqlPlanName}`;
+    const csqlAssocId = `csql-${assocId}`;
+
+    // 1. Create Backup Plan
+    await expectSuccess(
+      createBackupPlan({
+        project_id: projectId,
+        location,
+        backup_plan_name: csqlPlanName,
+        backup_vault: fullVaultName,
+        resource_type: csqlResourceType,
+        backup_rules: [
+          {
+            rule_id: ruleId,
+            retention_days: 1,
+            backup_schedule: {
+              standard_schedule: {
+                recurrence_type: 'DAILY',
+                time_zone: 'UTC',
+                backup_window: { start_hour_of_day: 0, end_hour_of_day: 6 },
+              },
+            },
+          },
+        ],
+      }),
+    );
+
+    // 2. Create Backup Plan Association
+    await expectSuccess(
+      createBackupPlanAssociation({
+        project_id: projectId,
+        location,
+        backup_plan_association_id: csqlAssocId,
+        resource: targetCsqlResource,
+        backup_plan: fullCsqlPlanName,
+        resource_type: csqlResourceType,
+      }),
+    );
+
+    // 3. Trigger Backup
+    const triggerResult = (await triggerBackupForAssociation(
+      projectId,
+      location,
+      csqlAssocId,
+      ruleId,
+    )) as any;
+    expect(triggerResult.name).toBeDefined();
+
+    // Wait for the trigger backup operation to complete
+    await waitForOperation(triggerResult.name);
+
+    // 4. Check Data Sources
+    let dataSources: any[] = [];
+    let dataSourceId = '';
+    for (let i = 0; i < 20; i++) {
+      dataSources = (await expectSuccess(
+        listDataSources({
+          project_id: projectId,
+          location,
+          backup_vault_name: vaultName,
+        }),
+      )) as any[];
+
+      const ds = dataSources.find((d) => {
+        const resName = d.dataSourceGcpResource?.gcpResourcename;
+        const propsName = d.dataSourceGcpResource?.cloudSqlInstanceDatasourceProperties?.name;
+        // Cloud SQL might have different property name or just use gcpResourcename
+        return resName === targetCsqlResource || propsName === targetCsqlResource;
+      });
+
+      if (ds) {
+        dataSourceId = ds.name.split('/').pop();
+        break;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 20000));
+    }
+    expect(
+      dataSourceId,
+      `Data source for ${targetCsqlResource} was not found after polling`,
+    ).not.toBe('');
+
+    // 5. Check Backup
+    let backups: any[] = [];
+    for (let i = 0; i < 20; i++) {
+      backups = (await expectSuccess(
+        listBackups({
+          project_id: projectId,
+          location,
+          backup_vault_name: vaultName,
+          datasource_name: dataSourceId,
+        }),
+      )) as any[];
+      if (backups.length > 0) break;
+      await new Promise((resolve) => setTimeout(resolve, 30000));
+    }
+    expect(backups.length).toBeGreaterThan(0);
+    const backup = backups[0];
+
+    // 6. Restore Backup
+    console.log(`Restoring CSQL backup to: ${restoreCsqlName}`);
+    const restoreResult = (await expectSuccess(
+      csqlRestore({
+        project: projectId,
+        restore_instance_name: restoreCsqlName,
+        backupdr_backup_name: backup.name,
+      }),
+    )) as any;
+    expect(restoreResult.name).toBeDefined();
+
+    // Wait for Cloud SQL restore operation to complete
+    await waitForCsqlOperation(projectId, restoreResult.name);
+  }, 2400000);
 });

@@ -23,10 +23,16 @@ const path = require('path');
 // ============================================================================
 
 const CONFIG = {
-  promptPath: path.join(__dirname, '..', 'prompts', 'analysis', 'gemini-ingestion-layer-analysis.md'),
+  promptPath: path.join(
+    __dirname,
+    '..',
+    'prompts',
+    'analysis',
+    'gemini-ingestion-layer-analysis.md',
+  ),
   inputsDir: path.join(__dirname, '..', 'analysis-inputs', 'ingestion-layer'),
   outputDir: path.join(__dirname, '..', 'analysis-outputs'),
-  defaultProvider: 'gemini'
+  defaultProvider: 'gemini',
 };
 
 // ============================================================================
@@ -38,7 +44,7 @@ function parseArgs() {
   const options = {
     provider: CONFIG.defaultProvider,
     output: null,
-    dryRun: false
+    dryRun: false,
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -214,7 +220,7 @@ async function runAnalysisWithClaude(combinedPrompt) {
     // Stream the analysis
     for await (const message of query(combinedPrompt, {
       systemPrompt: { type: 'preset', preset: 'claude_code' },
-      model: 'claude-sonnet-4'
+      model: 'claude-sonnet-4',
     })) {
       if (message.type === 'text') {
         messages.push(message.text);
@@ -301,16 +307,18 @@ function printStatistics(combinedPrompt) {
   console.log(`   Lines:     ${lines.toLocaleString()}`);
   console.log(`   Words:     ${words.toLocaleString()}`);
   console.log(`   Characters: ${chars.toLocaleString()}`);
-  console.log(`   Est. Tokens: ${estimatedTokens.toLocaleString()} (~${(chars / 1024).toFixed(2)} KB)`);
+  console.log(
+    `   Est. Tokens: ${estimatedTokens.toLocaleString()} (~${(chars / 1024).toFixed(2)} KB)`,
+  );
 
   // Cost estimates
   console.log('\n💰 Estimated Analysis Cost:');
   console.log('   Gemini 2.0 Pro:');
-  console.log(`     Input:  ${(estimatedTokens / 1000 * 0.001).toFixed(4)} USD`);
+  console.log(`     Input:  ${((estimatedTokens / 1000) * 0.001).toFixed(4)} USD`);
   console.log(`     Output: ~0.0030-0.0090 USD (estimated 1K-3K tokens)`);
   console.log(`     Total:  ~0.0040-0.0100 USD per analysis`);
   console.log('\n   Claude Sonnet 4:');
-  console.log(`     Input:  ${(estimatedTokens / 1000000 * 3).toFixed(4)} USD`);
+  console.log(`     Input:  ${((estimatedTokens / 1000000) * 3).toFixed(4)} USD`);
   console.log(`     Output: ~0.0450-0.1350 USD (estimated 1K-3K tokens)`);
   console.log(`     Total:  ~0.0500-0.1400 USD per analysis`);
 }
@@ -345,7 +353,9 @@ async function main() {
     console.log('\n🔍 Dry Run Mode: Saving combined prompt for manual review...');
     const dryRunPath = path.join(CONFIG.outputDir, 'combined-prompt-dryrun.md');
     saveOutput(combinedPrompt, dryRunPath);
-    console.log('\n✅ Dry run complete. Review the combined prompt and run without --dry-run when ready.');
+    console.log(
+      '\n✅ Dry run complete. Review the combined prompt and run without --dry-run when ready.',
+    );
     return;
   }
 
@@ -373,7 +383,7 @@ async function main() {
 // Entry Point
 // ============================================================================
 
-main().catch(error => {
+main().catch((error) => {
   console.error('\n❌ Fatal error:', error);
   process.exit(1);
 });

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {Validator} from './validator.js';
+import { Validator } from './validator.js';
 
 /**
  * Constraint validation properties for a radio.
@@ -44,7 +44,7 @@ export class RadioValidator extends Validator<RadioGroupState> {
 
     let isRequired = false;
     let isChecked = false;
-    for (const {checked, required} of states) {
+    for (const { checked, required } of states) {
       if (required) {
         isRequired = true;
       }
@@ -68,10 +68,7 @@ export class RadioValidator extends Validator<RadioGroupState> {
     };
   }
 
-  protected override equals(
-    prevGroup: RadioGroupState,
-    nextGroup: RadioGroupState,
-  ) {
+  protected override equals(prevGroup: RadioGroupState, nextGroup: RadioGroupState) {
     if (prevGroup.length !== nextGroup.length) {
       return false;
     }
@@ -90,7 +87,7 @@ export class RadioValidator extends Validator<RadioGroupState> {
   protected override copy(states: RadioGroupState): RadioGroupState {
     // Cast as unknown since typescript does not have enough information to
     // infer that the array always has at least one element.
-    return states.map(({checked, required}) => ({
+    return states.map(({ checked, required }) => ({
       checked,
       required,
     })) as unknown as RadioGroupState;

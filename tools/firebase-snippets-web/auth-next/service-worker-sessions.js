@@ -5,7 +5,7 @@
 
 function svcGetIdToken() {
   // [START auth_svc_get_idtoken]
-  const { getAuth, getIdToken } = require("firebase/auth");
+  const { getAuth, getIdToken } = require('firebase/auth');
 
   const auth = getAuth();
   getIdToken(auth.currentUser)
@@ -20,8 +20,8 @@ function svcGetIdToken() {
 
 function svcSubscribe(config) {
   // [START auth_svc_subscribe]
-  const { initializeApp } = require("firebase/app");
-  const { getAuth, onAuthStateChanged, getIdToken } = require("firebase/auth");
+  const { initializeApp } = require('firebase/app');
+  const { getAuth, onAuthStateChanged, getIdToken } = require('firebase/auth');
 
   // Initialize the Firebase app in the service worker script.
   initializeApp(config);
@@ -37,11 +37,14 @@ function svcSubscribe(config) {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         unsubscribe();
         if (user) {
-          getIdToken(user).then((idToken) => {
-            resolve(idToken);
-          }, (error) => {
-            resolve(null);
-          });
+          getIdToken(user).then(
+            (idToken) => {
+              resolve(idToken);
+            },
+            (error) => {
+              resolve(null);
+            },
+          );
         } else {
           resolve(null);
         }
@@ -54,7 +57,7 @@ function svcSubscribe(config) {
 function svcIntercept() {
   // See above
   function getIdTokenPromise() {
-    return Promise.resolve("id-token");
+    return Promise.resolve('id-token');
   }
 
   // [START auth_svc_intercept]
@@ -68,20 +71,21 @@ function svcIntercept() {
 
   // Get underlying body if available. Works for text and json bodies.
   const getBodyContent = (req) => {
-    return Promise.resolve().then(() => {
-      if (req.method !== 'GET') {
-        if (req.headers.get('Content-Type').indexOf('json') !== -1) {
-          return req.json()
-            .then((json) => {
+    return Promise.resolve()
+      .then(() => {
+        if (req.method !== 'GET') {
+          if (req.headers.get('Content-Type').indexOf('json') !== -1) {
+            return req.json().then((json) => {
               return JSON.stringify(json);
             });
-        } else {
-          return req.text();
+          } else {
+            return req.text();
+          }
         }
-      }
-    }).catch((error) => {
-      // Ignore error.
-    });
+      })
+      .catch((error) => {
+        // Ignore error.
+      });
   };
 
   self.addEventListener('fetch', (event) => {
@@ -92,10 +96,11 @@ function svcIntercept() {
       let req = evt.request;
       let processRequestPromise = Promise.resolve();
       // For same origin https requests, append idToken to header.
-      if (self.location.origin == getOriginFromUrl(evt.request.url) &&
-          (self.location.protocol == 'https:' ||
-           self.location.hostname == 'localhost') &&
-          idToken) {
+      if (
+        self.location.origin == getOriginFromUrl(evt.request.url) &&
+        (self.location.protocol == 'https:' || self.location.hostname == 'localhost') &&
+        idToken
+      ) {
         // Clone headers as request headers are immutable.
         const headers = new Headers();
         req.headers.forEach((val, key) => {
@@ -147,14 +152,14 @@ function svcRegister() {
   // [START auth_svc_register]
   // Install servicerWorker if supported on sign-in/sign-up page.
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js', {scope: '/'});
+    navigator.serviceWorker.register('/service-worker.js', { scope: '/' });
   }
   // [END auth_svc_register]
 }
 
 function svcSignInEmail(email, password) {
   // [START auth_svc_sign_in_email]
-  const { getAuth, signInWithEmailAndPassword } = require("firebase/auth");
+  const { getAuth, signInWithEmailAndPassword } = require('firebase/auth');
 
   // Sign in screen.
   const auth = getAuth();

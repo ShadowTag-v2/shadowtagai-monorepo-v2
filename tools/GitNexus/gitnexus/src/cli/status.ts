@@ -4,8 +4,8 @@
  * Shows the indexing status of the current repository.
  */
 
+import { getCurrentCommit, getGitRoot, isGitRepo } from '../storage/git.js';
 import { findRepo, getStoragePaths, hasKuzuIndex } from '../storage/repo-manager.js';
-import { getCurrentCommit, isGitRepo, getGitRoot } from '../storage/git.js';
 
 export const statusCommand = async () => {
   const cwd = process.cwd();

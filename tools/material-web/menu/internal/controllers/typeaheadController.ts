@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {MenuItem} from './menuItemController.js';
+import type { MenuItem } from './menuItemController.js';
 
 /**
  * The options that are passed to the typeahead controller.
@@ -102,9 +102,7 @@ export class TypeaheadController {
    *       current type buffer alive.
    * }
    */
-  constructor(
-    private readonly getProperties: () => TypeaheadControllerProperties,
-  ) {}
+  constructor(private readonly getProperties: () => TypeaheadControllerProperties) {}
 
   private get items() {
     return this.getProperties().getItems();
@@ -157,9 +155,7 @@ export class TypeaheadController {
       el.typeaheadText.trim().toLowerCase(),
     ]);
     this.lastActiveRecord =
-      this.typeaheadRecords.find(
-        (record) => record[TYPEAHEAD_RECORD.ITEM].tabIndex === 0,
-      ) ?? null;
+      this.typeaheadRecords.find((record) => record[TYPEAHEAD_RECORD.ITEM].tabIndex === 0) ?? null;
     if (this.lastActiveRecord) {
       this.lastActiveRecord[TYPEAHEAD_RECORD.ITEM].tabIndex = -1;
     }
@@ -207,11 +203,7 @@ export class TypeaheadController {
     clearTimeout(this.cancelTypeaheadTimeout);
     // Stop typingahead if one of the navigation or selection keys (except for
     // Space) are pressed
-    if (
-      event.code === 'Enter' ||
-      event.code.startsWith('Arrow') ||
-      event.code === 'Escape'
-    ) {
+    if (event.code === 'Enter' || event.code.startsWith('Arrow') || event.code === 'Escape') {
       this.endTypeahead();
       if (this.lastActiveRecord) {
         this.lastActiveRecord[TYPEAHEAD_RECORD.ITEM].tabIndex = -1;
@@ -260,10 +252,7 @@ export class TypeaheadController {
      * 5: [2, <reference>, 'banana']
      */
     const rebaseIndexOnActive = (record: TypeaheadRecord) => {
-      return (
-        (record[TYPEAHEAD_RECORD.INDEX] + numRecords - lastActiveIndex) %
-        numRecords
-      );
+      return (record[TYPEAHEAD_RECORD.INDEX] + numRecords - lastActiveIndex) % numRecords;
     };
 
     // records filtered and sorted / rebased around the last active index

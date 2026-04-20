@@ -1,7 +1,13 @@
 import { SupportedLanguages } from '../../config/supported-languages';
 
 /** Ruby extensionless filenames recognised as Ruby source */
-const RUBY_EXTENSIONLESS_FILES = new Set(['Rakefile', 'Gemfile', 'Guardfile', 'Vagrantfile', 'Brewfile']);
+const RUBY_EXTENSIONLESS_FILES = new Set([
+  'Rakefile',
+  'Gemfile',
+  'Guardfile',
+  'Vagrantfile',
+  'Brewfile',
+]);
 
 /**
  * Map file extension to SupportedLanguage enum
@@ -20,8 +26,15 @@ export const getLanguageFromFilename = (filename: string): SupportedLanguages | 
   // C (source and headers)
   if (filename.endsWith('.c') || filename.endsWith('.h')) return SupportedLanguages.C;
   // C++ (all common extensions)
-  if (filename.endsWith('.cpp') || filename.endsWith('.cc') || filename.endsWith('.cxx') ||
-      filename.endsWith('.hpp') || filename.endsWith('.hxx') || filename.endsWith('.hh')) return SupportedLanguages.CPlusPlus;
+  if (
+    filename.endsWith('.cpp') ||
+    filename.endsWith('.cc') ||
+    filename.endsWith('.cxx') ||
+    filename.endsWith('.hpp') ||
+    filename.endsWith('.hxx') ||
+    filename.endsWith('.hh')
+  )
+    return SupportedLanguages.CPlusPlus;
   // C#
   if (filename.endsWith('.cs')) return SupportedLanguages.CSharp;
   // Go
@@ -29,9 +42,14 @@ export const getLanguageFromFilename = (filename: string): SupportedLanguages | 
   // Rust
   if (filename.endsWith('.rs')) return SupportedLanguages.Rust;
   // PHP (all common extensions)
-  if (filename.endsWith('.php') || filename.endsWith('.phtml') ||
-      filename.endsWith('.php3') || filename.endsWith('.php4') ||
-      filename.endsWith('.php5') || filename.endsWith('.php8')) {
+  if (
+    filename.endsWith('.php') ||
+    filename.endsWith('.phtml') ||
+    filename.endsWith('.php3') ||
+    filename.endsWith('.php4') ||
+    filename.endsWith('.php5') ||
+    filename.endsWith('.php8')
+  ) {
     return SupportedLanguages.PHP;
   }
   // Ruby (extensions)

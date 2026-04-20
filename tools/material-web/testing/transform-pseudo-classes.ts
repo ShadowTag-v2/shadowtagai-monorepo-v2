@@ -92,10 +92,7 @@ export function transformPseudoClasses(
  * CSSGroupingRule unlike Chrome and Safari
  */
 function isCSSGroupingRule(rule: CSSRule): rule is CSSGroupingRule {
-  return (
-    !!(rule as CSSGroupingRule)?.cssRules &&
-    !(rule as CSSStyleRule).selectorText
-  );
+  return !!(rule as CSSGroupingRule)?.cssRules && !(rule as CSSStyleRule).selectorText;
 }
 
 /**
@@ -125,7 +122,7 @@ function visitRule(
   }
 
   try {
-    let {selectorText} = rule;
+    let { selectorText } = rule;
     // match :foo, ensuring that it does not have a paren at the end
     // (no pseudo class functions like :foo())
     const regex = /(:(?![\w-]+\()[\w-]+)/g;
@@ -173,9 +170,7 @@ function visitRule(
  * @return The re-arranged selector text.
  */
 function rearrangePseudoElements(selectorText: string) {
-  const pseudoElementsBeforeClasses = Array.from(
-    selectorText.matchAll(/(?:::[\w-]+)+(?=:[\w-])/g),
-  );
+  const pseudoElementsBeforeClasses = Array.from(selectorText.matchAll(/(?:::[\w-]+)+(?=:[\w-])/g));
   pseudoElementsBeforeClasses.reverse();
   for (const match of pseudoElementsBeforeClasses) {
     const pseudoElement = match[0];
@@ -184,10 +179,7 @@ function rearrangePseudoElements(selectorText: string) {
       .substring(pseudoElementIndex)
       .match(/(\s(?!([^\s].)*\))|,|$)/)!;
     const index = endOfCompoundSelector.index! + pseudoElementIndex;
-    selectorText =
-      selectorText.substring(0, index) +
-      pseudoElement +
-      selectorText.substring(index);
+    selectorText = selectorText.substring(0, index) + pseudoElement + selectorText.substring(index);
     selectorText =
       selectorText.substring(0, pseudoElementIndex) +
       selectorText.substring(pseudoElementIndex + pseudoElement.length);

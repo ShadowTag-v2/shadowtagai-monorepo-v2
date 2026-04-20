@@ -1,8 +1,8 @@
 // These samples are intended for Web so this import would normally be
 // done in HTML however using modules here is more convenient for
 // ensuring sample correctness offline.
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 function twitterProvider() {
   // [START auth_twitter_provider_create]
@@ -11,7 +11,7 @@ function twitterProvider() {
 
   // [START auth_twitter_provider_params]
   provider.setCustomParameters({
-    'lang': 'es'
+    lang: 'es',
   });
   // [END auth_twitter_provider_params]
 }
@@ -33,8 +33,9 @@ function twitterSignInPopup(provider) {
       // The signed-in user info.
       var user = result.user;
       // IdP data available in result.additionalUserInfo.profile.
-        // ...
-    }).catch((error) => {
+      // ...
+    })
+    .catch((error) => {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -49,7 +50,8 @@ function twitterSignInPopup(provider) {
 
 function twitterSignInRedirectResult() {
   // [START auth_twitter_signin_redirect_result]
-  firebase.auth()
+  firebase
+    .auth()
     .getRedirectResult()
     .then((result) => {
       if (result.credential) {
@@ -66,8 +68,9 @@ function twitterSignInRedirectResult() {
       // The signed-in user info.
       var user = result.user;
       // IdP data available in result.additionalUserInfo.profile.
-        // ...
-    }).catch((error) => {
+      // ...
+    })
+    .catch((error) => {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;

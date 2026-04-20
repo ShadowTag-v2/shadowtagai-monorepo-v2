@@ -6,12 +6,12 @@
 
 // import 'jasmine'; (google3-only)
 
-import {html} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import { html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {Environment} from '../../testing/environment.js';
-import {ButtonHarness} from '../harness.js';
-import {Button} from './button.js';
+import { Environment } from '../../testing/environment.js';
+import { ButtonHarness } from '../harness.js';
+import { Button } from './button.js';
 
 @customElement('test-button')
 class TestButton extends Button {}
@@ -23,12 +23,12 @@ describe('Button', () => {
     const button = new TestButton();
     env.render(html`${button}`);
     await env.waitForStability();
-    return {button, harness: new ButtonHarness(button)};
+    return { button, harness: new ButtonHarness(button) };
   }
 
   it('should not be focusable when disabled', async () => {
     // Arrange
-    const {button} = await setupTest();
+    const { button } = await setupTest();
     button.disabled = true;
     await env.waitForStability();
 
@@ -43,7 +43,7 @@ describe('Button', () => {
 
   it('should be focusable when soft-disabled', async () => {
     // Arrange
-    const {button} = await setupTest();
+    const { button } = await setupTest();
     button.softDisabled = true;
     await env.waitForStability();
 
@@ -59,7 +59,7 @@ describe('Button', () => {
   it('should not be clickable when disabled', async () => {
     // Arrange
     const clickListener = jasmine.createSpy('clickListener');
-    const {button} = await setupTest();
+    const { button } = await setupTest();
     button.disabled = true;
     button.addEventListener('click', clickListener);
     await env.waitForStability();
@@ -74,7 +74,7 @@ describe('Button', () => {
   it('should not be clickable when soft-disabled', async () => {
     // Arrange
     const clickListener = jasmine.createSpy('clickListener');
-    const {button} = await setupTest();
+    const { button } = await setupTest();
     button.softDisabled = true;
     button.addEventListener('click', clickListener);
     await env.waitForStability();

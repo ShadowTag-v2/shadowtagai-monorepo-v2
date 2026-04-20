@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_signup_password_modular]
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 
 const auth = getAuth();
 createUserWithEmailAndPassword(auth, email, password)

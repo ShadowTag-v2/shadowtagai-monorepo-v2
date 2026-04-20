@@ -3,39 +3,41 @@
 
 function onDisconnectSimple() {
   // [START rtdb_ondisconnect_simple]
-  const { getDatabase, ref, onDisconnect } = require("firebase/database");
+  const { getDatabase, ref, onDisconnect } = require('firebase/database');
 
   const db = getDatabase();
-  const presenceRef = ref(db, "disconnectmessage");
+  const presenceRef = ref(db, 'disconnectmessage');
   // Write a string when this client loses connection
-  onDisconnect(presenceRef).set("I disconnected!");
+  onDisconnect(presenceRef).set('I disconnected!');
   // [END rtdb_ondisconnect_simple]
 }
 
 function onDisconnectCallback() {
-  const { getDatabase, ref, onDisconnect } = require("firebase/database");
+  const { getDatabase, ref, onDisconnect } = require('firebase/database');
 
   const db = getDatabase();
-  const presenceRef = ref(db, "disconnectmessage");
+  const presenceRef = ref(db, 'disconnectmessage');
 
   // [START rtdb_ondisconnect_callback]
-  onDisconnect(presenceRef).remove().catch((err) => {
-    if (err) {
-      console.error("could not establish onDisconnect event", err);
-    }
-  });
+  onDisconnect(presenceRef)
+    .remove()
+    .catch((err) => {
+      if (err) {
+        console.error('could not establish onDisconnect event', err);
+      }
+    });
   // [END rtdb_ondisconnect_callback]
 }
 
 function onDisconnectCancel() {
-  const { getDatabase, ref, onDisconnect } = require("firebase/database");
+  const { getDatabase, ref, onDisconnect } = require('firebase/database');
 
   const db = getDatabase();
-  const presenceRef = ref(db, "disconnectmessage");
+  const presenceRef = ref(db, 'disconnectmessage');
 
   // [START rtdb_ondisconnect_cancel]
   const onDisconnectRef = onDisconnect(presenceRef);
-  onDisconnectRef.set("I disconnected");
+  onDisconnectRef.set('I disconnected');
   // some time later when we change our minds
   onDisconnectRef.cancel();
   // [END rtdb_ondisconnect_cancel]
@@ -43,15 +45,15 @@ function onDisconnectCancel() {
 
 function detectConnectionState() {
   // [START rtdb_detect_connection_state]
-  const { getDatabase, ref, onValue } = require("firebase/database");
+  const { getDatabase, ref, onValue } = require('firebase/database');
 
   const db = getDatabase();
-  const connectedRef = ref(db, ".info/connected");
+  const connectedRef = ref(db, '.info/connected');
   onValue(connectedRef, (snap) => {
     if (snap.val() === true) {
-      console.log("connected");
+      console.log('connected');
     } else {
-      console.log("not connected");
+      console.log('not connected');
     }
   });
   // [END rtdb_detect_connection_state]
@@ -59,20 +61,20 @@ function detectConnectionState() {
 
 function setServerTimestamp() {
   // [START rtdb_set_server_timestamp]
-  const { getDatabase, ref, onDisconnect, serverTimestamp } = require("firebase/database");
+  const { getDatabase, ref, onDisconnect, serverTimestamp } = require('firebase/database');
 
   const db = getDatabase();
-  const userLastOnlineRef = ref(db, "users/joe/lastOnline");
+  const userLastOnlineRef = ref(db, 'users/joe/lastOnline');
   onDisconnect(userLastOnlineRef).set(serverTimestamp());
   // [END rtdb_set_server_timestamp]
 }
 
 function estimateClockSkew() {
   // [START rtdb_estimate_clock_skew]
-  const { getDatabase, ref, onValue } = require("firebase/database");
+  const { getDatabase, ref, onValue } = require('firebase/database');
 
   const db = getDatabase();
-  const offsetRef = ref(db, ".info/serverTimeOffset");
+  const offsetRef = ref(db, '.info/serverTimeOffset');
   onValue(offsetRef, (snap) => {
     const offset = snap.val();
     const estimatedServerTimeMs = new Date().getTime() + offset;
@@ -82,7 +84,15 @@ function estimateClockSkew() {
 
 function samplePresenceApp() {
   // [START rtdb_sample_presence_app]
-  const { getDatabase, ref, onValue, push, onDisconnect, set, serverTimestamp } = require("firebase/database");
+  const {
+    getDatabase,
+    ref,
+    onValue,
+    push,
+    onDisconnect,
+    set,
+    serverTimestamp,
+  } = require('firebase/database');
 
   // Since I can connect from multiple devices or browser tabs, we store each connection instance separately
   // any time that connectionsRef's value is null (i.e. has no children) I am offline

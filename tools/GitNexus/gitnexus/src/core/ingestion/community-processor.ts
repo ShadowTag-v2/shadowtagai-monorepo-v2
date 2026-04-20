@@ -8,14 +8,14 @@
  * helping agents navigate the codebase by functional area rather than file structure.
  */
 
+import { createRequire } from 'node:module';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 // NOTE: The Leiden algorithm source is vendored from graphology's repo
 // (src/communities-leiden) because it was never published to npm.
 // We use createRequire to load the CommonJS vendored files in ESM context.
 import Graph from 'graphology';
-import { createRequire } from 'node:module';
-import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
-import { KnowledgeGraph, NodeLabel } from '../graph/types.js';
+import type { KnowledgeGraph, NodeLabel } from '../graph/types.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -86,14 +86,19 @@ export const getCommunityColor = (communityIndex: number): string => {
  */
 export const processCommunities = async (
   knowledgeGraph: KnowledgeGraph,
-  onProgress?: (message: string, progress: number) => void
+  onProgress?: (message: string, progress: number) => void,
 ): Promise<CommunityDetectionResult> => {
   onProgress?.('Building graph for community detection...', 0);
 
   // Pre-check total symbol count to determine large-graph mode before building
   let symbolCount = 0;
-  knowledgeGraph.forEachNode(node => {
-    if (node.label === 'Function' || node.label === 'Class' || node.label === 'Method' || node.label === 'Interface') {
+  knowledgeGraph.forEachNode((node) => {
+    if (
+      node.label === 'Function' ||
+      node.label === 'Class' ||
+      node.label === 'Method' ||
+      node.label === 'Interface'
+    ) {
       symbolCount++;
     }
   });
@@ -105,14 +110,17 @@ export const processCommunities = async (
     return {
       communities: [],
       memberships: [],
-      stats: { totalCommunities: 0, modularity: 0, nodesProcessed: 0 }
+      stats: { totalCommunities: 0, modularity: 0, nodesProcessed: 0 },
     };
   }
 
   const nodeCount = graph.order;
   const edgeCount = graph.size;
 
-  onProgress?.(`Running Leiden on ${nodeCount} nodes, ${edgeCount} edges${isLarge ? ` (filtered from ${symbolCount} symbols)` : ''}...`, 30);
+  onProgress?.(
+    `Running Leiden on ${nodeCount} nodes, ${edgeCount} edges${isLarge ? ` (filtered from ${symbolCount} symbols)` : ''}...`,
+    30,
+  );
 
   // Large graphs: higher resolution + capped iterations (matching Python leidenalg default of 2).
   // The first 2 iterations capture ~95%+ of modularity; additional iterations have diminishing returns.
@@ -121,12 +129,14 @@ export const processCommunities = async (
   let details: any;
   try {
     details = await Promise.race([
-      Promise.resolve((leiden as any).detailed(graph, {
-        resolution: isLarge ? 2.0 : 1.0,
-        maxIterations: isLarge ? 3 : 0,
-      })),
+      Promise.resolve(
+        (leiden as any).detailed(graph, {
+          resolution: isLarge ? 2.0 : 1.0,
+          maxIterations: isLarge ? 3 : 0,
+        }),
+      ),
       new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Leiden timeout')), LEIDEN_TIMEOUT_MS)
+        setTimeout(() => reject(new Error('Leiden timeout')), LEIDEN_TIMEOUT_MS),
       ),
     ]);
   } catch (e: any) {
@@ -134,7 +144,9 @@ export const processCommunities = async (
       onProgress?.('Community detection timed out, using fallback...', 60);
       // Fallback: assign all nodes to community 0
       const communities: Record<string, number> = {};
-      graph.forEachNode((node: string) => { communities[node] = 0; });
+      graph.forEachNode((node: string) => {
+        communities[node] = 0;
+      });
       details = { communities, count: 1, modularity: 0 };
     } else {
       throw e;
@@ -148,7 +160,7 @@ export const processCommunities = async (
     details.communities as Record<string, number>,
     details.count,
     graph,
-    knowledgeGraph
+    knowledgeGraph,
   );
 
   onProgress?.('Creating membership edges...', 80);
@@ -171,7 +183,7 @@ export const processCommunities = async (
       totalCommunities: details.count,
       modularity: details.modularity,
       nodesProcessed: graph.order,
-    }
+    },
   };
 };
 
@@ -194,7 +206,7 @@ const buildGraphologyGraph = (knowledgeGraph: KnowledgeGraph, isLarge: boolean):
   const connectedNodes = new Set<string>();
   const nodeDegree = new Map<string, number>();
 
-  knowledgeGraph.forEachRelationship(rel => {
+  knowledgeGraph.forEachRelationship((rel) => {
     if (!clusteringRelTypes.has(rel.type) || rel.sourceId === rel.targetId) return;
     if (isLarge && rel.confidence < MIN_CONFIDENCE_LARGE) return;
 
@@ -204,7 +216,7 @@ const buildGraphologyGraph = (knowledgeGraph: KnowledgeGraph, isLarge: boolean):
     nodeDegree.set(rel.targetId, (nodeDegree.get(rel.targetId) || 0) + 1);
   });
 
-  knowledgeGraph.forEachNode(node => {
+  knowledgeGraph.forEachNode((node) => {
     if (!symbolTypes.has(node.label) || !connectedNodes.has(node.id)) return;
     // For large graphs, skip degree-1 nodes — they just become singletons or
     // get absorbed into their single neighbor's community, but cost iteration time.
@@ -217,10 +229,14 @@ const buildGraphologyGraph = (knowledgeGraph: KnowledgeGraph, isLarge: boolean):
     });
   });
 
-  knowledgeGraph.forEachRelationship(rel => {
+  knowledgeGraph.forEachRelationship((rel) => {
     if (!clusteringRelTypes.has(rel.type)) return;
     if (isLarge && rel.confidence < MIN_CONFIDENCE_LARGE) return;
-    if (graph.hasNode(rel.sourceId) && graph.hasNode(rel.targetId) && rel.sourceId !== rel.targetId) {
+    if (
+      graph.hasNode(rel.sourceId) &&
+      graph.hasNode(rel.targetId) &&
+      rel.sourceId !== rel.targetId
+    ) {
       if (!graph.hasEdge(rel.sourceId, rel.targetId)) {
         graph.addEdge(rel.sourceId, rel.targetId);
       }
@@ -241,7 +257,7 @@ const createCommunityNodes = (
   communities: Record<string, number>,
   communityCount: number,
   graph: any,
-  knowledgeGraph: KnowledgeGraph
+  knowledgeGraph: KnowledgeGraph,
 ): CommunityNode[] => {
   // Group node IDs by community
   const communityMembers = new Map<number, string[]>();
@@ -296,12 +312,12 @@ const generateHeuristicLabel = (
   memberIds: string[],
   nodePathMap: Map<string, string>,
   graph: any,
-  commNum: number
+  commNum: number,
 ): string => {
   // Collect folder names from file paths
   const folderCounts = new Map<string, number>();
 
-  memberIds.forEach(nodeId => {
+  memberIds.forEach((nodeId) => {
     const filePath = nodePathMap.get(nodeId) || '';
     const parts = filePath.split('/').filter(Boolean);
 
@@ -309,7 +325,11 @@ const generateHeuristicLabel = (
     if (parts.length >= 2) {
       const folder = parts[parts.length - 2];
       // Skip generic folder names
-      if (!['src', 'lib', 'core', 'utils', 'common', 'shared', 'helpers'].includes(folder.toLowerCase())) {
+      if (
+        !['src', 'lib', 'core', 'utils', 'common', 'shared', 'helpers'].includes(
+          folder.toLowerCase(),
+        )
+      ) {
         folderCounts.set(folder, (folderCounts.get(folder) || 0) + 1);
       }
     }
@@ -333,7 +353,7 @@ const generateHeuristicLabel = (
 
   // Fallback: use function names to detect patterns
   const names: string[] = [];
-  memberIds.forEach(nodeId => {
+  memberIds.forEach((nodeId) => {
     const name = graph.getNodeAttribute(nodeId, 'name');
     if (name) names.push(name);
   });
@@ -383,9 +403,7 @@ const calculateCohesion = (memberIds: string[], graph: any): number => {
 
   // Sample up to 50 members for large communities
   const SAMPLE_SIZE = 50;
-  const sample = memberIds.length <= SAMPLE_SIZE
-    ? memberIds
-    : memberIds.slice(0, SAMPLE_SIZE);
+  const sample = memberIds.length <= SAMPLE_SIZE ? memberIds : memberIds.slice(0, SAMPLE_SIZE);
 
   let internalEdges = 0;
   let totalEdges = 0;

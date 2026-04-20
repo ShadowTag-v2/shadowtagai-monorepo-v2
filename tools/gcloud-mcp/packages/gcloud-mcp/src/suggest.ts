@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { AccessControlList, PRERELEASE_TRACKS_PRIORITIZED } from './denylist.js';
-import * as gcloud from './gcloud.js';
+import { type AccessControlList, PRERELEASE_TRACKS_PRIORITIZED } from './denylist.js';
+import type * as gcloud from './gcloud.js';
 
 export const parseReleaseTrack = (cmd: string): string => {
   for (const releaseTrack of PRERELEASE_TRACKS_PRIORITIZED) {

@@ -5,17 +5,17 @@
  */
 
 export {
-  buildBM25Index,
-  searchBM25,
-  isBM25Ready,
-  getBM25Stats,
-  clearBM25Index,
   type BM25SearchResult,
+  buildBM25Index,
+  clearBM25Index,
+  getBM25Stats,
+  isBM25Ready,
+  searchBM25,
 } from './bm25-index';
 
 export {
-  mergeWithRRF,
-  isHybridSearchReady,
   formatHybridResults,
   type HybridSearchResult,
+  isHybridSearchReady,
+  mergeWithRRF,
 } from './hybrid-search';

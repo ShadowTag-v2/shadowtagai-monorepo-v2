@@ -6,9 +6,9 @@
 
 // import 'jasmine'; (google3-only)
 
-import {createTokenTests} from '../testing/tokens.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdRipple} from './ripple.js';
+import { MdRipple } from './ripple.js';
 
 describe('<md-ripple>', () => {
   describe('.styles', () => {

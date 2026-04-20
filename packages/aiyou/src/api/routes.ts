@@ -1,25 +1,28 @@
-import { Router } from "express";
-import { z } from "zod";
-import { RagGraph, InsertDoc, RetrieveQuery } from "../graph/RagGraph";
-import { CognitivePersonaRouter } from "../agents/LegalMetaPersona";
+import { Router } from 'express';
+import { z } from 'zod';
+import { CognitivePersonaRouter } from '../agents/LegalMetaPersona';
+import { type InsertDoc, RagGraph, type RetrieveQuery } from '../graph/RagGraph';
 
-export function createShadowTag-v2Router(graph: RagGraph): Router {
+export function createShadowTag
+-v2Router(graph: RagGraph)
+: Router
+{
   const router = Router();
 
   const insertDocSchema = z.object({
     artifactId: z.string(),
     text: z.string(),
     tags: z.record(z.string(), z.any()).optional(),
-    embed: z.array(z.number()).optional()
+    embed: z.array(z.number()).optional(),
   });
 
   const retrieveQuerySchema = z.object({
     q: z.string(),
     k: z.number().optional(),
-    filter: z.record(z.string(), z.any()).optional()
+    filter: z.record(z.string(), z.any()).optional(),
   });
 
-  router.post("/graph/insert", async (req: any, res: any) => {
+  router.post('/graph/insert', async (req: any, res: any) => {
     try {
       const parsed = insertDocSchema.safeParse(req.body);
       if (!parsed.success) {
@@ -42,12 +45,12 @@ export function createShadowTag-v2Router(graph: RagGraph): Router {
 
       return res.status(201).json({ success: true, artifactId: docPayload.artifactId });
     } catch (err: any) {
-      console.error("[ShadowTag-v2 API] /graph/insert Error:", err);
-      return res.status(500).json({ error: "Internal Server Error" });
+      console.error('[ShadowTag-v2 API] /graph/insert Error:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
   });
 
-  router.post("/graph/retrieve", async (req: any, res: any) => {
+  router.post('/graph/retrieve', async (req: any, res: any) => {
     try {
       const parsed = retrieveQuerySchema.safeParse(req.body);
       if (!parsed.success) {
@@ -63,8 +66,8 @@ export function createShadowTag-v2Router(graph: RagGraph): Router {
 
       return res.status(200).json({ hits, count: hits.length });
     } catch (err: any) {
-      console.error("[ShadowTag-v2 API] /graph/retrieve Error:", err);
-      return res.status(500).json({ error: "Internal Server Error" });
+      console.error('[ShadowTag-v2 API] /graph/retrieve Error:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
   });
 
@@ -73,10 +76,10 @@ export function createShadowTag-v2Router(graph: RagGraph): Router {
   // ------------------------------------------------------------------
   const agentQuerySchema = z.object({
     q: z.string(),
-    filter: z.record(z.string(), z.any()).optional()
+    filter: z.record(z.string(), z.any()).optional(),
   });
 
-  router.post("/agent/query", async (req: any, res: any) => {
+  router.post('/agent/query', async (req: any, res: any) => {
     try {
       const parsed = agentQuerySchema.safeParse(req.body);
       if (!parsed.success) return res.status(400).json({ error: parsed.error });
@@ -84,7 +87,7 @@ export function createShadowTag-v2Router(graph: RagGraph): Router {
       // 1. Material Exhibit Retrieval (RAG)
       const hits = await graph.retrieve({ q: parsed.data.q, filter: parsed.data.filter, k: 3 });
 
-      const contextData = hits.map(h => `[Exhibit ${h.artifactId}]: ${h.snippet}`).join("\\n");
+      const contextData = hits.map((h) => `[Exhibit ${h.artifactId}]: ${h.snippet}`).join('\\n');
 
       // 2. Cognitive Routing (27-Year Constraint)
       const personaRouter = new CognitivePersonaRouter();
@@ -110,12 +113,11 @@ Based on the provided texts, the queries map explicitly to the definitions prese
       return res.status(200).json({
         synthesis: simulatedSynthesis.trim(),
         exhibitsUsed: hits.length,
-        metrics: personaRouter.getMetrics()
+        metrics: personaRouter.getMetrics(),
       });
-
     } catch (err: any) {
-      console.error("[ShadowTag-v2 API] /agent/query Error:", err);
-      return res.status(500).json({ error: "Internal Server Error" });
+      console.error('[ShadowTag-v2 API] /agent/query Error:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
   });
 

@@ -8,7 +8,7 @@ import '../../elevation/elevation.js';
 import '../../focus/md-focus-ring.js';
 import '../../ripple/ripple.js';
 
-import {html, isServer, LitElement, nothing} from 'lit';
+import { html, isServer, LitElement, nothing } from 'lit';
 import {
   property,
   query,
@@ -16,10 +16,10 @@ import {
   queryAssignedNodes,
   state,
 } from 'lit/decorators.js';
-import {ClassInfo, classMap} from 'lit/directives/class-map.js';
+import { type ClassInfo, classMap } from 'lit/directives/class-map.js';
 
-import {EASING} from '../../internal/motion/animation.js';
-import {mixinFocusable} from '../../labs/behaviors/focusable.js';
+import { EASING } from '../../internal/motion/animation.js';
+import { mixinFocusable } from '../../labs/behaviors/focusable.js';
 
 /**
  * Symbol used by the tab bar to request a tab to animate its indicator from a
@@ -39,18 +39,18 @@ export class Tab extends tabBaseClass {
    * element, `<md-tabs>`. Make sure if you're implementing your own `md-tab`
    * component that you have an `md-tab` attribute set.
    */
-  @property({type: Boolean, reflect: true, attribute: 'md-tab'})
+  @property({ type: Boolean, reflect: true, attribute: 'md-tab' })
   readonly isTab = true;
 
   /**
    * Whether or not the tab is selected.
    **/
-  @property({type: Boolean, reflect: true}) active = false;
+  @property({ type: Boolean, reflect: true }) active = false;
 
   /**
    * @deprecated use `active`
    */
-  @property({type: Boolean})
+  @property({ type: Boolean })
   get selected() {
     return this.active;
   }
@@ -61,18 +61,18 @@ export class Tab extends tabBaseClass {
   /**
    * In SSR, set this to true when an icon is present.
    */
-  @property({type: Boolean, attribute: 'has-icon'}) hasIcon = false;
+  @property({ type: Boolean, attribute: 'has-icon' }) hasIcon = false;
 
   /**
    * In SSR, set this to true when there is no label and only an icon.
    */
-  @property({type: Boolean, attribute: 'icon-only'}) iconOnly = false;
+  @property({ type: Boolean, attribute: 'icon-only' }) iconOnly = false;
 
   @query('.indicator') private readonly indicator!: HTMLElement | null;
   @state() protected fullWidthIndicator = false;
-  @queryAssignedNodes({flatten: true})
+  @queryAssignedNodes({ flatten: true })
   private readonly assignedDefaultNodes!: Node[];
-  @queryAssignedElements({slot: 'icon', flatten: true})
+  @queryAssignedElements({ slot: 'icon', flatten: true })
   private readonly assignedIcons!: HTMLElement[];
   private readonly internals =
     // Cast needed for closure
@@ -158,24 +158,18 @@ export class Tab extends tabBaseClass {
   private getKeyframes(previousTab: Tab) {
     const reduceMotion = shouldReduceMotion();
     if (!this.active) {
-      return reduceMotion ? [{'opacity': 1}, {'transform': 'none'}] : null;
+      return reduceMotion ? [{ opacity: 1 }, { transform: 'none' }] : null;
     }
 
     const from: Keyframe = {};
-    const fromRect =
-      previousTab.indicator?.getBoundingClientRect() ?? ({} as DOMRect);
+    const fromRect = previousTab.indicator?.getBoundingClientRect() ?? ({} as DOMRect);
     const fromPos = fromRect.left;
     const fromExtent = fromRect.width;
     const toRect = this.indicator!.getBoundingClientRect();
     const toPos = toRect.left;
     const toExtent = toRect.width;
     const scale = fromExtent / toExtent;
-    if (
-      !reduceMotion &&
-      fromPos !== undefined &&
-      toPos !== undefined &&
-      !isNaN(scale)
-    ) {
+    if (!reduceMotion && fromPos !== undefined && toPos !== undefined && !isNaN(scale)) {
       from['transform'] = `translateX(${(fromPos - toPos).toFixed(
         4,
       )}px) scaleX(${scale.toFixed(4)})`;
@@ -184,7 +178,7 @@ export class Tab extends tabBaseClass {
     }
     // note, including `transform: none` avoids quirky Safari behavior
     // that can hide the animation.
-    return [from, {'transform': 'none'}];
+    return [from, { transform: 'none' }];
   }
 
   private handleSlotChange() {
@@ -193,8 +187,7 @@ export class Tab extends tabBaseClass {
     // an icon.
     for (const node of this.assignedDefaultNodes) {
       const hasTextContent =
-        node.nodeType === Node.TEXT_NODE &&
-        !!(node as Text).wholeText.match(/\S/);
+        node.nodeType === Node.TEXT_NODE && !!(node as Text).wholeText.match(/\S/);
       if (node.nodeType === Node.ELEMENT_NODE || hasTextContent) {
         return;
       }

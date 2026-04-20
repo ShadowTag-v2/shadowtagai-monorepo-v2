@@ -1,13 +1,13 @@
-import { designSystemBuilderConfig } from "../config/agent-config";
-import { ComponentScaffolder } from "../services/component-scaffolder";
-import { DesignTokenGenerator } from "../services/design-token-generator";
+import { designSystemBuilderConfig } from '../config/agent-config';
+import { ComponentScaffolder } from '../services/component-scaffolder';
+import { DesignTokenGenerator } from '../services/design-token-generator';
 import type {
   Component,
   ComponentLibrary,
   DesignSystemRequest,
   DesignTokens,
-} from "../types/design-system";
-import { logger } from "../utils/logger";
+} from '../types/design-system';
+import { logger } from '../utils/logger';
 
 export class DesignSystemBuilder {
   private tokenGenerator: DesignTokenGenerator;
@@ -38,14 +38,14 @@ export class DesignSystemBuilder {
       // Create component library
       const library: ComponentLibrary = {
         name: request.projectName,
-        version: "1.0.0",
+        version: '1.0.0',
         framework: request.framework,
         components,
         designTokens,
         styleGuide: {
           brandGuidelines: `Design system for ${request.projectName}`,
-          usagePatterns: "Follow component prop interfaces and design tokens",
-          bestPractices: "Use semantic tokens, maintain consistency, ensure accessibility",
+          usagePatterns: 'Follow component prop interfaces and design tokens',
+          bestPractices: 'Use semantic tokens, maintain consistency, ensure accessibility',
         },
       };
 
@@ -55,7 +55,7 @@ export class DesignSystemBuilder {
       logger.info(`Design system created successfully: ${request.projectName}`);
       return library;
     } catch (error) {
-      logger.error("Error creating design system:", error);
+      logger.error('Error creating design system:', error);
       throw error;
     }
   }
@@ -72,7 +72,7 @@ export class DesignSystemBuilder {
     // For now, use default components
     // AI integration can be enabled when ANTHROPIC_API_KEY is configured
     if (!process.env.ANTHROPIC_API_KEY) {
-      logger.info("ANTHROPIC_API_KEY not configured, using default components");
+      logger.info('ANTHROPIC_API_KEY not configured, using default components');
       return this.generateDefaultComponents(componentNames, request.framework);
     }
 
@@ -127,9 +127,9 @@ Return the components as a JSON array.`;
         return JSON.parse(jsonMatch[0]);
       }
     } catch (error) {
-      logger.warn("Failed to parse AI response, using defaults");
+      logger.warn('Failed to parse AI response, using defaults');
     }
-    return this.generateDefaultComponents(componentNames, "react");
+    return this.generateDefaultComponents(componentNames, 'react');
   }
 
   /**
@@ -138,95 +138,95 @@ Return the components as a JSON array.`;
   private generateDefaultComponents(componentNames: string[], framework: string): Component[] {
     const defaultComponents: Record<string, Partial<Component>> = {
       Button: {
-        category: "input",
-        description: "A versatile button component with multiple variants",
+        category: 'input',
+        description: 'A versatile button component with multiple variants',
         props: [
           {
-            name: "variant",
-            type: "string",
+            name: 'variant',
+            type: 'string',
             required: false,
-            defaultValue: "primary",
-            description: "Button style variant",
+            defaultValue: 'primary',
+            description: 'Button style variant',
           },
           {
-            name: "size",
-            type: "string",
+            name: 'size',
+            type: 'string',
             required: false,
-            defaultValue: "medium",
-            description: "Button size",
+            defaultValue: 'medium',
+            description: 'Button size',
           },
           {
-            name: "disabled",
-            type: "boolean",
+            name: 'disabled',
+            type: 'boolean',
             required: false,
             defaultValue: false,
-            description: "Disabled state",
+            description: 'Disabled state',
           },
-          { name: "onClick", type: "function", required: false, description: "Click handler" },
-          { name: "children", type: "ReactNode", required: true, description: "Button content" },
+          { name: 'onClick', type: 'function', required: false, description: 'Click handler' },
+          { name: 'children', type: 'ReactNode', required: true, description: 'Button content' },
         ],
       },
       Input: {
-        category: "input",
-        description: "Text input field with validation support",
+        category: 'input',
+        description: 'Text input field with validation support',
         props: [
           {
-            name: "type",
-            type: "string",
+            name: 'type',
+            type: 'string',
             required: false,
-            defaultValue: "text",
-            description: "Input type",
+            defaultValue: 'text',
+            description: 'Input type',
           },
-          { name: "placeholder", type: "string", required: false, description: "Placeholder text" },
-          { name: "value", type: "string", required: false, description: "Input value" },
-          { name: "onChange", type: "function", required: false, description: "Change handler" },
-          { name: "error", type: "string", required: false, description: "Error message" },
+          { name: 'placeholder', type: 'string', required: false, description: 'Placeholder text' },
+          { name: 'value', type: 'string', required: false, description: 'Input value' },
+          { name: 'onChange', type: 'function', required: false, description: 'Change handler' },
+          { name: 'error', type: 'string', required: false, description: 'Error message' },
         ],
       },
       Card: {
-        category: "display",
-        description: "Container component for grouping related content",
+        category: 'display',
+        description: 'Container component for grouping related content',
         props: [
-          { name: "title", type: "string", required: false, description: "Card title" },
-          { name: "children", type: "ReactNode", required: true, description: "Card content" },
+          { name: 'title', type: 'string', required: false, description: 'Card title' },
+          { name: 'children', type: 'ReactNode', required: true, description: 'Card content' },
           {
-            name: "elevated",
-            type: "boolean",
+            name: 'elevated',
+            type: 'boolean',
             required: false,
             defaultValue: false,
-            description: "Elevated style",
+            description: 'Elevated style',
           },
         ],
       },
       Modal: {
-        category: "overlay",
-        description: "Modal dialog for displaying content over the page",
+        category: 'overlay',
+        description: 'Modal dialog for displaying content over the page',
         props: [
-          { name: "isOpen", type: "boolean", required: true, description: "Open state" },
-          { name: "onClose", type: "function", required: true, description: "Close handler" },
-          { name: "title", type: "string", required: false, description: "Modal title" },
-          { name: "children", type: "ReactNode", required: true, description: "Modal content" },
+          { name: 'isOpen', type: 'boolean', required: true, description: 'Open state' },
+          { name: 'onClose', type: 'function', required: true, description: 'Close handler' },
+          { name: 'title', type: 'string', required: false, description: 'Modal title' },
+          { name: 'children', type: 'ReactNode', required: true, description: 'Modal content' },
         ],
       },
       Badge: {
-        category: "display",
-        description: "Small label for status or count indicators",
+        category: 'display',
+        description: 'Small label for status or count indicators',
         props: [
           {
-            name: "variant",
-            type: "string",
+            name: 'variant',
+            type: 'string',
             required: false,
-            defaultValue: "default",
-            description: "Badge variant",
+            defaultValue: 'default',
+            description: 'Badge variant',
           },
-          { name: "children", type: "ReactNode", required: true, description: "Badge content" },
+          { name: 'children', type: 'ReactNode', required: true, description: 'Badge content' },
         ],
       },
     };
 
     return componentNames.map((name) => ({
       name,
-      category: (defaultComponents[name]?.category as any) || "display",
+      category: (defaultComponents[name]?.category as any) || 'display',
       description: defaultComponents[name]?.description || `${name} component`,
       props: defaultComponents[name]?.props || [],
       accessibility: {
@@ -239,7 +239,7 @@ Return the components as a JSON array.`;
    * Get default component set
    */
   private getDefaultComponents(): string[] {
-    return ["Button", "Input", "Card", "Modal", "Badge"];
+    return ['Button', 'Input', 'Card', 'Modal', 'Badge'];
   }
 
   /**
@@ -256,25 +256,25 @@ Return the components as a JSON array.`;
    */
   async generateComponent(
     componentName: string,
-    framework: ComponentLibrary["framework"],
+    framework: ComponentLibrary['framework'],
     options?: {
       description?: string;
-      category?: Component["category"];
+      category?: Component['category'];
     },
   ): Promise<Component> {
     // For now, return a default component structure
     // AI integration can be enabled when properly configured
     const defaultComponent: Component = {
       name: componentName,
-      category: options?.category || "display",
+      category: options?.category || 'display',
       description: options?.description || `${componentName} component`,
       props: [
-        { name: "children", type: "ReactNode", required: false, description: "Component content" },
+        { name: 'children', type: 'ReactNode', required: false, description: 'Component content' },
         {
-          name: "className",
-          type: "string",
+          name: 'className',
+          type: 'string',
           required: false,
-          description: "Additional CSS classes",
+          description: 'Additional CSS classes',
         },
       ],
       accessibility: {
@@ -294,7 +294,7 @@ Return the components as a JSON array.`;
 
 ## Overview
 
-${library.styleGuide?.brandGuidelines || "A comprehensive design system component library."}
+${library.styleGuide?.brandGuidelines || 'A comprehensive design system component library.'}
 
 ## Design Tokens
 
@@ -307,21 +307,21 @@ ${library.designTokens.colors
   .map(
     (color) => `- **${color.name}**: \`${color.value}\` - ${color.description || color.category}`,
   )
-  .join("\n")}
+  .join('\n')}
 
 ### Typography
 
 ${library.designTokens.typography
   .slice(0, 5)
   .map((typo) => `- **${typo.name}**: ${typo.fontSize} / ${typo.lineHeight}`)
-  .join("\n")}
+  .join('\n')}
 
 ### Spacing
 
 ${library.designTokens.spacing
   .slice(0, 5)
   .map((space) => `- **${space.name}**: \`${space.value}\``)
-  .join("\n")}
+  .join('\n')}
 
 ## Components
 
@@ -338,12 +338,12 @@ ${component.description}
 ${component.props
   .map(
     (prop) =>
-      `- \`${prop.name}\`${prop.required ? " (required)" : ""}: ${prop.type} - ${prop.description}`,
+      `- \`${prop.name}\`${prop.required ? ' (required)' : ''}: ${prop.type} - ${prop.description}`,
   )
-  .join("\n")}
+  .join('\n')}
 `,
   )
-  .join("\n")}
+  .join('\n')}
 
 ## Best Practices
 
@@ -355,8 +355,8 @@ ${component.props
 
 ## Usage
 
-\`\`\`${library.framework === "react" ? "jsx" : library.framework}
-import { Button } from '${library.name.toLowerCase().replace(/\s+/g, "-")}';
+\`\`\`${library.framework === 'react' ? 'jsx' : library.framework}
+import { Button } from '${library.name.toLowerCase().replace(/\s+/g, '-')}';
 
 <Button variant="primary">Click me</Button>
 \`\`\`

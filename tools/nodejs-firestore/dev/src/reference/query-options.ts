@@ -15,16 +15,17 @@
  */
 
 import * as protos from '../../protos/firestore_v1_proto_api';
-import api = protos.google.firestore.v1;
-import * as deepEqual from 'fast-deep-equal';
 
-import * as firestore from '@google-cloud/firestore';
-import {ResourcePath} from '../path';
-import {defaultConverter} from '../types';
-import {FilterInternal} from './filter-internal';
-import {FieldOrder} from './field-order';
-import {LimitType, QueryCursor} from './types';
-import {coalesce} from './helpers';
+import api = protos.google.firestore.v1;
+
+import type * as firestore from '@google-cloud/firestore';
+import * as deepEqual from 'fast-deep-equal';
+import { ResourcePath } from '../path';
+import { defaultConverter } from '../types';
+import type { FieldOrder } from './field-order';
+import type { FilterInternal } from './filter-internal';
+import { coalesce } from './helpers';
+import type { LimitType, QueryCursor } from './types';
 
 /**
  * Internal class representing custom Query options.
@@ -33,17 +34,11 @@ import {coalesce} from './helpers';
  * @private
  * @internal
  */
-export class QueryOptions<
-  AppModelType,
-  DbModelType extends firestore.DocumentData,
-> {
+export class QueryOptions<AppModelType, DbModelType extends firestore.DocumentData> {
   constructor(
     readonly parentPath: ResourcePath,
     readonly collectionId: string,
-    readonly converter: firestore.FirestoreDataConverter<
-      AppModelType,
-      DbModelType
-    >,
+    readonly converter: firestore.FirestoreDataConverter<AppModelType, DbModelType>,
     readonly allDescendants: boolean,
     readonly filters: FilterInternal[],
     readonly fieldOrders: FieldOrder[],
@@ -118,10 +113,7 @@ export class QueryOptions<
     id: string,
     requireConsistency = true,
   ): QueryOptions<firestore.DocumentData, firestore.DocumentData> {
-    let options = new QueryOptions<
-      firestore.DocumentData,
-      firestore.DocumentData
-    >(
+    let options = new QueryOptions<firestore.DocumentData, firestore.DocumentData>(
       parent,
       id,
       defaultConverter(),
@@ -143,9 +135,7 @@ export class QueryOptions<
    * @internal
    */
   with(
-    settings: Partial<
-      Omit<QueryOptions<AppModelType, DbModelType>, 'converter'>
-    >,
+    settings: Partial<Omit<QueryOptions<AppModelType, DbModelType>, 'converter'>>,
   ): QueryOptions<AppModelType, DbModelType> {
     return new QueryOptions(
       coalesce(settings.parentPath, this.parentPath)!,
@@ -169,10 +159,7 @@ export class QueryOptions<
     NewAppModelType,
     NewDbModelType extends firestore.DocumentData = firestore.DocumentData,
   >(
-    converter: firestore.FirestoreDataConverter<
-      NewAppModelType,
-      NewDbModelType
-    >,
+    converter: firestore.FirestoreDataConverter<NewAppModelType, NewDbModelType>,
   ): QueryOptions<NewAppModelType, NewDbModelType> {
     return new QueryOptions<NewAppModelType, NewDbModelType>(
       this.parentPath,

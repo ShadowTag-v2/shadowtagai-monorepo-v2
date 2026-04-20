@@ -10,15 +10,15 @@ const server = http.createServer((req, res) => {
   if (req.method === 'POST' && req.url === '/relay') {
     let body = '';
 
-    req.on('data', chunk => {
+    req.on('data', (chunk) => {
       body += chunk.toString();
     });
 
     req.on('end', () => {
-const { execFile } = require('child_process');
-const path = require('path');
+      const { execFile } = require('child_process');
+      const path = require('path');
 
-const VECTOR_RETRIEVAL_SCRIPT = path.join(__dirname, 'scripts', 'vector_retrieval.py');
+      const VECTOR_RETRIEVAL_SCRIPT = path.join(__dirname, 'scripts', 'vector_retrieval.py');
 
       try {
         const payload = JSON.parse(body);
@@ -26,17 +26,19 @@ const VECTOR_RETRIEVAL_SCRIPT = path.join(__dirname, 'scripts', 'vector_retrieva
 
         // Emulate forwarding to FastAPI backend / Sub-Routing
         if (payload.type === 'rag_query' && payload.query) {
-           console.log(`[Relay] Triggering Vector Retrieval for query: "${payload.query.substring(0, 50)}..."`);
-           execFile(VECTOR_RETRIEVAL_SCRIPT, [payload.query], (error, stdout, stderr) => {
-               if (error) {
-                   console.error(`[Relay] LanceDB retrieval error: ${stderr}`);
-                   res.writeHead(500, { 'Content-Type': 'application/json' });
-                   return res.end(JSON.stringify({ error: 'Retrieval failed', details: stderr }));
-               }
-               res.writeHead(200, { 'Content-Type': 'application/json' });
-               res.end(stdout);
-           });
-           return;
+          console.log(
+            `[Relay] Triggering Vector Retrieval for query: "${payload.query.substring(0, 50)}..."`,
+          );
+          execFile(VECTOR_RETRIEVAL_SCRIPT, [payload.query], (error, stdout, stderr) => {
+            if (error) {
+              console.error(`[Relay] LanceDB retrieval error: ${stderr}`);
+              res.writeHead(500, { 'Content-Type': 'application/json' });
+              return res.end(JSON.stringify({ error: 'Retrieval failed', details: stderr }));
+            }
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(stdout);
+          });
+          return;
         }
 
         res.writeHead(200, { 'Content-Type': 'application/json' });

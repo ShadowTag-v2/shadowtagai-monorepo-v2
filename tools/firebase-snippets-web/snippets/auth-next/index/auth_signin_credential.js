@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_signin_credential_modular]
-import { getAuth, signInWithCredential } from "firebase/auth";
+import { getAuth, signInWithCredential } from 'firebase/auth';
 
 // Sign in with the credential from the user.
 const auth = getAuth();

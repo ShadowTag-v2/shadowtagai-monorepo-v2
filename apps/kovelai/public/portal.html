@@ -185,9 +185,9 @@
     const SESSION_MAX = 4 * 60 * 60 * 1000;  // 4 hour max session
 
     let inactivityTimer;
-    let sessionStart = Date.now();
-    let sessionId = new URLSearchParams(location.search).get('session') || 'ephemeral';
-    let token = new URLSearchParams(location.search).get('token');
+    const sessionStart = Date.now();
+    const sessionId = new URLSearchParams(location.search).get('session') || 'ephemeral';
+    const token = new URLSearchParams(location.search).get('token');
 
     // ─── Dead-Man's Switch ───────────────────────────────────────────
     function resetInactivity() {
@@ -377,7 +377,7 @@
       // 4. Detect recording API (getDisplayMedia)
       if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
         const original = navigator.mediaDevices.getDisplayMedia.bind(navigator.mediaDevices);
-        navigator.mediaDevices.getDisplayMedia = function() {
+        navigator.mediaDevices.getDisplayMedia = () => {
           reportTelemetry('screen_recording_blocked');
           return Promise.reject(new Error('Screen recording is not permitted in privileged sessions.'));
         };

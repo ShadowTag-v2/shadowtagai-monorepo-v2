@@ -9,8 +9,8 @@
  * for consistency. Pub/Sub requires separate connections (Redis limitation).
  */
 
-import Redis from "ioredis";
-import logger from "../../utils/logger";
+import Redis from 'ioredis';
+import logger from '../../utils/logger';
 
 /**
  * Get Redis URL from environment
@@ -21,8 +21,8 @@ function getRedisUrl(): string {
     return process.env.REDIS_URL;
   }
 
-  const host = process.env.REDIS_HOST || "localhost";
-  const port = process.env.REDIS_PORT || "6379";
+  const host = process.env.REDIS_HOST || 'localhost';
+  const port = process.env.REDIS_PORT || '6379';
   const password = process.env.REDIS_PASSWORD;
 
   if (password) {
@@ -52,17 +52,17 @@ export function getBullMQConnection(): Redis {
         return Math.min(times * 200, 5000); // Exponential backoff, max 5s
       },
       reconnectOnError: (err) => {
-        const targetErrors = ["READONLY", "ECONNRESET", "ETIMEDOUT"];
+        const targetErrors = ['READONLY', 'ECONNRESET', 'ETIMEDOUT'];
         return targetErrors.some((e) => err.message.includes(e));
       },
     });
 
-    bullmqConnection.on("error", (err) => {
-      logger.error({ err }, "bullmq_redis_connection_error");
+    bullmqConnection.on('error', (err) => {
+      logger.error({ err }, 'bullmq_redis_connection_error');
     });
 
-    bullmqConnection.on("connect", () => {
-      logger.info("bullmq_redis_connected");
+    bullmqConnection.on('connect', () => {
+      logger.info('bullmq_redis_connected');
     });
   }
 
@@ -84,12 +84,12 @@ export function getPublisher(): Redis {
       },
     });
 
-    publisher.on("error", (err) => {
-      logger.error({ err }, "redis_publisher_error");
+    publisher.on('error', (err) => {
+      logger.error({ err }, 'redis_publisher_error');
     });
 
-    publisher.on("connect", () => {
-      logger.info("redis_publisher_connected");
+    publisher.on('connect', () => {
+      logger.info('redis_publisher_connected');
     });
   }
 
@@ -112,12 +112,12 @@ export function getSubscriber(): Redis {
       },
     });
 
-    subscriber.on("error", (err) => {
-      logger.error({ err }, "redis_subscriber_error");
+    subscriber.on('error', (err) => {
+      logger.error({ err }, 'redis_subscriber_error');
     });
 
-    subscriber.on("connect", () => {
-      logger.info("redis_subscriber_connected");
+    subscriber.on('connect', () => {
+      logger.info('redis_subscriber_connected');
     });
   }
 
@@ -128,7 +128,7 @@ export function getSubscriber(): Redis {
  * Check if job queue is enabled via environment variable
  */
 export function isJobQueueEnabled(): boolean {
-  return process.env.USE_JOB_QUEUE === "true";
+  return process.env.USE_JOB_QUEUE === 'true';
 }
 
 /**
@@ -145,5 +145,5 @@ export async function closeConnections(): Promise<void> {
   publisher = null;
   subscriber = null;
 
-  logger.info("redis_connections_closed");
+  logger.info('redis_connections_closed');
 }

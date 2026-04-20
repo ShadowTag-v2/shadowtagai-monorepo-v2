@@ -6,7 +6,7 @@
 
 /* Loads the current theme from the site */
 
-import {PostDoc} from 'postdoc-lib';
+import { PostDoc } from 'postdoc-lib';
 
 // create a constructable stylesheet
 const styleSheet = new CSSStyleSheet();

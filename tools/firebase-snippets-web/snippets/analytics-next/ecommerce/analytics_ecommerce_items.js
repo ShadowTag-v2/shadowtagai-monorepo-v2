@@ -12,7 +12,7 @@ const item_jeggings = {
   item_category: 'pants',
   item_variant: 'black',
   item_brand: 'Google',
-  price: 9.99
+  price: 9.99,
 };
 
 // A pair of boots
@@ -22,7 +22,7 @@ const item_boots = {
   item_category: 'shoes',
   item_variant: 'brown',
   item_brand: 'Google',
-  price: 24.99
+  price: 24.99,
 };
 
 // A pair of socks
@@ -32,6 +32,6 @@ const item_socks = {
   item_category: 'socks',
   item_variant: 'red',
   item_brand: 'Google',
-  price: 5.99
+  price: 5.99,
 };
 // [END analytics_ecommerce_items_modular]

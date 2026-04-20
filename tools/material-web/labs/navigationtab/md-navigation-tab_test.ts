@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html, render} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import { html, render } from 'lit';
+import { customElement } from 'lit/decorators.js';
 
-import {Environment} from '../../testing/environment.js';
+import { Environment } from '../../testing/environment.js';
 
-import {NavigationTabHarness} from './harness.js';
-import {MdNavigationTab} from './navigation-tab.js';
+import { NavigationTabHarness } from './harness.js';
+import { MdNavigationTab } from './navigation-tab.js';
 
 @customElement('md-test-navigation-tab')
 class TestNavigationTab extends MdNavigationTab {}
@@ -53,7 +53,7 @@ describe('mwc-navigation-tab', () => {
 
   describe('basic', () => {
     it('initializes as an md-navigation-tab', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       expect(harness.element).toBeInstanceOf(MdNavigationTab);
       expect(harness.element.active).toBeFalse();
       expect(harness.element.hideInactiveLabel).toBeFalse();
@@ -63,18 +63,15 @@ describe('mwc-navigation-tab', () => {
     });
 
     it('emits interaction event on click', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       const interactionHandler = jasmine.createSpy();
-      harness.element.addEventListener(
-        'navigation-tab-interaction',
-        interactionHandler,
-      );
+      harness.element.addEventListener('navigation-tab-interaction', interactionHandler);
       await harness.clickWithMouse();
       expect(interactionHandler).toHaveBeenCalled();
     });
 
     it('focus() sets focus on button element', async () => {
-      const {harness, button} = await setupTest();
+      const { harness, button } = await setupTest();
       harness.element.focus();
       expect(button.matches(':focus')).toBeTrue();
     });
@@ -91,7 +88,7 @@ describe('mwc-navigation-tab', () => {
 
   describe('active', () => {
     it('affects `aria-selected` of native button', async () => {
-      const {harness, button} = await setupTest();
+      const { harness, button } = await setupTest();
       harness.element.active = true;
       await env.waitForStability();
 
@@ -103,7 +100,7 @@ describe('mwc-navigation-tab', () => {
     });
 
     it('affects `tabindex` of native button', async () => {
-      const {harness, button} = await setupTest();
+      const { harness, button } = await setupTest();
       harness.element.active = true;
       await env.waitForStability();
 
@@ -115,44 +112,38 @@ describe('mwc-navigation-tab', () => {
     });
 
     it('sets the correct classes', async () => {
-      const {harness, navTab} = await setupTest();
+      const { harness, navTab } = await setupTest();
       harness.element.active = true;
       await env.waitForStability();
 
-      expect(
-        navTab.classList.contains('md3-navigation-tab--active'),
-      ).toBeTrue();
+      expect(navTab.classList.contains('md3-navigation-tab--active')).toBeTrue();
     });
   });
 
   describe('hideInactiveLabel', () => {
     it('sets the correct classes', async () => {
-      const {harness, navTab} = await setupTest();
+      const { harness, navTab } = await setupTest();
       harness.element.hideInactiveLabel = true;
       await env.waitForStability();
 
-      expect(
-        navTab.classList.contains('md3-navigation-tab--hide-inactive-label'),
-      ).toBeTrue();
+      expect(navTab.classList.contains('md3-navigation-tab--hide-inactive-label')).toBeTrue();
     });
   });
 
   describe('label', () => {
     it('displays label text', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       harness.element.label = 'foo';
       await env.waitForStability();
 
-      const content = harness.element.shadowRoot!.querySelector(
-        '.md3-navigation-tab__label-text',
-      )!;
+      const content = harness.element.shadowRoot!.querySelector('.md3-navigation-tab__label-text')!;
       expect(content.textContent!.trim()).toEqual('foo');
     });
   });
 
   describe('ariaLabel', () => {
     it('affects `aria-label` of native button', async () => {
-      const {harness, button} = await setupTest();
+      const { harness, button } = await setupTest();
       harness.element.label = 'foo';
       harness.element.ariaLabel = 'bar';
       await env.waitForStability();
@@ -163,7 +154,7 @@ describe('mwc-navigation-tab', () => {
 
   describe('showBadge', () => {
     it('displays badge', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       harness.element.showBadge = true;
       await env.waitForStability();
 
@@ -172,7 +163,7 @@ describe('mwc-navigation-tab', () => {
     });
 
     it('does not display badge if showBadge is false', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       harness.element.showBadge = false;
       await env.waitForStability();
 
@@ -183,7 +174,7 @@ describe('mwc-navigation-tab', () => {
 
   describe('badgeValue', () => {
     it('displays badge value', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       harness.element.showBadge = true;
       harness.element.badgeValue = '9';
       await env.waitForStability();
@@ -195,30 +186,26 @@ describe('mwc-navigation-tab', () => {
 
   describe('icons', () => {
     it('nodes with `slot=active-icon` will serve as the active icon', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       const icons = html`
         <i slot="active-icon" class="material-icons">star</i>
         <i slot="inactive-icon" class="material-icons">star_border</i>
       `;
       render(icons, harness.element);
 
-      const icon = harness.element.querySelector<HTMLElement>(
-        '[slot="active-icon"]',
-      )!;
+      const icon = harness.element.querySelector<HTMLElement>('[slot="active-icon"]')!;
       expect(icon.textContent!.trim()).toEqual('star');
     });
 
     it('nodes with `slot=inactive-icon` will serve as the inactive icon', async () => {
-      const {harness} = await setupTest();
+      const { harness } = await setupTest();
       const icons = html`
         <i slot="active-icon" class="material-icons">star</i>
         <i slot="inactive-icon" class="material-icons">star_border</i>
       `;
       render(icons, harness.element);
 
-      const icon = harness.element.querySelector<HTMLElement>(
-        '[slot="inactive-icon"]',
-      )!;
+      const icon = harness.element.querySelector<HTMLElement>('[slot="inactive-icon"]')!;
       expect(icon.textContent!.trim()).toEqual('star_border');
     });
   });

@@ -6,16 +6,14 @@
 
 // import 'jasmine'; (google3-only)
 
-import {redispatchEvent} from './redispatch-event.js';
+import { redispatchEvent } from './redispatch-event.js';
 
 describe('events', () => {
   let instance: HTMLDivElement;
 
   beforeEach(() => {
     instance = document.createElement('div');
-    instance
-      .attachShadow({mode: 'open'})
-      .append(document.createElement('slot'));
+    instance.attachShadow({ mode: 'open' }).append(document.createElement('slot'));
     // To have event.target set correctly, the EventTarget instance must be
     // attached to the DOM.
     document.body.appendChild(instance);
@@ -27,7 +25,7 @@ describe('events', () => {
 
   describe('redispatchEvent()', () => {
     it('should re-dispatch events', () => {
-      const event = new Event('foo', {composed: false, bubbles: true});
+      const event = new Event('foo', { composed: false, bubbles: true });
       const fooHandler = jasmine.createSpy('fooHandler');
       instance.addEventListener('foo', fooHandler);
       redispatchEvent(instance, event);
@@ -38,23 +36,17 @@ describe('events', () => {
         .withContext('redispatched event should be a new instance')
         .not.toBe(event);
       expect(redispatchedEvent.target)
-        .withContext(
-          'target should be the instance that redispatched the event',
-        )
+        .withContext('target should be the instance that redispatched the event')
         .toBe(instance);
-      expect(redispatchedEvent.type)
-        .withContext('should be the same event type')
-        .toBe(event.type);
-      expect(redispatchedEvent.composed)
-        .withContext('should not be composed')
-        .toBeFalse();
+      expect(redispatchedEvent.type).withContext('should be the same event type').toBe(event.type);
+      expect(redispatchedEvent.composed).withContext('should not be composed').toBeFalse();
       expect(redispatchedEvent.bubbles)
         .withContext('should keep other flags set to true')
         .toBeTrue();
     });
 
     it('should not dispatch multiple events if bubbling and composed', () => {
-      const event = new Event('foo', {composed: true, bubbles: true});
+      const event = new Event('foo', { composed: true, bubbles: true });
       const fooHandler = jasmine.createSpy('fooHandler');
       instance.addEventListener('foo', fooHandler);
       redispatchEvent(instance, event);
@@ -66,7 +58,7 @@ describe('events', () => {
       const lightDomInstance = document.createElement('div');
       try {
         document.body.appendChild(lightDomInstance);
-        const event = new Event('foo', {composed: true, bubbles: true});
+        const event = new Event('foo', { composed: true, bubbles: true });
         const fooHandler = jasmine.createSpy('fooHandler');
         instance.addEventListener('foo', fooHandler);
         redispatchEvent(instance, event);
@@ -78,29 +70,23 @@ describe('events', () => {
     });
 
     it('should preventDefault() on the original event if canceled', () => {
-      const event = new Event('foo', {cancelable: true});
-      const fooHandler = jasmine
-        .createSpy('fooHandler')
-        .and.callFake((event: Event) => {
-          event.preventDefault();
-        });
+      const event = new Event('foo', { cancelable: true });
+      const fooHandler = jasmine.createSpy('fooHandler').and.callFake((event: Event) => {
+        event.preventDefault();
+      });
       instance.addEventListener('foo', fooHandler);
       const result = redispatchEvent(instance, event);
-      expect(result)
-        .withContext('should return false since event was canceled')
-        .toBeFalse();
+      expect(result).withContext('should return false since event was canceled').toBeFalse();
       expect(fooHandler).toHaveBeenCalled();
       const redispatchedEvent = fooHandler.calls.first().args[0] as Event;
       expect(redispatchedEvent.defaultPrevented)
         .withContext('redispatched event should be canceled by handler')
         .toBeTrue();
-      expect(event.defaultPrevented)
-        .withContext('original event should be canceled')
-        .toBeTrue();
+      expect(event.defaultPrevented).withContext('original event should be canceled').toBeTrue();
     });
 
     it('should preserve event instance types', () => {
-      const event = new CustomEvent('foo', {detail: 'bar'});
+      const event = new CustomEvent('foo', { detail: 'bar' });
       const fooHandler = jasmine.createSpy('fooHandler');
       instance.addEventListener('foo', fooHandler);
       redispatchEvent(instance, event);

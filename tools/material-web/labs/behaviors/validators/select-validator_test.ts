@@ -6,7 +6,7 @@
 
 // import 'jasmine'; (google3-only)
 
-import {SelectValidator} from './select-validator.js';
+import { SelectValidator } from './select-validator.js';
 
 describe('SelectValidator', () => {
   it('is invalid when required and value is empty', () => {
@@ -16,7 +16,7 @@ describe('SelectValidator', () => {
     };
 
     const validator = new SelectValidator(() => state);
-    const {validity, validationMessage} = validator.getValidity();
+    const { validity, validationMessage } = validator.getValidity();
     expect(validity.valueMissing).withContext('valueMissing').toBeTrue();
     expect(validationMessage).withContext('validationMessage').not.toBe('');
   });
@@ -28,7 +28,7 @@ describe('SelectValidator', () => {
     };
 
     const validator = new SelectValidator(() => state);
-    const {validity, validationMessage} = validator.getValidity();
+    const { validity, validationMessage } = validator.getValidity();
     expect(validity.valueMissing).withContext('valueMissing').toBeFalse();
     expect(validationMessage).withContext('validationMessage').toBe('');
   });
@@ -40,7 +40,7 @@ describe('SelectValidator', () => {
     };
 
     const validator = new SelectValidator(() => state);
-    const {validity, validationMessage} = validator.getValidity();
+    const { validity, validationMessage } = validator.getValidity();
     expect(validity.valueMissing).withContext('valueMissing').toBeFalse();
     expect(validationMessage).withContext('validationMessage').toBe('');
   });

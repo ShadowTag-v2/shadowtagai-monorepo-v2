@@ -45,10 +45,7 @@
       "engine": "mlx (Apple Silicon native)",
       "kv_cache_slab": "data/sovereign_mlx/kv_cache_slab.bin",
       "llama_server": "llama.cpp Metal acceleration",
-      "models": [
-        "unsloth/gemma-4-31B-it-GGUF",
-        "ggml-org/gemma-4-26b-a4b-it-GGUF"
-      ],
+      "models": ["unsloth/gemma-4-31B-it-GGUF", "ggml-org/gemma-4-26b-a4b-it-GGUF"],
       "endpoint": "http://localhost:8080/v1"
     },
     "tier_3_vertex_ai": {
@@ -163,10 +160,19 @@
   },
   "repo_drift_remediation": {
     "delete_targets": [
-      "agent0/", "agents/", "agent_engine/",
-      "aiyou-global-edge-fabric/", "antigravity_gca_repo_bundle/",
-      "app/", "frontend/", "backend/", "fast-api/", "fastapi/",
-      "01_repo_census.json", "04_canonical_state.md", "gate0_summary.csv"
+      "agent0/",
+      "agents/",
+      "agent_engine/",
+      "aiyou-global-edge-fabric/",
+      "antigravity_gca_repo_bundle/",
+      "app/",
+      "frontend/",
+      "backend/",
+      "fast-api/",
+      "fastapi/",
+      "01_repo_census.json",
+      "04_canonical_state.md",
+      "gate0_summary.csv"
     ],
     "gitignore_patches": ["frontend/", "backend/", "fastapi/", "fast-api/"],
     "canonical_roots_preserved": [

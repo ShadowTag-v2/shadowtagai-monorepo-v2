@@ -35,15 +35,12 @@ function inlineCSS(eleventyConfig, isDev) {
     if (isDev) {
       return `<link rel="stylesheet" href="/css/${path}">`;
     }
-    const result = new CleanCSS({ inline: ['local'] }).minify([
-      `./site/css/${path}`,
-    ]);
+    const result = new CleanCSS({ inline: ['local'] }).minify([`./site/css/${path}`]);
     if (result.errors.length > 0 || result.warnings.length > 0) {
       throw new Error(
-        `CleanCSS errors/warnings on file ${path}:\n\n${[
-          ...result.errors,
-          ...result.warnings,
-        ].join('\n')}`
+        `CleanCSS errors/warnings on file ${path}:\n\n${[...result.errors, ...result.warnings].join(
+          '\n',
+        )}`,
       );
     }
     return `<style>${result.styles}</style>`;

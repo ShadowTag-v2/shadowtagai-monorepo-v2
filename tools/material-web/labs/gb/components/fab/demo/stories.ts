@@ -7,11 +7,11 @@
 import '@material/web/icon/icon.js';
 import '@material/web/labs/gb/components/fab/md-fab.js';
 
-import {MaterialStoryInit} from './material-collection.js';
-import {FabColor, FabSize} from '@material/web/labs/gb/components/fab/fab.js';
-import {adoptStyles} from '@material/web/labs/gb/styles/adopt-styles.js';
-import {styles as m3Styles} from '@material/web/labs/gb/styles/m3.cssresult.js';
-import {css, html, nothing} from 'lit';
+import type { FabColor, FabSize } from '@material/web/labs/gb/components/fab/fab.js';
+import { adoptStyles } from '@material/web/labs/gb/styles/adopt-styles.js';
+import { styles as m3Styles } from '@material/web/labs/gb/styles/m3.cssresult.js';
+import { css, html, nothing } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for fab stories. */
 export interface StoryKnobs {

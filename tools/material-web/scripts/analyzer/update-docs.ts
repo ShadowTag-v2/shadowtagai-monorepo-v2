@@ -5,8 +5,8 @@
  */
 
 import {
-  AbsolutePath,
-  Analyzer,
+  type AbsolutePath,
+  type Analyzer,
   createPackageAnalyzer,
 } from '@lit-labs/analyzer/package-analyzer.js';
 import * as fs from 'fs/promises';
@@ -14,12 +14,12 @@ import * as path from 'path';
 
 import {
   analyzeElementApi,
-  MdMethodParameterInfo,
-  MdModuleInfo,
-  MdPropertyInfo,
+  type MdMethodParameterInfo,
+  type MdModuleInfo,
+  type MdPropertyInfo,
 } from './analyze-element.js';
-import {docsToElementMapping} from './element-docs-map.js';
-import {MarkdownTable} from './markdown-tree-builder.js';
+import { docsToElementMapping } from './element-docs-map.js';
+import { MarkdownTable } from './markdown-tree-builder.js';
 
 interface MarkdownTableSection {
   name: string;
@@ -31,7 +31,7 @@ interface ElementTableSection {
   customElementName: string;
   summary: string;
   description: string;
-  tables: Array<{name: string; table: MarkdownTable}>;
+  tables: Array<{ name: string; table: MarkdownTable }>;
 }
 
 /**
@@ -52,9 +52,7 @@ async function updateApiDocs() {
 
   // Update all the documentation files in parallel
   for (const docFileName of documentationFileNames) {
-    filesWritten.push(
-      updateDocFileApiSection(docFileName, analyzer, packagePath),
-    );
+    filesWritten.push(updateDocFileApiSection(docFileName, analyzer, packagePath));
   }
 
   // Wait for all the files to be written
@@ -84,9 +82,7 @@ async function updateDocFileApiSection(
   const elementTableSections: ElementTableSection[] = [];
 
   for (const elementEntrypoint of elementEntrypoints) {
-    elementTableSections.push(
-      generateTableSection(elementEntrypoint, packagePath, analyzer),
-    );
+    elementTableSections.push(generateTableSection(elementEntrypoint, packagePath, analyzer));
   }
 
   const documentationFileContents = await fs.readFile(
@@ -121,10 +117,7 @@ function generateTableSection(
   packagePath: string,
   analyzer: Analyzer,
 ): ElementTableSection {
-  const elementDoc = analyzeElementApi(
-    analyzer,
-    path.resolve(packagePath, elementEntrypoint),
-  );
+  const elementDoc = analyzeElementApi(analyzer, path.resolve(packagePath, elementEntrypoint));
   const tables: MarkdownTableSection[] = [];
 
   const propertiesTable = generateFieldMarkdownTable(elementDoc);
@@ -132,15 +125,15 @@ function generateTableSection(
   const eventsTable = generateEventsMarkdownTable(elementDoc);
 
   if (propertiesTable.rows.length > 0) {
-    tables.push({name: 'Properties', table: propertiesTable});
+    tables.push({ name: 'Properties', table: propertiesTable });
   }
 
   if (methodsTable.rows.length > 0) {
-    tables.push({name: 'Methods', table: methodsTable});
+    tables.push({ name: 'Methods', table: methodsTable });
   }
 
   if (eventsTable.rows.length > 0) {
-    tables.push({name: 'Events', table: eventsTable});
+    tables.push({ name: 'Events', table: eventsTable });
   }
 
   return {
@@ -164,10 +157,7 @@ function generateTableSection(
  *     update the subclassRow.
  * @returns The mutated subclass row object.
  */
-function updateRow<T extends {[key: string]: unknown}>(
-  subclassRow: T,
-  superClassRow: T,
-) {
+function updateRow<T extends { [key: string]: unknown }>(subclassRow: T, superClassRow: T) {
   const keys = Object.keys(superClassRow) as Array<keyof T>;
   // update the row values if they are not defined
   for (const key of keys) {
@@ -288,12 +278,7 @@ function generateFieldMarkdownTable(element: MdModuleInfo): MarkdownTable {
  * element.
  */
 function generateMethodMarkdownTable(element: MdModuleInfo): MarkdownTable {
-  const methodsTable = new MarkdownTable([
-    'Method',
-    'Parameters',
-    'Returns',
-    'Description',
-  ]);
+  const methodsTable = new MarkdownTable(['Method', 'Parameters', 'Returns', 'Description']);
   const methodNameOrder: string[] = [];
   const methodToRow = new Map<
     string,
@@ -424,10 +409,7 @@ function generateEventsMarkdownTable(element: MdModuleInfo): MarkdownTable {
  * API tables to insert into the documentation file.
  * @returns The updated documentation file contents with the API section.
  */
-function insertMarkdownTables(
-  fileContents: string,
-  elementTableSections: ElementTableSection[],
-) {
+function insertMarkdownTables(fileContents: string, elementTableSections: ElementTableSection[]) {
   // A file that has no tables to insert should have its API section cleared.
   const hasContent = elementTableSections.reduce((hasContent, element) => {
     return hasContent || element.tables.length > 0;
@@ -488,14 +470,12 @@ function stringifyMarkdownTableSections(elements: ElementTableSection[]) {
   let tablesStrings = '';
 
   for (const element of elements) {
-    const {className, tables, customElementName} = element;
+    const { className, tables, customElementName } = element;
     tablesStrings += `
-### ${className}${
-      customElementName ? ` <code>&lt;${customElementName}&gt;</code>` : ''
-    }
+### ${className}${customElementName ? ` <code>&lt;${customElementName}&gt;</code>` : ''}
 ${tables
   .map(
-    ({name, table}) => `
+    ({ name, table }) => `
 #### ${name}
 
 ${table.toString()}

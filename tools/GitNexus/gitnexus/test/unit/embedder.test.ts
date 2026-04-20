@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { getEmbeddingDims, isEmbedderReady } from '../../src/mcp/core/embedder.js';
 
 describe('embedder', () => {

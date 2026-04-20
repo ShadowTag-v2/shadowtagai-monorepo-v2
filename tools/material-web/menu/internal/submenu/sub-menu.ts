@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {html, isServer, LitElement} from 'lit';
-import {property, queryAssignedElements} from 'lit/decorators.js';
+import { html, isServer, LitElement } from 'lit';
+import { property, queryAssignedElements } from 'lit/decorators.js';
 
 import {
   createDeactivateItemsEvent,
@@ -13,18 +13,18 @@ import {
   deactivateActiveItem,
   getFirstActivatableItem,
 } from '../../../list/internal/list-navigation-helpers.js';
-import {MenuItem} from '../controllers/menuItemController.js';
+import type { MenuItem } from '../controllers/menuItemController.js';
 import {
-  CloseMenuEvent,
+  type CloseMenuEvent,
   CloseReason,
   createActivateTypeaheadEvent,
   createDeactivateTypeaheadEvent,
   KeydownCloseKey,
-  Menu,
+  type Menu,
   NavigableKey,
   SelectionKey,
 } from '../controllers/shared.js';
-import {Corner} from '../menu.js';
+import { Corner } from '../menu.js';
 
 /**
  * @fires deactivate-items {Event} Requests the parent menu to deselect other
@@ -40,26 +40,26 @@ export class SubMenu extends LitElement {
   /**
    * The anchorCorner to set on the submenu.
    */
-  @property({attribute: 'anchor-corner'})
+  @property({ attribute: 'anchor-corner' })
   anchorCorner: Corner = Corner.START_END;
   /**
    * The menuCorner to set on the submenu.
    */
-  @property({attribute: 'menu-corner'}) menuCorner: Corner = Corner.START_START;
+  @property({ attribute: 'menu-corner' }) menuCorner: Corner = Corner.START_START;
   /**
    * The delay between mouseenter and submenu opening.
    */
-  @property({type: Number, attribute: 'hover-open-delay'}) hoverOpenDelay = 400;
+  @property({ type: Number, attribute: 'hover-open-delay' }) hoverOpenDelay = 400;
   /**
    * The delay between ponterleave and the submenu closing.
    */
-  @property({type: Number, attribute: 'hover-close-delay'})
+  @property({ type: Number, attribute: 'hover-close-delay' })
   hoverCloseDelay = 400;
 
   /**
    * READONLY: self-identifies as a menu item and sets its identifying attribute
    */
-  @property({type: Boolean, reflect: true, attribute: 'md-sub-menu'})
+  @property({ type: Boolean, reflect: true, attribute: 'md-sub-menu' })
   isSubMenu = true;
 
   get item() {
@@ -70,10 +70,10 @@ export class SubMenu extends LitElement {
     return this.menus[0] ?? null;
   }
 
-  @queryAssignedElements({slot: 'item', flatten: true})
+  @queryAssignedElements({ slot: 'item', flatten: true })
   private readonly items!: MenuItem[];
 
-  @queryAssignedElements({slot: 'menu', flatten: true})
+  @queryAssignedElements({ slot: 'menu', flatten: true })
   private readonly menus!: Menu[];
 
   private previousOpenTimeout = 0;
@@ -134,7 +134,7 @@ export class SubMenu extends LitElement {
         // aria-hidden required so ChromeVox doesn't announce the closed menu
         menu.ariaHidden = 'true';
       },
-      {once: true},
+      { once: true },
     );
 
     // Parent menu is `position: absolute` – this creates a new CSS relative
@@ -188,7 +188,7 @@ export class SubMenu extends LitElement {
       const opened = new Promise((resolve) => {
         open = resolve;
       });
-      menu.addEventListener('opened', open, {once: true});
+      menu.addEventListener('opened', open, { once: true });
       await opened;
     }
   }
@@ -208,7 +208,7 @@ export class SubMenu extends LitElement {
     const closed = new Promise((resolve) => {
       close = resolve;
     });
-    menu.addEventListener('closed', close, {once: true});
+    menu.addEventListener('closed', close, { once: true });
     await closed;
   }
 
@@ -295,8 +295,7 @@ export class SubMenu extends LitElement {
     if (event.defaultPrevented) return;
 
     const openedWithLR =
-      shouldOpenSubmenu &&
-      (NavigableKey.LEFT === event.code || NavigableKey.RIGHT === event.code);
+      shouldOpenSubmenu && (NavigableKey.LEFT === event.code || NavigableKey.RIGHT === event.code);
 
     if (event.code === SelectionKey.SPACE || openedWithLR) {
       // prevent space from scrolling and Left + Right from selecting previous /
@@ -329,16 +328,13 @@ export class SubMenu extends LitElement {
   }
 
   private onCloseSubmenu(event: CloseMenuEvent) {
-    const {itemPath, reason} = event.detail;
+    const { itemPath, reason } = event.detail;
     itemPath.push(this.item);
 
     this.dispatchEvent(createActivateTypeaheadEvent());
     // Escape should only close one menu not all of the menus unlike space or
     // click selection which should close all menus.
-    if (
-      reason.kind === CloseReason.KEYDOWN &&
-      reason.key === KeydownCloseKey.ESCAPE
-    ) {
+    if (reason.kind === CloseReason.KEYDOWN && reason.key === KeydownCloseKey.ESCAPE) {
       event.stopPropagation();
       this.item.dispatchEvent(createRequestActivationEvent());
       return;
@@ -349,7 +345,7 @@ export class SubMenu extends LitElement {
 
   private async onSubMenuKeydown(event: KeyboardEvent) {
     if (event.defaultPrevented) return;
-    const {close: shouldClose, keyCode} = this.isSubmenuCloseKey(event.code);
+    const { close: shouldClose, keyCode } = this.isSubmenuCloseKey(event.code);
     if (!shouldClose) return;
 
     // Communicate that it's handled so that we don't accidentally close every
@@ -403,9 +399,9 @@ export class SubMenu extends LitElement {
     switch (code) {
       case arrowEnterKey:
       case KeydownCloseKey.ESCAPE:
-        return {close: true, keyCode: code} as const;
+        return { close: true, keyCode: code } as const;
       default:
-        return {close: false} as const;
+        return { close: false } as const;
     }
   }
 }

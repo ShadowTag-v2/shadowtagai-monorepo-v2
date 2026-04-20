@@ -6,14 +6,14 @@
 
 // import 'jasmine'; (google3-only)
 
-import {css, html, nothing} from 'lit';
-import {customElement, property, query} from 'lit/decorators.js';
+import { css, html, nothing } from 'lit';
+import { customElement, property, query } from 'lit/decorators.js';
 
-import {Environment} from '../../testing/environment.js';
-import {ChipHarness} from '../harness.js';
+import { Environment } from '../../testing/environment.js';
+import { ChipHarness } from '../harness.js';
 
-import {MultiActionChip} from './multi-action-chip.js';
-import {renderRemoveButton} from './trailing-icons.js';
+import { MultiActionChip } from './multi-action-chip.js';
+import { renderRemoveButton } from './trailing-icons.js';
 
 @customElement('test-multi-action-chip')
 class TestMultiActionChip extends MultiActionChip {
@@ -54,9 +54,7 @@ describe('Multi-action chips', () => {
   ): Promise<TestMultiActionChip> {
     const root = env.render(template);
     await env.waitForStability();
-    const chip = root.querySelector<TestMultiActionChip>(
-      'test-multi-action-chip',
-    );
+    const chip = root.querySelector<TestMultiActionChip>('test-multi-action-chip');
     if (!chip) {
       throw new Error('Failed to query the rendered <test-multi-action-chip>');
     }
@@ -199,9 +197,7 @@ describe('Multi-action chips', () => {
         .withContext('chip should be attached before removing')
         .not.toBeNull();
       await harness.clickWithMouse();
-      expect(chip.parentElement)
-        .withContext('chip should be detached after removing')
-        .toBeNull();
+      expect(chip.parentElement).withContext('chip should be detached after removing').toBeNull();
     });
 
     it('should dispatch a "remove" event when removed', async () => {
@@ -224,16 +220,12 @@ describe('Multi-action chips', () => {
       });
 
       await harness.clickWithMouse();
-      expect(chip.parentElement)
-        .withContext('chip should still be attached')
-        .not.toBeNull();
+      expect(chip.parentElement).withContext('chip should still be attached').not.toBeNull();
     });
 
     it('should provide a default "ariaLabelRemove" value', async () => {
       const label = 'Label';
-      const chip = await setupTest(
-        html`<test-multi-action-chip>${label}</test-multi-action-chip>`,
-      );
+      const chip = await setupTest(html`<test-multi-action-chip>${label}</test-multi-action-chip>`);
 
       expect(getA11yLabelForChipRemoveButton(chip)).toEqual(`Remove ${label}`);
     });
@@ -246,9 +238,7 @@ describe('Multi-action chips', () => {
         </test-multi-action-chip>`,
       );
 
-      expect(getA11yLabelForChipRemoveButton(chip)).toEqual(
-        `Remove ${chip.ariaLabel}`,
-      );
+      expect(getA11yLabelForChipRemoveButton(chip)).toEqual(`Remove ${chip.ariaLabel}`);
     });
 
     it('should allow setting a custom "ariaLabelRemove"', async () => {
@@ -262,9 +252,7 @@ describe('Multi-action chips', () => {
         </test-multi-action-chip>`,
       );
 
-      expect(getA11yLabelForChipRemoveButton(chip)).toEqual(
-        customAriaLabelRemove,
-      );
+      expect(getA11yLabelForChipRemoveButton(chip)).toEqual(customAriaLabelRemove);
     });
 
     // TODO(b/350810013): remove test when label property is removed.
@@ -273,9 +261,7 @@ describe('Multi-action chips', () => {
       chip.label = 'Label';
       await env.waitForStability();
 
-      expect(getA11yLabelForChipRemoveButton(chip)).toEqual(
-        `Remove ${chip.label}`,
-      );
+      expect(getA11yLabelForChipRemoveButton(chip)).toEqual(`Remove ${chip.label}`);
     });
 
     // TODO(b/350810013): remove test when label property is removed.
@@ -285,9 +271,7 @@ describe('Multi-action chips', () => {
       chip.ariaLabel = 'Descriptive label';
       await env.waitForStability();
 
-      expect(getA11yLabelForChipRemoveButton(chip)).toEqual(
-        `Remove ${chip.ariaLabel}`,
-      );
+      expect(getA11yLabelForChipRemoveButton(chip)).toEqual(`Remove ${chip.ariaLabel}`);
     });
 
     // TODO(b/350810013): remove test when label property is removed.
@@ -299,9 +283,7 @@ describe('Multi-action chips', () => {
       chip.ariaLabelRemove = customAriaLabelRemove;
       await env.waitForStability();
 
-      expect(getA11yLabelForChipRemoveButton(chip)).toEqual(
-        customAriaLabelRemove,
-      );
+      expect(getA11yLabelForChipRemoveButton(chip)).toEqual(customAriaLabelRemove);
     });
   });
 });
@@ -326,31 +308,25 @@ function getSlotTextContent(slot: HTMLSlotElement) {
  * content of the elements it is labelled by.
  */
 function getA11yLabelForChipRemoveButton(chip: TestMultiActionChip): string {
-  const removeButton = chip.shadowRoot!.querySelector<HTMLButtonElement>(
-    'button.trailing.action',
-  )!;
+  const removeButton = chip.shadowRoot!.querySelector<HTMLButtonElement>('button.trailing.action')!;
 
   if (removeButton.ariaLabel) {
     return removeButton.ariaLabel;
   }
 
   // If the remove button is not aria-labelled, it should be aria-labelledby.
-  const removeButtonAriaLabelledBy =
-    removeButton.getAttribute('aria-labelledby')!;
+  const removeButtonAriaLabelledBy = removeButton.getAttribute('aria-labelledby')!;
   const elementsLabelledBy: HTMLElement[] = [];
   removeButtonAriaLabelledBy.split(' ').forEach((id) => {
     const labelledByElement = chip.shadowRoot?.getElementById(id);
     if (!labelledByElement) {
-      throw new Error(
-        `Cannot find element with ID "#{id}" in the chip's shadow root`,
-      );
+      throw new Error(`Cannot find element with ID "#{id}" in the chip's shadow root`);
     }
     elementsLabelledBy.push(labelledByElement);
   });
   const textFromAriaLabelledBy: string[] = [];
   elementsLabelledBy.forEach((element) => {
-    const unnamedSlotChildElement =
-      element.querySelector<HTMLSlotElement>('slot:not([name])');
+    const unnamedSlotChildElement = element.querySelector<HTMLSlotElement>('slot:not([name])');
     if (unnamedSlotChildElement) {
       textFromAriaLabelledBy.push(getSlotTextContent(unnamedSlotChildElement));
     } else {

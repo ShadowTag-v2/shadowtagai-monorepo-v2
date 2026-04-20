@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { describe, it, expect, vi, Mock } from 'vitest';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { describe, expect, it, type Mock, vi } from 'vitest';
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { registerTools } from './registration.js';
 import * as tools from './index.js';
+import { registerTools } from './registration.js';
 
 // Mock the underlying tool functions
 vi.mock('./index.js', () => ({

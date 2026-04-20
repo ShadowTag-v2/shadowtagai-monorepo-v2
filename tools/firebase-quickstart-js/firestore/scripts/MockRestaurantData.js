@@ -12,27 +12,16 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
-
+ */
 
 /**  If connecting to a live Firebase project (one that you set up in the
  * Firebase console) put your config vars into the `prod` field object here
  * and change the `initializeApp` value in `app.module.ts` to `environment.prod`.
  * Otherwise, leave untouched to enable connection to demo project and emulators.
-*/
+ */
 
 export const data = {
-  words: [
-    'Bar',
-    'Fire',
-    'Grill',
-    'Drive Thru',
-    'Place',
-    'Best',
-    'Spot',
-    'Prime',
-    'Eatin\'',
-  ],
+  words: ['Bar', 'Fire', 'Grill', 'Drive Thru', 'Place', 'Best', 'Spot', 'Prime', "Eatin'"],
   cities: [
     'Albuquerque',
     'Arlington',

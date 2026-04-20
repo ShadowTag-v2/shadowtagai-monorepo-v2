@@ -1,18 +1,18 @@
-import { Elysia } from "elysia";
-import { x402Config, networkConfig } from "../../middleware/x402/config";
-import { routePricing, toolPricing } from "../../middleware/x402/pricing";
-import { getPaymentsByUser, getUserPaymentStats } from "../../db/x402Operations";
-import { getOrCreateUserByWallet } from "../../db/operations";
-import { x402Service } from "../../middleware/x402/service";
-import logger from "../../utils/logger";
+import { Elysia } from 'elysia';
+import { getOrCreateUserByWallet } from '../../db/operations';
+import { getPaymentsByUser, getUserPaymentStats } from '../../db/x402Operations';
+import { networkConfig, x402Config } from '../../middleware/x402/config';
+import { routePricing, toolPricing } from '../../middleware/x402/pricing';
+import { x402Service } from '../../middleware/x402/service';
+import logger from '../../utils/logger';
 
-export const x402Route = new Elysia({ prefix: "/api/x402" })
+export const x402Route = new Elysia({ prefix: '/api/x402' })
   // x402 V2 config endpoint
-  .get("/config", () => {
+  .get('/config', () => {
     return {
       // Protocol info
       enabled: x402Config.enabled,
-      protocol: "x402",
+      protocol: 'x402',
       x402Version: 2,
       network: x402Config.network,
       environment: x402Config.environment,
@@ -31,55 +31,55 @@ export const x402Route = new Elysia({ prefix: "/api/x402" })
       // Available networks
       availableNetworks: [
         {
-          id: x402Config.environment === "testnet" ? "base-sepolia" : "base",
-          protocol: "x402",
+          id: x402Config.environment === 'testnet' ? 'base-sepolia' : 'base',
+          protocol: 'x402',
           name: x402Config.network,
           chainId: networkConfig.chainId,
           tokens: [
             {
-              symbol: "USDC",
+              symbol: 'USDC',
               address: x402Config.usdcAddress,
               decimals: 6,
             },
           ],
           facilitatorUrl: x402Config.facilitatorUrl,
-          nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
+          nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
         },
       ],
 
       // V2 header info
       headers: {
-        paymentSignature: "PAYMENT-SIGNATURE",
-        paymentResponse: "PAYMENT-RESPONSE",
-        paymentRequired: "PAYMENT-REQUIRED",
+        paymentSignature: 'PAYMENT-SIGNATURE',
+        paymentResponse: 'PAYMENT-RESPONSE',
+        paymentRequired: 'PAYMENT-REQUIRED',
       },
     };
   })
-  .get("/pricing", () => ({
+  .get('/pricing', () => ({
     tools: Object.values(toolPricing),
     routes: routePricing,
   }))
-  .get("/payments/:userId", async ({ params: { userId }, set }) => {
+  .get('/payments/:userId', async ({ params: { userId }, set }) => {
     try {
       const payments = await getPaymentsByUser(userId, 50);
       return { ok: true, payments };
     } catch (error) {
-      if (logger) logger.error({ error }, "x402_v2_payments_query_failed");
+      if (logger) logger.error({ error }, 'x402_v2_payments_query_failed');
       set.status = 500;
-      return { ok: false, error: "Failed to fetch payments" };
+      return { ok: false, error: 'Failed to fetch payments' };
     }
   })
-  .get("/stats/:userId", async ({ params: { userId }, set }) => {
+  .get('/stats/:userId', async ({ params: { userId }, set }) => {
     try {
       const stats = await getUserPaymentStats(userId);
       return { ok: true, stats };
     } catch (error) {
-      if (logger) logger.error({ error }, "x402_v2_payment_stats_failed");
+      if (logger) logger.error({ error }, 'x402_v2_payment_stats_failed');
       set.status = 500;
-      return { ok: false, error: "Failed to fetch stats" };
+      return { ok: false, error: 'Failed to fetch stats' };
     }
   })
-  .get("/health", async ({ set }) => {
+  .get('/health', async ({ set }) => {
     const HEALTH_CHECK_TIMEOUT_MS = 5000; // 5 second timeout
 
     try {
@@ -100,11 +100,11 @@ export const x402Route = new Elysia({ prefix: "/api/x402" })
         supported,
       };
     } catch (error: unknown) {
-      const isTimeout = error instanceof Error && error.name === "AbortError";
+      const isTimeout = error instanceof Error && error.name === 'AbortError';
       if (logger) {
         logger.error(
           { error: error instanceof Error ? error.message : String(error), isTimeout },
-          "x402_v2_health_check_failed",
+          'x402_v2_health_check_failed',
         );
       }
       set.status = 503;
@@ -112,22 +112,22 @@ export const x402Route = new Elysia({ prefix: "/api/x402" })
         ok: false,
         x402Version: 2,
         facilitatorAvailable: false,
-        error: isTimeout ? "Facilitator health check timed out" : "Facilitator unavailable",
+        error: isTimeout ? 'Facilitator health check timed out' : 'Facilitator unavailable',
       };
     }
   })
   // Get or create user by wallet address
-  .get("/user/:walletAddress", async ({ params: { walletAddress }, set }) => {
+  .get('/user/:walletAddress', async ({ params: { walletAddress }, set }) => {
     try {
-      if (!walletAddress || !walletAddress.startsWith("0x")) {
+      if (!walletAddress || !walletAddress.startsWith('0x')) {
         set.status = 400;
-        return { ok: false, error: "Invalid wallet address" };
+        return { ok: false, error: 'Invalid wallet address' };
       }
 
       const { user, isNew } = await getOrCreateUserByWallet(walletAddress);
 
       if (logger) {
-        logger.info({ userId: user.id, wallet: walletAddress, isNew }, "x402_v2_user_lookup");
+        logger.info({ userId: user.id, wallet: walletAddress, isNew }, 'x402_v2_user_lookup');
       }
 
       return {
@@ -137,8 +137,8 @@ export const x402Route = new Elysia({ prefix: "/api/x402" })
         isNew,
       };
     } catch (error) {
-      if (logger) logger.error({ error }, "x402_v2_user_lookup_failed");
+      if (logger) logger.error({ error }, 'x402_v2_user_lookup_failed');
       set.status = 500;
-      return { ok: false, error: "Failed to lookup user" };
+      return { ok: false, error: 'Failed to lookup user' };
     }
   });

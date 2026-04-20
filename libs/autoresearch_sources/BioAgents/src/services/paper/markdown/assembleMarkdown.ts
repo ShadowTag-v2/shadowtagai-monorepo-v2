@@ -2,10 +2,10 @@
  * Assemble a complete Markdown document with YAML frontmatter from LLM outputs
  */
 
-import * as fs from "fs";
-import * as path from "path";
-import logger from "../../../utils/logger";
-import type { DiscoverySection } from "../types";
+import * as fs from 'fs';
+import * as path from 'path';
+import logger from '../../../utils/logger';
+import type { DiscoverySection } from '../types';
 
 export type AssembleMarkdownOptions = {
   title: string;
@@ -41,12 +41,12 @@ export function assembleMarkdown(opts: AssembleMarkdownOptions): string {
   // YAML frontmatter
   // Escape YAML special chars in title/abstract by using block scalar
   const frontmatter = [
-    "---",
+    '---',
     `title: |`,
     `  ${title}`,
     `author: "${authors.replace(/"/g, '\\"')}"`,
     `abstract: |`,
-    ...abstract.split("\n").map((line) => `  ${line}`),
+    ...abstract.split('\n').map((line) => `  ${line}`),
     `bibliography: ${bibFilename}`,
     `biblio-style: unsrtnat`,
     `natbiboptions: numbers`,
@@ -55,43 +55,43 @@ export function assembleMarkdown(opts: AssembleMarkdownOptions): string {
     `  \\usepackage{amssymb}`,
     `  \\usepackage{graphicx}`,
     `  \\usepackage{booktabs}`,
-    "---",
-  ].join("\n");
+    '---',
+  ].join('\n');
 
   // Build body sections
   const sections: string[] = [];
 
   // Research Snapshot
-  sections.push("# Research Snapshot\n");
+  sections.push('# Research Snapshot\n');
   sections.push(researchSnapshot);
 
   // Background
-  sections.push("\n# Background\n");
+  sections.push('\n# Background\n');
   sections.push(background);
 
   // Key Insights
   if (keyInsights.length > 0) {
-    sections.push("\n# Key Insights\n");
-    sections.push(keyInsights.map((insight) => `- ${insight}`).join("\n"));
+    sections.push('\n# Key Insights\n');
+    sections.push(keyInsights.map((insight) => `- ${insight}`).join('\n'));
   }
 
   // Summary of Discoveries
   if (summaryOfDiscoveries) {
-    sections.push("\n# Summary of Discoveries\n");
+    sections.push('\n# Summary of Discoveries\n');
     sections.push(summaryOfDiscoveries);
   }
 
   // Discovery sections (already contain their own # headings)
   for (const ds of discoverySections) {
-    sections.push("\n" + ds.sectionMarkdown);
+    sections.push('\n' + ds.sectionMarkdown);
   }
 
-  const fullDocument = frontmatter + "\n\n" + sections.join("\n") + "\n";
+  const fullDocument = frontmatter + '\n\n' + sections.join('\n') + '\n';
 
-  const outputPath = path.join(outputDir, "paper.md");
-  fs.writeFileSync(outputPath, fullDocument, "utf-8");
+  const outputPath = path.join(outputDir, 'paper.md');
+  fs.writeFileSync(outputPath, fullDocument, 'utf-8');
 
-  logger.info({ outputPath, length: fullDocument.length }, "markdown_document_assembled");
+  logger.info({ outputPath, length: fullDocument.length }, 'markdown_document_assembled');
 
   return outputPath;
 }

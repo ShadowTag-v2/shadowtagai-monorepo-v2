@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {LitElement} from 'lit';
+import type { LitElement } from 'lit';
 
-import {MenuItem} from './menuItemController.js';
-import type {Corner, SurfacePositionTarget} from './surfacePositionController.js';
+import type { MenuItem } from './menuItemController.js';
+import type { Corner, SurfacePositionTarget } from './surfacePositionController.js';
 
 /**
  * The interface needed for a Menu to work with other md-menu elements.
@@ -127,7 +127,7 @@ export function createCloseMenuEvent<T extends Reason = DefaultReasons>(
   }>('close-menu', {
     bubbles: true,
     composed: true,
-    detail: {initiator, reason, itemPath: [initiator]},
+    detail: { initiator, reason, itemPath: [initiator] },
   });
 }
 
@@ -136,7 +136,7 @@ export function createCloseMenuEvent<T extends Reason = DefaultReasons>(
  * focusout event.
  */
 export function createStayOpenOnFocusoutEvent() {
-  return new Event('stay-open-on-focusout', {bubbles: true, composed: true});
+  return new Event('stay-open-on-focusout', { bubbles: true, composed: true });
 }
 
 /**
@@ -144,7 +144,7 @@ export function createStayOpenOnFocusoutEvent() {
  * focusout event.
  */
 export function createCloseOnFocusoutEvent() {
-  return new Event('close-on-focusout', {bubbles: true, composed: true});
+  return new Event('close-on-focusout', { bubbles: true, composed: true });
 }
 
 /**
@@ -164,32 +164,28 @@ export type CloseMenuEvent<T extends Reason = DefaultReasons> = ReturnType<
  * Creates an event that requests the given item be selected.
  */
 export function createDeactivateTypeaheadEvent() {
-  return new Event('deactivate-typeahead', {bubbles: true, composed: true});
+  return new Event('deactivate-typeahead', { bubbles: true, composed: true });
 }
 
 /**
  * The type of the event that requests the typeahead functionality of containing
  * menu be deactivated.
  */
-export type DeactivateTypeaheadEvent = ReturnType<
-  typeof createDeactivateTypeaheadEvent
->;
+export type DeactivateTypeaheadEvent = ReturnType<typeof createDeactivateTypeaheadEvent>;
 
 /**
  * Creates an event that requests the typeahead functionality of containing menu
  * be activated.
  */
 export function createActivateTypeaheadEvent() {
-  return new Event('activate-typeahead', {bubbles: true, composed: true});
+  return new Event('activate-typeahead', { bubbles: true, composed: true });
 }
 
 /**
  * The type of the event that requests the typeahead functionality of containing
  * menu be activated.
  */
-export type ActivateTypeaheadEvent = ReturnType<
-  typeof createActivateTypeaheadEvent
->;
+export type ActivateTypeaheadEvent = ReturnType<typeof createActivateTypeaheadEvent>;
 
 /**
  * Keys that are used to navigate menus.
@@ -240,9 +236,7 @@ type Values<T> = T[keyof T];
  * @return Whether or not the key code is in the predetermined list to close the
  * menu.
  */
-export function isClosableKey(
-  code: string,
-): code is Values<typeof KeydownCloseKey> {
+export function isClosableKey(code: string): code is Values<typeof KeydownCloseKey> {
   return Object.values(KeydownCloseKey).some((value) => value === code);
 }
 
@@ -254,9 +248,7 @@ export function isClosableKey(
  * @return Whether or not the key code is in the predetermined list to select a
  * menu item.
  */
-export function isSelectableKey(
-  code: string,
-): code is Values<typeof SelectionKey> {
+export function isSelectableKey(code: string): code is Values<typeof SelectionKey> {
   return Object.values(SelectionKey).some((value) => value === code);
 }
 
@@ -269,13 +261,10 @@ export function isSelectableKey(
  * @returns Whether the target element is contained inside the container's
  * composed subtree
  */
-export function isElementInSubtree(
-  target: EventTarget,
-  container: EventTarget,
-) {
+export function isElementInSubtree(target: EventTarget, container: EventTarget) {
   // Dispatch a composed, bubbling event to check its path to see if the
   // newly-focused element is contained in container's subtree
-  const focusEv = new Event('md-contains', {bubbles: true, composed: true});
+  const focusEv = new Event('md-contains', { bubbles: true, composed: true });
   let composedPath: EventTarget[] = [];
   const listener = (ev: Event) => {
     composedPath = ev.composedPath();

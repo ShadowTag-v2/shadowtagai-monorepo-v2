@@ -5,5 +5,5 @@
 // 'npm run snippets'.
 
 // [START perf_import_app_modular]
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
 // [END perf_import_app_modular]

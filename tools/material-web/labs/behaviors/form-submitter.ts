@@ -4,15 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {isServer, LitElement} from 'lit';
-import {property} from 'lit/decorators.js';
+import { isServer, type LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
 
-import {
-  afterDispatch,
-  setupDispatchHooks,
-} from '../../internal/events/dispatch-hooks.js';
-import {internals, WithElementInternals} from './element-internals.js';
-import {MixinBase, MixinReturn} from './mixin.js';
+import { afterDispatch, setupDispatchHooks } from '../../internal/events/dispatch-hooks.js';
+import { internals, type WithElementInternals } from './element-internals.js';
+import type { MixinBase, MixinReturn } from './mixin.js';
 
 /**
  * A string indicating the form submission behavior of the element.
@@ -73,12 +70,12 @@ export interface FormSubmitter {
  * @param base The class to mix functionality into.
  * @return The provided class with `FormSubmitter` mixed in.
  */
-export function mixinFormSubmitter<
-  T extends MixinBase<LitElement & WithElementInternals>,
->(base: T): MixinReturn<T, FormSubmitter> {
+export function mixinFormSubmitter<T extends MixinBase<LitElement & WithElementInternals>>(
+  base: T,
+): MixinReturn<T, FormSubmitter> {
   abstract class FormSubmitterElement extends base implements FormSubmitter {
     @property() type = 'submit';
-    @property({reflect: true}) value = '';
+    @property({ reflect: true }) value = '';
 
     // Name attribute must reflect synchronously for form integration.
     get name() {
@@ -98,7 +95,7 @@ export function mixinFormSubmitter<
         const isReset = this.type === 'reset';
         const isSubmit = this.type === 'submit';
         const elementInternals = this[internals];
-        const {form} = elementInternals;
+        const { form } = elementInternals;
         if (!form || !(isSubmit || isReset)) {
           return;
         }
@@ -126,7 +123,7 @@ export function mixinFormSubmitter<
                 get: () => this,
               });
             },
-            {capture: true, once: true},
+            { capture: true, once: true },
           );
 
           elementInternals.setFormValue(this.value);

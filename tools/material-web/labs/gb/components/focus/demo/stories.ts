@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {MaterialStoryInit} from './material-collection.js';
-import {styles as focusRingStyles} from '@material/web/labs/gb/components/focus/focus-ring.cssresult.js';
-import {css, html} from 'lit';
+import { styles as focusRingStyles } from '@material/web/labs/gb/components/focus/focus-ring.cssresult.js';
+import { css, html } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for focus ring stories. */
-export interface StoryKnobs {}
+export type StoryKnobs = {};
 
 const styles = [
   focusRingStyles,
@@ -99,9 +99,4 @@ const forcedStates: MaterialStoryInit<StoryKnobs> = {
 };
 
 /** Focus ring stories. */
-export const stories = [
-  focusable,
-  focusableParent,
-  focusableChild,
-  forcedStates,
-];
+export const stories = [focusable, focusableParent, focusableChild, forcedStates];

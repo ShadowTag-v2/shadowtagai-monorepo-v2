@@ -1,10 +1,10 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { resolveDartImport } from '../../src/core/ingestion/import-resolvers/dart.js';
 import type { ResolveCtx } from '../../src/core/ingestion/import-resolvers/types.js';
 
 function makeCtx(files: string[]): ResolveCtx {
   const allFileList = files;
-  const normalizedFileList = files.map(f => f.toLowerCase());
+  const normalizedFileList = files.map((f) => f.toLowerCase());
   return {
     allFilePaths: new Set(files),
     allFileList,

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
-import {QueryDocumentSnapshot} from '../document';
-import {DocumentChange} from '../document-change';
-import {Timestamp} from '../timestamp';
-import {validateFunction} from '../validate';
-import {isArrayEqual} from '../util';
-import {VectorQuery} from './vector-query';
+import type * as firestore from '@google-cloud/firestore';
+import type { QueryDocumentSnapshot } from '../document';
+import type { DocumentChange } from '../document-change';
+import type { Timestamp } from '../timestamp';
+import { isArrayEqual } from '../util';
+import { validateFunction } from '../validate';
+import type { VectorQuery } from './vector-query';
 
 /**
  * A `VectorQuerySnapshot` contains zero or more `QueryDocumentSnapshot` objects
@@ -34,18 +34,10 @@ export class VectorQuerySnapshot<
   DbModelType extends firestore.DocumentData = firestore.DocumentData,
 > implements firestore.VectorQuerySnapshot<AppModelType, DbModelType>
 {
-  private _materializedDocs: Array<
-    QueryDocumentSnapshot<AppModelType, DbModelType>
-  > | null = null;
-  private _materializedChanges: Array<
-    DocumentChange<AppModelType, DbModelType>
-  > | null = null;
-  private _docs:
-    | (() => Array<QueryDocumentSnapshot<AppModelType, DbModelType>>)
-    | null = null;
-  private _changes:
-    | (() => Array<DocumentChange<AppModelType, DbModelType>>)
-    | null = null;
+  private _materializedDocs: Array<QueryDocumentSnapshot<AppModelType, DbModelType>> | null = null;
+  private _materializedChanges: Array<DocumentChange<AppModelType, DbModelType>> | null = null;
+  private _docs: (() => Array<QueryDocumentSnapshot<AppModelType, DbModelType>>) | null = null;
+  private _changes: (() => Array<DocumentChange<AppModelType, DbModelType>>) | null = null;
 
   /**
    * @private
@@ -231,9 +223,7 @@ export class VectorQuerySnapshot<
    * ```
    */
   forEach(
-    callback: (
-      result: firestore.QueryDocumentSnapshot<AppModelType, DbModelType>,
-    ) => void,
+    callback: (result: firestore.QueryDocumentSnapshot<AppModelType, DbModelType>) => void,
     thisArg?: unknown,
   ): void {
     validateFunction('callback', callback);
@@ -251,9 +241,7 @@ export class VectorQuerySnapshot<
    * @returns true if this `VectorQuerySnapshot` is equal to the provided
    * value.
    */
-  isEqual(
-    other: firestore.VectorQuerySnapshot<AppModelType, DbModelType>,
-  ): boolean {
+  isEqual(other: firestore.VectorQuerySnapshot<AppModelType, DbModelType>): boolean {
     // Since the read time is different on every query read, we explicitly
     // ignore all metadata in this comparison.
 
@@ -276,15 +264,13 @@ export class VectorQuerySnapshot<
     if (this._materializedDocs && !this._materializedChanges) {
       // If we have only materialized the documents, we compare them first.
       return (
-        isArrayEqual(this.docs, other.docs) &&
-        isArrayEqual(this.docChanges(), other.docChanges())
+        isArrayEqual(this.docs, other.docs) && isArrayEqual(this.docChanges(), other.docChanges())
       );
     }
 
     // Otherwise, we compare the changes first as we expect there to be fewer.
     return (
-      isArrayEqual(this.docChanges(), other.docChanges()) &&
-      isArrayEqual(this.docs, other.docs)
+      isArrayEqual(this.docChanges(), other.docChanges()) && isArrayEqual(this.docs, other.docs)
     );
   }
 }

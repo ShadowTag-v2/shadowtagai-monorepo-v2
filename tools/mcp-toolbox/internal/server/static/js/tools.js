@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { loadTools } from "./loadTools.js";
+import { loadTools } from './loadTools.js';
 
 /**
  * These functions runs after the browser finishes loading and parsing HTML structure.
  * This ensures that elements can be safely accessed.
  */
 document.addEventListener('DOMContentLoaded', () => {
-    const toolDisplayArea = document.getElementById('tool-display-area');
-    const secondaryPanelContent = document.getElementById('secondary-panel-content');
-    const DEFAULT_TOOLSET = ""; // will return all toolsets
+  const toolDisplayArea = document.getElementById('tool-display-area');
+  const secondaryPanelContent = document.getElementById('secondary-panel-content');
+  const DEFAULT_TOOLSET = ''; // will return all toolsets
 
-    if (!secondaryPanelContent || !toolDisplayArea) {
-        console.error('Required DOM elements not found.');
-        return;
-    }
+  if (!secondaryPanelContent || !toolDisplayArea) {
+    console.error('Required DOM elements not found.');
+    return;
+  }
 
-    loadTools(secondaryPanelContent, toolDisplayArea, DEFAULT_TOOLSET);
+  loadTools(secondaryPanelContent, toolDisplayArea, DEFAULT_TOOLSET);
 });

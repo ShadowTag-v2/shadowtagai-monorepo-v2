@@ -11,11 +11,7 @@
       "author": "spec-kit-core",
       "repository": "https://github.com/github/spec-kit",
       "download_url": "https://github.com/github/spec-kit/releases/download/selftest-v1.0.0/selftest.zip",
-      "tags": [
-        "testing",
-        "core",
-        "utility"
-      ]
+      "tags": ["testing", "core", "utility"]
     }
   }
 }

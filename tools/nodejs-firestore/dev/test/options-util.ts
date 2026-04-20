@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-import {expect} from 'chai';
-import {Serializer} from '../src/serializer';
-import {createInstance} from './util/helpers';
-import {Firestore} from '../src';
-import {OptionsUtil} from '../src/pipelines/options-util';
+import { expect } from 'chai';
+import type { Firestore } from '../src';
+import { OptionsUtil } from '../src/pipelines/options-util';
+import { Serializer } from '../src/serializer';
+import { createInstance } from './util/helpers';
 
 describe('OptionsUtil', () => {
   let db: Firestore | undefined;
@@ -53,11 +53,7 @@ describe('OptionsUtil', () => {
 
   it('should support unknown options', () => {
     const optionsUtil = new OptionsUtil({});
-    const proto = optionsUtil.getOptionsProto(
-      new Serializer(db!),
-      {},
-      {baz: 'foo'},
-    );
+    const proto = optionsUtil.getOptionsProto(new Serializer(db!), {}, { baz: 'foo' });
 
     expect(proto).to.deep.equal({
       baz: {
@@ -68,17 +64,13 @@ describe('OptionsUtil', () => {
 
   it('should support unknown nested options', () => {
     const optionsUtil = new OptionsUtil({});
-    const proto = optionsUtil.getOptionsProto(
-      new Serializer(db!),
-      {},
-      {'foo.bar': 'baz'},
-    );
+    const proto = optionsUtil.getOptionsProto(new Serializer(db!), {}, { 'foo.bar': 'baz' });
 
     expect(proto).to.deep.equal({
       foo: {
         mapValue: {
           fields: {
-            bar: {stringValue: 'baz'},
+            bar: { stringValue: 'baz' },
           },
         },
       },
@@ -125,7 +117,7 @@ describe('OptionsUtil', () => {
     const proto = optionsUtil.getOptionsProto(
       new Serializer(db!),
       {
-        foo: {bar: 'yep', waldo: 'found'},
+        foo: { bar: 'yep', waldo: 'found' },
       },
       {
         'foo.bar': 123,
@@ -169,7 +161,7 @@ describe('OptionsUtil', () => {
     const proto = optionsUtil.getOptionsProto(
       new Serializer(db!),
       {
-        foo: {bar: 'yep', waldo: 'found'},
+        foo: { bar: 'yep', waldo: 'found' },
       },
       {
         foo: {

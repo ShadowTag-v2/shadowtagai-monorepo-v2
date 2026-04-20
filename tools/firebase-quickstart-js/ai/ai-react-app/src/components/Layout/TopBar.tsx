@@ -1,6 +1,6 @@
-import React from "react";
-import styles from "./TopBar.module.css";
-import firebaseIcon from "../../assets/firebase-icon.png";
+import type React from 'react';
+import firebaseIcon from '../../assets/firebase-icon.png';
+import styles from './TopBar.module.css';
 
 const TopBar: React.FC = () => {
   return (

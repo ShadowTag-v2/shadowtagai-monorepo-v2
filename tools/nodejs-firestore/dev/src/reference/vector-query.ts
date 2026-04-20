@@ -15,23 +15,23 @@
  */
 
 import * as protos from '../../protos/firestore_v1_proto_api';
-import api = protos.google.firestore.v1;
-import * as firestore from '@google-cloud/firestore';
-import {field} from '../pipelines';
-import {Pipeline} from '../pipelines';
 
-import {Timestamp} from '../timestamp';
-import {VectorValue} from '../field-value';
-import {FieldPath} from '../path';
-import {QueryDocumentSnapshot} from '../document';
-import {DocumentChange} from '../document-change';
-import {isPrimitiveArrayEqual} from '../util';
-import {QueryUtil} from './query-util';
-import {Query} from './query';
-import {VectorQueryOptions} from './vector-query-options';
-import {VectorQuerySnapshot} from './vector-query-snapshot';
-import {ExplainResults} from '../query-profile';
-import {QueryResponse} from './types';
+import api = protos.google.firestore.v1;
+
+import type * as firestore from '@google-cloud/firestore';
+import type { QueryDocumentSnapshot } from '../document';
+import type { DocumentChange } from '../document-change';
+import { VectorValue } from '../field-value';
+import { FieldPath } from '../path';
+import { field, type Pipeline } from '../pipelines';
+import { ExplainResults } from '../query-profile';
+import type { Timestamp } from '../timestamp';
+import { isPrimitiveArrayEqual } from '../util';
+import type { Query } from './query';
+import { QueryUtil } from './query-util';
+import type { QueryResponse } from './types';
+import type { VectorQueryOptions } from './vector-query-options';
+import { VectorQuerySnapshot } from './vector-query-snapshot';
 
 /**
  * A query that finds the documents whose vector fields are closest to a certain query vector.
@@ -46,11 +46,7 @@ export class VectorQuery<
    * @internal
    * @private
    **/
-  readonly _queryUtil: QueryUtil<
-    AppModelType,
-    DbModelType,
-    VectorQuery<AppModelType, DbModelType>
-  >;
+  readonly _queryUtil: QueryUtil<AppModelType, DbModelType, VectorQuery<AppModelType, DbModelType>>;
 
   /**
    * @private
@@ -120,7 +116,7 @@ export class VectorQuery<
     if (options === undefined) {
       options = {};
     }
-    const {result, explainMetrics} = await this._getResponse(options);
+    const { result, explainMetrics } = await this._getResponse(options);
     if (!explainMetrics) {
       throw new Error('No explain results');
     }
@@ -133,7 +129,7 @@ export class VectorQuery<
    * @returns A promise that will be resolved with the results of the query.
    */
   async get(): Promise<VectorQuerySnapshot<AppModelType, DbModelType>> {
-    const {result} = await this._getResponse();
+    const { result } = await this._getResponse();
     if (!result) {
       throw new Error('No VectorQuerySnapshot result');
     }
@@ -181,11 +177,7 @@ export class VectorQuery<
    * @returns A stream of document results.
    */
   _stream(transactionId?: Uint8Array): NodeJS.ReadableStream {
-    return this._queryUtil._stream(
-      this,
-      transactionId,
-      /*retryWithCursor*/ false,
-    );
+    return this._queryUtil._stream(this, transactionId, /*retryWithCursor*/ false);
   }
 
   /**
@@ -207,19 +199,17 @@ export class VectorQuery<
       : (this._options.queryVector as VectorValue);
 
     queryProto.structuredQuery!.findNearest = {
-      limit: {value: this._options.limit},
+      limit: { value: this._options.limit },
       distanceMeasure: this._options.distanceMeasure,
       vectorField: {
-        fieldPath: FieldPath.fromArgument(this._options.vectorField)
-          .formattedName,
+        fieldPath: FieldPath.fromArgument(this._options.vectorField).formattedName,
       },
       queryVector: queryVector._toProto(this._query._serializer),
       distanceResultField: this._options?.distanceResultField
-        ? FieldPath.fromArgument(this._options.distanceResultField!)
-            .formattedName
+        ? FieldPath.fromArgument(this._options.distanceResultField!).formattedName
         : undefined,
       distanceThreshold: this._options?.distanceThreshold
-        ? {value: this._options?.distanceThreshold}
+        ? { value: this._options?.distanceThreshold }
         : undefined,
     };
 
@@ -242,13 +232,7 @@ export class VectorQuery<
     docs: () => Array<QueryDocumentSnapshot<AppModelType, DbModelType>>,
     changes: () => Array<DocumentChange<AppModelType, DbModelType>>,
   ): VectorQuerySnapshot<AppModelType, DbModelType> {
-    return new VectorQuerySnapshot<AppModelType, DbModelType>(
-      this,
-      readTime,
-      size,
-      docs,
-      changes,
-    );
+    return new VectorQuerySnapshot<AppModelType, DbModelType>(this, readTime, size, docs, changes);
   }
 
   /**
@@ -263,9 +247,7 @@ export class VectorQuery<
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ...fieldValuesOrDocumentSnapshot: Array<unknown>
   ): VectorQuery<AppModelType, DbModelType> {
-    throw new Error(
-      'Unimplemented: Vector query does not support cursors yet.',
-    );
+    throw new Error('Unimplemented: Vector query does not support cursors yet.');
   }
 
   /**

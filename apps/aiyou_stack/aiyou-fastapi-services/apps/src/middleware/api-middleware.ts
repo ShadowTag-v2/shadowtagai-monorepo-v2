@@ -1,7 +1,7 @@
 // src/middleware/api-middleware.ts
-import type { Request, Response, NextFunction } from "express";
-import { type AnyZodObject, ZodError } from "zod";
-import { logger } from "../lib/logger"; // References "Trap B" solution
+import type { NextFunction, Request, Response } from 'express';
+import { type AnyZodObject, ZodError } from 'zod';
+import { logger } from '../lib/logger'; // References "Trap B" solution
 
 /**
  * 1. Request Logger Middleware
@@ -14,21 +14,21 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction) =
   // Log the incoming request
   logger.info(`Incoming ${req.method} ${req.url}`, {
     ip: req.ip,
-    userAgent: req.get("user-agent"),
-    correlationId: req.headers["x-correlation-id"] || "unknown",
+    userAgent: req.get('user-agent'),
+    correlationId: req.headers['x-correlation-id'] || 'unknown',
   });
 
   // Hook into response finish to log duration and status
-  res.on("finish", () => {
+  res.on('finish', () => {
     const duration = Date.now() - start;
-    const level = res.statusCode >= 500 ? "error" : res.statusCode >= 400 ? "warn" : "info";
+    const level = res.statusCode >= 500 ? 'error' : res.statusCode >= 400 ? 'warn' : 'info';
 
     const message = `Completed ${req.method} ${req.url} - ${res.statusCode} (${duration}ms)`;
 
     // Using the specific log levels teaches Gemini when to use warn vs info
-    if (level === "error") {
+    if (level === 'error') {
       logger.error(message, undefined, { statusCode: res.statusCode });
-    } else if (level === "warn") {
+    } else if (level === 'warn') {
       logger.warn(message, { statusCode: res.statusCode });
     } else {
       logger.info(message, { statusCode: res.statusCode });
@@ -62,7 +62,7 @@ export const validateRequest = (schema: AnyZodObject) => {
     } catch (error) {
       if (error instanceof ZodError) {
         // Log validation failures as warnings (Client Error), not Errors
-        logger.warn("Validation Failed", {
+        logger.warn('Validation Failed', {
           path: req.path,
           errors: error.issues,
         });
@@ -70,8 +70,8 @@ export const validateRequest = (schema: AnyZodObject) => {
         return res.status(400).json({
           success: false,
           error: {
-            code: "VALIDATION_ERROR",
-            message: "Invalid input data",
+            code: 'VALIDATION_ERROR',
+            message: 'Invalid input data',
             details: error.issues.map((e) => ({ path: e.path, message: e.message })),
           },
         });

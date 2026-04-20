@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START doc_reference_alternative_modular]
-import { doc } from "firebase/firestore";
+import { doc } from 'firebase/firestore';
 
 const alovelaceDocumentRef = doc(db, 'users/alovelace');
 // [END doc_reference_alternative_modular]

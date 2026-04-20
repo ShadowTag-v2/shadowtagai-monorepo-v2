@@ -10,8 +10,13 @@
  * Processes help agents understand how features work through the codebase.
  */
 
-import { KnowledgeGraph, GraphNode, GraphRelationship, NodeLabel } from '../graph/types';
-import { CommunityMembership } from './community-processor';
+import {
+  type GraphNode,
+  GraphRelationship,
+  type KnowledgeGraph,
+  type NodeLabel,
+} from '../graph/types';
+import type { CommunityMembership } from './community-processor';
 import { calculateEntryPointScore, isTestFile } from './entry-point-scoring';
 
 // ============================================================================
@@ -19,10 +24,10 @@ import { calculateEntryPointScore, isTestFile } from './entry-point-scoring';
 // ============================================================================
 
 export interface ProcessDetectionConfig {
-  maxTraceDepth: number;      // Maximum steps to trace (default: 10)
-  maxBranching: number;       // Max branches to follow per node (default: 3)
-  maxProcesses: number;       // Maximum processes to detect (default: 50)
-  minSteps: number;           // Minimum steps for a valid process (default: 2)
+  maxTraceDepth: number; // Maximum steps to trace (default: 10)
+  maxBranching: number; // Max branches to follow per node (default: 3)
+  maxProcesses: number; // Maximum processes to detect (default: 50)
+  minSteps: number; // Minimum steps for a valid process (default: 2)
 }
 
 const DEFAULT_CONFIG: ProcessDetectionConfig = {
@@ -37,21 +42,21 @@ const DEFAULT_CONFIG: ProcessDetectionConfig = {
 // ============================================================================
 
 export interface ProcessNode {
-  id: string;                    // "proc_handleLogin_createSession"
-  label: string;                 // "HandleLogin → CreateSession"
+  id: string; // "proc_handleLogin_createSession"
+  label: string; // "HandleLogin → CreateSession"
   heuristicLabel: string;
   processType: 'intra_community' | 'cross_community';
   stepCount: number;
-  communities: string[];         // Community IDs touched
+  communities: string[]; // Community IDs touched
   entryPointId: string;
   terminalId: string;
-  trace: string[];               // Ordered array of node IDs
+  trace: string[]; // Ordered array of node IDs
 }
 
 export interface ProcessStep {
   nodeId: string;
   processId: string;
-  step: number;                  // 1-indexed position in trace
+  step: number; // 1-indexed position in trace
 }
 
 export interface ProcessDetectionResult {
@@ -78,7 +83,7 @@ export const processProcesses = async (
   knowledgeGraph: KnowledgeGraph,
   memberships: CommunityMembership[],
   onProgress?: (message: string, progress: number) => void,
-  config: Partial<ProcessDetectionConfig> = {}
+  config: Partial<ProcessDetectionConfig> = {},
 ): Promise<ProcessDetectionResult> => {
   const cfg = { ...DEFAULT_CONFIG, ...config };
 
@@ -86,12 +91,12 @@ export const processProcesses = async (
 
   // Build lookup maps
   const membershipMap = new Map<string, string>();
-  memberships.forEach(m => membershipMap.set(m.nodeId, m.communityId));
+  memberships.forEach((m) => membershipMap.set(m.nodeId, m.communityId));
 
   const callsEdges = buildCallsGraph(knowledgeGraph);
   const reverseCallsEdges = buildReverseCallsGraph(knowledgeGraph);
   const nodeMap = new Map<string, GraphNode>();
-  knowledgeGraph.nodes.forEach(n => nodeMap.set(n.id, n));
+  knowledgeGraph.nodes.forEach((n) => nodeMap.set(n.id, n));
 
   // Step 1: Find entry points (functions that call others but have few callers)
   const entryPoints = findEntryPoints(knowledgeGraph, reverseCallsEdges, callsEdges);
@@ -108,10 +113,13 @@ export const processProcesses = async (
     const traces = traceFromEntryPoint(entryId, callsEdges, cfg);
 
     // Filter out traces that are too short
-    traces.filter(t => t.length >= cfg.minSteps).forEach(t => allTraces.push(t));
+    traces.filter((t) => t.length >= cfg.minSteps).forEach((t) => allTraces.push(t));
 
     if (i % 10 === 0) {
-      onProgress?.(`Tracing entry point ${i + 1}/${entryPoints.length}...`, 20 + (i / entryPoints.length) * 40);
+      onProgress?.(
+        `Tracing entry point ${i + 1}/${entryPoints.length}...`,
+        20 + (i / entryPoints.length) * 40,
+      );
     }
   }
 
@@ -121,9 +129,7 @@ export const processProcesses = async (
   const uniqueTraces = deduplicateTraces(allTraces);
 
   // Step 4: Limit to max processes (prioritize longer traces)
-  const limitedTraces = uniqueTraces
-    .sort((a, b) => b.length - a.length)
-    .slice(0, cfg.maxProcesses);
+  const limitedTraces = uniqueTraces.sort((a, b) => b.length - a.length).slice(0, cfg.maxProcesses);
 
   onProgress?.(`Creating ${limitedTraces.length} process nodes...`, 80);
 
@@ -137,7 +143,7 @@ export const processProcesses = async (
 
     // Get communities touched
     const communitiesSet = new Set<string>();
-    trace.forEach(nodeId => {
+    trace.forEach((nodeId) => {
       const comm = membershipMap.get(nodeId);
       if (comm) communitiesSet.add(comm);
     });
@@ -173,7 +179,7 @@ export const processProcesses = async (
       steps.push({
         nodeId,
         processId,
-        step: stepIdx + 1,  // 1-indexed
+        step: stepIdx + 1, // 1-indexed
       });
     });
   });
@@ -181,10 +187,11 @@ export const processProcesses = async (
   onProgress?.('Process detection complete!', 100);
 
   // Calculate stats
-  const crossCommunityCount = processes.filter(p => p.processType === 'cross_community').length;
-  const avgStepCount = processes.length > 0
-    ? processes.reduce((sum, p) => sum + p.stepCount, 0) / processes.length
-    : 0;
+  const crossCommunityCount = processes.filter((p) => p.processType === 'cross_community').length;
+  const avgStepCount =
+    processes.length > 0
+      ? processes.reduce((sum, p) => sum + p.stepCount, 0) / processes.length
+      : 0;
 
   return {
     processes,
@@ -207,7 +214,7 @@ type AdjacencyList = Map<string, string[]>;
 const buildCallsGraph = (graph: KnowledgeGraph): AdjacencyList => {
   const adj = new Map<string, string[]>();
 
-  graph.relationships.forEach(rel => {
+  graph.relationships.forEach((rel) => {
     if (rel.type === 'CALLS') {
       if (!adj.has(rel.sourceId)) {
         adj.set(rel.sourceId, []);
@@ -222,7 +229,7 @@ const buildCallsGraph = (graph: KnowledgeGraph): AdjacencyList => {
 const buildReverseCallsGraph = (graph: KnowledgeGraph): AdjacencyList => {
   const adj = new Map<string, string[]>();
 
-  graph.relationships.forEach(rel => {
+  graph.relationships.forEach((rel) => {
     if (rel.type === 'CALLS') {
       if (!adj.has(rel.targetId)) {
         adj.set(rel.targetId, []);
@@ -247,7 +254,7 @@ const buildReverseCallsGraph = (graph: KnowledgeGraph): AdjacencyList => {
 const findEntryPoints = (
   graph: KnowledgeGraph,
   reverseCallsEdges: AdjacencyList,
-  callsEdges: AdjacencyList
+  callsEdges: AdjacencyList,
 ): string[] => {
   const symbolTypes = new Set<NodeLabel>(['Function', 'Method']);
   const entryPointCandidates: {
@@ -256,7 +263,7 @@ const findEntryPoints = (
     reasons: string[];
   }[] = [];
 
-  graph.nodes.forEach(node => {
+  graph.nodes.forEach((node) => {
     if (!symbolTypes.has(node.label)) return;
 
     const filePath = node.properties.filePath || '';
@@ -277,7 +284,7 @@ const findEntryPoints = (
       node.properties.isExported ?? false,
       callers.length,
       callees.length,
-      filePath  // Pass filePath for framework detection
+      filePath, // Pass filePath for framework detection
     );
 
     if (score > 0) {
@@ -292,17 +299,17 @@ const findEntryPoints = (
   if (sorted.length > 0 && typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
     console.log(`[Process] Top 10 entry point candidates (new scoring):`);
     sorted.slice(0, 10).forEach((c, i) => {
-      const node = graph.nodes.find(n => n.id === c.id);
+      const node = graph.nodes.find((n) => n.id === c.id);
       const exported = node?.properties.isExported ? '✓' : '✗';
       const shortPath = node?.properties.filePath?.split('/').slice(-2).join('/') || '';
-      console.log(`  ${i+1}. ${node?.properties.name} [exported:${exported}] (${shortPath})`);
+      console.log(`  ${i + 1}. ${node?.properties.name} [exported:${exported}] (${shortPath})`);
       console.log(`     score: ${c.score.toFixed(2)} = [${c.reasons.join(' × ')}]`);
     });
   }
 
   return sorted
-    .slice(0, 200)  // Limit to prevent explosion
-    .map(c => c.id);
+    .slice(0, 200) // Limit to prevent explosion
+    .map((c) => c.id);
 };
 
 // ============================================================================
@@ -316,7 +323,7 @@ const findEntryPoints = (
 const traceFromEntryPoint = (
   entryId: string,
   callsEdges: AdjacencyList,
-  config: ProcessDetectionConfig
+  config: ProcessDetectionConfig,
 ): string[][] => {
   const traces: string[][] = [];
 
@@ -382,7 +389,7 @@ const deduplicateTraces = (traces: string[][]): string[][] => {
   for (const trace of sorted) {
     // Check if this trace is a subset of any already-added trace
     const traceKey = trace.join('->');
-    const isSubset = unique.some(existing => {
+    const isSubset = unique.some((existing) => {
       const existingKey = existing.join('->');
       return existingKey.includes(traceKey);
     });
@@ -405,5 +412,8 @@ const capitalize = (s: string): string => {
 };
 
 const sanitizeId = (s: string): string => {
-  return s.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 20).toLowerCase();
+  return s
+    .replace(/[^a-zA-Z0-9]/g, '_')
+    .substring(0, 20)
+    .toLowerCase();
 };

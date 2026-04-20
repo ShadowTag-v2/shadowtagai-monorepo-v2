@@ -1,6 +1,11 @@
-import { ensureInitialized, fetchAndActivate, getRemoteConfig, getValue } from 'firebase/remote-config';
-import { firebaseConfig } from './config';
 import { initializeApp } from 'firebase/app';
+import {
+  ensureInitialized,
+  fetchAndActivate,
+  getRemoteConfig,
+  getValue,
+} from 'firebase/remote-config';
+import { firebaseConfig } from './config';
 
 initializeApp(firebaseConfig);
 
@@ -8,9 +13,9 @@ const remoteConfig = getRemoteConfig();
 
 remoteConfig.settings.minimumFetchIntervalMillis = 3600000;
 
-remoteConfig.defaultConfig = ({
-  'welcome_message': 'Welcome'
-});
+remoteConfig.defaultConfig = {
+  welcome_message: 'Welcome',
+};
 
 ensureInitialized(remoteConfig)
   .then(() => {

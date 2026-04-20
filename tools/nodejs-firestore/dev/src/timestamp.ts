@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
+import type * as firestore from '@google-cloud/firestore';
 
-import {google} from '../protos/firestore_v1_proto_api';
-import {validateInteger} from './validate';
+import { google } from '../protos/firestore_v1_proto_api';
+import { validateInteger } from './validate';
 
 import api = google.firestore.v1;
 
@@ -215,9 +215,7 @@ export class Timestamp implements firestore.Timestamp {
    * as this `Timestamp`, with millisecond precision.
    */
   toDate(): Date {
-    return new Date(
-      this._seconds * 1000 + Math.round(this._nanoseconds / MS_TO_NANOS),
-    );
+    return new Date(this._seconds * 1000 + Math.round(this._nanoseconds / MS_TO_NANOS));
   }
 
   /**
@@ -286,7 +284,7 @@ export class Timestamp implements firestore.Timestamp {
       timestamp.nanos = this.nanoseconds;
     }
 
-    return {timestampValue: timestamp};
+    return { timestampValue: timestamp };
   }
 
   /**

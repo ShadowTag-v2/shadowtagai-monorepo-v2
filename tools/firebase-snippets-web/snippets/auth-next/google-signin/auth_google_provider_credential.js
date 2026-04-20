@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_google_provider_credential_modular]
-import { GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider } from 'firebase/auth';
 
 const credential = GoogleAuthProvider.credential(idToken);
 // [END auth_google_provider_credential_modular]

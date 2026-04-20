@@ -1,19 +1,19 @@
-import { useContext, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { MdFavorite, MdFavoriteBorder, MdStar } from "react-icons/md";
-import { onAuthStateChanged, User } from "firebase/auth";
-import { AuthContext } from "@/lib/firebase";
-import NotFound from "./NotFound";
+import { onAuthStateChanged, type User } from 'firebase/auth';
+import { useContext, useEffect, useState } from 'react';
+import { MdFavorite, MdFavoriteBorder, MdStar } from 'react-icons/md';
+import { Link, useParams } from 'react-router-dom';
+import MovieCard from '@/components/moviecard';
+import { AuthContext } from '@/lib/firebase';
 import {
-  handleGetMovieById,
-  handleGetIfFavoritedMovie,
   handleAddFavoritedMovie,
-  handleDeleteFavoritedMovie,
   handleAddReview,
+  handleDeleteFavoritedMovie,
   handleDeleteReview,
-  searchMoviesByDescription
-} from "@/lib/MovieService";
-import MovieCard from "@/components/moviecard";
+  handleGetIfFavoritedMovie,
+  handleGetMovieById,
+  searchMoviesByDescription,
+} from '@/lib/MovieService';
+import NotFound from './NotFound';
 
 export default function MoviePage() {
   const { id } = useParams() as { id: string };
@@ -22,7 +22,7 @@ export default function MoviePage() {
   const [loading, setLoading] = useState(true);
   const [authUser, setAuthUser] = useState<User | null>(null);
   const [isFavorited, setIsFavorited] = useState(false);
-  const [reviewText, setReviewText] = useState("");
+  const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState(1);
 
   const [movie, setMovie] = useState(null);
@@ -47,16 +47,10 @@ export default function MoviePage() {
       handleGetMovieById(id).then((movieData) => {
         setMovie(movieData);
         if (movieData?.reviews) {
-          const userReview = movieData.reviews.find(
-            (review) => review.user.id === authUser?.uid
-          );
+          const userReview = movieData.reviews.find((review) => review.user.id === authUser?.uid);
           searchMoviesByDescription(movieData.description).then((similarMovies) => {
-            const similarResults = similarMovies?.filter(
-              (movie) => movie.id !== movieData.id
-            );
-            setSimilarMovies(
-              similarResults && similarResults.length > 1 ? similarResults : []
-            );
+            const similarResults = similarMovies?.filter((movie) => movie.id !== movieData.id);
+            setSimilarMovies(similarResults && similarResults.length > 1 ? similarResults : []);
             setMovie(movieData);
           });
           setUserReview(userReview || null);
@@ -80,7 +74,7 @@ export default function MoviePage() {
       }
       setIsFavorited(!isFavorited);
     } catch (error) {
-      console.error("Error updating favorite status:", error);
+      console.error('Error updating favorite status:', error);
     }
   };
 
@@ -91,12 +85,12 @@ export default function MoviePage() {
 
     try {
       await handleAddReview(id, rating, reviewText);
-      setReviewText("");
+      setReviewText('');
       setRating(0);
       const updatedMovie = await handleGetMovieById(id);
       setMovie(updatedMovie);
     } catch (error) {
-      console.error("Error submitting review:", error);
+      console.error('Error submitting review:', error);
     }
   };
 
@@ -112,7 +106,7 @@ export default function MoviePage() {
       const updatedMovie = await handleGetMovieById(id);
       setMovie(updatedMovie);
     } catch (error) {
-      console.error("Error deleting review:", error);
+      console.error('Error deleting review:', error);
     }
   };
 
@@ -133,23 +127,19 @@ export default function MoviePage() {
             <MdStar className="text-yellow-500" size={24} />
             <span className="ml-1 text-gray-400 text-lg">{movie.rating}</span>
           </div>
-          <p className="text-lg mb-4 p-4 bg-gray-800 rounded-lg">
-            {movie.description}
-          </p>
+          <p className="text-lg mb-4 p-4 bg-gray-800 rounded-lg">{movie.description}</p>
           <div className="text-sm space-y-2">
             <p>
               <span className="font-bold">Genre:</span> {movie.genre}
             </p>
             <p>
-              <span className="font-bold">Release Year:</span>{" "}
-              {movie.releaseYear}
+              <span className="font-bold">Release Year:</span> {movie.releaseYear}
             </p>
             <p>
-              <span className="font-bold">Director:</span>{" "}
-              {movie.metadata[0]?.director}
+              <span className="font-bold">Director:</span> {movie.metadata[0]?.director}
             </p>
             <p>
-              <span className="font-bold">Tags:</span> {movie.tags?.join(", ")}
+              <span className="font-bold">Tags:</span> {movie.tags?.join(', ')}
             </p>
           </div>
           <div className="mt-4 flex space-x-4">
@@ -158,11 +148,7 @@ export default function MoviePage() {
               aria-label="Favorite"
               onClick={handleFavoriteToggle}
             >
-              {isFavorited ? (
-                <MdFavorite size={24} />
-              ) : (
-                <MdFavoriteBorder size={24} />
-              )}
+              {isFavorited ? <MdFavorite size={24} /> : <MdFavoriteBorder size={24} />}
             </button>
           </div>
         </div>
@@ -174,11 +160,7 @@ export default function MoviePage() {
           {movie.mainActors.map((actor) => (
             <Link key={actor.id} to={`/actor/${actor.id}`}>
               <div className="flex-shrink-0 bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer w-32">
-                <img
-                  className="w-full h-32 object-cover"
-                  src={actor.imageUrl}
-                  alt={actor.name}
-                />
+                <img className="w-full h-32 object-cover" src={actor.imageUrl} alt={actor.name} />
                 <div className="p-2 text-center">
                   <h3 className="font-bold text-sm text-white">{actor.name}</h3>
                 </div>
@@ -194,11 +176,7 @@ export default function MoviePage() {
           {movie.supportingActors.map((actor) => (
             <Link key={actor.id} to={`/actor/${actor.id}`}>
               <div className="flex-shrink-0 bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer w-32">
-                <img
-                  className="w-full h-32 object-cover"
-                  src={actor.imageUrl}
-                  alt={actor.name}
-                />
+                <img className="w-full h-32 object-cover" src={actor.imageUrl} alt={actor.name} />
                 <div className="p-2 text-center">
                   <h3 className="font-bold text-sm text-white">{actor.name}</h3>
                 </div>
@@ -211,10 +189,7 @@ export default function MoviePage() {
       <div className="mt-8">
         <h2 className="text-2xl font-bold mb-2">User Reviews</h2>
         {!userReview ? (
-          <form
-            onSubmit={handleReviewSubmit}
-            className="mb-4 p-4 bg-gray-800 rounded-lg shadow-md"
-          >
+          <form onSubmit={handleReviewSubmit} className="mb-4 p-4 bg-gray-800 rounded-lg shadow-md">
             <h3 className="text-xl font-bold mb-2">Leave a Review</h3>
             <textarea
               className="w-full p-2 rounded-lg bg-gray-700 text-white mb-2"
@@ -243,10 +218,7 @@ export default function MoviePage() {
         ) : null}
 
         {movie.reviews.map((review) => (
-          <div
-            key={review.id}
-            className="mb-4 p-4 bg-gray-800 rounded-lg shadow-md"
-          >
+          <div key={review.id} className="mb-4 p-4 bg-gray-800 rounded-lg shadow-md">
             <p className="font-bold">{review.user.username}</p>
             <p className="text-sm">{review.reviewDate}</p>
             <p className="mt-2">{review.reviewText}</p>
@@ -271,7 +243,7 @@ export default function MoviePage() {
               {similarMovies.map((similarMovie) => (
                 <MovieCard
                   id={similarMovie.id}
-                  title={similarMovie.title || "TBA"}
+                  title={similarMovie.title || 'TBA'}
                   imageUrl={similarMovie.imageUrl}
                   rating={similarMovie.rating}
                   genre={similarMovie.genre}

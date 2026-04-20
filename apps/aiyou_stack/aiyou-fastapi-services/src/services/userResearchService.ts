@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from "uuid";
-import { userResearcherAgent } from "../agents/userResearcher";
+import { v4 as uuidv4 } from 'uuid';
+import { userResearcherAgent } from '../agents/userResearcher';
 import type {
   AnalysisRequest,
   FlowAnalysisResult,
@@ -8,7 +8,7 @@ import type {
   UserFlowEvent,
   UserSession,
   UXRecommendation,
-} from "../models/schemas";
+} from '../models/schemas';
 
 export class UserResearchService {
   // In-memory storage (replace with database in production)
@@ -31,7 +31,7 @@ export class UserResearchService {
     return session;
   }
 
-  async trackEvent(sessionId: string, event: Omit<UserFlowEvent, "id">): Promise<UserFlowEvent> {
+  async trackEvent(sessionId: string, event: Omit<UserFlowEvent, 'id'>): Promise<UserFlowEvent> {
     const session = this.sessions.get(sessionId);
     if (!session) {
       throw new Error(`Session ${sessionId} not found`);
@@ -107,7 +107,7 @@ export class UserResearchService {
       this.painPoints.set(pp.id, pp);
     });
 
-    console.log("Pain Point Detection Insights:", insights);
+    console.log('Pain Point Detection Insights:', insights);
 
     return painPoints;
   }
@@ -145,7 +145,7 @@ export class UserResearchService {
   }
 
   async getRecommendations(filter?: {
-    priority?: "low" | "medium" | "high" | "critical";
+    priority?: 'low' | 'medium' | 'high' | 'critical';
     category?: string;
   }): Promise<UXRecommendation[]> {
     let recommendations = Array.from(this.recommendations.values());
@@ -208,7 +208,7 @@ export class UserResearchService {
     const dropOffRate = 1 - completionRate;
 
     // Find most common path
-    const paths = sessions.map((s) => s.events.map((e) => e.page).join(" → "));
+    const paths = sessions.map((s) => s.events.map((e) => e.page).join(' → '));
     const pathCounts = paths.reduce(
       (acc, path) => {
         acc[path] = (acc[path] || 0) + 1;
@@ -220,7 +220,7 @@ export class UserResearchService {
     const mostCommonPath =
       Object.entries(pathCounts)
         .sort(([, a], [, b]) => b - a)[0]?.[0]
-        ?.split(" → ") || [];
+        ?.split(' → ') || [];
 
     // Find exit pages
     const exitCounts = sessions.reduce(
@@ -276,7 +276,7 @@ export class UserResearchService {
   }
 
   // Feedback Management
-  async submitFeedback(feedback: Omit<UserFeedback, "id" | "createdAt">): Promise<UserFeedback> {
+  async submitFeedback(feedback: Omit<UserFeedback, 'id' | 'createdAt'>): Promise<UserFeedback> {
     const fullFeedback: UserFeedback = {
       id: uuidv4(),
       createdAt: new Date(),
@@ -334,7 +334,7 @@ export class UserResearchService {
       activeSessions: sessions.filter((s) => !s.endTime).length,
       totalUsers: new Set(sessions.map((s) => s.userId).filter(Boolean)).size,
       totalPainPoints: painPoints.length,
-      criticalPainPoints: painPoints.filter((pp) => pp.severity === "critical").length,
+      criticalPainPoints: painPoints.filter((pp) => pp.severity === 'critical').length,
       totalRecommendations: recommendations.length,
       totalFeedback: feedbacks.length,
     };

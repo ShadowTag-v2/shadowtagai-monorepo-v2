@@ -9,7 +9,7 @@
     {
       "dimension": "citation_accuracy",
       "description": "Does the system cite real, verifiable legal authorities?",
-      "weight": 0.30,
+      "weight": 0.3,
       "scoring": "binary per citation — real case law = 1, hallucinated = 0"
     },
     {
@@ -27,7 +27,7 @@
     {
       "dimension": "shepardization_status",
       "description": "Are cited cases still good law? (not overruled, distinguished, or superseded)",
-      "weight": 0.20,
+      "weight": 0.2,
       "scoring": "binary — good law = 1, bad law = 0"
     }
   ],
@@ -136,7 +136,7 @@
     "weighted_f1": "sum(dimension_weight * dimension_f1) for all dimensions"
   },
   "evaluation_script": "scripts/eval_counselconduit_f1.py",
-  "minimum_acceptable_f1": 0.70,
+  "minimum_acceptable_f1": 0.7,
   "target_f1": 0.85,
-  "production_threshold_f1": 0.90
+  "production_threshold_f1": 0.9
 }

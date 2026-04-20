@@ -5,19 +5,17 @@
  */
 
 import '@material/web/checkbox/checkbox.js';
-import {html} from 'lit';
+import { html } from 'lit';
 
-import {Environment} from '../../testing/environment.js';
-import {ariaSelector} from './query-selector-aria.js';
+import { Environment } from '../../testing/environment.js';
+import { ariaSelector } from './query-selector-aria.js';
 
 describe('query-selector-aria', () => {
   const env = new Environment();
 
   it('is needed when querying by aria attribute selectors fails', () => {
     // Arrange
-    const root = env.render(
-      html`<md-checkbox aria-label="Agree"></md-checkbox>`,
-    );
+    const root = env.render(html`<md-checkbox aria-label="Agree"></md-checkbox>`);
 
     // Act
     const checkbox = root.querySelector('[aria-label="Agree"]');
@@ -31,9 +29,7 @@ describe('query-selector-aria', () => {
   describe('ariaSelector()', () => {
     it('returns the element with an aria attribute query', () => {
       // Arrange
-      const root = env.render(
-        html`<md-checkbox aria-label="Agree"></md-checkbox>`,
-      );
+      const root = env.render(html`<md-checkbox aria-label="Agree"></md-checkbox>`);
 
       // Act
       const element = root.querySelector(ariaSelector('[aria-label="Agree"]'));

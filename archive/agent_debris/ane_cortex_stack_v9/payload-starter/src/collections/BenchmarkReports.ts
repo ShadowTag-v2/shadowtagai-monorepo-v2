@@ -6,4 +6,4 @@ export default {
     { name: 'summary', type: 'textarea' },
     { name: 'findings', type: 'json' },
   ],
-}
+};

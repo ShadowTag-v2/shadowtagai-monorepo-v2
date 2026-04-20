@@ -5,9 +5,9 @@
 // 'npm run snippets'.
 
 // [START get_document_options_modular]
-import { doc, getDocFromCache } from "firebase/firestore";
+import { doc, getDocFromCache } from 'firebase/firestore';
 
-const docRef = doc(db, "cities", "SF");
+const docRef = doc(db, 'cities', 'SF');
 
 // Get a document, forcing the SDK to fetch from the offline cache.
 try {
@@ -15,8 +15,8 @@ try {
 
   // Document was found in the cache. If no cached document exists,
   // an error will be returned to the 'catch' block below.
-  console.log("Cached document data:", doc.data());
+  console.log('Cached document data:', doc.data());
 } catch (e) {
-  console.log("Error getting cached document:", e);
+  console.log('Error getting cached document:', e);
 }
 // [END get_document_options_modular]

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { AppMode } from "../../App";
-import styles from "./LeftSidebar.module.css";
-import { BackendType, Content, ModelParams } from "firebase/ai";
-import { PREDEFINED_PERSONAS } from "../../config/personas";
+import { BackendType, type Content, type ModelParams } from 'firebase/ai';
+import type React from 'react';
+import { useState } from 'react';
+import type { AppMode } from '../../App';
+import { PREDEFINED_PERSONAS } from '../../config/personas';
+import styles from './LeftSidebar.module.css';
 
 interface LeftSidebarProps {
   /** The currently active application mode. */
@@ -28,20 +29,18 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
   // This component now manages its own UI state and pushes updates upwards.
   // It does not rely on a useEffect to sync systemInstruction from the parent,
   // following the pattern in RightSidebar.tsx to prevent state-reversion bugs.
-  const [selectedPersonaId, setSelectedPersonaId] = useState<string>("default");
-  const [customPersona, setCustomPersona] = useState<string>("");
+  const [selectedPersonaId, setSelectedPersonaId] = useState<string>('default');
+  const [customPersona, setCustomPersona] = useState<string>('');
 
-  const handleModelParamsUpdate = (
-    updateFn: (prevState: ModelParams) => ModelParams,
-  ) => {
+  const handleModelParamsUpdate = (updateFn: (prevState: ModelParams) => ModelParams) => {
     setGenerativeParams((prevState) => updateFn(prevState));
   };
 
   // Define the available modes and their display names
   const modes: { id: AppMode; label: string }[] = [
-    { id: "chat", label: "Chat" },
-    { id: "imagenGen", label: "Imagen Generation" },
-    { id: "live", label: "Live Conversation" },
+    { id: 'chat', label: 'Chat' },
+    { id: 'imagenGen', label: 'Imagen Generation' },
+    { id: 'live', label: 'Live Conversation' },
   ];
 
   const handleBackendChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,19 +53,19 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
 
     let newSystemInstructionText: string;
 
-    if (newPersonaId === "custom") {
+    if (newPersonaId === 'custom') {
       // When switching to custom, the instruction is whatever is in the textarea.
       newSystemInstructionText = customPersona;
     } else {
       // When switching to a predefined persona, find its instruction text.
       const selected = PREDEFINED_PERSONAS.find((p) => p.id === newPersonaId);
-      newSystemInstructionText = selected?.systemInstruction ?? "";
+      newSystemInstructionText = selected?.systemInstruction ?? '';
       // We are no longer in 'custom', but we don't clear the customPersona state
       // in case the user wants to switch back and forth.
     }
 
     const newSystemInstruction: Content | undefined = newSystemInstructionText
-      ? { parts: [{ text: newSystemInstructionText }], role: "system" }
+      ? { parts: [{ text: newSystemInstructionText }], role: 'system' }
       : undefined;
 
     // 2. Update model state upwards
@@ -76,14 +75,12 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
     }));
   };
 
-  const handleCustomPersonaChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
+  const handleCustomPersonaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newSystemInstructionText = e.target.value;
     setCustomPersona(newSystemInstructionText); // 1. Update UI state
 
     const newSystemInstruction: Content | undefined = newSystemInstructionText
-      ? { parts: [{ text: newSystemInstructionText }], role: "system" }
+      ? { parts: [{ text: newSystemInstructionText }], role: 'system' }
       : undefined;
 
     // 2. Update model state upwards
@@ -100,9 +97,9 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
           <li key={modeInfo.id}>
             <button
               // Apply 'active' style if this button's mode matches the current activeMode
-              className={`${styles.navButton} ${activeMode === modeInfo.id ? styles.active : ""}`}
+              className={`${styles.navButton} ${activeMode === modeInfo.id ? styles.active : ''}`}
               onClick={() => setActiveMode(modeInfo.id)}
-              aria-current={activeMode === modeInfo.id ? "page" : undefined}
+              aria-current={activeMode === modeInfo.id ? 'page' : undefined}
             >
               {modeInfo.label}
             </button>
@@ -140,7 +137,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
       </div>
 
       {/* Persona Selector */}
-      {activeMode === "chat" && (
+      {activeMode === 'chat' && (
         <div className={styles.personaSelector}>
           <h5 className={styles.selectorTitle}>Persona</h5>
           <select
@@ -154,7 +151,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
               </option>
             ))}
           </select>
-          {selectedPersonaId === "custom" && (
+          {selectedPersonaId === 'custom' && (
             <textarea
               value={customPersona}
               onChange={handleCustomPersonaChange}

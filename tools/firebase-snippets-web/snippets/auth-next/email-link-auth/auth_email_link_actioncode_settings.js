@@ -12,14 +12,14 @@ const actionCodeSettings = {
   // This must be true.
   handleCodeInApp: true,
   iOS: {
-    bundleId: 'com.example.ios'
+    bundleId: 'com.example.ios',
   },
   android: {
     packageName: 'com.example.android',
     installApp: true,
-    minimumVersion: '12'
+    minimumVersion: '12',
   },
   // The domain must be configured in Firebase Hosting and owned by the project.
-  linkDomain: 'custom-domain.com'
+  linkDomain: 'custom-domain.com',
 };
 // [END auth_email_link_actioncode_settings_modular]

@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_make_email_credential_modular]
-import { EmailAuthProvider } from "firebase/auth";
+import { EmailAuthProvider } from 'firebase/auth';
 
 const credential = EmailAuthProvider.credential(email, password);
 // [END auth_make_email_credential_modular]

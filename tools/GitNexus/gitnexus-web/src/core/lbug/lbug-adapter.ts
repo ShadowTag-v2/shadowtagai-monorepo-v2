@@ -7,15 +7,15 @@
  * Multi-table schema: separate tables for File, Function, Class, etc.
  */
 
-import { KnowledgeGraph } from '../graph/types';
+import type { KnowledgeGraph } from '../graph/types';
+import { generateAllCSVs } from './csv-generator';
 import {
+  EMBEDDING_TABLE_NAME,
   NODE_TABLES,
+  type NodeTableName,
   REL_TABLE_NAME,
   SCHEMA_QUERIES,
-  EMBEDDING_TABLE_NAME,
-  NodeTableName,
 } from './schema';
-import { generateAllCSVs } from './csv-generator';
 
 // Holds the reference to the dynamically loaded module
 let lbug: any = null;
@@ -55,7 +55,10 @@ export const initLbug = async () => {
         } catch (e) {
           // Schema might already exist, skip
           if (import.meta.env.DEV) {
-            console.warn(`Schema query ${i + 1}/${SCHEMA_QUERIES.length} skipped (may already exist):`, e);
+            console.warn(
+              `Schema query ${i + 1}/${SCHEMA_QUERIES.length} skipped (may already exist):`,
+              e,
+            );
           }
         }
       }
@@ -85,19 +88,22 @@ const isTestEnv = () => {
   if (typeof import.meta !== 'undefined' && typeof import.meta.env !== 'undefined') {
     if (import.meta.env.VITE_PLAYWRIGHT_TEST || import.meta.env.MODE === 'test') return true;
   }
-  if (typeof window !== 'undefined' && (window as unknown as { __PLAYWRIGHT_TEST__?: boolean }).__PLAYWRIGHT_TEST__) {
+  if (
+    typeof window !== 'undefined' &&
+    (window as unknown as { __PLAYWRIGHT_TEST__?: boolean }).__PLAYWRIGHT_TEST__
+  ) {
     return true;
   }
   if (typeof navigator !== 'undefined' && navigator.webdriver) {
     return true;
   }
-  return typeof process !== 'undefined' && (process.env.PLAYWRIGHT_TEST || process.env.NODE_ENV === 'test');
+  return (
+    typeof process !== 'undefined' &&
+    (process.env.PLAYWRIGHT_TEST || process.env.NODE_ENV === 'test')
+  );
 };
 
-export const loadGraphToLbug = async (
-  graph: KnowledgeGraph,
-  fileContents: Map<string, string>
-) => {
+export const loadGraphToLbug = async (graph: KnowledgeGraph, fileContents: Map<string, string>) => {
   // In headless Playwright, skip heavy bulk load to avoid hangs; UI still functions with empty DB.
   if (isTestEnv()) {
     if (import.meta.env.DEV) console.log('🧪 Skipping LadybugDB bulk load in test mode');
@@ -108,11 +114,15 @@ export const loadGraphToLbug = async (
 
   // Close previous connection/database to avoid leaking WASM resources across repo switches
   if (conn) {
-    try { await conn.close(); } catch {}
+    try {
+      await conn.close();
+    } catch {}
     conn = null;
   }
   if (db) {
-    try { await db.close(); } catch {}
+    try {
+      await db.close();
+    } catch {}
     db = null;
   }
 
@@ -130,13 +140,17 @@ export const loadGraphToLbug = async (
       await conn.query(SCHEMA_QUERIES[i]);
     } catch (e) {
       if (import.meta.env.DEV) {
-        console.warn(`Schema query ${i + 1}/${SCHEMA_QUERIES.length} skipped (may already exist):`, e);
+        console.warn(
+          `Schema query ${i + 1}/${SCHEMA_QUERIES.length} skipped (may already exist):`,
+          e,
+        );
       }
     }
   }
 
   try {
-    if (import.meta.env.DEV) console.log(`LadybugDB: Generating CSVs for ${graph.nodeCount} nodes...`);
+    if (import.meta.env.DEV)
+      console.log(`LadybugDB: Generating CSVs for ${graph.nodeCount} nodes...`);
 
     // 1. Generate all CSVs (per-table)
     const csvData = generateAllCSVs(graph, fileContents);
@@ -150,17 +164,24 @@ export const loadGraphToLbug = async (
       if (csv.split('\n').length <= 1) continue;
 
       const path = `/${tableName.toLowerCase()}.csv`;
-      try { await fs.unlink(path); } catch {}
+      try {
+        await fs.unlink(path);
+      } catch {}
       await fs.writeFile(path, csv);
       nodeFiles.push({ table: tableName, path });
     }
 
     // 3. Parse relation CSV and prepare for INSERT (COPY FROM doesn't work with multi-pair tables)
-    const relLines = csvData.relCSV.split('\n').slice(1).filter(line => line.trim());
+    const relLines = csvData.relCSV
+      .split('\n')
+      .slice(1)
+      .filter((line) => line.trim());
     const relCount = relLines.length;
 
     if (import.meta.env.DEV) {
-      console.log(`LadybugDB: Wrote ${nodeFiles.length} node CSVs, ${relCount} relations to insert`);
+      console.log(
+        `LadybugDB: Wrote ${nodeFiles.length} node CSVs, ${relCount} relations to insert`,
+      );
     }
 
     // 4. COPY all node tables (must complete before rels due to FK constraints)
@@ -189,9 +210,20 @@ export const loadGraphToLbug = async (
     const skippedRelStats = new Map<string, number>();
 
     // Group relations by (fromLabel, toLabel) pair for prepared statement reuse
-    const relsByLabelPair = new Map<string, Array<{ fromId: string; toId: string; relType: string; confidence: number; reason: string; step: number }>>();
+    const relsByLabelPair = new Map<
+      string,
+      Array<{
+        fromId: string;
+        toId: string;
+        relType: string;
+        confidence: number;
+        reason: string;
+        step: number;
+      }>
+    >();
     // RFC 4180 regex: handles doubled quotes ("") inside quoted fields
-    const csvRegex = /"((?:[^"]|"")*)","((?:[^"]|"")*)","((?:[^"]|"")*)",([0-9.]+),"((?:[^"]|"")*)",([0-9-]+)/;
+    const csvRegex =
+      /"((?:[^"]|"")*)","((?:[^"]|"")*)","((?:[^"]|"")*)",([0-9.]+),"((?:[^"]|"")*)",([0-9-]+)/;
 
     for (const line of relLines) {
       const match = line.match(csvRegex);
@@ -255,13 +287,15 @@ export const loadGraphToLbug = async (
             const statKey = `${r.relType}:${fromLabel}->${toLabel}`;
             skippedRelStats.set(statKey, (skippedRelStats.get(statKey) || 0) + 1);
             if (import.meta.env.DEV) {
-              console.warn(`⚠️ Skipped: ${statKey} | "${r.fromId}" → "${r.toId}" | ${err instanceof Error ? err.message : String(err)}`);
+              console.warn(
+                `⚠️ Skipped: ${statKey} | "${r.fromId}" → "${r.toId}" | ${err instanceof Error ? err.message : String(err)}`,
+              );
             }
           }
 
           // Yield to event loop every 500 relations
           if (i > 0 && i % 500 === 0) {
-            await new Promise(r => setTimeout(r, 0));
+            await new Promise((r) => setTimeout(r, 0));
           }
         }
       } finally {
@@ -275,7 +309,10 @@ export const loadGraphToLbug = async (
         const topSkipped = Array.from(skippedRelStats.entries())
           .sort((a, b) => b[1] - a[1])
           .slice(0, 10);
-        console.warn(`LadybugDB: Skipped ${skippedRels}/${relCount} relations (top by kind/pair):`, topSkipped);
+        console.warn(
+          `LadybugDB: Skipped ${skippedRels}/${relCount} relations (top by kind/pair):`,
+          topSkipped,
+        );
       }
     }
 
@@ -283,7 +320,9 @@ export const loadGraphToLbug = async (
     let totalNodes = 0;
     for (const tableName of NODE_TABLES) {
       try {
-        const countRes = await conn.query(`MATCH (n:${escapeTableName(tableName)}) RETURN count(n) AS cnt`);
+        const countRes = await conn.query(
+          `MATCH (n:${escapeTableName(tableName)}) RETURN count(n) AS cnt`,
+        );
         const countRows = await countRes.getAllRows();
         const countRow = countRows[0];
         const count = countRow ? (countRow.cnt ?? countRow[0] ?? 0) : 0;
@@ -293,15 +332,19 @@ export const loadGraphToLbug = async (
       }
     }
 
-    if (import.meta.env.DEV) console.log(`✅ LadybugDB Bulk Load Complete. Total nodes: ${totalNodes}, edges: ${insertedRels}`);
+    if (import.meta.env.DEV)
+      console.log(
+        `✅ LadybugDB Bulk Load Complete. Total nodes: ${totalNodes}, edges: ${insertedRels}`,
+      );
 
     // 7. Cleanup CSV files
     for (const { path } of nodeFiles) {
-      try { await fs.unlink(path); } catch {}
+      try {
+        await fs.unlink(path);
+      } catch {}
     }
 
     return { success: true, count: totalNodes };
-
   } catch (error) {
     if (import.meta.env.DEV) console.error('❌ LadybugDB Bulk Load Failed:', error);
     return { success: false, count: 0 };
@@ -315,9 +358,24 @@ const COPY_CSV_OPTS = `(HEADER=true, ESCAPE='"', DELIM=',', QUOTE='"', PARALLEL=
 
 // Multi-language table names created with backticks in CODE_ELEMENT_BASE
 const BACKTICK_TABLES = new Set([
-  'Struct', 'Enum', 'Macro', 'Typedef', 'Union', 'Namespace', 'Trait', 'Impl',
-  'TypeAlias', 'Const', 'Static', 'Property', 'Record', 'Delegate', 'Annotation',
-  'Constructor', 'Template', 'Module',
+  'Struct',
+  'Enum',
+  'Macro',
+  'Typedef',
+  'Union',
+  'Namespace',
+  'Trait',
+  'Impl',
+  'TypeAlias',
+  'Const',
+  'Static',
+  'Property',
+  'Record',
+  'Delegate',
+  'Annotation',
+  'Constructor',
+  'Template',
+  'Module',
   // Reserved/ambiguous identifiers that need quoting
   'File',
 ]);
@@ -333,7 +391,13 @@ const escapeTableForDelete = (table: string): string => {
 };
 
 /** Tables with isExported column (TypeScript/JS-native types) */
-const TABLES_WITH_EXPORTED = new Set<string>(['Function', 'Class', 'Interface', 'Method', 'CodeElement']);
+const TABLES_WITH_EXPORTED = new Set<string>([
+  'Function',
+  'Class',
+  'Interface',
+  'Method',
+  'CodeElement',
+]);
 
 /**
  * Get the COPY query for a node table with correct column mapping
@@ -388,7 +452,7 @@ export const executeQuery = async (cypher: string, readOnly = true): Promise<any
       // Parse RETURN clause to get column names/aliases
       // Handles: "a.name, b.filePath AS path, count(x) AS cnt"
       const returnClause = returnMatch[1];
-      columnNames = returnClause.split(',').map(col => {
+      columnNames = returnClause.split(',').map((col) => {
         col = col.trim();
         // Check for AS alias
         const asMatch = col.match(/\s+AS\s+(\w+)\s*$/i);
@@ -441,7 +505,9 @@ export const getLbugStats = async (): Promise<{ nodes: number; edges: number }> 
     let totalNodes = 0;
     for (const tableName of NODE_TABLES) {
       try {
-        const nodeResult = await conn.query(`MATCH (n:${escapeTableName(tableName)}) RETURN count(n) AS cnt`);
+        const nodeResult = await conn.query(
+          `MATCH (n:${escapeTableName(tableName)}) RETURN count(n) AS cnt`,
+        );
         const nodeRows = await nodeResult.getAllRows();
         const nodeRow = nodeRows[0];
         totalNodes += Number(nodeRow?.cnt ?? nodeRow?.[0] ?? 0);
@@ -453,7 +519,9 @@ export const getLbugStats = async (): Promise<{ nodes: number; edges: number }> 
     // Count edges from single relation table
     let totalEdges = 0;
     try {
-      const edgeResult = await conn.query(`MATCH ()-[r:${REL_TABLE_NAME}]->() RETURN count(r) AS cnt`);
+      const edgeResult = await conn.query(
+        `MATCH ()-[r:${REL_TABLE_NAME}]->() RETURN count(r) AS cnt`,
+      );
       const edgeRows = await edgeResult.getAllRows();
       const edgeRow = edgeRows[0];
       totalEdges = Number(edgeRow?.cnt ?? edgeRow?.[0] ?? 0);
@@ -505,7 +573,7 @@ export const closeLbug = async (): Promise<void> => {
  */
 export const executePrepared = async (
   cypher: string,
-  params: Record<string, any>
+  params: Record<string, any>,
 ): Promise<any[]> => {
   if (!conn) {
     await initLbug();
@@ -536,7 +604,7 @@ export const executePrepared = async (
  */
 export const executeWithReusedStatement = async (
   cypher: string,
-  paramsList: Array<Record<string, any>>
+  paramsList: Array<Record<string, any>>,
 ): Promise<void> => {
   if (!conn) {
     await initLbug();
@@ -564,7 +632,7 @@ export const executeWithReusedStatement = async (
     }
 
     if (i + SUB_BATCH_SIZE < paramsList.length) {
-      await new Promise(r => setTimeout(r, 0));
+      await new Promise((r) => setTimeout(r, 0));
     }
   }
 };
@@ -584,7 +652,9 @@ export const testArrayParams = async (): Promise<{ success: boolean; error?: str
     let testNodeId: string | null = null;
     for (const tableName of NODE_TABLES) {
       try {
-        const nodeResult = await conn.query(`MATCH (n:${escapeTableName(tableName)}) RETURN n.id AS id LIMIT 1`);
+        const nodeResult = await conn.query(
+          `MATCH (n:${escapeTableName(tableName)}) RETURN n.id AS id LIMIT 1`,
+        );
         const nodeRows = await nodeResult.getAllRows();
         const nodeRow = nodeRows[0];
         if (nodeRow) {
@@ -620,7 +690,7 @@ export const testArrayParams = async (): Promise<{ success: boolean; error?: str
 
     // Verify it was stored (using prepared statement to avoid injection)
     const verifyStmt = await conn.prepare(
-      `MATCH (e:${EMBEDDING_TABLE_NAME} {nodeId: $nodeId}) RETURN e.embedding AS emb`
+      `MATCH (e:${EMBEDDING_TABLE_NAME} {nodeId: $nodeId}) RETURN e.embedding AS emb`,
     );
     try {
       if (!verifyStmt.isSuccess()) {
@@ -634,8 +704,14 @@ export const testArrayParams = async (): Promise<{ success: boolean; error?: str
 
       // Clean up test embedding
       try {
-        const cleanupStmt = await conn.prepare(`MATCH (e:${EMBEDDING_TABLE_NAME} {nodeId: $nodeId}) DELETE e`);
-        try { await conn.execute(cleanupStmt, { nodeId: testNodeId }); } finally { await cleanupStmt.close(); }
+        const cleanupStmt = await conn.prepare(
+          `MATCH (e:${EMBEDDING_TABLE_NAME} {nodeId: $nodeId}) DELETE e`,
+        );
+        try {
+          await conn.execute(cleanupStmt, { nodeId: testNodeId });
+        } finally {
+          await cleanupStmt.close();
+        }
       } catch {}
 
       if (storedEmb && Array.isArray(storedEmb) && storedEmb.length === 384) {
@@ -646,7 +722,7 @@ export const testArrayParams = async (): Promise<{ success: boolean; error?: str
       } else {
         return {
           success: false,
-          error: `Embedding not stored correctly. Got: ${typeof storedEmb}, length: ${storedEmb?.length}`
+          error: `Embedding not stored correctly. Got: ${typeof storedEmb}, length: ${storedEmb?.length}`,
         };
       }
     } finally {

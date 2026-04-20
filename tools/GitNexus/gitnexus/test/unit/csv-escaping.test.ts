@@ -4,12 +4,12 @@
  * Tests: escapeCSVField, escapeCSVNumber, sanitizeUTF8, isBinaryContent
  * Covers hardening fix #23 (keyword arrays with backslashes and commas)
  */
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
   escapeCSVField,
   escapeCSVNumber,
-  sanitizeUTF8,
   isBinaryContent,
+  sanitizeUTF8,
 } from '../../src/core/lbug/csv-generator.js';
 
 // ─── escapeCSVField ──────────────────────────────────────────────────

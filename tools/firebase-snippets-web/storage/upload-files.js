@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/storage";
+import firebase from 'firebase/app';
+import 'firebase/storage';
 
 function uploadRef() {
   // [START storage_upload_ref]
@@ -13,8 +13,8 @@ function uploadRef() {
   var mountainImagesRef = storageRef.child('images/mountains.jpg');
 
   // While the file names are the same, the references point to different files
-  mountainsRef.name === mountainImagesRef.name;           // true
-  mountainsRef.fullPath === mountainImagesRef.fullPath;   // false
+  mountainsRef.name === mountainImagesRef.name; // true
+  mountainsRef.fullPath === mountainImagesRef.fullPath; // false
   // [END storage_upload_ref]
 }
 
@@ -36,7 +36,9 @@ function uploadBytes() {
   const ref = firebase.storage().ref().child('some-child');
 
   // [START storage_upload_bytes]
-  var bytes = new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21]);
+  var bytes = new Uint8Array([
+    0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
+  ]);
   ref.put(bytes).then((snapshot) => {
     console.log('Uploaded an array!');
   });
@@ -124,7 +126,8 @@ function monitorUpload(file) {
   // 1. 'state_changed' observer, called any time the state changes
   // 2. Error observer, called on failure
   // 3. Completion observer, called on successful completion
-  uploadTask.on('state_changed',
+  uploadTask.on(
+    'state_changed',
     (snapshot) => {
       // Observe state change events such as progress, pause, and resume
       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
@@ -148,7 +151,7 @@ function monitorUpload(file) {
       uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
         console.log('File available at', downloadURL);
       });
-    }
+    },
   );
   // [END storage_monitor_upload]
 }
@@ -162,14 +165,15 @@ function uploadHandleError(file) {
   // [START storage_upload_handle_error]
   // Create the file metadata
   var metadata = {
-    contentType: 'image/jpeg'
+    contentType: 'image/jpeg',
   };
 
   // Upload file and metadata to the object 'images/mountains.jpg'
   var uploadTask = storageRef.child('images/' + file.name).put(file, metadata);
 
   // Listen for state changes, errors, and completion of the upload.
-  uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+  uploadTask.on(
+    firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
     (snapshot) => {
       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
       var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -206,7 +210,7 @@ function uploadHandleError(file) {
       uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
         console.log('File available at', downloadURL);
       });
-    }
+    },
   );
   // [END storage_upload_handle_error]
 }

@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START storage_manage_uploads_modular]
-import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 
 const storage = getStorage();
 const storageRef = ref(storage, 'images/mountains.jpg');

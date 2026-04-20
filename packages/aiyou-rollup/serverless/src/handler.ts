@@ -5,6 +5,6 @@ export async function hello(event: APIGatewayProxyEventV2): Promise<APIGatewayPr
   return {
     statusCode: 200,
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ message, time: new Date().toISOString() })
+    body: JSON.stringify({ message, time: new Date().toISOString() }),
   };
 }

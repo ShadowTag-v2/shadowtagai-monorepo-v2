@@ -43,8 +43,8 @@
 }
 
 .controlGroup select,
-.controlGroup input[type="number"],
-.controlGroup input[type="text"],
+.controlGroup input[type='number'],
+.controlGroup input[type='text'],
 .controlGroup textarea {
   width: 100%;
   padding: 8px 12px;
@@ -59,12 +59,12 @@
     background-color 0.15s ease;
 }
 .controlGroup select:hover,
-.controlGroup input:not([type="range"]):hover,
+.controlGroup input:not([type='range']):hover,
 .controlGroup textarea:hover {
   border-color: var(--brand-gray-50);
 }
 .controlGroup select:focus,
-.controlGroup input:not([type="range"]):focus,
+.controlGroup input:not([type='range']):focus,
 .controlGroup textarea:focus {
   border-color: var(--color-border-focus);
   background-color: var(--color-surface-primary);
@@ -75,7 +75,7 @@
   -webkit-text-fill-color: var(--color-text-primary) !important;
 }
 
-.controlGroup input[type="range"] {
+.controlGroup input[type='range'] {
   width: 100%;
   height: 4px;
   cursor: pointer;
@@ -86,7 +86,7 @@
   padding: 0;
   margin-top: 8px;
 }
-.controlGroup input[type="range"]::-webkit-slider-thumb {
+.controlGroup input[type='range']::-webkit-slider-thumb {
   appearance: none;
   width: 14px;
   height: 14px;
@@ -94,7 +94,7 @@
   border-radius: 50%;
   cursor: pointer;
 }
-.controlGroup input[type="range"]::-moz-range-thumb {
+.controlGroup input[type='range']::-moz-range-thumb {
   width: 14px;
   height: 14px;
   background: var(--color-text-primary);
@@ -102,10 +102,10 @@
   cursor: pointer;
   border: none;
 }
-.controlGroup input[type="range"]:active::-webkit-slider-thumb {
+.controlGroup input[type='range']:active::-webkit-slider-thumb {
   background: var(--brand-gray-90);
 }
-.controlGroup input[type="range"]:active::-moz-range-thumb {
+.controlGroup input[type='range']:active::-moz-range-thumb {
   background: var(--brand-gray-90);
 }
 
@@ -129,7 +129,7 @@
   font-size: 0.8125rem;
   color: var(--color-text-secondary);
   text-align: right;
-  font-family: "Roboto Mono", monospace;
+  font-family: 'Roboto Mono', monospace;
 }
 
 .toggleGroup {
@@ -173,7 +173,7 @@
 
 .slider:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 20px;
   width: 20px;
   left: -2px;
@@ -233,7 +233,7 @@ input:checked + .slider:before {
   display: none;
 }
 .advancedSettings summary::before {
-  content: "▶";
+  content: '▶';
   display: inline-block;
   margin-right: 8px;
   font-size: 0.7em;

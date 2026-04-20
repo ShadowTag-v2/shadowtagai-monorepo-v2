@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START fs_geo_query_hashes_modular]
-import { collection, query, orderBy, startAt, endAt, getDocs } from 'firebase/firestore';
+import { collection, endAt, getDocs, orderBy, query, startAt } from 'firebase/firestore';
 
 // Find cities within 50km of London
 const center = [51.5074, 0.1278];
@@ -14,15 +14,11 @@ const radiusInM = 50 * 1000;
 // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
 // a separate query for each pair. There can be up to 9 pairs of bounds
 // depending on overlap, but in most cases there are 4.
-// @ts-ignore
+// @ts-expect-error
 const bounds = geofire.geohashQueryBounds(center, radiusInM);
 const promises = [];
 for (const b of bounds) {
-  const q = query(
-    collection(db, 'cities'),
-    orderBy('geohash'),
-    startAt(b[0]),
-    endAt(b[1]));
+  const q = query(collection(db, 'cities'), orderBy('geohash'), startAt(b[0]), endAt(b[1]));
 
   promises.push(getDocs(q));
 }
@@ -38,7 +34,7 @@ for (const snap of snapshots) {
 
     // We have to filter out a few false positives due to GeoHash
     // accuracy, but most will match
-    // @ts-ignore
+    // @ts-expect-error
     const distanceInKm = geofire.distanceBetween([lat, lng], center);
     const distanceInM = distanceInKm * 1000;
     if (distanceInM <= radiusInM) {

@@ -1,22 +1,18 @@
 /**
  * GameboyView - A wrapper around opentui-gameboy that adds app-specific UI
  */
+
+import { homedir } from 'node:os';
+import { join } from 'node:path';
+import { BoxRenderable, type CliRenderer, type KeyEvent, RGBA } from '@opentui/core';
 import {
-  CliRenderer,
-  BoxRenderable,
-  RGBA,
-  KeyEvent,
-} from "@opentui/core";
-import { join } from "node:path";
-import { homedir } from "node:os";
-import {
-  launchGameboy as launchGameboyCore,
-  isGameboyActive as isGameboyActiveCore,
   type GameboyOptions,
-  type Keybinding
-} from "opentui-gameboy";
-import { THEME } from "../../ui/theme.js";
-import { logError } from "../../ui/logger.js";
+  isGameboyActive as isGameboyActiveCore,
+  type Keybinding,
+  launchGameboy as launchGameboyCore,
+} from 'opentui-gameboy';
+import { logError } from '../../ui/logger.js';
+import { THEME } from '../../ui/theme.js';
 
 // Re-export safe wrapper
 export function isGameboyActive(): boolean {
@@ -41,22 +37,22 @@ export function launchGameboy(renderer: CliRenderer, options: GameboyViewOptions
 
   // Set up Ctrl+S handler for sidebar toggle (app-specific behavior)
   const sidebarKeyHandler = (key: KeyEvent) => {
-    if (key.ctrl && key.name === "s" && onSidebarRequest) {
+    if (key.ctrl && key.name === 's' && onSidebarRequest) {
       onSidebarRequest();
     }
   };
-  renderer.keyInput.on("keypress", sidebarKeyHandler);
+  renderer.keyInput.on('keypress', sidebarKeyHandler);
 
   // Define save/load keybindings (S and L without Ctrl)
-  const saveKeybinding: Keybinding = { key: "s" };
-  const loadKeybinding: Keybinding = { key: "l" };
+  const saveKeybinding: Keybinding = { key: 's' };
+  const loadKeybinding: Keybinding = { key: 'l' };
 
   try {
     // Launch the gameboy from the library
     launchGameboyCore(renderer, {
-      romDirectory: join(homedir(), ".pickle", "emulator"),
-      saveDirectory: join(homedir(), ".pickle", "emulator", "saves"),
-      logFile: join(homedir(), ".pickle", "gameboy.log"),
+      romDirectory: join(homedir(), '.pickle', 'emulator'),
+      saveDirectory: join(homedir(), '.pickle', 'emulator', 'saves'),
+      logFile: join(homedir(), '.pickle', 'gameboy.log'),
       theme: {
         bg: THEME.bg,
         text: THEME.text,
@@ -70,11 +66,11 @@ export function launchGameboy(renderer: CliRenderer, options: GameboyViewOptions
       loadKeybinding,
       onExit: () => {
         // Remove sidebar key handler
-        renderer.keyInput.off("keypress", sidebarKeyHandler);
+        renderer.keyInput.off('keypress', sidebarKeyHandler);
 
         // Remove background overlay when exiting
         try {
-          renderer.root.remove("gameboy-background");
+          renderer.root.remove('gameboy-background');
         } catch (e) {
           // Ignore if already removed
         }
@@ -89,9 +85,9 @@ export function launchGameboy(renderer: CliRenderer, options: GameboyViewOptions
     logError(`Failed to launch Gameboy: ${e instanceof Error ? e.message : String(e)}`);
 
     // Cleanup on failure
-    renderer.keyInput.off("keypress", sidebarKeyHandler);
+    renderer.keyInput.off('keypress', sidebarKeyHandler);
     try {
-      renderer.root.remove("gameboy-background");
+      renderer.root.remove('gameboy-background');
     } catch (err) {}
 
     // Notify caller that we "exited" (failed)

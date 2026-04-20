@@ -1,8 +1,8 @@
 // These samples are intended for Web so this import would normally be
 // done in HTML however using modules here is more convenient for
 // ensuring sample correctness offline.
-import firebase from "firebase/app";
-import "firebase/database";
+import firebase from 'firebase/app';
+import 'firebase/database';
 
 function socialPush() {
   // [START rtdb_social_push]
@@ -10,17 +10,17 @@ function socialPush() {
   var postListRef = firebase.database().ref('posts');
   var newPostRef = postListRef.push();
   newPostRef.set({
-      // ...
+    // ...
   });
   // [END rtdb_social_push]
 }
 
 function socialListenChildren() {
-  const postElement = document.querySelector("#post");
-  const postId = "1234";
+  const postElement = document.querySelector('#post');
+  const postId = '1234';
   function addCommentElement(el, key, text, author) {}
-  function setCommentValues(el, key, text, author) {};
-  function deleteComment(el, key) {};
+  function setCommentValues(el, key, text, author) {}
+  function deleteComment(el, key) {}
 
   // [START rtdb_social_listen_children]
   var commentsRef = firebase.database().ref('post-comments/' + postId);
@@ -55,7 +55,10 @@ function socialListenValue() {
 function socialMostStarred() {
   // [START rtdb_social_most_starred]
   var myUserId = firebase.auth().currentUser.uid;
-  var topUserPostsRef = firebase.database().ref('user-posts/' + myUserId).orderByChild('starCount');
+  var topUserPostsRef = firebase
+    .database()
+    .ref('user-posts/' + myUserId)
+    .orderByChild('starCount');
   // [END rtdb_social_most_starred]
 }
 

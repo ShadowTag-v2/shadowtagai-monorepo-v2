@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { generateProcessMermaid, generateSimpleMermaid } from '../../src/lib/mermaid-generator';
 import type { ProcessData } from '../../src/lib/mermaid-generator';
+import { generateProcessMermaid, generateSimpleMermaid } from '../../src/lib/mermaid-generator';
 
 describe('generateProcessMermaid', () => {
   it('returns placeholder for empty steps', () => {

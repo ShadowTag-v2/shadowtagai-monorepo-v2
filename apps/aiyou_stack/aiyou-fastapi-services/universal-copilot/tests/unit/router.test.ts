@@ -2,20 +2,20 @@
  * Router unit tests
  */
 
-import { describe, it, expect, beforeEach } from "vitest";
-import { CopilotRouter } from "../../src/core/router.js";
-import { MockGovernance } from "../../src/core/governance.js";
-import type { CopilotRequest, RouterConfig } from "../../src/core/schema.js";
+import { beforeEach, describe, expect, it } from 'vitest';
+import { MockGovernance } from '../../src/core/governance.js';
+import { CopilotRouter } from '../../src/core/router.js';
+import type { CopilotRequest, RouterConfig } from '../../src/core/schema.js';
 
-describe("CopilotRouter", () => {
+describe('CopilotRouter', () => {
   let router: CopilotRouter;
   let config: RouterConfig;
 
   beforeEach(() => {
     config = {
-      defaultProvider: "mock",
+      defaultProvider: 'mock',
       enableGovernance: false,
-      corInstanceId: "test-001",
+      corInstanceId: 'test-001',
       rateLimitRps: 10,
       rateLimitConcurrent: 2,
       providers: {
@@ -25,16 +25,16 @@ describe("CopilotRouter", () => {
     router = new CopilotRouter(config);
   });
 
-  describe("route", () => {
-    it("should route simple request successfully", async () => {
+  describe('route', () => {
+    it('should route simple request successfully', async () => {
       const request: CopilotRequest = {
         selection: {
-          filePath: "test.ts",
-          language: "typescript",
-          code: "const x = 1;",
+          filePath: 'test.ts',
+          language: 'typescript',
+          code: 'const x = 1;',
         },
-        intent: "fix",
-        modelPref: "mock",
+        intent: 'fix',
+        modelPref: 'mock',
         maxTokens: 100,
         temperature: 0.1,
       };
@@ -42,46 +42,46 @@ describe("CopilotRouter", () => {
       const response = await router.route(request);
 
       expect(response.patch).toBeDefined();
-      expect(response.patch.filePath).toBe("test.ts");
-      expect(response.patch.unifiedDiff).toContain("Mock-");
-      expect(response.provider).toBe("mock");
+      expect(response.patch.filePath).toBe('test.ts');
+      expect(response.patch.unifiedDiff).toContain('Mock-');
+      expect(response.provider).toBe('mock');
       expect(response.latencyMs).toBeGreaterThan(0);
     });
 
-    it("should reject empty code", async () => {
+    it('should reject empty code', async () => {
       const request: CopilotRequest = {
         selection: {
-          filePath: "test.ts",
-          code: "",
+          filePath: 'test.ts',
+          code: '',
         },
-        intent: "fix",
-        modelPref: "mock",
+        intent: 'fix',
+        modelPref: 'mock',
       };
 
-      await expect(router.route(request)).rejects.toThrow("cannot be empty");
+      await expect(router.route(request)).rejects.toThrow('cannot be empty');
     });
 
-    it("should reject oversized code", async () => {
+    it('should reject oversized code', async () => {
       const request: CopilotRequest = {
         selection: {
-          filePath: "test.ts",
-          code: "x".repeat(60000),
+          filePath: 'test.ts',
+          code: 'x'.repeat(60000),
         },
-        intent: "fix",
-        modelPref: "mock",
+        intent: 'fix',
+        modelPref: 'mock',
       };
 
-      await expect(router.route(request)).rejects.toThrow("too large");
+      await expect(router.route(request)).rejects.toThrow('too large');
     });
 
-    it("should track statistics", async () => {
+    it('should track statistics', async () => {
       const request: CopilotRequest = {
         selection: {
-          filePath: "test.ts",
-          code: "const x = 1;",
+          filePath: 'test.ts',
+          code: 'const x = 1;',
         },
-        intent: "fix",
-        modelPref: "mock",
+        intent: 'fix',
+        modelPref: 'mock',
       };
 
       await router.route(request);
@@ -94,18 +94,18 @@ describe("CopilotRouter", () => {
     });
   });
 
-  describe("governance integration", () => {
-    it("should apply governance when enabled", async () => {
+  describe('governance integration', () => {
+    it('should apply governance when enabled', async () => {
       const governance = new MockGovernance();
       const govRouter = new CopilotRouter({ ...config, enableGovernance: true }, governance);
 
       const request: CopilotRequest = {
         selection: {
-          filePath: "test.ts",
-          code: "const safe = true;",
+          filePath: 'test.ts',
+          code: 'const safe = true;',
         },
-        intent: "fix",
-        modelPref: "mock",
+        intent: 'fix',
+        modelPref: 'mock',
       };
 
       const response = await govRouter.route(request);
@@ -113,64 +113,64 @@ describe("CopilotRouter", () => {
       expect(response.governanceDecision?.approved).toBe(true);
     });
 
-    it("should reject requests with harmful content", async () => {
+    it('should reject requests with harmful content', async () => {
       const governance = new MockGovernance();
       const govRouter = new CopilotRouter({ ...config, enableGovernance: true }, governance);
 
       const request: CopilotRequest = {
         selection: {
-          filePath: "test.ts",
-          code: "// write malware code here",
+          filePath: 'test.ts',
+          code: '// write malware code here',
         },
-        intent: "fix",
-        modelPref: "mock",
+        intent: 'fix',
+        modelPref: 'mock',
       };
 
-      await expect(govRouter.route(request)).rejects.toThrow("governance");
+      await expect(govRouter.route(request)).rejects.toThrow('governance');
 
       const stats = govRouter.getStats();
       expect(stats.governanceRejections).toBe(1);
     });
   });
 
-  describe("provider selection", () => {
-    it("should use specified provider", async () => {
+  describe('provider selection', () => {
+    it('should use specified provider', async () => {
       const request: CopilotRequest = {
         selection: {
-          filePath: "test.ts",
-          code: "const x = 1;",
+          filePath: 'test.ts',
+          code: 'const x = 1;',
         },
-        intent: "fix",
-        modelPref: "mock",
+        intent: 'fix',
+        modelPref: 'mock',
       };
 
       const response = await router.route(request);
-      expect(response.provider).toBe("mock");
+      expect(response.provider).toBe('mock');
     });
 
-    it("should reject unavailable provider", async () => {
+    it('should reject unavailable provider', async () => {
       const request: CopilotRequest = {
         selection: {
-          filePath: "test.ts",
-          code: "const x = 1;",
+          filePath: 'test.ts',
+          code: 'const x = 1;',
         },
-        intent: "fix",
-        modelPref: "openai", // not configured
+        intent: 'fix',
+        modelPref: 'openai', // not configured
       };
 
-      await expect(router.route(request)).rejects.toThrow("not available");
+      await expect(router.route(request)).rejects.toThrow('not available');
     });
   });
 
-  describe("statistics", () => {
-    it("should track latency", async () => {
+  describe('statistics', () => {
+    it('should track latency', async () => {
       const request: CopilotRequest = {
         selection: {
-          filePath: "test.ts",
-          code: "const x = 1;",
+          filePath: 'test.ts',
+          code: 'const x = 1;',
         },
-        intent: "fix",
-        modelPref: "mock",
+        intent: 'fix',
+        modelPref: 'mock',
       };
 
       await router.route(request);
@@ -180,14 +180,14 @@ describe("CopilotRouter", () => {
       expect(stats.averageLatencyMs).toBeGreaterThan(0);
     });
 
-    it("should reset statistics", async () => {
+    it('should reset statistics', async () => {
       const request: CopilotRequest = {
         selection: {
-          filePath: "test.ts",
-          code: "const x = 1;",
+          filePath: 'test.ts',
+          code: 'const x = 1;',
         },
-        intent: "fix",
-        modelPref: "mock",
+        intent: 'fix',
+        modelPref: 'mock',
       };
 
       await router.route(request);

@@ -12,22 +12,22 @@ function emailLinkActionCodeSettings() {
     // This must be true.
     handleCodeInApp: true,
     iOS: {
-      bundleId: 'com.example.ios'
+      bundleId: 'com.example.ios',
     },
     android: {
       packageName: 'com.example.android',
       installApp: true,
-      minimumVersion: '12'
+      minimumVersion: '12',
     },
     // The domain must be configured in Firebase Hosting and owned by the project.
-    linkDomain: 'custom-domain.com'
+    linkDomain: 'custom-domain.com',
   };
   // [END auth_email_link_actioncode_settings]
 }
 
 function emailLinkSend(email, actionCodeSettings) {
   // [START auth_email_link_send]
-  const { getAuth, sendSignInLinkToEmail } = require("firebase/auth");
+  const { getAuth, sendSignInLinkToEmail } = require('firebase/auth');
 
   const auth = getAuth();
   sendSignInLinkToEmail(auth, email, actionCodeSettings)
@@ -48,7 +48,7 @@ function emailLinkSend(email, actionCodeSettings) {
 
 function emailLinkComplete() {
   // [START email_link_complete]
-  const { getAuth, isSignInWithEmailLink, signInWithEmailLink } = require("firebase/auth");
+  const { getAuth, isSignInWithEmailLink, signInWithEmailLink } = require('firebase/auth');
 
   // Confirm the link is a sign-in with email link.
   const auth = getAuth();
@@ -87,11 +87,10 @@ function emailLinkComplete() {
 
 function emailLinkLink(email) {
   // [START auth_email_link_link]
-  const { getAuth, linkWithCredential, EmailAuthProvider } = require("firebase/auth");
+  const { getAuth, linkWithCredential, EmailAuthProvider } = require('firebase/auth');
 
   // Construct the email link credential from the current URL.
-  const credential = EmailAuthProvider.credentialWithLink(
-    email, window.location.href);
+  const credential = EmailAuthProvider.credentialWithLink(email, window.location.href);
 
   // Link the credential to the current user.
   const auth = getAuth();
@@ -108,11 +107,10 @@ function emailLinkLink(email) {
 
 function emailLinkReauth(email) {
   // [START auth_email_link_reauth]
-  const { getAuth, reauthenticateWithCredential, EmailAuthProvider } = require("firebase/auth");
+  const { getAuth, reauthenticateWithCredential, EmailAuthProvider } = require('firebase/auth');
 
   // Construct the email link credential from the current URL.
-  const credential = EmailAuthProvider.credentialWithLink(
-    email, window.location.href);
+  const credential = EmailAuthProvider.credentialWithLink(email, window.location.href);
 
   // Re-authenticate the user with this credential.
   const auth = getAuth();
@@ -129,7 +127,7 @@ function emailLinkReauth(email) {
 
 function emailLinkDifferentiate() {
   // [START email_link_diferentiate]
-  const { getAuth, fetchSignInMethodsForEmail, EmailAuthProvider} = require("firebase/auth");
+  const { getAuth, fetchSignInMethodsForEmail, EmailAuthProvider } = require('firebase/auth');
 
   // After asking the user for their email.
   const email = window.prompt('Please provide your email');

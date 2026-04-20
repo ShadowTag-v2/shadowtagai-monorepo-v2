@@ -7,6 +7,6 @@
 // [START auth_apple_provider_params_modular]
 provider.setCustomParameters({
   // Localize the Apple authentication screen in French.
-  locale: 'fr'
+  locale: 'fr',
 });
 // [END auth_apple_provider_params_modular]

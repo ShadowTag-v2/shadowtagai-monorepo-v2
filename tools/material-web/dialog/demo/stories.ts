@@ -13,9 +13,9 @@ import '@material/web/iconbutton/icon-button.js';
 import '@material/web/radio/radio.js';
 import '@material/web/textfield/filled-text-field.js';
 
-import {MdDialog} from '@material/web/dialog/dialog.js';
-import {MaterialStoryInit} from './material-collection.js';
-import {css, html, nothing} from 'lit';
+import type { MdDialog } from '@material/web/dialog/dialog.js';
+import { css, html, nothing } from 'lit';
+import type { MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for dialog stories. */
 export interface StoryKnobs {
@@ -32,7 +32,7 @@ function showDialog(event: Event) {
 
 const standard: MaterialStoryInit<StoryKnobs> = {
   name: 'Dialog',
-  render({icon, headline, supportingText, quick, noFocusTrap}) {
+  render({ icon, headline, supportingText, quick, noFocusTrap }) {
     return html`
       <md-filled-button @click=${showDialog} aria-label="Open a dialog">
         Open
@@ -58,7 +58,7 @@ const standard: MaterialStoryInit<StoryKnobs> = {
 
 const alert: MaterialStoryInit<StoryKnobs> = {
   name: 'Alert',
-  render({quick, noFocusTrap}) {
+  render({ quick, noFocusTrap }) {
     return html`
       <md-filled-button @click=${showDialog} aria-label="Open an alert dialog">
         Alert
@@ -80,7 +80,7 @@ const alert: MaterialStoryInit<StoryKnobs> = {
 
 const confirm: MaterialStoryInit<StoryKnobs> = {
   name: 'Confirm',
-  render({quick, noFocusTrap}) {
+  render({ quick, noFocusTrap }) {
     return html`
       <md-filled-button
         @click=${showDialog}
@@ -117,7 +117,7 @@ const choose: MaterialStoryInit<StoryKnobs> = {
       align-items: center;
     }
   `,
-  render({quick, noFocusTrap}) {
+  render({ quick, noFocusTrap }) {
     return html`
       <md-filled-button @click=${showDialog} aria-label="Open a choice dialog">
         Choice
@@ -192,7 +192,7 @@ const contacts: MaterialStoryInit<StoryKnobs> = {
       flex: 1;
     }
   `,
-  render({quick, noFocusTrap}) {
+  render({ quick, noFocusTrap }) {
     return html`
       <md-filled-button @click=${showDialog} aria-label="Open a form dialog">
         Form
@@ -234,7 +234,7 @@ const contacts: MaterialStoryInit<StoryKnobs> = {
 
 const floatingSheet: MaterialStoryInit<StoryKnobs> = {
   name: 'Floating sheet',
-  render({quick, noFocusTrap}) {
+  render({ quick, noFocusTrap }) {
     return html`
       <md-filled-button @click=${showDialog} aria-label="Open a floating sheet">
         Floating sheet
@@ -258,11 +258,4 @@ const floatingSheet: MaterialStoryInit<StoryKnobs> = {
 };
 
 /** Dialog stories. */
-export const stories = [
-  standard,
-  alert,
-  confirm,
-  choose,
-  contacts,
-  floatingSheet,
-];
+export const stories = [standard, alert, confirm, choose, contacts, floatingSheet];

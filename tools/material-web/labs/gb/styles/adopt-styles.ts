@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {type CSSResult, type CSSResultOrNative} from 'lit';
+import type { CSSResult, CSSResultOrNative } from 'lit';
 
 /**
  * Owner types that can adopt stylesheets using `adoptStyles()`.
@@ -49,9 +49,7 @@ export function adoptStyles(
 
   styles = Array.isArray(styles) ? styles : [styles];
   const stylesheets: CSSStyleSheet[] = styles.map((cssResultOrNative) =>
-    isCSSResult(cssResultOrNative)
-      ? cssResultOrNative.styleSheet!
-      : cssResultOrNative,
+    isCSSResult(cssResultOrNative) ? cssResultOrNative.styleSheet! : cssResultOrNative,
   );
 
   if (adopt(owner, stylesheets)) {
@@ -70,9 +68,7 @@ function adopt(
   stylesheets: CSSStyleSheet[],
 ): node is DocumentOrShadowRoot {
   if (node && 'adoptedStyleSheets' in node) {
-    node.adoptedStyleSheets = Array.from(
-      new Set([...node.adoptedStyleSheets, ...stylesheets]),
-    );
+    node.adoptedStyleSheets = Array.from(new Set([...node.adoptedStyleSheets, ...stylesheets]));
     return true;
   }
   return false;

@@ -5,8 +5,9 @@
 // 'npm run snippets'.
 
 // [START multitenant_set_tenant_modular]
-import { getAuth } from "firebase/auth";
+import { getAuth } from 'firebase/auth';
+
 const auth = getAuth();
-const tenantId = "TENANT_ID1";
+const tenantId = 'TENANT_ID1';
 auth.tenantId = tenantId;
 // [END multitenant_set_tenant_modular]

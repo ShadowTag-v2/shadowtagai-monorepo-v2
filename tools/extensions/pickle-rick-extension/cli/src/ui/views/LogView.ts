@@ -1,15 +1,15 @@
-import fs from "node:fs";
-import fsp from "node:fs/promises";
+import fs from 'node:fs';
+import fsp from 'node:fs/promises';
 import {
-  CliRenderer,
   BoxRenderable,
-  TextRenderable,
-  StyledText,
+  type CliRenderer,
   parseColor,
-  type TextChunk,
   ScrollBoxRenderable,
-} from "@opentui/core";
-import { THEME } from "../theme.js";
+  StyledText,
+  type TextChunk,
+  TextRenderable,
+} from '@opentui/core';
+import { THEME } from '../theme.js';
 
 interface LogLine {
   content: string;
@@ -40,22 +40,22 @@ export class LogView {
     this.onNewLines = onNewLines;
 
     this.root = new BoxRenderable(renderer, {
-      id: "log-view-root",
-      width: "100%",
-      height: "100%",
+      id: 'log-view-root',
+      width: '100%',
+      height: '100%',
       backgroundColor: THEME.bg,
-      flexDirection: "column",
+      flexDirection: 'column',
       flexGrow: 1,
     });
 
     this.scrollBox = new ScrollBoxRenderable(renderer, {
-      id: "log-view-scroll",
-      width: "100%",
-      height: "100%",
+      id: 'log-view-scroll',
+      width: '100%',
+      height: '100%',
       flexGrow: 1,
       scrollY: true,
       stickyScroll: true,
-      stickyStart: "bottom",
+      stickyStart: 'bottom',
       backgroundColor: THEME.bg,
       scrollbarOptions: {
         trackOptions: {
@@ -66,10 +66,10 @@ export class LogView {
     });
 
     this.textRenderable = new TextRenderable(renderer, {
-      id: "log-view-text",
-      width: "100%",
-      height: "auto",
-      content: "[ Initializing Log View... ]",
+      id: 'log-view-text',
+      width: '100%',
+      height: 'auto',
+      content: '[ Initializing Log View... ]',
       fg: THEME.dim,
     });
     this.scrollBox.add(this.textRenderable);
@@ -84,9 +84,13 @@ export class LogView {
 
     let color = THEME.text;
 
-    if (trimmed.startsWith("[Phase") || trimmed.startsWith("[Iteration") || trimmed.startsWith("Phase")) {
+    if (
+      trimmed.startsWith('[Phase') ||
+      trimmed.startsWith('[Iteration') ||
+      trimmed.startsWith('Phase')
+    ) {
       color = THEME.accent;
-    } else if (trimmed.startsWith(">>")) {
+    } else if (trimmed.startsWith('>>')) {
       color = THEME.blue;
     } else if (/ERROR|FAILED|Exception|Error:/i.test(trimmed)) {
       color = THEME.error;
@@ -102,23 +106,22 @@ export class LogView {
   private async init() {
     try {
       await fsp.access(this.logFilePath, fs.constants.R_OK);
-      this.fileHandle = await fsp.open(this.logFilePath, "r");
+      this.fileHandle = await fsp.open(this.logFilePath, 'r');
       const stats = await this.fileHandle.stat();
       this.lastSize = stats.size;
 
       if (stats.size > 0) {
-        const content = await fsp.readFile(this.logFilePath, "utf8");
-        const rawLines = content.split("\n");
+        const content = await fsp.readFile(this.logFilePath, 'utf8');
+        const rawLines = content.split('\n');
 
-        const linesToProcess = rawLines[rawLines.length - 1] === ""
-          ? rawLines.slice(0, -1)
-          : rawLines;
+        const linesToProcess =
+          rawLines[rawLines.length - 1] === '' ? rawLines.slice(0, -1) : rawLines;
 
         const lastLines = linesToProcess.slice(-this.MAX_LINES);
         this.addRawLines(lastLines);
       }
     } catch (error) {
-      if (error instanceof Error && (error as NodeJS.ErrnoException).code !== "ENOENT") {
+      if (error instanceof Error && (error as NodeJS.ErrnoException).code !== 'ENOENT') {
         this.addRawLines([`[Error reading log: ${error.message}]`]);
       }
     }
@@ -156,7 +159,7 @@ export class LogView {
       if (!this.fileHandle) {
         try {
           await fsp.access(this.logFilePath, fs.constants.R_OK);
-          this.fileHandle = await fsp.open(this.logFilePath, "r");
+          this.fileHandle = await fsp.open(this.logFilePath, 'r');
           const stats = await this.fileHandle.stat();
           this.lastSize = stats.size;
           return;
@@ -175,15 +178,15 @@ export class LogView {
         const content = buffer.toString();
         this.lastSize = stats.size;
 
-        const rawLines = content.split("\n");
-        if (rawLines.length > 0 && rawLines[rawLines.length - 1] === "") {
+        const rawLines = content.split('\n');
+        if (rawLines.length > 0 && rawLines[rawLines.length - 1] === '') {
           rawLines.pop();
         }
 
         this.addRawLines(rawLines);
       } else if (stats.size < this.lastSize) {
         this.lastSize = stats.size;
-        this.addRawLines(["[Log file truncated]"]);
+        this.addRawLines(['[Log file truncated]']);
       }
     } catch (error) {
       if (this.fileHandle) {
@@ -195,14 +198,17 @@ export class LogView {
   }
 
   private stripAnsi(text: string): string {
-    return text.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "");
+    return text.replace(
+      /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+      '',
+    );
   }
 
   private addRawLines(newLines: string[]) {
     if (this.isDestroyed) return;
     if (newLines.length === 0) return;
 
-    const formatted = newLines.map(line => this.formatLogLine(line));
+    const formatted = newLines.map((line) => this.formatLogLine(line));
 
     this.lines.push(...formatted);
     if (this.lines.length > this.MAX_LINES) {
@@ -234,13 +240,14 @@ export class LogView {
     this.lastUpdateTime = now;
 
     // For very long logs, only render the last RENDER_CHUNK_SIZE lines to improve performance
-    const linesToRender = this.lines.length > this.RENDER_CHUNK_SIZE
-      ? this.lines.slice(-this.RENDER_CHUNK_SIZE)
-      : this.lines;
+    const linesToRender =
+      this.lines.length > this.RENDER_CHUNK_SIZE
+        ? this.lines.slice(-this.RENDER_CHUNK_SIZE)
+        : this.lines;
 
     const chunks: TextChunk[] = linesToRender.map((line, i) => ({
       __isChunk: true,
-      text: line.content + (i === linesToRender.length - 1 ? "" : "\n"),
+      text: line.content + (i === linesToRender.length - 1 ? '' : '\n'),
       fg: parseColor(line.color),
     }));
 

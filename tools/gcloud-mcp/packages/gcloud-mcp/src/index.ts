@@ -18,16 +18,16 @@
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import pkg from '../package.json' with { type: 'json' };
-import { createRunGcloudCommand } from './tools/run_gcloud_command.js';
-import * as gcloud from './gcloud.js';
-import yargs, { ArgumentsCamelCase, CommandModule } from 'yargs';
-import { hideBin } from 'yargs/helpers';
-import { init } from './commands/init.js';
-import { log } from './utility/logger.js';
 import fs from 'fs';
 import path from 'path';
+import yargs, { type ArgumentsCamelCase, type CommandModule } from 'yargs';
+import { hideBin } from 'yargs/helpers';
+import pkg from '../package.json' with { type: 'json' };
+import { init } from './commands/init.js';
 import { createAccessControlList } from './denylist.js';
+import * as gcloud from './gcloud.js';
+import { createRunGcloudCommand } from './tools/run_gcloud_command.js';
+import { log } from './utility/logger.js';
 
 export const default_deny: string[] = [
   'compute start-iap-tunnel',

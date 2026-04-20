@@ -8,19 +8,16 @@ import './material-collection.js';
 import './index.js';
 
 import {
-  KnobTypesToKnobs,
+  type KnobTypesToKnobs,
   MaterialCollection,
   materialInitsToStoryInits,
   setUpDemo,
 } from './material-collection.js';
 
-import {stories, StoryKnobs} from './stories.js';
+import { type StoryKnobs, stories } from './stories.js';
 
-const collection = new MaterialCollection<KnobTypesToKnobs<StoryKnobs>>(
-  'Segmented Button Set',
-  [],
-);
+const collection = new MaterialCollection<KnobTypesToKnobs<StoryKnobs>>('Segmented Button Set', []);
 
 collection.addStories(...materialInitsToStoryInits(stories));
 
-setUpDemo(collection, {icons: 'material-symbols'});
+setUpDemo(collection, { icons: 'material-symbols' });

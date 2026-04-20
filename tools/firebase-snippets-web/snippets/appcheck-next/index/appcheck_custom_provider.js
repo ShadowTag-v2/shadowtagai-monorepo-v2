@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START appcheck_custom_provider_modular]
-import { CustomProvider } from "firebase/app-check";
+import { CustomProvider } from 'firebase/app-check';
 
 const appCheckCustomProvider = new CustomProvider({
   getToken: () => {
@@ -14,17 +14,17 @@ const appCheckCustomProvider = new CustomProvider({
       // expiration time.
 
       // [START_EXCLUDE]
-      const tokenFromServer = "abc1234";
+      const tokenFromServer = 'abc1234';
       const expirationFromServer = 1234;
       // [END_EXCLUDE]
 
       const appCheckToken = {
         token: tokenFromServer,
-        expireTimeMillis: expirationFromServer * 1000
+        expireTimeMillis: expirationFromServer * 1000,
       };
 
       resolve(appCheckToken);
     });
-  }
+  },
 });
 // [END appcheck_custom_provider_modular]

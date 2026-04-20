@@ -15,10 +15,10 @@
  */
 
 export interface Rating {
-    id?: string;
-    rating: number;
-    text: string;
-    timestamp?: Date;
-    userId?: string;
-    userName?: string;
+  id?: string;
+  rating: number;
+  text: string;
+  timestamp?: Date;
+  userId?: string;
+  userName?: string;
 }

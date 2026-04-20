@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 /**
  * Moondream Ingestion Pipeline
  *
@@ -8,42 +9,42 @@
  * Outputs JSON Lines format for downstream processing.
  */
 
-import fg from "fast-glob";
-import fs from "fs-extra";
-import path from "node:path";
-import crypto from "node:crypto";
-import { request } from "undici";
+import crypto from 'node:crypto';
+import path from 'node:path';
+import fg from 'fast-glob';
+import fs from 'fs-extra';
+import { request } from 'undici';
 
 // Configuration
-const ROOTS = (process.env.INGEST_ROOTS || "C:/Users;E:/;F:/").split(";");
-const OUT = process.env.INGEST_OUT || "ingest/out/downloads.jsonl";
-const SEEN = process.env.INGEST_SEEN || "ingest/out/.seen.txt";
-const MOONDREAM_URL = process.env.MOONDREAM_URL || "http://localhost:7777/extract";
+const ROOTS = (process.env.INGEST_ROOTS || 'C:/Users;E:/;F:/').split(';');
+const OUT = process.env.INGEST_OUT || 'ingest/out/downloads.jsonl';
+const SEEN = process.env.INGEST_SEEN || 'ingest/out/.seen.txt';
+const MOONDREAM_URL = process.env.MOONDREAM_URL || 'http://localhost:7777/extract';
 
 const SUPPORTED_EXTS = [
-  ".png",
-  ".jpg",
-  ".jpeg",
-  ".pdf",
-  ".tiff",
-  ".bmp",
-  ".webp",
-  ".gif",
-  ".heic",
-  ".txt",
-  ".md",
-  ".csv",
-  ".json",
-  ".html",
+  '.png',
+  '.jpg',
+  '.jpeg',
+  '.pdf',
+  '.tiff',
+  '.bmp',
+  '.webp',
+  '.gif',
+  '.heic',
+  '.txt',
+  '.md',
+  '.csv',
+  '.json',
+  '.html',
 ];
 
 // Load seen hashes
 const seen = new Set<string>(
-  fs.existsSync(SEEN) ? fs.readFileSync(SEEN, "utf8").split("\n").filter(Boolean) : [],
+  fs.existsSync(SEEN) ? fs.readFileSync(SEEN, 'utf8').split('\n').filter(Boolean) : [],
 );
 
 function sha256(buf: Buffer): string {
-  return crypto.createHash("sha256").update(buf).digest("hex");
+  return crypto.createHash('sha256').update(buf).digest('hex');
 }
 
 async function parseWithMoondream(filePath: string): Promise<{
@@ -54,12 +55,12 @@ async function parseWithMoondream(filePath: string): Promise<{
   const ext = path.extname(filePath).toLowerCase();
 
   // Plain text files - no need for Moondream
-  if ([".txt", ".md", ".csv", ".json", ".html"].includes(ext)) {
-    const text = await fs.readFile(filePath, "utf8");
+  if (['.txt', '.md', '.csv', '.json', '.html'].includes(ext)) {
+    const text = await fs.readFile(filePath, 'utf8');
     return {
       text,
-      json: ext === ".json" ? JSON.parse(text) : null,
-      meta: { mode: "plain" },
+      json: ext === '.json' ? JSON.parse(text) : null,
+      meta: { mode: 'plain' },
     };
   }
 
@@ -67,32 +68,32 @@ async function parseWithMoondream(filePath: string): Promise<{
   try {
     const fileStream = fs.createReadStream(filePath);
     const response = await request(MOONDREAM_URL, {
-      method: "POST",
+      method: 'POST',
       body: fileStream,
       headers: {
-        "Content-Type": "application/octet-stream",
+        'Content-Type': 'application/octet-stream',
       },
     });
 
     const result = await response.body.json();
     return {
-      text: result.text || "",
+      text: result.text || '',
       json: result.data || null,
-      meta: { ...result.meta, mode: "moondream" },
+      meta: { ...result.meta, mode: 'moondream' },
     };
   } catch (error: unknown) {
     console.error(`[Moondream] Error processing ${filePath}:`, error.message);
     return {
-      text: "",
+      text: '',
       json: null,
-      meta: { mode: "error", error: error.message },
+      meta: { mode: 'error', error: error.message },
     };
   }
 }
 
 async function main() {
   await fs.ensureDir(path.dirname(OUT));
-  const outStream = fs.createWriteStream(OUT, { flags: "a" });
+  const outStream = fs.createWriteStream(OUT, { flags: 'a' });
 
   let processed = 0;
   let skipped = 0;
@@ -105,13 +106,13 @@ async function main() {
 
     console.log(`[Ingest] Scanning: ${root}`);
 
-    const files = await fg(["**/*"], {
+    const files = await fg(['**/*'], {
       cwd: root,
       dot: false,
       onlyFiles: true,
       absolute: true,
       followSymbolicLinks: false,
-      ignore: ["**/node_modules/**", "**/.git/**", "**/dist/**"],
+      ignore: ['**/node_modules/**', '**/.git/**', '**/dist/**'],
     });
 
     for (const filePath of files) {
@@ -146,10 +147,10 @@ async function main() {
         data: parsed.json || undefined,
         meta: parsed.meta || undefined,
         now: Math.floor(Date.now() / 1000),
-        source: "moondream-ingest",
+        source: 'moondream-ingest',
       };
 
-      outStream.write(JSON.stringify(record) + "\n");
+      outStream.write(JSON.stringify(record) + '\n');
       seen.add(hash);
       processed++;
 
@@ -160,7 +161,7 @@ async function main() {
   }
 
   outStream.end();
-  await fs.outputFile(SEEN, [...seen].join("\n"));
+  await fs.outputFile(SEEN, [...seen].join('\n'));
 
   console.log(`\n[Ingest] Complete!`);
   console.log(`  Processed: ${processed}`);
@@ -169,6 +170,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error("[Ingest] Fatal error:", error);
+  console.error('[Ingest] Fatal error:', error);
   process.exit(1);
 });

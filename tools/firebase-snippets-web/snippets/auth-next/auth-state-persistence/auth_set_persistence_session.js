@@ -5,7 +5,12 @@
 // 'npm run snippets'.
 
 // [START auth_set_persistence_session_modular]
-import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "firebase/auth";
+import {
+  browserSessionPersistence,
+  getAuth,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 
 const auth = getAuth();
 setPersistence(auth, browserSessionPersistence)

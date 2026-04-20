@@ -32,13 +32,6 @@
       "@skills/*": ["./src/skills/*"]
     }
   },
-  "include": [
-    "src/**/*",
-    "examples/**/*",
-    "tests/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["src/**/*", "examples/**/*", "tests/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

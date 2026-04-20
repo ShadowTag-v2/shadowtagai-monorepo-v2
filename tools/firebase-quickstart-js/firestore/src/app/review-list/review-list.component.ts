@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { Component, OnInit, Input, inject } from '@angular/core';
-import { Rating } from '../../types/ratings';
+import { Component, Input, inject, type OnInit } from '@angular/core';
+import { collection, collectionData, Firestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import type { Rating } from '../../types/ratings';
 
 @Component({
   selector: 'app-review-list',
   templateUrl: './review-list.component.html',
-  styleUrls: ['./review-list.component.css']
+  styleUrls: ['./review-list.component.css'],
 })
 export class ReviewListComponent implements OnInit {
   @Input() restaurantID: string | null = null;

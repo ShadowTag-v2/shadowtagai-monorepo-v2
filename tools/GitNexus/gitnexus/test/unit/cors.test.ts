@@ -13,7 +13,7 @@
  *   - https://gitnexus.vercel.app     → allowed
  *   - Everything else                 → rejected
  */
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { isAllowedOrigin } from '../../src/server/api.js';
 
 // ─── No origin (non-browser / curl) ──────────────────────────────────

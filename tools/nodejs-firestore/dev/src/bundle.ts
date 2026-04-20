@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {firestore, google} from '../protos/firestore_v1_proto_api';
+import { type firestore, google } from '../protos/firestore_v1_proto_api';
 
-import {DocumentSnapshot} from './document';
-import {QuerySnapshot} from './reference/query-snapshot';
-import {Timestamp} from './timestamp';
+import { DocumentSnapshot } from './document';
+import { QuerySnapshot } from './reference/query-snapshot';
+import { Timestamp } from './timestamp';
 import {
   invalidArgumentMessage,
   validateMaxNumberOfArguments,
@@ -64,10 +64,7 @@ export class BundleBuilder {
    * // Save `bundleBuffer` to CDN or stream it to clients.
    * ```
    */
-  add(
-    documentOrName: DocumentSnapshot | string,
-    querySnapshot?: QuerySnapshot,
-  ): BundleBuilder {
+  add(documentOrName: DocumentSnapshot | string, querySnapshot?: QuerySnapshot): BundleBuilder {
     // eslint-disable-next-line prefer-rest-params
     validateMinNumberOfArguments('BundleBuilder.add', arguments, 1);
     // eslint-disable-next-line prefer-rest-params
@@ -142,9 +139,7 @@ export class BundleBuilder {
    * @private
    * @internal
    */
-  private elementToLengthPrefixedBuffer(
-    bundleElement: firestore.IBundleElement,
-  ): Buffer {
+  private elementToLengthPrefixedBuffer(bundleElement: firestore.IBundleElement): Buffer {
     // Convert to a valid proto message object then take its JSON representation.
     // This take cares of stuff like converting internal byte array fields
     // to Base64 encodings.
@@ -163,24 +158,23 @@ export class BundleBuilder {
     for (const namedQuery of this.namedQueries.values()) {
       bundleBuffer = Buffer.concat([
         bundleBuffer,
-        this.elementToLengthPrefixedBuffer({namedQuery}),
+        this.elementToLengthPrefixedBuffer({ namedQuery }),
       ]);
     }
 
     for (const bundledDocument of this.documents.values()) {
-      const documentMetadata: firestore.IBundledDocumentMetadata =
-        bundledDocument.metadata;
+      const documentMetadata: firestore.IBundledDocumentMetadata = bundledDocument.metadata;
 
       bundleBuffer = Buffer.concat([
         bundleBuffer,
-        this.elementToLengthPrefixedBuffer({documentMetadata}),
+        this.elementToLengthPrefixedBuffer({ documentMetadata }),
       ]);
       // Write to the bundle if document exists.
       const document = bundledDocument.document;
       if (document) {
         bundleBuffer = Buffer.concat([
           bundleBuffer,
-          this.elementToLengthPrefixedBuffer({document}),
+          this.elementToLengthPrefixedBuffer({ document }),
         ]);
       }
     }
@@ -193,10 +187,7 @@ export class BundleBuilder {
       totalBytes: bundleBuffer.length,
     };
     // Prepends the metadata element to the bundleBuffer: `bundleBuffer` is the second argument to `Buffer.concat`.
-    bundleBuffer = Buffer.concat([
-      this.elementToLengthPrefixedBuffer({metadata}),
-      bundleBuffer,
-    ]);
+    bundleBuffer = Buffer.concat([this.elementToLengthPrefixedBuffer({ metadata }), bundleBuffer]);
     return bundleBuffer;
   }
 }

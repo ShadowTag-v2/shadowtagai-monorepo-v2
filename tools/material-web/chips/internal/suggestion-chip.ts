@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {AssistChip} from './assist-chip.js';
+import { AssistChip } from './assist-chip.js';
 
 /**
  * A suggestion chip component.

@@ -1,11 +1,6 @@
-import React from "react";
-import {
-  Content,
-  GroundingChunk,
-  GroundingMetadata,
-  GroundingSupport,
-} from "firebase/ai";
-import styles from "./ChatMessage.module.css";
+import type { Content, GroundingChunk, GroundingMetadata, GroundingSupport } from 'firebase/ai';
+import React from 'react';
+import styles from './ChatMessage.module.css';
 
 interface ChatMessageProps {
   /** The message content object containing role and parts. */
@@ -28,13 +23,13 @@ interface ProcessedSegment {
  */
 const getMessageText = (message: Content): string => {
   if (!message.parts || message.parts.length === 0) {
-    return "";
+    return '';
   }
   // Filter for parts that are TextPart (have a 'text' property) and join them.
   return message.parts
-    .filter((part): part is { text: string } => typeof part.text === "string")
+    .filter((part): part is { text: string } => typeof part.text === 'string')
     .map((part) => part.text)
-    .join("");
+    .join('');
 };
 
 const renderTextWithInlineHighlighting = (
@@ -91,19 +86,17 @@ const renderTextWithInlineHighlighting = (
         const chunk = chunks[ci - 1]; // ci is 1-based
         return chunk.web?.title || chunk.web?.uri || `Source ${ci}`;
       })
-      .join("; ");
+      .join('; ');
 
     outputNodes.push(
       <span
         key={`seg-${i}`}
         className={styles.highlightedSegment}
         title={`Sources: ${tooltipText}`}
-        data-source-indices={seg.chunkIndices.join(",")}
+        data-source-indices={seg.chunkIndices.join(',')}
       >
         {currentSegmentText}
-        <sup className={styles.sourceSuperscript}>
-          [{seg.chunkIndices.join(",")}]
-        </sup>
+        <sup className={styles.sourceSuperscript}>[{seg.chunkIndices.join(',')}]</sup>
       </span>,
     );
     lastIndexProcessed = Math.max(lastIndexProcessed, seg.endIndex);
@@ -123,13 +116,10 @@ const renderTextWithInlineHighlighting = (
  * containing text). Function role messages or model messages consisting only of function calls
  * are typically not rendered directly as chat bubbles.
  */
-const ChatMessage: React.FC<ChatMessageProps> = ({
-  message,
-  groundingMetadata,
-}) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ message, groundingMetadata }) => {
   const text = getMessageText(message);
-  const isUser = message.role === "user";
-  const isModel = message.role === "model";
+  const isUser = message.role === 'user';
+  const isModel = message.role === 'model';
 
   // We render:
   // 1. User messages (even if they only contain images/files, the 'user' role indicates an entry).
@@ -138,20 +128,14 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   // 1. 'function' role messages (these represent execution results, not direct chat).
   // 2. 'model' role messages that *only* contain function calls (these are instructions, not display text).
   // 3. 'system' role messages (handled separately, not usually in chat history display).
-  const shouldRender =
-    isUser ||
-    (isModel && text.trim() !== "");
+  const shouldRender = isUser || (isModel && text.trim() !== '');
 
   if (!shouldRender) {
     return null;
   }
 
   let messageContentNodes: React.ReactNode[];
-  if (
-    isModel &&
-    groundingMetadata?.groundingSupports &&
-    groundingMetadata?.groundingChunks
-  ) {
+  if (isModel && groundingMetadata?.groundingSupports && groundingMetadata?.groundingChunks) {
     messageContentNodes = renderTextWithInlineHighlighting(
       text,
       groundingMetadata.groundingSupports,
@@ -162,9 +146,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   }
 
   return (
-    <div
-      className={`${styles.messageContainer} ${isUser ? styles.user : styles.model}`}
-    >
+    <div className={`${styles.messageContainer} ${isUser ? styles.user : styles.model}`}>
       <div className={styles.messageBubble}>
         <pre className={styles.messageText}>
           {messageContentNodes.map((node, index) => (
@@ -175,8 +157,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
         {isModel &&
           groundingMetadata &&
           (groundingMetadata.searchEntryPoint?.renderedContent ||
-          (groundingMetadata.groundingChunks &&
-            groundingMetadata.groundingChunks.length > 0) ? (
+          (groundingMetadata.groundingChunks && groundingMetadata.groundingChunks.length > 0) ? (
             <div className={styles.sourcesSection}>
               {groundingMetadata.searchEntryPoint?.renderedContent && (
                 <div
@@ -197,11 +178,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
                           className={styles.sourceItem}
                           id={`source-ref-${index + 1}`}
                         >
-                          <a
-                            href={chunk.web?.uri}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
+                          <a href={chunk.web?.uri} target="_blank" rel="noopener noreferrer">
                             {`[${index + 1}] ${chunk.web?.title || chunk.web?.uri}`}
                           </a>
                         </li>

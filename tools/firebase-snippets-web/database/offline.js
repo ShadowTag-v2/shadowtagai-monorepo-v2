@@ -1,35 +1,35 @@
 // These samples are intended for Web so this import would normally be
 // done in HTML however using modules here is more convenient for
 // ensuring sample correctness offline.
-import firebase from "firebase/app";
-import "firebase/database";
+import firebase from 'firebase/app';
+import 'firebase/database';
 
 function onDisconnectSimple() {
   // [START rtdb_ondisconnect_simple]
-  var presenceRef = firebase.database().ref("disconnectmessage");
+  var presenceRef = firebase.database().ref('disconnectmessage');
   // Write a string when this client loses connection
-  presenceRef.onDisconnect().set("I disconnected!");
+  presenceRef.onDisconnect().set('I disconnected!');
   // [END rtdb_ondisconnect_simple]
 }
 
 function onDisconnectCallback() {
-  var presenceRef = firebase.database().ref("disconnectmessage");
+  var presenceRef = firebase.database().ref('disconnectmessage');
 
   // [START rtdb_ondisconnect_callback]
   presenceRef.onDisconnect().remove((err) => {
     if (err) {
-      console.error("could not establish onDisconnect event", err);
+      console.error('could not establish onDisconnect event', err);
     }
   });
   // [END rtdb_ondisconnect_callback]
 }
 
 function onDisconnectCancel() {
-  var presenceRef = firebase.database().ref("disconnectmessage");
+  var presenceRef = firebase.database().ref('disconnectmessage');
 
   // [START rtdb_ondisconnect_cancel]
   var onDisconnectRef = presenceRef.onDisconnect();
-  onDisconnectRef.set("I disconnected");
+  onDisconnectRef.set('I disconnected');
   // some time later when we change our minds
   onDisconnectRef.cancel();
   // [END rtdb_ondisconnect_cancel]
@@ -37,12 +37,12 @@ function onDisconnectCancel() {
 
 function detectConnectionState() {
   // [START rtdb_detect_connection_state]
-  var connectedRef = firebase.database().ref(".info/connected");
-  connectedRef.on("value", (snap) => {
+  var connectedRef = firebase.database().ref('.info/connected');
+  connectedRef.on('value', (snap) => {
     if (snap.val() === true) {
-      console.log("connected");
+      console.log('connected');
     } else {
-      console.log("not connected");
+      console.log('not connected');
     }
   });
   // [END rtdb_detect_connection_state]
@@ -50,15 +50,15 @@ function detectConnectionState() {
 
 function setServerTimestamp() {
   // [START rtdb_set_server_timestamp]
-  var userLastOnlineRef = firebase.database().ref("users/joe/lastOnline");
+  var userLastOnlineRef = firebase.database().ref('users/joe/lastOnline');
   userLastOnlineRef.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
   // [END rtdb_set_server_timestamp]
 }
 
 function estimateClockSkew() {
   // [START rtdb_estimate_clock_skew]
-  var offsetRef = firebase.database().ref(".info/serverTimeOffset");
-  offsetRef.on("value", (snap) => {
+  var offsetRef = firebase.database().ref('.info/serverTimeOffset');
+  offsetRef.on('value', (snap) => {
     var offset = snap.val();
     var estimatedServerTimeMs = new Date().getTime() + offset;
   });

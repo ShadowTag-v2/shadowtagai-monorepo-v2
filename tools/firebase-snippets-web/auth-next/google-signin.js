@@ -5,7 +5,7 @@
 
 function googleProvider() {
   // [START auth_google_provider_create]
-  const { GoogleAuthProvider } = require("firebase/auth");
+  const { GoogleAuthProvider } = require('firebase/auth');
 
   const provider = new GoogleAuthProvider();
   // [END auth_google_provider_create]
@@ -16,14 +16,14 @@ function googleProvider() {
 
   // [START auth_google_provider_params]
   provider.setCustomParameters({
-    'login_hint': 'user@example.com'
+    login_hint: 'user@example.com',
   });
   // [END auth_google_provider_params]
 }
 
 function googleSignInPopup(provider) {
   // [START auth_google_signin_popup]
-  const { getAuth, signInWithPopup, GoogleAuthProvider } = require("firebase/auth");
+  const { getAuth, signInWithPopup, GoogleAuthProvider } = require('firebase/auth');
 
   const auth = getAuth();
   signInWithPopup(auth, provider)
@@ -35,7 +35,8 @@ function googleSignInPopup(provider) {
       const user = result.user;
       // IdP data available using getAdditionalUserInfo(result)
       // ...
-    }).catch((error) => {
+    })
+    .catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -50,7 +51,7 @@ function googleSignInPopup(provider) {
 
 function googleSignInRedirectResult() {
   // [START auth_google_signin_redirect_result]
-  const { getAuth, getRedirectResult, GoogleAuthProvider } = require("firebase/auth");
+  const { getAuth, getRedirectResult, GoogleAuthProvider } = require('firebase/auth');
 
   const auth = getAuth();
   getRedirectResult(auth)
@@ -63,7 +64,8 @@ function googleSignInRedirectResult() {
       const user = result.user;
       // IdP data available using getAdditionalUserInfo(result)
       // ...
-    }).catch((error) => {
+    })
+    .catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -78,7 +80,7 @@ function googleSignInRedirectResult() {
 
 function googleBuildAndSignIn(id_token) {
   // [START auth_google_build_signin]
-  const { getAuth, signInWithCredential, GoogleAuthProvider } = require("firebase/auth");
+  const { getAuth, signInWithCredential, GoogleAuthProvider } = require('firebase/auth');
 
   // Build Firebase credential with the Google ID token.
   const credential = GoogleAuthProvider.credential(id_token);
@@ -105,7 +107,12 @@ function onSignIn_wrapper() {
   }
 
   // [START auth_google_callback]
-  const { getAuth, onAuthStateChanged, signInWithCredential, GoogleAuthProvider } = require("firebase/auth");
+  const {
+    getAuth,
+    onAuthStateChanged,
+    signInWithCredential,
+    GoogleAuthProvider,
+  } = require('firebase/auth');
   const auth = getAuth();
 
   function onSignIn(googleUser) {
@@ -116,8 +123,7 @@ function onSignIn_wrapper() {
       // Check if we are already signed-in Firebase with the correct user.
       if (!isUserEqual(googleUser, firebaseUser)) {
         // Build Firebase credential with the Google ID token.
-        const credential = GoogleAuthProvider.credential(
-            googleUser.getAuthResponse().id_token);
+        const credential = GoogleAuthProvider.credential(googleUser.getAuthResponse().id_token);
 
         // Sign in with credential from the Google user.
         // [START auth_google_signin_credential]
@@ -142,14 +148,16 @@ function onSignIn_wrapper() {
 
 function isUserEqual_wrapper() {
   // [START auth_google_checksameuser]
-  const { GoogleAuthProvider } = require("firebase/auth");
+  const { GoogleAuthProvider } = require('firebase/auth');
 
   function isUserEqual(googleUser, firebaseUser) {
     if (firebaseUser) {
       const providerData = firebaseUser.providerData;
       for (let i = 0; i < providerData.length; i++) {
-        if (providerData[i].providerId === GoogleAuthProvider.PROVIDER_ID &&
-            providerData[i].uid === googleUser.getBasicProfile().getId()) {
+        if (
+          providerData[i].providerId === GoogleAuthProvider.PROVIDER_ID &&
+          providerData[i].uid === googleUser.getBasicProfile().getId()
+        ) {
           // We don't need to reauth the Firebase connection.
           return true;
         }
@@ -162,7 +170,7 @@ function isUserEqual_wrapper() {
 
 function googleProviderCredential(idToken) {
   // [START auth_google_provider_credential]
-  const { GoogleAuthProvider } = require("firebase/auth");
+  const { GoogleAuthProvider } = require('firebase/auth');
 
   const credential = GoogleAuthProvider.credential(idToken);
   // [END auth_google_provider_credential]

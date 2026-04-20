@@ -1,8 +1,8 @@
 // These samples are intended for Web so this import would normally be
 // done in HTML however using modules here is more convenient for
 // ensuring sample correctness offline.
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 // ==========================================================================================
 // Docs: Snippets in this file are "general purpose" and are used on more than one docs page
@@ -11,14 +11,14 @@ import "firebase/auth";
 function makeGoogleCredential(googleUser) {
   // [START auth_make_google_credential]
   var credential = firebase.auth.GoogleAuthProvider.credential(
-    googleUser.getAuthResponse().id_token);
+    googleUser.getAuthResponse().id_token,
+  );
   // [END auth_make_google_credential]
 }
 
 function makeFacebookCredential(response) {
   // [START auth_make_facebook_credential]
-  var credential = firebase.auth.FacebookAuthProvider.credential(
-    response.authResponse.accessToken);
+  var credential = firebase.auth.FacebookAuthProvider.credential(response.authResponse.accessToken);
   // [END auth_make_facebook_credential]
 }
 
@@ -30,11 +30,15 @@ function makeEmailCredential(email, password) {
 
 function signOut() {
   // [START auth_sign_out]
-  firebase.auth().signOut().then(() => {
-    // Sign-out successful.
-  }).catch((error) => {
-    // An error happened.
-  });
+  firebase
+    .auth()
+    .signOut()
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      // An error happened.
+    });
   // [END auth_sign_out]
 }
 
@@ -79,7 +83,8 @@ function setLanguageCode() {
 function authWithCredential(credential) {
   // [START auth_signin_credential]
   // Sign in with the credential from the user.
-  firebase.auth()
+  firebase
+    .auth()
     .signInWithCredential(credential)
     .then((result) => {
       // Signed in
@@ -108,7 +113,7 @@ function initializeWithCustomDomain() {
     apiKey: '...',
     // By default, authDomain is '[YOUR_APP].firebaseapp.com'.
     // You may replace it with a custom domain.
-    authDomain: '[YOUR_CUSTOM_DOMAIN]'
+    authDomain: '[YOUR_CUSTOM_DOMAIN]',
   });
   // [END auth_init_custom_domain]
 }

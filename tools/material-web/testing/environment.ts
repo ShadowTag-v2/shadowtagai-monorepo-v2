@@ -6,9 +6,9 @@
 
 // import 'jasmine'; (google3-only)
 
-import {ReactiveElement, TemplateResult, render as litRender} from 'lit';
+import { render as litRender, type ReactiveElement, type TemplateResult } from 'lit';
 
-import {installSkipWebAnimations} from './skip-animations.js';
+import { installSkipWebAnimations } from './skip-animations.js';
 
 /**
  * Test environment setup for screenshot tests.

@@ -1,5 +1,5 @@
 import { LRUCache } from 'lru-cache';
-import Parser from 'web-tree-sitter';
+import type Parser from 'web-tree-sitter';
 
 // Define the interface for the Cache
 export interface ASTCache {
@@ -21,7 +21,7 @@ export const createASTCache = (maxSize: number = 50): ASTCache => {
       } catch (e) {
         console.warn('Failed to delete tree from WASM memory', e);
       }
-    }
+    },
   });
 
   return {
@@ -40,7 +40,7 @@ export const createASTCache = (maxSize: number = 50): ASTCache => {
 
     stats: () => ({
       size: cache.size,
-      maxSize: maxSize
-    })
+      maxSize: maxSize,
+    }),
   };
 };

@@ -18,7 +18,7 @@
  * Internal copy of GRPC status code. Copied to prevent loading of google-gax
  * at SDK startup.
  */
-export const enum StatusCode {
+export enum StatusCode {
   OK = 0,
   CANCELLED = 1,
   UNKNOWN = 2,

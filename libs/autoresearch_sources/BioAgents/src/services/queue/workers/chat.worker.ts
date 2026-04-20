@@ -6,18 +6,18 @@
  * but extracted to run in a separate worker process.
  */
 
-import { type Job, Worker } from "bullmq";
-import type { ConversationState, PlanTask, State } from "../../../types/core";
-import logger from "../../../utils/logger";
-import { getBullMQConnection } from "../connection";
+import { type Job, Worker } from 'bullmq';
+import type { ConversationState, PlanTask, State } from '../../../types/core';
+import logger from '../../../utils/logger';
+import { getBullMQConnection } from '../connection';
 import {
   notifyJobCompleted,
   notifyJobFailed,
   notifyJobProgress,
   notifyJobStarted,
   notifyMessageUpdated,
-} from "../notify";
-import type { ChatJobData, ChatJobResult, JobProgress } from "../types";
+} from '../notify';
+import type { ChatJobData, ChatJobResult, JobProgress } from '../types';
 
 /**
  * Process a chat job
@@ -36,11 +36,11 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
         attempt: job.attemptsMade + 1,
         maxAttempts: job.opts.attempts,
       },
-      "chat_job_retry_attempt",
+      'chat_job_retry_attempt',
     );
   }
 
-  logger.info({ jobId: job.id, messageId, conversationId }, "chat_job_started");
+  logger.info({ jobId: job.id, messageId, conversationId }, 'chat_job_started');
 
   // Notify: Job started
   await notifyJobStarted(job.id!, conversationId, messageId);
@@ -48,8 +48,8 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
   try {
     // Import required modules
     const { getMessage, getState, getConversationState, updateConversationState, updateMessage } =
-      await import("../../../db/operations");
-    const { updateMessageResponseTime } = await import("../../chat/tools");
+      await import('../../../db/operations');
+    const { updateMessageResponseTime } = await import('../../chat/tools');
 
     // Get message record (already created by route handler)
     const messageRecord = await getMessage(messageId);
@@ -64,7 +64,7 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
     }
 
     // Get conversation state
-    const { getConversation } = await import("../../../db/operations");
+    const { getConversation } = await import('../../../db/operations');
     const conversation = await getConversation(conversationId);
     const conversationStateRecord = await getConversationState(conversation.conversation_state_id);
 
@@ -81,8 +81,8 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
 
     // Wait for any pending file processing jobs BEFORE planning
     // This ensures files uploaded with the chat message are available
-    const { getPendingFileIds, getFileStatus } = await import("../../files/status");
-    const { getFileProcessQueue } = await import("../queues");
+    const { getPendingFileIds, getFileStatus } = await import('../../files/status');
+    const { getFileProcessQueue } = await import('../queues');
 
     const conversationStateId = conversationState.id;
     if (conversationStateId) {
@@ -91,7 +91,7 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
       if (pendingFileIds.length > 0) {
         logger.info(
           { jobId: job.id, pendingFileIds, conversationStateId },
-          "chat_job_waiting_for_file_processing",
+          'chat_job_waiting_for_file_processing',
         );
 
         const fileProcessQueue = getFileProcessQueue();
@@ -110,8 +110,8 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
             const fileStatus = await getFileStatus(fileId);
 
             if (
-              fileJobState === "completed" ||
-              fileStatus?.status === "ready" ||
+              fileJobState === 'completed' ||
+              fileStatus?.status === 'ready' ||
               !fileJob // Job doesn't exist (already completed/cleaned)
             ) {
               logger.info(
@@ -121,12 +121,12 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
                   fileJobState,
                   fileStatus: fileStatus?.status,
                 },
-                "chat_job_file_ready",
+                'chat_job_file_ready',
               );
               break;
             }
 
-            if (fileJobState === "failed" || fileStatus?.status === "error") {
+            if (fileJobState === 'failed' || fileStatus?.status === 'error') {
               logger.warn(
                 {
                   jobId: job.id,
@@ -134,7 +134,7 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
                   fileJobState,
                   fileStatus: fileStatus?.status,
                 },
-                "chat_job_file_failed_continuing",
+                'chat_job_file_failed_continuing',
               );
               break;
             }
@@ -153,33 +153,33 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
               jobId: job.id,
               uploadedDatasetsCount: freshConversationState.values.uploadedDatasets?.length || 0,
             },
-            "chat_job_refreshed_conversation_state_for_planning",
+            'chat_job_refreshed_conversation_state_for_planning',
           );
         }
       }
     }
 
     // Update progress: Planning
-    await job.updateProgress({ stage: "planning", percent: 10 } as JobProgress);
-    await notifyJobProgress(job.id!, conversationId, "planning", 10);
+    await job.updateProgress({ stage: 'planning', percent: 10 } as JobProgress);
+    await notifyJobProgress(job.id!, conversationId, 'planning', 10);
 
     // Step 1: Execute planning agent
-    logger.info({ jobId: job.id }, "chat_job_planning");
+    logger.info({ jobId: job.id }, 'chat_job_planning');
 
-    const { planningAgent } = await import("../../../agents/planning");
+    const { planningAgent } = await import('../../../agents/planning');
 
     const planningResult = await planningAgent({
       state,
       conversationState,
       message: messageRecord,
-      mode: "initial",
-      usageType: "chat",
+      mode: 'initial',
+      usageType: 'chat',
     });
 
     const plan = planningResult.plan;
 
     // Filter to only LITERATURE tasks (no ANALYSIS for regular chat)
-    const literatureTasks = plan.filter((task) => task.type === "LITERATURE");
+    const literatureTasks = plan.filter((task) => task.type === 'LITERATURE');
 
     logger.info(
       {
@@ -187,25 +187,25 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
         totalTasks: plan.length,
         literatureTasks: literatureTasks.length,
       },
-      "chat_job_planning_completed",
+      'chat_job_planning_completed',
     );
 
     // Update progress: Literature
     await job.updateProgress({
-      stage: "literature",
+      stage: 'literature',
       percent: 30,
     } as JobProgress);
-    await notifyJobProgress(job.id!, conversationId, "literature", 30);
+    await notifyJobProgress(job.id!, conversationId, 'literature', 30);
 
     // Step 2: Execute literature tasks
-    const { literatureAgent } = await import("../../../agents/literature");
+    const { literatureAgent } = await import('../../../agents/literature');
     const completedTasks: PlanTask[] = [];
 
     for (const task of literatureTasks) {
       task.start = new Date().toISOString();
-      task.output = "";
+      task.output = '';
 
-      const useBioLiterature = process.env.PRIMARY_LITERATURE_AGENT?.toUpperCase() === "BIO";
+      const useBioLiterature = process.env.PRIMARY_LITERATURE_AGENT?.toUpperCase() === 'BIO';
 
       // Build list of literature promises based on configured sources
       const literaturePromises: Promise<void>[] = [];
@@ -214,7 +214,7 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
       if (process.env.OPENSCHOLAR_API_URL) {
         const openScholarPromise = literatureAgent({
           objective: task.objective,
-          type: "OPENSCHOLAR",
+          type: 'OPENSCHOLAR',
         }).then((result) => {
           task.output += `${result.output}\n\n`;
         });
@@ -225,7 +225,7 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
       if (useBioLiterature) {
         const bioLiteraturePromise = literatureAgent({
           objective: task.objective,
-          type: "BIOLIT",
+          type: 'BIOLIT',
         }).then((result) => {
           task.output += `${result.output}\n\n`;
         });
@@ -236,7 +236,7 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
       if (process.env.KNOWLEDGE_DOCS_PATH) {
         const knowledgePromise = literatureAgent({
           objective: task.objective,
-          type: "KNOWLEDGE",
+          type: 'KNOWLEDGE',
         }).then((result) => {
           task.output += `${result.output}\n\n`;
         });
@@ -251,27 +251,27 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
 
     logger.info(
       { jobId: job.id, completedTasksCount: completedTasks.length },
-      "chat_job_literature_completed",
+      'chat_job_literature_completed',
     );
 
     // Update progress: Hypothesis
     await job.updateProgress({
-      stage: "hypothesis",
+      stage: 'hypothesis',
       percent: 60,
     } as JobProgress);
-    await notifyJobProgress(job.id!, conversationId, "hypothesis", 60);
+    await notifyJobProgress(job.id!, conversationId, 'hypothesis', 60);
 
     // Step 3: Check if hypothesis is needed
-    const allLiteratureOutput = completedTasks.map((t) => t.output).join("\n\n");
+    const allLiteratureOutput = completedTasks.map((t) => t.output).join('\n\n');
     const needsHypothesis = await checkRequiresHypothesis(message, allLiteratureOutput, messageId);
 
     let hypothesisText: string | undefined;
 
     // Step 4: Generate hypothesis if needed
     if (needsHypothesis && completedTasks.length > 0) {
-      logger.info({ jobId: job.id }, "chat_job_generating_hypothesis");
+      logger.info({ jobId: job.id }, 'chat_job_generating_hypothesis');
 
-      const { hypothesisAgent } = await import("../../../agents/hypothesis");
+      const { hypothesisAgent } = await import('../../../agents/hypothesis');
 
       const hypothesisResult = await hypothesisAgent({
         objective: planningResult.currentObjective,
@@ -288,9 +288,9 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
       }
 
       // Step 5: Run reflection agent
-      logger.info({ jobId: job.id }, "chat_job_reflection");
+      logger.info({ jobId: job.id }, 'chat_job_reflection');
 
-      const { reflectionAgent } = await import("../../../agents/reflection");
+      const { reflectionAgent } = await import('../../../agents/reflection');
 
       const reflectionResult = await reflectionAgent({
         conversationState,
@@ -310,13 +310,13 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
     }
 
     // Update progress: Reply
-    await job.updateProgress({ stage: "reply", percent: 90 } as JobProgress);
-    await notifyJobProgress(job.id!, conversationId, "reply", 90);
+    await job.updateProgress({ stage: 'reply', percent: 90 } as JobProgress);
+    await notifyJobProgress(job.id!, conversationId, 'reply', 90);
 
     // Step 6: Generate reply
-    logger.info({ jobId: job.id }, "chat_job_generating_reply");
+    logger.info({ jobId: job.id }, 'chat_job_generating_reply');
 
-    const { generateChatReply } = await import("../../../agents/reply/utils");
+    const { generateChatReply } = await import('../../../agents/reply/utils');
 
     // Log uploaded datasets info for debugging
     const uploadedDatasets = conversationState.values.uploadedDatasets || [];
@@ -328,10 +328,10 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
           filename: d.filename,
           hasContent: !!d.content,
           contentLength: d.content?.length || 0,
-          contentPreview: d.content?.slice(0, 100) || "no content",
+          contentPreview: d.content?.slice(0, 100) || 'no content',
         })),
       },
-      "chat_job_uploaded_datasets",
+      'chat_job_uploaded_datasets',
     );
 
     const replyText = await generateChatReply(
@@ -349,7 +349,7 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
       {
         maxTokens: 1024,
         messageId,
-        usageType: "chat",
+        usageType: 'chat',
       },
     );
 
@@ -370,7 +370,7 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
         responseTime,
         responseTimeSec: (responseTime / 1000).toFixed(2),
       },
-      "chat_job_completed",
+      'chat_job_completed',
     );
 
     // Notify: Job completed
@@ -389,7 +389,7 @@ async function processChatJob(job: Job<ChatJobData, ChatJobResult>): Promise<Cha
         attempt: job.attemptsMade + 1,
         willRetry: job.attemptsMade + 1 < (job.opts.attempts || 3),
       },
-      "chat_job_failed",
+      'chat_job_failed',
     );
 
     // Notify: Job failed (only on final attempt)
@@ -411,13 +411,13 @@ async function checkRequiresHypothesis(
   literatureResults: string,
   messageId?: string, // For token usage tracking
 ): Promise<boolean> {
-  const { LLM } = await import("../../../llm/provider");
+  const { LLM } = await import('../../../llm/provider');
 
-  const PLANNING_LLM_PROVIDER = process.env.PLANNING_LLM_PROVIDER || "google";
+  const PLANNING_LLM_PROVIDER = process.env.PLANNING_LLM_PROVIDER || 'google';
   const apiKey = process.env[`${PLANNING_LLM_PROVIDER.toUpperCase()}_API_KEY`];
 
   if (!apiKey) {
-    logger.warn("LLM API key not configured, defaulting to no hypothesis");
+    logger.warn('LLM API key not configured, defaulting to no hypothesis');
     return false;
   }
 
@@ -447,17 +447,17 @@ Respond with ONLY "YES" if a hypothesis is needed, or "NO" if it's not needed.`;
 
   try {
     const response = await llmProvider.createChatCompletion({
-      model: process.env.PLANNING_LLM_MODEL || "gemini-2.5-flash",
-      messages: [{ role: "user" as const, content: prompt }],
+      model: process.env.PLANNING_LLM_MODEL || 'gemini-2.5-flash',
+      messages: [{ role: 'user' as const, content: prompt }],
       maxTokens: 10,
       messageId,
-      usageType: "chat",
+      usageType: 'chat',
     });
 
     const answer = response.content.trim().toUpperCase();
-    return answer === "YES";
+    return answer === 'YES';
   } catch (err) {
-    logger.error({ err }, "hypothesis_check_failed");
+    logger.error({ err }, 'hypothesis_check_failed');
     return false;
   }
 }
@@ -466,9 +466,9 @@ Respond with ONLY "YES" if a hypothesis is needed, or "NO" if it's not needed.`;
  * Start the chat worker
  */
 export function startChatWorker(): Worker {
-  const concurrency = parseInt(process.env.CHAT_QUEUE_CONCURRENCY || "5");
+  const concurrency = parseInt(process.env.CHAT_QUEUE_CONCURRENCY || '5');
 
-  const worker = new Worker<ChatJobData, ChatJobResult>("chat", processChatJob, {
+  const worker = new Worker<ChatJobData, ChatJobResult>('chat', processChatJob, {
     connection: getBullMQConnection(),
     concurrency,
     // Chat jobs typically complete in 1-3 minutes
@@ -478,26 +478,26 @@ export function startChatWorker(): Worker {
     stalledInterval: 120000, // 2 minutes
   });
 
-  worker.on("completed", (job, result) => {
-    logger.info({ jobId: job.id, responseTime: result.responseTime }, "chat_worker_job_completed");
+  worker.on('completed', (job, result) => {
+    logger.info({ jobId: job.id, responseTime: result.responseTime }, 'chat_worker_job_completed');
   });
 
-  worker.on("failed", (job, error) => {
+  worker.on('failed', (job, error) => {
     logger.error(
       {
         jobId: job?.id,
         error: error.message,
         attemptsMade: job?.attemptsMade,
       },
-      "chat_worker_job_failed_permanently",
+      'chat_worker_job_failed_permanently',
     );
   });
 
-  worker.on("stalled", (jobId) => {
-    logger.warn({ jobId }, "chat_worker_job_stalled");
+  worker.on('stalled', (jobId) => {
+    logger.warn({ jobId }, 'chat_worker_job_stalled');
   });
 
-  logger.info({ concurrency }, "chat_worker_started");
+  logger.info({ concurrency }, 'chat_worker_started');
 
   return worker;
 }

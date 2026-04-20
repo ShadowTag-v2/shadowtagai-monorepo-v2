@@ -6,9 +6,9 @@
 
 // import 'jasmine'; (google3-only)
 
-import {createTokenTests} from '../testing/tokens.js';
+import { createTokenTests } from '../testing/tokens.js';
 
-import {MdFilledTonalIconButton} from './filled-tonal-icon-button.js';
+import { MdFilledTonalIconButton } from './filled-tonal-icon-button.js';
 
 describe('<md-filled-tonal-icon-button', () => {
   describe('.styles', () => {

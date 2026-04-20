@@ -1,15 +1,16 @@
-import React, { useState, useCallback } from "react";
-import styles from "./PromptInput.module.css";
 import {
-  AI,
-  ModelParams,
-  CountTokensResponse,
-  Part,
+  type AI,
+  type CountTokensResponse,
   getGenerativeModel,
-  ImagenModelParams,
-} from "firebase/ai";
-import { fileToGenerativePart } from "../../utils/fileUtils";
-import { AppMode } from "../../App";
+  type ImagenModelParams,
+  type ModelParams,
+  type Part,
+} from 'firebase/ai';
+import type React from 'react';
+import { useCallback, useState } from 'react';
+import type { AppMode } from '../../App';
+import { fileToGenerativePart } from '../../utils/fileUtils';
+import styles from './PromptInput.module.css';
 
 interface PromptInputProps {
   prompt: string;
@@ -32,7 +33,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
   onPromptChange,
   onSubmit,
   isLoading,
-  placeholder = "Type your prompt here...",
+  placeholder = 'Type your prompt here...',
   suggestions,
   onSuggestionClick,
   activeMode,
@@ -40,9 +41,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
   currentParams,
   selectedFile,
 }) => {
-  const [tokenCount, setTokenCount] = useState<CountTokensResponse | null>(
-    null,
-  );
+  const [tokenCount, setTokenCount] = useState<CountTokensResponse | null>(null);
   const [isCountingTokens, setIsCountingTokens] = useState<boolean>(false);
   const [tokenCountError, setTokenCountError] = useState<string | null>(null);
 
@@ -68,7 +67,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
         const filePart = await fileToGenerativePart(selectedFile);
         parts.push(filePart);
       } catch (err: unknown) {
-        console.error("Error processing file for token count:", err);
+        console.error('Error processing file for token count:', err);
         setTokenCountError(`Error processing file`);
         setIsCountingTokens(false);
         return;
@@ -77,45 +76,36 @@ const PromptInput: React.FC<PromptInputProps> = ({
 
     // Don't count if there's nothing to count
     if (parts.length === 0) {
-      setTokenCountError("Nothing to count tokens for (no text or file).");
+      setTokenCountError('Nothing to count tokens for (no text or file).');
       setIsCountingTokens(false);
       return;
     }
 
     try {
       if (!currentParams) {
-        throw Error(
-          "[PromptInput] currentParams is undefined when counting tokens",
-        );
+        throw Error('[PromptInput] currentParams is undefined when counting tokens');
       }
-      console.log("[PromptInput] Counting tokens with params:", currentParams);
+      console.log('[PromptInput] Counting tokens with params:', currentParams);
       const model = getGenerativeModel(aiInstance, currentParams);
 
       const request = {
-        contents: [{ role: "user" as const, parts }],
+        contents: [{ role: 'user' as const, parts }],
         systemInstruction: currentParams.systemInstruction,
         tools: currentParams.tools,
       };
-      console.log("[PromptInput] Calling countTokens with request:", request);
+      console.log('[PromptInput] Calling countTokens with request:', request);
 
       const result = await model.countTokens(request);
       setTokenCount(result);
-      console.log("[PromptInput] Token count result:", result);
+      console.log('[PromptInput] Token count result:', result);
     } catch (err: unknown) {
-      console.error("Error counting tokens:", err);
+      console.error('Error counting tokens:', err);
       setTokenCountError(`Token count failed`);
       setTokenCount(null); // Clear previous count on error
     } finally {
       setIsCountingTokens(false);
     }
-  }, [
-    prompt,
-    selectedFile,
-    aiInstance,
-    currentParams,
-    isLoading,
-    isCountingTokens,
-  ]);
+  }, [prompt, selectedFile, aiInstance, currentParams, isLoading, isCountingTokens]);
 
   return (
     <div className={styles.promptContainer}>
@@ -152,31 +142,25 @@ const PromptInput: React.FC<PromptInputProps> = ({
           disabled={isLoading || isCountingTokens || !prompt.trim()} // Disable if loading, counting, or empty
           aria-label="Submit prompt"
         >
-          {isLoading ? "Running..." : "Run ➤"}
+          {isLoading ? 'Running...' : 'Run ➤'}
         </button>
       </div>
 
       {/* Token Count Section - Only available for GenerativeModel */}
-      {activeMode === "chat" && (
+      {activeMode === 'chat' && (
         <div className={styles.tokenCountSection}>
           <button
             type="button"
             onClick={handleCountTokensClick}
-            disabled={
-              isLoading || isCountingTokens || (!prompt.trim() && !selectedFile)
-            } // Disable if no content or loading
+            disabled={isLoading || isCountingTokens || (!prompt.trim() && !selectedFile)} // Disable if no content or loading
             className={styles.countButton}
             title="Estimate token count for the current prompt and file"
           >
-            {isCountingTokens ? "Counting..." : "Count Tokens"}
+            {isCountingTokens ? 'Counting...' : 'Count Tokens'}
           </button>
           <div className={styles.tokenCountDisplay}>
-            {tokenCountError && (
-              <span className={styles.tokenError}>{tokenCountError}</span>
-            )}
-            {!tokenCountError && tokenCount && (
-              <span>Total Tokens: {tokenCount.totalTokens}</span>
-            )}
+            {tokenCountError && <span className={styles.tokenError}>{tokenCountError}</span>}
+            {!tokenCountError && tokenCount && <span>Total Tokens: {tokenCount.totalTokens}</span>}
             {!tokenCountError && !tokenCount && !isCountingTokens && (
               <span className={styles.tokenPlaceholder}></span>
             )}

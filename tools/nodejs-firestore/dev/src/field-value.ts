@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-import * as firestore from '@google-cloud/firestore';
+import type * as firestore from '@google-cloud/firestore';
 
 import * as deepEqual from 'fast-deep-equal';
 
 import * as proto from '../protos/firestore_v1_proto_api';
 
-import {FieldPath} from './path';
-import {Serializer, validateUserInput} from './serializer';
-import {isPrimitiveArrayEqual} from './util';
-import {
-  invalidArgumentMessage,
-  validateMinNumberOfArguments,
-  validateNumber,
-} from './validate';
+import type { FieldPath } from './path';
+import { type Serializer, validateUserInput } from './serializer';
+import { isPrimitiveArrayEqual } from './util';
+import { invalidArgumentMessage, validateMinNumberOfArguments, validateNumber } from './validate';
 
 import api = proto.google.firestore.v1;
 
@@ -46,14 +42,14 @@ export class VectorValue implements firestore.VectorValue {
    */
   constructor(values: number[] | undefined) {
     // Making a copy of the parameter.
-    this._values = (values || []).map(n => n);
+    this._values = (values || []).map((n) => n);
   }
 
   /**
    * Returns a copy of the raw number array form of the vector.
    */
   public toArray(): number[] {
-    return this._values.map(n => n);
+    return this._values.map((n) => n);
   }
 
   /**
@@ -69,7 +65,7 @@ export class VectorValue implements firestore.VectorValue {
    * @internal
    */
   static _fromProto(valueArray: api.IValue): VectorValue {
-    const values = valueArray.arrayValue?.values?.map(v => {
+    const values = valueArray.arrayValue?.values?.map((v) => {
       return v.doubleValue!;
     });
     return new VectorValue(values);
@@ -367,9 +363,7 @@ export class DeleteTransform extends FieldTransform {
   validate(): void {}
 
   toProto(): never {
-    throw new Error(
-      'FieldValue.delete() should not be included in a FieldTransform',
-    );
+    throw new Error('FieldValue.delete() should not be included in a FieldTransform');
   }
 }
 
@@ -418,10 +412,7 @@ class ServerTimestampTransform extends FieldTransform {
 
   validate(): void {}
 
-  toProto(
-    serializer: Serializer,
-    fieldPath: FieldPath,
-  ): api.DocumentTransform.IFieldTransform {
+  toProto(serializer: Serializer, fieldPath: FieldPath): api.DocumentTransform.IFieldTransform {
     return {
       fieldPath: fieldPath.formattedName,
       setToServerValue: 'REQUEST_TIME',
@@ -468,19 +459,15 @@ class NumericIncrementTransform extends FieldTransform {
     validateNumber('FieldValue.increment()', this.operand);
   }
 
-  toProto(
-    serializer: Serializer,
-    fieldPath: FieldPath,
-  ): api.DocumentTransform.IFieldTransform {
+  toProto(serializer: Serializer, fieldPath: FieldPath): api.DocumentTransform.IFieldTransform {
     const encodedOperand = serializer.encodeValue(this.operand)!;
-    return {fieldPath: fieldPath.formattedName, increment: encodedOperand};
+    return { fieldPath: fieldPath.formattedName, increment: encodedOperand };
   }
 
   isEqual(other: firestore.FieldValue): boolean {
     return (
       this === other ||
-      (other instanceof NumericIncrementTransform &&
-        this.operand === other.operand)
+      (other instanceof NumericIncrementTransform && this.operand === other.operand)
     );
   }
 }
@@ -524,10 +511,7 @@ class ArrayUnionTransform extends FieldTransform {
     }
   }
 
-  toProto(
-    serializer: Serializer,
-    fieldPath: FieldPath,
-  ): api.DocumentTransform.IFieldTransform {
+  toProto(serializer: Serializer, fieldPath: FieldPath): api.DocumentTransform.IFieldTransform {
     const encodedElements = serializer.encodeValue(this.elements)!.arrayValue!;
     return {
       fieldPath: fieldPath.formattedName,
@@ -538,8 +522,7 @@ class ArrayUnionTransform extends FieldTransform {
   isEqual(other: firestore.FieldValue): boolean {
     return (
       this === other ||
-      (other instanceof ArrayUnionTransform &&
-        deepEqual(this.elements, other.elements))
+      (other instanceof ArrayUnionTransform && deepEqual(this.elements, other.elements))
     );
   }
 }
@@ -583,10 +566,7 @@ class ArrayRemoveTransform extends FieldTransform {
     }
   }
 
-  toProto(
-    serializer: Serializer,
-    fieldPath: FieldPath,
-  ): api.DocumentTransform.IFieldTransform {
+  toProto(serializer: Serializer, fieldPath: FieldPath): api.DocumentTransform.IFieldTransform {
     const encodedElements = serializer.encodeValue(this.elements)!.arrayValue!;
     return {
       fieldPath: fieldPath.formattedName,
@@ -597,8 +577,7 @@ class ArrayRemoveTransform extends FieldTransform {
   isEqual(other: firestore.FieldValue): boolean {
     return (
       this === other ||
-      (other instanceof ArrayRemoveTransform &&
-        deepEqual(this.elements, other.elements))
+      (other instanceof ArrayRemoveTransform && deepEqual(this.elements, other.elements))
     );
   }
 }
@@ -614,24 +593,17 @@ class ArrayRemoveTransform extends FieldTransform {
  * @param value The value to validate.
  * @param allowUndefined Whether to allow nested properties that are `undefined`.
  */
-function validateArrayElement(
-  arg: string | number,
-  value: unknown,
-  allowUndefined: boolean,
-): void {
+function validateArrayElement(arg: string | number, value: unknown, allowUndefined: boolean): void {
   if (Array.isArray(value)) {
     throw new Error(
-      `${invalidArgumentMessage(
-        arg,
-        'array element',
-      )} Nested arrays are not supported.`,
+      `${invalidArgumentMessage(arg, 'array element')} Nested arrays are not supported.`,
     );
   }
   validateUserInput(
     arg,
     value,
     'array element',
-    /*path=*/ {allowDeletes: 'none', allowTransforms: false, allowUndefined},
+    /*path=*/ { allowDeletes: 'none', allowTransforms: false, allowUndefined },
     /*path=*/ undefined,
     /*level=*/ 0,
     /*inArray=*/ true,

@@ -3,7 +3,7 @@
 
 function createRef() {
   // [START storage_create_ref]
-  const { getStorage, ref } = require("firebase/storage");
+  const { getStorage, ref } = require('firebase/storage');
 
   // Get a reference to the storage service, which is used to create references in your storage bucket
   const storage = getStorage();
@@ -15,7 +15,7 @@ function createRef() {
 
 function createRefChild() {
   // [START storage_create_ref_child]
-  const { getStorage, ref } = require("firebase/storage");
+  const { getStorage, ref } = require('firebase/storage');
 
   const storage = getStorage();
 
@@ -32,7 +32,7 @@ function createRefChild() {
 
 function navigateRef() {
   // [START storage_navigate_ref]
-  const { getStorage, ref } = require("firebase/storage");
+  const { getStorage, ref } = require('firebase/storage');
 
   const storage = getStorage();
   const spaceRef = ref(storage, 'images/space.jpg');
@@ -49,7 +49,7 @@ function navigateRef() {
 
 function navigateRefChain() {
   // [START storage_navigate_ref_chain]
-  const { getStorage, ref } = require("firebase/storage");
+  const { getStorage, ref } = require('firebase/storage');
 
   const storage = getStorage();
   const spaceRef = ref(storage, 'images/space.jpg');
@@ -65,7 +65,7 @@ function navigateRefChain() {
 
 function refProperties() {
   // [START storage_ref_properties]
-  const { getStorage, ref } = require("firebase/storage");
+  const { getStorage, ref } = require('firebase/storage');
 
   const storage = getStorage();
   const spaceRef = ref(storage, 'images/space.jpg');
@@ -85,7 +85,7 @@ function refProperties() {
 
 function refFullExample() {
   // [START storage_ref_full_example]
-  const { getStorage, ref } = require("firebase/storage");
+  const { getStorage, ref } = require('firebase/storage');
 
   const storage = getStorage();
 

@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect, useMemo } from "preact/hooks";
-import { marked } from "marked";
-import DOMPurify from "dompurify";
-import { parseCitationsFromText, extractDomainName } from "../utils/parseCitations";
+import DOMPurify from 'dompurify';
+import { marked } from 'marked';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { extractDomainName, parseCitationsFromText } from '../utils/parseCitations';
 
 /**
  * Component that renders text with inline citations
@@ -38,7 +38,7 @@ export function InlineCitationText({ content }) {
 
     // Now remove any remaining [text]{} patterns that weren't in citations (empty URLs)
     // Use the same regex to clean up
-    processedContent = processedContent.replace(/\[([^\]]*)\]\{([^}]*)\}/g, "$1");
+    processedContent = processedContent.replace(/\[([^\]]*)\]\{([^}]*)\}/g, '$1');
 
     return processedContent;
   }, [citations, content]);
@@ -99,10 +99,10 @@ export function InlineCitationText({ content }) {
   const handleCitationClick = (citation, e) => {
     e.preventDefault();
     if (citation.urls.length === 1) {
-      window.open(citation.urls[0], "_blank", "noopener,noreferrer");
+      window.open(citation.urls[0], '_blank', 'noopener,noreferrer');
     } else if (citation.urls.length > 1) {
       citation.urls.forEach((url) => {
-        window.open(url, "_blank", "noopener,noreferrer");
+        window.open(url, '_blank', 'noopener,noreferrer');
       });
     }
   };
@@ -123,11 +123,11 @@ export function InlineCitationText({ content }) {
       const anchor = contentRef.current.querySelector(`[data-citation-anchor="${citation.index}"]`);
       if (!anchor) return;
 
-      anchor.classList.add("citation-button-wrapper");
-      anchor.innerHTML = "";
+      anchor.classList.add('citation-button-wrapper');
+      anchor.innerHTML = '';
 
-      const button = document.createElement("button");
-      button.className = "citation-button";
+      const button = document.createElement('button');
+      button.className = 'citation-button';
       button.textContent = `[${citation.index}]`;
 
       const firstUrl = citation.urls[0];
@@ -138,7 +138,7 @@ export function InlineCitationText({ content }) {
         // Use index if URL parsing fails
       }
 
-      button.title = `View source: ${domainName}${citation.urls.length > 1 ? ` (+${citation.urls.length - 1})` : ""}`;
+      button.title = `View source: ${domainName}${citation.urls.length > 1 ? ` (+${citation.urls.length - 1})` : ''}`;
       button.onclick = (e) => handleCitationClick(citation, e);
       button.onmouseenter = (e) => handleCitationHover(citation, e);
       button.onmouseleave = handleCitationLeave;
@@ -200,7 +200,7 @@ export function InlineCitationText({ content }) {
                       const hostname = new URL(hoveredCitation.urls[currentSourceIndex]).hostname;
                       return extractDomainName(hostname);
                     } catch {
-                      return "Source";
+                      return 'Source';
                     }
                   })()}
                 </p>

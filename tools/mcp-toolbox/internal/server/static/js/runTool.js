@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { isParamIncluded } from "./toolDisplay.js";
+import { isParamIncluded } from './toolDisplay.js';
 
 /**
  * Runs a specific tool using the /api/tools/toolName/invoke endpoint
@@ -23,98 +23,106 @@ import { isParamIncluded } from "./toolDisplay.js";
  * @param {!HTMLInputElement} prettifyCheckbox The checkbox to control JSON formatting.
  * @param {function(?Object): void} updateLastResults Callback to store the last results.
  */
-export async function handleRunTool(toolId, form, responseArea, parameters, prettifyCheckbox, updateLastResults, headers) {
-    const formData = new FormData(form);
-    const typedParams = {};
-    responseArea.value = 'Running tool...';
-    updateLastResults(null);
+export async function handleRunTool(
+  toolId,
+  form,
+  responseArea,
+  parameters,
+  prettifyCheckbox,
+  updateLastResults,
+  headers,
+) {
+  const formData = new FormData(form);
+  const typedParams = {};
+  responseArea.value = 'Running tool...';
+  updateLastResults(null);
 
-    for (const param of parameters) {
-        const NAME = param.name;
-        const VALUE_TYPE = param.valueType;
-        const RAW_VALUE = formData.get(NAME);
-        const INCLUDE_CHECKED = isParamIncluded(toolId, NAME)
+  for (const param of parameters) {
+    const NAME = param.name;
+    const VALUE_TYPE = param.valueType;
+    const RAW_VALUE = formData.get(NAME);
+    const INCLUDE_CHECKED = isParamIncluded(toolId, NAME);
 
-        try {
-            if (!INCLUDE_CHECKED) {
-                console.debug(`Param ${NAME} was intentionally skipped.`)
-                // if param was purposely unchecked, don't include it in body
-                continue;
-            }
-
-            if (VALUE_TYPE === 'boolean') {
-                typedParams[NAME] = RAW_VALUE !== null;
-                console.debug(`Parameter ${NAME} (boolean) set to: ${typedParams[NAME]}`);
-                continue;
-            }
-
-            // process remaining types
-            if (VALUE_TYPE && VALUE_TYPE.startsWith('array<')) {
-                typedParams[NAME] = parseArrayParameter(RAW_VALUE, VALUE_TYPE, NAME);
-            } else {
-                switch (VALUE_TYPE) {
-                    case 'number':
-                        if (RAW_VALUE === "") {
-                            console.debug(`Param ${NAME} was empty, setting to empty string.`)
-                            typedParams[NAME] = "";
-                        } else {
-                            const num = Number(RAW_VALUE);
-                            if (isNaN(num)) {
-                                throw new Error(`Invalid number input for ${NAME}: ${RAW_VALUE}`);
-                            }
-                            typedParams[NAME] = num;
-                        }
-                        break;
-                    case 'string':
-                    default:
-                        typedParams[NAME] = RAW_VALUE;
-                        break;
-                }
-            }
-        } catch (error) {
-            console.error('Error processing parameter:', NAME, error);
-            responseArea.value = `Error for ${NAME}: ${error.message}`;
-            return;
-        }
-    }
-
-    console.debug('Running tool:', toolId, 'with typed params:', typedParams);
     try {
-        const body = {
-            jsonrpc: "2.0",
-            id: "2",
-            method: "tools/call",
-            params: {
-                name: toolId,
-                arguments: typedParams
+      if (!INCLUDE_CHECKED) {
+        console.debug(`Param ${NAME} was intentionally skipped.`);
+        // if param was purposely unchecked, don't include it in body
+        continue;
+      }
+
+      if (VALUE_TYPE === 'boolean') {
+        typedParams[NAME] = RAW_VALUE !== null;
+        console.debug(`Parameter ${NAME} (boolean) set to: ${typedParams[NAME]}`);
+        continue;
+      }
+
+      // process remaining types
+      if (VALUE_TYPE && VALUE_TYPE.startsWith('array<')) {
+        typedParams[NAME] = parseArrayParameter(RAW_VALUE, VALUE_TYPE, NAME);
+      } else {
+        switch (VALUE_TYPE) {
+          case 'number':
+            if (RAW_VALUE === '') {
+              console.debug(`Param ${NAME} was empty, setting to empty string.`);
+              typedParams[NAME] = '';
+            } else {
+              const num = Number(RAW_VALUE);
+              if (isNaN(num)) {
+                throw new Error(`Invalid number input for ${NAME}: ${RAW_VALUE}`);
+              }
+              typedParams[NAME] = num;
             }
-        };
-
-        const mcpHeaders = {
-            ...headers,
-            'Content-Type': 'application/json',
-            'MCP-Protocol-Version': '2025-11-25'
-        };
-
-        const response = await fetch(`/mcp`, {
-            method: 'POST',
-            headers: mcpHeaders,
-            body: JSON.stringify(body)
-        });
-
-        if (!response.ok) {
-            const errorBody = await response.text();
-            throw new Error(`HTTP error ${response.status}: ${errorBody}`);
+            break;
+          case 'string':
+          default:
+            typedParams[NAME] = RAW_VALUE;
+            break;
         }
-
-        const results = await response.json();
-        updateLastResults(results);
-        displayResults(results, responseArea, prettifyCheckbox.checked);
+      }
     } catch (error) {
-        console.error('Error running tool:', error);
-        responseArea.value = `Error: ${error.message}`;
-        updateLastResults(null);
+      console.error('Error processing parameter:', NAME, error);
+      responseArea.value = `Error for ${NAME}: ${error.message}`;
+      return;
     }
+  }
+
+  console.debug('Running tool:', toolId, 'with typed params:', typedParams);
+  try {
+    const body = {
+      jsonrpc: '2.0',
+      id: '2',
+      method: 'tools/call',
+      params: {
+        name: toolId,
+        arguments: typedParams,
+      },
+    };
+
+    const mcpHeaders = {
+      ...headers,
+      'Content-Type': 'application/json',
+      'MCP-Protocol-Version': '2025-11-25',
+    };
+
+    const response = await fetch(`/mcp`, {
+      method: 'POST',
+      headers: mcpHeaders,
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      throw new Error(`HTTP error ${response.status}: ${errorBody}`);
+    }
+
+    const results = await response.json();
+    updateLastResults(results);
+    displayResults(results, responseArea, prettifyCheckbox.checked);
+  } catch (error) {
+    console.error('Error running tool:', error);
+    responseArea.value = `Error: ${error.message}`;
+    updateLastResults(null);
+  }
 }
 
 /**
@@ -126,70 +134,76 @@ export async function handleRunTool(toolId, form, responseArea, parameters, pret
  * @throws {Error} If parsing or type validation fails.
  */
 function parseArrayParameter(rawValue, valueType, paramName) {
-    const ELEMENT_TYPE = valueType.substring(6, valueType.length - 1);
-    let parsedArray;
-    try {
-        parsedArray = JSON.parse(rawValue);
-    } catch (e) {
-        throw new Error(`Invalid JSON format for ${paramName}. Expected an array. ${e.message}`);
-    }
+  const ELEMENT_TYPE = valueType.substring(6, valueType.length - 1);
+  let parsedArray;
+  try {
+    parsedArray = JSON.parse(rawValue);
+  } catch (e) {
+    throw new Error(`Invalid JSON format for ${paramName}. Expected an array. ${e.message}`);
+  }
 
-    if (!Array.isArray(parsedArray)) {
-        throw new Error(`Input for ${paramName} must be a JSON array (e.g., ["a", "b"]).`);
-    }
+  if (!Array.isArray(parsedArray)) {
+    throw new Error(`Input for ${paramName} must be a JSON array (e.g., ["a", "b"]).`);
+  }
 
-    return parsedArray.map((item, index) => {
-        switch (ELEMENT_TYPE) {
-            case 'number':
-                const NUM = Number(item);
-                if (isNaN(NUM)) {
-                    throw new Error(`Invalid number "${item}" found in array for ${paramName} at index ${index}.`);
-                }
-                return NUM;
-            case 'boolean':
-                return item === true || String(item).toLowerCase() === 'true';
-            case 'string':
-            default:
-                return item;
+  return parsedArray.map((item, index) => {
+    switch (ELEMENT_TYPE) {
+      case 'number': {
+        const NUM = Number(item);
+        if (isNaN(NUM)) {
+          throw new Error(
+            `Invalid number "${item}" found in array for ${paramName} at index ${index}.`,
+          );
         }
-    });
+        return NUM;
+      }
+      case 'boolean':
+        return item === true || String(item).toLowerCase() === 'true';
+      case 'string':
+      default:
+        return item;
+    }
+  });
 }
 
 /**
  * Displays the results from the tool run in the response area.
  */
 export function displayResults(results, responseArea, prettify) {
-    if (results === null || results === undefined) {
-        return;
-    }
+  if (results === null || results === undefined) {
+    return;
+  }
 
-    if (results.error) {
-        responseArea.value = `MCP Error ${results.error.code}: ${results.error.message}\n${JSON.stringify(results.error.data, null, 2) || ''}`;
-        return;
+  if (results.error) {
+    responseArea.value = `MCP Error ${results.error.code}: ${results.error.message}\n${JSON.stringify(results.error.data, null, 2) || ''}`;
+    return;
+  }
+
+  try {
+    let textContent = '';
+    if (results.result && Array.isArray(results.result.content)) {
+      textContent = results.result.content
+        .filter((c) => c.type === 'text' && typeof c.text === 'string')
+        .map((c) => c.text)
+        .join('\n');
+    } else if (results.result && typeof results.result.content === 'string') {
+      textContent = results.result.content;
+    } else {
+      textContent = JSON.stringify(results.result, null, 2);
     }
 
     try {
-        let textContent = "";
-        if (results.result && Array.isArray(results.result.content)) {
-            textContent = results.result.content
-                .filter(c => c.type === 'text' && typeof c.text === 'string')
-                .map(c => c.text)
-                .join('\n');
-        } else if (results.result && typeof results.result.content === 'string') {
-            textContent = results.result.content;
-        } else {
-            textContent = JSON.stringify(results.result, null, 2);
-        }
-
-        try {
-            const resultJson = JSON.parse(textContent);
-            responseArea.value = prettify ? JSON.stringify(resultJson, null, 2) : JSON.stringify(resultJson);
-        } catch (e) {
-            // Not pure JSON string, output as-is
-            responseArea.value = textContent;
-        }
-    } catch (error) {
-        console.error("Error parsing or stringifying results:", error);
-        responseArea.value = typeof results === 'object' ? JSON.stringify(results, null, 2) : String(results);
+      const resultJson = JSON.parse(textContent);
+      responseArea.value = prettify
+        ? JSON.stringify(resultJson, null, 2)
+        : JSON.stringify(resultJson);
+    } catch (e) {
+      // Not pure JSON string, output as-is
+      responseArea.value = textContent;
     }
+  } catch (error) {
+    console.error('Error parsing or stringifying results:', error);
+    responseArea.value =
+      typeof results === 'object' ? JSON.stringify(results, null, 2) : String(results);
+  }
 }

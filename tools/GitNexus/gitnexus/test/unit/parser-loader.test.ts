@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { loadParser, loadLanguage } from '../../src/core/tree-sitter/parser-loader.js';
+import { describe, expect, it } from 'vitest';
 import { SupportedLanguages } from '../../src/config/supported-languages.js';
+import { loadLanguage, loadParser } from '../../src/core/tree-sitter/parser-loader.js';
 
 describe('parser-loader', () => {
   describe('loadParser', () => {
@@ -60,7 +60,9 @@ describe('parser-loader', () => {
 
     it('loads TSX grammar for .tsx files', async () => {
       // TSX uses a different grammar (TypeScript.tsx vs TypeScript.typescript)
-      await expect(loadLanguage(SupportedLanguages.TypeScript, 'Component.tsx')).resolves.not.toThrow();
+      await expect(
+        loadLanguage(SupportedLanguages.TypeScript, 'Component.tsx'),
+      ).resolves.not.toThrow();
     });
 
     it('loads TS grammar for .ts files', async () => {
@@ -72,7 +74,9 @@ describe('parser-loader', () => {
     });
 
     it('throws for unsupported language', async () => {
-      await expect(loadLanguage('erlang' as SupportedLanguages)).rejects.toThrow('Unsupported language');
+      await expect(loadLanguage('erlang' as SupportedLanguages)).rejects.toThrow(
+        'Unsupported language',
+      );
     });
   });
 

@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
 /**
  * ShadowTag-v2 Ingestion Daemon — Gemini-Primary (Zero-Drift Semantic Extraction)
@@ -15,20 +15,20 @@ import path from "path";
  *            CLAUDE_API_KEY → claude-sonnet-4-6 (via Anthropic SDK)
  */
 
-const REPO_ROOT = path.resolve(__dirname, "../../../../..");
-const API_BASE = process.env.VITE_API_URL ?? "http://localhost:8000";
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY ?? "";
-const GEMINI_GEN_MODEL = process.env.GEMINI_GEN_MODEL ?? "gemini-3.1-pro";
-const GEMINI_EMBED_MODEL = "text-embedding-004";
+const REPO_ROOT = path.resolve(__dirname, '../../../../..');
+const API_BASE = process.env.VITE_API_URL ?? 'http://localhost:8000';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY ?? '';
+const GEMINI_GEN_MODEL = process.env.GEMINI_GEN_MODEL ?? 'gemini-3.1-pro';
+const GEMINI_EMBED_MODEL = 'text-embedding-004';
 const CHUNK_SIZE = 1500;
 const CHUNK_OVERLAP = 200;
-const ENABLE_EXTRACTION = process.env.ShadowTag-v2_EXTRACT === "1";
+const ENABLE_EXTRACTION = process.env.ShadowTag - v2_EXTRACT === '1';
 
 const SOURCE_DIRS = [
-  path.join(REPO_ROOT, "docs/Strategic_Intelligence"),
-  path.join(REPO_ROOT, "memory/erik-hancock-llm-memory/memory/snapshots"),
-  path.join(REPO_ROOT, "operations/drive_ingest"),
-  "/Users/pikeymickey/ShadowTag-v2-stack/recovered_assets/antigravity/brain/memory/snapshots",
+  path.join(REPO_ROOT, 'docs/Strategic_Intelligence'),
+  path.join(REPO_ROOT, 'memory/erik-hancock-llm-memory/memory/snapshots'),
+  path.join(REPO_ROOT, 'operations/drive_ingest'),
+  '/Users/pikeymickey/ShadowTag-v2-stack/recovered_assets/antigravity/brain/memory/snapshots',
 ];
 
 type Tags = Record<string, string | number>;
@@ -65,7 +65,7 @@ interface ChunkPayload {
 // ── Gemini embedding ──────────────────────────────────────────────────────────
 
 async function embedGemini(text: string): Promise<number[]> {
-  if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY not set — cannot embed.");
+  if (!GEMINI_API_KEY) throw new Error('GEMINI_API_KEY not set — cannot embed.');
   const url =
     `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_EMBED_MODEL}:embedContent` +
     `?key=${GEMINI_API_KEY}`;
@@ -74,15 +74,15 @@ async function embedGemini(text: string): Promise<number[]> {
     content: { parts: [{ text }] },
   });
   const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body,
   });
   if (!res.ok) {
     const err = await res.text();
     throw new Error(`Gemini embed ${res.status}: ${err}`);
   }
-  const json = await res.json() as { embedding: { values: number[] } };
+  const json = (await res.json()) as { embedding: { values: number[] } };
   return json.embedding.values;
 }
 
@@ -94,22 +94,22 @@ async function extractWithGemini(text: string): Promise<string> {
     `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_GEN_MODEL}:generateContent` +
     `?key=${GEMINI_API_KEY}`;
   const prompt = [
-    "Extract the key facts, decisions, and entities from the following text.",
-    "Return only a concise bullet list. No preamble.",
-    "",
+    'Extract the key facts, decisions, and entities from the following text.',
+    'Return only a concise bullet list. No preamble.',
+    '',
     text.slice(0, 3000),
-  ].join("\n");
+  ].join('\n');
   const body = JSON.stringify({
     contents: [{ parts: [{ text: prompt }] }],
     generationConfig: { temperature: 0, maxOutputTokens: 512 },
   });
   const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body,
   });
   if (!res.ok) return text;
-  const json = await res.json() as {
+  const json = (await res.json()) as {
     candidates: Array<{ content: { parts: Array<{ text: string }> } }>;
   };
   return json.candidates?.[0]?.content?.parts?.[0]?.text ?? text;
@@ -131,21 +131,21 @@ function extractTextFromSnapshot(raw: string): string {
   try {
     const obj = JSON.parse(raw) as Record<string, unknown>;
     const parts: string[] = [];
-    if (typeof obj["title"] === "string") parts.push(obj["title"]);
-    const msgs = obj["messages"];
+    if (typeof obj['title'] === 'string') parts.push(obj['title']);
+    const msgs = obj['messages'];
     if (Array.isArray(msgs)) {
       for (const m of msgs) {
-        if (m && typeof m === "object" && "content" in m) {
-          const c = (m as Record<string, unknown>)["content"];
-          if (typeof c === "string") parts.push(c);
+        if (m && typeof m === 'object' && 'content' in m) {
+          const c = (m as Record<string, unknown>)['content'];
+          if (typeof c === 'string') parts.push(c);
         }
       }
     }
-    const gates = obj["bootstrap_gates"];
-    if (Array.isArray(gates)) parts.push(gates.join(" "));
-    const stack = obj["tech_stack"];
-    if (Array.isArray(stack)) parts.push(stack.join(" "));
-    return parts.join("\n");
+    const gates = obj['bootstrap_gates'];
+    if (Array.isArray(gates)) parts.push(gates.join(' '));
+    const stack = obj['tech_stack'];
+    if (Array.isArray(stack)) parts.push(stack.join(' '));
+    return parts.join('\n');
   } catch {
     return raw;
   }
@@ -154,9 +154,9 @@ function extractTextFromSnapshot(raw: string): string {
 // ── Core ingest ───────────────────────────────────────────────────────────────
 
 async function ingestFile(filePath: string): Promise<void> {
-  const raw = fs.readFileSync(filePath, "utf-8");
+  const raw = fs.readFileSync(filePath, 'utf-8');
   const ext = path.extname(filePath).toLowerCase();
-  let text = ext === ".json" ? extractTextFromSnapshot(raw) : raw;
+  let text = ext === '.json' ? extractTextFromSnapshot(raw) : raw;
   if (!text.trim()) return;
 
   if (ENABLE_EXTRACTION) {
@@ -193,11 +193,11 @@ async function ingestFile(filePath: string): Promise<void> {
 
     try {
       const res = await fetch(`${API_BASE}/api/v1/ShadowTag-v2/graph/insert`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const status = res.ok ? "OK" : `FAIL(${res.status})`;
+      const status = res.ok ? 'OK' : `FAIL(${res.status})`;
       console.log(`[ingest] ${base} chunk ${i + 1}/${chunks.length} → ${status}`);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -208,7 +208,7 @@ async function ingestFile(filePath: string): Promise<void> {
 
 async function runIngestion(extraDir?: string): Promise<void> {
   if (!GEMINI_API_KEY) {
-    console.error("[ingest] GEMINI_API_KEY is not set. Export it before running.");
+    console.error('[ingest] GEMINI_API_KEY is not set. Export it before running.');
     process.exit(1);
   }
   const dirs = extraDir ? [...SOURCE_DIRS, extraDir] : SOURCE_DIRS;
@@ -218,13 +218,13 @@ async function runIngestion(extraDir?: string): Promise<void> {
     for (const entry of entries) {
       if (!entry.isFile()) continue;
       const ext = path.extname(entry.name).toLowerCase();
-      if (![".md", ".txt", ".json"].includes(ext)) continue;
+      if (!['.md', '.txt', '.json'].includes(ext)) continue;
       const full = path.join(dir, entry.name);
       console.log(`[ingest] processing: ${full}`);
       await ingestFile(full);
     }
   }
-  console.log("[ingest] complete.");
+  console.log('[ingest] complete.');
 }
 
 runIngestion(process.argv[2]);

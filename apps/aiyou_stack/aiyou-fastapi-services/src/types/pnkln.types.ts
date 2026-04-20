@@ -4,14 +4,14 @@
  */
 
 export type PNKLNComponent =
-  | "judge-6"
-  | "gemini-ingestion"
-  | "validator"
-  | "processor"
-  | "storage"
-  | "api-gateway";
+  | 'judge-6'
+  | 'gemini-ingestion'
+  | 'validator'
+  | 'processor'
+  | 'storage'
+  | 'api-gateway';
 
-export type AnalysisConfidence = "low" | "medium" | "high" | "very-high";
+export type AnalysisConfidence = 'low' | 'medium' | 'high' | 'very-high';
 
 export interface ComponentMetrics {
   // Performance Metrics
@@ -19,16 +19,16 @@ export interface ComponentMetrics {
     p50?: number;
     p95?: number;
     p99?: number;
-    unit: "ms" | "seconds" | "minutes";
+    unit: 'ms' | 'seconds' | 'minutes';
   };
   throughput?: {
     value: number;
-    unit: "req/sec" | "items/day" | "ops/min";
+    unit: 'req/sec' | 'items/day' | 'ops/min';
   };
   runtime?: {
     value: number;
-    unit: "minutes" | "hours";
-    frequency: "per-request" | "nightly" | "hourly";
+    unit: 'minutes' | 'hours';
+    frequency: 'per-request' | 'nightly' | 'hourly';
   };
 
   // Quality Gates
@@ -50,9 +50,9 @@ export interface ComponentMetrics {
 }
 
 export interface ArchitectureSpec {
-  type: "hybrid-ai" | "gke-cronjob" | "microservice" | "serverless";
+  type: 'hybrid-ai' | 'gke-cronjob' | 'microservice' | 'serverless';
   components: string[];
-  integrationPattern: "caller" | "callee" | "bidirectional";
+  integrationPattern: 'caller' | 'callee' | 'bidirectional';
   namespaces?: string[];
   containerCount?: number;
 }
@@ -83,10 +83,10 @@ export interface TierClassification {
 export interface MultiSourceCoverage {
   sources: {
     name: string;
-    type: "social" | "news" | "video" | "web" | "api";
+    type: 'social' | 'news' | 'video' | 'web' | 'api';
     itemsCollected: number;
     lastUpdated: string;
-    status: "active" | "inactive" | "error";
+    status: 'active' | 'inactive' | 'error';
   }[];
   diversityScore: number; // 0-100
   coverageGaps?: string[];
@@ -124,8 +124,8 @@ export interface ComponentAnalysisResult {
   risks: string[];
   optimizationOpportunities: string[];
   recommendations: {
-    priority: "critical" | "high" | "medium" | "low";
-    category: "performance" | "cost" | "quality" | "security" | "scalability";
+    priority: 'critical' | 'high' | 'medium' | 'low';
+    category: 'performance' | 'cost' | 'quality' | 'security' | 'scalability';
     description: string;
     estimatedImpact: string;
   }[];

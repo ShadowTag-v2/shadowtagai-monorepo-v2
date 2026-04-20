@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import {Filter} from '../filter';
-import {FieldFilterInternal} from './field-filter-internal';
+import type { Filter } from '../filter';
+import type { FieldFilterInternal } from './field-filter-internal';
 
 export abstract class FilterInternal {
   /** Returns a list of all field filters that are contained within this filter */

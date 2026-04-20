@@ -31,8 +31,6 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "externalBin": [
-      "binaries/engine"
-    ]
+    "externalBin": ["binaries/engine"]
   }
 }

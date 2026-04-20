@@ -24,21 +24,21 @@
 
 import { initializeApp } from 'firebase/app';
 import {
-  MultiFactorInfo,
-  MultiFactorResolver,
-  PhoneAuthProvider,
-  PhoneMultiFactorGenerator,
-  RecaptchaVerifier,
-  User,
   createUserWithEmailAndPassword,
   getAuth,
   getMultiFactorResolver,
+  type MultiFactorInfo,
+  type MultiFactorResolver,
   multiFactor,
   onAuthStateChanged,
+  PhoneAuthProvider,
+  PhoneMultiFactorGenerator,
+  RecaptchaVerifier,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
+  type User,
 } from 'firebase/auth';
 import { firebaseConfig } from './config';
 
@@ -56,33 +56,17 @@ declare const grecaptcha: any; // from Google reCAPTCHA V3
 const emailInput = document.getElementById('email')! as HTMLInputElement;
 const passwordInput = document.getElementById('password')! as HTMLInputElement;
 const mfaModal = document.getElementById('mfa-modal')! as HTMLDialogElement;
-const phoneNumberInput = document.getElementById(
-  'phone-number',
-)! as HTMLInputElement;
-const signOutButton = document.getElementById(
-  'quickstart-sign-out',
-)! as HTMLButtonElement;
-const enrollButton = document.getElementById(
-  'quickstart-enroll',
-)! as HTMLButtonElement;
-const verifyEmailButton = document.getElementById(
-  'quickstart-verify-email',
-)! as HTMLButtonElement;
-const signInStatus = document.getElementById(
-  'quickstart-sign-in-status',
-)! as HTMLSpanElement;
-const signInButton = document.getElementById(
-  'quickstart-sign-in',
-)! as HTMLButtonElement;
-const signUpButton = document.getElementById(
-  'quickstart-sign-up',
-)! as HTMLButtonElement;
+const phoneNumberInput = document.getElementById('phone-number')! as HTMLInputElement;
+const signOutButton = document.getElementById('quickstart-sign-out')! as HTMLButtonElement;
+const enrollButton = document.getElementById('quickstart-enroll')! as HTMLButtonElement;
+const verifyEmailButton = document.getElementById('quickstart-verify-email')! as HTMLButtonElement;
+const signInStatus = document.getElementById('quickstart-sign-in-status')! as HTMLSpanElement;
+const signInButton = document.getElementById('quickstart-sign-in')! as HTMLButtonElement;
+const signUpButton = document.getElementById('quickstart-sign-up')! as HTMLButtonElement;
 const passwordResetButton = document.getElementById(
   'quickstart-password-reset',
 )! as HTMLButtonElement;
-const enrolSendCodeForm = document.getElementById(
-  'enroll-send-code-form',
-)! as HTMLFormElement;
+const enrolSendCodeForm = document.getElementById('enroll-send-code-form')! as HTMLFormElement;
 const enrollCancelSendCodeButton = document.getElementById(
   'enroll-cancel-send-code-button',
 )! as HTMLButtonElement;
@@ -92,9 +76,7 @@ const enrollVerificationCodeForm = document.getElementById(
 const enrollCancelVerifyCodeButton = document.getElementById(
   'enroll-cancel-verify-code-button',
 )! as HTMLButtonElement;
-const signInSendCodeForm = document.getElementById(
-  'sign-in-send-code-form',
-)! as HTMLFormElement;
+const signInSendCodeForm = document.getElementById('sign-in-send-code-form')! as HTMLFormElement;
 const signInCancelSendCodeButton = document.getElementById(
   'sign-in-cancel-send-code-button',
 )! as HTMLButtonElement;
@@ -114,10 +96,10 @@ function passwordSignIn() {
   const password = passwordInput.value;
   // Sign in with email and password.
   signInWithEmailAndPassword(auth, email, password)
-    .then(function () {
+    .then(() => {
       alertMessage('User signed in!');
     })
-    .catch(function (error: any) {
+    .catch((error: any) => {
       // Handle second factor sign-in.
       if (error.code === 'auth/multi-factor-auth-required') {
         mfaResolver = getMultiFactorResolver(auth, error);
@@ -136,7 +118,7 @@ function passwordSignUp() {
   const password = passwordInput.value;
   // Sign up with email and password.
   createUserWithEmailAndPassword(auth, email, password)
-    .then(function () {
+    .then(() => {
       alertMessage('New user created!');
     })
     .catch(displayError);
@@ -147,7 +129,7 @@ function passwordSignUp() {
  */
 function signOutCurrentUser() {
   signOut(auth)
-    .then(function () {
+    .then(() => {
       alertMessage('User signed out!');
     })
     .catch(displayError);
@@ -159,7 +141,7 @@ function signOutCurrentUser() {
 function sendEmailVerificationToUser() {
   if (auth.currentUser) {
     sendEmailVerification(auth.currentUser)
-      .then(function () {
+      .then(() => {
         alertMessage('Email Verification Sent!');
       })
       .catch(displayError);
@@ -172,7 +154,7 @@ function sendEmailVerificationToUser() {
 function sendPasswordReset() {
   const email = emailInput.value;
   sendPasswordResetEmail(auth, email)
-    .then(function () {
+    .then(() => {
       alertMessage('Password Reset Email Sent!');
     })
     .catch(displayError);
@@ -226,7 +208,7 @@ function onEnrollClick() {
   if (auth.currentUser) {
     auth.currentUser
       .reload()
-      .then(function () {
+      .then(() => {
         showMfaDialog();
       })
       .catch(displayError);
@@ -248,18 +230,18 @@ function showMfaDialog() {
 function renderRecaptcha(container: HTMLElement | string) {
   recaptchaVerifier = new RecaptchaVerifier(auth, container, {
     size: 'normal',
-    callback: function (_response: any) {
+    callback: (_response: any) => {
       // reCAPTCHA solved, allow send code for enrollment/sign-in.
       updateEnrollSendCodeButtonUI();
       updateSignInSendCodeButtonUI();
     },
-    'expired-callback': function () {
+    'expired-callback': () => {
       // Response expired. Ask user to solve reCAPTCHA again.
       updateEnrollSendCodeButtonUI();
       updateSignInSendCodeButtonUI();
     },
   });
-  recaptchaVerifier.render().then(function (widgetId) {
+  recaptchaVerifier.render().then((widgetId) => {
     console.log({ widgetId });
     recaptchaWidgetId = widgetId;
   });
@@ -271,8 +253,7 @@ function renderRecaptcha(container: HTMLElement | string) {
  */
 function showAccountDetails(user: User | null) {
   const accountDetails = user ? JSON.stringify(user, null, '  ') : null;
-  document.getElementById('quickstart-account-details')!.textContent =
-    accountDetails;
+  document.getElementById('quickstart-account-details')!.textContent = accountDetails;
 }
 
 /**
@@ -287,11 +268,11 @@ function showEnrolledFactors(enrolledFactors: MultiFactorInfo[]) {
   if (enrolledFactors.length == 0) {
     listGroup.innerHTML = 'N/A';
   }
-  enrolledFactors.forEach(function (value, i) {
+  enrolledFactors.forEach((value, i) => {
     // Append entry to list.
     const displayName = value.displayName || 'N/A';
     // phoneNumber exsits on MultiFactorInfo, but is not typed
-    // @ts-ignore
+    // @ts-expect-error
     const phoneNumber: string = value.phoneNumber ?? 'NO_PHONE_NUMBER';
     const node = document.createElement('li');
     node.classList.add('mdl-list__item');
@@ -317,12 +298,12 @@ function updateMfaSignInHints(hints: MultiFactorInfo[]) {
   // Clear the list.
   mfaHints.innerHTML = '';
   mfaHints.appendChild(document.createElement('option'));
-  hints.forEach(function (value, i) {
+  hints.forEach((value, i) => {
     // Append entry to list.
     const node = document.createElement('option');
     node.setAttribute('data-val', i.toString());
     // phoneNumber exsits on MultiFactorInfo, but is not typed
-    // @ts-ignore
+    // @ts-expect-error
     node.textContent = value.phoneNumber ?? 'NO_PHONE_NUMBER';
     mfaHints.appendChild(node);
   });
@@ -353,7 +334,7 @@ async function onEnrollSendCode(e: Event) {
     const provider = new PhoneAuthProvider(auth);
     multiFactor(auth.currentUser)
       .getSession()
-      .then(function (multiFactorSession) {
+      .then((multiFactorSession) => {
         const phoneInfoOptions = {
           phoneNumber: phoneNumber,
           session: multiFactorSession,
@@ -362,12 +343,12 @@ async function onEnrollSendCode(e: Event) {
         return provider.verifyPhoneNumber(phoneInfoOptions, recaptchaVerifier!);
       })
       .then(
-        function (verificationId) {
+        (verificationId) => {
           phoneVerificationId = verificationId;
           // Update the multi-factor dialog to verify the sent code.
           updateMfaDialog();
         },
-        function (error) {
+        (error) => {
           updateEnrollSendCodeButtonUI();
           displayMfaError(error);
         },
@@ -387,8 +368,7 @@ function onEnrollVerifyCode(e: Event) {
     )! as HTMLInputElement;
     const code = enrolVerificationCodeInput.value;
     const credential = PhoneAuthProvider.credential(phoneVerificationId, code);
-    const multiFactorAssertion =
-      PhoneMultiFactorGenerator.assertion(credential);
+    const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(credential);
     const enrollDisplayNameInput = document.getElementById(
       'enroll-display-name',
     )! as HTMLInputElement;
@@ -396,7 +376,7 @@ function onEnrollVerifyCode(e: Event) {
     // Enroll the phone second factor.
     multiFactor(auth.currentUser)
       .enroll(multiFactorAssertion, displayName)
-      .then(function () {
+      .then(() => {
         showAccountDetails(auth.currentUser!);
         const enrolledFactors = multiFactor(auth.currentUser!).enrolledFactors;
         showEnrolledFactors(enrolledFactors);
@@ -414,10 +394,7 @@ function onEnrollVerifyCode(e: Event) {
 function onSignInSendCode(e: Event) {
   e.preventDefault();
   if (isCaptchaOK() && mfaResolver) {
-    const index = parseInt(
-      mfaHints.options[mfaHints.selectedIndex].getAttribute('data-val')!,
-      10,
-    );
+    const index = parseInt(mfaHints.options[mfaHints.selectedIndex].getAttribute('data-val')!, 10);
     const info = mfaResolver.hints[index];
     const provider = new PhoneAuthProvider(auth);
     const signInRequest = {
@@ -425,11 +402,11 @@ function onSignInSendCode(e: Event) {
       session: mfaResolver.session,
     };
     provider.verifyPhoneNumber(signInRequest, recaptchaVerifier!).then(
-      function (verificationId) {
+      (verificationId) => {
         phoneVerificationId = verificationId;
         updateMfaDialog();
       },
-      function (error) {
+      (error) => {
         updateSignInSendCodeButtonUI();
         displayMfaError(error);
       },
@@ -449,11 +426,10 @@ function onSignInVerifyCode(e: Event) {
     )! as HTMLInputElement;
     const code = signInVerificationCodeInput.value;
     const credential = PhoneAuthProvider.credential(phoneVerificationId, code);
-    const multiFactorAssertion =
-      PhoneMultiFactorGenerator.assertion(credential);
+    const multiFactorAssertion = PhoneMultiFactorGenerator.assertion(credential);
     mfaResolver
       .resolveSignIn(multiFactorAssertion)
-      .then(function () {
+      .then(() => {
         alertMessage('Signed in with second factor!');
         clearMfaDialog();
         const enrolledFactors = multiFactor(auth.currentUser!).enrolledFactors;
@@ -476,17 +452,15 @@ function onUnenroll(e: Event) {
     if (info) {
       multiFactor(auth.currentUser)
         .unenroll(info)
-        .then(function () {
+        .then(() => {
           alertMessage(
             // phoneNumber exsits on MultiFactorInfo, but is not typed
-            // @ts-ignore
+            // @ts-expect-error
             info.phoneNumber ?? 'NO_PHONE_NUMBER' + ' has been unenrolled!',
           );
           showAccountDetails(auth.currentUser!);
           const enrolledFactors =
-            (auth.currentUser &&
-              multiFactor(auth.currentUser).enrolledFactors) ||
-            [];
+            (auth.currentUser && multiFactor(auth.currentUser).enrolledFactors) || [];
           showEnrolledFactors(enrolledFactors);
         })
         .catch(displayError);
@@ -529,9 +503,7 @@ function isCaptchaOK() {
  * Updates the enroll send code button state depending on form values state.
  */
 function updateEnrollSendCodeButtonUI() {
-  const sendCode = document.getElementById(
-    'enroll-send-code-button',
-  )! as HTMLButtonElement;
+  const sendCode = document.getElementById('enroll-send-code-button')! as HTMLButtonElement;
   sendCode.disabled = !isCaptchaOK() || !isPhoneNumberValid();
 }
 
@@ -539,9 +511,7 @@ function updateEnrollSendCodeButtonUI() {
  * Updates the sign in send code button state depending on form values state.
  */
 function updateSignInSendCodeButtonUI() {
-  const signInSendCode = document.getElementById(
-    'sign-in-send-code-button',
-  )! as HTMLButtonElement;
+  const signInSendCode = document.getElementById('sign-in-send-code-button')! as HTMLButtonElement;
   signInSendCode.disabled = !isCaptchaOK();
 }
 
@@ -611,9 +581,7 @@ function displayMfaError(error: Error) {
  * Displays the alert message in the toast.
  */
 function alertMessage(msg: string) {
-  const snackbarContainer = document.getElementById(
-    'quickstart-snackbar',
-  )! as HTMLDivElement;
+  const snackbarContainer = document.getElementById('quickstart-snackbar')! as HTMLDivElement;
   const data = {
     message: msg,
   };
@@ -622,7 +590,7 @@ function alertMessage(msg: string) {
 }
 
 // Listening for Auth state changes.
-onAuthStateChanged(auth, function (user) {
+onAuthStateChanged(auth, (user) => {
   signOutButton.disabled = true;
   enrollButton.disabled = true;
   verifyEmailButton.disabled = true;

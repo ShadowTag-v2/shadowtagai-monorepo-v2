@@ -1,27 +1,27 @@
-import { z } from "zod";
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import { z } from 'zod';
 import {
-  textResource,
-  textResourceUri,
-  blobResourceUri,
   blobResource,
+  blobResourceUri,
   RESOURCE_TYPE_BLOB,
   RESOURCE_TYPE_TEXT,
   RESOURCE_TYPES,
-} from "../resources/templates.js";
+  textResource,
+  textResourceUri,
+} from '../resources/templates.js';
 
 // Tool input schema
 const GetResourceReferenceSchema = z.object({
   resourceType: z.enum([RESOURCE_TYPE_TEXT, RESOURCE_TYPE_BLOB]).default(RESOURCE_TYPE_TEXT),
-  resourceId: z.number().default(1).describe("ID of the text resource to fetch"),
+  resourceId: z.number().default(1).describe('ID of the text resource to fetch'),
 });
 
 // Tool configuration
-const name = "get-resource-reference";
+const name = 'get-resource-reference';
 const config = {
-  title: "Get Resource Reference Tool",
-  description: "Returns a resource reference that can be used by MCP clients",
+  title: 'Get Resource Reference Tool',
+  description: 'Returns a resource reference that can be used by MCP clients',
   inputSchema: GetResourceReferenceSchema,
 };
 
@@ -72,15 +72,15 @@ export const registerGetResourceReferenceTool = (server: McpServer) => {
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: `Returning resource reference for Resource ${resourceId}:`,
         },
         {
-          type: "resource",
+          type: 'resource',
           resource: resource,
         },
         {
-          type: "text",
+          type: 'text',
           text: `You can access this resource using the URI: ${resource.uri}`,
         },
       ],

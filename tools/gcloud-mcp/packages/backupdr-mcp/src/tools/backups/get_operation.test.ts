@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { describe, it, expect, vi, Mock, beforeEach } from 'vitest';
-import { getOperation } from './get_operation.js';
-import { apiClientFactory } from '../../utility/api_client_factory.js';
 import { protos } from '@google-cloud/backupdr';
+import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
+import { apiClientFactory } from '../../utility/api_client_factory.js';
+import { getOperation } from './get_operation.js';
 
 vi.mock('../../utility/api_client_factory.js');
 

@@ -4,16 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {PSEUDO_CLASSES} from '@material/web/labs/gb/components/shared/pseudo-classes.js';
-import {noChange} from 'lit';
-import {
-  Directive,
-  directive,
-  ElementPart,
-  PartInfo,
-  PartType,
-} from 'lit/directive.js';
-import {type ClassInfo} from 'lit/directives/class-map.js';
+import { PSEUDO_CLASSES } from '@material/web/labs/gb/components/shared/pseudo-classes.js';
+import { noChange } from 'lit';
+import { Directive, directive, type ElementPart, type PartInfo, PartType } from 'lit/directive.js';
+import type { ClassInfo } from 'lit/directives/class-map.js';
 
 /** Ripple classes. */
 export const RIPPLE_CLASSES = {
@@ -63,10 +57,7 @@ let ripplePropertiesRegistered = false;
  * @param ripple The element on which to set up ripple functionality.
  * @param opts Setup options, supports a cleanup `signal`.
  */
-export function setupRipple(
-  ripple: HTMLElement,
-  opts?: {signal?: AbortSignal},
-): void {
+export function setupRipple(ripple: HTMLElement, opts?: { signal?: AbortSignal }): void {
   if (!ripplePropertiesRegistered) {
     const properties = [
       ['--ripple-scale', '0%'],
@@ -109,9 +100,7 @@ export function setupRipple(
         const pressAnimation = ripple
           .getAnimations()
           .find(
-            (animation) =>
-              (animation as Partial<CSSAnimation>).animationName ===
-              'ripple-press',
+            (animation) => (animation as Partial<CSSAnimation>).animationName === 'ripple-press',
           );
         pressAnimation?.cancel();
         pressAnimation?.play();
@@ -150,12 +139,12 @@ class RippleDirective extends Directive {
     }
   }
   render() {}
-  override update({element}: ElementPart) {
+  override update({ element }: ElementPart) {
     if (this.element !== element) {
       this.element = element as HTMLElement;
       this.cleanup?.abort();
       this.cleanup = new AbortController();
-      setupRipple(this.element, {signal: this.cleanup.signal});
+      setupRipple(this.element, { signal: this.cleanup.signal });
     }
     return noChange;
   }

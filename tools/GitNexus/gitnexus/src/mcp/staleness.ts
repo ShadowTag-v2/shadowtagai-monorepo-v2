@@ -20,10 +20,11 @@ export interface StalenessInfo {
 export function checkStaleness(repoPath: string, lastCommit: string): StalenessInfo {
   try {
     // Get count of commits between lastCommit and HEAD
-    const result = execFileSync(
-      'git', ['rev-list', '--count', `${lastCommit}..HEAD`],
-      { cwd: repoPath, encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }
-    ).trim();
+    const result = execFileSync('git', ['rev-list', '--count', `${lastCommit}..HEAD`], {
+      cwd: repoPath,
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+    }).trim();
 
     const commitsBehind = parseInt(result, 10) || 0;
 

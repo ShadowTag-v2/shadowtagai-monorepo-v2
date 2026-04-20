@@ -3,27 +3,33 @@
 
 function socialPush() {
   // [START rtdb_social_push]
-  const { getDatabase, ref, push, set } = require("firebase/database");
+  const { getDatabase, ref, push, set } = require('firebase/database');
 
   // Create a new post reference with an auto-generated id
   const db = getDatabase();
   const postListRef = ref(db, 'posts');
   const newPostRef = push(postListRef);
   set(newPostRef, {
-      // ...
+    // ...
   });
   // [END rtdb_social_push]
 }
 
 function socialListenChildren() {
-  const postElement = document.querySelector("#post");
-  const postId = "1234";
+  const postElement = document.querySelector('#post');
+  const postId = '1234';
   function addCommentElement(el, key, text, author) {}
-  function setCommentValues(el, key, text, author) {};
-  function deleteComment(el, key) {};
+  function setCommentValues(el, key, text, author) {}
+  function deleteComment(el, key) {}
 
   // [START rtdb_social_listen_children]
-  const { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved } = require("firebase/database");
+  const {
+    getDatabase,
+    ref,
+    onChildAdded,
+    onChildChanged,
+    onChildRemoved,
+  } = require('firebase/database');
 
   const db = getDatabase();
   const commentsRef = ref(db, 'post-comments/' + postId);
@@ -42,29 +48,32 @@ function socialListenChildren() {
 }
 
 function socialListenValue() {
-
   // [START rtdb_social_listen_value]
-  const { getDatabase, ref, onValue } = require("firebase/database");
+  const { getDatabase, ref, onValue } = require('firebase/database');
 
   const db = getDatabase();
   const dbRef = ref(db, '/a/b/c');
 
-  onValue(dbRef, (snapshot) => {
-    snapshot.forEach((childSnapshot) => {
-      const childKey = childSnapshot.key;
-      const childData = childSnapshot.val();
-      // ...
-    });
-  }, {
-    onlyOnce: true
-  });
+  onValue(
+    dbRef,
+    (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const childKey = childSnapshot.key;
+        const childData = childSnapshot.val();
+        // ...
+      });
+    },
+    {
+      onlyOnce: true,
+    },
+  );
   // [END rtdb_social_listen_value]
 }
 
 function socialMostStarred() {
   // [START rtdb_social_most_starred]
-  const { getDatabase, ref, query, orderByChild } = require("firebase/database");
-  const { getAuth } = require("firebase/auth");
+  const { getDatabase, ref, query, orderByChild } = require('firebase/database');
+  const { getAuth } = require('firebase/auth');
 
   const db = getDatabase();
   const auth = getAuth();
@@ -76,7 +85,7 @@ function socialMostStarred() {
 
 function socialMostViewed() {
   // [START rtdb_social_most_viewed]
-  const { getDatabase, ref, query, orderByChild } = require("firebase/database");
+  const { getDatabase, ref, query, orderByChild } = require('firebase/database');
 
   const db = getDatabase();
   const mostViewedPosts = query(ref(db, 'posts'), orderByChild('metrics/views'));
@@ -85,7 +94,7 @@ function socialMostViewed() {
 
 function socialRecent() {
   // [START rtdb_social_recent]
-  const { getDatabase, ref, query, limitToLast } = require("firebase/database");
+  const { getDatabase, ref, query, limitToLast } = require('firebase/database');
 
   const db = getDatabase();
   const recentPostsRef = query(ref(db, 'posts'), limitToLast(100));

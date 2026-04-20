@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {NavigationTabState} from '../../navigationtab/internal/state.js';
+import type { NavigationTabState } from '../../navigationtab/internal/state.js';
 
 /**
  * The state of a navigation Bar.

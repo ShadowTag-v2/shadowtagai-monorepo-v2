@@ -5,20 +5,20 @@
 // 'npm run snippets'.
 
 // [START transaction_modular]
-import { runTransaction } from "firebase/firestore";
+import { runTransaction } from 'firebase/firestore';
 
 try {
   await runTransaction(db, async (transaction) => {
     const sfDoc = await transaction.get(sfDocRef);
     if (!sfDoc.exists()) {
-      throw "Document does not exist!";
+      throw 'Document does not exist!';
     }
 
     const newPopulation = sfDoc.data().population + 1;
     transaction.update(sfDocRef, { population: newPopulation });
   });
-  console.log("Transaction successfully committed!");
+  console.log('Transaction successfully committed!');
 } catch (e) {
-  console.log("Transaction failed: ", e);
+  console.log('Transaction failed: ', e);
 }
 // [END transaction_modular]

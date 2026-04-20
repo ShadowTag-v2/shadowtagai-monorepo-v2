@@ -1,12 +1,12 @@
 // Polyfills for pdfjs-dist DOM APIs (needed for pdf-parse@2.x in server environments)
 
-import * as nodeUrl from "url";
-import * as nodeFs from "fs";
-import nodeFsPromises from "fs/promises";
-import * as nodePath from "path";
-import * as nodeHttp from "http";
-import * as nodeHttps from "https";
-import * as nodeZlib from "zlib";
+import * as nodeFs from 'fs';
+import nodeFsPromises from 'fs/promises';
+import * as nodeHttp from 'http';
+import * as nodeHttps from 'https';
+import * as nodePath from 'path';
+import * as nodeUrl from 'url';
+import * as nodeZlib from 'zlib';
 
 // Ensure fs.promises is available (some bundlers strip it)
 const fsWithPromises = {
@@ -16,29 +16,29 @@ const fsWithPromises = {
 
 // Stub process.getBuiltinModule to prevent Bun runtime warning
 // This must be first, before any imports
-if (typeof process.getBuiltinModule !== "function") {
+if (typeof process.getBuiltinModule !== 'function') {
   (process as any).getBuiltinModule = (name: string) => {
     switch (name) {
-      case "module":
+      case 'module':
         return {
           createRequire: () => {
             // Return a dummy require that returns empty objects
             return () => ({});
           },
         };
-      case "url":
+      case 'url':
         return nodeUrl;
-      case "fs":
+      case 'fs':
         return fsWithPromises;
-      case "fs/promises":
+      case 'fs/promises':
         return nodeFsPromises;
-      case "path":
+      case 'path':
         return nodePath;
-      case "http":
+      case 'http':
         return nodeHttp;
-      case "https":
+      case 'https':
         return nodeHttps;
-      case "zlib":
+      case 'zlib':
         return nodeZlib;
       default:
         return undefined;
@@ -48,7 +48,7 @@ if (typeof process.getBuiltinModule !== "function") {
 
 let canvasModule: any = null;
 try {
-  canvasModule = await import("canvas");
+  canvasModule = await import('canvas');
 } catch {
   // canvas not available
 }

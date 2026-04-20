@@ -1,1 +1,4 @@
-[{"id": 1, "subject": "Welcome to Vanguard Ops"}, {"id": 2, "subject": "Bypassing the 1M Token Context Death"}]
+[
+  { "id": 1, "subject": "Welcome to Vanguard Ops" },
+  { "id": 2, "subject": "Bypassing the 1M Token Context Death" }
+]

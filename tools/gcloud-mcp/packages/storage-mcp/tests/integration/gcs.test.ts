@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-import { describe, it, beforeAll, afterAll, expect } from 'vitest';
-import { expectSuccess } from './helpers.js';
-import { createBucket } from '../../src/tools/buckets/create_bucket.js';
-import { deleteBucket } from '../../src/tools/buckets/delete_bucket.js';
-import { getBucketMetadata } from '../../src/tools/buckets/get_bucket_metadata.js';
-import { updateBucketLabels } from '../../src/tools/buckets/update_bucket_labels.js';
-import { viewIamPolicy } from '../../src/tools/buckets/view_iam_policy.js';
-import { checkIamPermissions } from '../../src/tools/buckets/check_iam_permissions.js';
-import { writeObject } from '../../src/tools/objects/write_object.js';
-import { readObjectContent } from '../../src/tools/objects/read_object_content.js';
-import { deleteObject } from '../../src/tools/objects/delete_object.js';
-import { readObjectMetadata } from '../../src/tools/objects/read_object_metadata.js';
-import { uploadObject } from '../../src/tools/objects/upload_object.js';
-import { listObjects } from '../../src/tools/objects/list_objects.js';
-import { moveObject } from '../../src/tools/objects/move_object.js';
-import { getBucketLocation } from '../../src/tools/buckets/get_bucket_location.js';
-import { copyObject } from '../../src/tools/objects/copy_object.js';
-import { updateObjectMetadata } from '../../src/tools/objects/update_object_metadata.js';
-import { downloadObject } from '../../src/tools/objects/download_object.js';
-import { listBuckets } from '../../src/tools/buckets/list_buckets.js';
 import * as fs from 'fs';
 import * as path from 'path';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { checkIamPermissions } from '../../src/tools/buckets/check_iam_permissions.js';
+import { createBucket } from '../../src/tools/buckets/create_bucket.js';
+import { deleteBucket } from '../../src/tools/buckets/delete_bucket.js';
+import { getBucketLocation } from '../../src/tools/buckets/get_bucket_location.js';
+import { getBucketMetadata } from '../../src/tools/buckets/get_bucket_metadata.js';
+import { listBuckets } from '../../src/tools/buckets/list_buckets.js';
+import { updateBucketLabels } from '../../src/tools/buckets/update_bucket_labels.js';
+import { viewIamPolicy } from '../../src/tools/buckets/view_iam_policy.js';
+import { copyObject } from '../../src/tools/objects/copy_object.js';
+import { deleteObject } from '../../src/tools/objects/delete_object.js';
+import { downloadObject } from '../../src/tools/objects/download_object.js';
+import { listObjects } from '../../src/tools/objects/list_objects.js';
+import { moveObject } from '../../src/tools/objects/move_object.js';
+import { readObjectContent } from '../../src/tools/objects/read_object_content.js';
+import { readObjectMetadata } from '../../src/tools/objects/read_object_metadata.js';
+import { updateObjectMetadata } from '../../src/tools/objects/update_object_metadata.js';
+import { uploadObject } from '../../src/tools/objects/upload_object.js';
+import { writeObject } from '../../src/tools/objects/write_object.js';
+import { expectSuccess } from './helpers.js';
 
 // This is an integration test that requires a running GCS instance
 // and application default credentials to be set up.

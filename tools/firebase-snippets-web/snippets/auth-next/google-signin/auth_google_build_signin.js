@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_google_build_signin_modular]
-import { getAuth, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, signInWithCredential } from 'firebase/auth';
 
 // Build Firebase credential with the Google ID token.
 const credential = GoogleAuthProvider.credential(id_token);

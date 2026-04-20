@@ -5,7 +5,7 @@
  * so the model knows which [@key] citations are valid.
  */
 
-import type { BibTeXEntry } from "../types";
+import type { BibTeXEntry } from '../types';
 
 export type CitationKeyInfo = {
   key: string;
@@ -20,8 +20,8 @@ export type CitationKeyInfo = {
  */
 export function extractCitationKeys(entries: BibTeXEntry[]): CitationKeyInfo[] {
   return entries.map((entry) => {
-    const title = extractBibtexField(entry.bibtex, "title");
-    const author = extractBibtexField(entry.bibtex, "author");
+    const title = extractBibtexField(entry.bibtex, 'title');
+    const author = extractBibtexField(entry.bibtex, 'author');
 
     return {
       key: entry.citekey,
@@ -37,7 +37,7 @@ export function extractCitationKeys(entries: BibTeXEntry[]): CitationKeyInfo[] {
  * Extract a field value from a BibTeX entry string
  */
 function extractBibtexField(bibtex: string, field: string): string {
-  const pattern = new RegExp(`${field}\\s*=\\s*[{"]([^}"]+)[}"]`, "i");
+  const pattern = new RegExp(`${field}\\s*=\\s*[{"]([^}"]+)[}"]`, 'i');
   const match = bibtex.match(pattern);
-  return match?.[1]?.trim() || "";
+  return match?.[1]?.trim() || '';
 }

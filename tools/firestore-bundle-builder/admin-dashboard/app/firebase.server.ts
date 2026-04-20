@@ -1,15 +1,15 @@
-import { initializeApp, getApps, applicationDefault } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-import type { QuerySnapshot } from "firebase-admin/firestore";
-import type { Bundle } from "./types";
+import { applicationDefault, getApps, initializeApp } from 'firebase-admin/app';
+import type { QuerySnapshot } from 'firebase-admin/firestore';
+import { getFirestore } from 'firebase-admin/firestore';
+import type { Bundle } from './types';
 
 const projectId = process.env.PROJECT_ID;
-const bundlesCollectionPath = process.env.BUNDLESPEC_COLLECTION || "bundles";
+const bundlesCollectionPath = process.env.BUNDLESPEC_COLLECTION || 'bundles';
 
 if (getApps().length === 0) {
   if (!projectId) {
     throw new Error(
-      "Missing PROJECT_ID environment variable. Please provide a .env file with the PROJECT_ID variable."
+      'Missing PROJECT_ID environment variable. Please provide a .env file with the PROJECT_ID variable.',
     );
   }
 
@@ -23,7 +23,7 @@ const firestore = getFirestore();
 
 // Converts a Firestore document to a plain object.
 function documentToObject<T>(
-  document: FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>
+  document: FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>,
 ): T {
   return {
     ...document.data(),
@@ -42,10 +42,7 @@ export async function getBundles(): Promise<Bundle[]> {
 }
 
 export async function getBundle(id: string): Promise<Bundle | null> {
-  const snapshot = await firestore
-    .collection(bundlesCollectionPath)
-    .doc(id)
-    .get();
+  const snapshot = await firestore.collection(bundlesCollectionPath).doc(id).get();
 
   if (!snapshot.exists) {
     return null;

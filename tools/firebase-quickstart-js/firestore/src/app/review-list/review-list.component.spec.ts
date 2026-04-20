@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { ReviewListComponent } from './review-list.component';
+import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { projectConfig } from 'src/environments/environment.default';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { projectConfig } from 'src/environments/environment.default';
+import { ReviewListComponent } from './review-list.component';
 
 describe('ReviewListComponent', () => {
   let component: ReviewListComponent;
@@ -29,9 +28,11 @@ describe('ReviewListComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ReviewListComponent],
-      imports: [provideFirebaseApp(() => initializeApp(projectConfig)),
-      provideFirestore(() => getFirestore()),
-      provideAuth(() => getAuth())]
+      imports: [
+        provideFirebaseApp(() => initializeApp(projectConfig)),
+        provideFirestore(() => getFirestore()),
+        provideAuth(() => getAuth()),
+      ],
     });
     fixture = TestBed.createComponent(ReviewListComponent);
     component = fixture.componentInstance;

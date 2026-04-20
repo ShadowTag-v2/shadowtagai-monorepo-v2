@@ -5,14 +5,16 @@
 // 'npm run snippets'.
 
 // [START auth_facebook_checksameuser_modular]
-import { FacebookAuthProvider } from "firebase/auth";
+import { FacebookAuthProvider } from 'firebase/auth';
 
 function isUserEqual(facebookAuthResponse, firebaseUser) {
   if (firebaseUser) {
     const providerData = firebaseUser.providerData;
     for (let i = 0; i < providerData.length; i++) {
-      if (providerData[i].providerId === FacebookAuthProvider.PROVIDER_ID &&
-          providerData[i].uid === facebookAuthResponse.userID) {
+      if (
+        providerData[i].providerId === FacebookAuthProvider.PROVIDER_ID &&
+        providerData[i].uid === facebookAuthResponse.userID
+      ) {
         // We don't need to re-auth the Firebase connection.
         return true;
       }

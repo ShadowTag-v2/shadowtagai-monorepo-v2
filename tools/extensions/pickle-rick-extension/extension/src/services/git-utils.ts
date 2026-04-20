@@ -1,7 +1,7 @@
 import { execSync } from 'child_process';
 import * as fs from 'fs';
-import * as path from 'path';
 import * as os from 'os';
+import * as path from 'path';
 import { printMinimalPanel, Style } from './pickle-utils.js';
 
 function run_cmd(cmd: string | string[], options: { cwd?: string; check?: boolean } = {}): string {
@@ -12,7 +12,7 @@ function run_cmd(cmd: string | string[], options: { cwd?: string; check?: boolea
   } catch (error: any) {
     if (check)
       throw new Error(
-        `Command failed: ${command}\nError: ${error.stderr?.toString() || error.message}`
+        `Command failed: ${command}\nError: ${error.stderr?.toString() || error.message}`,
       );
     return error.stdout?.toString().trim() || '';
   }
@@ -44,7 +44,7 @@ export function get_branch_name(task_id: string): string {
 export function update_ticket_status(
   ticket_id: string,
   new_status: string,
-  session_dir: string
+  session_dir: string,
 ): void {
   // 1. Find the ticket file
   // Search recursively in the session directory

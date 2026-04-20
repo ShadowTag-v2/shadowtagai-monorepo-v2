@@ -5,6 +5,6 @@ export const useSettings = () => {
 
   return {
     settings: llmSettings,
-    updateSettings: updateLLMSettings
+    updateSettings: updateLLMSettings,
   };
 };

@@ -1,10 +1,10 @@
 // gitnexus/src/core/ingestion/field-extractors/configs/csharp.ts
 
 import { SupportedLanguages } from '../../../../config/supported-languages.js';
+import type { FieldVisibility } from '../../field-types.js';
+import { extractSimpleTypeName } from '../../type-extractors/shared.js';
 import type { FieldExtractionConfig } from '../generic.js';
 import { findVisibility, hasKeyword, hasModifier } from './helpers.js';
-import { extractSimpleTypeName } from '../../type-extractors/shared.js';
-import type { FieldVisibility } from '../../field-types.js';
 
 const CSHARP_VIS = new Set<FieldVisibility>(['public', 'private', 'protected', 'internal']);
 

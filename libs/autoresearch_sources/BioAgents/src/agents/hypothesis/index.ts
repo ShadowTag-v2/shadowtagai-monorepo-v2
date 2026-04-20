@@ -1,13 +1,13 @@
-import type { ConversationState, Message, PlanTask } from "../../types/core";
-import logger from "../../utils/logger";
-import { generateHypothesis, type HypothesisDoc } from "./utils";
+import type { ConversationState, Message, PlanTask } from '../../types/core';
+import logger from '../../utils/logger';
+import { generateHypothesis, type HypothesisDoc } from './utils';
 
 type HypothesisResult = {
   hypothesis: string;
   thought?: string;
   start: string;
   end: string;
-  mode: "create" | "update";
+  mode: 'create' | 'update';
 };
 
 /**
@@ -32,7 +32,7 @@ export async function hypothesisAgent(input: {
 
   // Determine if we're creating or updating
   const currentHypothesis = conversationState.values.currentHypothesis;
-  const mode: "create" | "update" = currentHypothesis ? "update" : "create";
+  const mode: 'create' | 'update' = currentHypothesis ? 'update' : 'create';
 
   logger.info(
     {
@@ -41,7 +41,7 @@ export async function hypothesisAgent(input: {
       taskCount: completedTasks.length,
       hasCurrentHypothesis: !!currentHypothesis,
     },
-    "hypothesis_agent_started",
+    'hypothesis_agent_started',
   );
 
   try {
@@ -58,7 +58,7 @@ export async function hypothesisAgent(input: {
           outputLength: task.output?.length || 0,
           outputPreview: task.output?.substring(0, 100),
         },
-        "processing_completed_task_for_hypothesis",
+        'processing_completed_task_for_hypothesis',
       );
 
       if (task.output && task.output.trim()) {
@@ -73,9 +73,9 @@ export async function hypothesisAgent(input: {
     // Add current hypothesis if updating
     if (currentHypothesis) {
       hypDocs.push({
-        title: "Current Hypothesis",
+        title: 'Current Hypothesis',
         text: currentHypothesis,
-        context: "Existing hypothesis to be updated with new findings",
+        context: 'Existing hypothesis to be updated with new findings',
       });
     }
 
@@ -96,22 +96,22 @@ export async function hypothesisAgent(input: {
       contextParts.push(`Methodology: ${conversationState.values.methodology}`);
     }
     if (conversationState.values.keyInsights?.length) {
-      contextParts.push(`Key Insights:\n${conversationState.values.keyInsights.join("\n")}`);
+      contextParts.push(`Key Insights:\n${conversationState.values.keyInsights.join('\n')}`);
     }
 
     if (contextParts.length > 0) {
       hypDocs.push({
-        title: "Research Context",
-        text: contextParts.join("\n\n"),
-        context: "Overall research context",
+        title: 'Research Context',
+        text: contextParts.join('\n\n'),
+        context: 'Overall research context',
       });
     }
 
     if (hypDocs.length === 0) {
-      throw new Error("No data available for hypothesis generation");
+      throw new Error('No data available for hypothesis generation');
     }
 
-    logger.info({ docCount: hypDocs.length, mode }, "generating_hypothesis");
+    logger.info({ docCount: hypDocs.length, mode }, 'generating_hypothesis');
 
     // Generate or update hypothesis
     const { text, thought } = await generateHypothesis(message.question || objective, hypDocs, {
@@ -120,7 +120,7 @@ export async function hypothesisAgent(input: {
       thinkingBudget: 2048,
       mode,
       messageId: message.id,
-      usageType: "deep-research",
+      usageType: 'deep-research',
     });
 
     const end = new Date().toISOString();
@@ -131,7 +131,7 @@ export async function hypothesisAgent(input: {
         fullHypothesis: text,
         fullHypDocs: hypDocs,
       },
-      "hypothesis_agent_completed",
+      'hypothesis_agent_completed',
     );
 
     return {
@@ -142,7 +142,7 @@ export async function hypothesisAgent(input: {
       mode,
     };
   } catch (err) {
-    logger.error({ err, mode }, "hypothesis_agent_failed");
+    logger.error({ err, mode }, 'hypothesis_agent_failed');
     throw err;
   }
 }

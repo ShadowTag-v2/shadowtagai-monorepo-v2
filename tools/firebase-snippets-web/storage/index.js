@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/storage";
+import firebase from 'firebase/app';
+import 'firebase/storage';
 
 function initialize() {
   // [START storage_initialize]
@@ -9,7 +9,7 @@ function initialize() {
     apiKey: '<your-api-key>',
     authDomain: '<your-auth-domain>',
     databaseURL: '<your-database-url>',
-    storageBucket: '<your-storage-bucket-url>'
+    storageBucket: '<your-storage-bucket-url>',
   };
   firebase.initializeApp(firebaseConfig);
 
@@ -21,7 +21,7 @@ function initialize() {
 function multipleBuckets() {
   // [START storage_multiple_buckets]
   // Get a non-default Storage bucket
-  var storage = firebase.app().storage("gs://my-custom-bucket");
+  var storage = firebase.app().storage('gs://my-custom-bucket');
   // [END storage_multiple_buckets]
 }
 
@@ -35,7 +35,7 @@ function storageCustomApp() {
   var storage = customApp.storage();
 
   // Get a non-default bucket from a custom firebase.app.App
-  var storage = customApp.storage("gs://my-custom-bucket");
+  var storage = customApp.storage('gs://my-custom-bucket');
   // [END storage_custom_app]
 }
 
@@ -49,12 +49,14 @@ function storageOnComplete(file) {
   // - https://developer.mozilla.org/en-US/docs/Web/API/File
 
   const metadata = {
-    'contentType': file.type
+    contentType: file.type,
   };
 
   // [START storage_on_complete]
   const storageRef = firebase.storage().ref();
-  storageRef.child('images/' + file.name).put(file, metadata)
+  storageRef
+    .child('images/' + file.name)
+    .put(file, metadata)
     .then((snapshot) => {
       console.log('Uploaded', snapshot.totalBytes, 'bytes.');
       console.log('File metadata:', snapshot.metadata);
@@ -63,7 +65,8 @@ function storageOnComplete(file) {
         console.log('File available at', url);
         // ...
       });
-    }).catch((error) => {
+    })
+    .catch((error) => {
       console.error('Upload failed', error);
       // ...
     });

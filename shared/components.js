@@ -64,10 +64,10 @@ function renderTurnstile(containerId, siteKey, callback) {
   window.turnstile.render(container, {
     sitekey: siteKey,
     theme: 'dark',
-    callback: function(token) {
+    callback: (token) => {
       if (callback) callback(token);
     },
-    'error-callback': function() {
+    'error-callback': () => {
       console.error('Turnstile verification failed');
     },
   });
@@ -78,8 +78,9 @@ function renderTurnstile(containerId, siteKey, callback) {
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then((reg) => {
           console.log('[SW] Registered:', reg.scope);
           reg.addEventListener('updatefound', () => {
             const newWorker = reg.installing;
@@ -90,7 +91,7 @@ function registerServiceWorker() {
             });
           });
         })
-        .catch(err => console.warn('[SW] Registration failed:', err));
+        .catch((err) => console.warn('[SW] Registration failed:', err));
     });
   }
 }

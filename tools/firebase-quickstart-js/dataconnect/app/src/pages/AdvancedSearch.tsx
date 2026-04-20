@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import type React from 'react';
+import { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { MdStar } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 import { handleSearchAll } from '@/lib/MovieService';
 
 const genres = ['', 'action', 'crime', 'drama', 'sci-fi', 'thriller', 'adventure'];
@@ -26,7 +27,7 @@ export default function AdvancedSearchPage() {
       releaseYearRange.max,
       ratingRange.min,
       ratingRange.max,
-      genre
+      genre,
     );
     setResults({
       moviesMatchingTitle: searchResults?.moviesMatchingTitle,
@@ -41,7 +42,9 @@ export default function AdvancedSearchPage() {
       <h1 className="text-4xl font-bold mb-4">Advanced Search</h1>
       <form onSubmit={handleSearch} className="mb-8">
         <div className="flex items-center mb-4">
-          <label htmlFor="searchQuery" className="sr-only">Search</label>
+          <label htmlFor="searchQuery" className="sr-only">
+            Search
+          </label>
           <input
             id="searchQuery"
             type="text"
@@ -59,29 +62,39 @@ export default function AdvancedSearchPage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <div>
-            <label htmlFor="minYear" className="block mb-2">Release Year From</label>
+            <label htmlFor="minYear" className="block mb-2">
+              Release Year From
+            </label>
             <input
               id="minYear"
               type="number"
               className="w-full p-2 rounded bg-gray-800 text-white"
               value={releaseYearRange.min}
-              onChange={(e) => setReleaseYearRange({ ...releaseYearRange, min: Number(e.target.value) })}
+              onChange={(e) =>
+                setReleaseYearRange({ ...releaseYearRange, min: Number(e.target.value) })
+              }
               min="1900"
               max="2030"
             />
-            <label htmlFor="maxYear" className="block mb-2 mt-2">Release Year To</label>
+            <label htmlFor="maxYear" className="block mb-2 mt-2">
+              Release Year To
+            </label>
             <input
               id="maxYear"
               type="number"
               className="w-full p-2 rounded bg-gray-800 text-white"
               value={releaseYearRange.max}
-              onChange={(e) => setReleaseYearRange({ ...releaseYearRange, max: Number(e.target.value) })}
+              onChange={(e) =>
+                setReleaseYearRange({ ...releaseYearRange, max: Number(e.target.value) })
+              }
               min="1900"
               max="2030"
             />
           </div>
           <div>
-            <label htmlFor="genre" className="block mb-2">Genre</label>
+            <label htmlFor="genre" className="block mb-2">
+              Genre
+            </label>
             <select
               id="genre"
               className="w-full p-2 rounded bg-gray-800 text-white"
@@ -96,7 +109,9 @@ export default function AdvancedSearchPage() {
             </select>
           </div>
           <div>
-            <label htmlFor="minRating" className="block mb-2">Rating From</label>
+            <label htmlFor="minRating" className="block mb-2">
+              Rating From
+            </label>
             <input
               id="minRating"
               type="number"
@@ -106,7 +121,9 @@ export default function AdvancedSearchPage() {
               min="1"
               max="10"
             />
-            <label htmlFor="maxRating" className="block mb-2 mt-2">Rating To</label>
+            <label htmlFor="maxRating" className="block mb-2 mt-2">
+              Rating To
+            </label>
             <input
               id="maxRating"
               type="number"
@@ -127,7 +144,11 @@ export default function AdvancedSearchPage() {
             {results.moviesMatchingTitle?.map((movie) => (
               <Link key={movie.id} to={`/movie/${movie.id}`}>
                 <div className="bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer">
-                  <img className="w-full h-64 object-cover" src={movie.imageUrl} alt={movie.title} />
+                  <img
+                    className="w-full h-64 object-cover"
+                    src={movie.imageUrl}
+                    alt={movie.title}
+                  />
                   <div className="p-4">
                     <h3 className="font-bold text-lg mb-1 text-white">{movie.title}</h3>
                     <div className="flex items-center text-yellow-500">
@@ -136,7 +157,12 @@ export default function AdvancedSearchPage() {
                     </div>
                     <div className="flex flex-wrap gap-1 mt-2">
                       {movie?.tags?.map((tag, index) => (
-                        <span key={index} className="bg-gray-700 text-white px-2 py-1 rounded-full text-xs">{tag}</span>
+                        <span
+                          key={index}
+                          className="bg-gray-700 text-white px-2 py-1 rounded-full text-xs"
+                        >
+                          {tag}
+                        </span>
                       ))}
                     </div>
                   </div>
@@ -151,7 +177,11 @@ export default function AdvancedSearchPage() {
             {results.moviesMatchingDescription?.map((movie) => (
               <Link key={movie.id} to={`/movie/${movie.id}`}>
                 <div className="bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer">
-                  <img className="w-full h-64 object-cover" src={movie.imageUrl} alt={movie.title} />
+                  <img
+                    className="w-full h-64 object-cover"
+                    src={movie.imageUrl}
+                    alt={movie.title}
+                  />
                   <div className="p-4">
                     <h3 className="font-bold text-lg mb-1 text-white">{movie.title}</h3>
                     <div className="flex items-center text-yellow-500">
@@ -160,7 +190,12 @@ export default function AdvancedSearchPage() {
                     </div>
                     <div className="flex flex-wrap gap-1 mt-2">
                       {movie?.tags?.map((tag, index) => (
-                        <span key={index} className="bg-gray-700 text-white px-2 py-1 rounded-full text-xs">{tag}</span>
+                        <span
+                          key={index}
+                          className="bg-gray-700 text-white px-2 py-1 rounded-full text-xs"
+                        >
+                          {tag}
+                        </span>
                       ))}
                     </div>
                   </div>
@@ -199,7 +234,10 @@ export default function AdvancedSearchPage() {
                   <MdStar className="text-yellow-500" size={20} />
                   <span className="ml-1 text-gray-400">{review.rating}</span>
                 </div>
-                <Link to={`/movie/${review.movie.id}`} className="mt-2 text-blue-500 hover:text-blue-400 transition-colors">
+                <Link
+                  to={`/movie/${review.movie.id}`}
+                  className="mt-2 text-blue-500 hover:text-blue-400 transition-colors"
+                >
                   {review?.movie?.title}
                 </Link>
               </div>

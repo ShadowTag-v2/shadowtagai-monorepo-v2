@@ -1,6 +1,6 @@
-import type { ConversationState, Message, PlanTask } from "../../types/core";
-import logger from "../../utils/logger";
-import { reflectOnWorld, type ReflectionDoc } from "./utils";
+import type { ConversationState, Message, PlanTask } from '../../types/core';
+import logger from '../../utils/logger';
+import { type ReflectionDoc, reflectOnWorld } from './utils';
 
 type ReflectionResult = {
   conversationTitle?: string;
@@ -40,7 +40,7 @@ export async function reflectionAgent(input: {
       hasHypothesis: !!hypothesis,
       currentInsights: conversationState.values.keyInsights?.length || 0,
     },
-    "reflection_agent_started",
+    'reflection_agent_started',
   );
 
   try {
@@ -57,7 +57,7 @@ export async function reflectionAgent(input: {
           hasOutput: !!task.output,
           outputLength: task.output?.length || 0,
         },
-        "processing_max_level_task_for_reflection",
+        'processing_max_level_task_for_reflection',
       );
 
       if (task.output && task.output.trim()) {
@@ -72,9 +72,9 @@ export async function reflectionAgent(input: {
     // Add hypothesis if available
     if (hypothesis) {
       reflectionDocs.push({
-        title: "Current Hypothesis",
+        title: 'Current Hypothesis',
         text: hypothesis,
-        context: "Working hypothesis from completed tasks",
+        context: 'Working hypothesis from completed tasks',
       });
     }
 
@@ -96,20 +96,20 @@ export async function reflectionAgent(input: {
     }
     if (conversationState.values.keyInsights?.length) {
       worldContextParts.push(
-        `Existing Key Insights (${conversationState.values.keyInsights.length}):\n${conversationState.values.keyInsights.map((insight, i) => `${i + 1}. ${insight}`).join("\n")}`,
+        `Existing Key Insights (${conversationState.values.keyInsights.length}):\n${conversationState.values.keyInsights.map((insight, i) => `${i + 1}. ${insight}`).join('\n')}`,
       );
     }
 
     if (worldContextParts.length > 0) {
       reflectionDocs.push({
-        title: "Current World State",
-        text: worldContextParts.join("\n\n"),
-        context: "Existing world state to be updated",
+        title: 'Current World State',
+        text: worldContextParts.join('\n\n'),
+        context: 'Existing world state to be updated',
       });
     }
 
     if (reflectionDocs.length === 0) {
-      logger.warn("No data available for reflection, returning current state");
+      logger.warn('No data available for reflection, returning current state');
       const end = new Date().toISOString();
       return {
         conversationTitle: conversationState.values.conversationTitle,
@@ -122,18 +122,18 @@ export async function reflectionAgent(input: {
       };
     }
 
-    logger.info({ docCount: reflectionDocs.length }, "reflecting_on_world_state");
+    logger.info({ docCount: reflectionDocs.length }, 'reflecting_on_world_state');
 
     // Reflect and update world state
     const { text, thought } = await reflectOnWorld(
-      message.question || conversationState.values.objective || "",
+      message.question || conversationState.values.objective || '',
       reflectionDocs,
       {
         maxTokens: 4000,
         thinking: true,
         thinkingBudget: 4096,
         messageId: message.id,
-        usageType: "deep-research",
+        usageType: 'deep-research',
         // Pass existing values to preserve on parse failure
         existingObjective: conversationState.values.currentObjective,
         existingEvolvingObjective: conversationState.values.evolvingObjective,
@@ -150,7 +150,7 @@ export async function reflectionAgent(input: {
         thought,
         reflectionDocs,
       },
-      "reflection_agent_completed",
+      'reflection_agent_completed',
     );
 
     return {
@@ -159,7 +159,7 @@ export async function reflectionAgent(input: {
       end,
     };
   } catch (err) {
-    logger.error({ err }, "reflection_agent_failed");
+    logger.error({ err }, 'reflection_agent_failed');
     throw err;
   }
 }

@@ -7,25 +7,23 @@
 
 function makeGoogleCredential(googleUser) {
   // [START auth_make_google_credential]
-  const { GoogleAuthProvider } = require("firebase/auth");
+  const { GoogleAuthProvider } = require('firebase/auth');
 
-  const credential = GoogleAuthProvider.credential(
-    googleUser.getAuthResponse().id_token);
+  const credential = GoogleAuthProvider.credential(googleUser.getAuthResponse().id_token);
   // [END auth_make_google_credential]
 }
 
 function makeFacebookCredential(response) {
   // [START auth_make_facebook_credential]
-  const { FacebookAuthProvider } = require("firebase/auth");
+  const { FacebookAuthProvider } = require('firebase/auth');
 
-  const credential = FacebookAuthProvider.credential(
-    response.authResponse.accessToken);
+  const credential = FacebookAuthProvider.credential(response.authResponse.accessToken);
   // [END auth_make_facebook_credential]
 }
 
 function makeEmailCredential(email, password) {
   // [START auth_make_email_credential]
-  const { EmailAuthProvider } = require("firebase/auth");
+  const { EmailAuthProvider } = require('firebase/auth');
 
   const credential = EmailAuthProvider.credential(email, password);
   // [END auth_make_email_credential]
@@ -33,20 +31,22 @@ function makeEmailCredential(email, password) {
 
 function signOut() {
   // [START auth_sign_out]
-  const { getAuth, signOut } = require("firebase/auth");
+  const { getAuth, signOut } = require('firebase/auth');
 
   const auth = getAuth();
-  signOut(auth).then(() => {
-    // Sign-out successful.
-  }).catch((error) => {
-    // An error happened.
-  });
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      // An error happened.
+    });
   // [END auth_sign_out]
 }
 
 function authStateListener() {
   // [START auth_state_listener]
-  const { getAuth, onAuthStateChanged } = require("firebase/auth");
+  const { getAuth, onAuthStateChanged } = require('firebase/auth');
 
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
@@ -65,7 +65,7 @@ function authStateListener() {
 
 function currentUser() {
   // [START auth_current_user]
-  const { getAuth } = require("firebase/auth");
+  const { getAuth } = require('firebase/auth');
 
   const auth = getAuth();
   const user = auth.currentUser;
@@ -82,7 +82,7 @@ function currentUser() {
 
 function setLanguageCode() {
   // [START auth_set_language_code]
-  const { getAuth } = require("firebase/auth");
+  const { getAuth } = require('firebase/auth');
 
   const auth = getAuth();
   auth.languageCode = 'it';
@@ -93,7 +93,7 @@ function setLanguageCode() {
 
 function authWithCredential(credential) {
   // [START auth_signin_credential]
-  const { getAuth, signInWithCredential } = require("firebase/auth");
+  const { getAuth, signInWithCredential } = require('firebase/auth');
 
   // Sign in with the credential from the user.
   const auth = getAuth();
@@ -115,7 +115,7 @@ function authWithCredential(credential) {
 
 function signInRedirect(provider) {
   // [START auth_signin_redirect]
-  const { getAuth, signInWithRedirect } = require("firebase/auth");
+  const { getAuth, signInWithRedirect } = require('firebase/auth');
 
   const auth = getAuth();
   signInWithRedirect(auth, provider);
@@ -124,13 +124,13 @@ function signInRedirect(provider) {
 
 function initializeWithCustomDomain() {
   // [START auth_init_custom_domain]
-  const { initializeApp } = require("firebase/app");
+  const { initializeApp } = require('firebase/app');
 
   const firebaseConfig = {
-    apiKey: "...",
+    apiKey: '...',
     // By default, authDomain is '[YOUR_APP].firebaseapp.com'.
     // You may replace it with a custom domain.
-    authDomain: '[YOUR_CUSTOM_DOMAIN]'
+    authDomain: '[YOUR_CUSTOM_DOMAIN]',
   };
   const firebaseApp = initializeApp(firebaseConfig);
   // [END auth_init_custom_domain]

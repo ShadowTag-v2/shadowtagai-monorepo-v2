@@ -1,6 +1,6 @@
 // tests/e2e/checkout.spec.ts
 // Playwright E2E tests for the KovelAI Stripe checkout flow
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 const BASE_URL = process.env.BASE_URL || 'https://kovelai.web.app';
 
@@ -37,8 +37,8 @@ test.describe('KovelAI Pricing & Checkout', () => {
   test('enterprise CTA opens email', async ({ page }) => {
     await page.goto(`${BASE_URL}/pricing.html`);
     const entBtn = page.locator('.pricing-card').last().locator('.cta-btn');
-    const href = await entBtn.evaluate(el => {
-      el.addEventListener('click', e => e.preventDefault());
+    const href = await entBtn.evaluate((el) => {
+      el.addEventListener('click', (e) => e.preventDefault());
       el.click();
       return window.location.href;
     });
@@ -52,7 +52,9 @@ test.describe('KovelAI Pricing & Checkout', () => {
 
     // Intercept the API call to /billing/checkout
     const [request] = await Promise.all([
-      page.waitForRequest(req => req.url().includes('/billing/checkout'), { timeout: 5000 }).catch(() => null),
+      page
+        .waitForRequest((req) => req.url().includes('/billing/checkout'), { timeout: 5000 })
+        .catch(() => null),
       proBtn.click(),
     ]);
 
@@ -106,7 +108,7 @@ test.describe('KovelAI Onboarding Wizard', () => {
 
     // Step 4 — completion
     await expect(page.locator('.success')).toBeVisible();
-    await expect(page.locator('text=You\'re All Set')).toBeVisible();
+    await expect(page.locator("text=You're All Set")).toBeVisible();
   });
 });
 

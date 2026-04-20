@@ -15,10 +15,10 @@
  */
 
 import { mkdir, writeFile } from 'fs/promises';
+import os from 'os';
 import { join } from 'path';
 import pkg from '../../package.json' with { type: 'json' };
 import { log } from '../utility/logger.js';
-import os from 'os';
 
 export const geminiMd = `
 # gcloud MCP Extension for Gemini CLI

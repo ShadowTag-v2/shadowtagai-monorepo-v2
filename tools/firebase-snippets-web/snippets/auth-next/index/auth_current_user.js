@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_current_user_modular]
-import { getAuth } from "firebase/auth";
+import { getAuth } from 'firebase/auth';
 
 const auth = getAuth();
 const user = auth.currentUser;

@@ -1,17 +1,17 @@
-import { Elysia } from "elysia";
-import { b402Config, networkConfig } from "../../middleware/b402/config";
-import { b402RoutePricing } from "../../middleware/b402/pricing";
-import { getOrCreateUserByWallet } from "../../db/operations";
-import { b402Service } from "../../middleware/b402/service";
-import logger from "../../utils/logger";
+import { Elysia } from 'elysia';
+import { getOrCreateUserByWallet } from '../../db/operations';
+import { b402Config, networkConfig } from '../../middleware/b402/config';
+import { b402RoutePricing } from '../../middleware/b402/pricing';
+import { b402Service } from '../../middleware/b402/service';
+import logger from '../../utils/logger';
 
-export const b402Route = new Elysia({ prefix: "/api/b402" })
+export const b402Route = new Elysia({ prefix: '/api/b402' })
   // b402 config endpoint
-  .get("/config", () => {
+  .get('/config', () => {
     return {
       // Current active protocol info
       enabled: b402Config.enabled,
-      protocol: "b402",
+      protocol: 'b402',
       network: b402Config.network,
       environment: b402Config.environment,
       asset: b402Config.asset,
@@ -30,8 +30,8 @@ export const b402Route = new Elysia({ prefix: "/api/b402" })
       // Available networks (b402 supports BNB Chain)
       availableNetworks: [
         {
-          id: b402Config.environment === "testnet" ? "bsc-testnet" : "bsc",
-          protocol: "b402",
+          id: b402Config.environment === 'testnet' ? 'bsc-testnet' : 'bsc',
+          protocol: 'b402',
           name: b402Config.network,
           chainId: networkConfig.chainId,
           tokens: [
@@ -43,22 +43,22 @@ export const b402Route = new Elysia({ prefix: "/api/b402" })
           ],
           facilitatorUrl: b402Config.facilitatorUrl,
           relayerAddress: networkConfig.relayerAddress,
-          nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+          nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
         },
       ],
     };
   })
-  .get("/pricing", () => ({
+  .get('/pricing', () => ({
     routes: b402RoutePricing,
   }))
   // /supported endpoint - returns supported payment kinds for BNB Chain
   // Client should query this first to determine the scheme (allowance vs exact)
   // Proxies to the actual facilitator to get the correct signer address
-  .get("/supported", async ({ set }) => {
+  .get('/supported', async ({ set }) => {
     try {
       // Query the actual facilitator for supported payment kinds
       const response = await fetch(`${b402Config.facilitatorUrl}/supported`, {
-        method: "GET",
+        method: 'GET',
         signal: AbortSignal.timeout(5000),
       });
 
@@ -69,11 +69,11 @@ export const b402Route = new Elysia({ prefix: "/api/b402" })
 
       // Fallback to static config if facilitator is unavailable
       if (logger) {
-        logger.warn({ status: response.status }, "b402_facilitator_supported_fallback");
+        logger.warn({ status: response.status }, 'b402_facilitator_supported_fallback');
       }
     } catch (error) {
       if (logger) {
-        logger.warn({ error }, "b402_facilitator_supported_error");
+        logger.warn({ error }, 'b402_facilitator_supported_error');
       }
     }
 
@@ -82,7 +82,7 @@ export const b402Route = new Elysia({ prefix: "/api/b402" })
       kinds: [
         {
           network: b402Config.network,
-          scheme: "allowance",
+          scheme: 'allowance',
           x402Version: 1,
           extra: {
             facilitatorAddress: networkConfig.relayerAddress,
@@ -95,7 +95,7 @@ export const b402Route = new Elysia({ prefix: "/api/b402" })
       ],
     };
   })
-  .get("/health", async ({ set }) => {
+  .get('/health', async ({ set }) => {
     try {
       const health = await b402Service.checkHealth();
 
@@ -110,7 +110,7 @@ export const b402Route = new Elysia({ prefix: "/api/b402" })
         error: health.error,
       };
     } catch (error) {
-      if (logger) logger.error({ error }, "b402_health_check_failed");
+      if (logger) logger.error({ error }, 'b402_health_check_failed');
       set.status = 503;
       return {
         ok: false,
@@ -120,17 +120,17 @@ export const b402Route = new Elysia({ prefix: "/api/b402" })
     }
   })
   // Get or create user by wallet address - returns user UUID for conversation queries
-  .get("/user/:walletAddress", async ({ params: { walletAddress }, set }) => {
+  .get('/user/:walletAddress', async ({ params: { walletAddress }, set }) => {
     try {
-      if (!walletAddress || !walletAddress.startsWith("0x")) {
+      if (!walletAddress || !walletAddress.startsWith('0x')) {
         set.status = 400;
-        return { ok: false, error: "Invalid wallet address" };
+        return { ok: false, error: 'Invalid wallet address' };
       }
 
       const { user, isNew } = await getOrCreateUserByWallet(walletAddress);
 
       if (logger) {
-        logger.info({ userId: user.id, wallet: walletAddress, isNew }, "b402_user_lookup");
+        logger.info({ userId: user.id, wallet: walletAddress, isNew }, 'b402_user_lookup');
       }
 
       return {
@@ -140,8 +140,8 @@ export const b402Route = new Elysia({ prefix: "/api/b402" })
         isNew,
       };
     } catch (error) {
-      if (logger) logger.error({ error }, "b402_user_lookup_failed");
+      if (logger) logger.error({ error }, 'b402_user_lookup_failed');
       set.status = 500;
-      return { ok: false, error: "Failed to lookup user" };
+      return { ok: false, error: 'Failed to lookup user' };
     }
   });

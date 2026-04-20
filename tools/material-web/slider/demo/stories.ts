@@ -6,12 +6,9 @@
 
 import '@material/web/slider/slider.js';
 
-import {
-  labelStyles,
-  MaterialStoryInit,
-} from './material-collection.js';
-import {MdSlider} from '@material/web/slider/slider.js';
-import {css, html} from 'lit';
+import type { MdSlider } from '@material/web/slider/slider.js';
+import { css, html } from 'lit';
+import { labelStyles, type MaterialStoryInit } from './material-collection.js';
 
 /** Knob types for slider stories. */
 export interface StoryKnobs {
@@ -30,7 +27,7 @@ const sharedStyles = css`
 const single: MaterialStoryInit<StoryKnobs> = {
   name: 'Single point sliders',
   styles: [labelStyles, sharedStyles],
-  render({disabled}) {
+  render({ disabled }) {
     return html`
       <label>
         Continuous
@@ -63,7 +60,7 @@ const single: MaterialStoryInit<StoryKnobs> = {
 const range: MaterialStoryInit<StoryKnobs> = {
   name: 'Range sliders',
   styles: [labelStyles, sharedStyles],
-  render({disabled}) {
+  render({ disabled }) {
     return html`
       <label>
         Range
@@ -139,14 +136,14 @@ const customStyling: MaterialStoryInit<StoryKnobs> = {
       }
     `,
   ],
-  render({disabled}) {
+  render({ disabled }) {
     const labels = ['🤬', '😡', '😔', '😐', '😌', '😁', '🤪'];
     function labelFor(value: number) {
       return labels[Math.round(value * (labels.length - 1))];
     }
     function updateLabel(event: Event) {
       const target = event.target as MdSlider;
-      const {min, max, valueStart, valueEnd} = target;
+      const { min, max, valueStart, valueEnd } = target;
       const range = max - min;
       const fractionStart = valueStart! / range;
       const fractionEnd = valueEnd! / range;

@@ -8,7 +8,7 @@ export const firebaseConfig = {
   storageBucket: 'PROJECT_ID.appspot.com',
   messagingSenderId: 'SENDER_ID',
   appId: 'APP_ID',
-  measurementId: 'G-MEASUREMENT_ID'
+  measurementId: 'G-MEASUREMENT_ID',
 };
 
 export const vapidKey = '<YOUR_PUBLIC_VAPID_KEY_HERE>';

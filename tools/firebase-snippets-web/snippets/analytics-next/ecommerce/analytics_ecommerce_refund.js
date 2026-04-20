@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START analytics_ecommerce_refund_modular]
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 // Prepare ecommerce params
 const params11 = {
@@ -13,13 +13,13 @@ const params11 = {
   affiliation: 'Google Store',
   currency: 'USD',
   value: 9.99,
-  items: []
+  items: [],
 };
 
 // (Optional) For partial refunds, define the item_id and quantity of refunded items
 const refundedProduct = {
   item_id: 'SKU_123', // Required
-  quantity: 1 // Required
+  quantity: 1, // Required
 };
 
 params11.items.push(refundedProduct);

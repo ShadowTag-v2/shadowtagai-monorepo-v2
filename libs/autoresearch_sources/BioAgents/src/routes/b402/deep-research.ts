@@ -1,7 +1,7 @@
-import { Elysia } from "elysia";
-import { b402Middleware } from "../../middleware/b402/middleware";
-import { deepResearchStartHandler } from "../deep-research/start";
-import { deepResearchStatusHandler } from "../deep-research/status";
+import { Elysia } from 'elysia';
+import { b402Middleware } from '../../middleware/b402/middleware';
+import { deepResearchStartHandler } from '../deep-research/start';
+import { deepResearchStatusHandler } from '../deep-research/status';
 
 /**
  * b402 Deep Research Routes - Payment-gated deep research endpoints (BNB Chain)
@@ -17,14 +17,14 @@ import { deepResearchStatusHandler } from "../deep-research/status";
 export const b402DeepResearchRoute = new Elysia()
   // Status endpoint - NO payment required, but has ownership validation in handler
   // Must be registered BEFORE b402Middleware to avoid payment requirement
-  .get("/api/b402/deep-research/status/:messageId", deepResearchStatusHandler)
+  .get('/api/b402/deep-research/status/:messageId', deepResearchStatusHandler)
   // Payment-gated endpoints
   .use(b402Middleware())
-  .get("/api/b402/deep-research/start", async () => {
+  .get('/api/b402/deep-research/start', async () => {
     return {
-      message: "This endpoint requires POST method with b402 payment.",
-      apiDocumentation: "https://your-docs-url.com/api",
-      paymentInfo: "Include X-PAYMENT header with valid payment proof (BNB Chain)",
+      message: 'This endpoint requires POST method with b402 payment.',
+      apiDocumentation: 'https://your-docs-url.com/api',
+      paymentInfo: 'Include X-PAYMENT header with valid payment proof (BNB Chain)',
     };
   })
-  .post("/api/b402/deep-research/start", deepResearchStartHandler);
+  .post('/api/b402/deep-research/start', deepResearchStartHandler);

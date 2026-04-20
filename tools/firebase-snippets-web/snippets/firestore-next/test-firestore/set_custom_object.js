@@ -5,9 +5,9 @@
 // 'npm run snippets'.
 
 // [START set_custom_object_modular]
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from 'firebase/firestore';
 
 // Set with cityConverter
-const ref = doc(db, "cities", "LA").withConverter(cityConverter);
-await setDoc(ref, new City("Los Angeles", "CA", "USA"));
+const ref = doc(db, 'cities', 'LA').withConverter(cityConverter);
+await setDoc(ref, new City('Los Angeles', 'CA', 'USA'));
 // [END set_custom_object_modular]

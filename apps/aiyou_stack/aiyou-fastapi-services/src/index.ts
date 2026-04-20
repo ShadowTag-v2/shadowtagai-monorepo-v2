@@ -10,18 +10,18 @@
  */
 
 // Export data serialization
-export * from "./data-serialization";
+export * from './data-serialization';
 // Export image encoding
-export * from "./image-encoding";
+export * from './image-encoding';
 // Export text encoding
-export * from "./text-encoding";
+export * from './text-encoding';
 // Export all types
-export * from "./types";
+export * from './types';
 
-import { DataSerializer } from "./data-serialization";
-import { ImageEncoder } from "./image-encoding";
+import { DataSerializer } from './data-serialization';
+import { ImageEncoder } from './image-encoding';
 // Import classes for unified API
-import { TextEncoder } from "./text-encoding";
+import { TextEncoder } from './text-encoding';
 
 /**
  * Unified Encoding Service
@@ -47,10 +47,10 @@ export class EncodingService {
    * Quick encode to Base64
    */
   static toBase64(input: string | Buffer): string {
-    if (typeof input === "string") {
+    if (typeof input === 'string') {
       return TextEncoder.toBase64(input).encoded;
     }
-    return input.toString("base64");
+    return input.toString('base64');
   }
 
   /**
@@ -58,7 +58,7 @@ export class EncodingService {
    */
   static fromBase64(encoded: string, asBuffer: boolean = false): string | Buffer {
     if (asBuffer) {
-      return Buffer.from(encoded, "base64");
+      return Buffer.from(encoded, 'base64');
     }
     return TextEncoder.fromBase64(encoded);
   }
@@ -95,7 +95,7 @@ export class EncodingService {
    * Get version info
    */
   static getVersion(): string {
-    return "1.0.0";
+    return '1.0.0';
   }
 
   /**
@@ -108,19 +108,19 @@ export class EncodingService {
   } {
     return {
       text: [
-        "base64",
-        "base64url",
-        "hex",
-        "binary",
-        "ascii",
-        "utf8-bytes",
-        "url",
-        "html-entities",
-        "rot13",
-        "data-uri",
+        'base64',
+        'base64url',
+        'hex',
+        'binary',
+        'ascii',
+        'utf8-bytes',
+        'url',
+        'html-entities',
+        'rot13',
+        'data-uri',
       ],
-      image: ["jpeg", "png", "webp", "avif", "gif"],
-      data: ["json", "binary", "cbor", "query-string", "form-data", "csv", "xml"],
+      image: ['jpeg', 'png', 'webp', 'avif', 'gif'],
+      data: ['json', 'binary', 'cbor', 'query-string', 'form-data', 'csv', 'xml'],
     };
   }
 }
@@ -133,7 +133,7 @@ export default EncodingService;
 /**
  * Version of the encoding service
  */
-export const VERSION = "1.0.0";
+export const VERSION = '1.0.0';
 
 /**
  * Quick access to commonly used functions

@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START auth_oidc_direct_sign_in_modular]
-import { getAuth, OAuthProvider, signInWithCredential } from "firebase/auth";
+import { getAuth, OAuthProvider, signInWithCredential } from 'firebase/auth';
 
 const auth = getAuth();
 const credential = provider.credential({

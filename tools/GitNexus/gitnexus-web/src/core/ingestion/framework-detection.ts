@@ -32,7 +32,7 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
   // Normalize path separators and ensure leading slash for consistent matching
   let p = filePath.toLowerCase().replace(/\\/g, '/');
   if (!p.startsWith('/')) {
-    p = '/' + p;  // Add leading slash so patterns like '/app/' match 'app/...'
+    p = '/' + p; // Add leading slash so patterns like '/app/' match 'app/...'
   }
 
   // ========== JAVASCRIPT / TYPESCRIPT FRAMEWORKS ==========
@@ -45,15 +45,21 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
   }
 
   // Next.js - App Router (page.tsx files)
-  if (p.includes('/app/') && (
-    p.endsWith('page.tsx') || p.endsWith('page.ts') ||
-    p.endsWith('page.jsx') || p.endsWith('page.js')
-  )) {
+  if (
+    p.includes('/app/') &&
+    (p.endsWith('page.tsx') ||
+      p.endsWith('page.ts') ||
+      p.endsWith('page.jsx') ||
+      p.endsWith('page.js'))
+  ) {
     return { framework: 'nextjs-app', entryPointMultiplier: 3.0, reason: 'nextjs-app-page' };
   }
 
   // Next.js - API Routes
-  if (p.includes('/pages/api/') || (p.includes('/app/') && p.includes('/api/') && p.endsWith('route.ts'))) {
+  if (
+    p.includes('/pages/api/') ||
+    (p.includes('/app/') && p.includes('/api/') && p.endsWith('route.ts'))
+  ) {
     return { framework: 'nextjs-api', entryPointMultiplier: 3.0, reason: 'nextjs-api-route' };
   }
 
@@ -78,8 +84,10 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
   }
 
   // React components (lower priority - not all are entry points)
-  if ((p.includes('/components/') || p.includes('/views/')) &&
-      (p.endsWith('.tsx') || p.endsWith('.jsx'))) {
+  if (
+    (p.includes('/components/') || p.includes('/views/')) &&
+    (p.endsWith('.tsx') || p.endsWith('.jsx'))
+  ) {
     // Only boost if PascalCase filename (likely a component, not util)
     const fileName = p.split('/').pop() || '';
     if (/^[A-Z]/.test(fileName)) {
@@ -100,8 +108,10 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
   }
 
   // FastAPI / Flask routers
-  if ((p.includes('/routers/') || p.includes('/endpoints/') || p.includes('/routes/')) &&
-      p.endsWith('.py')) {
+  if (
+    (p.includes('/routers/') || p.includes('/endpoints/') || p.includes('/routes/')) &&
+    p.endsWith('.py')
+  ) {
     return { framework: 'fastapi', entryPointMultiplier: 2.5, reason: 'api-routers' };
   }
 
@@ -162,7 +172,7 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
   }
 
   // Go main.go files (THE entry point)
-  if (p.endsWith('/main.go') || p.endsWith('/cmd/') && p.endsWith('.go')) {
+  if (p.endsWith('/main.go') || (p.endsWith('/cmd/') && p.endsWith('.go'))) {
     return { framework: 'go', entryPointMultiplier: 3.0, reason: 'go-main' };
   }
 
@@ -191,7 +201,7 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
   }
 
   // C/C++ src folder entry points (if named specifically)
-  if ((p.includes('/src/') && (p.endsWith('/app.c') || p.endsWith('/app.cpp')))) {
+  if (p.includes('/src/') && (p.endsWith('/app.c') || p.endsWith('/app.cpp'))) {
     return { framework: 'c-cpp', entryPointMultiplier: 2.5, reason: 'c-app' };
   }
 
@@ -271,7 +281,11 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
   // ========== SWIFT / iOS ==========
 
   // iOS App entry points (highest priority)
-  if (p.endsWith('/appdelegate.swift') || p.endsWith('/scenedelegate.swift') || p.endsWith('/app.swift')) {
+  if (
+    p.endsWith('/appdelegate.swift') ||
+    p.endsWith('/scenedelegate.swift') ||
+    p.endsWith('/app.swift')
+  ) {
     return { framework: 'ios', entryPointMultiplier: 3.0, reason: 'ios-app-entry' };
   }
 
@@ -281,7 +295,10 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
   }
 
   // UIKit ViewControllers (high priority - screen entry points)
-  if ((p.includes('/viewcontrollers/') || p.includes('/controllers/') || p.includes('/screens/')) && p.endsWith('.swift')) {
+  if (
+    (p.includes('/viewcontrollers/') || p.includes('/controllers/') || p.includes('/screens/')) &&
+    p.endsWith('.swift')
+  ) {
     return { framework: 'uikit', entryPointMultiplier: 2.5, reason: 'uikit-viewcontroller' };
   }
 
@@ -297,7 +314,11 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
 
   // Coordinator by filename
   if (p.endsWith('coordinator.swift')) {
-    return { framework: 'ios-coordinator', entryPointMultiplier: 2.5, reason: 'ios-coordinator-file' };
+    return {
+      framework: 'ios-coordinator',
+      entryPointMultiplier: 2.5,
+      reason: 'ios-coordinator-file',
+    };
   }
 
   // SwiftUI Views (moderate - reusable components)
@@ -328,7 +349,10 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
   }
 
   // Flutter BLoC / controllers (state management entry points)
-  if ((p.includes('/lib/bloc/') || p.includes('/lib/controllers/') || p.includes('/lib/cubit/')) && p.endsWith('.dart')) {
+  if (
+    (p.includes('/lib/bloc/') || p.includes('/lib/controllers/') || p.includes('/lib/cubit/')) &&
+    p.endsWith('.dart')
+  ) {
     return { framework: 'flutter', entryPointMultiplier: 2.0, reason: 'flutter-state-management' };
   }
 
@@ -345,10 +369,10 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
   // ========== GENERIC PATTERNS ==========
 
   // Any language: index files in API folders
-  if (p.includes('/api/') && (
-    p.endsWith('/index.ts') || p.endsWith('/index.js') ||
-    p.endsWith('/__init__.py')
-  )) {
+  if (
+    p.includes('/api/') &&
+    (p.endsWith('/index.ts') || p.endsWith('/index.js') || p.endsWith('/__init__.py'))
+  ) {
     return { framework: 'api', entryPointMultiplier: 1.8, reason: 'api-index' };
   }
 
@@ -367,38 +391,53 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
  */
 export const FRAMEWORK_AST_PATTERNS = {
   // JavaScript/TypeScript decorators
-  'nestjs': ['@Controller', '@Get', '@Post', '@Put', '@Delete', '@Patch'],
-  'express': ['app.get', 'app.post', 'app.put', 'app.delete', 'router.get', 'router.post'],
+  nestjs: ['@Controller', '@Get', '@Post', '@Put', '@Delete', '@Patch'],
+  express: ['app.get', 'app.post', 'app.put', 'app.delete', 'router.get', 'router.post'],
 
   // Python decorators
-  'fastapi': ['@app.get', '@app.post', '@app.put', '@app.delete', '@router.get'],
-  'flask': ['@app.route', '@blueprint.route'],
+  fastapi: ['@app.get', '@app.post', '@app.put', '@app.delete', '@router.get'],
+  flask: ['@app.route', '@blueprint.route'],
 
   // Java annotations
-  'spring': ['@RestController', '@Controller', '@GetMapping', '@PostMapping', '@RequestMapping'],
-  'jaxrs': ['@Path', '@GET', '@POST', '@PUT', '@DELETE'],
+  spring: ['@RestController', '@Controller', '@GetMapping', '@PostMapping', '@RequestMapping'],
+  jaxrs: ['@Path', '@GET', '@POST', '@PUT', '@DELETE'],
 
   // C# attributes
-  'aspnet': ['[ApiController]', '[HttpGet]', '[HttpPost]', '[Route]'],
+  aspnet: ['[ApiController]', '[HttpGet]', '[HttpPost]', '[Route]'],
 
   // Go patterns (function signatures)
   'go-http': ['http.Handler', 'http.HandlerFunc', 'ServeHTTP'],
 
   // PHP/Laravel
-  'laravel': ['Route::get', 'Route::post', 'Route::put', 'Route::delete',
-              'Route::resource', 'Route::apiResource', '#[Route('],
+  laravel: [
+    'Route::get',
+    'Route::post',
+    'Route::put',
+    'Route::delete',
+    'Route::resource',
+    'Route::apiResource',
+    '#[Route(',
+  ],
 
   // Rust macros
-  'actix': ['#[get', '#[post', '#[put', '#[delete'],
-  'axum': ['Router::new'],
-  'rocket': ['#[get', '#[post'],
+  actix: ['#[get', '#[post', '#[put', '#[delete'],
+  axum: ['Router::new'],
+  rocket: ['#[get', '#[post'],
 
   // Dart/Flutter
-  'flutter': ['StatelessWidget', 'StatefulWidget', 'BuildContext', 'Widget build',
-              'ChangeNotifier', 'GetxController', 'Cubit<', 'Bloc<'],
+  flutter: [
+    'StatelessWidget',
+    'StatefulWidget',
+    'BuildContext',
+    'Widget build',
+    'ChangeNotifier',
+    'GetxController',
+    'Cubit<',
+    'Bloc<',
+  ],
 
   // Swift/iOS
-  'uikit': ['viewDidLoad', 'viewWillAppear', 'viewDidAppear', 'UIViewController'],
-  'swiftui': ['@main', 'WindowGroup', 'ContentView', '@StateObject', '@ObservedObject'],
-  'combine': ['sink', 'assign', 'Publisher', 'Subscriber'],
+  uikit: ['viewDidLoad', 'viewWillAppear', 'viewDidAppear', 'UIViewController'],
+  swiftui: ['@main', 'WindowGroup', 'ContentView', '@StateObject', '@ObservedObject'],
+  combine: ['sink', 'assign', 'Publisher', 'Subscriber'],
 };

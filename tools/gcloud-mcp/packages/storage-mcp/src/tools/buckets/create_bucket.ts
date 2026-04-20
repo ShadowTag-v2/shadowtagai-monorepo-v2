@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { CreateBucketRequest, Storage } from '@google-cloud/storage';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import { type CreateBucketRequest, Storage } from '@google-cloud/storage';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
 import { logger } from '../../utility/logger.js';
 import { USER_AGENT } from '../../utility/user_agent.js';
