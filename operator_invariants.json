@@ -158,6 +158,46 @@
     "phase_3": "PLANNED (Isolated tool runners + ephemeral tokens)",
     "phase_4": "PLANNED (BYOC/BYOK + regional isolation + FedRAMP)"
   },
+  "shallow_trunk_git": {
+    "purpose": "Bypass HTTP unpack object fetches to prevent GitHub token timeouts on large pushes",
+    "script": "scripts/push_20_chunks.py",
+    "partition_size_mb": 25,
+    "status": "OPERATIONAL (335 lines)"
+  },
+  "cinematic_telemetry": {
+    "purpose": "Autonomous telemetry visualization and auto-healing for 500 HTTP drops",
+    "studio_script": "scripts/cinematic_studio.py",
+    "dispatcher_script": "scripts/omega_auto_dispatcher.py",
+    "studio_status": "OPERATIONAL (74 lines)",
+    "dispatcher_status": "OPERATIONAL (159 lines)"
+  },
+  "scrapling_sandbox": {
+    "purpose": "Prevent accidental file/drive deletion during web scraping workflows",
+    "allowed_write_paths": ["./data/", "./output/", "./tmp/"],
+    "prohibited_commands": ["rm -rf", "shutil.rmtree on non-tmp paths"],
+    "enforcement": "scripts/scrapling_sandbox_guard.py",
+    "status": "OPERATIONAL (157 lines)"
+  },
+  "step_zero_enforcement": {
+    "purpose": "Dead code pruning BEFORE editing files >300 LOC",
+    "script": "scripts/step_zero_cleanup.sh",
+    "tools": ["ruff --fix", "vulture", "biome check"],
+    "status": "OPERATIONAL (87 lines)"
+  },
+  "session_persistence": {
+    "purpose": "JSONL state persistence across agent sessions",
+    "alias": "ag-resume",
+    "state_file": ".beads/session_state.jsonl",
+    "status": "MISSING — needs .zshrc entry"
+  },
+  "orchestrator_tools": {
+    "purpose": "Context management and session orchestration layer",
+    "memory_indexer": "tools/orchestrator/memory_indexer.py",
+    "compaction_engine": "tools/orchestrator/compaction_engine.py",
+    "session_forking": "tools/orchestrator/session_forking.py",
+    "in_process_mcp": "tools/orchestrator/in_process_mcp.py",
+    "status": "OPERATIONAL (4 modules, all compile clean)"
+  },
   "repo_drift_remediation": {
     "delete_targets": [
       "agent0/",

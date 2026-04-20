@@ -27,7 +27,7 @@ import logging
 import sys
 import time
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent.parent
@@ -55,10 +55,10 @@ class PipelineConfig:
 def write_run_log(stats: dict, start_time: float) -> None:
     """Write pipeline execution log to data/intelligence_pipeline/."""
     RUN_LOG_DIR.mkdir(parents=True, exist_ok=True)
-    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    ts = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
     log_path = RUN_LOG_DIR / f"pipeline_run_{ts}.json"
     stats["elapsed_seconds"] = round(time.time() - start_time, 2)
-    stats["finished_at"] = datetime.now(timezone.utc).isoformat()
+    stats["finished_at"] = datetime.now(UTC).isoformat()
     with open(log_path, "w") as f:
         json.dump(stats, f, indent=2)
     logger.info(f"Run log: {log_path}")
