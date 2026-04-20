@@ -12,7 +12,7 @@ def run_trinity():
 
     # 1. DEFINE STRATEGY (The "Business Context")
     # We set a conservative strategy: "No Marrying the Zeitgeist"
-    context = SystemContext(
+    SystemContext(
         wallet_balance=100000.0,
         daily_spend_limit=1000.0,
         current_spend=0.0,

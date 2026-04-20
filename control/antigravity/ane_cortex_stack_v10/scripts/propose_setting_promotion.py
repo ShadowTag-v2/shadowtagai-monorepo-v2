@@ -1,5 +1,5 @@
-from service.app.config import load_settings
 from service.app.adapters.authority_promotions import propose_promotion
+from service.app.config import load_settings
 
 s = load_settings()
 pid = propose_promotion(

@@ -88,7 +88,7 @@ def example_1_qk_attributions():
         print(f"  {attr.query_feature_desc} × {attr.key_feature_desc}: {attr.contribution:.4f}")
 
     # Visualize
-    fig = plot_qk_attribution_matrix(result, top_k=10, save_path="qk_induction.html")
+    plot_qk_attribution_matrix(result, top_k=10, save_path="qk_induction.html")
     print("\nVisualization saved to: qk_induction.html")
 
     return result
@@ -143,7 +143,7 @@ def example_2_head_loadings():
     print(edge.summarize(k=5))
 
     # Visualize
-    fig = plot_head_loadings(edge, top_k=8, save_path="head_loadings.html")
+    plot_head_loadings(edge, top_k=8, save_path="head_loadings.html")
     print("\nVisualization saved to: head_loadings.html")
 
     return edge
@@ -200,7 +200,7 @@ def example_3_attribution_graph():
             print(f"  L{layer}H{head}: {contrib:.3f}")
 
     # Visualize
-    fig = plot_attribution_graph(graph, save_path="attribution_graph.html")
+    plot_attribution_graph(graph, save_path="attribution_graph.html")
     print("\nVisualization saved to: attribution_graph.html")
 
     return graph
@@ -237,7 +237,7 @@ def example_4_interventions():
             top_logits.append([("grand", 0.9), ("énorme", 0.05), ("petit", 0.02)])
 
     # Visualize steering effect
-    fig = plot_intervention_scan(
+    plot_intervention_scan(
         scale_values=scale_values.tolist(),
         top_logits=top_logits,
         target_token="grand",
@@ -300,11 +300,11 @@ def main():
     print()
 
     # Run examples
-    qk_result = example_1_qk_attributions()
-    edge = example_2_head_loadings()
-    graph = example_3_attribution_graph()
+    example_1_qk_attributions()
+    example_2_head_loadings()
+    example_3_attribution_graph()
     scales, logits = example_4_interventions()
-    validated = example_5_circuit_validation()
+    example_5_circuit_validation()
 
     print("\n" + "=" * 80)
     print("All examples completed!")

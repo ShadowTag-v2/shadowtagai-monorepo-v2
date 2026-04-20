@@ -485,10 +485,6 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
         # This is a placeholder showing the structure
         url = f"{self.GRAPH_API_BASE}{endpoint}"
 
-        headers = {
-            "Authorization": f"Bearer {self._access_token}",
-            "Content-Type": "application/json",
-        }
 
         # Placeholder - actual HTTP call would go here
         logger.debug(f"MS365 API: {method} {url}")
@@ -503,12 +499,6 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
             f"https://login.microsoftonline.com/{self.ms365_config.tenant_id}/oauth2/v2.0/token"
         )
 
-        payload = {
-            "client_id": self.ms365_config.client_id,
-            "client_secret": client_secret,
-            "scope": "https://graph.microsoft.com/.default",
-            "grant_type": "client_credentials",
-        }
 
         # Placeholder - actual HTTP call would go here
         logger.debug(f"Requesting token from {token_url}")

@@ -143,12 +143,6 @@ class DTESystem:
         4. Validate and iterate
         """
         # Simulated critiques from different perspectives
-        critiques = [
-            "Add explicit format instructions (JSON schema)",
-            "Include few-shot examples for clarity",
-            "Clarify success criteria and edge cases",
-            "Reduce verbosity, focus on essential elements",
-        ]
 
         # Apply top critiques to evolve prompt
         evolved = prompt
@@ -213,11 +207,6 @@ class DTESystem:
         4. Validate improvements
         """
         # Analyze failure patterns (simulated)
-        common_failures = [
-            "Missing error handling instructions",
-            "Ambiguous output format",
-            "No handling for edge cases",
-        ]
 
         evolved = prompt
 

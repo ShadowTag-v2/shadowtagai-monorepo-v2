@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 import hashlib
 import os
+
 import requests
 
 EMBED_DIM = 1536

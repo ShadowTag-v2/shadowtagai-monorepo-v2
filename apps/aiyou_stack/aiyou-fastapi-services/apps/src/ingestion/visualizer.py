@@ -50,7 +50,7 @@ class BriefingVisualizer:
         tier3_count: int,
     ) -> str:
         """Generate tier distribution visualization."""
-        total = tier1_count + tier2_count + tier3_count
+        tier1_count + tier2_count + tier3_count
 
         if self.output_format == "ascii":
             return self._ascii_pie_chart(

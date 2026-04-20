@@ -10,8 +10,8 @@ This is the epistemological rigor layer of the Cor.Uphillsnowball doctrine.
 
 import random
 import statistics
-from dataclasses import dataclass
 from collections.abc import Callable
+from dataclasses import dataclass
 
 
 @dataclass(frozen=True)

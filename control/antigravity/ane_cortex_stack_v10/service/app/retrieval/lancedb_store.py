@@ -1,8 +1,11 @@
 from __future__ import annotations
+
 from pathlib import Path
 from typing import Any
+
 import lancedb
 import pyarrow as pa
+
 from ..providers.embeddings import embed_text
 
 TABLE_NAME = "ane_chunks"

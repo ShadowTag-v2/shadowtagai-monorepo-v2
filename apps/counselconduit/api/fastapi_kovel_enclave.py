@@ -34,9 +34,9 @@ from fastapi.responses import StreamingResponse
 try:
     # Monorepo context (running from repo root)
     from apps.counselconduit.api.firestore_client import (
+        AuditEntry,
         update_attorney_usage,
         write_audit_log,
-        AuditEntry,
     )
     from apps.counselconduit.api.gemini_rag import (
         QueryRequest,
@@ -50,9 +50,9 @@ try:
 except ImportError:
     # Docker/Cloud Run context (running from /app/)
     from api.firestore_client import (  # type: ignore[no-redef]
+        AuditEntry,
         update_attorney_usage,
         write_audit_log,
-        AuditEntry,
     )
     from api.gemini_rag import (  # type: ignore[no-redef]
         QueryRequest,
@@ -66,35 +66,35 @@ except ImportError:
 
 # Middleware + Error handlers (same path in both contexts)
 try:
-    from apps.counselconduit.api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware
-    from apps.counselconduit.api.middleware.token_budget import TokenBudgetMiddleware
-    from apps.counselconduit.api.middleware.prompt_guard import PromptGuardMiddleware
     from apps.counselconduit.api.app_error import AppError, app_error_handler, unhandled_error_handler
+    from apps.counselconduit.api.byok import router as byok_router
+    from apps.counselconduit.api.cloud_tasks_gdpr import router as tasks_router
+    from apps.counselconduit.api.cloud_tasks_gdpr_handler import router as gdpr_handler_router
     from apps.counselconduit.api.gdpr import router as gdpr_router
     from apps.counselconduit.api.kovel_attestation import router as attestation_router
     from apps.counselconduit.api.magic_link import router as onboarding_router
-    from apps.counselconduit.api.vent_mode import router as vent_router
-    from apps.counselconduit.api.cloud_tasks_gdpr import router as tasks_router
-    from apps.counselconduit.api.stripe_connect_webhook import router as connect_webhook_router
+    from apps.counselconduit.api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware
+    from apps.counselconduit.api.middleware.prompt_guard import PromptGuardMiddleware
+    from apps.counselconduit.api.middleware.token_budget import TokenBudgetMiddleware
     from apps.counselconduit.api.resend_webhook import router as resend_router
-    from apps.counselconduit.api.byok import router as byok_router
-    from apps.counselconduit.api.cloud_tasks_gdpr_handler import router as gdpr_handler_router
     from apps.counselconduit.api.stripe_connect_onboarding import router as connect_onboarding_router
+    from apps.counselconduit.api.stripe_connect_webhook import router as connect_webhook_router
+    from apps.counselconduit.api.vent_mode import router as vent_router
 except ImportError:
-    from api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware  # type: ignore[no-redef]
-    from api.middleware.token_budget import TokenBudgetMiddleware  # type: ignore[no-redef]
-    from api.middleware.prompt_guard import PromptGuardMiddleware  # type: ignore[no-redef]
     from api.app_error import AppError, app_error_handler, unhandled_error_handler  # type: ignore[no-redef]
+    from api.byok import router as byok_router  # type: ignore[no-redef]
+    from api.cloud_tasks_gdpr import router as tasks_router  # type: ignore[no-redef]
+    from api.cloud_tasks_gdpr_handler import router as gdpr_handler_router  # type: ignore[no-redef]
     from api.gdpr import router as gdpr_router  # type: ignore[no-redef]
     from api.kovel_attestation import router as attestation_router  # type: ignore[no-redef]
     from api.magic_link import router as onboarding_router  # type: ignore[no-redef]
-    from api.vent_mode import router as vent_router  # type: ignore[no-redef]
-    from api.cloud_tasks_gdpr import router as tasks_router  # type: ignore[no-redef]
-    from api.stripe_connect_webhook import router as connect_webhook_router  # type: ignore[no-redef]
+    from api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware  # type: ignore[no-redef]
+    from api.middleware.prompt_guard import PromptGuardMiddleware  # type: ignore[no-redef]
+    from api.middleware.token_budget import TokenBudgetMiddleware  # type: ignore[no-redef]
     from api.resend_webhook import router as resend_router  # type: ignore[no-redef]
-    from api.byok import router as byok_router  # type: ignore[no-redef]
-    from api.cloud_tasks_gdpr_handler import router as gdpr_handler_router  # type: ignore[no-redef]
     from api.stripe_connect_onboarding import router as connect_onboarding_router  # type: ignore[no-redef]
+    from api.stripe_connect_webhook import router as connect_webhook_router  # type: ignore[no-redef]
+    from api.vent_mode import router as vent_router  # type: ignore[no-redef]
 
 # ── Structured Logging ─────────────────────────────────────────────────────
 

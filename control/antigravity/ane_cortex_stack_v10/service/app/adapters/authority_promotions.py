@@ -1,9 +1,11 @@
 from __future__ import annotations
-from typing import Any
+
 import json
-from ..utils.db import pg_conn
+from typing import Any
+
 from ..adapters.authority_state import AuthorityState
 from ..adapters.memory_atoms import replace_authority_atoms
+from ..utils.db import pg_conn
 
 
 def propose_promotion(

@@ -60,7 +60,7 @@ class DeployManager:
 
         """
         branch_name = f"antigravity/{session_id[:8]}"
-        timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        datetime.utcnow().strftime("%Y%m%d_%H%M%S")
 
         result = {
             "success": False,

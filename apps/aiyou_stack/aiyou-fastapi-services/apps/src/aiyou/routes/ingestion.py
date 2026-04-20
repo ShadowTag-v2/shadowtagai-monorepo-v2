@@ -463,7 +463,7 @@ async def process_ingestion_job(job_id: str, user_id: str):
 def apply_moderation_rules(job: IngestionJob, db: Session) -> IngestionStatus:
     """Apply auto-moderation rules to determine job status"""
     # Get active rules
-    rules = (
+    (
         db.query(AutoModerationRule)
         .filter(AutoModerationRule.enabled)
         .order_by(AutoModerationRule.priority.desc())

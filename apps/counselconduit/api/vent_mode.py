@@ -22,8 +22,8 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Any
 from collections.abc import AsyncGenerator
+from typing import Any
 
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
@@ -199,8 +199,9 @@ async def start_vent_session(req: VentSessionRequest) -> VentCheckoutResponse:
     # Create Stripe Checkout (Connect destination)
     checkout_url = f"https://checkout.stripe.com/pay/placeholder_{session_id}"
     try:
-        import stripe
         import os
+
+        import stripe
 
         stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
         if stripe.api_key:

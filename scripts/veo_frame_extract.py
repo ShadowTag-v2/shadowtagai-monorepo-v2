@@ -54,7 +54,6 @@ import os
 import shutil
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -420,7 +419,7 @@ def run_full_pipeline(
     """
     # Import Veo generator
     sys.path.insert(0, str(Path(__file__).parent))
-    from veo_generate import generate_vertex_ai, generate_gemini_api
+    from veo_generate import generate_gemini_api, generate_vertex_ai
 
     results = {"video": None, "frames": [], "manifest": None, "scroll_js": None}
 

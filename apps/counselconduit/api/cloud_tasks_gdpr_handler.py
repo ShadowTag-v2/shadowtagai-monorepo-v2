@@ -70,8 +70,8 @@ def _verify_cloud_tasks_origin(request: Request) -> None:
     # In production, verify the OIDC token against Google's public keys
     token = auth_header.removeprefix("Bearer ")
     try:
-        from google.oauth2 import id_token
         from google.auth.transport import requests as google_requests
+        from google.oauth2 import id_token
 
         claims = id_token.verify_oauth2_token(
             token,

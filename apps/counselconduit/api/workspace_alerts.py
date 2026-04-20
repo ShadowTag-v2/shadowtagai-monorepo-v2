@@ -58,8 +58,8 @@ async def send_chat_alert(
 async def _send_chat_api(text: str, thread_key: str | None = None) -> bool:
     """Send via Google Chat API (googleapiclient)."""
     try:
-        from googleapiclient.discovery import build
         import google.auth
+        from googleapiclient.discovery import build
 
         credentials, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/chat.messages.create"])
         service = build("chat", "v1", credentials=credentials)
@@ -140,8 +140,9 @@ async def _send_gmail_api(
     """Send via Gmail API (google-api-python-client)."""
     import base64
     from email.mime.text import MIMEText
-    from googleapiclient.discovery import build
+
     import google.auth
+    from googleapiclient.discovery import build
 
     credentials, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/gmail.send"])
     service = build("gmail", "v1", credentials=credentials)

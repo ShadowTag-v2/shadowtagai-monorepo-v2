@@ -87,7 +87,7 @@ async def get_dashboard_data():
     - Trends
     """
     dashboard = get_dashboard()
-    snapshot = await dashboard.get_current_snapshot()
+    await dashboard.get_current_snapshot()
 
     # Generate fresh alerts
     await get_alerting_system().check_and_alert()

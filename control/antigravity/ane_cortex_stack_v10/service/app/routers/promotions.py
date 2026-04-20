@@ -1,8 +1,10 @@
+from typing import Any
+
 from fastapi import APIRouter
 from pydantic import BaseModel
-from typing import Any
+
+from ..adapters.authority_promotions import approve_and_apply, propose_promotion
 from ..config import load_settings
-from ..adapters.authority_promotions import propose_promotion, approve_and_apply
 
 router = APIRouter(prefix="/api")
 
