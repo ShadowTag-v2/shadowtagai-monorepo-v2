@@ -16,7 +16,7 @@
 - **Objections:** Actively hunt for violations. Tag `[shadowtag-omega-v4JR-VIOLATION]` with risk level. Never suppress.
 - **Auto-repair:** On any lint/type/test error → `python scripts/auto_error_repair.py` (Gemini primary). No approval needed.
   - Provider ladder: `REPAIR_PROVIDER=gemini` (default) → `openai` → `claude` (future stubs in script)
-  - Model: `GEMINI_GEN_MODEL` (default: `gemini-2.0-pro`)
+  - Model: `GEMINI_GEN_MODEL` (default: `gemini-3.1-flash-lite-preview`)
 - **Coverage:** ≥98% always. Judge #6 enforced. Auto-repair restores it.
 - **IDE sync:** `scripts/cursor_vscode_updater.sh` — installs all extensions + settings for Cursor + VSCode.
 - **Cursor rules:** `.cursor/rules/board-posture-160iq.mdc` — full doctrine. `.cursorrules` — quick-ref header.
