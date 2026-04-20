@@ -16,10 +16,10 @@ This module enforces the "ENDEX SLA" from the Cor.Uphillsnowball brief:
 hard deadlines prevent agents from hanging indefinitely.
 """
 
-from enum import IntEnum
-from dataclasses import dataclass
-import time
 import logging
+import time
+from dataclasses import dataclass
+from enum import IntEnum
 
 logger = logging.getLogger(__name__)
 

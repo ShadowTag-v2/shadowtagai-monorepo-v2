@@ -1,8 +1,9 @@
 from fastapi import APIRouter
-from ..models.contracts import SearchRequest, SearchResponse, SearchResultItem
+
 from ..config import load_settings
-from ..retrieval.context_builder import collect_context
+from ..models.contracts import SearchRequest, SearchResponse, SearchResultItem
 from ..providers.reranker import rerank
+from ..retrieval.context_builder import collect_context
 
 router = APIRouter(prefix="/api")
 

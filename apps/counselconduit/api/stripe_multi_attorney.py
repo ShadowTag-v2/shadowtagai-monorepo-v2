@@ -16,8 +16,8 @@ For v2: Connect accounts enable revenue sharing with individual attorneys.
 
 from __future__ import annotations
 
-import os
 import logging
+import os
 
 import stripe
 

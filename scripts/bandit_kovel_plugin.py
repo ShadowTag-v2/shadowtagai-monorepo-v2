@@ -10,7 +10,7 @@ B903: Detects missing Kovel attestation checks
 """
 
 import ast
-import bandit
+
 from bandit.core import issue as b_issue
 from bandit.core import test_properties as test_props
 

@@ -144,7 +144,6 @@ class ColabNotebookRunner:
         executed_cells = []
 
         # Create execution namespace
-        namespace = {}
 
         for i, cell in enumerate(cells):
             if cell.cell_type != "code":

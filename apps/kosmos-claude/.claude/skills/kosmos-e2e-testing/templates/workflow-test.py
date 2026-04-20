@@ -124,7 +124,7 @@ async def test_workflow_artifact_generation(artifacts_dir: str) -> dict:
     )
 
     start = time.time()
-    result = await workflow.run(num_cycles=1, tasks_per_cycle=2)
+    await workflow.run(num_cycles=1, tasks_per_cycle=2)
     elapsed = time.time() - start
 
     # Check for expected artifacts
@@ -155,7 +155,7 @@ async def test_workflow_error_handling(artifacts_dir: str) -> dict:
 
     start = time.time()
     try:
-        result = await workflow.run(num_cycles=1, tasks_per_cycle=1)
+        await workflow.run(num_cycles=1, tasks_per_cycle=1)
         # Should either fail gracefully or handle empty objective
         success = True
     except ValueError:

@@ -233,7 +233,7 @@ def example_transfer_package():
     )
 
     # Create context
-    context = package.create_context(
+    package.create_context(
         state_summary=state,
         metrics={"mrr_target": 120_000, "customers": 50, "ltv_cac": 4.0},
         verticals={"sales": 1500, "content": 800},
@@ -246,7 +246,7 @@ def example_transfer_package():
     )
 
     # Create restart prompt
-    prompt = package.create_restart_prompt(
+    package.create_restart_prompt(
         project="AI Agent Business Plan Execution",
         phase="Week 1 - Sales Automation Agent MVP Build",
         context="Building portfolio of AI agents for B2B automation",

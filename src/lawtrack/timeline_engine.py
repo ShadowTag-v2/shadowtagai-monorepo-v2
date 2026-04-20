@@ -14,8 +14,6 @@ Performance: <100ms timeline generation
 Accuracy: 99%+ (validated against jurisdiction rules)
 """
 
-import json
-from typing import Any
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum

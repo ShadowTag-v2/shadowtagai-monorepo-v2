@@ -126,7 +126,7 @@ class CalendarService:
         )
 
         # Event structure
-        event = {
+        {
             "summary": title,
             "description": full_description,
             "start": {
@@ -182,7 +182,7 @@ class CalendarService:
         )
 
         # Event structure for Microsoft Graph API
-        event = {
+        {
             "subject": title,
             "body": {"contentType": "HTML", "content": full_description},
             "start": {

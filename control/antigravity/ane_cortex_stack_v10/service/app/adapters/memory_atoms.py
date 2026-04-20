@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 from typing import Any
+
 from ..utils.db import pg_conn
 
 

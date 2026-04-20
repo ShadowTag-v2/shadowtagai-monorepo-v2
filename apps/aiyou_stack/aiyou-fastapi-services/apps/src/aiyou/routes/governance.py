@@ -106,7 +106,7 @@ async def upload_trace(trace: TraceUploadRequest):
 
     try:
         generator = get_signed_url_generator()
-        gcs_uri = generator.upload_trace(decision_id, trace_record)
+        generator.upload_trace(decision_id, trace_record)
         trace_url = generator.generate_trace_url(decision_id)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to upload trace: {e!s}")

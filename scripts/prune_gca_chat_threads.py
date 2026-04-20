@@ -128,7 +128,7 @@ def prune(db_path: Path | str, keep: int = 0) -> dict:
 
         before_bytes = len(row[0].encode("utf-8"))
         threads = state_dict.get(THREADS_FIELD, [])
-        threads_before = len(json.dumps(threads).encode("utf-8"))
+        len(json.dumps(threads).encode("utf-8"))
 
         # Keep N newest threads (threads are ordered oldest-first)
         if keep > 0 and len(threads) > keep:

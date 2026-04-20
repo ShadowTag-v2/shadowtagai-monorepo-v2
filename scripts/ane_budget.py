@@ -155,7 +155,7 @@ def scan_diff(diff_text: str) -> BudgetReport:
 
                 # Check both float32 and float16
                 mem_f32 = _estimate_memory(dims, element_size=4)
-                mem_f16 = _estimate_memory(dims, element_size=2)
+                _estimate_memory(dims, element_size=2)
 
                 # Use float32 as the conservative estimate
                 if mem_f32 > ANE_BUDGET_BYTES:

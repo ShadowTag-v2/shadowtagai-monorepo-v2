@@ -1,7 +1,9 @@
 from __future__ import annotations
+
 from pathlib import Path
-from ..config import load_settings
+
 from ..adapters.monorepo_truth import load_monorepo_truth
+from ..config import load_settings
 from ..utils.db import pg_conn
 
 

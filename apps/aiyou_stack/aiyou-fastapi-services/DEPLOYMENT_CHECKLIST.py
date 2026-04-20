@@ -311,7 +311,7 @@ class DeploymentChecker:
             orchestrator = COROrchestrator()
 
             # Create a test agent
-            agent = orchestrator.create_agent(
+            orchestrator.create_agent(
                 name="TestAgent",
                 role="Smoke Test",
                 capabilities=["testing"],

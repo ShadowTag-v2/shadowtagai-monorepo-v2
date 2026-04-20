@@ -1,8 +1,9 @@
 from __future__ import annotations
+
 from ..config import load_settings
-from ..utils.db import sqlite_conn, pg_conn
-from ..retrieval.sqlite_index import chunk_text
 from ..retrieval.lancedb_store import upsert_chunks
+from ..retrieval.sqlite_index import chunk_text
+from ..utils.db import pg_conn, sqlite_conn
 
 
 def mark_changed_files(sqlite_db: str, pg_dsn: str, repo_id: str):

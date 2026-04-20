@@ -227,7 +227,7 @@ class TestWeightOptimizer:
 
         # Final prediction error
         final_preds = nn.forward(X)
-        final_mse = np.mean((final_preds - y) ** 2)
+        np.mean((final_preds - y) ** 2)
 
         # Should improve (note: PSO may not always find optimal)
         assert result.best_fitness <= initial_mse

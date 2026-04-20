@@ -13,12 +13,12 @@ Components:
 """
 
 from .training_data_indexer import (
-    TrainingDataIndexer,
     SafetyCategory,
-    SafetyHit,
-    SafetyScanResult,
-    SafetyLexicon,
     SafetyGate,
+    SafetyHit,
+    SafetyLexicon,
+    SafetyScanResult,
+    TrainingDataIndexer,
 )
 
 __all__ = [

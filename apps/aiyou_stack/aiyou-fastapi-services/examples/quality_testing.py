@@ -24,7 +24,7 @@ def main():
 
     # Watermark content
     print("\nWatermarking content...")
-    result = shadowtag.watermark_content(
+    shadowtag.watermark_content(
         video_path="input_video.mp4",
         audio_path="input_audio.wav",
         prompt="Quality test content",

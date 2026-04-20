@@ -141,7 +141,7 @@ class NeuralMemory(Layer):
             # Let's stick to: Retrieve (using current) -> Memory is now 'used' -> Update (prepare for next).
 
             # Surprise Calculation
-            pred_val = memory(k_t)
+            memory(k_t)
 
             # MSE Loss
             # diff = pred_val - v_t  # Unused, removed

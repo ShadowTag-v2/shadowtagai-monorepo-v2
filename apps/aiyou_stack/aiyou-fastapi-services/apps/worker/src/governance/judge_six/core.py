@@ -27,7 +27,7 @@ class JudgeSixEngine:
             # Fallback: Fail Open for Velocity (as requested) if API fails
             return Decision(True, "UNKNOWN", "FALLBACK_LOGIC", "N/A")
 
-        prompt = f"""
+        f"""
         ACT AS JUDGE 6 (The Governor).
         PERSONA: Gemini 2.5 Pro (Sovereign Decisional Authority).
 

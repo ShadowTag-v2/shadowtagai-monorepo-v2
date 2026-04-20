@@ -1,7 +1,8 @@
 from __future__ import annotations
+
+import re
 from pathlib import Path
 from typing import Any
-import re
 
 
 def build_code_graph(repo_root: str) -> dict[str, Any]:

@@ -6,7 +6,7 @@
 - **Automation Restored**:
   1. `gcloud_auth_solver.py`: Ready (Jetski/Browser).
   2. `omega_auth_daemon.py`: RUNNING (PID: Active).
-  3. `BRAIN_DIR="/Users/pikeymickey/.gemini/antigravity/brain/0f155a4e-36e6-4528-a693-619a039e50"`
+  3. `BRAIN_DIR` is per-conversation: `~/.gemini/antigravity/brain/<conversation-id>`
   4. Ensure you are saving everything to beads as you go.
 
 ## 0.3 BOARD POSTURE — 160IQ PERMANENT (shadowtag-omega-v4JR + Auto-Repair)

@@ -18,8 +18,8 @@ import os
 from typing import Any
 
 import firebase_admin
-from firebase_admin import auth, credentials
 from fastapi import Header, HTTPException, status
+from firebase_admin import auth, credentials
 
 logger = logging.getLogger("counselconduit.auth")
 

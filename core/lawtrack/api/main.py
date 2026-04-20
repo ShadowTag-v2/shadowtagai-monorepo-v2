@@ -1,7 +1,7 @@
-from fastapi import FastAPI, HTTPException, Security
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from pydantic import BaseModel
 import os
+
+from fastapi import FastAPI, HTTPException, Security
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 app = FastAPI(title="Cor.LawTrack Engine", description="Zero-Trust API Gateway for Multi-Vertical Compliance", version="1.0.0")
 

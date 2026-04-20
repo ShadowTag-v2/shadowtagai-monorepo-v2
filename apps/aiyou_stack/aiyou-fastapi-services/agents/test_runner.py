@@ -62,7 +62,7 @@ class TestRunner:
         print("///▞ TEST RUNNER :: Running coverage analysis")
 
         try:
-            result = subprocess.run(
+            subprocess.run(
                 [
                     "python3",
                     "-m",
@@ -106,7 +106,7 @@ class TestRunner:
         print("///▞ TEST RUNNER :: Running benchmarks")
 
         try:
-            result = subprocess.run(
+            subprocess.run(
                 [
                     "python3",
                     "-m",

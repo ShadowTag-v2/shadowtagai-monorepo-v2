@@ -124,7 +124,7 @@ class ReactToContact(BattleDrill):
         """
         self.started_at = datetime.utcnow()
         error = context.get("error", "Unknown error")
-        task = context.get("task", "Unknown task")
+        context.get("task", "Unknown task")
 
         # Phase 1: ALERT
         self.current_phase = DrillPhase.ALERT

@@ -1,8 +1,9 @@
 from fastapi import APIRouter
-from ..config import load_settings
+
 from ..adapters.authority_state import AuthorityState
 from ..adapters.memory_atoms import search_atoms
 from ..adapters.monorepo_truth import load_monorepo_truth
+from ..config import load_settings
 from ..utils.db import pg_conn
 
 router = APIRouter(prefix="/api")

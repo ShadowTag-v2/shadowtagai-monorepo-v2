@@ -45,8 +45,8 @@ import asyncio
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any
 from enum import StrEnum
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -569,10 +569,10 @@ class WealthOptimizer:
 async def example_wealth_optimizer():
     """Demonstrate Wealth Optimizer"""
     from shadowtagai.core.gemini_ingestion_layer import (
-        SourceType,
-        SourceCoverageMetrics,
         IngestionResult,
         IngestionStatus,
+        SourceCoverageMetrics,
+        SourceType,
     )
 
     print("=== Wealth Optimizer Demo ===\n")

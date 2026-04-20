@@ -19,7 +19,7 @@ class ComputerUseSpawner:
         vnc_port = agent.vnc_port
         http_port = 8000 + (vnc_port - 5900)  # Map HTTP port based on agent index
 
-        cmd = [
+        [
             "docker",
             "run",
             "-d",

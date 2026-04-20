@@ -38,10 +38,9 @@ class PerformanceProfilingMiddleware(BaseHTTPMiddleware):
         # Get initial resource usage
         try:
             initial_memory = self.process.memory_info().rss / 1024 / 1024  # MB
-            initial_cpu = self.process.cpu_percent()
+            self.process.cpu_percent()
         except Exception:
             initial_memory = None
-            initial_cpu = None
 
         # Profile the request if enabled
         profiler = None
