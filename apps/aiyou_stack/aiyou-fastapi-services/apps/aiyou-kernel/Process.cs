@@ -141,7 +141,7 @@ public static class JudgeProcessBuilder
         var enforce = builder.AddStepFromType<EnforcementStep>("Enforcer");
 
         // The Directed Graph (The "Flow")
-        builder.OnExternalEvent("Start")
+        builder.OnInputEvent("Start")
             .SendEventTo(new ProcessFunctionTargetBuilder(compress, nameof(CompressionStep.ExtractFeaturesAsync), "rawInput"));
 
         compress.OnEvent("FeaturesExtracted")
