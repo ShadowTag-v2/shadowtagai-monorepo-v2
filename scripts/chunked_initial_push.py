@@ -49,9 +49,7 @@ def get_github_token():
     if not target_inst:
         print("Error: Could not find GitHub App installation for 'ShadowTag-v2'")
         sys.exit(1)
-    res2 = requests.post(
-        f"https://api.github.com/app/installations/{target_inst['id']}/access_tokens",
-        headers=headers,, timeout=30)
+    res2 = requests.post(f"https://api.github.com/app/installations/{target_inst['id']}/access_tokens", headers=headers, timeout=30)
     res2.raise_for_status()
     return res2.json()["token"]
 

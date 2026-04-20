@@ -24,8 +24,8 @@ try:
     r.raise_for_status()
     insts = r.json()
     r2 = requests.post(
-        f"https://api.github.com/app/installations/{insts[0]['id']}/access_tokens",
-        headers={"Authorization": f"Bearer {enc}"},, timeout=30)
+        f"https://api.github.com/app/installations/{insts[0]['id']}/access_tokens", headers={"Authorization": f"Bearer {enc}"}, timeout=30
+    )
     r2.raise_for_status()
     TOKEN = r2.json()["token"]
 except Exception as e:

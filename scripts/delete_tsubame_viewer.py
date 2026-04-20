@@ -27,9 +27,7 @@ def get_token(client_id, pem_path, owner_name):
     if not target_installation_id:
         return None
 
-    resp = requests.post(
-        f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
-        headers=headers,, timeout=30)
+    resp = requests.post(f"https://api.github.com/app/installations/{target_installation_id}/access_tokens", headers=headers, timeout=30)
     if resp.status_code == 201:
         return resp.json()["token"]
     return None
