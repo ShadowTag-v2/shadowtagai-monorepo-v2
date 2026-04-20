@@ -21,7 +21,7 @@ import os
 import subprocess
 import sys
 import time
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path

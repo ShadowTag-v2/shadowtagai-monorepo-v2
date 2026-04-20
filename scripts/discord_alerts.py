@@ -26,7 +26,7 @@ from __future__ import annotations
 import json
 import logging
 import os
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from enum import Enum
 from typing import Any
 
