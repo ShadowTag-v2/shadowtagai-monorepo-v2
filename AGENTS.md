@@ -195,6 +195,10 @@ unless the user explicitly directs a control plane change:
 
 - Gemma-4 31B Sovereign: gemma-4-31B-it-Q4_K_M.gguf (17GB) at ~/models/, served via llama-server (ANE build) on 127.0.0.1:8080, OpenAI-compat API, thinking mode active, inference verified (2026-04-20)
 - GEPA Router: dspy_gepa_router.py (118 LOC) at tools/orchestrator/, sidekick :8080 + auditor :8081 endpoints configured
+- Nested .git purge: 30 dirs removed from external_repos/ (was 30 → 0), verified clean (2026-04-20)
+- .env quarantine: 5 Kosmos test configs untracked from git index, *.env in .gitignore
+- Vulture whitelist: vulture_whitelist.py added (NotebookLM dynamic import false positive)
+- Dead code sweep: 10 vulture findings fixed (judge_architecture.py, fabric.py, judge_six_pipeline.py, governance_tools.py)
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
