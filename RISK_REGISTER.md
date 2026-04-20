@@ -61,3 +61,9 @@
 - New risks are appended with the next sequential number.
 - Severity ratings: 🔴 Critical (blocks execution), 🟠 High (causes incorrect behavior), 🟡 Medium (causes degraded operation), 🟢 Low (cosmetic or theoretical).
 - This file is a **companion** to `operator_invariants.json` — not a replacement for inline doctrine.
+
+## Risk #47: IDE SharedProcess Bug
+- **Type**: External (Electron/Extension)
+- **Severity**: Low
+- **Status**: Monitored
+- **Description**: Antigravity IDE SharedProcess uncaught exception ('fireEvent'). Upstream bug, no action required.

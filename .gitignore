@@ -208,3 +208,6 @@ tools/google-workspace-cli/.git/
 
 # Temporal server logs
 .beads/temporal-stderr.log
+
+# Quarantine Third-Party Envs
+libs/autoresearch_sources/Kosmos/**/.env*

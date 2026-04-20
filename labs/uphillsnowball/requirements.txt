@@ -1,4 +1,18 @@
-litellm>=1.0.0
-fastapi>=0.100.0
-uvicorn>=0.23.0
-pydantic>=2.0.0
+# UphillSnowball API Dependencies
+# Runtime: CPython 3.14.3 (monorepo .venv)
+
+# Server
+fastapi>=0.115.0
+uvicorn[standard]>=0.34.0
+sse-starlette>=2.2.0
+pydantic>=2.11.0
+
+# Google Cloud
+google-genai>=1.14.0
+google-cloud-firestore>=2.21.0
+
+# RAG / Vector
+lancedb>=0.30.0
+
+# Utilities
+httpx>=0.28.0
