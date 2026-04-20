@@ -7,7 +7,8 @@
   "settings": {
     "liveServer.settings.root": "/",
     "liveServer.settings.port": 5508,
-    "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.env",
+    "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python3",
+    "geminicodeassist.agentYoloMode": true,
     "java.import.generatesSources": false,
     "java.import.exclusions": [
       "**/*.proto",
