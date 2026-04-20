@@ -178,3 +178,71 @@ Per arXiv 2512.14982 (Leviathan, Kalman, Matias — Google Research):
 - **APPLY TO**: Oracle Studio stages, CounselConduit model_router, Vent Mode, Autoresearch Triad
 - **DO NOT APPLY TO**: Reasoning/thinking models (Gemini thinking, Claude extended thinking, DeepSeek-R1)
 - **Effect**: 1–8% accuracy boost with zero additional output tokens or latency
+
+## Companion Skills (Constitution v3)
+
+Three skills extracted from Cor.Constitution v3, integrated into the Fleet Vanguard doctrine:
+
+### 1. Google AI Mode Research (`google-ai-mode-research`)
+**Path:** `skills/google-ai-mode-research/SKILL.md`
+**Trigger:** Before any complex research query where `search_web` or Developer Knowledge MCP returns insufficient results.
+**Protocol:** Navigate to google.com → enter query → switch to AI Mode tab → auto-prompt "yes" 9× → extract fully-developed response.
+**Integration:** Slot #3 in the Doctrinal Acquisition hierarchy (after Dev Knowledge API and KIs, before raw web search).
+
+### 2. ROC Drill Rehearsal (`roc-drill-rehearsal`)
+**Path:** `skills/roc-drill-rehearsal/SKILL.md`
+**Trigger:** Before ANY critical operation — deployments, migrations, auth/payment changes, infra provisioning.
+**Protocol:** 4-phase military rehearsal: Back-Brief (state intent) → Rock Drill (simulate logic flow) → PCC/PCI (pre-combat checks) → Cross LD (execute only when verified).
+**Integration:** Mandatory gate for all STATE B (Clutch) operations. Uses `sequential-thinking` MCP for Phase 2 simulation.
+
+### 3. Doctrinal Acquisition Protocol (`doctrinal-acquisition`)
+**Path:** `skills/doctrinal-acquisition/SKILL.md`
+**Trigger:** Before any decision based on external knowledge. ALL decisions must cite verified sources.
+**Protocol:** 6-tier verification hierarchy: Developer Knowledge API → KIs → Google AI Mode → GCloud Docs → GitHub → Web Search. Refresh cycles: 1 month (volatile), 6 months (stable).
+**Integration:** Wraps the Velocity Protocol (K.4) combining all three research protocols for maximum speed. Motto: "Research Once → Save to Bead → Never Re-invent."
+
+## Operational Protocols (from live-engine / toolbelt / shadowtag-laws)
+
+Gap analysis of `.agent/workflows/live-engine.md`, `.agent/docs/toolbelt.md`, and `.agent/rules/shadowtag-laws.md` identified three protocols NOT previously captured in GEMINI.md or skills:
+
+### 4. Session Init Ritual (`/omega-loop` + `/live-engine`)
+**Source:** `live-engine.md` §Environment Setup, `shadowtag-laws.md` §0
+**Trigger:** Start of every session — before any task work.
+**Protocol:**
+1. Set env: `GCP_PROJECT_ID=shadowtag-omega-v4`
+2. Verify gcloud ADC: `gcloud auth list` (check active account)
+3. Start heartbeat: `scripts/omega_auth_daemon.py` (token refresh every 3 min)
+4. Sovereign memory sync: `ingest_memory_snapshots.py` (async, non-blocking)
+5. Check KIs + beads for ready work
+**Note:** `BRAIN_DIR` is per-conversation (`~/.gemini/antigravity/brain/<conversation-id>`), NOT hardcoded.
+
+### 5. Beads Protocol (Institutional Memory)
+**Source:** `shadowtag-laws.md` §5
+**Trigger:** Start of session (fetch ready work), on bug discovery, on task completion.
+**Protocol:**
+- **Session Start:** Run `python tools/beads_core.py` to fetch "Ready Work" — never ask "What's next?"
+- **Bug Discovery:** Do NOT fix immediately. CREATE a Beads issue via `beads_core.py`, continue current task.
+- **Task Completion:** UPDATE Beads status to `closed` with fix summary.
+- **Conflict:** If user contradicts Beads plan → ask for confirmation to update.
+**Integration:** Beads are the institutional memory layer. KIs are curated distillations. Both persist across sessions.
+
+### 6. Auto-Error-Repair Pipeline
+**Source:** `shadowtag-laws.md` §0.3
+**Trigger:** Any lint/type/test error during execution.
+**Protocol:**
+- On error → run `python scripts/auto_error_repair.py` (no approval needed)
+- Provider ladder: `gemini` (default) → `openai` → `claude` (future stubs)
+- Model: `gemini-3.1-flash-lite-preview` (updated from stale `gemini-2.0-pro` ref)
+- Coverage target: ≥98% always, Judge #6 enforced
+**Anti-pattern:** Never leave a broken build state. Auto-repair restores it.
+
+## Stale Reference Fixes
+
+The following stale references were identified in the source files:
+
+| File | Stale | Current |
+|------|-------|---------|
+| `shadowtag-laws.md` §0.3 | `gemini-2.0-pro` | `gemini-3.1-flash-lite-preview` |
+| `shadowtag-laws.md` §0 | Hardcoded `BRAIN_DIR` | Per-conversation `~/.gemini/antigravity/brain/<id>` |
+| `toolbelt.md` §0 | Hardcoded `BRAIN_DIR` | Per-conversation |
+| `live-engine.md` §Environment | `MEGA_PERMA_BRAIN` | Per-conversation |
