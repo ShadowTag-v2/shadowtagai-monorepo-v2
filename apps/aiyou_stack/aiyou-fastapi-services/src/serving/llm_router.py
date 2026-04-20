@@ -103,7 +103,6 @@ class LLMRouter:
     PRICING = {
         "gemini-3.1-flash-lite-preview": {"input": 0.075, "output": 0.30},
         "gemini-3.1-flash-lite-preview-thinking-exp": {"input": 0.075, "output": 0.30},
-        "gemini-3.1-flash-lite-preview": {"input": 3.50, "output": 10.50},
     }
 
     # Ada-K: Entropy thresholds for adaptive routing
@@ -150,7 +149,6 @@ class LLMRouter:
                 for model_name in [
                     "gemini-3.1-flash-lite-preview",
                     "gemini-3.1-flash-lite-preview-thinking-exp",
-                    "gemini-3.1-flash-lite-preview",
                 ]:
                     try:
                         self._gemini_models[model_name] = genai.GenerativeModel(model_name)
@@ -244,7 +242,6 @@ class LLMRouter:
         # Define model priority for ensemble
         models = [
             "gemini-3.1-flash-lite-preview-thinking-exp",
-            "gemini-3.1-flash-lite-preview",
             "gemini-3.1-flash-lite-preview",
         ][:k]
 
