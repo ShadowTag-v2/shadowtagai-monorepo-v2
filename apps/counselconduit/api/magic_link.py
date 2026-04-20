@@ -93,7 +93,10 @@ def _create_token(req: MatterCreateRequest) -> tuple[str, str, int]:
 
     Returns: (matter_id, token, expires_unix)
     """
-    from apps.counselconduit.api.uuid7 import uuid7_str
+    try:
+        from apps.counselconduit.api.uuid7 import uuid7_str
+    except ImportError:
+        from api.uuid7 import uuid7_str  # type: ignore[no-redef]
 
     matter_id = uuid7_str()
     expires_unix = int(time.time()) + (72 * 3600)  # 72-hour TTL

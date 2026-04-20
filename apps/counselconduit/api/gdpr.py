@@ -87,7 +87,10 @@ async def request_account_deletion(
         )
 
     # Generate receipt
-    from apps.counselconduit.api.uuid7 import uuid7_str
+    try:
+        from apps.counselconduit.api.uuid7 import uuid7_str
+    except ImportError:
+        from api.uuid7 import uuid7_str  # type: ignore[no-redef]
 
     receipt_id = uuid7_str()
     deletion_date = datetime.now(UTC).isoformat()
@@ -119,7 +122,10 @@ async def request_data_export(
     - Billing history
     - Audit log (user's own actions)
     """
-    from apps.counselconduit.api.uuid7 import uuid7_str
+    try:
+        from apps.counselconduit.api.uuid7 import uuid7_str
+    except ImportError:
+        from api.uuid7 import uuid7_str  # type: ignore[no-redef]
 
     export_id = uuid7_str()
 

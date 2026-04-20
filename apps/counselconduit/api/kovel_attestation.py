@@ -83,7 +83,10 @@ def _sign_receipt(receipt_body: dict[str, Any]) -> str:
 
 def generate_attestation(req: AttestationRequest) -> SessionAttestation:
     """Generate a Kovel Attestation Receipt for a privileged session."""
-    from apps.counselconduit.api.uuid7 import uuid7_str
+    try:
+        from apps.counselconduit.api.uuid7 import uuid7_str
+    except ImportError:
+        from api.uuid7 import uuid7_str  # type: ignore[no-redef]
 
     attestation_id = uuid7_str()
     timestamp = datetime.now(UTC).isoformat()
