@@ -69,3 +69,6 @@ browser_context = None  # noqa: F841 — required API parameter
 
 # email_service.py: tags is a public API parameter used by callers but not consumed by Gmail backend
 tags = None  # noqa: F841 — caller-facing API, Gmail backend ignores
+
+# kv_storage.py: cls is a required @classmethod param for Pydantic field_validator
+cls = None  # noqa: F841 — @classmethod `cls` required by Pydantic's field_validator

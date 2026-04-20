@@ -130,20 +130,23 @@ unless the user explicitly directs a control plane change:
 - Firestore rules: zero-trust deployed (default deny-all, admin-only access)
 - Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v9.6)
 - Semantic Kernel: .NET 11.0 Preview 2 (UNVERIFIED — see GEMINI.md v9.6)
-- Tests: 90 unit passed, 2 skipped (torch), 0 failed (E2E skipped — live Cloud Run endpoints)
+- Tests: 104 passed, 2 skipped (torch), 0 failed (E2E GDPR fixed, live Cloud Run verified)
 - Lighthouse: shadowtagai P96/A100/BP100/SEO100, kovelai P99/A100/BP100/SEO100, uphillsnowball A88+ (noindex intentional)
 - Dead code: clean (vulture 90%+ = 0 findings, 10 whitelisted false positives)
 - CSP headers: full parity across kovelai + shadowtagai (unsafe-eval removed)
 - Infrastructure: shadowtagai.web.app + kovelai.web.app + shadowtag-omega-v4.web.app deployed
 - Nested `.git` directories: 0 (reference_architectures/ clones are gitignored)
 - Ruff: 990 remaining (ALL in tools/mcp-toolbox third-party — 0 first-party violations)
-- CounselConduit: v3.1.0 on Cloud Run (Phase 1 + 2 LIVE, 27 endpoints, revision `counselconduit-00015-mmq`)
+- CounselConduit: v3.1.1 on Cloud Run (Phase 1 + 2 LIVE, 27 endpoints, revision `counselconduit-00016-mpj`)
 - Cloud Armor WAF: `apps/counselconduit/cloud_armor_policy.yaml`
 - Prompt Repetition: wired into Oracle Studio + Vent Mode (arXiv 2512.14982)
 - OG Social Images: generated + deployed for both sites
 - Pre-commit: Gitleaks 8.22.1 + Ruff 0.11.8 + Bandit 1.9.4 + detect-private-key
 - OpenTofu: 19 resources provisioned (IAM + alerts + log metrics)
-- GitNexus: 445,205 nodes | 685,812 edges | 6,090 clusters | 300 flows (indexed 2026-04-18)
+- GitNexus: 273,869 nodes | 505,829 edges | 5,667 clusters | 300 flows (re-indexed 2026-04-20)
+- Lead-Capture-Router: firebase-admin 13.8.0 + firebase-functions 7.2.5, 4 Cloud Functions LIVE (captureLead, captureContact, cspReport, analyticalWebhook)
+- Firestore Indexes: attestations (firm_id+timestamp, session_id+timestamp), account_deletions (status+scheduled_at) deployed
+- Gitleaks Dream Timeout: 120s→300s in dream_consolidation.py
 - Risk Register: 46 risks tracked (0 critical open, Risk #46 resolved GCP sprawl audit)
 - Gitleaks Guardian: 686 third-party findings audited → 0 risk confirmed, .gitleaksignore (668 fingerprints)
 - CL4R1T4S: competitive intel archived, 6 adoptable patterns identified, source code (1,902 files) extracted
@@ -224,7 +227,7 @@ Firestore is the CANONICAL database for this architecture. Supabase was evaluate
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **Monorepo-Uphillsnowball** (273867 symbols, 506115 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **Monorepo-Uphillsnowball** (273869 symbols, 505829 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 
