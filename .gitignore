@@ -219,3 +219,10 @@ libs/autoresearch_sources/Kosmos/**/.env*
 .pytest_cache/
 .ruff_cache/
 third_party/security/
+
+# ZIP bundle staging dirs (TASK 4)
+rebuilt_antigravity_bundle/
+antigravity_gca_repo_bundle/
+antigravity_strict_final_foldin_apply/
+antigravity_manifest_bundle_v3/
+antigravity_memory_lock_pack/
