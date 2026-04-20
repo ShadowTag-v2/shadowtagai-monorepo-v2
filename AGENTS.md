@@ -155,8 +155,8 @@ unless the user explicitly directs a control plane change:
 - Model refs: all aiyou_stack purged from deprecated gemini-1.5/2.5 → gemini-3.1-flash-lite-preview
 - Secrets doctrine: `secrets_manager_doctrine` replaces `env_master_doctrine` in GEMINI.md v9.5
 - ANE NPU: ane_bridge.py scaffolded, libane_bridge.dylib exists in archive/third_party only (not compiled in-tree), INT8 benchmark UNVERIFIED
-- ANE GGML: UNVERIFIED — no compiled ggml-ane binaries found in repo, architecture documented but not built
-- Semantic Kernel: ShadowTagV4.Kernel compiled (0 errors), OnExternalEvent→OnInputEvent fix, SKEXP0080 suppressed
+- ANE GGML: llama.cpp-ane compiled (GGML_ANE=ON), libggml-ane.dylib + llama-server at libs/cyberpunk_stack/llama.cpp-ane/build/bin/ (Apr 5), runtime benchmark UNVERIFIED
+- Semantic Kernel: ShadowTagV4.Kernel .csproj exists (net11.0, SK 1.74.0), OnExternalEvent→OnInputEvent fix NOT applied to surviving Process.cs:144, SKEXP0080 suppressed, dotnet not in PATH
 - Aegaeon Protocol: context_cache.py + swarm_router.py scaffolded (core/aegaeon/), no active slab (data/aegaeon/ empty), 90% discount available via implicit caching on Gemini 2.5+ models
 - Sovereign MLX: kv_cache_slab.py scaffolded (core/sovereign_mlx/), slab_prompt.txt exists (26KB corpus), no kv_cache_slab.bin built
 - Intelligence Pipeline: 9 scripts (domain_tagger → github_sync), retriever.py LanceDB search wired
