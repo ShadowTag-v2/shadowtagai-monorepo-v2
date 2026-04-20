@@ -28,7 +28,7 @@ REPORT_DIR = REPO_ROOT / "data" / "intelligence_pipeline" / "reports"
 
 GCP_PROJECT_ID = os.environ.get("GCP_PROJECT_ID", "shadowtag-omega-v4")
 REGION = "us-central1"
-MODEL = "gemini-2.0-flash-001"
+MODEL = "gemini-3.1-flash-lite-preview"
 ENDPOINT = (
     f"https://{REGION}-aiplatform.googleapis.com/v1/projects/"
     f"{GCP_PROJECT_ID}/locations/{REGION}/publishers/google/models/{MODEL}:generateContent"

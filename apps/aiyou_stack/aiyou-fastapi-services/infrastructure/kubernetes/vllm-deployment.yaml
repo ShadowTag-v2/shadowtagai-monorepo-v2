@@ -53,7 +53,7 @@ spec:
 
         env:
         - name: MODEL_ID
-          value: "google/gemini-2.0-flash-thinking-exp-1219"
+          value: "google/gemini-3.1-flash-lite-preview"
         - name: TENSOR_PARALLEL_SIZE
           value: "1"
         - name: GPU_MEMORY_UTILIZATION

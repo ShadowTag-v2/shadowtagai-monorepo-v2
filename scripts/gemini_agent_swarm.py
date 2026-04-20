@@ -45,7 +45,7 @@ logger = logging.getLogger("gemini_agent_swarm")
 
 _NON_REASONING_MODELS = {
     "gemini-3.1-flash-lite-preview",
-    "gemini-2.5-flash",
+    "gemini-3.1-flash-lite-preview",
     "gpt-4.1",
     "gpt-4o-mini",
     "claude-3.5-haiku",

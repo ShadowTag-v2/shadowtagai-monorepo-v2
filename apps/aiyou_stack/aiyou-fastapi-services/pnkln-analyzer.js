@@ -182,7 +182,7 @@ async function generateAnalysisInstructions(component, docsDir) {
   console.log('import google.generativeai as genai');
   console.log();
   console.log("genai.configure(api_key='YOUR_API_KEY')");
-  console.log("model = genai.GenerativeModel('gemini-2.0-pro')");
+  console.log("model = genai.GenerativeModel('gemini-3.1-flash-lite-preview')");
   console.log();
   console.log('# Upload documents');
   console.log('files = [');
@@ -227,7 +227,7 @@ ${prompt}
 import google.generativeai as genai
 
 genai.configure(api_key='YOUR_API_KEY')
-model = genai.GenerativeModel('gemini-2.0-pro')
+model = genai.GenerativeModel('gemini-3.1-flash-lite-preview')
 
 # Upload documents
 files = [
@@ -254,7 +254,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs').promises;
 
 const genai = new GoogleGenerativeAI('YOUR_API_KEY');
-const model = genai.getGenerativeModel({ model: 'gemini-2.0-pro' });
+const model = genai.getGenerativeModel({ model: 'gemini-3.1-flash-lite-preview' });
 
 async function runAnalysis() {
   // Upload files

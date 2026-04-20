@@ -25,7 +25,7 @@ function getLLMConfig() {
   if (process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY) {
     return {
       provider: 'gemini',
-      model: 'gemini-2.0-flash-exp', // Cheapest, fastest
+      model: 'gemini-3.1-flash-lite-preview', // Cheapest, fastest
       apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY,
     };
   }

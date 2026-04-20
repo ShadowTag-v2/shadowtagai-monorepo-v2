@@ -37,8 +37,8 @@ export interface CompletionResponse {
 // Cost per 1K tokens (approximate, varies by model version)
 const COST_PER_1K_TOKENS = {
   'claude-sonnet-4-5@20250929': { input: 0.003, output: 0.015 },
-  'gemini-1.5-flash-002': { input: 0.000075, output: 0.0003 },
-  'gemini-1.5-pro-002': { input: 0.00125, output: 0.005 },
+  'gemini-3.1-flash-lite-preview': { input: 0.000075, output: 0.0003 },
+  'gemini-3.1-flash-lite-preview': { input: 0.00125, output: 0.005 },
 };
 
 export class VertexAIClient {
@@ -121,7 +121,7 @@ export class VertexAIClient {
    */
   async callGemini(request: CompletionRequest, flash = true): Promise<CompletionResponse> {
     const startTime = performance.now();
-    const model = flash ? 'gemini-1.5-flash-002' : 'gemini-1.5-pro-002';
+    const model = flash ? 'gemini-3.1-flash-lite-preview' : 'gemini-3.1-flash-lite-preview';
 
     const endpoint = `https://${this.location}-aiplatform.googleapis.com/v1/projects/${this.projectId}/locations/${this.location}/publishers/google/models/${model}:generateContent`;
 

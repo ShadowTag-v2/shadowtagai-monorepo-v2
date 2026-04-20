@@ -99,7 +99,7 @@ class SustainedLoadEngine:
     def _get_model(self, key: str):
         """Get model for key."""
         genai.configure(api_key=key)
-        return genai.GenerativeModel("gemini-2.0-flash-exp")
+        return genai.GenerativeModel("gemini-3.1-flash-lite-preview")
 
     async def generate(self, prompt: str) -> str:
         """Generate with rate limiting."""

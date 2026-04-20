@@ -363,7 +363,7 @@ spec:
                   name: api-credentials
                   key: GEMINI_API_KEY
             - name: MODEL_ID
-              value: "gemini-2.0-flash-exp"
+              value: "gemini-3.1-flash-lite-preview"
             - name: MIN_QUALITY_SCORE
               valueFrom:
                 configMapKeyRef:
@@ -433,7 +433,7 @@ spec:
                   name: api-credentials
                   key: GEMINI_API_KEY
             - name: MODEL_ID
-              value: "gemini-2.0-flash-exp"
+              value: "gemini-3.1-flash-lite-preview"
             - name: OUTPUT_FORMAT
               value: "markdown"
             - name: DELIVERY_ENDPOINT
