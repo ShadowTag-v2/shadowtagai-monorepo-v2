@@ -103,7 +103,7 @@ def merge_repo(repo_name: str) -> bool:
 
 
 def main() -> None:
-    print(f"=== ehanc69 Mass Subtree Merge ===")
+    print("=== ehanc69 Mass Subtree Merge ===")
     print(f"  Staging: {STAGING_DIR}")
     print(f"  Target:  {TARGET_PREFIX}/")
     print(f"  DRY_RUN: {DRY_RUN}")
