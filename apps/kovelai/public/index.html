@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CounselConduit — Privilege-Preserving Legal AI</title>
-  <meta name="description" content="The Shopify for Legal AI. Privilege-preserving routing between law firms and frontier LLMs.">
+  <title>KovelAI | Ensure Your Clients' AI Searches Remain Privileged</title>
+  <meta name="description" content="KovelAI protects post-Heppner client internet searches from discovery while helping law firms get paid on the front end. Secure AI intake and revenue acceleration.">
   <!-- OG Social Video Tags (#12) -->
-  <meta property="og:title" content="CounselConduit — Privilege-Preserving Legal AI">
-  <meta property="og:description" content="The Shopify for Legal AI. Route your firm through frontier LLMs without breaking attorney-client privilege.">
+  <meta property="og:title" content="KovelAI | Post-Heppner Privileged Client AI">
+  <meta property="og:description" content="Ensure your clients' AI and web searches remain between you and them. Non-discoverable research through your firm's post-Heppner portal.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kovelai.com">
   <meta property="og:video" content="https://kovelai.web.app/videos/porsche-peelout-compressed.mp4">
@@ -25,10 +25,10 @@
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "CounselConduit",
-    "applicationCategory": "BusinessApplication",
+    "name": "KovelAI",
+    "applicationCategory": "LegalService",
     "operatingSystem": "Web",
-    "description": "Privilege-preserving Legal AI platform. The Shopify for Legal AI — route your firm through frontier LLMs without breaking attorney-client privilege.",
+    "description": "KovelAI protects post-Heppner client internet searches from discovery while helping law firms get paid on the front end.",
     "url": "https://kovelai.web.app",
     "offers": {
       "@type": "AggregateOffer",
@@ -47,6 +47,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Cloudflare Turnstile CAPTCHA -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
   <!-- Google Analytics 4 (external for CSP compliance) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-5QW1DZL23V"></script>
   <script src="/js/ga4.js"></script>
@@ -164,25 +166,86 @@
       font-weight: 700;
       letter-spacing: -0.02em;
       color: var(--text-primary);
+      text-decoration: none;
     }
 
     .logo span { color: var(--accent-teal); }
 
     .nav-links {
       display: flex;
-      gap: 2rem;
+      gap: 0;
       list-style: none;
     }
 
-    .nav-links a {
+    .nav-links > li {
+      position: relative;
+    }
+
+    .nav-links > li > a {
       color: var(--text-secondary);
       text-decoration: none;
       font-size: 0.875rem;
       font-weight: 500;
       transition: color 0.2s;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
     }
 
-    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links > li > a:hover,
+    .nav-links > li:hover > a { color: var(--text-primary); }
+
+    .nav-links > li > a .dropdown-arrow {
+      font-size: 0.6rem;
+      transition: transform 0.2s;
+    }
+
+    .nav-links > li:hover > a .dropdown-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* ── Dropdown Menus (Unusual Machines style) ── */
+    .nav-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 220px;
+      background: rgba(18, 18, 26, 0.95);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.5rem 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+      list-style: none;
+    }
+
+    .nav-links > li:hover > .nav-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .nav-dropdown li a {
+      display: block;
+      padding: 0.6rem 1.25rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.825rem;
+      font-weight: 400;
+      transition: all 0.15s;
+      border-left: 2px solid transparent;
+    }
+
+    .nav-dropdown li a:hover {
+      color: var(--text-primary);
+      background: rgba(0, 212, 170, 0.06);
+      border-left-color: var(--accent-teal);
+    }
 
     .nav-cta {
       padding: 0.6rem 1.5rem;
@@ -194,11 +257,21 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
+      text-decoration: none;
     }
 
     .nav-cta:hover {
       transform: translateY(-1px);
       box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
     }
 
     /* ── Sections ── */
@@ -437,6 +510,9 @@
       section { padding: 4rem 1.5rem; }
       .pricing-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
+      .nav-toggle { display: block; }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(18,18,26,0.98); padding: 1rem; border-top: 1px solid var(--border); }
+      .nav-links.open .nav-dropdown { position: static; opacity: 1; visibility: visible; transform: none; background: transparent; border: none; box-shadow: none; padding-left: 1rem; }
     }
 
     /* ── A11y: Skip nav + Focus styles ── */
@@ -476,13 +552,46 @@
 
   <!-- Navigation -->
   <nav id="main-nav" aria-label="Main navigation">
-    <a href="/" class="logo" aria-label="CounselConduit home">Counsel<span>Conduit</span></a>
-    <ul class="nav-links" role="list">
-      <li><a href="#features">Features</a></li>
-      <li><a href="#pricing">Pricing</a></li>
-      <li><a href="#security">Security</a></li>
+    <a href="/" class="logo" aria-label="KovelAI home">Kovel<span>AI</span></a>
+    <ul class="nav-links" id="navLinks" role="list">
+      <li>
+        <a href="#features">Platform <span class="dropdown-arrow">▾</span></a>
+        <ul class="nav-dropdown">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#security">Oracle Studio</a></li>
+          <li><a href="#security">Kovel Attestation</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#pricing">Pricing</a>
+      </li>
+      <li>
+        <a href="#discovery">Resources <span class="dropdown-arrow">▾</span></a>
+        <ul class="nav-dropdown">
+          <li><a href="#discovery">Discovery Risk</a></li>
+          <li><a href="/video-gallery">Video Gallery</a></li>
+          <li><a href="/showreel">Showreel</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#management">Company <span class="dropdown-arrow">▾</span></a>
+        <ul class="nav-dropdown">
+          <li><a href="#management">Leadership</a></li>
+          <li><a href="https://shadowtagai.web.app" target="_blank" rel="noopener">About ShadowTag AI</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#contact">Contact <span class="dropdown-arrow">▾</span></a>
+        <ul class="nav-dropdown">
+          <li><a href="#contact" onclick="openContactModal();return false">Contact Sales</a></li>
+          <li><a href="#contact" onclick="openContactModal();return false">Schedule a Demo</a></li>
+          <li><a href="mailto:founder@shadowtagai.com">Email</a></li>
+        </ul>
+      </li>
     </ul>
-    <button class="nav-cta" id="cta-start" aria-label="Start free trial of CounselConduit">Start Free Trial</button>
+    <a href="#contact" class="nav-cta" id="cta-start" aria-label="Contact sales for KovelAI">Contact Sales</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
   </nav>
 
   <!-- Scroll-Driven Video Hero -->
@@ -491,8 +600,8 @@
       <canvas id="scroll-canvas" role="img" aria-label="Cinematic visualization of legal AI technology in motion"></canvas>
       <div class="scroll-overlay" aria-hidden="true"></div>
       <div class="scroll-text-overlay">
-        <h1>Privilege-Preserving<br>Legal AI</h1>
-        <p>Route your firm through frontier LLMs without breaking attorney-client privilege. Protected under <em>United States v. Heppner</em>.</p>
+        <h1>Ensure Your Clients' AI and Web Searches<br>Remain Between You and Them</h1>
+        <p>Make your clients pay, on the front end, to do non-discoverable AI and web research through your firm's post-<em>Heppner</em> portal.</p>
       </div>
     </div>
   </header>
@@ -589,12 +698,32 @@
 
   <!-- Footer -->
   <footer role="contentinfo">
-    <p>&copy; 2026 CounselConduit — ShadowTag AI. All rights reserved. Protected under <em>United States v. Heppner</em> (S.D.N.Y., Feb. 10, 2026).</p>
+    <p>&copy; 2024–2026 KovelAI — A ShadowTag AI Company. All rights reserved. Protected under <em>United States v. Heppner</em> (S.D.N.Y., Feb. 10, 2026).</p>
   </footer>
 
   <!-- Scroll Animation Controller -->
   <script src="scroll-frames.js"></script>
   <!-- Intersection Observer + Service Worker (external for CSP compliance) -->
   <script src="/js/fade-observer.js"></script>
+  <!-- Mobile Nav Toggle -->
+  <script>
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (navToggle && navLinks) {
+      navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+    }
+    function openContactModal() {
+      const modal = document.getElementById('contactModal');
+      if (modal) { modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false'); }
+    }
+    function closeContactModal() {
+      const modal = document.getElementById('contactModal');
+      if (modal) { modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); }
+    }
+  </script>
+  <!-- Cloudflare Turnstile CAPTCHA -->
+  <script src="/js/turnstile.js" defer></script>
+  <!-- GDPR Cookie Consent Banner -->
+  <script src="/js/cookie-consent.js" defer></script>
 </body>
 </html>
