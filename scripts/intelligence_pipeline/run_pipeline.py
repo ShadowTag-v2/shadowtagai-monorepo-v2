@@ -27,7 +27,7 @@ import logging
 import sys
 import time
 from dataclasses import dataclass, field
-from datetime import datetime, timezone, UTC
+from datetime import UTC, datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent.parent
