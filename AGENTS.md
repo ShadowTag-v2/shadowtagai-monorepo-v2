@@ -123,15 +123,15 @@ unless the user explicitly directs a control plane change:
 ## Hardened state
 
 - v9.7 canonicalized: 2026-04-20
-- Commit: `58d3972e63`
+- Commit: `0ca7c04f85`
 - CI Python: 3.13 (all 3 workflows)
 - venv primary: CPython 3.14.3
-- Firestore: 2 databases (`(default)`, `shadowtag-engine`) — CANONICAL database layer (Supabase evaluated and rejected; see Firestore-vs-Supabase verdict below)
+- Firestore: 2 databases (`(default)`, `shadowtag-engine`) — CANONICAL database layer, PITR ENABLED (7-day retention), delete-protection ENABLED (Supabase evaluated and rejected; see Firestore-vs-Supabase verdict below)
 - Firestore rules: zero-trust deployed (default deny-all, admin-only access)
 - Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v9.6)
 - Semantic Kernel: .NET 11.0 Preview 2 (UNVERIFIED — see GEMINI.md v9.6)
 - Tests: 90 unit passed, 2 skipped (torch), 0 failed (E2E skipped — live Cloud Run endpoints)
-- Lighthouse: shadowtagai P89/A100/BP100/SEO100, kovelai P89/A97/BP100/SEO100, uphillsnowball A88+ (noindex intentional)
+- Lighthouse: shadowtagai P96/A100/BP100/SEO100, kovelai P99/A100/BP100/SEO100, uphillsnowball A88+ (noindex intentional)
 - Dead code: clean (vulture 90%+ = 0 findings, 10 whitelisted false positives)
 - CSP headers: full parity across kovelai + shadowtagai (unsafe-eval removed)
 - Infrastructure: shadowtagai.web.app + kovelai.web.app + shadowtag-omega-v4.web.app deployed
