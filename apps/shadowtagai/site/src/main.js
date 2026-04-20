@@ -50,12 +50,14 @@ window.openContactModal = () => {
   if (modal) {
     modal.classList.add('active');
     modal.setAttribute('aria-hidden', 'false');
+    modal.removeAttribute('inert');
   }
 };
 window.closeContactModal = () => {
   if (modal) {
     modal.classList.remove('active');
     modal.setAttribute('aria-hidden', 'true');
+    modal.setAttribute('inert', '');
   }
 };
 if (modal) {

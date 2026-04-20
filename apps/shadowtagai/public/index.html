@@ -12,17 +12,14 @@
   <meta property="og:url" content="https://shadowtagai.web.app/"/>
   <meta property="og:title" content="ShadowTag AI | Sovereign AI Infrastructure"/>
   <meta property="og:description" content="ShadowTag AI builds autonomous intelligence systems for institutions that demand total data sovereignty."/>
-  <meta property="og:image" content="https://shadowtagai.web.app/images/og-image.png"/>
-  <meta property="og:image:width" content="1024"/>
-  <meta property="og:image:height" content="1024"/>
-  <meta property="og:image:type" content="image/png"/>
+  <meta property="og:image" content="https://shadowtagai.web.app/images/og-image.jpg"/>
   <meta property="og:site_name" content="ShadowTag AI"/>
   <meta property="og:locale" content="en_US"/>
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="ShadowTag AI | Sovereign AI Infrastructure"/>
   <meta name="twitter:description" content="ShadowTag AI builds autonomous intelligence systems for institutions that demand total data sovereignty."/>
-  <meta name="twitter:image" content="https://shadowtagai.web.app/images/og-image.png"/>
+  <meta name="twitter:image" content="https://shadowtagai.web.app/images/og-image.jpg"/>
   <!-- JSON-LD -->
   <script type="application/ld+json">
   {
@@ -57,37 +54,22 @@
     ]
   }
   </script>
-  <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
-  <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32"/>
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon"/>
+  <link rel="icon" href="/images/favicon-32.png" type="image/png" sizes="32x32"/>
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png"/>
   <!-- Preconnect: saves ~100ms on font fetch -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <!-- Preload hero as AVIF (57KB vs 105KB WebP) -->
   <link rel="preload" as="image" href="/images/hero-bg.avif" type="image/avif" fetchpriority="high"/>
   <link rel="preload" as="image" href="/images/logo.webp" type="image/webp"/>
-  <!-- Google Analytics 4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5QW1DZL23V"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-5QW1DZL23V');
-  </script>
   <style>
     @font-face { font-family: 'Inter'; font-display: optional; src: local('Inter'); }
     body { margin: 0; background: #080c18; color: #dfe2f4; font-family: 'Inter', -apple-system, sans-serif; }
-    /* Mobile performance: hide heavy video on small screens */
-    @media (max-width: 768px) {
-      .hero-video { display: none !important; }
-      .hero { background: url('/images/hero-bg.avif') center/cover no-repeat; }
-    }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=optional" rel="stylesheet" media="print" onload="this.media='all'"/>
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=optional" rel="stylesheet"/></noscript>
-  <!-- Cloudflare Turnstile CAPTCHA -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
-  <script type="module" crossorigin src="/assets/main-CAUWRQEh.js"></script>
+  <script type="module" crossorigin src="/assets/main-Cve4gKY2.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/main-Drg33iiJ.css">
 </head>
 <body>
@@ -160,16 +142,10 @@
 
 <!-- ═══ HERO ═══ -->
 <section class="hero" id="hero">
-  <!-- Layer 0: Veo 3.1 video background (hidden on mobile via CSS for performance) -->
-  <video class="hero-video" autoplay loop muted playsinline poster="/images/hero-bg.avif" preload="none">
+  <!-- Layer 0: Veo 3.1 video background -->
+  <video class="hero-video" autoplay loop muted playsinline poster="/images/hero-bg.avif">
     <source src="/videos/hero-bg.mp4" type="video/mp4"/>
   </video>
-  <script>
-    // Desktop-only video: prevent 10MB download on mobile
-    if (window.innerWidth > 768) {
-      document.querySelector('.hero-video').preload = 'auto';
-    }
-  </script>
   <div class="hero-bg"></div>
   <div class="hero-fade"></div>
   <div class="hero-grain"></div>
@@ -364,11 +340,6 @@
     <span>UphillSnowball Platform</span>
   </div>
 </footer>
-<!-- Cloudflare Turnstile CAPTCHA -->
-<script src="/js/turnstile.js" defer></script>
-
-<!-- GDPR Cookie Consent Banner -->
-<script src="/js/cookie-consent.js" defer></script>
 
 </body>
 </html>
