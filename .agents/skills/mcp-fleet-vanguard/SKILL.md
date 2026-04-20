@@ -274,3 +274,69 @@ Gap analysis of the Cor.Brain Omni-Brain Index (64 plans, 46 walkthroughs, 73 ta
 5. **Pipeline Ignite:** Verify daemon fleet is running (Dream Consolidation, Loop Steward, KAIROS)
 **Integration:** Combines ROC Drill Phase 4 (Cross LD) with Session Init in reverse. The "lock" to Session Init's "unlock."
 
+## God Mode Operations & Workspace Isolation
+
+### 10. God Mode Admin (`god_mode_admin.py`)
+**Source:** toolbelt §4, live-engine §God Mode
+**Location:** `scripts/god_mode_admin.py`
+**Launch:**
+```bash
+export GCP_PROJECT_ID='shadowtag-omega-v4'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python scripts/god_mode_admin.py
+```
+**Full Command Reference:**
+
+| Command | Purpose |
+|---------|---------|
+| `help` | List all commands |
+| `status` | Show engine state, queue depth, scheduled jobs |
+| `sync` | Git pull --ff-only + repo sync |
+| `shell <cmd>` | Execute arbitrary shell command |
+| `json {"task":"..."}` | Submit structured task payload |
+| `commit` | Stage + commit current changes |
+| `rollback` | Revert last commit |
+| `memw` | Write to persistent memory |
+| `mems` | Search persistent memory |
+| `artifact` | Create/manage artifacts |
+| `stop` | Graceful shutdown |
+
+**Background jobs:** `sync_repo` (every 600s), `health_snapshot` (every 120s)
+**Dependency note:** Install `asyncpg` for full capability: `pip install asyncpg`
+
+### 11. GCA God Mode Bridge (`gca_god_mode_bridge.py`)
+**Source:** Historical session log
+**Location:** `tools/gca_god_mode_bridge.py`
+**Protocol:** Wraps God Mode admin in a non-interactive bridge for agent tool calls:
+```bash
+python3 tools/gca_god_mode_bridge.py status
+python3 tools/gca_god_mode_bridge.py json '{"task": "do something"}'
+```
+**Mechanics:** Starts Velocity Engine → transmits payload → reads output → graceful shutdown (no hang).
+
+### 12. Workspace Isolation Config
+**Source:** Historical session log
+**Workspace file:** `Monorepo-Uphillsnowball/pnkln.code-workspace`
+**Strict mode config:** `~/.antigravity/config.json`
+```json
+{
+  "strictMode": true,
+  "allowNonWorkspaceFileAccess": false
+}
+```
+**Effect:** Agent ignores files outside workspace context + `.gitignore` contents. Eliminates path-traversal jumps.
+**Rule:** Always launch Antigravity pointing to this workspace, not a parent directory.
+
+### 13. Service Account Registry
+**Source:** live-engine.md, GEMINI.md secrets doctrine
+
+| Account | Purpose |
+|---------|---------|
+| `shadowtag-core-run-sa@shadowtag-omega-v4.iam.gserviceaccount.com` | Cloud Run services (primary) |
+| `counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com` | CounselConduit prod |
+| `counselconduit-staging-sa@shadowtag-omega-v4.iam.gserviceaccount.com` | CounselConduit staging |
+| `767252945109-compute@developer.gserviceaccount.com` | Compute default (token refresh every 3 min) |
+
+### 14. MCP Toolbox Config
+**Source:** Historical session log
+**Path:** `/Users/pikeymickey/aiyou-stack/ShadowTag-v2/database_tools.yaml`
+**UI Action:** When prompted for "Tools Config Path" in the UI, paste the absolute path above.
