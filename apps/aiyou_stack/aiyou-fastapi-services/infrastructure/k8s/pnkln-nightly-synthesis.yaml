@@ -25,7 +25,7 @@ spec:
           # STEP 1: GATHER (Python / Gemini 2.5)
           initContainers:
           - name: ingestion-layer
-            image: us-central1-docker.pkg.dev/pnkln-core/pnkln-core/ingestion-analyzer:gemini-2.5
+            image: us-central1-docker.pkg.dev/pnkln-core/pnkln-core/ingestion-analyzer:gemini-3.1
             command: ["python", "-m", "app.jobs.nightly_ingest"]
             volumeMounts:
               - name: shared-workspace
@@ -39,7 +39,7 @@ spec:
           # STEP 2: BUILD (Node / Gemini 2.5)
           containers:
           - name: design-agent
-            image: us-central1-docker.pkg.dev/pnkln-core/pnkln-core/design-system-builder:gemini-2.5
+            image: us-central1-docker.pkg.dev/pnkln-core/pnkln-core/design-system-builder:gemini-3.1
             command: ["/bin/sh", "-c"]
             args:
               - |
