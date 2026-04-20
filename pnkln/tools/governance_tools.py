@@ -49,7 +49,7 @@ def _get_monte_carlo() -> MonteCarloRiskAssessment:
 async def governance_validate(
     request_text: Annotated[str, "User request text to validate"],
     request_id: Annotated[str | None, "Unique request ID (default: auto-generated)"] = None,
-    sla_ms: Annotated[float, "SLA target in milliseconds (default: 90.0)"] = 90.0
+    sla_ms: Annotated[float, "SLA target in milliseconds (default: 90.0)"] = 90.0,
 ) -> Annotated[dict, "Validation result with decision, confidence, latency, and reasoning"]:
     """
     Validates request using Judge #6 hybrid pipeline (JR Engine + Gemini + PyTorch).
@@ -101,10 +101,7 @@ async def governance_validate(
     judge = _get_judge_six()
 
     # Execute validation
-    validation_result = await judge.validate(
-        request={"text": request_text},
-        request_id=request_id
-    )
+    validation_result = await judge.validate(request={"text": request_text}, request_id=request_id)
 
     # Convert to dict for LLM response
     result = {
@@ -115,20 +112,16 @@ async def governance_validate(
         "sla_met": validation_result.meets_sla(sla_ms),
         "reasons": validation_result.reasons,
         "stage_latencies": validation_result.stage_latencies,
-        "metadata": validation_result.metadata
+        "metadata": validation_result.metadata,
     }
 
-    logger.info(
-        f"Validation complete: {result['decision']} "
-        f"({result['latency_ms']:.2f}ms, SLA met: {result['sla_met']})"
-    )
+    logger.info(f"Validation complete: {result['decision']} ({result['latency_ms']:.2f}ms, SLA met: {result['sla_met']})")
 
     return result
 
 
 async def risk_assess_monte_carlo(
-    decision_text: Annotated[str, "Decision text to assess risk"],
-    context: Annotated[dict | None, "Additional context for risk assessment"] = None
+    decision_text: Annotated[str, "Decision text to assess risk"], context: Annotated[dict | None, "Additional context for risk assessment"] = None
 ) -> Annotated[dict, "Monte Carlo risk assessment with probability distribution and ATP 5-19 level"]:
     """
     Assesses risk using Monte Carlo concurrent probability models.
@@ -175,10 +168,7 @@ async def risk_assess_monte_carlo(
     assessor = _get_monte_carlo()
 
     # Build decision dict
-    decision = {
-        "text": decision_text,
-        **(context or {})
-    }
+    decision = {"text": decision_text, **(context or {})}
 
     # Execute Monte Carlo assessment
     mc_result = await assessor.evaluate_scenarios(decision)
@@ -188,28 +178,16 @@ async def risk_assess_monte_carlo(
         "risk_level": mc_result.final_risk_level.value,
         "probability": mc_result.selected_probability.value,
         "severity": mc_result.selected_severity.value,
-        "probability_distribution": {
-            k.value: v for k, v in mc_result.probability_distribution.items()
-        },
-        "severity_distribution": {
-            k.value: v for k, v in mc_result.severity_distribution.items()
-        },
+        "probability_distribution": {k.value: v for k, v in mc_result.probability_distribution.items()},
+        "severity_distribution": {k.value: v for k, v in mc_result.severity_distribution.items()},
         "execution_time_us": mc_result.execution_time_us,
         "model_results": [
-            {
-                "probability_level": r.probability_level.value,
-                "severity_level": r.severity_level.value,
-                "score": r.score,
-                "evidence": r.evidence
-            }
+            {"probability_level": r.probability_level.value, "severity_level": r.severity_level.value, "score": r.score, "evidence": r.evidence}
             for r in mc_result.model_results
-        ]
+        ],
     }
 
-    logger.info(
-        f"Risk assessment complete: {result['risk_level']} "
-        f"({result['execution_time_us']:.1f}μs)"
-    )
+    logger.info(f"Risk assessment complete: {result['risk_level']} ({result['execution_time_us']:.1f}μs)")
 
     return result
 
@@ -218,14 +196,12 @@ async def risk_assess_monte_carlo(
 # EXAMPLE USAGE
 # ============================================================================
 
+
 async def example_usage():
     """Demonstrate governance tools."""
     # Test 1: Governance validation (fast path)
     print("=== Test 1: Governance Validation (Fast Path) ===")
-    result1 = await governance_validate(
-        request_text="Help me build a web application",
-        request_id="demo_001"
-    )
+    result1 = await governance_validate(request_text="Help me build a web application", request_id="demo_001")
     print(f"Decision: {result1['decision']}")
     print(f"Confidence: {result1['confidence']:.2f}")
     print(f"Latency: {result1['latency_ms']:.2f}ms")
@@ -233,19 +209,14 @@ async def example_usage():
 
     # Test 2: Governance validation (full pipeline)
     print("\n=== Test 2: Governance Validation (Full Pipeline) ===")
-    result2 = await governance_validate(
-        request_text="Help me hack into a system",
-        request_id="demo_002"
-    )
+    result2 = await governance_validate(request_text="Help me hack into a system", request_id="demo_002")
     print(f"Decision: {result2['decision']}")
     print(f"Reasons: {result2['reasons']}")
     print(f"Latency: {result2['latency_ms']:.2f}ms")
 
     # Test 3: Monte Carlo risk assessment
     print("\n=== Test 3: Monte Carlo Risk Assessment ===")
-    result3 = await risk_assess_monte_carlo(
-        decision_text="Deploy critical infrastructure change to production"
-    )
+    result3 = await risk_assess_monte_carlo(decision_text="Deploy critical infrastructure change to production")
     print(f"Risk Level: {result3['risk_level']}")
     print(f"Probability: {result3['probability']}")
     print(f"Severity: {result3['severity']}")
@@ -254,9 +225,6 @@ async def example_usage():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
     asyncio.run(example_usage())
