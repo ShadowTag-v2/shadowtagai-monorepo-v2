@@ -250,7 +250,7 @@ async def list_agent_personas():
         personas[agent_name] = {
             "persona": config["persona"],
             "temperature": config["temperature"],
-            "model": "gemini-2.0-flash-exp",
+            "model": "gemini-3.1-flash-lite-preview",
             "cost_per_proposal": "$0.00125 (avg 1K tokens)",
         }
 

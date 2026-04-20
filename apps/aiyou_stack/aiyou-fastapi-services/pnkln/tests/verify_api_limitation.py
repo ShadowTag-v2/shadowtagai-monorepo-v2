@@ -15,7 +15,7 @@ from vertexai.generative_models import FunctionDeclaration, GenerativeModel, Too
 # ============================================================================
 PROJECT_ID = os.getenv("GCP_PROJECT_ID")
 LOCATION = os.getenv("GCP_LOCATION", "us-central1")
-MODEL_NAME = "gemini-1.5-flash"
+MODEL_NAME = "gemini-3.1-flash-lite-preview"
 
 
 # ============================================================================

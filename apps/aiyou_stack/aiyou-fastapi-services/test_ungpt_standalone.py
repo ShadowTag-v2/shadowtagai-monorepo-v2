@@ -269,12 +269,12 @@ try:
         "consensus_level": "two_model_synthesis",
         "execution_time_seconds": 5.8,
         "total_cost": 0.046,
-        "models_consulted": ["claude-sonnet-4", "gemini-2.0-flash"],
+        "models_consulted": ["claude-sonnet-4", "gemini-3.1-flash-lite-preview"],
         "risk_level": "RA-2",
         "query_tier": "moderate",
         "reasoning_chain": [
             {"step": "claude_initial", "model": "claude-sonnet-4"},
-            {"step": "gemini_analysis", "model": "gemini-2.0-flash"},
+            {"step": "gemini_analysis", "model": "gemini-3.1-flash-lite-preview"},
             {"step": "final_synthesis", "model": "claude-sonnet-4"},
         ],
     }

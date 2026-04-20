@@ -26,7 +26,7 @@ class VerticalConfig:
     force_lc_threshold: float = 0.95
     enable_reranking: bool = False
     citation_required: bool = False
-    model: str = "gemini-1.5-flash-001"  # Default to Flash for cost
+    model: str = "gemini-3.1-flash-lite-preview-001"  # Default to Flash for cost
     max_output_tokens: int = 512
 
 
@@ -226,7 +226,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.80,
         enable_reranking=False,
         citation_required=False,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.AUTOMOTIVE_STANDARDS: VerticalConfig(
@@ -239,7 +239,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.80,
         enable_reranking=False,
         citation_required=False,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.FOOD_SAFETY: VerticalConfig(
@@ -252,7 +252,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.85,
         enable_reranking=False,
         citation_required=True,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.TELECOMMUNICATIONS: VerticalConfig(
@@ -265,7 +265,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.80,
         enable_reranking=False,
         citation_required=False,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.INSURANCE_REGULATIONS: VerticalConfig(
@@ -278,7 +278,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.85,
         enable_reranking=False,
         citation_required=True,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.REAL_ESTATE_COMPLIANCE: VerticalConfig(
@@ -291,7 +291,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.80,
         enable_reranking=False,
         citation_required=False,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.TRANSPORTATION_SAFETY: VerticalConfig(
@@ -304,7 +304,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.80,
         enable_reranking=False,
         citation_required=False,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.MARITIME_REGULATIONS: VerticalConfig(
@@ -317,7 +317,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.80,
         enable_reranking=False,
         citation_required=False,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.AVIATION_STANDARDS: VerticalConfig(
@@ -330,7 +330,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.85,
         enable_reranking=False,
         citation_required=True,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.CHEMICAL_SAFETY: VerticalConfig(
@@ -343,7 +343,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.85,
         enable_reranking=False,
         citation_required=True,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     # ------------------------------------------------------------------------
@@ -359,7 +359,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.75,
         enable_reranking=False,
         citation_required=False,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.SUPPLY_CHAIN: VerticalConfig(
@@ -372,7 +372,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.75,
         enable_reranking=False,
         citation_required=False,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.RETAIL_COMPLIANCE: VerticalConfig(
@@ -385,7 +385,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.75,
         enable_reranking=False,
         citation_required=False,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.HOSPITALITY_STANDARDS: VerticalConfig(
@@ -398,7 +398,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.75,
         enable_reranking=False,
         citation_required=False,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.EDUCATION_ACCREDITATION: VerticalConfig(
@@ -411,7 +411,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.75,
         enable_reranking=False,
         citation_required=False,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.LABOR_EMPLOYMENT: VerticalConfig(
@@ -424,7 +424,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.80,
         enable_reranking=False,
         citation_required=True,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.INTELLECTUAL_PROPERTY: VerticalConfig(
@@ -437,7 +437,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.80,
         enable_reranking=False,
         citation_required=True,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.DATA_PRIVACY: VerticalConfig(
@@ -450,7 +450,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.80,
         enable_reranking=False,
         citation_required=True,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.CORPORATE_GOVERNANCE: VerticalConfig(
@@ -463,7 +463,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.75,
         enable_reranking=False,
         citation_required=False,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
     VerticalType.TAX_REGULATIONS: VerticalConfig(
@@ -476,7 +476,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.85,
         enable_reranking=False,
         citation_required=True,
-        model="gemini-1.5-flash-001",
+        model="gemini-3.1-flash-lite-preview-001",
         max_output_tokens=512,
     ),
 }

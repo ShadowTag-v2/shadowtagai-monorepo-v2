@@ -32,7 +32,7 @@ class GeminiAgent:
         name: str,
         persona: str,
         tools: list[dict] | None = None,
-        model_name: str = "gemini-2.0-flash-exp",
+        model_name: str = "gemini-3.1-flash-lite-preview",
         temperature: float = 0.7,
         api_key: str | None = None,
     ):

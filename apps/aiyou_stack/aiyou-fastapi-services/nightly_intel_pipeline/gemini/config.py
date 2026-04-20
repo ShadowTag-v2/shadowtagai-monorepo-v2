@@ -12,8 +12,8 @@ GEMINI_INGESTION_CONFIG = {
     "base_url": "https://generativelanguage.googleapis.com/v1beta",
     # Model Selection - Flash 2.0 for cost efficiency
     # Flash: $0.075/1M input, $0.30/1M output (200x cheaper than Claude)
-    "model": os.getenv("GEMINI_INGESTION_MODEL", "gemini-2.0-flash"),
-    "fallback_model": "gemini-2.0-flash-lite",
+    "model": os.getenv("GEMINI_INGESTION_MODEL", "gemini-3.1-flash-lite-preview"),
+    "fallback_model": "gemini-3.1-flash-lite-preview-lite",
     # Generation Settings
     "max_tokens": 4096,
     "temperature": 0.3,  # Lower temp for consistent extraction
@@ -85,11 +85,11 @@ GEMINI_INGESTION_CONFIG = {
     ],
     # Pricing (for cost tracking)
     "pricing": {
-        "gemini-2.0-flash": {
+        "gemini-3.1-flash-lite-preview": {
             "input_per_million": 0.075,
             "output_per_million": 0.30,
         },
-        "gemini-2.0-flash-lite": {
+        "gemini-3.1-flash-lite-preview-lite": {
             "input_per_million": 0.0375,
             "output_per_million": 0.15,
         },

@@ -36,7 +36,7 @@ class SPMEngine:
 
         # Initialize Gemini via Vertex AI
         aiplatform.init(project=self.project_id, location=self.location)
-        self.gca_model = GenerativeModel("gemini-2.0-flash-001")
+        self.gca_model = GenerativeModel("gemini-3.1-flash-lite-preview-001")
 
         # Sub-Agents / Tools
         self.judge = JudgeSixEngine()  # Critic / Gatekeeper

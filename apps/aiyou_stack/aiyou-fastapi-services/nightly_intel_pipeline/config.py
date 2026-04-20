@@ -460,7 +460,7 @@ TIER_DISTRIBUTION_TARGETS = {
 # Gemini Analysis Prompt Configuration
 GEMINI_ANALYSIS_CONFIG = {
     "enabled": os.getenv("GEMINI_ANALYSIS_ENABLED", "false").lower() == "true",
-    "model": "gemini-2.0-pro",
+    "model": "gemini-3.1-flash-lite-preview",
     "confidence_target": 0.60,  # 60% pre-production, 70% post-deployment
     "analysis_areas": [
         "ethical_compliance",

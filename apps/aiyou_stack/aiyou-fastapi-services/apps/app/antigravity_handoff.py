@@ -28,7 +28,7 @@ from app.mcp_bridge import MCPBridge
 class ModelChoice(StrEnum):
     """Available LLM models"""
 
-    GEMINI = "gemini-2.0-flash-exp"
+    GEMINI = "gemini-3.1-flash-lite-preview"
     CLAUDE = "claude-sonnet-4.5"
     GPT5 = "gpt-5"
     GROK = "grok-beta"

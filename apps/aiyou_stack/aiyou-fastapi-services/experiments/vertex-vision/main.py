@@ -16,7 +16,7 @@ LOCATION = os.getenv("LOCATION", "us-central1")
 if PROJECT_ID:
     vertexai.init(project=PROJECT_ID, location=LOCATION)
     # Using Gemini 1.5 Flash for high speed/low cost
-    model = GenerativeModel("gemini-1.5-flash-001")
+    model = GenerativeModel("gemini-3.1-flash-lite-preview-001")
 else:
     print("⚠️ PROJECT_ID not set. Vertex AI init skipped (Mock Mode).")
     model = None

@@ -17,9 +17,9 @@ try:
 except Exception as e:
     print(f"❌ Failed to list models: {e}")
 
-print("\n🔍 Testing 'gemini-1.5-flash-001' connectivity...")
+print("\n🔍 Testing 'gemini-3.1-flash-lite-preview-001' connectivity...")
 try:
-    response = client.models.generate_content(model="gemini-1.5-flash-001", contents="Ping")
-    print(f"✅ gemini-1.5-flash-001 is ACTIVE. Response: {response.text}")
+    response = client.models.generate_content(model="gemini-3.1-flash-lite-preview-001", contents="Ping")
+    print(f"✅ gemini-3.1-flash-lite-preview-001 is ACTIVE. Response: {response.text}")
 except Exception as e:
-    print(f"❌ gemini-1.5-flash-001 Failed: {e}")
+    print(f"❌ gemini-3.1-flash-lite-preview-001 Failed: {e}")

@@ -17,7 +17,7 @@ class GeminiLayer:
     - Intelligence: Infinite (vs 0 for ReLU)
     """
 
-    def __init__(self, api_key=None, model_name="gemini-2.0-flash-exp"):
+    def __init__(self, api_key=None, model_name="gemini-3.1-flash-lite-preview"):
         self.api_key = api_key or os.getenv("GOOGLE_API_KEY")
         if not self.api_key:
             raise ValueError("Gemini API Key required for GeminiLayer")

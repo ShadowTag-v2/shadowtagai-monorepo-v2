@@ -90,7 +90,7 @@ class ShadowTagAiAgent:
         """Select model based on budget allocation and risk"""
         flash_ratio, _ = get_model_allocation()
         if random.random() < flash_ratio:
-            return "gemini-2.5-flash"
+            return "gemini-3.1-flash-lite-preview"
         return "gemini-3-pro-preview"
 
     def execute(self, task: AgentTask) -> AgentResult:

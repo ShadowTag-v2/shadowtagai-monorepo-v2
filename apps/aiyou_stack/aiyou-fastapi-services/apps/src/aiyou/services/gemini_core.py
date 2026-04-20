@@ -4,8 +4,8 @@ Supports both Vertex AI and direct API key authentication.
 
 Rate Limit Fallback Chain (ID/EGO/SUPEREGO):
 - Primary:   gemini-3.1-flash-lite-preview-preview-06-05 (ID: max capability)
-- Fallback1: gemini-2.5-flash-preview-05-20 (EGO: balanced)
-- Fallback2: gemini-2.0-flash (SUPEREGO: guaranteed execution)
+- Fallback1: gemini-3.1-flash-lite-preview-preview-05-20 (EGO: balanced)
+- Fallback2: gemini-3.1-flash-lite-preview (SUPEREGO: guaranteed execution)
 """
 
 import contextlib
@@ -30,8 +30,8 @@ logger = logging.getLogger(__name__)
 # Model fallback chain - ID → EGO → SUPEREGO
 MODEL_FALLBACK_CHAIN = [
     "gemini-3.1-flash-lite-preview-preview-06-05",  # ID: Maximum capability, aggressive optimization
-    "gemini-2.5-flash",  # EGO: Balanced performance/cost
-    "gemini-2.0-flash",  # SUPEREGO: Guaranteed execution, survivability
+    "gemini-3.1-flash-lite-preview",  # EGO: Balanced performance/cost
+    "gemini-3.1-flash-lite-preview",  # SUPEREGO: Guaranteed execution, survivability
 ]
 
 
@@ -206,8 +206,8 @@ class GeminiAntigravity:
 
         ID/EGO/SUPEREGO Decision Framework:
         - ID: Try maximum capability first (gemini-3.1-flash-lite-preview-preview)
-        - EGO: Fall back to balanced tier on rate limit (gemini-2.5-flash-preview)
-        - SUPEREGO: Guarantee execution via stable tier (gemini-2.0-flash)
+        - EGO: Fall back to balanced tier on rate limit (gemini-3.1-flash-lite-preview-preview)
+        - SUPEREGO: Guarantee execution via stable tier (gemini-3.1-flash-lite-preview)
 
         p99 survivability gate: Operation MUST complete, even at reduced capability.
         """
@@ -305,8 +305,8 @@ class GeminiAntigravity:
 
         ID/EGO/SUPEREGO Decision Framework:
         - ID (gemini-3.1-flash-lite-preview-preview): Maximum capability, try first
-        - EGO (gemini-2.5-flash-preview): Balanced fallback on rate limit
-        - SUPEREGO (gemini-2.0-flash): p99 survivability guarantee
+        - EGO (gemini-3.1-flash-lite-preview-preview): Balanced fallback on rate limit
+        - SUPEREGO (gemini-3.1-flash-lite-preview): p99 survivability guarantee
 
         Args:
             prompt: The input prompt

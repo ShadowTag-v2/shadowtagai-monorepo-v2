@@ -192,7 +192,7 @@ class Judge6Grounded:
 
             # Initialize Gemini model with grounding
             self._genai_model = GenerativeModel(
-                "gemini-2.0-flash-exp",
+                "gemini-3.1-flash-lite-preview",
                 tools=[self._grounding_tool],
             )
 

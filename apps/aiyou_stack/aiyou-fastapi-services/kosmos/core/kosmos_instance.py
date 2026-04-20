@@ -53,7 +53,7 @@ class KosmosConfig:
 KOSMOS_CONFIGS = {
     KosmosType.GEMINI_INTAKE: KosmosConfig(
         kosmos_type=KosmosType.GEMINI_INTAKE,
-        model_name="gemini-2.5-flash",
+        model_name="gemini-3.1-flash-lite-preview",
         api_url="https://generativelanguage.googleapis.com/v1beta/models",
         api_key_env="GEMINI_API_KEY",
     ),
@@ -71,7 +71,7 @@ KOSMOS_CONFIGS = {
     ),
     KosmosType.GEMINI_CODE_ASSIST: KosmosConfig(
         kosmos_type=KosmosType.GEMINI_CODE_ASSIST,
-        model_name="gemini-2.5-flash",
+        model_name="gemini-3.1-flash-lite-preview",
         api_url="https://generativelanguage.googleapis.com/v1beta/models",
         api_key_env="GEMINI_API_KEY",
     ),

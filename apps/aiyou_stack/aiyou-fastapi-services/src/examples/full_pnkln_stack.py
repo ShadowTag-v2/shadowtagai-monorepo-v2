@@ -83,7 +83,7 @@ def main():
         ),
     ]
 
-    caller = GeminiFunctionCaller(model_name="gemini-2.0-flash-exp", tools=tools)
+    caller = GeminiFunctionCaller(model_name="gemini-3.1-flash-lite-preview", tools=tools)
     print("   ✅ Function caller ready\n")
 
     # 4. Wrap with Judge #6

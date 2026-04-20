@@ -28,7 +28,7 @@ async def send_email(
     subject: str,
     html: str,
     reply_to: str | None = None,
-    tags: list[dict[str, str]] | None = None,
+    tags: list[dict[str, str]] | None = None,  # noqa: ARG001 — caller-facing API, not consumed by Gmail backend
 ) -> dict[str, Any]:
     """Send an email via Gmail API (Google Workspace).
 

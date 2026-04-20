@@ -7,7 +7,7 @@ from google.genai import types
 
 
 class SovereignRepairLoop:
-    def __init__(self, model_name="gemini-2.0-flash-exp"):
+    def __init__(self, model_name="gemini-3.1-flash-lite-preview"):
         self.client = genai.Client(vertexai=True, location="us-central1")
         self.model = model_name
 

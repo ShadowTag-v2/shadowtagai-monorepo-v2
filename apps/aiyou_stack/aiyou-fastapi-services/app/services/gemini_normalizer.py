@@ -6,7 +6,7 @@ with metadata, classifications, and JR Engine hints.
 Position in pipeline:
   Raw Scrape → Text Extraction → [GEMINI NORMALIZER] → IntelEvent → JR Scoring
 
-Cost estimate: ~$0.005-0.01 per item using gemini-2.0-flash
+Cost estimate: ~$0.005-0.01 per item using gemini-3.1-flash-lite-preview
 """
 
 import hashlib
@@ -138,7 +138,7 @@ class GeminiNormalizer:
     def __init__(
         self,
         api_key: str | None = None,
-        model: str = "gemini-2.0-flash",
+        model: str = "gemini-3.1-flash-lite-preview",
         timeout: float = 60.0,
         max_input_chars: int = 100000,
     ):

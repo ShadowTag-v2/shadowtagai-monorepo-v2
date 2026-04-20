@@ -31,7 +31,7 @@ class BarExamProtocol:
         # Level 1: Thinking-driven Validation
         try:
             response = self.client.models.generate_content(
-                model="gemini-2.0-flash-thinking-exp-01-21",  # Using a thinking model
+                model="gemini-3.1-flash-lite-preview-thinking",  # Using a thinking model
                 contents=f"Evaluate this agent's response to the challenge '{challenge}' for doctrinal correctness.",
                 config=types.GenerateContentConfig(
                     thinking_config=types.ThinkingConfig(include_thoughts=True),

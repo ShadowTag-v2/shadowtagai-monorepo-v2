@@ -99,7 +99,7 @@ class GeminiFunctionCaller:
 
         # Create caller
         caller = GeminiFunctionCaller(
-            model_name="gemini-2.0-flash-exp",
+            model_name="gemini-3.1-flash-lite-preview",
             tools=tools,
             api_key=os.environ['GOOGLE_API_KEY']
         )
@@ -112,7 +112,7 @@ class GeminiFunctionCaller:
 
     def __init__(
         self,
-        model_name: str = "gemini-2.0-flash-exp",
+        model_name: str = "gemini-3.1-flash-lite-preview",
         tools: list[FunctionTool] = None,
         api_key: str | None = None,
         enable_automatic_calling: bool = False,
@@ -124,7 +124,7 @@ class GeminiFunctionCaller:
         """Initialize Gemini Function Caller.
 
         Args:
-            model_name: Gemini model to use (gemini-2.0-flash-exp for <90ms latency)
+            model_name: Gemini model to use (gemini-3.1-flash-lite-preview for <90ms latency)
             tools: List of FunctionTool objects
             api_key: Google API key (defaults to GOOGLE_API_KEY env var)
             enable_automatic_calling: Let Gemini call functions automatically

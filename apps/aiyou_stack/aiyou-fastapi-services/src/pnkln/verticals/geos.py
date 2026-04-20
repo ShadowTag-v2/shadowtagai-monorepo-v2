@@ -9,7 +9,7 @@ from vertexai.generative_models import GenerativeModel, Part
 from src.pnkln.prompts import PNKLN_PROMPTS
 
 
-def geos_skim(text: str, model_name: str = "gemini-1.5-flash-001") -> str:
+def geos_skim(text: str, model_name: str = "gemini-3.1-flash-lite-preview-001") -> str:
     """Summarize geo triggers, actors, capital flow, compliance."""
     model = GenerativeModel(model_name)
     system_prompt = PNKLN_PROMPTS.get("sys_geos", "You are pnkln-geos.")

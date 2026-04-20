@@ -90,10 +90,10 @@ def list_files_tool(path: str = ".") -> dict:
 def pick_model(tier: str) -> str:
     t = (tier or "FREE").upper()
     if t == "PRO":
-        return "models/gemini-2.0-pro-exp"
+        return "models/gemini-3.1-flash-lite-preview"
     if t == "FLASH":
-        return "models/gemini-2.0-flash-exp"
-    return "models/gemini-1.5-flash-8b-exp"
+        return "models/gemini-3.1-flash-lite-preview"
+    return "models/gemini-3.1-flash-lite-preview"
 
 
 def call_gemini_turn(model: str, conversation_history: list, tools=None) -> dict:

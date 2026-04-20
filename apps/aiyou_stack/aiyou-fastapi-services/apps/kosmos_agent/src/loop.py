@@ -12,7 +12,7 @@ class KosmosAgent:
     def __init__(
         self,
         model_reasoning: str = "gemini-3.1-flash-lite-preview",
-        _model_tools: str = "gemini-1.5-flash",
+        _model_tools: str = "gemini-3.1-flash-lite-preview",
     ):
         self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
         self.model_id = model_reasoning

@@ -29,7 +29,7 @@ class GeminiLiveService:
         self,
         project_id: str | None = None,
         location: str = "us-central1",
-        model_id: str = "gemini-2.0-flash-exp",
+        model_id: str = "gemini-3.1-flash-lite-preview",
     ):
         """Initialize Gemini Live client"""
         self.project_id = project_id or os.getenv("GOOGLE_CLOUD_PROJECT", "acquired-jet-478701-b3")

@@ -309,7 +309,7 @@ class RAGPipeline:
         try:
             import google.generativeai as genai
 
-            model = genai.GenerativeModel("gemini-2.0-flash")
+            model = genai.GenerativeModel("gemini-3.1-flash-lite-preview")
             prompt = (
                 f"Answer the following question using ONLY the provided context. "
                 f"If the context doesn't contain enough information, say so.\n\n"

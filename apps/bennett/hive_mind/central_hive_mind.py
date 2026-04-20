@@ -91,7 +91,7 @@ Output MUST be valid JSON matching this schema exactly:
 }}
 """
     response = ai.models.generate_content(
-        model="gemini-2.0-pro",
+        model="gemini-3.1-flash-lite-preview",
         contents=prompt,
         config={"response_mime_type": "application/json"},
     )

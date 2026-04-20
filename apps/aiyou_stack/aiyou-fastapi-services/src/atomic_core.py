@@ -50,8 +50,8 @@ def initiate_research_omega(query: str, file_store: str | None = None) -> str:
         # For standard models, we fallback to Google Search only + Local Context.
         try:
             # Use Vertex AI Model (Credit Consuming - Next Gen)
-            # Verified Available: gemini-2.0-flash-001
-            model_name = "gemini-2.0-flash-001"
+            # Verified Available: gemini-3.1-flash-lite-preview-001
+            model_name = "gemini-3.1-flash-lite-preview-001"
 
             # Correct Tool Syntax for google-genai SDK (Standard API)
             fallback_tools = [types.Tool(google_search=types.GoogleSearch())]

@@ -66,3 +66,6 @@ connection_record = None  # noqa: F841 — SQLAlchemy event API requirement
 # --- Required function params ---
 # jetski/recorder.py: browser_context is a required method parameter
 browser_context = None  # noqa: F841 — required API parameter
+
+# email_service.py: tags is a public API parameter used by callers but not consumed by Gmail backend
+tags = None  # noqa: F841 — caller-facing API, Gmail backend ignores

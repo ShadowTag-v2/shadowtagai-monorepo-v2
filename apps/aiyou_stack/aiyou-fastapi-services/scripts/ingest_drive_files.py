@@ -15,7 +15,7 @@ def ingest_drive_files():
 
     client = genai.Client(vertexai=True, project="shadowtag-omega-v2", location="us-central1")
 
-    model = "gemini-2.0-flash-001"
+    model = "gemini-3.1-flash-lite-preview-001"
 
     for file_path in TARGETS:
         if not os.path.exists(file_path):

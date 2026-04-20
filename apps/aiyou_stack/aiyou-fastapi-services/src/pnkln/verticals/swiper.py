@@ -11,7 +11,7 @@ from vertexai.generative_models import GenerativeModel, Part
 from src.pnkln.prompts import PNKLN_PROMPTS
 
 
-def swiper_plan(query: str, model_name: str = "gemini-1.5-flash-001") -> str:
+def swiper_plan(query: str, model_name: str = "gemini-3.1-flash-lite-preview-001") -> str:
     """Generate a Swiper plan based on a query."""
     model = GenerativeModel(model_name)
     system_prompt = PNKLN_PROMPTS.get("sys_swiper", "You are pnkln-swiper.")
@@ -26,7 +26,7 @@ def swiper_plan(query: str, model_name: str = "gemini-1.5-flash-001") -> str:
     return response.text
 
 
-def swiper_visualize(img_b64: str, gear: str, model_name: str = "gemini-1.5-flash-001") -> str:
+def swiper_visualize(img_b64: str, gear: str, model_name: str = "gemini-3.1-flash-lite-preview-001") -> str:
     """Visualize gear placement in a scene."""
     model = GenerativeModel(model_name)
     prompt_text = f"Blend {gear} into scene, return JSON placements and style."

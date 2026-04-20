@@ -174,7 +174,7 @@ class DeepResearchIntegration:
                 "max_iterations": 10,
             },
             "planning": {
-                "model": "openrouter/gemini-2.5-flash",
+                "model": "openrouter/gemini-3.1-flash-lite-preview",
                 "description": "Generates 8-12 Exa-optimized subqueries",
                 "max_tokens": 3000,
             },

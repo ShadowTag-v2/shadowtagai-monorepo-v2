@@ -79,7 +79,7 @@ class MessageConsensusOrchestrator:
 
             if self.google_key:
                 genai.configure(api_key=self.google_key)
-                self.gemini_model = genai.GenerativeModel("gemini-2.0-flash-exp")
+                self.gemini_model = genai.GenerativeModel("gemini-3.1-flash-lite-preview")
             else:
                 self.gemini_model = None
         except ImportError:
@@ -215,7 +215,7 @@ class MessageConsensusOrchestrator:
     def _map_model_name(self, model_name: str) -> str:
         """Map friendly model names to pricing keys"""
         mapping = {
-            "Gemini": "gemini-2.0-flash-exp",
+            "Gemini": "gemini-3.1-flash-lite-preview",
             "Perplexity": "llama-3.1-sonar-large-128k-online",
             "SuperGrok": "grok-2-latest",
             "GPT4": "gpt-4-turbo-preview",

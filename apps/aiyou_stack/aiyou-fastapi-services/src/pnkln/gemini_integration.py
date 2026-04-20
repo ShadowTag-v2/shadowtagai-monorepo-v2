@@ -91,13 +91,13 @@ class GeminiService:
     - Built-in safety filters
     """
 
-    def __init__(self, model_name: str = "gemini-2.0-flash-exp"):
+    def __init__(self, model_name: str = "gemini-3.1-flash-lite-preview"):
         """Initialize Gemini service
 
         Models:
-        - gemini-2.0-flash-exp: Fast, cheap ($0.15/$0.60 per 1M tokens)
-        - gemini-2.0-pro: More capable, higher cost
-        - gemini-2.0-flash-thinking: Extended reasoning
+        - gemini-3.1-flash-lite-preview: Fast, cheap ($0.15/$0.60 per 1M tokens)
+        - gemini-3.1-flash-lite-preview: More capable, higher cost
+        - gemini-3.1-flash-lite-preview-thinking: Extended reasoning
         """
         self.model = genai.GenerativeModel(model_name)
         self.model_name = model_name

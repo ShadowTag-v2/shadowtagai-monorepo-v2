@@ -58,7 +58,7 @@ class UngptPipeline:
             from vertexai.generative_models import GenerativeModel
 
             vertexai.init(project=self.project_id, location="us-central1")
-            model = GenerativeModel("gemini-2.0-flash-exp")
+            model = GenerativeModel("gemini-3.1-flash-lite-preview")
 
             prompt = f"""Break this task into 1-3 atomic coding tasks:
 {task}
@@ -82,7 +82,7 @@ Return ONLY the JSON."""
             from vertexai.generative_models import GenerativeModel
 
             vertexai.init(project=self.project_id, location="us-central1")
-            model = GenerativeModel("gemini-2.0-flash-exp")
+            model = GenerativeModel("gemini-3.1-flash-lite-preview")
 
             prompt = f"""Write Python code for: {atom.content}
 Output ONLY the code, no explanations."""

@@ -15,7 +15,7 @@ class Settings(BaseSettings):
 
     # Gemini API Configuration
     gemini_api_key: str | None = None
-    gemini_model: str = "gemini-2.0-flash-exp"
+    gemini_model: str = "gemini-3.1-flash-lite-preview"
     gemini_project_id: str | None = None
     gemini_location: str | None = None
 
