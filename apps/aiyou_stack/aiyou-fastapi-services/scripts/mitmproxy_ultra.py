@@ -723,19 +723,18 @@ class EnhancedKeyRotator:
             flow.request.headers["x-goog-api-key"] = key_health.key
 
         # FEATURE 9: Model fallback (pro → flash)
-        if self.enable_model_fallback:
-            if (
-                "gemini-3.1-flash-lite-preview" in flow.request.path
-                or "gemini-pro" in flow.request.path
-            ):
-                # Check if key is stressed (high failure rate)
-                if key_health.consecutive_failures >= 2:
-                    flow.request.path = flow.request.path.replace(
-                        "gemini-3.1-flash-lite-preview",
-                        "gemini-1.5-flash",
-                    )
-                    flow.request.path = flow.request.path.replace("gemini-pro", "gemini-flash")
-                    print("🔄 Model fallback: pro → flash (key stress)")
+        if self.enable_model_fallback and (
+            "gemini-3.1-flash-lite-preview" in flow.request.path
+            or "gemini-pro" in flow.request.path
+        ):
+            # Check if key is stressed (high failure rate)
+            if key_health.consecutive_failures >= 2:
+                flow.request.path = flow.request.path.replace(
+                    "gemini-3.1-flash-lite-preview",
+                    "gemini-1.5-flash",
+                )
+                flow.request.path = flow.request.path.replace("gemini-pro", "gemini-flash")
+                print("🔄 Model fallback: pro → flash (key stress)")
 
         # FEATURE 8: Safety settings injection
         if self.enable_safety_injection and flow.request.method == "POST" and flow.request.content:
