@@ -71,7 +71,7 @@ async function askLLM(goal, imageBase64) {
 
   // --- PSEUDO-CODE FOR GEMINI API ---
   /*
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite-preview" });
   const result = await model.generateContent([
     `Goal: ${goal}. Return JSON only.`,
     { inlineData: { data: imageBase64, mimeType: "image/png" } }

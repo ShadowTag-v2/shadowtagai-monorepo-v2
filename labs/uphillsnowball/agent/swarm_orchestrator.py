@@ -28,7 +28,7 @@ logger = logging.getLogger("uphillsnowball.swarm")
 
 _PROJECT_ID = os.getenv("GOOGLE_CLOUD_PROJECT", "shadowtag-omega-v4")
 _LOCATION = os.getenv("GOOGLE_CLOUD_LOCATION", "us-central1")
-_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite-preview")
 
 
 # ── Agent Taxonomy ─────────────────────────────────────────────────────────

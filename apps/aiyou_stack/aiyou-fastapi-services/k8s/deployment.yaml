@@ -47,7 +47,7 @@ spec:
             - name: VERTEX_AI_LOCATION
               value: "us-central1"
             - name: VERTEX_AI_MODEL
-              value: "gemini-2.0-flash-exp"
+              value: "gemini-3.1-flash-lite-preview"
             - name: SERVICE_PORT
               value: "8000"
             - name: LOG_LEVEL

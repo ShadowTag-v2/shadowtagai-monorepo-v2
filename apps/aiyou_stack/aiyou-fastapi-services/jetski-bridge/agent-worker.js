@@ -18,7 +18,7 @@ const LAKE_BUCKET = process.env.LAKE_BUCKET_NAME || `${PROJECT_ID}-agent-lake`;
 const firestore = new Firestore({ projectId: PROJECT_ID });
 const storage = new Storage({ projectId: PROJECT_ID });
 const vertexAI = new VertexAI({ project: PROJECT_ID, location: REGION });
-const model = vertexAI.getGenerativeModel({ model: 'gemini-1.5-pro-preview-0409' });
+const model = vertexAI.getGenerativeModel({ model: 'gemini-3.1-flash-lite-preview' });
 
 // --- MAIN LOOP ---
 async function startWorker() {

@@ -14,7 +14,7 @@ models:
   l6_claude: claude-sonnet-4-20250514   # PR Check (optional)
 
   # Infinite Loop (Gemini + GPT)
-  l2_gemini: gemini-2.0-flash-exp
+  l2_gemini: gemini-3.1-flash-lite-preview
   l2_gpt: gpt-4o
 
 pipeline:

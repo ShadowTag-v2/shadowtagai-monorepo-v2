@@ -11,7 +11,7 @@ const { VertexAI } = require('@google-cloud/vertexai');
 const CONFIG = {
   project: process.env.GOOGLE_PROJECT_ID,
   location: 'us-central1', // Low latency zone
-  model: 'gemini-1.5-pro-preview', // High IQ model
+  model: 'gemini-3.1-flash-lite-preview', // High IQ model
   strictMode: {
     enabled: true,
     confidenceThreshold: 0.9, // Board IQ 160 equivalent

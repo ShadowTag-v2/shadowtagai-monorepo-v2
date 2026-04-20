@@ -42,7 +42,7 @@ function pickTarget(target: string | undefined): TargetConfig {
       return {
         base: 'https://generativelanguage.googleapis.com/v1beta', // Direct Gemini API
         key: process.env.GEMINI_API_KEY!,
-        model: 'gemini-1.5-flash',
+        model: 'gemini-3.1-flash-lite-preview',
       };
   }
 }

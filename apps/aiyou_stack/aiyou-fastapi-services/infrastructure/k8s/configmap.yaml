@@ -46,7 +46,7 @@ data:
   enabled-sources: "youtube,twitter,news,reddit,rss_feeds"
 
   # Gemini model (cost-effective)
-  gemini-model: "gemini-2.5-flash-lite"
+  gemini-model: "gemini-3.1-flash-lite-preview"
 
   # AM Briefing recipients (comma-separated)
   briefing-recipients: "redacted@shadowtag-v4.local,redacted@shadowtag-v4.local,redacted@shadowtag-v4.local"
