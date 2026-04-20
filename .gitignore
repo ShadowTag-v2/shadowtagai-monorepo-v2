@@ -200,3 +200,6 @@ infra/terraform/.terraform/
 public/frames/
 labs/uphillsnowball/external_payloads/veo_output/
 tools/google-workspace-cli/.git/
+
+# Temporal server logs
+.beads/temporal-stderr.log
