@@ -53,6 +53,8 @@
 | 44 | ShadowTagAI CSP included `unsafe-eval` + missing HSTS/COOP/CORP | 🟠 High | RESOLVED | `unsafe-eval` removed from `script-src`. Cloudflare Turnstile (`challenges.cloudflare.com`) added to `script-src` + `frame-src`. HSTS (preload, 1yr), COOP (same-origin), CORP (same-origin) added. Deployed `35de3f5ae7`. All 9 security headers verified live via `curl -D -`. |
 | 45 | GPG signing key not uploaded to GitHub — commits unverified on remote | 🟡 Medium | KNOWN | Ed25519 key `7B0BE56159C521F8BBD2EF39301A4A10622FFE11` generated and signing commits locally. GitHub 2FA ("Confirm access") blocks automated upload. **Action**: Manually add GPG public key at `github.com/settings/keys` after 2FA approval. |
 
+| 46 | GCP infrastructure sprawl — 175+ APIs enabled, stale Cloud Run services, orphaned secrets | 🟡 Medium | RESOLVED | Audit 2026-04-20: Disabled 9 unused APIs (Batch, Composer, Dataform, Dataplex, Dataproc, Datastream, Notebooks, Spanner, Dataproc Control). Deleted 3 stale Cloud Run services (capturelead, judge-sentinel, uphillsnowball-sovereign). Deleted 5 orphaned OAuth/connector secrets. Remaining: 2 Cloud Run (counselconduit prod+staging), 19 secrets (all active), 5 Cloud Scheduler jobs, 175 APIs. 10x_vibe_matrix.yml CI/CD created. |
+
 ## Review Policy
 
 - Risks with status `RESOLVED` are kept for institutional memory.

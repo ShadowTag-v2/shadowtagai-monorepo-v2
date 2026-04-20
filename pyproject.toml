@@ -142,6 +142,19 @@ root = "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"
 root = "apps/another_app"
 # extraPaths = ["apps/another_app/custom_src"]
 
+# Ruff — fast Python linting (Rich Hickey Doctrine)
+[tool.ruff]
+exclude = [
+    "tools/",
+    "third_party/",
+    "reference_architectures/",
+    "libs/autoresearch_sources/",
+    ".venv/",
+    "node_modules/",
+]
+line-length = 120
+target-version = "py313"
+
 # Bandit — Python security scanning (Cor.30 compliance)
 [tool.bandit]
 # Target directories for scanning

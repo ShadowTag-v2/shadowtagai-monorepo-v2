@@ -144,7 +144,7 @@ unless the user explicitly directs a control plane change:
 - Pre-commit: Gitleaks + Ruff + Bandit + detect-private-key
 - OpenTofu: 19 resources provisioned (IAM + alerts + log metrics)
 - GitNexus: 445,205 nodes | 685,812 edges | 6,090 clusters | 300 flows (indexed 2026-04-18)
-- Risk Register: 45 risks tracked (0 critical open, Risk #44 resolved CSP, Risk #45 known GPG upload)
+- Risk Register: 46 risks tracked (0 critical open, Risk #46 resolved GCP sprawl audit)
 - Gitleaks Guardian: 686 third-party findings audited → 0 risk confirmed, .gitleaksignore (668 fingerprints)
 - CL4R1T4S: competitive intel archived, 6 adoptable patterns identified, source code (1,902 files) extracted
 - Architecture docs: 7 specs + 229 Cor.Atlantis recovered docs
@@ -174,9 +174,11 @@ unless the user explicitly directs a control plane change:
 - LawTrack: core/lawtrack (schema + API + services) + src/lawtrack (enforcement + rules_database + timeline_engine) — 1,305 LOC
 - 50-State Holidays: infra/migrations/003_jurisdiction_holidays_50_states.sql (339 LOC, all 50 state judicial holidays)
 - LawTrack UI: apps/lawtrack-ui (React + Vite + TypeScript case dashboard)
-- Ruff: 0 violations across all recovered + existing Python (95 auto-fixed, 12 manual)
+- Ruff: 62,221 unsafe-fixes applied (v9.6), tools/ excluded in pyproject.toml, 830 remaining (non-critical style)
 - Vulture: 0 findings at 90%+ confidence across recovered Python
-- Tests: 5 passed (test_dispatch_compute.py)
+- Tests: 10 passed (test_judge6.py — 10/10, test_dispatch_compute.py — 5/5)
+- CI/CD: 10x_vibe_matrix.yml (4-phase: Gitleaks → ruff+vulture+biome → UI audit → auto-commit)
+- GCP Cleanup: 9 APIs disabled, 3 Cloud Run deleted, 5 secrets purged (2026-04-20)
 - Veo 3.1 Pipeline: veo_pipeline.py operational (6 presets, Veo 3.1/3.1-Fast/3.1-Lite/3.0/2.0), google-genai SDK 1.66.0+, GCS bucket gs://shadowtag-omega-v4-media, frame extraction via ffmpeg 8.1
 - Video Compression: 52MB → 20MB kovelai (10 videos), 19MB → 8.8MB shadowtagai (7 videos), CRF 30, H.264, faststart
 - Branded Billboards: KovelAI (cyan neon) + ShadowTag AI (magenta neon) composited onto hero-drift via ffmpeg overlay
