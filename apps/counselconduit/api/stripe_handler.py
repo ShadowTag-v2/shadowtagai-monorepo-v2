@@ -208,7 +208,8 @@ def _handle_invoice_payment_failed(event: dict[str, Any]) -> dict[str, str]:
     try:
         from apps.counselconduit.api.workspace_alerts import alert_payment_failure
 
-        asyncio.create_task(
+        loop = asyncio.get_running_loop()
+        loop.create_task(
             alert_payment_failure(
                 attorney_id=customer,
                 firm_id="",
@@ -216,6 +217,9 @@ def _handle_invoice_payment_failed(event: dict[str, Any]) -> dict[str, str]:
                 error=f"Payment attempt #{attempt_count} failed",
             )
         )
+    except RuntimeError:
+        # No running event loop (e.g., sync test context) — skip alerting
+        logger.debug("No running event loop for async alert — skipping.")
     except Exception as e:
         logger.warning("Chat alert failed (non-fatal): %s", e)
 

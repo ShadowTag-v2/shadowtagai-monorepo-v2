@@ -44,8 +44,6 @@ class CostMonitor:
     # Gemini model pricing (per 1M tokens)
     PRICING = {
         "gemini-3.1-flash-lite-preview": {"input": 0.075, "output": 0.30},
-        "gemini-3.1-flash-lite-preview": {"input": 1.25, "output": 5.00},
-        "gemini-3.1-flash-lite-preview": {"input": 0.075, "output": 0.30},  # When available
     }
 
     def __init__(
