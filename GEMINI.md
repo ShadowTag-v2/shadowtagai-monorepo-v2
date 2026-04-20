@@ -10,7 +10,7 @@ status: LOCKED
 <workspace_alignment>
 - Active project: `shadowtag-omega-v4`
 - Only authorized external runtime model: `gemini-3.1-flash-lite-preview-thinking`
-- NOTE TO ANTIGRAVITY: `.NET 11.0 Preview 2` IS INSTALLED. Use it for Semantic Kernel.
+- NOTE: `.NET 11.0 Preview 2` is NOT installed. Semantic Kernel claim removed (unverified).
 </workspace_alignment>
 
 <canonical_truth_hierarchy>
