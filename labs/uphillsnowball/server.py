@@ -236,7 +236,7 @@ async def stream_task(task_id: str, request: Request):
                         "event": event.get("event", "message"),
                         "data": str(event.get("data", "")),
                     }
-                except asyncio.TimeoutError:
+                except TimeoutError:
                     # Keep-alive ping
                     yield {"event": "ping", "data": ""}
         finally:

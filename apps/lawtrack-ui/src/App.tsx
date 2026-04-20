@@ -145,6 +145,7 @@ function QueueCard({
           />
           <div className="action-row">
             <button
+              type="button"
               className="btn-reject"
               disabled={!reason.trim()}
               onClick={() => {
@@ -154,17 +155,17 @@ function QueueCard({
             >
               Confirm Reject
             </button>
-            <button className="btn-ghost" onClick={() => setRejecting(false)}>
+            <button type="button" className="btn-ghost" onClick={() => setRejecting(false)}>
               Cancel
             </button>
           </div>
         </div>
       ) : (
         <div className="action-row">
-          <button className="btn-approve" onClick={() => onApprove(item.extraction_id)}>
+          <button type="button" className="btn-approve" onClick={() => onApprove(item.extraction_id)}>
             Approve
           </button>
-          <button className="btn-reject-outline" onClick={() => setRejecting(true)}>
+          <button type="button" className="btn-reject-outline" onClick={() => setRejecting(true)}>
             Reject
           </button>
         </div>
@@ -257,6 +258,7 @@ export default function App() {
 
         <nav className="sidebar-nav">
           <button
+            type="button"
             className={`nav-item ${tab === 'queue' ? 'active' : ''}`}
             onClick={() => setTab('queue')}
           >
@@ -264,6 +266,7 @@ export default function App() {
             {state.queue.length > 0 && <span className="badge">{state.queue.length}</span>}
           </button>
           <button
+            type="button"
             className={`nav-item ${tab === 'docket' ? 'active' : ''}`}
             onClick={() => setTab('docket')}
           >
@@ -291,7 +294,7 @@ export default function App() {
                 : 'Approved deadlines — chronological'}
             </p>
           </div>
-          <button className="btn-refresh" onClick={refresh} disabled={state.loading}>
+          <button type="button" className="btn-refresh" onClick={refresh} disabled={state.loading}>
             {state.loading ? 'Loading…' : 'Refresh'}
           </button>
         </header>

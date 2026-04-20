@@ -80,7 +80,7 @@ jobs:
           ruff check apps/ core/ control/ src/ scripts/ tools/ \
             --fix --select E,W,F,I \
             --ignore E501 \
-            --output-format=text 2>&1 | tee /tmp/ruff-output.txt || true
+            --output-format=full 2>&1 | tee /tmp/ruff-output.txt || true
           echo "ruff_exit=$?" >> "$GITHUB_OUTPUT"
 
       - name: Vulture dead code scan
