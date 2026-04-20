@@ -1,16 +1,13 @@
-from fastapi import FastAPI, Depends, HTTPException, Security
+from fastapi import FastAPI, HTTPException, Security
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 import os
 
-app = FastAPI(
-    title="Cor.LawTrack Engine",
-    description="Zero-Trust API Gateway for Multi-Vertical Compliance",
-    version="1.0.0"
-)
+app = FastAPI(title="Cor.LawTrack Engine", description="Zero-Trust API Gateway for Multi-Vertical Compliance", version="1.0.0")
 
 # Enforce JWT / Bearer Auth for all inbound external requests
 security = HTTPBearer()
+
 
 def verify_token(credentials: HTTPAuthorizationCredentials = Security(security)):
     # Placeholder for actual JWKS OIDC validation against SSO provier (e.g. Google/Okta)
@@ -19,10 +16,12 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Security(security))
         raise HTTPException(status_code=403, detail="Invalid authorization token")
     return credentials.credentials
 
+
 @app.get("/health")
 def health_check():
     """Validates the API is hot and responding."""
     return {"status": "ok", "engine": "Cor.LawTrack", "encryption_mode": "enforced"}
+
 
 # Import and attach service routers (To be implemented downstream)
 # from core.lawtrack.services import ingestion, timeline, help_on_demand
@@ -32,4 +31,5 @@ def health_check():
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8080)
