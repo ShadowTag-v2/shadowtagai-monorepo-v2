@@ -37,11 +37,10 @@ License: Proprietary
 import asyncio
 import time
 from dataclasses import dataclass
-from typing import Optional
 import logging
 
 from pnkln.core.cor_orchestrator import ExecutionContext, SequentialPipeline
-from pnkln.core.jr_engine import JREngine, RiskLevel, ProbabilityLevel, SeverityLevel
+from pnkln.core.jr_engine import JREngine, RiskLevel
 
 logger = logging.getLogger(__name__)
 

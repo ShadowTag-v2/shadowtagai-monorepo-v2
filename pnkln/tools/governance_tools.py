@@ -16,7 +16,7 @@ License: Proprietary
 """
 
 import asyncio
-from typing import Annotated, Optional
+from typing import Annotated
 import logging
 
 from pnkln.core.judge_six_pipeline import JudgeSixPipeline
