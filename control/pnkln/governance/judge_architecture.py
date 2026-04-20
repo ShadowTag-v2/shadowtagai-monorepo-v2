@@ -449,7 +449,7 @@ class InfrastructureOptimizer:
         else:
             return "default_neuron_onnx"  # Portable fallback
 
-    def project_savings(self, current_spend: float, multi_silicon_mix: dict[str, float]) -> dict[str, float]:
+    def project_savings(self, current_spend: float, _multi_silicon_mix: dict[str, float]) -> dict[str, float]:
         """
         Project cost savings from multi-silicon strategy.
 
@@ -492,7 +492,7 @@ class SupplyChainSecurityGate:
     """
 
     async def validate(
-        self, function_name: str = None, callable: Any = None, sbom: dict[str, Any] = None, decision: Decision = None
+        self, _function_name: str = None, _callable: Any = None, _sbom: dict[str, Any] = None, decision: Decision = None
     ) -> dict[str, Any]:
         """
         Validate supply chain security for function or decision.

@@ -67,7 +67,7 @@ class CorCSRMCGovernanceFabric:
         payload: dict,
         user_id: str,
         controls: list,
-        applied: str,
+        _applied: str,
         framework: str,
     ):
         if risk in [RiskLevel.TERMINAL, RiskLevel.EXTREMELY_HIGH]:
