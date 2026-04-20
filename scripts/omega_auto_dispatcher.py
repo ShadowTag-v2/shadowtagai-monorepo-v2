@@ -16,7 +16,7 @@ from __future__ import annotations
 import json
 import time
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from pathlib import Path
 from typing import Any
 
@@ -47,7 +47,7 @@ class HealAttempt:
     action: str
     success: bool
     timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+        default_factory=lambda: datetime.now(UTC).isoformat()
     )
     error: str | None = None
 
@@ -167,7 +167,7 @@ def run_heal_cycle() -> dict[str, Any]:
         "unique_endpoints": len(endpoint_counts),
         "healed": healed,
         "escalated": escalated,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
     }
 
 
