@@ -38,7 +38,7 @@ def mock_gemini_fix(error_trace):
     """Simulates the 'Fix Selbst' loop.
     In production, this sends 'error_trace' to Gemini 1.5 Pro via Vertex AI.
     """
-    log("Consulting Gemini 1.5 Pro for fix...", "RECOVERY")
+    log(f"Consulting Gemini 1.5 Pro for fix (trace length: {len(error_trace)} chars)...", "RECOVERY")
     time.sleep(1)  # Simulate thinking
     log("Gemini suggests: 'Memory leak in Titan Engine. Patching...'", "RECOVERY")
     # Here we would file_writer.write(...) the fix.
