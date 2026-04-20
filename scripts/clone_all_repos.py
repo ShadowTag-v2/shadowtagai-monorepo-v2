@@ -145,9 +145,7 @@ if __name__ == "__main__":
         repos = []
         page = 1
         while True:
-            resp = requests.get(
-                f"https://api.github.com/installation/repositories?per_page=100&page={page}",
-                headers=auth_headers,, timeout=30)
+            resp = requests.get(f"https://api.github.com/installation/repositories?per_page=100&page={page}", headers=auth_headers, timeout=30)
             if resp.status_code != 200:
                 break
             data = resp.json()
