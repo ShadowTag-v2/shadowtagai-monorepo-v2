@@ -36,6 +36,94 @@
       "cloned_to": "reference_architectures/FFmpeg/",
       "license": "LGPL-2.1",
       "status": "active_reference"
+    },
+    {
+      "name": "gotalab/cc-sdd",
+      "url": "https://github.com/gotalab/cc-sdd",
+      "purpose": "Claude Code SDD (Source Design Document) extraction — competitive intel on context compaction architecture",
+      "version_pinned": "latest (shallow clone)",
+      "cloned_to": "external_repos/cc-sdd/",
+      "license": "MIT",
+      "status": "active_reference"
+    },
+    {
+      "name": "killop/anything_about_game",
+      "url": "https://github.com/killop/anything_about_game",
+      "purpose": "Game development resources — rendering pipelines, ECS architecture, spatial algorithms",
+      "version_pinned": "latest (shallow clone)",
+      "cloned_to": "external_repos/anything_about_game/",
+      "license": "Unknown",
+      "status": "active_reference"
+    },
+    {
+      "name": "jimmc414/Kosmos",
+      "url": "https://github.com/jimmc414/Kosmos",
+      "purpose": "Multi-agent swarm orchestration system — reference for CounselConduit agent coordination patterns",
+      "version_pinned": "latest (shallow clone)",
+      "cloned_to": "external_repos/Kosmos/",
+      "license": "MIT",
+      "status": "active_reference"
+    },
+    {
+      "name": "facebook/react-native",
+      "url": "https://github.com/facebook/react-native",
+      "purpose": "Cross-platform mobile framework — reference for Kovel AI mobile app architecture",
+      "version_pinned": "0.80+",
+      "cloned_to": null,
+      "license": "MIT",
+      "size_mb": 2500,
+      "status": "documented_only",
+      "note": "Too large to clone (2.5GB+). Architecture documented in KI."
+    },
+    {
+      "name": "react-native-elements/react-native-elements",
+      "url": "https://github.com/react-native-elements/react-native-elements",
+      "purpose": "Cross-platform RN UI component library",
+      "version_pinned": "latest",
+      "cloned_to": null,
+      "license": "MIT",
+      "status": "documented_only"
+    },
+    {
+      "name": "react-hook-form/react-hook-form",
+      "url": "https://github.com/react-hook-form/react-hook-form",
+      "purpose": "Performant form validation — reference for Kovel attestation forms",
+      "version_pinned": "latest",
+      "cloned_to": null,
+      "license": "MIT",
+      "status": "documented_only"
+    },
+    {
+      "name": "facebook/react",
+      "url": "https://github.com/facebook/react",
+      "purpose": "Core React library — RSC patterns, concurrent rendering reference",
+      "version_pinned": "19.x",
+      "cloned_to": null,
+      "license": "MIT",
+      "size_mb": 3000,
+      "status": "documented_only",
+      "note": "Too large to clone (3GB+). Use react.dev docs via google-developer-knowledge MCP."
+    },
+    {
+      "name": "ionic-team/ionic-framework",
+      "url": "https://github.com/ionic-team/ionic-framework",
+      "purpose": "Cross-platform hybrid mobile framework — alternative to RN for PWA-first approach",
+      "version_pinned": "latest",
+      "cloned_to": null,
+      "license": "MIT",
+      "size_mb": 1500,
+      "status": "documented_only"
+    },
+    {
+      "name": "expo/expo",
+      "url": "https://github.com/expo/expo",
+      "purpose": "React Native toolchain — managed workflow, Expo Router, EAS Build reference",
+      "version_pinned": "SDK 53+",
+      "cloned_to": null,
+      "license": "MIT",
+      "size_mb": 4000,
+      "status": "documented_only",
+      "note": "Too large to clone (4GB+). Use expo.dev docs."
     }
   ]
 }
