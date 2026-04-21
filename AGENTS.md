@@ -233,6 +233,12 @@ unless the user explicitly directs a control plane change:
 - NotebookLM MCP: Evaluated YES — `uv tool install notebooklm-mcp-cli`, cookie-based auth, 50 queries/day free, extends External Cognitive Suite
 - Awesome-AITools Catalog: 239 tools audited, 4 high-value candidates (MemPalace 96.6% recall, codesight 9-13x token reduction, NadirClaw 10ms LLM router, CLI-Anything agent-native CLIs)
 - antigravity-awesome-skills: 1,415 community skills cataloged at github.com/anthropics/awesome-claude-code-skills, 22 installed (gcp-cloud-run, stripe-integration, k6-load-testing, production-code-audit, scroll-experience, prompt-caching, cost-optimization, pci-compliance, saas-multi-tenant, micro-saas-launcher, startup-financial-modeling, progressive-web-app, seo-technical, andrej-karpathy, pydantic-ai, design-taste-frontend, deep-research, notebooklm, fastapi-pro, cloud-architect, gdpr-data-handling, payment-integration)
+- daScript MCP Reference: 29-tool compiler-backed MCP server (utils/mcp/), 18 skills, 3-tier execution (interpreter→AOT→JIT), semantic hashing hybrid, CLAUDE.md exemplar — reference only, do NOT import
+- Ruler Agent Config: intellectronica/ruler CLI unifies agent configs from single .ruler/ source → auto-distributes to Claude/Copilot/Cursor/Windsurf/Cline/Aider/Gemini/Zed/Kiro — evaluate for config drift elimination
+- NotebookLM MCP: Wired into antigravity-mcp-config.json (uv tool run notebooklm-mcp-cli), extends External Cognitive Suite
+- Cinematic Scroll PWA: manifest.json + sw.js (cache-first frames, network-first HTML) + meta tags wired into index.html
+- Lighthouse kovelai.web.app: A92/BP100/SEO100 (accessibility dipped from 100→92, needs audit)
+- Tool Evaluations: MemPalace (96.6% recall@5, ChromaDB+SQLite, MCP-native, verbatim storage — HIGH VALUE for KI replacement), codesight (AST-based 9-13x token reduction, .codesight/ dir, MCP server — HIGH VALUE for context optimization), NadirClaw (10ms LLM router, 3-tier dispatch, 40-70% cost reduction, OpenAI-compat proxy — HIGH VALUE for CounselConduit model routing)
 - GitHub MCP Server: `@modelcontextprotocol/server-github` installed globally, registered in antigravity-mcp-config.json, token via GITHUB_PERSONAL_ACCESS_TOKEN in .env
 - GitHub-First Protocol: Rule 52 + PreToolUse hook (.claude/hooks/github-preflight.sh) injecting branch/CI/PR state on every Write|Edit|Bash
 - Claude Code Action CI/CD: 3 workflows (claude-code-action.yml PR review, claude-issue-triage.yml auto-classify, claude-security-scan.yml Cor.30+OWASP audit) — all Vertex AI OIDC, GitHub App token
