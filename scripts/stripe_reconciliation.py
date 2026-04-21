@@ -14,7 +14,7 @@ import asyncio
 import logging
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime
 
 logger = logging.getLogger("stripe_reconciliation")
 
@@ -91,7 +91,7 @@ async def reconcile():
 
     # 4. Report
     report = {
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(datetime.UTC).isoformat(),
         "total_subscriptions": reconciled + len(discrepancies),
         "reconciled": reconciled,
         "discrepancies": len(discrepancies),
