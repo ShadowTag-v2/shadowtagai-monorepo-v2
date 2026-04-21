@@ -1,0 +1,40 @@
+# Roo / Windsurf Agent Rules — ShadowTag Monorepo
+
+## Canonical Contract
+- `AGENTS.md` is the canonical contract. Read it at session start.
+- `GEMINI.md` defines operator invariants.
+- `antigravity-mcp-config.json` is MCP truth.
+
+## 🔗 GITHUB-FIRST PROTOCOL (MANDATORY)
+Before ANY code change, you MUST verify GitHub state:
+
+1. **Pre-Session**: `git fetch origin --prune && git status` — confirm branch is synced with remote.
+2. **Pre-Edit**: Check no conflicting PRs touch the same files.
+3. **Pre-Commit**: Run pre-commit hooks. Verify CI is green on base branch.
+4. **Post-Commit**: Push to remote immediately. Create PR for feature work — never push directly to `main`.
+
+### Canonical Source
+- **Repo**: `git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git` (SSH primary)
+- **Auth**: GitHub App PEM (ID `3018200`) — never use PATs or `gh auth login`
+- **MCP**: Use `github` MCP server for PR/issue operations
+
+### System Prompt
+Always verify current branch status and remote GitHub state using git tools before proposing changes.
+
+## ⛔ BLACKLISTED TOOLS & VENDORS
+- **INTERNAL `generate_image`:** FORBIDDEN. Use Stitch MCP or Google Flow.
+- **KLING / RUNWAY / SORA:** FORBIDDEN. All video must use **VEO 3.1**.
+
+## Security Baseline
+- Never store secrets in code. Use GCP Secret Manager + ADC.
+- Every API route is authenticated by default.
+- Validate all inputs with Zod/Pydantic before processing.
+- Never return raw database objects. Serialize via DTOs.
+- Errors: structured RFC 9457 JSON. Never expose stack traces.
+
+## Context Files
+Read these at session start:
+- `.context/ARCHITECTURE.md` — architecture overview
+- `.context/GITHUB_PROTOCOL.md` — GitHub integration lifecycle
+- `.context/coding_style.md` — code style rules
+- `.context/system_prompt.md` — always-on agent instructions
