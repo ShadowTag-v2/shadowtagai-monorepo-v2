@@ -68,6 +68,17 @@
         "HOME": "/Users/pikeymickey"
       }
     },
+    "github": {
+      "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
+      "args": [
+        "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/@modelcontextprotocol/server-github/dist/index.js"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}",
+        "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
+        "HOME": "/Users/pikeymickey"
+      }
+    },
     "media-generators": {
       "command": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python",
       "args": [
