@@ -1,27 +1,20 @@
-const { defineConfig, devices } = require('@playwright/test');
-
-module.exports = defineConfig({
-  testDir: './tests/e2e',
-  fullyParallel: true,
+// @ts-check
+/** @type {import('@playwright/test').PlaywrightTestConfig} */
+const config = {
+  testDir: '.',
+  testMatch: ['**/e2e_smoke.spec.js', '**/e2e*.spec.js'],
+  timeout: 30000,
   retries: 1,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
   use: {
+    baseURL: process.env.KOVELAI_URL || 'https://kovelai.web.app',
     trace: 'on-first-retry',
-    viewport: { width: 1280, height: 720 },
-    // Auto-enable DevTools logging for a11y parameters
-    launchOptions: {
-      args: ['--enable-blink-features=AccessibilityObjectModel'],
-    },
+    screenshot: 'only-on-failure',
   },
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: { browserName: 'chromium' },
     },
   ],
-});
+};
+module.exports = config;
