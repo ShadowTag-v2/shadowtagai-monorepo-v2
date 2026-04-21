@@ -94,15 +94,11 @@ public class HumanGateStep : KernelProcessStep
 {
     // This step waits for an external event (human click in Admin UI)
     [KernelFunction]
-    public async Task AwaitApprovalAsync(KernelProcessStepContext context, RiskAssessment risk)
+    public void AwaitApproval(RiskAssessment risk)
     {
-        Console.WriteLine($"[HumanGate] PAUSED. Risk: {risk.Level}. Waiting for Approval...");
-        // In reality, this persists state to Postgres and sleeps until API wake-up
-
-        // Emulate human click after sleeping
-        await Task.Delay(1000);
-        Console.WriteLine("[HumanGate] APPROVED via mock internal trigger.");
-        await context.EmitEventAsync(new() { Id = "Approved", Data = risk });
+        Console.WriteLine($"[HumanGate] PAUSED. Risk: {risk.Level}. Waiting for generic external Approval event...");
+        // Execution halts here. The workflow saves state to DB and sleeps.
+        // It relies on API Controller sending builder.OnExternalEvent("UserApproved")
     }
 }
 
@@ -152,7 +148,7 @@ public static class JudgeProcessBuilder
             .SendEventTo(new ProcessFunctionTargetBuilder(enforce, nameof(EnforcementStep.Execute), "risk"));
 
         risk.OnEvent("RiskModerate")
-            .SendEventTo(new ProcessFunctionTargetBuilder(human, nameof(HumanGateStep.AwaitApprovalAsync), "risk"));
+            .SendEventTo(new ProcessFunctionTargetBuilder(human, nameof(HumanGateStep.AwaitApproval), "risk"));
 
         risk.OnEvent("RiskPreclusive")
             .SendEventTo(new ProcessFunctionTargetBuilder(hermes, nameof(HermesOfflineStep.RouteOfflineAsync), "risk"));
@@ -161,9 +157,9 @@ public static class JudgeProcessBuilder
         hermes.OnEvent("SovereignComplete")
             .SendEventTo(new ProcessFunctionTargetBuilder(enforce, nameof(EnforcementStep.Block), "risk"));
 
-        // Human Loop Closure
-        // Fixed: Internalized the event emission directly from the HumanGateStep
-        human.OnEvent("Approved")
+        // Human Loop Closure via Proper OnExternalEvent
+        // This accepts the "risk" parameter from the UI HTTP payload injected upon resuming
+        builder.OnExternalEvent("UserApproved")
             .SendEventTo(new ProcessFunctionTargetBuilder(enforce, nameof(EnforcementStep.Execute), "risk"));
 
         return builder.Build();
