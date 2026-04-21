@@ -146,7 +146,7 @@ def generate_placeholder_frames(
         # Add frame counter text
         try:
             font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 48)
-        except (OSError, IOError):
+        except OSError:
             font = ImageFont.load_default()
 
         text = f"Frame {i + 1:04d}/{frame_count}"
