@@ -233,6 +233,14 @@ unless the user explicitly directs a control plane change:
 - NotebookLM MCP: Evaluated YES — `uv tool install notebooklm-mcp-cli`, cookie-based auth, 50 queries/day free, extends External Cognitive Suite
 - Awesome-AITools Catalog: 239 tools audited, 4 high-value candidates (MemPalace 96.6% recall, codesight 9-13x token reduction, NadirClaw 10ms LLM router, CLI-Anything agent-native CLIs)
 - antigravity-awesome-skills: 1,415 community skills cataloged at github.com/anthropics/awesome-claude-code-skills, 22 installed (gcp-cloud-run, stripe-integration, k6-load-testing, production-code-audit, scroll-experience, prompt-caching, cost-optimization, pci-compliance, saas-multi-tenant, micro-saas-launcher, startup-financial-modeling, progressive-web-app, seo-technical, andrej-karpathy, pydantic-ai, design-taste-frontend, deep-research, notebooklm, fastapi-pro, cloud-architect, gdpr-data-handling, payment-integration)
+- GitHub MCP Server: `@modelcontextprotocol/server-github` installed globally, registered in antigravity-mcp-config.json, token via GITHUB_PERSONAL_ACCESS_TOKEN in .env
+- GitHub-First Protocol: Rule 52 + PreToolUse hook (.claude/hooks/github-preflight.sh) injecting branch/CI/PR state on every Write|Edit|Bash
+- Claude Code Action CI/CD: 3 workflows (claude-code-action.yml PR review, claude-issue-triage.yml auto-classify, claude-security-scan.yml Cor.30+OWASP audit) — all Vertex AI OIDC, GitHub App token
+- GCP Workload Identity: SA `claude-code-action@shadowtag-omega-v4.iam.gserviceaccount.com`, `roles/aiplatform.user`, WIF pool `github-pool`, provider `github-provider`, bound to ShadowTag-v2/Monorepo-Uphillsnowball
+- Context Folder: `.context/ARCHITECTURE.md` + `.context/GITHUB_PROTOCOL.md` for cross-agent architecture awareness
+- Memory Kernel Analysis: 8 adoptable patterns (typed knowledge, temporal decay, spreading activation, closure metrics, token budgeting, view generation, event sourcing, file-first index) — selective adoption, NOT wholesale migration
+- daScript MCP Reference: 29-tool compiler-backed MCP server (protocol.das 56KB), 20 skills, 3-tier execution (interpreter→AOT→JIT), semantic hashing hybrid — reference only, do NOT import
+- Ruler Agent Config: intellectronica/ruler supports 23+ AI coding agents (AGENTS.md + MCP + Skills), single `.ruler/` source → auto-distribute to Claude/Copilot/Cursor/Antigravity — evaluate for config drift elimination
 
 ## Firestore-vs-Supabase verdict
 
