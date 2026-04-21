@@ -67,9 +67,7 @@ class LanceDBRetriever:
                 self._db = lancedb.connect(str(self.db_path))
                 logger.info("Connected to LanceDB at %s", self.db_path)
             except ImportError:
-                logger.error(
-                    "lancedb not installed. Install with: pip install lancedb"
-                )
+                logger.error("lancedb not installed. Install with: pip install lancedb")
                 raise
         return self._db
 
@@ -173,10 +171,7 @@ class LanceDBRetriever:
             List of RetrievedChunk with fused scores.
         """
         try:
-            search = (
-                self.table.search(query, query_type="hybrid")
-                .limit(k)
-            )
+            search = self.table.search(query, query_type="hybrid").limit(k)
             results = search.to_pandas()
 
             chunks = []

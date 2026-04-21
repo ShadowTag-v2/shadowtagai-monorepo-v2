@@ -65,6 +65,7 @@ TIER_QUOTAS = {
 @dataclass
 class TenantContext:
     """Extracted tenant context from request."""
+
     firm_id: str
     attorney_id: str | None = None
     session_id: str | None = None
@@ -75,6 +76,7 @@ class TenantContext:
 @dataclass
 class ProxyToken:
     """Ephemeral proxy token for LiteLLM."""
+
     token: str
     firm_id: str
     session_id: str
@@ -152,9 +154,7 @@ def check_quota(ctx: TenantContext) -> bool:
         _hourly_counts[ctx.firm_id] = []
 
     # Purge expired entries
-    _hourly_counts[ctx.firm_id] = [
-        ts for ts in _hourly_counts[ctx.firm_id] if now - ts < window
-    ]
+    _hourly_counts[ctx.firm_id] = [ts for ts in _hourly_counts[ctx.firm_id] if now - ts < window]
 
     if len(_hourly_counts[ctx.firm_id]) >= max_calls:
         return False

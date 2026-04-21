@@ -99,7 +99,10 @@ class GeminiClient:
         self.pricing = {
             "gemini-3.1-flash-lite-preview": {"input": 3.50, "output": 10.50},  # USD per 1M tokens
             "gemini-3.1-flash-lite-preview-vision": {"input": 3.50, "output": 10.50},
-            "gemini-3.1-flash-lite-preview": {"input": 0.35, "output": 1.05},  # Cheaper, faster model
+            "gemini-3.1-flash-lite-preview": {
+                "input": 0.35,
+                "output": 1.05,
+            },  # Cheaper, faster model
             "textembedding-gecko": 0.025,  # Per 1K characters
         }
 
@@ -363,7 +366,9 @@ class GeminiClient:
             }
 
         """
-        await self._check_rate_limit("gemini-3.1-flash-lite-preview")  # Use faster model for metadata
+        await self._check_rate_limit(
+            "gemini-3.1-flash-lite-preview"
+        )  # Use faster model for metadata
 
         prompt = f"""
         Based on this {content_type} content description, generate optimized metadata:

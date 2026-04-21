@@ -58,9 +58,7 @@ def inject_into_claude_md(block: str) -> bool:
     marker = "## Intelligence Pipeline —"
     if marker in content:
         # Replace existing block
-        pattern = re.compile(
-            r"## Intelligence Pipeline —.*?(?=\n## |\Z)", re.DOTALL
-        )
+        pattern = re.compile(r"## Intelligence Pipeline —.*?(?=\n## |\Z)", re.DOTALL)
         content = pattern.sub(block.strip(), content)
     else:
         content += "\n" + block

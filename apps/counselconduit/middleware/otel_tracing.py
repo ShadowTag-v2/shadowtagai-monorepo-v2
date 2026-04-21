@@ -64,15 +64,11 @@ class _NoOpSpan:
 class _NoOpTracer:
     """No-op tracer for when OTel is not installed."""
 
-    def start_as_current_span(
-        self, name: str, **kwargs: Any
-    ) -> _NoOpSpan:
+    def start_as_current_span(self, name: str, **kwargs: Any) -> _NoOpSpan:
         return _NoOpSpan()
 
 
-def trace_sandbox_quota_check(
-    firm_id: str, tier: str, current_usage: int, limit: int
-) -> dict[str, Any]:
+def trace_sandbox_quota_check(firm_id: str, tier: str, current_usage: int, limit: int) -> dict[str, Any]:
     """Trace a sandbox quota enforcement check."""
     tracer = get_tracer()
     with tracer.start_as_current_span("sandbox.quota_check") as span:
@@ -94,9 +90,7 @@ def trace_sandbox_quota_check(
         return {"allowed": allowed, "remaining": max(0, limit - current_usage)}
 
 
-def trace_gdpr_operation(
-    operation: str, firm_id: str, attorney_id: str = ""
-) -> dict[str, Any]:
+def trace_gdpr_operation(operation: str, firm_id: str, attorney_id: str = "") -> dict[str, Any]:
     """Trace a GDPR endpoint operation."""
     tracer = get_tracer()
     start = time.monotonic()
@@ -111,9 +105,7 @@ def trace_gdpr_operation(
     return {"operation": operation, "duration_ms": round(duration_ms, 2)}
 
 
-def trace_model_invocation(
-    model_name: str, firm_id: str, input_tokens: int, output_tokens: int
-) -> dict[str, Any]:
+def trace_model_invocation(model_name: str, firm_id: str, input_tokens: int, output_tokens: int) -> dict[str, Any]:
     """Trace an LLM model invocation for billing and monitoring."""
     tracer = get_tracer()
     with tracer.start_as_current_span("llm.invoke") as span:

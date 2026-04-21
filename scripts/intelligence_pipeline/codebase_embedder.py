@@ -31,14 +31,24 @@ GCP_PROJECT_ID = os.environ.get("GCP_PROJECT_ID", "shadowtag-omega-v4")
 REGION = "us-central1"
 EMBED_MODEL = "text-embedding-005"
 EMBED_ENDPOINT = (
-    f"https://{REGION}-aiplatform.googleapis.com/v1/projects/"
-    f"{GCP_PROJECT_ID}/locations/{REGION}/publishers/google/models/{EMBED_MODEL}:predict"
+    f"https://{REGION}-aiplatform.googleapis.com/v1/projects/{GCP_PROJECT_ID}/locations/{REGION}/publishers/google/models/{EMBED_MODEL}:predict"
 )
 
 EXCLUDED_DIRS = {
-    "node_modules", "archive", "third_party", ".venv", "__pycache__",
-    "build", "dist", "bazel-out", ".git", ".gitnexus", "external_repos",
-    "external_sdks", "reference_architectures", "deep-archive",
+    "node_modules",
+    "archive",
+    "third_party",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "bazel-out",
+    ".git",
+    ".gitnexus",
+    "external_repos",
+    "external_sdks",
+    "reference_architectures",
+    "deep-archive",
 }
 INCLUDED_EXTENSIONS = {".py", ".go", ".ts", ".tsx", ".js", ".jsx"}
 MAX_CHUNK_SIZE = 2000  # characters per chunk
@@ -56,7 +66,7 @@ def embed_batch(texts: list[str], token: str) -> list[list[float]]:
     import requests
 
     payload = {
-        "instances": [{"content": t[:EMBED_MODEL and 3000]} for t in texts],
+        "instances": [{"content": t[: EMBED_MODEL and 3000]} for t in texts],
     }
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
     resp = requests.post(EMBED_ENDPOINT, json=payload, headers=headers, timeout=60)
@@ -99,12 +109,14 @@ def save_state(state: dict) -> None:
 
 def get_or_create_code_table(db) -> object:
     """Get or create the code_files table in LanceDB."""
-    schema = pa.schema([
-        pa.field("file_path", pa.string()),
-        pa.field("chunk_index", pa.int32()),
-        pa.field("text", pa.string()),
-        pa.field("vector", pa.list_(pa.float32(), 768)),
-    ])
+    schema = pa.schema(
+        [
+            pa.field("file_path", pa.string()),
+            pa.field("chunk_index", pa.int32()),
+            pa.field("text", pa.string()),
+            pa.field("vector", pa.list_(pa.float32(), 768)),
+        ]
+    )
     if "code_files" in db.table_names():
         return db.open_table("code_files")
     return db.create_table("code_files", schema=schema)
@@ -139,7 +151,7 @@ def run_codebase_embedder(cfg=None) -> dict:
             continue
 
         # Chunk the file
-        chunks = [content[i:i + MAX_CHUNK_SIZE] for i in range(0, len(content), MAX_CHUNK_SIZE)]
+        chunks = [content[i : i + MAX_CHUNK_SIZE] for i in range(0, len(content), MAX_CHUNK_SIZE)]
         for idx, chunk in enumerate(chunks):
             batch_texts.append(chunk)
             batch_meta.append({"file_path": str(fpath.relative_to(REPO_ROOT)), "chunk_index": idx, "text": chunk})

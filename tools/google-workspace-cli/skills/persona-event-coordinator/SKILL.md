@@ -38,4 +38,3 @@ Plan and manage events — scheduling, invitations, and logistics.
 - Use `gws calendar +agenda --days 30` for long-range event planning.
 - Create a dedicated calendar for each major event series.
 - Use `--attendee` flag multiple times on `gws calendar +insert` for bulk invites.
-

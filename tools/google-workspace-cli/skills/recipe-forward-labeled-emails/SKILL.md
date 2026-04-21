@@ -26,4 +26,3 @@ Find Gmail messages with a specific label and forward them to another address.
 3. Forward via new email: `gws gmail +send --to manager@company.com --subject 'FW: [Original Subject]' --body 'Forwarding for your review:
 
 [Original Message Body]'`
-

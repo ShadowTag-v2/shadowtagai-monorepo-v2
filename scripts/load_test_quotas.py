@@ -20,6 +20,7 @@ from dataclasses import dataclass
 @dataclass
 class LoadTestResult:
     """Results from a single load test run."""
+
     firm_id: str
     tier: str
     total_requests: int

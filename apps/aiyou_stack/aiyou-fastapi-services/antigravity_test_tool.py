@@ -13,9 +13,15 @@ class TestAntigravityLogic(unittest.TestCase):
         self.assertIn("list_files_tool", funcs)
 
     def test_pick_model(self):
-        self.assertEqual(antigravity_service.pick_model("FREE"), "models/gemini-3.1-flash-lite-preview")
-        self.assertEqual(antigravity_service.pick_model("FLASH"), "models/gemini-3.1-flash-lite-preview")
-        self.assertEqual(antigravity_service.pick_model("PRO"), "models/gemini-3.1-flash-lite-preview")
+        self.assertEqual(
+            antigravity_service.pick_model("FREE"), "models/gemini-3.1-flash-lite-preview"
+        )
+        self.assertEqual(
+            antigravity_service.pick_model("FLASH"), "models/gemini-3.1-flash-lite-preview"
+        )
+        self.assertEqual(
+            antigravity_service.pick_model("PRO"), "models/gemini-3.1-flash-lite-preview"
+        )
 
     @patch("subprocess.check_output")
     def test_code_search_tool_execution(self, mock_subprocess):

@@ -29,4 +29,3 @@ Save a Gmail message body into a Google Doc for archival or reference.
 Subject: Important Update
 
 [EMAIL BODY]'`
-

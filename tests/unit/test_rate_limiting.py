@@ -48,7 +48,7 @@ class TestRateLimiting:
         """Should allow exactly MAX requests within the window."""
         _check_rate_limit, _, max_requests, _ = _get_rate_limiter()
         for i in range(max_requests):
-            assert _check_rate_limit("firm_002") is True, f"Request {i+1} should pass"
+            assert _check_rate_limit("firm_002") is True, f"Request {i + 1} should pass"
 
     def test_blocks_after_max_requests(self):
         """Should block after MAX requests within the window."""

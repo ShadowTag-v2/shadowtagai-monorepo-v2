@@ -18,23 +18,27 @@ REPO_ROOT = Path(__file__).parent.parent.parent
 LANCEDB_DIR = REPO_ROOT / "data" / "lancedb"
 
 COMPARTMENTS = {
-    "workspace_knowledge": pa.schema([
-        pa.field("id", pa.string()),
-        pa.field("title", pa.string()),
-        pa.field("source", pa.string()),
-        pa.field("text", pa.string()),
-        pa.field("vector", pa.list_(pa.float32(), 768)),
-        pa.field("domain", pa.string()),
-        pa.field("ingested_at", pa.string()),
-    ]),
-    "external_research": pa.schema([
-        pa.field("id", pa.string()),
-        pa.field("query", pa.string()),
-        pa.field("source_url", pa.string()),
-        pa.field("text", pa.string()),
-        pa.field("vector", pa.list_(pa.float32(), 768)),
-        pa.field("fetched_at", pa.string()),
-    ]),
+    "workspace_knowledge": pa.schema(
+        [
+            pa.field("id", pa.string()),
+            pa.field("title", pa.string()),
+            pa.field("source", pa.string()),
+            pa.field("text", pa.string()),
+            pa.field("vector", pa.list_(pa.float32(), 768)),
+            pa.field("domain", pa.string()),
+            pa.field("ingested_at", pa.string()),
+        ]
+    ),
+    "external_research": pa.schema(
+        [
+            pa.field("id", pa.string()),
+            pa.field("query", pa.string()),
+            pa.field("source_url", pa.string()),
+            pa.field("text", pa.string()),
+            pa.field("vector", pa.list_(pa.float32(), 768)),
+            pa.field("fetched_at", pa.string()),
+        ]
+    ),
 }
 
 

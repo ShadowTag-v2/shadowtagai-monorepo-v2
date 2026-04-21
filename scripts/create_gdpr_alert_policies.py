@@ -26,8 +26,7 @@ def create_rate_limit_alert() -> dict:
     policy = {
         "displayName": "GDPR Endpoint 429 Rate Limit Alert",
         "documentation": {
-            "content": "GDPR endpoints are returning 429 Too Many Requests at a high rate. "
-            "This may indicate abuse or a misconfigured client.",
+            "content": "GDPR endpoints are returning 429 Too Many Requests at a high rate. This may indicate abuse or a misconfigured client.",
             "mimeType": "text/markdown",
         },
         "conditions": [
@@ -67,8 +66,7 @@ def create_dlq_alert() -> dict:
     policy = {
         "displayName": "GDPR Dead Letter Queue Alert",
         "documentation": {
-            "content": "Failed GDPR deletion tasks have been routed to the dead-letter queue. "
-            "Manual investigation required.",
+            "content": "Failed GDPR deletion tasks have been routed to the dead-letter queue. Manual investigation required.",
             "mimeType": "text/markdown",
         },
         "conditions": [

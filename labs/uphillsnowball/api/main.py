@@ -136,10 +136,23 @@ TASKS: list[dict[str, Any]] = []
 # ── 17-Layer Gauntlet ──
 
 GAUNTLET_LAYERS = [
-    "Identity Check", "Role Authorization", "Session Validity", "Rate Limit",
-    "Content Safety", "Command Safety", "Path Protection", "Gemini Zone",
-    "LOC Ceiling", "Dependency Check", "Model Isolation", "Output Size",
-    "Network Egress", "Cost Guard", "Git Safety", "Telemetry Airgap", "RKILL Switch",
+    "Identity Check",
+    "Role Authorization",
+    "Session Validity",
+    "Rate Limit",
+    "Content Safety",
+    "Command Safety",
+    "Path Protection",
+    "Gemini Zone",
+    "LOC Ceiling",
+    "Dependency Check",
+    "Model Isolation",
+    "Output Size",
+    "Network Egress",
+    "Cost Guard",
+    "Git Safety",
+    "Telemetry Airgap",
+    "RKILL Switch",
 ]
 
 BLOCKED_COMMANDS = {"rm -rf", "sudo", "chmod 777", "mkfs", "dd if=", ":(){ :|:& };:", "fork bomb"}
@@ -206,9 +219,15 @@ def evaluate_gauntlet(req: GauntletRequest) -> GauntletResult:
                 detail = "RKILL: upstream layer blocked"
 
         elapsed = (time.monotonic() - layer_start) * 1000
-        layers.append(GauntletLayerResult(
-            layer_id=i, name=name, verdict=verdict, detail=detail, elapsed_ms=round(elapsed, 2),
-        ))
+        layers.append(
+            GauntletLayerResult(
+                layer_id=i,
+                name=name,
+                verdict=verdict,
+                detail=detail,
+                elapsed_ms=round(elapsed, 2),
+            )
+        )
 
     total_elapsed = (time.monotonic() - start) * 1000
     verdict_str = "PASS" if passed else "BLOCKED"
@@ -289,10 +308,12 @@ async def evaluate(body: GauntletRequest) -> GauntletResult:
 async def _async_sleep(seconds: float) -> None:
     """Async sleep wrapper."""
     import asyncio
+
     await asyncio.sleep(seconds)
 
 
 if __name__ == "__main__":
     import uvicorn
+
     port = int(os.environ.get("PORT", "8080"))
     uvicorn.run(app, host="0.0.0.0", port=port)
