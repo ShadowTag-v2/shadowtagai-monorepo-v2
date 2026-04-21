@@ -130,7 +130,8 @@ def prune(db_path: Path | str, keep: int = 0) -> dict:
 
         before_bytes = len(row[0].encode("utf-8"))
         threads = state_dict.get(THREADS_FIELD, [])
-        len(json.dumps(threads).encode("utf-8"))
+        threads_bytes = len(json.dumps(threads).encode("utf-8"))
+        print(f"  📊 chatThreads payload: {threads_bytes / 1024:.1f} KB across {len(threads)} threads")
 
         # Keep N newest threads (threads are ordered oldest-first)
         if keep > 0 and len(threads) > keep:
@@ -143,7 +144,7 @@ def prune(db_path: Path | str, keep: int = 0) -> dict:
         for k in error_keys:
             del state_dict[k]
         if error_keys:
-            pass
+            print(f"  🧹 Purged {len(error_keys)} error-stack keys")
 
         new_value = json.dumps(state_dict)
         after_bytes = len(new_value.encode("utf-8"))
@@ -203,17 +204,21 @@ def monitor_mode(threshold_mb: float = 20.0) -> None:
     """Runs a noisy background monitor to check DB size."""
     db_path = locate_db()
     if not db_path:
+        print("❌ Could not locate state.vscdb")
         sys.exit(1)
 
+    print(f"👁️  Monitoring {db_path} (threshold: {threshold_mb:.0f} MB)")
 
     while True:
         size_mb = db_path.stat().st_size / (1024 * 1024)
-        datetime.now().strftime("%H:%M:%S")
+        ts = datetime.now().strftime("%H:%M:%S")
 
         if size_mb > threshold_mb:
+            print(f"  🚨 [{ts}] BLOAT DETECTED: {size_mb:.1f} MB > {threshold_mb:.0f} MB threshold")
             trigger_mac_notification(size_mb)
             time.sleep(3600)
         else:
+            print(f"  ✅ [{ts}] OK: {size_mb:.1f} MB")
             time.sleep(600)
 
 
@@ -221,57 +226,79 @@ def cli_write(keep: int = 0) -> None:
     """CLI entry for --write mode."""
     db_path = locate_db()
     if not db_path:
+        print("❌ Could not locate state.vscdb in any known path.")
         sys.exit(1)
 
-    db_path.stat().st_size
+    size_mb = db_path.stat().st_size / (1024 * 1024)
+    print(f"📂 Database: {db_path} ({size_mb:.1f} MB)")
 
     # Inspect first
     metrics = inspect(db_path)
 
     if not metrics["found"]:
+        print("⚠️  GCA state key not found in database. Nothing to prune.")
         return
 
     if not metrics["valid_json"]:
+        print("⚠️  GCA state is corrupted (invalid JSON). Cannot prune safely.")
         return
 
+    print(f"  🔍 GCA state: {metrics['gca_total_bytes'] / 1024:.1f} KB total, {metrics['thread_count']} threads")
 
     # Backup
     backup_path = f"{db_path}.backup.{datetime.now().strftime('%Y%m%dT%H%M%S')}"
     shutil.copy2(str(db_path), backup_path)
+    print(f"  💾 Backup saved: {backup_path}")
 
     # Prune
     result = prune(db_path, keep=keep)
     if not result["success"]:
         if "database is locked" in result.get("reason", ""):
-            pass
+            print("🔒 Database is locked! Close your IDE (Cmd+Q) and try again.")
         else:
-            pass
+            print(f"❌ Prune failed: {result.get('reason', 'unknown')}")
         return
 
+    freed_kb = result["freed_bytes"] / 1024
+    print(f"  ✂️  Trimmed {result['threads_before']} → {result['threads_after']} threads (freed {freed_kb:.1f} KB)")
 
     # VACUUM
     vac = vacuum_db(db_path)
     if vac["success"]:
-        (vac["recovered"] / vac["before_size"] * 100) if vac["before_size"] > 0 else 0
+        pct = (vac["recovered"] / vac["before_size"] * 100) if vac["before_size"] > 0 else 0
+        print(f"  🗜️  VACUUM: {vac['before_size'] / 1024:.0f} KB → {vac['after_size'] / 1024:.0f} KB ({pct:.0f}% recovered)")
+    print("✅ Done.")
 
 
 def cli_dry_run() -> None:
     """CLI entry for dry-run mode (default)."""
     db_path = locate_db()
     if not db_path:
+        print("❌ Could not locate state.vscdb in any known path.")
         sys.exit(1)
 
-    db_path.stat().st_size
+    size_mb = db_path.stat().st_size / (1024 * 1024)
+    print(f"📂 Database: {db_path} ({size_mb:.1f} MB)")
 
     metrics = inspect(db_path)
     if not metrics["found"]:
+        print("⚠️  GCA state key not found.")
         return
 
     if not metrics.get("valid_json"):
+        print("⚠️  GCA state is corrupted (invalid JSON).")
         return
 
+    print(f"  🔍 GCA state: {metrics['gca_total_bytes'] / 1024:.1f} KB total")
+    threads_kb = metrics["threads_bytes"] / 1024
+    print(f"  💬 chatThreads: {threads_kb:.1f} KB across {metrics['thread_count']} threads")
+    print(f"  📋 Other keys: {metrics['other_key_count']}")
 
-    metrics["threads_bytes"]
+    if size_mb > BLOAT_THRESHOLD_MB:
+        print(f"  🚨 BLOATED! ({size_mb:.1f} MB > {BLOAT_THRESHOLD_MB} MB threshold)")
+        print("  👉 Run with --write to prune.")
+    else:
+        print(f"  ✅ Healthy ({size_mb:.1f} MB)")
 
 
 if __name__ == "__main__":
@@ -292,8 +319,8 @@ if __name__ == "__main__":
         if db_path:
             result = vacuum_db(db_path)
             if result["success"]:
-                pass
+                print(f"🗜️  VACUUM: {result['before_size'] / 1024:.0f} KB → {result['after_size'] / 1024:.0f} KB")
             else:
-                pass
+                print(f"❌ VACUUM failed: {result.get('reason', 'unknown')}")
     else:
         cli_dry_run()
