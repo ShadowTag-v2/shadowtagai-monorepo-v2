@@ -115,12 +115,55 @@ jobs:
           fi
 
   # ─────────────────────────────────────────────
+  # Phase 2.5: Ruler Agent Config Drift Detection
+  # ─────────────────────────────────────────────
+  phase-2-5-ruler-drift:
+    name: "Phase 2.5 — Ruler Config Drift"
+    runs-on: ubuntu-latest
+    needs: phase-2-lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Ruler
+        run: npm install -g @intellectronica/ruler
+
+      - name: Check for .ruler/ directory
+        id: check-ruler
+        run: |
+          if [ -d ".ruler" ]; then
+            echo "ruler_exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ruler_exists=false" >> "$GITHUB_OUTPUT"
+            echo "⚠️ No .ruler/ directory found — skipping drift check"
+          fi
+
+      - name: Run Ruler Apply (dry-run)
+        if: steps.check-ruler.outputs.ruler_exists == 'true'
+        run: |
+          echo "📏 Checking agent config drift against .ruler/ source..."
+          ruler apply 2>&1
+          if [ -n "$(git diff --name-only)" ]; then
+            echo "❌ RULER DRIFT DETECTED — agent configs diverged from .ruler/ source"
+            git diff --stat
+            git diff --name-only
+            echo "Run 'ruler apply' locally to fix."
+            exit 1
+          else
+            echo "✅ All agent configs match .ruler/ source"
+          fi
+
+  # ─────────────────────────────────────────────
   # Phase 3: Tactical UI Auditor
   # ─────────────────────────────────────────────
   phase-3-ui-audit:
     name: "Phase 3 — Tactical UI Auditor"
     runs-on: ubuntu-latest
-    needs: phase-2-lint
+    needs: [phase-2-lint, phase-2-5-ruler-drift]
     steps:
       - uses: actions/checkout@v4
 
@@ -156,7 +199,7 @@ jobs:
   phase-4-autocommit:
     name: "Phase 4 — Auto-Commit Fixes"
     runs-on: ubuntu-latest
-    needs: [phase-2-lint, phase-3-ui-audit]
+    needs: [phase-2-lint, phase-2-5-ruler-drift, phase-3-ui-audit]
     if: needs.phase-2-lint.outputs.fixes_applied == 'true' && github.event_name == 'push'
     steps:
       - uses: actions/checkout@v4
