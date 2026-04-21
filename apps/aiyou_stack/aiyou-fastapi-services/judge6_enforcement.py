@@ -264,7 +264,9 @@ class GeminiValidator:
 
         if GEMINI_AVAILABLE and self.api_key:
             genai.configure(api_key=self.api_key)
-            self.model = genai.GenerativeModel("gemini-3.1-flash-lite-preview", tools="code_execution")
+            self.model = genai.GenerativeModel(
+                "gemini-3.1-flash-lite-preview", tools="code_execution"
+            )
             self.enabled = True
             logger.info("Gemini validator initialized")
         else:

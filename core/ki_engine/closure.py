@@ -25,9 +25,7 @@ from core.ki_engine.schema import KIMetadata
 
 
 # Pattern to match KI ID references in body text
-KI_REF_PATTERN = re.compile(
-    r"\b(FACT|DECI|CONS|BELI|PREF|OPEN|PROC|ENTS|CONF)-\d{4}-\d{2}-\d{2}[A-Za-z0-9-]*"
-)
+KI_REF_PATTERN = re.compile(r"\b(FACT|DECI|CONS|BELI|PREF|OPEN|PROC|ENTS|CONF)-\d{4}-\d{2}-\d{2}[A-Za-z0-9-]*")
 
 
 @dataclass

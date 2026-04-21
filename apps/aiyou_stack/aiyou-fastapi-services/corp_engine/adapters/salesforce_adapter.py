@@ -621,7 +621,6 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
 
         url = f"{self._instance_url}{endpoint}"
 
-
         # Placeholder - actual HTTP call would go here
         logger.debug(f"Salesforce API: {method} {url}")
 
@@ -630,7 +629,6 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
     async def _request_token(self, consumer_secret: str) -> dict[str, Any] | None:
         """Request OAuth2 access token"""
         token_url = f"{self.sf_config.instance_url}/services/oauth2/token"
-
 
         # Placeholder - actual HTTP call would go here
         logger.debug(f"Requesting token from {token_url}")

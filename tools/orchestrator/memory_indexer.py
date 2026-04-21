@@ -126,10 +126,7 @@ def _write_hot_pointers(entries: list[dict[str, Any]]) -> None:
             lines.append(entry["raw"])
         else:
             tags_str = ", ".join(entry.get("tags", []))
-            lines.append(
-                f"- **{entry['file']}** {entry['lines']} | "
-                f"{entry['summary']} | [{tags_str}]"
-            )
+            lines.append(f"- **{entry['file']}** {entry['lines']} | {entry['summary']} | [{tags_str}]")
 
     MEMORY_MD_PATH.write_text("\n".join(lines) + "\n")
 

@@ -34,9 +34,7 @@ def render_index(kis: list[KIMetadata]) -> str:
         ki_type = ki.ki_type.value if hasattr(ki.ki_type, "value") else str(ki.ki_type)
         status = ki.status.value if hasattr(ki.status, "value") else str(ki.status)
         tags = ", ".join(ki.tags[:5])
-        lines.append(
-            f"| {ki.name} | {ki_type} | {status} | {ki.confidence:.1f} | {ki.age_days:.0f} | {tags} |"
-        )
+        lines.append(f"| {ki.name} | {ki_type} | {status} | {ki.confidence:.1f} | {ki.age_days:.0f} | {tags} |")
 
     lines.append("")
     return "\n".join(lines) + "\n"

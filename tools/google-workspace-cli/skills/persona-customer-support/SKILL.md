@@ -36,4 +36,3 @@ Manage customer support — track tickets, respond, escalate issues.
 - Use `gws gmail +triage --labels` to see email categories at a glance.
 - Set up Gmail filters for auto-labeling support requests.
 - Use `--format table` for quick status dashboard views.
-

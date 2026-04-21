@@ -77,8 +77,7 @@ class DeletionReceipt(BaseModel):
     deletion_date: str  # ISO 8601 — 30 days from now
     receipt_id: str
     message: str = (
-        "Your account and all associated data will be permanently deleted within 30 days. "
-        "You will receive a confirmation email when complete."
+        "Your account and all associated data will be permanently deleted within 30 days. You will receive a confirmation email when complete."
     )
 
 
@@ -114,9 +113,7 @@ async def _schedule_hard_delete(receipt_id: str, firm_id: str, deletion_date: st
                 http_method=tasks_v2.HttpMethod.POST,
                 url=f"{_SERVICE_URL}/account/_execute-delete",
                 headers={"Content-Type": "application/json"},
-                body=json.dumps(
-                    {"receipt_id": receipt_id, "firm_id": firm_id}
-                ).encode(),
+                body=json.dumps({"receipt_id": receipt_id, "firm_id": firm_id}).encode(),
             ),
             schedule_time=scheduled_time,
         )
@@ -333,9 +330,7 @@ async def check_deletion_status(receipt_id: str) -> dict[str, Any]:
         # Note: In production, this would use the caller's firm_id from auth context
         from google.cloud.firestore_v1.base_query import FieldFilter
 
-        query = db.collection_group("gdpr").where(
-            filter=FieldFilter("receipt_id", "==", receipt_id)
-        )
+        query = db.collection_group("gdpr").where(filter=FieldFilter("receipt_id", "==", receipt_id))
         docs = []
         async for doc in query.stream():
             docs.append(doc.to_dict())
@@ -419,10 +414,12 @@ async def execute_hard_delete(payload: dict[str, Any]) -> dict[str, str]:
 
         # 2. Mark GDPR request as completed
         gdpr_ref = firm_ref.collection("gdpr").document(receipt_id)
-        await gdpr_ref.update({
-            "status": "completed",
-            "completed_at": datetime.now(UTC).isoformat(),
-        })
+        await gdpr_ref.update(
+            {
+                "status": "completed",
+                "completed_at": datetime.now(UTC).isoformat(),
+            }
+        )
 
         # 3. Delete firm document itself (but NOT audit_log)
         await firm_ref.delete()

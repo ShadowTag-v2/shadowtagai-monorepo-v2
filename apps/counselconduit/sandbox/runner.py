@@ -163,12 +163,7 @@ class SandboxRunner:
     def cleanup_expired(self, max_age_seconds: int = 3600) -> int:
         """Remove completed executions older than max_age_seconds."""
         now = datetime.now(UTC)
-        expired = [
-            eid
-            for eid, ex in self._executions.items()
-            if ex.completed_at
-            and (now - ex.completed_at).total_seconds() > max_age_seconds
-        ]
+        expired = [eid for eid, ex in self._executions.items() if ex.completed_at and (now - ex.completed_at).total_seconds() > max_age_seconds]
         for eid in expired:
             del self._executions[eid]
         if expired:

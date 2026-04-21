@@ -32,8 +32,7 @@ GCP_PROJECT_ID = os.environ.get("GCP_PROJECT_ID", "shadowtag-omega-v4")
 REGION = "us-central1"
 MODEL = "gemini-3.1-flash-lite-preview"
 ENDPOINT = (
-    f"https://{REGION}-aiplatform.googleapis.com/v1/projects/"
-    f"{GCP_PROJECT_ID}/locations/{REGION}/publishers/google/models/{MODEL}:generateContent"
+    f"https://{REGION}-aiplatform.googleapis.com/v1/projects/{GCP_PROJECT_ID}/locations/{REGION}/publishers/google/models/{MODEL}:generateContent"
 )
 TEMPERATURE = 0.3
 MAX_TOKENS = 800
@@ -96,7 +95,7 @@ def classify_batch_llm(docs: list[dict], token: str) -> list[dict]:
     prompt = (
         "Classify each document into exactly ONE domain: "
         "tech, biz, memory, arch, research, skills.\n\n"
-        "Return JSON array: [{\"id\": ..., \"domain\": ...}]\n\n"
+        'Return JSON array: [{"id": ..., "domain": ...}]\n\n'
     )
     for doc in docs:
         prompt += f"- id={doc['id']}, title={doc.get('title', 'unknown')}\n"

@@ -138,7 +138,12 @@ class ChatSummary(BaseModel):
                     "https://github.com/org/repo/issues/123",
                     "https://pnkln.ai/docs/ingestion-layer",
                 ],
-                "tags": ["ingestion", "gemini-3.1-flash-lite-preview", "pre-production", "architecture"],
+                "tags": [
+                    "ingestion",
+                    "gemini-3.1-flash-lite-preview",
+                    "pre-production",
+                    "architecture",
+                ],
             },
         }
 

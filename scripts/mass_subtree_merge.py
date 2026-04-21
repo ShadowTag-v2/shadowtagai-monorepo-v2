@@ -33,11 +33,7 @@ def get_staged_repos() -> list[str]:
     if not STAGING_DIR.exists():
         print(f"ERROR: Staging dir {STAGING_DIR} does not exist.")
         sys.exit(1)
-    repos = sorted(
-        d.name
-        for d in STAGING_DIR.iterdir()
-        if d.is_dir() and not d.name.startswith(".")
-    )
+    repos = sorted(d.name for d in STAGING_DIR.iterdir() if d.is_dir() and not d.name.startswith("."))
     return repos
 
 
@@ -63,11 +59,13 @@ def merge_repo(repo_name: str) -> bool:
     staging_git = staging_path / ".git"
     if staging_git.exists():
         import shutil
+
         shutil.rmtree(staging_git)
 
     # Create target dir and copy files
     target_path.mkdir(parents=True, exist_ok=True)
     import shutil
+
     for item in staging_path.iterdir():
         dest = target_path / item.name
         if item.is_dir():
@@ -84,7 +82,9 @@ def merge_repo(repo_name: str) -> bool:
     # Commit with squash-style message
     result = run(
         [
-            "git", "commit", "-m",
+            "git",
+            "commit",
+            "-m",
             f"fold-in: squash-merge ehanc69/{repo_name} → {target_path}\n\n"
             f"Source: https://github.com/ehanc69/{repo_name}\n"
             f"Method: copy + squash (single commit, no history)",

@@ -26,7 +26,9 @@ def swiper_plan(query: str, model_name: str = "gemini-3.1-flash-lite-preview-001
     return response.text
 
 
-def swiper_visualize(img_b64: str, gear: str, model_name: str = "gemini-3.1-flash-lite-preview-001") -> str:
+def swiper_visualize(
+    img_b64: str, gear: str, model_name: str = "gemini-3.1-flash-lite-preview-001"
+) -> str:
     """Visualize gear placement in a scene."""
     model = GenerativeModel(model_name)
     prompt_text = f"Blend {gear} into scene, return JSON placements and style."

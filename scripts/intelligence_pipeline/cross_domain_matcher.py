@@ -31,8 +31,7 @@ GCP_PROJECT_ID = os.environ.get("GCP_PROJECT_ID", "shadowtag-omega-v4")
 REGION = "us-central1"
 EMBED_MODEL = "text-embedding-005"
 EMBED_ENDPOINT = (
-    f"https://{REGION}-aiplatform.googleapis.com/v1/projects/"
-    f"{GCP_PROJECT_ID}/locations/{REGION}/publishers/google/models/{EMBED_MODEL}:predict"
+    f"https://{REGION}-aiplatform.googleapis.com/v1/projects/{GCP_PROJECT_ID}/locations/{REGION}/publishers/google/models/{EMBED_MODEL}:predict"
 )
 TOP_K = 3
 BATCH_SIZE = 10
@@ -105,7 +104,9 @@ def get_git_commits(limit: int = 500) -> list[dict]:
     try:
         result = subprocess.run(
             ["git", "log", f"--max-count={limit}", "--format=%H|%s"],
-            capture_output=True, text=True, cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True,
+            cwd=str(REPO_ROOT),
         )
         commits = []
         for line in result.stdout.strip().split("\n"):
@@ -135,10 +136,7 @@ def run_cross_domain_matcher(cfg=None) -> dict:
         code_tbl = db.open_table("code_files")
 
     # Filter unmatched docs
-    unmatched = [
-        row for _, row in docs_df.iterrows()
-        if str(row.get("id", row.name)) not in matched
-    ]
+    unmatched = [row for _, row in docs_df.iterrows() if str(row.get("id", row.name)) not in matched]
     logger.info(f"Unmatched docs: {len(unmatched)} (already matched: {len(matched)})")
 
     if cfg and cfg.dry_run:

@@ -141,7 +141,6 @@ function QueueCard({
             placeholder="Rejection reason (required)"
             value={reason}
             onChange={(e) => setReason(e.target.value)}
-            autoFocus
           />
           <div className="action-row">
             <button
@@ -162,7 +161,11 @@ function QueueCard({
         </div>
       ) : (
         <div className="action-row">
-          <button type="button" className="btn-approve" onClick={() => onApprove(item.extraction_id)}>
+          <button
+            type="button"
+            className="btn-approve"
+            onClick={() => onApprove(item.extraction_id)}
+          >
             Approve
           </button>
           <button type="button" className="btn-reject-outline" onClick={() => setRejecting(true)}>

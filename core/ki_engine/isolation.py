@@ -23,7 +23,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 
-
 @dataclass
 class IsolationConfig:
     """Configuration for per-agent isolation."""
@@ -138,10 +137,7 @@ def list_agent_kis(ki_dir: Path, agent_id: str) -> list[str]:
     agent_dir = resolve_agent_dir(ki_dir, agent_id)
     if not agent_dir.exists():
         return []
-    return [
-        d.name for d in sorted(agent_dir.iterdir())
-        if d.is_dir() and (d / "metadata.json").exists()
-    ]
+    return [d.name for d in sorted(agent_dir.iterdir()) if d.is_dir() and (d / "metadata.json").exists()]
 
 
 def list_shared_kis(ki_dir: Path) -> list[str]:
@@ -149,7 +145,4 @@ def list_shared_kis(ki_dir: Path) -> list[str]:
     sd = shared_dir(ki_dir)
     if not sd.exists():
         return []
-    return [
-        d.name for d in sorted(sd.iterdir())
-        if d.is_dir() and (d / "metadata.json").exists()
-    ]
+    return [d.name for d in sorted(sd.iterdir()) if d.is_dir() and (d / "metadata.json").exists()]

@@ -311,6 +311,7 @@ def activate(entries: list[KIEntry], ki_dir: Path, report: DreamReport):
 
     # Run activation with top 5 most common tags as seeds
     from collections import Counter
+
     tag_counts = Counter()
     for ki in ki_metas:
         tag_counts.update(ki.tags)

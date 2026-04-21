@@ -104,7 +104,7 @@ Sleep 1s
 Show
 Sleep 1s
 
-Type "gws drive files list" 
+Type "gws drive files list"
 Type ` --params "{\"q\":\"$Q\",\"fields\":\"files(name,mimeType)\"}"` Enter
 Sleep 3s
 
@@ -118,8 +118,8 @@ Sleep 1s
 Type "echo '# Notes' > /tmp/notes.md" Enter
 Sleep 500ms
 
-Type "gws drive files create" 
-Type ` --json '{"name":"notes.md","mimeType":"text/markdown"}'` 
+Type "gws drive files create"
+Type ` --json '{"name":"notes.md","mimeType":"text/markdown"}'`
 Type " --upload /tmp/notes.md" Enter
 Sleep 3s
 
@@ -135,9 +135,9 @@ Sleep 1s
 
 Type `MSG=$(echo -e "To: justin@example.com\nSubject: joke of the day\n\n$JOKE" | base64 | tr -d '\n' | tr '+/' '-_' | tr -d '=')` Enter
 
-Type "gws gmail users messages send" 
-Type ` --params '{"userId":"me"}'` 
-Type ` --json "{\"raw\":\"$MSG\"}"` 
+Type "gws gmail users messages send"
+Type ` --params '{"userId":"me"}'`
+Type ` --json "{\"raw\":\"$MSG\"}"`
 Type " | jq ." Enter
 Sleep 3s
 
@@ -148,9 +148,9 @@ Sleep 1s
 Show
 Sleep 1s
 
-Type "gws calendar events insert" 
-Type ` --params '{"calendarId":"primary"}'` 
-Type ` --json '{"summary":"Ship v1.0 🚀","start":{"dateTime":"2024-06-17T10:00:00-07:00"},"end":{"dateTime":"2024-06-17T10:30:00-07:00"}}'` 
+Type "gws calendar events insert"
+Type ` --params '{"calendarId":"primary"}'`
+Type ` --json '{"summary":"Ship v1.0 🚀","start":{"dateTime":"2024-06-17T10:00:00-07:00"},"end":{"dateTime":"2024-06-17T10:30:00-07:00"}}'`
 Type " | jq . | head -15" Enter
 Sleep 3s
 
@@ -161,8 +161,8 @@ Sleep 1s
 Show
 Sleep 1s
 
-Type "gws sheets spreadsheets values append" 
-Type ` --params '{"spreadsheetId":"1izmtvgBC4NuxHhABFX6descuB6-SXTm3g7c6LYBngJQ","range":"Sheet1!A1","valueInputOption":"USER_ENTERED"}'` 
+Type "gws sheets spreadsheets values append"
+Type ` --params '{"spreadsheetId":"1izmtvgBC4NuxHhABFX6descuB6-SXTm3g7c6LYBngJQ","range":"Sheet1!A1","valueInputOption":"USER_ENTERED"}'`
 Type ` --json '{"values":[["Deploy","v1.0","=NOW()"]]}'` Enter
 Sleep 3s
 
@@ -173,11 +173,11 @@ Sleep 1s
 Show
 Sleep 1s
 
-Type "gws drive files list" 
+Type "gws drive files list"
 Type " --params '" Sleep 50ms
 Type@30ms '{"pageSize":2,"fields":"nextPageToken,files(id)"}' Sleep 50ms
-Type "'" 
-Type " --page-all" 
+Type "'"
+Type " --page-all"
 Type " | jq -r '.files[]?.id'" Enter
 Sleep 6s
 

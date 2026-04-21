@@ -30,8 +30,7 @@ GCP_PROJECT_ID = os.environ.get("GCP_PROJECT_ID", "shadowtag-omega-v4")
 REGION = "us-central1"
 MODEL = "gemini-3.1-flash-lite-preview"
 ENDPOINT = (
-    f"https://{REGION}-aiplatform.googleapis.com/v1/projects/"
-    f"{GCP_PROJECT_ID}/locations/{REGION}/publishers/google/models/{MODEL}:generateContent"
+    f"https://{REGION}-aiplatform.googleapis.com/v1/projects/{GCP_PROJECT_ID}/locations/{REGION}/publishers/google/models/{MODEL}:generateContent"
 )
 
 
@@ -56,8 +55,13 @@ def load_top_gaps(conn: sqlite3.Connection, top_n: int = 100) -> list[dict]:
     ).fetchall()
     return [
         {
-            "type": r[0], "source_id": r[1], "title": r[2],
-            "match": r[3], "similarity": r[4], "domain": r[5], "priority": r[6],
+            "type": r[0],
+            "source_id": r[1],
+            "title": r[2],
+            "match": r[3],
+            "similarity": r[4],
+            "domain": r[5],
+            "priority": r[6],
         }
         for r in rows
     ]
@@ -65,9 +69,7 @@ def load_top_gaps(conn: sqlite3.Connection, top_n: int = 100) -> list[dict]:
 
 def load_domain_distribution(conn: sqlite3.Connection) -> dict:
     """Load domain distribution stats."""
-    rows = conn.execute(
-        "SELECT domain, COUNT(*) FROM doc_domains GROUP BY domain"
-    ).fetchall()
+    rows = conn.execute("SELECT domain, COUNT(*) FROM doc_domains GROUP BY domain").fetchall()
     return {r[0]: r[1] for r in rows}
 
 
@@ -100,13 +102,15 @@ def _fallback_report(gaps: list[dict]) -> dict:
     """Generate a basic report without LLM when API fails."""
     actions = []
     for i, g in enumerate(gaps[:20]):
-        actions.append({
-            "rank": i + 1,
-            "action": f"Address {g['type']} gap: {g['title']}",
-            "type": g["type"],
-            "priority": g["priority"],
-            "domain": g["domain"],
-        })
+        actions.append(
+            {
+                "rank": i + 1,
+                "action": f"Address {g['type']} gap: {g['title']}",
+                "type": g["type"],
+                "priority": g["priority"],
+                "domain": g["domain"],
+            }
+        )
     return {"actions": actions, "summary": f"Fallback report: {len(gaps)} gaps found"}
 
 
@@ -129,9 +133,7 @@ def render_markdown(report: dict, domain_dist: dict) -> str:
     lines.append("| Rank | Action | Type | Priority | Domain |")
     lines.append("|------|--------|------|----------|--------|")
     for a in report.get("actions", []):
-        lines.append(
-            f"| {a['rank']} | {a['action']} | {a['type']} | {a['priority']} | {a['domain']} |"
-        )
+        lines.append(f"| {a['rank']} | {a['action']} | {a['type']} | {a['priority']} | {a['domain']} |")
     lines.append("")
 
     if "summary" in report:
@@ -163,9 +165,7 @@ def run_synthesis_report(cfg=None) -> dict:
         prompt = (
             "You are a senior engineering lead reviewing a gap analysis.\n\n"
             f"Domain distribution: {json.dumps(domain_dist)}\n\n"
-            f"Top gaps ({len(gaps)}):\n"
-            + json.dumps(gaps[:30], indent=2)
-            + "\n\nGenerate a ranked action queue as JSON: "
+            f"Top gaps ({len(gaps)}):\n" + json.dumps(gaps[:30], indent=2) + "\n\nGenerate a ranked action queue as JSON: "
             '{"actions": [{"rank": N, "action": "...", "type": "A/B/C", '
             '"priority": "high/medium/low", "domain": "..."}], "summary": "..."}'
         )
