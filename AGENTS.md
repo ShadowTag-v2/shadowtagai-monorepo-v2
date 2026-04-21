@@ -122,15 +122,15 @@ unless the user explicitly directs a control plane change:
 
 ## Hardened state
 
-- v9.7 canonicalized: 2026-04-20
-- Commit: `0ca7c04f85`
+- v9.8 canonicalized: 2026-04-21
+- Commit: `bae283268e`
 - CI Python: 3.13 (all 3 workflows)
 - venv primary: CPython 3.14.3
 - Firestore: 2 databases (`(default)`, `shadowtag-engine`) — CANONICAL database layer, PITR ENABLED (7-day retention), delete-protection ENABLED (Supabase evaluated and rejected; see Firestore-vs-Supabase verdict below)
 - Firestore rules: zero-trust deployed (default deny-all, admin-only access)
 - Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v9.6)
 - Semantic Kernel: .NET 11.0 Preview 2 (UNVERIFIED — see GEMINI.md v9.6)
-- Tests: 104 passed, 2 skipped (torch), 0 failed (E2E GDPR fixed, live Cloud Run verified)
+- Tests: 196 passed, 2 skipped (torch), 0 failed (E2E GDPR fixed, live Cloud Run verified)
 - Lighthouse: shadowtagai P96/A100/BP100/SEO100, kovelai P99/A100/BP100/SEO100, uphillsnowball A88+ (noindex intentional)
 - Dead code: clean (vulture 90%+ = 0 findings, 10 whitelisted false positives)
 - CSP headers: full parity across kovelai + shadowtagai (unsafe-eval removed)
@@ -183,7 +183,7 @@ unless the user explicitly directs a control plane change:
 - LawTrack UI: apps/lawtrack-ui (React + Vite + TypeScript case dashboard), 0 biome violations
 - Ruff: 62,221 unsafe-fixes applied (v9.7), tools/ excluded in pyproject.toml, 990 remaining (all third-party)
 - Vulture: 0 findings at 90%+ confidence (10 whitelisted: SwarmVoter, VoteDecision, SavedModelMetadata, etc.)
-- Tests: 90 passed, 2 skipped (torch), 0 failed (test_judge6.py 10/10, test_dispatch_compute.py 5/5)
+- Tests: 196 passed, 2 skipped (torch), 0 failed (test_judge6.py 10/10, test_dispatch_compute.py 5/5)
 - CI/CD: 10x_vibe_matrix.yml (4-phase: Gitleaks → ruff+vulture+biome → UI audit → auto-commit)
 - CI/CD: gca-pr-review.yml (dependabot guard: `if: github.actor != 'dependabot[bot]'` on setup job)
 - CI/CD: judge6_yolo_gate.yml (dependabot guard on csrmc-audit job)
@@ -205,6 +205,10 @@ unless the user explicitly directs a control plane change:
 - LanceDB: corrupted table ablated + rebuilt (2026-04-20); drive_embedder.py re-ingesting 1,088 markdown files via Vertex AI text-embedding-005
 - LanceDB Retriever Bridge: retriever_lancedb.py (local-first RAG, Vertex AI fallback, hybrid search)
 - Ruff Unsafe Fixes: 1 hidden fix applied (995→990 remaining, all in tools/mcp-toolbox third-party)
+- daScript MCP Reference: 24 tools (3,862 LOC), dual-transport (HTTP+stdio), 20 skills — cloned to /tmp/dascript-ref for pattern study
+- Ruler Agent Config: intellectronica/ruler supports 23 AI coding agents (AGENTS.md + MCP + Skills distribution) — evaluated for cross-agent config unification
+- Firebase Auth: Verified 2026-04-21 (founder@shadowtagai.com, project shadowtag-omega-v4, billing enabled)
+- Eval Harness Vulture: dream_consolidation.py NotebookLM import annotated, eval_*_f1.py dimension_weights confirmed used (vulture false positive)
 - Gitleaks Production Sweep: 173 findings (all in docs/CANONICALIZATION_REPORT — third-party token samples, not real secrets)
 - Staging Channel: kovelai--staging-zjaqs7fe.web.app (7d TTL, deployed 2026-04-20)
 - Cloud Run Health: CounselConduit 200 OK, Stripe webhook endpoint LIVE (400 on invalid payload = correct)

@@ -530,7 +530,7 @@ if __name__ == "__main__":
 
     # Phase 6: Archive to NotebookLM Master Brain (if available)
     try:
-        from notebooklm import NotebookLM  # noqa: F811
+        from notebooklm import NotebookLM  # noqa: F811  # vulture: used conditionally for archive
 
         print("\n[ARCHIVE] Archiving Dream report to NotebookLM Master Brain...")
         # Master Brain ID from session config
