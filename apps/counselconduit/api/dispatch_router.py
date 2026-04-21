@@ -398,6 +398,14 @@ async def dispatch_endpoint(
         if body.firm_id in _firm_policies:
             allowed = _firm_policies[body.firm_id].allowed_models
 
+        # Per-model circuit breaker check (#8)
+        if body.preferred_model and is_circuit_open(body.preferred_model):
+            logger.warning(
+                "Per-model circuit breaker open for %s, falling back",
+                body.preferred_model,
+            )
+            body.preferred_model = None  # Let model_router pick next best
+
         result = await dispatch_request(
             query=body.query,
             firm_id=body.firm_id,
@@ -408,6 +416,17 @@ async def dispatch_endpoint(
         )
 
         latency_ms = (time.monotonic() - start) * 1000
+
+        # Track successful model usage for per-model circuit breaker
+        record_provider_success(result.get("model", ""))
+
+        # Track token usage in Firestore (#15)
+        if body.firm_id:
+            # Fire-and-forget — don't block the response
+            import asyncio
+            asyncio.create_task(
+                track_token_usage(body.firm_id, x_user_tier, result.get("estimated_tokens", 100))
+            )
 
         # Add rate-limit headers
         _add_rate_limit_headers(response, body.firm_id, x_user_tier)
@@ -425,6 +444,9 @@ async def dispatch_endpoint(
         raise
     except Exception as e:
         _record_circuit_error()
+        # Also track per-model failure for circuit breaker (#8)
+        if body.preferred_model:
+            record_provider_failure(body.preferred_model)
         logger.exception("Dispatch failed: %s", e)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -851,7 +873,7 @@ _MAX_CONCURRENT_SSE = 50
 @router.get("/admin/vent-mode/diagnostics")
 async def vent_mode_diagnostics(
     request: Request,
-    x_admin_key: Annotated[str | None, Header()] = None,
+    _caller: str = Depends(_verify_admin_caller),
 ) -> dict:
     """SSE stream health diagnostics for Vent Mode."""
     return {
@@ -869,7 +891,7 @@ async def vent_mode_diagnostics(
 @router.get("/admin/provider-health")
 async def provider_health(
     request: Request,
-    x_admin_key: Annotated[str | None, Header()] = None,
+    _caller: str = Depends(_verify_admin_caller),
 ) -> dict:
     """Health status of upstream LLM providers with circuit breaker state."""
     providers = {}
@@ -972,7 +994,7 @@ async def verify_admin_auth(request: Request) -> bool:
 @router.get("/admin/token-budgets")
 async def token_budgets(
     request: Request,
-    x_admin_key: Annotated[str | None, Header()] = None,
+    _caller: str = Depends(_verify_admin_caller),
 ) -> dict:
     """Current token budget consumption by tier with Firestore backing."""
     # Try Firestore first for real data
@@ -1030,7 +1052,7 @@ async def track_token_usage(firm_id: str, tier: str, tokens: int) -> None:
 @router.get("/admin/slo-report")
 async def slo_compliance_report(
     request: Request,
-    x_admin_key: Annotated[str | None, Header()] = None,
+    _caller: str = Depends(_verify_admin_caller),
 ) -> dict:
     """Monthly SLO compliance report for CounselConduit."""
     import os

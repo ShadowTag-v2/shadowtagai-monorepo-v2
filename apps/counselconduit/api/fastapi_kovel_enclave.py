@@ -82,6 +82,8 @@ try:
     from apps.counselconduit.api.stripe_connect_onboarding import router as connect_onboarding_router
     from apps.counselconduit.api.stripe_connect_webhook import router as connect_webhook_router
     from apps.counselconduit.api.vent_mode import router as vent_router
+    from apps.counselconduit.api.token_meter import router as token_meter_router
+    from apps.counselconduit.api.session_pin_monitor import cleanup_session_pins_firestore
 except ImportError:
     from api.app_error import AppError, app_error_handler, unhandled_error_handler  # type: ignore[no-redef]
     from api.byok import router as byok_router  # type: ignore[no-redef]
@@ -99,6 +101,8 @@ except ImportError:
     from api.stripe_connect_onboarding import router as connect_onboarding_router  # type: ignore[no-redef]
     from api.stripe_connect_webhook import router as connect_webhook_router  # type: ignore[no-redef]
     from api.vent_mode import router as vent_router  # type: ignore[no-redef]
+    from api.token_meter import router as token_meter_router  # type: ignore[no-redef]
+    from api.session_pin_monitor import cleanup_session_pins_firestore  # type: ignore[no-redef]
 
 # ── Structured Logging ─────────────────────────────────────────────────────
 
@@ -198,6 +202,7 @@ app.include_router(byok_router)
 app.include_router(gdpr_handler_router)
 app.include_router(connect_onboarding_router)
 app.include_router(dispatch_router)
+app.include_router(token_meter_router)
 
 # ── Static Files (admin dashboard) ────────────────────────────────────────
 import pathlib as _pathlib
