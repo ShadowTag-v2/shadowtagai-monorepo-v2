@@ -49,7 +49,7 @@ class ModelConfig(BaseModel):
 AVAILABLE_MODELS: dict[str, ModelConfig] = {
     "gemini-flash": ModelConfig(
         provider=ModelProvider.GEMINI,
-        model_id="gemini-3.1-flash-lite-preview",
+        model_id="gemini-3.1-flash-lite-preview-thinking",
         display_name="Gemini Flash (Fast)",
         cost_per_1k_input=0.00005,
         cost_per_1k_output=0.0001,
