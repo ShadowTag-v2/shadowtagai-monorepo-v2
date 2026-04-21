@@ -1,0 +1,33 @@
+{
+  "displayName": "CounselConduit Circuit Breaker — 5xx Error Rate",
+  "documentation": {
+    "content": "Circuit breaker alert: >5% server error rate over 5 minutes.\n\nRunbook:\n1. Check /admin/circuit-breaker endpoint\n2. Review Cloud Run logs: gcloud logging read 'resource.labels.service_name=\"counselconduit\"'\n3. If circuit is OPEN, wait 60s cooldown or restart revision\n4. Check model provider status if errors are from LiteLLM",
+    "mimeType": "text/markdown"
+  },
+  "conditions": [
+    {
+      "displayName": "5xx rate on counselconduit",
+      "conditionThreshold": {
+        "filter": "resource.type = \"cloud_run_revision\" AND resource.labels.service_name = \"counselconduit\" AND metric.type = \"run.googleapis.com/request_count\" AND metric.labels.response_code_class = \"5xx\"",
+        "aggregations": [
+          {
+            "alignmentPeriod": "300s",
+            "perSeriesAligner": "ALIGN_RATE",
+            "crossSeriesReducer": "REDUCE_SUM"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "thresholdValue": 0.05,
+        "duration": "300s",
+        "trigger": {
+          "count": 1
+        }
+      }
+    }
+  ],
+  "notificationChannels": [
+    "projects/shadowtag-omega-v4/notificationChannels/4615832086798366980"
+  ],
+  "combiner": "OR",
+  "enabled": true
+}
