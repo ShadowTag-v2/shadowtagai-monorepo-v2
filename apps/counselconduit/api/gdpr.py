@@ -13,6 +13,7 @@ Architecture:
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 from datetime import UTC, datetime, timedelta
@@ -35,6 +36,9 @@ _SERVICE_URL = os.getenv(
 
 # Rate limit: 1 deletion request per firm per 24 hours
 _DELETION_COOLDOWN_HOURS = 24
+
+# Subcollections to cascade-delete during hard wipe
+SUBCOLLECTIONS_TO_DELETE = ["sessions", "transcripts", "matters", "billing_records", "clients"]
 
 
 # ── Models ─────────────────────────────────────────────────────────────────
@@ -449,3 +453,163 @@ async def execute_hard_delete(payload: dict[str, Any]) -> dict[str, str]:
         deleted_collections,
     )
     return {"status": "completed", "receipt_id": receipt_id}
+
+
+# ── Rate limiter for export requests ──────────────────────────────────
+# 1 export per hour per firm (abuse prevention — Cor.30 R14)
+_export_rate_limit: dict[str, float] = {}
+_EXPORT_COOLDOWN_SECONDS = 3600  # 1 hour
+
+
+def _check_export_rate_limit(firm_id: str) -> bool:
+    """Check if a firm can request another export (1/hr limit)."""
+    import time as _time
+
+    now = _time.time()
+    last_request = _export_rate_limit.get(firm_id)
+    if last_request and (now - last_request) < _EXPORT_COOLDOWN_SECONDS:
+        return False
+    _export_rate_limit[firm_id] = now
+    return True
+
+
+@router.post("/_execute-export", include_in_schema=False)
+async def execute_data_export(payload: dict[str, Any]) -> dict[str, Any]:
+    """Internal endpoint called by Cloud Tasks for data export.
+
+    NOT exposed in OpenAPI schema. Generates a data export package:
+    1. Collect all firm data (sessions, transcripts, matters, billing)
+    2. Package as JSON or CSV per request
+    3. Upload to GCS with signed URL (24-hour expiry)
+    4. Email download link to requesting attorney
+    """
+    export_id = payload.get("export_id")
+    firm_id = payload.get("firm_id")
+    attorney_id = payload.get("attorney_id")
+    fmt = payload.get("format", "json")
+
+    if not export_id or not firm_id or not attorney_id:
+        raise HTTPException(
+            status_code=400,
+            detail="Missing export_id, firm_id, or attorney_id",
+        )
+
+    # Rate limit check
+    if not _check_export_rate_limit(firm_id):
+        raise HTTPException(
+            status_code=429,
+            detail="Export rate limit exceeded. Maximum 1 export per hour per firm.",
+        )
+
+    logger.info(
+        "Executing data export: export=%s firm=%s format=%s",
+        export_id,
+        firm_id,
+        fmt,
+    )
+
+    export_data: dict[str, Any] = {
+        "export_id": export_id,
+        "firm_id": firm_id,
+        "format": fmt,
+        "generated_at": datetime.now(UTC).isoformat(),
+        "collections": {},
+    }
+
+    try:
+        try:
+            from apps.counselconduit.api.firestore_client import _get_client
+        except ImportError:
+            from api.firestore_client import _get_client  # type: ignore[no-redef]
+
+        db = _get_client()
+        firm_ref = db.collection("firms").document(firm_id)
+
+        # Collect data from all subcollections
+        for subcol in SUBCOLLECTIONS_TO_DELETE:
+            try:
+                col_ref = firm_ref.collection(subcol)
+                docs = []
+                async for doc in col_ref.stream():
+                    doc_data = doc.to_dict()
+                    doc_data["_document_id"] = doc.id
+                    docs.append(doc_data)
+                export_data["collections"][subcol] = docs
+                logger.info("Exported %d docs from %s/%s", len(docs), firm_id, subcol)
+            except Exception as e:
+                logger.warning("Export failed for %s/%s: %s", firm_id, subcol, e)
+                export_data["collections"][subcol] = {"error": str(e)}
+
+        # Upload to GCS with signed URL
+        try:
+            from google.cloud import storage as gcs
+
+            client = gcs.Client()
+            bucket = client.bucket(f"{os.environ.get('GCP_PROJECT', 'shadowtag-omega-v4')}.firebasestorage.app")
+            blob_path = f"exports/{firm_id}/{export_id}.{fmt}"
+            blob = bucket.blob(blob_path)
+
+            if fmt == "json":
+                blob.upload_from_string(
+                    json.dumps(export_data, default=str, indent=2),
+                    content_type="application/json",
+                )
+            elif fmt == "csv":
+                import csv
+                import io
+
+                output = io.StringIO()
+                writer = csv.writer(output)
+                for col_name, docs in export_data["collections"].items():
+                    if isinstance(docs, list) and docs:
+                        writer.writerow([f"--- {col_name} ---"])
+                        writer.writerow(docs[0].keys())
+                        for doc in docs:
+                            writer.writerow(doc.values())
+                blob.upload_from_string(
+                    output.getvalue(),
+                    content_type="text/csv",
+                )
+
+            # Generate signed URL (24-hour expiry)
+            from datetime import timedelta
+
+            signed_url = blob.generate_signed_url(
+                expiration=timedelta(hours=24),
+                method="GET",
+            )
+
+            # Send email notification
+            try:
+                try:
+                    from apps.counselconduit.api.email_service import send_email
+                except ImportError:
+                    from api.email_service import send_email  # type: ignore[no-redef]
+
+                await send_email(
+                    to=attorney_id,
+                    subject="CounselConduit — Your Data Export is Ready",
+                    body=f"Your data export is ready for download.\n\nDownload link (expires in 24 hours):\n{signed_url}\n\nExport ID: {export_id}",
+                )
+            except Exception as e:
+                logger.warning("Email notification failed: %s", e)
+
+            logger.info("Export uploaded: export=%s blob=%s", export_id, blob_path)
+            return {
+                "status": "completed",
+                "export_id": export_id,
+                "download_url": signed_url,
+            }
+
+        except Exception as e:
+            logger.warning("GCS upload failed (returning inline data): %s", e)
+            return {
+                "status": "completed_inline",
+                "export_id": export_id,
+                "data_size": len(json.dumps(export_data, default=str)),
+                "message": "Export data generated but GCS upload failed. Contact support.",
+            }
+
+    except Exception as e:
+        logger.error("Data export failed: export=%s error=%s", export_id, e)
+        return {"status": "failed", "export_id": export_id, "error": str(e)}

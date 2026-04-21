@@ -137,8 +137,12 @@ unless the user explicitly directs a control plane change:
 - Infrastructure: shadowtagai.web.app + kovelai.web.app + shadowtag-omega-v4.web.app deployed
 - Nested `.git` directories: 0 (reference_architectures/ clones are gitignored)
 - Ruff: 990 remaining (ALL in tools/mcp-toolbox third-party — 0 first-party violations)
-- CounselConduit: v3.1.1 on Cloud Run (Phase 1 + 2 LIVE, 27 endpoints, revision `counselconduit-00016-mpj`)
-- Cloud Armor WAF: `apps/counselconduit/cloud_armor_policy.yaml`
+- CounselConduit: v3.2.0 on Cloud Run (Phase 1 + 2 + 2.5 LIVE, 30 endpoints, revision `counselconduit-00020-puy`)
+- Cloud Armor WAF: `apps/counselconduit/cloud_armor_policy.yaml` (+ GDPR endpoint rate limiting)
+- Phase 2.5 Sandbox: SandboxMiddleware + per-tier quotas + proxy tokens + GDPR export + dead-letter queue
+- Firestore RLS: Per-firm tenant isolation rules deployed (firms/{firmId}/sessions, transcripts, matters, billing_records, clients)
+- Cloud Tasks: gdpr-deletions (5 retries, exponential backoff) + gdpr-deletions-dlq (dead-letter)
+- Monitoring: Notification channel `6144499617599280001` (ops@kovelai.com)
 - Prompt Repetition: wired into Oracle Studio + Vent Mode (arXiv 2512.14982)
 - OG Social Images: generated + deployed for both sites
 - Pre-commit: Gitleaks 8.22.1 + Ruff 0.11.8 + Bandit 1.9.4 + detect-private-key
