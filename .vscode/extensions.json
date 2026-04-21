@@ -1,0 +1,13 @@
+{
+  "unwantedRecommendations": [
+    "google.cros-ide",
+    "mtxr.sqltools"
+  ],
+  "recommendations": [
+    "astral-sh.ty",
+    "charliermarsh.ruff",
+    "esbenp.prettier-vscode",
+    "google.geminicodeassist",
+    "DavidAnson.vscode-markdownlint"
+  ]
+}
