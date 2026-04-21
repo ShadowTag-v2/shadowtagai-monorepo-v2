@@ -55,6 +55,7 @@ class ActionType(Enum):
     TEST_RUN = "test_run"
     LINT_FIX = "lint_fix"
     DREAM = "dream"
+    FTS_REINDEX = "fts_reindex"
     IDLE = "idle"
 
 
@@ -91,6 +92,7 @@ REVERSIBLE_ACTIONS = {
     ActionType.TEST_RUN: True,
     ActionType.LINT_FIX: True,
     ActionType.DREAM: True,
+    ActionType.FTS_REINDEX: True,
     ActionType.REBASE: False,  # Irreversible — needs user approval
 }
 
@@ -213,6 +215,36 @@ def check_dream_schedule() -> list[Action]:
     return actions
 
 
+def check_fts_freshness() -> list[Action]:
+    """Check if FTS5 index needs rebuilding."""
+    actions = []
+    ki_dir = Path(
+        os.environ.get("KI_DIR", os.path.expanduser("~/.gemini/antigravity/knowledge"))
+    )
+    fts_db = ki_dir / ".ki-index.db"
+    if not fts_db.exists():
+        actions.append(
+            Action(
+                action_type=ActionType.FTS_REINDEX,
+                description="FTS5 index missing — initial build",
+                reversible=True,
+                risk_level="low",
+            )
+        )
+    else:
+        age_hours = (datetime.now(UTC) - datetime.fromtimestamp(fts_db.stat().st_mtime, tz=UTC)).total_seconds() / 3600
+        if age_hours > 12:
+            actions.append(
+                Action(
+                    action_type=ActionType.FTS_REINDEX,
+                    description=f"FTS5 index stale ({age_hours:.1f}h since last build)",
+                    reversible=True,
+                    risk_level="low",
+                )
+            )
+    return actions
+
+
 # --- Execute Actions ---------------------------------------------------------
 
 
@@ -261,6 +293,27 @@ def execute_action(action: Action) -> bool:
             print("  [EXEC] Dream cycle timed out")
             return False
 
+    elif action.action_type == ActionType.FTS_REINDEX:
+        try:
+            ki_dir = Path(
+                os.environ.get("KI_DIR", os.path.expanduser("~/.gemini/antigravity/knowledge"))
+            )
+            result = subprocess.run(
+                [sys.executable, "-c",
+                 f"import sys; sys.path.insert(0, '{REPO_ROOT}'); "
+                 f"from core.ki_engine.fts_index import reindex_all; "
+                 f"from pathlib import Path; "
+                 f"print(reindex_all(Path('{ki_dir}')))"],
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            print(f"  [EXEC] FTS5 reindex: {result.stdout.strip()} KIs")
+            return result.returncode == 0
+        except subprocess.TimeoutExpired:
+            print("  [EXEC] FTS5 reindex timed out")
+            return False
+
     elif action.action_type == ActionType.LINT_FIX:
         print(f"  [INFO] {action.description} — steward does not auto-commit")
         return True
@@ -283,6 +336,7 @@ def run_cycle(cycle_number: int, consecutive_idles: int) -> CycleReport:
     actions.extend(check_git_status())
     actions.extend(check_test_status())
     actions.extend(check_dream_schedule())
+    actions.extend(check_fts_freshness())
 
     report.actions_evaluated = len(actions)
 
