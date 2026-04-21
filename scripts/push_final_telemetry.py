@@ -19,11 +19,7 @@ token = res2.json()["token"]
 
 repo_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
 subprocess.run(["git", "remote", "set-url", "origin", repo_url], check=True)
-print("Pushing to GitHub with refreshed App Token...")
 ret = subprocess.run(["git", "push", "origin", "main", "--no-verify"])
 if ret.returncode == 0:
-    print("=== TELEMETRY ===")
     out1 = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True)
     out2 = subprocess.run(["git", "show", "--stat", "--oneline"], capture_output=True, text=True)
-    print(f"COMMIT_SHA: {out1.stdout.strip()}")
-    print(f"FILES_CHANGED: {len(out2.stdout.splitlines())}")

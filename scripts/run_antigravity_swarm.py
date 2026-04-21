@@ -22,7 +22,7 @@ from pnkln.core.judge_six_pipeline import JudgeSix
 
 
 class AgentUnit:
-    def __init__(self, id, role):
+    def __init__(self, id, role) -> None:
         self.id = id
         self.role = role
         self.status = "Idle"
@@ -33,15 +33,14 @@ class AgentUnit:
 
 
 class AntigravitySwarm:
-    """
-    Antigravity implementation of the BioAgents swarm.
+    """Antigravity implementation of the BioAgents swarm.
     Parameters aligned with Antigravity's agentic makeup:
     - Purpose: ShadowTag-v2JR
     - Reason: Doctrine
-    - Brakes: Judge6
+    - Brakes: Judge6.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.running = True
         self.governance_log = []
 
@@ -65,18 +64,18 @@ class AntigravitySwarm:
             "recent_decisions": self.governance_log[-5:],
         }
 
-    def start(self):
+    def start(self) -> None:
         import threading
 
         self.thread = threading.Thread(target=self._run_loop)
         self.thread.start()
 
-    def stop(self):
+    def stop(self) -> None:
         self.running = False
         if hasattr(self, "thread"):
             self.thread.join()
 
-    def _initialize_antigravity_roster(self):
+    def _initialize_antigravity_roster(self) -> None:
         # Pillars (SOPs)
         pillars = [
             ("SOP-A", "Upload Triage"),
@@ -104,9 +103,8 @@ class AntigravitySwarm:
         for cid, role in capabilities:
             self.units.append(AgentUnit(id=cid, role=f"Capability: {role}"))
 
-    def _run_loop(self):
-        """
-        Override the run loop to simulate Antigravity's coding and optimization tasks
+    def _run_loop(self) -> None:
+        """Override the run loop to simulate Antigravity's coding and optimization tasks
         instead of generic economic viability checks.
         """
         while self.running:
@@ -162,40 +160,30 @@ class AntigravitySwarm:
                             "decision": unit.judge_decision,
                             "score": unit.viability_score,
                             "context": context,
-                        }
+                        },
                     )
 
-                except Exception as e:
-                    print(f"Judge Error: {e}")
+                except Exception:
                     unit.status = "Error"
 
             time.sleep(1.5)  # Wait before next cycle
 
 
 if __name__ == "__main__":
-    print("///▞ ANTIGRAVITY SWARM :: INITIALIZING")
-    print("///▞ PARAMETERS :: Purpose=ShadowTag-v2JR • Reason=Doctrine • Brakes=Judge6")
 
     swarm = AntigravitySwarm()
     swarm.start()
 
     try:
         # Run for a few cycles to demonstrate
-        for i in range(5):
+        for _i in range(5):
             time.sleep(2)
             status = swarm.get_governance_status()
-            print(f"\n///▞ STATUS CYCLE {i + 1}")
-            print(f"Active Agents: {status['active_agents']}")
-            print(f"Approved Actions: {status['approved_actions']}")
-            print(f"Blocked Actions: {status['blocked_actions']}")
-            print(f"Avg Viability: {status['avg_viability']}")
 
             if status["recent_decisions"]:
                 last_decision = status["recent_decisions"][-1]
-                print(f"Latest Decision: {last_decision['agent']} -> {last_decision['decision']} ({last_decision['proposal']})")
 
     except KeyboardInterrupt:
-        print("\nStopping swarm...")
+        pass
     finally:
         swarm.stop()
-        print("///▞ ANTIGRAVITY SWARM :: TERMINATED")

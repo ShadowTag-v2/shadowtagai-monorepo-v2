@@ -49,9 +49,6 @@ def review_pr(pr_num: int, token: str, dry_run: bool = False) -> dict:
     """Run GCA review on a single PR."""
     import subprocess
 
-    print(f"\n{'=' * 60}")
-    print(f"  Reviewing PR #{pr_num}")
-    print(f"{'=' * 60}")
 
     cmd = [sys.executable, os.path.join(SCRIPTS_DIR, "run_gca_local.py"), "--pr", str(pr_num)]
     if dry_run:
@@ -64,7 +61,6 @@ def review_pr(pr_num: int, token: str, dry_run: bool = False) -> dict:
     findings = [l for l in output.splitlines() if "finding(s)" in l]
     total_findings = sum(int(l.split(":")[1].strip().split()[0]) for l in findings if ":" in l)
 
-    print(f"  PR #{pr_num}: {total_findings} total findings")
 
     return {
         "pr": pr_num,
@@ -76,13 +72,12 @@ def review_pr(pr_num: int, token: str, dry_run: bool = False) -> dict:
 
 def merge_pr(pr_num: int, token: str, title: str) -> dict:
     """Merge a PR via squash."""
-    result = _gh_api(
+    return _gh_api(
         "PUT",
         f"/repos/ShadowTag-v2/Monorepo-Uphillsnowball/pulls/{pr_num}/merge",
         token,
         {"commit_title": title, "merge_method": "squash"},
     )
-    return result
 
 
 def main() -> int:
@@ -93,8 +88,6 @@ def main() -> int:
     args = parser.parse_args()
 
     pr_nums = [int(p.strip()) for p in args.prs.split(",") if p.strip()]
-    print(f"\nGCA Batch Review — {len(pr_nums)} PRs: {pr_nums}")
-    print(f"Merge: {args.merge} | Dry-run: {args.dry_run}\n")
 
     token = get_token()
     results = []
@@ -104,10 +97,8 @@ def main() -> int:
             # Get PR metadata
             pr_data = _gh_api("GET", f"/repos/ShadowTag-v2/Monorepo-Uphillsnowball/pulls/{pr_num}", token)
             if pr_data.get("state") != "open":
-                print(f"  PR #{pr_num}: SKIP (state={pr_data.get('state', 'unknown')})")
                 continue
             if pr_data.get("merged"):
-                print(f"  PR #{pr_num}: SKIP (already merged)")
                 continue
 
             title = pr_data.get("title", f"PR #{pr_num}")
@@ -115,7 +106,6 @@ def main() -> int:
 
             # Check if head branch exists
             if not head_ref:
-                print(f"  PR #{pr_num}: SKIP (head branch deleted)")
                 _gh_api("PATCH", f"/repos/ShadowTag-v2/Monorepo-Uphillsnowball/pulls/{pr_num}", token, {"state": "closed"})
                 continue
 
@@ -125,24 +115,17 @@ def main() -> int:
 
             # Auto-merge if clean and --merge flag set
             if args.merge and not args.dry_run and result["findings"] == 0:
-                print(f"  PR #{pr_num}: Auto-merging (0 findings)...")
                 # Try update branch first
                 _gh_api("PUT", f"/repos/ShadowTag-v2/Monorepo-Uphillsnowball/pulls/{pr_num}/update-branch", token, {"update_method": "merge"})
                 time.sleep(3)
-                merge_result = merge_pr(pr_num, token, f"{title} (#{pr_num})")
-                print(f"  Merge result: {merge_result.get('message', merge_result.get('error', '?'))}")
+                merge_pr(pr_num, token, f"{title} (#{pr_num})")
 
         except Exception as e:
-            print(f"  PR #{pr_num}: ERROR — {e}")
             results.append({"pr": pr_num, "findings": -1, "error": str(e)})
 
     # Summary
-    print(f"\n{'=' * 60}")
-    print(f"  BATCH SUMMARY — {len(results)} PRs reviewed")
-    print(f"{'=' * 60}")
     for r in results:
-        status = "✅ CLEAN" if r.get("findings", -1) == 0 else f"⚠️ {r.get('findings', '?')} findings"
-        print(f"  PR #{r['pr']}: {status}")
+        "✅ CLEAN" if r.get("findings", -1) == 0 else f"⚠️ {r.get('findings', '?')} findings"
 
     return 0
 

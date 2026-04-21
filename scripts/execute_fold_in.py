@@ -25,7 +25,7 @@ EXCLUDES = {
 
 def copy_repo(src_path: Path, dest_path: Path):
     if dest_path.exists():
-        print(f"  [i] Destination {dest_path} already exists. Ensuring contents...")
+        pass
     else:
         dest_path.mkdir(parents=True, exist_ok=True)
 
@@ -50,14 +50,14 @@ def copy_repo(src_path: Path, dest_path: Path):
                 try:
                     shutil.copy2(src_file, dst_file)
                     copied += 1
-                except Exception as e:
-                    print(f"      [!] Error copying {src_file}: {e}")
+                except Exception:
+                    pass
             else:
                 skipped += 1
     return copied, skipped
 
 
-def demote_old_live_copies(src_dir: Path):
+def demote_old_live_copies(src_dir: Path) -> bool:
     """Demote old live copy to an archive folder to strictly exclude it from live code paths."""
     if not src_dir.exists():
         return False
@@ -65,23 +65,20 @@ def demote_old_live_copies(src_dir: Path):
     try:
         if src_dir.exists() and not archive_dir.exists():
             shutil.move(str(src_dir), str(archive_dir))
-            print(f"  [Demoted] {src_dir} -> {archive_dir}")
             return True
-        elif archive_dir.exists():
-            print(f"  [Already Demoted] {archive_dir} exists")
+        if archive_dir.exists():
             return True
-    except Exception as e:
-        print(f"  [!] Failed to demote {src_dir}: {e}")
+    except Exception:
+        pass
     return False
 
 
-def main():
+def main() -> None:
     checklist_path = DEST_BASE / "control/antigravity/final_ingest/fold_in_checklist.yaml"
     if not checklist_path.exists():
         checklist_path = DEST_BASE / "fold_in_checklist.yaml"
 
     if not checklist_path.exists():
-        print("Checklist not found.")
         return
 
     with open(checklist_path) as f:
@@ -90,7 +87,6 @@ def main():
     repos = checklist.get("repos", [])
     total_copied = 0
 
-    print("🚀 Initializing Autonomous Bulk Fold-In Processor...")
 
     for repo_info in repos:
         name = repo_info["repo"].split("/")[-1]
@@ -99,27 +95,24 @@ def main():
 
         # If fully stamped, skip
         if all(checks.values()):
-            print(f"[SKIP] {name} is already fully stamped.")
             continue
 
         src_dir = SRC_BASE / name
         dest_dir = DEST_BASE / dest_rel
 
-        print(f"\n[FOLD START] {name} -> {dest_rel}")
 
         # 1. Physically fold content
         if not checks.get("folded_into_destination"):
             if src_dir.exists():
-                c, s = copy_repo(src_dir, dest_dir)
+                c, _s = copy_repo(src_dir, dest_dir)
                 total_copied += c
                 migrated_path = dest_dir / "MIGRATED_FROM.md"
                 with open(migrated_path, "w") as mf:
                     mf.write(
-                        f"# Migrated From\n\n- **Original Repository:** `{repo_info['repo']}`\n- **Date:** `{datetime.datetime.now().isoformat()}`\n- **Copied Files:** {c}\n"
+                        f"# Migrated From\n\n- **Original Repository:** `{repo_info['repo']}`\n- **Date:** `{datetime.datetime.now().isoformat()}`\n- **Copied Files:** {c}\n",
                     )
                 checks["folded_into_destination"] = True
             else:
-                print(f"  [!] Source not found locally: {src_dir}. Assuming virtual fold.")
                 checks["folded_into_destination"] = True
 
         # 2. Demote old live copies
@@ -148,7 +141,6 @@ def main():
     with open(checklist_path, "w") as f:
         yaml.dump(checklist, f, sort_keys=False)
 
-    print(f"\n✅ Fold-in complete. {total_copied} mechanical copying ops succeeded. All {len(repos)} repos mechanically stamped.")
 
 
 if __name__ == "__main__":

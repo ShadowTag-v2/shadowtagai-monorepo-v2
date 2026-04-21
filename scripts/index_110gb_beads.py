@@ -27,7 +27,7 @@ def init_db():
     c = conn.cursor()
     c.execute(
         """CREATE TABLE IF NOT EXISTS beads_registry
-                 (filepath TEXT UNIQUE, size_bytes INT, biome_status TEXT, ane_semantic_class TEXT, last_indexed TIMESTAMP)"""
+                 (filepath TEXT UNIQUE, size_bytes INT, biome_status TEXT, ane_semantic_class TEXT, last_indexed TIMESTAMP)""",
     )
     conn.commit()
     return conn
@@ -43,7 +43,7 @@ def biome_check(filepath: str) -> str:
         result = subprocess.run(["npx", "@biomejs/biome", "check", filepath], capture_output=True, text=True)
         return "PASS" if result.returncode == 0 else "FAIL_SYNTAX"
     except Exception as e:
-        return f"ERROR: {str(e)}"
+        return f"ERROR: {e!s}"
 
 
 def ane_semantic_scan(filepath: str, filename: str) -> str:
@@ -81,12 +81,11 @@ print(json.dumps({{"category": cat}}))
     return "UNKNOWN"
 
 
-def index_library():
-    print("🧠 [BEADS INDEXER] Initializing 110GB Grounding Library Scan...")
+def index_library() -> None:
     conn = init_db()
     c = conn.cursor()
 
-    for root, dirs, files in os.walk(BEADS_DIR):
+    for root, _dirs, files in os.walk(BEADS_DIR):
         for file in files:
             # Skip massive WAL files or internal DB locks to prevent blocking
             if file.endswith((".db-wal", ".db-shm", ".lock", ".sock", ".pid")):
@@ -95,7 +94,6 @@ def index_library():
             filepath = os.path.join(root, file)
             size = os.path.getsize(filepath)
 
-            print(f"  🔍 Scanning Object: {file} ({size} bytes)...")
 
             biome_status = biome_check(filepath)
             ane_class = ane_semantic_scan(filepath, file)
@@ -109,10 +107,9 @@ def index_library():
             conn.commit()
 
             if biome_status == "FAIL_SYNTAX":
-                print(f"     ⚠️ Biome flagged syntax corruption in {file}.")
+                pass
 
     conn.close()
-    print("✅ [BEADS INDEXER] 110GB Library successfully mapped and categorized.")
 
 
 if __name__ == "__main__":

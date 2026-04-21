@@ -16,7 +16,6 @@ by the verify-and-post job.
 
 from __future__ import annotations
 
-import json
 import re
 import sys
 from dataclasses import dataclass, field
@@ -30,19 +29,19 @@ TENSOR_PATTERNS = [
     # PyTorch: nn.Linear(512, 1024), torch.randn(batch, seq, dim)
     re.compile(
         r"(?:nn\.Linear|nn\.Conv[12]d|torch\.(?:randn|zeros|ones|empty))"
-        r"\s*\(([^)]+)\)"
+        r"\s*\(([^)]+)\)",
     ),
     # TensorFlow/Keras: Dense(1024), layers.Dense(units=1024)
     re.compile(
         r"(?:Dense|Conv[12]D|LSTM|GRU|Embedding)"
-        r"\s*\(([^)]+)\)"
+        r"\s*\(([^)]+)\)",
     ),
     # CoreML / ANE annotations: shape=[1, 512, 768]
     re.compile(r"shape\s*=\s*\[([^\]]+)\]"),
     # MLX: mx.zeros((batch, seq, dim))
     re.compile(
         r"mx\.(?:zeros|ones|full|random\.normal)"
-        r"\s*\(\s*\(([^)]+)\)\s*\)"
+        r"\s*\(\s*\(([^)]+)\)\s*\)",
     ),
     # Generic dimension comments: # dims: 512x1024x3
     re.compile(r"#\s*dims?:\s*([\d]+\s*[x×]\s*[\d]+(?:\s*[x×]\s*[\d]+)*)"),
@@ -108,6 +107,7 @@ def _estimate_memory(dims: list[int], element_size: int = 4, buffers: int = 3) -
         dims: List of dimension sizes.
         element_size: Bytes per element (4 for float32, 2 for float16).
         buffers: Number of buffers (input + output + workspace).
+
     """
     if not dims:
         return 0
@@ -166,7 +166,7 @@ def scan_diff(diff_text: str) -> BudgetReport:
                             dims=dims,
                             estimated_bytes=mem_f32,
                             expression=match.group(0).strip(),
-                        )
+                        ),
                     )
 
     return report
@@ -177,14 +177,12 @@ def main() -> int:
     if len(sys.argv) > 1:
         diff_path = Path(sys.argv[1])
         if not diff_path.exists():
-            print(f"Error: {diff_path} not found", file=sys.stderr)
             return 1
         diff_text = diff_path.read_text()
     else:
         diff_text = sys.stdin.read()
 
     report = scan_diff(diff_text)
-    print(json.dumps(report.to_dict(), indent=2))
 
     # Exit non-zero if violations found (used as CI gate)
     return 0 if report.passed else 1

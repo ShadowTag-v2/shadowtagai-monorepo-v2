@@ -4,7 +4,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 
-def evaluate_rag():
+def evaluate_rag() -> None:
     target_precision = 0.94
     measured = 0.92
     if measured < target_precision:

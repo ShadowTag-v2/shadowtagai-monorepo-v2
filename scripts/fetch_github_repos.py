@@ -1,3 +1,4 @@
+import contextlib
 import json
 import os
 import time
@@ -30,7 +31,6 @@ def get_repos(app_id, pem_path, owner_name):
             break
 
     if not target_installation_id:
-        print(f"Could not find installation for {owner_name}")
         return []
 
     # Get installation access token
@@ -62,7 +62,7 @@ def get_repos(app_id, pem_path, owner_name):
 if __name__ == "__main__":
     # Try the user ones first
     repos_ehanc69 = []
-    try:
+    with contextlib.suppress(Exception):
         repos_ehanc69 = get_repos(
             app_id=os.environ.get("EHANC69_APP_ID", "3018080"),
             pem_path=os.environ.get(
@@ -71,11 +71,9 @@ if __name__ == "__main__":
             ),
             owner_name="ehanc69",
         )
-    except Exception as e:
-        print(f"Failed for ehanc69: {e}")
 
     repos_shadowtag = []
-    try:
+    with contextlib.suppress(Exception):
         repos_shadowtag = get_repos(
             app_id=os.environ.get("GITHUB_APP_ID", "3018200"),
             pem_path=os.environ.get(
@@ -84,11 +82,8 @@ if __name__ == "__main__":
             ),
             owner_name="ShadowTag-v2",
         )
-    except Exception as e:
-        print(f"Failed for ShadowTag-v2: {e}")
 
-    all_repos = sorted(list(set(repos_ehanc69 + repos_shadowtag)))
+    all_repos = sorted(set(repos_ehanc69 + repos_shadowtag))
     with open("fetched_repos.json", "w") as f:
         json.dump(all_repos, f, indent=2)
 
-    print(f"Total fetched repos: {len(all_repos)}")

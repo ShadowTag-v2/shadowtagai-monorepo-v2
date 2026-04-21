@@ -1,5 +1,4 @@
-"""
-Step 2 — Codebase Embedder
+"""Step 2 — Codebase Embedder.
 
 Embeds every .py / .go / .ts file in the monorepo using CodeChunker →
 Vertex AI text-embedding-005 → LanceDB::code_files table.
@@ -12,7 +11,6 @@ Runtime: ~3 hours for full monorepo (incremental is fast)
 import json
 import logging
 import os
-import sys
 import time
 from pathlib import Path
 
@@ -115,7 +113,7 @@ def get_or_create_code_table(db) -> object:
             pa.field("chunk_index", pa.int32()),
             pa.field("text", pa.string()),
             pa.field("vector", pa.list_(pa.float32(), 768)),
-        ]
+        ],
     )
     if "code_files" in db.table_names():
         return db.open_table("code_files")
@@ -159,7 +157,7 @@ def run_codebase_embedder(cfg=None) -> dict:
             if len(batch_texts) >= 5:
                 try:
                     vectors = embed_batch(batch_texts, token)
-                    rows = [{**m, "vector": v} for m, v in zip(batch_meta, vectors)]
+                    rows = [{**m, "vector": v} for m, v in zip(batch_meta, vectors, strict=False)]
                     tbl.add(rows)
                     embedded_count += len(rows)
                 except Exception as e:
@@ -174,7 +172,7 @@ def run_codebase_embedder(cfg=None) -> dict:
     if batch_texts:
         try:
             vectors = embed_batch(batch_texts, token)
-            rows = [{**m, "vector": v} for m, v in zip(batch_meta, vectors)]
+            rows = [{**m, "vector": v} for m, v in zip(batch_meta, vectors, strict=False)]
             tbl.add(rows)
             embedded_count += len(rows)
         except Exception as e:

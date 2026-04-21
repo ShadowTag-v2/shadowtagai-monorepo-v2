@@ -1,6 +1,5 @@
 #!/usr/bin/env -S .venv/bin/python3
-"""
-scripts/lance_embed_ingestor.py
+"""scripts/lance_embed_ingestor.py
 Batch-embeds the SQLite corpus extractions into LanceDB using Gemini text-embedding.
 
 Strategy:
@@ -87,9 +86,9 @@ def _upsert_lance(db_name: str, rows: list[dict], vectors: list[list[float]]) ->
             pa.field("name", pa.utf8()),
             pa.field("text", pa.utf8()),
             pa.field("vector", pa.list_(pa.float32(), EMBED_DIM)),
-        ]
+        ],
     )
-    records = [{"id": r["id"], "name": r["name"], "text": r["text"][:500], "vector": v} for r, v in zip(rows, vectors)]
+    records = [{"id": r["id"], "name": r["name"], "text": r["text"][:500], "vector": v} for r, v in zip(rows, vectors, strict=False)]
     # list_tables() returns ListTablesResponse with .tables list in lancedb>=0.20
     tbl_response = db.list_tables()
     existing = getattr(tbl_response, "tables", None) or list(tbl_response)
@@ -118,14 +117,14 @@ def embed_db(db_name: str, db_path: Path, client, limit: int = 50_000) -> int:
         try:
             vectors = _embed_batch(client, texts)
         except Exception as exc:
-            logger.error("Embed batch %d failed: %s — sleeping 10s", i // BATCH_SIZE, exc)
+            logger.exception("Embed batch %d failed: %s — sleeping 10s", i // BATCH_SIZE, exc)
             time.sleep(10)
             continue
 
         # Write back to SQLite
         conn.executemany(
             "UPDATE extractions SET embedding=? WHERE id=?",
-            [(json.dumps(v), r["id"]) for r, v in zip(batch, vectors)],
+            [(json.dumps(v), r["id"]) for r, v in zip(batch, vectors, strict=False)],
         )
         conn.commit()
         _upsert_lance(db_name, batch, vectors)

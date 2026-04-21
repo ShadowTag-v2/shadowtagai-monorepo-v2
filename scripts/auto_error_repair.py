@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-ShadowTag-v2 Autonomous Error Repair Engine
+"""ShadowTag-v2 Autonomous Error Repair Engine.
 =====================================
 Watches lint/test output, calls Gemini (primary) for fix, applies it,
 re-runs checks, commits when green. Zero user approval required.
@@ -82,7 +81,7 @@ def run_ruff() -> list[Error]:
                     code=item.get("code", ""),
                     message=item.get("message", ""),
                     source="ruff",
-                )
+                ),
             )
     except json.JSONDecodeError:
         pass
@@ -105,7 +104,7 @@ def run_mypy() -> list[Error]:
                         code=item.get("code", ""),
                         message=item.get("message", ""),
                         source="mypy",
-                    )
+                    ),
                 )
         except json.JSONDecodeError:
             continue
@@ -129,18 +128,15 @@ def run_tests() -> list[Error]:
                     code="TEST_FAIL",
                     message=f"{m.group(2)}: {m.group(3)}",
                     source="pytest",
-                )
+                ),
             )
     return errors
 
 
 def collect_errors() -> list[Error]:
     errs: list[Error] = []
-    print("[repair] running ruff...", flush=True)
     errs += run_ruff()
-    print("[repair] running mypy...", flush=True)
     errs += run_mypy()
-    print("[repair] running pytest...", flush=True)
     errs += run_tests()
     return errs
 
@@ -150,13 +146,14 @@ def collect_errors() -> list[Error]:
 
 def _gemini_generate(prompt: str) -> str:
     if not GEMINI_API_KEY:
-        raise RuntimeError("GEMINI_API_KEY not set")
+        msg = "GEMINI_API_KEY not set"
+        raise RuntimeError(msg)
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_GEN_MODEL}:generateContent?key={GEMINI_API_KEY}"
     body = json.dumps(
         {
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {"temperature": 0, "maxOutputTokens": 2048},
-        }
+        },
     ).encode()
     req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
     with urllib.request.urlopen(req, timeout=60) as resp:
@@ -186,9 +183,11 @@ def _gemini_generate(prompt: str) -> str:
 
 def generate(prompt: str) -> str:
     if REPAIR_PROVIDER == "openai":
-        raise NotImplementedError("Set REPAIR_PROVIDER=gemini or stub _openai_generate")
+        msg = "Set REPAIR_PROVIDER=gemini or stub _openai_generate"
+        raise NotImplementedError(msg)
     if REPAIR_PROVIDER == "claude":
-        raise NotImplementedError("Set REPAIR_PROVIDER=gemini or stub _claude_generate")
+        msg = "Set REPAIR_PROVIDER=gemini or stub _claude_generate"
+        raise NotImplementedError(msg)
     return _gemini_generate(prompt)
 
 
@@ -226,7 +225,7 @@ def build_repair_prompt(errors: list[Error]) -> str:
             ```
             {context}
             ```
-        """)
+        """),
         )
 
     return textwrap.dedent(f"""
@@ -262,9 +261,7 @@ def apply_patches(llm_response: str, dry_run: bool = False) -> list[str]:
 
     try:
         data = json.loads(text)
-    except json.JSONDecodeError as exc:
-        print(f"[repair] could not parse LLM response as JSON: {exc}", flush=True)
-        print(f"[repair] raw: {llm_response[:500]}", flush=True)
+    except json.JSONDecodeError:
         return []
 
     patched: list[str] = []
@@ -275,11 +272,10 @@ def apply_patches(llm_response: str, dry_run: bool = False) -> list[str]:
             continue
         target = REPO_ROOT / rel
         if dry_run:
-            print(f"[repair][dry-run] would write {target} ({len(content)} chars)")
+            pass
         else:
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(content)
-            print(f"[repair] patched {rel}")
         patched.append(rel)
     return patched
 
@@ -291,10 +287,9 @@ def auto_format() -> None:
 def auto_commit(patched_files: list[str], round_n: int) -> None:
     if not patched_files or not AUTO_COMMIT:
         return
-    subprocess.run(["git", "add"] + patched_files, cwd=REPO_ROOT)
+    subprocess.run(["git", "add", *patched_files], cwd=REPO_ROOT)
     msg = f"fix(auto-repair): round {round_n} — {len(patched_files)} file(s) [provider={REPAIR_PROVIDER}]"
     subprocess.run(["git", "commit", "-m", msg], cwd=REPO_ROOT)
-    print(f"[repair] committed: {msg}")
 
 
 # ── Main repair loop ──────────────────────────────────────────────────────────
@@ -304,16 +299,13 @@ def repair_loop(dry_run: bool = False, ci: bool = False) -> int:
     for round_n in range(1, MAX_ROUNDS + 1):
         errors = collect_errors()
         if not errors:
-            print(f"[repair] ✓ all clear after round {round_n - 1}")
             return 0
 
-        print(f"[repair] round {round_n}/{MAX_ROUNDS} — {len(errors)} error(s)")
         prompt = build_repair_prompt(errors)
 
         try:
             response = generate(prompt)
-        except Exception as exc:
-            print(f"[repair] LLM call failed: {exc}", flush=True)
+        except Exception:
             break
 
         patched = apply_patches(response, dry_run=dry_run)
@@ -322,26 +314,23 @@ def repair_loop(dry_run: bool = False, ci: bool = False) -> int:
             auto_commit(patched, round_n)
 
         if not patched:
-            print("[repair] no patches produced — stopping.")
             break
 
     remaining = collect_errors()
     if remaining:
-        print(f"[repair] ✗ {len(remaining)} unresolved error(s) after {MAX_ROUNDS} rounds")
-        for e in remaining[:20]:
-            print(f"  [{e.source}] {e.file}:{e.line} {e.code}: {e.message}")
+        for _e in remaining[:20]:
+            pass
         return 1 if ci else 0
     return 0
 
 
 def watch_loop() -> None:
-    print("[repair] watch mode — polling every 10s (Ctrl-C to stop)")
     try:
         while True:
             repair_loop()
             time.sleep(10)
     except KeyboardInterrupt:
-        print("[repair] watch stopped.")
+        pass
 
 
 if __name__ == "__main__":

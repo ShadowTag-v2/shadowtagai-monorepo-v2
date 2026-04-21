@@ -1,5 +1,4 @@
-"""
-Drive Embedder - Sovereign Memory Ingestion Protocol
+"""Drive Embedder - Sovereign Memory Ingestion Protocol.
 
 Embeds every .md file in the local data/drive_ingest/markdown/ directory
 into the LanceDB workspace_knowledge table using Vertex AI embeddings.
@@ -9,7 +8,6 @@ This is a standalone ingestion script, separate from the 7-step pipeline.
 
 import json
 import logging
-import sys
 import time
 from pathlib import Path
 
@@ -27,9 +25,8 @@ STATE_PATH = REPO_ROOT / "data" / "drive_ingest" / "fast_ingest_state.json"
 def embed_batch(texts: list[str], token: str) -> list[list[float]]:
     """Embed a batch via Vertex AI text-embedding-005."""
     import os
+
     import requests
-    import google.auth
-    import google.auth.transport.requests as gauth_requests
 
     project = os.environ.get("GCP_PROJECT_ID", "shadowtag-omega-v4")
     region = "us-central1"
@@ -69,7 +66,7 @@ def get_or_create_table(db):
             pa.field("vector", pa.list_(pa.float32(), 768)),
             pa.field("domain", pa.string()),
             pa.field("ingested_at", pa.string()),
-        ]
+        ],
     )
     result = db.list_tables()
     table_names = result.tables if hasattr(result, "tables") else list(result)
@@ -124,13 +121,13 @@ def run(cfg=None) -> dict:
                 "text": content[:2000],
                 "domain": "",
                 "ingested_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            }
+            },
         )
 
         if len(batch_texts) >= 5:
             try:
                 vectors = embed_batch(batch_texts, token)
-                rows = [{**m, "vector": v} for m, v in zip(batch_meta, vectors)]
+                rows = [{**m, "vector": v} for m, v in zip(batch_meta, vectors, strict=False)]
                 tbl.add(rows)
                 ingested += len(rows)
             except Exception as e:
@@ -145,7 +142,7 @@ def run(cfg=None) -> dict:
     if batch_texts:
         try:
             vectors = embed_batch(batch_texts, token)
-            rows = [{**m, "vector": v} for m, v in zip(batch_meta, vectors)]
+            rows = [{**m, "vector": v} for m, v in zip(batch_meta, vectors, strict=False)]
             tbl.add(rows)
             ingested += len(rows)
         except Exception as e:

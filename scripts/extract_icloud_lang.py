@@ -26,7 +26,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("iCloud_Extractor")
 
 
-def ingest_icloud_notes(notes_dir: str):
+def ingest_icloud_notes(notes_dir: str) -> None:
     logger.info(f"Targeting iCloud Notes Vault: {notes_dir}")
 
     # Locate all note files (txt and md)
@@ -66,7 +66,7 @@ def ingest_icloud_notes(notes_dir: str):
                     attributes={"deadline": "Friday"},
                 ),
             ],
-        )
+        ),
     ]
 
     # Initialize Memory Service
@@ -106,7 +106,7 @@ def ingest_icloud_notes(notes_dir: str):
                             "text": f"[{ext.extraction_class.upper()}] {ext.extraction_text} | Context: {ext.attributes}",
                             "timestamp": "retroactive",
                             "node_type": "icloud_note_extraction",
-                        }
+                        },
                     )
 
                 # Push mathematically tagged structures into the active Sovereign Vector Engine
@@ -114,7 +114,7 @@ def ingest_icloud_notes(notes_dir: str):
                 logger.info(f" -> Upserted {len(structured_events)} structured entities.")
 
         except Exception as e:
-            logger.error(f"Failed extracting {filepath}: {str(e)}")
+            logger.exception(f"Failed extracting {filepath}: {e!s}")
 
     logger.info("iCloud Extraction Sequence Complete.")
 

@@ -59,4 +59,3 @@ packet = {
 out = Path("./data/memory/launch-packet.json")
 out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(json.dumps(packet, indent=2, ensure_ascii=False), encoding="utf-8")
-print({"exported": str(out)})

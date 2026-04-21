@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Chunked Git Data API Push — Invariant #90
+"""Chunked Git Data API Push — Invariant #90
 Pushes all tracked files in 100MB chunks, 5 per JWT window.
 Renews token between batch windows.
 
@@ -44,8 +43,7 @@ def api(method: str, path: str, body: dict | None = None, token: str = "") -> di
     try:
         r = urllib.request.urlopen(rq, timeout=120)
         return json.loads(r.read())
-    except urllib.error.HTTPError as e:
-        print(f"  ❌ HTTP {e.code}: {e.read().decode()[:200]}")
+    except urllib.error.HTTPError:
         raise
 
 
@@ -93,9 +91,7 @@ def get_token() -> str:
     """Get token from env or mint new one."""
     env_token = os.environ.get("GH_TOKEN", "")
     if env_token:
-        print("  Using GH_TOKEN from environment")
         return env_token
-    print("  Minting new JWT token...")
     return mint_jwt()
 
 
@@ -153,13 +149,11 @@ def group_into_chunks(files: list[tuple[str, int]], chunk_mb: int) -> list[list[
 def push_chunk(chunk: list[tuple[str, int]], chunk_idx: int, token: str, dry_run: bool) -> list[dict]:
     """Push a chunk of files as blobs, return tree items."""
     tree_items = []
-    chunk_size_mb = sum(s for _, s in chunk) / 1024 / 1024
+    sum(s for _, s in chunk) / 1024 / 1024
 
-    print(f"\n  📦 Chunk {chunk_idx}: {len(chunk)} files, {chunk_size_mb:.1f} MB")
 
-    for i, (fpath, size) in enumerate(chunk):
+    for i, (fpath, _size) in enumerate(chunk):
         if dry_run:
-            print(f"    [DRY] {fpath} ({size / 1024:.0f}K)")
             tree_items.append({"path": fpath, "mode": "100644", "type": "blob", "sha": "dry-run"})
             continue
 
@@ -171,35 +165,28 @@ def push_chunk(chunk: list[tuple[str, int]], chunk_idx: int, token: str, dry_run
         tree_items.append({"path": fpath, "mode": "100644", "type": "blob", "sha": blob["sha"]})
 
         if (i + 1) % 50 == 0 or i == len(chunk) - 1:
-            print(f"    ✅ {i + 1}/{len(chunk)} files uploaded")
+            pass
 
     return tree_items
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Chunked Git Data API Push")
     parser.add_argument("--dry-run", action="store_true", help="Don't actually push")
     parser.add_argument("--chunk-size-mb", type=int, default=CHUNK_SIZE_MB, help="MB per chunk")
     parser.add_argument("--batch-size", type=int, default=BATCH_SIZE, help="Chunks per token window")
     args = parser.parse_args()
 
-    print("=" * 60)
-    print("Chunked Push Protocol — Invariant #90")
-    print("=" * 60)
 
     # 1. Get tracked files
     files = get_tracked_files()
-    total_mb = sum(s for _, s in files) / 1024 / 1024
-    print(f"\nTracked files: {len(files)}")
-    print(f"Total size: {total_mb:.1f} MB")
+    sum(s for _, s in files) / 1024 / 1024
 
     # 2. Group into chunks
     chunks = group_into_chunks(files, args.chunk_size_mb)
-    print(f"Chunks ({args.chunk_size_mb}MB each): {len(chunks)}")
-    print(f"Batch windows ({args.batch_size} chunks/window): {(len(chunks) + args.batch_size - 1) // args.batch_size}")
 
     if args.dry_run:
-        print("\n🔸 DRY RUN — no changes will be pushed")
+        pass
 
     # 3. Push in batches
     all_tree_items: list[dict] = []
@@ -207,37 +194,27 @@ def main():
 
     for batch_start in range(0, len(chunks), args.batch_size):
         batch_end = min(batch_start + args.batch_size, len(chunks))
-        batch_num = batch_start // args.batch_size + 1
-        total_batches = (len(chunks) + args.batch_size - 1) // args.batch_size
+        batch_start // args.batch_size + 1
+        (len(chunks) + args.batch_size - 1) // args.batch_size
 
-        print(f"\n{'=' * 40}")
-        print(f"BATCH {batch_num}/{total_batches} (chunks {batch_start + 1}-{batch_end})")
-        print(f"{'=' * 40}")
 
         if batch_start > 0 and not args.dry_run:
-            print("  🔄 Renewing JWT token...")
             token = mint_jwt()
 
         for i in range(batch_start, batch_end):
             items = push_chunk(chunks[i], i + 1, token, args.dry_run)
             all_tree_items.extend(items)
 
-        print(f"\n  ✅ Batch {batch_num} complete. {len(all_tree_items)} total blobs.")
 
     # 4. Create tree + commit + update ref
     if args.dry_run:
-        print(f"\n🔸 DRY RUN complete. Would push {len(all_tree_items)} files.")
         return
 
-    print(f"\n{'=' * 40}")
-    print("CREATING COMMIT")
-    print(f"{'=' * 40}")
 
     # Get current main
     branch = api("GET", "branches/main", token=token)
     base_sha = branch["commit"]["sha"]
     base_tree = branch["commit"]["commit"]["tree"]["sha"]
-    print(f"  Base: {base_sha[:12]}")
 
     # Create tree (may need chunking for >1000 items)
     # GitHub tree API handles up to ~10K items
@@ -247,7 +224,6 @@ def main():
         {"base_tree": base_tree, "tree": all_tree_items},
         token,
     )
-    print(f"  Tree: {tree['sha'][:12]}")
 
     commit = api(
         "POST",
@@ -268,11 +244,8 @@ def main():
         token,
     )
     new_sha = commit["sha"]
-    print(f"  Commit: {new_sha[:12]}")
 
     api("PATCH", "git/refs/heads/main", {"sha": new_sha, "force": False}, token)
-    print(f"\n🎯 origin/main: {base_sha[:12]} → {new_sha[:12]}")
-    print("✅ Push complete!")
 
 
 if __name__ == "__main__":

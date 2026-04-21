@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Session Manifest Builder
+"""Session Manifest Builder.
 ========================
 Parses raw_sessions.txt → deduplicates → emits structured TELEPORT_MANIFEST.json.
 
@@ -40,11 +39,11 @@ SESSION_RE = re.compile(r"(session_[A-Za-z0-9]+)")
 
 
 def parse_raw_file(path: Path) -> tuple[dict[str, str], int, int]:
-    """
-    Returns:
-      session_map: {session_id: group}
-      total_lines: raw non-comment, non-empty lines scanned
-      duplicate_count: how many duplicate IDs were encountered
+    """Returns:
+    session_map: {session_id: group}
+    total_lines: raw non-comment, non-empty lines scanned
+    duplicate_count: how many duplicate IDs were encountered.
+
     """
     session_map: dict[str, str] = {}
     seen: set[str] = set()
@@ -139,7 +138,6 @@ def main() -> None:
     args = parser.parse_args()
 
     if not args.raw_file.exists():
-        print(f"ERROR: {args.raw_file} not found", file=sys.stderr)
         sys.exit(1)
 
     session_map, raw_lines, duplicates = parse_raw_file(args.raw_file)
@@ -151,17 +149,12 @@ def main() -> None:
     output = json.dumps(manifest, indent=2)
 
     if args.dry_run:
-        print(output)
-        print(f"\n[dry-run] Would write {len(output)} chars to {args.out}", file=sys.stderr)
         return
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(output + "\n")
-    print(f"[manifest] wrote {args.out}")
-    print(f"[manifest] {manifest['meta']['total_unique_sessions']} unique sessions")
-    print(f"[manifest] {duplicates} duplicates removed from {raw_lines} raw lines")
-    for gname, gdata in manifest["groups"].items():
-        print(f"  {gname}: {gdata['count']} sessions (priority {gdata['priority']})")
+    for _gname, _gdata in manifest["groups"].items():
+        pass
 
 
 if __name__ == "__main__":

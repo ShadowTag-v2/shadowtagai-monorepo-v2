@@ -14,28 +14,23 @@ extract_dirs = [
     "ane_cortex_stack_v10_bundle",
 ]
 
-print("Starting Master Rule Pack overlay...")
 for ex_dir in extract_dirs:
     src_dir = os.path.join(SOURCE_BASE, ex_dir)
     if not os.path.exists(src_dir):
         continue
 
-    print(f"Applying payload from {ex_dir}...")
     for item in os.listdir(src_dir):
         # Skip __MACOSX and other junk
-        if item.startswith(".") and item != ".github" and item != ".agent":
+        if item.startswith(".") and item not in {".github", ".agent"}:
             continue
 
         s = os.path.join(src_dir, item)
         d = os.path.join(TARGET_BASE, item)
 
         if os.path.isdir(s):
-            print(f"  Mergiug directory: {item}/")
             shutil.copytree(s, d, dirs_exist_ok=True)
         else:
-            print(f"  Copying file: {item}")
             shutil.copy2(s, d)
 
 # Special cases: move trailing isolated JSONs into correct config dirs if applicable,
 # but for now just leave them in the archive unless specified.
-print("Successfully overlaid the control plane architectures and Superpowers/Antigravity Agent Skills.")

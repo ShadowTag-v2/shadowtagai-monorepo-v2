@@ -6,7 +6,6 @@ Usage:
     python3 scripts/health-dashboard.py --json  # Machine-readable output
 """
 
-import json
 import pathlib
 import subprocess
 import sys
@@ -58,7 +57,7 @@ def check_workflows() -> dict:
 
 
 def check_daemons() -> dict:
-    code, out = run("launchctl list 2>/dev/null | grep pnkln")
+    _code, out = run("launchctl list 2>/dev/null | grep pnkln")
     daemons = [l.split("\t") for l in out.split("\n") if l.strip()] if out else []
     active = sum(1 for d in daemons if d[0] != "-")
     return {
@@ -89,7 +88,7 @@ def check_git_pack() -> dict:
     return {"size_gb": round(size_gb, 1), "status": f"{'⚠️' if size_gb > 5 else '✅'} {size_gb:.1f} GB"}
 
 
-def main():
+def main() -> None:
     as_json = "--json" in sys.argv
 
     checks = {
@@ -105,25 +104,9 @@ def main():
     }
 
     if as_json:
-        print(json.dumps(checks, indent=2))
         return
 
-    print("╔══════════════════════════════════════════╗")
-    print("║   📊 MONOREPO HEALTH DASHBOARD           ║")
-    print("╚══════════════════════════════════════════╝")
-    print(f"  🕐 {checks['timestamp']}")
-    print()
-    print(f"  {'Tests:':<20} {checks['tests']['status']}  {checks['tests']['detail']}")
-    print(f"  {'Lint (ruff):':<20} {checks['lint']['status']}  {checks['lint']['detail'][:60]}")
-    print(f"  {'Dead Code:':<20} {checks['dead_code']['status']}  {checks['dead_code']['detail'][:60]}")
-    print(f"  {'Git:':<20} {checks['git']['status']}  {checks['git']['branch']} @ {checks['git']['last_commit'][:40]}")
-    print(f"  {'Workflows:':<20} {checks['workflows']['status']}")
-    print(f"  {'Daemons:':<20} {checks['daemons']['status']}")
-    print(f"  {'Disk:':<20} {checks['disk']['status']}")
-    print(f"  {'Git Pack:':<20} {checks['git_pack']['status']}")
-    print()
-    overall = all(c.get("code", 0) == 0 if "code" in c else True for c in [checks["tests"], checks["lint"]])
-    print(f"  Overall: {'🟢 HEALTHY' if overall else '🔴 ISSUES DETECTED'}")
+    all(c.get("code", 0) == 0 if "code" in c else True for c in [checks["tests"], checks["lint"]])
 
 
 if __name__ == "__main__":

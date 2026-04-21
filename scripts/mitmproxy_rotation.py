@@ -17,24 +17,22 @@ if not KEYS:
     if single_key:
         KEYS = [single_key]
 
-print(f"Loaded {len(KEYS)} API keys for rotation.")
 
 
 class KeyRotator:
     def request(self, flow: http.HTTPFlow) -> None:
         # Target Google Generative AI API
-        if "generativelanguage.googleapis.com" in flow.request.pretty_host:
-            if KEYS:
-                # Pick a random key
-                key = random.choice(KEYS)
+        if "generativelanguage.googleapis.com" in flow.request.pretty_host and KEYS:
+            # Pick a random key
+            key = random.choice(KEYS)
 
-                # Replace in query parameters (common for Gemini)
-                if "key" in flow.request.query:
-                    flow.request.query["key"] = key
+            # Replace in query parameters (common for Gemini)
+            if "key" in flow.request.query:
+                flow.request.query["key"] = key
 
-                # Replace in headers (if used)
-                if "x-goog-api-key" in flow.request.headers:
-                    flow.request.headers["x-goog-api-key"] = key
+            # Replace in headers (if used)
+            if "x-goog-api-key" in flow.request.headers:
+                flow.request.headers["x-goog-api-key"] = key
 
                 # print(f"Rotated to key: ...{key[-4:]}")
 

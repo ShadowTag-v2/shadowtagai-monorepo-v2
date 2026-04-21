@@ -1,5 +1,4 @@
-"""
-scripts/cinematic_studio.py
+"""scripts/cinematic_studio.py
 Telemetry capture and Auto-Healing boundary for the Cinematic Studio UI payload.
 """
 
@@ -22,15 +21,14 @@ logger = logging.getLogger("CinematicTelemetry")
 
 
 class CinematicTelemetry:
-    def __init__(self):
+    def __init__(self) -> None:
         # Keep track of recent 500 errors to check for 3 concurrent hits
         self.recent_500s = deque(maxlen=3)
         self.error_threshold = 3
         self.time_window_seconds = 60
 
-    def log_http_response(self, status_code: int, endpoint: str, stack_trace: str = ""):
-        """
-        Intercepts HTTP responses from the Cinematic UI.
+    def log_http_response(self, status_code: int, endpoint: str, stack_trace: str = "") -> None:
+        """Intercepts HTTP responses from the Cinematic UI.
         If a fatal 500 HTTP drop occurs over 3 concurrent hits, it autonomously dispatches
         a God Mode repair task directly to the agent swarm without user intervention.
         """
@@ -45,7 +43,7 @@ class CinematicTelemetry:
             # But we'll leave it as a sliding window of the last 3 errors for now.
             logger.info(f"Normal Response: {status_code} on {endpoint}")
 
-    def _check_auto_heal_threshold(self):
+    def _check_auto_heal_threshold(self) -> None:
         if len(self.recent_500s) == self.error_threshold:
             # Check if all 3 errors occurred within the time window
             first_error_time = self.recent_500s[0][0]

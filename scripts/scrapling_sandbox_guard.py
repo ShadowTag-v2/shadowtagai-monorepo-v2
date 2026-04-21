@@ -1,4 +1,4 @@
-"""Scrapling Sandbox Guard — scrapling_sandbox_guard.py
+"""Scrapling Sandbox Guard — scrapling_sandbox_guard.py.
 
 SAFE MODE enforcement for web scraping workflows.
 Prevents accidental file/drive deletion during scraping plans.
@@ -12,12 +12,11 @@ Rules:
 
 from __future__ import annotations
 
+import contextlib
 import json
-import os
-from datetime import datetime, timezone, UTC
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
-
 
 ALLOWED_WRITE_ROOTS = frozenset({"data", "output", "tmp"})
 WRITE_LOG_PATH = Path(".beads/scrapling_writes.jsonl")
@@ -39,6 +38,7 @@ def validate_write_path(target_path: str | Path) -> Path:
 
     Raises:
         SandboxViolationError: If path is outside sandbox.
+
     """
     resolved = Path(target_path).resolve()
     cwd = Path.cwd().resolve()
@@ -47,17 +47,20 @@ def validate_write_path(target_path: str | Path) -> Path:
     try:
         relative = resolved.relative_to(cwd)
     except ValueError as exc:
-        raise SandboxViolationError(f"SANDBOX VIOLATION: Path '{target_path}' is outside workspace root '{cwd}'") from exc
+        msg = f"SANDBOX VIOLATION: Path '{target_path}' is outside workspace root '{cwd}'"
+        raise SandboxViolationError(msg) from exc
 
     # Must be under an allowed root
     parts = relative.parts
     if not parts:
-        raise SandboxViolationError("SANDBOX VIOLATION: Cannot write to workspace root")
+        msg = "SANDBOX VIOLATION: Cannot write to workspace root"
+        raise SandboxViolationError(msg)
 
     root_dir = parts[0]
     if root_dir not in ALLOWED_WRITE_ROOTS:
+        msg = f"SANDBOX VIOLATION: Root '{root_dir}/' is not in allowed write paths: {sorted(ALLOWED_WRITE_ROOTS)}. Target: {target_path}"
         raise SandboxViolationError(
-            f"SANDBOX VIOLATION: Root '{root_dir}/' is not in allowed write paths: {sorted(ALLOWED_WRITE_ROOTS)}. Target: {target_path}"
+            msg,
         )
 
     _log_write("validate", str(target_path), allowed=True)
@@ -75,6 +78,7 @@ def validate_command(command: str) -> str:
 
     Raises:
         SandboxViolationError: If command contains blocked patterns.
+
     """
     command_lower = command.lower().strip()
 
@@ -85,8 +89,9 @@ def validate_command(command: str) -> str:
                 _log_write("command_allowed", command, allowed=True)
                 return command
 
+            msg = f"SANDBOX VIOLATION: Command contains blocked pattern '{pattern}': {command}\nOnly deletion of ./tmp/ paths is allowed."
             raise SandboxViolationError(
-                f"SANDBOX VIOLATION: Command contains blocked pattern '{pattern}': {command}\nOnly deletion of ./tmp/ paths is allowed."
+                msg,
             )
 
     _log_write("command_allowed", command, allowed=True)
@@ -102,6 +107,7 @@ def safe_write(target_path: str | Path, content: str | bytes) -> Path:
 
     Returns:
         The resolved path that was written to.
+
     """
     validated = validate_write_path(target_path)
     validated.parent.mkdir(parents=True, exist_ok=True)
@@ -149,30 +155,19 @@ def _log_write(
 
 if __name__ == "__main__":
     # Self-test
-    print("=== Scrapling Sandbox Guard Self-Test ===")
 
     # Valid paths
     for path in ["data/scraped.json", "output/results.csv", "tmp/cache.bin"]:
-        try:
+        with contextlib.suppress(SandboxViolationError):
             validate_write_path(path)
-            print(f"  ✓ {path} — ALLOWED")
-        except SandboxViolationError as e:
-            print(f"  ✗ {path} — {e}")
 
     # Invalid paths
     for path in ["apps/main.py", "../escape.txt", "scripts/danger.sh"]:
-        try:
+        with contextlib.suppress(SandboxViolationError):
             validate_write_path(path)
-            print(f"  ✗ {path} — SHOULD HAVE BEEN BLOCKED")
-        except SandboxViolationError:
-            print(f"  ✓ {path} — correctly BLOCKED")
 
     # Command validation
     for cmd in ["rm -rf /tmp/cache", "rm -rf apps/", "ls -la data/"]:
-        try:
+        with contextlib.suppress(SandboxViolationError):
             validate_command(cmd)
-            print(f"  ✓ cmd '{cmd}' — ALLOWED")
-        except SandboxViolationError:
-            print(f"  ✓ cmd '{cmd}' — correctly BLOCKED")
 
-    print("\n✓ Self-test complete")

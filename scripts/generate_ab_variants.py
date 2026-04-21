@@ -76,7 +76,6 @@ VARIANTS = {
 
 def generate_variant(prompt: str, output_path: str) -> str:
     """Generate a single video variant."""
-    print(f"  Generating: {output_path}")
     operation = client.models.generate_videos(
         model="veo-3.1-generate-preview",
         prompt=prompt,
@@ -87,18 +86,16 @@ def generate_variant(prompt: str, output_path: str) -> str:
         ),
     )
     while not operation.done:
-        print("    Waiting for video generation...")
         time.sleep(10)
         operation = client.operations.get(operation)
 
     video = operation.response.generated_videos[0]
     client.files.download(file=video.video)
     video.video.save(output_path)
-    print(f"  ✅ Saved: {output_path}")
     return output_path
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Generate A/B hero video variants")
     parser.add_argument(
         "--variant",
@@ -119,15 +116,11 @@ def main():
 
     for variant_name in variants_to_gen:
         prompts = VARIANTS[variant_name]
-        print(f"\n=== Variant: {variant_name} ===")
 
         for platform, prompt in prompts.items():
             output_path = os.path.join(args.output_dir, f"{platform}-{variant_name}.mp4")
             generate_variant(prompt, output_path)
 
-    print(f"\n✅ All variants saved to {args.output_dir}")
-    print("Upload to GCS with:")
-    print(f"  gcloud storage cp {args.output_dir}/*.mp4 gs://shadowtag-omega-v4-archive/hero-videos/variants/")
 
 
 if __name__ == "__main__":

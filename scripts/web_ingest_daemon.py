@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-SYSTEM PROMPT (ArXiv 2512.14982 - PROMPT REPETITION ENFORCEMENT):
+"""SYSTEM PROMPT (ArXiv 2512.14982 - PROMPT REPETITION ENFORCEMENT):
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
@@ -80,7 +79,7 @@ EXAMPLES = [
                 attributes={"domain": "Security"},
             ),
         ],
-    )
+    ),
 ]
 
 
@@ -139,7 +138,8 @@ class WebIngester:
     def __init__(self) -> None:
         self.api_key = os.environ.get("GEMINI_API_KEY")
         if not self.api_key:
-            raise RuntimeError("GEMINI_API_KEY not set")
+            msg = "GEMINI_API_KEY not set"
+            raise RuntimeError(msg)
         self.db = CheckpointDB(DB_PATH)
         self.writer = JSONLWriter(JSONL_PATH)
 
@@ -188,7 +188,7 @@ class WebIngester:
                                             "source": name,
                                         }
                                         for e in res.extractions
-                                    ]
+                                    ],
                                 )
                         break
                     except Exception as e:
@@ -196,7 +196,8 @@ class WebIngester:
                         logger.warning(f"  Attempt {attempt + 1} failed: {e}. Retry in {wait}s.")
                         time.sleep(wait)
                 else:
-                    raise RuntimeError("All retries exhausted")
+                    msg = "All retries exhausted"
+                    raise RuntimeError(msg)
 
                 self.writer.write(fid, extractions)
                 self.db.insert_extractions(fid, name, extractions)
@@ -204,7 +205,7 @@ class WebIngester:
                 logger.info(f"  → {len(extractions)} intelligence nodes processed successfully")
 
             except Exception as e:
-                logger.error(f"  → Fatal Failure: {e}")
+                logger.exception(f"  → Fatal Failure: {e}")
                 self.db.mark(fid, name, "failed")
 
             time.sleep(RATE_DELAY)

@@ -47,4 +47,3 @@ base = Path(".agent/memory")
     encoding="utf-8",
 )
 
-print({"generated": str(base)})

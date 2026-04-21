@@ -1,5 +1,5 @@
 """# noqa: INP001
-scripts/generate_hero_video.py
+scripts/generate_hero_video.py.
 
 Veo 3.1 Hero Video Generator for ShadowTag AI
 
@@ -30,7 +30,6 @@ try:
     from google import genai
     from google.genai import types
 except ImportError:
-    print("ERROR: google-genai SDK not installed. Run: pip install google-genai")
     sys.exit(1)
 
 
@@ -76,19 +75,17 @@ VIDEO_MODEL = "veo-3.1-generate-preview"
 class Veo31Pipeline:
     """Orchestrates the Nano Banana 2 → Veo 3.1 video generation pipeline."""
 
-    def __init__(self, api_key: str | None = None):
+    def __init__(self, api_key: str | None = None) -> None:
         self.api_key = api_key or os.environ.get("GEMINI_API_KEY")
         if not self.api_key:
-            raise ValueError("GEMINI_API_KEY not set. Export it or pass via --api-key.")
+            msg = "GEMINI_API_KEY not set. Export it or pass via --api-key."
+            raise ValueError(msg)
         self.client = genai.Client(api_key=self.api_key)
 
     def generate_reference_image(self, prompt: str, output_path: str = "reference_frame.png") -> str:
-        """
-        Step 1: Generate a high-quality reference frame using Gemini 3.1 Flash Image
+        """Step 1: Generate a high-quality reference frame using Gemini 3.1 Flash Image
         (Nano Banana 2) via generate_content with IMAGE response modality.
         """
-        print(f"🎨 [Step 1/3] Generating reference frame via {IMAGE_MODEL}...")
-
         response = self.client.models.generate_content(
             model=IMAGE_MODEL,
             contents=[prompt],
@@ -106,10 +103,10 @@ class Veo31Pipeline:
                 img_bytes = part.inline_data.data
                 with open(output_path, "wb") as f:
                     f.write(img_bytes)
-                print(f"   ✅ Reference frame saved: {output_path} ({len(img_bytes)} bytes)")
                 return output_path
 
-        raise RuntimeError("Image generation returned no image parts.")
+        msg = "Image generation returned no image parts."
+        raise RuntimeError(msg)
 
     def generate_video(
         self,
@@ -118,21 +115,17 @@ class Veo31Pipeline:
         output_path: str = DEFAULT_OUTPUT,
         aspect_ratio: str = "16:9",
     ) -> str:
-        """
-        Step 2: Generate video via Veo 3.1 API.
+        """Step 2: Generate video via Veo 3.1 API.
 
         Supports:
           - Text-to-video (prompt only)
           - Image-to-video (first frame anchored to reference image)
         """
-        print(f"🎬 [Step 2/3] Submitting video generation to {VIDEO_MODEL}...")
-
         # Build the request — Veo 3.1 has strict personGeneration rules:
         #   Image-to-video: "allow_adult" ONLY
         #   Text-to-video:  "allow_all" ONLY
         # See: https://ai.google.dev/gemini-api/docs/video#veo-api-parameters
         if reference_image_path and os.path.exists(reference_image_path):
-            print(f"   📎 Using reference image: {reference_image_path}")
             with open(reference_image_path, "rb") as f:
                 image_bytes = f.read()
 
@@ -154,7 +147,6 @@ class Veo31Pipeline:
                 config=generate_config,
             )
         else:
-            print("   📝 Text-to-video mode (no reference image)")
             generate_config = types.GenerateVideosConfig(
                 aspect_ratio=aspect_ratio,
                 number_of_videos=1,
@@ -169,18 +161,17 @@ class Veo31Pipeline:
             )
 
         # Poll for completion
-        print("   ⏳ Waiting for video generation (this can take 2-5 minutes)...")
         poll_count = 0
         while not operation.done:
             time.sleep(10)
             poll_count += 1
             operation = self.client.operations.get(operation)
-            elapsed = poll_count * 10
-            print(f"      ... polling ({elapsed}s elapsed)")
+            poll_count * 10
 
         # Extract result
         if not operation.response or not operation.response.generated_videos:
-            raise RuntimeError(f"Video generation failed. Operation result: {operation}")
+            msg = f"Video generation failed. Operation result: {operation}"
+            raise RuntimeError(msg)
 
         video = operation.response.generated_videos[0]
 
@@ -191,18 +182,17 @@ class Veo31Pipeline:
         try:
             self.client.files.download(file=video.video)
             video.video.save(output_path)
-            size_mb = os.path.getsize(output_path) / (1024 * 1024)
-            print(f"   ✅ Video saved: {output_path} ({size_mb:.1f} MB)")
+            os.path.getsize(output_path) / (1024 * 1024)
         except AttributeError:
             # Fallback: direct byte access for older SDK versions
             video_bytes = video.video.video_bytes
             if video_bytes:
                 with open(output_path, "wb") as f:
                     f.write(video_bytes)
-                size_mb = len(video_bytes) / (1024 * 1024)
-                print(f"   ✅ Video saved (direct bytes): {output_path} ({size_mb:.1f} MB)")
+                len(video_bytes) / (1024 * 1024)
             else:
-                raise RuntimeError("Could not download video bytes from response.")
+                msg = "Could not download video bytes from response."
+                raise RuntimeError(msg)
 
         return output_path
 
@@ -213,12 +203,9 @@ class Veo31Pipeline:
         last_frame_path: str | None = None,
         output_path: str = DEFAULT_OUTPUT,
     ) -> str:
-        """
-        Generate a seamless looping video by providing both first and last frames.
+        """Generate a seamless looping video by providing both first and last frames.
         Uses Veo 3.1's image interpolation when both frames are provided.
         """
-        print("🔄 [Looping Mode] Generating seamless loop with frame anchors...")
-
         config = types.GenerateVideosConfig(
             aspect_ratio="16:9",
             number_of_videos=1,
@@ -249,14 +236,13 @@ class Veo31Pipeline:
 
         operation = self.client.models.generate_videos(**kwargs)
 
-        print("   ⏳ Awaiting loop generation...")
         while not operation.done:
             time.sleep(10)
             operation = self.client.operations.get(operation)
-            print("      ... still processing")
 
         if not operation.response or not operation.response.generated_videos:
-            raise RuntimeError("Loop video generation failed.")
+            msg = "Loop video generation failed."
+            raise RuntimeError(msg)
 
         video = operation.response.generated_videos[0]
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -270,7 +256,6 @@ class Veo31Pipeline:
                 with open(output_path, "wb") as f:
                     f.write(video_bytes)
 
-        print(f"   ✅ Looping video saved: {output_path}")
         return output_path
 
     def run_full_pipeline(
@@ -280,15 +265,10 @@ class Veo31Pipeline:
         output_path: str = DEFAULT_OUTPUT,
         skip_reference: bool = False,
     ) -> dict:
-        """
-        Execute the complete Nano Banana 2 → Veo 3.1 pipeline.
+        """Execute the complete Nano Banana 2 → Veo 3.1 pipeline.
 
         Returns a dict with paths to generated assets.
         """
-        print("=" * 60)
-        print("  ShadowTag AI — Veo 3.1 Hero Video Pipeline")
-        print("=" * 60)
-
         results = {"reference_image": None, "video": None}
 
         # Step 1: Generate reference image
@@ -299,9 +279,7 @@ class Veo31Pipeline:
             try:
                 self.generate_reference_image(image_prompt, ref_path)
                 results["reference_image"] = ref_path
-            except Exception as e:
-                print(f"   ⚠️  Reference image generation failed: {e}")
-                print("   Continuing without reference frame (text-to-video mode)...")
+            except Exception:
                 ref_path = None
 
         # Step 2: Generate video
@@ -313,14 +291,6 @@ class Veo31Pipeline:
         results["video"] = video_path
 
         # Step 3: Summary
-        print("\n" + "=" * 60)
-        print("  ✅ Pipeline Complete")
-        print("=" * 60)
-        print(f"  Reference Image: {results['reference_image'] or 'skipped'}")
-        print(f"  Video Output:    {results['video']}")
-        print("\n  Next: Update index.html hero section to use this video.")
-        print("  CSS: <video> with object-fit: cover, autoplay, loop, muted, playsinline")
-        print("=" * 60)
 
         return results
 
@@ -328,7 +298,7 @@ class Veo31Pipeline:
 # ──────────────────────────────────────────────
 # CLI Entry Point
 # ──────────────────────────────────────────────
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Generate Veo 3.1 hero background video for ShadowTag AI")
     parser.add_argument(
         "--prompt",

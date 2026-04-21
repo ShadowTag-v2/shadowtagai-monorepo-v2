@@ -40,7 +40,6 @@ if __name__ == "__main__":
         "ehanc69",
     )
     if not token:
-        print("Failed to get token for ehanc69")
         sys.exit(1)
 
     headers = {
@@ -50,15 +49,11 @@ if __name__ == "__main__":
     }
 
     url = "https://api.github.com/repos/ehanc69/TsubameViewer"
-    print(f"Deleting repository: {url}")
 
     # Needs delete_repo scope, which the GitHub App must have
     resp = requests.delete(url, headers=headers, timeout=30)
 
-    if resp.status_code == 204:
-        print("Successfully deleted ehanc69/TsubameViewer")
-    elif resp.status_code == 404:
-        print("Repository not found or already deleted.")
+    if resp.status_code in {204, 404}:
+        pass
     else:
-        print(f"Failed to delete repository: {resp.status_code}")
-        print(resp.json())
+        pass

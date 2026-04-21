@@ -6,7 +6,7 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO)
 
 
-def process_vision_corpus():
+def process_vision_corpus() -> None:
     IN = Path("data/raw_images")
     OUT = Path("data/ocr_summaries")
 

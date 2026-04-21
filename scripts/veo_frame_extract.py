@@ -1,4 +1,4 @@
-"""Extract frames from Veo 3.1 generated videos for scroll animations.
+r"""Extract frames from Veo 3.1 generated videos for scroll animations.
 
 Replaces the Kling 3.0 → manual frame extraction workflow with a
 fully automated Veo 3.1 → ffmpeg pipeline.
@@ -183,6 +183,7 @@ def extract_frames(
 
     Returns:
         List of paths to extracted frame files.
+
     """
     if not check_ffmpeg():
         logger.error("ffmpeg not found. Install: brew install ffmpeg")
@@ -509,7 +510,7 @@ def _download_gcs(gcs_uri: str, output_dir: str) -> str | None:
         )
         return local_path
     except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        logger.error("GCS download failed: %s", e)
+        logger.exception("GCS download failed: %s", e)
         return None
 
 
@@ -586,18 +587,13 @@ Examples:
     )
 
     if args.list_presets:
-        for name, preset in SCROLL_PRESETS.items():
-            print(f"\n{'─' * 60}")
-            print(f"  {name}: {preset['description']}")
-            print(f"  Frames: {preset['frame_count']}")
-            print(f"{'─' * 60}")
-            print(f"  {preset['veo_prompt'][:200]}...\n")
+        for preset in SCROLL_PRESETS.values():
+            pass
         return 0
 
     # Mode 1: Extract from existing video
     if args.input:
         if not Path(args.input).exists():
-            print(f"❌ Video not found: {args.input}")
             return 1
 
         frames = extract_frames(
@@ -614,9 +610,7 @@ Examples:
             generate_scroll_js(args.output, frames)
 
         if frames:
-            print(f"\n✅ Extracted {len(frames)} frames to {args.output}")
             return 0
-        print("\n❌ Frame extraction failed")
         return 1
 
     # Mode 2: Full Veo pipeline
@@ -626,7 +620,6 @@ Examples:
     aspect = args.aspect_ratio or preset.get("aspect_ratio", "16:9")
 
     if not prompt:
-        print("❌ No prompt provided. Use --veo-prompt or --preset.")
         return 1
 
     results = run_full_pipeline(
@@ -643,10 +636,8 @@ Examples:
     )
 
     if results["frames"]:
-        print(f"\n✅ Pipeline complete: {len(results['frames'])} frames extracted")
         return 0
 
-    print("\n❌ Pipeline failed")
     return 1
 
 

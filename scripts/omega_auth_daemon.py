@@ -32,7 +32,7 @@ logger = logging.getLogger("omega_auth_daemon")
 _running = True
 
 
-def _handle_shutdown(signum, _frame):
+def _handle_shutdown(signum, _frame) -> None:
     global _running
     logger.info("Received signal %d — shutting down gracefully", signum)
     _running = False
@@ -51,14 +51,13 @@ def _refresh_adc() -> bool:
             token_preview = result.stdout.strip()[:12] + "..."
             logger.info("ADC token refreshed: %s", token_preview)
             return True
-        else:
-            logger.warning("ADC refresh failed: %s", result.stderr.strip()[:200])
-            return False
+        logger.warning("ADC refresh failed: %s", result.stderr.strip()[:200])
+        return False
     except subprocess.TimeoutExpired:
-        logger.error("ADC refresh timed out (30s)")
+        logger.exception("ADC refresh timed out (30s)")
         return False
     except FileNotFoundError:
-        logger.error("gcloud CLI not found in PATH")
+        logger.exception("gcloud CLI not found in PATH")
         return False
 
 
@@ -78,11 +77,11 @@ def _check_compute_sa() -> bool:
         logger.warning("No active gcloud accounts")
         return False
     except Exception as e:
-        logger.error("Account check failed: %s", e)
+        logger.exception("Account check failed: %s", e)
         return False
 
 
-def main():
+def main() -> None:
     """Main daemon loop — refresh ADC every REFRESH_INTERVAL_SECONDS."""
     signal.signal(signal.SIGTERM, _handle_shutdown)
     signal.signal(signal.SIGINT, _handle_shutdown)

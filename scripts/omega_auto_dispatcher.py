@@ -1,4 +1,4 @@
-"""Omega Auto-Dispatcher — omega_auto_dispatcher.py
+"""Omega Auto-Dispatcher — omega_auto_dispatcher.py.
 
 Autonomous telemetry auto-healing for HTTP 500 drops.
 Wired to cinematic_studio.py for telemetry visualization.
@@ -14,12 +14,10 @@ Flow:
 from __future__ import annotations
 
 import json
-import time
 from dataclasses import dataclass, field
-from datetime import datetime, timezone, UTC
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
-
 
 TELEMETRY_PATH = Path(".beads/telemetry_events.jsonl")
 HEAL_LOG_PATH = Path(".beads/auto_heal.jsonl")
@@ -60,6 +58,7 @@ def scan_for_failures(
 
     Returns:
         List of HealthEvent objects with 5xx status codes.
+
     """
     if not TELEMETRY_PATH.exists():
         return []
@@ -78,7 +77,7 @@ def scan_for_failures(
                         status_code=status,
                         timestamp=data.get("timestamp", ""),
                         error=data.get("error"),
-                    )
+                    ),
                 )
         except (json.JSONDecodeError, KeyError):
             continue
@@ -103,6 +102,7 @@ def attempt_heal(
 
     Returns:
         HealAttempt record.
+
     """
     if attempt_number <= 1:
         action = "retry"
@@ -141,6 +141,7 @@ def run_heal_cycle() -> dict[str, Any]:
 
     Returns:
         Summary of the heal cycle.
+
     """
     failures = scan_for_failures()
     if not failures:
@@ -184,13 +185,10 @@ def _log_heal(attempt: HealAttempt) -> None:
                     "error": attempt.error,
                 },
             )
-            + "\n"
+            + "\n",
         )
 
 
 if __name__ == "__main__":
     # Self-test
-    print("=== Omega Auto-Dispatcher Self-Test ===")
     result = run_heal_cycle()
-    print(f"Heal cycle result: {json.dumps(result, indent=2)}")
-    print("✓ Self-test complete")

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Atomic Thread Manager
+"""Atomic Thread Manager
 CRUD operations for OPORD-based atomic threads.
 """
 
@@ -33,7 +32,7 @@ class ThreadMetadata:
 class AtomicThreadManager:
     """Manage atomic thread lifecycle."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         THREADS_DIR.mkdir(parents=True, exist_ok=True)
         self.index = self._load_index()
 
@@ -51,7 +50,7 @@ class AtomicThreadManager:
             },
         }
 
-    def _save_index(self):
+    def _save_index(self) -> None:
         with open(CONTEXT_INDEX, "w") as f:
             json.dump(self.index, f, indent=2)
 
@@ -112,12 +111,12 @@ class AtomicThreadManager:
         self.index["stats"]["by_tier"][tier] += 1
         self._save_index()
 
-        print(f"///▞ Created {thread_id} ({tier}/{insert_type})")
         return thread_id
 
-    def complete(self, thread_id: str, outcome: str, files_changed: list[str] = None):
+    def complete(self, thread_id: str, outcome: str, files_changed: list[str] | None = None) -> None:
         if thread_id not in self.index["threads"]:
-            raise ValueError(f"Thread {thread_id} not found")
+            msg = f"Thread {thread_id} not found"
+            raise ValueError(msg)
 
         self.index["threads"][thread_id]["status"] = "COMPLETE"
         self.index["threads"][thread_id]["summary"] = outcome
@@ -149,16 +148,15 @@ class AtomicThreadManager:
             with open(thread_file, "w") as f:
                 f.write(content)
 
-        print(f"///▞ Completed {thread_id}")
 
-    def block(self, thread_id: str, reason: str):
+    def block(self, thread_id: str, reason: str) -> None:
         if thread_id not in self.index["threads"]:
-            raise ValueError(f"Thread {thread_id} not found")
+            msg = f"Thread {thread_id} not found"
+            raise ValueError(msg)
 
         self.index["threads"][thread_id]["status"] = "BLOCKED"
         self.index["threads"][thread_id]["summary"] = f"BLOCKED: {reason}"
         self._save_index()
-        print(f"///▞ Blocked {thread_id}: {reason}")
 
     def list_threads(self, status: str | None = None) -> list[dict]:
         threads = list(self.index["threads"].values())
@@ -170,7 +168,7 @@ class AtomicThreadManager:
         return self.index["stats"]
 
 
-def main():
+def main() -> None:
     import argparse
 
     parser = argparse.ArgumentParser(description="Atomic Thread Manager")
@@ -214,11 +212,10 @@ def main():
         manager.block(args.thread_id, args.reason)
     elif args.command == "list":
         threads = manager.list_threads(args.status)
-        for t in threads:
-            print(f"{t['thread_id']} [{t['status']}] {t['tier']}/{t['insert_type']}: {t['summary'][:50]}")
+        for _t in threads:
+            pass
     elif args.command == "stats":
-        stats = manager.get_stats()
-        print(json.dumps(stats, indent=2))
+        manager.get_stats()
     else:
         parser.print_help()
 

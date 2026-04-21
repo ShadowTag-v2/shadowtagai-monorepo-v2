@@ -55,44 +55,38 @@ def _run(cmd: list[str], timeout: int = 15) -> tuple[bool, str]:
 
 def _check(label: str, ok: bool, detail: str = "") -> bool:
     """Print a status check line."""
-    icon = "✅" if ok else "❌"
-    suffix = f" — {detail}" if detail else ""
-    print(f"  {icon} {label}{suffix}")
     return ok
 
 
 class GodModeAdmin:
     """Validates the full production stack."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.checks_passed = 0
         self.checks_failed = 0
         self.start_time = time.monotonic()
 
-    def _record(self, ok: bool):
+    def _record(self, ok: bool) -> None:
         if ok:
             self.checks_passed += 1
         else:
             self.checks_failed += 1
 
-    def check_gcp_project(self):
+    def check_gcp_project(self) -> None:
         """Verify GCP project binding."""
-        print("\n🔧 GCP Project")
-        ok, out = _run(["gcloud", "config", "get-value", "project"])
+        _ok, out = _run(["gcloud", "config", "get-value", "project"])
         active = out.strip()
         self._record(_check("Active project", active == PROJECT_ID, active))
         self._record(_check("PROJECT_ID env var", os.getenv("GCP_PROJECT_ID") == PROJECT_ID, PROJECT_ID))
 
-    def check_gcloud_auth(self):
+    def check_gcloud_auth(self) -> None:
         """Verify gcloud authentication."""
-        print("\n🔐 GCP Authentication")
-        ok, out = _run(["gcloud", "auth", "list", "--filter=status:ACTIVE", "--format=value(account)"])
+        _ok, out = _run(["gcloud", "auth", "list", "--filter=status:ACTIVE", "--format=value(account)"])
         accounts = [a.strip() for a in out.strip().split("\n") if a.strip()]
         self._record(_check("Active gcloud account", bool(accounts), ", ".join(accounts[:2])))
 
-    def check_firebase(self):
+    def check_firebase(self) -> None:
         """Verify Firebase project access."""
-        print("\n🔥 Firebase")
         ok, out = _run(["npx", "-y", "firebase-tools@latest", "projects:list", "--json"])
         if ok:
             try:
@@ -104,9 +98,8 @@ class GodModeAdmin:
         else:
             self._record(_check("Firebase CLI", False, "not installed or not authenticated"))
 
-    def check_cloud_run(self):
+    def check_cloud_run(self) -> None:
         """Verify Cloud Run service."""
-        print("\n☁️  Cloud Run")
         ok, out = _run(
             [
                 "gcloud",
@@ -117,14 +110,13 @@ class GodModeAdmin:
                 f"--region={REGION}",
                 f"--project={PROJECT_ID}",
                 "--format=value(status.url)",
-            ]
+            ],
         )
         url = out.strip() if ok else ""
         self._record(_check(f"Service '{CLOUD_RUN_SERVICE}' exists", ok, url))
 
-    def check_secrets(self):
+    def check_secrets(self) -> None:
         """Verify Secret Manager access."""
-        print("\n🗝️  Secret Manager")
         ok, out = _run(
             [
                 "gcloud",
@@ -132,7 +124,7 @@ class GodModeAdmin:
                 "list",
                 f"--project={PROJECT_ID}",
                 "--format=value(name)",
-            ]
+            ],
         )
         if ok:
             secrets = [s.strip() for s in out.strip().split("\n") if s.strip()]
@@ -140,9 +132,8 @@ class GodModeAdmin:
         else:
             self._record(_check("Secret Manager access", False, out[:100]))
 
-    def check_pem(self):
+    def check_pem(self) -> None:
         """Verify GitHub App PEM exists."""
-        print("\n🔑 GitHub App PEM")
         found = False
         for path in PEM_PATHS:
             p = Path(path)
@@ -156,26 +147,23 @@ class GodModeAdmin:
         env_pem = os.getenv("SHADOWTAG_PEM", "")
         self._record(_check("$SHADOWTAG_PEM env var", bool(env_pem), env_pem[:50] if env_pem else "unset"))
 
-    def check_python(self):
+    def check_python(self) -> None:
         """Verify Python environment."""
-        print("\n🐍 Python Environment")
         self._record(
-            _check(f"Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}", sys.version_info >= (3, 11), sys.version)
+            _check(f"Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}", sys.version_info >= (3, 11), sys.version),
         )
         venv = os.getenv("VIRTUAL_ENV", "")
         self._record(_check("Virtual env", bool(venv) or Path(".venv").exists(), venv or (".venv exists" if Path(".venv").exists() else "none")))
 
-    def check_tools(self):
+    def check_tools(self) -> None:
         """Verify required CLI tools."""
-        print("\n🛠️  CLI Tools")
         tools = ["gcloud", "git", "node", "npx", "ruff", "docker"]
         for tool in tools:
             found = shutil.which(tool) is not None
             self._record(_check(tool, found, shutil.which(tool) or "not in PATH"))
 
-    def check_firestore(self):
+    def check_firestore(self) -> None:
         """Verify Firestore databases."""
-        print("\n📦 Firestore")
         for db_id in FIRESTORE_DBS:
             ok, out = _run(
                 [
@@ -186,13 +174,12 @@ class GodModeAdmin:
                     f"--database={db_id}",
                     f"--project={PROJECT_ID}",
                     "--format=value(locationId)",
-                ]
+                ],
             )
             self._record(_check(f"Database '{db_id}'", ok, out.strip() if ok else "not found"))
 
-    def check_dotenv(self):
+    def check_dotenv(self) -> None:
         """Verify .env file presence (gitignored, kernel-locked)."""
-        print("\n📄 Environment Files")
         env_path = Path(".env")
         self._record(_check(".env exists", env_path.exists()))
         if env_path.exists():
@@ -202,11 +189,6 @@ class GodModeAdmin:
 
     def run_all(self):
         """Run all checks and print summary."""
-        print("=" * 60)
-        print(f"  GOD MODE ADMIN — {PROJECT_ID}")
-        print(f"  {time.strftime('%Y-%m-%d %H:%M:%S')}")
-        print("=" * 60)
-
         self.check_gcp_project()
         self.check_gcloud_auth()
         self.check_python()
@@ -217,16 +199,12 @@ class GodModeAdmin:
         self.check_cloud_run()
         self.check_secrets()
 
-        elapsed = time.monotonic() - self.start_time
-        total = self.checks_passed + self.checks_failed
-        print("\n" + "=" * 60)
-        print(f"  RESULTS: {self.checks_passed}/{total} passed, {self.checks_failed} failed")
-        print(f"  Elapsed: {elapsed:.1f}s")
+        time.monotonic() - self.start_time
+        self.checks_passed + self.checks_failed
         if self.checks_failed == 0:
-            print("  🟢 GOD MODE: FULLY OPERATIONAL")
+            pass
         else:
-            print("  🟡 GOD MODE: DEGRADED — fix failures above")
-        print("=" * 60)
+            pass
 
         return self.checks_failed == 0
 

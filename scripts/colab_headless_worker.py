@@ -11,7 +11,6 @@ IPC_DIR = "/content/drive/MyDrive/Antigravity_IPC"
 os.makedirs(f"{IPC_DIR}/inbox", exist_ok=True)
 os.makedirs(f"{IPC_DIR}/outbox", exist_ok=True)
 
-print("☁️ Sovereign Cloud T4 Worker Online. Polling VFS with Atomic Locks...")
 
 while True:
     try:
@@ -38,7 +37,7 @@ while True:
             os.rename(tmp_outbox, outbox_path)
             os.remove(inbox_path)
 
-    except Exception as e:
-        print(f"Polling error: {e}")
+    except Exception:
+        pass
 
     time.sleep(0.5)

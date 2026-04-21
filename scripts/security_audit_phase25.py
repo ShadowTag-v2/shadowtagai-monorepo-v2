@@ -10,7 +10,6 @@ Usage:
 
 from __future__ import annotations
 
-import ast
 import os
 import re
 import sys
@@ -79,13 +78,13 @@ def audit_file(filepath: str) -> list[dict]:
                 "check": "file_exists",
                 "message": "File not found",
                 "line": 0,
-            }
+            },
         )
         return findings
 
     with open(filepath) as f:
         content = f.read()
-        lines = content.split("\n")
+        content.split("\n")
 
     for check_name, check in CHECKS.items():
         want_match = check.get("want_match", False)
@@ -99,7 +98,7 @@ def audit_file(filepath: str) -> list[dict]:
                     "check": check_name,
                     "message": f"Missing: {check['description']}",
                     "line": 0,
-                }
+                },
             )
         elif not want_match and matches:
             for m in matches:
@@ -111,16 +110,13 @@ def audit_file(filepath: str) -> list[dict]:
                         "check": check_name,
                         "message": check["description"],
                         "line": line_num,
-                    }
+                    },
                 )
 
     return findings
 
 
-def main():
-    print("=" * 72)
-    print("Cor.30 Security Audit — Phase 2.5 Files")
-    print("=" * 72)
+def main() -> None:
 
     all_findings = []
     for filepath in AUDIT_FILES:
@@ -130,25 +126,18 @@ def main():
     # Report
     critical = [f for f in all_findings if f["severity"] == "CRITICAL"]
     high = [f for f in all_findings if f["severity"] == "HIGH"]
-    medium = [f for f in all_findings if f["severity"] == "MEDIUM"]
-    warnings = [f for f in all_findings if f["severity"] == "WARNING"]
+    [f for f in all_findings if f["severity"] == "MEDIUM"]
+    [f for f in all_findings if f["severity"] == "WARNING"]
 
     for f in all_findings:
-        icon = {"CRITICAL": "🔴", "HIGH": "🟠", "MEDIUM": "🟡", "WARNING": "⚠️", "INFO": "ℹ️"}.get(f["severity"], "•")
-        print(f"{icon} [{f['severity']}] {f['file']}:{f['line']} — {f['message']}")
+        {"CRITICAL": "🔴", "HIGH": "🟠", "MEDIUM": "🟡", "WARNING": "⚠️", "INFO": "ℹ️"}.get(f["severity"], "•")
 
-    print()
-    print(f"Files audited: {len(AUDIT_FILES)}")
-    print(f"Critical: {len(critical)} | High: {len(high)} | Medium: {len(medium)} | Warnings: {len(warnings)}")
 
     if critical:
-        print("\n🔴 AUDIT FAILED — Critical findings must be resolved before deploy")
         sys.exit(1)
     elif high:
-        print("\n🟠 AUDIT WARNING — High-severity findings should be reviewed")
         sys.exit(0)
     else:
-        print("\n✅ AUDIT PASSED — No critical or high-severity findings")
         sys.exit(0)
 
 

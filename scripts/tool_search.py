@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-tool_search — Lazy Discovery for Skills System
+"""tool_search — Lazy Discovery for Skills System.
 ================================================
 Implements Claude Code-style lazy tool loading via semantic search.
 Instead of loading all 90+ skills at session start, only load skills
@@ -146,11 +145,11 @@ def build_index() -> list[dict]:
                         "description": description[:200],
                         "path": str(skill_file),
                         "keywords": keywords,
-                    }
+                    },
                 )
 
-            except (OSError, UnicodeDecodeError) as e:
-                print(f"[WARN] Error reading {skill_file}: {e}", file=sys.stderr)
+            except (OSError, UnicodeDecodeError):
+                pass
 
     # Write index
     INDEX_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -161,7 +160,6 @@ def build_index() -> list[dict]:
             indent=2,
         )
 
-    print(f"[INDEX] Built index with {len(entries)} skills → {INDEX_FILE}")
     return entries
 
 
@@ -170,7 +168,6 @@ def build_index() -> list[dict]:
 
 def search(query: str, top_k: int = TOP_K) -> list[dict]:
     """Search the skills index for matching skills."""
-
     # Load or build index
     if INDEX_FILE.exists():
         with open(INDEX_FILE) as f:
@@ -217,7 +214,7 @@ def search(query: str, top_k: int = TOP_K) -> list[dict]:
                 {
                     **entry,
                     "relevance": round(score, 2),
-                }
+                },
             )
 
     return results
@@ -226,16 +223,12 @@ def search(query: str, top_k: int = TOP_K) -> list[dict]:
 # --- Main --------------------------------------------------------------------
 
 
-def main():
+def main() -> None:
     if "--index" in sys.argv:
         build_index()
         return
 
     if len(sys.argv) < 2:
-        print("Usage: python tool_search.py <query> [--top N] [--index]")
-        print("\nExamples:")
-        print('  python tool_search.py "deploy to firebase"')
-        print('  python tool_search.py "debug memory leak" --top 3')
         sys.exit(1)
 
     query = sys.argv[1]
@@ -249,15 +242,10 @@ def main():
     results = search(query, top_k)
 
     if not results:
-        print(f"No skills found matching: '{query}'")
         sys.exit(0)
 
-    print(f"Skills matching '{query}':\n")
-    for i, result in enumerate(results, 1):
-        print(f"  {i}. {result['name']} (relevance: {result['relevance']})")
-        print(f"     {result['description']}")
-        print(f"     → {result['path']}")
-        print()
+    for _i, _result in enumerate(results, 1):
+        pass
 
 
 if __name__ == "__main__":

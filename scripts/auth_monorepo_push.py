@@ -25,8 +25,5 @@ token = res2.json()["token"]
 
 remote_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
 subprocess.run(["git", "remote", "set-url", "origin", remote_url], check=True)
-print("Configured authenticated remote.")
 
-print("Executing finish_changes.py...")
 subprocess.run(["python3", "scripts/finish_changes.py"])
-print("Push complete.")

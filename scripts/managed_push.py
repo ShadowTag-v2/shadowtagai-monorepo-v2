@@ -1,5 +1,4 @@
-"""
-managed_push.py — Resumable, self-healing GitHub push daemon for Monorepo-Uphillsnowball.
+"""managed_push.py — Resumable, self-healing GitHub push daemon for Monorepo-Uphillsnowball.
 
 Features:
   - Checkpoint file: survives restarts, picks up at last committed batch
@@ -15,6 +14,7 @@ Run once:
 Or let launchd manage it (see scripts/com.antigravity.push.plist).
 """
 
+import contextlib
 import json
 import logging
 import os
@@ -61,7 +61,7 @@ def run(cmd: str, check: bool = False) -> subprocess.CompletedProcess:
 class TokenManager:
     """Issues and caches GitHub App installation tokens, proactively refreshes."""
 
-    def __init__(self, app_id: str, pem_path: str, owner: str):
+    def __init__(self, app_id: str, pem_path: str, owner: str) -> None:
         self.app_id = app_id
         self.pem_path = pem_path
         self.owner = owner
@@ -136,10 +136,8 @@ def save_checkpoint(batch_index: int) -> None:
 
 
 def clear_checkpoint() -> None:
-    try:
+    with contextlib.suppress(FileNotFoundError):
         os.remove(CHECKPOINT_FILE)
-    except FileNotFoundError:
-        pass
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────

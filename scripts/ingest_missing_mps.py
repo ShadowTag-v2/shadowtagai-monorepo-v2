@@ -44,8 +44,7 @@ def chunk_text(text: str, chunk_size: int = 1000):
     return [c for c in chunks if c.strip()]
 
 
-def execute_ingestion():
-    print("🚀 [FAST-FOLLOW INGEST] Initiating...")
+def execute_ingestion() -> None:
     # Force MPS on Apple Silicon
     try:
         model = SentenceTransformer("all-MiniLM-L6-v2", device="mps")
@@ -61,9 +60,7 @@ def execute_ingestion():
     total_chunks = 0
 
     for thread in TARGET_THREADS:
-        print(f"\n🔍 Sweeping Thread: {thread}")
         files = get_files_recursively(thread)
-        print(f"   => Found {len(files)} target files.")
 
         for file in files:
             try:
@@ -85,7 +82,6 @@ def execute_ingestion():
             total_chunks += len(chunks)
             total_files += 1
 
-    print("\n✅ Fast-Follow Complete.")
 
 
 if __name__ == "__main__":

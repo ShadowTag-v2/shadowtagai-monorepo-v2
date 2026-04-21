@@ -1,5 +1,4 @@
-"""
-ShadowTag v2 Setup Script
+"""ShadowTag v2 Setup Script.
 
 Installation:
     pip install -e .

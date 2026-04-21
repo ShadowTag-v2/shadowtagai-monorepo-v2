@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-scripts/gemini_agent_swarm.py
+"""scripts/gemini_agent_swarm.py
 Gemini Agent Swarm — replaces n-autoresearch/Kosmos/BioAgents with a Gemini-native multi-agent loop.
 
 Architectural lineage:
@@ -44,7 +43,6 @@ logger = logging.getLogger("gemini_agent_swarm")
 # Repeat the instruction at the end of the prompt to reduce drift.
 
 _NON_REASONING_MODELS = {
-    "gemini-3.1-flash-lite-preview",
     "gemini-3.1-flash-lite-preview",
     "gpt-4.1",
     "gpt-4o-mini",
@@ -277,7 +275,7 @@ async def _loop(query: str, interval: int) -> None:
                 dispatch_payload_by_id(2)
 
         except Exception as exc:
-            logger.error("Swarm iteration failed: %s", exc)
+            logger.exception("Swarm iteration failed: %s", exc)
         await asyncio.sleep(interval)
 
 
@@ -298,4 +296,4 @@ if __name__ == "__main__":
             Path(args.out).write_text(output)
             logger.info("Result written to %s", args.out)
         else:
-            print(output)
+            pass
