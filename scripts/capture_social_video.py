@@ -13,7 +13,9 @@ VARIANTS = {0: "control", 1: "var_A", 2: "var_B"}
 
 async def record_variant(browser, variant_idx, variant_name) -> None:
     context = await browser.new_context(
-        viewport={"width": 1280, "height": 720}, record_video_dir=".", record_video_size={"width": 1280, "height": 720},
+        viewport={"width": 1280, "height": 720},
+        record_video_dir=".",
+        record_video_size={"width": 1280, "height": 720},
     )
 
     page = await context.new_page()

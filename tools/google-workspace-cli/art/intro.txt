@@ -26,4 +26,3 @@
                        📅 Calendar 📊 Sheets
                        📝 Docs     🎨 Slides
                        💬 Chat     👥 Admin
-

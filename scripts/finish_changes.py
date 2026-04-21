@@ -50,6 +50,5 @@ def main() -> None:
     run_cmd("git push origin main || echo 'Push failed or branch up to date.'")
 
 
-
 if __name__ == "__main__":
     main()

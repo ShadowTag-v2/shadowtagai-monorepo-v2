@@ -37,7 +37,7 @@ def infer_ki_type(ki: dict) -> KIType:
     Uses name, summary, and tags to guess the appropriate type.
     """
     name_lower = (ki.get("name", "") + " " + ki.get("summary", "")).lower()
-    tags = [t.lower() for t in ki.get("tags", [])]
+    [t.lower() for t in ki.get("tags", [])]
 
     # Decision indicators
     if any(w in name_lower for w in ["decision", "chose", "selected", "verdict", "approved"]):

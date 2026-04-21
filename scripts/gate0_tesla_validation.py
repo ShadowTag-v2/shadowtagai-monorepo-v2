@@ -121,7 +121,6 @@ if len(lat_ok) >= 20:
     p95_latency = statistics.quantiles(lat_ok, n=20)[18]
 
 
-
 if (success_rate >= 95 and avg_latency <= 500) or (success_rate >= 90 and rl > 10):
     pass
 else:

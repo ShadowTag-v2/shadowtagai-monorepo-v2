@@ -20,7 +20,7 @@ import sys
 import time
 import uuid
 from collections import defaultdict
-from typing import Literal, Optional
+from typing import Literal
 
 from dotenv import load_dotenv
 from fastmcp import FastMCP

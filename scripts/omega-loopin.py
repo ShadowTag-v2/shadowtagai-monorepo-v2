@@ -73,7 +73,6 @@ def phase_1(dry_run: bool = False) -> None:
         count += 1
 
 
-
 # ─────────────────────────────────────────────────────────────
 # Phase 2: Gitignore Verification
 # ─────────────────────────────────────────────────────────────
@@ -206,7 +205,6 @@ def phase_6(dry_run: bool = False) -> None:
     result.stdout.strip()
 
 
-
 # ─────────────────────────────────────────────────────────────
 # Phase 7: Thread Handoff Manifest
 # ─────────────────────────────────────────────────────────────
@@ -250,7 +248,6 @@ def phase_7(dry_run: bool = False) -> None:
         manifest_path.write_text(manifest)
 
 
-
 # ─────────────────────────────────────────────────────────────
 # Main
 # ─────────────────────────────────────────────────────────────
@@ -276,13 +273,11 @@ def main() -> None:
     if args.skip_push and 5 in selected:
         selected.remove(5)
 
-
     for num in sorted(selected):
         if num in phases:
             phases[num](dry_run=args.dry_run)
         else:
             pass
-
 
 
 if __name__ == "__main__":

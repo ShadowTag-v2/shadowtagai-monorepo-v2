@@ -214,13 +214,11 @@
     // Use the full scrollable height minus the viewport
     const containerHeight = container.scrollHeight - window.innerHeight;
     const scrolled = Math.max(0, -rect.top);
-    const progress = containerHeight > 0
-      ? Math.max(0, Math.min(1, scrolled / containerHeight))
-      : 0;
+    const progress = containerHeight > 0 ? Math.max(0, Math.min(1, scrolled / containerHeight)) : 0;
 
     const targetFrame = Math.min(
       CONFIG.totalFrames - 1,
-      Math.floor(progress * (CONFIG.totalFrames - 1))
+      Math.floor(progress * (CONFIG.totalFrames - 1)),
     );
 
     if (targetFrame !== currentFrame) {

@@ -16,7 +16,6 @@ import datetime
 import json
 import logging
 import os
-from typing import Optional
 
 from google.cloud import storage as gcs_storage
 

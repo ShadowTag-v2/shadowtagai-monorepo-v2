@@ -30,4 +30,3 @@ with open(output_path, "w") as f:
                 f.write(f"- `{item}`\n")
     else:
         f.write("*No reference directory found.*\n")
-

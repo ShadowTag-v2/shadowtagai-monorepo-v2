@@ -101,10 +101,8 @@ def main() -> None:
     config = VeoHeroConfig()
     sites = config.get_sites()
 
-
     for site in sites:
         config.to_api_request(site)
-
 
 
 if __name__ == "__main__":

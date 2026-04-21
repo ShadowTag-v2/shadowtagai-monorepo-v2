@@ -21,6 +21,5 @@ def main() -> None:
         token.write(creds.to_json())
 
 
-
 if __name__ == "__main__":
     main()

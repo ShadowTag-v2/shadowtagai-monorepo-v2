@@ -50,7 +50,6 @@ def clone_repo(repo_name, owner, token, target_dir) -> bool:
         # Don't print the raw stderr because it might contain the token
         return False
 
-
     # Remove the .git folder so it becomes part of the monorepo instead of a submodule
     # if it's not one of the existing 4
     if repo_name not in existing:
@@ -98,7 +97,6 @@ if __name__ == "__main__":
 
     # Do we need to clone the 4 existing ones? The prompt says they are already in the manifest but
     # taking a look they might actually be tracked already. We'll skip stripping their .git.
-
 
     ehanc69_client_id = "Iv23liWtuBLy8uYLpzjn"
     ehanc69_pem = "/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.private-key.pem"
@@ -158,4 +156,3 @@ if __name__ == "__main__":
             clone_repo(repo, "ShadowTag-v2", shadowtag_token, target_dir)
         else:
             pass
-

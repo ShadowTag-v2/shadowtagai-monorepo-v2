@@ -72,7 +72,6 @@ def get_token(client_id, pem_path, owner_name):
 
 
 if __name__ == "__main__":
-
     # 1. Fetch Tokens
     token_e = get_token(
         "Iv23liWtuBLy8uYLpzjn",
@@ -98,7 +97,6 @@ if __name__ == "__main__":
 
     if "Monorepo-Uphillsnowball" in repos:
         repos.remove("Monorepo-Uphillsnowball")
-
 
     cloned_count = 0
     skipped_count = 0
@@ -139,7 +137,6 @@ if __name__ == "__main__":
         else:
             pass
 
-
     # 3. Process external Prettier repos
     externals = [
         "https://github.com/prettier/prettier",
@@ -167,4 +164,3 @@ if __name__ == "__main__":
                 pass
         else:
             pass
-

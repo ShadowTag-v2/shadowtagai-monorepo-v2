@@ -136,7 +136,6 @@ def execute_harvest() -> None:
             if path:
                 successful_clones.append((name, path))
 
-
     # 2. ANE Categorization & Move
     for name, path in successful_clones:
         category = categorize_repo_via_ane(name, path)
@@ -149,7 +148,6 @@ def execute_harvest() -> None:
 
         shutil.move(path, final_path)
         time.sleep(0.1)  # Prevent ANE buffer overflow
-
 
 
 if __name__ == "__main__":

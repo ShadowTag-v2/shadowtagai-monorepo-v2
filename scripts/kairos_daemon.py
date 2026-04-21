@@ -105,6 +105,19 @@ def health_check() -> dict:
     except (subprocess.TimeoutExpired, FileNotFoundError):
         checks["git_dirty"] = "unknown"
 
+    # 6. Git fetch --prune (GitHub-first context: keep remote refs fresh)
+    try:
+        fetch_result = subprocess.run(
+            ["git", "fetch", "--prune", "origin"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            cwd=str(REPO_ROOT),
+        )
+        checks["git_fetch"] = "ok" if fetch_result.returncode == 0 else "failed"
+    except (subprocess.TimeoutExpired, FileNotFoundError):
+        checks["git_fetch"] = "timeout"
+
     logger.info("Health: %s", json.dumps(checks))
     return checks
 

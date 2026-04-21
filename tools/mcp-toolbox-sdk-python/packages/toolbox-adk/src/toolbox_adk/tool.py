@@ -96,7 +96,6 @@ class ToolboxTool(BaseTool):
         properties = {}
         required = []
         schema_items = None
-        schema_additional_properties = None
 
         if schema_type == Type.ARRAY:
             if hasattr(param, "items") and param.items:
@@ -268,7 +267,6 @@ class ToolboxTool(BaseTool):
                     self._core_tool = self._core_tool.add_auth_token_getter(service, bound_getter)
 
         result: Any | None = None
-        error: Exception | None = None
 
         try:
             # Execute the core tool
@@ -276,7 +274,6 @@ class ToolboxTool(BaseTool):
             return result
 
         except Exception as e:
-            error = e
             raise e
         finally:
             if reset_token:

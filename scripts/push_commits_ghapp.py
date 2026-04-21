@@ -66,7 +66,6 @@ def main() -> None:
         if res.returncode != 0:
             sys.exit(1)
 
-
     # Finally switch remote origin url to git@ to preserve local setup
     # we won't change origin to avoid messing up other things if not needed
 

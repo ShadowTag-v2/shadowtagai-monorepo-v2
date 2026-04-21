@@ -33,4 +33,3 @@ for line in lines:
 
 with open("monorepo_manifest.yaml", "w") as f:
     f.writelines(out_lines)
-

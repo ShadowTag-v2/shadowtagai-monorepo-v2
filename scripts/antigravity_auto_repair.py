@@ -40,7 +40,6 @@ class ReactRepairHandler(FileSystemEventHandler):
             self.execute_repair(event.src_path)
 
     def execute_repair(self, filepath) -> None:
-
         # 1. Structural formatter pass (spawning eliminated)
         # res = subprocess.run(["npx", "@biomejs/biome", "format", "--write", filepath], check=False)
 
@@ -59,7 +58,6 @@ class ReactRepairHandler(FileSystemEventHandler):
 
 
 def trigger_daemon(continuous=False) -> None:
-
     if not os.path.exists(TARGET_DIR):
         sys.exit(1)
 

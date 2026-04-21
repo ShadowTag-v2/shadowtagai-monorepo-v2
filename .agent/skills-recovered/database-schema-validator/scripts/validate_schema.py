@@ -13,7 +13,7 @@ def validate_schema(filename):
         with open(filename) as f:
             content = f.read()
 
-        lines = content.split("\n")
+        content.split("\n")
         errors = []
 
         # Check 1: No DROP TABLE

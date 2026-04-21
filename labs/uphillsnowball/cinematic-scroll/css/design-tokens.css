@@ -88,7 +88,7 @@
 }
 
 /* ===== LIGHT MODE ===== */
-[data-theme="light"] {
+[data-theme='light'] {
   --color-bg-dark: hsl(220, 20%, 96%);
   --color-bg-card: hsl(220, 20%, 92%);
   --color-bg-glass: rgba(0, 0, 0, 0.03);

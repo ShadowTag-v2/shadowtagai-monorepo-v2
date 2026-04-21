@@ -1,8 +1,5 @@
 {
-  "unwantedRecommendations": [
-    "google.cros-ide",
-    "mtxr.sqltools"
-  ],
+  "unwantedRecommendations": ["google.cros-ide", "mtxr.sqltools"],
   "recommendations": [
     "astral-sh.ty",
     "charliermarsh.ruff",

@@ -70,7 +70,7 @@ export function getNodesByLabelFull(
   return nodes.sort((a, b) => a.name.localeCompare(b.name));
 }
 
+export type { PipelineOptions, PipelineResult };
 // Tests can pass { skipGraphPhases: true } as third arg for faster runs
 // (skips MRO, community detection, and process extraction).
 export { runPipelineFromRepo };
-export type { PipelineOptions, PipelineResult };

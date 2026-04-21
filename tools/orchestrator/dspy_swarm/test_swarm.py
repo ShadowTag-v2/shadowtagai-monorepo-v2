@@ -1,4 +1,5 @@
 """Tests for DSPy Swarm Router."""
+
 import unittest
 from swarm_config import SwarmConfig, SwarmEndpoint
 

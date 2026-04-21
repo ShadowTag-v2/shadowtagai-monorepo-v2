@@ -68,6 +68,5 @@ def patch_drift() -> None:
                 f.write(line)
 
 
-
 if __name__ == "__main__":
     patch_drift()

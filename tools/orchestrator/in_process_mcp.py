@@ -14,7 +14,7 @@ from __future__ import annotations
 import importlib
 import time
 from dataclasses import dataclass, field
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from typing import Any
 from collections.abc import Callable
 

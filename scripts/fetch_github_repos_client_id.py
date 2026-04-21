@@ -86,4 +86,3 @@ if __name__ == "__main__":
     all_repos = sorted(set(repos_ehanc69 + repos_shadowtag))
     with open("fetched_repos_client_id.json", "w") as f:
         json.dump(all_repos, f, indent=2)
-

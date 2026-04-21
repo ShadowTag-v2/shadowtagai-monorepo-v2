@@ -18,7 +18,6 @@ if not KEYS:
         KEYS = [single_key]
 
 
-
 class KeyRotator:
     def request(self, flow: http.HTTPFlow) -> None:
         # Target Google Generative AI API

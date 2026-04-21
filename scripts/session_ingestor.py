@@ -271,7 +271,6 @@ def main() -> None:
     groups = manifest.get("groups", {})
     ingest_status: dict[str, Any] = manifest.get("ingest_status", {})
 
-
     # Sort groups by priority
     sorted_groups = sorted(groups.items(), key=lambda x: x[1].get("priority", 99))
 

@@ -127,7 +127,6 @@ def push_with_token(token: str, org: str, repo: str, branch: str | None = None) 
             text=True,
         ).strip()
 
-
     # ── PRIMARY: SSH push ──
     subprocess.run(
         ["git", "remote", "set-url", "origin", ssh_url],
@@ -142,7 +141,6 @@ def push_with_token(token: str, org: str, repo: str, branch: str | None = None) 
 
     if result.returncode == 0:
         return
-
 
     # ── FALLBACK: HTTPS + GIT_ASKPASS ──
     askpass_script = None
@@ -201,7 +199,6 @@ def main() -> None:
 
     target = TARGETS[target_name]
 
-
     # Verify PEM exists
     if not os.path.exists(target["pem_path"]):
         sys.exit(1)
@@ -234,7 +231,6 @@ def main() -> None:
         repo = input("  Enter repo name: ").strip()
 
     push_with_token(access_token, target["org"], repo)
-
 
 
 if __name__ == "__main__":

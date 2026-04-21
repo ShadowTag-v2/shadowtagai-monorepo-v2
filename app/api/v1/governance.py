@@ -17,7 +17,6 @@ from app.models.governance import (
     ISO42001Assessment,
     RiskLevel,
     ComplianceFramework,
-    ControlAssessment,
 )
 from app.services.governance_engine import GovernanceEngine
 from app.services.batch_governance import get_batch_engine

@@ -9,7 +9,6 @@ import pyarrow as pa
 
 
 def init_pipeline():
-
     db_path = os.path.join(os.getcwd(), ".lancedb")
     db = lancedb.connect(db_path)
 
