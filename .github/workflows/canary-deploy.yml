@@ -1,0 +1,103 @@
+# .github/workflows/canary-deploy.yml
+# Item #8: Canary Deployment GitHub Action
+name: Canary Deploy (CounselConduit)
+
+on:
+  workflow_dispatch:
+    inputs:
+      traffic_percent:
+        description: 'Traffic percentage for canary (5, 25, 50, 100)'
+        required: true
+        default: '5'
+        type: choice
+        options: ['5', '25', '50', '100']
+      rollback:
+        description: 'Rollback canary to 0% traffic'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  PROJECT_ID: shadowtag-omega-v4
+  SERVICE: counselconduit
+  REGION: us-central1
+  TAG: canary
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Auth to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Setup Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Rollback (if requested)
+        if: ${{ github.event.inputs.rollback == 'true' }}
+        run: |
+          echo "🔄 Rolling back canary to 0% traffic..."
+          gcloud run services update-traffic $SERVICE \
+            --to-tags=$TAG=0 \
+            --region=$REGION \
+            --project=$PROJECT_ID \
+            --quiet
+
+      - name: Deploy Canary Revision
+        if: ${{ github.event.inputs.rollback != 'true' && github.event.inputs.traffic_percent == '5' }}
+        run: |
+          echo "🚀 Deploying new canary revision..."
+          gcloud run deploy $SERVICE \
+            --source=apps/counselconduit \
+            --region=$REGION \
+            --project=$PROJECT_ID \
+            --no-traffic \
+            --tag=$TAG \
+            --quiet
+
+      - name: Route Traffic to Canary
+        if: ${{ github.event.inputs.rollback != 'true' }}
+        run: |
+          echo "🐤 Routing ${{ github.event.inputs.traffic_percent }}% to canary..."
+          gcloud run services update-traffic $SERVICE \
+            --to-tags=$TAG=${{ github.event.inputs.traffic_percent }} \
+            --region=$REGION \
+            --project=$PROJECT_ID \
+            --quiet
+
+      - name: Health Check (wait 60s)
+        if: ${{ github.event.inputs.rollback != 'true' }}
+        run: |
+          echo "⏱ Waiting 60s for canary stabilization..."
+          sleep 60
+          CANARY_URL="https://${TAG}---${SERVICE}-767252945109.${REGION}.run.app/health"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" $CANARY_URL)
+          if [ "$STATUS" != "200" ]; then
+            echo "❌ Canary health check failed (status=$STATUS). Rolling back..."
+            gcloud run services update-traffic $SERVICE \
+              --to-tags=$TAG=0 \
+              --region=$REGION \
+              --project=$PROJECT_ID \
+              --quiet
+            exit 1
+          fi
+          echo "✅ Canary healthy at ${{ github.event.inputs.traffic_percent }}%"
+
+      - name: Run Smoke Tests Against Canary
+        if: ${{ github.event.inputs.rollback != 'true' }}
+        run: |
+          pip install httpx pytest
+          BASE_URL="https://${TAG}---${SERVICE}-767252945109.${REGION}.run.app" \
+            pytest apps/counselconduit/tests/test_smoke.py -v --tb=short || true
