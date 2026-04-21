@@ -39,7 +39,9 @@ except ImportError:
         get_tenant_quota,
     )
 
-logger = logging.getLogger("counselconduit.dispatch_router")
+import structlog
+
+logger = structlog.get_logger("counselconduit.dispatch_router")
 
 router = APIRouter(tags=["dispatch"])
 
