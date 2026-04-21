@@ -5,21 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KovelAI | Ensure Your Clients' AI Searches Remain Privileged</title>
   <meta name="description" content="KovelAI protects post-Heppner client internet searches from discovery while helping law firms get paid on the front end. Secure AI intake and revenue acceleration.">
-  <!-- OG Social Video Tags (#12) -->
+  <!-- OG Social Video Tags -->
   <meta property="og:title" content="KovelAI | Post-Heppner Privileged Client AI">
   <meta property="og:description" content="Ensure your clients' AI and web searches remain between you and them. Non-discoverable research through your firm's post-Heppner, KovelAI, portal.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kovelai.com">
-  <meta property="og:video" content="https://kovelai.web.app/videos/hero-bg.mp4">
+  <meta property="og:video" content="https://kovelai.web.app/videos/supercar-peelout-compressed.mp4">
   <meta property="og:video:type" content="video/mp4">
   <meta property="og:video:width" content="1280">
   <meta property="og:video:height" content="720">
   <meta property="og:image" content="https://kovelai.web.app/og-image.jpg">
   <meta name="twitter:card" content="player">
-  <meta name="twitter:player" content="https://kovelai.web.app/videos/hero-bg.mp4">
+  <meta name="twitter:player" content="https://kovelai.web.app/videos/supercar-peelout-compressed.mp4">
   <meta name="twitter:player:width" content="1280">
   <meta name="twitter:player:height" content="720">
-  <meta name="theme-color" content="#0a0a0f">
+  <meta name="theme-color" content="#0A0E1A">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="manifest" href="/manifest.json">
   <script type="application/ld+json">
   {
@@ -39,7 +41,7 @@
     },
     "provider": {
       "@type": "Organization",
-      "name": "ShadowTag AI",
+      "name": "ShadowTagAI",
       "url": "https://shadowtagai.web.app"
     }
   }
@@ -47,529 +49,44 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
   <!-- Cloudflare Turnstile CAPTCHA -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
   <!-- Google Analytics 4 (external for CSP compliance) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-5QW1DZL23V"></script>
   <script src="/js/ga4.js"></script>
-  <style>
-    :root {
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #12121a;
-      --bg-card: rgba(18, 18, 26, 0.7);
-      --accent-teal: #00d4aa;
-      --accent-teal-dim: rgba(0, 212, 170, 0.15);
-      --accent-blue: #4a9eff;
-      --text-primary: #f0f0f5;
-      --text-secondary: #8888a0;
-      --text-muted: #8b8b9e;
-      --border: rgba(255, 255, 255, 0.06);
-      --glass: rgba(255, 255, 255, 0.03);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; font-size: 16px; }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── Scroll-Driven Video Canvas ── */
-    .scroll-video-container {
-      position: relative;
-      height: 300vh;
-    }
-
-    .scroll-video-sticky {
-      position: sticky;
-      top: 0;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    #scroll-canvas {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.85;
-    }
-
-    .scroll-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgba(10, 10, 15, 0.3) 0%,
-        rgba(10, 10, 15, 0.1) 40%,
-        rgba(10, 10, 15, 0.6) 80%,
-        rgba(10, 10, 15, 0.95) 100%
-      );
-      pointer-events: none;
-    }
-
-    .scroll-text-overlay {
-      position: absolute;
-      bottom: 12%;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      z-index: 2;
-    }
-
-    .scroll-text-overlay h1 {
-      font-size: clamp(2.5rem, 6vw, 5rem);
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 1.05;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, var(--text-primary) 40%, var(--accent-teal) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .scroll-text-overlay p {
-      font-size: 1.25rem;
-      color: var(--text-secondary);
-      max-width: 600px;
-      margin: 0 auto;
-      font-weight: 300;
-    }
-
-    /* ── Navigation ── */
-    nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 100;
-      padding: 1.25rem 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      backdrop-filter: blur(20px);
-      background: rgba(10, 10, 15, 0.6);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.4s ease;
-    }
-
-    .logo {
-      font-size: 1.2rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
-      text-decoration: none;
-    }
-
-    .logo span { color: var(--accent-teal); }
-
-    .nav-links {
-      display: flex;
-      gap: 0;
-      list-style: none;
-    }
-
-    .nav-links > li {
-      position: relative;
-    }
-
-    .nav-links > li > a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: color 0.2s;
-      padding: 0.75rem 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .nav-links > li > a:hover,
-    .nav-links > li:hover > a { color: var(--text-primary); }
-
-    .nav-links > li > a .dropdown-arrow {
-      font-size: 0.6rem;
-      transition: transform 0.2s;
-    }
-
-    .nav-links > li:hover > a .dropdown-arrow {
-      transform: rotate(180deg);
-    }
-
-    /* ── Dropdown Menus (Unusual Machines style) ── */
-    .nav-dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      min-width: 220px;
-      background: rgba(18, 18, 26, 0.95);
-      backdrop-filter: blur(24px);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 0.5rem 0;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(8px);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
-      list-style: none;
-    }
-
-    .nav-links > li:hover > .nav-dropdown {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    .nav-dropdown li a {
-      display: block;
-      padding: 0.6rem 1.25rem;
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.825rem;
-      font-weight: 400;
-      transition: all 0.15s;
-      border-left: 2px solid transparent;
-    }
-
-    .nav-dropdown li a:hover {
-      color: var(--text-primary);
-      background: rgba(0, 212, 170, 0.06);
-      border-left-color: var(--accent-teal);
-    }
-
-    .nav-cta {
-      padding: 0.6rem 1.5rem;
-      background: var(--accent-teal);
-      color: var(--bg-primary);
-      border: none;
-      border-radius: 8px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-decoration: none;
-    }
-
-    .nav-cta:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3);
-    }
-
-    .nav-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--text-primary);
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    /* ── Sections ── */
-    section {
-      padding: 8rem 3rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      text-transform: uppercase;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      color: var(--accent-teal);
-      margin-bottom: 1rem;
-    }
-
-    .section-title {
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-    }
-
-    .section-desc {
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      line-height: 1.7;
-      max-width: 640px;
-      font-weight: 300;
-    }
-
-    /* ── Feature Cards ── */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.5rem;
-      margin-top: 4rem;
-    }
-
-    .feature-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2.5rem;
-      backdrop-filter: blur(10px);
-      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .feature-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent-teal), transparent);
-      opacity: 0;
-      transition: opacity 0.35s;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(0, 212, 170, 0.2);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-    }
-
-    .feature-card:hover::before { opacity: 1; }
-
-    .feature-icon {
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--accent-teal-dim);
-      border-radius: 12px;
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .feature-card h3 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-      letter-spacing: -0.01em;
-    }
-
-    .feature-card p {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      line-height: 1.6;
-      font-weight: 300;
-    }
-
-    /* ── Pricing ── */
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 4rem;
-    }
-
-    .pricing-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2.5rem;
-      text-align: center;
-      transition: all 0.35s;
-      position: relative;
-    }
-
-    .pricing-card.featured {
-      border-color: var(--accent-teal);
-      box-shadow: 0 0 40px rgba(0, 212, 170, 0.1);
-    }
-
-    .pricing-card.featured::after {
-      content: 'MOST POPULAR';
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--accent-teal);
-      color: var(--bg-primary);
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 4px 16px;
-      border-radius: 12px;
-      letter-spacing: 0.1em;
-    }
-
-    .pricing-tier {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 1rem;
-    }
-
-    .pricing-amount {
-      font-size: 3rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      margin-bottom: 0.25rem;
-    }
-
-    .pricing-amount span {
-      font-size: 1rem;
-      font-weight: 400;
-      color: var(--text-secondary);
-    }
-
-    .pricing-features {
-      list-style: none;
-      margin: 2rem 0;
-      text-align: left;
-    }
-
-    .pricing-features li {
-      padding: 0.5rem 0;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .pricing-features li::before {
-      content: '✓';
-      color: var(--accent-teal);
-      font-weight: 700;
-    }
-
-    .pricing-cta {
-      width: 100%;
-      padding: 0.9rem;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-primary);
-      border-radius: 10px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .pricing-card.featured .pricing-cta {
-      background: var(--accent-teal);
-      color: var(--bg-primary);
-      border-color: var(--accent-teal);
-    }
-
-    .pricing-cta:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: var(--accent-teal);
-    }
-
-    .pricing-card.featured .pricing-cta:hover {
-      box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3);
-      transform: translateY(-1px);
-    }
-
-    /* ── Footer ── */
-    footer {
-      padding: 4rem 3rem;
-      border-top: 1px solid var(--border);
-      text-align: center;
-    }
-
-    footer p {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-
-    /* ── Animations ── */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      section { padding: 4rem 1.5rem; }
-      .pricing-grid { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-      .nav-toggle { display: block; }
-      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(18,18,26,0.98); padding: 1rem; border-top: 1px solid var(--border); }
-      .nav-links.open .nav-dropdown { position: static; opacity: 1; visibility: visible; transform: none; background: transparent; border: none; box-shadow: none; padding-left: 1rem; }
-    }
-
-    /* ── A11y: Skip nav + Focus styles ── */
-    .skip-nav {
-      position: absolute;
-      top: -100%;
-      left: 0;
-      background: var(--accent-teal);
-      color: var(--bg-primary);
-      padding: 0.75rem 1.5rem;
-      z-index: 200;
-      font-weight: 600;
-      border-radius: 0 0 8px 0;
-      transition: top 0.2s;
-    }
-    .skip-nav:focus { top: 0; }
-    *:focus-visible {
-      outline: 2px solid var(--accent-teal);
-      outline-offset: 2px;
-    }
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      white-space: nowrap;
-      border-width: 0;
-    }
-  </style>
 </head>
 <body>
   <!-- Skip Navigation (a11y) -->
-  <a href="#features" class="skip-nav">Skip to main content</a>
+  <a href="#main-content" class="skip-nav">Skip to main content</a>
 
-  <!-- Navigation -->
-  <nav id="main-nav" aria-label="Main navigation">
+  <!-- ═══ Utility Bar (Unusual Machines pattern) ═══ -->
+  <div class="utility-bar" role="complementary" aria-label="Utility navigation">
+    <a href="#main-content" aria-label="Skip to content">Accessibility</a>
+    <span aria-hidden="true">|</span>
+    <a href="#contact" onclick="openContactModal();return false">Contact Sales</a>
+  </div>
+
+  <!-- ═══ Navigation ═══ -->
+  <nav id="main-nav" class="main-nav" aria-label="Main navigation">
     <a href="/" class="logo" aria-label="KovelAI home">Kovel<span>AI</span></a>
     <ul class="nav-links" id="navLinks" role="list">
       <li>
         <a href="#features">Platform <span class="dropdown-arrow">▾</span></a>
         <ul class="nav-dropdown">
           <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How It Works</a></li>
-          <li><a href="#security">Oracle Studio</a></li>
-          <li><a href="#security">Kovel Attestation</a></li>
+          <li><a href="#features">How It Works</a></li>
+          <li><a href="#features">Oracle Studio</a></li>
+          <li><a href="#features">Kovel Attestation</a></li>
         </ul>
       </li>
       <li>
         <a href="#pricing">Pricing</a>
       </li>
       <li>
-        <a href="#discovery">Resources <span class="dropdown-arrow">▾</span></a>
+        <a href="#why-kovelai">Resources <span class="dropdown-arrow">▾</span></a>
         <ul class="nav-dropdown">
-          <li><a href="#discovery">Discovery Risk</a></li>
+          <li><a href="#why-kovelai">Why KovelAI</a></li>
           <li><a href="/video-gallery">Video Gallery</a></li>
           <li><a href="/showreel">Showreel</a></li>
         </ul>
@@ -578,7 +95,7 @@
         <a href="#management">Company <span class="dropdown-arrow">▾</span></a>
         <ul class="nav-dropdown">
           <li><a href="#management">Leadership</a></li>
-          <li><a href="https://shadowtagai.web.app" target="_blank" rel="noopener">About ShadowTag AI</a></li>
+          <li><a href="https://shadowtagai.web.app" target="_blank" rel="noopener">About ShadowTagAI</a></li>
         </ul>
       </li>
       <li>
@@ -590,140 +107,335 @@
         </ul>
       </li>
     </ul>
-    <a href="#contact" class="nav-cta" id="cta-start" aria-label="Contact sales for KovelAI">Contact Sales</a>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+    <a href="#contact" class="nav-cta" id="cta-nav" onclick="openContactModal();return false" aria-label="Contact sales for KovelAI">Contact Sales</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
   </nav>
 
-  <!-- Scroll-Driven Video Hero -->
-  <header class="scroll-video-container" id="hero" role="banner">
-    <div class="scroll-video-sticky">
-      <canvas id="scroll-canvas" role="img" aria-label="Cinematic matte-black sports car drifting through neon-lit rain-slicked streets at night"></canvas>
-      <div class="scroll-overlay" aria-hidden="true"></div>
-      <div class="scroll-text-overlay">
-        <h1>Ensure Your Clients' AI and Web Searches<br>Remain Between You and Them</h1>
-        <p>Make your clients pay, on the front end, to do non-discoverable AI and web research through your firm's post-<em>Heppner</em>, KovelAI, portal.</p>
+  <!-- ═══ Hero Section (Video Background + KPI Widget) ═══ -->
+  <header class="hero" id="hero" role="banner">
+    <video class="hero-video-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+      <source src="/videos/supercar-peelout-compressed.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge fade-in">
+          <span>🛡️</span>
+          <span>Protected under <em>United States v. Heppner</em> (S.D.N.Y., 2026)</span>
+        </div>
+        <h1 class="fade-in stagger-1">Ensure Your Clients' AI and Web Searches<br>Remain Between You and Them</h1>
+        <p class="fade-in stagger-2">Make your clients pay, on the front end, to do non-discoverable AI and web research through your firm's post-<em>Heppner</em>, KovelAI, portal.</p>
+        <div class="hero-actions fade-in stagger-3">
+          <button class="btn-primary" id="cta-hero-start" onclick="openContactModal()">Schedule a Demo</button>
+          <a href="#features" class="btn-secondary">Learn More</a>
+        </div>
+      </div>
+      <!-- KPI Widget (replaces stock ticker) -->
+      <div class="hero-kpi fade-in stagger-4">
+        <p class="kpi-title">Platform Metrics</p>
+        <div class="kpi-item">
+          <div class="kpi-icon">🤖</div>
+          <div>
+            <p class="kpi-label">6 AI Models</p>
+            <p class="kpi-value">Gemini · Claude · GPT-4 · Grok · Perplexity · DeepSeek</p>
+          </div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-icon">🛡️</div>
+          <div>
+            <p class="kpi-label">Kovel Attestation</p>
+            <p class="kpi-value">HMAC-SHA256 cryptographic proof per session</p>
+          </div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-icon">⚖️</div>
+          <div>
+            <p class="kpi-label">Judge #6 Gate</p>
+            <p class="kpi-value">Mandatory policy enforcement on every action</p>
+          </div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-icon">📋</div>
+          <div>
+            <p class="kpi-label">Oracle Studio</p>
+            <p class="kpi-value">7-stage legal memo generation pipeline</p>
+          </div>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- Features -->
   <main id="main-content">
-  <section id="features" aria-labelledby="features-title">
-    <div class="fade-in">
-      <p class="section-label">Capabilities</p>
-      <h2 class="section-title" id="features-title">Enterprise-grade AI for<br>legal professionals</h2>
-      <p class="section-desc">Multi-model routing, cryptographic attestation, and immutable audit trails — built from day one for courtroom defensibility.</p>
-    </div>
-    <div class="features-grid" role="list" aria-label="Key features">
-      <div class="feature-card fade-in" role="listitem">
-        <div class="feature-icon">🛡️</div>
-        <h3>Kovel Attestation</h3>
-        <p>HMAC-SHA256 cryptographic receipts per session proving privileged communication under the Kovel doctrine.</p>
-      </div>
-      <div class="feature-card fade-in" role="listitem">
-        <div class="feature-icon">🤖</div>
-        <h3>Multi-Model Routing</h3>
-        <p>Query Gemini, Claude, GPT-4, Grok, and Perplexity through a single privileged interface with model-specific routing policies.</p>
-      </div>
-      <div class="feature-card fade-in" role="listitem">
-        <div class="feature-icon">⚖️</div>
-        <h3>Judge #6 Policy Gate</h3>
-        <p>Mandatory governance checkpoint on every model route, export action, and regulated-domain answer. Zero unauthorized data exfiltration.</p>
-      </div>
-      <div class="feature-card fade-in" role="listitem">
-        <div class="feature-icon">📋</div>
-        <h3>Oracle Studio</h3>
-        <p>7-stage analysis pipeline that transforms raw legal queries into cited, jurisdiction-aware legal memoranda.</p>
-      </div>
-      <div class="feature-card fade-in" role="listitem">
-        <div class="feature-icon">🔐</div>
-        <h3>Ephemeral Client View</h3>
-        <p>Auto-logout, screen wipe, no export, no copy, dead-man's switch. Research vanishes when the session ends.</p>
-      </div>
-      <div class="feature-card fade-in" role="listitem">
-        <div class="feature-icon">📊</div>
-        <h3>Immutable Transcripts</h3>
-        <p>Every AI interaction is logged with tamper-proof audit trails. Lawyer oversight dashboard for all sessions.</p>
-      </div>
-    </div>
-  </section>
 
-  <!-- Pricing -->
-  <section id="pricing" aria-labelledby="pricing-title">
-    <div class="fade-in">
-      <p class="section-label">Pricing</p>
-      <h2 class="section-title" id="pricing-title">Scale with your practice</h2>
-      <p class="section-desc">All plans include every LLM API cost. No surprise token bills. Auto-tier upgrade keeps you compliant.</p>
-    </div>
-    <div class="pricing-grid">
-      <div class="pricing-card fade-in">
-        <p class="pricing-tier">Solo</p>
-        <p class="pricing-amount">$299<span>/mo</span></p>
-        <ul class="pricing-features">
-          <li>1 attorney seat</li>
-          <li>All LLM models included</li>
-          <li>Kovel attestation</li>
-          <li>Ephemeral client portal</li>
-          <li>Standard support</li>
-        </ul>
-        <button class="pricing-cta" id="cta-solo">Get Started</button>
+    <!-- ═══ "Why KovelAI?" — Editorial Rows (replaces Recent News) ═══ -->
+    <section id="why-kovelai" class="section-padded" aria-labelledby="why-title">
+      <div class="fade-in">
+        <p class="section-label">Why KovelAI</p>
+        <h2 class="section-title" id="why-title">The discovery risk is real.<br>The solution is here.</h2>
       </div>
-      <div class="pricing-card featured fade-in">
-        <p class="pricing-tier">Practice</p>
-        <p class="pricing-amount">$599<span>/mo</span></p>
-        <ul class="pricing-features">
-          <li>5 attorney seats</li>
-          <li>All LLM models included</li>
-          <li>Oracle Studio memos</li>
-          <li>Priority model routing</li>
-          <li>Dedicated account manager</li>
-        </ul>
-        <button class="pricing-cta" id="cta-practice">Get Started</button>
+      <div class="editorial-rows">
+        <a href="#features" class="editorial-row fade-in stagger-1">
+          <div class="editorial-row-content">
+            <span class="editorial-number">01</span>
+            <div>
+              <h3>Post-Heppner Compliance</h3>
+              <p>Every client AI search is routed through your firm's Kovel umbrella, making research non-discoverable.</p>
+            </div>
+          </div>
+          <span class="editorial-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="#features" class="editorial-row fade-in stagger-2">
+          <div class="editorial-row-content">
+            <span class="editorial-number">02</span>
+            <div>
+              <h3>Revenue on the Front End</h3>
+              <p>Clients subscribe to your portal with their credit card. You get paid before a single query runs.</p>
+            </div>
+          </div>
+          <span class="editorial-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="#features" class="editorial-row fade-in stagger-3">
+          <div class="editorial-row-content">
+            <span class="editorial-number">03</span>
+            <div>
+              <h3>Courtroom-Defensible Audit Trail</h3>
+              <p>Immutable transcripts, cryptographic attestation, and Judge #6 policy gates on every interaction.</p>
+            </div>
+          </div>
+          <span class="editorial-arrow" aria-hidden="true">→</span>
+        </a>
       </div>
-      <div class="pricing-card fade-in">
-        <p class="pricing-tier">Enterprise</p>
-        <p class="pricing-amount">$999<span>/mo</span></p>
-        <ul class="pricing-features">
-          <li>Unlimited seats</li>
-          <li>BYOC/BYOK support</li>
-          <li>Regional data isolation</li>
-          <li>Custom retention policies</li>
-          <li>FedRAMP compliance path</li>
-        </ul>
-        <button class="pricing-cta" id="cta-enterprise">Contact Sales</button>
+    </section>
+
+    <!-- ═══ Quick Links Card (Unusual Machines pattern) ═══ -->
+    <section class="section-padded" aria-label="Quick links">
+      <div class="quick-links fade-in">
+        <div class="quick-links-label">
+          <h3>Quick<br>Links</h3>
+        </div>
+        <div class="quick-links-grid">
+          <a href="#features" class="quick-link-item">
+            <span class="ql-icon">🛡️</span>
+            <div class="ql-text">
+              <h4>Features</h4>
+              <p>Explore all capabilities</p>
+            </div>
+          </a>
+          <a href="#pricing" class="quick-link-item">
+            <span class="ql-icon">💰</span>
+            <div class="ql-text">
+              <h4>Pricing</h4>
+              <p>Plans for every firm size</p>
+            </div>
+          </a>
+          <a href="#contact" class="quick-link-item" onclick="openContactModal();return false">
+            <span class="ql-icon">📅</span>
+            <div class="ql-text">
+              <h4>Schedule Demo</h4>
+              <p>See KovelAI in action</p>
+            </div>
+          </a>
+          <a href="#features" class="quick-link-item">
+            <span class="ql-icon">📋</span>
+            <div class="ql-text">
+              <h4>Oracle Studio</h4>
+              <p>AI-generated legal memos</p>
+            </div>
+          </a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- ═══ Features ═══ -->
+    <section id="features" class="section-padded" aria-labelledby="features-title">
+      <div class="fade-in">
+        <p class="section-label">Capabilities</p>
+        <h2 class="section-title" id="features-title">Enterprise-grade AI for<br>legal professionals</h2>
+        <p class="section-desc">Multi-model routing, cryptographic attestation, and immutable audit trails — built from day one for courtroom defensibility.</p>
+      </div>
+      <div class="features-grid" role="list" aria-label="Key features">
+        <div class="feature-card fade-in stagger-1" role="listitem">
+          <div class="feature-icon">🛡️</div>
+          <h3>Kovel Attestation</h3>
+          <p>HMAC-SHA256 cryptographic receipts per session proving privileged communication under the Kovel doctrine.</p>
+        </div>
+        <div class="feature-card fade-in stagger-2" role="listitem">
+          <div class="feature-icon">🤖</div>
+          <h3>Multi-Model Routing</h3>
+          <p>Query Gemini, Claude, GPT-4, Grok, and Perplexity through a single privileged interface with model-specific routing policies.</p>
+        </div>
+        <div class="feature-card fade-in stagger-3" role="listitem">
+          <div class="feature-icon">⚖️</div>
+          <h3>Judge #6 Policy Gate</h3>
+          <p>Mandatory governance checkpoint on every model route, export action, and regulated-domain answer. Zero unauthorized data exfiltration.</p>
+        </div>
+        <div class="feature-card fade-in stagger-4" role="listitem">
+          <div class="feature-icon">📋</div>
+          <h3>Oracle Studio</h3>
+          <p>7-stage analysis pipeline that transforms raw legal queries into cited, jurisdiction-aware legal memoranda.</p>
+        </div>
+        <div class="feature-card fade-in stagger-5" role="listitem">
+          <div class="feature-icon">🔐</div>
+          <h3>Ephemeral Client View</h3>
+          <p>Auto-logout, screen wipe, no export, no copy, dead-man's switch. Research vanishes when the session ends.</p>
+        </div>
+        <div class="feature-card fade-in stagger-6" role="listitem">
+          <div class="feature-icon">📊</div>
+          <h3>Immutable Transcripts</h3>
+          <p>Every AI interaction is logged with tamper-proof audit trails. Lawyer oversight dashboard for all sessions.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Pricing ═══ -->
+    <section id="pricing" class="section-padded" aria-labelledby="pricing-title">
+      <div class="fade-in">
+        <p class="section-label">Pricing</p>
+        <h2 class="section-title" id="pricing-title">Scale with your practice</h2>
+        <p class="section-desc">All plans include every LLM API cost. No surprise token bills. Auto-tier upgrade keeps you compliant.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card fade-in stagger-1">
+          <p class="pricing-tier">Solo</p>
+          <p class="pricing-amount">$299<span>/mo</span></p>
+          <ul class="pricing-features">
+            <li>1 attorney seat</li>
+            <li>All LLM models included</li>
+            <li>Kovel attestation</li>
+            <li>Ephemeral client portal</li>
+            <li>Standard support</li>
+          </ul>
+          <button class="pricing-cta" id="cta-solo" onclick="openContactModal()">Get Started</button>
+        </div>
+        <div class="pricing-card featured fade-in stagger-2">
+          <p class="pricing-tier">Practice</p>
+          <p class="pricing-amount">$599<span>/mo</span></p>
+          <ul class="pricing-features">
+            <li>5 attorney seats</li>
+            <li>All LLM models included</li>
+            <li>Oracle Studio memos</li>
+            <li>Priority model routing</li>
+            <li>Dedicated account manager</li>
+          </ul>
+          <button class="pricing-cta" id="cta-practice" onclick="openContactModal()">Get Started</button>
+        </div>
+        <div class="pricing-card fade-in stagger-3">
+          <p class="pricing-tier">Enterprise</p>
+          <p class="pricing-amount">$999<span>/mo</span></p>
+          <ul class="pricing-features">
+            <li>Unlimited seats</li>
+            <li>BYOC/BYOK support</li>
+            <li>Regional data isolation</li>
+            <li>Custom retention policies</li>
+            <li>FedRAMP compliance path</li>
+          </ul>
+          <button class="pricing-cta" id="cta-enterprise" onclick="openContactModal()">Contact Sales</button>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <!-- Footer -->
-  <footer role="contentinfo">
-    <p>&copy; 2024–2026 KovelAI — A ShadowTag AI Company. All rights reserved. Protected under <em>United States v. Heppner</em> (S.D.N.Y., Feb. 10, 2026).</p>
+  <!-- ═══ Contact Split Section ═══ -->
+  <section id="contact" class="contact-split" aria-labelledby="contact-title">
+    <div class="contact-split-inner">
+      <div class="contact-info fade-in">
+        <p class="section-label">Contact</p>
+        <h2 id="contact-title">Let's secure your practice</h2>
+        <p>Get in touch to schedule a demo or learn how KovelAI can protect your firm's AI research under the Kovel doctrine.</p>
+        <div class="contact-detail">
+          <span class="contact-detail-icon">📧</span>
+          <a href="mailto:founder@shadowtagai.com">founder@shadowtagai.com</a>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-icon">🌐</span>
+          <span>A ShadowTagAI Company</span>
+        </div>
+      </div>
+      <form class="contact-form fade-in stagger-2" id="contactForm" action="https://us-central1-shadowtag-omega-v4.cloudfunctions.net/captureLead" method="POST">
+        <div class="form-row">
+          <input type="text" name="name" placeholder="Full Name" required aria-label="Full name">
+          <input type="email" name="email" placeholder="Work Email" required aria-label="Work email">
+        </div>
+        <input type="text" name="firm" placeholder="Law Firm Name" aria-label="Law firm name">
+        <select name="interest" aria-label="Area of interest">
+          <option value="" disabled selected>What are you interested in?</option>
+          <option value="demo">Schedule a Demo</option>
+          <option value="pricing">Pricing Information</option>
+          <option value="enterprise">Enterprise Solutions</option>
+          <option value="partnership">Partnership Inquiries</option>
+        </select>
+        <textarea name="message" placeholder="Tell us about your needs..." rows="4" aria-label="Message"></textarea>
+        <div class="turnstile-container" id="turnstile-widget"></div>
+        <button type="submit" class="btn-primary" id="cta-contact-submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ═══ Contact Modal (secondary) ═══ -->
+  <div class="modal-overlay" id="contactModal" aria-hidden="true" role="dialog" aria-label="Contact form">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeContactModal()" aria-label="Close contact form">&times;</button>
+      <p class="section-label">Get in Touch</p>
+      <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;">Schedule a Demo</h2>
+      <form class="contact-form" action="https://us-central1-shadowtag-omega-v4.cloudfunctions.net/captureLead" method="POST">
+        <input type="text" name="name" placeholder="Full Name" required aria-label="Full name">
+        <input type="email" name="email" placeholder="Work Email" required aria-label="Work email">
+        <input type="text" name="firm" placeholder="Law Firm Name" aria-label="Law firm name">
+        <textarea name="message" placeholder="Tell us about your needs..." rows="3" aria-label="Message"></textarea>
+        <div class="turnstile-container" id="turnstile-modal-widget"></div>
+        <button type="submit" class="btn-primary" id="cta-modal-submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══ Multi-Column Footer ═══ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo">Kovel<span>AI</span></a>
+        <p>Protect your clients' AI searches from discovery. A ShadowTagAI company, built on the Kovel doctrine and post-<em>Heppner</em> privilege framework.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#features">Oracle Studio</a></li>
+          <li><a href="#features">Kovel Attestation</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="https://shadowtagai.web.app" target="_blank" rel="noopener">About ShadowTagAI</a></li>
+          <li><a href="#management">Leadership</a></li>
+          <li><a href="/showreel">Showreel</a></li>
+          <li><a href="/video-gallery">Video Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:founder@shadowtagai.com">Email Us</a></li>
+          <li><a href="#contact" onclick="openContactModal();return false">Contact Sales</a></li>
+          <li><a href="#contact" onclick="openContactModal();return false">Schedule Demo</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024–2026 KovelAI — A ShadowTagAI Company. All rights reserved. Protected under <em>United States v. Heppner</em> (S.D.N.Y., Feb. 10, 2026).</p>
+      <div class="footer-social" aria-label="Social media links">
+        <!-- Social icons placeholder — add when accounts are created -->
+      </div>
+    </div>
   </footer>
 
-  <!-- Scroll Animation Controller -->
-  <script src="scroll-frames.js"></script>
-  <!-- Intersection Observer + Service Worker (external for CSP compliance) -->
-  <script src="/js/fade-observer.js"></script>
-  <!-- Mobile Nav Toggle -->
-  <script>
-    const navToggle = document.getElementById('navToggle');
-    const navLinks = document.getElementById('navLinks');
-    if (navToggle && navLinks) {
-      navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
-    }
-    function openContactModal() {
-      const modal = document.getElementById('contactModal');
-      if (modal) { modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false'); }
-    }
-    function closeContactModal() {
-      const modal = document.getElementById('contactModal');
-      if (modal) { modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); }
-    }
-  </script>
-  <!-- Cloudflare Turnstile CAPTCHA -->
+  <!-- ═══ Scripts ═══ -->
+  <script src="/main.js"></script>
+  <!-- Cloudflare Turnstile -->
   <script src="/js/turnstile.js" defer></script>
-  <!-- GDPR Cookie Consent Banner -->
+  <!-- GDPR Cookie Consent -->
   <script src="/js/cookie-consent.js" defer></script>
 </body>
 </html>
