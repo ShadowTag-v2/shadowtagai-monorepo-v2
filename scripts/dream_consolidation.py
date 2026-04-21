@@ -2,14 +2,19 @@
 """
 KAIROS Dream Memory Consolidation Daemon
 =========================================
-Implements the 4-phase Dream protocol for KI system maintenance.
-Adapted from Claude Code v2.1.98 dream memory consolidation.
+Implements the enhanced 8-phase Dream protocol for KI system maintenance.
+Adapted from Claude Code v2.1.98 + memory-kernel integration.
 
 Phases:
-  1. Orient  — Scan KI index, read metadata, map current state
-  2. Gather  — Read session logs, identify drifted memories
-  3. Consolidate — Merge learnings, resolve contradictions, date normalize
-  4. Prune   — Enforce size limits, remove orphaned artifacts
+  1. Orient        — Scan KI index, read metadata, map current state
+  2. Gather        — Read session logs, identify drifted memories
+  2.5 Activate     — Spreading activation for collision detection
+  3. Consolidate   — Merge learnings, resolve contradictions, date normalize
+  3.5 Promote      — Belief promotion pipeline + conflict detection
+  4. Prune         — Enforce size limits, remove orphaned artifacts
+  4.5 Measure      — Operational closure metrics + generate views
+  5. Gitleaks      — Nightly production secret scan
+  6. Archive       — NotebookLM archive
 
 Usage:
   python dream_consolidation.py --ki-dir ~/.gemini/antigravity/knowledge
@@ -22,6 +27,22 @@ import sys
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
+
+# --- KI Engine Integration ---------------------------------------------------
+# Falls back gracefully if ki_engine is not available
+try:
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from core.ki_engine.activation import spread_activation
+    from core.ki_engine.closure import compute_closure
+    from core.ki_engine.decay import rank_kis
+    from core.ki_engine.events import EventAction, append_event
+    from core.ki_engine.promotion import detect_conflicts, promote_beliefs
+    from core.ki_engine.schema import KIMetadata
+    from core.ki_engine.views import generate_all_views
+
+    HAS_KI_ENGINE = True
+except ImportError:
+    HAS_KI_ENGINE = False
 
 # --- Configuration -----------------------------------------------------------
 
@@ -260,17 +281,136 @@ def prune(entries: list[KIEntry], issues: dict, report: DreamReport):
     print(f"[PRUNE] {report.artifacts_pruned} orphaned artifacts, index size: {total_summary_kb:.1f}KB/{INDEX_MAX_KB}KB")
 
 
+# --- Phase 2.5: Activate (memory-kernel integration) -------------------------
+
+
+def activate(entries: list[KIEntry], ki_dir: Path, report: DreamReport):
+    """Run spreading activation for collision detection."""
+    if not HAS_KI_ENGINE:
+        print("[ACTIVATE] KI engine not available — skipping")
+        return
+
+    # Load enhanced metadata
+    ki_metas = []
+    for entry in entries:
+        metadata_file = Path(entry.path) / "metadata.json"
+        if metadata_file.exists():
+            try:
+                ki_metas.append(KIMetadata.load(metadata_file))
+            except (json.JSONDecodeError, OSError):
+                pass
+
+    if not ki_metas:
+        print("[ACTIVATE] No KI metadata loaded — skipping")
+        return
+
+    # Collect all tags for seeding
+    all_tags = set()
+    for ki in ki_metas:
+        all_tags.update(ki.tags)
+
+    # Run activation with top 5 most common tags as seeds
+    from collections import Counter
+    tag_counts = Counter()
+    for ki in ki_metas:
+        tag_counts.update(ki.tags)
+    seed_tags = {tag for tag, _ in tag_counts.most_common(5)}
+
+    result = spread_activation(ki_metas, seed_tags=seed_tags, steps=2)
+
+    if result.collisions:
+        print(f"[ACTIVATE] {len(result.collisions)} cross-domain collisions detected:")
+        for collision in result.collisions[:5]:
+            print(f"  ⚡ {collision.description}")
+            report.actions.append(f"COLLISION: {collision.description}")
+    else:
+        print(f"[ACTIVATE] {len(result.activated)} KIs activated, 0 collisions")
+
+
+# --- Phase 3.5: Promote + Detect Conflicts -----------------------------------
+
+
+def promote_and_detect(entries: list[KIEntry], ki_dir: Path, report: DreamReport):
+    """Run belief promotion and conflict detection."""
+    if not HAS_KI_ENGINE:
+        print("[PROMOTE] KI engine not available — skipping")
+        return
+
+    ki_metas = []
+    for entry in entries:
+        metadata_file = Path(entry.path) / "metadata.json"
+        if metadata_file.exists():
+            try:
+                ki_metas.append(KIMetadata.load(metadata_file))
+            except (json.JSONDecodeError, OSError):
+                pass
+
+    # Promotion pipeline
+    promo_result = promote_beliefs(ki_metas, ki_dir=ki_dir, dry_run=DRY_RUN)
+    if promo_result.promoted:
+        print(f"[PROMOTE] {len(promo_result.promoted)} beliefs promoted to facts:")
+        for name in promo_result.promoted:
+            print(f"  📈 {name}")
+            report.actions.append(f"PROMOTED: '{name}' belief → fact (confidence ≥ 0.9)")
+
+    # Conflict detection
+    conflict_result = detect_conflicts(ki_metas)
+    if conflict_result.detected:
+        print(f"[CONFLICT] {len(conflict_result.detected)} conflicts detected:")
+        for c in conflict_result.detected:
+            print(f"  ⚠️ {c.ki_a} ↔ {c.ki_b}: {c.reason}")
+            report.actions.append(f"CONFLICT: {c.ki_a} ↔ {c.ki_b}: {c.reason}")
+            report.contradictions_found += 1
+
+
+# --- Phase 4.5: Closure Metrics + Views --------------------------------------
+
+
+def measure_and_render(entries: list[KIEntry], ki_dir: Path, report: DreamReport):
+    """Compute closure metrics and generate views."""
+    if not HAS_KI_ENGINE:
+        print("[MEASURE] KI engine not available — skipping")
+        return
+
+    ki_metas = []
+    for entry in entries:
+        metadata_file = Path(entry.path) / "metadata.json"
+        if metadata_file.exists():
+            try:
+                ki_metas.append(KIMetadata.load(metadata_file))
+            except (json.JSONDecodeError, OSError):
+                pass
+
+    # Closure metrics
+    closure = compute_closure(ki_metas, ki_dir=ki_dir)
+    print(f"[CLOSURE] Phase: {closure.phase} | Index: {closure.closure_index:.2f} | Beliefs: {closure.belief_pct:.0f}%")
+    print(f"[CLOSURE] Types: {dict(closure.by_type)}")
+    for pred in closure.predictions:
+        if pred.status == "degraded":
+            print(f"  ⚠️ {pred.tool}: {pred.detail}")
+            report.actions.append(f"CLOSURE WARNING: {pred.tool} — {pred.detail}")
+
+    # Generate views
+    if not DRY_RUN:
+        views_dir = ki_dir / "_views"
+        views = generate_all_views(ki_metas, views_dir)
+        print(f"[VIEWS] Generated {len(views)} views in {views_dir}")
+    else:
+        print("[VIEWS] DRY RUN — would generate views")
+
+
 # --- Main --------------------------------------------------------------------
 
 
 def run_dream_cycle(ki_dir: Path) -> DreamReport:
-    """Execute the full 4-phase Dream consolidation cycle."""
+    """Execute the full enhanced Dream consolidation cycle."""
     report = DreamReport()
 
     print("=" * 60)
     print(f"KAIROS Dream Consolidation — {datetime.now(UTC).isoformat()}")
     print(f"KI Directory: {ki_dir}")
     print(f"Mode: {'DRY RUN' if DRY_RUN else 'LIVE'}")
+    print(f"KI Engine: {'ACTIVE' if HAS_KI_ENGINE else 'NOT AVAILABLE'}")
     print("=" * 60)
 
     # Phase 1: Orient
@@ -281,13 +421,25 @@ def run_dream_cycle(ki_dir: Path) -> DreamReport:
     report.phase = "gather"
     issues = gather(entries, report)
 
+    # Phase 2.5: Activate (spreading activation for collision detection)
+    report.phase = "activate"
+    activate(entries, ki_dir, report)
+
     # Phase 3: Consolidate
     report.phase = "consolidate"
     consolidate(entries, issues, report)
 
+    # Phase 3.5: Promote + Detect
+    report.phase = "promote"
+    promote_and_detect(entries, ki_dir, report)
+
     # Phase 4: Prune
     report.phase = "prune"
     prune(entries, issues, report)
+
+    # Phase 4.5: Measure + Views
+    report.phase = "measure"
+    measure_and_render(entries, ki_dir, report)
 
     # Report
     report.phase = "complete"
@@ -317,12 +469,34 @@ if __name__ == "__main__":
         )
     )
 
-    if len(sys.argv) > 1 and sys.argv[1] not in ("--dry-run",):
+    if len(sys.argv) > 1 and sys.argv[1] not in ("--dry-run", "--migrate"):
         ki_dir = Path(sys.argv[1])
+
+    # Optional: run migration first
+    if "--migrate" in sys.argv:
+        from core.ki_engine.migration import migrate_ki_metadata
+
+        print("\n[MIGRATE] Running KI metadata migration...")
+        mig_result = migrate_ki_metadata(ki_dir, dry_run=DRY_RUN)
+        print(f"[MIGRATE] Migrated: {len(mig_result.migrated)}, Skipped: {len(mig_result.skipped)}, Errors: {len(mig_result.errors)}")
 
     report = run_dream_cycle(ki_dir)
 
-    # Phase 5: Gitleaks nightly production scan
+    # Phase 5a: Rebuild FTS5 search index
+    print("\n[FTS5] Rebuilding search index...")
+    if DRY_RUN:
+        print("[FTS5] DRY RUN — would rebuild index")
+    else:
+        try:
+            from core.ki_engine.fts_index import reindex_all
+
+            fts_count = reindex_all(ki_dir)
+            print(f"[FTS5] ✅ Indexed {fts_count} KIs")
+        except Exception as e:
+            print(f"[FTS5] ⚠️ FTS5 failed: {e}")
+            report.actions.append(f"FTS5: Reindex failed — {e}")
+
+    # Phase 5b: Gitleaks nightly production scan
     repo_root = Path(__file__).resolve().parent.parent
     guardian_script = repo_root / "scripts" / "gitleaks_guardian.py"
     if guardian_script.exists():
