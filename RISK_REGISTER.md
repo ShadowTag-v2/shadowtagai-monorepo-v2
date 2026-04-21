@@ -1,4 +1,4 @@
-# RISK_REGISTER — v9.4
+# RISK_REGISTER — v9.5
 
 > Operational risks tracked as part of the sovereign monorepo governance.
 > Reviewed on each version bump. Mitigations are enforced, not advisory.
@@ -91,6 +91,24 @@
 - **Severity**: 🟢 Low
 - **Status**: KNOWN
 - **Description**: JTF scaffolds (`src/headquarters/`, `src/intelligence/`, `src/governance/`, `src/workflows/`) are pure Python dataclass+async scaffolds. They do NOT depend on Temporal.io runtime. If Temporal integration is added later, `temporalio` SDK must be installed and workflow registration configured. Current scaffolds are self-contained and importable without external dependencies.
+
+## Risk #52: Staging Branch Residue — Stale Remote Branch After Merge
+- **Type**: Operational / Git Hygiene
+- **Severity**: 🟢 Low
+- **Status**: RESOLVED
+- **Description**: `staging` branch remained on both local and remote after all 10 PRs merged to main. Deleted local (`git branch -d staging`) and remote (`git push origin --delete staging`) during session `4d82db23`. Only `main` remains.
+
+## Risk #53: Bandit HIGH — Shell Injection in Scripts (B605)
+- **Type**: Security / Code Quality
+- **Severity**: 🟡 Medium
+- **Status**: KNOWN
+- **Description**: 6 Bandit HIGH findings: 3x B605 (subprocess.getoutput with f-strings in `git_frame_external.py`, `mass_git_sync.py`), 2x B202 (extractall without validation in `ingest_downloads.py`), 1x B324 (MD5 without usedforsecurity=False in `last30days_to_ingest.py`). All in internal scripts (not production API code). **Action**: Refactor to `subprocess.run()` with explicit args, add `usedforsecurity=False` to MD5 call, validate archive contents before extraction.
+
+## Risk #54: npx/Node Not on Agent Shell PATH
+- **Type**: Environmental / Toolchain
+- **Severity**: 🟡 Medium
+- **Status**: MITIGATED
+- **Description**: `npx` unavailable in default agent shell (nvm not sourced). Firebase CLI deploy requires explicit PATH prepend: `PATH="$HOME/.nvm/versions/node/$(ls $HOME/.nvm/versions/node/ | tail -1)/bin:$PATH"`. Mitigated by using this prepend in all Firebase deploy commands.
 
 ## Known Issues
 - Antigravity IDE: SharedProcess uncaught exception (reading 'fireEvent') - Ignored upstream Electron/Extension bug.
