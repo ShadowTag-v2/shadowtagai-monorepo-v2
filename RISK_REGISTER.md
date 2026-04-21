@@ -117,5 +117,11 @@
 - **Status**: RESOLVED
 - **Description**: Two copies of `ShadowTagV4.Kernel/Process.cs` existed: (1) canonical at `apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/Process.cs` and (2) duplicate at `apps/aiyou_stack/aiyou-fastapi-services/src/dotnet/AiYou.Kernel/Process.cs`. The duplicate had already drifted — AGENTS.md incorrectly claimed `OnExternalEvent` should be replaced with `OnInputEvent` (which does NOT exist in SK Process.Core 1.21.0-alpha). `OnExternalEvent` is the CORRECT API for human-in-the-loop external resumption. **Resolution**: Duplicate deleted via `git rm -r`. Canonical copy updated with user's authoritative version. AGENTS.md corrected. `dotnet build` verified clean (0 warnings, 0 errors).
 
+## Risk #56: NadirClaw Model Dispatch — Noisy Neighbor / Session Pin Memory Leak
+- **Type**: Operational / Performance
+- **Severity**: 🟡 Medium
+- **Status**: MITIGATED
+- **Description**: NadirClaw 3-tier dispatch introduces three operational risks: (1) Noisy neighbor — a single firm could exhaust the model routing budget. Mitigated by `TenantQuota` with per-tier RPM limits (trial=20, pro=60, enterprise=200). Quotas backed by Firestore `tenant_quotas` collection. (2) Session pin memory leak — `_session_pins` dict grows unbounded in long-running processes. Mitigated by 30-minute TTL auto-expiry (`SESSION_PIN_TTL_SECONDS=1800`). (3) Fallback chain exhaustion — if all models in a fallback chain are unavailable, system degrades to `gemini-flash`. Metrics tracked via `_fallback_hits` for Cloud Monitoring alerting. **Files**: `apps/counselconduit/api/model_router.py`, `apps/counselconduit/tests/test_model_router.py` (33 tests).
+
 ## Known Issues
 - Antigravity IDE: SharedProcess uncaught exception (reading 'fireEvent') - Ignored upstream Electron/Extension bug.

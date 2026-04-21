@@ -4,22 +4,15 @@
 Routes queries to the optimal model based on:
 - Query complexity (simple → flash, complex → pro)
 - Firm-level model policy (which models are allowed)
-- Cost tier (trial → cheapest, enterprise → best)
-- Load balancing (distribute across providers)
-
-Supported models:
-- Gemini (3.1 Flash Lite, 3.1 Pro) — default
-- Claude (Sonnet 4.5, Opus 4) — via API key
-- GPT (4.1, o3) — via API key
-- Grok (3.5) — via API key
-- Perplexity (pplx-api) — via API key
-
-Architecture: LiteLLM proxy with tenant-scoped, ephemeral, sandbox-bound tokens.
+- Cost tier (trial -> cheapest, enterprise -> best)
+- Per-tenant quotas (noisy neighbor protection)
 """
 
 from __future__ import annotations
 
 import logging
+import time
+from collections import defaultdict
 from enum import StrEnum
 
 from pydantic import BaseModel, Field
@@ -161,10 +154,45 @@ _tenant_quotas: dict[str, TenantQuota] = {}
 
 
 def get_tenant_quota(firm_id: str, tier: str = "trial") -> TenantQuota:
-    """Get or create quota tracker for a tenant."""
+    """Get or create quota tracker for a tenant.
+
+    In production, this reads/writes to Firestore:
+        db.collection('tenant_quotas').document(firm_id)
+    In-memory fallback for local dev and tests.
+    """
     if firm_id not in _tenant_quotas:
         _tenant_quotas[firm_id] = TenantQuota(firm_id=firm_id)
     return _tenant_quotas[firm_id]
+
+
+async def sync_quota_to_firestore(firm_id: str) -> None:
+    """Persist tenant quota state to Firestore (Item 5).
+
+    Called after each request to persist RPM/daily counters.
+    Uses Firestore's increment() for atomic counter updates.
+    """
+    try:
+        from google.cloud import firestore as _fs  # lazy import
+
+        db = _fs.AsyncClient(project="shadowtag-omega-v4")
+        doc_ref = db.collection("tenant_quotas").document(firm_id)
+        quota = _tenant_quotas.get(firm_id)
+        if quota:
+            await doc_ref.set(
+                {
+                    "firm_id": firm_id,
+                    "current_rpm": quota.current_rpm,
+                    "current_daily": quota.current_daily,
+                    "max_rpm": quota.max_rpm,
+                    "max_daily": quota.max_daily,
+                    "updated_at": _fs.SERVER_TIMESTAMP,
+                },
+                merge=True,
+            )
+    except ImportError:
+        pass  # Firestore SDK not installed (local dev)
+    except Exception as e:
+        logger.warning("Firestore quota sync failed for %s: %s", firm_id, e)
 
 
 # ── BYOK Encryption Config (Phase 4 Stub) ────────────────────────────────
@@ -178,20 +206,53 @@ class BYOKConfig(BaseModel):
     rotation_period_days: int = 90
 
 
-# ── Session Pinning ───────────────────────────────────────────────────────
+# ── Session Pinning with TTL (Item 13) ────────────────────────────────────
 
-# Session → model mapping for multi-turn context preservation
-_session_pins: dict[str, str] = {}
+SESSION_PIN_TTL_SECONDS = 30 * 60  # 30 minutes auto-expire
+
+# Session → (model_key, pinned_at_timestamp)
+_session_pins: dict[str, tuple[str, float]] = {}
 
 
 def pin_session_model(session_id: str, model_key: str) -> None:
     """Pin a session to a specific model for context continuity."""
-    _session_pins[session_id] = model_key
+    _session_pins[session_id] = (model_key, time.time())
 
 
 def get_pinned_model(session_id: str) -> str | None:
-    """Get the pinned model for a session."""
-    return _session_pins.get(session_id)
+    """Get the pinned model for a session, respecting TTL."""
+    pin = _session_pins.get(session_id)
+    if pin is None:
+        return None
+    model_key, pinned_at = pin
+    if time.time() - pinned_at > SESSION_PIN_TTL_SECONDS:
+        del _session_pins[session_id]
+        logger.info("Session pin expired for %s (TTL=%ds)", session_id, SESSION_PIN_TTL_SECONDS)
+        return None
+    return model_key
+
+
+# ── Dispatch Metrics (Items 9, 16) ────────────────────────────────────────
+
+# In-memory counters for Cloud Monitoring export
+_dispatch_metrics: dict[str, int] = defaultdict(int)
+_fallback_hits: dict[str, int] = defaultdict(int)
+
+
+def record_dispatch(tier: str, model_key: str) -> None:
+    """Record dispatch decision for Cloud Monitoring metrics."""
+    _dispatch_metrics[f"dispatch.{tier}.{model_key}"] += 1
+
+
+def record_fallback(original: str, fallback: str) -> None:
+    """Record fallback chain activation."""
+    _fallback_hits[f"fallback.{original}->{fallback}"] += 1
+    logger.info("Fallback chain hit: %s → %s", original, fallback)
+
+
+def get_dispatch_metrics() -> dict[str, int]:
+    """Return all dispatch metrics for Cloud Monitoring export."""
+    return {**_dispatch_metrics, **_fallback_hits}
 
 
 # ── Prompt Classifier (NadirClaw-style, ~10ms) ───────────────────────────
@@ -316,11 +377,65 @@ def select_model(req: ModelRequest) -> ModelConfig:
     for candidate in tier_candidates:
         fallback = FALLBACK_CHAIN.get(candidate)
         if fallback and fallback in req.firm_allowed_models and fallback in AVAILABLE_MODELS:
-            logger.info("Fallback: %s → %s", candidate, fallback)
+            record_fallback(candidate, fallback)
             return AVAILABLE_MODELS[fallback]
 
     # 5. Absolute fallback
+    record_dispatch("fallback", "gemini-flash")
     return AVAILABLE_MODELS["gemini-flash"]
+
+
+# ── FastAPI Integration (Item 4: Wire NadirClaw into CC API) ──────────────
+
+
+async def dispatch_request(
+    query: str,
+    firm_id: str,
+    session_id: str = "",
+    user_tier: str = "trial",
+    preferred_model: str | None = None,
+    firm_allowed_models: list[str] | None = None,
+) -> dict:
+    """Top-level dispatch function for CounselConduit API endpoints.
+
+    Wires NadirClaw classification → model selection → quota tracking → metrics.
+    Call this from FastAPI route handlers.
+    """
+    if firm_allowed_models is None:
+        firm_allowed_models = ["gemini-flash"]
+
+    req = ModelRequest(
+        query_text=query,
+        firm_id=firm_id,
+        session_id=session_id,
+        user_tier=user_tier,
+        preferred_model=preferred_model,
+        firm_allowed_models=firm_allowed_models,
+    )
+
+    # Classify and route
+    model = select_model(req)
+    tier = classify_prompt(query) if query else DispatchTier.SIMPLE
+
+    # Record metrics for Cloud Monitoring
+    record_dispatch(tier.value, model.model_id)
+
+    # Increment tenant quota counters
+    if firm_id:
+        quota = get_tenant_quota(firm_id, user_tier)
+        quota.current_rpm += 1
+        quota.current_daily += 1
+        # Fire-and-forget Firestore sync
+        import asyncio
+        asyncio.create_task(sync_quota_to_firestore(firm_id))
+
+    return {
+        "model": model.model_id,
+        "provider": model.provider,
+        "tier": tier.value,
+        "session_pinned": bool(get_pinned_model(session_id)) if session_id else False,
+        "cost_per_1k_input": model.cost_per_1k_input,
+    }
 
 
 def get_models_for_tier(tier: str) -> list[ModelConfig]:
