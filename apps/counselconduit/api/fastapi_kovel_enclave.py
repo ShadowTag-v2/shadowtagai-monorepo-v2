@@ -77,6 +77,7 @@ try:
     from apps.counselconduit.api.middleware.prompt_guard import PromptGuardMiddleware
     from apps.counselconduit.api.middleware.token_budget import TokenBudgetMiddleware
     from apps.counselconduit.api.resend_webhook import router as resend_router
+    from apps.counselconduit.api.sandbox_router import SandboxMiddleware
     from apps.counselconduit.api.stripe_connect_onboarding import router as connect_onboarding_router
     from apps.counselconduit.api.stripe_connect_webhook import router as connect_webhook_router
     from apps.counselconduit.api.vent_mode import router as vent_router
@@ -92,6 +93,7 @@ except ImportError:
     from api.middleware.prompt_guard import PromptGuardMiddleware  # type: ignore[no-redef]
     from api.middleware.token_budget import TokenBudgetMiddleware  # type: ignore[no-redef]
     from api.resend_webhook import router as resend_router  # type: ignore[no-redef]
+    from api.sandbox_router import SandboxMiddleware  # type: ignore[no-redef]
     from api.stripe_connect_onboarding import router as connect_onboarding_router  # type: ignore[no-redef]
     from api.stripe_connect_webhook import router as connect_webhook_router  # type: ignore[no-redef]
     from api.vent_mode import router as vent_router  # type: ignore[no-redef]
@@ -116,10 +118,19 @@ logger = structlog.get_logger("counselconduit")
 
 app = FastAPI(
     title="CounselConduit: Kovel Enclave",
-    version="3.1.0",
+    version="3.2.0",
     description="Privileged Legal AI under the Kovel Doctrine. Zero-retention architecture.",
     docs_url="/docs",  # OpenAPI/Swagger enabled — API documentation
     redoc_url="/redoc",
+    openapi_tags=[
+        {"name": "Kovel Enclave", "description": "Privileged query endpoints protected by Kovel doctrine"},
+        {"name": "Stripe Connect", "description": "Dual-billing engine: client→attorney + attorney→us"},
+        {"name": "GDPR", "description": "Article 17 erasure + Article 20 data portability"},
+        {"name": "Attestation", "description": "HMAC-SHA256 Kovel attestation receipts"},
+        {"name": "Vent Mode", "description": "SSE streaming for real-time AI interaction"},
+        {"name": "Sandbox", "description": "Phase 3: Tenant isolation, quota enforcement, proxy tokens"},
+        {"name": "BYOK", "description": "Bring Your Own Key — customer-managed LLM API keys"},
+    ],
 )
 
 # ── OpenTelemetry (Cloud Trace) ────────────────────────────────────────────
@@ -161,6 +172,9 @@ app.add_middleware(TokenBudgetMiddleware)
 
 # OWASP LLM01: Prompt injection detection
 app.add_middleware(PromptGuardMiddleware)
+
+# Phase 3: Tenant isolation + per-tier quota enforcement + proxy token validation
+app.add_middleware(SandboxMiddleware)
 
 # Cor.30: Opaque error handling — never expose stack traces
 app.add_exception_handler(AppError, app_error_handler)
