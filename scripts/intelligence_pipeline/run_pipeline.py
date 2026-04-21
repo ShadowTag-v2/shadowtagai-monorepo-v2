@@ -1,5 +1,4 @@
-"""
-Intelligence Pipeline Orchestrator
+"""Intelligence Pipeline Orchestrator.
 
 Wires 2,856 ingested LanceDB docs against the codebase, git history, and biz plans.
 
@@ -79,7 +78,7 @@ def run_step(step_num: int, label: str, fn, cfg: PipelineConfig, stats: dict) ->
     logger.info(f"[Step {step_num}] {label} — STARTING")
     t0 = time.time()
     try:
-        result = fn(cfg)
+        fn(cfg)
         elapsed = round(time.time() - t0, 2)
         stats[label] = {"status": "ok", "elapsed": elapsed}
         logger.info(f"[Step {step_num}] {label} — DONE ({elapsed}s)")
@@ -87,11 +86,11 @@ def run_step(step_num: int, label: str, fn, cfg: PipelineConfig, stats: dict) ->
     except Exception as e:
         elapsed = round(time.time() - t0, 2)
         stats[label] = {"status": "error", "error": str(e), "elapsed": elapsed}
-        logger.error(f"[Step {step_num}] {label} — FAILED: {e}")
+        logger.exception(f"[Step {step_num}] {label} — FAILED: {e}")
         return False
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Intelligence Pipeline Orchestrator")
     parser.add_argument("--dry-run", action="store_true", help="Log steps without executing")
     parser.add_argument("--skip-step", type=int, action="append", default=[], help="Skip step N")
@@ -113,13 +112,13 @@ def main():
         cfg.skip_steps.update({6, 7})
 
     # Lazy imports to avoid loading heavy deps for --help
-    from scripts.intelligence_pipeline.domain_tagger import run_domain_tagger
     from scripts.intelligence_pipeline.codebase_embedder import run_codebase_embedder
     from scripts.intelligence_pipeline.cross_domain_matcher import run_cross_domain_matcher
+    from scripts.intelligence_pipeline.domain_tagger import run_domain_tagger
     from scripts.intelligence_pipeline.gap_analyzer import run_gap_analyzer
-    from scripts.intelligence_pipeline.synthesis_report import run_synthesis_report
-    from scripts.intelligence_pipeline.memory_injector import run_memory_injector
     from scripts.intelligence_pipeline.github_sync import run_github_sync
+    from scripts.intelligence_pipeline.memory_injector import run_memory_injector
+    from scripts.intelligence_pipeline.synthesis_report import run_synthesis_report
 
     steps = [
         (1, "domain_tagger", run_domain_tagger),

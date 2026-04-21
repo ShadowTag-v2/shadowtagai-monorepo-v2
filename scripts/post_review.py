@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deduplicate and post PR review comments via GitHub Pulls Review API.
+r"""Deduplicate and post PR review comments via GitHub Pulls Review API.
 
 Collects review outputs from multiple parallel Gemini agent jobs,
 deduplicates findings, and posts inline line-level comments as a
@@ -157,7 +157,7 @@ def parse_gemini_output(text: str, agent_name: str) -> list[ReviewComment]:
                         body=current.get("body", ""),
                         severity=current.get("severity", "info"),
                         agent=agent_name,
-                    )
+                    ),
                 )
             current = {"path": line.split(":", 1)[1].strip()}
 
@@ -187,7 +187,7 @@ def parse_gemini_output(text: str, agent_name: str) -> list[ReviewComment]:
                 body=current.get("body", ""),
                 severity=current.get("severity", "info"),
                 agent=agent_name,
-            )
+            ),
         )
 
     return comments
@@ -230,12 +230,10 @@ def post_review(
 
     try:
         with urllib.request.urlopen(req) as resp:
-            result = json.loads(resp.read())
-            print(f"Review posted: {result.get('html_url', 'OK')}", file=sys.stderr)
+            json.loads(resp.read())
             return True
     except urllib.error.HTTPError as e:
-        body = e.read().decode()
-        print(f"GitHub API error {e.code}: {body}", file=sys.stderr)
+        e.read().decode()
         return False
 
 
@@ -301,15 +299,12 @@ def main() -> int:
 
     # Output or post
     if args.dry_run:
-        print(review.build_summary())
-        print(f"\n--- {len(review.comments)} inline comments ---")
-        for c in review.comments:
-            print(f"  {c.path}:{c.line} [{c.severity}] {c.body[:80]}")
+        for _c in review.comments:
+            pass
         return 0
 
     token = os.environ.get("GITHUB_TOKEN")
     if not token:
-        print("Error: GITHUB_TOKEN not set", file=sys.stderr)
         return 1
 
     success = post_review(args.repo, args.pr, args.commit, review, token)

@@ -24,7 +24,6 @@ def get_installations(client_id, pem_path):
 
     resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
     if resp.status_code != 200:
-        print(f"Failed to get installations for {client_id}: {resp.status_code} {resp.text}")
         return None, None
 
     return resp.json(), headers
@@ -33,40 +32,34 @@ def get_installations(client_id, pem_path):
 def get_access_token(installation_id, headers):
     resp = requests.post(f"https://api.github.com/app/installations/{installation_id}/access_tokens", headers=headers, timeout=30)
     if resp.status_code != 201:
-        print(f"Failed to get access token: {resp.status_code} {resp.text}")
         return None
     return resp.json()["token"]
 
 
-def clone_repo(repo_name, owner, token, target_dir):
+def clone_repo(repo_name, owner, token, target_dir) -> bool:
     repo_path = target_dir / repo_name
     if repo_path.exists():
-        print(f"[{repo_name}] Already exists, skipping clone.")
         return True
 
     clone_url = f"https://x-access-token:{token}@github.com/{owner}/{repo_name}.git"
 
-    print(f"[{repo_name}] Cloning...")
     # Hide output unless it fails to avoid spam, but hide the token!
     result = subprocess.run(["git", "clone", clone_url, str(repo_path)], capture_output=True, text=True)
 
     if result.returncode != 0:
-        print(f"[{repo_name}] ❌ Clone failed.")
         # Don't print the raw stderr because it might contain the token
         return False
 
-    print(f"[{repo_name}] ✅ Cloned successfully.")
 
     # Remove the .git folder so it becomes part of the monorepo instead of a submodule
     # if it's not one of the existing 4
     if repo_name not in existing:
         subprocess.run(["rm", "-rf", str(repo_path / ".git")])
-        print(f"[{repo_name}] 🧹 Stripped .git directory for monorepo ingestion.")
 
     return True
 
 
-def process_identity(client_id, pem_path, owner_name, repos_to_clone, target_dir):
+def process_identity(client_id, pem_path, owner_name, repos_to_clone, target_dir) -> None:
     installations, headers = get_installations(client_id, pem_path)
     if not installations:
         return
@@ -106,7 +99,6 @@ if __name__ == "__main__":
     # Do we need to clone the 4 existing ones? The prompt says they are already in the manifest but
     # taking a look they might actually be tracked already. We'll skip stripping their .git.
 
-    print(f"Total repos to process: {len(all_repos)}")
 
     ehanc69_client_id = "Iv23liWtuBLy8uYLpzjn"
     ehanc69_pem = "/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.private-key.pem"
@@ -165,6 +157,5 @@ if __name__ == "__main__":
         elif repo in shadowtag_repos:
             clone_repo(repo, "ShadowTag-v2", shadowtag_token, target_dir)
         else:
-            print(f"[{repo}] ⚠️ Could not determine owner.")
+            pass
 
-    print("✅ All repositories physically cloned into the monorepo.")

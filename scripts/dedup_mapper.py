@@ -15,17 +15,15 @@ markdown_rows = []
 
 def get_remote(git_dir):
     try:
-        remote = subprocess.check_output(
+        return subprocess.check_output(
             ["git", "-C", str(git_dir), "config", "--get", "remote.origin.url"],
             stderr=subprocess.DEVNULL,
             text=True,
         ).strip()
-        return remote
     except subprocess.CalledProcessError:
         return ""
 
 
-print("Generating Dedup Table...")
 for root_dir in scan_dirs:
     root_path = Path(root_dir)
     if not root_path.exists():
@@ -54,7 +52,7 @@ for root_dir in scan_dirs:
             status = "Duplicate Git Clone"
 
         clean_path = ds_path.replace(os.path.expanduser("~"), "~")
-        markdown_rows.append(f"| `{clean_path}` | `{remote_url if remote_url else 'NONE'}` | {status} |")
+        markdown_rows.append(f"| `{clean_path}` | `{remote_url or 'NONE'}` | {status} |")
 
 # Also find raw non-git folders that match the target names
 target_names = [
@@ -83,5 +81,3 @@ os.makedirs("docs", exist_ok=True)
 with open(out_file, "w") as f:
     f.write(report)
 
-print(f"Report written to {out_file}.")
-print(report)

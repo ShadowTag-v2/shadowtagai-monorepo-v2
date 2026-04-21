@@ -116,8 +116,7 @@ def _get_github_token() -> str:
         from auth_github_app import get_token  # type: ignore[import]
 
         return get_token()
-    except Exception as exc:
-        print(f"[auth] Failed to get token via auth_github_app: {exc}", file=sys.stderr)
+    except Exception:
         # Fallback: check env
         tok = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
         if tok:
@@ -144,25 +143,20 @@ def _gh_get(path: str, token: str, accept: str = "application/vnd.github+json") 
 
 def fetch_pr_metadata(pr_number: int, token: str) -> tuple[str, str]:
     """Returns (base_ref, head_sha)."""
-    print(f"[setup] Fetching PR #{pr_number} metadata...", flush=True)
     data = json.loads(_gh_get(f"/repos/{REPO}/pulls/{pr_number}", token))
     base_ref = data["base"]["ref"]
     head_sha = data["head"]["sha"]
-    print(f"[setup] base_ref={base_ref}  head_sha={head_sha[:12]}...", flush=True)
     return base_ref, head_sha
 
 
 def fetch_diff(base_ref: str, head_sha: str, token: str) -> str:
     """Fetch unified diff for base...head via GitHub compare API."""
-    print(f"[setup] Fetching diff {base_ref}...{head_sha[:12]}...", flush=True)
     raw = _gh_get(
         f"/repos/{REPO}/compare/{base_ref}...{head_sha}",
         token,
         accept="application/vnd.github.diff",
     )
-    diff_text = raw.decode("utf-8", errors="replace")
-    print(f"[setup] Diff size: {len(diff_text):,} chars", flush=True)
-    return diff_text
+    return raw.decode("utf-8", errors="replace")
 
 
 # ── agent runner ──────────────────────────────────────────────────────────────
@@ -171,7 +165,6 @@ def fetch_diff(base_ref: str, head_sha: str, token: str) -> str:
 def run_gemini_agent(agent: str, diff_text: str, out_path: Path) -> tuple[str, bool]:
     """Run a single gemini agent. Returns (agent_name, success)."""
     prompt = AGENT_PROMPTS[agent] + f"\n\n--- DIFF ---\n{diff_text}\n--- END DIFF ---"
-    print(f"[analyze] Starting {agent} agent...", flush=True)
     t0 = time.time()
     try:
         result = subprocess.run(
@@ -180,19 +173,16 @@ def run_gemini_agent(agent: str, diff_text: str, out_path: Path) -> tuple[str, b
             text=True,
             timeout=300,
         )
-        elapsed = time.time() - t0
+        time.time() - t0
         output = result.stdout.strip() or result.stderr.strip()
         out_path.write_text(output)
-        lines = [l for l in output.splitlines() if l.startswith("FILE:")]
-        print(f"[analyze] {agent}: {len(lines)} finding(s) in {elapsed:.1f}s", flush=True)
+        [l for l in output.splitlines() if l.startswith("FILE:")]
         return agent, True
     except subprocess.TimeoutExpired:
         out_path.write_text("NO_FINDINGS\n# agent timed out after 300s")
-        print(f"[analyze] {agent}: TIMEOUT", flush=True)
         return agent, False
     except Exception as exc:
         out_path.write_text(f"NO_FINDINGS\n# agent error: {exc}")
-        print(f"[analyze] {agent}: ERROR — {exc}", flush=True)
         return agent, False
 
 
@@ -201,7 +191,6 @@ def run_gemini_agent(agent: str, diff_text: str, out_path: Path) -> tuple[str, b
 
 def run_ane_gate(diff_path: Path, ane_out_path: Path) -> dict:
     """Run ane_budget.py and write JSON report. Returns report dict."""
-    print("[ane-gate] Running ANE budget check...", flush=True)
     try:
         result = subprocess.run(
             [PYTHON, str(ANE_BUDGET_SCRIPT), str(diff_path)],
@@ -211,11 +200,9 @@ def run_ane_gate(diff_path: Path, ane_out_path: Path) -> dict:
         )
         report = json.loads(result.stdout) if result.stdout.strip() else {"passed": True, "violations": []}
         ane_out_path.write_text(json.dumps(report, indent=2))
-        status = "PASSED" if report.get("passed") else "FAILED"
-        print(f"[ane-gate] {status} — {report.get('violation_count', 0)} violation(s)", flush=True)
+        "PASSED" if report.get("passed") else "FAILED"
         return report
     except Exception as exc:
-        print(f"[ane-gate] ERROR — {exc}", flush=True)
         report = {"passed": True, "violations": [], "error": str(exc)}
         ane_out_path.write_text(json.dumps(report, indent=2))
         return report
@@ -246,17 +233,10 @@ def main() -> int:
 
     agents = [a.strip() for a in args.agents.split(",") if a.strip() in AGENT_PROMPTS]
     if not agents:
-        print(f"ERROR: No valid agents. Choose from: {', '.join(AGENT_PROMPTS)}", file=sys.stderr)
         return 1
 
     workdir = Path(f"/tmp/gca_local_pr{args.pr}")
     workdir.mkdir(exist_ok=True)
-    print(f"\n{'=' * 60}")
-    print(f"  GCA Local Orchestrator — PR #{args.pr} @ {args.repo}")
-    print(f"  Agents: {', '.join(agents)}")
-    print(f"  Workdir: {workdir}")
-    print(f"  Dry-run: {args.dry_run}")
-    print(f"{'=' * 60}\n", flush=True)
 
     # ── 1. setup: get token + PR metadata + diff ──────────────────────────────
     token = _get_github_token()
@@ -270,7 +250,6 @@ def main() -> int:
     ane_out_path = workdir / "ane_report.json"
     agent_out_paths = {agent: workdir / f"review_{agent}.txt" for agent in agents}
 
-    print(f"\n[parallel] Launching {len(agents)} gemini agents + ANE gate...\n", flush=True)
 
     with ThreadPoolExecutor(max_workers=len(agents) + 1) as pool:
         # Submit ANE gate
@@ -280,9 +259,9 @@ def main() -> int:
         agent_futures = {pool.submit(run_gemini_agent, agent, diff_text, agent_out_paths[agent]): agent for agent in agents}
 
         # Collect results as they complete
-        for future in as_completed(list(agent_futures.keys()) + [ane_future]):
+        for future in as_completed([*list(agent_futures.keys()), ane_future]):
             if future in agent_futures:
-                agent_name, ok = future.result()
+                _agent_name, _ok = future.result()
             else:
                 # ANE gate future
                 future.result()
@@ -290,10 +269,8 @@ def main() -> int:
     # ── 4. verify-and-post ────────────────────────────────────────────────────
     review_globs = [str(p) for p in agent_out_paths.values() if p.exists()]
     if not review_globs:
-        print("ERROR: No review files produced by agents.", file=sys.stderr)
         return 1
 
-    print(f"\n[verify-post] Posting review to PR #{args.pr}...", flush=True)
     cmd = [
         PYTHON,
         str(POST_REVIEW_SCRIPT),
@@ -318,11 +295,9 @@ def main() -> int:
 
     if result.returncode == 0:
         if not args.dry_run:
-            print(f"\n✓ Review posted to https://github.com/{args.repo}/pull/{args.pr}")
+            pass
         return 0
-    else:
-        print(f"\nERROR: post_review.py exited {result.returncode}", file=sys.stderr)
-        return result.returncode
+    return result.returncode
 
 
 if __name__ == "__main__":

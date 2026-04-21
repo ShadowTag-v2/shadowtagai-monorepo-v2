@@ -4,7 +4,7 @@ import sys
 import yaml
 
 
-def main():
+def main() -> None:
     try:
         with open("repo_census.current.json") as f:
             census = json.load(f)
@@ -48,11 +48,8 @@ def main():
         with open("repo_merge_blockers.json", "w") as f:
             json.dump(blockers, f, indent=2)
 
-        print(f"Delta computed: {len(delta)} repos need physical merge action.")
-        print(f"Blockers found: {len(blockers)} repos unclassified.")
 
-    except Exception as e:
-        print(f"Error computing delta: {e}")
+    except Exception:
         sys.exit(1)
 
 

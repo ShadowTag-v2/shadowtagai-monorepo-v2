@@ -1,4 +1,4 @@
-"""Veo 3.1 video generation via Vertex AI / Gemini API.
+r"""Veo 3.1 video generation via Vertex AI / Gemini API.
 
 Replaces Remotion with Google's native Veo 3.1 model for CounselConduit
 sales demos, product walkthroughs, and marketing assets.
@@ -169,7 +169,7 @@ def generate_vertex_ai(
         from google import genai
         from google.genai.types import GenerateVideosConfig, Image
     except ImportError:
-        logger.error("google-genai not installed. Run: pip install google-genai")
+        logger.exception("google-genai not installed. Run: pip install google-genai")
         return None
 
     os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "True"
@@ -242,7 +242,7 @@ def generate_gemini_api(
         from google import genai
         from google.genai.types import GenerateVideosConfig, Image
     except ImportError:
-        logger.error("google-genai not installed. Run: pip install google-genai")
+        logger.exception("google-genai not installed. Run: pip install google-genai")
         return None
 
     # Gemini API client (non-Vertex)
@@ -304,27 +304,6 @@ def generate_gemini_api(
 
 def print_flow_instructions(prompt: str) -> None:
     """Print instructions for using Google Flow in browser."""
-    print("\n" + "=" * 72)
-    print("  GOOGLE FLOW — Browser Generation Instructions")
-    print("=" * 72)
-    print()
-    print("  1. Open: https://labs.google/flow")
-    print("  2. Sign in with your AI Ultra account")
-    print("  3. Click '+ New Video'")
-    print("  4. Paste this prompt:")
-    print()
-    print(f"  {prompt}")
-    print()
-    print("  5. Select model: Veo 3.1")
-    print("  6. Set aspect ratio: 16:9")
-    print("  7. Generate")
-    print("  8. Download → save to:")
-    print("     labs/uphillsnowball/external_payloads/")
-    print()
-    print("  ⚠️  OPSEC: AI Ultra tier = invisible SynthID only (no visible watermark)")
-    print("  ⚠️  NEVER paste proprietary code or operator_invariants into Flow prompts")
-    print("=" * 72)
-    print()
 
 
 # ── Utilities ─────────────────────────────────────────────────────────
@@ -406,11 +385,8 @@ Examples:
     )
 
     if args.list_presets:
-        for name, prompt in DEMO_PRESETS.items():
-            print(f"\n{'─' * 60}")
-            print(f"  {name}")
-            print(f"{'─' * 60}")
-            print(f"  {prompt}\n")
+        for prompt in DEMO_PRESETS.values():
+            pass
         return 0
 
     # Resolve prompt
@@ -443,10 +419,8 @@ Examples:
         )
 
     if result:
-        print(f"\n✅ Video generated: {result}")
         return 0
 
-    print("\n❌ Video generation failed. Check logs above.")
     return 1
 
 

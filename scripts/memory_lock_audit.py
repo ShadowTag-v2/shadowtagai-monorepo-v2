@@ -5,8 +5,11 @@ import argparse
 import json
 import os
 import re
-from collections.abc import Iterable
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 CANONICAL_FILES = [
     "monorepo_manifest.yaml",
@@ -91,7 +94,7 @@ def find_matches(root: Path, patterns: list[str]) -> list[dict]:
                         "line": line_no,
                         "match": m.group(0),
                         "pattern": rx.pattern,
-                    }
+                    },
                 )
     return hits
 
@@ -148,7 +151,6 @@ def main() -> int:
 
     root = Path(args.repo_root).resolve()
     report = audit(root)
-    print(json.dumps(report, indent=2))
     if args.write:
         docs = root / "docs"
         docs.mkdir(exist_ok=True)

@@ -40,7 +40,6 @@ class PnklnDoc(LanceModel):
 
 def smoke_test() -> int:
     lancedb.connect(DB_URI)
-    print(f"✅ LanceDB + Vertex AI [{EMBED_MODEL_NAME}] Smoke Test Passed. DB URI: {DB_URI}")
     return 0
 
 

@@ -34,7 +34,6 @@ def create_products():
             recurring={"interval": p["interval"]},
         )
         created.append({"product_id": product.id, "price_id": price.id, "name": p["name"]})
-        print(f"✅ Created: {p['name']} - Price ID: {price.id}")
 
     with open("stripe_products.json", "w") as f:
         json.dump(created, f, indent=2)
@@ -44,7 +43,5 @@ def create_products():
 
 if __name__ == "__main__":
     products = create_products()
-    print("\nAdd to .env:")
     for p in products:
         env_key = p["name"].upper().replace(" ", "_").replace("COR2.0_", "")
-        print(f"{env_key}_PRICE_ID={p['price_id']}")

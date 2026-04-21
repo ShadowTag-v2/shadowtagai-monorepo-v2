@@ -15,7 +15,6 @@ try:
     ANE_ENABLED = True
 except ImportError:
     ANE_ENABLED = False
-    print("Warning: ANE Router not found. Categorization will fall back to CPU.")
 
 GITHUB_USER = "ehanc69"
 ECOSYSTEM_DIR = os.path.abspath("apps/ShadowTag-v2_ecosystem")
@@ -26,7 +25,6 @@ os.makedirs(RAW_CLONE_DIR, exist_ok=True)
 
 def fetch_repo_list() -> list[dict]:
     """Fetches all repos for the user via authenticated GitHub CLI."""
-    print(f"📡 [SWARM] Querying GH CLI for {GITHUB_USER}'s private repository manifest...")
     try:
         result = subprocess.run(
             [
@@ -46,11 +44,8 @@ def fetch_repo_list() -> list[dict]:
         repos = json.loads(result.stdout)
 
         # Format mapping to match original schema expectation
-        formatted_repos = [{"name": r["name"], "clone_url": r["sshUrl"]} for r in repos]
-        print(f"✅ [SWARM] Located {len(formatted_repos)} repositories securely.")
-        return formatted_repos
-    except subprocess.CalledProcessError as e:
-        print(f"🔴 GitHub CLI Error: {e.stderr}")
+        return [{"name": r["name"], "clone_url": r["sshUrl"]} for r in repos]
+    except subprocess.CalledProcessError:
         return []
 
 
@@ -60,10 +55,8 @@ def clone_repo(repo: dict):
     target_path = os.path.join(RAW_CLONE_DIR, name)
 
     if os.path.exists(target_path):
-        print(f"    ⏭️ Skip: {name} already ingested.")
         return name, target_path
 
-    print(f"    📥 Cloning {name} via authenticated gh CLI...")
     try:
         # Use `gh repo clone` which inherently uses the authenticated HTTPS token
         subprocess.run(
@@ -72,8 +65,7 @@ def clone_repo(repo: dict):
             capture_output=True,
         )
         return name, target_path
-    except subprocess.CalledProcessError as e:
-        print(f"    ❌ Failed to clone {name}: {e.stderr}")
+    except subprocess.CalledProcessError:
         return name, None
 
 
@@ -130,13 +122,11 @@ RESULT = {{"category": category}}
     return "unclassified"
 
 
-def execute_harvest():
+def execute_harvest() -> None:
     repos = fetch_repo_list()
     if not repos:
-        print("🔴 No repositories found or API rate limited.")
         return
 
-    print("\n🚀 [SWARM] Initiating Mass Multi-Threaded Ingestion...")
     # 1. Mass Parallel Clone
     successful_clones = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
@@ -146,8 +136,6 @@ def execute_harvest():
             if path:
                 successful_clones.append((name, path))
 
-    print(f"\n✅ [SWARM] {len(successful_clones)} Repositories Ingested.")
-    print("\n🧠 [ROUTER] Engaging Apple Neural Engine for Topological Sorting...")
 
     # 2. ANE Categorization & Move
     for name, path in successful_clones:
@@ -160,10 +148,8 @@ def execute_harvest():
             shutil.rmtree(final_path)  # Clean overwrite for idempotency
 
         shutil.move(path, final_path)
-        print(f"    ⚡ [ANE] {name} -> routed to /{category}/")
         time.sleep(0.1)  # Prevent ANE buffer overflow
 
-    print("\n✅ MISSION ACCOMPLISHED. 57-Repo Monorepo Consolidation Complete.")
 
 
 if __name__ == "__main__":

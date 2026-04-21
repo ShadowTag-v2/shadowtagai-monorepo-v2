@@ -42,7 +42,7 @@ def embed_batch(client: genai.Client, texts: list[str]) -> list[list[float]]:
             )
             embeddings.append(resp.embeddings[0].values)
         except Exception as e:
-            logger.error("Embedding failed: %s", e)
+            logger.exception("Embedding failed: %s", e)
             embeddings.append([0.0] * 768)  # zero vector fallback
     return embeddings
 
@@ -63,7 +63,7 @@ def main() -> None:
             pa.field("doc_id", pa.string()),
             pa.field("text", pa.string()),
             pa.field("vector", pa.list_(pa.float32(), 768)),
-        ]
+        ],
     )
 
     try:
@@ -104,13 +104,13 @@ def main() -> None:
 
             if len(text_batch) >= BATCH_SIZE:
                 vectors = embed_batch(client, [t[1] for t in text_batch])
-                for row, vec in zip(text_batch, vectors):
+                for row, vec in zip(text_batch, vectors, strict=False):
                     records_to_insert.append(
                         {
                             "doc_id": row[0],
                             "text": row[1][:2000],  # store truncated text
                             "vector": vec,
-                        }
+                        },
                     )
                 text_batch = []
                 total_processed += BATCH_SIZE
@@ -120,13 +120,13 @@ def main() -> None:
     # Flush remaining
     if text_batch:
         vectors = embed_batch(client, [t[1] for t in text_batch])
-        for row, vec in zip(text_batch, vectors):
+        for row, vec in zip(text_batch, vectors, strict=False):
             records_to_insert.append(
                 {
                     "doc_id": row[0],
                     "text": row[1][:2000],
                     "vector": vec,
-                }
+                },
             )
         total_processed += len(text_batch)
 
@@ -135,7 +135,7 @@ def main() -> None:
             table.add(records_to_insert)
             logger.info("Inserted %d records into LanceDB", len(records_to_insert))
         except Exception as e:
-            logger.error("Failed to insert into LanceDB: %s", e)
+            logger.exception("Failed to insert into LanceDB: %s", e)
 
     logger.info("Embedding complete. Total processed: %d", total_processed)
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-push_20_chunks.py — Chunked Git Push Daemon (Invariant #58)
+"""push_20_chunks.py — Chunked Git Push Daemon (Invariant #58).
 
 Breaks large pushes into partitioned chunks to bypass
 GitHub's HTTP 408 server timeout on massive repos.
@@ -61,8 +60,7 @@ def get_commits_to_push(remote_head: str) -> list[str]:
         text=True,
         check=True,
     )
-    commits = [c for c in result.stdout.strip().split("\n") if c]
-    return commits
+    return [c for c in result.stdout.strip().split("\n") if c]
 
 
 def issue_token(target_name: str) -> tuple[str, str]:
@@ -80,16 +78,12 @@ def issue_token(target_name: str) -> tuple[str, str]:
     target_config = omega_sync.TARGETS[target_name]
     org = target_config["org"]
 
-    print(f"  🔑 Issuing fresh JWT for App ID {target_config['app_id']}...")
     jwt_token = omega_sync.generate_jwt(target_config["app_id"], target_config["pem_path"])
 
-    print(f"  🔍 Finding installation for {org}...")
     installation_id = omega_sync.get_installation_id(jwt_token, org)
 
-    print("  🎟️  Exchanging JWT for installation access token...")
     access_token = omega_sync.get_access_token(jwt_token, installation_id)
 
-    print(f"  ✅ Token issued (installation {installation_id})")
     return access_token, org
 
 
@@ -135,19 +129,11 @@ def push_chunk(
             timeout=timeout,
         )
 
-        if result.returncode == 0:
-            return True
-        elif "Everything up-to-date" in result.stderr:
-            return True
-        else:
-            print(f"  ❌ Push error: {result.stderr[-300:]}")
-            return False
+        return bool(result.returncode == 0 or "Everything up-to-date" in result.stderr)
 
     except subprocess.TimeoutExpired:
-        print(f"  ❌ Timeout ({timeout}s)")
         return False
-    except Exception as e:
-        print(f"  ❌ Exception: {e}")
+    except Exception:
         return False
 
 
@@ -166,26 +152,21 @@ def push_commits_individually(
     pushed = 0
     current_token = access_token
 
-    for j, sha in enumerate(commits):
-        short = sha[:12]
-        print(f"    ↳ Sub-commit [{j + 1}/{len(commits)}] {short}...")
+    for _j, sha in enumerate(commits):
+        sha[:12]
 
         # Try with 300s timeout and 50MB buffer for single commits
         ok = push_chunk(sha, branch, current_token, force=force, timeout=300, post_buffer=52428800)
         if ok:
             pushed += 1
-            print(f"    ↳ [{j + 1}/{len(commits)}] ✅ individual commit pushed")
         else:
             # Last resort: fresh token + 600s timeout
-            print(f"    ↳ [{j + 1}/{len(commits)}] ⚠️ failed — escalating (fresh token + 600s)...")
             time.sleep(5)
             current_token, _ = token_issuer(target)
             ok = push_chunk(sha, branch, current_token, force=force, timeout=600, post_buffer=52428800)
             if ok:
                 pushed += 1
-                print(f"    ↳ [{j + 1}/{len(commits)}] ✅ pushed (escalation succeeded)")
             else:
-                print(f"    ↳ [{j + 1}/{len(commits)}] ❌ FATAL: commit {short} cannot be pushed.")
                 return False, current_token, pushed
 
         time.sleep(1)  # Brief cooldown
@@ -193,7 +174,7 @@ def push_commits_individually(
     return True, current_token, pushed
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Chunked Git Push Daemon (Invariant #58)")
     parser.add_argument(
         "--batch-size",
@@ -239,23 +220,14 @@ def main():
 
     force = not args.no_force
 
-    print("═══ CHUNKED PUSH DAEMON v2 (Invariant #58) ═══")
-    print(f"  Branch:       {args.branch}")
-    print(f"  Batch size:   {args.batch_size} commits/chunk")
-    print(f"  Token window: {args.token_window} chunks before token refresh")
-    print(f"  Force push:   {force}")
-    print(f"  Resume from:  chunk {args.resume_from}")
-    print(f"  Target:       {args.target}")
 
     # Get commits to push
     remote_head = get_remote_head(args.branch)
     commits = get_commits_to_push(remote_head)
 
     if not commits:
-        print("  ✅ Nothing to push — already up to date.")
         return
 
-    print(f"  📦 {len(commits)} commits to push")
 
     # Build chunks: each chunk is a list of commit SHAs
     chunk_groups = []
@@ -263,8 +235,7 @@ def main():
         batch = commits[i : i + args.batch_size]
         chunk_groups.append(batch)
 
-    total_chunks = len(chunk_groups)
-    print(f"  🔪 Split into {total_chunks} chunks")
+    len(chunk_groups)
 
     # Issue initial token
     access_token, org = issue_token(args.target)
@@ -278,34 +249,29 @@ def main():
         # Skip already-pushed chunks
         if chunk_num < args.resume_from:
             skipped += 1
-            print(f"\n  [{chunk_num}/{total_chunks}] ⏭️  Skipped (resume-from={args.resume_from})")
             continue
 
         # Re-issue token every token_window chunks
         if chunks_since_token >= args.token_window:
-            print(f"\n  ⏸️  Token window reached ({args.token_window} chunks) — re-issuing...")
             time.sleep(3)
             access_token, org = issue_token(args.target)
             chunks_since_token = 0
 
         target_sha = chunk_commits[-1]
-        short_sha = target_sha[:12]
-        print(f"\n  [{chunk_num}/{total_chunks}] Pushing {len(chunk_commits)} commits up to {short_sha}...")
+        target_sha[:12]
 
         # Try the batch push
         success = push_chunk(target_sha, args.branch, access_token, force=force, timeout=300)
         if success:
             pushed += 1
             chunks_since_token += 1
-            print(f"  [{chunk_num}/{total_chunks}] ✅ Batch pushed ({pushed} chunks done)")
         else:
             # === ADAPTIVE SPLIT: push commits individually ===
-            print(f"  [{chunk_num}/{total_chunks}] ⚠️ Batch failed — splitting into {len(chunk_commits)} individual commits...")
             time.sleep(3)
-            access_token, org = issue_token(args.target)
+            access_token, _org = issue_token(args.target)
             chunks_since_token = 0
 
-            ok, access_token, sub_pushed = push_commits_individually(
+            ok, access_token, _sub_pushed = push_commits_individually(
                 chunk_commits,
                 args.branch,
                 access_token,
@@ -316,19 +282,13 @@ def main():
             if ok:
                 pushed += 1
                 chunks_since_token += 1
-                print(f"  [{chunk_num}/{total_chunks}] ✅ All {sub_pushed} sub-commits pushed (adaptive split)")
             else:
-                print(f"  ABORT: Chunk {chunk_num} failed even with individual commits.")
-                print(f"  💡 Hint: resume later with --resume-from {chunk_num}")
                 sys.exit(1)
 
         # Brief cooldown between chunks
         if i < len(chunk_groups) - 1:
             time.sleep(2)
 
-    print("\n═══ CHUNKED PUSH COMPLETE ═══")
-    print(f"  Chunks: {pushed} pushed, {skipped} skipped / {total_chunks} total")
-    print(f"  Branch: {args.branch}")
 
 
 if __name__ == "__main__":

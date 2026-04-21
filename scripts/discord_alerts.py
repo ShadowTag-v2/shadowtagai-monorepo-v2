@@ -118,7 +118,7 @@ def send_alert(
                 logger.error("Discord webhook returned %d", resp.status)
                 return False
     except urllib.error.URLError as exc:
-        logger.error("Discord webhook failed: %s", exc)
+        logger.exception("Discord webhook failed: %s", exc)
         return False
 
     # Also send critical alerts to secondary channel
@@ -206,5 +206,4 @@ if __name__ == "__main__":
 
     level = AlertLevel[level_name.upper()]
     ok = send_alert(level, title, desc)
-    print(f"Alert sent: {ok}")
     sys.exit(0 if ok else 1)

@@ -232,3 +232,5 @@ antigravity_memory_lock_pack/
 
 # Cinematic scroll generated frames (large binaries)
 labs/uphillsnowball/cinematic-scroll/frames/
+# Product pitch site scraped reference assets
+labs/uphillsnowball/product-pitch-site/clone-base/

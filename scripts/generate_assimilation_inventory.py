@@ -25,7 +25,8 @@ def get_installation_token():
 
     resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
     if resp.status_code != 200:
-        raise Exception(f"Failed to fetch installations: {resp.text}")
+        msg = f"Failed to fetch installations: {resp.text}"
+        raise Exception(msg)
 
     installations = resp.json()
     inst_id = next(
@@ -34,11 +35,13 @@ def get_installation_token():
     )
 
     if not inst_id:
-        raise Exception(f"Installation for {INSTALLATION_USER} not found.")
+        msg = f"Installation for {INSTALLATION_USER} not found."
+        raise Exception(msg)
 
     token_resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers, timeout=30)
     if token_resp.status_code != 201:
-        raise Exception(f"Failed to generate token: {token_resp.text}")
+        msg = f"Failed to generate token: {token_resp.text}"
+        raise Exception(msg)
 
     return token_resp.json()["token"]
 
@@ -47,7 +50,8 @@ def generate_inventory(token):
     headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"}
     res = requests.get("https://api.github.com/installation/repositories?per_page=100", headers=headers, timeout=30)
     if res.status_code != 200:
-        raise Exception(f"Failed to fetch repositories: {res.text}")
+        msg = f"Failed to fetch repositories: {res.text}"
+        raise Exception(msg)
 
     repos = res.json().get("repositories", [])
 
@@ -75,7 +79,7 @@ def generate_inventory(token):
                 "status": status,
                 "build_wired": False,
                 "ci_wired": False,
-            }
+            },
         )
 
     INVENTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -86,11 +90,8 @@ def generate_inventory(token):
 
 
 if __name__ == "__main__":
-    print("Verifying Auth and Generating Inventory...")
     try:
         tkn = get_installation_token()
         inv = generate_inventory(tkn)
-        print(f"SUCCESS: Inventory generated at {INVENTORY_PATH}")
-        print(f"Total target repositories discovered: {len(inv)}")
-    except Exception as e:
-        print(f"ERROR: {e}")
+    except Exception:
+        pass

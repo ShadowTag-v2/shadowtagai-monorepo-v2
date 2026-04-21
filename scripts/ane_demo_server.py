@@ -117,7 +117,7 @@ async def run_infer(request: Request):
                 "jurisdiction_rule": "FRCP 12(a)(1)(A)(i)",
                 "raw_date_text": "March 10, 2026",
                 "computed_date": "2026-03-31",
-            }
+            },
         ],
         "zero_cloud_drift": True,
         "latency_ms": 2514,

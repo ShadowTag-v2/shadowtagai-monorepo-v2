@@ -31,4 +31,3 @@ with open(output_path, "w") as f:
     else:
         f.write("*No reference directory found.*\n")
 
-print("[indexer] Reference index generated at docs/REFERENCE_INDEX.md")

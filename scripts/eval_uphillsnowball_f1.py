@@ -61,6 +61,7 @@ def evaluate_tool_selection(
 
     Returns:
         Tuple of (precision score, list of notes).
+
     """
     notes = []
     if not actual_tools:
@@ -95,6 +96,7 @@ def evaluate_output(
 
     Returns:
         Quality score 0-1.
+
     """
     if not expected_output:
         return 1.0
@@ -124,6 +126,7 @@ def evaluate_behaviors(
 
     Returns:
         Tuple of (precision, recall, f1).
+
     """
     if not expected_behaviors:
         return 1.0, 1.0, 1.0
@@ -179,6 +182,7 @@ def evaluate_task(
         errors_encountered: Errors that occurred during execution.
         errors_recovered: Errors that were successfully recovered from.
         dimension_weights: Weights for scoring dimensions.
+
     """
     result = TaskEvalResult(
         task_id=task_id,
@@ -236,6 +240,7 @@ def evaluate_all(
         ground_truth_path: Path to ground truth JSON file.
         results_path: Path to agent results JSON file.
             If None, runs a self-test.
+
     """
     gt_path = Path(ground_truth_path)
     with gt_path.open() as f:
@@ -319,40 +324,19 @@ def evaluate_all(
 
 def print_report(summary: AgentEvalSummary) -> None:
     """Print formatted evaluation report."""
-    print("=" * 60)
-    print("  UPHILLSNOWBALL AGENT TASK F1 EVALUATION REPORT")
-    print("=" * 60)
-    print()
-
-    status = "✅ PASSING" if summary.passing else "❌ FAILING"
-    print(f"  Status:          {status}")
-    print(f"  Aggregate F1:    {summary.aggregate_f1:.4f}")
-    print(f"  Weighted F1:     {summary.weighted_f1:.4f}")
-    print(f"  Mean Precision:  {summary.mean_precision:.4f}")
-    print(f"  Mean Recall:     {summary.mean_recall:.4f}")
-    print(f"  Total Tasks:     {summary.total_tasks}")
-    print()
-
     if summary.category_scores:
-        print("  Category Scores:")
-        for cat, score in sorted(summary.category_scores.items()):
-            print(f"    {cat:20s} F1: {score:.3f}")
-        print()
+        for _cat, _score in sorted(summary.category_scores.items()):
+            pass
 
-    print("-" * 60)
 
     for r in summary.results:
-        print(f"\n  [{r.task_id}] {r.task_description[:55]}...")
-        print(f"    F1: {r.f1:.3f}  Tool: {r.tool_precision:.3f}  Output: {r.output_quality:.3f}  Recovery: {r.error_recovery:.3f}")
         if r.notes:
-            for note in r.notes:
-                print(f"    ⚠ {note}")
-
-    print()
-    print("=" * 60)
+            for _note in r.notes:
+                pass
 
 
-def main():
+
+def main() -> None:
     """Main entry point."""
     repo_root = Path(__file__).parent.parent
     gt_path = repo_root / "apps" / "data" / "eval" / "uphillsnowball_f1_ground_truth.json"
@@ -371,19 +355,15 @@ def main():
             res_path = None
             i += 1
         else:
-            print(f"Unknown argument: {args[i]}")
             sys.exit(1)
 
     if not gt_path.exists():
-        print(f"Ground truth file not found: {gt_path}")
         sys.exit(1)
 
-    print(f"Ground truth: {gt_path}")
     if res_path:
-        print(f"Results:      {res_path}")
+        pass
     else:
-        print("Mode: Self-test (ground truth = predictions)")
-    print()
+        pass
 
     summary = evaluate_all(gt_path, res_path)
     print_report(summary)

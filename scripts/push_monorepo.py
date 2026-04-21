@@ -33,7 +33,6 @@ def get_token(app_id, pem_path, owner_name):
     resp = session.get("https://api.github.com/app/installations", headers=headers, timeout=30)
 
     if resp.status_code != 200:
-        print(f"Failed to fetch installations: {resp.status_code}")
         return None
 
     installations = resp.json()
@@ -60,7 +59,6 @@ def get_token(app_id, pem_path, owner_name):
 
 
 if __name__ == "__main__":
-    print("--- Authenticating for Monorepo Push ---")
 
     # Needs to push to ShadowTag-v2
     token_s = get_token(
@@ -70,7 +68,6 @@ if __name__ == "__main__":
     )
 
     if not token_s:
-        print("CRITICAL: Failed to acquire ShadowTag-v2 App token.")
         sys.exit(1)
 
     repo_url = f"https://x-access-token:{token_s}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
@@ -79,19 +76,17 @@ if __name__ == "__main__":
     os.environ["GIT_TERMINAL_PROMPT"] = "0"
     os.environ["GIT_ASKPASS"] = "/usr/bin/false"
 
-    print("Pushing local monorepo state to GitHub (bypassing LFS hooks & streaming output)...")
     cmd = f"git push -f --no-verify {repo_url} HEAD:main"
 
     res = subprocess.run(cmd, shell=True, text=True)  # REMOVED capture_output=True  # nosec B602 — intentional shell for git/system ops
     if res.returncode == 0:
-        print("SUCCESS! The fully assimilated monorepo has been pushed to https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball")
+        pass
     else:
-        print("Push failed! Attempting master branch...")
 
         # In case the default branch is master
         cmd_master = f"git push -f --no-verify {repo_url} HEAD:master"
         res_master = subprocess.run(cmd_master, shell=True, text=True)  # nosec B602 — intentional shell for git/system ops
         if res_master.returncode == 0:
-            print("SUCCESS! Pushed to master branch.")
+            pass
         else:
-            print("Failed.")
+            pass

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Gemini Sustained Load Calculator & Runner
+"""Gemini Sustained Load Calculator & Runner
 Maximum indefinite throughput without quota exhaustion.
 """
 
@@ -28,8 +27,7 @@ class QuotaLimits:
 
 
 class SustainedLoadEngine:
-    """
-    Maximum sustained load without quota exhaustion.
+    """Maximum sustained load without quota exhaustion.
 
     Math for 10 accounts:
     - 60 RPM × 10 = 600 RPM total
@@ -45,7 +43,7 @@ class SustainedLoadEngine:
     SAFE_RPM_PER_KEY = 8  # Conservative
     MAX_RPM_PER_KEY = 10  # Aggressive
 
-    def __init__(self, mode: str = "safe"):
+    def __init__(self, mode: str = "safe") -> None:
         # Load keys
         self.keys: list[str] = []
         for i in range(1, 11):
@@ -59,7 +57,8 @@ class SustainedLoadEngine:
                 self.keys = [default]
 
         if not self.keys:
-            raise ValueError("No API keys found")
+            msg = "No API keys found"
+            raise ValueError(msg)
 
         self.num_keys = len(self.keys)
         self.mode = mode
@@ -85,10 +84,6 @@ class SustainedLoadEngine:
             HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_ONLY_HIGH,
         }
 
-        print(f"///▞ SUSTAINED :: {self.num_keys} keys loaded")
-        print(f"///▞ SUSTAINED :: Mode: {mode}")
-        print(f"///▞ SUSTAINED :: Target: {self.total_rpm} RPM ({self.interval:.2f}s interval)")
-        print(f"///▞ SUSTAINED :: Daily capacity: {self.total_rpm * 60 * 24:,} requests")
 
     def _next_key(self) -> str:
         """Round-robin key selection."""
@@ -114,21 +109,19 @@ class SustainedLoadEngine:
             self.total_errors += 1
             return f"[Error: {e}]"
 
-    async def run_sustained(self, prompt_generator, duration_hours: float = None):
-        """
-        Run sustained load indefinitely or for specified duration.
+    async def run_sustained(self, prompt_generator, duration_hours: float | None = None) -> None:
+        """Run sustained load indefinitely or for specified duration.
 
         Args:
             prompt_generator: Callable that returns next prompt
             duration_hours: None for indefinite, or hours to run
+
         """
         self.start_time = time.time()
         end_time = None
         if duration_hours:
             end_time = self.start_time + (duration_hours * 3600)
 
-        print(f"\n///▞ SUSTAINED :: Starting {'indefinite' if not end_time else f'{duration_hours}h'} run")
-        print("///▞ SUSTAINED :: Press Ctrl+C to stop\n")
 
         try:
             while True:
@@ -143,24 +136,23 @@ class SustainedLoadEngine:
                 # Log progress every 100 requests
                 if self.total_requests % 100 == 0:
                     elapsed = time.time() - self.start_time
-                    actual_rpm = (self.total_requests / elapsed) * 60
-                    print(f"///▞ SUSTAINED :: {self.total_requests} requests, {actual_rpm:.1f} actual RPM, {self.total_errors} errors")
+                    (self.total_requests / elapsed) * 60
 
                 # Rate limit
                 await asyncio.sleep(self.interval)
 
         except KeyboardInterrupt:
-            print("\n///▞ SUSTAINED :: Stopped by user")
+            pass
 
         self.print_stats()
 
-    async def run_batch_sustained(self, prompts: list[str], loop: bool = True):
-        """
-        Run through a batch of prompts at sustained rate.
+    async def run_batch_sustained(self, prompts: list[str], loop: bool = True) -> None:
+        """Run through a batch of prompts at sustained rate.
 
         Args:
             prompts: List of prompts
             loop: Whether to loop through prompts indefinitely
+
         """
         idx = 0
 
@@ -174,27 +166,14 @@ class SustainedLoadEngine:
 
         await self.run_sustained(get_prompt)
 
-    def print_stats(self):
+    def print_stats(self) -> None:
         """Print final stats."""
         elapsed = time.time() - self.start_time if self.start_time else 0
         actual_rpm = (self.total_requests / elapsed) * 60 if elapsed > 0 else 0
 
-        print("\n" + "=" * 60)
-        print("///▞ SUSTAINED LOAD STATS")
-        print("=" * 60)
-        print(f"Duration: {elapsed / 3600:.2f} hours ({elapsed:.0f} seconds)")
-        print(f"Total Requests: {self.total_requests:,}")
-        print(f"Total Errors: {self.total_errors}")
-        print(f"Error Rate: {(self.total_errors / max(1, self.total_requests)) * 100:.2f}%")
-        print(f"Actual RPM: {actual_rpm:.1f}")
-        print(f"Target RPM: {self.total_rpm}")
-        print(f"Efficiency: {(actual_rpm / self.total_rpm) * 100:.1f}%")
-        print("=" * 60)
 
         # Projection
-        daily_projection = actual_rpm * 60 * 24
-        print(f"\nProjected Daily Throughput: {daily_projection:,.0f} requests")
-        print(f"Projected Monthly Throughput: {daily_projection * 30:,.0f} requests")
+        actual_rpm * 60 * 24
 
 
 def code_generation_prompts():
@@ -217,7 +196,7 @@ def code_generation_prompts():
         idx += 1
 
 
-async def main():
+async def main() -> None:
     """Demo sustained load."""
     import argparse
 
@@ -250,7 +229,6 @@ async def main():
             f,
             indent=2,
         )
-    print(f"\nResults saved to {output_path}")
 
 
 if __name__ == "__main__":

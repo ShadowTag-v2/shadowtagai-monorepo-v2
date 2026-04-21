@@ -13,7 +13,7 @@ MAX_MB = 90
 MAX_BYTES = MAX_MB * 1024 * 1024
 
 
-def clear_heavy_folders():
+def clear_heavy_folders() -> None:
     paths_to_clear = {
         "node_modules",
         ".venv",
@@ -27,7 +27,6 @@ def clear_heavy_folders():
         "target",
         ".pnpm",
     }
-    print("Scrubbing heavy folders from workspace...")
     for root, dirs, _ in os.walk(".", topdown=False):
         for name in dirs:
             if name in paths_to_clear:
@@ -47,15 +46,13 @@ def get_github_token():
     res.raise_for_status()
     target_inst = next((i for i in res.json() if i["account"]["login"] == "ShadowTag-v2"), None)
     if not target_inst:
-        print("Error: Could not find GitHub App installation for 'ShadowTag-v2'")
         sys.exit(1)
     res2 = requests.post(f"https://api.github.com/app/installations/{target_inst['id']}/access_tokens", headers=headers, timeout=30)
     res2.raise_for_status()
     return res2.json()["token"]
 
 
-def chunk_commit_push(token):
-    print("Resetting local git history for chunked push...")
+def chunk_commit_push(token) -> None:
     subprocess.run(["rm", "-rf", ".git"], check=False)
     subprocess.run(["git", "init"], check=True)
     subprocess.run(["git", "checkout", "-b", "main"], check=True)
@@ -82,7 +79,6 @@ def chunk_commit_push(token):
     result = subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], capture_output=True, text=True)
     all_files = [f for f in result.stdout.split("\n") if f]
 
-    print(f"Discovered {len(all_files)} trackable files.")
 
     total_files = len(all_files)
     idx = 0
@@ -98,7 +94,6 @@ def chunk_commit_push(token):
 
         # Git LFS / 100MB limit guard:
         if size > 95 * 1024 * 1024:
-            print(f"WARNING: Skipping {f} because it is >95MB and will break pushing.")
             continue
 
         current_files.append(f)
@@ -108,10 +103,9 @@ def chunk_commit_push(token):
             if not current_files:
                 continue
 
-            print(f"Batch {BATCH}: Adding {len(current_files)} files ({current_size / 1024 / 1024:.2f} MB)...")
 
             for i in range(0, len(current_files), 1000):
-                cmd = ["git", "add"] + current_files[i : i + 1000]
+                cmd = ["git", "add", *current_files[i:i + 1000]]
                 subprocess.run(cmd, check=True)
 
             subprocess.run(
@@ -120,17 +114,14 @@ def chunk_commit_push(token):
             )
 
             success = False
-            for attempt in range(3):
-                print(f"Pushing Batch {BATCH} (Attempt {attempt + 1}/3)...")
+            for _attempt in range(3):
                 ret = subprocess.run(["git", "push", "origin", "main", "--no-verify"])
                 if ret.returncode == 0:
                     success = True
                     break
-                else:
-                    time.sleep(5)
+                time.sleep(5)
 
             if not success:
-                print(f"Failed to push batch {BATCH}. Aborting.")
                 sys.exit(1)
 
             current_files = []

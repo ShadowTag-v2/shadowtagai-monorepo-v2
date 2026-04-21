@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Google Drive Document Reader
+"""Google Drive Document Reader
 Reads all Google Docs and PDFs from your Drive, extracts text content.
 """
 
@@ -51,7 +50,7 @@ def get_credentials():
     return creds
 
 
-def list_all_files(service, mime_type: str = None):
+def list_all_files(service, mime_type: str | None = None):
     """List all files of a given mime type."""
     files = []
     page_token = None
@@ -85,8 +84,7 @@ def export_google_doc(service, file_id: str, file_name: str) -> str:
         request = service.files().export_media(fileId=file_id, mimeType="text/plain")
         content = request.execute()
         return content.decode("utf-8")
-    except Exception as e:
-        print(f"  Error exporting {file_name}: {e}")
+    except Exception:
         return ""
 
 
@@ -99,11 +97,10 @@ def download_pdf(service, file_id: str, file_name: str) -> bytes:
 
         done = False
         while not done:
-            status, done = downloader.next_chunk()
+            _status, done = downloader.next_chunk()
 
         return fh.getvalue()
-    except Exception as e:
-        print(f"  Error downloading {file_name}: {e}")
+    except Exception:
         return b""
 
 
@@ -128,8 +125,7 @@ def sanitize_filename(name: str) -> str:
     return "".join(c if c.isalnum() or c in (" ", "-", "_") else "_" for c in name)
 
 
-def main():
-    print("///▞ GDRIVE READER :: Initializing")
+def main() -> None:
 
     # Create output directory
     OUTPUT_DIR.mkdir(exist_ok=True)
@@ -138,30 +134,22 @@ def main():
     creds = get_credentials()
     service = build("drive", "v3", credentials=creds)
 
-    print("///▞ GDRIVE READER :: Authenticated")
 
     # Get all Google Docs
-    print("\n=== Google Docs ===")
     docs = list_all_files(service, "application/vnd.google-apps.document")
-    print(f"Found {len(docs)} Google Docs")
 
     for doc in docs:
-        print(f"  Processing: {doc['name']}")
         content = export_google_doc(service, doc["id"], doc["name"])
 
         if content:
             filename = sanitize_filename(doc["name"]) + ".txt"
             filepath = OUTPUT_DIR / filename
             filepath.write_text(content)
-            print(f"    Saved: {filepath}")
 
     # Get all PDFs
-    print("\n=== PDFs ===")
     pdfs = list_all_files(service, "application/pdf")
-    print(f"Found {len(pdfs)} PDFs")
 
     for pdf in pdfs:
-        print(f"  Processing: {pdf['name']}")
         pdf_bytes = download_pdf(service, pdf["id"], pdf["name"])
 
         if pdf_bytes:
@@ -176,15 +164,10 @@ def main():
                 txt_filename = sanitize_filename(pdf["name"]) + "_extracted.txt"
                 txt_filepath = OUTPUT_DIR / txt_filename
                 txt_filepath.write_text(text)
-                print(f"    Saved: {txt_filepath}")
             else:
-                print(f"    Saved PDF only (no text extraction): {pdf_filepath}")
+                pass
 
     # Summary
-    print("\n///▞ GDRIVE READER :: Complete")
-    print(f"Output directory: {OUTPUT_DIR}")
-    print(f"Total docs processed: {len(docs)}")
-    print(f"Total PDFs processed: {len(pdfs)}")
 
     # Create manifest
     manifest = {
@@ -193,7 +176,6 @@ def main():
     }
     manifest_path = OUTPUT_DIR / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2))
-    print(f"Manifest saved: {manifest_path}")
 
 
 if __name__ == "__main__":

@@ -28,7 +28,7 @@ def get_github_token():
     return res2.json()["token"]
 
 
-def sync_remote_state(token):
+def sync_remote_state(token) -> None:
     repo_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
     try:
         subprocess.run(["git", "remote", "set-url", "origin", repo_url], check=True)
@@ -47,17 +47,15 @@ def get_push_candidate_set():
         for f in block.stdout.splitlines():
             if f.strip():
                 files.add(f.strip())
-    return sorted(list(files))
+    return sorted(files)
 
 
-def chunk_commit_push():
+def chunk_commit_push() -> None:
     BATCH = 20
     current_size = 0
     current_files = []
 
-    print("Enumerating intelligent candidate payload...")
     all_files = get_push_candidate_set()
-    print(f"Discovered {len(all_files)} trackable files remaining.")
 
     total_files = len(all_files)
     idx = 0
@@ -68,7 +66,6 @@ def chunk_commit_push():
         size = 0 if os.path.islink(f) else os.path.getsize(f)
 
         if size > 95 * 1024 * 1024:
-            print(f"WARNING: Skipping {f} because it is >95MB and will break pushing.")
             continue
 
         current_files.append(f)
@@ -78,9 +75,8 @@ def chunk_commit_push():
             if not current_files:
                 continue
 
-            print(f"Batch {BATCH}: Adding {len(current_files)} remaining files ({current_size / 1024 / 1024:.2f} MB)...")
             for i in range(0, len(current_files), 1000):
-                subprocess.run(["git", "add"] + current_files[i : i + 1000], check=True)
+                subprocess.run(["git", "add", *current_files[i:i + 1000]], check=True)
 
             subprocess.run(
                 ["git", "commit", "--no-verify", "-m", f"chore: stateful sync chunk {BATCH}"],
@@ -88,7 +84,7 @@ def chunk_commit_push():
             )
 
             success = False
-            for attempt in range(3):
+            for _attempt in range(3):
                 ret = subprocess.run(["git", "push", "origin", "main", "--no-verify"])
                 if ret.returncode == 0:
                     success = True

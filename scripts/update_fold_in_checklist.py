@@ -8,7 +8,8 @@ from typing import Any
 try:
     import yaml
 except Exception as exc:
-    raise SystemExit("PyYAML is required. Install with: python3 -m pip install pyyaml") from exc
+    msg = "PyYAML is required. Install with: python3 -m pip install pyyaml"
+    raise SystemExit(msg) from exc
 
 
 TRUTHY_PRESENT_KEYS = {
@@ -54,7 +55,8 @@ def normalize_repo_items(data: Any) -> list[dict[str, Any]]:
         if isinstance(data.get("repositories"), list):
             return [item for item in data["repositories"] if isinstance(item, dict)]
 
-    raise SystemExit("Unsupported checklist schema: expected list or repos/repositories list")
+    msg = "Unsupported checklist schema: expected list or repos/repositories list"
+    raise SystemExit(msg)
 
 
 def write_back(data: Any, items: list[dict[str, Any]]) -> Any:
@@ -80,9 +82,11 @@ def main() -> int:
     root = Path(args.root).resolve()
 
     if not checklist_path.exists():
-        raise SystemExit(f"Checklist not found: {checklist_path}")
+        msg = f"Checklist not found: {checklist_path}"
+        raise SystemExit(msg)
     if not root.exists():
-        raise SystemExit(f"Root not found: {root}")
+        msg = f"Root not found: {root}"
+        raise SystemExit(msg)
 
     raw = load_yaml(checklist_path)
     items = normalize_repo_items(raw)
@@ -119,12 +123,6 @@ def main() -> int:
     new_data = write_back(raw, items)
     save_yaml(checklist_path, new_data)
 
-    print("CHECKLIST_UPDATE_COMPLETE")
-    print(f"checklist={checklist_path}")
-    print(f"root={root}")
-    print(f"repos_scanned={len(items)}")
-    print(f"fields_updated={updated}")
-    print(f"blocked_repos={blocked}")
     return 0
 
 

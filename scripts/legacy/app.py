@@ -37,8 +37,7 @@ class AgentExecutionRequest(BaseModel):
 
 @app.post("/api/v1/agent/execute")
 async def execute_agent_endpoint(req: AgentExecutionRequest):
-    """
-    Main ingestion endpoint for Autonomous AI events underneath the Uphillsnowball Matrix.
+    """Main ingestion endpoint for Autonomous AI events underneath the Uphillsnowball Matrix.
     Forces all interactions through the 4-Gate System (Jurisdiction, Intent, Lattice, Sigstore).
     """
     try:
@@ -55,11 +54,11 @@ async def execute_agent_endpoint(req: AgentExecutionRequest):
         return {"status": "SUCCESS", "provenance": signed_artifact}
 
     except PermissionError as pe:
-        logger.error(f"[GATE 0 FAILED] {str(pe)}")
+        logger.exception(f"[GATE 0 FAILED] {pe!s}")
         raise HTTPException(status_code=403, detail=str(pe))
     except RuntimeError as re:
-        logger.error(f"[GATE 1 SEMANTIC JUDGE FAILED] {str(re)}")
+        logger.exception(f"[GATE 1 SEMANTIC JUDGE FAILED] {re!s}")
         raise HTTPException(status_code=451, detail=str(re))
     except Exception as e:
-        logger.critical(f"[LATTICE_ERROR] Terminal Containment activated. Cause: {str(e)}")
+        logger.critical(f"[LATTICE_ERROR] Terminal Containment activated. Cause: {e!s}")
         raise HTTPException(status_code=500, detail="Terminal Governance Contains this Flow.")

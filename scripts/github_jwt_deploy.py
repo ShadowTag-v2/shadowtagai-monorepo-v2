@@ -35,7 +35,8 @@ def get_installation_id(jwt_token, org_name):
         if inst["account"]["login"].lower() == org_name.lower():
             return inst["id"]
 
-    raise Exception(f"Installation not found for organization {org_name}")
+    msg = f"Installation not found for organization {org_name}"
+    raise Exception(msg)
 
 
 def get_access_token(jwt_token, installation_id):
@@ -48,7 +49,7 @@ def get_access_token(jwt_token, installation_id):
     return response.json()["token"]
 
 
-def push_to_remote(token):
+def push_to_remote(token) -> None:
     remote_url = f"https://x-access-token:{token}@github.com/{REPO_OWNER}/{REPO_NAME}.git"
 
     # Check current branch
@@ -56,38 +57,29 @@ def push_to_remote(token):
     if not branch_output:
         branch_output = "HEAD"
 
-    print(f"Pushing branch {branch_output} to remote...")
 
     subprocess.run(["git", "remote", "set-url", "origin", remote_url], check=True)
     push_result = subprocess.run(["git", "push", "--no-verify", "origin", branch_output], capture_output=True, text=True)
 
     if push_result.returncode != 0:
-        print(f"Error pushing: {push_result.stderr}", file=sys.stderr)
         sys.exit(1)
 
-    print("Push successful!")
 
 
 if __name__ == "__main__":
     if not os.path.exists(PEM_PATH):
-        print(f"Error: PEM file not found at {PEM_PATH}", file=sys.stderr)
         sys.exit(1)
 
-    print("Generating JWT...")
     jwt_token = generate_jwt(APP_ID, PEM_PATH)
 
-    print(f"Finding installation for {REPO_OWNER}...")
     try:
         install_id = get_installation_id(jwt_token, REPO_OWNER)
-    except Exception as e:
-        print(f"Error getting installation ID: {e}", file=sys.stderr)
+    except Exception:
         sys.exit(1)
 
-    print("Exchanging JWT for Installation Access Token...")
     try:
         access_token = get_access_token(jwt_token, install_id)
-    except Exception as e:
-        print(f"Error generating token: {e}", file=sys.stderr)
+    except Exception:
         sys.exit(1)
 
     push_to_remote(access_token)

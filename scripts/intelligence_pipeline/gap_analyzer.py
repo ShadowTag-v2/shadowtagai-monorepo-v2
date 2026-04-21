@@ -1,5 +1,4 @@
-"""
-Step 4 — Gap Analyzer
+"""Step 4 — Gap Analyzer.
 
 Three gap types from the match tables:
 
@@ -10,13 +9,11 @@ Three gap types from the match tables:
 Output: crossref.db → table gap_matrix
 """
 
+import argparse
 import logging
-import re
 import sqlite3
 from datetime import datetime
 from pathlib import Path
-
-import argparse
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +38,7 @@ def init_gap_table(conn: sqlite3.Connection) -> None:
             priority TEXT DEFAULT 'medium',
             status TEXT DEFAULT 'open',
             analyzed_at TEXT NOT NULL
-        )"""
+        )""",
     )
     conn.commit()
 
@@ -107,7 +104,7 @@ def analyze_type_c(conn: sqlite3.Connection) -> int:
         """SELECT m.doc_id, d.title, m.code_path, m.similarity
            FROM doc_code_matches m
            JOIN doc_domains d ON m.doc_id = d.doc_id
-           WHERE m.rank = 1 AND m.similarity > 0.5"""
+           WHERE m.rank = 1 AND m.similarity > 0.5""",
     )
     for row in cursor:
         code_path = REPO_ROOT / row[2]

@@ -24,17 +24,14 @@ DRY_RUN = os.environ.get("DRY_RUN", "true").lower() in ("true", "1", "yes")
 
 def run(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
     """Run a shell command and return result."""
-    print(f"  $ {' '.join(cmd)}")
     return subprocess.run(cmd, capture_output=True, text=True, check=check)
 
 
 def get_staged_repos() -> list[str]:
     """Return sorted list of repo dirs in staging."""
     if not STAGING_DIR.exists():
-        print(f"ERROR: Staging dir {STAGING_DIR} does not exist.")
         sys.exit(1)
-    repos = sorted(d.name for d in STAGING_DIR.iterdir() if d.is_dir() and not d.name.startswith("."))
-    return repos
+    return sorted(d.name for d in STAGING_DIR.iterdir() if d.is_dir() and not d.name.startswith("."))
 
 
 def merge_repo(repo_name: str) -> bool:
@@ -48,11 +45,9 @@ def merge_repo(repo_name: str) -> bool:
     target_path = Path(TARGET_PREFIX) / repo_name
 
     if target_path.exists():
-        print(f"  SKIP (already merged): {target_path}")
         return True
 
     if DRY_RUN:
-        print(f"  DRY_RUN: would merge {staging_path} → {target_path}")
         return True
 
     # Remove .git from the staging clone so we can add it as plain files
@@ -76,7 +71,6 @@ def merge_repo(repo_name: str) -> bool:
     # Stage the new files
     result = run(["git", "add", str(target_path)], check=False)
     if result.returncode != 0:
-        print(f"  ERROR staging {repo_name}: {result.stderr}")
         return False
 
     # Commit with squash-style message
@@ -93,42 +87,27 @@ def merge_repo(repo_name: str) -> bool:
     )
     if result.returncode != 0:
         # Might be empty (no new files)
-        if "nothing to commit" in result.stdout + result.stderr:
-            print(f"  SKIP (no new files): {repo_name}")
-            return True
-        print(f"  ERROR committing {repo_name}: {result.stderr}")
-        return False
+        return "nothing to commit" in result.stdout + result.stderr
 
     return True
 
 
 def main() -> None:
-    print("=== ehanc69 Mass Subtree Merge ===")
-    print(f"  Staging: {STAGING_DIR}")
-    print(f"  Target:  {TARGET_PREFIX}/")
-    print(f"  DRY_RUN: {DRY_RUN}")
-    print()
 
     repos = get_staged_repos()
-    print(f"Found {len(repos)} repos in staging:")
-    for r in repos:
-        print(f"  - {r}")
-    print()
+    for _r in repos:
+        pass
 
     success = 0
     fail = 0
-    skip = 0
 
     for repo in repos:
-        print(f"[{repos.index(repo) + 1}/{len(repos)}] {repo}")
         result = merge_repo(repo)
         if result:
             success += 1
         else:
             fail += 1
 
-    print()
-    print(f"=== Complete: {success} merged, {fail} failed, {skip} skipped ===")
 
     if fail > 0:
         sys.exit(1)

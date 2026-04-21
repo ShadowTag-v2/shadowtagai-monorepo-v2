@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 
 
-def harden_mcp():
+def harden_mcp() -> None:
     root = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball")
 
     # 3. Rewrite all non-canonical MCP surfaces as adapter/retired notes only
@@ -16,7 +16,7 @@ def harden_mcp():
         adapter_mcp.write_text('{"_note": "ADAPTER-ONLY STUB. See Uphillsnowball/antigravity-mcp-config.json"}')
 
     adapter_global_mcp = Path(
-        os.path.expanduser("~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json")
+        os.path.expanduser("~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json"),
     )
     if adapter_global_mcp.exists():
         adapter_global_mcp.write_text('{"_note": "ADAPTER-ONLY STUB. See Uphillsnowball/antigravity-mcp-config.json"}')
@@ -46,12 +46,8 @@ COMPLETE_WITH_BLOCKERS (due to legacy duplicate roots existing natively prior to
     (root / "docs" / "ADAPTER_ONLY_HARDENING_REPORT.md").write_text(report_content)
 
     # Print requested output
-    print("1. files changed: cline_mcp_settings.json, mcp_config.json, docs/ADAPTER_ONLY_HARDENING_REPORT.md, fold_in_checklist.yaml")
-    print("2. blockers remaining: 0 missing repos, but duplicate legacy roots exist.")
-    print("3. final verdict: COMPLETE_WITH_BLOCKERS")
 
-    sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, cwd=root).stdout.strip()
-    print(f"4. pushed commit SHA: {sha}")
+    subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, cwd=root).stdout.strip()
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""KAIROS Daemon — Background Autonomous Agent Controller
+"""KAIROS Daemon — Background Autonomous Agent Controller.
 
 Runs in continuous mode, executing scheduled maintenance tasks:
   1. Dream Consolidation (nightly) — KI maintenance
@@ -129,7 +129,7 @@ def run_dream_consolidation() -> bool:
         logger.error("Dream consolidation failed: %s", result.stderr[:500])
         return False
     except subprocess.TimeoutExpired:
-        logger.error("Dream consolidation timed out (300s)")
+        logger.exception("Dream consolidation timed out (300s)")
         return False
 
 
@@ -153,7 +153,7 @@ def run_dead_code_audit() -> bool:
         logger.warning("Dead code audit found issues: %s", result.stdout[-500:])
         return True  # Still "succeeded" even if violations found
     except subprocess.TimeoutExpired:
-        logger.error("Dead code audit timed out (120s)")
+        logger.exception("Dead code audit timed out (120s)")
         return False
 
 
@@ -174,7 +174,7 @@ def run_loop_steward() -> bool:
         logger.info("Loop steward cycle: exit=%d", result.returncode)
         return result.returncode == 0
     except subprocess.TimeoutExpired:
-        logger.error("Loop steward timed out (60s)")
+        logger.exception("Loop steward timed out (60s)")
         return False
 
 

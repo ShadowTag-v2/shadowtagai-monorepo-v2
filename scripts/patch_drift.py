@@ -1,7 +1,7 @@
 import json
 
 
-def patch_drift():
+def patch_drift() -> None:
     # Load 01
     with open("01_repo_census.json") as f:
         census = json.load(f)
@@ -55,20 +55,18 @@ def patch_drift():
                 f.write(f"- **total blocked:** {blocked}\n")
             elif "### Blocked Repos" in line:
                 f.write("### Blocked Repos\n")
-                for r in missing_repos:
-                    f.write(f"- `{r['repo_name']}`: Physical path missing\n")
+                f.writelines(f"- `{r['repo_name']}`: Physical path missing\n" for r in missing_repos)
             elif "- None." in line:
                 continue  # we replaced it above
             elif "- **duplicate-live-root result:** NO DUPLICATES" in line:
                 f.write(
-                    "- **duplicate-live-root result:** FAIL (legacy roots found like apps/ShadowTag-v2-fastapi-services vs apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services)\n"
+                    "- **duplicate-live-root result:** FAIL (legacy roots found like apps/ShadowTag-v2-fastapi-services vs apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services)\n",
                 )
             elif "- **final verdict:** COMPLETE" in line:
                 f.write("- **final verdict:** COMPLETE_WITH_BLOCKERS\n")
             else:
                 f.write(line)
 
-    print("Patched 01_repo_census.json, 02_merge_plan.md, and 04_canonical_state.md")
 
 
 if __name__ == "__main__":

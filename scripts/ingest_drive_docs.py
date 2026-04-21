@@ -61,7 +61,7 @@ try:
                     attributes={"context": "Omega Protocol"},
                 ),
             ],
-        )
+        ),
     ]
 except NameError:
     EXAMPLES = []
@@ -81,7 +81,7 @@ def extract_text_from_pdf(filepath: str) -> str:
                 text += str(extracted) + "\n"
         return text
     except Exception as e:
-        logger.error(f"Failed to read PDF {filepath}: {e}")
+        logger.exception(f"Failed to read PDF {filepath}: {e}")
         return ""
 
 
@@ -91,7 +91,7 @@ def extract_text_from_file(filepath: str) -> str:
         with open(filepath, encoding="utf-8", errors="ignore") as f:
             return f.read()
     except Exception as e:
-        logger.error(f"Failed to read file {filepath}: {e}")
+        logger.exception(f"Failed to read file {filepath}: {e}")
         return ""
 
 
@@ -106,7 +106,7 @@ def extract_text_from_epub(filepath: str) -> str:
                 text += soup.get_text() + "\n"
         return text
     except Exception as e:
-        logger.error(f"Failed to read EPUB {filepath}: {e}")
+        logger.exception(f"Failed to read EPUB {filepath}: {e}")
         return ""
 
 
@@ -115,10 +115,10 @@ def load_processed_state() -> set:
     if not os.path.exists(STATE_FILE):
         return set()
     with open(STATE_FILE, encoding="utf-8") as f:
-        return set(line.strip() for line in f if line.strip())
+        return {line.strip() for line in f if line.strip()}
 
 
-def append_to_processed_state(filepath: str):
+def append_to_processed_state(filepath: str) -> None:
     """Appends a new file to the processed registry."""
     with open(STATE_FILE, "a", encoding="utf-8") as f:
         f.write(f"{filepath}\n")
@@ -179,11 +179,11 @@ def process_file(filepath: str) -> bool:
 
         return True
     except Exception as e:
-        logger.error(f"LangExtract failed for {filepath}: {e}")
+        logger.exception(f"LangExtract failed for {filepath}: {e}")
         return False
 
 
-def main():
+def main() -> None:
     if lx is None:
         logger.error("langextract is missing. Install it before running this ingestion pipeline.")
         return
@@ -199,7 +199,7 @@ def main():
             logger.warning(f"Directory not found: {root_dir}")
             continue
 
-        for root, dirs, files in os.walk(root_dir):
+        for root, _dirs, files in os.walk(root_dir):
             for file in files:
                 filepath = os.path.join(root, file)
                 total_files_discovered += 1

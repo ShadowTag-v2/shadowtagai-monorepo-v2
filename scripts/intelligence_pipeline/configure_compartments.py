@@ -1,5 +1,4 @@
-"""
-Dual-Stack Architecture: LanceDB Compartment Initializer
+"""Dual-Stack Architecture: LanceDB Compartment Initializer
 Ensures absolute isolation between internal sovereign data and external API data.
 
 Creates two compartments:
@@ -7,10 +6,11 @@ Creates two compartments:
   - external_research  (external: web search results, API responses, scraped data)
 """
 
-import lancedb
-import pyarrow as pa
 import logging
 from pathlib import Path
+
+import lancedb
+import pyarrow as pa
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ COMPARTMENTS = {
             pa.field("vector", pa.list_(pa.float32(), 768)),
             pa.field("domain", pa.string()),
             pa.field("ingested_at", pa.string()),
-        ]
+        ],
     ),
     "external_research": pa.schema(
         [
@@ -37,7 +37,7 @@ COMPARTMENTS = {
             pa.field("text", pa.string()),
             pa.field("vector", pa.list_(pa.float32(), 768)),
             pa.field("fetched_at", pa.string()),
-        ]
+        ],
     ),
 }
 
@@ -62,4 +62,3 @@ def initialize_compartments() -> dict:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     result = initialize_compartments()
-    print(f"Compartments: {result}")

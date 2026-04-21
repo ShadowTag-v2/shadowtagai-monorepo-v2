@@ -1,5 +1,4 @@
-"""
-Step 3 — Cross-Domain Matcher
+"""Step 3 — Cross-Domain Matcher.
 
 For each of 2,856 docs, finds top-3 semantic matches in:
   - Doc → Code file (embedding cosine similarity)
@@ -78,17 +77,17 @@ def init_match_tables(conn: sqlite3.Connection) -> None:
     conn.execute(
         """CREATE TABLE IF NOT EXISTS doc_code_matches (
             doc_id TEXT, code_path TEXT, similarity REAL, rank INTEGER,
-            PRIMARY KEY (doc_id, rank))"""
+            PRIMARY KEY (doc_id, rank))""",
     )
     conn.execute(
         """CREATE TABLE IF NOT EXISTS doc_doc_matches (
             doc_id TEXT, matched_doc_id TEXT, similarity REAL, rank INTEGER,
-            PRIMARY KEY (doc_id, rank))"""
+            PRIMARY KEY (doc_id, rank))""",
     )
     conn.execute(
         """CREATE TABLE IF NOT EXISTS doc_commit_matches (
             doc_id TEXT, commit_hash TEXT, similarity REAL, rank INTEGER,
-            PRIMARY KEY (doc_id, rank))"""
+            PRIMARY KEY (doc_id, rank))""",
     )
     conn.commit()
 
@@ -143,12 +142,12 @@ def run_cross_domain_matcher(cfg=None) -> dict:
         conn.close()
         return {"unmatched": len(unmatched), "already_matched": len(matched)}
 
-    token = get_access_token()
+    get_access_token()
     match_count = 0
 
     for row in unmatched:
         doc_id = str(row.get("id", row.name))
-        title = str(row.get("title", row.get("source", "")))
+        str(row.get("title", row.get("source", "")))
 
         try:
             # Doc → Code matches (vector search)

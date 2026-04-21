@@ -3,13 +3,12 @@ import shutil
 import subprocess
 
 
-def write_file(path, content):
+def write_file(path, content) -> None:
     dir_name = os.path.dirname(path)
     if dir_name:
         os.makedirs(dir_name, exist_ok=True)
     with open(path, "w") as f:
         f.write(content.strip() + "\n")
-    print(f"Wrote {path}")
 
 
 # 1. pnkln-antigravity-pack
@@ -222,7 +221,6 @@ for f in ["scripts/judge6.sh", "scripts/cleanup-cinematic-videos.sh", "scripts/p
     os.chmod(f"{pack_dir}/{f}", 0o755)
 
 shutil.make_archive(pack_dir, "zip", pack_dir)
-print(f"Created {pack_dir}.zip")
 
 # 2. Setup the recursive meta-evolve layer
 write_file(
@@ -414,5 +412,4 @@ for repo in repos:
     repo_name = repo.rstrip("/").split("/")[-1].replace(".git", "")
     dest = os.path.join(out_dir, repo_name)
     if not os.path.exists(dest):
-        print(f"Cloning {repo}...")
         subprocess.run(["git", "clone", "--depth", "1", repo, dest], check=False)
