@@ -73,11 +73,13 @@ def build_csharp() -> dict[str, Any]:
             ["dotnet", "build", str(proj), "--nologo", "-v", "quiet"],
             timeout=180,
         )
-        results.append({
-            "project": proj.name,
-            "status": "success" if rc == 0 else "failed",
-            "errors": err[:300] if rc != 0 else None,
-        })
+        results.append(
+            {
+                "project": proj.name,
+                "status": "success" if rc == 0 else "failed",
+                "errors": err[:300] if rc != 0 else None,
+            }
+        )
     all_ok = all(r["status"] != "failed" for r in results)
     return {"phase": "build_csharp", "success": all_ok, "projects": results}
 

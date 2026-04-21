@@ -39,4 +39,3 @@ Lead a team — run standups, coordinate tasks, and communicate.
 - Use `gws calendar +agenda --week --format table` for weekly team calendar views.
 - Pipe standup reports to Chat with `gws chat spaces messages create`.
 - Use `--sanitize` for any operations involving sensitive team data.
-

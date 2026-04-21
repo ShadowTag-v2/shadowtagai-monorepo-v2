@@ -471,7 +471,10 @@ Provide comprehensive, execution-ready response."""
         "consensus_level": "multi_model_consensus",
         "execution_time": execution_time,
         "total_cost": total_cost,
-        "models": ["claude-sonnet-4", "gemini-3.1-flash-lite-preview"],  # Will add grok, gpt-5 when configured
+        "models": [
+            "claude-sonnet-4",
+            "gemini-3.1-flash-lite-preview",
+        ],  # Will add grok, gpt-5 when configured
         "risk_level": "RA-3",
         "reasoning_chain": reasoning_chain,
     }

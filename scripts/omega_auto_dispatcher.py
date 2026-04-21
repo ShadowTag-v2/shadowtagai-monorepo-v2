@@ -46,9 +46,7 @@ class HealAttempt:
     attempt_number: int
     action: str
     success: bool
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     error: str | None = None
 
 

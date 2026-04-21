@@ -218,9 +218,7 @@ def check_dream_schedule() -> list[Action]:
 def check_fts_freshness() -> list[Action]:
     """Check if FTS5 index needs rebuilding."""
     actions = []
-    ki_dir = Path(
-        os.environ.get("KI_DIR", os.path.expanduser("~/.gemini/antigravity/knowledge"))
-    )
+    ki_dir = Path(os.environ.get("KI_DIR", os.path.expanduser("~/.gemini/antigravity/knowledge")))
     fts_db = ki_dir / ".ki-index.db"
     if not fts_db.exists():
         actions.append(
@@ -295,15 +293,16 @@ def execute_action(action: Action) -> bool:
 
     elif action.action_type == ActionType.FTS_REINDEX:
         try:
-            ki_dir = Path(
-                os.environ.get("KI_DIR", os.path.expanduser("~/.gemini/antigravity/knowledge"))
-            )
+            ki_dir = Path(os.environ.get("KI_DIR", os.path.expanduser("~/.gemini/antigravity/knowledge")))
             result = subprocess.run(
-                [sys.executable, "-c",
-                 f"import sys; sys.path.insert(0, '{REPO_ROOT}'); "
-                 f"from core.ki_engine.fts_index import reindex_all; "
-                 f"from pathlib import Path; "
-                 f"print(reindex_all(Path('{ki_dir}')))"],
+                [
+                    sys.executable,
+                    "-c",
+                    f"import sys; sys.path.insert(0, '{REPO_ROOT}'); "
+                    f"from core.ki_engine.fts_index import reindex_all; "
+                    f"from pathlib import Path; "
+                    f"print(reindex_all(Path('{ki_dir}')))",
+                ],
                 capture_output=True,
                 text=True,
                 timeout=30,

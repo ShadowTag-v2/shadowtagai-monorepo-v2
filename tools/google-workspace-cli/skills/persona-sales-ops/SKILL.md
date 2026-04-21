@@ -37,4 +37,3 @@ Manage sales workflows — track deals, schedule calls, client comms.
 - Use `gws gmail +triage --query 'from:client-domain.com'` to filter client emails.
 - Schedule follow-up calls immediately after meetings to maintain momentum.
 - Keep all client-facing documents in a dedicated shared Drive folder.
-

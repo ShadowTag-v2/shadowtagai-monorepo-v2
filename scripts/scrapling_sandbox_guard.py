@@ -47,24 +47,17 @@ def validate_write_path(target_path: str | Path) -> Path:
     try:
         relative = resolved.relative_to(cwd)
     except ValueError as exc:
-        raise SandboxViolationError(
-            f"SANDBOX VIOLATION: Path '{target_path}' is outside "
-            f"workspace root '{cwd}'"
-        ) from exc
+        raise SandboxViolationError(f"SANDBOX VIOLATION: Path '{target_path}' is outside workspace root '{cwd}'") from exc
 
     # Must be under an allowed root
     parts = relative.parts
     if not parts:
-        raise SandboxViolationError(
-            "SANDBOX VIOLATION: Cannot write to workspace root"
-        )
+        raise SandboxViolationError("SANDBOX VIOLATION: Cannot write to workspace root")
 
     root_dir = parts[0]
     if root_dir not in ALLOWED_WRITE_ROOTS:
         raise SandboxViolationError(
-            f"SANDBOX VIOLATION: Root '{root_dir}/' is not in allowed "
-            f"write paths: {sorted(ALLOWED_WRITE_ROOTS)}. "
-            f"Target: {target_path}"
+            f"SANDBOX VIOLATION: Root '{root_dir}/' is not in allowed write paths: {sorted(ALLOWED_WRITE_ROOTS)}. Target: {target_path}"
         )
 
     _log_write("validate", str(target_path), allowed=True)
@@ -93,9 +86,7 @@ def validate_command(command: str) -> str:
                 return command
 
             raise SandboxViolationError(
-                f"SANDBOX VIOLATION: Command contains blocked pattern "
-                f"'{pattern}': {command}\n"
-                f"Only deletion of ./tmp/ paths is allowed."
+                f"SANDBOX VIOLATION: Command contains blocked pattern '{pattern}': {command}\nOnly deletion of ./tmp/ paths is allowed."
             )
 
     _log_write("command_allowed", command, allowed=True)
@@ -120,8 +111,7 @@ def safe_write(target_path: str | Path, content: str | bytes) -> Path:
     else:
         validated.write_text(content)
 
-    _log_write("write", str(target_path), allowed=True,
-               size=len(content))
+    _log_write("write", str(target_path), allowed=True, size=len(content))
     return validated
 
 

@@ -167,10 +167,12 @@ async def create_task(req: TaskCreateRequest):
 
         # Notify SSE subscribers
         if task.task_id in _task_events:
-            await _task_events[task.task_id].put({
-                "event": "status",
-                "data": {"status": task.status, "result": task.result[:500]},
-            })
+            await _task_events[task.task_id].put(
+                {
+                    "event": "status",
+                    "data": {"status": task.status, "result": task.result[:500]},
+                }
+            )
 
         return TaskResponse(
             task_id=task.task_id,

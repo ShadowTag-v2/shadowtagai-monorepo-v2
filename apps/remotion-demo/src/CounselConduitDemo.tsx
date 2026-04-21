@@ -11,7 +11,7 @@ import {
 
 /* ═══════════════════════════════════════════════════════════════════════════
    CounselConduit – Sales Demo Video (15 seconds @ 30fps = 450 frames)
-   
+
    Scene breakdown:
      0–90    Intro / brand reveal
      91–180  Problem statement

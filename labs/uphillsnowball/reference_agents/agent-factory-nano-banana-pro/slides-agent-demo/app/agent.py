@@ -18,7 +18,10 @@ import google.auth
 
 from google.adk.agents import Agent
 from google.adk.apps.app import App
-from google.adk.tools.mcp_tool.mcp_toolset import McpToolset, StreamableHTTPConnectionParams
+from google.adk.tools.mcp_tool.mcp_toolset import (
+    McpToolset,
+    StreamableHTTPConnectionParams,
+)
 
 _, project_id = google.auth.default()
 os.environ["GOOGLE_CLOUD_PROJECT"] = project_id
@@ -26,7 +29,9 @@ os.environ["GOOGLE_CLOUD_LOCATION"] = "global"
 os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "True"
 
 # Initialize MCP Toolset
-mcp_server_url = "https://CLOUD_RUN_SERVICE_URL/mcp"      # update with your MCP server address
+mcp_server_url = (
+    "https://CLOUD_RUN_SERVICE_URL/mcp"  # update with your MCP server address
+)
 mcp_tools = McpToolset(
     connection_params=StreamableHTTPConnectionParams(
         url=mcp_server_url,

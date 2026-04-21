@@ -34,8 +34,7 @@ def embed_batch(texts: list[str], token: str) -> list[list[float]]:
     project = os.environ.get("GCP_PROJECT_ID", "shadowtag-omega-v4")
     region = "us-central1"
     endpoint = (
-        f"https://{region}-aiplatform.googleapis.com/v1/projects/"
-        f"{project}/locations/{region}/publishers/google/models/text-embedding-005:predict"
+        f"https://{region}-aiplatform.googleapis.com/v1/projects/{project}/locations/{region}/publishers/google/models/text-embedding-005:predict"
     )
     payload = {"instances": [{"content": t[:3000]} for t in texts]}
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
@@ -61,15 +60,17 @@ def save_state(state: dict) -> None:
 
 def get_or_create_table(db):
     """Get or create workspace_knowledge table."""
-    schema = pa.schema([
-        pa.field("id", pa.string()),
-        pa.field("title", pa.string()),
-        pa.field("source", pa.string()),
-        pa.field("text", pa.string()),
-        pa.field("vector", pa.list_(pa.float32(), 768)),
-        pa.field("domain", pa.string()),
-        pa.field("ingested_at", pa.string()),
-    ])
+    schema = pa.schema(
+        [
+            pa.field("id", pa.string()),
+            pa.field("title", pa.string()),
+            pa.field("source", pa.string()),
+            pa.field("text", pa.string()),
+            pa.field("vector", pa.list_(pa.float32(), 768)),
+            pa.field("domain", pa.string()),
+            pa.field("ingested_at", pa.string()),
+        ]
+    )
     result = db.list_tables()
     table_names = result.tables if hasattr(result, "tables") else list(result)
     if "workspace_knowledge" in table_names:
@@ -115,14 +116,16 @@ def run(cfg=None) -> dict:
             continue
 
         batch_texts.append(content[:3000])
-        batch_meta.append({
-            "id": str(fpath.relative_to(REPO_ROOT)),
-            "title": fpath.stem,
-            "source": "drive_ingest",
-            "text": content[:2000],
-            "domain": "",
-            "ingested_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        })
+        batch_meta.append(
+            {
+                "id": str(fpath.relative_to(REPO_ROOT)),
+                "title": fpath.stem,
+                "source": "drive_ingest",
+                "text": content[:2000],
+                "domain": "",
+                "ingested_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            }
+        )
 
         if len(batch_texts) >= 5:
             try:

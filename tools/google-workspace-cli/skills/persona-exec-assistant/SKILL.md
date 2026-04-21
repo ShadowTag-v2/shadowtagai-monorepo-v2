@@ -37,4 +37,3 @@ Manage an executive's schedule, inbox, and communications.
 - Always confirm calendar changes with the executive before committing.
 - Use `--format table` for quick visual scans of agenda and triage output.
 - Check `gws calendar +agenda --week` on Monday mornings for weekly planning.
-

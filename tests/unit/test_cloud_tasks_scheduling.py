@@ -54,7 +54,7 @@ class TestCloudTasksScheduling:
     async def test_deletion_date_is_30_days_out(self):
         """Verify the deletion date is approximately 30 days from now."""
         now = datetime.now(UTC)
-        deletion_date = (now + timedelta(days=30))
+        deletion_date = now + timedelta(days=30)
         # Verify the date is approximately 30 days out
         delta = deletion_date - now
         assert 29 <= delta.days <= 31

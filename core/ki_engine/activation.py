@@ -183,12 +183,10 @@ def spread_activation(
     # Phase 2: Spreading steps
     for step in range(steps):
         new_activations: dict[str, float] = {}
-        current_energy = decay_per_step ** step
+        current_energy = decay_per_step**step
 
         # Sort by activation, take top K (lateral inhibition)
-        sorted_active = sorted(
-            activations.items(), key=lambda x: x[1], reverse=True
-        )[:top_k_per_step]
+        sorted_active = sorted(activations.items(), key=lambda x: x[1], reverse=True)[:top_k_per_step]
 
         for ki_name, activation in sorted_active:
             ki = ki_by_name.get(ki_name)
@@ -200,18 +198,14 @@ def spread_activation(
                 for neighbor_name in ki_by_tag.get(tag, []):
                     if neighbor_name != ki_name:
                         spread = activation * current_energy * 0.3
-                        new_activations[neighbor_name] = (
-                            new_activations.get(neighbor_name, 0) + spread
-                        )
+                        new_activations[neighbor_name] = new_activations.get(neighbor_name, 0) + spread
                         source_tags[neighbor_name].update(source_tags.get(ki_name, set()))
                         activated_by[neighbor_name].append(f"spread:{ki_name}")
 
             # Spread through explicit relations
             for neighbor_name, rel_weight in relation_graph.get(ki_name, []):
                 spread = activation * current_energy * rel_weight
-                new_activations[neighbor_name] = (
-                    new_activations.get(neighbor_name, 0) + spread
-                )
+                new_activations[neighbor_name] = new_activations.get(neighbor_name, 0) + spread
                 activated_by[neighbor_name].append(f"rel:{ki_name}")
 
         # Merge new activations
@@ -314,14 +308,11 @@ def detect_collisions(
                         activation_b=b.activation,
                         shared_tags=shared,
                         description=(
-                            f"Unexpected connection: '{a.ki.name}' and '{b.ki.name}' "
-                            f"(dissimilarity={dissim:.2f}, shared={shared or 'none'})"
+                            f"Unexpected connection: '{a.ki.name}' and '{b.ki.name}' (dissimilarity={dissim:.2f}, shared={shared or 'none'})"
                         ),
                     )
                 )
 
     # Sort by combined activation (most interesting first)
-    collisions.sort(
-        key=lambda c: c.activation_a + c.activation_b, reverse=True
-    )
+    collisions.sort(key=lambda c: c.activation_a + c.activation_b, reverse=True)
     return collisions[:max_pairs]

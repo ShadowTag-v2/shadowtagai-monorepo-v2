@@ -35,9 +35,7 @@ class CompactionResult:
     compacted_tokens: int
     reduction_pct: float
     method: str
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     error: str | None = None
 
 
@@ -126,11 +124,7 @@ def compact_stale_tool_results(
         compacted.append(item)
 
     compacted_count = sum(len(str(item)) for item in compacted)
-    reduction = (
-        ((original_count - compacted_count) / original_count * 100)
-        if original_count > 0
-        else 0.0
-    )
+    reduction = ((original_count - compacted_count) / original_count * 100) if original_count > 0 else 0.0
 
     result = CompactionResult(
         success=True,
@@ -198,11 +192,7 @@ def auto_compact(
 
     compacted = [summary_entry] + retained
     compacted_tokens = sum(len(str(item)) for item in compacted)
-    reduction = (
-        ((original_tokens - compacted_tokens) / original_tokens * 100)
-        if original_tokens > 0
-        else 0.0
-    )
+    reduction = ((original_tokens - compacted_tokens) / original_tokens * 100) if original_tokens > 0 else 0.0
 
     result = CompactionResult(
         success=True,

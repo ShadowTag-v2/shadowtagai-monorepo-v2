@@ -46,4 +46,3 @@ cargo run -- generate-skills --output-dir skills
 
 # Stage the changed files so changesets/action commits them
 git add crates/*/Cargo.toml Cargo.lock flake.nix flake.lock skills/ npm/package.json
-

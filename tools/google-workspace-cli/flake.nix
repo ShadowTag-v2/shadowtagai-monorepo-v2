@@ -41,7 +41,7 @@
           buildInputs = pkgs.lib.optionals pkgs.stdenv.isLinux linuxDeps
             ++ pkgs.lib.optionals pkgs.stdenv.isDarwin darwinDeps;
 
-          # Tests are disabled by default in buildRustPackage if not specified, 
+          # Tests are disabled by default in buildRustPackage if not specified,
           # but we'll be explicit. Some tests might require network.
           doCheck = false;
 

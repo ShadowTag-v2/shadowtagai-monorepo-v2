@@ -468,7 +468,6 @@ class TestFTS:
         count = reindex_all(tmp_ki_dir)
         assert count >= 4
 
-
         conn = sqlite3.connect(str(_db_path(tmp_ki_dir)))
         results = search_fts(conn, "firestore")
         conn.close()

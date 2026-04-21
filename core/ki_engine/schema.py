@@ -178,17 +178,13 @@ class KIMetadata:
             "status": self.status.value if isinstance(self.status, KIStatus) else self.status,
             "confidence": self.confidence,
             "ttl_days": self.ttl_days,
-            "classification": self.classification.value
-            if isinstance(self.classification, KIClassification)
-            else self.classification,
+            "classification": self.classification.value if isinstance(self.classification, KIClassification) else self.classification,
         }
         if self.relations:
             d["relations"] = [
                 {
                     "target_ki": r.target_ki,
-                    "relation_type": r.relation_type.value
-                    if isinstance(r.relation_type, RelationType)
-                    else r.relation_type,
+                    "relation_type": r.relation_type.value if isinstance(r.relation_type, RelationType) else r.relation_type,
                     "created_at": r.created_at,
                 }
                 for r in self.relations
