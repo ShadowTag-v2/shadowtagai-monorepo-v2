@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """GitHub App JWT-based PR creator. Replaces `gh pr create` for doctrine compliance."""
+
 import json
 import os
 import sys
@@ -10,6 +11,7 @@ try:
     import requests
 except ImportError:
     import subprocess
+
     subprocess.check_call([sys.executable, "-m", "pip", "install", "PyJWT", "requests", "--quiet"])
     import jwt
     import requests
