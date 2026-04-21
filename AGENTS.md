@@ -241,6 +241,13 @@ unless the user explicitly directs a control plane change:
 - Memory Kernel Analysis: 8 adoptable patterns (typed knowledge, temporal decay, spreading activation, closure metrics, token budgeting, view generation, event sourcing, file-first index) — selective adoption, NOT wholesale migration
 - daScript MCP Reference: 29-tool compiler-backed MCP server (protocol.das 56KB), 20 skills, 3-tier execution (interpreter→AOT→JIT), semantic hashing hybrid — reference only, do NOT import
 - Ruler Agent Config: intellectronica/ruler supports 23+ AI coding agents (AGENTS.md + MCP + Skills), single `.ruler/` source → auto-distribute to Claude/Copilot/Cursor/Antigravity — evaluate for config drift elimination
+- Agent Rules Coverage: GitHub-First Protocol enforced across ALL 4 agent surfaces — `.clinerules` (Cline), `.cursorrules` (Cursor), `.roorules` (Roo/Windsurf), `.context/system_prompt.md` (Antigravity IDE) — matching `.claude/rules/52-github-first-protocol.md` and `.context/GITHUB_PROTOCOL.md`
+- 10-PR Deployment Matrix: All 10 PRs merged (#55–#67) — Pulumi IaC, LanceDB RAG, Tauri GlassBox, C++ Monte Carlo, GitHub Actions CI/CD, Core Governance, Go Shield Layer, DSPy Swarm, Cinematic Verification, Daemons & Egress
+- Branch Cleanup: 10 feature branches deleted locally, `main` + `staging` only remaining
+- Pre-commit Hooks: Gitleaks ✅, ruff ✅, ruff-format ✅ (74 files reformatted), bandit ✅
+- Gitleaks: 170 findings (all third-party token samples in docs/CANONICALIZATION_REPORT, covered by .gitleaksignore)
+- GitHub Issues: 2 open (#56 deployment checklist, #57 LFS hook), 0 open PRs
+- Commit: `b3a3792d5f` (2026-04-21)
 
 ## Firestore-vs-Supabase verdict
 
