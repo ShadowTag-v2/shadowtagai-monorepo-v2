@@ -119,7 +119,7 @@ class FirmPolicyResponse(BaseModel):
 
 _ADMIN_ALLOWED_CALLERS = {
     "cloud-scheduler",  # Cloud Scheduler OIDC token sub
-    "admin",            # Firebase Auth admin role
+    "admin",  # Firebase Auth admin role
 }
 
 
@@ -212,6 +212,7 @@ def _get_firestore_client():
     """Get Firestore client, None if not available."""
     try:
         from google.cloud import firestore
+
         return firestore.Client(project="shadowtag-omega-v4")
     except Exception:
         return None
@@ -228,17 +229,20 @@ async def _persist_firm_policy(policy: FirmPolicyRequest) -> bool:
         from google.cloud import firestore as _fs_inc
 
         doc_ref = client.collection(_FIRM_POLICY_COLLECTION).document(policy.firm_id)
-        doc_ref.set({
-            "firm_id": policy.firm_id,
-            "allowed_models": policy.allowed_models,
-            "max_rpm": policy.max_rpm,
-            "max_daily": policy.max_daily,
-            "byok_enabled": policy.byok.enabled,
-            "byok_kms_key_uri": policy.byok.kms_key_uri,
-            "byok_key_algorithm": policy.byok.key_algorithm,
-            "updated_at": _fs_inc.SERVER_TIMESTAMP,
-            "version": _fs_inc.Increment(1),
-        }, merge=True)
+        doc_ref.set(
+            {
+                "firm_id": policy.firm_id,
+                "allowed_models": policy.allowed_models,
+                "max_rpm": policy.max_rpm,
+                "max_daily": policy.max_daily,
+                "byok_enabled": policy.byok.enabled,
+                "byok_kms_key_uri": policy.byok.kms_key_uri,
+                "byok_key_algorithm": policy.byok.key_algorithm,
+                "updated_at": _fs_inc.SERVER_TIMESTAMP,
+                "version": _fs_inc.Increment(1),
+            },
+            merge=True,
+        )
         logger.info("Persisted firm policy to Firestore (versioned): %s", policy.firm_id)
         return True
     except Exception as e:
@@ -347,10 +351,7 @@ def cleanup_expired_session_pins() -> int:
         from api.model_router import SESSION_PIN_TTL_SECONDS, _session_pins  # type: ignore[no-redef]
 
     now = time.time()
-    expired = [
-        sid for sid, (_, ts) in _session_pins.items()
-        if now - ts > SESSION_PIN_TTL_SECONDS
-    ]
+    expired = [sid for sid, (_, ts) in _session_pins.items() if now - ts > SESSION_PIN_TTL_SECONDS]
     for sid in expired:
         del _session_pins[sid]
 
@@ -418,9 +419,8 @@ async def dispatch_endpoint(
         if body.firm_id:
             # Fire-and-forget — don't block the response
             import asyncio
-            asyncio.create_task(
-                track_token_usage(body.firm_id, x_user_tier, result.get("estimated_tokens", 100))
-            )
+
+            asyncio.create_task(track_token_usage(body.firm_id, x_user_tier, result.get("estimated_tokens", 100)))
 
         # Add rate-limit headers
         _add_rate_limit_headers(response, body.firm_id, x_user_tier)
@@ -761,11 +761,13 @@ async def admin_token_budgets(
     firms = []
     for firm_id, usage in _firm_token_usage.items():
         window_remaining = max(0, _TOKEN_BUDGET_WINDOW - (now - usage["window_start"]))
-        firms.append({
-            "firm_id": firm_id,
-            "tokens_used": usage["tokens_used"],
-            "window_remaining_sec": round(window_remaining),
-        })
+        firms.append(
+            {
+                "firm_id": firm_id,
+                "tokens_used": usage["tokens_used"],
+                "window_remaining_sec": round(window_remaining),
+            }
+        )
 
     return {
         "firms": firms,
@@ -799,16 +801,16 @@ async def _persist_session_pin_with_ttl(
     try:
         import datetime
 
-        expire_at = datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(
-            seconds=ttl_seconds
-        )
+        expire_at = datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(seconds=ttl_seconds)
         doc_ref = client.collection(_SESSION_PINS_COLLECTION).document(session_id)
-        doc_ref.set({
-            "session_id": session_id,
-            "model_key": model_key,
-            "pinned_at": datetime.datetime.now(tz=datetime.UTC).isoformat(),
-            "expire_at": expire_at,
-        })
+        doc_ref.set(
+            {
+                "session_id": session_id,
+                "model_key": model_key,
+                "pinned_at": datetime.datetime.now(tz=datetime.UTC).isoformat(),
+                "expire_at": expire_at,
+            }
+        )
         return True
     except Exception as e:
         logger.warning("Failed to persist session pin %s: %s", session_id, e)
@@ -882,6 +884,7 @@ async def vent_mode_diagnostics(
 
 # ── Provider Health (Item #19) ────────────────────────────────────────────
 
+
 @router.get("/admin/provider-health")
 async def provider_health(
     request: Request,
@@ -894,7 +897,7 @@ async def provider_health(
         failures = cb_state.get("failures", 0)
         cb_status = "open" if failures >= 5 else ("half-open" if failures >= 3 else "closed")
         providers[model_key] = {
-            "provider": model_cfg.provider.value if hasattr(model_cfg.provider, 'value') else str(model_cfg.provider),
+            "provider": model_cfg.provider.value if hasattr(model_cfg.provider, "value") else str(model_cfg.provider),
             "model_id": model_cfg.model_id,
             "display_name": model_cfg.display_name,
             "status": "degraded" if cb_status == "open" else "operational",
@@ -967,6 +970,7 @@ async def verify_admin_auth(request: Request) -> bool:
         token = auth_header[7:]
         try:
             import firebase_admin.auth as _fb_auth
+
             decoded = _fb_auth.verify_id_token(token)
             # Check custom claim: admin=true
             if decoded.get("admin") is True:
@@ -985,6 +989,7 @@ async def verify_admin_auth(request: Request) -> bool:
 
 # ── Token Budgets with Firestore Tracking (Items #15, #19) ───────────────
 
+
 @router.get("/admin/token-budgets")
 async def token_budgets(
     request: Request,
@@ -999,6 +1004,7 @@ async def token_budgets(
     }
     try:
         from google.cloud import firestore as _fs
+
         db = _fs.AsyncClient(project="shadowtag-omega-v4")
         async for doc in db.collection("token_budgets").stream():
             data = doc.to_dict()
@@ -1019,6 +1025,7 @@ async def track_token_usage(firm_id: str, tier: str, tokens: int) -> None:
     """Persist token usage to Firestore for budget tracking (Item #15)."""
     try:
         from google.cloud import firestore as _fs
+
         db = _fs.AsyncClient(project="shadowtag-omega-v4")
         doc_ref = db.collection("token_budgets").document(f"{firm_id}_{tier}")
         await doc_ref.set(
@@ -1042,6 +1049,7 @@ async def track_token_usage(firm_id: str, tier: str, tokens: int) -> None:
 
 
 # ── SLO Compliance Report (Item #22) ────────────────────────────────────
+
 
 @router.get("/admin/slo-report")
 async def slo_compliance_report(

@@ -14,9 +14,7 @@ import os
 import httpx
 import pytest
 
-BASE_URL = os.environ.get(
-    "BASE_URL", "https://counselconduit-767252945109.us-central1.run.app"
-)
+BASE_URL = os.environ.get("BASE_URL", "https://counselconduit-767252945109.us-central1.run.app")
 
 # Cloud Armor rate limiter may return 429 during load — accept it as valid
 _RATE_LIMITED = 429
@@ -185,9 +183,7 @@ class TestStripeWebhook:
             content=b'{"type":"checkout.session.completed"}',
             headers={"Content-Type": "application/json"},
         )
-        assert r.status_code in (400, 401, 403, _RATE_LIMITED), (
-            f"Webhook accepted unsigned request (status={r.status_code})"
-        )
+        assert r.status_code in (400, 401, 403, _RATE_LIMITED), f"Webhook accepted unsigned request (status={r.status_code})"
 
     def test_webhook_rejects_forged_signature(self, client: httpx.Client) -> None:
         """Webhook must reject requests with forged Stripe-Signature."""
@@ -199,9 +195,7 @@ class TestStripeWebhook:
                 "Stripe-Signature": "t=1234567890,v1=forged_signature_value",
             },
         )
-        assert r.status_code in (400, 401, 403, _RATE_LIMITED), (
-            f"Webhook accepted forged signature (status={r.status_code})"
-        )
+        assert r.status_code in (400, 401, 403, _RATE_LIMITED), f"Webhook accepted forged signature (status={r.status_code})"
 
     def test_webhook_endpoint_exists(self, client: httpx.Client) -> None:
         """Webhook endpoint must exist (not 404)."""
@@ -231,4 +225,3 @@ class TestNewAdminEndpoints:
     def test_firm_policies_exists(self, client: httpx.Client) -> None:
         r = client.get("/admin/firm-policies")
         assert r.status_code in (200, 401, 404, _RATE_LIMITED, 500)
-

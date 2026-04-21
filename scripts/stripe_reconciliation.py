@@ -36,7 +36,7 @@ async def reconcile():
     price_to_tier = {
         "price_1TNKSREHnWpykeMiRMDlVgLl": "professional",  # Pro Monthly $149
         "price_1TNKSjEHnWpykeMi0S9GCVjy": "professional",  # Pro Annual $1,428
-        "price_1TNKSREHnWpykeMi8mrDf4rI": "enterprise",    # Enterprise $20K/mo
+        "price_1TNKSREHnWpykeMi8mrDf4rI": "enterprise",  # Enterprise $20K/mo
     }
 
     discrepancies = []
@@ -54,18 +54,21 @@ async def reconcile():
         # 2. Check Firestore for matching tenant record
         try:
             from google.cloud import firestore as _fs
+
             db = _fs.AsyncClient(project="shadowtag-omega-v4")
             # Look up tenant by stripe_customer_id
             query = db.collection("tenants").where("stripe_customer_id", "==", customer_id)
             docs = [doc async for doc in query.stream()]
 
             if not docs:
-                discrepancies.append({
-                    "type": "ORPHANED_SUBSCRIPTION",
-                    "customer_id": customer_id,
-                    "price_id": price_id,
-                    "expected_tier": expected_tier,
-                })
+                discrepancies.append(
+                    {
+                        "type": "ORPHANED_SUBSCRIPTION",
+                        "customer_id": customer_id,
+                        "price_id": price_id,
+                        "expected_tier": expected_tier,
+                    }
+                )
                 continue
 
             tenant_data = docs[0].to_dict()
@@ -73,13 +76,15 @@ async def reconcile():
 
             # 3. Check tier mismatch
             if actual_tier != expected_tier:
-                discrepancies.append({
-                    "type": "TIER_MISMATCH",
-                    "customer_id": customer_id,
-                    "firestore_tier": actual_tier,
-                    "stripe_tier": expected_tier,
-                    "firm_id": tenant_data.get("firm_id"),
-                })
+                discrepancies.append(
+                    {
+                        "type": "TIER_MISMATCH",
+                        "customer_id": customer_id,
+                        "firestore_tier": actual_tier,
+                        "stripe_tier": expected_tier,
+                        "firm_id": tenant_data.get("firm_id"),
+                    }
+                )
             else:
                 reconciled += 1
 
@@ -112,4 +117,5 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     result = asyncio.run(reconcile())
     import json
+
     print(json.dumps(result, indent=2))

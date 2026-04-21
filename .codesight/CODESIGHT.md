@@ -1614,19 +1614,19 @@
 - hashed_password: String
 - is_active: Boolean (default)
 - created_at: DateTime
-- _relations_: workspace_links: 
+- _relations_: workspace_links:
 
 ### Workspace
 - id: int (pk, index)
 - name: String
 - created_at: DateTime
-- _relations_: members: , agents: 
+- _relations_: members: , agents:
 
 ### WorkspaceMember
 - workspace_id: int (fk, pk)
 - user_id: int (fk, pk)
 - role: Enum (default)
-- _relations_: workspace: , user: 
+- _relations_: workspace: , user:
 
 ### AIAgent
 - id: int (pk, index)
@@ -1635,7 +1635,7 @@
 - system_prompt: Text (nullable)
 - is_active: Boolean (default)
 - created_at: DateTime
-- _relations_: workspace: 
+- _relations_: workspace:
 
 ### Conversation
 - id: Integer (pk, index)
