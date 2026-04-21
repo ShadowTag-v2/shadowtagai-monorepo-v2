@@ -10,6 +10,7 @@ This workspace is optimized for **Agentic Development**. It contains specific st
 2.  **Adhere to Coding Standards**: Always check `.context/coding_style.md` for specific implementation details.
 3.  **Mission Awareness**: The user's goal is defined in `mission.md`. Align all your actions with this mission.
 4.  **Tool-Centric Architecture**: Agents interact with the world through tools. Prioritize creating robust, well-documented tools in the `tools/` directory.
+5.  **GitHub-First**: Always verify current branch status and remote GitHub state (`git fetch origin --prune && git status`) before proposing any code changes. Read `.context/GITHUB_PROTOCOL.md` for the full lifecycle.
 
 ## Interaction Style
 - **Proactive**: Suggest improvements and next steps.
