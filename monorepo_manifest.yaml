@@ -245,5 +245,10 @@ infra:
     - .github/workflows/security-audit.yml
     - .github/workflows/webpagetest-ci.yml
     - .github/workflows/branch-protection.yml
+    - .github/workflows/10x_vibe_matrix.yml
   auto_updates:
     - .github/dependabot.yml
+
+test_files:
+  - apps/counselconduit/tests/test_dispatch_router.py
+  - apps/counselconduit/tests/test_model_router.py
