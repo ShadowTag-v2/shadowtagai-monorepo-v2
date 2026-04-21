@@ -1,0 +1,152 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(255, 96, 96, 1)",
+        "name": "Deployments",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "CounselConduit SLO Burn Rate & Provider Health Dashboard",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "panels": [
+    {
+      "title": "SLO Burn Rate (99.5% target)",
+      "type": "gauge",
+      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 0},
+      "targets": [
+        {
+          "expr": "1 - (sum(rate(http_requests_total{status=~\"5..\",service=\"counselconduit\"}[30m])) / sum(rate(http_requests_total{service=\"counselconduit\"}[30m])))",
+          "legendFormat": "Availability"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "steps": [
+              {"color": "red", "value": 0.99},
+              {"color": "yellow", "value": 0.995},
+              {"color": "green", "value": 0.999}
+            ]
+          },
+          "min": 0.98,
+          "max": 1.0,
+          "unit": "percentunit"
+        }
+      }
+    },
+    {
+      "title": "Error Budget Remaining",
+      "type": "stat",
+      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 0},
+      "targets": [
+        {
+          "expr": "1 - ((sum(increase(http_requests_total{status=~\"5..\",service=\"counselconduit\"}[30d])) / sum(increase(http_requests_total{service=\"counselconduit\"}[30d]))) / 0.005)",
+          "legendFormat": "Budget %"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "steps": [
+              {"color": "red", "value": 0},
+              {"color": "yellow", "value": 0.25},
+              {"color": "green", "value": 0.5}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "title": "Provider Latency Heatmap",
+      "type": "heatmap",
+      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 0},
+      "targets": [
+        {
+          "expr": "sum(rate(http_request_duration_seconds_bucket{service=\"counselconduit\"}[5m])) by (le, provider)",
+          "format": "heatmap",
+          "legendFormat": "{{provider}}"
+        }
+      ],
+      "options": {
+        "calculate": false,
+        "yAxis": {"unit": "s"}
+      }
+    },
+    {
+      "title": "Request Rate by Dispatch Tier",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "targets": [
+        {
+          "expr": "sum(rate(counselconduit_dispatch_total[5m])) by (tier)",
+          "legendFormat": "{{tier}}"
+        }
+      ]
+    },
+    {
+      "title": "Circuit Breaker State",
+      "type": "state-timeline",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "targets": [
+        {
+          "expr": "counselconduit_circuit_breaker_state",
+          "legendFormat": "{{model}}"
+        }
+      ]
+    },
+    {
+      "title": "Token Budget Usage by Tier",
+      "type": "bargauge",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+      "targets": [
+        {
+          "expr": "counselconduit_token_budget_used / counselconduit_token_budget_limit",
+          "legendFormat": "{{tier}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "steps": [
+              {"color": "green", "value": 0},
+              {"color": "yellow", "value": 0.8},
+              {"color": "red", "value": 0.95}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "title": "Prompt Repetition Efficacy",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+      "targets": [
+        {
+          "expr": "sum(rate(counselconduit_prompt_repeated_total[1h])) by (model)",
+          "legendFormat": "Repeated ({{model}})"
+        },
+        {
+          "expr": "sum(rate(counselconduit_dispatch_total[1h])) by (model)",
+          "legendFormat": "Total ({{model}})"
+        }
+      ]
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 38,
+  "tags": ["counselconduit", "slo", "production"],
+  "time": {"from": "now-24h", "to": "now"},
+  "title": "CounselConduit — SLO Burn Rate & Provider Health",
+  "uid": "counselconduit-slo-burn",
+  "version": 1
+}
