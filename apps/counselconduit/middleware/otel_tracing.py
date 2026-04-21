@@ -20,8 +20,8 @@ logger = logging.getLogger("counselconduit.otel")
 # Only import opentelemetry if available (optional dependency)
 _OTEL_AVAILABLE = False
 try:
-    from opentelemetry import trace
-    from opentelemetry.trace import StatusCode
+    from opentelemetry import trace  # noqa: F401
+    from opentelemetry.trace import StatusCode  # noqa: F401  # vulture: interface contract
 
     _OTEL_AVAILABLE = True
 except ImportError:
@@ -119,4 +119,64 @@ def trace_model_invocation(model_name: str, firm_id: str, input_tokens: int, out
         "model": model_name,
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
+    }
+
+
+def trace_dispatch_routing(
+    firm_id: str,
+    tier: str,
+    model: str,
+    session_pinned: bool,
+    latency_ms: float,
+    query_length: int,
+) -> dict[str, Any]:
+    """Trace a NadirClaw dispatch routing decision.
+
+    Item #14: Adds spans for every routing decision so they show up
+    in Cloud Trace for latency analysis and debugging.
+    """
+    tracer = get_tracer()
+    with tracer.start_as_current_span("dispatch.route") as span:
+        span.set_attribute("dispatch.firm_id", firm_id)
+        span.set_attribute("dispatch.tier", tier)
+        span.set_attribute("dispatch.model", model)
+        span.set_attribute("dispatch.session_pinned", session_pinned)
+        span.set_attribute("dispatch.latency_ms", latency_ms)
+        span.set_attribute("dispatch.query_length", query_length)
+        span.set_attribute("service.name", _SERVICE_NAME)
+
+    return {
+        "firm_id": firm_id,
+        "tier": tier,
+        "model": model,
+        "latency_ms": round(latency_ms, 2),
+    }
+
+
+def trace_judge6_evaluation(
+    risk_score: int,
+    risk_level: str,
+    approved: bool,
+    flags_count: int,
+    pipeline_ms: int,
+) -> dict[str, Any]:
+    """Trace a Judge #6 governance evaluation."""
+    tracer = get_tracer()
+    with tracer.start_as_current_span("judge6.evaluate") as span:
+        span.set_attribute("judge6.risk_score", risk_score)
+        span.set_attribute("judge6.risk_level", risk_level)
+        span.set_attribute("judge6.approved", approved)
+        span.set_attribute("judge6.flags_count", flags_count)
+        span.set_attribute("judge6.pipeline_ms", pipeline_ms)
+
+        if not approved:
+            span.add_event(
+                "judge6_blocked",
+                {"risk_score": risk_score, "risk_level": risk_level},
+            )
+
+    return {
+        "risk_score": risk_score,
+        "approved": approved,
+        "pipeline_ms": pipeline_ms,
     }

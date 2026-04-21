@@ -37,13 +37,16 @@ Do not mix these lanes casually. Consumer and enterprise economics are different
 - Lighthouse LHCI (ShadowTagAI): P93+ / A93+ / BP96 / SEO100
 - Structural tests: 68/68
 - Dead code: clean (vulture + ruff) — Kosmos dead code noted, production paths clean
-- CounselConduit: v3.1.0 LIVE on Cloud Run (20 API modules)
-- Cloud Armor WAF: `counselconduit-waf` (XSS + SQLi rules active)
-- Cloud Monitoring: 7 alert policies + email channel (17531835029676919705)
+- CounselConduit: v3.2.0 LIVE on Cloud Run (23 API modules, 33 endpoints)
+- Cloud Armor WAF: `counselconduit-waf` (XSS + SQLi + rate limiting active)
+- Cloud Monitoring: 9 alert policies + email channel (17531835029676919705) + SLO burn rate alert (17434870411493760882)
+- SLO: CounselConduit 99.5% Availability, 30-day rolling (service: F2cVj-pyTHmSv7dcU8LrBA, slo: -jycE9GTQGKQmincRmp3pA)
+- Firestore TTL: session_pins.expire_at ACTIVE (auto-delete expired sessions)
 - Security: Cor.30 v2.5 + OWASP LLM10 enforced (docs/SECURITY_DOD.md)
 - Pre-commit: Gitleaks + Ruff + Bandit + detect-private-key
 - Secret Manager: 23 secrets, 9 imported to OpenTofu state
 - OpenTofu: 19 resources provisioned (IAM + alerts + log metrics)
+- Terraform IaC: infra/terraform/counselconduit-monitoring/main.tf (339 LOC)
 - RISK_REGISTER: v9.0 (35 tracked risks)
 - Open PRs: 0
 
