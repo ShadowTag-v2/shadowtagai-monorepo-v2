@@ -195,6 +195,9 @@ unless the user explicitly directs a control plane change:
 - Branded Billboards: KovelAI (cyan neon) + ShadowTag AI (magenta neon) composited onto hero-drift via ffmpeg overlay
 - Billboard Assets: kovelai-billboard.png, shadowtag-billboard.png, og-billboard-branded.png, promo-screenshot.png
 - Google External Cognitive Suite: Flow + Mariner + Whisk + Labs FX + Opal + Vids — skill documented, payload dirs provisioned
+- Nano Banana 2/Pro: Gemini 3 image gen models in Google Flow (labs.google/fx/tools/flow), watermark-free downloads, 16:9 + 4 outputs, NB Pro = reasoning + Search + 4K + text rendering
+- Agent Starter Pack: `uvx agent-starter-pack` (ADK base + Cloud Run + Vertex AI sessions), ref: github.com/GoogleCloudPlatform/devrel-demos/ai-ml
+- Cinematic Scroll Workflow: NB2 (image) → Veo 3.1 (i2v, 8s 4K, native audio) → ffmpeg frames → scroll-driven hero section (frames on scroll, NOT video playback)
 - Firebase Preview Channels: kovelai--staging (7d TTL)
 - Security Headers: CSP + HSTS (preload) + XFO (DENY) + CORP + COOP + Permissions-Policy — all 8 verified live
 - Multi-site Deploy: kovelai.web.app + shadowtagai.web.app + shadowtag-omega-v4.web.app — all 3 live (2026-04-20)
