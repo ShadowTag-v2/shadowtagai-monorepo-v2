@@ -27,6 +27,8 @@ export class ScrollEngine {
    * @param {string} [config.frameExtension='.png'] - Frame file extension
    * @param {number} [config.preloadCount=10] - Frames to eagerly preload
    * @param {number} [config.bufferSize=5] - Frames to preload ahead of current
+   * @param {function} [config.onFirstFrame] - Callback when first frame is loaded
+   * @param {boolean} [config.preferWebP=true] - Use WebP if supported
    */
   constructor(config) {
     this.canvas = config.canvas;
@@ -37,12 +39,38 @@ export class ScrollEngine {
     this.frameExtension = config.frameExtension || '.png';
     this.preloadCount = config.preloadCount || 10;
     this.bufferSize = config.bufferSize || 5;
+    this.onFirstFrame = config.onFirstFrame || null;
+    this.preferWebP = config.preferWebP !== false;
 
     this.frames = new Array(this.frameCount);
     this.loadedFrames = new Set();
     this.currentFrame = 0;
     this.rafId = null;
     this.isReducedMotion = false;
+    this._webpSupported = null;
+  }
+
+  /**
+   * Detect WebP support.
+   * @returns {Promise<boolean>}
+   */
+  async detectWebPSupport() {
+    if (this._webpSupported !== null) return this._webpSupported;
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        this._webpSupported = img.width > 0 && img.height > 0;
+        if (this._webpSupported && this.preferWebP) {
+          this.frameExtension = '.webp';
+        }
+        resolve(this._webpSupported);
+      };
+      img.onerror = () => {
+        this._webpSupported = false;
+        resolve(false);
+      };
+      img.src = 'data:image/webp;base64,UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA';
+    });
   }
 
   /**
@@ -53,6 +81,9 @@ export class ScrollEngine {
     this.isReducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
+
+    // Detect WebP support for smaller payloads
+    await this.detectWebPSupport();
 
     this.resizeCanvas();
     window.addEventListener('resize', () => this.resizeCanvas());
@@ -65,8 +96,9 @@ export class ScrollEngine {
     }
     await Promise.all(preloadPromises);
 
-    // Draw first frame
+    // Draw first frame and signal loading complete
     this.drawFrame(0);
+    if (this.onFirstFrame) this.onFirstFrame();
 
     // If reduced motion, just show first frame and skip scroll binding
     if (this.isReducedMotion) {
