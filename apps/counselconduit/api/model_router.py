@@ -199,11 +199,22 @@ async def sync_quota_to_firestore(firm_id: str) -> None:
 
 
 class BYOKConfig(BaseModel):
-    """Bring-Your-Own-Key encryption config. Phase 4 enterprise feature."""
+    """Bring-Your-Own-Key configuration for enterprise tenants.
+
+    Supports customer-managed encryption keys via Cloud KMS.
+    Fields:
+        enabled: Whether BYOK is active for this tenant.
+        kms_key_uri: Full Cloud KMS CryptoKey resource name.
+        kms_rotation_period_days: Key rotation period in days (default 90).
+        kms_next_rotation_time: ISO 8601 timestamp for next scheduled rotation.
+        key_algorithm: KMS key algorithm (default GOOGLE_SYMMETRIC_ENCRYPTION).
+    """
 
     enabled: bool = False
-    kms_key_uri: str | None = None  # GCP KMS key URI
-    rotation_period_days: int = 90
+    kms_key_uri: str = ""
+    kms_rotation_period_days: int = 90
+    kms_next_rotation_time: str = ""
+    key_algorithm: str = "GOOGLE_SYMMETRIC_ENCRYPTION"
 
 
 # ── Session Pinning with TTL (Item 13) ────────────────────────────────────
