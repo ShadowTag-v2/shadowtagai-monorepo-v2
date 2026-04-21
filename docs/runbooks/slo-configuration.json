@@ -1,0 +1,23 @@
+{
+  "serviceName": "counselconduit",
+  "displayName": "CounselConduit Availability SLO",
+  "goal": 0.995,
+  "rollingPeriod": "2592000s",
+  "calendarPeriod": "MONTH",
+  "serviceLevelIndicator": {
+    "windowsBased": {
+      "windowPeriod": "300s",
+      "goodTotalRatioThreshold": {
+        "threshold": 0.995,
+        "performance": {
+          "goodTotalRatio": {
+            "goodServiceFilter": "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"counselconduit\" AND metric.type=\"run.googleapis.com/request_latencies\" AND metric.labels.response_code_class=\"2xx\"",
+            "totalServiceFilter": "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"counselconduit\" AND metric.type=\"run.googleapis.com/request_latencies\""
+          }
+        }
+      }
+    }
+  },
+  "notes": "99.5% availability SLO. Measured over 30-day rolling window. Error budget: 0.5% = ~3.6 hours/month of allowed downtime.",
+  "created_for": "Item #7 — Post-deploy config hardening"
+}

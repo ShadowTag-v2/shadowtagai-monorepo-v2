@@ -1,0 +1,67 @@
+# .github/workflows/load-test.yml
+# Item #16: k6 Load Test GitHub Action for PR Gate
+name: Load Test (k6)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/counselconduit/**'
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: 'Target URL to test'
+        required: false
+        default: 'https://staging---counselconduit-767252945109.us-central1.run.app'
+      vus:
+        description: 'Virtual Users'
+        required: false
+        default: '5'
+      duration:
+        description: 'Test Duration'
+        required: false
+        default: '30s'
+
+permissions:
+  contents: read
+
+jobs:
+  load-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          curl https://github.com/grafana/k6/releases/download/v1.7.1/k6-v1.7.1-linux-amd64.tar.gz -L | tar xzf -
+          sudo cp k6-v1.7.1-linux-amd64/k6 /usr/local/bin/
+
+      - name: Run Load Test
+        env:
+          BASE_URL: ${{ github.event.inputs.target_url || 'https://staging---counselconduit-767252945109.us-central1.run.app' }}
+          K6_VUS: ${{ github.event.inputs.vus || '5' }}
+          K6_DURATION: ${{ github.event.inputs.duration || '30s' }}
+        run: |
+          k6 run \
+            --vus ${K6_VUS} \
+            --duration ${K6_DURATION} \
+            --out json=results.json \
+            --no-color \
+            apps/counselconduit/tests/load-test.js
+
+      - name: Upload Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-results
+          path: results.json
+          retention-days: 30
+
+      - name: Check Thresholds
+        if: failure()
+        run: |
+          echo "::error::k6 load test thresholds were breached. Check results artifact."
+          echo "Review the load test script at apps/counselconduit/tests/load-test.js"

@@ -199,6 +199,15 @@ app.include_router(gdpr_handler_router)
 app.include_router(connect_onboarding_router)
 app.include_router(dispatch_router)
 
+# ── Static Files (admin dashboard) ────────────────────────────────────────
+import pathlib as _pathlib
+
+_static_dir = _pathlib.Path(__file__).resolve().parent.parent / "static"
+if _static_dir.is_dir():
+    from starlette.staticfiles import StaticFiles
+
+    app.mount("/static", StaticFiles(directory=str(_static_dir)), name="static")
+
 
 @app.get("/")
 async def root():
