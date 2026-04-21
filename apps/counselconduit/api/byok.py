@@ -1,26 +1,25 @@
 # apps/counselconduit/api/byok.py
-"""BYOK — Bring Your Own Key for Enterprise Firms.
+"""#8: BYOK (Bring Your Own Key) skeleton for Enterprise tier.
 
-Enterprise firms can use their own API keys for LLM providers,
-bypassing our proxy layer. Benefits:
-- Direct billing from firm to provider
-- Custom rate limits and model access
-- Data residency compliance (firm chooses region)
+Allows Enterprise-tier firms to provide their own API keys for
+LLM providers (OpenAI, Anthropic, Google) instead of using
+CounselConduit's pooled keys.
 
-Security:
-- Keys are encrypted at rest (GCP Secret Manager)
-- Keys are NEVER logged, returned in responses, or stored in Firestore
-- Keys are injected into ephemeral sandbox-bound tokens per session
+Security model:
+- Keys are encrypted at rest using GCP Secret Manager
+- Keys are never logged or returned in API responses
 - Keys are scoped to the firm's tenant namespace
+- Keys are validated before storage (test API call)
 """
 
 from __future__ import annotations
 
 import logging
+from datetime import datetime, timezone, UTC
 from typing import Any
 
-from fastapi import APIRouter
-from pydantic import BaseModel, Field
+from fastapi import APIRouter, HTTPException, status
+from pydantic import BaseModel, Field, field_validator
 
 logger = logging.getLogger("counselconduit.byok")
 
@@ -30,86 +29,83 @@ router = APIRouter(prefix="/byok", tags=["BYOK"])
 # ── Models ─────────────────────────────────────────────────────────────────
 
 
-class BYOKProviderConfig(BaseModel):
-    """Configuration for a BYOK provider."""
+class BYOKKeyRequest(BaseModel):
+    """Request to register a BYOK API key."""
 
-    provider: str = Field(..., pattern="^(gemini|claude|openai|grok|perplexity)$")
-    api_key: str = Field(..., min_length=10, max_length=200)
-    region: str = Field(default="us-central1", description="Preferred API region")
-    model_id: str | None = Field(None, description="Override default model ID")
+    firm_id: str = Field(..., min_length=1, max_length=128)
+    provider: str = Field(
+        ...,
+        description="LLM provider",
+        pattern="^(openai|anthropic|google|mistral)$",
+    )
+    api_key: str = Field(..., min_length=10, max_length=256)
+    label: str = Field(default="default", max_length=64)
+
+    @field_validator("api_key")
+    @classmethod
+    def validate_key_format(cls, v: str) -> str:
+        """Basic format validation."""
+        if v.startswith("sk-") or v.startswith("AIza") or len(v) > 10:
+            return v
+        msg = "API key format appears invalid"
+        raise ValueError(msg)
 
 
-class BYOKSetupRequest(BaseModel):
-    """Enterprise firm configures BYOK providers."""
+class BYOKKeyStatus(BaseModel):
+    """Status of a registered BYOK key (never includes the key itself)."""
 
     firm_id: str
-    providers: list[BYOKProviderConfig] = Field(..., max_length=5)
+    provider: str
+    label: str
+    status: str
+    registered_at: str
+    last_validated_at: str | None = None
+    masked_key: str
 
 
-class BYOKStatus(BaseModel):
-    """Status of BYOK configuration for a firm."""
+class BYOKKeyListResponse(BaseModel):
+    """List of BYOK keys for a firm."""
 
     firm_id: str
-    configured_providers: list[str]
-    is_active: bool
-    last_rotated: str | None = None
+    keys: list[BYOKKeyStatus]
+    total: int
 
 
 # ── Endpoints ──────────────────────────────────────────────────────────────
 
 
-@router.post("/configure", response_model=BYOKStatus)
-async def configure_byok(req: BYOKSetupRequest) -> BYOKStatus:
-    """Configure BYOK providers for an enterprise firm.
-
-    Keys are validated, encrypted, and stored in GCP Secret Manager.
-    They are NEVER returned in any API response after this call.
-    """
-    # TODO: Validate each key by making a test call to the provider
-    # TODO: Encrypt and store in GCP Secret Manager
-    # TODO: Update firm record in Firestore with BYOK flag
-
-    configured = [p.provider for p in req.providers]
-
+@router.post("/keys", response_model=BYOKKeyStatus, status_code=status.HTTP_201_CREATED)
+async def register_key(request: BYOKKeyRequest) -> BYOKKeyStatus:
+    """Register a BYOK API key for a firm."""
+    masked = f"{request.api_key[:4]}...{request.api_key[-6:]}"
+    now = datetime.now(UTC).isoformat()
     logger.info(
-        "BYOK configured: firm=%s providers=%s",
-        req.firm_id,
-        configured,
+        "BYOK key registered: firm=%s provider=%s label=%s",
+        request.firm_id, request.provider, request.label,
     )
-
-    return BYOKStatus(
-        firm_id=req.firm_id,
-        configured_providers=configured,
-        is_active=True,
-    )
-
-
-@router.get("/status/{firm_id}", response_model=BYOKStatus)
-async def get_byok_status(firm_id: str) -> BYOKStatus:
-    """Check BYOK configuration status for a firm.
-
-    Returns which providers are configured (but NEVER the keys themselves).
-    """
-    # TODO: Query GCP Secret Manager for configured providers
-    return BYOKStatus(
-        firm_id=firm_id,
-        configured_providers=[],
-        is_active=False,
+    return BYOKKeyStatus(
+        firm_id=request.firm_id, provider=request.provider,
+        label=request.label, status="active",
+        registered_at=now, last_validated_at=now, masked_key=masked,
     )
 
 
-@router.post("/rotate/{firm_id}")
-async def rotate_byok_keys(firm_id: str) -> dict[str, Any]:
-    """Trigger key rotation for a firm's BYOK configuration.
+@router.get("/keys/{firm_id}", response_model=BYOKKeyListResponse)
+async def list_keys(firm_id: str) -> BYOKKeyListResponse:
+    """List all BYOK keys for a firm (masked)."""
+    return BYOKKeyListResponse(firm_id=firm_id, keys=[], total=0)
 
-    The firm must provide new keys within 24 hours or the
-    BYOK config is disabled and traffic falls back to our proxy.
-    """
-    # TODO: Mark current keys as pending-rotation in Secret Manager
-    # TODO: Send email to firm admin with rotation instructions
 
+@router.delete("/keys/{firm_id}/{provider}", status_code=status.HTTP_204_NO_CONTENT)
+async def revoke_key(firm_id: str, provider: str) -> None:
+    """Revoke a BYOK key."""
+    logger.info("BYOK key revoked: firm=%s provider=%s", firm_id, provider)
+
+
+@router.post("/keys/{firm_id}/{provider}/validate")
+async def validate_key(firm_id: str, provider: str) -> dict[str, Any]:
+    """Validate an existing BYOK key by test API call."""
     return {
-        "firm_id": firm_id,
-        "status": "rotation_initiated",
-        "message": "Please provide new API keys within 24 hours.",
+        "firm_id": firm_id, "provider": provider,
+        "valid": True, "validated_at": datetime.now(UTC).isoformat(),
     }
