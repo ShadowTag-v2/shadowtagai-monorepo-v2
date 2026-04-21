@@ -39,9 +39,7 @@ class J6Judge6Bridge:
 
     def __init__(self) -> None:
         """Initialize J-6 bridge with staff designation lookup."""
-        self._j6_designation: JStaffDesignation = (
-            JTFHeadquarters.get_routing_authority("J6")
-        )
+        self._j6_designation: JStaffDesignation = JTFHeadquarters.get_routing_authority("J6")
         logger.info(
             "J-6 Bridge initialized: %s (%s)",
             self._j6_designation.agent_role,
@@ -58,9 +56,7 @@ class J6Judge6Bridge:
         """Return the J-6 authority code (e.g., 'J-6')."""
         return self._j6_designation.j_code
 
-    async def authorize_validation(
-        self, request: dict[str, Any], request_id: str = "default"
-    ) -> dict[str, Any]:
+    async def authorize_validation(self, request: dict[str, Any], request_id: str = "default") -> dict[str, Any]:
         """Authorize a validation request through J-6 routing authority.
 
         This is the pre-flight check before Judge6 pipeline execution.
