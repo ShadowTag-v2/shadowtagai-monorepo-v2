@@ -160,17 +160,13 @@ async def _verify_admin_caller(request: Request) -> str:
                 },
             ) from e
 
-    # Check for internal caller header (Cloud Run → Cloud Run)
-    internal_header = request.headers.get("X-Cloud-Trace-Context")
-    if internal_header:
-        return "internal-service"
-
+    # No valid auth method found — reject
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail={
             "type": "https://api.counselconduit.com/errors/unauthorized",
             "title": "Unauthorized",
-            "detail": "Admin endpoints require authentication.",
+            "detail": "Admin endpoints require authentication. Provide a valid OIDC Bearer token.",
         },
     )
 
