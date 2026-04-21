@@ -129,7 +129,7 @@ unless the user explicitly directs a control plane change:
 - Firestore: 2 databases (`(default)`, `shadowtag-engine`) — CANONICAL database layer, PITR ENABLED (7-day retention), delete-protection ENABLED (Supabase evaluated and rejected; see Firestore-vs-Supabase verdict below)
 - Firestore rules: zero-trust deployed (default deny-all, admin-only access)
 - Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v9.6)
-- Semantic Kernel: .NET 11.0 Preview 2 (UNVERIFIED — see GEMINI.md v9.6)
+- Semantic Kernel: .NET 10.0.106 (net10.0, SK 1.74.0, verified build-clean, OnExternalEvent is correct API)
 - Tests: 196 passed, 2 skipped (torch), 0 failed (E2E GDPR fixed, live Cloud Run verified)
 - Lighthouse: shadowtagai P96/A100/BP100/SEO100, kovelai P99/A100/BP100/SEO100, uphillsnowball A88+ (noindex intentional)
 - Dead code: clean (vulture 90%+ = 0 findings, 10 whitelisted false positives)
@@ -163,14 +163,14 @@ unless the user explicitly directs a control plane change:
 - Secrets doctrine: `secrets_manager_doctrine` replaces `env_master_doctrine` in GEMINI.md v9.5
 - ANE NPU: ane_bridge.py scaffolded, libane_bridge.dylib exists in archive/third_party only (not compiled in-tree), INT8 benchmark UNVERIFIED
 - ANE GGML: llama.cpp-ane compiled (GGML_ANE=ON), libggml-ane.dylib + llama-server at libs/cyberpunk_stack/llama.cpp-ane/build/bin/ (Apr 5), runtime benchmark UNVERIFIED
-- Semantic Kernel: ShadowTagV4.Kernel .csproj exists (net11.0, SK 1.74.0), OnExternalEvent→OnInputEvent fix NOT applied to surviving Process.cs:144, SKEXP0080 suppressed, dotnet not in PATH
+- Semantic Kernel: ShadowTagV4.Kernel .csproj (net10.0, SK 1.74.0), OnExternalEvent IS correct API (OnInputEvent does NOT exist in SK Process.Core 1.21.0-alpha), src/dotnet/AiYou.Kernel duplicate DELETED — single canonical copy at apps/aiyou-kernel, SKEXP0080 suppressed, dotnet in PATH via Homebrew
 - Aegaeon Protocol: context_cache.py + swarm_router.py scaffolded (core/aegaeon/), no active slab (data/aegaeon/ empty), 90% discount available via implicit caching on Gemini 2.5+ models
 - Sovereign MLX: kv_cache_slab.py scaffolded (core/sovereign_mlx/), slab_prompt.txt exists (26KB corpus), no kv_cache_slab.bin built
 - Intelligence Pipeline: 9 scripts (domain_tagger → github_sync), retriever.py LanceDB search wired
 - Drive Ingest: 2,860 docs extracted + 1,088 markdown files queued for re-vectorization (LanceDB table rebuilt 2026-04-20)
 - Zero CPU Router: 4-tier dispatch cascade (ANE→Metal/MLX→Vertex AI), vulture fixes applied
 - KAIROS Daemon: datetime.UTC→datetime.timezone.utc fix, --once test passes
-- .venv: CPython 3.14.3 + mlx + litellm 1.83.7 + lancedb 0.30.2 + scipy 1.17.1 + numpy 2.4.3
+- .venv: CPython 3.14.3 + mlx + litellm 1.83.10 + lancedb 0.30.2 + scipy 1.17.1 + numpy 2.4.4 + fastapi 0.136.0 + stripe 15.0.1 + grpcio 1.80.0 + dspy 3.1.3 + firebase-admin 7.4.0
 - Cor.Autoresearch: Karpathy evidence-based ML loop (val_bpb metric, 5-min budget, git reset on failure)
 - Operator Invariants: v2 with full sovereign compute topology, Aegaeon protocol, intelligence pipeline state
 - Governance Recovery: 7 packages from Claude mono-fresh (control/pnkln/governance, core/governance, core/zt1, core/lawtrack, src/lawtrack, infra/migrations, apps/lawtrack-ui)
