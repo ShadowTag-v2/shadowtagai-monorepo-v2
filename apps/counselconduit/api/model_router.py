@@ -428,6 +428,20 @@ async def dispatch_request(
     model = select_model(req)
     tier = classify_prompt(query) if query else DispatchTier.SIMPLE
 
+    # ── arXiv 2512.14982: Prompt Repetition (Zero-Cost Accuracy Boost) ────
+    # For non-reasoning model tiers (flash, lite, mini, haiku), repeat the
+    # user's instruction in the context. Boosts accuracy 1-8% with zero
+    # additional output tokens or latency.
+    # Source: Leviathan, Kalman, Matias (Google Research)
+    # DO NOT apply to: thinking/reasoning models (Gemini thinking, extended thinking)
+    _NON_REASONING_SIGNALS = ("flash", "lite", "mini", "haiku", "pplx")
+    prompt_repeated = False
+    effective_query = query
+    if any(sig in model.model_id.lower() for sig in _NON_REASONING_SIGNALS):
+        if not model.model_id.lower().endswith("-thinking"):
+            effective_query = f"{query}\n\n---\n[Instruction Repeat]: {query}"
+            prompt_repeated = True
+
     # Record metrics for Cloud Monitoring
     record_dispatch(tier.value, model.model_id)
 
@@ -446,6 +460,8 @@ async def dispatch_request(
         "tier": tier.value,
         "session_pinned": bool(get_pinned_model(session_id)) if session_id else False,
         "cost_per_1k_input": model.cost_per_1k_input,
+        "prompt_repeated": prompt_repeated,
+        "effective_query": effective_query,
     }
 
 

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CounselConduit — Provider Health Dashboard</title>
+    <meta name="description" content="Admin dashboard for CounselConduit model provider health monitoring.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-card: #14141f;
+            --bg-card-hover: #1a1a2e;
+            --text-primary: #e8e8f0;
+            --text-secondary: #8888a0;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-amber: #f59e0b;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --border-subtle: rgba(255,255,255,0.06);
+            --glow-green: 0 0 20px rgba(34,197,94,0.15);
+            --glow-red: 0 0 20px rgba(239,68,68,0.15);
+            --radius: 12px;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .refresh-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        .refresh-btn:hover { background: var(--bg-card-hover); }
+        .refresh-btn.loading { opacity: 0.6; cursor: wait; }
+        .summary-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-card.healthy { box-shadow: var(--glow-green); }
+        .stat-card.unhealthy { box-shadow: var(--glow-red); }
+        .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+        .stat-value { font-size: 2rem; font-weight: 700; margin-top: 0.25rem; }
+        .stat-value.green { color: var(--accent-green); }
+        .stat-value.red { color: var(--accent-red); }
+        .stat-value.amber { color: var(--accent-amber); }
+        .stat-value.blue { color: var(--accent-blue); }
+        .providers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .provider-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .provider-card:hover { transform: translateY(-2px); }
+        .provider-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            transition: background 0.3s;
+        }
+        .provider-card.up::before { background: linear-gradient(90deg, var(--accent-green), transparent); }
+        .provider-card.down::before { background: linear-gradient(90deg, var(--accent-red), transparent); }
+        .provider-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .status-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .status-dot.up { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
+        .status-dot.down { background: var(--accent-red); box-shadow: 0 0 8px var(--accent-red); animation: pulse-dot 1.5s infinite; }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .provider-meta { font-size: 0.875rem; color: var(--text-secondary); }
+        .provider-meta span { display: block; margin-top: 0.25rem; }
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+        .circuit-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .circuit-state {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .circuit-state.closed { color: var(--accent-green); }
+        .circuit-state.open { color: var(--accent-red); }
+        .auth-form {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius);
+            padding: 2rem;
+            max-width: 500px;
+            margin: 4rem auto;
+        }
+        .auth-form input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: var(--font);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        .auth-form button {
+            margin-top: 1rem;
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: var(--font);
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .auth-form button:hover { opacity: 0.9; }
+        .last-updated {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 2rem;
+        }
+        .error-banner {
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            color: var(--accent-red);
+            font-size: 0.875rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="auth-view" class="auth-form" style="display:none;">
+    <h1 style="font-size:1.25rem; margin-bottom:1rem;">🔒 Admin Authentication</h1>
+    <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:1rem;">
+        Enter your OIDC identity token to access the dashboard.
+    </p>
+    <label class="stat-label" for="token-input">Bearer Token</label>
+    <input type="password" id="token-input" placeholder="eyJhbGci...">
+    <button onclick="authenticate()">Authenticate</button>
+</div>
+
+<div id="dashboard-view" class="dashboard" style="display:none;">
+    <header>
+        <h1>⚡ CounselConduit Operations</h1>
+        <button class="refresh-btn" id="refresh-btn" onclick="refreshAll()">↻ Refresh</button>
+    </header>
+
+    <div id="error-banner" class="error-banner"></div>
+
+    <div class="summary-row" id="summary-row">
+        <div class="stat-card" id="stat-healthy">
+            <div class="stat-label">Providers Healthy</div>
+            <div class="stat-value green" id="healthy-count">—</div>
+        </div>
+        <div class="stat-card" id="stat-circuit">
+            <div class="stat-label">Circuit Breaker</div>
+            <div class="stat-value green" id="circuit-status">—</div>
+        </div>
+        <div class="stat-card" id="stat-firms">
+            <div class="stat-label">Active Firms</div>
+            <div class="stat-value blue" id="firms-count">—</div>
+        </div>
+        <div class="stat-card" id="stat-errors">
+            <div class="stat-label">Circuit Errors</div>
+            <div class="stat-value" id="error-count">—</div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Model Providers</h2>
+    <div class="providers-grid" id="providers-grid">
+        <!-- Populated by JS -->
+    </div>
+
+    <h2 class="section-title">Circuit Breaker</h2>
+    <div class="circuit-card" id="circuit-card">
+        <div class="circuit-state closed" id="circuit-state-text">Loading...</div>
+        <div class="provider-meta" id="circuit-details"></div>
+    </div>
+
+    <h2 class="section-title">Firm Policies</h2>
+    <div class="providers-grid" id="firms-grid">
+        <!-- Populated by JS -->
+    </div>
+
+    <div class="last-updated" id="last-updated">Last updated: never</div>
+</div>
+
+<script>
+const BASE = 'https://counselconduit-767252945109.us-central1.run.app';
+let TOKEN = '';
+
+function authenticate() {
+    TOKEN = document.getElementById('token-input').value.trim();
+    if (!TOKEN) return;
+    document.getElementById('auth-view').style.display = 'none';
+    document.getElementById('dashboard-view').style.display = 'block';
+    refreshAll();
+}
+
+async function apiFetch(path) {
+    const r = await fetch(`${BASE}${path}`, {
+        headers: { 'Authorization': `Bearer ${TOKEN}` }
+    });
+    if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+    return r.json();
+}
+
+async function refreshAll() {
+    const btn = document.getElementById('refresh-btn');
+    btn.classList.add('loading');
+    btn.textContent = '⏳ Loading...';
+    const banner = document.getElementById('error-banner');
+    banner.style.display = 'none';
+
+    try {
+        const [providers, circuit, policies] = await Promise.allSettled([
+            apiFetch('/admin/provider-health'),
+            apiFetch('/admin/circuit-breaker'),
+            apiFetch('/admin/firm-policies'),
+        ]);
+
+        if (providers.status === 'fulfilled') renderProviders(providers.value);
+        if (circuit.status === 'fulfilled') renderCircuit(circuit.value);
+        if (policies.status === 'fulfilled') renderPolicies(policies.value);
+
+        document.getElementById('last-updated').textContent =
+            `Last updated: ${new Date().toLocaleTimeString()}`;
+    } catch (e) {
+        banner.textContent = `Error: ${e.message}`;
+        banner.style.display = 'block';
+    }
+
+    btn.classList.remove('loading');
+    btn.textContent = '↻ Refresh';
+}
+
+function renderProviders(data) {
+    document.getElementById('healthy-count').textContent =
+        `${data.healthy_count}/${data.total_providers}`;
+
+    const grid = document.getElementById('providers-grid');
+    grid.innerHTML = '';
+
+    for (const [name, info] of Object.entries(data.providers)) {
+        const up = info.reachable;
+        const card = document.createElement('div');
+        card.className = `provider-card ${up ? 'up' : 'down'}`;
+        card.innerHTML = `
+            <div class="provider-name">
+                <span class="status-dot ${up ? 'up' : 'down'}"></span>
+                ${name.charAt(0).toUpperCase() + name.slice(1)}
+            </div>
+            <div class="provider-meta">
+                <span>Status: ${up ? `✅ ${info.status_code}` : `❌ ${info.error || 'unreachable'}`}</span>
+                ${info.latency_ms ? `<span>Latency: ${info.latency_ms}ms</span>` : ''}
+            </div>
+        `;
+        grid.appendChild(card);
+    }
+}
+
+function renderCircuit(data) {
+    const el = document.getElementById('circuit-status');
+    const stateText = document.getElementById('circuit-state-text');
+    const details = document.getElementById('circuit-details');
+    const errCount = document.getElementById('error-count');
+    const statCard = document.getElementById('stat-circuit');
+
+    if (data.open) {
+        el.textContent = 'OPEN';
+        el.className = 'stat-value red';
+        stateText.textContent = '🔴 CIRCUIT OPEN — Load shedding active';
+        stateText.className = 'circuit-state open';
+        statCard.className = 'stat-card unhealthy';
+    } else {
+        el.textContent = 'CLOSED';
+        el.className = 'stat-value green';
+        stateText.textContent = '🟢 CIRCUIT CLOSED — Normal operation';
+        stateText.className = 'circuit-state closed';
+        statCard.className = 'stat-card healthy';
+    }
+
+    errCount.textContent = data.errors_in_window;
+    errCount.className = `stat-value ${data.errors_in_window > 5 ? 'amber' : 'green'}`;
+
+    details.innerHTML = `
+        <span>Errors: ${data.errors_in_window} / ${data.threshold}</span>
+        <span>Window: ${data.window_seconds}s | Cooldown: ${data.cooldown_seconds}s</span>
+    `;
+}
+
+function renderPolicies(data) {
+    document.getElementById('firms-count').textContent = data.count;
+    const grid = document.getElementById('firms-grid');
+    grid.innerHTML = '';
+
+    for (const p of data.policies) {
+        const card = document.createElement('div');
+        card.className = 'provider-card up';
+        card.innerHTML = `
+            <div class="provider-name">${p.firm_id}</div>
+            <div class="provider-meta">
+                <span>Models: ${(p.allowed_models || []).join(', ')}</span>
+                <span>Rate Limit: ${p.max_rpm} RPM / ${p.max_daily} daily</span>
+                <span>BYOK: ${p.byok_enabled ? '✅ Enabled' : '❌ Disabled'}</span>
+            </div>
+        `;
+        grid.appendChild(card);
+    }
+
+    if (data.count === 0) {
+        grid.innerHTML = '<div class="provider-card"><div class="provider-meta">No firm policies configured</div></div>';
+    }
+}
+
+// Auto-show auth form on load
+document.getElementById('auth-view').style.display = 'block';
+
+// Auto-refresh every 30 seconds when authenticated
+setInterval(() => { if (TOKEN) refreshAll(); }, 30000);
+</script>
+
+</body>
+</html>
