@@ -221,6 +221,14 @@ unless the user explicitly directs a control plane change:
 - .env quarantine: 5 Kosmos test configs untracked from git index, *.env in .gitignore
 - Vulture whitelist: vulture_whitelist.py added (NotebookLM dynamic import false positive)
 - Dead code sweep: 10 vulture findings fixed (judge_architecture.py, fabric.py, judge_six_pipeline.py, governance_tools.py)
+- Skills Fleet: 160→182 (22 community skills cherry-picked from antigravity-awesome-skills 1,415-skill repo)
+- Media MCP Server: labs/uphillsnowball/media-mcp-server/ (4 files, Veo 3.1 + NB Pro, CORS + rate limiting + GCS sanitization)
+- Cinematic Scroll: labs/uphillsnowball/cinematic-scroll/ (8 files, scroll-driven frame renderer, Lighthouse A95/BP96/SEO100, Docker+nginx)
+- Reference Agents: labs/uphillsnowball/reference_agents/ (54 files sparse-cloned from devrel-demos agent-factory)
+- Memory Kernel Analysis: 8 adoptable patterns documented (typed knowledge, temporal decay, spreading activation, closure metrics, token budgeting, view generation, event sourcing, file-first index) — selective adoption path, NOT wholesale migration
+- NotebookLM MCP: Evaluated YES — `uv tool install notebooklm-mcp-cli`, cookie-based auth, 50 queries/day free, extends External Cognitive Suite
+- Awesome-AITools Catalog: 239 tools audited, 4 high-value candidates (MemPalace 96.6% recall, codesight 9-13x token reduction, NadirClaw 10ms LLM router, CLI-Anything agent-native CLIs)
+- antigravity-awesome-skills: 1,415 community skills cataloged at github.com/anthropics/awesome-claude-code-skills, 22 installed (gcp-cloud-run, stripe-integration, k6-load-testing, production-code-audit, scroll-experience, prompt-caching, cost-optimization, pci-compliance, saas-multi-tenant, micro-saas-launcher, startup-financial-modeling, progressive-web-app, seo-technical, andrej-karpathy, pydantic-ai, design-taste-frontend, deep-research, notebooklm, fastapi-pro, cloud-architect, gdpr-data-handling, payment-integration)
 
 ## Firestore-vs-Supabase verdict
 
