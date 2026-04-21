@@ -52,27 +52,17 @@ async def generate_image(
     # gemini_client = Gemini()
     # genai_client = gemini_client.api_client
     genai_client = genai.Client()
-    content = types.Content(
-        parts=[types.Part.from_text(text=prompt)],
-        role="user"
-    )
+    content = types.Content(parts=[types.Part.from_text(text=prompt)], role="user")
     if source_image_gsc_uri:
         guessed_mime_type, _ = mimetypes.guess_type(source_image_gsc_uri)
         if not guessed_mime_type:
             # Handle the case where mime type is not found, e.g., by raising
             # an error or using a default
-            raise ValueError(
-                f"Could not determine mime type for {source_image_gsc_uri}")
+            raise ValueError(f"Could not determine mime type for {source_image_gsc_uri}")
         mime_type = guessed_mime_type
 
         content.parts.insert(  # type: ignore
-            0,
-            types.Part(
-                file_data=types.FileData(
-                    file_uri=source_image_gsc_uri,
-                    mime_type=mime_type
-                )
-            )
+            0, types.Part(file_data=types.FileData(file_uri=source_image_gsc_uri, mime_type=mime_type))
         )
 
     asset = MediaAsset(uri="")
@@ -84,8 +74,8 @@ async def generate_image(
                 response_modalities=["IMAGE"],
                 image_config=types.ImageConfig(
                     aspect_ratio=aspect_ratio,
-                )
-            )
+                ),
+            ),
         )
         response_text = ""
         if response and response.parts:
@@ -99,7 +89,7 @@ async def generate_image(
                     gcs_uri = await upload_data_to_gcs(
                         "mcp-tools",
                         part.inline_data.data,
-                        part.inline_data.mime_type  # type: ignore
+                        part.inline_data.mime_type,  # type: ignore
                     )
                     asset = MediaAsset(uri=gcs_uri)
                     break
@@ -111,8 +101,6 @@ async def generate_image(
     if not asset.uri:
         asset.error = "No image was generated."
     else:
-        asset.uri = asset.uri.replace('gs://', AUTHORIZED_URI)
-        logging.info(
-            f"Image URL: {asset.uri}"
-        )
+        asset.uri = asset.uri.replace("gs://", AUTHORIZED_URI)
+        logging.info(f"Image URL: {asset.uri}")
     return asset

@@ -89,9 +89,7 @@ def recall_score(
     confidence = max(0.0, min(1.0, ki.confidence))
 
     # Temporal decay with per-type half-life
-    half_life = half_life_override or TYPE_HALF_LIVES.get(
-        ki.ki_type, DEFAULT_HALF_LIFE_DAYS
-    )
+    half_life = half_life_override or TYPE_HALF_LIVES.get(ki.ki_type, DEFAULT_HALF_LIFE_DAYS)
     decay = temporal_decay(ki.age_days, half_life)
 
     # Combined score

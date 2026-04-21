@@ -55,6 +55,7 @@ def test_turboquant():
         print("  ✅ PASS")
     except ImportError:
         import pytest
+
         pytest.skip("torch not installed")
     except Exception as e:
         print(f"  ❌ FAIL: {e}")
@@ -80,6 +81,7 @@ def test_aimdo_allocator():
         print("  ✅ PASS")
     except ImportError:
         import pytest
+
         pytest.skip("torch/psutil not installed")
     except Exception as e:
         print(f"  ❌ FAIL: {e}")

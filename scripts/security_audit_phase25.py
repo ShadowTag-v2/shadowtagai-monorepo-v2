@@ -29,12 +29,12 @@ AUDIT_FILES = [
 # Security patterns to check
 CHECKS = {
     "no_hardcoded_keys": {
-        "pattern": r'(sk_live_|sk_test_|AIza|AKIA|ghp_|gho_|glpat-)',
+        "pattern": r"(sk_live_|sk_test_|AIza|AKIA|ghp_|gho_|glpat-)",
         "severity": "CRITICAL",
         "description": "Hardcoded API keys detected",
     },
     "no_eval_exec": {
-        "pattern": r'\beval\s*\(|\bexec\s*\(',
+        "pattern": r"\beval\s*\(|\bexec\s*\(",
         "severity": "HIGH",
         "description": "Dynamic code execution (eval/exec)",
     },
@@ -44,22 +44,22 @@ CHECKS = {
         "description": "SQL injection via f-string concatenation",
     },
     "no_pickle": {
-        "pattern": r'\bpickle\.loads?\b',
+        "pattern": r"\bpickle\.loads?\b",
         "severity": "HIGH",
         "description": "Unsafe deserialization (pickle)",
     },
     "no_shell_true": {
-        "pattern": r'subprocess\.\w+\(.*shell\s*=\s*True',
+        "pattern": r"subprocess\.\w+\(.*shell\s*=\s*True",
         "severity": "HIGH",
         "description": "Shell injection via subprocess(shell=True)",
     },
     "no_debug_true": {
-        "pattern": r'debug\s*=\s*True',
+        "pattern": r"debug\s*=\s*True",
         "severity": "MEDIUM",
         "description": "Debug mode enabled in production",
     },
     "input_validation": {
-        "pattern": r'BaseModel|Field\(|validator|field_validator',
+        "pattern": r"BaseModel|Field\(|validator|field_validator",
         "severity": "INFO",
         "description": "Input validation present (Pydantic)",
         "want_match": True,
@@ -72,13 +72,15 @@ def audit_file(filepath: str) -> list[dict]:
     findings = []
 
     if not os.path.exists(filepath):
-        findings.append({
-            "file": filepath,
-            "severity": "WARNING",
-            "check": "file_exists",
-            "message": "File not found",
-            "line": 0,
-        })
+        findings.append(
+            {
+                "file": filepath,
+                "severity": "WARNING",
+                "check": "file_exists",
+                "message": "File not found",
+                "line": 0,
+            }
+        )
         return findings
 
     with open(filepath) as f:
@@ -90,23 +92,27 @@ def audit_file(filepath: str) -> list[dict]:
         matches = list(re.finditer(check["pattern"], content, re.IGNORECASE))
 
         if want_match and not matches:
-            findings.append({
-                "file": filepath,
-                "severity": "WARNING",
-                "check": check_name,
-                "message": f"Missing: {check['description']}",
-                "line": 0,
-            })
+            findings.append(
+                {
+                    "file": filepath,
+                    "severity": "WARNING",
+                    "check": check_name,
+                    "message": f"Missing: {check['description']}",
+                    "line": 0,
+                }
+            )
         elif not want_match and matches:
             for m in matches:
-                line_num = content[:m.start()].count("\n") + 1
-                findings.append({
-                    "file": filepath,
-                    "severity": check["severity"],
-                    "check": check_name,
-                    "message": check["description"],
-                    "line": line_num,
-                })
+                line_num = content[: m.start()].count("\n") + 1
+                findings.append(
+                    {
+                        "file": filepath,
+                        "severity": check["severity"],
+                        "check": check_name,
+                        "message": check["description"],
+                        "line": line_num,
+                    }
+                )
 
     return findings
 

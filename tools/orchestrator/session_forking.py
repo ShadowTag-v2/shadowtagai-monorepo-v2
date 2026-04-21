@@ -30,9 +30,7 @@ class WorkUnit:
     files: list[str] = field(default_factory=list)
     description: str = ""
     status: str = "pending"  # pending, in_progress, complete, failed, rolled_back
-    created_at: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
-    )
+    created_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     completed_at: str | None = None
     verification: str | None = None
     rollback_commands: list[str] = field(default_factory=list)
@@ -94,9 +92,7 @@ def start_fork(fork: WorkUnit) -> WorkUnit:
     return fork
 
 
-def complete_fork(
-    fork: WorkUnit, verification_result: str | None = None
-) -> WorkUnit:
+def complete_fork(fork: WorkUnit, verification_result: str | None = None) -> WorkUnit:
     """Mark a fork as complete with optional verification."""
     fork.status = "complete"
     fork.completed_at = datetime.now(UTC).isoformat()

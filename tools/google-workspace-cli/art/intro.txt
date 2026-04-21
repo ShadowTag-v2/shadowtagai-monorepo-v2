@@ -1,4 +1,4 @@
-          
+
           ╔════════════════════════════════════════════════╗
           ║                                                ║
           ║           ██████╗ ██╗     ██╗███████╗          ║
@@ -13,17 +13,17 @@
           ║              One tool. Every API.              ║
           ║                                                ║
           ╚════════════════════════════════════════════════╝
-        
+
                   ⭐ github.com/googleworkspace/cli
-        
+
                     npm i -g @googleworkspace/cli
-        
+
                   ────────────────────────────────
                          Built with Rust. 🦀
                   ────────────────────────────────
-        
-                       🚀 Drive    📧 Gmail              
-                       📅 Calendar 📊 Sheets             
-                       📝 Docs     🎨 Slides             
-                       💬 Chat     👥 Admin              
-  
+
+                       🚀 Drive    📧 Gmail
+                       📅 Calendar 📊 Sheets
+                       📝 Docs     🎨 Slides
+                       💬 Chat     👥 Admin
+

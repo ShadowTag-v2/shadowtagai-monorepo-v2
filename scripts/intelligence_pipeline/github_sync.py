@@ -39,7 +39,9 @@ def get_installation_token() -> str:
         if auth_script.exists():
             result = subprocess.run(
                 [sys.executable, str(auth_script), "--token-only"],
-                capture_output=True, text=True, cwd=str(REPO_ROOT),
+                capture_output=True,
+                text=True,
+                cwd=str(REPO_ROOT),
             )
             if result.returncode == 0:
                 return result.stdout.strip()
@@ -81,7 +83,9 @@ def push_feature_branch(branch_name: str) -> bool:
     try:
         result = subprocess.run(
             ["git", "push", "origin", branch_name],
-            capture_output=True, text=True, cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True,
+            cwd=str(REPO_ROOT),
         )
         if result.returncode == 0:
             logger.info(f"Pushed branch: {branch_name}")

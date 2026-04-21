@@ -74,9 +74,7 @@ def ki_tmpdir(tmp_path: Path) -> Path:
     )
     artifacts1 = ki1 / "artifacts"
     artifacts1.mkdir()
-    (artifacts1 / "analysis.md").write_text(
-        "# Firestore vs Supabase\nFirestore chosen for GCP native integration."
-    )
+    (artifacts1 / "analysis.md").write_text("# Firestore vs Supabase\nFirestore chosen for GCP native integration.")
 
     # Create another sample KI
     ki2 = ki_dir / "security-constraint"
@@ -161,9 +159,7 @@ class TestFTS5Index:
     def test_init_creates_tables(self, tmp_path: Path) -> None:
         """init_index should create ki_meta, ki_fts, and ki_artifacts tables."""
         conn = init_index(tmp_path)
-        tables = conn.execute(
-            "SELECT name FROM sqlite_master WHERE type='table' OR type='view'"
-        ).fetchall()
+        tables = conn.execute("SELECT name FROM sqlite_master WHERE type='table' OR type='view'").fetchall()
         table_names = {t[0] for t in tables}
         assert "ki_meta" in table_names
         assert "ki_artifacts" in table_names
@@ -203,9 +199,7 @@ class TestFTS5Index:
 
         # Verify search works
         conn = sqlite3.connect(str(db_path))
-        results = conn.execute(
-            "SELECT name FROM ki_meta ORDER BY name"
-        ).fetchall()
+        results = conn.execute("SELECT name FROM ki_meta ORDER BY name").fetchall()
         assert len(results) == 2
         conn.close()
 

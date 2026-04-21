@@ -366,7 +366,9 @@ class GeminiClient:
             }
 
         """
-        await self._check_rate_limit("gemini-3.1-flash-lite-preview")  # Use faster model for metadata
+        await self._check_rate_limit(
+            "gemini-3.1-flash-lite-preview"
+        )  # Use faster model for metadata
 
         prompt = f"""
         Based on this {content_type} content description, generate optimized metadata:

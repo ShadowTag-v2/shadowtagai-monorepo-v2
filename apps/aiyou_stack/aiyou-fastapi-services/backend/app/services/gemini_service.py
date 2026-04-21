@@ -26,7 +26,9 @@ from app.models.gemini import (
 class GeminiService:
     """Service for interacting with Google Gemini AI for analysis tasks."""
 
-    def __init__(self, api_key: str | None = None, model_name: str = "gemini-3.1-flash-lite-preview"):
+    def __init__(
+        self, api_key: str | None = None, model_name: str = "gemini-3.1-flash-lite-preview"
+    ):
         """Initialize the Gemini service.
 
         Args:

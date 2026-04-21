@@ -28,9 +28,7 @@ class ToolResult:
     result: Any = None
     error: str | None = None
     elapsed_ms: float = 0.0
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
 
 # Registry of in-process tool implementations
@@ -128,12 +126,7 @@ def auto_register_orchestrator_tools() -> list[str]:
 
 def list_tools() -> dict[str, str]:
     """List all registered tools with their callable info."""
-    return {
-        name: f"{func.__module__}.{func.__qualname__}"
-        if hasattr(func, "__module__")
-        else str(func)
-        for name, func in _TOOL_REGISTRY.items()
-    }
+    return {name: f"{func.__module__}.{func.__qualname__}" if hasattr(func, "__module__") else str(func) for name, func in _TOOL_REGISTRY.items()}
 
 
 if __name__ == "__main__":

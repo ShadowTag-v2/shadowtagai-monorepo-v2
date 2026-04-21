@@ -81,12 +81,18 @@ async def register_key(request: BYOKKeyRequest) -> BYOKKeyStatus:
     now = datetime.now(UTC).isoformat()
     logger.info(
         "BYOK key registered: firm=%s provider=%s label=%s",
-        request.firm_id, request.provider, request.label,
+        request.firm_id,
+        request.provider,
+        request.label,
     )
     return BYOKKeyStatus(
-        firm_id=request.firm_id, provider=request.provider,
-        label=request.label, status="active",
-        registered_at=now, last_validated_at=now, masked_key=masked,
+        firm_id=request.firm_id,
+        provider=request.provider,
+        label=request.label,
+        status="active",
+        registered_at=now,
+        last_validated_at=now,
+        masked_key=masked,
     )
 
 
@@ -106,6 +112,8 @@ async def revoke_key(firm_id: str, provider: str) -> None:
 async def validate_key(firm_id: str, provider: str) -> dict[str, Any]:
     """Validate an existing BYOK key by test API call."""
     return {
-        "firm_id": firm_id, "provider": provider,
-        "valid": True, "validated_at": datetime.now(UTC).isoformat(),
+        "firm_id": firm_id,
+        "provider": provider,
+        "valid": True,
+        "validated_at": datetime.now(UTC).isoformat(),
     }

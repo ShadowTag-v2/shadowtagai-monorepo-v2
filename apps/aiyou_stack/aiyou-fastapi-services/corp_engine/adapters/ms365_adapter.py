@@ -485,7 +485,6 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
         # This is a placeholder showing the structure
         url = f"{self.GRAPH_API_BASE}{endpoint}"
 
-
         # Placeholder - actual HTTP call would go here
         logger.debug(f"MS365 API: {method} {url}")
 
@@ -498,7 +497,6 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
         token_url = (
             f"https://login.microsoftonline.com/{self.ms365_config.tenant_id}/oauth2/v2.0/token"
         )
-
 
         # Placeholder - actual HTTP call would go here
         logger.debug(f"Requesting token from {token_url}")

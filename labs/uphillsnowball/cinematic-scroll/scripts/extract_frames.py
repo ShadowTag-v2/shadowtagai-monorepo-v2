@@ -58,9 +58,12 @@ def extract_frames(
 
     cmd = [
         "ffmpeg",
-        "-i", str(video),
-        "-vf", f"fps={fps}",
-        "-q:v", "2",  # High quality
+        "-i",
+        str(video),
+        "-vf",
+        f"fps={fps}",
+        "-q:v",
+        "2",  # High quality
         output_pattern,
         "-y",  # Overwrite
     ]
@@ -69,11 +72,16 @@ def extract_frames(
     if fmt == "webp":
         cmd = [
             "ffmpeg",
-            "-i", str(video),
-            "-vf", f"fps={fps}",
-            "-c:v", "libwebp",
-            "-quality", "90",
-            "-compression_level", "4",
+            "-i",
+            str(video),
+            "-vf",
+            f"fps={fps}",
+            "-c:v",
+            "libwebp",
+            "-quality",
+            "90",
+            "-compression_level",
+            "4",
             output_pattern,
             "-y",
         ]

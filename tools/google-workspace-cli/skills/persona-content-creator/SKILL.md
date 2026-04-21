@@ -36,4 +36,3 @@ Create, organize, and distribute content across Workspace.
 - Use `gws docs +write` for quick content updates — it handles the Docs API formatting.
 - Keep a 'Content Calendar' in a shared Sheet for tracking publication schedules.
 - Use `--format yaml` for human-readable output when debugging API responses.
-

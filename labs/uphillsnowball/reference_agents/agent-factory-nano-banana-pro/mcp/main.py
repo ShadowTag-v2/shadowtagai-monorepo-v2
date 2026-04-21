@@ -38,19 +38,11 @@ def _initialize_console_logging(min_level: int = logging.INFO):
     h_warn_and_above.setLevel(logging.WARNING)
 
     handlers = [h_info_and_below, h_warn_and_above]
-    logging.basicConfig(
-        format="%(asctime)s | %(levelname)s | %(message)s",
-        level=min_level,
-        handlers=handlers,
-        force=True
-    )
+    logging.basicConfig(format="%(asctime)s | %(levelname)s | %(message)s", level=min_level, handlers=handlers, force=True)
 
 
 tools = [generate_image]
-mcp = FastMCP(
-    name="MediaGenerators",
-    tools=tools
-)
+mcp = FastMCP(name="MediaGenerators", tools=tools)
 
 if __name__ == "__main__":
     load_dotenv()
