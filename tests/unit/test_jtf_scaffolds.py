@@ -118,9 +118,7 @@ class TestJ6Judge6Bridge:
     async def test_authorize_validation(self):
         """Authorization pre-flight grants access."""
         bridge = J6Judge6Bridge()
-        auth = await bridge.authorize_validation(
-            {"text": "test request"}, request_id="test_001"
-        )
+        auth = await bridge.authorize_validation({"text": "test request"}, request_id="test_001")
         assert auth["authorized"] is True
         assert auth["authority"] == "J-6"
         assert auth["c2_chain_verified"] is True
