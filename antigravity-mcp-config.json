@@ -67,6 +67,21 @@
         "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
         "HOME": "/Users/pikeymickey"
       }
+    },
+    "media-generators": {
+      "command": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python",
+      "args": [
+        "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/media-mcp-server/media_mcp_server.py"
+      ],
+      "env": {
+        "GCS_MEDIA_BUCKET": "shadowtag-omega-v4-media",
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
+        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
+        "CORS_ORIGINS": "http://localhost:8888,https://shadowtagai.web.app,https://kovelai.web.app",
+        "RATE_LIMIT_RPM": "30",
+        "PATH": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin:/Users/pikeymickey/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
+        "HOME": "/Users/pikeymickey"
+      }
     }
   },
   "capability_registry": {

@@ -86,3 +86,24 @@
   /* ===== EXTENDED RADIUS ===== */
   --radius-xl: 24px;
 }
+
+/* ===== LIGHT MODE ===== */
+[data-theme="light"] {
+  --color-bg-dark: hsl(220, 20%, 96%);
+  --color-bg-card: hsl(220, 20%, 92%);
+  --color-bg-glass: rgba(0, 0, 0, 0.03);
+  --color-border-glass: rgba(0, 0, 0, 0.08);
+
+  --color-text-primary: hsl(220, 20%, 12%);
+  --color-text-secondary: hsl(220, 10%, 40%);
+
+  --color-primary: hsl(200, 100%, 45%);
+  --color-secondary: hsl(280, 80%, 50%);
+  --color-accent: hsl(340, 90%, 50%);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-glow-primary: 0 0 20px rgba(0, 153, 255, 0.15);
+  --shadow-glow-accent: 0 0 20px rgba(255, 51, 102, 0.15);
+}
