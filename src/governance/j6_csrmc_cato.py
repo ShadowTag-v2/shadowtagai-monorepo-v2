@@ -97,9 +97,7 @@ class Judge6CSRMC:
                 "🛑 J-6 ZTA VIOLATION: Unacceptable Risk (%s). Handoff Blocked.",
                 severity,
             )
-            raise CSRMCBlockError(
-                f"CSRMC_ZTA_BLOCK: {source}->{destination} blocked (severity={severity})"
-            )
+            raise CSRMCBlockError(f"CSRMC_ZTA_BLOCK: {source}->{destination} blocked (severity={severity})")
 
         logger.info("✅ J-6 cATO Verified. Handoff Authorized.")
         return True
