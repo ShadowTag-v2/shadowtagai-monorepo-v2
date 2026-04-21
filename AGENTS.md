@@ -190,10 +190,11 @@ unless the user explicitly directs a control plane change:
 - CI/CD: antigravity_ci.yml (dependabot guard on test-proxy job)
 - GCA vs 10x Compatibility: DO NOT FOLD — orthogonal concerns (PR review vs hygiene enforcement)
 - GCP Cleanup: 9 APIs disabled, 3 Cloud Run deleted, 5 secrets purged (2026-04-20)
-- Veo 3.1 Pipeline: veo_pipeline.py operational (6 presets, Veo 3.1/3.1-Fast/3.1-Lite/3.0/2.0), google-genai SDK 1.66.0+, GCS bucket gs://shadowtag-omega-v4-media, frame extraction via ffmpeg 8.1
-- Video Compression: 52MB → 20MB kovelai (10 videos), 19MB → 8.8MB shadowtagai (7 videos), CRF 30, H.264, faststart
+- Veo 3.1 Pipeline: veo_pipeline.py operational (14 presets incl. 4 portrait 9:16, i2v, extended), Veo 3.1/3.1-Fast/3.1-Lite/3.0/2.0 all GA, google-genai SDK 1.66.0+, GCS bucket gs://shadowtag-omega-v4-media, frame extraction via ffmpeg 8.1
+- Video Compression: CRF 28 H.264 pipeline, 14 originals + 13 web-compressed, faststart + AAC 128k
 - Branded Billboards: KovelAI (cyan neon) + ShadowTag AI (magenta neon) composited onto hero-drift via ffmpeg overlay
 - Billboard Assets: kovelai-billboard.png, shadowtag-billboard.png, og-billboard-branded.png, promo-screenshot.png
+- Google External Cognitive Suite: Flow + Mariner + Whisk + Labs FX + Opal + Vids — skill documented, payload dirs provisioned
 - Firebase Preview Channels: kovelai--staging (7d TTL)
 - Security Headers: CSP + HSTS (preload) + XFO (DENY) + CORP + COOP + Permissions-Policy — all 8 verified live
 - Multi-site Deploy: kovelai.web.app + shadowtagai.web.app + shadowtag-omega-v4.web.app — all 3 live (2026-04-20)
