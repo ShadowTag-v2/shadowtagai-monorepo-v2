@@ -12,6 +12,8 @@
     "liveServer.settings.port": 5509,
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "python.envFile": "${workspaceFolder}/.env",
+    "python.languageServer": "None",
+    "ty.enable": true,
     "geminicodeassist.agentYoloMode": true,
     "java.import.generatesSources": false,
     "java.import.exclusions": [
@@ -175,5 +177,9 @@
     "java.gradle.enabled": false,
     "telemetry.telemetryLevel": "off",
     "gradle.enableTelemetry": false,
+    "[python]": {
+      "editor.defaultFormatter": "charliermarsh.ruff",
+      "editor.formatOnSave": true,
+    },
   }
 }
