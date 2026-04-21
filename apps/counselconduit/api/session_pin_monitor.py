@@ -77,11 +77,7 @@ def cleanup_session_pins_memory() -> int:
             return 0
 
     now = time.time()
-    expired = [
-        sid
-        for sid, (_, ts) in _session_pins.items()
-        if now - ts > SESSION_PIN_TTL_SECONDS
-    ]
+    expired = [sid for sid, (_, ts) in _session_pins.items() if now - ts > SESSION_PIN_TTL_SECONDS]
     for sid in expired:
         del _session_pins[sid]
 

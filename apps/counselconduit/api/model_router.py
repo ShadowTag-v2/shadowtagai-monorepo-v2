@@ -279,17 +279,30 @@ def classify_prompt(query: str) -> DispatchTier:
 
     # Agentic indicators
     agentic_signals = [
-        "analyze", "compare", "draft", "review contract",
-        "find precedent", "summarize case", "prepare memo",
-        "tool:", "search:", "cite:", "multi-step",
+        "analyze",
+        "compare",
+        "draft",
+        "review contract",
+        "find precedent",
+        "summarize case",
+        "prepare memo",
+        "tool:",
+        "search:",
+        "cite:",
+        "multi-step",
     ]
     if any(signal in query_lower for signal in agentic_signals) or word_count > 200:
         return DispatchTier.AGENTIC
 
     # Complex indicators
     complex_signals = [
-        "explain", "why", "how does", "what are the implications",
-        "difference between", "pros and cons", "legal analysis",
+        "explain",
+        "why",
+        "how does",
+        "what are the implications",
+        "difference between",
+        "pros and cons",
+        "legal analysis",
     ]
     if any(signal in query_lower for signal in complex_signals) or word_count > 50:
         return DispatchTier.COMPLEX
@@ -452,6 +465,7 @@ async def dispatch_request(
         quota.current_daily += 1
         # Fire-and-forget Firestore sync
         import asyncio
+
         asyncio.create_task(sync_quota_to_firestore(firm_id))
 
     return {

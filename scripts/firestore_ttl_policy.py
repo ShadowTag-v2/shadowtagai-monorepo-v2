@@ -35,18 +35,12 @@ def configure_ttl_policy() -> None:
             UpdateFieldRequest,
         )
     except ImportError:
-        logger.error(
-            "google-cloud-firestore-admin not installed. "
-            "Run: pip install google-cloud-firestore-admin"
-        )
+        logger.error("google-cloud-firestore-admin not installed. Run: pip install google-cloud-firestore-admin")
         sys.exit(1)
 
     client = FirestoreAdminClient()
 
-    field_name = (
-        f"projects/{PROJECT_ID}/databases/{DATABASE_ID}/"
-        f"collectionGroups/{COLLECTION_ID}/fields/{TTL_FIELD}"
-    )
+    field_name = f"projects/{PROJECT_ID}/databases/{DATABASE_ID}/collectionGroups/{COLLECTION_ID}/fields/{TTL_FIELD}"
 
     field = Field(
         name=field_name,
@@ -85,10 +79,7 @@ def verify_ttl_policy() -> None:
 
     client = FirestoreAdminClient()
 
-    field_name = (
-        f"projects/{PROJECT_ID}/databases/{DATABASE_ID}/"
-        f"collectionGroups/{COLLECTION_ID}/fields/{TTL_FIELD}"
-    )
+    field_name = f"projects/{PROJECT_ID}/databases/{DATABASE_ID}/collectionGroups/{COLLECTION_ID}/fields/{TTL_FIELD}"
 
     request = GetFieldRequest(name=field_name)
 

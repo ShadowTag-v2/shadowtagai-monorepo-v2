@@ -34,26 +34,26 @@ def analyze_canary():
         f"--project={PROJECT}", f"--region={REGION}",
         "--format=json(status.traffic)"
     ], capture_output=True, text=True)
-    
+
     traffic = json.loads(result.stdout)
     stable_rev = None
     canary_rev = None
-    
+
     for t in traffic.get("status", {}).get("traffic", []):
         if t.get("tag") == "canary":
             canary_rev = t["revisionName"]
         elif t.get("percent", 0) > 50:
             stable_rev = t["revisionName"]
-    
+
     if not canary_rev:
         print("No canary revision found")
         sys.exit(0)
-    
+
     stable_metrics = get_revision_metrics(stable_rev, WINDOW_MINUTES)
     canary_metrics = get_revision_metrics(canary_rev, WINDOW_MINUTES)
-    
+
     delta = canary_metrics["error_rate"] - stable_metrics["error_rate"]
-    
+
     if delta > ERROR_THRESHOLD:
         print(f"ROLLBACK: Canary error rate {canary_metrics['error_rate']:.2%} "
               f"exceeds stable {stable_metrics['error_rate']:.2%} by {delta:.2%}")

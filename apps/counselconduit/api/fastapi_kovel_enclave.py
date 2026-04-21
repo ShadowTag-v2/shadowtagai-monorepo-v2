@@ -84,6 +84,8 @@ try:
     from apps.counselconduit.api.vent_mode import router as vent_router
     from apps.counselconduit.api.token_meter import router as token_meter_router
     from apps.counselconduit.api.session_pin_monitor import cleanup_session_pins_firestore
+    from apps.counselconduit.api.provider_health import router as provider_health_router
+    from apps.counselconduit.api.deprecation_middleware import DeprecationMiddleware
 except ImportError:
     from api.app_error import AppError, app_error_handler, unhandled_error_handler  # type: ignore[no-redef]
     from api.byok import router as byok_router  # type: ignore[no-redef]
@@ -103,6 +105,8 @@ except ImportError:
     from api.vent_mode import router as vent_router  # type: ignore[no-redef]
     from api.token_meter import router as token_meter_router  # type: ignore[no-redef]
     from api.session_pin_monitor import cleanup_session_pins_firestore  # type: ignore[no-redef]
+    from api.provider_health import router as provider_health_router  # type: ignore[no-redef]
+    from api.deprecation_middleware import DeprecationMiddleware  # type: ignore[no-redef]
 
 # ── Structured Logging ─────────────────────────────────────────────────────
 
@@ -124,7 +128,7 @@ logger = structlog.get_logger("counselconduit")
 
 app = FastAPI(
     title="CounselConduit: Kovel Enclave",
-    version="3.2.0",
+    version="3.3.2",
     description="Privileged Legal AI under the Kovel Doctrine. Zero-retention architecture.",
     docs_url="/docs",  # OpenAPI/Swagger enabled — API documentation
     redoc_url="/redoc",
@@ -183,6 +187,9 @@ app.add_middleware(PromptGuardMiddleware)
 # Phase 3: Tenant isolation + per-tier quota enforcement + proxy token validation
 app.add_middleware(SandboxMiddleware)
 
+# RFC 8594: Deprecation + Sunset headers on versioned routes
+app.add_middleware(DeprecationMiddleware)
+
 # Cor.30: Opaque error handling — never expose stack traces
 app.add_exception_handler(AppError, app_error_handler)
 app.add_exception_handler(Exception, unhandled_error_handler)
@@ -203,6 +210,7 @@ app.include_router(gdpr_handler_router)
 app.include_router(connect_onboarding_router)
 app.include_router(dispatch_router)
 app.include_router(token_meter_router)
+app.include_router(provider_health_router)
 
 # ── Static Files (admin dashboard) ────────────────────────────────────────
 import pathlib as _pathlib
@@ -213,6 +221,27 @@ if _static_dir.is_dir():
 
     app.mount("/static", StaticFiles(directory=str(_static_dir)), name="static")
 
+
+# ── Root-level static files (ZAP WARN fix: 404 on /robots.txt, /favicon.ico) ─
+from starlette.responses import FileResponse as _FileResponse
+
+
+@app.get("/robots.txt", include_in_schema=False)
+async def robots_txt():
+    """Serve robots.txt from static directory."""
+    _robots = _static_dir / "robots.txt"
+    if _robots.is_file():
+        return _FileResponse(str(_robots), media_type="text/plain")
+    return JSONResponse({"detail": "Not found"}, status_code=404)
+
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    """Serve favicon.ico from static directory."""
+    _favicon = _static_dir / "favicon.ico"
+    if _favicon.is_file():
+        return _FileResponse(str(_favicon), media_type="image/x-icon")
+    return JSONResponse({"detail": "Not found"}, status_code=404)
 
 @app.get("/")
 async def root():

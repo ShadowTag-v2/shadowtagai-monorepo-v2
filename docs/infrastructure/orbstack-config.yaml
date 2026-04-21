@@ -1,0 +1,54 @@
+# OrbStack Configuration Export
+# Item 22: Version-controlled OrbStack settings reference
+# Note: OrbStack uses GUI preferences, not a config file.
+# This documents the intended configuration for reproducibility.
+
+## Runtime Settings
+docker_context: orbstack
+buildkit_version: v0.25.2
+platforms:
+  - linux/arm64      # Native Apple Silicon
+  - linux/amd64      # Cross-compile for Cloud Run
+  - linux/amd64/v2
+  - linux/riscv64
+  - linux/ppc64le
+  - linux/s390x
+  - linux/386
+  - linux/arm/v7
+  - linux/arm/v6
+
+## Resource Limits (OrbStack defaults — dynamic allocation)
+# OrbStack uses macOS's native virtualization framework
+# CPU/RAM are dynamically shared with host, no fixed limits needed
+cpu: dynamic
+memory: dynamic
+# Disk: ~/.orbstack/ (SSD, auto-grows)
+
+## Network Configuration
+dns: auto  # OrbStack provides *.orb.local DNS for containers
+network_mode: bridge
+# Containers accessible via: <container-name>.orb.local
+
+## Docker CLI Integration
+cli_symlink: /usr/local/bin/docker -> /Applications/OrbStack.app/Contents/MacOS/xbin/docker
+compose_plugin: v2.40.3
+buildx_plugin: v0.29.1
+
+## Credential Helpers
+creds_store: osxkeychain
+cred_helpers:
+  gcr.io: gcloud
+  us-central1-docker.pkg.dev: gcloud
+
+## Auto-Start
+# Configure in: OrbStack → Settings → General → "Start at Login"
+auto_start: recommended
+
+## Active Containers (as of export)
+# kovelai-nginx: nginx:1.27-alpine
+# kovelai-agent: ghcr.io/kovelai/secure-proxy:latest
+# kovelai-api: ghcr.io/kovelai/secure-proxy:latest
+# mcp-toolbox-postgres-local-1: postgres:15-alpine
+# cor-autoresearch-redis-1: redis:7-alpine
+# uphillsnowball-relay: uphillsnowball-uphillsnowball-relay
+# aiyou_postgres: postgres:16-alpine

@@ -198,4 +198,3 @@ async def configure_circuit_breaker_alert(
     except Exception as e:
         logger.warning("Circuit breaker alert creation failed: %s", e)
         return {"status": "error", "reason": str(e)}
-
