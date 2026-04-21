@@ -129,7 +129,18 @@ async def _verify_admin_caller(request: Request) -> str:
 
     Returns caller identity string.
     """
+    endpoint = request.url.path
+    client_ip = request.client.host if request.client else "unknown"
+    user_agent = request.headers.get("User-Agent", "unknown")
+
     if os.environ.get("APP_ENV") != "production":
+        logger.info(
+            "admin_auth_bypass",
+            event="admin_auth",
+            outcome="dev_bypass",
+            endpoint=endpoint,
+            client_ip=client_ip,
+        )
         return "dev-bypass"
 
     # Check for Cloud Scheduler OIDC token
@@ -147,10 +158,27 @@ async def _verify_admin_caller(request: Request) -> str:
                 audience=os.environ.get("CLOUD_RUN_URL", ""),
             )
             caller = id_info.get("email", id_info.get("sub", "unknown"))
-            logger.info("Admin endpoint accessed by: %s", caller)
+            logger.info(
+                "admin_auth_success",
+                event="admin_auth",
+                outcome="success",
+                caller=caller,
+                endpoint=endpoint,
+                client_ip=client_ip,
+                user_agent=user_agent,
+                token_issuer=id_info.get("iss", "unknown"),
+            )
             return caller
         except Exception as e:
-            logger.warning("Admin auth failed: %s", e)
+            logger.warning(
+                "admin_auth_failed",
+                event="admin_auth",
+                outcome="rejected",
+                error=str(e),
+                endpoint=endpoint,
+                client_ip=client_ip,
+                user_agent=user_agent,
+            )
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail={
@@ -161,6 +189,14 @@ async def _verify_admin_caller(request: Request) -> str:
             ) from e
 
     # No valid auth method found — reject
+    logger.warning(
+        "admin_auth_missing",
+        event="admin_auth",
+        outcome="no_credentials",
+        endpoint=endpoint,
+        client_ip=client_ip,
+        user_agent=user_agent,
+    )
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail={
