@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # PagerDuty Integration Setup (#3/#4)
-# 
+#
 # Run this script after creating a PagerDuty account at https://app.pagerduty.com
 # The GCP notification channel (11292559663830648124) already routes to PagerDuty's email integration.
 #

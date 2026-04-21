@@ -39,12 +39,23 @@ repos:
         additional_dependencies: ['bandit[toml]']
         pass_filenames: false
 
+  # pip-audit — dependency vulnerability scanning (Cor.30 R34)
+  - repo: local
+    hooks:
+      - id: pip-audit
+        name: pip-audit (dependency vulnerabilities)
+        entry: bash -c 'python3 -m pip_audit -r apps/counselconduit/requirements.txt --desc --no-deps 2>&1 | tail -5'
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]  # Only on push, not every commit (slow)
+
   # Ruler — agent instruction drift detection
   - repo: local
     hooks:
       - id: ruler-apply-check
         name: ruler apply --dry-run
-        entry: bash -c 'if command -v ruler &>/dev/null; then ruler apply --dry-run 2>&1 | grep -q "No changes" && echo "✓ Ruler: no drift" || echo "⚠ Ruler: drift detected — run ruler apply"; else echo "⚠ Ruler not installed — skip"; fi'
+        entry: "bash -c 'if command -v ruler &>/dev/null; then ruler apply --dry-run 2>&1 | grep -q \"No changes\" && echo \"OK Ruler no drift\" || echo \"WARN Ruler drift detected\"; else echo \"WARN Ruler not installed\"; fi'"
         language: system
         pass_filenames: false
         always_run: true

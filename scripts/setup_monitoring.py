@@ -30,9 +30,7 @@ def create_email_notification_channel() -> str | None:
         project_name = f"projects/{PROJECT_ID}"
 
         # Check if channel already exists
-        existing = list(client.list_notification_channels(
-            request={"name": project_name}
-        ))
+        existing = list(client.list_notification_channels(request={"name": project_name}))
         for ch in existing:
             if ch.type_ == "email" and ch.labels.get("email_address") == ADMIN_EMAIL:
                 logger.info("Email channel already exists: %s", ch.name)
