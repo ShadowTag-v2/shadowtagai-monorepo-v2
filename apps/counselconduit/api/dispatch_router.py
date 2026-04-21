@@ -135,9 +135,7 @@ async def _verify_admin_caller(request: Request) -> str:
 
     if os.environ.get("APP_ENV") != "production":
         logger.info(
-            "admin_auth_bypass",
-            event="admin_auth",
-            outcome="dev_bypass",
+            "admin_auth: dev_bypass",
             endpoint=endpoint,
             client_ip=client_ip,
         )
@@ -159,9 +157,7 @@ async def _verify_admin_caller(request: Request) -> str:
             )
             caller = id_info.get("email", id_info.get("sub", "unknown"))
             logger.info(
-                "admin_auth_success",
-                event="admin_auth",
-                outcome="success",
+                "admin_auth: success",
                 caller=caller,
                 endpoint=endpoint,
                 client_ip=client_ip,
@@ -171,9 +167,7 @@ async def _verify_admin_caller(request: Request) -> str:
             return caller
         except Exception as e:
             logger.warning(
-                "admin_auth_failed",
-                event="admin_auth",
-                outcome="rejected",
+                "admin_auth: rejected",
                 error=str(e),
                 endpoint=endpoint,
                 client_ip=client_ip,
@@ -190,9 +184,7 @@ async def _verify_admin_caller(request: Request) -> str:
 
     # No valid auth method found — reject
     logger.warning(
-        "admin_auth_missing",
-        event="admin_auth",
-        outcome="no_credentials",
+        "admin_auth: no_credentials",
         endpoint=endpoint,
         client_ip=client_ip,
         user_agent=user_agent,
