@@ -40,3 +40,22 @@ Before finalizing a commit, ask yourself:
 2. Are there unrelated configuration changes staged alongside this feature?
 
 If the staging area contains unrelated changes, you must immediately unstage them before proceeding.
+
+## 5. GitHub-First Protocol (MANDATORY)
+
+Before ANY code change, verify GitHub state:
+
+1. **Pre-Session**: `git fetch origin --prune && git status` — confirm branch is synced with remote.
+2. **Pre-Edit**: Check no conflicting PRs touch the same files.
+3. **Pre-Commit**: Run pre-commit hooks. Verify CI is green on base branch.
+4. **Post-Commit**: Push to remote immediately. Create PR for feature work — never push directly to `main`.
+
+### Canonical Source
+- **Repo**: `git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git` (SSH primary)
+- **Auth**: GitHub App PEM (ID `3018200`) — never use PATs or browser OAuth
+- **Context**: Read `.context/GITHUB_PROTOCOL.md` at session start
+- **MCP**: Use `github` MCP server registered in `antigravity-mcp-config.json`
+
+### System Prompt
+Always verify current branch status and remote GitHub state using git tools before proposing changes.
+

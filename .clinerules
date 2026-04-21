@@ -1,0 +1,36 @@
+# ⏺ ///▙▖▙▖▞ COR.STITCH VEO 3.1 ANTIGRAVITY FINALITY
+
+## ⛔ BLACKLISTED TOOLS & VENDORS (DO NOT USE)
+- **INTERNAL `generate_image`:** FORBIDDEN. Administratively disabled (shadow trapped).
+- **CLAUDE CODE:** FORBIDDEN. All logic/wiring strictly routed through Antigravity native agents.
+- **KLING / RUNWAY / SORA:** FORBIDDEN. All video/temporal media must use **VEO 3.1** via Google Flow or Opal.
+
+## ✅ THE MANDATORY GOOGLE COGNITIVE SUITE WORKFLOW
+When constructing websites, you are mathematically restricted to the following pipeline. You MUST use the `system_omega_cognitive_router` custom skill to access them. Reference `~/.beads/GOOGLE_COGNITIVE_SUITE_SOP.md` for exact execution steps:
+
+1. **Ideation & UI Generation (Stitch MCP)**: Use the `stitch-design` and `react:components` skills. Generate UI designs using the Ideate Agent's "YOLO" slider for divergent exploration. Export the `DESIGN.md`.
+2. **Visual Iteration (Nano Banana 2 / Pro)**: Use the Redesign Agent to visually iterate on UI/UX designs before converting to code.
+3. **Cinematic Video (Veo 3.1 via Opal / Google Vids)**: For hero backgrounds and cinematic media, you MUST use Veo 3.1. Generate it watermark-free via Google Opal's node interface and drop it into the `/public/assets` directory.
+4. **Static Imagery (Labs FX / Whisk)**: Generate mood boards, textures, and assets via Whisk and Labs FX.
+5. **Web Research & DOM Scraping**:
+   - Use **Mariner** for autonomous, authenticated web tasks.
+   - Use **Chrome DevTools MCP** to perfectly extract geometry, flexbox logic, and DOM elements from target websites (1:1 cloning).
+
+Violating this workflow will trigger a system rejection. Stay within the Google Sovereign Architecture.
+
+## 🔗 GITHUB-FIRST PROTOCOL (MANDATORY)
+Before ANY code change, you MUST verify GitHub state:
+
+1. **Pre-Session**: `git fetch origin --prune && git status` — confirm branch is synced with remote.
+2. **Pre-Edit**: Check no conflicting PRs touch the same files. Use `gh pr list --state open` or GitHub MCP.
+3. **Pre-Commit**: Run pre-commit hooks. Verify CI is green on base branch.
+4. **Post-Commit**: Push to remote immediately. Create PR for feature work — never push directly to `main`.
+
+### Canonical Source
+- **Repo**: `git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git` (SSH primary)
+- **Auth**: GitHub App PEM (ID `3018200`) — never use PATs or `gh auth login`
+- **Context**: Read `.context/GITHUB_PROTOCOL.md` at session start
+- **MCP**: Use `github` MCP server for PR/issue operations (registered in `antigravity-mcp-config.json`)
+
+### System Prompt Injection
+Always verify current branch status and remote GitHub state using git tools before proposing changes.
