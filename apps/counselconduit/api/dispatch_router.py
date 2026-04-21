@@ -78,6 +78,19 @@ class FirmPolicyRequest(BaseModel):
     byok: BYOKConfig = Field(default_factory=BYOKConfig)
 
 
+class ModelInfoResponse(BaseModel):
+    """Individual model info for GET /admin/models."""
+
+    key: str
+    model_id: str
+    display_name: str
+    provider: str
+    cost_per_1k_input: float
+    cost_per_1k_output: float
+    supports_streaming: bool
+    supports_tools: bool
+
+
 class FirmPolicyResponse(BaseModel):
     """POST /admin/firm-policy response body."""
 
@@ -267,24 +280,25 @@ async def admin_metrics_endpoint() -> MetricsResponse:
 
 @router.get(
     "/admin/models",
+    response_model=list[ModelInfoResponse],
     summary="List available models for subscription tier",
 )
 async def admin_models_endpoint(
     tier: str = "trial",
-) -> list[dict]:
+) -> list[ModelInfoResponse]:
     """Return available models filtered by subscription tier."""
     models = get_models_for_tier(tier)
     return [
-        {
-            "key": key,
-            "model_id": m.model_id,
-            "display_name": m.display_name,
-            "provider": m.provider,
-            "cost_per_1k_input": m.cost_per_1k_input,
-            "cost_per_1k_output": m.cost_per_1k_output,
-            "supports_streaming": m.supports_streaming,
-            "supports_tools": m.supports_tools,
-        }
+        ModelInfoResponse(
+            key=key,
+            model_id=m.model_id,
+            display_name=m.display_name,
+            provider=m.provider.value,
+            cost_per_1k_input=m.cost_per_1k_input,
+            cost_per_1k_output=m.cost_per_1k_output,
+            supports_streaming=m.supports_streaming,
+            supports_tools=m.supports_tools,
+        )
         for key, m in AVAILABLE_MODELS.items()
         if m in models
     ]

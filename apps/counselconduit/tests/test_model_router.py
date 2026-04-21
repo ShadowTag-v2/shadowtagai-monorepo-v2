@@ -164,8 +164,8 @@ class TestBYOKConfig:
     def test_default_disabled(self):
         config = BYOKConfig()
         assert config.enabled is False
-        assert config.kms_key_uri is None
-        assert config.rotation_period_days == 90
+        assert config.kms_key_uri == ""
+        assert config.kms_rotation_period_days == 90
 
 
 # ── Dispatch Metrics Tests ────────────────────────────────────────────────
@@ -205,7 +205,7 @@ class TestSelectModel:
             firm_allowed_models=["gemini-flash", "gemini-pro"],
         )
         model = select_model(req)
-        assert model.model_id == "gemini-3.1-flash-lite-preview"
+        assert model.model_id == "gemini-3.1-flash-lite-preview-thinking"
 
     def test_agentic_query_routes_to_pro(self):
         req = ModelRequest(
@@ -230,7 +230,7 @@ class TestSelectModel:
             firm_allowed_models=["gemini-flash"],
         )
         model = select_model(req)
-        assert model.model_id == "gemini-3.1-flash-lite-preview"
+        assert model.model_id == "gemini-3.1-flash-lite-preview-thinking"
 
     def test_session_pin_overrides(self):
         pin_session_model("s1", "claude-sonnet")
@@ -252,7 +252,7 @@ class TestSelectModel:
             firm_allowed_models=["gemini-flash", "gemini-pro"],
         )
         model = select_model(req)
-        assert model.model_id == "gemini-3.1-flash-lite-preview"
+        assert model.model_id == "gemini-3.1-flash-lite-preview-thinking"
 
 
 # ── Async Dispatch Integration Tests ─────────────────────────────────────
@@ -268,7 +268,7 @@ class TestDispatchRequest:
             firm_id="firm-test",
             firm_allowed_models=["gemini-flash"],
         )
-        assert result["model"] == "gemini-3.1-flash-lite-preview"
+        assert result["model"] == "gemini-3.1-flash-lite-preview-thinking"
         assert result["tier"] == "simple"
         assert isinstance(result["cost_per_1k_input"], float)
 

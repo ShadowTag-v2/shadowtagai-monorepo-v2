@@ -77,16 +77,25 @@ async def export_metrics_to_cloud_monitoring() -> dict:
         return {"exported": 0, "status": "error", "reason": str(e)}
 
 
-async def configure_fallback_saturation_alert() -> dict:
+async def configure_fallback_saturation_alert(
+    notification_channel_ids: list[str] | None = None,
+) -> dict:
     """Configure Cloud Monitoring alert for fallback chain saturation.
 
     Triggers when fallback hits exceed threshold within window.
+
+    Args:
+        notification_channel_ids: List of Cloud Monitoring notification channel
+            resource names (e.g., 'projects/shadowtag-omega-v4/notificationChannels/12345').
+            Configure channels in Cloud Console → Monitoring → Alerting → Notification Channels.
     """
     try:
         from google.cloud import monitoring_v3
 
         client = monitoring_v3.AlertPolicyServiceClient()
         project_name = f"projects/{PROJECT_ID}"
+
+        channels = notification_channel_ids or []
 
         policy = monitoring_v3.AlertPolicy(
             display_name="NadirClaw Fallback Saturation Alert",
@@ -107,7 +116,7 @@ async def configure_fallback_saturation_alert() -> dict:
                     ),
                 )
             ],
-            notification_channels=[],  # Add channels via Cloud Console
+            notification_channels=channels,
             combiner=monitoring_v3.AlertPolicy.ConditionCombinerType.OR,
             enabled={"value": True},
         )
@@ -126,3 +135,67 @@ async def configure_fallback_saturation_alert() -> dict:
     except Exception as e:
         logger.warning("Alert policy creation failed: %s", e)
         return {"status": "error", "reason": str(e)}
+
+
+async def configure_circuit_breaker_alert(
+    notification_channel_ids: list[str] | None = None,
+) -> dict:
+    """Configure Cloud Monitoring alert for circuit breaker trips.
+
+    Triggers when the dispatch circuit breaker opens (HTTP 503 responses).
+
+    Args:
+        notification_channel_ids: List of Cloud Monitoring notification channel
+            resource names.
+    """
+    try:
+        from google.cloud import monitoring_v3
+
+        client = monitoring_v3.AlertPolicyServiceClient()
+        project_name = f"projects/{PROJECT_ID}"
+
+        channels = notification_channel_ids or []
+
+        policy = monitoring_v3.AlertPolicy(
+            display_name="NadirClaw Circuit Breaker Open Alert",
+            conditions=[
+                monitoring_v3.AlertPolicy.Condition(
+                    display_name="Circuit breaker 503 responses > 5/min",
+                    condition_threshold=monitoring_v3.AlertPolicy.Condition.MetricThreshold(
+                        filter=(
+                            'resource.type = "cloud_run_revision" '
+                            'AND metric.type = "run.googleapis.com/request_count" '
+                            'AND metric.labels.response_code = "503"'
+                        ),
+                        comparison=monitoring_v3.AlertPolicy.Condition.MetricThreshold.ComparisonType.COMPARISON_GT,
+                        threshold_value=5,
+                        duration={"seconds": 60},
+                        aggregations=[
+                            monitoring_v3.Aggregation(
+                                alignment_period={"seconds": 60},
+                                per_series_aligner=monitoring_v3.Aggregation.Aligner.ALIGN_RATE,
+                            )
+                        ],
+                    ),
+                )
+            ],
+            notification_channels=channels,
+            combiner=monitoring_v3.AlertPolicy.ConditionCombinerType.OR,
+            enabled={"value": True},
+        )
+
+        result = client.create_alert_policy(
+            request={
+                "name": project_name,
+                "alert_policy": policy,
+            }
+        )
+        logger.info("Created circuit breaker alert: %s", result.name)
+        return {"alert_policy": result.name, "status": "created"}
+
+    except ImportError:
+        return {"status": "skipped", "reason": "sdk_not_installed"}
+    except Exception as e:
+        logger.warning("Circuit breaker alert creation failed: %s", e)
+        return {"status": "error", "reason": str(e)}
+

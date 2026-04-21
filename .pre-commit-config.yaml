@@ -38,3 +38,13 @@ repos:
         args: [-c, pyproject.toml, -r, apps/counselconduit/, --skip, 'B101', -ll]
         additional_dependencies: ['bandit[toml]']
         pass_filenames: false
+
+  # Ruler — agent instruction drift detection
+  - repo: local
+    hooks:
+      - id: ruler-apply-check
+        name: ruler apply --dry-run
+        entry: bash -c 'if command -v ruler &>/dev/null; then ruler apply --dry-run 2>&1 | grep -q "No changes" && echo "✓ Ruler: no drift" || echo "⚠ Ruler: drift detected — run ruler apply"; else echo "⚠ Ruler not installed — skip"; fi'
+        language: system
+        pass_filenames: false
+        always_run: true

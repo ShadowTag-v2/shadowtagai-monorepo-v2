@@ -123,5 +123,17 @@
 - **Status**: MITIGATED
 - **Description**: NadirClaw 3-tier dispatch introduces three operational risks: (1) Noisy neighbor — a single firm could exhaust the model routing budget. Mitigated by `TenantQuota` with per-tier RPM limits (trial=20, pro=60, enterprise=200). Quotas backed by Firestore `tenant_quotas` collection. (2) Session pin memory leak — `_session_pins` dict grows unbounded in long-running processes. Mitigated by 30-minute TTL auto-expiry (`SESSION_PIN_TTL_SECONDS=1800`). (3) Fallback chain exhaustion — if all models in a fallback chain are unavailable, system degrades to `gemini-flash`. Metrics tracked via `_fallback_hits` for Cloud Monitoring alerting. **Files**: `apps/counselconduit/api/model_router.py`, `apps/counselconduit/tests/test_model_router.py` (33 tests).
 
+## Risk #57: NadirClaw Circuit Breaker — False-Positive Load Shedding
+- **Type**: Operational / Reliability
+- **Severity**: 🟡 Medium
+- **Status**: MITIGATED
+- **Description**: The NadirClaw dispatch circuit breaker (10 errors / 60s window / 30s cooldown) may false-trip during transient upstream model API outages, blocking all dispatch requests with HTTP 503. Mitigated by: (1) Per-model error tracking (not global), (2) Half-open state after cooldown allows single probe request, (3) `/admin/circuit-breaker` GET endpoint for real-time status monitoring, (4) Cloud Monitoring saturation alert configured in `monitoring.py` with configurable notification channels. **Files**: `apps/counselconduit/api/dispatch_router.py` (circuit breaker impl), `apps/counselconduit/api/monitoring.py` (alert config).
+
+## Risk #58: Dispatch Admin Endpoints — No Authentication Gate
+- **Type**: Security / Access Control
+- **Severity**: 🟠 High
+- **Status**: KNOWN
+- **Description**: `/admin/*` dispatch endpoints (metrics, firm-policy, session-cleanup, circuit-breaker, models) are not behind authentication middleware. In production, these must be restricted to internal Cloud Scheduler callers (OIDC token) or admin-role Firebase Auth users. **Action**: Add `_verify_admin_auth()` gate before Phase 3 deployment. Cloud Run IAM invoker restriction provides partial mitigation for now.
+
 ## Known Issues
 - Antigravity IDE: SharedProcess uncaught exception (reading 'fireEvent') - Ignored upstream Electron/Extension bug.
