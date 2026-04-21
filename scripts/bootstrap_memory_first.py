@@ -28,7 +28,7 @@ state = authority.write(
             "Load codebase only after memory hydration",
             "If mismatch exists, create upgrade task instead of mutating memory backward",
         ],
-    }
+    },
 )
 persist_snapshot(s.postgres_dsn, s.repo_id, "startup", "memory-first-bootstrap", json.dumps(state), "v1")
 replace_authority_atoms(s.postgres_dsn, s.repo_id, state)
@@ -40,6 +40,5 @@ JsonMemoryStore(s.json_memory_path).append(
         "body": "Antigravity must hydrate from authority memory before it looks at the codebase.",
         "tags": ["bootstrap", "authority", "antigravity"],
         "repo_id": s.repo_id,
-    }
+    },
 )
-print({"status": "bootstrapped", "authority_state_path": s.authority_state_path})

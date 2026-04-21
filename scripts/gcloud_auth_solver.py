@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-gcloud_auth_solver.py - The "Keymaster"
+"""gcloud_auth_solver.py - The "Keymaster"
 Recursively checks and fixes Google Cloud Authentication.
 Logic: Plan -> Act -> Verify -> Loop.
 """
@@ -8,13 +7,10 @@ Logic: Plan -> Act -> Verify -> Loop.
 import subprocess
 
 
-def solve_auth():
-    print("Checking gcloud auth status...")
+def solve_auth() -> None:
     try:
         subprocess.run(["gcloud", "auth", "print-identity-token"], check=True, capture_output=True)
-        print("Auth is valid.")
     except subprocess.CalledProcessError:
-        print("Auth invalid. Revoking and re-authenticating...")
         subprocess.run(["gcloud", "auth", "application-default", "revoke"], check=False)
         subprocess.run(["gcloud", "auth", "application-default", "login"], check=True)
         subprocess.run(
@@ -22,7 +18,6 @@ def solve_auth():
             check=True,
         )
         subprocess.run(["gcloud", "auth", "login", "--update-adc"], check=True)
-        print("Auth solver complete. You are securely connected.")
 
 
 if __name__ == "__main__":

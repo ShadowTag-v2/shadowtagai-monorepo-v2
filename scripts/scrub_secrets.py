@@ -2,7 +2,7 @@ import os
 import re
 
 
-def scrub_file(filepath):
+def scrub_file(filepath) -> None:
     if not os.path.exists(filepath):
         return
     with open(filepath) as f:
@@ -19,7 +19,6 @@ def scrub_file(filepath):
 
     with open(filepath, "w") as f:
         f.write(content)
-    print(f"Scrubbed {filepath}")
 
 
 scrub_file("docs/AUDIT_REPORT.md")

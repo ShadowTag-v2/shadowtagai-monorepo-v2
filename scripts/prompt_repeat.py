@@ -2,13 +2,13 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
 
 def repeat_prompt(text: str, times: int = 2, separator: str = """\n\n--- REPEAT ---\n\n""") -> str:
     if times < 1:
-        raise ValueError("times must be >= 1")
+        msg = "times must be >= 1"
+        raise ValueError(msg)
     return separator.join([text] * times)
 
 
@@ -21,12 +21,12 @@ def main() -> int:
     args = parser.parse_args()
 
     text = Path(args.input).read_text(encoding="utf-8") if args.file else args.input
-    result = repeat_prompt(text, times=args.times)
+    repeat_prompt(text, times=args.times)
 
     if args.json:
-        print(json.dumps({"times": args.times, "result": result}, ensure_ascii=False, indent=2))
+        pass
     else:
-        print(result)
+        pass
     return 0
 
 

@@ -13,10 +13,9 @@ TARGET_REPO_TO_DELETE = "ehanc69/TsubameViewer"
 
 
 def run_cmd(cmd, cwd=None):
-    print(f"Running: {cmd}")
     res = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True)  # nosec B602 — intentional shell for git/system ops
     if res.returncode != 0:
-        print(f"Error ({res.returncode}): {res.stderr}")
+        pass
     return res
 
 
@@ -42,7 +41,6 @@ def get_installation_token():
             break
 
     if not inst_id:
-        print(f"Could not find installation for {TARGET_LOGIN}")
         sys.exit(1)
 
     # 2. Get access token
@@ -51,8 +49,7 @@ def get_installation_token():
     return resp.json()["token"]
 
 
-def delete_repo(token, full_name):
-    print(f"\nAttempting to delete {full_name}...")
+def delete_repo(token, full_name) -> None:
     headers = {
         "Authorization": f"token {token}",
         "Accept": "application/vnd.github.v3+json",
@@ -60,12 +57,10 @@ def delete_repo(token, full_name):
     }
     url = f"https://api.github.com/repos/{full_name}"
     resp = requests.delete(url, headers=headers, timeout=30)
-    if resp.status_code == 204:
-        print(f"Successfully deleted {full_name}")
-    elif resp.status_code == 404:
-        print(f"{full_name} not found. May already be deleted.")
+    if resp.status_code in {204, 404}:
+        pass
     else:
-        print(f"Failed to delete {full_name}: {resp.status_code} {resp.text}")
+        pass
 
 
 def get_repos(token):
@@ -80,16 +75,14 @@ def get_repos(token):
     return repos
 
 
-def main():
+def main() -> None:
     token = get_installation_token()
-    print("Successfully authenticated and acquired Installation Access Token.")
 
     # First, delete TsubameViewer
     delete_repo(token, TARGET_REPO_TO_DELETE)
 
     # Fetch remaining repos
     repos = get_repos(token)
-    print(f"\nFound {len(repos)} repositories under {TARGET_LOGIN}.")
 
     monorepo_root = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball")
     target_base = monorepo_root / "apps" / "ShadowTag-v2_stack"
@@ -106,16 +99,14 @@ def main():
     success_count = 0
     fail_count = 0
 
-    for i, repo in enumerate(repos):
+    for _i, repo in enumerate(repos):
         repo_name = repo["name"]
-        print(f"\n[{i + 1}/{len(repos)}] Processing {repo_name}...")
 
         target_dir = f"apps/ShadowTag-v2_stack/{repo_name}"
         target_path = monorepo_root / target_dir
 
         # Skip if directory already exists
         if target_path.exists():
-            print(f"Directory {target_dir} already exists. Skipping subtree merge.")
             continue
 
         default_branch = repo.get("default_branch", "main")
@@ -129,7 +120,6 @@ def main():
             # 2. Fetch remote
             res = run_cmd(f"git fetch {repo_name}", cwd=monorepo_root)
             if res.returncode != 0:
-                print(f"Failed to fetch {repo_name}. Skipping subtree add.")
                 fail_count += 1
                 with open(manifest_path, "a") as f:
                     f.write(f"| {clone_url} | {target_dir} | git fetch failed | ERROR |\n")
@@ -141,35 +131,31 @@ def main():
                 cwd=monorepo_root,
             )
             if res.returncode == 0:
-                print(f"Successfully subtree merged {repo_name} into {target_dir}")
                 success_count += 1
                 with open(manifest_path, "a") as f:
                     f.write(f"| {clone_url} | {target_dir} | git subtree add | SUCCESS |\n")
-            else:
-                print(f"Failed to subtree merge {repo_name}. Trying master if main failed.")
-                # fall back to master if we assumed main but it was actually master
-                if default_branch == "main":
-                    res = run_cmd(
-                        f"git subtree add --prefix={target_dir} {repo_name} master",
-                        cwd=monorepo_root,
-                    )
-                    if res.returncode == 0:
-                        success_count += 1
-                        with open(manifest_path, "a") as f:
-                            f.write(f"| {clone_url} | {target_dir} | git subtree add (master) | SUCCESS |\n")
-                    else:
-                        fail_count += 1
-                        with open(manifest_path, "a") as f:
-                            f.write(f"| {clone_url} | {target_dir} | git subtree add failed | ERROR |\n")
+            # fall back to master if we assumed main but it was actually master
+            elif default_branch == "main":
+                res = run_cmd(
+                    f"git subtree add --prefix={target_dir} {repo_name} master",
+                    cwd=monorepo_root,
+                )
+                if res.returncode == 0:
+                    success_count += 1
+                    with open(manifest_path, "a") as f:
+                        f.write(f"| {clone_url} | {target_dir} | git subtree add (master) | SUCCESS |\n")
                 else:
                     fail_count += 1
                     with open(manifest_path, "a") as f:
                         f.write(f"| {clone_url} | {target_dir} | git subtree add failed | ERROR |\n")
+            else:
+                fail_count += 1
+                with open(manifest_path, "a") as f:
+                    f.write(f"| {clone_url} | {target_dir} | git subtree add failed | ERROR |\n")
         finally:
             # 4. Remove temporary remote
             run_cmd(f"git remote remove {repo_name}", cwd=monorepo_root)
 
-    print(f"\nAssimilation complete! {success_count} successful, {fail_count} failed.")
 
 
 if __name__ == "__main__":

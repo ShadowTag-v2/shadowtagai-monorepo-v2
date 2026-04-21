@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-ShadowTag-v2 Session Ingestor
+"""ShadowTag-v2 Session Ingestor.
 ======================
 Reads TELEPORT_MANIFEST.json, finds session files in ~/.claude/projects/,
 extracts conversation text, embeds via Gemini text-embedding-004, and
@@ -58,8 +57,7 @@ def chunk_text(text: str) -> list[str]:
 
 
 def find_session_file(session_id: str) -> Path | None:
-    """
-    Search for session data in ~/.claude/projects/.
+    """Search for session data in ~/.claude/projects/.
 
     NOTE: Manifest session IDs use the Anthropic cloud format (session_01XXXX).
     Local JSONL files use UUID format keyed by the local sessionId field.
@@ -121,13 +119,14 @@ def extract_text_from_jsonl(path: Path) -> str:
 
 def embed_gemini(text: str) -> list[float]:
     if not GEMINI_API_KEY:
-        raise RuntimeError("GEMINI_API_KEY not set")
+        msg = "GEMINI_API_KEY not set"
+        raise RuntimeError(msg)
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{EMBED_MODEL}:embedContent?key={GEMINI_API_KEY}"
     body = json.dumps(
         {
             "model": f"models/{EMBED_MODEL}",
             "content": {"parts": [{"text": text}]},
-        }
+        },
     ).encode()
     req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
     with urllib.request.urlopen(req, timeout=30) as resp:
@@ -145,7 +144,7 @@ def insert_chunk(artifact_id: str, text: str, tags: dict[str, Any], embed: list[
             "text": text,
             "tags": tags,
             "embed": embed,
-        }
+        },
     ).encode()
     req = urllib.request.Request(
         f"{API_BASE}/api/v1/ShadowTag-v2/graph/insert",
@@ -188,19 +187,15 @@ def ingest_session(session_id: str, group: str) -> dict[str, Any]:
         }
 
         if DRY_RUN:
-            print(f"[dry-run] {session_id} chunk {i + 1}/{len(chunks)} ({len(chunk)} chars)")
             ingested += 1
             continue
 
         try:
             embed = embed_gemini(chunk)
-        except Exception as exc:
-            print(f"[ingestor] embed failed for {session_id} chunk {i + 1}: {exc}")
+        except Exception:
             continue
 
         ok = insert_chunk(artifact_id, chunk, tags, embed)
-        status = "OK" if ok else "FAIL"
-        print(f"[ingestor] {session_id} chunk {i + 1}/{len(chunks)} → {status}")
         if ok:
             ingested += 1
 
@@ -235,18 +230,15 @@ def main() -> None:
     # ── Local-only mode: ingest whatever JSONL files actually exist ────────────
     if args.local_only:
         files = all_local_jsonl_files()
-        print(f"[ingestor] --local-only: found {len(files)} local JSONL files")
         for f in files:
             sid = f.stem  # UUID filename without .jsonl extension
             text = extract_text_from_jsonl(f)
             if not text.strip():
-                print(f"[ingestor] {sid} → empty, skip")
                 continue
             chunks = chunk_text(text)
-            print(f"[ingestor] {sid} → {len(chunks)} chunks ({len(text)} chars)")
             if DRY_RUN:
-                for i, c in enumerate(chunks):
-                    print(f"  [dry-run] chunk {i + 1}/{len(chunks)} ({len(c)} chars)")
+                for i, _c in enumerate(chunks):
+                    pass
                 continue
             ingested = 0
             for i, chunk in enumerate(chunks):
@@ -262,30 +254,23 @@ def main() -> None:
                 }
                 try:
                     embed = embed_gemini(chunk)
-                except Exception as exc:
-                    print(f"[ingestor] embed failed chunk {i + 1}: {exc}")
+                except Exception:
                     continue
                 ok = insert_chunk(artifact_id, chunk, tags, embed)
                 if ok:
                     ingested += 1
-                    print(f"[ingestor] {sid} chunk {i + 1}/{len(chunks)} → OK")
                 else:
-                    print(f"[ingestor] {sid} chunk {i + 1}/{len(chunks)} → FAIL")
-            print(f"[ingestor] {sid} → {ingested}/{len(chunks)} chunks ingested")
+                    pass
         return
 
     # ── Manifest-based mode ────────────────────────────────────────────────────
     if not MANIFEST_PATH.exists():
-        print(f"ERROR: manifest not found at {MANIFEST_PATH}", flush=True)
-        print("Run: python scripts/session_manifest_builder.py Docs/raw_sessions.txt", flush=True)
         raise SystemExit(1)
 
     manifest: dict[str, Any] = json.loads(MANIFEST_PATH.read_text())
     groups = manifest.get("groups", {})
     ingest_status: dict[str, Any] = manifest.get("ingest_status", {})
 
-    print("[ingestor] NOTE: manifest session IDs (session_01XXXX) are Anthropic cloud IDs.")
-    print("[ingestor] Local ~/.claude/projects/ uses UUID format. Use --local-only for local sessions.")
 
     # Sort groups by priority
     sorted_groups = sorted(groups.items(), key=lambda x: x[1].get("priority", 99))
@@ -294,28 +279,24 @@ def main() -> None:
         if args.group and group_name != args.group:
             continue
         sessions = group_data.get("sessions", [])
-        print(f"\n[ingestor] group={group_name} priority={group_data.get('priority')} sessions={len(sessions)}")
 
         for sid in sessions:
             # Skip already ingested
             if sid in ingest_status and ingest_status[sid].get("status") == "ingested":
-                print(f"[ingestor] skip {sid} (already ingested)")
                 continue
 
             result = ingest_session(sid, group_name)
             ingest_status[sid] = result
-            print(f"[ingestor] {sid} → {result['status']} ({result.get('chunks', 0)} chunks)")
 
             # Persist status after each session (fault-tolerant)
             if not DRY_RUN:
                 manifest["ingest_status"] = ingest_status
                 MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n")
 
-    total_ingested = sum(1 for v in ingest_status.values() if v.get("status") == "ingested")
+    sum(1 for v in ingest_status.values() if v.get("status") == "ingested")
     total_not_found = sum(1 for v in ingest_status.values() if v.get("status") == "not_found")
-    print(f"\n[ingestor] done. ingested={total_ingested} not_found={total_not_found}")
     if total_not_found > 0:
-        print(f"[ingestor] {total_not_found} not_found = cloud IDs with no local JSONL. Run --local-only instead.")
+        pass
 
 
 if __name__ == "__main__":

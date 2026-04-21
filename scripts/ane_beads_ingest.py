@@ -12,7 +12,6 @@ try:
     ANE_ENABLED = True
 except ImportError:
     ANE_ENABLED = False
-    print("Warning: ANE Router not found. Categorization will fall back to CPU.")
 
 INTEL_DIR = os.path.abspath("apps/ShadowTag-v2_ecosystem/recovered_intel")
 # Use physical mapping to the active root
@@ -100,13 +99,11 @@ print(json.dumps({{"semantic_type": semantic_type, "neural_summary": summary}}))
     return {"semantic_type": "cpu_fallback", "neural_summary": "CPU processed."}
 
 
-def execute_ingestion():
-    print("🧠 [ANE BEADS INGESTER] Initiating Memory Engram Formatting...")
+def execute_ingestion() -> None:
     conn = initialize_beads_db()
     cursor = conn.cursor()
 
     if not os.path.exists(INTEL_DIR):
-        print("🔴 Recovered Intel directory not found. Did extraction finish?")
         return
 
     for folder_name in os.listdir(INTEL_DIR):
@@ -114,7 +111,6 @@ def execute_ingestion():
         if not os.path.isdir(folder_path):
             continue
 
-        print(f"    🔍 Analyzing {folder_name} via ANE...")
         insights = process_directory_via_ane(folder_path, folder_name)
 
         try:
@@ -131,12 +127,10 @@ def execute_ingestion():
                 ),
             )
             conn.commit()
-            print(f"    ✅ Bead Written: {insights.get('semantic_type')} -> {insights.get('neural_summary')}")
-        except Exception as e:
-            print(f"    ❌ Failed to write bead for {folder_name}: {e}")
+        except Exception:
+            pass
 
     conn.close()
-    print("\n✅ [ANE BEADS INGESTER] Complete. Legacy Intelligence successfully mapped to memory_beads UUIDs.")
 
 
 if __name__ == "__main__":

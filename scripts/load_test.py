@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-load_test.py — Lightweight API load testing script
+"""load_test.py — Lightweight API load testing script
 ═══════════════════════════════════════════════════
 Uses asyncio + aiohttp for concurrent request testing.
 No external dependencies beyond aiohttp (already in pyproject.toml).
@@ -48,7 +47,7 @@ async def run_load_test(url: str, concurrency: int, total_requests: int) -> dict
     results: list[tuple[int, float]] = []
     semaphore = asyncio.Semaphore(concurrency)
 
-    async def bounded_fetch(session: aiohttp.ClientSession):
+    async def bounded_fetch(session: aiohttp.ClientSession) -> None:
         async with semaphore:
             result = await fetch(session, url)
             results.append(result)
@@ -84,26 +83,12 @@ async def run_load_test(url: str, concurrency: int, total_requests: int) -> dict
     }
 
 
-def print_report(metrics: dict):
+def print_report(metrics: dict) -> None:
     """Pretty-print load test results."""
-    icon = OK if metrics["success_rate"] >= 99 else (WARN if metrics["success_rate"] >= 95 else FAIL)
-    print(f"\n{'═' * 60}")
-    print(f"  {icon} Load Test: {metrics['url']}")
-    print(f"{'═' * 60}")
-    print(f"  Requests:    {metrics['total_requests']} ({metrics['concurrency']} concurrent)")
-    print(f"  Wall Time:   {metrics['wall_time_s']}s")
-    print(f"  Throughput:  {metrics['rps']} req/s")
-    print(f"  Success:     {metrics['success']}/{metrics['total_requests']} ({metrics['success_rate']}%)")
-    print(f"  Errors:      {metrics['errors']}")
-    print(
-        f"  Latency (ms): min={metrics['latency_min_ms']}  mean={metrics['latency_mean_ms']}  "
-        f"median={metrics['latency_median_ms']}  p95={metrics['latency_p95_ms']}  "
-        f"p99={metrics['latency_p99_ms']}  max={metrics['latency_max_ms']}"
-    )
-    print(f"{'═' * 60}")
+    OK if metrics["success_rate"] >= 99 else (WARN if metrics["success_rate"] >= 95 else FAIL)
 
 
-async def main():
+async def main() -> None:
     parser = argparse.ArgumentParser(description="API Load Tester")
     parser.add_argument("--url", type=str, help="Target URL")
     parser.add_argument("--targets", type=str, help="'all' to test kovelai + shadowtagai")

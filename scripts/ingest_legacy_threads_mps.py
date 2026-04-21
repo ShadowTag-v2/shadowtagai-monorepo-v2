@@ -21,7 +21,6 @@ TARGET_THREADS = [
 def get_files_recursively(directory):
     """Pickle Rick: Ruthlessly hunt down every file in the directory structure."""
     if not os.path.exists(directory):
-        print(f"⚠️ [Pickle Rick Warning]: Target missing {directory}")
         return []
 
     if os.path.isfile(directory):
@@ -55,16 +54,12 @@ def chunk_text(text: str, chunk_size: int = 1000) -> list[str]:
     return [c for c in chunks if c.strip()]
 
 
-def execute_ingestion():
-    print("🥒 [PICKLE RICK PROTOCOL] Initiating...")
-    print("⚡ Utilizing Apple Silicon ANE (mps) for ruthless vector math acceleration.")
+def execute_ingestion() -> None:
 
     # Force MPS on Apple Silicon
     try:
         model = SentenceTransformer("all-MiniLM-L6-v2", device="mps")
-        print("✅ MPS Backend Activated.")
-    except Exception as e:
-        print(f"⚠️ Could not load MPS backend, falling back to CPU. ({e})")
+    except Exception:
         model = SentenceTransformer("all-MiniLM-L6-v2")
 
     def local_embed_fn(text: str):
@@ -76,9 +71,7 @@ def execute_ingestion():
     total_chunks = 0
 
     for thread in TARGET_THREADS:
-        print(f"\n🔍 Sweeping Thread: {thread}")
         files = get_files_recursively(thread)
-        print(f"   => Found {len(files)} target files.")
 
         for file in files:
             try:
@@ -98,13 +91,6 @@ def execute_ingestion():
             total_chunks += len(chunks)
             total_files_ingested += 1
 
-    print("\n================================================")
-    print("🥒 PICKLE RICK RUTHLESS ANE MERGE COMPLETE 🥒")
-    print(f"Total Threads Processed : {len(TARGET_THREADS)}")
-    print(f"Total Files Ingested    : {total_files_ingested}")
-    print(f"Total Vector Chunks     : {total_chunks}")
-    print("Vector Graph Updated. The intelligence is now ONE.")
-    print("================================================")
 
 
 if __name__ == "__main__":

@@ -23,4 +23,3 @@ upsert_master_memory(
     "PROJECTS",
     "ANE-first antigravity workbench on M1 Pro with CortexLTM + Beads + LanceDB",
 )
-print({"thread_id": thread_id, "status": "seeded"})

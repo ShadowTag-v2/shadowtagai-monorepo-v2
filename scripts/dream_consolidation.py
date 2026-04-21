@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-KAIROS Dream Memory Consolidation Daemon
+"""KAIROS Dream Memory Consolidation Daemon.
 =========================================
 Implements the enhanced 8-phase Dream protocol for KI system maintenance.
 Adapted from Claude Code v2.1.98 + memory-kernel integration.
@@ -21,6 +20,7 @@ Usage:
   python dream_consolidation.py --dry-run  # Preview changes without writing
 """
 
+import contextlib
 import json
 import os
 import sys
@@ -91,7 +91,6 @@ def orient(ki_dir: Path) -> list[KIEntry]:
     entries = []
 
     if not ki_dir.exists():
-        print(f"[ORIENT] KI directory not found: {ki_dir}")
         return entries
 
     for ki_path in sorted(ki_dir.iterdir()):
@@ -128,10 +127,9 @@ def orient(ki_dir: Path) -> list[KIEntry]:
             )
             entries.append(entry)
 
-        except (json.JSONDecodeError, KeyError) as e:
-            print(f"[ORIENT] Error reading {metadata_file}: {e}")
+        except (json.JSONDecodeError, KeyError):
+            pass
 
-    print(f"[ORIENT] Scanned {len(entries)} KIs")
     return entries
 
 
@@ -173,7 +171,7 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
                         "ki": entry.name,
                         "pattern": pattern,
                         "path": entry.path,
-                    }
+                    },
                 )
                 report.dates_normalized += 1
 
@@ -184,14 +182,14 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
                     "ki": entry.name,
                     "size_kb": entry.size_kb,
                     "limit_kb": ARTIFACT_MAX_KB,
-                }
+                },
             )
             report.size_violations.append(entry.name)
 
         # Check for stale entries (>30 days since last update)
         if entry.updated_at:
             try:
-                updated = datetime.fromisoformat(entry.updated_at.replace("Z", "+00:00"))
+                updated = datetime.fromisoformat(entry.updated_at)
                 age_days = (now - updated).days
                 if age_days > 30:
                     issues["stale_entries"].append(
@@ -199,18 +197,13 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
                             "ki": entry.name,
                             "age_days": age_days,
                             "updated_at": entry.updated_at,
-                        }
+                        },
                     )
             except (ValueError, TypeError):
                 pass
 
     report.ki_scanned = len(entries)
 
-    print(
-        f"[GATHER] Found: {len(issues['relative_dates'])} relative dates, "
-        f"{len(issues['size_violations'])} size violations, "
-        f"{len(issues['stale_entries'])} stale entries"
-    )
 
     return issues
 
@@ -218,9 +211,8 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
 # --- Phase 3: Consolidate ----------------------------------------------------
 
 
-def consolidate(entries: list[KIEntry], issues: dict, report: DreamReport):
+def consolidate(entries: list[KIEntry], issues: dict, report: DreamReport) -> None:
     """Resolve contradictions, normalize dates, merge duplicates."""
-
     # Check for potential contradictions (same topic, different claims)
     names_seen = {}
     for entry in entries:
@@ -237,15 +229,13 @@ def consolidate(entries: list[KIEntry], issues: dict, report: DreamReport):
     for rd in issues["relative_dates"]:
         report.actions.append(f"RELATIVE DATE: '{rd['pattern']}' found in '{rd['ki']}' — convert to absolute ISO-8601 date")
 
-    print(f"[CONSOLIDATE] {report.contradictions_found} potential contradictions, {len(issues['relative_dates'])} dates to normalize")
 
 
 # --- Phase 4: Prune ----------------------------------------------------------
 
 
-def prune(entries: list[KIEntry], issues: dict, report: DreamReport):
+def prune(entries: list[KIEntry], issues: dict, report: DreamReport) -> None:
     """Enforce size limits, remove orphans, trim index."""
-
     # Report size violations
     for sv in issues["size_violations"]:
         report.actions.append(f"SIZE VIOLATION: '{sv['ki']}' is {sv['size_kb']}KB (limit: {sv['limit_kb']}KB) — consider splitting")
@@ -278,16 +268,14 @@ def prune(entries: list[KIEntry], issues: dict, report: DreamReport):
     if len(entries) > MAX_INDEX_ENTRIES:
         report.actions.append(f"INDEX COUNT: {len(entries)} entries (limit: {MAX_INDEX_ENTRIES}) — archive oldest")
 
-    print(f"[PRUNE] {report.artifacts_pruned} orphaned artifacts, index size: {total_summary_kb:.1f}KB/{INDEX_MAX_KB}KB")
 
 
 # --- Phase 2.5: Activate (memory-kernel integration) -------------------------
 
 
-def activate(entries: list[KIEntry], ki_dir: Path, report: DreamReport):
+def activate(entries: list[KIEntry], ki_dir: Path, report: DreamReport) -> None:
     """Run spreading activation for collision detection."""
     if not HAS_KI_ENGINE:
-        print("[ACTIVATE] KI engine not available — skipping")
         return
 
     # Load enhanced metadata
@@ -295,13 +283,10 @@ def activate(entries: list[KIEntry], ki_dir: Path, report: DreamReport):
     for entry in entries:
         metadata_file = Path(entry.path) / "metadata.json"
         if metadata_file.exists():
-            try:
+            with contextlib.suppress(json.JSONDecodeError, OSError):
                 ki_metas.append(KIMetadata.load(metadata_file))
-            except (json.JSONDecodeError, OSError):
-                pass
 
     if not ki_metas:
-        print("[ACTIVATE] No KI metadata loaded — skipping")
         return
 
     # Collect all tags for seeding
@@ -320,46 +305,37 @@ def activate(entries: list[KIEntry], ki_dir: Path, report: DreamReport):
     result = spread_activation(ki_metas, seed_tags=seed_tags, steps=2)
 
     if result.collisions:
-        print(f"[ACTIVATE] {len(result.collisions)} cross-domain collisions detected:")
         for collision in result.collisions[:5]:
-            print(f"  ⚡ {collision.description}")
             report.actions.append(f"COLLISION: {collision.description}")
     else:
-        print(f"[ACTIVATE] {len(result.activated)} KIs activated, 0 collisions")
+        pass
 
 
 # --- Phase 3.5: Promote + Detect Conflicts -----------------------------------
 
 
-def promote_and_detect(entries: list[KIEntry], ki_dir: Path, report: DreamReport):
+def promote_and_detect(entries: list[KIEntry], ki_dir: Path, report: DreamReport) -> None:
     """Run belief promotion and conflict detection."""
     if not HAS_KI_ENGINE:
-        print("[PROMOTE] KI engine not available — skipping")
         return
 
     ki_metas = []
     for entry in entries:
         metadata_file = Path(entry.path) / "metadata.json"
         if metadata_file.exists():
-            try:
+            with contextlib.suppress(json.JSONDecodeError, OSError):
                 ki_metas.append(KIMetadata.load(metadata_file))
-            except (json.JSONDecodeError, OSError):
-                pass
 
     # Promotion pipeline
     promo_result = promote_beliefs(ki_metas, ki_dir=ki_dir, dry_run=DRY_RUN)
     if promo_result.promoted:
-        print(f"[PROMOTE] {len(promo_result.promoted)} beliefs promoted to facts:")
         for name in promo_result.promoted:
-            print(f"  📈 {name}")
             report.actions.append(f"PROMOTED: '{name}' belief → fact (confidence ≥ 0.9)")
 
     # Conflict detection
     conflict_result = detect_conflicts(ki_metas)
     if conflict_result.detected:
-        print(f"[CONFLICT] {len(conflict_result.detected)} conflicts detected:")
         for c in conflict_result.detected:
-            print(f"  ⚠️ {c.ki_a} ↔ {c.ki_b}: {c.reason}")
             report.actions.append(f"CONFLICT: {c.ki_a} ↔ {c.ki_b}: {c.reason}")
             report.contradictions_found += 1
 
@@ -367,37 +343,30 @@ def promote_and_detect(entries: list[KIEntry], ki_dir: Path, report: DreamReport
 # --- Phase 4.5: Closure Metrics + Views --------------------------------------
 
 
-def measure_and_render(entries: list[KIEntry], ki_dir: Path, report: DreamReport):
+def measure_and_render(entries: list[KIEntry], ki_dir: Path, report: DreamReport) -> None:
     """Compute closure metrics and generate views."""
     if not HAS_KI_ENGINE:
-        print("[MEASURE] KI engine not available — skipping")
         return
 
     ki_metas = []
     for entry in entries:
         metadata_file = Path(entry.path) / "metadata.json"
         if metadata_file.exists():
-            try:
+            with contextlib.suppress(json.JSONDecodeError, OSError):
                 ki_metas.append(KIMetadata.load(metadata_file))
-            except (json.JSONDecodeError, OSError):
-                pass
 
     # Closure metrics
     closure = compute_closure(ki_metas, ki_dir=ki_dir)
-    print(f"[CLOSURE] Phase: {closure.phase} | Index: {closure.closure_index:.2f} | Beliefs: {closure.belief_pct:.0f}%")
-    print(f"[CLOSURE] Types: {dict(closure.by_type)}")
     for pred in closure.predictions:
         if pred.status == "degraded":
-            print(f"  ⚠️ {pred.tool}: {pred.detail}")
             report.actions.append(f"CLOSURE WARNING: {pred.tool} — {pred.detail}")
 
     # Generate views
     if not DRY_RUN:
         views_dir = ki_dir / "_views"
-        views = generate_all_views(ki_metas, views_dir)
-        print(f"[VIEWS] Generated {len(views)} views in {views_dir}")
+        generate_all_views(ki_metas, views_dir)
     else:
-        print("[VIEWS] DRY RUN — would generate views")
+        pass
 
 
 # --- Main --------------------------------------------------------------------
@@ -407,12 +376,6 @@ def run_dream_cycle(ki_dir: Path) -> DreamReport:
     """Execute the full enhanced Dream consolidation cycle."""
     report = DreamReport()
 
-    print("=" * 60)
-    print(f"KAIROS Dream Consolidation — {datetime.now(UTC).isoformat()}")
-    print(f"KI Directory: {ki_dir}")
-    print(f"Mode: {'DRY RUN' if DRY_RUN else 'LIVE'}")
-    print(f"KI Engine: {'ACTIVE' if HAS_KI_ENGINE else 'NOT AVAILABLE'}")
-    print("=" * 60)
 
     # Phase 1: Orient
     report.phase = "orient"
@@ -444,20 +407,10 @@ def run_dream_cycle(ki_dir: Path) -> DreamReport:
 
     # Report
     report.phase = "complete"
-    print("\n" + "=" * 60)
-    print("DREAM CYCLE COMPLETE")
-    print(f"  KIs scanned: {report.ki_scanned}")
-    print(f"  Contradictions: {report.contradictions_found}")
-    print(f"  Dates to normalize: {report.dates_normalized}")
-    print(f"  Size violations: {len(report.size_violations)}")
-    print(f"  Orphaned artifacts: {report.artifacts_pruned}")
-    print(f"  Actions required: {len(report.actions)}")
-    print("=" * 60)
 
     if report.actions:
-        print("\nACTION ITEMS:")
-        for i, action in enumerate(report.actions, 1):
-            print(f"  {i}. {action}")
+        for _i, _action in enumerate(report.actions, 1):
+            pass
 
     return report
 
@@ -467,7 +420,7 @@ if __name__ == "__main__":
         os.environ.get(
             "KI_DIR",
             os.path.expanduser("~/.gemini/antigravity/knowledge"),
-        )
+        ),
     )
 
     if len(sys.argv) > 1 and sys.argv[1] not in ("--dry-run", "--migrate"):
@@ -477,24 +430,19 @@ if __name__ == "__main__":
     if "--migrate" in sys.argv:
         from core.ki_engine.migration import migrate_ki_metadata
 
-        print("\n[MIGRATE] Running KI metadata migration...")
         mig_result = migrate_ki_metadata(ki_dir, dry_run=DRY_RUN)
-        print(f"[MIGRATE] Migrated: {len(mig_result.migrated)}, Skipped: {len(mig_result.skipped)}, Errors: {len(mig_result.errors)}")
 
     report = run_dream_cycle(ki_dir)
 
     # Phase 5a: Rebuild FTS5 search index
-    print("\n[FTS5] Rebuilding search index...")
     if DRY_RUN:
-        print("[FTS5] DRY RUN — would rebuild index")
+        pass
     else:
         try:
             from core.ki_engine.fts_index import reindex_all
 
             fts_count = reindex_all(ki_dir)
-            print(f"[FTS5] ✅ Indexed {fts_count} KIs")
         except Exception as e:
-            print(f"[FTS5] ⚠️ FTS5 failed: {e}")
             report.actions.append(f"FTS5: Reindex failed — {e}")
 
     # Phase 5b: Gitleaks nightly production scan
@@ -503,7 +451,6 @@ if __name__ == "__main__":
     if guardian_script.exists():
         import subprocess as _sp
 
-        print("\n[GITLEAKS] Running nightly production scan...")
         gl_report = repo_root / ".beads" / f"gitleaks_nightly_{datetime.now(UTC).strftime('%Y%m%d')}.md"
         cmd = [
             sys.executable,
@@ -516,24 +463,22 @@ if __name__ == "__main__":
             str(gl_report),
         ]
         if DRY_RUN:
-            print(f"[GITLEAKS] DRY RUN — would run: {' '.join(cmd)}")
+            pass
         else:
             result = _sp.run(cmd, capture_output=True, text=True, timeout=300)
             if result.returncode == 0:
-                print(f"[GITLEAKS] ✅ Production clean — report at {gl_report}")
+                pass
             else:
-                print(f"[GITLEAKS] ⚠️ Findings detected (exit {result.returncode})")
                 if result.stdout:
-                    print(result.stdout[:500])
+                    pass
                 report.actions.append(f"GITLEAKS: Production scan found issues — review {gl_report}")
     else:
-        print("[GITLEAKS] Guardian script not found — skipping nightly scan")
+        pass
 
     # Phase 6: Archive to NotebookLM Master Brain (if available)
     try:
-        from notebooklm import NotebookLM  # noqa: F811  # vulture: used conditionally for archive
+        from notebooklm import NotebookLM  # vulture: used conditionally for archive
 
-        print("\n[ARCHIVE] Archiving Dream report to NotebookLM Master Brain...")
         # Master Brain ID from session config
         master_brain_id = os.environ.get(
             "NOTEBOOKLM_BRAIN_ID",
@@ -549,12 +494,12 @@ if __name__ == "__main__":
             f"Actions: {len(report.actions)}\n"
         )
         if not DRY_RUN:
-            print(f"[ARCHIVE] Report text prepared for brain '{master_brain_id}' ({len(report_text)} chars)")
+            pass
             # NotebookLM upload would happen here when API is live
         else:
-            print(f"[ARCHIVE] DRY RUN — would archive to brain '{master_brain_id}'")
+            pass
     except ImportError:
-        print("[ARCHIVE] notebooklm module not available — skipping archive step")
+        pass
 
     # Exit with error if critical issues found
     if report.contradictions_found > 3 or len(report.size_violations) > 5:

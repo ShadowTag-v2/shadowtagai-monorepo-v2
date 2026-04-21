@@ -10,8 +10,7 @@ from urllib3.util.retry import Retry
 
 
 def run(cmd):
-    res = subprocess.run(cmd, shell=True, capture_output=True, text=True)  # nosec B602 — intentional shell for git/system ops
-    return res
+    return subprocess.run(cmd, shell=True, capture_output=True, text=True)  # nosec B602 — intentional shell for git/system ops
 
 
 def get_session():
@@ -65,7 +64,6 @@ token_s = get_token(
     "ShadowTag-v2",
 )
 if not token_s:
-    print("Failed to acquire token")
     sys.exit(1)
 
 os.environ["GIT_TERMINAL_PROMPT"] = "0"
@@ -73,17 +71,12 @@ os.environ["GIT_ASKPASS"] = "/usr/bin/false"
 
 remote_url = f"https://x-access-token:{token_s}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
 
-print("1. Wiping broken remotes...")
 run("git remote remove origin")
 
-print("2. Mapping canonical live token remote...")
 run(f"git remote add origin {remote_url}")
 
-print("3. Executing Monolith Push of scrubbed main history...")
 push_res = run("git push -f --set-upstream origin main")
 
 if push_res.returncode != 0:
-    print(f"Push failed. Error: {push_res.stderr}")
     sys.exit(1)
 
-print("SUCCESS: Deep synced 56 canonical repositories to GitHub App target.")

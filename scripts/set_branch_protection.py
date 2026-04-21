@@ -15,8 +15,7 @@ def generate_jwt(app_id, pem_path):
     with open(pem_path, "rb") as pem_file:
         signing_key = serialization.load_pem_private_key(pem_file.read(), password=None)
     payload = {"iat": int(time.time()) - 60, "exp": int(time.time()) + (10 * 60), "iss": app_id}
-    encoded_jwt = jwt.encode(payload, signing_key, algorithm="RS256")
-    return encoded_jwt
+    return jwt.encode(payload, signing_key, algorithm="RS256")
 
 
 def get_installation_id(encoded_jwt, owner):
@@ -35,7 +34,7 @@ def get_installation_token(encoded_jwt, installation_id):
     return response.json()["token"]
 
 
-def set_branch_protection(token, owner, repo, branch):
+def set_branch_protection(token, owner, repo, branch) -> None:
     headers = {
         "Authorization": f"Bearer {token}",
         "Accept": "application/vnd.github.v3+json",
@@ -51,13 +50,11 @@ def set_branch_protection(token, owner, repo, branch):
         },
         "restrictions": None,
     }
-    print(f"Applying protection to {branch}...")
     response = requests.put(url, headers=headers, json=payload, timeout=30)
     if response.status_code == 200:
-        print("Branch protection rules applied successfully!")
+        pass
     else:
-        print(f"Failed to set branch protection: {response.status_code}")
-        print(response.json())
+        pass
 
 
 if __name__ == "__main__":

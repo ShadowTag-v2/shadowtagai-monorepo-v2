@@ -1,4 +1,4 @@
-"""Memory Index — memory_index.py
+"""Memory Index — memory_index.py.
 
 Lightweight CLI entrypoint for the Three-Layer Context Memory system.
 Delegates to tools/orchestrator/memory_indexer.py.
@@ -28,14 +28,12 @@ from tools.orchestrator.memory_indexer import (  # noqa: E402
 def main() -> None:
     """CLI entrypoint."""
     if len(sys.argv) < 2:
-        print(__doc__)
         sys.exit(1)
 
     command = sys.argv[1]
 
     if command == "add":
         if len(sys.argv) < 6:
-            print("Usage: memory_index.py add <file> <start_line> <end_line> <summary>")
             sys.exit(1)
         file_path = sys.argv[2]
         start_line = int(sys.argv[3])
@@ -43,23 +41,19 @@ def main() -> None:
         summary = sys.argv[5]
         tags = sys.argv[6:] if len(sys.argv) > 6 else None
 
-        result = index_file_context(file_path, start_line, end_line, summary, tags)
-        print(f"✓ Indexed: {result['file']} {result['lines']}")
+        index_file_context(file_path, start_line, end_line, summary, tags)
 
     elif command == "show":
         content = get_hot_context()
         if content:
-            print(content)
+            pass
         else:
-            print("(empty — no hot context)")
+            pass
 
     elif command == "clear":
         clear_hot_context()
-        print("✓ Hot context cleared")
 
     else:
-        print(f"Unknown command: {command}")
-        print(__doc__)
         sys.exit(1)
 
 

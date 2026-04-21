@@ -54,6 +54,8 @@
       ],
       "env": {
         "STITCH_API_KEY": "${STITCH_API_KEY}",
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
+        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
         "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
         "HOME": "/Users/pikeymickey"
       }
@@ -71,10 +73,12 @@
     "github": {
       "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
       "args": [
-        "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/@modelcontextprotocol/server-github/dist/index.js"
+        "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/github-app-mcp-wrapper.mjs"
       ],
       "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}",
+        "GITHUB_APP_ID": "3018200",
+        "GITHUB_INSTALLATION_ID": "114307210",
+        "GITHUB_PEM_PATH": "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem",
         "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
         "HOME": "/Users/pikeymickey"
       }

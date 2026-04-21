@@ -50,27 +50,8 @@ def build_packet(root: Path) -> str:
 
 def build_recovery_packet(root: Path) -> str:
     return (
-        "\n".join(
-            [
-                "# Recovery Packet",
-                "",
-                "If memory appears dropped:",
-                "- stop feature work",
-                "- run `scripts/root_guard.sh`",
-                "- run `python3 scripts/memory_lock_audit.py --repo-root . --write`",
-                "- run `python3 scripts/rebuild_context_packet.py --repo-root . --write`",
-                "- read `docs/SESSION_PACKET.md`",
-                "- continue only from canonical files and verified sources",
-                "",
-                "## Canonical files",
-                "- AGENTS.md",
-                "- docs/MEMORY_LOCK.md",
-                "- docs/UPDATED_PNKLN_PACK.md",
-                "- monorepo_manifest.yaml",
-                "- antigravity-mcp-config.json",
-            ]
-        )
-        + "\n"
+        "# Recovery Packet\n\nIf memory appears dropped:\n- stop feature work\n- run `scripts/root_guard.sh`\n- run `python3 scripts/memory_lock_audit.py --repo-root . --write`\n- run `python3 scripts/rebuild_context_packet.py --repo-root . --write`\n- read `docs/SESSION_PACKET.md`\n- continue only from canonical files and verified sources\n\n## Canonical files\n- AGENTS.md\n- docs/MEMORY_LOCK.md\n- docs/UPDATED_PNKLN_PACK.md\n- monorepo_manifest.yaml\n- antigravity-mcp-config.json"
+         "\n"
     )
 
 
@@ -87,7 +68,6 @@ def main() -> int:
         docs.mkdir(exist_ok=True)
         (docs / "SESSION_PACKET.md").write_text(packet, encoding="utf-8")
         (docs / "RECOVERY_PACKET.md").write_text(recovery, encoding="utf-8")
-    print(packet)
     return 0
 
 

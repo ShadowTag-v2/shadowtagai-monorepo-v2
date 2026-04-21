@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Gemini Multi-Key Burner
+"""Gemini Multi-Key Burner
 Load balances across 10 Gemini Pro accounts for maximum throughput.
 No caching, no rate limiting - burn through quotas fast.
 """
@@ -29,12 +28,11 @@ class KeyStats:
 
 
 class MultiKeyGeminiBurner:
-    """
-    Load balancer for 10 Gemini Pro accounts.
+    """Load balancer for 10 Gemini Pro accounts.
     Round-robin rotation, no caching, max throughput.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         # Load all 10 API keys
         self.keys: list[str] = []
         for i in range(1, 11):
@@ -48,9 +46,9 @@ class MultiKeyGeminiBurner:
                     self.keys.append(default_key)
 
         if not self.keys:
-            raise ValueError("No GEMINI_KEY_* or GEMINI_API_KEY environment variables found")
+            msg = "No GEMINI_KEY_* or GEMINI_API_KEY environment variables found"
+            raise ValueError(msg)
 
-        print(f"///▞ BURNER :: Loaded {len(self.keys)} API keys")
 
         # Initialize stats per key
         self.stats: dict[int, KeyStats] = {i: KeyStats(key_id=i) for i in range(len(self.keys))}
@@ -99,12 +97,12 @@ class MultiKeyGeminiBurner:
         return await asyncio.to_thread(self.generate, prompt)
 
     async def burn_parallel(self, prompts: list[str], concurrency: int = 10) -> list[str]:
-        """
-        Burn through prompts in parallel.
+        """Burn through prompts in parallel.
 
         Args:
             prompts: List of prompts to process
             concurrency: Max concurrent requests (default 10 = all keys)
+
         """
         semaphore = asyncio.Semaphore(concurrency)
 
@@ -118,8 +116,7 @@ class MultiKeyGeminiBurner:
     def burn_sequential(self, prompts: list[str]) -> list[str]:
         """Burn through prompts sequentially with key rotation."""
         results = []
-        for i, prompt in enumerate(prompts):
-            print(f"///▞ BURNER :: Request {i + 1}/{len(prompts)}")
+        for _i, prompt in enumerate(prompts):
             result = self.generate(prompt)
             results.append(result)
         return results
@@ -144,22 +141,14 @@ class MultiKeyGeminiBurner:
             ],
         }
 
-    def print_stats(self):
+    def print_stats(self) -> None:
         """Print formatted stats."""
         stats = self.get_stats()
-        print("\n" + "=" * 50)
-        print("///▞ BURNER STATS")
-        print("=" * 50)
-        print(f"Total Keys: {stats['total_keys']}")
-        print(f"Total Requests: {stats['total_requests']}")
-        print(f"Total Errors: {stats['total_errors']}")
-        print("\nPer-Key Breakdown:")
-        for ks in stats["per_key"]:
-            print(f"  Key {ks['key_id']}: {ks['requests']} requests, {ks['errors']} errors")
-        print("=" * 50)
+        for _ks in stats["per_key"]:
+            pass
 
 
-async def main():
+async def main() -> None:
     """Demo: Burn through test prompts."""
     burner = MultiKeyGeminiBurner()
 
@@ -169,15 +158,12 @@ async def main():
         for i in range(100)
     ]
 
-    print(f"///▞ BURNER :: Starting burn of {len(test_prompts)} prompts")
     start = time.time()
 
     # Burn in parallel
     results = await burner.burn_parallel(test_prompts, concurrency=10)
 
     elapsed = time.time() - start
-    print(f"\n///▞ BURNER :: Completed in {elapsed:.2f}s")
-    print(f"///▞ BURNER :: Rate: {len(test_prompts) / elapsed:.1f} requests/sec")
 
     burner.print_stats()
 
@@ -194,7 +180,6 @@ async def main():
             f,
             indent=2,
         )
-    print(f"\n///▞ BURNER :: Results saved to {output_path}")
 
 
 if __name__ == "__main__":

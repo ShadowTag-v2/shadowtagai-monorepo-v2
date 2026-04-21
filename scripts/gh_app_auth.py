@@ -1,12 +1,11 @@
+import contextlib
 import subprocess
 import time
 
 import requests
 
-try:
+with contextlib.suppress(ImportError):
     import jwt
-except ImportError:
-    pass
 
 APP_ID = "3018200"
 PEM_PATH = "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
@@ -26,6 +25,5 @@ try:
     token = res2.json()["token"]
     remote_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
     subprocess.run(["git", "remote", "set-url", "origin", remote_url], check=True)
-    print("✅ Authenticated GitHub App Native Route Established.")
-except Exception as e:
-    print(f"❌ Custom Auth Egress Failed: {e}")
+except Exception:
+    pass

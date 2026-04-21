@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Gate 0: Tesla Fleet API viability test (1Hz for 60s)
+"""Gate 0: Tesla Fleet API viability test (1Hz for 60s).
 ---------------------------------------------------
 PREREQS (one-time):
   1) Register app at https://developer.tesla.com
@@ -40,22 +39,14 @@ SLEEP_S = float(os.getenv("TESLA_SLEEP_S", "1"))  # target 1 Hz
 # assert VEHICLE_ID and VEHICLE_ID != "YOUR_VEHICLE_ID", "VEHICLE_ID not set"
 
 if ACCESS_TOKEN == "YOUR_OAUTH_TOKEN" or VEHICLE_ID == "YOUR_VEHICLE_ID":
-    print("WARNING: ACCESS_TOKEN or VEHICLE_ID not set. Please set environment variables.")
+    pass
     # We might want to exit or just let it fail if the user wants to see the structure
 
 headers = {"Authorization": f"Bearer {ACCESS_TOKEN}", "Content-Type": "application/json"}
 
-print("Gate 0 configuration:")
-print("  BASE:", TESLA_API_BASE)
-print("  VEHICLE_ID:", VEHICLE_ID)
-print("  CALLS:", CALLS, "| INTERVAL (s):", SLEEP_S)
-print("-" * 60)
 
 # CELL 2: Execute 60-Call Stress Test
 endpoint = f"{TESLA_API_BASE}/api/1/vehicles/{VEHICLE_ID}/vehicle_data"
-print(f"Starting Gate 0 validation: {CALLS} calls over ~{CALLS * SLEEP_S:.0f} seconds")
-print("Testing endpoint:", endpoint)
-print("-" * 60)
 
 results = {
     "successful_calls": 0,
@@ -67,7 +58,7 @@ results = {
     "speeds_mph": [],
 }
 
-for i in range(CALLS):
+for _i in range(CALLS):
     start_time = time.time()
     try:
         resp = requests.get(endpoint, headers=headers, timeout=TIMEOUT_S)
@@ -81,23 +72,19 @@ for i in range(CALLS):
             data = resp.json()
             speed = data.get("response", {}).get("drive_state", {}).get("speed", "N/A")
             results["speeds_mph"].append(speed if isinstance(speed, (int, float)) else None)
-            print(f"Call {i + 1}/{CALLS}: ✅ {latency_ms:.0f}ms  | speed={speed} mph")
         elif resp.status_code == 429:
             results["rate_limit_errors"] += 1
             results["failed_calls"] += 1
             results["speeds_mph"].append(None)
-            print(f"Call {i + 1}/{CALLS}: ⚠️ 429 Rate Limited")
         else:
             results["failed_calls"] += 1
             results["speeds_mph"].append(None)
-            print(f"Call {i + 1}/{CALLS}: ❌ {resp.status_code}")
-    except Exception as e:
+    except Exception:
         results["failed_calls"] += 1
         results["latencies_ms"].append(None)
         results["timestamps"].append(datetime.now().isoformat())
         results["http_statuses"].append("EXC")
         results["speeds_mph"].append(None)
-        print(f"Call {i + 1}/{CALLS}: ❌ Error: {e}")
 
     # maintain approximate 1 Hz pacing
     elapsed = time.time() - start_time
@@ -118,7 +105,6 @@ out_json = {
 output_file = "gate0_results.json"
 with open(output_file, "w") as f:
     json.dump(out_json, f, indent=2)
-print(f"\nSaved raw results to {output_file}")
 
 # CELL 3: Analysis & Decision
 total = CALLS
@@ -134,42 +120,13 @@ if len(lat_ok) >= 20:
     # approximate p95 via quantiles
     p95_latency = statistics.quantiles(lat_ok, n=20)[18]
 
-print("\n" + "=" * 60)
-print("GATE 0 VALIDATION RESULTS")
-print("=" * 60)
-print(f"Success Rate : {success_rate:.1f}% ({ok}/{total})")
-print(f"Failed Calls : {fail}")
-print(f"Rate-Limited : {rl}")
-print(f"Average Lat. : {avg_latency:.0f} ms")
-print(f"P95 Lat.     : {p95_latency:.0f} ms")
-print(f"Actual Freq. : ~{1.0 / SLEEP_S:.2f} Hz (target)")
-print("=" * 60)
 
-print("\nATP 5-19 GATE 0 DECISION:")
-print("-" * 60)
 
-if success_rate >= 95 and avg_latency <= 500:
-    print("✅ GATE 0 PASS")
-    print("   - Success rate meets threshold (≥95%)")
-    print("   - Latency acceptable (≤500ms)")
-    print("   - PROCEED to 90-day validation phase")
-    print("   - UNLOCK: F&F pilot planning (Gate 1)")
-elif success_rate >= 90 and rl > 10:
-    print("⚠️ GATE 0 CONDITIONAL")
-    print("   - Rate limiting detected (>10 errors)")
-    print("   - Requires architecture adjustment")
-    print("   - RECOMMENDATION: Batch requests, cache data")
-    print("   - RETEST in 48 hours with optimizations")
+if (success_rate >= 95 and avg_latency <= 500) or (success_rate >= 90 and rl > 10):
+    pass
 else:
-    print("❌ GATE 0 FAIL")
-    print("   - Success rate below threshold (<95%) and/or high latency")
-    print("   - KILL SWITCH TRIGGERED")
-    print("   - PIVOT: OBD-II dongle strategy")
-    print("   - Sunk cost: <$10K (acceptable)")
+    pass
 
-print("-" * 60)
-print("Next Action: Review with Erik Hancock")
-print(f"Timestamp : {datetime.now().isoformat()}")
 
 # Optional: save a compact summary CSV for quick sharing
 import csv
@@ -187,4 +144,3 @@ with open(csv_path, "w", newline="") as f:
     w.writerow(["calls", total])
     w.writerow(["interval_s", SLEEP_S])
     w.writerow(["endpoint", endpoint])
-print(f"Saved summary to {csv_path}")

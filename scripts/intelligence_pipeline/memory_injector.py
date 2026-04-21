@@ -1,5 +1,4 @@
-"""
-Step 6 — Memory Injector
+"""Step 6 — Memory Injector.
 
 Injects top-50 synthesis results into agent-readable locations:
 
@@ -8,14 +7,12 @@ Injects top-50 synthesis results into agent-readable locations:
   3. Update monorepo_manifest.yaml intelligence section
 """
 
-import glob
+import argparse
 import json
 import logging
 import re
 from datetime import date
 from pathlib import Path
-
-import argparse
 
 logger = logging.getLogger(__name__)
 

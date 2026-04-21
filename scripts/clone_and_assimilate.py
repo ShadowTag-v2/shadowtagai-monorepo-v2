@@ -21,10 +21,8 @@ def get_session():
 
 
 def get_token(client_id, pem_path, owner_name):
-    print(f"Attempting to fetch installation token for {owner_name} using Client ID {client_id}...")
     try:
         if not os.path.exists(pem_path):
-            print(f"ERROR: PEM file not found at {pem_path}")
             return None
 
         with open(pem_path, "rb") as f:
@@ -44,7 +42,6 @@ def get_token(client_id, pem_path, owner_name):
 
         resp = session.get("https://api.github.com/app/installations", headers=headers, timeout=30)
         if resp.status_code != 200:
-            print(f"Failed to get installations for {owner_name}: {resp.status_code} {resp.text}")
             return None
 
         installations = resp.json()
@@ -58,10 +55,8 @@ def get_token(client_id, pem_path, owner_name):
             target_installation_id = installations[0]["id"]
 
         if not target_installation_id:
-            print(f"No installation ID found in API response for {owner_name}")
             return None
 
-        print(f"Found installation ID {target_installation_id} for {owner_name}, requesting access token...")
         resp = session.post(
             f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
             headers=headers,
@@ -69,18 +64,14 @@ def get_token(client_id, pem_path, owner_name):
         )
 
         if resp.status_code == 201:
-            print(f"Token acquired for {owner_name}.")
             return resp.json()["token"]
-        else:
-            print(f"Failed to create access token for {owner_name}: {resp.status_code} {resp.text}")
 
-    except Exception as e:
-        print(f"Exception fetching token for {owner_name}: {e}")
+    except Exception:
+        pass
     return None
 
 
 if __name__ == "__main__":
-    print("--- GitHub Multi-Repo Assimilator ---")
 
     # 1. Fetch Tokens
     token_e = get_token(
@@ -95,7 +86,6 @@ if __name__ == "__main__":
     )
 
     if not token_e and not token_s:
-        print("CRITICAL: Failed to acquire any GitHub App tokens. Check network and PEM files.")
         sys.exit(1)
 
     # 2. Load manifest repos
@@ -103,14 +93,12 @@ if __name__ == "__main__":
     if not os.path.exists(json_path):
         json_path = "fetched_repos.json"
 
-    print(f"\nLoading {json_path}...")
     with open(json_path) as f:
         repos = json.load(f)
 
     if "Monorepo-Uphillsnowball" in repos:
         repos.remove("Monorepo-Uphillsnowball")
 
-    print(f"Targeting {len(repos)} internal repositories to clone into canonical roots...")
 
     cloned_count = 0
     skipped_count = 0
@@ -122,7 +110,6 @@ if __name__ == "__main__":
         if os.path.exists(dest):
             files = os.listdir(dest)
             if len(files) > 1 or (len(files) == 1 and files[0] != "README.md"):
-                print(f"Skipping {repo}: appears already populated.")
                 skipped_count += 1
                 continue
             else:
@@ -148,15 +135,12 @@ if __name__ == "__main__":
             git_dir = os.path.join(dest, ".git")
             if os.path.exists(git_dir):
                 shutil.rmtree(git_dir)  # Vaporize .git to merge cleanly into the monorepo
-            print(f" [OK] Cloned internal: {repo}")
             cloned_count += 1
         else:
-            print(f" [FAILED] Could not clone {repo} using provided tokens.")
+            pass
 
-    print(f"\nInternal Clone Phase Complete: {cloned_count} cloned, {skipped_count} skipped.")
 
     # 3. Process external Prettier repos
-    print("\n--- Cloning external remote dependencies ---")
     externals = [
         "https://github.com/prettier/prettier",
         "https://github.com/prettier/prettier-vscode",
@@ -172,18 +156,15 @@ if __name__ == "__main__":
         name = url.split("/")[-1]
         dest = f"third_party/{name}"
         if not os.path.exists(dest):
-            print(f"Cloning external: {name}...")
             cmd = f"git clone {url} {dest}"
             res = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec B602 — intentional shell for git/system ops
             if res.returncode == 0:
                 git_dir = os.path.join(dest, ".git")
                 if os.path.exists(git_dir):
                     shutil.rmtree(git_dir)  # Flatten inside our monorepo tree
-                print(f" [OK] Externally pulled: {name}")
                 ext_cloned += 1
             else:
-                print(f" [FAILED] External: {name}")
+                pass
         else:
-            print(f" [SKIPPED] External {name}: already exists.")
+            pass
 
-    print(f"\nTotal Run Finished. Internals: {cloned_count}, Externals: {ext_cloned}")

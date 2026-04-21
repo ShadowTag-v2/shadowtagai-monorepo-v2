@@ -60,6 +60,12 @@
   <!-- Skip Navigation (a11y) -->
   <a href="#main-content" class="skip-nav">Skip to main content</a>
 
+  <!-- Scroll Progress -->
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="alert">✓ Message sent. We'll respond within 24 hours.</div>
+
   <!-- ═══ Utility Bar (Unusual Machines pattern) ═══ -->
   <div class="utility-bar" role="complementary" aria-label="Utility navigation">
     <a href="#main-content" aria-label="Skip to content">Accessibility</a>
@@ -334,6 +340,32 @@
           </ul>
           <button class="pricing-cta" id="cta-enterprise" onclick="openContactModal()">Contact Sales</button>
         </div>
+      </div>
+    </section>
+
+    <!-- ═══ Leadership ═══ -->
+    <section id="management" class="section-padded" aria-labelledby="management-title">
+      <div class="fade-in">
+        <p class="section-label">Leadership</p>
+        <h2 class="section-title" id="management-title">Management</h2>
+      </div>
+      <div class="ceo-card fade-in stagger-1">
+        <img src="/images/founder.jpeg" alt="Erik Hanson, Founder & CEO" class="ceo-headshot" loading="lazy" decoding="async" onerror="this.style.display='none'">
+        <div>
+          <h3>Erik Hanson</h3>
+          <div class="ceo-title">Founder & CEO</div>
+          <p>Erik founded ShadowTagAI and KovelAI to protect privileged communications in the age of AI. With expertise in distributed systems and legal technology, he leads the mission to ensure that attorney-client privilege extends seamlessly into AI-assisted research under the <em>Heppner</em> framework.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CTA ═══ -->
+    <section class="cta-section" aria-labelledby="cta-title">
+      <div class="fade-in">
+        <p class="section-label">Get Started</p>
+        <h2 id="cta-title">Ready to Secure Your Practice?</h2>
+        <p>Schedule a demo to see how KovelAI protects your clients' AI research under the Kovel doctrine with cryptographic attestation.</p>
+        <button onclick="openContactModal()" class="btn-primary" style="font-size:1rem;padding:1rem 3rem;">Schedule a Demo</button>
       </div>
     </section>
 

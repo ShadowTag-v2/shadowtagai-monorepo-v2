@@ -1,5 +1,4 @@
-"""
-Step 5 — Synthesis Report
+"""Step 5 — Synthesis Report.
 
 Feeds top-100 gaps to Gemini 2.0 Flash → ranked action queue JSON + Markdown report.
 
@@ -43,7 +42,6 @@ def get_access_token() -> str:
 
 def load_top_gaps(conn: sqlite3.Connection, top_n: int = 100) -> list[dict]:
     """Load top N gaps ordered by priority."""
-    priority_order = {"high": 1, "medium": 2, "low": 3}
     rows = conn.execute(
         """SELECT gap_type, source_id, source_title, best_match_id,
                   best_similarity, domain, priority
@@ -109,7 +107,7 @@ def _fallback_report(gaps: list[dict]) -> dict:
                 "type": g["type"],
                 "priority": g["priority"],
                 "domain": g["domain"],
-            }
+            },
         )
     return {"actions": actions, "summary": f"Fallback report: {len(gaps)} gaps found"}
 
@@ -173,10 +171,7 @@ def run_synthesis_report(cfg=None) -> dict:
 
         # Parse JSON from response
         match = re.search(r"\{.*\}", response, re.DOTALL)
-        if match:
-            report = json.loads(match.group())
-        else:
-            report = _fallback_report(gaps)
+        report = json.loads(match.group()) if match else _fallback_report(gaps)
 
     except Exception as e:
         logger.warning(f"Gemini synthesis failed: {e}, using fallback")

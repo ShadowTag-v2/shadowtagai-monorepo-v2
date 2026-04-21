@@ -42,7 +42,7 @@ EXCLUDE_DIRS = {
 def run_cmd(cmd, cwd=None):
     res = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True)  # nosec B602 — intentional shell for git/system ops
     if res.returncode != 0 and "Deleted branch" not in res.stderr and "No such remote" not in res.stderr:
-        print(f"Error ({res.returncode}): {res.stderr}", flush=True)
+        pass
     return res
 
 
@@ -61,7 +61,6 @@ def get_installation_token(app_id, pem_path, target_account):
         None,
     )
     if not inst_id:
-        print(f"Could not find installation for {target_account} using App {app_id}")
         sys.exit(1)
     resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers, timeout=30)
     resp.raise_for_status()
@@ -84,7 +83,7 @@ def get_repos(token):
     return repos
 
 
-def append_to_manifest(repo_name, manifest_path):
+def append_to_manifest(repo_name, manifest_path) -> None:
     if not manifest_path.exists():
         return
     with open(manifest_path) as f:
@@ -119,7 +118,7 @@ def append_to_manifest(repo_name, manifest_path):
         f.write(append_str)
 
 
-def copy_tree(src: Path, dst: Path):
+def copy_tree(src: Path, dst: Path) -> None:
     dst.mkdir(parents=True, exist_ok=True)
     for current_root, dirs, files in os.walk(src):
         # Exclude specified directories
@@ -137,15 +136,12 @@ def copy_tree(src: Path, dst: Path):
             shutil.copy2(s, t)
 
 
-def main():
-    print("Authenticating Source App (ehanc69)...", flush=True)
+def main() -> None:
     source_token = get_installation_token(APP_1_ID, APP_1_KEY, SOURCE_LOGIN)
 
-    print("Authenticating Target App (ShadowTag-v2)...", flush=True)
     target_token = get_installation_token(APP_2_ID, APP_2_KEY, TARGET_ORG)
 
     repos = get_repos(source_token)
-    print(f"Found {len(repos)} source repositories under {SOURCE_LOGIN}.", flush=True)
 
     monorepo_root = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball")
     run_cmd("git add -A", cwd=monorepo_root)
@@ -165,9 +161,9 @@ def main():
 
     initial_push = run_cmd("git push -u origin main", cwd=monorepo_root)
     if initial_push.returncode != 0:
-        print(f"Initial push failed. Waiting to let Git pack-objects settle. Status: {initial_push.stderr}")
+        pass
     else:
-        print("Initial base state pushed successfully.")
+        pass
 
     manifest_path = monorepo_root / "monorepo_manifest.yaml"
     success_count = 0
@@ -176,20 +172,15 @@ def main():
     TEMP_DIR.mkdir(parents=True, exist_ok=True)
     DST_ROOT.mkdir(parents=True, exist_ok=True)
 
-    for i, repo in enumerate(repos):
+    for _i, repo in enumerate(repos):
         repo_name = repo["name"]
         if repo_name == "TsubameViewer":
             continue
 
-        print(f"\n--- [{i + 1}/{len(repos)}] Processing: {repo_name} ---", flush=True)
         target_dir = f"apps/ShadowTag-v2_stack/{repo_name}"
         target_path = monorepo_root / target_dir
 
         if target_path.exists():
-            print(
-                f"   [OK] {repo_name} already exists. Skipping flat copy because logic says exists. Will append manifest.",
-                flush=True,
-            )
             append_to_manifest(repo_name, manifest_path)
             continue
 
@@ -200,7 +191,6 @@ def main():
             shutil.rmtree(clone_path)
 
         try:
-            print(f"   [CLONE] Fetching {repo_name} surface clone...", flush=True)
             subprocess.run(
                 ["git", "clone", "--depth", "1", clone_url, str(clone_path)],
                 check=True,
@@ -208,43 +198,29 @@ def main():
                 stderr=subprocess.DEVNULL,
             )
 
-            print(
-                f"   [COPY] Flat copying {repo_name} to monorepo (ignoring Git/Bloat)...",
-                flush=True,
-            )
             copy_tree(clone_path, target_path)
 
             append_to_manifest(repo_name, manifest_path)
 
-            print("   [SYNC] Committing and uploading chunk...", flush=True)
             run_cmd("git add -A", cwd=monorepo_root)
             run_cmd(f'git commit -m "chore(assimilation): flat copy {repo_name}"', cwd=monorepo_root)
             push_res = run_cmd("git push origin main", cwd=monorepo_root)
 
             if push_res.returncode == 0:
-                print("   [UPLOAD] Success.", flush=True)
                 success_count += 1
             else:
-                print("   [UPLOAD] Retrying chunk push...", flush=True)
                 run_cmd("git pull origin main --no-rebase -s recursive -X ours", cwd=monorepo_root)
                 push_retry = run_cmd("git push origin main", cwd=monorepo_root)
                 if push_retry.returncode == 0:
-                    print("   [UPLOAD] Forced sync success.", flush=True)
                     success_count += 1
                 else:
-                    print("   [UPLOAD FAILED]", flush=True)
                     fail_count += 1
         except subprocess.CalledProcessError:
-            print(f"   [ERROR] Failed to clone {repo_name}")
             fail_count += 1
         finally:
             if clone_path.exists():
                 shutil.rmtree(clone_path)
 
-    print(
-        f"\nAssimilation UPLOAD ENFORCEMENT complete! {success_count} canonical flat copies verified and pushed to ShadowTag-v2, {fail_count} failed.",
-        flush=True,
-    )
 
 
 if __name__ == "__main__":

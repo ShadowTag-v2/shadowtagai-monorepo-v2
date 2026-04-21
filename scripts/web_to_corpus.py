@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-scripts/web_to_corpus.py — Web Scrape → Corpus Normalizer
+"""scripts/web_to_corpus.py — Web Scrape → Corpus Normalizer.
 ----------------------------------------------------------
 Reads new items from data/web_ingest/ingest.db (IngestStore.items schema),
 converts them into the langextract extractions schema (class/text/attrs),
@@ -25,7 +24,6 @@ import argparse
 import json
 import re
 import sqlite3
-import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -83,9 +81,9 @@ def _trust_for(source: str) -> dict:
 
 # ── Class Heuristic ───────────────────────────────────────────────────────────
 
-_STAT_RE = re.compile(r"\b\d+\.?\d*\s*%|\b\d{4,}\b|\bpercent\b|\bGDP\b|\bmillion\b|\bbillion\b", re.I)
-_RESEARCH_RE = re.compile(r"\bstudy\b|\bpaper\b|\bresearch\b|\bjournal\b|\barXiv\b|\bpreprint\b", re.I)
-_SOCIAL_RE = re.compile(r"\bthink\b|\bfeel\b|\bIMO\b|\bLMK\b|\breddit\b|\b4chan\b|\bunpopular opinion\b", re.I)
+_STAT_RE = re.compile(r"\b\d+\.?\d*\s*%|\b\d{4,}\b|\bpercent\b|\bGDP\b|\bmillion\b|\bbillion\b", re.IGNORECASE)
+_RESEARCH_RE = re.compile(r"\bstudy\b|\bpaper\b|\bresearch\b|\bjournal\b|\barXiv\b|\bpreprint\b", re.IGNORECASE)
+_SOCIAL_RE = re.compile(r"\bthink\b|\bfeel\b|\bIMO\b|\bLMK\b|\breddit\b|\b4chan\b|\bunpopular opinion\b", re.IGNORECASE)
 
 
 def _classify(text: str, source: str) -> str:
@@ -156,12 +154,10 @@ def _already_processed(conn: sqlite3.Connection, item_id: str) -> bool:
 
 
 def normalize(dry_run: bool = False) -> dict[str, int]:
-    """
-    Incremental pass: read new items → write extractions.
+    """Incremental pass: read new items → write extractions.
     Returns {"processed": N, "skipped": N, "errors": N}.
     """
     if not WEB_DB.exists():
-        print(f"[web_to_corpus] DB not found: {WEB_DB}", file=sys.stderr)
         return {"processed": 0, "skipped": 0, "errors": 0}
 
     conn = sqlite3.connect(str(WEB_DB))
@@ -212,14 +208,13 @@ def normalize(dry_run: bool = False) -> dict[str, int]:
                 "adapter": source,
                 "score": meta.get("score", meta.get("like_count", 0)),
                 "ingested_at": ingested_at,
-            }
+            },
         )
 
         # Display name: "source_prefix: title[:60]"
         name = f"{source}: {title[:60]}"
 
         if dry_run:
-            print(f"  [{extraction_class}] [{trust['label']}] {name[:80]}")
             stats["processed"] += 1
             continue
 
@@ -233,8 +228,7 @@ def normalize(dry_run: bool = False) -> dict[str, int]:
                 (item_id, name, "ok", 1),
             )
             stats["processed"] += 1
-        except Exception as e:
-            print(f"[web_to_corpus] insert error {item_id}: {e}", file=sys.stderr)
+        except Exception:
             stats["errors"] += 1
 
     if not dry_run:
@@ -246,18 +240,14 @@ def normalize(dry_run: bool = False) -> dict[str, int]:
 
 def show_stats() -> None:
     if not WEB_DB.exists():
-        print("DB not found.")
         return
     conn = sqlite3.connect(str(WEB_DB))
     rows = conn.execute("SELECT source, COUNT(*) FROM items GROUP BY source ORDER BY COUNT(*) DESC").fetchall()
-    ext = conn.execute("SELECT COUNT(*) FROM extractions").fetchone()
-    items_total = conn.execute("SELECT COUNT(*) FROM items").fetchone()
+    conn.execute("SELECT COUNT(*) FROM extractions").fetchone()
+    conn.execute("SELECT COUNT(*) FROM items").fetchone()
     conn.close()
-    print(f"\nitems total    : {items_total[0]}")
-    print(f"extractions    : {ext[0]}")
-    print("\nBy source:")
-    for src, cnt in rows:
-        print(f"  {cnt:5d}  {src}")
+    for _src, _cnt in rows:
+        pass
 
 
 # ── CLI ────────────────────────────────────────────────────────────────────────
@@ -274,10 +264,7 @@ def main() -> None:
         show_stats()
         return
 
-    label = "[DRY RUN] " if args.dry_run else ""
-    print(f"{label}web_to_corpus: scanning {WEB_DB} ...")
-    stats = normalize(dry_run=args.dry_run)
-    print(f"{label}Done — processed={stats['processed']} skipped={stats['skipped']} errors={stats['errors']}")
+    normalize(dry_run=args.dry_run)
 
 
 if __name__ == "__main__":

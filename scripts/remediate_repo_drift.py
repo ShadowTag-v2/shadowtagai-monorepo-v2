@@ -49,7 +49,7 @@ EXCLUDE_EXTS = {
 }
 
 
-def is_excluded(path, name, is_dir):
+def is_excluded(path, name, is_dir) -> bool:
     if is_dir and name in EXCLUDE_DIRS:
         return True
     if not is_dir:
@@ -59,8 +59,7 @@ def is_excluded(path, name, is_dir):
     return False
 
 
-def scrub_workspaces():
-    print("[remediate] Starting workspace deletion protocol...")
+def scrub_workspaces() -> None:
     deleted = 0
     for root, dirs, files in os.walk(ROOT):
         dirs[:] = [d for d in dirs if not is_excluded(root, d, True)]
@@ -69,17 +68,11 @@ def scrub_workspaces():
                 if file == CANONICAL_WORKSPACE:
                     continue
                 path = os.path.join(root, file)
-                print(f"  - Deleting alternate root: {path}", flush=True)
                 os.remove(path)
                 deleted += 1
-    print(
-        f"[remediate] Deletion complete. Neutralized {deleted} alternate operator entrypoints.\n",
-        flush=True,
-    )
 
 
-def scrub_content():
-    print("[remediate] Starting aggressive string replacement protocol...", flush=True)
+def scrub_content() -> None:
 
     # Precise replacements
     naming_replacements = {
@@ -131,13 +124,8 @@ def scrub_content():
                     f.write(content)
                 mod_count += 1
 
-    print(
-        f"[remediate] Replacement protocol complete. Reprogrammed {mod_count} files to canonical alignment.\n",
-        flush=True,
-    )
 
 
 if __name__ == "__main__":
     scrub_workspaces()
     scrub_content()
-    print("[remediate] Programmatic phase 3.5 sweep strictly enforced and finalized.", flush=True)

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Autonomous Loop Steward Daemon
+"""Autonomous Loop Steward Daemon.
 ===============================
 Timer-based daemon that advances in-progress work while the user is away.
 Adapted from Claude Code's autonomous loop steward pattern.
@@ -33,7 +32,7 @@ REPO_ROOT = Path(
     os.environ.get(
         "REPO_ROOT",
         os.path.expanduser("~/.gemini/antigravity/Monorepo-Uphillsnowball"),
-    )
+    ),
 )
 DRY_RUN = "--dry-run" in sys.argv
 
@@ -107,7 +106,6 @@ def is_reversible(action: Action) -> bool:
 
 def evaluate_action(action: Action, consecutive_idles: int) -> ActionVerdict:
     """Determine whether to proceed with an action."""
-
     # 3-consecutive-idle scaling
     if consecutive_idles >= MAX_IDLE_CYCLES:
         return ActionVerdict.SCALE_BACK
@@ -146,7 +144,7 @@ def check_git_status() -> list[Action]:
                     description=f"{dirty_count} uncommitted files detected",
                     reversible=True,
                     risk_level="low",
-                )
+                ),
             )
     except (subprocess.TimeoutExpired, FileNotFoundError):
         pass
@@ -170,7 +168,7 @@ def check_test_status() -> list[Action]:
                     description=f"Tests stale ({age_hours:.1f}h since last run)",
                     reversible=True,
                     risk_level="low",
-                )
+                ),
             )
     else:
         actions.append(
@@ -179,7 +177,7 @@ def check_test_status() -> list[Action]:
                 description="No test run marker found",
                 reversible=True,
                 risk_level="low",
-            )
+            ),
         )
 
     return actions
@@ -200,7 +198,7 @@ def check_dream_schedule() -> list[Action]:
                     description=f"Dream consolidation due ({age_hours:.0f}h since last)",
                     reversible=True,
                     risk_level="low",
-                )
+                ),
             )
     else:
         actions.append(
@@ -209,7 +207,7 @@ def check_dream_schedule() -> list[Action]:
                 description="No Dream cycle recorded — initial run",
                 reversible=True,
                 risk_level="low",
-            )
+            ),
         )
 
     return actions
@@ -227,7 +225,7 @@ def check_fts_freshness() -> list[Action]:
                 description="FTS5 index missing — initial build",
                 reversible=True,
                 risk_level="low",
-            )
+            ),
         )
     else:
         age_hours = (datetime.now(UTC) - datetime.fromtimestamp(fts_db.stat().st_mtime, tz=UTC)).total_seconds() / 3600
@@ -238,7 +236,7 @@ def check_fts_freshness() -> list[Action]:
                     description=f"FTS5 index stale ({age_hours:.1f}h since last build)",
                     reversible=True,
                     risk_level="low",
-                )
+                ),
             )
     return actions
 
@@ -249,7 +247,6 @@ def check_fts_freshness() -> list[Action]:
 def execute_action(action: Action) -> bool:
     """Execute a steward action. Returns True if successful."""
     if DRY_RUN:
-        print(f"  [DRY RUN] Would execute: {action.description}")
         return True
 
     if action.action_type == ActionType.TEST_RUN:
@@ -265,10 +262,8 @@ def execute_action(action: Action) -> bool:
             marker = REPO_ROOT / ".beads" / "last_test_run"
             marker.parent.mkdir(parents=True, exist_ok=True)
             marker.touch()
-            print(f"  [EXEC] Tests: {'PASS' if result.returncode == 0 else 'FAIL'}")
             return result.returncode == 0
         except subprocess.TimeoutExpired:
-            print("  [EXEC] Tests timed out")
             return False
 
     elif action.action_type == ActionType.DREAM:
@@ -285,10 +280,8 @@ def execute_action(action: Action) -> bool:
                 marker = REPO_ROOT / ".beads" / "last_dream_run"
                 marker.parent.mkdir(parents=True, exist_ok=True)
                 marker.touch()
-                print("  [EXEC] Dream cycle complete")
                 return result.returncode == 0
         except subprocess.TimeoutExpired:
-            print("  [EXEC] Dream cycle timed out")
             return False
 
     elif action.action_type == ActionType.FTS_REINDEX:
@@ -307,14 +300,11 @@ def execute_action(action: Action) -> bool:
                 text=True,
                 timeout=30,
             )
-            print(f"  [EXEC] FTS5 reindex: {result.stdout.strip()} KIs")
             return result.returncode == 0
         except subprocess.TimeoutExpired:
-            print("  [EXEC] FTS5 reindex timed out")
             return False
 
     elif action.action_type == ActionType.LINT_FIX:
-        print(f"  [INFO] {action.description} — steward does not auto-commit")
         return True
 
     return True
@@ -369,31 +359,22 @@ def run_cycle(cycle_number: int, consecutive_idles: int) -> CycleReport:
     return report
 
 
-def main():
+def main() -> None:
     """Main steward loop."""
-    print("=" * 60)
-    print(f"Loop Steward — Started {datetime.now(UTC).isoformat()}")
-    print(f"Cycle interval: {CYCLE_INTERVAL}s | Max idle: {MAX_IDLE_CYCLES}")
-    print(f"Repo: {REPO_ROOT}")
-    print(f"Mode: {'DRY RUN' if DRY_RUN else 'LIVE'}")
-    print("=" * 60)
-
     consecutive_idles = 0
     cycle_number = 0
 
     # Single cycle mode for testing
     if "--once" in sys.argv:
         report = run_cycle(1, 0)
-        print(f"\nCycle 1: {report.actions_evaluated} evaluated, {report.actions_taken} taken")
-        for detail in report.details:
-            print(f"  {detail}")
+        for _detail in report.details:
+            pass
         return
 
     # Continuous mode
     try:
         while True:
             cycle_number += 1
-            print(f"\n--- Cycle {cycle_number} ---")
 
             report = run_cycle(cycle_number, consecutive_idles)
 
@@ -402,19 +383,17 @@ def main():
             else:
                 consecutive_idles = 0
 
-            print(f"Actions: {report.actions_taken}/{report.actions_evaluated} | Idle streak: {consecutive_idles}/{MAX_IDLE_CYCLES}")
-            for detail in report.details:
-                print(f"  {detail}")
+            for _detail in report.details:
+                pass
 
             if report.verdict == ActionVerdict.SCALE_BACK:
                 scaled_interval = CYCLE_INTERVAL * (2 ** min(consecutive_idles, 5))
-                print(f"Scaling back — next cycle in {scaled_interval}s")
                 time.sleep(scaled_interval)
             else:
                 time.sleep(CYCLE_INTERVAL)
 
     except KeyboardInterrupt:
-        print(f"\nSteward stopped after {cycle_number} cycles")
+        pass
 
 
 if __name__ == "__main__":

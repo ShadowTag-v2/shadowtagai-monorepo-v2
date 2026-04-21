@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Vertex AI Veo Configuration — High-Resolution (1080p) Backend
+"""Vertex AI Veo Configuration — High-Resolution (1080p) Backend.
 
 Configures Vertex AI backend for Veo operations requiring higher
 resolution (1080p) or enterprise SLA features not available in the
@@ -15,7 +15,6 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 
 # Vertex AI model mappings (Veo via Vertex uses different model names)
@@ -55,20 +54,8 @@ GCS_OUTPUT_URI = "gs://shadowtag-omega-v4-media/veo-output/vertex/"
 
 def list_models() -> None:
     """Print available Vertex AI Veo models."""
-    print("\n┌─────────────────────────────────────────────────────────┐")
-    print("│  Vertex AI Veo Models — shadowtag-omega-v4             │")
-    print("├──────────────┬──────────────────────┬──────┬───────────┤")
-    print("│ Model        │ Vertex Endpoint      │ Res  │ Price/sec │")
-    print("├──────────────┼──────────────────────┼──────┼───────────┤")
-    for name, config in VERTEX_VEO_MODELS.items():
-        print(f"│ {name:<12} │ {config['vertex_model']:<20} │ {config['max_resolution']:<4} │ {config['pricing']:<9} │")
-    print("└──────────────┴──────────────────────┴──────┴───────────┘\n")
-    print(f"GCS Output: {GCS_OUTPUT_URI}")
-    print("Project: shadowtag-omega-v4")
-    print("Region: us-central1")
-    print("\nNote: Vertex AI requires ADC authentication:")
-    print("  gcloud auth application-default login")
-    print("  gcloud config set project shadowtag-omega-v4")
+    for _name, _config in VERTEX_VEO_MODELS.items():
+        pass
 
 
 def generate_vertex_request(preset: str, resolution: str) -> dict:
@@ -78,15 +65,14 @@ def generate_vertex_request(preset: str, resolution: str) -> dict:
 
     # Import preset from main pipeline
     sys.path.insert(0, ".")
-    from scripts.veo_pipeline import PRESETS  # noqa: E402
+    from scripts.veo_pipeline import PRESETS
 
     if preset not in PRESETS:
-        print(f"❌ Unknown preset: {preset}")
         sys.exit(1)
 
     preset_config = PRESETS[preset]
 
-    request = {
+    return {
         "model": vertex_config["vertex_model"],
         "endpoint": vertex_config["endpoint"],
         "project": "shadowtag-omega-v4",
@@ -99,8 +85,6 @@ def generate_vertex_request(preset: str, resolution: str) -> dict:
         },
     }
 
-    print(json.dumps(request, indent=2))
-    return request
 
 
 def main() -> None:

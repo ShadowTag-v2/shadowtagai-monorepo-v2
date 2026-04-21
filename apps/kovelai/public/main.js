@@ -1,18 +1,21 @@
 /**
  * KovelAI — Main Application Script
- * Handles: nav, modals, intersection observer, smooth scroll, dynamic effects
+ * Handles: nav, modals, toast, intersection observer, scroll progress, smooth scroll
+ * Infrastructure parity with ShadowTagAI
  */
 
 (function () {
   'use strict';
 
   // ── DOM References ──
-  const nav = document.getElementById('main-nav');
-  const navToggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
-  const contactModal = document.getElementById('contactModal');
+  var nav = document.getElementById('main-nav');
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  var contactModal = document.getElementById('contactModal');
+  var scrollProgress = document.getElementById('scrollProgress');
+  var toast = document.getElementById('toast');
 
-  // ── Nav Background on Scroll ──
+  // ── Nav Scroll ──
   function handleNavScroll() {
     if (!nav) return;
     if (window.scrollY > 60) {
@@ -21,19 +24,31 @@
       nav.classList.remove('scrolled');
     }
   }
-  window.addEventListener('scroll', handleNavScroll, { passive: true });
-  handleNavScroll();
+
+  // ── Scroll Progress Bar ──
+  function handleScrollProgress() {
+    if (!scrollProgress) return;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+    scrollProgress.style.width = progress + '%';
+  }
+
+  function onScroll() {
+    handleNavScroll();
+    handleScrollProgress();
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
   // ── Mobile Nav Toggle ──
   if (navToggle && navLinks) {
     navToggle.addEventListener('click', function () {
       navLinks.classList.toggle('open');
-      const isOpen = navLinks.classList.contains('open');
+      var isOpen = navLinks.classList.contains('open');
       navToggle.setAttribute('aria-expanded', isOpen);
       navToggle.textContent = isOpen ? '✕' : '☰';
     });
 
-    // Close mobile nav when clicking a link
     navLinks.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
         if (window.innerWidth <= 768) {
@@ -50,7 +65,6 @@
     if (contactModal) {
       contactModal.style.display = 'flex';
       contactModal.setAttribute('aria-hidden', 'false');
-      // Focus first input
       var firstInput = contactModal.querySelector('input, textarea');
       if (firstInput) firstInput.focus();
     }
@@ -63,23 +77,49 @@
     }
   };
 
-  // Close modal on overlay click
   if (contactModal) {
     contactModal.addEventListener('click', function (e) {
-      if (e.target === contactModal) {
-        closeContactModal();
-      }
+      if (e.target === contactModal) closeContactModal();
     });
   }
 
-  // Close modal on Escape
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && contactModal && contactModal.style.display === 'flex') {
       closeContactModal();
     }
   });
 
-  // ── Intersection Observer for Fade-In Animations ──
+  // ── Toast ──
+  function showToast() {
+    if (!toast) return;
+    toast.classList.add('show');
+    setTimeout(function () {
+      toast.classList.remove('show');
+    }, 4000);
+  }
+
+  // ── Contact Form Submit (Cloud Functions) ──
+  var contactForms = document.querySelectorAll('form[action*="captureLead"]');
+  contactForms.forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var formData = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        body: formData
+      }).then(function () {
+        showToast();
+        form.reset();
+        closeContactModal();
+      }).catch(function () {
+        showToast();
+        form.reset();
+        closeContactModal();
+      });
+    });
+  });
+
+  // ── Intersection Observer for Fade-In ──
   var fadeEls = document.querySelectorAll('.fade-in');
   if (fadeEls.length > 0 && 'IntersectionObserver' in window) {
     var observer = new IntersectionObserver(
@@ -93,17 +133,12 @@
       },
       { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     );
-    fadeEls.forEach(function (el) {
-      observer.observe(el);
-    });
+    fadeEls.forEach(function (el) { observer.observe(el); });
   } else {
-    // Fallback: show everything
-    fadeEls.forEach(function (el) {
-      el.classList.add('visible');
-    });
+    fadeEls.forEach(function (el) { el.classList.add('visible'); });
   }
 
-  // ── Smooth Scroll for Anchor Links ──
+  // ── Smooth Scroll ──
   document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
       var targetId = this.getAttribute('href');
@@ -118,8 +153,6 @@
 
   // ── Service Worker Registration ──
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(function () {
-      // Silent fail — non-critical
-    });
+    navigator.serviceWorker.register('/sw.js').catch(function () {});
   }
 })();

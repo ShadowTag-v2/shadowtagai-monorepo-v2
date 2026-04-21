@@ -1,11 +1,11 @@
-"""
-Step 7 — GitHub Sync
+"""Step 7 — GitHub Sync.
 
 1. Push feat/agent-1774963915 branch (40 unpushed commits) to ShadowTag-v2/Monorepo-Uphillsnowball
 2. Create PRs for each high-priority gap from synthesis report
 3. Update repo description with pipeline status
 """
 
+import argparse
 import json
 import logging
 import os
@@ -16,7 +16,6 @@ import time
 from pathlib import Path
 
 import requests
-import argparse
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +73,7 @@ def get_installation_token() -> str:
         return resp.json()["token"]
 
     except Exception as e:
-        logger.error(f"Failed to get installation token: {e}")
+        logger.exception(f"Failed to get installation token: {e}")
         raise
 
 
@@ -93,7 +92,7 @@ def push_feature_branch(branch_name: str) -> bool:
         logger.warning(f"Push failed: {result.stderr}")
         return False
     except Exception as e:
-        logger.error(f"Push error: {e}")
+        logger.exception(f"Push error: {e}")
         return False
 
 
@@ -169,7 +168,7 @@ def run_github_sync(cfg=None) -> dict:
     try:
         token = get_installation_token()
     except Exception:
-        logger.error("Cannot authenticate to GitHub — skipping sync")
+        logger.exception("Cannot authenticate to GitHub — skipping sync")
         return {"status": "auth_failed"}
 
     # Create issues for high-priority actions

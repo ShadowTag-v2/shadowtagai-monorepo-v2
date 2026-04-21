@@ -44,7 +44,6 @@ def get_mapping(repo_name):
     return mappings.get(repo_name, f"apps/ShadowTag-v2_stack/{repo_name}")
 
 
-print("Discovering local source payloads...")
 synced_count = 0
 for rep_dir in Path(CACHE_DIR).iterdir():
     if not rep_dir.is_dir():
@@ -69,14 +68,11 @@ for rep_dir in Path(CACHE_DIR).iterdir():
     dest_sub = get_mapping(repo_name)
     dest_abs = os.path.join(MONO_ROOT, dest_sub)
 
-    print(f"[{repo_name}] Synchronizing to {dest_sub}...")
     os.makedirs(dest_abs, exist_ok=True)
-    subprocess.run(["rsync", "-a", "--exclude=.git", f"{str(rep_dir)}/", dest_abs], capture_output=True)
+    subprocess.run(["rsync", "-a", "--exclude=.git", f"{rep_dir!s}/", dest_abs], capture_output=True)
     synced_count += 1
 
-print(f"Synchronized {synced_count} repositories.")
 
-print("\nAuthenticating GitHub App Route (ID: 3018080)...")
 PEM_PATH = "/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.private-key.pem"
 APP_ID = "3018080"
 try:
@@ -91,7 +87,6 @@ try:
     r2.raise_for_status()
     token = r2.json()["token"]
 
-    print("Setting remote and Executing Egress...")
     remote_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
     subprocess.run(["git", "remote", "set-url", "origin", remote_url], check=True)
 
@@ -103,8 +98,7 @@ try:
             check=False,
         )
         subprocess.run(["git", "push", "origin", "HEAD"], check=False)
-        print("✅ Massive Push Complete. The Monorepo is Canonical.")
     else:
-        print("✅ No net-new drifts detected in local cache.")
-except Exception as e:
-    print(f"❌ Custom Auth Egress Failed: {e}")
+        pass
+except Exception:
+    pass

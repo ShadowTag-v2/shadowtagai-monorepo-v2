@@ -15,7 +15,6 @@ def get_installation_token(app_id, key_path, target_login):
 
     resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
     if resp.status_code != 200:
-        print(f"Error fetching installations: {resp.text}")
         return None
 
     installations = resp.json()
@@ -29,29 +28,24 @@ def get_installation_token(app_id, key_path, target_login):
         inst_id = installations[0]["id"]
 
     if not inst_id:
-        print("No installation found.")
         return None
 
     url = f"https://api.github.com/app/installations/{inst_id}/access_tokens"
     res = requests.post(url, headers=headers, timeout=30)
     if res.status_code != 201:
-        print(f"Error creating access token: {res.text}")
         return None
 
     return res.json()["token"]
 
 
-def delete_repo(token, owner, repo):
+def delete_repo(token, owner, repo) -> None:
     headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"}
     url = f"https://api.github.com/repos/{owner}/{repo}"
-    print(f"Deleting {url}...")
     res = requests.delete(url, headers=headers, timeout=30)
-    if res.status_code == 204:
-        print(f"SUCCESS: Deleted {owner}/{repo}")
-    elif res.status_code == 404:
-        print(f"Repo {owner}/{repo} not found or already deleted.")
+    if res.status_code in {204, 404}:
+        pass
     else:
-        print(f"FAILED to delete: HTTP {res.status_code} - {res.text}")
+        pass
 
 
 if __name__ == "__main__":
@@ -62,4 +56,4 @@ if __name__ == "__main__":
     if token:
         delete_repo(token, "ehanc69", "TsubameViewer")
     else:
-        print("Could not get ehanc69 token.")
+        pass

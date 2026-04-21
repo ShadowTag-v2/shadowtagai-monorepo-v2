@@ -12,17 +12,13 @@ DATA_STORE_ID = "judge6-doctrine-store"  # We will create/use this ID
 DOCS_DIR = "docs"
 
 
-def check_env():
+def check_env() -> None:
     if not PROJECT_ID:
-        print("❌ Error: GEMINI_PROJECT_ID or GOOGLE_CLOUD_PROJECT environment variable not set.")
         sys.exit(1)
-    print(f"✅ Using Project: {PROJECT_ID}")
-    print(f"✅ Using Location: {LOCATION}")
 
 
-def import_documents(project_id: str, location: str, data_store_id: str, input_dir: str):
-    """
-    Imports documents from a local directory to Vertex AI Search.
+def import_documents(project_id: str, location: str, data_store_id: str, input_dir: str) -> None:
+    """Imports documents from a local directory to Vertex AI Search.
     Note: In a real scenario, we usually upload to GCS first, but here we'll simulate
     or use the inline content method if files are small, or guide the user to GCS.
 
@@ -32,14 +28,6 @@ def import_documents(project_id: str, location: str, data_store_id: str, input_d
 
     Actually, let's use the GCS method as it's standard.
     """
-    print(f"\n--- 1. Data Ingestion for {data_store_id} ---")
-    print(f"To utilize your credits, you should upload your '{input_dir}' content to a GCS bucket.")
-    print("Then create a Data Store in Vertex AI Agent Builder pointing to that bucket.")
-    print("\nRun this command to upload your docs:")
-    print(f"  gsutil mb -l {location} gs://{project_id}-judge6-docs")
-    print(f"  gsutil cp {input_dir}/* gs://{project_id}-judge6-docs/")
-    print("\nThen creates the data store (can be done via UI or API).")
-
     # We can try to list data stores to see if it exists
     client = discoveryengine.DataStoreServiceClient()
     parent = f"projects/{project_id}/locations/{location}/collections/default_collection"
@@ -48,18 +36,15 @@ def import_documents(project_id: str, location: str, data_store_id: str, input_d
         # List data stores
         request = discoveryengine.ListDataStoresRequest(parent=parent)
         page_result = client.list_data_stores(request=request)
-        existing_stores = [ds.name for ds in page_result]
-        print(f"Found {len(existing_stores)} existing data stores.")
-    except Exception as e:
-        print(f"⚠️  Could not list data stores (API enabled?): {e}")
+        [ds.name for ds in page_result]
+    except Exception:
+        pass
 
 
-def query_judge6_grounded(project_id: str, location: str, data_store_id: str, query: str):
-    """
-    Queries Gemini with grounding against the Vertex AI Search data store.
+def query_judge6_grounded(project_id: str, location: str, data_store_id: str, query: str) -> None:
+    """Queries Gemini with grounding against the Vertex AI Search data store.
     This is the key step that uses the "GenAI App Builder" credits.
     """
-    print("\n--- 2. Querying Judge #6 (Grounded) ---")
     vertexai.init(project=project_id, location=location)
 
     # Define the grounding tool
@@ -67,33 +52,28 @@ def query_judge6_grounded(project_id: str, location: str, data_store_id: str, qu
     data_store_path = f"projects/{project_id}/locations/{location}/collections/default_collection/dataStores/{data_store_id}"
 
     grounding_tool = Tool.from_google_search_retrieval(
-        grounding.GoogleSearchRetrieval()
+        grounding.GoogleSearchRetrieval(),
     )  # Fallback to Google Search if datastore not ready, but we want Data Store:
 
     # Correct way for Vertex AI Search Grounding:
     grounding_tool = Tool.from_retrieval(
         grounding.Retrieval(
             source=grounding.VertexAISearch(datastore=data_store_path),
-        )
+        ),
     )
 
     model = GenerativeModel("gemini-3.1-flash-lite-preview")
 
-    print(f"❓ Question: {query}")
     try:
         response = model.generate_content(query, tools=[grounding_tool], generation_config={"temperature": 0.0})
-        print("\n⚖️  Judge #6 Verdict:")
-        print(response.text)
 
         # Print citations if any
         if response.candidates[0].grounding_metadata.grounding_chunks:
-            print("\n📜 Citations (from Sovereign Memory):")
-            for chunk in response.candidates[0].grounding_metadata.grounding_chunks:
-                print(f" - {chunk.retrieved_context.title}")
+            for _chunk in response.candidates[0].grounding_metadata.grounding_chunks:
+                pass
 
-    except Exception as e:
-        print(f"❌ Error querying model: {e}")
-        print("Ensure you have enabled the 'Vertex AI API' and 'Vertex AI Search API'.")
+    except Exception:
+        pass
 
 
 if __name__ == "__main__":

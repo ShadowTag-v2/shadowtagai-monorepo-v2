@@ -28,9 +28,7 @@ for repo_entry in data.get("repos", []):
                 repo_entry["checks"]["index_updated"] = True
                 repo_entry["checks"]["build_sanity_checked"] = True
                 repo_entry["checks"]["final_status_stamped"] = True
-            print(f"Updated {dest} to canonical_in_monorepo")
 
 with open(yaml_path, "w") as f:
     yaml.dump(data, f, sort_keys=False, default_flow_style=False)
 
-print("Reconciliation complete.")

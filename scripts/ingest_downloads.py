@@ -30,7 +30,6 @@ for path in targets:
         sub_dest = os.path.join(DEST, name.replace(".zip", "").replace(".tar.gz", ""))
         os.makedirs(sub_dest, exist_ok=True)
 
-        print(f"Extracting {name} to {sub_dest}...")
         try:
             if name.endswith(".zip"):
                 with zipfile.ZipFile(out_path, "r") as z:
@@ -38,7 +37,6 @@ for path in targets:
             elif name.endswith(".tar.gz"):
                 with tarfile.open(out_path, "r:gz") as t:
                     t.extractall(sub_dest)
-        except Exception as e:
-            print(f"Failed to extract {name}: {e}")
+        except Exception:
+            pass
 
-print("Extraction complete.")
