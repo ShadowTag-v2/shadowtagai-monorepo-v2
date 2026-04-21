@@ -33,15 +33,15 @@ from pathlib import Path
 # Model registry
 # ---------------------------------------------------------------------------
 MODELS = {
-    "veo-3.1": "veo-3.1-generate-preview",
-    "veo-3.1-fast": "veo-3.1-fast-generate-preview",
-    "veo-3.1-lite": "veo-3.1-lite-generate-preview",
+    "veo-3.1": "veo-3.1-generate-001",
+    "veo-3.1-fast": "veo-3.1-fast-generate-001",
+    "veo-3.1-lite": "veo-3.1-lite-generate-001",
     "veo-3": "veo-3.0-generate-001",
     "veo-3-fast": "veo-3.0-fast-generate-001",
     "veo-2": "veo-2.0-generate-001",
 }
 
-DEFAULT_MODEL = "veo-3.1-generate-preview"
+DEFAULT_MODEL = "veo-3.1-generate-001"
 
 # ---------------------------------------------------------------------------
 # Preset library
@@ -49,13 +49,28 @@ DEFAULT_MODEL = "veo-3.1-generate-preview"
 PRESETS = {
     "hero_drift": {
         "prompt": (
-            "Cinematic aerial establishing shot of a futuristic cyberpunk cityscape at night. "
-            "An enormous holographic shield dome glowing in cyan and teal protects a central "
-            "data center district. Digital rain particles fall through volumetric fog. Scales "
-            "of justice appear as a faint holographic watermark in the sky. Slow camera push-in "
-            "through rain-slicked streets with neon reflections. No people, no cars, no vehicles. "
-            "Dark moody atmosphere, shot on ARRI Alexa with 50mm anamorphic lens. "
-            "No sharp cuts, continuous smooth motion."
+            "Cinematic aerial tracking shot of a sleek matte-black sports car powersliding "
+            "through rain-slicked neon-lit city streets at night. Tire smoke billows in "
+            "volumetric clouds illuminated by cyan and teal neon signs. The car is a generic "
+            "mid-engine supercar with sharp aggressive lines — NOT a branded vehicle, no logos, "
+            "no badges, no recognizable brand design. Camera follows from a low three-quarter "
+            "rear angle. Sparks fly from the rear wheels. Wet pavement reflects neon colors. "
+            "Dark moody cyberpunk atmosphere. Shot on ARRI Alexa with 50mm anamorphic lens. "
+            "No sharp cuts, continuous smooth tracking motion."
+        ),
+        "duration_seconds": 8,
+        "aspect_ratio": "16:9",
+    },
+    "generic_supercar_peelout": {
+        "prompt": (
+            "Dramatic close-up of a matte-black unbranded supercar doing a standing burnout "
+            "on wet asphalt at night. Massive tire smoke clouds billow from the rear wheels, "
+            "illuminated by teal and cyan neon underbody glow. The car has aggressive sharp "
+            "body lines, large rear diffuser, and quad exhaust tips — but NO brand logos, "
+            "NO badges, NO recognizable manufacturer design cues. Camera starts low behind "
+            "the wheel arch, slowly panning to a dramatic rear three-quarter shot. Rain "
+            "droplets on the bodywork catch neon reflections. Cinematic depth of field, "
+            "shot on RED V-Raptor, 85mm lens. Continuous smooth motion."
         ),
         "duration_seconds": 8,
         "aspect_ratio": "16:9",
