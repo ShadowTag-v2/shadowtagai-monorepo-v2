@@ -17,13 +17,13 @@ import os
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime, timezone, UTC
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 logger = logging.getLogger("counselconduit.sandbox.runner")
 
 
-class SandboxTier(str, Enum):
+class SandboxTier(StrEnum):
     """Isolation levels for sandbox execution."""
 
     BASIC = "basic"  # Solo tier — no network, 30s timeout
