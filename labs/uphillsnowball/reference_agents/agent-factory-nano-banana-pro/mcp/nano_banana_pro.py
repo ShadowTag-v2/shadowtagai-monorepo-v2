@@ -28,7 +28,7 @@ MAX_RETRIES = 5
 
 async def generate_image(
     prompt: str,
-    source_image_gsc_uri: Optional[str] = None,
+    source_image_gsc_uri: str | None = None,
     aspect_ratio: Literal["16:9", "9:16"] = "16:9",
 ) -> MediaAsset:
     """Generates an image using Gemini 3 Flash Image model (Nano Banana Pro).

@@ -82,6 +82,18 @@
         "PATH": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin:/Users/pikeymickey/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
         "HOME": "/Users/pikeymickey"
       }
+    },
+    "notebooklm": {
+      "command": "/Users/pikeymickey/.local/bin/uv",
+      "args": [
+        "tool",
+        "run",
+        "notebooklm-mcp-cli"
+      ],
+      "env": {
+        "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
+        "HOME": "/Users/pikeymickey"
+      }
     }
   },
   "capability_registry": {
