@@ -38,5 +38,14 @@
   },
   "hooksConfig": {
     "enabled": true
+  },
+  "contextFileName": "AGENTS.md",
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
+      "args": [
+        "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/@anthropic-ai/claude-code/vendor/@anthropic-ai/mcp-server-sequential-thinking/dist/index.js"
+      ]
+    }
   }
 }
