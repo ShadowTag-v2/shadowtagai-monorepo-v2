@@ -26,24 +26,37 @@
         <span class="nav__logo-text">CinemaScroll</span>
       </a>
       <ul class="nav__links" id="nav-links">
-        <li><a href="#story" class="nav__link">Story</a></li>
-        <li><a href="#features" class="nav__link">Features</a></li>
-        <li><a href="#reviews" class="nav__link">Reviews</a></li>
+        <li><a href="#story" class="nav__link" style="color: hsl(220, 10%, 75%);">Story</a></li>
+        <li><a href="#features" class="nav__link" style="color: hsl(220, 10%, 75%);">Features</a></li>
+        <li><a href="#reviews" class="nav__link" style="color: hsl(220, 10%, 75%);">Reviews</a></li>
       </ul>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">
+        <span class="theme-toggle__knob" id="theme-knob">🌙</span>
+      </button>
       <a href="#contact" class="nav__cta" id="nav-cta">Get Started</a>
+      <button class="nav__hamburger" id="nav-hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
     <div class="nav__progress" id="scroll-progress"></div>
   </nav>
 
   <!-- ===== HERO (Cinematic Scroll) ===== -->
+  <main>
   <section class="hero" id="hero-section">
     <canvas class="hero__canvas" id="hero-canvas"></canvas>
+    <div class="hero__loading" id="hero-loading">
+      <div style="text-align: center;">
+        <div class="hero__loading-spinner"></div>
+        <p class="hero__loading-text">Loading cinematic frames…</p>
+      </div>
+    </div>
     <div class="hero__overlay">
       <h1 class="hero__title" id="hero-title">
         <span class="hero__title-line">Cinematic</span>
         <span class="hero__title-line hero__title-line--accent">Scroll</span>
       </h1>
-      <p class="hero__subtitle" id="hero-subtitle">
+      <p class="hero__subtitle" id="hero-subtitle" style="color: hsl(220, 10%, 72%);">
         100% Google-native pipeline. Nano Banana 2 → Veo 3.1 → Frame Sequence.
       </p>
     </div>
@@ -173,6 +186,8 @@
     </div>
   </section>
 
+  </main>
+
   <!-- ===== FOOTER ===== -->
   <footer class="footer" id="footer">
     <div class="footer__wave">
@@ -286,6 +301,92 @@
           marqueeTrack.style.animationPlayState = 'running';
         });
       }
+    }
+
+    // ===== THEME TOGGLE (Item 9) =====
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeKnob = document.getElementById('theme-knob');
+    if (themeToggle) {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      themeKnob.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+
+      themeToggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        themeKnob.textContent = next === 'dark' ? '🌙' : '☀️';
+      });
+    }
+
+    // ===== PREFERS-REDUCED-MOTION STATIC FALLBACK (Item 18) =====
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (prefersReduced.matches) {
+      const heroLoading = document.getElementById('hero-loading');
+      if (heroLoading) heroLoading.classList.add('loaded');
+      // Static hero gradient background instead of frame animation
+      if (heroSection) {
+        heroSection.style.height = '100vh';
+        heroSection.style.background = 'linear-gradient(135deg, hsl(220, 20%, 8%), hsl(280, 50%, 15%), hsl(200, 80%, 15%))';
+      }
+    }
+
+    // ===== SCROLL DEPTH TRACKING (Item 20) =====
+    const scrollDepthMarkers = [25, 50, 75, 100];
+    const firedDepths = new Set();
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const percentScrolled = Math.round((scrollY / docHeight) * 100);
+
+      scrollDepthMarkers.forEach(depth => {
+        if (percentScrolled >= depth && !firedDepths.has(depth)) {
+          firedDepths.add(depth);
+          // Google Analytics gtag event
+          if (typeof gtag === 'function') {
+            gtag('event', 'scroll_depth', {
+              event_category: 'engagement',
+              event_label: `${depth}%`,
+              value: depth,
+              non_interaction: true,
+            });
+          }
+          console.log(`[Analytics] Scroll depth: ${depth}%`);
+        }
+      });
+    }, { passive: true });
+
+    // Track hero frame progress
+    if (canvas && heroSection) {
+      let lastTrackedFrame = -1;
+      window.addEventListener('scroll', () => {
+        const rect = heroSection.getBoundingClientRect();
+        const scrollable = rect.height - window.innerHeight;
+        if (scrollable <= 0) return;
+        const progress = Math.max(0, Math.min(1, (window.scrollY - rect.top - window.scrollY) / scrollable));
+        const framePercent = Math.round(progress * 100);
+        if (framePercent % 25 === 0 && framePercent !== lastTrackedFrame) {
+          lastTrackedFrame = framePercent;
+          if (typeof gtag === 'function') {
+            gtag('event', 'hero_frame_progress', {
+              event_category: 'cinematic_scroll',
+              event_label: `${framePercent}%`,
+              value: framePercent,
+            });
+          }
+        }
+      }, { passive: true });
+    }
+
+    // ===== LOADING PLACEHOLDER DISMISS (Item 16) =====
+    const heroLoading2 = document.getElementById('hero-loading');
+    if (heroLoading2 && canvas) {
+      // Dismiss after engine loads first frame or after timeout
+      const dismissLoading = () => heroLoading2.classList.add('loaded');
+      canvas.addEventListener('load', dismissLoading);
+      setTimeout(dismissLoading, 3000); // Max 3s wait
     }
   </script>
 </body>
