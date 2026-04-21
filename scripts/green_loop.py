@@ -7,7 +7,7 @@ import subprocess
 logging.basicConfig(level=logging.INFO)
 
 
-def green_loop():
+def green_loop() -> None:
     if subprocess.call(["pytest", "."]) == 0:
         logging.info("Green Line intact. Preserving artifact.")
         os.makedirs("data/green_loop", exist_ok=True)

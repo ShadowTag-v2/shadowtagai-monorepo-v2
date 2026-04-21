@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-scripts/ingest_monitor.py — Continuous Web Ingest → Corpus → Swarm Monitor
+"""scripts/ingest_monitor.py — Continuous Web Ingest → Corpus → Swarm Monitor.
 ---------------------------------------------------------------------------
 Ties together all three pipeline stages in a loop:
 
@@ -52,10 +51,8 @@ async def _run_adapter(name: str, adapter_fn) -> int:
         async for item in adapter.fetch_items():
             if store.save_item(item):
                 count += 1
-        print(f"  [{name}] +{count} new items")
         return count
-    except Exception as exc:
-        print(f"  [{name}] FAILED: {exc}", file=sys.stderr)
+    except Exception:
         return 0
 
 
@@ -66,32 +63,31 @@ async def run_web_adapters(sources: list[str]) -> dict[str, int]:
 
     ADAPTERS: dict[str, object] = {
         "reddit": lambda: RedditAdapter(limit=25),
-        "4chan": lambda: FourChanAdapter(),
+        "4chan": FourChanAdapter,
     }
 
     # Optional adapters — only import if available
     try:
         from ingestion.sources.news_adapter import NewsRSSAdapter
 
-        ADAPTERS["news"] = lambda: NewsRSSAdapter()
+        ADAPTERS["news"] = NewsRSSAdapter
     except ImportError:
         pass
 
     try:
         from ingestion.sources.darkweb_adapter import DarkWebAdapter
 
-        ADAPTERS["darkweb"] = lambda: DarkWebAdapter()
+        ADAPTERS["darkweb"] = DarkWebAdapter
     except ImportError:
         pass
 
     active = {k: v for k, v in ADAPTERS.items() if not sources or k in sources}
     if not active:
-        print(f"  [adapters] No matching adapters for: {sources}")
         return {}
 
     tasks = [_run_adapter(name, fn) for name, fn in active.items()]
     counts_list = await asyncio.gather(*tasks)
-    return dict(zip(active.keys(), counts_list))
+    return dict(zip(active.keys(), counts_list, strict=False))
 
 
 # ── Stage 2: Normalize to Corpus ─────────────────────────────────────────────
@@ -112,7 +108,7 @@ def run_web_to_corpus() -> dict[str, int]:
             cwd=str(REPO_ROOT),
         )
         if result.returncode != 0:
-            print(f"  [web_to_corpus] stderr: {result.stderr}", file=sys.stderr)
+            pass
         return {"processed": -1, "skipped": 0, "errors": 0}
 
 
@@ -123,7 +119,6 @@ def run_swarm(verified_only: bool = False) -> dict:
     """Run gemini_agent_swarm.py as subprocess, capture JSON output."""
     swarm_script = REPO_ROOT / "scripts/gemini_agent_swarm.py"
     if not swarm_script.exists():
-        print("  [swarm] gemini_agent_swarm.py not found — skipping", file=sys.stderr)
         return {"skipped": True}
 
     cmd = [sys.executable, str(swarm_script), "--output-json"]
@@ -139,7 +134,6 @@ def run_swarm(verified_only: bool = False) -> dict:
             timeout=600,
         )
         if result.returncode != 0:
-            print(f"  [swarm] exit {result.returncode}: {result.stderr[:200]}", file=sys.stderr)
             return {"error": result.stderr[:500]}
         # Attempt to parse last JSON blob from stdout
         for line in reversed(result.stdout.splitlines()):
@@ -161,22 +155,16 @@ def run_swarm(verified_only: bool = False) -> dict:
 
 def run_once(sources: list[str], verified_only: bool) -> dict:
     ts = datetime.now(UTC).isoformat()
-    print(f"\n[monitor] Pass starting at {ts}")
 
     # Stage 1
-    print("[monitor] Stage 1: web adapters …")
     ingest_counts = asyncio.run(run_web_adapters(sources))
 
     # Stage 2
-    print("[monitor] Stage 2: web_to_corpus …")
     corpus_stats = run_web_to_corpus()
-    print(f"  processed={corpus_stats.get('processed')} skipped={corpus_stats.get('skipped')} errors={corpus_stats.get('errors')}")
 
     # Stage 3
-    print("[monitor] Stage 3: gemini agent swarm …")
     swarm_result = run_swarm(verified_only=verified_only)
-    judge6 = swarm_result.get("architect_directive", {}).get("judge6_gate", "unknown")
-    print(f"  judge6_gate={judge6}")
+    swarm_result.get("architect_directive", {}).get("judge6_gate", "unknown")
 
     output = {
         "ts": ts,
@@ -199,7 +187,6 @@ def run_once(sources: list[str], verified_only: bool) -> dict:
             existing = []
     existing.append(output)
     out_file.write_text(json.dumps(existing, indent=2))
-    print(f"[monitor] Written → {out_file}")
 
     return output
 
@@ -208,10 +195,8 @@ def run_once(sources: list[str], verified_only: bool) -> dict:
 
 
 def run_loop(interval: int, sources: list[str], verified_only: bool) -> None:
-    print(f"[monitor] Loop mode: interval={interval}s sources={sources or 'all'} verified_only={verified_only}")
     while True:
         run_once(sources, verified_only)
-        print(f"[monitor] Sleeping {interval}s …")
         time.sleep(interval)
 
 

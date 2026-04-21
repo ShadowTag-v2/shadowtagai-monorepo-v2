@@ -1,5 +1,4 @@
-"""
-Step 1 — Domain Tagger
+"""Step 1 — Domain Tagger.
 
 Classifies each of 2,856 LanceDB documents into:
   tech | biz | memory | arch | research | skills
@@ -132,7 +131,7 @@ def init_db() -> sqlite3.Connection:
             domain TEXT NOT NULL,
             method TEXT NOT NULL,
             tagged_at TEXT NOT NULL
-        )"""
+        )""",
     )
     conn.commit()
     return conn

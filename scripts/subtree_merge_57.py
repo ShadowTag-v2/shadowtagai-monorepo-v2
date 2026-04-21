@@ -2,11 +2,13 @@
 from __future__ import annotations
 
 import argparse
-import json
 import os
 import shutil
-from collections.abc import Iterable
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 DEFAULT_SRC_ROOT = Path("/Users/pikeymickey/shadowtag-omega-v4-stack")
 DEFAULT_DST_ROOT = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/ShadowTag-v2_stack")
@@ -67,14 +69,16 @@ def main() -> int:
     dst_root = Path(args.dst_root).expanduser().resolve()
 
     if not src_root.exists():
-        raise SystemExit(f"missing src root: {src_root}")
+        msg = f"missing src root: {src_root}"
+        raise SystemExit(msg)
 
     results = []
 
     if args.one:
         src = src_root / args.one
         if not src.exists():
-            raise SystemExit(f"missing requested source: {src}")
+            msg = f"missing requested source: {src}"
+            raise SystemExit(msg)
         dst = dst_root / args.one
         results.append(copy_tree(src, dst))
     else:
@@ -83,18 +87,6 @@ def main() -> int:
             if src.is_dir():
                 results.append(copy_tree(src, dst))
 
-    print(
-        json.dumps(
-            {
-                "status": "ok",
-                "src_root": str(src_root),
-                "dst_root": str(dst_root),
-                "merged_count": len(results),
-                "results": results,
-            },
-            indent=2,
-        )
-    )
     return 0
 
 

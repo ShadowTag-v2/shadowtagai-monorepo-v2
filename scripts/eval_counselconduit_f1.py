@@ -55,8 +55,7 @@ def normalize_citation(citation: str) -> str:
     # Remove extra spaces
     normalized = " ".join(normalized.split())
     # Remove trailing periods
-    normalized = normalized.rstrip(".")
-    return normalized
+    return normalized.rstrip(".")
 
 
 def citation_matches(predicted: str, expected: str, fuzzy: bool = True) -> bool:
@@ -66,6 +65,7 @@ def citation_matches(predicted: str, expected: str, fuzzy: bool = True) -> bool:
         predicted: The citation produced by the system.
         expected: The ground truth citation.
         fuzzy: If True, use fuzzy matching (substring containment).
+
     """
     p = normalize_citation(predicted)
     e = normalize_citation(expected)
@@ -106,6 +106,7 @@ def evaluate_query(
         expected_citations: Ground truth citations.
         predicted_citations: System-produced citations.
         dimension_weights: Optional weights for scoring dimensions.
+
     """
     result = CitationEvalResult(
         query_id=query_id,
@@ -166,6 +167,7 @@ def evaluate_all(
         ground_truth_path: Path to ground truth JSON file.
         predictions_path: Path to predictions JSON file.
             If None, runs a self-test with ground truth as both.
+
     """
     gt_path = Path(ground_truth_path)
     with gt_path.open() as f:
@@ -226,37 +228,16 @@ def evaluate_all(
 
 def print_report(summary: EvalSummary) -> None:
     """Print formatted evaluation report."""
-    print("=" * 60)
-    print("  COUNSELCONDUIT F1 EVALUATION REPORT")
-    print("=" * 60)
-    print()
-
-    status = "✅ PASSING" if summary.passing else "❌ FAILING"
-    print(f"  Status:          {status}")
-    print(f"  Aggregate F1:    {summary.aggregate_f1:.4f}")
-    print(f"  Weighted F1:     {summary.weighted_f1:.4f}")
-    print(f"  Mean Precision:  {summary.mean_precision:.4f}")
-    print(f"  Mean Recall:     {summary.mean_recall:.4f}")
-    print(f"  Total Queries:   {summary.total_queries}")
-    print()
-    print("-" * 60)
-
     for r in summary.results:
-        print(f"\n  [{r.query_id}] {r.query_text[:50]}...")
-        print(f"    Precision: {r.precision:.3f}  Recall: {r.recall:.3f}  F1: {r.f1:.3f}")
-        print(f"    Correct: {r.correct_citations}/{r.total_expected}  Predicted: {r.total_predicted}")
         if r.false_positives:
-            print(f"    False Positives: {len(r.false_positives)}")
+            pass
         if r.false_negatives:
-            print(f"    False Negatives: {len(r.false_negatives)}")
-            for fn in r.false_negatives[:3]:
-                print(f"      - {fn[:70]}")
-
-    print()
-    print("=" * 60)
+            for _fn in r.false_negatives[:3]:
+                pass
 
 
-def main():
+
+def main() -> None:
     """Main entry point."""
     # Default paths
     repo_root = Path(__file__).parent.parent
@@ -277,19 +258,15 @@ def main():
             pred_path = None
             i += 1
         else:
-            print(f"Unknown argument: {args[i]}")
             sys.exit(1)
 
     if not gt_path.exists():
-        print(f"Ground truth file not found: {gt_path}")
         sys.exit(1)
 
-    print(f"Ground truth: {gt_path}")
     if pred_path:
-        print(f"Predictions:  {pred_path}")
+        pass
     else:
-        print("Mode: Self-test (ground truth = predictions)")
-    print()
+        pass
 
     summary = evaluate_all(gt_path, pred_path)
     print_report(summary)

@@ -1,5 +1,4 @@
-"""
-Custom Bandit Plugin: Kovel Privilege Leak Detection
+"""Custom Bandit Plugin: Kovel Privilege Leak Detection.
 
 Checks for patterns that could leak privileged attorney-client
 communications in CounselConduit.
@@ -39,6 +38,7 @@ def kovel_transcript_leak(context):
                     text="Possible logging of privileged Kovel session data. Privileged communications must never appear in logs.",
                     lineno=context.node.lineno,
                 )
+    return None
 
 
 @test_props.checks("Call")
@@ -71,3 +71,4 @@ def kovel_unprotected_export(context):
                         lineno=context.node.lineno,
                     )
                 break
+    return None

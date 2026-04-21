@@ -1,4 +1,5 @@
 import argparse
+import contextlib
 import os
 import subprocess
 import sys
@@ -6,18 +7,14 @@ import sys
 # Add apps path to reach zero_cpu_router
 sys.path.insert(0, os.path.abspath("apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"))
 
-try:
+with contextlib.suppress(ImportError):
     from zero_cpu_router import dispatch_compute
-except ImportError:
-    print("WARNING: zero_cpu_router not found. Formatting will proceed locally without Cloud dispatch.")
 
 
-def run_local_linting(target_dir):
-    """
-    Tier 1: High-speed, local operations on the Apple M1 Max.
+def run_local_linting(target_dir) -> None:
+    """Tier 1: High-speed, local operations on the Apple M1 Max.
     Runs ruff and biome across the integrated monorepo.
     """
-    print(f"[+] Launching Tier 1 Local ANE/Silicon Compute: Linting {target_dir}")
     # Using biome for JS/TS and ruff for Python
     cmds = [
         ["npx", "--yes", "@biomejs/biome", "format", "--write", target_dir],
@@ -27,20 +24,14 @@ def run_local_linting(target_dir):
     ]
 
     for cmd in cmds:
-        try:
-            print(f" -> Running: {' '.join(cmd)}")
+        with contextlib.suppress(Exception):
             subprocess.run(cmd, check=False)
-        except Exception as e:
-            print(f"    [!] Failed to run {cmd[0]}: {e}")
 
 
-def dispatch_heavy_refactor(file_path):
-    """
-    Tier 3: Asynchronous structural refactoring.
+def dispatch_heavy_refactor(file_path) -> None:
+    """Tier 3: Asynchronous structural refactoring.
     Sends the file to the Colab inbox via Google Drive IPC.
     """
-    print(f"[+] Dispatching Tier 3 Colab Refactor: {file_path}")
-
     with open(file_path) as f:
         code_content = f.read()
 
@@ -66,7 +57,7 @@ RESULT = perform_refactoring(CODE)
     dispatch_compute(payload, estimated_bytes=len(payload), requires_cloud=True)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="The Great Monorepo Refactor Pipeline")
     parser.add_argument(
         "--refactor",
@@ -90,7 +81,6 @@ def main():
                 run_local_linting(d)
 
     if args.refactor:
-        print("\n[+] Initiating The Great Refactor (Colab T4 Swarm)...")
         # In a real scenario, we would selectively target complex monolithic files
         # For demonstration, we simulate targeting a few Python files
         for root, _, files in os.walk("apps"):
@@ -98,7 +88,6 @@ def main():
                 if file.endswith(".py") and os.path.getsize(os.path.join(root, file)) > 10000:  # Files > 10KB
                     file_path = os.path.join(root, file)
                     dispatch_heavy_refactor(file_path)
-        print("[+] All refactoring payloads dispatched to Google Drive IPC Inbox. Awaiting Colab workers...")
 
 
 if __name__ == "__main__":

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-scripts/last30days_to_ingest.py — last30days skill → IngestStore bridge
+"""scripts/last30days_to_ingest.py — last30days skill → IngestStore bridge.
 ------------------------------------------------------------------------
 Runs the last30days research skill for a given topic and funnels its
 structured JSON output into data/web_ingest/ingest.db so that
@@ -87,7 +86,7 @@ def report_to_items(report: dict) -> list[dict]:
                     "via": "last30days",
                     "engagement": r.get("engagement"),
                 },
-            }
+            },
         )
 
     # ── X / Twitter ─────────────────────────────────────────────────────────
@@ -108,7 +107,7 @@ def report_to_items(report: dict) -> list[dict]:
                     "via": "last30days",
                     "engagement": x.get("engagement"),
                 },
-            }
+            },
         )
 
     # ── Hacker News ──────────────────────────────────────────────────────────
@@ -133,7 +132,7 @@ def report_to_items(report: dict) -> list[dict]:
                     "via": "last30days",
                     "engagement": h.get("engagement"),
                 },
-            }
+            },
         )
 
     # ── YouTube ──────────────────────────────────────────────────────────────
@@ -158,7 +157,7 @@ def report_to_items(report: dict) -> list[dict]:
                     "via": "last30days",
                     "engagement": y.get("engagement"),
                 },
-            }
+            },
         )
 
     # ── TikTok ───────────────────────────────────────────────────────────────
@@ -181,7 +180,7 @@ def report_to_items(report: dict) -> list[dict]:
                     "via": "last30days",
                     "engagement": t.get("engagement"),
                 },
-            }
+            },
         )
 
     # ── Instagram ────────────────────────────────────────────────────────────
@@ -204,7 +203,7 @@ def report_to_items(report: dict) -> list[dict]:
                     "via": "last30days",
                     "engagement": ig.get("engagement"),
                 },
-            }
+            },
         )
 
     # ── Bluesky ──────────────────────────────────────────────────────────────
@@ -225,7 +224,7 @@ def report_to_items(report: dict) -> list[dict]:
                     "via": "last30days",
                     "engagement": b.get("engagement"),
                 },
-            }
+            },
         )
 
     # ── Truth Social ─────────────────────────────────────────────────────────
@@ -246,7 +245,7 @@ def report_to_items(report: dict) -> list[dict]:
                     "via": "last30days",
                     "engagement": ts.get("engagement"),
                 },
-            }
+            },
         )
 
     # ── Polymarket ───────────────────────────────────────────────────────────
@@ -271,7 +270,7 @@ def report_to_items(report: dict) -> list[dict]:
                     "via": "last30days",
                     "engagement": pm.get("engagement"),
                 },
-            }
+            },
         )
 
     # ── Web search ───────────────────────────────────────────────────────────
@@ -287,7 +286,7 @@ def report_to_items(report: dict) -> list[dict]:
                 "published_at": w.get("date"),
                 "author": w.get("source_domain"),
                 "metadata": {"topic": topic, "score": w.get("score"), "via": "last30days"},
-            }
+            },
         )
 
     return items
@@ -299,15 +298,13 @@ def run_last30days(topic: str, extra_args: list[str]) -> dict:
         sys.exit(
             f"[ERROR] Skill not found: {SKILL_SCRIPT}\n"
             "Run: git clone https://github.com/mvanhorn/last30days-skill.git /tmp/last30days-skill && "
-            "bash /tmp/last30days-skill/scripts/sync.sh"
+            "bash /tmp/last30days-skill/scripts/sync.sh",
         )
 
-    cmd = [sys.executable, str(SKILL_SCRIPT), topic, "--emit=json"] + extra_args
-    print(f"[last30days_to_ingest] Running: {' '.join(cmd)}", file=sys.stderr)
+    cmd = [sys.executable, str(SKILL_SCRIPT), topic, "--emit=json", *extra_args]
 
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=360)
     if result.returncode != 0:
-        print(result.stderr, file=sys.stderr)
         sys.exit(f"[ERROR] last30days.py exited {result.returncode}")
 
     # Extract JSON: the emit=json mode prints a single JSON object to stdout
@@ -340,7 +337,6 @@ def save_to_ingest_store(items: list[dict], dry_run: bool) -> tuple[int, int]:
             metadata=raw.get("metadata") or {},
         )
         if dry_run:
-            print(f"  [dry-run] {item.source:<45} {item.title[:60]}")
             new_count += 1
         else:
             saved = store.save_item(item, tier=3)
@@ -372,29 +368,17 @@ def main() -> None:
     if args.mock:
         extra.append("--mock")
 
-    print(f"[last30days_to_ingest] Topic: {args.topic}", file=sys.stderr)
     report = run_last30days(args.topic, extra)
 
     items = report_to_items(report)
     total = len(items)
-    print(f"[last30days_to_ingest] Mapped {total} items from report", file=sys.stderr)
 
     if total == 0:
-        print("[last30days_to_ingest] No items to save.", file=sys.stderr)
         return
 
-    new, skipped = save_to_ingest_store(items, dry_run=args.dry_run)
-    action = "would save" if args.dry_run else "saved"
-    print(
-        f"[last30days_to_ingest] {action} {new} new, {skipped} duplicate/skipped (total {total})",
-        file=sys.stderr,
-    )
+    _new, _skipped = save_to_ingest_store(items, dry_run=args.dry_run)
     if not args.dry_run:
-        print(f"[last30days_to_ingest] DB: {WEB_DB}", file=sys.stderr)
-        print(
-            "[last30days_to_ingest] Run web_to_corpus.py next to push into FTS5 corpus.",
-            file=sys.stderr,
-        )
+        pass
 
 
 if __name__ == "__main__":

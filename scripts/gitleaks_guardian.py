@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-gitleaks_guardian.py — Autonomous Secret Leak Classifier & Gate
+"""gitleaks_guardian.py — Autonomous Secret Leak Classifier & Gate.
 
 Per AGENTS.md Rule 23: Gitleaks + detect-private-key in pre-commit and CI.
 Per GEMINI.md Cor.30 R3–8: Secrets & Supply Chain enforcement.
@@ -131,7 +130,7 @@ LOW_SIGNAL_RULES = {
 class Finding:
     """A classified Gitleaks finding."""
 
-    def __init__(self, raw: dict):
+    def __init__(self, raw: dict) -> None:
         self.raw = raw
         self.rule_id: str = raw.get("RuleID", "unknown")
         self.file: str = raw.get("File", "")
@@ -146,9 +145,8 @@ class Finding:
         self.reason: str = ""
         self._classify()
 
-    def _classify(self):
+    def _classify(self) -> None:
         """Classify finding into BLOCK / WARN / IGNORE."""
-
         # Rule 1: Path-based ignore (third-party code)
         for pattern in IGNORE_PATH_PATTERNS:
             if re.search(pattern, self.file):
@@ -176,11 +174,10 @@ class Finding:
             return
 
         # Rule 5: .env.example / README / docs (template values)
-        if re.search(r"\.env\.example|README|\.md$", self.file):
-            if self.rule_id in LOW_SIGNAL_RULES:
-                self.verdict = "WARN"
-                self.reason = "Documentation/example — likely placeholder"
-                return
+        if re.search(r"\.env\.example|README|\.md$", self.file) and self.rule_id in LOW_SIGNAL_RULES:
+            self.verdict = "WARN"
+            self.reason = "Documentation/example — likely placeholder"
+            return
 
         # Rule 6: Critical rules in production paths → always BLOCK
         if self.rule_id in CRITICAL_RULES:
@@ -227,8 +224,6 @@ class Finding:
 def run_gitleaks_scan(scope: str = "production") -> list[dict]:
     """Run gitleaks and return parsed JSON findings."""
     if not os.path.exists(GITLEAKS_BIN):
-        print(f"❌ Gitleaks binary not found at {GITLEAKS_BIN}")
-        print("   Install: brew install gitleaks")
         sys.exit(2)
 
     report_path = "/tmp/gitleaks_guardian_report.json"
@@ -278,10 +273,9 @@ def run_gitleaks_scan(scope: str = "production") -> list[dict]:
             str(REPO_ROOT),
         ]
 
-    print(f"🔍 Running: {' '.join(cmd)}")
     proc = subprocess.run(cmd, capture_output=True, text=True)
     if proc.returncode not in (0, 1):
-        print(f"⚠️ Gitleaks exited with code {proc.returncode}: {proc.stderr[:200]}")
+        pass
 
     # Gitleaks exit 1 = findings, exit 0 = clean
     if os.path.exists(report_path):
@@ -336,7 +330,6 @@ def auto_remediate_ignores(findings: list[Finding]) -> int:
         with open(GITLEAKS_IGNORE, "a") as fh:
             fh.write("\n".join(new_entries))
             fh.write("\n")
-        print(f"  📝 Added {len(new_entries)} entries to .gitleaksignore")
 
     return len(new_entries)
 
@@ -412,7 +405,6 @@ def generate_report(findings: list[Finding], output_path: str | None = None) -> 
         Path(output_path).parent.mkdir(parents=True, exist_ok=True)
         with open(output_path, "w") as f:
             f.write(report)
-        print(f"  📄 Report written to {output_path}")
 
     return report
 
@@ -421,13 +413,13 @@ def _suggest_remediation(finding: Finding) -> str:
     """Suggest specific remediation for a finding."""
     rule = finding.rule_id
 
-    if rule in ("gcp-api-key",):
+    if rule == "gcp-api-key":
         return "Move to GCP Secret Manager or use ADC"
-    if rule in ("stripe-secret-key",):
+    if rule == "stripe-secret-key":
         return "Move to Secret Manager (`STRIPE_SECRET_KEY`)"
     if rule in ("github-pat", "github-token"):
         return "Rotate immediately. Use GitHub App PEM instead"
-    if rule in ("private-key",):
+    if rule == "private-key":
         return "Remove from source. Store in Secret Manager"
     if "generic" in rule:
         return "Review manually. If real, move to `.env` (gitignored)"
@@ -444,11 +436,8 @@ def gate_check(findings: list[Finding]) -> bool:
     """Return True if pipeline should HALT (BLOCK findings exist)."""
     blocks = [f for f in findings if f.verdict == "BLOCK"]
     if blocks:
-        print(f"\n🚨 PIPELINE BLOCKED — {len(blocks)} credential leak(s) detected:")
-        for f in blocks:
-            print(f"   ❌ [{f.rule_id}] {f.file}:{f.line} — {f.redacted_secret}")
-        print("\n   Remediate these findings before pushing.")
-        print("   See: python3 scripts/gitleaks_guardian.py --mode scan --scope production")
+        for _f in blocks:
+            pass
         return True
     return False
 
@@ -458,7 +447,7 @@ def gate_check(findings: list[Finding]) -> bool:
 # ============================================================================
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         description="Gitleaks Guardian — Autonomous Secret Leak Classifier & Gate",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -505,14 +494,10 @@ Examples:
 
     args = parser.parse_args()
 
-    print("═══ GITLEAKS GUARDIAN ═══")
-    print(f"  Mode: {args.mode} | Scope: {args.scope}")
-    print()
 
     # Manifest mode: dedicated third-party leak inventory
     if args.mode == "manifest":
         if not args.input:
-            print("❌ --manifest requires --input with a JSON findings file")
             sys.exit(2)
         raw_findings = load_existing_report(args.input)
         _generate_manifest(raw_findings, args.output)
@@ -521,24 +506,20 @@ Examples:
     # Get findings
     if args.mode == "report" and args.input:
         raw_findings = load_existing_report(args.input)
-    elif args.mode == "staged":
-        raw_findings = run_staged_scan()
-    elif args.mode == "gate":
+    elif args.mode in {"staged", "gate"}:
         raw_findings = run_staged_scan()
     else:
         raw_findings = run_gitleaks_scan(scope=args.scope)
 
     if not raw_findings:
-        print("✅ No findings. Clean scan.")
         sys.exit(0)
 
     # Classify
     findings = classify_findings(raw_findings)
     blocks = [f for f in findings if f.verdict == "BLOCK"]
     warns = [f for f in findings if f.verdict == "WARN"]
-    ignores = [f for f in findings if f.verdict == "IGNORE"]
+    [f for f in findings if f.verdict == "IGNORE"]
 
-    print(f"  📊 Classified: {len(blocks)} BLOCK | {len(warns)} WARN | {len(ignores)} IGNORE")
 
     # Auto-remediate ignores
     if args.auto_ignore:
@@ -546,7 +527,6 @@ Examples:
 
     # JSON output
     if args.json:
-        print(json.dumps([f.to_dict() for f in findings], indent=2))
         sys.exit(1 if blocks else 0)
 
     # Generate report
@@ -560,20 +540,16 @@ Examples:
 
     # Print summary
     if blocks:
-        print()
-        for f in blocks:
-            print(f"  🚨 [{f.rule_id}] {f.file}:{f.line}")
-            print(f"     → {_suggest_remediation(f)}")
+        for _f in blocks:
+            pass
 
     if warns:
-        print()
-        for f in warns:
-            print(f"  ⚠️  [{f.rule_id}] {f.file}:{f.line} — {f.reason}")
+        for _f in warns:
+            pass
 
     # Gate verdict
-    if args.mode in ("gate", "staged"):
-        if gate_check(findings):
-            sys.exit(1)
+    if args.mode in ("gate", "staged") and gate_check(findings):
+        sys.exit(1)
 
     sys.exit(1 if blocks else 0)
 
@@ -693,7 +669,6 @@ def _generate_manifest(raw_findings: list[dict], output_dir: str | None = None) 
 
     md_path = out_dir / "third_party_leak_manifest.md"
     md_path.write_text("\n".join(lines))
-    print(f"  📄 Manifest: {md_path}")
 
     # ── CSV export ──
     csv_path = out_dir / "third_party_leak_manifest.csv"
@@ -710,30 +685,25 @@ def _generate_manifest(raw_findings: list[dict], output_dir: str | None = None) 
                     f.get("File", ""),
                     f.get("StartLine", 0),
                     _extract_repo(f.get("File", "")),
-                ]
+                ],
             )
-    print(f"  📊 CSV: {csv_path}")
 
     # ── Per-repo sub-manifests ──
     by_repo: dict[str, list] = defaultdict(list)
     for f in raw_findings:
         by_repo[_extract_repo(f.get("File", ""))].append(f)
-    print("  📂 Per-repo breakdown:")
     for repo in sorted(by_repo):
         items = by_repo[repo]
         rules = defaultdict(int)
         for f in items:
             rules[f.get("RuleID", "")] += 1
-        summary = ", ".join(f"{r}:{c}" for r, c in sorted(rules.items(), key=lambda x: -x[1]))
-        print(f"     {repo}: {len(items)} ({summary})")
+        ", ".join(f"{r}:{c}" for r, c in sorted(rules.items(), key=lambda x: -x[1]))
 
     # ── Deduplicated secrets-only list ──
     dedup_path = out_dir / "third_party_secrets_deduped.txt"
     with open(dedup_path, "w") as f:
         for rule, secret in sorted(secrets.keys()):
             f.write(f"{rule}\t{_redact(secret)}\n")
-    print(f"  🔑 Deduped: {dedup_path} ({len(secrets)} unique)")
-    print("\n  ✅ Manifest generation complete")
 
 
 if __name__ == "__main__":

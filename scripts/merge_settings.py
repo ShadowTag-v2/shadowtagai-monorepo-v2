@@ -14,8 +14,7 @@ try:
         # strip trailing comma before right brace
         content = content.replace(",\n}", "\n}")
         global_data = json.loads(content)
-except Exception as e:
-    print(f"Failed to read global: {e}")
+except Exception:
     global_data = {}
 
 # Merge global into ws (ws takes precedence if conflict)
@@ -33,4 +32,3 @@ with open(ws_settings_path, "w", encoding="utf-8") as f:
 with open(global_settings_path, "w", encoding="utf-8") as f:
     json.dump({}, f, indent=2)
 
-print("Merged successfully.")

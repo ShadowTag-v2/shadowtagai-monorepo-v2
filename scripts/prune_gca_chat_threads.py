@@ -28,6 +28,7 @@ Usage:
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 import shutil
@@ -87,7 +88,7 @@ def inspect(db_path: Path | str) -> dict:
     gca_total_bytes = len(row[0].encode("utf-8"))
     threads = state_dict.get(THREADS_FIELD, [])
     threads_bytes = len(json.dumps(threads).encode("utf-8"))
-    other_keys = [k for k in state_dict.keys() if k != THREADS_FIELD]
+    other_keys = [k for k in state_dict if k != THREADS_FIELD]
 
     return {
         "found": True,
@@ -106,6 +107,7 @@ def prune(db_path: Path | str, keep: int = 0) -> dict:
     Args:
         db_path: Path to state.vscdb
         keep: Number of newest threads to retain (0 = remove all)
+
     """
     db_path = Path(db_path)
 
@@ -141,7 +143,7 @@ def prune(db_path: Path | str, keep: int = 0) -> dict:
         for k in error_keys:
             del state_dict[k]
         if error_keys:
-            print(f"Pruned {len(error_keys)} error-stack keys")
+            pass
 
         new_value = json.dumps(state_dict)
         after_bytes = len(new_value.encode("utf-8"))
@@ -193,7 +195,6 @@ def trigger_mac_notification(size_mb: float) -> None:
     """Fires a macOS notification and text-to-speech sound."""
     title = "🚨 IDE Bloat Alert"
     message = f"state.vscdb has ballooned to {size_mb:.1f} MB! Cmd+Q your IDE and run the prune script."
-    print(f"\n🔊 Triggering alert! DB is {size_mb:.1f} MB.")
     subprocess.run(["osascript", "-e", f'display notification "{message}" with title "{title}" sound name "Basso"'])
     subprocess.run(["say", "Warning. IDE database is bloated. Please close the editor and vacuum."])
 
@@ -202,22 +203,17 @@ def monitor_mode(threshold_mb: float = 20.0) -> None:
     """Runs a noisy background monitor to check DB size."""
     db_path = locate_db()
     if not db_path:
-        print("❌ Error: Could not locate state.vscdb.")
         sys.exit(1)
 
-    print(f"👁️  Monitoring DB size every 10 minutes. Threshold: {threshold_mb}MB")
 
     while True:
         size_mb = db_path.stat().st_size / (1024 * 1024)
-        ts = datetime.now().strftime("%H:%M:%S")
-        print(f"  [{ts}] state.vscdb = {size_mb:.1f} MB", end="")
+        datetime.now().strftime("%H:%M:%S")
 
         if size_mb > threshold_mb:
-            print(" ⚠️  OVER THRESHOLD")
             trigger_mac_notification(size_mb)
             time.sleep(3600)
         else:
-            print(" ✅")
             time.sleep(600)
 
 
@@ -225,101 +221,65 @@ def cli_write(keep: int = 0) -> None:
     """CLI entry for --write mode."""
     db_path = locate_db()
     if not db_path:
-        print("❌ Error: Could not locate state.vscdb.")
         sys.exit(1)
 
-    initial_size = db_path.stat().st_size
+    db_path.stat().st_size
 
     # Inspect first
     metrics = inspect(db_path)
-    print(f"State DB: {db_path}")
-    print(f"File size: {initial_size:,} bytes")
 
     if not metrics["found"]:
-        print("google.geminicodeassist key not found.")
         return
 
     if not metrics["valid_json"]:
-        print("❌ GCA state contains invalid JSON. Refusing to modify.")
         return
 
-    print(f"GCA state total:          {metrics['gca_total_bytes']:,} bytes")
-    print(f"chatThreads payload:      {metrics['threads_bytes']:,} bytes")
-    print(f"Thread count:                      {metrics['thread_count']}")
-    print(f"Other preserved keys:             {metrics['other_key_count']}")
-    print(f"Preserved keys: {metrics['other_keys']}")
 
     # Backup
-    print("\n──── WRITE MODE ────")
     backup_path = f"{db_path}.backup.{datetime.now().strftime('%Y%m%dT%H%M%S')}"
     shutil.copy2(str(db_path), backup_path)
-    print(f"Backup created: {backup_path}")
-    print(f"Before:    {metrics['gca_total_bytes']:,} bytes")
 
     # Prune
     result = prune(db_path, keep=keep)
     if not result["success"]:
         if "database is locked" in result.get("reason", ""):
-            print("\n⚠️ ERROR: Database is locked by the active IDE instance.")
-            print("🚨 USER ACTION REQUIRED: Cmd+Q to completely quit Antigravity, then run again.")
+            pass
         else:
-            print(f"❌ Prune failed: {result.get('reason', 'unknown')}")
+            pass
         return
 
-    print(f"After:          {result['after_bytes']:,} bytes")
-    print(f"Freed:     {result['freed_bytes']:,} bytes")
-    print(f"Threads:   {metrics['threads_bytes']:,} → 2 bytes")
-    print("✅ Successfully pruned geminiCodeAssist.chatThreads")
-    print("   Reopen the IDE to verify GCA still loads and auth is intact.")
 
     # VACUUM
-    print("\nRunning VACUUM...")
     vac = vacuum_db(db_path)
     if vac["success"]:
-        pct = (vac["recovered"] / vac["before_size"] * 100) if vac["before_size"] > 0 else 0
-        print(f"VACUUM recovered {pct:.1f}% — from {vac['before_size'] / 1024 / 1024:.1f} MB down to {vac['after_size'] / 1024 / 1024:.1f} MB")
+        (vac["recovered"] / vac["before_size"] * 100) if vac["before_size"] > 0 else 0
 
 
 def cli_dry_run() -> None:
     """CLI entry for dry-run mode (default)."""
     db_path = locate_db()
     if not db_path:
-        print("❌ Error: Could not locate state.vscdb.")
         sys.exit(1)
 
-    initial_size = db_path.stat().st_size
-    print(f"State DB: {db_path}")
-    print(f"File size: {initial_size:,} bytes ({initial_size / 1024 / 1024:.1f} MB)")
+    db_path.stat().st_size
 
     metrics = inspect(db_path)
     if not metrics["found"]:
-        print("google.geminicodeassist key not found.")
         return
 
     if not metrics.get("valid_json"):
-        print(f"⚠️ GCA state contains invalid JSON ({metrics.get('raw_bytes', 0):,} bytes)")
         return
 
-    print(f"GCA state total:          {metrics['gca_total_bytes']:,} bytes")
-    print(f"chatThreads payload:      {metrics['threads_bytes']:,} bytes")
-    print(f"Thread count:                      {metrics['thread_count']}")
-    print(f"Other preserved keys:             {metrics['other_key_count']}")
-    print(f"Preserved keys: {metrics['other_keys'][:5]}...")
 
-    would_free = metrics["threads_bytes"]
-    print("\n──── DRY RUN (no changes made) ────")
-    print(f"Would free:    ~{would_free:,} bytes ({would_free / 1024 / 1024:.1f} MB)")
-    print("Run with --write to prune (IDE must be closed first).")
+    metrics["threads_bytes"]
 
 
 if __name__ == "__main__":
     args = sys.argv[1:]
 
     if "--monitor" in args:
-        try:
+        with contextlib.suppress(KeyboardInterrupt):
             monitor_mode()
-        except KeyboardInterrupt:
-            print("\nExiting monitor.")
     elif "--write" in args:
         keep = 0
         if "--keep" in args:
@@ -332,8 +292,8 @@ if __name__ == "__main__":
         if db_path:
             result = vacuum_db(db_path)
             if result["success"]:
-                print(f"VACUUM: {result['before_size']:,} → {result['after_size']:,} bytes")
+                pass
             else:
-                print(f"VACUUM failed: {result.get('reason')}")
+                pass
     else:
         cli_dry_run()

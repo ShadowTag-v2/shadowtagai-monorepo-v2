@@ -1,4 +1,5 @@
 import subprocess
+import sys
 import time
 
 import jwt
@@ -21,18 +22,14 @@ installations = res.json()
 
 target_inst = next((i for i in installations if i["account"]["login"] == "ShadowTag-v2"), None)
 if not target_inst:
-    print("Error: Could not find GitHub App installation for account 'ShadowTag-v2'")
-    exit(1)
+    sys.exit(1)
 
 inst_id = target_inst["id"]
 res2 = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers, timeout=30)
 res2.raise_for_status()
 token = res2.json()["token"]
 
-print("Configuring git remote with app token...")
 repo_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
 subprocess.run(["git", "remote", "set-url", "origin", repo_url], check=True)
 
-print("Pushing to origin main...")
 subprocess.run(["git", "push", "origin", "main"], check=True)
-print("Push complete!")

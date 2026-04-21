@@ -162,11 +162,11 @@ def _get_client():
 
     Returns:
         google.genai.Client instance.
+
     """
     try:
         from google import genai  # noqa: PLC0415
     except ImportError:
-        print("❌ google-genai SDK not installed. Run: pip install google-genai")
         sys.exit(1)
 
     if os.environ.get("USE_VERTEX_AI", "").strip() == "1":
@@ -192,12 +192,12 @@ def _load_image(image_path: str):
 
     Returns:
         google.genai.types.Image with inline data (raw bytes, not base64).
+
     """
     from google.genai import types  # noqa: PLC0415
 
     path = Path(image_path)
     if not path.exists():
-        print(f"❌ Image file not found: {image_path}")
         sys.exit(1)
 
     return types.Image.from_file(location=str(path))
@@ -216,6 +216,7 @@ def extract_frames(video_path: str, output_dir: str, fps: int = 30) -> int:
 
     Returns:
         Number of frames extracted.
+
     """
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
@@ -234,12 +235,9 @@ def extract_frames(video_path: str, output_dir: str, fps: int = 30) -> int:
 
     result = subprocess.run(cmd, capture_output=True, text=True)  # noqa: S603
     if result.returncode != 0:
-        print(f"ffmpeg error: {result.stderr}", file=sys.stderr)
         return 0
 
-    frame_count = len(list(out.glob("frame_*.png")))
-    print(f"✅ Extracted {frame_count} frames to {output_dir}")
-    return frame_count
+    return len(list(out.glob("frame_*.png")))
 
 
 # ---------------------------------------------------------------------------
@@ -255,13 +253,13 @@ def _poll_operation(client, operation, poll_interval: int = 10):
 
     Returns:
         The completed operation.
+
     """
     elapsed = 0
     while not operation.done:
         time.sleep(poll_interval)
         elapsed += poll_interval
-        mins, secs = divmod(elapsed, 60)
-        print(f"   ⏳ Polling... ({mins}m {secs}s elapsed)")
+        _mins, _secs = divmod(elapsed, 60)
         operation = client.operations.get(operation=operation)
     return operation
 
@@ -280,9 +278,9 @@ def _save_videos(client, operation, prefix: str) -> list[Path]:
 
     Returns:
         List of saved file paths.
+
     """
     if not operation.result or not operation.result.generated_videos:
-        print("❌ No videos generated. Check quotas, permissions, and safety filters.")
         return []
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -292,7 +290,7 @@ def _save_videos(client, operation, prefix: str) -> list[Path]:
         out_path = OUTPUT_DIR / f"{prefix}_{i}.mp4"
 
         if video.uri:
-            print(f"   📎 Video URI: {video.uri}")
+            pass
 
         # Gemini API returns a server-side URI; download bytes before saving.
         # Vertex AI stores videos in GCS (output_gcs_uri); bytes are not
@@ -302,11 +300,9 @@ def _save_videos(client, operation, prefix: str) -> list[Path]:
 
         if video.video_bytes:
             video.save(str(out_path))
-            print(f"✅ Saved: {out_path}")
             saved.append(out_path)
         else:
-            print("   ℹ️  Video stored at GCS URI (Vertex AI). Download via gsutil:")
-            print(f"      gsutil cp '{video.uri}' '{out_path}'")
+            pass
     return saved
 
 
@@ -329,22 +325,16 @@ def generate_video(
 
     Returns:
         List of saved video paths.
+
     """
     from google.genai import types  # noqa: PLC0415
 
     if preset_name not in PRESETS:
-        print(f"❌ Unknown preset: {preset_name}")
-        print(f"Available presets: {', '.join(PRESETS.keys())}")
         sys.exit(1)
 
     preset = PRESETS[preset_name]
     client = _get_client()
 
-    print(f"🎬 Generating video with preset: {preset_name}")
-    print(f"   Model: {model}")
-    print(f"   Resolution: {resolution}")
-    print(f"   Backend: {'Vertex AI' if client.vertexai else 'Gemini API'}")
-    print(f"   Prompt: {preset['prompt'][:80]}...")
 
     config_kwargs = {
         "number_of_videos": 1,
@@ -372,13 +362,10 @@ def generate_video(
             config=config,
         )
 
-        print("⏳ Waiting for generation (latency: 11s – 6min)...")
         operation = _poll_operation(client, operation)
         return _save_videos(client, operation, preset_name)
 
-    except Exception as e:
-        print(f"❌ Generation failed: {e}")
-        print("   Ensure API key / gcloud auth and Veo API access are configured.")
+    except Exception:
         sys.exit(1)
 
 
@@ -404,6 +391,7 @@ def generate_from_image(
 
     Returns:
         List of saved video paths.
+
     """
     from google.genai import types  # noqa: PLC0415
 
@@ -427,12 +415,9 @@ def generate_from_image(
     if last_image_path:
         last_image = _load_image(last_image_path)
         config.last_frame = last_image
-        print("🎬 Generating with first+last frame interpolation")
     else:
-        print(f"🎬 Generating from first frame: {image_path}")
+        pass
 
-    print(f"   Model: {model}")
-    print(f"   Prompt: {prompt[:80]}...")
 
     # Vertex AI requires output_gcs_uri.
     if client.vertexai:
@@ -444,14 +429,12 @@ def generate_from_image(
 
     try:
         operation = client.models.generate_videos(**kwargs)
-        print("⏳ Waiting for generation (latency: 11s – 6min)...")
         operation = _poll_operation(client, operation)
 
         stem = Path(image_path).stem
         return _save_videos(client, operation, f"img2vid_{stem}")
 
-    except Exception as e:
-        print(f"❌ Image-to-video generation failed: {e}")
+    except Exception:
         sys.exit(1)
 
 
@@ -475,6 +458,7 @@ def extend_video(
 
     Returns:
         List of saved video paths.
+
     """
     from google.genai import types  # noqa: PLC0415
 
@@ -482,15 +466,11 @@ def extend_video(
 
     path = Path(video_path)
     if not path.exists():
-        print(f"❌ Video file not found: {video_path}")
         sys.exit(1)
 
     # Video.from_file handles raw bytes and MIME detection correctly.
     video_obj = types.Video.from_file(location=str(path))
 
-    print(f"🎬 Extending video: {video_path}")
-    print(f"   Model: {model}")
-    print(f"   Prompt: {prompt[:80]}...")
 
     ext_config_kwargs = {
         "number_of_videos": 1,
@@ -512,15 +492,12 @@ def extend_video(
             config=types.GenerateVideosConfig(**ext_config_kwargs),
         )
 
-        print("⏳ Waiting for extension (latency: 11s – 6min)...")
         operation = _poll_operation(client, operation)
 
         stem = path.stem
         return _save_videos(client, operation, f"extended_{stem}")
 
-    except Exception as e:
-        print(f"❌ Video extension failed: {e}")
-        print("   Note: Only Veo-generated videos can be extended (max 141s, stored <2 days).")
+    except Exception:
         sys.exit(1)
 
 
@@ -529,18 +506,11 @@ def extend_video(
 # ---------------------------------------------------------------------------
 def list_presets() -> None:
     """Print all available presets and models."""
-    print("Available Veo Presets:")
-    print("=" * 60)
-    for name, preset in PRESETS.items():
-        print(f"\n🎬 {name}")
-        print(f"   Duration: {preset['duration_seconds']}s")
-        print(f"   Aspect: {preset['aspect_ratio']}")
-        print(f"   Prompt: {preset['prompt'][:100]}...")
+    for _preset in PRESETS.values():
+        pass
 
-    print("\n\nAvailable Models:")
-    print("=" * 60)
-    for alias, model_id in MODELS.items():
-        print(f"  {alias:20s} → {model_id}")
+    for _alias, _model_id in MODELS.items():
+        pass
 
 
 # ---------------------------------------------------------------------------
@@ -625,11 +595,7 @@ def main() -> None:
             model=model,
             resolution=args.resolution,
         )
-    elif args.extend and not args.prompt:
-        print("❌ --extend requires --prompt")
-        sys.exit(1)
-    elif args.image and not args.prompt:
-        print("❌ --image requires --prompt")
+    elif (args.extend and not args.prompt) or (args.image and not args.prompt):
         sys.exit(1)
     else:
         parser.print_help()

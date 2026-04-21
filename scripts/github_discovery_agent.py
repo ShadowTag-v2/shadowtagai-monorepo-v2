@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-GitHub Script Discovery Agent
+"""GitHub Script Discovery Agent
 Scans project for scripts that should be tracked in GitHub.
 Produces structured JSON output for pipeline integration.
 """
@@ -45,8 +44,7 @@ class RepoProposal:
 
 
 class GitHubDiscoveryAgent:
-    """
-    Automated code discovery and packaging agent.
+    """Automated code discovery and packaging agent.
 
     Searches project for scripts that should be tracked in GitHub.
     Produces actionable export plan with security scanning.
@@ -95,16 +93,16 @@ class GitHubDiscoveryAgent:
         r"-----BEGIN.*PRIVATE.*KEY-----",
     ]
 
-    def __init__(self, project_root: str = None):
+    def __init__(self, project_root: str | None = None) -> None:
         self.project_root = Path(project_root or os.getcwd())
         self.candidates: list[ScriptCandidate] = []
 
     def scan(self) -> dict[str, Any]:
-        """
-        Scan project for script candidates.
+        """Scan project for script candidates.
 
         Returns:
             Dictionary with scripts and repo proposals
+
         """
         self._discover_scripts()
         repos = self._propose_repos()
@@ -125,7 +123,7 @@ class GitHubDiscoveryAgent:
             },
         }
 
-    def _discover_scripts(self):
+    def _discover_scripts(self) -> None:
         """Walk project tree and identify script candidates."""
         for root, dirs, files in os.walk(self.project_root):
             # Skip excluded directories
@@ -217,18 +215,17 @@ class GitHubDiscoveryAgent:
 
         if "test" in name or "test" in path_str:
             return "test-util"
-        elif "cli" in name or "argparse" in content or "click" in content:
+        if "cli" in name or "argparse" in content or "click" in content:
             return "cli"
-        elif "deploy" in path_str or "k8s" in path_str or "docker" in name:
+        if "deploy" in path_str or "k8s" in path_str or "docker" in name:
             return "infra"
-        elif "pipeline" in name or "etl" in name:
+        if "pipeline" in name or "etl" in name:
             return "data-pipeline"
-        elif "scrape" in name or "crawler" in name:
+        if "scrape" in name or "crawler" in name:
             return "scraper"
-        elif "def " in content and "import " in content:
+        if "def " in content and "import " in content:
             return "library"
-        else:
-            return "other"
+        return "other"
 
     def _find_dependencies(self, content: str, language: str) -> dict[str, list[str]]:
         """Extract dependencies from imports."""
@@ -255,9 +252,8 @@ class GitHubDiscoveryAgent:
             issues.append("hardcoded paths")
 
         # Missing error handling
-        if "try:" not in content and "except" not in content:
-            if "open(" in content or "requests." in content:
-                issues.append("missing error handling")
+        if "try:" not in content and "except" not in content and ("open(" in content or "requests." in content):
+            issues.append("missing error handling")
 
         # TODO/FIXME
         if "TODO" in content or "FIXME" in content:
@@ -307,23 +303,21 @@ class GitHubDiscoveryAgent:
 
         if "services" in path_parts:
             return "ShadowTag-v2-services"
-        elif "scripts" in path_parts:
+        if "scripts" in path_parts:
             return "ShadowTag-v2-scripts"
-        elif "infra" in path_parts or "k8s" in path_parts:
+        if "infra" in path_parts or "k8s" in path_parts:
             return "ShadowTag-v2-infra"
-        elif category == "test-util":
+        if category == "test-util":
             return "ShadowTag-v2-tests"
-        else:
-            return "ShadowTag-v2-core"
+        return "ShadowTag-v2-core"
 
     def _infer_status(self, content: str, issues: list[str]) -> str:
         """Infer production readiness."""
         if len(issues) > 2:
             return "experiment"
-        elif len(issues) > 0:
+        if len(issues) > 0:
             return "prototype"
-        else:
-            return "production-ready"
+        return "production-ready"
 
     def _propose_repos(self) -> list[RepoProposal]:
         """Generate repository proposals from candidates."""
@@ -357,13 +351,13 @@ class GitHubDiscoveryAgent:
                         {"title": "docs: add README", "description": "Basic documentation"},
                     ],
                     priority="now" if len(scripts) > 3 else "later",
-                )
+                ),
             )
 
         return sorted(repos, key=lambda r: len(r.scripts_included), reverse=True)
 
 
-def main():
+def main() -> None:
     """CLI interface."""
     import argparse
 
@@ -378,19 +372,15 @@ def main():
     result = agent.scan()
 
     if args.summary:
-        print(f"Total scanned: {result['summary']['total_scanned']}")
-        print(f"Candidates: {result['summary']['candidates']}")
-        print(f"Sensitive: {result['summary']['sensitive']}")
-        print(f"Repos proposed: {result['summary']['repos_proposed']}")
+        pass
     else:
         output = json.dumps(result, indent=2)
 
         if args.output:
             with open(args.output, "w") as f:
                 f.write(output)
-            print(f"Output saved to: {args.output}")
         else:
-            print(output)
+            pass
 
 
 if __name__ == "__main__":

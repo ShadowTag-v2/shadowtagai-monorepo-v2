@@ -56,6 +56,29 @@
 **/aiyou_stack/cosmic-crab-payload/node_modules/**
 **/aiyou_stack/nascent-apollo/node_modules/**
 
+# Minified / bundled JS (charset detection thrash)
+**/*.min.js
+**/*.bundle.js
+**/*.min.css
+**/DarkReaderScript.js
+
+# Images and media
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.gif
+**/*.ico
+**/*.svg
+**/*.webp
+**/*.gguf
+
+# Clone artifacts
+**/clone-base/**
+
+# Third party tools
+**/tools/mcp-toolbox/**
+**/third_party/security/**
+
 # Secrets
 .env
 **/.env.local

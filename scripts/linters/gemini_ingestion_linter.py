@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Gemini Ingestion Layer Custom Linter
+"""Gemini Ingestion Layer Custom Linter.
 
 Enforces domain-specific patterns for the intelligence collection pipeline:
 1. Rate limiting decorators on all crawler functions
@@ -18,7 +17,7 @@ from pathlib import Path
 class GeminiIngestionLinter(ast.NodeVisitor):
     """AST visitor that enforces Gemini Ingestion Layer patterns."""
 
-    def __init__(self, filename: str):
+    def __init__(self, filename: str) -> None:
         self.filename = filename
         self.errors: list[tuple[int, str]] = []
         self.in_crawler_class = False
@@ -153,7 +152,6 @@ def lint_file(filepath: Path) -> list[tuple[int, str]]:
 def main() -> int:
     """Main entry point for the linter."""
     if len(sys.argv) < 2:
-        print("Usage: gemini_ingestion_linter.py <file_or_directory>")
         return 1
 
     target = Path(sys.argv[1])
@@ -163,7 +161,6 @@ def main() -> int:
     elif target.is_dir():
         files = list(target.rglob("*.py"))
     else:
-        print(f"Error: {target} is not a valid file or directory")
         return 1
 
     total_errors = 0
@@ -174,15 +171,11 @@ def main() -> int:
 
         errors = lint_file(filepath)
         if errors:
-            print(f"\n{filepath}:")
-            for lineno, message in sorted(errors):
-                print(f"  Line {lineno}: {message}")
+            for _lineno, _message in sorted(errors):
                 total_errors += 1
 
     if total_errors > 0:
-        print(f"\n❌ Found {total_errors} Gemini Ingestion Layer violations")
         return 1
-    print("✅ All files pass Gemini Ingestion Layer linting")
     return 0
 
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Nano Banana 2 — Batch Image Regeneration
+"""Nano Banana 2 — Batch Image Regeneration
 Model: gemini-3.1-flash-image-preview
 Regenerates ALL website graphics + pitch deck assets.
 """
@@ -15,7 +14,6 @@ from google import genai
 
 api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("API_KEY")
 if not api_key:
-    print("❌ GEMINI_API_KEY not set")
     sys.exit(1)
 
 client = genai.Client(api_key=api_key)
@@ -168,9 +166,8 @@ IMAGES = [
 ]
 
 
-def generate_image(item):
+def generate_image(item) -> bool | None:
     """Generate a single image and save it."""
-    print(f"\n🎨 Generating: {item['name']}...")
     try:
         response = client.models.generate_content(
             model=MODEL,
@@ -181,37 +178,24 @@ def generate_image(item):
                 os.makedirs(os.path.dirname(item["path"]), exist_ok=True)
                 image = PIL.Image.open(BytesIO(part.inline_data.data))
                 image.save(item["path"])
-                print(f"   ✅ Saved: {item['path']}")
                 return True
-            elif part.text is not None:
-                print(f"   📝 Model note: {part.text[:100]}")
-        print(f"   ⚠️  No image data returned for {item['name']}")
+            if part.text is not None:
+                pass
         return False
-    except Exception as e:
-        print(f"   ❌ Error: {e}")
+    except Exception:
         return False
 
 
 if __name__ == "__main__":
-    print("=" * 60)
-    print("🍌 NANO BANANA 2 — BATCH IMAGE REGENERATION")
-    print(f"   Model: {MODEL}")
-    print(f"   Total images: {len(IMAGES)}")
-    print("=" * 60)
 
     success = 0
     failed = 0
     for i, item in enumerate(IMAGES, 1):
-        print(f"\n[{i}/{len(IMAGES)}]", end="")
         if generate_image(item):
             success += 1
         else:
             failed += 1
         # Rate limit: 15 RPM for image gen
         if i < len(IMAGES):
-            print("   ⏳ Cooling 5s (rate limit)...")
             time.sleep(5)
 
-    print("\n" + "=" * 60)
-    print(f"🎉 COMPLETE: {success} succeeded, {failed} failed")
-    print("=" * 60)

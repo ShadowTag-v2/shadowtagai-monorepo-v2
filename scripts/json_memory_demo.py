@@ -9,6 +9,5 @@ store.append(
         "body": "Editor-blocking flows hit ANE first but must fail over on compile errors, unsupported ops, timeouts, or validation mismatches.",
         "tags": ["ane", "fallback", "editor"],
         "repo_id": "ane",
-    }
+    },
 )
-print(store.search("fallback metal validation"))

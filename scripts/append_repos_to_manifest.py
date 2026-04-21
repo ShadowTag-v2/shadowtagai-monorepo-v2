@@ -9,7 +9,6 @@ repos = [r for r in repos if r != "Monorepo-Uphillsnowball"]
 existing = {"ShadowTag-v2-fastapi-services", "cosmic-crab-payload", "Pipeline", "nascent-apollo"}
 new_repos = [r for r in repos if r not in existing]
 
-print(f"Adding {len(new_repos)} new repos as folded-in components.")
 
 with open("monorepo_manifest.yaml") as f:
     lines = f.readlines()
@@ -35,4 +34,3 @@ for line in lines:
 with open("monorepo_manifest.yaml", "w") as f:
     f.writelines(out_lines)
 
-print("Manifest updated successfully.")

@@ -40,7 +40,6 @@ def find_ffmpeg() -> str:
             return path
         except (FileNotFoundError, subprocess.CalledProcessError):
             continue
-    print("❌ ffmpeg not found")
     sys.exit(1)
 
 
@@ -51,7 +50,6 @@ def create_concat_file(clips: list[str], tmp_dir: pathlib.Path) -> pathlib.Path:
         for clip_name in clips:
             clip_path = VEO_DIR / f"{clip_name}.mp4"
             if not clip_path.exists():
-                print(f"⚠️  Skipping missing clip: {clip_path}")
                 continue
             f.write(f"file '{clip_path.resolve()}'\n")
     return concat_path
@@ -77,13 +75,10 @@ def concatenate_videos(
         "copy",
         str(output),
     ]
-    print(f"🎬 Concatenating → {output}")
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
-        print(f"❌ ffmpeg error: {result.stderr[:500]}")
         sys.exit(1)
-    size_mb = output.stat().st_size / (1024 * 1024)
-    print(f"✅ Demo reel created: {output} ({size_mb:.1f} MB)")
+    output.stat().st_size / (1024 * 1024)
 
 
 def main() -> None:

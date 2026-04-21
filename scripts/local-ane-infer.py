@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import argparse
-import json
 import os
 import sys
 
@@ -13,26 +12,23 @@ except ImportError:
     dispatch_compute = None
 
 
-def antigravity_local_infer(prompt: str, model: str = "pnkln-logic-8b", require_json: bool = False):
-    """
-    Antigravity Native Protocol: Executing reasoning locally
+def antigravity_local_infer(prompt: str, model: str = "pnkln-logic-8b", require_json: bool = False) -> None:
+    """Antigravity Native Protocol: Executing reasoning locally
     on the user's Apple Silicon (ANE) to avoid cloud round-trips for sensitive data.
     """
     if not dispatch_compute:
-        print(json.dumps({"error": "zero_cpu_router is missing. ANE offline."}))
         sys.exit(1)
 
     try:
         # Antigravity explicitly invoking Pickle Rick (ANE) autonomously
-        result = dispatch_compute(prompt, model=model)
+        dispatch_compute(prompt, model=model)
 
         if require_json:
-            print(json.dumps({"status": "success", "backend": "ANE", "output": result}))
+            pass
         else:
-            print(f"[ANTIGRAVITY ANE EXECUTION]\n{result}")
+            pass
 
-    except Exception as e:
-        print(json.dumps({"error": str(e)}))
+    except Exception:
         sys.exit(1)
 
 

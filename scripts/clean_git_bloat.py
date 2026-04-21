@@ -25,20 +25,17 @@ def get_token():
     return resp.json()["token"]
 
 
-def run_cmd(cmd):
+def run_cmd(cmd) -> None:
     subprocess.run(cmd, shell=True, cwd=monorepo_root, check=True)  # nosec B602 — intentional shell for git/system ops
 
 
 if __name__ == "__main__":
     t = get_token()
-    print("Purging bloated .git...")
     subprocess.run("pkill -9 -f git || true", shell=True)  # nosec B602 — intentional shell for git/system ops
     subprocess.run("rm -rf .git", shell=True, cwd=monorepo_root)  # nosec B602 — intentional shell for git/system ops
     run_cmd("git init")
     remote = f"https://x-access-token:{t}@github.com/{TARGET_ORG}/{TARGET_REPO}.git"
     run_cmd(f"git remote add origin {remote}")
-    print("Fetching clean remote main...")
     run_cmd("git fetch origin main")
     run_cmd("git checkout -b main")
     run_cmd("git reset --mixed origin/main")
-    print("Local git repo re-initialized and synced with origin/main perfectly! 15GB bloat eradicated.")

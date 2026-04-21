@@ -4,7 +4,7 @@ import json
 import yaml
 
 
-def generate_four_file_proof():
+def generate_four_file_proof() -> None:
     with open("repo_census.current.json") as f:
         census = json.load(f)
 
@@ -28,7 +28,7 @@ def generate_four_file_proof():
                 "duplicate_family": c["duplicate_family"],
                 "blocker": "none",
                 "evidence": "Filesystem folded in and .git swept",
-            }
+            },
         )
     with open("01_repo_census.json", "w") as f:
         json.dump(export_census, f, indent=2)
@@ -54,7 +54,7 @@ def generate_four_file_proof():
 
         for c in census:
             f.write(
-                f"- **{stamp}** | `{c['repo_name']}` | PHYSICAL FOLD-IN | Rsync from GitHub | Touched `{c['destination_path']}` | SUCCESS | verified via filesystem | Rollback: delete dir\n"
+                f"- **{stamp}** | `{c['repo_name']}` | PHYSICAL FOLD-IN | Rsync from GitHub | Touched `{c['destination_path']}` | SUCCESS | verified via filesystem | Rollback: delete dir\n",
             )
 
     # 04_canonical_state.md
@@ -81,7 +81,6 @@ def generate_four_file_proof():
         f.write("- **nested-git result:** NO NESTED GIT\n")
         f.write("- **final verdict:** COMPLETE\n")
 
-    print("FOUR_FILE_REPORT_READY\n- 01_repo_census.json\n- 02_merge_plan.md\n- 03_execution_log.md\n- 04_canonical_state.md")
 
 
 if __name__ == "__main__":

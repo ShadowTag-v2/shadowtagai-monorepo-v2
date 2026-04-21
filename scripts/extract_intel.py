@@ -34,14 +34,11 @@ def sanitize_name(path_str):
     return path_str.replace("/", "_").replace(" ", "_")[1:]
 
 
-print("🥒 [PICKLE RICK] SOVEREIGN EXTRACTION INITIATED")
-print("Targeting distributed OS memory blocks for copy-only extraction...\n")
 
 success_count = 0
 for path in INTEL_PATHS:
     p = Path(path)
     if not p.exists():
-        print(f"    ⏭️ Skip (Not Found): {path}")
         continue
 
     # Destination mapping
@@ -49,17 +46,14 @@ for path in INTEL_PATHS:
     dest_path = os.path.join(TARGET_DIR, safe_name)
 
     if os.path.exists(dest_path):
-        print(f"    ⏭️ Skip (Already Ingested): {path}")
         continue
 
     try:
-        print(f"    📥 Extracting: {path} -> {safe_name}")
         if p.is_dir():
             shutil.copytree(path, dest_path, dirs_exist_ok=True, ignore_dangling_symlinks=True)
         else:
             shutil.copy2(path, dest_path)
         success_count += 1
-    except Exception as e:
-        print(f"    ❌ Extraction Failed: {path} - {e}")
+    except Exception:
+        pass
 
-print(f"\n✅ SYSTEM OVERLOAD AVOIDED. Extracted {success_count} critical intelligence blocks into the Monorepo Boundary.")

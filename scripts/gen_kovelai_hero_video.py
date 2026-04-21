@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Veo 3.1 Hero Video Generator — KovelAI Legal Tech
+"""Veo 3.1 Hero Video Generator — KovelAI Legal Tech.
 =================================================
 Generates an 8-second Abstract Data Architecture loop for the
 KovelAI hero section background. Deep navy + slate grey + glowing gold.
@@ -51,53 +50,39 @@ Duration: 8 seconds. 4K resolution. Cinematic, photorealistic render quality.
 """.strip()
 
 
-def main():
+def main() -> None:
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        raise RuntimeError("GEMINI_API_KEY environment variable not set.\nRun: export GEMINI_API_KEY=your_key_here")
+        msg = "GEMINI_API_KEY environment variable not set.\nRun: export GEMINI_API_KEY=your_key_here"
+        raise RuntimeError(msg)
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     client = genai.Client(api_key=api_key)
 
-    print("▶  Submitting Veo 3.1 generation request...")
-    print("   Model  : veo-3.1-generate-preview")
-    print(f"   Output : {OUTPUT_FILE}")
-    print()
 
     operation = client.models.generate_videos(
         model="veo-3.1-generate-preview",
         prompt=HERO_PROMPT,
     )
 
-    print("⏳  Polling for completion (typical: 3–8 minutes)...")
     poll_count = 0
     while not operation.done:
         poll_count += 1
-        elapsed = poll_count * 15
-        print(f"   [{elapsed:>4}s] Still generating...", end="\r", flush=True)
+        poll_count * 15
         time.sleep(15)
         operation = client.operations.get(operation)
 
-    print(f"\n✅  Generation complete after ~{poll_count * 15}s")
 
     if not operation.response or not operation.response.generated_videos:
-        raise RuntimeError("No videos in response. Check API quota or prompt.")
+        msg = "No videos in response. Check API quota or prompt."
+        raise RuntimeError(msg)
 
     video = operation.response.generated_videos[0]
     client.files.download(file=video.video)
     video.video.save(OUTPUT_FILE)
 
-    size_mb = os.path.getsize(OUTPUT_FILE) / (1024 * 1024)
-    print(f"💾  Saved: {OUTPUT_FILE} ({size_mb:.1f} MB)")
-    print()
-    print("━" * 60)
-    print("Next steps:")
-    print("  1. Review the video: open apps/kovelai/public/hero-videos/legal-data-arch.mp4")
-    print("  2. Upload to GCS:  gsutil cp apps/kovelai/public/hero-videos/legal-data-arch.mp4")
-    print("     gs://shadowtag-omega-v4-archive/hero-videos/legal-data-arch.mp4")
-    print("  3. firebase deploy --only hosting:kovelai")
-    print("━" * 60)
+    os.path.getsize(OUTPUT_FILE) / (1024 * 1024)
 
 
 if __name__ == "__main__":

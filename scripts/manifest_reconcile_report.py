@@ -14,7 +14,8 @@ except Exception:
 
 def load_yaml(path: Path) -> Any:
     if yaml is None:
-        raise RuntimeError("pyyaml is required. Install with: python3 -m pip install pyyaml")
+        msg = "pyyaml is required. Install with: python3 -m pip install pyyaml"
+        raise RuntimeError(msg)
     with path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
@@ -74,7 +75,7 @@ def main() -> int:
                 "primary": f1[key],
                 "secondary": f2[key],
                 "severity": "critical" if classify_path(key) in {"repo_roots", "control_plane"} else "medium",
-            }
+            },
         )
 
     report = {
@@ -125,13 +126,12 @@ def main() -> int:
                     f"- primary: `{item['primary']}`",
                     f"- secondary: `{item['secondary']}`",
                     "",
-                ]
+                ],
             )
     else:
         md_lines.append("No differing keys found.\n")
 
     markdown = "\n".join(md_lines)
-    print(markdown)
     if args.markdown_out:
         Path(args.markdown_out).write_text(markdown + "\n", encoding="utf-8")
     return 0

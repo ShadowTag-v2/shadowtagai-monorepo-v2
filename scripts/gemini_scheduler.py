@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Gemini Scheduler - Run workflows via Gemini Layer instead of GitHub Actions.
+"""Gemini Scheduler - Run workflows via Gemini Layer instead of GitHub Actions.
 Bypasses GitHub Actions billing by using Gemini API directly.
 """
 
@@ -38,14 +37,14 @@ except ImportError:
 class GeminiScheduler:
     """Run scheduled tasks through Gemini layer instead of GitHub Actions."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.gemini = None
         self.jura = None
         self.bugbot = BugBot()
         self.log_file = Path(__file__).parent.parent / "logs" / "scheduler.log"
         self.log_file.parent.mkdir(exist_ok=True)
 
-    def _init_gemini(self):
+    def _init_gemini(self) -> bool:
         """Initialize Gemini on first use (lazy loading)."""
         if self.gemini is None:
             try:
@@ -57,19 +56,16 @@ class GeminiScheduler:
                 return False
         return True
 
-    def _log(self, message: str):
+    def _log(self, message: str) -> None:
         """Log to file and stdout."""
         timestamp = datetime.utcnow().isoformat()
         log_entry = f"[{timestamp}] {message}"
-        print(f"///▞ SCHEDULER :: {message}")
 
         with open(self.log_file, "a") as f:
             f.write(log_entry + "\n")
 
     def run_ingestion(self):
-        """
-        Run the ingestion workflow (replaces GitHub Actions 'Ingestion (hourly)').
-        """
+        """Run the ingestion workflow (replaces GitHub Actions 'Ingestion (hourly)')."""
         self._log("Starting ingestion run")
 
         # Step 1: Static analysis (no Gemini needed)
@@ -131,7 +127,7 @@ class GeminiScheduler:
 
         return {"candidate": candidate_id, "passed": passed, "reasoning": reasoning}
 
-    def start_scheduler(self, interval_minutes: int = 60):
+    def start_scheduler(self, interval_minutes: int = 60) -> None:
         """Start the scheduler loop."""
         self._log(f"Starting scheduler with {interval_minutes} minute interval")
 
@@ -147,7 +143,7 @@ class GeminiScheduler:
             time.sleep(60)
 
 
-def main():
+def main() -> None:
     """Run scheduler or single task."""
     import argparse
 
@@ -160,8 +156,7 @@ def main():
     scheduler = GeminiScheduler()
 
     if args.run_once:
-        result = scheduler.run_ingestion()
-        print(json.dumps(result, indent=2))
+        scheduler.run_ingestion()
     else:
         scheduler.start_scheduler(args.interval)
 

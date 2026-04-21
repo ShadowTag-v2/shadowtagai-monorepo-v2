@@ -37,6 +37,7 @@ def extract_frames(
 
     Returns:
         Number of frames extracted.
+
     """
     Path(output_dir).mkdir(parents=True, exist_ok=True)
 
@@ -55,16 +56,12 @@ def extract_frames(
 
     cmd.extend(["-y", output_pattern])
 
-    print(f"Extracting frames: {video_path} → {output_dir} ({frame_format} @ {fps}fps)")
     result = subprocess.run(cmd, capture_output=True, text=True)
 
     if result.returncode != 0:
-        print(f"FFmpeg error: {result.stderr}", file=sys.stderr)
         sys.exit(1)
 
-    frame_count = len([f for f in os.listdir(output_dir) if f.startswith("frame_") and f.endswith(f".{frame_format}")])
-    print(f"Extracted {frame_count} frames.")
-    return frame_count
+    return len([f for f in os.listdir(output_dir) if f.startswith("frame_") and f.endswith(f".{frame_format}")])
 
 
 def generate_placeholder_frames(
@@ -85,11 +82,11 @@ def generate_placeholder_frames(
 
     Returns:
         Number of frames generated.
+
     """
     try:
         from PIL import Image, ImageDraw, ImageFont
     except ImportError:
-        print("Pillow required: pip install Pillow", file=sys.stderr)
         sys.exit(1)
 
     Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -138,9 +135,8 @@ def generate_placeholder_frames(
         img.save(filename, **save_kwargs)
 
         if (i + 1) % 50 == 0 or i == 0:
-            print(f"  Generated {i + 1}/{count} frames...")
+            pass
 
-    print(f"Generated {count} placeholder frames in {output_dir}")
     return count
 
 
@@ -160,7 +156,7 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.generate_placeholder:
-        output_dir = args.video if args.video else args.output_dir
+        output_dir = args.video or args.output_dir
         generate_placeholder_frames(
             output_dir=output_dir,
             count=args.count,

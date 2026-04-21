@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Veo 3.1 Hero Video Generator — Full Design-to-Video Pipeline
+"""Veo 3.1 Hero Video Generator — Full Design-to-Video Pipeline
 Generates Fluid Kinetic Aura (ShadowTag) and Legal Data Architecture (KovelAI)
 background loops using brand colors extracted from Stitch MCP design tokens.
 """
@@ -25,7 +24,6 @@ if os.path.exists(env_path):
 
 api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
 if not api_key:
-    print("❌ No GEMINI_API_KEY found in environment or .env")
     sys.exit(1)
 
 client = genai.Client(api_key=api_key)
@@ -62,15 +60,8 @@ KOVELAI_PROMPT = (
 )
 
 
-def generate_video(prompt: str, output_path: str, label: str):
+def generate_video(prompt: str, output_path: str, label: str) -> bool | None:
     """Generate a video with Veo 3.1 and save it."""
-    print(f"\n{'=' * 60}")
-    print(f"  🎬 Generating: {label}")
-    print(f"{'=' * 60}")
-    print(f"  Prompt: {prompt[:120]}...")
-    print(f"  Output: {output_path}")
-    print()
-
     try:
         operation = client.models.generate_videos(
             model="veo-3.1-generate-preview",
@@ -85,8 +76,7 @@ def generate_video(prompt: str, output_path: str, label: str):
         poll_count = 0
         while not operation.done:
             poll_count += 1
-            elapsed = poll_count * 15
-            print(f"  ⏳ [{label}] Waiting... ({elapsed}s elapsed)")
+            poll_count * 15
             time.sleep(15)
             operation = client.operations.get(operation)
 
@@ -95,20 +85,16 @@ def generate_video(prompt: str, output_path: str, label: str):
             video = operation.response.generated_videos[0]
             client.files.download(file=video.video)
             video.video.save(output_path)
-            print(f"  ✅ [{label}] Saved to {output_path}")
             return True
-        else:
-            print(f"  ❌ [{label}] No video in response")
-            if hasattr(operation, "error") and operation.error:
-                print(f"     Error: {operation.error}")
-            return False
+        if hasattr(operation, "error") and operation.error:
+            pass
+        return False
 
-    except Exception as e:
-        print(f"  ❌ [{label}] Error: {e}")
+    except Exception:
         return False
 
 
-def main():
+def main() -> int:
     target = sys.argv[1] if len(sys.argv) > 1 else "both"
 
     results = {}
@@ -121,13 +107,8 @@ def main():
         kv_path = os.path.join(OUTPUT_DIR, "kovelai", "public", "legal-data-arch.mp4")
         results["kovelai"] = generate_video(KOVELAI_PROMPT, kv_path, "KovelAI — Legal Data Architecture")
 
-    print(f"\n{'=' * 60}")
-    print("  📊 Results Summary")
-    print(f"{'=' * 60}")
-    for name, success in results.items():
-        status = "✅ SUCCESS" if success else "❌ FAILED"
-        print(f"  {name}: {status}")
-    print()
+    for _name, _success in results.items():
+        pass
 
     return 0 if all(results.values()) else 1
 
