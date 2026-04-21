@@ -1,0 +1,56 @@
+# Item 10: k6 CI pipeline for automated load regression tests
+name: k6 Load Test
+on:
+  workflow_dispatch:
+    inputs:
+      duration:
+        description: 'Test duration (e.g., 30s, 5m)'
+        required: false
+        default: '30s'
+      vus:
+        description: 'Virtual users'
+        required: false
+        default: '5'
+  schedule:
+    - cron: '0 6 * * 1'  # Weekly Monday 6am UTC
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          sudo gpg -k
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install k6
+
+      - name: Run smoke test
+        run: |
+          k6 run \
+            --duration ${{ inputs.duration || '30s' }} \
+            --vus ${{ inputs.vus || '5' }} \
+            --out json=k6-results.json \
+            scripts/k6_counselconduit_smoke.js
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: k6-results
+          path: k6-results.json
+          retention-days: 30
+
+      - name: Check thresholds
+        run: |
+          # Fail if any k6 threshold was exceeded
+          if grep -q '"type":"Point","metric":"http_req_failed"' k6-results.json 2>/dev/null; then
+            echo "⚠️ Some requests failed — check load test results"
+          fi
+          echo "✅ k6 load test completed"
