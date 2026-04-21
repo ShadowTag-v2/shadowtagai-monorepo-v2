@@ -66,6 +66,6 @@ class IPBEngine:
         """Step 3: Evaluate adversarial capability."""
         return {"adversary_capability": "Peer"}
 
-    def _determine_coas(self, threat: dict[str, str]) -> list[str]:
+    def _determine_coas(self, _threat: dict[str, str]) -> list[str]:
         """Step 4: Determine Most Dangerous / Most Likely COAs."""
         return ["MDCOA_Target", "MLCOA_Target"]
