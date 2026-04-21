@@ -6,10 +6,10 @@
   ],
   "settings": {
     "terminal.integrated.env.osx": {
-      "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json"
+      "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
     },
     "liveServer.settings.root": "/",
-    "liveServer.settings.port": 5509,
+    "liveServer.settings.port": 5510,
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "python.envFile": "${workspaceFolder}/.env",
     "python.languageServer": "None",
