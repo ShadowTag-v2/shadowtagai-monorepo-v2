@@ -54,292 +54,451 @@
     ]
   }
   </script>
-  <link rel="icon" href="/images/favicon.ico" type="image/x-icon"/>
-  <link rel="icon" href="/images/favicon-32.png" type="image/png" sizes="32x32"/>
-  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png"/>
-  <!-- Preconnect: saves ~100ms on font fetch -->
+  <meta name="theme-color" content="#09090B"/>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+  <link rel="icon" href="/favicon.ico" sizes="any"/>
+  <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32"/>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+  <link rel="manifest" href="/manifest.json"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <!-- Preload hero as AVIF (57KB vs 105KB WebP) -->
   <link rel="preload" as="image" href="/images/hero-bg.avif" type="image/avif" fetchpriority="high"/>
   <link rel="preload" as="image" href="/images/logo.webp" type="image/webp"/>
   <style>
     @font-face { font-family: 'Inter'; font-display: optional; src: local('Inter'); }
-    body { margin: 0; background: #080c18; color: #dfe2f4; font-family: 'Inter', -apple-system, sans-serif; }
+    body { margin: 0; background: #09090b; color: #eeeef0; font-family: 'Inter', -apple-system, sans-serif; }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=optional" rel="stylesheet" media="print" onload="this.media='all'"/>
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=optional" rel="stylesheet"/></noscript>
-  <script type="module" crossorigin src="/assets/main-Cve4gKY2.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/main-Drg33iiJ.css">
+  <link rel="stylesheet" href="/styles.css"/>
 </head>
 <body>
+  <!-- Skip Navigation -->
+  <a href="#main-content" class="skip-nav">Skip to main content</a>
 
-<!-- Scroll Progress -->
-<div class="scroll-progress" id="scrollProgress"></div>
+  <!-- Scroll Progress -->
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
-<!-- Aurora BG -->
-<div class="aurora-bg"></div>
+  <!-- Toast -->
+  <div id="toast" class="toast" role="alert">✓ Inquiry received. We'll respond within 24 hours.</div>
 
-<!-- Particles -->
-<div class="particles" id="particles"></div>
-
-<!-- Toast -->
-<div id="toast" class="toast">✓ Inquiry received. We'll respond within 24 hours.</div>
-
-<!-- ═══ CONTACT MODAL ═══ -->
-<div id="contactModal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
-  <div class="modal-content">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem">
-      <h3 style="font-size:1.5rem;font-weight:700;margin:0">Contact ShadowTag AI</h3>
-      <button onclick="closeContactModal()" style="background:none;border:none;color:var(--color-outline);cursor:pointer;font-size:1.5rem" aria-label="Close">&times;</button>
+  <!-- ═══ Contact Modal ═══ -->
+  <div id="contactModal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeContactModal()" aria-label="Close">&times;</button>
+      <p class="section-label">Get Started</p>
+      <h3 style="font-size:1.5rem;font-weight:700;margin-bottom:1.5rem;">Contact ShadowTag AI</h3>
+      <form id="contactForm" action="https://script.google.com/macros/s/AKfycbxV1yD3_QHOnZ79N0I59bXTWAjt2tLHajRD6zNzjiogYOyPX0LaojymAXpmyfXXzJ5Nww/exec" method="POST">
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off"/>
+        <input type="hidden" name="sheet_name" value="ShadowTagAI"/>
+        <input type="hidden" name="source" value="shadowtagai.web.app"/>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div class="form-row">
+            <div>
+              <label for="st-name" class="sr-only">Name</label>
+              <input id="st-name" name="name" type="text" required class="modal-input" placeholder="Jane Smith"/>
+            </div>
+            <div>
+              <label for="st-org" class="sr-only">Organization</label>
+              <input id="st-org" name="company" type="text" class="modal-input" placeholder="Acme Corp"/>
+            </div>
+          </div>
+          <div>
+            <label for="st-email" class="sr-only">Email</label>
+            <input id="st-email" name="email" type="email" required class="modal-input" placeholder="you@company.com"/>
+          </div>
+          <div>
+            <label for="st-message" class="sr-only">Message</label>
+            <textarea id="st-message" name="message" rows="4" class="modal-input" placeholder="Tell us about your infrastructure needs..." style="resize:vertical"></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%">Submit</button>
+        </div>
+      </form>
     </div>
-    <form id="contactForm" action="https://script.google.com/macros/s/AKfycbxV1yD3_QHOnZ79N0I59bXTWAjt2tLHajRD6zNzjiogYOyPX0LaojymAXpmyfXXzJ5Nww/exec" method="POST">
-      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off"/>
-      <input type="hidden" name="sheet_name" value="ShadowTagAI"/>
-      <input type="hidden" name="source" value="shadowtagai.web.app"/>
-      <div style="display:grid;gap:1rem">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-          <div>
-            <label for="st-name" style="display:block;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--color-on-surface-variant);margin-bottom:0.5rem">Name</label>
-            <input id="st-name" name="name" type="text" required class="modal-input" placeholder="Jane Smith"/>
-          </div>
-          <div>
-            <label for="st-org" style="display:block;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--color-on-surface-variant);margin-bottom:0.5rem">Organization</label>
-            <input id="st-org" name="company" type="text" class="modal-input" placeholder="Acme Corp"/>
-          </div>
-        </div>
-        <div>
-          <label for="st-email" style="display:block;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--color-on-surface-variant);margin-bottom:0.5rem">Email</label>
-          <input id="st-email" name="email" type="email" required class="modal-input" placeholder="you@company.com"/>
-        </div>
-        <div>
-          <label for="st-message" style="display:block;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--color-on-surface-variant);margin-bottom:0.5rem">Message</label>
-          <textarea id="st-message" name="message" rows="4" class="modal-input" placeholder="Tell us about your infrastructure needs..." style="resize:vertical"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Submit</button>
-      </div>
-    </form>
   </div>
-</div>
 
-<!-- ═══ NAVIGATION ═══ -->
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="/" class="nav-brand">
-      <img src="/images/logo.webp" alt="ShadowTag AI" class="nav-logo" width="44" height="44" loading="eager"/>
+  <!-- ═══ Utility Bar ═══ -->
+  <div class="utility-bar" role="complementary" aria-label="Utility navigation">
+    <a href="https://kovelai.web.app" target="_blank" rel="noopener">KovelAI →</a>
+    <span aria-hidden="true">|</span>
+    <a href="#contact" onclick="openContactModal();return false">Get Started</a>
+  </div>
+
+  <!-- ═══ Navigation ═══ -->
+  <nav id="main-nav" class="main-nav" aria-label="Main navigation">
+    <a href="/" class="nav-brand" aria-label="ShadowTag AI home">
+      <img src="/images/logo.webp" alt="ShadowTag AI" class="nav-logo" width="36" height="36" loading="eager"/>
       <span class="nav-brand-text">Shadow<span>Tag</span> AI</span>
     </a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#platform">Platform</a></li>
-      <li><a href="#capabilities">Capabilities</a></li>
-      <li><a href="#infrastructure">Infrastructure</a></li>
-      <li><a href="#leadership">Leadership</a></li>
+    <ul class="nav-links" id="navLinks" role="list">
+      <li>
+        <a href="#platform">Platform <span class="dropdown-arrow">▾</span></a>
+        <ul class="nav-dropdown">
+          <li><a href="#platform">UphillSnowball</a></li>
+          <li><a href="#capabilities">Capabilities</a></li>
+          <li><a href="#infrastructure">Infrastructure</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#capabilities">Capabilities</a>
+      </li>
+      <li>
+        <a href="#leadership">Company <span class="dropdown-arrow">▾</span></a>
+        <ul class="nav-dropdown">
+          <li><a href="#leadership">Leadership</a></li>
+          <li><a href="https://kovelai.web.app" target="_blank" rel="noopener">KovelAI Product</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#contact" onclick="openContactModal();return false">Contact</a>
+      </li>
     </ul>
     <button class="nav-cta" onclick="openContactModal()">Get Started</button>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
-  </div>
-</nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+  </nav>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero" id="hero">
-  <!-- Layer 0: Veo 3.1 video background -->
-  <video class="hero-video" autoplay loop muted playsinline poster="/images/hero-bg.avif">
-    <source src="/videos/hero-bg.mp4" type="video/mp4"/>
-  </video>
-  <div class="hero-bg"></div>
-  <div class="hero-fade"></div>
-  <div class="hero-grain"></div>
-
-  <div class="hero-content">
-    <div class="hero-logo">
-      <img src="/images/logo.webp" alt="ShadowTag AI" width="240" height="240" loading="eager" decoding="async"/>
-      <span class="holo-sheen"></span>
-    </div>
-    <div class="hero-badge">SOVEREIGN · AUTONOMOUS · ZERO-TRUST</div>
-    <h1>
-      Autonomous Intelligence for<br/>
-      <span class="gradient-text">Total Data Sovereignty</span>
-    </h1>
-    <p class="hero-sub">
-      ShadowTag AI builds <strong>sovereign AI infrastructure</strong> for institutions that refuse to compromise on control.
-      The <span class="accent">UphillSnowball</span> platform is a fully airgapped, autonomous intelligence engine —
-      no cloud dependency, no data leakage, total institutional control.
-    </p>
-    <div class="hero-ctas">
-      <button onclick="openContactModal()" class="btn btn-primary">Request Access</button>
-      <a href="#platform" class="btn btn-ghost">Explore Platform →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ PLATFORM ═══ -->
-<section class="section" id="platform">
-  <div class="section-inner reveal">
-    <div class="section-label">Platform</div>
-    <h2 class="section-title">The UphillSnowball Platform</h2>
-    <p class="section-desc">
-      A sovereign AI operating system that runs entirely on your infrastructure.
-      No API calls to external models, no cloud dependencies, no data ever leaves your perimeter.
-    </p>
-    <div class="feature-grid">
-      <div class="glass-card">
-        <div class="glass-card-icon">🛡️</div>
-        <h3>Zero-Trust Architecture</h3>
-        <p>Every component operates under zero-trust principles. No implicit trust, no shared secrets, no external dependencies.</p>
+  <!-- ═══ Hero ═══ -->
+  <header class="hero" id="hero" role="banner">
+    <video class="hero-video-bg" autoplay loop muted playsinline poster="/images/hero-bg.avif" aria-hidden="true">
+      <source src="/videos/hero-bg.mp4" type="video/mp4"/>
+    </video>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge fade-in">SOVEREIGN · AUTONOMOUS · ZERO-TRUST</div>
+        <h1 class="fade-in stagger-1">Autonomous Intelligence for<br><span class="gradient-text">Total Data Sovereignty</span></h1>
+        <p class="fade-in stagger-2">
+          ShadowTag AI builds <strong>sovereign AI infrastructure</strong> for institutions that refuse to compromise on control.
+          The <span class="accent">UphillSnowball</span> platform is a fully airgapped, autonomous intelligence engine —
+          no cloud dependency, no data leakage, total institutional control.
+        </p>
+        <div class="hero-actions fade-in stagger-3">
+          <button class="btn-primary" onclick="openContactModal()">Request Access</button>
+          <a href="#platform" class="btn-secondary">Explore Platform →</a>
+        </div>
       </div>
-      <div class="glass-card">
-        <div class="glass-card-icon">🧠</div>
-        <h3>Sovereign Inference</h3>
-        <p>On-premise model execution via Apple Neural Engine and local GPU acceleration. Your data never leaves your hardware.</p>
-      </div>
-      <div class="glass-card">
-        <div class="glass-card-icon">⚡</div>
-        <h3>Autonomous Operations</h3>
-        <p>Self-healing daemon fleet, automated security patching, and recursive self-improvement within bounded safety constraints.</p>
+      <!-- KPI Widget -->
+      <div class="hero-kpi fade-in stagger-4">
+        <p class="kpi-title">Architecture Metrics</p>
+        <div class="kpi-item">
+          <div class="kpi-icon">🛡️</div>
+          <div>
+            <p class="kpi-label">Zero-Trust Core</p>
+            <p class="kpi-value">No implicit trust, no shared secrets</p>
+          </div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-icon">🧠</div>
+          <div>
+            <p class="kpi-label">Sovereign Inference</p>
+            <p class="kpi-value">ANE + MLX on-device, data never leaves</p>
+          </div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-icon">⚡</div>
+          <div>
+            <p class="kpi-label">Autonomous Ops</p>
+            <p class="kpi-value">Self-healing daemon fleet with bounded safety</p>
+          </div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-icon">⚙️</div>
+          <div>
+            <p class="kpi-label">17-Layer Shield</p>
+            <p class="kpi-value">Deterministic compliance firewall</p>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </header>
 
-<!-- ═══ CAPABILITIES ═══ -->
-<section class="section" id="capabilities" style="background:var(--color-surface-lowest)">
-  <div class="section-inner reveal">
-    <div class="section-label">Capabilities</div>
-    <h2 class="section-title">Enterprise-Grade Intelligence</h2>
-    <p class="section-desc">
-      From document analysis to autonomous research, ShadowTag AI delivers institutional-grade capabilities
-      without sacrificing data sovereignty.
-    </p>
-    <div class="feature-grid">
-      <div class="glass-card">
-        <div class="glass-card-icon">📄</div>
-        <h3>Document Intelligence</h3>
-        <p>Automated contract analysis, compliance review, and risk scoring across thousands of documents simultaneously.</p>
-      </div>
-      <div class="glass-card">
-        <div class="glass-card-icon">🔍</div>
-        <h3>Autonomous Research</h3>
-        <p>Multi-agent research swarms that operate within your security perimeter, synthesizing insights from internal knowledge bases.</p>
-      </div>
-      <div class="glass-card">
-        <div class="glass-card-icon">🎯</div>
-        <h3>Risk Assessment</h3>
-        <p>Real-time risk matrix evaluation using the ATP 5-19 doctrine. Deterministic guardrails prevent hallucination-based decisions.</p>
-      </div>
-      <div class="glass-card">
-        <div class="glass-card-icon">🔐</div>
-        <h3>Steganographic Watermarking</h3>
-        <p>Invisible digital watermarks embedded in all AI-generated content for provenance tracking and IP protection.</p>
-      </div>
-      <div class="glass-card">
-        <div class="glass-card-icon">📊</div>
-        <h3>RAG Pipeline</h3>
-        <p>Private vector database with LanceDB. Your institutional knowledge indexed locally, queried in milliseconds.</p>
-      </div>
-      <div class="glass-card">
-        <div class="glass-card-icon">🏗️</div>
-        <h3>Multi-Agent Orchestration</h3>
-        <p>Temporal-based workflow orchestration with bounded recursion. Complex tasks decomposed and executed autonomously.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  <main id="main-content">
 
-<!-- ═══ INFRASTRUCTURE ═══ -->
-<section class="section" id="infrastructure">
-  <div class="section-inner reveal">
-    <div class="section-label">Infrastructure</div>
-    <h2 class="section-title">Built for Institutional Control</h2>
-    <div class="feature-grid" style="grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:2rem">
-      <div class="glass-card" style="text-align:center">
-        <div style="font-size:2.5rem;margin-bottom:1rem">🏛️</div>
-        <h3>On-Premise First</h3>
-        <p>Runs on your hardware — Apple Silicon, bare metal, or air-gapped data centers. Zero cloud dependency.</p>
+    <!-- ═══ "Why ShadowTag AI?" Editorial Rows ═══ -->
+    <section id="why-shadowtag" class="section-padded" aria-labelledby="why-title">
+      <div class="fade-in">
+        <p class="section-label">Why ShadowTag AI</p>
+        <h2 class="section-title" id="why-title">Your data. Your hardware.<br>Your intelligence.</h2>
       </div>
-      <div class="glass-card" style="text-align:center">
-        <div style="font-size:2.5rem;margin-bottom:1rem">🔒</div>
-        <h3>FedRAMP Ready</h3>
-        <p>Architecture designed for government and defense compliance from day one. NIST 800-53, SOC 2, HIPAA.</p>
+      <div class="editorial-rows">
+        <a href="#platform" class="editorial-row fade-in stagger-1">
+          <div class="editorial-row-content">
+            <span class="editorial-number">01</span>
+            <div>
+              <h3>Zero Cloud Dependency</h3>
+              <p>Run the entire AI stack on your hardware. No API calls to external models, no data ever leaves your perimeter.</p>
+            </div>
+          </div>
+          <span class="editorial-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="#capabilities" class="editorial-row fade-in stagger-2">
+          <div class="editorial-row-content">
+            <span class="editorial-number">02</span>
+            <div>
+              <h3>Institutional-Grade Intelligence</h3>
+              <p>Document analysis, autonomous research, and risk assessment — all within your security perimeter.</p>
+            </div>
+          </div>
+          <span class="editorial-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="#infrastructure" class="editorial-row fade-in stagger-3">
+          <div class="editorial-row-content">
+            <span class="editorial-number">03</span>
+            <div>
+              <h3>Compliance by Architecture</h3>
+              <p>FedRAMP-ready, NIST 800-53, SOC 2, HIPAA — baked into the infrastructure from day one, not bolted on.</p>
+            </div>
+          </div>
+          <span class="editorial-arrow" aria-hidden="true">→</span>
+        </a>
       </div>
-      <div class="glass-card" style="text-align:center">
-        <div style="font-size:2.5rem;margin-bottom:1rem">⚙️</div>
-        <h3>17-Layer Shield</h3>
-        <p>Deterministic compliance firewall. Every AI decision passes through 17 auditable governance layers.</p>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ═══ LEADERSHIP ═══ -->
-<section class="section" id="leadership" style="background:var(--color-surface-lowest)">
-  <div class="section-inner reveal">
-    <div class="section-label">Leadership</div>
-    <h2 class="section-title">Management</h2>
-    <div class="ceo-card" style="margin-top:2rem">
-      <img src="/images/founder.jpeg" alt="Erik Hanson, Founder & CEO" class="ceo-headshot" loading="lazy" decoding="async"/>
-      <div>
-        <h3 style="font-size:1.5rem;font-weight:700;margin:0 0 0.25rem">Erik Hanson</h3>
-        <div style="font-size:0.8rem;color:var(--color-primary);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem">Founder & CEO</div>
-        <p style="font-size:0.95rem;color:var(--color-on-surface-variant);line-height:1.7;margin:0">
-          Erik founded ShadowTag AI to build sovereign intelligence infrastructure for institutions
-          that demand total control over their AI operations. With deep expertise in distributed systems,
-          security architecture, and autonomous agents, he leads the company's mission to eliminate
-          the forced trade-off between AI capability and data sovereignty.
+    <!-- ═══ Quick Links ═══ -->
+    <section class="section-padded" aria-label="Quick links">
+      <div class="quick-links fade-in">
+        <div class="quick-links-label">
+          <h3>Quick<br>Links</h3>
+        </div>
+        <div class="quick-links-grid">
+          <a href="#platform" class="quick-link-item">
+            <span class="ql-icon">🛡️</span>
+            <div class="ql-text">
+              <h4>Platform</h4>
+              <p>UphillSnowball architecture</p>
+            </div>
+          </a>
+          <a href="#capabilities" class="quick-link-item">
+            <span class="ql-icon">🧠</span>
+            <div class="ql-text">
+              <h4>Capabilities</h4>
+              <p>Enterprise AI services</p>
+            </div>
+          </a>
+          <a href="https://kovelai.web.app" class="quick-link-item" target="_blank" rel="noopener">
+            <span class="ql-icon">⚖️</span>
+            <div class="ql-text">
+              <h4>KovelAI</h4>
+              <p>Legal AI product</p>
+            </div>
+          </a>
+          <a href="#contact" class="quick-link-item" onclick="openContactModal();return false">
+            <span class="ql-icon">📅</span>
+            <div class="ql-text">
+              <h4>Request Access</h4>
+              <p>Get started today</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Platform ═══ -->
+    <section id="platform" class="section-padded" aria-labelledby="platform-title">
+      <div class="fade-in">
+        <p class="section-label">Platform</p>
+        <h2 class="section-title" id="platform-title">The UphillSnowball Platform</h2>
+        <p class="section-desc">
+          A sovereign AI operating system that runs entirely on your infrastructure.
+          No API calls to external models, no cloud dependencies, no data ever leaves your perimeter.
         </p>
       </div>
-    </div>
-  </div>
-</section>
+      <div class="feature-grid">
+        <div class="glass-card fade-in stagger-1">
+          <div class="glass-card-icon">🛡️</div>
+          <h3>Zero-Trust Architecture</h3>
+          <p>Every component operates under zero-trust principles. No implicit trust, no shared secrets, no external dependencies.</p>
+        </div>
+        <div class="glass-card fade-in stagger-2">
+          <div class="glass-card-icon">🧠</div>
+          <h3>Sovereign Inference</h3>
+          <p>On-premise model execution via Apple Neural Engine and local GPU acceleration. Your data never leaves your hardware.</p>
+        </div>
+        <div class="glass-card fade-in stagger-3">
+          <div class="glass-card-icon">⚡</div>
+          <h3>Autonomous Operations</h3>
+          <p>Self-healing daemon fleet, automated security patching, and recursive self-improvement within bounded safety constraints.</p>
+        </div>
+      </div>
+    </section>
 
-<!-- ═══ CTA ═══ -->
-<section class="section">
-  <div class="section-inner reveal" style="text-align:center">
-    <div class="section-label">Get Started</div>
-    <h2 class="section-title" style="max-width:700px;margin:0 auto 1rem">Ready for Sovereign AI?</h2>
-    <p class="section-desc" style="margin:0 auto 2rem">
-      Request access to the UphillSnowball platform. Deploy autonomous intelligence
-      on your own infrastructure with zero data compromise.
-    </p>
-    <button onclick="openContactModal()" class="btn btn-primary" style="font-size:1rem;padding:1rem 3rem">Request Access</button>
-  </div>
-</section>
+    <!-- ═══ Capabilities ═══ -->
+    <section id="capabilities" class="section-alt" aria-labelledby="capabilities-title">
+      <div class="section-padded">
+        <div class="fade-in">
+          <p class="section-label">Capabilities</p>
+          <h2 class="section-title" id="capabilities-title">Enterprise-Grade Intelligence</h2>
+          <p class="section-desc">
+            From document analysis to autonomous research, ShadowTag AI delivers institutional-grade capabilities
+            without sacrificing data sovereignty.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <div class="glass-card fade-in stagger-1">
+            <div class="glass-card-icon">📄</div>
+            <h3>Document Intelligence</h3>
+            <p>Automated contract analysis, compliance review, and risk scoring across thousands of documents simultaneously.</p>
+          </div>
+          <div class="glass-card fade-in stagger-2">
+            <div class="glass-card-icon">🔍</div>
+            <h3>Autonomous Research</h3>
+            <p>Multi-agent research swarms that operate within your security perimeter, synthesizing insights from internal knowledge bases.</p>
+          </div>
+          <div class="glass-card fade-in stagger-3">
+            <div class="glass-card-icon">🎯</div>
+            <h3>Risk Assessment</h3>
+            <p>Real-time risk matrix evaluation using the ATP 5-19 doctrine. Deterministic guardrails prevent hallucination-based decisions.</p>
+          </div>
+          <div class="glass-card fade-in stagger-4">
+            <div class="glass-card-icon">🔐</div>
+            <h3>Steganographic Watermarking</h3>
+            <p>Invisible digital watermarks embedded in all AI-generated content for provenance tracking and IP protection.</p>
+          </div>
+          <div class="glass-card fade-in stagger-5">
+            <div class="glass-card-icon">📊</div>
+            <h3>RAG Pipeline</h3>
+            <p>Private vector database with LanceDB. Your institutional knowledge indexed locally, queried in milliseconds.</p>
+          </div>
+          <div class="glass-card fade-in stagger-6">
+            <div class="glass-card-icon">🏗️</div>
+            <h3>Multi-Agent Orchestration</h3>
+            <p>Temporal-based workflow orchestration with bounded recursion. Complex tasks decomposed and executed autonomously.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<!-- ═══ FOOTER ═══ -->
-<footer class="footer">
-  <div class="footer-inner">
-    <div>
-      <div class="footer-brand">ShadowTag AI</div>
-      <p class="footer-desc">Sovereign AI infrastructure for institutions that demand total data control. No cloud dependency, no data leakage.</p>
-    </div>
-    <div>
-      <div class="footer-heading">Platform</div>
-      <ul class="footer-links">
-        <li><a href="#platform">UphillSnowball</a></li>
-        <li><a href="#capabilities">Capabilities</a></li>
-        <li><a href="#infrastructure">Infrastructure</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-heading">Company</div>
-      <ul class="footer-links">
-        <li><a href="#leadership">Leadership</a></li>
-        <li><a href="/privacy">Privacy Policy</a></li>
-        <li><a href="/terms">Terms of Service</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-heading">Contact</div>
-      <ul class="footer-links">
-        <li><a href="#" onclick="openContactModal();return false">Get Started</a></li>
-        <li><a href="mailto:founder@shadowtagai.com">Email</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2024–2026 ShadowTag AI. All rights reserved.</span>
-    <span>UphillSnowball Platform</span>
-  </div>
-</footer>
+    <!-- ═══ Infrastructure ═══ -->
+    <section id="infrastructure" class="section-padded" aria-labelledby="infrastructure-title">
+      <div class="fade-in">
+        <p class="section-label">Infrastructure</p>
+        <h2 class="section-title" id="infrastructure-title">Built for Institutional Control</h2>
+      </div>
+      <div class="feature-grid feature-grid-3">
+        <div class="glass-card centered fade-in stagger-1">
+          <div class="glass-card-icon-lg" aria-hidden="true">🏛️</div>
+          <h3>On-Premise First</h3>
+          <p>Runs on your hardware — Apple Silicon, bare metal, or air-gapped data centers. Zero cloud dependency.</p>
+        </div>
+        <div class="glass-card centered fade-in stagger-2">
+          <div class="glass-card-icon-lg" aria-hidden="true">🔒</div>
+          <h3>FedRAMP Ready</h3>
+          <p>Architecture designed for government and defense compliance from day one. NIST 800-53, SOC 2, HIPAA.</p>
+        </div>
+        <div class="glass-card centered fade-in stagger-3">
+          <div class="glass-card-icon-lg" aria-hidden="true">⚙️</div>
+          <h3>17-Layer Shield</h3>
+          <p>Deterministic compliance firewall. Every AI decision passes through 17 auditable governance layers.</p>
+        </div>
+      </div>
+    </section>
 
+    <!-- ═══ Leadership ═══ -->
+    <section id="leadership" class="section-alt" aria-labelledby="leadership-title">
+      <div class="section-padded">
+        <div class="fade-in">
+          <p class="section-label">Leadership</p>
+          <h2 class="section-title" id="leadership-title">Management</h2>
+        </div>
+        <div class="ceo-card fade-in stagger-1">
+          <img src="/images/founder.jpeg" alt="Erik Hanson, Founder & CEO" class="ceo-headshot" loading="lazy" decoding="async"/>
+          <div>
+            <h3>Erik Hanson</h3>
+            <div class="ceo-title">Founder & CEO</div>
+            <p>
+              Erik founded ShadowTag AI to build sovereign intelligence infrastructure for institutions
+              that demand total control over their AI operations. With deep expertise in distributed systems,
+              security architecture, and autonomous agents, he leads the company's mission to eliminate
+              the forced trade-off between AI capability and data sovereignty.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CTA ═══ -->
+    <section class="cta-section" aria-labelledby="cta-title">
+      <div class="fade-in">
+        <p class="section-label">Get Started</p>
+        <h2 id="cta-title">Ready for Sovereign AI?</h2>
+        <p>
+          Request access to the UphillSnowball platform. Deploy autonomous intelligence
+          on your own infrastructure with zero data compromise.
+        </p>
+        <button onclick="openContactModal()" class="btn-primary" style="font-size:1rem;padding:1rem 3rem;">Request Access</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══ Contact Split Section ═══ -->
+  <section id="contact" class="contact-split" aria-labelledby="contact-title">
+    <div class="contact-split-inner">
+      <div class="contact-info fade-in">
+        <p class="section-label">Contact</p>
+        <h2 id="contact-title">Build sovereign intelligence</h2>
+        <p>Get in touch to learn how ShadowTag AI can deploy autonomous intelligence on your infrastructure with zero data compromise.</p>
+        <div class="contact-detail">
+          <span class="contact-detail-icon">📧</span>
+          <a href="mailto:founder@shadowtagai.com">founder@shadowtagai.com</a>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-icon">⚖️</span>
+          <a href="https://kovelai.web.app" target="_blank" rel="noopener">KovelAI — Legal AI Product</a>
+        </div>
+      </div>
+      <form class="contact-form fade-in stagger-2" action="https://script.google.com/macros/s/AKfycbxV1yD3_QHOnZ79N0I59bXTWAjt2tLHajRD6zNzjiogYOyPX0LaojymAXpmyfXXzJ5Nww/exec" method="POST">
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off"/>
+        <input type="hidden" name="sheet_name" value="ShadowTagAI"/>
+        <input type="hidden" name="source" value="shadowtagai.web.app"/>
+        <div class="form-row">
+          <input type="text" name="name" placeholder="Full Name" required aria-label="Full name"/>
+          <input type="text" name="company" placeholder="Organization" aria-label="Organization"/>
+        </div>
+        <input type="email" name="email" placeholder="Work Email" required aria-label="Work email"/>
+        <textarea name="message" placeholder="Tell us about your infrastructure needs..." rows="4" aria-label="Message"></textarea>
+        <button type="submit" class="btn-primary">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ═══ Multi-Column Footer ═══ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-grid">
+      <div class="footer-brand-block">
+        <span class="nav-brand-text">Shadow<span>Tag</span> AI</span>
+        <p>Sovereign AI infrastructure for institutions that demand total data control. No cloud dependency, no data leakage.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#platform">UphillSnowball</a></li>
+          <li><a href="#capabilities">Capabilities</a></li>
+          <li><a href="#infrastructure">Infrastructure</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#leadership">Leadership</a></li>
+          <li><a href="https://kovelai.web.app" target="_blank" rel="noopener">KovelAI</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="#contact" onclick="openContactModal();return false">Get Started</a></li>
+          <li><a href="mailto:founder@shadowtagai.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024–2026 ShadowTag AI. All rights reserved.</span>
+      <span>UphillSnowball Platform</span>
+    </div>
+  </footer>
+
+  <!-- ═══ Scripts ═══ -->
+  <script src="/main.js"></script>
 </body>
 </html>
