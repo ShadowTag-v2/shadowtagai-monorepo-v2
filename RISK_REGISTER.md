@@ -79,3 +79,18 @@
 - **Severity**: 🟠 High
 - **Status**: RESOLVED
 - **Description**: Both Firestore databases lacked Point-in-Time Recovery, exposing the project to unrecoverable data loss from accidental writes or deletions. PITR enabled on both `(default)` (nam5) and `shadowtag-engine` (us-central1) via Firebase MCP on 2026-04-20. 7-day version retention confirmed for both databases. Delete-protection was already enabled.
+
+## Risk #50: Agent Context Drift — Stale Invariants in Long-Running Sessions
+- **Type**: Operational / AI Safety
+- **Severity**: 🟡 Medium
+- **Status**: MITIGATED
+- **Description**: Long-running agent sessions accumulate stale context from operator_invariants.json and GEMINI.md, causing drift between canonical truth and in-memory agent state. Mitigated by: (1) KAIROS daemon refreshes context every 5 minutes, (2) Dream consolidation prunes stale KIs nightly, (3) GEMINI.md version pinning prevents implicit upgrades.
+
+## Risk #51: JTF V35.0 Scaffolds — Temporal.io Runtime Not Installed
+- **Type**: Build / Dependency
+- **Severity**: 🟢 Low
+- **Status**: KNOWN
+- **Description**: JTF scaffolds (`src/headquarters/`, `src/intelligence/`, `src/governance/`, `src/workflows/`) are pure Python dataclass+async scaffolds. They do NOT depend on Temporal.io runtime. If Temporal integration is added later, `temporalio` SDK must be installed and workflow registration configured. Current scaffolds are self-contained and importable without external dependencies.
+
+## Known Issues
+- Antigravity IDE: SharedProcess uncaught exception (reading 'fireEvent') - Ignored upstream Electron/Extension bug.

@@ -79,4 +79,3 @@ push_res = run("git push -f --set-upstream origin main")
 
 if push_res.returncode != 0:
     sys.exit(1)
-

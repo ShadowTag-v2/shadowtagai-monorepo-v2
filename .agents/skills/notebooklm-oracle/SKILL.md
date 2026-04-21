@@ -1,45 +1,44 @@
 ---
 name: notebooklm-oracle
-description: "Enforces mandatory architectural context retrieval before planning mode. Use before drafting flight plans, touching undocumented APIs, or starting any complex logic in the monorepo."
+description: Enforces mandatory architectural context retrieval. Use before drafting flight plans, touching undocumented APIs, or starting any complex logic in the monorepo.
 ---
 
 # NotebookLM Oracle Mandate
 
-Context must be computed, never guessed. This skill ensures you never guess domain logic, system constraints, or monorepo context in isolation.
+This skill ensures that you never guess domain logic, system constraints, or monorepo context in isolation. Context must be computed, never guessed.
 
-## When to Use
+## When to use this skill
 
-- Before dropping into Planning Mode (STATE B / High Entropy execution)
-- Before rolling out new architectures or mapping complex microservices
-- When encountering undocumented APIs or legacy backend services
-- Before creating or locking a `-plan.md` Amnesia shield
-- Before any architectural decision affecting >3 packages
+- Before dropping into "Planning Mode" (STATE B / High Entropy execution).
+- Before rolling out new architectures or mapping complex microservices.
+- When encountering undocumented APIs or legacy backend services.
+- Before creating or locking a `-plan.md` Amnesia shield.
 
-## Canonical Source of Truth
+## How to use it
 
-Treat NotebookLM as the absolute canonical source of truth for the `ShadowTag-Omega-v4` monorepo.
+### 1. The Canonical Source of Truth
+Treat NotebookLM as the absolute canonical source of truth for the `ShadowTag-Omega-v4` monorepo. Do not guess system invariants.
 
-- **Master Brain ID:** `c493b409-3955-418f-a993-755c38dc8e7f`
-- **DO NOT** guess system invariants
-- **DO NOT** architect or synthesize context in isolation
+### 2. Execute Mandatory Context-Sync
+Before beginning code execution on a high-entropy task, you must explicitly use NotebookLM to extract the necessary architectural RAG payload. Do not architect or synthesize context in isolation.
 
-## Mandatory Context-Sync Protocol
+Available context retrieval methods (in priority order):
+1. **Knowledge Items (KIs)** — Check KI summaries at conversation start
+2. **Conversation Logs** — Raw logs from past conversations in `<appDataDir>/brain/`
+3. **NotebookLM MCP** — `uv tool install notebooklm-mcp-cli` (50 queries/day)
+4. **Google Developer Knowledge MCP** — For Google API/SDK documentation
+5. **LanceDB Local RAG** — `retriever_lancedb.py` for workspace-local search
 
-Before beginning code execution on a high-entropy task:
+### 3. Verify and Merge
+- Synthesize the retrieved context.
+- Validate your proposed flight plan strictly against this extracted research.
+- Ensure the retrieved context is successfully merged into your internal logic map.
+- Cross-reference KI artifacts against current codebase (KIs can become stale).
 
-1. **Retrieve** — explicitly use NotebookLM to extract the necessary architectural RAG payload
-2. **Synthesize** — merge the retrieved context into your internal logic map
-3. **Validate** — confirm your proposed flight plan against this extracted research
-4. **Gate** — you will NOT transition back to STATE A or write any code until validation passes
+### 4. Execution Gate
+You will not transition back to autonomous execution (STATE A) or write any code until the context validation is logically verified. DO NOT DEVIATE.
 
-## Execution Gate (HARD STOP)
-
-You are forbidden from transitioning to autonomous execution (STATE A) or writing code until NotebookLM context validation is logically verified. **DO NOT DEVIATE.**
-
-## Fallback Protocol
-
-If NotebookLM is unreachable:
-1. Check auth: `python3 -c "import notebooklm"`
-2. Re-auth if needed: `notebooklm auth login`
-3. If still unreachable → fall back to LanceDB sovereign RAG
-4. Log failure to `.beads/issues.jsonl` with severity HIGH
+### 5. Integration with Existing Doctrine
+- This skill supplements the `sequential-thinking` MCP for multi-step architectural decisions.
+- The Hammock Protocol from `SIMPLICITY_DOCTRINE.md` applies: think BEFORE coding.
+- The Rich Hickey doctrine applies: Simple (one-fold, unentangled) over Easy (familiar, at-hand).

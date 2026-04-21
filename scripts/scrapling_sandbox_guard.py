@@ -170,4 +170,3 @@ if __name__ == "__main__":
     for cmd in ["rm -rf /tmp/cache", "rm -rf apps/", "ls -la data/"]:
         with contextlib.suppress(SandboxViolationError):
             validate_command(cmd)
-

@@ -78,9 +78,7 @@ export class ScrollEngine {
    */
   async init() {
     // Respect prefers-reduced-motion
-    this.isReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
+    this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Detect WebP support for smaller payloads
     await this.detectWebPSupport();
@@ -207,12 +205,12 @@ export class ScrollEngine {
 
       const scrollProgress = Math.max(
         0,
-        Math.min(1, (window.scrollY - containerTop) / scrollableHeight)
+        Math.min(1, (window.scrollY - containerTop) / scrollableHeight),
       );
 
       const targetFrame = Math.min(
         Math.floor(scrollProgress * this.frameCount),
-        this.frameCount - 1
+        this.frameCount - 1,
       );
 
       if (targetFrame !== this.currentFrame) {
@@ -258,7 +256,7 @@ export class ScrollEngine {
           promises.push(
             this.loadFrame(i).catch(() => {
               /* non-fatal */
-            })
+            }),
           );
         }
       }

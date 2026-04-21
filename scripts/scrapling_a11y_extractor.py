@@ -44,7 +44,6 @@ def bypass_cloudflare_a11y(url: str) -> None:
             "extracted_links": len(structured_links),
         }
 
-
     except Exception:
         pass
 

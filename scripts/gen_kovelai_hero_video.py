@@ -60,7 +60,6 @@ def main() -> None:
 
     client = genai.Client(api_key=api_key)
 
-
     operation = client.models.generate_videos(
         model="veo-3.1-generate-preview",
         prompt=HERO_PROMPT,
@@ -72,7 +71,6 @@ def main() -> None:
         poll_count * 15
         time.sleep(15)
         operation = client.operations.get(operation)
-
 
     if not operation.response or not operation.response.generated_videos:
         msg = "No videos in response. Check API quota or prompt."

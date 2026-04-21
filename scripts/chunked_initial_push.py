@@ -79,7 +79,6 @@ def chunk_commit_push(token) -> None:
     result = subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], capture_output=True, text=True)
     all_files = [f for f in result.stdout.split("\n") if f]
 
-
     total_files = len(all_files)
     idx = 0
     for f in all_files:
@@ -103,9 +102,8 @@ def chunk_commit_push(token) -> None:
             if not current_files:
                 continue
 
-
             for i in range(0, len(current_files), 1000):
-                cmd = ["git", "add", *current_files[i:i + 1000]]
+                cmd = ["git", "add", *current_files[i : i + 1000]]
                 subprocess.run(cmd, check=True)
 
             subprocess.run(

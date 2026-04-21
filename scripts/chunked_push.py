@@ -151,7 +151,6 @@ def push_chunk(chunk: list[tuple[str, int]], chunk_idx: int, token: str, dry_run
     tree_items = []
     sum(s for _, s in chunk) / 1024 / 1024
 
-
     for i, (fpath, _size) in enumerate(chunk):
         if dry_run:
             tree_items.append({"path": fpath, "mode": "100644", "type": "blob", "sha": "dry-run"})
@@ -177,7 +176,6 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=BATCH_SIZE, help="Chunks per token window")
     args = parser.parse_args()
 
-
     # 1. Get tracked files
     files = get_tracked_files()
     sum(s for _, s in files) / 1024 / 1024
@@ -197,7 +195,6 @@ def main() -> None:
         batch_start // args.batch_size + 1
         (len(chunks) + args.batch_size - 1) // args.batch_size
 
-
         if batch_start > 0 and not args.dry_run:
             token = mint_jwt()
 
@@ -205,11 +202,9 @@ def main() -> None:
             items = push_chunk(chunks[i], i + 1, token, args.dry_run)
             all_tree_items.extend(items)
 
-
     # 4. Create tree + commit + update ref
     if args.dry_run:
         return
-
 
     # Get current main
     branch = api("GET", "branches/main", token=token)

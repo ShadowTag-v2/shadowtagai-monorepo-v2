@@ -84,7 +84,6 @@ class SustainedLoadEngine:
             HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_ONLY_HIGH,
         }
 
-
     def _next_key(self) -> str:
         """Round-robin key selection."""
         key = self.keys[self.current_key_idx]
@@ -121,7 +120,6 @@ class SustainedLoadEngine:
         end_time = None
         if duration_hours:
             end_time = self.start_time + (duration_hours * 3600)
-
 
         try:
             while True:
@@ -170,7 +168,6 @@ class SustainedLoadEngine:
         """Print final stats."""
         elapsed = time.time() - self.start_time if self.start_time else 0
         actual_rpm = (self.total_requests / elapsed) * 60 if elapsed > 0 else 0
-
 
         # Projection
         actual_rpm * 60 * 24

@@ -126,14 +126,12 @@ def sanitize_filename(name: str) -> str:
 
 
 def main() -> None:
-
     # Create output directory
     OUTPUT_DIR.mkdir(exist_ok=True)
 
     # Authenticate
     creds = get_credentials()
     service = build("drive", "v3", credentials=creds)
-
 
     # Get all Google Docs
     docs = list_all_files(service, "application/vnd.google-apps.document")

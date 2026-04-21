@@ -122,7 +122,7 @@ class TestCredentialStrategy:
 
         auth_credential = AuthCredential(auth_type=AuthCredentialTypes.API_KEY, api_key="abc")
         # Omit 'in' / 'in_' to test default location (header)
-        auth_scheme = APIKey(type="apiKey", name="x-api-key", **{"in": "header"})  # This is explicit.
+        APIKey(type="apiKey", name="x-api-key", **{"in": "header"})  # This is explicit.
         # To test DEFAULT, we need an object that returns None for .in_
 
         class MockScheme:

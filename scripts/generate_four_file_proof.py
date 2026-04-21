@@ -82,6 +82,5 @@ def generate_four_file_proof() -> None:
         f.write("- **final verdict:** COMPLETE\n")
 
 
-
 if __name__ == "__main__":
     generate_four_file_proof()

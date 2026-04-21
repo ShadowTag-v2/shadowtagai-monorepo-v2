@@ -48,7 +48,6 @@ def deploy_kosmos_core() -> None:
                 else:
                     pass
 
-
     except Exception:
         pass
 

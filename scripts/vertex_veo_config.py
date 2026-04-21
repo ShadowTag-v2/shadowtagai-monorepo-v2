@@ -86,7 +86,6 @@ def generate_vertex_request(preset: str, resolution: str) -> dict:
     }
 
 
-
 def main() -> None:
     parser = argparse.ArgumentParser(description="Vertex AI Veo Configuration")
     parser.add_argument("--list-models", action="store_true", help="List Vertex AI Veo models")

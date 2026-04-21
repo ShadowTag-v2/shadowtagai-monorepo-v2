@@ -73,7 +73,6 @@ def scrub_workspaces() -> None:
 
 
 def scrub_content() -> None:
-
     # Precise replacements
     naming_replacements = {
         re.compile(r"pnkln-stack", re.IGNORECASE): "pnkln-stack",
@@ -123,7 +122,6 @@ def scrub_content() -> None:
                 with open(path, "w", encoding="utf-8") as f:
                     f.write(content)
                 mod_count += 1
-
 
 
 if __name__ == "__main__":

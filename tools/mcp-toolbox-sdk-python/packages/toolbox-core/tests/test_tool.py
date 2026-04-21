@@ -250,7 +250,6 @@ async def test_tool_creation_callable_and_run(
     """
     tool_name = TEST_TOOL_NAME
     base_url = HTTPS_BASE_URL
-    invoke_url = f"{base_url}/api/tool/{tool_name}/invoke"
 
     input_args = {"message": "hello world", "count": 5}
     expected_payload = input_args.copy()
@@ -298,7 +297,6 @@ async def test_tool_run_with_pydantic_validation_error(
     """
     tool_name = TEST_TOOL_NAME
     base_url = HTTPS_BASE_URL
-    invoke_url = f"{base_url}/api/tool/{tool_name}/invoke"
 
     transport = MockTransport(base_url)
     transport.tool_invoke_mock.side_effect = Exception("Should not be called")
@@ -490,11 +488,8 @@ async def test_auth_token_overrides_client_header(
         },
     )
     tool_name = TEST_TOOL_NAME
-    base_url = HTTPS_BASE_URL
-    invoke_url = f"{base_url}/api/tool/{tool_name}/invoke"
 
     input_args = {"message": "test", "count": 1}
-    mock_server_response = {"result": "Success"}
 
     tool_instance._ToolboxTool__transport.tool_invoke_mock.return_value = "Success"
     await tool_instance(**input_args)
@@ -578,7 +573,6 @@ async def test_bind_param_success(
     assert original_tool._bound_params == {}
 
     # Test invocation of the new tool
-    invoke_url = f"{HTTPS_BASE_URL}/api/tool/{TEST_TOOL_NAME}/invoke"
     original_tool._ToolboxTool__transport.tool_invoke_mock.return_value = "Success"
     await bound_tool(message="hello")
 
@@ -617,7 +611,6 @@ async def test_bind_params_success_with_callable(
     assert len(bound_tool.__signature__.parameters) == 0
 
     # Test invocation
-    invoke_url = f"{HTTPS_BASE_URL}/api/tool/{TEST_TOOL_NAME}/invoke"
     tool._ToolboxTool__transport.tool_invoke_mock.return_value = "Success"
     await bound_tool()
 
@@ -675,7 +668,6 @@ async def test_bind_param_chaining(
     }
 
     # Test invocation
-    invoke_url = f"{HTTPS_BASE_URL}/api/tool/{TEST_TOOL_NAME}/invoke"
     tool._ToolboxTool__transport.tool_invoke_mock.return_value = "Success"
     await fully_bound_tool()
 
@@ -707,9 +699,6 @@ async def test_tool_call_http_warning(
     should_warn: bool,
 ):
     """Tests the HTTP security warning logic during tool invocation via __call__."""
-    url = f"{base_url}/api/tool/{TEST_TOOL_NAME}/invoke"
-    args = {"param1": "value1"}
-    response_payload = {"result": "success"}
     transport = MockTransport(base_url)
 
     tool = ToolboxTool(

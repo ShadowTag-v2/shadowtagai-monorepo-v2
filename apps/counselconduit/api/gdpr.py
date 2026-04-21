@@ -266,7 +266,7 @@ async def request_data_export(
 
     # Wire to Cloud Tasks for async export generation
     try:
-        from google.cloud import tasks_v2, storage
+        from google.cloud import tasks_v2
 
         # Schedule export generation task
         tasks_client = tasks_v2.CloudTasksAsyncClient()

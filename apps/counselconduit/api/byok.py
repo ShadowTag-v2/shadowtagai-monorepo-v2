@@ -15,10 +15,10 @@ Security model:
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
 from pydantic import BaseModel, Field, field_validator
 
 logger = logging.getLogger("counselconduit.byok")

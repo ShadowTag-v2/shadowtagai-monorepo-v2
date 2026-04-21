@@ -328,12 +328,10 @@ def print_report(summary: AgentEvalSummary) -> None:
         for _cat, _score in sorted(summary.category_scores.items()):
             pass
 
-
     for r in summary.results:
         if r.notes:
             for _note in r.notes:
                 pass
-
 
 
 def main() -> None:

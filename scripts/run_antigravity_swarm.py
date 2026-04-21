@@ -170,7 +170,6 @@ class AntigravitySwarm:
 
 
 if __name__ == "__main__":
-
     swarm = AntigravitySwarm()
     swarm.start()
 

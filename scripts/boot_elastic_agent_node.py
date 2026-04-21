@@ -29,7 +29,6 @@ class PnklnHybridEngine:
         self.model_path = model_path
         self.gpu_engine = None
 
-
         # 1. Attempt ANE (Apple Neural Engine) Zero-CPU Boot First
         if self.prefer_ane and dispatch_compute:
             # dispatch_compute implicitly orchestrates ane_bridge.py (Pickle Rick)

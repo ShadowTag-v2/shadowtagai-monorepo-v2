@@ -55,7 +55,6 @@ def chunk_text(text: str, chunk_size: int = 1000) -> list[str]:
 
 
 def execute_ingestion() -> None:
-
     # Force MPS on Apple Silicon
     try:
         model = SentenceTransformer("all-MiniLM-L6-v2", device="mps")
@@ -90,7 +89,6 @@ def execute_ingestion() -> None:
             memory.persist_traversal(timeline_id="global_monorepo", events=events)
             total_chunks += len(chunks)
             total_files_ingested += 1
-
 
 
 if __name__ == "__main__":

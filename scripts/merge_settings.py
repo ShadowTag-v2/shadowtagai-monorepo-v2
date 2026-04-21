@@ -31,4 +31,3 @@ with open(ws_settings_path, "w", encoding="utf-8") as f:
 
 with open(global_settings_path, "w", encoding="utf-8") as f:
     json.dump({}, f, indent=2)
-

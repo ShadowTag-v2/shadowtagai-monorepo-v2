@@ -85,31 +85,6 @@ class ConflictResolver:
         - ShadowTagAi architecture constraints
         - Request: merged version preserving best of both
         """
-        prompt = f"""You are resolving a Git merge conflict in {file_path}.
-
-Both versions are valid changes to the codebase. Your task is to intelligently merge them,
-preserving the semantic intent and improvements from both.
-
-**Our Version (local):**
-```
-{ours}
-```
-
-**Their Version (remote):**
-```
-{theirs}
-```
-
-**Constraints:**
-- Preserve functionality from both versions if possible
-- Maintain code style consistency
-- Keep ShadowTagAi architecture patterns (Judge #6, ShadowTag, JR framework)
-- Ensure no logic is lost
-- If versions are incompatible, prefer the more recent/complete one
-
-**Output:**
-Provide ONLY the resolved code, no explanations or markdown fences.
-"""
 
         # In production, call Anthropic API
         # For now, use heuristic fallback

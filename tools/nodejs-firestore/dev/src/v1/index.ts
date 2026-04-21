@@ -15,7 +15,7 @@
 import { FirestoreAdminClient } from './firestore_admin_client';
 import { FirestoreClient } from './firestore_client';
 
-export { FirestoreClient, FirestoreAdminClient };
+export { FirestoreAdminClient, FirestoreClient };
 
 // Doing something really horrible for reverse compatibility with original JavaScript exports
 const existingExports = module.exports;
