@@ -1,0 +1,1567 @@
+# Routes
+
+## CRUD Resources
+
+- **`/`** GET | POST | DELETE/:id
+- **`/verify`** GET | POST | GET/:id → Verify
+- **`/v1/policies`** POST | PUT/:id | DELETE/:id → Policie
+- **``** POST | GET/:id | DELETE/:id
+- **`/contexts`** GET | POST | GET/:id | PATCH/:id → Context
+- **`/v1/threads`** GET | POST | GET/:id | PATCH/:id | DELETE/:id → Thread
+- **`/api/memory`** GET | GET/:id | DELETE/:id → Memory
+- **`/api/tasks`** GET | POST | GET/:id → Task
+
+## Other Routes
+
+### fastapi
+
+- `POST` `/assess` params() → in: GovernanceAssessmentRequest, out: GovernanceAssessmentResponse [auth]
+- `POST` `/eu-ai-act/assess` params() → in: GovernanceAssessmentRequest, out: GovernanceAssessmentResponse [auth]
+- `POST` `/nist-rmf/assess` params() → in: GovernanceAssessmentRequest, out: GovernanceAssessmentResponse [auth]
+- `POST` `/iso-42001/assess` params() → in: GovernanceAssessmentRequest, out: GovernanceAssessmentResponse [auth]
+- `GET` `/frameworks` params() → out: GovernanceAssessmentResponse [auth]
+- `GET` `/risk-levels` params() → out: GovernanceAssessmentResponse [auth]
+- `POST` `/assess/batch` params() → in: GovernanceAssessmentRequest, out: GovernanceAssessmentResponse [auth]
+- `POST` `/feedback` params() → in: Feedback [auth]
+- `GET` `/health` params() [auth] ✓
+- `POST` `/query` params() → in: SwarmQuery [auth, queue]
+- `POST` `/feed` params() → in: FeedRequest, out: FeedResponse [auth, upload] ✓
+- `POST` `/upload` params() → in: FeedRequest, out: FeedResponse [auth, upload] ✓
+- `GET` `/item/{item_id}` params(item_id) → out: FeedResponse [auth, upload] ✓
+- `GET` `/stats` params() → out: FeedResponse [auth, upload] ✓
+- `POST` `/v1/chat/completions` params() [auth, ai] ✓
+- `POST` `/chat` → in: Query [auth, cache]
+- `POST` `/certificate` params() → in: ComplianceCertificateRequest, out: ComplianceCertificate [auth, db]
+- `POST` `/batch` params() → in: ComplianceCertificateRequest, out: ComplianceCertificate [auth, db]
+- `GET` `/dashboard` params() → out: ComplianceCertificate [auth, db] ✓
+- `GET` `/audit/{content_id}` params(content_id) → out: ComplianceCertificate [auth, db]
+- `GET` `/metrics` params() → out: ComplianceCertificate [auth, db] ✓
+- `POST` `/vote` params() → in: SwarmVoteRequest, out: SwarmVoteResponse [payment]
+- `GET` `/status` params() → in: dic, out: SwarmVoteResponse [payment] ✓
+- `GET` `/usage` params() → in: dic, out: SwarmVoteResponse [payment]
+- `POST` `/decision` params() → in: DecisionContext, out: DecisionResult
+- `GET` `/validation` params() → out: DecisionResult
+- `POST` `/debate` params() → in: DecisionContext, out: DecisionResult
+- `POST` `/evolve` params() → in: DecisionContext, out: DecisionResult
+- `POST` `/wealth/analyze` params() → in: DecisionContext, out: DecisionResult
+- `GET` `/ratings` params() → out: DecisionResult
+- `GET` `/training/compare` params() → out: DecisionResult
+- `GET` `/cheat-sheet` params() → out: DecisionResult
+- `GET` `/ecosystem/status` params() → out: DecisionResult
+- `POST` `/telemetry` params() → in: VehicleTelemetry, out: HealthResponse ✓
+- `GET` `/vehicles` params() → out: HealthResponse ✓
+- `POST` `/decide` params() → in: DecisionRequest, out: DecisionResponse ✓
+- `POST` `/users` params() → in: UserCreate, out: UserResponse [auth, db] ✓
+- `GET` `/users` params() → out: UserResponse [auth, db] ✓
+- `POST` `/execute` params() → in: CodeExecutionRequest, out: CodeExecutionResponse [auth, db, queue]
+- `GET` `/ready` params() → out: CodeExecutionResponse [auth, db, queue]
+- `POST` `/csp-report` params()
+- `POST` `/analyze` params() → in: AnalysisRequest, out: WealthPlan
+- `POST` `/api/v1/whiteboard/revenue` params() → in: RevenueRequest
+- `GET` `/api/v1/whiteboard/status` params()
+- `POST` `/{workspace_id}/knowledge` params(workspace_id) → in: st, out: IngestionResponse [upload]
+- `POST` `/generate-image` params() → in: ImageGenerationRequest [auth]
+- `POST` `/authenticate` params() → in: UploadFile, out: AuthenticationResponse [auth, upload] ✓
+- `GET` `/receipt/{asset_id}` params(asset_id) → out: AuthenticationResponse [auth, upload] ✓
+- `GET` `/images/{filename}` params(filename) → out: GovernanceResponse [auth, db] ✓
+- `POST` `/mission` params() → in: MissionRequest, out: GovernanceResponse [auth, db] ✓
+- `POST` `/v1/governance/evaluate` params() → in: MissionRequest, out: GovernanceResponse [auth, db] ✓
+- `GET` `/v1/metrics` params() → out: GovernanceResponse [auth, db] ✓
+- `GET` `/v1/circuit-breaker` params() → out: GovernanceResponse [auth, db] ✓
+- `GET` `/v1/trust/{agent_id}` params(agent_id) → out: GovernanceResponse [auth, db] ✓
+- `GET` `/v1/shadow-mode/report` params() → out: GovernanceResponse [auth, db] ✓
+- `POST` `/v1/completions` params() → in: CompletionRequest, out: CompletionResponse [auth] ✓
+- `GET` `/v1/models` params() → out: CompletionResponse [auth] ✓
+- `GET` `/api/v1/test_protected` params() [auth] ✓
+- `GET` `/test` params() [upload] ✓
+- `POST` `/ingestion/jobs` params() [upload] ✓
+- `GET` `/error` params() [upload] ✓
+- `POST` `/v1/ungpt/query` params() → in: UnGPTRequest, out: UnGPTResponse [auth, cache, ai]
+- `GET` `/v1/ungpt/health` params() → out: UnGPTResponse [auth, cache, ai]
+- `GET` `/v1/ungpt/budget/{user_id}` params(user_id) → out: UnGPTResponse [auth, cache, ai]
+- `POST` `/validate` params() → in: ValidationRequest, out: HealthResponse [auth] ✓
+- `POST` `/validate/batch` params() → in: ValidationRequest, out: HealthResponse [auth] ✓
+- `POST` `/judge` params() → in: dict ✓
+- `POST` `/stream` params() → in: dict
+- `POST` `/tool/open_url` params()
+- `POST` `/endpoint` → in: dic [auth] ✓
+- `POST` `/keys` params() → in: BYOKKeyRequest, out: BYOKKeyStatus [db, ai]
+- `GET` `/keys/{firm_id}` params(firm_id) → out: BYOKKeyStatus [db, ai]
+- `DELETE` `/keys/{firm_id}/{provider}` params(firm_id, provider) → out: BYOKKeyStatus [db, ai]
+- `POST` `/keys/{firm_id}/{provider}/validate` params(firm_id, provider) → in: BYOKKeyRequest, out: BYOKKeyStatus [db, ai]
+- `POST` `/execute-deletion` params() [auth, db, queue]
+- `POST` `/heartbeat` params() → out: QueryResponse [auth, cache, email, payment]
+- `POST` `/enclave/v1/query` params() → out: QueryResponse [auth, cache, email, payment]
+- `POST` `/enclave/v1/query/stream` params() → out: QueryResponse [auth, cache, email, payment]
+- `GET` `/enclave/v1/health` params() → out: QueryResponse [auth, cache, email, payment]
+- `POST` `/delete` params() → in: DeletionRequest, out: DeletionReceipt [auth, db, queue, email, upload]
+- `POST` `/export` params() → in: DeletionRequest, out: DeletionReceipt [auth, db, queue, email, upload]
+- `GET` `/deletion-status/{receipt_id}` params(receipt_id) → out: DeletionReceipt [auth, db, queue, email, upload]
+- `POST` `/_execute-delete` params() → in: DeletionRequest, out: DeletionReceipt [auth, db, queue, email, upload]
+- `POST` `/_execute-export` params() → in: DeletionRequest, out: DeletionReceipt [auth, db, queue, email, upload]
+- `POST` `/generate` params() → in: AttestationRequest, out: SessionAttestation [auth]
+- `POST` `/create-matter` params() → in: MatterCreateRequest, out: MagicLinkResponse [auth, email]
+- `POST` `/resend` params() [email, payment]
+- `POST` `/onboard` params() → in: ConnectOnboardRequest, out: ConnectOnboardResponse [auth, payment]
+- `GET` `/status/{account_id}` params(account_id) → out: ConnectOnboardResponse [auth, payment]
+- `POST` `/create-payment-intent` params() → in: ConnectOnboardRequest, out: ConnectOnboardResponse [auth, payment]
+- `POST` `/stripe-connect` params() [auth, payment]
+- `POST` `/stripe` params() [auth, payment]
+- `POST` `/start` params() → in: VentSessionRequest, out: VentCheckoutResponse [auth, cache, payment]
+- `POST` `/message` params() → in: VentSessionRequest, out: VentCheckoutResponse [auth, cache, payment]
+- `POST` `/message/stream` params() → in: VentSessionRequest, out: VentCheckoutResponse [auth, cache, payment]
+- `POST` `/summarize` params() → in: VentSessionRequest, out: VentCheckoutResponse [auth, cache, payment]
+- `POST` `/process-dataset` params() → in: list
+- `POST` `/clone-voice` params() → in: ForgeRequest [auth, upload] ✓
+- `POST` `/log-receipt` params() → in: ReceiptPayload [auth, db]
+- `POST` `/api/copilotkit` params() [auth, cache, payment]
+- `POST` `/api/oracle-studio` params() [auth, cache, payment]
+- `POST` `/api/verb-audit` params() [auth, cache, payment]
+- `POST` `/api/v1/magic-link` params() → in: MagicLinkRequest, out: dict [auth, email, payment, ai] ✓
+- `POST` `/api/v1/session/start` params() → in: MagicLinkRequest, out: dict [auth, email, payment, ai] ✓
+- `POST` `/api/v1/query` params() → in: MagicLinkRequest, out: dict [auth, email, payment, ai] ✓
+- `POST` `/api/v1/session/end` params() → in: MagicLinkRequest, out: dict [auth, email, payment, ai] ✓
+- `GET` `/api/v1/health` params() → out: dict [auth, email, payment, ai] ✓
+- `GET` `/api/v1/tiers` params() → out: dict [auth, email, payment, ai] ✓
+- `POST` `/api/v1/stripe/onboard` params() → in: MagicLinkRequest, out: dict [auth, email, payment, ai] ✓
+- `POST` `/api/v1/stripe/webhook` params() → in: MagicLinkRequest, out: dict [auth, email, payment, ai] ✓
+- `GET` `/api/v1/stripe/balance/{account_id}` params(account_id) → out: dict [auth, email, payment, ai] ✓
+- `POST` `/api/v1/stripe/subscribe` params() → in: MagicLinkRequest, out: dict [auth, email, payment, ai] ✓
+- `POST` `/api/v1/ingest/webhook` params() → in: IngestionPayload [auth, db, email, payment] ✓
+- `GET` `/api/v1/telemetry/roi` params() [auth, db, email, payment] ✓
+- `POST` `/api/pnkln/execute` params() → in: ExecuteRequest, out: HealthResponse [db] ✓
+- `GET` `/api/pnkln/skills` params() → out: HealthResponse [db] ✓
+- `GET` `/api/pnkln/agents` params() → out: HealthResponse [db] ✓
+- `GET` `/api/pnkln/audit` params() → out: HealthResponse [db] ✓
+- `POST` `/api/pnkln/execute/skill/{skill_id}` params(skill_id) → in: ExecuteRequest, out: HealthResponse [db] ✓
+- `POST` `/api/pnkln/execute/agent/{agent_id}` params(agent_id) → in: ExecuteRequest, out: HealthResponse [db] ✓
+- `POST` `/create-checkout-session` params() → in: CheckoutRequest [auth, payment]
+- `GET` `/health/ready` params() → out: DecisionResult [auth, cache] ✓
+- `GET` `/api/v1/audit/{decision_id}` params(decision_id) → out: DecisionResult [auth, cache] ✓
+- `GET` `/agents` params() [db]
+- `GET` `/agents/{agent_id}` params(agent_id) [db]
+- `POST` `/spawn` params() → in: SpawnRequest [db]
+- `POST` `/task` params() → in: SpawnRequest [db]
+- `POST` `/revenue` params() → in: SpawnRequest [db]
+- `GET` `/tree` params() [db]
+- `POST` `/activate` params() → in: SpawnRequest [db]
+- `POST` `/wealth` params() → in: DebateRequest, out: DebateResult
+- `GET` `/report` params() → in: in, out: IngestionReport [auth, db]
+- `GET` `/runtime-efficiency` params() → in: in, out: IngestionReport [auth, db]
+- `GET` `/quality-gates` params() → in: in, out: IngestionReport [auth, db]
+- `GET` `/source-coverage` params() → in: in, out: IngestionReport [auth, db]
+- `GET` `/source-coverage/gaps` params() → in: in, out: IngestionReport [auth, db]
+- `GET` `/source-coverage/{source_type}` params(source_type) → in: in, out: IngestionReport [auth, db]
+- `GET` `/tier-distribution` params() → in: in, out: IngestionReport [auth, db]
+- `GET` `/ethical-compliance` params() → in: in, out: IngestionReport [auth, db]
+- `GET` `/ethical-compliance/score` params() → in: in, out: IngestionReport [auth, db]
+- `GET` `/ethical-compliance/violations` params() → in: in, out: IngestionReport [auth, db]
+- `GET` `/costs/monthly` params() → in: in, out: IngestionReport [auth, db]
+- `GET` `/briefing-delivery` params() → in: in, out: IngestionReport [auth, db]
+- `GET` `/summary` params() → in: in, out: IngestionReport [auth, db]
+- `POST` `/check-robots-txt` params() → in: st, out: IngestionReport [auth, db]
+- `POST` `/check-rate-limit` params() → in: st, out: IngestionReport [auth, db]
+- `GET` `/bottlenecks` params() → in: in, out: PerformanceReport [auth, db, cache]
+- `GET` `/bottlenecks/{bottleneck_id}/fix` params(bottleneck_id) → in: in, out: PerformanceReport [auth, db, cache]
+- `GET` `/slow-endpoints` params() → in: in, out: PerformanceReport [auth, db, cache]
+- `GET` `/trends/{endpoint:path}` params(path) → in: in, out: PerformanceReport [auth, db, cache]
+- `GET` `/n-plus-one` params() → in: in, out: PerformanceReport [auth, db, cache]
+- `GET` `/memory-leaks` params() → in: in, out: PerformanceReport [auth, db, cache]
+- `GET` `/optimization-suggestions` params() → in: in, out: PerformanceReport [auth, db, cache]
+- `GET` `/cache/stats` params() → in: in, out: PerformanceReport [auth, db, cache]
+- `POST` `/cache/clear` params() → out: PerformanceReport [auth, db, cache]
+- `POST` `/process` → in: BackgroundTasks [auth, db, cache]
+- `POST` `/contexts/search` → in: CreateContextRequest, out: ThreadExportResponse [auth, upload]
+- `POST` `/workflows/execute` → in: CreateContextRequest, out: ThreadExportResponse [auth, upload]
+- `POST` `/scholarly-pdfs/upload` → in: CreateContextRequest, out: ThreadExportResponse [auth, upload]
+- `POST` `/scholarly-pdfs/search` → in: CreateContextRequest, out: ThreadExportResponse [auth, upload]
+- `GET` `/shifts/{shift_number}/contexts` params(shift_number) → out: ThreadExportResponse [auth, upload]
+- `POST` `/shifts/{shift_number}/clear-memory` params(shift_number) → in: CreateContextRequest, out: ThreadExportResponse [auth, upload]
+- `GET` `/export/{opord_number}` params(opord_number) → out: ThreadExportResponse [auth, upload]
+- `POST` `/export/bulk` → in: CreateContextRequest, out: ThreadExportResponse [auth, upload]
+- `GET` `/export/preview` → out: ThreadExportResponse [auth, upload]
+- `POST` `/v1/judge` → in: JudgeRequest, out: HealthResponse [auth, db]
+- `GET` `/v1/rulings/{decision_id}` params(decision_id) → out: HealthResponse [auth, db]
+- `GET` `/v1/usage` → out: HealthResponse [auth, db]
+- `DELETE` `/v1/rulings` → out: HealthResponse [auth, db]
+- `POST` `/pubsub` [queue, payment]
+- `POST` `/hunt` → out: JobResponse [auth, db, queue, ai]
+- `POST` `/swarm` → out: JobResponse [auth, db, queue, ai]
+- `POST` `/brainstorm` → out: JobResponse [auth, db, queue, ai]
+- `POST` `/single` → out: JobResponse [auth, db, queue, ai]
+- `POST` `/bulk_analyze` → out: JobResponse [auth, db, queue, ai]
+- `GET` `/cost_stats` → out: JobResponse [auth, db, queue, ai]
+- `POST` `/hunt/async` → out: JobResponse [auth, db, queue, ai]
+- `GET` `/status/{job_id}` params(job_id) → out: JobResponse [auth, db, queue, ai]
+- `POST` `/puzzle/start` → out: JobResponse [auth, db, queue, ai]
+- `GET` `/puzzle/{room_id}/status` params(room_id) → out: JobResponse [auth, db, queue, ai]
+- `POST` `/puzzle/{room_id}/solve` params(room_id) → out: JobResponse [auth, db, queue, ai]
+- `POST` `/puzzle/{room_id}/code` params(room_id) → out: JobResponse [auth, db, queue, ai]
+- `POST` `/puzzle/{room_id}/auto` params(room_id) → out: JobResponse [auth, db, queue, ai]
+- `POST` `/puzzle/{room_id}/vault_interaction` params(room_id) → out: JobResponse [auth, db, queue, ai]
+- `GET` `/puzzle/{room_id}/history` params(room_id) → out: JobResponse [auth, db, queue, ai]
+- `GET` `/vertex_test` → out: JobResponse [auth, db, queue, ai]
+- `POST` `/auto_mode` params() [upload]
+- `POST` `/deploy_scout` params() [upload]
+- `GET` `/admin/stats` params() [auth]
+- `POST` `/ping` params() → in: HelpRequest [auth, queue] ✓
+- `POST` `/webhook/email` params() → in: EmailWebhookPayload [queue, email, payment]
+- `POST` `/calculate` params() → in: TimelineRequest [db]
+- `GET` `/matter/{matter_id}` params(matter_id) [db]
+- `GET` `/events` params() → in: Optional [auth, cache, queue] ✓
+- `GET` `/connections` params() [auth, queue]
+- `POST` `/pipeline/{name}` params(name) [auth, ai] ✓
+- `POST` `/llm/{provider}` params(provider) [auth, ai] ✓
+- `POST` `/llm/summarize` params() [auth, ai] ✓
+- `GET` `/search` params() [auth, ai] ✓
+- `GET` `/browse` params() [auth, ai] ✓
+- `GET` `/research` params() [auth, ai] ✓
+- `POST` `/kb/add` params() [auth, ai] ✓
+- `GET` `/kb/search` params() [auth, ai] ✓
+- `POST` `/fs/write` params() [auth, ai] ✓
+- `GET` `/fs/read` params() [auth, ai] ✓
+- `POST` `/pipeline/coding/stream` params() [auth, ai] ✓
+- `POST` `/pipeline/rag/ask` params() [auth, ai] ✓
+- `POST` `/pipeline/data/analyze` params() [auth, ai] ✓
+- `GET` `/pipelines` params() [auth, ai] ✓
+- `GET` `/hello` [auth, db] ✓
+- `GET` `/v1/threads/{thread_id}/events` params(thread_id) [auth, db, cache] ✓
+- `POST` `/v1/threads/{thread_id}/promote-core-memory` params(thread_id) → in: ThreadCreateRequest [auth, db, cache] ✓
+- `POST` `/v1/threads/{thread_id}/events` params(thread_id) → in: ThreadCreateRequest [auth, db, cache] ✓
+- `POST` `/v1/threads/{thread_id}/events/{event_id}/reaction` params(thread_id, event_id) → in: ThreadCreateRequest [auth, db, cache] ✓
+- `GET` `/v1/threads/{thread_id}/summary` params(thread_id) [auth, db, cache] ✓
+- `POST` `/v1/threads/{thread_id}/memory-context` params(thread_id) → in: ThreadCreateRequest [auth, db, cache] ✓
+- `POST` `/v1/threads/{thread_id}/chat` params(thread_id) → in: ThreadCreateRequest [auth, db, cache] ✓
+- `POST` `/ask` params() → in: QuestionRequest [auth] ✓
+- `GET` `/path` [auth, db, cache] ✓
+- `POST` `/path` [auth, db, cache] ✓
+- `GET` `/api/health` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/config` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/config` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/policy` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/policy/presets` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `PUT` `/api/policy` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/init` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/init` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `PUT` `/api/config` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/workflow/run` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/workflow/run` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/workflow/status/{run_id}` params(run_id) → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/workflow/status/{run_id}` params(run_id) → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/workflow/docs-confirmation` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/workflow/docs-confirmation` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/workflow/docs-confirmation` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/workflow/docs-confirmation` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/workflow/preview-confirmation` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/workflow/preview-confirmation` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/workflow/preview-confirmation` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/workflow/preview-confirmation` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/workflow/ui-revision` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/workflow/ui-revision` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/workflow/architecture-revision` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/workflow/architecture-revision` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/workflow/quality-revision` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/workflow/quality-revision` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/workflow/cancel/{run_id}` params(run_id) → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/workflow/runs` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/workflow/artifacts/{run_id}` params(run_id) → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/workflow/artifacts/{run_id}/archive` params(run_id) → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/workflow/ui-review/{run_id}` params(run_id) → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/workflow/ui-review/{run_id}/screenshot` params(run_id) → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/experts` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/experts` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/experts/{expert_id}/advice` params(expert_id) → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/experts/advice/history` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/experts/advice/content` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/phases` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/phases` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/catalogs` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/hosts/doctor` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/hosts/validate` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/hosts/runtime-validation` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/hosts/runtime-validation` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/deploy/platforms` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/deploy/precheck` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/deploy/remediation` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/deploy/remediation/export` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/deploy/remediation/archive` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/deploy/generate` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/release/readiness` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/release/proof-pack` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/governance/workflow-harness` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/governance/harnesses` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/governance/operational-harness` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/governance/timeline` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/governance/framework-harness` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/governance/hook-harness` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/analyze/repo-map` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/analyze/impact` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/analyze/regression-guard` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/analyze/dependency-graph` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/memory/consolidate` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/hooks` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/hooks/history` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/hooks/test` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/experts/{name}` params(name) → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/compact` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/compact/{phase}` params(phase) → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/session-brief` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `POST` `/api/session-brief/generate` params() → out: PipelinePolicyResponse [auth, db, queue, ai] ✓
+- `GET` `/api/agents` params() [auth, queue] ✓
+- `GET` `/api/tasks/{task_id}/stream` params(task_id) [auth, queue] ✓
+- `POST` `/api/gauntlet/evaluate` params() → in: TaskCreate [auth, queue] ✓
+- `POST` `/api/agent/stream` params() → in: AgentRequest [queue] ✓
+- `POST` `/api/infer` params() [auth, queue]
+- `POST` `/api/v1/agent/execute` params() → in: AgentExecutionRequest ✓
+
+### go-net-http
+
+- `ALL` `/health` params() ✓
+- `ALL` `/api/edge/v1` params() ✓
+- `ALL` `/healthz` params() ✓
+- `ALL` `/.well-known/terraform.json` params() [auth] ✓
+- `ALL` `/v1/providers/` params() [auth] ✓
+- `ALL` `/state/` params() [auth, cache] ✓
+- `ALL` `/button.svg` params() [db] ✓
+- `ALL` `/button.png` params() [db] ✓
+- `ALL` `/metrics` params() [auth, payment] ✓
+- `ALL` `/gate/approve` params() [auth, payment] ✓
+- `ALL` `/gate/halt` params() [auth, payment] ✓
+- `ALL` `/gate/check` params() [auth, payment] ✓
+- `ALL` `/gate/open` params() [auth, payment] ✓
+- `ALL` `/gate/close` params() [auth, payment] ✓
+- `ALL` `/rollback/check` params() [auth, payment] ✓
+- `ALL` `/rollback/open` params() [auth, payment] ✓
+- `ALL` `/rollback/close` params() [auth, payment] ✓
+- `ALL` `/computeMetadata/v1/project/project-id` params() [cache, upload]
+- `ALL` `/api/*` params() [auth, cache] ✓
+- `ALL` `/*` params() ✓
+- `ALL` `/test/{test_id}` params(test_id) ✓
+- `ALL` `/auth/login` params() [auth, cache, queue, payment]
+- `ALL` `/auth/verify` params() [auth, cache, queue, payment]
+- `ALL` `/auth/recovery` params() [auth, cache, queue, payment]
+- `ALL` `/auth/logout` params() [auth, cache, queue, payment]
+- `ALL` `/auth/oidc/{provider}/login` params(provider) [auth, cache, queue, payment]
+- `ALL` `/auth/oidc/{provider}/redirect` params(provider) [auth, cache, queue, payment]
+- `ALL` `/auth/oidc/{provider}/redirect/{redirect_path:.*}` params(provider) [auth, cache, queue, payment]
+- `ALL` `/runners` params() [auth, cache, queue, payment]
+- `ALL` `/events/last` params() [auth, cache, queue, payment]
+- `ALL` `/tokens/{token_id}` params(token_id) [auth, cache, queue, payment]
+- `ALL` `/tasks/{task_id}/stop` params(task_id) [auth, cache, queue, payment]
+- `ALL` `/tasks/{task_id}/confirm` params(task_id) [auth, cache, queue, payment]
+- `ALL` `/tasks/{task_id}/reject` params(task_id) [auth, cache, queue, payment]
+- `ALL` `/tasks/last` params() [auth, cache, queue, payment]
+- `ALL` `/{key_id}/refs` params(key_id) [auth, cache, queue, payment]
+- `ALL` `/{storage_id}/refs` params(storage_id) [auth, cache, queue, payment]
+- `ALL` `/{storage_id}/sync` params(storage_id) [auth, cache, queue, payment]
+- `ALL` `/{repository_id}/refs` params(repository_id) [auth, cache, queue, payment]
+- `ALL` `/{repository_id}/branches` params(repository_id) [auth, cache, queue, payment]
+- `ALL` `/{inventory_id}/refs` params(inventory_id) [auth, cache, queue, payment]
+- `ALL` `/{inventory_id}/terraform/aliases` params(inventory_id) [auth, cache, queue, payment]
+- `ALL` `/{inventory_id}/terraform/aliases/{alias_id}` params(inventory_id, alias_id) [auth, cache, queue, payment]
+- `ALL` `/{inventory_id}/terraform/states` params(inventory_id) [auth, cache, queue, payment]
+- `ALL` `/{inventory_id}/terraform/states/latest` params(inventory_id) [auth, cache, queue, payment]
+- `ALL` `/{inventory_id}/terraform/states/{state_id}` params(inventory_id, state_id) [auth, cache, queue, payment]
+- `ALL` `/{environment_id}/refs` params(environment_id) [auth, cache, queue, payment]
+- `ALL` `/{template_id}/description` params(template_id) [auth, cache, queue, payment]
+- `ALL` `/{template_id}/refs` params(template_id) [auth, cache, queue, payment]
+- `ALL` `/{template_id}/tasks` params(template_id) [auth, cache, queue, payment]
+- `ALL` `/{template_id}/tasks/last` params(template_id) [auth, cache, queue, payment]
+- `ALL` `/{template_id}/schedules` params(template_id) [auth, cache, queue, payment]
+- `ALL` `/{template_id}/stats` params(template_id) [auth, cache, queue, payment]
+- `ALL` `/{template_id}/stop_all_tasks` params(template_id) [auth, cache, queue, payment]
+- `ALL` `/{template_id}/perms` params(template_id) [auth, cache, queue, payment]
+- `ALL` `/{template_id}/perms/{perm_id}` params(template_id, perm_id) [auth, cache, queue, payment]
+- `ALL` `/{inventory_id}/set_default` params(inventory_id) [auth, cache, queue, payment]
+- `ALL` `/{inventory_id}/attach` params(inventory_id) [auth, cache, queue, payment]
+- `ALL` `/{inventory_id}/detach` params(inventory_id) [auth, cache, queue, payment]
+- `ALL` `/{task_id}/output` params(task_id) [auth, cache, queue, payment]
+- `ALL` `/{task_id}/raw_output` params(task_id) [auth, cache, queue, payment]
+- `ALL` `/{task_id}/stages` params(task_id) [auth, cache, queue, payment]
+- `ALL` `/{task_id}/ansible/hosts` params(task_id) [auth, cache, queue, payment]
+- `ALL` `/{task_id}/ansible/errors` params(task_id) [auth, cache, queue, payment]
+- `ALL` `/{schedule_id}/active` params(schedule_id) [auth, cache, queue, payment]
+- `ALL` `/{view_id}/templates` params(view_id) [auth, cache, queue, payment]
+- `ALL` `/aliases` params() [auth, cache, queue, payment]
+- `ALL` `/aliases/{alias_id}` params(alias_id) [auth, cache, queue, payment]
+- `ALL` `/{integration_id}/refs` params(integration_id) [auth, cache, queue, payment]
+- `ALL` `/{integration_id}/matchers` params(integration_id) [auth, cache, queue, payment]
+- `ALL` `/{integration_id}/values` params(integration_id) [auth, cache, queue, payment]
+- `ALL` `/{integration_id}/aliases` params(integration_id) [auth, cache, queue, payment]
+- `ALL` `/{integration_id}/aliases/{alias_id}` params(integration_id, alias_id) [auth, cache, queue, payment]
+- `ALL` `/{integration_id}/matchers/{matcher_id}` params(integration_id, matcher_id) [auth, cache, queue, payment]
+- `ALL` `/{integration_id}/matchers/{matcher_id}/refs` params(integration_id, matcher_id) [auth, cache, queue, payment]
+- `ALL` `/{integration_id}/values/{value_id}` params(integration_id, value_id) [auth, cache, queue, payment]
+- `ALL` `/{integration_id}/values/{value_id}/refs` params(integration_id, value_id) [auth, cache, queue, payment]
+- `ALL` `/mgmt` params() [auth, db]
+- `ALL` `/mgmt/objects` params() [auth, db]
+- `ALL` `/mgmt/raw/{oid}` params(oid) [auth, db]
+- `ALL` `/mgmt/locks` params() [auth, db]
+- `ALL` `/mgmt/users` params() [auth, db]
+- `ALL` `/mgmt/add` params() [auth, db]
+- `ALL` `/mgmt/del` params() [auth, db]
+- `ALL` `/mgmt/css/{file}` params(file) [auth, db]
+- `ALL` `/{user}/{repo}/objects/batch` params(user, repo) [auth, db, upload] ✓
+- `ALL` `/{user}/{repo}/objects` params(user, repo) [auth, db, upload] ✓
+- `ALL` `/{user}/{repo}/locks` params(user, repo) [auth, db, upload] ✓
+- `ALL` `/{user}/{repo}/locks/verify` params(user, repo) [auth, db, upload] ✓
+- `ALL` `/{user}/{repo}/locks/{id}/unlock` params(user, repo, id) [auth, db, upload] ✓
+- `ALL` `/objects/batch` params() [auth, db, upload] ✓
+- `ALL` `/objects` params() [auth, db, upload] ✓
+
+### chi
+
+- `GET` `X-Internal-Shield-Sig` params()
+- `GET` `X-DOW-L2-Crisis` params()
+- `GET` `X-DOW-L3-Deepfake` params()
+- `GET` `X-DOW-L4-SynthID` params()
+- `GET` `X-DOW-L5-AADC` params()
+- `GET` `X-DOW-L6-EUAI` params()
+- `GET` `X-DOW-L7-FinRisk` params()
+- `GET` `X-DOW-L8-Phishing` params()
+- `GET` `X-DOW-L9-SupplyChain` params()
+- `GET` `X-DOW-L10-Espionage` params()
+- `GET` `X-DOW-L11-Harassment` params()
+- `GET` `X-DOW-L12-SecPlus` params()
+- `GET` `FileType` params() [cache]
+- `GET` `name` params() [auth] ✓
+- `GET` `Authorization` params() [auth, cache]
+- `GET` `instance/service-accounts/` params() [auth, payment] ✓
+- `GET` `x-forwarded-for` params() [db] ✓
+- `GET` `location` params() [db] ✓
+- `GET` `perftest/api/961/status` params() [auth] ✓
+- `PUT` `perftest/api/961` params() [auth] ✓
+- `POST` `podinfo` params() [auth] ✓
+- `GET` `Content-Length` params() ✓
+- `GET` `Content-Range` params() ✓
+- `GET` `x-retry-test-id` params() ✓
+- `GET` `alloydb-omni` params() [auth, db] ✓
+- `GET` `alloydb-postgres-admin` params() [auth, db] ✓
+- `GET` `alloydb-postgres` params() [auth, db] ✓
+- `GET` `bigquery` params() [auth, db] ✓
+- `GET` `clickhouse` params() [auth, db] ✓
+- `GET` `cloud-sql-postgres` params() [auth, db] ✓
+- `GET` `cloud-sql-postgres-admin` params() [auth, db] ✓
+- `GET` `cloud-sql-mysql` params() [auth, db] ✓
+- `GET` `cloud-sql-mysql-admin` params() [auth, db] ✓
+- `GET` `cloud-sql-mssql` params() [auth, db] ✓
+- `GET` `cloud-sql-mssql-admin` params() [auth, db] ✓
+- `GET` `dataplex` params() [auth, db] ✓
+- `GET` `firestore` params() [auth, db] ✓
+- `GET` `mysql` params() [auth, db] ✓
+- `GET` `mssql` params() [auth, db] ✓
+- `GET` `looker` params() [auth, db] ✓
+- `GET` `looker-dev` params() [auth, db] ✓
+- `GET` `looker-conversational-analytics` params() [auth, db] ✓
+- `GET` `postgres` params() [auth, db] ✓
+- `GET` `spanner` params() [auth, db] ✓
+- `GET` `spanner-postgres` params() [auth, db] ✓
+- `GET` `mindsdb` params() [auth, db] ✓
+- `GET` `sqlite` params() [auth, db] ✓
+- `GET` `neo4j` params() [auth, db] ✓
+- `GET` `alloydb-postgres-observability` params() [auth, db] ✓
+- `GET` `cloud-sql-postgres-observability` params() [auth, db] ✓
+- `GET` `cloud-sql-mysql-observability` params() [auth, db] ✓
+- `GET` `cloud-sql-mssql-observability` params() [auth, db] ✓
+- `GET` `serverless-spark` params() [auth, db] ✓
+- `GET` `dataproc` params() [auth, db] ✓
+- `GET` `cloud-healthcare` params() [auth, db] ✓
+- `GET` `snowflake` params() [auth, db] ✓
+- `GET` `oracledb` params() [auth, db] ✓
+- `GET` `/tool/{toolName}` params(toolName) [auth] ✓
+- `POST` `/tool/{toolName}/invoke` params(toolName) [auth] ✓
+- `GET` `/toolset` params() [auth] ✓
+- `GET` `/toolset/{toolsetName}` params(toolsetName) [auth] ✓
+- `POST` `/invoke` params() [auth] ✓
+- `GET` `Content-type` params()
+- `GET` `/{toolsetName}/sse` params(toolsetName) [auth, db, cache, queue] ✓
+- `GET` `/sse` params() [auth, db, cache, queue] ✓
+- `GET` `X-Forwarded-Proto` params() [auth, db, cache, queue] ✓
+- `GET` `sessionId` params() [auth, db, cache, queue] ✓
+- `GET` `Mcp-Session-Id` params() [auth, db, cache, queue] ✓
+- `GET` `MCP-Protocol-Version` params() [auth, db, cache, queue] ✓
+- `GET` `Cache-Control` params() [auth, cache]
+- `GET` `Connection` params() [auth, cache]
+- `GET` `/.well-known/oauth-protected-resource` params() [auth, cache] ✓
+- `GET` `Access-Control-Allow-Origin` params() [auth]
+- `GET` `/tools` params()
+- `GET` `/toolsets` params()
+- `GET` `Content-Type` params()
+- `GET` `https://oauth2.googleapis.com/tokeninfo` params() [auth, db] ✓
+- `GET` `User-Agent` params() ✓
+- `GET` `WWW-Authenticate` params() [auth, queue]
+- `GET` `query` params() [db] ✓
+- `GET` `id` params() [auth, db] ✓
+- `GET` `email` params() [auth, db] ✓
+- `POST` `http://127.0.0.1:5000/api/tool/my-exec-sql-tool/invoke` params(5000) [auth, db] ✓
+- `POST` `http://127.0.0.1:5000/api/tool/my-auth-exec-sql-tool/invoke` params(5000) [auth, db] ✓
+- `GET` `state` params() [auth, queue] ✓
+- `GET` `code` params() [auth, queue] ✓
+- `GET` `authorization` params() [auth, queue] ✓
+- `GET` `Location` params() [auth, cache]
+- `GET` `X-Terraform-Get` params() [auth]
+- `GET` `value` params() [auth, cache] ✓
+- `GET` `foo` params() [auth, cache] ✓
+- `GET` `num` params() [auth, cache] ✓
+- `GET` `Accept` params()
+- `GET` `sort` params() [db] ✓
+- `GET` `order` params() [db] ✓
+- `GET` `X-Hub-Signature-256` params() [auth, queue, payment] ✓
+- `GET` `x-hub-signature` params() [auth, queue, payment] ✓
+- `GET` `X-Real-IP` params() [auth, db]
+- `GET` `user-agent` params() [auth, db] ✓
+- `GET` `return` params() [auth, db] ✓
+- `GET` `app` params() [db] ✓
+- `GET` `limit` params() [auth, db, queue] ✓
+- `GET` `start` params() [auth, db, queue] ✓
+- `GET` `end` params() [auth, db, queue] ✓
+- `GET` `user_id` params() [auth, db, queue] ✓
+- `GET` `X-Runner-Token` params() [auth, cache, payment]
+- `GET` `s` params() [auth, db, queue] ✓
+- `GET` `db` params() [auth, db, cache] ✓
+- `GET` `json` params() [auth, db] ✓
+- `GET` `backup` params() ✓
+- `GET` `default` params() [auth, db, cache, queue, payment] ✓
+- `GET` `rule` params() [auth, db, cache, queue, payment] ✓
+- `GET` `env` params() [auth, db, cache, queue, payment] ✓
+- `GET` `This operation must be run in a work tree.` params() [queue, payment]
+- `GET` `Error parsing args: %v` params() [queue, payment]
+- `GET` `--to requires exactly one Git LFS object file path` params() [queue, payment]
+- `GET` `--to and exactly one of --theirs, --ours, and --base must be used together` params() [queue, payment]
+- `GET` `Could not checkout` params() [queue, payment]
+- `GET` `Cannot checkout LFS objects, Git LFS is not installed.` params() [queue, payment]
+- `GET` `Scanner error: %s` params() [queue, payment]
+- `GET` `Could not convert %q to absolute path: %v` params() [queue, payment]
+- `GET` `Could not create path %q: %v` params() [queue, payment]
+- `GET` `Could not checkout (are you not in the middle of a merge?): %v` params() [queue, payment]
+- `GET` `Could not create object scanner: %v` params() [queue, payment]
+- `GET` `Could not find object %q` params() [queue, payment]
+- `GET` `Could not find decoder pointer for object %q: %v` params() [queue, payment]
+- `GET` `Error checking out %v to %q: %v` params() [queue, payment]
+- `GET` `at most one of --base, --theirs, and --ours is allowed` params() [queue, payment]
+- `GET` `Error cleaning Git LFS object` params()
+- `GET` `Unable to get local media path.` params()
+- `GET` `Files don't match:` params()
+- `GET` `Unable to move %s to %s` params()
+- `GET` `This command should be run by the Git 'clean' filter` params()
+- `GET` `Possibly malformed conversion on Windows, see `git lfs help smudge` for more details.` params()
+- `GET` `WARNING: `git lfs clone` is deprecated and will not be updated\n          with new flags from `git clone`` params() [payment, upload]
+- `GET` ``git clone` has been updated in upstream Git to have comparable\nspeeds to `git lfs clone`.` params() [payment, upload]
+- `GET` `Error(s) during clone:` params() [payment, upload]
+- `GET` `Unable to derive current working dir: %v` params() [payment, upload]
+- `GET` `Unable to find clone dir at %q` params() [payment, upload]
+- `GET` `Unable to change directory to clone dir %q: %v` params() [payment, upload]
+- `GET` `Error performing `git lfs pull` for submodules: %v` params() [payment, upload]
+- `GET` `Unknown reason` params()
+- `GET` `This system does not support de-duplication: %s` params()
+- `GET` `This platform supports file de-duplication, however, Git LFS extensions are configured and therefore de-duplication can not be used.` params()
+- `GET` `OK: This platform and repository support file de-duplication.` params()
+- `GET` `This system does not support de-duplication.` params()
+- `GET` `Working tree is dirty. Please commit or reset your change.` params()
+- `GET` `Could not scan for Git LFS tree: %s` params()
+- `GET` `Skipped: %s (Size: %d)\n          %s` params()
+- `GET` `Skipped: %s (Size: %d)` params()
+- `GET` `Success: %s (Size: %d)` params()
+- `GET` `Finished successfully.` params()
+- `GET` `              count: %d` params()
+- `GET` `Git LFS object file does not exist` params()
+- `GET` `unknown clone file error` params()
+- `GET` `Error getting Git version: %s` params() [auth]
+- `GET` `Extension: %s` params()
+- `GET` `fetch` params() [queue, upload] ✓
+- `GET` `Invalid remote name %q: %s` params() [queue, upload]
+- `GET` `Further command line arguments are ignored with --stdin` params() [queue, upload]
+- `GET` `Invalid ref argument: %v` params() [queue, upload]
+- `GET` `Error reading from stdin:` params() [queue, upload]
+- `GET` `Could not fetch` params() [queue, upload]
+- `GET` `Cannot combine --json with --prune` params() [queue, upload]
+- `GET` `Cannot combine --all with --recent` params() [queue, upload]
+- `GET` `Cannot combine --all with --include or --exclude` params() [queue, upload]
+- `GET` `Ignoring global include / exclude paths to fulfil --all` params() [queue, upload]
+- `GET` `Fetching reference %s` params() [queue, upload]
+- `GET` `error: failed to fetch some objects from '%s'` params() [queue, upload]
+- `GET` `Could not scan for Git LFS files` params() [queue, upload]
+- `GET` `Could not scan for Git LFS previous versions` params() [queue, upload]
+- `GET` `Could not scan for recent refs` params() [queue, upload]
+- `GET` `Couldn't scan commits at %v: %v` params() [queue, upload]
+- `GET` `Fetching all references...` params() [queue, upload]
+- `GET` `This command should be run by the Git filter process` params() [cache, queue, payment]
+- `GET` `unknown command %q` params() [cache, queue, payment]
+- `GET` `See: `git lfs help smudge` for more details.` params() [cache, queue, payment]
+- `GET` `Git LFS fsck OK` params()
+- `GET` `moving corrupt objects to %s` params()
+- `GET` `Error checking Git LFS files` params()
+- `GET` `Pointer for %s (blob %s) was not canonical` params()
+- `GET` `%q (treeish %s) should have been a pointer but was not` params()
+- `GET` `%s (%s) could not be checked: %s` params()
+- `GET` `%s (%s) is corrupt` params()
+- `GET` `warning: %s` params()
+- `GET` `Run `git lfs install --force` to reset Git configuration.` params()
+- `GET` `Git LFS initialized.` params()
+- `GET` `Only one of the --local, --system, --worktree, and --file options can be specified.` params()
+- `GET` `warning: current user is not root/admin, system install is likely to fail.` params()
+- `GET` `Locking %s failed: %v` params()
+- `GET` `Locked %s` params()
+- `GET` `unable to canonicalize path %q: %v` params()
+- `GET` `unable to canonicalize path %q` params()
+- `GET` `cannot lock directory: %s` params()
+- `GET` `Error building filters: %v` params() [cache]
+- `GET` `--cached option can't be combined with --limit` params() [cache]
+- `GET` `--cached option can't be combined with filters` params() [cache]
+- `GET` `--cached option can't be combined with --local` params() [cache]
+- `GET` `--verify option can't be combined with filters` params() [cache]
+- `GET` `--verify option can't be combined with --local` params() [cache]
+- `GET` `Error while retrieving locks: %v` params() [cache]
+- `GET` `No logs to show` params()
+- `GET` `Supply a log name.` params()
+- `GET` `Error reading log: %s` params()
+- `GET` `Error clearing %s` params()
+- `GET` `Cleared %s` params()
+- `GET` `Sample wrapped error message` params()
+- `GET` `Sample error message` params()
+- `GET` `Sample panic message` params()
+- `GET` `Cannot use --all with explicit reference` params() [payment]
+- `GET` `Did you mean `git lfs ls-files --all --` ?` params() [payment]
+- `GET` `Cannot use --deleted with reference range` params() [payment]
+- `GET` `Could not read empty Git tree object` params() [payment]
+- `GET` `filepath: %s\n    size: %d\ncheckout: %v\ndownload: %v\n     oid: %s %s\n version: %s\n` params() [payment]
+- `GET` `Could not scan for Git LFS index: %s` params() [payment]
+- `GET` `Could not scan for Git LFS history: %s` params() [payment]
+- `GET` `the --ancestor, --current, --other, and --output options are mandatory` params()
+- `GET` `failed to run merge program %q: %s` params()
+- `GET` `could not create temporary file when merging: %s` params()
+- `GET` `could not copy non-LFS content when merging: %s` params()
+- `GET` `could not decode pointer when merging: %s` params()
+- `GET` `could not create callback: %s` params()
+- `GET` `cannot open root` params() [cache]
+- `GET` `Cannot use --everything with explicit reference arguments` params() [cache]
+- `GET` `Cannot use --everything with --include-ref or --exclude-ref` params() [cache]
+- `GET` `Unable to determine bareness` params() [cache]
+- `GET` `Fetching remote refs` params() [cache]
+- `GET` `Cannot migrate non-local ref: %s` params() [cache]
+- `GET` `Could not determine if working copy is dirty` params() [cache]
+- `GET` `override changes in your working copy?  All uncommitted changes will be lost! [y/N] ` params() [cache]
+- `GET` `Could not read answer` params() [cache]
+- `GET` `n` params() [cache] ✓
+- `GET` `N` params() [cache]
+- `GET` `y` params() [cache] ✓
+- `GET` `Y` params() [cache]
+- `GET` `changes in your working copy will be overridden ...` params() [cache]
+- `GET` `working copy must not be dirty` params() [cache]
+- `GET` `One or more files must be specified with --include` params() [cache, queue, payment]
+- `GET` `Invalid remote %s provided` params() [cache, queue, payment]
+- `GET` `Checkout` params() [cache, queue, payment]
+- `GET` `--no-rewrite and --fixup cannot be combined` params() [auth, cache, payment]
+- `GET` `Expected one or more files with --no-rewrite` params() [auth, cache, payment]
+- `GET` `Unable to find current reference` params() [auth, cache, payment]
+- `GET` `Unable to load commit` params() [auth, cache, payment]
+- `GET` `No Git LFS filters found in '.gitattributes'` params() [auth, cache, payment]
+- `GET` `File %s did not match any Git LFS filters in '.gitattributes'` params() [auth, cache, payment]
+- `GET` `Could not rewrite %q` params() [auth, cache, payment]
+- `GET` `Unable to write commit` params() [auth, cache, payment]
+- `GET` `Unable to update ref` params() [auth, cache, payment]
+- `GET` `Cannot use --fixup with --include, --exclude` params() [auth, cache, payment]
+- `GET` `Cannot parse --above=<n>` params(n) [auth, cache, payment]
+- `GET` `Cannot use --above with --include, --exclude, --fixup` params() [auth, cache, payment]
+- `GET` `%s: convert to Git LFS` params() [auth, cache, payment]
+- `GET` `expected '.gitattributes' to be a file, got a symbolic link` params() [auth, cache, payment]
+- `GET` `unable to find entry %s in tree` params() [auth, cache, payment]
+- `GET` `expected %s to be a tree, got %s` params() [auth, cache, payment]
+- `GET` `error parsing path %s` params() [auth, cache, payment]
+- `GET` `cannot parse --above=<n>` params(n)
+- `GET` `cannot parse --unit=<unit>` params(unit)
+- `GET` `Unsupported --pointers option value` params()
+- `GET` `Cannot use --fixup with --pointers=%s` params()
+- `GET` `Cannot combine --strict with --no-strict` params()
+- `GET` `Cannot combine --check with --pointer` params()
+- `GET` `With --check, --file cannot be combined with --stdin` params()
+- `GET` `Must specify either --file or --stdin with --check` params()
+- `GET` `Git LFS pointer for %s` params()
+- `GET` `warning: Using LFS extensions, use --no-extensions for a plain pointer.` params()
+- `GET` `Git blob OID: %s` params()
+- `GET` `Pointer from %s` params()
+- `GET` `Pointers do not match` params()
+- `GET` `note: Mismatch may be due to differing LFS extensions.` params()
+- `GET` `Nothing to do!` params()
+- `GET` `cannot read from STDIN and --pointer` params()
+- `GET` `The --stdin flag expects a pointer file from STDIN.` params()
+- `GET` `This should be run through Git's post-checkout hook.  Run `git lfs update` to install it.` params() [payment]
+- `GET` `Warning: post-checkout rev diff %v:%v failed: %v` params() [payment]
+- `GET` `Falling back on full scan.` params() [payment]
+- `GET` `Warning: post-checkout locked file check failed: %v` params() [payment]
+- `GET` `Warning: post-commit failed: %v` params()
+- `GET` `Warning: post-commit locked file check failed: %v` params()
+- `GET` `This should be run through Git's post-merge hook.  Run `git lfs update` to install it.` params()
+- `GET` `Warning: post-merge locked file check failed: %v` params()
+- `GET` `This should be run through Git's pre-push hook.  Run `git lfs update` to install it.` params() [upload]
+- `GET` `Cannot specify both --verify-remote and --no-verify-remote` params() [queue]
+- `GET` `Invalid value for --when-unverified: %s` params() [queue]
+- `GET` `These objects to be pruned are missing on remote:` params() [queue]
+- `GET` `Prune error: %v` params() [queue]
+- `GET` `Prune sub-tasks failed, cannot continue` params() [queue]
+- `GET` `Deleting objects` params() [queue]
+- `GET` `Unable to find media path for %v: %v` params() [queue]
+- `GET` `Failed to remove file %v: %v` params() [queue]
+- `GET` `failed to delete some files` params() [queue]
+- `GET` `Prune failed, see errors above` params() [queue]
+- `GET` `couldn't scan commits at %v: %v` params() [queue]
+- `GET` `Could not pull` params() [queue, payment]
+- `GET` `Failed to fetch some objects from '%s'` params() [queue, payment]
+- `GET` `Skipping object checkout, Git LFS is not installed for this repository.\nConsider installing it with 'git lfs install'.` params() [queue, payment]
+- `GET` `Specify a remote and a remote branch name (`git lfs push origin main`)` params() [queue, upload]
+- `GET` `At least one object ID must be supplied with --object-id` params() [queue, upload]
+- `GET` `At least one ref must be supplied without --all` params() [queue, upload]
+- `GET` `Error getting local refs.` params() [queue, upload]
+- `GET` `Unable to find local media path:` params() [queue, upload]
+- `GET` `Unable to stat local media path` params() [queue, upload]
+- `GET` `Unable to parse pointer at: %q` params() [cache, queue, payment]
+- `GET` `Error downloading object: %s (%s): %s` params() [cache, queue, payment]
+- `GET` `This command should be run by the Git 'smudge' filter` params() [cache, queue, payment]
+- `GET` `Possibly malformed smudge on Windows: see `git lfs help smudge` for more info.` params() [cache, queue, payment]
+- `GET` `unknown file` params() [cache, queue, payment]
+- `GET` `Objects to be committed:` params() [cache]
+- `GET` `Objects not staged for commit:` params() [cache]
+- `GET` `missing` params() [cache] ✓
+- `GET` `deleted` params() [cache] ✓
+- `GET` `File` params() [cache]
+- `GET` `On branch %s` params() [cache]
+- `GET` `Could not scan for Git LFS objects` params() [cache]
+- `GET` `Objects to be pushed to %s:` params() [cache]
+- `GET` `--json option can't be combined with arguments` params()
+- `GET` `Current directory %q outside of Git working directory %q.` params()
+- `GET` `%q already supported` params()
+- `GET` `Tracking %q` params()
+- `GET` `Error reading '.gitattributes' file` params()
+- `GET` `Error opening '.gitattributes' file` params()
+- `GET` `Searching for files matching pattern: %s` params()
+- `GET` `Error getting tracked files for %q: %s` params()
+- `GET` `Found %d files previously added to Git matching pattern: %s` params()
+- `GET` `Pattern '%s' matches forbidden file '%s'. If you would like to track %s, modify '.gitattributes' manually.` params()
+- `GET` `Touching %q` params()
+- `GET` `Error marking %q modified: %s` params()
+- `GET` `Error changing lockable file permissions: %s` params()
+- `GET` `Listing tracked patterns` params()
+- `GET` `    %s [lockable] (%s)` params(lockable)
+- `GET` `Listing excluded patterns` params()
+- `GET` `System Git LFS configuration has been removed.` params()
+- `GET` `Global Git LFS configuration has been removed.` params()
+- `GET` `Hooks for this repository have been removed.` params()
+- `GET` `Exactly one of --id or a set of paths must be provided` params() [cache]
+- `GET` `Unable to determine path: %v` params() [cache]
+- `GET` `Unlocked %s` params() [cache]
+- `GET` `Unable to unlock %v: %v` params() [cache]
+- `GET` `Unlocked Lock %s` params() [cache]
+- `GET` `warning: unlocking with uncommitted changes because --force` params() [cache]
+- `GET` `Cannot unlock file with uncommitted changes` params() [cache]
+- `GET` `Error opening '.gitattributes' for writing` params()
+- `GET` `Untracking %q` params()
+- `GET` `Updated %s access from %s to %s.` params()
+- `GET` `Removed invalid %s access of %s.` params()
+- `GET` `You cannot use --force and --manual options together` params()
+- `GET` `To resolve this, either:` params()
+- `GET` `run `git lfs update --manual` for instructions on how to merge hooks.` params()
+- `GET` `run `git lfs update --force` to overwrite your hook.` params()
+- `GET` `Updated Git hooks.` params()
+- `GET` `Unable to create lock system: %v` params() [cache, queue, upload]
+- `GET` `Add the following to '%s/%s':` params() [cache, queue, upload]
+- `GET` `Not in a Git repository` params() [cache, queue, upload]
+- `GET` `Errors logged to '%s'.\nUse `git lfs logs last` to view the log.` params() [cache, queue, upload]
+- `GET` `Error clearing old temporary files: %s` params() [cache, queue, upload]
+- `GET` `Cannot read from STDIN: %s (%s)` params() [cache, queue, upload]
+- `GET` `Cannot read from STDIN: %s` params() [cache, queue, upload]
+- `GET` `Not in a Git repository.` params() [cache, queue, upload]
+- `GET` `Could not determine bareness` params() [cache, queue, upload]
+- `GET` `Unknown repository format version: %s` params() [cache, queue, upload]
+- `GET` `Could not determine current working directory` params() [cache, queue, upload]
+- `GET` `Could not canonicalize current working directory` params() [cache, queue, upload]
+- `GET` `Unable to log panic to '%s': %s` params() [cache, queue, upload]
+- `GET` `Unable to log panic to '%s'` params() [cache, queue, upload]
+- `GET` `Error getting network interface: %s` params() [cache, queue, upload]
+- `GET` `Error getting IP address: %s` params() [cache, queue, upload]
+- `GET` `Current time in UTC:` params() [cache, queue, upload]
+- `GET` `Environment:` params() [cache, queue, upload]
+- `GET` `Client IP addresses:` params() [cache, queue, upload]
+- `GET` `lfs.pathfiltercachesize` params() [cache, queue, upload]
+- `GET` `Git version %s or higher is required for Git LFS; your version: %s` params() [cache, queue, upload]
+- `GET` `no ref specified for verification` params() [auth, upload]
+- `GET` `warning: Authentication error: %s` params() [auth, upload]
+- `GET` `error: Authentication error: %s` params() [auth, upload]
+- `GET` `Remote %q does not support the Git LFS locking API. Consider disabling it with:` params() [auth, upload]
+- `GET` `Locking support detected on remote %q. Consider enabling it with:` params() [auth, upload]
+- `GET` `warning: error adding %q lock for ref %q: %+v` params() [auth, upload]
+- `GET` `lfs` params() [auth, upload] ✓
+- `GET` `core.autocrlf` params() ✓
+- `GET` `filter.lfs.clean` params() [payment]
+- `GET` `Checkout error trying to change directory: %s` params() [payment]
+- `GET` `Checkout error trying to check path for %q: %s` params() [payment]
+- `GET` `Checkout error trying to run diff-index: %s` params() [payment]
+- `GET` `Checkout error for %q: %s` params() [payment]
+- `GET` `Checkout error trying to create path for %q: %s` params() [payment]
+- `GET` `Skipped checkout for %q, content not local. Use fetch to download.` params() [payment]
+- `GET` `could not check out %q` params() [payment]
+- `GET` `Could not update the index` params() [payment]
+- `GET` `Error updating the Git index:` params() [payment]
+- `GET` `Unknown help topic %#q` params() [db] ✓
+- `GET` `Sorry, no usage text found for %q` params() [db] ✓
+- `GET` `Error logging HTTP stats: %s` params() [db] ✓
+- `GET` `ref %q:` params() [queue, upload]
+- `GET` `push` params() [queue, upload] ✓
+- `GET` `missing objects` params() [queue, upload]
+- `GET` `failed` params() [queue, upload] ✓
+- `GET` `Git LFS upload %s:` params() [queue, upload]
+- `GET` `  (missing) %s (%s)` params() [queue, upload]
+- `GET` `  (corrupt) %s (%s)` params() [queue, upload]
+- `GET` `hint: Your push was rejected due to missing or corrupt local objects.` params() [queue, upload]
+- `GET` `hint: You can disable this check with: `git config lfs.allowincompletepush true`` params() [queue, upload]
+- `GET` `Unable to push locked files:` params() [queue, upload]
+- `GET` `Cannot update locked files.` params() [queue, upload]
+- `GET` `warning: The above files would have halted this push.` params() [queue, upload]
+- `GET` `Consider unlocking your own locked files: (`git lfs unlock <path>`)` params(path) [queue, upload]
+- `GET` `Error uploading file %s (%s)` params() [queue, upload]
+- `GET` `Error reading `git config`: %s` params() [auth, cache] ✓
+- `GET` `core.sharedrepository` params() [auth, cache] ✓
+- `GET` `key %q has uppercase, shouldn't` params() [auth, cache] ✓
+- `GET` `lfs.fetchinclude` params() [auth, cache] ✓
+- `GET` `lfs.fetchexclude` params() [auth, cache] ✓
+- `GET` `remote.lfsdefault` params() [auth, cache] ✓
+- `GET` `remote.lfspushdefault` params() [auth, cache] ✓
+- `GET` `remote.pushDefault` params() [auth, cache] ✓
+- `GET` `core.hooksPath` params() [auth, cache] ✓
+- `GET` `Error: %s` params() [auth, cache] ✓
+- `GET` `lfs.storage` params() [auth, cache] ✓
+- `GET` `GIT_` params() [auth, cache] ✓
+- `GET` `user.name` params() [auth, cache] ✓
+- `GET` `user.email` params() [auth, cache] ✓
+- `GET` `EMAIL` params() [auth, cache] ✓
+- `GET` `duplicate priority %d on %s` params()
+- `GET` `warning: These `git config` values clash:` params()
+- `GET` `warning: These unsafe '.lfsconfig' keys were ignored:` params()
+- `GET` `http` params() ✓
+- `GET` `ttp` params() ✓
+- `GET` `Git credentials for %s not found` params() [auth, cache]
+- `GET` `credential value for %s contains newline: %q` params() [auth, cache]
+- `GET` `credential value for %s contains carriage return: %q\nIf this is intended, set `credential.protectProtocol=false`` params() [auth, cache]
+- `GET` `credential value for %s contains null byte: %q` params() [auth, cache]
+- `GET` `GIT_ASKPASS` params() [auth, cache]
+- `GET` `core.askpass` params() [auth, cache]
+- `GET` `SSH_ASKPASS` params() [auth, cache]
+- `GET` `credential` params() [auth, cache] ✓
+- `GET` `Invalid Credential type queried from AskPass` params() [auth, cache]
+- `GET` `failed to find `git credential %s`: %v` params() [auth, cache]
+- `GET` `invalid input to `git credential %s`: %v` params() [auth, cache]
+- `GET` `change the GIT_TERMINAL_PROMPT env var to be prompted to enter your credentials for %s://%s` params() [auth, cache]
+- `GET` ``git credential %s` error: %s` params() [auth, cache]
+- `GET` `credential fill errors:` params() [auth, cache]
+- `GET` `no valid credential helpers to reject` params() [auth, cache] ✓
+- `GET` `no valid credential helpers to approve` params() [auth, cache] ✓
+- `GET` `No credential helper configured` params() [auth, cache]
+- `GET` `HOME` params()
+- `GET` `Error` params() [auth, upload]
+- `GET` `Fatal error` params() [auth, upload]
+- `GET` `Not implemented` params() [auth, upload]
+- `GET` `Authentication required` params() [auth, upload]
+- `GET` `Smudge error` params() [auth, upload]
+- `GET` `pointer error` params() [auth, upload]
+- `GET` `Pointer file error` params() [auth, upload]
+- `GET` `Pointer error` params() [auth, upload]
+- `GET` `Expected key %s, got %s` params() [auth, upload]
+- `GET` `pointer parsing` params() [auth, upload]
+- `GET` `unreachable` params() [cache] ✓
+- `GET` `too short object ID: %q` params()
+- `GET` `error trying to create local storage directory in %q: %s` params()
+- `GET` `GIT_ALTERNATE_OBJECT_DIRECTORIES` params()
+- `GET` `configuration is read-only` params() ✓
+- `GET` `reading filter-process initialization` params()
+- `GET` `invalid filter-process pkt-line welcome message: %s` params()
+- `GET` `reading filter-process versions` params()
+- `GET` `filter '%s' not supported (your Git supports: %s)` params()
+- `GET` `writing filter-process initialization failed` params()
+- `GET` `reading filter-process capabilities failed with %s` params()
+- `GET` `writing filter-process capabilities failed with %s` params()
+- `GET` `unknown FilterProcessStatus '%d'` params()
+- `GET` `failed to find `git hash-object`: %v` params() [auth, cache, payment, upload]
+- `GET` `Failed to run `git update-index`` params() [auth, cache, payment, upload]
+- `GET` `error building Git blob OID: %s` params() [auth, cache, payment, upload]
+- `GET` `remote required` params() [auth, cache, payment, upload]
+- `GET` `Git can't resolve ref: %q` params() [auth, cache, payment, upload]
+- `GET` `not on a branch` params() [auth, cache, payment, upload]
+- `GET` `remote not found for branch %q` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git remote`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to call `git remote`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git remote -v`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to call `git remote -v`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git show-ref`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to call `git show-ref`: %v` params() [auth, cache, payment, upload]
+- `GET` `invalid remote name: %q` params() [auth, cache, payment, upload]
+- `GET` `invalid remote URL protocol %q in %q` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git for-each-ref`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to call `git for-each-ref`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git show`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to call `git show`: %v %v` params() [auth, cache, payment, upload]
+- `GET` `Unexpected output from `git show`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git rev-parse --git-dir --show-toplevel`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to call `git rev-parse --git-dir --show-toplevel`: %q` params() [auth, cache, payment, upload]
+- `GET` `bad `git rev-parse` output: %q` params() [auth, cache, payment, upload]
+- `GET` `error converting %q to absolute: %s` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git rev-parse --show-toplevel`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to call `git rev-parse --show-toplevel`: %v %v` params() [auth, cache, payment, upload]
+- `GET` `no output from `git rev-parse --show-toplevel`` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git rev-parse --git-dir`` params() [auth, cache, payment, upload]
+- `GET` `failed to call `git rev-parse --git-dir`` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git rev-parse --git-common-dir`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to call `git rev-parse --git-common-dir`: %v %v: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git worktree`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to open output pipe to `git worktree`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to open error pipe to `git worktree`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to start `git worktree`: %v` params() [auth, cache, payment, upload]
+- `GET` `error in `git worktree`: %v: %s` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git clone`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to start `git clone`: %v` params() [auth, cache, payment, upload]
+- `GET` ``git clone` failed: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git ls-remote`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to call `git ls-remote`: %v` params() [auth, cache, payment, upload]
+- `GET` `unexpected tag returned by `git ls-remote --heads`: %s %s` params() [auth, cache, payment, upload]
+- `GET` `cannot open pipe` params() [auth, cache, payment, upload]
+- `GET` `invalid `git for-each-ref` line: %q` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git ls-files`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to call `git ls-files`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git diff-tree`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to call `git diff-tree`: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to start `git diff-tree`: %v` params() [auth, cache, payment, upload]
+- `GET` ``git diff-tree` failed: %v` params() [auth, cache, payment, upload]
+- `GET` `failed to find `git status`` params() [auth, cache, payment, upload]
+- `GET` `Failed to call `git status`` params() [auth, cache, payment, upload]
+- `GET` `Failed to start `git status`` params() [auth, cache, payment, upload]
+- `GET` ``git status` failed` params() [auth, cache, payment, upload]
+- `GET` `GIT_OBJECT_DIRECTORY` params() [auth, cache, payment, upload]
+- `GET` `extensions.objectformat` params() [auth, cache, payment, upload]
+- `GET` `unsupported repository hash algorithm %q` params() [auth, cache, payment, upload]
+- `GET` `Error in `git %s`: %v %s` params() [cache]
+- `GET` `missing object: %s` params()
+- `GET` `push.default` params() ✓
+- `GET` `unknown RevListOrder %d` params() [auth]
+- `GET` `ref %q is ambiguous` params() [auth]
+- `GET` `unknown scan type: %d` params() [auth]
+- `GET` `missing OID in line (got %q)` params() [auth]
+- `GET` `Exiting because of %q signal.` params()
+- `GET` `some filter configuration was not removed (found %s)` params()
+- `GET` `the %q attribute should be %q but is %q` params()
+- `GET` `lfs.pruneremotetocheck` params() ✓
+- `GET` `cannot format %v for DiffIndexStatus` params() [cache]
+- `GET` ``git diff-index` scan` params() [cache]
+- `GET` `invalid line: %s` params() [cache]
+- `GET` `invalid description: %s` params() [cache]
+- `GET` `Invalid action: %s` params()
+- `GET` `extension '%s' failed with: %s` params()
+- `GET` `could not remove working directory file %q` params() [queue]
+- `GET` `could not create working directory file %q` params() [queue]
+- `GET` `could not write working directory file: %v` params() [queue]
+- `GET` `smudge filter` params() [queue]
+- `GET` `Downloading %s (%s)` params() [queue]
+- `GET` `Error downloading %s (%s)` params() [queue]
+- `GET` `No known remotes` params() [queue]
+- `GET` `error opening media file` params() [queue]
+- `GET` `extension '%s' is not configured` params() [queue]
+- `GET` `actual OID %s during smudge does not match expected %s` params() [queue]
+- `GET` `actual extension name '%s' does not match expected '%s'` params() [queue]
+- `GET` `actual OID %s for extension '%s' does not match expected %s` params() [queue]
+- `GET` `Error opening smudged file: %s` params() [queue]
+- `GET` `Error reading from media file: %s` params() [queue]
+- `GET` `no callback given` params()
+- `GET` `unable to scan starting at %q: no remote set` params()
+- `GET` `expected %d bytes, read %d bytes` params()
+- `GET` `error in `git cat-file --batch-check`: %v %v` params()
+- `GET` `error while scanning `git log` for stashed refs: %v` params()
+- `GET` `error while scanning `git log`: %v` params()
+- `GET` `error in `git log`: %v %v` params()
+- `GET` `error in `git ls-tree`: %v %v` params()
+- `GET` `Hook already exists: %s` params() [payment]
+- `GET` `blob size exceeds Git LFS pointer size cutoff` params()
+- `GET` `not a regular file: %q` params()
+- `GET` `file size exceeds Git LFS pointer size cutoff` params()
+- `GET` `Missing version` params()
+- `GET` `Invalid version: %s` params()
+- `GET` `Invalid OID` params()
+- `GET` `invalid size: %q` params()
+- `GET` `Invalid OID value: %s` params()
+- `GET` `Invalid OID type: %s` params()
+- `GET` `Invalid OID: %s` params()
+- `GET` `Invalid extension value: %s` params()
+- `GET` `Invalid priority: %s` params()
+- `GET` `duplicate priority found: %d` params()
+- `GET` `invalid header` params()
+- `GET` `error reading line %d: %s` params()
+- `GET` `extra line: %s` params()
+- `GET` `GIT_LFS_PROGRESS` params() ✓
+- `GET` `GIT_LFS_PROGRESS must be an absolute path` params() ✓
+- `GET` `error writing Git LFS %s progress to %s: %s` params() ✓
+- `GET` `unable to get working dir: %v` params() ✓
+- `GET` `failed to redirect request` params() [auth, db, upload] ✓
+- `GET` `credentials` params() [auth, db, upload] ✓
+- `GET` `token` params() [auth, db, upload] ✓
+- `GET` `warning: current Git remote contains credentials` params() [auth, db, upload] ✓
+- `GET` `lfs.gitprotocol` params() [auth, cache, upload] ✓
+- `GET` `lfs.pushurl` params() [auth, cache, upload] ✓
+- `GET` `lfs.url` params() [auth, cache, upload] ✓
+- `GET` `remote.` params() [auth, cache, upload]
+- `GET` `warning: Multiple 'url.*.%s' keys with the same alias: %q` params() [auth, cache, upload]
+- `GET` `error creating HTTP client` params()
+- `GET` `Error resolving key path %q` params()
+- `GET` `Error resolving cert path %q` params()
+- `GET` `Error reading client cert file %q` params()
+- `GET` `Error reading client key file %q` params()
+- `GET` `Error decoding PEM block from %q` params()
+- `GET` `Error reading client key file %q (not a PKCS#1 file?)` params()
+- `GET` `Error reading client cert/key` params()
+- `GET` `GIT_SSL_CAINFO` params()
+- `GET` `GIT_SSL_CAPATH` params()
+- `GET` `http.sslcapath` params() ✓
+- `GET` `missing protocol: %q` params() [auth, cache] ✓
+- `GET` `too many redirects` params() [auth, cache] ✓
+- `GET` `HTTP/2 cannot be used except with TLS` params() [auth, cache] ✓
+- `GET` `Unknown HTTP version %q` params() [auth, cache] ✓
+- `GET` `refusing insecure redirect: HTTPS to HTTP` params() [auth, cache] ✓
+- `GET` `A` params() [auth, cache]
+- `GET` `Retry-After` params() [auth] ✓
+- `GET` `Invalid HTTP status for %s %s: %d` params() [auth] ✓
+- `GET` `Client error %s from HTTP %d` params() [auth] ✓
+- `GET` `Server error %s from HTTP %d` params() [auth] ✓
+- `GET` `Expected JSON type, got: %q` params()
+- `GET` `Unable to parse HTTP response for %s %s` params()
+- `GET` `HTTPS_PROXY` params()
+- `GET` `https_proxy` params() ✓
+- `GET` `HTTP_PROXY` params()
+- `GET` `http_proxy` params() ✓
+- `GET` `NO_PROXY` params()
+- `GET` `no_proxy` params() ✓
+- `GET` `Request body must implement io.ReadCloser and io.Seeker: %T` params() [auth]
+- `GET` `invalid server response` params() [auth, db, upload] ✓
+- `GET` `a` params() [db] ✓
+- `GET` `cursor` params() [db] ✓
+- `GET` `%q is not a valid directory` params() [cache, payment]
+- `GET` `no matching locks found` params() [auth, cache]
+- `GET` `multiple locks found; ambiguous` params() [auth, cache]
+- `GET` `lock cache initialization` params() [auth, cache]
+- `GET` `locking API` params() [auth, cache]
+- `GET` `server unable to create lock: %s` params() [auth, cache]
+- `GET` `lock cache` params() [auth, cache]
+- `GET` `make lock path absolute` params() [auth, cache]
+- `GET` `set file write flag` params() [auth, cache]
+- `GET` `unable to get lock ID: %v` params() [auth, cache]
+- `GET` `server unable to unlock: %s` params() [auth, cache]
+- `GET` `error caching unlock information: %v` params() [auth, cache]
+- `GET` `can't search cached locks when filter or limit is set` params() [auth, cache]
+- `GET` `can't search cached locks when limit is set` params() [auth, cache]
+- `GET` `server error searching locks: %s` params() [auth, cache]
+- `GET` `locking` params() [auth, cache]
+- `GET` `server error searching for locks: %s` params() [auth, cache]
+- `GET` `inititalization of cache directory %s failed: already exists, but is no directory` params() [auth, cache]
+- `GET` `initiailization of cache directory %s failed: directory creation failed` params() [auth, cache]
+- `GET` `initialization of cache directory %s failed` params() [auth, cache]
+- `GET` `no cached locks present` params() [auth, cache]
+- `GET` `lock response: invalid locked-at: %s` params()
+- `GET` `incomplete fields for lock` params()
+- `GET` `lock response: multiple next-cursor responses` params()
+- `GET` `lock response: invalid response: %q` params()
+- `GET` `lock response: incomplete lock data` params()
+- `GET` `lock response: interspersed response: %q` params()
+- `GET` `Failed to connect to remote SSH server: %s` params()
+- `GET` `pure SSH connection unavailable (#%d)` params()
+- `GET` `Unable to negotiate version with remote side (unable to read capabilities)` params()
+- `GET` `Unable to negotiate version with remote side (missing version=1)` params()
+- `GET` `Unable to negotiate version with remote side (unable to send version)` params()
+- `GET` `Unable to negotiate version with remote side (unable to read status)` params()
+- `GET` `no error provided` params()
+- `GET` `server said: %q` params()
+- `GET` `Unable to negotiate version with remote side (unexpected status %d; %s)` params()
+- `GET` `error reading packet` params()
+- `GET` `no status seen` params()
+- `GET` `expected status line, got %q` params()
+- `GET` `unexpected data, got %q` params()
+- `GET` `unexpected flush packet` params()
+- `GET` `unexpected delimiter packet` params()
+- `GET` `GIT_SSH_VARIANT` params() [auth]
+- `GET` `ssh.variant` params() [auth] ✓
+- `GET` `XDG_RUNTIME_DIR` params() [auth]
+- `GET` `GIT_SSH` params() [auth]
+- `GET` `GIT_SSH_COMMAND` params() [auth]
+- `GET` `core.sshcommand` params() [auth] ✓
+- `GET` `error running %s: '%s' '%s'` params() [cache]
+- `GET` `counted too many items` params()
+- `GET` `unknown enabled state for %v` params()
+- `GET` `invalid directory` params()
+- `GET` `not a directory` params() ✓
+- `GET` `invalid directory %q in path: %q` params()
+- `GET` `not a directory: %q` params()
+- `GET` `can't set filemode on file %q: %v` params()
+- `GET` `cannot replace %q with %q: %v` params()
+- `GET` `could not find user %s` params()
+- `GET` `cannot eval symlinks for %s` params()
+- `GET` `file %q has an invalid hash %s, expected %s` params()
+- `GET` `Unable to create temporary file for spooling` params() [auth]
+- `GET` `unable to spool` params() [auth]
+- `GET` `unable to seek` params() [auth]
+- `GET` `error converting working directory to Cygwin` params()
+- `GET` `failed to translate path from Cygwin to Windows: %s` params()
+- `GET` `Unsupported OS version. 10.12.x Sierra or higher required.` params()
+- `GET` `clonefile is not supported` params()
+- `GET` `error cloning from %v to %v: %s` params()
+- `GET` `unsupported platform` params() ✓
+- `GET` `object %q has invalid size (got: %d)` params() [auth, upload]
+- `GET` `batch request` params() [auth] ✓
+- `GET` `batch response` params() [auth] ✓
+- `GET` `unsupported hash algorithm` params() [auth] ✓
+- `GET` `Object %s not found on the server.` params() [auth, upload]
+- `GET` `cannot write data to temporary file %q` params() [auth, upload]
+- `GET` `expected OID %s, got %s after %d bytes written` params() [auth, upload]
+- `GET` `can't close temporary file %q: %v` params() [auth, upload]
+- `GET` `Should never ask this function to upload` params() [auth, upload]
+- `GET` `No upload action for object: %s` params() [auth, queue, upload]
+- `GET` `Transfer-Encoding` params() [auth, queue, upload]
+- `GET` `basic upload` params() [auth, queue, upload]
+- `GET` `Received status %d` params() [auth, queue, upload]
+- `GET` `Invalid status for %s %s: %d` params() [auth, queue, upload]
+- `GET` `content type detection error` params() [auth, queue, upload]
+- `GET` `content type rewind failure` params() [auth, queue, upload]
+- `GET` `Should never ask this function to download` params() [auth, queue, upload]
+- `GET` `failed to find custom transfer command %q remote: %v` params() [auth, upload]
+- `GET` `failed to get stdout for custom transfer command %q remote: %v` params() [auth, upload]
+- `GET` `failed to get stdin for custom transfer command %q remote: %v` params() [auth, upload]
+- `GET` `failed to start custom transfer command %q remote: %v` params() [auth, upload]
+- `GET` `error initializing custom adapter %q worker %d: %v` params() [auth, upload]
+- `GET` `timeout while shutting down worker process %d` params() [auth, upload]
+- `GET` `custom transfer %q was not properly initialized, see previous errors` params() [auth, upload]
+- `GET` `context object for custom transfer %q was of the wrong type` params() [auth, upload]
+- `GET` `unexpected OID %q in response, expecting %q` params() [auth, upload]
+- `GET` `error transferring %q: %v` params() [auth, upload]
+- `GET` `downloaded file failed checks: %v` params() [auth, upload]
+- `GET` `failed to copy downloaded file: %v` params() [auth, upload]
+- `GET` `invalid message %q from custom adapter %q` params() [auth, upload]
+- `GET` `corrupt object: %s (%s)` params() ✓
+- `GET` `missing object: %s (%s)` params() ✓
+- `GET` `lfs.standalonetransferagent` params() [upload] ✓
+- `GET` `Error creating progress logger: %s` params() [db, queue, upload]
+- `GET` `could not get connection for batch request` params() [auth, upload]
+- `GET` `no message provided` params() [auth, upload]
+- `GET` `batch response: status %d from server (%s)` params() [auth, upload]
+- `GET` `batch response: unsupported hash algorithm: %q` params() [auth, upload]
+- `GET` `batch response: malformed response: %q` params() [auth, upload]
+- `GET` `batch response: invalid size: %s` params() [auth, upload]
+- `GET` `batch response: invalid expires-in: %s` params() [auth, upload]
+- `GET` `batch response: invalid expires-at: %s` params() [auth, upload]
+- `GET` `No download action for object: %s` params() [auth, upload]
+- `GET` `got status %d when fetching OID %s: %s` params() [auth, upload]
+- `GET` `unexpected size argument` params() [auth, upload]
+- `GET` `expected valid size, got %q` params() [auth, upload]
+- `GET` `no size argument seen` params() [auth, upload]
+- `GET` `got status %d when verifying upload OID %s: %s` params() [auth, upload]
+- `GET` `got status %d when verifying upload OID %s` params() [auth, upload]
+- `GET` `SSH upload` params() [auth, upload]
+- `GET` `got status %d when uploading OID %s` params() [auth, upload]
+- `GET` `got status %d when uploading OID %s: %s` params() [auth, upload]
+- `GET` `Checking out LFS objects` params() [auth, queue, payment, upload]
+- `GET` `Downloading LFS objects` params() [auth, queue, payment, upload]
+- `GET` `Uploading LFS objects` params() [auth, queue, payment, upload]
+- `GET` `action %q expires at %s` params() [auth, queue, payment, upload]
+- `GET` `[%v] The server returned an unknown OID.` params() [auth, queue, upload]
+- `GET` `Upload-Offset` params() [auth, upload]
+- `GET` `missing Upload-Offset header from tus.io HEAD response at %q, contact server admin` params() [auth, upload]
+- `GET` `invalid Upload-Offset value %q in response from tus.io HEAD at %q, contact server admin` params() [auth, upload]
+- `GET` `tus.io upload` params() [auth, upload]
+- `GET` `verify` params() [auth, upload] ✓
+- `GET` `Foo` params() [auth, upload]
+- `GET` `config` params() ✓
+- `GET` `Range` params() [auth, db, upload] ✓
+
+## gRPC
+
+- `/CartService/AddItem` (AddItemRequest) → Empty
+- `/RecommendationService/ListRecommendations` (ListRecommendationsRequest) → ListRecommendationsResponse
+- `/ProductCatalogService/ListProducts` (Empty) → ListProductsResponse
+- `/ShippingService/GetQuote` (GetQuoteRequest) → GetQuoteResponse
+- `/CurrencyService/GetSupportedCurrencies` (Empty) → GetSupportedCurrenciesResponse
+- `/PaymentService/Charge` (ChargeRequest) → ChargeResponse
+- `/EmailService/SendOrderConfirmation` (SendOrderConfirmationRequest) → Empty
+- `/CheckoutService/PlaceOrder` (PlaceOrderRequest) → PlaceOrderResponse
+- `/AdService/GetAds` (AdRequest) → AdResponse
+
+## WebSocket Events
+
+- `WS` `close` — `apps/aiyou_stack/aiyou-fastapi-services/jetski-bridge/bridge-server.js`
+- `WS` `message` — `apps/aiyou_stack/aiyou-fastapi-services/jetski-bridge/bridge-server.js`
+- `WS` `message` — `apps/cosmic-crab/src/relay/server.js`
+- `WS` `open` — `archive/claude-code-src-leak/src/remote/SessionsWebSocket.ts`
+- `WS` `message` — `archive/claude-code-src-leak/src/remote/SessionsWebSocket.ts`
+- `WS` `error` — `archive/claude-code-src-leak/src/remote/SessionsWebSocket.ts`
+- `WS` `close` — `archive/claude-code-src-leak/src/remote/SessionsWebSocket.ts`
+- `WS` `pong` — `archive/claude-code-src-leak/src/remote/SessionsWebSocket.ts`
+- `WS` `open` — `archive/claude-code-src-leak/src/services/voiceStreamSTT.ts`
+- `WS` `message` — `archive/claude-code-src-leak/src/services/voiceStreamSTT.ts`
+- `WS` `close` — `archive/claude-code-src-leak/src/services/voiceStreamSTT.ts`
+- `WS` `unexpected-response` — `archive/claude-code-src-leak/src/services/voiceStreamSTT.ts`
+- `WS` `error` — `archive/claude-code-src-leak/src/services/voiceStreamSTT.ts`
+- `WS` `connect` — `archive/claude-code-src-leak/src/utils/ide.ts`
+- `WS` `error` — `archive/claude-code-src-leak/src/utils/ide.ts`
+- `WS` `timeout` — `archive/claude-code-src-leak/src/utils/ide.ts`
+- `WS` `open` — `archive/claude-code-src-leak/src/utils/mcpWebSocketTransport.ts`
+- `WS` `error` — `archive/claude-code-src-leak/src/utils/mcpWebSocketTransport.ts`
+- `WS` `message` — `archive/claude-code-src-leak/src/utils/mcpWebSocketTransport.ts`
+- `WS` `close` — `archive/claude-code-src-leak/src/utils/mcpWebSocketTransport.ts`
+- `WS` `message` — `external_repos/apps/Gemini-CLI-UI/server/index.js`
+- `WS` `close` — `external_repos/apps/Gemini-CLI-UI/server/index.js`
+- `WS` `error` — `external_repos/apps/Gemini-CLI-UI/server/index.js`
+- `WS` `${arg}` — `external_repos/apps/devtools-frontend/scripts/run_start.mjs`
+- `WS` `listening` — `external_repos/node/benchmark/dgram/array-vs-concat.js`
+- `WS` `listening` — `external_repos/node/benchmark/dgram/multi-buffer.js`
+- `WS` `message` — `external_repos/node/benchmark/dgram/multi-buffer.js`
+- `WS` `listening` — `external_repos/node/benchmark/dgram/offset-length.js`
+- `WS` `message` — `external_repos/node/benchmark/dgram/offset-length.js`
+- `WS` `listening` — `external_repos/node/benchmark/dgram/single-buffer.js`
+- `WS` `message` — `external_repos/node/benchmark/dgram/single-buffer.js`
+- `WS` `close` — `external_repos/node/benchmark/fs/read-stream-throughput.js`
+- `WS` `drain` — `external_repos/node/benchmark/fs/read-stream-throughput.js`
+- `WS` `data` — `external_repos/node/benchmark/http/_chunky_http_client.js`
+- `WS` `close` — `external_repos/node/benchmark/http/_chunky_http_client.js`
+- `WS` `error` — `external_repos/node/benchmark/http/_chunky_http_client.js`
+- `WS` `connect` — `external_repos/node/benchmark/net/net-c2s-cork.js`
+- `WS` `drain` — `external_repos/node/benchmark/net/net-c2s-cork.js`
+- `WS` `connect` — `external_repos/node/benchmark/net/net-c2s.js`
+- `WS` `connect` — `external_repos/node/benchmark/net/net-pipe.js`
+- `WS` `connect` — `external_repos/node/benchmark/net/net-s2c.js`
+- `WS` `data` — `external_repos/node/benchmark/tls/throughput-s2c.js`
+- `WS` `drain` — `external_repos/node/benchmark/tls/throughput-s2c.js`
+- `WS` `data` — `external_repos/node/benchmark/websocket/simple.js`
+- `WS` `timeout` — `external_repos/node/lib/_http_client.js`
+- `WS` `data` — `external_repos/node/lib/_http_client.js`
+- `WS` `end` — `external_repos/node/lib/_http_client.js`
+- `WS` `close` — `external_repos/node/lib/_http_client.js`
+- `WS` `drain` — `external_repos/node/lib/_http_client.js`
+- `WS` `error` — `external_repos/node/lib/_http_client.js`
+- `WS` `close` — `external_repos/node/lib/_http_server.js`
+- `WS` `timeout` — `external_repos/node/lib/_http_server.js`
+- `WS` `data` — `external_repos/node/lib/_http_server.js`
+- `WS` `error` — `external_repos/node/lib/_http_server.js`
+- `WS` `end` — `external_repos/node/lib/_http_server.js`
+- `WS` `drain` — `external_repos/node/lib/_http_server.js`
+- `WS` `resume` — `external_repos/node/lib/_http_server.js`
+- `WS` `pause` — `external_repos/node/lib/_http_server.js`
+- `WS` `readable` — `external_repos/node/lib/https.js`
+- `WS` `error` — `external_repos/node/lib/https.js`
+- `WS` `end` — `external_repos/node/lib/https.js`
+- `WS` `session` — `external_repos/node/lib/https.js`
+- `WS` `close` — `external_repos/node/lib/internal/child_process.js`
+- `WS` `data` — `external_repos/node/test/common/inspector-helper.js`
+- `WS` `listening` — `external_repos/node/test/common/udp.js`
+- `WS` `error` — `external_repos/node/test/common/udp.js`
+- `WS` `data` — `external_repos/node/test/common/websocket-server.js`
+- `WS` `close` — `external_repos/node/test/common/websocket-server.js`
+- `WS` `error` — `external_repos/node/test/common/websocket-server.js`
+- `WS` `fd` — `external_repos/node/test/fixtures/net-fd-passing-receiver.js`
+- `WS` `timeout` — `external_repos/node/test/internet/test-net-connect-timeout.js`
+- `WS` `connect` — `external_repos/node/test/internet/test-net-connect-timeout.js`
+- `WS` `secureConnect` — `external_repos/node/test/internet/test-tls-autoselectfamily-servername.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-async-wrap-tlssocket-asyncreset.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-child-process-disconnect.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-child-process-disconnect.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-child-process-fork-net-server.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-child-process-fork-net-socket.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-child-process-fork-net.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-child-process-fork-net.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-child-process-fork-net.js`
+- `WS` `finish` — `external_repos/node/test/parallel/test-child-process-fork-net.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-child-process-send-keep-open.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-cluster-accept-fail.js`
+- `WS` `message` — `external_repos/node/test/parallel/test-cluster-dgram-1.js`
+- `WS` `message` — `external_repos/node/test/parallel/test-cluster-dgram-2.js`
+- `WS` `message` — `external_repos/node/test/parallel/test-cluster-dgram-bind-fd.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-cluster-disconnect.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-cluster-disconnect.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-cluster-net-listen-ipv6only-false.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-cluster-worker-wait-server-close.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-cluster-worker-wait-server-close.js`
+- `WS` `lookup` — `external_repos/node/test/parallel/test-destroy-socket-in-lookup.js`
+- `WS` `listening` — `external_repos/node/test/parallel/test-dgram-address.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-dgram-address.js`
+- `WS` `message` — `external_repos/node/test/parallel/test-dgram-bind-fd.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-dgram-bind-fd.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-dgram-bind-fd.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-dgram-bind-socket-close-before-cluster-reply.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-dgram-bind-socket-close-before-lookup.js`
+- `WS` `listening` — `external_repos/node/test/parallel/test-dgram-bind.js`
+- `WS` `listening` — `external_repos/node/test/parallel/test-dgram-close-in-listening.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-dgram-close-is-not-callback.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-dgram-close.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-dgram-cluster-bind-error.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-dgram-cluster-close-in-listening.js`
+- `WS` `listening` — `external_repos/node/test/parallel/test-dgram-cluster-close-in-listening.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-dgram-cluster-close-in-listening.js`
+- `WS` `message` — `external_repos/node/test/parallel/test-dgram-connect-send-multi-string-array.js`
+- `WS` `listening` — `external_repos/node/test/parallel/test-dgram-listen-after-bind.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-dgram-listen-after-bind.js`
+- `WS` `listening` — `external_repos/node/test/parallel/test-dgram-multicast-loopback.js`
+- `WS` `listening` — `external_repos/node/test/parallel/test-dgram-multicast-set-interface.js`
+- `WS` `listening` — `external_repos/node/test/parallel/test-dgram-multicast-setTTL.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-dgram-send-cb-quelches-error.js`
+- `WS` `message` — `external_repos/node/test/parallel/test-dgram-send-error.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-dgram-send-error.js`
+- `WS` `message` — `external_repos/node/test/parallel/test-dgram-send-multi-string-array.js`
+- `WS` `listening` — `external_repos/node/test/parallel/test-dgram-setTTL.js`
+- `WS` `listening` — `external_repos/node/test/parallel/test-dgram-unref-in-cluster.js`
+- `WS` `message` — `external_repos/node/test/parallel/test-dns-multi-channel.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-abort-client.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-after-connect.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-agent-destroyed-socket.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-http-agent-reuse-drained-socket-only.js`
+- `WS` `free` — `external_repos/node/test/parallel/test-http-agent-timeout.js`
+- `WS` `timeout` — `external_repos/node/test/parallel/test-http-agent-timeout.js`
+- `WS` `message` — `external_repos/node/test/parallel/test-http-autoselectfamily.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-client-agent.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-http-client-read-in-error.js`
+- `WS` `newListener` — `external_repos/node/test/parallel/test-http-client-read-in-error.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-http-client-set-timeout.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-http-client-timeout-on-connect.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-connect-req-res.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-connect-req-res.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-connect.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-connect.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-extra-response.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-http-extra-response.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-http-header-overflow.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-http-keep-alive-drop-requests.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-keep-alive-drop-requests.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-keep-alive-drop-requests.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-keep-alive-empty-line.mjs`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-keep-alive-max-requests.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-keep-alive-max-requests.js`
+- `WS` `ready` — `external_repos/node/test/parallel/test-http-keep-alive-max-requests.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-keep-alive-pipeline-max-requests.js`
+- `WS` `ready` — `external_repos/node/test/parallel/test-http-keep-alive-pipeline-max-requests.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-keep-alive-pipeline-max-requests.js`
+- `WS` `free` — `external_repos/node/test/parallel/test-http-keepalive-free.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-many-ended-pipelines.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-outgoing-first-chunk-singlebyte-encoding.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-outgoing-first-chunk-singlebyte-encoding.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-http-outgoing-message-capture-rejection.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-parser-memory-retention.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-pipeline-flood.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-remove-connection-header-persists-connection.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-req-res-close.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-server-connection-list-when-close.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-http-server-destroy-socket-on-client-error.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-http-server-destroy-socket-on-client-error.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-server-destroy-socket-on-client-error.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-server-destroy-socket-on-client-error.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-server-keep-alive-defaults.js`
+- `WS` `ready` — `external_repos/node/test/parallel/test-http-server-keep-alive-defaults.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-server-keep-alive-defaults.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-server-keep-alive-max-requests-null.js`
+- `WS` `ready` — `external_repos/node/test/parallel/test-http-server-keep-alive-max-requests-null.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-server-keep-alive-max-requests-null.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-http-server-multiple-client-error.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-server-multiple-client-error.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-server-unconsume.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-http-socket-error-listeners.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-socket-error-listeners.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-upgrade-advertise.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-upgrade-agent.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-upgrade-agent.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-upgrade-client.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http-upgrade-client.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-upgrade-client2.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-upgrade-server-with-body-and-extras.mjs`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-upgrade-server-with-body-and-extras.mjs`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-upgrade-server-with-body.mjs`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-upgrade-server-with-body.mjs`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-upgrade-server-with-large-body-unread.mjs`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-upgrade-server-with-large-body-unread.mjs`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-upgrade-server-with-large-body.mjs`
+- `WS` `end` — `external_repos/node/test/parallel/test-http-upgrade-server-with-large-body.mjs`
+- `WS` `data` — `external_repos/node/test/parallel/test-http-upgrade-server.js`
+- `WS` `finish` — `external_repos/node/test/parallel/test-http2-byteswritten-server.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http2-client-destroy.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http2-client-jsstream-destroy.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http2-client-jsstream-destroy.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http2-compat-socket.js`
+- `WS` `testEvent` — `external_repos/node/test/parallel/test-http2-compat-socket.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-http2-connect-method.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-http2-connect-method.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http2-connect-method.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-http2-connect-method.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http2-server-socket-destroy.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http2-server-unknown-protocol.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-http2-trailers-after-session-close.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-https-agent-create-connection.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-https-agent-create-connection.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-https-agent-create-connection.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-https-agent-create-connection.js`
+- `WS` `message` — `external_repos/node/test/parallel/test-https-autoselectfamily.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-https-keep-alive-drop-requests.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-https-keep-alive-drop-requests.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-https-keep-alive-drop-requests.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-allow-half-open.js`
+- `WS` `finish` — `external_repos/node/test/parallel/test-net-allow-half-open.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-net-allow-half-open.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-net-autoselectfamily-commandline-option.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-net-autoselectfamily-default.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-net-autoselectfamily-ipv4first.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-net-autoselectfamily.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-blocklist.js`
+- `WS` `readable` — `external_repos/node/test/parallel/test-net-buffersize.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-buffersize.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-net-bytes-read.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-bytes-read.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-net-bytes-read.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-net-bytes-stats.js`
+- `WS` `finish` — `external_repos/node/test/parallel/test-net-bytes-stats.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-net-bytes-stats.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-net-connect-buffer.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-net-connect-buffer2.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-connect-custom-lookup-non-string-address.mjs`
+- `WS` `close` — `external_repos/node/test/parallel/test-net-connect-destroy.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-connect-immediate-destroy.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-net-connect-options-allowhalfopen.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-connect-options-allowhalfopen.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-net-connect-options-fd.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-connect-options-fd.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-connect-options-ipv6.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-connect-reset-after-destroy.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-connect-reset-before-connected.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-connect-reset-until-connected.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-connect-reset.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-dns-error.js`
+- `WS` `lookup` — `external_repos/node/test/parallel/test-net-dns-error.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-net-end-destroyed.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-end-destroyed.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-net-large-string.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-large-string.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-net-listen-ipv6only.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-listen-ipv6only.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-local-address-port.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-perf_hooks.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-perf_hooks.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-net-pingpong.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-pingpong.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-pingpong.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-net-pingpong.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-reconnect.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-net-reconnect.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-remote-address-port.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-net-remote-address-port.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-net-remote-address.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-remote-address.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-net-server-blocklist.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-net-server-max-connections-close-makes-more-available.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-net-server-pause-on-connect.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-net-settimeout.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-net-socket-byteswritten.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-socket-byteswritten.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-socket-close-after-end.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-net-socket-close-after-end.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-net-socket-end-before-connect.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-socket-reset-send.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-net-socket-timeout-unref.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-stream.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-sync-cork.js`
+- `WS` `timeout` — `external_repos/node/test/parallel/test-net-timeout-no-handle.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-net-timeout-no-handle.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-net-writable.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-write-after-close.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-net-write-arguments.js`
+- `WS` `connect` — `external_repos/node/test/parallel/test-net-write-cb-on-destroy-before-connect.js`
+- `WS` `timeout` — `external_repos/node/test/parallel/test-net-write-slow.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-permission-net-udp.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-repl.js`
+- `WS` `finish` — `external_repos/node/test/parallel/test-stream-pipe-flow.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-stream-pipeline.js`
+- `WS` `finish` — `external_repos/node/test/parallel/test-stream-pipeline.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-stream-pipeline.js`
+- `WS` `finish` — `external_repos/node/test/parallel/test-stream-writable-write-writev-finish.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-stream-writable-write-writev-finish.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-tls-buffersize.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-tls-buffersize.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-tls-client-reject.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-tls-client-reject.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-tls-client-reject.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-tls-connect-allow-half-open-option.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-tls-connect-allow-half-open-option.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-tls-destroy-stream.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-tls-destroy-stream.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-tls-disable-renegotiation.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-tls-disable-renegotiation.js`
+- `WS` `secure` — `external_repos/node/test/parallel/test-tls-disable-renegotiation.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-tls-multiple-cas-as-string.js`
+- `WS` `secureConnect` — `external_repos/node/test/parallel/test-tls-net-socket-keepalive.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-tls-net-socket-keepalive.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-tls-net-socket-keepalive.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-tls-net-socket-keepalive.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-tls-pause.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-tls-psk-server.js`
+- `WS` `secureConnect` — `external_repos/node/test/parallel/test-tls-reinitialize-listeners.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-tls-reinitialize-listeners.js`
+- `WS` `timeout` — `external_repos/node/test/parallel/test-tls-request-timeout.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-tls-server-parent-constructor-options.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-tls-server-parent-constructor-options.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-tls-socket-close.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-tls-socket-close.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-tls-streamwrap-buffersize.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-tls-streamwrap-buffersize.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-tls-streamwrap-buffersize.js`
+- `WS` `data` — `external_repos/node/test/parallel/test-tls-use-after-free-regression.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-tls-use-after-free-regression.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-trace-events-net.js`
+- `WS` `message` — `external_repos/node/test/parallel/test-worker-dns-terminate-during-query.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-wrap-js-stream-destroy.js`
+- `WS` `end` — `external_repos/node/test/parallel/test-wrap-js-stream-destroy.js`
+- `WS` `close` — `external_repos/node/test/parallel/test-wrap-js-stream-destroy.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-wrap-js-stream-exceptions.js`
+- `WS` `error` — `external_repos/node/test/parallel/test-x509-escaping.js`
+- `WS` `timeout` — `external_repos/node/test/pummel/test-http-upload-timeout.js`
+- `WS` `data` — `external_repos/node/test/pummel/test-net-pingpong-delay.js`
+- `WS` `timeout` — `external_repos/node/test/pummel/test-net-pingpong-delay.js`
+- `WS` `end` — `external_repos/node/test/pummel/test-net-pingpong-delay.js`
+- `WS` `close` — `external_repos/node/test/pummel/test-net-pingpong-delay.js`
+- `WS` `data` — `external_repos/node/test/pummel/test-net-pingpong.js`
+- `WS` `end` — `external_repos/node/test/pummel/test-net-pingpong.js`
+- `WS` `close` — `external_repos/node/test/pummel/test-net-pingpong.js`
+- `WS` `timeout` — `external_repos/node/test/pummel/test-net-timeout.js`
+- `WS` `error` — `external_repos/node/test/pummel/test-net-timeout.js`
+- `WS` `data` — `external_repos/node/test/pummel/test-net-timeout.js`
+- `WS` `end` — `external_repos/node/test/pummel/test-net-timeout.js`
+- `WS` `data` — `external_repos/node/test/pummel/test-net-write-callbacks.js`
+- `WS` `end` — `external_repos/node/test/pummel/test-net-write-callbacks.js`
+- `WS` `data` — `external_repos/node/test/sequential/test-async-wrap-getasyncid.js`
+- `WS` `error` — `external_repos/node/test/sequential/test-dgram-implicit-bind-failure.js`
+- `WS` `error` — `external_repos/node/test/sequential/test-http-regr-gh-2928.js`
+- `WS` `data` — `external_repos/node/test/sequential/test-http-server-keep-alive-timeout-slow-client-headers.js`
+- `WS` `end` — `external_repos/node/test/sequential/test-net-GH-5504.js`
+- `WS` `_socketEnd` — `external_repos/node/test/sequential/test-net-GH-5504.js`
+- `WS` `close` — `external_repos/node/test/sequential/test-net-localport.js`
+- `WS` `connect` — `external_repos/node/test/sequential/test-pipe.js`
+- `WS` `data` — `external_repos/node/test/sequential/test-tls-psk-client.js`
+- `WS` `end` — `external_repos/node/test/sequential/test-tls-psk-client.js`
+- `WS` `error` — `external_repos/node/test/sequential/test-tls-psk-client.js`
+- `WS` `timeout` — `external_repos/npm/node/lib/_http_client.js`
+- `WS` `data` — `external_repos/npm/node/lib/_http_client.js`
+- `WS` `end` — `external_repos/npm/node/lib/_http_client.js`
+- `WS` `close` — `external_repos/npm/node/lib/_http_client.js`
+- `WS` `drain` — `external_repos/npm/node/lib/_http_client.js`
+- `WS` `error` — `external_repos/npm/node/lib/_http_client.js`
+- `WS` `close` — `external_repos/npm/node/lib/_http_server.js`
+- `WS` `timeout` — `external_repos/npm/node/lib/_http_server.js`
+- `WS` `data` — `external_repos/npm/node/lib/_http_server.js`
+- `WS` `error` — `external_repos/npm/node/lib/_http_server.js`
+- `WS` `end` — `external_repos/npm/node/lib/_http_server.js`
+- `WS` `drain` — `external_repos/npm/node/lib/_http_server.js`
+- `WS` `resume` — `external_repos/npm/node/lib/_http_server.js`
+- `WS` `pause` — `external_repos/npm/node/lib/_http_server.js`
+- `WS` `readable` — `external_repos/npm/node/lib/https.js`
+- `WS` `error` — `external_repos/npm/node/lib/https.js`
+- `WS` `end` — `external_repos/npm/node/lib/https.js`
+- `WS` `session` — `external_repos/npm/node/lib/https.js`
+- `WS` `close` — `external_repos/playwright-python/tests/async/test_websocket.py`
+- `WS` `framesent` — `external_repos/playwright-python/tests/async/test_websocket.py`
+- `WS` `framereceived` — `external_repos/playwright-python/tests/async/test_websocket.py`
+- `WS` `socketerror` — `external_repos/playwright-python/tests/async/test_websocket.py`
+- `WS` `open` — `reference_architectures/superpowers-zh/tests/brainstorm-server/server.test.js`
+- `WS` `error` — `reference_architectures/superpowers-zh/tests/brainstorm-server/server.test.js`
+- `WS` `message` — `reference_architectures/superpowers-zh/tests/brainstorm-server/server.test.js`
