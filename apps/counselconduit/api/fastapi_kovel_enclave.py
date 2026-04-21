@@ -70,6 +70,7 @@ try:
     from apps.counselconduit.api.byok import router as byok_router
     from apps.counselconduit.api.cloud_tasks_gdpr import router as tasks_router
     from apps.counselconduit.api.cloud_tasks_gdpr_handler import router as gdpr_handler_router
+    from apps.counselconduit.api.dispatch_router import router as dispatch_router
     from apps.counselconduit.api.gdpr import router as gdpr_router
     from apps.counselconduit.api.kovel_attestation import router as attestation_router
     from apps.counselconduit.api.magic_link import router as onboarding_router
@@ -86,6 +87,7 @@ except ImportError:
     from api.byok import router as byok_router  # type: ignore[no-redef]
     from api.cloud_tasks_gdpr import router as tasks_router  # type: ignore[no-redef]
     from api.cloud_tasks_gdpr_handler import router as gdpr_handler_router  # type: ignore[no-redef]
+    from api.dispatch_router import router as dispatch_router  # type: ignore[no-redef]
     from api.gdpr import router as gdpr_router  # type: ignore[no-redef]
     from api.kovel_attestation import router as attestation_router  # type: ignore[no-redef]
     from api.magic_link import router as onboarding_router  # type: ignore[no-redef]
@@ -130,6 +132,7 @@ app = FastAPI(
         {"name": "Vent Mode", "description": "SSE streaming for real-time AI interaction"},
         {"name": "Sandbox", "description": "Phase 3: Tenant isolation, quota enforcement, proxy tokens"},
         {"name": "BYOK", "description": "Bring Your Own Key — customer-managed LLM API keys"},
+        {"name": "dispatch", "description": "NadirClaw 3-tier model dispatch + routing metrics"},
     ],
 )
 
@@ -158,7 +161,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
-    expose_headers=["X-Kovel-Signature", "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-Token-Budget-Remaining"],
+    expose_headers=["X-Kovel-Signature", "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-Token-Budget-Remaining", "X-Dispatch-Tier"],
 )
 
 # Cor.30 R31: Security headers on every response
@@ -194,6 +197,7 @@ app.include_router(resend_router)
 app.include_router(byok_router)
 app.include_router(gdpr_handler_router)
 app.include_router(connect_onboarding_router)
+app.include_router(dispatch_router)
 
 
 @app.get("/")
