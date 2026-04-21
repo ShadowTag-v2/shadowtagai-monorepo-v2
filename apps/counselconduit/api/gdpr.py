@@ -96,9 +96,10 @@ async def _schedule_hard_delete(receipt_id: str, firm_id: str, deletion_date: st
     Queue: gdpr-deletions, Target: POST /account/_execute-delete
     """
     try:
+        import json
+
         from google.cloud import tasks_v2
         from google.protobuf import timestamp_pb2
-        import json
 
         client = tasks_v2.CloudTasksClient()
         parent = client.queue_path(_GCP_PROJECT, _GCP_LOCATION, _GDPR_QUEUE)
@@ -169,15 +170,15 @@ async def request_account_deletion(
     try:
         try:
             from apps.counselconduit.api.firestore_client import (
+                AuditEntry,
                 store_gdpr_request,
                 write_audit_log,
-                AuditEntry,
             )
         except ImportError:
             from api.firestore_client import (  # type: ignore[no-redef]
+                AuditEntry,
                 store_gdpr_request,
                 write_audit_log,
-                AuditEntry,
             )
 
         await store_gdpr_request(
@@ -377,15 +378,15 @@ async def execute_hard_delete(payload: dict[str, Any]) -> dict[str, str]:
     try:
         try:
             from apps.counselconduit.api.firestore_client import (
+                AuditEntry,
                 _get_client,
                 write_audit_log,
-                AuditEntry,
             )
         except ImportError:
             from api.firestore_client import (  # type: ignore[no-redef]
+                AuditEntry,
                 _get_client,
                 write_audit_log,
-                AuditEntry,
             )
 
         db = _get_client()

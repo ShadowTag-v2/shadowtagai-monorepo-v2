@@ -12,15 +12,19 @@ Tests cover:
 from __future__ import annotations
 
 import time
-from unittest.mock import patch
 
 import pytest
 
 from apps.counselconduit.api.model_router import (
+    SESSION_PIN_TTL_SECONDS,
     BYOKConfig,
     DispatchTier,
     ModelRequest,
     TenantQuota,
+    _dispatch_metrics,
+    _fallback_hits,
+    _session_pins,
+    _tenant_quotas,
     classify_prompt,
     dispatch_request,
     get_dispatch_metrics,
@@ -30,13 +34,7 @@ from apps.counselconduit.api.model_router import (
     record_dispatch,
     record_fallback,
     select_model,
-    SESSION_PIN_TTL_SECONDS,
-    _dispatch_metrics,
-    _fallback_hits,
-    _session_pins,
-    _tenant_quotas,
 )
-
 
 # ── Fixtures ──────────────────────────────────────────────────────────────
 
