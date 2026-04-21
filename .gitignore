@@ -238,3 +238,4 @@ labs/uphillsnowball/product-pitch-site/clone-base/
 # Quarantine Third-Party Envs
 libs/autoresearch_sources/Kosmos/.claude/skills/.env*
 labs/uphillsnowball/product-pitch-site/cloner-tool/
+.codesight/wiki/
