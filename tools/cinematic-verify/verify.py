@@ -1,4 +1,5 @@
 """Cinematic Verification Pipeline — Browser-based Lighthouse + screenshot audit."""
+
 import json
 import subprocess
 import sys
@@ -23,7 +24,10 @@ def run_lighthouse(url: str, output_dir: Path) -> dict:
     """Run Lighthouse CI and return scores."""
     output_path = output_dir / f"lighthouse-{url.replace('https://', '').replace('/', '_')}.json"
     cmd = [
-        "npx", "-y", "lighthouse", url,
+        "npx",
+        "-y",
+        "lighthouse",
+        url,
         "--output=json",
         f"--output-path={output_path}",
         "--chrome-flags=--headless --no-sandbox",
@@ -33,11 +37,7 @@ def run_lighthouse(url: str, output_dir: Path) -> dict:
         subprocess.run(cmd, check=True, capture_output=True, timeout=120)
         with open(output_path) as f:
             report = json.load(f)
-        return {
-            cat: int(report["categories"][cat]["score"] * 100)
-            for cat in THRESHOLDS
-            if cat in report.get("categories", {})
-        }
+        return {cat: int(report["categories"][cat]["score"] * 100) for cat in THRESHOLDS if cat in report.get("categories", {})}
     except (subprocess.CalledProcessError, FileNotFoundError, json.JSONDecodeError) as e:
         return {"error": str(e)}
 

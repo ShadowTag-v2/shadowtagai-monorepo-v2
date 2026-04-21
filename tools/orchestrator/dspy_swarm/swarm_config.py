@@ -1,10 +1,12 @@
 """Configuration for the DSPy Swarm Router."""
+
 from dataclasses import dataclass, field
 
 
 @dataclass(frozen=True)
 class SwarmEndpoint:
     """A model endpoint in the swarm."""
+
     name: str
     host: str
     port: int
@@ -17,6 +19,7 @@ class SwarmEndpoint:
 @dataclass
 class SwarmConfig:
     """Top-level swarm configuration."""
+
     endpoints: list[SwarmEndpoint] = field(default_factory=list)
     fallback_model: str = "gemini-3.1-flash-lite-preview"
     timeout_seconds: int = 30

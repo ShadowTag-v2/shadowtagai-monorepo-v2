@@ -204,7 +204,6 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
 
     report.ki_scanned = len(entries)
 
-
     return issues
 
 
@@ -228,7 +227,6 @@ def consolidate(entries: list[KIEntry], issues: dict, report: DreamReport) -> No
     # Report relative dates that need manual conversion
     for rd in issues["relative_dates"]:
         report.actions.append(f"RELATIVE DATE: '{rd['pattern']}' found in '{rd['ki']}' — convert to absolute ISO-8601 date")
-
 
 
 # --- Phase 4: Prune ----------------------------------------------------------
@@ -267,7 +265,6 @@ def prune(entries: list[KIEntry], issues: dict, report: DreamReport) -> None:
 
     if len(entries) > MAX_INDEX_ENTRIES:
         report.actions.append(f"INDEX COUNT: {len(entries)} entries (limit: {MAX_INDEX_ENTRIES}) — archive oldest")
-
 
 
 # --- Phase 2.5: Activate (memory-kernel integration) -------------------------
@@ -375,7 +372,6 @@ def measure_and_render(entries: list[KIEntry], ki_dir: Path, report: DreamReport
 def run_dream_cycle(ki_dir: Path) -> DreamReport:
     """Execute the full enhanced Dream consolidation cycle."""
     report = DreamReport()
-
 
     # Phase 1: Orient
     report.phase = "orient"

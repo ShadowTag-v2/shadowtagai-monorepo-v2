@@ -39,4 +39,3 @@ for path in targets:
                     t.extractall(sub_dest)
         except Exception:
             pass
-

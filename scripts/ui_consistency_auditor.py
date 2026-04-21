@@ -100,7 +100,6 @@ def scan_file(filepath: str) -> list[dict]:
 
 
 def main() -> None:
-
     all_findings = []
     scanned = 0
 
@@ -123,7 +122,6 @@ def main() -> None:
     high = [f for f in all_findings if f["severity"] == "HIGH"]
     med = [f for f in all_findings if f["severity"] == "MEDIUM"]
     low = [f for f in all_findings if f["severity"] == "LOW"]
-
 
     if high:
         for _f in high[:50]:

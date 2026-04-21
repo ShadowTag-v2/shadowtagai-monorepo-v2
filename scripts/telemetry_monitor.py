@@ -8,7 +8,6 @@ LANCEDB_PATH = REPO_ROOT / "data" / "lancedb" / "workspace_knowledge"
 
 
 def execute_hardware_telemetry() -> None:
-
     # Evaluate explicit PyArrow physical disk weight
     try:
         size_bytes = sum(f.stat().st_size for f in LANCEDB_PATH.rglob("*") if f.is_file())
@@ -34,7 +33,6 @@ def execute_hardware_telemetry() -> None:
 
     except Exception:
         pass
-
 
 
 if __name__ == "__main__":

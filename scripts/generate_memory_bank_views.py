@@ -46,4 +46,3 @@ base = Path(".agent/memory")
     "# Common Tasks\n\n## Session bootstrap\nGET /api/hydrate-pack before any substantial reasoning.\n",
     encoding="utf-8",
 )
-

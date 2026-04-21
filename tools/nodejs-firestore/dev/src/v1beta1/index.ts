@@ -19,6 +19,7 @@
 // tslint:disable deprecation
 
 import { FirestoreClient } from './firestore_client';
+
 export { FirestoreClient };
 
 // Doing something really horrible for reverse compatibility with original JavaScript exports

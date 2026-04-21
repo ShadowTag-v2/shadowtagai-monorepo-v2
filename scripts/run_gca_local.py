@@ -250,7 +250,6 @@ def main() -> int:
     ane_out_path = workdir / "ane_report.json"
     agent_out_paths = {agent: workdir / f"review_{agent}.txt" for agent in agents}
 
-
     with ThreadPoolExecutor(max_workers=len(agents) + 1) as pool:
         # Submit ANE gate
         ane_future = pool.submit(run_ane_gate, diff_path, ane_out_path)

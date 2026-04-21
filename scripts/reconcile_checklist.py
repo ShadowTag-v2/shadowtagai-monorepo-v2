@@ -31,4 +31,3 @@ for repo_entry in data.get("repos", []):
 
 with open(yaml_path, "w") as f:
     yaml.dump(data, f, sort_keys=False, default_flow_style=False)
-

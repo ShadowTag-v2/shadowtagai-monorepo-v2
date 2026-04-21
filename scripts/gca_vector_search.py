@@ -32,7 +32,6 @@ def query_hud_vectors(query_text: str, top_k: int = 10) -> None:
     if not results or not results["ids"] or not results["ids"][0]:
         return
 
-
     # Iterate through the parallel arrays
     for i in range(len(results["ids"][0])):
         results["ids"][0][i]

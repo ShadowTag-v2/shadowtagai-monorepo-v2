@@ -220,14 +220,12 @@ def main() -> None:
 
     force = not args.no_force
 
-
     # Get commits to push
     remote_head = get_remote_head(args.branch)
     commits = get_commits_to_push(remote_head)
 
     if not commits:
         return
-
 
     # Build chunks: each chunk is a list of commit SHAs
     chunk_groups = []
@@ -288,7 +286,6 @@ def main() -> None:
         # Brief cooldown between chunks
         if i < len(chunk_groups) - 1:
             time.sleep(2)
-
 
 
 if __name__ == "__main__":

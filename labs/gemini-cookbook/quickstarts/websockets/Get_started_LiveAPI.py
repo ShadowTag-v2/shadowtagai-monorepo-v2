@@ -49,7 +49,6 @@ import base64
 import json
 import io
 import os
-import sys
 import traceback
 
 import cv2

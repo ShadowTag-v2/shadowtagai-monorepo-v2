@@ -59,7 +59,6 @@ def get_token(app_id, pem_path, owner_name):
 
 
 if __name__ == "__main__":
-
     # Needs to push to ShadowTag-v2
     token_s = get_token(
         "3018200",
@@ -82,7 +81,6 @@ if __name__ == "__main__":
     if res.returncode == 0:
         pass
     else:
-
         # In case the default branch is master
         cmd_master = f"git push -f --no-verify {repo_url} HEAD:master"
         res_master = subprocess.run(cmd_master, shell=True, text=True)  # nosec B602 — intentional shell for git/system ops

@@ -119,8 +119,14 @@ test.describe('KovelAI Homepage — Features Section', () => {
   });
 
   test('feature cards have titles and descriptions', async ({ page }) => {
-    const titles = ['Kovel Attestation', 'Multi-Model Routing', 'Judge #6 Policy Gate',
-                    'Oracle Studio', 'Ephemeral Client View', 'Immutable Transcripts'];
+    const titles = [
+      'Kovel Attestation',
+      'Multi-Model Routing',
+      'Judge #6 Policy Gate',
+      'Oracle Studio',
+      'Ephemeral Client View',
+      'Immutable Transcripts',
+    ];
     for (const title of titles) {
       const card = page.locator('.feature-card', { hasText: title });
       await expect(card).toBeAttached();
@@ -140,8 +146,12 @@ test.describe('KovelAI Homepage — Pricing Section', () => {
 
   test('shows correct pricing amounts', async ({ page }) => {
     await expect(page.locator('.pricing-card').filter({ hasText: 'Solo' })).toContainText('$299');
-    await expect(page.locator('.pricing-card').filter({ hasText: 'Practice' })).toContainText('$599');
-    await expect(page.locator('.pricing-card').filter({ hasText: 'Enterprise' })).toContainText('$999');
+    await expect(page.locator('.pricing-card').filter({ hasText: 'Practice' })).toContainText(
+      '$599',
+    );
+    await expect(page.locator('.pricing-card').filter({ hasText: 'Enterprise' })).toContainText(
+      '$999',
+    );
   });
 
   test('Practice card is featured', async ({ page }) => {

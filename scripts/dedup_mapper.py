@@ -80,4 +80,3 @@ out_file = "docs/DEDUP_MAPPING.md"
 os.makedirs("docs", exist_ok=True)
 with open(out_file, "w") as f:
     f.write(report)
-

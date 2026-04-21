@@ -28,9 +28,9 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from sse_starlette.sse import EventSourceResponse
 
-from agent.gauntlet import GauntletVerdict, evaluate
-from agent.memory import AgentState, TaskRecord, get_memory
-from agent.swarm_orchestrator import AgentRole, SwarmTask, get_orchestrator
+from agent.gauntlet import evaluate
+from agent.memory import TaskRecord, get_memory
+from agent.swarm_orchestrator import SwarmTask, get_orchestrator
 
 logger = logging.getLogger("uphillsnowball.server")
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))

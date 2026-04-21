@@ -236,7 +236,6 @@ def print_report(summary: EvalSummary) -> None:
                 pass
 
 
-
 def main() -> None:
     """Main entry point."""
     # Default paths

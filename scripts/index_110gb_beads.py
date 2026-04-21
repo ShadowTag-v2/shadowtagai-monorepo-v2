@@ -94,7 +94,6 @@ def index_library() -> None:
             filepath = os.path.join(root, file)
             size = os.path.getsize(filepath)
 
-
             biome_status = biome_check(filepath)
             ane_class = ane_semantic_scan(filepath, file)
 

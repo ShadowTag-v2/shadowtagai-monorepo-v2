@@ -34,7 +34,6 @@ def sanitize_name(path_str):
     return path_str.replace("/", "_").replace(" ", "_")[1:]
 
 
-
 success_count = 0
 for path in INTEL_PATHS:
     p = Path(path)
@@ -56,4 +55,3 @@ for path in INTEL_PATHS:
         success_count += 1
     except Exception:
         pass
-

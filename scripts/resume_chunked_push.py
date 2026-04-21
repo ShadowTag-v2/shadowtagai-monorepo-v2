@@ -76,7 +76,7 @@ def chunk_commit_push() -> None:
                 continue
 
             for i in range(0, len(current_files), 1000):
-                subprocess.run(["git", "add", *current_files[i:i + 1000]], check=True)
+                subprocess.run(["git", "add", *current_files[i : i + 1000]], check=True)
 
             subprocess.run(
                 ["git", "commit", "--no-verify", "-m", f"chore: stateful sync chunk {BATCH}"],

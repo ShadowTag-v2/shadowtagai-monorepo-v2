@@ -335,7 +335,6 @@ def generate_video(
     preset = PRESETS[preset_name]
     client = _get_client()
 
-
     config_kwargs = {
         "number_of_videos": 1,
         "duration_seconds": preset["duration_seconds"],
@@ -418,7 +417,6 @@ def generate_from_image(
     else:
         pass
 
-
     # Vertex AI requires output_gcs_uri.
     if client.vertexai:
         gcs_prefix = os.environ.get(
@@ -470,7 +468,6 @@ def extend_video(
 
     # Video.from_file handles raw bytes and MIME detection correctly.
     video_obj = types.Video.from_file(location=str(path))
-
 
     ext_config_kwargs = {
         "number_of_videos": 1,

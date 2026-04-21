@@ -49,7 +49,6 @@ def review_pr(pr_num: int, token: str, dry_run: bool = False) -> dict:
     """Run GCA review on a single PR."""
     import subprocess
 
-
     cmd = [sys.executable, os.path.join(SCRIPTS_DIR, "run_gca_local.py"), "--pr", str(pr_num)]
     if dry_run:
         cmd.append("--dry-run")
@@ -60,7 +59,6 @@ def review_pr(pr_num: int, token: str, dry_run: bool = False) -> dict:
     output = result.stdout + result.stderr
     findings = [l for l in output.splitlines() if "finding(s)" in l]
     total_findings = sum(int(l.split(":")[1].strip().split()[0]) for l in findings if ":" in l)
-
 
     return {
         "pr": pr_num,

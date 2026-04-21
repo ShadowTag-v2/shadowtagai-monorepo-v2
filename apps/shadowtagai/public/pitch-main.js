@@ -4,20 +4,22 @@
    ═══════════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  'use strict';
-
   /* ─── HEADER SCROLL ─── */
   const header = document.getElementById('site-header');
   let lastScroll = 0;
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    if (y > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
-    lastScroll = y;
-  }, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      const y = window.scrollY;
+      if (y > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+      lastScroll = y;
+    },
+    { passive: true },
+  );
 
   /* ─── MOBILE NAV ─── */
   const hamburger = document.getElementById('hamburger-menu');
@@ -34,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.style.overflow = '';
     });
     // Close on nav link click (mobile)
-    mainMenu.querySelectorAll('a').forEach(link => {
+    mainMenu.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
         mainMenu.classList.remove('active');
         document.body.style.overflow = '';
@@ -45,31 +47,34 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ─── SCROLL-DRIVEN FADE-IN ─── */
   const animElements = document.querySelectorAll(
     '.homeBanner__content__text, .homeBanner__content__quotations, ' +
-    '.news-item, .product-card, .arch-card, .metric-block, .business-card'
+      '.news-item, .product-card, .arch-card, .metric-block, .business-card',
   );
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
-      if (entry.isIntersecting) {
-        // Stagger animation by sibling index
-        const parent = entry.target.parentElement;
-        const siblings = parent ? Array.from(parent.children) : [];
-        const siblingIndex = siblings.indexOf(entry.target);
-        const delay = Math.min(siblingIndex * 100, 500);
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          // Stagger animation by sibling index
+          const parent = entry.target.parentElement;
+          const siblings = parent ? Array.from(parent.children) : [];
+          const siblingIndex = siblings.indexOf(entry.target);
+          const delay = Math.min(siblingIndex * 100, 500);
 
-        setTimeout(() => {
-          entry.target.classList.add('animate-in');
-        }, delay);
+          setTimeout(() => {
+            entry.target.classList.add('animate-in');
+          }, delay);
 
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  });
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px',
+    },
+  );
 
-  animElements.forEach(el => observer.observe(el));
+  animElements.forEach((el) => observer.observe(el));
 
   /* ─── FLOATING PARTICLES ─── */
   const particlesContainer = document.getElementById('particles');
@@ -99,32 +104,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ─── COUNTER ANIMATION ─── */
   const counters = document.querySelectorAll('.metric-block__value[data-count]');
-  const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const target = parseInt(el.getAttribute('data-count'), 10);
-        const duration = 2000;
-        const start = performance.now();
+  const counterObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.getAttribute('data-count'), 10);
+          const duration = 2000;
+          const start = performance.now();
 
-        const animateCount = (now) => {
-          const elapsed = now - start;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          const current = Math.round(eased * target);
-          el.textContent = current.toLocaleString();
-          if (progress < 1) requestAnimationFrame(animateCount);
-        };
-        requestAnimationFrame(animateCount);
-        counterObserver.unobserve(el);
-      }
-    });
-  }, { threshold: 0.5 });
-  counters.forEach(c => counterObserver.observe(c));
+          const animateCount = (now) => {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - (1 - progress) ** 3;
+            const current = Math.round(eased * target);
+            el.textContent = current.toLocaleString();
+            if (progress < 1) requestAnimationFrame(animateCount);
+          };
+          requestAnimationFrame(animateCount);
+          counterObserver.unobserve(el);
+        }
+      });
+    },
+    { threshold: 0.5 },
+  );
+  counters.forEach((c) => counterObserver.observe(c));
 
   /* ─── SMOOTH SCROLL FOR NAV LINKS ─── */
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', e => {
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
       const targetId = anchor.getAttribute('href');
       if (targetId === '#') return;
       const target = document.querySelector(targetId);
@@ -159,6 +167,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  console.log('%cShadowTag AI', 'color: #00e5ff; font-size: 16px; font-weight: bold; font-family: monospace;');
-  console.log('%cSovereign AI Infrastructure · shadowtag-omega-v4', 'color: #8b8ba0; font-size: 11px; font-family: monospace;');
+  console.log(
+    '%cShadowTag AI',
+    'color: #00e5ff; font-size: 16px; font-weight: bold; font-family: monospace;',
+  );
+  console.log(
+    '%cSovereign AI Infrastructure · shadowtag-omega-v4',
+    'color: #8b8ba0; font-size: 11px; font-family: monospace;',
+  );
 });

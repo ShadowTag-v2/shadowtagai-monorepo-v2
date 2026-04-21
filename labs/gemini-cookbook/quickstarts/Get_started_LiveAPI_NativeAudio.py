@@ -47,7 +47,6 @@ Start talking to Gemini
 """
 
 import asyncio
-import sys
 import traceback
 
 import pyaudio

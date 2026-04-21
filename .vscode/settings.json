@@ -1,5 +1,5 @@
 {
-  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python",
   "editor.formatOnSave": true,
 
   "files.exclude": {
@@ -125,7 +125,7 @@
   "gradle.autoDetect": "off",
 
   "antigravity.dangerMode": "auto",
-  "cmake.sourceDirectory": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/control/legacy_workspaces/vllm",
+  "cmake.configureOnOpen": false,
   "git.detectSubmodulesLimit": 20,
 
   "workbench.trustedDomains.promptInTrustedWorkspace": true,
@@ -164,9 +164,5 @@
   "sqltools.autoConnectTo": [],
   "sqltools.disableReleaseNotifications": true,
 
-  "cmake.python.executable": "${workspaceFolder}/.venv/bin/python",
-  "cmake.configureArgs": [
-    "-DPython3_EXECUTABLE=${workspaceFolder}/.venv/bin/python",
-    "-DPYTHON_EXECUTABLE=${workspaceFolder}/.venv/bin/python"
-  ]
+  "cmake.configureOnOpen": false
 }

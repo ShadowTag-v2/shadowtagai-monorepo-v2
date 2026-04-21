@@ -6,9 +6,7 @@ Validates the _schedule_hard_delete function and deletion flow.
 
 from __future__ import annotations
 
-import json
-from datetime import UTC, datetime, timedelta
-from unittest.mock import AsyncMock, MagicMock, patch
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
@@ -29,7 +27,7 @@ class TestCloudTasksScheduling:
     async def test_schedule_handles_missing_cloud_tasks(self):
         """Should gracefully handle Cloud Tasks library not available."""
         scheduler = _get_scheduler()
-        deletion_date = (datetime.now(UTC) + timedelta(days=30)).isoformat()
+        deletion_date = (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()
 
         # The function should not raise even if Cloud Tasks is unavailable
         # It catches exceptions and logs warnings
@@ -43,7 +41,7 @@ class TestCloudTasksScheduling:
     async def test_schedule_returns_without_crash(self):
         """Scheduler should never crash — graceful degradation."""
         scheduler = _get_scheduler()
-        deletion_date = (datetime.now(UTC) + timedelta(days=30)).isoformat()
+        deletion_date = (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()
 
         try:
             await scheduler("receipt_002", "firm_002", deletion_date)
@@ -53,7 +51,7 @@ class TestCloudTasksScheduling:
     @pytest.mark.asyncio
     async def test_deletion_date_is_30_days_out(self):
         """Verify the deletion date is approximately 30 days from now."""
-        now = datetime.now(UTC)
+        now = datetime.now(timezone.utc)
         deletion_date = now + timedelta(days=30)
         # Verify the date is approximately 30 days out
         delta = deletion_date - now

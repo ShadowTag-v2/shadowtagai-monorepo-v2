@@ -31,4 +31,3 @@ install_id = resp.json()["id"]
 resp = requests.post(f"https://api.github.com/app/installations/{install_id}/access_tokens", headers=headers, timeout=30)
 if resp.status_code != 201:
     sys.exit(1)
-

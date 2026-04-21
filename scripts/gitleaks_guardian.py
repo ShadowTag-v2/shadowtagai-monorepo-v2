@@ -494,7 +494,6 @@ Examples:
 
     args = parser.parse_args()
 
-
     # Manifest mode: dedicated third-party leak inventory
     if args.mode == "manifest":
         if not args.input:
@@ -519,7 +518,6 @@ Examples:
     blocks = [f for f in findings if f.verdict == "BLOCK"]
     warns = [f for f in findings if f.verdict == "WARN"]
     [f for f in findings if f.verdict == "IGNORE"]
-
 
     # Auto-remediate ignores
     if args.auto_ignore:

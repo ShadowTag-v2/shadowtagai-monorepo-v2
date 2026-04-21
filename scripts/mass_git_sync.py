@@ -126,7 +126,6 @@ def main() -> None:
     if not token:
         return
 
-
     # Parse provided raw blob, trimming commas and cleaning paths
     lines = RAW_PATHS.splitlines()
     targets = []

@@ -15,10 +15,8 @@ Covers:
 """
 
 import json
-import math
 import sqlite3
-import tempfile
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -33,23 +31,19 @@ from core.ki_engine.schema import (
     generate_ki_id,
 )
 from core.ki_engine.decay import (
-    RankedKI,
     rank_kis,
     recall_score,
     temporal_decay,
 )
 from core.ki_engine.activation import (
     ActivationResult,
-    Collision,
     detect_collisions,
     spread_activation,
 )
 from core.ki_engine.budget import (
-    BudgetResult,
-    estimate_tokens,
     token_budget_recall,
 )
-from core.ki_engine.closure import ClosureResult, compute_closure
+from core.ki_engine.closure import compute_closure
 from core.ki_engine.events import (
     EventAction,
     KIEvent,
@@ -59,15 +53,10 @@ from core.ki_engine.events import (
     read_events,
 )
 from core.ki_engine.promotion import (
-    ConflictResult,
-    PromotionResult,
     detect_conflicts,
     promote_beliefs,
 )
 from core.ki_engine.views import (
-    render_constraints,
-    render_conflicts,
-    render_decisions,
     render_handoff,
     render_index,
 )
@@ -90,7 +79,7 @@ def _make_ki(
     relations: list[KIRelation] | None = None,
 ) -> KIMetadata:
     """Create a test KI with optional age override."""
-    now = datetime.now(UTC)
+    now = datetime.now(timezone.utc)
     updated = (now - timedelta(days=age_days)).isoformat()
     return KIMetadata(
         name=name,

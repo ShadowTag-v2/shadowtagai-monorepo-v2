@@ -93,7 +93,6 @@ def merge_repo(repo_name: str) -> bool:
 
 
 def main() -> None:
-
     repos = get_staged_repos()
     for _r in repos:
         pass
@@ -107,7 +106,6 @@ def main() -> None:
             success += 1
         else:
             fail += 1
-
 
     if fail > 0:
         sys.exit(1)

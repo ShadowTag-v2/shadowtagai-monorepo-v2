@@ -187,7 +187,6 @@ def generate_image(item) -> bool | None:
 
 
 if __name__ == "__main__":
-
     success = 0
     failed = 0
     for i, item in enumerate(IMAGES, 1):
@@ -198,4 +197,3 @@ if __name__ == "__main__":
         # Rate limit: 15 RPM for image gen
         if i < len(IMAGES):
             time.sleep(5)
-

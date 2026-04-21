@@ -58,4 +58,3 @@ Before ANY code change, verify GitHub state:
 
 ### System Prompt
 Always verify current branch status and remote GitHub state using git tools before proposing changes.
-
