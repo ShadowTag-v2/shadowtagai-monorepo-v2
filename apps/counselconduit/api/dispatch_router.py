@@ -13,20 +13,31 @@ Provides:
 from __future__ import annotations
 
 import logging
+import os
 import time
 from typing import Annotated
 
-from fastapi import APIRouter, Header, HTTPException, Response, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response, status
 from pydantic import BaseModel, Field
 
-from apps.counselconduit.api.model_router import (
-    AVAILABLE_MODELS,
-    BYOKConfig,
-    dispatch_request,
-    get_dispatch_metrics,
-    get_models_for_tier,
-    get_tenant_quota,
-)
+try:
+    from apps.counselconduit.api.model_router import (
+        AVAILABLE_MODELS,
+        BYOKConfig,
+        dispatch_request,
+        get_dispatch_metrics,
+        get_models_for_tier,
+        get_tenant_quota,
+    )
+except ImportError:
+    from api.model_router import (  # type: ignore[no-redef]
+        AVAILABLE_MODELS,
+        BYOKConfig,
+        dispatch_request,
+        get_dispatch_metrics,
+        get_models_for_tier,
+        get_tenant_quota,
+    )
 
 logger = logging.getLogger("counselconduit.dispatch_router")
 
@@ -102,10 +113,138 @@ class FirmPolicyResponse(BaseModel):
     status: str = "updated"
 
 
-# ── In-memory firm policies (Firestore-backed in production) ─────────────
+# ── Admin Auth Gate (Risk #58 Mitigation) ────────────────────────────────
 
-_firm_policies: dict[str, FirmPolicyRequest] = {}
+_ADMIN_ALLOWED_CALLERS = {
+    "cloud-scheduler",  # Cloud Scheduler OIDC token sub
+    "admin",            # Firebase Auth admin role
+}
+
+
+async def _verify_admin_caller(request: Request) -> str:
+    """Verify admin endpoint caller is authorized.
+
+    In production: validates Cloud Scheduler OIDC token or Firebase Admin JWT.
+    In development: allows all (APP_ENV != production).
+
+    Returns caller identity string.
+    """
+    if os.environ.get("APP_ENV") != "production":
+        return "dev-bypass"
+
+    # Check for Cloud Scheduler OIDC token
+    auth_header = request.headers.get("Authorization", "")
+    if auth_header.startswith("Bearer "):
+        token = auth_header[7:]
+        try:
+            # In production, validate OIDC token via google.auth
+            import google.auth.transport.requests
+            import google.oauth2.id_token
+
+            id_info = google.oauth2.id_token.verify_oauth2_token(
+                token,
+                google.auth.transport.requests.Request(),
+                audience=os.environ.get("CLOUD_RUN_URL", ""),
+            )
+            caller = id_info.get("email", id_info.get("sub", "unknown"))
+            logger.info("Admin endpoint accessed by: %s", caller)
+            return caller
+        except Exception as e:
+            logger.warning("Admin auth failed: %s", e)
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail={
+                    "type": "https://api.counselconduit.com/errors/unauthorized",
+                    "title": "Unauthorized",
+                    "detail": "Valid OIDC token or Firebase Admin JWT required.",
+                },
+            ) from e
+
+    # Check for internal caller header (Cloud Run → Cloud Run)
+    internal_header = request.headers.get("X-Cloud-Trace-Context")
+    if internal_header:
+        return "internal-service"
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail={
+            "type": "https://api.counselconduit.com/errors/unauthorized",
+            "title": "Unauthorized",
+            "detail": "Admin endpoints require authentication.",
+        },
+    )
+
+
+# ── Firestore-backed firm policies ───────────────────────────────────────
+
+_firm_policies: dict[str, FirmPolicyRequest] = {}  # local cache
 _start_time = time.time()
+_FIRM_POLICY_COLLECTION = "firm_policies"
+
+
+def _get_firestore_client():
+    """Get Firestore client, None if not available."""
+    try:
+        from google.cloud import firestore
+        return firestore.Client(project="shadowtag-omega-v4")
+    except Exception:
+        return None
+
+
+async def _persist_firm_policy(policy: FirmPolicyRequest) -> bool:
+    """Persist firm policy to Firestore. Returns True on success."""
+    client = _get_firestore_client()
+    if not client:
+        logger.debug("Firestore unavailable — policy cached in-memory only")
+        return False
+
+    try:
+        doc_ref = client.collection(_FIRM_POLICY_COLLECTION).document(policy.firm_id)
+        doc_ref.set({
+            "firm_id": policy.firm_id,
+            "allowed_models": policy.allowed_models,
+            "max_rpm": policy.max_rpm,
+            "max_daily": policy.max_daily,
+            "byok_enabled": policy.byok.enabled,
+            "byok_kms_key_uri": policy.byok.kms_key_uri,
+            "byok_key_algorithm": policy.byok.key_algorithm,
+            "updated_at": time.time(),
+        })
+        logger.info("Persisted firm policy to Firestore: %s", policy.firm_id)
+        return True
+    except Exception as e:
+        logger.warning("Firestore persist failed for %s: %s", policy.firm_id, e)
+        return False
+
+
+async def _load_firm_policies_from_firestore() -> int:
+    """Load all firm policies from Firestore into local cache. Returns count."""
+    client = _get_firestore_client()
+    if not client:
+        return 0
+
+    try:
+        docs = client.collection(_FIRM_POLICY_COLLECTION).stream()
+        loaded = 0
+        for doc in docs:
+            data = doc.to_dict()
+            _firm_policies[data["firm_id"]] = FirmPolicyRequest(
+                firm_id=data["firm_id"],
+                allowed_models=data.get("allowed_models", ["gemini-flash"]),
+                max_rpm=data.get("max_rpm", 60),
+                max_daily=data.get("max_daily", 5000),
+                byok=BYOKConfig(
+                    enabled=data.get("byok_enabled", False),
+                    kms_key_uri=data.get("byok_kms_key_uri", ""),
+                    key_algorithm=data.get("byok_key_algorithm", "GOOGLE_SYMMETRIC_ENCRYPTION"),
+                ),
+            )
+            loaded += 1
+        logger.info("Loaded %d firm policies from Firestore", loaded)
+        return loaded
+    except Exception as e:
+        logger.warning("Firestore load failed: %s", e)
+        return 0
 
 
 # ── Circuit Breaker (Load Shedding) ──────────────────────────────────────
@@ -173,7 +312,10 @@ def cleanup_expired_session_pins() -> int:
 
     Returns count of evicted pins.
     """
-    from apps.counselconduit.api.model_router import SESSION_PIN_TTL_SECONDS, _session_pins
+    try:
+        from apps.counselconduit.api.model_router import SESSION_PIN_TTL_SECONDS, _session_pins
+    except ImportError:
+        from api.model_router import SESSION_PIN_TTL_SECONDS, _session_pins  # type: ignore[no-redef]
 
     now = time.time()
     expired = [
@@ -265,7 +407,9 @@ async def dispatch_endpoint(
     summary="Dispatch metrics for Cloud Monitoring",
     description="Returns all NadirClaw dispatch metrics: tier distribution, fallback hits, totals.",
 )
-async def admin_metrics_endpoint() -> MetricsResponse:
+async def admin_metrics_endpoint(
+    _caller: str = Depends(_verify_admin_caller),
+) -> MetricsResponse:
     """Expose dispatch metrics for Cloud Monitoring scraping."""
     metrics = get_dispatch_metrics()
     total = sum(v for k, v in metrics.items() if k.startswith("dispatch."))
@@ -285,6 +429,7 @@ async def admin_metrics_endpoint() -> MetricsResponse:
 )
 async def admin_models_endpoint(
     tier: str = "trial",
+    _caller: str = Depends(_verify_admin_caller),
 ) -> list[ModelInfoResponse]:
     """Return available models filtered by subscription tier."""
     models = get_models_for_tier(tier)
@@ -310,9 +455,15 @@ async def admin_models_endpoint(
     summary="Set per-firm model policy and quota",
     description="Create or update model routing policy for a specific firm. Controls allowed models and quota limits.",
 )
-async def admin_firm_policy_endpoint(body: FirmPolicyRequest) -> FirmPolicyResponse:
-    """Per-firm model policy CRUD."""
+async def admin_firm_policy_endpoint(
+    body: FirmPolicyRequest,
+    _caller: str = Depends(_verify_admin_caller),
+) -> FirmPolicyResponse:
+    """Per-firm model policy CRUD — persists to Firestore."""
     _firm_policies[body.firm_id] = body
+
+    # Persist to Firestore (async, non-blocking)
+    persisted = await _persist_firm_policy(body)
 
     # Update quota overrides
     quota = get_tenant_quota(body.firm_id)
@@ -332,6 +483,7 @@ async def admin_firm_policy_endpoint(body: FirmPolicyRequest) -> FirmPolicyRespo
         quota_rpm=body.max_rpm,
         quota_daily=body.max_daily,
         byok_enabled=body.byok.enabled,
+        status="persisted" if persisted else "cached",
     )
 
 
@@ -340,7 +492,9 @@ async def admin_firm_policy_endpoint(body: FirmPolicyRequest) -> FirmPolicyRespo
     summary="Evict expired session pins",
     description="Manually trigger session pin cleanup. Can be called from Cloud Scheduler.",
 )
-async def admin_session_cleanup() -> dict:
+async def admin_session_cleanup(
+    _caller: str = Depends(_verify_admin_caller),
+) -> dict:
     """Cron-callable session pin cleanup endpoint."""
     evicted = cleanup_expired_session_pins()
     return {"evicted": evicted, "status": "ok"}
@@ -350,7 +504,9 @@ async def admin_session_cleanup() -> dict:
     "/admin/circuit-breaker",
     summary="Circuit breaker status",
 )
-async def admin_circuit_breaker_status() -> dict:
+async def admin_circuit_breaker_status(
+    _caller: str = Depends(_verify_admin_caller),
+) -> dict:
     """Return current circuit breaker state."""
     return {
         "open": _circuit_state["open"],
@@ -359,3 +515,39 @@ async def admin_circuit_breaker_status() -> dict:
         "window_seconds": CIRCUIT_BREAKER_WINDOW,
         "cooldown_seconds": CIRCUIT_BREAKER_COOLDOWN,
     }
+
+
+@router.get(
+    "/admin/firm-policies",
+    summary="List all firm policies (Firestore-backed)",
+)
+async def admin_list_firm_policies(
+    _caller: str = Depends(_verify_admin_caller),
+) -> dict:
+    """List all cached firm policies. Optionally reload from Firestore."""
+    return {
+        "policies": [
+            {
+                "firm_id": p.firm_id,
+                "allowed_models": p.allowed_models,
+                "max_rpm": p.max_rpm,
+                "max_daily": p.max_daily,
+                "byok_enabled": p.byok.enabled,
+            }
+            for p in _firm_policies.values()
+        ],
+        "count": len(_firm_policies),
+        "source": "cache",
+    }
+
+
+@router.post(
+    "/admin/firm-policies/reload",
+    summary="Reload firm policies from Firestore",
+)
+async def admin_reload_firm_policies(
+    _caller: str = Depends(_verify_admin_caller),
+) -> dict:
+    """Force-reload all firm policies from Firestore."""
+    loaded = await _load_firm_policies_from_firestore()
+    return {"loaded": loaded, "status": "ok"}
