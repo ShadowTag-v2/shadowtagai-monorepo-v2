@@ -137,3 +137,15 @@
 
 ## Known Issues
 - Antigravity IDE: SharedProcess uncaught exception (reading 'fireEvent') - Ignored upstream Electron/Extension bug.
+
+## Risk #59: Trivy HIGH — ecdsa CVE-2024-23342 (Minerva Timing Attack)
+- **Type**: Security / Dependency
+- **Severity**: 🟠 High
+- **Status**: RESOLVED
+- **Description**: Trivy container scan flagged `ecdsa 0.19.2` (CVE-2024-23342, Minerva timing attack in ECDSA signature verification). The `ecdsa` package was a transitive dependency of `python-jose[cryptography]`. No direct imports of `python-jose` or `ecdsa` existed in CounselConduit — all JWT verification uses `firebase_admin.auth.verify_id_token()`. **Resolution**: Replaced `python-jose[cryptography]>=3.3.0` with `PyJWT[crypto]>=2.10.0` in `requirements.txt`. PyJWT uses the `cryptography` backend directly, eliminating the `ecdsa` dependency entirely. OS-level CVEs (ncurses CVE-2025-69720, libudev CVE-2026-29111) remain in Debian base image — no upstream fix available.
+
+## Risk #60: ZAP Baseline Warnings — Cache-Control / CORP Headers Missing
+- **Type**: Security / Headers
+- **Severity**: 🟢 Low
+- **Status**: RESOLVED
+- **Description**: OWASP ZAP baseline scan flagged 3 warnings: (1) WARN-10015 Cache-control directives — API responses lacked `no-store`. (2) WARN-10049 Storable/cacheable content. (3) WARN-90004 Missing Cross-Origin-Resource-Policy header. **Resolution**: Added `Cache-Control: no-store, no-cache, must-revalidate, private`, `Pragma: no-cache`, `Cross-Origin-Resource-Policy: same-origin`, and `Cross-Origin-Opener-Policy: same-origin` to `SecurityHeadersMiddleware`. Also added `/robots.txt` and `/favicon.ico` root routes to eliminate 404 findings.

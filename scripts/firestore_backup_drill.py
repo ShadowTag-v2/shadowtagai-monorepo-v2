@@ -33,10 +33,15 @@ def run(cmd: list[str]) -> str:
 def list_recent_backups() -> list[str]:
     """List Firestore export folders from the last 7 days."""
     print("📋 Listing recent Firestore backups...")
-    out = run([
-        "gcloud", "storage", "ls", BACKUP_BUCKET,
-        f"--project={PROJECT}",
-    ])
+    out = run(
+        [
+            "gcloud",
+            "storage",
+            "ls",
+            BACKUP_BUCKET,
+            f"--project={PROJECT}",
+        ]
+    )
     folders = [line.strip() for line in out.splitlines() if line.strip()]
     print(f"   Found {len(folders)} backup folder(s)")
     return folders

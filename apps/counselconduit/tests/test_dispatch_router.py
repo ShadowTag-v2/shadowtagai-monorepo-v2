@@ -114,6 +114,7 @@ class TestCircuitBreaker:
     def test_state_after_threshold(self):
         for _ in range(CIRCUIT_BREAKER_THRESHOLD):
             from apps.counselconduit.api.dispatch_router import _record_circuit_error
+
             _record_circuit_error()
         assert _circuit_state["open"] is True
 
@@ -122,6 +123,7 @@ class TestCircuitBreaker:
         _circuit_state["last_error"] = time.time() - 120  # well past cooldown
         _circuit_state["errors"] = CIRCUIT_BREAKER_THRESHOLD
         from apps.counselconduit.api.dispatch_router import _check_circuit_breaker
+
         _check_circuit_breaker()  # should not raise
         assert _circuit_state["open"] is False
 
@@ -142,6 +144,7 @@ class TestFirmPolicy:
 
     def test_policy_with_byok(self):
         from apps.counselconduit.api.model_router import BYOKConfig
+
         policy = FirmPolicyRequest(
             firm_id="firm-ent",
             allowed_models=["gemini-pro"],
@@ -160,6 +163,7 @@ class TestMonitoring:
     @pytest.mark.asyncio
     async def test_export_metrics_no_sdk(self):
         from apps.counselconduit.api.monitoring import export_metrics_to_cloud_monitoring
+
         result = await export_metrics_to_cloud_monitoring()
         # Should gracefully skip when SDK not installed
         assert result["status"] in ("ok", "skipped", "error")
@@ -167,5 +171,6 @@ class TestMonitoring:
     @pytest.mark.asyncio
     async def test_fallback_alert_no_sdk(self):
         from apps.counselconduit.api.monitoring import configure_fallback_saturation_alert
+
         result = await configure_fallback_saturation_alert()
         assert result["status"] in ("created", "skipped", "error")

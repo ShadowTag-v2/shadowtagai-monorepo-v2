@@ -46,7 +46,7 @@ pk: `id` (int)
 - `hashed_password`: String
 - `is_active`: Boolean _(default)_
 - `created_at`: DateTime
-- _relations_: workspace_links: 
+- _relations_: workspace_links:
 
 ### Workspace
 
@@ -55,7 +55,7 @@ pk: `id` (int)
 - `id`: int _(pk, index)_
 - `name`: String
 - `created_at`: DateTime
-- _relations_: members: , agents: 
+- _relations_: members: , agents:
 
 ### WorkspaceMember
 
@@ -64,7 +64,7 @@ pk: `workspace_id` (int) · fk: workspace_id, user_id
 - `workspace_id`: int _(fk, pk)_
 - `user_id`: int _(fk, pk)_
 - `role`: Enum _(default)_
-- _relations_: workspace: , user: 
+- _relations_: workspace: , user:
 
 ### AIAgent
 
@@ -76,7 +76,7 @@ pk: `id` (int) · fk: workspace_id
 - `system_prompt`: Text _(nullable)_
 - `is_active`: Boolean _(default)_
 - `created_at`: DateTime
-- _relations_: workspace: 
+- _relations_: workspace:
 
 ### Conversation
 

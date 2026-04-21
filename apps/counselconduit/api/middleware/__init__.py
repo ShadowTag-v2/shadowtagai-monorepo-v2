@@ -62,6 +62,12 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response.headers["X-XSS-Protection"] = "1; mode=block"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+        # ZAP WARN-10015: Prevent caching of API responses
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, private"
+        response.headers["Pragma"] = "no-cache"
+        # ZAP WARN-90004: Cross-Origin isolation headers
+        response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
+        response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; "
             "script-src 'self' https://js.stripe.com; "

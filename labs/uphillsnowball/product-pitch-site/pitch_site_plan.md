@@ -335,7 +335,7 @@ Target: P90+ / A95+ / BP95+ / SEO95+
 ### Firebase Hosting via MCP Doctrine
 ```
 1. firebase_get_environment → verify auth
-2. read_resource("firebase-mcp-server", "firebase://guides/init/hosting")  
+2. read_resource("firebase-mcp-server", "firebase://guides/init/hosting")
 3. firebase_init → hosting config for pitch site
 4. Deploy via MCP-orchestrated CLI
 5. Verify live URL

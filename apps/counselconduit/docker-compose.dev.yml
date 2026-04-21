@@ -1,0 +1,66 @@
+# Item 17: docker-compose.dev.yml — local dev stack for CounselConduit
+# Item 6, 12: Also includes Cloud SQL proxy sidecar for local dev
+
+services:
+  counselconduit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: counselconduit-dev
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_ENV=development
+      - PORT=8080
+      - CORS_ORIGINS=http://localhost:4000,http://localhost:5173,http://localhost:8080
+      - FIRESTORE_EMULATOR_HOST=firestore-emulator:8086
+      - GOOGLE_CLOUD_PROJECT=shadowtag-omega-v4
+    env_file:
+      - path: .env
+        required: false
+    depends_on:
+      firestore-emulator:
+        condition: service_started
+    networks:
+      - cc-net
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; r=httpx.get('http://localhost:8080/health'); assert r.status_code==200"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  firestore-emulator:
+    image: gcr.io/google.com/cloudsdktool/google-cloud-cli:latest
+    container_name: cc-firestore-emulator
+    command: >
+      gcloud emulators firestore start
+        --host-port=0.0.0.0:8086
+        --project=shadowtag-omega-v4
+    ports:
+      - "8086:8086"
+    networks:
+      - cc-net
+
+  # Item 19: Cloud SQL Auth Proxy for connecting to prod DB from local
+  cloudsql-proxy:
+    image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.15.0
+    container_name: cc-cloudsql-proxy
+    command: >
+      --port=5432
+      --address=0.0.0.0
+      shadowtag-omega-v4:us-central1:counselconduit-fdc
+    ports:
+      - "5433:5432"
+    volumes:
+      - ${GOOGLE_APPLICATION_CREDENTIALS:-~/.config/gcloud/application_default_credentials.json}:/credentials.json:ro
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials.json
+    networks:
+      - cc-net
+    profiles:
+      - with-cloudsql  # Only start with: docker compose --profile with-cloudsql up
+
+networks:
+  cc-net:
+    driver: bridge

@@ -139,9 +139,7 @@ class TestDispatchJudge6Integration:
             from apps.counselconduit.api.judge6 import judge6_pipeline
 
             # Test with content that Judge #6 should flag
-            result = judge6_pipeline(
-                "I guarantee this legal advice is 100% correct and you will win your case."
-            )
+            result = judge6_pipeline("I guarantee this legal advice is 100% correct and you will win your case.")
 
             # RED signal should replace output
             if result["signal"] == "RED":
