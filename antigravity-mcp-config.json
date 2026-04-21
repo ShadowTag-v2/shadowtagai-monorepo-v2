@@ -105,6 +105,15 @@
         "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
         "HOME": "/Users/pikeymickey"
       }
+    },
+    "mempalace": {
+      "command": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python",
+      "args": ["-m", "mempalace.mcp_server"],
+      "env": {
+        "MEMPALACE_DB_DIR": "/Users/pikeymickey/.gemini/antigravity/mempalace_db",
+        "PATH": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin:/Users/pikeymickey/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
+        "HOME": "/Users/pikeymickey"
+      }
     }
   },
   "capability_registry": {
