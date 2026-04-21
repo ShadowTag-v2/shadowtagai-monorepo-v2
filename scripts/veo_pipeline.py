@@ -49,11 +49,26 @@ DEFAULT_MODEL = "veo-3.1-generate-preview"
 PRESETS = {
     "hero_drift": {
         "prompt": (
-            "Cinematic aerial tracking shot of a sleek matte-black autonomous vehicle "
-            "drifting through a rain-slicked neon-lit Tokyo intersection at golden hour. "
-            "Camera follows from 45-degree angle, shallow depth of field, lens flare from "
-            "brake lights reflecting on wet asphalt, volumetric fog, shot on ARRI Alexa "
-            "with 85mm anamorphic lens. No sharp cuts, continuous smooth motion."
+            "Cinematic aerial establishing shot of a futuristic cyberpunk cityscape at night. "
+            "An enormous holographic shield dome glowing in cyan and teal protects a central "
+            "data center district. Digital rain particles fall through volumetric fog. Scales "
+            "of justice appear as a faint holographic watermark in the sky. Slow camera push-in "
+            "through rain-slicked streets with neon reflections. No people, no cars, no vehicles. "
+            "Dark moody atmosphere, shot on ARRI Alexa with 50mm anamorphic lens. "
+            "No sharp cuts, continuous smooth motion."
+        ),
+        "duration_seconds": 8,
+        "aspect_ratio": "16:9",
+    },
+    "legal_shield_hero": {
+        "prompt": (
+            "Slow cinematic push into a holographic shield dome glowing in bright cyan "
+            "and teal, protecting a futuristic server room. Digital data streams flow "
+            "upward through the dome. Scales of justice rotate slowly overhead as a "
+            "holographic projection. Rain falls outside the dome, wet reflections on "
+            "dark pavement. Cyberpunk city skyline in background. No people, no vehicles. "
+            "Volumetric lighting, premium tech aesthetic. Shot on RED V-Raptor, "
+            "35mm lens, shallow depth of field."
         ),
         "duration_seconds": 8,
         "aspect_ratio": "16:9",
