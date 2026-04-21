@@ -110,5 +110,12 @@
 - **Status**: MITIGATED
 - **Description**: `npx` unavailable in default agent shell (nvm not sourced). Firebase CLI deploy requires explicit PATH prepend: `PATH="$HOME/.nvm/versions/node/$(ls $HOME/.nvm/versions/node/ | tail -1)/bin:$PATH"`. Mitigated by using this prepend in all Firebase deploy commands.
 
+
+## Risk #55: Duplicate Process.cs — SK Process Definition Drift
+- **Type**: Architectural / Code Duplication
+- **Severity**: 🟠 High
+- **Status**: RESOLVED
+- **Description**: Two copies of `ShadowTagV4.Kernel/Process.cs` existed: (1) canonical at `apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/Process.cs` and (2) duplicate at `apps/aiyou_stack/aiyou-fastapi-services/src/dotnet/AiYou.Kernel/Process.cs`. The duplicate had already drifted — AGENTS.md incorrectly claimed `OnExternalEvent` should be replaced with `OnInputEvent` (which does NOT exist in SK Process.Core 1.21.0-alpha). `OnExternalEvent` is the CORRECT API for human-in-the-loop external resumption. **Resolution**: Duplicate deleted via `git rm -r`. Canonical copy updated with user's authoritative version. AGENTS.md corrected. `dotnet build` verified clean (0 warnings, 0 errors).
+
 ## Known Issues
 - Antigravity IDE: SharedProcess uncaught exception (reading 'fireEvent') - Ignored upstream Electron/Extension bug.
