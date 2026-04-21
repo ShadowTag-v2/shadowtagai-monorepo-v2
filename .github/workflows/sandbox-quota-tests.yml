@@ -1,0 +1,60 @@
+# .github/workflows/sandbox-quota-tests.yml
+# CI Gate: Sandbox quota enforcement tests
+# Runs on every PR and push to main
+
+name: Sandbox Quota Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/counselconduit/api/sandbox_router.py'
+      - 'tests/unit/test_rate_limiting.py'
+      - 'tests/unit/test_cloud_tasks_scheduling.py'
+      - 'tests/integration/test_hard_delete_cascade.py'
+  pull_request:
+    paths:
+      - 'apps/counselconduit/api/sandbox_router.py'
+      - 'tests/unit/test_rate_limiting.py'
+      - 'tests/unit/test_cloud_tasks_scheduling.py'
+      - 'tests/integration/test_hard_delete_cascade.py'
+
+permissions:
+  contents: read
+
+jobs:
+  sandbox-tests:
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.13", "3.14"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          allow-prereleases: true
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-asyncio pydantic structlog httpx
+
+      - name: Run sandbox quota tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          pytest tests/unit/test_rate_limiting.py \
+                 tests/unit/test_cloud_tasks_scheduling.py \
+                 tests/integration/test_hard_delete_cascade.py \
+                 -v --tb=short -q
+
+      - name: Run ruff check on sandbox files
+        run: |
+          pip install ruff
+          ruff check apps/counselconduit/api/sandbox_router.py \
+                     apps/counselconduit/api/gdpr.py

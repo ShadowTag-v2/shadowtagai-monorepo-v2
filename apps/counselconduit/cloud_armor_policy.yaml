@@ -74,7 +74,25 @@ rules:
           request.headers['x-tls-version'] != '' &&
           request.headers['x-tls-version'] < 'TLSv1.2'
 
-  # Rule 6: Block requests with suspiciously large payloads (>1MB)
+  # Rule 6: GDPR endpoints — 3 req/min strict limit (deletion/export abuse prevention)
+  - action: rate_based_ban
+    priority: 2200
+    description: "GDPR endpoints: 3 req/min strict limit"
+    match:
+      expr:
+        expression: >-
+          request.path.startsWith('/account/delete') ||
+          request.path.startsWith('/account/export') ||
+          request.path.startsWith('/gdpr/')
+    rateLimitOptions:
+      conformAction: allow
+      exceedAction: deny(429)
+      rateLimitThreshold:
+        count: 3
+        intervalSec: 60
+      banDurationSec: 3600
+
+  # Rule 7: Block requests with suspiciously large payloads (>1MB)
   - action: deny(413)
     priority: 5000
     description: "Block oversized requests"
