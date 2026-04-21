@@ -226,3 +226,9 @@ antigravity_gca_repo_bundle/
 antigravity_strict_final_foldin_apply/
 antigravity_manifest_bundle_v3/
 antigravity_memory_lock_pack/
+
+# Reference repos (cloned external repos)
+.reference_repos/
+
+# Cinematic scroll generated frames (large binaries)
+labs/uphillsnowball/cinematic-scroll/frames/
