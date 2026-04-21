@@ -17,10 +17,12 @@ import hmac
 import json
 import logging
 import os
+import time
+from collections import defaultdict
 from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger("counselconduit.kovel_attestation")
@@ -29,6 +31,29 @@ router = APIRouter(prefix="/attestation", tags=["Kovel Attestation"])
 
 # HMAC signing key for attestation receipts
 _ATTESTATION_SECRET = os.getenv("KOVEL_ATTESTATION_SECRET", "kovel-dev-secret")
+
+# ── Rate Limiting (#9) ────────────────────────────────────────────────────
+
+_RATE_LIMIT_WINDOW = 60  # seconds
+_RATE_LIMIT_MAX = 10  # max requests per window per firm
+
+# In-memory sliding window rate limiter (per-firm)
+_rate_windows: dict[str, list[float]] = defaultdict(list)
+
+
+def _check_rate_limit(firm_id: str) -> bool:
+    """Check if firm has exceeded rate limit. Returns True if allowed."""
+    now = time.monotonic()
+    window = _rate_windows[firm_id]
+
+    # Purge expired entries
+    _rate_windows[firm_id] = [t for t in window if now - t < _RATE_LIMIT_WINDOW]
+
+    if len(_rate_windows[firm_id]) >= _RATE_LIMIT_MAX:
+        return False
+
+    _rate_windows[firm_id].append(now)
+    return True
 
 
 # ── Models ─────────────────────────────────────────────────────────────────
@@ -129,7 +154,24 @@ async def create_attestation(req: AttestationRequest) -> SessionAttestation:
     The receipt proves that a privileged attorney-client communication
     occurred via AI under the Kovel doctrine, without storing the
     actual content (only SHA-256 hashes).
+
+    Rate-limited: 10 requests per minute per firm.
     """
+    # #9: Rate limiting
+    if not _check_rate_limit(req.firm_id):
+        logger.warning(
+            "Rate limit exceeded: firm=%s (max %d/min)",
+            req.firm_id,
+            _RATE_LIMIT_MAX,
+        )
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail={
+                "code": "RATE_LIMIT_EXCEEDED",
+                "message": f"Maximum {_RATE_LIMIT_MAX} attestation requests per minute per firm.",
+            },
+        )
+
     attestation = generate_attestation(req)
 
     # Store in Firestore (immutable, append-only collection)
@@ -141,8 +183,21 @@ async def create_attestation(req: AttestationRequest) -> SessionAttestation:
 
         await store_attestation(req.firm_id, attestation.model_dump())
     except Exception as e:
-        # Non-fatal: attestation is still returned to client even if persistence fails
-        logger.warning("Firestore attestation store failed (non-fatal): %s", e)
+        # #16: Structured monitoring alert for attestation failures
+        logger.error(
+            "ATTESTATION_STORE_FAILURE: firm=%s id=%s error=%s",
+            req.firm_id,
+            attestation.attestation_id,
+            str(e),
+            extra={
+                "severity": "ERROR",
+                "labels": {
+                    "service": "counselconduit",
+                    "component": "kovel_attestation",
+                    "alert_type": "attestation_persistence_failure",
+                },
+            },
+        )
 
     logger.info(
         "Kovel attestation generated: id=%s session=%s firm=%s",
