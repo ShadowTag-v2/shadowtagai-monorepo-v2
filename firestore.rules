@@ -13,6 +13,56 @@ service cloud.firestore {
       allow read: if request.auth != null && resource.data.status == 'active';
     }
 
+    // ── Phase 3: Per-firm tenant isolation ──────────────────────────────
+    // Firm documents: attorneys can only access their own firm
+    match /firms/{firmId} {
+      allow read: if request.auth != null && request.auth.token.firm_id == firmId;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+
+      // Sessions: scoped to firm, readable by firm's attorneys
+      match /sessions/{sessionId} {
+        allow read: if request.auth != null && request.auth.token.firm_id == firmId;
+        allow create: if request.auth != null && request.auth.token.firm_id == firmId;
+        allow delete: if request.auth != null && request.auth.token.admin == true;
+      }
+
+      // Transcripts: immutable once written (lawyer permanent record)
+      match /transcripts/{transcriptId} {
+        allow read: if request.auth != null && request.auth.token.firm_id == firmId;
+        allow create: if request.auth != null && request.auth.token.firm_id == firmId;
+        allow update, delete: if false; // Immutable — per Kovel doctrine
+      }
+
+      // Matters: firm-scoped case management
+      match /matters/{matterId} {
+        allow read, write: if request.auth != null && request.auth.token.firm_id == firmId;
+      }
+
+      // Billing records: read-only for attorneys, write by system only
+      match /billing_records/{recordId} {
+        allow read: if request.auth != null && request.auth.token.firm_id == firmId;
+        allow write: if request.auth != null && request.auth.token.admin == true;
+      }
+
+      // Clients: firm-scoped, restricted to firm attorneys
+      match /clients/{clientId} {
+        allow read, write: if request.auth != null && request.auth.token.firm_id == firmId;
+      }
+    }
+
+    // GDPR audit trail: read-only for admins, system-write only
+    match /gdpr_audit/{auditId} {
+      allow read: if request.auth != null && request.auth.token.admin == true;
+      allow write: if false; // System-only via admin SDK
+    }
+
+    // Kovel attestation receipts: immutable, admin-readable
+    match /attestations/{attestationId} {
+      allow read: if request.auth != null && request.auth.token.admin == true;
+      allow create: if request.auth != null;
+      allow update, delete: if false; // Immutable receipts
+    }
+
     // Stripe webhook events: write-only from authenticated service accounts
     match /stripe_events/{eventId} {
       allow read: if request.auth != null && request.auth.token.admin == true;

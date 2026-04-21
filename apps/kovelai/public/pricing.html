@@ -107,6 +107,14 @@
     Need a custom plan? <a href="mailto:enterprise@kovelai.com">Contact our team</a> for volume pricing and tailored compliance packages.
   </div>
 
+  <div class="enterprise-note" style="border-top: 1px solid #2a3042; margin-top: 1rem; padding-top: 2rem;">
+    <strong style="color: #c9a14a;">Law Firm Setup</strong><br/>
+    Set up your Stripe Connect account to receive client payments directly.<br/>
+    <button id="connect-onboard-btn" class="cta-btn cta-primary" style="max-width: 280px; margin: 1rem auto 0; display: inline-block; padding: 0.75rem 2rem;">
+      Set Up Firm Billing →
+    </button>
+  </div>
+
   <script src="https://js.stripe.com/v3/"></script>
   <script>
     // Stripe publishable key (frontend-safe)
@@ -186,6 +194,32 @@
           if (error) console.error(error);
         }
       });
+    });
+
+    // Stripe Connect onboarding for law firms
+    document.getElementById('connect-onboard-btn')?.addEventListener('click', async () => {
+      try {
+        const res = await fetch(`${API_BASE}/connect/onboard`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Kovel-Auth': localStorage.getItem('kovel_token') || '',
+          },
+          body: JSON.stringify({
+            firm_name: prompt('Enter your firm name:'),
+            return_url: window.location.href,
+          }),
+        });
+        const data = await res.json();
+        if (data.onboarding_url) {
+          window.location.href = data.onboarding_url;
+        } else {
+          alert('Please log in first to set up firm billing.');
+        }
+      } catch (err) {
+        console.error('Connect onboarding error:', err);
+        alert('Unable to start onboarding. Please try again.');
+      }
     });
   </script>
 </body>
