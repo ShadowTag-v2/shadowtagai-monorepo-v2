@@ -87,7 +87,6 @@ def main() -> None:
     repos = checklist.get("repos", [])
     total_copied = 0
 
-
     for repo_info in repos:
         name = repo_info["repo"].split("/")[-1]
         dest_rel = repo_info["destination"]
@@ -99,7 +98,6 @@ def main() -> None:
 
         src_dir = SRC_BASE / name
         dest_dir = DEST_BASE / dest_rel
-
 
         # 1. Physically fold content
         if not checks.get("folded_into_destination"):
@@ -140,7 +138,6 @@ def main() -> None:
     # Save checklist gracefully
     with open(checklist_path, "w") as f:
         yaml.dump(checklist, f, sort_keys=False)
-
 
 
 if __name__ == "__main__":

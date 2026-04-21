@@ -57,13 +57,11 @@ def push_to_remote(token) -> None:
     if not branch_output:
         branch_output = "HEAD"
 
-
     subprocess.run(["git", "remote", "set-url", "origin", remote_url], check=True)
     push_result = subprocess.run(["git", "push", "--no-verify", "origin", branch_output], capture_output=True, text=True)
 
     if push_result.returncode != 0:
         sys.exit(1)
-
 
 
 if __name__ == "__main__":

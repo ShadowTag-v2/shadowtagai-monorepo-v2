@@ -48,7 +48,6 @@ def main() -> None:
         with open("repo_merge_blockers.json", "w") as f:
             json.dump(blockers, f, indent=2)
 
-
     except Exception:
         sys.exit(1)
 

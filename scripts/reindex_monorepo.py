@@ -196,14 +196,12 @@ def main() -> None:
     parser.add_argument("--recreate", action="store_true", help="Delete and recreate ChromaDB collection")
     args = parser.parse_args()
 
-
     conn = init_sqlite()
     model = get_embedder()
     collection = get_collection(recreate=args.recreate)
 
     _scanned, _indexed = crawl(args.dirs, model, collection, conn, args.dry_run)
     conn.close()
-
 
 
 if __name__ == "__main__":

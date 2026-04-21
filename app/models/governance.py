@@ -3,9 +3,9 @@ Governance models and schemas
 """
 
 from pydantic import BaseModel, Field
-from typing import Optional, Any
+from typing import Any
 from datetime import datetime
-from enum import Enum, StrEnum
+from enum import StrEnum
 
 
 class RiskLevel(StrEnum):

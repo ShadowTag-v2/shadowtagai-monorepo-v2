@@ -1,4 +1,5 @@
 """Integration tests for the governance control plane."""
+
 import unittest
 
 
@@ -9,6 +10,7 @@ class TestGovernanceIntegration(unittest.TestCase):
         """Governance control plane should be importable."""
         try:
             import core.governance  # noqa: F401
+
             importable = True
         except ImportError:
             importable = False

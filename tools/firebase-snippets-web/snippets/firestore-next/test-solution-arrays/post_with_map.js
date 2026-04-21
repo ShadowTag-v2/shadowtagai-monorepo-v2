@@ -9,7 +9,7 @@
 {
   title: 'My great post', categories;
   :
-  ('technology');
+  ('technology')
   : true,
         "opinion": true,
         "cats": true

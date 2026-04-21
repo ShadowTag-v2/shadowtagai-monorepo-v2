@@ -10,7 +10,6 @@ def check_stage_3() -> None:
     except Exception:
         return
 
-
     drift = 0
     expected_paths = []
 

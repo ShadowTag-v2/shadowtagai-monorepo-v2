@@ -83,6 +83,5 @@ def execute_ingestion() -> None:
             total_files += 1
 
 
-
 if __name__ == "__main__":
     execute_ingestion()

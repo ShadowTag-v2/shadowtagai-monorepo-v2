@@ -148,7 +148,6 @@ class AtomicThreadManager:
             with open(thread_file, "w") as f:
                 f.write(content)
 
-
     def block(self, thread_id: str, reason: str) -> None:
         if thread_id not in self.index["threads"]:
             msg = f"Thread {thread_id} not found"

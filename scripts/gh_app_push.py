@@ -45,4 +45,3 @@ try:
     subprocess.run("python3 scripts/omega-loopin.py", shell=True, check=True)  # nosec B602 — intentional shell for git/system ops
 except Exception:
     pass
-

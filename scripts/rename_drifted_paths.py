@@ -60,4 +60,3 @@ for root, dirs, files in os.walk(ROOT, topdown=False):
             if old_path != new_path:
                 merge_directories(old_path, new_path)
                 renamed_dirs += 1
-

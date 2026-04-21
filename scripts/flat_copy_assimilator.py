@@ -222,6 +222,5 @@ def main() -> None:
                 shutil.rmtree(clone_path)
 
 
-
 if __name__ == "__main__":
     main()

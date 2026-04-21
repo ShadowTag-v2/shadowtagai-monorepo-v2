@@ -28,7 +28,7 @@ class TestToolboxClientAuth:
     async def test_init_toolbox_identity(self, mock_core_client):
         """Test init with TOOLBOX_IDENTITY (no auth headers)."""
         creds = CredentialStrategy.toolbox_identity()
-        client = ToolboxClient(server_url="http://test", credentials=creds)
+        ToolboxClient(server_url="http://test", credentials=creds)
 
         # Verify core client created with empty headers for auth
         _, kwargs = mock_core_client.call_args
@@ -47,7 +47,7 @@ class TestToolboxClientAuth:
         mock_fetch_id.return_value = "id-token-123"
 
         creds = CredentialStrategy.application_default_credentials(target_audience="aud")
-        client = ToolboxClient(server_url="http://test", credentials=creds)
+        ToolboxClient(server_url="http://test", credentials=creds)
 
         _, kwargs = mock_core_client.call_args
         headers = kwargs["client_headers"]
@@ -75,7 +75,7 @@ class TestToolboxClientAuth:
         mock_default.return_value = (mock_creds, "proj")
 
         creds = CredentialStrategy.application_default_credentials(target_audience="aud")
-        client = ToolboxClient(server_url="http://test", credentials=creds)
+        ToolboxClient(server_url="http://test", credentials=creds)
 
         token_getter = mock_core_client.call_args[1]["client_headers"]["Authorization"]
         token = token_getter()
@@ -97,7 +97,7 @@ class TestToolboxClientAuth:
         mock_default.return_value = (mock_creds, "proj")
 
         creds = CredentialStrategy.application_default_credentials(target_audience="aud")
-        client = ToolboxClient(server_url="http://test", credentials=creds)
+        ToolboxClient(server_url="http://test", credentials=creds)
         token_getter = mock_core_client.call_args[1]["client_headers"]["Authorization"]
         assert token_getter() == "Bearer access-token-123"
 
@@ -118,14 +118,14 @@ class TestToolboxClientAuth:
         mock_default.return_value = (mock_creds, "proj")
 
         creds = CredentialStrategy.application_default_credentials(target_audience="aud")
-        client = ToolboxClient(server_url="http://test", credentials=creds)
+        ToolboxClient(server_url="http://test", credentials=creds)
         token_getter = mock_core_client.call_args[1]["client_headers"]["Authorization"]
         assert token_getter() == ""
 
     @patch("toolbox_adk.client.toolbox_core.ToolboxClient")
     async def test_init_api_key(self, mock_core_client):
         creds = CredentialStrategy.api_key(key="123", header_name="x-foo")
-        client = ToolboxClient("http://test", credentials=creds)
+        ToolboxClient("http://test", credentials=creds)
         headers = mock_core_client.call_args[1]["client_headers"]
         assert headers["x-foo"] == "123"
         assert "Authorization" not in headers
@@ -133,7 +133,7 @@ class TestToolboxClientAuth:
     @patch("toolbox_adk.client.toolbox_core.ToolboxClient")
     async def test_init_manual_token(self, mock_core_client):
         creds = CredentialStrategy.manual_token(token="abc")
-        client = ToolboxClient("http://test", credentials=creds)
+        ToolboxClient("http://test", credentials=creds)
         headers = mock_core_client.call_args[1]["client_headers"]
         assert headers["Authorization"] == "Bearer abc"
 
@@ -144,7 +144,7 @@ class TestToolboxClientAuth:
         mock_google_creds.token = "creds-token"
 
         creds = CredentialStrategy.manual_credentials(credentials=mock_google_creds)
-        client = ToolboxClient("http://test", credentials=creds)
+        ToolboxClient("http://test", credentials=creds)
 
         token_getter = mock_core_client.call_args[1]["client_headers"]["Authorization"]
         assert token_getter() == "Bearer creds-token"
@@ -157,7 +157,7 @@ class TestToolboxClientAuth:
         mock_google_creds.token = "refreshed-token"
 
         creds = CredentialStrategy.manual_credentials(credentials=mock_google_creds)
-        client = ToolboxClient("http://test", credentials=creds)
+        ToolboxClient("http://test", credentials=creds)
 
         token_getter = mock_core_client.call_args[1]["client_headers"]["Authorization"]
         assert token_getter() == "Bearer refreshed-token"
@@ -166,7 +166,7 @@ class TestToolboxClientAuth:
     @patch("toolbox_adk.client.toolbox_core.ToolboxClient")
     async def test_init_user_identity(self, mock_core_client):
         creds = CredentialStrategy.user_identity(client_id="c", client_secret="s")
-        client = ToolboxClient("http://test", credentials=creds)
+        ToolboxClient("http://test", credentials=creds)
 
         token_getter = mock_core_client.call_args[1]["client_headers"]["Authorization"]
         # Should be empty initially

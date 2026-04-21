@@ -122,6 +122,5 @@ def main() -> None:
             generate_variant(prompt, output_path)
 
 
-
 if __name__ == "__main__":
     main()

@@ -13,10 +13,9 @@ in CounselConduit. Tool calls run in ephemeral containers with:
 from __future__ import annotations
 
 import logging
-import os
 import uuid
 from dataclasses import dataclass, field
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from enum import StrEnum
 from typing import Any
 

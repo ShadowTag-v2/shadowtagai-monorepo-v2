@@ -66,13 +66,11 @@ def frame_git_repo(path_str) -> None:
         else:
             pass
 
-
     except Exception:
         pass
 
 
 def main() -> None:
-
     # Parse and dedup
     lines = RAW_PATHS.splitlines()
     targets = list({line.strip().rstrip(",") for line in lines if line.strip()})

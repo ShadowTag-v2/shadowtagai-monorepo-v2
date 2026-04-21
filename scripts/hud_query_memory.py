@@ -51,7 +51,8 @@ def query_chroma(query: str, top_k: int) -> list[dict]:
     for doc, meta, dist in zip(
         results["documents"][0],
         results["metadatas"][0],
-        results["distances"][0], strict=False,
+        results["distances"][0],
+        strict=False,
     ):
         hits.append(
             {
@@ -114,7 +115,6 @@ def main() -> None:
 
     query = " ".join(args.query)
     top_k = args.top
-
 
     if not args.beads_only:
         hits = query_chroma(query, top_k)

@@ -4,9 +4,7 @@
 from __future__ import annotations
 
 import json
-import os
 import sqlite3
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -34,14 +32,11 @@ from core.ki_engine.isolation import (
     unshare_ki,
 )
 from core.ki_engine.migration import (
-    MigrationResult,
     infer_ki_type,
     migrate_ki_metadata,
 )
 from core.ki_engine.schema import (
-    KIClassification,
     KIMetadata,
-    KIStatus,
     KIType,
 )
 

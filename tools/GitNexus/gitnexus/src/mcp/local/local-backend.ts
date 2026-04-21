@@ -16,6 +16,7 @@ import {
   isLbugReady,
   isWriteQuery,
 } from '../core/lbug-adapter.js';
+
 export { isWriteQuery };
 
 // Embedding imports are lazy (dynamic import) to avoid loading onnxruntime-node

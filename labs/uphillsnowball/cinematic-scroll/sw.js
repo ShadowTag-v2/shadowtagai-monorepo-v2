@@ -9,21 +9,21 @@ const STATIC_ASSETS = [
   '/css/components.css',
   '/css/animations.css',
   '/js/scroll-engine.js',
-  '/manifest.json'
+  '/manifest.json',
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
-  );
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS)));
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    )
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))),
+      ),
   );
   self.clients.claim();
 });
@@ -32,15 +32,21 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
   // Cache-first for frame images (heavy assets)
-  if (url.pathname.includes('/frames/') || url.pathname.endsWith('.webp') || url.pathname.endsWith('.png')) {
+  if (
+    url.pathname.includes('/frames/') ||
+    url.pathname.endsWith('.webp') ||
+    url.pathname.endsWith('.png')
+  ) {
     event.respondWith(
-      caches.match(event.request).then((cached) =>
-        cached || fetch(event.request).then((response) => {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-          return response;
-        })
-      )
+      caches.match(event.request).then(
+        (cached) =>
+          cached ||
+          fetch(event.request).then((response) => {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+            return response;
+          }),
+      ),
     );
     return;
   }
@@ -53,6 +59,6 @@ self.addEventListener('fetch', (event) => {
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         return response;
       })
-      .catch(() => caches.match(event.request))
+      .catch(() => caches.match(event.request)),
   );
 });

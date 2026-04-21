@@ -158,6 +158,13 @@ exclude = [
 line-length = 120
 target-version = "py313"
 
+[tool.ruff.lint]
+# CRITICAL: Never auto-fix these rules.
+# B018 strips print() calls treating f-string args as "useless expressions"
+# F841 strips variable assignments used only for logging/print output
+# The v9.7 unsafe-fixes sweep (62,221 fixes) silently killed prune_gca_chat_threads.py output.
+unfixable = ["B018", "F841"]
+
 # Bandit — Python security scanning (Cor.30 compliance)
 [tool.bandit]
 # Target directories for scanning

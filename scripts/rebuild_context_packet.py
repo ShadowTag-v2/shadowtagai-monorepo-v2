@@ -51,7 +51,7 @@ def build_packet(root: Path) -> str:
 def build_recovery_packet(root: Path) -> str:
     return (
         "# Recovery Packet\n\nIf memory appears dropped:\n- stop feature work\n- run `scripts/root_guard.sh`\n- run `python3 scripts/memory_lock_audit.py --repo-root . --write`\n- run `python3 scripts/rebuild_context_packet.py --repo-root . --write`\n- read `docs/SESSION_PACKET.md`\n- continue only from canonical files and verified sources\n\n## Canonical files\n- AGENTS.md\n- docs/MEMORY_LOCK.md\n- docs/UPDATED_PNKLN_PACK.md\n- monorepo_manifest.yaml\n- antigravity-mcp-config.json"
-         "\n"
+        "\n"
     )
 
 

@@ -94,7 +94,9 @@
   padding: var(--space-sm) var(--space-lg);
   background: var(--gradient-primary);
   border-radius: var(--radius-pill);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .nav__cta:hover {
@@ -196,7 +198,9 @@
   border: var(--glass-border);
   border-radius: var(--radius-lg);
   padding: var(--space-2xl);
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .story__card:hover {
@@ -254,7 +258,9 @@
   border-radius: var(--radius-lg);
   padding: var(--space-2xl);
   text-align: center;
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .feature-card:hover {
@@ -420,7 +426,7 @@
   font-size: 12px;
 }
 
-[data-theme="light"] .theme-toggle__knob {
+[data-theme='light'] .theme-toggle__knob {
   transform: translateX(20px);
 }
 
@@ -454,7 +460,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .hero__loading-text {
@@ -477,7 +485,9 @@
   height: 2px;
   background: var(--color-text-primary);
   border-radius: 2px;
-  transition: transform var(--transition-fast), opacity var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
 }
 
 /* ===== RESPONSIVE — TABLET (768px) ===== */

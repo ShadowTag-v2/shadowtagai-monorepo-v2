@@ -157,6 +157,5 @@ def main() -> None:
             run_cmd(f"git remote remove {repo_name}", cwd=monorepo_root)
 
 
-
 if __name__ == "__main__":
     main()

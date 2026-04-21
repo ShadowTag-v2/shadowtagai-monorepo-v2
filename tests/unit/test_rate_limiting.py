@@ -7,9 +7,6 @@ Validates the sliding window rate limiter on the Kovel attestation endpoint.
 from __future__ import annotations
 
 import time
-from unittest.mock import patch
-
-import pytest
 
 
 def _get_rate_limiter():

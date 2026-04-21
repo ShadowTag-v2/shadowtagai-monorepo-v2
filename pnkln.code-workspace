@@ -13,6 +13,12 @@
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "python.envFile": "${workspaceFolder}/.env",
     "python.languageServer": "None",
+    "cmake.python.executable": "${workspaceFolder}/.venv/bin/python",
+    "cmake.configureArgs": [
+      "-DVLLM_PYTHON_EXECUTABLE=${workspaceFolder}/.venv/bin/python",
+      "-DPython3_EXECUTABLE=${workspaceFolder}/.venv/bin/python",
+      "-DPYTHON_EXECUTABLE=${workspaceFolder}/.venv/bin/python"
+    ],
     "geminicodeassist.agentYoloMode": true,
     "java.import.generatesSources": false,
     "java.import.exclusions": [
@@ -34,8 +40,8 @@
     "files.exclude": {
       "**/*.proto": true,
       "**/node_modules/**": true,
-      "**/external_repos/**": true,
-      "**/external_sdks/**": true,
+      "    "python.languageServer": "None",
+    "cmake_sdks/**": true,
       "**/control/legacy_workspaces/**": true,
       "**/apps/devrel-demos/**": true,
       "**/.venv*/**": true,

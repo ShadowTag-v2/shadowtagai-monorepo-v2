@@ -96,8 +96,13 @@ import {
   SPAN_NAME_BATCH_GET_DOCUMENTS,
   type TraceUtil,
 } from './telemetry/trace-util';
-export { Pipelines };
 
+export type {
+  AggregateFieldType,
+  AggregateSpec,
+  AggregateType,
+} from './aggregate';
+export { Aggregate, AggregateField } from './aggregate';
 export type { BulkWriterError } from './bulk-writer';
 export { BulkWriter } from './bulk-writer';
 export type { BundleBuilder } from './bundle';
@@ -107,7 +112,15 @@ export { DocumentChange } from './document-change';
 export { FieldValue, VectorValue } from './field-value';
 export { Filter } from './filter';
 export { GeoPoint } from './geo-point';
+export { setLogFunction } from './logger';
 export { FieldPath } from './path';
+export { QueryPartition } from './query-partition';
+export type {
+  ExecutionStats,
+  ExplainMetrics,
+  ExplainResults,
+  PlanSummary,
+} from './query-profile';
 export type { AggregateQuery } from './reference/aggregate-query';
 export type { AggregateQuerySnapshot } from './reference/aggregate-query-snapshot';
 export { CollectionReference } from './reference/collection-reference';
@@ -120,21 +133,7 @@ export type { VectorQuerySnapshot } from './reference/vector-query-snapshot';
 export { Timestamp } from './timestamp';
 export { Transaction } from './transaction';
 export { WriteBatch, WriteResult } from './write-batch';
-export { CollectionGroup };
-export type {
-  AggregateFieldType,
-  AggregateSpec,
-  AggregateType,
-} from './aggregate';
-export { Aggregate, AggregateField } from './aggregate';
-export { setLogFunction } from './logger';
-export { QueryPartition } from './query-partition';
-export type {
-  ExecutionStats,
-  ExplainMetrics,
-  ExplainResults,
-  PlanSummary,
-} from './query-profile';
+export { CollectionGroup, Pipelines };
 
 const libVersion = require('../../package.json').version;
 setLibVersion(libVersion);

@@ -49,7 +49,6 @@ class MultiKeyGeminiBurner:
             msg = "No GEMINI_KEY_* or GEMINI_API_KEY environment variables found"
             raise ValueError(msg)
 
-
         # Initialize stats per key
         self.stats: dict[int, KeyStats] = {i: KeyStats(key_id=i) for i in range(len(self.keys))}
 

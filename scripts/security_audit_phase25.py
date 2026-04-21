@@ -117,7 +117,6 @@ def audit_file(filepath: str) -> list[dict]:
 
 
 def main() -> None:
-
     all_findings = []
     for filepath in AUDIT_FILES:
         findings = audit_file(filepath)
@@ -131,7 +130,6 @@ def main() -> None:
 
     for f in all_findings:
         {"CRITICAL": "🔴", "HIGH": "🟠", "MEDIUM": "🟡", "WARNING": "⚠️", "INFO": "ℹ️"}.get(f["severity"], "•")
-
 
     if critical:
         sys.exit(1)

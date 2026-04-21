@@ -36,4 +36,3 @@ with open(output_path, "w") as f:
     cmd = "find . -maxdepth 3 -name '*.code-workspace'"
     res = subprocess.run(shlex.split(cmd), capture_output=True, text=True)
     f.write(f"```text\n{res.stdout.strip()}\n```\n")
-

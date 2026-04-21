@@ -3,9 +3,7 @@
  * Handles: nav, modals, toast, intersection observer, scroll progress, smooth scroll
  */
 
-(function () {
-  'use strict';
-
+(() => {
   // ── DOM References ──
   var nav = document.getElementById('main-nav');
   var navToggle = document.getElementById('navToggle');
@@ -42,15 +40,15 @@
 
   // ── Mobile Nav Toggle ──
   if (navToggle && navLinks) {
-    navToggle.addEventListener('click', function () {
+    navToggle.addEventListener('click', () => {
       navLinks.classList.toggle('open');
       var isOpen = navLinks.classList.contains('open');
       navToggle.setAttribute('aria-expanded', isOpen);
       navToggle.textContent = isOpen ? '✕' : '☰';
     });
 
-    navLinks.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
+    navLinks.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
         if (window.innerWidth <= 768) {
           navLinks.classList.remove('open');
           navToggle.setAttribute('aria-expanded', 'false');
@@ -61,7 +59,7 @@
   }
 
   // ── Contact Modal ──
-  window.openContactModal = function () {
+  window.openContactModal = () => {
     if (contactModal) {
       contactModal.style.display = 'flex';
       contactModal.setAttribute('aria-hidden', 'false');
@@ -69,7 +67,7 @@
       if (firstInput) firstInput.focus();
     }
   };
-  window.closeContactModal = function () {
+  window.closeContactModal = () => {
     if (contactModal) {
       contactModal.style.display = 'none';
       contactModal.setAttribute('aria-hidden', 'true');
@@ -77,11 +75,11 @@
   };
 
   if (contactModal) {
-    contactModal.addEventListener('click', function (e) {
+    contactModal.addEventListener('click', (e) => {
       if (e.target === contactModal) closeContactModal();
     });
   }
-  document.addEventListener('keydown', function (e) {
+  document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && contactModal && contactModal.style.display === 'flex') {
       closeContactModal();
     }
@@ -91,28 +89,30 @@
   function showToast() {
     if (!toast) return;
     toast.classList.add('show');
-    setTimeout(function () {
+    setTimeout(() => {
       toast.classList.remove('show');
     }, 4000);
   }
 
   // ── Contact Form Submit (Google Apps Script) ──
   if (contactForm) {
-    contactForm.addEventListener('submit', function (e) {
+    contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
       var formData = new FormData(contactForm);
       fetch(contactForm.action, {
         method: 'POST',
-        body: formData
-      }).then(function () {
-        showToast();
-        contactForm.reset();
-        closeContactModal();
-      }).catch(function () {
-        showToast(); // Show success anyway (Google Apps Script CORS quirk)
-        contactForm.reset();
-        closeContactModal();
-      });
+        body: formData,
+      })
+        .then(() => {
+          showToast();
+          contactForm.reset();
+          closeContactModal();
+        })
+        .catch(() => {
+          showToast(); // Show success anyway (Google Apps Script CORS quirk)
+          contactForm.reset();
+          closeContactModal();
+        });
     });
   }
 
@@ -120,23 +120,27 @@
   var fadeEls = document.querySelectorAll('.fade-in');
   if (fadeEls.length > 0 && 'IntersectionObserver' in window) {
     var observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
+      (entries) => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
             observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' },
     );
-    fadeEls.forEach(function (el) { observer.observe(el); });
+    fadeEls.forEach((el) => {
+      observer.observe(el);
+    });
   } else {
-    fadeEls.forEach(function (el) { el.classList.add('visible'); });
+    fadeEls.forEach((el) => {
+      el.classList.add('visible');
+    });
   }
 
   // ── Smooth Scroll ──
-  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', function (e) {
       var targetId = this.getAttribute('href');
       if (targetId === '#') return;
@@ -150,6 +154,6 @@
 
   // ── Service Worker ──
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(function () {});
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
   }
 })();

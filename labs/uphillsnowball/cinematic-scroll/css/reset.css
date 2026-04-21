@@ -1,5 +1,7 @@
 /* reset.css — Minimal CSS reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -26,11 +28,14 @@ a {
   text-decoration: none;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
-img, video, canvas {
+img,
+video,
+canvas {
   display: block;
   max-width: 100%;
 }

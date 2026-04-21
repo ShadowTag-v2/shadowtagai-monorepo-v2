@@ -9,7 +9,7 @@
 {
   title: 'My great post', categories;
   :
-  technology: 1502144665, opinion;
+  technology: 1502144665, opinion
   : 1502144665,
     cats: 1502144665
 }
