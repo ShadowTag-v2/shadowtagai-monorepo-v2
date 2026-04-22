@@ -59,7 +59,7 @@ class KVEntryCreate(BaseModel):
 
     @field_validator("value")
     @classmethod
-    def validate_value_size(cls, v: Any) -> Any:  # noqa: vulture — @classmethod requires cls
+    def validate_value_size(cls, v: Any) -> Any:  # noqa  # vulture — @classmethod requires cls
         """Enforce max value size (1MB serialized)."""
         import json
 

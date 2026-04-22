@@ -223,7 +223,7 @@ if _static_dir.is_dir():
 
 
 # ── Root-level static files (ZAP WARN fix: 404 on /robots.txt, /favicon.ico) ─
-from starlette.responses import FileResponse as _FileResponse
+from starlette.responses import FileResponse as _FileResponse, JSONResponse
 
 
 @app.get("/robots.txt", include_in_schema=False)

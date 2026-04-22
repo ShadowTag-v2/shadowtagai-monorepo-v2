@@ -19,7 +19,7 @@ import logging
 import os
 import time
 from collections import defaultdict
-from datetime import datetime, timezone, UTC
+from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, status
