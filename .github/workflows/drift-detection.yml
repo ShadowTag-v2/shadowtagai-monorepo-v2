@@ -1,0 +1,76 @@
+# Nightly Infrastructure Drift Detection
+# Runs plan -detailed-exitcode against all Terragrunt stacks
+# Alerts on any drift detected
+
+name: Nightly Drift Detection
+on:
+  schedule:
+    - cron: '0 6 * * *'  # 6am UTC daily
+  workflow_dispatch:
+
+env:
+  TF_IN_AUTOMATION: true
+  TERRAGRUNT_NON_INTERACTIVE: true
+
+jobs:
+  drift-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Auth to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SA }}
+
+      - name: Setup OpenTofu
+        uses: mise-action/mise-action@v2
+
+      - name: Install Terragrunt
+        run: |
+          curl -sLo terragrunt https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64
+          chmod +x terragrunt
+          mv terragrunt /usr/local/bin/
+
+      - name: Run Drift Check (Prod)
+        id: drift-prod
+        run: |
+          cd terraform/infrastructure-live-gcp/prod
+          terragrunt run-all plan -detailed-exitcode --terragrunt-non-interactive 2>&1 | tee /tmp/drift-prod.log || true
+          if grep -q "Plan:" /tmp/drift-prod.log; then
+            echo "drift_detected=true" >> "$GITHUB_OUTPUT"
+            echo "::error::DRIFT DETECTED in production — review /tmp/drift-prod.log"
+          else
+            echo "drift_detected=false" >> "$GITHUB_OUTPUT"
+            echo "✅ No drift detected in production"
+          fi
+
+      - name: Run Drift Check (Staging)
+        id: drift-staging
+        run: |
+          cd terraform/infrastructure-live-gcp/staging
+          terragrunt run-all plan -detailed-exitcode --terragrunt-non-interactive 2>&1 | tee /tmp/drift-staging.log || true
+          if grep -q "Plan:" /tmp/drift-staging.log; then
+            echo "drift_detected=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::DRIFT DETECTED in staging — review /tmp/drift-staging.log"
+          else
+            echo "drift_detected=false" >> "$GITHUB_OUTPUT"
+            echo "✅ No drift detected in staging"
+          fi
+
+      - name: Upload Drift Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: drift-logs
+          path: /tmp/drift-*.log
+          retention-days: 7
+
+      - name: Fail on Production Drift
+        if: steps.drift-prod.outputs.drift_detected == 'true'
+        run: exit 1

@@ -1,0 +1,34 @@
+# Checkov Policy-as-Code Security Scan
+# Blocks PRs with insecure Terraform configurations
+
+name: Checkov Security Scan
+on:
+  pull_request:
+    paths:
+      - 'terraform/**'
+      - 'infra/**'
+      - '*.tf'
+
+jobs:
+  checkov:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: terraform/
+          framework: terraform
+          quiet: true
+          soft_fail: false
+          output_format: sarif
+          output_file_path: results.sarif
+
+      - name: Upload SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
+          category: checkov

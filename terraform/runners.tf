@@ -2,9 +2,10 @@ terraform {
   required_version = ">= 1.5.0"
 }
 
-# Source the GitHub Actions Runners from the local cloned module cache
+# Source the GitHub Actions Runners from the Terraform Registry
 module "gh_actions_runners" {
-  source = "../external_repos/terraform-google-github-actions-runners"
+  source  = "terraform-google-modules/github-actions-runners/google"
+  version = "~> 4.0"
 
   project_id = "shadowtag-omega-v4"
   region     = "us-central1"
