@@ -125,8 +125,6 @@ async def _stream_vent_response(
             )
         except ImportError:
             from api.empathy_templates import (  # type: ignore[no-redef]
-                get_checkin,
-                get_empathy_opener,
                 should_checkin,
                 wrap_seu_prompt,
             )

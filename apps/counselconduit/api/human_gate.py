@@ -12,7 +12,7 @@ Security: Requires firm-scoped JWT + Judge6 authorization gate.
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone, UTC
+from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Header, HTTPException

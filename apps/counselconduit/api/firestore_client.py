@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import logging
 import os
-from datetime import datetime, timezone, UTC
+from datetime import UTC, datetime
 from typing import Any
 
 logger = logging.getLogger("counselconduit.firestore")
