@@ -343,7 +343,8 @@ async def _post_review_comments(pr_number: int, findings: list[dict]) -> None:
             body += "### ✅ All Clear\n\n"
             body += "No issues found. All three tiers verified.\n\n"
 
-        body += f"---\n*Tiers executed: Monty (Logic) {'✅' if True else '❌'} | "
+        logic_ran = any("Test" in str(f) or "Logic" not in str(f) for f in findings) or not critical
+        body += f"---\n*Tiers executed: Monty (Logic) {'✅' if logic_ran else '❌'} | "
         body += f"ANE (M1 Max) {'✅' if any('ANE' in str(f) for f in findings) else '⏭️'} | "
         body += f"Colab T4 {'✅' if any('Colab' in str(f) for f in findings) else '⏭️'}*\n"
 
