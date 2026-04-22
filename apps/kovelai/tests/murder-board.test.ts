@@ -1,233 +1,352 @@
 /**
- * @fileoverview Murder Board Integration Tests
+ * @fileoverview Murder Board Orchestrator v2 Test Suite — Vitest
  *
- * End-to-end tests for the 7-stage War Room pipeline.
- * Uses mock Firestore and model stubs for deterministic testing.
+ * Tests the 7-stage pipeline including SSE streaming,
+ * stage progression, error handling, and Judge 6 decisions.
  *
- * @see murder-board.ts — Pipeline orchestrator
- * @see legal-prompts.ts — System prompts
+ * Sprint Item #21: Enhanced test suite.
+ *
+ * @see lib/orchestrator/murder-board-v2.ts
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-// ═══════════════════════════════════════════════════════════
-// Mock Setup
-// ═══════════════════════════════════════════════════════════
+// Mock fetch globally
+const mockFetch = vi.fn();
+global.fetch = mockFetch;
 
-const mockFirestore = {
-  collection: vi.fn().mockReturnThis(),
-  doc: vi.fn().mockReturnThis(),
-  set: vi.fn().mockResolvedValue(undefined),
-  get: vi.fn().mockResolvedValue({
-    exists: true,
-    data: () => ({
-      status: 'intake',
-      firm_id: 'test-firm-001',
-      seu_token_hash: 'test-token-hash',
-    }),
-  }),
-  update: vi.fn().mockResolvedValue(undefined),
-};
+// Mock crypto.randomUUID
+vi.stubGlobal('crypto', {
+  randomUUID: () => '550e8400-e29b-41d4-a716-446655440000',
+});
 
-vi.mock('firebase-admin/firestore', () => ({
-  getFirestore: () => mockFirestore,
-  FieldValue: {
-    serverTimestamp: () => new Date().toISOString(),
-  },
-}));
-
-// Mock model responses for each stage
-const MOCK_RESPONSES: Record<string, string> = {
-  intake: JSON.stringify({
-    parties: [{ name: 'John Doe', role: 'plaintiff' }],
-    timeline: [{ date: '2025-06-15', event: 'Contract signed' }],
-    claims: ['breach_of_contract'],
-    keywords: ['contract', 'damages', 'breach'],
-    jurisdiction: 'CA',
-  }),
-  osint: JSON.stringify({
-    queries: [
-      'California breach of contract elements',
-      'contract damages calculation California',
-    ],
-  }),
-  verb_audit: JSON.stringify({
-    verbs: [
-      {
-        verb: 'breached',
-        context: 'Defendant breached the agreement on July 1',
-        kinematic_classification: 'volitional',
-        cause_of_action: 'Breach of Contract',
-        element_matched: 'Material breach by defendant',
-        confidence: 0.92,
-        strengthens_or_weakens: 'strengthens',
-      },
-    ],
-  }),
-  oracle: 'Based on the evidence presented, the client has a strong case for breach of contract under Cal. Civ. Code § 1549...',
-  citations: JSON.stringify({
-    citations: [
-      {
-        id: 'cit-001',
-        text: 'Cal. Civ. Code § 1549',
-        source: 'California Civil Code',
-        url: 'https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=1549',
-        relevance: 0.95,
-        authority_type: 'statute',
-      },
-    ],
-  }),
-  brief: '# Attorney Work-Product Brief\n\n## Executive Summary\n\nStrong case for breach of contract...',
-};
-
-// ═══════════════════════════════════════════════════════════
-// Pipeline Stage Tests
-// ═══════════════════════════════════════════════════════════
-
-describe('Murder Board Pipeline', () => {
+describe('Murder Board Orchestrator v2', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    process.env.GOOGLE_AI_API_KEY = 'test-api-key';
   });
 
   afterEach(() => {
+    delete process.env.GOOGLE_AI_API_KEY;
     vi.restoreAllMocks();
   });
 
-  describe('Session Management', () => {
-    it('should create a new session with correct initial state', async () => {
-      const sessionId = 'test-session-001';
-      const sessionData = {
-        session_id: sessionId,
-        firm_id: 'test-firm-001',
-        status: 'intake',
-        seu_token_hash: 'test-hash-abc123',
-        started_at: expect.any(String),
-      };
+  describe('executeMurderBoard', () => {
+    it('should execute all 7 stages in sequence', async () => {
+      // Mock LLM responses for each stage
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            candidates: [
+              {
+                content: {
+                  parts: [{ text: '{"status": "stage complete", "decision": "APPROVED"}' }],
+                },
+              },
+            ],
+          }),
+      });
 
-      await mockFirestore.set(sessionData);
-
-      expect(mockFirestore.set).toHaveBeenCalledWith(
-        expect.objectContaining({
-          session_id: sessionId,
-          status: 'intake',
-        }),
+      const { executeMurderBoard } = await import(
+        '../lib/orchestrator/murder-board-v2'
       );
-    });
 
-    it('should reject sessions without S.E.U. token', () => {
-      const invalidSession = {
-        firm_id: 'test-firm-001',
-        seu_token_hash: '', // Empty — invalid
-      };
-
-      expect(invalidSession.seu_token_hash).toBeFalsy();
-    });
-  });
-
-  describe('Stage 1: Intake Extraction', () => {
-    it('should extract parties, timeline, claims, and jurisdiction', () => {
-      const parsed = JSON.parse(MOCK_RESPONSES.intake);
-
-      expect(parsed.parties).toHaveLength(1);
-      expect(parsed.parties[0].name).toBe('John Doe');
-      expect(parsed.timeline).toHaveLength(1);
-      expect(parsed.claims).toContain('breach_of_contract');
-      expect(parsed.jurisdiction).toBe('CA');
-    });
-
-    it('should extract search keywords for OSINT', () => {
-      const parsed = JSON.parse(MOCK_RESPONSES.intake);
-      expect(parsed.keywords.length).toBeGreaterThan(0);
-    });
-  });
-
-  describe('Stage 2: OSINT Query Generation', () => {
-    it('should generate jurisdiction-specific search queries', () => {
-      const parsed = JSON.parse(MOCK_RESPONSES.osint);
-      expect(parsed.queries.length).toBeGreaterThanOrEqual(2);
-      expect(parsed.queries[0]).toContain('California');
-    });
-  });
-
-  describe('Stage 3: Verb Audit', () => {
-    it('should classify verbs with kinematic taxonomy', () => {
-      const parsed = JSON.parse(MOCK_RESPONSES.verb_audit);
-      expect(parsed.verbs).toHaveLength(1);
-      expect(parsed.verbs[0].kinematic_classification).toBe('volitional');
-      expect(parsed.verbs[0].confidence).toBeGreaterThan(0.5);
-    });
-
-    it('should map verbs to causes of action', () => {
-      const parsed = JSON.parse(MOCK_RESPONSES.verb_audit);
-      expect(parsed.verbs[0].cause_of_action).toBe('Breach of Contract');
-    });
-
-    it('should indicate whether verb strengthens or weakens the case', () => {
-      const parsed = JSON.parse(MOCK_RESPONSES.verb_audit);
-      expect(['strengthens', 'weakens']).toContain(
-        parsed.verbs[0].strengthens_or_weakens,
+      const stages: string[] = [];
+      const result = await executeMurderBoard(
+        {
+          caseDescription: 'Client was wrongfully terminated after reporting OSHA violations',
+          firmId: '550e8400-e29b-41d4-a716-446655440000',
+          clientId: '660e8400-e29b-41d4-a716-446655440001',
+          jurisdiction: 'California',
+          practiceArea: 'Employment',
+        },
+        (stageResult) => {
+          stages.push(`${stageResult.stage}:${stageResult.status}`);
+        },
       );
-    });
-  });
 
-  describe('Stage 4: Oracle Memo', () => {
-    it('should produce strategy memo with citations', () => {
-      expect(MOCK_RESPONSES.oracle).toContain('breach of contract');
-      expect(MOCK_RESPONSES.oracle).toContain('Cal. Civ. Code');
-    });
-  });
+      // All 7 stages should complete
+      expect(result.stages).toHaveLength(7);
+      expect(result.status).toBe('completed');
+      expect(result.id).toBeDefined();
 
-  describe('Stage 5: Citation Validation', () => {
-    it('should produce structured citations with authority types', () => {
-      const parsed = JSON.parse(MOCK_RESPONSES.citations);
-      expect(parsed.citations).toHaveLength(1);
-      expect(parsed.citations[0].authority_type).toBe('statute');
-      expect(parsed.citations[0].relevance).toBeGreaterThan(0.8);
-    });
-  });
+      // Verify stage order
+      const expectedStages = [
+        'EXTRACTION',
+        'CONFLICT_CHECK',
+        'VIABILITY_SCORING',
+        'FEE_STRUCTURE',
+        'ORACLE_MEMO',
+        'RETAINER_DRAFT',
+        'RISK_GATE',
+      ];
 
-  describe('Stage 6: Brief Generation', () => {
-    it('should produce markdown with proper heading structure', () => {
-      expect(MOCK_RESPONSES.brief).toMatch(/^# /);
-      expect(MOCK_RESPONSES.brief).toContain('## Executive Summary');
+      for (let i = 0; i < expectedStages.length; i++) {
+        expect(result.stages[i].stage).toBe(expectedStages[i]);
+        expect(result.stages[i].status).toBe('completed');
+      }
     });
-  });
 
-  describe('Pipeline Error Handling', () => {
-    it('should set session status to failed on stage error', async () => {
-      await mockFirestore.update({ status: 'failed', error: 'Model timeout' });
-      expect(mockFirestore.update).toHaveBeenCalledWith(
-        expect.objectContaining({ status: 'failed' }),
+    it('should detect REJECTED decision from Judge 6', async () => {
+      let callCount = 0;
+      mockFetch.mockImplementation(() => {
+        callCount++;
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              candidates: [
+                {
+                  content: {
+                    parts: [
+                      {
+                        text:
+                          callCount >= 7
+                            ? 'REJECTED: Conflict of interest not resolved at Stage 2.'
+                            : '{"status": "ok"}',
+                      },
+                    ],
+                  },
+                },
+              ],
+            }),
+        });
+      });
+
+      const { executeMurderBoard } = await import(
+        '../lib/orchestrator/murder-board-v2'
       );
+
+      const result = await executeMurderBoard({
+        caseDescription: 'Test case for rejection',
+        firmId: '550e8400-e29b-41d4-a716-446655440000',
+        clientId: '660e8400-e29b-41d4-a716-446655440001',
+        jurisdiction: 'New York',
+        practiceArea: 'Litigation',
+      });
+
+      expect(result.finalDecision).toBe('REJECTED');
+      expect(result.status).toBe('rejected');
     });
 
-    it('should preserve partial results on failure', async () => {
-      const partialSession = {
-        status: 'failed',
-        intake_data: JSON.parse(MOCK_RESPONSES.intake),
-        error: 'Failed at stage 3',
-      };
+    it('should detect CONDITIONAL_APPROVAL from Judge 6', async () => {
+      let callCount = 0;
+      mockFetch.mockImplementation(() => {
+        callCount++;
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              candidates: [
+                {
+                  content: {
+                    parts: [
+                      {
+                        text:
+                          callCount >= 7
+                            ? 'CONDITIONAL_APPROVAL: Require client waiver before proceeding.'
+                            : '{"status": "ok"}',
+                      },
+                    ],
+                  },
+                },
+              ],
+            }),
+        });
+      });
 
-      expect(partialSession.intake_data.parties).toBeDefined();
-      expect(partialSession.error).toContain('stage 3');
+      const { executeMurderBoard } = await import(
+        '../lib/orchestrator/murder-board-v2'
+      );
+
+      const result = await executeMurderBoard({
+        caseDescription: 'Test case for conditional',
+        firmId: '550e8400-e29b-41d4-a716-446655440000',
+        clientId: '660e8400-e29b-41d4-a716-446655440001',
+        jurisdiction: 'Texas',
+        practiceArea: 'Family',
+      });
+
+      expect(result.finalDecision).toBe('CONDITIONAL_APPROVAL');
+      expect(result.status).toBe('completed');
+    });
+
+    it('should handle stage failure and stop pipeline', async () => {
+      let callCount = 0;
+      mockFetch.mockImplementation(() => {
+        callCount++;
+        if (callCount === 3) {
+          return Promise.resolve({
+            ok: false,
+            status: 500,
+          });
+        }
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              candidates: [{ content: { parts: [{ text: '{"ok": true}' }] } }],
+            }),
+        });
+      });
+
+      const { executeMurderBoard } = await import(
+        '../lib/orchestrator/murder-board-v2'
+      );
+
+      const result = await executeMurderBoard({
+        caseDescription: 'Test case for failure',
+        firmId: '550e8400-e29b-41d4-a716-446655440000',
+        clientId: '660e8400-e29b-41d4-a716-446655440001',
+        jurisdiction: 'Florida',
+        practiceArea: 'Criminal',
+      });
+
+      expect(result.status).toBe('failed');
+      // At least one stage should have failed
+      const failedStages = result.stages.filter((s) => s.status === 'failed');
+      expect(failedStages.length).toBeGreaterThan(0);
+    });
+
+    it('should throw when API key is missing', async () => {
+      delete process.env.GOOGLE_AI_API_KEY;
+
+      const { executeMurderBoard } = await import(
+        '../lib/orchestrator/murder-board-v2'
+      );
+
+      const result = await executeMurderBoard({
+        caseDescription: 'Test case without API key',
+        firmId: '550e8400-e29b-41d4-a716-446655440000',
+        clientId: '660e8400-e29b-41d4-a716-446655440001',
+        jurisdiction: 'California',
+        practiceArea: 'Employment',
+      });
+
+      expect(result.status).toBe('failed');
+      const failedStage = result.stages.find((s) => s.status === 'failed');
+      expect(failedStage?.error).toContain('GOOGLE_AI_API_KEY');
+    });
+
+    it('should record duration for each stage', async () => {
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            candidates: [
+              { content: { parts: [{ text: '{"ok": true, "decision": "APPROVED"}' }] } },
+            ],
+          }),
+      });
+
+      const { executeMurderBoard } = await import(
+        '../lib/orchestrator/murder-board-v2'
+      );
+
+      const result = await executeMurderBoard({
+        caseDescription: 'Duration test',
+        firmId: '550e8400-e29b-41d4-a716-446655440000',
+        clientId: '660e8400-e29b-41d4-a716-446655440001',
+        jurisdiction: 'California',
+        practiceArea: 'Employment',
+      });
+
+      for (const stage of result.stages) {
+        if (stage.status === 'completed') {
+          expect(stage.durationMs).toBeDefined();
+          expect(stage.durationMs).toBeGreaterThanOrEqual(0);
+        }
+      }
     });
   });
 
-  describe('Billing Telemetry', () => {
-    it('should record token consumption per stage', () => {
-      const telemetry = {
-        firm_id: 'test-firm-001',
-        session_id: 'test-session-001',
-        pipeline_type: 'war_room',
-        stages_completed: 7,
-        verb_count: 12,
-        citation_count: 8,
-        model_routed: 'gemini-2.5-flash',
-        tokens_consumed: 14500,
-      };
+  describe('createMurderBoardSSEStream', () => {
+    it('should create a readable stream', async () => {
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            candidates: [
+              { content: { parts: [{ text: '{"ok": true, "decision": "APPROVED"}' }] } },
+            ],
+          }),
+      });
 
-      expect(telemetry.stages_completed).toBe(7);
-      expect(telemetry.tokens_consumed).toBeGreaterThan(0);
+      const { createMurderBoardSSEStream } = await import(
+        '../lib/orchestrator/murder-board-v2'
+      );
+
+      const stream = createMurderBoardSSEStream({
+        caseDescription: 'SSE stream test',
+        firmId: '550e8400-e29b-41d4-a716-446655440000',
+        clientId: '660e8400-e29b-41d4-a716-446655440001',
+        jurisdiction: 'California',
+        practiceArea: 'Employment',
+      });
+
+      expect(stream).toBeInstanceOf(ReadableStream);
     });
+  });
+});
+
+// ─── War Room Prompts Tests ──────────────────────────────────────────
+
+describe('War Room Prompts', () => {
+  it('should build prompts for all 7 stages', async () => {
+    const { generateFullPipelinePrompts } = await import(
+      '../lib/prompts/war-room-prompts'
+    );
+
+    const prompts = generateFullPipelinePrompts('Test case', 'flash');
+    expect(prompts).toHaveLength(7);
+
+    const stageNames = prompts.map((p) => p.stage);
+    expect(stageNames).toEqual([
+      'EXTRACTION',
+      'CONFLICT_CHECK',
+      'VIABILITY_SCORING',
+      'FEE_STRUCTURE',
+      'ORACLE_MEMO',
+      'RETAINER_DRAFT',
+      'RISK_GATE',
+    ]);
+  });
+
+  it('should apply prompt repetition for non-reasoning tiers', async () => {
+    const { buildMurderBoardPrompt } = await import(
+      '../lib/prompts/war-room-prompts'
+    );
+
+    const flashPrompt = buildMurderBoardPrompt('EXTRACTION', 'Test input', 'flash');
+    expect(flashPrompt.system).toContain('INSTRUCTION EMPHASIS');
+
+    const litePrompt = buildMurderBoardPrompt('EXTRACTION', 'Test input', 'lite');
+    expect(litePrompt.system).toContain('INSTRUCTION EMPHASIS');
+  });
+
+  it('should NOT apply prompt repetition for reasoning tier', async () => {
+    const { buildMurderBoardPrompt } = await import(
+      '../lib/prompts/war-room-prompts'
+    );
+
+    const reasoningPrompt = buildMurderBoardPrompt('EXTRACTION', 'Test input', 'reasoning');
+    // The system prompt already contains INSTRUCTION EMPHASIS inline, but
+    // the wrapper should NOT add an additional block with the user input
+    const additionalRepetitions = (reasoningPrompt.system.match(/Test input/g) || []).length;
+    expect(additionalRepetitions).toBe(0);
+  });
+
+  it('should include all critical elements in RISK_GATE prompt', async () => {
+    const { MURDER_BOARD_PROMPTS } = await import(
+      '../lib/prompts/war-room-prompts'
+    );
+
+    const riskPrompt = MURDER_BOARD_PROMPTS.RISK_GATE.system;
+    expect(riskPrompt).toContain('APPROVED');
+    expect(riskPrompt).toContain('CONDITIONAL_APPROVAL');
+    expect(riskPrompt).toContain('REJECTED');
+    expect(riskPrompt).toContain('Judge 6');
+    expect(riskPrompt).toContain('malpractice');
   });
 });

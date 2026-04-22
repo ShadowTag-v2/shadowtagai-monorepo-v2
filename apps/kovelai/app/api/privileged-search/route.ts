@@ -19,6 +19,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { z } from 'zod';
 import { verifySEUToken, type SEUViolationError } from '@/lib/security/seu-token-manager';
+import { withRateLimit } from '@/lib/middleware/rate-limiter';
 
 // ─── Request Validation ───────────────────────────────────────────────
 const SearchRequestSchema = z.object({
