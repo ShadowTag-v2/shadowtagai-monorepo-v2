@@ -1,0 +1,3 @@
+config:
+  gcp:project: shadowtag-omega-v4
+  gcp:region: us-central1
