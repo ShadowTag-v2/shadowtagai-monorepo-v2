@@ -383,7 +383,7 @@ resource "google_container_node_pool" "system_pool" {
   }
 }
 
-# Judge #6 GPU pool (L4 GPUs for enforcement)
+# Judge 6 GPU pool (L4 GPUs for enforcement)
 resource "google_container_node_pool" "judge_gpu_pool" {
   name     = "judge-l4-pool"
   location = var.region
@@ -608,10 +608,10 @@ resource "google_project_iam_member" "gke_node_roles" {
   member  = "serviceAccount:${google_service_account.gke_node_sa.email}"
 }
 
-# Workload Identity for Judge #6
+# Workload Identity for Judge 6
 resource "google_service_account" "judge6_sa" {
   account_id   = "judge6-workload-sa"
-  display_name = "Judge #6 Workload Service Account"
+  display_name = "Judge 6 Workload Service Account"
 }
 
 resource "google_service_account_iam_binding" "judge6_workload_identity" {
@@ -812,7 +812,7 @@ output "gke_node_sa_email" {
 }
 
 output "judge6_sa_email" {
-  description = "Judge #6 workload identity service account"
+  description = "Judge 6 workload identity service account"
   value       = google_service_account.judge6_sa.email
 }
 

@@ -4,27 +4,27 @@
 
 This prompt is designed for **Gemini 2.0 Pro** to perform comprehensive analysis of the Gemini Ingestion Layer within the SHADOWTAGAI Core Stack™. The ingestion layer is a preventive, upstream intelligence collection pipeline that operates as a GKE CronJob, gathering data from multiple sources for downstream processing.
 
-## Evolution from Judge #6
+## Evolution from Judge 6
 
-This analysis prompt evolved from the Judge #6 validation system prompt, adapting from a reactive enforcement role to a proactive collection role. Key changes reflect the shift from real-time validation to batch intelligence gathering.
+This analysis prompt evolved from the Judge 6 validation system prompt, adapting from a reactive enforcement role to a proactive collection role. Key changes reflect the shift from real-time validation to batch intelligence gathering.
 
 ### Direct Replacements
 
-| Judge #6 Version       | Gemini Ingestion Layer Version                       | Rationale                                          |
+| Judge 6 Version       | Gemini Ingestion Layer Version                       | Rationale                                          |
 | ---------------------- | ---------------------------------------------------- | -------------------------------------------------- |
-| "Judge #6"             | "Gemini Ingestion Layer"                             | Domain-specific naming for intelligence collection |
+| "Judge 6"             | "Gemini Ingestion Layer"                             | Domain-specific naming for intelligence collection |
 | `judge_six.py`         | Pipeline documentation, architecture specs, diagrams | Broader scope for distributed ingestion system     |
 | p99 ≤90ms latency      | ~45 min/night runtime efficiency                     | Batch processing vs. real-time validation          |
 | 98% test coverage gate | Quality gates: items, sources, costs, scores         | Multifaceted quality over strict coverage          |
 
 ### Context-Specific Adaptations
 
-| Aspect              | Judge #6                           | Gemini Ingestion Layer                          |
+| Aspect              | Judge 6                           | Gemini Ingestion Layer                          |
 | ------------------- | ---------------------------------- | ----------------------------------------------- |
 | **Architecture**    | Hybrid Gemini+PyTorch              | GKE CronJob Multi-Container                     |
 | **Key Metrics**     | Latency, throughput, block rate    | Items/day, sources, cost/item, relevance scores |
 | **Integration**     | Calls services in 4 namespaces     | Called by services in 4 namespaces              |
-| **Unique Features** | ATP 5-19 compliance, JR validation | Ethical crawling, tier classification           |
+| **Unique Features** | Compliance Framework compliance, JR validation | Ethical crawling, tier classification           |
 | **Cost Model**      | Per-API-call pricing               | Monthly operational ~$77                        |
 | **Quality Focus**   | FP/FN rates                        | Relevance, timeliness, completeness             |
 
@@ -222,7 +222,7 @@ This analysis prompt evolved from the Judge #6 validation system prompt, adaptin
 
 **Target Confidence: ≥60%**
 
-This is intentionally lower than Judge #6's 70% target because the Gemini Ingestion Layer analysis relies on pre-production specifications and documentation rather than production telemetry. Once the system is in production with real metrics, the confidence target should be raised to 70-80%.
+This is intentionally lower than Judge 6's 70% target because the Gemini Ingestion Layer analysis relies on pre-production specifications and documentation rather than production telemetry. Once the system is in production with real metrics, the confidence target should be raised to 70-80%.
 
 **Confidence Factors:**
 
@@ -286,9 +286,9 @@ Flag assumptions and uncertainties clearly.
 Prioritize actionable recommendations.
 ```
 
-### Integration with Judge #6
+### Integration with Judge 6
 
-For end-to-end pipeline analysis, combine this prompt with the Judge #6 validation analysis to examine:
+For end-to-end pipeline analysis, combine this prompt with the Judge 6 validation analysis to examine:
 
 - Data handoff between ingestion and validation
 - Quality preservation through the pipeline
@@ -323,7 +323,7 @@ For end-to-end pipeline analysis, combine this prompt with the Judge #6 validati
 2. **Gather Baseline Metrics**: Collect production data for future analyses
 3. **Refine Thresholds**: Adjust gates based on actual performance
 4. **Automate Reporting**: Integrate analysis into CI/CD pipeline
-5. **Combine with Judge #6**: Create unified stack analysis capability
+5. **Combine with Judge 6**: Create unified stack analysis capability
 
 ## References
 
@@ -331,10 +331,10 @@ For end-to-end pipeline analysis, combine this prompt with the Judge #6 validati
 - [Gemini Ingestion Layer Architecture](../architecture/gemini-ingestion-layer.md)
 - [Ethical Crawling Guidelines](../architecture/ethical-crawling.md)
 - [Tier Classification Model](../architecture/tier-classification.md)
-- [Judge #6 Analysis Prompt](./judge-six-analysis.md) (for comparison)
+- [Judge 6 Analysis Prompt](./judge-six-analysis.md) (for comparison)
 
 ## Version History
 
-- **v1.0** (2025-11-07): Initial version adapted from Judge #6
+- **v1.0** (2025-11-07): Initial version adapted from Judge 6
 - Target for Gemini 2.0 Pro
 - Pre-production confidence target: ≥60%

@@ -479,7 +479,7 @@ gcloud container clusters delete nightly-intel-cluster --zone=us-central1-a
 
 3. **Tune Configuration**: Adjust tier thresholds based on results
 
-4. **Integrate with Judge #6**: Set up data handoff pipeline
+4. **Integrate with Judge 6**: Set up data handoff pipeline
 
 5. **Enable Alerting**: Configure Cloud Monitoring alerts
 

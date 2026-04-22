@@ -29,7 +29,7 @@ in a flat text file and hit context limits.
 
 ## Key Decisions (2026-04)
 - 2026-04-18: Switched to CPython 3.14.3, venv rebuilt → topic/python_env.md
-- 2026-04-18: Judge #6 BLOCK/ALLOW spec finalized → topic/judge6.md
+- 2026-04-18: Judge 6 BLOCK/ALLOW spec finalized → topic/judge6.md
 - 2026-04-17: Firebase MCP-first deployment doctrine → topic/firebase_deploy.md
 
 ## People & Accounts
@@ -70,7 +70,7 @@ in a flat text file and hit context limits.
 
 ## Key Decisions
 - 2026-04-18: RBAC + HMAC webhooks + Cloud Armor WAF deployed
-- 2026-04-15: Judge #6 process framework → .NET Semantic Kernel
+- 2026-04-15: Judge 6 process framework → .NET Semantic Kernel
 - 2026-04-10: Oracle Studio 7-stage pipeline designed
 
 ## Open Items

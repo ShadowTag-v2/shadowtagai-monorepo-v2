@@ -76,7 +76,7 @@ class SPMEngine:
                 rules=memory_rules,
             )
 
-            # D. Critic Step: Judge #6 Scrutiny
+            # D. Critic Step: Judge 6 Scrutiny
             approved_prompts = []
             for prompt in suggestions:
                 # Judge evaluates intent

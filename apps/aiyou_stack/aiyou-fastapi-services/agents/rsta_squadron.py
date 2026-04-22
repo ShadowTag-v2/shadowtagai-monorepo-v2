@@ -3,7 +3,7 @@
 OPORD 2511-ALPHA // ATP 3-20.96 Aligned
 
 Reorganizes n-autoresearch/Kosmos/BioAgents swarm into Reinforced Armored Cavalry (650 agents):
-- HHT "HEADHUNTERS" (90): Command & Control, Judge #6
+- HHT "HEADHUNTERS" (90): Command & Control, Judge 6
 - TROOP A "APACHE" (120): Deep Recon (SuperGrok/Perplexity)
 - TROOP B "BRAVO" (130): Heavy Armor Dev (Gemini 1.5 Pro/Ultra)
 - TROOP C "COBRA" (130): Rapid Response Frontend (Claude Sonnet/Haiku)
@@ -48,7 +48,7 @@ class TroopType(StrEnum):
 class SectionType(StrEnum):
     """Section types within HHT - ATP 3-20.96 Chapter 2"""
 
-    COMMAND = "command"  # CDR, XO, 1SG, Judge #6 (ATP 2-3)
+    COMMAND = "command"  # CDR, XO, 1SG, Judge 6 (ATP 2-3)
     S1_PERSONNEL = "s1"  # Personnel Operations (ATP 2-15) - NEW
     S2_INTEL = "s2_intel"  # Intelligence (ATP 2-16)
     S3_OPS = "s3_ops"  # Operations (ATP 2-12)
@@ -187,7 +187,7 @@ class RSTASquadron:
     with ATP 3-20.96 Cavalry Squadron doctrine alignment.
 
     Squadron Structure (650 agents total):
-    - HHT "HEADHUNTERS" (90): Command & Control, Judge #6, Gemini 3 Pro
+    - HHT "HEADHUNTERS" (90): Command & Control, Judge 6, Gemini 3 Pro
       - Command: 10, S-2: 20, S-3: 20, S-6: 15, FSE: 15, TACP: 5, Medical: 5
     - TROOP A "APACHE" (120): Deep Recon / RSTA (SuperGrok/Perplexity)
       - Zone: 30, Area: 30, Screening: 30, Deep Dive: 30
@@ -223,10 +223,10 @@ class RSTASquadron:
             "target_strength": 90,
             "model": "gemini-3-pro-preview",
             "secondary_model": "gemini-3.1-flash-lite-preview",
-            "rsta_function": "Command & Control, Judge #6",
+            "rsta_function": "Command & Control, Judge 6",
             "atp_reference": "ATP 3-20.96 Chapter 2",
             "sections": [
-                ("Command Section", 10, "command", "CDR, XO, 1SG, Judge #6 governance"),
+                ("Command Section", 10, "command", "CDR, XO, 1SG, Judge 6 governance"),
                 (
                     "S-2 Intelligence",
                     20,

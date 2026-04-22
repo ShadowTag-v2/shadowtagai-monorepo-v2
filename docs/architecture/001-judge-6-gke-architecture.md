@@ -1,4 +1,4 @@
-# Architecture Design: Judge #6 on GKE with Vertex AI
+# Architecture Design: Judge 6 on GKE with Vertex AI
 
 ## Status
 
@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-Production-ready inference architecture for deploying Judge #6 (Pnkln's AI governance agent) on Google Kubernetes Engine with Vertex AI integration, LangGraph orchestration, and Document AI for AiURCM compliance automation.
+Production-ready inference architecture for deploying Judge 6 (Pnkln's AI governance agent) on Google Kubernetes Engine with Vertex AI integration, LangGraph orchestration, and Document AI for AiURCM compliance automation.
 
 **Key Performance Targets:**
 
@@ -26,7 +26,7 @@ Production-ready inference architecture for deploying Judge #6 (Pnkln's AI gover
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    PNKLN CORE STACK                             │
-│                    Judge #6 Inference System                     │
+│                    Judge 6 Inference System                     │
 └─────────────────────────────────────────────────────────────────┘
 
 ┌──────────────┐
@@ -54,7 +54,7 @@ Production-ready inference architecture for deploying Judge #6 (Pnkln's AI gover
                     │  │   (Supervisor Pattern)           │ │
                     │  │                                  │ │
                     │  │   ┌──────────────────────────┐  │ │
-                    │  │   │  Judge #6 Coordinator    │  │ │
+                    │  │   │  Judge 6 Coordinator    │  │ │
                     │  │   │  (State Graph Manager)   │  │ │
                     │  │   └──────────┬───────────────┘  │ │
                     │  │              │                  │ │
@@ -173,7 +173,7 @@ Production-ready inference architecture for deploying Judge #6 (Pnkln's AI gover
 **Model Configuration**:
 
 ```yaml
-Model: google/gemini-2.0-flash-thinking-exp-1219 # Judge #6 base model
+Model: google/gemini-2.0-flash-thinking-exp-1219 # Judge 6 base model
 Quantization: FP16 (baseline), INT8 (cost optimization)
 Batch Size: Dynamic (adaptive to QPS)
 Max Sequence Length: 32,768 tokens
@@ -184,13 +184,13 @@ KV Cache: PagedAttention with 90% GPU memory allocation
 
 **Deployment Pattern**: Multi-Model Single Endpoint
 
-- Deploy Judge #6 variants to same endpoint
+- Deploy Judge 6 variants to same endpoint
 - Traffic splitting: 90% production / 10% canary
 - Gradual rollout for model updates
 
 **Endpoint Types**:
 
-- **Dedicated Endpoint**: Judge #6 production traffic
+- **Dedicated Endpoint**: Judge 6 production traffic
 - **Shared Endpoint**: Development/testing
 
 **Scaling**:
@@ -208,7 +208,7 @@ KV Cache: PagedAttention with 90% GPU memory allocation
 ```python
 # State Graph Structure
 class Judge6State(TypedDict):
-    """Shared state across all Judge #6 agents"""
+    """Shared state across all Judge 6 agents"""
     document_id: str
     document_content: str
     compliance_framework: str  # FDA, SEC, ITAR, etc.
@@ -303,7 +303,7 @@ workflow.add_conditional_edges(
 **Processing Flow**:
 
 ```
-Cloud Storage → Document AI Processor → LangGraph Orchestrator → Judge #6
+Cloud Storage → Document AI Processor → LangGraph Orchestrator → Judge 6
 ```
 
 #### 4.2 Integration Architecture
@@ -316,7 +316,7 @@ Cloud Storage → Document AI Processor → LangGraph Orchestrator → Judge #6
 3. Document AI processes document (async)
 4. Parsed output sent to Pub/Sub topic
 5. LangGraph consumer picks up message
-6. Judge #6 workflow initiated
+6. Judge 6 workflow initiated
 
 **Code Structure**:
 
@@ -389,10 +389,10 @@ spec:
 
 **Use Cases**:
 
-- **A/B Testing**: 90/10 split for new Judge #6 versions
+- **A/B Testing**: 90/10 split for new Judge 6 versions
 - **Multi-Model Serving**: Route by compliance framework
-  - FDA → Judge #6 Pharma variant
-  - SEC → Judge #6 Finance variant
+  - FDA → Judge 6 Pharma variant
+  - SEC → Judge 6 Finance variant
 - **Cost Optimization**: Route low-priority to INT8 quantized models
 
 ### 6. Scaling & Performance

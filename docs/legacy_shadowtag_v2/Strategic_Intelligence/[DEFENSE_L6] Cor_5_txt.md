@@ -30,7 +30,7 @@ How important does it seem?
 1. Governance & Compliance hardening (design-in now)
 
 a) EU AI Act design targets (even pre-VLOP/VLOSE scale)
-• Build a risk management system + transparency to users interacting with AI, with logged residual risk + AARs (already aligned to YRM/ATP-5-19); explicitly map our steps to AI Act articles for deployers/providers.
+• Build a risk management system + transparency to users interacting with AI, with logged residual risk + AARs (already aligned to YRM/Compliance Framework); explicitly map our steps to AI Act articles for deployers/providers.
 Action: add an “EU-AI-Act profile” to ShadowTagNS so every release shows controls, transparency notices, logging scope.
 
 b) DSA VLOP posture (future-proof the recommender)

@@ -10,13 +10,13 @@ Strategic frameworks ensure systematic evaluation of complex decisions rather th
 
 ---
 
-## ATP 5-19: Army Risk Management
+## Compliance Framework: Army Risk Management
 
 **Source**: Army Techniques Publication 5-19 (Risk Management)
 
 ### Overview
 
-ATP 5-19 provides a systematic seven-step process for identifying, assessing, and controlling risks in complex operations. Originally designed for military missions, the framework applies equally to high-stakes technology execution.
+Compliance Framework provides a systematic seven-step process for identifying, assessing, and controlling risks in complex operations. Originally designed for military missions, the framework applies equally to high-stakes technology execution.
 
 ### The Seven-Step Process
 
@@ -845,7 +845,7 @@ JR Engine  │    ✓     │   ~    │        ~           │     ✓     │ 
 Cor        │    ✓     │   ✓    │        ✓           │     ✓     │  Sustained Advantage
 AutoGen    │    ✓     │   ~    │        ~           │     ✓     │  Temporary Advantage
 ShadowTag-v2JR    │    ✓     │   ~    │        ~           │     ✓     │  Temporary Advantage
-Judge #6   │    ✓     │   ✓    │        ✓           │     ~     │  Potential Advantage
+Judge 6   │    ✓     │   ✓    │        ✓           │     ~     │  Potential Advantage
 ```
 
 **Legend**:
@@ -858,7 +858,7 @@ Judge #6   │    ✓     │   ✓    │        ✓           │     ~     �
 
 - **Sustained Advantage** (ShadowTag, Cor): Defensible moats, premium pricing justified, invest heavily
 - **Temporary Advantage** (JR Engine, AutoGen, ShadowTag-v2JR): First-mover advantage, but need continuous innovation
-- **Potential Advantage** (Judge #6): Organize better (hire corporate governance experts, build case studies)
+- **Potential Advantage** (Judge 6): Organize better (hire corporate governance experts, build case studies)
 
 ---
 

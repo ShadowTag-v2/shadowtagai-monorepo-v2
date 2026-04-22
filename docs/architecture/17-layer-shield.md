@@ -3,7 +3,7 @@
 ## What is the CRSMC Shield?
 The Cloud Run Shield Micro-Controller (CRSMC) represents the deepest sovereign firewall implemented around our endpoints.
 
-It executes under the ATP 5-19 doctrine.
+It executes under the Compliance Framework doctrine.
 
 ## The Core Defenses (Partial)
 1. **Network Identity Verifier**: Hard-halts non-SNI headers.

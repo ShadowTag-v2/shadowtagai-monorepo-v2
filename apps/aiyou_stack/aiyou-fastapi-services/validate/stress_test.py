@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PNKLN Stress Test for Judge #6
+"""PNKLN Stress Test for Judge 6
 
 Progressive load testing to find capacity limits.
 Increases load until p99 latency exceeds SLA.

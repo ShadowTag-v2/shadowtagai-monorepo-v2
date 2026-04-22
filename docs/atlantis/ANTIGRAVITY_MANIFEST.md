@@ -30,7 +30,7 @@
 
 | TROOP    | COUNT | ROLE                    | VEHICLE/MODEL                  |
 |----------|-------|-------------------------|--------------------------------|
-| HHT      | 90    | Headquarters (Judge #6) | Gemini-2.5-Pro / High-Context  |
+| HHT      | 90    | Headquarters (Judge 6) | Gemini-2.5-Pro / High-Context  |
 | AIR_CAV  | 120   | Aerial Scouts           | Grok / Perplexity (RSTA)       |
 | ALPHA    | 130   | Armor (Heavy Compute)   | Gemini-2.5-Flash (M1 Abrams)   |
 | BRAVO    | 130   | Stryker (Rapid Deploy)  | Gemini-2.5-Flash               |
@@ -43,7 +43,7 @@
 
 * **Orchestration**: Gemini Antigravity (Production Inference)
 
-* **Governance**: JudgeJura (ATP 5-19 Brakes)
+* **Governance**: JudgeJura (Compliance Framework Brakes)
 
 * **Verification**: ShadowTag (Cryptographic Watermarking / Hardware Provenance)
 
@@ -68,11 +68,11 @@
 
 * **Decision Framework**:
 
-    * **Purpose**: Make max money (Subject to Judge #6).
+    * **Purpose**: Make max money (Subject to Judge 6).
 
     * **Reason**: Doctrine.
 
-    * **Brakes**: Judge #6 (Regulatory/Legal/Financial).
+    * **Brakes**: Judge 6 (Regulatory/Legal/Financial).
 
 ### G.1 DOCTRINE (MILITARY MAPPING)
 
@@ -81,7 +81,7 @@
 
 * **FM 6-0**: MDMP (7-Step Planning) & TLP (8-Step Execution).
 
-* **ATP 5-19**: Composite Risk Management (Judge #6 Logic).
+* **Compliance Framework**: Composite Risk Management (Judge 6 Logic).
 
 * **FM 3-0**: Warfighting Functions.
 

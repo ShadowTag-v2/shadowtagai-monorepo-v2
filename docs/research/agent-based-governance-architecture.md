@@ -1,6 +1,6 @@
 # Agent-Based Governance: Replacing Synchronous Enforcement with Autonomous Intelligence
 
-**Research Report: Comprehensive agent-based governance architectures to replace synchronous Judge #6 system (p99≤90ms) with autonomous agent patterns supporting 2-5 second decision latency**
+**Research Report: Comprehensive agent-based governance architectures to replace synchronous Judge 6 system (p99≤90ms) with autonomous agent patterns supporting 2-5 second decision latency**
 
 ---
 
@@ -336,9 +336,9 @@ class PolicyRAGAgent:
 
 **Policy versioning**: Track changes with metadata, maintain audit trail, enable rollback, link policy versions to decisions made.
 
-### ATP 5-19 risk framework conversion to agent reasoning
+### Compliance Framework risk framework conversion to agent reasoning
 
-ATP 5-19 (Army Risk Management) uses **5-step process**: Identify hazards → Assess hazards → Develop controls → Implement controls → Supervise & evaluate.
+Compliance Framework (Army Risk Management) uses **5-step process**: Identify hazards → Assess hazards → Develop controls → Implement controls → Supervise & evaluate.
 
 **Risk matrix** (Probability × Severity):
 
@@ -356,7 +356,7 @@ E         M        M        L        L
 
 ```python
 ATP_5_19_SYSTEM_PROMPT = """
-You are a risk assessment agent using ATP 5-19 framework.
+You are a risk assessment agent using Compliance Framework framework.
 
 STEP 1: IDENTIFY HAZARDS using METT-TC
 - Mission: Nature and complexity
@@ -389,7 +389,7 @@ OUTPUT FORMAT:
 
 **Function calling approach**: Define `calculate_risk_level(probability, severity)` as tool, let LLM determine probability/severity based on scenario analysis, then programmatically look up risk level from matrix for deterministic results.
 
-**RAG-enhanced assessment**: Retrieve relevant policy guidance for context, LLM identifies hazards with policy references, assesses each hazard using ATP 5-19 definitions, system calculates risk programmatically, proposes controls based on policy database.
+**RAG-enhanced assessment**: Retrieve relevant policy guidance for context, LLM identifies hazards with policy references, assesses each hazard using Compliance Framework definitions, system calculates risk programmatically, proposes controls based on policy database.
 
 ---
 
@@ -576,7 +576,7 @@ class AgentCircuitBreaker:
 
 **Implementation**:
 
-- Deploy agent system in parallel to existing Judge #6
+- Deploy agent system in parallel to existing Judge 6
 - Route copy of all requests to new system
 - Continue using existing system for all decisions
 - Log all agent recommendations
@@ -1080,7 +1080,7 @@ class HybridGovernance:
 
 ## 8. Production deployment recommendations
 
-### Reference architecture: Replacing Judge #6
+### Reference architecture: Replacing Judge 6
 
 ```
 ┌───────────────────────────────────────────────────────┐
@@ -1270,7 +1270,7 @@ class HybridGovernance:
 
 **1. Multi-agent orchestration**: While ADK supports agent creation, sophisticated multi-agent coordination (GaaS-style trust scoring, MI9-style telemetry) requires custom implementation. Google provides building blocks but not turnkey governance orchestration.
 
-**2. ATP 5-19 risk framework**: No pre-built military risk assessment integration. Requires custom prompt engineering and function calling implementation as detailed in section 3.
+**2. Compliance Framework risk framework**: No pre-built military risk assessment integration. Requires custom prompt engineering and function calling implementation as detailed in section 3.
 
 **3. Policy precedent accumulation**: Kosmos-style world models for long-horizon reasoning not available as managed service. Must build custom structured memory layer.
 
@@ -1462,7 +1462,7 @@ Organizations must **explicitly accept** these trade-offs before migration:
 
 ## Conclusion: The path forward
 
-Replacing synchronous Judge #6 with agent-based governance is **technically feasible, economically viable, and strategically advantageous** for organizations willing to accept eventual consistency trade-offs and invest in proper compensating controls.
+Replacing synchronous Judge 6 with agent-based governance is **technically feasible, economically viable, and strategically advantageous** for organizations willing to accept eventual consistency trade-offs and invest in proper compensating controls.
 
 **The decision is not "agents vs rules" but rather "which blend of agents and rules optimizes for your unique requirements?"** Most enterprises will benefit from hybrid architectures: deterministic OPA rules for critical fast-path decisions, agent-based reasoning for complex contextual evaluation.
 
@@ -1476,6 +1476,6 @@ Replacing synchronous Judge #6 with agent-based governance is **technically feas
 
 **The window for early-mover advantage is now**: Organizations deploying production agent governance today will accumulate years of policy precedents, agent training data, and operational expertise before this becomes industry standard practice (projected 2-3 years based on adoption curves).
 
-**Start with shadow mode this quarter**. Deploy in parallel to Judge #6, measure agreement rates, build organizational confidence. The cost is minimal ($200-500/month), the learning is invaluable, and you'll be positioned to make an informed migration decision with real data rather than assumptions.
+**Start with shadow mode this quarter**. Deploy in parallel to Judge 6, measure agreement rates, build organizational confidence. The cost is minimal ($200-500/month), the learning is invaluable, and you'll be positioned to make an informed migration decision with real data rather than assumptions.
 
 Agent-based governance represents the future of policy enforcement in complex, rapidly-changing environments. The question is not whether to adopt, but when and how aggressively to migrate.

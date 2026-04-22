@@ -557,7 +557,7 @@ The **Transcript-to-Contract (T2C)** application is a specialized AI-powered leg
 
 **Synergies with Other PNKLN Services**:
 
-- **Judge #6**: Use for contract quality validation (like Tier Classification)
+- **Judge 6**: Use for contract quality validation (like Tier Classification)
 - **AM Briefing**: Daily metrics on contracts generated, attorney performance
 - **Trial Wins Wiki** (future): Feed contract dispute outcomes back to improve AI
 

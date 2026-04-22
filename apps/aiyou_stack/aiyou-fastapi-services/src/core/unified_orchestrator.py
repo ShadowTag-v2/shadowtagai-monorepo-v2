@@ -11,7 +11,7 @@ Architecture:
 │ ├─ Simple tasks → Gemini function calling              │
 │ ├─ Complex reasoning → Anthropic CoT                   │
 │ ├─ Hybrid → Anthropic plans, Gemini executes           │
-│ └─ Judge #6 validates all operations                   │
+│ └─ Judge 6 validates all operations                   │
 └─────────────────────────────────────────────────────────┘
 """
 
@@ -111,7 +111,7 @@ class UnifiedOrchestrator:
         Args:
             function_caller: Optional GeminiFunctionCaller instance
             llm_executor: Optional MultiProviderExecutor instance
-            enable_judge: Enable Judge #6 validation
+            enable_judge: Enable Judge 6 validation
             judge_validator: Optional custom validation function
             enable_auto_routing: Automatically detect task complexity
             default_complexity: Default complexity if not specified

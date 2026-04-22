@@ -83,7 +83,7 @@ Cloud Run Fit by Vertical
 | Oracle (HTTP)                                    | ✅ PERFECT    | Stateless Gemini wrapper                  | PRO $100k            |
 | JURA Router                                      | ✅ GOOD       | Stateless tier routing                    | Core infra           |
 | CodePMCS Scan                                    | ✅ GOOD       | Stateless code analysis                   | PRO $400k            |
-| JudgeJura (ATP 5-19)                             | ⚠️ PARTIAL    | Needs Redis for verdict cache             | PRO $100k            |
+| JudgeJura (Compliance Framework)                             | ⚠️ PARTIAL    | Needs Redis for verdict cache             | PRO $100k            |
 | GPTRAM/Redis                                     | ❌ NO         | Stateful, persistent connections          | Memorystore required |
 | ShadowTag                                        | ⚠️ PARTIAL    | L0-L4 attestation needs state             | Mixed                |
 
@@ -165,7 +165,7 @@ Squadron Structure (650 Agents)
 
 | Troop    | Size | Model            | Role                       |
 | -------- | ---- | ---------------- | -------------------------- |
-| HHT      | 90   | gemini-3.1-pro   | Judge #6, S-1 to S-6 Staff |
+| HHT      | 90   | gemini-3.1-pro   | Judge 6, S-1 to S-6 Staff |
 | AIR_CAV  | 120  | gemini-3.1-flash | Aerial Scouts              |
 | ALPHA    | 130  | gemini-3.1-flash | Armor                      |
 | BRAVO    | 130  | gemini-3.1-flash | Stryker                    |

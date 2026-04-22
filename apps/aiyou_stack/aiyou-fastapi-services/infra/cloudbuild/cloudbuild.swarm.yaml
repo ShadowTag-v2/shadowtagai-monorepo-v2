@@ -28,7 +28,7 @@ steps:
       - 'us-central1'
       - '--platform'
       - 'managed'
-      - '--allow-unauthenticated' # Secured via internal Judge #6 logic
+      - '--allow-unauthenticated' # Secured via internal Judge 6 logic
       - '--set-env-vars'
       - 'IQ_LOCK=160,MODE=COMBAT,JUDGE_LEVEL=6'
 

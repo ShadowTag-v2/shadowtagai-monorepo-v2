@@ -1,17 +1,17 @@
-# Judge #6 HITL System - Complete Overview
+# Judge 6 HITL System - Complete Overview
 
 **Binary enforcement engine for high-stakes decision-making with Human-in-the-Loop gates**
 
 ## Executive Summary
 
-Judge #6 is a **binary ALLOW/BLOCK enforcement system** that evaluates high-risk actions across four verticals (Financial, Legal Case, Legal Compliance, Fraud) with integrated ATP 5-19 risk assessment and sub-90ms latency targets.
+Judge 6 is a **binary ALLOW/BLOCK enforcement system** that evaluates high-risk actions across four verticals (Financial, Legal Case, Legal Compliance, Fraud) with integrated Compliance Framework risk assessment and sub-90ms latency targets.
 
 **Decision Framework**: Purpose=ShadowTag-v2JR • Reason=Doctrine • Brakes=Army RM
 
 **Key Capabilities**:
 
 - **Binary decisions**: ALLOW or BLOCK (no ambiguity)
-- **ATP 5-19 risk matrix**: Probability (A-E) × Severity (I-IV) → Risk Level (EH/H/M/L)
+- **Compliance Framework risk matrix**: Probability (A-E) × Severity (I-IV) → Risk Level (EH/H/M/L)
 - **HITL gates**: Automated routing to appropriate approval authority (CFO, Legal, etc.)
 - **Semantic compression**: 10:1 audit trail compression while preserving decision-critical info
 - **Sub-90ms latency**: Target p50≈30ms, p99≤90ms for real-time enforcement
@@ -23,7 +23,7 @@ Judge #6 is a **binary ALLOW/BLOCK enforcement system** that evaluates high-risk
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                   Judge #6 HITL System                          │
+│                   Judge 6 HITL System                          │
 │                                                                 │
 │  ┌────────────────────┐         ┌────────────────────┐         │
 │  │   FastAPI Layer    │         │   Gemini 2.0 Flash │         │
@@ -56,7 +56,7 @@ Judge #6 is a **binary ALLOW/BLOCK enforcement system** that evaluates high-risk
 │     │                               │                          │
 │     ▼                               ▼                          │
 │  ┌──────────────┐         ┌─────────────────────┐             │
-│  │ ATP 5-19     │         │ Semantic Compression│             │
+│  │ Compliance Framework     │         │ Semantic Compression│             │
 │  │ Risk Matrix  │         │  (10:1 ratio)       │             │
 │  │              │         │                     │             │
 │  │ P(A-E) ×     │         │ Audit Trail Storage │             │
@@ -73,7 +73,7 @@ Every judge follows this flow (implemented in `BaseJudge.judge()`):
 1. **Start latency timer** (p99 ≤90ms target)
 2. **Evaluate action** (vertical-specific logic)
 3. **Extract risk factors** (probability, severity, rationale, mitigations)
-4. **Perform ATP 5-19 risk assessment** (matrix lookup)
+4. **Perform Compliance Framework risk assessment** (matrix lookup)
 5. **Determine approval gate** (based on risk level + amount)
 6. **Generate semantic audit trail** (10:1 compression)
 7. **Return binary decision** (ALLOW or BLOCK)
@@ -249,7 +249,7 @@ context = {
 
 **See**: [FraudJudge Specifications](./fraud-judge-spec.md)
 
-## ATP 5-19 Risk Matrix Integration
+## Compliance Framework Risk Matrix Integration
 
 All judges use the **Army Techniques Publication 5-19** risk assessment matrix.
 
@@ -365,7 +365,7 @@ action→amount→vendor_status→PO_status→risk_level→approval_gate→decis
 
 **Article 9**: High-risk AI systems require:
 
-- ✅ Risk assessment (ATP 5-19 matrix)
+- ✅ Risk assessment (Compliance Framework matrix)
 - ✅ Human oversight (HITL gates)
 - ✅ Technical documentation (audit trails)
 - ✅ Transparency (semantic summaries)
@@ -523,7 +523,7 @@ kubectl expose deployment judge-hitl --type=LoadBalancer --port=8001
 
 ## References
 
-- **ATP 5-19**: Army Techniques Publication 5-19 (Risk Management)
+- **Compliance Framework**: Army Techniques Publication 5-19 (Risk Management)
 - **EU AI Act**: Regulation (EU) 2024/1689
 - **CA SB 53**: California Senate Bill 53 (AI Transparency)
 - **Source Code**: `/src/judges/`, `/src/risk_matrix/`, `/src/utils/`

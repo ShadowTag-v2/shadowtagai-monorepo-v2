@@ -137,7 +137,7 @@ is set, these gates fall back to **env var overrides** (which take precedence).
 ## Adversa AI 50-Subcommand Bypass
 
 **Source**: Adversa AI security audit (public)
-**Severity**: 🔴 CRITICAL (for our Judge #6)
+**Severity**: 🔴 CRITICAL (for our Judge 6)
 
 The attack chains 50+ benign-looking subcommands that individually pass the
 BLOCK/ALLOW security monitor but collectively perform a harmful action:
@@ -151,7 +151,7 @@ cat /tmp/stage1.txt | base64 -d   # ALLOW: reading temp file
 # Final step reconstructs and executes malicious payload
 ```
 
-### Implications for Judge #6
+### Implications for Judge 6
 Our current BLOCK/ALLOW spec (judge6_block_allow_spec.md) evaluates actions individually.
 The Composite Action Evaluation rule (line 83-86) is theoretically sound but lacks:
 

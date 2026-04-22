@@ -4,14 +4,14 @@
  * PNKLN Analyzer - Gemini 2.0 Pro Integration
  *
  * Utility for analyzing PNKLN Core Stack™ components using Gemini 2.0 Pro.
- * Supports both Judge #6 (validation) and Gemini Ingestion Layer (collection) analyses.
+ * Supports both Judge 6 (validation) and Gemini Ingestion Layer (collection) analyses.
  *
  * Usage:
  *   node pnkln-analyzer.js <component> <command> [options]
  *
  * Components:
  *   ingestion    - Gemini Ingestion Layer
- *   judge6       - Judge #6 Validation System
+ *   judge6       - Judge 6 Validation System
  *
  * Commands:
  *   analyze      - Run Gemini analysis on component
@@ -44,7 +44,7 @@ const CONFIG = {
       ],
     },
     judge6: {
-      name: 'Judge #6',
+      name: 'Judge 6',
       promptFile: 'judge-six-prompt.md',
       confidenceTarget: 70,
       type: 'validation',
@@ -396,7 +396,7 @@ Usage:
 
 Components:
   ingestion    Gemini Ingestion Layer (collection pipeline)
-  judge6       Judge #6 (validation system)
+  judge6       Judge 6 (validation system)
 
 Commands:
   prepare [docs-dir]              Validate documentation for analysis

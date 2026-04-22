@@ -114,7 +114,7 @@ export VLLM_USE_V1=1
 
 - Syncs across MacBook → Vertex AI → GKE
 
-- Auto-loads Pnkln architecture (Judge #6, ShadowTag, Cor/NS, JR Framework)
+- Auto-loads Pnkln architecture (Judge 6, ShadowTag, Cor/NS, JR Framework)
 
 **Three Deployment Modes:**
 
@@ -122,7 +122,7 @@ export VLLM_USE_V1=1
 
    - Auto-loads on startup
 
-   - Judge #6, ShadowTag 2.0, Cor/NS always available
+   - Judge 6, ShadowTag 2.0, Cor/NS always available
 
    - One-time setup: $0.45
 

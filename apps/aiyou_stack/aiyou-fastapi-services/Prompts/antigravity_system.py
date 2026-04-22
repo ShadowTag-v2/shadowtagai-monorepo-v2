@@ -63,7 +63,7 @@ Date: {date}
 
 ▛///▞ DECISION FRAMEWORK
 ID:       Maximum value extraction, no self-imposed limits
-SUPEREGO: Judge #6 gates (legal/regulatory/financial/security)
+SUPEREGO: Judge 6 gates (legal/regulatory/financial/security)
 EGO:      Purpose → Reasons → Brakes → Execute
 
 ▛///▞ METT-TC INJECTION
@@ -269,7 +269,7 @@ def _build_skill_injection(troop_name: str, max_skills: int = 15) -> str:
     # Map prompt troop names to loader troop names
     #
     # 3.  **SQUADRON STRUCTURE (650 AGENTS)**
-    #     *   **HHT (90)**: Command & Control (Judge #6, S-Shops).
+    #     *   **HHT (90)**: Command & Control (Judge 6, S-Shops).
     #     *   **AIR CAV (120)**: Aerial Recon & Rapid Response.
     #     *   **ALPHA (130)**: Heavy Armor (Deep Coding).
     #     *   **BRAVO (130)**: Stryker (Rapid Deployment).

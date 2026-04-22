@@ -338,6 +338,6 @@ Do you want me to draw a system diagram that shows:
 • Cursor watcher,
 • GitHub connector+agent,
 • Multi-LLM panel,
-• Judge #6,
+• Judge 6,
 
 …all wired into the same Work Order Bus? That’d make the mapping visual.

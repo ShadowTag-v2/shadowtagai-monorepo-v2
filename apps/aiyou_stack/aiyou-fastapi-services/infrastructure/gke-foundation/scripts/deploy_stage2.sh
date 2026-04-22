@@ -2,7 +2,7 @@
 set -e
 
 # ONE-CLICK DEPLOYMENT: STAGE 2 (INFERENCE CORE)
-# Mission: Deploy vLLM with Gemini Adapter and Judge #6 Sidecar.
+# Mission: Deploy vLLM with Gemini Adapter and Judge 6 Sidecar.
 
 # Ensure we are in the script's directory so relative paths work
 cd "$(dirname "$0")"
@@ -28,7 +28,7 @@ if ! kubectl get secret hf-token -n gke-inference-system > /dev/null 2>&1; then
 fi
 
 # 4. Deploy vLLM + Judge Sidecar
-echo "🧠 Deploying vLLM + Judge #6..."
+echo "🧠 Deploying vLLM + Judge 6..."
 kubectl apply -f ../k8s/vllm-gemini.yaml
 
 # 5. Validation Gate (SLA Check)

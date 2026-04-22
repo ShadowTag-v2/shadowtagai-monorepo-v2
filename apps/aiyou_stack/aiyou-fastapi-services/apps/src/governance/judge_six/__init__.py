@@ -70,7 +70,7 @@ class SafetyConfig:
 
 
 class JudgeSix:
-    """Judge #6 Governance Engine.
+    """Judge 6 Governance Engine.
     Enforces 'Zero-Deviation' safety policies.
     """
 

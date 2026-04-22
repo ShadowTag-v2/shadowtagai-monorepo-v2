@@ -164,7 +164,7 @@
     "114. `apps/counselconduit/src/api/nexus_serverless.py` (Cloud Run FastAPI + CTM Retrieval).",
     "115. `apps/counselconduit/database/bq_monte_carlo.sql` (BigQuery Midas Monte Carlo Stored Procedure).",
     "116. `infra/terraform/sidecar.tf` (gVisor Sandboxing & VPC Target).",
-    "117. Semantic Kernel Process Framework (.NET 8): Judge #6 is an IMMUTABLE PROCESS. All AI logic executes as step-by-step nodes (extract -> score -> risk gate) bound strictly by ATP 5-19 doctrine.",
+    "117. Semantic Kernel Process Framework (.NET 8): Judge 6 is an IMMUTABLE PROCESS. All AI logic executes as step-by-step nodes (extract -> score -> risk gate) bound strictly by ATP 5-19 doctrine.",
     "118. Compiler Guillotine (Process Execution): Verify `Process.cs` builds and passes semantic kernel evaluations during backend alterations.",
     "--- XIII. PARITY CONSOLIDATION (v3.2) & CLAUDE OS SOURCE LEAK INTEGRATION ---",
     "119. Three-Layer Context Memory: All context must traverse `tools/orchestrator/memory_indexer.py`. `MEMORY.md` acts strictly as a hyper-lightweight pointer table to Topic Files. No raw transcripts allowed in context window.",

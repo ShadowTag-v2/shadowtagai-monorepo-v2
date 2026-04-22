@@ -608,7 +608,7 @@ orchestrator = create_orchestrator(memory=memory)
 
 # Memory auto-available in all executions
 
-result = await orchestrator.execute("Build on Judge #6 architecture")
+result = await orchestrator.execute("Build on Judge 6 architecture")
 
 ```
 

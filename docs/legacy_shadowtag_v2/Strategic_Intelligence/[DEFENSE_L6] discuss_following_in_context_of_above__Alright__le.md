@@ -11,7 +11,7 @@ discuss following in context of above: Alright, let’s ground this in your MVP 
 ~4–6 months to MVP.
     •    Core ingestion → RAG engine (already scaffolded with Cursor).
     •    Hosting layer → YouTube clone baseline (open-source clones + custom AI upload policy).
-    •    Risk/guardrails → ATP 5-19 / ShadowTag-v2JR embedded early.
+    •    Risk/guardrails → Compliance Framework / ShadowTag-v2JR embedded early.
     •    Deployment infra → CoreWeave/NVIDIA for compute acceleration.
 ✅ Net time saved: ~65–70%. That’s the equivalent of skipping 9+ months of infra churn.
 ⸻
@@ -51,7 +51,7 @@ Do you want me to re-roll your pitch deck slides specifically for CoreWeave/NVID
 ~4–6 months to MVP.
     •    Core ingestion → RAG engine (already scaffolded with Cursor).
     •    Hosting layer → YouTube clone baseline (open-source clones + custom AI upload policy).
-    •    Risk/guardrails → ATP 5-19 / ShadowTag-v2JR embedded early.
+    •    Risk/guardrails → Compliance Framework / ShadowTag-v2JR embedded early.
     •    Deployment infra → CoreWeave/NVIDIA for compute acceleration.
 
 ✅ Net time saved: ~65–70%. That’s the equivalent of skipping 9+ months of infra churn.

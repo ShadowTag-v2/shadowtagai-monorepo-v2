@@ -1,5 +1,5 @@
 /**
- * PNKLN Judge #6 Lite - Cloudflare Worker
+ * PNKLN Judge 6 Lite - Cloudflare Worker
  *
  * 3-tier hybrid enforcement at the edge:
  * Tier 1: Rules Engine (<5ms) - 95% of requests
@@ -163,7 +163,7 @@ export default {
     if (request.method === 'GET') {
       return new Response(
         JSON.stringify({
-          service: 'PNKLN Judge #6 Lite',
+          service: 'PNKLN Judge 6 Lite',
           version: '1.0.0',
           status: 'operational',
           uptime: Date.now(),
@@ -241,7 +241,7 @@ export default {
         },
       });
     } catch (error) {
-      console.error('Judge #6 error:', error);
+      console.error('Judge 6 error:', error);
 
       return new Response(
         JSON.stringify({
@@ -382,7 +382,7 @@ async function analyzeWithClaude(
 }
 
 function buildJudgeSystemPrompt(): string {
-  return `You are PNKLN Judge #6, an AI governance enforcement system.
+  return `You are PNKLN Judge 6, an AI governance enforcement system.
 
 Your role is to analyze content and determine if it violates policy guidelines.
 

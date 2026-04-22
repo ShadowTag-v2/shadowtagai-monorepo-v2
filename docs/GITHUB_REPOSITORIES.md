@@ -24,7 +24,7 @@
 
 - Pre-execution governance engine (AiU)
 - Content verification platform (ShadowTag-v2)
-- Judge #6 enforcement infrastructure
+- Judge 6 enforcement infrastructure
 - GKE native deployment (15 files, 2,473 lines)
 - 4-LLM orchestration (Gemini 40% + Claude 35% + GPT-5 15% + Perplexity/Grok 10%)
 
@@ -96,7 +96,7 @@
 
 **Key Components** (now in main repo):
 
-- **Judge #6**: Gemini + PyTorch + Rules engine (98% coverage, p99 ≤90ms)
+- **Judge 6**: Gemini + PyTorch + Rules engine (98% coverage, p99 ≤90ms)
 - **ShadowTag 2.0**: DCT watermarking for content protection
 - **Cor/NS**: Unified execution brain for service mesh coordination
 - **JR Framework**: Purpose • Reasons • Brakes decision framework
@@ -224,7 +224,7 @@
 - Claude Sonnet 4.5 (35%)
 - GPT-4 Turbo / GPT-5 (15%)
 - Perplexity + Grok (10%)
-- PyTorch (Judge #6 inference)
+- PyTorch (Judge 6 inference)
 - vLLM (model serving)
 
 ### Data & Memory
@@ -239,7 +239,7 @@
 - Prometheus (metrics)
 - Grafana (dashboards)
 - Google Cloud Monitoring
-- Custom Judge #6 telemetry
+- Custom Judge 6 telemetry
 
 ---
 
@@ -252,7 +252,7 @@
 **Total Code**: ~36,615 lines production code
 **Key Additions**:
 
-- Judge #6 pre-commit enforcement (TypeScript hooks + P3 Hybrid Engine)
+- Judge 6 pre-commit enforcement (TypeScript hooks + P3 Hybrid Engine)
 - FedRAMP/HIPAA compliance templates
 - SQLCipher AES-256 encryption at rest
 - AI Code Refactorer (Vertex AI + Claude Agent SDK)

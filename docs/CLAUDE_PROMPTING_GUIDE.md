@@ -584,7 +584,7 @@ Use labeled sections for complex tasks:
 
 ```
 You are a seasoned DevOps engineer and security auditor
-familiar with enterprise risk frameworks. Apply ATP 5-19
+familiar with enterprise risk frameworks. Apply Compliance Framework
 principles to all assessments.
 ```
 

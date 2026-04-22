@@ -1,7 +1,7 @@
 """Infrastructure Analysis Skill - pinkln Agent Architecture System
 
 This skill provides comprehensive analysis capabilities for infrastructure components
-in the PNKLN Core Stack™, including Judge #6 (enforcement/validation) and Gemini
+in the PNKLN Core Stack™, including Judge 6 (enforcement/validation) and Gemini
 Ingestion Layer (intelligence collection).
 
 Capabilities:
@@ -78,9 +78,9 @@ class InfrastructureAnalysisSkill:
     - Iterate Relentlessly: Continuous improvement cycles
     """
 
-    # Judge #6 Specification
+    # Judge 6 Specification
     JUDGE_SIX_SPEC = SystemSpec(
-        name="Judge #6",
+        name="Judge 6",
         system_type=SystemType.JUDGE,
         architecture="Hybrid Gemini+PyTorch on GKE",
         key_metrics={
@@ -543,7 +543,7 @@ Obsess Over Details, Simplify Ruthlessly, Iterate to Excellence.
 
 
 def analyze_judge_six() -> AnalysisResult:
-    """Quick analysis of Judge #6 system."""
+    """Quick analysis of Judge 6 system."""
     skill = InfrastructureAnalysisSkill()
     return skill.analyze_system(skill.JUDGE_SIX_SPEC)
 
@@ -555,7 +555,7 @@ def analyze_gemini_ingestion() -> AnalysisResult:
 
 
 def compare_judge_and_ingestion() -> dict[str, Any]:
-    """Compare Judge #6 and Gemini Ingestion Layer."""
+    """Compare Judge 6 and Gemini Ingestion Layer."""
     skill = InfrastructureAnalysisSkill()
     return skill.comparative_analysis(skill.JUDGE_SIX_SPEC, skill.GEMINI_INGESTION_SPEC)
 
@@ -568,8 +568,8 @@ if __name__ == "__main__":
     print("PNKLN Infrastructure Analysis Skill Demo")
     print("=" * 70)
 
-    # Analyze Judge #6
-    print("\n--- Judge #6 Analysis ---")
+    # Analyze Judge 6
+    print("\n--- Judge 6 Analysis ---")
     judge_result = skill.analyze_system(skill.JUDGE_SIX_SPEC)
     print(f"Strengths: {len(judge_result.strengths)}")
     print(f"Recommendations: {len(judge_result.recommendations)}")

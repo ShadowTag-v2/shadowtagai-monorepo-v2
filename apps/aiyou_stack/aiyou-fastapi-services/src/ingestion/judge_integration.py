@@ -1,6 +1,6 @@
-"""Judge #6 Integration for End-to-End Flow Analysis.
+"""Judge 6 Integration for End-to-End Flow Analysis.
 
-Bridges validation (Judge #6) with intelligence gathering (Ingestion Layer):
+Bridges validation (Judge 6) with intelligence gathering (Ingestion Layer):
 - Analyzes data handoffs between collection → validation
 - Validates ingested data quality before downstream use
 - Provides unified metrics across pipeline
@@ -53,7 +53,7 @@ class ValidationResult:
 
 
 class Judge6Integrator:
-    """Integrates Ingestion Layer with Judge #6 validation framework.
+    """Integrates Ingestion Layer with Judge 6 validation framework.
 
     Functions:
     1. Pre-ingestion validation (source health checks)
@@ -131,7 +131,7 @@ class Judge6Integrator:
         self,
         ingestion_metrics: dict,
     ) -> list[ValidationResult]:
-        """Validate ingestion pipeline output (Judge #6 style).
+        """Validate ingestion pipeline output (Judge 6 style).
 
         Args:
             ingestion_metrics: Metrics from ingestion pipeline
@@ -389,7 +389,7 @@ class Judge6Integrator:
 
     def generate_validation_report(self, validation_results: list[ValidationResult]) -> str:
         """Generate human-readable validation report."""
-        lines = ["\n## Judge #6 Validation Report", ""]
+        lines = ["\n## Judge 6 Validation Report", ""]
 
         # Summary
         status_counts = {

@@ -33,7 +33,7 @@
 
 - **6-layer stack**: Gulfstream Offshore → Core Stack™ → AiU Digital Mall → RoadMesh → Orbital → Gov/Defense
 
-- **19 verticals mapped**: DoD, FAA, FDA, Judiciary, LEO, Aircraft Relay, GPU Pods, Highway LiDAR, C-V2X, Digital ATC, Mall, Cognitive Stack v5, Judge #6, AiUCRM, ShadowTag, Gulfstream, Cor.64 Intel, + 2 ShadowTag licensing packs
+- **19 verticals mapped**: DoD, FAA, FDA, Judiciary, LEO, Aircraft Relay, GPU Pods, Highway LiDAR, C-V2X, Digital ATC, Mall, Cognitive Stack v5, Judge 6, AiUCRM, ShadowTag, Gulfstream, Cor.64 Intel, + 2 ShadowTag licensing packs
 
 - **Valuation model**: $77.5B conservative / $124.5B optimistic, 76.9% weighted EBITDA
 
@@ -59,7 +59,7 @@
 
 - **Cognitive Stack v5**: BDH, RoT, MoE-CL, CoDA/DLM
 
-- **Judge #6**: 3-layer hybrid (Gemini + PyTorch + Rules), <500µs p99 target, 98% PRB coverage
+- **Judge 6**: 3-layer hybrid (Gemini + PyTorch + Rules), <500µs p99 target, 98% PRB coverage
 
 - **ShadowTag v2**: DCT-based multimodal watermarking (text/image/video/telemetry)
 
@@ -99,7 +99,7 @@ background: "Army Special Forces + Legal training"
 
 starting_capital: $0K
 approach: "Bootstrap discipline with Series A path"
-philosophy: "JR doctrine (maximize value every equation) + ATP 5-19 risk management"
+philosophy: "JR doctrine (maximize value every equation) + Compliance Framework risk management"
 
 # Technical Stack
 
@@ -143,7 +143,7 @@ production_cluster_cost: "$161k/mo for 5 clusters at scale"
 
 - Every decision optimized for highest defensible outcome
 
-**2. ATP 5-19 Risk Stratification**
+**2. Compliance Framework Risk Stratification**
 
 - RA-1 (Critical): Showstoppers, require multi-layer mitigation
 
@@ -159,7 +159,7 @@ production_cluster_cost: "$161k/mo for 5 clusters at scale"
 
 - Stage 2: Inference Core (single LLM, p99 <90ms)
 
-- Stage 3: Judge #6 Integration (enforcement live, 98% coverage)
+- Stage 3: Judge 6 Integration (enforcement live, 98% coverage)
 
 - Stage 4: Multi-LLM + Gateway (5 LLMs, global routing)
 
@@ -181,7 +181,7 @@ production_cluster_cost: "$161k/mo for 5 clusters at scale"
 
 ### Critical Components
 
-**Judge #6 Architecture** (Hybrid Enforcement):
+**Judge 6 Architecture** (Hybrid Enforcement):
 
 ```yaml
 layer1_gemini:
@@ -196,7 +196,7 @@ layer2_pytorch:
 
 layer3_rules:
   purpose: "Deterministic gates"
-  framework: "ATP 5-19 risk stratification"
+  framework: "Compliance Framework risk stratification"
   target_latency: "<2ms p99"
 
 aggregation:
@@ -277,7 +277,7 @@ tpu-pool: "pool=tpu, accelerator=tpu-v5e"
 
 **Phase 0** (Now → 90 days):
 
-- Deploy Judge #6 alpha (<500µs p99, 95% coverage)
+- Deploy Judge 6 alpha (<500µs p99, 95% coverage)
 
 - Launch ShadowTag v2 API (image/video/text)
 
@@ -326,7 +326,7 @@ tpu-pool: "pool=tpu, accelerator=tpu-v5e"
 
 - Bootstrap discipline (prove before scale)
 
-- Military-grade precision (ATP 5-19 frameworks)
+- Military-grade precision (Compliance Framework frameworks)
 
 - First principles thinking (question all assumptions)
 
@@ -379,7 +379,7 @@ company targeting regulated markets (defense, healthcare, finance).
 
 - Terraform: GKE Standard cluster with 4 node pools (system, judge, gpu, tpu)
 
-- K8s manifests: vLLM inference with Judge #6 sidecar enforcement
+- K8s manifests: vLLM inference with Judge 6 sidecar enforcement
 
 - Automation scripts: Stage 1 & 2 deployment with gate validation
 
@@ -405,17 +405,17 @@ company targeting regulated markets (defense, healthcare, finance).
 - p99 latency: ≤90ms total application (15ms network + 5ms gateway + 10ms Judge
   - 55ms inference + 5ms serialization)
 
-- Judge #6: <500µs p99 governance path (scales to <200µs), 98% PRB coverage mandate
+- Judge 6: <500µs p99 governance path (scales to <200µs), 98% PRB coverage mandate
 
 - Availability: 99.9% (43min/month downtime budget)
 
-**Judge #6 Architecture** (hybrid enforcement):
+**Judge 6 Architecture** (hybrid enforcement):
 
 - Layer 1: Fine-tuned Gemini (policy understanding, <5ms)
 
 - Layer 2: PyTorch (enforcement logic, <3ms)
 
-- Layer 3: Rules engine (ATP 5-19 deterministic gates, <2ms)
+- Layer 3: Rules engine (Compliance Framework deterministic gates, <2ms)
 
 - Aggregation: 2/3 majority vote, RA-1 requires unanimous allow
 
@@ -463,7 +463,7 @@ company targeting regulated markets (defense, healthcare, finance).
 
 - Proof-of-concept before scaling (no exceptions)
 
-**Risk Management** (ATP 5-19 adapted):
+**Risk Management** (Compliance Framework adapted):
 
 - RA-1 (Critical): Multi-layer mitigation required
 
@@ -520,7 +520,7 @@ company targeting regulated markets (defense, healthcare, finance).
 
 - Apply JR doctrine to all decisions
 
-- Call out violations of CRM (ATP 5-19) framework
+- Call out violations of CRM (Compliance Framework) framework
 
 - Bootstrap discipline: prove before scale, always
 

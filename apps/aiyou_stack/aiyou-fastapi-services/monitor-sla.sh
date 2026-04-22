@@ -4,7 +4,7 @@ set -euo pipefail
 ################################################################################
 # Pnkln SLA Monitor - Continuous Monitoring with Kill-Switch
 ################################################################################
-# Purpose: Monitor Judge #6 p99/p95/p50 latencies with automatic kill-switch
+# Purpose: Monitor Judge 6 p99/p95/p50 latencies with automatic kill-switch
 # SLA Target: p99 ≤90ms, p95 ≤50ms, p50 ≤20ms
 # Kill-Switch: Automatic shutdown on SLA breach + cost overrun
 ################################################################################
@@ -281,7 +281,7 @@ display_status() {
     echo ""
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo "  Pnkln SLA Monitor v${VERSION}"
-    echo "  Judge #6 Performance Dashboard"
+    echo "  Judge 6 Performance Dashboard"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo ""
 

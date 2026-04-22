@@ -1,4 +1,4 @@
-"""Judge #6 Main Entry Point and Demonstration
+"""Judge 6 Main Entry Point and Demonstration
 
 Usage:
     python -m judge6.main              # Run demonstration
@@ -42,8 +42,8 @@ def print_axioms():
 
 
 def demo_evaluations(judge: JudgmentRule):
-    """Demonstrate Judge #6 evaluation capabilities."""
-    print_header("DEMONSTRATION: Judge #6 in Action")
+    """Demonstrate Judge 6 evaluation capabilities."""
+    print_header("DEMONSTRATION: Judge 6 in Action")
 
     demo_requests = [
         {
@@ -158,7 +158,7 @@ def main():
     setup_logging(verbose)
     config = get_config()
 
-    print_header("PNKLN Judge #6 - AI Governance & Risk Management System")
+    print_header("PNKLN Judge 6 - AI Governance & Risk Management System")
     print("Version: 2.0.0")
     print(f"Cor Instance: {config.COR_INSTANCE_ID}")
     print(f"Test Coverage Target: {config.TEST_COVERAGE_TARGET:.1%}")
@@ -166,7 +166,7 @@ def main():
     # Display constitutional axioms
     print_axioms()
 
-    # Initialize Judge #6
+    # Initialize Judge 6
     judge = JudgmentRule(cor_instance_id="cor-demo-001")
 
     # Run demonstrations
@@ -179,7 +179,7 @@ def main():
     display_competitive_advantages()
 
     # Final summary
-    print_header("Judge #6 Analysis Complete")
+    print_header("Judge 6 Analysis Complete")
     print("Ready for deployment across regulated verticals")
     print("Cryptographic governance enforcement active")
     print("=" * 80 + "\n")

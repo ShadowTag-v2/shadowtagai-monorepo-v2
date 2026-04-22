@@ -6,21 +6,21 @@
 
 ## EXECUTIVE SUMMARY
 
-This document establishes the **baseline metrics** for Judge #6 development and projects the **expected improvements** once implemented.
+This document establishes the **baseline metrics** for Judge 6 development and projects the **expected improvements** once implemented.
 
-**Current State (No Judge #6):**
+**Current State (No Judge 6):**
 
 - No automated policy enforcement
 
 - Manual code review for compliance
 
-- No ATP 5-19 governance framework
+- No Compliance Framework governance framework
 
 - No Purpose/Reasons/Brakes validation
 
-**Target State (With Judge #6):**
+**Target State (With Judge 6):**
 
-- Automated ATP 5-19 compliance enforcement
+- Automated Compliance Framework compliance enforcement
 
 - Purpose/Reasons/Brakes validation (JR Engine)
 
@@ -28,7 +28,7 @@ This document establishes the **baseline metrics** for Judge #6 development and 
 
 ## 5 KEY METRICS
 
-| Metric          | Current (No Judge #6) | Target (Judge #6) | Improvement |
+| Metric          | Current (No Judge 6) | Target (Judge 6) | Improvement |
 | --------------- | --------------------- | ----------------- | ----------- |
 | Policy Coverage | 0%                    | 94%               | +New        |
 | Validation Time | 3,800ms               | <200ms            | +95%        |

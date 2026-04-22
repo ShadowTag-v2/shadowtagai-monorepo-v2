@@ -14,7 +14,7 @@ Google's 42-page agents whitepaper (Sep 2024) defines their Vertex AI agent arch
 
 1. **NO SLA COMMITMENTS** → pnkln's p99≤90ms contractual guarantee
 2. **NO COST DISCIPLINE** → pnkln's semantic compression (487 bytes vs 50KB)
-3. **NO MILITARY RIGOR** → pnkln's ATP 5-19 JR Engine governance
+3. **NO MILITARY RIGOR** → pnkln's Compliance Framework JR Engine governance
 4. **NO VENDOR PORTABILITY** → pnkln's CloudFlare edge + containerized GKE
 5. **NO BOOTSTRAP EFFICIENCY** → pnkln's $60-65K burn target vs unlimited VC capital assumption
 
@@ -32,13 +32,13 @@ Google's 42-page agents whitepaper (Sep 2024) defines their Vertex AI agent arch
 │                      │ Single-vendor dependency │ + GPT-5 15% + Grok 5%    │
 │                      │                          │ Multi-model risk mgmt    │
 ├──────────────────────┼──────────────────────────┼──────────────────────────┤
-│ DECISION ENGINE      │ Pure LLM orchestration   │ Judge #6 Hybrid:         │
+│ DECISION ENGINE      │ Pure LLM orchestration   │ Judge 6 Hybrid:         │
 │                      │ ReAct/CoT/ToT prompts    │ • Gemini (reasoning)     │
 │                      │ Probabilistic only       │ • PyTorch (local infer)  │
 │                      │                          │ • Hard rules (0-cost)    │
 │                      │                          │ Deterministic + adaptive │
 ├──────────────────────┼──────────────────────────┼──────────────────────────┤
-│ GOVERNANCE LAYER     │ NONE SPECIFIED           │ JR Engine (ATP 5-19):    │
+│ GOVERNANCE LAYER     │ NONE SPECIFIED           │ JR Engine (Compliance Framework):    │
 │                      │ "Examples" + prompts     │ Purpose → Reasons →      │
 │                      │ No risk framework        │ Brakes validation        │
 │                      │                          │ Prob(A-E)×Severity(I-IV) │
@@ -63,7 +63,7 @@ Google's 42-page agents whitepaper (Sep 2024) defines their Vertex AI agent arch
 ├──────────────────────┼──────────────────────────┼──────────────────────────┤
 │ LATENCY TARGET       │ ⚠️ NOT SPECIFIED ⚠️       │ ✅ p99≤90ms SLA ✅        │
 │                      │ "Production-grade" claim │ Hard gate, contractual   │
-│                      │ No published guarantees  │ Judge #6 enforcement     │
+│                      │ No published guarantees  │ Judge 6 enforcement     │
 ├──────────────────────┼──────────────────────────┼──────────────────────────┤
 │ MULTI-AGENT COORD    │ "Agent chaining" vision  │ AutoGen + NS mesh:       │
 │                      │ "Mixture of experts"     │ • Already implemented    │
@@ -126,16 +126,16 @@ CHARACTERISTICS:
 ### 2.2 pnkln'S JR ENGINE PATTERN
 
 ```
-pnkln ORCHESTRATION (JR Engine + Judge #6):
+pnkln ORCHESTRATION (JR Engine + Judge 6):
 ┌─────────────────────────────────────────┐
 │ 1. Purpose    ← Does this advance       │
 │                 pnkln mission/revenue?  │
 │ 2. Reasons    ← Defensible judgment     │
 │                 with evidence chain     │
-│ 3. Brakes     ← ATP 5-19 risk scoring:  │
+│ 3. Brakes     ← Compliance Framework risk scoring:  │
 │                 Prob(A-E)×Severity(I-IV)│
 │                 → Level(EH/H/M/L)       │
-│ 4. Enforcement← Judge #6 validation:    │
+│ 4. Enforcement← Judge 6 validation:    │
 │                 Gemini+PyTorch+rules    │
 │                 <90ms p99 gate          │
 │ 5. Execute    ← If PRB passes, proceed  │
@@ -146,7 +146,7 @@ CHARACTERISTICS:
 ✓ Deterministic + adaptive hybrid
 ✓ <500μs JR Engine execution
 ✓ p99≤90ms total SLA enforcement
-✓ ATP 5-19 military risk framework
+✓ Compliance Framework military risk framework
 ✓ Hard cost ceiling (semantic compression)
 ✗ Less exploratory than ReAct N-loops
 ```
@@ -251,7 +251,7 @@ evaluations more robust as models evolve"
 
 **ANALYSIS**: Google is **abandoning determinism** in favor of probabilistic eval. This works for consumer apps (Gemini chat) but creates compliance risk for enterprise.
 
-### 4.2 pnkln'S ATP 5-19 FRAMEWORK
+### 4.2 pnkln'S Compliance Framework FRAMEWORK
 
 ```
 JR ENGINE RISK ASSESSMENT (MILITARY STANDARD):
@@ -311,9 +311,9 @@ ENTERPRISE RFP SCENARIO:
 │                                         │
 │ pnkln RESPONSE:                         │
 │ ✅ p99≤90ms contractual SLA             │
-│ ✅ ATP 5-19 deterministic risk scoring  │
+│ ✅ Compliance Framework deterministic risk scoring  │
 │ ✅ Blockchain audit trail (ShadowTag)   │
-│ ✅ Judge #6 hybrid prevents hallucinate │
+│ ✅ Judge 6 hybrid prevents hallucinate │
 └─────────────────────────────────────────┘
 
 WIN PROBABILITY: 80%+ in regulated verticals
@@ -399,7 +399,7 @@ Positioning matrix:
 ├─────────────────┼────────────┼──────────────┤
 │ Vendor lock-in  │ GCP-only   │ Portable     │
 ├─────────────────┼────────────┼──────────────┤
-│ Governance      │ Prompts    │ ATP 5-19     │
+│ Governance      │ Prompts    │ Compliance Framework     │
 ├─────────────────┼────────────┼──────────────┤
 │ Audit trail     │ Logs       │ Blockchain   │
 ├─────────────────┼────────────┼──────────────┤
@@ -525,7 +525,7 @@ STRATEGIC GAPS FILLED BY pnkln:
 │ SLA              │ ❌ None     │ ✅ p99≤90ms  │
 │ Cost optimization│ ❌ None     │ ✅ 102× ↓    │
 │ Vendor portability│ ❌ GCP-lock│ ✅ Containers│
-│ Governance       │ ❌ Prompts  │ ✅ ATP 5-19  │
+│ Governance       │ ❌ Prompts  │ ✅ Compliance Framework  │
 │ Security mandate │ ❌ Implied  │ ✅ 100% gate │
 │ Bootstrap path   │ ❌ None     │ ✅ $0K→$275M │
 │ Watermarking     │ ❌ None     │ ✅ ShadowTag │
@@ -658,7 +658,7 @@ IDEAL CUSTOMER PROFILE (ICP):
 │ Revenue: $50M-500M ARR                  │
 │ Vertical: Healthcare, finance, defense  │
 │ Pain: "Need audit trail + determinism"  │
-│ Win: ATP 5-19 compliance + SLA contract │
+│ Win: Compliance Framework compliance + SLA contract │
 │                                         │
 │ SEGMENT 4: BUDGET-CONSTRAINED IT        │
 │ Revenue: $10-100M ARR                   │
@@ -686,7 +686,7 @@ pnkln VS VERTEX AI COMPARISON TABLE:
 │                        │ Regional    │ containers   │
 │                        │ deploy      │ Multi-cloud  │
 ├────────────────────────┼─────────────┼──────────────┤
-│ GOVERNANCE             │ LLM prompts │ ATP 5-19     │
+│ GOVERNANCE             │ LLM prompts │ Compliance Framework     │
 │                        │ Probabilistic│ Deterministic│
 │                        │ only        │ + adaptive   │
 ├────────────────────────┼─────────────┼──────────────┤
@@ -698,7 +698,7 @@ pnkln VS VERTEX AI COMPARISON TABLE:
 │                        │  unbounded) │  compression)│
 ├────────────────────────┼─────────────┼──────────────┤
 │ COMPLIANCE READINESS   │ Manual      │ Built-in     │
-│                        │ (SOC2/ISO)  │ (ATP 5-19)   │
+│                        │ (SOC2/ISO)  │ (Compliance Framework)   │
 ├────────────────────────┼─────────────┼──────────────┤
 │ EDGE DEPLOYMENT        │ Regional    │ <50ms global │
 │                        │ (GCP zones) │ (CloudFlare) │
@@ -726,8 +726,8 @@ DELIVERABLES NEEDED:
 │                                         │
 │ 2. TECHNICAL WHITEPAPER                 │
 │    ├─ This Cor.54 document (public ver) │
-│    ├─ ATP 5-19 framework explainer      │
-│    └─ Judge #6 hybrid architecture      │
+│    ├─ Compliance Framework framework explainer      │
+│    └─ Judge 6 hybrid architecture      │
 │                                         │
 │ 3. DEMO VIDEO (3-5min)                  │
 │    ├─ Side-by-side: pnkln vs Vertex AI  │
@@ -737,7 +737,7 @@ DELIVERABLES NEEDED:
 │ 4. RFP RESPONSE TEMPLATE                │
 │    ├─ Pre-filled compliance sections    │
 │    ├─ SLA commitment language           │
-│    └─ ATP 5-19 audit trail examples     │
+│    └─ Compliance Framework audit trail examples     │
 │                                         │
 │ 5. CASE STUDY (GULFSTREAM PILOT)        │
 │    ├─ Underwater data center agents     │
@@ -784,7 +784,7 @@ RISK REGISTER:
 │    │                      │          │ + MCP test │
 ├────┼──────────────────────┼──────────┼────────────┤
 │ R7 │ Regulated customers  │ D×IV=L   │ SOC2/ISO   │
-│    │ reject ATP 5-19      │          │ mapping doc│
+│    │ reject Compliance Framework      │          │ mapping doc│
 │    │ (prefer ISO only)    │          │ available  │
 └────┴──────────────────────┴──────────┴────────────┘
 
@@ -848,7 +848,7 @@ R4 MITIGATION PLAN (GCP PREFERENCE RISK):
 ├────┼──────────────────────────────────┼───────────┤
 │ A4 │ Patent search: JR Engine prior   │ Legal     │
 │    │ art                              │ (external)│
-│    │ • ATP 5-19 commercial use        │           │
+│    │ • Compliance Framework commercial use        │           │
 │    │ • Purpose/Reasons/Brakes pattern │           │
 └────┴──────────────────────────────────┴───────────┘
 ```
@@ -876,7 +876,7 @@ R4 MITIGATION PLAN (GCP PREFERENCE RISK):
 ├────┼──────────────────────────────────┼──────────┤
 │ M4 │ First enterprise RFP response    │ 2025-12-10│
 │    │ ├─ Using pnkln vs Vertex table   │          │
-│    │ ├─ ATP 5-19 compliance section   │          │
+│    │ ├─ Compliance Framework compliance section   │          │
 │    │ └─ p99≤90ms SLA commitment       │          │
 └────┴──────────────────────────────────┴──────────┘
 ```
@@ -899,7 +899,7 @@ QUANTITATIVE TARGETS:
 QUALITATIVE TARGETS:
 • Cor.54 cited in sales process
 • "Vertex AI alternative" brand recognition
-• Enterprise trust in ATP 5-19 framework
+• Enterprise trust in Compliance Framework framework
 • Zero p99≤90ms SLA breaches
 ```
 
@@ -998,7 +998,7 @@ CORE FINDINGS:
 │    by Google—requires A/B testing before│
 │    relying on 40-60% savings claim      │
 │                                         │
-│ 4. ATP 5-19 JR ENGINE IS UNIQUE MOAT    │
+│ 4. Compliance Framework JR ENGINE IS UNIQUE MOAT    │
 │    Google has no equivalent military-   │
 │    grade risk framework                 │
 │                                         │
@@ -1009,7 +1009,7 @@ CORE FINDINGS:
 
 STRATEGIC POSTURE:
 ✅ ATTACK: Position as "Vertex AI alternative"
-✅ DEFEND: Patent JR Engine, trademark ATP 5-19
+✅ DEFEND: Patent JR Engine, trademark Compliance Framework
 ✅ VALIDATE: MCP testing (2-week sprint)
 ✅ EXECUTE: Create sales collateral (1 week)
 

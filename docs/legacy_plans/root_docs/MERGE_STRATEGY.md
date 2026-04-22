@@ -16,7 +16,7 @@ We have TWO valuable branches with different approaches:
   - DTE evolution framework
   - MAD consensus engine
   - Cheat Sheet Fusion
-  - Integrated Judge #6
+  - Integrated Judge 6
 
 **Strengths**:
 

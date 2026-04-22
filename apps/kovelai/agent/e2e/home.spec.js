@@ -122,7 +122,7 @@ test.describe('KovelAI Homepage — Features Section', () => {
     const titles = [
       'Kovel Attestation',
       'Multi-Model Routing',
-      'Judge #6 Policy Gate',
+      'Judge 6 Policy Gate',
       'Oracle Studio',
       'Ephemeral Client View',
       'Immutable Transcripts',

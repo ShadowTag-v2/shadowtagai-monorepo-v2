@@ -99,13 +99,13 @@ SEED ROUND (NOW — Q4 2025)
 │                                                              │
 │ Use of Funds:                                                │
 │ ├─ $35M: Gulfstream (BOEM permits, CAISO interconnect, Diablo)│
-│ ├─ $8M:  Core Stack (Judge #6 prototype, GKE deployment)    │
+│ ├─ $8M:  Core Stack (Judge 6 prototype, GKE deployment)    │
 │ └─ $4M:  Digital Freeway POC (Denver 10-mile corridor)      │
 │                                                              │
 │ 24-Month Gates (Must Clear for Series A):                   │
 │ ✓ BOEM RUE permit approved (Gulfstream)                     │
 │ ✓ CAISO interconnect study complete                         │
-│ ✓ Judge #6: 10M queries/day, p99 <500μs                     │
+│ ✓ Judge 6: 10M queries/day, p99 <500μs                     │
 │ ✓ Digital Freeway: 37% commute reduction proven             │
 │ ✓ 10 enterprise design partners (Core Stack SDK)            │
 └──────────────────────────────────────────────────────────────┘
@@ -125,7 +125,7 @@ SERIES A (24 MONTHS — Q4 2027)
 │                                                              │
 │ 24-Month Gates (Must Clear for Series B):                   │
 │ ✓ 50 MW operational (Gulfstream Phase 1)                    │
-│ ✓ Judge #6: 1B+ queries/month                               │
+│ ✓ Judge 6: 1B+ queries/month                               │
 │ ✓ Digital Freeway: 100-mile corridor operational            │
 │ ✓ 10,000 vehicles coordinated (Tesla Fleet API)             │
 │ ✓ 10 aircraft relay nodes (commercial airline partners)     │
@@ -213,7 +213,7 @@ THE 2×2 MATRIX: WHERE PNKLN WINS
               │                         │                         │
               │  COMMODITY CLOUD        │  PNKLN                  │
     HIGH      │                         │                         │
-    ENERGY    │  AWS / Azure / GCP      │  Gulfstream + Judge #6  │
+    ENERGY    │  AWS / Azure / GCP      │  Gulfstream + Judge 6  │
     COST      │  CoreWeave / Lambda     │                         │
               │                         │  ★ ONLY PLAYER HERE     │
     ($60-80   │  Cost: $60-80/MWh       │  Cost: $17/MWh          │
@@ -343,7 +343,7 @@ KEY ADVISORS (Building Out)
 HIRING ROADMAP (Seed Funding)
 
 ┌──────────────────────────────────────────────────────────────┐
-│ Q1 2026: VP Engineering (Core Stack, Judge #6)              │
+│ Q1 2026: VP Engineering (Core Stack, Judge 6)              │
 │ Q2 2026: VP Energy (Gulfstream permits, CAISO)              │
 │ Q3 2026: VP Sales (Enterprise design partners)              │
 │ Q4 2026: VP Product (AiU Mall, RoadMesh)                    │
@@ -384,7 +384,7 @@ WHY WE WIN: OPERATOR DNA + DOMAIN EXPERTISE + BOOTSTRAP DISCIPLINE
 
 ### SPEAKER NOTES
 
-"The team. I'm Erik Hansen, founder and CEO. My background is US Army Special Forces—that's where AiUCRM comes from. Military Composite Risk Management adapted for AI governance. I also have legal training, which is why we're filing CAISO permits and BOEM applications before anyone else thinks to. And 25 years of technology entrepreneurship with bootstrap discipline—I don't spend capital we haven't earned. We're building out key advisors in four domains: energy, defense, GKE infrastructure, and marketplace economics. These aren't just names on a letterhead—they're operators who've built the exact systems we need. The hiring roadmap is aggressive but realistic. VP Engineering first, because Judge #6 is the technical core. VP Energy second, because Gulfstream is the economic foundation. By Series A, we're 25-30 people. By Series B, 100-150. We stay lean until we've proven each layer works."
+"The team. I'm Erik Hansen, founder and CEO. My background is US Army Special Forces—that's where AiUCRM comes from. Military Composite Risk Management adapted for AI governance. I also have legal training, which is why we're filing CAISO permits and BOEM applications before anyone else thinks to. And 25 years of technology entrepreneurship with bootstrap discipline—I don't spend capital we haven't earned. We're building out key advisors in four domains: energy, defense, GKE infrastructure, and marketplace economics. These aren't just names on a letterhead—they're operators who've built the exact systems we need. The hiring roadmap is aggressive but realistic. VP Engineering first, because Judge 6 is the technical core. VP Energy second, because Gulfstream is the economic foundation. By Series A, we're 25-30 people. By Series B, 100-150. We stay lean until we've proven each layer works."
 
 ---
 
@@ -411,7 +411,7 @@ USE OF FUNDS:
 │       Platform leases, infrastructure deposits               │
 │                                                              │
 │  $8M  ████████ PNKLN Core Stack™                            │
-│       Judge #6 prototype, GKE deployment                     │
+│       Judge 6 prototype, GKE deployment                     │
 │       10M queries/day capacity, <500μs p99                   │
 │                                                              │
 │  $4M  ████ Digital Freeway POC                               │
@@ -424,7 +424,7 @@ USE OF FUNDS:
 ┌──────────────────────────────────────────────────────────────┐
 │ □ BOEM RUE permit approved (Gulfstream platform access)     │
 │ □ CAISO interconnect study complete (50 MW allocation)      │
-│ □ Judge #6: 10M queries/day, p99 <500μs (lab validation)    │
+│ □ Judge 6: 10M queries/day, p99 <500μs (lab validation)    │
 │ □ Digital Freeway: 37% commute reduction (Denver POC)       │
 │ □ 10 enterprise design partners (Core Stack SDK beta)       │
 └──────────────────────────────────────────────────────────────┘

@@ -37,7 +37,7 @@ HAZARD_DB = [
 class JudgeSixSentinel:
     def __init__(self, engine=None):
         self.engine = engine
-        self.name = "Judge #6 V2.0.0 (Omega)"
+        self.name = "Judge 6 V2.0.0 (Omega)"
         self.memory = MemoryBank()
         self.army = CavMTOE(num_soldiers=650) if ARMY_AVAILABLE else None
 

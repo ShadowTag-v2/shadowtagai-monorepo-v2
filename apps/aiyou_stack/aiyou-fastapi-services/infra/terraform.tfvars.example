@@ -16,7 +16,7 @@ model_bucket_name = "pnkln-models-your-unique-suffix"
 # GPU Node Pools
 # Customize based on your workload requirements
 gpu_node_pools = {
-  # L4 pool - optimized for Judge #6 with p99 ≤90ms target
+  # L4 pool - optimized for Judge 6 with p99 ≤90ms target
   "l4-inference" = {
     machine_type    = "g2-standard-4"
     gpu_type        = "nvidia-l4"

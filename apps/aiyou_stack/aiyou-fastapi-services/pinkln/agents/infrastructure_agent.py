@@ -1,7 +1,7 @@
 """Infrastructure Agent - PNKLN Core Stack™ Analyst
 
 This agent provides comprehensive infrastructure analysis and optimization
-for the PNKLN Core Stack™ systems, including Judge #6, Gemini Ingestion Layer,
+for the PNKLN Core Stack™ systems, including Judge 6, Gemini Ingestion Layer,
 and other infrastructure components.
 
 The agent embodies the pinkln philosophy:
@@ -46,7 +46,7 @@ class InfrastructureAgent(BaseAgent):
     comprehensive insights into PNKLN Core Stack™ infrastructure components.
 
     Capabilities:
-    - System analysis (Judge #6, Gemini Ingestion, etc.)
+    - System analysis (Judge 6, Gemini Ingestion, etc.)
     - Comparative evaluation across systems
     - Cost optimization recommendations
     - Performance tuning insights
@@ -95,13 +95,13 @@ class InfrastructureAgent(BaseAgent):
         return await self.general_infrastructure_review(task, context)
 
     async def analyze_judge_six(self) -> dict[str, Any]:
-        """Analyze Judge #6 validation/enforcement system.
+        """Analyze Judge 6 validation/enforcement system.
 
         Returns:
-            Comprehensive analysis of Judge #6
+            Comprehensive analysis of Judge 6
 
         """
-        print("\n🔍 Analyzing Judge #6 System...")
+        print("\n🔍 Analyzing Judge 6 System...")
 
         result = self.skill.analyze_system(
             self.skill.JUDGE_SIX_SPEC,
@@ -112,7 +112,7 @@ class InfrastructureAgent(BaseAgent):
         enhanced_result = self._apply_pinkln_lens(result)
 
         return {
-            "system": "Judge #6",
+            "system": "Judge 6",
             "type": "enforcement_validation",
             "analysis": enhanced_result,
             "gemini_prompt": self.skill.generate_gemini_prompt(self.skill.JUDGE_SIX_SPEC),
@@ -153,7 +153,7 @@ class InfrastructureAgent(BaseAgent):
         }
 
     async def comparative_analysis(self) -> dict[str, Any]:
-        """Perform comparative analysis between Judge #6 and Gemini Ingestion.
+        """Perform comparative analysis between Judge 6 and Gemini Ingestion.
 
         Returns:
             Comparative insights and integration recommendations
@@ -225,7 +225,7 @@ class InfrastructureAgent(BaseAgent):
         # Quick wins (< 1 week implementation)
         optimizations["quick_wins"] = [
             {
-                "action": "Implement semantic caching in Judge #6",
+                "action": "Implement semantic caching in Judge 6",
                 "impact": "Reduce API calls by 40-60%",
                 "effort": "2-3 days",
             },
@@ -249,7 +249,7 @@ class InfrastructureAgent(BaseAgent):
                 "effort": "1-2 weeks",
             },
             {
-                "action": "Optimize Judge #6 validation rules",
+                "action": "Optimize Judge 6 validation rules",
                 "impact": "Reduce false positive rate by 20%",
                 "effort": "2-3 weeks",
             },
@@ -328,7 +328,7 @@ class InfrastructureAgent(BaseAgent):
                     "percentage": "60% on compute",
                 },
                 {
-                    "item": "Optimize Judge #6 validation rules",
+                    "item": "Optimize Judge 6 validation rules",
                     "savings": "$40-80/month",
                     "percentage": "20% fewer API calls",
                 },
@@ -550,7 +550,7 @@ class InfrastructureAgent(BaseAgent):
 
 
 async def quick_judge_analysis() -> dict[str, Any]:
-    """Quick analysis of Judge #6."""
+    """Quick analysis of Judge 6."""
     agent = InfrastructureAgent()
     return await agent.analyze_judge_six()
 

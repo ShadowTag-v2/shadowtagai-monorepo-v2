@@ -13,7 +13,7 @@ Architecture:
 - MCP Protocol: Tool discovery + execution interface
 - Playwright: Headless browser automation
 - Jura Integration: Cost tier routing + quota tracking
-- Judge #6: Governance for agentic operations
+- Judge 6: Governance for agentic operations
 
 Performance: p99 ≤150ms (deterministic), p99 ≤500ms (agentic)
 """

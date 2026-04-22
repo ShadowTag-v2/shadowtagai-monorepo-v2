@@ -1,5 +1,5 @@
 /**
- * Type definitions for Judge #6 CLI
+ * Type definitions for Judge 6 CLI
  */
 
 export interface RiskLevel {

@@ -9,7 +9,7 @@ Confidential & Proprietary | BOARD EYES ONLY Date: January 8, 2026 Version: 
    The Thesis: pnkln is not a startup; it is a Sovereign Industrial System. We are building the "Civilization OS" – a vertically integrated stack from offshore electrons (L1) to governed marketplace (L3) to orbital defense (L6).
    The Asset: We have secured the Sulphur Bank Mercury Mine Superfund Site ("The Lair") – a regulatory liability we transform into a >100MW sovereign geothermal data center using a 50% federal funding loophole.
    Recent Win ("The Gucci Hunt" & "The Index"): In Jan 2026, a deep autonomous sweep of our legacy repositories recovered 17GB of high-value assets ("The Index"), unlocking $85M in additional pre-money valuation:
-   The Brain (1.2GB): 300+ Governance SOPs (ATP 5-19) & Market Intel.
+   The Brain (1.2GB): 300+ Governance SOPs (Compliance Framework) & Market Intel.
    The Body (8.5GB): Proven JaaS Microservices, Legacy API Connectors (Stripe/Twilio).
    The Soul (7.3GB): 2 years of decision logs & curated "Judge" training vectors.
    Impact: Shifts status from "Startup" to "Scale-up" (Platform Dormant vs. InDev).
@@ -79,7 +79,7 @@ Confidential & Proprietary | BOARD EYES ONLY Date: January 8, 2026 Version: 
    We are no longer "building" the platform; we are "waking it up".
    A. The "Brain" (Strategies & Doctrine) [~1.2GB]
    Asset: Governance SOPs (ShadowTag-v2-sops) & "Antigravity Doctrine".
-   Value: 300+ standard operating procedures for autonomous compliance (ATP 5-19). Eliminates $2M/yr in legal/operational overhead.
+   Value: 300+ standard operating procedures for autonomous compliance (Compliance Framework). Eliminates $2M/yr in legal/operational overhead.
    B. The "Body" (Infrastructure & Code) [~8.5GB]
    Asset: antigravity-arch (Blueprints) & ShadowTag-v2-fastapi-services (JaaS Microservices).
    Value: Pre-built integrations for Stripe, Twilio, SendGrid. Saves ~18 months of engineering time.

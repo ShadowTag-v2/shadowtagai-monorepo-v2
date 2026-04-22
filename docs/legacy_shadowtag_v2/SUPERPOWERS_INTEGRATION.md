@@ -81,7 +81,7 @@ Successfully integrated the **LLM Memory Persistence System** (Superpowers Marke
 ┌─────────────────────────────────────────────────────────────────┐
 │  STEP 4: pnkln SYNTHESIS                                        │
 │  • Aggregate thread results                                     │
-│  • ATP 5-19 validation (for intelligence)                       │
+│  • Compliance Framework validation (for intelligence)                       │
 │  • Confidence scoring                                           │
 │  • Cost & latency metrics                                       │
 └────────────────┬────────────────────────────────────────────────┘
@@ -170,7 +170,7 @@ POST /api/v1/orchestrator/intelligence/classify
       "tier_classification": {
         "tier": 1,
         "confidence": 0.87,
-        "reasoning": "Weighted consensus: 3 agents, avg tier 1.1 → Tier 1\n\nDebate Summary:\nRound 1:\n  Skeptic: Tier 2 (70% confidence) - Source .gov domain reliable...\n  Optimist: Tier 1 (90% confidence) - Primary source, strategic impact...\n  Neutral: Tier 1 (85% confidence) - ATP 5-19: source A, credibility 2...",
+        "reasoning": "Weighted consensus: 3 agents, avg tier 1.1 → Tier 1\n\nDebate Summary:\nRound 1:\n  Skeptic: Tier 2 (70% confidence) - Source .gov domain reliable...\n  Optimist: Tier 1 (90% confidence) - Primary source, strategic impact...\n  Neutral: Tier 1 (85% confidence) - Compliance Framework: source A, credibility 2...",
         "tags": ["aviation", "regulation", "AI", "DO-178D"]
       },
       "cost": 0.00375,
@@ -313,7 +313,7 @@ python scripts/claude_code_memory_local.py
 
 ```
 
-**Result**: Claude Code now remembers pnkln architecture (Judge #6, ShadowTag, ATP 5-19) in all sessions.
+**Result**: Claude Code now remembers pnkln architecture (Judge 6, ShadowTag, Compliance Framework) in all sessions.
 
 #### 2. **Vertex AI Workbench Memory**
 
@@ -388,7 +388,7 @@ class pnklnOrchestrator:
 
 ### 2. **Validation Service ↔ Orchestrator**
 
-Intelligence classifications automatically run ATP 5-19 validation via existing `ValidationService`.
+Intelligence classifications automatically run Compliance Framework validation via existing `ValidationService`.
 
 ### 3. **Ingestion Service ↔ Orchestrator**
 

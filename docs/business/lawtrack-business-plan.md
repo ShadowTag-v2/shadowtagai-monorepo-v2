@@ -94,7 +94,7 @@ Mobile Critical Tiles (push notifications)
 ### Customer Segments
 
 1. **Federal Agencies** (430 agencies)
-   - Pain: ATP 5-19 compliance, risk management, audit trails
+   - Pain: Compliance Framework compliance, risk management, audit trails
    - Willingness to pay: $50K-200K/year
    - Decision cycle: 6-12 months (long sales cycle)
    - **Target**: 10 agencies by Y3
@@ -164,7 +164,7 @@ Mobile Critical Tiles (push notifications)
 
 - 100% cryptographic audit (Ed25519 signatures)
 - Immutable logs (Merkle trees)
-- Compliance-ready (SOC 2, ATP 5-19)
+- Compliance-ready (SOC 2, Compliance Framework)
 - 7-year retention
 - Tamper-proof
 
@@ -190,7 +190,7 @@ Mobile Critical Tiles (push notifications)
 | **Department** | $10K/year       | 10 users, 1 jurisdiction, standard support                         | Small agencies/departments  |
 | **Agency**     | $30K/year       | 50 users, 5 jurisdictions, priority support, mobile app            | Mid-size agencies           |
 | **Enterprise** | $75K/year       | 200 users, unlimited jurisdictions, dedicated support, SLA         | Large agencies/corporations |
-| **Federal**    | $100K-500K/year | Unlimited users, custom rules, ATP 5-19 compliance, on-prem option | Federal agencies            |
+| **Federal**    | $100K-500K/year | Unlimited users, custom rules, Compliance Framework compliance, on-prem option | Federal agencies            |
 
 ### Unit Economics
 
@@ -214,7 +214,7 @@ Mobile Critical Tiles (push notifications)
 
 **Tactics**:
 
-- Target: Federal agencies with ATP 5-19 compliance mandates
+- Target: Federal agencies with Compliance Framework compliance mandates
 - Offer: Free pilot (6 months) + dedicated onboarding
 - Value: Compliance audit trail + risk reduction
 - Metrics: 3-5 pilot agencies, 95%+ satisfaction
@@ -324,7 +324,7 @@ Mobile Critical Tiles (push notifications)
 **Erik Hancock** (Founder/CEO)
 
 - Systems Engineering + Risk Management background
-- ATP 5-19 expertise (military risk assessment)
+- Compliance Framework expertise (military risk assessment)
 - Built Pinkln Ultrathink ecosystem + ShadowTag audit system
 
 **Open Roles** (Post-Funding):
@@ -454,7 +454,7 @@ Mobile Critical Tiles (push notifications)
 │    ├─ Ed25519 signatures                                    │
 │    ├─ Merkle tree hashing                                   │
 │    ├─ Immutable logs (7-year retention)                     │
-│    └─ SOC 2 / ATP 5-19 compliant                            │
+│    └─ SOC 2 / Compliance Framework compliant                            │
 │                                                             │
 │  [Infrastructure]                                           │
 │    ├─ GCP GKE (Kubernetes)                                  │

@@ -129,7 +129,7 @@ GET  /api/v1/cv/models               # List available CV models
 **Integration with Cor.17:**
 
 - **Reasoning Engine**: High-level decision making ("Should I abort mission?", "Which route is safer?")
-- **Judge #6**: Safety validation for every flight decision (Purpose/Reasons/Brakes)
+- **Judge 6**: Safety validation for every flight decision (Purpose/Reasons/Brakes)
 - **GPTRAM Memory**: 100-step trajectory memory for adaptive planning
 - **Safety Layer**: Flight safety validation, geofence compliance
 - **Hive Storage**: Store HD maps, flight logs, trajectory data
@@ -150,7 +150,7 @@ MissionPlannerAgent (Glicko-2 rated)
     ↓
 GAAS Path Planner (A* on HD map)
     ↓
-Judge #6: Validate each waypoint for safety
+Judge 6: Validate each waypoint for safety
     ↓
 Cor.17 Reasoning: "Is this route safe given weather/obstacles?"
     ↓
@@ -170,7 +170,7 @@ Return: {trajectory, safety_score, estimated_time, obstacles}
 - **Planning Latency**: <200ms for path planning (100m route)
 - **Localization Accuracy**: <10cm (NDT lidar)
 - **Obstacle Detection Range**: 50m (32-line lidar)
-- **Safety Validation**: 100% of waypoints validated by Judge #6
+- **Safety Validation**: 100% of waypoints validated by Judge 6
 - **Simulation Throughput**: 10× real-time in Gazebo
 
 #### B. New API Endpoints
@@ -181,7 +181,7 @@ POST /api/v1/autonomous/plan-mission        # High-level mission planning
 POST /api/v1/autonomous/plan-path           # A* path planning
 POST /api/v1/autonomous/localize            # NDT localization from lidar
 POST /api/v1/autonomous/detect-obstacles    # Obstacle detection
-POST /api/v1/autonomous/validate-safety     # Judge #6 safety validation
+POST /api/v1/autonomous/validate-safety     # Judge 6 safety validation
 POST /api/v1/autonomous/build-map           # HD-map building
 POST /api/v1/autonomous/simulate            # Gazebo simulation
 GET  /api/v1/autonomous/flight-logs         # Retrieve flight telemetry
@@ -203,9 +203,9 @@ GET  /api/v1/autonomous/flight-logs         # Retrieve flight telemetry
 │  └────────────┘  └────────────┘  └────────────────────────┘ │
 │         ↓              ↓                    ↓                │
 │  ┌──────────────────────────────────────────────────────────┐ │
-│  │           Judge #6: Safety Governance Layer             │ │
+│  │           Judge 6: Safety Governance Layer             │ │
 │  │  - CV Content Moderation                                │ │
-│  │  - Flight Safety Validation (ATP 5-19)                  │ │
+│  │  - Flight Safety Validation (Compliance Framework)                  │ │
 │  │  - Autonomous Decision Audit Trail                      │ │
 │  └──────────────────────────────────────────────────────────┘ │
 │         ↓              ↓                    ↓                │
@@ -231,25 +231,25 @@ GET  /api/v1/autonomous/flight-logs         # Retrieve flight telemetry
    - GAAS: Navigate warehouse aisles autonomously
    - Tegu CV: Detect inventory anomalies (missing items, damage)
    - Cor.17: Reason about restocking priorities
-   - Judge #6: Validate safety near workers
+   - Judge 6: Validate safety near workers
 
 2. **Smart City Surveillance**
    - GAAS: Patrol routes with drone swarm
    - Tegu CV: License plate recognition, facial recognition
    - Cor.17: Detect suspicious patterns across cameras
-   - Judge #6: Privacy compliance validation
+   - Judge 6: Privacy compliance validation
 
 3. **Agricultural Monitoring**
    - GAAS: Survey farmland autonomously
    - Tegu CV: Detect crop diseases, count plants
    - Cor.17: Recommend irrigation/fertilization
-   - Judge #6: Validate chemical usage safety
+   - Judge 6: Validate chemical usage safety
 
 4. **Search and Rescue**
    - GAAS: Navigate disaster area
    - Tegu CV: Detect people in rubble
    - Cor.17: Prioritize rescue targets
-   - Judge #6: Validate flight safety in hazardous conditions
+   - Judge 6: Validate flight safety in hazardous conditions
 
 ---
 
@@ -298,7 +298,7 @@ GET  /api/v1/autonomous/flight-logs         # Retrieve flight telemetry
   - HD-map building (10km²/month)
   - Obstacle detection + avoidance
   - Gazebo simulation (unlimited)
-  - Judge #6 safety validation
+  - Judge 6 safety validation
   - Hive storage: 1TB (flight logs + maps)
   - 99.9% SLA
 - **Projected Customers**: 4
@@ -331,7 +331,7 @@ GET  /api/v1/autonomous/flight-logs         # Retrieve flight telemetry
   - All Cor.17 reasoning capabilities
   - Multi-modal sensor fusion (lidar + camera + radar)
   - Real-time decision intelligence
-  - Custom safety frameworks beyond Judge #6
+  - Custom safety frameworks beyond Judge 6
   - Dedicated multi-region deployment
   - White-glove integration services
   - Hive storage: 100TB
@@ -493,7 +493,7 @@ GET  /api/v1/autonomous/flight-logs         # Retrieve flight telemetry
 | Provider                | Pricing             | Differentiation             | Pinkln Advantage                                                       |
 | ----------------------- | ------------------- | --------------------------- | ---------------------------------------------------------------------- |
 | **Google Cloud Vision** | $1.50 per 1k images | Mature, broad model support | 10× cheaper at scale ($0.15 per 1k at CV-Pro tier), includes reasoning |
-| **AWS Rekognition**     | $1.00 per 1k images | Deep AWS integration        | Includes temporal memory (GPTRAM), safety validation (Judge #6)        |
+| **AWS Rekognition**     | $1.00 per 1k images | Deep AWS integration        | Includes temporal memory (GPTRAM), safety validation (Judge 6)        |
 | **Microsoft Azure CV**  | $1.00 per 1k images | Enterprise features         | Unified with autonomous systems, custom models                         |
 | **Clarifai**            | $1.20 per 1k images | Custom training             | Integrated reasoning, better compliance                                |
 
@@ -658,7 +658,7 @@ GET  /api/v1/autonomous/flight-logs         # Retrieve flight telemetry
    - Gazebo simulation cluster
 
 3. **Cross-System Integration**:
-   - Judge #6 safety validation for autonomous decisions
+   - Judge 6 safety validation for autonomous decisions
    - GPTRAM temporal memory for CV + autonomous state
    - Hive storage for models, maps, logs
    - Cor.17 reasoning for high-level decisions
@@ -676,13 +676,13 @@ GET  /api/v1/autonomous/flight-logs         # Retrieve flight telemetry
   - 50 traffic cameras with LPR (Tegu CV)
   - 5 autonomous patrol drones (GAAS)
   - Real-time incident detection + response (Cor.17 reasoning)
-  - Safety compliance (Judge #6)
+  - Safety compliance (Judge 6)
 
 **Success Metrics:**
 
 - **Latency**: <500ms for CV, <200ms for path planning ✅
 - **Accuracy**: >95% LPR accuracy, <10cm localization ✅
-- **Safety**: 100% of flight decisions validated by Judge #6 ✅
+- **Safety**: 100% of flight decisions validated by Judge 6 ✅
 - **Uptime**: >99.9% over 30 days ✅
 - **Customer Satisfaction**: NPS >50 ✅
 
@@ -763,9 +763,9 @@ GET  /api/v1/autonomous/flight-logs         # Retrieve flight telemetry
                   └────────────┬────────────┘
                                │
                   ┌────────────▼────────────┐
-                  │     Judge #6 Safety     │
+                  │     Judge 6 Safety     │
                   │  - Purpose/Reasons/Brakes│
-                  │  - ATP 5-19 Validation  │
+                  │  - Compliance Framework Validation  │
                   │  - Audit Compression    │
                   └────────────┬────────────┘
                                │
@@ -957,7 +957,7 @@ app/
 
 **Risk 3: Safety Incidents (Autonomous Systems)**
 
-- **Mitigation**: 100% Judge #6 validation before flight decisions
+- **Mitigation**: 100% Judge 6 validation before flight decisions
 - **Fallback**: Manual override capability for all missions
 - **Insurance**: Cyber-physical liability insurance ($5k/month)
 
@@ -983,7 +983,7 @@ app/
 
 **Risk 3: Competition from Hyperscalers (Google, AWS, Microsoft)**
 
-- **Mitigation**: Differentiate on integrated reasoning + safety (Judge #6 + Cor.17)
+- **Mitigation**: Differentiate on integrated reasoning + safety (Judge 6 + Cor.17)
 - **Niche Focus**: Serve mid-market customers underserved by hyperscalers
 - **Speed**: Faster iteration cycle (weeks vs months for cloud giants)
 
@@ -1005,7 +1005,7 @@ app/
 - ✅ **CV Accuracy**: >95% on standard benchmarks
 - ✅ **Autonomous Latency**: <200ms (p99) for path planning
 - ✅ **Localization Accuracy**: <10cm (NDT lidar)
-- ✅ **Safety Validation**: 100% of autonomous decisions through Judge #6
+- ✅ **Safety Validation**: 100% of autonomous decisions through Judge 6
 - ✅ **Uptime**: >99.9% (CV), >99.95% (Autonomous)
 
 ### Customer Metrics
@@ -1062,7 +1062,7 @@ app/
 2. **Strategic Differentiation**: No competitor offers integrated CV + Autonomous + AI Reasoning
 3. **Low Risk**: Open-source stack (Tegu + GAAS), pilot-gated rollout, <1 month payback
 4. **Market Timing**: Enterprise CV and autonomous systems markets growing >15% CAGR
-5. **Synergistic Fit**: Leverages existing Cor.17 reasoning + Judge #6 safety + GPTRAM memory
+5. **Synergistic Fit**: Leverages existing Cor.17 reasoning + Judge 6 safety + GPTRAM memory
 
 **Next Steps:**
 

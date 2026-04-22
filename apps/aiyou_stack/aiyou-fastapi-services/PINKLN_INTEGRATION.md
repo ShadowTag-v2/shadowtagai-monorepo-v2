@@ -91,7 +91,7 @@ BENEFITS:
 │  ┌──────────────────────────────────────────────────────────┐  │
 │  │ LAYER 3: PNKLN CORE STACK                               │  │
 │  │                                                          │  │
-│  │  Judge #6 (JR Engine)    → Validate ALL functions       │  │
+│  │  Judge 6 (JR Engine)    → Validate ALL functions       │  │
 │  │  Cor (Orchestrator)      → Coordinate execution         │  │
 │  │  ShadowTag (Watermark)   → Cryptographic audit          │  │
 │  │  NS (Semantic Memory)    → Context retrieval            │  │
@@ -201,13 +201,13 @@ result = caller.execute(
 - ✅ 3× faster (local Python vs 3 API calls)
 - ✅ Glicko-2 ratings track agent performance
 - ✅ DTE evolves debate prompts automatically
-- ✅ Judge #6 validates debate outputs
+- ✅ Judge 6 validates debate outputs
 
 #### 3. PNKLN Stack Integration
 
 **New Capabilities:**
 
-- Every function call validated by Judge #6 (Purpose/Reasons/Brakes)
+- Every function call validated by Judge 6 (Purpose/Reasons/Brakes)
 - ShadowTag watermarks ALL outputs (Ed25519 signatures)
 - NS retrieves relevant context before execution
 - Cor coordinates Judge → Execute → Watermark → Store flow
@@ -363,7 +363,7 @@ caller = GeminiFunctionCaller(
     tools=registry.get_all_tools()
 )
 
-# 3. Wrap with Judge #6 validation
+# 3. Wrap with Judge 6 validation
 judge = JudgeSix(
     caller=caller,
     mission_statement="Execute decisions with ultrathink precision"
@@ -392,7 +392,7 @@ Update Glicko ratings for all functions used.
 
 # Result breakdown:
 # • Gemini orchestrates 4 function calls internally
-# • Judge #6 validates each call
+# • Judge 6 validates each call
 # • ShadowTag watermarks output
 # • NS stores execution context
 # • Glicko-2 updates performance ratings

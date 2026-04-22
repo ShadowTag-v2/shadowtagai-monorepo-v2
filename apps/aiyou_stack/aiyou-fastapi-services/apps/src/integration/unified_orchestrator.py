@@ -70,7 +70,7 @@ class UnifiedPinklnOrchestrator:
 
         Args:
             api_key: Gemini API key
-            enable_jr_validation: Enable Judge #6 validation
+            enable_jr_validation: Enable Judge 6 validation
             enable_shadowtag: Enable cryptographic watermarking
             enable_memory: Enable semantic memory (NS)
             enable_glicko: Enable Glicko-2 performance tracking
@@ -96,7 +96,7 @@ class UnifiedPinklnOrchestrator:
         self.shadowtag = ShadowTag() if enable_shadowtag else None
         self.memory = SemanticMemory() if enable_memory else None
 
-        # Wrap with Judge #6 if enabled
+        # Wrap with Judge 6 if enabled
         if enable_jr_validation:
             self.judge = JudgeSix(
                 caller=self.gemini_caller,
@@ -206,7 +206,7 @@ Always:
 """
 
     def _get_mission_statement(self) -> str:
-        """Get mission statement for Judge #6."""
+        """Get mission statement for Judge 6."""
         return """Execute tasks with ultrathink precision. Ensure all function calls:
 
 1. PURPOSE: Advance the user's goals efficiently
@@ -227,7 +227,7 @@ Allow: Research, analysis, optimization, collaboration
         This is the main entry point that combines:
         - Gemini function calling (1 API call)
         - Kernel functions (local execution)
-        - Judge #6 validation (if enabled)
+        - Judge 6 validation (if enabled)
         - ShadowTag watermarking (if enabled)
         - Semantic memory (if enabled)
         - Glicko-2 ratings (if enabled)
@@ -247,7 +247,7 @@ Allow: Research, analysis, optimization, collaboration
             if self.memory:
                 self.memory.store(user_request, {"type": "user_request"})
 
-            # Execute through Cor (which handles Judge #6 + ShadowTag)
+            # Execute through Cor (which handles Judge 6 + ShadowTag)
             result = self.cor.execute(user_request, context)
 
             # Calculate metrics

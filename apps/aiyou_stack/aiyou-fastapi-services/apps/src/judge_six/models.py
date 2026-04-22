@@ -1,4 +1,4 @@
-"""Data models for Judge #6"""
+"""Data models for Judge 6"""
 
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -74,7 +74,7 @@ class BrakesVerdict:
 
 @dataclass
 class JRVerdict:
-    """Overall Judge #6 Verdict"""
+    """Overall Judge 6 Verdict"""
 
     id: str
     action_id: str

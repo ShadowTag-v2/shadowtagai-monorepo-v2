@@ -12,11 +12,11 @@ The $800M defense procurement compliance market alone loses millions annually to
 
 ---
 
-## The Solution: Judge #6 + ShadowTag + JR Engine
+## The Solution: Judge 6 + ShadowTag + JR Engine
 
 | Product | What It Does | Status |
 |---------|--------------|--------|
-| **Judge #6** | Sub-100ms AI governance engine (ATP 5-19 compliance) | Live |
+| **Judge 6** | Sub-100ms AI governance engine (ATP 5-19 compliance) | Live |
 | **n-autoresearch/Kosmos/BioAgents** | 600-agent swarm with JURA cost-aware routing | Production |
 | **ShadowTag** | Cryptographic watermarking (L0-L4 attestation) | Q1 2026 |
 | **JR Engine** | Purpose/Reason/Brakes strategic scoring | Production |
@@ -36,7 +36,7 @@ The $800M defense procurement compliance market alone loses millions annually to
 
 | Segment | TAM | Our Entry Point |
 |---------|-----|-----------------|
-| Defense Procurement Compliance | $800M | Judge #6 enterprise pilots |
+| Defense Procurement Compliance | $800M | Judge 6 enterprise pilots |
 | AI Governance Platforms | $2.1B by 2027 | Full stack (Judge + ShadowTag + JR) |
 | Content Authenticity | $1.4B by 2028 | ShadowTag for media/defense |
 
@@ -84,7 +84,7 @@ Enterprise tier: $50K-500K/year unlimited decisions
 
 | Date | Milestone | ARR |
 |------|-----------|-----|
-| Nov 15, 2025 | Judge #6 prototype on GKE | — |
+| Nov 15, 2025 | Judge 6 prototype on GKE | — |
 | Dec 1, 2025 | First enterprise pilot | $0.25M pipeline |
 | Jan 15, 2026 | ShadowTag integration | — |
 | Q4 2026 | 10 paying customers | $10M ARR |
@@ -100,7 +100,7 @@ Enterprise tier: $50K-500K/year unlimited decisions
 Hundreds of AI startups froze overnight. We went commercial.
 
 - Competitors: Waiting for reauthorization
-- PNKLN: Shipping Judge #6
+- PNKLN: Shipping Judge 6
 
 The governance layer of AI is unowned. We're claiming it.
 

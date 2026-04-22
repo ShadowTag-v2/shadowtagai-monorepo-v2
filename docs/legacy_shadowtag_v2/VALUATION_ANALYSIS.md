@@ -40,7 +40,7 @@
 | Differentiator            | Description                                        | Defensibility               |
 | ------------------------- | -------------------------------------------------- | --------------------------- |
 | **Pure Gemini Doctrine**  | 100% Google stack (no OpenAI/Anthropic dependency) | HIGH (ecosystem lock-in)    |
-| **ATP 5-19 Risk Matrix**  | Military-grade risk stratification                 | HIGH (DoD alignment)        |
+| **Compliance Framework Risk Matrix**  | Military-grade risk stratification                 | HIGH (DoD alignment)        |
 | **CSRMC Continuous ATO**  | Real-time compliance (not PDF audits)              | VERY HIGH (regulatory moat) |
 | **650-Agent Squadron**    | Cavalry-structured swarm architecture              | MEDIUM (can be replicated)  |
 | **S-Score Survivability** | Quantified cyber resilience metric                 | HIGH (novel methodology)    |

@@ -1,4 +1,4 @@
-"""Validation API Routes (PNKLN: Judge #6)
+"""Validation API Routes (PNKLN: Judge 6)
 FastAPI endpoints for ATP 5-19 compliance and JR validation
 """
 
@@ -385,7 +385,7 @@ async def batch_validate(request: BatchValidationRequest) -> BatchValidationResp
 @router.get(
     "/health",
     summary="Validation service health check",
-    description="Quick health check for Judge #6 validation pipeline",
+    description="Quick health check for Judge 6 validation pipeline",
 )
 async def health_check():
     """Health check endpoint for monitoring.

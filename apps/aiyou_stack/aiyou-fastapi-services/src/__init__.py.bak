@@ -2,7 +2,7 @@
 AutoGen → Native Gemini Function Calling Migration
 
 Complete implementation of native Gemini function calling with SHADOWTAGAI stack:
-- JR Engine (Judge #6)
+- JR Engine (Judge 6)
 - Cor (Orchestrator)
 - ShadowTag (Watermarking)
 - NS (Semantic Memory)

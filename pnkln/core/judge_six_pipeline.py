@@ -53,7 +53,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ValidationResult:
     """
-    Result from Judge #6 validation pipeline.
+    Result from Judge 6 validation pipeline.
 
     Attributes:
         decision: Final decision (APPROVE/REJECT/ESCALATE)
@@ -191,7 +191,7 @@ class JudgeSixPipeline:
     """
 
     def __init__(self):
-        """Initialize Judge #6 pipeline."""
+        """Initialize Judge 6 pipeline."""
         self.jr_engine = JREngine()
         self.gemini_agent = GeminiAgent()
         self.pytorch_classifier = PyTorchClassifier()
@@ -200,7 +200,7 @@ class JudgeSixPipeline:
         self.pipeline = SequentialPipeline("judge_six_validation")
         self._build_pipeline()
 
-        logger.info("Judge #6 pipeline initialized (p99 ≤ 90ms SLA)")
+        logger.info("Judge 6 pipeline initialized (p99 ≤ 90ms SLA)")
 
     def _build_pipeline(self) -> None:
         """Construct validation pipeline stages."""
@@ -323,9 +323,9 @@ class JudgeSixPipeline:
 
         # SLA tracking
         if not validation_result.meets_sla():
-            logger.warning(f"Judge #6 SLA violation: {total_latency_ms:.2f}ms > 90ms (request: {request_id})")
+            logger.warning(f"Judge 6 SLA violation: {total_latency_ms:.2f}ms > 90ms (request: {request_id})")
         else:
-            logger.info(f"Judge #6 validated in {total_latency_ms:.2f}ms: {result['decision']} (request: {request_id})")
+            logger.info(f"Judge 6 validated in {total_latency_ms:.2f}ms: {result['decision']} (request: {request_id})")
 
         return validation_result
 
@@ -336,7 +336,7 @@ class JudgeSixPipeline:
 
 
 async def example_usage():
-    """Demonstrate Judge #6 pipeline."""
+    """Demonstrate Judge 6 pipeline."""
     judge = JudgeSixPipeline()
 
     # Test case 1: Clean request (fast path)

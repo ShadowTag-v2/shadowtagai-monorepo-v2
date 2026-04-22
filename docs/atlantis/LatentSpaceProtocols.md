@@ -44,7 +44,7 @@
 
 > "Verify, then trust. Then verify again."
 
-### The Epistemic Wall (Judge #6)
+### The Epistemic Wall (Judge 6)
 
 
 

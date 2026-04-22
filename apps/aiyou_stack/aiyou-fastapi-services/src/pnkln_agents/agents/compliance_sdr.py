@@ -6,7 +6,7 @@ from typing import Any
 
 class ComplianceSDRAgent:
     """Simulates a Sales Development Rep (SDR) agent subject to GDPR governance checks.
-    Used for verifying Judge #6 'Brakes' logic.
+    Used for verifying Judge 6 'Brakes' logic.
     """
 
     def __init__(self):
@@ -27,7 +27,7 @@ class ComplianceSDRAgent:
                 "location": "Berlin, Germany",
             }
 
-            # Governance Check (Mocking Judge #6)
+            # Governance Check (Mocking Judge 6)
             verdict = self.judge_six_governance_check(lead)
 
             if verdict["status"] == "BLOCKED":
@@ -42,7 +42,7 @@ class ComplianceSDRAgent:
         print(f"    Total Processed: {count}")
 
     def judge_six_governance_check(self, lead: dict) -> dict:
-        """Simulates Judge #6 Governance Engine (GDPR Rule)."""
+        """Simulates Judge 6 Governance Engine (GDPR Rule)."""
         # Rule: EU emails require explicit consent.
         if "germany" in lead["location"].lower() or ".de" in lead["email"]:
             # 34% chance of missing consent (matching Ultrathink Report stats)
@@ -217,7 +217,7 @@ class ComplianceSDRAgent(ShadowTagAiAgent):
                 justification=f"B2B lead generation query: {query}",
                 risk_probability=risk_probability,
                 risk_severity=risk_severity,
-                mitigation_strategy="Judge #6 GDPR/CAN-SPAM enforcement + personal email filtering",
+                mitigation_strategy="Judge 6 GDPR/CAN-SPAM enforcement + personal email filtering",
             ),
             Reason(
                 justification=f"Estimated cost: ${task.cost_estimate_usd:.2f} for {target_count} leads",

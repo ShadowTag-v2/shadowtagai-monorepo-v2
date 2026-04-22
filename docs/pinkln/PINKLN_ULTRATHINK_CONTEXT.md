@@ -50,7 +50,7 @@
 │  │                                                           │ │
 │  │  ┌────────────┐  ┌─────────────┐  ┌──────────────────┐  │ │
 │  │  │ JR Engine  │  │     Cor     │  │   ShadowTag      │  │ │
-│  │  │ (P-R-B)    │  │  (Judge #6) │  │  (Ed25519 + MT)  │  │ │
+│  │  │ (P-R-B)    │  │  (Judge 6) │  │  (Ed25519 + MT)  │  │ │
 │  │  └────────────┘  └─────────────┘  └──────────────────┘  │ │
 │  │                                                           │ │
 │  │  ┌────────────┐  ┌─────────────┐  ┌──────────────────┐  │ │
@@ -699,7 +699,7 @@ decision = jr.validate(
         "DTE evolution proven (+3.7%)"
     ],
     brakes=[
-        "ATP 5-19 compliance check",
+        "Compliance Framework compliance check",
         "Cryptographic audit trail",
         "Rollback plan documented"
     ]
@@ -713,7 +713,7 @@ audit_log = decision.audit_trail   # Cryptographic proof
 
 ```
 
-**ATP 5-19 Risk Matrix**:
+**Compliance Framework Risk Matrix**:
 
 ```
 
@@ -729,7 +729,7 @@ E (Unlikely) × IV (Negligible)  = L  (Low)
 
 ---
 
-### 2. Cor (Judge #6 Hybrid Enforcement)
+### 2. Cor (Judge 6 Hybrid Enforcement)
 
 **3-Layer Decision System**:
 
@@ -802,7 +802,7 @@ is_valid = shadow.verify(tagged)
 
 - **Merkle Tree**: Hash chain for audit trail
 
-- **Retention**: 7 years (ATP 5-19 compliance)
+- **Retention**: 7 years (Compliance Framework compliance)
 
 ---
 
@@ -1110,7 +1110,7 @@ decision = jr.validate(
         "3 enterprise pilots successful"
     ],
     brakes=[
-        "ATP 5-19 compliance: ✅ Validated",
+        "Compliance Framework compliance: ✅ Validated",
         "ShadowTag audit trail: ✅ Enabled",
         "Rollback plan: ✅ Documented",
         "Monitoring: ✅ Prometheus + Grafana"
@@ -1261,7 +1261,7 @@ FRAMEWORKS:
 • GRPO (G=8 group size, mean-centered advantages, no clipping)
 
 VALIDATION:
-• JR Engine: Purpose-Reasons-Brakes (ATP 5-19 risk matrix)
+• JR Engine: Purpose-Reasons-Brakes (Compliance Framework risk matrix)
 • Load Testing: p99 ≤90ms SLA, $0.0003 cost, 7-year audit retention
 • Glicko-2: Rating ≥1500, Uncertainty ≤200, Volatility ≤0.1
 • DTE: Improvement metric >0%, benchmark validation required

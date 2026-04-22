@@ -1,4 +1,4 @@
-"""Judge #6 Silent Detector — Passive signal collection layer.
+"""Judge 6 Silent Detector — Passive signal collection layer.
 
 Detects patterns that suggest prompt injection, data exfiltration,
 or unauthorized escalation BEFORE they reach the model router.

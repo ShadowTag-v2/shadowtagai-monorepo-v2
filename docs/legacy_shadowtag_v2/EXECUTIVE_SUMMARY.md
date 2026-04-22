@@ -1,7 +1,7 @@
 # pnkln GKE Inference Deployment - Executive Summary
 
 **Date**: November 2025
-**Project**: GKE Inference Infrastructure with Judge #6 Governance
+**Project**: GKE Inference Infrastructure with Judge 6 Governance
 **Decision Framework**: JR Engine (Purpose, Reasons, Brakes)
 **Risk Assessment**: RA-2 (MEDIUM)
 
@@ -12,7 +12,7 @@
 This deployment establishes production-grade LLM inference infrastructure on Google Cloud Platform, featuring:
 
 1. **Multi-LLM routing** (Google Hypercomputer allocation: Gemini 40%, Claude 35%, GPT-4 15%)
-2. **Judge #6 governance** (ATP 5-19 compliance, 3-layer hybrid validation)
+2. **Judge 6 governance** (Compliance Framework compliance, 3-layer hybrid validation)
 3. **Enterprise SLA** (p99 ≤90ms, 99.95% availability, 98% coverage)
 4. **Cost discipline** ($60-65K/mo with autoscaling, ROI ≥3× in 18 months)
 
@@ -27,7 +27,7 @@ This deployment establishes production-grade LLM inference infrastructure on Goo
 | Impact Area                    | Description                                                     | Value                                          |
 | ------------------------------ | --------------------------------------------------------------- | ---------------------------------------------- |
 | **Infrastructure Credibility** | Production-grade AI infrastructure signals enterprise readiness | Qualitative: High                              |
-| **Regulatory Compliance**      | Judge #6 ATP 5-19 compliance ahead of EU AI Act (Dec 2025)      | Risk mitigation: $2-5M potential fines avoided |
+| **Regulatory Compliance**      | Judge 6 Compliance Framework compliance ahead of EU AI Act (Dec 2025)      | Risk mitigation: $2-5M potential fines avoided |
 | **Vendor Independence**        | Multi-LLM strategy reduces OpenAI/Anthropic lock-in risk        | Strategic: De-risk single vendor               |
 | **Performance SLA**            | p99 ≤90ms establishes competitive moat vs. industry 200-500ms   | Competitive advantage                          |
 
@@ -38,7 +38,7 @@ This deployment establishes production-grade LLM inference infrastructure on Goo
 | **Sales AI**          | RFP automation (3× win rate: 10% → 30%)                        | $3.6M            | Month 6-12 |
 | **Call Intelligence** | Real-time sentiment + objection handling (20% conversion lift) | $2.4M            | Month 3-9  |
 | **Deal Intelligence** | Competitive analysis automation (5hr → 15min)                  | $1.8M            | Month 6-12 |
-| **Negotiation AI**    | ATP 5-19 risk scoring (<500μs latency)                         | $1.8M            | Month 9-18 |
+| **Negotiation AI**    | Compliance Framework risk scoring (<500μs latency)                         | $1.8M            | Month 9-18 |
 | **Total ARR**         |                                                                | **$9.6M**        | Month 18   |
 
 ### Strategic Moat (180-540 Days)
@@ -46,7 +46,7 @@ This deployment establishes production-grade LLM inference infrastructure on Goo
 | Initiative                       | Description                                         | Impact                              |
 | -------------------------------- | --------------------------------------------------- | ----------------------------------- |
 | **Google Hypercomputer Lock-in** | 18-month lead time for competitors to replicate     | Defensible technical moat           |
-| **Judge #6 Licensing**           | Standalone ATP 5-19 compliance product              | $2-4M ARR (separate revenue stream) |
+| **Judge 6 Licensing**           | Standalone Compliance Framework compliance product              | $2-4M ARR (separate revenue stream) |
 | **ShadowTag 2.0**                | Cryptographic audit trail (C2PA + DCT watermarking) | Regulatory moat (provenance)        |
 | **Gulfstream UDCs**              | ERCOT arbitrage via energy optimization             | $190M pilot (DOE 80%@4.5%)          |
 
@@ -97,7 +97,7 @@ _Note: Conservative model assumes linear ramp. Actual may be non-linear with pil
 
 - **Revenue**: $9.6M ARR in 18 months (4 verticals: Sales, Call Intel, Deal Intel, Negotiation)
 - **Moat**: Google Hypercomputer lock-in (18-month competitor lead time)
-- **Regulatory**: EU AI Act compliance (Judge #6 ATP 5-19) ahead of Dec 2025 deadline
+- **Regulatory**: EU AI Act compliance (Judge 6 Compliance Framework) ahead of Dec 2025 deadline
 - **Independence**: Multi-LLM strategy reduces vendor lock-in risk
 
 ### Gate #2: REASONS
@@ -113,7 +113,7 @@ _Note: Conservative model assumes linear ramp. Actual may be non-linear with pil
 
 2. **EU AI Act Timing**
    - Deadline: December 2025
-   - Judge #6 ATP 5-19 compliance: Only system with dual-use tech screening
+   - Judge 6 Compliance Framework compliance: Only system with dual-use tech screening
    - Competitive advantage: 6-12 month lead vs. competitors
 
 3. **Google Hypercomputer Access**
@@ -129,7 +129,7 @@ _Note: Conservative model assumes linear ramp. Actual may be non-linear with pil
 **Risk Level**: **RA-2 (MEDIUM)**
 
 - **Known**: GKE reliability (99.95% SLA), GPU availability
-- **Unknown**: Judge #6 latency under production load, customer willingness to pay
+- **Unknown**: Judge 6 latency under production load, customer willingness to pay
 - **Mitigation**: Parallel validation (Layers 1/2/3), pilot phase (Month 0-3)
 
 ### Gate #3: BRAKES
@@ -152,7 +152,7 @@ _Note: Conservative model assumes linear ramp. Actual may be non-linear with pil
 1. **LTV:CAC <4:1** after Month 12 → Immediate shutdown
 2. **Monthly cost >$65K** for 2 consecutive months → Mandatory review
 3. **p99 latency >90ms** for 7 consecutive days → Rollback deployment
-4. **Judge #6 coverage <98%** for 3 consecutive days → Audit + fix
+4. **Judge 6 coverage <98%** for 3 consecutive days → Audit + fix
 
 #### Budget Alerts (Prometheus + Cloud Monitoring)
 
@@ -194,7 +194,7 @@ _Note: Conservative model assumes linear ramp. Actual may be non-linear with pil
 
 | Risk                         | Probability | Impact | Mitigation                                                  |
 | ---------------------------- | ----------- | ------ | ----------------------------------------------------------- |
-| **Judge #6 latency spike**   | Medium      | High   | Parallel validation (Layers 1/2/3), Layer 1 fast path (90%) |
+| **Judge 6 latency spike**   | Medium      | High   | Parallel validation (Layers 1/2/3), Layer 1 fast path (90%) |
 | **GPU quota unavailability** | Low         | High   | Pre-request 20× L4 GPUs, fallback to CPU inference          |
 | **Gemini API rate limits**   | Medium      | Medium | Multi-LLM failover (Claude, GPT-4), local vLLM              |
 | **Cost overrun**             | Low         | Medium | Budget alerts (50%/75%/90%/100%), HPA limits                |
@@ -204,9 +204,9 @@ _Note: Conservative model assumes linear ramp. Actual may be non-linear with pil
 | Risk                    | Probability | Impact | Mitigation                                              |
 | ----------------------- | ----------- | ------ | ------------------------------------------------------- |
 | **Product-market fit**  | Medium      | High   | Pilot customers (Month 0-3), $0 ACV feedback-only       |
-| **Competitor response** | Medium      | Medium | 18-month Google Hypercomputer lead time, Judge #6 moat  |
+| **Competitor response** | Medium      | Medium | 18-month Google Hypercomputer lead time, Judge 6 moat  |
 | **Pricing pressure**    | Medium      | Medium | Cost optimization (GPU utilization 70-85%), model mix   |
-| **Regulatory changes**  | Low         | High   | Judge #6 modular design, Layer 3 OPA rules (updateable) |
+| **Regulatory changes**  | Low         | High   | Judge 6 modular design, Layer 3 OPA rules (updateable) |
 
 ---
 
@@ -218,7 +218,7 @@ _Note: Conservative model assumes linear ramp. Actual may be non-linear with pil
 
 1. **Purpose Alignment** ✅
    - Advances pnkln revenue ($9.6M ARR in 18 months)
-   - Builds defensible moat (Google Hypercomputer, Judge #6 licensing)
+   - Builds defensible moat (Google Hypercomputer, Judge 6 licensing)
    - Establishes regulatory compliance (EU AI Act Dec 2025)
 
 2. **Bootstrap Discipline** ✅
@@ -234,7 +234,7 @@ _Note: Conservative model assumes linear ramp. Actual may be non-linear with pil
 4. **Financial Upside** ✅
    - ROI: 4.4× in 18 months (exceeds 3× target)
    - Monthly cost: $65K (vs. AWS $80-90K, Azure $70-85K)
-   - Strategic optionality: Judge #6 licensing ($2-4M standalone), Gulfstream ($190M pilot)
+   - Strategic optionality: Judge 6 licensing ($2-4M standalone), Gulfstream ($190M pilot)
 
 ---
 
@@ -244,7 +244,7 @@ _Note: Conservative model assumes linear ramp. Actual may be non-linear with pil
 
 - Week 1: GPU quota approval, Terraform apply
 - Week 2: Kubernetes deployment, monitoring setup
-- Week 3: Judge #6 fine-tuning (Gemini on PRB corpus)
+- Week 3: Judge 6 fine-tuning (Gemini on PRB corpus)
 - Week 4: Load testing, p99 latency validation
 
 ### Phase 2: Pilot (Month 1-3)
@@ -291,12 +291,12 @@ _Note: Conservative model assumes linear ramp. Actual may be non-linear with pil
 
 1. ⏳ Store API keys in Secret Manager (Anthropic, OpenAI, xAI)
 2. ⏳ Fine-tune Gemini on PRB corpus (Vertex AI Generative AI Studio)
-3. ⏳ Build container images (Judge #6, LLM Router)
+3. ⏳ Build container images (Judge 6, LLM Router)
 
 ### Deployment (Week 2-4)
 
 1. ⏳ Run `./deploy.sh` (20-30 minute deployment)
-2. ⏳ Load test Judge #6 (validate p99 <90ms)
+2. ⏳ Load test Judge 6 (validate p99 <90ms)
 3. ⏳ Configure Grafana dashboards
 4. ⏳ Document runbook (ops playbook)
 

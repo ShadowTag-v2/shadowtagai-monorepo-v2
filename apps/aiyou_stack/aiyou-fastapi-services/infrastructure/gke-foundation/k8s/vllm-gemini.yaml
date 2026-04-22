@@ -35,7 +35,7 @@ spec:
         ports:
         - containerPort: 8000
 
-      # Judge #6 Sidecar (Enforcement)
+      # Judge 6 Sidecar (Enforcement)
       - name: judge-enforcer
         image: pnkln/judge:v6.2
         env:

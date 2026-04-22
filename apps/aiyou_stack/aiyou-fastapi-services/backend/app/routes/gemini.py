@@ -63,7 +63,7 @@ async def compare_systems(
     request: ComparisonAnalysisRequest,
     service: GeminiService = Depends(get_gemini_service),
 ):
-    """Compare two systems (e.g., Judge #6 vs Ingestion Layer).
+    """Compare two systems (e.g., Judge 6 vs Ingestion Layer).
 
     Provides comparative analysis across:
     - Architecture

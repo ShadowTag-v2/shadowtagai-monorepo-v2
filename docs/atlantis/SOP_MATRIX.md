@@ -65,7 +65,7 @@ Code Change
 | Gate | Troop | Pass Condition |
 |------|-------|----------------|
 | Security | CODEPMCS | No HIGH/CRITICAL CVEs |
-| Governance | HHT | Judge #6 APPROVED |
+| Governance | HHT | Judge 6 APPROVED |
 | Build | CI/CD | Exit code 0 |
 | Test | CI/CD | All tests pass |
 
@@ -107,7 +107,7 @@ When model hits lowest confidence token in reasoning chain:
 
 ## SOP-D: Code Review
 
-**Purpose:** CodePMCS + Judge #6 approval gates
+**Purpose:** CodePMCS + Judge 6 approval gates
 
 ### Review Stages
 
@@ -122,10 +122,10 @@ Code Submission
 │   • Security vulnerabilities        │
 │   • Code style compliance           │
 ├─────────────────────────────────────┤
-│ Stage 2: Judge #6 Review            │
+│ Stage 2: Judge 6 Review            │
 │   • Governance compliance           │
 │   • Architecture alignment          │
-│   • Risk assessment (ATP 5-19)      │
+│   • Risk assessment (Compliance Framework)      │
 ├─────────────────────────────────────┤
 │ Stage 3: Auto-Remediation           │
 │   • Fix detected issues             │

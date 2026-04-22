@@ -225,7 +225,7 @@ scrape_configs:
 
 **Key Metrics:**
 
-- Judge #6 validation rate
+- Judge 6 validation rate
 
 - Gemini function call latency
 
@@ -639,7 +639,7 @@ kubectl port-forward svc/grafana 3000:3000
 │                 ↓                                                │
 │  ┌──────────────────────────────────────────────────────────┐  │
 │  │ LAYER 1: pnkln stack (Validation & Audit)               │  │
-│  │  • Judge #6 (Purpose/Reasons/Brakes)                     │  │
+│  │  • Judge 6 (Purpose/Reasons/Brakes)                     │  │
 │  │  • ShadowTag (Ed25519 signatures)                        │  │
 │  │  • Cor (Orchestration)                                   │  │
 │  │  • NS (Semantic memory)                                  │  │

@@ -8,7 +8,7 @@ The original plan called for a $62.5K/month GKE infrastructure with:
 
 - 4-namespace Kubernetes deployment
 - GPU node pools (L4, A100)
-- 3-layer hybrid Judge #6 (Gemini + PyTorch + Rules)
+- 3-layer hybrid Judge 6 (Gemini + PyTorch + Rules)
 
 **Problems with this approach:**
 

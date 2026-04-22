@@ -57,7 +57,7 @@ From this deployment, you have:
 **Purpose:** Jupyter notebook for multi-agent orchestration
 **Architecture:**
 - **Cell 1-2**: Environment + GCS connection
-- **Cell 3**: ShadowTag-v2JR governance (Judge #6, ATP 5-19)
+- **Cell 3**: ShadowTag-v2JR governance (Judge 6, ATP 5-19)
 - **Cell 4**: Agent Mail (NS - Nervous System)
 - **Cell 5-6**: Task coordination + context management
 - **Cell 7**: Agent configuration (WhiteCastle, BrownSnow, OrangeCreek)
@@ -244,7 +244,7 @@ initial_coordination_prompt = """
 
    # Review governance logs
    review_governance_logs("risk")  # Risk assessments
-   review_governance_logs("validations")  # Judge #6 results
+   review_governance_logs("validations")  # Judge 6 results
    review_governance_logs("brakes")  # Brake violations (should be empty)
    ```
 
@@ -313,7 +313,7 @@ grep "bevy" Cargo.toml
 Tasks:
 - [ ] Implement feature X
 - [ ] Write tests (98% coverage)
-- [ ] Judge #6 validation
+- [ ] Judge 6 validation
 
 **Checkpoints**:
 - 25%: Design approved
@@ -391,7 +391,7 @@ if context_mgr.needs_consolidation():
 | Workbench Instance (n1-standard-8) | ~$0.38/hr | ~$274/mo if left running 24/7 |
 | Persistent Disk (200GB SSD) | ~$34/mo | Storage for Rust builds + cargo cache |
 | GCS Buckets | ~$0.02/GB/mo | Agent Mail ~1GB, Logs ~0.5GB |
-| Vertex AI API (Gemini) | ~$0.25/1K requests | Judge #6 validations |
+| Vertex AI API (Gemini) | ~$0.25/1K requests | Judge 6 validations |
 | **Total (assuming 8hr/day usage)** | ~$100/mo | Stop instance when not in use |
 
 **Stop instance to save costs:**
@@ -424,7 +424,7 @@ gsutil iam get gs://pnkln-agent-mail | grep pnkln-agent-orchestrator
 # Should show "objectAdmin" role
 ```
 
-### Issue: Judge #6 validation fails (Gemini API error)
+### Issue: Judge 6 validation fails (Gemini API error)
 **Solution:** Verify Vertex AI API enabled + quota
 ```bash
 gcloud services list --enabled | grep aiplatform
@@ -449,7 +449,7 @@ gcloud notebooks instances start pnkln-multi-agent --location=us-central1-a
 
 1. **Scale to More Agents**: Add specialized agents in Cell 7
 2. **Custom Brakes**: Define domain-specific constraints per vertical
-3. **Integration Tests**: Add Judge #6 validation for E2E workflows
+3. **Integration Tests**: Add Judge 6 validation for E2E workflows
 4. **CI/CD**: Trigger Vertex notebooks from GitHub Actions
 5. **Multi-Project**: Replicate pattern across PNKLN's 30 verticals
 

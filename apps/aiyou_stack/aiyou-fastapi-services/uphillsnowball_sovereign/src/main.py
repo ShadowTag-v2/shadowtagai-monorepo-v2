@@ -55,7 +55,7 @@ async def health_check():
 @app.post("/mission")
 async def launch_mission(req: MissionRequest):
     """The Single Entrypoint.
-    Guarded by Judge #6 and the 650-Unit Army.
+    Guarded by Judge 6 and the 650-Unit Army.
     """
     # 1. Governance Gate
     verdict = judge.evaluate(req.query, req.context)

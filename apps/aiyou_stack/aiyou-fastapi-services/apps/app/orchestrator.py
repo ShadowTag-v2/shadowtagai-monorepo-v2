@@ -38,7 +38,7 @@ class AgentState(TypedDict):
 
 
 def node_router(state: AgentState) -> dict:
-    """Judge #6 Router: Determines Risk Level"""
+    """Judge 6 Router: Determines Risk Level"""
     risk = calculate_risk(state["task"])
     logger.info(f"Router assigned risk level: {risk}")
     return {"risk_level": risk}
@@ -90,7 +90,7 @@ def node_arbiter(state: AgentState) -> dict:
     llm = get_strong_llm(temperature=0.0)
 
     prompt = f"""
-    You are the Arbiter (Judge #6).
+    You are the Arbiter (Judge 6).
     TASK: {state["task"].description}
     DRAFT: {state["draft"]}
     CRITIQUE: {state["critique"]}

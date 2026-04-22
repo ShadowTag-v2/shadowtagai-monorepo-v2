@@ -1,7 +1,7 @@
 # GEMINI CLI TUI RENDERING - PLATFORM INTEGRATION ANALYSIS
 
 **Integration Date:** 2025-11-17
-**Component:** Terminal User Interface (TUI) for Judge #6 + Complete Platform
+**Component:** Terminal User Interface (TUI) for Judge 6 + Complete Platform
 **Status:** NEW CAPABILITY - Developer Experience Enhancement
 **Value Impact:** Developer productivity +2×, Governance transparency +100%
 
@@ -32,7 +32,7 @@ This TUI layer sits **on top of** all backend systems we've integrated:
 
 - Roll-in Plugins: TUI rendering for `/analyze-ingestion` command
 
-- PiCO PRISM: ATP 5-19 risk matrix heatmaps
+- PiCO PRISM: Compliance Framework risk matrix heatmaps
 
 **VALUE IMPACT:**
 
@@ -62,7 +62,7 @@ Web Dashboard
 │ ├─ Judge Architecture (21 Governance Layers)           │
 │ ├─ LLM Memory Persistence (4-LLM Orchestration)        │
 │ ├─ Roll-in Plugins (Gemini Ingestion Analysis)         │
-│ └─ PiCO PRISM (ATP 5-19 Risk Assessment)               │
+│ └─ PiCO PRISM (Compliance Framework Risk Assessment)               │
 └─────────────────────────────────────────────────────────┘
 
 ```
@@ -104,7 +104,7 @@ Developer (stays in terminal)
 │ │   → TUI: Memory sync + orchestration progress        │
 │ ├─ Roll-in Plugins (Gemini Ingestion Analysis)         │
 │ │   → TUI: /analyze-ingestion heatmaps                 │
-│ └─ PiCO PRISM (ATP 5-19 Risk Assessment)               │
+│ └─ PiCO PRISM (Compliance Framework Risk Assessment)               │
 │     → TUI: Risk matrix + Monte Carlo visualization     │
 └─────────────────────────────────────────────────────────┘
 
@@ -310,7 +310,7 @@ const JudgeArchitectureScanner = ({ decision }) => {
 
 ---
 
-### ATP 5-19 Risk Matrix Heatmap
+### Compliance Framework Risk Matrix Heatmap
 
 **Use Case:** Visualize probability × severity → risk level (EH/H/M/L)
 
@@ -337,7 +337,7 @@ const RiskMatrixHeatmap = ({ risk }) => {
 
   return (
     <Box flexDirection="column">
-      <Text bold>ATP 5-19 Risk Matrix</Text>
+      <Text bold>Compliance Framework Risk Matrix</Text>
       <Box>
         <Text>
           ┌─────────────────┐
@@ -388,7 +388,7 @@ const MemorySyncStatus = () => {
 
       <Box marginTop={1} borderStyle="round" borderColor="cyan">
         <Text>
-          pnkln Memory Loaded: Judge #6, ShadowTag 2.0, Cor/NS, Judge Architecture (21 layers)
+          pnkln Memory Loaded: Judge 6, ShadowTag 2.0, Cor/NS, Judge Architecture (21 layers)
         </Text>
       </Box>
     </Box>
@@ -729,7 +729,7 @@ Annual value (per developer):
 
 - Week 1: Ink setup + basic UI (40 hours × $80/hour = $3,200)
 
-- Week 2: Judge #6 + AutoGen integration (40 hours × $80/hour = $3,200)
+- Week 2: Judge 6 + AutoGen integration (40 hours × $80/hour = $3,200)
 
 - Week 3: Polish + testing (40 hours × $80/hour = $3,200)
 
@@ -794,7 +794,7 @@ ROI: $470,760 / $9,660 (dev + annual ops) = 48.7× (>>3× bootstrap gate)
 
 - [ ] Test alternate screen buffer (verify flicker-free)
 
-**Day 3-4: Judge #6 API Integration**
+**Day 3-4: Judge 6 API Integration**
 
 - [ ] Connect to Judge Architecture backend (`/api/v1/judge/validate`)
 
@@ -802,7 +802,7 @@ ROI: $470,760 / $9,660 (dev + annual ops) = 48.7× (>>3× bootstrap gate)
 
 - [ ] Display 21-layer validation in real-time
 
-**Day 5: ATP 5-19 Risk Matrix**
+**Day 5: Compliance Framework Risk Matrix**
 
 - [ ] Build ASCII heatmap component
 
@@ -870,7 +870,7 @@ ROI: $470,760 / $9,660 (dev + annual ops) = 48.7× (>>3× bootstrap gate)
 
 **Day 17-18: GKE Integration**
 
-- [ ] CLI talks to Judge #6 service via gRPC
+- [ ] CLI talks to Judge 6 service via gRPC
 
 - [ ] Authentication (API keys + OAuth)
 
@@ -1077,7 +1077,7 @@ tmux new-session -d -s test "judge6 scan 'Test decision'"
 
 - **No secrets in CLI:** API keys via environment variables only
 
-- **HTTPS only:** All API calls to Judge #6 backend over TLS
+- **HTTPS only:** All API calls to Judge 6 backend over TLS
 
 - **No telemetry:** CLI doesn't track usage without opt-in
 
@@ -1133,10 +1133,10 @@ tmux new-session -d -s test "judge6 scan 'Test decision'"
 ║ ├─ Judge Architecture: 21-layer interactive validation   ║
 ║ ├─ LLM Memory: Sync status + 4-LLM orchestration         ║
 ║ ├─ Roll-in Plugins: /analyze-ingestion TUI rendering     ║
-║ └─ PiCO PRISM: ATP 5-19 risk matrix + Monte Carlo        ║
+║ └─ PiCO PRISM: Compliance Framework risk matrix + Monte Carlo        ║
 ╠═══════════════════════════════════════════════════════════╣
 ║ NEXT ACTIONS (IMMEDIATE):                                 ║
-║ 1. Week 1: Ink setup + Judge #6 integration              ║
+║ 1. Week 1: Ink setup + Judge 6 integration              ║
 ║ 2. Week 2: AutoGen + LLM Memory + PiCO PRISM components  ║
 ║ 3. Week 3: npm publish + internal rollout (50 developers)║
 ║ 4. Month 1: Measure adoption vs JSON output (A/B test)   ║
@@ -1191,4 +1191,4 @@ The Gemini CLI TUI rendering implementation is a **Developer Experience (DX) mul
 
 **This is the "last mile" integration** that ties together AutoGen, Judge Architecture, LLM Memory, Roll-in Plugins, and PiCO PRISM into a unified terminal experience. Without TUI, developers resist governance tools. With TUI, governance becomes muscle memory.
 
-**Next Action:** Begin Week 1 implementation (Ink setup + Judge #6 integration).
+**Next Action:** Begin Week 1 implementation (Ink setup + Judge 6 integration).

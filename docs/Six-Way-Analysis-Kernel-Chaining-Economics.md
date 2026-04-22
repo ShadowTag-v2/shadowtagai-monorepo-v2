@@ -123,16 +123,16 @@ Decision Context (50KB raw input)
 
 ### 2.1 Branch B (PNKLN Core) + Branch F
 
-**Branch B alone (Judge #6, Ingestion):**
+**Branch B alone (Judge 6, Ingestion):**
 
-- Judge #6 uses Gemini 2.0 Pro for validation
+- Judge 6 uses Gemini 2.0 Pro for validation
 - Cost: ~$0.003 per validation (3KB input × 2KB output)
 - At 10M validations/month: $30K/month
 
 **Branch B + Branch F (Kernel Chaining):**
 
 - Kernel 1 (ATP scan): Gemini Flash ($0.0003)
-- Kernel 2 (Judge #6): PyTorch local ($0)
+- Kernel 2 (Judge 6): PyTorch local ($0)
 - Kernel 3 (audit): zstd ($0)
 - **Total: $0.0003 per validation** (90% cost reduction)
 - At 10M validations/month: **$3K/month**
@@ -141,12 +141,12 @@ Decision Context (50KB raw input)
 
 **Integration path:**
 
-- Replace monolithic Judge #6 prompt with 3-kernel chain
+- Replace monolithic Judge 6 prompt with 3-kernel chain
 - Kernel 1: Extract violations (Gemini Flash)
-- Kernel 2: Existing Judge #6 PyTorch model (already local!)
+- Kernel 2: Existing Judge 6 PyTorch model (already local!)
 - Kernel 3: Compress decision metadata (new)
 
-**Effort:** 2-3 days to refactor Judge #6 into kernel chain
+**Effort:** 2-3 days to refactor Judge 6 into kernel chain
 **ROI:** 90% cost reduction for 3 days work = **10,800% annual ROI**
 
 ---
@@ -453,15 +453,15 @@ Decision Context (50KB raw input)
 
 ### 6.1 Integration with Branch B (PNKLN Core)
 
-**Current Judge #6 architecture (Branch B):**
+**Current Judge 6 architecture (Branch B):**
 
 ```python
 # Monolithic prompt approach
 def judge_six_validate(content):
     prompt = f"""
-    You are Judge #6. Evaluate this content for violations.
+    You are Judge 6. Evaluate this content for violations.
     Content: {content}
-    ATP 5-19 rules: {atp_rules}  # 15KB of rules
+    Compliance Framework rules: {atp_rules}  # 15KB of rules
     Return decision: approve/reject
     """
     response = gemini_pro.generate(prompt)  # $0.003 cost, 120ms latency
@@ -490,8 +490,8 @@ def judge_six_validate(content):
 
 **Migration effort:**
 
-- Extract ATP 5-19 rules into Kernel 1 prompt (1 day)
-- Wrap existing Judge #6 PyTorch model as Kernel 2 (1 day)
+- Extract Compliance Framework rules into Kernel 1 prompt (1 day)
+- Wrap existing Judge 6 PyTorch model as Kernel 2 (1 day)
 - Add audit compression Kernel 3 (1 day)
 - Test and validate (1 day)
 
@@ -614,7 +614,7 @@ async def kernel_efficiency_metrics():
 **Phase 1: Immediate Deploy (Week 1)**
 
 - Merge **B (PNKLN) + E (Deployment) + F (Kernel Chain)**
-- Refactor Judge #6 into 3-kernel chain
+- Refactor Judge 6 into 3-kernel chain
 - Deploy to production
 - **Outcome:** Live API with 90% cost reduction
 
@@ -667,7 +667,7 @@ async def kernel_efficiency_metrics():
 │ (Kernel Chain)           │    │ (GaaS + Kosmos)             │
 │                          │    │                             │
 │ • Kernel 1: ATP scan     │    │ • Kosmos multi-cycle        │
-│ • Kernel 2: Judge #6     │    │ • GaaS trust scoring        │
+│ • Kernel 2: Judge 6     │    │ • GaaS trust scoring        │
 │ • Kernel 3: Audit        │    │ • MI9 telemetry             │
 │                          │    │                             │
 │ Cost: $0.0003/decision   │    │ Cost: $0.01/decision        │
@@ -915,9 +915,9 @@ git merge claude/encode-4-hour-session-01TmTpAFMrwDgviiEYm5U1Cx  # B
 git merge claude/judge-encode-deployment-01KUckmEQU8oHhDFzL6jZWuU  # E
 git merge claude/kernel-chaining-architecture-01XDGPpkmfkiiiNWRNFnkJKR  # F
 
-# Day 2-3: Refactor Judge #6 into kernel chain
+# Day 2-3: Refactor Judge 6 into kernel chain
 # Extract ATP scan → Kernel 1
-# Wrap Judge #6 PyTorch → Kernel 2
+# Wrap Judge 6 PyTorch → Kernel 2
 # Add audit compression → Kernel 3
 
 # Day 4: Test locally

@@ -130,7 +130,7 @@ Revenue at Scale:
 - 31× faster than AutoGen
 - 97% cost reduction
 - <35ms latency SLA
-- ATP 5-19 compliance built-in
+- Compliance Framework compliance built-in
 
 #### Tier 2: Ultrathink Suite (Pay-Per-Task)
 
@@ -427,7 +427,7 @@ Upsells:
 ### Phase 3: Go-to-Market (Weeks 5-8)
 
 1. **Launch beachhead** (defense contractors)
-   - ATP 5-19 compliance marketing
+   - Compliance Framework compliance marketing
    - 48hrs → 35ms speed claim
    - $3K MRR pilot contracts
 

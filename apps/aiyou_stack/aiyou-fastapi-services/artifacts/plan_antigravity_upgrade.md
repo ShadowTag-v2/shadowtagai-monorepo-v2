@@ -2,7 +2,7 @@
 
 ## Objective
 
-Upgrade the current workspace to fully implement the "Antigravity Workspace Template" standards, focusing on the "Flying n-autoresearch/Kosmos/BioAgents" agent swarm and "Judge #6" governance engine.
+Upgrade the current workspace to fully implement the "Antigravity Workspace Template" standards, focusing on the "Flying n-autoresearch/Kosmos/BioAgents" agent swarm and "Judge 6" governance engine.
 
 ## Phase 1: Infinite Memory Engine
 
@@ -12,7 +12,7 @@ Upgrade the current workspace to fully implement the "Antigravity Workspace Temp
 - [ ] Implement token counting and auto-summarization trigger.
 - [ ] Store summaries in `memory_summary.json` while keeping recent logs in `memory_current.json`.
 
-## Phase 2: Judge #6 LLM Integration
+## Phase 2: Judge 6 LLM Integration
 
 **Goal**: Replace keyword-based validation in `src/pnkln/judge_six.py` with actual Gemini 3 Deep Think validation.
 
@@ -32,7 +32,7 @@ Upgrade the current workspace to fully implement the "Antigravity Workspace Temp
 
 **Goal**: Expose Python tools for the agent.
 
-- [ ] Create `src/tools/governance_tools.py` wrapping Judge #6.
+- [ ] Create `src/tools/governance_tools.py` wrapping Judge 6.
 - [ ] Create `src/tools/swarm_tools.py` for managing agent units.
 
 ## Execution Strategy

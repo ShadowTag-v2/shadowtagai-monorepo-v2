@@ -53,7 +53,7 @@ spec:
         component: gemini-ingestion
       annotations:
         summary: "Gemini ingestion job failed or stalled"
-        description: "No completed ingestion job in last 24 hours. Judge #6 using stale data."
+        description: "No completed ingestion job in last 24 hours. Judge 6 using stale data."
 
     # Alert if items per day below minimum
     - alert: IngestionLowVolume

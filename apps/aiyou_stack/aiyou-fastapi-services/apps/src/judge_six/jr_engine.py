@@ -1,5 +1,5 @@
 """JR Engine - Purpose/Reasons/Brakes Validation Framework
-Core orchestration for Judge #6
+Core orchestration for Judge 6
 """
 
 import time

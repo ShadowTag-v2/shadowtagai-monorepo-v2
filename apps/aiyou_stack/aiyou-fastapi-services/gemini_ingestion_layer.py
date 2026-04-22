@@ -13,11 +13,11 @@ Architecture: GKE CronJob Multi-Container
 - Multi-source parallel crawling
 - Ethical compliance enforcement (rate limiting, robots.txt)
 - Tiered data classification for downstream prioritization
-- Feeds into Judge #6 validation pipeline
+- Feeds into Judge 6 validation pipeline
 
 Integration Position: Pre-Validation Intelligence Collection
 - UPSTREAM: Web sources, APIs, feeds
-- DOWNSTREAM: Judge #6 Enforcement → AutoGen Orchestration → Execution
+- DOWNSTREAM: Judge 6 Enforcement → AutoGen Orchestration → Execution
 
 Performance Targets:
 - Runtime: ~45 min/night for full ingestion cycle

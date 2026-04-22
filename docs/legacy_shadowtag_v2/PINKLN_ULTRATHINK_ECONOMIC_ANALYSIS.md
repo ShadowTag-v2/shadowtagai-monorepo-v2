@@ -144,7 +144,7 @@ annual_cost: "$4,200"
 
 **Value Proposition**:
 
-- ATP 5-19 compliance scanning (<35ms)
+- Compliance Framework compliance scanning (<35ms)
 - 98% PRB coverage (Purpose/Reasons/Brakes)
 - Cryptographic audit trails (ShadowTag)
 - 99.9% uptime SLA
@@ -298,7 +298,7 @@ optimistic:
 
 **Inclusions**:
 
-- **Unlimited kernel chain decisions** (ATP 5-19 compliance)
+- **Unlimited kernel chain decisions** (Compliance Framework compliance)
 - **Unlimited ultrathink tasks** (debates, DTE, GRPO)
 - **Custom DTE evolution strategies** (domain-specific improvements)
 - **Dedicated Glicko-2 ratings** (private performance tracking)
@@ -318,7 +318,7 @@ optimistic:
 
 1. **Defense contractors**: BAE Systems, Lockheed Martin, Raytheon
    - Use case: Procurement compliance, contract review automation
-   - Pain point: Manual ATP 5-19 reviews cost $200K+/year
+   - Pain point: Manual Compliance Framework reviews cost $200K+/year
 
 2. **Healthcare**: Kaiser, UnitedHealth, CVS
    - Use case: HIPAA compliance scanning, medical decision support
@@ -378,7 +378,7 @@ year_3:
 │         └───────────────┬───────────────────────────────┘   │
 │                         │ Provides intelligence             │
 │         ┌───────────────▼───────────────────────────────┐   │
-│         │ Judge #6 (Enforcement)                        │   │ ← Reactive validation
+│         │ Judge 6 (Enforcement)                        │   │ ← Reactive validation
 │         │   Latency: <500µs p99                         │   │   98% PRB coverage
 │         │   Coverage: 98% PRB                           │   │
 │         └───────────────────────────────────────────────┘   │
@@ -392,7 +392,7 @@ year_3:
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Data Flow: Pinkln → Ingestion → Judge #6
+### Data Flow: Pinkln → Ingestion → Judge 6
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -422,12 +422,12 @@ year_3:
                      │
                      ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 3. Judge #6 (Enforcement Validation)                        │
+│ 3. Judge 6 (Enforcement Validation)                        │
 │    Input: Enriched context + classified intelligence        │
 │    Process:                                                  │
 │      • Layer 1: Gemini policy understanding (<5ms)          │
 │      • Layer 2: PyTorch enforcement logic (<3ms)            │
-│      • Layer 3: ATP 5-19 deterministic rules (<2ms)         │
+│      • Layer 3: Compliance Framework deterministic rules (<2ms)         │
 │      • Aggregation: 2/3 majority vote                       │
 │    Output: Go/No-Go decision + risk tier + audit trail      │
 │    Latency: <500µs p99 (scales to <200µs)                   │
@@ -568,7 +568,7 @@ improvement: "33× more tasks per dollar"
 dte_system = DTESystem()
 
 result = await dte_system.evolve_prompt(
-    current_prompt="Extract ATP 5-19 violations from context",
+    current_prompt="Extract Compliance Framework violations from context",
     test_cases=[
         {"input": "...", "expected": "..."},
         # 100+ test cases
@@ -589,7 +589,7 @@ result = await dte_system.evolve_prompt(
 1. **RCR-MAD**: Recursive Critique & Refinement + Multi-Agent Debate
    - Agents critique each other's prompt suggestions
    - Consensus-driven improvement
-   - Proven: +3.7% on ATP 5-19 violation detection
+   - Proven: +3.7% on Compliance Framework violation detection
 
 2. **GRPO**: Group Relative Policy Optimization
    - Optimize prompt quality relative to group mean
@@ -676,7 +676,7 @@ cryptographic_proof:
 
 **Regulatory Compliance**:
 
-- **DoD**: ATP 5-19 requires audit trails for procurement decisions
+- **DoD**: Compliance Framework requires audit trails for procurement decisions
 - **Healthcare**: HIPAA demands immutable logs for patient data access
 - **Finance**: SEC/FINRA require decision justification for trades
 
@@ -698,7 +698,7 @@ cryptographic_proof:
 
 1. **Beachhead Market**: Defense contractor procurement compliance
    - Target: Small/mid-size contractors (revenue $10-50M)
-   - Pain point: ATP 5-19 manual review costs $50K+/year
+   - Pain point: Compliance Framework manual review costs $50K+/year
    - Our offer: $5K/year enterprise plan (90% savings)
 
 2. **Founder-Led Sales**:
@@ -818,7 +818,7 @@ year_1_total_revenue: "$400K"
 **Costs**:
 
 ```yaml
-infrastructure: "$10K (Pinkln + Gemini Ingestion + Judge #6)"
+infrastructure: "$10K (Pinkln + Gemini Ingestion + Judge 6)"
 team: "$150K (2 engineers part-time, founder sweat equity)"
 sales_marketing: "$40K (conferences, ads, content)"
 certifications: "$50K (SOC 2 prep)"
@@ -950,7 +950,7 @@ year_3_profit: "$2,000K (40% margin)"
 
 ---
 
-## Part 7: Risk Analysis & Mitigations (ATP 5-19 Framework)
+## Part 7: Risk Analysis & Mitigations (Compliance Framework Framework)
 
 ### RA-1 (Critical Risks)
 
@@ -1042,10 +1042,10 @@ year_3_profit: "$2,000K (40% margin)"
 **Reasons**:
 
 1. **Proven economics**: 31× faster, 97% cheaper than AutoGen baseline
-2. **Market validation**: Defense contractors pay $50K+/year for ATP 5-19 compliance
+2. **Market validation**: Defense contractors pay $50K+/year for Compliance Framework compliance
 3. **Technical differentiation**: DTE self-evolution (+3.7%) is unique moat
 4. **Bootstrap discipline**: $15K investment → $150K profit in Year 1
-5. **Strategic alignment**: Pinkln funds Judge #6, Gemini Ingestion, ShadowTag development
+5. **Strategic alignment**: Pinkln funds Judge 6, Gemini Ingestion, ShadowTag development
 
 **Brakes**:
 
@@ -1108,7 +1108,7 @@ year_3_profit: "$2,000K (40% margin)"
 3. **`claude/encode-for-onhere-017h22kbUNsyvrGA1F5xRK74`** (current):
    - pnkln Core Stack™ documentation
    - Gemini Ingestion Layer spec
-   - Judge #6 enforcement architecture
+   - Judge 6 enforcement architecture
 
 ---
 
@@ -1128,7 +1128,7 @@ pinkln-ultrathink-ecosystem/
 │   ├── evolution/            # DTE self-evolution system
 │   ├── integration/          # Unified Pinkln + pnkln orchestrator
 │   ├── kernels/              # ATP scan, Judge, Audit compress
-│   ├── pnkln/                # Judge #6, Ingestion, ShadowTag
+│   ├── pnkln/                # Judge 6, Ingestion, ShadowTag
 │   ├── prompts/              # Cheat sheet fusion (10 essentials)
 │   ├── ratings/              # Glicko-2 implementation
 │   └── training/             # GRPO/PPO simulation
@@ -1193,7 +1193,7 @@ pinkln-ultrathink-ecosystem/
 **Strategic Value**:
 
 - Pinkln Ultrathink becomes Layer 2A in pnkln Core Stack™
-- Funds development of Judge #6, Gemini Ingestion, ShadowTag
+- Funds development of Judge 6, Gemini Ingestion, ShadowTag
 - Enables bootstrap path to profitability (no dilution)
 - Creates defensible moat (DTE evolution + Glicko-2 + ShadowTag)
 

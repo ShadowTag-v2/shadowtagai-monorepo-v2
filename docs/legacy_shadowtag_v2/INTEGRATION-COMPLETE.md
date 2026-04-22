@@ -205,7 +205,7 @@ erik-hancock-llm-memory/.github/workflows/*.yml (Daily & cross-device sync)
 
 **Components Integrated**:
 
-- **ATP 5-19 Scan**: 95% compression (50KB → 2.5KB violations)
+- **Compliance Framework Scan**: 95% compression (50KB → 2.5KB violations)
 
 - **Judge Six**: Binary classification for critical decisions
 
@@ -315,7 +315,7 @@ src/ingestion/judge_integration.py     (Data pipeline integration)
 
 - ✓ Pinkln AI: Glicko-2 ratings, MAD debates, orchestration
 
-- ✓ Kernels: ATP 5-19 scan, Judge Six, Audit compress
+- ✓ Kernels: Compliance Framework scan, Judge Six, Audit compress
 
 - ✓ Evolution: DTE system, GRPO training
 

@@ -143,9 +143,9 @@ kubectl logs -n gke-training-system -l app=gemini-ingestion \
 - Twitter: $20/month (basic tier)
 - NewsAPI: $15/month (developer plan)
 
-**Total:** ~$77/month (99% cheaper than Judge #6 stack)
+**Total:** ~$77/month (99% cheaper than Judge 6 stack)
 
-## Integration with Judge #6
+## Integration with Judge 6
 
 **Data Flow:**
 
@@ -154,14 +154,14 @@ Gemini Ingestion (2:00-2:45 AM)
     ↓
 Cloud Storage (gs://pnkln-ingestion-daily/YYYY-MM-DD-briefing.json)
     ↓ (Pub/Sub trigger)
-Judge #6 (loads new data into Redis cache)
+Judge 6 (loads new data into Redis cache)
     ↓
 Services (validated queries using fresh intelligence)
 ```
 
 **Failure Handling:**
 
-- If ingestion fails, Judge #6 uses previous day's data
+- If ingestion fails, Judge 6 uses previous day's data
 - Alert fired to PagerDuty for manual investigation
 - Services continue operating (degraded, stale data)
 
@@ -265,7 +265,7 @@ Production (Q2 2026):
 - [ ] Multi-region failover configured
 - [ ] Cost tracking dashboard deployed
 - [ ] Tier classification accuracy ≥90%
-- [ ] Integration with Judge #6 tested end-to-end
+- [ ] Integration with Judge 6 tested end-to-end
 - [ ] Runbook documented
 - [ ] On-call rotation assigned
 

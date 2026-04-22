@@ -16,13 +16,13 @@ The Kill Chain is activated automatically or manually upon **ANY** of the follow
 
 - **Cloud Run Scaling:** Instance count exceeds **50** without explicit override.
 
-### 2. Security & Governance Triggers (Judge #6)
+### 2. Security & Governance Triggers (Judge 6)
 
 - **Unauthorized Tool Access:** Agent attempts to use `rm -rf`, `sudo`, `chmod`, or access `/etc/shadow`.
 
 - **Data Exfiltration:** Agent attempts to send data to non-whitelisted domains (i.e., not `googleapis.com`, `github.com`).
 
-- **Prompt Injection:** Judge #6 detects a "jailbreak" pattern in agent inputs/outputs.
+- **Prompt Injection:** Judge 6 detects a "jailbreak" pattern in agent inputs/outputs.
 
 - **IAM Escalation:** Agent attempts to modify its own IAM permissions.
 

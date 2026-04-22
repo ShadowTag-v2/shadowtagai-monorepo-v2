@@ -1,5 +1,5 @@
 # apps/counselconduit/api/judge6.py
-"""Judge #6: Python-First Governance Pipeline.
+"""Judge 6: Python-First Governance Pipeline.
 
 MVP implementation of the deterministic governance interceptor.
 Implements the ATP 5-19 Risk Matrix for all AI outputs.
@@ -44,7 +44,7 @@ class RiskLevel(Enum):
 
 @dataclass
 class RiskAssessment:
-    """Result of Judge #6 risk evaluation."""
+    """Result of Judge 6 risk evaluation."""
 
     risk_score: int  # 1-25
     risk_level: RiskLevel
@@ -149,7 +149,7 @@ def _step_enforce(text: str, risk_level: RiskLevel) -> str:
 
     # RED — blocked
     return (
-        "⛔ This response has been blocked by the Judge #6 governance pipeline. "
+        "⛔ This response has been blocked by the Judge 6 governance pipeline. "
         "The AI output contained language that exceeds the ATP 5-19 risk threshold. "
         "Please review the flagged items and consult directly with your attorney."
     )
@@ -159,7 +159,7 @@ def _step_enforce(text: str, risk_level: RiskLevel) -> str:
 
 
 def evaluate(text: str) -> GovernanceResult:
-    """Run the full Judge #6 governance pipeline on AI output.
+    """Run the full Judge 6 governance pipeline on AI output.
 
     This is the main entry point. Call after every Gemini response
     before returning to the client.
@@ -196,7 +196,7 @@ def evaluate(text: str) -> GovernanceResult:
     )
 
     logger.info(
-        "Judge #6 evaluation: score=%d level=%s approved=%s flags=%d",
+        "Judge 6 evaluation: score=%d level=%s approved=%s flags=%d",
         risk_score,
         risk_level.value,
         approved,

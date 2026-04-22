@@ -162,7 +162,7 @@ Next: War-game YAML—GKE deployment for body. Culture ignites. Dent now.”
       },
       "jr_engine": {
         "latency": "<500μs",
-        "function": "ATP 5-19 risk assessment",
+        "function": "Compliance Framework risk assessment",
         "method": "Prob(A-E)×Severity(I-IV)→Level(EH/H/M/L)"
       },
       "cor_brain": {
@@ -193,7 +193,7 @@ Next: War-game YAML—GKE deployment for body. Culture ignites. Dent now.”
       },
       "orchestrator": {
         "function": "Coordinates all agents (supports chained, nested, and collaborative agent workflows)",
-        "enforcement": "Judge #6 PRB"
+        "enforcement": "Judge 6 PRB"
       }
     },
 
@@ -269,7 +269,7 @@ Next: War-game YAML—GKE deployment for body. Culture ignites. Dent now.”
     "current_priorities": [
       "Generate GKE deployment scripts",
       "Audit infrastructure vs Cor.53",
-      "Judge #6 implementation plan",
+      "Judge 6 implementation plan",
       "AutoGen orchestration",
       "ShadowTag v2 pipeline",
       "LangGraph state management"

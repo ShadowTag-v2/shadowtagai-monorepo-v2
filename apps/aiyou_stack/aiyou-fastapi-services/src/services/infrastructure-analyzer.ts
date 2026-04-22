@@ -56,7 +56,7 @@ export class InfrastructureAnalyzer {
       return InfrastructureComponent.GEMINI_INGESTION;
     }
 
-    // Judge #6
+    // Judge 6
     if (input.includes('judge') || input.includes('validation') || input.includes('enforcement')) {
       return InfrastructureComponent.JUDGE_SIX;
     }
@@ -82,8 +82,8 @@ export class InfrastructureAnalyzer {
         return GEMINI_INGESTION_ANALYSIS_PROMPT;
 
       case InfrastructureComponent.JUDGE_SIX:
-        // TODO: Add Judge #6 analysis prompt
-        return 'Judge #6 analysis not yet implemented';
+        // TODO: Add Judge 6 analysis prompt
+        return 'Judge 6 analysis not yet implemented';
 
       case InfrastructureComponent.PNKLN_CORE:
         // TODO: Add PNKLN Core analysis prompt

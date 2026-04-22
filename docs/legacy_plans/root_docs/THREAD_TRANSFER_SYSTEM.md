@@ -10,7 +10,7 @@ Congratulations on completing the **Thread Transfer Package System**—a compreh
 
 1. **types.ts** (380+ lines)
    - Complete type system for all package components
-   - ATP 5-19 risk matrix enums (Probability A-E × Severity I-IV)
+   - Compliance Framework risk matrix enums (Probability A-E × Severity I-IV)
    - Bootstrap constraints interface
    - Framework configuration structures
    - Repository and artifact tracking
@@ -27,12 +27,12 @@ Congratulations on completing the **Thread Transfer Package System**—a compreh
 3. **handoff-outline.ts** (360+ lines)
    - Builder pattern for Part 2 (Handoff Outline)
    - Key parameters management
-   - Framework configuration (JR Engine, ATP 5-19, Bootstrap)
+   - Framework configuration (JR Engine, Compliance Framework, Bootstrap)
    - Repository targets with priority classification
    - Objectives breakdown (Immediate/M1-3/M3+)
    - Variable naming conventions
    - Open questions tracking
-   - **RiskAssessment** utility class with ATP 5-19 matrix calculation
+   - **RiskAssessment** utility class with Compliance Framework matrix calculation
    - **FrameworkPresets** for PNKLN bootstrap and production configs
    - Risk flag icons (🔴 EH, 🟠 H, 🟡 M, 🟢 L)
 
@@ -92,7 +92,7 @@ Every major component uses fluent builder pattern for:
 - Readable construction syntax
 - Method chaining
 
-### 2. ATP 5-19 Risk Matrix Integration
+### 2. Compliance Framework Risk Matrix Integration
 
 Military-grade risk assessment:
 
@@ -219,7 +219,7 @@ const pkg = new TransferPackageBuilder()
 
 ### PNKLN Core Stack™
 
-- **Judge #6**: p99≤90ms SLA enforcement
+- **Judge 6**: p99≤90ms SLA enforcement
 - **Namespaces**: judge-six, core-stack, shadow-tag, ns-mesh, audit-compress
 - **Semantic Compression**: 50KB → 487 bytes targets
 - **Bootstrap Constraints**: $0K capital, ROI ≥3× (18mo), LTV:CAC ≥4:1 (12mo)
@@ -227,7 +227,7 @@ const pkg = new TransferPackageBuilder()
 ### Decision Frameworks
 
 - **JR Engine**: Purpose → Reasons → Brakes
-- **ATP 5-19**: Probability × Severity risk matrix
+- **Compliance Framework**: Probability × Severity risk matrix
 - **Bootstrap Gates**: ROI, LTV:CAC, SLA thresholds
 
 ### Claude Agent SDK
@@ -295,7 +295,7 @@ Reflects **different roles in workflow**:
 
 - No context loss (100% validation target)
 - No assumption blindness (auto-critique)
-- No missing risk assessment (ATP 5-19 required)
+- No missing risk assessment (Compliance Framework required)
 
 ### 5. Economic Rationality
 
@@ -329,7 +329,7 @@ Scales from **per-session to batch production**:
    - Risk flag completeness thresholds
 
 3. **Template Expansion**
-   - Judge #6 enforcement scenarios
+   - Judge 6 enforcement scenarios
    - Shadow-tag deployment patterns
    - Audit-compress pipeline setups
 
@@ -341,7 +341,7 @@ Scales from **per-session to batch production**:
 ### M3+ Strategic Additions
 
 1. **Combined Prompts**
-   - End-to-end analysis (Ingestion → Judge #6)
+   - End-to-end analysis (Ingestion → Judge 6)
    - Cross-component handoff tracking
    - Full PNKLN stack transfer packages
 
@@ -368,7 +368,7 @@ Scales from **per-session to batch production**:
 ✅ **Validation**: Completeness scoring ensures quality before export
 ✅ **Flexibility**: Builder pattern supports custom + template workflows
 ✅ **Multi-Format**: Markdown, JSON, compact serve different use cases
-✅ **Risk-Aware**: ATP 5-19 integration forces explicit assessment
+✅ **Risk-Aware**: Compliance Framework integration forces explicit assessment
 ✅ **Self-Critical**: Auto-critique surfaces blindspots proactively
 
 ### Trade-offs
@@ -396,7 +396,7 @@ Scales from **per-session to batch production**:
 The **Thread Transfer Package System** successfully translates the conceptual 3-part framework into production-grade code with:
 
 - **Industrial Architecture**: 7 modules, builder patterns, type safety
-- **Military-Grade Risk**: ATP 5-19 integration throughout
+- **Military-Grade Risk**: Compliance Framework integration throughout
 - **Economic Viability**: 60× time savings, $0 marginal cost
 - **Integration Ready**: Claude SDK, GKE, PNKLN stack compatible
 

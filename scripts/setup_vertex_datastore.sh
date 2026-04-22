@@ -1,12 +1,12 @@
 #!/bin/bash
-# setup_vertex_datastore.sh - Create Vertex AI Search datastore for Judge #6 grounding
+# setup_vertex_datastore.sh - Create Vertex AI Search datastore for Judge 6 grounding
 #
 # Layer 3 infrastructure for JURA governance:
 # - Creates GCS bucket for doctrine documents
 # - Sets up Vertex AI Search datastore
 # - Configures document indexing
 #
-# Target: "Always Grounded" mode - all Judge #6 queries through Vertex AI Search
+# Target: "Always Grounded" mode - all Judge 6 queries through Vertex AI Search
 
 set -euo pipefail
 
@@ -115,7 +115,7 @@ upload_doctrine_docs() {
 # JURA Governance Policy
 
 ## Purpose
-This document defines the governance policies for Judge #6 compliance scoring.
+This document defines the governance policies for Judge 6 compliance scoring.
 
 ## Risk Categories
 
@@ -280,7 +280,7 @@ PYTHON
 
 # Main execution
 main() {
-    log_info "=== Vertex AI Search Datastore Setup for Judge #6 ==="
+    log_info "=== Vertex AI Search Datastore Setup for Judge 6 ==="
     log_info "Project: $PROJECT_ID"
     log_info "Location: $LOCATION"
     log_info "Datastore: $DATASTORE_ID"

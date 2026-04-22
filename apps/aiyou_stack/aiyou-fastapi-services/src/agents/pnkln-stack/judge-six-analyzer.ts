@@ -1,6 +1,6 @@
 /**
- * Judge #6 Analyzer Agent
- * Specialized agent for analyzing the PNKLN Judge #6 validation system
+ * Judge 6 Analyzer Agent
+ * Specialized agent for analyzing the PNKLN Judge 6 validation system
  */
 
 import { masterPromptFramework } from '../../prompts/frameworks/master-prompt-framework';
@@ -17,10 +17,10 @@ import { BaseAgent } from '../../utils/base-agent';
 export class JudgeSixAnalyzerAgent extends BaseAgent {
   metadata: AgentMetadata = {
     id: 'judge-six-analyzer',
-    name: 'Judge #6 Validation System Analyzer',
+    name: 'Judge 6 Validation System Analyzer',
     category: 'quality-testing',
     description:
-      'Analyzes the PNKLN Judge #6 real-time validation system for performance and accuracy.',
+      'Analyzes the PNKLN Judge 6 real-time validation system for performance and accuracy.',
     tagline: 'Real-time validation system analysis',
     capabilities: ['analysis', 'optimization'],
     tags: ['pnkln', 'judge-6', 'validation', 'enforcement', 'latency', 'ai'],
@@ -44,9 +44,9 @@ export class JudgeSixAnalyzerAgent extends BaseAgent {
 
     examples: [
       {
-        input: 'Analyze Judge #6 for performance optimization',
+        input: 'Analyze Judge 6 for performance optimization',
         output: `## Executive Summary
-Judge #6 demonstrates excellent latency performance (p99: 78ms) with opportunities
+Judge 6 demonstrates excellent latency performance (p99: 78ms) with opportunities
 to improve false positive rates and reduce API call costs.
 
 ## Architecture Analysis

@@ -3,7 +3,7 @@ PNKLN Safety Module
 
 Training data safety indexing and content classification based on:
 - Apertus LLM Training Data Indexing Research (arxiv:2510.09471v1)
-- Judge #6 governance integration
+- Judge 6 governance integration
 - ShadowTag provenance verification
 
 Components:

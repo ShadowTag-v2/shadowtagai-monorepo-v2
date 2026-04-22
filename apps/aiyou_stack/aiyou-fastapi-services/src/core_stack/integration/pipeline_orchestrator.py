@@ -1,5 +1,5 @@
 """PNKLN Core Stack™ — Integration Pipeline Orchestrator
-Handles data flow: Gemini Ingestion → Cloud Storage → Judge #6 → Services
+Handles data flow: Gemini Ingestion → Cloud Storage → Judge 6 → Services
 """
 
 import asyncio
@@ -28,7 +28,7 @@ class PipelineConfig:
     pubsub_topic: str = "ingestion-complete"
     pubsub_subscription: str = "judge-6-updater"
 
-    # Redis (Judge #6 cache)
+    # Redis (Judge 6 cache)
     redis_host: str = "judge-6-redis.gke-inference-system.svc.cluster.local"
     redis_port: int = 6379
     redis_db: int = 0
@@ -64,7 +64,7 @@ class IngestionPublisher:
                 },
             )
             # Still publish for debugging, but mark as failed
-            # Judge #6 will detect "failed_quality_gates" status
+            # Judge 6 will detect "failed_quality_gates" status
 
         # Generate GCS path: YYYY-MM-DD-briefing.json
         blob_name = f"{self.config.gcs_prefix}{briefing.briefing_date}-briefing.json"
@@ -76,7 +76,7 @@ class IngestionPublisher:
         gcs_path = f"gs://{self.config.gcs_bucket}/{blob_name}"
         logger.info(f"Published briefing to {gcs_path}")
 
-        # Trigger Pub/Sub event for Judge #6 to consume
+        # Trigger Pub/Sub event for Judge 6 to consume
         topic_path = self.pubsub_client.topic_path(
             self.config.pubsub_project,
             self.config.pubsub_topic,
@@ -98,8 +98,8 @@ class IngestionPublisher:
 
 
 class Judge6Updater:
-    """Subscribes to Pub/Sub events and updates Judge #6 Redis cache.
-    Runs as sidecar in Judge #6 StatefulSet (gke-inference-system).
+    """Subscribes to Pub/Sub events and updates Judge 6 Redis cache.
+    Runs as sidecar in Judge 6 StatefulSet (gke-inference-system).
     """
 
     def __init__(self, config: PipelineConfig):
@@ -113,14 +113,14 @@ class Judge6Updater:
         )
 
     async def connect_redis(self):
-        """Establish Redis connection (Judge #6 cache)"""
+        """Establish Redis connection (Judge 6 cache)"""
         self.redis_client = await redis.from_url(
             f"redis://{self.config.redis_host}:{self.config.redis_port}/{self.config.redis_db}",
         )
-        logger.info("Connected to Judge #6 Redis cache")
+        logger.info("Connected to Judge 6 Redis cache")
 
     async def load_briefing_to_cache(self, gcs_path: str) -> bool:
-        """Load ingestion briefing from GCS into Judge #6 Redis cache.
+        """Load ingestion briefing from GCS into Judge 6 Redis cache.
         Returns: True if successful, False if quality gates failed
         """
         # Download from GCS
@@ -150,7 +150,7 @@ class Judge6Updater:
             )
             return False
 
-        # Load items into Redis for Judge #6 lookup
+        # Load items into Redis for Judge 6 lookup
         pipeline = self.redis_client.pipeline()
 
         for item in briefing.items:
@@ -183,7 +183,7 @@ class Judge6Updater:
         await pipeline.execute()
 
         logger.info(
-            f"Loaded {briefing.total_items} items into Judge #6 cache ({briefing.briefing_date})",
+            f"Loaded {briefing.total_items} items into Judge 6 cache ({briefing.briefing_date})",
         )
 
         return True
@@ -198,12 +198,12 @@ class Judge6Updater:
 
             logger.info(f"Received ingestion-complete event for {briefing_date}")
 
-            # Load into Judge #6 cache
+            # Load into Judge 6 cache
             success = await self.load_briefing_to_cache(gcs_path)
 
             if success:
                 message.ack()
-                logger.info(f"Successfully loaded {briefing_date} into Judge #6")
+                logger.info(f"Successfully loaded {briefing_date} into Judge 6")
             else:
                 # Quality gates failed, but still ack (logged for manual review)
                 message.ack()
@@ -229,7 +229,7 @@ class Judge6Updater:
 
 
 class Judge6Client:
-    """Client for services to query Judge #6 (real-time validation).
+    """Client for services to query Judge 6 (real-time validation).
     Runs in gke-inference-system, gke-gateway-system, etc.
     """
 
@@ -238,14 +238,14 @@ class Judge6Client:
         self.redis_client: redis.Redis | None = None
 
     async def connect(self):
-        """Establish Redis connection to Judge #6 cache"""
+        """Establish Redis connection to Judge 6 cache"""
         self.redis_client = await redis.from_url(
             f"redis://{self.config.redis_host}:{self.config.redis_port}/{self.config.redis_db}",
         )
-        logger.info("Connected to Judge #6")
+        logger.info("Connected to Judge 6")
 
     async def validate_item(self, item_id: str) -> JudgeDecision:
-        """Validate item against Judge #6 policies.
+        """Validate item against Judge 6 policies.
         SLA: <500μs p99 latency, ≥98% coverage
         """
         start_time = datetime.now()
@@ -258,7 +258,7 @@ class Judge6Client:
 
         if item_data is None:
             # Item not in cache (coverage gap)
-            logger.warning(f"Item {item_id} not found in Judge #6 cache")
+            logger.warning(f"Item {item_id} not found in Judge 6 cache")
             return JudgeDecision(
                 item_id=item_id,
                 allowed=False,
@@ -273,7 +273,7 @@ class Judge6Client:
         # Parse item
         item = IngestedItem.from_dict(eval(item_data))
 
-        # Apply Judge #6 policies (simplified for example)
+        # Apply Judge 6 policies (simplified for example)
         # Real implementation: ATP 5-19 CRM, PRB framework, JR doctrine
         allowed = True
         risk_level = "RA-4 (Low)"
@@ -308,13 +308,13 @@ class Judge6Client:
         # Log if SLA violated
         if not decision.meets_sla():
             logger.error(
-                f"Judge #6 SLA violation: {latency_us}μs latency, {decision.coverage:.2%} coverage",
+                f"Judge 6 SLA violation: {latency_us}μs latency, {decision.coverage:.2%} coverage",
             )
 
         return decision
 
     async def get_stats(self) -> dict:
-        """Get Judge #6 cache statistics"""
+        """Get Judge 6 cache statistics"""
         latest_briefing = await self.redis_client.get("briefing:latest")
 
         tier_counts = {}
@@ -334,7 +334,7 @@ class Judge6Client:
 async def integration_test():
     """Simulate end-to-end pipeline:
     1. Gemini Ingestion publishes briefing
-    2. Judge #6 Updater loads to cache
+    2. Judge 6 Updater loads to cache
     3. Service validates item
     """
     config = PipelineConfig()
@@ -373,17 +373,17 @@ async def integration_test():
     gcs_path = publisher.publish_briefing(briefing)
     print(f"✓ Published briefing to {gcs_path}")
 
-    # Step 2: Load to Judge #6 (Updater)
+    # Step 2: Load to Judge 6 (Updater)
     updater = Judge6Updater(config)
     await updater.connect_redis()
     success = await updater.load_briefing_to_cache(gcs_path)
-    print(f"✓ Loaded to Judge #6 cache: {success}")
+    print(f"✓ Loaded to Judge 6 cache: {success}")
 
     # Step 3: Validate item (Service)
     judge_client = Judge6Client(config)
     await judge_client.connect()
     decision = await judge_client.validate_item("ing_20251115_000001")
-    print(f"✓ Judge #6 decision: {decision.allowed}, {decision.latency_us}μs")
+    print(f"✓ Judge 6 decision: {decision.allowed}, {decision.latency_us}μs")
     print(f"  SLA met: {decision.meets_sla()}")
 
     # Get stats

@@ -1,4 +1,4 @@
-"""PNKLN Core Stack - Judge #6 Validation Layer
+"""PNKLN Core Stack - Judge 6 Validation Layer
 
 Hybrid Gemini+PyTorch validation system that ensures data quality
 and compliance before items reach downstream applications.
@@ -48,7 +48,7 @@ class ValidationStatus(StrEnum):
 
 @dataclass
 class ValidationResult:
-    """Result of Judge #6 validation"""
+    """Result of Judge 6 validation"""
 
     item_id: str
     status: ValidationStatus
@@ -109,7 +109,7 @@ class ContentSafetyClassifier(nn.Module):
 
 
 class Judge6Validator:
-    """Judge #6 - Main validation orchestrator.
+    """Judge 6 - Main validation orchestrator.
 
     Implements hybrid Gemini+PyTorch validation with:
     - Fast PyTorch pre-screening (<10ms)
@@ -560,7 +560,7 @@ Respond in JSON:
         return ValidationStatus.PASSED
 
     def get_stats(self) -> dict:
-        """Get Judge #6 performance statistics."""
+        """Get Judge 6 performance statistics."""
         avg_latency = (
             self._total_latency_ms / self._validation_count if self._validation_count > 0 else 0.0
         )

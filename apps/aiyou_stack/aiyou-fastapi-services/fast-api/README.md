@@ -114,7 +114,7 @@ curl http://localhost:8000/health
 
 
 
-- [ ] Integrate Judge #6 AI engine for real decision logic
+- [ ] Integrate Judge 6 AI engine for real decision logic
 
 
 - [ ] Add pytest test suite (target: 85%+ coverage)

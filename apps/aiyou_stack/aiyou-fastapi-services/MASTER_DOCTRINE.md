@@ -22,11 +22,11 @@
 |---|---|---|---|
 | **I** | **The Brain** | $10.5B (13.5x) | SaaS / Sovereign IaaS (Tier 30) |
 | **II** | **The Steel** | $100.0B (20x) | SkyNode Infrastructure (1GW) |
-| **III** | **The Shield** | $35.0B (14x) | Judge #6 / Defense Contracts |
+| **III** | **The Shield** | $35.0B (14x) | Judge 6 / Defense Contracts |
 
 ## 3. SQUADRON STRUCTURE (650 Agents)
 
-* **HHT (90)**: Headquarters | Judge #6, S-1 to S-6 Staff
+* **HHT (90)**: Headquarters | Judge 6, S-1 to S-6 Staff
 
 * **AIR_CAV (120)**: Aerial Scouts | Apache, Kiowa, Black Hawk
 
@@ -42,7 +42,7 @@
 
 | TIER | LEVEL | PRICE | CAPABILITY |
 |---|---|---|---|
-| 1-5 | BASIC | $25k | Risk Radar (ATP 5-19) |
+| 1-5 | BASIC | $25k | Risk Radar (Compliance Framework) |
 | 6-15 | AIT | $100k | Defensive Ops (CodePMCS) |
 | 16-25 | SOF | $400k | Hunter/Killer (Troop A/B) |
 | 30 | THE CHILD | $1M+ | Sovereign AI (30 Verticals) |
@@ -55,7 +55,7 @@
 
 * **Orchestration**: `services/swarm_orchestrator.py` (Antigravity Swarm).
 
-* **Governance**: **Judge #6** (ATP 5-19 Enforcement + JR Engine).
+* **Governance**: **Judge 6** (Compliance Framework Enforcement + JR Engine).
 
 * **Intelligence**: **Gemini Ingestion Layer** (GKE CronJob).
 

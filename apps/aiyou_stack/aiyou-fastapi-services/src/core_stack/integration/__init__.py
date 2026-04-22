@@ -1,9 +1,9 @@
 """PNKLN Core Stack™ — Integration Layer
-Gemini Ingestion → Judge #6 → Services
+Gemini Ingestion → Judge 6 → Services
 
 This module handles the data flow between:
 1. Gemini Ingestion Layer (nightly batch intelligence collection)
-2. Judge #6 (real-time governance enforcement)
+2. Judge 6 (real-time governance enforcement)
 3. Services (inference, training, gateway systems)
 
 Key Components:

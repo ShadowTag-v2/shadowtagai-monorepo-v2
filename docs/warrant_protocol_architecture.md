@@ -22,7 +22,7 @@ To create an autonomous, always-looping entity (e.g., for monitoring the stock m
 Not all clients need (or can afford) all 17 DOW CRSMC control layers. By separating them into modular plugins, we create a **Premium Entitlement Matrix**.
 
 - **The Accounting Firm:** Subscribes to Layers 1 (Cyber), 7 (Financial Risk), and 8 (Hacker Mitigation). Their Swarm operates with high commercial speed but lower physical friction.
-- **The Defense Contractor (or Supply Chain):** Subscribes to Layer 9 (Physical Risk / ATP 5-19 Fusion) and 13 (VPN/Insider Threat).
+- **The Defense Contractor (or Supply Chain):** Subscribes to Layer 9 (Physical Risk / Compliance Framework Fusion) and 13 (VPN/Insider Threat).
 - **The Law Firm:** Subscribes to Layer 6 (EU AI Act), 10 (KYB/Espionage), and custom integration with Ice Lake to ensure 100% citation accuracy without hallucination.
 
 *Pricing Strategy:* Base platform includes Layers 1 and 14. Remaining layers are SaaS upsells ($20k/yr per layer).

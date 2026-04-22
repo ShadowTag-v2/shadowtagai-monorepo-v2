@@ -25,16 +25,16 @@ The Ingestion Layer is a **nightly CronJob-based intelligence collection system*
 - **Cost**: ~$77/month operational
 - **Integration**: **CALLED BY** services in 4 namespaces (judge6-system, analytics, briefing, archive)
 
-### Key Differences from Judge #6
+### Key Differences from Judge 6
 
-| Aspect              | Judge #6 (Enforcement)          | Gemini Ingestion (Collection)         |
+| Aspect              | Judge 6 (Enforcement)          | Gemini Ingestion (Collection)         |
 | ------------------- | ------------------------------- | ------------------------------------- |
 | **Architecture**    | Hybrid Gemini+PyTorch real-time | GKE CronJob multi-container batch     |
 | **Primary Metric**  | p99 latency ≤90ms               | Runtime ≤45 min/night                 |
 | **Throughput**      | 2.7M validations/day            | 100+ items/night                      |
 | **Key Metrics**     | Latency, block rate, FP/FN      | Items/day, sources, cost/item         |
 | **Integration**     | Calls services (downstream)     | Called by services (upstream)         |
-| **Unique Features** | ATP 5-19, JR validation         | Ethical crawling, tier classification |
+| **Unique Features** | Compliance Framework, JR validation         | Ethical crawling, tier classification |
 | **Cost Model**      | Per API call                    | Monthly operational (~$77)            |
 | **Quality Focus**   | False positive/negative rates   | Relevance, timeliness, completeness   |
 
@@ -280,7 +280,7 @@ The analysis should enable decision-makers to:
 - **Structured output**: Use markdown tables, bullet lists, and code snippets
 - **Confidence scoring**: Explicitly state confidence (0-100%) for each assessment
 - **Actionable recommendations**: Provide concrete fixes, not vague suggestions
-- **PNKLN awareness**: Consider integration with Judge #6, analytics, and briefing services
+- **PNKLN awareness**: Consider integration with Judge 6, analytics, and briefing services
 
 ---
 

@@ -13,7 +13,7 @@ Option 1: Implement Token Compression Pipeline 🔥
 Deploy the pnkln compression pipeline from the spec:
 Stage 1: ATP_519 semantic extraction (50KB → 2.5KB)
 Stage 2: LLMLingua-2 compression (2.5KB → 400-600 bytes)
-Stage 3: Judge #6 binary decision (→ 487 bytes)
+Stage 3: Judge 6 binary decision (→ 487 bytes)
 Stage 4: ZSTD audit compression (→ 49 bytes)
 Target: <35ms latency, 95% cost reduction
 Option 2: Continue LLM Memory Integration 📊
@@ -21,7 +21,7 @@ From your memory - you were setting up:
 Claude web extraction (from claude.ai and code.claude.com)
 Google Drive knowledge extraction
 Merging all sources into unified memory/current.json
-Option 3: Deploy Judge #6 with Triton ⚡
+Option 3: Deploy Judge 6 with Triton ⚡
 Based on the Triton spec, implement governance enforcement:
 Use Triton Standard (not Gluon - better ROI for M1-M3)
 Target: 50-100μs per batch on A100

@@ -67,7 +67,7 @@ gcloud services list --enabled --project=$GCP_PROJECT_ID | grep -E 'notebooks|co
 - [ ] **Directory structure initialized**:
   - [ ] `/agent-mail/` (inter-agent communication)
   - [ ] `/checkpoints/` (state persistence)
-  - [ ] `/coverage-reports/` (Judge #6 outputs)
+  - [ ] `/coverage-reports/` (Judge 6 outputs)
 
 **Verification**:
 
@@ -136,7 +136,7 @@ gsutil ls gs://${GCP_PROJECT_ID}-pnkln-agents/setup/
   - Risk Level: RA-2
   - Coverage Target: 98%
 - [ ] **OrangeCreek (OC-03)** configured
-  - Role: Validation & QA (Judge #6)
+  - Role: Validation & QA (Judge 6)
   - Risk Level: RA-4 (Requires human approval)
   - Coverage Target: 100%
 
@@ -265,7 +265,7 @@ gsutil ls gs://${GCP_PROJECT_ID}-pnkln-agents/setup/
 
 ---
 
-## Phase 6: Judge #6 Validation
+## Phase 6: Judge 6 Validation
 
 ### 6.1 Coverage Enforcement
 
@@ -398,7 +398,7 @@ cargo tarpaulin --out Stdout  # Check coverage
 
 - **Solution**: Verify GCS bucket permissions: `gsutil iam get gs://${GCP_PROJECT_ID}-pnkln-agents`
 
-**Issue**: Judge #6 coverage validation fails
+**Issue**: Judge 6 coverage validation fails
 
 - **Solution**: Review generated tests in rust_scriptbots, add coverage for untested paths
 

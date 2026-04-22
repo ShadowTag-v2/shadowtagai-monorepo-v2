@@ -27,7 +27,7 @@ class TierClassification(StrEnum):
 
 
 class ValidationStatus(StrEnum):
-    """Judge #6 validation status"""
+    """Judge 6 validation status"""
 
     PENDING = "pending"
     APPROVED = "approved"
@@ -77,7 +77,7 @@ class IngestionMetrics(BaseModel):
 
 
 class ValidationMetrics(BaseModel):
-    """Judge #6 validation metrics"""
+    """Judge 6 validation metrics"""
 
     date: datetime = Field(default_factory=datetime.utcnow)
     items_validated: int = Field(ge=0)

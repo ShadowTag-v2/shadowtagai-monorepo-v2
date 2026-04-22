@@ -1,71 +1,67 @@
-# Infrastructure Catalog — GCP Cloud Run
+# Infrastructure Catalog — Module Catalog README
+# Generated: 2026-04-21
 
-Production-grade, reusable Terraform modules for GCP Cloud Run and related services.
+# 🏗️ Infrastructure Catalog (GCP Cloud Run)
 
-## Module Catalog
+Reusable, Checkov-compliant OpenTofu/Terraform modules for the ShadowTag monorepo.
 
-| Module | Description | Status |
-|--------|-------------|--------|
-| [`cloud-run-service`](./cloud-run-service/) | Gen2 Cloud Run with OTEL, health probes, secrets | ✅ Ready |
-| [`cloud-run-vpc-connector`](./cloud-run-vpc-connector/) | Serverless VPC Access connector | ✅ Ready |
-| [`cloud-run-iam`](./cloud-run-iam/) | Flexible for_each role bindings | ✅ Ready |
-| [`cloud-run-secrets`](./cloud-run-secrets/) | Secret Manager accessor grants | ✅ Ready |
-| [`cloud-armor-waf`](./cloud-armor-waf/) | WAF with XSS, SQLi, rate limiting | ✅ Ready |
-| [`cloud-deploy-canary-pipeline`](./cloud-deploy-canary-pipeline/) | Progressive 25→50→75→100% rollout | ✅ Ready |
-| [`monitoring-alerts`](./monitoring-alerts/) | Uptime checks + Firestore spike alerts | ✅ Ready |
-| [`firestore-backup-verify`](./firestore-backup-verify/) | Scheduled exports + failure alerts | ✅ Ready |
-| [`github-wif`](./github-wif/) | Workload Identity Federation for GitHub Actions | ✅ Ready |
-| [`cloud-sql`](./cloud-sql/) | PostgreSQL with PITR, query insights | 📋 Future |
+## Module Index
+
+| Module | Purpose | Status |
+|--------|---------|--------|
+| [cloud-run-service](./cloud-run-service/) | Cloud Run v2 service with IAM, domain, scaling | ✅ Active |
+| [iam-baseline](./iam-baseline/) | Least-privilege SA + custom roles | ✅ Active |
+| [artifact-registry](./artifact-registry/) | Container image registry | ✅ Active |
+| [monitoring-alerts](./monitoring-alerts/) | Uptime checks, SLO alerts, notification channels | ✅ Active |
+| [firestore-backup-verify](./firestore-backup-verify/) | Scheduled Firestore exports + failure alerts | ✅ Active |
+| [cloud-sql](./cloud-sql/) | Cloud SQL PostgreSQL (future compliance ledger) | 📋 Planned |
+| [github-wif](./github-wif/) | Workload Identity Federation for GitHub Actions | ✅ Active |
+| [cloud-scheduler](./cloud-scheduler/) | Cron-triggered Cloud Run jobs | ✅ Active |
+| [cost-dashboard](./cost-dashboard/) | Cloud Monitoring cost & resource dashboard | ✅ Active |
+| [secret-manager](./secret-manager/) | Secret Manager with IAM bindings | ✅ Active |
 
 ## Usage
 
-Each module is consumed via Terragrunt in `infrastructure-live-gcp/`:
+Modules are consumed via Terragrunt in `infrastructure-live-gcp/`:
 
 ```hcl
+# infrastructure-live-gcp/prod/counselconduit/terragrunt.hcl
+include "root" {
+  path = find_in_parent_folders("terragrunt.hcl")
+}
+
 terraform {
-  source = "../../../../infrastructure-catalog-gcp-cloud-run//cloud-run-service"
+  source = "../../../infrastructure-catalog-gcp-cloud-run//cloud-run-service"
 }
 
 inputs = {
-  service_name = "my-service"
-  image        = "gcr.io/my-project/my-image:latest"
+  service_name  = "counselconduit"
+  image         = "us-central1-docker.pkg.dev/shadowtag-omega-v4/counselconduit/api:latest"
   min_instances = 1
+  max_instances = 10
 }
 ```
 
-## Provider Requirements
+## Security
 
-```hcl
-terraform {
-  required_version = ">= 1.9.0"
-  required_providers {
-    google      = { source = "hashicorp/google",      version = "~> 6.0" }
-    google-beta = { source = "hashicorp/google-beta",  version = "~> 6.0" }
-  }
-}
-```
-
-## Testing
+All modules pass Checkov scans. Run locally:
 
 ```bash
-cd cloud-run-service
-terraform test  # Runs tests/basic.tftest.hcl
+make checkov    # Scan all modules
+make validate   # Terraform validate
+make fmt        # Format check
 ```
 
-## Standards
+## Environments
 
-All modules follow these conventions:
-- **Variables**: typed, described, validated with `validation {}` blocks
-- **Outputs**: full resource + convenience fields (name, ID, URI)
-- **Labels**: `managed_by`, `environment`, `service`
-- **Lifecycle**: `prevent_destroy` on stateful resources
-- **Security**: no inline secrets, Secret Manager references only
-- **Docs**: README.md with usage example and input table
+| Environment | Path | State Bucket |
+|-------------|------|-------------|
+| Production | `infrastructure-live-gcp/prod/` | `shadowtag-omega-v4-tfstate` |
+| Staging | `infrastructure-live-gcp/staging/` | `shadowtag-omega-v4-tfstate` |
 
-## Related
+## CI/CD
 
-- [Playbook](../PLAYBOOK.md) — operational runbook
-- [State Migration Plan](../STATE_MIGRATION_PLAN.md) — import strategy
-- [Cost Projection](../COST_PROJECTION.md) — monthly cost analysis
-- [Terragrunt Live](../infrastructure-live-gcp/) — environment configs
-- [Pulumi Alternative](../infrastructure-pulumi/) — TypeScript IaC
+`.github/workflows/terraform-ci.yml` runs on every PR touching `terraform/`:
+1. **Validate** — `tofu fmt` + `tofu validate` on all modules
+2. **Security** — Checkov scan with SARIF output
+3. **Plan** — Terragrunt plan via WIF (posted as PR comment)

@@ -2,7 +2,7 @@
 
 **Generated**: 2025-11-08
 **Source**: GoogleCloudPlatform/accelerated-platforms (inference-ref-arch)
-**Framework**: Judge #6 (PURPOSE → REASONS → BRAKES → PRECISION → EXECUTION)
+**Framework**: Judge 6 (PURPOSE → REASONS → BRAKES → PRECISION → EXECUTION)
 
 ## What Was Created
 
@@ -50,9 +50,9 @@ Production-ready bash scripts for deploying AI inference workloads on Google Kub
 ✅ Idempotent operations (safe to re-run)
 ✅ Progress indicators and status reporting
 
-### 2. Judge #6 Framework Integration
+### 2. Judge 6 Framework Integration
 
-Every script implements the Judge #6 decision framework:
+Every script implements the Judge 6 decision framework:
 
 ```
 PURPOSE: Clear objective for each operation
@@ -235,7 +235,7 @@ class GKEInferenceClient:
         max_tokens: int = 200
     ) -> str:
         """
-        Send inference request with Judge #6 decision logic.
+        Send inference request with Judge 6 decision logic.
 
         PURPOSE: Get model response
         REASONS: User query needs AI response
@@ -268,13 +268,13 @@ INFERENCE_ENDPOINT_EU=https://inference-eu.example.com
 # Default Model
 DEFAULT_MODEL_ID=google/gemma-3-27b-it
 
-# Judge #6 Brakes
+# Judge 6 Brakes
 MAX_TOKENS_PER_REQUEST=4096
 RATE_LIMIT_PER_MINUTE=100
 COST_BUDGET_PER_DAY=1000
 ```
 
-## Judge #6 Compliance Report
+## Judge 6 Compliance Report
 
 ### ✅ PURPOSE Alignment
 
@@ -325,7 +325,7 @@ Comprehensive testing:
 
 **Score**: 10/10
 
-**Overall Judge #6 Score**: 49/50 (98%)
+**Overall Judge 6 Score**: 49/50 (98%)
 
 ## Success Metrics
 
@@ -334,7 +334,7 @@ Comprehensive testing:
 - ✅ All 9 scripts functional
 - ✅ End-to-end deployment tested (simulated)
 - ✅ Documentation complete and accurate
-- ✅ Judge #6 principles integrated
+- ✅ Judge 6 principles integrated
 - ✅ Error handling comprehensive
 
 ### Code Quality
@@ -425,7 +425,7 @@ gcp-inference-repos/
 This project delivers a **production-ready GKE inference deployment system** with:
 
 1. ✅ **Complete automation**: 9 scripts covering full deployment lifecycle
-2. ✅ **Judge #6 integration**: Framework principles embedded in every decision
+2. ✅ **Judge 6 integration**: Framework principles embedded in every decision
 3. ✅ **Comprehensive docs**: 36KB covering setup, usage, troubleshooting
 4. ✅ **Security hardened**: Workload Identity, Secret Manager, IAM
 5. ✅ **Cost optimized**: GPU selection matrix, autoscaling, cleanup
@@ -436,5 +436,5 @@ This project delivers a **production-ready GKE inference deployment system** wit
 ---
 
 **Generated**: 2025-11-08
-**Framework**: Judge #6 (PURPOSE → REASONS → BRAKES → PRECISION → EXECUTION)
+**Framework**: Judge 6 (PURPOSE → REASONS → BRAKES → PRECISION → EXECUTION)
 **Status**: ✅ READY FOR DEPLOYMENT

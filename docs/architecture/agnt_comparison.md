@@ -9,7 +9,7 @@
 | **Prompt Architecture** | Single monolithic system prompt (150K+ chars) inserted via API | 4-layer hierarchy: `/etc/` + `~/.claude/` + `./CLAUDE.md` + `.claude/rules/` (51 files) |
 | **Context Management** | 4-layer compaction (micro/auto/reactive/snip) with 167K threshold | Platform-level truncation + KI pointer system |
 | **Memory** | `/memories` directory + Dream consolidation (auto-save + dream cycle) | KI system (metadata.json + artifacts/) + brain/ session persistence |
-| **Security Gate** | Inline security monitor (BLOCK/ALLOW, ~14K chars in system prompt) | Judge #6 spec (external, compiled binary target) |
+| **Security Gate** | Inline security monitor (BLOCK/ALLOW, ~14K chars in system prompt) | Judge 6 spec (external, compiled binary target) |
 | **Permission Tiers** | 4-tier: always/allow/ask/deny per tool | State A/B machine: YOLO + Clutch |
 | **Autonomous Loop** | Timer-based steward (reversibility heuristic, 3-idle scaling) | Loop steward daemon (`scripts/loop_steward.py`) |
 | **Sub-agents** | Explore mode, Worker Fork | model-delegation skill + browser_subagent |
@@ -22,7 +22,7 @@
 ## Unique Strengths — Antigravity
 
 1. **Multi-model routing** — Not locked to Anthropic. Can delegate to Gemini, Claude, GPT, Grok.
-2. **Compiled security binary (Judge #6)** — External, auditable, not inlined in system prompt.
+2. **Compiled security binary (Judge 6)** — External, auditable, not inlined in system prompt.
 3. **Skills system** — 90+ modular skills vs Claude Code's monolithic prompt.
 4. **SOVEREIGN_GOLD_MASTER tagging** — Immutable codebase snapshots for rollback.
 5. **Dream consolidation** — Automated KI maintenance (Claude Code's Dream is manual `/dream` command).
@@ -39,7 +39,7 @@
 
 ## Adoptable Patterns (Priority Order)
 
-1. ✅ **BLOCK/ALLOW security monitor** — Implemented in Judge #6 spec
+1. ✅ **BLOCK/ALLOW security monitor** — Implemented in Judge 6 spec
 2. ✅ **Autonomous loop steward** — Implemented in `scripts/loop_steward.py`
 3. ✅ **Dream memory consolidation** — Implemented in `scripts/dream_consolidation.py`
 4. 📋 **tool_search lazy discovery** — Planned (Work Stream 6b)

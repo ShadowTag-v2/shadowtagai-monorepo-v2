@@ -1,4 +1,4 @@
-"""Judge #6: Core Judgment Rule System
+"""Judge 6: Core Judgment Rule System
 
 Implements the six-gate evaluation process for AI governance:
 GATE 1: ATP 5-19 Risk Classification (BEFORE processing)
@@ -25,7 +25,7 @@ class JudgmentError(Exception):
 
 
 class JudgmentRule:
-    """Judge #6: PNKLN's Governance Enforcement Engine
+    """Judge 6: PNKLN's Governance Enforcement Engine
 
     Purpose: Enforce ShadowTag-v2JR doctrine with cryptographic guarantees.
 
@@ -34,7 +34,7 @@ class JudgmentRule:
     """
 
     def __init__(self, cor_instance_id: str | None = None):
-        """Initialize Judge #6 governance engine.
+        """Initialize Judge 6 governance engine.
 
         Args:
             cor_instance_id: Unique Cor instance identifier.

@@ -4,7 +4,7 @@ from judge_six_jax import init_mock_data, judge_six_enforce
 
 
 def benchmark(batch_size=1024, seq_len=256, iters=1000):
-    print(f"Benchmarking JAX Judge #6 (Batch: {batch_size}, Seq: {seq_len})")
+    print(f"Benchmarking JAX Judge 6 (Batch: {batch_size}, Seq: {seq_len})")
 
     # Initialize data
     input_ids, policy_matrix = init_mock_data(batch_size, seq_len)

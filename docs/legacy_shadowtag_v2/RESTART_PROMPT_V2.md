@@ -342,7 +342,7 @@ tests/test_orchestrator.py # Validation suite (all passing)
 
 - Glicko-2 vs Elo - Rating comparison
 
-### Risk Levels (ATP 5-19)
+### Risk Levels (Compliance Framework)
 
 
 

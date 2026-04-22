@@ -88,7 +88,7 @@
 │     - Complete audit trail                                          │
 │                                                                     │
 │  5. FLYINGMONKEYS SWARM GATE                                        │
-│     - ATP 5-19 compliant risk assessment                            │
+│     - Compliance Framework compliant risk assessment                            │
 │     - Every stage gated                                             │
 │     - No other platform has military-grade governance               │
 │                                                                     │

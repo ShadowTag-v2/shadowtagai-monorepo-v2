@@ -10,15 +10,15 @@ To establishing Sovereign AI dominance in the Gov/Defense sector.
 ## 2. THE PAIN (Why they buy)
 
 - **Data Sovereignty**: They cannot use public models (OpenAI/Anthropic) due to data leakage.
-- **Compliance**: must adhere to ATP 5-19 and other rigid safety standards.
+- **Compliance**: must adhere to Compliance Framework and other rigid safety standards.
 - **Latency**: Field operations require edge-compute, not cloud-dependency.
 
-## 3. THE SOLUTION (Judge #6 Governance)
+## 3. THE SOLUTION (Judge 6 Governance)
 
 We do not sell "Chatbots". We sell **Sovereignty**.
 
 - **ShadowTag Identity**: Cryptographic proof of Model Provenance (L0-L4).
-- **Judge #6 Governance**: Pre-inference compliance gates (The "Brakes").
+- **Judge 6 Governance**: Pre-inference compliance gates (The "Brakes").
 - **Sovereign Instance**: Deployed in _their_ VPC (The Child).
 
 ## 4. THE MOAT (Unfair Advantage)

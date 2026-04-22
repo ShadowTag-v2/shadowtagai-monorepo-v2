@@ -3,7 +3,7 @@
 Handles the end-to-end flow of media attestation:
 1. Ingestion
 2. Semantic Hashing (NeuralHash)
-3. Judge #6 Enforcement (Gateway)
+3. Judge 6 Enforcement (Gateway)
 4. Cryptographic Signing (ShadowTag) - optional integration
 5. Verification
 """
@@ -34,7 +34,7 @@ class AttestationResult:
 
 class AttestationPipeline:
     """Pipeline for processing media assets through Neural Hash attestation
-    and Judge #6 Governance.
+    and Judge 6 Governance.
     """
 
     def __init__(self):
@@ -75,7 +75,7 @@ class AttestationPipeline:
             # We'll re-raise or handle. For critical pipeline, fail closed.
             raise
 
-        # 2. Judge #6 Gate Check (The Governance)
+        # 2. Judge 6 Gate Check (The Governance)
         # We simulate provenance data for MVP or use provided metadata
         provenance_data = metadata.get("provenance", {"receipt_id": "pending_generation"})
 
@@ -86,10 +86,10 @@ class AttestationPipeline:
         )
 
         if judgment.decision == "REJECT":
-            logger.warning(f"Asset blocked by Judge #6: {judgment.reason}")
+            logger.warning(f"Asset blocked by Judge 6: {judgment.reason}")
             # In validation mode, we return the rejection result
         else:
-            logger.info(f"Asset APPROVED by Judge #6: {judgment.reason}")
+            logger.info(f"Asset APPROVED by Judge 6: {judgment.reason}")
 
         # 3. Construct Final Record
         result = AttestationResult(

@@ -331,7 +331,7 @@ New clean module structure.
 
 #### [NEW] `src/antigravity/core/`
 - **`ontology.py`**: Shared DNA (Enums, Pydantic Models).
-- **`governor.py`**: Judge #6 (Policy-as-Code).
+- **`governor.py`**: Judge 6 (Policy-as-Code).
 - **`prosecutor.py`**: Sovereign Vault (WORM Storage).
 
 ### 2. The Agents (`src/antigravity/agents/`)
@@ -952,7 +952,7 @@ Source Brain: 70a74298-dcd2-4210-bb26-3dc337d0d2a8
 
 ## Goal Description
 
-Implement the "Self-Prompting Monkey" (SPM) loop and the Dual Sidecar architecture (Judge #6 + Jetski) as defined in the "Omega Protocol" update. This provides a rigorous 4-iteration code generation loop with browser-based reality checks ("Jetski") and governance gating ("Judge #6").
+Implement the "Self-Prompting Monkey" (SPM) loop and the Dual Sidecar architecture (Judge 6 + Jetski) as defined in the "Omega Protocol" update. This provides a rigorous 4-iteration code generation loop with browser-based reality checks ("Jetski") and governance gating ("Judge 6").
 
 ## Proposed Changes
 
@@ -976,7 +976,7 @@ Implement the "Self-Prompting Monkey" (SPM) loop and the Dual Sidecar architectu
 
 - Dependencies: `selenium-wire`, `selenium`, `fastapi`, `uvicorn`, `requests`.
 
-### Governance Sidecar (Judge #6 + SPM)
+### Governance Sidecar (Judge 6 + SPM)
 
 #### [MODIFY] [src/governance/voting/spm_engine.py](file:///Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2/src/governance/voting/spm_engine.py)
 
@@ -1212,7 +1212,7 @@ We will execute the autonomous development of the frontend (`frontend/app/GlassB
 
 # Phase 4: The Glass House Protocol & DOW CRSMC '25
 
-With the local ANE swarm initialized, we must elevate the architecture into a "Military-Grade" Autonomous Defense System. The Sentinel will operate on a highly specialized Triad loop (Architect, Builder, Critic) utilizing ATP 5-19 (Composite Risk Management) as the core anchor for the 17-Layer DOW CRSMC '25 defense shield.
+With the local ANE swarm initialized, we must elevate the architecture into a "Military-Grade" Autonomous Defense System. The Sentinel will operate on a highly specialized Triad loop (Architect, Builder, Critic) utilizing Compliance Framework (Composite Risk Management) as the core anchor for the 17-Layer DOW CRSMC '25 defense shield.
 
 ## Proposed Changes
 
@@ -1222,9 +1222,9 @@ With the local ANE swarm initialized, we must elevate the architecture into a "M
 - **Builder (Gemini 3 Flash)**: Sandboxed worker. It receives the *approved* blueprint from the Architect and drafts the artifact or transaction script without direct file system write access.
 - **Critic (DOW CRSMC '25 Sentinel)**: The ultimate safety officer. It enforces the 17-Layer DOW CRSMC matrix before *any* code touches the file system.
 
-### 2. ATP 5-19 Core Enforcement
+### 2. Compliance Framework Core Enforcement
 
-- **Implementation**: We will codify ATP 5-19 (Army Techniques Publication 5-19) into the Critic's logic in `src/governance/dow_crsmc_sentinel.py`. Every proposed action by the Builder will be assessed across Probability, Severity, and Risk Level.
+- **Implementation**: We will codify Compliance Framework (Army Techniques Publication 5-19) into the Critic's logic in `src/governance/dow_crsmc_sentinel.py`. Every proposed action by the Builder will be assessed across Probability, Severity, and Risk Level.
 - **Controls**: The Critic will mandate specific mitigations (e.g., EU 26 compliance blocks, Sandbox isolation, Identity-Aware Proxy verification) before green-lighting execution.
 
 ### 3. Glass House Telemetry

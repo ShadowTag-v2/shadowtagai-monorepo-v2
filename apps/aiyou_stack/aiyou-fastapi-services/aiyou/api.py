@@ -3,7 +3,7 @@
 AI-curated social video platform with:
 - AI-presumed feed ranking (not engagement-based)
 - ShadowTag integration for verified content
-- Judge #6 validation before publication
+- Judge 6 validation before publication
 - Energy-based content scoring
 
 Endpoints:
@@ -257,7 +257,7 @@ async def upload_content(
 
     Pipeline:
     1. Classify content (Tier 1/2/3)
-    2. Validate with Judge #6
+    2. Validate with Judge 6
     3. Authenticate with ShadowTag (if auto_verify)
     4. Rank with AI engine
     5. Publish to feed
@@ -287,7 +287,7 @@ async def upload_content(
         # Step 2: Classify into tier
         tier_score = await classifier.classify(ingested_item)
 
-        # Step 3: Validate with Judge #6
+        # Step 3: Validate with Judge 6
         validation_result = await validator.validate(ingested_item, tier_score)
 
         # Check if validation passed

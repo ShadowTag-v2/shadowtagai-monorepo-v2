@@ -44,7 +44,7 @@
 - **Mechanism**: Inter-satellite link (ISL) takes over immediate routing if ground downlink is unavailable ensuring data retention in-orbit.
 
 
-- **Security**: Data remains encrypted (Judge #6) during transit.
+- **Security**: Data remains encrypted (Judge 6) during transit.
 
 ### 4. Compute Shift
 

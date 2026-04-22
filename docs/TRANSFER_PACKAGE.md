@@ -167,7 +167,7 @@ NEXT TASK: [specify current objective]
 - **MAD** - Multi-Agent Debate (adversarial consensus)
 - **DTE** - Debate-Train-Evolve (GRPO policy improvement)
 
-## Risk Levels (ATP 5-19)
+## Risk Levels (Compliance Framework)
 
 - **RA-1** - Routine operations
 - **RA-2** - Low impact (Research, Design)

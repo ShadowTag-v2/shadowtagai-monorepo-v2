@@ -106,7 +106,7 @@ def main():
 
     # 4. ENFORCE GULFSTREAM (Financial Law)
     print("\n[4/4] Codifying Gulfstream Rent Logic...")
-    # These rules are immutable. Judge #6 reads these to kill bad deals.
+    # These rules are immutable. Judge 6 reads these to kill bad deals.
     financial_laws = {
         "FIN_01": {"rule": "LTV_CAC_RATIO", "min_threshold": 4.0, "action": "BLOCK"},
         "FIN_02": {"rule": "GROSS_MARGIN", "min_threshold": 0.85, "action": "BLOCK"},

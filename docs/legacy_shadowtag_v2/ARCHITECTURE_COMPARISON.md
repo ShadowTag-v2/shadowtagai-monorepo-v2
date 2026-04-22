@@ -1,4 +1,4 @@
-# Architecture Comparison: Gemini Ingestion Layer vs Judge #6
+# Architecture Comparison: Gemini Ingestion Layer vs Judge 6
 
 **Analysis Date**: 2025-11-08
 **Purpose**: Document design differences for complementary pnkln components
@@ -13,7 +13,7 @@ Both systems use Gemini 2.0 Pro/Flash for AI-powered analysis but serve differen
 
 ## Side-by-Side Comparison
 
-| Dimension           | **Gemini Ingestion Layer**                   | **Judge #6 Hybrid Enforcement**         |
+| Dimension           | **Gemini Ingestion Layer**                   | **Judge 6 Hybrid Enforcement**         |
 | ------------------- | -------------------------------------------- | --------------------------------------- |
 | **Role**            | Proactive intelligence collection            | Reactive validation & enforcement       |
 | **Trigger**         | Scheduled (nightly cron)                     | Event-driven (real-time requests)       |
@@ -24,7 +24,7 @@ Both systems use Gemini 2.0 Pro/Flash for AI-powered analysis but serve differen
 | **Cost**            | ~$77/month                                   | ~$6,000/month (GPU pool)                |
 | **Integration**     | Called BY services (pull model)              | Calls services (push model)             |
 | **Primary Metrics** | Items/day, sources, cost/item, quality score | P99 latency, coverage rate, FP/FN rates |
-| **Quality Focus**   | Relevance, timeliness, completeness          | Policy accuracy, ATP 5-19 compliance    |
+| **Quality Focus**   | Relevance, timeliness, completeness          | Policy accuracy, Compliance Framework compliance    |
 | **Unique Features** | Ethical crawling, tier classification        | Multi-layer validation, JR enforcement  |
 
 ---
@@ -35,21 +35,21 @@ Both systems use Gemini 2.0 Pro/Flash for AI-powered analysis but serve differen
 
 #### File References
 
-- **Judge #6**: `judge_six.py` (single enforcement script)
+- **Judge 6**: `judge_six.py` (single enforcement script)
 - **Ingestion**: Pipeline docs, architecture specs, config YAMLs
 
-**Rationale**: Ingestion is more distributed (8 containers, multiple data sources) vs Judge #6's monolithic enforcement logic. Analyzing docs/specs provides broader insights into dependencies, bottlenecks, and integration points.
+**Rationale**: Ingestion is more distributed (8 containers, multiple data sources) vs Judge 6's monolithic enforcement logic. Analyzing docs/specs provides broader insights into dependencies, bottlenecks, and integration points.
 
 #### Performance Metrics
 
-- **Judge #6**: p99 ≤90ms (real-time latency SLA)
+- **Judge 6**: p99 ≤90ms (real-time latency SLA)
 - **Ingestion**: ~45 min/night runtime efficiency
 
-**Rationale**: Judge #6 operates in the hot path (every request), demanding sub-100ms responses. Ingestion is a background batch job where total runtime matters more than per-item latency. Forcing real-time metrics on batch processing would create inapplicable constraints.
+**Rationale**: Judge 6 operates in the hot path (every request), demanding sub-100ms responses. Ingestion is a background batch job where total runtime matters more than per-item latency. Forcing real-time metrics on batch processing would create inapplicable constraints.
 
 #### Gates
 
-- **Judge #6**: 98% coverage (policy enforcement completeness)
+- **Judge 6**: 98% coverage (policy enforcement completeness)
 - **Ingestion**: Multi-dimensional quality gates (items, sources, costs, scores)
 
 **Rationale**: Coverage measures "how much of policy is enforced." For ingestion, quality isn't binary—it's about volume (500+ items/day), diversity (5+ sources), cost efficiency (≤$0.15/item), and relevance (≥0.70 score). This prevents optimizing for quantity alone.
@@ -60,7 +60,7 @@ Both systems use Gemini 2.0 Pro/Flash for AI-powered analysis but serve differen
 
 #### Architecture
 
-- **Judge #6**: Hybrid Gemini + PyTorch + Rules Engine
+- **Judge 6**: Hybrid Gemini + PyTorch + Rules Engine
   - Layer 1: Gemini 1.5 Flash (policy understanding, 30ms budget)
   - Layer 2: PyTorch neural net (pattern matching, 40ms budget)
   - Layer 3: Rules engine (deterministic checks, 20ms budget)
@@ -73,24 +73,24 @@ Both systems use Gemini 2.0 Pro/Flash for AI-powered analysis but serve differen
   - 1 AM briefing generator
   - **Total**: 8 containers, 45 min sequential/parallel pipeline
 
-**Implication**: Judge #6's hybrid design suits on-the-fly decisions (milliseconds). Ingestion's containerized cron approach emphasizes scalability and fault isolation for bulk processing (minutes). Analyzing this reveals:
+**Implication**: Judge 6's hybrid design suits on-the-fly decisions (milliseconds). Ingestion's containerized cron approach emphasizes scalability and fault isolation for bulk processing (minutes). Analyzing this reveals:
 
-- **Judge #6**: Tight coupling between layers for speed
+- **Judge 6**: Tight coupling between layers for speed
 - **Ingestion**: Loose coupling for resilience (one container failure ≠ total failure)
 
 #### Key Metrics
 
-- **Judge #6**: Latency, throughput, block rate, FP/FN rates
+- **Judge 6**: Latency, throughput, block rate, FP/FN rates
   - Defensive metrics: how fast can we stop bad requests?
 
 - **Ingestion**: Items/day, sources, cost/item, quality score
   - Acquisitive metrics: how much high-value data can we collect?
 
-**Implication**: Judge #6 optimizes for speed and accuracy in enforcement. Ingestion optimizes for breadth, diversity, and cost-effectiveness in collection. Tracking sources ensures no single-source bias (e.g., over-reliance on Twitter), while cost/item enables sustainable ops.
+**Implication**: Judge 6 optimizes for speed and accuracy in enforcement. Ingestion optimizes for breadth, diversity, and cost-effectiveness in collection. Tracking sources ensures no single-source bias (e.g., over-reliance on Twitter), while cost/item enables sustainable ops.
 
 #### Integration Pattern
 
-- **Judge #6**: **Caller** to 4 namespaces
+- **Judge 6**: **Caller** to 4 namespaces
   - Actively calls governance, orchestration, inference, security services
   - Enforces policies before requests proceed
 
@@ -98,12 +98,12 @@ Both systems use Gemini 2.0 Pro/Flash for AI-powered analysis but serve differen
   - Services pull data from ingestion (e.g., briefings, tier 1 items)
   - Passive delivery model
 
-**Implication**: Judge #6 is **in the critical path** (blocks requests), requiring low latency. Ingestion is **out of the critical path** (background job), allowing for longer runtimes. This flip highlights ingestion as a foundational layer feeding downstream systems.
+**Implication**: Judge 6 is **in the critical path** (blocks requests), requiring low latency. Ingestion is **out of the critical path** (background job), allowing for longer runtimes. This flip highlights ingestion as a foundational layer feeding downstream systems.
 
 #### Unique Features
 
-- **Judge #6**: ATP 5-19 compliance, JR validation
-  - Military doctrine alignment (ATP 5-19: Army Planning)
+- **Judge 6**: Compliance Framework compliance, JR validation
+  - Military doctrine alignment (Compliance Framework: Army Planning)
   - JR validation (Joint Readiness standards)
   - Focus: correctness under rules of engagement
 
@@ -112,11 +112,11 @@ Both systems use Gemini 2.0 Pro/Flash for AI-powered analysis but serve differen
   - Tier 1/2/3 classification for data prioritization
   - Focus: legality and strategic resource allocation
 
-**Implication**: Judge #6's military rigor suits enforcement (zero-tolerance for policy violations). Ingestion's ethical emphasis suits web crawling (avoid bans, lawsuits). Tier classification enables smart resource allocation—e.g., allocate more Gemini quota to Tier 1 sources.
+**Implication**: Judge 6's military rigor suits enforcement (zero-tolerance for policy violations). Ingestion's ethical emphasis suits web crawling (avoid bans, lawsuits). Tier classification enables smart resource allocation—e.g., allocate more Gemini quota to Tier 1 sources.
 
 #### Cost Model
 
-- **Judge #6**: Per-operation API costs (Gemini + GPU amortized over requests)
+- **Judge 6**: Per-operation API costs (Gemini + GPU amortized over requests)
   - Variable cost scaling with request volume
   - GPU pool: ~$6,000/month (spot instances)
 
@@ -124,11 +124,11 @@ Both systems use Gemini 2.0 Pro/Flash for AI-powered analysis but serve differen
   - Predictable cost regardless of ingestion volume (within quotas)
   - Breakdown: $45 Gemini, $15 GKE runtime, $17 other
 
-**Implication**: Judge #6's cost scales with traffic (good for variable load). Ingestion's fixed cost suits predictable batch workloads. If ingestion volume doubles, costs may spike (need sensitivity analysis).
+**Implication**: Judge 6's cost scales with traffic (good for variable load). Ingestion's fixed cost suits predictable batch workloads. If ingestion volume doubles, costs may spike (need sensitivity analysis).
 
 #### Quality Focus
 
-- **Judge #6**: FP/FN rates (precision/recall)
+- **Judge 6**: FP/FN rates (precision/recall)
   - False positives: blocking legitimate requests (bad UX)
   - False negatives: allowing policy violations (security risk)
 
@@ -137,13 +137,13 @@ Both systems use Gemini 2.0 Pro/Flash for AI-powered analysis but serve differen
   - Timeliness: Is it recent enough to be actionable?
   - Completeness: Are key fields populated?
 
-**Implication**: Judge #6's binary classification (allow/block) demands precision. Ingestion's holistic quality ensures data is actionable, not just accurate. Example: A 2-week-old news article may be accurate but not timely.
+**Implication**: Judge 6's binary classification (allow/block) demands precision. Ingestion's holistic quality ensures data is actionable, not just accurate. Example: A 2-week-old news article may be accurate but not timely.
 
 ---
 
 ### 3. **New Sections Added to Ingestion Prompt**
 
-These sections address gaps in the Judge #6 prompt and make analysis more comprehensive for a pre-production intelligence collection system.
+These sections address gaps in the Judge 6 prompt and make analysis more comprehensive for a pre-production intelligence collection system.
 
 #### Ethical Compliance Model
 
@@ -231,7 +231,7 @@ These sections address gaps in the Judge #6 prompt and make analysis more compre
 
 ### 4. **Confidence Adjustments: Realistic Expectations**
 
-#### Judge #6 (Production)
+#### Judge 6 (Production)
 
 - **Target**: ≥70% confidence
 - **Data**: Real production logs, metrics, telemetry
@@ -259,7 +259,7 @@ These sections address gaps in the Judge #6 prompt and make analysis more compre
 
 ## Integration Strategy: Combining Both Systems
 
-While architecturally different, Judge #6 and Gemini Ingestion Layer are **complementary**:
+While architecturally different, Judge 6 and Gemini Ingestion Layer are **complementary**:
 
 ### Handoff Analysis
 
@@ -274,7 +274,7 @@ Gemini Ingestion (2 AM)
     ↓ Quality gates enforce thresholds
     ↓ AM briefing generated (6 AM)
     ↓
-Judge #6 (All Day)
+Judge 6 (All Day)
     ↓ Receives briefing data
     ↓ Uses Tier 1 items for context enrichment
     ↓ Validates requests against collected intelligence
@@ -283,20 +283,20 @@ Judge #6 (All Day)
 
 #### Integration Points to Analyze
 
-1. **Briefing Delivery**: Does Judge #6 successfully consume briefings?
+1. **Briefing Delivery**: Does Judge 6 successfully consume briefings?
    - Check `/v1/briefing` endpoint health
    - Validate payload schema compatibility
 
-2. **Tier Utilization**: Does Judge #6 prioritize Tier 1 data?
+2. **Tier Utilization**: Does Judge 6 prioritize Tier 1 data?
    - Monitor which tier items are accessed most
    - Optimize ingestion to increase Tier 1 %
 
-3. **Latency Impact**: Does ingestion data reduce Judge #6 latency?
+3. **Latency Impact**: Does ingestion data reduce Judge 6 latency?
    - Hypothesis: Pre-loaded context → faster Gemini calls
    - Measure: P99 latency with/without briefing data
 
 4. **Cost Synergy**: Do cached classifications reduce Gemini costs?
-   - If ingestion pre-classifies items, Judge #6 can skip re-classification
+   - If ingestion pre-classifies items, Judge 6 can skip re-classification
    - Potential savings: $X/month in redundant API calls
 
 ---
@@ -305,7 +305,7 @@ Judge #6 (All Day)
 
 ### Test Runs
 
-1. **Judge #6**: Run analysis on prod logs to establish baseline
+1. **Judge 6**: Run analysis on prod logs to establish baseline
 2. **Ingestion**: Run analysis on specs + dummy data to calibrate Gemini
 3. **Combined**: Analyze integration points (briefing delivery, data handoff)
 
@@ -326,9 +326,9 @@ Probe failure modes:
   - Fallback: Use cached data? Skip source?
 - **Ingestion**: Cost spike (Gemini quota exceeded)
   - Mitigation: Pause classification? Use cheaper model?
-- **Judge #6**: Briefing delivery fails
+- **Judge 6**: Briefing delivery fails
   - Degradation: Continue with stale data? Alert operator?
-- **Judge #6**: Ingestion data is low quality
+- **Judge 6**: Ingestion data is low quality
   - Detection: Quality score <0.70 triggers alert
 
 ### Integration Testing
@@ -336,7 +336,7 @@ Probe failure modes:
 End-to-end flow:
 
 1. Deploy ingestion → Wait for 2 AM job
-2. Verify briefing delivery → Check Judge #6 logs
+2. Verify briefing delivery → Check Judge 6 logs
 3. Measure latency impact → Compare P99 before/after
 4. Validate cost savings → Check Gemini API usage
 
@@ -344,12 +344,12 @@ End-to-end flow:
 
 ## Summary Table: When to Use Each
 
-| Scenario                       | Use Gemini Ingestion | Use Judge #6  |
+| Scenario                       | Use Gemini Ingestion | Use Judge 6  |
 | ------------------------------ | -------------------- | ------------- |
 | Collect intelligence from web  | ✅                   | ❌            |
 | Validate requests in real-time | ❌                   | ✅            |
 | Classify data into tiers       | ✅                   | ❌            |
-| Enforce ATP 5-19 policies      | ❌                   | ✅            |
+| Enforce Compliance Framework policies      | ❌                   | ✅            |
 | Respect robots.txt             | ✅                   | N/A           |
 | Sub-90ms latency required      | ❌                   | ✅            |
 | Nightly batch processing       | ✅                   | ❌            |
@@ -361,10 +361,10 @@ End-to-end flow:
 
 ## Conclusion
 
-Both Gemini Ingestion Layer and Judge #6 are **polished, production-ready** systems with complementary roles:
+Both Gemini Ingestion Layer and Judge 6 are **polished, production-ready** systems with complementary roles:
 
 - **Ingestion**: Upstream intelligence collection (proactive, batch, ethical)
-- **Judge #6**: Downstream enforcement (reactive, real-time, precise)
+- **Judge 6**: Downstream enforcement (reactive, real-time, precise)
 
 The prompt adaptations are **smart and justified**, reflecting:
 

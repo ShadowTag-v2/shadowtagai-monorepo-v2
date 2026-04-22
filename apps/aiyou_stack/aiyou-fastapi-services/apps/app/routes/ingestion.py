@@ -31,7 +31,7 @@ ingestion_service = IngestionService()
     1. Ethical compliance check (robots.txt, rate limiting, PII scrubbing)
     2. Tier classification (Gemini 2.0 Pro or rule-based fallback)
     3. Storage in intelligence lake
-    4. Queued for validation (Judge #6)
+    4. Queued for validation (Judge 6)
 
     **Cost:** ~$0.0016 per item (Gemini API + compute)
     **Processing Time:** ~5 seconds average
@@ -142,7 +142,7 @@ async def get_item(item_id: str) -> IngestionItemResponse:
         item_id=item_id,
         status=item["status"],
         classification=classification,
-        validation_result=None,  # Populated after Judge #6 validation
+        validation_result=None,  # Populated after Judge 6 validation
         shadowtag=None,  # Populated after attestation
         processing_time_ms=None,  # Calculate from timestamps
     )

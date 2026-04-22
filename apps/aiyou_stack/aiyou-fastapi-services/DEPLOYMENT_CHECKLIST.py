@@ -137,7 +137,7 @@ class DeploymentChecker:
         # Test AutoGen Integration
         self.smoke_test_autogen_integration()
 
-        # Test Judge #6 Enforcement
+        # Test Judge 6 Enforcement
         self.smoke_test_judge6_enforcement()
 
     def phase_4_integration_tests(self):
@@ -355,7 +355,7 @@ class DeploymentChecker:
             )
 
     def smoke_test_judge6_enforcement(self):
-        """Smoke test for Judge #6 Enforcement"""
+        """Smoke test for Judge 6 Enforcement"""
         try:
             from judge6_enforcement import Judge6Enforcer
 
@@ -372,18 +372,18 @@ class DeploymentChecker:
 
             if result.is_valid:
                 self.add_result(
-                    check_name="Judge #6: Compliant Task Validation",
+                    check_name="Judge 6: Compliant Task Validation",
                     passed=True,
                     message=f"Compliant task approved ({result.violation_level.value})",
                     severity="HIGH",
                 )
             else:
                 self.add_result(
-                    check_name="Judge #6: Compliant Task Validation",
+                    check_name="Judge 6: Compliant Task Validation",
                     passed=False,
                     message=f"Unexpected rejection: {result.violations}",
                     severity="HIGH",
-                    remediation="Check Judge #6 validation logic",
+                    remediation="Check Judge 6 validation logic",
                 )
 
             # Test RA-1 task (should block)
@@ -395,14 +395,14 @@ class DeploymentChecker:
 
             if not result.is_valid and result.brakes_triggered:
                 self.add_result(
-                    check_name="Judge #6: RA-1 Kill-Switch",
+                    check_name="Judge 6: RA-1 Kill-Switch",
                     passed=True,
                     message="RA-1 operation correctly blocked by brakes",
                     severity="CRITICAL",
                 )
             else:
                 self.add_result(
-                    check_name="Judge #6: RA-1 Kill-Switch",
+                    check_name="Judge 6: RA-1 Kill-Switch",
                     passed=False,
                     message="RA-1 operation NOT blocked - SAFETY FAILURE",
                     severity="CRITICAL",
@@ -411,7 +411,7 @@ class DeploymentChecker:
 
         except Exception as e:
             self.add_result(
-                check_name="Judge #6: Smoke Test",
+                check_name="Judge 6: Smoke Test",
                 passed=False,
                 message=f"Error: {e!s}",
                 severity="CRITICAL",

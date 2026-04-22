@@ -38,7 +38,7 @@ Total Layer 1:        $77/mo
 
 ```
 
-### Layer 2: Judge #6 + JR Engine (Enforcement)
+### Layer 2: Judge 6 + JR Engine (Enforcement)
 
 ```
 

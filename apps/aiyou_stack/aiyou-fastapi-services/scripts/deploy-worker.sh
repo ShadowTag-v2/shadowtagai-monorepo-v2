@@ -1,5 +1,5 @@
 #!/bin/bash
-# PNKLN Judge #6 Lite - Cloudflare Worker Deployment Script
+# PNKLN Judge 6 Lite - Cloudflare Worker Deployment Script
 # Target: Ship in 30 minutes
 
 set -euo pipefail

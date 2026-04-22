@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pnkln Judge #6 Synthetic Workload Generator
+"""Pnkln Judge 6 Synthetic Workload Generator
 Purpose: Generate realistic request patterns to validate p99 ≤ 90ms SLA
 """
 
@@ -78,7 +78,7 @@ class RequestResult:
 
 
 class SyntheticWorkloadGenerator:
-    """Generates synthetic workload for Judge #6 validation"""
+    """Generates synthetic workload for Judge 6 validation"""
 
     def __init__(self, config: WorkloadConfig):
         self.config = config

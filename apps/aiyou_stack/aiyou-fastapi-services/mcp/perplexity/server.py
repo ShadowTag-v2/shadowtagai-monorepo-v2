@@ -1,11 +1,11 @@
 """Perplexity MCP Server - Model Context Protocol Server for Perplexity Integration
 
-Routes Comet browser queries through Judge #6 for compliance scoring,
+Routes Comet browser queries through Judge 6 for compliance scoring,
 stamps SHADOWTAG watermarks on AI-generated content, and logs all
 transactions to Apertus-compatible manifest for "Total Recall" audit.
 
 Target Metrics:
-- Judge #6 latency: <35ms
+- Judge 6 latency: <35ms
 - Watermark overhead: <5ms
 - Manifest write: <2ms
 """
@@ -22,7 +22,7 @@ from typing import Any
 
 @dataclass
 class GovernanceResult:
-    """Result of Judge #6 governance check."""
+    """Result of Judge 6 governance check."""
 
     decision: str  # APPROVE, DENY, REVIEW
     risk_score: int  # 0-100
@@ -62,7 +62,7 @@ class PerplexityMCPServer:
     """MCP Server for Perplexity Comet Browser Integration.
 
     Provides three core tools:
-    1. governance_score - Judge #6 compliance check
+    1. governance_score - Judge 6 compliance check
     2. watermark_content - SHADOWTAG DCT watermarking
     3. log_to_manifest - Apertus JSONL logging
 
@@ -122,7 +122,7 @@ class PerplexityMCPServer:
 
         print("Perplexity MCP Server initialized")
         print(f"  Manifest: {self.manifest_path}")
-        print(f"  Judge #6 target: <{judge6_latency_target_ms}ms")
+        print(f"  Judge 6 target: <{judge6_latency_target_ms}ms")
         print(f"  SHADOWTAG: {'enabled' if enable_shadowtag else 'disabled'}")
 
     async def governance_score(
@@ -132,7 +132,7 @@ class PerplexityMCPServer:
         user_context: dict[str, Any],
         transaction_value: float | None = None,
     ) -> GovernanceResult:
-        """Judge #6 governance scoring for Perplexity requests.
+        """Judge 6 governance scoring for Perplexity requests.
 
         Evaluates compliance requirements and risk level for:
         - Shopping transactions (Comet checkout)
@@ -189,7 +189,7 @@ class PerplexityMCPServer:
         # SLA check
         if latency_ms > self.judge6_latency_target:
             print(
-                f"  SLA BREACH: Judge #6 took {latency_ms:.1f}ms (target: {self.judge6_latency_target}ms)",
+                f"  SLA BREACH: Judge 6 took {latency_ms:.1f}ms (target: {self.judge6_latency_target}ms)",
             )
 
         return GovernanceResult(
@@ -387,7 +387,7 @@ class PerplexityMCPServer:
 PERPLEXITY_MCP_TOOLS = [
     {
         "name": "perplexity_governance_score",
-        "description": "Score a Perplexity Comet browser request for compliance using Judge #6. Returns risk score and decision (APPROVE/DENY/REVIEW).",
+        "description": "Score a Perplexity Comet browser request for compliance using Judge 6. Returns risk score and decision (APPROVE/DENY/REVIEW).",
         "input_schema": {
             "type": "object",
             "properties": {

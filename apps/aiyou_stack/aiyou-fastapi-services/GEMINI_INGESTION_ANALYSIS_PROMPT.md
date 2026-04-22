@@ -11,7 +11,7 @@
 
 You are analyzing the **Gemini Ingestion Layer**, a multi-source intelligence collection pipeline that feeds the PNKLN Core Stack™. This is a **pre-validation intelligence collection component** that runs as a GKE CronJob for nightly batch processing.
 
-**System Role:** Upstream intelligence gathering → Feeds Judge #6 validation → AutoGen orchestration → Execution
+**System Role:** Upstream intelligence gathering → Feeds Judge 6 validation → AutoGen orchestration → Execution
 
 **Key Characteristics:**
 
@@ -46,7 +46,7 @@ You will analyze the following artifacts:
 
 1. **Source Code:** `gemini_ingestion_layer.py` (complete implementation)
 2. **Architecture Documentation:** GKE CronJob multi-container design
-3. **Integration Specs:** Handoff to Judge #6 and downstream services
+3. **Integration Specs:** Handoff to Judge 6 and downstream services
 4. **Ethical Crawl Configuration:** `EthicalCrawlConfig` dataclass
 
 ### Supporting Artifacts
@@ -286,7 +286,7 @@ Evaluate the system's ability to meet these targets:
 - Rate limit coordination
 - Error handling
 
-### Downstream Integration (Ingestion Layer → Judge #6)
+### Downstream Integration (Ingestion Layer → Judge 6)
 
 - Data format handoff (`IntelligenceItem` structure)
 - Tier-based routing (Tier 1 → priority validation)
@@ -376,7 +376,7 @@ Provide your analysis in the following structure:
 ## Integration Analysis
 ### Upstream (Sources → Ingestion)
 - [Assessment]
-### Downstream (Ingestion → Judge #6)
+### Downstream (Ingestion → Judge 6)
 - [Assessment]
 
 ## Key Performance Indicators
@@ -478,18 +478,18 @@ This ingestion layer is the **first component** in the PNKLN intelligence pipeli
 
 **Your analysis should consider:**
 
-- Handoff quality to Judge #6 (data format, metadata completeness)
-- Volume handling (1000-5000 items/day → Judge #6 throughput)
+- Handoff quality to Judge 6 (data format, metadata completeness)
+- Volume handling (1000-5000 items/day → Judge 6 throughput)
 - Cost implications for full stack (ingestion $77/mo + downstream costs)
 - Ethical compliance foundation (sets tone for entire stack)
 
 ---
 
-## Comparison to Judge #6 (Reference Architecture)
+## Comparison to Judge 6 (Reference Architecture)
 
-For context, here's how this differs from Judge #6:
+For context, here's how this differs from Judge 6:
 
-| Aspect | Judge #6 (Validation) | Gemini Ingestion Layer |
+| Aspect | Judge 6 (Validation) | Gemini Ingestion Layer |
 |--------|----------------------|------------------------|
 | **Architecture** | Hybrid Gemini+PyTorch | GKE CronJob Multi-Container |
 | **Latency** | p99 ≤90ms | ~45 min/night (batch) |
@@ -499,7 +499,7 @@ For context, here's how this differs from Judge #6:
 | **Cost Model** | Per API call | Monthly operational (~$77) |
 | **Quality** | FP/FN rates | Relevance, Timeliness, Completeness |
 
-**Key Insight:** Ingestion is **proactive collection**, Judge #6 is **reactive validation**. They complement each other.
+**Key Insight:** Ingestion is **proactive collection**, Judge 6 is **reactive validation**. They complement each other.
 
 ---
 
@@ -513,7 +513,7 @@ Your analysis is successful if it:
 4. ✅ **Evaluates tier classification quality** (Gemini prompt effectiveness)
 5. ✅ **Provides actionable recommendations** (prioritized, specific)
 6. ✅ **Meets confidence target** (≥60% overall)
-7. ✅ **Considers full-stack integration** (handoff to Judge #6)
+7. ✅ **Considers full-stack integration** (handoff to Judge 6)
 
 ---
 

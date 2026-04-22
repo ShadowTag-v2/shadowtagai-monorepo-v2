@@ -54,7 +54,7 @@ def release_monkeys(target_url, instances=10):
 """)
 
 if not os.path.exists("judge6_pipeline.py"):
-    print("   >> 'judge6_pipeline.py' missing. Generating Judge #6 Orchestration...")
+    print("   >> 'judge6_pipeline.py' missing. Generating Judge 6 Orchestration...")
     with open("judge6_pipeline.py", "w") as f:
         f.write("""
 import time
@@ -64,7 +64,7 @@ try:
 except ImportError:
     pass
 
-print("\\n⚖️ [Judge #6] Initializing Jura Protocol...")
+print("\\n⚖️ [Judge 6] Initializing Jura Protocol...")
 print("   - Hardware: Checking for A100...")
 if torch.cuda.is_available():
     print(f"   - GPU Found: {torch.cuda.get_device_name(0)}")
@@ -79,7 +79,7 @@ print("   - Token Compression: 95% target set.")
 print("\\n🚀 [PIPELINE] EXECUTION STARTED")
 release_monkeys("localhost:8000/api/judge", instances=10)
 
-print("\\n✅ [Judge #6] Pipeline Run Complete. Output sent to Kuvasz.")
+print("\\n✅ [Judge 6] Pipeline Run Complete. Output sent to Kuvasz.")
 """)
 
 # --- 3. EXECUTE ---

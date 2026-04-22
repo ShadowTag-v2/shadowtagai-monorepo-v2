@@ -10,7 +10,7 @@ Alignment with **ExToto Rule** (Max ARR, Generational Wealth):
 
 1. **Infrastructure Sovereignty ("The Steel")**: By understanding the "ML $\leftrightarrow$ Systems Bridge" via `TinyTorch`, we reduce dependency on black-box frameworks (PyTorch/TensorFlow) for our sovereign `SkyNode` (1GW) clusters. This allows for hyper-optimized inference engines (C++/CUDA level) tailored to our specific workloads.
 
-2. **Credibility ("The Shield")**: Leveraging resources from a future **MIT Press (2026)** publication and **Harvard** curriculum drastically increases the "IQ score" of our defense/government proposals (Judge #6).
+2. **Credibility ("The Shield")**: Leveraging resources from a future **MIT Press (2026)** publication and **Harvard** curriculum drastically increases the "IQ score" of our defense/government proposals (Judge 6).
 
 3. **Talent Density**: Using this as a training manual for the human team and "FlyingMonkeys" ensures everyone speaks the language of *systems*, not just *models*.
 

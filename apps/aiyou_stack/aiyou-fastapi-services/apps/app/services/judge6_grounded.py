@@ -1,4 +1,4 @@
-"""Judge #6 Grounded Governance Client
+"""Judge 6 Grounded Governance Client
 
 Layer 3 (JURA) implementation with Vertex AI Search grounding.
 All governance queries go through doctrine datastore for citation-backed decisions.
@@ -193,7 +193,7 @@ class Judge6Grounded:
         if self._initialized:
             return
 
-        logger.info(f"Initializing Judge #6 Grounded with datastore: {self.datastore_id}")
+        logger.info(f"Initializing Judge 6 Grounded with datastore: {self.datastore_id}")
 
         try:
             # Initialize Vertex AI
@@ -218,7 +218,7 @@ class Judge6Grounded:
             )
 
             self._initialized = True
-            logger.info("✓ Judge #6 Grounded initialized with Vertex AI Search")
+            logger.info("✓ Judge 6 Grounded initialized with Vertex AI Search")
 
         except ImportError as e:
             logger.warning(f"Vertex AI SDK not available: {e}")
@@ -462,7 +462,7 @@ _judge: Judge6Grounded | None = None
 
 
 async def get_judge() -> Judge6Grounded:
-    """Get or create global Judge #6 instance."""
+    """Get or create global Judge 6 instance."""
     global _judge
     if _judge is None:
         _judge = Judge6Grounded()
@@ -490,7 +490,7 @@ async def score_governance(
 if __name__ == "__main__":
 
     async def test():
-        print("=== Judge #6 Grounded Governance Test ===\n")
+        print("=== Judge 6 Grounded Governance Test ===\n")
 
         judge = Judge6Grounded()
         await judge.initialize()

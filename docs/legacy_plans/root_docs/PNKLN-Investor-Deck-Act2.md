@@ -40,7 +40,7 @@ PNKLN: SIX INTEGRATED LAYERS
                          ▲
         ╔══════════════════════════════════════════╗
         ║  LAYER 2: PNKLN CORE STACK™              ║
-        ║  Judge #6 │ AiUCRM │ ShadowTag           ║
+        ║  Judge 6 │ AiUCRM │ ShadowTag           ║
         ║                                          ║  $1.5B ARR
         ║  Revenue: Enterprise SDK licensing       ║  80% margin
         ╚══════════════════════════════════════════╝
@@ -190,7 +190,7 @@ JUDGE #6 (AiUJR Enforcement):
 
 AiUCRM (Cor.55: Pre-Hoc Compliance):
 ┌────────────────────────────────────────────────────────────┐
-│ Origin:       Military Composite Risk Management (ATP 5-19)│
+│ Origin:       Military Composite Risk Management (Compliance Framework)│
 │ Impact:       -94% regulatory fines, -85% moderation costs │
 │ Moat Value:   $8.6B EV premium (vs. post-hoc competitors) │
 │ Strategy:     Prevent violations, don't detect them       │
@@ -212,12 +212,12 @@ VALUE:   $22.5B (15× ARR, enterprise software multiple)
 
 - **Layout:** Four quadrants
   - Top-left: Cognitive Stack v5 (brain icon with 5 components radiating out)
-  - Top-right: Judge #6 (shield icon with <500μs badge)
+  - Top-right: Judge 6 (shield icon with <500μs badge)
   - Bottom-left: AiUCRM (military chevron with -94% fines stat)
   - Bottom-right: ShadowTag v2 (watermark pattern over video frame)
 - **Center:** Connecting lines showing data flow:
-  - Input → Cognitive Stack → Judge #6 → Output
-  - AiUCRM feeds into Judge #6
+  - Input → Cognitive Stack → Judge 6 → Output
+  - AiUCRM feeds into Judge 6
   - ShadowTag applies to final output
 - **Color scheme:** Purple gradients (tech, intelligence, security)
 - **Call-out box (top):** "$8.6B moat value" in gold, large font
@@ -225,7 +225,7 @@ VALUE:   $22.5B (15× ARR, enterprise software multiple)
 
 ### SPEAKER NOTES
 
-"Layer 2 is the brain. The Cognitive Stack processes AI workloads 59% cheaper and 82% faster than GPT-4-class models. But here's what matters: Judge #6 validates every output in under 500 microseconds. Not after it causes harm—before it's even delivered. This is military-grade risk management adapted for AI. Competitors moderate after the fact. We prevent violations before they happen. The result: 94% fewer regulatory fines, $8.6 billion in avoided legal costs. This isn't a feature—it's the core defensibility of the entire stack."
+"Layer 2 is the brain. The Cognitive Stack processes AI workloads 59% cheaper and 82% faster than GPT-4-class models. But here's what matters: Judge 6 validates every output in under 500 microseconds. Not after it causes harm—before it's even delivered. This is military-grade risk management adapted for AI. Competitors moderate after the fact. We prevent violations before they happen. The result: 94% fewer regulatory fines, $8.6 billion in avoided legal costs. This isn't a feature—it's the core defensibility of the entire stack."
 
 ---
 
@@ -247,7 +247,7 @@ THE PROBLEM WITH CURRENT AI MARKETPLACES:
 THE AiU DIGITAL MALL DIFFERENCE:
 ┌────────────────────────────────────────────────────────────┐
 │ Every Model Pre-Certified:                                │
-│ ├─ Judge #6 validates before listing                      │
+│ ├─ Judge 6 validates before listing                      │
 │ ├─ AiUCRM risk stratification (RA-1 → RA-4)              │
 │ ├─ ShadowTag v2 provenance tracking                       │
 │ └─ Continuous monitoring post-deployment                  │
@@ -271,7 +271,7 @@ THE ECONOMICS:
 │ Justification:       Compliance = 4× premium pricing      │
 │                                                            │
 │ Revenue:             $12B × 12% = $1.44B ARR              │
-│ COGS:                ~15% (Judge #6 compute, monitoring)   │
+│ COGS:                ~15% (Judge 6 compute, monitoring)   │
 │ Gross Margin:        85%                                   │
 │                                                            │
 │ Customer LTV:        $450K (3-year avg, 95% retention)    │
@@ -291,7 +291,7 @@ VALUATION: $21.6B (15× ARR, marketplace network effects)
     - Trust Score (large, 0-100)
     - Compliance badges (HIPAA, SOC 2, FedRAMP, etc.)
     - Price per 1M tokens
-    - "Pre-Certified by Judge #6" checkmark
+    - "Pre-Certified by Judge 6" checkmark
   - Search/filter sidebar (left)
   - Transaction volume chart (right, showing growth curve)
 - **Top banner:** "$12B GMV × 12% = $1.44B ARR"
@@ -304,7 +304,7 @@ VALUATION: $21.6B (15× ARR, marketplace network effects)
 
 ### SPEAKER NOTES
 
-"Layer 3 is where trust becomes revenue. Every AI company wants a marketplace. But trust is binary in regulated industries—you either have provable compliance or you don't. We're the only marketplace where every model is pre-certified by Judge #6. Enterprises pay a 4× premium for this—our 12% take rate vs. 2-5% for Hugging Face. Why? Because the cost of deploying an unsafe model isn't the model price—it's the $1.3 billion fine Meta paid for GDPR violations. We eliminate that risk. Once an enterprise integrates AiU Mall, switching costs are $3-5 million. This is a network effects business with compliance lock-in."
+"Layer 3 is where trust becomes revenue. Every AI company wants a marketplace. But trust is binary in regulated industries—you either have provable compliance or you don't. We're the only marketplace where every model is pre-certified by Judge 6. Enterprises pay a 4× premium for this—our 12% take rate vs. 2-5% for Hugging Face. Why? Because the cost of deploying an unsafe model isn't the model price—it's the $1.3 billion fine Meta paid for GDPR violations. We eliminate that risk. Once an enterprise integrates AiU Mall, switching costs are $3-5 million. This is a network effects business with compliance lock-in."
 
 ---
 
@@ -501,8 +501,8 @@ DoD TACTICAL EDGE AI ($2B ARR, 70% margin)
 │ ├─ Forward Operating Bases: AI without cloud connectivity │
 │ ├─ SATCOM integration: Starlink military terminals        │
 │ ├─ C-V2X tactical vehicles: Convoy coordination           │
-│ ├─ Judge #6 validation: Pre-execution safety gates        │
-│ └─ AiUCRM risk stratification: RA-1 → RA-4 (ATP 5-19)    │
+│ ├─ Judge 6 validation: Pre-execution safety gates        │
+│ └─ AiUCRM risk stratification: RA-1 → RA-4 (Compliance Framework)    │
 │                                                            │
 │ Why We Win:                                                │
 │ └─ Only vendor with offline AI + pre-hoc compliance       │
@@ -513,11 +513,11 @@ FAA/NASA AEROSPACE (AiU Aero: $2B ARR, 75% margin)
 │ Use Cases:                                                 │
 │ ├─ Real-time flight path verification                     │
 │ ├─ Predictive maintenance AI (engine/airframe monitoring) │
-│ ├─ Judge #6 pre-certification (safety-critical systems)   │
+│ ├─ Judge 6 pre-certification (safety-critical systems)   │
 │ └─ Aircraft relay layer integration (in-flight compute)   │
 │                                                            │
 │ Why We Win:                                                │
-│ └─ FAA requires provable safety—Judge #6 provides audit trail│
+│ └─ FAA requires provable safety—Judge 6 provides audit trail│
 └────────────────────────────────────────────────────────────┘
 
 FDA/HIPAA MEDICAL (AiU Med: $1B ARR, 70% margin)
@@ -588,7 +588,7 @@ THE FLYWHEEL: ENERGY → TRUST → REVENUE → SCALE
                          ▼
         ╔═══════════════════════════════════════════╗
         ║  LAYER 2: PNKLN CORE STACK™               ║
-        ║  <500μs Judge #6 governance               ║
+        ║  <500μs Judge 6 governance               ║
         ╚═══════════════════════════════════════════╝
                          │
                          ├──> Real-time governance creates...
@@ -670,7 +670,7 @@ WHY THIS IS DEFENSIBLE:
 
 ### SPEAKER NOTES
 
-"This is why PNKLN isn't six companies—it's one flywheel. Cheap energy makes Judge #6 economically viable. Judge #6 creates the only trusted marketplace. Marketplace revenue funds 100,000 physical towers. Those towers enable global satellite mesh. Complete coverage unlocks government contracts worth $5.5 billion. And government revenue funds the next gigawatt of energy, which restarts the cycle at higher scale. Competitors can replicate individual features—CoreWeave can build GPU towers, Starlink can deploy satellites, OpenAI can build models. But no one can integrate all six layers in the same timeline. By the time they try, we're three turns ahead on the flywheel."
+"This is why PNKLN isn't six companies—it's one flywheel. Cheap energy makes Judge 6 economically viable. Judge 6 creates the only trusted marketplace. Marketplace revenue funds 100,000 physical towers. Those towers enable global satellite mesh. Complete coverage unlocks government contracts worth $5.5 billion. And government revenue funds the next gigawatt of energy, which restarts the cycle at higher scale. Competitors can replicate individual features—CoreWeave can build GPU towers, Starlink can deploy satellites, OpenAI can build models. But no one can integrate all six layers in the same timeline. By the time they try, we're three turns ahead on the flywheel."
 
 ---
 
@@ -683,7 +683,7 @@ GOOGLE CLOUD NATIVE = IMPOSSIBLE TO REPLICATE ON AWS
 THE 4-NAMESPACE ARCHITECTURE:
 ┌────────────────────────────────────────────────────────────┐
 │ gke-inference-system/                                      │
-│ ├─ Judge #6: StatefulSet + Redis (sub-millisecond state)  │
+│ ├─ Judge 6: StatefulSet + Redis (sub-millisecond state)  │
 │ ├─ Vertex AI Prediction endpoints (model serving)         │
 │ ├─ Horizontal Pod Autoscaling (3-10 replicas)             │
 │ └─ Target: p99 latency <500μs, 10M queries/day            │
@@ -697,7 +697,7 @@ THE 4-NAMESPACE ARCHITECTURE:
 │ gke-monitoring-system/                                     │
 │ ├─ Cloud Monitoring + Logging (native integration)        │
 │ ├─ Prometheus + Grafana (custom dashboards)               │
-│ ├─ Workload Metrics API (Judge #6 coverage tracking)      │
+│ ├─ Workload Metrics API (Judge 6 coverage tracking)      │
 │ └─ Alerting: <95% coverage triggers auto-rollback         │
 │                                                            │
 │ gke-gateway-system/                                        │
@@ -713,7 +713,7 @@ GKE-SPECIFIC ADVANTAGES:
 │ └─ Native model serving, no EKS equivalent on AWS         │
 │                                                            │
 │ Binary Authorization:                                      │
-│ └─ Judge #6 enforcement via admission webhooks            │
+│ └─ Judge 6 enforcement via admission webhooks            │
 │                                                            │
 │ Workload Identity:                                         │
 │ └─ Zero-trust service auth (vs AWS IAM complexity)        │
@@ -758,7 +758,7 @@ MOAT VALUE: Replicating on AWS/Azure = 18-24 month rewrite
 
 ### SPEAKER NOTES
 
-"This is the technical moat. We built the entire stack on Google Kubernetes Engine and Vertex AI. That's not just a deployment choice—it's a 24-month competitive barrier. Judge #6 requires sub-500 microsecond latency, which we achieve with GKE StatefulSets and in-memory Redis. RoadMesh requires coordinating 100,000 distributed edge clusters, which we do with Anthos multi-cluster mesh. Training uses Vertex AI Pipelines with preemptible TPU v5 pods—70% cheaper than AWS. If a competitor tries to replicate this on EKS, they're rewriting the entire orchestration layer. By the time they finish, we're two product generations ahead. And the cost advantage is permanent: $60K per month vs. $500K+ on AWS."
+"This is the technical moat. We built the entire stack on Google Kubernetes Engine and Vertex AI. That's not just a deployment choice—it's a 24-month competitive barrier. Judge 6 requires sub-500 microsecond latency, which we achieve with GKE StatefulSets and in-memory Redis. RoadMesh requires coordinating 100,000 distributed edge clusters, which we do with Anthos multi-cluster mesh. Training uses Vertex AI Pipelines with preemptible TPU v5 pods—70% cheaper than AWS. If a competitor tries to replicate this on EKS, they're rewriting the entire orchestration layer. By the time they finish, we're two product generations ahead. And the cost advantage is permanent: $60K per month vs. $500K+ on AWS."
 
 ---
 

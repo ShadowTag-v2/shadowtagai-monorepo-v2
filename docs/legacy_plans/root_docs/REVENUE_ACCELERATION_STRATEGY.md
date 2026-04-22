@@ -16,7 +16,7 @@
 
 - **Target**: $27.5K MRR by Day 90
 - **Time to first dollar**: 14 days
-- **Strategy**: Productize Judge #6 as standalone API for AI governance
+- **Strategy**: Productize Judge 6 as standalone API for AI governance
 - **ICP**: Companies using Claude/GPT/Gemini with $1M-50M revenue
 - **Pricing**: $99 Starter → $499 Professional → $2K+ Enterprise
 
@@ -24,7 +24,7 @@
 
 - **Target**: $24K MRR + $305K booked by Day 90
 - **Time to first dollar**: 7 days
-- **Strategy**: High-ticket ATP 5-19 consulting for enterprises
+- **Strategy**: High-ticket Compliance Framework consulting for enterprises
 - **ICP**: Large enterprises ($100M+) in regulated industries
 - **Pricing**: $5K workshops → $25K implementations → $2K/mo retainers
 
@@ -46,7 +46,7 @@
 
 **JaaS**:
 
-- [ ] Deploy Judge #6 to GKE
+- [ ] Deploy Judge 6 to GKE
 - [ ] Launch landing page (judgeasaservice.ai)
 - [ ] Write technical docs
 - [ ] Post on Show HN
@@ -55,7 +55,7 @@
 **Consulting**:
 
 - [ ] LinkedIn DM to 50 warm contacts
-- [ ] Post 3 LinkedIn articles (ATP 5-19 for AI)
+- [ ] Post 3 LinkedIn articles (Compliance Framework for AI)
 - [ ] Offer $5K AI Risk Assessment
 - [ ] Goal: 2 discovery calls, 1 deal closed
 
@@ -74,7 +74,7 @@
 
 - [ ] Reddit posts (r/MachineLearning, r/LangChain)
 - [ ] Sponsor AI newsletter
-- [ ] Blog: "ATP 5-19 for AI"
+- [ ] Blog: "Compliance Framework for AI"
 - [ ] Goal: 25 free tier, 5 paying customers
 
 **Consulting**:
@@ -256,7 +256,7 @@
 ## COMPETITIVE ADVANTAGES
 
 1. **Military + Legal + AI**: Unique positioning no competitor has
-2. **ATP 5-19 Framework**: Proven, not theoretical consultant fluff
+2. **Compliance Framework Framework**: Proven, not theoretical consultant fluff
 3. **3-Layer Hybrid**: Technical differentiation (fine-tuned + PyTorch + rules)
 4. **Zero Debt**: Full control, no investor pressure
 5. **Low Burn**: Lakeport location, lean operation
@@ -273,7 +273,7 @@
 2. "This will slow us down" → "p99 ≤90ms, <20% overhead"
 3. "We'll build it ourselves" → "$50K + 2 engineer-months vs. $500/mo"
 4. "Not a priority" → "What would make it one? A lawsuit?"
-5. "Too expensive" → "One GDPR fine pays for 250 years of Judge #6"
+5. "Too expensive" → "One GDPR fine pays for 250 years of Judge 6"
 
 ### Consulting Objections
 
@@ -297,9 +297,9 @@
 
 Choose ONE to start TODAY:
 
-### Option A: Judge #6 Deployment
+### Option A: Judge 6 Deployment
 
-1. Deploy Judge #6 to GKE (using existing Terraform)
+1. Deploy Judge 6 to GKE (using existing Terraform)
 2. Set up landing page (judgeasaservice.ai)
 3. Write API docs
 4. Launch Show HN

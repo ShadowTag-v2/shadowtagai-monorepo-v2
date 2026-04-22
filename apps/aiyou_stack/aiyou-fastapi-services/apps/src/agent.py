@@ -85,7 +85,7 @@ class GeminiAgent:
         print(f"🧠 Reflecting on {len(history)} past interactions...")
 
         # Check if we need to stop the swarm based on history/mission (simplified)
-        # In a real scenario, this would analyze the 'brakes' score from Judge #6
+        # In a real scenario, this would analyze the 'brakes' score from Judge 6
 
     def run(self, task: str):
         """Main entry point for the agent."""

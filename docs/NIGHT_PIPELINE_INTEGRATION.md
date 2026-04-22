@@ -12,7 +12,7 @@
 Successfully integrated 12 Night Pipeline branches into the ShadowTag-v2 Platform, creating a comprehensive three-layer AI infrastructure:
 
 1. **Layer 1**: Intelligence Collection (Gemini Ingestion)
-2. **Layer 2**: Compliance Enforcement (Judge #6 + JR Engine)
+2. **Layer 2**: Compliance Enforcement (Judge 6 + JR Engine)
 3. **Layer 3**: Agent Orchestration (Claude Master Framework)
 
 **Result**: Complete vertical integration from ethical data collection through compliance enforcement to intelligent agent execution.
@@ -274,7 +274,7 @@ Successfully integrated 12 Night Pipeline branches into the ShadowTag-v2 Platfor
 ```
 ShadowTagAi Agent Platform v0.2.0
 ├── Layer 1: Gemini Ingestion ($77/mo)
-└── Layer 2: Judge #6 + JR Engine ($1,000-1,600/mo)
+└── Layer 2: Judge 6 + JR Engine ($1,000-1,600/mo)
 ```
 
 ### After Integration (v1.0.0)
@@ -285,7 +285,7 @@ ShadowTag-v2 Platform: Complete Intelligence Ecosystem
 │   ├─ Multi-source collection
 │   ├─ Ethical compliance
 │   └─ Tier classification
-├── Layer 2: Judge #6 + JR Engine ($1,000-1,600/mo)
+├── Layer 2: Judge 6 + JR Engine ($1,000-1,600/mo)
 │   ├─ GDPR/CAN-SPAM/HIPAA enforcement
 │   ├─ Purpose/Reasons/Brakes validation
 │   └─ Audit trails

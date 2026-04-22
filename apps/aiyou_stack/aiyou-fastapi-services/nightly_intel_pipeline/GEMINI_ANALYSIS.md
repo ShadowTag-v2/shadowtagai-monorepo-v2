@@ -2,7 +2,7 @@
 
 **Comprehensive Analysis Framework for Intelligence Pipeline Evaluation**
 
-This document outlines the Gemini 2.0 Pro analysis prompt architecture for evaluating the Nightly Intel Pipeline's ingestion layer, adapted from the Judge #6 validation system prompt.
+This document outlines the Gemini 2.0 Pro analysis prompt architecture for evaluating the Nightly Intel Pipeline's ingestion layer, adapted from the Judge 6 validation system prompt.
 
 ## Overview
 
@@ -10,7 +10,7 @@ The Gemini Ingestion Layer Analysis Prompt is designed to perform comprehensive 
 
 ### Key Distinction: Collection vs. Enforcement
 
-| Aspect | Judge #6 (Enforcement) | Gemini Ingestion Layer (Collection) |
+| Aspect | Judge 6 (Enforcement) | Gemini Ingestion Layer (Collection) |
 |--------|------------------------|-------------------------------------|
 | **Primary Role** | Reactive validator | Proactive collector |
 | **Architecture** | Hybrid Gemini+PyTorch | GKE CronJob Multi-Container |
@@ -30,7 +30,7 @@ These replacements ensure the prompt stays focused on intelligence collection ra
 
 
 
-- **From**: "Judge #6" references throughout
+- **From**: "Judge 6" references throughout
 
 
 - **To**: "Gemini Ingestion Layer" for all system references
@@ -111,7 +111,7 @@ These replacements ensure the prompt stays focused on intelligence collection ra
 
 ### Architecture Evolution
 
-**Judge #6 (Hybrid Gemini+PyTorch)**
+**Judge 6 (Hybrid Gemini+PyTorch)**
 
 
 - Real-time inference for validation
@@ -152,11 +152,11 @@ These replacements ensure the prompt stays focused on intelligence collection ra
 
 ### Integration Pattern Flip
 
-**Judge #6**: Caller (invokes 4 namespace services)
+**Judge 6**: Caller (invokes 4 namespace services)
 
 ```
 
-Judge #6 → Service A
+Judge 6 → Service A
          → Service B
          → Service C
          → Service D
@@ -190,7 +190,7 @@ Service D ┘
 
 ### Unique Features Comparison
 
-#### Judge #6 Features
+#### Judge 6 Features
 
 
 
@@ -370,7 +370,7 @@ ETHICAL_COMPLIANCE_CHECKS = {
 
 ### Target Confidence Levels
 
-**Judge #6 (Production System)**:
+**Judge 6 (Production System)**:
 
 
 - **Target**: ≥70% confidence
@@ -494,14 +494,14 @@ Include failure mode analysis in prompts:
 
 5. **Kubernetes Failures**: Pod eviction, node downtime
 
-### Integration with Judge #6
+### Integration with Judge 6
 
 **Combined Analysis Opportunity**:
-Since Ingestion Layer and Judge #6 are complementary (collection → validation), a unified prompt could analyze:
+Since Ingestion Layer and Judge 6 are complementary (collection → validation), a unified prompt could analyze:
 
 
 
-- **Handoff Protocols**: How does Tier 2 data flow to Judge #6?
+- **Handoff Protocols**: How does Tier 2 data flow to Judge 6?
 
 
 - **Schema Compatibility**: Data format alignment
@@ -517,7 +517,7 @@ Since Ingestion Layer and Judge #6 are complementary (collection → validation)
 ```
 
 Analyze the end-to-end data flow from Gemini Ingestion Layer (collection)
-to Judge #6 (validation):
+to Judge 6 (validation):
 
 
 
@@ -670,7 +670,7 @@ QUALITY_METRICS = {
    - Increase confidence target to 70%+
 
 
-   - Integrate with Judge #6 for end-to-end evaluation
+   - Integrate with Judge 6 for end-to-end evaluation
 
 
    - Add visualization dashboards
@@ -749,7 +749,7 @@ Before running Gemini analysis prompt:
 
 ## Conclusion
 
-The Gemini Ingestion Layer Analysis Prompt represents a strategic adaptation of the Judge #6 framework, tailored for **proactive intelligence collection** rather than reactive validation. By emphasizing ethical crawling, multi-source diversity, and tier-based prioritization, this prompt enables comprehensive pre-production evaluation of the SHADOWTAGAI Core Stack's foundational data layer.
+The Gemini Ingestion Layer Analysis Prompt represents a strategic adaptation of the Judge 6 framework, tailored for **proactive intelligence collection** rather than reactive validation. By emphasizing ethical crawling, multi-source diversity, and tier-based prioritization, this prompt enables comprehensive pre-production evaluation of the SHADOWTAGAI Core Stack's foundational data layer.
 
 **Key Takeaways**:
 

@@ -468,7 +468,7 @@ async def main():
 
     # Example query
     query = """
-    Design a scalable API for the Judge #6 service that:
+    Design a scalable API for the Judge 6 service that:
     1. Handles 10K req/sec
     2. Maintains p99 latency ≤90ms
     3. Integrates with ShadowTag 2.0

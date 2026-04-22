@@ -48,7 +48,7 @@ Multiplier effect:      9.3× baseline
 
 **What It Does**:
 
-- 3-kernel pipeline: ATP scan → Judge #6 → Audit compress
+- 3-kernel pipeline: ATP scan → Judge 6 → Audit compress
 - 98.5% token reduction (50KB → 487 bytes)
 - Glicko-2 performance tracking (μ/φ/σ)
 - DTE self-evolution (+3.7% accuracy proven)

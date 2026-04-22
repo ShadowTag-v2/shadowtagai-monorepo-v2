@@ -15,7 +15,7 @@ A platform that provides elite, AI-driven representation to professionals who ar
 ## Tech Stack
 
 - **Negotiation Engine (`contract_judge.py`)**:
-  - Powered by **LawJudge** (Judge #6).
+  - Powered by **LawJudge** (Judge 6).
   - Analyzes contracts against union standards (SAG-AFTRA) and market comps.
 - **Frontend**: Next.js (Planned).
 - **Infrastructure**: GKE Sovereign Cloud.

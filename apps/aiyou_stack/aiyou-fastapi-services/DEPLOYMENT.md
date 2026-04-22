@@ -164,7 +164,7 @@ Import dashboard from `monitoring/grafana-dashboard.json`
 Key panels:
 
 - File search latency (p50, p95, p99)
-- Judge #6 enforcement latency
+- Judge 6 enforcement latency
 - Error rates
 - Kill switch state
 - Request throughput

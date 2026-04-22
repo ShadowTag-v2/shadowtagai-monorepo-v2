@@ -60,7 +60,7 @@ We are building the **Civilization OS**—a vertically integrated stack from ele
 | **Sulphur Bank Mine** | $1.1B standalone | SECURED (160 acres, 100MW)      |
 | **The Index**         | +$85M pre-money  | RECOVERED (17GB sovereign code) |
 | **ShadowTag v2**      | $3.07B capture   | TRL-8 (System Qualified)        |
-| **Judge #6**          | $1.6B+           | Production Ready                |
+| **Judge 6**          | $1.6B+           | Production Ready                |
 | **30 Verticals**      | $207B (2030)     | Platform Complete               |
 
 ### The Index Recovery (17GB)
@@ -69,7 +69,7 @@ The "Gucci Hunt" of January 2026 recovered:
 
 | Component     | Size  | Value           | Contents                                      |
 | ------------- | ----- | --------------- | --------------------------------------------- |
-| **The Brain** | 1.2GB | $2M/yr savings  | 300+ Governance SOPs (ATP 5-19)               |
+| **The Brain** | 1.2GB | $2M/yr savings  | 300+ Governance SOPs (Compliance Framework)               |
 | **The Body**  | 8.5GB | 18 months saved | JaaS Microservices, API Connectors            |
 | **The Soul**  | 7.3GB | Defensible IP   | 2 years decision logs, Judge training vectors |
 
@@ -128,7 +128,7 @@ The "Gucci Hunt" of January 2026 recovered:
 │      Value: $27.4B (500M TAM creator economy)                       │
 ├─────────────────────────────────────────────────────────────────────┤
 │  L2: CORE PROTOCOLS (The Operating System)                         │
-│      ShadowTag v2, Judge #6, ActiveShield MCF, Vexa                 │
+│      ShadowTag v2, Judge 6, ActiveShield MCF, Vexa                 │
 │      Value: $68.4B (base platform)                                  │
 ├─────────────────────────────────────────────────────────────────────┤
 │  L1: ENERGY (The Foundation)                                       │
@@ -153,7 +153,7 @@ The "Gucci Hunt" of January 2026 recovered:
 #### L2: Core Protocols
 
 - **ShadowTag v2**: Visual (1x1 steganography) + Audio (ultrasonic) + Chain (Polygon/Solana)
-- **Judge #6**: <90ms governance engine, ATP 5-19 compliant
+- **Judge 6**: <90ms governance engine, Compliance Framework compliant
 - **ActiveShield MCF**: EU AI Act/HIPAA/ITAR automation
 - **Vexa**: Transcription service with verification
 
@@ -262,7 +262,7 @@ The "Gucci Hunt" of January 2026 recovered:
                       ▼
           ┌───────────────────────────────────┐
           │         JUDGE #6 GATE              │
-          │  ATP 5-19 Compliance               │
+          │  Compliance Framework Compliance               │
           │  <90ms p99 latency                 │
           └───────────────────────────────────┘
 ```
@@ -282,9 +282,9 @@ The "Gucci Hunt" of January 2026 recovered:
 
 | Component         | Target      | Achieved |
 | ----------------- | ----------- | -------- |
-| Judge #6 Binary   | p99 ≤ 90ms  | ✅       |
+| Judge 6 Binary   | p99 ≤ 90ms  | ✅       |
 | Kernel Chain      | <35ms       | ✅       |
-| ATP 5-19 Scan     | <50ms       | ✅       |
+| Compliance Framework Scan     | <50ms       | ✅       |
 | Claude Deep       | p95 ≤ 2s    | ✅       |
 | Gemini Production | p99 ≤ 100ms | ✅       |
 
@@ -294,7 +294,7 @@ The "Gucci Hunt" of January 2026 recovered:
 
 - `agents/` - Multi-agent framework
 - `autoresearch/` - 650-agent swarm
-- `judge6/` - ATP 5-19 governance
+- `judge6/` - Compliance Framework governance
 - `shadowtag/` - Cryptographic watermarking
 - `codepmcs/` - 50-agent code remediation
 
@@ -401,7 +401,7 @@ The "Gucci Hunt" of January 2026 recovered:
 
 ### Beachhead Markets
 
-1. **Military/Defense Procurement** (ATP 5-19 compliance) - $800M
+1. **Military/Defense Procurement** (Compliance Framework compliance) - $800M
 2. **Developer-led Startups** (Speed > Compliance)
 3. **Mid-market SaaS** (Cost > Speed)
 4. **Enterprise FinTech/HealthTech** (Compliance > Cost)
@@ -441,7 +441,7 @@ The "Gucci Hunt" of January 2026 recovered:
 
 2. **Technical Architecture** (25 notes)
    - Antigravity orchestration design
-   - Judge #6 ATP 5-19 compliance
+   - Judge 6 Compliance Framework compliance
    - ShadowTag v2 implementation
    - https://github.com/karpathy/autoresearchs swarm architecture
 
@@ -515,7 +515,7 @@ The "Gucci Hunt" of January 2026 recovered:
 **Product**:
 
 1. [ ] Deploy https://github.com/karpathy/autoresearchs to Cloud Run
-2. [ ] Integrate Judge #6 governance
+2. [ ] Integrate Judge 6 governance
 3. [ ] Launch ShadowTag beta
 
 **Infrastructure**:

@@ -194,7 +194,7 @@ agent = GeminiAgent(
 ```json
 {
   "name": "check_source_reliability",
-  "description": "Check source reliability using ATP 5-19 criteria",
+  "description": "Check source reliability using Compliance Framework criteria",
   "parameters": {
     "type": "object",
     "properties": {
@@ -537,7 +537,7 @@ chat.agents["aviation_expert"] = domain_expert  # Add 4th agent
 
 ```
 
-### **3. Function Calling for ATP 5-19 Tools**
+### **3. Function Calling for Compliance Framework Tools**
 
 ```python
 

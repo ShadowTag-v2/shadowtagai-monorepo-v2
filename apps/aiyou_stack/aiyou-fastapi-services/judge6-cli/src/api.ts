@@ -1,5 +1,5 @@
 /**
- * Judge #6 API Client
+ * Judge 6 API Client
  *
  * Handles HTTP communication with FastAPI backend.
  */
@@ -15,7 +15,7 @@ export class Judge6ApiClient {
   }
 
   /**
-   * Validate a decision using Judge #6.
+   * Validate a decision using Judge 6.
    */
   async validate(request: DecisionValidationRequest): Promise<DecisionValidationResponse> {
     try {

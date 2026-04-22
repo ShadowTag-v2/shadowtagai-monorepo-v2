@@ -280,10 +280,10 @@ Test:
 
 ```bash
 # In Claude Code, ask:
-"What is Judge #6?"
+"What is Judge 6?"
 
 # Should respond with:
-# "Judge #6 is a hybrid Gemini+PyTorch+Rules validation system with 98% coverage and p99 ≤90ms latency..."
+# "Judge 6 is a hybrid Gemini+PyTorch+Rules validation system with 98% coverage and p99 ≤90ms latency..."
 ```
 
 ### 3.5 4-LLM Orchestration (Optional)

@@ -311,7 +311,7 @@ export CRAWLER_RESPECT_ROBOTS_TXT=false
 
 - [Architecture Documentation](../README.md)
 - [API Reference](API.md)
-- [Integration with Judge #6](INTEGRATION.md)
+- [Integration with Judge 6](INTEGRATION.md)
 - [Contributing Guidelines](../CONTRIBUTING.md)
 
 ## Support

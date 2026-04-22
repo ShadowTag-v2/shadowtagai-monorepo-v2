@@ -40,7 +40,7 @@ Adding Gemini CLI TUI, kernel-chaining architecture, and migrating from Autogen 
 import { render, Box, Text } from "ink";
 import { judge6 } from "@pnkln/governance-sdk";
 
-// CloudFlare Workers API endpoint (CLI talks to Judge #6 service)
+// CloudFlare Workers API endpoint (CLI talks to Judge 6 service)
 export default {
   async fetch(request) {
     const { purpose } = await request.json();
@@ -73,11 +73,11 @@ npm Package Hosting:
 
 CLI Bundle Size:
 - Ink + dependencies: 5MB
-- Judge #6 SDK: 2MB
+- Judge 6 SDK: 2MB
 - Total: 7MB (acceptable for CLI)
 
 Development Cost:
-- Week 1: Ink prototype + Judge #6 integration
+- Week 1: Ink prototype + Judge 6 integration
 - Week 2: Flicker testing across terminals
 - Week 3: npm publish + docs
 - Total: 3 weeks (~$15K if outsourced, $0 if internal)
@@ -143,7 +143,7 @@ class KernelChain:
     """
     Chains multiple specialized kernels for complex decision workflows
 
-    Example: pnkln Intelligence → Judge #6 → JR Engine → Action
+    Example: pnkln Intelligence → Judge 6 → JR Engine → Action
     """
 
     def __init__(self, kernels: List[Kernel]):
@@ -170,7 +170,7 @@ class KernelChain:
 # Example usage: Multi-step governance workflow
 chain = KernelChain([
     GeminiIngestionKernel(),   # Collect intelligence from 5 sources
-    Judge6Kernel(),            # Binary governance scan (ATP 5-19)
+    Judge6Kernel(),            # Binary governance scan (Compliance Framework)
     JREngineKernel(),          # Justice/Restitution layer
     ActionExecutionKernel()    # Execute approved action
 ])
@@ -355,7 +355,7 @@ Trade-off: -2% accuracy, +75% faster, -99.6% cheaper
 
 ```
 Week 1: Replace Autogen with Gemini SDK (5 collectors)
-Week 2: Migrate Judge #6 to Gemini (binary decision logic)
+Week 2: Migrate Judge 6 to Gemini (binary decision logic)
 Week 3: Testing + rollback plan
 Total: 3 weeks (~$15K if outsourced, $0 if internal)
 ```
@@ -786,7 +786,7 @@ Conclusion: Gemini Flash offers best price/performance ratio
 ### Immediate Actions (Week 1)
 
 1. **Start Gemini CLI Prototype**
-   - Build Ink-based TUI with Judge #6 integration
+   - Build Ink-based TUI with Judge 6 integration
    - Test on iTerm2, Wezterm, VSCode terminals
    - Deploy CloudFlare Workers API endpoint
    - **Cost:** $0 (free tier), **Time:** 1 week

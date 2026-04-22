@@ -73,7 +73,7 @@ Evaluated four potential integration vectors:
    - ROI: **NEGATIVE** until Year 2+
 
 5. **Critical Path Conflict**: Distracts from actual revenue-generating work:
-   - Judge #6 deployment on GKE
+   - Judge 6 deployment on GKE
    - LangGraph orchestration
    - NS mesh architecture
    - Revenue model validation
@@ -131,7 +131,7 @@ echo "Revisit: When doc processing >$50K/year at Google pricing" >> docs/researc
 
 **The Steve Jobs Question**: "Does this make the product 10x better for customers?"
 
-- **Answer**: No. Customers buy governance, not OCR. OCR is a feature. Judge #6 is the product.
+- **Answer**: No. Customers buy governance, not OCR. OCR is a feature. Judge 6 is the product.
 
 **Cool tech doesn't pay the bills. Customers solving urgent problems pay the bills.**
 
@@ -145,4 +145,4 @@ This decision establishes a pattern:
 
 ---
 
-**Next Action**: Focus on GKE inference architecture for Judge #6 deployment.
+**Next Action**: Focus on GKE inference architecture for Judge 6 deployment.

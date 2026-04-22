@@ -707,7 +707,7 @@ class EthicalCrawler:
 
 **Integration with pnkln:**
 
-- **Tier 1:** Triggers immediate Judge #6 validation → ShadowTag verification
+- **Tier 1:** Triggers immediate Judge 6 validation → ShadowTag verification
 
 - **Tier 2:** Queued for batch processing (hourly)
 

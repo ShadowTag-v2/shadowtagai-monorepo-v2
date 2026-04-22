@@ -53,7 +53,7 @@ See: [Gemini Ingestion Layer Analysis](../analysis/gemini-ingestion-layer-analys
 
 **Integration Role**: Bridges ingestion and validation layers
 
-### 3. Judge #6 Validation Layer (Downstream)
+### 3. Judge 6 Validation Layer (Downstream)
 
 **Purpose**: Reactive enforcement and quality validation
 
@@ -63,7 +63,7 @@ See: [Gemini Ingestion Layer Analysis](../analysis/gemini-ingestion-layer-analys
 - **Execution**: Real-time (p99 ≤90ms latency)
 - **Integration**: Calls services in 4 namespaces
 - **Coverage**: 98% test coverage target
-- **Compliance**: ATP 5-19, JR validation
+- **Compliance**: Compliance Framework, JR validation
 
 **Capabilities**:
 
@@ -147,13 +147,13 @@ See: [Gemini Ingestion Layer Analysis](../analysis/gemini-ingestion-layer-analys
 ╚═══════════════════════════════════════════════════════════════╝
 
 ┌─────────────────────────────────────────────────────────────────┐
-│              Judge #6 Validation Layer                          │
+│              Judge 6 Validation Layer                          │
 │              (Hybrid Gemini+PyTorch)                            │
 │                                                                 │
 │  ┌────────────┐  ┌────────────┐  ┌────────────┐               │
 │  │  Quality   │  │ Compliance │  │   Error    │               │
 │  │   Gates    │  │  Checking  │  │  Detection │               │
-│  │ (ATP 5-19) │  │   (JR)     │  │  (FP/FN)   │               │
+│  │ (Compliance Framework) │  │   (JR)     │  │  (FP/FN)   │               │
 │  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘               │
 │        │               │               │                       │
 │        └───────────────┴───────────────┘                       │
@@ -194,11 +194,11 @@ External Sources → Gemini Ingestion → Tier Classification → Storage
 ### 2. Validation Phase (Real-time)
 
 ```
-Storage → Judge #6 → Quality Gates → Validated Data
+Storage → Judge 6 → Quality Gates → Validated Data
 ```
 
 1. Data retrieved from storage
-2. ATP 5-19 compliance validation
+2. Compliance Framework compliance validation
 3. JR validation checks
 4. Error detection (FP/FN analysis)
 5. Quality gates enforce thresholds
@@ -224,7 +224,7 @@ The PNKLN stack operates across **4 Kubernetes namespaces**:
 
 1. **ingestion-ns**: Gemini Ingestion Layer pods
 2. **storage-ns**: Data warehouse and analytics services
-3. **validation-ns**: Judge #6 enforcement services
+3. **validation-ns**: Judge 6 enforcement services
 4. **delivery-ns**: AM briefing and presentation services
 
 ### Service Communication
@@ -248,7 +248,7 @@ The PNKLN stack operates across **4 Kubernetes namespaces**:
 - **Latency**: p99 ≤90ms for real-time responses
 - **Accuracy**: FP/FN rates within tolerance
 - **Coverage**: 98% test coverage
-- **Compliance**: 100% ATP 5-19 and JR adherence
+- **Compliance**: 100% Compliance Framework and JR adherence
 
 ### Delivery Quality Metrics
 
@@ -287,7 +287,7 @@ The PNKLN stack operates across **4 Kubernetes namespaces**:
 
 ### Compliance Standards
 
-- **ATP 5-19**: Military intelligence doctrine compliance
+- **Compliance Framework**: Military intelligence doctrine compliance
 - **JR Validation**: [Specific requirements to be documented]
 - **Data Retention**: [Policies to be documented]
 - **Privacy**: [PII handling to be documented]
@@ -389,7 +389,7 @@ The PNKLN stack operates across **4 Kubernetes namespaces**:
 ## References
 
 - [Gemini Ingestion Layer Analysis](../analysis/gemini-ingestion-layer-analysis.md)
-- [Judge #6 Documentation](#) (To be created)
+- [Judge 6 Documentation](#) (To be created)
 - [GKE Deployment Guide](#) (To be created)
 - [AM Briefing Format Spec](#) (To be created)
 

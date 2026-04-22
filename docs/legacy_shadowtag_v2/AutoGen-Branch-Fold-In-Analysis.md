@@ -48,7 +48,7 @@
 
 ```
 
-Branch B: pnkln Core Stack (Gemini Ingestion, Judge #6)
+Branch B: pnkln Core Stack (Gemini Ingestion, Judge 6)
 Branch F: Kernel Chaining (3-kernel chain, 97.5% cost reduction)
 Branch E: FastAPI Deployment (REST API infrastructure)
 
@@ -102,7 +102,7 @@ Solution: ONE unified architecture replaces 3 branches!
 # OLD: 3 separate API calls (Branch F)
 
 context = load_decision_context()  # 50KB
-result_1 = await gemini_api("ATP 5-19 scan", context)  # API call 1
+result_1 = await gemini_api("Compliance Framework scan", context)  # API call 1
 result_2 = await pytorch_model(result_1)  # Local (no API)
 result_3 = await gemini_api("Audit compress", result_2)  # API call 3
 
@@ -373,7 +373,7 @@ for cycle in range(10):
 
 **What It Is:**
 
-- Purpose/Reasons/Brakes validation (ATP 5-19)
+- Purpose/Reasons/Brakes validation (Compliance Framework)
 
 - Validates every function call before execution
 
@@ -470,7 +470,7 @@ Flow:
 | Metric                   | Phase 1 (Current)      | AutoGen Branch       | Improvement             |
 | ------------------------ | ---------------------- | -------------------- | ----------------------- |
 | **Features Implemented** | 2/10                   | **10/10**            | **5x complete**         |
-| **Latency (p99)**        | ~90ms (Judge #6)       | **35ms**             | **2.6x faster**         |
+| **Latency (p99)**        | ~90ms (Judge 6)       | **35ms**             | **2.6x faster**         |
 | **Multi-Agent**          | ❌ Spec'd only         | ✅ **Implemented**   | **Ready**               |
 | **Glicko-2 Ratings**     | ❌ Spec'd only         | ✅ **Implemented**   | **Ready**               |
 | **GRPO Training**        | ❌ Spec'd only         | ✅ **Implemented**   | **Ready**               |

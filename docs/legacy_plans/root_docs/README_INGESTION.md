@@ -432,7 +432,7 @@ PNKLNBot/1.0 (+https://pnkln.ai/bot; Intelligence Collection)
 
 ### Traditional Metrics vs. Ingestion Metrics
 
-| Judge #6 (Validation)    | Ingestion Layer                     |
+| Judge 6 (Validation)    | Ingestion Layer                     |
 | ------------------------ | ----------------------------------- |
 | p99 ≤ 90ms (latency)     | ~45 min/night (batch runtime)       |
 | FP/FN rates              | Relevance, timeliness, completeness |

@@ -1,0 +1,19 @@
+# Item 18: CODEOWNERS for terraform/ directory
+# Assigns review ownership for infrastructure changes
+
+# Root terraform ownership
+/terraform/ @ShadowTag-v2/infra-team @ehanc69
+
+# Catalog modules — require infra-team review
+/terraform/infrastructure-catalog-gcp-cloud-run/ @ShadowTag-v2/infra-team
+
+# Live environments — require founder + infra review
+/terraform/infrastructure-live-gcp/prod/ @ehanc69 @ShadowTag-v2/infra-team
+/terraform/infrastructure-live-gcp/staging/ @ShadowTag-v2/infra-team
+
+# Pulumi experiments — R&D only
+/terraform/infrastructure-pulumi/ @ehanc69
+
+# Security-sensitive modules need explicit founder approval
+/terraform/infrastructure-catalog-gcp-cloud-run/github-wif/ @ehanc69
+/terraform/infrastructure-catalog-gcp-cloud-run/iam-baseline/ @ehanc69

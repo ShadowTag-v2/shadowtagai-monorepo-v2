@@ -184,7 +184,7 @@ Revenue at Scale:
 
 - <35ms latency SLA
 
-- ATP 5-19 compliance built-in
+- Compliance Framework compliance built-in
 
 #### Tier 2: Ultrathink Suite (Pay-Per-Task)
 
@@ -578,7 +578,7 @@ Upsells:
 
 1. **Launch beachhead** (defense contractors)
 
-   - ATP 5-19 compliance marketing
+   - Compliance Framework compliance marketing
 
    - 48hrs → 35ms speed claim
 

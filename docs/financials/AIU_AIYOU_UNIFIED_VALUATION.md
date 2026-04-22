@@ -30,10 +30,10 @@ This creates the world's only platform that **governs AI before execution** AND 
 | Gemini AI Integration | $38.9B | 0.75 | 94.1% accuracy, 40ms latency |
 | Satellite Mesh | $18.3B | 0.65 | Starlink + CoreWeave integration |
 | CineVerse Creator Economy | $27.4B | 0.70 | 500M TAM, verified streaming |
-| Judge Architecture | $19.0B | 0.80 | ATP 5-19 compliance, DSA VLOP |
+| Judge Architecture | $19.0B | 0.80 | Compliance Framework compliance, DSA VLOP |
 | LLM Memory Persistence | $3.5B | 0.70 | 4-LLM orchestration |
 | ShadowTag Provenance | $29.6B | 0.75 | Hardware-level attestation |
-| Judge #6 Enforcement | $1.6B | 0.65 | JR Engine, P99 ≤90ms |
+| Judge 6 Enforcement | $1.6B | 0.65 | JR Engine, P99 ≤90ms |
 | ShadowTagAi Vertex AI | $0.3B | 0.70 | Operational intelligence |
 | **Subtotal** | **$207B** | **0.73 avg** | **Diversified revenue** |
 
@@ -154,7 +154,7 @@ This creates the world's only platform that **governs AI before execution** AND 
 
 | Moat Type | Valuation | Strength | Description |
 |-----------|-----------|----------|-------------|
-| Judge Architecture (ATP 5-19) | $5.0B | ★★★★★ | 3-5 year regulatory lead |
+| Judge Architecture (Compliance Framework) | $5.0B | ★★★★★ | 3-5 year regulatory lead |
 | ShadowTag Provenance | $8.0B | ★★★★★ | Hardware-level cryptographic attestation |
 | 4-LLM Memory Orchestration | $2.0B | ★★★★☆ | 12-18 month technical lead |
 | PINKLN Self-Evolution (DTE) | $1.5B | ★★★★☆ | +3.7% continuous improvement |
@@ -310,7 +310,7 @@ This represents one of the highest ROI opportunities in AI infrastructure histor
 
 **Q1 2025**: Deploy PINKLN Core ($240K)
 - Gemini function calling
-- Judge #6 validation
+- Judge 6 validation
 - LLM memory persistence
 - Target: p99 ≤90ms latency
 
@@ -415,7 +415,7 @@ This represents one of the highest ROI opportunities in AI infrastructure histor
 - **Reasoning**: Cor.17 BDH/RoT/MoE-CL hybrid models (+82% throughput)
 - **Memory**: GPTRAM (Redis) + 4-LLM rotation (GitHub-backed)
 - **Safety**: Google Cloud DLP + Hive AI + AiUCRM validation
-- **Governance**: Judge Architecture (ATP 5-19) + Judge #6 (JR Engine)
+- **Governance**: Judge Architecture (Compliance Framework) + Judge 6 (JR Engine)
 - **Provenance**: ShadowTag v2 (cryptographic watermarking)
 
 ### **Deployment**

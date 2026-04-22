@@ -1,4 +1,4 @@
-# Judge #6 Admission Webhook
+# Judge 6 Admission Webhook
 # Enforces governance policies at Kubernetes admission control layer
 # Target: 98% coverage of all inference requests
 ---

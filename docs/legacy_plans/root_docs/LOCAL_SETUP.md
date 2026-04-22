@@ -275,5 +275,5 @@ Once you verify it works locally:
 2. **Upload Test Documents** - Add a few sample PDFs to GCS
 3. **Initialize Test Corpus** - Create one corpus to test file search
 4. **Test Real Query** - Try actual file search retrieval
-5. **Implement Judge #6** - Add your Judge layers
+5. **Implement Judge 6** - Add your Judge layers
 6. **Deploy to GKE** - Follow DEPLOYMENT_STEP_BY_STEP.md

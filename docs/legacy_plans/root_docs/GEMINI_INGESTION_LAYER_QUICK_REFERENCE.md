@@ -310,7 +310,7 @@ User-Agent: GeminiIngestionBot/1.0 (+https://yourorg.com/ingestion-policy)
 
 **Feeds Data To:**
 
-1. **Judge #6:** Enforcement/validation of ingested items
+1. **Judge 6:** Enforcement/validation of ingested items
 2. **Analysis Microservices (4 Namespaces):**
    - Trend detection (Tier 1+2)
    - Entity extraction (full metadata)
@@ -326,11 +326,11 @@ User-Agent: GeminiIngestionBot/1.0 (+https://yourorg.com/ingestion-policy)
 - **Ethical Shield:** 100% compliance protects entire PNKLN stack
 - **Resilience:** GKE fault tolerance ensures continuous data flow
 
-**Handoff to Judge #6:**
+**Handoff to Judge 6:**
 
 - Ingestion Layer: Collects raw intelligence
-- Judge #6: Validates against ATP 5-19 policies
-- Feedback Loop: Judge #6 flags problematic sources → Ingestion deprioritizes
+- Judge 6: Validates against Compliance Framework policies
+- Feedback Loop: Judge 6 flags problematic sources → Ingestion deprioritizes
 
 ---
 
@@ -463,7 +463,7 @@ User-Agent: GeminiIngestionBot/1.0 (+https://yourorg.com/ingestion-policy)
 ### Documentation
 
 - Full Analysis: `GEMINI_INGESTION_LAYER_INCEPTION_ANALYSIS.md`
-- Integration with Judge #6: `JUDGE_SIX_INCEPTION_ANALYSIS.md`
+- Integration with Judge 6: `JUDGE_SIX_INCEPTION_ANALYSIS.md`
 - Implementation Guide: TBD (Week 1)
 - API Reference: TBD (Week 2)
 

@@ -21,7 +21,7 @@ Traditional agent frameworks use "start simple, add enforcement later" approach,
 │  2. JR Engine validates (Purpose/Reasons/Brakes)    │
 │  3. If brake triggered → escalate to human          │
 │  4. Execute with guardrails → raw result            │
-│  5. Judge #6 verifies compliance → verification     │
+│  5. Judge 6 verifies compliance → verification     │
 │  6. If verification fails → rollback and log        │
 │  7. Return result with watermark                     │
 └─────────────────────────────────────────────────────┘
@@ -113,7 +113,7 @@ reasons = [
         justification="Automated lead generation with compliance enforcement",
         risk_probability=0.2,
         risk_severity=0.3,
-        mitigation_strategy="Judge #6 GDPR/CAN-SPAM filtering"
+        mitigation_strategy="Judge 6 GDPR/CAN-SPAM filtering"
     )
 ]
 
@@ -138,7 +138,7 @@ else:
 | ≥0.2 | Low | Standard execution |
 | <0.2 | Extremely Low | Fast-path execution |
 
-### 2. Judge #6 Lite (Rule-Based Enforcement)
+### 2. Judge 6 Lite (Rule-Based Enforcement)
 
 **Target Latency:** <90ms p99
 
@@ -293,7 +293,7 @@ print(f"LTV:CAC ratio: {ratio:.1f}:1")  # 5.3:1
 
 3. Agent scrapes LinkedIn/Apollo/Clearbit
 
-4. Judge #6 filters personal emails, flags EU contacts
+4. Judge 6 filters personal emails, flags EU contacts
 
 5. Output: N approved + M blocked + audit PDF
 
@@ -389,7 +389,7 @@ See [docs/adr/001-enforcement-first-architecture.md](docs/adr/001-enforcement-fi
 
 - JR Engine for Purpose/Reasons/Brakes validation
 
-- Judge #6 Lite for rule-based compliance
+- Judge 6 Lite for rule-based compliance
 
 - Target SLA: <90ms p99 for verification
 
@@ -403,7 +403,7 @@ See [docs/adr/001-enforcement-first-architecture.md](docs/adr/001-enforcement-fi
 
 - [x] Implement JR Engine
 
-- [x] Implement Judge #6 Lite
+- [x] Implement Judge 6 Lite
 
 - [x] Implement Agent Pattern
 
@@ -433,7 +433,7 @@ See [docs/adr/001-enforcement-first-architecture.md](docs/adr/001-enforcement-fi
 
 ### Medium-term (90 days)
 
-- [ ] Implement ML training for Judge #6
+- [ ] Implement ML training for Judge 6
 
 - [ ] Add LangGraph integration
 

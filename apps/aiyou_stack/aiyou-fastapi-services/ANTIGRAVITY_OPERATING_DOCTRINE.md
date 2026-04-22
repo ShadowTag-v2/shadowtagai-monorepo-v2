@@ -72,7 +72,7 @@ Aligned with AWS Agentic Security Scoping Matrix:
 
 - **Meta-Cognitive Layer (Strategy):** Long-horizon planning, policy selection. (Commanders)
 
-- **Deliberative Layer (Tactics):** Mid-horizon planning (Judge #6), MPC. (Squad Leaders)
+- **Deliberative Layer (Tactics):** Mid-horizon planning (Judge 6), MPC. (Squad Leaders)
 
 - **Reactive Layer (Reflex):** <90ms safety shutdowns and collision avoidance. (Line Agents)
 

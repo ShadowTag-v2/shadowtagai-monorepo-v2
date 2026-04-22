@@ -167,7 +167,7 @@ class CorOrchestrator:
         if self.enable_multi_provider and self.unified_orchestrator:
             # Multi-provider mode: Use UnifiedOrchestrator
             if self.judge:
-                # Execute with Judge #6 validation
+                # Execute with Judge 6 validation
                 # Note: UnifiedOrchestrator handles this internally
                 result = self.judge.enforce(task)
             else:

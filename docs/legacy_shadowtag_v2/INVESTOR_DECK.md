@@ -123,7 +123,7 @@ Latency: 35ms | Cost: $0.0003
 
 ### Beachhead Market
 
-**Military/Defense Procurement Compliance (ATP 5-19)**:
+**Military/Defense Procurement Compliance (Compliance Framework)**:
 
 - Market Size: $800M annually
 - Pain Point: Manual review takes 48+ hours
@@ -225,7 +225,7 @@ Latency: 35ms | Cost: $0.0003
 
 ### Phase 1: Beachhead (Months 1-6)
 
-**Target**: Defense contractors using ATP 5-19
+**Target**: Defense contractors using Compliance Framework
 
 - Marketing: Direct sales to procurement teams
 - Sales Cycle: 30-60 days (pilot → production)
@@ -293,7 +293,7 @@ Latency: 35ms | Cost: $0.0003
 
 **Before Pinkln**:
 
-- Manual ATP 5-19 review: 48+ hours
+- Manual Compliance Framework review: 48+ hours
 - Staff cost: $120/hour × 48 hours = $5,760 per review
 - Annual reviews: 200-500
 - **Total Cost**: $1.15M - $2.88M/year
@@ -415,7 +415,7 @@ Latency: 35ms | Cost: $0.0003
 
 - **Technical Advisor**: Former Google AI researcher
 - **Go-to-Market Advisor**: Ex-VP Sales at LangChain/Anthropic
-- **Compliance Advisor**: Military procurement expert (ATP 5-19)
+- **Compliance Advisor**: Military procurement expert (Compliance Framework)
 
 ### Hiring Plan (12 Months)
 

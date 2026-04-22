@@ -182,7 +182,7 @@ infrastructure/terraform/
 └───────────────────────────────────────────────────────────┘
                           ↓
 ┌───────────────────────────────────────────────────────────┐
-│  STEP 4: Judge #6 Layer 1 (Authenticity Scoring)          │
+│  STEP 4: Judge 6 Layer 1 (Authenticity Scoring)          │
 │  └─> Authenticity Score: 88/100                           │
 │      (Feeds into Layers 2 & 3 for final decision)         │
 └───────────────────────────────────────────────────────────┘
@@ -211,7 +211,7 @@ infrastructure/terraform/
 - 24hr TTL
 - Estimated hit rate: 60-70%
 
-### Judge #6 Layer 1 Integration
+### Judge 6 Layer 1 Integration
 
 **Layer 1: Authenticity & Provenance**
 
@@ -481,7 +481,7 @@ authenticity_score = max(0, base_score - tampering_penalty)
 
 **Scope:**
 
-- Judge #6 Layer 1 training pipeline
+- Judge 6 Layer 1 training pipeline
 - Collect 50k authentic + 10k deepfake samples
 - Fine-tune Gemini 1.5 Flash
 - Deploy inference endpoint

@@ -10,12 +10,12 @@ from tenacity import retry, stop_after_attempt, wait_fixed
 
 def bash_exec(command: str):
     """Executes a bash command safely.
-    Includes Judge #6 Guardrails.
+    Includes Judge 6 Guardrails.
     """
-    # Safety Check: Judge #6 Logic
+    # Safety Check: Judge 6 Logic
     if "rm -rf" in command:
         print(f"🚫 BLOCKED BASH COMMAND: {command}")
-        return {"error": "Blocked by Judge #6: High Risk Destructive Command"}
+        return {"error": "Blocked by Judge 6: High Risk Destructive Command"}
 
     try:
         print(f"⚡ Executing Shell: {command}")

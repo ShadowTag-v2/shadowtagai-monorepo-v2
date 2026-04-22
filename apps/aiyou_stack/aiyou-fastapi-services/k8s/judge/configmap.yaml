@@ -15,7 +15,7 @@ data:
   GEMINI_MODEL_NAME: "gemini-3.1-flash-lite-preview"
   GEMINI_TUNED_MODEL_NAME: "gemini-3.1-flash-lite-preview-tuned"
 
-  # Judge #6 Hybrid Architecture
+  # Judge 6 Hybrid Architecture
   ENABLE_LAYER_1_GEMINI: "true"
   ENABLE_LAYER_2_PYTORCH: "true"
   ENABLE_LAYER_3_RULES: "true"

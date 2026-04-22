@@ -1,7 +1,7 @@
 {
   "name": "@pnkln/universal-copilot",
   "version": "1.0.0",
-  "description": "Compliant multi-LLM code assistant with Judge #6 governance",
+  "description": "Compliant multi-LLM code assistant with Judge 6 governance",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",

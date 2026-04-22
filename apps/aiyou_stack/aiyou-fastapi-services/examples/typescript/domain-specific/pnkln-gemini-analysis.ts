@@ -62,7 +62,7 @@ multiple sources for PNKLN Core Stack™ AM Briefing delivery.
 
 ## Integration
 - **Called By**:
-  - Judge #6 (validation namespace)
+  - Judge 6 (validation namespace)
   - AM Briefing (delivery namespace)
   - Analytics (metrics namespace)
   - Admin (management namespace)

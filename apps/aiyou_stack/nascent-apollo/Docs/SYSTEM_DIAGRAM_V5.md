@@ -13,7 +13,7 @@ graph TD
     end
 
     subgraph "The 6th Arbitrator (ShadowTag-v2JR)"
-        E -->|Proposals| I{Judge #6}
+        E -->|Proposals| I{Judge 6}
         I -->|1. Purpose Check| J[Mission Alignment]
         I -->|2. Reasons Check| K[Evidence & Logic]
         I -->|3. Brakes Check| L[Safety & Compliance]

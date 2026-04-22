@@ -29,7 +29,7 @@ cd validate && python test_latency.py --p99-target-ms=90  # Expected: PASS (exit
 
 ### ✅ N - Narrow Scope
 
-- [x] Single workload: Judge #6 inference
+- [x] Single workload: Judge 6 inference
 - [x] Single SLA: p99 ≤90ms
 - [x] Single platform: GKE Hypercomputer
 - [x] Single constraint: ≤$65K/mo budget
@@ -83,7 +83,7 @@ Brakes (Meet SLA)          → validate/ (Testing harness)
 
 ### Model Preparation
 
-- [ ] Judge #6 model files ready
+- [ ] Judge 6 model files ready
 - [ ] Model size verified (fits in GPU memory)
 - [ ] Model format compatible with vLLM/inference server
 

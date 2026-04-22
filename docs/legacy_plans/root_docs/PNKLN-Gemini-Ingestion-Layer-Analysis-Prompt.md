@@ -6,7 +6,7 @@
 **Target Model:** Gemini 2.0 Pro
 **Analysis Type:** Pre-Production Technical & Strategic Assessment
 **Confidence Target:** ≥60% overall (with section-specific bands)
-**Based on:** Judge #6 Analysis Framework (adapted for collection vs. enforcement)
+**Based on:** Judge 6 Analysis Framework (adapted for collection vs. enforcement)
 
 ---
 
@@ -386,9 +386,9 @@ Recommended Source Additions:
 
 **Confidence Target: ≥60% (can analyze from schema docs)**
 
-### 5.1 Judge #6 Integration Analysis
+### 5.1 Judge 6 Integration Analysis
 
-**Critical addition:** Evaluate how ingestion layer hands off to Judge #6.
+**Critical addition:** Evaluate how ingestion layer hands off to Judge 6.
 
 ```
 Handoff Specification:
@@ -401,9 +401,9 @@ Handoff Specification:
 
 **Questions to answer:**
 
-- Does Judge #6 expect a specific schema? (If ingestion changes output, does Judge break?)
+- Does Judge 6 expect a specific schema? (If ingestion changes output, does Judge break?)
 - Is there schema versioning? (Can ingestion evolve without breaking downstream?)
-- Are there pre-handoff quality gates? (Block bad data from reaching Judge #6)
+- Are there pre-handoff quality gates? (Block bad data from reaching Judge 6)
 - What happens if handoff fails? (Retry logic, dead letter queue, alerts?)
 
 ### 5.2 Integration with Other PNKLN Services
@@ -776,7 +776,7 @@ Pre-Production Checklist:
 [ ] Alerting and monitoring fully configured
 [ ] Disaster recovery plan documented and tested
 [ ] Legal review of crawling practices complete
-[ ] Judge #6 handoff tested end-to-end
+[ ] Judge 6 handoff tested end-to-end
 
 CURRENT STATUS: [X/10 gates cleared]
 BLOCKERS: [List of incomplete gates]
@@ -872,7 +872,7 @@ INVESTOR FRAMING:
 
 **VERSION HISTORY:**
 
-- v1.0: Initial adaptation from Judge #6 framework
+- v1.0: Initial adaptation from Judge 6 framework
 - v2.0: Added failure modes, cost scaling, handoff analysis, confidence bands, moat valuation
 
 **MAINTAINED BY:** PNKLN Core Stack™ Engineering

@@ -12,7 +12,7 @@ Deployment Time: 30-45 minutes (automated)
 ═══════════════════════════════════════════════════════════════════
 
 MISSION:
-Deploy production-ready Judge #6 multi-LLM inference platform on GKE
+Deploy production-ready Judge 6 multi-LLM inference platform on GKE
 to enable high-performance content moderation for regulated markets
 (legal compliance, medical review, financial services).
 
@@ -174,7 +174,7 @@ INFRASTRUCTURE AS CODE:
 DEVELOPMENT TOOLS:
   ✓ pnkln-workbench.ipynb     Jupyter development notebook
                               • 15KB
-                              • Complete Judge #6 implementation
+                              • Complete Judge 6 implementation
                               • Multi-LLM orchestration
                               • Circuit breaker logic
                               • SLA benchmarking
@@ -429,7 +429,7 @@ DEPLOYMENT:
 
 POST-DEPLOYMENT:
   [ ] API keys updated: make update-secrets
-  [ ] Judge #6 deployed: kubectl get pods -n pnkln-inference
+  [ ] Judge 6 deployed: kubectl get pods -n pnkln-inference
   [ ] SLA verified: make sla-check
   [ ] Costs within limits: make cost-estimate
   [ ] Monitoring active: make sla-monitor
@@ -483,7 +483,7 @@ COST COMPLIANCE:
 IMMEDIATE (First Hour):
   1. Deploy infrastructure: ./pnkln-gke-deploy.sh
   2. Update API keys: make update-secrets
-  3. Deploy Judge #6: make deploy-judge
+  3. Deploy Judge 6: make deploy-judge
   4. Verify SLA: make sla-check
 
 SHORT-TERM (First Week):
@@ -536,7 +536,7 @@ COST TRACKING:
 
 v1.0.0 (2025-11-15) - Initial Release
   • GKE Hypercomputer deployment automation
-  • Judge #6 multi-LLM orchestration (5 providers)
+  • Judge 6 multi-LLM orchestration (5 providers)
   • Vertex AI Workbench integration (PyTorch + LangChain)
   • SLA monitoring with automatic kill-switch
   • Terraform IaC support (complete infrastructure)

@@ -43,7 +43,7 @@ Long time! Saw you're at [Company] now - nice move.
 
 Quick question: Is AI governance on your radar? I'm helping defense contractors deploy LLMs without getting their security clearance revoked.
 
-Built a framework based on ATP 5-19 (yes, that ATP 5-19). Turns out military risk management maps perfectly to AI compliance.
+Built a framework based on Compliance Framework (yes, that Compliance Framework). Turns out military risk management maps perfectly to AI compliance.
 
 Worth a 15-min call? I'm doing a limited number of free risk assessments this month.
 
@@ -66,7 +66,7 @@ I've been working on something at the intersection of our SF and JD backgrounds:
 
 Companies are deploying LLMs with ZERO compliance strategy. Then they get hit with GDPR fines or discrimination lawsuits. It's a disaster.
 
-I'm offering a limited number of free AI risk assessments (normally $500). Basically I review your AI deployments and give you an ATP 5-19 risk matrix.
+I'm offering a limited number of free AI risk assessments (normally $500). Basically I review your AI deployments and give you an Compliance Framework risk matrix.
 
 No pitch, just value. 30 min tops. Interested?
 
@@ -87,7 +87,7 @@ I noticed [Company] is [recent AI initiative from their LinkedIn/news].
 
 Quick question: How are you handling compliance/audit trails for those AI decisions? Most companies I talk to are winging it until they get sued.
 
-I built a risk assessment framework based on ATP 5-19 (military risk management). Former SF operator + attorney, so I live at the intersection of compliance and execution.
+I built a risk assessment framework based on Compliance Framework (military risk management). Former SF operator + attorney, so I live at the intersection of compliance and execution.
 
 Would love to share what I'm seeing in the market. No pitch, just a conversation. 15 min this week?
 
@@ -106,7 +106,7 @@ Hey [First Name],
 
 Great meeting you at [TOC event]. Hope the [their Tesla model] is treating you well!
 
-Wanted to run something by you: I'm working on a fleet coordination system for Teslas using the Fleet API. Think "ATP 5-19 risk management for traffic" - real-time V2V communication to avoid accidents.
+Wanted to run something by you: I'm working on a fleet coordination system for Teslas using the Fleet API. Think "Compliance Framework risk management for traffic" - real-time V2V communication to avoid accidents.
 
 Testing it on my Model 3 in Lakeport. Looking for a few beta testers in [their area].
 
@@ -128,7 +128,7 @@ Totally understand if you're swamped.
 
 If AI compliance isn't a priority right now, no worries! But if it is, I'm offering a free 30-min risk assessment (no pitch, just value).
 
-I'll review your AI deployments and give you a risk score based on ATP 5-19. Worth a quick chat?
+I'll review your AI deployments and give you a risk score based on Compliance Framework. Worth a quick chat?
 
 Erik
 ```
@@ -192,7 +192,7 @@ Erik
 
 ### Introduction (2 min)
 
-"Thanks for taking the time. Quick background: I'm a former SF operator turned attorney. I noticed companies are deploying AI with zero risk framework, then getting blindsided by liability. So I adapted ATP 5-19 - the Army's risk management framework - for AI systems."
+"Thanks for taking the time. Quick background: I'm a former SF operator turned attorney. I noticed companies are deploying AI with zero risk framework, then getting blindsided by liability. So I adapted Compliance Framework - the Army's risk management framework - for AI systems."
 
 ### Discovery Questions (10 min)
 
@@ -209,7 +209,7 @@ Erik
 
 ### Solution Overview (8 min)
 
-"What I do is bring ATP 5-19 to AI. Three layers:
+"What I do is bring Compliance Framework to AI. Three layers:
 
 1. Policy layer (Purpose/Reasons/Brakes for every use case)
 2. Enforcement layer (catches edge cases before they hit production)
@@ -243,7 +243,7 @@ AI RISK ASSESSMENT PROPOSAL
 For: [Company Name]
 
 OVERVIEW:
-2-day ATP 5-19 risk assessment of your current AI deployments.
+2-day Compliance Framework risk assessment of your current AI deployments.
 
 DELIVERABLES:
 1. Risk Matrix (CATASTROPHIC → NEGLIGIBLE for each AI use case)
@@ -275,12 +275,12 @@ AI GOVERNANCE IMPLEMENTATION PROPOSAL
 For: [Company Name]
 
 OVERVIEW:
-30-day engagement to implement ATP 5-19 risk framework for your AI systems.
+30-day engagement to implement Compliance Framework risk framework for your AI systems.
 
 DELIVERABLES:
 1. Full ShadowTag-v2JR framework implementation
 2. Custom policy corpus (Purpose/Reasons/Brakes per use case)
-3. Technical integration (Judge #6 deployment)
+3. Technical integration (Judge 6 deployment)
 4. Training for engineering + compliance teams (2-hour sessions)
 5. Playbook documentation (100-page PDF)
 6. 90-day post-launch support (email/Slack)

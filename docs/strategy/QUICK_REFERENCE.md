@@ -38,7 +38,7 @@
 
 - **FL2 pattern**: Strict module contracts, graceful restarts, fallback to old system
 - **Our gain**: Skip 6-12 months of discovering/fixing scaling brittleness
-- **Doctrine fit**: ShadowTag-v2JR demands this (ATP 5-19 risk mitigation)
+- **Doctrine fit**: ShadowTag-v2JR demands this (Compliance Framework risk mitigation)
 
 ### 3. Solo + Cursor Can Ship in <6 Months
 
@@ -54,7 +54,7 @@ Cloudflare doesn't have:
 
 1. **AI-native video hosting** (they're text/web crawlers)
 2. **Engagement optimization** for AI-generated content
-3. **ShadowTag-v2JR operating doctrine** (risk-first, ATP 5-19, objection protocol)
+3. **ShadowTag-v2JR operating doctrine** (risk-first, Compliance Framework, objection protocol)
 
 > "Cloudflare covers the web. ShadowTag-v2 owns AI-native video."
 
@@ -123,10 +123,10 @@ FL2 patterns map directly to military risk doctrine:
 
 | FL2 Feature             | ShadowTag-v2JR Doctrine             | Army Reference     |
 | ----------------------- | ---------------------------- | ------------------ |
-| Strict module contracts | Preventable error mitigation | ATP 5-19 Risk Mgmt |
+| Strict module contracts | Preventable error mitigation | Compliance Framework Risk Mgmt |
 | Graceful restarts       | Operational continuity       | AR 385-10 Safety   |
 | Automated rollback      | Fail-safe by default         | DD Form 2977       |
-| Phased rollout          | Controlled risk exposure     | ATP 5-19           |
+| Phased rollout          | Controlled risk exposure     | Compliance Framework           |
 
 **Alignment Score**: 95%
 

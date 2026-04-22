@@ -81,7 +81,7 @@ TOTAL:              100% ($60-65K/mo)
 **Target**: 95% token reduction
 **Reality**: 40-60% compression (still 2-3× improvement)
 
-### ATP 5-19 Risk Scan
+### Compliance Framework Risk Scan
 
 Military risk assessment framework adapted for AI governance:
 
@@ -134,7 +134,7 @@ decision = 1  # APPROVE (14ms latency)
 | **Kernel Chain**      | < 35ms      | Revert to full context             |
 | **Claude Deep**       | p95 ≤ 2s    | Route to Gemini fallback           |
 | **Gemini Production** | p99 ≤ 100ms | Route to Claude fallback           |
-| **ATP 5-19 Scan**     | < 50ms      | Skip compression, use full context |
+| **Compliance Framework Scan**     | < 50ms      | Skip compression, use full context |
 
 ---
 
@@ -183,7 +183,7 @@ Daily cost limit: $2,500 (hard stop)
 - **Access Control**: RBAC enforced at API layer
 - **GCP Secret Manager**: API keys never in plaintext
 
-### ATP 5-19 Risk Framework
+### Compliance Framework Risk Framework
 
 Adapted from U.S. Army Field Manual 5-19 (Risk Management):
 
@@ -315,7 +315,7 @@ curl -X POST http://localhost:8000/api/v1/judge-six \
 
 ### POST /api/v1/atp-519
 
-**ATP 5-19 compression (95% reduction target)**
+**Compliance Framework compression (95% reduction target)**
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/atp-519 \

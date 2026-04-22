@@ -58,7 +58,7 @@ class TestATP519ScanKernel:
 
 
 class TestJudgeSixClassifyKernel:
-    """Tests for kernel_2: Judge #6 Classifier."""
+    """Tests for kernel_2: Judge 6 Classifier."""
 
     @pytest.mark.asyncio
     async def test_classify_with_violations(self):

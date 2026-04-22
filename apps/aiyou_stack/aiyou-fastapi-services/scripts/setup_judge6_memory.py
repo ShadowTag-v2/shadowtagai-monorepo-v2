@@ -57,7 +57,7 @@ def query_judge6_grounded(project_id: str, location: str, data_store_id: str, qu
     """Queries Gemini with grounding against the Vertex AI Search data store.
     This is the key step that uses the "GenAI App Builder" credits.
     """
-    print("\n--- 2. Querying Judge #6 (Grounded) ---")
+    print("\n--- 2. Querying Judge 6 (Grounded) ---")
     vertexai.init(project=project_id, location=location)
 
     # Define the grounding tool
@@ -84,7 +84,7 @@ def query_judge6_grounded(project_id: str, location: str, data_store_id: str, qu
             tools=[grounding_tool],
             generation_config={"temperature": 0.0},
         )
-        print("\n⚖️  Judge #6 Verdict:")
+        print("\n⚖️  Judge 6 Verdict:")
         print(response.text)
 
         # Print citations if any

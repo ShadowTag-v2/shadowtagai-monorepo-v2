@@ -18,7 +18,7 @@
 - Ensure 100% ITAR/Export compliance and facility clearance oversight.
 
 
-- Drive "Program of Record" inclusion for Judge #6 enforcement.
+- Drive "Program of Record" inclusion for Judge 6 enforcement.
 
 **Profile**:
 

@@ -18,7 +18,7 @@ I've implemented the **complete PNKLN Core Stack™** - all three layers of your
 - AM briefing generation
 - **Status**: Production-ready, GKE-deployable
 
-### ✅ Layer 2: Judge #6 Validation (Complete)
+### ✅ Layer 2: Judge 6 Validation (Complete)
 
 - Hybrid Gemini+PyTorch validation engine
 - ATP 5-19 risk assessment (severity × probability)
@@ -59,7 +59,7 @@ I've implemented the **complete PNKLN Core Stack™** - all three layers of your
              │ feeds into
 ┌────────────▼────────────────────────────────────────────┐
 │  Layer 2: VALIDATION                                    │
-│  → Judge #6 API (port 8001)                            │
+│  → Judge 6 API (port 8001)                            │
 │  → ATP 5-19 risk scoring                               │
 └────────────┬────────────────────────────────────────────┘
              │ validates for
@@ -72,7 +72,7 @@ I've implemented the **complete PNKLN Core Stack™** - all three layers of your
 │  → Neural    │  │  → Energy-based ranking              │
 │    hash      │  │  → No engagement bias                │
 │  → Stego     │  │  → ShadowTag verified content        │
-│  → Blockchain│  │  → Judge #6 pre-validation           │
+│  → Blockchain│  │  → Judge 6 pre-validation           │
 └──────────────┘  └───────────────────────────────────────┘
 ```
 
@@ -90,7 +90,7 @@ export ANTHROPIC_API_KEY="your_key"
 docker-compose up
 
 # Access services
-# - Judge #6: http://localhost:8001
+# - Judge 6: http://localhost:8001
 # - ShadowTag: http://localhost:8002
 # - ShadowTag-v4: http://localhost:8003
 ```
@@ -98,7 +98,7 @@ docker-compose up
 ### Individual Services
 
 ```bash
-# Judge #6 Validation
+# Judge 6 Validation
 python -m uvicorn validation.api:app --port 8001
 
 # ShadowTag Authentication
@@ -130,7 +130,7 @@ kubectl apply -f infrastructure/k8s/cronjob.yaml
 | Component                    | Cost/Unit         | Monthly (at scale)              |
 | ---------------------------- | ----------------- | ------------------------------- |
 | **Ingestion Layer**          | $0.0077/item      | ~$77/month (10k items/day)      |
-| **Judge #6 Validation**      | $0.005/validation | Variable by traffic             |
+| **Judge 6 Validation**      | $0.005/validation | Variable by traffic             |
 | **ShadowTag Authentication** | $0.015/asset      | Variable by uploads             |
 | **ShadowTag-v4 Platform**           | Hosting only      | $50-100/month (compute)         |
 | **Total**                    | -                 | **~$200-300/month** (estimated) |
@@ -151,7 +151,7 @@ kubectl apply -f infrastructure/k8s/cronjob.yaml
 
 ## 🎓 Technical Highlights
 
-### Judge #6 Innovations
+### Judge 6 Innovations
 
 - **Hybrid AI**: Combines PyTorch (fast pre-screening) + Gemini (deep analysis)
 - **ATP 5-19**: Military-grade risk assessment (severity × probability)
@@ -185,7 +185,7 @@ kubectl apply -f infrastructure/k8s/cronjob.yaml
    ↓
 3. Tier Classifier assigns Tier 1/2/3
    ↓
-4. Judge #6 validates (ATP 5-19 risk assessment)
+4. Judge 6 validates (ATP 5-19 risk assessment)
    ↓
 5. If PASSED → ShadowTag authentication
    ├─ Neural fingerprint generation
@@ -227,7 +227,7 @@ kubectl apply -f infrastructure/k8s/cronjob.yaml
 - ✅ Cost: ~$77/month
 - ✅ Quality: 70% relevance, 95% completeness
 
-### Judge #6
+### Judge 6
 
 - ✅ Latency: p99 ≤90ms
 - ✅ Coverage: 98% gate compliance
@@ -252,7 +252,7 @@ kubectl apply -f infrastructure/k8s/cronjob.yaml
 
 ## 🧩 API Endpoints
 
-### Judge #6 (port 8001)
+### Judge 6 (port 8001)
 
 ```
 POST /validate              # Validate single item
@@ -376,7 +376,7 @@ pip install -r requirements.txt
 # Set API key
 export ANTHROPIC_API_KEY="your_key"
 
-# Run Judge #6
+# Run Judge 6
 python -m uvicorn validation.api:app --port 8001 &
 
 # Run ShadowTag
@@ -432,7 +432,7 @@ You now have:
 ### Systems Delivered
 
 - ✅ Gemini Ingestion Layer (12 files)
-- ✅ Judge #6 Validation (2 files)
+- ✅ Judge 6 Validation (2 files)
 - ✅ ShadowTag Authentication (4 files)
 - ✅ ShadowTag-v4 Platform (2 files)
 - ✅ Infrastructure (Docker, K8s, compose)
@@ -451,7 +451,7 @@ You now have:
 
 You asked for:
 
-1. **Judge #6 validation layer** ✅
+1. **Judge 6 validation layer** ✅
 2. **ShadowTag authentication system** ✅
 3. **ShadowTag-v4 content platform** ✅
 

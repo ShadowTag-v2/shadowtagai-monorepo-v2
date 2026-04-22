@@ -155,7 +155,7 @@ core:pnklnJR(doctrine),pnklnCor(unified-cpu),pnklnNS(nervous-system).stack:BDH,R
 #pnklnTag-spec
 pnklnTag:L0-raw-hash(blake3),L1-integrity(cose-signed-sidecar),L2-timeline(merkle-log,public-anchor),L3-license(w3c-vc),L4-relational-attestation(pnt,celestial,airspace).embed:1x1-pixel,audio-steganography,blockchain-receipt.
 #risk-engine
-pnklnYRM:ATP-5-19-based.5-steps:identify,assess,develop-controls,implement,supervise.risk=prob*sev.tiers:RA1(log),RA2(overlay),RA3(isolate),RA4(stop).
+pnklnYRM:Compliance Framework-based.5-steps:identify,assess,develop-controls,implement,supervise.risk=prob*sev.tiers:RA1(log),RA2(overlay),RA3(isolate),RA4(stop).
 #g2m
 spearhead:pnkln-consumer-app.broadhead:pnklnJR-daas-licensing.P0(0-3mo):prototype,10k-waitlist.P1(3-9mo):beta,100k-dau.P2(9-18mo):public,10M-mau.P3(18-30mo):global,50M-mau.
 #legal

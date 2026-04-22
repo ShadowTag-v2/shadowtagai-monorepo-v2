@@ -2,13 +2,13 @@
 
 **Date**: 2025-11-17
 **Branch**: `claude/kernel-chaining-architecture-01XDGPpkmfkiiiNWRNFnkJKR`
-**Impact**: Revolutionary cost and performance improvement for Judge #6
+**Impact**: Revolutionary cost and performance improvement for Judge 6
 
 ---
 
 ## Executive Summary: The Change
 
-### Before Kernel Chaining (Current Judge #6)
+### Before Kernel Chaining (Current Judge 6)
 
 **Architecture**: Monolithic LLM prompt
 
@@ -46,7 +46,7 @@
 
 ## 1. Financial Impact: The Money Difference
 
-### Current Judge #6 Economics
+### Current Judge 6 Economics
 
 **At 100K decisions/month** (current scale):
 
@@ -143,7 +143,7 @@
 
 ### Latency Comparison
 
-**Current Judge #6**:
+**Current Judge 6**:
 
 | Metric | Current | Target | Status |
 | ------ | ------- | ------ | ------ |
@@ -172,7 +172,7 @@
 
 ### Scalability
 
-**Current Judge #6**:
+**Current Judge 6**:
 
 - Bottleneck: Gemini API rate limits (2,000 RPM)
 
@@ -210,7 +210,7 @@
 
 ### Complexity
 
-**Current Judge #6**:
+**Current Judge 6**:
 
 - 1 service: Gemini API caller
 
@@ -238,7 +238,7 @@
 
 ### Maintainability
 
-**Current Judge #6**:
+**Current Judge 6**:
 
 - Single prompt to maintain
 
@@ -266,7 +266,7 @@
 
 ### Failure Modes
 
-**Current Judge #6**:
+**Current Judge 6**:
 
 - Gemini API down → entire system fails
 
@@ -296,13 +296,13 @@
 
 ### Token Usage Breakdown
 
-**Current Judge #6 (Monolithic Prompt)**:
+**Current Judge 6 (Monolithic Prompt)**:
 
 ```
 
 System Prompt: 5,000 tokens
 Decision Context: 10,000 tokens
-ATP 5-19 Rules: 3,000 tokens
+Compliance Framework Rules: 3,000 tokens
 Output: 500 tokens
 ─────────────────────────────
 Total Input: 18,000 tokens
@@ -358,7 +358,7 @@ Kernel 3 (Rules):
 
 - Layer 1 (Gemini Ingestion): $77
 
-- Layer 2 (Judge #6): $1,400-2,600
+- Layer 2 (Judge 6): $1,400-2,600
 
 - Layer 3 (Kosmos): $100-500
 
@@ -400,7 +400,7 @@ Kernel 3 (Rules):
 
 **Phase 2: Shadow Mode** (4-6 weeks):
 
-- Run kernel chain parallel to Judge #6
+- Run kernel chain parallel to Judge 6
 
 - Compare decisions (target: 95%+ agreement)
 
@@ -418,7 +418,7 @@ Kernel 3 (Rules):
 
 **Phase 4: Full Migration** (1-2 weeks):
 
-- Decommission Judge #6
+- Decommission Judge 6
 
 - Kernel chain = primary enforcement
 
@@ -446,7 +446,7 @@ Kernel 3 (Rules):
 
 **Current Bottleneck**:
 
-- Judge #6 costs $0.01/decision
+- Judge 6 costs $0.01/decision
 
 - At 1M decisions/month: $10K/month cost
 
@@ -496,10 +496,10 @@ Kernel 3 (Rules):
 
 **High Risk** ❌:
 
-- **PyTorch model accuracy**: Needs >95% agreement with current Judge #6
+- **PyTorch model accuracy**: Needs >95% agreement with current Judge 6
   - Mitigation: Extensive shadow mode testing (4-6 weeks)
 
-  - Fallback: Revert to Judge #6 if agreement <95%
+  - Fallback: Revert to Judge 6 if agreement <95%
 
 **Medium Risk** ⚠️:
 
@@ -549,7 +549,7 @@ Kernel 3 (Rules):
 
 ## 8. Comparison Table: All Architectures
 
-| Metric                    | Current Judge #6 | Kernel Chaining | Agent-Based (Research)      | Hybrid (Recommended) |
+| Metric                    | Current Judge 6 | Kernel Chaining | Agent-Based (Research)      | Hybrid (Recommended) |
 | ------------------------- | ---------------- | --------------- | --------------------------- | -------------------- |
 | **Cost (100K decisions)** | $1,400-2,600     | **$180-230** ✅ | $1,350-1,750                | $230-280             |
 | **Cost (1M decisions)**   | $10.5K-21K       | **$700-800** ✅ | $3,700-4,500                | $850-1,000           |

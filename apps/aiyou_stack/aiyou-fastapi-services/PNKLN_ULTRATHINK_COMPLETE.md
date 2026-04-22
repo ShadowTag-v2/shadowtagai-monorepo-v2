@@ -153,7 +153,7 @@ result = caller.execute("Research quantum computing")
 
 **Components**:
 
-#### 1. Judge #6 (JR Engine)
+#### 1. Judge 6 (JR Engine)
 
 **File**: `src/pnkln/judge_six.py`
 
@@ -455,7 +455,7 @@ Update Glicko ratings for all functions used.
 
 # Result breakdown:
 # • Gemini orchestrates 4 function calls internally
-# • Judge #6 validates each call
+# • Judge 6 validates each call
 # • ShadowTag watermarks output
 # • NS stores execution context
 # • Glicko-2 updates performance ratings
@@ -642,7 +642,7 @@ pytest src/tests/ -v
 # Test latency (p99 ≤90ms)
 pytest src/tests/test_latency.py -v -s
 
-# Test Judge #6 validation
+# Test Judge 6 validation
 pytest src/tests/test_judge_six.py -v
 
 # Test benchmarks (HumanEval)

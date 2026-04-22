@@ -71,7 +71,7 @@ settings = get_settings()
 
 app = FastAPI(
     title="Pnkln File Search Service",
-    description="Google File Search Integration for Pnkln Core Stack with Judge #6",
+    description="Google File Search Integration for Pnkln Core Stack with Judge 6",
     version="0.1.0",
     lifespan=lifespan,
 )

@@ -15,7 +15,7 @@
 3. [Risk Stratification](#risk-stratification)
 4. [Approval Gates](#approval-gates)
 5. [Audit Trail](#audit-trail)
-6. [Judge #6 Protocol](#judge-6-protocol)
+6. [Judge 6 Protocol](#judge-6-protocol)
 7. [Incident Response](#incident-response)
 
 ---
@@ -421,9 +421,9 @@ gs://{BUCKET}/audit-logs/{YYYY}/{MM}/{DD}/{agent_id}-{task_id}.json
 
 ---
 
-## Judge #6 Protocol
+## Judge 6 Protocol
 
-**Judge #6** is OrangeCreek's (OC-03) enforcement mechanism for test coverage.
+**Judge 6** is OrangeCreek's (OC-03) enforcement mechanism for test coverage.
 
 ### Coverage Requirements
 
@@ -602,4 +602,4 @@ PRB_THRESHOLDS_DEV = {
 - [ATP 5-19 Risk Management](https://armypubs.army.mil/epubs/DR_pubs/DR_a/pdf/web/atp5_19.pdf)
 - [AGENTS.md](./AGENTS.md) - Agent registry and capabilities
 - [PREFLIGHT_CHECKLIST.md](./PREFLIGHT_CHECKLIST.md) - Deployment checklist
-- [Judge #6 Coverage Protocol](./AGENTS.md#judge-6-protocol)
+- [Judge 6 Coverage Protocol](./AGENTS.md#judge-6-protocol)

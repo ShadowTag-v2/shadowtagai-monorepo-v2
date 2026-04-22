@@ -50,7 +50,7 @@ Latency: Medium
 
 - Spot checks
 
-- Judge #6 verdicts
+- Judge 6 verdicts
 
 ### FREE Tier (0% of requests)
 

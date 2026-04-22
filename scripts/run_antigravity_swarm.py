@@ -44,7 +44,7 @@ class AntigravitySwarm:
         self.running = True
         self.governance_log = []
 
-        # Override Judge #6 with Antigravity parameters
+        # Override Judge 6 with Antigravity parameters
         try:
             self.judge = JudgeSix()
         except TypeError:
