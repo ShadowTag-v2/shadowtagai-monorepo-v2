@@ -1,51 +1,62 @@
-# UphillSnowball ANE-Optimized OrbStack Container
-# Architecture: linux/arm64 (Apple Silicon Native)
-# Role: Glass House Sentinel (Relay + Tree-Sitter Pruning Engine)
+# Dockerfile — The Sealed Apple Box
+#
+# Multi-stage build:
+#   Stage 1 (rust-builder): Compile ast-grep (sg) from Rust source
+#   Stage 2 (cpp-builder):  Compile Midas C++ IPC client
+#   Stage 3 (runtime):      Python runtime with all dependencies
+#
+# The final image contains:
+#   - ast-grep (sg) binary for zero-latency AST mitigation
+#   - Midas C++ binary for ZMQ IPC quant operations
+#   - Python Temporal workers for durable execution
+#   - Playwright/Chromium for Scrapling web automation
 
-FROM ubuntu:24.04
+# ── Stage 1: ast-grep from Rust ────────────────────────────────
+FROM rust:1.78-slim AS rust-builder
+RUN cargo install ast-grep --locked
 
-ENV DEBIAN_FRONTEND=noninteractive
+# ── Stage 2: Midas C++ from GCC ───────────────────────────────
+FROM gcc:13 AS cpp-builder
+RUN apt-get update && apt-get install -y libzmq3-dev nlohmann-json3-dev && rm -rf /var/lib/apt/lists/*
+COPY src/native/ /usr/src/native/
+WORKDIR /usr/src/native/core
+RUN g++ -std=c++17 -O2 -o /usr/src/midas_ipc midas_ipc_client.cpp -lzmq
 
-# 1. Install System Dependencies & Pruning Prerequisites
-# OrbStack handles network and mounts via VirtioFS natively.
-RUN apt-get update && apt-get install -y \
-    curl \
-    git \
-    build-essential \
-    python3 \
-    python3-pip \
-    python3-venv \
-    nodejs \
-    npm \
-    clang \
-    && rm -rf /var/lib/apt/lists/*
+# ── Stage 3: Python Runtime ───────────────────────────────────
+FROM python:3.12-slim
 
-WORKDIR /opt/uphillsnowball
+# System dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      curl jq ffmpeg libnss3 libzmq5 && \
+    rm -rf /var/lib/apt/lists/*
 
-# 2. Setup Node.js Relay & Context Pruning (Tree-sitter WASM)
-# Tree-sitter CLI installed globally for rapid AST sharding
-RUN npm install -g pnpm pm2 tree-sitter-cli
+# Copy compiled binaries from builder stages
+COPY --from=rust-builder /usr/local/cargo/bin/sg /usr/local/bin/sg
+COPY --from=cpp-builder /usr/src/midas_ipc /usr/local/bin/midas_ipc
 
-# Copy Node manifests (assuming they exist or will be generated)
-COPY package*.json ./
-RUN if [ -f package.json ]; then npm install; fi
+# Python dependencies
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt && \
+    playwright install chromium --with-deps
 
-# 3. Setup Agentic Python Core (Akit/Jetski)
-RUN python3 -m venv /opt/uphillsnowball/.venv
-ENV PATH="/opt/uphillsnowball/.venv/bin:$PATH"
+# Application code
+COPY . /app/
 
-COPY requirements.txt* ./
-RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
+# Runtime configuration
+ENV PORT=8080
+ENV HEALTH_PORT=8080
+ENV METRICS_PORT=9090
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
 
-# 4. Copy the Core Intelligence Code
-COPY . /opt/uphillsnowball/
+EXPOSE 8080
+EXPOSE 9090
 
-# 5. Export Communication Ports
-# 3000: Node.js Antigravity WebSocket Relay
-# 53410: Language Server Orchestrator (Jetski)
-EXPOSE 3000
-EXPOSE 53410
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+    CMD curl -f http://localhost:8080/healthz || exit 1
 
-# 6. Ignite the Triad
-# Boot the central nervous system via PM2 to ensure automatic restart if an agent crashes the thread
-CMD ["pm2-runtime", "start", "relay.js", "--name", "uphillsnowball-relay"]
+# Start Temporal worker
+CMD ["python", "-m", "src.worker"]
