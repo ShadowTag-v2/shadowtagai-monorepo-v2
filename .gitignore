@@ -120,6 +120,7 @@ launchd-sync*
 # --- Next.js / Webpack Caches ---
 **/.next/
 **/.nuxt/
+**/public/_next/
 
 # --- Image/Animation Artifacts ---
 **/*.gif

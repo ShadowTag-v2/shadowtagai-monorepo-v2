@@ -1,7 +1,6 @@
 {
   "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python",
   "editor.formatOnSave": true,
-
   "files.exclude": {
     "**/archive/**": true,
     "**/node_modules/**": true,
@@ -39,7 +38,6 @@
     "**/.cloud-workstations/**": true,
     "**/.benchmarks/**": true
   },
-
   "search.exclude": {
     "**/archive/**": true,
     "**/node_modules/**": true,
@@ -62,7 +60,6 @@
     "**/playwright-report/**": true,
     "**/test-results/**": true
   },
-
   "python.analysis.exclude": [
     "**/archive",
     "**/node_modules",
@@ -78,13 +75,11 @@
     "**/tools/google-cloud-dart",
     "**/tools/dio"
   ],
-
   "python.testing.autoTestDiscoverOnSaveEnabled": false,
   "python.languageServer": "None",
   "[python]": {
     "editor.defaultFormatter": "astral-sh.ruff"
   },
-
   "java.server.launchMode": "LightWeight",
   "java.autobuild.enabled": false,
   "java.completion.enabled": false,
@@ -104,7 +99,6 @@
     "**/tools/java-firestore/**",
     "**/tools/google-cloud-dart/**"
   ],
-
   "dart.analysisExcludedFolders": [
     "archive",
     "external_repos",
@@ -119,15 +113,12 @@
     "tools/PureMac",
     "node_modules"
   ],
-
   "bazel.enableCodeLens": false,
   "bazel.disableUpdateCheck": true,
   "gradle.autoDetect": "off",
-
   "antigravity.dangerMode": "auto",
   "cmake.configureOnOpen": false,
   "git.detectSubmodulesLimit": 20,
-
   "workbench.trustedDomains.promptInTrustedWorkspace": true,
   "workbench.externalUriOpeners": {
     "accounts.google.com": "default"
@@ -145,24 +136,25 @@
     "https://pagespeed.web.dev",
     "https://notebooklm.google.com"
   ],
-
   "update.mode": "manual",
   "extensions.autoUpdate": "onlyEnabledExtensions",
   "cloudcode.enableExperiments": false,
   "cloudcode.enableTelemetry": false,
   "cloudcode.autoDependencies": "off",
   "cloudcode.customGcloudPath": "/Users/pikeymickey/google-cloud-sdk/bin/gcloud",
-
-  // Cloud Code → Cloud Run integration
   "cloudcode.project": "shadowtag-omega-v4",
   "cloudcode.cloudRun.region": "us-central1",
-
   "vim.enableNeovim": false,
   "geminicodeassist.project": "shadowtag-omega-v4",
-
   "todo-tree.general.debug": false,
   "sqltools.autoConnectTo": [],
   "sqltools.disableReleaseNotifications": true,
-
-  "cmake.configureOnOpen": false
+  "files.watcherExclude": {
+    "**/.venv/**": true,
+    "**/.git/objects/**": true,
+    "**/node_modules/**": true,
+    "**/.lancedb_data/**": true,
+    "**/data/lancedb/**": true,
+    "**/drive_corpus/**": true
+  }
 }
