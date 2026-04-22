@@ -1,0 +1,71 @@
+/**
+ * @fileoverview Firestore Composite Indexes for Verb Ledger Queries
+ *
+ * Defines indexes needed for War Room analytical queries.
+ * Deploy with: firebase deploy --only firestore:indexes
+ *
+ * @see verb_ledger.py — Data model
+ * @see WAR_ROOM_ARCHITECTURE.md — Query patterns
+ */
+
+{
+  "indexes": [
+    {
+      "collectionGroup": "verb_ledger",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "firm_id", "order": "ASCENDING" },
+        { "fieldPath": "timestamp", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "verb_ledger",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "session_id", "order": "ASCENDING" },
+        { "fieldPath": "timestamp", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "murder_board_sessions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "firm_id", "order": "ASCENDING" },
+        { "fieldPath": "started_at", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "murder_board_sessions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "started_at", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "kovel_billing_telemetry",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "firm_id", "order": "ASCENDING" },
+        { "fieldPath": "timestamp", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "brief_exports",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "firm_id", "order": "ASCENDING" },
+        { "fieldPath": "expires_at", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "brief_exports",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "firm_id", "order": "ASCENDING" },
+        { "fieldPath": "generated_at", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
