@@ -11,9 +11,8 @@ Run monthly as part of DR drill schedule.
 """
 
 import subprocess
-import json
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 
 
 PROJECT = "shadowtag-omega-v4"
@@ -61,7 +60,7 @@ def drill_report(backups: list[str], valid: int, invalid: int):
     """Print drill results."""
     print("\n" + "=" * 60)
     print("🏋️  FIRESTORE BACKUP DRILL REPORT")
-    print(f"   Date: {datetime.now(timezone.utc).isoformat()}")
+    print(f"   Date: {datetime.now(UTC).isoformat()}")
     print(f"   Total backups found: {len(backups)}")
     print(f"   Valid: {valid}")
     print(f"   Invalid: {invalid}")
@@ -74,7 +73,7 @@ def main():
     print("FIRESTORE BACKUP RESTORE DRILL")
     print(f"Project: {PROJECT}")
     print(f"Database: {DATABASE}")
-    print(f"Date: {datetime.now(timezone.utc).isoformat()}")
+    print(f"Date: {datetime.now(UTC).isoformat()}")
     print("=" * 60)
 
     backups = list_recent_backups()

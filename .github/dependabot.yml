@@ -79,6 +79,23 @@ updates:
           - "patch"
     open-pull-requests-limit: 3
 
+  # Terraform — IaC Catalog
+  - package-ecosystem: "terraform"
+    directory: "/terraform/infrastructure-catalog-gcp-cloud-run"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "terraform"
+      - "infrastructure"
+    groups:
+      terraform-providers:
+        update-types:
+          - "minor"
+          - "patch"
+    open-pull-requests-limit: 3
+
   # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"

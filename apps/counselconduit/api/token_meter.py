@@ -7,11 +7,11 @@ Used by the client-facing portal to show remaining quota.
 from __future__ import annotations
 
 import logging
-import time
 
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, Header
 from pydantic import BaseModel
 from typing import Annotated
+from datetime import UTC
 
 logger = logging.getLogger("counselconduit.token_meter")
 
@@ -81,9 +81,9 @@ async def token_meter(
         status = "ok"
 
     # Calculate next daily reset (midnight UTC)
-    from datetime import datetime, timezone, timedelta
+    from datetime import datetime, timedelta
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     reset_at = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
 
     return TokenMeterResponse(

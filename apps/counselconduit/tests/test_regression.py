@@ -6,7 +6,6 @@ Run with: pytest tests/test_regression.py -v --base-url=<url>
 
 import os
 
-import pytest
 import requests
 
 BASE_URL = os.environ.get(
