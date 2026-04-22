@@ -67,7 +67,7 @@ class SplinterDistributionMoat:
         task_body = {
             "http_request": {
                 "http_method": tasks_v2.HttpMethod.POST,
-                "url": f"https://api.uphillsnowball.io/v5/media/syndicate/linkedin",
+                "url": "https://api.uphillsnowball.io/v5/media/syndicate/linkedin",
                 "body": json.dumps(
                     {"narrative": narrative, "alert": alert}
                 ).encode(),

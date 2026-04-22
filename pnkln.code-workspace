@@ -13,6 +13,8 @@
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "python.envFile": "${workspaceFolder}/.env",
     "python.languageServer": "None",
+    "ty.pythonPath": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "ty.pythonVersion": "3.14",
 
     "cmake.python.executable": "${workspaceFolder}/.venv/bin/python",
     "cmake.configureSettings": {
