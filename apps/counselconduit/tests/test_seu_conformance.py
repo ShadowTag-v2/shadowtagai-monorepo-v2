@@ -16,11 +16,11 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from api.empathy_templates import (  # noqa: E402
-    EmpathyFingerprint,
     _CHECKIN_TEMPLATES,
     _EMPATHY_OPENERS,
     _ONE_MORE_THING,
     _WARM_CLOSES,
+    EmpathyFingerprint,
     fingerprint_output,
     get_checkin,
     get_empathy_opener,
@@ -29,7 +29,6 @@ from api.empathy_templates import (  # noqa: E402
     should_checkin,
     wrap_seu_prompt,
 )
-
 
 # ── Empathy Template Tests ────────────────────────────────────────────────
 

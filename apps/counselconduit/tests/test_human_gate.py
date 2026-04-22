@@ -12,13 +12,13 @@ Tests the full lifecycle:
 from __future__ import annotations
 
 import pytest
-from fastapi.testclient import TestClient
 from fastapi import FastAPI
+from fastapi.testclient import TestClient
 
 from apps.counselconduit.api.human_gate import (
-    router,
-    register_pending_gate,
     _pending_gates,
+    register_pending_gate,
+    router,
 )
 
 

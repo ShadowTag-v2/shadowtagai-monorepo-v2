@@ -7,11 +7,11 @@ Used by the client-facing portal to show remaining quota.
 from __future__ import annotations
 
 import logging
+from datetime import UTC
+from typing import Annotated
 
 from fastapi import APIRouter, Header
 from pydantic import BaseModel
-from typing import Annotated
-from datetime import UTC
 
 logger = logging.getLogger("counselconduit.token_meter")
 

@@ -8,6 +8,27 @@ interface CheckoutRequestBody {
   coupon?: string;
 }
 
+/* Item 19: In-memory rate limiter (10 req/min per IP) */
+const rateMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 10;
+const RATE_WINDOW_MS = 60_000;
+const ALLOWED_ORIGINS = [
+  "https://kovelai.web.app",
+  "https://kovelai.com",
+  "http://localhost:3000",
+];
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return false;
+  }
+  entry.count++;
+  return entry.count > RATE_LIMIT;
+}
+
 /**
  * POST /api/checkout
  *
@@ -18,6 +39,24 @@ interface CheckoutRequestBody {
  */
 export async function POST(request: NextRequest) {
   try {
+    /* Item 19: Rate limit by IP */
+    const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    if (isRateLimited(clientIp)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
+    /* Item 19: Origin validation */
+    const origin = request.headers.get("origin");
+    if (origin && !ALLOWED_ORIGINS.includes(origin)) {
+      return NextResponse.json(
+        { error: "Forbidden origin" },
+        { status: 403 }
+      );
+    }
+
     const body = (await request.json()) as CheckoutRequestBody;
     const { tier, coupon } = body;
 
@@ -31,7 +70,7 @@ export async function POST(request: NextRequest) {
 
     const stripe = getStripe();
     const priceId = STRIPE_PRICES[tier].monthly;
-    const origin = request.headers.get("origin") || "https://kovelai.web.app";
+    const requestOrigin = origin || "https://kovelai.web.app";
 
     // Build checkout session params
     // Item 9: Also accept coupon from URL query params
@@ -47,8 +86,8 @@ export async function POST(request: NextRequest) {
           quantity: 1,
         },
       ],
-      success_url: `${origin}/?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/#pricing`,
+      success_url: `${requestOrigin}/?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${requestOrigin}/#pricing`,
       // Item 8: Billing portal return URL
       customer_creation: "always",
       metadata: {
