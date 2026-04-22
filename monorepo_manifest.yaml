@@ -211,15 +211,15 @@ highest_value_opportunities:
   - KovelAI (formerly CounselConduit) is the Google Cloud billing gateway product. uphillsnowball is the independent local R&D lab. They remain completely detached.
 
 hardened_state:
-  version: "10.2"
-  timestamp: "2026-04-22T20:35:00Z"
+  version: "10.3"
+  timestamp: "2026-04-23T05:13:00Z"
   ci_python: "3.13"
   venv_primary: "3.14.3"
   venv_secondary: "3.14.3"
-  dotnet_sdk: "10.0.106"
+  dotnet_sdk: "10.0.202"
   dotnet_target_framework: "net10.0"
   counselconduit_version: "3.2.0"
-  tests_passed: "68"
+  tests_passed: "212"
   tests_e2e_skipped: "5 (live Cloud Run — expected failures)"
   e2e_tests: "tests/e2e/test_counselconduit_e2e.py"
   lighthouse_perf: "93+"
@@ -239,7 +239,7 @@ hardened_state:
   scheduler_jobs: 2
   dashboards: 2
   api_modules: 23
-  risk_register_count: 68
+  risk_register_count: 71
   cloud_armor_policy: "apps/counselconduit/cloud_armor_policy.yaml"
   fleet_vanguard_version: "11.0"
   secrets_doctrine: "secrets_manager_doctrine"

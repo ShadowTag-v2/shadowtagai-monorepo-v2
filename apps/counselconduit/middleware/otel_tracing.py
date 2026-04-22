@@ -45,7 +45,7 @@ class _NoOpSpan:
     def __enter__(self) -> _NoOpSpan:
         return self
 
-    def __exit__(self, *args: Any) -> None:  # noqa: vulture — interface contract
+    def __exit__(self, *_args: Any) -> None:  # vulture: interface contract
         pass
 
     def set_attribute(self, key: str, value: Any) -> None:
@@ -54,7 +54,7 @@ class _NoOpSpan:
     def set_status(self, status: Any, description: str = "") -> None:
         pass
 
-    def add_event(self, name: str, attributes: dict[str, Any] | None = None) -> None:  # noqa: vulture — OTel interface
+    def add_event(self, name: str, _attributes: dict[str, Any] | None = None) -> None:  # vulture: OTel interface
         pass
 
     def record_exception(self, exc: Exception) -> None:
@@ -64,7 +64,7 @@ class _NoOpSpan:
 class _NoOpTracer:
     """No-op tracer for when OTel is not installed."""
 
-    def start_as_current_span(self, name: str, **kwargs: Any) -> _NoOpSpan:  # noqa  # vulture — OTel interface
+    def start_as_current_span(self, name: str, **_kwargs: Any) -> _NoOpSpan:  # vulture: OTel interface
         return _NoOpSpan()
 
 
