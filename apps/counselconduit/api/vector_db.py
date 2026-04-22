@@ -16,6 +16,6 @@ schema = pa.schema(
 )
 
 
-def ingest_document(workspace_id: int, text: str):
+def ingest_document(_workspace_id: int, _text: str):
     """Ingest a document into the vector database."""
     pass  # Implementation follows in Phase 2

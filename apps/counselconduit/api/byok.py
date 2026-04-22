@@ -15,7 +15,7 @@ Security model:
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from typing import Any
 
 from fastapi import APIRouter, status
@@ -43,7 +43,7 @@ class BYOKKeyRequest(BaseModel):
 
     @field_validator("api_key")
     @classmethod
-    def validate_key_format(cls, v: str) -> str:
+    def validate_key_format(cls, v: str) -> str:  # noqa: vulture — @classmethod requires cls
         """Basic format validation."""
         if v.startswith("sk-") or v.startswith("AIza") or len(v) > 10:
             return v
@@ -78,7 +78,7 @@ class BYOKKeyListResponse(BaseModel):
 async def register_key(request: BYOKKeyRequest) -> BYOKKeyStatus:
     """Register a BYOK API key for a firm."""
     masked = f"{request.api_key[:4]}...{request.api_key[-6:]}"
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
     logger.info(
         "BYOK key registered: firm=%s provider=%s label=%s",
         request.firm_id,
@@ -115,5 +115,5 @@ async def validate_key(firm_id: str, provider: str) -> dict[str, Any]:
         "firm_id": firm_id,
         "provider": provider,
         "valid": True,
-        "validated_at": datetime.now(timezone.utc).isoformat(),
+        "validated_at": datetime.now(UTC).isoformat(),
     }

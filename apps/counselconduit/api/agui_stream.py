@@ -21,14 +21,14 @@ import time
 import uuid
 from collections.abc import AsyncGenerator
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
-from enum import Enum
+from datetime import datetime, timezone, UTC
+from enum import Enum, StrEnum
 from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
-class AGUIEventType(str, Enum):
+class AGUIEventType(StrEnum):
     """AG-UI SSE event types per the AG-UI protocol spec."""
 
     RUN_STARTED = "run_started"
@@ -53,7 +53,7 @@ class AGUIEvent:
     data: dict[str, Any] = field(default_factory=dict)
     event_id: str = field(default_factory=lambda: str(uuid.uuid4()))
     timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+        default_factory=lambda: datetime.now(UTC).isoformat()
     )
 
     def to_sse(self) -> str:

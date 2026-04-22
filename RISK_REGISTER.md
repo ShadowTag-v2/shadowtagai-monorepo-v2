@@ -1,4 +1,4 @@
-# RISK_REGISTER — v10.1
+# RISK_REGISTER — v10.2
 
 > Operational risks tracked as part of the sovereign monorepo governance.
 > Reviewed on each version bump. Mitigations are enforced, not advisory.
@@ -204,3 +204,15 @@
 - **Severity**: 🟡 Medium
 - **Status**: RESOLVED
 - **Description**: `terraform/.pre-commit-config.yaml` pinned `pre-commit-terraform` to `v1.96.5` which is a non-existent tag (latest is `v1.105.0`). This caused `pre-commit` cache to fail with `pathspec 'v1.96.5' did not match any file(s) known to git`, blocking all commits. Additionally, 14 CounselConduit files used `from datetime import UTC` which is Python 3.11+ only — system Python 3.9 caused `ImportError` in test collection. **Mitigation**: (1) Pinned to `v1.105.0` (verified via GitHub API). (2) Synced gitleaks version to `v8.30.0` matching root config. (3) Replaced all `datetime.UTC` with `datetime.timezone.utc` (works on all Python versions). (4) Pre-commit cache purged. (5) E2E tests adapted to match live API behavior (Cloud Run CORS max-age=600, flexible health status).
+
+## Risk #70: CLOUDSDK_PYTHON Pointed at System Python 3.9 — gcloud CLI Broken
+- **Type**: DevOps / Toolchain
+- **Severity**: 🟠 High
+- **Status**: RESOLVED
+- **Description**: `~/.zshenv` exported `CLOUDSDK_PYTHON="python3"` which resolved to macOS system Python 3.9 via Xcode. Google Cloud SDK 565.0.0 requires Python 3.10+. All `gcloud` commands failed with `SyntaxError` on `match/case` statements. **Remediation**: Changed `~/.zshenv` to `CLOUDSDK_PYTHON="/opt/homebrew/bin/python3.13"`. Ran `gcloud components reinstall` to rebuild component state. Verified with `gcloud --version` and `gcloud config get-value project`. gcloud auth tokens are expired — user must run `gcloud auth login` in native terminal.
+
+## Risk #71: python-dotenv 1.0.1 CVE-2026-28684 — Transitive Dependency Vulnerability
+- **Type**: Security / Supply Chain
+- **Severity**: 🟡 Medium
+- **Status**: RESOLVED
+- **Description**: `pip-audit` flagged `python-dotenv==1.0.1` with CVE-2026-28684. It's a transitive dependency from uvicorn/fastapi, not directly pinned. **Remediation**: Added explicit `python-dotenv>=1.2.2` pin to `apps/counselconduit/requirements.txt` to force the patched version.

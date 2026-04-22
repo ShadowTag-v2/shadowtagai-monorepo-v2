@@ -16,7 +16,7 @@ from __future__ import annotations
 import json
 import logging
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, UTC
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, status
@@ -163,7 +163,7 @@ async def request_account_deletion(
         from api.uuid7 import uuid7_str  # type: ignore[no-redef]
 
     receipt_id = uuid7_str()
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     deletion_date = (now + timedelta(days=30)).isoformat()
 
     # #11: Wire to Firestore soft-delete
@@ -418,7 +418,7 @@ async def execute_hard_delete(payload: dict[str, Any]) -> dict[str, str]:
         await gdpr_ref.update(
             {
                 "status": "completed",
-                "completed_at": datetime.now(timezone.utc).isoformat(),
+                "completed_at": datetime.now(UTC).isoformat(),
             }
         )
 
@@ -510,7 +510,7 @@ async def execute_data_export(payload: dict[str, Any]) -> dict[str, Any]:
         "export_id": export_id,
         "firm_id": firm_id,
         "format": fmt,
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "collections": {},
     }
 

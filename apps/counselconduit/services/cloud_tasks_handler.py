@@ -15,13 +15,13 @@ from __future__ import annotations
 import json
 import logging
 from dataclasses import dataclass
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
-class NotificationType(str, Enum):
+class NotificationType(StrEnum):
     """Types of push notifications from Cloud Tasks."""
 
     TASK_COMPLETED = "task_completed"

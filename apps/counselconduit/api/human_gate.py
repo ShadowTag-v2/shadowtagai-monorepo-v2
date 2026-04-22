@@ -12,7 +12,7 @@ Security: Requires firm-scoped JWT + Judge6 authorization gate.
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from typing import Annotated
 
 from fastapi import APIRouter, Header, HTTPException
@@ -62,7 +62,7 @@ def register_pending_gate(process_id: str, metadata: dict | None = None) -> None
     is reached.
     """
     _pending_gates[process_id] = {
-        "registered_at": datetime.now(timezone.utc).isoformat(),
+        "registered_at": datetime.now(UTC).isoformat(),
         "metadata": metadata or {},
         "status": "pending",
     }
@@ -82,7 +82,7 @@ def resolve_pending_gate(process_id: str, decision: str) -> bool:
     gate = _pending_gates.get(process_id)
     if gate and gate["status"] == "pending":
         gate["status"] = decision
-        gate["resolved_at"] = datetime.now(timezone.utc).isoformat()
+        gate["resolved_at"] = datetime.now(UTC).isoformat()
         return True
     return False
 
@@ -152,7 +152,7 @@ async def decide_human_gate(
         process_id=body.process_id,
         decision=body.decision,
         event_fired=event_name,
-        timestamp=datetime.now(timezone.utc).isoformat(),
+        timestamp=datetime.now(UTC).isoformat(),
         reviewer=x_user_id,
     )
 
