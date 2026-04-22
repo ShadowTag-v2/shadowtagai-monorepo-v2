@@ -89,8 +89,8 @@ class TestTokenBudgetChaos:
         """When tenant exceeds quota, should degrade to cheapest model."""
         from apps.counselconduit.api.model_router import (
             ModelRequest,
-            _tenant_quotas,
             TenantQuota,
+            _tenant_quotas,
             select_model,
         )
 

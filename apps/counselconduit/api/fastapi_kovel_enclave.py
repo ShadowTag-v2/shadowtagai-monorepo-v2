@@ -70,6 +70,7 @@ try:
     from apps.counselconduit.api.byok import router as byok_router
     from apps.counselconduit.api.cloud_tasks_gdpr import router as tasks_router
     from apps.counselconduit.api.cloud_tasks_gdpr_handler import router as gdpr_handler_router
+    from apps.counselconduit.api.deprecation_middleware import DeprecationMiddleware
     from apps.counselconduit.api.dispatch_router import router as dispatch_router
     from apps.counselconduit.api.gdpr import router as gdpr_router
     from apps.counselconduit.api.kovel_attestation import router as attestation_router
@@ -77,20 +78,20 @@ try:
     from apps.counselconduit.api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware
     from apps.counselconduit.api.middleware.prompt_guard import PromptGuardMiddleware
     from apps.counselconduit.api.middleware.token_budget import TokenBudgetMiddleware
+    from apps.counselconduit.api.provider_health import router as provider_health_router
     from apps.counselconduit.api.resend_webhook import router as resend_router
     from apps.counselconduit.api.sandbox_router import SandboxMiddleware
+    from apps.counselconduit.api.session_pin_monitor import cleanup_session_pins_firestore
     from apps.counselconduit.api.stripe_connect_onboarding import router as connect_onboarding_router
     from apps.counselconduit.api.stripe_connect_webhook import router as connect_webhook_router
-    from apps.counselconduit.api.vent_mode import router as vent_router
     from apps.counselconduit.api.token_meter import router as token_meter_router
-    from apps.counselconduit.api.session_pin_monitor import cleanup_session_pins_firestore
-    from apps.counselconduit.api.provider_health import router as provider_health_router
-    from apps.counselconduit.api.deprecation_middleware import DeprecationMiddleware
+    from apps.counselconduit.api.vent_mode import router as vent_router
 except ImportError:
     from api.app_error import AppError, app_error_handler, unhandled_error_handler  # type: ignore[no-redef]
     from api.byok import router as byok_router  # type: ignore[no-redef]
     from api.cloud_tasks_gdpr import router as tasks_router  # type: ignore[no-redef]
     from api.cloud_tasks_gdpr_handler import router as gdpr_handler_router  # type: ignore[no-redef]
+    from api.deprecation_middleware import DeprecationMiddleware  # type: ignore[no-redef]
     from api.dispatch_router import router as dispatch_router  # type: ignore[no-redef]
     from api.gdpr import router as gdpr_router  # type: ignore[no-redef]
     from api.kovel_attestation import router as attestation_router  # type: ignore[no-redef]
@@ -98,14 +99,13 @@ except ImportError:
     from api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware  # type: ignore[no-redef]
     from api.middleware.prompt_guard import PromptGuardMiddleware  # type: ignore[no-redef]
     from api.middleware.token_budget import TokenBudgetMiddleware  # type: ignore[no-redef]
+    from api.provider_health import router as provider_health_router  # type: ignore[no-redef]
     from api.resend_webhook import router as resend_router  # type: ignore[no-redef]
     from api.sandbox_router import SandboxMiddleware  # type: ignore[no-redef]
     from api.stripe_connect_onboarding import router as connect_onboarding_router  # type: ignore[no-redef]
     from api.stripe_connect_webhook import router as connect_webhook_router  # type: ignore[no-redef]
-    from api.vent_mode import router as vent_router  # type: ignore[no-redef]
     from api.token_meter import router as token_meter_router  # type: ignore[no-redef]
-    from api.provider_health import router as provider_health_router  # type: ignore[no-redef]
-    from api.deprecation_middleware import DeprecationMiddleware  # type: ignore[no-redef]
+    from api.vent_mode import router as vent_router  # type: ignore[no-redef]
 
 # ── Structured Logging ─────────────────────────────────────────────────────
 
