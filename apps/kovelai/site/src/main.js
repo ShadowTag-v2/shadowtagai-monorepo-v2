@@ -90,6 +90,44 @@ const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
 if (navToggle && navLinks) {
   navToggle.addEventListener('click', () => {
-    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+    const isOpen = navLinks.style.display === 'flex';
+    navLinks.style.display = isOpen ? 'none' : 'flex';
+    navToggle.textContent = isOpen ? '☰' : '✕';
   });
+  // Close nav on link click (mobile)
+  navLinks.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      navLinks.style.display = 'none';
+      navToggle.textContent = '☰';
+    });
+  });
+}
+
+// ═══ SCROLL ENTRANCE OBSERVER ═══
+const entranceEls = document.querySelectorAll('.scroll-entrance');
+if (entranceEls.length) {
+  const entranceObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('entered');
+          entranceObserver.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.08, rootMargin: '0px 0px -40px 0px' },
+  );
+  entranceEls.forEach((el) => entranceObserver.observe(el));
+}
+
+// ═══ A/B HEADLINE TEST ═══
+const hero = document.getElementById('heroHeadline');
+if (hero) {
+  const variants = {
+    a: `Every Google Search Your Client Makes Is a Loaded Gun Pointed at Your Case.<br/><span class="accent">KovelAI Disarms It — And Bills For the Protection.</span>`,
+    b: `After <em>Heppner</em>, Your Clients' Browser History Is Opposing Counsel's Exhibit A.<br/><span class="accent">KovelAI Makes It Disappear — Under Privilege.</span>`,
+  };
+  const pick = Math.random() < 0.5 ? 'a' : 'b';
+  hero.innerHTML = variants[pick];
+  hero.dataset.variant = pick;
 }

@@ -9,6 +9,7 @@ from __future__ import annotations
 import pytest
 
 from apps.counselconduit.api.model_router import (
+    ModelRequest,
     _dispatch_metrics,
     _fallback_hits,
     _session_pins,
@@ -16,9 +17,7 @@ from apps.counselconduit.api.model_router import (
     classify_prompt,
     dispatch_request,
     select_model,
-    ModelRequest,
 )
-
 
 # ── Fixtures ──────────────────────────────────────────────────────────────
 
