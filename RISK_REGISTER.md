@@ -149,3 +149,9 @@
 - **Severity**: 🟢 Low
 - **Status**: RESOLVED
 - **Description**: OWASP ZAP baseline scan flagged 3 warnings: (1) WARN-10015 Cache-control directives — API responses lacked `no-store`. (2) WARN-10049 Storable/cacheable content. (3) WARN-90004 Missing Cross-Origin-Resource-Policy header. **Resolution**: Added `Cache-Control: no-store, no-cache, must-revalidate, private`, `Pragma: no-cache`, `Cross-Origin-Resource-Policy: same-origin`, and `Cross-Origin-Opener-Policy: same-origin` to `SecurityHeadersMiddleware`. Also added `/robots.txt` and `/favicon.ico` root routes to eliminate 404 findings.
+
+## Risk #61: IaC Catalog Coverage — State Bucket + WIF Bootstrap Required
+- **Type**: Infrastructure / IaC
+- **Severity**: 🟡 Medium
+- **Status**: MITIGATED
+- **Description**: Terraform Catalog v1.0.0 (`terraform-catalog-v1.0.0` tag) deployed with 10 catalog modules, Terragrunt prod/staging stacks, CI pipeline, and Checkov hardening. **Coverage**: 22/24 Checkov checks pass (2 informational: CKV_GCP_79 version pin detection, CKV_GCP_125 OIDC format). **Remaining bootstrap dependencies**: (1) GCS state bucket `shadowtag-omega-v4-tfstate` must be created before `terragrunt plan` works. (2) WIF module must be applied first to bootstrap CI/CD auth for GitHub Actions. (3) `make plan` requires GCP credentials (ADC or service account). **Modules**: cloud-run-service, iam-baseline, artifact-registry, monitoring-alerts, firestore-backup-verify, cloud-sql (SSL+pgAudit), github-wif (OIDC trust), cloud-scheduler, cost-dashboard, secret-manager. **Files**: `terraform/infrastructure-catalog-gcp-cloud-run/`, `terraform/infrastructure-live-gcp/`, `.github/workflows/terraform-ci.yml`, `terraform/Makefile`.
