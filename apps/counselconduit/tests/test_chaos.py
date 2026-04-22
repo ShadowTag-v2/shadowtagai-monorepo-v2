@@ -10,7 +10,6 @@ Tests system resilience under failure conditions:
 
 import asyncio
 import time
-from unittest.mock import AsyncMock, patch
 
 import pytest
 
@@ -27,7 +26,6 @@ class TestCircuitBreakerChaos:
             _circuit_breakers,
             is_circuit_open,
             record_provider_failure,
-            record_provider_success,
         )
 
         # Reset state

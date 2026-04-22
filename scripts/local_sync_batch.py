@@ -91,7 +91,13 @@ try:
     subprocess.run(["git", "remote", "set-url", "origin", remote_url], check=True)
 
     subprocess.run(["git", "add", "-A"], check=False)
-    status = subprocess.getoutput("git status --porcelain")
+    result = subprocess.run(
+        ["git", "status", "--porcelain"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    status = result.stdout
     if status.strip():
         subprocess.run(
             ["git", "commit", "-m", "chore: final convergence of all 56 source payloads [skip ci]"],

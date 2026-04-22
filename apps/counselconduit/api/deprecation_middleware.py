@@ -11,7 +11,6 @@ Usage in fastapi_kovel_enclave.py:
 
 from __future__ import annotations
 
-import time
 from typing import Any
 
 from starlette.middleware.base import BaseHTTPMiddleware

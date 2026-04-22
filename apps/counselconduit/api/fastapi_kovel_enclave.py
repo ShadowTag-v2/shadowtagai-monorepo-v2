@@ -104,7 +104,6 @@ except ImportError:
     from api.stripe_connect_webhook import router as connect_webhook_router  # type: ignore[no-redef]
     from api.vent_mode import router as vent_router  # type: ignore[no-redef]
     from api.token_meter import router as token_meter_router  # type: ignore[no-redef]
-    from api.session_pin_monitor import cleanup_session_pins_firestore  # type: ignore[no-redef]
     from api.provider_health import router as provider_health_router  # type: ignore[no-redef]
     from api.deprecation_middleware import DeprecationMiddleware  # type: ignore[no-redef]
 

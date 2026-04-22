@@ -16,7 +16,7 @@ Covers:
 
 import json
 import sqlite3
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, UTC
 from pathlib import Path
 
 import pytest
@@ -79,7 +79,7 @@ def _make_ki(
     relations: list[KIRelation] | None = None,
 ) -> KIMetadata:
     """Create a test KI with optional age override."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     updated = (now - timedelta(days=age_days)).isoformat()
     return KIMetadata(
         name=name,
