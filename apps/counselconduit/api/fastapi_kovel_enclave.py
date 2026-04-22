@@ -170,6 +170,7 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
     expose_headers=["X-Kovel-Signature", "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-Token-Budget-Remaining", "X-Dispatch-Tier"],
+    max_age=3600,  # Cache preflight responses for 1 hour
 )
 
 # Cor.30 R31: Security headers on every response
