@@ -31,6 +31,8 @@ Exit codes:
   2 — Scan error (gitleaks binary not found, etc.)
 """
 
+from __future__ import annotations
+
 import argparse
 import csv
 import json
@@ -340,7 +342,7 @@ def auto_remediate_ignores(findings: list[Finding]) -> int:
 # ============================================================================
 
 
-def generate_report(findings: list[Finding], output_path: Optional[str] = None) -> str:
+def generate_report(findings: list[Finding], output_path: str | None = None) -> str:
     """Generate a markdown audit report."""
     blocks = [f for f in findings if f.verdict == "BLOCK"]
     warns = [f for f in findings if f.verdict == "WARN"]
@@ -553,7 +555,7 @@ Examples:
     sys.exit(1 if blocks else 0)
 
 
-def _generate_manifest(raw_findings: list[dict], output_dir: Optional[str] = None) -> None:
+def _generate_manifest(raw_findings: list[dict], output_dir: str | None = None) -> None:
     """Generate a structured third-party leak manifest with deduplication.
 
     Outputs:
