@@ -1,28 +1,24 @@
 {
   "folders": [
     {
-      "path": "."
-    }
+      "path": ".",
+    },
   ],
   "settings": {
     "terminal.integrated.env.osx": {
-      "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json"
+      "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
     },
     "liveServer.settings.root": "/",
-    "liveServer.settings.port": 5510,
+    "liveServer.settings.port": 5511,
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "python.envFile": "${workspaceFolder}/.env",
     "python.languageServer": "None",
-    "ty.pythonPath": "/opt/homebrew/opt/python@3.14/bin/python3.14",
-    "ty.pythonVersion": "3.14",
-
     "cmake.python.executable": "${workspaceFolder}/.venv/bin/python",
     "cmake.configureSettings": {
       "VLLM_PYTHON_EXECUTABLE": "${workspaceFolder}/.venv/bin/python",
       "Python3_EXECUTABLE": "${workspaceFolder}/.venv/bin/python",
-      "PYTHON_EXECUTABLE": "${workspaceFolder}/.venv/bin/python"
+      "PYTHON_EXECUTABLE": "${workspaceFolder}/.venv/bin/python",
     },
-
     "geminicodeassist.agentYoloMode": true,
     "java.import.generatesSources": false,
     "java.import.exclusions": [
@@ -39,7 +35,7 @@
       "**/tools/java-firestore/**",
       "**/tools/google-cloud-dart/**",
       "**/deep-archive/**",
-      "**/.gradle/**"
+      "**/.gradle/**",
     ],
     "files.exclude": {
       "**/*.proto": true,
@@ -80,7 +76,7 @@
       "**/.gradle/**": true,
       "**/dist/**": true,
       "**/.next/**": true,
-      "**/.firebase/**": true
+      "**/.firebase/**": true,
     },
     "search.exclude": {
       "**/node_modules/**": true,
@@ -106,7 +102,7 @@
       "**/deep-archive/**": true,
       "**/.gradle/**": true,
       "**/dist/**": true,
-      "**/.next/**": true
+      "**/.next/**": true,
     },
     "files.watcherExclude": {
       "**/.git/objects/**": true,
@@ -123,7 +119,10 @@
       "**/.gradle/**": true,
       "**/.lancedb/**": true,
       "**/.gitnexus/**": true,
-      "**/third_party/**": true
+      "**/third_party/**": true,
+      "**/.lancedb_data/**": true,
+      "**/data/lancedb/**": true,
+      "**/drive_corpus/**": true,
     },
     "python.analysis.exclude": [
       "**/archive",
@@ -144,7 +143,7 @@
       "**/tools/firebase-quickstart-js",
       "**/clone-base",
       "**/deep-archive",
-      "**/apps"
+      "**/apps",
     ],
     "dart.analysisExcludedFolders": [
       "archive",
@@ -158,7 +157,7 @@
       "tools/dio",
       "tools/Mole",
       "tools/PureMac",
-      "node_modules"
+      "node_modules",
     ],
     "java.server.launchMode": "LightWeight",
     "java.autobuild.enabled": false,
@@ -180,7 +179,7 @@
     "cloudcode.bigquery.enabled": false,
     "cloudcode.duetAI.enableNotebooks": false,
     "cloudcode.dependencyPaths": {
-      "gcloud": "/opt/homebrew/share/google-cloud-sdk/bin/gcloud"
+      "gcloud": "/opt/homebrew/share/google-cloud-sdk/bin/gcloud",
     },
     "gradle.nestedProjects": false,
     "java.gradle.enabled": false,
@@ -188,7 +187,8 @@
     "gradle.enableTelemetry": false,
     "[python]": {
       "editor.defaultFormatter": "charliermarsh.ruff",
-      "editor.formatOnSave": true
-    }
-  }
+      "editor.formatOnSave": true,
+    },
+    "geminicodeassist.project": "shadowtag-omega-v4",
+  },
 }

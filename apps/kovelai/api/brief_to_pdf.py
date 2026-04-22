@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import io
 import logging
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 
 logger = logging.getLogger(__name__)
 

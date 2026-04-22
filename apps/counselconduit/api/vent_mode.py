@@ -118,15 +118,15 @@ async def _stream_vent_response(
     try:
         try:
             from apps.counselconduit.api.empathy_templates import (
-                get_empathy_opener,
                 get_checkin,
+                get_empathy_opener,
                 should_checkin,
                 wrap_seu_prompt,
             )
         except ImportError:
             from api.empathy_templates import (  # type: ignore[no-redef]
-                get_empathy_opener,
                 get_checkin,
+                get_empathy_opener,
                 should_checkin,
                 wrap_seu_prompt,
             )
