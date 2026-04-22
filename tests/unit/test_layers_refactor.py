@@ -25,10 +25,20 @@ def patch_sys_path():
     # Mock numpy since it may not be installed in the test venv
     if "numpy" not in sys.modules:
         sys.modules["numpy"] = MagicMock()
-    # Mock src.kosmos — judge.py depends on src.kosmos.doctrine (not yet built)
-    for mod_name in ("src", "src.kosmos", "src.kosmos.doctrine"):
+    # Mock src.kosmos — judge.py and models.py depend on src.kosmos.doctrine
+    # and src.kosmos.doctrine.atp_5_19 (not yet built). Each intermediate must
+    # look like a real package (have __path__) for importlib to traverse.
+    _kosmos_mods = [
+        "src", "src.kosmos", "src.kosmos.doctrine",
+        "src.kosmos.doctrine.atp_5_19",
+    ]
+    for mod_name in _kosmos_mods:
         if mod_name not in sys.modules:
-            sys.modules[mod_name] = MagicMock()
+            mock_mod = MagicMock()
+            mock_mod.__path__ = []
+            mock_mod.__package__ = mod_name
+            mock_mod.__name__ = mod_name
+            sys.modules[mod_name] = mock_mod
     yield
     if path_str in sys.path:
         sys.path.remove(path_str)
