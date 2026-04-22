@@ -18,7 +18,8 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-from typing import Any, Callable, Coroutine
+from typing import Any
+from collections.abc import Callable, Coroutine
 
 import redis
 
@@ -163,7 +164,7 @@ async def ucmj_drag_race_sla(
         )
         return result
 
-    except asyncio.TimeoutError:
+    except TimeoutError:
         logger.critical(
             "⏰ UCMJ ARTICLE 92 VIOLATION: Agent %s exceeded %dms SLA. "
             "Court-martial initiated. Agent will be replaced.",
