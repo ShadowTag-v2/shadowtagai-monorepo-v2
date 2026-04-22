@@ -1,5 +1,5 @@
 # apps/counselconduit/api/oracle_studio.py
-"""Oracle Studio — 7-Prompt Legal Research System with LiteLLM + Prompt Repetition.
+"""Oracle Studio — 7-Prompt Legal Research System with S.E.U. Framework.
 
 The Oracle Studio runs a multi-prompt pipeline for deep legal research:
 
@@ -11,6 +11,7 @@ The Oracle Studio runs a multi-prompt pipeline for deep legal research:
 6. SYNTHESIS — Generate the Oracle Memo with citations
 7. ATTESTATION — Generate Kovel attestation receipt
 
+S.E.U. Framework: Safety → Empathy → Utility ordering on all stages.
 Each prompt is structurally isolated from user input (OWASP LLM01).
 The system prompt is injected server-side, never from the client.
 
@@ -42,6 +43,13 @@ class OracleStage(StrEnum):
     SYNTHESIS = "synthesis"
     ATTESTATION = "attestation"
 
+
+# Safety directives — applied to every S.E.U. wrapped prompt
+_SAFETY_DIRECTIVES = (
+    "This is a privileged attorney-client communication protected under Kovel. "
+    "Never log client PII. Never give direct legal advice — identify issues only. "
+    "All outputs are for attorney review, not client consumption."
+)
 
 # System prompts — NEVER exposed to client, NEVER in logs (OWASP LLM07)
 _SYSTEM_PROMPTS: dict[OracleStage, str] = {
@@ -273,6 +281,23 @@ async def run_oracle_pipeline(req: OracleRequest) -> OracleResponse:
 
         system_prompt = _SYSTEM_PROMPTS[stage]
 
+        # S.E.U. wrapping for client-facing stages (INTAKE and SYNTHESIS)
+        if stage in (OracleStage.INTAKE, OracleStage.SYNTHESIS):
+            try:
+                try:
+                    from apps.counselconduit.api.empathy_templates import wrap_seu_prompt
+                except ImportError:
+                    from api.empathy_templates import wrap_seu_prompt  # type: ignore[no-redef]
+
+                system_prompt = wrap_seu_prompt(
+                    safety_instructions=_SAFETY_DIRECTIVES,
+                    utility_prompt=system_prompt,
+                    session_id=req.session_id,
+                    include_one_more_thing=(stage == OracleStage.SYNTHESIS),
+                )
+            except Exception as e:
+                logger.warning("S.E.U. wrapping failed (using raw prompt): %s", e)
+
         # Call LLM with prompt repetition
         content, tokens = await _call_llm(
             system_prompt=system_prompt,
@@ -280,6 +305,31 @@ async def run_oracle_pipeline(req: OracleRequest) -> OracleResponse:
             model_id=model_id,
             stage=stage,
         )
+
+        # Fingerprint client-facing outputs (Risk #63)
+        if stage in (OracleStage.INTAKE, OracleStage.SYNTHESIS):
+            try:
+                try:
+                    from apps.counselconduit.api.empathy_templates import (
+                        fingerprint_output,
+                        get_empathy_opener,
+                    )
+                except ImportError:
+                    from api.empathy_templates import (  # type: ignore[no-redef]
+                        fingerprint_output,
+                        get_empathy_opener,
+                    )
+
+                expected = get_empathy_opener(seed=req.session_id)
+                fp = fingerprint_output(content, expected)
+                if fp.mutation_detected:
+                    logger.warning(
+                        "Empathy mutation detected: stage=%s session=%s",
+                        stage.value,
+                        req.session_id,
+                    )
+            except Exception:
+                pass  # Fingerprinting is non-fatal
 
         result = OracleStageResult(
             stage=stage,

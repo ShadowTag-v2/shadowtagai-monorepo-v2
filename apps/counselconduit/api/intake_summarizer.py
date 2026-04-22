@@ -1,12 +1,14 @@
 # apps/counselconduit/api/intake_summarizer.py
-"""Intake Summary Extraction Model for Vent Mode.
+"""Intake Summary Extraction Model with S.E.U. Framework.
 
 After a Vent Mode session ends, this module analyzes the full transcript
 to extract a structured legal intake summary. The summary is saved as
 a "matter brief" for the attorney's review.
 
+S.E.U. Framework: Safety → Empathy → Utility ordering.
 Uses litellm for model routing with prompt repetition for accuracy.
 Outputs: key facts, legal issues, emotional state, urgency, suggested actions.
+Includes: LAYMAN_TRANSLATION markers, warm handoff trigger, session recap.
 """
 
 from __future__ import annotations
@@ -51,6 +53,11 @@ class IntakeSummary:
     jurisdiction_hints: list[str] = field(default_factory=list)
     raw_summary: str = ""
     confidence: float = 0.0
+    # S.E.U. additions
+    layman_summary: str = ""  # Jargon-free plain-language version
+    warm_handoff_triggered: bool = False  # True if θ threshold exceeded
+    legal_domain_count: int = 0  # Number of distinct legal domains detected
+    session_recap: str = ""  # "Here's what you now understand" framing
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -66,6 +73,10 @@ class IntakeSummary:
             "jurisdiction_hints": self.jurisdiction_hints,
             "raw_summary": self.raw_summary,
             "confidence": self.confidence,
+            "layman_summary": self.layman_summary,
+            "warm_handoff_triggered": self.warm_handoff_triggered,
+            "legal_domain_count": self.legal_domain_count,
+            "session_recap": self.session_recap,
         }
 
 
@@ -81,6 +92,8 @@ IMPORTANT RULES:
 4. Assess emotional state based on language intensity, not topic sensitivity.
 5. Rate urgency based on statute of limitations, imminent deadlines, or safety concerns.
 6. Output VALID JSON matching the specified schema.
+7. LAYMAN_TRANSLATION: For every legal term used, provide a plain-language equivalent in parentheses.
+8. SESSION_RECAP: End with "Here's what you now understand" framing for the client.
 
 OUTPUT SCHEMA:
 {
@@ -94,8 +107,14 @@ OUTPUT SCHEMA:
   "potential_claims": ["claim1", ...],
   "jurisdiction_hints": ["state or court hints", ...],
   "raw_summary": "2-3 sentence plain language summary",
+  "layman_summary": "Jargon-free summary a non-lawyer would understand",
+  "legal_domain_count": integer_number_of_distinct_legal_areas,
+  "session_recap": "Here's what you now understand: ...",
   "confidence": 0.0-1.0
 }"""
+
+# Warm handoff threshold θ: if >3 legal domains detected, flag for attorney
+_WARM_HANDOFF_THETA = 3
 
 
 async def extract_intake_summary(
@@ -161,14 +180,28 @@ Extract the intake summary as valid JSON."""
             jurisdiction_hints=data.get("jurisdiction_hints", []),
             raw_summary=data.get("raw_summary", ""),
             confidence=float(data.get("confidence", 0.0)),
+            layman_summary=data.get("layman_summary", ""),
+            legal_domain_count=int(data.get("legal_domain_count", 0)),
+            session_recap=data.get("session_recap", ""),
         )
 
+        # Warm handoff trigger: θ > 3 legal domains
+        if summary.legal_domain_count > _WARM_HANDOFF_THETA:
+            summary.warm_handoff_triggered = True
+            logger.info(
+                "Warm handoff triggered: session=%s domains=%d (threshold=%d)",
+                session_id,
+                summary.legal_domain_count,
+                _WARM_HANDOFF_THETA,
+            )
+
         logger.info(
-            "Intake summary extracted: session=%s issues=%d urgency=%s confidence=%.2f",
+            "Intake summary extracted: session=%s issues=%d urgency=%s confidence=%.2f handoff=%s",
             session_id,
             len(summary.legal_issues),
             summary.urgency.value,
             summary.confidence,
+            summary.warm_handoff_triggered,
         )
         return summary
 
