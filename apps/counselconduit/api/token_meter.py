@@ -7,7 +7,7 @@ Used by the client-facing portal to show remaining quota.
 from __future__ import annotations
 
 import logging
-from datetime import timezone, UTC
+from datetime import UTC
 from typing import Annotated
 
 from fastapi import APIRouter, Header

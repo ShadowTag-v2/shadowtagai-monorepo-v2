@@ -9,6 +9,7 @@ Covers items 9, 10, 14, 16, 19 from the execution checklist.
 from __future__ import annotations
 
 import json
+
 import pytest
 
 from apps.counselconduit.api.agui_stream import (
@@ -18,17 +19,16 @@ from apps.counselconduit.api.agui_stream import (
     SSESessionContext,
     sse_headers,
 )
+from apps.counselconduit.services.cloud_tasks_handler import (
+    CloudTasksHandler,
+    DeadManSwitch,
+)
 from apps.counselconduit.services.kovel_attestation import (
     KovelAttestationService,
 )
 from apps.counselconduit.services.litellm_proxy import (
     LiteLLMProxy,
     ModelProvider,
-)
-from apps.counselconduit.services.cloud_tasks_handler import (
-    CloudTasksHandler,
-    DeadManSwitch,
-    NotificationType,
 )
 
 
