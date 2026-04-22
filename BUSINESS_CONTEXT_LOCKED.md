@@ -1,178 +1,267 @@
-# BUSINESS_CONTEXT_LOCKED — v9.0
+# BUSINESS_CONTEXT_LOCKED — v10.0
 
-## Consumer Syndicate
+> **Hard Redesign applied 2026-04-22** — Full Emotional Arbitrage + S.E.U. Architecture integrated.
+
+---
+
+## Identity
+
+CounselConduit is the **"Shopify for Legal AI"** — a privilege-preserving routing tier between law firms and foundational LLMs (Gemini, Claude, ChatGPT, Grok, Perplexity) protected under *United States v. Heppner* (S.D.N.Y., Feb. 10, 2026).
+
+**Hard Redesign Thesis**: CounselConduit is not a legal research tool. It is an **emotional arbitrage engine** — the client pays because they feel safe, heard, and understood. The AI does the thinking; the brand does the holding.
+
+---
+
+## §1 — Core Tiers (Updated v10.0)
+
+### Consumer Syndicate
 - Price: `$149/mo`
 - Margin: `95%`
 - Architecture: `Centralized Hive Mind Oracle + Stateless Micro-Edge`
 
-## Enterprise Base SLA
+### Enterprise Base SLA
 - Price: `$20,000/mo`
 - Margin: `69–71%`
 - Core value: `Zero-latency AST risk mitigation`
 - Isolation: `Dedicated GCP sidecar`
 
-## Enterprise EU26 Premium
+### Enterprise EU26 Premium
 - Price: `$28,333/mo`
 - Margin: `76–78%`
-- Core value: `higher-assurance compliance and enterprise isolation posture`
+- Core value: `Higher-assurance compliance and enterprise isolation posture`
 
-## Sovereign Scale
+### Sovereign Scale
 - Customer pays `100% compute pass-through`
 - Software margin retained on the base license
 
-## Latency doctrine
-- Target: `p99 <= 90ms total application path` where the architecture permits
+---
 
-## Architectural split
+## §2 — Dual-Billing Engine (Stripe Connect)
+
+1. **Client → Lawyer**: Client subscribes to AI portal with credit card. Funds flow to lawyer's Stripe account. Lawyer gets paid upfront for each query.
+2. **Lawyer → Us**: Auto-scaling tiered subscription (Solo $299, Practice $599, Enterprise $999). Tiers cover ALL LLM API costs + 85%+ margin. Auto-bump on usage (like Claude Code billing).
+3. **Fee Isolation**: We never touch the client-lawyer fee arrangement.
+
+### Stripe Live Configuration
+- Account: `acct_1Syh9JEHnWpykeMi` (US, charges+payouts enabled)
+- Products: `prod_UM2XwCF1byjegL` (Trial), `prod_UM2X10cpyay52e` (Pro), `prod_UM2XMVp9Er7A0i` (Enterprise)
+- Pro Monthly: `price_1TNKSREHnWpykeMiRMDlVgLl` ($149/mo)
+- Pro Annual: `price_1TNKSjEHnWpykeMi0S9GCVjy` ($1,428/yr)
+- Enterprise: `price_1TNKSREHnWpykeMi8mrDf4rI` ($20K/mo)
+- Beta Coupon: `3wseBY7Z` (50% off, 3 months, max 100)
+- Portal: `bpc_1TNKSjEHnWpykeMi0qQPoaHm`
+- Webhook: `we_1TNKSjEHnWpykeMiQZqmpy3X` → `https://counselconduit-api.run.app/webhooks/stripe`
+
+---
+
+## §3 — Architectural Split
+
 - Consumer path: centralized intelligence + stateless micro-edge
 - Enterprise path: tenant-isolated sidecars + stronger controls + mTLS
+- **Rule**: Do not mix these lanes casually. Consumer and enterprise economics are different products.
 
-## Rule
-Do not mix these lanes casually. Consumer and enterprise economics are different products.
+### Latency Doctrine
+- Target: `p99 <= 90ms total application path` where architecture permits
 
-## Hardened State
-- v9.0 canonicalized: 2026-04-18
-- Latest production commit: `afb244705d5` (2026-04-18)
+---
+
+## §4 — The "Intake Engine" Hard Redesign
+
+### 4.1 Emotional Arbitrage
+
+> "Nobody is buying 'AI attorney research'. They are paying for **the feeling that someone smart has their back**.
+> That's the entire product. Everything else is infrastructure."
+
+The gap between what the AI costs to provide and what emotional security is worth = **emotional arbitrage**.
+
+- Legal AI costs: ~$0.02/query
+- Client perception: "A brilliant attorney who works 24/7 just for me"
+- Charge: $149–$999/mo
+- Margin: ♾️ (the raw cost is noise)
+
+### 4.2 The Invisible Meter
+
+**Must-hit metric**: Avg client spends **>45 min/session** inside the portal.
+
+Design principles:
+1. **Session timer is hidden** — never show how long they've been in
+2. **No "are you still there?"** prompts — dead-man's switch architecture
+3. **Ambient micro-animations** — typing indicators, subtle glow, pulsing orbs
+4. **Progressive depth** — start with reassurance, gradually surface actionable intelligence
+5. **"One More Thing" cadence** — end every response with a gentle hook to the next topic
+6. **Warm close** — "You're doing the right thing by understanding this" (never "goodbye")
+
+### 4.3 The Psychological & Therapeutic Layer
+
+#### Design Canon
+1. Client must FEEL heard first, informed second
+2. Every AI response opens with an empathy acknowledgment — then pivots to legal
+3. Legal jargon auto-detected and footnoted inline with LAYMAN_TRANSLATION
+4. "How are you feeling about this?" check-in auto-inserted every 3rd response
+5. Ambient "you're not alone" social proof microdata (anonymized: "837 people explored this today")
+6. Session recaps framed as emotional victories: "Here's what you now understand that you didn't before"
+7. Warm handoff: escalation to a real attorney framed as "we've found a specialist who can take this further for you"
+
+#### Intake Flow (S.E.U. Framework)
+
+**S.E.U. = Safety → Empathy → Utility**
+
+Every client session must traverse these layers in order:
+
+```
+┌──────────────────────────────────────────────────┐
+│ LAYER 1: SAFETY                                  │
+│ "You're in the right place."                     │
+│ - Kovel attestation badge visible                │
+│ - "Attorney-client privilege applies here" banner│
+│ - Calm, dark UI — no jarring colors              │
+│ - No visible timer. No "hurry up" cues.          │
+├──────────────────────────────────────────────────┤
+│ LAYER 2: EMPATHY                                 │
+│ "We understand this is stressful."               │
+│ - Opening prompt: "Tell us what's happening"     │
+│ - AI empathy acknowledger before every response  │
+│ - "How are you feeling?" check-in every 3 turns  │
+│ - Social proof: "437 clients explored this today"│
+├──────────────────────────────────────────────────┤
+│ LAYER 3: UTILITY                                 │
+│ "Here's what this means for you."                │
+│ - Legal analysis in plain English first           │
+│ - Jargon footnoted, not replaced                 │
+│ - Action items surfaced last                     │
+│ - Warm handoff to attorney if complexity > θ     │
+└──────────────────────────────────────────────────┘
+```
+
+#### Emotional Loop Architecture
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Intake     │────▶│   Oracle    │────▶│   Output    │
+│  (empathy)   │     │ (analysis)  │     │ (reassure)  │
+└─────────────┘     └─────────────┘     └─────────────┘
+       │                                       │
+       └──────────── "One More Thing" ◀────────┘
+```
+
+### 4.4 Vent Mode (Upgraded)
+
+Vent Mode is the **emotional release valve**. Client speaks unstructured grievances. AI:
+1. Validates emotionally
+2. Extracts legal entities/claims silently
+3. Summarizes into structured intake
+4. Attorney sees clean brief, client felt heard
+
+Key metrics:
+- Avg vent duration: target 15+ minutes
+- Extraction accuracy: >90% entity coverage
+- Client satisfaction: NPS > 70 post-vent
+
+---
+
+## §5 — Four Corners Sweep (Business Plan v2.0)
+
+### 5.1 Product Architecture
+
+| Component | Purpose | Status |
+|-----------|---------|--------|
+| CounselConduit API | Cloud Run FastAPI (33 endpoints) | ✅ LIVE v3.2.0 |
+| KovelAI Frontend | Firebase Hosting (attorney-facing) | ✅ LIVE |
+| ShadowTagAI | Firebase Hosting (client-facing) | ✅ LIVE |
+| Oracle Studio | 7-stage LLM pipeline | ✅ Built |
+| Vent Mode | SSE streaming emotional intake | ✅ Built |
+| Judge 6 | Policy gate (ATP 5-19) | ✅ Built |
+| NadirClaw Dispatch | 3-tier model router w/ circuit breaker | ✅ Built |
+| Dead-Man's Switch | Ephemeral session protection | ✅ Built |
+| Kovel Attestation | HMAC-SHA256 privilege receipts | ✅ Built |
+| Stripe Connect | Dual-billing onboarding flow | ✅ Built |
+| GDPR Module | Article 15/17/20 + Cloud Tasks 30-day TTL | ✅ Built |
+
+### 5.2 Market Position
+
+- **TAM**: $18.5B (US legal tech, growingat 9.1% CAGR)
+- **SAM**: $1.2B (small-mid law firms using AI tools)
+- **SOM Year 1**: $2.4M (200 firms × $999/mo avg)
+- **SOM Year 3**: $18M (1,500 firms × $1,000/mo avg)
+
+### 5.3 Competitive Moat (4 Layers)
+
+1. **Privilege Layer**: *Heppner* precedent — only platform with Kovel attestation receipts
+2. **Emotional Layer**: S.E.U. framework — competitors do research, we do reassurance
+3. **Switching Cost**: Attorney workflows + client data locked behind privilege wall
+4. **Network Effect**: More attorneys → more client trust → more referrals
+
+### 5.4 Revenue Model
+
+| Year | Firms | ARPU/mo | MRR | ARR | Margin |
+|------|-------|---------|-----|-----|--------|
+| Y1 | 200 | $999 | $200K | $2.4M | 85% |
+| Y2 | 800 | $1,100 | $880K | $10.6M | 87% |
+| Y3 | 1,500 | $1,200 | $1.8M | $21.6M | 89% |
+| Y4 | 3,000 | $1,400 | $4.2M | $50.4M | 90% |
+| Y5 | 5,000 | $1,500 | $7.5M | $90M | 91% |
+
+### 5.5 Exit Thesis
+
+| Path | Multiplier | Valuation | Timeline |
+|------|-----------|-----------|----------|
+| SaaS Acquisition (Thomson Reuters, LexisNexis) | 15-20x ARR | $1.35B–$1.8B @ Y5 ARR | 5-7 years |
+| Strategic PE (Vista, Thoma Bravo) | 12-15x ARR | $1.08B–$1.35B | 4-6 years |
+| IPO | 20-25x ARR | $1.8B–$2.25B | 7-10 years |
+
+### 5.6 Funding Strategy (If Pursued)
+
+- **Pre-seed**: Self-funded / bootstrapped → current state
+- **Seed**: $2-3M @ $15M post-money → first 50 firms, hire 3 engineers
+- **Series A**: $10-15M @ $80M post-money → 500 firms, enterprise launch
+- **Series B**: $30-50M @ $300M post-money → 2,000 firms, international
+
+> **Default mode**: Bootstrap to $5M ARR before considering outside capital. Emotional arbitrage margins support this.
+
+---
+
+## §6 — Hardened Production State
+
+### v10.0 canonicalized: 2026-04-22
+- Latest production commit: `13da4ddf2b` (2026-04-22)
 - Lighthouse LHCI (KovelAI): P93+ / A93+ / BP100 / SEO100
 - Lighthouse LHCI (ShadowTagAI): P93+ / A93+ / BP96 / SEO100
 - Structural tests: 68/68
 - Dead code: clean (vulture + ruff) — Kosmos dead code noted, production paths clean
-- CounselConduit: v3.2.0 LIVE on Cloud Run (23 API modules, 33 endpoints)
+- CounselConduit: v3.2.0 LIVE on Cloud Run (23 API modules, 44 endpoint files)
 - Cloud Armor WAF: `counselconduit-waf` (XSS + SQLi + rate limiting active)
-- Cloud Monitoring: 9 alert policies + email channel (17531835029676919705) + SLO burn rate alert (17434870411493760882)
-- SLO: CounselConduit 99.5% Availability, 30-day rolling (service: F2cVj-pyTHmSv7dcU8LrBA, slo: -jycE9GTQGKQmincRmp3pA)
-- Firestore TTL: session_pins.expire_at ACTIVE (auto-delete expired sessions)
-- Security: Cor.30 v2.5 + OWASP LLM10 enforced (docs/SECURITY_DOD.md)
+- Cloud Monitoring: 9 alert policies + email channel
+- SLO: CounselConduit 99.5% Availability, 30-day rolling
+- Firestore TTL: session_pins.expire_at ACTIVE
+- Security: Cor.30 v2.5 + OWASP LLM10 enforced
 - Pre-commit: Gitleaks + Ruff + Bandit + detect-private-key
 - Secret Manager: 23 secrets, 9 imported to OpenTofu state
-- OpenTofu: 19 resources provisioned (IAM + alerts + log metrics)
-- Terraform IaC: infra/terraform/counselconduit-monitoring/main.tf (339 LOC)
-- RISK_REGISTER: v9.0 (35 tracked risks)
+- OpenTofu: 19 resources provisioned
+- RISK_REGISTER: v9.5 (61 tracked risks)
 - Open PRs: 0
 
-### CounselConduit Cloud Run (2026-04-18)
+### CounselConduit Cloud Run
 | Service | URL | Rev |
 |---------|-----|-----|
 | Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00010-s74 (100% traffic) |
 | Staging | https://counselconduit-staging-767252945109.us-central1.run.app | counselconduit-staging-00003-l9h |
 
-### Wave 9.3 Deliverables (2026-04-18)
-- **OG Social Images**: Generated + deployed for KovelAI and ShadowTagAI (visible on Facebook/LinkedIn)
-- **CSP Hardening**: Removed `unsafe-eval` + `cdn.tailwindcss.com` from both sites
-- **Lighthouse BP 100**: Fixed favicon 404s → console errors eliminated
-- **New Modules**: `silent_detector.py`, `blast_radius.py`, `null_model_validator.py`, `ucmj_discipline.py`
-- **Dead Code**: `discord_alerts.py` deleted (replaced by `workspace_alerts.py`)
-- **Dependabot**: `.github/dependabot.yml` — weekly grouped updates
-- **CHANGELOG.md**: Complete Wave 4→9 history
-- **Tests**: 68/68 passed (0 skipped)
-- **API Modules**: 33 total
-- **GEMINI.md**: v9.0
-- **Git Repack**: 46GB → 33GB
-
-### Wave 9 Deliverables (2026-04-18)
-- **IaC Apply**: 13 resources created (IAM bindings + log metric + alert policy)
-- **IaC Import**: 9 existing secrets imported to OpenTofu state
-- **API Key Restriction**: Key 2 restricted 72→16 APIs
-- **GCA Batch Reviewer**: `scripts/run_gca_batch.py` — batch Dependabot PR review + auto-merge
-- **GCA CI Fallback**: `.github/workflows/gca-review.yml` — 4-agent review on PRs
-- **Pre-push GCA Hook**: `.git/hooks/pre-push` — advisory gate (soft-fail relock)
-- **SM-First Auth**: `auth_github_app.py` 5-tier PEM fallback (SM→keys→Downloads→.ssh→$env)
-- **OTEL Sampling**: `OTEL_TRACE_SAMPLING_RATE` configurable (10% default, 100% staging)
-- **Lighthouse CI**: `.lighthouserc.json` — P90/A90/BP100/SEO100 budget gates
-- **Cloud Build**: `cloudbuild.yaml` + `cloudbuild-staging.yaml` (source-based deploy)
-- **Staging Branch**: `staging` created + pushed to origin
-- **Email Alerts**: Notification channel wired to 7 alert policies
-- **Cloud Scheduler**: `firestore-backup-verify` daily 06:00 UTC health probe
-- **Firestore Backup**: Daily schedule, 7d retention
-- **PubSub Topic**: `secret-rotation-notifications`
-- **Production Runbook**: `docs/PRODUCTION_RUNBOOK.md`
-- **Secret Rotation**: `docs/SECRET_ROTATION.md`
-- **Heartbeat Tests**: 4 new tests (TTL, dead-man's, rate limit)
-- **FFmpeg Demo**: `scripts/ffmpeg_demo_record.sh`
-- **10 PRs Resolved**: 8 Dependabot closed (head deleted), PR #48 closed, PR #55 closed (incorporated)
-- **Auto-merge**: Enabled + delete-branch-on-merge for future PRs
-- **Risk Register v9.0**: 4 new entries (#26-29)
-- **Reference Repos**: 41 total (FFmpeg added)
-
-### Wave 8 Deliverables (2026-04-18)
-- **25-Rule Security Contract**: Non-negotiable security canon in AGENTS.md (auth, input validation, secrets)
-- **15 Security Defaults**: Tokens, CORS, CSP, HSTS, rate limits, RLS, webhook HMAC, backups
-- **Headless CLI Protocol**: PTY Buffer Trap prevention doctrine in GEMINI.md + SKILL.md
-- **Cloud Run Rev 00010-s74**: Health probes (liveness + startup), autoscale 1-10, concurrency 80
-- **Canary Traffic Split**: 90% rev-00009 / 10% rev-00010 (progressive rollout)
-- **GDPR Cleanup Cron**: Cloud Scheduler `gdpr-30day-cleanup` daily 02:00 UTC (OIDC auth)
-- **OpenTelemetry Cloud Trace**: telemetry.py OTLP exporter wired into FastAPI app
-- **OpenTofu 1.11.6**: infra/terraform/ initialized, Google provider 7.28.0, plan: 19 resources
-- **Staging .env.example**: 37-variable template for staging environment
-- **Mobile Networking Spec**: Flutter/Dio 6-interceptor stack (docs/mobile_networking_spec.md)
-- **OAuth Fix**: Desktop client g8e1 for gws CLI (redirect_uri_mismatch resolved)
-- **Pitch-deck-agent Bucket**: Archived to ARCHIVE storage class
-- **40 Reference Repos**: Terraform, Lighthouse, Flagger, OpenTofu, Semaphore (gitignored)
-- **Lighthouse Post-Deploy**: P93 / A93 / BP100 / SEO100 (kovelai.web.app)
-### Wave 7 Deliverables (2026-04-18)
-- **Google Workspace Alerts**: Gmail API + Google Chat API replace Discord + Resend (workspace_alerts.py)
-- **Secret Manager Migration**: 20+ secrets migrated from .env to Google Secret Manager
-- **Terraform IaC**: infra/terraform/secrets.tf (secrets, IAM, anomaly alerts)
-- **gws CLI v0.22.5**: Google Workspace CLI installed for agent-driven email/chat
-- **Org-Level Storage Policy**: `constraints/storage.publicAccessPrevention` enforced
-- **GCS Lifecycle**: 30-day auto-delete on Cloud Build source buckets
-- **Deployment Runbook**: docs/DEPLOYMENT_RUNBOOK.md (pre-deploy, canary, rollback)
-- **.gcloudignore**: Prevents 2GB Cloud Build tarball upload
-- **Dead Code Audit**: 34 unused imports fixed via ruff --fix
-- **Bandit Scan**: 0 medium/high severity findings across 4,074 LOC
-- **Cloud Run Labels**: managed_by=opentofu, environment=production
-- **Hero Videos on CDN**: Migrated to Firebase Hosting (apps/kovelai/public/videos/)
-- **gcloud PATH Fix**: Cloud Code now finds Homebrew gcloud correctly
-- **22 Reference Repos**: Terraform/IaC shallow clones (gitignored, 2.2 GB)
-
-### Wave 4-5 Deliverables (2026-04-18)
-- **Firebase Auth JWT**: Server-side verification via firebase-admin SDK
-- **Docker Import Paths**: try/except fallbacks for monorepo vs /app/ Docker context
-- **Video Compression**: hero-bg 82% smaller, sphere-holo 83% smaller (ffmpeg CRF 30-32)
-- **Transcript Viewer**: 7-stage Oracle Studio viewer (transcripts.html)
-- **GDPR Export UI**: Article 20 data portability page (export.html)
-- **Dead-Man's Switch**: Client portal session replay protection + DevTools defeat
-- **Attorney Onboarding**: 4-step wizard (firm info → plan → models → Stripe Connect)
-- **Google Workspace Alerts**: Payment failure, security event, GDPR deletion (replaced Discord)
-- **Intake Summarizer**: LLM-powered intake extraction for Vent Mode
-- **Webhook Signatures**: Stripe + Kovel + Resend HMAC verification tests (9 tests)
-- **Mobile Spec**: Flutter/Dio interceptor stack (auth, Kovel, rate limit, dead-man's switch)
-- **OpenTelemetry**: Instrumentation added to requirements
-- **Firestore Health**: /health endpoint verifies Firestore connectivity
-- **Session Heartbeat**: /heartbeat endpoint for client keep-alive
-
-### Production Hardening (2026-04-16)
-- **CSP Headers**: Strict Content-Security-Policy deployed on both KovelAI and ShadowTagAI
-- **CSP connect-src**: googletagmanager.com added to ShadowTagAI (BP 96→100 fix)
-- **Permissions-Policy**: Camera, microphone, geolocation denied by default
-- **WebP Optimization**: All hero/pitch images converted (79–98% payload reduction)
-- **Custom 404 Pages**: Premium branded 404.html for both sites
-- **DNS Prefetch**: `dns-prefetch` hints for CDN resources
-- **Preview Channels**: kovelai-preview + shadowtagai-preview (7d TTL)
-- **Google Search Console**: Verification meta tags added (placeholder — replace with actual codes)
-- **Firebase Storage**: Initialized with zero-trust deny-all rules
-- **GCS CORS**: Hotlink protection — 5 authorized origins only
-- **Cloud Monitoring**: Error rate alert policy + email notification channel
-- **captureLead**: ACTIVE v2 Cloud Function (reCAPTCHA-gated)
-- **Hero Preload**: `<link rel="preload">` for ShadowTagAI hero image (LCP improvement)
-- **Git Auth**: SSH deploy key registered via GitHub App API (write access)
-- **Remote**: `git@github-shadowtag:ShadowTag-v2/Monorepo-Uphillsnowball.git`
-
-### Deployed Hosting Targets (2026-04-16)
+### Deployed Hosting Targets
 | Target | URL | Status |
 |--------|-----|--------|
 | KovelAI Live | https://kovelai.web.app | ✅ |
 | ShadowTagAI Live | https://shadowtagai.web.app | ✅ |
 | Default Site | https://shadowtag-omega-v4.web.app | ✅ |
-| KovelAI Preview | https://kovelai--preview-8ezcbvse.web.app | ✅ 7d |
-| ShadowTagAI Preview | https://shadowtagai--preview-32m75f3r.web.app | ✅ 7d |
 
-## Webhook vs Firestore Pricing Matrix
+---
+
+## §7 — Webhook vs Firestore Pricing Matrix
+
 Because we moved away from Redis cache over to Firestore `system_idempotency_keys` for Zod validation locks, high frequency polling will cost approximately $0.18 per 100k requests read/writes against the GCP document quota. We remain heavily profitable beneath the $5K Base Tier barrier. Edge Sovereign node ingress remains $0.00 bandwidth locked within our private peering subnet.
 
 ---
 
-## Canonical Production Assets (Locked 2026-04-16)
+## §8 — Canonical Production Assets (Locked 2026-04-16)
 
 ### KovelAI Hero Video
 | Property | Value |
@@ -193,3 +282,25 @@ Because we moved away from Redis cache over to Firestore `system_idempotency_key
 | Accent | `#c9a96e` (glowing gold) |
 | Font | Inter 300–800 |
 | Aesthetic | Structured Precision — Legal Tech |
+
+---
+
+## §9 — Wave Delivery History
+
+### Wave 9.3 (2026-04-18)
+- OG Social Images, CSP Hardening, Lighthouse BP 100, New Modules (silent_detector, blast_radius, null_model_validator, ucmj_discipline), Dead Code purge, Dependabot, CHANGELOG.md, 68/68 tests, 33 API modules
+
+### Wave 9 (2026-04-18)
+- IaC Apply (13 resources), IaC Import (9 secrets), API Key Restriction, GCA Batch Reviewer, Pre-push GCA Hook, SM-First Auth, OTEL Sampling, Lighthouse CI, Cloud Build, Staging Branch, Email Alerts, Cloud Scheduler, Firestore Backup, PubSub Topic, Production Runbook, Secret Rotation, Heartbeat Tests, 10 PRs Resolved, Auto-merge, Risk Register v9.0
+
+### Wave 8 (2026-04-18)
+- 25-Rule Security Contract, 15 Security Defaults, Headless CLI Protocol, Cloud Run Rev 00010-s74, Canary Traffic Split, GDPR Cleanup Cron, OpenTelemetry, OpenTofu 1.11.6, Mobile Networking Spec
+
+### Wave 7 (2026-04-18)
+- Google Workspace Alerts, Secret Manager Migration, Terraform IaC, gws CLI, Org-Level Storage Policy, GCS Lifecycle, Deployment Runbook
+
+### Wave 4-5 (2026-04-18)
+- Firebase Auth JWT, Docker Import Paths, Video Compression, Transcript Viewer, GDPR Export UI, Dead-Man's Switch, Attorney Onboarding, Intake Summarizer, Webhook Signatures, Mobile Spec, OpenTelemetry, Firestore Health, Session Heartbeat
+
+### Production Hardening (2026-04-16)
+- CSP Headers, Permissions-Policy, WebP Optimization, Custom 404 Pages, DNS Prefetch, Preview Channels, Google Search Console, Firebase Storage, GCS CORS, Cloud Monitoring, captureLead, Hero Preload, Git Auth
