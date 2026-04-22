@@ -1,0 +1,52 @@
+# Vulture dead code CI gate
+# Runs on every PR and push to main for scripts/ directory
+
+name: Vulture Dead Code Scan
+
+on:
+  push:
+    branches: [main]
+    paths: ['scripts/**/*.py']
+  pull_request:
+    branches: [main]
+    paths: ['scripts/**/*.py']
+
+permissions:
+  contents: read
+
+jobs:
+  vulture:
+    runs-on: ubuntu-latest
+    name: Dead Code Detection
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: 'pip'
+
+      - name: Install vulture
+        run: pip install vulture
+
+      - name: Run vulture (scripts/)
+        run: |
+          python -m vulture scripts/ scripts/vulture_whitelist.py \
+            --min-confidence 90 \
+            --exclude "venv,node_modules,.git,external_repos"
+
+      - name: Run vulture (apps/kovelai/)
+        run: |
+          python -m vulture apps/kovelai/ \
+            --min-confidence 90 \
+            --exclude "venv,node_modules,.git,.next" || true
+        # Non-blocking for now — informational only
+
+      - name: Run vulture (apps/counselconduit/)
+        run: |
+          python -m vulture apps/counselconduit/ \
+            --min-confidence 90 \
+            --exclude "venv,node_modules,.git,.next" || true
+        # Non-blocking for now — informational only
