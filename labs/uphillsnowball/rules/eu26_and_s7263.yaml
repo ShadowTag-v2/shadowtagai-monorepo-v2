@@ -1,0 +1,105 @@
+# rules/eu26_and_s7263.yaml — ast-grep YAML rules (Item 17)
+#
+# EU Article 26 Directive compliance + Section 72.63 audit patterns.
+# These rules enforce code hygiene via structural AST matching.
+
+id: ban-bullmq-import
+language: typescript
+rule:
+  kind: import_statement
+  pattern: import $_ from "bullmq"
+message: "BullMQ is banned. Use Google Cloud Tasks as the exclusive queue broker."
+severity: error
+
+---
+id: ban-bullmq-require
+language: typescript
+rule:
+  kind: call_expression
+  pattern: require("bullmq")
+message: "BullMQ is banned. Use Google Cloud Tasks as the exclusive queue broker."
+severity: error
+
+---
+id: ban-hardcoded-api-key
+language: python
+rule:
+  kind: assignment
+  pattern: $VAR = "sk-$$$"
+message: "Hardcoded API keys are forbidden. Use GCP Secret Manager or .env."
+severity: error
+
+---
+id: enforce-parameterized-sql
+language: python
+rule:
+  kind: call_expression
+  pattern: cursor.execute(f"$$$")
+message: "String-interpolated SQL is forbidden. Use parameterized queries only."
+severity: error
+
+---
+id: ban-rm-rf-subprocess
+language: python
+rule:
+  kind: call_expression
+  pattern: subprocess.run(["rm", "-rf", $$$])
+message: "Destructive rm -rf in subprocess is banned from the tool set."
+severity: error
+
+---
+id: enforce-pydantic-model
+language: python
+rule:
+  any:
+    - pattern: dict(**$$$)
+  not:
+    inside:
+      kind: class_definition
+      has:
+        kind: argument_list
+        has:
+          pattern: BaseModel
+message: "Prefer Pydantic models over raw dicts for API contracts."
+severity: warning
+
+---
+id: ban-telemetry-sentry
+language: python
+rule:
+  kind: import_statement
+  pattern: import sentry_sdk
+message: "Sentry telemetry is severed. DISABLE_TELEMETRY=1 is enforced."
+severity: error
+
+---
+id: ban-telemetry-sentry-ts
+language: typescript
+rule:
+  kind: import_statement
+  pattern: import $_ from "@sentry/node"
+message: "Sentry telemetry is severed. DISABLE_TELEMETRY=1 is enforced."
+severity: error
+
+---
+id: enforce-async-activity
+language: python
+rule:
+  kind: function_definition
+  has:
+    kind: decorator
+    pattern: "@activity.defn($$$)"
+  not:
+    has:
+      kind: async_keyword
+message: "Temporal activities decorated with @activity.defn must be async."
+severity: error
+
+---
+id: ban-force-push
+language: python
+rule:
+  kind: string
+  pattern: '"git push --force$$$"'
+message: "Force push is forbidden. Use regular push or --force-with-lease."
+severity: error

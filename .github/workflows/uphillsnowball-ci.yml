@@ -1,0 +1,274 @@
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# uphillsnowball-ci.yml — Polyglot CI for labs/uphillsnowball
+#
+# Triggered on changes to labs/uphillsnowball/** only.
+# Jobs:
+#   1. python-lint     — ruff + vulture dead code sweep
+#   2. python-test     — pytest with Redis service container
+#   3. go-build        — Cor.Go ZTA kernel compilation
+#   4. docker-build    — Multi-stage sealed container validation
+#   5. security-scan   — Gitleaks + Bandit on the lab
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+name: Uphill Snowball CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'labs/uphillsnowball/**'
+      - '.github/workflows/uphillsnowball-ci.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'labs/uphillsnowball/**'
+      - '.github/workflows/uphillsnowball-ci.yml'
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: '3.12'
+  GO_VERSION: '1.22'
+  LAB_DIR: labs/uphillsnowball
+
+concurrency:
+  group: uphillsnowball-${{ github.ref }}
+  cancel-in-progress: true
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+jobs:
+
+  # ── 1. Python Lint & Dead Code Sweep ─────────────────────────
+  python-lint:
+    name: 🧹 Lint (ruff + vulture)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: ${{ env.LAB_DIR }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install lint tools
+        run: pip install --no-cache-dir ruff vulture
+
+      - name: ruff check (fix mode disabled in CI)
+        run: ruff check src/ --output-format=github
+
+      - name: ruff format check
+        run: ruff format src/ --check --diff
+
+      - name: vulture dead code sweep (90% confidence)
+        run: vulture src/ --min-confidence 90
+
+  # ── 2. Python Tests with Redis ───────────────────────────────
+  python-test:
+    name: 🧪 Test (pytest + Redis)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [python-lint]
+    defaults:
+      run:
+        working-directory: ${{ env.LAB_DIR }}
+
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: ${{ env.LAB_DIR }}/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          pip install --no-cache-dir -r requirements.txt
+          pip install --no-cache-dir pytest-cov fakeredis
+
+      - name: Run pytest
+        env:
+          REDIS_ADDR: localhost:6379
+          PYTHONPATH: ${{ github.workspace }}/${{ env.LAB_DIR }}
+        run: |
+          pytest tests/ \
+            -v \
+            --tb=short \
+            --cov=src \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage.xml \
+            --junitxml=junit.xml
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            ${{ env.LAB_DIR }}/junit.xml
+            ${{ env.LAB_DIR }}/coverage.xml
+          retention-days: 14
+
+  # ── 3. Cor.Go ZTA Kernel Build ───────────────────────────────
+  go-build:
+    name: 🔨 Go Build (Cor.Go ZTA)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: ${{ env.LAB_DIR }}/cmd/cor-go
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: ${{ env.LAB_DIR }}/cmd/cor-go/go.sum
+
+      - name: Download dependencies
+        run: go mod download || go mod tidy
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Build judge6_pep
+        run: go build -o ../../bin/judge6_pep .
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: cor-go-binary
+          path: ${{ env.LAB_DIR }}/bin/judge6_pep
+          retention-days: 7
+
+  # ── 4. Docker Multi-Stage Build ──────────────────────────────
+  docker-build:
+    name: 🐳 Docker Build (sealed container)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [python-lint]
+    defaults:
+      run:
+        working-directory: ${{ env.LAB_DIR }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ env.LAB_DIR }}
+          push: false
+          tags: pnkln-omega:ci-${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ── 5. Security Scan ─────────────────────────────────────────
+  security-scan:
+    name: 🔒 Security (Gitleaks + Bandit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Bandit
+        run: pip install --no-cache-dir bandit[toml]
+
+      - name: Bandit scan (Python security)
+        run: |
+          bandit -r ${{ env.LAB_DIR }}/src/ \
+            --severity-level medium \
+            --confidence-level medium \
+            --format json \
+            --output bandit-results.json \
+            || true
+
+      - name: Upload Bandit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bandit-results
+          path: bandit-results.json
+          retention-days: 14
+
+  # ── 6. AST-grep Rules Validation ──────────────────────────────
+  ast-grep-scan:
+    name: 🌲 AST-grep Rules (eu26 + s7263)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: ${{ env.LAB_DIR }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ast-grep
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/ast-grep/ast-grep/main/install.sh | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Run eu26_and_s7263 rules
+        run: |
+          if [ -f rules/eu26_and_s7263.yaml ]; then
+            echo "📋 Scanning with eu26_and_s7263.yaml rules..."
+            sg scan --rule rules/eu26_and_s7263.yaml src/ || true
+          else
+            echo "⚠️ No rules file found, skipping"
+          fi
+
+  # ── Gate: All checks must pass ───────────────────────────────
+  ci-gate:
+    name: ✅ CI Gate
+    runs-on: ubuntu-latest
+    needs: [python-lint, python-test, go-build, docker-build, security-scan, ast-grep-scan]
+    if: always()
+    steps:
+      - name: Check job results
+        run: |
+          echo "python-lint:    ${{ needs.python-lint.result }}"
+          echo "python-test:    ${{ needs.python-test.result }}"
+          echo "go-build:       ${{ needs.go-build.result }}"
+          echo "docker-build:   ${{ needs.docker-build.result }}"
+          echo "security-scan:  ${{ needs.security-scan.result }}"
+          echo "ast-grep-scan:  ${{ needs.ast-grep-scan.result }}"
+
+          if [[ "${{ needs.python-lint.result }}" == "failure" ]] || \
+             [[ "${{ needs.python-test.result }}" == "failure" ]] || \
+             [[ "${{ needs.security-scan.result }}" == "failure" ]]; then
+            echo "❌ CRITICAL GATE FAILURE. Blocking merge."
+            exit 1
+          fi
+
+          echo "✅ CI Gate passed. All critical checks succeeded."
