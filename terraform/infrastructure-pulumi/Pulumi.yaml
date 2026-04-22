@@ -1,0 +1,11 @@
+name: shadowtag-infrastructure
+runtime:
+  name: nodejs
+  options:
+    typescript: true
+description: ShadowTag GCP Infrastructure managed via Pulumi TypeScript
+config:
+  gcp:project:
+    default: shadowtag-omega-v4
+  gcp:region:
+    default: us-central1
