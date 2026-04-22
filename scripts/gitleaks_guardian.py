@@ -41,7 +41,7 @@ import re
 import subprocess
 import sys
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from pathlib import Path
 from typing import Optional
 
@@ -348,7 +348,7 @@ def generate_report(findings: list[Finding], output_path: str | None = None) -> 
     warns = [f for f in findings if f.verdict == "WARN"]
     ignores = [f for f in findings if f.verdict == "IGNORE"]
 
-    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    timestamp = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     report = f"""# 🛡️ Gitleaks Guardian — Audit Report
 
@@ -615,7 +615,7 @@ def _generate_manifest(raw_findings: list[dict], output_dir: str | None = None) 
         secrets[key]["files"].append(f"{short_path}:{line}")
         secrets[key]["repos"].add(_extract_repo(file_path))
 
-    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    timestamp = datetime.now(UTC).strftime("%Y-%m-%d")
 
     # ── Markdown manifest ──
     by_rule: dict[str, list] = defaultdict(list)
