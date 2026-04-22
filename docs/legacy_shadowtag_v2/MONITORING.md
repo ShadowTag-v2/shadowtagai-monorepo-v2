@@ -103,7 +103,7 @@ gcloud alpha billing accounts list --format="table(name,displayName)"
 
 #### What to Monitor
 
-1. **Judge #6 Validation Active**
+1. **Judge 6 Validation Active**
 
    ```python
    # Check validation rate
@@ -146,7 +146,7 @@ gcloud alpha billing accounts list --format="table(name,displayName)"
 
 #### Success Metrics
 
-- ✅ Judge #6 blocking 3-5% of calls (shows it's active)
+- ✅ Judge 6 blocking 3-5% of calls (shows it's active)
 
 - ✅ 100% of decisions have ShadowTag signatures
 
@@ -154,7 +154,7 @@ gcloud alpha billing accounts list --format="table(name,displayName)"
 
 #### Failure Indicators
 
-- ❌ Judge #6 blocks 0% (not running) or >20% (too strict)
+- ❌ Judge 6 blocks 0% (not running) or >20% (too strict)
 
 - ❌ Missing signatures
 
@@ -540,7 +540,7 @@ def calculate_daily_value():
     """Calculate dollar value generated today"""
     value = 0
 
-    # Judge #6 prevented incidents
+    # Judge 6 prevented incidents
     blocked = get_judge_stats()['blocked']
     value += blocked * (25000 / 30)  # $25K per incident, daily rate
 
@@ -652,9 +652,9 @@ python scripts/health_dashboard.py
 
 **Layer 1**
 
-- ❌ Judge #6 blocks 0% for 24h → Check if running
+- ❌ Judge 6 blocks 0% for 24h → Check if running
 
-- ❌ Judge #6 blocks >30% for 24h → Thresholds too strict
+- ❌ Judge 6 blocks >30% for 24h → Thresholds too strict
 
 - ❌ Missing signatures → ShadowTag not running
 
@@ -730,7 +730,7 @@ Daily checklist:
 
 - [ ] Verify costs are within budget ($870/month)
 
-- [ ] Check for any blocked decisions (Judge #6)
+- [ ] Check for any blocked decisions (Judge 6)
 
 ---
 

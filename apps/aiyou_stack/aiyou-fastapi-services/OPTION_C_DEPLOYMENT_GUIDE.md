@@ -12,7 +12,7 @@
 You've selected the **RECOMMENDED** deployment path that delivers:
 
 ✅ **Execution Velocity:** AutoGen multi-agent orchestration
-✅ **Compliance Rigor:** Judge #6 PRB validation gates
+✅ **Compliance Rigor:** Judge 6 PRB validation gates
 ✅ **Risk Management:** ATP 5-19 stratification
 ✅ **Audit Trails:** ShadowTag watermarking on all outputs
 ✅ **Production Safety:** RA-1 kill-switch protection
@@ -220,17 +220,17 @@ Discovered 5 skills
 RA-1 Skills (2):
   • Database Modification
     Risk: CRITICAL - Irreversible or production-impacting operation
-    Judge #6 Review Required: True
+    Judge 6 Review Required: True
 
   • Financial Transaction Analysis
     Risk: HIGH - Modifies state or handles sensitive data
-    Judge #6 Review Required: True
+    Judge 6 Review Required: True
 
 ... [additional skills] ...
 
 ✓ Manifest generated: cor_skills_manifest.json
 
-⚠️  2 high-risk skills require Judge #6 enforcement
+⚠️  2 high-risk skills require Judge 6 enforcement
 ```
 
 ### Test 4.2: AutoGen Orchestration
@@ -255,7 +255,7 @@ Response Preview: Based on the task of analyzing security vulnerabilities...
 ✓ COR AutoGen Integration smoke test complete
 ```
 
-### Test 4.3: Judge #6 Enforcement
+### Test 4.3: Judge 6 Enforcement
 
 ```bash
 python judge6_enforcement.py
@@ -264,7 +264,7 @@ python judge6_enforcement.py
 **Expected Output:**
 
 ```
-=== Judge #6 Enforcement - ShadowTag-v2JR Doctrine Compliance ===
+=== Judge 6 Enforcement - ShadowTag-v2JR Doctrine Compliance ===
 
 --- Test 1: Compliant Healthcare GTM Task ---
 Validation: V0_COMPLIANT
@@ -279,7 +279,7 @@ Decision: BLOCKED
 Brakes Triggered: True
 Violations: ['BRAKE TRIGGERED: Irreversible production operation detected']
 
-✓ Judge #6 enforcement smoke test complete
+✓ Judge 6 enforcement smoke test complete
 ```
 
 **CRITICAL:** Test 2 MUST show "BLOCKED" with brakes triggered. If not, DO NOT proceed to production.
@@ -461,10 +461,10 @@ report_path = cor['export_report']('telehealth_gtm_execution_report.json')
 
 print(f"✓ Audit trail exported: {report_path}")
 
-# Optional: Export Judge #6 audit log
+# Optional: Export Judge 6 audit log
 judge6_audit = cor['judge6'].export_audit_log('judge6_telehealth_audit.json')
 
-print(f"✓ Judge #6 audit: {judge6_audit}")
+print(f"✓ Judge 6 audit: {judge6_audit}")
 ```
 
 ---
@@ -544,7 +544,7 @@ print(f"✓ Batch report: {report_path}")
 ### Daily Checks
 
 ```bash
-# Check Judge #6 audit log for violations
+# Check Judge 6 audit log for violations
 python -c "
 import json
 with open('judge6_audit_log.json') as f:
@@ -574,7 +574,7 @@ print(f'Critical violations in last 24h: {len(critical)}')
 
 3. **Performance Monitoring:**
    - Average execution time per vertical
-   - Judge #6 validation overhead
+   - Judge 6 validation overhead
    - API costs (Anthropic + Gemini)
 
 ---
@@ -626,7 +626,7 @@ Before deploying to customer-facing operations:
 - [ ] ShadowTag watermarking confirmed on outputs
 - [ ] Audit trail generation tested
 - [ ] API keys secured (not in source code/logs)
-- [ ] Judge #6 PRB validation tested with compliant + non-compliant tasks
+- [ ] Judge 6 PRB validation tested with compliant + non-compliant tasks
 - [ ] Multi-vertical batch processing tested
 - [ ] Execution time < 48 hours for typical vertical GTM task
 - [ ] Zero unintended capital expenditure (bootstrap constraint honored)
@@ -688,7 +688,7 @@ Before deploying to customer-facing operations:
 **Documentation:**
 
 - COR.53 Integration: See `cor53_integration_guide.py` docstrings
-- Judge #6 Enforcement: See `judge6_enforcement.py` docstrings
+- Judge 6 Enforcement: See `judge6_enforcement.py` docstrings
 - Deployment Validation: Run `python DEPLOYMENT_CHECKLIST.py`
 
 **API Documentation:**
@@ -720,7 +720,7 @@ Track these KPIs to validate Option C deployment:
 
 3. **Quality:**
    - ShadowTag watermark presence: Target 100%
-   - Judge #6 validation accuracy: Target > 95%
+   - Judge 6 validation accuracy: Target > 95%
    - Execution success rate: Target > 85%
 
 4. **Economics:**
@@ -737,7 +737,7 @@ You now have everything needed to deploy **Option C: Full Stack COR.53 Integrati
 **The stack delivers:**
 
 - ⚡ **Velocity:** AutoGen multi-agent orchestration
-- 🛡️ **Safety:** Judge #6 PRB enforcement with kill-switch
+- 🛡️ **Safety:** Judge 6 PRB enforcement with kill-switch
 - 📊 **Compliance:** ATP 5-19 risk stratification + audit trails
 - 💰 **Economics:** $0K bootstrap (open-source + API free tiers)
 

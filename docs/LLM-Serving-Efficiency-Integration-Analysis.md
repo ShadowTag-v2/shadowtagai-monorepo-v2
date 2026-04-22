@@ -692,7 +692,7 @@ ROI: 148× in first year
 - **After**: Native Gemini orchestration → **35ms p99**
 - **Value**: Real-time debate UI (terminal rendering)
 
-### Judge #6 HITL (Binary Enforcement)
+### Judge 6 HITL (Binary Enforcement)
 
 - **Before**: Purpose/Reasons/Brakes validation → 3 API calls
 - **After**: Single function call → **≤30ms per validation**
@@ -703,7 +703,7 @@ ROI: 148× in first year
 ```
 User Query (CLI TUI)
     ↓ 10ms (terminal input)
-Judge #6 HITL Validation
+Judge 6 HITL Validation
     ↓ 30ms (Purpose/Reasons/Brakes)
 AutoGen Multi-Agent Debate
     ↓ 35ms (3 agents via native Gemini)

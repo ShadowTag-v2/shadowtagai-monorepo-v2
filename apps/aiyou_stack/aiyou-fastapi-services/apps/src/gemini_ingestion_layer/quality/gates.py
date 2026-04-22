@@ -1,7 +1,7 @@
 """Quality Gates Implementation
 
 Multi-faceted quality checks for the Gemini Ingestion Layer.
-Unlike Judge #6's 98% coverage requirement, this focuses on:
+Unlike Judge 6's 98% coverage requirement, this focuses on:
 - Daily items ingested
 - Source diversity
 - Cost efficiency

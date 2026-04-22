@@ -61,7 +61,7 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
   - Cursor rules + ESLint hybrid
   - Pre-commit hooks
   - Monthly quality reports
-- ✅ **Judge #6 Validation** (JR Engine)
+- ✅ **Judge 6 Validation** (JR Engine)
 - ✅ **ShadowTag Watermarking** (cryptographic audit)
 - ✅ **Priority Support** (48-hour response)
 
@@ -322,7 +322,7 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 
 - Reduced AWS/GCP costs (31× faster → less compute)
 - Lower headcount needs (67% faster code reviews)
-- Fewer production incidents (Judge #6 validation)
+- Fewer production incidents (Judge 6 validation)
 
 ---
 

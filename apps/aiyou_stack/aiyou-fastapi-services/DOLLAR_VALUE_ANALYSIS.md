@@ -49,13 +49,13 @@
 
 ### Layer 1: PNKLN Stack (Validation & Audit)
 
-#### Judge #6 (Purpose/Reasons/Brakes Validation)
+#### Judge 6 (Purpose/Reasons/Brakes Validation)
 
 **Prevented Bad Decisions**
 
 - Critical decisions/month: 50
 
-- Bad decision rate without Judge #6: 5% = 2.5/month
+- Bad decision rate without Judge 6: 5% = 2.5/month
 
 - Cost per bad decision: $25,000 (avg incident cost)
 
@@ -335,7 +335,7 @@
 | Item                             | Monthly Cost | 18-Month Cost  |
 | -------------------------------- | ------------ | -------------- |
 | Memory persistence               | $0.12        | $2.16          |
-| Intelligence Pipeline (Judge #6) | $370.00      | $6,660.00      |
+| Intelligence Pipeline (Judge 6) | $370.00      | $6,660.00      |
 | Gemini function calling          | $500.00      | $9,000.00      |
 | **Total Monthly**                | **$870.12**  | **$15,662.16** |
 
@@ -424,7 +424,7 @@ Some benefits are hard to quantify precisely. Applying 50% haircut to soft benef
 
 - Annual cost: $10,441.44 ($870.12 × 12)
 
-- Annual value: $25,000 (just Judge #6, ignoring everything else)
+- Annual value: $25,000 (just Judge 6, ignoring everything else)
 
 - ROI: 139%
 

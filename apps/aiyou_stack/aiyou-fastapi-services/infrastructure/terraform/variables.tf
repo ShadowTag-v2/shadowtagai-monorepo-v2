@@ -1,4 +1,4 @@
-# Terraform Variables for Judge #6 GKE Infrastructure
+# Terraform Variables for Judge 6 GKE Infrastructure
 
 variable "project_id" {
   description = "GCP Project ID"
@@ -58,7 +58,7 @@ variable "release_channel" {
 }
 
 variable "k8s_namespace" {
-  description = "Kubernetes namespace for Judge #6 workloads"
+  description = "Kubernetes namespace for Judge 6 workloads"
   type        = string
   default     = "judge-6"
 }

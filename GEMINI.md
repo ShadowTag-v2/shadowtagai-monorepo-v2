@@ -257,7 +257,7 @@ CounselConduit is the "Shopify for Legal AI" — a privilege-preserving routing 
 - **Control Plane**: Tenant registry, plan/tier logic, billing orchestration, model routing policy, audit metadata.
 - **Data Plane**: Per-firm storage namespace, per-firm transcript path, per-firm model policy, per-firm billing attribution.
 - **LiteLLM Proxy**: Ephemeral sandbox-bound tokens (tied to tenant + session + TTL). User-billed. No master keys in sandbox.
-- **Judge #6**: Mandatory policy gate on model routing, export, transcript generation, and regulated-domain answers.
+- **Judge 6**: Mandatory policy gate on model routing, export, transcript generation, and regulated-domain answers.
 
 ### Cloud Run Service URLs
 - **Production**: `https://counselconduit-767252945109.us-central1.run.app`
@@ -266,7 +266,7 @@ CounselConduit is the "Shopify for Legal AI" — a privilege-preserving routing 
 
 ### Implementation Phases
 1. **Phase 1 (Secure MVP)**: ✅ LIVE — Cloud Run v3.1.0 + RBAC + billing tiers + HMAC webhooks + Cloud Armor WAF + OpenAPI docs.
-2. **Phase 2 (Privilege)**: ✅ LIVE — Judge #6 gate + Kovel attestation (HMAC-SHA256) + Oracle Studio 7-stage pipeline + LiteLLM multi-model routing + SSE streaming (Vent Mode) + prompt repetition (arXiv 2512.14982) + Firestore persistence + Cloud Tasks GDPR 30-day delete + Google Workspace alerts (Gmail API + Chat API) + Stripe Connect onboarding.
+2. **Phase 2 (Privilege)**: ✅ LIVE — Judge 6 gate + Kovel attestation (HMAC-SHA256) + Oracle Studio 7-stage pipeline + LiteLLM multi-model routing + SSE streaming (Vent Mode) + prompt repetition (arXiv 2512.14982) + Firestore persistence + Cloud Tasks GDPR 30-day delete + Google Workspace alerts (Gmail API + Chat API) + Stripe Connect onboarding.
 3. **Phase 3 (Sandbox)**: Isolated tool runners + read-only FS + short-lived proxy tokens + tenant-billed token issuance.
 4. **Phase 4 (Enterprise)**: BYOC/BYOK + regional isolation + custom retention + FedRAMP + evidence-grade audit exports.
 

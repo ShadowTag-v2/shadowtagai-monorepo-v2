@@ -185,7 +185,7 @@ class CorOrchestrator:
 
 
 async def example_usage():
-    """Example: Judge #6 validation pipeline using Cor Orchestrator.
+    """Example: Judge 6 validation pipeline using Cor Orchestrator.
 
     This demonstrates Pattern 1 (Sequential Pipeline) with conditional
     stage skipping to maintain p99≤90ms SLA.

@@ -136,7 +136,7 @@ Even with maximum skepticism, the numbers remain exceptional:
 
 4. **Memory Creates Lock-In**: Once users build context, switching cost is infinite. Their AI "knows" their projects.
 
-5. **Compliance Opens Enterprise**: ShadowTag cryptographic audit (ATP 5-19). Required for defense, finance, healthcare.
+5. **Compliance Opens Enterprise**: ShadowTag cryptographic audit (Compliance Framework). Required for defense, finance, healthcare.
 
 ---
 

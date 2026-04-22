@@ -336,9 +336,9 @@ Based on U.S. Army Techniques Publication 5-19 (Risk Management):
 - **Approval**: Requires 3-agent peer review + human approval
 - **Human Gate**: Yes (Erik)
 
-## Judge #6: Code Validation
+## Judge 6: Code Validation
 
-All code completions must pass Judge #6 validation:
+All code completions must pass Judge 6 validation:
 
 1. **Security**: No vulnerabilities (SQL injection, XSS, auth bypass)
 2. **Coverage**: Meets RA-level threshold (95-99%)
@@ -346,7 +346,7 @@ All code completions must pass Judge #6 validation:
 4. **Documentation**: Functions have clear docstrings
 5. **Performance**: No anti-patterns (N+1 queries, blocking I/O)
 
-Judge #6 uses Gemini 2.0 Flash for automated analysis.
+Judge 6 uses Gemini 2.0 Flash for automated analysis.
 
 ## Brake Activation Protocol
 
@@ -402,7 +402,7 @@ Tasks:
 - 25%: Cargo.toml updated, module scaffolding
 - 50%: Basic window renders, ECS initialized
 - 75%: Event pipeline connected
-- 100%: Tests pass, Judge #6 validation
+- 100%: Tests pass, Judge 6 validation
 
 ---
 
@@ -467,7 +467,7 @@ Critical path: Core Integration must complete before UI Components.
 - [ ] All tests pass with 98%+ coverage
 - [ ] Bevy window renders on Vertex AI Workbench
 - [ ] Agent Mail coordination logged throughout
-- [ ] Judge #6 validates all code completions
+- [ ] Judge 6 validates all code completions
 - [ ] No brake violations
 
 ## Timeline
@@ -475,7 +475,7 @@ Critical path: Core Integration must complete before UI Components.
 - **Day 1**: Environment setup + Core Integration (0-50%)
 - **Day 2**: Core Integration (50-100%) + UI Components start
 - **Day 3**: UI Components + CI/CD Pipeline
-- **Day 4**: Integration testing + Judge #6 validation
+- **Day 4**: Integration testing + Judge 6 validation
 - **Day 5**: Buffer for brake resolutions / refactoring
 
 ## Agent Coordination

@@ -55,7 +55,7 @@ Successfully integrated the **AutoGen to Gemini Migration** branch into the Shad
 
 ### Specialized Kernels (`src/kernels/`)
 
-- `atp_519_scan.py` - ATP 5-19 violation extraction
+- `atp_519_scan.py` - Compliance Framework violation extraction
 - `judge_six.py` - Binary decision making
 - `audit_compress.py` - Audit trail compression (zstd)
 
@@ -258,7 +258,7 @@ async def hybrid_execution(request: Request):
 
 **7 Core Functions:**
 
-1. `atp_519_scan(context)` - Extract ATP 5-19 violations
+1. `atp_519_scan(context)` - Extract Compliance Framework violations
 2. `judge_six_classify(context)` - Binary go/no-go decision
 3. `audit_compress(data)` - Compress audit trail (zstd)
 4. `multi_agent_debate(question, num_agents)` - Collaborative reasoning

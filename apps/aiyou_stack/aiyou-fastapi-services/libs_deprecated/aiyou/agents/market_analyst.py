@@ -60,7 +60,7 @@ To establishing Sovereign AI dominance in the {vertical_name} sector.
 We do not sell "Chatbots". We sell **{focus_area}**.
 
 - **ShadowTag Identity**: Cryptographic proof of Model Provenance (L0-L4).
-- **Judge #6 Governance**: Pre-inference compliance gates (The "Brakes").
+- **Judge 6 Governance**: Pre-inference compliance gates (The "Brakes").
 - **Sovereign Instance**: Deployed in *their* VPC (The Child).
 
 ## 4. THE MOAT (Unfair Advantage)
@@ -86,7 +86,7 @@ We do not sell "Chatbots". We sell **{focus_area}**.
     def execute_campaign(self) -> dict[str, str]:
         """Executes the 'Big Three' Campaign."""
         campaigns = [
-            ("Gov/Defense", "02", "Sovereignty", "Judge #6 Governance"),
+            ("Gov/Defense", "02", "Sovereignty", "Judge 6 Governance"),
             ("Fintech", "05", "Risk Mitigation", "FinJudge Audit"),
             ("Healthcare", "09", "Regulatory Compliance", "Auto-Compliance"),
         ]

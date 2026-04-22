@@ -1,6 +1,6 @@
 """Shadow Mode Framework for safe agent governance migration.
 
-Runs new agent system in parallel with existing Judge #6 without
+Runs new agent system in parallel with existing Judge 6 without
 affecting production decisions, enabling validation before cutover.
 """
 
@@ -39,7 +39,7 @@ class ShadowDecision(BaseModel):
 
 
 class ProductionDecision(BaseModel):
-    """Decision from existing Judge #6 system."""
+    """Decision from existing Judge 6 system."""
 
     decision_id: str
     decision: str
@@ -125,7 +125,7 @@ class ShadowModeOrchestrator:
 
         Args:
             shadow_agent: New agent-based governance system
-            production_client: Existing Judge #6 client
+            production_client: Existing Judge 6 client
             sample_rate: Fraction of requests to shadow (0.0-1.0)
             log_mismatches_only: Only log disagreements for review
 
@@ -224,12 +224,12 @@ class ShadowModeOrchestrator:
         )
 
     async def _get_production_decision(self, request: dict[str, Any]) -> ProductionDecision:
-        """Get decision from existing Judge #6 system."""
+        """Get decision from existing Judge 6 system."""
         import httpx
 
         start = time.time()
 
-        # Call Judge #6 endpoint
+        # Call Judge 6 endpoint
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 settings.judge6_endpoint,

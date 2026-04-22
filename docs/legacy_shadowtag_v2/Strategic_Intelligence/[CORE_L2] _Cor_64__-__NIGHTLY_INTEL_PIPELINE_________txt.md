@@ -82,7 +82,7 @@ WITHOUT PIPELINE:
 WITH PIPELINE:
 ├─ Detection: Oct 31, 2024 (proactive, 90-day lead)
 ├─ Implementation: Nov-Dec 2025 (controlled)
-├─ Risk: ATP 5-19 RA-4 → RA-1 (mitigated)
+├─ Risk: Compliance Framework RA-4 → RA-1 (mitigated)
 └─ Competitive: Demo compliance in sales → +15% win rate
 
 QUANTIFIED ADVANTAGE:
@@ -144,7 +144,7 @@ import random
 from datetime import datetime, timedelta
 
 class EthicalScraper:
-    """ATP 5-19 RA-1 compliant scraper with robots.txt respect"""
+    """Compliance Framework RA-1 compliant scraper with robots.txt respect"""
 
     def __init__(self, config):
         self.config = config
@@ -156,7 +156,7 @@ class EthicalScraper:
         """
         Fetch URL with full ethical compliance
 
-        ATP 5-19 Risk Mitigation:
+        Compliance Framework Risk Mitigation:
         - RA-4 (Extremely High): Violating robots.txt, DDoS
         - RA-1 (Low): Compliant, throttled, respectful
         """
@@ -422,7 +422,7 @@ spec:
 GATE A (Month 6 → $750K ARR)
 ├─ Intel Pipeline Contribution: +$112K (15% win rate boost)
 ├─ Proof Point: "90-day regulatory head-start" in pitch
-└─ ATP 5-19 RA-2 → RA-1 (compliance risk mitigated)
+└─ Compliance Framework RA-2 → RA-1 (compliance risk mitigated)
 
 GATE B (Month 12 → $2.5M ARR)
 ├─ Intel Pipeline Contribution: +$375K (RFP positioning)
@@ -457,7 +457,7 @@ EXTRACTED CORE DOCTRINE
     """The only rule that matters"""
     return "Maximize value in every equation"
     No social video. No creators. Just pure optimization doctrine.
-2.  RISK STRATIFICATION MATRIX (ATP 5-19)
+2.  RISK STRATIFICATION MATRIX (Compliance Framework)
     From Cor.2, stripped clean:
     RISK_ASSESSMENT_MATRIX:
     ├── RA-1 (Extremely High)
@@ -484,7 +484,7 @@ EXTRACTED CORE DOCTRINE
     ├── Control: Lightweight tracking
     └── Authority: Automated
 3.  CONTROL HIERARCHY
-    From ATP 5-19 implementation in Cor.2:
+    From Compliance Framework implementation in Cor.2:
     CONTROL_PREFERENCE_ORDER = [
     "Engineering", # Design out the hazard
     "Administrative", # Policies and procedures
@@ -504,7 +504,7 @@ EXTRACTED CORE DOCTRINE
     Rule: "Maximize value"
     Constraint: "Risk ≤ tolerance (via YRM)"
 5.  THE 5-STEP RISK PROCESS
-    Pure ATP 5-19, no platform specifics:
+    Pure Compliance Framework, no platform specifics:
     def RISK_MANAGEMENT_CYCLE():
     while operational:
     identify_hazards() # Step 1
@@ -585,7 +585,7 @@ EXTRACTED CORE DOCTRINE
     ║ No creators. No videos. No platform. ║
     ║ Just pure, military-grade governance. ║
     ║ ║
-    ║ This is your Judge #6 core. ║
+    ║ This is your Judge 6 core. ║
     ╚═══════════════════════════════════════════════════════════════╝
     “ <next>
 
@@ -951,7 +951,7 @@ EXTRACTED CORE DOCTRINE
     """The only rule that matters"""
     return "Maximize value in every equation"
     No social video. No creators. Just pure optimization doctrine.
-2.  RISK STRATIFICATION MATRIX (ATP 5-19)
+2.  RISK STRATIFICATION MATRIX (Compliance Framework)
     From Cor.2, stripped clean:
     RISK_ASSESSMENT_MATRIX:
     ├── RA-1 (Extremely High)
@@ -978,7 +978,7 @@ EXTRACTED CORE DOCTRINE
     ├── Control: Lightweight tracking
     └── Authority: Automated
 3.  CONTROL HIERARCHY
-    From ATP 5-19 implementation in Cor.2:
+    From Compliance Framework implementation in Cor.2:
     CONTROL_PREFERENCE_ORDER = [
     "Engineering", # Design out the hazard
     "Administrative", # Policies and procedures
@@ -998,7 +998,7 @@ EXTRACTED CORE DOCTRINE
     Rule: "Maximize value"
     Constraint: "Risk ≤ tolerance (via YRM)"
 5.  THE 5-STEP RISK PROCESS
-    Pure ATP 5-19, no platform specifics:
+    Pure Compliance Framework, no platform specifics:
     def RISK_MANAGEMENT_CYCLE():
     while operational:
     identify_hazards() # Step 1
@@ -1079,7 +1079,7 @@ EXTRACTED CORE DOCTRINE
     ║ No creators. No videos. No platform. ║
     ║ Just pure, military-grade governance. ║
     ║ ║
-    ║ This is your Judge #6 core. ║
+    ║ This is your Judge 6 core. ║
     ╚═══════════════════════════════════════════════════════════════╝"
 
 “╔═══════════════════════════════════════════════════════════════╗
@@ -1094,7 +1094,7 @@ EXTRACTED CORE DOCTRINE
     """The only rule that matters"""
     return "Maximize value in every equation"
     No social video. No creators. Just pure optimization doctrine.
-2.  RISK STRATIFICATION MATRIX (ATP 5-19)
+2.  RISK STRATIFICATION MATRIX (Compliance Framework)
     From Cor.2, stripped clean:
     RISK_ASSESSMENT_MATRIX:
     ├── RA-1 (Extremely High)
@@ -1121,7 +1121,7 @@ EXTRACTED CORE DOCTRINE
     ├── Control: Lightweight tracking
     └── Authority: Automated
 3.  CONTROL HIERARCHY
-    From ATP 5-19 implementation in Cor.2:
+    From Compliance Framework implementation in Cor.2:
     CONTROL_PREFERENCE_ORDER = [
     "Engineering", # Design out the hazard
     "Administrative", # Policies and procedures
@@ -1141,7 +1141,7 @@ EXTRACTED CORE DOCTRINE
     Rule: "Maximize value"
     Constraint: "Risk ≤ tolerance (via YRM)"
 5.  THE 5-STEP RISK PROCESS
-    Pure ATP 5-19, no platform specifics:
+    Pure Compliance Framework, no platform specifics:
     def RISK_MANAGEMENT_CYCLE():
     while operational:
     identify_hazards() # Step 1
@@ -1222,7 +1222,7 @@ EXTRACTED CORE DOCTRINE
     ║ No creators. No videos. No platform. ║
     ║ Just pure, military-grade governance. ║
     ║ ║
-    ║ This is your Judge #6 core. ║
+    ║ This is your Judge 6 core. ║
     ╚═══════════════════════════════════════════════════════════════╝"
     “Deep breath. Let's get brutally clear.
     You've buried a genuinely elegant consumer problem (auto shop accountability) under $858B enterprise legal-tech TAM metrics that don't apply to it. That's not your actual business—it's someone else's pitch deck you're using as scaffolding.
@@ -1331,7 +1331,7 @@ Everything else is noise until that works.”
 GOOGLE ACCELERATED-PLATFORMS REFERENCE ARCHITECTURE ADAPTATION
 
 EXECUTIVE SUMMARY
-ARCHITECTURE: Google GKE Inference Reference + pnkln Judge #6 Hybrid
+ARCHITECTURE: Google GKE Inference Reference + pnkln Judge 6 Hybrid
 TARGET SLA: p99 ≤90ms end-to-end latency
 COST TARGET: $60-65K/month (includes GPU/TPU + networking)
 DEPLOYMENT: Terraform IaC + GitOps (4 namespaces)
@@ -1845,7 +1845,7 @@ name: shadowtag-v2
 labels:
 tier: security
 pnkln.io/component: "watermarking"
-Judge #6 Hybrid Enforcement System
+Judge 6 Hybrid Enforcement System
 
 # judge6-deployment.yaml - 3-layer hybrid enforcement
 
@@ -2284,9 +2284,9 @@ echo "────────────────────────�
 
 kubectl apply -f ${K8S_DIR}/namespaces.yaml
 
-# Deploy Judge #6
+# Deploy Judge 6
 
-echo "▶ Deploying Judge #6 hybrid enforcement..."
+echo "▶ Deploying Judge 6 hybrid enforcement..."
 kubectl apply -f ${K8S_DIR}/judge6-deployment.yaml
 
 # Deploy LLM routing
@@ -2343,7 +2343,7 @@ echo "────────────────────────�
 echo " Cluster: ${CLUSTER_NAME}"
 echo " Region: ${REGION}"
 echo " Namespaces: 4 (deployed)"
-echo " Judge #6: ✓ Active (3 layers)"
+echo " Judge 6: ✓ Active (3 layers)"
 echo " LLM Router: ✓ Active (5 models)"
 echo " Monitoring: ✓ Prometheus configured"
 echo "════════════════════════════════════════════════════════"
@@ -2357,9 +2357,9 @@ echo "╔═══════════════════════�
 echo "║ VALIDATION SUITE - P99 LATENCY & COVERAGE ║"
 echo "╚══════════════════════════════════════════════════════╝"
 
-# Test Judge #6 latency
+# Test Judge 6 latency
 
-echo "▶ Testing Judge #6 p99 latency..."
+echo "▶ Testing Judge 6 p99 latency..."
 for i in {1..100}; do
 curl -s -o /dev/null -w "%{time_total}\n" \
  http://judge6-service.ShadowTag-v2jr-governance/validate
@@ -2438,7 +2438,7 @@ Ready to execute deployment? The system is architected for immediate execution w
 GOOGLE ACCELERATED-PLATFORMS REFERENCE ARCHITECTURE ADAPTATION
 
 EXECUTIVE SUMMARY
-ARCHITECTURE: Google GKE Inference Reference + pnkln Judge #6 Hybrid
+ARCHITECTURE: Google GKE Inference Reference + pnkln Judge 6 Hybrid
 TARGET SLA: p99 ≤90ms end-to-end latency
 COST TARGET: $60-65K/month (includes GPU/TPU + networking)
 DEPLOYMENT: Terraform IaC + GitOps (4 namespaces)
@@ -2952,7 +2952,7 @@ name: shadowtag-v2
 labels:
 tier: security
 pnkln.io/component: "watermarking"
-Judge #6 Hybrid Enforcement System
+Judge 6 Hybrid Enforcement System
 
 # judge6-deployment.yaml - 3-layer hybrid enforcement
 
@@ -3391,9 +3391,9 @@ echo "────────────────────────�
 
 kubectl apply -f ${K8S_DIR}/namespaces.yaml
 
-# Deploy Judge #6
+# Deploy Judge 6
 
-echo "▶ Deploying Judge #6 hybrid enforcement..."
+echo "▶ Deploying Judge 6 hybrid enforcement..."
 kubectl apply -f ${K8S_DIR}/judge6-deployment.yaml
 
 # Deploy LLM routing
@@ -3450,7 +3450,7 @@ echo "────────────────────────�
 echo " Cluster: ${CLUSTER_NAME}"
 echo " Region: ${REGION}"
 echo " Namespaces: 4 (deployed)"
-echo " Judge #6: ✓ Active (3 layers)"
+echo " Judge 6: ✓ Active (3 layers)"
 echo " LLM Router: ✓ Active (5 models)"
 echo " Monitoring: ✓ Prometheus configured"
 echo "════════════════════════════════════════════════════════"
@@ -3464,9 +3464,9 @@ echo "╔═══════════════════════�
 echo "║ VALIDATION SUITE - P99 LATENCY & COVERAGE ║"
 echo "╚══════════════════════════════════════════════════════╝"
 
-# Test Judge #6 latency
+# Test Judge 6 latency
 
-echo "▶ Testing Judge #6 p99 latency..."
+echo "▶ Testing Judge 6 p99 latency..."
 for i in {1..100}; do
 curl -s -o /dev/null -w "%{time_total}\n" \
  http://judge6-service.ShadowTag-v2jr-governance/validate

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Safety Scanner with Lexicons
 Scans content for harmful patterns before corpus indexing.
-Judge #6 pre-filter for Flying n-autoresearch/Kosmos/BioAgents pipeline.
+Judge 6 pre-filter for Flying n-autoresearch/Kosmos/BioAgents pipeline.
 """
 
 import json

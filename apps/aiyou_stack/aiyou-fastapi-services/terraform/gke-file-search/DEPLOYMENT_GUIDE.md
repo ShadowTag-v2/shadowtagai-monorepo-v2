@@ -380,7 +380,7 @@ gcloud projects get-iam-policy $PROJECT_ID \
    - Import into respective RAG corpora
 
 2. **Configure Application**
-   - Integrate File Search API into Judge #6 orchestrator
+   - Integrate File Search API into Judge 6 orchestrator
    - Implement parallel execution (File Search + Judge Layer 1)
    - Add latency monitoring
 

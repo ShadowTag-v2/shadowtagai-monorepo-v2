@@ -20,7 +20,7 @@ Traditional agent frameworks use "start simple, add enforcement later" approach,
 │  2. JR Engine validates (Purpose/Reasons/Brakes)    │
 │  3. If brake triggered → escalate to human          │
 │  4. Execute with guardrails → raw result            │
-│  5. Judge #6 verifies compliance → verification     │
+│  5. Judge 6 verifies compliance → verification     │
 │  6. If verification fails → rollback and log        │
 │  7. Return result with watermark                     │
 └─────────────────────────────────────────────────────┘
@@ -82,7 +82,7 @@ if result.status.name == 'COMPLETED':
 
 **Target Latency:** <500μs
 
-Validates every agent action using ATP 5-19 risk assessment:
+Validates every agent action using Compliance Framework risk assessment:
 
 ```python
 from shadowtagai_agents import JREngine, Purpose, Reason
@@ -102,7 +102,7 @@ reasons = [
         justification="Automated lead generation with compliance enforcement",
         risk_probability=0.2,
         risk_severity=0.3,
-        mitigation_strategy="Judge #6 GDPR/CAN-SPAM filtering"
+        mitigation_strategy="Judge 6 GDPR/CAN-SPAM filtering"
     )
 ]
 
@@ -116,7 +116,7 @@ else:
         print(f"  - {brake.reason}")
 ```
 
-**Risk Levels (ATP 5-19):**
+**Risk Levels (Compliance Framework):**
 
 | Risk Score | Level          | Action                       |
 | ---------- | -------------- | ---------------------------- |
@@ -126,7 +126,7 @@ else:
 | ≥0.2       | Low            | Standard execution           |
 | <0.2       | Extremely Low  | Fast-path execution          |
 
-### 2. Judge #6 Lite (Rule-Based Enforcement)
+### 2. Judge 6 Lite (Rule-Based Enforcement)
 
 **Target Latency:** <90ms p99
 
@@ -257,7 +257,7 @@ print(f"LTV:CAC ratio: {ratio:.1f}:1")  # 5.3:1
 1. User query: "Find 100 German fintech CTOs"
 2. JR Engine validates budget/purpose
 3. Agent scrapes LinkedIn/Apollo/Clearbit
-4. Judge #6 filters personal emails, flags EU contacts
+4. Judge 6 filters personal emails, flags EU contacts
 5. Output: N approved + M blocked + audit PDF
 
 **Features:**
@@ -334,7 +334,7 @@ See [docs/adr/001-enforcement-first-architecture.md](docs/adr/001-enforcement-fi
 
 - Enforcement-first pattern (validation before execution)
 - JR Engine for Purpose/Reasons/Brakes validation
-- Judge #6 Lite for rule-based compliance
+- Judge 6 Lite for rule-based compliance
 - Target SLA: <90ms p99 for verification
 - Revenue model: $297-$9,970/mo + usage pricing
 
@@ -345,7 +345,7 @@ See [docs/adr/001-enforcement-first-architecture.md](docs/adr/001-enforcement-fi
 ### Immediate (7-day MVP)
 
 - [x] Implement JR Engine
-- [x] Implement Judge #6 Lite
+- [x] Implement Judge 6 Lite
 - [x] Implement Agent Pattern
 - [x] Implement Compliance SDR Agent
 - [ ] Write tests (unit + integration)
@@ -364,7 +364,7 @@ See [docs/adr/001-enforcement-first-architecture.md](docs/adr/001-enforcement-fi
 
 ### Medium-term (90 days)
 
-- [ ] Implement ML training for Judge #6
+- [ ] Implement ML training for Judge 6
 - [ ] Add LangGraph integration
 - [ ] Scale to 10+ customers
 - [ ] Validate revenue model
@@ -392,7 +392,7 @@ Proprietary - ShadowTagAi Engineering
 
 **Based on:**
 
-- ATP 5-19 (US Army risk assessment methodology)
+- Compliance Framework (US Army risk assessment methodology)
 - GDPR (EU General Data Protection Regulation)
 - CAN-SPAM Act (US email marketing law)
 - HIPAA (US healthcare data protection)

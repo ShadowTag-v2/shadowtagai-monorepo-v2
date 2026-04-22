@@ -86,8 +86,8 @@ def main():
     caller = GeminiFunctionCaller(model_name="gemini-3.1-flash-lite-preview", tools=tools)
     print("   ✅ Function caller ready\n")
 
-    # 4. Wrap with Judge #6
-    print("4️⃣  Initializing Judge #6 (JR Engine)...")
+    # 4. Wrap with Judge 6
+    print("4️⃣  Initializing Judge 6 (JR Engine)...")
     judge = JudgeSix(
         caller=caller,
         mission_statement="Research topics and provide summaries",
@@ -140,7 +140,7 @@ def main():
         print(f"Meets p99≤90ms SLA: {'✅ YES' if metrics['meets_sla'] else '❌ NO'}")
         print()
 
-        # Show Judge #6 audit log
+        # Show Judge 6 audit log
         print("=" * 70)
         print("JUDGE #6 AUDIT LOG")
         print("=" * 70)

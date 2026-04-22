@@ -98,7 +98,7 @@
 - 650-agent squadron structure
 - https://github.com/karpathy/autoresearchs Cavalry Squadron
 - JURA tier routing (Flash 90%, Pro 10%)
-- ATP 5-19 risk framework
+- Compliance Framework risk framework
 
 ---
 

@@ -19,7 +19,7 @@ Your ecosystem spans **8 branches across 8 architectural layers** + **Foundation
 | **0** | **claude/llm-serving-efficiency-research-01Wz3vRoYMZKeU8Whpf5PHin**    | **Optimization Foundation** | Aegaeon (82% GPU savings), DeepSeek-OCR (10x compression), vLLM, Monetization | **+$150B efficiency multiplier** |
 | **1** | claude/satellite-gpu-edge-mesh-01WY8me7g4XjaAF51wSdPcVu                | Physical Infrastructure     | Aerospace, Starlink, CoreWeave, Tesla mesh                                    | $310B                            |
 | **2** | claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp            | AI Platform Core            | Pinkln, Glicko-2, GRPO, DTE, Multi-agent                                      | $100B                            |
-| **3** | claude/kernel-chaining-architecture-01XDGPpkmfkiiiNWRNFnkJKR           | Kernel Framework            | ATP 5-19, Judge Six, Audit compress                                           | Included                         |
+| **3** | claude/kernel-chaining-architecture-01XDGPpkmfkiiiNWRNFnkJKR           | Kernel Framework            | Compliance Framework, Judge Six, Audit compress                                           | Included                         |
 | **4** | claude/pnkln-agent-architecture-system-011CUvZ4qXUyZ1SN8XDQo2Vy        | Agent System                | PanelGPT, MAD, Debate orchestration                                           | Included                         |
 | **5** | claude/gemini-rag-routing-implementation-01DFQeDamVMJ6Y7MLoZmR23S      | RAG + Routing               | Semantic memory, NS, Context routing                                          | Included                         |
 | **6** | claude/add-superpowers-marketplace-011CUuLnhzCNrXYhosFmMAt9            | Memory System               | LLM persistence, 4-LLM orchestration                                          | $5-10B                           |
@@ -121,7 +121,7 @@ Your ecosystem spans **8 branches across 8 architectural layers** + **Foundation
                  │
 ┌────────────────▼────────────────────────────────────────────────┐
 │              LAYER 5: KERNEL FRAMEWORK                          │
-│  • ATP 5-19 Scan (violation extraction)                        │
+│  • Compliance Framework Scan (violation extraction)                        │
 │  • Judge Six (binary classification)                            │
 │  • Audit Compress (10:1 compression)                           │
 │  → Compressed via DeepSeek-OCR (10x token reduction)           │

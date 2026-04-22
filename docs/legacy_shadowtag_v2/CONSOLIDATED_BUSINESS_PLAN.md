@@ -18,13 +18,13 @@ We are building the **Civilization OS**—a vertically integrated stack from ele
 | **Sulphur Bank Mine** | $1.1B standalone | SECURED (160 acres, 100MW) |
 | **The Index** | +$85M pre-money | RECOVERED (17GB sovereign code) |
 | **ShadowTag v2** | $3.07B capture | TRL-8 (System Qualified) |
-| **Judge #6** | $1.6B+ | Production Ready |
+| **Judge 6** | $1.6B+ | Production Ready |
 | **30 Verticals** | $207B (2030) | Platform Complete |
 
 ### Core Components
 - **Antigravity**: Cross-model AI orchestration (Claude/Gemini/GPT-5)
 - **https://github.com/karpathy/autoresearchs**: 650-agent swarm for parallel task execution
-- **Judge #6**: ATP 5-19 risk governance (<35ms decisions)
+- **Judge 6**: Compliance Framework risk governance (<35ms decisions)
 - **ShadowTag**: Cryptographic content watermarking ("Stripe for Authenticity")
 
 **The Pitch**: "31× faster AI. 97% cheaper. Self-evolving. Powered by our own electrons."
@@ -48,7 +48,7 @@ We are building the **Civilization OS**—a vertically integrated stack from ele
 │      AiU Digital Mall, Tokable, Dreamlight, CineVerse               │
 ├─────────────────────────────────────────────────────────────────────┤
 │  L2: CORE PROTOCOLS (The Operating System)                         │
-│      ShadowTag v2, Judge #6, ActiveShield MCF, Vexa                 │
+│      ShadowTag v2, Judge 6, ActiveShield MCF, Vexa                 │
 ├─────────────────────────────────────────────────────────────────────┤
 │  L1: ENERGY (The Foundation)                                       │
 │      Sulphur Bank Mine, Geothermal + Solar, Bitcoin Mining          │
@@ -63,7 +63,7 @@ We are building the **Civilization OS**—a vertically integrated stack from ele
 
 ### Layer 2: Core Protocols
 - **ShadowTag v2**: Visual (1x1 steganography) + Audio (ultrasonic) + Chain (Polygon/Solana)
-- **Judge #6**: <90ms governance engine, ATP 5-19 compliant
+- **Judge 6**: <90ms governance engine, Compliance Framework compliant
 - **ActiveShield MCF**: EU AI Act/HIPAA/ITAR automation
 
 ### Layer 3: Consumer Interface
@@ -91,7 +91,7 @@ We are building the **Civilization OS**—a vertically integrated stack from ele
 | **Total Addressable** | **$25.0B** | **$60.8B** | **15.3%** |
 
 ### Beachhead Markets
-1. **Military/Defense Procurement** (ATP 5-19 compliance) - $800M
+1. **Military/Defense Procurement** (Compliance Framework compliance) - $800M
 2. **Developer-led Startups** (Speed > Compliance)
 3. **Mid-market SaaS** (Cost > Speed)
 4. **Enterprise FinTech/HealthTech** (Compliance > Cost)
@@ -189,9 +189,9 @@ We are building the **Civilization OS**—a vertically integrated stack from ele
 
 | Component | Target | Cost |
 |-----------|--------|------|
-| Judge #6 Binary | p99 ≤ 90ms | $0.0003/decision |
+| Judge 6 Binary | p99 ≤ 90ms | $0.0003/decision |
 | Kernel Chain | <35ms | - |
-| ATP 5-19 Scan | <50ms | - |
+| Compliance Framework Scan | <50ms | - |
 | Claude Deep | p95 ≤ 2s | - |
 | Gemini Production | p99 ≤ 100ms | - |
 
@@ -200,7 +200,7 @@ We are building the **Civilization OS**—a vertically integrated stack from ele
 **Core Services**:
 - `agents/` - Multi-agent framework
 - `flying_monkeys/` - 650-agent swarm
-- `judge6/` - ATP 5-19 governance
+- `judge6/` - Compliance Framework governance
 - `shadowtag/` - Cryptographic watermarking
 - `codepmcs/` - 50-agent code remediation
 
@@ -268,13 +268,13 @@ We are building the **Civilization OS**—a vertically integrated stack from ele
 |-----------|-------|--------|
 | Base Platform | $68.4B | Monte Carlo DCF |
 | Gemini AI Integration | +$38.9B | 96% automation |
-| Governance Premium (Judge #6) | +$19B | Enterprise compliance |
+| Governance Premium (Judge 6) | +$19B | Enterprise compliance |
 | Satellite GPU Edge Mesh | +$18.3B | Cost/latency optimization |
 | Deployment Strategy (Hybrid) | +$14.5B | Edge + Cloud |
 | Multi-Agent Systems (Glicko-2) | +$10.3B | Quality improvement |
 | Security Refactoring | +$4.1B | Risk reduction |
 | LLM Memory Integration | +$3.5B | Creator patterns |
-| Judge #6 Enforcement | +$1.6B | ATP 5-19 compliance |
+| Judge 6 Enforcement | +$1.6B | Compliance Framework compliance |
 | Risk Adjustment (-25%) | -$32.9B | Conservative discount |
 | **Total** | **$207B** | |
 
@@ -409,7 +409,7 @@ We are building the **Civilization OS**—a vertically integrated stack from ele
 
 ### Product (Week 3-4)
 1. [ ] Deploy https://github.com/karpathy/autoresearchs to Cloud Run
-2. [ ] Integrate Judge #6 governance
+2. [ ] Integrate Judge 6 governance
 3. [ ] Launch ShadowTag beta
 
 ### Infrastructure (Ongoing)

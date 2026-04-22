@@ -1,14 +1,14 @@
-# Analysis Framework Comparison: Judge #6 vs. Gemini Ingestion Layer
+# Analysis Framework Comparison: Judge 6 vs. Gemini Ingestion Layer
 
 ## Overview
 
-This document provides a comprehensive comparison of the analysis frameworks for two critical components of the pnkln Core Stack™: **Judge #6** (validation/enforcement) and **Gemini Ingestion Layer** (data collection). Both use Gemini 2.0 Pro for analysis but are tailored to their distinct roles, execution models, and operational contexts.
+This document provides a comprehensive comparison of the analysis frameworks for two critical components of the pnkln Core Stack™: **Judge 6** (validation/enforcement) and **Gemini Ingestion Layer** (data collection). Both use Gemini 2.0 Pro for analysis but are tailored to their distinct roles, execution models, and operational contexts.
 
 ## Why Different Analysis Approaches?
 
 The two components serve fundamentally different purposes in the stack:
 
-- **Judge #6**: Reactive, defensive, real-time validator
+- **Judge 6**: Reactive, defensive, real-time validator
 - **Gemini Ingestion Layer**: Proactive, acquisitive, batch collector
 
 This functional contrast necessitates different analysis priorities, metrics, and confidence targets.
@@ -21,7 +21,7 @@ These swaps maintain the prompt's analytical structure while adapting it to doma
 
 ### 1. File References
 
-| Aspect             | Judge #6                              | Gemini Ingestion Layer                      |
+| Aspect             | Judge 6                              | Gemini Ingestion Layer                      |
 | ------------------ | ------------------------------------- | ------------------------------------------- |
 | **Primary Source** | `judge_six.py` (single Python script) | Pipeline docs, architecture specs, configs  |
 | **Scope**          | Focused code review                   | Distributed system analysis                 |
@@ -31,7 +31,7 @@ These swaps maintain the prompt's analytical structure while adapting it to doma
 
 ### 2. Performance Metrics
 
-| Aspect                | Judge #6                  | Gemini Ingestion Layer           |
+| Aspect                | Judge 6                  | Gemini Ingestion Layer           |
 | --------------------- | ------------------------- | -------------------------------- |
 | **Primary Metric**    | p99 latency ≤ 90ms        | Runtime efficiency ~45 min/night |
 | **Focus**             | Sub-second response times | Bulk processing throughput       |
@@ -41,12 +41,12 @@ These swaps maintain the prompt's analytical structure while adapting it to doma
 
 **Analysis Impact**:
 
-- Judge #6: Bottleneck identification in request path, caching strategies
+- Judge 6: Bottleneck identification in request path, caching strategies
 - Ingestion Layer: Parallelization opportunities, stage-wise breakdown, time-boxing
 
 ### 3. Quality Gates
 
-| Aspect          | Judge #6                          | Gemini Ingestion Layer                             |
+| Aspect          | Judge 6                          | Gemini Ingestion Layer                             |
 | --------------- | --------------------------------- | -------------------------------------------------- |
 | **Gate Type**   | 98% validation coverage threshold | Multi-faceted: items, sources, costs, scores       |
 | **Measurement** | Binary: covered or not            | Continuous: volume, diversity, efficiency, quality |
@@ -56,7 +56,7 @@ These swaps maintain the prompt's analytical structure while adapting it to doma
 
 **Analysis Impact**:
 
-- Judge #6: Gap analysis for uncovered validation paths
+- Judge 6: Gap analysis for uncovered validation paths
 - Ingestion Layer: Balance assessment across competing objectives (volume vs. cost vs. quality)
 
 ---
@@ -67,7 +67,7 @@ These changes reflect the components' positions and roles in the pnkln stack.
 
 ### 1. Architecture
 
-| Aspect        | Judge #6                                | Gemini Ingestion Layer                     |
+| Aspect        | Judge 6                                | Gemini Ingestion Layer                     |
 | ------------- | --------------------------------------- | ------------------------------------------ |
 | **Design**    | Hybrid Gemini + PyTorch                 | GKE CronJob multi-container                |
 | **Execution** | Real-time, synchronous                  | Batch, scheduled (nightly)                 |
@@ -75,14 +75,14 @@ These changes reflect the components' positions and roles in the pnkln stack.
 
 **Analysis Questions**:
 
-- **Judge #6**: Why hybrid? How are models combined? Fallback strategy?
+- **Judge 6**: Why hybrid? How are models combined? Fallback strategy?
 - **Ingestion**: Container coordination? Resource allocation? Failure recovery?
 
 **Key Insight**: Architectural analysis must align with execution model—latency optimization vs. batch efficiency.
 
 ### 2. Key Metrics
 
-| Metric Category | Judge #6                | Gemini Ingestion Layer              |
+| Metric Category | Judge 6                | Gemini Ingestion Layer              |
 | --------------- | ----------------------- | ----------------------------------- |
 | **Speed**       | Latency (p50, p95, p99) | Total runtime, processing rate      |
 | **Volume**      | Throughput (req/sec)    | Items per day                       |
@@ -92,12 +92,12 @@ These changes reflect the components' positions and roles in the pnkln stack.
 
 **Analysis Impact**:
 
-- **Judge #6**: Latency percentile analysis, error rate trends
+- **Judge 6**: Latency percentile analysis, error rate trends
 - **Ingestion**: Volume/cost trade-offs, tier optimization, source portfolio rebalancing
 
 ### 3. Integration Pattern
 
-| Aspect             | Judge #6                           | Gemini Ingestion Layer                 |
+| Aspect             | Judge 6                           | Gemini Ingestion Layer                 |
 | ------------------ | ---------------------------------- | -------------------------------------- |
 | **Direction**      | **Calls** services in 4 namespaces | **Called by** services in 4 namespaces |
 | **Role**           | Active validator, initiates checks | Passive provider, responds to triggers |
@@ -105,26 +105,26 @@ These changes reflect the components' positions and roles in the pnkln stack.
 
 **Analysis Questions**:
 
-- **Judge #6**: How reliable are service calls? What's the latency overhead? Failure modes?
+- **Judge 6**: How reliable are service calls? What's the latency overhead? Failure modes?
 - **Ingestion**: How are inbound requests triggered? Load balancing? Rate limiting for callers?
 
-**Key Insight**: Direction matters—Judge #6 analysis focuses on _calling_ reliability, Ingestion on _being called_ scalability.
+**Key Insight**: Direction matters—Judge 6 analysis focuses on _calling_ reliability, Ingestion on _being called_ scalability.
 
 ### 4. Unique Features
 
 | Component           | Unique Features                       | Analysis Focus                                                |
 | ------------------- | ------------------------------------- | ------------------------------------------------------------- |
-| **Judge #6**        | ATP 5-19 compliance, JR validation    | Protocol adherence, audit trail, enforcement consistency      |
+| **Judge 6**        | Compliance Framework compliance, JR validation    | Protocol adherence, audit trail, enforcement consistency      |
 | **Ingestion Layer** | Ethical crawling, tier classification | Robots.txt compliance, rate limiting, data value distribution |
 
 **Analysis Impact**:
 
-- **Judge #6**: Compliance gap analysis, audit trail completeness
+- **Judge 6**: Compliance gap analysis, audit trail completeness
 - **Ingestion**: Ethical violation risk assessment, tier optimization for ROI
 
 ### 5. Cost Model
 
-| Aspect              | Judge #6                                             | Gemini Ingestion Layer                              |
+| Aspect              | Judge 6                                             | Gemini Ingestion Layer                              |
 | ------------------- | ---------------------------------------------------- | --------------------------------------------------- |
 | **Unit**            | Per-operation (per validation)                       | Monthly operational (~$77)                          |
 | **Primary Drivers** | API call frequency, PyTorch inference                | API calls, GKE compute, storage                     |
@@ -132,14 +132,14 @@ These changes reflect the components' positions and roles in the pnkln stack.
 
 **Analysis Questions**:
 
-- **Judge #6**: Cost per validation? How to reduce high-frequency API calls?
+- **Judge 6**: Cost per validation? How to reduce high-frequency API calls?
 - **Ingestion**: How does cost scale with 2x, 10x item volume? Cost per Tier 1 item?
 
 **Key Insight**: Per-operation vs. monthly total requires different sensitivity analysis approaches.
 
 ### 6. Quality Focus
 
-| Dimension       | Judge #6                          | Gemini Ingestion Layer                                 |
+| Dimension       | Judge 6                          | Gemini Ingestion Layer                                 |
 | --------------- | --------------------------------- | ------------------------------------------------------ |
 | **Primary**     | FP/FN rates (binary correctness)  | Relevance, timeliness, completeness (holistic quality) |
 | **Measurement** | Precision, recall, block rate     | Multi-dimensional scoring, tier classification         |
@@ -147,14 +147,14 @@ These changes reflect the components' positions and roles in the pnkln stack.
 
 **Analysis Impact**:
 
-- **Judge #6**: Error pattern analysis, model performance comparison
+- **Judge 6**: Error pattern analysis, model performance comparison
 - **Ingestion**: Tier distribution trends, source contribution assessment
 
 ---
 
 ## New Sections in Ingestion Layer Analysis
 
-These additions address gaps in the original Judge #6 prompt and provide deeper insights for pre-production systems.
+These additions address gaps in the original Judge 6 prompt and provide deeper insights for pre-production systems.
 
 ### 1. Ethical Compliance Model
 
@@ -174,7 +174,7 @@ These additions address gaps in the original Judge #6 prompt and provide deeper 
 - Ensures trust-building for entire pnkln stack
 - Prevents costly violations (bans, lawsuits)
 
-**Why Not in Judge #6?**: Judge #6 operates on already-collected data; ethical concerns are upstream (at collection point).
+**Why Not in Judge 6?**: Judge 6 operates on already-collected data; ethical concerns are upstream (at collection point).
 
 ### 2. Multi-Source Coverage Analysis
 
@@ -194,7 +194,7 @@ These additions address gaps in the original Judge #6 prompt and provide deeper 
 - Identifies expansion opportunities
 - Assesses resilience to source failures
 
-**Why Not in Judge #6?**: Judge #6 validates data regardless of source; diversity is an ingestion concern.
+**Why Not in Judge 6?**: Judge 6 validates data regardless of source; diversity is an ingestion concern.
 
 ### 3. Tier Classification Metrics
 
@@ -213,7 +213,7 @@ These additions address gaps in the original Judge #6 prompt and provide deeper 
 - Identifies low-value data for filtering
 - Optimizes cost-per-value ratio
 
-**Why Not in Judge #6?**: Tier classification happens at ingestion; Judge #6 uses tiers for prioritization but doesn't create them.
+**Why Not in Judge 6?**: Tier classification happens at ingestion; Judge 6 uses tiers for prioritization but doesn't create them.
 
 ### 4. AM Briefing Delivery Effectiveness
 
@@ -232,13 +232,13 @@ These additions address gaps in the original Judge #6 prompt and provide deeper 
 - Measures time-to-insight (full pipeline)
 - Identifies content gaps (ingested but not surfaced)
 
-**Why Not in Judge #6?**: Judge #6 is mid-stack; delivery effectiveness is evaluated separately, but ingestion can trace end-to-end impact.
+**Why Not in Judge 6?**: Judge 6 is mid-stack; delivery effectiveness is evaluated separately, but ingestion can trace end-to-end impact.
 
 ---
 
 ## Confidence Adjustments
 
-### Judge #6: ≥70% Target (Production Analysis)
+### Judge 6: ≥70% Target (Production Analysis)
 
 **Rationale**:
 
@@ -304,7 +304,7 @@ Both prompts follow a consistent format for ease of use and comparison:
 
 ### Differences
 
-- **Judge #6**: Production data sources, latency focus, FP/FN metrics
+- **Judge 6**: Production data sources, latency focus, FP/FN metrics
 - **Ingestion**: Specs-only sources, runtime focus, tier classification
 
 This consistency enables:
@@ -317,7 +317,7 @@ This consistency enables:
 
 ## Combined Analysis Opportunities
 
-Since Ingestion and Judge #6 are complementary, a **joint analysis** could provide end-to-end insights:
+Since Ingestion and Judge 6 are complementary, a **joint analysis** could provide end-to-end insights:
 
 ### Handoff Analysis
 
@@ -325,7 +325,7 @@ Since Ingestion and Judge #6 are complementary, a **joint analysis** could provi
 
 **Questions**:
 
-- Is ingestion tier metadata used effectively by Judge #6?
+- Is ingestion tier metadata used effectively by Judge 6?
 - What's the end-to-end latency from collection to validation?
 - Are quality signals lost in the handoff?
 
@@ -335,17 +335,17 @@ Since Ingestion and Judge #6 are complementary, a **joint analysis** could provi
 
 **Questions**:
 
-- Could ingestion pre-filter to reduce Judge #6 load?
+- Could ingestion pre-filter to reduce Judge 6 load?
 - What's the total pipeline cost per intelligence delivered?
 - Are there shared infrastructure savings?
 
 ### Quality Feedback Loop
 
-**Focus**: Judge #6 rejection signals back to ingestion, source reliability scoring
+**Focus**: Judge 6 rejection signals back to ingestion, source reliability scoring
 
 **Questions**:
 
-- Which sources have highest Judge #6 rejection rates?
+- Which sources have highest Judge 6 rejection rates?
 - Can rejection patterns inform ingestion tier classification?
 - Should low-quality sources be deprioritized or dropped?
 
@@ -355,7 +355,7 @@ Since Ingestion and Judge #6 are complementary, a **joint analysis** could provi
 
 **Questions**:
 
-- Can ingestion tier metadata enable Judge #6 fast-path?
+- Can ingestion tier metadata enable Judge 6 fast-path?
 - Should dashboards show ingestion → validation flow?
 - How are cross-component incidents coordinated?
 
@@ -365,14 +365,14 @@ Since Ingestion and Judge #6 are complementary, a **joint analysis** could provi
 
 ### Short-Term
 
-1. **Test Runs**: Execute sample analyses on dummy specs (Ingestion) and test data (Judge #6) to calibrate Gemini outputs
+1. **Test Runs**: Execute sample analyses on dummy specs (Ingestion) and test data (Judge 6) to calibrate Gemini outputs
 2. **Visualization**: Add automated chart generation (tier distributions, latency histograms) for digestibility
 3. **Edge Cases**: Include probes for failure modes (source outages, cost spikes) in both prompts
 4. **Documentation**: Create example reports for reference
 
 ### Medium-Term
 
-1. **Combined Prompt**: Develop integrated analysis for Ingestion + Judge #6 handoffs
+1. **Combined Prompt**: Develop integrated analysis for Ingestion + Judge 6 handoffs
 2. **Trend Analysis**: Extend prompts to compare week-over-week, month-over-month changes
 3. **Predictive Insights**: Ask Gemini to forecast risks based on trends
 4. **Automation**: Script prompt execution and report generation for continuous monitoring
@@ -388,7 +388,7 @@ Since Ingestion and Judge #6 are complementary, a **joint analysis** could provi
 
 ## Execution Readiness
 
-### Judge #6 Analysis
+### Judge 6 Analysis
 
 **Status**: ✅ Ready for execution
 **Prerequisites**:
@@ -412,7 +412,7 @@ Since Ingestion and Judge #6 are complementary, a **joint analysis** could provi
 
 ## Comparison Summary Table
 
-| Aspect                | Judge #6                             | Gemini Ingestion Layer                           |
+| Aspect                | Judge 6                             | Gemini Ingestion Layer                           |
 | --------------------- | ------------------------------------ | ------------------------------------------------ |
 | **Role**              | Reactive validator                   | Proactive collector                              |
 | **Execution**         | Real-time, synchronous               | Batch, scheduled (nightly)                       |
@@ -420,7 +420,7 @@ Since Ingestion and Judge #6 are complementary, a **joint analysis** could provi
 | **Architecture**      | Hybrid Gemini + PyTorch              | GKE CronJob multi-container                      |
 | **Key Metrics**       | Latency, throughput, FP/FN, coverage | Items/day, sources, cost/item, tier distribution |
 | **Integration**       | Calls services (active)              | Called by services (passive)                     |
-| **Unique Features**   | ATP 5-19, JR validation              | Ethical crawling, tier classification            |
+| **Unique Features**   | Compliance Framework, JR validation              | Ethical crawling, tier classification            |
 | **Cost Model**        | Per-operation API calls              | Monthly operational (~$77)                       |
 | **Quality Focus**     | FP/FN rates (binary)                 | Relevance, timeliness, completeness (holistic)   |
 | **Confidence Target** | ≥70% (production data)               | ≥60% (specs-only, pre-prod)                      |
@@ -432,9 +432,9 @@ Since Ingestion and Judge #6 are complementary, a **joint analysis** could provi
 
 ## Conclusion
 
-The **Judge #6** and **Gemini Ingestion Layer** analysis prompts are **tailored, complementary frameworks** that reflect their components' distinct roles in the pnkln Core Stack™:
+The **Judge 6** and **Gemini Ingestion Layer** analysis prompts are **tailored, complementary frameworks** that reflect their components' distinct roles in the pnkln Core Stack™:
 
-- **Judge #6**: Defensive, real-time, accuracy-focused
+- **Judge 6**: Defensive, real-time, accuracy-focused
 - **Ingestion Layer**: Acquisitive, batch, efficiency-focused
 
 Both prompts are **ready for execution** and provide structured, evidence-based analysis with:

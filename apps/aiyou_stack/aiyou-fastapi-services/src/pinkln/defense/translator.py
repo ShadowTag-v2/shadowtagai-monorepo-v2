@@ -17,7 +17,7 @@ class MilSpecTranslator:
             # Software/AI
             "Kernel Chaining": "Disaggregated Decision Logic",
             "Ultrathink": "Cognitive Overmatch Engine",
-            "Judge #6": "Automated Compliance & Oversight (ACO)",
+            "Judge 6": "Automated Compliance & Oversight (ACO)",
             "Flying minion": "Autonomous Swarm Agents",
             "Hallucination": "Information Integrity Failure",
             "Latency": "Decision Cycle Time (OODA Loop)",
@@ -43,7 +43,7 @@ class MilSpecTranslator:
         return {
             "Capability": self.dictionary["SkyNode"],
             "Discriminator": f"Reduces {self.dictionary['Latency']} by 90%",
-            "Security": f"Enforced by {self.dictionary['Judge #6']}",
+            "Security": f"Enforced by {self.dictionary['Judge 6']}",
         }
 
 

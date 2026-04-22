@@ -1,10 +1,10 @@
 # @pnkln/judge6-cli
 
-**Zero-flicker TUI for Judge #6 decision validation**
+**Zero-flicker TUI for Judge 6 decision validation**
 
 Validate governance decisions using the Purpose/Reasons/Brakes framework with ATP 5-19 compliance.
 
-![Judge #6 CLI Demo](https://via.placeholder.com/800x400?text=Judge+%236+CLI+Demo)
+![Judge 6 CLI Demo](https://via.placeholder.com/800x400?text=Judge+%236+CLI+Demo)
 
 ---
 
@@ -289,7 +289,7 @@ ROI: $68,052 / $90 = 756× (PASS)
 
 ## Comparison to Gemini CLI
 
-| Feature | Gemini CLI | Judge #6 CLI |
+| Feature | Gemini CLI | Judge 6 CLI |
 |---------|------------|--------------|
 | Flicker Elimination | ✅ | ✅ |
 | Alternate Screen | ✅ | ✅ |
@@ -339,7 +339,7 @@ MIT © PNKLN
 
 ```bibtex
 @software{judge6_cli,
-  title = {Judge #6 CLI: Zero-Flicker TUI for Decision Validation},
+  title = {Judge 6 CLI: Zero-Flicker TUI for Decision Validation},
   author = {PNKLN},
   year = {2025},
   url = {https://github.com/ehanc69/shadowtag_v4-fastapi-services}

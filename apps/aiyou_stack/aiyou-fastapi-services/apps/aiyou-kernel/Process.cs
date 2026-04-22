@@ -7,7 +7,7 @@ using System.Text.Json;
 namespace ShadowTagV4.Kernel;
 
 // ---------------------------------------------------------
-// DOMAIN: CSRMC RISK MATRIX (Supersedes ATP 5-19)
+// DOMAIN: CSRMC RISK MATRIX (Supersedes Compliance Framework)
 // ---------------------------------------------------------
 public enum RiskLevel { RA1_Negligible, RA2_Moderate, RA3_High, RA4_Preclusive }
 public enum Decision { ALLOW, BLOCK, ESCALATE }
@@ -43,7 +43,7 @@ public class CompressionStep : KernelProcessStep
 // ---------------------------------------------------------
 public class RiskStep : KernelProcessStep
 {
-    [KernelFunction, Description("Evaluates features against CSRMC Doctrine (Supersedes ATP 5-19)")]
+    [KernelFunction, Description("Evaluates features against CSRMC Doctrine (Supersedes Compliance Framework)")]
     public async Task EvaluateRiskAsync(KernelProcessStepContext context, string features)
     {
         // 1. Load Doctrine Rules (Vector Search from Postgres)

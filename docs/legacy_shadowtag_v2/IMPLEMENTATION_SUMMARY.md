@@ -41,7 +41,7 @@ This repository now contains a **production-ready** GKE inference deployment inf
 
 **Namespaces** (`namespaces.yaml`):
 
-- `pnkln-stackjr-governance` - Judge #6 enforcement
+- `pnkln-stackjr-governance` - Judge 6 enforcement
 - `autogen-orchestration` - Multi-agent coordination
 - `cognitive-stack-v5` - LLM routing layer
 - `shadowtag-v2` - Watermarking security
@@ -68,7 +68,7 @@ This repository now contains a **production-ready** GKE inference deployment inf
 - ✅ Custom metrics adapter configuration
 - ✅ HPA for prefill (3-20 pods)
 - ✅ HPA for decode (5-40 pods)
-- ✅ HPA for Judge #6 (3-10 pods)
+- ✅ HPA for Judge 6 (3-10 pods)
 - ✅ Metrics: GPU util, KV cache, P99 latency, QPS
 
 #### 3. Deployment Automation (`scripts/`)
@@ -159,7 +159,7 @@ This repository now contains a **production-ready** GKE inference deployment inf
 
 #### 🔄 Partially Implemented (Hooks Provided)
 
-15. **Judge #6 Deployment** - Architecture defined, deployment pending
+15. **Judge 6 Deployment** - Architecture defined, deployment pending
 16. **AutoGen Integration** - Namespace created, deployment pending
 17. **ShadowTag v2** - Namespace created, deployment pending
 
@@ -229,7 +229,7 @@ Before running `./scripts/deploy.sh`, ensure:
 **Decision**: Standard GKE
 **Reasoning**:
 
-- Need for local NVMe SSDs (Judge #6 model caching)
+- Need for local NVMe SSDs (Judge 6 model caching)
 - Fine-grained GPU control
 - Custom node pool configurations
 
@@ -381,7 +381,7 @@ scripts/
        gs://pnkln-core-stack-model-weights/
    ```
 
-6. **Deploy Judge #6**
+6. **Deploy Judge 6**
    - Implement 3-layer hybrid enforcement
    - Configure Gemini API client
    - Deploy PyTorch neural layer

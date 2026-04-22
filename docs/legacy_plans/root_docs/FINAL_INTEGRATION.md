@@ -30,9 +30,9 @@ The PINKLN ecosystem is now **100% complete** with FIVE complementary architectu
 
 ## Integration Timeline
 
-### Commit 1: `0d9d256` - Judge #6 Inception
+### Commit 1: `0d9d256` - Judge 6 Inception
 
-- Judge #6 inception analysis ($6.6M value, 12× ROI)
+- Judge 6 inception analysis ($6.6M value, 12× ROI)
 - JR Engine baseline (Purpose/Reasons/Brakes)
 
 ### Commit 2: `3e89142` - Gemini Ingestion Layer
@@ -42,7 +42,7 @@ The PINKLN ecosystem is now **100% complete** with FIVE complementary architectu
 
 ### Commit 3: `f06d622` - PNKLN Core Stack™
 
-- 32 implementation tickets (16 Judge #6 + 16 Ingestion)
+- 32 implementation tickets (16 Judge 6 + 16 Ingestion)
 - 12-week roadmap
 - Kubernetes manifests (GKE CronJob, ConfigMap, Secrets)
 - JR Engine prototype (8 files, 4 working examples)
@@ -60,14 +60,14 @@ The PINKLN ecosystem is now **100% complete** with FIVE complementary architectu
 - Full test suite (tests/)
 - Technical documentation (ARCHITECTURE.md, PINKLN_ECOSYSTEM.md)
 - Unified README.md
-- Judge #6 API deployment manifest
+- Judge 6 API deployment manifest
 
 **45 files added** (7,221 lines)
 
 ### Commit 6: `5e14679` - AutoGen → Gemini Migration
 
 - Native Gemini function calling (src/core/)
-- PNKLN Core Stack (src/pnkln/): Judge #6, Cor, ShadowTag, NS
+- PNKLN Core Stack (src/pnkln/): Judge 6, Cor, ShadowTag, NS
 - Integration layer (src/integration/)
 - Working examples (src/examples/)
 - Comprehensive test suite (src/tests/)
@@ -115,7 +115,7 @@ python scripts/claude_code_memory_local.py
 
 **Value:**
 
-- Judge #6, ShadowTag, JR Engine always available
+- Judge 6, ShadowTag, JR Engine always available
 - No re-explaining PNKLN architecture
 - Consistent patterns across sessions
 
@@ -266,7 +266,7 @@ def analyze_jitter(latencies_us):
 ```
 
 **SLA Target:** Stability score ≥0.85
-**Value:** Critical for ATP 5-19 compliance, validates JR Engine governance
+**Value:** Critical for Compliance Framework compliance, validates JR Engine governance
 
 #### 4. Cost Projection Modeling
 
@@ -327,7 +327,7 @@ export JUDGE6_ITERATIONS=1000
 
 **Value:**
 
-- ATP 5-19 audit trail (7-year retention)
+- Compliance Framework audit trail (7-year retention)
 - Historical performance trending
 - CI/CD integration (automated gates)
 - Valuation evidence for investors
@@ -407,14 +407,14 @@ load_testing/
 
 ### Documentation (35 files)
 
-1. Business analysis (4): Judge #6 + Gemini Ingestion inception + quick refs
+1. Business analysis (4): Judge 6 + Gemini Ingestion inception + quick refs
 2. Technical architecture (4): README, ARCHITECTURE, PINKLN_ECOSYSTEM, PINKLN_EVOLUTION_ANALYSIS
 3. Integration guides (3): PINKLN_INTEGRATION, COMPLETE_INTEGRATION_SUMMARY, FINAL_INTEGRATION
 4. Investor materials (2): INVESTOR_PITCH, STAKEHOLDER_PRESENTATION
 5. Implementation planning (2): IMPLEMENTATION_TICKETS (32 issues), PNKLN_ROADMAP (12 weeks)
 6. Launch materials (3): GITHUB_PROJECT_SETUP, WEEK_1_DEPLOYMENT_CHECKLIST, DESIGN_PARTNER_OUTREACH
 7. Kubernetes (8): manifests + 68-page README
-8. GitHub templates (2): Judge #6 + Gemini Ingestion
+8. GitHub templates (2): Judge 6 + Gemini Ingestion
 9. LLM Memory docs (4): README, QUICKSTART, DEPLOYMENT, IMPLEMENTATION_SUMMARY
 10. Load testing docs (1): README_ENHANCEMENTS
 11. Other (2): HANDOFF_SUMMARY, etc.
@@ -439,7 +439,7 @@ load_testing/
 #### src/ - Gemini Function Calling + PNKLN Core Stack (45 files)
 
 - `core/` (3): Native Gemini function calling
-- `pnkln/` (5): Judge #6, Cor, ShadowTag, NS + **init**
+- `pnkln/` (5): Judge 6, Cor, ShadowTag, NS + **init**
 - `integration/` (3): Kernel adapters, unified orchestrator
 - `examples/` (4): Working examples
 - `agents/` (3): Duplicated from app/
@@ -513,7 +513,7 @@ load_testing/
 │                            ↓                                          │
 │  LAYER 4: PNKLN CORE STACK                                           │
 │  ┌────────────────────────────────────────────────────────────────┐  │
-│  │ • Judge #6: Purpose/Reasons/Brakes validation                  │  │
+│  │ • Judge 6: Purpose/Reasons/Brakes validation                  │  │
 │  │ • Cor: Unified orchestrator (Validate→Execute→Watermark→Store) │  │
 │  │ • ShadowTag: Cryptographic watermarking (Ed25519 + Merkle)     │  │
 │  │ • NS: Semantic memory retrieval (vector search)                │  │
@@ -536,7 +536,7 @@ load_testing/
 │  │ • Jitter analysis (500μs SLA, stability ≥0.85)                 │  │
 │  │ • Cost projection modeling (month-by-month, 12 months)         │  │
 │  │ • Environment configs (dev/staging/prod)                       │  │
-│  │ • Historical tracking (ATP 5-19 7-year retention)              │  │
+│  │ • Historical tracking (Compliance Framework 7-year retention)              │  │
 │  │ • Connection pool metrics (≥80% reuse ratio)                   │  │
 │  │ • Warmup iterations (cold-start exclusion)                     │  │
 │  │ • Comprehensive SLA validation (P50/P95/P99)                   │  │
@@ -585,7 +585,7 @@ load_testing/
 3. **Glicko-2 Performance Tracking** (better than Elo/PPO)
 4. **ShadowTag Cryptographic Audit** (regulatory compliance)
 5. **Cross-Device Memory Sync** ⭐ NEW (2,121+ conversations)
-6. **Production-Grade Testing** ⭐ NEW (9 enhancements, ATP 5-19 compliant)
+6. **Production-Grade Testing** ⭐ NEW (9 enhancements, Compliance Framework compliant)
 
 ---
 
@@ -597,13 +597,13 @@ load_testing/
 
 ```bash
 kubectl apply -f kubernetes/cronjob.yaml              # Gemini Ingestion Layer
-kubectl apply -f kubernetes/judge-six-api-deployment.yaml  # Judge #6 API
+kubectl apply -f kubernetes/judge-six-api-deployment.yaml  # Judge 6 API
 ```
 
 **Performance:**
 
 - Ingestion: 63 items/day, ~45 min runtime
-- Judge #6: <200ms p99 latency, 94% policy coverage
+- Judge 6: <200ms p99 latency, 94% policy coverage
 - **Value:** $10.4M annual, 15× ROI
 
 ### Mode 2: Gemini Function Calling (Embedded) - src/ + erik-hancock-llm-memory/
@@ -752,7 +752,7 @@ PYTHONPATH=src python src/judge_six/example.py
 ### Weeks 2-4
 
 9. ⏳ **Design partner engagement** - Show both deployment modes + memory
-10. ⏳ **Production load testing** - ATP 5-19 compliance validation
+10. ⏳ **Production load testing** - Compliance Framework compliance validation
 11. ⏳ **4-LLM orchestration** - Deploy peer review rotation
 12. ⏳ **Investor outreach** - Present $22.5M ARR projections
 
@@ -785,7 +785,7 @@ PYTHONPATH=src python src/judge_six/example.py
 - ✅ AutoGen → Gemini migration integrated
 - ✅ LLM memory persistence integrated
 - ✅ Enhanced load testing integrated
-- ✅ PNKLN Core Stack complete (Judge #6, Cor, ShadowTag, NS)
+- ✅ PNKLN Core Stack complete (Judge 6, Cor, ShadowTag, NS)
 - ✅ Two deployment modes documented
 
 ---
@@ -800,14 +800,14 @@ PYTHONPATH=src python src/judge_six/example.py
 ✅ **2,121+ conversations** persisted across devices ⭐ NEW
 ✅ **9 production enhancements** (adaptive load, jitter analysis, SLA validation) ⭐ NEW
 ✅ **Two deployment modes** (Enterprise K8s + Embedded Gemini)
-✅ **Four foundational components** (Judge #6, Cor, ShadowTag, NS)
+✅ **Four foundational components** (Judge 6, Cor, ShadowTag, NS)
 ✅ **Five architectures unified** (Core Stack, Kernel Chain, Gemini Migration, Memory, Testing)
 ✅ **Self-evolution** (DTE +3.7% accuracy)
 ✅ **Performance tracking** (Glicko-2 ratings)
 ✅ **Cryptographic audit** (ShadowTag watermarking)
 ✅ **Semantic memory** (NS context retrieval)
 ✅ **Cross-device sync** (Claude Code, Vertex AI, 4-LLM rotation) ⭐ NEW
-✅ **Production validation** (ATP 5-19 compliant testing) ⭐ NEW
+✅ **Production validation** (Compliance Framework compliant testing) ⭐ NEW
 ✅ **Business justification** ($10.4M value, 15× ROI, $22.5M ARR Y3)
 ✅ **Investor materials** (pitch deck, revenue projections, technical moat)
 

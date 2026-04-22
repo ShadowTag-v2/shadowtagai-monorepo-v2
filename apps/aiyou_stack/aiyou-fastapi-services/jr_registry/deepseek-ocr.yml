@@ -16,7 +16,7 @@ imperatives:
   - Velocity and Adaptability
   - Building Defensible Technology Moats
 roi_gate:
-  gate_name: "Judge #6 OCR pipeline decision"
+  gate_name: "Judge 6 OCR pipeline decision"
   why_now: "Need to validate token compression vs accuracy for large-doc ingestion and compliance workloads."
   due: "2025-12-20"
   blocked_if_missed: true

@@ -1,9 +1,9 @@
 """Gemini Ingestion Layer Analysis Prompt
 
-Adapted from Judge #6 analysis framework for intelligence collection pipeline.
+Adapted from Judge 6 analysis framework for intelligence collection pipeline.
 Target: Gemini 2.0 Pro analysis of pre-production ingestion system.
 
-Confidence Target: ≥60% (lower than Judge #6 due to specs-only, no prod telemetry)
+Confidence Target: ≥60% (lower than Judge 6 due to specs-only, no prod telemetry)
 """
 
 GEMINI_INGESTION_ANALYSIS_PROMPT = """
@@ -147,9 +147,9 @@ Analyze robustness under failure:
 
 **Confidence requirement**: ≥60%
 
-## Comparison Table: Judge #6 vs. Gemini Ingestion Layer
+## Comparison Table: Judge 6 vs. Gemini Ingestion Layer
 
-| Aspect | Judge #6 (Enforcement) | Gemini Ingestion (Collection) |
+| Aspect | Judge 6 (Enforcement) | Gemini Ingestion (Collection) |
 |--------|------------------------|-------------------------------|
 | **Purpose** | Validate commits, enforce quality | Collect intelligence from diverse sources |
 | **Architecture** | Hybrid Gemini+PyTorch sync API | GKE CronJob multi-container batch |
@@ -209,7 +209,7 @@ Provide your analysis in the following structure:
 
 1. **Read all provided documentation** (architecture specs, code, flowcharts)
 2. **Score each dimension** (0.0-1.0) with confidence (0.0-1.0)
-3. **Target ≥60% confidence** for each dimension (lower than Judge #6 due to pre-prod)
+3. **Target ≥60% confidence** for each dimension (lower than Judge 6 due to pre-prod)
 4. **Identify gaps** where confidence is low due to missing specs
 5. **Forecast metrics** based on design and comparable systems
 6. **Provide GO/NO-GO** with clear reasoning
@@ -231,7 +231,7 @@ This analysis is successful if:
 
 ## Notes
 
-- **Pre-production context**: Scores will be lower than Judge #6 due to lack of real telemetry
+- **Pre-production context**: Scores will be lower than Judge 6 due to lack of real telemetry
 - **Ethical priority**: Any robots.txt or rate limit violations are CRITICAL
 - **Cost sensitivity**: Budget is tight at $77/month, overruns are high risk
 - **V2X integration**: This is a key differentiator, analysis must be thorough
@@ -241,7 +241,7 @@ This analysis is successful if:
 
 **Analysis Version**: 1.0.0
 **Target System**: Gemini Ingestion Layer (PNKLN Core Stack™)
-**Adapted From**: Judge #6 Analysis Prompt
+**Adapted From**: Judge 6 Analysis Prompt
 **Date**: 2025-11-15
 """
 

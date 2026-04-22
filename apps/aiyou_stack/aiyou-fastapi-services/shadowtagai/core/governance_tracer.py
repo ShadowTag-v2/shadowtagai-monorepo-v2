@@ -1,6 +1,6 @@
 """Governance Tracer - Monetizes transparency via signed audit URLs.
 
-Captures Judge #6 decision logs, uploads to private GCS bucket,
+Captures Judge 6 decision logs, uploads to private GCS bucket,
 and mints time-limited "Teleport" URLs for paid audit trail access.
 """
 
@@ -60,7 +60,7 @@ class GovernanceTracer:
         trace_data = {
             "decision_id": decision_id,
             "timestamp_utc": datetime.datetime.utcnow().isoformat(),
-            "judge_version": "Judge #6 (v1.1.0)",
+            "judge_version": "Judge 6 (v1.1.0)",
             "inputs": inputs,
             "logic_trace": logic_log,
             "final_verdict": result,

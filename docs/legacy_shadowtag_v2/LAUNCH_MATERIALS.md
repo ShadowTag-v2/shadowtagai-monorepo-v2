@@ -37,7 +37,7 @@ Gemini function calling:
 
 I've open-sourced 7 production-ready examples:
 
-1. ATP 5-19 Compliance Checker (98.5% token reduction)
+1. Compliance Framework Compliance Checker (98.5% token reduction)
 2. Multi-Agent Debate (31× faster than AutoGen)
 3. Code Review Automation (67% faster reviews)
 4. Research Summarizer (10× faster than manual)

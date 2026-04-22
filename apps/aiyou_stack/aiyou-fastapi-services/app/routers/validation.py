@@ -1,4 +1,4 @@
-"""Judge #6 Validation Router"""
+"""Judge 6 Validation Router"""
 
 import logging
 
@@ -42,7 +42,7 @@ class ValidateBatchResponse(BaseModel):
 
 @router.post("/validate-item", response_model=ValidateItemResponse)
 async def validate_single_item(request: ValidateItemRequest):
-    """Validate a single ingested item using Judge #6
+    """Validate a single ingested item using Judge 6
 
     - **item**: The ingested item to validate
     - **use_hybrid**: Whether to use hybrid Gemini+PyTorch approach (default: true)
@@ -65,7 +65,7 @@ async def validate_single_item(request: ValidateItemRequest):
 
 @router.post("/validate-batch", response_model=ValidateBatchResponse)
 async def validate_item_batch(request: ValidateBatchRequest):
-    """Validate a batch of items using Judge #6
+    """Validate a batch of items using Judge 6
 
     - **items**: List of ingested items to validate
 
@@ -87,7 +87,7 @@ async def validate_item_batch(request: ValidateBatchRequest):
 
 @router.get("/metrics", response_model=ValidationMetrics)
 async def get_validation_metrics():
-    """Get latest validation metrics from Judge #6
+    """Get latest validation metrics from Judge 6
 
     Returns performance metrics including latency, error rates, and confidence
     """
@@ -111,7 +111,7 @@ async def get_validation_metrics():
 
 @router.get("/gates")
 async def get_performance_gates():
-    """Get Judge #6 performance gate configuration
+    """Get Judge 6 performance gate configuration
 
     Returns thresholds for FP/FN rates and confidence
     """
@@ -127,7 +127,7 @@ async def get_performance_gates():
 
 @router.get("/status")
 async def get_judge_status():
-    """Get Judge #6 service status
+    """Get Judge 6 service status
 
     Returns health and configuration info
     """

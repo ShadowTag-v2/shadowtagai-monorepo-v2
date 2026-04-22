@@ -4109,10 +4109,10 @@ bquote>   incorporate this properly and note what needs to be fixed:
 bquote>
 bquote>   Key Observations from your Doctrine:
 bquote>
-bquote>   1. PRO Tier = HHT Command / Judge #6 - This is correct and hasn't changed. The PRO tier (gemini-exp-1206) is for:
-bquote>     - Judge #6 decisions
+bquote>   1. PRO Tier = HHT Command / Judge 6 - This is correct and hasn't changed. The PRO tier (gemini-exp-1206) is for:
+bquote>     - Judge 6 decisions
 bquote>     - Protocol 2511 confidence checks
-bquote>     - Risk gating (ATP 5-19)
+bquote>     - Risk gating (Compliance Framework)
 bquote>   2. The System Prompts (SOP A-D) reference both Perplexity and Grok in TROOP A:
 bquote>   "Use Perplexity/Grok tools to ingest market data"
 bquote>
@@ -4177,7 +4177,7 @@ bquote> | **TIER** | **NAME** | **PRICE (ARR)** | **THE PROMISE** | **CAPABILITI
 bquote>  |
 bquote> | :--- | :--- | :--- | :--- | :--- | :--- |
 bquote> | **1 - 5** | **BASIC TRAINING** | **$25K - $75K** | *"We show you the risks."* | • **BCTL Assessment**
-bquote> (Quarterly)<br>• **Risk Radar** (Weekly Scan)<br>• **Access:** Portal Only (Read-Only) | **ATP 5-19**<br>(Risk Mgmt
+bquote> (Quarterly)<br>• **Risk Radar** (Weekly Scan)<br>• **Access:** Portal Only (Read-Only) | **Compliance Framework**<br>(Risk Mgmt
 bquote> Only) |
 bquote> | **6 - 15** | **AIT (ADVANCED)** | **$100K - $350K** | *"We fix the obvious."* | • **Troop A (Recon):** Monthly
 bquote> Deep Dives<br>• **Troop C (Defense):** Basic CodePMCS Linter<br>• **Access:** Slack Channel (Advisory) | **+ ADP
@@ -4205,7 +4205,7 @@ zsh: == not found
 zsh: command not found: YOU
 ➜ ~ MISSION: PROTECT THE CORP. ENFORCE DOCTRINE.
 zsh: command not found: MISSION:
-➜ ~ 1. RISK GATING: Every action proposed by the Swarm must be scored against ATP 5-19.
+➜ ~ 1. RISK GATING: Every action proposed by the Swarm must be scored against Compliance Framework.
 zsh: command not found: 1.
 ➜ ~ - LOW RISK: Auto-Approve.
 cd: too many arguments
@@ -4394,11 +4394,11 @@ class Protocol2511:
 class HHTCommand:
     def __init__(self):
         self.iq_lock = 160
-        self.doctrine = ["ATP 5-19", "ADP 3-90"]
+        self.doctrine = ["Compliance Framework", "ADP 3-90"]
 
     asy**PURP intake_mission(self, objective: str) -> bool:
         logger.info(f"⚡ ANALYZING MISSION: {objective}")
-        # Mocking Judge #6 Risk Assessment
+        # Mocking Judge 6 Risk Assessment
         risk_score = 1  # Low Risk
         if risk_score > 3:
             logger.critical("🛑 JUDGE #6 DENIAL: RISK TOO HIGH.")
@@ -4437,11 +4437,11 @@ if>
 if> class HHTCommand:
 if>     def __init__(self):
 if>         self.iq_lock = 160
-if>         self.doctrine = ["ATP 5-19", "ADP 3-90"]
+if>         self.doctrine = ["Compliance Framework", "ADP 3-90"]
 if>
 if>     asy**PURP intake_mission(self, objective: str) -> bool:
 if>         logger.info(f"⚡ ANALYZING MISSION: {objective}")
-if>         # Mocking Judge #6 Risk Assessment
+if>         # Mocking Judge 6 Risk Assessment
 if>         risk_score = 1  # Low Risk
 if>         if risk_score > 3:
 if if>             logger.critical("🛑 JUDGE #6 DENIAL: RISK TOO HIGH.")
@@ -4627,7 +4627,7 @@ bquote>  {"name":"pnkln:TroopB","prompt":"ROLE:Ranger Eng; MISSION:Direct Action
 bquote> Secure, Linted"},
 bquote>  {"name":"pnkln:TroopC","prompt":"ROLE:Defense/MilDec; MISSION:Protect IP; TACTIC:CodePMCS enforcement + ShadowTag
 bquote> watermarking"},
-bquote>  {"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:ATP 5-19 Check; IF Confidence<0.75
+bquote>  {"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75
 bquote> THEN Freeze"}
 bquote> ]
 bquote> JSON
@@ -4767,7 +4767,7 @@ bash-3.2$ ```bash
 > Secure, Linted"},
 >  {"name":"pnkln:TroopC","prompt":"ROLE:Defense/MilDec; MISSION:Protect IP; TACTIC:CodePMCS enforcement + ShadowTag
 > watermarking"},
->  {"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:ATP 5-19 Check; IF Confidence<0.75
+>  {"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75
 > THEN Freeze"}
 > ]
 > JSON

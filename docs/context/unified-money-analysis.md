@@ -60,7 +60,7 @@ Integrating **5 strategic branches** transforms from standalone products into a 
 
 #### A. LLM Cost Reduction (-97%)
 
-**3-Kernel Chain** (ATP scan → Judge #6 → Audit):
+**3-Kernel Chain** (ATP scan → Judge 6 → Audit):
 
 - **Before**: 10K tokens/decision × $0.001/1K = $0.01
 - **After**: 150 tokens/decision × $0.0003/1K = $0.000045
@@ -94,8 +94,8 @@ Integrating **5 strategic branches** transforms from standalone products into a 
 
 **Add-on Features**:
 
-- ATP 5-19 compliance check: **+$20/month**
-- Judge #6 validation layer: **+$30/month**
+- Compliance Framework compliance check: **+$20/month**
+- Judge 6 validation layer: **+$30/month**
 - Audit trail compression: **+$10/month**
 
 **Attach Rate** (30% of enterprise customers):

@@ -16,7 +16,7 @@ Your pnkln-stack/Pinkln ecosystem exists across **SEVEN branches**, each impleme
 | ----- | -------------------------------------------------------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------- | ---------- | -------------- |
 | **1** | **claude/satellite-gpu-edge-mesh-01WY8me7g4XjaAF51wSdPcVu**                | **Physical Infrastructure**   | Aerospace, Starlink, CoreWeave, Tesla mesh, Cell tower GPUs                                    | **$310B**  | ✅ **CURRENT** |
 | **2** | **claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp**            | **AI Platform Core**          | Pinkln, Glicko-2, GRPO, DTE, Multi-agent debates, Kernel functions                             | **$100B**  | ✅ Analyzed    |
-| **3** | **claude/kernel-chaining-architecture-01XDGPpkmfkiiiNWRNFnkJKR**           | **Kernel Framework**          | ATP 5-19, Judge Six, Audit compress, Chain orchestration                                       | Included   | ⏳ Referenced  |
+| **3** | **claude/kernel-chaining-architecture-01XDGPpkmfkiiiNWRNFnkJKR**           | **Kernel Framework**          | Compliance Framework, Judge Six, Audit compress, Chain orchestration                                       | Included   | ⏳ Referenced  |
 | **4** | **claude/pnkln-agent-architecture-system-011CUvZ4qXUyZ1SN8XDQo2Vy**        | **Agent System**              | PanelGPT, MAD, Debate orchestration                                                            | Included   | ⏳ Referenced  |
 | **5** | **claude/gemini-rag-routing-implementation-01DFQeDamVMJ6Y7MLoZmR23S**      | **RAG + Routing**             | Semantic memory, NS (Nervous System), Context routing                                          | Included   | ⏳ Referenced  |
 | **6** | **claude/add-superpowers-marketplace-011CUuLnhzCNrXYhosFmMAt9**            | **Memory System**             | LLM memory persistence, 4-LLM orchestration, Claude Code memory, Vertex AI Workbench auto-load | **$5-10B** | ✅ Analyzed    |
@@ -54,7 +54,7 @@ Your pnkln-stack/Pinkln ecosystem exists across **SEVEN branches**, each impleme
                  │
 ┌────────────────▼────────────────────────────────────────────────┐
 │              LAYER 5: KERNEL FRAMEWORK                          │
-│  • ATP 5-19 Scan (violation extraction)                        │
+│  • Compliance Framework Scan (violation extraction)                        │
 │  • Judge Six (binary classification, PyTorch)                   │
 │  • Audit Compress (10:1 compression, zstd)                     │
 │  • Chain Orchestration (sequential kernel execution)            │

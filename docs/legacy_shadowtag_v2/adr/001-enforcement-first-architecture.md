@@ -26,7 +26,7 @@ Implement **enforcement-first agent architecture** with mandatory validation gat
 
 1. **JR Engine** (Purpose/Reasons/Brakes validator) - <500μs latency
 
-2. **Judge #6 Lite** (Rule-based enforcement) - <90ms p99 SLA
+2. **Judge 6 Lite** (Rule-based enforcement) - <90ms p99 SLA
 
 3. **Agent Pattern** (Integrated enforcement workflow)
 
@@ -61,8 +61,8 @@ def shadowtagai_agent_pattern():
 | -------------------- | ------------------ | ----------------------------------- |
 | **State Management** | LangGraph          | Industry standard for agent state   |
 | **Inference**        | Gemini Flash       | 40% LLM allocation, $0.50/1M tokens |
-| **Enforcement**      | Judge #6 Lite      | Rule-based (pre-ML), <90ms target   |
-| **Validation**       | JR Engine          | ATP 5-19 risk assessment, <500μs    |
+| **Enforcement**      | Judge 6 Lite      | Rule-based (pre-ML), <90ms target   |
+| **Validation**       | JR Engine          | Compliance Framework risk assessment, <500μs    |
 | **Memory**           | ChromaDB           | Self-hosted, $0 cost                |
 | **Edge Compute**     | CloudFlare Workers | <50ms latency target                |
 
@@ -115,7 +115,7 @@ def shadowtagai_agent_pattern():
 
 - CloudFlare Workers: $200-400/mo
 
-- Judge #6 rules maintenance: $0 (no ML training yet)
+- Judge 6 rules maintenance: $0 (no ML training yet)
 
 - **TOTAL:** $1,000-1,600/mo operational cost
 
@@ -143,7 +143,7 @@ Generate B2B leads without GDPR/CAN-SPAM violations
 
 3. Agent scrapes LinkedIn/Apollo/Clearbit
 
-4. Judge #6 filters personal emails, flags EU contacts
+4. Judge 6 filters personal emails, flags EU contacts
 
 5. Output: N approved + M blocked + audit PDF
 
@@ -167,7 +167,7 @@ Generate B2B leads without GDPR/CAN-SPAM violations
 
 **Target Latency:** <500μs
 
-**Method:** ATP 5-19 risk assessment (Probability × Severity → Level)
+**Method:** Compliance Framework risk assessment (Probability × Severity → Level)
 
 **Function:** Validates all agent actions before execution
 
@@ -206,7 +206,7 @@ Generate B2B leads without GDPR/CAN-SPAM violations
 
    - Rate limit exceeded
 
-### Risk Levels (ATP 5-19)
+### Risk Levels (Compliance Framework)
 
 | Risk Score | Level          | Action                       |
 | ---------- | -------------- | ---------------------------- |
@@ -218,7 +218,7 @@ Generate B2B leads without GDPR/CAN-SPAM violations
 
 ---
 
-## Judge #6 Lite: Rule-Based Enforcement
+## Judge 6 Lite: Rule-Based Enforcement
 
 **Target Latency:** <50ms (production <90ms p99)
 
@@ -293,7 +293,7 @@ Generate B2B leads without GDPR/CAN-SPAM violations
 
 ### Missing Components
 
-- [ ] Cold-start handling (no training data for Judge #6 ML)
+- [ ] Cold-start handling (no training data for Judge 6 ML)
 
 - [ ] Memory strategy (Redis short-term + Postgres audit trail)
 
@@ -323,7 +323,7 @@ Generate B2B leads without GDPR/CAN-SPAM violations
 
 ## Alternative Approaches Considered
 
-1. **Build Judge #6 as Zapier integration** (no agent, pure middleware)
+1. **Build Judge 6 as Zapier integration** (no agent, pure middleware)
    - PRO: Faster time-to-market
 
    - CON: Lower margins, commoditized
@@ -418,7 +418,7 @@ Generate B2B leads without GDPR/CAN-SPAM violations
 1. **Immediate (Days 1-7):**
    - [x] Implement JR Engine
 
-   - [x] Implement Judge #6 Lite
+   - [x] Implement Judge 6 Lite
 
    - [x] Implement Agent Pattern
 
@@ -446,7 +446,7 @@ Generate B2B leads without GDPR/CAN-SPAM violations
 
    - [ ] Build customer dashboard
 
-   - [ ] Implement ML training for Judge #6
+   - [ ] Implement ML training for Judge 6
 
    - [ ] Scale to 10+ customers
 
@@ -460,11 +460,11 @@ Generate B2B leads without GDPR/CAN-SPAM violations
 
 - Revenue Analysis: godofprompt.ai ($997/mo) vs ShadowTagAi ($9,970/mo)
 
-- Technical Stack: LangGraph + Gemini Flash + Judge #6 Lite
+- Technical Stack: LangGraph + Gemini Flash + Judge 6 Lite
 
 - Bootstrap Constraints: $60-65K burn, 3× ROI, 4:1 LTV:CAC
 
-- ATP 5-19: Army risk assessment methodology
+- Compliance Framework: Army risk assessment methodology
 
 - GDPR: EU General Data Protection Regulation
 
@@ -498,7 +498,7 @@ Generate B2B leads without GDPR/CAN-SPAM violations
 
 - Enterprises will trust startup for compliance (high-risk vendor eval)
 
-- Judge #6 Lite rules can achieve 90%+ compliance without ML
+- Judge 6 Lite rules can achieve 90%+ compliance without ML
 
 - Erik has time for 7-day sprint while maintaining $60-65K burn ops
 

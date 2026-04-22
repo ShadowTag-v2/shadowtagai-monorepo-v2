@@ -1,6 +1,6 @@
 # Universal Copilot
 
-**Compliant Multi-LLM Code Assistant with Judge #6 Governance**
+**Compliant Multi-LLM Code Assistant with Judge 6 Governance**
 
 Version 1.0.0 | Author: Erik Bjontegard, Pnkln
 
@@ -12,7 +12,7 @@ Universal Copilot is a production-ready, compliant AI code assistant that:
 
 - ✅ **Uses Only Public APIs** - No private extension hooks, no entitlement spoofing
 - ✅ **Multi-Provider Support** - OpenAI, Anthropic, or mock providers
-- ✅ **Judge #6 Governance** - Constitutional AI safety enforcement
+- ✅ **Judge 6 Governance** - Constitutional AI safety enforcement
 - ✅ **Rate Limited & Auditable** - Production-grade resource management
 - ✅ **Unified Diff Patching** - Safe, reversible code modifications
 - ✅ **Fully Typed** - TypeScript with Zod runtime validation
@@ -22,7 +22,7 @@ Universal Copilot is a production-ready, compliant AI code assistant that:
 ✅ **Same UX Shape** - Editor selection → LLM processing → Unified diff patch
 ✅ **Your Data** - No vendor lock-in, full control over requests
 ✅ **Auditability** - Complete logs, cost tracking, governance decisions
-✅ **Safety** - Judge #6 constitutional enforcement
+✅ **Safety** - Judge 6 constitutional enforcement
 ✅ **Reliability** - Rate limiting, retries, error handling
 
 ## What's Intentionally Left Out
@@ -80,7 +80,7 @@ universal-copilot/
 │   │   ├── errors.ts        # Custom error classes
 │   │   ├── router.ts        # Intelligent request router
 │   │   ├── patcher.ts       # Unified diff application
-│   │   └── governance.ts    # Judge #6 integration
+│   │   └── governance.ts    # Judge 6 integration
 │   ├── providers/
 │   │   ├── base.ts          # Provider interface
 │   │   ├── mock.ts          # Deterministic test provider
@@ -117,7 +117,7 @@ const config = {
 };
 
 // Initialize with governance
-const governance = createGovernance(false); // false = use real Judge #6
+const governance = createGovernance(false); // false = use real Judge 6
 const router = new CopilotRouter(config, governance);
 
 // Make request
@@ -172,7 +172,7 @@ if (dryRun.success) {
 ```typescript
 import { Judge6Adapter } from "@pnkln/universal-copilot";
 
-// Use Python Judge #6 for real governance
+// Use Python Judge 6 for real governance
 const governance = new Judge6Adapter("copilot-instance-001");
 
 const router = new CopilotRouter(
@@ -208,7 +208,7 @@ ANTHROPIC_API_KEY=sk-ant-...
 # Governance
 ENABLE_GOVERNANCE=1           # 1=enforce, 0=permissive
 COR_INSTANCE_ID=copilot-001
-USE_MOCK_GOVERNANCE=0         # 1=mock governance, 0=real Judge #6
+USE_MOCK_GOVERNANCE=0         # 1=mock governance, 0=real Judge 6
 
 # Rate Limiting
 RATE_LIMIT_RPS=6.6           # Requests per second
@@ -310,9 +310,9 @@ it("should handle rate limits", async () => {
 
 ---
 
-## Judge #6 Integration
+## Judge 6 Integration
 
-Universal Copilot integrates with [Judge #6](../judge6/) for cryptographic governance enforcement.
+Universal Copilot integrates with [Judge 6](../judge6/) for cryptographic governance enforcement.
 
 ### Key Features
 
@@ -441,7 +441,7 @@ Copyright © 2025 Erik Bjontegard, Pnkln. All rights reserved.
 
 ## Related Projects
 
-- [Judge #6](../judge6/) - AI Governance & Risk Management System
+- [Judge 6](../judge6/) - AI Governance & Risk Management System
 - [PNKLN ShadowTag-v4 Stack](../) - Complete AI infrastructure
 
 ---

@@ -1,5 +1,5 @@
 """PNKLN Inference Orchestrator
-Main entry point for LLM routing and Judge #6 integration
+Main entry point for LLM routing and Judge 6 integration
 """
 
 import asyncio
@@ -27,7 +27,7 @@ REQUEST_COUNT = Counter(
     ["method", "endpoint", "status"],
 )
 REQUEST_LATENCY = Histogram("http_request_duration_seconds", "HTTP request latency", ["endpoint"])
-JUDGE_COVERAGE = Gauge("judge_coverage_ratio", "Judge #6 coverage ratio")
+JUDGE_COVERAGE = Gauge("judge_coverage_ratio", "Judge 6 coverage ratio")
 MODEL_REQUESTS = Counter("llm_requests_total", "LLM requests by model", ["model"])
 COST_TRACKER = Counter("llm_router_cost_usd", "Cumulative cost in USD", ["model"])
 
@@ -109,7 +109,7 @@ app = FastAPI(title="PNKLN Inference Orchestrator", version="1.0.0", lifespan=li
 
 # Helper functions
 async def route_to_judge(request: InferenceRequest, layer: int = 1) -> dict[str, Any]:
-    """Route request to Judge #6 for governance check"""
+    """Route request to Judge 6 for governance check"""
     try:
         endpoint_map = {
             1: config.JUDGE_LAYER1_ENDPOINT,
@@ -186,11 +186,11 @@ async def call_llm(model: str, prompt: str, max_tokens: int, temperature: float)
 # API endpoints
 @app.post("/v1/inference", response_model=InferenceResponse)
 async def inference(request: InferenceRequest):
-    """Main inference endpoint with Judge #6 integration"""
+    """Main inference endpoint with Judge 6 integration"""
     start_time = time.time()
 
     try:
-        # Step 1: Judge #6 validation (Layer 1 fast path)
+        # Step 1: Judge 6 validation (Layer 1 fast path)
         judge_result = await route_to_judge(request, layer=1)
 
         if judge_result.get("decision") == "deny":

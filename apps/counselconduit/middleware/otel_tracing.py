@@ -160,7 +160,7 @@ def trace_judge6_evaluation(
     flags_count: int,
     pipeline_ms: int,
 ) -> dict[str, Any]:
-    """Trace a Judge #6 governance evaluation."""
+    """Trace a Judge 6 governance evaluation."""
     tracer = get_tracer()
     with tracer.start_as_current_span("judge6.evaluate") as span:
         span.set_attribute("judge6.risk_score", risk_score)

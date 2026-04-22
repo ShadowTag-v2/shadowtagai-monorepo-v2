@@ -5,7 +5,7 @@
 #
 # PURPOSE: Non-blocking long-running tasks for:
 #   - ShadowTag DCT watermark analysis
-#   - JR Engine / Judge #6 performance analytics
+#   - JR Engine / Judge 6 performance analytics
 #   - Large refactor/code review simulations
 #
 # GUARDRAILS:

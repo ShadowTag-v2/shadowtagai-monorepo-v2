@@ -9,7 +9,7 @@
 
 This document contains all implementation tickets for both components:
 
-1. **Judge #6** (Enforcement Layer)
+1. **Judge 6** (Enforcement Layer)
 2. **Gemini Ingestion Layer** (Collection Layer)
 
 **Total Tickets:** 32 (16 per component)
@@ -20,7 +20,7 @@ This document contains all implementation tickets for both components:
 
 ## JUDGE #6 IMPLEMENTATION TICKETS
 
-### EPIC: Judge #6 - ATP 5-19 Enforcement Engine
+### EPIC: Judge 6 - Compliance Framework Enforcement Engine
 
 ---
 
@@ -67,18 +67,18 @@ class JREngine:
 
 ---
 
-#### Issue #2: [JUDGE-6] ATP 5-19 Policy Schema
+#### Issue #2: [JUDGE-6] Compliance Framework Policy Schema
 
 **Labels:** `enhancement`, `judge-6`, `atp-5-19`, `phase-1`
 **Effort:** 1 week
 
 **Description:**
-Define ATP 5-19 policy schema (JSON format) covering 44 threat categories.
+Define Compliance Framework policy schema (JSON format) covering 44 threat categories.
 
 **Acceptance Criteria:**
 
 - [ ] JSON schema for policies (OpenAPI-compatible)
-- [ ] 44 threat categories defined (OWASP Top 10 + ATP 5-19)
+- [ ] 44 threat categories defined (OWASP Top 10 + Compliance Framework)
 - [ ] Policy validation logic
 - [ ] Example policies (20+ rules)
 - [ ] Schema documentation
@@ -93,13 +93,13 @@ Define ATP 5-19 policy schema (JSON format) covering 44 threat categories.
   "description": "Prevent SQL injection attacks",
   "detection_pattern": "SELECT.*FROM.*WHERE",
   "action": "block",
-  "atp_5_19_mapping": "3.2.1.a"
+  "compliance_framework_mapping": "3.2.1.a"
 }
 ```
 
 **Files to Create:**
 
-- `schemas/atp_5_19_policy_schema.json`
+- `schemas/compliance_framework_policy_schema.json`
 - `src/judge_six/policies/__init__.py`
 - `src/judge_six/policies/loader.py`
 - `policies/security/injection.json`
@@ -269,7 +269,7 @@ Optimize for <200ms p99 latency and 150 validations/sec throughput.
 **Effort:** 1 week
 
 **Description:**
-Expand from 20 to 44 threat categories (OWASP + ATP 5-19 + custom).
+Expand from 20 to 44 threat categories (OWASP + Compliance Framework + custom).
 
 **Acceptance Criteria:**
 
@@ -357,7 +357,7 @@ CREATE TABLE audit_log (
 **Effort:** 2 weeks
 
 **Description:**
-Extend beyond ATP 5-19 to support SOC 2, HIPAA, ISO 27001.
+Extend beyond Compliance Framework to support SOC 2, HIPAA, ISO 27001.
 
 **Acceptance Criteria:**
 
@@ -374,7 +374,7 @@ Extend beyond ATP 5-19 to support SOC 2, HIPAA, ISO 27001.
   "policy_id": "multi-001",
   "description": "Encrypt data at rest",
   "frameworks": {
-    "atp_5_19": "3.2.1.b",
+    "compliance_framework": "3.2.1.b",
     "soc_2": "CC6.1",
     "hipaa": "164.312(a)(2)(iv)",
     "iso_27001": "A.10.1.1"
@@ -540,7 +540,7 @@ Enable horizontal scaling for >150 validations/sec.
                        |
        ┌───────────────┼───────────────┐
        │               │               │
-   Judge #6        Judge #6        Judge #6
+   Judge 6        Judge 6        Judge 6
    Instance 1      Instance 2      Instance 3
        │               │               │
        └───────────────┼───────────────┘
@@ -644,7 +644,7 @@ Generate downloadable compliance reports for customers.
 **Acceptance Criteria:**
 
 - [ ] Report formats: PDF, CSV, JSON
-- [ ] Report types: ATP 5-19, SOC 2, HIPAA, ISO 27001
+- [ ] Report types: Compliance Framework, SOC 2, HIPAA, ISO 27001
 - [ ] Time range selection (daily, weekly, monthly, custom)
 - [ ] Branding customization (customer logo)
 - [ ] Automated scheduling (email reports)
@@ -1391,13 +1391,13 @@ def check_quality_gates(metrics: Metrics) -> GateResult:
 
 **Team Structure:**
 
-- **Team A (Judge #6):** 3 engineers
+- **Team A (Judge 6):** 3 engineers
 - **Team B (Ingestion Layer):** 2 engineers
 - **Shared:** 1 DevOps engineer (GKE, PostgreSQL, Redis)
 
 ### Week-by-Week Schedule
 
-| Week | Judge #6 (Team A)                                 | Ingestion Layer (Team B)                                | Shared (DevOps)     |
+| Week | Judge 6 (Team A)                                 | Ingestion Layer (Team B)                                | Shared (DevOps)     |
 | ---- | ------------------------------------------------- | ------------------------------------------------------- | ------------------- |
 | 1    | Issue #1 (JR Engine), #2 (ATP Schema)             | Issue #17 (GKE), #18 (CronJob), #19 (YouTube)           | GKE cluster setup   |
 | 2    | Issue #3 (Gemini), #4 (API)                       | Issue #20 (Twitter), #21 (DB), #22 (Classification)     | PostgreSQL setup    |
@@ -1419,25 +1419,25 @@ def check_quality_gates(metrics: Metrics) -> GateResult:
 ### Critical Path
 
 ```
-Ingestion Layer → Judge #6 → Analysis Services → AM Briefing
+Ingestion Layer → Judge 6 → Analysis Services → AM Briefing
 ```
 
 **Week 3 Integration:**
 
 - Ingestion collects 280 items/day
-- Judge #6 validates items (35% policy coverage)
-- Feedback loop: Judge #6 → Ingestion (source quality)
+- Judge 6 validates items (35% policy coverage)
+- Feedback loop: Judge 6 → Ingestion (source quality)
 
 **Week 6 Integration:**
 
 - Ingestion: 620 items/day, Gemini NLP classification
-- Judge #6: 78% policy coverage, hybrid enforcement
+- Judge 6: 78% policy coverage, hybrid enforcement
 - E2E latency: <10 sec (ingestion → validation → storage)
 
 **Week 9 Integration:**
 
 - Ingestion: 850 items/day, 24 sources, 6:45 AM briefing
-- Judge #6: 94% policy coverage, <200ms latency
+- Judge 6: 94% policy coverage, <200ms latency
 - Full PNKLN stack operational
 
 ---
@@ -1460,13 +1460,13 @@ Ingestion Layer → Judge #6 → Analysis Services → AM Briefing
 
 ### Week 12 Targets
 
-**Judge #6:**
+**Judge 6:**
 
 - [ ] 94% policy coverage
 - [ ] <200ms p99 latency
 - [ ] 150 validations/sec throughput
 - [ ] 3.2% false positive rate
-- [ ] ATP 5-19 certified
+- [ ] Compliance Framework certified
 
 **Gemini Ingestion Layer:**
 
@@ -1480,7 +1480,7 @@ Ingestion Layer → Judge #6 → Analysis Services → AM Briefing
 **PNKLN Core Stack™:**
 
 - [ ] End-to-end integration complete
-- [ ] Ingestion → Judge #6 latency <5 min
+- [ ] Ingestion → Judge 6 latency <5 min
 - [ ] Feedback loop operational
 - [ ] 4 analysis services consuming data
 - [ ] AM briefing delivery 6:45 AM
@@ -1491,7 +1491,7 @@ Ingestion Layer → Judge #6 → Analysis Services → AM Briefing
 
 | Component                             | Dev Cost                | Operational Cost/Month |
 | ------------------------------------- | ----------------------- | ---------------------- |
-| Judge #6                              | $175K (36 person-weeks) | $350                   |
+| Judge 6                              | $175K (36 person-weeks) | $350                   |
 | Ingestion Layer                       | $145K (24 person-weeks) | $77                    |
 | Shared Infra (GKE, PostgreSQL, Redis) | $50K (8 person-weeks)   | $250                   |
 | **TOTAL**                             | **$370K**               | **$677/month**         |

@@ -421,7 +421,7 @@ class OPORDGenerator:
         """Build Para 5: COMMAND AND SIGNAL"""
         return CommandAndSignal(
             command={
-                "squadron_commander": "Judge #6",
+                "squadron_commander": "Judge 6",
                 "xo": "JR Engine",
                 "s3": "OPORD Generator",
                 "air_cav_co": "Apache Lead",
@@ -435,7 +435,7 @@ class OPORDGenerator:
                 "emergency": "Direct Gemini API fallback",
             },
             succession_of_command=[
-                "Squadron CDR (Judge #6)",
+                "Squadron CDR (Judge 6)",
                 "XO (JR Engine)",
                 "S-3",
                 "AIR CAV Troop CDR",

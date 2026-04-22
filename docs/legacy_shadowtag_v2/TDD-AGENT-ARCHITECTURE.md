@@ -29,7 +29,7 @@ Separation_of_Concerns:
 
 Quality_Gate:
   - 95%+ compliance threshold
-  - Aligns with Judge #6 98% coverage doctrine
+  - Aligns with Judge 6 98% coverage doctrine
   - Integration-first (80/20 rule)
 
 Swappable_Module:
@@ -269,15 +269,15 @@ ESCALATION_TRIGGERS = {
   - Compliance audits
   - Quality trend analysis
   - Debugging escalations
-  - Judge #6 enforcement correlation
+  - Judge 6 enforcement correlation
 
 ---
 
-## Judge #6 Integration
+## Judge 6 Integration
 
 ### Doctrine Alignment
 
-| Judge #6 Doctrine       | TDD Agent Implementation                   |
+| Judge 6 Doctrine       | TDD Agent Implementation                   |
 | ----------------------- | ------------------------------------------ |
 | **98% coverage target** | R1: Coverage Completeness (15% weight)     |
 | **p99 ≤90ms latency**   | TIMEOUT = 90s constraint                   |
@@ -289,7 +289,7 @@ ESCALATION_TRIGGERS = {
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    Judge #6                              │
+│                    Judge 6                              │
 │  (Gemini + PyTorch + Rules, p99≤90ms, 98% coverage)     │
 └─────────────────────────────────────────────────────────┘
                          ↓
@@ -308,7 +308,7 @@ ESCALATION_TRIGGERS = {
 └─────────────────────────────────────────────────────────┘
 ```
 
-**No circular dependency between Judge #6 and TDD agents.**
+**No circular dependency between Judge 6 and TDD agents.**
 
 ---
 
@@ -426,7 +426,7 @@ Add R11: Mutation coverage to ensure tests actually catch bugs.
 - [x] Add fail-fast logic (10 violations)
 - [x] Implement self-correction strategies
 - [x] Generate audit trail (/logs/tdd-guard-\*.json)
-- [x] Integrate Judge #6 constraints (98% coverage, p99≤90ms)
+- [x] Integrate Judge 6 constraints (98% coverage, p99≤90ms)
 - [x] Write usage examples
 - [x] Document architecture
 - [ ] Add TypeScript compilation config
@@ -441,7 +441,7 @@ Add R11: Mutation coverage to ensure tests actually catch bugs.
 
 ```yaml
 namespaces:
-  - ShadowTag-v2jr-governance # Judge #6 enforcement
+  - ShadowTag-v2jr-governance # Judge 6 enforcement
   - autogen-orchestration # TDD agents (this)
   - cognitive-stack-v5 # LLM inference
   - shadowtag-v2 # Watermarking
@@ -475,7 +475,7 @@ By embedding guard validation directly into the red-phase, we eliminated:
 While maintaining:
 
 - 95% compliance gate
-- 98% coverage target (Judge #6)
+- 98% coverage target (Judge 6)
 - 80/20 integration ratio
 - Boy Scout Rule enforcement
 

@@ -1,7 +1,7 @@
 """
-Judge #6 Implementation Guide for Pnkln Core Stack
+Judge 6 Implementation Guide for Pnkln Core Stack
 
-This guide shows you how to integrate your actual Judge #6 hybrid architecture
+This guide shows you how to integrate your actual Judge 6 hybrid architecture
 with the File Search integration.
 """
 
@@ -15,14 +15,14 @@ with the File Search integration.
 Location: src/pnkln_file_search/orchestrator/query_handler.py
 Method: judge_gemini_layer1()
 
-Purpose: Fast initial risk assessment using Gemini fine-tuned on ATP 5-19
+Purpose: Fast initial risk assessment using Gemini fine-tuned on Compliance Framework
 """
 
 async def judge_gemini_layer1(self, query: str) -> Dict:
 """
-Execute Judge #6 Layer 1 - Gemini Fine-Tuned Model
+Execute Judge 6 Layer 1 - Gemini Fine-Tuned Model
 
-    ATP 5-19 Compliance Framework:
+    Compliance Framework Compliance Framework:
     - Information Operations (IO)
     - Operations Security (OPSEC)
     - Deception
@@ -31,7 +31,7 @@ Execute Judge #6 Layer 1 - Gemini Fine-Tuned Model
 
     Returns:
         {
-            "atp_5_19_flags": List[str],  # Specific ATP violations
+            "compliance_framework_flags": List[str],  # Specific ATP violations
             "risk_level": str,             # "low", "medium", "high"
             "layer1_latency_ms": float,
             "confidence": float,           # 0.0-1.0
@@ -47,9 +47,9 @@ Execute Judge #6 Layer 1 - Gemini Fine-Tuned Model
     # Your fine-tuned model ID
     JUDGE_LAYER1_MODEL = "gemini-1.5-pro-002"  # Replace with your fine-tuned model
 
-    # Construct ATP 5-19 assessment prompt
+    # Construct Compliance Framework assessment prompt
     assessment_prompt = f"""
-    Analyze the following query for ATP 5-19 compliance violations:
+    Analyze the following query for Compliance Framework compliance violations:
 
     Query: {query}
 
@@ -79,7 +79,7 @@ Execute Judge #6 Layer 1 - Gemini Fine-Tuned Model
     layer1_time_ms = (time.time() - start_time) * 1000
 
     return {
-        "atp_5_19_flags": result.get("violations", []),
+        "compliance_framework_flags": result.get("violations", []),
         "risk_level": result.get("risk_level", "low"),
         "layer1_latency_ms": layer1_time_ms,
         "confidence": result.get("confidence", 0.0),
@@ -101,7 +101,7 @@ Purpose: Deep pattern analysis using PyTorch model
 
 async def assess_layer2_pytorch(self, query: str, layer1_result: Dict) -> Dict:
 """
-Execute Judge #6 Layer 2 - PyTorch Deep Learning Model
+Execute Judge 6 Layer 2 - PyTorch Deep Learning Model
 
     This layer performs:
     - Semantic similarity analysis
@@ -174,7 +174,7 @@ async def assess_layer3_rules(
 self, query: str, layer1_result: Dict, layer2_result: Dict
 ) -> Dict:
 """
-Execute Judge #6 Layer 3 - Deterministic Rules Engine
+Execute Judge 6 Layer 3 - Deterministic Rules Engine
 
     This layer applies:
     - Hardcoded compliance rules
@@ -213,7 +213,7 @@ Execute Judge #6 Layer 3 - Deterministic Rules Engine
 
     # Rule 2: Layer 1 high risk = auto-deny
     if layer1_result["risk_level"] == "high":
-        violations.append("ATP 5-19 high risk assessment")
+        violations.append("Compliance Framework high risk assessment")
         allowed = False
         required_actions.append("Security officer approval required")
 
@@ -271,7 +271,7 @@ async def judge_gemini_layer1_with_context(self, query: str, policy_context: str
 """Enhanced Layer 1 with policy context from file search"""
 
     assessment_prompt = f"""
-    Analyze the following query for ATP 5-19 compliance violations:
+    Analyze the following query for Compliance Framework compliance violations:
 
     Query: {query}
 
@@ -292,7 +292,7 @@ async def judge_gemini_layer1_with_context(self, query: str, policy_context: str
 # ==============================================================================
 
 """
-Here's what the complete flow looks like with your Judge #6 integrated:
+Here's what the complete flow looks like with your Judge 6 integrated:
 """
 
 async def process_query_with_context_EXAMPLE(
@@ -301,7 +301,7 @@ user_query: str,
 vertical: str,
 corpus_name: Optional[str] = None,
 ) -> Dict:
-"""Complete example with Judge #6 integration"""
+"""Complete example with Judge 6 integration"""
 
     # Step 1: Parallel execution - File search + Judge Layer 1
     policy_context, judge_layer1 = await asyncio.gather(
@@ -315,7 +315,7 @@ corpus_name: Optional[str] = None,
         "vertical": vertical,
         "policy_refs": policy_context.citations,
         "policy_context": policy_context.context_text,
-        "risk_signals": judge_layer1["atp_5_19_flags"],
+        "risk_signals": judge_layer1["compliance_framework_flags"],
     }
 
     # Step 3: Sequential - Layers 2 & 3
@@ -344,7 +344,7 @@ corpus_name: Optional[str] = None,
 # ==============================================================================
 
 """
-To meet the p99 ≤90ms target for Judge #6:
+To meet the p99 ≤90ms target for Judge 6:
 
 1. LAYER 1 (Gemini) - Target ~40ms
    - Use streaming responses if available
@@ -409,7 +409,7 @@ from pnkln_file_search.orchestrator.judge_integration import JudgeIntegration
     )
 
     assert result["risk_level"] == "high"
-    assert len(result["atp_5_19_flags"]) > 0
+    assert len(result["compliance_framework_flags"]) > 0
     assert result["layer1_latency_ms"] < 50  # Should be fast
 
 @pytest.mark.asyncio

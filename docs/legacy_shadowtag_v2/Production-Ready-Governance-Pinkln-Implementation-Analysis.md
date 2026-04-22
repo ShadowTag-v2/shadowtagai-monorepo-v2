@@ -241,7 +241,7 @@ Kernel chaining (ATP, Judge, Audit)
 
 **7 Core Functions**:
 
-1. `atp_519_scan(context)` - Extract ATP 5-19 violations
+1. `atp_519_scan(context)` - Extract Compliance Framework violations
 
 2. `judge_six_classify(context)` - Binary go/no-go decision
 

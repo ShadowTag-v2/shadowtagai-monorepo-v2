@@ -345,7 +345,7 @@ async def test_gemini_quality(prompt, expected_quality):
 
     response = await router.generate(prompt)
 
-    # Evaluate response quality (using Judge #6 or human eval)
+    # Evaluate response quality (using Judge 6 or human eval)
     quality = evaluate_response(prompt, response)
 
     assert quality >= expected_quality, f"Quality {quality} below threshold {expected_quality}"

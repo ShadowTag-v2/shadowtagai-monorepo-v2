@@ -333,7 +333,7 @@ def main():
                 print(
                     f"    Risk: {skill.atp_classification['level']} - {skill.atp_classification['rationale']}",
                 )
-                print(f"    Judge #6 Review Required: {skill.atp_classification['judge6_review']}")
+                print(f"    Judge 6 Review Required: {skill.atp_classification['judge6_review']}")
 
     # Generate manifest
     manifest_path = registry.generate_manifest()
@@ -341,7 +341,7 @@ def main():
 
     # Display high-risk skills requiring enforcement
     high_risk = registry.get_high_risk_skills()
-    print(f"\n⚠️  {len(high_risk)} high-risk skills require Judge #6 enforcement")
+    print(f"\n⚠️  {len(high_risk)} high-risk skills require Judge 6 enforcement")
 
 
 if __name__ == "__main__":

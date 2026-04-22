@@ -2,7 +2,7 @@
 """PNKLN Stack Integration Analyzer
 
 Analyzes the integration between Intelligence Pipeline (upstream collection)
-and Judge #6 (downstream enforcement) to identify:
+and Judge 6 (downstream enforcement) to identify:
 - Schema compatibility issues
 - Data flow bottlenecks
 - Integration failure modes
@@ -14,7 +14,7 @@ Usage:
 
 Requires:
     - GOOGLE_API_KEY environment variable for Gemini 2.0 Pro
-    - Access to both Intelligence Pipeline and Judge #6 specifications
+    - Access to both Intelligence Pipeline and Judge 6 specifications
 """
 
 import argparse
@@ -32,13 +32,13 @@ except ImportError:
 
 
 INTEGRATION_ANALYSIS_PROMPT = """
-# PNKLN Stack Integration Analysis: Intelligence Pipeline ↔ Judge #6
+# PNKLN Stack Integration Analysis: Intelligence Pipeline ↔ Judge 6
 
 ## Analysis Objective
 
 Evaluate the integration between two PNKLN Core Stack™ components:
 1. **Intelligence Pipeline** (upstream): Nightly collection of regulatory/competitive intelligence
-2. **Judge #6** (downstream): Real-time ATP 5-19 enforcement engine
+2. **Judge 6** (downstream): Real-time ATP 5-19 enforcement engine
 
 ## System Positions in Stack
 
@@ -51,7 +51,7 @@ Evaluate the integration between two PNKLN Core Stack™ components:
 ┌─────────┐          ┌──────────┐          ┌──────────┐
 │ COLLECT │          │ VALIDATE │          │  SERVE   │
 │         │──────────▶          │──────────▶          │
-│ Intel   │  Data    │ Judge #6 │  Cleared │ Services │
+│ Intel   │  Data    │ Judge 6 │  Cleared │ Services │
 │ Pipeline│  Items   │          │  Content │          │
 └─────────┘          └──────────┘          └──────────┘
 ```
@@ -78,7 +78,7 @@ Evaluate the integration between two PNKLN Core Stack™ components:
 }
 ```
 
-**Judge #6 Expected Input**:
+**Judge 6 Expected Input**:
 ```json
 {
   "content": "string (required)",
@@ -91,8 +91,8 @@ Evaluate the integration between two PNKLN Core Stack™ components:
 ```
 
 **Evaluate**:
-- Schema mapping: Which Intelligence fields → Judge #6 inputs?
-- Missing fields: Does Judge #6 need data not collected by Intelligence?
+- Schema mapping: Which Intelligence fields → Judge 6 inputs?
+- Missing fields: Does Judge 6 need data not collected by Intelligence?
 - Format mismatches: Timestamp formats, JSON nesting, encoding
 - Data transformation complexity: Simple mapping or custom ETL?
 
@@ -100,18 +100,18 @@ Evaluate the integration between two PNKLN Core Stack™ components:
 
 **Scenario A: Proactive Validation**
 - Intelligence ingests Tier 1 regulatory item
-- Before CEO briefing, validate content via Judge #6
+- Before CEO briefing, validate content via Judge 6
 - Ensure no ATP 5-19 violations in summary/recommendations
 - Question: Is this necessary? Intelligence is curated intelligence, not user-generated
 
 **Scenario B: Reactive Investigation**
-- Judge #6 flags high-volume policy violations
+- Judge 6 flags high-volume policy violations
 - Intelligence Pipeline re-scans sources for root cause
 - Question: Does Intelligence have "targeted re-scan" capability?
 
 **Scenario C: Shared Context**
 - Intelligence discovers new regulatory framework
-- Judge #6 updates ATP 5-19 rules to reflect new law
+- Judge 6 updates ATP 5-19 rules to reflect new law
 - Question: Is there a feedback loop for rule updates?
 
 **Evaluate**:
@@ -122,9 +122,9 @@ Evaluate the integration between two PNKLN Core Stack™ components:
 
 ### 3. SCHEMA COMPATIBILITY MATRIX
 
-Compare Intelligence Pipeline BigQuery schema to Judge #6 input requirements:
+Compare Intelligence Pipeline BigQuery schema to Judge 6 input requirements:
 
-| Intelligence Field | Judge #6 Field | Mapping | Issues |
+| Intelligence Field | Judge 6 Field | Mapping | Issues |
 |--------------------|----------------|---------|--------|
 | `content` | `content` | Direct | None |
 | `title` | `context` | Append? | Clarify usage |
@@ -136,17 +136,17 @@ Compare Intelligence Pipeline BigQuery schema to Judge #6 input requirements:
 
 **Evaluate**:
 - Are there breaking incompatibilities?
-- Does Judge #6 need access to raw Intelligence metadata?
-- Should tier classification inform Judge #6 priority queue?
+- Does Judge 6 need access to raw Intelligence metadata?
+- Should tier classification inform Judge 6 priority queue?
 
 ### 4. FAILURE ISOLATION
 
 **Intelligence Pipeline Failure**:
-- Impact on Judge #6: None (independent operation)
-- Judge #6 continues validating user content
+- Impact on Judge 6: None (independent operation)
+- Judge 6 continues validating user content
 - No new intelligence items for proactive checks
 
-**Judge #6 Failure**:
+**Judge 6 Failure**:
 - Impact on Intelligence: None (independent operation)
 - Intelligence continues ingesting and briefing
 - No validation available if requested
@@ -169,18 +169,18 @@ Compare Intelligence Pipeline BigQuery schema to Judge #6 input requirements:
 - Latency: ~45 minutes (acceptable for nightly job)
 - Output: Morning briefing by 6:45 AM
 
-**Judge #6**:
+**Judge 6**:
 - Execution: Real-time (on user request)
 - Latency: p99 ≤90ms (critical for UX)
 - Output: ALLOW/BLOCK/FLAG decision
 
 **Integration Latency**:
-- If Intelligence calls Judge #6: Adds 90ms per item × 125 items = 188 seconds (~3 min)
-- If Judge #6 queries Intelligence: BigQuery query <1s (acceptable)
+- If Intelligence calls Judge 6: Adds 90ms per item × 125 items = 188 seconds (~3 min)
+- If Judge 6 queries Intelligence: BigQuery query <1s (acceptable)
 
 **Evaluate**:
 - Is 3-minute overhead acceptable for Intelligence runtime?
-- Should Judge #6 validation be async (post-briefing)?
+- Should Judge 6 validation be async (post-briefing)?
 - Can parallelization reduce latency?
 
 ### 6. COST IMPLICATIONS
@@ -190,12 +190,12 @@ Compare Intelligence Pipeline BigQuery schema to Judge #6 input requirements:
 - GKE: $120/month
 - Storage: $150/month
 
-**Judge #6**: ~$180/month (estimated)
+**Judge 6**: ~$180/month (estimated)
 - Anthropic API: $120/month (Gemini + Haiku)
 - GKE: $60/month (lower compute, real-time)
 
 **Integration Overhead**:
-- If Intelligence validates all items via Judge #6: +125 validations/day × 30 = 3,750 validations/month
+- If Intelligence validates all items via Judge 6: +125 validations/day × 30 = 3,750 validations/month
 - Additional cost: ~$45/month (Haiku @ $0.80/1M input tokens)
 
 **Evaluate**:
@@ -226,7 +226,7 @@ Generate a detailed flow diagram showing:
     │      ↓
     ├─ STEP 4: Cor Synthesis (Tier 1 only, 5-10 min)
     │      ↓
-    │  **INTEGRATION POINT A: Optional Judge #6 Validation**
+    │  **INTEGRATION POINT A: Optional Judge 6 Validation**
     │      ├─ Validate Tier 1 cor_summary (19 × 90ms = 1.7s)
     │      ├─ Check for ATP 5-19 violations
     │      └─ Flag if issues detected
@@ -242,9 +242,9 @@ Generate a detailed flow diagram showing:
               │
               └─ Email to CEO
                     ↓
-            **INTEGRATION POINT C: Judge #6 Query**
+            **INTEGRATION POINT C: Judge 6 Query**
                     │
-                    └─ If CEO clicks item link, Judge #6 may validate external content
+                    └─ If CEO clicks item link, Judge 6 may validate external content
 ```
 
 **Evaluate**:
@@ -289,7 +289,7 @@ Rate the overall integration quality (0-100):
 
 State your confidence (0-100%) in this analysis given:
 - Spec-only context (no production telemetry)
-- Assumptions about Judge #6 implementation
+- Assumptions about Judge 6 implementation
 - Inferred integration patterns
 
 **Minimum acceptable confidence**: 55% (cross-component analysis with gaps)
@@ -348,10 +348,10 @@ class StackIntegrationAnalyzer:
                 print(f"⚠️  Missing {name}: {path}")
                 specs[name] = f"[File not found: {path}]"
 
-        # Note: Judge #6 specs would be loaded from separate branch
+        # Note: Judge 6 specs would be loaded from separate branch
         # For now, use placeholder
         specs["JUDGE6_SPEC"] = (
-            "[Judge #6 specs to be loaded from judge-six-improvement-analysis branch]"
+            "[Judge 6 specs to be loaded from judge-six-improvement-analysis branch]"
         )
 
         return specs
@@ -377,7 +377,7 @@ class StackIntegrationAnalyzer:
 
 ## BEGIN INTEGRATION ANALYSIS
 
-Execute the integration analysis framework above. Focus on actionable insights for improving the handoff between Intelligence Pipeline and Judge #6.
+Execute the integration analysis framework above. Focus on actionable insights for improving the handoff between Intelligence Pipeline and Judge 6.
 """
 
         print("\n🔗 Running integration analysis...")
@@ -401,7 +401,7 @@ Execute the integration analysis framework above. Focus on actionable insights f
         metadata = f"""---
 generated: {datetime.now().isoformat()}
 analyzer: Gemini 2.0 Pro (gemini-3.1-flash-lite-preview)
-analysis_type: Stack Integration (Intelligence Pipeline ↔ Judge #6)
+analysis_type: Stack Integration (Intelligence Pipeline ↔ Judge 6)
 confidence_floor: 55%
 ---
 

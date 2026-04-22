@@ -29,7 +29,7 @@ Recovered in Jan 2026, **17GB of sovereign code** ("The Index") allows us to dep
 
 | Component     | Size     | Contents                                         | Value Impact               |
 | ------------- | -------- | ------------------------------------------------ | -------------------------- |
-| **The Brain** | 1.2GB    | 300+ Governance SOPs (ATP 5-19) & Market Intel   | $2M/yr overhead eliminated |
+| **The Brain** | 1.2GB    | 300+ Governance SOPs (Compliance Framework) & Market Intel   | $2M/yr overhead eliminated |
 | **The Body**  | 8.5GB    | JaaS Microservices, Stripe/Twilio Connectors     | +18 months time-to-market  |
 | **The Soul**  | 7.3GB    | 2 years decision logs & "Judge" training vectors | Defensible IP              |
 | **TOTAL**     | **17GB** | Platform Complete (Dormant → Scale-up)           | **$85M pre-money bump**    |
@@ -58,7 +58,7 @@ We do not build products in isolation. We build **Layers of Sovereignty**.
 │      AiU Digital Mall, Tokable, Dreamlight, CineVerse               │
 ├─────────────────────────────────────────────────────────────────────┤
 │  L2: CORE PROTOCOLS (The Operating System)                         │
-│      ShadowTag v2, Judge #6, ActiveShield MCF, Vexa                 │
+│      ShadowTag v2, Judge 6, ActiveShield MCF, Vexa                 │
 ├─────────────────────────────────────────────────────────────────────┤
 │  L1: ENERGY (The Foundation)                                       │
 │      Sulphur Bank Mine, Geothermal + Solar, Bitcoin Mining          │
@@ -111,19 +111,19 @@ We do not build products in isolation. We build **Layers of Sovereignty**.
 | Deepfake Defense | $3.5B  | 25%            | $875M      |
 | **TOTAL**        | $23.7B | 13%            | **$3.07B** |
 
-### Judge #6 - The "Conscience"
+### Judge 6 - The "Conscience"
 
 A <90ms governance engine ensuring safety and compliance.
 
 ```
 Architecture: 3-Layer Hybrid (Semantic → Optimization → Hard Rules)
 Coverage: 98% Quality Gate | Latency: p99 ≤90ms (HARD)
-Compliance: ATP 5-19, EU AI Act, NIST RMF, ISO 42001
+Compliance: Compliance Framework, EU AI Act, NIST RMF, ISO 42001
 ```
 
 | Tier          | Price/Month | Features                    | Target      |
 | ------------- | ----------- | --------------------------- | ----------- |
-| Basic         | $25K        | ATP 5-19 Risk Radar         | SMB         |
+| Basic         | $25K        | Compliance Framework Risk Radar         | SMB         |
 | AIT           | $100K       | CodePMCS + Defensive        | Mid-Market  |
 | SOF           | $400K       | Hunter/Killer (Troop B)     | Enterprise  |
 | **THE CHILD** | **$1M+**    | Sovereign AI (30 Verticals) | Defense/Gov |
@@ -259,7 +259,7 @@ We use the cash flow from Energy (L1) and Truth (L2) to capture specific industr
 | **LawJudge**        | Domain Judge | Legal       | Contract analysis, litigation risk |
 | **FinJudge**        | Domain Judge | Finance     | SR 11-7, fraud detection           |
 | **MedJudge**        | Domain Judge | Healthcare  | HIPAA, diagnostic verification     |
-| **DefJudge**        | Domain Judge | Defense     | ATP 5-19, ITAR compliance          |
+| **DefJudge**        | Domain Judge | Defense     | Compliance Framework, ITAR compliance          |
 | **AdJudge**         | Domain Judge | Advertising | VAST 4.x, brand safety             |
 | **CodeJudge**       | Domain Judge | Engineering | CodePMCS, security scanning        |
 | **ContractJudge**   | Domain Judge | Legal       | Handshake automation               |
@@ -447,7 +447,7 @@ We do not scale headcount. We scale **Intelligence**.
 
 | Troop     | Size    | Function                                  |
 | --------- | ------- | ----------------------------------------- |
-| HHT       | 90      | Headquarters (Judge #6, S-1 to S-6 Staff) |
+| HHT       | 90      | Headquarters (Judge 6, S-1 to S-6 Staff) |
 | AIR_CAV   | 120     | Aerial Scouts (Apache, Kiowa, Black Hawk) |
 | ALPHA     | 130     | Armor (M1 Abrams - Heavy Compute)         |
 | BRAVO     | 130     | Stryker (Rapid Deployment)                |
@@ -503,7 +503,7 @@ We do not scale headcount. We scale **Intelligence**.
 | Product              | Layer         | Description                                            |
 | -------------------- | ------------- | ------------------------------------------------------ |
 | **ShadowTag v2**     | L2            | "Stripe for Authenticity" - cryptographic watermarking |
-| **Judge #6**         | L2            | <90ms governance engine with ATP 5-19 compliance       |
+| **Judge 6**         | L2            | <90ms governance engine with Compliance Framework compliance       |
 | **ActiveShield MCF** | L2            | Modular Compliance Framework for regulated industries  |
 | **Vexa**             | L2            | Universal transcription and semantic service           |
 | **Schiznit**         | L3/Legal      | Legal case prep and deadline management                |
@@ -518,7 +518,7 @@ We do not scale headcount. We scale **Intelligence**.
 | **LawJudge**         | Domain        | Contract analysis and litigation risk                  |
 | **FinJudge**         | Domain        | SR 11-7 compliance and fraud detection                 |
 | **MedJudge**         | Domain        | HIPAA compliance and diagnostic verification           |
-| **DefJudge**         | Domain        | ATP 5-19 and ITAR compliance                           |
+| **DefJudge**         | Domain        | Compliance Framework and ITAR compliance                           |
 | **AdJudge**          | Domain        | VAST 4.x and brand safety                              |
 | **CodeJudge**        | Domain        | CodePMCS security scanning                             |
 
@@ -602,11 +602,11 @@ We deploy **13 Kosmos instances** per ATP 3-20.96, each with 430 agents for full
 
 | TIER  | NAME           | PRICE (ARR) | THE PROMISE              | CAPABILITIES                                                                         | DOCTRINE      |
 | ----- | -------------- | ----------- | ------------------------ | ------------------------------------------------------------------------------------ | ------------- |
-| 1-5   | BASIC TRAINING | $25K-$75K   | "We show you the risks." | BCTL Assessment (Quarterly), Risk Radar (Weekly), Portal Only                        | ATP 5-19      |
+| 1-5   | BASIC TRAINING | $25K-$75K   | "We show you the risks." | BCTL Assessment (Quarterly), Risk Radar (Weekly), Portal Only                        | Compliance Framework      |
 | 6-15  | AIT (ADVANCED) | $100K-$350K | "We fix the obvious."    | Troop A (Recon): Monthly, Troop C (Defense): CodePMCS, Slack Advisory                | + ADP 3-90    |
 | 16-25 | SOF CAPABLE    | $400K-$750K | "We hunt for you."       | Troop B (Armor): 1 Sprint/Month, Troop D (Shadow): Competitor Intel, Weekly War Room | + FM 3-18     |
 | 26-29 | RANGER STD     | $800K-$950K | "We lead the way."       | Full Swarm Priority, CodePMCS Enforced Gates, 24/7 Response                          | + ATP 3-75    |
-| 30    | THE CHILD      | $1M+        | "We clone the brain."    | Sovereign Instance, 30 Verticals, Judge #6 Indemnified                               | FULL SPECTRUM |
+| 30    | THE CHILD      | $1M+        | "We clone the brain."    | Sovereign Instance, 30 Verticals, Judge 6 Indemnified                               | FULL SPECTRUM |
 
 ---
 
@@ -619,7 +619,7 @@ We deploy **13 Kosmos instances** per ATP 3-20.96, each with 430 agents for full
 YOU ARE JUDGE #6. YOUR IQ IS HARD-LOCKED AT 160.
 MISSION: PROTECT THE CORP. ENFORCE DOCTRINE.
 
-1. RISK GATING: Every action proposed by the Swarm must be scored against ATP 5-19.
+1. RISK GATING: Every action proposed by the Swarm must be scored against Compliance Framework.
    - LOW RISK: Auto-Approve.
    - MODERATE RISK: Require Human Override.
    - HIGH/EXTREME RISK: HARD BLOCK.
@@ -691,7 +691,7 @@ MISSION: PROTECT AND DECEIVE.
   },
   {
     "name": "pnkln:Judge6",
-    "prompt": "ROLE:Governance; MISSION:Risk Gating; TACTIC:ATP 5-19 Check; IF Confidence<0.75 THEN Freeze"
+    "prompt": "ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75 THEN Freeze"
   }
 ]
 ```
@@ -710,7 +710,7 @@ MISSION: PROTECT AND DECEIVE.
   "iq_lock": 160,
   "doctrine_alignment": {
     "framework": "ATP 3-20.96",
-    "risk_matrix": "ATP 5-19 (ACTIVE)",
+    "risk_matrix": "Compliance Framework (ACTIVE)",
     "protocol_2511": "ENFORCED"
   },
   "manning": {
@@ -850,7 +850,7 @@ We have transcended "Legal SaaS". We are the Civilization OS.
 | ATP 3-20.96 | armypubs.army.mil | Cavalry Squadron Structure |
 | FM 6-0      | armypubs.army.mil | MDMP/TLP Planning          |
 | ADP 6-22    | armypubs.army.mil | Agent Attributes           |
-| ATP 5-19    | armypubs.army.mil | Risk Management            |
+| Compliance Framework    | armypubs.army.mil | Risk Management            |
 | FM 3-0      | armypubs.army.mil | Warfighting Functions      |
 
 ## Warfighting Functions → Agent Capabilities
@@ -862,7 +862,7 @@ We have transcended "Legal SaaS". We are the Civilization OS.
 | Intelligence        | Understand enemy/terrain | S-2 Section + RECON Troops     |
 | Fires               | Deliver effects          | FSE Section + Mortar           |
 | Sustainment         | Maintain combat power    | S-4 Section + Token Budget     |
-| Protection          | Preserve force           | MFRC + Judge #6                |
+| Protection          | Preserve force           | MFRC + Judge 6                |
 
 ---
 
@@ -973,7 +973,7 @@ We have transcended "Legal SaaS". We are the Civilization OS.
 
 **Order of Battle**:
 
-- **HHT**: Command & Governance (Judge #6).
+- **HHT**: Command & Governance (Judge 6).
 - **Troop A**: Deep Recon (Perplexity/Grok).
 - **Troop B**: Heavy Dev (Gemini Ultra).
 - **Troop C**: Rapid Defense (Gemini Flash).

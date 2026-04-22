@@ -349,7 +349,7 @@ configure_kubectl() {
 }
 
 deploy_judge() {
-    log_info "Deploying Judge #6 inference service..."
+    log_info "Deploying Judge 6 inference service..."
 
     if [ ! -f "$SCRIPT_DIR/judge-deployment.yaml" ]; then
         log_error "judge-deployment.yaml not found in $SCRIPT_DIR"
@@ -357,11 +357,11 @@ deploy_judge() {
     fi
 
     kubectl apply -f "$SCRIPT_DIR/judge-deployment.yaml" || {
-        log_error "Failed to deploy Judge #6"
+        log_error "Failed to deploy Judge 6"
         exit 1
     }
 
-    log_success "Judge #6 deployed successfully"
+    log_success "Judge 6 deployed successfully"
 
     log_info "Waiting for deployment to be ready (timeout: 5 minutes)..."
     kubectl wait --for=condition=available --timeout=300s \
@@ -371,7 +371,7 @@ deploy_judge() {
         exit 1
     }
 
-    log_success "Judge #6 is ready"
+    log_success "Judge 6 is ready"
 }
 
 verify_deployment() {

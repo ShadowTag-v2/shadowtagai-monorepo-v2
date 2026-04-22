@@ -11,7 +11,7 @@
 
 This roadmap coordinates parallel development of both PNKLN Core Stack™ components:
 
-- **Judge #6** (Enforcement Layer): ATP 5-19 compliance & validation
+- **Judge 6** (Enforcement Layer): Compliance Framework compliance & validation
 - **Gemini Ingestion Layer** (Collection Layer): Multi-source intelligence acquisition
 
 **Key Principle:** **Collection First, Enforcement Second, Integration Throughout**
@@ -26,10 +26,10 @@ Week 1-3: FOUNDATION PHASE
 INGESTION:  [GKE Setup]→[YouTube]→[Twitter]→[DB Schema]→[Basic Classifier]→[Email Briefing]
              ⬇️ 280 items/day, 6 sources, 20% Tier 1
 
-JUDGE #6:   [JR Engine Core]→[ATP 5-19 Schema]→[Gemini API]→[Validation API]
+JUDGE #6:   [JR Engine Core]→[Compliance Framework Schema]→[Gemini API]→[Validation API]
              ⬇️ 35% coverage, <500ms latency
 
-INTEGRATION: Week 3 milestone: Ingestion feeds Judge #6 for validation
+INTEGRATION: Week 3 milestone: Ingestion feeds Judge 6 for validation
 ═══════════════════════════════════════════════════════════════════════════
 
 Week 4-6: ENHANCEMENT PHASE
@@ -49,7 +49,7 @@ INGESTION:  [24 Sources]→[Slack/PDF Briefing]→[Quality Gates]→[Monitoring]
              ⬇️ 850 items/day, 24 sources, 38% Tier 1, 6:45 AM delivery
 
 JUDGE #6:   [Multi-Framework]→[Custom Policies]→[Dashboard]→[99.2% SLA]
-             ⬇️ 94% coverage, <200ms latency, ATP 5-19 certified
+             ⬇️ 94% coverage, <200ms latency, Compliance Framework certified
 
 INTEGRATION: Week 9 milestone: Production-ready PNKLN stack, stakeholder demo
 ═══════════════════════════════════════════════════════════════════════════
@@ -85,12 +85,12 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | YouTube collector         | Backend Eng 2 | Docker container  | 18 items/day        |
 | Database schema           | Backend Eng 1 | PostgreSQL tables | Schema created      |
 
-**Judge #6**
+**Judge 6**
 
 | Task                     | Owner         | Deliverable  | Success Metric      |
 | ------------------------ | ------------- | ------------ | ------------------- |
 | JR Engine core (Purpose) | Backend Eng 3 | `purpose.py` | Unit tests pass     |
-| ATP 5-19 schema design   | Backend Eng 4 | JSON schema  | 20 policies defined |
+| Compliance Framework schema design   | Backend Eng 4 | JSON schema  | 20 policies defined |
 | Gemini API setup         | Backend Eng 5 | API client   | <200ms test latency |
 
 **Integration**
@@ -100,7 +100,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 **Week 1 Targets:**
 
 - Ingestion: 0 → 18 items/day (YouTube only)
-- Judge #6: 0 → 10% coverage (basic policies)
+- Judge 6: 0 → 10% coverage (basic policies)
 - Infrastructure: GKE + PostgreSQL operational
 
 ---
@@ -115,7 +115,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | News RSS collector    | Backend Eng 1 | Docker container | 60 items/day     |
 | Rule-based classifier | Backend Eng 2 | `rule_based.py`  | 15% Tier 1 ratio |
 
-**Judge #6**
+**Judge 6**
 
 | Task                | Owner         | Deliverable       | Success Metric       |
 | ------------------- | ------------- | ----------------- | -------------------- |
@@ -131,7 +131,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 **Week 2 Targets:**
 
 - Ingestion: 18 → 123 items/day (YouTube + Twitter + News)
-- Judge #6: 10% → 25% coverage (JR Engine + policies)
+- Judge 6: 10% → 25% coverage (JR Engine + policies)
 
 ---
 
@@ -145,7 +145,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | Minimal AM briefing    | Backend Eng 1 | Email generator       | 10-item email sent |
 | PostgreSQL integration | Backend Eng 1 | Data persistence      | 280 items stored   |
 
-**Judge #6**
+**Judge 6**
 
 | Task               | Owner         | Deliverable    | Success Metric    |
 | ------------------ | ------------- | -------------- | ----------------- |
@@ -157,20 +157,20 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 
 | Task                          | Owner             | Deliverable       | Success Metric          |
 | ----------------------------- | ----------------- | ----------------- | ----------------------- |
-| **Ingestion → Judge #6 feed** | Backend Eng 1 + 4 | API integration   | 280 items validated/day |
+| **Ingestion → Judge 6 feed** | Backend Eng 1 + 4 | API integration   | 280 items validated/day |
 | Latency benchmark             | DevOps            | Metrics dashboard | <5 min end-to-end       |
 
 **Week 3 Milestones:**
 
 - ✅ **Ingestion:** 280 items/day, 6 sources, 20% Tier 1, email briefing
-- ✅ **Judge #6:** 35% coverage, <500ms latency, JR Engine operational
+- ✅ **Judge 6:** 35% coverage, <500ms latency, JR Engine operational
 - ✅ **Integration:** First data flow, ingestion → validation working
 - ✅ **Stakeholder Demo #1:** Show 280 items collected → validated → briefed
 
 **Decision Point:** Proceed to Phase 2 if:
 
 - [ ] Ingestion: ≥250 items/day
-- [ ] Judge #6: ≥30% coverage
+- [ ] Judge 6: ≥30% coverage
 - [ ] Integration: E2E latency <10 min
 
 ---
@@ -189,7 +189,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | News API collectors (part 1) | Backend Eng 1 | AP, Reuters     | 80 items/day      |
 | Reddit collector             | Backend Eng 2 | Reddit API      | 50 items/day      |
 
-**Judge #6**
+**Judge 6**
 
 | Task                   | Owner         | Deliverable            | Success Metric                   |
 | ---------------------- | ------------- | ---------------------- | -------------------------------- |
@@ -199,12 +199,12 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 
 **Integration**
 
-- Feedback loop prototype (Judge #6 source quality → Ingestion)
+- Feedback loop prototype (Judge 6 source quality → Ingestion)
 
 **Week 4 Targets:**
 
 - Ingestion: 280 → 410 items/day (added 130 from News + Reddit)
-- Judge #6: 35% → 55% coverage (hybrid enforcement)
+- Judge 6: 35% → 55% coverage (hybrid enforcement)
 
 ---
 
@@ -218,7 +218,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | RSS feed collector           | Backend Eng 2 | Generic RSS          | 68 items/day   |
 | Parallel execution           | Backend Eng 1 | Async collectors     | 70 min runtime |
 
-**Judge #6**
+**Judge 6**
 
 | Task                     | Owner         | Deliverable       | Success Metric         |
 | ------------------------ | ------------- | ----------------- | ---------------------- |
@@ -230,13 +230,13 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 
 | Task              | Owner             | Deliverable     | Success Metric         |
 | ----------------- | ----------------- | --------------- | ---------------------- |
-| **Feedback loop** | Backend Eng 1 + 3 | Quality signals | Judge #6 flags sources |
+| **Feedback loop** | Backend Eng 1 + 3 | Quality signals | Judge 6 flags sources |
 | E2E optimization  | DevOps            | Profiling       | <8 sec end-to-end      |
 
 **Week 5 Targets:**
 
 - Ingestion: 410 → 613 items/day
-- Judge #6: 55% → 70% coverage, <300ms latency
+- Judge 6: 55% → 70% coverage, <300ms latency
 
 ---
 
@@ -250,7 +250,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | Gemini NLP tuning         | Backend Eng 2 | Prompt optimization | 31% Tier 1 ratio |
 | Performance optimization  | Backend Eng 1 | Final tuning        | 52 min runtime   |
 
-**Judge #6**
+**Judge 6**
 
 | Task                       | Owner         | Deliverable         | Success Metric            |
 | -------------------------- | ------------- | ------------------- | ------------------------- |
@@ -268,14 +268,14 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 **Week 6 Milestones:**
 
 - ✅ **Ingestion:** 620 items/day, 16 sources, 31% Tier 1, ethical 100%
-- ✅ **Judge #6:** 78% coverage, <280ms latency, hybrid enforcement
+- ✅ **Judge 6:** 78% coverage, <280ms latency, hybrid enforcement
 - ✅ **Integration:** E2E <8 sec, feedback loop automated
 - ✅ **Stakeholder Demo #2:** Show AI-powered classification + validation
 
 **Decision Point:** Proceed to Phase 3 if:
 
 - [ ] Ingestion: ≥600 items/day, Tier 1 ≥28%
-- [ ] Judge #6: ≥75% coverage, <300ms latency
+- [ ] Judge 6: ≥75% coverage, <300ms latency
 - [ ] Integration: Feedback loop operational
 
 ---
@@ -294,7 +294,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | Slack briefing              | Backend Eng 1     | Slack webhook                     | Formatted messages |
 | PDF briefing                | Backend Eng 2     | PDF generator                     | Professional PDFs  |
 
-**Judge #6**
+**Judge 6**
 
 | Task               | Owner         | Deliverable    | Success Metric        |
 | ------------------ | ------------- | -------------- | --------------------- |
@@ -305,12 +305,12 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 
 **Integration**
 
-- Multi-framework validation (Ingestion items → Judge #6 multi-framework check)
+- Multi-framework validation (Ingestion items → Judge 6 multi-framework check)
 
 **Week 7 Targets:**
 
 - Ingestion: 620 → 700 items/day
-- Judge #6: 78% → 87% coverage (multi-framework)
+- Judge 6: 78% → 87% coverage (multi-framework)
 
 ---
 
@@ -324,7 +324,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | Web dashboard               | Backend Eng 1     | React dashboard         | Briefing web view  |
 | Quality gates               | Backend Eng 2     | Automated checks        | Alerts on failures |
 
-**Judge #6**
+**Judge 6**
 
 | Task                    | Owner         | Deliverable      | Success Metric            |
 | ----------------------- | ------------- | ---------------- | ------------------------- |
@@ -342,7 +342,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 **Week 8 Targets:**
 
 - Ingestion: 700 → 850 items/day, 24 sources
-- Judge #6: 87% → 94% coverage, <200ms latency
+- Judge 6: 87% → 94% coverage, <200ms latency
 
 ---
 
@@ -356,11 +356,11 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | 6:45 AM delivery          | Backend Eng 1 | Scheduling     | Consistent delivery |
 | Stakeholder customization | Backend Eng 1 | Config options | Custom briefings    |
 
-**Judge #6**
+**Judge 6**
 
 | Task                   | Owner             | Deliverable     | Success Metric  |
 | ---------------------- | ----------------- | --------------- | --------------- |
-| ATP 5-19 certification | Backend Eng 5     | Compliance docs | Certified ready |
+| Compliance Framework certification | Backend Eng 5     | Compliance docs | Certified ready |
 | 99.2% SLA enforcement  | Backend Eng 4     | Alerting        | Alerts working  |
 | Final policies (94%)   | Backend Eng 3 + 5 | 90+ policies    | 94% coverage    |
 
@@ -375,14 +375,14 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 **Week 9 Milestones:**
 
 - ✅ **Ingestion:** 850 items/day, 24 sources, 38% Tier 1, 6:45 AM, $77/mo
-- ✅ **Judge #6:** 94% coverage, <200ms, ATP 5-19 certified, 99.2% SLA
+- ✅ **Judge 6:** 94% coverage, <200ms, Compliance Framework certified, 99.2% SLA
 - ✅ **Integration:** Production-ready PNKLN Core Stack™
 - ✅ **Business:** First enterprise contracts signed ($89K ACV)
 
 **Decision Point:** Launch v1.0 if:
 
 - [ ] Ingestion: ≥850 items/day, Tier 1 ≥35%, ethical 100%
-- [ ] Judge #6: ≥94% coverage, <200ms, ATP 5-19 docs complete
+- [ ] Judge 6: ≥94% coverage, <200ms, Compliance Framework docs complete
 - [ ] Integration: E2E tests pass, security audit clean
 - [ ] Stakeholder: ≥8/10 satisfaction
 
@@ -402,7 +402,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | Historical analytics    | Backend Eng 2  | Trend detection | Anomaly alerts     |
 | Advanced filtering      | Backend Eng 1  | Smart queries   | Personalized feeds |
 
-**Judge #6**
+**Judge 6**
 
 | Task               | Owner         | Deliverable    | Success Metric   |
 | ------------------ | ------------- | -------------- | ---------------- |
@@ -412,12 +412,12 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 
 **Integration**
 
-- Cross-component analytics (Ingestion trends → Judge #6 policy recommendations)
+- Cross-component analytics (Ingestion trends → Judge 6 policy recommendations)
 
 **Week 10 Targets:**
 
 - Ingestion: 850+ items/day, 40% Tier 1 (ML boost)
-- Judge #6: 150 → 250 val/sec (horizontal scaling)
+- Judge 6: 150 → 250 val/sec (horizontal scaling)
 
 ---
 
@@ -431,12 +431,12 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | Performance tuning | Backend Eng 1 | Final optimization | <43 min runtime |
 | Uptime monitoring  | DevOps        | Alerts             | 99.5% uptime    |
 
-**Judge #6**
+**Judge 6**
 
 | Task               | Owner         | Deliverable       | Success Metric        |
 | ------------------ | ------------- | ----------------- | --------------------- |
 | Rate limiting      | Backend Eng 4 | Token bucket      | 100/500 req/min tiers |
-| Compliance reports | Backend Eng 5 | PDF generator     | ATP 5-19 reports      |
+| Compliance reports | Backend Eng 5 | PDF generator     | Compliance Framework reports      |
 | Final FP/FN tuning | Backend Eng 3 | Policy refinement | 3.2% FP, 5.8% FN      |
 
 **Integration**
@@ -449,7 +449,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 **Week 11 Targets:**
 
 - Ingestion: $77/mo verified, 99.5% uptime
-- Judge #6: 3.2% FP rate, compliance reports ready
+- Judge 6: 3.2% FP rate, compliance reports ready
 
 ---
 
@@ -463,7 +463,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | Runbook creation     | DevOps          | Operations manual | On-call ready      |
 | Stakeholder training | Product Manager | Training sessions | 90% adoption       |
 
-**Judge #6**
+**Judge 6**
 
 | Task                | Owner       | Deliverable       | Success Metric        |
 | ------------------- | ----------- | ----------------- | --------------------- |
@@ -482,7 +482,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 **Week 12 Milestones:**
 
 - ✅ **PNKLN Core Stack™ v1.0 LAUNCHED**
-- ✅ All targets exceeded (Judge #6 + Ingestion Layer)
+- ✅ All targets exceeded (Judge 6 + Ingestion Layer)
 - ✅ $500K ARR booked (enterprise contracts)
 - ✅ 8.9/10 stakeholder satisfaction
 - ✅ Handoff to operations team complete
@@ -493,13 +493,13 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 
 ### Integration Milestone #1 (Week 3): First Data Flow
 
-**Goal:** Prove Ingestion → Judge #6 integration works
+**Goal:** Prove Ingestion → Judge 6 integration works
 
 **Test Scenario:**
 
 1. Ingestion collects 280 items from YouTube, Twitter, News
 2. Items stored in PostgreSQL
-3. Judge #6 API called for each item (validation)
+3. Judge 6 API called for each item (validation)
 4. Validation results stored
 5. AM briefing generated (only validated Tier 1 items)
 
@@ -507,17 +507,17 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 
 - [ ] E2E latency <10 min
 - [ ] 0% data loss (280 in → 280 validated)
-- [ ] Judge #6 validation rate ≥95% (no bottleneck)
+- [ ] Judge 6 validation rate ≥95% (no bottleneck)
 
 ---
 
 ### Integration Milestone #2 (Week 6): Feedback Loop
 
-**Goal:** Judge #6 informs Ingestion about source quality
+**Goal:** Judge 6 informs Ingestion about source quality
 
 **Test Scenario:**
 
-1. Judge #6 validates 620 items/day
+1. Judge 6 validates 620 items/day
 2. Identifies 3 sources with high false positive rate (>15%)
 3. Sends feedback signal to Ingestion Layer
 4. Ingestion deprioritizes bad sources (reduce collection frequency)
@@ -538,7 +538,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 **Test Scenario:**
 
 1. Ingestion: 850 items/day from 24 sources
-2. Judge #6: Validates all 850 items (<200ms avg)
+2. Judge 6: Validates all 850 items (<200ms avg)
 3. Analysis Services: Consume validated data (4 namespaces)
 4. AM Briefing: Delivers 25-item report at 6:45 AM (Slack + PDF + email)
 5. Stakeholder: Reviews briefing, provides satisfaction score
@@ -560,9 +560,9 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | --------------------- | --------------------- | ------------------------------------ |
 | **Backend Eng 1**     | Full-time (Ingestion) | Collectors, briefing, orchestration  |
 | **Backend Eng 2**     | Full-time (Ingestion) | Classification, optimization, ethics |
-| **Backend Eng 3**     | Full-time (Judge #6)  | JR Engine, policies, analytics       |
-| **Backend Eng 4**     | Full-time (Judge #6)  | API, dashboard, performance          |
-| **Backend Eng 5**     | Full-time (Judge #6)  | Policies, compliance, reports        |
+| **Backend Eng 3**     | Full-time (Judge 6)  | JR Engine, policies, analytics       |
+| **Backend Eng 4**     | Full-time (Judge 6)  | API, dashboard, performance          |
+| **Backend Eng 5**     | Full-time (Judge 6)  | Policies, compliance, reports        |
 | **DevOps Engineer**   | Full-time (Shared)    | GKE, PostgreSQL, Redis, monitoring   |
 | **Data Scientist**    | 50% (Weeks 10-12)     | ML classification, analytics         |
 | **Security Engineer** | 25% (Week 8)          | Security audit, pen testing          |
@@ -602,7 +602,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | **Ethical compliance violation** | 20%         | Very High | 100% robots.txt checks, legal review      | Backend Eng 2    |
 | **Stakeholder adoption <80%**    | 35%         | High      | Training, customization, feedback loops   | Product Manager  |
 | **False positive user friction** | 50%         | Medium    | JR Engine tuning, allow-lists             | Backend Eng 3    |
-| **ATP 5-19 certification delay** | 25%         | High      | Start compliance docs early (Week 5)      | Backend Eng 5    |
+| **Compliance Framework certification delay** | 25%         | High      | Start compliance docs early (Week 5)      | Backend Eng 5    |
 
 ---
 
@@ -610,7 +610,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 
 ### Weekly KPI Dashboard
 
-| Week | Ingestion Items/Day | Ingestion Tier 1 % | Judge #6 Coverage | Judge #6 Latency | E2E Latency | Cost/Month                    |
+| Week | Ingestion Items/Day | Ingestion Tier 1 % | Judge 6 Coverage | Judge 6 Latency | E2E Latency | Cost/Month                    |
 | ---- | ------------------- | ------------------ | ----------------- | ---------------- | ----------- | ----------------------------- |
 | 0    | 0                   | N/A                | 0%                | N/A              | N/A         | $0                            |
 | 1    | 18                  | 10%                | 10%               | 800ms            | N/A         | $50                           |
@@ -621,7 +621,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 | 6    | 620                 | 31%                | 78%               | 280ms            | 6 min       | $190                          |
 | 7    | 700                 | 34%                | 87%               | 220ms            | 5.5 min     | $240                          |
 | 8    | 850                 | 36%                | 92%               | 210ms            | 5 min       | $265                          |
-| 9    | 850                 | 38%                | 94%               | 200ms            | 4.5 min     | $427 (Gemini + Judge #6)      |
+| 9    | 850                 | 38%                | 94%               | 200ms            | 4.5 min     | $427 (Gemini + Judge 6)      |
 | 10   | 870                 | 40%                | 94%               | 185ms            | 4 min       | $450                          |
 | 11   | 880                 | 41%                | 95%               | 180ms            | 3.8 min     | $480                          |
 | 12   | 900                 | 42%                | 95%               | 175ms            | 3.5 min     | $677 (final operational cost) |
@@ -656,7 +656,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 - **Content:**
   - 620 items/day from 16 sources
   - Gemini NLP tier classification (31% Tier 1)
-  - Hybrid Judge #6 enforcement (Gemini + PyTorch)
+  - Hybrid Judge 6 enforcement (Gemini + PyTorch)
   - Feedback loop demonstration
   - Ethical compliance dashboard (100% robots.txt)
 - **Goal:** Show AI differentiation, customer interest
@@ -668,7 +668,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 - **Content:**
   - 850 items/day from 24 sources
   - 6:45 AM briefing delivery (Slack + PDF + email + dashboard)
-  - ATP 5-19 compliance certification
+  - Compliance Framework compliance certification
   - 94% policy coverage, <200ms validation
   - Multi-framework support (SOC 2, HIPAA, ISO 27001)
 - **Goal:** Launch PNKLN Core Stack™ v1.0, sign contracts
@@ -680,12 +680,12 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 
 ### Scenario 1: Week 6 Targets Missed
 
-**If:** Ingestion <600 items/day OR Judge #6 <75% coverage
+**If:** Ingestion <600 items/day OR Judge 6 <75% coverage
 
 **Action:**
 
 1. **Extend Phase 2 by 1 week** (Week 6 → Week 7)
-2. Prioritize: Ingestion sources over Judge #6 policies (data scarcity worse than validation gaps)
+2. Prioritize: Ingestion sources over Judge 6 policies (data scarcity worse than validation gaps)
 3. Reduce Week 7-8 scope (defer LinkedIn, Mastodon to Week 9)
 4. Communicate delay to stakeholders
 
@@ -728,9 +728,9 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 
 **Action:**
 
-1. **Profile bottleneck** (PostgreSQL writes, Judge #6 API, network?)
+1. **Profile bottleneck** (PostgreSQL writes, Judge 6 API, network?)
 2. **Optimize database:** Bulk inserts, connection pooling
-3. **Optimize Judge #6:** Async validation, caching
+3. **Optimize Judge 6:** Async validation, caching
 4. **Optimize network:** Co-locate services (same GCP region)
 
 **Impact:** May defer Week 4 features by 2-3 days
@@ -742,19 +742,19 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 ### v1.1 (Month 4)
 
 - **Ingestion:** Government contract-specific sources (DTIC, GovInfo)
-- **Judge #6:** FedRAMP compliance policies
-- **Integration:** Cross-PNKLN analytics (Ingestion + Judge #6 + Analysis Services)
+- **Judge 6:** FedRAMP compliance policies
+- **Integration:** Cross-PNKLN analytics (Ingestion + Judge 6 + Analysis Services)
 
 ### v1.2 (Month 5)
 
 - **Ingestion:** Podcast transcript ingestion (Spotify, Apple Podcasts)
-- **Judge #6:** Custom ML models (customer-specific threats)
+- **Judge 6:** Custom ML models (customer-specific threats)
 - **Integration:** Predictive threat modeling (historical analysis)
 
 ### v2.0 (Month 9)
 
 - **Ingestion:** Real-time streaming (WebSocket-based, not just nightly batch)
-- **Judge #6:** Auto-policy generation (ML-suggested policies)
+- **Judge 6:** Auto-policy generation (ML-suggested policies)
 - **Integration:** Multi-tenant architecture (customer isolation)
 
 ---
@@ -774,7 +774,7 @@ INTEGRATION: Week 12 milestone: PNKLN Core Stack™ v1.0 launch-ready
 - **AI:** Gemini 2.0 Pro API
 - **APIs:** YouTube Data API, Twitter API v2, NewsAPI, Reddit API
 
-**Judge #6:**
+**Judge 6:**
 
 - **Language:** Python 3.11+
 - **Web Framework:** FastAPI

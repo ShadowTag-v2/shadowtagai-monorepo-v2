@@ -20,7 +20,7 @@
 | Strength | 90 agents |
 | Model | gemini-2.5-pro-preview-06-05 |
 | Tier | PRO |
-| Role | Command, Control, Judge #6, S-1 to S-6 Staff |
+| Role | Command, Control, Judge 6, S-1 to S-6 Staff |
 
 **Responsibilities:**
 
@@ -28,7 +28,7 @@
 
 - JURA Protocol enforcement
 
-- Judge #6 governance verdicts
+- Judge 6 governance verdicts
 
 - Staff coordination (S-1 to S-6)
 
@@ -129,7 +129,7 @@
 
 **Responsibilities:**
 
-- Security scanning (ATP 5-19)
+- Security scanning (Compliance Framework)
 
 - Code quality audits
 

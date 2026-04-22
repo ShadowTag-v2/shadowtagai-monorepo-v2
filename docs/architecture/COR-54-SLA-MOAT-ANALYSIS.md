@@ -192,7 +192,7 @@ NEW POSITIONING (DEFENSIBLE):
 **SALES PROOF POINT**:
 
 ```
-"Our Judge #6 hybrid automatically fails over:
+"Our Judge 6 hybrid automatically fails over:
  Gemini → Claude → GPT-5 → Local PyTorch
 
  Even if Google Cloud has a 4-hour outage
@@ -254,7 +254,7 @@ MITIGATION EFFECTIVENESS:
 
 ```
 WEEK 1: ARCHITECTURE
-├─ [ ] Implement 4-layer failover in Judge #6
+├─ [ ] Implement 4-layer failover in Judge 6
 ├─ [ ] Add local PyTorch fallback (deterministic)
 ├─ [ ] Test failover latency: Gemini→Claude→GPT-5→Local
 └─ [ ] Confirm: p99≤90ms maintained during provider outage
@@ -336,7 +336,7 @@ ARCHITECTURAL TRUTH:
 **WHAT COULD BE WRONG**:
 
 1. Correlated failures - What if all 3 commercial APIs depend on same AWS region and it goes down? (Validate: check provider infrastructure diversity)
-2. Local PyTorch degradation - What if deterministic fallback produces lower-quality decisions? (Test: measure Judge #6 accuracy on local-only mode)
+2. Local PyTorch degradation - What if deterministic fallback produces lower-quality decisions? (Test: measure Judge 6 accuracy on local-only mode)
 3. Force majeure enforceability - What if courts interpret "third-party API outage" narrowly? (Validate: legal review by tech transaction attorney)
 
 **NEXT GATE**: Implement 4-layer failover prototype and stress-test with simulated provider outages (target: Week 1 completion)

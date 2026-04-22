@@ -382,7 +382,7 @@ HAZARD_DB = [
 class JudgeSixSentinel:
     def __init__(self, engine=None):
         self.engine = engine
-        self.name = "Judge #6 V2.0.0 (Omega)"
+        self.name = "Judge 6 V2.0.0 (Omega)"
         self.memory = MemoryBank()
         try:
              # Fix import path logic for runtime

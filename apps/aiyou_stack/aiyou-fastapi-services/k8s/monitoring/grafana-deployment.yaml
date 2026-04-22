@@ -1,5 +1,5 @@
 # Grafana Deployment with Pre-configured Dashboards
-# Dashboards: Inference Overview, Judge #6, GPU Utilization, Cost Tracking
+# Dashboards: Inference Overview, Judge 6, GPU Utilization, Cost Tracking
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -101,7 +101,7 @@ data:
   judge-6-dashboard.json: |
     {
       "dashboard": {
-        "title": "Judge #6 Governance",
+        "title": "Judge 6 Governance",
         "tags": ["governance", "compliance", "atp-5-19"],
         "timezone": "browser",
         "panels": [

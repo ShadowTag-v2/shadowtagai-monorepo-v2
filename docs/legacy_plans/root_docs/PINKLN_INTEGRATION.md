@@ -91,7 +91,7 @@ BENEFITS:
 │  ┌──────────────────────────────────────────────────────────┐  │
 │  │ LAYER 3: SHADOWTAGAI CORE STACK                               │  │
 │  │                                                          │  │
-│  │  Judge #6 (JR Engine)    → Validate ALL functions       │  │
+│  │  Judge 6 (JR Engine)    → Validate ALL functions       │  │
 │  │  Cor (Orchestrator)      → Coordinate execution         │  │
 │  │  ShadowTag (Watermark)   → Cryptographic audit          │  │
 │  │  NS (Semantic Memory)    → Context retrieval            │  │
@@ -201,13 +201,13 @@ result = caller.execute(
 - ✅ 3× faster (local Python vs 3 API calls)
 - ✅ Glicko-2 ratings track agent performance
 - ✅ DTE evolves debate prompts automatically
-- ✅ Judge #6 validates debate outputs
+- ✅ Judge 6 validates debate outputs
 
 #### 3. SHADOWTAGAI Stack Integration
 
 **New Capabilities:**
 
-- Every function call validated by Judge #6 (Purpose/Reasons/Brakes)
+- Every function call validated by Judge 6 (Purpose/Reasons/Brakes)
 - ShadowTag watermarks ALL outputs (Ed25519 signatures)
 - NS retrieves relevant context before execution
 - Cor coordinates Judge → Execute → Watermark → Store flow
@@ -268,7 +268,7 @@ result = caller.execute(
 ```python
 # Convert kernel_1 (ATP scan) to function tool
 @function_registry.register(
-    description="Extract ATP 5-19 violations",
+    description="Extract Compliance Framework violations",
     parameters={"context": {"type": "string"}}
 )
 def atp_519_scan(context: str) -> dict:
@@ -335,7 +335,7 @@ registry = FunctionRegistry()
 
 # Register kernel functions
 @registry.register(
-    description="Extract ATP 5-19 violations",
+    description="Extract Compliance Framework violations",
     parameters={"context": {"type": "string"}}
 )
 def atp_519_scan(context: str) -> dict:
@@ -363,7 +363,7 @@ caller = GeminiFunctionCaller(
     tools=registry.get_all_tools()
 )
 
-# 3. Wrap with Judge #6 validation
+# 3. Wrap with Judge 6 validation
 judge = JudgeSix(
     caller=caller,
     mission_statement="Execute decisions with ultrathink precision"
@@ -384,7 +384,7 @@ cor = CorOrchestrator(
 
 # 5. Execute complex workflow in SINGLE API call
 result = cor.execute("""
-Analyze this decision context for ATP 5-19 violations.
+Analyze this decision context for Compliance Framework violations.
 Have a panel debate the severity.
 Evolve the violation detection prompt if accuracy is low.
 Update Glicko ratings for all functions used.
@@ -392,7 +392,7 @@ Update Glicko ratings for all functions used.
 
 # Result breakdown:
 # • Gemini orchestrates 4 function calls internally
-# • Judge #6 validates each call
+# • Judge 6 validates each call
 # • ShadowTag watermarks output
 # • NS stores execution context
 # • Glicko-2 updates performance ratings

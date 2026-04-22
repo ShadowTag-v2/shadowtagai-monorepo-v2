@@ -1,4 +1,4 @@
-# Judge #6 Layer 1: Gemini Fast Policy Validation
+# Judge 6 Layer 1: Gemini Fast Policy Validation
 # Target: p99 <30ms via Vertex AI Gemini 1.5 Pro (tuned on PRB corpus)
 # Allocation: 40% of inference requests
 ---

@@ -17,6 +17,6 @@
 
 ## Army Doctrine Integration
 
-- **ATP 5-19**: Risk Management (mapped to YRM).
+- **Compliance Framework**: Risk Management (mapped to YRM).
 - **FM 5-0**: Planning.
 - **FM 3-12**: Cyberspace Operations.

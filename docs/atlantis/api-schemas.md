@@ -12,7 +12,7 @@ AiYou provides **five primary API surfaces** across the PNKLN Core Stack™:
 
 4. **Ingestion API** — Submit intelligence items for collection (PNKLN: Preparation)
 
-5. **Validation API** — Validate intelligence compliance (PNKLN: Logic & Validation / Judge #6)
+5. **Validation API** — Validate intelligence compliance (PNKLN: Logic & Validation / Judge 6)
 
 **Base URL:** `https://api.aiyou.io/v1`
 **Authentication:** Bearer token (OAuth 2.0 / API keys)
@@ -45,7 +45,7 @@ User/Service
     │
     ▼
 ┌─────────────────────────────────────────────────────┐
-│ L — Logic & Validation (Validation API / Judge #6)  │
+│ L — Logic & Validation (Validation API / Judge 6)  │
 │     POST /validation/validate                       │
 │     GET  /validation/rules                          │
 └─────────────────────────────────────────────────────┘
@@ -710,7 +710,7 @@ Retrieve status and classification results for a submitted item.
   },
   "validation_result": {
     "status": "passed",
-    "atp_5_19_coverage": 0.984,
+    "compliance_framework_coverage": 0.984,
     "judge_id": "val_a1b2c3"
   },
   "shadowtag": {
@@ -725,13 +725,13 @@ Retrieve status and classification results for a submitted item.
 
 ---
 
-## 5. Validation API (PNKLN: Judge #6)
+## 5. Validation API (PNKLN: Judge 6)
 
-The Validation API provides real-time ATP 5-19 compliance validation and JR (Joint Requirements) checking for intelligence items.
+The Validation API provides real-time Compliance Framework compliance validation and JR (Joint Requirements) checking for intelligence items.
 
 ### POST /validation/validate
 
-Validate an intelligence item against ATP 5-19 rules and JR compliance.
+Validate an intelligence item against Compliance Framework rules and JR compliance.
 
 **Request:**
 
@@ -742,7 +742,7 @@ Validate an intelligence item against ATP 5-19 rules and JR compliance.
   "options": {
     "strict_mode": true,
     "require_human_review": false,
-    "atp_5_19_coverage_threshold": 0.98
+    "compliance_framework_coverage_threshold": 0.98
   }
 }
 
@@ -754,7 +754,7 @@ Validate an intelligence item against ATP 5-19 rules and JR compliance.
 {
   "validation_id": "val_a1b2c3d4e5",
   "result": "PASS",
-  "atp_5_19_scores": {
+  "compliance_framework_scores": {
     "source_reliability": "B (Usually Reliable)",
     "credibility": 2,
     "timeliness": "current (<24h)",
@@ -793,7 +793,7 @@ Validate an intelligence item against ATP 5-19 rules and JR compliance.
       "matched_text": "...new F-35 avionics architecture integrates..."
     }
   ],
-  "atp_5_19_scores": {
+  "compliance_framework_scores": {
     "source_reliability": "C (Fairly Reliable)",
     "credibility": 2,
     "timeliness": "current (<24h)",
@@ -827,7 +827,7 @@ Validate an intelligence item against ATP 5-19 rules and JR compliance.
       "recommendation": "human_review"
     }
   ],
-  "atp_5_19_scores": {
+  "compliance_framework_scores": {
     "source_reliability": "C (Fairly Reliable)",
     "credibility": 3.5,
     "timeliness": "current (<48h)",
@@ -850,13 +850,13 @@ Validate an intelligence item against ATP 5-19 rules and JR compliance.
 
 ### GET /validation/rules
 
-List all ATP 5-19 rules and JR compliance checks.
+List all Compliance Framework rules and JR compliance checks.
 
 **Response:**
 
 ```json
 {
-  "atp_5_19_rules": {
+  "compliance_framework_rules": {
     "total_rules": 127,
     "categories": [
       {

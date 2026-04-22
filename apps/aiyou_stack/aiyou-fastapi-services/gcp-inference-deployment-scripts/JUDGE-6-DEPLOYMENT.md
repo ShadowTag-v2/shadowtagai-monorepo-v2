@@ -1,10 +1,10 @@
-# Judge #6 Integration: GKE Inference Deployment
+# Judge 6 Integration: GKE Inference Deployment
 
-This document outlines how the GKE inference deployment scripts integrate with the Judge #6 framework for AI/ML decision-making and governance.
+This document outlines how the GKE inference deployment scripts integrate with the Judge 6 framework for AI/ML decision-making and governance.
 
-## Judge #6 Framework Overview
+## Judge 6 Framework Overview
 
-Judge #6 implements a systematic approach to complex decisions:
+Judge 6 implements a systematic approach to complex decisions:
 
 ```
 PURPOSE → REASONS → BRAKES → PRECISION → EXECUTION
@@ -122,7 +122,7 @@ else
 fi
 ```
 
-## Judge #6 Decision Points
+## Judge 6 Decision Points
 
 ### Decision Point 1: Cluster Mode Selection
 
@@ -242,14 +242,14 @@ volumeAttributes:
 
 **EXECUTION**: Automated bucket creation with lifecycle policies
 
-## Integration with Judge #6 Principles
+## Integration with Judge 6 Principles
 
 ### 1. Bootstrap Discipline
 
 **Apply**: Clone only required repos, not all 440+ GCP repos
 
 ```bash
-# Selective clone (Judge #6 aligned)
+# Selective clone (Judge 6 aligned)
 git clone --depth=1 \
   https://github.com/GoogleCloudPlatform/accelerated-platforms.git
 
@@ -304,7 +304,7 @@ curl http://localhost:8000/v1/chat/completions \
 # NOT: Assume deployment works without testing
 ```
 
-## Judge #6 Audit Checklist
+## Judge 6 Audit Checklist
 
 Before deployment, verify:
 
@@ -328,7 +328,7 @@ After deployment:
 - [ ] Cost per request calculated and within budget
 - [ ] Monitoring dashboards show healthy metrics
 
-## Judge #6 Decision Log
+## Judge 6 Decision Log
 
 Track deployment decisions in structured format:
 
@@ -372,7 +372,7 @@ The GKE inference deployment integrates with ShadowTag-v2's FastAPI services:
 class GKEInferenceClient:
     """
     Client for GKE-deployed inference workloads.
-    Applies Judge #6 framework for request routing.
+    Applies Judge 6 framework for request routing.
     """
 
     def select_endpoint(self, model_id: str, requirements: InferenceRequirements):
@@ -383,13 +383,13 @@ class GKEInferenceClient:
         PRECISION: Exact endpoint selection
         EXECUTION: Request with timeout and retry
         """
-        # Judge #6 decision logic here
+        # Judge 6 decision logic here
         pass
 ```
 
 ## Conclusion
 
-The GKE inference deployment scripts embody Judge #6 principles:
+The GKE inference deployment scripts embody Judge 6 principles:
 
 1. **Purpose-driven**: Each component has clear objectives
 2. **Reason-based**: Decisions backed by performance/cost data
@@ -406,5 +406,5 @@ This alignment ensures the deployment is:
 ## References
 
 - GoogleCloudPlatform/accelerated-platforms: [inference-ref-arch](https://github.com/GoogleCloudPlatform/accelerated-platforms/tree/main/docs/platforms/gke/base/use-cases/inference-ref-arch)
-- Judge #6 Framework: See project documentation
+- Judge 6 Framework: See project documentation
 - ShadowTag-v2 Platform: FastAPI services integration

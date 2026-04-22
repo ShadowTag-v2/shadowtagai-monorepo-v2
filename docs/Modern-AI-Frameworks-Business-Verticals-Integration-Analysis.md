@@ -409,7 +409,7 @@ Judge Architecture (21 Governance Layers)
     ↓
 AutoGen Multi-Agent Debate (35ms p99)
     ↓
-Judge #6 HITL (<90ms validation)
+Judge 6 HITL (<90ms validation)
     ↓
 Cor.17 AI Engine
     • Orchestration (LangChain → Native Gemini)
@@ -430,7 +430,7 @@ Judge Architecture (21 Layers → MCP-enabled, A2A routing)
     ↓
 AutoGen Debate (35ms → Google Agent Starter Pack templates)
     ↓
-Judge #6 HITL (<90ms → Backlog.md task tracking)
+Judge 6 HITL (<90ms → Backlog.md task tracking)
     ↓
 Cor.17 Enhanced Engine
     • Orchestration (Native Gemini + A2A protocol)

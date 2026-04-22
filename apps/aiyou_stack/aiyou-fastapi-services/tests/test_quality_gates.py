@@ -70,7 +70,7 @@ def test_cost_efficiency_pass():
 
 
 def test_relevance_score_threshold_60_percent():
-    """Test 60% confidence threshold for pre-prod (not 70% like Judge #6)"""
+    """Test 60% confidence threshold for pre-prod (not 70% like Judge 6)"""
     gates = QualityGates(min_relevance_score=0.60)
 
     # Just above threshold

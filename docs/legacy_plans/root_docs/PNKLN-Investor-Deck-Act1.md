@@ -256,7 +256,7 @@ THE INTEGRATED STACK (Preview)
                          ▲
         ┌─────────────────────────────────────────┐
         │   PNKLN CORE STACK™                     │
-        │   Judge #6 │ AiUCRM │ ShadowTag         │  $1.5B ARR
+        │   Judge 6 │ AiUCRM │ ShadowTag         │  $1.5B ARR
         └─────────────────────────────────────────┘
                          ▲
         ┌─────────────────────────────────────────┐

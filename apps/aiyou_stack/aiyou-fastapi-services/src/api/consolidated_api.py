@@ -281,7 +281,7 @@ async def ingestion_quality():
 
 @app.post("/governance", tags=["Governance"])
 async def evaluate_governance(action: dict[str, Any]):
-    """Judge #6 governance evaluation.
+    """Judge 6 governance evaluation.
     ATP 5-19 risk assessment with <90ms latency target.
     """
     return {"verdict": "APPROVED", "confidence": 0.95, "latency_ms": 45, "risk_level": "LOW"}

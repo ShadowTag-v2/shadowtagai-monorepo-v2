@@ -31,7 +31,7 @@ The transition from a fragmented portfolio to a unified platform represents a fi
 | ---------------------- | ----------------------------------------------- | ----------------------- |
 | **Cor**                | Unified Execution Engine (Single Control Plane) | Lock-in & Observability |
 | **JR Engine**          | Reasoning Orchestration (Model Routing)         | 40% Cost Reduction      |
-| **Judge #6**           | Business Judgment Rule Automation               | Governance Wedge        |
+| **Judge 6**           | Business Judgment Rule Automation               | Governance Wedge        |
 | **ShadowTag**          | DCT Watermarking (Content Authenticity)         | Security/IP Defense     |
 | **pnkln-stackJR**      | Automated Governance & Compliance               | Regulatory Moat         |
 | **Cognitive Stack v5** | Full-stack MLOps Platform                       | Multi-Cloud Portability |
@@ -59,7 +59,7 @@ The transition from a fragmented portfolio to a unified platform represents a fi
 
 Based on defense tech premiums (15-30× ARR).
 
-1.  **Judge #6**: $12.5M ARR → $125M - $187M
+1.  **Judge 6**: $12.5M ARR → $125M - $187M
 2.  **JR Engine + Cor**: $36M ARR → $540M - $720M
 3.  **ShadowTag DCT**: $9M ARR → $135M - $180M
 4.  **AutoGen Orchestration**: $15M ARR → $225M - $300M
@@ -121,7 +121,7 @@ ERCOT Rev ($5M) → Software Dev → Grants ($50M) → Infra Loan ($100M) → Sc
 
 **Differentiation**:
 
-- **Military-Grade Risk Management**: ATP 5-19 doctrine applied to software.
+- **Military-Grade Risk Management**: Compliance Framework doctrine applied to software.
 - **Unified Governance**: pnkln-stackJR automates auditability (saving customers $2M/yr).
 - **Multi-Cloud/Model Agnostic**: Prevents vendor lock-in.
 
@@ -133,13 +133,13 @@ ERCOT Rev ($5M) → Software Dev → Grants ($50M) → Infra Loan ($100M) → Sc
     - Pitch "First Commercial Subsea AI" to Ralph Hinsche.
     - Offer 10% equity for $50M GPU discount.
 2.  **Regulatory Pre-Clearance**:
-    - Establish Gulfstream/Judge #6 as "Pre-Cleared" using drafted compliance frameworks.
+    - Establish Gulfstream/Judge 6 as "Pre-Cleared" using drafted compliance frameworks.
     - Target DOE loan acceleration (2+ years advantage).
 3.  **Positioning Overhaul**:
     - Rebrand all decks: "Military-Grade Risk Management" > "Fast Inference".
     - Capitalize on the $500M valuation delta of "Trusted Brand" vs "Commodity Tech".
 4.  **Vertex Deployment**:
-    - Deploy Judge #6 POC immediately.
+    - Deploy Judge 6 POC immediately.
     - Validate p99 ≤90ms SLA.
 
 ---

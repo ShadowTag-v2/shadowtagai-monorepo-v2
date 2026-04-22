@@ -22,7 +22,7 @@ python3 -m http.server 8889
 |---------|---------|
 | Hero | Privilege-Preserving AI tagline, STAI metrics card |
 | Latest Developments | Date-stamped news items |
-| Products | Oracle Studio, Judge #6, CounselConduit |
+| Products | Oracle Studio, Judge 6, CounselConduit |
 | Platform Architecture | 3-tier Google Cloud stack |
 | Key Metrics | Counter-animated operational stats |
 | Business Model | Dual-billing, pricing tiers |

@@ -45,7 +45,7 @@ Version: {mem.get("version", "1.0.0")}
 
 ## Core Architectures
 
-### Judge #6
+### Judge 6
 **Description**: {mem["shadowtagai_architecture"]["judge_6"]["description"]}
 
 **Components**:
@@ -236,7 +236,7 @@ Conversations: {self.memory_data.get("statistics", {}).get("total_conversations"
 Last Updated: {self.memory_data.get("last_updated", "Unknown")}
 
 Architecture contexts loaded:
-- Judge #6 (98% coverage, p99 ≤90ms)
+- Judge 6 (98% coverage, p99 ≤90ms)
 - ShadowTag 2.0 (DCT watermarking)
 - Cor/NS (Execution brain + service mesh)
 

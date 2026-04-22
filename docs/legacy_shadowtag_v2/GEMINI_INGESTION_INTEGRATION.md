@@ -8,11 +8,11 @@
 
 ## What Was Built
 
-I've successfully integrated the **Gemini Ingestion Layer** into your GKE deployment, adapting the Judge #6 architecture pattern for proactive intelligence collection. Here's the complete implementation:
+I've successfully integrated the **Gemini Ingestion Layer** into your GKE deployment, adapting the Judge 6 architecture pattern for proactive intelligence collection. Here's the complete implementation:
 
 ### 🎯 **Core Achievement**
 
-**Adapted Judge #6 enforcement pattern → Gemini Ingestion collection pattern**
+**Adapted Judge 6 enforcement pattern → Gemini Ingestion collection pattern**
 
 From: Reactive validation (90ms latency, 98% coverage, real-time enforcement)
 To: Proactive collection (45-min batch, multi-source diversity, ethical crawling)
@@ -76,7 +76,7 @@ Init: Config Validator
 
 **Sections**:
 
-- ✅ Side-by-side comparison table (Ingestion vs Judge #6)
+- ✅ Side-by-side comparison table (Ingestion vs Judge 6)
 - ✅ Direct replacements rationale (file refs, metrics, gates)
 - ✅ Context-specific adaptations (architecture, integration, cost)
 - ✅ New sections added (ethical compliance, multi-source coverage, tier metrics, AM briefing)
@@ -159,7 +159,7 @@ output "gemini_ingestion_sa_email" {
     ┌───────────────────┴───────────────────────────────┐
     │         DATA CONSUMERS (4 Namespaces)             │
     ├───────────────────┬───────────────────────────────┤
-    │ pnkln-stackjr-governance│ Judge #6 (context enrichment) │
+    │ pnkln-stackjr-governance│ Judge 6 (context enrichment) │
     │ autogen-orchestr. │ Multi-Agent (agent context)   │
     │ cognitive-stack-v5│ LLM Router (briefing delivery)│
     │ shadowtag-v2      │ Watermarking (raw data access)│
@@ -210,7 +210,7 @@ NIGHTLY PIPELINE (2 AM - 3 AM UTC)
 ┌────────────────────────────────────────────────────────┐
 │ 5. AVAILABILITY (6 AM - Next 2 AM)                    │
 │    Services pull data:                                │
-│    ├── Judge #6: Tier 1 items for context            │
+│    ├── Judge 6: Tier 1 items for context            │
 │    ├── AutoGen: High-relevance data for agents       │
 │    ├── LLM Router: Receives briefing delivery        │
 │    └── ShadowTag: Accesses raw items for watermarks  │
@@ -219,11 +219,11 @@ NIGHTLY PIPELINE (2 AM - 3 AM UTC)
 
 ---
 
-## 📊 **Comparison: Gemini Ingestion vs Judge #6**
+## 📊 **Comparison: Gemini Ingestion vs Judge 6**
 
 ### Quick Reference Table
 
-| Aspect           | **Gemini Ingestion**  | **Judge #6**               |
+| Aspect           | **Gemini Ingestion**  | **Judge 6**               |
 | ---------------- | --------------------- | -------------------------- |
 | **Philosophy**   | Proactive (collect)   | Reactive (enforce)         |
 | **Execution**    | Scheduled (cron)      | Event-driven (HPA)         |
@@ -235,7 +235,7 @@ NIGHTLY PIPELINE (2 AM - 3 AM UTC)
 | **Integration**  | Called BY (pull)      | Calls (push)               |
 | **Key Metrics**  | Items, sources, cost  | Latency, FP/FN             |
 | **Quality**      | Relevance, timeliness | Policy accuracy            |
-| **Compliance**   | Ethical (robots.txt)  | Military (ATP 5-19)        |
+| **Compliance**   | Ethical (robots.txt)  | Military (Compliance Framework)        |
 
 ### Key Design Decisions
 
@@ -452,7 +452,7 @@ kubectl get prometheusrule gemini-ingestion-alerts -n gemini-ingestion -o yaml
 
 ### Integration Validation
 
-**Test Judge #6 Integration**:
+**Test Judge 6 Integration**:
 
 ```python
 # In pnkln-stackjr-governance namespace
@@ -581,7 +581,7 @@ After first week of operation, verify:
 ### Integration
 
 - ✅ Briefing delivery: 100% success rate
-- ✅ Judge #6 consumption: Context enrichment active
+- ✅ Judge 6 consumption: Context enrichment active
 - ✅ AutoGen usage: Tier 1 items accessed
 - ✅ ShadowTag access: Raw data available
 
@@ -592,7 +592,7 @@ After first week of operation, verify:
 | Document                         | Purpose                           | Location                          |
 | -------------------------------- | --------------------------------- | --------------------------------- |
 | **Gemini Ingestion Layer Guide** | Complete deployment & operations  | `docs/GEMINI_INGESTION_LAYER.md`  |
-| **Architecture Comparison**      | Ingestion vs Judge #6 analysis    | `docs/ARCHITECTURE_COMPARISON.md` |
+| **Architecture Comparison**      | Ingestion vs Judge 6 analysis    | `docs/ARCHITECTURE_COMPARISON.md` |
 | **Deployment Checklist**         | Production readiness verification | `docs/DEPLOYMENT_CHECKLIST.md`    |
 | **Implementation Summary**       | GKE infrastructure overview       | `docs/IMPLEMENTATION_SUMMARY.md`  |
 | **GKE Architecture Analysis**    | Google reference alignment        | `GKE_ARCHITECTURE_ANALYSIS.md`    |
@@ -604,7 +604,7 @@ After first week of operation, verify:
 
 ### Design Phase
 
-- [x] Adapted Judge #6 prompt for ingestion use case
+- [x] Adapted Judge 6 prompt for ingestion use case
 - [x] Defined quality gates (items, sources, cost, score, runtime)
 - [x] Established ethical compliance model (robots.txt, rate limiting)
 - [x] Designed tier classification system (Tier 1/2/3)
@@ -666,7 +666,7 @@ After first week of operation, verify:
 
 4. ⏳ **Wait for first nightly run** - Verify 2 AM execution
 5. ⏳ **Check metrics** - Validate quality gates passed
-6. ⏳ **Test integration** - Verify Judge #6 receives data
+6. ⏳ **Test integration** - Verify Judge 6 receives data
 7. ⏳ **Review costs** - Confirm ~$77/month estimate
 
 ### Medium-term (Month 1)

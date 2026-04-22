@@ -3,7 +3,7 @@
 
 Per AGENTS.md Rule 23: Gitleaks + detect-private-key in pre-commit and CI.
 Per GEMINI.md Cor.30 R3–8: Secrets & Supply Chain enforcement.
-Per Judge #6 Rule B7: Credential Leakage — BLOCK.
+Per Judge 6 Rule B7: Credential Leakage — BLOCK.
 
 5-Layer Defense Model:
   Layer 1: Pre-commit hook (.pre-commit-config.yaml)

@@ -32,7 +32,7 @@ FEATURES:
 
 INTEGRATION POINTS:
 -------------------
-- Track A (Intelligence): Gemini Ingestion → Judge #6 → Storage
+- Track A (Intelligence): Gemini Ingestion → Judge 6 → Storage
 - Track B (Training): DTE → MAD → GRPO → Glicko → Benchmark
 - Shared: JR Engine, Cor Orchestrator, NS Mesh, ShadowTag
 

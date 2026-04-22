@@ -1,14 +1,14 @@
 # Gemini Ingestion Layer Analysis Prompt - Design Discussion
 
-> Analysis of prompt changes from Judge #6 version to Gemini Ingestion Layer implementation
+> Analysis of prompt changes from Judge 6 version to Gemini Ingestion Layer implementation
 
 ## Overview
 
-This document discusses the evolution of the Gemini Ingestion Layer Analysis Prompt, highlighting the strategic changes made when repurposing the Judge #6 analysis framework for the PNKLN Core Stack™ ingestion layer. This represents a solid milestone in adapting the prompt architecture from an enforcement/validation system to an intelligence collection pipeline.
+This document discusses the evolution of the Gemini Ingestion Layer Analysis Prompt, highlighting the strategic changes made when repurposing the Judge 6 analysis framework for the PNKLN Core Stack™ ingestion layer. This represents a solid milestone in adapting the prompt architecture from an enforcement/validation system to an intelligence collection pipeline.
 
 ## Direct Replacements: Keeping It Domain-Relevant
 
-These swaps are straightforward but effective for repurposing the prompt without losing its core structure. Replacing "Judge #6" with "Gemini Ingestion Layer" everywhere ensures the prompt stays focused on the new domain—an intelligence collection pipeline rather than an enforcement/validation system.
+These swaps are straightforward but effective for repurposing the prompt without losing its core structure. Replacing "Judge 6" with "Gemini Ingestion Layer" everywhere ensures the prompt stays focused on the new domain—an intelligence collection pipeline rather than an enforcement/validation system.
 
 ### File References
 
@@ -39,9 +39,9 @@ This prevents over-optimizing for quantity at the expense of usability in downst
 
 ## Context-Specific Adaptations: Tailoring to Function
 
-The following table contrasts the two versions, showing how the prompt evolves from a reactive validator (Judge #6) to a proactive collector (Ingestion Layer). This isn't just cosmetic—it's a smart pivot that reflects their positions in the pipeline.
+The following table contrasts the two versions, showing how the prompt evolves from a reactive validator (Judge 6) to a proactive collector (Ingestion Layer). This isn't just cosmetic—it's a smart pivot that reflects their positions in the pipeline.
 
-| Aspect | Judge #6 Version | Gemini Ingestion Layer Version |
+| Aspect | Judge 6 Version | Gemini Ingestion Layer Version |
 |--------|------------------|-------------------------------|
 | **Architecture** | Hybrid Gemini+PyTorch | GKE CronJob Multi-Container |
 | **Key Metrics** | Latency, Throughput, Block Rate | Items/Day, Sources, Cost/Item |
@@ -52,7 +52,7 @@ The following table contrasts the two versions, showing how the prompt evolves f
 
 ### Architecture Analysis
 
-**Judge #6**: Hybrid Gemini+PyTorch setup suits on-the-fly enforcement
+**Judge 6**: Hybrid Gemini+PyTorch setup suits on-the-fly enforcement
 
 **Ingestion Layer**: GKE CronJob multi-container approach emphasizes scalability and orchestration
 
@@ -60,7 +60,7 @@ Analyzing this could reveal strengths in fault tolerance or resource allocation,
 
 ### Key Metrics Evolution
 
-**Judge #6**: Latency, throughput, block rate (defensive)
+**Judge 6**: Latency, throughput, block rate (defensive)
 
 **Ingestion Layer**: Items/day, sources, cost/item (acquisitive)
 
@@ -71,7 +71,7 @@ This refocuses from speed/blocking to volume/diversity/efficiency. For ingestion
 
 ### Integration Pattern Flip
 
-**Judge #6**: Calls services in 4 namespaces (active caller)
+**Judge 6**: Calls services in 4 namespaces (active caller)
 
 **Ingestion Layer**: Called by services in 4 namespaces (passive callee)
 
@@ -83,15 +83,15 @@ Flipping from caller to callee highlights ingestion as a foundational layer. It 
 
 ### Unique Features
 
-**Judge #6**: ATP 5-19, JR Validation
+**Judge 6**: ATP 5-19, JR Validation
 
 **Ingestion Layer**: Ethical Crawling, Tier Classification
 
-The ethical emphasis is spot-on for ingestion—crawling web sources demands compliance to avoid legal risks. Tier classification (e.g., prioritizing high-value data) adds a strategic layer absent in Judge #6's validation focus, enabling better resource allocation.
+The ethical emphasis is spot-on for ingestion—crawling web sources demands compliance to avoid legal risks. Tier classification (e.g., prioritizing high-value data) adds a strategic layer absent in Judge 6's validation focus, enabling better resource allocation.
 
 ### Cost Model Transition
 
-**Judge #6**: API calls per validation (micro-level)
+**Judge 6**: API calls per validation (micro-level)
 
 **Ingestion Layer**: Monthly operational ~$77 (macro-level)
 
@@ -99,7 +99,7 @@ Scaling from per-operation to monthly totals fits batch processing. At $77/month
 
 ### Quality Focus Broadening
 
-**Judge #6**: FP/FN rates (binary accuracy)
+**Judge 6**: FP/FN rates (binary accuracy)
 
 **Ingestion Layer**: Relevance, timeliness, completeness (holistic quality)
 
@@ -109,7 +109,7 @@ This broadens from binary error rates to holistic data quality, which is essenti
 
 ## New Sections Added: Enhancing Depth and Relevance
 
-Adding these sections is a great move, as they address gaps in the original Judge #6 prompt and make the analysis more comprehensive for a pre-production system.
+Adding these sections is a great move, as they address gaps in the original Judge 6 prompt and make the analysis more comprehensive for a pre-production system.
 
 ### 1. Ethical Compliance Model
 
@@ -159,7 +159,7 @@ It's a nice end-to-end touchpoint.
 
 ## Confidence Adjustments: Realistic Expectations
 
-**Judge #6**: Target ≥70% (with production data)
+**Judge 6**: Target ≥70% (with production data)
 
 **Ingestion Layer**: Target ≥60% (specs-only, pre-production)
 
@@ -202,7 +202,7 @@ Include probes for failure modes to stress-test resilience:
 - Rate limit violations
 - Compliance issues
 
-### 4. Integration with Judge #6
+### 4. Integration with Judge 6
 
 Since they're complementary, a combined prompt could analyze handoffs between:
 
@@ -240,7 +240,7 @@ Establish mechanisms to:
 **Long-term Vision**:
 
 1. Production deployment with monitoring
-2. Integrate with Judge #6 for end-to-end analysis
+2. Integrate with Judge 6 for end-to-end analysis
 3. Build automated reporting pipeline
 4. Scale to additional PNKLN components
 
@@ -254,7 +254,7 @@ This prompt represents a key component in the broader PNKLN Core Stack™ analys
 ├─────────────────────────────────────────────┤
 │  Ingestion Layer (Gemini Analysis)          │
 │           ↓                                 │
-│  Validation Layer (Judge #6)                │
+│  Validation Layer (Judge 6)                │
 │           ↓                                 │
 │  Processing & Intelligence                  │
 │           ↓                                 │
@@ -266,7 +266,7 @@ The Gemini Ingestion Layer Analysis Prompt ensures quality at the foundation, se
 
 ## Conclusion
 
-The evolution from Judge #6 to Gemini Ingestion Layer represents thoughtful adaptation of a proven framework to a new domain. The changes—from metrics to new sections—reflect deep understanding of the functional differences between validation and collection systems.
+The evolution from Judge 6 to Gemini Ingestion Layer represents thoughtful adaptation of a proven framework to a new domain. The changes—from metrics to new sections—reflect deep understanding of the functional differences between validation and collection systems.
 
 With realistic confidence targets, comprehensive coverage of ethical and quality concerns, and clear paths for iteration, this prompt is well-positioned to deliver valuable insights for optimizing the PNKLN Core Stack™'s intelligence collection capabilities.
 

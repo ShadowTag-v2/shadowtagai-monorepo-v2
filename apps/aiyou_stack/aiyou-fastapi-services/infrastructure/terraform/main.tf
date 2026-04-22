@@ -1,4 +1,4 @@
-# Pnkln Judge #6 GKE Infrastructure
+# Pnkln Judge 6 GKE Infrastructure
 # Production-ready deployment on Google Cloud Platform
 
 terraform {
@@ -210,8 +210,8 @@ resource "google_container_cluster" "judge_6_cluster" {
 # Service Account for GKE workloads
 resource "google_service_account" "judge_6_sa" {
   account_id   = "judge-6-workload-sa"
-  display_name = "Judge #6 Workload Service Account"
-  description  = "Service account for Judge #6 inference workloads"
+  display_name = "Judge 6 Workload Service Account"
+  description  = "Service account for Judge 6 inference workloads"
 }
 
 # IAM bindings for service account
@@ -377,7 +377,7 @@ resource "google_firestore_database" "judge_6_state" {
 # Document AI Processor
 resource "google_document_ai_processor" "ocr_processor" {
   location     = var.document_ai_location
-  display_name = "Judge #6 OCR Processor"
+  display_name = "Judge 6 OCR Processor"
   type         = "OCR_PROCESSOR"
 
   depends_on = [google_project_service.required_apis]
@@ -385,7 +385,7 @@ resource "google_document_ai_processor" "ocr_processor" {
 
 resource "google_document_ai_processor" "form_parser" {
   location     = var.document_ai_location
-  display_name = "Judge #6 Form Parser"
+  display_name = "Judge 6 Form Parser"
   type         = "FORM_PARSER_PROCESSOR"
 
   depends_on = [google_project_service.required_apis]

@@ -37,8 +37,8 @@ Tokable v2.0 integrates four powerful systems into a unified platform:
 │  │ LAYER 2: DECISION FRAMEWORK (Pinkln Ultrathink)           │ │
 │  │                                                            │ │
 │  │  • Gemini function calling orchestration                  │ │
-│  │  • ATP 5-19 risk management                               │ │
-│  │  • Judge #6 approval gates                                │ │
+│  │  • Compliance Framework risk management                               │ │
+│  │  • Judge 6 approval gates                                │ │
 │  │  • Multi-agent debates (PanelGPT/MAD)                     │ │
 │  │  • Glicko-2 performance ratings                           │ │
 │  │                                                            │ │
@@ -106,7 +106,7 @@ Tokable v2.0 integrates four powerful systems into a unified platform:
 
 ### 1. Tokable ↔ Pinkln Ultrathink
 
-**Use Case**: Every creator revenue decision goes through Judge #6
+**Use Case**: Every creator revenue decision goes through Judge 6
 
 ```python
 # In src/api/tokable.py
@@ -133,7 +133,7 @@ async def send_tip(request: SendTipRequest):
 
 **Benefits**:
 
-- **Fraud prevention**: ATP 5-19 risk assessment on all transactions
+- **Fraud prevention**: Compliance Framework risk assessment on all transactions
 - **Compliance**: Automated KYC/AML checks
 - **Performance**: 35ms decision latency vs. 1100ms (31× faster)
 
@@ -230,7 +230,7 @@ async def validate_tokable_scale():
 
 # Tokable API (3-20 replicas, HPA)
 - Tokable streaming API
-- Pinkln Judge #6 validation
+- Pinkln Judge 6 validation
 - LLM memory lookups
 - Load testing endpoints
 
@@ -280,7 +280,7 @@ async def validate_tokable_scale():
 
 ## 🔐 Security & Compliance (Enhanced)
 
-### ATP 5-19 Risk Matrix (Pinkln Integration)
+### Compliance Framework Risk Matrix (Pinkln Integration)
 
 All Tokable transactions validated against:
 
@@ -295,7 +295,7 @@ All Tokable transactions validated against:
 
 - ✅ **PCI-DSS**: Payment processing via Stripe (compliant)
 - ✅ **GDPR**: Memory persistence with right-to-erasure
-- ✅ **KYC/AML**: Creator verification (Pinkln Judge #6)
+- ✅ **KYC/AML**: Creator verification (Pinkln Judge 6)
 - ✅ **Content Moderation**: AI-based NSFW detection
 - ✅ **DMCA**: NFT takedown process
 
@@ -336,7 +336,7 @@ All Tokable transactions validated against:
 
 ### Phase 2: Feature Enablement (Week 3-4)
 
-- ⏳ Enable Pinkln Judge #6 for all revenue transactions
+- ⏳ Enable Pinkln Judge 6 for all revenue transactions
 - ⏳ Enable LLM memory for creator/fan personalization
 - ⏳ A/B test personalized vs. non-personalized art generation
 - ⏳ Measure revenue lift from integration
@@ -365,7 +365,7 @@ All Tokable transactions validated against:
 | ---------------------- | ------------- | -------------------------------- |
 | **Audio**              | Required      | ❌ Disabled (gesture-only)       |
 | **AI Integration**     | Filters only  | ✅ Real-time art generation      |
-| **Decision Framework** | None          | ✅ ATP 5-19 risk management      |
+| **Decision Framework** | None          | ✅ Compliance Framework risk management      |
 | **Memory Persistence** | Basic         | ✅ Cross-session personalization |
 | **Load Testing**       | Internal only | ✅ Public SLA guarantees         |
 | **Monetization**       | Tips only     | ✅ 6 revenue streams             |

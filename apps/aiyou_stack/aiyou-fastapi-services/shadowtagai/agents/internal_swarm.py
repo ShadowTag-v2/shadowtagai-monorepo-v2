@@ -20,7 +20,7 @@ Usage example::
     from shadowtagai.agents.internal_swarm import InternalSwarm
 
     swarm = InternalSwarm()
-    decision = "SWARM VOTE: Deploy Judge #6 to Vertex AI"
+    decision = "SWARM VOTE: Deploy Judge 6 to Vertex AI"
     result = swarm.evaluate(decision)
     print(result)
 
@@ -28,7 +28,7 @@ The ``result`` string matches the required output format:
 
     ///▞ n-autoresearch/Kosmos/BioAgents SWARM DECISION
     ═══════════════════════════════════════
-    CONTEXT: Deploy Judge #6 to Vertex AI | RISK: M | BRAKES: 1
+    CONTEXT: Deploy Judge 6 to Vertex AI | RISK: M | BRAKES: 1
     CALCULATION: risk=0.6 - brakes=0.15 = 0.45
     CONSENSUS: 42.0% weighted approve
     ═══════════════════════════════════════
@@ -121,7 +121,7 @@ class InternalSwarm:
     """Implements the 600‑agent internal voting protocol.
 
     The public entry point is :meth:`evaluate`, which accepts a raw decision
-    string (e.g. ``"SWARM VOTE: Deploy Judge #6"``) and returns a formatted
+    string (e.g. ``"SWARM VOTE: Deploy Judge 6"``) and returns a formatted
     decision report.
     """
 

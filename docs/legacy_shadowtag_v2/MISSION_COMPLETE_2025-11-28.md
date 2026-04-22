@@ -68,7 +68,7 @@
 ╔══════════════════════════════════════════════════════════════╗
 ║  https://github.com/karpathy/autoresearchS CAVALRY SQUADRON                              ║
 ╠══════════════════════════════════════════════════════════════╣
-║  HHT (90)       │ Headquarters │ Judge #6, S-1 to S-6       ║
+║  HHT (90)       │ Headquarters │ Judge 6, S-1 to S-6       ║
 ║  AIR_CAV (120)  │ Aerial Scouts │ Apache, Kiowa, Black Hawk ║
 ║  ALPHA (130)    │ Armor │ M1 Abrams (Heavy Compute)         ║
 ║  BRAVO (130)    │ Stryker │ Rapid Deployment                ║
@@ -296,7 +296,7 @@ python3 ../antigravity_status.py
 
 - Parallel execution: 5 agents concurrent (configurable)
 - Average latency: ~2000ms per task
-- Judge #6 approval rate: ~75% (score ≥60 or revenue ≥$10k)
+- Judge 6 approval rate: ~75% (score ≥60 or revenue ≥$10k)
 - Token tracking: Real-time
 
 ---

@@ -1,4 +1,4 @@
-# Quick Start Guide - Judge #6 Validation Sprint
+# Quick Start Guide - Judge 6 Validation Sprint
 
 **Time to first results: ~30 minutes**
 
@@ -87,7 +87,7 @@ chmod +x infrastructure/pnkln-gke-bootstrap.sh
 
 ---
 
-## Step 4: Deploy Judge #6 (3 minutes)
+## Step 4: Deploy Judge 6 (3 minutes)
 
 ```bash
 # Apply all Kubernetes manifests
@@ -116,7 +116,7 @@ kubectl get svc -n pnkln-core
 **What this does:**
 
 - ✓ Creates pnkln-core namespace
-- ✓ Deploys Judge #6 with 3 layers (Gemini, PyTorch, Rules)
+- ✓ Deploys Judge 6 with 3 layers (Gemini, PyTorch, Rules)
 - ✓ Configures HorizontalPodAutoscaler
 - ✓ Sets up PodDisruptionBudget for HA
 
@@ -149,7 +149,7 @@ kubectl get prometheusrule -n pnkln-monitoring
 **What this does:**
 
 - ✓ Installs Prometheus + Grafana stack
-- ✓ Configures ServiceMonitor for Judge #6
+- ✓ Configures ServiceMonitor for Judge 6
 - ✓ Sets up SLA alerting rules
 
 ---

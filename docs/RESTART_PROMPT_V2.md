@@ -218,7 +218,7 @@ tests/test_orchestrator.py # Validation suite (all passing)
 - GRPO vs PPO - Training comparison
 - Glicko-2 vs Elo - Rating comparison
 
-### Risk Levels (ATP 5-19)
+### Risk Levels (Compliance Framework)
 - RA-1: Routine
 - RA-2: Low impact
 - RA-3: Moderate (mission-critical)

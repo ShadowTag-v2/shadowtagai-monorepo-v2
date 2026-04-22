@@ -464,7 +464,7 @@ manifest = shadowtag.sign(consensus_text)
 - **Plan:** "Add exit-intent popup + 3-email sequence"
 - **Challenge:** "Deploy this week or lose another $60K"
 
-### **Army Risk Management (ATP 5-19)**
+### **Army Risk Management (Compliance Framework)**
 
 - **Purpose** = ShadowTag-v2JR (mission advancement)
 - **Reasons** = Evidence-only, first-principles

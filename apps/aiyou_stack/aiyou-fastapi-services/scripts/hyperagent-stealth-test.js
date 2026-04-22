@@ -161,7 +161,7 @@ async function runTests() {
     }
 
     console.log(`\n  Suitable for: Scraping, QA, Data Collection`);
-    console.log(`  NOT for: Real-time (<100ms), Judge #6 SLA paths`);
+    console.log(`  NOT for: Real-time (<100ms), Judge 6 SLA paths`);
     console.log(`═══════════════════════════════════════════════════════════════\n`);
   } catch (error) {
     console.error('\n❌ TEST FAILED:', error.message);

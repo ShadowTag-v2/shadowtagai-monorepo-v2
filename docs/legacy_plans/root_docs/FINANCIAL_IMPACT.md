@@ -166,7 +166,7 @@ Latency Improvement:
 
 ```
 Before: Every decision query hits database + runs full kernel chain
-After:  Common decisions cached (ATP 5-19 risk assessments, Judge #6 approvals)
+After:  Common decisions cached (Compliance Framework risk assessments, Judge 6 approvals)
 
 Database Impact:
 - Before: 1M decisions/mo × 3 queries/decision = 3M queries/mo
@@ -470,7 +470,7 @@ pip install deepseek-ocr
 **Impact**: $3.6k/year savings, <1 month
 
 ```python
-# Add Redis cache to Judge #6 decisions
+# Add Redis cache to Judge 6 decisions
 from app.kernels import cached_judge_six
 
 @cached(ttl=3600)  # 1 hour cache

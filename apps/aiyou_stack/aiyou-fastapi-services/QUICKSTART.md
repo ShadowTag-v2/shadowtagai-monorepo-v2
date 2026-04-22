@@ -1,4 +1,4 @@
-# Judge #6 GKE Platform - Quick Start Guide
+# Judge 6 GKE Platform - Quick Start Guide
 
 ## 🚀 Fastest Path to Production (30-45 minutes)
 
@@ -92,7 +92,7 @@ echo -n "xxxx" | \
 # Vertex AI uses Workload Identity automatically
 ```
 
-#### 4. Deploy Judge #6 Application (5 minutes)
+#### 4. Deploy Judge 6 Application (5 minutes)
 
 ```bash
 # Get cluster credentials
@@ -158,7 +158,7 @@ After deployment, verify:
 - [ ] GKE cluster created and healthy
 - [ ] GPU node pool configured (0-20 L4 nodes)
 - [ ] API keys stored in Secret Manager
-- [ ] Judge #6 pods running (3/3 ready)
+- [ ] Judge 6 pods running (3/3 ready)
 - [ ] SLA targets met (p99≤90ms)
 - [ ] Cost tracking enabled
 - [ ] Monitoring dashboards accessible
@@ -388,7 +388,7 @@ For issues or questions:
 
 ---
 
-**Project**: PNKLN Judge #6 GKE Inference Platform
+**Project**: PNKLN Judge 6 GKE Inference Platform
 **Version**: 1.0.0
 **Last Updated**: 2025-01-08
 **Deployment Time**: 30-45 minutes (automated)

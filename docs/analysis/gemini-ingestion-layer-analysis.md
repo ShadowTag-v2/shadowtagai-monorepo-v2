@@ -6,11 +6,11 @@
 
 ## Executive Summary
 
-The Gemini Ingestion Layer represents a critical foundational component in the PNKLN intelligence pipeline, serving as the primary data collection mechanism for downstream services. This analysis examines the architectural evolution from the Judge #6 validation system to a purpose-built ingestion layer, highlighting key design decisions and operational characteristics.
+The Gemini Ingestion Layer represents a critical foundational component in the PNKLN intelligence pipeline, serving as the primary data collection mechanism for downstream services. This analysis examines the architectural evolution from the Judge 6 validation system to a purpose-built ingestion layer, highlighting key design decisions and operational characteristics.
 
 ## Overview
 
-The Gemini Ingestion Layer is an intelligence collection pipeline designed to gather, classify, and deliver multi-source data on a nightly basis. Unlike the reactive Judge #6 system, this layer operates in a proactive, acquisitive mode—emphasizing data quality, ethical compliance, and operational efficiency.
+The Gemini Ingestion Layer is an intelligence collection pipeline designed to gather, classify, and deliver multi-source data on a nightly basis. Unlike the reactive Judge 6 system, this layer operates in a proactive, acquisitive mode—emphasizing data quality, ethical compliance, and operational efficiency.
 
 ### Core Characteristics
 
@@ -20,11 +20,11 @@ The Gemini Ingestion Layer is an intelligence collection pipeline designed to ga
 - **Cost Model**: ~$77/month operational budget
 - **Quality Focus**: Relevance, Timeliness, Completeness
 
-## Evolution from Judge #6
+## Evolution from Judge 6
 
 ### Architectural Comparison
 
-| Aspect              | Judge #6 (Validation)           | Gemini Ingestion Layer (Collection) |
+| Aspect              | Judge 6 (Validation)           | Gemini Ingestion Layer (Collection) |
 | ------------------- | ------------------------------- | ----------------------------------- |
 | **Purpose**         | Reactive enforcement/validation | Proactive intelligence gathering    |
 | **Architecture**    | Hybrid Gemini+PyTorch           | GKE CronJob Multi-Container         |
@@ -35,7 +35,7 @@ The Gemini Ingestion Layer is an intelligence collection pipeline designed to ga
 
 ### Key Metrics Evolution
 
-#### Judge #6 Metrics (Latency-Focused)
+#### Judge 6 Metrics (Latency-Focused)
 
 - p99 latency ≤90ms
 - Throughput capacity
@@ -69,7 +69,7 @@ The ingestion layer operates as a scheduled Kubernetes job with multiple contain
 
 ### Integration Points
 
-Unlike Judge #6 which actively called downstream services, the Ingestion Layer is **called by** services across 4 namespaces:
+Unlike Judge 6 which actively called downstream services, the Ingestion Layer is **called by** services across 4 namespaces:
 
 - **Upstream Triggers**: Services initiate ingestion runs based on schedules or events
 - **Downstream Handoffs**: Processed data flows to analytics, storage, and presentation layers
@@ -79,7 +79,7 @@ Unlike Judge #6 which actively called downstream services, the Ingestion Layer i
 
 ### Multi-Dimensional Quality Assessment
 
-The ingestion layer replaced Judge #6's binary coverage metrics with a holistic quality framework:
+The ingestion layer replaced Judge 6's binary coverage metrics with a holistic quality framework:
 
 #### 1. **Daily Items Metric**
 
@@ -117,7 +117,7 @@ Data sources are classified into three tiers to optimize resource allocation:
 
 ## Ethical Compliance Model
 
-A critical addition absent from Judge #6, the ethical framework ensures sustainable and legal data collection:
+A critical addition absent from Judge 6, the ethical framework ensures sustainable and legal data collection:
 
 ### 1. **robots.txt Compliance**
 
@@ -203,7 +203,7 @@ This metric bridges technical ingestion with user value, ensuring the pipeline s
 
 ### Realistic Expectations
 
-**Target Confidence**: ≥60% (down from Judge #6's ≥70%)
+**Target Confidence**: ≥60% (down from Judge 6's ≥70%)
 
 **Rationale**: Pre-production systems lack real-world telemetry. Analysis relies on:
 
@@ -243,16 +243,16 @@ The Ingestion Layer serves as the **foundational upstream component** in PNKLN:
               │
               ▼
 ┌─────────────────────────────────────┐
-│  Judge #6 & Validation (Downstream) │
+│  Judge 6 & Validation (Downstream) │
 │  - Quality enforcement              │
-│  - ATP 5-19 compliance              │
+│  - Compliance Framework compliance              │
 │  - JR validation                    │
 └─────────────────────────────────────┘
 ```
 
 ### Handoff Analysis
 
-A combined prompt analyzing both Ingestion and Judge #6 could reveal:
+A combined prompt analyzing both Ingestion and Judge 6 could reveal:
 
 - Data quality degradation between layers
 - Integration bottlenecks or failures
@@ -336,13 +336,13 @@ The analysis prompt for Gemini 2.0 Pro should include:
 1. **Deploy to Pre-Production**: Run initial ingestion jobs in staging GKE cluster
 2. **Monitor and Tune**: Collect real telemetry and adjust tier classifications
 3. **Iterate on Prompt**: Refine Gemini analysis prompt based on test run outputs
-4. **Integrate with Judge #6**: Create combined analysis for end-to-end flow
+4. **Integrate with Judge 6**: Create combined analysis for end-to-end flow
 5. **Stakeholder Review**: Present AM briefing samples for format feedback
 6. **Production Launch**: Once all checklist items complete and confidence ≥60%
 
 ## Conclusion
 
-The Gemini Ingestion Layer represents a strategic pivot from reactive validation (Judge #6) to proactive intelligence collection, tailored to the unique demands of PNKLN's data pipeline. By emphasizing ethical compliance, multi-source diversity, and holistic quality metrics, it establishes a sustainable foundation for downstream analytics and decision-making.
+The Gemini Ingestion Layer represents a strategic pivot from reactive validation (Judge 6) to proactive intelligence collection, tailored to the unique demands of PNKLN's data pipeline. By emphasizing ethical compliance, multi-source diversity, and holistic quality metrics, it establishes a sustainable foundation for downstream analytics and decision-making.
 
 The analysis framework—leveraging Gemini 2.0 Pro's natural language strengths—provides a comprehensive evaluation methodology suited to pre-production systems with limited real-world data. As the system matures and real telemetry becomes available, confidence levels and optimization opportunities will improve.
 
@@ -352,4 +352,4 @@ The analysis framework—leveraging Gemini 2.0 Pro's natural language strengths�
 
 ---
 
-_For questions or deep-dives on specific sections, refer to the full PNKLN Core Stack documentation or the Judge #6 comparison analysis._
+_For questions or deep-dives on specific sections, refer to the full PNKLN Core Stack documentation or the Judge 6 comparison analysis._

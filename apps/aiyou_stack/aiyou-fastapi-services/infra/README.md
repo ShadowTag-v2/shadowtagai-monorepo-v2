@@ -9,7 +9,7 @@ Production-ready Terraform configuration for deploying PNKLN Core Stack on GKE w
 - **Private Cluster**: Secure by default with private nodes
 - **Workload Identity**: Secure GCS and Secret Manager access
 - **Monitoring**: Managed Prometheus + Cloud Monitoring
-- **p99 ≤90ms Ready**: Optimized for low-latency inference (Judge #6)
+- **p99 ≤90ms Ready**: Optimized for low-latency inference (Judge 6)
 
 ## Prerequisites
 
@@ -111,7 +111,7 @@ max_node_count = 3  # Auto-scale under load
 - GCS storage (100GB models): ~$2/mo
 - **Total**: ~$162/mo
 
-**Active state** (example: 12h/day Judge #6 on L4):
+**Active state** (example: 12h/day Judge 6 on L4):
 - L4 GPU (spot, 12h/day): ~$72/mo
 - CPU pool: ~$140/mo
 - Networking: ~$50/mo
@@ -164,7 +164,7 @@ gcloud secrets versions add pnkln-gke-cluster-api-keys \
 - **Machine**: g2-standard-4 (4 vCPUs, 16GB RAM)
 - **GPU**: NVIDIA L4 (24GB VRAM)
 - **Cost**: ~$0.40/hr (spot)
-- **Use case**: Judge #6 with p99 ≤90ms SLA
+- **Use case**: Judge 6 with p99 ≤90ms SLA
 
 ### H100 (High-Performance Production)
 

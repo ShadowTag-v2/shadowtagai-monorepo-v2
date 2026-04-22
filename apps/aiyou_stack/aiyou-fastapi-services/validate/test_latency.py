@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PNKLN Judge #6 Latency Validation Harness
+"""PNKLN Judge 6 Latency Validation Harness
 
 Tests p99 latency against 90ms SLA target.
 Generates detailed reports with percentile breakdowns.
@@ -329,7 +329,7 @@ class LatencyTester:
 
 
 async def main():
-    parser = argparse.ArgumentParser(description="PNKLN Judge #6 Latency Validation Harness")
+    parser = argparse.ArgumentParser(description="PNKLN Judge 6 Latency Validation Harness")
     parser.add_argument(
         "--endpoint",
         default="http://judge6.pnkln.svc.cluster.local",

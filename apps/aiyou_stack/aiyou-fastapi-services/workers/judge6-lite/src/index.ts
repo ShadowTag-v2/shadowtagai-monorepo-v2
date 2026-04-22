@@ -1,5 +1,5 @@
 /**
- * PNKLN Judge #6 Lite - Cloudflare Workers Edition
+ * PNKLN Judge 6 Lite - Cloudflare Workers Edition
  *
  * Revenue-first architecture: Rules Engine → Gemini Flash → PyTorch (escalation only)
  * Target: <50ms p99 latency, $5/month base cost
@@ -142,7 +142,7 @@ async function callGeminiFlash(
 ): Promise<{ approved: boolean; confidence: number; reason: string }> {
   const endpoint = `https://${env.GOOGLE_CLOUD_LOCATION}-aiplatform.googleapis.com/v1/projects/${env.GOOGLE_CLOUD_PROJECT}/locations/${env.GOOGLE_CLOUD_LOCATION}/publishers/google/models/gemini-3.1-flash-lite-preview:generateContent`;
 
-  const systemPrompt = `You are Judge #6, an AI governance enforcement system. Analyze the following content for policy violations.
+  const systemPrompt = `You are Judge 6, an AI governance enforcement system. Analyze the following content for policy violations.
 
 Evaluate against these criteria:
 1. Financial fraud or misleading investment claims

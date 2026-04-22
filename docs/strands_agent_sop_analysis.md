@@ -9,13 +9,13 @@
 ## PURPOSE CHECK
 
 ├─ **Advances Pnkln?** PARTIAL
-│ ├─ RFC 2119 constraints = ATP 5-19 compatible precision
+│ ├─ RFC 2119 constraints = Compliance Framework compatible precision
 │ ├─ Markdown workflows = portable, zero vendor lock-in
 │ ├─ Converts to Anthropic Skills = Claude integration path
 │ └─ BUT: AWS ecosystem bias (Bedrock-first, not GCP-native)
 
 ├─ **Revenue impact?** LOW-MEDIUM
-│ ├─ Could accelerate Judge #6 enforcement workflow definition
+│ ├─ Could accelerate Judge 6 enforcement workflow definition
 │ ├─ Reduces prompt engineering overhead (faster iteration)
 │ └─ Reusable SOPs = operational leverage for $60-65K/mo burn
 
@@ -85,7 +85,7 @@
 
 **Use:** `strands-agents-sops` skills → convert existing SOPs
 **Deploy:** Upload to Claude.ai Skills (not production stack)
-**Purpose:** Development/prototyping only (not Judge #6 runtime)
+**Purpose:** Development/prototyping only (not Judge 6 runtime)
 **Benefit:** Rapid workflow testing for JR Engine iterations
 **Constraint:** Claude.ai only (not GCP Vertex AI / Gemini)
 
@@ -96,7 +96,7 @@
 ### [3] FULL STRANDS ADOPTION (EXPENSIVE)
 
 **Install:** `pip install strands-agents strands-agents-sops`
-**Migrate:** Rewrite Judge #6 enforcement as Agent SOPs
+**Migrate:** Rewrite Judge 6 enforcement as Agent SOPs
 **Deploy:** Dual-cloud (GCP for Gemini + AWS for Strands orchestration)
 **MCP:** Enable token compression via SOP format
 
@@ -118,13 +118,13 @@ git clone https://github.com/strands-agents/agent-sop.git
 **Extract:** Constraint methodology (MUST/SHOULD/MAY → P/R/B mapping)
 **Design:** `.jrp` format spec (Purpose/Reasons/Brakes/Steps/Constraints)
 **Build:** Python tool to convert `.jrp` → Gemini function calling schema
-**Validate:** Single Judge #6 workflow as `.jrp` proof-of-concept
+**Validate:** Single Judge 6 workflow as `.jrp` proof-of-concept
 
 ### Completion Criteria
 
 - [ ] `.jrp` format spec documented (1 page max)
 - [ ] Converter tool generates valid Gemini function schemas
-- [ ] Judge #6 enforcement workflow runs <90ms p99
+- [ ] Judge 6 enforcement workflow runs <90ms p99
 - [ ] Binary compression achieves <500 bytes (ATP_519_scan target)
 - [ ] Zero AWS dependencies (pure GCP deployment)
 
@@ -176,7 +176,7 @@ git clone https://github.com/strands-agents/agent-sop.git
 
 ## COUNTER-RECOMMENDATION
 
-**Try Option [2] SKILLS-ONLY for 1 week** on real Judge #6 workflows
+**Try Option [2] SKILLS-ONLY for 1 week** on real Judge 6 workflows
 
 ### Measure
 

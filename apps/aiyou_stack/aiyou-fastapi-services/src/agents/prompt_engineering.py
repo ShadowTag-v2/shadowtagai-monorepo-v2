@@ -13,7 +13,7 @@ class PromptAdaptationAgent(BaseAgent):
     def get_metadata(self) -> AgentMetadata:
         return AgentMetadata(
             name="Prompt Adaptation Specialist",
-            description="Transforms prompts between use cases (e.g., Judge #6 → Gemini Ingestion Layer). Maintains structure while tailoring metrics, architecture, and domain focus.",
+            description="Transforms prompts between use cases (e.g., Judge 6 → Gemini Ingestion Layer). Maintains structure while tailoring metrics, architecture, and domain focus.",
             category=AgentCategory.AI_INNOVATION,
             icon="🔄",
             tags=["prompt-engineering", "adaptation", "transformation", "reusability"],

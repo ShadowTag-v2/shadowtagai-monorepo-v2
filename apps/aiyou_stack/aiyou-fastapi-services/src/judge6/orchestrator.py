@@ -1,4 +1,4 @@
-"""Judge #6 LangGraph Orchestrator
+"""Judge 6 LangGraph Orchestrator
 Multi-agent workflow for compliance document analysis
 """
 
@@ -58,7 +58,7 @@ class WorkflowStep(StrEnum):
 
 
 class Judge6State(TypedDict):
-    """Shared state across all Judge #6 agents.
+    """Shared state across all Judge 6 agents.
     Uses Annotated with operator.add for list fields to enable proper state merging.
     """
 
@@ -95,7 +95,7 @@ class Judge6State(TypedDict):
 
 
 class Judge6Orchestrator:
-    """LangGraph-based orchestrator for Judge #6 multi-agent compliance analysis.
+    """LangGraph-based orchestrator for Judge 6 multi-agent compliance analysis.
 
     Uses supervisor pattern with specialized agents for each workflow step.
     """
@@ -144,7 +144,7 @@ class Judge6Orchestrator:
         self.workflow = self._build_workflow()
 
     def _build_workflow(self) -> StateGraph:
-        """Build the LangGraph state machine for Judge #6 workflow.
+        """Build the LangGraph state machine for Judge 6 workflow.
 
         Graph structure:
         START → Supervisor → ClassifyDocument → ParseDocument → ExtractPolicies
@@ -520,7 +520,7 @@ Return: {{"recommendations": [...]}}
             logger.error(f"Failed to record metrics: {e}")
 
     def process_document(self, document_id: str, document_content: str) -> dict[str, Any]:
-        """Process a compliance document through the Judge #6 workflow.
+        """Process a compliance document through the Judge 6 workflow.
 
         Args:
             document_id: Unique identifier for the document

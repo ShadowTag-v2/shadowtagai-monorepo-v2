@@ -1,5 +1,5 @@
 -- SeatJudge "Liquid Inventory" Schema (Austin Pilot)
--- Powered by Judge #6 v2.0
+-- Powered by Judge 6 v2.0
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -42,7 +42,7 @@ CREATE TABLE events (
     end_time TIMESTAMP WITH TIME ZONE
 );
 
--- 5. RISK SCORES (Judge #6 Integration)
+-- 5. RISK SCORES (Judge 6 Integration)
 -- Stores real-time risk assessments for users, venues, or specific transactions
 CREATE TABLE risk_scores (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

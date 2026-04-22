@@ -38,7 +38,7 @@ The pnkln orchestrator now includes specialized infrastructure analysis capabili
 - Tier 1 data ≥30% of daily items
 - Confidence ≥60% (pre-production specs-only)
 
-### 2. Judge #6 (Coming Soon)
+### 2. Judge 6 (Coming Soon)
 
 **Purpose**: Validation and enforcement system analysis
 
@@ -391,9 +391,9 @@ if (result.confidence < 0.6) {
 
 ### Planned Features
 
-1. **Judge #6 Analysis**
+1. **Judge 6 Analysis**
    - Validation and enforcement system evaluation
-   - ATP 5-19 compliance checking
+   - Compliance Framework compliance checking
    - Performance analysis (p99 latency targets)
 
 2. **pnkln Core Analysis**

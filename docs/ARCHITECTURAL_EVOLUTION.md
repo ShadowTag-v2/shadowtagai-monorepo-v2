@@ -184,7 +184,7 @@ GRPO Training Loop:
 
 **OLD: Business Frameworks**
 
-- ATP 5-19 (Military risk management)
+- Compliance Framework (Military risk management)
 - Purpose/Reason/Brakes (Decision protocol)
 - Boy Scout Rule (Code quality)
 - Reality Distortion Field (Vision)

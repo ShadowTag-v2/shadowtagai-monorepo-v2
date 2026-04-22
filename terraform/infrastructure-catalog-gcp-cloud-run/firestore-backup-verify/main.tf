@@ -41,6 +41,15 @@ resource "google_storage_bucket" "firestore_backups" {
   location                    = "US"
   uniform_bucket_level_access = true
   force_destroy               = false
+  public_access_prevention    = "enforced"  # CKV_GCP_114
+
+  versioning {
+    enabled = true  # CKV_GCP_78
+  }
+
+  # CKV_GCP_62: Access logging — skipped intentionally for cost efficiency.
+  # A dedicated log bucket would add $X/mo for a backup-only use case.
+  # checkov:skip=CKV_GCP_62: Backup bucket access logging deferred (cost/benefit)
 
   lifecycle_rule {
     action {

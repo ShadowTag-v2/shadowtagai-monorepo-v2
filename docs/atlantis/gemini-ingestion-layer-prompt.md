@@ -447,10 +447,10 @@ Your analysis is successful if it:
 ### Additional Context
 
 **PNKLN Stack Position**:
-The Ingestion Layer is the foundational upstream component. Its output quality directly impacts all downstream systems including Judge #6 validation and AM briefing delivery. Failures here cascade through the entire stack.
+The Ingestion Layer is the foundational upstream component. Its output quality directly impacts all downstream systems including Judge 6 validation and AM briefing delivery. Failures here cascade through the entire stack.
 
 **Prior Art**:
-This analysis template evolved from the Judge #6 analysis prompt. Key differences reflect the shift from reactive enforcement (Judge #6) to proactive collection (Ingestion Layer).
+This analysis template evolved from the Judge 6 analysis prompt. Key differences reflect the shift from reactive enforcement (Judge 6) to proactive collection (Ingestion Layer).
 
 **Gemini 2.0 Pro Strengths**:
 Leverage Gemini's multimodal capabilities for:
@@ -661,14 +661,14 @@ The Explanatory style will help:
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 1.0 | 2025-11-15 | Initial template based on Judge #6 evolution |
+| 1.0 | 2025-11-15 | Initial template based on Judge 6 evolution |
 
 ## Related Resources
 
 
 - [PNKLN Analysis Framework](./README.md)
 
-- [Judge #6 Prompt Template](./judge-six-prompt.md)
+- [Judge 6 Prompt Template](./judge-six-prompt.md)
 
 - [Metrics Configuration](./metrics-config.yaml)
 

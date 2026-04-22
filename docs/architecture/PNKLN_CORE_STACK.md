@@ -12,10 +12,10 @@ The PNKLN Core Stack™ is an intelligence collection and processing pipeline de
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                   │
 │  ┌─────────────────────┐         ┌──────────────────────┐       │
-│  │  Gemini Ingestion   │────────>│     Judge #6         │       │
+│  │  Gemini Ingestion   │────────>│     Judge 6         │       │
 │  │       Layer         │         │  Validation Layer    │       │
 │  │                     │         │                      │       │
-│  │  • Multi-source     │         │  • ATP 5-19 Rules    │       │
+│  │  • Multi-source     │         │  • Compliance Framework Rules    │       │
 │  │  • Ethical crawling │         │  • JR Validation     │       │
 │  │  • Tier classification       │  • FP/FN Detection   │       │
 │  │  • GKE CronJob      │         │  • Hybrid AI         │       │
@@ -66,7 +66,7 @@ The PNKLN Core Stack™ is an intelligence collection and processing pipeline de
 
 ---
 
-### 2. Judge #6 Validation Layer
+### 2. Judge 6 Validation Layer
 
 **Role**: Reactive validator and enforcement system
 **Type**: Downstream/reactive component
@@ -75,7 +75,7 @@ The PNKLN Core Stack™ is an intelligence collection and processing pipeline de
 
 **Key Responsibilities**:
 
-- ATP 5-19 compliance validation
+- Compliance Framework compliance validation
 - JR (Joint Resolution) validation
 - False positive/negative detection
 - Service call validation across 4 namespaces
@@ -87,7 +87,7 @@ The PNKLN Core Stack™ is an intelligence collection and processing pipeline de
 - Block rate monitoring
 - API call cost tracking per validation
 
-**Documentation**: See [Judge #6 Specifications](./JUDGE_SIX.md)
+**Documentation**: See [Judge 6 Specifications](./JUDGE_SIX.md)
 
 ---
 
@@ -134,9 +134,9 @@ The PNKLN Core Stack™ is an intelligence collection and processing pipeline de
    Tier Classification
    ↓
 
-2. VALIDATION (Judge #6)
+2. VALIDATION (Judge 6)
    ↓
-   - ATP 5-19 rule checks
+   - Compliance Framework rule checks
    - JR validation
    - Quality scoring
    ↓
@@ -181,7 +181,7 @@ The PNKLN Core Stack™ is an intelligence collection and processing pipeline de
 
 ### Quality Assurance
 
-- Multi-layered validation (ingestion tier classification + Judge #6 validation)
+- Multi-layered validation (ingestion tier classification + Judge 6 validation)
 - Comprehensive metrics at each stage
 - End-to-end tracking from collection to delivery
 
@@ -245,7 +245,7 @@ See individual component documentation for detailed metrics.
 - [x] Architecture design
 - [x] Component specifications
 - [x] Gemini analysis prompt development
-- [x] Judge #6 analysis prompt development
+- [x] Judge 6 analysis prompt development
 
 ### In Progress
 
@@ -265,10 +265,10 @@ See individual component documentation for detailed metrics.
 
 ## Analysis Framework
 
-Both core components (Ingestion Layer and Judge #6) are analyzed using Gemini 2.0 Pro with specialized prompts:
+Both core components (Ingestion Layer and Judge 6) are analyzed using Gemini 2.0 Pro with specialized prompts:
 
 - **Gemini Ingestion Layer Analysis**: Focuses on collection efficiency, ethical compliance, tier classification
-- **Judge #6 Analysis**: Focuses on validation accuracy, latency, coverage
+- **Judge 6 Analysis**: Focuses on validation accuracy, latency, coverage
 
 **Confidence Targets**:
 
@@ -290,7 +290,7 @@ Gemini Ingestion Layer
     ↓ (data handoff)
 Services in Namespace 1-4
     ↓ (trigger)
-Judge #6 Validation
+Judge 6 Validation
     ↓ (validated data)
 Services in Namespace 1-4
     ↓ (processed intelligence)
@@ -359,7 +359,7 @@ AM Briefing Delivery
 ## References
 
 - [Gemini Ingestion Layer Specifications](./GEMINI_INGESTION_LAYER.md)
-- [Judge #6 Specifications](./JUDGE_SIX.md)
+- [Judge 6 Specifications](./JUDGE_SIX.md)
 - [Analysis Prompts](../prompts/README.md)
 - [Deployment Guide](../deployment/README.md)
 - [Cost Model Documentation](./COST_MODEL.md)

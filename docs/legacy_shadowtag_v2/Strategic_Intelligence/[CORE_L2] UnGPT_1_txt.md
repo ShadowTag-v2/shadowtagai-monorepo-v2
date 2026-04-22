@@ -11,7 +11,7 @@ UnGPT.1
 ````python
 # atomic_orchestrator.py
 # Vertex AI Workbench implementation for JR + Cor + NS integration
-# Implements AoT (Atom of Thoughts) with ATP 5-19 risk isolation
+# Implements AoT (Atom of Thoughts) with Compliance Framework risk isolation
 
 import asyncio
 import time
@@ -24,7 +24,7 @@ import google.generativeai as genai
 from datetime import datetime
 import hashlib
 
-# ATP 5-19 Risk Classification
+# Compliance Framework Risk Classification
 class RiskLevel(Enum):
     RA_1 = "routine"      # Normal operations
     RA_2 = "low"          # Minor impact if fails
@@ -93,7 +93,7 @@ class JudgmentRuleDecomposer:
         Each thread gets Purpose, Reasons, Brakes per ShadowTag-v2JR doctrine.
         """
 
-        decomposition_prompt = f"""You are a military-grade reasoning system (ShadowTag-v2JR Judge #6).
+        decomposition_prompt = f"""You are a military-grade reasoning system (ShadowTag-v2JR Judge 6).
 Decompose this query into atomic, parallelizable reasoning threads.
 
 QUERY: {query}
@@ -178,7 +178,7 @@ Each thread's prompt should be self-contained with all necessary context.
 class AtomicThreadExecutor:
     """
     Concurrent execution engine for atomic threads.
-    Implements error isolation per ATP 5-19 risk stratification.
+    Implements error isolation per Compliance Framework risk stratification.
     """
 
     def __init__(
@@ -558,7 +558,7 @@ def setup_pnkln_agents(gemini_config):
 
     risk_assessor = AssistantAgent(
         name="RiskAssessor",
-        system_message="You are a military-grade risk analyst. Use ATP 5-19 methodology for risk stratification.",
+        system_message="You are a military-grade risk analyst. Use Compliance Framework methodology for risk stratification.",
         llm_config=gemini_config
     )
 
@@ -569,7 +569,7 @@ def setup_pnkln_agents(gemini_config):
     }
 ```
 
-## Testing Framework (98% Coverage per ShadowTag-v2JR Judge #6)
+## Testing Framework (98% Coverage per ShadowTag-v2JR Judge 6)
 
 ```python
 # test_atomic_orchestrator.py
@@ -630,8 +630,8 @@ class TestAtomicOrchestrator:
             assert t001_result.result is not None
 
     @pytest.mark.asyncio
-    async def test_atp_5_19_risk_stratification(self):
-        """Verify ATP 5-19 risk levels are correctly assigned."""
+    async def test_compliance_framework_risk_stratification(self):
+        """Verify Compliance Framework risk levels are correctly assigned."""
 
         decomposer = JudgmentRuleDecomposer()
 
@@ -700,7 +700,7 @@ os.environ["GOOGLE_API_KEY"] = "your-api-key-here"
 result = await main()
 ```
 
-This implementation gives you production-grade AoT reasoning with full ShadowTag-v2JR compliance, ATP 5-19 risk isolation, and audit trails. Ready to integrate into your JR/Cor/NS stack.“
+This implementation gives you production-grade AoT reasoning with full ShadowTag-v2JR compliance, Compliance Framework risk isolation, and audit trails. Ready to integrate into your JR/Cor/NS stack.“
 
 “# Voice-Enabled Atomic Orchestrator for Mac/PC
 
@@ -1370,7 +1370,7 @@ First run will download ~150MB Whisper model. This is a **one-time delay of 30-6
 
 ---
 
-## ATP 5-19 Failure Modes to Watch For
+## Compliance Framework Failure Modes to Watch For
 
 **RA-2 (Low Risk) - Expected Issues:**
 

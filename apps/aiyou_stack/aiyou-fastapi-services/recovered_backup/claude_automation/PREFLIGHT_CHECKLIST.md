@@ -198,7 +198,7 @@
 - [ ] **Run first task execution**
   - Let agents complete one small RA-1 task
   - Verify progress updates in PLAN.md
-  - Confirm Judge #6 validation runs
+  - Confirm Judge 6 validation runs
   - Check 98% coverage enforcement
 
 - [ ] **Generate execution report** (Cell 12)
@@ -279,7 +279,7 @@ gsutil iam ch serviceAccount:<SA_EMAIL>:objectAdmin gs://pnkln-agent-mail
 ✅ All phases complete without errors
 ✅ Agents coordinate via Agent Mail
 ✅ Governance logs appear in GCS
-✅ First task executes with Judge #6 validation
+✅ First task executes with Judge 6 validation
 ✅ rust_scriptbots compiles on instance
 ✅ Bevy integration tasks claimed and in progress
 

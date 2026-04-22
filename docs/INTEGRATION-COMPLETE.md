@@ -162,7 +162,7 @@ erik-hancock-llm-memory/.github/workflows/*.yml (Daily & cross-device sync)
 
 **Components Integrated**:
 
-- **ATP 5-19 Scan**: 95% compression (50KB → 2.5KB violations)
+- **Compliance Framework Scan**: 95% compression (50KB → 2.5KB violations)
 - **Judge Six**: Binary classification for critical decisions
 - **Audit Compress**: 10:1 ratio using zstd level 22 (target: 487 bytes)
 - **Unified Orchestrator**: Single Gemini API call (vs 31+ in AutoGen)
@@ -245,7 +245,7 @@ src/ingestion/judge_integration.py     (Data pipeline integration)
 - ✓ Layer 0: GPU pooling, compression, pricing tiers
 - ✓ Aerospace: 7-phase business plan, edge mesh, ROI calculator
 - ✓ Pinkln AI: Glicko-2 ratings, MAD debates, orchestration
-- ✓ Kernels: ATP 5-19 scan, Judge Six, Audit compress
+- ✓ Kernels: Compliance Framework scan, Judge Six, Audit compress
 - ✓ Evolution: DTE system, GRPO training
 - ✓ Memory: 4-LLM rotation, schema validation
 - ✓ Cross-layer: End-to-end inference, valuation model

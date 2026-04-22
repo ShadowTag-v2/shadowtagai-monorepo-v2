@@ -637,17 +637,17 @@ Actionability:   (87% - 31%) / 31% = +181%
 
 **Role:** Proactive intelligence acquisition
 
-- **Feeds Data To:** Judge #6 (enforcement/validation), analysis layers, decision engines
+- **Feeds Data To:** Judge 6 (enforcement/validation), analysis layers, decision engines
 - **Called By:** 4 downstream services in PNKLN namespaces
 - **Data Flow:** Raw sources → Ingestion Layer → Structured intelligence → PNKLN consumers
 
 **Integration Points:**
 
-#### 1. Judge #6 (Enforcement)
+#### 1. Judge 6 (Enforcement)
 
 - **Handoff:** Ingestion Layer provides structured items for validation
-- **Quality Gate:** Judge #6 validates ingested data against ATP 5-19 policies
-- **Feedback Loop:** Judge #6 flags problematic sources → Ingestion Layer deprioritizes/blocks
+- **Quality Gate:** Judge 6 validates ingested data against Compliance Framework policies
+- **Feedback Loop:** Judge 6 flags problematic sources → Ingestion Layer deprioritizes/blocks
 
 #### 2. Analysis Microservices (4 Namespaces)
 
@@ -1007,10 +1007,10 @@ ROI Multiple: $2.856M / $145K = 19.7× ≈ 18× (conservative)
 
 **Changelog:**
 
-- 2025-11-15: Initial inception analysis created (adapted from Judge #6 framework)
+- 2025-11-15: Initial inception analysis created (adapted from Judge 6 framework)
 
 ---
 
 **END OF INCEPTION ANALYSIS**
 
-_This document establishes the baseline for Gemini Ingestion Layer. Future analyses will compare actual production metrics against these projections to calculate true improvement percentages. Integration with Judge #6 analysis enables end-to-end PNKLN Core Stack™ evaluation._
+_This document establishes the baseline for Gemini Ingestion Layer. Future analyses will compare actual production metrics against these projections to calculate true improvement percentages. Integration with Judge 6 analysis enables end-to-end PNKLN Core Stack™ evaluation._

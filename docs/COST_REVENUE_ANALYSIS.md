@@ -38,7 +38,7 @@
 - Cost/item: $0.077 (under $0.10 target) ✅
 - Sources: 10+ unique sources across 3+ types
 
-### Layer 2: Judge #6 + JR Engine (Enforcement)
+### Layer 2: Judge 6 + JR Engine (Enforcement)
 
 | Component              | Monthly Cost        | Details                           |
 | ---------------------- | ------------------- | --------------------------------- |
@@ -53,7 +53,7 @@
 - Target: <90ms p99 latency
 - Compliance checks: GDPR, CAN-SPAM, HIPAA
 - Audit trails: 100% captured
-- Risk scoring: ATP 5-19 framework
+- Risk scoring: Compliance Framework framework
 
 ### Combined Stack Total
 
@@ -81,7 +81,7 @@
 
 **Features:**
 
-- Core enforcement (JR Engine + Judge #6 Lite)
+- Core enforcement (JR Engine + Judge 6 Lite)
 - Basic audit trails
 - GDPR/CAN-SPAM compliance checks
 - Email support

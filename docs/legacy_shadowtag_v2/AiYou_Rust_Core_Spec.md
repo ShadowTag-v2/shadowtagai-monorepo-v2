@@ -10,7 +10,7 @@
 - **Components**:
   - **Ingestion Module**: Validation, sanitization.
   - **Routing Module**: Traffic direction (RAG vs Inference).
-  - **Safety Module**: pnkln-stackJR policies (ATP 5-19).
+  - **Safety Module**: pnkln-stackJR policies (Compliance Framework).
 
 ## 2. KEY PATTERNS
 

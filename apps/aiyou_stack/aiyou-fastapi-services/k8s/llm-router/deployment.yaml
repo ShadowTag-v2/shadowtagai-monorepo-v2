@@ -77,7 +77,7 @@ data:
       ttl_seconds: 3600
       key_prefix: "llm-cache:"
 
-    # Judge #6 integration
+    # Judge 6 integration
     governance:
       enabled: true
       judge_endpoint: "http://judge-webhook.ShadowTag-v2jr-governance.svc.cluster.local:443"

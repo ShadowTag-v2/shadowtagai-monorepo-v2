@@ -1,4 +1,4 @@
-"""Judge #6 Governance Skill Structure
+"""Judge 6 Governance Skill Structure
 Adapted from K-Dense-AI/claude-scientific-skills
 
 This module defines the schema and base class for "Governance Skills".
@@ -14,7 +14,7 @@ class GovernanceSkill(BaseModel):
     name: str
     description: str
     version: str = "1.0.0"
-    author: str = "Judge #6"
+    author: str = "Judge 6"
     tags: list[str] = []
 
     def execute(self, context: dict[str, Any]) -> dict[str, Any]:

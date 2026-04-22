@@ -1,5 +1,5 @@
 /**
- * PNKLN Judge #6 - Rules Engine (Tier 1 Enforcement)
+ * PNKLN Judge 6 - Rules Engine (Tier 1 Enforcement)
  *
  * Fast, deterministic policy violation detection.
  * Target: <5ms latency, catches 95% of obvious violations.

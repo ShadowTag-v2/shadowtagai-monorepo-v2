@@ -39,9 +39,9 @@ The AutoGen → Gemini migration has been fully implemented and validated. The p
 
   - **Optimist** (temp=0.9): Opportunity-seeking, upgrades by 1 tier
 
-  - **Neutral** (temp=0.3): ATP 5-19 strict arbiter, no bias
+  - **Neutral** (temp=0.3): Compliance Framework strict arbiter, no bias
 
-- Function calling tools for ATP 5-19 validation
+- Function calling tools for Compliance Framework validation
 
 - Fallback mode for operation without API key
 
@@ -55,7 +55,7 @@ The AutoGen → Gemini migration has been fully implemented and validated. The p
 
 - `GET /api/v1/agents/benchmark`: Performance comparison vs. AutoGen
 
-- `POST /api/v1/agents/function-calling/atp-519`: Test ATP 5-19 tools
+- `POST /api/v1/agents/function-calling/atp-519`: Test Compliance Framework tools
 
 - `GET /api/v1/agents/health`: Service health check
 
@@ -164,7 +164,7 @@ Debate Summary:
 Round 1:
   Skeptic: Tier 1 (70% confidence) - DoD contract is reliable source
   Optimist: Tier 1 (70% confidence) - $500M signals strategic importance
-  Neutral: Tier 1 (70% confidence) - ATP 5-19 criteria met
+  Neutral: Tier 1 (70% confidence) - Compliance Framework criteria met
 
 Round 2:
   Skeptic: Tier 1 (70% confidence) - Consensus maintained
@@ -360,7 +360,7 @@ Annual savings (50K classifications/day):
 
 ## Compliance Validation
 
-### ATP 5-19 (NATO Intelligence Standards) ✅
+### Compliance Framework (NATO Intelligence Standards) ✅
 
 - Source reliability (A-F scale): Implemented in function calling tools
 
@@ -396,7 +396,7 @@ The AutoGen → Gemini migration is **production-ready** with all validation tes
 ✅ **Performance:** 87.5% cost reduction, +3.7% accuracy, 64% faster
 ✅ **Security:** Eliminated arbitrary code execution risk
 ✅ **Scalability:** Cloud Run auto-scaling validated
-✅ **Compliance:** ATP 5-19, ITAR, GDPR/CCPA ready
+✅ **Compliance:** Compliance Framework, ITAR, GDPR/CCPA ready
 
 **Recommendation:** Deploy to Cloud Run staging environment with GEMINI_API_KEY for real-world validation before production rollout.
 

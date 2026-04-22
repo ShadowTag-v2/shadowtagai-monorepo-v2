@@ -1,6 +1,6 @@
 # Pnkln Core Stack - GKE + File Search Integration
 
-> **Complete Terraform configuration for deploying GKE with Vertex AI File Search API integration for Judge #6 hybrid policy enforcement**
+> **Complete Terraform configuration for deploying GKE with Vertex AI File Search API integration for Judge 6 hybrid policy enforcement**
 
 ## 🎯 Overview
 
@@ -280,7 +280,7 @@ node_pool_config = {
 
 ```hcl
 latency_sla = {
-  judge_p99           = 90    # Judge #6 p99 latency (ms)
+  judge_p99           = 90    # Judge 6 p99 latency (ms)
   file_search_p99     = 1000  # File Search p99 latency (ms)
   total_acceptable    = 850   # Total acceptable latency (ms)
 }

@@ -2,7 +2,7 @@
 ====================================
 
 SK-inspired patterns adapted for ShadowTagAi constraints:
-- Pattern 1: Sequential Pipeline (Judge #6 validation)
+- Pattern 1: Sequential Pipeline (Judge 6 validation)
 - Pattern 2: Concurrent Execution (Monte Carlo risk)
 - Pattern 3: Plugin Schema Standardization (LangGraph tools)
 """

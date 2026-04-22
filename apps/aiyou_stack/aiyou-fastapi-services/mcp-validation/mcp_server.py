@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""MCP Code Execution Server for Judge #6 v2.0
+"""MCP Code Execution Server for Judge 6 v2.0
 Production-grade FastAPI implementation with gVisor sandbox integration
 
 Security Features:

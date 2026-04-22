@@ -37,7 +37,7 @@ Architecture:
 200 Active Agents (from 600-agent https://github.com/karpathy/autoresearchs swarm)
 │
 ▼
-Heuristic Vote (ATP 5-19 risk scoring)
+Heuristic Vote (Compliance Framework risk scoring)
 │
 ├─► ≥55% approve → APPROVE ($0)
 ├─► ≤40% approve → REJECT ($0)

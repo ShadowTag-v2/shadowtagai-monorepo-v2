@@ -70,7 +70,7 @@ def health_check():
 
 @app.post("/assess", response_model=RiskAssessment)
 def assess_risk(seat: SeatRequest):
-    """Judge #6 Endpoint: Scores a specific seat transaction in real-time."""
+    """Judge 6 Endpoint: Scores a specific seat transaction in real-time."""
     risk = calculate_risk(seat)
 
     # Store in Memory (Ingestion)

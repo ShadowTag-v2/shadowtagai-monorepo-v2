@@ -1,6 +1,6 @@
 # Gemini Ingestion Layer Analysis: Financial & Timeline Economics
 
-**Analysis Framework Comparison: Judge #6 vs Gemini Ingestion Layer**
+**Analysis Framework Comparison: Judge 6 vs Gemini Ingestion Layer**
 
 **Date:** 2025-11-16
 **Context:** Adaptation of enforcement validation framework to intelligence collection pipeline
@@ -35,7 +35,7 @@
 
 ## I. Framework Comparison
 
-### Judge #6 Analysis (Enforcement/Validation)
+### Judge 6 Analysis (Enforcement/Validation)
 
 **Purpose:** Validate enforcement system compliance and performance
 **System Type:** Real-time API enforcement layer
@@ -46,7 +46,7 @@
 | **Performance** | p99 ≤90ms latency         | $800-1,200/mo (Gemini Flash) |
 | **Quality**     | FP/FN rates, 98% coverage | Churn risk if missed         |
 | **Integration** | Calls 4 namespaces        | API costs per call           |
-| **Compliance**  | ATP 5-19 framework        | Legal liability risk         |
+| **Compliance**  | Compliance Framework framework        | Legal liability risk         |
 | **Confidence**  | ≥70% (prod data)          | High confidence needed       |
 
 **Analysis Cost:** $0.15-0.50/run
@@ -307,7 +307,7 @@ If each week of delay costs:
 
 ### Why 60% vs 70%?
 
-**Judge #6 (Enforcement):**
+**Judge 6 (Enforcement):**
 
 - Has production data available
 
@@ -447,7 +447,7 @@ schedule:
 
 ```
 
-Judge #6 Analysis:              $6/year (24 runs)
+Judge 6 Analysis:              $6/year (24 runs)
 Ingestion Layer Analysis:       $6/year (24 runs)
 ────────────────────────────────────────────────
 Total Gemini API Cost:          $12/year
@@ -458,7 +458,7 @@ Total Gemini API Cost:          $12/year
 
 ```
 
-Judge #6 manual review avoided: $19,200-38,400/year
+Judge 6 manual review avoided: $19,200-38,400/year
 Ingestion manual review avoided:$19,200-38,400/year
 ────────────────────────────────────────────────
 Total Savings:                  $38,400-76,800/year
@@ -481,7 +481,7 @@ Total Savings:                  $38,400-76,800/year
 
 ```
 
-Judge #6 reviews:               264-528 hours (12 deep reviews)
+Judge 6 reviews:               264-528 hours (12 deep reviews)
 Ingestion reviews:              264-528 hours (12 deep reviews)
 ────────────────────────────────────────────────
 Total:                          528-1,056 hours
@@ -691,7 +691,7 @@ Total Annual Budget:            $912
 
 ### Confidence Thresholds
 
-1. **Judge #6:** ≥70% (enforcement, high stakes)
+1. **Judge 6:** ≥70% (enforcement, high stakes)
 
 2. **Ingestion:** ≥60% (collection, lower stakes)
 

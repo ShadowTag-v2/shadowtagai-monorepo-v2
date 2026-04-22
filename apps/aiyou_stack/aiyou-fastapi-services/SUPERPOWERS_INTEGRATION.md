@@ -326,7 +326,7 @@ python scripts/claude_code_memory_local.py
 
 ```
 
-**Result**: Claude Code now remembers PNKLN architecture (Judge #6, ShadowTag, ATP 5-19) in all sessions.
+**Result**: Claude Code now remembers PNKLN architecture (Judge 6, ShadowTag, ATP 5-19) in all sessions.
 
 #### 2. **Vertex AI Workbench Memory**
 

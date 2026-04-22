@@ -80,7 +80,7 @@ Progressive disclosure + batch filtering + embeddings = 97% cost savings
 1. **Multi-source scrapers** (`nightly_intel_pipeline/scrapers/`)
    - GitHub repository discovery & code flattening
    - arXiv paper search & metadata extraction
-   - Ethical scraping (ATP 5-19 compliant, RFC 9309 robots.txt)
+   - Ethical scraping (Compliance Framework compliant, RFC 9309 robots.txt)
 
 2. **JR Engine scoring** (`nightly_intel_pipeline/engines/jr_engine.py`)
    - Purpose Alignment (35%)
@@ -123,7 +123,7 @@ Progressive disclosure + batch filtering + embeddings = 97% cost savings
 **Strategic Value**:
 
 - Data moat: 18,000 scored items after Year 1
-- Platform synergy: Feeds Kosmos, Judge #6, ShadowTag
+- Platform synergy: Feeds Kosmos, Judge 6, ShadowTag
 - Competitive moat: 12-18 month lead
 - Customer lock-in: 80-90% retention
 
@@ -379,7 +379,7 @@ Created **`docs/MAC_DEPLOYMENT.md`** (comprehensive local deployment):
 ```
 GitHub + arXiv → Ethical Scraper → JR Engine → Tier Classifier → Briefing
                                                                          ↓
-                                                              Kosmos + Judge #6 + ShadowTag
+                                                              Kosmos + Judge 6 + ShadowTag
 ```
 
 **LLM Memory System**:
@@ -574,7 +574,7 @@ Cursor/Claude/Codex → Extract → Gemini Metadata → Git Version Control
 
 - Purpose → Reasons → Brakes framework
 - 4 weighted criteria
-- ATP 5-19 risk levels
+- Compliance Framework risk levels
 
 ### 9.3 Memory Systems
 

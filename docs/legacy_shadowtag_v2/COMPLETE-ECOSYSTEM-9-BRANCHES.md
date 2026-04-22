@@ -99,7 +99,7 @@ Successfully integrated **9 architectural branches** into a unified ecosystem co
 
 - `claude/pnkln-intelligence-pipeline-deployment-011CUvwKSmyxTgTWmc7WaHUR` (Evolution)
 
-- ATP 5-19 compliance scanning (95% compression)
+- Compliance Framework compliance scanning (95% compression)
 
 - Judge Six + Audit compress (10:1 ratio)
 
@@ -383,7 +383,7 @@ Score = 0.30 × Human_Engagement
 
 - [x] Memory persistence operational (2,121+ conversations)
 
-- [x] Kernel framework deployed (ATP 5-19, Judge Six, Audit)
+- [x] Kernel framework deployed (Compliance Framework, Judge Six, Audit)
 
 - [x] Unified API with 6 endpoints
 

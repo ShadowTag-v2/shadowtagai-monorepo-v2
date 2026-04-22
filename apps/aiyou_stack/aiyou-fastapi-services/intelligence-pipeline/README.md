@@ -495,13 +495,13 @@ Overall Health: 🟢 GOOD (82%)
 Confidence: 73%
 ```
 
-### Integration with Judge #6
+### Integration with Judge 6
 
-The Gemini analysis framework is adapted from the Judge #6 analysis prompt, customized for the Intelligence Pipeline's upstream collection role vs Judge #6's downstream enforcement role.
+The Gemini analysis framework is adapted from the Judge 6 analysis prompt, customized for the Intelligence Pipeline's upstream collection role vs Judge 6's downstream enforcement role.
 
 **Key Differences**:
 
-| Aspect | Judge #6 (Enforcement) | Intelligence Pipeline (Collection) |
+| Aspect | Judge 6 (Enforcement) | Intelligence Pipeline (Collection) |
 |--------|------------------------|-----------------------------------|
 | Architecture | Hybrid Gemini+PyTorch | GKE CronJob Multi-Container |
 | Key Metrics | Latency, Throughput, Block Rate | Items/Day, Sources, Cost/Item |

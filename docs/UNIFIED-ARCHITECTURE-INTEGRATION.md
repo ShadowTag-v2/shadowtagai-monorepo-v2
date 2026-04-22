@@ -70,7 +70,7 @@ ShadowTag-v2 Unified Ecosystem ($550B integrated value)
     │   └── Wealth accelerators (funnel redesign)
     │
     ├── Kernel Framework
-    │   ├── ATP 5-19 scan (violation extraction)
+    │   ├── Compliance Framework scan (violation extraction)
     │   ├── Judge Six (binary classification)
     │   ├── Audit compress (10:1 compression)
     │   └── All run as Gemini function tools

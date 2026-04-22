@@ -1,6 +1,6 @@
-"""Judge #6 Enforcement - ShadowTag-v2JR Doctrine Compliance & Gemini Integration
+"""Judge 6 Enforcement - ShadowTag-v2JR Doctrine Compliance & Gemini Integration
 
-This module implements the Judge #6 enforcement layer from ShadowTag-v2JR doctrine:
+This module implements the Judge 6 enforcement layer from ShadowTag-v2JR doctrine:
 1. Purpose, Reasons, Brakes (PRB) validation gates
 2. Pre-flight task validation before execution
 3. Doctrine violation detection and kill-switch enforcement
@@ -333,7 +333,7 @@ Provide scores and brief rationale. Format response as JSON:
 
 
 class Judge6Enforcer:
-    """Judge #6 Enforcement Engine - Complete PRB validation and enforcement"""
+    """Judge 6 Enforcement Engine - Complete PRB validation and enforcement"""
 
     def __init__(
         self,
@@ -341,7 +341,7 @@ class Judge6Enforcer:
         gemini_api_key: str | None = None,
         doctrine: DoctrineConstraints | None = None,
     ):
-        """Initialize Judge #6 Enforcer
+        """Initialize Judge 6 Enforcer
 
         Args:
             api_key: Anthropic API key
@@ -363,7 +363,7 @@ class Judge6Enforcer:
 
         self.audit_log: list[ValidationResult] = []
 
-        logger.info("Judge #6 Enforcer initialized with PRB gates")
+        logger.info("Judge 6 Enforcer initialized with PRB gates")
 
     def validate_task(
         self,
@@ -386,7 +386,7 @@ class Judge6Enforcer:
         violations = []
         recommendations = []
 
-        logger.info(f"Judge #6 validating task: {task_description[:50]}...")
+        logger.info(f"Judge 6 validating task: {task_description[:50]}...")
 
         # Determine skill and risk level
         from cor_autogen_integration import SkillRouter
@@ -517,7 +517,7 @@ class Judge6Enforcer:
 
 def main():
     """Example usage and smoke test"""
-    print("=== Judge #6 Enforcement - ShadowTag-v2JR Doctrine Compliance ===\n")
+    print("=== Judge 6 Enforcement - ShadowTag-v2JR Doctrine Compliance ===\n")
 
     # Initialize enforcer
     enforcer = Judge6Enforcer()
@@ -566,7 +566,7 @@ def main():
     audit_path = enforcer.export_audit_log()
     print(f"✓ Audit log: {audit_path}")
 
-    print("\n✓ Judge #6 enforcement smoke test complete")
+    print("\n✓ Judge 6 enforcement smoke test complete")
 
 
 if __name__ == "__main__":

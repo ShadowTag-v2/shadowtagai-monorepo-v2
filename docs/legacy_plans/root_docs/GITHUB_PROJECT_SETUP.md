@@ -7,11 +7,11 @@
 
 ## OVERVIEW
 
-This guide provides step-by-step instructions for creating a GitHub Project to track the PNKLN Core Stack™ implementation across both components (Judge #6 + Gemini Ingestion Layer).
+This guide provides step-by-step instructions for creating a GitHub Project to track the PNKLN Core Stack™ implementation across both components (Judge 6 + Gemini Ingestion Layer).
 
 **Project Structure:**
 
-- **2 Components:** Judge #6 (Enforcement), Gemini Ingestion Layer (Collection)
+- **2 Components:** Judge 6 (Enforcement), Gemini Ingestion Layer (Collection)
 - **4 Phases:** Foundation (Weeks 1-3), Enhancement (4-6), Production (7-9), Scale (10-12)
 - **32 Issues:** 16 per component
 - **3 Integration Milestones:** Week 3, 6, 9
@@ -27,7 +27,7 @@ This guide provides step-by-step instructions for creating a GitHub Project to t
 3. Click **"New project"**
 4. Select **"Board"** template
 5. Name: `PNKLN Core Stack™ - Implementation`
-6. Description: `Judge #6 + Gemini Ingestion Layer - 12 Week Development Roadmap`
+6. Description: `Judge 6 + Gemini Ingestion Layer - 12 Week Development Roadmap`
 7. Click **"Create project"**
 
 ### Option B: Using GitHub CLI
@@ -36,7 +36,7 @@ This guide provides step-by-step instructions for creating a GitHub Project to t
 gh project create \
   --owner ehanc69 \
   --title "PNKLN Core Stack™ - Implementation" \
-  --body "Judge #6 + Gemini Ingestion Layer - 12 Week Development Roadmap"
+  --body "Judge 6 + Gemini Ingestion Layer - 12 Week Development Roadmap"
 ```
 
 ---
@@ -61,7 +61,7 @@ gh project create \
 Add these custom fields to track metadata:
 
 1. **Component** (Single select)
-   - Judge #6
+   - Judge 6
    - Gemini Ingestion Layer
    - Integration
    - Shared Infrastructure
@@ -96,7 +96,7 @@ Add these custom fields to track metadata:
 ### Component Labels
 
 ```bash
-gh label create "component: judge-6" --color "0052CC" --description "Judge #6 (Enforcement Layer)"
+gh label create "component: judge-6" --color "0052CC" --description "Judge 6 (Enforcement Layer)"
 gh label create "component: ingestion" --color "00875A" --description "Gemini Ingestion Layer (Collection)"
 gh label create "component: integration" --color "FF5630" --description "Integration between components"
 gh label create "component: infrastructure" --color "6554C0" --description "Shared infrastructure (GKE, PostgreSQL, Redis)"
@@ -140,19 +140,19 @@ gh label create "type: infrastructure" --color "6554C0" --description "Infrastru
 # Milestone 1: Week 3 - First Integration
 gh milestone create \
   --title "Week 3: First Integration" \
-  --description "First data flow: Ingestion (280 items/day) → Judge #6 (35% coverage)" \
+  --description "First data flow: Ingestion (280 items/day) → Judge 6 (35% coverage)" \
   --due-date 2025-12-06
 
 # Milestone 2: Week 6 - Feedback Loop
 gh milestone create \
   --title "Week 6: Feedback Loop Operational" \
-  --description "Ingestion (620 items/day) → Judge #6 (78% coverage) → Feedback signals" \
+  --description "Ingestion (620 items/day) → Judge 6 (78% coverage) → Feedback signals" \
   --due-date 2025-12-27
 
 # Milestone 3: Week 9 - Production Launch
 gh milestone create \
   --title "Week 9: Production Launch" \
-  --description "PNKLN Core Stack™ v1.0: 850 items/day, 94% coverage, ATP 5-19 certified" \
+  --description "PNKLN Core Stack™ v1.0: 850 items/day, 94% coverage, Compliance Framework certified" \
   --due-date 2026-01-17
 
 # Milestone 4: Week 12 - v1.0 Release
@@ -166,7 +166,7 @@ gh milestone create \
 
 ## STEP 5: CREATE ISSUES (32 Total)
 
-### Judge #6 Issues (16)
+### Judge 6 Issues (16)
 
 #### PHASE 1: Foundation (Weeks 1-3)
 
@@ -181,12 +181,12 @@ gh issue create \
   --assignee "backend-eng-3"
 ```
 
-**Issue #2: ATP 5-19 Policy Schema**
+**Issue #2: Compliance Framework Policy Schema**
 
 ```bash
 gh issue create \
-  --title "[JUDGE-6] ATP 5-19 Policy Schema (44 Threat Categories)" \
-  --body "Define ATP 5-19 policy schema (JSON format) covering 44 threat categories..." \
+  --title "[JUDGE-6] Compliance Framework Policy Schema (44 Threat Categories)" \
+  --body "Define Compliance Framework policy schema (JSON format) covering 44 threat categories..." \
   --label "component: judge-6,phase-1: foundation,priority: critical,type: feature" \
   --milestone "Week 3: First Integration"
 ```
@@ -288,11 +288,11 @@ NC='\033[0m' # No Color
 
 echo -e "${BLUE}Creating PNKLN Core Stack™ GitHub Issues...${NC}"
 
-# Judge #6 Issues (Phase 1)
-echo -e "${GREEN}Creating Judge #6 Phase 1 issues...${NC}"
+# Judge 6 Issues (Phase 1)
+echo -e "${GREEN}Creating Judge 6 Phase 1 issues...${NC}"
 
 gh issue create --title "[JUDGE-6] JR Engine Core Framework" \
-  --body "**Component:** Judge #6
+  --body "**Component:** Judge 6
 **Phase:** Foundation (Weeks 1-3)
 **Effort:** 3 weeks
 
@@ -315,12 +315,12 @@ Implement core Purpose/Reasons/Brakes validation framework.
   --label "component: judge-6,phase-1: foundation,priority: critical" \
   --milestone "Week 3: First Integration"
 
-gh issue create --title "[JUDGE-6] ATP 5-19 Policy Schema" \
-  --body "**Component:** Judge #6
+gh issue create --title "[JUDGE-6] Compliance Framework Policy Schema" \
+  --body "**Component:** Judge 6
 **Phase:** Foundation (Weeks 1-3)
 **Effort:** 1 week
 
-Define ATP 5-19 policy schema (JSON) covering 44 threat categories.
+Define Compliance Framework policy schema (JSON) covering 44 threat categories.
 
 **Acceptance Criteria:**
 - [ ] JSON schema (OpenAPI-compatible)
@@ -329,7 +329,7 @@ Define ATP 5-19 policy schema (JSON) covering 44 threat categories.
 - [ ] Schema validation logic
 
 **Files:**
-- \`schemas/atp_5_19_policy_schema.json\`
+- \`schemas/compliance_framework_policy_schema.json\`
 - \`policies/security/injection.json\`
 - \`policies/compliance/data_residency.json\`" \
   --label "component: judge-6,phase-1: foundation,priority: critical" \
@@ -352,22 +352,22 @@ echo -e "${GREEN}✓ All issues created!${NC}"
 
 **Week 1-3 (Foundation):**
 
-- Issue #1-4 (Judge #6 Phase 1)
+- Issue #1-4 (Judge 6 Phase 1)
 - Issue #17-23 (Ingestion Phase 1)
 
 **Week 4-6 (Enhancement):**
 
-- Issue #5-8 (Judge #6 Phase 2)
+- Issue #5-8 (Judge 6 Phase 2)
 - Issue #24-29 (Ingestion Phase 2)
 
 **Week 7-9 (Production):**
 
-- Issue #9-12 (Judge #6 Phase 3)
+- Issue #9-12 (Judge 6 Phase 3)
 - Issue #30-32 (Ingestion Phase 3)
 
 **Week 10-12 (Scale):**
 
-- Issue #13-16 (Judge #6 Phase 4)
+- Issue #13-16 (Judge 6 Phase 4)
 
 ---
 
@@ -493,18 +493,18 @@ labels: "standup"
 | **Velocity (person-weeks)** | 0/60     | X/60     | Y/60   | ... | 60/60   |
 | **Budget Burn**             | $0/$370K | $X/$370K | ...    | ... | $370K   |
 | **Ingestion Items/Day**     | 0        | 18       | 280    | ... | 850     |
-| **Judge #6 Coverage**       | 0%       | 10%      | 35%    | ... | 94%     |
+| **Judge 6 Coverage**       | 0%       | 10%      | 35%    | ... | 94%     |
 
 ---
 
 ## APPENDIX: FULL ISSUE LIST
 
-### Judge #6 (16 Issues)
+### Judge 6 (16 Issues)
 
 **Phase 1 (Weeks 1-3):**
 
 1. JR Engine Core Framework
-2. ATP 5-19 Policy Schema
+2. Compliance Framework Policy Schema
 3. Gemini API Integration
 4. Validation API Endpoints
 

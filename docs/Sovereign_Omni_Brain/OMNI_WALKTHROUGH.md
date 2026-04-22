@@ -109,15 +109,15 @@ Source Brain: f6e572fc-3b8e-45ff-bbe5-7ba6ca9de593
 
 Every atomic code block produced or discussed in this thread, reprinted:
 
-### Block 1: Judge #6 Core Engine — `judge6_core.py` (802 lines)
+### Block 1: Judge 6 Core Engine — `judge6_core.py` (802 lines)
 [View full file](file:///Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/src/governance/judge6_core.py)
 
 The canonical governance engine. Key components:
 - `ViolationType` enum: 22 violation categories across EU AI Act, GDPR, NIST, Cyber, Legal, and Operational domains
-- `ATPRiskMatrix`: ATP 5-19 Table 1-1 probability × severity scoring
+- `ATPRiskMatrix`: Compliance Framework Table 1-1 probability × severity scoring
 - `VIOLATION_FRAMEWORK_MAP`: 22-entry routing table mapping violations to frameworks, base probabilities, severities, and enforcement floors
 - `EUAIActMitigation`, `GDPRMitigation`, `NISTMitigation`, `LegalMitigation`: 4 framework-specific mitigation modules with playbooks
-- `Judge6Engine.evaluate()`: Full ATP 5-19 5-step execution returning `GovernanceDecision` at p99 < 90ms
+- `Judge6Engine.evaluate()`: Full Compliance Framework 5-step execution returning `GovernanceDecision` at p99 < 90ms
 
 ### Block 2: Silent Detector — `silent_detector.py` (172 lines)
 [View full file](file:///Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/src/governance/silent_detector.py)
@@ -209,7 +209,7 @@ We consolidated the "Atomic Code Blocks" into a single transfer packet.
   - The Omega Protocol (The Law).
   - Distinctions Log (The Philosophy).
   - Antigravity Core (The Brain).
-  - Judge #6 (The Brakes).
+  - Judge 6 (The Brakes).
   - Flying Monkeys (The Hands).
 
 ## 4. Deliverables
@@ -259,7 +259,7 @@ We recognized that infrastructure without governance is merely a prototype. By a
   - Implemented the `generate_embedding` pipeline leveraging `google.generativeai`.
   - Integrated `pnkln-platform/core/config.py` for Vault/Secret Manager ecosystem credential resolution.
 
-### 2. Judge #6 Semantic API (PR Batch 02)
+### 2. Judge 6 Semantic API (PR Batch 02)
 - **Path:** `pnkln-platform/policy_engine/judge_6_api.py`
 - **Accomplishments:**
   - Engineered the Antigravity Swarm Sovereign Directives validator using the `gemini-3.1-flash-lite-preview` model.
@@ -326,7 +326,7 @@ We have successfully pivoted from a "Heavy Lift" VM-based architecture to a **Se
 
 ### A. The Core (`src/antigravity/core/`)
 - **`ontology.py`**: The DNA. Strict Pydantic models and proper secret management (`os.getenv`).
-- **`governor.py`** (**Judge #6**): Policy-as-Code. Prevents financial suicide and enforces "Lindy" rules on tech adoption.
+- **`governor.py`** (**Judge 6**): Policy-as-Code. Prevents financial suicide and enforces "Lindy" rules on tech adoption.
 - **`prosecutor.py`**: The **Sovereign Vault**. WORM storage and the "LEO Toggle" for cryptographic evidence handling.
 
 ### B. The Agents (`src/antigravity/agents/`)
@@ -536,7 +536,7 @@ Source Brain: 70a74298-dcd2-4210-bb26-3dc337d0d2a8
 
 ## Summary
 
-The **Self-Prompting Monkey (SPM) Loop** and the **Dual Sidecar Architecture** have been fully implemented. The system now features a rigorous 4-iteration code generation loop backed by real browser automation (Jetski) and governance gating (Judge #6), all running on **Cloud Run** in verified "God Mode".
+The **Self-Prompting Monkey (SPM) Loop** and the **Dual Sidecar Architecture** have been fully implemented. The system now features a rigorous 4-iteration code generation loop backed by real browser automation (Jetski) and governance gating (Judge 6), all running on **Cloud Run** in verified "God Mode".
 
 ## Architecture Components
 
@@ -570,7 +570,7 @@ The **Self-Prompting Monkey (SPM) Loop** and the **Dual Sidecar Architecture** h
 ## Operational Status
 
 - **Loop**: Built-in (Cor.Self Prompting).
-- **Control**: Judge #6 Active.
+- **Control**: Judge 6 Active.
 - **Reality**: Jetski Online.
 
 
@@ -589,13 +589,13 @@ Source Brain: 15a647d3-0720-430b-8b44-f2a34947359f
 
 ## Verification & Impact
 
-We executed an isolated ADK pipeline test using an ambiguous initial directive: *"Build a Next.js Firestore real-time component but adhere to Army ATP 5-19 Risk protocols."*
+We executed an isolated ADK pipeline test using an ambiguous initial directive: *"Build a Next.js Firestore real-time component but adhere to Army Compliance Framework Risk protocols."*
 The ADK output logs verified that instead of hallucinating logic, Uphillsnowball:
 
 1. Identified the tech component (Firestore/Next.js).
 2. Successfully beamed telemetry: `🌐 [MCP] Uphillsnowball routing query to Developer Knowledge API: Firestore real-time listeners Next.js`.
-3. Identified the Risk Constraint (ATP 5-19).
-4. Successfully beamed telemetry: `🧊 [GBS] Uphillsnowball accessing Ice Lake: 'ATP 5-19'`.
+3. Identified the Risk Constraint (Compliance Framework).
+4. Successfully beamed telemetry: `🧊 [GBS] Uphillsnowball accessing Ice Lake: 'Compliance Framework'`.
 
 Uphillsnowball has successfully shifted from *Static Storage* into **Kinetic Intelligence**.
 
@@ -714,7 +714,7 @@ Source Brain: e1bf5a92-8228-4bc0-b50b-a1d164574415
 # Walkthrough - Judge 6 CSRMC Upgrade (Cor.Judge.6.1)
 
 ## Overview
-We upgraded Judge 6 from a static ATP 5-19 implementation to a dynamic **DoD Cybersecurity Risk Management Construct (CSRMC)** engine. This system now acts as an "Active Governor," enforcing 19 distinct layers of defense including kill switches, insider threat detection, and automated mitigation loops.
+We upgraded Judge 6 from a static Compliance Framework implementation to a dynamic **DoD Cybersecurity Risk Management Construct (CSRMC)** engine. This system now acts as an "Active Governor," enforcing 19 distinct layers of defense including kill switches, insider threat detection, and automated mitigation loops.
 
 ## Key Changes
 
@@ -761,7 +761,7 @@ A new governing artifact, `.beads/ARCHITECTURE_DOCTRINE_V2.md`, was subsequently
 - **Gideon OS** (Engine/Decisions)
 - **The Boardroom** (IQ 160 Command)
 - **BIOS/Kosmos**
-- **Judge #6** (CRSMC / ATP 5-19 Shield)
+- **Judge 6** (CRSMC / Compliance Framework Shield)
 
 ## 2. Infrastructure Evolution: BullMQ → Cloud Tasks
 
@@ -771,7 +771,7 @@ We aligned the execution plan with the doctrine mandate calling for *pure server
 
 The `scripts/ingest_manuals.py` script was created and initiated. It successfully downloaded and parsed 20+ crucial documents directly into local context (`.beads/doctrinal_manuals/*.md`), providing offline, zero-latency inference for Judge 6.
 
-- *Targets digested include:* ATP 5-19, NIST Frameworks, Ranger Handbooks, and Arxiv papers (2512.14982, etc.).
+- *Targets digested include:* Compliance Framework, NIST Frameworks, Ranger Handbooks, and Arxiv papers (2512.14982, etc.).
 
 Concurrently, the critical target repositories for AST mitigation and local swarm logic (`ast-grep-vscode`, `ast-grep`, `Kosmos`, `BioAgents`) were directly cloned into `libs/clones/`.
 
@@ -793,7 +793,7 @@ The Swarm is now fully decoupled, doctrinally armored, and generating code at sc
 
 The architecture has escalated to a "Military-Grade" Autonomous Defense System:
 
-- **ATP 5-19 Centerpiece**: The Triad Sentinel now utilizes `dow_crsmc_sentinel.py` to gate any Builder actions via the US Army's Composite Risk Management parameters, securing the 17-Layer DOW CRSMC '25 shield.
+- **Compliance Framework Centerpiece**: The Triad Sentinel now utilizes `dow_crsmc_sentinel.py` to gate any Builder actions via the US Army's Composite Risk Management parameters, securing the 17-Layer DOW CRSMC '25 shield.
 - **Glass House Telemetry**: Extracted the `AGENT_THOUGHT_CHUNK` logs into `relay_server.py` and broadcasted them via raw WebSockets. The React frontend (`GlassBoxDashboard.tsx`) now streams this telepathy in real-time alongside an explicit 'ESTOP' override mechanism.
 - **CIAO Silicon Mesh**: Created `ciao_mesh_worker.py` to decentralize the local Apple Neural Engine (ANE) across any idle M-Series chips, offloading neural backpropagation and intelligence gathering to the Pub/Sub grid.
 
@@ -1888,7 +1888,7 @@ This document outlines the finalized modifications and verified integrations res
 - Decoupled rudimentary Swarm structures, introducing pure U.S. Army MDMP designations.
 - The base `Squadron` now enforces:
   - `receipt_of_mission`
-  - `mission_analysis` (ATP 5-19 risk evaluations utilizing Cloudflare BGP anomaly multipliers)
+  - `mission_analysis` (Compliance Framework risk evaluations utilizing Cloudflare BGP anomaly multipliers)
   - `execute_mission`
 - Upgraded the central `ATP519Scanner.run_scan` to pass incoming claim intelligence directly through the structured `ReconSquadron` processes before the main `BIOSAgentForge` proxy.
 
@@ -2224,7 +2224,7 @@ As per the `Cor_Architecture_Doctrine_v3.0` and the previous thread's transfer p
 
 ## Key Additions
 
-* **LangExtract Cloud Run Workers:** Deployed the Rust and TypeScript endpoints to scale document parsing horizontally using `gideon-deep-mode` queues. Added a vertical testing script (`test_caduceus_vertical.py`) to validate the 17-Layer Sentinel's ATP 5-19 rejection mechanisms on these tasks.
+* **LangExtract Cloud Run Workers:** Deployed the Rust and TypeScript endpoints to scale document parsing horizontally using `gideon-deep-mode` queues. Added a vertical testing script (`test_caduceus_vertical.py`) to validate the 17-Layer Sentinel's Compliance Framework rejection mechanisms on these tasks.
 * **Splinter Distribution Moat:** Created `src/splinter/syndication_engine.py`, the headless artifact syndicator responsible for saturating X, LinkedIn, and Medium to solidify the 95% distribution mandate.
 * **GlassBox Dashboard Matrix React:** Fixed type issues (`msg.type`, `msg.payload`) in the Next.js `GlassBoxDashboard.tsx` app, added WebGPU optimization initialization logic, and allowed the 80/20 telemetry pane to display the LangExtract progress in real time (`LangExtractStatus`). Injected a dedicated iframe mode for safely rendering RAW_HTML_ARTIFACT chunks natively.
 * **Raider Oracle Visualization:** Built the `ActivistKillShotWidget.tsx` component to visually interpret the 10-Fingers $AAPL target logic generated by the Oracle.
@@ -2251,7 +2251,7 @@ As per the `Cor_Architecture_Doctrine_v3.0` and the previous thread's transfer p
 ## Execution of CEO Prompts 1-4 & Apple Neural Engine Capability
 *   **ANE 1.7 TFLOPS Core Context**: Analyzed the Maderix Substack data confirming that by bypassing CoreML via the private `_ANEInMemoryModelDescriptor` API and utilizing Zero-Copy `IOSurfaces`, the Apple Silicon M4 ANE achieves up to 6.6 TFLOPS per watt—80x more efficient than an Nvidia A100—effectively making it an unprecedented local inference hub.
 *   **GlassBoxDashboard Hardened**: Integrated Sentinel-validated `RAW_HTML_ARTIFACT` sandboxing directly into the Next.js React component, preemptively analyzing payloads for malicious JavaScript patterns (e.g. `eval`) before frame attachment.
-*   **Raider Oracle ATP 5-19 Parity**: Introduced proxy LLC shell-routing into the hostile takeover output string inside `sr/agents/raider_oracle.py` to satisfy SEC risk aversion outlined by the ATP 5-19 framework.
+*   **Raider Oracle Compliance Framework Parity**: Introduced proxy LLC shell-routing into the hostile takeover output string inside `sr/agents/raider_oracle.py` to satisfy SEC risk aversion outlined by the Compliance Framework framework.
 *   **Ice Lake WebSocket Sync**: Updated `GlassBoxDashboard.tsx` to handle the generic `ICE_LAKE_SYNC` event pushed from the new `dispatch_ice_lake_ingestion` FAISS queue in `cloud_tasks_publisher.py`.
 *   **Llama 3/Groq Token Economics**: Built an explicit margin-calculation mechanism into `SplinterSyndicationEngine` concluding that driving 1,000 headless-Crawler distribution artifacts per day through Groq costs mere cents compared to massive ARR generation.
 *   **Google Developer Knowledge MCP API**: Validated integration with `developerknowledge.googleapis.com` MCP to act as the primary operational ground-truth library for Google technology moving forward.

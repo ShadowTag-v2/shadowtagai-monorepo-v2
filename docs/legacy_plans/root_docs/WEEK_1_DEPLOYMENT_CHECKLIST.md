@@ -33,9 +33,9 @@ Week 1 establishes the foundation for PNKLN Core Stack™ development. This chec
 
 - [ ] **Backend Engineer 1** (Ingestion): `_______________` (email: `_______________`)
 - [ ] **Backend Engineer 2** (Ingestion): `_______________` (email: `_______________`)
-- [ ] **Backend Engineer 3** (Judge #6): `_______________` (email: `_______________`)
-- [ ] **Backend Engineer 4** (Judge #6): `_______________` (email: `_______________`)
-- [ ] **Backend Engineer 5** (Judge #6): `_______________` (email: `_______________`)
+- [ ] **Backend Engineer 3** (Judge 6): `_______________` (email: `_______________`)
+- [ ] **Backend Engineer 4** (Judge 6): `_______________` (email: `_______________`)
+- [ ] **Backend Engineer 5** (Judge 6): `_______________` (email: `_______________`)
 - [ ] **DevOps Engineer**: `_______________` (email: `_______________`)
 - [ ] **Product Manager** (25%): `_______________` (email: `_______________`)
 
@@ -522,7 +522,7 @@ Week 1 establishes the foundation for PNKLN Core Stack™ development. This chec
      - News collector (target: +60 items/day)
      - Rule-based tier classification
      - JR Engine Brakes validator
-     - ATP 5-19 policy schema
+     - Compliance Framework policy schema
 
 - [ ] **Demo Environment Ready**
   - [ ] Terminal 1: GKE logs
@@ -565,7 +565,7 @@ Week 1 establishes the foundation for PNKLN Core Stack™ development. This chec
 - [x] Multi-container CronJob deployed
 - [x] Total items collected: **63/day**
 
-**Judge #6:**
+**Judge 6:**
 
 - [x] JR Engine prototype tested (4 examples)
 - [x] Purpose validator enhanced
@@ -609,7 +609,7 @@ Week 1 establishes the foundation for PNKLN Core Stack™ development. This chec
 2. Rule-based tier classification (target: 15% Tier 1 ratio)
 3. Basic email AM briefing (10 items)
 
-**Judge #6:** 4. Brakes validator implementation 5. ATP 5-19 policy schema (20 policies) 6. Gemini API integration (test endpoint)
+**Judge 6:** 4. Brakes validator implementation 5. Compliance Framework policy schema (20 policies) 6. Gemini API integration (test endpoint)
 
 **Integration:** 7. End-to-end test: Ingestion → PostgreSQL → Manual validation
 

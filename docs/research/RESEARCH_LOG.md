@@ -20,7 +20,7 @@ YYYY-MM-DD | Technology | Decision | Rationale | Revisit Conditions
 - **Rationale**:
   - No current OCR problem to solve
   - Google Document AI provides compliance-ready solution
-  - Opportunity cost conflicts with critical path (Judge #6 GKE deployment)
+  - Opportunity cost conflicts with critical path (Judge 6 GKE deployment)
   - Expected ROI negative until Year 2+
 - **Revisit When**:
   - Document processing volume >1M docs/month
@@ -35,7 +35,7 @@ YYYY-MM-DD | Technology | Decision | Rationale | Revisit Conditions
 
 ### 1. Core Stack Components
 
-Technologies directly related to ShadowTagAi Core Stack (Judge #6, LangGraph, NS mesh, ShadowTag)
+Technologies directly related to ShadowTagAi Core Stack (Judge 6, LangGraph, NS mesh, ShadowTag)
 
 ### 2. Edge AI & Optimization
 
@@ -71,7 +71,7 @@ If answers are unclear → DEFER and revisit later.
 
 ## Active Research Areas
 
-- [ ] GKE inference architecture for Judge #6 deployment
+- [ ] GKE inference architecture for Judge 6 deployment
 - [ ] LangGraph orchestration patterns for multi-agent workflows
 - [ ] NS mesh routing optimization
 - [ ] ShadowTag DCT watermarking implementation

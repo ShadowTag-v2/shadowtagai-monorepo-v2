@@ -38,7 +38,7 @@ def atp_519_scan(rule_json: str, scenario_json: str) -> dict:
 
 
 def judge6_simulator(rule_json: str, scenario_json: str) -> dict:
-    """Simulates Judge #6 decision based on the rule.
+    """Simulates Judge 6 decision based on the rule.
     Returns { "allowed": bool, "reason": str }
     """
     scan_result = atp_519_scan(rule_json, scenario_json)

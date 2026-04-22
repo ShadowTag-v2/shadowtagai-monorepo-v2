@@ -15,7 +15,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
   "component_hierarchy": {
     "jr_engine": {
       "name": "JR Engine (Judgment Rule)",
-      "function": "ATP 5-19 risk assessment",
+      "function": "Compliance Framework risk assessment",
       "performance": {
         "latency_target": "<500μs",
         "assessment_method": "Risk Matrix: Prob(A-E) × Severity(I-IV) → Level(EH/H/M/L)"
@@ -69,7 +69,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
       "name": "Orchestrator (Meta-Brain)",
       "function": "Coordinates all autonomous agents",
       "enforcement": {
-        "framework": "Judge #6 PRB (Purpose/Reasons/Brakes)",
+        "framework": "Judge 6 PRB (Purpose/Reasons/Brakes)",
         "coverage_gate": "98%",
         "rollback_trigger": "<95% coverage",
         "validation": "Synchronous validation in critical path"
@@ -136,7 +136,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
     "namespaces": [
       {
         "name": "ShadowTag-v2jr-governance",
-        "purpose": "Judge #6 enforcement"
+        "purpose": "Judge 6 enforcement"
       },
       {
         "name": "autogen-orchestration",
@@ -182,7 +182,7 @@ Cor.75 **”EXECUTING MEMORY EXTRACTION**
   "deployment_priorities": [
     "Generate GKE deployment scripts (Google Accelerated Platforms reference)",
     "Audit existing infrastructure against Cor.53 specs",
-    "Create Judge #6 implementation plan with synchronous enforcement",
+    "Create Judge 6 implementation plan with synchronous enforcement",
     "Build AutoGen multi-agent orchestration for namespace coordination",
     "Deploy ShadowTag v2 watermarking pipeline",
     "Configure LangGraph state management for Cognitive Stack v5"
@@ -206,7 +206,7 @@ All pnkln/Cor specifications consolidated from conversation history into indexle
 
 - This JSON represents ground truth for current architecture
 - GKE deployment still pending (not Vertex AI Workbench)
-- Judge #6 enforcement not yet implemented (target state documented)
+- Judge 6 enforcement not yet implemented (target state documented)
 
 **ALTERNATIVES**:
 

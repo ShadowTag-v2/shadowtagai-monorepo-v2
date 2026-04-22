@@ -5,7 +5,7 @@
 The pnkln Core Stack™ is an AI-powered intelligence collection and delivery system built on FastAPI, featuring:
 
 - **Gemini Ingestion Layer**: Multi-source data collection with ethical crawling
-- **Judge #6 Validation**: Hybrid Gemini+PyTorch content validation system
+- **Judge 6 Validation**: Hybrid Gemini+PyTorch content validation system
 - **Tier Classification**: Intelligent content prioritization (Tier 1/2/3)
 - **AM Briefing Delivery**: Automated morning intelligence summaries
 
@@ -47,7 +47,7 @@ External Sources (YouTube, Twitter, News, RSS)
           │
           ▼
 ┌─────────────────────┐
-│ Judge #6 Validation │  Hybrid: Gemini + PyTorch
+│ Judge 6 Validation │  Hybrid: Gemini + PyTorch
 │ - Content filtering │  Target: p99 ≤90ms
 │ - Quality gates     │  FP/FN: ≤2%
 │ - Confidence scoring│
@@ -114,7 +114,7 @@ RESPECT_ROBOTS_TXT=true
 RATE_LIMIT_REQUESTS_PER_MINUTE=60
 ```
 
-### 2. Judge #6 Validation System
+### 2. Judge 6 Validation System
 
 **Purpose**: Validate and filter ingested content using hybrid AI
 
@@ -435,7 +435,7 @@ make docker-up
 
 **Low validation approval rate**:
 
-- Adjust Judge #6 thresholds
+- Adjust Judge 6 thresholds
 - Review source quality
 - Check relevance scoring
 - Validate tier thresholds

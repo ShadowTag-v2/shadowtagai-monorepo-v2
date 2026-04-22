@@ -13,7 +13,7 @@ The implementation of the ExToto Doctrine has transformed the system from a fr
 8600: The unified port where the https://github.com/karpathy/autoresearchs server now provides the JURA Protocol interface.
 🛡️ Governance & Precision
 0.75 Confidence Threshold: The SOP-C Decision Protocol now triggers an automatic branch/review if model confidence drops below 75%, predicting 75% of downstream errors.
-34 vs 66: In our live governance test of 100 leads, the system successfully blocked 34 non-compliant leads and flagged 66 for review, demonstrating active ATP 5-19 enforcement.
+34 vs 66: In our live governance test of 100 leads, the system successfully blocked 34 non-compliant leads and flagged 66 for review, demonstrating active Compliance Framework enforcement.
 90/10 Split: The JURA Tier Routing is now optimized for efficiency, routing 90% of low-entropy tokens to FLASH ($0.01/req) and 10% of high-strategic tokens to PRO ($0.10-$1.00/req).
 🛠️ Codebase & Resources
 987 Deletions / 42 Insertions: The final "Deep Clean" pass removed nearly 1,000 lines of legacy code, conflict markers (<<<<<<<), and redundant stubs, replaced by 42 lines of high-density Antigravity orchestration logic.

@@ -1,4 +1,4 @@
-# Judge #6 Validation System
+# Judge 6 Validation System
 
 **Real-Time Compliance & Intelligence Validation Layer**
 
@@ -6,7 +6,7 @@
 
 ## Overview
 
-**Judge #6** is AiYou's downstream validation and enforcement system within the PNKLN Core Stack™, operating as a **hybrid Gemini+PyTorch real-time validator** that applies ATP 5-19 compliance rules, JR (Joint Requirements) validation, and quality gates to intelligence items before they reach ShadowTag attestation.
+**Judge 6** is AiYou's downstream validation and enforcement system within the PNKLN Core Stack™, operating as a **hybrid Gemini+PyTorch real-time validator** that applies Compliance Framework compliance rules, JR (Joint Requirements) validation, and quality gates to intelligence items before they reach ShadowTag attestation.
 
 **Key Function:** Transform classified intelligence (from Gemini Ingestion Layer) into compliance-validated, actionable data ready for cryptographic attestation.
 
@@ -21,10 +21,10 @@
 ```
 
 ┌──────────────────────────────────────────────────────────┐
-│                   Judge #6 Validation                     │
+│                   Judge 6 Validation                     │
 │                                                           │
 │  ┌────────────────┐  ┌────────────────┐  ┌────────────┐ │
-│  │  ATP 5-19      │  │   JR Rules     │  │  Quality   │ │
+│  │  Compliance Framework      │  │   JR Rules     │  │  Quality   │ │
 │  │  Compliance    │  │   Validator    │  │   Gates    │ │
 │  │                │  │                │  │            │ │
 │  │ • DO-178C      │  │ • NIST RMF     │  │ • FP/FN    │ │
@@ -64,7 +64,7 @@
 
 - Binary classification for known patterns (ITAR keywords, export control lists)
 
-- Low-latency decision trees for ATP 5-19 rules
+- Low-latency decision trees for Compliance Framework rules
 
 - Batch scoring for coverage metrics
 
@@ -81,7 +81,7 @@
 
 ### Operational Metrics (vs. Gemini Ingestion Layer)
 
-| Metric | Judge #6 (Validation) | Gemini Ingestion Layer |
+| Metric | Judge 6 (Validation) | Gemini Ingestion Layer |
 |--------|----------------------|------------------------|
 | **Architecture** | Hybrid Gemini+PyTorch | GKE CronJob Multi-Container |
 | **Execution Model** | Real-time on-demand | Nightly batch (23:00 UTC) |
@@ -90,7 +90,7 @@
 | **Quality Gates** | FP/FN rates, Coverage (≥98%) | Relevance, Timeliness, Completeness |
 | **Integration** | **Calls** services in 4 namespaces | **Called by** services in 4 namespaces |
 | **Cost Model** | Per-API-call variable ($0.02-0.05/validation) | Fixed monthly (~$77) |
-| **Unique Features** | ATP 5-19 compliance, JR validation | Ethical crawling, Tier classification |
+| **Unique Features** | Compliance Framework compliance, JR validation | Ethical crawling, Tier classification |
 
 ### Performance Benchmarks (Production)
 
@@ -109,7 +109,7 @@ throughput:
 accuracy_metrics:
   false_positive_rate: ≤1.5%  # Items incorrectly blocked
   false_negative_rate: ≤0.5%  # Non-compliant items passed
-  coverage: ≥98%               # % of ATP 5-19 rules evaluated
+  coverage: ≥98%               # % of Compliance Framework rules evaluated
 
 block_rate:
   tier_1_items: 2-5%    # High-value intelligence rarely blocked
@@ -121,15 +121,15 @@ block_rate:
 
 ---
 
-## ATP 5-19 Compliance Rules
+## Compliance Framework Compliance Rules
 
-### What is ATP 5-19?
+### What is Compliance Framework?
 
-**Allied Tactical Publication (ATP) 5-19** is a NATO standardized framework for **joint intelligence preparation of the operational environment (JIPOE)**. Judge #6 implements a subset of ATP 5-19 rules relevant to intelligence validation, ensuring items meet military intelligence standards before attestation.
+**Allied Tactical Publication (ATP) 5-19** is a NATO standardized framework for **joint intelligence preparation of the operational environment (JIPOE)**. Judge 6 implements a subset of Compliance Framework rules relevant to intelligence validation, ensuring items meet military intelligence standards before attestation.
 
-**Key ATP 5-19 Domains Implemented:**
+**Key Compliance Framework Domains Implemented:**
 
-| Domain | ATP 5-19 Requirement | Judge #6 Implementation | Pass Criteria |
+| Domain | Compliance Framework Requirement | Judge 6 Implementation | Pass Criteria |
 |--------|---------------------|------------------------|---------------|
 | **Source Reliability** | 6-level classification (A-F) | Rate sources A (Reliable) to F (Unreliable) | Source rating ≥C |
 | **Information Credibility** | 6-level classification (1-6) | Rate content 1 (Confirmed) to 6 (Improbable) | Credibility ≤3 |
@@ -142,9 +142,9 @@ block_rate:
 
 ```python
 
-# Simplified ATP 5-19 validation logic
+# Simplified Compliance Framework validation logic
 
-def validate_atp_5_19(item):
+def validate_compliance_framework(item):
     results = {
         "source_reliability": rate_source(item.source),  # A-F scale
         "credibility": rate_credibility(item.content),   # 1-6 scale
@@ -172,7 +172,7 @@ def validate_atp_5_19(item):
 {
   "item_id": "ing_2025-11-15_a7b3c9",
   "validation_result": "PASS",
-  "atp_5_19_scores": {
+  "compliance_framework_scores": {
     "source_reliability": "B (Usually Reliable)",
     "credibility": 2 ("Probably True"),
     "timeliness": "current (<24h)",
@@ -180,7 +180,7 @@ def validate_atp_5_19(item):
     "relevance": 3,
     "classification": "UNCLASSIFIED//FOUO"
   },
-  "pass_reason": "All ATP 5-19 criteria met",
+  "pass_reason": "All Compliance Framework criteria met",
   "next_action": "shadowtag_l4_attestation"
 }
 
@@ -262,17 +262,17 @@ An ingested item contains: *"Lockheed Martin's new F-35 avionics architecture in
 
 ### Coverage Target: ≥98%
 
-**Coverage** measures the percentage of ATP 5-19 rules evaluated against each intelligence item. Judge #6 targets ≥98% coverage, meaning nearly all regulatory checks are applied.
+**Coverage** measures the percentage of Compliance Framework rules evaluated against each intelligence item. Judge 6 targets ≥98% coverage, meaning nearly all regulatory checks are applied.
 
 **Coverage Calculation:**
 
 ```
 
-Coverage = (Rules Evaluated / Total ATP 5-19 Rules) × 100%
+Coverage = (Rules Evaluated / Total Compliance Framework Rules) × 100%
 
 Example:
 
-- Total ATP 5-19 rules implemented: 127
+- Total Compliance Framework rules implemented: 127
 
 - Rules evaluated for item "ing_2025-11-15_a7b3c9": 125
 
@@ -320,7 +320,7 @@ Example:
 
 ## Integration with 4 Kubernetes Namespaces
 
-Judge #6 **calls** services across **4 Kubernetes namespaces** to complete validation:
+Judge 6 **calls** services across **4 Kubernetes namespaces** to complete validation:
 
 ### Namespace Architecture
 
@@ -338,8 +338,8 @@ Judge #6 **calls** services across **4 Kubernetes namespaces** to complete valid
 │                          ▼                                   │
 │  ┌─────────────────────────────────────────────────────┐   │
 │  │ namespace: intelligence-validation  ← JUDGE #6 HERE │   │
-│  │  - Judge #6 validation API                          │   │
-│  │  - ATP 5-19 rule engine                             │   │
+│  │  - Judge 6 validation API                          │   │
+│  │  - Compliance Framework rule engine                             │   │
 │  │  - JR compliance checker                            │   │
 │  └─────────────────────────────────────────────────────┘   │
 │          │                    │                     │       │
@@ -373,12 +373,12 @@ Judge #6 **calls** services across **4 Kubernetes namespaces** to complete valid
 
 ### Variable Cost Structure
 
-Unlike Gemini Ingestion Layer's **fixed monthly cost ($1,376)**, Judge #6 operates on a **per-validation cost model** to scale with usage.
+Unlike Gemini Ingestion Layer's **fixed monthly cost ($1,376)**, Judge 6 operates on a **per-validation cost model** to scale with usage.
 
 ```yaml
 per_validation_costs:
   gemini_2_0_pro:
-    input_tokens_avg: 1500 tokens (item content + ATP 5-19 rules)
+    input_tokens_avg: 1500 tokens (item content + Compliance Framework rules)
     cost_per_1m_input: $1.25
     cost_per_validation: $0.001875
 
@@ -405,13 +405,13 @@ total_per_validation: $0.002225 (~$0.0022)
 | **100,000** | 3,000,000 | $6,675 | $0.0022 |
 | **500,000** (2× scale) | 15,000,000 | $33,375 | $0.0022 |
 
-**Key Insight:** Cost scales **linearly** with volume (no infrastructure fixed costs to amortize), making Judge #6 more expensive at high scale compared to batch systems.
+**Key Insight:** Cost scales **linearly** with volume (no infrastructure fixed costs to amortize), making Judge 6 more expensive at high scale compared to batch systems.
 
 **Optimization Strategy:**
 
 - **Cache Validation Results:** 30-day TTL for identical content hashes (reduces duplicate validations by ~15%)
 
-- **Tier-Based Routing:** Skip ATP 5-19 checks for Tier 3 items (low-value), saving ~30% on API calls
+- **Tier-Based Routing:** Skip Compliance Framework checks for Tier 3 items (low-value), saving ~30% on API calls
 
 - **Batch Mode (Optional):** For non-critical items, batch 100 validations per Gemini call (reduces cost by 40%)
 
@@ -419,7 +419,7 @@ total_per_validation: $0.002225 (~$0.0022)
 
 ## Real-Time vs. Batch Processing Trade-Offs
 
-### Why Real-Time for Judge #6?
+### Why Real-Time for Judge 6?
 
 | Use Case | Latency Requirement | Example |
 |----------|-----------------------|---------|
@@ -433,7 +433,7 @@ total_per_validation: $0.002225 (~$0.0022)
 
 - Historical analysis, trend detection, archival
 
-**Real-Time Processing (Judge #6)** required for:
+**Real-Time Processing (Judge 6)** required for:
 
 - Safety-critical decisions (aviation, defense, autonomous vehicles)
 
@@ -445,7 +445,7 @@ total_per_validation: $0.002225 (~$0.0022)
 
 ## Comparison Table: Acquisitive vs. Defensive Philosophy
 
-| Dimension | Gemini Ingestion Layer (Acquisitive) | Judge #6 (Defensive) |
+| Dimension | Gemini Ingestion Layer (Acquisitive) | Judge 6 (Defensive) |
 |-----------|-------------------------------------|----------------------|
 | **Goal** | Maximize **recall** (catch everything) | Maximize **precision** (block bad items) |
 | **Error Tolerance** | High (15-25% misclassification OK pre-prod) | Low (<2% FP/FN) |
@@ -458,7 +458,7 @@ total_per_validation: $0.002225 (~$0.0022)
 
 - **Ingestion Layer = Fishing Trawler:** Cast a wide net, accept bycatch, sort later
 
-- **Judge #6 = Quality Inspector:** Examine each fish, reject defects, pass only premium
+- **Judge 6 = Quality Inspector:** Examine each fish, reject defects, pass only premium
 
 ---
 
@@ -485,7 +485,7 @@ key_metrics:
     alert_threshold: "FP > 2% for 24h rolling window"
 
 
-  - name: "ATP 5-19 Coverage (%)"
+  - name: "Compliance Framework Coverage (%)"
     alert_threshold: "Coverage < 98% for 1 hour"
 
 
@@ -514,7 +514,7 @@ key_metrics:
 
 - [ ] Reduce FP rate to ≤1.0% through fine-tuned PyTorch models
 
-- [ ] Increase ATP 5-19 coverage to 99.5%
+- [ ] Increase Compliance Framework coverage to 99.5%
 
 - [ ] Implement human-in-the-loop review for borderline cases (0.45-0.55 confidence)
 
@@ -523,7 +523,7 @@ key_metrics:
 
 - [ ] Extend JR validation to non-English content (Mandarin, Russian, Arabic)
 
-- [ ] Translate ATP 5-19 rules for NATO allies (French, German, Polish)
+- [ ] Translate Compliance Framework rules for NATO allies (French, German, Polish)
 
 ### Q3 2026: Explainability & Auditing
 
@@ -537,19 +537,19 @@ key_metrics:
 
 - [ ] Implement validation result caching (30-day TTL) → reduce costs by 15-20%
 
-- [ ] Tier-based routing (skip ATP 5-19 for Tier 3 items) → save 30% on API calls
+- [ ] Tier-based routing (skip Compliance Framework for Tier 3 items) → save 30% on API calls
 
 ---
 
 ## Integration with Cor.8 Ecosystem
 
-| Cor.8 Component | Judge #6 Input | Judge #6 Output |
+| Cor.8 Component | Judge 6 Input | Judge 6 Output |
 |-----------------|----------------|-----------------|
 | **Gemini Ingestion Layer** | Classified items (Tier 1/2/3) | Validation pass/fail/flag |
 | **ShadowTag Attestation** | Validation results | Attestation level (L2/L4) or rejection |
 | **PNT System** | Geo-tagged intelligence | Threat alerts for anti-spoofing |
 | **Aviation Vertical** | FAA filings, NOTAM updates | Compliance-validated updates |
-| **Defense & ISR** | FOIA docs, DoD contracts | ATP 5-19 validated intel |
+| **Defense & ISR** | FOIA docs, DoD contracts | Compliance Framework validated intel |
 
 ---
 

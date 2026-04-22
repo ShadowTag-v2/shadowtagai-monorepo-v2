@@ -18,7 +18,7 @@ This repository now contains two complementary strategic documents that together
 │  │ WHAT we offer   │◄───────────┤ HOW we deliver   │       │
 │  │                 │            │                  │       │
 │  │ • p99≤90ms SLA  │            │ • DTE evolution  │       │
-│  │ • ATP 5-19 gov  │            │ • GRPO training  │       │
+│  │ • Compliance Framework gov  │            │ • GRPO training  │       │
 │  │ • 102× compress │            │ • Glicko-2 alloc │       │
 │  │ • Multi-model   │            │ • Cheat fusion   │       │
 │  │ • $60-65K burn  │            │ • MAD validation │       │
@@ -121,7 +121,7 @@ Every **external claim** in COR.54 is backed by an **internal capability** in CO
 COR.54 CLAIM                   COR.54A ENABLER               SECTION
 ─────────────────────────────────────────────────────────────────────
 p99≤90ms SLA                → DTE + GRPO training          → 4.1, 4.2
-ATP 5-19 governance         → MAD/Panel debates            → 3.1, 5
+Compliance Framework governance         → MAD/Panel debates            → 3.1, 5
 102× semantic compression   → Cheat Sheet fusion (21→10)   → 3.2
 Multi-model allocation      → Glicko-2 ratings (μ/φ/σ)     → 5.1
 Multi-agent coordination    → Benchmark validation         → 7.1
@@ -186,7 +186,7 @@ Bootstrap $0K→$275M path    → Investor materials           → 9.1, 9.2
 
 - Chain multiple reasoning "kernels" (CoT→ToT→RCR→MAD) in sequence
 - Each kernel = atomic reasoning unit
-- Chaining = Judge #6 orchestration layer
+- Chaining = Judge 6 orchestration layer
 - Goal: Even tighter latency bounds for complex multi-step reasoning
 
 ---
@@ -299,7 +299,7 @@ Bootstrap $0K→$275M path    → Investor materials           → 9.1, 9.2
 
 ### Q1: "Is Pnkln's p99≤90ms SLA real or marketing hype?"
 
-**A**: COR.54A Section 4 shows GRPO training + DTE evolution enable <500μs JR Engine execution. Combined with Judge #6 hybrid (Gemini+PyTorch+rules), total latency budget is achievable. NOT vaporware—architected capability.
+**A**: COR.54A Section 4 shows GRPO training + DTE evolution enable <500μs JR Engine execution. Combined with Judge 6 hybrid (Gemini+PyTorch+rules), total latency budget is achievable. NOT vaporware—architected capability.
 
 ### Q2: "How does Pnkln avoid vendor lock-in if using 40% Gemini?"
 

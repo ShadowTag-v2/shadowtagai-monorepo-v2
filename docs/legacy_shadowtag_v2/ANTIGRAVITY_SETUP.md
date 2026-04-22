@@ -81,7 +81,7 @@ metrics = client.get_metrics()
 
 **Squadron Structure**:
 
-- **HHT (90 agents)**: Headquarters, Judge #6, S-1 to S-6 Staff
+- **HHT (90 agents)**: Headquarters, Judge 6, S-1 to S-6 Staff
 - **AIR_CAV (120 agents)**: Aerial Scouts (Apache, Kiowa, Black Hawk)
 - **ALPHA (130 agents)**: Armor (M1 Abrams - Heavy Compute)
 - **BRAVO (130 agents)**: Stryker (Rapid Deployment)

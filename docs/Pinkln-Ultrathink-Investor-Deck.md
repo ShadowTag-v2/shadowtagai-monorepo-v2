@@ -304,7 +304,7 @@ Cost: Hidden                    Cost: Optimized -30%
 
 **Technical Pedigree:**
 
-- PNKLN Core Stack: ATP 5-19 risk framework, JR Engine (<500μs validation)
+- PNKLN Core Stack: Compliance Framework risk framework, JR Engine (<500μs validation)
 - Gemini Ingestion Layer: 8+ source collection, 45 min runtime
 - FastAPI Deployment: GKE + OpenTelemetry production infrastructure
 
@@ -410,7 +410,7 @@ Cost: Hidden                    Cost: Optimized -30%
 
 **4. Team Ready to Execute**
 
-- PNKLN Core Stack proven (Judge #6, Gemini Ingestion, JR Engine)
+- PNKLN Core Stack proven (Judge 6, Gemini Ingestion, JR Engine)
 - FastAPI deployment infrastructure mature (GKE + OpenTelemetry)
 - 10-week roadmap to full platform (Phases 1-3 spec'd out)
 

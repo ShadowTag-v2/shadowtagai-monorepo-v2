@@ -452,7 +452,7 @@ Minimum confidence: {request.confidence_threshold * 100}%
         self,
         request: ComparisonAnalysisRequest,
     ) -> ComparisonAnalysisResponse:
-        """Compare two systems (e.g., Judge #6 vs Ingestion Layer).
+        """Compare two systems (e.g., Judge 6 vs Ingestion Layer).
 
         Args:
             request: Comparison request

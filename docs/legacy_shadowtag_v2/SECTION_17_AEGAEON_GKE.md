@@ -6,7 +6,7 @@
 
 - `claude/gke-deployment-preflight-validation-011CUvwFd6EehwYx2V6KcP8k` (Deployment & Validation)
 
-- `claude/gke-inference-validation-sprint-01GT3tb66B9CWyJ5o6PHNYZP` (GPU Inference for Judge #6)
+- `claude/gke-inference-validation-sprint-01GT3tb66B9CWyJ5o6PHNYZP` (GPU Inference for Judge 6)
 
 - **Research**: `docs/research/cor-23-llm-serving-efficiency.md` (Aegaeon SOSP'24 analysis)
 
@@ -223,7 +223,7 @@ Annual Savings:       $100K+/year
 
 2. $77/month production infrastructure (GKE Autopilot)
 
-3. p99 ≤90ms validated (Judge #6 GPU sprint)
+3. p99 ≤90ms validated (Judge 6 GPU sprint)
 
 4. 2,526× ROI (Memory persistence)
 

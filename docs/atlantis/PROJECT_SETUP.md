@@ -77,14 +77,14 @@ This guide explains how to use the **"heavier" Projects approach** for Pnkln con
 
    - Location: `docs/pnkln/TECHNICAL_SLA.md`
 
-   - Purpose: Judge #6 targets, core stack, architecture principles
+   - Purpose: Judge 6 targets, core stack, architecture principles
 
 
 5. **RISK_FRAMEWORK.md** (risk management)
 
    - Location: `docs/pnkln/RISK_FRAMEWORK.md`
 
-   - Purpose: ATP 5-19 gates, kill-switch protocols
+   - Purpose: Compliance Framework gates, kill-switch protocols
 
 **How to Upload**:
 
@@ -108,9 +108,9 @@ When working on strategic decisions, use the JR_ENGINE framework (PURPOSE → RE
 
 When evaluating financial decisions, validate against BOOTSTRAP_GATES (burn limit $60-65K, ROI ≥3×, LTV:CAC ≥4:1).
 
-When making technical decisions, check TECHNICAL_SLA compliance (Judge #6 p99≤90ms, core stack requirements).
+When making technical decisions, check TECHNICAL_SLA compliance (Judge 6 p99≤90ms, core stack requirements).
 
-When assessing risks, apply RISK_FRAMEWORK (ATP 5-19: Identify → Assess → Control → Implement → Supervise).
+When assessing risks, apply RISK_FRAMEWORK (Compliance Framework: Identify → Assess → Control → Implement → Supervise).
 
 Always exercise objection duty: challenge assumptions, flag weak evidence, call out scope creep.
 
@@ -200,7 +200,7 @@ Should we [technical choice]? Check against TECHNICAL_SLA requirements.
 
 ```
 
-Should we migrate from PostgreSQL to MongoDB for Judge #6? Check against TECHNICAL_SLA requirements.
+Should we migrate from PostgreSQL to MongoDB for Judge 6? Check against TECHNICAL_SLA requirements.
 
 ```
 
@@ -247,7 +247,7 @@ ALTERNATIVE: Optimize PostgreSQL (indexes, caching) to reach p99≤90ms target.
 
 ```
 
-Assess the risk of [scenario] using ATP 5-19 framework.
+Assess the risk of [scenario] using Compliance Framework framework.
 
 ```
 
@@ -255,7 +255,7 @@ Assess the risk of [scenario] using ATP 5-19 framework.
 
 ```
 
-Assess the risk of relying on a single cloud provider (AWS) using ATP 5-19 framework.
+Assess the risk of relying on a single cloud provider (AWS) using Compliance Framework framework.
 
 ```
 
@@ -752,7 +752,7 @@ Evaluate [decision] using:
 
 2. BOOTSTRAP_GATES (all 5 gates)
 
-3. RISK_FRAMEWORK (ATP 5-19 assessment)
+3. RISK_FRAMEWORK (Compliance Framework assessment)
 
 Provide a consolidated recommendation.
 
@@ -862,7 +862,7 @@ Classify this evidence (Tier 1-4). What's missing? What would strengthen the cas
 
    - Check gate compliance for recent spending
 
-   - Assess 1-2 risks using ATP 5-19
+   - Assess 1-2 risks using Compliance Framework
 
    - Refine custom instructions based on results
 

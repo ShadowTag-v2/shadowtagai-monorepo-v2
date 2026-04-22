@@ -12,7 +12,7 @@ We watched that happen — then shipped anyway.
 
 ## What We Built While Others Waited
 
-**Judge #6** — AI governance engine for defense procurement compliance (ATP 5-19)
+**Judge 6** — AI governance engine for defense procurement compliance (ATP 5-19)
 - Sub-100ms decision latency (vs. 48+ hour manual review)
 - $0.005/decision cost, $0.50/decision pricing = 100× margin
 - Already handling production workloads
@@ -38,7 +38,7 @@ The SBIR collapse created three things:
 **$2M seed** to reach $10M ARR by Q4 2026
 
 - 10 person team max (Year 1)
-- Judge #6 enterprise pilots: Dec 1
+- Judge 6 enterprise pilots: Dec 1
 - First paying customers: Jan 15
 - Close this round: Before Dec 1
 

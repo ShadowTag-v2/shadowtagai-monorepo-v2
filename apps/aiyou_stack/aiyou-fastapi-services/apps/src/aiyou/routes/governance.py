@@ -38,7 +38,7 @@ class TraceRecord(BaseModel):
 
     decision_id: str = Field(default_factory=lambda: str(uuid4()))
     timestamp_utc: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
-    judge_version: str = "Judge #6 (v1.0.4)"
+    judge_version: str = "Judge 6 (v1.0.4)"
     inputs: TraceInput
     logic_trace: list[str] = Field(default_factory=list)
     final_verdict: str = "PENDING"
@@ -98,7 +98,7 @@ async def upload_trace(trace: TraceUploadRequest):
     trace_record = {
         "decision_id": decision_id,
         "timestamp_utc": datetime.utcnow().isoformat(),
-        "judge_version": "Judge #6 (v1.0.4)",
+        "judge_version": "Judge 6 (v1.0.4)",
         "inputs": trace.inputs.model_dump(),
         "logic_trace": trace.logic_trace,
         "final_verdict": trace.final_verdict,
@@ -146,5 +146,5 @@ async def health_check():
         "status": "healthy",
         "service": "governance",
         "fedramp_compliant": True,
-        "judge_version": "Judge #6 (v1.0.4)",
+        "judge_version": "Judge 6 (v1.0.4)",
     }

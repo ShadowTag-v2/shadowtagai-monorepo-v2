@@ -119,7 +119,7 @@ response = model.generate_content("SWARM VOTE: Update database schema")
 ```python
 from src.pnkln-stack.services.gemini_core import GeminiAntigravity
 
-# Swarm is already integrated via Judge #6
+# Swarm is already integrated via Judge 6
 
 # Use autoresearch2.py for native execution
 

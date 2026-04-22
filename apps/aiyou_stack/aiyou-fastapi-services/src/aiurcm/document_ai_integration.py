@@ -1,5 +1,5 @@
 """AiURCM Document AI Integration
-Processes compliance documents using Google Document AI and triggers Judge #6 analysis
+Processes compliance documents using Google Document AI and triggers Judge 6 analysis
 """
 
 import json
@@ -179,14 +179,14 @@ class DocumentAIProcessor:
         use_form_parser: bool = False,
         metadata: dict[str, Any] | None = None,
     ) -> str:
-        """Process document and publish to Pub/Sub for Judge #6 analysis.
+        """Process document and publish to Pub/Sub for Judge 6 analysis.
 
         Args:
             bucket_name: GCS bucket
             file_path: File path in bucket
             mime_type: MIME type
             use_form_parser: Use form parser
-            metadata: Additional metadata to pass to Judge #6
+            metadata: Additional metadata to pass to Judge 6
 
         Returns:
             Pub/Sub message ID
@@ -200,7 +200,7 @@ class DocumentAIProcessor:
             use_form_parser=use_form_parser,
         )
 
-        # Prepare message for Judge #6
+        # Prepare message for Judge 6
         message_data = {
             "document_id": result.document_id,
             "document_content": result.text_content,
@@ -306,7 +306,7 @@ class CloudFunctionHandler:
             # Determine processor type based on file path or content type
             use_form_parser = "forms" in file_path.lower()
 
-            # Process and trigger Judge #6
+            # Process and trigger Judge 6
             message_id = self.processor.process_and_trigger_judge6(
                 bucket_name=bucket_name,
                 file_path=file_path,
@@ -318,7 +318,7 @@ class CloudFunctionHandler:
                 },
             )
 
-            logger.info(f"Successfully triggered Judge #6: message_id={message_id}")
+            logger.info(f"Successfully triggered Judge 6: message_id={message_id}")
 
         except Exception as e:
             logger.error(f"Failed to process document: {e}", exc_info=True)
@@ -330,7 +330,7 @@ def process_compliance_document(event, context):
     """Cloud Function entry point for Document AI processing.
 
     Triggered by: Cloud Storage object finalization
-    Triggers: Pub/Sub message to Judge #6 orchestrator
+    Triggers: Pub/Sub message to Judge 6 orchestrator
     """
     import os
 

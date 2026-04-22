@@ -1,4 +1,4 @@
-"""Unit tests for Judge #6 validation pipeline (p99≤90ms SLA)."""
+"""Unit tests for Judge 6 validation pipeline (p99≤90ms SLA)."""
 
 import asyncio
 
@@ -9,10 +9,10 @@ from shadowtagai.core.jr_engine import RiskLevel
 
 
 class TestJudgeSixPipeline:
-    """Test suite for Judge #6 pipeline."""
+    """Test suite for Judge 6 pipeline."""
 
     def setup_method(self):
-        """Initialize Judge #6 pipeline for tests."""
+        """Initialize Judge 6 pipeline for tests."""
         self.judge = JudgeSixPipeline()
 
     @pytest.mark.asyncio
@@ -90,7 +90,7 @@ class TestJudgeSixPipeline:
 
     @pytest.mark.asyncio
     async def test_concurrent_validations(self):
-        """Test that Judge #6 can handle concurrent requests."""
+        """Test that Judge 6 can handle concurrent requests."""
         requests = [{"text": f"Concurrent request {i}"} for i in range(10)]
 
         # Execute all validations concurrently

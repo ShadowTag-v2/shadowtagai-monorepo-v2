@@ -28,7 +28,7 @@
 1. ✅ Create Bevy plugin (`ClaudeAgentPlugin`) enabling agent-to-game communication
 2. ✅ Implement bidirectional message passing between Python/TypeScript agents and Rust/Bevy
 3. ✅ Enable agents to spawn entities, update components, and query game state
-4. ✅ Maintain 98%+ test coverage per Judge #6 protocol
+4. ✅ Maintain 98%+ test coverage per Judge 6 protocol
 5. ✅ Deploy to production with ATP 5-19 compliance
 
 ### Success Metrics
@@ -585,7 +585,7 @@
 
 ---
 
-### Checkpoint 4.2: Coverage Validation (Judge #6)
+### Checkpoint 4.2: Coverage Validation (Judge 6)
 
 **Owner**: OrangeCreek (OC-03)
 **Risk Level**: RA-4 (Human Approval Required)
@@ -712,7 +712,7 @@
 ### Risk 2: Coverage Below 98%
 
 **Probability**: 20%
-**Impact**: Moderate (Judge #6 blocks deployment)
+**Impact**: Moderate (Judge 6 blocks deployment)
 **Mitigation**:
 
 - Write tests alongside code (TDD)
@@ -791,7 +791,7 @@
 ### Phase 4 Success
 
 - [ ] Security audit passed
-- [ ] Coverage ≥98% validated by Judge #6
+- [ ] Coverage ≥98% validated by Judge 6
 - [ ] Production deployment successful
 - [ ] No P0/P1 incidents in first week
 

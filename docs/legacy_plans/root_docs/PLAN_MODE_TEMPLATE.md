@@ -168,7 +168,7 @@ See [GEMINI_INGESTION_ANALYSIS.md](./GEMINI_INGESTION_ANALYSIS.md) for a compreh
 ### Applied to System Analysis
 
 ```
-Judge #6 → Gemini Ingestion Layer:
+Judge 6 → Gemini Ingestion Layer:
 - swap domain terminology → intelligence collection
 - shift p99 ≤90ms → ~45 min/night batch runtime
 - replace 98% coverage → multi-gate quality (items, sources, costs, scores)
@@ -179,7 +179,7 @@ Judge #6 → Gemini Ingestion Layer:
 - lower confidence 70% → 60% (pre-prod, spec-only)
 
 Impl:
-- maintain Judge #6 prompt structure
+- maintain Judge 6 prompt structure
 - customize metrics for upstream collection role
 - integrate GKE cron architecture analysis
 - validate ethical compliance sections
@@ -188,12 +188,12 @@ Unresolved Qs:
 - test runs calibrated for Gemini 2.0 Pro?
 - visualization requests (tables/charts) needed?
 - edge case scenarios (outages, cost spikes) included?
-- integration analysis with Judge #6 handoffs?
+- integration analysis with Judge 6 handoffs?
 
 Options:
 1. Deploy to pre-prod + run calibration
 2. Add visualization enhancement first
-3. Create combined Judge #6 ↔ Ingestion prompt
+3. Create combined Judge 6 ↔ Ingestion prompt
 ```
 
 **Takeaway**: Same concise format works for code refactors AND architectural migrations.

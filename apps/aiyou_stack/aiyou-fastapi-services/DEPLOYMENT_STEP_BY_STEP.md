@@ -572,7 +572,7 @@ Deployment Checklist
 
 [ ] All 30 corpora initialized
 [ ] Policy documents uploaded to GCS
-[ ] Judge #6 layers implemented
+[ ] Judge 6 layers implemented
 [ ] Environment variables configured
 [ ] Health checks passing
 
@@ -671,7 +671,7 @@ curl <http://localhost:8000/metrics> | grep latency
 """
 After successful deployment:
 
-1. Implement Judge #6 layers (see JUDGE_IMPLEMENTATION_GUIDE.md)
+1. Implement Judge 6 layers (see JUDGE_IMPLEMENTATION_GUIDE.md)
 2. Configure vertical-specific rules
 3. Set up alerting (PagerDuty, Slack, etc.)
 4. Create Grafana dashboards

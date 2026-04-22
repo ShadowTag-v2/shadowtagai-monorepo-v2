@@ -32,7 +32,7 @@ export function createVertexClient(config?: VertexConfig): AnthropicVertex {
 }
 
 /**
- * Judge #6 Governance Request
+ * Judge 6 Governance Request
  */
 export interface JudgeRequest {
   content: string;
@@ -41,7 +41,7 @@ export interface JudgeRequest {
 }
 
 /**
- * Judge #6 Decision Response
+ * Judge 6 Decision Response
  */
 export interface JudgeDecision {
   approved: boolean;
@@ -104,7 +104,7 @@ export async function judgeWithGemini(
 }
 
 function buildJudgeSystemPrompt(): string {
-  return `You are PNKLN Judge #6, an AI governance enforcement system.
+  return `You are PNKLN Judge 6, an AI governance enforcement system.
 
 Your role is to analyze content and determine if it violates policy guidelines.
 

@@ -21,7 +21,7 @@
 │  └────────┬─────────┘  └────────┬─────────┘  └──────┬───────┘  │
 │           │                     │                     │          │
 │  ┌────────┴──────────┬──────────┴──────────┬──────────┴───────┐ │
-│  │    ShadowTag-v2 Video    │  Judge #6 Safety   │  GPTRAM Memory  │ │
+│  │    ShadowTag-v2 Video    │  Judge 6 Safety   │  GPTRAM Memory  │ │
 │  │  $5-8B value      │  Governance Layer  │  (unified)      │ │
 │  └───────────────────┴────────────────────┴──────────────────┘ │
 │                              ↓                                  │
@@ -204,13 +204,13 @@
 - **Revenue Impact**: +$40M/year cross-selling ShadowTag to ShadowTag-v2 creators
 - **Technical**: ShadowTag-v2 upload endpoint → ShadowTag neural hash → blockchain receipt
 
-#### Synergy 3: GAAS ↔ Judge #6 ↔ ShadowTag
+#### Synergy 3: GAAS ↔ Judge 6 ↔ ShadowTag
 
 **Integration**: Flight decisions validated AND authenticated
 
 - **Use Case**: Autonomous drone missions have tamper-proof audit trails
 - **Revenue Impact**: +$25M/year from defense/regulatory compliance
-- **Technical**: GAAS mission → Judge #6 validation → ShadowTag receipt
+- **Technical**: GAAS mission → Judge 6 validation → ShadowTag receipt
 
 #### Synergy 4: Tegu + GAAS ↔ ShadowTag-v2
 
@@ -270,11 +270,11 @@
 - **Competitors**: TikTok (engagement), YouTube (watch time)
 - **Regulatory Advantage**: Aligns with EU AI Act fair algorithm requirements
 
-#### Advantage 4: Integrated Safety (Judge #6)
+#### Advantage 4: Integrated Safety (Judge 6)
 
 **Moat**: 100% decision validation across all platforms
 
-- **Compliance**: ATP 5-19, SOC 2, GDPR, HIPAA
+- **Compliance**: Compliance Framework, SOC 2, GDPR, HIPAA
 - **Differentiation**: Only platform with military-grade safety validation
 
 ### 5.2 Total Addressable Market (TAM)
@@ -366,7 +366,7 @@
 
 **Risk 3: GAAS Safety Incidents**
 
-- **Mitigation**: 100% Judge #6 validation, geofencing, manual override
+- **Mitigation**: 100% Judge 6 validation, geofencing, manual override
 - **Insurance**: $10M liability coverage
 - **Compliance**: Part 107 waiver assistance
 
@@ -472,7 +472,7 @@
 
 **Scenario D: Defense Contractor (Lockheed, Northrop)**
 
-- **Rationale**: GAAS + Judge #6 for military applications
+- **Rationale**: GAAS + Judge 6 for military applications
 - **Valuation**: $5-8B (Tegu + GAAS + safety only)
 - **Likelihood**: Moderate (SOF interest in autonomous systems)
 

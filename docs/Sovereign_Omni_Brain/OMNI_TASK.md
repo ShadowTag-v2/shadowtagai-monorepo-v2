@@ -847,7 +847,7 @@ Designate the operational parameters, risk thresholds (YRM), and specific SLA ta
 
 ## Actions
 
-- [x] Define ATP 5-19 YRM Matrix for Cloud Tasks dispatch.
+- [x] Define Compliance Framework YRM Matrix for Cloud Tasks dispatch.
 - [x] Define p99 Latency targets for Gideon OS.
 - [x] Enshrine parameters in `.beads/GIDEON_OS_MIGRATION_SLA.md`.
 
@@ -868,13 +868,13 @@ Build the Python-to-Objective-C bridge bypassing the 119-compile limit to pipe t
 
 ## Objective
 
-Elevate the local ANE Swarm Ascension into a "Military-Grade" Autonomous Defense System. Initialize the Triad Swarm (Architect, Builder, Critic) utilizing ATP 5-19 as the anchoring risk matrix for the 17-Layer DOW CRSMC '25 shield. Establish the Glass House telemetry to stream continuous "Thought" processes mapping anomaly detection arrays.
+Elevate the local ANE Swarm Ascension into a "Military-Grade" Autonomous Defense System. Initialize the Triad Swarm (Architect, Builder, Critic) utilizing Compliance Framework as the anchoring risk matrix for the 17-Layer DOW CRSMC '25 shield. Establish the Glass House telemetry to stream continuous "Thought" processes mapping anomaly detection arrays.
 
 ## Actions
 
-- [x] Update `implementation_plan.md` to formally document the Glass House Triad and ATP 5-19 core.
+- [x] Update `implementation_plan.md` to formally document the Glass House Triad and Compliance Framework core.
 - [x] Upgrade `src/relay_server.py` to buffer and broadcast `AGENT_THOUGHT_CHUNK` telemetry for the Glass Box UI.
-- [x] Create `src/governance/dow_crsmc_sentinel.py` to enact the ATP 5-19 risk assessment and 17-layer inspection gauntlet.
+- [x] Create `src/governance/dow_crsmc_sentinel.py` to enact the Compliance Framework risk assessment and 17-layer inspection gauntlet.
 - [x] Connect the Local Mac instances to the GCP Serverless Matrix via CIAO Mesh mapping.
 - [x] Inject Copilot SDK logic to stream the generated AG-UI telemetry back to the user.
 - [x] Initialize the local GlassBox React Dashboard to visualize agentic WebSocket chatter.
@@ -1045,7 +1045,7 @@ Source Brain: 5221bc1c-bb1a-4069-b419-0e083757f0a1
 - [x] Commercialization Pivot
 - [x] Final Manifest & Egress (Omega Loop Executed)
 
-## Phase 8: Mitigation Framework (ATP 5-19 x Kosmos)
+## Phase 8: Mitigation Framework (Compliance Framework x Kosmos)
 
 - [x] Research & Grounding
 - [x] Documentation ([MITIGATION_FRAMEWORK.md])
@@ -2873,7 +2873,7 @@ Source Brain: 8ee66667-ceed-46c2-8676-98d0b38d2c18
 
 - [x] 1. Delivered Maderix ANE 1.7 TFlops / 6.6 TFLOPS/W inference explanation (exposing Apple CoreML abstractions).
 - [x] 2. Prompt 1: Sentinel JS blocking explicitly built into `GlassBoxDashboard.tsx` iframe.
-- [x] 3. Prompt 2: ATP 5-19 proxy check embedded directly into `src/agents/raider_oracle.py`.
+- [x] 3. Prompt 2: Compliance Framework proxy check embedded directly into `src/agents/raider_oracle.py`.
 - [x] 4. Prompt 3: `ICE_LAKE_SYNC` websocket translation added to UI for direct feedback.
 - [x] 5. Prompt 4: Splinter token scaling economics (Llama3 on Groq) method constructed inside `syndication_engine.py`.
 

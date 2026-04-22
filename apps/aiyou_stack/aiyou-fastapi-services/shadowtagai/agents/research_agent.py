@@ -209,7 +209,7 @@ class GeminiResearchAgent:
     def _validate_function_call(self, fn_name: str, args: dict[str, Any]) -> bool:
         """Validate function calls before execution.
 
-        Integration point for JR Engine / Judge #6 validation.
+        Integration point for JR Engine / Judge 6 validation.
 
         Args:
             fn_name: Function being called

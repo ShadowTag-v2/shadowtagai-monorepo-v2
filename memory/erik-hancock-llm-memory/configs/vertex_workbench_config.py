@@ -108,7 +108,7 @@ def load_shadowtagai_memory():
         print(f"Conversations: {{stats.get('total_conversations', 0):,}}")
 
     print("\\nArchitectures:")
-    print("  • Judge #6 (98% coverage, p99 ≤90ms)")
+    print("  • Judge 6 (98% coverage, p99 ≤90ms)")
     print("  • ShadowTag 2.0 (DCT watermarking)")
     print("  • Cor/NS (Execution brain + service mesh)")
 

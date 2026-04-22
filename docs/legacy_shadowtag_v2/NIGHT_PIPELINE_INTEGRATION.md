@@ -13,7 +13,7 @@ Successfully integrated 12 Night Pipeline branches into the pnkln-stack Platform
 
 1. **Layer 1**: Intelligence Collection (Gemini Ingestion)
 
-2. **Layer 2**: Compliance Enforcement (Judge #6 + JR Engine)
+2. **Layer 2**: Compliance Enforcement (Judge 6 + JR Engine)
 
 3. **Layer 3**: Agent Orchestration (Claude Master Framework)
 
@@ -351,7 +351,7 @@ Successfully integrated 12 Night Pipeline branches into the pnkln-stack Platform
 
 ShadowTagAi Agent Platform v0.2.0
 ├── Layer 1: Gemini Ingestion ($77/mo)
-└── Layer 2: Judge #6 + JR Engine ($1,000-1,600/mo)
+└── Layer 2: Judge 6 + JR Engine ($1,000-1,600/mo)
 
 ```
 
@@ -364,7 +364,7 @@ pnkln-stack Platform: Complete Intelligence Ecosystem
 │   ├─ Multi-source collection
 │   ├─ Ethical compliance
 │   └─ Tier classification
-├── Layer 2: Judge #6 + JR Engine ($1,000-1,600/mo)
+├── Layer 2: Judge 6 + JR Engine ($1,000-1,600/mo)
 │   ├─ GDPR/CAN-SPAM/HIPAA enforcement
 │   ├─ Purpose/Reasons/Brakes validation
 │   └─ Audit trails

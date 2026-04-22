@@ -117,7 +117,7 @@ This repository combines TWO powerful approaches into a unified AI decision syst
 | **MAD multi-agent debates**  | ✅ Implemented            | `src/agents/debate.py`                    |
 | **Cheat Sheet Fusion**       | ✅ In progress            | `src/pnkln/judge_six.py`                  |
 | **4-layer failover**         | ⚠️ Enhance Gemini         | `src/core/gemini_function_calling.py`     |
-| **Judge #6**                 | ✅ Implemented            | `src/pnkln/judge_six.py`                  |
+| **Judge 6**                 | ✅ Implemented            | `src/pnkln/judge_six.py`                  |
 | **Integrated system**        | ✅ Implemented            | `src/integration/unified_orchestrator.py` |
 
 **Status**:

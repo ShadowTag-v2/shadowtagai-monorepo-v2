@@ -1,4 +1,4 @@
-# Judge #6 v2.0 - Encoding Improvements
+# Judge 6 v2.0 - Encoding Improvements
 
 This document outlines the improvements made in the refactored version 2.0.
 
@@ -427,7 +427,7 @@ decision_dict = decision.to_dict()
 
 ## Conclusion
 
-Version 2.0 represents a complete professional refactoring of Judge #6 with:
+Version 2.0 represents a complete professional refactoring of Judge 6 with:
 - ✅ Better code organization
 - ✅ Enhanced type safety
 - ✅ Comprehensive error handling

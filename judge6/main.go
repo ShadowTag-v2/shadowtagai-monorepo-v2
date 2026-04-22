@@ -346,7 +346,7 @@ func EvaluateCommand(cmd string) PolicyResult {
 }
 
 // ──────────────────────────────────────────────
-// Judge #6 Orchestrator
+// Judge 6 Orchestrator
 // ──────────────────────────────────────────────
 
 // Judge is the top-level policy evaluator that orchestrates all rules.
@@ -356,7 +356,7 @@ type Judge struct {
 	log     *log.Logger
 }
 
-// NewJudge creates a new Judge #6 instance with default limits.
+// NewJudge creates a new Judge 6 instance with default limits.
 func NewJudge() *Judge {
 	return &Judge{
 		chains:  NewChainTracker(),

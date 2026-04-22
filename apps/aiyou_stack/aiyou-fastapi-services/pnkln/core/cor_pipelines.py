@@ -3,7 +3,7 @@
 
 Extracted from cor_orchestrator.py (Rich Hickey refactor).
 
-Pattern 1: Sequential Pipeline (Judge #6 validation)
+Pattern 1: Sequential Pipeline (Judge 6 validation)
 Pattern 2: Concurrent Execution (Monte Carlo decisions)
 
 Author: Pnkln Architecture Team

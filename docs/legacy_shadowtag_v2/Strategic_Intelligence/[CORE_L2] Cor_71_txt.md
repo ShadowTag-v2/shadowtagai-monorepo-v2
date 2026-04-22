@@ -813,7 +813,7 @@ Latency target: <500μs
 Coverage: 98% gates
 ROI validation: ≥3× in 18 months
 INITIATE CouncilOfExcellence™ for critical paths
-Judge #6 hybrid enforcement
+Judge 6 hybrid enforcement
 ShadowTag DCT integration
 AutoGen orchestration
 EVOLVE via EvolutionEngine™ 

@@ -1,4 +1,4 @@
-"""Configuration management for Judge #6 governance system."""
+"""Configuration management for Judge 6 governance system."""
 
 from dataclasses import dataclass, field
 
@@ -119,7 +119,7 @@ class ProvenanceConfig:
 
 @dataclass
 class Judge6Config:
-    """Master configuration for Judge #6 system."""
+    """Master configuration for Judge 6 system."""
 
     # Instance identifier
     COR_INSTANCE_ID: str = "cor-001"

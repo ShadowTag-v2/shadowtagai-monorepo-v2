@@ -101,7 +101,7 @@ Located at `/docs/`:
 | ---------------- | ----------------------------------------- | -------------------- |
 | **Pipeline**     | CI/CD + Agent orchestration               | Active               |
 | **Core Swarm**   | https://github.com/karpathy/autoresearchs | 650 Agents           |
-| **Governance**   | JudgeJura #6                              | ATP 5-19             |
+| **Governance**   | JudgeJura #6                              | Compliance Framework             |
 | **Framework**    | ExToto                                    | ID/EGO/SUPEREGO      |
 | **Code Quality** | CODEPMCS                                  | 50-Agent Remediation |
 | **ShadowTag**    | Cryptographic watermarking                | Building             |

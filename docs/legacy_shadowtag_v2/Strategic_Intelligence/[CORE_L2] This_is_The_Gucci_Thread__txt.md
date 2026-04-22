@@ -7,7 +7,7 @@ We are folding the Antigravity Omega Protocol (Structure & RLM) into the Judge 6
 This script establishes the Four Corners of the Singularity on your machine:
 North (Structure): A Google-Style Monorepo (uv workspace).
 East (The Brain): The RLM v3 "Grad Student" (Recursive Agent).
-South (The Law): Judge 6 Sentinel (ATP 5-19 Risk Matrix + Grounding).
+South (The Law): Judge 6 Sentinel (Compliance Framework Risk Matrix + Grounding).
 West (The Interface): Warpgrep & Antigravity Deployment.
 🦍 The Antigravity Singularity Protocol
 Run this block. It constructs the entire ecosystem from zero.
@@ -131,11 +131,11 @@ TOML
 
 # ==============================================================================
 
-# CORNER 3: THE LAW (Judge 6 Sentinel & ATP 5-19)
+# CORNER 3: THE LAW (Judge 6 Sentinel & Compliance Framework)
 
 # ==============================================================================
 
-echo ">>> [3/8] ⚖️ Codifying Judge 6 Sentinel (ATP 5-19)..."
+echo ">>> [3/8] ⚖️ Codifying Judge 6 Sentinel (Compliance Framework)..."
 
 # This is the FULL Judge 6 Logic (Risk Matrix + Grounding)
 
@@ -149,7 +149,7 @@ except: class Fore: RED=GREEN=YELLOW=CYAN=MAGENTA=BLUE=""
 PROJECT_ID = "$PROJECT_ID"
 REGION = "$REGION"
 
-# --- RISK MATRIX (ATP 5-19) ---
+# --- RISK MATRIX (Compliance Framework) ---
 
 HAZARD_DATABASE = [
 {"pattern": "sk-", "severity": "I", "name": "API Key Leak"},

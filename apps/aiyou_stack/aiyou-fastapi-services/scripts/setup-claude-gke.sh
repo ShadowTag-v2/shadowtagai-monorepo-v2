@@ -172,7 +172,7 @@ cat > ~/.claude-code/templates/phase1.checklist << 'EOF'
 EOF
 
 cat > ~/.claude-code/templates/phase2.checklist << 'EOF'
-# Phase 2: Judge #6 Deployment
+# Phase 2: Judge 6 Deployment
 ☐ Deploy Layer 1 (Gemini fine-tuned) - p99 ≤10ms
 ☐ Deploy Layer 2 (PyTorch classifier) - p99 ≤10ms
 ☐ Deploy Layer 3 (Rules engine) - p99 ≤10ms
@@ -415,7 +415,7 @@ case "$PHASE" in
         echo "Infrastructure setup plan loaded"
         ;;
     phase2)
-        echo "Judge #6 deployment plan loaded"
+        echo "Judge 6 deployment plan loaded"
         ;;
     phase3)
         echo "Stack integration plan loaded"
@@ -444,7 +444,7 @@ cat > ~/validate-sla.sh << 'EOF'
 # Validate p99 ≤90ms SLA for full stack
 
 # Run in parallel (Habit 4)
-echo "Testing Judge #6 layers in parallel..."
+echo "Testing Judge 6 layers in parallel..."
 
 test_layer() {
     local layer=$1

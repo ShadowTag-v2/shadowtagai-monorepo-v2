@@ -17,8 +17,8 @@ The PNKLN Core Stack™ is a multi-layer intelligence pipeline:
 └─────────────────────────────────────────────────────────┘
                            ↑
 ┌─────────────────────────────────────────────────────────┐
-│                   Judge #6 Layer                         │
-│         (Validation, Enforcement, ATP 5-19, JR)         │
+│                   Judge 6 Layer                         │
+│         (Validation, Enforcement, Compliance Framework, JR)         │
 └─────────────────────────────────────────────────────────┘
                            ↑
 ┌─────────────────────────────────────────────────────────┐
@@ -128,23 +128,23 @@ From the Master All-Agent Framework:
 
 ---
 
-## Evolution from Judge #6
+## Evolution from Judge 6
 
-The Gemini Ingestion Layer represents an evolution from the Judge #6 validation system:
+The Gemini Ingestion Layer represents an evolution from the Judge 6 validation system:
 
-| Aspect              | Judge #6 (Validation)           | Gemini Ingestion (Collection)          |
+| Aspect              | Judge 6 (Validation)           | Gemini Ingestion (Collection)          |
 | ------------------- | ------------------------------- | -------------------------------------- |
 | **Role**            | Reactive validator              | Proactive collector                    |
 | **Architecture**    | Hybrid Gemini+PyTorch           | GKE CronJob Multi-Container            |
 | **Performance**     | p99 ≤90ms (real-time)           | ~45 min/night (batch)                  |
 | **Key Metrics**     | Latency, Throughput, Block Rate | Items/Day, Sources, Cost/Item          |
 | **Integration**     | Calls services in 4 namespaces  | Called by services in 4 namespaces     |
-| **Unique Features** | ATP 5-19, JR Validation         | Ethical Crawling, Tier Classification  |
+| **Unique Features** | Compliance Framework, JR Validation         | Ethical Crawling, Tier Classification  |
 | **Cost Model**      | API calls per validation        | Monthly operational ~$77               |
 | **Quality Focus**   | FP/FN rates                     | Relevance, Timeliness, Completeness    |
 | **Testing**         | 98% coverage gate               | Quality gates on items, sources, costs |
 
-**Key Insight**: Judge #6 is about enforcement (downstream, defensive), while Gemini Ingestion is about acquisition (upstream, proactive). The framework adapts accordingly.
+**Key Insight**: Judge 6 is about enforcement (downstream, defensive), while Gemini Ingestion is about acquisition (upstream, proactive). The framework adapts accordingly.
 
 ---
 
@@ -408,7 +408,7 @@ console.log(`Optimization Opportunities: ${analysis.recommendations.length}`);
 ### Short-term (1-2 months)
 
 4. **Production Telemetry Integration** - Connect to GKE metrics
-5. **Combined Analysis** - End-to-end pipeline (Ingestion → Judge #6 → Briefing)
+5. **Combined Analysis** - End-to-end pipeline (Ingestion → Judge 6 → Briefing)
 6. **A/B Testing Framework** - Test optimization recommendations
 
 ### Medium-term (3-6 months)

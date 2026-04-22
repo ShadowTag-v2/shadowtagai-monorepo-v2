@@ -3,7 +3,7 @@
 **Category:** AI Safety Layer
 **Wedge:** AI development teams
 **ARR Wedge:** $600M - $900M
-**Moat:** Doctrine + Compliance (ATP 5-19)
+**Moat:** Doctrine + Compliance (Compliance Framework)
 **Path:** $1B - $2B
 
 ## Strategic Position

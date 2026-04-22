@@ -1,4 +1,4 @@
-"""Simple example demonstrating Judge #6 usage."""
+"""Simple example demonstrating Judge 6 usage."""
 
 import json
 
@@ -6,10 +6,10 @@ from judge6 import JudgmentRule
 
 
 def main():
-    print("Judge #6 Simple Example")
+    print("Judge 6 Simple Example")
     print("=" * 60)
 
-    # Initialize Judge #6
+    # Initialize Judge 6
     judge = JudgmentRule(cor_instance_id="example-001")
 
     # Example 1: Approved request

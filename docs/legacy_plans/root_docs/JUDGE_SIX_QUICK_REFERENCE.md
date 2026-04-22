@@ -6,8 +6,8 @@
 
 ## 30-SECOND SUMMARY
 
-**What is Judge #6?**
-Automated governance & compliance enforcement engine for AI/LLM systems using ATP 5-19 military framework + Purpose/Reasons/Brakes (JR Engine) validation.
+**What is Judge 6?**
+Automated governance & compliance enforcement engine for AI/LLM systems using Compliance Framework military framework + Purpose/Reasons/Brakes (JR Engine) validation.
 
 **Current Status:** Not implemented (this is inception baseline)
 
@@ -17,7 +17,7 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 
 ## 5 KEY METRICS
 
-| Metric                     | Current (No Judge #6) | Target (With Judge #6) | Improvement                    |
+| Metric                     | Current (No Judge 6) | Target (With Judge 6) | Improvement                    |
 | -------------------------- | --------------------- | ---------------------- | ------------------------------ |
 | **💰 Cost/Year**           | $500,000              | $103,000               | **-79% (-$397K)**              |
 | **📈 Revenue Potential**   | $1.2M                 | $7.8M                  | **+540% (+$6.6M)**             |
@@ -57,7 +57,7 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 
 ### Coverage & Accuracy
 
-- **Policy Categories:** 0 → 44 (ATP 5-19 + OWASP + custom)
+- **Policy Categories:** 0 → 44 (Compliance Framework + OWASP + custom)
 - **Threat Coverage:** 5 → 44 categories (+780%)
 - **False Positives:** N/A → 3.2%
 - **False Negatives:** 100% → 5.8%
@@ -70,7 +70,7 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 
 ### Security Posture
 
-- **Compliance Frameworks:** 0 → 4 (ATP 5-19, SOC 2, HIPAA, ISO 27001)
+- **Compliance Frameworks:** 0 → 4 (Compliance Framework, SOC 2, HIPAA, ISO 27001)
 - **Audit Trail:** 12% → 99.8% (+732%)
 - **Annual Security Incidents:** 50 → 4.3 (-91%)
 
@@ -103,12 +103,12 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 
 ```
 ┌─────────────────────────────────────────────┐
-│           Judge #6 Enforcement              │
+│           Judge 6 Enforcement              │
 │                                             │
 │  ┌──────────┐      ┌──────────────────┐   │
 │  │ Purpose  │ ───▶ │  Policy Engine   │   │
 │  └──────────┘      │                  │   │
-│                    │  • ATP 5-19      │   │
+│                    │  • Compliance Framework      │   │
 │  ┌──────────┐      │  • OWASP Top 10 │   │
 │  │ Reasons  │ ───▶ │  • Custom Rules │   │
 │  └──────────┘      │                  │   │
@@ -130,7 +130,7 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 ### Phase 1: Foundation (Weeks 1-3)
 
 - ✅ JR Engine core framework
-- ✅ ATP 5-19 policy schema
+- ✅ Compliance Framework policy schema
 - ✅ Gemini integration
 - ✅ Validation API
 - **Target:** 35% coverage, <500ms latency
@@ -165,7 +165,7 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 
 | Solution      | Coverage | Latency     | Cost/Mo | Compliance  | Verdict             |
 | ------------- | -------- | ----------- | ------- | ----------- | ------------------- |
-| **Judge #6**  | 94%      | <200ms      | $350    | ATP 5-19 ✅ | **Winner**          |
+| **Judge 6**  | 94%      | <200ms      | $350    | Compliance Framework ✅ | **Winner**          |
 | AutoGen       | 32%      | 672ms       | $1,350  | ❌          | Lacks governance    |
 | LangChain     | 27%      | 584ms       | $850    | ❌          | No compliance story |
 | LangGraph     | 29%      | 632ms       | $920    | ❌          | Limited enforcement |
@@ -174,7 +174,7 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 
 **Unique Advantages:**
 
-1. ✅ Only ATP 5-19 compliant solution
+1. ✅ Only Compliance Framework compliant solution
 2. ✅ JR Engine (philosophical validation)
 3. ✅ Hybrid Gemini + PyTorch (cost + speed)
 4. ✅ Purpose-built for regulated industries
@@ -185,16 +185,16 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 
 ### Total Addressable Market (TAM)
 
-**Without Judge #6:**
+**Without Judge 6:**
 
 - $15M (non-regulated LLM platforms)
 - Standard AI/ML security tools
 - Generic compliance checking
 
-**With Judge #6:**
+**With Judge 6:**
 
 - $47M (+213% expansion)
-- Defense contractors (ATP 5-19)
+- Defense contractors (Compliance Framework)
 - Healthcare (HIPAA-ready)
 - Financial services (SOC 2)
 - Regulated enterprise
@@ -202,7 +202,7 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 ### Customer Segments
 
 1. **Defense Contractors** ($18M TAM)
-   - ATP 5-19 compliance mandatory
+   - Compliance Framework compliance mandatory
    - $120K ACV (premium tier)
    - 3-year contracts
 
@@ -266,7 +266,7 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 
 - [ ] 94% policy coverage
 - [ ] <200ms latency
-- [ ] ATP 5-19 certified
+- [ ] Compliance Framework certified
 - [ ] SOC 2 audit trail complete
 
 ### Week 12 (Scale)
@@ -283,7 +283,7 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 ### Must Be True for Success
 
 1. **Gemini Flash latency <150ms** (documented)
-2. **Defense contractors need ATP 5-19** (validate)
+2. **Defense contractors need Compliance Framework** (validate)
 3. **Enterprises pay premium for compliance** (validate)
 4. **JR Engine reduces false positives** (prototype)
 5. **Sales cycle shortens with proof** (test)
@@ -308,7 +308,7 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 
 ### Validation Tasks
 
-1. **Interview 3 defense contractors** on ATP 5-19 pain
+1. **Interview 3 defense contractors** on Compliance Framework pain
 2. **Survey 5 healthcare CISOs** on LLM governance budget
 3. **A/B test pricing** ($89K vs $65K vs $45K tiers)
 
@@ -316,7 +316,7 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 
 1. **Prototype JR Engine** (500 LOC MVP)
 2. **Set up Gemini API** credentials
-3. **Draft ATP 5-19 schema** (JSON format)
+3. **Draft Compliance Framework schema** (JSON format)
 4. **Create test policies** (20 initial rules)
 
 ### Business Tasks
@@ -338,7 +338,7 @@ Automated governance & compliance enforcement engine for AI/LLM systems using AT
 
 ### External References
 
-- [ATP 5-19 Overview](https://armypubs.army.mil/epubs/DR_pubs/DR_a/ARN30716-ATP_5-19-000-WEB-2.pdf)
+- [Compliance Framework Overview](https://armypubs.army.mil/epubs/DR_pubs/DR_a/ARN30716-ATP_5-19-000-WEB-2.pdf)
 - [Gemini Flash Performance](https://ai.google.dev/gemini-api/docs/models/gemini-2)
 - [OWASP LLM Top 10](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
 

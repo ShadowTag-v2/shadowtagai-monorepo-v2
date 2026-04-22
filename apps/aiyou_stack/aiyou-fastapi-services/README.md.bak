@@ -8,7 +8,7 @@
 
 Includes specialized agents for analyzing components of the PNKLN Core Stack™ intelligence pipeline:
 - **Gemini Ingestion Layer Analyzer**: Intelligence collection pipeline analysis
-- **Judge #6 Analyzer**: Real-time validation system analysis
+- **Judge 6 Analyzer**: Real-time validation system analysis
 - **Component Comparison**: Migration and adaptation guidance
 - **Master Prompt Framework**: Generate specialized prompts for any component
 
@@ -117,14 +117,14 @@ Intelligent data collection and tier classification pipeline:
 - **Tier Classification**: Tier 1 (authoritative), Tier 2 (relevant), Tier 3 (general)
 - **Ethical Crawling**: robots.txt compliance, rate limiting, attribution
 - **Cost**: ~$77/month, ~45 minutes runtime per night
-- **Delivery**: Feeds Judge #6 and AM Briefing services
+- **Delivery**: Feeds Judge 6 and AM Briefing services
 
 #### PNKLN Stack Agents 🆕
 
 | Agent | Description | Tags |
 |-------|-------------|------|
 | **Gemini Ingestion Analyzer** | Analyzes intelligence collection pipeline | `pnkln`, `ingestion`, `ethics`, `intelligence` |
-| **Judge #6 Analyzer** | Analyzes real-time validation system | `pnkln`, `validation`, `latency`, `enforcement` |
+| **Judge 6 Analyzer** | Analyzes real-time validation system | `pnkln`, `validation`, `latency`, `enforcement` |
 | **Component Comparison** | Compares components and provides migration guidance | `pnkln`, `comparison`, `migration`, `adaptation` |
 
 ## Installation
@@ -492,7 +492,7 @@ Tier-classified intelligence from 6+ sources:
 - Tier 2: Relevant (medium authority, high engagement)
 - Tier 3: General (broad collection for context)
 
-**Impact**: Feeds Judge #6 decision-making, AM Briefing generation
+**Impact**: Feeds Judge 6 decision-making, AM Briefing generation
 
 ### 3. Computer Vision + Autonomous Aviation (Tegu + GAAS)
 
@@ -717,7 +717,7 @@ CRM-JR Analysis:
 - 🔄 ShadowTag neural hash implementation
 
 ### Q1 2026: Integration
-- 🔜 Judge #6 + AiUCRM integration
+- 🔜 Judge 6 + AiUCRM integration
 - 🔜 AM Briefing + Gemini Ingestion integration
 - 🔜 CineVerse + Tegu content moderation
 - 🔜 Digital Mall + FaceNet vendor verification

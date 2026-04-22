@@ -1,5 +1,5 @@
 #!/bin/bash
-# preflight-check.sh - Pre-deployment validation for Judge #6 GKE platform
+# preflight-check.sh - Pre-deployment validation for Judge 6 GKE platform
 # Run this before executing pnkln-gke-deploy.sh to catch issues early
 
 set -euo pipefail

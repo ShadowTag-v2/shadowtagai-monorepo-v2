@@ -19,7 +19,7 @@ Powered by **Gemini 2.0 Pro**, the service provides:
 - **Ingestion Layer Analysis**: Comprehensive analysis of GKE CronJob Multi-Container architecture
 - **Compliance Auditing**: Ethical compliance checks (robots.txt, rate limiting, ToS)
 - **Coverage Analysis**: Multi-source diversity and gap identification
-- **System Comparison**: Compare different systems (e.g., Judge #6 vs Ingestion Layer)
+- **System Comparison**: Compare different systems (e.g., Judge 6 vs Ingestion Layer)
 - **Custom Analysis**: Flexible analysis for any system component
 
 **Key Metrics Analyzed:**
@@ -250,13 +250,13 @@ curl "http://localhost:8000/api/ingestion/coverage/analyze"
 }
 ```
 
-### Compare Systems (Judge #6 vs Ingestion Layer)
+### Compare Systems (Judge 6 vs Ingestion Layer)
 
 ```bash
 curl -X POST "http://localhost:8000/api/gemini/compare" \
   -H "Content-Type: application/json" \
   -d '{
-    "system_a_name": "Judge #6",
+    "system_a_name": "Judge 6",
     "system_a_specs": "Hybrid Gemini+PyTorch enforcement system...",
     "system_b_name": "Ingestion Layer",
     "system_b_specs": "GKE CronJob intelligence collection...",
@@ -299,7 +299,7 @@ COMPLIANCE_USER_AGENT=PNKLN-Ingestion/1.0
 
 ## Architecture Comparison
 
-| Aspect | Judge #6 | Ingestion Layer |
+| Aspect | Judge 6 | Ingestion Layer |
 |--------|----------|-----------------|
 | **Architecture** | Hybrid Gemini+PyTorch | GKE CronJob Multi-Container |
 | **Key Metrics** | p99 ≤90ms latency, 98% coverage | ~45 min/night runtime, items/day, sources, cost/item |
@@ -347,7 +347,7 @@ COMPLIANCE_USER_AGENT=PNKLN-Ingestion/1.0
 
 This service integrates with:
 
-- **Judge #6**: Enforcement and validation downstream
+- **Judge 6**: Enforcement and validation downstream
 - **4 Namespaces**: Cross-namespace service calls
 - **AM Briefing**: Morning intelligence delivery
 - **GKE**: Kubernetes orchestration

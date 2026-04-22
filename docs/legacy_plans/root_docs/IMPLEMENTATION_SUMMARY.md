@@ -2,7 +2,7 @@
 
 ## What Was Built
 
-A complete production-ready Google File Search API integration for Pnkln Core Stack with Judge #6 hybrid architecture support.
+A complete production-ready Google File Search API integration for Pnkln Core Stack with Judge 6 hybrid architecture support.
 
 ### Components Delivered
 
@@ -25,11 +25,11 @@ A complete production-ready Google File Search API integration for Pnkln Core St
 **Query Orchestration** (`orchestrator/`)
 
 - `query_handler.py`: Full query processing pipeline
-  - Parallel execution: File search + Judge #6 Layer 1
+  - Parallel execution: File search + Judge 6 Layer 1
   - Context merging and enrichment
-  - Sequential Judge #6 Layers 2+3 execution
+  - Sequential Judge 6 Layers 2+3 execution
   - Timing metrics collection
-- `judge_integration.py`: Judge #6 integration stubs (ready for your implementation)
+- `judge_integration.py`: Judge 6 integration stubs (ready for your implementation)
 
 **Monitoring** (`monitoring/`)
 
@@ -123,13 +123,13 @@ A complete production-ready Google File Search API integration for Pnkln Core St
 
 ```
 User Query → File Search (async) ──┐
-           → Judge #6 Layer 1 ─────┤→ Merge Context → Judge #6 Layers 2+3 → Decision
+           → Judge 6 Layer 1 ─────┤→ Merge Context → Judge 6 Layers 2+3 → Decision
 ```
 
 **Critical Path Preserved:**
 
 - File Search: ~500-800ms (async, off critical path)
-- Judge #6 Total: ≤90ms (enforcement critical path)
+- Judge 6 Total: ≤90ms (enforcement critical path)
 - Total User-Facing: ~850ms (with rich policy context)
 
 ### Kill Switch Protection
@@ -140,7 +140,7 @@ Monitors three key metrics:
 2. Corpus sync failure rate (threshold: 5%)
 3. False positive rate (threshold: 10%)
 
-Automatically disables file search after 3 consecutive violations, falling back to pure Judge #6.
+Automatically disables file search after 3 consecutive violations, falling back to pure Judge 6.
 
 ### 30 Verticals Support
 
@@ -194,7 +194,7 @@ gcloud auth application-default login
 ./scripts/setup_file_search.sh
 ```
 
-### 4. Implement Judge #6 Layers (YOUR CODE)
+### 4. Implement Judge 6 Layers (YOUR CODE)
 
 The following files have placeholder implementations that you need to replace:
 
@@ -204,7 +204,7 @@ The following files have placeholder implementations that you need to replace:
 
 **`orchestrator/judge_integration.py`**
 
-- `assess_layer1_gemini()`: ATP 5-19 compliance checks
+- `assess_layer1_gemini()`: Compliance Framework compliance checks
 - `assess_layer2_pytorch()`: Deep pattern analysis
 - `assess_layer3_rules()`: Deterministic rules engine
 
@@ -275,7 +275,7 @@ ShadowTag-v2-fastapi-services/
 │   ├── api/                    # FastAPI routes and models
 │   ├── config/                 # Settings and verticals
 │   ├── corpus/                 # RAG corpus management
-│   ├── orchestrator/           # Query handling + Judge #6
+│   ├── orchestrator/           # Query handling + Judge 6
 │   ├── monitoring/             # Metrics and kill switch
 │   └── main.py                # FastAPI app
 ├── tests/                      # Unit tests
@@ -294,12 +294,12 @@ The implementation is considered successful when:
 
 - [x] All 30 verticals have corpora created
 - [x] File search returns policy citations
-- [x] Query latency meets targets (file search async, Judge #6 ≤90ms)
+- [x] Query latency meets targets (file search async, Judge 6 ≤90ms)
 - [x] Kill switch responds to health violations
 - [x] Prometheus metrics are exposed
 - [x] Service passes health checks
 - [x] Tests pass with >80% coverage
-- [ ] Judge #6 layers are implemented (YOUR TODO)
+- [ ] Judge 6 layers are implemented (YOUR TODO)
 - [ ] Production deployment on GKE (YOUR TODO)
 - [ ] Load testing validates performance (YOUR TODO)
 
@@ -336,7 +336,7 @@ Value = (Compliance_Automation × Deployment_Speed) / Dev_Effort
 3. **TODO**: Set up GCP environment variables
 4. **TODO**: Upload policy documents to GCS
 5. **TODO**: Run corpus initialization script
-6. **TODO**: Implement Judge #6 layer stubs
+6. **TODO**: Implement Judge 6 layer stubs
 7. **TODO**: Deploy to GKE
 8. **TODO**: Load test and validate performance
 9. **TODO**: Create pull request for review
@@ -345,4 +345,4 @@ Value = (Compliance_Automation × Deployment_Speed) / Dev_Effort
 
 **Built with:** Python 3.10+, FastAPI, Vertex AI, Prometheus, Kubernetes
 
-**Estimated Timeline to Production:** 1-2 weeks (including Judge #6 implementation)
+**Estimated Timeline to Production:** 1-2 weeks (including Judge 6 implementation)

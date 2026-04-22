@@ -5,7 +5,7 @@
 
 ## THE SIX GATES
 
-1.  **Risk Classification:** ATP 5-19 (Kinetic Safety).
+1.  **Risk Classification:** Compliance Framework (Kinetic Safety).
 2.  **Purpose:** Intent Validation.
 3.  **Cyber Constitution:** CSRMC (Survivability).
 4.  **Resource Allocation:** Control Injection.

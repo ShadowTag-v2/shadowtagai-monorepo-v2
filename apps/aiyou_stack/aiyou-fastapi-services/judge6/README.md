@@ -1,10 +1,10 @@
-# Judge #6: AI Governance & Risk Management System
+# Judge 6: AI Governance & Risk Management System
 
 Version 2.0.0 - Refactored for production use
 
 ## Overview
 
-Judge #6 is a cryptographically-enforced AI governance framework implementing:
+Judge 6 is a cryptographically-enforced AI governance framework implementing:
 
 - **Cor.53 Constitutional Axioms** - Immutable governance rules
 - **ATP 5-19 Risk Stratification** - Military-grade risk assessment
@@ -53,7 +53,7 @@ uv pip install typing-extensions dataclasses-json
 ```python
 from judge6 import JudgmentRule
 
-# Initialize Judge #6
+# Initialize Judge 6
 judge = JudgmentRule(cor_instance_id="my-instance")
 
 # Evaluate a request
@@ -101,7 +101,7 @@ set_config(config)
 
 ### Cryptographic Guarantees
 
-Unlike competitors that rely on "aspirational language" (e.g., "NEVER do X"), Judge #6 provides:
+Unlike competitors that rely on "aspirational language" (e.g., "NEVER do X"), Judge 6 provides:
 
 - **Immutable Axioms**: Cannot be overridden by user input
 - **Cryptographic Signatures**: Tamper-evident audit trails
@@ -110,7 +110,7 @@ Unlike competitors that rely on "aspirational language" (e.g., "NEVER do X"), Ju
 
 ### Competitive Advantages
 
-| Feature | PNKLN Judge #6 | Anthropic Claude | OpenAI GPT | Google Gemini |
+| Feature | PNKLN Judge 6 | Anthropic Claude | OpenAI GPT | Google Gemini |
 |---------|----------------|------------------|------------|---------------|
 | Governance Model | Cryptographic | Aspirational | Opaque | Probabilistic |
 | Risk Assessment | Pre-execution | Reactive | Implicit | Probabilistic |

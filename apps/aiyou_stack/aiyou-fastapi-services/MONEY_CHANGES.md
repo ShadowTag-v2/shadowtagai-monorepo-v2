@@ -136,7 +136,7 @@ NET ANNUAL IMPROVEMENT: $4,655,160 (+21.7%)
 
 **Before**:
 
-- Every tip/NFT sale queries database 3 times (ATP 5-19 check, Judge #6, audit)
+- Every tip/NFT sale queries database 3 times (ATP 5-19 check, Judge 6, audit)
 
 - 1M decisions/month × 3 queries = 3M database queries/month
 

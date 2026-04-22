@@ -1,4 +1,4 @@
-# Judge #6 HITL System - Testing & Deployment Guide
+# Judge 6 HITL System - Testing & Deployment Guide
 
 ## Quick Start
 
@@ -33,7 +33,7 @@ xdg-open htmlcov/index.html  # Linux
 
 ### Unit Tests (`tests/unit/`)
 
-**test_risk_matrix.py** - ATP 5-19 Risk Matrix
+**test_risk_matrix.py** - Compliance Framework Risk Matrix
 
 - Matrix lookup correctness (all 20 combinations)
 - Approval authority determination
@@ -260,7 +260,7 @@ kubectl exec -it deployment/judge-hitl -n pnkln-judges -- \
 ### GitHub Actions (Suggested)
 
 ```yaml
-name: Judge #6 HITL CI
+name: Judge 6 HITL CI
 
 on: [push, pull_request]
 

@@ -57,4 +57,4 @@ Defines the reliability and safety targets.
 
 ### 🛡️ Safety & Governance
 
-The system is protected by **Judge #6** implementing the **SOP-C Decision Protocol**. Any task with a confidence score below **0.75** will be automatically frozen to prevent cascading errors.
+The system is protected by **Judge 6** implementing the **SOP-C Decision Protocol**. Any task with a confidence score below **0.75** will be automatically frozen to prevent cascading errors.
