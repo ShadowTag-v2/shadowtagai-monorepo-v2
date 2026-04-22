@@ -16,7 +16,7 @@ from __future__ import annotations
 import logging
 import uuid
 from dataclasses import dataclass, field
-from datetime import datetime, timezone, UTC
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any
 
@@ -56,7 +56,7 @@ class TaskContext:
     state: TaskState = TaskState.SUBMITTED
     model_preference: str = "gemini-3.1-flash-lite-preview-thinking"
     created_at: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
     metadata: dict[str, Any] = field(default_factory=dict)
 
