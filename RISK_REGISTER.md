@@ -180,3 +180,9 @@
 - **Status**: KNOWN
 - **Description**: The "Invisible Meter" design principle (hiding session duration, no idle prompts, encouraging >45min sessions) could conflict with GDPR Art. 5(1)(a) transparency principle and the ePrivacy Directive's informed consent requirement. If session duration is tracked server-side for product analytics while being hidden from the user, regulators may consider this deceptive dark pattern. **Action**: (1) Document session duration tracking in privacy policy, (2) Ensure session_pins TTL is the only server-side tracking (already 30min), (3) Never use hidden session duration for billing calculations, (4) Allow users to request their session logs via GDPR Art. 15 (already built in `gdpr.py`).
 
+## Risk #66: Build Artifact Leak — Next.js _next/ Committed to Git
+- **Type**: Security / Build Hygiene
+- **Severity**: 🟡 Medium
+- **Status**: RESOLVED
+- **Description**: 20 Next.js build artifacts (`apps/kovelai/public/_next/`) were tracked in git, including JS chunks with source maps, CSS bundles, font files (woff2), and build manifests (`_buildManifest.js`, `_ssgManifest.js`). These leak internal build hashes, chunk fingerprints, and potentially expose source structure to attackers. **Root Cause**: `next export` output was committed before `.gitignore` rule `**/public/_next/` was added. **Remediation**: (1) `git rm --cached -r apps/kovelai/public/_next/` executed to untrack 20 files. (2) `.gitignore` already has `**/public/_next/` at line 123. (3) Files remain on disk for local serving but are no longer version-controlled. **Action**: Verify no other build output directories are tracked (`git ls-files --cached '**/dist/' '**/.next/' '**/build/'`). Add pre-commit hook to reject `_next/` additions.
+
