@@ -1,4 +1,4 @@
-# RISK_REGISTER — v9.5
+# RISK_REGISTER — v10.0
 
 > Operational risks tracked as part of the sovereign monorepo governance.
 > Reviewed on each version bump. Mitigations are enforced, not advisory.
@@ -155,3 +155,28 @@
 - **Severity**: 🟡 Medium
 - **Status**: MITIGATED
 - **Description**: Terraform Catalog v1.0.0 (`terraform-catalog-v1.0.0` tag) deployed with 10 catalog modules, Terragrunt prod/staging stacks, CI pipeline, and Checkov hardening. **Coverage**: 22/24 Checkov checks pass (2 informational: CKV_GCP_79 version pin detection, CKV_GCP_125 OIDC format). **Remaining bootstrap dependencies**: (1) GCS state bucket `shadowtag-omega-v4-tfstate` must be created before `terragrunt plan` works. (2) WIF module must be applied first to bootstrap CI/CD auth for GitHub Actions. (3) `make plan` requires GCP credentials (ADC or service account). **Modules**: cloud-run-service, iam-baseline, artifact-registry, monitoring-alerts, firestore-backup-verify, cloud-sql (SSL+pgAudit), github-wif (OIDC trust), cloud-scheduler, cost-dashboard, secret-manager. **Files**: `terraform/infrastructure-catalog-gcp-cloud-run/`, `terraform/infrastructure-live-gcp/`, `.github/workflows/terraform-ci.yml`, `terraform/Makefile`.
+
+## Risk #62: Emotional Arbitrage Spec Drift — No Validation Gate
+- **Type**: Product / Architecture
+- **Severity**: 🟡 Medium
+- **Status**: KNOWN
+- **Description**: The S.E.U. Architecture (`spec/SEU_ARCHITECTURE.md`) and Emotional Arbitrage spec (`spec/EMOTIONAL_ARBITRAGE.md`) are now canonical product truth. No CI gate validates that prompt templates in `oracle_studio.py`, `vent_mode.py`, and `intake_summarizer.py` conform to the S.E.U. framework (Safety → Empathy → Utility ordering). Prompt mutations could silently break the emotional architecture. **Action**: Add a spec-conformance test that validates all client-facing LLM prompts open with empathy acknowledgers and follow S.E.U. ordering.
+
+## Risk #63: S.E.U. Prompt Injection Surface — Empathy Acknowledger Bypass
+- **Type**: Security / AI Safety
+- **Severity**: 🟠 High
+- **Status**: KNOWN
+- **Description**: The mandatory empathy acknowledger ("We understand this is stressful") is prepended to all client-facing LLM responses. This creates a predictable prompt structure that adversaries could exploit via prompt injection to bypass Judge 6 policy gates. **Action**: Randomize empathy opener templates (minimum 20 variants), add post-generation Judge 6 scan on all client-facing outputs, implement output fingerprinting to detect if empathy layer was stripped or mutated.
+
+## Risk #64: Test Suite Python Version Mismatch — System 3.9 vs Required 3.14
+- **Type**: Build / CI
+- **Severity**: 🟡 Medium
+- **Status**: KNOWN
+- **Description**: Agent shell resolves `python3` to macOS system Python 3.9 (via Xcode), which cannot import `datetime.UTC` (3.11+) or `enum.StrEnum` (3.11+). Tests require CPython 3.14+ per doctrine. Homebrew Python 3.14.4 is installed but not on default PATH. **Action**: Ensure `.env` or shell profile sets `PATH="/opt/homebrew/bin:$PATH"` before all test runs. CI uses explicit Python 3.14 matrix.
+
+## Risk #65: Invisible Meter Session Tracking — GDPR Art. 5(1)(a) Transparency Risk
+- **Type**: Legal / Privacy
+- **Severity**: 🟠 High
+- **Status**: KNOWN
+- **Description**: The "Invisible Meter" design principle (hiding session duration, no idle prompts, encouraging >45min sessions) could conflict with GDPR Art. 5(1)(a) transparency principle and the ePrivacy Directive's informed consent requirement. If session duration is tracked server-side for product analytics while being hidden from the user, regulators may consider this deceptive dark pattern. **Action**: (1) Document session duration tracking in privacy policy, (2) Ensure session_pins TTL is the only server-side tracking (already 30min), (3) Never use hidden session duration for billing calculations, (4) Allow users to request their session logs via GDPR Art. 15 (already built in `gdpr.py`).
+
