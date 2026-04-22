@@ -16,14 +16,14 @@ from __future__ import annotations
 import logging
 import uuid
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from enum import Enum
+from datetime import datetime, timezone, UTC
+from enum import Enum, StrEnum
 from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
-class AgentRole(str, Enum):
+class AgentRole(StrEnum):
     """Agent roles in the CounselConduit multi-agent topology."""
 
     ORCHESTRATOR = "orchestrator"
@@ -33,7 +33,7 @@ class AgentRole(str, Enum):
     MODEL_ROUTER = "model_router"
 
 
-class TaskState(str, Enum):
+class TaskState(StrEnum):
     """A2A Task lifecycle states (per Google A2A spec)."""
 
     SUBMITTED = "submitted"
@@ -56,7 +56,7 @@ class TaskContext:
     state: TaskState = TaskState.SUBMITTED
     model_preference: str = "gemini-3.1-flash-lite-preview-thinking"
     created_at: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+        default_factory=lambda: datetime.now(UTC).isoformat()
     )
     metadata: dict[str, Any] = field(default_factory=dict)
 
