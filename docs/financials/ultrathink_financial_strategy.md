@@ -45,7 +45,7 @@ The PNKLN platform has pivoted from a generic AI tool to a high-margin **Intelli
 
 * **II. Steel**: SkyNode Architecture (1.35GW Simulated) - **PENDING**
 
-* **III. Shield**: Judge #6 - **ACTIVE**
+* **III. Shield**: Judge 6 - **ACTIVE**
 
 ## 3. Cost Optimization ("The Leak Fix")
 

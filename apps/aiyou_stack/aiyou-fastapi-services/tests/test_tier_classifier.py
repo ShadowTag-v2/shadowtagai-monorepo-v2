@@ -81,7 +81,7 @@ async def test_tier_distribution_targets():
 
 @pytest.mark.asyncio
 async def test_confidence_threshold_60_percent():
-    """Test that 60% threshold is used (not 70% like Judge #6)"""
+    """Test that 60% threshold is used (not 70% like Judge 6)"""
     classifier = TierClassifier(confidence_threshold=0.60)
 
     # This should meet the 60% threshold

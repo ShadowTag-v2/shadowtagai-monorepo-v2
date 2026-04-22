@@ -1,7 +1,7 @@
 """
-Judge #6 Implementation Guide for Pnkln Core Stack
+Judge 6 Implementation Guide for Pnkln Core Stack
 
-This guide shows you how to integrate your actual Judge #6 hybrid architecture
+This guide shows you how to integrate your actual Judge 6 hybrid architecture
 with the File Search integration.
 """
 
@@ -20,7 +20,7 @@ Purpose: Fast initial risk assessment using Gemini fine-tuned on ATP 5-19
 
 async def judge_gemini_layer1(self, query: str) -> Dict:
     """
-    Execute Judge #6 Layer 1 - Gemini Fine-Tuned Model
+    Execute Judge 6 Layer 1 - Gemini Fine-Tuned Model
 
     ATP 5-19 Compliance Framework:
     - Information Operations (IO)
@@ -101,7 +101,7 @@ Purpose: Deep pattern analysis using PyTorch model
 
 async def assess_layer2_pytorch(self, query: str, layer1_result: Dict) -> Dict:
     """
-    Execute Judge #6 Layer 2 - PyTorch Deep Learning Model
+    Execute Judge 6 Layer 2 - PyTorch Deep Learning Model
 
     This layer performs:
     - Semantic similarity analysis
@@ -174,7 +174,7 @@ async def assess_layer3_rules(
     self, query: str, layer1_result: Dict, layer2_result: Dict
 ) -> Dict:
     """
-    Execute Judge #6 Layer 3 - Deterministic Rules Engine
+    Execute Judge 6 Layer 3 - Deterministic Rules Engine
 
     This layer applies:
     - Hardcoded compliance rules
@@ -292,7 +292,7 @@ async def judge_gemini_layer1_with_context(self, query: str, policy_context: str
 # ==============================================================================
 
 """
-Here's what the complete flow looks like with your Judge #6 integrated:
+Here's what the complete flow looks like with your Judge 6 integrated:
 """
 
 async def process_query_with_context_EXAMPLE(
@@ -301,7 +301,7 @@ async def process_query_with_context_EXAMPLE(
     vertical: str,
     corpus_name: Optional[str] = None,
 ) -> Dict:
-    """Complete example with Judge #6 integration"""
+    """Complete example with Judge 6 integration"""
 
     # Step 1: Parallel execution - File search + Judge Layer 1
     policy_context, judge_layer1 = await asyncio.gather(
@@ -344,7 +344,7 @@ async def process_query_with_context_EXAMPLE(
 # ==============================================================================
 
 """
-To meet the p99 ≤90ms target for Judge #6:
+To meet the p99 ≤90ms target for Judge 6:
 
 1. LAYER 1 (Gemini) - Target ~40ms
    - Use streaming responses if available

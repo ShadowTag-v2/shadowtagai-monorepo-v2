@@ -2,7 +2,7 @@
 """pinkln Infrastructure Analysis Demo
 
 This script demonstrates the infrastructure analysis capabilities for the
-PNKLN Core Stack™, including Judge #6 and Gemini Ingestion Layer analysis.
+PNKLN Core Stack™, including Judge 6 and Gemini Ingestion Layer analysis.
 
 Usage:
     python pnkln_infrastructure_demo.py
@@ -44,8 +44,8 @@ def print_subsection(title: str):
 
 
 async def demo_judge_six_analysis():
-    """Demo 1: Analyze Judge #6 System"""
-    print_section("DEMO 1: Judge #6 Analysis")
+    """Demo 1: Analyze Judge 6 System"""
+    print_section("DEMO 1: Judge 6 Analysis")
 
     agent = InfrastructureAgent()
     result = await agent.analyze_judge_six()
@@ -125,7 +125,7 @@ async def demo_gemini_ingestion_analysis():
 
 async def demo_comparative_analysis():
     """Demo 3: Comparative Analysis"""
-    print_section("DEMO 3: Comparative Analysis - Judge #6 vs Gemini Ingestion")
+    print_section("DEMO 3: Comparative Analysis - Judge 6 vs Gemini Ingestion")
 
     agent = InfrastructureAgent()
     result = await agent.comparative_analysis()
@@ -136,7 +136,7 @@ async def demo_comparative_analysis():
 
     print_subsection("Role Contrast")
     role_contrast = analysis["role_contrast"]
-    print(f"Judge #6: {role_contrast['Judge #6']}")
+    print(f"Judge 6: {role_contrast['Judge 6']}")
     print(f"Gemini Ingestion Layer: {role_contrast['Gemini Ingestion Layer']}")
     print(f"\nRelationship: {role_contrast['relationship']}")
 
@@ -289,7 +289,7 @@ async def demo_gemini_prompt_generation():
 
     print("Generating analysis prompts for Gemini 2.0 Pro...\n")
 
-    print_subsection("Judge #6 Analysis Prompt")
+    print_subsection("Judge 6 Analysis Prompt")
     judge_prompt = skill.generate_gemini_prompt(skill.JUDGE_SIX_SPEC)
     print(judge_prompt[:500] + "...")
     print(f"\nTotal length: {len(judge_prompt)} characters")

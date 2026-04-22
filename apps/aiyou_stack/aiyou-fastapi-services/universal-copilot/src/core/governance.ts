@@ -1,6 +1,6 @@
 /**
- * Judge #6 Governance Integration Adapter
- * Provides safe interface to Python-based Judge #6 system
+ * Judge 6 Governance Integration Adapter
+ * Provides safe interface to Python-based Judge 6 system
  */
 
 import { spawn } from 'node:child_process';
@@ -8,7 +8,7 @@ import * as path from 'node:path';
 import type { GovernanceEngine } from './router.js';
 
 /**
- * Judge #6 governance decision
+ * Judge 6 governance decision
  */
 export interface Judge6Decision {
   approved: boolean;
@@ -27,8 +27,8 @@ export interface Judge6Decision {
 }
 
 /**
- * Python Judge #6 adapter
- * Calls Python Judge #6 implementation via subprocess
+ * Python Judge 6 adapter
+ * Calls Python Judge 6 implementation via subprocess
  */
 export class Judge6Adapter implements GovernanceEngine {
   private corInstanceId: string;
@@ -70,7 +70,7 @@ export class Judge6Adapter implements GovernanceEngine {
 
       proc.on('close', (code) => {
         if (code !== 0) {
-          reject(new Error(`Judge #6 evaluation failed: ${stderr || 'Unknown error'}`));
+          reject(new Error(`Judge 6 evaluation failed: ${stderr || 'Unknown error'}`));
           return;
         }
 
@@ -78,18 +78,18 @@ export class Judge6Adapter implements GovernanceEngine {
           const decision = JSON.parse(stdout) as Judge6Decision;
           resolve(decision);
         } catch (error) {
-          reject(new Error(`Failed to parse Judge #6 response: ${error}`));
+          reject(new Error(`Failed to parse Judge 6 response: ${error}`));
         }
       });
 
       proc.on('error', (error) => {
-        reject(new Error(`Failed to spawn Judge #6 process: ${error.message}`));
+        reject(new Error(`Failed to spawn Judge 6 process: ${error.message}`));
       });
 
       // Timeout after 5 seconds
       setTimeout(() => {
         proc.kill();
-        reject(new Error('Judge #6 evaluation timeout'));
+        reject(new Error('Judge 6 evaluation timeout'));
       }, 5000);
     });
   }

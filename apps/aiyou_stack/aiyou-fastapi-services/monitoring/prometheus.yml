@@ -21,7 +21,7 @@ scrape_configs:
       - targets: ['host.docker.internal:8000']
     metrics_path: '/metrics'
 
-  # Judge #6 Governance Engine
+  # Judge 6 Governance Engine
   - job_name: 'judge-six'
     static_configs:
       - targets: ['host.docker.internal:8001']

@@ -31,7 +31,7 @@
   │    Find every edge, exploit every inefficiency,                 │
   │    capture every basis point. No self-imposed limits."          │
   ├─────────────────────────────────────────────────────────────────┤
-  │  SUPEREGO (Judge #6 / JURA):                                    │
+  │  SUPEREGO (Judge 6 / JURA):                                    │
   │    Hard gates - non-negotiable, mechanical enforcement:         │
   │    - Legal: Action must be defensible in court                  │
   │    - Regulatory: Survives audit from any jurisdiction           │
@@ -52,7 +52,7 @@
   ╔══════════════════════════════════════════════════════════════════╗
   ║  n-autoresearch/Kosmos/BioAgents CAVALRY SQUADRON                                  ║
   ╠══════════════════════════════════════════════════════════════════╣
-  ║  HHT (90)       │ Headquarters │ Judge #6, S-1 to S-6 Staff     ║
+  ║  HHT (90)       │ Headquarters │ Judge 6, S-1 to S-6 Staff     ║
   ║  AIR_CAV (120)  │ Aerial Scouts │ Apache, Kiowa, Black Hawk     ║
   ║  ALPHA (130)    │ Armor │ M1 Abrams (Heavy Compute)             ║
   ║  BRAVO (130)    │ Stryker │ Rapid Deployment                    ║

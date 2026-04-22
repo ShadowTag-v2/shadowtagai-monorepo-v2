@@ -123,7 +123,7 @@ Legal Whiteboard (GitHub persistence)
 
 ---
 
-## 📝 ATP 5-19 Risk Scoring
+## 📝 Compliance Framework Risk Scoring
 
 ```
 SEVERITY × PROBABILITY = RISK SCORE
@@ -249,7 +249,7 @@ python3 shadowtagai/agents/https://github.com/karpathy/autoresearchs_orchestrato
 | Kernel Chain | <35ms     | Revert to full context       |
 | Gemini       | p99≤100ms | Route to Claude fallback     |
 | Claude       | p95≤2s    | Route to Gemini fallback     |
-| ATP 5-19     | <50ms     | Skip compression             |
+| Compliance Framework     | <50ms     | Skip compression             |
 
 ---
 

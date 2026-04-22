@@ -15,7 +15,7 @@ This document provides a methodology for analyzing and adapting system component
 ## Table of Contents
 
 1. [Component Adaptation Framework](#component-adaptation-framework)
-2. [Case Study: Judge #6 → Gemini Ingestion Layer](#case-study-judge-6--gemini-ingestion-layer)
+2. [Case Study: Judge 6 → Gemini Ingestion Layer](#case-study-judge-6--gemini-ingestion-layer)
 3. [Adaptation Methodology](#adaptation-methodology)
 4. [PNKLN Core Stack Integration](#pnkln-core-stack-integration)
 5. [Analysis Templates](#analysis-templates)
@@ -64,16 +64,16 @@ This document provides a methodology for analyzing and adapting system component
 
 ---
 
-## Case Study: Judge #6 → Gemini Ingestion Layer
+## Case Study: Judge 6 → Gemini Ingestion Layer
 
 ### Background
 
 **PNKLN Core Stack™ Components:**
 
-- **Judge #6**: Real-time validation/enforcement system (reactive, defensive)
+- **Judge 6**: Real-time validation/enforcement system (reactive, defensive)
 - **Gemini Ingestion Layer**: Nightly intelligence collection pipeline (proactive, acquisitive)
 
-**Challenge**: Repurpose Judge #6 analysis prompt for Gemini Ingestion Layer while maintaining analytical depth.
+**Challenge**: Repurpose Judge 6 analysis prompt for Gemini Ingestion Layer while maintaining analytical depth.
 
 **Outcome**: Successfully adapted prompt, shifting from reactive validation to proactive collection analysis.
 
@@ -84,7 +84,7 @@ This document provides a methodology for analyzing and adapting system component
 #### 1.1 Component Identity
 
 ```diff
-- Judge #6
+- Judge 6
 + Gemini Ingestion Layer
 ```
 
@@ -128,13 +128,13 @@ O (Organized): ✓ Structured prompt captures distributed complexity
 + ~45 min/night runtime efficiency (batch processing)
 ```
 
-**Rationale**: Judge #6 needs instant decisions; Ingestion runs as nightly cron job.
+**Rationale**: Judge 6 needs instant decisions; Ingestion runs as nightly cron job.
 
 **Metric Shift Logic**:
 
 | Component     | Role                | Metric Focus              | Why                                              |
 | ------------- | ------------------- | ------------------------- | ------------------------------------------------ |
-| **Judge #6**  | Real-time validator | Latency (p50, p99)        | Users/services wait for responses                |
+| **Judge 6**  | Real-time validator | Latency (p50, p99)        | Users/services wait for responses                |
 | **Ingestion** | Batch collector     | Total runtime, throughput | No users waiting; optimize for cost/completeness |
 
 **Strategic Insight** (Value Stick from BUSINESS_STRATEGY.md):
@@ -228,7 +228,7 @@ Action Items:
 
 #### 2.1 Architecture Comparison
 
-| Aspect             | Judge #6                     | Gemini Ingestion Layer        | Strategic Implication    |
+| Aspect             | Judge 6                     | Gemini Ingestion Layer        | Strategic Implication    |
 | ------------------ | ---------------------------- | ----------------------------- | ------------------------ |
 | **Architecture**   | Hybrid Gemini+PyTorch        | GKE CronJob Multi-Container   | Scalability over speed   |
 | **Design Pattern** | Synchronous request/response | Asynchronous batch processing | Different failure modes  |
@@ -238,7 +238,7 @@ Action Items:
 **Architecture Analysis Prompts**:
 
 ```
-For Judge #6 (Hybrid AI):
+For Judge 6 (Hybrid AI):
 "Analyze the hybrid Gemini+PyTorch architecture for:
 1. Latency optimization (target p99 <90ms)
 2. Failover between Gemini and PyTorch
@@ -256,7 +256,7 @@ For Gemini Ingestion Layer (GKE CronJob):
 **First Principles Analysis** (Musk Principle #3 from BUSINESS_STRATEGY.md):
 
 ```
-Judge #6 First Principles:
+Judge 6 First Principles:
 Physics: Network latency limits (speed of light)
 Economics: API cost per call
 User Need: Instant validation
@@ -281,7 +281,7 @@ User Need: Comprehensive intelligence
 
 **Metrics Transformation Table**:
 
-| Category       | Judge #6 (Defensive)          | Ingestion Layer (Acquisitive)       | Why Different?        |
+| Category       | Judge 6 (Defensive)          | Ingestion Layer (Acquisitive)       | Why Different?        |
 | -------------- | ----------------------------- | ----------------------------------- | --------------------- |
 | **Speed**      | p50/p99 latency               | Total runtime                       | Batch vs real-time    |
 | **Throughput** | Requests/second               | Items/day                           | Volume granularity    |
@@ -295,7 +295,7 @@ User Need: Comprehensive intelligence
 Portfolio View of PNKLN Stack:
 
 H1 (Core—70% resources):
-  Judge #6 - Mature, production-critical
+  Judge 6 - Mature, production-critical
   Metrics: Uptime, latency, accuracy
   Goal: Defend 99.9% SLA
 
@@ -322,9 +322,9 @@ Rebalancing Trigger:
 **Direction of Dependencies**:
 
 ```
-Judge #6 (Caller):
+Judge 6 (Caller):
 ┌──────────┐
-│ Judge #6 │ ──calls──► Service A (Namespace 1)
+│ Judge 6 │ ──calls──► Service A (Namespace 1)
 └──────────┘ ──calls──► Service B (Namespace 2)
              ──calls──► Service C (Namespace 3)
              ──calls──► Service D (Namespace 4)
@@ -340,7 +340,7 @@ Service D (Namespace 4) ─┤                     │
 
 **Analysis Questions for Each Pattern**:
 
-**For Judge #6 (Caller)**:
+**For Judge 6 (Caller)**:
 
 - How does it handle downstream service failures?
 - Are calls parallelized or sequential?
@@ -375,9 +375,9 @@ Economic Logic: $77/month + GKE costs for 10k+ items/day
 
 **Feature Evolution**:
 
-| Feature Type       | Judge #6                | Ingestion Layer              | Strategic Value         |
+| Feature Type       | Judge 6                | Ingestion Layer              | Strategic Value         |
 | ------------------ | ----------------------- | ---------------------------- | ----------------------- |
-| **Compliance**     | ATP 5-19, JR Validation | Ethical Crawling, robots.txt | Legal risk mitigation   |
+| **Compliance**     | Compliance Framework, JR Validation | Ethical Crawling, robots.txt | Legal risk mitigation   |
 | **Classification** | Binary (pass/fail)      | Tier 1/2/3 value             | Resource prioritization |
 | **Adaptability**   | Fixed rules             | Dynamic source expansion     | Future-proofing         |
 | **Transparency**   | Audit logs              | Crawl transparency           | Trust-building          |
@@ -424,7 +424,7 @@ ROI: Avoiding one lawsuit = 100× cost of compliance
 **Cost Structure Comparison**:
 
 ```
-Judge #6 (Per-Operation):
+Judge 6 (Per-Operation):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
 API Call: $0.0001/request
 Scale: 10M requests/month
@@ -500,7 +500,7 @@ Decision: GO (manageable cost, acceptable risk)
 **From Binary to Holistic Quality**:
 
 ```
-Judge #6 Quality Metrics:
+Judge 6 Quality Metrics:
 ━━━━━━━━━━━━━━━━━━━━━━━━
 False Positive Rate: <2%
 False Negative Rate: <1%
@@ -946,7 +946,7 @@ Output: Recommendations to boost effectiveness score
 **Realistic Expectation Setting**:
 
 ```
-Judge #6 (Production):
+Judge 6 (Production):
 ━━━━━━━━━━━━━━━━━━━━━
 Data Available:
   - Production logs (6 months)
@@ -1087,7 +1087,7 @@ Total Time: 15-20 hours for thorough adaptation
 │          ↓                                   │
 │  [Data Processing Pipeline]                 │
 │          ↓                                   │
-│  [Judge #6 Validation] ← Original analysis  │
+│  [Judge 6 Validation] ← Original analysis  │
 │          ↓                                   │
 │  [Service A] [Service B] [Service C]        │
 │          ↓                                   │
@@ -1101,32 +1101,32 @@ Total Time: 15-20 hours for thorough adaptation
 **End-to-End Flow Prompt**:
 
 ```
-Analyze the handoff between Gemini Ingestion Layer and Judge #6:
+Analyze the handoff between Gemini Ingestion Layer and Judge 6:
 
 1. Data Flow:
    - What format does Ingestion output?
-   - What format does Judge #6 expect?
+   - What format does Judge 6 expect?
    - Is there a transformation layer?
    - What happens on format mismatch?
 
 2. Quality Continuity:
-   - Does Ingestion's tier classification align with Judge #6's validation?
+   - Does Ingestion's tier classification align with Judge 6's validation?
    - Are there conflicts (e.g., Tier 1 item fails validation)?
    - How is feedback looped back to improve ingestion?
 
 3. Performance Cascade:
-   - If Ingestion runs >45 min, does it delay Judge #6?
-   - If Judge #6 blocks items, does it reduce effective ingestion volume?
+   - If Ingestion runs >45 min, does it delay Judge 6?
+   - If Judge 6 blocks items, does it reduce effective ingestion volume?
    - What's the end-to-end latency (ingestion start → briefing delivery)?
 
 4. Cost Accumulation:
-   - Combined cost: $277/month (Ingestion) + $1,000/month (Judge #6) = $1,277
-   - Per-item cost: $0.0092 (Ingestion) + $0.001 (Judge #6) = $0.0102
+   - Combined cost: $277/month (Ingestion) + $1,000/month (Judge 6) = $1,277
+   - Per-item cost: $0.0092 (Ingestion) + $0.001 (Judge 6) = $0.0102
    - Is there optimization opportunity in shared infrastructure?
 
 5. Failure Modes:
-   - If Ingestion fails, does Judge #6 starve for data?
-   - If Judge #6 is down, do items pile up?
+   - If Ingestion fails, does Judge 6 starve for data?
+   - If Judge 6 is down, do items pile up?
    - What's the recovery strategy for each scenario?
 
 Output: Integration health score + optimization recommendations
@@ -1405,7 +1405,7 @@ For each scenario, provide:
 
 ---
 
-### 6. Integration with Judge #6
+### 6. Integration with Judge 6
 
 **Why**: They're complementary—end-to-end flow matters.
 
@@ -1422,7 +1422,7 @@ For each scenario, provide:
 - Quality: 40% Tier 1, 35% Tier 2, 25% Tier 3
 - Cost: $0.0092/item
 
-### 2. Judge #6 Validation (Downstream)
+### 2. Judge 6 Validation (Downstream)
 
 - Input: All items from Ingestion
 - Block Rate: ~2% (false positives + actual bad items)
@@ -1436,18 +1436,18 @@ For each scenario, provide:
 
 ### 4. Optimization Opportunities
 
-- Can Judge #6 skip Tier 1 items (high trust)?
+- Can Judge 6 skip Tier 1 items (high trust)?
   → Savings: 4,000 items/day × $0.001 = $4/day = $120/month
-- Can Ingestion use Judge #6 feedback to improve classification?
+- Can Ingestion use Judge 6 feedback to improve classification?
   → If Tier 1 item blocked → Reclassify to Tier 2 in model training
 - Can they share infrastructure?
   → Both run in GKE → Potential node sharing
 
 ### 5. Failure Cascade Analysis
 
-- If Ingestion fails → Judge #6 has no input → Briefing empty
-- If Judge #6 fails → Unvalidated items in Briefing → Risk
-- Mitigation: Queue between them, Judge #6 fallback to "pass-through" mode
+- If Ingestion fails → Judge 6 has no input → Briefing empty
+- If Judge 6 fails → Unvalidated items in Briefing → Risk
+- Mitigation: Queue between them, Judge 6 fallback to "pass-through" mode
 
 Output: Integration score + 3 optimization recommendations
 ```

@@ -40,7 +40,7 @@ class AgentRole(Enum):
     DIRECTOR = "director"  # Kosmos — strategic direction
     RESEARCHER = "researcher"  # BioAgent — deep research
     EXECUTOR = "executor"  # n-autoresearch — code execution
-    REVIEWER = "reviewer"  # Judge #6 — governance gate
+    REVIEWER = "reviewer"  # Judge 6 — governance gate
     MEMORY = "memory"  # Hippocampus — state persistence
 
 
@@ -79,7 +79,7 @@ class SwarmOrchestrator:
         1. Receive task from user or daemon
         2. Director agent plans execution strategy
         3. Tasks fanned out to specialized agents
-        4. Results aggregated and passed through Judge #6
+        4. Results aggregated and passed through Judge 6
         5. Final output delivered + memory updated
     """
 
@@ -125,7 +125,7 @@ class SwarmOrchestrator:
             ),
             AgentRole.REVIEWER: AgentConfig(
                 role=AgentRole.REVIEWER,
-                system_instruction="""You are Judge #6 — the governance gate. You review
+                system_instruction="""You are Judge 6 — the governance gate. You review
                 all agent outputs for safety, correctness, and compliance. You have
                 VETO power. Score risk on the ATP 5-19 matrix (1-25 scale).
                 Block anything above risk score 15.""",
@@ -178,7 +178,7 @@ class SwarmOrchestrator:
         return response.text or ""
 
     async def review_output(self, output: str) -> dict[str, Any]:
-        """Pass output through Judge #6 governance gate."""
+        """Pass output through Judge 6 governance gate."""
         review_prompt = f"""Review this agent output for safety and correctness.
 
 Output to review:

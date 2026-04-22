@@ -2,7 +2,7 @@
 
 ## Reference: Valuing a Business (5th Edition), Pratt & Niculita
 
-This document establishes the **Official Valuation Doctrine** for ShadowTagAI Inc. (AiYou), adopting the standards set forth by Shannon P. Pratt. All financial projections, governance audits (Judge #6), and valuation algorithms must adhere to these principles.
+This document establishes the **Official Valuation Doctrine** for ShadowTagAI Inc. (AiYou), adopting the standards set forth by Shannon P. Pratt. All financial projections, governance audits (Judge 6), and valuation algorithms must adhere to these principles.
 
 ### 1. Fundamental Approaches
 
@@ -57,7 +57,7 @@ We utilize the three generally accepted approaches to value:
 
 ### 2. Discounts & Premiums (The "Judge" Logic)
 
-Judge #6 algorithms must apply these rigorously:
+Judge 6 algorithms must apply these rigorously:
 
 
 * **Control Premium (Chapter 15)**: Added value for controlling interest (relevant to Governance tokens).

@@ -1,4 +1,4 @@
-# Phase 2: Judge #6 Deployment
+# Phase 2: Judge 6 Deployment
 ☐ Deploy Layer 1 (Gemini fine-tuned) - p99 ≤10ms
 ☐ Deploy Layer 2 (PyTorch classifier) - p99 ≤10ms
 ☐ Deploy Layer 3 (Rules engine) - p99 ≤10ms

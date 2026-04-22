@@ -1,4 +1,4 @@
-"""LangGraph State Models for Judge #6 Governance Engine
+"""LangGraph State Models for Judge 6 Governance Engine
 
 Defines the three-phase state machine:
 1. AssessmentState - OPA Fast Check (JREngine)

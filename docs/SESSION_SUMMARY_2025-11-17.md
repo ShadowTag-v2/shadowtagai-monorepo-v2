@@ -72,7 +72,7 @@ This session completed the integration of three major branches into the SHADOWTA
 
 **AGENT_GOVERNANCE_ECONOMICS.md** - Financial and strategic impact analysis:
 
-**Current State (Judge #6 + JR Engine)**:
+**Current State (Judge 6 + JR Engine)**:
 
 - Cost: **$1,000-1,600/month**
 - Latency: **p99≤90ms** ✅
@@ -99,7 +99,7 @@ This session completed the integration of three major branches into the SHADOWTA
 
 **Strategic Recommendations**:
 
-1. ✅ **Maintain Judge #6** for core enforcement ($1,000-1,600/mo)
+1. ✅ **Maintain Judge 6** for core enforcement ($1,000-1,600/mo)
 2. ✅ **Add hybrid agent layer** for complex cases (+$50-150/mo)
 3. ❌ **Defer full agent migration** unless strategic necessity
 4. ✅ **Monitor agent tech evolution** (18-month decision gate)
@@ -230,7 +230,7 @@ ShadowTag-v2-fastapi-services/
 **Current SHADOWTAGAI Stack** (Baseline):
 
 - Layer 1 (Gemini Ingestion): **$77/month**
-- Layer 2 (Judge #6 + JR Engine): **$1,000-1,600/month**
+- Layer 2 (Judge 6 + JR Engine): **$1,000-1,600/month**
 - **Total**: **$1,077-1,677/month**
 
 **Recommended Enhancement** (Hybrid Agent Layer):
@@ -255,7 +255,7 @@ ShadowTag-v2-fastapi-services/
 **Latency Profiles**:
 | Component | P99 Latency | Use Case |
 |-----------|-------------|----------|
-| Judge #6 (Current) | <90ms | Real-time enforcement ✅ |
+| Judge 6 (Current) | <90ms | Real-time enforcement ✅ |
 | SK Patterns (New) | <90ms | Pattern orchestration ✅ |
 | Hybrid Fast Path | <10ms | 98% deterministic rules ✅ |
 | Hybrid Slow Path | 2-5s | 2% complex agent reasoning ✅ |
@@ -263,7 +263,7 @@ ShadowTag-v2-fastapi-services/
 
 **Scalability**:
 
-- Synchronous (Judge #6): ~100-200 req/sec
+- Synchronous (Judge 6): ~100-200 req/sec
 - Asynchronous (Agents): ~2,300-4,600 req/sec (23× improvement)
 
 ### Capabilities Added
@@ -304,7 +304,7 @@ ShadowTag-v2-fastapi-services/
 
 ```
 Layer 1: Gemini Ingestion (Collection - $77/mo)
-Layer 2: Judge #6 + JR Engine (Enforcement - $1,000-1,600/mo)
+Layer 2: Judge 6 + JR Engine (Enforcement - $1,000-1,600/mo)
 ```
 
 ### After This Session (v0.3.0)
@@ -316,7 +316,7 @@ Layer 1: Gemini Ingestion (Collection - $77/mo)
 ├─ Current: Rule-based tier classification
 └─ Roadmap: Agent-based quality assessment (+$50/mo)
 
-Layer 2: Judge #6 + JR Engine (Enforcement - $1,000-1,600/mo)
+Layer 2: Judge 6 + JR Engine (Enforcement - $1,000-1,600/mo)
 ├─ Core: Synchronous <90ms blocking (maintained)
 ├─ Enhancement: SK patterns for orchestration
 └─ Roadmap: Hybrid agent layer for 2% complex cases (+$50-150/mo)
@@ -355,7 +355,7 @@ Layer 3: Agent Orchestration (New Capabilities)
 
 **Production-Ready**:
 
-1. ✅ **Judge #6 + JR Engine** - Proven synchronous enforcement (<90ms p99)
+1. ✅ **Judge 6 + JR Engine** - Proven synchronous enforcement (<90ms p99)
 2. ✅ **SK Pattern Implementation** - Zero-overhead orchestration patterns
 3. ✅ **Kosmos Agents** - Autonomous long-horizon research capability
 4. ✅ **Comprehensive test suite** - 897 lines across 6 test files
@@ -441,7 +441,7 @@ Layer 3: Agent Orchestration (New Capabilities)
 **Phase 2: Layer 2 Extension** (Month 3-4)
 
 - [ ] Extend to complex lead validation edge cases
-- [ ] Route: Judge #6 rejects → agent review (2% traffic)
+- [ ] Route: Judge 6 rejects → agent review (2% traffic)
 - [ ] Cost: +$30-50/month
 
 **Phase 3: Policy Precedent System** (Month 5-6)
@@ -543,7 +543,7 @@ Layer 3: Agent Orchestration (New Capabilities)
 
 **Hybrid Agent Layer** (if approved):
 
-- Target: 95%+ agreement with Judge #6 in shadow mode
+- Target: 95%+ agreement with Judge 6 in shadow mode
 - Target: <5% escalation rate for complex cases
 - Target: +$50-150/mo incremental cost maintained
 

@@ -180,7 +180,7 @@ spec:
 | GPU support | ✓ All types | ✓ L4, A100, H100 |
 | Cost optimization | Manual | Automatic |
 
-**Recommendation**: For your Judge #6 hybrid system requiring local SSDs for model caching, stick with **Standard GKE**. For the LLM routing layer, consider a **separate Autopilot cluster** to maximize cost savings.
+**Recommendation**: For your Judge 6 hybrid system requiring local SSDs for model caching, stick with **Standard GKE**. For the LLM routing layer, consider a **separate Autopilot cluster** to maximize cost savings.
 
 ### 4. **Custom Compute Classes Not Implemented**
 
@@ -266,7 +266,7 @@ env:
   value: "fp8"
 ```
 
-**Judge #6 PyTorch Layer** should use:
+**Judge 6 PyTorch Layer** should use:
 
 ```python
 # In your PyTorch model loading
@@ -461,7 +461,7 @@ spec:
         periodSeconds: 60
 ```
 
-### 4. **Judge #6 Optimization**
+### 4. **Judge 6 Optimization**
 
 Your 3-layer hybrid needs revision:
 
@@ -578,7 +578,7 @@ spec:
 ### Phase 3: Workload Deployment (30 min)
 
 - Namespace creation (4 namespaces)
-- Judge #6 hybrid deployment
+- Judge 6 hybrid deployment
 - Disaggregated LLM serving (prefill + decode)
 - Model weight synchronization
 

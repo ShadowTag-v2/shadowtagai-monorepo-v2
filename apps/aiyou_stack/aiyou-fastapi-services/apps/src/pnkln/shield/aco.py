@@ -1,5 +1,5 @@
 """ACO - Automated Compliance & Oversight
-Defense-Grade Wrapper for Judge #6 to enable Continuous ATO.
+Defense-Grade Wrapper for Judge 6 to enable Continuous ATO.
 
 Unlocks Pillar III ($35B Valuation).
 """
@@ -25,7 +25,7 @@ class RMFControl:
 
 class ACO:
     """Automated Compliance & Oversight (ACO)
-    Translates commercial 'Judge #6' logic into DoD RMF/ATO standards.
+    Translates commercial 'Judge 6' logic into DoD RMF/ATO standards.
     """
 
     def __init__(self):

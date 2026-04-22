@@ -78,7 +78,7 @@ What investors see:
 
 - 5,728 lines of production Python code
 
-- Working Judge #6 pipeline (p99≤90ms SLA)
+- Working Judge 6 pipeline (p99≤90ms SLA)
 
 - Gemini Ingestion Layer (running nightly)
 
@@ -92,11 +92,11 @@ What investors see:
 
 **Investor conversation:**
 
-- "Here's the live demo... [shows Judge #6 latency dashboard]"
+- "Here's the live demo... [shows Judge 6 latency dashboard]"
 
 - "We're processing 5K items/night at $77/month... [shows cost metrics]"
 
-- "Our risk framework is ATP 5-19 military-grade... [shows deterministic decisions]"
+- "Our risk framework is Compliance Framework military-grade... [shows deterministic decisions]"
 
 **Funding outcome:**
 
@@ -120,7 +120,7 @@ Timeline:
 
 - Month 1-2: Finish documentation (NIST, C2PA, adtech, etc.)
 
-- Month 3-5: Implement core pipelines (Judge #6, Ingestion)
+- Month 3-5: Implement core pipelines (Judge 6, Ingestion)
 
 - Month 6-8: Build UI/UX layer
 
@@ -194,7 +194,7 @@ No servers, no APIs, no infra.
 
 - **Subtotal:** $77/month
 
-**Judge #6 Validator:**
+**Judge 6 Validator:**
 
 - GKE GPU nodes (T4): $150/month (spot instances)
 
@@ -228,7 +228,7 @@ Steps:
 
 2. Understand strategic context and compliance requirements
 
-3. Implement Judge #6 pipeline from scratch (referencing architecture doc)
+3. Implement Judge 6 pipeline from scratch (referencing architecture doc)
 
 4. Write tests
 
@@ -298,7 +298,7 @@ What's built in:
 
 What's built in:
 
-- ATP 5-19 risk framework (JR Engine) ✅
+- Compliance Framework risk framework (JR Engine) ✅
 
 - Ethical crawler (robots.txt compliance) ✅
 
@@ -386,7 +386,7 @@ What you can show:
 
 What you can show:
 
-- Real-time Judge #6 latency dashboard (p99≤90ms)
+- Real-time Judge 6 latency dashboard (p99≤90ms)
 
 - Gemini Ingestion Layer logs (5K items/night, $77/month)
 
@@ -620,7 +620,7 @@ Merged Branch Structure:
 
 - [ ] Deploy to staging GKE cluster
 
-- [ ] Build basic UI dashboard for Judge #6 metrics
+- [ ] Build basic UI dashboard for Judge 6 metrics
 
 - [ ] Create investor demo script (show live latency, cost per item, risk decisions)
 

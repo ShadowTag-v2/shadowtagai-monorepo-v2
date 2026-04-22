@@ -339,20 +339,20 @@ Please proceed with the structured analysis of the Gemini Ingestion Layer across
 
 ---
 
-## Comparison with Judge #6 Analysis Prompt
+## Comparison with Judge 6 Analysis Prompt
 
-| Aspect                | Gemini Ingestion Analysis                                                            | Judge #6 Analysis                                                       |
+| Aspect                | Gemini Ingestion Analysis                                                            | Judge 6 Analysis                                                       |
 | --------------------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| **Target System**     | Gemini Ingestion Layer                                                               | Judge #6 Validation Layer                                               |
+| **Target System**     | Gemini Ingestion Layer                                                               | Judge 6 Validation Layer                                               |
 | **Role**              | Proactive collector                                                                  | Reactive validator                                                      |
 | **Key Metrics**       | Items/day, sources, cost/item, tier scores                                           | Latency, throughput, block rate, FP/FN                                  |
 | **Architecture**      | GKE CronJob, multi-container                                                         | Hybrid Gemini+PyTorch                                                   |
 | **Execution Pattern** | Batch (~45 min nightly)                                                              | Real-time (p99 ≤90ms)                                                   |
-| **Unique Dimensions** | Ethical compliance, multi-source coverage, tier classification, AM Briefing delivery | ATP 5-19 compliance, JR validation, coverage gates, service integration |
+| **Unique Dimensions** | Ethical compliance, multi-source coverage, tier classification, AM Briefing delivery | Compliance Framework compliance, JR validation, coverage gates, service integration |
 | **Confidence Target** | ≥60% (specs-only)                                                                    | ≥70% (with prod data)                                                   |
 | **Analysis Focus**    | Collection breadth, ethics, efficiency                                               | Validation accuracy, speed, coverage                                    |
 
-**Complementary Analysis**: Running both prompts provides end-to-end insight into the PNKLN Stack's intelligence pipeline, from collection (Ingestion Layer) to validation (Judge #6).
+**Complementary Analysis**: Running both prompts provides end-to-end insight into the PNKLN Stack's intelligence pipeline, from collection (Ingestion Layer) to validation (Judge 6).
 
 ---
 
@@ -360,7 +360,7 @@ Please proceed with the structured analysis of the Gemini Ingestion Layer across
 
 | Version | Date       | Changes                                                         |
 | ------- | ---------- | --------------------------------------------------------------- |
-| 1.0     | 2025-11-15 | Initial prompt creation based on Judge #6 adaptation discussion |
+| 1.0     | 2025-11-15 | Initial prompt creation based on Judge 6 adaptation discussion |
 
 ---
 
@@ -388,7 +388,7 @@ After running this analysis:
 
 - [PNKLN Core Stack Architecture](../architecture/PNKLN_CORE_STACK.md)
 - [Gemini Ingestion Layer Specifications](../architecture/GEMINI_INGESTION_LAYER.md)
-- [Judge #6 Analysis Prompt](./judge_six_analysis.md) (for comparison)
+- [Judge 6 Analysis Prompt](./judge_six_analysis.md) (for comparison)
 - [Analysis Results Archive](./results/) (store Gemini outputs here)
 
 ---

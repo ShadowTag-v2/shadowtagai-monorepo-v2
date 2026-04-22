@@ -12,7 +12,7 @@
 
 Two parallel development tracks have emerged for Pinkln, each with distinct strengths:
 
-| Dimension        | Current Branch (Judge #6) | Kernel-Chaining Branch          |
+| Dimension        | Current Branch (Judge 6) | Kernel-Chaining Branch          |
 | ---------------- | ------------------------- | ------------------------------- |
 | **Focus**        | Enterprise deployment     | Technical implementation        |
 | **Deliverables** | Business + Kubernetes     | Full application code           |
@@ -31,7 +31,7 @@ Two parallel development tracks have emerged for Pinkln, each with distinct stre
 
 **Commits:**
 
-- `0d9d256` - Judge #6 inception analysis and baseline metrics
+- `0d9d256` - Judge 6 inception analysis and baseline metrics
 - `3e89142` - Gemini Ingestion Layer inception analysis
 - `f06d622` - Complete PNKLN Core Stack™ implementation package
 - `082bd70` - Final launch materials (GitHub Project, Week 1, Design Partners)
@@ -97,7 +97,7 @@ Two parallel development tracks have emerged for Pinkln, each with distinct stre
 **Gaps:**
 
 - ⚠️ Missing full application implementation (only JR Engine prototype)
-- ⚠️ No ATP 5-19 scanner kernel
+- ⚠️ No Compliance Framework scanner kernel
 - ⚠️ No audit compression kernel
 - ⚠️ No orchestration layer
 - ⚠️ No multi-agent debate system
@@ -256,7 +256,7 @@ Two parallel development tracks have emerged for Pinkln, each with distinct stre
 | Aspect           | Current Branch                                 | Kernel-Chaining Branch         |
 | ---------------- | ---------------------------------------------- | ------------------------------ |
 | **Vision**       | Two-component stack (Collection + Enforcement) | Unified ultrathink ecosystem   |
-| **Architecture** | Microservices (Judge #6 + Gemini Ingestion)    | Kernel chaining pipeline       |
+| **Architecture** | Microservices (Judge 6 + Gemini Ingestion)    | Kernel chaining pipeline       |
 | **Focus**        | Production deployment                          | Technical innovation           |
 | **Complexity**   | High (2 systems, 4 namespaces)                 | Medium (3 kernels, sequential) |
 
@@ -284,13 +284,13 @@ Two parallel development tracks have emerged for Pinkln, each with distinct stre
 │                    ↓                        │
 │         Intelligence Database               │
 │                    ↓                        │
-│  Component 2: Judge #6 (Enforcement)       │
+│  Component 2: Judge 6 (Enforcement)       │
 │  ┌─────────────────────────────────────┐   │
 │  │ JR Engine (Purpose/Reasons/Brakes)  │   │
 │  │ ├── Gemini Flash 2.0 (primary)      │   │
 │  │ └── PyTorch (fallback)              │   │
 │  │                                      │   │
-│  │ ATP 5-19 compliance validation       │   │
+│  │ Compliance Framework compliance validation       │   │
 │  │ 44 threat categories                 │   │
 │  │ <200ms p99 latency                   │   │
 │  │ 94% policy coverage                  │   │
@@ -318,7 +318,7 @@ Annual Value: $10.4M | ROI: 15× | Cost: $370K
 │  ┌───────────────────────────────────────────────┐     │
 │  │ Kernel 1: ATP_519_scan                        │     │
 │  │ ├── Model: Gemini 2.0 Flash                   │     │
-│  │ ├── Extract: ATP 5-19 violations              │     │
+│  │ ├── Extract: Compliance Framework violations              │     │
 │  │ ├── Output: Structured JSON (~2.5KB)          │     │
 │  │ └── Latency: 40ms p50                         │     │
 │  └───────────────────────────────────────────────┘     │
@@ -453,7 +453,7 @@ unified-branch/
 
 - Current branch becomes standalone enterprise product
 - Target: Defense, healthcare, fintech
-- Focus: ATP 5-19 compliance, intelligence briefings
+- Focus: Compliance Framework compliance, intelligence briefings
 - Deployment: Kubernetes-native, multi-tenant SaaS
 
 **Product 2: Pinkln Ultrathink (Developer Tool)**
@@ -487,7 +487,7 @@ unified-branch/
 Pinkln Core Library (kernel-chaining)
     ↓ (dependency)
 PNKLN Core Stack™ (current branch)
-    ├── Judge #6 uses app/validation/jr_engine.py
+    ├── Judge 6 uses app/validation/jr_engine.py
     ├── ATP scanner uses app/kernels/atp_519_scan.py
     └── Ingestion uses app/agents/debate.py for multi-source consensus
 ```
@@ -579,7 +579,7 @@ Lightweight decision pipeline for embedded use.
 
 **PNKLN_ROADMAP.md** (extend to 16 weeks):
 
-- Week 1-12: Current plan (Judge #6 + Gemini Ingestion)
+- Week 1-12: Current plan (Judge 6 + Gemini Ingestion)
 - Week 13-14: Ultrathink ecosystem features (Glicko-2, MAD, DTE)
 - Week 15-16: Integration testing, performance tuning, launch
 
@@ -656,7 +656,7 @@ uvicorn app.main_ecosystem:app --reload --port 8001
 
 **WEEK_1_DEPLOYMENT_CHECKLIST.md** (add ecosystem tasks):
 
-- Day 3: Deploy Judge #6 API (FastAPI + Kubernetes)
+- Day 3: Deploy Judge 6 API (FastAPI + Kubernetes)
 - Day 4: Test kernel chaining pipeline (ATP_519_scan → judge_six → audit_compress)
 - Day 5: Validate 52ms p50 latency, 98.5% token reduction
 
@@ -702,7 +702,7 @@ gh label create "grpo" --color "ffeaa7" --description "Group relative policy opt
 │                     PostgreSQL Intelligence DB                   │
 │                              ↓                                   │
 │                                                                  │
-│  Layer 2: DECISION ENFORCEMENT (Judge #6 Kernel Chain)          │
+│  Layer 2: DECISION ENFORCEMENT (Judge 6 Kernel Chain)          │
 │  ┌────────────────────────────────────────────────────────┐     │
 │  │ Decision Context (50KB) → ATP_519_scan (Gemini Flash) │     │
 │  │       ↓ (2.5KB JSON)                                   │     │
@@ -760,13 +760,13 @@ Timeline: 16 weeks | Team: 7.25 FTE → 9.5 FTE (ecosystem features)
 
 **Documentation (27 files):**
 
-1. Business Analysis (4): Judge #6 + Gemini Ingestion inception + quick refs
+1. Business Analysis (4): Judge 6 + Gemini Ingestion inception + quick refs
 2. Technical Docs (3): README, ARCHITECTURE, PINKLN_ECOSYSTEM
 3. Implementation (2): IMPLEMENTATION_TICKETS (48 issues), PNKLN_ROADMAP (16 weeks)
 4. Launch Materials (3): GitHub Project, Week 1 Checklist, Design Partner Outreach
 5. Stakeholder (1): 25-slide presentation
 6. Kubernetes (6): namespace, cronjob, configmap, secrets, service-account, README
-7. GitHub Templates (2): Judge #6 + Gemini Ingestion issue templates
+7. GitHub Templates (2): Judge 6 + Gemini Ingestion issue templates
 8. Analysis (1): This evolution analysis
 9. Other (5): .gitignore, requirements.txt, .env.example, etc.
 
@@ -794,7 +794,7 @@ Timeline: 16 weeks | Team: 7.25 FTE → 9.5 FTE (ecosystem features)
    - Week 13-14: Ecosystem features (Glicko-2, MAD, DTE, GRPO)
    - Week 15-16: Integration, performance tuning, launch
 
-3. ✅ **Create Kubernetes deployment** for Judge #6 API
+3. ✅ **Create Kubernetes deployment** for Judge 6 API
    - Deployment, Service, HPA for FastAPI service
    - Integrate with existing ingestion infrastructure
 
@@ -820,7 +820,7 @@ Timeline: 16 weeks | Team: 7.25 FTE → 9.5 FTE (ecosystem features)
    - Update ROI calculations
 
 3. ✅ **Deploy Week 1 + ultrathink demo**
-   - Week 1: Ingestion + Judge #6 baseline (current plan)
+   - Week 1: Ingestion + Judge 6 baseline (current plan)
    - Week 2: Multi-agent debate demo, Glicko-2 ratings dashboard
 
 ### Long-Term (Month 2-4)
@@ -847,7 +847,7 @@ Timeline: 16 weeks | Team: 7.25 FTE → 9.5 FTE (ecosystem features)
 - ✅ Kubernetes deployments successful (ingestion + API)
 - ✅ Performance targets met:
   - Ingestion: 63 items/day, ~45min runtime
-  - Judge #6 API: 52ms p50, <90ms p99
+  - Judge 6 API: 52ms p50, <90ms p99
   - Token reduction: ≥98.5%
 
 ### Business Validation

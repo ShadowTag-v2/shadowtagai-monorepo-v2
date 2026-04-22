@@ -1,6 +1,6 @@
 # Gemini Ingestion Layer - Intelligence Collection Pipeline
 
-**Part of PNKLN Core Stack™** | **Adapted from Judge #6 Analysis Framework**
+**Part of PNKLN Core Stack™** | **Adapted from Judge 6 Analysis Framework**
 
 ## Overview
 
@@ -317,11 +317,11 @@ GET /api/v1/context?event_id=evt-123&location=37.7749,-122.4194
 
 ```
 
-## Comparison: Judge #6 vs. Gemini Ingestion Layer
+## Comparison: Judge 6 vs. Gemini Ingestion Layer
 
-This system is adapted from the Judge #6 enforcement framework. Key differences:
+This system is adapted from the Judge 6 enforcement framework. Key differences:
 
-| Aspect | Judge #6 (Enforcement) | Gemini Ingestion (Collection) |
+| Aspect | Judge 6 (Enforcement) | Gemini Ingestion (Collection) |
 |--------|------------------------|-------------------------------|
 | **Purpose** | Validate commits, enforce quality gates | Collect intelligence from diverse sources |
 | **Architecture** | Hybrid Gemini+PyTorch sync API | GKE CronJob multi-container batch |
@@ -563,7 +563,7 @@ Proprietary - ShadowTag-v4 Inc.
 
 - Gemini 2.0 Pro API: https://ai.google.dev/docs
 
-- Judge #6 Framework: `docs/judge-six-analysis.md`
+- Judge 6 Framework: `docs/judge-six-analysis.md`
 
 - V2X Mesh API: `services/v2x-mesh/README.md`
 

@@ -1,6 +1,6 @@
 # PNKLN Latency Validation Harness
 
-Comprehensive testing suite for validating Judge #6 inference latency against **p99 ≤90ms** SLA.
+Comprehensive testing suite for validating Judge 6 inference latency against **p99 ≤90ms** SLA.
 
 ## Tools
 
@@ -114,7 +114,7 @@ ENDPOINT=http://judge6.pnkln.svc.cluster.local bash test_health.sh
 **Example**:
 
 ```
-🏥 Health Check for Judge #6
+🏥 Health Check for Judge 6
 ================================
 Endpoint: http://judge6.pnkln.svc.cluster.local
 

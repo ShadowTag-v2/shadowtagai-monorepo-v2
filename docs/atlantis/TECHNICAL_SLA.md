@@ -440,7 +440,7 @@ except ServiceUnavailable:
 
 - **Async I/O**: Use async/await for I/O-bound operations (FastAPI native)
 
-**Latency Budget Breakdown** (Judge #6 target p99≤90ms):
+**Latency Budget Breakdown** (Judge 6 target p99≤90ms):
 
 ```
 
@@ -569,7 +569,7 @@ TECHNICAL DEBT LOG
 
   - Priority: Medium (after revenue validation)
 
-[DEBT-002] No automated integration tests for Judge #6
+[DEBT-002] No automated integration tests for Judge 6
 
   - Created: 2025-10-15
 
@@ -615,7 +615,7 @@ TECHNICAL DEBT LOG
 
 ## PERFORMANCE OPTIMIZATION PLAYBOOK
 
-### When p99 Latency Exceeds Target (>90ms for Judge #6)
+### When p99 Latency Exceeds Target (>90ms for Judge 6)
 
 **STEP 1: Measure** (1 day)
 
@@ -755,7 +755,7 @@ AFTER: p99 = 65ms (85ms saved, target ≤90ms ACHIEVED ✅)
 
 ## QUICK REFERENCE
 
-**Judge #6 SLA**:
+**Judge 6 SLA**:
 
 - p99≤90ms, p50≤30ms, 99.9% uptime, <0.1% errors, 100 concurrent
 

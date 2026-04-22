@@ -94,7 +94,7 @@ _From antigravity_master_plan_v8.md — 2030 projections_
 
 | Tier      | Description                                         | Price    |
 | --------- | --------------------------------------------------- | -------- |
-| Basic     | ATP 5-19 Risk Radar — "We show you the risks"       | $25K/yr  |
+| Basic     | Compliance Framework Risk Radar — "We show you the risks"       | $25K/yr  |
 | AIT       | CodePMCS + Defensive — "We fix the obvious"         | $100K/yr |
 | SOF       | Troop B Hunter/Killer — "We hunt for you"           | $400K/yr |
 | The Child | Sovereign AI for Defense/Gov — "We clone the brain" | $1M+/yr  |

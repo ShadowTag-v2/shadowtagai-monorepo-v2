@@ -46,7 +46,7 @@ The PNKLN Multi-Agent System consists of three specialized agents working in coo
        │ Agent Mail: Code
        ▼
 ┌─────────────┐
-│ OrangeCreek │ (Validation - Judge #6)
+│ OrangeCreek │ (Validation - Judge 6)
 └──────┬──────┘
        │ Approval Gate (RA-4)
        ▼
@@ -248,13 +248,13 @@ AgentConfig(
 
 - **Codename**: OC-03
 - **Name**: OrangeCreek
-- **Role**: Validation & Quality Assurance (Judge #6)
+- **Role**: Validation & Quality Assurance (Judge 6)
 - **Risk Level**: RA-4 (High Risk - Requires Human Approval)
 - **Coverage Target**: 100%
 
 ### Capabilities
 
-#### 1. Test Suite Generation (Judge #6)
+#### 1. Test Suite Generation (Judge 6)
 
 - Generate comprehensive unit tests
 - Create integration tests for multi-component workflows
@@ -334,7 +334,7 @@ AgentConfig(
     codename="OC-03",
     role="Validation & Quality Assurance",
     capabilities=[
-        "Test suite generation (Judge #6)",
+        "Test suite generation (Judge 6)",
         "Coverage enforcement (98% minimum)",
         "Security validation",
         "ATP 5-19 compliance gating"
@@ -452,7 +452,7 @@ Risk levels follow ATP 5-19 guidelines:
 
 ## Coverage Requirements
 
-### Judge #6 Enforcement
+### Judge 6 Enforcement
 
 OrangeCreek (OC-03) enforces minimum test coverage requirements:
 

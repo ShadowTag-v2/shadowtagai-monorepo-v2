@@ -1,6 +1,6 @@
-# Judge #6 — ATP 5-19 Risk Scoring Template
+# Judge 6 — ATP 5-19 Risk Scoring Template
 # ==========================================
-# Stable process skeleton beneath Judge #6 enforcement.
+# Stable process skeleton beneath Judge 6 enforcement.
 # Every risk decision MUST be scored through this 7-step framework.
 # Reference: U.S. Army ATP 5-19, Composite Risk Management
 #
@@ -29,7 +29,7 @@
 # - Input validation (Zod/Pydantic schema)
 # - Rate limiting (per-user, per-endpoint)
 # - Kovel attestation (cryptographic hash)
-# - Judge #6 policy gate (mandatory)
+# - Judge 6 policy gate (mandatory)
 # - Token budget cap (per-session)
 # - Audit log (structured, no PII)
 

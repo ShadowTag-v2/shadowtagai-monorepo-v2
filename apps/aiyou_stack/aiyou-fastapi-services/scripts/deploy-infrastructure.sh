@@ -175,15 +175,15 @@ deploy_kubernetes_manifests() {
     kubectl apply -f "${K8S_DIR}/base/namespaces.yaml"
     log_success "Namespaces created"
 
-    # Deploy Judge #6
-    log_info "Deploying Judge #6 enforcement system..."
+    # Deploy Judge 6
+    log_info "Deploying Judge 6 enforcement system..."
     kubectl apply -f "${K8S_DIR}/base/judge6-deployment.yaml"
-    log_success "Judge #6 deployment created"
+    log_success "Judge 6 deployment created"
 
     # Wait for deployments
     log_info "Waiting for deployments to be ready..."
     kubectl wait --for=condition=available --timeout=600s \
-        deployment/judge6-hybrid -n ShadowTag-v2jr-governance || log_warning "Judge #6 deployment may need more time"
+        deployment/judge6-hybrid -n ShadowTag-v2jr-governance || log_warning "Judge 6 deployment may need more time"
 
     log_success "Kubernetes manifests deployed"
 }

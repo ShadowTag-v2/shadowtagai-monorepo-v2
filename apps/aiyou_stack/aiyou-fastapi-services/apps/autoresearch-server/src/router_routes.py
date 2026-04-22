@@ -39,7 +39,7 @@ class RequestModel(BaseModel):
 
 @api_router.post("/dispatch")
 async def dispatch_task(r: RequestModel):
-    # SOVEREIGN KOSMOS UNIFICATION (Gemini 2.5 Pro + Judge #6)
+    # SOVEREIGN KOSMOS UNIFICATION (Gemini 2.5 Pro + Judge 6)
     from src.libs.shadowtag_v4.governance.judge_client import judge
 
     # 1. Consult the Judge (Governance Layer)

@@ -6,7 +6,7 @@ Separates Short-Term (Session) from Long-Term (Memory) with an ETL pipeline.
 
 Integrates:
 -   Session Manager (RAM / Hot Path)
--   Memory Layer (Disk / Cold Path) with Judge #6 Validation
+-   Memory Layer (Disk / Cold Path) with Judge 6 Validation
 -   Gemini v2.0 for Inference (via src.pnkln.gemini_integration)
 """
 
@@ -51,7 +51,7 @@ class Session:
 class MemoryLayer:
     """The 'Hard Drive'. Implements the ETL pattern.
     Stores facts that survive beyond the immediate session.
-    Protected by Judge #6 validation.
+    Protected by Judge 6 validation.
     """
 
     def __init__(self):
@@ -101,11 +101,11 @@ class MemoryLayer:
             if new_facts:
                 valid_facts = []
                 for fact in new_facts:
-                    # Judge #6 Validation Logic
+                    # Judge 6 Validation Logic
                     if self.judge.validate_fact(fact):
                         valid_facts.append(fact)
                     else:
-                        logger.info(f"[Memory ETL] Judge #6 REJECTED fact: {fact}")
+                        logger.info(f"[Memory ETL] Judge 6 REJECTED fact: {fact}")
 
                 if valid_facts:
                     logger.info(f"[Memory ETL] Storing new facts: {valid_facts}")

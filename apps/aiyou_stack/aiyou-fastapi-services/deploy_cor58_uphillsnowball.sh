@@ -50,13 +50,13 @@ else
     echo "✅ Artifact Registry exists."
 fi
 
-# 3. Build & Deploy: Judge #6 (Governance Engine)
-echo "⚖️  Building Judge #6 (Omega Governance)..."
+# 3. Build & Deploy: Judge 6 (Governance Engine)
+echo "⚖️  Building Judge 6 (Omega Governance)..."
 gcloud builds submit . \
     --config=cloudbuild.yaml \
     --substitutions=_SERVICE_NAME=judge-six-omega
 
-echo "🚀 Deploying Judge #6 to Cloud Run..."
+echo "🚀 Deploying Judge 6 to Cloud Run..."
 gcloud run deploy judge-six-omega \
     --image=$REGION-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/judge-six-omega:latest \
     --region=$REGION \

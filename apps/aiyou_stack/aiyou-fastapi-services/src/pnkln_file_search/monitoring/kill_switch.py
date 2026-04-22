@@ -17,7 +17,7 @@ class KillSwitchState(Enum):
 
     ACTIVE = "active"  # File search enabled
     DEGRADED = "degraded"  # File search experiencing issues
-    DISABLED = "disabled"  # File search disabled, fallback to Judge #6 only
+    DISABLED = "disabled"  # File search disabled, fallback to Judge 6 only
 
 
 class KillSwitch:
@@ -29,7 +29,7 @@ class KillSwitch:
     3. False positive policy match rate
 
     When thresholds are exceeded, automatically disables file search
-    and falls back to pure Judge #6 enforcement.
+    and falls back to pure Judge 6 enforcement.
     """
 
     def __init__(self, metrics_collector: MetricsCollector | None = None):
@@ -152,7 +152,7 @@ class KillSwitch:
             logger.warning("kill_switch_degraded", state="degraded")
 
     def _disable(self) -> None:
-        """Disable file search (fallback to Judge #6 only)"""
+        """Disable file search (fallback to Judge 6 only)"""
         if self.state != KillSwitchState.DISABLED:
             self.state = KillSwitchState.DISABLED
             logger.error(

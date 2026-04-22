@@ -51,7 +51,7 @@ class GeminiSecurityScanner:
 """,
 )
 
-# 3. THE PIPELINE HOOK (Connecting to Judge #6)
+# 3. THE PIPELINE HOOK (Connecting to Judge 6)
 create_file(
     "src/devtools/pipeline_hook.py",
     """

@@ -15,8 +15,8 @@ The "Ultrathink" engine replaces monolithic LLM prompts with **Kernel Chaining**
 
 ### The "Kernel Chain" Flow
 
-1.  **Scanner (ATP 5-19)**: Gemini Flash (40ms) extracts pure JSON violations.
-2.  **Classifier (Judge #6)**: Local PyTorch/CPU (<12ms) rates severity (Risk Tier 1-5).
+1.  **Scanner (Compliance Framework)**: Gemini Flash (40ms) extracts pure JSON violations.
+2.  **Classifier (Judge 6)**: Local PyTorch/CPU (<12ms) rates severity (Risk Tier 1-5).
 3.  **Compressor**: zstd (Level 22) reduces audit trails by **98.5%** (487 bytes).
 4.  **Decision**: "Go/No-Go" binary output with confidence score.
 

@@ -89,21 +89,21 @@ Your role is to provide comprehensive technical analysis based on available docu
   }
 
   private initializeComponentTemplates(): void {
-    // Judge #6 Template
+    // Judge 6 Template
     this.componentTemplates.set('judge-6', {
       id: 'judge-6-analysis',
-      name: 'Judge #6 Validation System Analysis',
+      name: 'Judge 6 Validation System Analysis',
       version: '2.0.0',
       targetComponent: 'judge-6',
 
       sections: {
         ...this.baseTemplate.sections,
-        context: `You are analyzing Judge #6, a real-time validation and enforcement system in the PNKLN Core Stack™.
+        context: `You are analyzing Judge 6, a real-time validation and enforcement system in the PNKLN Core Stack™.
 This is a hybrid Gemini+PyTorch AI system that validates data quality and enforces business rules with strict latency requirements.`,
       },
 
       replacements: [
-        { key: '{{COMPONENT_NAME}}', value: 'Judge #6', description: 'Component identifier' },
+        { key: '{{COMPONENT_NAME}}', value: 'Judge 6', description: 'Component identifier' },
         {
           key: '{{COMPONENT_TYPE}}',
           value: 'Validation & Enforcement System',
@@ -174,7 +174,7 @@ This is a GKE CronJob-based system that ethically crawls multiple sources, class
 
       adaptations: [
         {
-          from: 'Real-time validation (Judge #6)',
+          from: 'Real-time validation (Judge 6)',
           to: 'Batch collection (Ingestion Layer)',
           rationale: 'Shifts from latency-focused to efficiency-focused, preventive vs reactive',
         },

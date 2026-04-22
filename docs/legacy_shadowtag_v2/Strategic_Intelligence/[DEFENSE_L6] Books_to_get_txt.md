@@ -62,7 +62,7 @@ Example Entries
    • Why It Matters: Ground truth for BJR doctrines → informs our ShadowTagJR and Board decision protection.
    • When to Use: Doctrine Ledger entries tied to governance, board resolutions, liability shields.
 
-2. ATP 5-19 Risk Management (Army Doctrine)
+2. Compliance Framework Risk Management (Army Doctrine)
    • Type: Free, doctrinal military manual.
    • Why It Matters: Provides our risk assessment loop and tiered controls for the ShadowTag Risk Engine.
    • When to Use: All Ledger entries tagged with “Risk Tier” or escalation.
@@ -84,7 +84,7 @@ Example Entries
 
 ⸻
 N
-Next Steps 1. I’ll generate the full Sourcebook index using the 41 recommended resources. 2. Each gets its own doctrine “card.” 3. We link these cards to Ledger triggers (e.g., risk decision → ATP 5-19; positioning → Dunford; acquisition → ABA Model APA).
+Next Steps 1. I’ll generate the full Sourcebook index using the 41 recommended resources. 2. Each gets its own doctrine “card.” 3. We link these cards to Ledger triggers (e.g., risk decision → Compliance Framework; positioning → Dunford; acquisition → ABA Model APA).
 
 ⸻
 
@@ -102,7 +102,7 @@ Got it ✅ — with all personas locked at IQ 160, I’ve run a full inventory �
 1. Core Doctrines (Kept)
    • ShadowTagJR (supreme ethos) → every decision ties to shareholder value maximization.
    • Doctrine-Controlled Enterprise loop (decision → log → test → refine).
-   • Risk Engine (ATP 5-19) with automated tiering.
+   • Risk Engine (Compliance Framework) with automated tiering.
    • AI-First Build Accelerators (UI → React, Agents, Auto-PDF, Website from sketch).
    • Security-First Doctrine (ISO 27001 + SOC2 baseline).
    • Rehearse, rehearse, rehearse (meeting prep + simulation).
@@ -122,7 +122,7 @@ Got it ✅ — with all personas locked at IQ 160, I’ve run a full inventory �
 
 3. Sourcebook (Refined)
 
-From the 41 recommended, we’ve prioritized 10 high-leverage cards (BJR, ABA Guidebook, ATP 5-19, McKinsey, Damodaran, Google SRE, ISO 27001, NIST AI RMF, Dunford, Reforge).
+From the 41 recommended, we’ve prioritized 10 high-leverage cards (BJR, ABA Guidebook, Compliance Framework, McKinsey, Damodaran, Google SRE, ISO 27001, NIST AI RMF, Dunford, Reforge).
 • Cut for now: lower-utility / long-horizon resources (e.g., PCI DSS, HIPAA, CSA CCM, some accounting treatises, advanced valuation like Pratt, WIPO patent guides).
 
 ⸻

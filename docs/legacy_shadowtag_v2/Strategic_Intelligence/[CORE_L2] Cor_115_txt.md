@@ -19,7 +19,7 @@ GKE CronJob batch intelligence gathering (NEW)
 
 🎯 What Was Added
 Ingestion Layer Analyzer for pnkln Core Stack™
-Based on your analysis comparing Judge #6 to the Gemini Ingestion Layer, I've built a complete monitoring system adapted for batch processing, ethical crawling, and intelligence gathering.
+Based on your analysis comparing Judge 6 to the Gemini Ingestion Layer, I've built a complete monitoring system adapted for batch processing, ethical crawling, and intelligence gathering.
 
 🔍 Key Components Implemented
 
@@ -96,8 +96,8 @@ GET /ingestion/costs/monthly # Monthly cost tracking
 GET /ingestion/briefing-delivery # Delivery metrics
 
 🏗️ Architecture
-Metrics Adaptation (Judge #6 → Ingestion Layer)
-| Judge #6 (Validation) | Ingestion Layer (Gathering) | |-----------------------|-----------------------------| | p99 ≤ 90ms (latency) | ~45 min/night (batch runtime) | | FP/FN rates | Relevance, timeliness, completeness | | 98% coverage | 6-dimensional quality gates | | API calls per validation | Monthly operational ~$77 | | Calls 4 namespaces | Called by 4 namespaces | | Hybrid Gemini+PyTorch | GKE CronJob multi-container |
+Metrics Adaptation (Judge 6 → Ingestion Layer)
+| Judge 6 (Validation) | Ingestion Layer (Gathering) | |-----------------------|-----------------------------| | p99 ≤ 90ms (latency) | ~45 min/night (batch runtime) | | FP/FN rates | Relevance, timeliness, completeness | | 98% coverage | 6-dimensional quality gates | | API calls per validation | Monthly operational ~$77 | | Calls 4 namespaces | Called by 4 namespaces | | Hybrid Gemini+PyTorch | GKE CronJob multi-container |
 Integration Points
 Ingestion Layer → Intelligence Pipeline → Analysis → Briefing
 ↓ ↓
@@ -226,7 +226,7 @@ QUICK_START.md - 5-minute quick start
 🎓 Key Innovations
 
 1. Context-Specific Adaptation
-   Shifted from real-time latency metrics (Judge #6) to batch runtime efficiency for nightly CronJobs.
+   Shifted from real-time latency metrics (Judge 6) to batch runtime efficiency for nightly CronJobs.
 2. Ethical Compliance Model
    Built-in robots.txt checking, rate limiting, and transparent user agent—critical for legal web crawling.
 3. Multi-Source Coverage

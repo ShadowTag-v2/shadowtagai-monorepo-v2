@@ -1,10 +1,10 @@
-# Judge #6 HITL System - Compliance Documentation
+# Judge 6 HITL System - Compliance Documentation
 
 **EU AI Act + California SB 53 Compliance**
 
 ## Executive Summary
 
-Judge #6 HITL System is designed to meet regulatory requirements for high-stakes AI decision-making systems under:
+Judge 6 HITL System is designed to meet regulatory requirements for high-stakes AI decision-making systems under:
 
 - **EU AI Act** (Regulation (EU) 2024/1689)
 - **California SB 53** (AI Transparency Requirements)
@@ -17,7 +17,7 @@ Judge #6 HITL System is designed to meet regulatory requirements for high-stakes
 
 ### System Classification
 
-**Judge #6 Risk Classification**: **HIGH-RISK AI SYSTEM** (Article 6)
+**Judge 6 Risk Classification**: **HIGH-RISK AI SYSTEM** (Article 6)
 
 **Rationale**:
 
@@ -31,7 +31,7 @@ Judge #6 HITL System is designed to meet regulatory requirements for high-stakes
 ✅ **Implemented**:
 
 1. **Risk Identification** (Article 9.2.a):
-   - ATP 5-19 risk matrix (Probability × Severity → Risk Level)
+   - Compliance Framework risk matrix (Probability × Severity → Risk Level)
    - Systematic risk factor extraction per vertical
    - Documented in `src/risk_matrix/__init__.py`
 
@@ -58,7 +58,7 @@ Judge #6 HITL System is designed to meet regulatory requirements for high-stakes
 ✅ **Implemented**:
 
 1. **Training Data Quality** (Article 10.3):
-   - Risk assessment based on documented ATP 5-19 standards
+   - Risk assessment based on documented Compliance Framework standards
    - No ML training on user data (rules-based + external fraud ML)
    - Audit trail validation prevents data drift
 
@@ -87,7 +87,7 @@ Judge #6 HITL System is designed to meet regulatory requirements for high-stakes
 
 3. **Architecture**:
    - Multi-vertical judge system (Fin, Case, Law, Fraud)
-   - ATP 5-19 risk assessment integration
+   - Compliance Framework risk assessment integration
    - Semantic compression for audit trails (10:1 ratio)
 
 4. **Risk Management Measures**:
@@ -132,7 +132,7 @@ Judge #6 HITL System is designed to meet regulatory requirements for high-stakes
 ✅ **Implemented**:
 
 1. **User Information** (Article 13.1):
-   - System clearly identified as "Judge #6 HITL System"
+   - System clearly identified as "Judge 6 HITL System"
    - Decision reasoning provided in `JudgeResponse.reasoning`
    - Next steps clearly communicated
 
@@ -257,7 +257,7 @@ Ethical Considerations:
      - System uptime
 
 4. **Training Data Description**:
-   - ATP 5-19 risk matrix (public military standard)
+   - Compliance Framework risk matrix (public military standard)
    - Financial thresholds (industry standard)
    - Regulatory requirements (public laws)
    - No proprietary training data
@@ -484,12 +484,12 @@ WHERE approval_chain IS NOT NULL
 
 ## Conclusion
 
-Judge #6 HITL System is **designed for compliance** with EU AI Act and California SB 53 requirements. Key strengths:
+Judge 6 HITL System is **designed for compliance** with EU AI Act and California SB 53 requirements. Key strengths:
 
 ✅ **Transparency**: Full documentation, model cards, public metrics
 ✅ **Human Oversight**: HITL gates for all high-risk decisions
 ✅ **Audit Trails**: Immutable 7-year retention with semantic compression
-✅ **Risk Management**: ATP 5-19 systematic risk assessment
+✅ **Risk Management**: Compliance Framework systematic risk assessment
 ✅ **Performance**: Sub-90ms latency, validated quality metrics
 
 **Next Steps**: External legal audit + EU AI Act database registration before production deployment.

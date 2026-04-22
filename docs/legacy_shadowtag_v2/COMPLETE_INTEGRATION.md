@@ -37,7 +37,7 @@ This document describes the **complete integration** of 5 major architectural co
 │  ┌──────────────────────────────────────────────────────────────────┐  │
 │  │ LAYER 2: pnkln ULTRATHINK ECOSYSTEM                             │  │
 │  │                                                                  │  │
-│  │  Judge #6 (JR Engine)     → Purpose/Reasons/Brakes validation   │  │
+│  │  Judge 6 (JR Engine)     → Purpose/Reasons/Brakes validation   │  │
 │  │  Cor (Orchestrator)       → Unified execution coordinator       │  │
 │  │  ShadowTag (Watermark)    → Cryptographic audit trails          │  │
 │  │  NS (Semantic Memory)     → Context retrieval system            │  │
@@ -159,7 +159,7 @@ result = caller.execute("Research quantum computing and write a report")
 
 **Purpose**: Transform intelligence collection into active reasoning
 
-#### 2.1 Judge #6 (JR Engine) - `src/pnkln/judge_six.py` (334 lines)
+#### 2.1 Judge 6 (JR Engine) - `src/pnkln/judge_six.py` (334 lines)
 
 **Purpose/Reasons/Brakes** validation framework:
 
@@ -346,7 +346,7 @@ python erik-hancock-llm-memory/scripts/claude_code_memory_local.py
 
 **What Gets Remembered**:
 
-- Judge #6, ShadowTag, JR Engine patterns
+- Judge 6, ShadowTag, JR Engine patterns
 
 - Bootstrap Gates (ROI ≥3x, LTV:CAC ≥4:1)
 
@@ -475,7 +475,7 @@ result = await llm_blender_rotation(
 
    - Multi-function workflows
 
-   - Judge #6 validation overhead
+   - Judge 6 validation overhead
 
 **Usage**:
 
@@ -528,9 +528,9 @@ jobs:
 ```markdown
 # pnkln Architecture Patterns
 
-## Judge #6 Validation
+## Judge 6 Validation
 
-Always wrap function calls with Judge #6:
+Always wrap function calls with Judge 6:
 \`\`\`python
 result = judge.validate(function_call, args)
 if not result['allowed']:
@@ -586,11 +586,11 @@ module.exports = {
       create(context) {
         return {
           CallExpression(node) {
-            // Enforce Judge #6 validation
+            // Enforce Judge 6 validation
             if (isFunctionCall(node) && !hasJudgeWrapper(node)) {
               context.report({
                 node,
-                message: "Function calls must be wrapped with Judge #6 validation",
+                message: "Function calls must be wrapped with Judge 6 validation",
               });
             }
           },
@@ -642,7 +642,7 @@ npm run lint
 
 python src/tests/test_latency.py
 
-# Validate Judge #6 integration
+# Validate Judge 6 integration
 
 python src/tests/test_judge_six.py
 
@@ -658,7 +658,7 @@ python src/tests/test_judge_six.py
 
 - Performance benchmarks met
 
-- Judge #6 validation present
+- Judge 6 validation present
 
 ---
 
@@ -685,7 +685,7 @@ tools = [
 
 caller = GeminiFunctionCaller("gemini-3.1-flash-exp", tools)
 
-# 2. Wrap with Judge #6 validation
+# 2. Wrap with Judge 6 validation
 
 judge = JudgeSix(
     purpose="Collect high-quality intelligence",
@@ -911,7 +911,7 @@ kubectl apply -f erik-hancock-llm-memory/configs/gke_configmap.yaml
 
 pytest src/tests/test_pnkln_integration.py
 
-# Judge #6 validation
+# Judge 6 validation
 
 pytest src/tests/test_judge_six.py
 
@@ -992,7 +992,7 @@ python erik-hancock-llm-memory/scripts/extract_and_commit.py
 
 - **ESLint** enforces pnkln patterns
 
-- **Judge #6** validates all function calls
+- **Judge 6** validates all function calls
 
 - **ShadowTag** provides audit trail
 

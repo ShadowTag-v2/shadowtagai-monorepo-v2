@@ -33,7 +33,7 @@ class PolicyContext(BaseModel):
 
 
 class EnforcementDecision(BaseModel):
-    """Enforcement decision from Judge #6"""
+    """Enforcement decision from Judge 6"""
 
     allowed: bool
     confidence: float

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Judge #6 Latency Validation - Enhanced Version v2.0
+"""Judge 6 Latency Validation - Enhanced Version v2.0
 Target: P99 ≤90ms, P95 ≤65ms, P50 ≤40ms
 Features: Adaptive load, degradation detection, results export, warmup
 """

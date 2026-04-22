@@ -54,7 +54,7 @@ This prompt analyzes the **Gemini-powered Nightly Intelligence Ingestion Layer**
 
 ## 📊 Key Performance Indicators
 
-### Ingestion Metrics (vs. Judge #6's Latency/Throughput)
+### Ingestion Metrics (vs. Judge 6's Latency/Throughput)
 
 | Metric                 | Target            | Measurement                                |
 | ---------------------- | ----------------- | ------------------------------------------ |
@@ -65,7 +65,7 @@ This prompt analyzes the **Gemini-powered Nightly Intelligence Ingestion Layer**
 | **Error Rate**         | <2%               | Failed items / total attempted             |
 | **Relevance Score**    | ≥70%              | ML model confidence on Tier 1/2 items      |
 
-### Quality Gates (vs. Judge #6's 98% Coverage)
+### Quality Gates (vs. Judge 6's 98% Coverage)
 
 1. **Daily Items**: ≥200 items/day minimum (prevents data gaps)
 2. **Source Diversity**: No single source >60% of daily volume
@@ -78,7 +78,7 @@ This prompt analyzes the **Gemini-powered Nightly Intelligence Ingestion Layer**
 
 ## 🔒 Ethical Compliance Model
 
-### Crawling Standards (NEW - not in Judge #6)
+### Crawling Standards (NEW - not in Judge 6)
 
 **robots.txt Compliance**:
 
@@ -142,7 +142,7 @@ Monitor for:
 
 ## 🏆 Tier Classification System
 
-### Tier Definitions (vs. Judge #6's FP/FN Rates)
+### Tier Definitions (vs. Judge 6's FP/FN Rates)
 
 **Tier 1 (High Value)**: Directly actionable intelligence
 
@@ -536,9 +536,9 @@ The SHADOWTAGAI Intelligence Ingestion Layer demonstrates a well-architected app
 
 ---
 
-## 🎓 Key Differences from Judge #6 Analysis
+## 🎓 Key Differences from Judge 6 Analysis
 
-| Aspect                | Judge #6                         | Gemini Ingestion Layer                |
+| Aspect                | Judge 6                         | Gemini Ingestion Layer                |
 | --------------------- | -------------------------------- | ------------------------------------- |
 | **System Type**       | Enforcement/Validation           | Collection/Intelligence               |
 | **Execution Pattern** | Real-time, per-request           | Batch, nightly cron                   |
@@ -646,7 +646,7 @@ if __name__ == "__main__":
 
 ### Related Analyses
 
-- Judge #6 Validation System Analysis (internal)
+- Judge 6 Validation System Analysis (internal)
 - SHADOWTAGAI Core Stack™ Architecture Review (internal)
 - Multi-Source Intelligence Best Practices (internal)
 

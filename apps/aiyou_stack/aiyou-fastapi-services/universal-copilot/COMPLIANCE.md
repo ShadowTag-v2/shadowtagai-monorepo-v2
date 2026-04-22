@@ -201,7 +201,7 @@ await patcher.applyPatch(
 ✅ **Clear logs** - Every decision traceable
 ✅ **Cost tracking** - Know exactly what you spend
 ✅ **Error handling** - Graceful degradation
-✅ **Governance** - Judge #6 safety enforcement
+✅ **Governance** - Judge 6 safety enforcement
 
 ---
 
@@ -286,7 +286,7 @@ await expect(
 | Feature | Universal Copilot | GitHub Copilot | Claude Code | Cody |
 |---------|-------------------|----------------|-------------|------|
 | **API Access** | Public SDKs only | Private extension APIs | Private extension APIs | Private extension APIs |
-| **Governance** | Judge #6 (cryptographic) | Undocumented | Undocumented | Undocumented |
+| **Governance** | Judge 6 (cryptographic) | Undocumented | Undocumented | Undocumented |
 | **Cost Tracking** | ✅ Transparent | ❌ Opaque | ❌ Opaque | ❌ Opaque |
 | **Audit Trail** | ✅ Complete | ❌ None | ❌ None | ❌ None |
 | **Multi-Provider** | ✅ Yes (3+) | ❌ No | ❌ No | ❌ No |
@@ -343,7 +343,7 @@ A: We adapt to use compliant alternatives or document limitations.
 A: Absolutely! Open a PR with your proposed changes.
 
 **Q: What about regulatory compliance (HIPAA, SOX, etc.)?**
-A: Judge #6 provides audit trails; consult your legal team for full compliance.
+A: Judge 6 provides audit trails; consult your legal team for full compliance.
 
 ---
 

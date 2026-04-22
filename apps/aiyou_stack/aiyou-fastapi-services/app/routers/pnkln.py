@@ -95,7 +95,7 @@ async def list_namespaces():
             {
                 "name": settings.GKE_NAMESPACE_VALIDATION,
                 "role": "Content validation and filtering",
-                "components": ["Judge #6", "Quality Gates"],
+                "components": ["Judge 6", "Quality Gates"],
             },
             {
                 "name": settings.GKE_NAMESPACE_PROCESSING,

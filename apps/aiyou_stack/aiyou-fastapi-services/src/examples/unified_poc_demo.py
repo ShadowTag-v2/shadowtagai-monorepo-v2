@@ -239,7 +239,7 @@ def demo_6_complete_workflow(orchestrator: UnifiedPinklnOrchestrator):
 This demonstrates ALL systems working together in a single request:
 
 1. Gemini receives complex request
-2. Judge #6 validates every function call
+2. Judge 6 validates every function call
 3. Functions execute: scan, judge, debate, evolve, analyze
 4. ShadowTag watermarks output
 5. NS stores context in semantic memory

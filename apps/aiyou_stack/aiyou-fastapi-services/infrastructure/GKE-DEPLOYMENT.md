@@ -36,7 +36,7 @@
 │  └────────────┘  └────────────┘  └────────────┘         │
 │                                                          │
 │  Namespaces:                                            │
-│  ├─ ShadowTag-v2jr-governance    (Judge #6 enforcement)        │
+│  ├─ ShadowTag-v2jr-governance    (Judge 6 enforcement)        │
 │  ├─ autogen-orchestration (Multi-agent)                 │
 │  ├─ cognitive-stack-v5    (LLM routing)                 │
 │  └─ shadowtag-v2          (Watermarking)                │
@@ -46,7 +46,7 @@
 
 ### Key Components
 
-1. **Judge #6 Hybrid Enforcement System**
+1. **Judge 6 Hybrid Enforcement System**
    - 3-layer hybrid: Gemini + PyTorch + Rules
    - p99 latency budget: 90ms
    - Coverage target: 98%
@@ -514,7 +514,7 @@ After infrastructure deployment, proceed to:
 
 1. **Deploy Kubernetes Manifests** (`/kubernetes/README.md`)
    - Namespaces
-   - Judge #6 enforcement system
+   - Judge 6 enforcement system
    - LLM routing layer
    - Monitoring stack
 

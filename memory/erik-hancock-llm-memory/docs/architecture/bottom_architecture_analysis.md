@@ -328,7 +328,7 @@ Kill Process: <100ms (blocking syscall)
 Search Filter: <10ms (regex compile + filter)
 ```
 
-**PNKLN RELEVANCE:** Bottom's p50 < 10ms, p99 < 50ms on UI updates provides a reference for Judge #6's p99 ≤ 90ms SLA.
+**PNKLN RELEVANCE:** Bottom's p50 < 10ms, p99 < 50ms on UI updates provides a reference for Judge 6's p99 ≤ 90ms SLA.
 
 ---
 
@@ -477,7 +477,7 @@ Data Collection ←→ Application State ←→ UI Rendering
 Platform-Specific    Pure Logic         Platform-Agnostic
 ```
 
-**Lesson:** Judge #6 enforcement should cleanly separate decision logic from platform-specific enforcement mechanisms.
+**Lesson:** Judge 6 enforcement should cleanly separate decision logic from platform-specific enforcement mechanisms.
 
 ### 2. **Feature Flags for Modularity**
 ```rust
@@ -490,7 +490,7 @@ mod gpu;
 // Conditional compilation → smaller binaries for specific use cases
 ```
 
-**Lesson:** PNKLN Core Stack components (Judge #6, JR Engine, Cor, ShadowTag) should be feature-gated for deployment flexibility.
+**Lesson:** PNKLN Core Stack components (Judge 6, JR Engine, Cor, ShadowTag) should be feature-gated for deployment flexibility.
 
 ### 3. **Error Context Propagation**
 ```rust
@@ -648,7 +648,7 @@ Added Capabilities:
 ├─ Alert rules (threshold-based + ML anomaly detection)
 ├─ RBAC (role-based access control)
 ├─ Compliance reporting (SOC2, ISO27001)
-└─ AI-powered root cause analysis (Judge #6 integration)
+└─ AI-powered root cause analysis (Judge 6 integration)
 
 Pricing:
 ├─ Freemium: Single host (OSS bottom equivalent)
@@ -658,20 +658,20 @@ Pricing:
 TAM: $500M-$2B (server monitoring market)
 ```
 
-#### 3. **Judge #6 Integration Demo**
-Use bottom as reference implementation for Judge #6 UI:
+#### 3. **Judge 6 Integration Demo**
+Use bottom as reference implementation for Judge 6 UI:
 ```
 Demo Scenario:
 "Real-time Governance Enforcement Monitoring"
 
 UI Layout:
-├─ Top: Judge #6 decision rate (decisions/sec)
+├─ Top: Judge 6 decision rate (decisions/sec)
 ├─ Middle-Left: ATP_519_scan violations (live feed)
 ├─ Middle-Right: Enforcement latency (p50/p90/p99 histogram)
 └─ Bottom: Process table (flagged processes)
 
 Value Proposition:
-"See Judge #6 enforce governance at <90ms p99 latency"
+"See Judge 6 enforce governance at <90ms p99 latency"
 
 Sales Use Case: Live demo at defense/healthcare/finance conferences
 ```
@@ -717,7 +717,7 @@ TAM: $50M-$100M (niche consulting market)
 
 ## PNKLN CORE STACK INTEGRATION
 
-### Judge #6 Enforcement Monitoring
+### Judge 6 Enforcement Monitoring
 ```rust
 // Hypothetical integration
 
@@ -834,13 +834,13 @@ impl CorDashboard {
 - **P(Performance Hit):** 20-30% - TUI overhead minimal (<2% CPU)
 
 ### Severity: II (Moderate)
-- **Impact on Judge #6 SLA:** Minimal - UI rendering separate from enforcement path
+- **Impact on Judge 6 SLA:** Minimal - UI rendering separate from enforcement path
 - **Bootstrap Capital Risk:** Low - OSS patterns free to adopt
 - **Technical Debt:** Low - Well-architected, active maintenance
 
 ### Risk Level: MODERATE (C-II)
 **Recommended Mitigation:**
-1. ✅ Prototype Judge #6 monitoring widget (2 dev-days)
+1. ✅ Prototype Judge 6 monitoring widget (2 dev-days)
 2. ✅ Benchmark rendering overhead (1 dev-day)
 3. ✅ Evaluate ratatui vs custom TUI (1 dev-day)
 4. ⚠️ Ensure TUI doesn't interfere with p99 ≤ 90ms SLA
@@ -857,10 +857,10 @@ impl CorDashboard {
 4. ✅ **Extract patterns**: Identify reusable components for PNKLN
 
 ### SHORT-TERM (Month 1)
-1. ✅ **Prototype**: Judge #6 enforcement dashboard using ratatui
+1. ✅ **Prototype**: Judge 6 enforcement dashboard using ratatui
 2. ✅ **Evaluate**: ratatui vs egui (GPU-accelerated) for production use
 3. ✅ **Document**: TUI best practices for PNKLN internal docs
-4. ⚠️ **Test**: Ensure TUI doesn't violate Judge #6 p99 ≤ 90ms SLA
+4. ⚠️ **Test**: Ensure TUI doesn't violate Judge 6 p99 ≤ 90ms SLA
 
 ### LONG-TERM (Months 2-6)
 1. ⚠️ **Build**: PNKLN Observer (enterprise monitoring platform)
@@ -927,7 +927,7 @@ impl CorDashboard {
 4. **Deployment model** for single-binary, zero-config tools
 
 **Strategic Recommendation:**
-- ✅ **Adopt ratatui** for PNKLN internal tools (Judge #6 dashboard, Cor monitor)
+- ✅ **Adopt ratatui** for PNKLN internal tools (Judge 6 dashboard, Cor monitor)
 - ✅ **Extract patterns** into shared "pnkln-tui-framework" crate
 - ⚠️ **Validate p99 ≤ 90ms SLA** compatibility before production deployment
 - ⚠️ **Consider egui** if GPU acceleration required (e.g., ShadowTag video preview)
@@ -941,4 +941,4 @@ impl CorDashboard {
 *Generated: 2025-11-21*
 *Analyst: Claude Sonnet 4.5*
 *Framework: ATP 5-19 Risk Management + JR Engine Doctrine*
-*SLA Compliance: p99 < 90ms required for Judge #6 integration*
+*SLA Compliance: p99 < 90ms required for Judge 6 integration*

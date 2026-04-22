@@ -82,7 +82,7 @@ WITHOUT PIPELINE:
 WITH PIPELINE:
 ├─ Detection: Oct 31, 2024 (proactive, 90-day lead)
 ├─ Implementation: Nov-Dec 2025 (controlled)
-├─ Risk: ATP 5-19 RA-4 → RA-1 (mitigated)
+├─ Risk: Compliance Framework RA-4 → RA-1 (mitigated)
 └─ Competitive: Demo compliance in sales → +15% win rate
 
 QUANTIFIED ADVANTAGE:
@@ -144,7 +144,7 @@ import random
 from datetime import datetime, timedelta
 
 class EthicalScraper:
-    """ATP 5-19 RA-1 compliant scraper with robots.txt respect"""
+    """Compliance Framework RA-1 compliant scraper with robots.txt respect"""
 
     def __init__(self, config):
         self.config = config
@@ -156,7 +156,7 @@ class EthicalScraper:
         """
         Fetch URL with full ethical compliance
 
-        ATP 5-19 Risk Mitigation:
+        Compliance Framework Risk Mitigation:
         - RA-4 (Extremely High): Violating robots.txt, DDoS
         - RA-1 (Low): Compliant, throttled, respectful
         """
@@ -422,7 +422,7 @@ spec:
 GATE A (Month 6 → $750K ARR)
 ├─ Intel Pipeline Contribution: +$112K (15% win rate boost)
 ├─ Proof Point: "90-day regulatory head-start" in pitch
-└─ ATP 5-19 RA-2 → RA-1 (compliance risk mitigated)
+└─ Compliance Framework RA-2 → RA-1 (compliance risk mitigated)
 
 GATE B (Month 12 → $2.5M ARR)
 ├─ Intel Pipeline Contribution: +$375K (RFP positioning)

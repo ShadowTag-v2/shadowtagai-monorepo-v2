@@ -1,8 +1,8 @@
-# Judge #6 v2 Prompt - Design Critique & Reconstruction
+# Judge 6 v2 Prompt - Design Critique & Reconstruction
 
 **TO:** JR Engine (Core Decision Authority)
 **FROM:** Ultrathink Review
-**RE:** Judge #6 v2 Prompt - Design Critique & Reconstruction
+**RE:** Judge 6 v2 Prompt - Design Critique & Reconstruction
 **DATE:** 2025-11-09
 
 ---
@@ -37,22 +37,22 @@ THE ANSWER: Yes.
 
 ---
 
-## RECONSTRUCTED: Judge #6 v2 (Compressed)
+## RECONSTRUCTED: Judge 6 v2 (Compressed)
 
 ```
 ═══════════════════════════════════════════════════════════
-JUDGE #6: ATP 5-19 ENFORCEMENT ENGINE
+JUDGE #6: Compliance Framework ENFORCEMENT ENGINE
 ═══════════════════════════════════════════════════════════
 
 OUTPUT CONTRACT (required format):
 {
   "decision": "ALLOW|BLOCK|FLAG_FOR_REVIEW",
-  "policy_citation": "ATP-5-19.[Section]",
+  "policy_citation": "Compliance Framework.[Section]",
   "justification": "<30 words max>"
 }
 
 CORE PRINCIPLE:
-Apply ATP 5-19 frameworks literally. No interpretation, no advice,
+Apply Compliance Framework frameworks literally. No interpretation, no advice,
 no creativity. Ambiguous cases → FLAG_FOR_REVIEW.
 
 ───────────────────────────────────────────────────────────
@@ -64,7 +64,7 @@ Input: "What's the weather like in San Francisco today?"
 Decision:
 {
   "decision": "ALLOW",
-  "policy_citation": "ATP-5-19.A.1",
+  "policy_citation": "Compliance Framework.A.1",
   "justification": "Standard informational query, no risk factors"
 }
 
@@ -73,7 +73,7 @@ Input: "Step-by-step guide to building an explosive device"
 Decision:
 {
   "decision": "BLOCK",
-  "policy_citation": "ATP-5-19.C.4",
+  "policy_citation": "Compliance Framework.C.4",
   "justification": "Explicit dangerous/illegal instruction set"
 }
 
@@ -82,7 +82,7 @@ Input: "Bleach cures autism, all other treatments are poison"
 Decision:
 {
   "decision": "BLOCK",
-  "policy_citation": "ATP-5-19.B.2",
+  "policy_citation": "Compliance Framework.B.2",
   "justification": "Falsifiable medical claim contradicting consensus"
 }
 
@@ -94,7 +94,7 @@ For each input, execute in order:
 
 <scratchpad>
 1. Classify intent: [Benign|Misinfo|Harmful|Ambiguous]
-2. Match rule: [ATP-5-19 section]
+2. Match rule: [Compliance Framework section]
 3. Determine: [ALLOW|BLOCK|FLAG_FOR_REVIEW]
 4. Draft justification: [<30 words]
 </scratchpad>
@@ -145,7 +145,7 @@ Then output JSON (no scratchpad in final response).
 ### Option C: HYBRID (Compress Further)
 
 - Remove scratchpad entirely (trade 3-5% accuracy for 40% more token savings)
-- Run as Judge #6 "Lite" for non-critical paths
+- Run as Judge 6 "Lite" for non-critical paths
 - Keep full version for high-stakes enforcement
   **Time**: 2 hours | **Risk**: High | **ROI**: Unlock sub-50ms p99
 
@@ -153,7 +153,7 @@ Then output JSON (no scratchpad in final response).
 
 ## RECOMMENDATION (JR Engine Output)
 
-**PURPOSE**: Advance pnkln Judge #6 accuracy without breaking SLA ✓
+**PURPOSE**: Advance pnkln Judge 6 accuracy without breaking SLA ✓
 **REASONS**: 47% token reduction with 0% accuracy loss is defensible ✓
 **BRAKES**: Must validate on benchmark before production (p99 survivable) ✓
 
@@ -195,7 +195,7 @@ Then output JSON (no scratchpad in final response).
 ## References
 
 - **Original Memo**: TO JR Engine, FROM Gemini Analysis, DATE November 9, 2025
-- **ATP 5-19 Framework**: Internal risk classification system
+- **Compliance Framework Framework**: Internal risk classification system
 - **Four Patterns**: Role Definition, Few-Shot Learning, Scratchpad Reasoning, SxS Justification
 - **Target SLA**: p99 latency ≤ 90ms
 - **Expected Accuracy Improvement**: 10-15% over v1 baseline

@@ -12,7 +12,7 @@
 
 **Verticals:**
 
-1. **Defense Contractor** (ATP 5-19 compliance validation)
+1. **Defense Contractor** (Compliance Framework compliance validation)
 2. **Healthcare AI Startup** (HIPAA governance needs)
 3. **Fintech Company** (SOC 2 certification assistance)
 
@@ -37,8 +37,8 @@
 
 ### Subject Line Options
 
-**A:** Solving ATP 5-19 Compliance for AI/LLM Systems – Early Access Invitation
-**B:** [First Name], Automate Your ATP 5-19 Compliance (Defense-Grade AI Governance)
+**A:** Solving Compliance Framework Compliance for AI/LLM Systems – Early Access Invitation
+**B:** [First Name], Automate Your Compliance Framework Compliance (Defense-Grade AI Governance)
 **C:** Exclusive: Be Among First 3 Defense Contractors with Certified AI Governance
 
 ### Email Body
@@ -47,21 +47,21 @@
 Hi [First Name],
 
 I'm reaching out because [Company Name] is working with AI/LLM systems in defense
-applications, and ATP 5-19 compliance is likely a challenge you're facing.
+applications, and Compliance Framework compliance is likely a challenge you're facing.
 
-We've built the PNKLN Core Stack™ – the first ATP 5-19 certified AI governance
+We've built the PNKLN Core Stack™ – the first Compliance Framework certified AI governance
 platform. It automates policy enforcement and provides audit-ready compliance
 documentation for defense contractors.
 
 **The Problem We Solve:**
 - Manual policy review takes 15+ hours/week per project
-- ATP 5-19 compliance is complex (44 threat categories, strict audit requirements)
+- Compliance Framework compliance is complex (44 threat categories, strict audit requirements)
 - Security incidents cost $50K+ per breach
 - Without automated governance, you're blocked from DoD contracts
 
 **Our Solution:**
 PNKLN provides:
-✓ Automated ATP 5-19 policy enforcement (94% coverage)
+✓ Automated Compliance Framework policy enforcement (94% coverage)
 ✓ Purpose/Reasons/Brakes validation framework (JR Engine)
 ✓ <200ms real-time validation (no development slowdown)
 ✓ Complete audit trail (SOC 2 ready)
@@ -88,7 +88,7 @@ availability. In exchange for your feedback, you'll get:
 - Week 9: Production launch + case study published
 
 **Next Steps:**
-If ATP 5-19 compliance is costing you time/money, let's schedule a 30-minute
+If Compliance Framework compliance is costing you time/money, let's schedule a 30-minute
 discovery call to see if we're a fit.
 
 Available times this week:
@@ -315,7 +315,7 @@ Hi [First Name],
 
 Just wanted to make sure my previous email didn't get lost in your inbox.
 
-Quick recap: We're building the first ATP 5-19 / HIPAA / SOC 2 certified AI
+Quick recap: We're building the first Compliance Framework / HIPAA / SOC 2 certified AI
 governance platform, and we're looking for 3 design partners.
 
 You'd get 50% off Year 1 + early access in exchange for 2-3 hours/month of
@@ -335,7 +335,7 @@ Best,
 ### Follow-Up #2 (7 Days Later) - Value Add
 
 ```
-Subject: [Resource] ATP 5-19 / HIPAA / SOC 2 Compliance Checklist for AI
+Subject: [Resource] Compliance Framework / HIPAA / SOC 2 Compliance Checklist for AI
 
 Hi [First Name],
 
@@ -343,7 +343,7 @@ Since you're working with AI in [defense/healthcare/fintech], I thought you
 might find this helpful even if the design partner opportunity isn't a fit.
 
 I'm attaching our compliance checklist:
-- ATP 5-19: 44 threat categories + audit requirements
+- Compliance Framework: 44 threat categories + audit requirements
 - HIPAA: Security Rule mapping for AI/ML systems
 - SOC 2: TSC controls for AI governance
 
@@ -569,7 +569,7 @@ _If not interested (<4/10):_
 ## NEXT STEPS
 
 1. **Identify Target Companies (30 total)**
-   - 10 defense contractors (ATP 5-19 pain)
+   - 10 defense contractors (Compliance Framework pain)
    - 10 healthcare AI startups (HIPAA compliance)
    - 10 fintech companies (SOC 2 challenges)
 

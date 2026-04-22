@@ -5,7 +5,7 @@ Workflow:
 1. User query: "Find 100 German fintech CTOs"
 2. JR Engine validates budget/purpose
 3. Agent scrapes LinkedIn/Apollo/Clearbit
-4. Judge #6 filters personal emails, flags EU contacts
+4. Judge 6 filters personal emails, flags EU contacts
 5. Output: N approved + M blocked + audit PDF
 
 Pricing: $0.10/approved lead
@@ -249,7 +249,7 @@ class ComplianceSDRAgent(ShadowTagAiAgent):
                 justification=f"B2B lead generation query: {query}",
                 risk_probability=risk_probability,
                 risk_severity=risk_severity,
-                mitigation_strategy="Judge #6 GDPR/CAN-SPAM enforcement + personal email filtering",
+                mitigation_strategy="Judge 6 GDPR/CAN-SPAM enforcement + personal email filtering",
             ),
             Reason(
                 justification=f"Estimated cost: ${task.cost_estimate_usd:.2f} for {target_count} leads",

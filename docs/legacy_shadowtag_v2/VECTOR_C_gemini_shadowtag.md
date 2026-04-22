@@ -12,12 +12,12 @@
 
 1. **Multimodal Analysis:** Gemini's vision capabilities detect DCT frequency domain artifacts invisible to traditional CV
 2. **Vertex AI Native:** Zero-friction integration (same GKE cluster, Workload Identity)
-3. **Judge #6 Layer 1 Synergy:** Watermark validation feeds into Judge's authenticity scoring
+3. **Judge 6 Layer 1 Synergy:** Watermark validation feeds into Judge's authenticity scoring
 
 **Pipeline Architecture:**
 
 ```
-Video Input → ShadowTag DCT Embedding → Gemini Video Analysis → Judge #6 (Authenticity Score)
+Video Input → ShadowTag DCT Embedding → Gemini Video Analysis → Judge 6 (Authenticity Score)
               └─ Watermark Metadata ─────────┘
 ```
 
@@ -63,9 +63,9 @@ Video Input → ShadowTag DCT Embedding → Gemini Video Analysis → Judge #6 (
 - Shared GPU pool reduces cost (vs dedicated ShadowTag GPU nodes)
 - Workload Identity authentication (zero credential management)
 
-**4. Judge #6 Layer 1 Integration:**
+**4. Judge 6 Layer 1 Integration:**
 
-- Watermark validation is **Layer 1** input to Judge #6 (authenticity scoring)
+- Watermark validation is **Layer 1** input to Judge 6 (authenticity scoring)
 - Gemini provides richer context than binary "watermark present/absent"
 - Example: "DCT coefficients show consistent watermark pattern, but EXIF metadata tampered"
 
@@ -284,9 +284,9 @@ Step 3: Gemini Analysis (40% of GPU capacity)
 │  - confidence: 0.0-1.0                                      │
 └─────────────────────────────────────────────────────────────┘
 
-Step 4: Judge #6 Layer 1 Input
+Step 4: Judge 6 Layer 1 Input
 ┌─────────────────────────────────────────────────────────────┐
-│ Judge #6 (Medical Decision Validation)                      │
+│ Judge 6 (Medical Decision Validation)                      │
 ├─────────────────────────────────────────────────────────────┤
 │ Layer 1 Inputs:                                             │
 │  - Watermark present: YES/NO                                │

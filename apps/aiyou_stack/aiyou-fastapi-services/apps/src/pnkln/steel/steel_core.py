@@ -5,7 +5,7 @@ Target Valuation: $100.0B
 import logging
 from typing import Any
 
-# Placeholder for Judge #6 integration
+# Placeholder for Judge 6 integration
 # from judge_six.judge_core import JudgeSix
 
 logger = logging.getLogger(__name__)
@@ -21,8 +21,8 @@ class SkyNode:
         self.workload: list[str] = []
 
     def activate(self) -> str:
-        """Activates the node if permitted by Judge #6."""
-        # TODO: Judge #6 Validation Check
+        """Activates the node if permitted by Judge 6."""
+        # TODO: Judge 6 Validation Check
         # if not JudgeSix.approve(action="ACTIVATE_NODE", context=self.node_id):
         #     return "DENIED"
 

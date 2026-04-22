@@ -1,4 +1,4 @@
-"""LangGraph Node Implementations for Judge #6 Kill Chain
+"""LangGraph Node Implementations for Judge 6 Kill Chain
 
 Kill Chain Phases:
 1. node_assessment - OPA Fast Check (JREngine wrapper, <500μs)

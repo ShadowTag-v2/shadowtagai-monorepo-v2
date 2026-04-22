@@ -277,7 +277,7 @@ The `mac_local_demo.py` script validates:
 
 1. ✅ **Core Imports** - All modules load correctly
 2. ✅ **JR Engine** - Purpose/Reasons/Brakes validation (<500μs)
-3. ✅ **Judge #6 Lite** - GDPR/CAN-SPAM compliance (<90ms)
+3. ✅ **Judge 6 Lite** - GDPR/CAN-SPAM compliance (<90ms)
 4. ✅ **Gemini Ingestion** - Multi-source collection
 5. ✅ **Intelligence Agent** - Full pipeline (collection → enforcement)
 6. ✅ **Compliance SDR** - Lead generation with enforcement
@@ -290,7 +290,7 @@ The `mac_local_demo.py` script validates:
 | Component | Target | Typical Mac Performance |
 |-----------|--------|------------------------|
 | JR Engine | <500μs | ~50-100μs |
-| Judge #6 | <90ms | ~5-20ms |
+| Judge 6 | <90ms | ~5-20ms |
 | Ingestion (10 items) | N/A | ~100-500ms |
 | Full Demo | N/A | ~2-5 seconds |
 

@@ -57,7 +57,7 @@ class RiskLevel(StrEnum):
 
 @dataclass
 class JRAssessment:
-    """Judge #6 assessment result: Purpose → Reasons → Brakes.
+    """Judge 6 assessment result: Purpose → Reasons → Brakes.
 
     Target latency: <500μs (deterministic, no LLM calls)
     """
@@ -484,7 +484,7 @@ class AntigravityAgent:
     """Self-aware coding agent using optimized multi-agent patterns.
 
     APPLIES:
-    - Judge #6: Purpose/Reasons/Brakes assessment
+    - Judge 6: Purpose/Reasons/Brakes assessment
     - Glicko-2: Dynamic agent selection
     - Panel Debate: Edge case consensus
     - Sequential Pipeline: Quality gates

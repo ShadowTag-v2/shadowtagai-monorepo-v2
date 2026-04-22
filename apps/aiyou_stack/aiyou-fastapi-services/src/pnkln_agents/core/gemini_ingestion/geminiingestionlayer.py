@@ -26,7 +26,7 @@ class GeminiIngestionLayer:
 
     Integration:
     - Called by services in 4 namespaces
-    - Feeds data to Judge #6 enforcement layer
+    - Feeds data to Judge 6 enforcement layer
     - Outputs to AM briefing delivery
     """
 

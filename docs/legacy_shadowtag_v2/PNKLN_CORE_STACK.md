@@ -120,7 +120,7 @@ The pnkln Core Stack™ is an integrated intelligence pipeline that collects, pr
 
 ---
 
-### 4. Judge #6
+### 4. Judge 6
 
 **Position**: Downstream validation
 **Role**: Reactive validator and enforcer
@@ -130,7 +130,7 @@ The pnkln Core Stack™ is an integrated intelligence pipeline that collects, pr
 **Responsibilities**:
 
 - Real-time validation of processed data and requests
-- ATP 5-19 protocol compliance
+- Compliance Framework protocol compliance
 - JR validation rules enforcement
 - Binary enforcement decisions (allow/block)
 - Audit trail generation
@@ -210,7 +210,7 @@ The pnkln Core Stack™ is an integrated intelligence pipeline that collects, pr
    ↓
    Insights, trends, anomalies, scores
    ↓
-4. Judge #6 (Real-time Validation)
+4. Judge 6 (Real-time Validation)
    ↓
    Validated, filtered, compliant intelligence
    ↓
@@ -225,7 +225,7 @@ The stack operates across **4 namespaces** for isolation, security, and scalabil
 
 1. **Ingestion Namespace**: Gemini Ingestion Layer
 2. **Processing Namespace**: Enrichment + Intelligence Processing
-3. **Validation Namespace**: Judge #6
+3. **Validation Namespace**: Judge 6
 4. **Delivery Namespace**: Presentation layer
 
 **Inter-namespace Communication**:
@@ -243,7 +243,7 @@ The stack operates across **4 namespaces** for isolation, security, and scalabil
 
 Applied across the entire stack:
 
-| Dimension        | Ingestion Layer              | Processing               | Judge #6         | Delivery             |
+| Dimension        | Ingestion Layer              | Processing               | Judge 6         | Delivery             |
 | ---------------- | ---------------------------- | ------------------------ | ---------------- | -------------------- |
 | **Relevance**    | Source tier, initial scoring | Deep relevance modeling  | Validation rules | User feedback        |
 | **Timeliness**   | Collection timestamp         | Freshness decay          | Staleness checks | Delivery SLA         |
@@ -271,7 +271,7 @@ Applied across the entire stack:
 - Coverage ≥ 98%
 - FP rate ≤ target
 - FN rate ≤ target
-- ATP 5-19 compliance 100%
+- Compliance Framework compliance 100%
 
 **Delivery** (Assuring):
 
@@ -306,7 +306,7 @@ Applied across the entire stack:
 - Bias analysis in NLP
 - Data minimization
 
-**Judge #6**:
+**Judge 6**:
 
 - Audit log completeness
 - Enforcement consistency
@@ -329,7 +329,7 @@ Applied across the entire stack:
 | Gemini Ingestion Layer    | ~$77            | API calls, GKE compute, storage            |
 | Data Storage & Enrichment | ~$150           | Storage (GCS, BigQuery), NLP compute       |
 | Intelligence Processing   | ~$200           | ML model inference, distributed compute    |
-| Judge #6                  | ~$300           | Gemini API calls, PyTorch inference, infra |
+| Judge 6                  | ~$300           | Gemini API calls, PyTorch inference, infra |
 | Delivery & Presentation   | ~$100           | Notification services, hosting, CDN        |
 | **Total**                 | **~$827/month** | **Full stack operational cost**            |
 
@@ -337,7 +337,7 @@ Applied across the entire stack:
 
 1. **Ingestion**: Caching, deduplication, incremental updates
 2. **Processing**: Model efficiency, batch sizing, GPU optimization
-3. **Judge #6**: Gemini vs. PyTorch routing, cache validation results
+3. **Judge 6**: Gemini vs. PyTorch routing, cache validation results
 4. **Delivery**: Static generation, CDN caching, lazy loading
 
 ---
@@ -354,7 +354,7 @@ Applied across the entire stack:
 
 - Enrichment latency, accuracy, throughput, resource utilization
 
-**Judge #6**:
+**Judge 6**:
 
 - Latency (p50/p95/p99), throughput, FP/FN rates, coverage, uptime
 
@@ -431,14 +431,14 @@ Applied across the entire stack:
 ### Current State (Q4 2025)
 
 - Gemini Ingestion Layer: Pre-production
-- Judge #6: Production
+- Judge 6: Production
 - Processing & Enrichment: Production
 - Delivery: Production
 
 ### Near-Term (Q1 2026)
 
 - Gemini Ingestion Layer: Production launch
-- Combined Ingestion + Judge #6 analysis
+- Combined Ingestion + Judge 6 analysis
 - Tier 1 optimization (increase to 40%)
 - Cost reduction initiatives (target: -15%)
 
@@ -479,13 +479,13 @@ Refer to individual component documentation for detailed metrics.
 ### Component Documentation
 
 - [Gemini Ingestion Layer Analysis](./GEMINI_INGESTION_LAYER_ANALYSIS.md)
-- [Judge #6 Analysis Framework](./JUDGE_6_ANALYSIS.md)
+- [Judge 6 Analysis Framework](./JUDGE_6_ANALYSIS.md)
 - [Analysis Prompt Comparison](./ANALYSIS_COMPARISON.md)
 
 ### Prompt Templates
 
 - [Gemini Ingestion Layer Prompt](../prompts/gemini-ingestion-layer-analysis.md)
-- [Judge #6 Analysis Prompt](../prompts/judge-6-analysis.md)
+- [Judge 6 Analysis Prompt](../prompts/judge-6-analysis.md)
 
 ### Operational Guides
 

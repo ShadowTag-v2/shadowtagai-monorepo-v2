@@ -3,7 +3,7 @@
 # EXAMPLE DEPLOYMENT - PNKLN CORE JUDGE #6 + FILE SEARCH
 # ============================================================================
 # This is an example deployment showing how to integrate File Search with
-# the Judge #6 hybrid architecture for policy enforcement
+# the Judge 6 hybrid architecture for policy enforcement
 # ============================================================================
 
 apiVersion: apps/v1
@@ -45,7 +45,7 @@ spec:
         - name: FILE_SEARCH_ENABLED
           value: "true"
 
-        # Judge #6 Performance Targets
+        # Judge 6 Performance Targets
         - name: JUDGE_LATENCY_P99_MS
           value: "90"
         - name: FILE_SEARCH_LATENCY_P99_MS

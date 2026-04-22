@@ -14,7 +14,7 @@
     * **RED (EH):** STOP. Board/Crisis Response Team.
 6. **Gate 6 (Commit):** Mint ShadowTag. Execute.
 
-## II. RISK MATRIX (ATP 5-19)
+## II. RISK MATRIX (Compliance Framework)
 **Severity (S):**
 I. Catastrophic (Death/Loss >$2.5M) | II. Critical (>$600k) | III. Moderate (>$60k) | IV. Negligible
 

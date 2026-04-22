@@ -178,7 +178,7 @@ Comprehensive guide mapping ML/AI papers to Vertex AI capabilities:
 
 ### B. Agent-Based Services
 
-#### Judge #6 Inference Platform (Branch: claude/gke-deployment-scripts-012TMjqWKQfQeLyurA5QthhP)
+#### Judge 6 Inference Platform (Branch: claude/gke-deployment-scripts-012TMjqWKQfQeLyurA5QthhP)
 
 **Purpose**: Production-grade AI inference with GKE deployment
 
@@ -288,7 +288,7 @@ shadowtag_v4-fastapi-services/
 
 ### Deployment Configuration
 
-- **judge-deployment.yaml** - K8s deployment manifest for Judge #6
+- **judge-deployment.yaml** - K8s deployment manifest for Judge 6
 - **pnkln-gke-deploy.sh** - GKE deployment automation script (18KB)
 - **monitor-sla.sh** - SLA monitoring script
 - **Makefile** - Build, deploy, test automation

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Kuvasz provides uptime and SSL monitoring for Judge #6 and Token Compression endpoints.
+Kuvasz provides uptime and SSL monitoring for Judge 6 and Token Compression endpoints.
 
 **Features:**
 
@@ -75,7 +75,7 @@ Default credentials:
 
 ## Configure Monitoring Targets
 
-### Judge #6 Endpoint
+### Judge 6 Endpoint
 
 
 
@@ -187,7 +187,7 @@ Default credentials:
 
 ## Monitoring SLA Compliance
 
-### Judge #6 SLA: p99 ≤ 90ms
+### Judge 6 SLA: p99 ≤ 90ms
 
 
 
@@ -398,7 +398,7 @@ KUVASZ_BASE_URL=https://status.shadowtag.ai
 2. ✅ Start Kuvasz: `docker-compose up -d`
 
 
-3. ✅ Add Judge #6 endpoint monitoring
+3. ✅ Add Judge 6 endpoint monitoring
 
 
 4. ✅ Add Token Compression monitoring

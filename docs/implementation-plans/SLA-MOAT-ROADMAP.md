@@ -14,7 +14,7 @@ This roadmap implements the 4-layer failover architecture required to safely off
 
 ### Objective
 
-Implement 4-layer failover system in Judge #6 with automated cascade from Gemini → Claude → GPT-5 → Local PyTorch.
+Implement 4-layer failover system in Judge 6 with automated cascade from Gemini → Claude → GPT-5 → Local PyTorch.
 
 ### Tasks
 
@@ -75,7 +75,7 @@ Implement 4-layer failover system in Judge #6 with automated cascade from Gemini
 
 **Deliverables**:
 
-- [ ] Lightweight PyTorch model for Judge #6 decisions (<50MB)
+- [ ] Lightweight PyTorch model for Judge 6 decisions (<50MB)
 - [ ] Rule-based engine for deterministic edge cases
 - [ ] Model deployment (containerized, <10ms p99 inference)
 - [ ] Quality benchmarking vs commercial APIs
@@ -87,7 +87,7 @@ Implement 4-layer failover system in Judge #6 with automated cascade from Gemini
 - Model runs entirely on CPU (no GPU dependency)
 - Graceful degradation messaging ("Limited mode" flag in response)
 
-**Dependencies**: Training data from previous Judge #6 decisions
+**Dependencies**: Training data from previous Judge 6 decisions
 
 ---
 
@@ -573,7 +573,7 @@ Equip sales team to position SLA as primary competitive moat vs Vertex AI.
    - Risk: If any provider unavailable, reduces failover layers
 
 2. **Local PyTorch model can achieve ≥80% agreement with Gemini**
-   - Validate: Benchmark on historical Judge #6 decisions
+   - Validate: Benchmark on historical Judge 6 decisions
    - Risk: If accuracy <80%, customer experience degrades in local-only mode
 
 3. **Force majeure language enforceable in target customer jurisdictions**

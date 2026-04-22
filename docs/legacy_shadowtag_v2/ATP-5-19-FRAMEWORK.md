@@ -1,14 +1,14 @@
-# ATP 5-19 Risk Framework Reference
+# Compliance Framework Risk Framework Reference
 
-**Framework**: ATP 5-19 Risk Frameworks
+**Framework**: Compliance Framework Risk Frameworks
 **Purpose**: Content risk classification for AI enforcement
-**Applied By**: Judge #6 enforcement engine
+**Applied By**: Judge 6 enforcement engine
 
 ---
 
 ## Overview
 
-The ATP 5-19 framework provides a structured approach to classifying and responding to user inputs based on risk categories. It enables consistent, literal application of risk policies without interpretation or deviation.
+The Compliance Framework framework provides a structured approach to classifying and responding to user inputs based on risk categories. It enables consistent, literal application of risk policies without interpretation or deviation.
 
 ## Risk Categories
 
@@ -33,9 +33,9 @@ The ATP 5-19 framework provides a structured approach to classifying and respond
 
 **Policy Citations**:
 
-- `ATP-5-19.A.1`: General benign queries
-- `ATP-5-19.A.2`: Educational requests
-- `ATP-5-19.A.3`: Factual information
+- `Compliance Framework.A.1`: General benign queries
+- `Compliance Framework.A.2`: Educational requests
+- `Compliance Framework.A.3`: Factual information
 
 ---
 
@@ -67,7 +67,7 @@ The ATP 5-19 framework provides a structured approach to classifying and respond
 
 **Action**: BLOCK
 
-**Policy Citation**: `ATP-5-19.B.2`
+**Policy Citation**: `Compliance Framework.B.2`
 
 #### B.3: Scientific Misinformation
 
@@ -92,7 +92,7 @@ The ATP 5-19 framework provides a structured approach to classifying and respond
 - Dangerous weapon modifications
 
 **Action**: BLOCK
-**Policy Citation**: `ATP-5-19.C.1`
+**Policy Citation**: `Compliance Framework.C.1`
 
 #### C.2: Illegal Activities
 
@@ -101,7 +101,7 @@ The ATP 5-19 framework provides a structured approach to classifying and respond
 - Fraud schemes
 
 **Action**: BLOCK
-**Policy Citation**: `ATP-5-19.C.2`
+**Policy Citation**: `Compliance Framework.C.2`
 
 #### C.3: Self-Harm
 
@@ -110,7 +110,7 @@ The ATP 5-19 framework provides a structured approach to classifying and respond
 - Eating disorder promotion
 
 **Action**: BLOCK
-**Policy Citation**: `ATP-5-19.C.3`
+**Policy Citation**: `Compliance Framework.C.3`
 
 #### C.4: General Harmful Instructions
 
@@ -124,7 +124,7 @@ The ATP 5-19 framework provides a structured approach to classifying and respond
 - "How to create [dangerous chemical weapon]"
 
 **Action**: BLOCK
-**Policy Citation**: `ATP-5-19.C.4`
+**Policy Citation**: `Compliance Framework.C.4`
 
 ---
 
@@ -143,9 +143,9 @@ The ATP 5-19 framework provides a structured approach to classifying and respond
 
 **Policy Citations**:
 
-- `ATP-5-19.D.1`: Ambiguous intent
-- `ATP-5-19.D.2`: Unclear context
-- `ATP-5-19.D.3`: Edge cases requiring review
+- `Compliance Framework.D.1`: Ambiguous intent
+- `Compliance Framework.D.2`: Unclear context
+- `Compliance Framework.D.3`: Edge cases requiring review
 
 ---
 
@@ -173,12 +173,12 @@ The ATP 5-19 framework provides a structured approach to classifying and respond
 
 ### Evaluation Protocol
 
-For each input, Judge #6 follows this process:
+For each input, Judge 6 follows this process:
 
 ```
 <scratchpad>
 1. Classify intent: [Benign|Misinfo|Harmful|Ambiguous]
-2. Match rule: [ATP-5-19 section]
+2. Match rule: [Compliance Framework section]
 3. Determine: [ALLOW|BLOCK|FLAG_FOR_REVIEW]
 4. Draft justification: [<30 words]
 </scratchpad>
@@ -191,7 +191,7 @@ All decisions produce standardized JSON:
 ```json
 {
   "decision": "ALLOW|BLOCK|FLAG_FOR_REVIEW",
-  "policy_citation": "ATP-5-19.[Section]",
+  "policy_citation": "Compliance Framework.[Section]",
   "justification": "<30 words max>"
 }
 ```
@@ -214,7 +214,7 @@ All decisions produce standardized JSON:
 
 ### No Opinions or Advice
 
-- Judge #6 enforces, does not advise
+- Judge 6 enforces, does not advise
 - No explanations beyond policy citation
 - No helpful suggestions or alternatives
 
@@ -261,7 +261,7 @@ These domains receive stricter enforcement:
 ```json
 {
   "decision": "ALLOW",
-  "policy_citation": "ATP-5-19.A.1",
+  "policy_citation": "Compliance Framework.A.1",
   "justification": "Standard informational query, no risk factors"
 }
 ```
@@ -271,7 +271,7 @@ These domains receive stricter enforcement:
 ```json
 {
   "decision": "ALLOW",
-  "policy_citation": "ATP-5-19.A.2",
+  "policy_citation": "Compliance Framework.A.2",
   "justification": "Educational content request, benign intent"
 }
 ```
@@ -283,7 +283,7 @@ These domains receive stricter enforcement:
 ```json
 {
   "decision": "BLOCK",
-  "policy_citation": "ATP-5-19.C.4",
+  "policy_citation": "Compliance Framework.C.4",
   "justification": "Explicit dangerous/illegal instruction set"
 }
 ```
@@ -293,7 +293,7 @@ These domains receive stricter enforcement:
 ```json
 {
   "decision": "BLOCK",
-  "policy_citation": "ATP-5-19.B.2",
+  "policy_citation": "Compliance Framework.B.2",
   "justification": "Falsifiable medical claim contradicting consensus"
 }
 ```
@@ -305,7 +305,7 @@ These domains receive stricter enforcement:
 ```json
 {
   "decision": "FLAG_FOR_REVIEW",
-  "policy_citation": "ATP-5-19.D.1",
+  "policy_citation": "Compliance Framework.D.1",
   "justification": "Context-dependent query requiring human judgment"
 }
 ```
@@ -331,13 +331,13 @@ These domains receive stricter enforcement:
 
 ## References
 
-- **Judge #6 Prompts**: `/prompts/judge/`
+- **Judge 6 Prompts**: `/prompts/judge/`
 - **Design Critique**: `JUDGE-6-V2-DESIGN-CRITIQUE.md`
 - **Version Registry**: `/prompts/judge/metadata/judge-versions.json`
 
 ---
 
-**Note**: ATP 5-19 is an internal framework. The designation "ATP" references military risk management methodology adapted for AI content enforcement.
+**Note**: Compliance Framework is an internal framework. The designation "ATP" references military risk management methodology adapted for AI content enforcement.
 
 **Maintained by**: JR Engine (Core Decision Authority)
 **Last Updated**: 2025-11-14

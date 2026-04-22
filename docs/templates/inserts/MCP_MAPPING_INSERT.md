@@ -139,7 +139,7 @@ Use for: Protocol analysis, SDK mapping, architecture integration
 
 - [ ] Create wrapper modules
 - [ ] Add ShadowTag hooks
-- [ ] Implement Judge #6 gates
+- [ ] Implement Judge 6 gates
 - [ ] Wire to Flying n-autoresearch/Kosmos/BioAgents
 
 ---

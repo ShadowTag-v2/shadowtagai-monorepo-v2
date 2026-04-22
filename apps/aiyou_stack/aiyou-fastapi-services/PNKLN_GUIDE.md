@@ -8,7 +8,7 @@ The PNKLN Stack analyzer provides specialized tools for analyzing components of 
 
 - **Master Prompt Framework**: Generates specialized analysis prompts for different components
 
-- **Component Analyzers**: Dedicated agents for Judge #6, Gemini Ingestion Layer, and more
+- **Component Analyzers**: Dedicated agents for Judge 6, Gemini Ingestion Layer, and more
 
 - **Comparison Framework**: Compares components and provides migration guidance
 
@@ -129,7 +129,7 @@ Confidence: 85%
 
 ```
 
-### 2. Judge #6 Analyzer
+### 2. Judge 6 Analyzer
 
 Analyzes the real-time validation system with focus on:
 
@@ -169,7 +169,7 @@ const result = await analyzer.execute({
 
 ## Executive Summary
 
-Judge #6 demonstrates excellent latency (p99: 78ms) with opportunities
+Judge 6 demonstrates excellent latency (p99: 78ms) with opportunities
 to reduce false positives and API costs.
 
 ## Performance Assessment ✓
@@ -250,11 +250,11 @@ const result = await analyzer.compareComponents(
 
 ```
 
-# Component Comparison: Judge #6 vs Gemini Ingestion Layer
+# Component Comparison: Judge 6 vs Gemini Ingestion Layer
 
 ## Architectural Differences
 
-Judge #6 uses Hybrid Gemini+PyTorch while Gemini Ingestion uses GKE CronJob.
+Judge 6 uses Hybrid Gemini+PyTorch while Gemini Ingestion uses GKE CronJob.
 This reflects their different positions in the stack: real-time validation vs batch collection.
 
 ## Metric Adaptations
@@ -271,7 +271,7 @@ This reflects their different positions in the stack: real-time validation vs ba
 
 ## Key Differences Table
 
-| Aspect | Judge #6 | Gemini Ingestion |
+| Aspect | Judge 6 | Gemini Ingestion |
 |--------|----------|------------------|
 | Purpose | Real-time validation | Intelligence collection |
 | Architecture | Hybrid Gemini+PyTorch | GKE CronJob Multi-Container |
@@ -322,7 +322,7 @@ const prompt = masterPromptFramework.generatePrompt(
 
 Each component has tailored metrics:
 
-#### Judge #6
+#### Judge 6
 
 - Latency (p50, p95, p99)
 
@@ -578,7 +578,7 @@ See `examples/pnkln-stack/` for:
 
 - `judge-six-optimization.ts`: Performance optimization
 
-- `component-migration.ts`: Migration from Judge #6 to Ingestion
+- `component-migration.ts`: Migration from Judge 6 to Ingestion
 
 - `ci-cd-integration.ts`: Automated analysis in CI/CD
 

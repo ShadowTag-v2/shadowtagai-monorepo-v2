@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide demonstrates how to adapt prompts between different use cases while maintaining analytical rigor, using the **Prompt Adaptation Specialist** agent. Based on real-world examples from the PNKLN Core Stack™, particularly the transformation from "Judge #6" (validation system) to "Gemini Ingestion Layer" (intelligence collection pipeline).
+This guide demonstrates how to adapt prompts between different use cases while maintaining analytical rigor, using the **Prompt Adaptation Specialist** agent. Based on real-world examples from the PNKLN Core Stack™, particularly the transformation from "Judge 6" (validation system) to "Gemini Ingestion Layer" (intelligence collection pipeline).
 
 ---
 
@@ -10,7 +10,7 @@ This guide demonstrates how to adapt prompts between different use cases while m
 
 1. [Decision Framework](#decision-framework)
 2. [Adaptation Methodology](#adaptation-methodology)
-3. [Case Study: Judge #6 → Gemini Ingestion Layer](#case-study-judge-6--gemini-ingestion-layer)
+3. [Case Study: Judge 6 → Gemini Ingestion Layer](#case-study-judge-6--gemini-ingestion-layer)
 4. [Direct Replacements](#direct-replacements)
 5. [Context-Specific Adaptations](#context-specific-adaptations)
 6. [New Sections to Add](#new-sections-to-add)
@@ -26,7 +26,7 @@ Before adapting any prompt, understand the domain shift:
 
 ### Source vs. Target Analysis
 
-| Dimension | Source (Judge #6) | Target (Ingestion Layer) |
+| Dimension | Source (Judge 6) | Target (Ingestion Layer) |
 |-----------|------------------|-------------------------|
 | **Role** | Reactive/Enforcement | Preventive/Upstream |
 | **Function** | Validate & Block | Collect & Curate |
@@ -69,11 +69,11 @@ Before adapting any prompt, understand the domain shift:
 
 ---
 
-## Case Study: Judge #6 → Gemini Ingestion Layer
+## Case Study: Judge 6 → Gemini Ingestion Layer
 
 ### Context
 
-**Judge #6**: A hybrid Gemini+PyTorch validation system that enforces quality gates in real-time, blocking invalid requests across 4 namespaces. Optimized for p99 ≤90ms latency with 98% test coverage.
+**Judge 6**: A hybrid Gemini+PyTorch validation system that enforces quality gates in real-time, blocking invalid requests across 4 namespaces. Optimized for p99 ≤90ms latency with 98% test coverage.
 
 **Gemini Ingestion Layer**: A GKE-based CronJob system that ethically collects intelligence from multiple sources (YouTube, Twitter, News, Web) nightly, classifying by tier and delivering AM briefings. Runtime target: ~45 min/night, cost: ~$77/month.
 
@@ -81,7 +81,7 @@ Before adapting any prompt, understand the domain shift:
 
 Both systems analyze components in the PNKLN Core Stack™, but at different pipeline stages:
 
-- **Judge #6**: Downstream validation (defensive)
+- **Judge 6**: Downstream validation (defensive)
 - **Ingestion Layer**: Upstream collection (acquisitive)
 
 The analytical framework (architecture review, metrics evaluation, integration analysis) remains valuable, but the specifics must change to match operational realities.
@@ -94,7 +94,7 @@ The analytical framework (architecture review, metrics evaluation, integration a
 
 | Source | Target | Rationale |
 |--------|--------|-----------|
-| Judge #6 | Gemini Ingestion Layer | Domain-specific identifier |
+| Judge 6 | Gemini Ingestion Layer | Domain-specific identifier |
 | ATP 5-19 validation | Ethical crawling | Unique feature swap |
 | JR Validation | Tier classification | Strategic prioritization |
 
@@ -102,7 +102,7 @@ The analytical framework (architecture review, metrics evaluation, integration a
 
 ```python
 # Find and replace ALL occurrences
-sed -i 's/Judge #6/Gemini Ingestion Layer/g' prompt.txt
+sed -i 's/Judge 6/Gemini Ingestion Layer/g' prompt.txt
 sed -i 's/ATP 5-19/ethical crawling compliance/g' prompt.txt
 ```
 
@@ -130,7 +130,7 @@ Ingestion layers are more distributed than single-script validators. Analyzing f
 **Example Transformation**:
 
 ```markdown
-<!-- BEFORE: Judge #6 -->
+<!-- BEFORE: Judge 6 -->
 Evaluate performance:
 - p99 latency ≤90ms
 - Throughput ≥1000 req/sec
@@ -159,7 +159,7 @@ Ingestion optimizing solely for "how much" creates garbage. Measuring daily item
 
 ### Architecture Pattern Shift
 
-#### Judge #6 (Hybrid AI - Real-time)
+#### Judge 6 (Hybrid AI - Real-time)
 
 ```yaml
 Architecture: Hybrid Gemini+PyTorch
@@ -185,7 +185,7 @@ Scaling: Parallelization across sources
 
 ### Key Metrics Alignment
 
-#### Judge #6 (Defensive Metrics)
+#### Judge 6 (Defensive Metrics)
 
 ```
 Focus: Speed + Blocking Effectiveness
@@ -223,10 +223,10 @@ Analyze metrics:
 
 ### Integration Direction Flip
 
-#### Judge #6: Caller (Downstream)
+#### Judge 6: Caller (Downstream)
 
 ```
-Judge #6 → Calls Services in 4 Namespaces
+Judge 6 → Calls Services in 4 Namespaces
 - Makes validation requests to upstream systems
 - Blocks based on responses
 - Acts as gatekeeper
@@ -260,7 +260,7 @@ Integration Analysis:
 
 ### Cost Model Transformation
 
-#### Judge #6: Per-Operation
+#### Judge 6: Per-Operation
 
 ```
 Cost Model: API calls × $0.002/call
@@ -521,7 +521,7 @@ Include in analysis:
 
 ### Component Complementarity
 
-**Judge #6** and **Ingestion Layer** are complementary, not competitive:
+**Judge 6** and **Ingestion Layer** are complementary, not competitive:
 
 ```
 ┌─────────────────────────────────────┐
@@ -641,7 +641,7 @@ Analyze handoffs between:
    - Document common patterns
 
 4. **Integration**
-   - Combine Judge #6 + Ingestion Layer analysis for end-to-end view
+   - Combine Judge 6 + Ingestion Layer analysis for end-to-end view
    - Create cross-component dashboards
    - Enable holistic stack optimization
 
@@ -659,9 +659,9 @@ adapter = AgentRegistry.get_agent("prompt_adaptation")
 
 # Execute adaptation task
 result = await adapter.execute(
-    task="Adapt Judge #6 prompt for Gemini Ingestion Layer analysis",
+    task="Adapt Judge 6 prompt for Gemini Ingestion Layer analysis",
     context={
-        "source_system": "Judge #6 (validation)",
+        "source_system": "Judge 6 (validation)",
         "target_system": "Gemini Ingestion Layer (collection)",
         "source_prompt": "...",  # Original prompt
         "requirements": [

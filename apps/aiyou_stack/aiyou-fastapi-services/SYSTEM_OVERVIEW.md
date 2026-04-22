@@ -24,7 +24,7 @@ shadowtag_v4-fastapi-services/
 │   ├── src/core/              # Core routing and governance
 │   │   ├── router.ts          # Intelligent request routing
 │   │   ├── patcher.ts         # Unified diff application
-│   │   ├── governance.ts      # Judge #6 integration
+│   │   ├── governance.ts      # Judge 6 integration
 │   │   └── schema.ts          # Zod type definitions
 │   ├── src/providers/         # LLM provider abstractions
 │   │   ├── mock.ts            # Deterministic testing
@@ -37,7 +37,7 @@ shadowtag_v4-fastapi-services/
 
 ---
 
-## Component 1: Judge #6 - AI Governance System
+## Component 1: Judge 6 - AI Governance System
 
 ### Purpose
 
@@ -115,7 +115,7 @@ else:
 
 ### Competitive Advantages
 
-| Feature | Judge #6 | Anthropic | OpenAI | Google |
+| Feature | Judge 6 | Anthropic | OpenAI | Google |
 |---------|----------|-----------|--------|--------|
 | Governance | Cryptographic | Aspirational | Opaque | Probabilistic |
 | Risk Assessment | Pre-execution (ATP 5-19) | Reactive | Implicit | Probabilistic |
@@ -130,7 +130,7 @@ else:
 
 ### Purpose
 
-Provides compliant, vendor-independent AI code assistance with multi-LLM support and Judge #6 governance enforcement.
+Provides compliant, vendor-independent AI code assistance with multi-LLM support and Judge 6 governance enforcement.
 
 ### Key Features
 
@@ -151,7 +151,7 @@ Providers:
 - **OpenAI**: GPT-4o via public SDK
 - **Anthropic**: Claude Sonnet 4 via public SDK
 
-#### 2. Judge #6 Governance Integration
+#### 2. Judge 6 Governance Integration
 
 ```typescript
 import { Judge6Adapter, CopilotRouter } from "@pnkln/universal-copilot";
@@ -162,9 +162,9 @@ const router = new CopilotRouter(
   governance
 );
 
-// All requests validated through Judge #6
+// All requests validated through Judge 6
 const response = await router.route(request);
-// response.governanceDecision contains Judge #6 verdict
+// response.governanceDecision contains Judge 6 verdict
 ```
 
 #### 3. Unified Diff Patching
@@ -246,7 +246,7 @@ const request = {
   modelPref: "auto",
 };
 
-// 4. Route through Judge #6 → LLM → Response
+// 4. Route through Judge 6 → LLM → Response
 const response = await router.route(request);
 
 // 5. Verify governance approval
@@ -285,7 +285,7 @@ if (response.governanceDecision?.approved) {
        │                     │
        ▼                     ▼
 ┌─────────────┐      ┌──────────────┐
-│ Judge #6    │      │ LLM Provider │
+│ Judge 6    │      │ LLM Provider │
 │ Governance  │      │ (OpenAI/     │
 │ (Python)    │      │  Anthropic)  │
 └──────┬──────┘      └──────┬───────┘
@@ -324,7 +324,7 @@ USE_MOCK=1 npm run dev
 ### Production Mode
 
 ```bash
-# Judge #6
+# Judge 6
 cd judge6
 python -m judge6.main
 
@@ -363,7 +363,7 @@ CMD ["node", "dist/widget.js"]
 
 ## Testing
 
-### Judge #6 Tests
+### Judge 6 Tests
 
 ```bash
 cd judge6
@@ -449,7 +449,7 @@ USE_MOCK=1 USE_MOCK_GOVERNANCE=1 npm run test:e2e
 
 ## Documentation
 
-- **Judge #6**
+- **Judge 6**
   - [README.md](./judge6/README.md) - Package documentation
   - [IMPROVEMENTS.md](./judge6/IMPROVEMENTS.md) - v2.0 refactoring details
 

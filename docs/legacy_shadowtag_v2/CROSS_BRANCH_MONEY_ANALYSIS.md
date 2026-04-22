@@ -31,7 +31,7 @@
 
 ### 1. claude/kernel-chaining-architecture-01XDGPpkmfkiiiNWRNFnkJKR
 
-**TECH**: 3-kernel decision pipeline (ATP scan → Judge #6 → Audit compress)
+**TECH**: 3-kernel decision pipeline (ATP scan → Judge 6 → Audit compress)
 
 **PERFORMANCE**:
 
@@ -54,7 +54,7 @@ Tier 1: Kernel Chain API @ $0.0003/decision
 
 **BEACHHEAD MARKET**:
 
-- Military/defense procurement (ATP 5-19 compliance)
+- Military/defense procurement (Compliance Framework compliance)
 
 - Market size: $800M annually
 
@@ -274,7 +274,7 @@ TOTAL: $54.38K MRR = $652K ARR
 
 ### 4. claude/pnkln-intelligence-pipeline-deployment-011CUvwKSmyxTgTWmc7WaHUR
 
-**TECH**: Enhanced load testing suite for Judge #6 p99 ≤90ms SLA validation
+**TECH**: Enhanced load testing suite for Judge 6 p99 ≤90ms SLA validation
 
 **INFRASTRUCTURE COSTS** (GKE Native):
 
@@ -336,7 +336,7 @@ TOTAL: $114.92K MRR = $1.38M ARR
 
 **FIX**:
 
-- ✅ Productize as "Judge #6 SLA Guarantee" service
+- ✅ Productize as "Judge 6 SLA Guarantee" service
 
 - ✅ Public status page (builds trust → premium pricing)
 
@@ -825,7 +825,7 @@ AFTER (1 unified GTM):
 
 **LTV:CAC**: $12K / $500 = **24:1** ✅ (exceeds 4:1 gate)
 
-### Gate 3: p99 ≤90ms (Judge #6 SLA)
+### Gate 3: p99 ≤90ms (Judge 6 SLA)
 
 **Current Performance**:
 
@@ -857,7 +857,7 @@ AFTER (1 unified GTM):
 
 ---
 
-## RISK ASSESSMENT (ATP 5-19 FRAMEWORK)
+## RISK ASSESSMENT (Compliance Framework FRAMEWORK)
 
 ### Technical Risks
 

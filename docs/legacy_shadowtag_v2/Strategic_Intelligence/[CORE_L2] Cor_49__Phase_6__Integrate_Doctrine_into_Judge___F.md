@@ -15,14 +15,14 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
      | src/pnkln/judge_six.py                    | ✅      | Added RiskManager, MDMPPipeline, BattleDrillRouter;
      doctrine_validate(), handle_error_with_drill(), enforce_with_doctrine()   |
      | pnkln/governance/judge_architecture.py    | ✅      | Added doctrine imports, RiskLevel mapping methods,
-     Layer 0 ATP 5-19 CRM, Layer 0.5 FM 6-0 MDMP                                |
+     Layer 0 Compliance Framework CRM, Layer 0.5 FM 6-0 MDMP                                |
      | agents/autoresearch.py                  | ✅      | Added TLPPipeline integration, risk-based consensus
      thresholds in PRTP, prtp_with_battle_drills()                             |
      | agents/swarm_boss.py                      | ✅      | Added MDMPPipeline, receive_mission_with_mdmp(),
      handle_error_with_drill(), get_doctrine_status()                             |
      | judge6/risk_manager.py                    | ✅      | Added RA↔Doctrine mapping,
      full_doctrine_assessment(), get_consensus_threshold(), get_approval_authority()                    |
-     | voice_consensus/consensus_orchestrator.py | ✅      | Added ATP 5-19 thresholds,
+     | voice_consensus/consensus_orchestrator.py | ✅      | Added Compliance Framework thresholds,
      assess_risk_and_set_threshold(), check_consensus_reached(), execute_full_consensus_with_doctrine() |
 
      Integration Overview
@@ -33,7 +33,7 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
      │                                                                          │
      │  KOSMOS DOCTRINE (src/kosmos/doctrine/)                                 │
      │  ├── fm_6_0.py (MDMP/TLP) ──────────→ Judge Decision Workflow           │
-     │  ├── atp_5_19.py (Risk Mgmt) ───────→ JudgeVerdict Risk Classification  │
+     │  ├── compliance_framework.py (Risk Mgmt) ───────→ JudgeVerdict Risk Classification  │
      │  ├── fm_3_0.py (Warfighting) ───────→ 6 Functions → Judge Layers        │
      │  ├── battle_drills.py ──────────────→ Error Recovery Procedures         │
      │  └── adp_6_22.py (Leadership) ──────→ Agent Attributes/Competencies     │
@@ -41,7 +41,7 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
      │                           ↓                                              │
      │  JUDGE ARCHITECTURE (21 Layers)                                         │
      │  ├── Purpose/Reasons/Brakes → FM 6-0 Commander's Intent                 │
-     │  ├── Risk Assessment → ATP 5-19 5-Step CRM                              │
+     │  ├── Risk Assessment → Compliance Framework 5-Step CRM                              │
      │  ├── Regulatory Compliance → FM 6-27 Law of Land Warfare                │
      │  └── Decision Classification → FM 3-0 Tactical/Operational/Strategic    │
      │                                                                          │
@@ -50,7 +50,7 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
      │  ├── Swarm Orchestration → FM 6-0 TLP 8-Step                            │
      │  ├── Agent Voting → ATP 3-20.96 MFRC Screen/Guard/Cover                 │
      │  ├── Consensus Building → Kosmos Whiteboard + Glicko-2                  │
-     │  └── Mission Validation → Judge #6 Purpose/Reasons/Brakes              │
+     │  └── Mission Validation → Judge 6 Purpose/Reasons/Brakes              │
      │                                                                          │
      └─────────────────────────────────────────────────────────────────────────┘
 
@@ -60,20 +60,20 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
      | File                                      | Integration                                           |
      |-------------------------------------------|-------------------------------------------------------|
      | src/pnkln/judge_six.py                    | Import doctrine modules, add MDMP validation workflow |
-     | pnkln/governance/judge_architecture.py    | Map ATP 5-19 risk matrix to 21-layer validation       |
+     | pnkln/governance/judge_architecture.py    | Map Compliance Framework risk matrix to 21-layer validation       |
      | agents/autoresearch.py                  | Add TLP orchestration, doctrine-based voting          |
      | agents/swarm_boss.py                      | Integrate MDMP planning into swarm cycles             |
-     | judge6/risk_manager.py                    | Replace with ATP 5-19 RiskManager                     |
+     | judge6/risk_manager.py                    | Replace with Compliance Framework RiskManager                     |
      | voice_consensus/consensus_orchestrator.py | Add doctrine consensus thresholds                     |
 
      ---
      Implementation Steps
 
-     Step 1: Judge #6 Doctrine Integration
+     Step 1: Judge 6 Doctrine Integration
 
      Update src/pnkln/judge_six.py:
 
-     from kosmos.doctrine.atp_5_19 import RiskManager, RiskLevel, CONSENSUS_THRESHOLDS
+     from kosmos.doctrine.compliance_framework import RiskManager, RiskLevel, CONSENSUS_THRESHOLDS
      from kosmos.doctrine.fm_6_0 import MDMPPipeline
      from kosmos.doctrine.battle_drills import BattleDrillRouter, DrillTrigger
 
@@ -88,7 +88,7 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
              # FM 6-0 MDMP Step 2: Mission Analysis
              analysis = await self.mdmp.step2_mission_analysis(decision.context)
 
-             # ATP 5-19: 5-Step Risk Assessment
+             # Compliance Framework: 5-Step Risk Assessment
              risk_result = await self.risk_manager.full_assessment(decision.task)
 
              # Map doctrine risk to Judge thresholds
@@ -102,24 +102,24 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
 
              return verdict
 
-     Step 2: Judge Architecture ATP 5-19 Alignment
+     Step 2: Judge Architecture Compliance Framework Alignment
 
      Update pnkln/governance/judge_architecture.py:
 
-     from kosmos.doctrine.atp_5_19 import (
+     from kosmos.doctrine.compliance_framework import (
          RiskLevel as DoctrineRiskLevel,
          Probability, Severity, RISK_MATRIX
      )
 
      # Replace existing RiskLevel with doctrine-aligned
      class RiskLevel(Enum):
-         LOW = "LOW"                    # ATP 5-19: Screen (50%)
-         MEDIUM = "MEDIUM"              # ATP 5-19: Standard (60%)
-         HIGH = "HIGH"                  # ATP 5-19: Guard (75%)
-         EXTREMELY_HIGH = "EXTREMELY_HIGH"  # ATP 5-19: Cover (90%)
+         LOW = "LOW"                    # Compliance Framework: Screen (50%)
+         MEDIUM = "MEDIUM"              # Compliance Framework: Standard (60%)
+         HIGH = "HIGH"                  # Compliance Framework: Guard (75%)
+         EXTREMELY_HIGH = "EXTREMELY_HIGH"  # Compliance Framework: Cover (90%)
 
      def assess_risk(probability: str, severity: str) -> RiskLevel:
-         """ATP 5-19 Figure 1-3 Risk Assessment Matrix"""
+         """Compliance Framework Figure 1-3 Risk Assessment Matrix"""
          prob = Probability[probability.upper()]
          sev = Severity[severity.upper()]
          return RISK_MATRIX.get((prob, sev), RiskLevel.MEDIUM)
@@ -129,7 +129,7 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
      Update agents/autoresearch.py:
 
      from kosmos.doctrine.fm_6_0 import TLPPipeline
-     from kosmos.doctrine.atp_5_19 import CONSENSUS_THRESHOLDS
+     from kosmos.doctrine.compliance_framework import CONSENSUS_THRESHOLDS
      from kosmos.doctrine.battle_drills import BattleDrillRouter, DrillTrigger
 
      class https://github.com/karpathy/autoresearchs:
@@ -191,7 +191,7 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
      Replace judge6/risk_manager.py with doctrine import:
 
      # judge6/risk_manager.py - NOW WRAPS DOCTRINE
-     from kosmos.doctrine.atp_5_19 import (
+     from kosmos.doctrine.compliance_framework import (
          RiskManager as DoctrineRiskManager,
          RiskLevel, RiskMatrix, Hazard, Control,
          Probability, Severity, CONSENSUS_THRESHOLDS
@@ -209,11 +209,11 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
 
      Update voice_consensus/consensus_orchestrator.py:
 
-     from kosmos.doctrine.atp_5_19 import CONSENSUS_THRESHOLDS, RiskLevel
+     from kosmos.doctrine.compliance_framework import CONSENSUS_THRESHOLDS, RiskLevel
 
      class ConsensusOrchestrator:
          def get_threshold(self, risk_level: str) -> float:
-             """Get ATP 5-19 aligned consensus threshold"""
+             """Get Compliance Framework aligned consensus threshold"""
              level = RiskLevel[risk_level.upper()]
              return CONSENSUS_THRESHOLDS.get(level, 0.60)
 
@@ -224,8 +224,8 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
      |----------------------|--------------------|-------------------------|
      | FM 6-0 MDMP 7-Step   | SwarmBoss          | Planning workflow       |
      | FM 6-0 TLP 8-Step    | https://github.com/karpathy/autoresearchs      | Rapid audit cycles      |
-     | ATP 5-19 CRM 5-Step  | Judge Architecture | Risk validation         |
-     | ATP 5-19 Risk Matrix | RiskManager        | Probability × Severity  |
+     | Compliance Framework CRM 5-Step  | Judge Architecture | Risk validation         |
+     | Compliance Framework Risk Matrix | RiskManager        | Probability × Severity  |
      | FM 3-0 Warfighting   | SwarmBoss          | 6 function coordination |
      | FM 7-8 Battle Drills | BattleDrillRouter  | Error handling          |
      | ADP 6-22 Leadership  | Agent Attributes   | Quality metrics         |
@@ -236,7 +236,7 @@ Cor.49 Phase 6: Integrate Doctrine into Judge & https://github.com/karpathy/auto
 
      1. Unit Tests: Test doctrine imports in each modified file
      2. Integration Tests: Verify Judge → https://github.com/karpathy/autoresearchs flow with doctrine
-     3. Risk Assessment: Validate ATP 5-19 matrix produces correct thresholds
+     3. Risk Assessment: Validate Compliance Framework matrix produces correct thresholds
      4. Battle Drills: Test error handling triggers correct drills
      5. End-to-End: Run full audit with doctrine-aligned pipeline
 

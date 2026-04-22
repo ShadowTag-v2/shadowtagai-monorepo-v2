@@ -31,7 +31,7 @@ The pinkln Agent Architecture System now includes comprehensive infrastructure a
 
 ### Core Components
 
-#### 1. Judge #6 - Enforcement/Validation System
+#### 1. Judge 6 - Enforcement/Validation System
 
 **Role**: Reactive validator ensuring quality and compliance
 
@@ -83,7 +83,7 @@ The pinkln Agent Architecture System now includes comprehensive infrastructure a
 │              PNKLN Core Stack™ Pipeline                 │
 │                                                          │
 │  ┌───────────────────┐          ┌──────────────────┐    │
-│  │  Gemini Ingestion │          │     Judge #6     │    │
+│  │  Gemini Ingestion │          │     Judge 6     │    │
 │  │      Layer        │─────────>│   Validation     │    │
 │  │                   │          │                  │    │
 │  │  - Collect Data   │          │  - Validate      │    │
@@ -109,7 +109,7 @@ from pinkln.skills.infrastructure_analysis import InfrastructureAnalysisSkill
 
 skill = InfrastructureAnalysisSkill()
 
-# Analyze Judge #6
+# Analyze Judge 6
 judge_result = skill.analyze_system(skill.JUDGE_SIX_SPEC)
 
 # Analyze Gemini Ingestion
@@ -139,7 +139,7 @@ my_system = SystemSpec(
         "uptime": "99.9%"
     },
     integration_points=[
-        "Connects to Judge #6",
+        "Connects to Judge 6",
         "Reads from Ingestion Layer"
     ],
     unique_features=[
@@ -245,7 +245,7 @@ agent = InfrastructureAgent(config=config)
 
 ## Use Cases
 
-### Use Case 1: Analyze Judge #6 Performance
+### Use Case 1: Analyze Judge 6 Performance
 
 ```python
 from pinkln.agents.infrastructure_agent import InfrastructureAgent
@@ -253,7 +253,7 @@ from pinkln.agents.infrastructure_agent import InfrastructureAgent
 agent = InfrastructureAgent()
 result = await agent.analyze_judge_six()
 
-print("=== Judge #6 Analysis ===")
+print("=== Judge 6 Analysis ===")
 print(f"Strengths: {len(result['analysis']['core_analysis']['strengths'])}")
 print(f"Recommendations: {len(result['analysis']['core_analysis']['recommendations'])}")
 print(f"\nNext Steps:")
@@ -338,7 +338,7 @@ claude_agent = ClaudePnklnAgent()
 infra_agent = InfrastructureAgent()
 ```
 
-### Example: Analyze Judge #6 with Claude
+### Example: Analyze Judge 6 with Claude
 
 ```python
 # Get analysis from Infrastructure Agent
@@ -346,7 +346,7 @@ judge_analysis = await infra_agent.analyze_judge_six()
 
 # Use Claude to deep-dive into specific areas
 challenge = f"""
-Based on this Judge #6 analysis:
+Based on this Judge 6 analysis:
 {judge_analysis['analysis']['core_analysis']}
 
 Provide detailed recommendations for:
@@ -420,7 +420,7 @@ print(response.content[0].text)
 ```python
 # Analyze both systems in parallel on Vertex AI
 systems = [
-    ("Judge #6", skill.JUDGE_SIX_SPEC),
+    ("Judge 6", skill.JUDGE_SIX_SPEC),
     ("Gemini Ingestion", skill.GEMINI_INGESTION_SPEC)
 ]
 

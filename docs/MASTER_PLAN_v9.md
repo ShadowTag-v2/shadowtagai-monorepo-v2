@@ -41,7 +41,7 @@ We are building the **Civilization OS** — a vertically integrated stack from e
 │      DoD Edge, ActiveShield ITAR, AiU Aero/Med                      │
 ├─────────────────────────────────────────────────────────────────────┤
 │  L5: ORBITAL (The High Ground)                                      │
-│      Space Compute, Post-Starlink Mesh, LEO Judge #6 Instances       │
+│      Space Compute, Post-Starlink Mesh, LEO Judge 6 Instances       │
 ├─────────────────────────────────────────────────────────────────────┤
 │  L4: PHYSICAL MESH (The Moving World)                               │
 │      RoadMesh (software-licensed), SkyMesh, Tower GPU Pods           │
@@ -50,7 +50,7 @@ We are building the **Civilization OS** — a vertically integrated stack from e
 │      AiU Digital Mall, Tokable, Dreamlight SDK, CineVerse            │
 ├─────────────────────────────────────────────────────────────────────┤
 │  L2: CORE PROTOCOLS (The Operating System)                          │
-│      ShadowTag v2, Judge #6, ActiveShield MCF, Vexa                  │
+│      ShadowTag v2, Judge 6, ActiveShield MCF, Vexa                  │
 ├─────────────────────────────────────────────────────────────────────┤
 │  L1: ENERGY (The Foundation)                                        │
 │      Sulphur Bank Mine, Geothermal + Solar, Bitcoin Mining           │
@@ -61,7 +61,7 @@ We are building the **Civilization OS** — a vertically integrated stack from e
 
 | Phase       | Name     | Focus                                                       | Timeline   |
 | ----------- | -------- | ----------------------------------------------------------- | ---------- |
-| **Phase 1** | The Mind | Pure SaaS — ShadowTag, ActiveShield, Judge #6               | NOW → 2026 |
+| **Phase 1** | The Mind | Pure SaaS — ShadowTag, ActiveShield, Judge 6               | NOW → 2026 |
 | **Phase 2** | The Body | Sovereign Infrastructure — Sulphur Bank + distressed assets | 2026–2028  |
 | **Phase 3** | The Fist | Hard Tech — Robotics, Satellites (paid in cash, deferred)   | 2030+      |
 
@@ -96,11 +96,11 @@ We are building the **Civilization OS** — a vertically integrated stack from e
 
 ---
 
-## L2.2 — Judge #6: "The Conscience"
+## L2.2 — Judge 6: "The Conscience"
 
 **Architecture**: 3-stage hybrid validation pipeline, p99 ≤ 90ms SLA
 
-- Stage 1: JR Engine ATP 5-19 scan (<500μs)
+- Stage 1: JR Engine Compliance Framework scan (<500μs)
 - Stage 2: Gemini `gemini-3.1-flash-lite-preview` semantic check (~40-60ms)
 - Stage 3: PyTorch classifier + hard rules (~15-25ms)
 
@@ -108,7 +108,7 @@ We are building the **Civilization OS** — a vertically integrated stack from e
 
 | Tier               | Price/Month | Features                   |
 | ------------------ | ----------- | -------------------------- |
-| Basic (1-5)        | $25K        | ATP 5-19 Risk Radar        |
+| Basic (1-5)        | $25K        | Compliance Framework Risk Radar        |
 | AIT (6-15)         | $100K       | CodePMCS + Defensive       |
 | SOF (16-25)        | $400K       | Hunter/Killer (Troop B)    |
 | **THE CHILD (30)** | **$1M+**    | Sovereign AI, 30 Verticals |
@@ -167,7 +167,7 @@ We are building the **Civilization OS** — a vertically integrated stack from e
 | LawJudge   | Legal       | Contract analysis, litigation risk |
 | FinJudge   | Finance     | SR 11-7, fraud detection           |
 | MedJudge   | Healthcare  | HIPAA, diagnostic verification     |
-| DefJudge   | Defense     | ATP 5-19, ITAR compliance          |
+| DefJudge   | Defense     | Compliance Framework, ITAR compliance          |
 | AdJudge    | Advertising | VAST 4.x, brand safety             |
 | CodeJudge  | Engineering | CodePMCS, security scanning        |
 
@@ -206,7 +206,7 @@ Insurance ($10K), Real Estate ($8K), Education ($5K), Government ($15K), Logisti
 | Orchestration | FM 6-0 Mission Command | LangGraph + CrewAI                     | Deterministic state machines                  |
 | Intelligence  | ATP 2-01.3 Intel Prep  | Mem0 + GraphRAG + GNNs                 | Multi-hop graph reasoning                     |
 | Compute       | ADP 3-0 Maneuver       | GKE Autopilot (Spot + Image Streaming) | 60-91% cost reduction, <5s cold start         |
-| Governance    | ATP 3-60 Targeting     | OPA + Judge #6                         | <10ms fast path, <90ms full                   |
+| Governance    | Targeting Framework Targeting     | OPA + Judge 6                         | <10ms fast path, <90ms full                   |
 | Memory        | —                      | Firestore Native (TTL + Vector Search) | Zero idle cost, auto-scales to billions       |
 | Security      | ATP 3-37.34            | NIST PQC (ML-KEM/Kyber FIPS 203)       | Post-quantum, harvest-now-decrypt-later proof |
 | Optimization  | FM 4-0 Sustainment     | Quantum-Inspired Annealing (QAOA)      | NP-hard routing 100x faster                   |
@@ -230,7 +230,7 @@ Insurance ($10K), Real Estate ($8K), Education ($5K), Government ($15K), Logisti
 
 | Troop                 | Size | Function                        | Doctrine                       |
 | --------------------- | ---- | ------------------------------- | ------------------------------ |
-| **HHT (Judge #6)**    | 90   | Command & Governance            | IQ Lock 160, ATP 5-19          |
+| **HHT (Judge 6)**    | 90   | Command & Governance            | IQ Lock 160, Compliance Framework          |
 | **Troop A (Recon)**   | 120  | Deep Market Intel               | Perplexity/Grok scanning       |
 | **Troop B (Armor)**   | 130  | Heavy Dev (Gemini Ultra)        | Ranger Standard (98% coverage) |
 | **Troop C (Stryker)** | 130  | Rapid Defense / MilDec          | CodePMCS enforcement           |
@@ -253,7 +253,7 @@ KOSMOS-SUPERGROK (430) → X/GROKIPEDIA
 [
   {
     "name": "pnkln:Judge6",
-    "prompt": "ROLE:Governance; MISSION:Risk Gating; TACTIC:ATP 5-19; IF Confidence<0.75 THEN Freeze; OUTPUT:JSON {verdict, risk_score, reasoning}"
+    "prompt": "ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework; IF Confidence<0.75 THEN Freeze; OUTPUT:JSON {verdict, risk_score, reasoning}"
   },
   {
     "name": "pnkln:TroopA",
@@ -461,7 +461,7 @@ _Assumes disciplined round sizing relative to valuation step-ups (see Part 8)._
 | LTV:CAC              | ≥4:1 (12mo)    | Scale back acquisition |
 | Test Coverage        | ≥98%           | Block deployments      |
 | CI Green Runs        | 2 before merge | Automated enforcement  |
-| Judge #6 p99 Latency | ≤90ms          | Incident escalation    |
+| Judge 6 p99 Latency | ≤90ms          | Incident escalation    |
 
 ## Warfighting Functions → Platform Capabilities
 
@@ -469,9 +469,9 @@ _Assumes disciplined round sizing relative to valuation step-ups (see Part 8)._
 | ----------------- | -------------------------------------------- |
 | Command & Control | LangGraph Orchestrator + HHT                 |
 | Intelligence      | S-2 Section + RECON Troops (Perplexity/Grok) |
-| Fires             | FSE Section + Judge #6 governance decisions  |
+| Fires             | FSE Section + Judge 6 governance decisions  |
 | Sustainment       | S-4 Section + Token Budget Manager           |
-| Protection        | MFRC + Judge #6 + ShadowTag                  |
+| Protection        | MFRC + Judge 6 + ShadowTag                  |
 
 ## Tier 1–30 Pricing Matrix
 
@@ -493,7 +493,7 @@ _Assumes disciplined round sizing relative to valuation step-ups (see Part 8)._
 | 4. Ops      | tools/scripts/sync-daemon.sh | ARMED              |
 | 5. Queue    | ingestion pipeline           | LOADED             |
 | 6. Manual   | README/                      | READY              |
-| 7. Safety   | Judge #6 pipeline            | ACTIVE             |
+| 7. Safety   | Judge 6 pipeline            | ACTIVE             |
 | 8. Primer   | NewThreadPrimer              | LOCKED             |
 | 9. Health   | GitNexus (398K nodes)        | PASSED             |
 | 10. Base    | Monorepo-Uphillsnowball      | SECURE             |
@@ -506,7 +506,7 @@ _Assumes disciplined round sizing relative to valuation step-ups (see Part 8)._
 
 | System             | Canonical Path                                                           | Notes                                  |
 | ------------------ | ------------------------------------------------------------------------ | -------------------------------------- |
-| Judge #6 Pipeline  | `pnkln/core/judge_six_pipeline.py`                                       | 3-stage, GeminiAgent wired, p99≤90ms   |
+| Judge 6 Pipeline  | `pnkln/core/judge_six_pipeline.py`                                       | 3-stage, GeminiAgent wired, p99≤90ms   |
 | COR Orchestrator   | `pnkln/core/cor_orchestrator.py`                                         | SequentialPipeline base class          |
 | Ingestion Pipeline | `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/ingestion/`                     | Full pipeline with tiers + briefing    |
 | Briefing Delivery  | `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/ingestion/delivery/briefing.py` | gws gmail send                         |
@@ -540,7 +540,7 @@ _Assumes disciplined round sizing relative to valuation step-ups (see Part 8)._
 │  EFFICIENCY GAINS                                                   │
 │  ├─ Token Reduction: 98.5% (Kernel Chain)                           │
 │  ├─ Cost Reduction: 97.5% ($0.10 → $0.0003)                         │
-│  ├─ Judge #6 Latency: p99 ≤90ms                                     │
+│  ├─ Judge 6 Latency: p99 ≤90ms                                     │
 │  └─ Infra: Cloud Run + Firestore (zero idle cost)                   │
 ├─────────────────────────────────────────────────────────────────────┤
 │  UNIT ECONOMICS                                                     │
@@ -558,7 +558,7 @@ _Assumes disciplined round sizing relative to valuation step-ups (see Part 8)._
 | Product          | Layer        | Description                                                |
 | ---------------- | ------------ | ---------------------------------------------------------- |
 | ShadowTag v2     | L2           | "Stripe for Authenticity" — cryptographic watermarking     |
-| Judge #6         | L2           | <90ms governance engine, ATP 5-19 compliance               |
+| Judge 6         | L2           | <90ms governance engine, Compliance Framework compliance               |
 | ActiveShield MCF | L2           | Modular Compliance Framework (EU AI Act / HIPAA / ITAR)    |
 | Vexa             | L2           | Universal transcription + semantic understanding           |
 | LegalTrack       | L3/Legal     | Court deadline automation, email → calendar pipeline       |

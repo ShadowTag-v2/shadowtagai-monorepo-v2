@@ -90,7 +90,7 @@ This document unifies **four strategic branches** into one coherent revenue-gene
 
 #### Beachhead Market: Military/Defense Compliance
 
-- **Market Size**: $800M annually (ATP 5-19 compliance)
+- **Market Size**: $800M annually (Compliance Framework compliance)
 - **Pain Point**: Manual review takes 48+ hours
 - **Our Solution**: Automated compliance in <35ms
 - **Customer Acquisition Cost**: $5K
@@ -226,7 +226,7 @@ This document unifies **four strategic branches** into one coherent revenue-gene
 **Enhanced Load Testing Suite**:
 
 - **Monthly Cost**: $370
-- **Purpose**: Validate Judge #6 SLA (p99 ≤90ms)
+- **Purpose**: Validate Judge 6 SLA (p99 ≤90ms)
 - **ROI**: 3.3× in 18 months
 
 #### Money Impact: Preventing Outages
@@ -292,7 +292,7 @@ This document unifies **four strategic branches** into one coherent revenue-gene
 │                                                            │
 │  [1] KERNEL CHAIN (Specialized Prompts)                   │
 │      ├─ ATP 519 Scan (violations extraction)              │
-│      ├─ Judge #6 (binary decision + risk tier)            │
+│      ├─ Judge 6 (binary decision + risk tier)            │
 │      └─ Audit Compress (zstd → 487 bytes)                 │
 │      Performance: p99 ≤35ms | Cost: $0.0003               │
 │                                                            │
@@ -379,7 +379,7 @@ This document unifies **four strategic branches** into one coherent revenue-gene
 **Decision Governance**:
 
 - JR Framework (Purpose • Reasons • Brakes)
-- ATP 5-19 Risk Matrix (Probability A-E × Severity I-IV)
+- Compliance Framework Risk Matrix (Probability A-E × Severity I-IV)
 - Bootstrap Gates (ROI ≥3×, LTV:CAC ≥4:1, p99 ≤90ms, Security 100%)
 
 ---
@@ -423,7 +423,7 @@ This document unifies **four strategic branches** into one coherent revenue-gene
 
 **Our Position**:
 
-- **Beachhead**: Military/defense ($800M, ATP 5-19 compliance)
+- **Beachhead**: Military/defense ($800M, Compliance Framework compliance)
 - **Wedge**: AI startups/research labs (developer-first)
 - **Expansion**: Fortune 500 + government agencies (enterprise sales)
 
@@ -551,7 +551,7 @@ Agents Deployed:
 
 Frameworks:
 • Reasoning: CoT/ToT/RCR/RTF-TAG-BAB-CARE-RISE (fused)
-• Decision: JR (Purpose•Reasons•Brakes) + ATP 5-19 risk matrix
+• Decision: JR (Purpose•Reasons•Brakes) + Compliance Framework risk matrix
 • Bootstrap Gates: ROI ≥3×, LTV:CAC ≥4:1, p99 ≤90ms, Security 100%
 
 Philosophy:

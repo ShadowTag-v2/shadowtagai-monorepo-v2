@@ -50,7 +50,7 @@ Based on my comprehensive search through your conversation history, here’s the
 
 - Deep technical integration (CoreWeave, Starlink, Vertex AI, NVIDIA partnerships)
 - Sophisticated financial modeling (Monte Carlo simulations, risk-adjusted scenarios)
-- Military doctrine integration (ATP 5-19 risk management)
+- Military doctrine integration (Compliance Framework risk management)
 - Legal structures (C-Corp, Foundation, hybrid IPO strategy)
 - Specific cost breakdowns ($250K formations rounds, $456K 90-day budgets)
 

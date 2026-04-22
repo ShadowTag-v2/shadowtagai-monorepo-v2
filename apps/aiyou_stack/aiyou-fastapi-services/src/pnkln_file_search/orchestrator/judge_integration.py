@@ -1,5 +1,5 @@
-"""Judge #6 Integration Stub
-Placeholder for actual Judge #6 hybrid architecture implementation
+"""Judge 6 Integration Stub
+Placeholder for actual Judge 6 hybrid architecture implementation
 """
 
 import structlog
@@ -8,9 +8,9 @@ logger = structlog.get_logger(__name__)
 
 
 class JudgeIntegration:
-    """Integration point for Judge #6 Hybrid Architecture
+    """Integration point for Judge 6 Hybrid Architecture
 
-    This is a placeholder/stub for your actual Judge #6 implementation.
+    This is a placeholder/stub for your actual Judge 6 implementation.
     Replace with your real ATP 5-19 compliance checking system.
 
     Architecture (for reference):
@@ -21,7 +21,7 @@ class JudgeIntegration:
     """
 
     def __init__(self):
-        """Initialize Judge #6 integration"""
+        """Initialize Judge 6 integration"""
         logger.info("judge_integration_initialized")
 
     async def assess_layer1_gemini(self, query: str, context: dict) -> dict:

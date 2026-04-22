@@ -29,7 +29,7 @@ KOSMOS CAVALRY SQUADRON (430 agents) - ATP 3-20.96 ALIGNED
 ═══════════════════════════════════════════════════════════════════════
 │
 ├── HHT (Headquarters & Headquarters Troop) ─────────────── 115 agents
-│   ├── Command Section: 10 (CDR, XO, 1SG, Judge #6)
+│   ├── Command Section: 10 (CDR, XO, 1SG, Judge 6)
 │   ├── S-1 Personnel: 10 (Agent lifecycle management)
 │   ├── S-2 Intelligence: 20 (IPB, threat assessment)
 │   ├── S-3 Operations: 20 (Planning, MDMP/RDSP)

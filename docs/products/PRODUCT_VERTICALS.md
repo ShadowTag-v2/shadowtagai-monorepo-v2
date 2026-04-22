@@ -14,13 +14,13 @@ The strategic pivot from 18+ systems to the **Pnkln Core Stack** demonstrates ru
 
 ## Six Core Verticals (MVP Focus)
 
-### 1. Judge #6: Corporate Governance Automation
+### 1. Judge 6: Corporate Governance Automation
 
 **Business Judgment Rule automation for corporate boards**
 
 #### Overview
 
-Judge #6 brings Business Judgment Rule automation to corporate governance, analyzing board decisions against fiduciary duty standards using multi-model consensus. The system provides real-time decision support that documents board deliberation rigor, potentially reducing insurance premiums 15-30% while improving governance outcomes.
+Judge 6 brings Business Judgment Rule automation to corporate governance, analyzing board decisions against fiduciary duty standards using multi-model consensus. The system provides real-time decision support that documents board deliberation rigor, potentially reducing insurance premiums 15-30% while improving governance outcomes.
 
 #### Market Opportunity
 

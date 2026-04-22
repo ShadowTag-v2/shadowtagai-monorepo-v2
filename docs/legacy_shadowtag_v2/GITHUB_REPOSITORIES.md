@@ -29,7 +29,7 @@
 
 - Content verification platform (pnkln-stack)
 
-- Judge #6 enforcement infrastructure
+- Judge 6 enforcement infrastructure
 
 - GKE native deployment (15 files, 2,473 lines)
 
@@ -127,7 +127,7 @@
 
 **Key Components** (now in main repo):
 
-- **Judge #6**: Gemini + PyTorch + Rules engine (98% coverage, p99 ≤90ms)
+- **Judge 6**: Gemini + PyTorch + Rules engine (98% coverage, p99 ≤90ms)
 
 - **ShadowTag 2.0**: DCT watermarking for content protection
 
@@ -290,7 +290,7 @@
 
 - Perplexity + Grok (10%)
 
-- PyTorch (Judge #6 inference)
+- PyTorch (Judge 6 inference)
 
 - vLLM (model serving)
 
@@ -312,7 +312,7 @@
 
 - Google Cloud Monitoring
 
-- Custom Judge #6 telemetry
+- Custom Judge 6 telemetry
 
 ---
 
@@ -325,7 +325,7 @@
 **Total Code**: ~36,615 lines production code
 **Key Additions**:
 
-- Judge #6 pre-commit enforcement (TypeScript hooks + P3 Hybrid Engine)
+- Judge 6 pre-commit enforcement (TypeScript hooks + P3 Hybrid Engine)
 
 - FedRAMP/HIPAA compliance templates
 

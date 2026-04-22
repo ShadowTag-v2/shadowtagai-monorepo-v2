@@ -9,7 +9,7 @@ def deploy_kosmos_core():
     Includes:
     - Doctrine (Knowledge Base)
     - Invisible Swarm (Audit Layer)
-    - Judge #6 (Governance Logic)
+    - Judge 6 (Governance Logic)
     """
     print("///▞ KOSMOS CORE :: Initiating Transfer Protocol...")
 
@@ -56,7 +56,7 @@ def deploy_kosmos_core():
         print(
             "4. Run 'python3 run_operation_glow_up.py' (or integrate InvisibleSwarm into your main loop).",
         )
-        print("5. Verify 'Make Cash' governance via Judge #6.")
+        print("5. Verify 'Make Cash' governance via Judge 6.")
 
     except Exception as e:
         print(f"❌ Transfer Failed: {e}")

@@ -52,14 +52,14 @@ class Settings(BaseSettings):
         description="Max false positive rate (10%)",
     )
 
-    # Judge #6 Configuration
+    # Judge 6 Configuration
     judge_p99_latency_target: int = Field(
         default=90,
-        description="Judge #6 P99 latency target in ms",
+        description="Judge 6 P99 latency target in ms",
     )
     judge_gemini_allocation: float = Field(
         default=0.40,
-        description="Gemini allocation percentage for Judge #6",
+        description="Gemini allocation percentage for Judge 6",
     )
 
     # Service Configuration

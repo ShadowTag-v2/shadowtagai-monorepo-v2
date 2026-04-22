@@ -14,7 +14,7 @@ The highest level of abstraction. Defines the "Maximize Value" algorithm, the ce
 ### [Cor.2: ShadowTag Risk Engine (YRM) v1.0](./cor2_risk_engine.md)
 
 **Risk Management & Governance**
-Based on ATP 5-19. Defines the 5-step risk loop, risk matrices, and automated control tiers (Red/Orange/Yellow/Green).
+Based on Compliance Framework. Defines the 5-step risk loop, risk matrices, and automated control tiers (Red/Orange/Yellow/Green).
 
 ### [Cor.8: Master Plan](./cor8_master_plan.md)
 

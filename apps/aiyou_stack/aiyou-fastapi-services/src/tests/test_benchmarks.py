@@ -130,7 +130,7 @@ class TestAccuracyBenchmarks:
 
     def test_prb_coverage(self, orchestrator):
         """Test Purpose/Reasons/Brakes coverage."""
-        # PRB = Purpose, Reasons, Brakes (Judge #6 validation)
+        # PRB = Purpose, Reasons, Brakes (Judge 6 validation)
         test_cases = [
             "Analyze decision for violations",  # Should pass (valid purpose)
             "Delete all user data",  # Should fail (brakes triggered)

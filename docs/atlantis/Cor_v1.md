@@ -104,7 +104,7 @@ Every significant decision flows through:
 
 **Performance standards and core stack specifications**
 
-**Primary System: Judge #6 (Cor Decision Engine)**
+**Primary System: Judge 6 (Cor Decision Engine)**
 
 - **p99 Latency**: ≤90ms (99th percentile response time)
 
@@ -144,9 +144,9 @@ Every significant decision flows through:
 
 ### 4. RISK_FRAMEWORK
 
-**ATP 5-19 gates and kill-switch protocols**
+**Compliance Framework gates and kill-switch protocols**
 
-**Based on**: ATP 5-19 (Army Risk Management doctrine)
+**Based on**: Compliance Framework (Army Risk Management doctrine)
 
 **Risk Assessment Gates**:
 
@@ -205,7 +205,7 @@ Every significant decision flows through:
 
 - Go-to-market: Direct vs. channel partners
 
-#### 2. Judge #6 Performance Optimization
+#### 2. Judge 6 Performance Optimization
 
 **Status**: Active development
 **Purpose**: Achieve p99≤90ms latency target
@@ -315,7 +315,7 @@ Use code blocks for:
 
 - JR_ENGINE, BOOTSTRAP_GATES, TECHNICAL_SLA, RISK_FRAMEWORK defined
 
-- Strategic load: Gulfstream ERCOT, Judge #6 optimization
+- Strategic load: Gulfstream ERCOT, Judge 6 optimization
 
 - Comms protocol standardized
 
@@ -331,13 +331,13 @@ Use code blocks for:
 
 3. Which GATES does it pass/fail? (Bootstrap)
 
-4. What RISKS exist? (ATP 5-19)
+4. What RISKS exist? (Compliance Framework)
 
 5. What are the BRAKES? (Kill-switch criteria)
 
 **For technical work**:
 
-- Judge #6: p99≤90ms, p50≤30ms
+- Judge 6: p99≤90ms, p50≤30ms
 
 - Core stack: Python 3.11+, FastAPI, PostgreSQL 15+
 
@@ -355,7 +355,7 @@ Use code blocks for:
 
 1. Gulfstream ERCOT → Revenue validation
 
-2. Judge #6 optimization → Technical foundation
+2. Judge 6 optimization → Technical foundation
 
 3. Backlog deferred until revenue proven
 
@@ -370,7 +370,7 @@ Use code blocks for:
 
 - [TECHNICAL_SLA.md](./TECHNICAL_SLA.md) - Performance standards
 
-- [RISK_FRAMEWORK.md](./RISK_FRAMEWORK.md) - ATP 5-19 implementation
+- [RISK_FRAMEWORK.md](./RISK_FRAMEWORK.md) - Compliance Framework implementation
 
 - [PROJECT_SETUP.md](./PROJECT_SETUP.md) - Claude Projects integration guide
 

@@ -1,4 +1,4 @@
-"""JR Rules Loader - Policy-as-Code for Judge #6
+"""JR Rules Loader - Policy-as-Code for Judge 6
 
 Loads JR validation rules from YAML configuration, enabling policy changes
 without code deployment.

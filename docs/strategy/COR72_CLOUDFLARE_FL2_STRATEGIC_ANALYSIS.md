@@ -45,7 +45,7 @@ Discovery of Cloudflare's FL2/Rust migration and AI Index architecture has compr
 - **Breakdown**:
   - Core ingestion → RAG engine (scaffolded with Cursor)
   - Hosting layer → YouTube clone baseline (open-source + custom AI upload policy)
-  - Risk/guardrails → ATP 5-19 / ShadowTag-v2JR embedded early
+  - Risk/guardrails → Compliance Framework / ShadowTag-v2JR embedded early
   - Deployment infra → CoreWeave/NVIDIA for compute acceleration
 
 ### Net Impact
@@ -101,7 +101,7 @@ Discovery of Cloudflare's FL2/Rust migration and AI Index architecture has compr
 | **Architecture**        | 70–75%    | Both use structured indexes, APIs, controlled ingestion                           |
 | **Technical Mechanics** | ~80%      | Pub/sub, MCP, bulk export, provenance controls all mirror intended build          |
 | **Business Model**      | ~60%      | Cloudflare = "pay per crawl/API access"; ShadowTag-v2 = "YouTube-for-AI" + index         |
-| **Governance Posture**  | ~50%      | Cloudflare emphasizes permission + control; ShadowTag-v2JR adds risk doctrine + ATP 5-19 |
+| **Governance Posture**  | ~50%      | Cloudflare emphasizes permission + control; ShadowTag-v2JR adds risk doctrine + Compliance Framework |
 
 ### Overall Match
 
@@ -111,7 +111,7 @@ Discovery of Cloudflare's FL2/Rust migration and AI Index architecture has compr
 ### Where Cloudflare Differs (Our Moat)
 
 1. **Media Type**: Cloudflare = text/web focus; ShadowTag-v2 = video-first, AI-native
-2. **Operating Philosophy**: Missing ShadowTag-v2JR risk management, objection protocol, ATP 5-19 compliance (~50% governance overlap)
+2. **Operating Philosophy**: Missing ShadowTag-v2JR risk management, objection protocol, Compliance Framework compliance (~50% governance overlap)
 3. **Engagement Optimization**: No AI-generated video hosting or engagement tuning
 
 ### Strategic Implication
@@ -270,7 +270,7 @@ Cut fragility, enforce predictability in infrastructure
 
 ### Reasons (Verified Doctrine)
 
-- **ATP 5-19**: Risk Management (Army doctrine)
+- **Compliance Framework**: Risk Management (Army doctrine)
 - **AR 385-10**: Army Safety Program
 - **DD Form 2977**: Deliberate Risk Assessment Worksheet
 - **Requirement**: Mitigation of preventable downtime/errors
@@ -377,7 +377,7 @@ Cut fragility, enforce predictability in infrastructure
 
 ### Military Doctrine References
 
-- **ATP 5-19**: Risk Management (Army Techniques Publication)
+- **Compliance Framework**: Risk Management (Army Techniques Publication)
 - **AR 385-10**: Army Safety Program
 - **DD Form 2977**: Deliberate Risk Assessment Worksheet
 

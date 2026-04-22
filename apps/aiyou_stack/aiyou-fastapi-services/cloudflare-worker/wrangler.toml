@@ -1,4 +1,4 @@
-# Cloudflare Workers Configuration for PNKLN Judge #6 Lite
+# Cloudflare Workers Configuration for PNKLN Judge 6 Lite
 
 name = "pnkln-judge"
 main = "worker.ts"

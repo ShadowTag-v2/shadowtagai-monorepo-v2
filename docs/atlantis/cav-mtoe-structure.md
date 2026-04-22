@@ -317,7 +317,7 @@ async def ask_llm(self, from_llm: str, to_llm: str, question: str):
 | **Voting** | Simple majority | Hierarchical coalescence |
 | **Risk handling** | Same for all | Threshold by risk level |
 | **Scalability** | Add more agents | Add more troops/squads |
-| **Military alignment** | None | Full ATP 5-19 compliance |
+| **Military alignment** | None | Full Compliance Framework compliance |
 
 ---
 

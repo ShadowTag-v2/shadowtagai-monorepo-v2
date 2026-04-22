@@ -40,7 +40,7 @@
 Antigravity now codes using:
 
 
-- **Judge #6**: Purpose/Reasons/Brakes assessment (<500μs)
+- **Judge 6**: Purpose/Reasons/Brakes assessment (<500μs)
 
 
 - **Glicko-2**: Dynamic model selection (78% cost reduction)
@@ -271,7 +271,7 @@ Final Decision (88% avg confidence, $0.125 total cost)
 
 ## Self-Applied Framework Patterns
 
-### Judge #6 Assessment
+### Judge 6 Assessment
 
 Every code action now follows:
 

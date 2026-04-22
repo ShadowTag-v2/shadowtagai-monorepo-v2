@@ -13,7 +13,7 @@ This document establishes ShadowTag's compliance framework for the EU AI Act and
 
 ### Strategic Positioning
 
-**Key Advantage:** ShadowTag's doctrine-first design (ShadowTagNS, YRM, ATP-5-19) already aligns with core EU regulatory principles of transparency, accountability, and risk management. This framework maps those principles to specific regulatory requirements.
+**Key Advantage:** ShadowTag's doctrine-first design (ShadowTagNS, YRM, Compliance Framework) already aligns with core EU regulatory principles of transparency, accountability, and risk management. This framework maps those principles to specific regulatory requirements.
 
 **Compliance Philosophy:** Design-in compliance, not bolt-on compliance.
 
@@ -50,7 +50,7 @@ ShadowTag's existing YRM framework maps to EU AI Act requirements:
 | ----------------------------------------------------------- | ---------------------------------------- | -------------- |
 | Identify and analyze known and reasonably foreseeable risks | YRM Risk Identification Module           | ✅ DESIGNED    |
 | Estimate and evaluate risks                                 | YRM Quantitative Risk Assessment         | ✅ DESIGNED    |
-| Evaluate other possibly arising risks (AAR feedback)        | ATP-5-19 After-Action Review integration | ✅ DESIGNED    |
+| Evaluate other possibly arising risks (AAR feedback)        | Compliance Framework After-Action Review integration | ✅ DESIGNED    |
 | Adopt suitable risk management measures                     | YRM Mitigation Controls                  | 🔄 IN PROGRESS |
 | Test high-risk AI systems                                   | ShadowTagNS Testing & Validation Framework   | 📋 PLANNED     |
 | Iterative process throughout lifecycle                      | Continuous YRM/AAR loop                  | ✅ DESIGNED    |
@@ -730,7 +730,7 @@ YRM already covers:
 - Map residual risk acceptance to regulatory thresholds
 - Integrate DSA systemic risk assessment workflow
 
-### 6.3 ATP-5-19 Integration
+### 6.3 Compliance Framework Integration
 
 After-Action Review process ensures:
 
@@ -808,7 +808,7 @@ After-Action Review process ensures:
 - Cor.5: Boardroom IQ 160 Framework
 - ShadowTag Network Sovereignty (ShadowTagNS)
 - ShadowTag Risk Management (YRM)
-- ATP-5-19 After-Action Review Framework
+- Compliance Framework After-Action Review Framework
 - NIST AI RMF / ISO 42001 Implementation (pending)
 
 ---

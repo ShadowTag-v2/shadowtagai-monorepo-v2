@@ -13,7 +13,7 @@ The COR.53 pipeline now includes **PHASE 0: Intelligence Ingestion** as the firs
 ```
 OLD PIPELINE (v1.0.0):
 1. Task intake (manual only)
-2. Judge #6 validation
+2. Judge 6 validation
 3. Skill routing
 4. AutoGen execution
 5. Audit trail
@@ -21,7 +21,7 @@ OLD PIPELINE (v1.0.0):
 NEW PIPELINE (v2.0.0):
 0. Intelligence ingestion (multi-source collection) ← NEW
 1. Task intake (intelligence-driven OR manual)
-2. Judge #6 validation
+2. Judge 6 validation
 3. Skill routing
 4. AutoGen execution
 5. Audit trail

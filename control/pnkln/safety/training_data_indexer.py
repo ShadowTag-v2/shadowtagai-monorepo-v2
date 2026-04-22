@@ -23,7 +23,7 @@ PERFORMANCE TARGETS (from paper):
 
 INTEGRATION:
 - ShadowTag provenance verification
-- Judge #6 content classification
+- Judge 6 content classification
 - Kernel Chain audit trails
 """
 
@@ -489,7 +489,7 @@ class TrainingDataIndexer:
 
 class SafetyGate:
     """
-    Safety gate for Judge #6 pipeline.
+    Safety gate for Judge 6 pipeline.
 
     Blocks content that exceeds severity thresholds before
     it reaches governance evaluation.

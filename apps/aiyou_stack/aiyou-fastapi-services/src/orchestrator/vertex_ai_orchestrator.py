@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pnkln Judge #6 Hybrid Orchestrator - Vertex AI Integration
+"""Pnkln Judge 6 Hybrid Orchestrator - Vertex AI Integration
 Purpose: Coordinate 3-layer governance enforcement with <90ms p99 latency SLA
 Architecture:
   Layer 1: Fine-tuned Gemini (policy understanding)
@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class Config:
-    """Configuration for Judge #6 orchestrator"""
+    """Configuration for Judge 6 orchestrator"""
 
     project_id: str = os.getenv("GOOGLE_CLOUD_PROJECT", "pnkln-validation")
     location: str = os.getenv("VERTEX_AI_LOCATION", "us-central1")
@@ -468,7 +468,7 @@ class Layer3Rules:
 
 
 class JudgeOrchestrator:
-    """Orchestrates Judge #6 hybrid 3-layer enforcement"""
+    """Orchestrates Judge 6 hybrid 3-layer enforcement"""
 
     def __init__(self, config: Config):
         self.config = config
@@ -476,7 +476,7 @@ class JudgeOrchestrator:
         self.layer2 = Layer2PyTorch(config)
         self.layer3 = Layer3Rules(config)
 
-        logger.info("Judge #6 Orchestrator initialized")
+        logger.info("Judge 6 Orchestrator initialized")
 
     async def judge_request(self, request: dict[str, Any]) -> JudgeState:
         """Process a request through all 3 layers"""

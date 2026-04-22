@@ -1,8 +1,8 @@
-# pnkln Judge #6 - GKE Inference Validation Sprint
+# pnkln Judge 6 - GKE Inference Validation Sprint
 
 ## Executive Summary
 
-**Objective**: Validate Google Cloud's GKE inference reference architecture against pnkln's strict latency SLA for Judge #6 hybrid governance enforcement.
+**Objective**: Validate Google Cloud's GKE inference reference architecture against pnkln's strict latency SLA for Judge 6 hybrid governance enforcement.
 
 **Success Criteria**: p99 latency ≤ 90ms for 3-layer hybrid decision pipeline
 **Budget**: $5,000 (2-week sprint cap)
@@ -12,7 +12,7 @@
 
 ## Architecture Overview
 
-### Judge #6 Hybrid 3-Layer Design
+### Judge 6 Hybrid 3-Layer Design
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -83,7 +83,7 @@ cd infrastructure
 # - Vertex AI Workbench instance
 ```
 
-### Step 2: Deploy Judge #6 Components
+### Step 2: Deploy Judge 6 Components
 
 ```bash
 # Apply Kubernetes manifests

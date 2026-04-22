@@ -47,8 +47,8 @@ deploy-terraform: ## Deploy using Terraform (alternative)
 		terraform plan -var="project_id=$(PROJECT_ID)" -out=tfplan && \
 		terraform apply tfplan
 
-deploy-judge: ## Deploy Judge #6 service only
-	@echo "Deploying Judge #6..."
+deploy-judge: ## Deploy Judge 6 service only
+	@echo "Deploying Judge 6..."
 	@kubectl apply -f judge-deployment.yaml
 
 ################################################################################
@@ -91,7 +91,7 @@ status: ## Show cluster and deployment status
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 	@kubectl get svc -n $(NAMESPACE) || echo "Namespace not found"
 
-logs: ## Show Judge #6 logs
+logs: ## Show Judge 6 logs
 	@kubectl logs -n $(NAMESPACE) -l app=pnkln-judge --tail=100 -f
 
 logs-errors: ## Show error logs only

@@ -26,18 +26,30 @@ variable "database_version" {
   type        = string
   default     = "POSTGRES_16"
   description = "Database version (POSTGRES_16, POSTGRES_15, MYSQL_8_0)."
+  validation {
+    condition     = can(regex("^(POSTGRES_1[4-7]|MYSQL_8_0)$", var.database_version))
+    error_message = "Must be POSTGRES_14-17 or MYSQL_8_0."
+  }
 }
 
 variable "tier" {
   type        = string
   default     = "db-f1-micro"
   description = "Machine type tier."
+  validation {
+    condition     = can(regex("^db-", var.tier))
+    error_message = "Tier must start with 'db-' (e.g. db-f1-micro, db-custom-2-8192)."
+  }
 }
 
 variable "disk_size_gb" {
   type        = number
   default     = 10
   description = "Storage size in GB."
+  validation {
+    condition     = var.disk_size_gb >= 10 && var.disk_size_gb <= 30720
+    error_message = "Disk size must be between 10 GB and 30 TB."
+  }
 }
 
 variable "availability_type" {
@@ -82,6 +94,7 @@ resource "google_sql_database_instance" "main" {
     ip_configuration {
       ipv4_enabled    = false
       private_network = "projects/${var.project_id}/global/networks/default"
+      ssl_mode        = "ENCRYPTED_ONLY"  # CKV_GCP_6: Require SSL for all connections
     }
 
     maintenance_window {
@@ -94,6 +107,45 @@ resource "google_sql_database_instance" "main" {
       query_insights_enabled  = true
       record_application_tags = true
       record_client_address   = false
+    }
+
+    # Checkov CKV_GCP_109: log levels ERROR or lower
+    # Checkov CKV_GCP_111: log SQL statements
+    # Checkov CKV_GCP_54: log_lock_waits
+    database_flags {
+      name  = "log_min_messages"
+      value = "error"
+    }
+    database_flags {
+      name  = "log_min_error_statement"  # CKV_GCP_109
+      value = "error"
+    }
+    database_flags {
+      name  = "log_statement"
+      value = "all"
+    }
+    database_flags {
+      name  = "log_lock_waits"
+      value = "on"
+    }
+    # CKV_GCP_51: log_checkpoints
+    database_flags {
+      name  = "log_checkpoints"
+      value = "on"
+    }
+    # CKV_GCP_53: log_disconnections
+    database_flags {
+      name  = "log_disconnections"
+      value = "on"
+    }
+    # CKV_GCP_110: pgAudit
+    database_flags {
+      name  = "cloudsql.enable_pgaudit"
+      value = "on"
+    }
+    database_flags {
+      name  = "pgaudit.log"
+      value = "all"
     }
   }
 

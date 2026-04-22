@@ -99,7 +99,7 @@ Pipeline:
 Output:
   Storage: PostgreSQL (structured), GCS (raw), Redis (cache)
   API: FastAPI REST endpoints
-  Consumers: [Judge #6, AM Briefing, Agent Training Data]
+  Consumers: [Judge 6, AM Briefing, Agent Training Data]
 
 ```
 

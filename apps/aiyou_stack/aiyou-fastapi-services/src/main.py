@@ -106,9 +106,9 @@ async def lifespan(app: FastAPI):
 
     # Initialize shadow mode if enabled
     if settings.shadow_mode_enabled:
-        # Note: Requires Judge #6 client implementation
+        # Note: Requires Judge 6 client implementation
         shadow_orchestrator = None  # ShadowModeOrchestrator(...)
-        print("⚠️  Shadow mode enabled but Judge #6 client not configured")
+        print("⚠️  Shadow mode enabled but Judge 6 client not configured")
     else:
         print("ℹ️  Shadow mode disabled")
 
@@ -214,7 +214,7 @@ class MissionRequest(BaseModel):
 @app.post("/mission")
 async def launch_mission(req: MissionRequest):
     """Sovereign OS Mission Entrypoint.
-    Guarded by Judge #6 Sentinel and the CavMTOE Army Consensus.
+    Guarded by Judge 6 Sentinel and the CavMTOE Army Consensus.
     """
     verdict = judge_sentinel.evaluate(req.query, req.context)
 

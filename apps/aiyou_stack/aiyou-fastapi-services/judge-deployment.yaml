@@ -23,7 +23,7 @@ metadata:
   name: judge-config
   namespace: pnkln-inference
 data:
-  # Judge #6 Multi-LLM Configuration
+  # Judge 6 Multi-LLM Configuration
   JUDGE_VERSION: "6.0.0"
   SLA_P99_TARGET_MS: "90"
   SLA_P95_TARGET_MS: "50"

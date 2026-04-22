@@ -1,4 +1,4 @@
-# PNKLN Judge #6 Lite - Project Summary
+# PNKLN Judge 6 Lite - Project Summary
 
 **Status:** ✅ **READY TO DEPLOY**
 
@@ -331,7 +331,7 @@ curl -X POST https://your-worker.workers.dev \
 - Complex setup (weeks/months)
 - Vendor lock-in
 
-### PNKLN Judge #6 Lite
+### PNKLN Judge 6 Lite
 
 - <50ms latency (seamless UX)
 - $99/month + usage

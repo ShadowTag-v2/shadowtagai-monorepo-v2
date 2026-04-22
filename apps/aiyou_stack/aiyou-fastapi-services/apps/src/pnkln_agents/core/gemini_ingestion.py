@@ -6,7 +6,7 @@ Runtime: ~45 min/night (batch processing)
 Cost: ~$77/month operational
 Quality Gates: Items/Day, Sources, Cost/Item, Relevance Scores
 
-Function: Proactive collector (upstream of Judge #6 enforcement)
+Function: Proactive collector (upstream of Judge 6 enforcement)
 Integration: Called by services in 4 namespaces
 """
 
@@ -294,7 +294,7 @@ class GeminiIngestionLayer:
 
     Integration:
     - Called by services in 4 namespaces
-    - Feeds data to Judge #6 enforcement layer
+    - Feeds data to Judge 6 enforcement layer
     - Outputs to AM briefing delivery
     """
 

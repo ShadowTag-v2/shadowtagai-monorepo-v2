@@ -1,6 +1,6 @@
 # Gemini Ingestion Layer - Enhancements
 
-**Visualizations, Edge Case Handling, and Judge #6 Integration**
+**Visualizations, Edge Case Handling, and Judge 6 Integration**
 
 This document describes the three major enhancements added to the Gemini Ingestion Layer.
 
@@ -215,15 +215,15 @@ data = await degradation.get_with_fallback(
 | Network timeout  | RetryHandler             | Exponential backoff retry |
 | Data unavailable | GracefulDegradation      | Use cached data           |
 
-## 3. Judge #6 Integration
+## 3. Judge 6 Integration
 
 ### Overview
 
-Bridges intelligence gathering (Ingestion Layer) with validation (Judge #6 framework), providing end-to-end pipeline visibility.
+Bridges intelligence gathering (Ingestion Layer) with validation (Judge 6 framework), providing end-to-end pipeline visibility.
 
 ### Comparison
 
-| Aspect           | Judge #6               | Ingestion Layer            | Integration       |
+| Aspect           | Judge 6               | Ingestion Layer            | Integration       |
 | ---------------- | ---------------------- | -------------------------- | ----------------- |
 | **Role**         | Validation/enforcement | Collection/gathering       | Handoff analysis  |
 | **Timing**       | Real-time (reactive)   | Batch (proactive)          | Both              |
@@ -278,7 +278,7 @@ unified = integrator.get_unified_metrics(
 **Validation Report Example**:
 
 ```
-## Judge #6 Validation Report
+## Judge 6 Validation Report
 
 **Overall**: 5/6 passed (83.3%)
 
@@ -389,7 +389,7 @@ cost_detector = CostSpikeDetector(
     alert_threshold=0.75,
 )
 
-# Judge #6 integration
+# Judge 6 integration
 judge_integrator = Judge6Integrator()
 ```
 
@@ -410,7 +410,7 @@ MONTHLY_BUDGET=77.0
 COST_ALERT_THRESHOLD=0.75
 COST_CRITICAL_THRESHOLD=0.90
 
-# Judge #6 integration
+# Judge 6 integration
 ENABLE_VALIDATION=true
 ```
 
@@ -443,13 +443,13 @@ ingestion_handoff_latency_seconds
 2. **Automated Remediation** - Auto-adjust rate limits, retry configs
 3. **Predictive Alerting** - ML-based anomaly detection
 4. **Cross-Pipeline Tracing** - OpenTelemetry integration
-5. **Real-Time Dashboard** - Grafana panels for Judge #6 + Ingestion
+5. **Real-Time Dashboard** - Grafana panels for Judge 6 + Ingestion
 
 ## References
 
 - Aegaeon: Multi-model GPU pooling (SOSP '24)
-- Judge #6: Validation framework (internal)
-- ATP 5-19: Risk management framework (U.S. Army)
+- Judge 6: Validation framework (internal)
+- Compliance Framework: Risk management framework (U.S. Army)
 - Circuit Breaker Pattern (Release It!)
 - Exponential Backoff (Google Cloud best practices)
 

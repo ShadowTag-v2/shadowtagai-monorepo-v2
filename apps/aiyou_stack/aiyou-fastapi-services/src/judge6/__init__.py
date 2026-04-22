@@ -1,4 +1,4 @@
-"""Judge #6 Governance Engine - LangGraph Implementation
+"""Judge 6 Governance Engine - LangGraph Implementation
 
 This module implements what Antigravity promised but didn't deliver:
 - LangGraph state machine for governance kill chain

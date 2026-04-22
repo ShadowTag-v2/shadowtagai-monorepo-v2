@@ -1,6 +1,6 @@
 # GKE + pnkln-stack Ecosystem Integration
 
-**pnkln Core Stack™ + Judge #6 v2.0 + 6 Verticals**
+**pnkln Core Stack™ + Judge 6 v2.0 + 6 Verticals**
 
 Date: 2025-11-17
 Architecture: Google Kubernetes Engine (GKE) Native
@@ -10,14 +10,14 @@ Status: ✅ Ready for Deployment
 
 ## Executive Summary
 
-Successfully integrated the complete **pnkln-stack Ecosystem** (Judge #6 v2.0 + 6 verticals) with **pnkln Core Stack™** (LLM orchestration + multi-agent intelligence) on **GKE-native infrastructure**.
+Successfully integrated the complete **pnkln-stack Ecosystem** (Judge 6 v2.0 + 6 verticals) with **pnkln Core Stack™** (LLM orchestration + multi-agent intelligence) on **GKE-native infrastructure**.
 
 ### Unified Platform Components
 
 | Component            | Type                | Purpose                                                | P99 Target |
 | -------------------- | ------------------- | ------------------------------------------------------ | ---------- |
 | **pnkln API**        | FastAPI             | Intelligence collection, validation, LLM orchestration | ≤90ms      |
-| **Judge #6 v2.0**    | Decision Engine     | Binary decisions with kernel chaining                  | ≤80ms      |
+| **Judge 6 v2.0**    | Decision Engine     | Binary decisions with kernel chaining                  | ≤80ms      |
 | **Gemini Agents**    | Multi-Agent System  | 3-agent debate (skeptic, optimist, neutral)            | 1234ms     |
 | **LLM Orchestrator** | Router              | Domain-based routing to specialized LLMs               | 1500ms     |
 | **Growth Engine**    | Databricks + RAPIDS | Campaign optimization on Spark-on-k8s                  | N/A        |
@@ -30,7 +30,7 @@ Successfully integrated the complete **pnkln-stack Ecosystem** (Judge #6 v2.0 + 
 
 **Combined Y5 ARR:** $3.36B + pnkln Platform Revenue
 
-- Judge #6 Verticals: $3.36B (92% gross margin, +55% EBITDA)
+- Judge 6 Verticals: $3.36B (92% gross margin, +55% EBITDA)
 
 - pnkln Services: TBD (intelligence platform revenue)
 
@@ -62,12 +62,12 @@ Successfully integrated the complete **pnkln-stack Ecosystem** (Judge #6 v2.0 + 
         │                         │
         ▼                         ▼
 ┌──────────────┐          ┌──────────────┐
-│  pnkln API   │          │  Judge #6    │
+│  pnkln API   │          │  Judge 6    │
 │  (FastAPI)   │          │  v2.0        │
 │              │          │              │
 │  - Ingestion │          │  - Kernel    │
 │  - Validation│          │    Chaining  │
-│  - Agents    │          │  - ATP 5-19  │
+│  - Agents    │          │  - Compliance Framework  │
 │  - Orchestra │          │  - Binary    │
 │              │          │    Decisions │
 └──────┬───────┘          └──────┬───────┘
@@ -109,7 +109,7 @@ Successfully integrated the complete **pnkln-stack Ecosystem** (Judge #6 v2.0 + 
 
 **1. GKE Standard (`pnkln-main`)**
 
-- **Purpose:** GPU workloads, ML training, Judge #6, pnkln agents
+- **Purpose:** GPU workloads, ML training, Judge 6, pnkln agents
 
 - **Location:** us-central1 (multi-zone)
 
@@ -196,7 +196,7 @@ spec:
 
 - Scale-down: 50% decrease with 5min stabilization
 
-### Judge #6 v2.0 Deployment
+### Judge 6 v2.0 Deployment
 
 ```yaml
 apiVersion: apps/v1
@@ -365,7 +365,7 @@ kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1/namespaces/production/pods
 
 ## Integration Points
 
-### 1. pnkln ↔ Judge #6
+### 1. pnkln ↔ Judge 6
 
 **Intelligence Classification + Risk Scoring:**
 
@@ -377,7 +377,7 @@ User Request → pnkln Orchestrator → Domain = "intelligence"
                      ↓
               Tier Classification (1/2/3, confidence)
                      ↓
-              Judge #6 ATP 5-19 Risk Scoring
+              Judge 6 Compliance Framework Risk Scoring
                      ↓
               Binary Decision (ALLOW/BLOCK) + Audit Trail
 
@@ -398,7 +398,7 @@ POST /api/v1/orchestrator/intelligence/classify
 
 # Response: Tier 1, 87% confidence
 
-# Step 2: Judge #6 Risk Scoring
+# Step 2: Judge 6 Risk Scoring
 
 POST /api/v1/judge6/decision
 {
@@ -420,7 +420,7 @@ POST /api/v1/judge6/decision
 | Intelligence | Gemini Multi-Agent | → CaseJudge (litigation risk scoring) |
 | Code | GPT-5 | → Internal Dev Tools |
 | Research | Perplexity | → LawJudge (regulatory research) |
-| Financial | Judge #6 | → FinJudge (wire transfer HITL gates) |
+| Financial | Judge 6 | → FinJudge (wire transfer HITL gates) |
 
 ### 3. Growth Engine ↔ BigQuery
 
@@ -471,7 +471,7 @@ data:
 
     default allow = false
 
-    # ATP 5-19 compliance check
+    # Compliance Framework compliance check
     allow {
       input.risk_level == "RA-1"
       input.coverage >= 0.98
@@ -516,7 +516,7 @@ data:
 
 ### Revenue Unlock vs. Cost
 
-**Judge #6 Kernel Chaining:**
+**Judge 6 Kernel Chaining:**
 
 - Monthly Savings: $50K (API costs + revenue unlock)
 
@@ -540,7 +540,7 @@ data:
 
 | Service                | p50   | p95    | p99    | Max    |
 | ---------------------- | ----- | ------ | ------ | ------ |
-| **Judge #6 v2.0**      | 30ms  | 70ms   | 80ms   | 150ms  |
+| **Judge 6 v2.0**      | 30ms  | 70ms   | 80ms   | 150ms  |
 | **pnkln Validation**   | 40ms  | 80ms   | 90ms   | 200ms  |
 | **Gemini Multi-Agent** | 800ms | 1100ms | 1234ms | 2000ms |
 | **LLM Orchestrator**   | 600ms | 1200ms | 1500ms | 3000ms |
@@ -600,7 +600,7 @@ gcloud alpha monitoring policies create \
 
 - [ ] Deploy pnkln API to GKE (kubectl apply)
 
-- [ ] Deploy Judge #6 v2.0 to GKE
+- [ ] Deploy Judge 6 v2.0 to GKE
 
 - [ ] Configure HPA for autoscaling
 
@@ -610,7 +610,7 @@ gcloud alpha monitoring policies create \
 
 ### Week 3-4: Integration & Testing
 
-- [ ] Integration tests: pnkln ↔ Judge #6 flow
+- [ ] Integration tests: pnkln ↔ Judge 6 flow
 
 - [ ] Load testing: Validate p99≤90ms SLA
 
@@ -680,7 +680,7 @@ gcloud alpha monitoring policies create \
 
 **Performance:**
 
-- Judge #6: p99 ≤80ms (beat 90ms SLA by 11%)
+- Judge 6: p99 ≤80ms (beat 90ms SLA by 11%)
 
 - pnkln Validation: p99 ≤90ms (meets SLA)
 
@@ -692,7 +692,7 @@ gcloud alpha monitoring policies create \
 
 - Monthly LLM costs: $6,975
 
-- Monthly net benefit (Judge #6 + LLM savings): +$69,300
+- Monthly net benefit (Judge 6 + LLM savings): +$69,300
 
 - **ROI: 370%/month**
 

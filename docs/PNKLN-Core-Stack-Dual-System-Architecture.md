@@ -1,6 +1,6 @@
 # PNKLN CORE STACK™ — DUAL-SYSTEM ARCHITECTURE
 
-## Gemini Ingestion Layer + Judge #6 Integration (GKE-Native)
+## Gemini Ingestion Layer + Judge 6 Integration (GKE-Native)
 
 **Document Version:** 1.0
 **Last Updated:** 2025-11-15
@@ -14,14 +14,14 @@
 The PNKLN Core Stack™ implements a **two-stage intelligence-to-governance pipeline**:
 
 1. **Gemini Ingestion Layer** (Upstream): Proactive intelligence collection via ethical web crawling
-2. **Judge #6** (Downstream): Real-time governance enforcement with <500μs p99 latency
+2. **Judge 6** (Downstream): Real-time governance enforcement with <500μs p99 latency
 
 This architecture separates **acquisition** (batch, nightly) from **enforcement** (real-time, continuous), optimizing each for its purpose while maintaining end-to-end data quality and compliance.
 
 **Combined Economics:**
 
 - Gemini Ingestion: ~$77/month operational cost
-- Judge #6: $60-65K/month production deployment (includes full stack)
+- Judge 6: $60-65K/month production deployment (includes full stack)
 - **Total Core Stack ARR Target:** $1.5B (2030)
 
 ---
@@ -81,15 +81,15 @@ spec:
             cloud.google.com/gke-preemptible: "true" # Cost optimization
 ```
 
-### Key Metrics (vs Judge #6)
+### Key Metrics (vs Judge 6)
 
-| Dimension             | Gemini Ingestion Layer                    | Judge #6                                    |
+| Dimension             | Gemini Ingestion Layer                    | Judge 6                                    |
 | --------------------- | ----------------------------------------- | ------------------------------------------- |
 | **Architecture**      | GKE CronJob Multi-Container               | GKE StatefulSet + Redis                     |
 | **Execution Model**   | Batch (nightly, ~45 min)                  | Real-time (<500μs p99)                      |
 | **Primary Metrics**   | Items/day, Sources, Cost/item, Relevance  | Latency, Throughput, Block Rate, FP/FN      |
 | **Integration Role**  | **Called by** services (upstream trigger) | **Calls** services (downstream enforcement) |
-| **Key Features**      | Ethical crawling, Tier classification     | ATP 5-19 CRM, JR validation, PRB gates      |
+| **Key Features**      | Ethical crawling, Tier classification     | Compliance Framework CRM, JR validation, PRB gates      |
 | **Cost Model**        | ~$77/month operational                    | Included in $60-65K stack                   |
 | **Quality Focus**     | Relevance, Timeliness, Completeness       | False Positive/Negative rates               |
 | **Confidence Target** | ≥60% (pre-prod, specs-only)               | ≥70% (prod, telemetry-backed)               |
@@ -230,7 +230,7 @@ tier_3_sources:  # Low-value, bulk context
 
 **Delivery SLA:**
 
-- **Target Completion:** 2:45 AM daily (before Judge #6 morning validation)
+- **Target Completion:** 2:45 AM daily (before Judge 6 morning validation)
 - **Format:** JSON to Cloud Storage, Pub/Sub event trigger
 - **Latency to Services:** <5 minutes from ingestion completion to availability
 
@@ -240,7 +240,7 @@ tier_3_sources:  # Low-value, bulk context
 
 ### Purpose
 
-Real-time governance enforcement ensuring all AI outputs comply with ATP 5-19 CRM, JR doctrine, and PRB framework.
+Real-time governance enforcement ensuring all AI outputs comply with Compliance Framework CRM, JR doctrine, and PRB framework.
 
 ### Architecture (GKE-Native)
 
@@ -350,7 +350,7 @@ performance_gates:
 ┌─────────────────────────────────────────────────────────────┐
 │ JUDGE #6 (Continuous, <500μs p99)                           │
 │                                                             │
-│  [Redis Cache] ←→ [Judge #6 Core] ←→ [ATP 5-19 Validator]  │
+│  [Redis Cache] ←→ [Judge 6 Core] ←→ [Compliance Framework Validator]  │
 │        │                 │                      │           │
 │        ↓                 ↓                      ↓           │
 │  Sub-ms Lookup    PRB Enforcement    JR Doctrine Check     │
@@ -389,12 +389,12 @@ class IngestionBriefing:
         )
 ```
 
-**Cloud Storage → Judge #6:**
+**Cloud Storage → Judge 6:**
 
 ```python
 @dataclass
 class IngestedItem:
-    """Individual item for Judge #6 validation"""
+    """Individual item for Judge 6 validation"""
     item_id: str
     source: str
     tier: int  # 1, 2, or 3
@@ -402,13 +402,13 @@ class IngestedItem:
     metadata: Dict[str, Any]
     ingestion_score: float
 
-    # Judge #6 adds these fields during validation
+    # Judge 6 adds these fields during validation
     judge_verdict: Optional[str] = None
     prb_compliance: Optional[bool] = None
     atp_519_risk: Optional[str] = None  # RA-1 through RA-4
 ```
 
-**Judge #6 → Services:**
+**Judge 6 → Services:**
 
 ```python
 class JudgeDecision:
@@ -426,18 +426,18 @@ class JudgeDecision:
 **Scenario 1: Ingestion Layer Fails (Stale Data)**
 
 - **Detection:** No Pub/Sub event by 3:00 AM
-- **Fallback:** Judge #6 uses previous day's briefing (marked as stale)
+- **Fallback:** Judge 6 uses previous day's briefing (marked as stale)
 - **Alert:** PagerDuty → On-call engineer
 - **Impact:** Minimal (services still validated, data 24h old)
 
-**Scenario 2: Judge #6 Coverage Drops <98%**
+**Scenario 2: Judge 6 Coverage Drops <98%**
 
 - **Detection:** Prometheus alert on coverage metric
 - **Action:** Automatic rollback to last known good version (GKE rollout undo)
 - **Fallback:** Reject all ambiguous requests (fail-closed)
 - **Impact:** High (potential service degradation, manual review required)
 
-**Scenario 3: Judge #6 Latency Exceeds 500μs p99**
+**Scenario 3: Judge 6 Latency Exceeds 500μs p99**
 
 - **Detection:** Cloud Monitoring latency alert
 - **Action:** Scale StatefulSet replicas (3 → 6 → 9)
@@ -481,9 +481,9 @@ breakdown:
   annual_total: "$924"
 ```
 
-### Judge #6: Included in $60-65K/month Stack
+### Judge 6: Included in $60-65K/month Stack
 
-Judge #6 cost is part of the full PNKLN Core Stack™ deployment, which includes:
+Judge 6 cost is part of the full PNKLN Core Stack™ deployment, which includes:
 
 - 3× A100 GPUs for StatefulSet
 - 32GB Redis instances × 3
@@ -496,7 +496,7 @@ Judge #6 cost is part of the full PNKLN Core Stack™ deployment, which includes
 
 ## QUALITY GATES COMPARISON
 
-| Gate          | Gemini Ingestion    | Judge #6           |
+| Gate          | Gemini Ingestion    | Judge 6           |
 | ------------- | ------------------- | ------------------ |
 | **Primary**   | Relevance ≥0.70     | Coverage ≥98%      |
 | **Secondary** | Items/day ≥10K      | Latency p99 ≤500μs |
@@ -510,7 +510,7 @@ Judge #6 cost is part of the full PNKLN Core Stack™ deployment, which includes
 
 Both systems use Gemini 2.0 Pro for pre-production analysis, with confidence targets adjusted for data availability:
 
-**Judge #6 Analysis Prompt:**
+**Judge 6 Analysis Prompt:**
 
 - **Input:** Production telemetry (logs, metrics, traces)
 - **Confidence Target:** ≥70%
@@ -527,7 +527,7 @@ Both systems use Gemini 2.0 Pro for pre-production analysis, with confidence tar
 1. **Test Runs:** Execute both prompts on sample data, compare outputs
 2. **Visualization:** Add requests for tier distribution charts, latency histograms
 3. **Edge Cases:** Probe failure modes (source outages, cost spikes, latency degradation)
-4. **Combined Analysis:** Single prompt analyzing Ingestion → Judge #6 handoff
+4. **Combined Analysis:** Single prompt analyzing Ingestion → Judge 6 handoff
 
 ---
 
@@ -543,16 +543,16 @@ Both systems use Gemini 2.0 Pro for pre-production analysis, with confidence tar
 
 ### Production Readiness (Q2 2026)
 
-- [ ] Judge #6 <500μs p99 validated with ingested data
+- [ ] Judge 6 <500μs p99 validated with ingested data
 - [ ] Multi-source coverage: 5+ Tier 1, 15+ Tier 2 sources
 - [ ] Cost efficiency: <$0.001/item sustained over 90 days
 - [ ] End-to-end integration test (Ingestion → Judge → Services)
-- [ ] Confidence targets met: Ingestion ≥60%, Judge #6 ≥70%
+- [ ] Confidence targets met: Ingestion ≥60%, Judge 6 ≥70%
 
 ### Scale (2027-2030)
 
 - [ ] 1B+ items/month ingestion capacity
-- [ ] Judge #6: 10M+ queries/day, p99 <500μs
+- [ ] Judge 6: 10M+ queries/day, p99 <500μs
 - [ ] Global multi-cluster deployment (Anthos)
 - [ ] Full PNKLN Core Stack™: $1.5B ARR
 
@@ -561,7 +561,7 @@ Both systems use Gemini 2.0 Pro for pre-production analysis, with confidence tar
 ## DOCUMENT REFERENCES
 
 - **Cor.26:** Cognitive Stack v5 technical architecture
-- **Cor.53:** Source code definitions (JR, PRB, ATP 5-19)
+- **Cor.53:** Source code definitions (JR, PRB, Compliance Framework)
 - **Cor.55:** Pre-hoc compliance moat ($8.6B EV premium)
 - **GKE Inference Ref:** https://github.com/GoogleCloudPlatform/accelerated-platforms/.../inference-ref-arch/
 

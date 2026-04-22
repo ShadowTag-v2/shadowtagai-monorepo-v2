@@ -1,6 +1,6 @@
 # PNKLN Kubernetes Deployment Manifests
 
-Production-ready Kubernetes manifests for deploying Judge #6 inference workload with **p99 ≤90ms** latency SLA.
+Production-ready Kubernetes manifests for deploying Judge 6 inference workload with **p99 ≤90ms** latency SLA.
 
 ## Architecture
 
@@ -172,7 +172,7 @@ metrics:
 
 ### GPU Selection
 
-**L4 (Recommended for Judge #6)**:
+**L4 (Recommended for Judge 6)**:
 
 ```yaml
 nodeSelector:

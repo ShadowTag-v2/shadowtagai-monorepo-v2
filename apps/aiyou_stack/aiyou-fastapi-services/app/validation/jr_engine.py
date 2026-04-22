@@ -93,7 +93,7 @@ class JREngine:
             ),
             reasons_status=ValidationStatus.PASS,
             reasons_notes=(
-                "Must-have: Core decision engine (Judge #6 compliant). "
+                "Must-have: Core decision engine (Judge 6 compliant). "
                 "Zero cost (local PyTorch), <12ms p99. Risk tier classification "
                 "required for audit compliance."
             ),

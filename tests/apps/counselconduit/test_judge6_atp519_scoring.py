@@ -1,5 +1,5 @@
 # tests/test_judge6_atp519_scoring.py
-"""Integration tests for Judge #6 ATP 5-19 Risk Scoring.
+"""Integration tests for Judge 6 ATP 5-19 Risk Scoring.
 
 Tests the score_risk function and RISK_MATRIX against known scenarios
 to verify correct risk level computation per ATP 5-19.

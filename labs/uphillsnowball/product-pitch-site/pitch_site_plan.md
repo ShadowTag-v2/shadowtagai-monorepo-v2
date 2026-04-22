@@ -47,7 +47,7 @@ Pre-built ShadowTagAI branded version (459 lines, 26KB) already mirrors the UM s
 - `.header.header--fixed` → ShadowTagAI header with Kovel AI link
 - `.homeBanner` → Hero with particles, metrics card (STAI ticker)
 - `.homeHighlights` → Recent developments (4 news items)
-- `.homeQuickAccess` → Products grid (KovelAI, CounselConduit, Oracle Studio, Judge #6)
+- `.homeQuickAccess` → Products grid (KovelAI, CounselConduit, Oracle Studio, Judge 6)
 - `.homeEvents` → Platform Architecture (3 arch-cards)
 - `.homeMetrics` → By The Numbers (6 metric blocks with data-count animation)
 - `.homeBusiness` → Revenue Architecture (Dual-Billing, Pricing Tiers, Unit Economics)

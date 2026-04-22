@@ -1,4 +1,4 @@
-# Judge #6 Kernel Chain - Streamlined Deploy + UI Components
+# Judge 6 Kernel Chain - Streamlined Deploy + UI Components
 
 **Status**: READY FOR RE-ROLL | **Updated**: 2025-11-24
 **Primary**: 3-Command Kernel Chain Deployment
@@ -94,7 +94,7 @@ SAVED:  $31,060/year (164× reduction)
    └─ Vision encoder validates DCT marks client-side
    └─ Zero-latency, zero-server-cost verification
 
-2. Judge #6 Visual Governance
+2. Judge 6 Visual Governance
    └─ Image/video content moderation at edge
    └─ p99 ≤90ms achievable with 0.5B variant
    └─ Defense/healthcare use case: real-time visual compliance
@@ -129,7 +129,7 @@ SAVED:  $31,060/year (164× reduction)
 | Component | Source | Value |
 |-----------|--------|-------|
 | shadcn/ui Components | `/src/components/ui/` | Production-grade UI for AiU dashboard |
-| Tool Registry Pattern | `/src/config/index.ts` | Modular feature management for Judge #6 plugins |
+| Tool Registry Pattern | `/src/config/index.ts` | Modular feature management for Judge 6 plugins |
 | Client-Side Processing | Architecture | Validates WebGPU/WASM billing model |
 
 ### Extraction Commands
@@ -190,7 +190,7 @@ cp toolkit-extract/src/config/index.ts pnkln-components/config/tool-registry-pat
 | ROI | ~20-30% dev cycle time reduction on 2+ hour tasks |
 
 ### Use Cases
-- Long-running Judge #6 performance analysis
+- Long-running Judge 6 performance analysis
 - JR Engine refactors
 - ShadowTag watermark analysis
 
@@ -200,7 +200,7 @@ If message display bug causes loss of governance decision context within first 3
 ### Revenue Opportunity
 - **Kernel Chain API**: Add async execution layer → target batch processing customers
 - **ShadowTag**: Build teleport-style progress monitoring → $0.01/min monitored vs $0.005/min fire-and-forget
-- **Judge #6 Audit**: Package as "Governance Decision Replay" → $500/mo compliance tier
+- **Judge 6 Audit**: Package as "Governance Decision Replay" → $500/mo compliance tier
 
 ---
 
@@ -210,7 +210,7 @@ If message display bug causes loss of governance decision context within first 3
 
 | Aspect | Assessment |
 |--------|------------|
-| RFC 2119 constraints | ✓ ATP 5-19 compatible precision |
+| RFC 2119 constraints | ✓ Compliance Framework compatible precision |
 | Markdown workflows | ✓ Portable, zero vendor lock-in |
 | AWS ecosystem bias | ✗ Not GCP-native |
 | Strands SDK dependency | ✗ Third-party maintenance risk |
@@ -229,7 +229,7 @@ PURPOSE: Build JR Protocol format (not use Strands SDK)
 ### Completion Criteria
 - [ ] .jrp format spec documented (1 page max)
 - [ ] Converter tool generates valid Gemini function schemas
-- [ ] Judge #6 enforcement workflow runs <90ms p99
+- [ ] Judge 6 enforcement workflow runs <90ms p99
 - [ ] Binary compression achieves <500 bytes
 - [ ] Zero AWS dependencies
 
@@ -321,11 +321,11 @@ rm -rf /tmp/kdense-review  # Delete immediately after extraction
 
 ## DEPLOYMENT STATUS ✅
 
-### Judge #6 (Claude Code Session) - COMPLETE
+### Judge 6 (Claude Code Session) - COMPLETE
 
 | Component | Status | Details |
 |-----------|--------|---------|
-| Judge #6 CPU Pod | 🟢 RUNNING | `1/1 Ready, 0 Restarts` |
+| Judge 6 CPU Pod | 🟢 RUNNING | `1/1 Ready, 0 Restarts` |
 | K8s Deployment | 🟢 DEPLOYED | `k8s/judge6_deployment_cpu.yaml` |
 | Kuvasz Monitoring | 🟢 RUNNING | localhost:8080, 3000, 9099 |
 | Engine Image | 🟢 PUSHED | sha256:dfeec6d072a1 |
@@ -372,7 +372,7 @@ The "Antigravity" session (likely Cursor/VS Code with another LLM) attempted a "
 
 ### Option A: Ignore and Continue (Recommended)
 The Antigravity session's phantom files don't exist, so nothing to clean up. Simply:
-1. Leave the working deployment as-is (Judge #6 CPU pod running)
+1. Leave the working deployment as-is (Judge 6 CPU pod running)
 2. Revert `requirements.txt` to remove problematic `graphrag` dependency if needed
 3. Continue with Token Compression Pipeline using existing `shadowtagai/core/` framework
 
@@ -403,7 +403,7 @@ Keep what works, add what's needed:
 │ ASSESSMENT NODE          │  DEBATE NODE (Conditional)           │
 │ • JREngine wrapper       │  • PanelDebateSystem wrapper         │
 │ • <500μs latency         │  • Triggers if confidence <80%       │
-│ • ATP 5-19 risk matrix   │  • Prosecutor/Defender/Judge         │
+│ • Compliance Framework risk matrix   │  • Prosecutor/Defender/Judge         │
 ├──────────────────────────┼──────────────────────────────────────┤
 │ AUDIT NODE               │  MEM0 MEMORY LAYER                   │
 │ • AuditCompressKernel    │  • Session context (Redis cache)     │
@@ -425,7 +425,7 @@ Keep what works, add what's needed:
 
 ### User Choices
 - **Memory Backend**: PostgreSQL + Redis (leverages existing infra)
-- **GKE Cluster**: Use existing `autopilot-cluster-1` (where Judge #6 CPU pod runs)
+- **GKE Cluster**: Use existing `autopilot-cluster-1` (where Judge 6 CPU pod runs)
 
 ### Dependencies to Add (requirements.txt)
 
@@ -653,7 +653,7 @@ Source: `PNKLN_TOKEN_COMPRESSION_SPEC.md` (1056 lines)
 ### 10 Antigravity Instances
 | Instance | Role |
 |----------|------|
-| ag-judge6-dev-01 | Judge #6 kernel development |
+| ag-judge6-dev-01 | Judge 6 kernel development |
 | ag-compression-01 | Token compression pipeline |
 | ag-monitor-01 | Monitoring & observability |
 | ag-api-gateway-01 | FastAPI gateway development |
@@ -693,7 +693,7 @@ Source: `PNKLN_TOKEN_COMPRESSION_SPEC.md` (1056 lines)
 ## SUCCESS METRICS
 
 ### Technical Gates
-- [ ] Judge #6 p99 ≤ 90ms
+- [ ] Judge 6 p99 ≤ 90ms
 - [ ] Token compression ≥ 95%
 - [ ] Compression latency ≤ 35ms
 - [ ] Uptime ≥ 99.9%
@@ -711,7 +711,7 @@ Source: `PNKLN_TOKEN_COMPRESSION_SPEC.md` (1056 lines)
 |------|--------|-------|
 | 0-1 | Git merge + cleanup | Claude |
 | 1-2 | Deploy Kuvasz monitoring | Claude |
-| 2-8 | Deploy Judge #6 to A100 | Claude + GCP |
+| 2-8 | Deploy Judge 6 to A100 | Claude + GCP |
 | 8-16 | Token compression pipeline | AG-01 to AG-08 |
 | 16-20 | Integration & load testing | AG-09, AG-10 |
 | 20-24 | Production deployment | Claude |
@@ -725,7 +725,7 @@ All core deployment tasks COMPLETE:
 1. ~~**Execute merge script**~~ ✅ DONE
 2. ~~**GCloud auth check**~~ ✅ DONE
 3. ~~**Start Kuvasz**~~ ✅ RUNNING
-4. ~~**Deploy Judge #6 manifests**~~ ✅ DEPLOYED
+4. ~~**Deploy Judge 6 manifests**~~ ✅ DEPLOYED
 5. ~~**Verify CPU pod running**~~ ✅ `1/1 Ready`
 6. ~~**Confirm deployment health**~~ ✅ Health checks passing
 

@@ -1,4 +1,4 @@
-# Judge #6 System Analysis Prompt
+# Judge 6 System Analysis Prompt
 
 **Target Model**: Gemini 2.0 Pro
 **Confidence Target**: ≥70% (with production data)
@@ -9,9 +9,9 @@
 
 ## Purpose
 
-Analyze the **Judge #6** real-time validation and enforcement system architecture, implementation, and operational readiness for the PNKLN Core Stack™.
+Analyze the **Judge 6** real-time validation and enforcement system architecture, implementation, and operational readiness for the PNKLN Core Stack™.
 
-Judge #6 is a **hybrid Gemini+PyTorch inference system** running on GKE with GPU acceleration, responsible for real-time request validation, ATP 5-19 rule enforcement, and JR (Judgment Record) validation.
+Judge 6 is a **hybrid Gemini+PyTorch inference system** running on GKE with GPU acceleration, responsible for real-time request validation, Compliance Framework rule enforcement, and JR (Judgment Record) validation.
 
 ---
 
@@ -27,14 +27,14 @@ Judge #6 is a **hybrid Gemini+PyTorch inference system** running on GKE with GPU
 
 ### Key Differences from Gemini Ingestion Layer
 
-| Aspect              | Judge #6 (Enforcement)          | Gemini Ingestion (Collection)         |
+| Aspect              | Judge 6 (Enforcement)          | Gemini Ingestion (Collection)         |
 | ------------------- | ------------------------------- | ------------------------------------- |
 | **Architecture**    | Hybrid Gemini+PyTorch real-time | GKE CronJob multi-container batch     |
 | **Primary Metric**  | p99 latency ≤90ms               | Runtime ≤45 min/night                 |
 | **Throughput**      | 2.7M validations/day            | 100+ items/night                      |
 | **Key Metrics**     | Latency, block rate, FP/FN      | Items/day, sources, cost/item         |
 | **Integration**     | Calls services (downstream)     | Called by services (upstream)         |
-| **Unique Features** | ATP 5-19, JR validation         | Ethical crawling, tier classification |
+| **Unique Features** | Compliance Framework, JR validation         | Ethical crawling, tier classification |
 | **Cost Model**      | Per API call                    | Monthly operational (~$77)            |
 | **Quality Focus**   | False positive/negative rates   | Relevance, timeliness, completeness   |
 
@@ -64,14 +64,14 @@ Analyze real-time performance metrics:
 
 Evaluate enforcement quality:
 
-- **ATP Coverage**: ≥98% of ATP 5-19 rules enforced
+- **ATP Coverage**: ≥98% of Compliance Framework rules enforced
 - **False Positive Rate**: ≤0.5% (incorrectly blocked legitimate requests)
 - **False Negative Rate**: ≤1.0% (missed policy violations)
 - **JR Validation Accuracy**: ≥99% (Judgment Record correctness)
 
-### 4. **ATP 5-19 Rule Enforcement**
+### 4. **Compliance Framework Rule Enforcement**
 
-Review implementation of ATP 5-19 policy rules:
+Review implementation of Compliance Framework policy rules:
 
 - **Rule completeness**: All 19 rules covered
 - **Rule accuracy**: Correct interpretation and application
@@ -256,7 +256,7 @@ Each with:
 
 The analysis should enable decision-makers to:
 
-1. **Validate** Judge #6 meets performance SLAs (p99 ≤90ms)
+1. **Validate** Judge 6 meets performance SLAs (p99 ≤90ms)
 2. **Identify** optimization opportunities for cost/performance
 3. **Prioritize** improvements based on user impact
 4. **Ensure** security and compliance posture is robust
@@ -287,4 +287,4 @@ The analysis should enable decision-makers to:
 
 **End of Prompt**
 
-Run this analysis and provide a comprehensive review of the Judge #6 system for PNKLN Core Stack™.
+Run this analysis and provide a comprehensive review of the Judge 6 system for PNKLN Core Stack™.

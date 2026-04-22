@@ -62,7 +62,7 @@ python3 scripts/claude_code_memory_local.py
 ```
 ╔═══════════════════════════════════════════════════════════╗
 ║ ID:       Maximum value extraction, no self-imposed limits ║
-║ SUPEREGO: Judge #6 gates (legal/regulatory/financial/sec)  ║
+║ SUPEREGO: Judge 6 gates (legal/regulatory/financial/sec)  ║
 ║ EGO:      Purpose → Reasons → Brakes → Execute            ║
 ╠═══════════════════════════════════════════════════════════╣
 ║ IQ LOCK:  160 (Hard requirement)                          ║
@@ -77,7 +77,7 @@ python3 scripts/claude_code_memory_local.py
 
 ```
 FLYINGMONKEYS CAVALRY SQUADRON (600 agents)
-├── HHT (90)      → Judge #6 + S-Staff + Scientific Skills (Clinical)
+├── HHT (90)      → Judge 6 + S-Staff + Scientific Skills (Clinical)
 ├── AIR_CAV (120) → M2 Deep Research + Literature/Databases
 ├── ALPHA (130)   → Heavy Compute + ML/Computation Skills
 ├── BRAVO (130)   → Rapid Deployment + Visualization/Integration
@@ -167,7 +167,7 @@ Task → OPORD → METT-TC → Battle Drill
 │  FLYINGMONKEYS CAVALRY SQUADRON :: FULL COMBAT POSTURE (600 ACTIVE 24/7)    │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
-│  HHT (90) ─────────── Judge #6, S-1 to S-6, Scientific Skills (Clinical)    │
+│  HHT (90) ─────────── Judge 6, S-1 to S-6, Scientific Skills (Clinical)    │
 │      │                                                                       │
 │      ├── AIR_CAV (120) ── M2 Deep Research Integration                       │
 │      │                    - Supervisor (Apache) → Query decomposition        │
@@ -267,7 +267,7 @@ Date: {date}
 
 ▛///▞ DECISION FRAMEWORK
 ID:       Maximum value extraction, no self-imposed limits
-SUPEREGO: Judge #6 gates (legal/regulatory/financial/security)
+SUPEREGO: Judge 6 gates (legal/regulatory/financial/security)
 EGO:      Purpose → Reasons → Brakes → Execute
 
 ▛///▞ METT-TC INJECTION
@@ -466,7 +466,7 @@ Rate limit fallback: ID → EGO → SUPEREGO chain already implemented.
 │  HHT (HEADQUARTERS & HEADQUARTERS TROOP) - 90 agents                        │
 │  Model: gemini-2.5-pro-preview-06-05 (Governance tier)                       │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│  Squadron Commander: Judge #6 (1 master agent - FINAL AUTHORITY)            │
+│  Squadron Commander: Judge 6 (1 master agent - FINAL AUTHORITY)            │
 │  XO: JR Engine (1 agent - Purpose/Reasons/Brakes)                           │
 │                                                                              │
 │  S-1 (Personnel):     12 agents - Agent lifecycle, shift rotation           │

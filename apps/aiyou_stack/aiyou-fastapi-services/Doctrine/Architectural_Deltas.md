@@ -1,4 +1,4 @@
-# Judge #6 Meta-Analysis: The 10 Hidden Deltas
+# Judge 6 Meta-Analysis: The 10 Hidden Deltas
 
 **Status:** ARCHITECTURAL MANDATE
 **Source:** Operation Deep Audit
@@ -22,7 +22,7 @@
 ## 4. The "Semantic Router" (The Switchboard)
 
 - **The Miss:** We rely on `main.py` logic to route tasks.
-- **The Delta:** **Embedding-Based Routing.** Instead of `if/else`, embed the user request. Calculate cosine similarity against the "Capabilities Vector." If the vector points to "UI Design," route to Troop B. If "Security," route to Judge #6. It is faster and softer than hard logic.
+- **The Delta:** **Embedding-Based Routing.** Instead of `if/else`, embed the user request. Calculate cosine similarity against the "Capabilities Vector." If the vector points to "UI Design," route to Troop B. If "Security," route to Judge 6. It is faster and softer than hard logic.
 
 ## 5. The "Temporal Cache" (The Time Machine)
 

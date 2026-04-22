@@ -167,7 +167,7 @@ Hi Anthropic team,
 
 We're Erik Hansen (ehanc69) evaluating Anthropic MCP code execution
 for production deployment in FedRAMP-regulated AI infrastructure
-(Judge #6 v2.0 governance system).
+(Judge 6 v2.0 governance system).
 
 Request:
 

@@ -3,7 +3,7 @@
 
 This example demonstrates the full end-to-end flow through the PNKLN stack:
 1. Gemini Ingestion Layer - Collect data from multiple sources
-2. Judge #6 Validation - Validate and filter content
+2. Judge 6 Validation - Validate and filter content
 3. Processing - Tier classification and analysis
 4. Delivery - Generate AM briefing
 
@@ -40,7 +40,7 @@ class PNKLNPipelineDemo:
         print()
 
         # Step 3: Validate ingested items
-        print("Step 3: Running Judge #6 validation...")
+        print("Step 3: Running Judge 6 validation...")
         await self.run_validation()
         print()
 

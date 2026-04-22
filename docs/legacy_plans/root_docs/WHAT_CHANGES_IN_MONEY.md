@@ -63,12 +63,12 @@ Additional compute:  2× vCPU, 4GB RAM            = $80/month
 
 ---
 
-## BRANCH 2: Judge #6 TUI CLI ✅ INTEGRATED
+## BRANCH 2: Judge 6 TUI CLI ✅ INTEGRATED
 
 ### What Was Added
 
 - Zero-flicker terminal interface (Ink framework)
-- ATP 5-19 risk matrix visualization
+- Compliance Framework risk matrix visualization
 - Binary decision compression (487 bytes)
 - Mock API client for offline use
 
@@ -162,7 +162,7 @@ Recurring:
 
 ### What Was Added
 
-- 3-kernel decision pipeline (ATP_519_scan → Judge #6 → Audit Compress)
+- 3-kernel decision pipeline (ATP_519_scan → Judge 6 → Audit Compress)
 - Kernel orchestration patterns (sync, async, parallel)
 - Glicko-2 kernel performance ratings
 - Cheat sheet fusion (21 → 10 elements)
@@ -277,8 +277,8 @@ Load Testing Infrastructure:
 | Agent API ($10k tier)        | -           | $50,000      | +$50k                 |
 | Strategy Engine ($20k tier)  | -           | $20,000      | +$20k                 |
 | Enterprise Scale ($50k tier) | -           | $100,000     | +$100k                |
-| Judge #6 Dashboard           | -           | $2,450       | +$2.5k                |
-| Judge #6 Enterprise          | -           | $2,500       | +$2.5k                |
+| Judge 6 Dashboard           | -           | $2,450       | +$2.5k                |
+| Judge 6 Enterprise          | -           | $2,500       | +$2.5k                |
 | **TOTAL MRR**                | **$25,000** | **$199,950** | **+$174,950 (+700%)** |
 
 ### Cost Transformation
@@ -291,7 +291,7 @@ Load Testing Infrastructure:
 | Enterprise Scale Decisions | -              | $8,700           | +$8,700               |
 | Intelligence Pipeline      | -              | $370             | +$370                 |
 | Load Testing               | -              | $250             | +$250                 |
-| Judge #6 CLI               | -              | $5               | +$5                   |
+| Judge 6 CLI               | -              | $5               | +$5                   |
 | LLM Memory                 | -              | $0.07            | +$0.07                |
 | **TOTAL COSTS**            | **$300/month** | **$9,714/month** | **+$9,414 (+3,138%)** |
 
@@ -310,7 +310,7 @@ Load Testing Infrastructure:
 ```
 Initial Investment (already deployed):
 - Agent Layer Development:        $50,000
-- Judge #6 CLI Development:       $15,000
+- Judge 6 CLI Development:       $15,000
 - LLM Memory System:              $10,000
 - Kernel Architecture:            $30,000
 - Load Testing Suite:             $5,000
@@ -350,7 +350,7 @@ $25k Infrastructure API (1.0×)
 $95k with Agents (3.8×)
     ↓ Add Kernel Chaining (Enterprise Scale)
 $195k with Enterprise tier (7.8×)
-    ↓ Add Judge #6 Dashboard upsells
+    ↓ Add Judge 6 Dashboard upsells
 $200k Total (8.0×)
 ```
 
@@ -369,7 +369,7 @@ BUT costs remain <5% of revenue (excellent unit economics)
 - Infrastructure costs scale sublinearly (10× capacity, 29× cost due to efficiency)
 - Gemini API ($0.0003/call) is 97% cheaper than monolithic approaches
 - LLM Memory has near-zero marginal cost
-- Judge #6 CLI is free (adoption funnel)
+- Judge 6 CLI is free (adoption funnel)
 
 ### 3. Margin vs. Growth Trade-off
 
@@ -425,14 +425,14 @@ LTV increased: 6.7× ($10k → $66.7k)
 
 | Tier                    | Price/Month | Features                          | Target Customers      | Estimated Count |
 | ----------------------- | ----------- | --------------------------------- | --------------------- | --------------- |
-| **Free**                | $0          | Judge #6 CLI, limited API         | Developers, tinkerers | 2,000           |
+| **Free**                | $0          | Judge 6 CLI, limited API         | Developers, tinkerers | 2,000           |
 | **Starter**             | $500        | Infrastructure API, 100k calls/mo | Startups              | 20              |
 | **Professional**        | $2,000      | + Agent API, PanelGPT, Wealth     | Growing companies     | 15              |
 | **Agent API**           | $10,000     | Full agent layer, 1M calls/mo     | Mid-market            | 5               |
 | **Strategy Engine**     | $20,000     | + DTE evolution, GRPO training    | Enterprises           | 1               |
 | **Enterprise Scale**    | $50,000     | Dedicated infra, 10M calls/mo     | Large enterprises     | 2               |
-| **Judge #6 Dashboard**  | $49         | Web dashboard + history           | CLI users             | 50              |
-| **Judge #6 Enterprise** | $499        | + SSO, compliance exports         | Regulated industries  | 5               |
+| **Judge 6 Dashboard**  | $49         | Web dashboard + history           | CLI users             | 50              |
+| **Judge 6 Enterprise** | $499        | + SSO, compliance exports         | Regulated industries  | 5               |
 
 **Total Customers: 2,098**
 **Paying Customers: 98**
@@ -447,8 +447,8 @@ Professional:       15 × $2,000    = $30,000
 Agent API:           5 × $10,000   = $50,000
 Strategy Engine:     1 × $20,000   = $20,000
 Enterprise Scale:    2 × $50,000   = $100,000
-Judge #6 Dashboard: 50 × $49       = $2,450
-Judge #6 Enterprise: 5 × $499      = $2,495
+Judge 6 Dashboard: 50 × $49       = $2,450
+Judge 6 Enterprise: 5 × $499      = $2,495
                          TOTAL MRR = $214,945
 
 (Conservative estimate: $199,950 accounts for churn/downgrades)
@@ -530,7 +530,7 @@ Pinkln Pricing (Agent API tier):
 Value Prop:
 - Specialized kernels > general LLM for governance
 - Sub-90ms latency (OpenAI p99: 2-5 seconds)
-- Built-in compliance (ATP 5-19)
+- Built-in compliance (Compliance Framework)
 ```
 
 ### vs Anthropic Claude API
@@ -546,7 +546,7 @@ Pinkln Pricing:
 
 Value Prop:
 - Purpose-built for decision governance
-- Audit trail built-in (Judge #6)
+- Audit trail built-in (Judge 6)
 - Multi-agent debates > single model
 ```
 
@@ -725,7 +725,7 @@ Flicker: 0 frames (TUI perfection)
 - AI Agent Platform (defensible)
 - 8 pricing tiers ($0 - $50k/month)
 - Ecosystem lock-in (CLI → Dashboard → Enterprise)
-- Differentiated with Judge #6, Glicko-2, DTE, GRPO
+- Differentiated with Judge 6, Glicko-2, DTE, GRPO
 
 ### Bottom Line
 

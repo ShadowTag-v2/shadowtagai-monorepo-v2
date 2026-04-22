@@ -192,7 +192,7 @@ const features = [
   },
   {
     icon: '🛡️',
-    title: 'Judge #6 Policy Gate',
+    title: 'Judge 6 Policy Gate',
     desc: 'Mandatory compliance layer on every query, every response',
   },
 ];

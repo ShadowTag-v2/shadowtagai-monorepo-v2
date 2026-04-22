@@ -95,7 +95,7 @@ We translate commercial innovation into military dominance.
 
   - _Kernel Chaining_ $\rightarrow$ **JADC2 Decision Logic**
 
-  - _Judge #6_ $\rightarrow$ **Automated Compliance & Oversight (ACO)**
+  - _Judge 6_ $\rightarrow$ **Automated Compliance & Oversight (ACO)**
 
 - **The "Arsenal of Democracy":**
   - Non-dilutive capital via DoD contracts (STRATFI/TACFI).

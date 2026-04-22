@@ -377,7 +377,7 @@ class Protection(WarfightingFunction):
     The related tasks and systems that preserve the force
     so the commander can apply maximum combat power.
 
-    AI Implementation: MFRC (Screen/Guard/Cover) + Judge #6
+    AI Implementation: MFRC (Screen/Guard/Cover) + Judge 6
     """
 
     def __post_init__(self):

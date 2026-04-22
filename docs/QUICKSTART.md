@@ -276,7 +276,7 @@ time curl -X POST \
 
 - [Architecture Documentation](./architecture.md)
 - [API Reference](./api.md)
-- [ATP 5-19 Risk Framework](./atp-5-19.md)
+- [Compliance Framework Risk Framework](./atp-5-19.md)
 - [Deployment Runbooks](./runbooks/)
 - [Main README](../README.md)
 

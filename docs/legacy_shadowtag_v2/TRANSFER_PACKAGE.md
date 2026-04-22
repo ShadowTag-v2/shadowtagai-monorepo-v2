@@ -224,7 +224,7 @@ NEXT TASK: [specify current objective]
 
 - **DTE** - Debate-Train-Evolve (GRPO policy improvement)
 
-## Risk Levels (ATP 5-19)
+## Risk Levels (Compliance Framework)
 
 - **RA-1** - Routine operations
 

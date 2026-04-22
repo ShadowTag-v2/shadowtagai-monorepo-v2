@@ -1,5 +1,5 @@
 """
-Judge #6 — Composite Risk Management Governance Engine
+Judge 6 — Composite Risk Management Governance Engine
 shadowtag-omega-v4 :: COR.CSRMC
 
 DOCTRINE SPINE:

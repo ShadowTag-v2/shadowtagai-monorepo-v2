@@ -112,7 +112,7 @@ This extended session completed the integration of **FOUR major branches** into 
 
 - Layer 1 (Gemini Ingestion): $77/month
 
-- Layer 2 (Judge #6): $1,000-1,600/month
+- Layer 2 (Judge 6): $1,000-1,600/month
 
 - **Total**: **$1,077-1,677/month**
 
@@ -120,7 +120,7 @@ This extended session completed the integration of **FOUR major branches** into 
 
 - Layer 1: $77/month
 
-- Layer 2 (Judge #6): $1,000-1,600/month (unchanged)
+- Layer 2 (Judge 6): $1,000-1,600/month (unchanged)
 
 - Layer 3 (Kosmos): $100-500/month (optional)
 
@@ -134,7 +134,7 @@ This extended session completed the integration of **FOUR major branches** into 
 
 - Layer 1: $77/month
 
-- Layer 2 (Kernel Chaining): **$180-230/month** (-$820-1,370 vs Judge #6)
+- Layer 2 (Kernel Chaining): **$180-230/month** (-$820-1,370 vs Judge 6)
 
 - Layer 3: $100-500/month
 
@@ -403,7 +403,7 @@ pnkln-stack-fastapi-services/
 
 - ✅ Kernel chaining canary deployment (2-4 weeks)
 
-- ✅ Full production: Kernel chaining replaces Judge #6
+- ✅ Full production: Kernel chaining replaces Judge 6
 
 - ✅ pnkln-stack scale to GKE if >10 customers
 
@@ -495,10 +495,10 @@ pnkln-stack-fastapi-services/
 
 **High Priority** ❌:
 
-1. **Kernel Chaining Accuracy** - Needs 95%+ agreement with Judge #6
+1. **Kernel Chaining Accuracy** - Needs 95%+ agreement with Judge 6
    - Mitigation: 4-6 week shadow mode validation
 
-   - Fallback: Revert to Judge #6 if <95%
+   - Fallback: Revert to Judge 6 if <95%
 
 2. **pnkln-stack Compliance Coverage** - Legal/regulatory risk
    - Mitigation: Legal review of all compliance claims

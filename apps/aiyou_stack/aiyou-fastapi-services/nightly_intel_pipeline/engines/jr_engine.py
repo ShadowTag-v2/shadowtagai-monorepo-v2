@@ -70,7 +70,7 @@ class JRScore:
 
 
 class JREngine:
-    """Judge #6 Governance Engine - JR Scoring System
+    """Judge 6 Governance Engine - JR Scoring System
 
     Implements Purpose → Reasons → Brakes framework using Claude API
     """

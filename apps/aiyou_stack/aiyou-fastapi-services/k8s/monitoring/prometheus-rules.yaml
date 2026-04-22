@@ -23,7 +23,7 @@ spec:
         component: judge-6
         sla: latency
       annotations:
-        summary: "Judge #6 p99 latency exceeds 90ms SLA"
+        summary: "Judge 6 p99 latency exceeds 90ms SLA"
         description: "Current p99 latency: {{ $value | humanizeDuration }}. SLA requires ≤90ms. Immediate scale-up required."
         runbook: "https://docs.pnkln.internal/runbooks/judge-6-latency-breach"
 
@@ -38,7 +38,7 @@ spec:
         component: judge-6
         sla: latency
       annotations:
-        summary: "Judge #6 p95 latency approaching SLA limit"
+        summary: "Judge 6 p95 latency approaching SLA limit"
         description: "Current p95 latency: {{ $value | humanizeDuration }}. Target: ≤60ms. Investigate before p99 breach."
 
     # Error Rate Alerts
@@ -53,7 +53,7 @@ spec:
         severity: critical
         component: judge-6
       annotations:
-        summary: "Judge #6 error rate exceeds 5%"
+        summary: "Judge 6 error rate exceeds 5%"
         description: "Current error rate: {{ $value | humanizePercentage }}. Normal: <1%. Check layer health."
 
     # Circuit Breaker Alerts
@@ -65,7 +65,7 @@ spec:
         severity: warning
         component: judge-6
       annotations:
-        summary: "Judge #6 circuit breaker frequently tripping"
+        summary: "Judge 6 circuit breaker frequently tripping"
         description: "Circuit breaker trips in last 5m: {{ $value }}. Indicates layer timeouts. Check Gemini/PyTorch layer health."
 
     # GPU Utilization Alerts
@@ -78,7 +78,7 @@ spec:
         component: judge-6
         cost_optimization: true
       annotations:
-        summary: "Judge #6 GPU underutilized"
+        summary: "Judge 6 GPU underutilized"
         description: "Average GPU utilization: {{ $value }}%. Consider scaling down or using smaller instance types."
 
     - alert: Judge6GPUOverutilized
@@ -89,7 +89,7 @@ spec:
         severity: warning
         component: judge-6
       annotations:
-        summary: "Judge #6 GPU overutilized"
+        summary: "Judge 6 GPU overutilized"
         description: "Average GPU utilization: {{ $value }}%. May cause queuing delays. Scale up."
 
     # Layer-Specific Alerts
@@ -130,7 +130,7 @@ spec:
         severity: info
         component: judge-6
       annotations:
-        summary: "Judge #6 receiving low request volume"
+        summary: "Judge 6 receiving low request volume"
         description: "Request rate: {{ $value }} req/s. Indicates possible routing issue or validation sprint idle."
 
     - alert: Judge6HighRequestVolume
@@ -141,7 +141,7 @@ spec:
         severity: warning
         component: judge-6
       annotations:
-        summary: "Judge #6 receiving high request volume"
+        summary: "Judge 6 receiving high request volume"
         description: "Request rate: {{ $value }} req/s. Ensure HPA is scaling appropriately."
 
   # Recording Rules for Dashboards

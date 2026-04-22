@@ -91,7 +91,7 @@ Every decision must map to **at least one** of these strategic outcomes:
 
 **Examples**:
 
-- ✅ "Optimize Judge #6 to p99≤90ms" → Enables enterprise sales, SLA requirement
+- ✅ "Optimize Judge 6 to p99≤90ms" → Enables enterprise sales, SLA requirement
 
 - ❌ "Migrate to microservices" → Premature complexity, no blocked opportunities
 
@@ -348,7 +348,7 @@ CONFIDENCE: High (strong Tier 1 + Tier 2 evidence, minimal reliance on speculati
 
 **Pre-Decision Questions**:
 
-- Does this help achieve p99≤90ms for Judge #6?
+- Does this help achieve p99≤90ms for Judge 6?
 
 - Does this maintain 99.9% uptime requirement?
 
@@ -366,7 +366,7 @@ CONFIDENCE: High (strong Tier 1 + Tier 2 evidence, minimal reliance on speculati
 
 #### 3. Risk Framework Triggers
 
-**From**: RISK_FRAMEWORK.md (ATP 5-19)
+**From**: RISK_FRAMEWORK.md (Compliance Framework)
 
 **Pre-Decision Questions**:
 
@@ -394,7 +394,7 @@ CONFIDENCE: High (strong Tier 1 + Tier 2 evidence, minimal reliance on speculati
 
 **Pre-Decision Questions**:
 
-- Does this align with current priorities (Gulfstream, Judge #6)?
+- Does this align with current priorities (Gulfstream, Judge 6)?
 
 - Is this "nice to have" vs. "must have" for next milestone?
 
@@ -431,7 +431,7 @@ BRAKES:
 
 [Technical SLA]
 
-- Judge #6 latency impact: [improves/degrades/neutral by Xms]
+- Judge 6 latency impact: [improves/degrades/neutral by Xms]
 
 - Uptime risk: [low/medium/high]
 
@@ -455,7 +455,7 @@ BRAKES:
 
 [Strategic Alignment]
 
-- Priority alignment: [Gulfstream/Judge #6/backlog]
+- Priority alignment: [Gulfstream/Judge 6/backlog]
 
 - Urgency: [must-have/nice-to-have]
 
@@ -492,7 +492,7 @@ BRAKES:
 
 [Technical SLA]
 
-- Judge #6 latency impact: Improves by ~30ms (database optimization)
+- Judge 6 latency impact: Improves by ~30ms (database optimization)
 
 - Uptime risk: Low (caching layer is additive, not replacement)
 
@@ -789,7 +789,7 @@ DECISION: REJECT
 RATIONALE: No evidence of need, massive opportunity cost, high risk, strategic misalignment. Solve performance with optimization (caching, queries) not rewrite.
 NEXT STEPS:
 
-1. Focus on Judge #6 optimization to p99≤90ms (current plan)
+1. Focus on Judge 6 optimization to p99≤90ms (current plan)
 
 2. If performance targets still missed after optimization, revisit
 

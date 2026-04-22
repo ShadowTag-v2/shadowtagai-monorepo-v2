@@ -1,6 +1,6 @@
 """Intelligence Agent: Collection → Enforcement Pipeline
 
-Combines Gemini Ingestion Layer (upstream) with Judge #6 Enforcement (downstream)
+Combines Gemini Ingestion Layer (upstream) with Judge 6 Enforcement (downstream)
 
 Architecture:
 ┌─────────────────────────────────────────────────────────┐
@@ -15,7 +15,7 @@ Architecture:
 │  2. JR Engine Validation (Purpose/Reasons/Brakes)       │
 │     └─ Validate collection intent                       │
 │                                                          │
-│  3. Judge #6 Enforcement (Verification)                 │
+│  3. Judge 6 Enforcement (Verification)                 │
 │     ├─ GDPR/CAN-SPAM compliance                         │
 │     ├─ Content policy enforcement                       │
 │     └─ Audit trail generation                           │
@@ -73,7 +73,7 @@ class IntelligenceAgent(ShadowTagAiAgent):
     Pipeline:
     1. Collect intelligence from multiple sources (Gemini Ingestion Layer)
     2. Validate collection intent (JR Engine)
-    3. Enforce compliance on collected data (Judge #6 Lite)
+    3. Enforce compliance on collected data (Judge 6 Lite)
     4. Generate morning briefing
     5. Export audit trail
 
@@ -149,7 +149,7 @@ class IntelligenceAgent(ShadowTagAiAgent):
                 justification=f"Intelligence collection query: {query}",
                 risk_probability=0.2,  # Low risk for read-only collection
                 risk_severity=0.3,  # Medium severity if ethical violations occur
-                mitigation_strategy="Ethical compliance validation + Judge #6 enforcement",
+                mitigation_strategy="Ethical compliance validation + Judge 6 enforcement",
             ),
             Reason(
                 justification=f"Estimated cost: ${task.cost_estimate_usd:.2f} for {target_items} items",
@@ -170,7 +170,7 @@ class IntelligenceAgent(ShadowTagAiAgent):
 
         Pipeline:
         1. Gemini Ingestion Layer collects data
-        2. Judge #6 verifies compliance
+        2. Judge 6 verifies compliance
         3. Generate AM briefing
         4. Return results
         """
@@ -199,7 +199,7 @@ class IntelligenceAgent(ShadowTagAiAgent):
             # Log warnings but continue
             pass
 
-        # Step 3: Verify with Judge #6 (on sampled items)
+        # Step 3: Verify with Judge 6 (on sampled items)
         # For large collections, verify a sample
         sample_size = min(len(ingestion_result.items), 100)
         sampled_items = ingestion_result.items[:sample_size]

@@ -252,7 +252,7 @@ class CavalrySquadron:
             "name": "HHT - Headquarters & Headquarters Troop",
             "target_strength": 90,
             "model": "gemini-3.1-flash-lite-preview-preview-06-05",
-            "commander": "Judge #6",
+            "commander": "Judge 6",
             "platoons": [
                 ("S-1 Personnel", 12),
                 ("S-2 Intel", 15),

@@ -3,7 +3,7 @@
 Provides:
 - Gemini Ingestion Layer (Intelligence collection with ethical compliance)
 - JR Engine (Purpose/Reasons/Brakes validator)
-- Judge #6 Lite (Rule-based enforcement)
+- Judge 6 Lite (Rule-based enforcement)
 - Agent Pattern (Integrated collection → enforcement workflow)
 - Intelligence Agent (Complete pipeline)
 - Compliance SDR Agent (GDPR/CAN-SPAM lead generation)

@@ -291,7 +291,7 @@ All API calls use:
   │     └─> Write classified data
   │
   ├─> Container 3: Validation (5 min)
-  │     ├─> Judge #6 quality gates
+  │     ├─> Judge 6 quality gates
   │     ├─> Items gate (volume, quality)
   │     ├─> Sources gate (diversity, balance)
   │     ├─> Costs gate (efficiency)
@@ -350,7 +350,7 @@ DELETE FROM intelligence.items WHERE expires_at < NOW();
 
 ---
 
-## Quality Gates (Judge #6)
+## Quality Gates (Judge 6)
 
 ### Gate Definitions
 
@@ -658,7 +658,7 @@ intelligence_gate_passed{gate="costs"} 1
 
 #### 3. Quality Gate Failure
 
-**Detection**: Judge #6 validation fails
+**Detection**: Judge 6 validation fails
 **Mitigation**:
 
 - Deliver data with warning flag

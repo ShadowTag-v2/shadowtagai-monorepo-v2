@@ -1,13 +1,13 @@
 """GEMINI INGESTION LAYER - Batch Intelligence Collection Pipeline
 ================================================================
 
-ARCHITECTURE: GKE CronJob Multi-Container (vs Judge #6 Real-Time)
+ARCHITECTURE: GKE CronJob Multi-Container (vs Judge 6 Real-Time)
 RUNTIME: ~45 min/night batch processing (vs p99≤90ms real-time SLA)
 PURPOSE: Proactive intelligence collection (vs reactive validation)
 
 SK PATTERN ADAPTATION:
 ---------------------
-Uses SAME Sequential Pipeline pattern from Judge #6, but adapted for:
+Uses SAME Sequential Pipeline pattern from Judge 6, but adapted for:
 - Batch processing (nightly cron) vs real-time requests
 - Multi-source collection vs single request validation
 - Quality gates (items, sources, costs) vs coverage metrics
@@ -15,7 +15,7 @@ Uses SAME Sequential Pipeline pattern from Judge #6, but adapted for:
 
 COMPLEMENTARY TO JUDGE #6:
 --------------------------
-Ingestion Layer (Upstream):        Judge #6 (Downstream):
+Ingestion Layer (Upstream):        Judge 6 (Downstream):
 ┌─────────────────────┐           ┌──────────────────────┐
 │ Nightly Collection  │           │ Real-time Validation │
 │ ~45 min runtime     │  ────────>│ p99≤90ms SLA         │
@@ -34,8 +34,8 @@ PERFORMANCE TARGETS:
 INTEGRATION POINTS:
 ------------------
 - CALLED BY: Scheduler (GKE CronJob), NS mesh services
-- CALLS TO: Judge #6 (validation), Cor Brain (routing), NS (persistence)
-- HANDOFF: Ingested data → Judge #6 validation → Storage
+- CALLS TO: Judge 6 (validation), Cor Brain (routing), NS (persistence)
+- HANDOFF: Ingested data → Judge 6 validation → Storage
 
 QUALITY FOCUS:
 -------------
@@ -318,7 +318,7 @@ class NewsAPICollector(BaseSourceCollector):
 class QualityGates:
     """Quality gates for ingestion pipeline.
 
-    Gates replace Judge #6's 98% coverage with multi-dimensional checks:
+    Gates replace Judge 6's 98% coverage with multi-dimensional checks:
     - Items/day: 1000-5000 (quality over quantity)
     - Active sources: ≥8 (diversity)
     - Cost/item: ≤$0.02 (efficiency)
@@ -382,9 +382,9 @@ class QualityGates:
 class GeminiIngestionLayer:
     """Batch intelligence collection pipeline using SK Sequential Pattern.
 
-    RUNTIME: ~45 min/night (vs Judge #6 p99≤90ms)
+    RUNTIME: ~45 min/night (vs Judge 6 p99≤90ms)
     PATTERN: Sequential Pipeline with quality gates
-    INTEGRATION: Called by GKE CronJob, calls Judge #6 for validation
+    INTEGRATION: Called by GKE CronJob, calls Judge 6 for validation
 
     Pipeline Stages:
     1. Multi-source collection (~30 min) - Parallel collectors

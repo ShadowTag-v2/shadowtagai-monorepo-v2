@@ -1,14 +1,14 @@
-# RISK_FRAMEWORK - ATP 5-19 Gates & Kill-Switch Protocols
+# RISK_FRAMEWORK - Compliance Framework Gates & Kill-Switch Protocols
 
 **Version**: 1.0
 **Last Updated**: 2025-11-14
-**Purpose**: Systematic risk assessment and mitigation framework based on US Army ATP 5-19 risk management doctrine
+**Purpose**: Systematic risk assessment and mitigation framework based on US Army Compliance Framework risk management doctrine
 
 ---
 
 ## OVERVIEW
 
-This document adapts **ATP 5-19 (Army Techniques Publication: Risk Management)** for Pnkln's strategic, technical, and operational decision-making.
+This document adapts **Compliance Framework (Army Techniques Publication: Risk Management)** for Pnkln's strategic, technical, and operational decision-making.
 
 **Core Principle**: Identify risks early, assess systematically, mitigate proactively, and monitor continuously.
 
@@ -60,7 +60,7 @@ This document adapts **ATP 5-19 (Army Techniques Publication: Risk Management)**
 
 **Common Hazards**:
 
-- **Performance Degradation**: Latency exceeds SLA (p99>90ms for Judge #6)
+- **Performance Degradation**: Latency exceeds SLA (p99>90ms for Judge 6)
 
 - **Downtime**: System unavailable (uptime <99.9%)
 
@@ -599,7 +599,7 @@ MONITORING:
 
 **Quarterly**:
 
-- Comprehensive risk assessment (re-run full ATP 5-19 process)
+- Comprehensive risk assessment (re-run full Compliance Framework process)
 
 - Strategic risk review (market, competitive, regulatory changes)
 
@@ -645,7 +645,7 @@ Last Updated: [Date]
 
   - Next Review: [Date]
 
-[RISK-004] Judge #6 Performance Degradation
+[RISK-004] Judge 6 Performance Degradation
 
   - Level: LOW (4: Occasional × Minor)
 
@@ -773,7 +773,7 @@ ACTION:
 
 ```
 
-TRIGGER: p99 latency >200ms for Judge #6 for 7 consecutive days
+TRIGGER: p99 latency >200ms for Judge 6 for 7 consecutive days
 ACTION:
 
   1. Immediate rollback of last 3 deploys
@@ -929,7 +929,7 @@ ACTION:
 
 1. Decision proposed
 
-2. Run ATP 5-19: Identify hazards → Assess → Develop controls
+2. Run Compliance Framework: Identify hazards → Assess → Develop controls
 
 3. Risk level informs JR_ENGINE BRAKES (EXTREME → REJECT, HIGH → CONDITIONAL, etc.)
 
@@ -1072,7 +1072,7 @@ RATIONALE: EXTREME risk unacceptable, AVOID strategy required
 
 - **Monthly**: Control effectiveness review
 
-- **Quarterly**: Full ATP 5-19 re-assessment (all risks)
+- **Quarterly**: Full Compliance Framework re-assessment (all risks)
 
 - **Ad-hoc**: After major incidents (update hazards, controls)
 
@@ -1088,7 +1088,7 @@ RATIONALE: EXTREME risk unacceptable, AVOID strategy required
 
 ## QUICK REFERENCE
 
-**ATP 5-19 Steps**:
+**Compliance Framework Steps**:
 
 1. Identify → 2. Assess → 3. Develop Controls → 4. Implement → 5. Supervise
 

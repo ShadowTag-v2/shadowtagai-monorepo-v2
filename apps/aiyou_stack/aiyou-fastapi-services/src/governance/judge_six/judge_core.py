@@ -1,4 +1,4 @@
-"""Judge #6 Core - The Governance Engine
+"""Judge 6 Core - The Governance Engine
 Combined Implementation: Legacy Logic + CSRMC 2026 + Omega Protocol
 
 Authority:
@@ -52,7 +52,7 @@ class JudgeSixEngine:
         self.policy_path = policy_path
         self.constitution = self._load_constitution_from_file() or self._load_default_constitution()
         logger.info(
-            f"⚖️  Judge #6 Engine Online - CSRMC Active (Constitution v{self.constitution.get('judge6_constitution', {}).get('version', 'Unknown')})",
+            f"⚖️  Judge 6 Engine Online - CSRMC Active (Constitution v{self.constitution.get('judge6_constitution', {}).get('version', 'Unknown')})",
         )
 
     def _load_constitution_from_file(self) -> dict[str, Any] | None:

@@ -31,7 +31,7 @@ Date: November 28, 2025
 ╔══════════════════════════════════════════════════════════════════╗
 ║ n-autoresearch/Kosmos/BioAgents CAVALRY SQUADRON ║
 ╠══════════════════════════════════════════════════════════════════╣
-║ HHT (90) │ Headquarters │ Judge #6, S-1 to S-6 Staff ║
+║ HHT (90) │ Headquarters │ Judge 6, S-1 to S-6 Staff ║
 ║ AIR_CAV (120) │ Aerial Scouts │ Apache, Kiowa, Black Hawk ║
 ║ ALPHA (130) │ Armor │ M1 Abrams (Heavy Compute) ║
 ║ BRAVO (130) │ Stryker │ Rapid Deployment ║
@@ -154,7 +154,7 @@ Compact Version (token-optimized):
 ▛///▞ ANTIGRAVITY :: ULTRATHINK
 ID: Max value extraction, no self-imposed limits
 EGO: Purpose→Reasons→Brakes (JR Engine)
-SUPEREGO: Judge #6 gates (legal/regulatory/financial/security)
+SUPEREGO: Judge 6 gates (legal/regulatory/financial/security)
 SQUADRON: 650 agents (HHT:90, AIR_CAV:120, ALPHA:130, BRAVO:130, CHARLIE:130, CODEPMCS:50)
 IQ LOCK: 160 | POSTURE: Full Combat 24/7
 STACK: n-autoresearch/Kosmos/BioAgents:8600, CodePMCS, JudgeJura, ShadowTag, GPTRAM

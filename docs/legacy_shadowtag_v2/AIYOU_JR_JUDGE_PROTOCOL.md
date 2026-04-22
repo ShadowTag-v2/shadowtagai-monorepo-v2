@@ -5,7 +5,7 @@
 
 ## 1. THE CORE MECHANIC: "PURPOSE, REASONS, BRAKES"
 
-Unlike standard arbitrators that vote on "quality" or "eloquence", Judge #6 enforces **structured, testable commitments**.
+Unlike standard arbitrators that vote on "quality" or "eloquence", Judge 6 enforces **structured, testable commitments**.
 
 ### 1.1 Purpose (The "Why")
 
@@ -21,7 +21,7 @@ Unlike standard arbitrators that vote on "quality" or "eloquence", Judge #6 enfo
 
 ### 1.3 Brakes (The "What-If")
 
-- **Metric:** Army Risk Management (ATP 5-19).
+- **Metric:** Army Risk Management (Compliance Framework).
 - **Checks:**
   - **Reversibility:** Can we rollback?
   - **Blast Radius:** What breaks if this fails?
@@ -42,7 +42,7 @@ The Judge does not output "Advice". It outputs a **Work Order**:
 
 ## 3. COMPARISON: THE "WHY"
 
-| Dimension             | Plain Arbitrator | **pnkln-stackJR Judge #6** | Competitors |
+| Dimension             | Plain Arbitrator | **pnkln-stackJR Judge 6** | Competitors |
 | :-------------------- | :--------------- | :------------------------- | :---------- |
 | **Decision Quality**  | Inconsistent     | **Consistent, Aligned**    | Moderate    |
 | **Risk Control**      | None             | **Explicit Brakes**        | Minimal     |
@@ -50,7 +50,7 @@ The Judge does not output "Advice". It outputs a **Work Order**:
 | **Rework Savings**    | Baseline         | **20-30%**                 | 5-10%       |
 | **Budget Efficiency** | 75%              | **105-135%**               | 85%         |
 
-**Verdict:** A plain arbitrator saves time but bleeds money. Judge #6 preserves capital.
+**Verdict:** A plain arbitrator saves time but bleeds money. Judge 6 preserves capital.
 
 ---
 

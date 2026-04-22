@@ -29,7 +29,7 @@ This document catalogs all Army doctrine publications integrated into the Kosmos
 
 | Publication | Title | AI Application |
 |-------------|-------|----------------|
-| **ATP 5-19** | Risk Management | 5-step CRM process, risk matrix, consensus thresholds |
+| **Compliance Framework** | Risk Management | 5-step CRM process, risk matrix, consensus thresholds |
 
 ### Intelligence
 
@@ -262,7 +262,7 @@ https://armypubs.army.mil/epubs/DR_pubs/DR_a/ARN35404-FM_6-0-000-WEB-1.pdf
 
 https://talent.army.mil/wp-content/uploads/2020/11/ARN20039_ADP-6-22-C1-FINAL-WEB.pdf
 
-# ATP 5-19 Risk Management
+# Compliance Framework Risk Management
 
 https://armypubs.army.mil/epubs/DR_pubs/DR_a/pdf/web/atp5_19.pdf
 
@@ -302,7 +302,7 @@ src/kosmos/
     ├── __init__.py                # Doctrine module exports
     ├── adp_6_22.py               # ADP 6-22 Leadership attributes
     ├── fm_6_0.py                 # FM 6-0 MDMP/TLP/Staff
-    ├── atp_5_19.py               # ATP 5-19 Risk Management
+    ├── compliance_framework.py               # Compliance Framework Risk Management
     ├── fm_3_0.py                 # FM 3-0 Warfighting Functions
     └── battle_drills.py          # FM 7-8 Battle Drills
 
@@ -335,7 +335,7 @@ src/kosmos/
 | 6. COA Approval | `step6_coa_approval()` | Command Decision |
 | 7. Orders Production | `step7_orders_production()` | Code Generation |
 
-### ATP 5-19 → Risk Assessment
+### Compliance Framework → Risk Assessment
 
 | Step | Code | Purpose |
 |------|------|---------|
@@ -354,7 +354,7 @@ src/kosmos/
 | Fires | `Fires` | FSE + Mortar |
 | Movement & Maneuver | `Movement` | GKE Autopilot |
 | Sustainment | `Sustainment` | S-4 + Token Budget |
-| Protection | `Protection` | MFRC + Judge #6 |
+| Protection | `Protection` | MFRC + Judge 6 |
 
 ### FM 7-8 → Battle Drills
 

@@ -54,7 +54,7 @@ variable "gpu_node_pools" {
     spot              = bool
   }))
   default = {
-    # L4 GPU pool - Cost optimized for inference (Judge #6 workload)
+    # L4 GPU pool - Cost optimized for inference (Judge 6 workload)
     "l4-inference" = {
       machine_type    = "g2-standard-4"
       gpu_type        = "nvidia-l4"

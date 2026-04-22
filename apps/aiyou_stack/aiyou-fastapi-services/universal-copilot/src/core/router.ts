@@ -1,6 +1,6 @@
 /**
  * Intelligent router with rate limiting and governance
- * Routes requests to appropriate providers with Judge #6 enforcement
+ * Routes requests to appropriate providers with Judge 6 enforcement
  */
 
 import Bottleneck from 'bottleneck';
@@ -9,7 +9,7 @@ import { GovernanceError, RateLimitError, ValidationError } from './errors.js';
 import type { CopilotRequest, CopilotResponse, Provider, RouterConfig } from './schema.js';
 
 /**
- * Judge #6 governance integration interface
+ * Judge 6 governance integration interface
  * Allows optional governance without hard dependency
  */
 export interface GovernanceEngine {

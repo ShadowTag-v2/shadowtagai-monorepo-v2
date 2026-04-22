@@ -85,7 +85,7 @@ audit_trail = await compress(binary_decision)                      # API call 3
 tools = [
     FunctionTool(
         name="atp_519_scan",
-        description="Extract ATP 5-19 violations from context",
+        description="Extract Compliance Framework violations from context",
         function=atp_519_scan_local,  # Local Python function
         parameters={"context": {"type": "string"}}
     ),
@@ -193,7 +193,7 @@ result = caller.execute("Process this decision context...")
 │  ┌──────────────▼───────────────────────────────────────────┐  │
 │  │ LAYER 1: PNKLN Stack (Validation & Audit)               │  │
 │  │                                                          │  │
-│  │  • Judge #6 (JR Engine): Purpose/Reasons/Brakes         │  │
+│  │  • Judge 6 (JR Engine): Purpose/Reasons/Brakes         │  │
 │  │  • Cor: Orchestration coordinator                       │  │
 │  │  • ShadowTag: Ed25519 cryptographic watermarks          │  │
 │  │  • NS: Semantic memory retrieval                        │  │
@@ -303,7 +303,7 @@ src/pnkln/
 ```python
 class JudgeSix:
     """
-    Judge #6 enforcement layer for function calling.
+    Judge 6 enforcement layer for function calling.
 
     Validates every function call against:
 
@@ -567,7 +567,7 @@ class DTESystem:
 ```
 
 src/kernels/
-├── atp_519_scan.py      # ATP 5-19 violation extraction
+├── atp_519_scan.py      # Compliance Framework violation extraction
 ├── judge_six.py         # Binary classification (PyTorch)
 ├── audit_compress.py    # Audit trail compression
 ├── base.py              # Kernel base class
@@ -593,7 +593,7 @@ class ATP519ScanKernel(Kernel):
 
 def atp_519_scan_local(context: str) -> Dict:
     """
-    Extract ATP 5-19 violations from context.
+    Extract Compliance Framework violations from context.
 
     Executes locally, no API call overhead.
     """
@@ -605,7 +605,7 @@ def atp_519_scan_local(context: str) -> Dict:
 
 atp_scan_tool = FunctionTool(
     name="atp_519_scan",
-    description="Extract ATP 5-19 violations",
+    description="Extract Compliance Framework violations",
     function=atp_519_scan_local,
     parameters={"context": {"type": "string"}}
 )
@@ -802,7 +802,7 @@ erik-hancock-llm-memory/
    python scripts/claude_code_memory_local.py --install
 
    # Pnkln architecture loaded on every startup:
-   # - Judge #6 validation framework
+   # - Judge 6 validation framework
    # - ShadowTag cryptographic audit
    # - JR (Purpose/Reasons/Brakes) engine
    # - Glicko-2 rating system
@@ -873,7 +873,7 @@ erik-hancock-llm-memory/
 
 - Synergizes with **NS semantic memory** (Layer 1)
 
-- Provides historical context for **Judge #6** validation (Layer 1)
+- Provides historical context for **Judge 6** validation (Layer 1)
 
 - Training corpus for **GRPO optimization** (Layer 5)
 
@@ -1099,7 +1099,7 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
 
 - [ ] Cherry-pick Gemini function calling core
 
-- [ ] Cherry-pick PNKLN stack (Judge #6, Cor, ShadowTag, NS)
+- [ ] Cherry-pick PNKLN stack (Judge 6, Cor, ShadowTag, NS)
 
 - [ ] Cherry-pick Glicko-2 implementation
 
@@ -1177,7 +1177,7 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
 
 3. **PNKLN Stack** adds validation & audit
 
-   - Judge #6 validates every function call
+   - Judge 6 validates every function call
 
    - ShadowTag provides cryptographic proof
 

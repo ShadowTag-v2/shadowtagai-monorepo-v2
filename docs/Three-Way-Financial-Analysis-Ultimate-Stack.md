@@ -61,7 +61,7 @@ C: Future Architecture   "We're replacing synchronous systems with agents"
 
 - Cor.5 Boardroom IQ 160 Framework
 - EU AI Act & DSA VLOP Compliance
-- PNKLN Core Stack adaptation (Gemini Ingestion + Judge #6)
+- PNKLN Core Stack adaptation (Gemini Ingestion + Judge 6)
 - Financial analysis comparing approaches
 
 **Value created:**
@@ -84,9 +84,9 @@ C: Future Architecture   "We're replacing synchronous systems with agents"
 
 **What was built:** 5,728 lines production Python code
 
-- Judge #6 Pipeline (p99≤90ms SLA)
+- Judge 6 Pipeline (p99≤90ms SLA)
 - Gemini Ingestion Layer (nightly CronJob)
-- JR Engine (<500μs ATP 5-19 risk assessment)
+- JR Engine (<500μs Compliance Framework risk assessment)
 - Ethical Crawler (robots.txt compliance)
 - Monte Carlo Risk Assessment (5 parallel models)
 - Test suite (24 test files, 90%+ coverage)
@@ -163,7 +163,7 @@ C: Future Architecture   "We're replacing synchronous systems with agents"
 
 **Branch B only:**
 
-- "Here's our live Judge #6 pipeline running at p99≤90ms. We process 5K items/night at $77/month..."
+- "Here's our live Judge 6 pipeline running at p99≤90ms. We process 5K items/night at $77/month..."
 - **Investor reaction:** "This is real. How much runway do you have?"
 - **Funding range:** $500K-2M pre-seed, $2M-4M seed
 - **Dilution:** 10-20% → Post-money $10M-20M
@@ -198,7 +198,7 @@ C: Future Architecture   "We're replacing synchronous systems with agents"
 **Branch A (Compliance-First):**
 
 - Month 1-2: Finish all docs (NIST, C2PA, adtech, etc.)
-- Month 3-6: Implement Judge #6 + Ingestion from specs
+- Month 3-6: Implement Judge 6 + Ingestion from specs
 - Month 7-9: Build UI/UX layer
 - Month 10-11: Beta testing
 - Month 12: Launch, first revenue
@@ -233,10 +233,10 @@ C: Future Architecture   "We're replacing synchronous systems with agents"
 **Branch A + B + C merged (Ultimate Stack):**
 
 - Month 0: Code exists ✅, Docs exist ✅, Research exists ✅
-- Month 1-2: Ship MVP with Judge #6 (synchronous)
+- Month 1-2: Ship MVP with Judge 6 (synchronous)
 - Month 3-4: First revenue from MVP
 - Month 5-12: Build agent governance (GaaS + MI9) in parallel
-- Month 13-16: Shadow mode validation (agents vs Judge #6)
+- Month 13-16: Shadow mode validation (agents vs Judge 6)
 - Month 17-20: Gradual migration to hybrid (98% OPA + 2% agents)
 - Month 21-24: Full agent governance for enterprise contracts
 - **Total:** 5 months to first revenue, 7 months to differentiated product, 24 months to ultimate architecture
@@ -283,7 +283,7 @@ C: Future Architecture   "We're replacing synchronous systems with agents"
 
 ## 3. Strategic Trade-Offs: The Architectural Decision
 
-### 3.1 Synchronous (Judge #6) vs Asynchronous (Agent Governance)
+### 3.1 Synchronous (Judge 6) vs Asynchronous (Agent Governance)
 
 Branch B implements **synchronous enforcement** (p99≤90ms):
 
@@ -326,7 +326,7 @@ Weighted average latency: ~100ms
 
 ### 3.2 When to Use Which Architecture
 
-**Use Branch B synchronous Judge #6 when:**
+**Use Branch B synchronous Judge 6 when:**
 
 - Latency <90ms is regulatory requirement (banking, defense)
 - Determinism legally mandated (zero hallucination tolerance)
@@ -350,7 +350,7 @@ Weighted average latency: ~100ms
 - Willing to accept ~100ms weighted average latency
 - Want cost savings ($357K/year) without compromising safety
 
-**ShadowTag recommendation:** Start with Judge #6 (Branch B), deploy agent governance (Branch C) in shadow mode after 6 months, migrate to hybrid after 12 months validation.
+**ShadowTag recommendation:** Start with Judge 6 (Branch B), deploy agent governance (Branch C) in shadow mode after 6 months, migrate to hybrid after 12 months validation.
 
 ---
 
@@ -498,7 +498,7 @@ Weighted average latency: ~100ms
 **Phase 0: Immediate (Week 1-2) - Merge A + B**
 
 - Integrate documentation with code
-- Add compliance comments to Judge #6, Ingestion Layer
+- Add compliance comments to Judge 6, Ingestion Layer
 - Deploy MVP to staging GKE
 - **Cost:** $10K (1 eng-week)
 - **Outcome:** Demo-ready + audit-ready
@@ -506,8 +506,8 @@ Weighted average latency: ~100ms
 **Phase 1: Shadow Mode (Month 1-4) - Add Agent Research**
 
 - Implement agent_governance.py using ADK + Agent Engine
-- Deploy in shadow mode (parallel to Judge #6, no traffic)
-- Validate 95%+ agreement between Judge #6 and agents
+- Deploy in shadow mode (parallel to Judge 6, no traffic)
+- Validate 95%+ agreement between Judge 6 and agents
 - **Cost:** $100K (2 engineers × 2 months)
 - **Outcome:** Validate agent governance feasibility
 
@@ -551,7 +551,7 @@ Weighted average latency: ~100ms
 - **Probability:** 30% (Medium)
 - **Impact:** $200K wasted on implementation
 - **Mitigation:** Phase 1 shadow mode validates before full commitment
-- **Fallback:** Keep Judge #6 synchronous, use agents only for policy authoring
+- **Fallback:** Keep Judge 6 synchronous, use agents only for policy authoring
 
 **Risk 2: Regulatory rejection of eventual consistency**
 
@@ -622,7 +622,7 @@ Weighted average latency: ~100ms
 - **Probability:** 50% (Medium-High) - market dependent
 - **Impact:** Raise at $15M-30M instead of $60M-100M
 - **Mitigation:** Bootstrap Phase 0-1 with revenue, delay Phase 2-4 until Series A
-- **Fallback:** Cut scope, ship Judge #6 only (Branch B), add agents in Series B
+- **Fallback:** Cut scope, ship Judge 6 only (Branch B), add agents in Series B
 
 ---
 
@@ -696,7 +696,7 @@ Weighted average latency: ~100ms
 **Month 1-2: Ship MVP**
 
 - Merge Branch B code + Branch A compliance docs
-- Add compliance annotations to Judge #6 code
+- Add compliance annotations to Judge 6 code
 - Deploy to staging GKE
 - Build basic UI dashboard
 - **Milestone:** Demo-ready for investors
@@ -711,7 +711,7 @@ Weighted average latency: ~100ms
 
 - Hire 2 engineers specialized in ADK/LangGraph
 - Implement GaaS + MI9 frameworks
-- Deploy agents in shadow mode (parallel to Judge #6)
+- Deploy agents in shadow mode (parallel to Judge 6)
 - Validate 95%+ agreement
 - **Milestone:** Agent governance validated
 
@@ -885,9 +885,9 @@ Weighted average latency: ~100ms
 **The Triple Crown:**
 
 1. **Working Code** (Branch B)
-   - Judge #6 p99≤90ms validation
+   - Judge 6 p99≤90ms validation
    - Gemini Ingestion 5K items/night
-   - JR Engine <500μs ATP 5-19 risk
+   - JR Engine <500μs Compliance Framework risk
    - Ethical Crawler robots.txt compliance
    - ✅ Can launch TOMORROW
 

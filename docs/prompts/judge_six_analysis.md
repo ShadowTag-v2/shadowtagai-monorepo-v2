@@ -1,8 +1,8 @@
-# Judge #6 Validation Layer - Analysis Prompt for Gemini 2.0 Pro
+# Judge 6 Validation Layer - Analysis Prompt for Gemini 2.0 Pro
 
 ## Meta Information
 
-**Analysis Target**: Judge #6 Validation Layer (PNKLN Core Stack™)
+**Analysis Target**: Judge 6 Validation Layer (PNKLN Core Stack™)
 **Analysis Tool**: Gemini 2.0 Pro
 **Analysis Type**: Production architecture and performance evaluation
 **Confidence Target**: ≥70% (with production telemetry and data)
@@ -13,19 +13,19 @@
 
 ## Prompt Structure
 
-This prompt is designed for Gemini 2.0 Pro to perform a comprehensive analysis of Judge #6, the validation and enforcement layer of the PNKLN Core Stack™. Unlike the Ingestion Layer analysis, this assumes access to production data, telemetry, and real-world performance metrics.
+This prompt is designed for Gemini 2.0 Pro to perform a comprehensive analysis of Judge 6, the validation and enforcement layer of the PNKLN Core Stack™. Unlike the Ingestion Layer analysis, this assumes access to production data, telemetry, and real-world performance metrics.
 
 ---
 
 ## ANALYSIS PROMPT
 
 ```
-You are a senior AI systems architect and performance engineer conducting a comprehensive production analysis of Judge #6, the downstream validation and enforcement component of the PNKLN Core Stack™.
+You are a senior AI systems architect and performance engineer conducting a comprehensive production analysis of Judge 6, the downstream validation and enforcement component of the PNKLN Core Stack™.
 
 ### Context
 
-Judge #6 is a hybrid Gemini + PyTorch inference system designed to:
-- Validate intelligence items against ATP 5-19 compliance rules
+Judge 6 is a hybrid Gemini + PyTorch inference system designed to:
+- Validate intelligence items against Compliance Framework compliance rules
 - Perform JR (Joint Resolution) validation on collected data
 - Detect and minimize false positives (FP) and false negatives (FN)
 - Operate in real-time with p99 latency ≤90ms
@@ -64,7 +64,7 @@ Perform a structured analysis across **8 key dimensions**, providing:
 
 **Evaluate**:
 - Is the hybrid AI architecture (Gemini for nuanced rules + PyTorch for speed) optimal?
-- How well does Judge #6 integrate with services across 4 namespaces?
+- How well does Judge 6 integrate with services across 4 namespaces?
 - Are there architectural bottlenecks revealed by production data?
 - Does the system scale horizontally under increased load?
 - How resilient is the architecture to service failures in called namespaces?
@@ -116,7 +116,7 @@ Reasoning: [Why this confidence level given production data]
 **Focus**: p99 ≤90ms target, throughput capacity, latency distribution
 
 **Evaluate**:
-- Does Judge #6 consistently meet the p99 ≤90ms latency SLA?
+- Does Judge 6 consistently meet the p99 ≤90ms latency SLA?
 - What is the actual latency distribution (p50, p95, p99, p99.9)?
 - What is the maximum sustained throughput (validations/second)?
 - Are there latency spikes or patterns (time-of-day, load-dependent)?
@@ -133,19 +133,19 @@ Reasoning: [Why this confidence level given production data]
 
 ---
 
-#### 3. ATP 5-19 & JR Validation Accuracy
+#### 3. Compliance Framework & JR Validation Accuracy
 **Focus**: Rule compliance, validation correctness, FP/FN rates
 
 **Evaluate**:
-- How accurately does Judge #6 enforce ATP 5-19 rules (% correct validations)?
+- How accurately does Judge 6 enforce Compliance Framework rules (% correct validations)?
 - What are the observed FP/FN rates, and how do they compare to targets?
-- Are there specific ATP 5-19 rules with higher error rates?
+- Are there specific Compliance Framework rules with higher error rates?
 - How effective is JR validation in catching edge cases?
 - Are there patterns in validation errors (e.g., certain data types, sources)?
 - How quickly are validation logic bugs identified and fixed?
 
 **Key Documents & Data**:
-- ATP 5-19 rule specifications and implementation
+- Compliance Framework rule specifications and implementation
 - FP/FN analysis reports with categorization
 - Validation accuracy metrics over time
 - User-reported validation errors and resolutions
@@ -158,7 +158,7 @@ Reasoning: [Why this confidence level given production data]
 **Focus**: ≥98% coverage target, test effectiveness, code maintainability
 
 **Evaluate**:
-- Does Judge #6 maintain ≥98% test coverage consistently?
+- Does Judge 6 maintain ≥98% test coverage consistently?
 - Are the tests effective (high coverage + low production bugs)?
 - What code paths are untested or under-tested?
 - Is the codebase maintainable (complexity, documentation)?
@@ -182,13 +182,13 @@ Reasoning: [Why this confidence level given production data]
 - How reliable are service calls to the 4 namespaces (success rate)?
 - What is the latency overhead of cross-namespace communication?
 - Are there namespaces with higher failure or timeout rates?
-- How does Judge #6 handle service unavailability (retries, fallbacks)?
+- How does Judge 6 handle service unavailability (retries, fallbacks)?
 - Is the integration well-documented and monitored?
 - Are there API versioning or compatibility issues?
 
 **Key Documents & Data**:
 - Service call telemetry by namespace (latency, errors, timeouts)
-- Dependency graphs showing Judge #6 → service interactions
+- Dependency graphs showing Judge 6 → service interactions
 - Circuit breaker/retry logic implementation and metrics
 - Service SLA compliance data
 
@@ -221,7 +221,7 @@ Reasoning: [Why this confidence level given production data]
 **Focus**: Blocking decisions, false block rate, user impact
 
 **Evaluate**:
-- What percentage of items are blocked by Judge #6 (block rate)?
+- What percentage of items are blocked by Judge 6 (block rate)?
 - Is the block rate stable or trending?
 - What is the false block rate (items incorrectly rejected)?
 - How do users perceive blocking decisions (complaints, overrides)?
@@ -242,7 +242,7 @@ Reasoning: [Why this confidence level given production data]
 **Focus**: Observability, alert coverage, incident response
 
 **Evaluate**:
-- Is Judge #6 well-instrumented (metrics, logs, traces)?
+- Is Judge 6 well-instrumented (metrics, logs, traces)?
 - Are alerts comprehensive and actionable?
 - How quickly are production issues detected and resolved (MTTD, MTTR)?
 - Are there monitoring blind spots that led to undetected issues?
@@ -276,7 +276,7 @@ After analyzing all 8 dimensions, provide:
 - What additional data would increase confidence further?
 
 **Production Health Assessment**:
-- Based on this analysis, what is Judge #6's current production health (Healthy/Degraded/Critical)?
+- Based on this analysis, what is Judge 6's current production health (Healthy/Degraded/Critical)?
 - What are the top 3 priorities to improve production stability?
 - What technical debt should be addressed in the next quarter?
 
@@ -308,7 +308,7 @@ Target **overall confidence ≥70%** given production context.
 
 ### Begin Analysis
 
-Please proceed with the structured analysis of Judge #6 across all 8 dimensions, followed by the overall summary. Emphasize production data and real-world observations.
+Please proceed with the structured analysis of Judge 6 across all 8 dimensions, followed by the overall summary. Emphasize production data and real-world observations.
 ```
 
 ---
@@ -330,7 +330,7 @@ Please proceed with the structured analysis of Judge #6 across all 8 dimensions,
 
 2. **Input to Gemini 2.0 Pro**:
    - Start a new Gemini conversation
-   - First message: "I'm providing production data and code for Judge #6 analysis."
+   - First message: "I'm providing production data and code for Judge 6 analysis."
    - Upload or paste:
      - judge_six.py and related code
      - CSV/JSON of production metrics
@@ -365,20 +365,20 @@ Please proceed with the structured analysis of Judge #6 across all 8 dimensions,
 
 ## Comparison with Gemini Ingestion Layer Analysis Prompt
 
-| Aspect                | Judge #6 Analysis                              | Gemini Ingestion Analysis                                      |
+| Aspect                | Judge 6 Analysis                              | Gemini Ingestion Analysis                                      |
 | --------------------- | ---------------------------------------------- | -------------------------------------------------------------- |
-| **Target System**     | Judge #6 Validation Layer                      | Gemini Ingestion Layer                                         |
+| **Target System**     | Judge 6 Validation Layer                      | Gemini Ingestion Layer                                         |
 | **Role**              | Reactive validator                             | Proactive collector                                            |
 | **Data Availability** | Production telemetry (30+ days)                | Specs only (pre-production)                                    |
 | **Confidence Target** | ≥70%                                           | ≥60%                                                           |
 | **Key Metrics**       | Latency (p99 ≤90ms), throughput, FP/FN rates   | Items/day, sources, cost/item, tier scores                     |
 | **Architecture**      | Hybrid Gemini+PyTorch                          | GKE CronJob, multi-container                                   |
 | **Execution Pattern** | Real-time (sub-100ms)                          | Batch (~45 min nightly)                                        |
-| **Unique Dimensions** | ATP 5-19 compliance, JR validation, block rate | Ethical compliance, multi-source coverage, tier classification |
+| **Unique Dimensions** | Compliance Framework compliance, JR validation, block rate | Ethical compliance, multi-source coverage, tier classification |
 | **Analysis Focus**    | Accuracy, speed, reliability                   | Breadth, ethics, efficiency                                    |
 | **Primary Risk**      | Latency SLA violation, false blocks            | Source outages, cost overruns                                  |
 
-**Complementary Analysis**: Judge #6 focuses on validation quality and speed; Ingestion Layer focuses on collection breadth and ethics. Together they cover the full intelligence pipeline.
+**Complementary Analysis**: Judge 6 focuses on validation quality and speed; Ingestion Layer focuses on collection breadth and ethics. Together they cover the full intelligence pipeline.
 
 ---
 
@@ -386,7 +386,7 @@ Please proceed with the structured analysis of Judge #6 across all 8 dimensions,
 
 ### 1. Production Data Emphasis
 
-Judge #6 analysis relies heavily on real metrics:
+Judge 6 analysis relies heavily on real metrics:
 
 - Latency histograms, not estimates
 - Actual FP/FN rates from labeled data
@@ -398,15 +398,15 @@ Judge #6 analysis relies heavily on real metrics:
 
 ### 3. Performance-Critical Dimensions
 
-Judge #6 has strict latency SLAs (p99 ≤90ms), so performance analysis is more granular.
+Judge 6 has strict latency SLAs (p99 ≤90ms), so performance analysis is more granular.
 
 ### 4. Validation Accuracy Focus
 
-ATP 5-19 compliance and FP/FN rates are central, unlike Ingestion's tier classification.
+Compliance Framework compliance and FP/FN rates are central, unlike Ingestion's tier classification.
 
 ### 5. Service Integration Complexity
 
-Judge #6 **calls** services in 4 namespaces; Ingestion is **called by** them. This prompt digs into cross-namespace reliability.
+Judge 6 **calls** services in 4 namespaces; Ingestion is **called by** them. This prompt digs into cross-namespace reliability.
 
 ---
 
@@ -422,10 +422,10 @@ Judge #6 **calls** services in 4 namespaces; Ingestion is **called by** them. Th
 
 ### When to Update This Prompt
 
-- **Architecture Changes**: If Judge #6's hybrid model evolves (e.g., switch from Gemini to custom LLM)
+- **Architecture Changes**: If Judge 6's hybrid model evolves (e.g., switch from Gemini to custom LLM)
 - **New Metrics**: If additional KPIs are added (e.g., fairness metrics for validation decisions)
-- **ATP Rule Updates**: If ATP 5-19 rules change significantly
-- **Namespace Expansion**: If Judge #6 integrates with more than 4 namespaces
+- **ATP Rule Updates**: If Compliance Framework rules change significantly
+- **Namespace Expansion**: If Judge 6 integrates with more than 4 namespaces
 - **Quarterly Reviews**: Re-run analysis every quarter to track improvements
 
 ### Feedback Loop
@@ -443,9 +443,9 @@ After running this analysis:
 ## Related Documents
 
 - [PNKLN Core Stack Architecture](../architecture/PNKLN_CORE_STACK.md)
-- [Judge #6 Specifications](../architecture/JUDGE_SIX.md) (to be created)
+- [Judge 6 Specifications](../architecture/JUDGE_SIX.md) (to be created)
 - [Gemini Ingestion Layer Analysis Prompt](./gemini_ingestion_analysis.md) (complementary)
-- [Analysis Results Archive](./results/) (store both Judge #6 and Ingestion analyses)
+- [Analysis Results Archive](./results/) (store both Judge 6 and Ingestion analyses)
 
 ---
 
@@ -458,7 +458,7 @@ After running this analysis:
 ## Appendix: Sample Gemini Output Structure (with Production Data)
 
 ```
-# Judge #6 Validation Layer Analysis Results
+# Judge 6 Validation Layer Analysis Results
 Generated: 2025-11-15
 Analyst: Gemini 2.0 Pro
 Confidence: 74%
@@ -542,7 +542,7 @@ Overall Weaknesses:
 ...
 
 Critical Risks:
-1. **Gemini API dependency**: Single point of failure; Google API changes or outages directly impact Judge #6
+1. **Gemini API dependency**: Single point of failure; Google API changes or outages directly impact Judge 6
    - Probability: Medium (3 incidents/month)
    - Impact: High (full validation unavailable)
    - Mitigation: Implement caching + local fallback model
@@ -550,7 +550,7 @@ Critical Risks:
    - Probability: High (traffic up 12% QoQ)
    - Impact: Medium (user complaints, but not blocking)
    - Mitigation: Horizontal scaling + async patterns
-3. **ATP 5-19 rule drift**: Manual rule updates risk inconsistencies (2 incidents where rules weren't synced across regions)
+3. **Compliance Framework rule drift**: Manual rule updates risk inconsistencies (2 incidents where rules weren't synced across regions)
    - Probability: Low (1-2/quarter)
    - Impact: Medium (incorrect validations)
    - Mitigation: Automated rule deployment with version tracking
@@ -572,7 +572,7 @@ Confidence Reasoning:
 **Production Health Assessment**:
 **Status**: **Healthy** (with caveats)
 
-Judge #6 is operational and meeting most SLAs, but has notable technical debt:
+Judge 6 is operational and meeting most SLAs, but has notable technical debt:
 - p99 latency SLA is consistently violated (118ms vs. 90ms target)
 - Gemini API dependency creates resilience risk
 - Service integration with Namespace 2 needs attention

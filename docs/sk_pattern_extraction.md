@@ -68,7 +68,7 @@ var result = await kernel.RunAsync(plan);
 - LLM-based planning: unpredictable token costs
 - Azure OpenAI dependency
 
-### ShadowTagAi Adaptation: Judge #6 Validation Pipeline
+### ShadowTagAi Adaptation: Judge 6 Validation Pipeline
 
 **Implementation:** `/shadowtagai/core/judge_six_pipeline.py`
 
@@ -155,14 +155,14 @@ class MonteCarloRiskAssessment:
         # AsyncIO gather - <500μs total
         results = await asyncio.gather(*tasks)
 
-        # Aggregate via ATP 5-19 matrix
+        # Aggregate via Compliance Framework matrix
         return self._aggregate(results)
 ```
 
 **Advantages:**
 
 - ✅ **<500μs execution**: All 5 models in parallel
-- ✅ **Built-in aggregation**: ATP 5-19 risk matrix
+- ✅ **Built-in aggregation**: Compliance Framework risk matrix
 - ✅ **No Kernel overhead**: Pure AsyncIO
 - ✅ **Deterministic**: No LLM planning
 
@@ -172,7 +172,7 @@ class MonteCarloRiskAssessment:
 | ------------------------ | ----------- | ---------------------- |
 | Execution time (5 funcs) | ~50-100ms   | <500μs                 |
 | Overhead per function    | 10-20ms     | <100μs                 |
-| Aggregation              | Manual      | Built-in (ATP 5-19)    |
+| Aggregation              | Manual      | Built-in (Compliance Framework)    |
 
 ---
 
@@ -243,7 +243,7 @@ def shadowtag_embed_video(
 | ------------------------- | ----------------------------- | ----------- |
 | `shadowtag_embed_video`   | DCT video watermarking        | ~200-500ms  |
 | `shadowtag_embed_audio`   | Ultrasonic audio watermarking | ~100-300ms  |
-| `governance_validate`     | Judge #6 validation           | p99≤90ms    |
+| `governance_validate`     | Judge 6 validation           | p99≤90ms    |
 | `risk_assess_monte_carlo` | Concurrent risk assessment    | <500μs      |
 
 ---
@@ -258,7 +258,7 @@ def shadowtag_embed_video(
 ### ❌ Planner Classes (SequentialPlanner, StepwisePlanner)
 
 **Reason:** Token-heavy LLM calls conflict with MCP 40-60% reduction thesis
-**Alternative:** JR Engine deterministic logic (ATP 5-19)
+**Alternative:** JR Engine deterministic logic (Compliance Framework)
 
 ### ❌ Semantic Memory Connectors
 
@@ -287,7 +287,7 @@ def shadowtag_embed_video(
 ├── core/
 │   ├── __init__.py                     # Core exports
 │   ├── cor_orchestrator.py             # SK Patterns 1-3 (500 lines)
-│   ├── jr_engine.py                    # ATP 5-19 framework (400 lines)
+│   ├── jr_engine.py                    # Compliance Framework framework (400 lines)
 │   ├── judge_six_pipeline.py           # Pattern 1 implementation (350 lines)
 │   └── monte_carlo_risk.py             # Pattern 2 implementation (300 lines)
 ├── tools/
@@ -298,7 +298,7 @@ def shadowtag_embed_video(
 
 /tests/
 ├── test_cor_orchestrator.py            # Pattern 1-2 tests
-├── test_jr_engine.py                   # ATP 5-19 tests
+├── test_jr_engine.py                   # Compliance Framework tests
 ├── test_judge_six.py                   # Pipeline SLA tests
 └── test_monte_carlo.py                 # Concurrent execution tests
 
@@ -319,8 +319,8 @@ def shadowtag_embed_video(
 ```
 JR Engine quick_scan:           <500μs  ✅ Target met
 Monte Carlo (5 models):         <500μs  ✅ Target met
-Judge #6 fast path (80%):       20-30ms ✅ Well under 90ms SLA
-Judge #6 full pipeline (20%):   70-85ms ✅ Meets 90ms SLA
+Judge 6 fast path (80%):       20-30ms ✅ Well under 90ms SLA
+Judge 6 full pipeline (20%):   70-85ms ✅ Meets 90ms SLA
 Cor orchestration overhead:     <1ms    ✅ Target met
 ```
 
@@ -374,12 +374,12 @@ pytest tests/test_monte_carlo.py::TestMonteCarloRiskAssessment::test_evaluate_sc
 └────────┬─────────┘
          │
     ┌────┴────┐
-    │JR Engine│          Deterministic ATP 5-19
+    │JR Engine│          Deterministic Compliance Framework
     │ (<500μs)│          Zero token cost
     └────┬────┘
          │
   ┌──────┴──────┐
-  │  Judge #6   │        p99≤90ms SLA
+  │  Judge 6   │        p99≤90ms SLA
   │ (p99≤90ms)  │        Hybrid (Gemini+PyTorch+Rules)
   │  Hybrid     │        Conditional stage skipping
   └──────┬──────┘
@@ -413,7 +413,7 @@ Based on COR.54 analysis, ShadowTagAi + SK patterns address:
 | ------------------- | --------------------- | -------------------------- |
 | **SLA commitments** | ❌ None               | ✅ p99≤90ms contractual    |
 | **Cost discipline** | ❌ Opaque             | ✅ 102× compression        |
-| **Governance**      | ❌ Prompts only       | ✅ ATP 5-19 deterministic  |
+| **Governance**      | ❌ Prompts only       | ✅ Compliance Framework deterministic  |
 | **Orchestration**   | ❌ LangChain external | ✅ Cor brain <1ms          |
 | **Multi-agent**     | ❌ Roadmap            | ✅ Production (AutoGen+NS) |
 | **Edge execution**  | ❌ Regional           | ✅ CloudFlare <50ms        |
@@ -433,7 +433,7 @@ Based on COR.54 analysis, ShadowTagAi + SK patterns address:
 
 ## USAGE EXAMPLES
 
-### Example 1: Judge #6 Validation (Pattern 1)
+### Example 1: Judge 6 Validation (Pattern 1)
 
 ```python
 from shadowtagai.core.judge_six_pipeline import JudgeSixPipeline
@@ -524,7 +524,7 @@ validation = await governance_validate(
 
 **Mitigation:** We extracted the **structural patterns** (sequential, concurrent, plugin schema), not implementation details. SK's value is in orchestration logic, which we've replicated deterministically.
 
-### Risk 2: Judge #6 pipeline violates p99≤90ms under load
+### Risk 2: Judge 6 pipeline violates p99≤90ms under load
 
 **Mitigation:**
 
@@ -559,7 +559,7 @@ validation = await governance_validate(
 **2. Regulated Enterprise (Healthcare, Finance, Defense)**
 
 - Pain: "Need audit trail + determinism"
-- Win: ATP 5-19 compliance + p99≤90ms SLA
+- Win: Compliance Framework compliance + p99≤90ms SLA
 
 **3. Bootstrap SaaS**
 
@@ -580,7 +580,7 @@ validation = await governance_validate(
 
 - ✅ p99≤90ms contractual SLA (Google has none)
 - ✅ $60-65K burn (vs $200K+ estimated)
-- ✅ ATP 5-19 governance (regulatory compliance)
+- ✅ Compliance Framework governance (regulatory compliance)
 
 ---
 
