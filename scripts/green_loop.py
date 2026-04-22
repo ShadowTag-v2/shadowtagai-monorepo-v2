@@ -12,7 +12,13 @@ def green_loop() -> None:
         logging.info("Green Line intact. Preserving artifact.")
         os.makedirs("data/green_loop", exist_ok=True)
         with open("data/green_loop/latest.json", "w") as f:
-            f.write(json.dumps({"hash": subprocess.getoutput("git rev-parse HEAD")}))
+            result = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            f.write(json.dumps({"hash": result.stdout.strip()}))
 
 
 if __name__ == "__main__":

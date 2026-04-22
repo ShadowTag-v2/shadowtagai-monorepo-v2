@@ -11,8 +11,6 @@ Requires:
 
 import json
 import logging
-import os
-import sys
 
 logger = logging.getLogger("p1_push_notify")
 

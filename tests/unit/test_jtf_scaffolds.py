@@ -8,6 +8,10 @@ Tests cover:
 - J-6 augmented validation results
 """
 
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+
 import pytest
 
 from src.headquarters.jtf_staff_topology import JStaffDesignation, JTFHeadquarters
