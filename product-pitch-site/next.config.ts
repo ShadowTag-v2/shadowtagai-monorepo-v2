@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
-  /* Use "export" for static Firebase Hosting deploy */
+  output: "export",
+  /* Static export for Firebase Hosting — no Node.js server needed */
 };
 
 export default nextConfig;

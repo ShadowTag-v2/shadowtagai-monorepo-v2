@@ -136,7 +136,7 @@ repo_roots:
     status: canonical
     path: apps/counselconduit
     notes: >-
-      Production CounselConduit v3.1.0 on Cloud Run. 33 API modules.
+      Production CounselConduit v3.2.0 on Cloud Run. 23 API modules, 44 endpoint files.
       Phase 1 + 2 LIVE. OpenAPI docs at /docs.
       Secrets: GCP Secret Manager (prod), .env (local dev only).
 
@@ -159,6 +159,22 @@ repo_roots:
     status: canonical
     path: apps/shadowtag-default
     notes: Firebase Hosting default site redirect.
+
+  - name: product-pitch-site
+    status: canonical
+    path: product-pitch-site
+    notes: >-
+      KovelAI pitch site source (Next.js 16, Turbopack, static export).
+      Builds to apps/kovelai/public/ for Firebase Hosting.
+      output: export. metadataBase: https://kovelai.web.app
+
+  # ─── Agent Protocol Infrastructure ───
+  - name: a2a-agent-cards
+    status: canonical
+    path: apps/counselconduit/.well-known
+    notes: >-
+      A2A Agent Cards for CounselConduit multi-agent topology.
+      Orchestrator, Oracle Studio, Vent Mode, Billing Agent.
 
 control_plane:
   canonical_mcp_config: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/antigravity-mcp-config.json
@@ -195,15 +211,15 @@ highest_value_opportunities:
   - KovelAI (formerly CounselConduit) is the Google Cloud billing gateway product. uphillsnowball is the independent local R&D lab. They remain completely detached.
 
 hardened_state:
-  version: "9.6"
-  timestamp: "2026-04-22T01:40:00Z"
+  version: "10.1"
+  timestamp: "2026-04-22T19:36:00Z"
   ci_python: "3.13"
   venv_primary: "3.14.3"
   venv_secondary: "3.14.3"
   dotnet_sdk: "10.0.106"
   dotnet_target_framework: "net10.0"
-  counselconduit_version: "3.1.0"
-  tests_passed: "196"
+  counselconduit_version: "3.2.0"
+  tests_passed: "68"
   tests_e2e_skipped: "5 (live Cloud Run — expected failures)"
   e2e_tests: "tests/e2e/test_counselconduit_e2e.py"
   lighthouse_perf: "93+"
@@ -219,20 +235,25 @@ hardened_state:
   hosting_targets: 4
   preview_channels: 2
   cloud_functions: 1
-  alert_policies: 7
+  alert_policies: 9
   scheduler_jobs: 2
   dashboards: 2
-  api_modules: 33
-  risk_register_count: 55
+  api_modules: 23
+  risk_register_count: 68
   cloud_armor_policy: "apps/counselconduit/cloud_armor_policy.yaml"
   fleet_vanguard_version: "11.0"
   secrets_doctrine: "secrets_manager_doctrine"
   model_refs_purged: true
   veo_pipeline: "scripts/veo_pipeline.py (6 presets)"
   veo_presets: ["hero_drift", "counselconduit_hero", "shadowtagai_marketing", "onboarding_flow", "billing_explainer", "stripe_webhook"]
-  skills_added: ["google-external-cognitive-suite", "veo3-flow-cinematic"]
+  skills_added: ["google-external-cognitive-suite", "veo3-flow-cinematic", "a2a-agent-card-publisher", "a2ui-generative-blueprint", "agui-sse-transport", "adk2-graph-workflow", "four-pillar-protocol-stack", "agent-encryption-doctrine", "sequential-attention-selector", "cloud-api-registry-mcp-binder", "developer-connect-cicd", "a2a-development-patterns"]
   pinkln_docs_relocated: "docs/pinkln/ (11 files, 27K words)"
   disk_reclaimed_gb: 219
+  a2a_protocol_version: "1.0"
+  agui_transport: "sse"
+  a2ui_consumer: "copilotkit"
+  adrs: ["001-deepseek-ocr-evaluation", "002-sse-only-transport", "003-backend-encryption", "004-copilotkit-a2ui-consumer"]
+  agent_cards: ["apps/counselconduit/.well-known/agent.json"]
 
 infra:
   monitoring:
