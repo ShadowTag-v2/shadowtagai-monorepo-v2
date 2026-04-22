@@ -28,7 +28,7 @@ async def send_email(
     subject: str,
     html: str,
     reply_to: str | None = None,
-    tags: list[dict[str, str]] | None = None,  # noqa: ARG001 — caller-facing API, not consumed by Gmail backend
+    _tags: list[dict[str, str]] | None = None,  # noqa: ARG001 — caller-facing API, not consumed by Gmail backend
 ) -> dict[str, Any]:
     """Send an email via Gmail API (Google Workspace).
 
@@ -105,7 +105,7 @@ async def send_magic_link_email(
         to=to,
         subject=f"{attorney_name} has invited you to a secure research session",
         html=html,
-        tags=[{"name": "type", "value": "magic_link"}],
+        _tags=[{"name": "type", "value": "magic_link"}],
     )
 
 
@@ -140,7 +140,7 @@ async def send_vent_receipt(
         to=to,
         subject=f"Payment confirmed — {amount_display} intake session",
         html=html,
-        tags=[{"name": "type", "value": "vent_receipt"}],
+        _tags=[{"name": "type", "value": "vent_receipt"}],
     )
 
 
@@ -173,5 +173,5 @@ async def send_gdpr_confirmation(
         to=to,
         subject="Your account deletion request has been received",
         html=html,
-        tags=[{"name": "type", "value": "gdpr_confirmation"}],
+        _tags=[{"name": "type", "value": "gdpr_confirmation"}],
     )
