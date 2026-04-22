@@ -15,7 +15,7 @@ from __future__ import annotations
 import json
 import logging
 from dataclasses import dataclass
-from enum import Enum, StrEnum
+from enum import StrEnum
 from typing import Any
 
 logger = logging.getLogger(__name__)
@@ -194,9 +194,10 @@ class DeadManSwitch:
             The Cloud Tasks task name.
         """
         try:
+            import time as _time
+
             from google.cloud import tasks_v2
             from google.protobuf import timestamp_pb2
-            import time as _time
 
             client = tasks_v2.CloudTasksClient()
             parent = client.queue_path(

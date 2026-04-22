@@ -14,10 +14,9 @@ Collection structure:
 from __future__ import annotations
 
 import logging
-import time
 import uuid
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone, UTC
+from datetime import UTC, datetime
 from typing import Any
 
 logger = logging.getLogger(__name__)

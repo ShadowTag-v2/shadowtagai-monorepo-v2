@@ -15,7 +15,7 @@ Security model:
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone, UTC
+from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, status
@@ -43,7 +43,7 @@ class BYOKKeyRequest(BaseModel):
 
     @field_validator("api_key")
     @classmethod
-    def validate_key_format(cls, v: str) -> str:  # noqa: vulture — @classmethod requires cls
+    def validate_key_format(cls, v: str) -> str:  # noqa  # vulture — @classmethod requires cls
         """Basic format validation."""
         if v.startswith("sk-") or v.startswith("AIza") or len(v) > 10:
             return v

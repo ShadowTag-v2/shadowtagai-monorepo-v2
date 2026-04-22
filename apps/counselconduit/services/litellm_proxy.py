@@ -18,8 +18,7 @@ import logging
 import time
 import uuid
 from dataclasses import dataclass, field
-from enum import Enum, StrEnum
-from typing import Any
+from enum import StrEnum
 
 logger = logging.getLogger(__name__)
 

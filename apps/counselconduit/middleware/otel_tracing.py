@@ -64,7 +64,7 @@ class _NoOpSpan:
 class _NoOpTracer:
     """No-op tracer for when OTel is not installed."""
 
-    def start_as_current_span(self, name: str, **kwargs: Any) -> _NoOpSpan:  # noqa: vulture — OTel interface
+    def start_as_current_span(self, name: str, **kwargs: Any) -> _NoOpSpan:  # noqa  # vulture — OTel interface
         return _NoOpSpan()
 
 
