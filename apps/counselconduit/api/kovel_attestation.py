@@ -19,7 +19,7 @@ import logging
 import os
 import time
 from collections import defaultdict
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, status
@@ -114,7 +114,7 @@ def generate_attestation(req: AttestationRequest) -> SessionAttestation:
         from api.uuid7 import uuid7_str  # type: ignore[no-redef]
 
     attestation_id = uuid7_str()
-    timestamp = datetime.now(UTC).isoformat()
+    timestamp = datetime.now(timezone.utc).isoformat()
 
     receipt_body = {
         "attestation_id": attestation_id,

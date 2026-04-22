@@ -17,7 +17,7 @@ import logging
 import time
 import uuid
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone, UTC
+from datetime import datetime, timezone
 from typing import Any
 
 logger = logging.getLogger(__name__)
@@ -34,10 +34,10 @@ class SessionRecord:
     state: str = "active"
     encryption_key_ref: str = ""  # Firestore doc ref to encryption key
     created_at: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
     updated_at: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
     ttl_seconds: int = 3600
     metadata: dict[str, Any] = field(default_factory=dict)
@@ -140,7 +140,7 @@ class FirestoreSessionService:
         ref = self._session_ref(tenant_id, session_id)
         await ref.update({
             "state": state,
-            "updated_at": datetime.now(UTC).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat(),
         })
 
     async def store_attestation(
