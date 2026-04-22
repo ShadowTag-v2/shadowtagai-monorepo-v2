@@ -3,7 +3,7 @@ name: mcp-fleet-vanguard
 description: Verifies all MCP servers are installed, operational, and used on each tool call. Prevents raw terminal fallbacks. Enforces STATE C zero-blind execution.
 ---
 
-# MCP Fleet Vanguard (v8.4)
+# MCP Fleet Vanguard (v11.0)
 
 This skill enforces strict "Zero-Blind Execution" rules for the IDE. It ensures that system tools, cloud deployments, and database queries are routed exclusively through the Model Context Protocol (MCP) fleet rather than raw bash fallbacks.
 
