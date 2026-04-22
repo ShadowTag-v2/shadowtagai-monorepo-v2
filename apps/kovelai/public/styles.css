@@ -809,6 +809,34 @@ img, video {
   color: var(--on-surface-variant);
 }
 
+/* --- Attorney Hook Section --- */
+.hook {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4xl);
+}
+
+.hook__problem {
+  max-width: 720px;
+}
+
+.hook__solution {
+  max-width: 100%;
+}
+
+.hook__cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+@media (max-width: 768px) {
+  .hook__cards {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* --- CTA Section --- */
 .cta-section {
   text-align: center;
@@ -895,6 +923,205 @@ img, video {
 
 .footer__bottom a:hover {
   color: var(--primary);
+}
+
+/* --- Section Variants --- */
+.section--alt {
+  background: var(--surface-container-lowest);
+}
+
+/* --- Comparison Table --- */
+.comparison-table {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--ghost-border);
+}
+
+.comparison-table table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: var(--space-md) var(--space-lg);
+  text-align: left;
+  border-bottom: 1px solid var(--ghost-border);
+  font-size: var(--body-md);
+}
+
+.comparison-table thead th {
+  background: var(--surface-container);
+  font-weight: 600;
+  font-size: var(--label-md);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--on-surface-variant);
+}
+
+.comparison-table__header--bad {
+  color: #e57373 !important;
+}
+
+.comparison-table__header--good {
+  color: var(--primary) !important;
+}
+
+.comparison-table__label {
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.comparison-table__bad {
+  color: #e57373;
+}
+
+.comparison-table__good {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.comparison-table tbody tr:hover {
+  background: rgba(15, 204, 206, 0.03);
+}
+
+.comparison-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* --- Testimonials --- */
+.testimonials__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+.testimonial {
+  background: var(--surface-container);
+  border: 1px solid var(--ghost-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.testimonial__stars {
+  color: #FFD700;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+.testimonial__quote {
+  font-size: var(--body-md);
+  color: var(--on-surface-variant);
+  line-height: 1.7;
+  flex: 1;
+  font-style: italic;
+}
+
+.testimonial__author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--ghost-border);
+}
+
+.testimonial__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--primary), var(--tertiary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: var(--label-sm);
+  color: var(--surface);
+  flex-shrink: 0;
+}
+
+.testimonial__name {
+  font-weight: 600;
+  font-size: var(--body-md);
+  color: var(--on-surface);
+}
+
+.testimonial__firm {
+  font-size: var(--label-sm);
+  color: var(--on-surface-variant);
+}
+
+/* --- FAQ --- */
+.faq__list {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.faq__item {
+  background: var(--surface-container);
+  border: 1px solid var(--ghost-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color var(--transition-base);
+}
+
+.faq__item[open] {
+  border-color: var(--primary);
+}
+
+.faq__question {
+  padding: var(--space-lg);
+  font-weight: 600;
+  font-size: var(--body-lg);
+  color: var(--on-surface);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.faq__question::-webkit-details-marker {
+  display: none;
+}
+
+.faq__question::after {
+  content: '+';
+  font-size: 1.4rem;
+  color: var(--primary);
+  font-weight: 300;
+  transition: transform var(--transition-base);
+  flex-shrink: 0;
+  margin-left: var(--space-md);
+}
+
+.faq__item[open] .faq__question::after {
+  content: '−';
+}
+
+.faq__answer {
+  padding: 0 var(--space-lg) var(--space-lg);
+  color: var(--on-surface-variant);
+  line-height: 1.7;
+  font-size: var(--body-md);
+}
+
+@media (max-width: 768px) {
+  .testimonials__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .testimonials__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* --- AI Processing Chips --- */

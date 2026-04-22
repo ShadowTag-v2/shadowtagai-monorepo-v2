@@ -56,7 +56,14 @@ def frame_git_repo(path_str) -> None:
 
         subprocess.run(["git", "add", "-A"], cwd=path_str, check=False)
 
-        status = subprocess.getoutput(f"cd '{path_str}' && git status --porcelain")
+        result = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=path_str,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        status = result.stdout
         if status.strip():
             subprocess.run(
                 ["git", "commit", "-m", "chore: autonomous local repository framing"],

@@ -10,10 +10,7 @@ Validates that:
 
 from __future__ import annotations
 
-import hashlib
-import hmac
 import os
-import time
 
 import httpx
 import pytest

@@ -91,7 +91,14 @@ def process_git_directory(repo_path: str, token: str) -> None:
         subprocess.run(["git", "add", "-A"], cwd=repo_path, check=False)
 
         # 2. Check if there are changes to commit
-        status = subprocess.getoutput(f"cd '{repo_path}' && git status --porcelain")
+        result = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=repo_path,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        status = result.stdout
         if status.strip():
             subprocess.run(
                 ["git", "commit", "-m", "chore(antigravity): autonomous multi-repo sync"],
@@ -102,7 +109,14 @@ def process_git_directory(repo_path: str, token: str) -> None:
             pass
 
         # 3. Pull Current Remote
-        remote_out = subprocess.getoutput(f"cd '{repo_path}' && git remote get-url origin").strip()
+        remote_result = subprocess.run(
+            ["git", "remote", "get-url", "origin"],
+            cwd=repo_path,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        remote_out = remote_result.stdout.strip()
         if "fatal: No such remote" in remote_out or not remote_out:
             return
 
