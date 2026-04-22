@@ -9,7 +9,7 @@
 
 ## Purpose
 
-Enable non-blocking, long-running Claude Code tasks to increase JR Engine + Judge #6 development throughput while maintaining p99 governance standards.
+Enable non-blocking, long-running Claude Code tasks to increase JR Engine + Judge 6 development throughput while maintaining p99 governance standards.
 
 ---
 
@@ -33,7 +33,7 @@ Enable non-blocking, long-running Claude Code tasks to increase JR Engine + Judg
 | Secrets/credentials      | Security exposure     |
 | Live customer data       | Compliance violation  |
 | Production deployments   | Governance bypass     |
-| Final Judge #6 decisions | Audit trail integrity |
+| Final Judge 6 decisions | Audit trail integrity |
 
 ---
 
@@ -145,7 +145,7 @@ Track these metrics during trial period:
 
 - `scripts/async/claude_async.sh` - Wrapper implementation
 - `pnkln/safety/training_data_indexer.py` - Safety indexing module
-- `pnkln/governance/judge_six.py` - Judge #6 governance engine
+- `pnkln/governance/judge_six.py` - Judge 6 governance engine
 
 ---
 

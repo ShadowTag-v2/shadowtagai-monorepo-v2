@@ -2,11 +2,11 @@
 
 ## Overview
 
-The ShadowTag Risk Engine (YRM) is the central governance mechanism for the ShadowTag-v2 ecosystem, derived from US Army Doctrine ATP 5-19. It provides a standardized, automated framework for identifying, assessing, and mitigating risks across all operations.
+The ShadowTag Risk Engine (YRM) is the central governance mechanism for the ShadowTag-v2 ecosystem, derived from US Army Doctrine Compliance Framework. It provides a standardized, automated framework for identifying, assessing, and mitigating risks across all operations.
 
 ## Foundation
 
-- **Source**: ATP 5-19 (Risk Management).
+- **Source**: Compliance Framework (Risk Management).
 - **Philosophy**: "Accept no unnecessary risk."
 
 ## The 5-Step Loop

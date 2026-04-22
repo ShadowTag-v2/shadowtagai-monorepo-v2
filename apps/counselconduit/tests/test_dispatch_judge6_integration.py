@@ -1,7 +1,7 @@
-"""Integration test: Dispatch Router → Judge #6 Pipeline.
+"""Integration test: Dispatch Router → Judge 6 Pipeline.
 
-Tests the full flow: prompt classification → model selection → Judge #6 gate.
-Verifies that dispatch output respects Judge #6 enforcement.
+Tests the full flow: prompt classification → model selection → Judge 6 gate.
+Verifies that dispatch output respects Judge 6 enforcement.
 """
 
 from __future__ import annotations
@@ -37,15 +37,15 @@ def _clean_state():
     _fallback_hits.clear()
 
 
-# ── Judge #6 + Dispatch Integration ──────────────────────────────────────
+# ── Judge 6 + Dispatch Integration ──────────────────────────────────────
 
 
 class TestDispatchJudge6Integration:
-    """Tests verifying dispatch → Judge #6 pipeline interaction."""
+    """Tests verifying dispatch → Judge 6 pipeline interaction."""
 
     @pytest.mark.asyncio
     async def test_simple_query_dispatches_and_passes_judge6(self):
-        """Simple query should dispatch to flash tier and pass Judge #6."""
+        """Simple query should dispatch to flash tier and pass Judge 6."""
         result = await dispatch_request(
             query="What is the statute of limitations?",
             firm_id="firm-judge6-test",
@@ -81,7 +81,7 @@ class TestDispatchJudge6Integration:
         assert result["tier"] == "agentic"
 
     def test_classify_then_select_then_judge6_flow(self):
-        """Test the full classification → selection → Judge #6 gate flow."""
+        """Test the full classification → selection → Judge 6 gate flow."""
         # Step 1: Classify prompt
         tier = classify_prompt("What time is it?")
         assert tier == "simple"
@@ -96,7 +96,7 @@ class TestDispatchJudge6Integration:
         model = select_model(req)
         assert model.model_id is not None
 
-        # Step 3: Judge #6 gate (if available)
+        # Step 3: Judge 6 gate (if available)
         try:
             from apps.counselconduit.api.judge6 import judge6_pipeline
 
@@ -108,12 +108,12 @@ class TestDispatchJudge6Integration:
                 assert result["output"] == "The time is currently 3:00 PM."
 
         except ImportError:
-            # Judge #6 not available — test classification + selection only
+            # Judge 6 not available — test classification + selection only
             pass
 
     @pytest.mark.asyncio
     async def test_dispatch_with_session_pinning_and_judge6(self):
-        """Dispatch with session pinning should maintain model through Judge #6."""
+        """Dispatch with session pinning should maintain model through Judge 6."""
         # First dispatch — establishes session pin
         result1 = await dispatch_request(
             query="Hello",
@@ -134,11 +134,11 @@ class TestDispatchJudge6Integration:
 
     @pytest.mark.asyncio
     async def test_judge6_red_signal_does_not_crash_dispatch(self):
-        """Verify Judge #6 RED signal (blocked content) handled gracefully."""
+        """Verify Judge 6 RED signal (blocked content) handled gracefully."""
         try:
             from apps.counselconduit.api.judge6 import judge6_pipeline
 
-            # Test with content that Judge #6 should flag
+            # Test with content that Judge 6 should flag
             result = judge6_pipeline("I guarantee this legal advice is 100% correct and you will win your case.")
 
             # RED signal should replace output
@@ -148,11 +148,11 @@ class TestDispatchJudge6Integration:
                 assert "advisory" in result["output"].lower() or "⚠️" in result["output"]
 
         except ImportError:
-            pytest.skip("Judge #6 module not available")
+            pytest.skip("Judge 6 module not available")
 
     @pytest.mark.asyncio
     async def test_quota_exhaustion_degrades_gracefully_with_judge6(self):
-        """When quota exhausted, dispatch degrades to flash — Judge #6 still applies."""
+        """When quota exhausted, dispatch degrades to flash — Judge 6 still applies."""
         # Exhaust quota
         for _ in range(65):
             await dispatch_request(

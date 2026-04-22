@@ -56,7 +56,7 @@ LAYER 3: AiU Digital Mall ($1.44B ARR)
 LAYER 2: SHADOWTAGAI Core Stack™ ($1.5B ARR)
 ├─ Cognitive Stack v5 (Cor.26: BDH, RoT, MoE-CL, CoDA)
 │  └─ GKE with Vertex AI integration (Pipelines + Model Garden)
-├─ Judge #6 (<500μs governance, 98% coverage)
+├─ Judge 6 (<500μs governance, 98% coverage)
 │  └─ GKE stateful sets with in-memory Redis for <500μs latency
 ├─ AiUCRM (Cor.55: pre-hoc compliance, -94% fines)
 │  └─ GKE policy automation (OPA + Config Connector)
@@ -104,7 +104,7 @@ gke-gateway-system/       # API gateway + ingress
 
 - **GKE Autopilot:** Serverless Kubernetes, no node management
 - **Vertex AI Integration:** Native model serving, Pipelines, Model Garden
-- **Binary Authorization:** Judge #6 pre-execution enforcement
+- **Binary Authorization:** Judge 6 pre-execution enforcement
 - **Workload Identity:** Secure service-to-service auth
 - **Multi-cluster Mesh:** RoadMesh distributed coordination
 - **Config Connector:** Infrastructure-as-code (K8s native)
@@ -112,9 +112,9 @@ gke-gateway-system/       # API gateway + ingress
 ### **Key Frameworks**
 
 **JR (Business Judgment Rule):** Maximize value in every equation
-**AiUCRM:** Military-grade risk management (ATP 5-19: RA-1→RA-4)
-**PRB (Purpose/Reasons/Brakes):** Judge #6 enforcement framework (GKE admission webhooks)
-**YRM:** pnkln-stack Risk Management (ATP 5-19 commercial adaptation)
+**AiUCRM:** Military-grade risk management (Compliance Framework: RA-1→RA-4)
+**PRB (Purpose/Reasons/Brakes):** Judge 6 enforcement framework (GKE admission webhooks)
+**YRM:** pnkln-stack Risk Management (Compliance Framework commercial adaptation)
 
 ---
 
@@ -164,7 +164,7 @@ TECHNICAL_STACK:
       deployment: "GKE StatefulSet with Redis for sub-millisecond state"
       enforcement: "GKE admission webhooks + OPA policies"
     aiucrm:
-      origin: "Military Composite Risk Management (ATP 5-19)"
+      origin: "Military Composite Risk Management (Compliance Framework)"
       impact: "-94% regulatory fines, -85% moderation costs"
       moat_value: "$8.6B EV premium"
       deployment: "GKE Policy Controller + Config Connector"
@@ -246,7 +246,7 @@ FINANCIALS:
     gates_24mo:
       - "BOEM RUE permit approved"
       - "CAISO interconnect study complete"
-      - "Judge #6 on GKE: 10M queries/day, p99 <500μs"
+      - "Judge 6 on GKE: 10M queries/day, p99 <500μs"
       - "Digital Freeway on GKE: 37% commute reduction proven"
       - "10 enterprise design partners (GKE deployment templates)"
 
@@ -293,20 +293,20 @@ CURRENT_OBJECTIVES:
     - "File CAISO Mega-Rule interconnection (wind+compute package)"
     - "File BOEM RUE permits (3 Santa Barbara platforms)"
     - "Negotiate Diablo Canyon standby power contract"
-    - "Deploy Judge #6 on GKE (10M query capacity, <500μs p99)"
+    - "Deploy Judge 6 on GKE (10M query capacity, <500μs p99)"
     - "Build Digital Freeway 10-mile test corridor (GKE edge clusters)"
     - "GKE reference architecture implementation (4 namespaces)"
 
   q2_2026:
     - "BOEM RUE approved (6-month fast-track)"
     - "CAISO study initiated (24-month timeline)"
-    - "Judge #6 alpha on GKE with 10 design partners"
+    - "Judge 6 alpha on GKE with 10 design partners"
     - "ShadowTag v2 operational (GKE batch processing)"
     - "GKE multi-cluster mesh operational (Anthos)"
 
   q4_2027:
     - "50 MW operational (Gulfstream Phase 1, GKE offshore)"
-    - "Judge #6 on GKE: 1B+ queries/month, p99 <500μs"
+    - "Judge 6 on GKE: 1B+ queries/month, p99 <500μs"
     - "Digital Freeway: 100-mile corridor (GKE edge)"
     - "Series A close ($150M)"
     - "GKE Enterprise multi-region deployment"
@@ -314,7 +314,7 @@ CURRENT_OBJECTIVES:
 
 ### **GKE-Specific Technical Details**
 
-**Judge #6 Architecture on GKE:**
+**Judge 6 Architecture on GKE:**
 
 ```yaml
 apiVersion: apps/v1
@@ -374,7 +374,7 @@ spec:
 **Vertex AI Integration:**
 
 ```python
-# Deploy Judge #6 to Vertex AI Prediction
+# Deploy Judge 6 to Vertex AI Prediction
 from google.cloud import aiplatform
 
 aiplatform.init(project="shadowtagai-prod", location="us-central1")
@@ -430,7 +430,7 @@ You are continuing a strategic planning session with Erik, founder/CEO of SHADOW
 ## COMPLETE STACK (6 Layers - All GKE-Native)
 
 1. **Gulfstream Offshore:** $17/MWh energy, GKE clusters in offshore containers, $1.75B ARR
-2. **SHADOWTAGAI Core Stack™:** Judge #6 on GKE (<500μs via StatefulSet+Redis), Cognitive Stack v5 on Vertex AI, $1.5B ARR
+2. **SHADOWTAGAI Core Stack™:** Judge 6 on GKE (<500μs via StatefulSet+Redis), Cognitive Stack v5 on Vertex AI, $1.5B ARR
 3. **AiU Digital Mall:** GKE microservices with Istio mesh, $12B GMV × 12% = $1.44B ARR
 4. **RoadMesh Digital Freeways:** GKE on bare metal edge clusters (100K+ towers), Anthos multi-cluster, $2.5B ARR
 5. **AiU Orbital:** GKE at satellite ground stations, aircraft relay coordination, $3.5B ARR
@@ -439,8 +439,8 @@ You are continuing a strategic planning session with Erik, founder/CEO of SHADOW
 ## KEY FRAMEWORKS
 
 - **JR (Business Judgment Rule):** Maximize value in every equation
-- **AiUCRM:** Military risk management (ATP 5-19: RA-1→RA-4) enforced via GKE Policy Controller
-- **PRB:** Purpose/Reasons/Brakes (Judge #6 enforcement via GKE admission webhooks)
+- **AiUCRM:** Military risk management (Compliance Framework: RA-1→RA-4) enforced via GKE Policy Controller
+- **PRB:** Purpose/Reasons/Brakes (Judge 6 enforcement via GKE admission webhooks)
 - **Gate-based execution:** No capital without cleared milestones
 
 ## CRITICAL DOCUMENTS (Cor Series)
@@ -463,14 +463,14 @@ You are continuing a strategic planning session with Erik, founder/CEO of SHADOW
 - File CAISO Mega-Rule interconnection (wind+compute package)
 - File BOEM RUE permits (3 Santa Barbara platforms)
 - Negotiate Diablo Canyon nuclear backup contract
-- Deploy Judge #6 on GKE (10M query capacity, p99 <500μs latency)
+- Deploy Judge 6 on GKE (10M query capacity, p99 <500μs latency)
 - Build Digital Freeway 10-mile test corridor (GKE edge clusters, Denver)
 - Implement GKE reference architecture (4 namespaces, $60-65K/mo)
 
 ## CAPITAL STRATEGY
 
 - **Seed:** $47M for 15% equity ($266M pre-money)
-  - Gates: BOEM approved, CAISO study complete, Judge #6 on GKE operational
+  - Gates: BOEM approved, CAISO study complete, Judge 6 on GKE operational
 - **Series A:** $150M at $3B pre-money (24 months, $150M ARR gate)
   - Scale: GKE Enterprise multi-region deployment
 - **Series B:** $500M at $15B pre-money (48 months, $2B ARR gate)
@@ -496,7 +496,7 @@ You are continuing a strategic planning session with Erik, founder/CEO of SHADOW
 
 ## GKE DEPLOYMENT PRIORITIES
 
-1. Judge #6: StatefulSet with Redis for <500μs p99 latency
+1. Judge 6: StatefulSet with Redis for <500μs p99 latency
 2. Cognitive Stack v5: Vertex AI Model Garden + Pipelines integration
 3. RoadMesh: GKE on bare metal with Anthos multi-cluster coordination
 4. AiU Mall: GKE microservices with Istio + Binary Authorization

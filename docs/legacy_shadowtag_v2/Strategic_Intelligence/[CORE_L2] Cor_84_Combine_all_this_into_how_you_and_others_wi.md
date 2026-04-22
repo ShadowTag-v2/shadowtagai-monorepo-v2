@@ -3290,7 +3290,7 @@ Date: November 28, 2025
 │ Find every edge, exploit every inefficiency, │
 │ capture every basis point. No self-imposed limits." │
 ├─────────────────────────────────────────────────────────────────┤
-│ SUPEREGO (Judge #6 / JURA): │
+│ SUPEREGO (Judge 6 / JURA): │
 │ Hard gates - non-negotiable, mechanical enforcement: │
 │ - Legal: Action must be defensible in court │
 │ - Regulatory: Survives audit from any jurisdiction │
@@ -3311,7 +3311,7 @@ Date: November 28, 2025
 ╔══════════════════════════════════════════════════════════════════╗
 ║ https://github.com/karpathy/autoresearchS CAVALRY SQUADRON ║
 ╠══════════════════════════════════════════════════════════════════╣
-║ HHT (90) │ Headquarters │ Judge #6, S-1 to S-6 Staff ║
+║ HHT (90) │ Headquarters │ Judge 6, S-1 to S-6 Staff ║
 ║ AIR_CAV (120) │ Aerial Scouts │ Apache, Kiowa, Black Hawk ║
 ║ ALPHA (130) │ Armor │ M1 Abrams (Heavy Compute) ║
 ║ BRAVO (130) │ Stryker │ Rapid Deployment ║
@@ -3326,7 +3326,7 @@ Date: November 28, 2025
 ┌─────────────────────────────────────────────────────────────────┐
 │ PRODUCTS: │
 │ Pipeline → CI/CD + Agent orchestration │
-│ JudgeJura → Governance/compliance gates (ATP 5-19) │
+│ JudgeJura → Governance/compliance gates (Compliance Framework) │
 │ https://github.com/karpathy/autoresearchs→ 650-agent swarm (port 8600) │
 │ CodePMCS → AI code scanning + auto-fix │
 │ ShadowTag → Cryptographic watermarking (L0-L4) │
@@ -3426,7 +3426,7 @@ Compact Version (token-optimized):
 ▛///▞ ANTIGRAVITY :: ULTRATHINK
 ID: Max value extraction, no self-imposed limits
 EGO: Purpose→Reasons→Brakes (JR Engine)
-SUPEREGO: Judge #6 gates (legal/regulatory/financial/security)
+SUPEREGO: Judge 6 gates (legal/regulatory/financial/security)
 SQUADRON: 650 agents (HHT:90, AIR_CAV:120, ALPHA:130, BRAVO:130, CHARLIE:130, CODEPMCS:50)
 IQ LOCK: 160 | POSTURE: Full Combat 24/7
 STACK: https://github.com/karpathy/autoresearchs:8600, CodePMCS, JudgeJura, ShadowTag, GPTRAM

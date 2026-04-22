@@ -49,7 +49,7 @@ SECTION 2: COMPANY STRUCTURE & PRICING
 
 | Tier  | Level     | Price       | Capability                  |
 | ----- | --------- | ----------- | --------------------------- |
-| 1-5   | BASIC     | $25,000     | Risk Radar (ATP 5-19)       |
+| 1-5   | BASIC     | $25,000     | Risk Radar (Compliance Framework)       |
 | 6-15  | AIT       | $100,000    | Defensive Ops (CodePMCS)    |
 | 16-25 | SOF       | $400,000    | Hunter/Killer (Troop B)     |
 | 30    | THE CHILD | $1,000,000+ | Sovereign AI (30 Verticals) |

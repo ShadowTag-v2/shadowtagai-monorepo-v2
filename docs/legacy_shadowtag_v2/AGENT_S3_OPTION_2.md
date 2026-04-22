@@ -16,7 +16,7 @@ Option 2 implements the **FAST** integration path from the ATP_519_SCAN analysis
 - ✅ **Immediate M3 Integration**: 2-3 week implementation vs 6-8 weeks for Option 1
 - ✅ **Proven ROI**: Reduces compliance audits from 20 hours to 4 hours
 - ✅ **Revenue Acceleration**: Enables $2K/mo Compliance-as-a-Service upsell
-- ✅ **Judge #6 Integration**: Seamless enforcement via NS nervous system
+- ✅ **Judge 6 Integration**: Seamless enforcement via NS nervous system
 - ✅ **Manual Review Layer**: Human-in-the-loop before enforcement
 
 ### Cost-Benefit Analysis
@@ -78,7 +78,7 @@ ROI per Customer:
 │                      │                                      │
 │                      ▼                                      │
 │  ┌─────────────────────────────────────────┐              │
-│  │     Judge #6 Enforcement Layer          │              │
+│  │     Judge 6 Enforcement Layer          │              │
 │  │  - Purpose/Reasons/Brakes validation    │              │
 │  │  - Critical failure escalation          │              │
 │  │  - Automated enforcement actions        │              │
@@ -125,14 +125,14 @@ ROI per Customer:
 - ✅ Pending review queue management
 - ✅ Evidence display (screenshots, observations)
 - ✅ Confidence scoring
-- ✅ Judge #6 escalation triggers
+- ✅ Judge 6 escalation triggers
 - ✅ Review summary reports
 
-### 3. Judge #6 Integration
+### 3. Judge 6 Integration
 
 **File:** `src/pnkln/compliance_judge_integration.py`
 
-- `ComplianceJudgeIntegration`: NS → Judge #6 bridge
+- `ComplianceJudgeIntegration`: NS → Judge 6 bridge
 - `ComplianceEnforcementContext`: Enforcement metadata
 - Semantic memory storage via NS
 - Auto-escalation for critical failures
@@ -140,7 +140,7 @@ ROI per Customer:
 **Features:**
 
 - ✅ NS semantic memory integration
-- ✅ Judge #6 enforcement pipeline
+- ✅ Judge 6 enforcement pipeline
 - ✅ Auto-escalation for severity=critical + status=failed
 - ✅ Historical compliance queries
 - ✅ Insights generation from audit history
@@ -170,7 +170,7 @@ Complete workflow demonstrations:
 
 1. Basic compliance audit
 2. Manual review interface
-3. Judge #6 integration via NS
+3. Judge 6 integration via NS
 4. Full M3 integration timeline simulation
 
 ---
@@ -282,7 +282,7 @@ python -m src.pnkln.compliance_review_interface \
   --interactive
 ```
 
-### Judge #6 Integration
+### Judge 6 Integration
 
 ```python
 from src.pnkln.compliance_judge_integration import ComplianceJudgeIntegration
@@ -380,7 +380,7 @@ kubectl create job --from=cronjob/hipaa-compliance-audit \
 
 ### Compliance-as-a-Service Upsell
 
-**Target:** Regulated industries already buying Judge #6
+**Target:** Regulated industries already buying Judge 6
 
 **Pricing Tiers:**
 
@@ -403,7 +403,7 @@ kubectl create job --from=cronjob/hipaa-compliance-audit \
 
 - **Price:** $1,000/mo per enterprise customer
 - **Value:** White-label UI-TARS hosting for dedicated grounding endpoints
-- **Bundle:** Include with Judge #6 Enterprise tier ($10K+/mo contracts)
+- **Bundle:** Include with Judge 6 Enterprise tier ($10K+/mo contracts)
 - **Margin:** 60% (after GCP compute + support costs)
 
 ---
@@ -430,7 +430,7 @@ kubectl create job --from=cronjob/hipaa-compliance-audit \
 **If PoC ≥70%:**
 
 - ✅ Deploy to GKE with ConfigMaps and PersistentVolumeClaims
-- ✅ Integrate Judge #6 enforcement via NS API
+- ✅ Integrate Judge 6 enforcement via NS API
 - ✅ Configure automated CronJobs for weekly/monthly audits
 - ✅ Set up monitoring and alerting (Prometheus + Grafana)
 - ✅ Create customer onboarding documentation
@@ -472,7 +472,7 @@ kubectl create job --from=cronjob/hipaa-compliance-audit \
 - ✅ Async processing with background jobs
 - ✅ Cache results in NS semantic memory for fast retrieval
 
-**Gate:** Cannot replace Judge #6; supplements via NS nervous system
+**Gate:** Cannot replace Judge 6; supplements via NS nervous system
 
 ### BRAKE 3: Grounding Model Dependency
 
@@ -531,7 +531,7 @@ kubectl create job --from=cronjob/hipaa-compliance-audit \
 1. ✅ **DONE:** Code Option 2 implementation
 2. **Week 1:** Deploy PoC on Vertex Workbench
 3. **Week 1:** Run 10 test scenarios for validation
-4. **Week 2-3:** Integrate with Judge #6 enforcement (if PoC ≥70%)
+4. **Week 2-3:** Integrate with Judge 6 enforcement (if PoC ≥70%)
 5. **M4:** Launch Compliance-as-a-Service upsell
 6. **M5:** Target 5 customers @ $2K/mo = $10K MRR
 7. **M6:** Evaluate upgrade to Option 1 (ShadowTag Validator)
@@ -555,7 +555,7 @@ src/pnkln/
 │   ├── display_review_queue()
 │   └── interactive_review()
 │
-└── compliance_judge_integration.py    # Judge #6 integration
+└── compliance_judge_integration.py    # Judge 6 integration
     ├── ComplianceJudgeIntegration
     ├── ComplianceEnforcementContext
     ├── _store_compliance_memory() → NS

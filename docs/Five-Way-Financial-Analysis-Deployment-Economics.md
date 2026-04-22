@@ -234,9 +234,9 @@
    - Kubernetes production manifests
 
 2. **Governance engines** (Branch B + E)
-   - Judge #6 validation
+   - Judge 6 validation
    - Gemini Ingestion Layer
-   - JR Engine ATP 5-19 risk
+   - JR Engine Compliance Framework risk
 
 3. **Compliance frameworks** (Branch A + E)
    - EU AI Act assessment API
@@ -576,7 +576,7 @@ curl https://api.ShadowTag.com/health  # ✅ Production healthy
 │   BRANCH B      │  │   BRANCH D       │
 │  PNKLN Core     │  │  Kosmos Agents   │
 │                 │  │                  │
-│ • Judge #6      │  │ • World Model    │
+│ • Judge 6      │  │ • World Model    │
 │ • Ingestion     │  │ • ReAct Loop     │
 │ • JR Engine     │  │ • Multi-agent    │
 └────────┬────────┘  └───────┬──────────┘
@@ -711,7 +711,7 @@ curl https://api.ShadowTag.com/health  # ✅ Production healthy
 Approve immediate merge of B + E. Ship production API THIS WEEK. Add A for compliance, D for differentiation, C for future roadmap. Branch E is the unlock. Without it, we're just a research lab. With it, we're a business.
 
 **🧠 Cofounder Persona:**
-Branch E has the highest marginal value. It's the difference between a GitHub repo and a SaaS company. Merge B + E immediately (synchronous Judge #6 API), add D for Kosmos research endpoints, use C as the 12-month roadmap. This is the fastest path to revenue.
+Branch E has the highest marginal value. It's the difference between a GitHub repo and a SaaS company. Merge B + E immediately (synchronous Judge 6 API), add D for Kosmos research endpoints, use C as the 12-month roadmap. This is the fastest path to revenue.
 
 **💻 CTO Persona:**
 Branch E's FastAPI + K8s infrastructure is production-grade. I can deploy B + E in 2 days. Adding D (Kosmos) is low-risk because Branch E already has the API layer. Integration is clean. Approve full stack merge.

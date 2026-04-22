@@ -1,4 +1,4 @@
-# Judge #6 Hybrid Enforcement System
+# Judge 6 Hybrid Enforcement System
 # 3-layer architecture: Gemini + PyTorch + Rules
 # Target: p99 ≤ 90ms, Coverage ≥ 98%
 ---

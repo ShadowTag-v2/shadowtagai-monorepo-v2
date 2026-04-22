@@ -1,6 +1,6 @@
 # GKE + ShadowTag-v4 Ecosystem Integration
 
-**PNKLN Core Stack™ + Judge #6 v2.0 + 6 Verticals**
+**PNKLN Core Stack™ + Judge 6 v2.0 + 6 Verticals**
 
 Date: 2025-11-17
 Architecture: Google Kubernetes Engine (GKE) Native
@@ -10,14 +10,14 @@ Status: ✅ Ready for Deployment
 
 ## Executive Summary
 
-Successfully integrated the complete **ShadowTag-v4 Ecosystem** (Judge #6 v2.0 + 6 verticals) with **PNKLN Core Stack™** (LLM orchestration + multi-agent intelligence) on **GKE-native infrastructure**.
+Successfully integrated the complete **ShadowTag-v4 Ecosystem** (Judge 6 v2.0 + 6 verticals) with **PNKLN Core Stack™** (LLM orchestration + multi-agent intelligence) on **GKE-native infrastructure**.
 
 ### Unified Platform Components
 
 | Component | Type | Purpose | P99 Target |
 |-----------|------|---------|------------|
 | **PNKLN API** | FastAPI | Intelligence collection, validation, LLM orchestration | ≤90ms |
-| **Judge #6 v2.0** | Decision Engine | Binary decisions with kernel chaining | ≤80ms |
+| **Judge 6 v2.0** | Decision Engine | Binary decisions with kernel chaining | ≤80ms |
 | **Gemini Agents** | Multi-Agent System | 3-agent debate (skeptic, optimist, neutral) | 1234ms |
 | **LLM Orchestrator** | Router | Domain-based routing to specialized LLMs | 1500ms |
 | **Growth Engine** | Databricks + RAPIDS | Campaign optimization on Spark-on-k8s | N/A |
@@ -30,7 +30,7 @@ Successfully integrated the complete **ShadowTag-v4 Ecosystem** (Judge #6 v2.0 +
 
 **Combined Y5 ARR:** $3.36B + PNKLN Platform Revenue
 
-- Judge #6 Verticals: $3.36B (92% gross margin, +55% EBITDA)
+- Judge 6 Verticals: $3.36B (92% gross margin, +55% EBITDA)
 
 - PNKLN Services: TBD (intelligence platform revenue)
 
@@ -62,7 +62,7 @@ Successfully integrated the complete **ShadowTag-v4 Ecosystem** (Judge #6 v2.0 +
         │                         │
         ▼                         ▼
 ┌──────────────┐          ┌──────────────┐
-│  PNKLN API   │          │  Judge #6    │
+│  PNKLN API   │          │  Judge 6    │
 │  (FastAPI)   │          │  v2.0        │
 │              │          │              │
 │  - Ingestion │          │  - Kernel    │
@@ -109,7 +109,7 @@ Successfully integrated the complete **ShadowTag-v4 Ecosystem** (Judge #6 v2.0 +
 
 **1. GKE Standard (`pnkln-main`)**
 
-- **Purpose:** GPU workloads, ML training, Judge #6, PNKLN agents
+- **Purpose:** GPU workloads, ML training, Judge 6, PNKLN agents
 
 - **Location:** us-central1 (multi-zone)
 
@@ -201,7 +201,7 @@ spec:
 
 - Scale-down: 50% decrease with 5min stabilization
 
-### Judge #6 v2.0 Deployment
+### Judge 6 v2.0 Deployment
 
 ```yaml
 apiVersion: apps/v1
@@ -378,7 +378,7 @@ kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1/namespaces/production/pods
 
 ## Integration Points
 
-### 1. PNKLN ↔ Judge #6
+### 1. PNKLN ↔ Judge 6
 
 **Intelligence Classification + Risk Scoring:**
 
@@ -390,7 +390,7 @@ User Request → PNKLN Orchestrator → Domain = "intelligence"
                      ↓
               Tier Classification (1/2/3, confidence)
                      ↓
-              Judge #6 ATP 5-19 Risk Scoring
+              Judge 6 ATP 5-19 Risk Scoring
                      ↓
               Binary Decision (ALLOW/BLOCK) + Audit Trail
 
@@ -411,7 +411,7 @@ POST /api/v1/orchestrator/intelligence/classify
 
 # Response: Tier 1, 87% confidence
 
-# Step 2: Judge #6 Risk Scoring
+# Step 2: Judge 6 Risk Scoring
 
 POST /api/v1/judge6/decision
 {
@@ -434,7 +434,7 @@ POST /api/v1/judge6/decision
 | Intelligence | Gemini Multi-Agent | → CaseJudge (litigation risk scoring) |
 | Code | GPT-5 | → Internal Dev Tools |
 | Research | Perplexity | → LawJudge (regulatory research) |
-| Financial | Judge #6 | → FinJudge (wire transfer HITL gates) |
+| Financial | Judge 6 | → FinJudge (wire transfer HITL gates) |
 
 ### 3. Growth Engine ↔ BigQuery
 
@@ -534,7 +534,7 @@ data:
 
 ### Revenue Unlock vs. Cost
 
-**Judge #6 Kernel Chaining:**
+**Judge 6 Kernel Chaining:**
 
 - Monthly Savings: $50K (API costs + revenue unlock)
 
@@ -558,7 +558,7 @@ data:
 
 | Service | p50 | p95 | p99 | Max |
 |---------|-----|-----|-----|-----|
-| **Judge #6 v2.0** | 30ms | 70ms | 80ms | 150ms |
+| **Judge 6 v2.0** | 30ms | 70ms | 80ms | 150ms |
 | **PNKLN Validation** | 40ms | 80ms | 90ms | 200ms |
 | **Gemini Multi-Agent** | 800ms | 1100ms | 1234ms | 2000ms |
 | **LLM Orchestrator** | 600ms | 1200ms | 1500ms | 3000ms |
@@ -621,7 +621,7 @@ gcloud alpha monitoring policies create \
 
 - [ ] Deploy PNKLN API to GKE (kubectl apply)
 
-- [ ] Deploy Judge #6 v2.0 to GKE
+- [ ] Deploy Judge 6 v2.0 to GKE
 
 - [ ] Configure HPA for autoscaling
 
@@ -631,7 +631,7 @@ gcloud alpha monitoring policies create \
 
 ### Week 3-4: Integration & Testing
 
-- [ ] Integration tests: PNKLN ↔ Judge #6 flow
+- [ ] Integration tests: PNKLN ↔ Judge 6 flow
 
 - [ ] Load testing: Validate p99≤90ms SLA
 
@@ -701,7 +701,7 @@ gcloud alpha monitoring policies create \
 
 **Performance:**
 
-- Judge #6: p99 ≤80ms (beat 90ms SLA by 11%)
+- Judge 6: p99 ≤80ms (beat 90ms SLA by 11%)
 
 - PNKLN Validation: p99 ≤90ms (meets SLA)
 
@@ -713,7 +713,7 @@ gcloud alpha monitoring policies create \
 
 - Monthly LLM costs: $6,975
 
-- Monthly net benefit (Judge #6 + LLM savings): +$69,300
+- Monthly net benefit (Judge 6 + LLM savings): +$69,300
 
 - **ROI: 370%/month**
 

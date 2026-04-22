@@ -1,4 +1,4 @@
-# Judge #6 Deployment Guide
+# Judge 6 Deployment Guide
 
 ## Production Deployment on GKE with Vertex AI
 
@@ -265,7 +265,7 @@ gcloud monitoring uptime create judge-6-health \
 # Create alert policy
 gcloud alpha monitoring policies create \
   --notification-channels=YOUR_CHANNEL_ID \
-  --display-name="Judge #6 High Latency" \
+  --display-name="Judge 6 High Latency" \
   --condition-threshold-value=500 \
   --condition-threshold-duration=300s \
   --condition-display-name="p99 latency > 500ms"
@@ -276,7 +276,7 @@ gcloud alpha monitoring policies create \
 ```bash
 # Create log-based metric for errors
 gcloud logging metrics create judge6_errors \
-  --description="Count of Judge #6 errors" \
+  --description="Count of Judge 6 errors" \
   --log-filter='resource.type="k8s_container"
 resource.labels.namespace_name="judge-6"
 severity>=ERROR'

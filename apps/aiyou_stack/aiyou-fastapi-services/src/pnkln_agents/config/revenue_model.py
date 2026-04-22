@@ -135,7 +135,7 @@ DEFAULT_REVENUE_MODEL = RevenueModel(
         tier=PricingTier.BASE,
         monthly_price_usd=297.0,
         features=[
-            "Core enforcement (JR Engine + Judge #6 Lite)",
+            "Core enforcement (JR Engine + Judge 6 Lite)",
             "Basic audit trails",
             "GDPR/CAN-SPAM compliance checks",
             "Email support",

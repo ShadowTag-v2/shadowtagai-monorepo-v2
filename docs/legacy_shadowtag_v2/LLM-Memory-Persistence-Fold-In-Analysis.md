@@ -15,7 +15,7 @@
 
 - **Operational Efficiency:** Persistent memory eliminates re-explaining architecture (+2× decision speed)
 
-- **Developer Productivity:** pnkln architecture (Judge #6, ShadowTag, JR Framework) auto-loaded in all sessions
+- **Developer Productivity:** pnkln architecture (Judge 6, ShadowTag, JR Framework) auto-loaded in all sessions
 
 - **Team Collaboration:** Cross-device sync ensures consistency across Mac, Vertex, GKE
 
@@ -51,7 +51,7 @@
 
 - **How it works:** Extract conversations → Gemini Flash metadata → local `memory.md` file
 
-- **What's loaded:** Judge #6, ShadowTag 2.0, Cor/NS, JR Framework, Bootstrap Gates, Judge Architecture (21 layers)
+- **What's loaded:** Judge 6, ShadowTag 2.0, Cor/NS, JR Framework, Bootstrap Gates, Judge Architecture (21 layers)
 
 - **Cost:** $0.45 one-time (2,121 conversations)
 
@@ -125,7 +125,7 @@
 
 - **Cross-model intelligence** (each answer vetted by 3 LLMs)
 
-- **Persistent architecture** (all agents have Judge #6, JR Framework in memory)
+- **Persistent architecture** (all agents have Judge 6, JR Framework in memory)
 
 **Integration Point:**
 
@@ -341,7 +341,7 @@ pnkln_memory = json.loads(blob.download_as_string())
 # All Judge Architecture layers available as global variable
 
 print(f"✓ pnkln memory loaded: {pnkln_memory['version']}")
-print(f"  - Judge #6: {pnkln_memory['pnkln_architecture']['judge_6']['description']}")
+print(f"  - Judge 6: {pnkln_memory['pnkln_architecture']['judge_6']['description']}")
 print(f"  - Judge Architecture: 21 governance layers loaded")
 print(f"  - JR Framework: Purpose • Reasons • Brakes")
 print(f"  - Bootstrap Gates: ROI ≥3×, LTV:CAC ≥4:1, p99 ≤90ms, Security 100%")
@@ -415,7 +415,7 @@ def sync_memory():
 
 **Before LLM Memory System:**
 
-- Each session: Re-explain Judge #6, ShadowTag, Cor/NS, JR Framework
+- Each session: Re-explain Judge 6, ShadowTag, Cor/NS, JR Framework
 
 - New team members: 2-3 weeks to learn architecture
 
@@ -425,7 +425,7 @@ def sync_memory():
 
 **After LLM Memory System:**
 
-- Every session: All architectures auto-loaded (Judge #6, ShadowTag, Cor/NS, Judge Architecture)
+- Every session: All architectures auto-loaded (Judge 6, ShadowTag, Cor/NS, Judge Architecture)
 
 - New team members: 3-5 days (architecture pre-loaded, instant context)
 
@@ -502,7 +502,7 @@ def sync_memory():
 
 **Developer Onboarding:**
 
-- **Before:** 2-3 weeks to learn pnkln architecture (Judge #6, ShadowTag, Cor/NS, JR Framework, Bootstrap Gates, Judge Architecture)
+- **Before:** 2-3 weeks to learn pnkln architecture (Judge 6, ShadowTag, Cor/NS, JR Framework, Bootstrap Gates, Judge Architecture)
 
 - **After:** 3-5 days (architecture pre-loaded in Claude Code + Vertex, instant context)
 
@@ -1042,7 +1042,7 @@ Bootstrap Gate Check: ≥3× in 18mo → PASS (3,325× >> 3×)
 1. **Onboarding Acceleration**
    - 2-3 weeks → 3-5 days (5× faster)
 
-   - All architectures pre-loaded (Judge #6, ShadowTag, Cor/NS, Judge Architecture)
+   - All architectures pre-loaded (Judge 6, ShadowTag, Cor/NS, Judge Architecture)
 
    - Zero context switch penalty (Mac ↔ Vertex ↔ GKE)
 

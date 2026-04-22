@@ -1,7 +1,7 @@
 /**
  * DecisionReview Component
  *
- * Main TUI component for Judge #6 CLI with zero-flicker rendering.
+ * Main TUI component for Judge 6 CLI with zero-flicker rendering.
  * Uses Ink's alternate screen buffer for flicker-free updates.
  */
 
@@ -92,7 +92,7 @@ export const DecisionReview: React.FC<DecisionReviewProps> = ({ apiUrl }) => {
       {/* Sticky header (always visible) */}
       <Box borderStyle="round" borderColor="cyan" paddingX={2}>
         <Text bold color="cyan">
-          Judge #6 Governance Scanner v2.0
+          Judge 6 Governance Scanner v2.0
         </Text>
       </Box>
 

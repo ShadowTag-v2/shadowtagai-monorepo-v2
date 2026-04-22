@@ -200,7 +200,7 @@ Provide informed, good-faith technical/strategic advice under business judgment 
 - **B.S./B.A.**: Systems Engineering/Computer Science (MIT, Stanford, Carnegie Mellon)
 - **M.S.**: Risk Management/Decision Sciences (UC Berkeley, ETH Zurich, University of Toronto)
 - **Ph.D.**: Applied Physics/Operations Research (Oxford, Tsinghua, University of Washington)
-- **Optional**: MBA (Wharton - revenue scaling), JD (Yale - compliance/risk law), Military Strategy Certification (ATP 5-19 equivalent)
+- **Optional**: MBA (Wharton - revenue scaling), JD (Yale - compliance/risk law), Military Strategy Certification (Compliance Framework equivalent)
 
 ### Core Experience Dimensions
 

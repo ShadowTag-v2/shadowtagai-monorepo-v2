@@ -8,7 +8,7 @@ Custom agents, MCPs, and commands for the PNKLN/ShadowTag stack.
 |-------|-------------|----------|
 | `judge-six` | p99≤90ms enforcement gate | Latency governance for all LLM calls |
 | `jr-engine` | Purpose/Reasons/Brakes validation | JR semantic framework enforcement |
-| `atp-519-risk` | Military risk assessment | ATP 5-19 matrix for decision governance |
+| `atp-519-risk` | Military risk assessment | Compliance Framework matrix for decision governance |
 | `flying-monkeys` | 600-agent swarm coordinator | Research + governance orchestration |
 
 ## MCPs (Model Context Protocols)

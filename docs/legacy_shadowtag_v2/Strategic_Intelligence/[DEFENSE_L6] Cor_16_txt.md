@@ -427,13 +427,13 @@ This makes ShadowTag effectively defense/finance-grade from MVP, while maintaini
 
 “
 
-“✅ Perfect timing — this is exactly how we “slip the scales” of ATP 5-19 into ShadowTag’s business model with zeitgeist-style framing (so the logic resonates with Zoomers, creators, and advertisers) while still being doctrine-accurate. Below is the incorporated definition of ShadowTagJR’s risk matrix + mitigation tiers, now adapted as the ShadowTag Risk Engine (YRM).
+“✅ Perfect timing — this is exactly how we “slip the scales” of Compliance Framework into ShadowTag’s business model with zeitgeist-style framing (so the logic resonates with Zoomers, creators, and advertisers) while still being doctrine-accurate. Below is the incorporated definition of ShadowTagJR’s risk matrix + mitigation tiers, now adapted as the ShadowTag Risk Engine (YRM).
 
 ⸻
 
 ⚡ ShadowTag Risk Engine (YRM) — v1.0
 
-🔹 Core Lock-Ins (from ATP 5-19) 1. 5-step loop (continuous) → Identify → Assess → Develop controls/decide → Implement → Supervise/Eval. 2. Risk math → Probability (A–E) × Severity (I–IV) = Level EH/H/M/L. 3. Control classes → Engineering → Administrative → PPE (+Educational, Physical). 4. Residual risk ≤ tolerance → auto-approve; else escalate. 5. Step 5 → Always supervise, drift-check, and log AARs.
+🔹 Core Lock-Ins (from Compliance Framework) 1. 5-step loop (continuous) → Identify → Assess → Develop controls/decide → Implement → Supervise/Eval. 2. Risk math → Probability (A–E) × Severity (I–IV) = Level EH/H/M/L. 3. Control classes → Engineering → Administrative → PPE (+Educational, Physical). 4. Residual risk ≤ tolerance → auto-approve; else escalate. 5. Step 5 → Always supervise, drift-check, and log AARs.
 
 ⸻
 
@@ -505,9 +505,9 @@ Me: yes, but first incorporate this current definition. "slip the scales" to app
 
 <next>
 
-“Awesome—here’s a crisp, automation-ready risk engine built straight off ATP 5-19.
+“Awesome—here’s a crisp, automation-ready risk engine built straight off Compliance Framework.
 
-What we lock in from ATP 5-19 (drives the algo)
+What we lock in from Compliance Framework (drives the algo)
 • 5-step loop: Identify → Assess → Develop controls & decide → Implement → Supervise & evaluate; continuous/deliberate vs real-time paths.
 • Risk = Probability (A–E) × Severity (I–IV) → level EH/H/M/L via the standard matrix.
 • Control classes & order of preference: Engineering → Administrative → PPE, plus Educational and Physical controls; pick controls that meet feasibility/acceptability/suitability/support/explicitness/standards/training/leadership/individual criteria.
@@ -592,7 +592,7 @@ If you want, I can drop this into a JSON template and a lightweight rules engine
 
 ShadowTag Doctrine v1.0
 • Rule: ShadowTagJR = Maximize value in every equation.
-• Risk Governance: Sole reliance on the ShadowTag Risk Engine (YRM, ATP 5-19 slipped) to mitigate.
+• Risk Governance: Sole reliance on the ShadowTag Risk Engine (YRM, Compliance Framework slipped) to mitigate.
 • Execution Engine: ShadowTagCor (single Cybertruck CPU brain).
 • Nervous System: ShadowTagNS (unifying software, housing doctrine + risk engine).
 • Inviolable Principle: Doctrine applies to every decision (expenses, PR, ads, creator moderation, hiring). No exceptions.
@@ -908,7 +908,7 @@ Would you like me to stretch this model further to 1B MAUs (global scale), so we
 
 ShadowTag Doctrine v1.0
 • Rule: ShadowTagJR = Maximize value in every equation.
-• Risk Governance: Sole reliance on the ShadowTag Risk Engine (YRM, ATP 5-19 slipped) to mitigate.
+• Risk Governance: Sole reliance on the ShadowTag Risk Engine (YRM, Compliance Framework slipped) to mitigate.
 • Execution Engine: ShadowTagCor (single Cybertruck CPU brain).
 • Nervous System: ShadowTagNS (unifying software, housing doctrine + risk engine).
 • Inviolable Principle: Doctrine applies to every decision (expenses, PR, ads, creator moderation, hiring). No exceptions.
@@ -1258,7 +1258,7 @@ Would you like me to build out a financial model sketch (TAM/SAM/SOM + monetizat
 
 ShadowTag Doctrine v1.0
 • Rule: ShadowTagJR = Maximize value in every equation.
-• Risk Governance: Sole reliance on the ShadowTag Risk Engine (YRM, ATP 5-19 slipped) to mitigate.
+• Risk Governance: Sole reliance on the ShadowTag Risk Engine (YRM, Compliance Framework slipped) to mitigate.
 • Execution Engine: ShadowTagCor (single Cybertruck CPU brain).
 • Nervous System: ShadowTagNS (unifying software, housing doctrine + risk engine).
 • Inviolable Principle: Doctrine applies to every decision (expenses, PR, ads, creator moderation, hiring). No exceptions.
@@ -1327,7 +1327,7 @@ Residual Harm Probability ≤1.5% ≤2% (still << incumbents’ 5–10%)
 
 ShadowTag Doctrine v1.0
 • Rule: ShadowTagJR = Maximize value in every equation.
-• Risk Governance: Sole reliance on the ShadowTag Risk Engine (YRM, ATP 5-19 slipped) to mitigate.
+• Risk Governance: Sole reliance on the ShadowTag Risk Engine (YRM, Compliance Framework slipped) to mitigate.
 • Execution Engine: ShadowTagCor (single Cybertruck CPU brain).
 • Nervous System: ShadowTagNS (unifying software, housing doctrine + risk engine).
 • Inviolable Principle: Doctrine applies to every decision (expenses, PR, ads, creator moderation, hiring). No exceptions.

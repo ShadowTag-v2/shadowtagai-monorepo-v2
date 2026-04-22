@@ -16,7 +16,7 @@ imperatives:
   - Velocity and Adaptability
 roi_gate:
   gate_name: "RAG ingestion pipeline decision"
-  why_now: "Need robust ingestion + retrieval layer for Judge #6 RAG tasks."
+  why_now: "Need robust ingestion + retrieval layer for Judge 6 RAG tasks."
   due: "2026-02-01"
   blocked_if_missed: false
 governance:

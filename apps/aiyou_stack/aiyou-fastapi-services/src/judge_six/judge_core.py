@@ -1,4 +1,4 @@
-"""Judge #6 Core - Governance Engine
+"""Judge 6 Core - Governance Engine
 Target Valuation: $35.0B
 Purpose / Reasons / Brakes
 """
@@ -37,7 +37,7 @@ class JudgeSix:
             logger.warning(f"Action {action} halted: Brakes engaged.")
             return Verdict.DENIED
 
-        logger.info(f"Action {action} APPROVED by Judge #6.")
+        logger.info(f"Action {action} APPROVED by Judge 6.")
         return Verdict.APPROVED
 
     @staticmethod

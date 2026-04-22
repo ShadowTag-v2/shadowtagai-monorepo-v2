@@ -60,7 +60,7 @@
 - 90-day sprint timeline
 
 
-- Risk matrix (ATP 5-19)
+- Risk matrix (Compliance Framework)
 
 
 - Revenue activation phases

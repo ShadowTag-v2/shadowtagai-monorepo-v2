@@ -9,7 +9,7 @@ This directory contains Gemini 2.0 Pro analysis prompts for comprehensive evalua
 | Prompt                        | Target Component          | Phase          | Confidence Target | File                                                           |
 | ----------------------------- | ------------------------- | -------------- | ----------------- | -------------------------------------------------------------- |
 | **Gemini Ingestion Analysis** | Gemini Ingestion Layer    | Pre-production | ≥60%              | [gemini_ingestion_analysis.md](./gemini_ingestion_analysis.md) |
-| **Judge #6 Analysis**         | Judge #6 Validation Layer | Production     | ≥70%              | [judge_six_analysis.md](./judge_six_analysis.md)               |
+| **Judge 6 Analysis**         | Judge 6 Validation Layer | Production     | ≥70%              | [judge_six_analysis.md](./judge_six_analysis.md)               |
 
 ---
 
@@ -23,7 +23,7 @@ Both prompts analyze:
 
 1. **Architecture & Design** - System structure, scalability, resilience
 2. **Performance** - Runtime efficiency or real-time latency
-3. **Core Functionality** - Tier classification (Ingestion) or validation accuracy (Judge #6)
+3. **Core Functionality** - Tier classification (Ingestion) or validation accuracy (Judge 6)
 4. **Quality & Testing** - Code coverage, monitoring, quality gates
 5. **Integration** - Cross-service communication and handoffs
 6. **Cost Model** - Operational costs and efficiency
@@ -54,7 +54,7 @@ Each dimension receives:
 
 **For Production Systems** (with real data):
 
-- Use: [Judge #6 Analysis](./judge_six_analysis.md)
+- Use: [Judge 6 Analysis](./judge_six_analysis.md)
 - Confidence Target: ≥70%
 - Best for: Performance tuning, cost optimization, production health checks
 
@@ -76,11 +76,11 @@ Optional (if available):
 - [ ] Architecture diagrams
 - [ ] Ethical crawling compliance docs
 
-#### For Judge #6 Analysis
+#### For Judge 6 Analysis
 
 Required:
 
-- [ ] Judge #6 source code (judge_six.py and related files)
+- [ ] Judge 6 source code (judge_six.py and related files)
 - [ ] Production metrics:
   - Latency distributions (p50, p95, p99, p99.9)
   - Throughput data (validations/second)
@@ -223,11 +223,11 @@ Pre-Production Readiness Assessment / Production Health Assessment:
 
 ---
 
-## 📊 Comparison: Ingestion vs. Judge #6 Prompts
+## 📊 Comparison: Ingestion vs. Judge 6 Prompts
 
-| Aspect               | Gemini Ingestion Prompt                     | Judge #6 Prompt                                         |
+| Aspect               | Gemini Ingestion Prompt                     | Judge 6 Prompt                                         |
 | -------------------- | ------------------------------------------- | ------------------------------------------------------- |
-| **Target**           | Gemini Ingestion Layer                      | Judge #6 Validation Layer                               |
+| **Target**           | Gemini Ingestion Layer                      | Judge 6 Validation Layer                               |
 | **Phase**            | Pre-production (specs)                      | Production (telemetry)                                  |
 | **Data Source**      | Architecture docs, manifests                | Source code, metrics, logs                              |
 | **Confidence**       | ≥60% (limited data)                         | ≥70% (rich data)                                        |
@@ -347,7 +347,7 @@ docs/prompts/results/
 | 2025-11-15 | Pre-prod   | 62%        | Runtime feasible, cost model solid, need Gemini fallback  | Added caching (2025-12-01) |
 | 2026-01-15 | Prod (1mo) | 68%        | Runtime stable at 43min, cost $73/mo, Tier 1 at 18% (low) | Tuned tier thresholds      |
 
-## Judge #6
+## Judge 6
 
 | Date       | Phase      | Confidence | Key Findings                                          | Actions Taken                          |
 | ---------- | ---------- | ---------- | ----------------------------------------------------- | -------------------------------------- |
@@ -426,7 +426,7 @@ Run analysis immediately after:
 
 ### General Tips
 
-- **Separate Concerns**: Run one prompt per component; don't mix Ingestion + Judge #6
+- **Separate Concerns**: Run one prompt per component; don't mix Ingestion + Judge 6
 - **Version Control**: Commit analysis results to git for history
 - **Cross-Reference**: Compare analyses over time to track trends
 - **Automate**: Script the analysis process for consistency
@@ -525,7 +525,7 @@ Found a gap or improvement?
 ## 🗺️ Next Steps
 
 1. **Run Your First Analysis**:
-   - Choose [Gemini Ingestion Analysis](./gemini_ingestion_analysis.md) or [Judge #6 Analysis](./judge_six_analysis.md)
+   - Choose [Gemini Ingestion Analysis](./gemini_ingestion_analysis.md) or [Judge 6 Analysis](./judge_six_analysis.md)
    - Follow the Quick Start Guide above
    - Save results to `results/` directory
 

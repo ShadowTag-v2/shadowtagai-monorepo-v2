@@ -42,7 +42,7 @@ Tokable v2.0 integrates four powerful systems into a unified platform:
 │  │                                                            │ │
 │  │  • Gemini function calling orchestration                  │ │
 │  │  • ATP 5-19 risk management                               │ │
-│  │  • Judge #6 approval gates                                │ │
+│  │  • Judge 6 approval gates                                │ │
 │  │  • Multi-agent debates (PanelGPT/MAD)                     │ │
 │  │  • Glicko-2 performance ratings                           │ │
 │  │                                                            │ │
@@ -111,7 +111,7 @@ Tokable v2.0 integrates four powerful systems into a unified platform:
 
 ### 1. Tokable ↔ Pinkln Ultrathink
 
-**Use Case**: Every creator revenue decision goes through Judge #6
+**Use Case**: Every creator revenue decision goes through Judge 6
 
 ```python
 
@@ -256,7 +256,7 @@ async def validate_tokable_scale():
 - Tokable streaming API
 
 
-- Pinkln Judge #6 validation
+- Pinkln Judge 6 validation
 
 
 - LLM memory lookups
@@ -355,7 +355,7 @@ All Tokable transactions validated against:
 
 - ✅ **GDPR**: Memory persistence with right-to-erasure
 
-- ✅ **KYC/AML**: Creator verification (Pinkln Judge #6)
+- ✅ **KYC/AML**: Creator verification (Pinkln Judge 6)
 
 - ✅ **Content Moderation**: AI-based NSFW detection
 
@@ -409,7 +409,7 @@ All Tokable transactions validated against:
 
 ### Phase 2: Feature Enablement (Week 3-4)
 
-- ⏳ Enable Pinkln Judge #6 for all revenue transactions
+- ⏳ Enable Pinkln Judge 6 for all revenue transactions
 
 - ⏳ Enable LLM memory for creator/fan personalization
 

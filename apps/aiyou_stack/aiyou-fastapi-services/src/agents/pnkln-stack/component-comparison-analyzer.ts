@@ -50,7 +50,7 @@ Focus on:
 
     examples: [
       {
-        input: 'Compare Judge #6 and Gemini Ingestion Layer',
+        input: 'Compare Judge 6 and Gemini Ingestion Layer',
         output: masterPromptFramework.compareComponents('judge-6', 'gemini-ingestion'),
       },
     ],

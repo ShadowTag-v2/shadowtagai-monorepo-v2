@@ -20,7 +20,7 @@ Successfully integrated **Cor.17 AI Architecture** components into the pnkln Cor
 
 2. **Semantic Search** - Neural search (Nowgrep-inspired) for intelligence items
 
-3. **Content Safety** - PII detection + safety moderation for ATP 5-19 compliance
+3. **Content Safety** - PII detection + safety moderation for Compliance Framework compliance
 
 **Integration Approach:** Option A (Recommended) - Cherry-pick best components, not full merge
 
@@ -32,7 +32,7 @@ Successfully integrated **Cor.17 AI Architecture** components into the pnkln Cor
 | **Token Efficiency** | -35%        | Reduced token waste via session memory            |
 | **Search Speed**     | +60%        | Semantic search vs. keyword search                |
 | **Index Size**       | -40%        | Vector embeddings vs. full-text indices           |
-| **Compliance**       | +99%        | Enhanced ATP 5-19 PII detection                   |
+| **Compliance**       | +99%        | Enhanced Compliance Framework PII detection                   |
 | **Manual Review**    | -70%        | Automated safety moderation                       |
 
 ---
@@ -45,7 +45,7 @@ Successfully integrated **Cor.17 AI Architecture** components into the pnkln Cor
 │                  pnkln CORE STACK™                      │
 │  - Intelligence Classification (Gemini Agents)          │
 │  - LLM Orchestration (Multi-provider routing)          │
-│  - Judge #6 Integration (Binary decisions)             │
+│  - Judge 6 Integration (Binary decisions)             │
 └────────────────┬────────────────────────────────────────┘
                  │
                  ▼
@@ -351,7 +351,7 @@ New Item: "DoD AI procurement policy"
 
 ## 3. Content Safety Service
 
-**Purpose:** PII detection and content moderation for ATP 5-19 compliance
+**Purpose:** PII detection and content moderation for Compliance Framework compliance
 
 ### Features
 
@@ -361,7 +361,7 @@ New Item: "DoD AI procurement policy"
 
 - **Safety Assessment**: Risk scoring (safe, low, medium, high, blocked)
 
-- **Compliance Checking**: ATP 5-19, GDPR, CCPA compliance validation
+- **Compliance Checking**: Compliance Framework, GDPR, CCPA compliance validation
 
 ### API Endpoints
 
@@ -409,21 +409,21 @@ Response:
     "medium_risk_score": 0.5,
     "low_risk_score": 0.2
   },
-  "compliance_modes": ["ATP 5-19", "GDPR", "CCPA"]
+  "compliance_modes": ["Compliance Framework", "GDPR", "CCPA"]
 }
 
 ```
 
 ### Use Cases
 
-**1. Intelligence Item Ingestion (ATP 5-19):**
+**1. Intelligence Item Ingestion (Compliance Framework):**
 
 ```
 
 Raw Intel: "Source: John Doe (john.doe@mil.gov, SSN: 123-45-6789)"
 → Content Safety detects: email, SSN
 → Scrubbed: "Source: [NAME] ([EMAIL_REDACTED], SSN: [SSN_REDACTED])"
-→ ATP 5-19 Compliance: PASSED
+→ Compliance Framework Compliance: PASSED
 
 ```
 
@@ -487,7 +487,7 @@ POST /api/v1/orchestrator/intelligence/classify
 
 ### 2. Ingestion ↔ Content Safety
 
-**ATP 5-19 Compliance Enhancement:**
+**Compliance Framework Compliance Enhancement:**
 
 ```python
 
@@ -496,7 +496,7 @@ POST /api/v1/orchestrator/intelligence/classify
 
 
 + Enhanced Content Safety (content_safety.py)
-= Comprehensive ATP 5-19 + GDPR/CCPA compliance
+= Comprehensive Compliance Framework + GDPR/CCPA compliance
 
 ```
 
@@ -717,7 +717,7 @@ curl -X POST http://localhost:8080/api/v1/cor17/safety/moderate \
 
 - [ ] Measure reasoning depth increase
 
-- [ ] Validate ATP 5-19 compliance enhancement
+- [ ] Validate Compliance Framework compliance enhancement
 
 ### Phase 4 (Month 2+)
 
@@ -739,7 +739,7 @@ curl -X POST http://localhost:8080/api/v1/cor17/safety/moderate \
 
 - Semantic Search (Nowgrep-inspired neural search)
 
-- Content Safety (PII detection + ATP 5-19 compliance)
+- Content Safety (PII detection + Compliance Framework compliance)
 
 **Performance:**
 

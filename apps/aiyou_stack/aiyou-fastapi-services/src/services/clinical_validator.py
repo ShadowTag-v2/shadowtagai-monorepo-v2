@@ -4,7 +4,7 @@
 Gating mechanism for AI-generated clinical interpretations.
 Ensures every output passes:
 1. Liability Shield (SB 243, Medical DLP, Clinical Gateway)
-2. Judge #6 Governance Rules (Medical Alignment)
+2. Judge 6 Governance Rules (Medical Alignment)
 """
 
 import logging
@@ -47,7 +47,7 @@ class ClinicalValidator:
             patient_context=context or {},
         )
 
-        # 2. Judge #6 Grounding Check
+        # 2. Judge 6 Grounding Check
         # Ensure the interpretation follows the "Medical Doctrine"
         try:
             judge_verdict = await score_governance(
@@ -61,9 +61,9 @@ class ClinicalValidator:
             ]  # Allow REVIEW with warnings
             judge_warnings = [judge_verdict.reasoning]
         except Exception as e:
-            logger.warning(f"Judge #6 audit failed: {e}")
+            logger.warning(f"Judge 6 audit failed: {e}")
             judge_approved = True  # Fallback to shield-only if judge is down
-            judge_warnings = [f"Judge #6 offline fallback: {e}"]
+            judge_warnings = [f"Judge 6 offline fallback: {e}"]
 
         is_safe = shield_result.passed and judge_approved
 

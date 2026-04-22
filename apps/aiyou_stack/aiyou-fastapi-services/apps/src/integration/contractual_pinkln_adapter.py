@@ -8,7 +8,7 @@ Pinkln Ultrathink ecosystem, enabling:
 - Glicko-2 quality tracking for conflict detection strategies
 - GRPO training for resolution suggestions
 - DTE evolution for prompt optimization
-- Judge #6 validation for all outputs
+- Judge 6 validation for all outputs
 
 Author: PNKLN Core Stack / ShadowTag-v4 FastAPI Services
 Version: 3.0.0 (Contractual + Pinkln Unified)
@@ -49,7 +49,7 @@ class ContractualPinklnAdapter:
     3. Glicko-2 System: Quality tracking and strategy ranking
     4. GRPO Trainer: Learns optimal resolution suggestions
     5. DTE Evolver: Self-improving prompts
-    6. Judge #6: Validates all outputs
+    6. Judge 6: Validates all outputs
     7. Cor: Coordinates execution flow
     8. ShadowTag: Cryptographic audit trail
     """
@@ -67,7 +67,7 @@ class ContractualPinklnAdapter:
 
         Args:
             gemini_api_key: Google API key (defaults to env var)
-            enable_judge_six: Validate all function calls with Judge #6
+            enable_judge_six: Validate all function calls with Judge 6
             enable_shadowtag: Add cryptographic watermarks to outputs
             enable_glicko: Track quality with Glicko-2 ratings
             enable_grpo: Enable GRPO training (requires negotiation outcomes)
@@ -119,7 +119,7 @@ class ContractualPinklnAdapter:
         2. suggest_resolutions: GRPO-trained resolution suggestions
         3. rate_quality: Glicko-2 quality rating
         4. evolve_prompt: DTE prompt evolution
-        5. validate_output: Judge #6 validation
+        5. validate_output: Judge 6 validation
         """
         tools = []
 
@@ -247,13 +247,13 @@ class ContractualPinklnAdapter:
                 ),
             )
 
-        # Tool 5: Judge #6 Validation (always available)
+        # Tool 5: Judge 6 Validation (always available)
         if self.judge_six:
             tools.append(
                 FunctionTool(
                     name="validate_with_judge_six",
                     description="""
-                Validate output using Judge #6 framework (Purpose/Reasons/Brakes).
+                Validate output using Judge 6 framework (Purpose/Reasons/Brakes).
 
                 Validation criteria:
                 - Purpose: Aligns with Contractual mission (dispute prevention)
@@ -289,13 +289,13 @@ Core capabilities:
 1. Multi-agent conflict detection (conservative, liberal, neutral perspectives)
 2. GRPO-trained resolution suggestions (68% acceptance rate)
 3. Glicko-2 quality tracking (continuous improvement)
-4. Judge #6 validation (purpose, reasons, brakes)
+4. Judge 6 validation (purpose, reasons, brakes)
 
 Operating principles:
 - Ultrathink mode: Pause, breathe, design, urgency, insanely great
 - Bias toward false positives in conflict detection (protect both parties)
 - Prioritize legal enforceability over vague compromises
-- Validate all outputs through Judge #6 before returning
+- Validate all outputs through Judge 6 before returning
 
 Performance targets:
 - Latency: <35ms p99
@@ -309,7 +309,7 @@ Performance targets:
     def _detect_conflicts_wrapper(self, transcript_text: str, session_id: str) -> dict[str, Any]:
         """Wrapper for multi-agent conflict detection
 
-        Executes through Cor orchestrator for Judge #6 validation
+        Executes through Cor orchestrator for Judge 6 validation
         """
         # Parse session_id to UUID
         from uuid import UUID
@@ -322,7 +322,7 @@ Performance targets:
         Transcript = namedtuple("Transcript", ["id", "text"])
         transcript = Transcript(id=session_uuid, text=transcript_text)
 
-        # Execute through Cor (validates with Judge #6)
+        # Execute through Cor (validates with Judge 6)
         if self.cor:
             result = self.cor.execute(
                 operation="detect_conflicts",
@@ -439,11 +439,11 @@ Performance targets:
         }
 
     def _validate_judge_six_wrapper(self, output_data: dict, operation: str) -> dict[str, Any]:
-        """Wrapper for Judge #6 validation"""
+        """Wrapper for Judge 6 validation"""
         if not self.judge_six:
-            return {"valid": True, "note": "Judge #6 not enabled"}
+            return {"valid": True, "note": "Judge 6 not enabled"}
 
-        # Validate through Judge #6
+        # Validate through Judge 6
         validation_result = self.judge_six.validate(
             output=output_data,
             operation=operation,
@@ -487,7 +487,7 @@ Performance targets:
         Session ID: {session_id}
 
         Use the detect_conflicts function to identify conflicts through multi-agent debate.
-        Then validate results with Judge #6.
+        Then validate results with Judge 6.
 
         Return detected conflicts with confidence scores and explanations.
         """
@@ -537,7 +537,7 @@ Performance targets:
         Party B: {conflict_data.get("party_b_proposal")}
 
         Use the suggest_resolutions function to generate GRPO-trained suggestions.
-        Then validate with Judge #6.
+        Then validate with Judge 6.
 
         Return top 3 suggestions with predicted acceptance probability.
         """
@@ -557,7 +557,7 @@ Performance targets:
             return self._extract_suggestions_from_text(result)
 
     def _judge_six_callback(self, function_name: str, args: dict[str, Any]) -> bool:
-        """Validation callback for Judge #6
+        """Validation callback for Judge 6
 
         Args:
             function_name: Name of function being called

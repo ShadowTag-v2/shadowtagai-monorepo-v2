@@ -32,7 +32,7 @@ Repository fork strategy for MCP integration analysis
 
 ### Technical Context
 
-- MCP integration evaluation for Judge #6 (p99≤90ms SLA)
+- MCP integration evaluation for Judge 6 (p99≤90ms SLA)
 
 - Semantic compression targets: 487 bytes vs 50KB for governance decisions
 
@@ -55,9 +55,9 @@ FORK_STRATEGY=[BEST|FAST|CHEAP]  # pending selection
 
 - **JR Engine**: Purpose (advances pnkln/revenue?) → Reasons (defensible?) → Brakes (p99 survivable?)
 
-- **Bootstrap Gates**: ROI ≥3× (18mo), LTV:CAC ≥4:1 (12mo), p99 ≤90ms (Judge #6 SLA)
+- **Bootstrap Gates**: ROI ≥3× (18mo), LTV:CAC ≥4:1 (12mo), p99 ≤90ms (Judge 6 SLA)
 
-- **ATP 5-19 Risk**: Probability (A-E) × Severity (I-IV) → EH/H/M/L decision thresholds
+- **Compliance Framework Risk**: Probability (A-E) × Severity (I-IV) → EH/H/M/L decision thresholds
 
 ### Repository Targets
 
@@ -81,7 +81,7 @@ FORK_STRATEGY=[BEST|FAST|CHEAP]  # pending selection
 
 2. **M1-3**: Map MCP architecture to pnkln namespace strategy (judge-six, core-stack, shadow-tag, ns-mesh, audit-compress)
 
-3. **M3+**: GKE-native production deployment with MCP-optimized Judge #6 enforcement
+3. **M3+**: GKE-native production deployment with MCP-optimized Judge 6 enforcement
 
 ### Variable Names & Conventions
 
@@ -117,7 +117,7 @@ ORG_TARGET         # Alternative org namespace
 
 ### CONTEXT RESTORATION - THREAD ID: MCP-FORK-20241117
 
-**Mission**: Validate MCP (Model Context Protocol) 40-60% token reduction claims through direct code analysis. Fork 7 critical repos (Anthropic/MCP/DeepSeek/Qwen/Llama) to erikcleveland namespace for implementation mapping to pnkln Judge #6 architecture.
+**Mission**: Validate MCP (Model Context Protocol) 40-60% token reduction claims through direct code analysis. Fork 7 critical repos (Anthropic/MCP/DeepSeek/Qwen/Llama) to erikcleveland namespace for implementation mapping to pnkln Judge 6 architecture.
 
 **Current State**:
 
@@ -129,7 +129,7 @@ ORG_TARGET         # Alternative org namespace
 
 **Bootstrap Constraints**:
 
-- $0K capital, Judge #6 p99≤90ms SLA non-negotiable
+- $0K capital, Judge 6 p99≤90ms SLA non-negotiable
 
 - Target: 487 bytes vs 50KB governance decisions via semantic compression
 
@@ -139,7 +139,7 @@ ORG_TARGET         # Alternative org namespace
 
 - JR Engine: Purpose → Reasons → Brakes
 
-- ATP 5-19 Risk Matrix: Probability × Severity → EH/H/M/L
+- Compliance Framework Risk Matrix: Probability × Severity → EH/H/M/L
 
 - ROI ≥3× (18mo), LTV:CAC ≥4:1 (12mo)
 

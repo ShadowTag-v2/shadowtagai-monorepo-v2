@@ -5,10 +5,10 @@ set -euo pipefail
 # Master Deployment Script - PNKLN Core Stack™ Full Deployment
 # ==============================================================================
 #
-# Deploys both Judge #6 and Gemini Ingestion Layer systems
+# Deploys both Judge 6 and Gemini Ingestion Layer systems
 #
 # SYSTEMS:
-# 1. Judge #6 - Real-time validation (GPU-accelerated, p99≤90ms)
+# 1. Judge 6 - Real-time validation (GPU-accelerated, p99≤90ms)
 # 2. Gemini Ingestion Layer - Nightly intelligence collection (CronJob)
 #
 # FIXES APPLIED:
@@ -29,7 +29,7 @@ set -euo pipefail
 #   build      - Build and push container images (both systems)
 #   cluster    - Create GKE cluster
 #   deploy     - Deploy to Kubernetes (both systems)
-#   validate   - Run latency validation (Judge #6)
+#   validate   - Run latency validation (Judge 6)
 #   cleanup    - Clean up resources
 # ==============================================================================
 
@@ -155,7 +155,7 @@ build_and_push_images() {
   configure_docker_auth
 
   local components=(
-    # Judge #6 components
+    # Judge 6 components
     "judge6-gemini"
     "judge6-orchestrator"
     "judge6-gateway"
@@ -256,23 +256,23 @@ deploy_to_kubernetes() {
     --region="${REGION}" \
     --project="${PROJECT_ID}" || error_exit "Failed to get credentials"
 
-  # Apply ConfigMaps first (Judge #6)
-  log_info "Applying Judge #6 ConfigMaps..."
+  # Apply ConfigMaps first (Judge 6)
+  log_info "Applying Judge 6 ConfigMaps..."
   kubectl apply -f k8s/atp519_configmap.yaml || error_exit "Failed to apply ATP519 ConfigMap"
 
   # Wait for ConfigMap to be ready
   kubectl wait --for=jsonpath='{.metadata.name}'=atp519-rules \
     configmap/atp519-rules -n judge6-system --timeout=60s || log_warn "ConfigMap wait timed out"
 
-  # Apply Judge #6 deployment
-  log_info "Applying Judge #6 deployment..."
-  kubectl apply -f k8s/judge6_deployment.yaml || error_exit "Failed to apply Judge #6 deployment"
+  # Apply Judge 6 deployment
+  log_info "Applying Judge 6 deployment..."
+  kubectl apply -f k8s/judge6_deployment.yaml || error_exit "Failed to apply Judge 6 deployment"
 
-  # Wait for Judge #6 deployments to be ready
-  log_info "Waiting for Judge #6 deployments to be ready..."
+  # Wait for Judge 6 deployments to be ready
+  log_info "Waiting for Judge 6 deployments to be ready..."
   kubectl wait --for=condition=available \
     --timeout=300s \
-    deployment/judge6-inference -n judge6-system || log_warn "Judge #6 deployment not ready after 5 minutes"
+    deployment/judge6-inference -n judge6-system || log_warn "Judge 6 deployment not ready after 5 minutes"
 
   # Apply Gemini Ingestion Layer CronJob
   log_info "Applying Gemini Ingestion Layer CronJob..."
@@ -330,7 +330,7 @@ cleanup() {
 
   # Delete Kubernetes resources
   log_info "Deleting Kubernetes resources..."
-  kubectl delete -f k8s/judge6_deployment.yaml --ignore-not-found=true || log_warn "Judge #6 cleanup had errors"
+  kubectl delete -f k8s/judge6_deployment.yaml --ignore-not-found=true || log_warn "Judge 6 cleanup had errors"
   kubectl delete -f k8s/gemini_ingestion_cronjob.yaml --ignore-not-found=true || log_warn "Ingestion Layer cleanup had errors"
   kubectl delete -f k8s/atp519_configmap.yaml --ignore-not-found=true || log_warn "ConfigMap cleanup had errors"
 
@@ -357,7 +357,7 @@ show_status() {
   log_info "GKE Cluster:"
   gcloud container clusters list --filter="name:${CLUSTER_NAME}" --format="table(name,location,status)" || true
 
-  log_info "\n=== Judge #6 System ==="
+  log_info "\n=== Judge 6 System ==="
   log_info "Deployments:"
   kubectl get deployments -n judge6-system || log_warn "Not connected to cluster"
 
@@ -389,7 +389,7 @@ main() {
   log_info "Cluster: ${CLUSTER_NAME}"
   log_info ""
   log_info "Deploying Systems:"
-  log_info "  1. Judge #6 - Real-time validation (GPU)"
+  log_info "  1. Judge 6 - Real-time validation (GPU)"
   log_info "  2. Gemini Ingestion Layer - Nightly intelligence collection"
 
   validate_prerequisites

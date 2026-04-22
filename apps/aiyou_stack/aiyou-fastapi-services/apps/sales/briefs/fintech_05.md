@@ -18,7 +18,7 @@ To establishing Sovereign AI dominance in the Fintech sector.
 We do not sell "Chatbots". We sell **Risk Mitigation**.
 
 - **ShadowTag Identity**: Cryptographic proof of Model Provenance (L0-L4).
-- **Judge #6 Governance**: Pre-inference compliance gates (The "Brakes").
+- **Judge 6 Governance**: Pre-inference compliance gates (The "Brakes").
 - **Sovereign Instance**: Deployed in _their_ VPC (The Child).
 
 ## 4. THE MOAT (Unfair Advantage)

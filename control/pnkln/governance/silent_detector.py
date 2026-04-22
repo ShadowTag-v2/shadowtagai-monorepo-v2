@@ -1,4 +1,4 @@
-"""Judge #6 Silent Detector — Passive signal collection layer.
+"""Judge 6 Silent Detector — Passive signal collection layer.
 
 Scans content streams for NY S7263, RAISE Act, credential, and injection
 violations without blocking the caller. All hits are routed through

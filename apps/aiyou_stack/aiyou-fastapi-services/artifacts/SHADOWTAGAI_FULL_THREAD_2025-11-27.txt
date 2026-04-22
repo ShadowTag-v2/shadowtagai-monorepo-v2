@@ -169,7 +169,7 @@ STATUS: Live, production-hardened enough for revenue-critical path
 
 **JR ENGINE SCAN – RE-SCORED FOR REVENUE VELOCITY**
 Purpose: Does this 10× our decision speed and unblock $10k+ MRR in <30 days?
-- ✅ Async = parallelize Judge #6 governance + ShadowTag batch jobs → cuts effective dev cycle 40-50% on >1h tasks
+- ✅ Async = parallelize Judge 6 governance + ShadowTag batch jobs → cuts effective dev cycle 40-50% on >1h tasks
 - ✅ Context preservation = 50–70% token reduction on iterative refactors → direct margin expansion
 - ✅ Immediate demo superpower: client sees real-time progress of a 3-hour watermarking job from their phone → closes deals faster
 - ✅ Zero cash cost, near-zero engineering cost → pure leverage
@@ -184,7 +184,7 @@ This is the difference between "yet another LLM wrapper" and "the first async LL
    - Live telemetry + teleport URL: $0.018/minute (+260% revenue, same infra)
    → Target: $7–15k MRR from existing pipeline in 6 weeks
 
-2. Judge #6 "Governance Replay" add-on
+2. Judge 6 "Governance Replay" add-on
    - Background tasks auto-captured with full context → sell replay viewer at $800/mo per compliance team
 
 3. Kernel Chain positioning

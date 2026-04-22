@@ -1,6 +1,6 @@
 """minion Five: RLP (Dense Rewards) Validator
 Implements Paper 4: Per-token 'think-before-predict' rewards.
-Integrates with Judge #6 to kill processes if reasoning drifts.
+Integrates with Judge 6 to kill processes if reasoning drifts.
 """
 
 

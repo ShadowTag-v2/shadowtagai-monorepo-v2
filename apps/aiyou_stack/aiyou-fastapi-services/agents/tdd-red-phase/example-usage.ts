@@ -199,7 +199,7 @@ async function example4_BootstrapROI() {
   const executionTime = Date.now() - startTime;
 
   console.log(`Actual execution time: ${executionTime}ms`);
-  console.log(`Judge #6 SLA (p99 ≤90ms): ${executionTime < 90 ? '✓ PASS' : '✗ FAIL'}`);
+  console.log(`Judge 6 SLA (p99 ≤90ms): ${executionTime < 90 ? '✓ PASS' : '✗ FAIL'}`);
   console.log('\n');
 }
 
@@ -226,8 +226,8 @@ async function example5_CustomConfiguration() {
   console.log('├─ R10 (Integration): 10% → Adjust for unit vs integration');
   console.log('└─ Total must sum to 100%\n');
 
-  console.log('Judge #6 Integration:');
-  console.log('├─ coverage_target: 98% (from Judge #6 doctrine)');
+  console.log('Judge 6 Integration:');
+  console.log('├─ coverage_target: 98% (from Judge 6 doctrine)');
   console.log('├─ latency_p99_ms: 90 (p99 ≤90ms SLA)');
   console.log('└─ Auto-enforced in compliance validation\n');
 }

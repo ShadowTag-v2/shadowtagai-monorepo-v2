@@ -239,3 +239,10 @@ labs/uphillsnowball/product-pitch-site/clone-base/
 libs/autoresearch_sources/Kosmos/.claude/skills/.env*
 labs/uphillsnowball/product-pitch-site/cloner-tool/
 .codesight/wiki/
+
+# Terraform / OpenTofu
+.terraform/
+*.terraform.lock.hcl
+.terragrunt-cache/
+*.tfstate
+*.tfstate.backup

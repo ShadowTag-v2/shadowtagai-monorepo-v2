@@ -48,7 +48,7 @@ curl -X POST http://localhost:8600/task \
 
 ### Run Governance Task (PRO Tier)
 
-Forces execution via the "Strategy" tier agents (Judge #6 / JURA).
+Forces execution via the "Strategy" tier agents (Judge 6 / JURA).
 
 ```bash
 curl -X POST http://localhost:8600/governance \

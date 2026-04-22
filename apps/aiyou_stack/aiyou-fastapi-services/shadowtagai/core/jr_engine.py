@@ -181,7 +181,7 @@ class JREngine:
 
     INTEGRATION:
     ------------
-    - Judge #6: Uses JR Engine as first stage (<500μs)
+    - Judge 6: Uses JR Engine as first stage (<500μs)
     - Monte Carlo: Parallel probability models
     - Cor Orchestrator: Routing decisions
     """
@@ -292,7 +292,7 @@ class JREngine:
     def quick_scan(self, request: dict, violation_keywords: list | None = None) -> PRBDecision:
         """Fast keyword-based risk scan for 80%+ LOW risk cases.
 
-        This is the entry point for Judge #6 pipeline:
+        This is the entry point for Judge 6 pipeline:
         - <500μs execution
         - ~80% classified as LOW (skip Gemini)
         - ~20% require semantic check

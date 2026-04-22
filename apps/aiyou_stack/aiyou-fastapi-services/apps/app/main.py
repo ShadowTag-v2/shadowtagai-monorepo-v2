@@ -30,7 +30,7 @@ async def lifespan(app: FastAPI):
     # Startup
     print("🚀 PNKLN Core Stack™ API starting...")
     print("📦 Gemini Ingestion Layer: OPERATIONAL")
-    print("⚖️  Judge #6 Validation: OPERATIONAL")
+    print("⚖️  Judge 6 Validation: OPERATIONAL")
 
     # Initialize Cor.17 services
     from app.routes.cor17 import gptram, safety_service, search_service
@@ -79,7 +79,7 @@ app = FastAPI(
     - **PII scrubbing** for GDPR/CCPA compliance
     - **Cost:** ~$1.4K/month fixed operational budget
 
-    ### 2. Judge #6 Validation (L — Logic & Validation)
+    ### 2. Judge 6 Validation (L — Logic & Validation)
     - **ATP 5-19 compliance** (NATO intelligence standards)
     - **JR validation** (ITAR, EAR, NIST RMF, OPSEC)
     - **Real-time validation** with p99 ≤90ms latency
@@ -104,7 +104,7 @@ app = FastAPI(
     ## Documentation
 
     - [Gemini Ingestion Layer Docs](https://github.com/ShadowTag-v2/shadowtag_v4-fastapi-services/blob/main/docs/cor8-shadowtag_v4-global-edge-fabric/03-technical-architecture/gemini-ingestion-layer.md)
-    - [Judge #6 Validation Docs](https://github.com/ShadowTag-v2/shadowtag_v4-fastapi-services/blob/main/docs/cor8-shadowtag_v4-global-edge-fabric/03-technical-architecture/judge-six-validation.md)
+    - [Judge 6 Validation Docs](https://github.com/ShadowTag-v2/shadowtag_v4-fastapi-services/blob/main/docs/cor8-shadowtag_v4-global-edge-fabric/03-technical-architecture/judge-six-validation.md)
     - [API Schemas](https://github.com/ShadowTag-v2/shadowtag_v4-fastapi-services/blob/main/docs/cor8-shadowtag_v4-global-edge-fabric/09-implementation/api-schemas.md)
 
     ## Architecture
@@ -141,7 +141,7 @@ app = FastAPI(
     ## Cost Model
 
     - **Gemini Ingestion:** $1,376/month (fixed infrastructure + API costs)
-    - **Judge #6 Validation:** $0.0022/validation (variable cost)
+    - **Judge 6 Validation:** $0.0022/validation (variable cost)
     - **Total (50K validations/day):** ~$4,700/month
 
     ## Revenue Unlock
@@ -245,7 +245,7 @@ async def health_check():
 
     **Components:**
     - Gemini Ingestion Layer (crawler, classifier, validator)
-    - Judge #6 Validation (ATP 5-19, JR compliance)
+    - Judge 6 Validation (ATP 5-19, JR compliance)
     - Gemini API connectivity
     """
     return HealthResponse(

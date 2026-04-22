@@ -8,7 +8,7 @@ This directory stores the output from Gemini 2.0 Pro analysis runs for PNKLN Cor
 results/
 ├── README.md                           # This file
 ├── gemini_ingestion_YYYY-MM-DD.md     # Ingestion Layer analyses
-├── judge_six_YYYY-MM-DD.md            # Judge #6 analyses
+├── judge_six_YYYY-MM-DD.md            # Judge 6 analyses
 └── combined_stack_YYYY-MM-DD.md       # Full stack analyses (optional)
 ```
 
@@ -30,7 +30,7 @@ Examples:
 | ------------------- | ----- | ---------- | ------------ | ------------- | ------------ |
 | _(No analyses yet)_ |       |            |              |               |              |
 
-### Judge #6 Validation Layer
+### Judge 6 Validation Layer
 
 | Date                | Phase | Confidence | Key Findings | Actions Taken | Results File |
 | ------------------- | ----- | ---------- | ------------ | ------------- | ------------ |
@@ -209,7 +209,7 @@ Jan 2026: 68% (30 days prod data)
 Apr 2026: 72% (90 days prod data)
 ```
 
-### Example: Judge #6 Trends
+### Example: Judge 6 Trends
 
 ```
 p99 Latency Trend:

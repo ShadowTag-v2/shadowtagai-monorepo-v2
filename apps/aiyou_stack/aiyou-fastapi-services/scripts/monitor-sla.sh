@@ -1,5 +1,5 @@
 #!/bin/bash
-# Pnkln Judge #6 - Real-time SLA Monitor
+# Pnkln Judge 6 - Real-time SLA Monitor
 # Purpose: Monitor p99 latency and alert on SLA breaches
 
 set -euo pipefail

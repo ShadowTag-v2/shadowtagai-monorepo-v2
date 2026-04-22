@@ -1,5 +1,5 @@
 #!/bin/bash
-# Health check script for Judge #6 deployment
+# Health check script for Judge 6 deployment
 # Tests basic endpoint availability before latency testing
 
 set -e
@@ -8,7 +8,7 @@ ENDPOINT="${ENDPOINT:-http://judge6.pnkln.svc.cluster.local}"
 MAX_RETRIES=30
 RETRY_DELAY=5
 
-echo "🏥 Health Check for Judge #6"
+echo "🏥 Health Check for Judge 6"
 echo "================================"
 echo "Endpoint: $ENDPOINT"
 echo ""

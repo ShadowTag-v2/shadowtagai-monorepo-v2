@@ -17,7 +17,7 @@ Complete documentation for the KERNEL Prompt Engineering Framework and its appli
 
 - **[Gemini Ingestion Layer Analysis](prompts/gemini-ingestion-layer.md)** - Production prompt example
   - KERNEL-compliant structure
-  - Evolution from Judge #6
+  - Evolution from Judge 6
   - Six analysis dimensions
   - Implementation notes
   - Integration with pnkln Core Stack™

@@ -16,7 +16,7 @@ Two **complementary** architectures serving different layers of the AI Agent Saa
 
 | Dimension             | Kernel Chaining                                       | Business Plan Module                      |
 | --------------------- | ----------------------------------------------------- | ----------------------------------------- |
-| **Primary Purpose**   | Decision governance & ATP 5-19 compliance             | Revenue generation & product strategy     |
+| **Primary Purpose**   | Decision governance & Compliance Framework compliance             | Revenue generation & product strategy     |
 | **Architecture**      | Multi-kernel pipeline (Extract→Classify→Decide→Audit) | Business metrics & vertical models        |
 | **Tech Stack**        | Gemini Flash + PyTorch + zstd compression             | Python dataclasses + validation logic     |
 | **Performance Focus** | Latency (52ms p99), Cost ($0.0003/decision)           | Unit economics (LTV:CAC 4:1+, 75% margin) |
@@ -37,7 +37,7 @@ Optimized decision-making pipeline that breaks complex risk assessments into spe
 
 ```python
 kernel_chain = [
-    ATP519ScanKernel(),      # Extract ATP 5-19 violations → JSON
+    ATP519ScanKernel(),      # Extract Compliance Framework violations → JSON
     JudgeSixClassifier(),    # PyTorch model: violations → go/no-go
     AuditCompressKernel()    # zstd compression for audit trail
 ]
@@ -55,7 +55,7 @@ kernel_chain = [
 
 - High-volume decisions (>10K/month)
 - Cost optimization critical
-- Need ATP 5-19 compliance enforcement
+- Need Compliance Framework compliance enforcement
 - Debugging/observability important
 
 ### Revenue Model
@@ -78,7 +78,7 @@ components = {
     'metrics': BusinessMetrics($120K MRR, 50 customers, 4:1 LTV:CAC),
     'verticals': 6 productized AI agents,
     'tech_stack': Python + LangGraph + GPT-4 + Pinecone,
-    'decision_framework': ATP 5-19 risk matrix,
+    'decision_framework': Compliance Framework risk matrix,
     'kill_switches': Evidence-based pivot/shutdown gates,
     'context': Thread rollup (47:1 compression)
 }
@@ -141,7 +141,7 @@ components = {
 
 **Kernel Chaining** enforces:
 
-- ATP 5-19 compliance on all outbound actions
+- Compliance Framework compliance on all outbound actions
 - Risk assessment before sending emails (spam prevention)
 - Audit trail for customer compliance requirements
 - Cost optimization: $0.0003/decision vs $0.02/GPT-4 call
@@ -161,12 +161,12 @@ decision_context = {
     'message': ai_generated_content
 }
 
-# Run through ATP 5-19 compliance pipeline
+# Run through Compliance Framework compliance pipeline
 result = kernel_chain.execute(decision_context)
 
 if result.confidence < 0.85:
     # Kill-switch: High-risk action blocked
-    raise ComplianceError("ATP 5-19 violation detected")
+    raise ComplianceError("Compliance Framework violation detected")
 
 # Approved: Execute sales action
 send_outreach(prospect, message)
@@ -258,7 +258,7 @@ kernel_chain.throughput  # 150 decisions/sec
 
 ### Phase 3: Production Runtime (Month 1-3)
 
-- Run all AI agent actions through ATP 5-19 kernel pipeline
+- Run all AI agent actions through Compliance Framework kernel pipeline
 - Monitor: Latency, cost, compliance violations
 - Iterate based on audit trail analysis
 
@@ -272,9 +272,9 @@ kernel_chain.throughput  # 150 decisions/sec
 
 ## Technical Integration Points
 
-### 1. **ATP 5-19 Decision Framework**
+### 1. **Compliance Framework Decision Framework**
 
-Both use ATP 5-19, but at different layers:
+Both use Compliance Framework, but at different layers:
 
 **Business Plan Module**:
 
@@ -375,7 +375,7 @@ Use **Business Plan Module**:
 
 Use **Kernel Chaining**:
 
-- ATP 5-19 compliance enforcement
+- Compliance Framework compliance enforcement
 - Cost optimization at scale
 - Real-time decision governance
 - Audit trail requirements

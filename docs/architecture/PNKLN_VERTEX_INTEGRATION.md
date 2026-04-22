@@ -70,7 +70,7 @@ investor_db = [
     {"name": "Tiger Global", "profile": "Growth-stage investor, marketplaces"}
 ]
 
-ShadowTag-v2_desc = "AI-powered content moderation platform. $207B 2030 valuation. 94/100 10 Fingers score. Judge #6 enforced governance."
+ShadowTag-v2_desc = "AI-powered content moderation platform. $207B 2030 valuation. 94/100 10 Fingers score. Judge 6 enforced governance."
 
 pitches = {}
 for inv in investor_db:

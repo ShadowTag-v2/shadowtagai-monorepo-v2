@@ -98,7 +98,7 @@ class ATP519ScanKernel:
 
 @dataclass
 class JudgeSixResult:
-    """Judge #6 binary decision result"""
+    """Judge 6 binary decision result"""
 
     decision: bool  # approve/reject
     risk_tier: str  # EH/H/M/L

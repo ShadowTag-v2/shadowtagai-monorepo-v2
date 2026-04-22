@@ -30,7 +30,7 @@
 
 ```
 
-Judge #6 p99 budget: 90ms
+Judge 6 p99 budget: 90ms
 
 Component                Latency    GKE saves?
 ───────────────────────────────────────────────
@@ -80,7 +80,7 @@ git push
 
 **Critique / Weaknesses / Assumptions**:
 
-1. **min=1 cost** - $35/mo for always-warm Judge #6; acceptable for p99 SLA
+1. **min=1 cost** - $35/mo for always-warm Judge 6; acceptable for p99 SLA
 
 2. **Gemini is the bottleneck** - 40ms of 90ms budget; infrastructure choice irrelevant
 

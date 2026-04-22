@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document specifies the Gemini Ingestion Layer Analysis Prompt, adapted from the Judge #6 validation framework for intelligence collection pipeline analysis. The ingestion layer operates as a proactive collector feeding the SHADOWTAGAI Core Stack™, contrasting with Judge #6's reactive enforcement role.
+This document specifies the Gemini Ingestion Layer Analysis Prompt, adapted from the Judge 6 validation framework for intelligence collection pipeline analysis. The ingestion layer operates as a proactive collector feeding the SHADOWTAGAI Core Stack™, contrasting with Judge 6's reactive enforcement role.
 
 **System Role**: Pre-production intelligence collection pipeline
 **Runtime Model**: GKE CronJob (nightly batch processing)
@@ -12,9 +12,9 @@ This document specifies the Gemini Ingestion Layer Analysis Prompt, adapted from
 
 ---
 
-## Architecture Comparison: Judge #6 vs Gemini Ingestion Layer
+## Architecture Comparison: Judge 6 vs Gemini Ingestion Layer
 
-| Aspect               | Judge #6 (Validation)                       | Gemini Ingestion Layer (Collection)     |
+| Aspect               | Judge 6 (Validation)                       | Gemini Ingestion Layer (Collection)     |
 | -------------------- | ------------------------------------------- | --------------------------------------- |
 | **Primary Function** | Reactive enforcement/validation             | Proactive data collection               |
 | **Architecture**     | Hybrid Gemini+PyTorch+Rules (3-layer)       | GKE CronJob Multi-Container             |
@@ -24,7 +24,7 @@ This document specifies the Gemini Ingestion Layer Analysis Prompt, adapted from
 | **Quality Gates**    | 98% PRB coverage (Purpose/Reasons/Brakes)   | Items, sources, costs, relevance scores |
 | **Integration**      | Calls services in 4 namespaces              | Called by services in 4 namespaces      |
 | **Position**         | Enforcement layer (reactive)                | Foundation layer (acquisitive)          |
-| **Unique Features**  | ATP 5-19 risk stratification, JR validation | Ethical crawling, tier classification   |
+| **Unique Features**  | Compliance Framework risk stratification, JR validation | Ethical crawling, tier classification   |
 | **Cost Model**       | API calls per validation                    | Monthly operational ~$77                |
 | **Quality Focus**    | FP/FN rates, coverage %                     | Relevance, timeliness, completeness     |
 
@@ -34,7 +34,7 @@ This document specifies the Gemini Ingestion Layer Analysis Prompt, adapted from
 
 ### 1. Component Identity
 
-- **From**: "Judge #6"
+- **From**: "Judge 6"
 
 - **To**: "Gemini Ingestion Layer"
 
@@ -95,7 +95,7 @@ This document specifies the Gemini Ingestion Layer Analysis Prompt, adapted from
 
 - RA-2: Source bans → Exponential backoff + allowlist management
 
-- ATP 5-19 Integration: Ethical gates enforce deterministic blocks for non-compliant sources
+- Compliance Framework Integration: Ethical gates enforce deterministic blocks for non-compliant sources
 
 **SHADOWTAGAI Stack Impact**: Trust-building for entire platform, reduces litigation risk
 
@@ -340,7 +340,7 @@ pubsub_topics:
 
 ### Pre-Production Constraints
 
-**Target**: ≥60% confidence (vs ≥70% for Judge #6 production)
+**Target**: ≥60% confidence (vs ≥70% for Judge 6 production)
 
 **Rationale**:
 
@@ -586,9 +586,9 @@ total_monthly_cost: "$77"
 
 - **Tier Misclassification**: Analyze false Tier 1 assignments (low relevance but high source reputation)
 
-### Integration with Judge #6
+### Integration with Judge 6
 
-- **End-to-End Flow**: Analyze handoff from ingestion → Judge #6 validation
+- **End-to-End Flow**: Analyze handoff from ingestion → Judge 6 validation
 
 - **Combined Prompt**: Unified analysis covering collection → enforcement pipeline
 
@@ -694,7 +694,7 @@ Provide a structured report with:
 
 - Per-dimension analysis (findings + confidence scores)
 
-- Risk assessment (ATP 5-19 stratification: RA-1 to RA-4)
+- Risk assessment (Compliance Framework stratification: RA-1 to RA-4)
 
 - Recommendations (prioritized by impact)
 

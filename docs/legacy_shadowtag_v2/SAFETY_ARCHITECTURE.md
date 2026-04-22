@@ -39,7 +39,7 @@ To prevent this in the **ShadowTag/pnkln** ecosystem, we implement **4 Layers of
 
 - They can _download_ YouTube videos and _upload_ transcripts, but they cannot _delete_ the source videos or modify existing archives.
 
-### 3. "Judge #6" Governance Layer (The Superego)
+### 3. "Judge 6" Governance Layer (The Superego)
 
 **Rule:** All destructive actions (`DELETE`, `DROP`, `rm -rf`) require a "2-Key Turn."
 **Implementation:**
@@ -82,7 +82,7 @@ steps:
 
 If an agent is detected attempting > 5 deletions in 1 minute:
 
-1. **Judge #6** triggers the **Kill Chain**.
+1. **Judge 6** triggers the **Kill Chain**.
 
 2. The service scales to zero.
 

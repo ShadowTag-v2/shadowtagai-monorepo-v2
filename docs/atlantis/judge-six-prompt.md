@@ -1,21 +1,21 @@
-# Judge #6 - Analysis Prompt Template
+# Judge 6 - Analysis Prompt Template
 
-> Comprehensive analysis prompt for Gemini 2.0 Pro to evaluate the PNKLN Judge #6 validation component
+> Comprehensive analysis prompt for Gemini 2.0 Pro to evaluate the PNKLN Judge 6 validation component
 
 ## Prompt Structure
 
-This prompt is designed for use with **Gemini 2.0 Pro** to conduct deep technical analysis of the Judge #6 enforcement and validation component within the PNKLN Core Stack™.
+This prompt is designed for use with **Gemini 2.0 Pro** to conduct deep technical analysis of the Judge 6 enforcement and validation component within the PNKLN Core Stack™.
 
 ---
 
 ## Analysis Prompt
 
 ```markdown
-You are a senior infrastructure architect and AI systems expert conducting a comprehensive production analysis of **Judge #6** for the PNKLN Core Stack™.
+You are a senior infrastructure architect and AI systems expert conducting a comprehensive production analysis of **Judge 6** for the PNKLN Core Stack™.
 
 ### Context
 
-Judge #6 is an enforcement and validation system that provides real-time compliance checking for ATP 5-19 standards and JR (Junction/Routing) validation. It operates as a hybrid Gemini + PyTorch architecture to deliver low-latency decisions on data validity before it progresses through the PNKLN pipeline.
+Judge 6 is an enforcement and validation system that provides real-time compliance checking for Compliance Framework standards and JR (Junction/Routing) validation. It operates as a hybrid Gemini + PyTorch architecture to deliver low-latency decisions on data validity before it progresses through the PNKLN pipeline.
 
 **Target Performance**:
 
@@ -41,7 +41,7 @@ You have access to:
 
 2. Architecture specifications
 
-3. ATP 5-19 compliance documentation
+3. Compliance Framework compliance documentation
 
 4. JR validation rules
 
@@ -103,11 +103,11 @@ Assess the p99 ≤90ms target:
 
 - How close are we to the 90ms target?
 
-#### 3. ATP 5-19 Compliance Validation
+#### 3. Compliance Framework Compliance Validation
 
-Evaluate enforcement of ATP 5-19 standards:
+Evaluate enforcement of Compliance Framework standards:
 
-- Coverage of ATP 5-19 requirements
+- Coverage of Compliance Framework requirements
 
 - Validation logic correctness
 
@@ -119,7 +119,7 @@ Evaluate enforcement of ATP 5-19 standards:
 
 **Key Questions**:
 
-- What % of ATP 5-19 requirements are automated?
+- What % of Compliance Framework requirements are automated?
 
 - How are compliance rules updated?
 
@@ -441,7 +441,7 @@ Your analysis is successful if it:
 ### Additional Context
 
 **PNKLN Stack Position**:
-Judge #6 is a downstream validation layer that filters data after initial ingestion and processing. It's critical for ensuring only high-quality, compliant data reaches analytics and delivery systems.
+Judge 6 is a downstream validation layer that filters data after initial ingestion and processing. It's critical for ensuring only high-quality, compliant data reaches analytics and delivery systems.
 
 **Evolution from Specs**:
 If a prior spec-based analysis exists (≥60% confidence), compare production reality to predicted performance. Call out surprises (positive or negative).
@@ -491,7 +491,7 @@ Gather all relevant production data:
 
 - [ ] `judge_six.py` source code
 
-- [ ] ATP 5-19 compliance docs
+- [ ] Compliance Framework compliance docs
 
 - [ ] JR validation rules
 
@@ -567,7 +567,7 @@ Based on Gemini's output:
 
 ### Key Differences
 
-| Aspect | Judge #6 | Ingestion Layer |
+| Aspect | Judge 6 | Ingestion Layer |
 |--------|----------|-----------------|
 | **Data Available** | Production telemetry | Specs/docs only |
 | **Confidence Target** | ≥70% | ≥60% |
@@ -575,12 +575,12 @@ Based on Gemini's output:
 | **Quality Metrics** | FP/FN rates | Relevance, timeliness |
 | **Cost Model** | Per API call | Monthly total |
 | **Integration** | Calls services | Called by services |
-| **Unique Concerns** | ATP 5-19, JR validation | Ethical crawling, tiers |
+| **Unique Concerns** | Compliance Framework, JR validation | Ethical crawling, tiers |
 
 ### When to Use Which
 
 
-- **Judge #6 Prompt**: For production validation systems with real-time requirements
+- **Judge 6 Prompt**: For production validation systems with real-time requirements
 
 - **Ingestion Layer Prompt**: For batch collection systems with ethical/diversity concerns
 

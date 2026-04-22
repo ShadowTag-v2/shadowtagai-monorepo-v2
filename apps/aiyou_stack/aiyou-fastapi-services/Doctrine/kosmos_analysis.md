@@ -18,7 +18,7 @@ _Source: <https://edisonscientific.com/articles/announcing-kosmos> (11.05.2025)_
 
 - **Gap**: PNKLN is currently focused on "Swarm Orchestration" (TLP/Mission Command). Kosmos is "Deep Research" (Science/Discovery).
 
-- **Opportunity**: PNKLN's "Corpus Guard" and "Judge #6" are the perfect _governance layer_ for a Kosmos-style agent.
+- **Opportunity**: PNKLN's "Corpus Guard" and "Judge 6" are the perfect _governance layer_ for a Kosmos-style agent.
 
 - **Pivot**: Adapt `swarm_boss.py` to support "Deep Research" missions, not just coding tasks.
 

@@ -8,7 +8,7 @@
 - **97% cost reduction** ($0.01 → $0.0003 per negotiation)
 - **94% accuracy** (vs. 82% baseline, 91% multi-agent v2.0)
 - **Self-evolving AI** (DTE +3.7% continuous improvement)
-- **Enterprise-grade validation** (Judge #6 framework)
+- **Enterprise-grade validation** (Judge 6 framework)
 
 **Market Opportunity:**
 
@@ -45,7 +45,7 @@ Latency: 5.7s | Cost: $0.36 | Accuracy: 94%
 Negotiation → Transcript → Gemini + Function Tools → Result
                               ├─ detect_conflicts() [multi-agent local]
                               ├─ suggest_resolutions() [GRPO local]
-                              ├─ validate_output() [Judge #6 local]
+                              ├─ validate_output() [Judge 6 local]
                               └─ rate_quality() [Glicko-2 local]
 
 Latency: 35ms | Cost: $0.0003 | Accuracy: 94%
@@ -77,7 +77,7 @@ Latency: 35ms | Cost: $0.0003 | Accuracy: 94%
 │  │  detect_conflicts()       → Multi-agent debate (local)      │  │
 │  │  suggest_resolutions()    → GRPO-trained suggestions        │  │
 │  │  generate_contract()      → Document from resolved terms    │  │
-│  │  validate_output()        → Judge #6 validation             │  │
+│  │  validate_output()        → Judge 6 validation             │  │
 │  │  rate_quality()           → Glicko-2 performance tracking   │  │
 │  │  evolve_prompt()          → DTE self-improvement            │  │
 │  └──────────────────────────────────────────────────────────────┘  │
@@ -85,7 +85,7 @@ Latency: 35ms | Cost: $0.0003 | Accuracy: 94%
 │  ┌──────────────────────────────────────────────────────────────┐  │
 │  │ LAYER 3: PNKLN CORE STACK                                   │  │
 │  │                                                              │  │
-│  │  Judge #6 (JR Engine)    → Purpose/Reasons/Brakes           │  │
+│  │  Judge 6 (JR Engine)    → Purpose/Reasons/Brakes           │  │
 │  │  Cor (Orchestrator)      → Coordinate execution flow        │  │
 │  │  ShadowTag (Watermark)   → Ed25519 signatures               │  │
 │  │  NS (Semantic Memory)    → Context retrieval (Phase 2)      │  │
@@ -168,7 +168,7 @@ Latency: 35ms | Cost: $0.0003 | Accuracy: 94%
 - 35ms latency
 - $0.0003 cost per negotiation
 - Unlimited negotiations
-- Judge #6 validation
+- Judge 6 validation
 - ShadowTag audit trail
 - Glicko-2 quality tracking
 - **Target**: 200 clients by Year 3
@@ -353,7 +353,7 @@ Latency: 35ms | Cost: $0.0003 | Accuracy: 94%
 
 **Features:**
 
-- ✅ **Judge #6 validation**: Every output validated (Purpose/Reasons/Brakes)
+- ✅ **Judge 6 validation**: Every output validated (Purpose/Reasons/Brakes)
 - ✅ **ShadowTag watermarks**: Cryptographic audit trail (Ed25519 signatures)
 - ✅ **Glicko-2 ratings**: Track strategy quality over time
 - ✅ **GRPO suggestions**: AI learns optimal resolutions (68% acceptance rate)
@@ -458,7 +458,7 @@ Latency: 35ms | Cost: $0.0003 | Accuracy: 94%
 | **DTE Accuracy Improvement**      | +3.7% per evolution cycle | Benchmark dataset        |
 | **Glicko-2 Strategy Rating**      | 1800+ (top strategies)    | Performance database     |
 | **GRPO Training Efficiency**      | 2.5× faster than PPO      | Training logs            |
-| **Judge #6 Validation Pass Rate** | 95%+                      | Validation logs          |
+| **Judge 6 Validation Pass Rate** | 95%+                      | Validation logs          |
 | **ShadowTag Audit Coverage**      | 100% of enterprise tier   | Cryptographic signatures |
 
 ---
@@ -471,7 +471,7 @@ Latency: 35ms | Cost: $0.0003 | Accuracy: 94%
 ✅ **97% cost reduction** vs. multi-agent approaches
 ✅ **$1B+ valuation potential** (Year 5, conservative)
 ✅ **Self-evolving AI** with proven +3.7% continuous improvement
-✅ **Enterprise-grade validation** (Judge #6 + ShadowTag)
+✅ **Enterprise-grade validation** (Judge 6 + ShadowTag)
 ✅ **Blue ocean market** ($90B+ TAM, no direct competitors)
 
 **Key Success Factors:**

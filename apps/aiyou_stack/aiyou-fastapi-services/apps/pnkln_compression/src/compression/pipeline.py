@@ -46,7 +46,7 @@ class PnklnCompressionPipeline:
         compressed = self.compressor.compress_for_judge6(asdict(atp))
         latencies["llm"] = (time.perf_counter() - t2) * 1000
 
-        # --- Stage 3: Judge #6 Logic ---
+        # --- Stage 3: Judge 6 Logic ---
         t3 = time.perf_counter()
         decision_data = self._judge6_decide(atp)
         latencies["judge"] = (time.perf_counter() - t3) * 1000

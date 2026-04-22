@@ -1,4 +1,4 @@
-"""PNKLN Core Stack - Judge #6 Validation API
+"""PNKLN Core Stack - Judge 6 Validation API
 
 FastAPI service exposing validation endpoints across 4 namespaces:
 - ingestion (validates items from ingestion layer)
@@ -95,7 +95,7 @@ class HealthResponse(BaseModel):
 
 # Create FastAPI app
 app = FastAPI(
-    title="Judge #6 Validation API",
+    title="Judge 6 Validation API",
     description="PNKLN Core Stack validation layer with ATP 5-19 risk assessment",
     version="1.0.0",
 )

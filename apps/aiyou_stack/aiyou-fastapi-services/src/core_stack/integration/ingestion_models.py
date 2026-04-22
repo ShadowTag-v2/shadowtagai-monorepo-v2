@@ -1,5 +1,5 @@
 """PNKLN Core Stack™ — Gemini Ingestion Layer Data Models
-Integration contract between Ingestion → Judge #6 → Services
+Integration contract between Ingestion → Judge 6 → Services
 """
 
 import json
@@ -74,7 +74,7 @@ class CostSummary:
 @dataclass
 class IngestedItem:
     """Individual intelligence item from Gemini Ingestion Layer.
-    This is the atomic unit passed to Judge #6 for validation.
+    This is the atomic unit passed to Judge 6 for validation.
     """
 
     item_id: str
@@ -86,7 +86,7 @@ class IngestedItem:
     ingestion_score: float  # Classifier confidence
     ingestion_timestamp: datetime
 
-    # Judge #6 adds these fields during validation (initially None)
+    # Judge 6 adds these fields during validation (initially None)
     judge_verdict: str | None = None
     prb_compliance: bool | None = None
     atp_519_risk: str | None = None  # RA-1 through RA-4
@@ -103,7 +103,7 @@ class IngestedItem:
             "metadata": self.metadata,
             "ingestion_score": round(self.ingestion_score, 3),
             "ingestion_timestamp": self.ingestion_timestamp.isoformat(),
-            # Judge #6 fields (None if not yet validated)
+            # Judge 6 fields (None if not yet validated)
             "judge_verdict": self.judge_verdict,
             "prb_compliance": self.prb_compliance,
             "atp_519_risk": self.atp_519_risk,
@@ -132,7 +132,7 @@ class IngestedItem:
 @dataclass
 class IngestionBriefing:
     """Complete output from Gemini Ingestion Layer (daily batch).
-    This is what gets written to Cloud Storage and triggers Judge #6 update.
+    This is what gets written to Cloud Storage and triggers Judge 6 update.
     """
 
     briefing_date: str  # YYYY-MM-DD
@@ -151,7 +151,7 @@ class IngestionBriefing:
     classifier_version: str
 
     def meets_quality_gates(self) -> bool:
-        """Validate against all quality gates before Judge #6 ingestion.
+        """Validate against all quality gates before Judge 6 ingestion.
         Rollback trigger: 3 consecutive days failing gates.
         """
         return (
@@ -214,7 +214,7 @@ class IngestionBriefing:
 
 @dataclass
 class JudgeDecision:
-    """Real-time validation response from Judge #6.
+    """Real-time validation response from Judge 6.
     Returned to services in <500μs p99.
     """
 
@@ -230,7 +230,7 @@ class JudgeDecision:
     prb_violations: list[str]  # Purpose/Reasons/Brakes violations
 
     def meets_sla(self) -> bool:
-        """Check if decision meets Judge #6 SLA"""
+        """Check if decision meets Judge 6 SLA"""
         return (
             self.latency_us < 500_000  # p99 <500μs
             and self.coverage >= 0.98  # 98% coverage minimum

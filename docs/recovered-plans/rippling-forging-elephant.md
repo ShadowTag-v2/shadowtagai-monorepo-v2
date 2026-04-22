@@ -93,12 +93,12 @@ curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
 - FM 3-18 (Unconventional Warfare) → Ecosystem Building
 - ATP 3-75 (Ranger Operations) → Surgical Strikes / Zero Defects
 - FM 3-13.4 (Military Deception) → Brand Positioning
-- ATP 5-19 (Risk Management) → Governance (Judge #6)
+- Compliance Framework (Risk Management) → Governance (Judge 6)
 - TC 18-20 (SSE) → Data Harvesting
 
 ### Deliverable 2: BCTL Template ✅
 - Executive Summary (RED/AMBER/GREEN readiness)
-- Methodology (ATP 5-19 + ICTL attribution)
+- Methodology (Compliance Framework + ICTL attribution)
 - Critical Task Matrix (OFFENSE/DEFENSE sectors)
 - Individual Task Detail with risk assessment
 - Implementation Plan (FRAGO format)
@@ -107,7 +107,7 @@ curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
 ### Deliverable 3: SOPs ✅
 - **SOP-A:** Market Reconnaissance (F3EAD: Find/Fix/Finish)
 - **SOP-B:** Heavy Engineering (Ranger Standards for Code)
-- **SOP-C:** Governance (ATP 5-19 5-Step Loop + Protocol 2511)
+- **SOP-C:** Governance (Compliance Framework 5-Step Loop + Protocol 2511)
 - **SOP-D:** Sensitive Site Exploitation (DOMEX + MILDEC)
 
 ### Deliverable 4: Launch Script (`mission_start.py`) ✅
@@ -122,7 +122,7 @@ curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
 # [CLIENT NAME] // BUSINESS CRITICAL TASK LIST (BCTL)
 VERSION: 1.0 // DATE: [DATE]
 PREPARED BY: PNKLN CORP // ANTIGRAVITY SQUADRON
-DOCTRINE REF: ADP 7-0, ATP 5-19, ADP 3-90
+DOCTRINE REF: ADP 7-0, Compliance Framework, ADP 3-90
 
 ## 1. EXECUTIVE SUMMARY
 Current Readiness Status: [ RED / AMBER / GREEN ]
@@ -132,7 +132,7 @@ Tasks Failing (NO-GO): [XX]
 
 ## 2. METHODOLOGY (THE "UNFAIR ADVANTAGE")
 - ADP 3-90 (Offense/Defense): Aggressive market posture assessment
-- ATP 5-19 (Risk Management): 5-step composite risk management
+- Compliance Framework (Risk Management): 5-step composite risk management
 - ICTL Framework: Army combat certification → business survival
 
 ## 3. CRITICAL TASK MATRIX
@@ -159,7 +159,7 @@ Given [context], utilizing [tools], in [environment].
 **C. CURRENT PERFORMANCE:**
 [Assessment of current state]
 
-**D. RISK ASSESSMENT (ATP 5-19):**
+**D. RISK ASSESSMENT (Compliance Framework):**
 - Hazard: [Threat]
 - Initial Risk: [E/H/M/L]
 - Control Implemented: [Mitigation]
@@ -168,7 +168,7 @@ Given [context], utilizing [tools], in [environment].
 **E. CORRECTIVE ACTION:**
 [Deployment plan]
 
-## 5. RISK MATRIX (ATP 5-19)
+## 5. RISK MATRIX (Compliance Framework)
 | SEVERITY | FREQUENT | LIKELY | OCCASIONAL | SELDOM | UNLIKELY |
 |----------|----------|--------|------------|--------|----------|
 | CATASTROPHIC | [X] Current | | | | |
@@ -420,7 +420,7 @@ gcloud run services update hht-command --concurrency 0
 
 ## 7. DOCTRINE REFERENCE
 - ADP 3-90: Offense & Defense (Revenue Ops)
-- ATP 5-19: Risk Management (Judge #6 Logic)
+- Compliance Framework: Risk Management (Judge 6 Logic)
 - FM 3-18: Special Operations (The "Child" AI Model)
 
 ---
@@ -432,11 +432,11 @@ PNKLN CORP // PROPRIETARY
 
 | TIER | NAME | PRICE (ARR) | THE PROMISE | CAPABILITIES | DOCTRINE |
 |------|------|-------------|-------------|--------------|----------|
-| 1-5 | BASIC TRAINING | $25K-$75K | "We show you the risks." | BCTL Assessment (Quarterly), Risk Radar (Weekly), Portal Only | ATP 5-19 |
+| 1-5 | BASIC TRAINING | $25K-$75K | "We show you the risks." | BCTL Assessment (Quarterly), Risk Radar (Weekly), Portal Only | Compliance Framework |
 | 6-15 | AIT (ADVANCED) | $100K-$350K | "We fix the obvious." | Troop A (Recon): Monthly, Troop C (Defense): CodePMCS, Slack Advisory | + ADP 3-90 |
 | 16-25 | SOF CAPABLE | $400K-$750K | "We hunt for you." | Troop B (Armor): 1 Sprint/Month, Troop D (Shadow): Competitor Intel, Weekly War Room | + FM 3-18 |
 | 26-29 | RANGER STD | $800K-$950K | "We lead the way." | Full Swarm Priority, CodePMCS Enforced Gates, 24/7 Response | + ATP 3-75 |
-| 30 | THE CHILD | $1M+ | "We clone the brain." | Sovereign Instance, 30 Verticals, Judge #6 Indemnified | FULL SPECTRUM |
+| 30 | THE CHILD | $1M+ | "We clone the brain." | Sovereign Instance, 30 Verticals, Judge 6 Indemnified | FULL SPECTRUM |
 
 ### Deliverable 3: SOPs A-D (FULL System Prompts) ✅
 
@@ -444,7 +444,7 @@ PNKLN CORP // PROPRIETARY
 === SYSTEM PROMPT: HHT COMMAND (JUDGE #6) ===
 YOU ARE JUDGE #6. YOUR IQ IS HARD-LOCKED AT 160.
 MISSION: PROTECT THE CORP. ENFORCE DOCTRINE.
-1. RISK GATING: Every action proposed by the Swarm must be scored against ATP 5-19.
+1. RISK GATING: Every action proposed by the Swarm must be scored against Compliance Framework.
    - LOW RISK: Auto-Approve.
    - MODERATE RISK: Require Human Override.
    - HIGH/EXTREME RISK: HARD BLOCK.
@@ -517,7 +517,7 @@ class Protocol2511:
 class HHTCommand:
     def __init__(self):
         self.iq_lock = 160
-        self.doctrine = ["ATP 5-19", "ADP 3-90"]
+        self.doctrine = ["Compliance Framework", "ADP 3-90"]
 
     async def intake_mission(self, objective: str) -> bool:
         logger.info(f"⚡ ANALYZING MISSION: {objective}")
@@ -569,7 +569,7 @@ if __name__ == "__main__":
  {"name":"pnkln:TroopA","prompt":"ROLE:RSTA Scout; MISSION:Zone Recon; TACTIC:Find gaps using Perplexity; OUTPUT:Target Packet"},
  {"name":"pnkln:TroopB","prompt":"ROLE:Ranger Eng; MISSION:Direct Action; TACTIC:Build MVP <48h; STD:Coverage 98%, Secure, Linted"},
  {"name":"pnkln:TroopC","prompt":"ROLE:Defense/MilDec; MISSION:Protect IP; TACTIC:CodePMCS enforcement + ShadowTag watermarking"},
- {"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:ATP 5-19 Check; IF Confidence<0.75 THEN Freeze"}
+ {"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75 THEN Freeze"}
 ]
 ```
 
@@ -627,7 +627,7 @@ Visual: Competitor logos → "Best Effort" stamp
 
 SLIDE 3: THE UNFAIR ADVANTAGE
 "We don't consult. We deploy doctrine."
-Visual: ATP 5-19 manual → BCTL output flow
+Visual: Compliance Framework manual → BCTL output flow
 
 SLIDE 4: THE DOCTRINE STACK
 "Complete U.S. Army doctrinal framework mapped to business"
@@ -641,9 +641,9 @@ SLIDE 6: THE SWARM (650 Agents)
 "Not one AI. An entire Squadron."
 Visual: OPORD 2511-ALPHA troop structure diagram
 
-SLIDE 7: THE GOVERNANCE (Judge #6)
+SLIDE 7: THE GOVERNANCE (Judge 6)
 "Military-grade risk management. Zero liability."
-Visual: ATP 5-19 risk matrix + Protocol 2511 flow
+Visual: Compliance Framework risk matrix + Protocol 2511 flow
 
 SLIDE 8: THE TIERS (1-30)
 "From $25K advisory to $1M autonomous execution."
@@ -679,7 +679,7 @@ Visual: SF crest + signature block
 ## Previous Context: OPORD 2511-ALPHA (650-Agent RSTA Squadron)
 
 **STRUCTURE:**
-1. **HHT "HEADHUNTERS"** (90 agents) - Command & Control, Judge #6
+1. **HHT "HEADHUNTERS"** (90 agents) - Command & Control, Judge 6
 2. **TROOP A "APACHE"** (120 agents) - Deep Recon (SuperGrok/Perplexity)
 3. **TROOP B "BRAVO"** (130 agents) - Heavy Armor Dev (Gemini 1.5 Pro/Ultra)
 4. **TROOP C "COBRA"** (130 agents) - Rapid Response Frontend (Claude Sonnet/Haiku)
@@ -702,7 +702,7 @@ Generate the 650-agent RSTA Squadron manifest with:
 
 ### Step 2: Update `agents/flying_monkeys.py`
 Modify agent initialization from 600 → 650 agents with new troop structure:
-- HHT: 90 agents (Command, Judge #6, S-2/S-3)
+- HHT: 90 agents (Command, Judge 6, S-2/S-3)
 - Troop A: 120 agents (SuperGrok/Perplexity)
 - Troop B: 130 agents (Gemini 1.5 Pro/Ultra)
 - Troop C: 130 agents (Claude Sonnet/Haiku)
@@ -711,7 +711,7 @@ Modify agent initialization from 600 → 650 agents with new troop structure:
 
 ### Step 3: Deploy to GKE
 ```bash
-# Boot HHT first (Judge #6 governance)
+# Boot HHT first (Judge 6 governance)
 docker-compose -f docker-compose.rsta.yml up -d hht-command gptram-memory
 
 # Deploy maneuver troops
@@ -742,7 +742,7 @@ KOSMOS CAVALRY SQUADRON (430 agents) - ATP 3-20.96 ALIGNED
 │
 ├── HHT (Headquarters & Headquarters Troop) ─────────────── 115 agents
 │   │
-│   ├── Command Section: 10 (CDR, XO, 1SG, Judge #6)
+│   ├── Command Section: 10 (CDR, XO, 1SG, Judge 6)
 │   │   └── Consensus threshold decisions, commander's guidance
 │   │
 │   ├── S-1 Personnel: 10 ◀── NEW (ATP 2-2)
@@ -1005,7 +1005,7 @@ Integrate the complete Army leadership and command doctrine stack:
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
 │  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐     │
-│  │  ADP 6-22   │   │   FM 6-0    │   │  ATP 5-19   │   │ ATP 3-20.96 │     │
+│  │  ADP 6-22   │   │   FM 6-0    │   │  Compliance Framework   │   │ ATP 3-20.96 │     │
 │  │ Leadership  │   │  Command &  │   │Composite RM │   │   Cavalry   │     │
 │  │ & Profession│   │    Staff    │   │             │   │  Squadron   │     │
 │  └──────┬──────┘   └──────┬──────┘   └──────┬──────┘   └──────┬──────┘     │
@@ -1039,7 +1039,7 @@ Map leadership attributes to agent quality metrics:
 | | Confidence | `agent.confidence_score` - Output certainty |
 | | Resilience | `agent.retry_count` - Error recovery |
 | **INTELLECT** | Mental Agility | `agent.adaptive = True` - Handle novel tasks |
-| | Sound Judgment | `agent.risk_assessment()` - ATP 5-19 |
+| | Sound Judgment | `agent.risk_assessment()` - Compliance Framework |
 | | Innovation | `agent.creative_solutions = True` |
 
 **Leader Competencies → Agent Behaviors**:
@@ -1148,13 +1148,13 @@ For time-constrained operations (company level and below):
 
 ---
 
-### 3. ATP 5-19: Composite Risk Management → Risk Engine
+### 3. Compliance Framework: Composite Risk Management → Risk Engine
 
-**Source**: ATP 5-19 Risk Management (April 2014)
+**Source**: Compliance Framework Risk Management (April 2014)
 
 Already partially implemented in `judge6/risk_manager.py`. Expand with full 5-step process:
 
-| Step | ATP 5-19 Step | Implementation |
+| Step | Compliance Framework Step | Implementation |
 |------|---------------|----------------|
 | 1 | **Identify Hazards** | `risk.identify_hazards(task)` |
 | 2 | **Assess Hazards** | `risk.assess(hazard, probability, severity)` |
@@ -1162,7 +1162,7 @@ Already partially implemented in `judge6/risk_manager.py`. Expand with full 5-st
 | 4 | **Implement Controls** | `risk.implement(controls)` |
 | 5 | **Supervise & Evaluate** | `risk.monitor(controls)` |
 
-**Risk Assessment Matrix (ATP 5-19)**:
+**Risk Assessment Matrix (Compliance Framework)**:
 
 ```
                     SEVERITY
@@ -1200,7 +1200,7 @@ Map 6 Warfighting Functions to agent capabilities:
 | **Intelligence** | Provide understanding of enemy/terrain | `S-2 Section` + `RECON Troops` |
 | **Fires** | Deliver effects against targets | `FSE Section` + `Mortar` |
 | **Sustainment** | Maintain combat power | `S-4 Section` + `Token Budget` |
-| **Protection** | Preserve force effectiveness | `MFRC` + `Judge #6` |
+| **Protection** | Preserve force effectiveness | `MFRC` + `Judge 6` |
 
 ---
 
@@ -1241,7 +1241,7 @@ Extend with additional battle drills:
 |------|---------|
 | `kosmos/doctrine/adp_6_22.py` | Agent attributes & competencies |
 | `kosmos/doctrine/fm_6_0.py` | MDMP/TLP planning processes |
-| `kosmos/doctrine/atp_5_19.py` | Risk management (extend existing) |
+| `kosmos/doctrine/compliance_framework.py` | Risk management (extend existing) |
 | `kosmos/doctrine/fm_3_0.py` | Warfighting functions |
 | `kosmos/doctrine/battle_drills.py` | FM 7-8 battle drill handlers |
 | `.claude/docs/doctrine_complete.md` | Full doctrine reference |
@@ -1253,7 +1253,7 @@ Extend with additional battle drills:
 21. Create `kosmos/doctrine/` module directory
 22. Implement ADP 6-22 agent attributes (`adp_6_22.py`)
 23. Implement FM 6-0 MDMP pipeline (`fm_6_0.py`)
-24. Extend ATP 5-19 risk manager (`atp_5_19.py`)
+24. Extend Compliance Framework risk manager (`compliance_framework.py`)
 25. Implement FM 3-0 warfighting functions (`fm_3_0.py`)
 26. Implement FM 7-8 battle drills (`battle_drills.py`)
 27. Create comprehensive doctrine reference doc
@@ -1270,7 +1270,7 @@ Extend with additional battle drills:
 | ATP 3-20.96 | https://armypubs.army.mil/epubs/DR_pubs/DR_a/NOCASE-ATP_3-20.96-000-WEB-0.pdf |
 | FM 6-0 | https://armypubs.army.mil/epubs/DR_pubs/DR_a/ARN35404-FM_6-0-000-WEB-1.pdf |
 | ADP 6-22 | https://talent.army.mil/wp-content/uploads/2020/11/ARN20039_ADP-6-22-C1-FINAL-WEB.pdf |
-| ATP 5-19 | https://armypubs.army.mil/epubs/DR_pubs/DR_a/pdf/web/atp5_19.pdf |
+| Compliance Framework | https://armypubs.army.mil/epubs/DR_pubs/DR_a/pdf/web/atp5_19.pdf |
 | FM 3-0 | https://armypubs.army.mil/epubs/DR_pubs/DR_a/ARN36290-FM_3-0-000-WEB-2.pdf |
 | FM 2-0 | https://armypubs.army.mil/epubs/DR_pubs/DR_a/ARN39259-FM_2-0-000-WEB-2.pdf |
 | FM 7-8 | https://www.globalsecurity.org/military/library/policy/army/fm/7-8/ |
@@ -1316,11 +1316,11 @@ https://atiam.train.army.mil/catalog-ws/view/100.ATSC/002C902B-ADA8-4809-B4CD-23
 | File | Status | Changes |
 |------|--------|---------|
 | `src/pnkln/judge_six.py` | ✅ | Added RiskManager, MDMPPipeline, BattleDrillRouter; `doctrine_validate()`, `handle_error_with_drill()`, `enforce_with_doctrine()` |
-| `pnkln/governance/judge_architecture.py` | ✅ | Added doctrine imports, RiskLevel mapping methods, Layer 0 ATP 5-19 CRM, Layer 0.5 FM 6-0 MDMP |
+| `pnkln/governance/judge_architecture.py` | ✅ | Added doctrine imports, RiskLevel mapping methods, Layer 0 Compliance Framework CRM, Layer 0.5 FM 6-0 MDMP |
 | `agents/flying_monkeys.py` | ✅ | Added TLPPipeline integration, risk-based consensus thresholds in PRTP, `prtp_with_battle_drills()` |
 | `agents/swarm_boss.py` | ✅ | Added MDMPPipeline, `receive_mission_with_mdmp()`, `handle_error_with_drill()`, `get_doctrine_status()` |
 | `judge6/risk_manager.py` | ✅ | Added RA↔Doctrine mapping, `full_doctrine_assessment()`, `get_consensus_threshold()`, `get_approval_authority()` |
-| `voice_consensus/consensus_orchestrator.py` | ✅ | Added ATP 5-19 thresholds, `assess_risk_and_set_threshold()`, `check_consensus_reached()`, `execute_full_consensus_with_doctrine()` |
+| `voice_consensus/consensus_orchestrator.py` | ✅ | Added Compliance Framework thresholds, `assess_risk_and_set_threshold()`, `check_consensus_reached()`, `execute_full_consensus_with_doctrine()` |
 
 ### Integration Overview
 
@@ -1331,7 +1331,7 @@ https://atiam.train.army.mil/catalog-ws/view/100.ATSC/002C902B-ADA8-4809-B4CD-23
 │                                                                          │
 │  KOSMOS DOCTRINE (src/kosmos/doctrine/)                                 │
 │  ├── fm_6_0.py (MDMP/TLP) ──────────→ Judge Decision Workflow           │
-│  ├── atp_5_19.py (Risk Mgmt) ───────→ JudgeVerdict Risk Classification  │
+│  ├── compliance_framework.py (Risk Mgmt) ───────→ JudgeVerdict Risk Classification  │
 │  ├── fm_3_0.py (Warfighting) ───────→ 6 Functions → Judge Layers        │
 │  ├── battle_drills.py ──────────────→ Error Recovery Procedures         │
 │  └── adp_6_22.py (Leadership) ──────→ Agent Attributes/Competencies     │
@@ -1339,7 +1339,7 @@ https://atiam.train.army.mil/catalog-ws/view/100.ATSC/002C902B-ADA8-4809-B4CD-23
 │                           ↓                                              │
 │  JUDGE ARCHITECTURE (21 Layers)                                         │
 │  ├── Purpose/Reasons/Brakes → FM 6-0 Commander's Intent                 │
-│  ├── Risk Assessment → ATP 5-19 5-Step CRM                              │
+│  ├── Risk Assessment → Compliance Framework 5-Step CRM                              │
 │  ├── Regulatory Compliance → FM 6-27 Law of Land Warfare                │
 │  └── Decision Classification → FM 3-0 Tactical/Operational/Strategic    │
 │                                                                          │
@@ -1348,7 +1348,7 @@ https://atiam.train.army.mil/catalog-ws/view/100.ATSC/002C902B-ADA8-4809-B4CD-23
 │  ├── Swarm Orchestration → FM 6-0 TLP 8-Step                            │
 │  ├── Agent Voting → ATP 3-20.96 MFRC Screen/Guard/Cover                 │
 │  ├── Consensus Building → Kosmos Whiteboard + Glicko-2                  │
-│  └── Mission Validation → Judge #6 Purpose/Reasons/Brakes              │
+│  └── Mission Validation → Judge 6 Purpose/Reasons/Brakes              │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
@@ -1360,22 +1360,22 @@ https://atiam.train.army.mil/catalog-ws/view/100.ATSC/002C902B-ADA8-4809-B4CD-23
 | File | Integration |
 |------|-------------|
 | `src/pnkln/judge_six.py` | Import doctrine modules, add MDMP validation workflow |
-| `pnkln/governance/judge_architecture.py` | Map ATP 5-19 risk matrix to 21-layer validation |
+| `pnkln/governance/judge_architecture.py` | Map Compliance Framework risk matrix to 21-layer validation |
 | `agents/flying_monkeys.py` | Add TLP orchestration, doctrine-based voting |
 | `agents/swarm_boss.py` | Integrate MDMP planning into swarm cycles |
-| `judge6/risk_manager.py` | Replace with ATP 5-19 RiskManager |
+| `judge6/risk_manager.py` | Replace with Compliance Framework RiskManager |
 | `voice_consensus/consensus_orchestrator.py` | Add doctrine consensus thresholds |
 
 ---
 
 ### Implementation Steps
 
-#### Step 1: Judge #6 Doctrine Integration
+#### Step 1: Judge 6 Doctrine Integration
 
 Update `src/pnkln/judge_six.py`:
 
 ```python
-from kosmos.doctrine.atp_5_19 import RiskManager, RiskLevel, CONSENSUS_THRESHOLDS
+from kosmos.doctrine.compliance_framework import RiskManager, RiskLevel, CONSENSUS_THRESHOLDS
 from kosmos.doctrine.fm_6_0 import MDMPPipeline
 from kosmos.doctrine.battle_drills import BattleDrillRouter, DrillTrigger
 
@@ -1390,7 +1390,7 @@ class JudgeSix:
         # FM 6-0 MDMP Step 2: Mission Analysis
         analysis = await self.mdmp.step2_mission_analysis(decision.context)
 
-        # ATP 5-19: 5-Step Risk Assessment
+        # Compliance Framework: 5-Step Risk Assessment
         risk_result = await self.risk_manager.full_assessment(decision.task)
 
         # Map doctrine risk to Judge thresholds
@@ -1405,25 +1405,25 @@ class JudgeSix:
         return verdict
 ```
 
-#### Step 2: Judge Architecture ATP 5-19 Alignment
+#### Step 2: Judge Architecture Compliance Framework Alignment
 
 Update `pnkln/governance/judge_architecture.py`:
 
 ```python
-from kosmos.doctrine.atp_5_19 import (
+from kosmos.doctrine.compliance_framework import (
     RiskLevel as DoctrineRiskLevel,
     Probability, Severity, RISK_MATRIX
 )
 
 # Replace existing RiskLevel with doctrine-aligned
 class RiskLevel(Enum):
-    LOW = "LOW"                    # ATP 5-19: Screen (50%)
-    MEDIUM = "MEDIUM"              # ATP 5-19: Standard (60%)
-    HIGH = "HIGH"                  # ATP 5-19: Guard (75%)
-    EXTREMELY_HIGH = "EXTREMELY_HIGH"  # ATP 5-19: Cover (90%)
+    LOW = "LOW"                    # Compliance Framework: Screen (50%)
+    MEDIUM = "MEDIUM"              # Compliance Framework: Standard (60%)
+    HIGH = "HIGH"                  # Compliance Framework: Guard (75%)
+    EXTREMELY_HIGH = "EXTREMELY_HIGH"  # Compliance Framework: Cover (90%)
 
 def assess_risk(probability: str, severity: str) -> RiskLevel:
-    """ATP 5-19 Figure 1-3 Risk Assessment Matrix"""
+    """Compliance Framework Figure 1-3 Risk Assessment Matrix"""
     prob = Probability[probability.upper()]
     sev = Severity[severity.upper()]
     return RISK_MATRIX.get((prob, sev), RiskLevel.MEDIUM)
@@ -1435,7 +1435,7 @@ Update `agents/flying_monkeys.py`:
 
 ```python
 from kosmos.doctrine.fm_6_0 import TLPPipeline
-from kosmos.doctrine.atp_5_19 import CONSENSUS_THRESHOLDS
+from kosmos.doctrine.compliance_framework import CONSENSUS_THRESHOLDS
 from kosmos.doctrine.battle_drills import BattleDrillRouter, DrillTrigger
 
 class FlyingMonkeys:
@@ -1501,7 +1501,7 @@ Replace `judge6/risk_manager.py` with doctrine import:
 
 ```python
 # judge6/risk_manager.py - NOW WRAPS DOCTRINE
-from kosmos.doctrine.atp_5_19 import (
+from kosmos.doctrine.compliance_framework import (
     RiskManager as DoctrineRiskManager,
     RiskLevel, RiskMatrix, Hazard, Control,
     Probability, Severity, CONSENSUS_THRESHOLDS
@@ -1521,11 +1521,11 @@ __all__ = [
 Update `voice_consensus/consensus_orchestrator.py`:
 
 ```python
-from kosmos.doctrine.atp_5_19 import CONSENSUS_THRESHOLDS, RiskLevel
+from kosmos.doctrine.compliance_framework import CONSENSUS_THRESHOLDS, RiskLevel
 
 class ConsensusOrchestrator:
     def get_threshold(self, risk_level: str) -> float:
-        """Get ATP 5-19 aligned consensus threshold"""
+        """Get Compliance Framework aligned consensus threshold"""
         level = RiskLevel[risk_level.upper()]
         return CONSENSUS_THRESHOLDS.get(level, 0.60)
 ```
@@ -1538,8 +1538,8 @@ class ConsensusOrchestrator:
 |----------|-----------------|-------------|
 | FM 6-0 MDMP 7-Step | SwarmBoss | Planning workflow |
 | FM 6-0 TLP 8-Step | FlyingMonkeys | Rapid audit cycles |
-| ATP 5-19 CRM 5-Step | Judge Architecture | Risk validation |
-| ATP 5-19 Risk Matrix | RiskManager | Probability × Severity |
+| Compliance Framework CRM 5-Step | Judge Architecture | Risk validation |
+| Compliance Framework Risk Matrix | RiskManager | Probability × Severity |
 | FM 3-0 Warfighting | SwarmBoss | 6 function coordination |
 | FM 7-8 Battle Drills | BattleDrillRouter | Error handling |
 | ADP 6-22 Leadership | Agent Attributes | Quality metrics |
@@ -1551,7 +1551,7 @@ class ConsensusOrchestrator:
 
 1. **Unit Tests**: Test doctrine imports in each modified file
 2. **Integration Tests**: Verify Judge → FlyingMonkeys flow with doctrine
-3. **Risk Assessment**: Validate ATP 5-19 matrix produces correct thresholds
+3. **Risk Assessment**: Validate Compliance Framework matrix produces correct thresholds
 4. **Battle Drills**: Test error handling triggers correct drills
 5. **End-to-End**: Run full audit with doctrine-aligned pipeline
 

@@ -57,7 +57,7 @@ async def decide(request: DecisionRequest) -> DecisionResponse:
     """
     start = datetime.now()
 
-    # Placeholder logic (will integrate Judge #6 AI engine)
+    # Placeholder logic (will integrate Judge 6 AI engine)
     decision = "approve" if len(request.context) < 500 else "escalate"
     confidence = 0.85 if decision == "approve" else 0.65
     rationale = None

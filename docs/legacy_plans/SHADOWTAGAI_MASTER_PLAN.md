@@ -46,7 +46,7 @@ We are bootstrapping the **"Apple of AI Infrastructure"** — marrying the physi
 - **2030 ARR:** $1.5 Billion
 
 - **The Components:**
-  - **Judge #6:** 3-Layer Governance (Gemini + PyTorch + Rules). <500μs latency. 98% coverage.
+  - **Judge 6:** 3-Layer Governance (Gemini + PyTorch + Rules). <500μs latency. 98% coverage.
 
   - **Cognitive Stack v5:** BDH, RoT, MoE-CL, CoDA. GKE + Vertex AI Pipelines.
 
@@ -129,14 +129,14 @@ At the heart of every vertical is **ShadowTag v2**: our proprietary watermarking
 
 - **Value:** Enables true auditability, copyright defense, and "Chain of Custody" for AI generation.
 
-- **Deployment:** Integrated into the inference layer (Judge #6 sidecar) on GKE.
+- **Deployment:** Integrated into the inference layer (Judge 6 sidecar) on GKE.
 
 ## CAPITAL STRATEGY (BOOTSTRAP TO BILLIONS)
 
 - **Current Capital:** $0K (Bootstrap Discipline).
 
 - **Seed Gate:** $47M @ $266M Pre-Money (15%).
-  - _Milestones:_ BOEM Permits, CAISO Filing, Judge #6 Launch.
+  - _Milestones:_ BOEM Permits, CAISO Filing, Judge 6 Launch.
 
 - **Series A:** $150M @ $3B Pre-Money.
 
@@ -150,7 +150,7 @@ At the heart of every vertical is **ShadowTag v2**: our proprietary watermarking
 
 2. **JR Doctrine:** Maximize value in every equation.
 
-3. **STRM (ShadowTag Risk Management):** ATP 5-19 adapted for AI safety (RA-1 to RA-4).
+3. **STRM (ShadowTag Risk Management):** Compliance Framework adapted for AI safety (RA-1 to RA-4).
 
 ---
 

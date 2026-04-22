@@ -4,7 +4,7 @@
 
 **What**: Extract 2,121+ LLM conversations → Generate metadata → Persist to GitHub → Load into Claude Code/Vertex/4-LLM
 
-**Why**: Claude Code remembers YOUR ShadowTagAi architecture (Judge #6, ShadowTag, JR framework) forever
+**Why**: Claude Code remembers YOUR ShadowTagAi architecture (Judge 6, ShadowTag, JR framework) forever
 
 **Cost**: $0.45 one-time + $0.02/month
 
@@ -68,7 +68,7 @@ Conversations: 2,121
 Last Updated: 2025-01-16T12:34:56Z
 
 Architecture contexts loaded:
-- Judge #6 (98% coverage, p99 ≤90ms)
+- Judge 6 (98% coverage, p99 ≤90ms)
 - ShadowTag 2.0 (DCT watermarking)
 - Cor/NS (Execution brain + service mesh)
 
@@ -78,10 +78,10 @@ Ready to assist with ShadowTagAi-aligned decision making.
 ### Step 6: Test (30 seconds)
 Restart Claude Code, then ask:
 
-> "What is Judge #6?"
+> "What is Judge 6?"
 
 Expected response:
-> Judge #6 is ShadowTagAi's content moderation system using Gemini + PyTorch + Rules engine. It provides 98% coverage with p99 latency ≤90ms for high-scale content filtering...
+> Judge 6 is ShadowTagAi's content moderation system using Gemini + PyTorch + Rules engine. It provides 98% coverage with p99 latency ≤90ms for high-scale content filtering...
 
 **✅ Installation complete!**
 
@@ -188,7 +188,7 @@ git push -u origin claude/add-superpowers-marketplace-011CUuLnhzCNrXYhosFmMAt9
 When you deploy to Claude Code/Vertex, these contexts are available:
 
 ### ShadowTagAi Architectures
-- **Judge #6**: Gemini + PyTorch + Rules (98% coverage, p99 ≤90ms)
+- **Judge 6**: Gemini + PyTorch + Rules (98% coverage, p99 ≤90ms)
 - **ShadowTag 2.0**: DCT watermarking for content protection
 - **Cor/NS**: Unified execution brain + service mesh
 

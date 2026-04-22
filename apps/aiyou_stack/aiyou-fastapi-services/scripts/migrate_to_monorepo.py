@@ -11,7 +11,7 @@ TARGET_DIR = Path("src/vendor")
 
 
 def check_governance(operation: str):
-    print(f"⚖️  Asking Judge #6 for permission to: {operation}...")
+    print(f"⚖️  Asking Judge 6 for permission to: {operation}...")
     try:
         resp = requests.post(
             f"{BASE_URL}/risk",

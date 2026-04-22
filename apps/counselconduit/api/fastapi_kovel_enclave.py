@@ -347,7 +347,7 @@ async def execute_query(
     """Execute a Kovel-privileged query against the Gemini RAG pipeline.
 
     Synchronous endpoint — returns full response after completion.
-    All responses pass through Judge #6 governance before returning.
+    All responses pass through Judge 6 governance before returning.
     """
     attorney_id = _verify_kovel_auth(x_kovel_auth)
     request.attorney_id = attorney_id
@@ -356,7 +356,7 @@ async def execute_query(
     result = await execute_privileged_query(request)
     elapsed_ms = int((time.monotonic() - start) * 1000)
 
-    # Judge #6 governance gate
+    # Judge 6 governance gate
     governance = judge6_evaluate(result.response)
     if not governance.assessment.approved:
         result.response = governance.output_text  # Replace with blocked message

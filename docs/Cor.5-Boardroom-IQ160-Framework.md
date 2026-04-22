@@ -262,7 +262,7 @@ Notify founder immediately when any of the following occur:
 - Risk identification and mitigation strategies benefit from maximum foresight
 - Edge-case scenarios modeled at highest cognitive level
 
-**After-Action Review (AAR) / ATP-5-19**
+**After-Action Review (AAR) / Compliance Framework**
 
 - All AARs conducted at IQ 160 to maximize learning and adaptation
 - Post-incident analysis benefits from comprehensive systems thinking

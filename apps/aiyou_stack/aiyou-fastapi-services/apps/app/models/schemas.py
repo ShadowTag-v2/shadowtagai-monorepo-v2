@@ -131,7 +131,7 @@ class SourceCoverageResponse(BaseModel):
 
 
 # ============================================================================
-# VALIDATION API SCHEMAS (PNKLN: Judge #6)
+# VALIDATION API SCHEMAS (PNKLN: Judge 6)
 # ============================================================================
 
 

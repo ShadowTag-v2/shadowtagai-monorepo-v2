@@ -69,7 +69,7 @@ class ShadowTagAiAgent:
     2. JR Engine validates (Purpose/Reasons/Brakes) → JRDecision
     3. If brake triggered → escalate to human
     4. Execute task with guardrails → raw result
-    5. Judge #6 verifies result → VerificationResult
+    5. Judge 6 verifies result → VerificationResult
     6. If verification fails → rollback and log
     7. Return result with watermark
     """
@@ -121,7 +121,7 @@ class ShadowTagAiAgent:
                 "constraints_applied": jr_decision.constraints,
             }
 
-            # Step 4: Verify with Judge #6
+            # Step 4: Verify with Judge 6
             verification_result = self._verify_with_judge_six(raw_result, task.context)
             audit_trail["verification"] = verification_result.audit_report
 
@@ -195,7 +195,7 @@ class ShadowTagAiAgent:
                 justification="Automated agent task execution",
                 risk_probability=0.1,
                 risk_severity=0.2,
-                mitigation_strategy="Automated verification with Judge #6",
+                mitigation_strategy="Automated verification with Judge 6",
             ),
         ]
 
@@ -213,7 +213,7 @@ class ShadowTagAiAgent:
         raise NotImplementedError("Subclasses must implement _execute_task")
 
     def _verify_with_judge_six(self, result: Any, context: dict[str, Any]) -> VerificationResult:
-        """Verify result with Judge #6"""
+        """Verify result with Judge 6"""
         return self.judge_six.verify(result, context)
 
     def _escalate_to_human(
@@ -265,7 +265,7 @@ class ShadowTagAiAgent:
         """Rollback and log when verification fails"""
         execution_time_ms = (time.perf_counter() - start_time) * 1000
         audit_trail["rollback"] = {
-            "reason": "Judge #6 verification failed",
+            "reason": "Judge 6 verification failed",
             "violations": [
                 {
                     "type": v.violation_type.value,

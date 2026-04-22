@@ -1,0 +1,113 @@
+# Item 19: CI/CD pipeline for Terraform
+# Triggers on changes to terraform/ directory
+
+name: "Terraform CI"
+
+on:
+  pull_request:
+    paths:
+      - "terraform/**"
+  push:
+    branches: [main]
+    paths:
+      - "terraform/**"
+
+permissions:
+  id-token: write   # WIF OIDC
+  contents: read
+  pull-requests: write
+
+env:
+  TF_VERSION: "1.14.8"
+  TG_VERSION: "1.0.2"
+  CHECKOV_VERSION: "3.2.520"
+
+jobs:
+  validate:
+    name: Validate & Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: ${{ env.TF_VERSION }}
+
+      - name: Setup Terragrunt
+        uses: gruntwork-io/setup-terragrunt@v1
+        with:
+          terragrunt_version: ${{ env.TG_VERSION }}
+
+      - name: Format Check
+        run: tofu fmt -check -recursive terraform/
+
+      - name: Validate Modules
+        run: |
+          for dir in terraform/infrastructure-catalog-gcp-cloud-run/*/; do
+            echo "→ Validating $dir"
+            cd "$dir"
+            tofu init -backend=false -no-color >/dev/null 2>&1
+            tofu validate
+            cd "$GITHUB_WORKSPACE"
+          done
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: terraform/infrastructure-catalog-gcp-cloud-run
+          framework: terraform
+          quiet: true
+          output_format: sarif
+          skip_check: CKV_GCP_41  # SA User needed for CI/CD
+
+  plan:
+    name: Terraform Plan (Prod)
+    runs-on: ubuntu-latest
+    needs: [validate, security]
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SA }}
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: ${{ env.TF_VERSION }}
+
+      - name: Setup Terragrunt
+        uses: gruntwork-io/setup-terragrunt@v1
+        with:
+          terragrunt_version: ${{ env.TG_VERSION }}
+
+      - name: Terragrunt Plan
+        run: |
+          cd terraform/infrastructure-live-gcp/prod
+          terragrunt run-all plan --terragrunt-non-interactive -no-color 2>&1 | tee plan.txt
+
+      - name: Post Plan to PR
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const fs = require('fs');
+            const plan = fs.readFileSync('terraform/infrastructure-live-gcp/prod/plan.txt', 'utf8');
+            const body = `## Terraform Plan\n\`\`\`\n${plan.slice(0, 60000)}\n\`\`\``;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });

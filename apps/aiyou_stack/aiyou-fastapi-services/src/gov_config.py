@@ -263,7 +263,7 @@ class GovernanceSettings(BaseSettings):
     )
     judge6_endpoint: str | None = Field(
         default=None,
-        description="Legacy Judge #6 endpoint for comparison",
+        description="Legacy Judge 6 endpoint for comparison",
     )
 
     # Rate Limiting

@@ -142,7 +142,7 @@ Output: Prioritized list with code examples."
 
 ### Background
 
-The PNKLN Core Stack™ includes a Gemini Ingestion Layer—a nightly batch system that crawls multiple sources (YouTube, Twitter, news) to collect intelligence data. The team adapted a "Judge #6" validation prompt to create an analysis prompt for this ingestion system.
+The PNKLN Core Stack™ includes a Gemini Ingestion Layer—a nightly batch system that crawls multiple sources (YouTube, Twitter, news) to collect intelligence data. The team adapted a "Judge 6" validation prompt to create an analysis prompt for this ingestion system.
 
 **Challenge:**
 
@@ -160,9 +160,9 @@ Strategic prompt engineering tailored to Gemini 2.0 Pro's strengths.
 
 These swaps repurposed the prompt without losing core structure:
 
-| Original (Judge #6) | New (Ingestion Layer)                         | Why                                      |
+| Original (Judge 6) | New (Ingestion Layer)                         | Why                                      |
 | ------------------- | --------------------------------------------- | ---------------------------------------- |
-| "Judge #6"          | "Gemini Ingestion Layer"                      | Domain focus                             |
+| "Judge 6"          | "Gemini Ingestion Layer"                      | Domain focus                             |
 | `judge_six.py`      | Pipeline docs & arch specs                    | Broader scope for distributed system     |
 | p99 ≤90ms           | ~45 min/night runtime                         | Batch vs real-time metrics               |
 | 98% coverage        | Quality gates (items, sources, costs, scores) | Multifaceted quality vs binary threshold |
@@ -176,12 +176,12 @@ By using architecture docs instead of requiring the model to read all code files
 
 The prompt evolved from a reactive validator to a proactive collector:
 
-| Dimension           | Judge #6 (Validator)            | Ingestion Layer (Collector)           | Impact                      |
+| Dimension           | Judge 6 (Validator)            | Ingestion Layer (Collector)           | Impact                      |
 | ------------------- | ------------------------------- | ------------------------------------- | --------------------------- |
 | **Architecture**    | Hybrid Gemini+PyTorch           | GKE CronJob Multi-Container           | Emphasizes orchestration    |
 | **Key Metrics**     | Latency, throughput, block rate | Items/day, sources, cost/item         | Volume/diversity over speed |
 | **Integration**     | Calls services in 4 namespaces  | Called by services in 4 namespaces    | Foundation layer            |
-| **Unique Features** | ATP 5-19, JR validation         | Ethical crawling, tier classification | Compliance focus            |
+| **Unique Features** | Compliance Framework, JR validation         | Ethical crawling, tier classification | Compliance focus            |
 | **Cost Model**      | API calls per validation        | Monthly operational ~$77              | Batch-friendly              |
 | **Quality Focus**   | FP/FN rates                     | Relevance, timeliness, completeness   | Holistic data quality       |
 
@@ -338,7 +338,7 @@ Good delivery effectiveness analysis prevents this.
 
 ### Confidence Adjustments: Realistic Expectations
 
-**Change:** Lowered target confidence from ≥70% (Judge #6) to ≥60% (Ingestion Layer)
+**Change:** Lowered target confidence from ≥70% (Judge 6) to ≥60% (Ingestion Layer)
 
 **Reasoning:**
 

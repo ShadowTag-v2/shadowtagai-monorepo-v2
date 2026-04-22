@@ -1,6 +1,6 @@
 /**
  * Gemini Ingestion Layer Analysis Prompt
- * Adapted from Judge #6 for intelligence collection pipeline analysis
+ * Adapted from Judge 6 for intelligence collection pipeline analysis
  */
 
 export const GEMINI_INGESTION_ANALYSIS_PROMPT = `You are an expert systems architect analyzing the Gemini Ingestion Layer component of the PNKLN Core Stack™.
@@ -242,7 +242,7 @@ CRITICAL ANALYSIS AREAS:
    - What if runtime exceeds 45 minutes?
    - How are tier misclassifications corrected?
 
-2. **Integration with Judge #6**:
+2. **Integration with Judge 6**:
    - Analyze handoff between ingestion and validation
    - Data format compatibility
    - SLA alignment

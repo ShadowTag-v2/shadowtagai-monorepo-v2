@@ -1,5 +1,5 @@
 # JR (Purpose/Reasons/Brakes) Policy Configuration
-# Externalized rules for Judge #6 validation layer
+# Externalized rules for Judge 6 validation layer
 # Edit this file to change governance policies without code deployment
 
 # PURPOSE: Allowlist of valid purposes that advance the mission

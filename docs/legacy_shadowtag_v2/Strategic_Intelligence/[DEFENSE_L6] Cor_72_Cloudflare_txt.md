@@ -15,7 +15,7 @@ Cor.72 Cloudflare
 ~4–6 months to MVP.
     •    Core ingestion → RAG engine (already scaffolded with Cursor).
     •    Hosting layer → YouTube clone baseline (open-source clones + custom AI upload policy).
-    •    Risk/guardrails → ATP 5-19 / ShadowTag-v2JR embedded early.
+    •    Risk/guardrails → Compliance Framework / ShadowTag-v2JR embedded early.
     •    Deployment infra → CoreWeave/NVIDIA for compute acceleration.
 
 ✅ Net time saved: ~65–70%. That’s the equivalent of skipping 9+ months of infra churn.
@@ -72,7 +72,7 @@ Based on Cloudflare’s AI Index first build (public beta) and ShadowTag-v2’s 
     •    ShadowTag-v2 = “YouTube-for-AI” + index. That’s adjacent, not identical → ~60% overlap.
     •    Governance posture:
     •    They emphasize permission + control (domain owners decide what’s indexed).
-    •    ShadowTag-v2JR enforces risk-first, objection protocol, ATP 5-19 compliance.
+    •    ShadowTag-v2JR enforces risk-first, objection protocol, Compliance Framework compliance.
     •    Here overlap is ~50% — they don’t have risk doctrine baked in.
 
 ⸻
@@ -106,7 +106,7 @@ Based on Cloudflare’s AI Index first build (public beta) and ShadowTag-v2’s 
     •    ShadowTag-v2 = “YouTube-for-AI” + index. That’s adjacent, not identical → ~60% overlap.
     •    Governance posture:
     •    They emphasize permission + control (domain owners decide what’s indexed).
-    •    ShadowTag-v2JR enforces risk-first, objection protocol, ATP 5-19 compliance.
+    •    ShadowTag-v2JR enforces risk-first, objection protocol, Compliance Framework compliance.
     •    Here overlap is ~50% — they don’t have risk doctrine baked in.
 
 ⸻
@@ -311,7 +311,7 @@ What remains
 
 ⚖️ ShadowTag-v2JR Alignment
     •    Purpose → Cut fragility, enforce predictability in infra.
-    •    Reasons → Verified doctrine: ATP 5-19, AR 385-10, DD Form 2977 demand mitigation of preventable downtime/errors.
+    •    Reasons → Verified doctrine: Compliance Framework, AR 385-10, DD Form 2977 demand mitigation of preventable downtime/errors.
     •    Brakes → Automate regression tests, fallback, socket activation.
 
 ⸻
@@ -350,7 +350,7 @@ Do you want me to draft a Cursor-ready spec (module definition format + graceful
 
 ⚖️ ShadowTag-v2JR Alignment
     •    Purpose → Cut fragility, enforce predictability in infra.
-    •    Reasons → Verified doctrine: ATP 5-19, AR 385-10, DD Form 2977 demand mitigation of preventable downtime/errors.
+    •    Reasons → Verified doctrine: Compliance Framework, AR 385-10, DD Form 2977 demand mitigation of preventable downtime/errors.
     •    Brakes → Automate regression tests, fallback, socket activation.
 
 ⸻

@@ -5,7 +5,7 @@ SK-INSPIRED PATTERN EXTRACTION:
 -------------------------------
 Implements 3 core Semantic Kernel patterns adapted for Pnkln constraints:
 
-1. SEQUENTIAL PIPELINE (Maps to Judge #6 validation)
+1. SEQUENTIAL PIPELINE (Maps to Judge 6 validation)
    - Agent1 → Agent2 → Agent3 (each builds on prior output)
    - Maintains p99≤90ms SLA by conditional stage execution
    - Avoids SK's Kernel DI overhead (200-500ms) via direct async calls
@@ -23,7 +23,7 @@ Implements 3 core Semantic Kernel patterns adapted for Pnkln constraints:
 PERFORMANCE TARGETS:
 -------------------
 - Orchestration latency: p99 < 1ms (vs SK Kernel 200-500ms)
-- Sequential pipeline: p99 ≤ 90ms (Judge #6 SLA)
+- Sequential pipeline: p99 ≤ 90ms (Judge 6 SLA)
 - Concurrent execution: < 500μs (JR Engine + parallel models)
 - Memory footprint: < 100MB per orchestrator instance
 
@@ -657,7 +657,7 @@ class CorOrchestrator:
 
     Integration points:
     - JR Engine: Deterministic risk routing
-    - Judge #6: Hybrid validation pipeline
+    - Judge 6: Hybrid validation pipeline
     - NS Mesh: <100μs service routing
     - AutoGen: Multi-agent conversations
     """
@@ -860,7 +860,7 @@ class CorOrchestrator:
 
 
 async def example_usage():
-    """Example: Judge #6 validation pipeline using Cor Orchestrator.
+    """Example: Judge 6 validation pipeline using Cor Orchestrator.
 
     This demonstrates Pattern 1 (Sequential Pipeline) with conditional
     stage skipping to maintain p99≤90ms SLA.

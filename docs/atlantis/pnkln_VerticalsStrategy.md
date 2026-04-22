@@ -9,7 +9,7 @@ To establish 30 independent, high-value revenue streams ("The Child" instance) t
 | ID | VERTICAL | REVENUE MODEL | TARGET | STATUS |
 |---|---|---|---|---|
 | 01 | **ShadowTag Identity** | Licensing | Enterprise | ACTIVE |
-| 02 | **Judge #6 Governance** | SaaS / API | Gov/Defense | ACTIVE |
+| 02 | **Judge 6 Governance** | SaaS / API | Gov/Defense | ACTIVE |
 | 03 | **CodePMCS Security** | Audit Fee | DevTeams | ACTIVE |
 | 04 | **SkyNode Compute** | IaaS | AI Labs | PILOT |
 | 05 | **FinJudge Audit** | Retainer | Fintech | PLANNING |

@@ -179,7 +179,7 @@ The ingestion layer is **called by** these services to trigger collection:
 
 Ingested data **feeds into** these services:
 
-1. **judge-six-validator** - Validates all incoming data for compliance (ATP 5-19, JR)
+1. **judge-six-validator** - Validates all incoming data for compliance (Compliance Framework, JR)
 2. **am-briefing-generator** - Produces daily 6 AM intelligence briefings
 3. **strategic-dashboard** - Powers Cor.57 real-time monitoring
 4. **defense-reporting** - Feeds classified DoD/DHS reporting systems
@@ -194,7 +194,7 @@ Ingested data **feeds into** these services:
 │         │                                                  │
 │         │ 125ms avg latency                                │
 │         ▼                                                  │
-│  [Judge #6 Validator]                                      │
+│  [Judge 6 Validator]                                      │
 │         │                                                  │
 │         │ <90ms p99 validation                             │
 │         ▼                                                  │
@@ -297,16 +297,16 @@ Ingested data **feeds into** these services:
 
 ---
 
-## Ingestion vs. Validation (Judge #6)
+## Ingestion vs. Validation (Judge 6)
 
 ### Architectural Comparison
 
-| Component            | Ingestion Layer                                     | Judge #6 Validator                                | Strategic Impact                                          |
+| Component            | Ingestion Layer                                     | Judge 6 Validator                                | Strategic Impact                                          |
 | -------------------- | --------------------------------------------------- | ------------------------------------------------- | --------------------------------------------------------- |
-| **Architecture**     | GKE CronJob Multi-Container (Batch)                 | Hybrid Gemini+PyTorch (Real-time)                 | Complementary: Ingestion feeds validated data to Judge #6 |
-| **Key Metrics**      | Items/Day, Sources, Cost/Item                       | Latency (p99 ≤90ms), Throughput, Block Rate       | Ingestion: volume/diversity; Judge #6: speed/accuracy     |
-| **Integration Role** | Called by 4 services (data provider)                | Calls services in 4 namespaces (enforcement)      | Ingestion = foundation; Judge #6 = protection             |
-| **Unique Features**  | Ethical Crawling, Tier Classification, Multi-Source | ATP 5-19 Compliance, JR Validation, Fast Decision | Prevent bad data entry vs. prevent bad data propagation   |
+| **Architecture**     | GKE CronJob Multi-Container (Batch)                 | Hybrid Gemini+PyTorch (Real-time)                 | Complementary: Ingestion feeds validated data to Judge 6 |
+| **Key Metrics**      | Items/Day, Sources, Cost/Item                       | Latency (p99 ≤90ms), Throughput, Block Rate       | Ingestion: volume/diversity; Judge 6: speed/accuracy     |
+| **Integration Role** | Called by 4 services (data provider)                | Calls services in 4 namespaces (enforcement)      | Ingestion = foundation; Judge 6 = protection             |
+| **Unique Features**  | Ethical Crawling, Tier Classification, Multi-Source | Compliance Framework Compliance, JR Validation, Fast Decision | Prevent bad data entry vs. prevent bad data propagation   |
 | **Cost Model**       | Monthly Operational ~$77                            | API Calls per Validation                          | Fixed cost vs. variable cost                              |
 | **Quality Focus**    | Relevance, Timeliness, Completeness                 | False Positive/Negative Rates                     | Input quality vs. output correctness                      |
 | **Runtime**          | ~45 min/night (batch)                               | p99 ≤90ms (real-time)                             | Overnight gathering vs. instant response                  |
@@ -317,10 +317,10 @@ Ingested data **feeds into** these services:
 ```
 [Collection] → [Classification] → [Validation] → [Action]
      ↑               ↑                  ↑            ↑
-  Ingestion      Ingestion          Judge #6    Downstream
+  Ingestion      Ingestion          Judge 6    Downstream
    Layer          Layer              Layer       Services
 
-Ingestion ensures GOOD INPUTS → Judge #6 ensures CORRECT OUTPUTS
+Ingestion ensures GOOD INPUTS → Judge 6 ensures CORRECT OUTPUTS
 ```
 
 ---
@@ -433,9 +433,9 @@ The Gemini Ingestion Layer is a **critical foundational component** of the Cor.5
 - ✅ Ethically compliant (99.8% robots.txt, zero legal violations)
 - ✅ High-quality output (70% Tier 1, 87.3% relevance)
 - ✅ Reliable (99.7% success rate, 98.5% on-time AM briefings)
-- ✅ Well-integrated (feeds Judge #6 and 3 other downstream services)
+- ✅ Well-integrated (feeds Judge 6 and 3 other downstream services)
 
-**Strategic Role**: Ingestion prevents bad data entry; Judge #6 prevents bad data propagation. Together, they ensure **end-to-end intelligence quality** for the Unified Sky-Ground GPU Mesh.
+**Strategic Role**: Ingestion prevents bad data entry; Judge 6 prevents bad data propagation. Together, they ensure **end-to-end intelligence quality** for the Unified Sky-Ground GPU Mesh.
 
 ---
 

@@ -13,7 +13,7 @@ class minionsClient:
     """minions 650-Agent Swarm Client
 
     Structure:
-    - HHT: 90 (Headquarters, Judge #6)
+    - HHT: 90 (Headquarters, Judge 6)
     - AIR_CAV: 120 (Aerial Scouts)
     - ALPHA: 130 (Armor - Heavy Compute)
     - BRAVO: 130 (Stryker - Rapid)

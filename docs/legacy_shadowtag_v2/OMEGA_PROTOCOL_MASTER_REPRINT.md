@@ -26,7 +26,7 @@
 
 | TROOP        | SIZE | MODEL | ROLE                    | TACTIC                    |
 | ------------ | ---- | ----- | ----------------------- | ------------------------- |
-| **HHT**      | 90   | PRO   | Judge #6, Governance    | Judge #6 / cATO Gating    |
+| **HHT**      | 90   | PRO   | Judge 6, Governance    | Judge 6 / cATO Gating    |
 | **AIR**      | 120  | FLASH | Aerial Scouts (Recon)   | Zone Recon via Perplexity |
 | **ALPHA**    | 130  | FLASH | Armor (Heavy Compute)   | Main Battle Tank Ops      |
 | **BRAVO**    | 130  | FLASH | Stryker (Rapid Deploy)  | MVP < 48h                 |
@@ -44,7 +44,7 @@
 
 ## 5. RESEARCH DELTAS & PROTOCOLS
 
-- **Entropy-Targeted RL**: Focus compute on high-entropy forks via Judge #6.
+- **Entropy-Targeted RL**: Focus compute on high-entropy forks via Judge 6.
 - **SOP-C Decision Protocol**: "Lowest-Confidence Check" triggers immediate branch review.
 - **RoT Templates**: 40% token reduction via retrieval-of-thought.
 - **Long⊗Short Routing**: 7B model for low-entropy, Pro for high-entropy.
@@ -108,14 +108,14 @@ if __name__ == "__main__":
 
 ## 10. COR.JUDGE.6 DOCTRINE (CSRMC 2026)
 
-> **SUPERSEDES**: ATP 5-19 (Risk Management)
+> **SUPERSEDES**: Compliance Framework (Risk Management)
 > **AUTHORITY**: DoD CSRMC 2025/2026 Framework
 > **STATE**: "Always-On" (Continuous ATO)
 
 ### A. THE SHIFT
 
-- **Legacy (ATP 5-19)**: Static, Snapshot-in-time, Checklist compliance.
-- **Omega (Judge #6)**: Dynamic, Real-time, Policy-as-Code enforcement.
+- **Legacy (Compliance Framework)**: Static, Snapshot-in-time, Checklist compliance.
+- **Omega (Judge 6)**: Dynamic, Real-time, Policy-as-Code enforcement.
 
 ### B. 10 STRATEGIC TENETS
 

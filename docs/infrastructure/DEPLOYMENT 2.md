@@ -78,7 +78,7 @@ cat ~/.claude-code/memory.md
 
 # 4. Test
 
-# Open Claude Code → Ask "What is Judge #6?"
+# Open Claude Code → Ask "What is Judge 6?"
 
 # Should respond with ShadowTagAi architecture details
 
@@ -400,7 +400,7 @@ export GOOGLE_CLOUD_PROJECT=shadowtagai-prod  # Your GCP project
 - [ ] Restart Claude Code
 
 
-- [ ] Ask Claude Code: "What is Judge #6?"
+- [ ] Ask Claude Code: "What is Judge 6?"
 
 
 - [ ] Response includes: "98% coverage, p99 ≤90ms"

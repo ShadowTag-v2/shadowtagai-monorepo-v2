@@ -75,7 +75,7 @@ jr_validation_gate_1_purpose() {
     echo "Expected impact:"
     echo "  • Revenue: \$9.6M ARR in 18 months (Sales, Call Intel, Deal Intel, Negotiation)"
     echo "  • Moat: Google Hypercomputer lock-in (18-month lead time for competitors)"
-    echo "  • Regulatory: EU AI Act compliance (Judge #6 ATP 5-19)"
+    echo "  • Regulatory: EU AI Act compliance (Judge 6 ATP 5-19)"
     echo "  • Vendor independence: Multi-LLM strategy (40/35/15/5/5)"
     echo ""
     read -p "Proceed with deployment? [y/N] " -n 1 -r
@@ -102,7 +102,7 @@ jr_validation_gate_2_reasons() {
     echo ""
     echo "Risk assessment: RA-2 (MEDIUM)"
     echo "  • Known: GKE reliability (99.95% SLA)"
-    echo "  • Unknown: Judge #6 latency under production load"
+    echo "  • Unknown: Judge 6 latency under production load"
     echo "  • Mitigation: Parallel validation + Layer 1 fast path"
     echo ""
     read -p "Accept risk level? [y/N] " -n 1 -r
@@ -131,7 +131,7 @@ jr_validation_gate_3_brakes() {
     echo "  1. LTV:CAC <4:1 after 12 months → Immediate shutdown"
     echo "  2. Monthly cost >\$65K for 2 consecutive months → Review"
     echo "  3. p99 latency >90ms for 7 days → Rollback"
-    echo "  4. Judge #6 coverage <98% for 3 days → Audit"
+    echo "  4. Judge 6 coverage <98% for 3 days → Audit"
     echo ""
     echo "Budget alerts configured at: 50%, 75%, 90%, 100%"
     echo ""
@@ -220,8 +220,8 @@ deploy_kubernetes() {
     log_info "Deploying namespaces..."
     kubectl apply -f k8s/base/
 
-    # Deploy Judge #6
-    log_info "Deploying Judge #6 (3 layers + webhook)..."
+    # Deploy Judge 6
+    log_info "Deploying Judge 6 (3 layers + webhook)..."
     kubectl apply -f k8s/judge-6/
 
     # Deploy LLM Router
@@ -249,7 +249,7 @@ verify_deployment() {
     kubectl get nodes
 
     # Check pods in governance namespace
-    log_info "Checking Judge #6 pods..."
+    log_info "Checking Judge 6 pods..."
     kubectl get pods -n ShadowTag-v2jr-governance
 
     # Check pods in inference namespace
@@ -289,7 +289,7 @@ print_next_steps() {
     echo "   - gcr.io/$PROJECT_ID/judge-webhook:latest"
     echo "   - gcr.io/$PROJECT_ID/llm-router:latest"
     echo ""
-    echo "5. Load test Judge #6 (validate p99 <90ms):"
+    echo "5. Load test Judge 6 (validate p99 <90ms):"
     echo "   kubectl run -it --rm load-test --image=williamyeh/wrk --restart=Never -- ..."
     echo ""
     echo "6. Monitor ROI gates (Month 3/6/12):"
@@ -297,7 +297,7 @@ print_next_steps() {
     echo ""
     echo "Monthly cost target: \$${MONTHLY_BUDGET_USD}"
     echo "ROI target: ≥3× in 18 months"
-    echo "SLA targets: p99 ≤90ms, 99.95% availability, 98% Judge #6 coverage"
+    echo "SLA targets: p99 ≤90ms, 99.95% availability, 98% Judge 6 coverage"
     echo ""
 }
 

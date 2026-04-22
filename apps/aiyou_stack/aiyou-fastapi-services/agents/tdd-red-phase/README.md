@@ -68,7 +68,7 @@ tdd-red-phase:
 
 ```typescript
 MAX_ITERATIONS = 3           // Self-correction attempts
-TIMEOUT = 90s                // p99 ≤90ms doctrine (Judge #6)
+TIMEOUT = 90s                // p99 ≤90ms doctrine (Judge 6)
 FAIL_FAST = 10 violations    // Don't analyze 100+ violations
 COMPLIANCE_THRESHOLD = 95%   // Pass/fail gate
 ```
@@ -154,9 +154,9 @@ interface AgentResult {
 }
 ```
 
-## Integration with Judge #6
+## Integration with Judge 6
 
-The agent aligns with Judge #6 enforcement doctrine:
+The agent aligns with Judge 6 enforcement doctrine:
 
 - **Coverage Target:** 98% (enforced via R1)
 - **Latency SLA:** p99 ≤90ms (timeout constraint)
@@ -185,7 +185,7 @@ This agent **leaves code cleaner than found** by:
 - Same 10 validation rules
 - Faster execution (no inter-agent communication)
 - Clearer audit trail
-- Judge #6 integration maintained
+- Judge 6 integration maintained
 
 **Ship TODAY. Perfect tomorrow.**
 
@@ -199,7 +199,7 @@ Edit `/src/config/tdd-compliance-rules.json` to customize:
 - Thresholds
 - Timeout values
 - Audit settings
-- Judge #6 integration params
+- Judge 6 integration params
 
 ## Logs
 

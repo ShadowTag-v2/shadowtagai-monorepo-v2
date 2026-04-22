@@ -1,7 +1,7 @@
 {
   "name": "@pnkln/judge6-cli",
   "version": "2.0.0",
-  "description": "Zero-flicker TUI for Judge #6 decision validation (Purpose/Reasons/Brakes)",
+  "description": "Zero-flicker TUI for Judge 6 decision validation (Purpose/Reasons/Brakes)",
   "main": "dist/index.js",
   "bin": {
     "judge6": "dist/index.js"

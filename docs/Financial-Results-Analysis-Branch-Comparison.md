@@ -68,7 +68,7 @@ What investors see:
 What investors see:
 
 - 5,728 lines of production Python code
-- Working Judge #6 pipeline (p99≤90ms SLA)
+- Working Judge 6 pipeline (p99≤90ms SLA)
 - Gemini Ingestion Layer (running nightly)
 - JR Engine (<500μs risk assessment)
 - Ethical Crawler (robots.txt compliance)
@@ -77,9 +77,9 @@ What investors see:
 
 **Investor conversation:**
 
-- "Here's the live demo... [shows Judge #6 latency dashboard]"
+- "Here's the live demo... [shows Judge 6 latency dashboard]"
 - "We're processing 5K items/night at $77/month... [shows cost metrics]"
-- "Our risk framework is ATP 5-19 military-grade... [shows deterministic decisions]"
+- "Our risk framework is Compliance Framework military-grade... [shows deterministic decisions]"
 
 **Funding outcome:**
 
@@ -100,7 +100,7 @@ What investors see:
 Timeline:
 
 - Month 1-2: Finish documentation (NIST, C2PA, adtech, etc.)
-- Month 3-5: Implement core pipelines (Judge #6, Ingestion)
+- Month 3-5: Implement core pipelines (Judge 6, Ingestion)
 - Month 6-8: Build UI/UX layer
 - Month 9-10: Beta testing
 - Month 11-12: Launch, first revenue
@@ -158,7 +158,7 @@ No servers, no APIs, no infra.
 - Egress: $4/month
 - **Subtotal:** $77/month
 
-**Judge #6 Validator:**
+**Judge 6 Validator:**
 
 - GKE GPU nodes (T4): $150/month (spot instances)
 - Gemini API calls: $30/month (15% edge cases)
@@ -185,7 +185,7 @@ Steps:
 
 1. Read 2,088 lines of documentation (Cor.5, EU AI Act, PNKLN)
 2. Understand strategic context and compliance requirements
-3. Implement Judge #6 pipeline from scratch (referencing architecture doc)
+3. Implement Judge 6 pipeline from scratch (referencing architecture doc)
 4. Write tests
 5. Deploy to GKE
 
@@ -242,7 +242,7 @@ What's built in:
 
 What's built in:
 
-- ATP 5-19 risk framework (JR Engine) ✅
+- Compliance Framework risk framework (JR Engine) ✅
 - Ethical crawler (robots.txt compliance) ✅
 - Explainable decisions (JR Engine reasoning) ✅
 
@@ -315,7 +315,7 @@ What you can show:
 
 What you can show:
 
-- Real-time Judge #6 latency dashboard (p99≤90ms)
+- Real-time Judge 6 latency dashboard (p99≤90ms)
 - Gemini Ingestion Layer logs (5K items/night, $77/month)
 - JR Engine risk matrix (live decision in <500μs)
 - Ethical Crawler compliance (robots.txt adherence live)
@@ -513,7 +513,7 @@ Merged Branch Structure:
 
 - [ ] Run full test suite on merged codebase
 - [ ] Deploy to staging GKE cluster
-- [ ] Build basic UI dashboard for Judge #6 metrics
+- [ ] Build basic UI dashboard for Judge 6 metrics
 - [ ] Create investor demo script (show live latency, cost per item, risk decisions)
 - [ ] Generate first compliance report using governance_tools.py
 

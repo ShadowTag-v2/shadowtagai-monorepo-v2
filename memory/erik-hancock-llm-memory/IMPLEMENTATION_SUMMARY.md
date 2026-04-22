@@ -17,7 +17,7 @@ A **three-layer LLM memory persistence system** that extracts conversations from
 
 1. **Claude Code Memory** (`~/.claude-code/memory.md`)
    - Auto-loads ShadowTagAi architecture on Claude Code startup
-   - Judge #6, ShadowTag 2.0, Cor/NS, JR Framework always available
+   - Judge 6, ShadowTag 2.0, Cor/NS, JR Framework always available
    - Cost: $0.45 one-time
 
 2. **Vertex AI Workbench** (GCS-backed)
@@ -184,7 +184,7 @@ A **three-layer LLM memory persistence system** that extracts conversations from
 ## ShadowTagAi Architecture (Loaded into Memory)
 
 ### Core Systems
-- **Judge #6**: Gemini + PyTorch + Rules (98% coverage, p99 ≤90ms)
+- **Judge 6**: Gemini + PyTorch + Rules (98% coverage, p99 ≤90ms)
 - **ShadowTag 2.0**: DCT watermarking for content protection
 - **Cor/NS**: Unified execution brain + service mesh
 
@@ -266,7 +266,7 @@ A **three-layer LLM memory persistence system** that extracts conversations from
    ```
 
 3. **Restart Claude Code** and test:
-   > "What is Judge #6?"
+   > "What is Judge 6?"
 
 ### Advanced Deployments
 
@@ -298,7 +298,7 @@ kubectl apply -f configs/gke_configmap.yaml
 - [ ] File exists: `~/.claude-code/memory.md`
 - [ ] Config exists: `~/.claude-code/config.json`
 - [ ] Restart Claude Code
-- [ ] Ask: "What is Judge #6?"
+- [ ] Ask: "What is Judge 6?"
 - [ ] Response includes: "98% coverage, p99 ≤90ms"
 
 ### Vertex Workbench
@@ -428,7 +428,7 @@ kubectl apply -f configs/gke_configmap.yaml
 
 **Built for**: ShadowTagAi Corp.
 **CEO**: ShadowTagAi Team
-**Architecture**: Judge #6, ShadowTag 2.0, Cor/NS
+**Architecture**: Judge 6, ShadowTag 2.0, Cor/NS
 **Frameworks**: JR Framework, Bootstrap Gates
 **Deployment**: MacBook → Vertex AI Workbench → GKE Native
 

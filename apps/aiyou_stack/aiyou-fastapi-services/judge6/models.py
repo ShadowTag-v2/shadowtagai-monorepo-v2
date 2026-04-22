@@ -1,4 +1,4 @@
-"""Core data models and type definitions for Judge #6 governance system."""
+"""Core data models and type definitions for Judge 6 governance system."""
 
 from dataclasses import dataclass, field
 from enum import Enum
@@ -93,7 +93,7 @@ class ProvenanceStamp:
 
 @dataclass
 class JudgmentDecision:
-    """Result of Judge #6 governance evaluation.
+    """Result of Judge 6 governance evaluation.
 
     Represents the complete decision output including risk assessment,
     reasoning, violations, and cryptographic provenance.

@@ -69,7 +69,7 @@ As it’s been running in that capacity in the sandbox for its entire beta dev c
 
 <next>
 
-“This is it — I’ve now rolled the attached persona + Google Drive frameworks + the valuation texts (Pratt, McKinsey, Gazdecki, Dunford) into a bomb-plan transfer draft focused only on ShadowTag-v2 (no ClarityBoard/ClarityAI). I also swapped “Army RM” for ATP 5-19 / AR 385-10 / DD Form 2977 as you requested.
+“This is it — I’ve now rolled the attached persona + Google Drive frameworks + the valuation texts (Pratt, McKinsey, Gazdecki, Dunford) into a bomb-plan transfer draft focused only on ShadowTag-v2 (no ClarityBoard/ClarityAI). I also swapped “Army RM” for Compliance Framework / AR 385-10 / DD Form 2977 as you requested.
 
 Here’s the consolidated plan with percentages and valuation metrics:
 
@@ -90,7 +90,7 @@ Impact (with frameworks rolled in):
 • Build speed: 35–45% faster (Tiny Team + Owen coding backbone).
 • Cost savings: 25–60% lower than peers (Pratt cost multipliers).
 • Reliability: 2× higher via ensemble dissent (McKinsey value drivers).
-• Risk posture: Aligned to ATP 5-19 / AR 385-10 / DD Form 2977 — “Risk Management as moat.”
+• Risk posture: Aligned to Compliance Framework / AR 385-10 / DD Form 2977 — “Risk Management as moat.”
 
 ⸻
 
@@ -171,7 +171,7 @@ Do you want me to (a) spin this into the 10-slide Sequoia-ready pitch deck now, 
 
 <next>
 
-“This is it — I’ve now rolled the attached persona + Google Drive frameworks + the valuation texts (Pratt, McKinsey, Gazdecki, Dunford) into a bomb-plan transfer draft focused only on ShadowTag-v2 (no ClarityBoard/ClarityAI). I also swapped “Army RM” for ATP 5-19 / AR 385-10 / DD Form 2977 as you requested.
+“This is it — I’ve now rolled the attached persona + Google Drive frameworks + the valuation texts (Pratt, McKinsey, Gazdecki, Dunford) into a bomb-plan transfer draft focused only on ShadowTag-v2 (no ClarityBoard/ClarityAI). I also swapped “Army RM” for Compliance Framework / AR 385-10 / DD Form 2977 as you requested.
 
 Here’s the consolidated plan with percentages and valuation metrics:
 
@@ -192,7 +192,7 @@ Impact (with frameworks rolled in):
 • Build speed: 35–45% faster (Tiny Team + Owen coding backbone).
 • Cost savings: 25–60% lower than peers (Pratt cost multipliers).
 • Reliability: 2× higher via ensemble dissent (McKinsey value drivers).
-• Risk posture: Aligned to ATP 5-19 / AR 385-10 / DD Form 2977 — “Risk Management as moat.”
+• Risk posture: Aligned to Compliance Framework / AR 385-10 / DD Form 2977 — “Risk Management as moat.”
 
 ⸻
 

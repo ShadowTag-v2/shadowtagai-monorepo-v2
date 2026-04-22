@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * Judge #6 CLI - Zero-Flicker TUI
+ * Judge 6 CLI - Zero-Flicker TUI
  *
- * Entry point for the Judge #6 decision validation CLI.
+ * Entry point for the Judge 6 decision validation CLI.
  * Inspired by Google's Gemini CLI terminal rendering improvements.
  */
 
@@ -19,7 +19,7 @@ const apiUrl = apiUrlArg ? apiUrlArg.split('=')[1] : 'http://localhost:8000';
 // Show help
 if (args.includes('--help') || args.includes('-h')) {
   console.log(`
-Judge #6 CLI - Decision Validation Tool
+Judge 6 CLI - Decision Validation Tool
 
 USAGE:
   judge6 [OPTIONS]
@@ -40,7 +40,7 @@ EXAMPLES:
   judge6 --version
 
 ABOUT:
-  Judge #6 validates decisions using the Purpose/Reasons/Brakes framework.
+  Judge 6 validates decisions using the Purpose/Reasons/Brakes framework.
   All decisions must:
     1. PURPOSE: Advance the mission
     2. REASONS: Be defensible and logical
@@ -66,7 +66,7 @@ MORE INFO:
 
 // Show version
 if (args.includes('--version') || args.includes('-v')) {
-  console.log('Judge #6 CLI v2.0.0');
+  console.log('Judge 6 CLI v2.0.0');
   process.exit(0);
 }
 

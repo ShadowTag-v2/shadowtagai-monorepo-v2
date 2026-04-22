@@ -281,7 +281,7 @@ At 50M legal decisions/year (all customers):
 
 **What It Does**:
 
-- 3-kernel specialization (ATP scan → Judge #6 → Audit compress)
+- 3-kernel specialization (ATP scan → Judge 6 → Audit compress)
 - 98.5% token reduction
 - <35ms p99 latency
 - PyTorch + Gemini + rules hybrid
@@ -327,8 +327,8 @@ At 50M legal decisions/year (all customers):
 
 **Kernel-Powered Features** (add-ons):
 
-- ATP 5-19 compliance check: **+$20/month**
-- Judge #6 validation layer: **+$30/month**
+- Compliance Framework compliance check: **+$20/month**
+- Judge 6 validation layer: **+$30/month**
 - Audit trail compression: **+$10/month**
 
 **Attach Rate**:
@@ -490,7 +490,7 @@ At 50M legal decisions/year (all customers):
 
 1. **Gemini 2.0 Flash**: First model with <90ms latency (enables real-time)
 2. **LLM Proliferation**: 4 viable models (Gemini, GPT, Claude, Grok) → orchestration value
-3. **AI Trust Crisis**: Lawyers demand transparency → Judge #6 validation layer
+3. **AI Trust Crisis**: Lawyers demand transparency → Judge 6 validation layer
 4. **Legal Tech M&A**: Clio $3B, Harvey $3B → category proven
 
 **The Unfair Advantages**:
@@ -574,7 +574,7 @@ At 50M legal decisions/year (all customers):
 **Every legal AI needs**:
 
 - Deadline calculation → our kernel chain
-- Decision validation → our Judge #6
+- Decision validation → our Judge 6
 - Audit trail → our ShadowTag
 - Memory persistence → our LLM system
 - Speed → our Gemini functions

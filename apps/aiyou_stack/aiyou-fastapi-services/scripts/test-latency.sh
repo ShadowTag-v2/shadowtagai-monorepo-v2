@@ -1,5 +1,5 @@
 #!/bin/bash
-# PNKLN Judge #6 - Latency Testing Script
+# PNKLN Judge 6 - Latency Testing Script
 # Validates <50ms p99 target
 
 set -euo pipefail

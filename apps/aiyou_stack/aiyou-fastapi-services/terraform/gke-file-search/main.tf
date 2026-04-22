@@ -2,7 +2,7 @@
 # PNKLN CORE STACK - GKE + FILE SEARCH INTEGRATION
 # ============================================================================
 # Purpose: Deploy GKE cluster with Vertex AI File Search API integration
-# Architecture: Judge #6 Hybrid + RAG-based Policy Enforcement
+# Architecture: Judge 6 Hybrid + RAG-based Policy Enforcement
 # Target: 30 vertical-specific policy corpora
 # ============================================================================
 

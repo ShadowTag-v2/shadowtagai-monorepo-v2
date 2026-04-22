@@ -366,7 +366,7 @@ Decomposition Hints: {", ".join(intake_data.get("decomposition_hints", []))}
         """JR Layer: Claude decomposes message into atomic threads
         with Purpose/Reasons/Brakes
         """
-        decomposition_prompt = f"""You are ShadowTag-v2JR Judge #6, a military-grade reasoning system.
+        decomposition_prompt = f"""You are ShadowTag-v2JR Judge 6, a military-grade reasoning system.
 
 USER MESSAGE:
 {user_message}

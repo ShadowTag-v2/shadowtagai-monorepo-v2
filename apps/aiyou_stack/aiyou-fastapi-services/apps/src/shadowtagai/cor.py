@@ -120,7 +120,7 @@ class CorOrchestrator:
             memories = self.memory.retrieve(task)
             context["memories"] = memories
 
-        # 2. Execute with Judge #6 if available
+        # 2. Execute with Judge 6 if available
         result = self.judge.enforce(task) if self.judge else self.function_caller.execute(task)
 
         # 3. Watermark output if ShadowTag available

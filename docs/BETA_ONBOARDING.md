@@ -147,5 +147,5 @@ If you have questions, contact [Attorney Name] at [attorney_email].
 | Attorney doesn't understand Kovel doctrine | Pre-call briefing doc + CLE credit partner |
 | Client ignores magic link TTL | Dead-man's switch auto-logout + email reminder |
 | Stripe Connect onboarding friction | Stripe Hosted Onboarding (embedded, 2 min) |
-| Model hallucination in Oracle Memo | Judge #6 policy gate + mandatory citation verification |
+| Model hallucination in Oracle Memo | Judge 6 policy gate + mandatory citation verification |
 | Privilege waiver accusation | Kovel attestation + immutable audit trail |

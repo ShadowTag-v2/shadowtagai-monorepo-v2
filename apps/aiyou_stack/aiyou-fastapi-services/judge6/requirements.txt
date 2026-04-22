@@ -1,4 +1,4 @@
-# Judge #6 Core Dependencies
+# Judge 6 Core Dependencies
 typing-extensions>=4.0.0
 dataclasses-json>=0.6.0
 

@@ -37,7 +37,7 @@ class CorpusIndexer:
     """Elasticsearch indexer for Flying minion corpus.
 
     Pipeline:
-    GitHub Discovery Agent → Safety Scanner → Corpus Indexer → Judge #6
+    GitHub Discovery Agent → Safety Scanner → Corpus Indexer → Judge 6
     """
 
     INDEX_NAME = "minions-corpus"

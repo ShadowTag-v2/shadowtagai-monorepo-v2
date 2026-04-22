@@ -28,7 +28,7 @@ checklist against staging instead.
 
 ### A04: Insecure Design
 - [x] Threat model documented ✅ (Cor.30)
-- [x] Judge #6 gate on all LLM outputs ✅
+- [x] Judge 6 gate on all LLM outputs ✅
 - [x] Rate limits per firm ✅
 - [x] Token budgets enforced ✅
 

@@ -68,7 +68,7 @@ The **Gemini Ingestion Layer** is a foundational component of the SHADOWTAGAI Co
 │                             │                                  │
 │                             ▼                                  │
 │         ┌───────────────────────────────────────┐             │
-│         │      Judge #6 Validation Layer        │             │
+│         │      Judge 6 Validation Layer        │             │
 │         │      AM Briefing Generator            │             │
 │         │      Other SHADOWTAGAI Services             │             │
 │         └───────────────────────────────────────┘             │
@@ -284,7 +284,7 @@ The ingestion layer is invoked by:
 
 Ingested data is consumed by:
 
-1. **Judge #6**: Validation and quality filtering
+1. **Judge 6**: Validation and quality filtering
 2. **AM Briefing Generator**: Morning summary creation
 3. **Analytics Services**: Trend analysis, insights
 4. **Research Tools**: Ad-hoc query interfaces
@@ -473,7 +473,7 @@ See [FastAPI Integration](../../src/api/ingestion.py) for REST API documentation
 - [SHADOWTAGAI Core Stack™ Overview](./shadowtagai-core-stack.md)
 - [Ethical Crawling Guidelines](./ethical-crawling.md)
 - [Tier Classification Model](./tier-classification.md)
-- [Judge #6 Validation Layer](./judge-six.md)
+- [Judge 6 Validation Layer](./judge-six.md)
 - [GKE CronJob Manifests](../../k8s/ingestion-cronjob.yaml)
 - [FastAPI Endpoints](../../src/api/ingestion.py)
 

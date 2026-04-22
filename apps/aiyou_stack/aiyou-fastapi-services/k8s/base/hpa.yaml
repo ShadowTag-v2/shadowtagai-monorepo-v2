@@ -203,7 +203,7 @@ spec:
       selectPolicy: Min
 
 ---
-# HPA for Judge #6 Hybrid
+# HPA for Judge 6 Hybrid
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:

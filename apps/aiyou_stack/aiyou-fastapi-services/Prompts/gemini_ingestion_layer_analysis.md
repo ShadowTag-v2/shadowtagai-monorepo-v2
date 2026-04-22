@@ -1,6 +1,6 @@
 # Gemini Ingestion Layer Analysis Prompt
 
-**Version:** 1.0 (Evolved from Judge #6 v1.0)
+**Version:** 1.0 (Evolved from Judge 6 v1.0)
 **Target Model:** Gemini 2.0 Pro
 **Confidence Threshold:** ≥60% (Pre-Production)
 **Last Updated:** 2025-11-15
@@ -41,7 +41,7 @@ You are analyzing the **Gemini Ingestion Layer**, an intelligent data collection
 
 - **Upstream Callers:** 4 namespaces (intelligence, analytics, reporting, api-gateway)
 - **Downstream Outputs:** Morning briefings (Markdown), BigQuery tables, GCS artifacts
-- **Cross-Service:** Consumed by analytics dashboards, enforcement layers (e.g., Judge #6)
+- **Cross-Service:** Consumed by analytics dashboards, enforcement layers (e.g., Judge 6)
 
 ### Monthly Cost Model
 
@@ -224,7 +224,7 @@ You are analyzing the **Gemini Ingestion Layer**, an intelligent data collection
 
 ## 8. Cross-Cutting Concerns
 ### Integration Handoffs
-[Analysis of interactions with Judge #6, analytics, etc.]
+[Analysis of interactions with Judge 6, analytics, etc.]
 
 ### Cost Sensitivity Analysis
 [What if item volume doubles? API price increases?]
@@ -260,11 +260,11 @@ Where applicable, output tables or ASCII diagrams:
 
 ---
 
-## Comparison to Judge #6 (Context)
+## Comparison to Judge 6 (Context)
 
-For reference, this prompt evolved from the Judge #6 analysis prompt. Key differences:
+For reference, this prompt evolved from the Judge 6 analysis prompt. Key differences:
 
-| Aspect | Judge #6 (Validation System) | Gemini Ingestion Layer |
+| Aspect | Judge 6 (Validation System) | Gemini Ingestion Layer |
 |--------|------------------------------|------------------------|
 | **Role** | Reactive enforcement (downstream) | Proactive collection (upstream) |
 | **Architecture** | Hybrid Gemini+PyTorch | GKE CronJob multi-container |
@@ -276,7 +276,7 @@ For reference, this prompt evolved from the Judge #6 analysis prompt. Key differ
 | **Cost Model** | Per-API-call pricing | Monthly operational (~$77) |
 | **Confidence** | ≥70% (production data available) | ≥60% (pre-prod, specs-only) |
 
-This context helps you understand the ingestion layer as **foundational** to the PNKLN stack, feeding validated intelligence to enforcement layers like Judge #6.
+This context helps you understand the ingestion layer as **foundational** to the PNKLN stack, feeding validated intelligence to enforcement layers like Judge 6.
 
 ---
 
@@ -302,7 +302,7 @@ Stress-test the system conceptually:
 
 ### Integration Analysis
 
-Since this feeds Judge #6 and other services:
+Since this feeds Judge 6 and other services:
 
 - **Data Contracts:** Are output schemas versioned? Breaking changes handled?
 - **Latency Tolerance:** Can analytics wait 2 AM for fresh data, or need real-time?
@@ -345,7 +345,7 @@ This analysis is successful if it:
 
 - **Test Runs:** Validate on dummy specs to calibrate output quality
 - **Visualization:** Add Mermaid diagrams or tables for tier distributions
-- **Combined Analysis:** Cross-reference with Judge #6 analysis to map end-to-end data flow
+- **Combined Analysis:** Cross-reference with Judge 6 analysis to map end-to-end data flow
 - **Feedback Loop:** Incorporate production telemetry once available to bump confidence to ≥70%
 
 ---
@@ -364,7 +364,7 @@ The Gemini Ingestion Layer is one component in a broader intelligence pipeline:
 │         │                              ▼                    │
 │         │                    [Analytics Namespace]          │
 │         │                              │                    │
-│         └──────────────────► [Judge #6 (Validation)]        │
+│         └──────────────────► [Judge 6 (Validation)]        │
 │                                        │                    │
 │                                        ▼                    │
 │                              [API Gateway Namespace]        │
@@ -383,7 +383,7 @@ The Gemini Ingestion Layer is one component in a broader intelligence pipeline:
 **Your analysis should consider:**
 
 - How ingestion quality cascades to downstream accuracy
-- Whether Judge #6's validation needs match ingestion's output schema
+- Whether Judge 6's validation needs match ingestion's output schema
 - If analytics can detect ingestion drift (e.g., source bias creep)
 
 ---
@@ -391,7 +391,7 @@ The Gemini Ingestion Layer is one component in a broader intelligence pipeline:
 ## License & Attribution
 
 This prompt is part of the PNKLN Core Stack™ internal documentation.
-Evolved from Judge #6 Analysis Prompt v1.0 (2025-Q4).
+Evolved from Judge 6 Analysis Prompt v1.0 (2025-Q4).
 Maintained by: PNKLN Architecture Team
 Contact: <redacted@shadowtag-v4.local> (example - update as needed)
 

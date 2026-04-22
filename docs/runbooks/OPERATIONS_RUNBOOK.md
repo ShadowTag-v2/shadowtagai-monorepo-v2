@@ -1,8 +1,8 @@
-# Judge #6 Operations Runbook
+# Judge 6 Operations Runbook
 
 ## Quick Reference
 
-**Service**: Judge #6 AI Governance Platform
+**Service**: Judge 6 AI Governance Platform
 **Deployment**: GKE Autopilot + Vertex AI
 **SLA**: 99.9% uptime
 **Support**: 24/7 on-call rotation

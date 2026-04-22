@@ -23,7 +23,7 @@ This repository implements a comprehensive Claude Code infrastructure system ada
 3. **Dev Docs System**: State management for context resets (3-file pattern)
 4. **Specialized Agents**: Auto-rollback, code review, experiment analysis
 5. **Board Automation**: Automatic board sync from task completion
-6. **Coverage Gate**: Judge #6 enforcement (98% coverage required)
+6. **Coverage Gate**: Judge 6 enforcement (98% coverage required)
 
 ---
 
@@ -141,7 +141,7 @@ Claude responds → Stop hooks → Python quality pipeline
 2. Filters for Python files (`.py`)
 3. Runs `uv run ruff format .` (auto-formatting)
 4. Runs `uv run mypy --strict .` (type checking)
-5. Runs `uv run pytest --cov --cov-fail-under=98` (**Judge #6 enforcement**)
+5. Runs `uv run pytest --cov --cov-fail-under=98` (**Judge 6 enforcement**)
 6. Displays results with:
    - Format status (✅/⚠️)
    - Type errors (inline if ≤5, suggest agent if >5)
@@ -156,7 +156,7 @@ Claude responds → Stop hooks → Python quality pipeline
 or
 
 ```
-❌ COVERAGE GATE FAILED (Judge #6 violation)
+❌ COVERAGE GATE FAILED (Judge 6 violation)
    Current: 96.5% | Required: 98% | Delta: -1.7%
 
 🚨 COMMIT BLOCKED: Coverage dropped below 98%
@@ -471,7 +471,7 @@ After compaction:
 
 **File**: `.claude/agents/auto-rollback-agent.md`
 
-**Purpose**: Enforce Judge #6 (98% coverage) by automatically fixing coverage drops or reverting changes.
+**Purpose**: Enforce Judge 6 (98% coverage) by automatically fixing coverage drops or reverting changes.
 
 **Trigger**: `stop-python-quality-pipeline` detects coverage < 98%
 
@@ -1004,7 +1004,7 @@ This infrastructure transforms Claude Code from a frustrating tool producing inc
 
 **The result**: A development environment where quality is enforced, context is preserved, progress is tracked, and the developer can focus on building features instead of debugging AI-generated messes.
 
-**Judge #6 is not just watching—Judge #6 is automated, enforced, and backed by an agent that will either fix coverage or revert your code.**
+**Judge 6 is not just watching—Judge 6 is automated, enforced, and backed by an agent that will either fix coverage or revert your code.**
 
 Welcome to the future of AI-assisted development.
 

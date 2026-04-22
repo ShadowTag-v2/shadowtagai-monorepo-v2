@@ -2,7 +2,7 @@
 
 **Option 2: Hybrid Approach (Cloud Run Serverless)**
 
-This guide covers deploying the pnkln Core Stack™ (Gemini Ingestion Layer + Judge #6 Validation) to Google Cloud Run.
+This guide covers deploying the pnkln Core Stack™ (Gemini Ingestion Layer + Judge 6 Validation) to Google Cloud Run.
 
 ---
 
@@ -501,7 +501,7 @@ gcloud run services update pnkln-api \
 
 - **Gemini Ingestion Layer:** [gemini-ingestion-layer.md](./docs/cor8-pnkln-stack-global-edge-fabric/03-technical-architecture/gemini-ingestion-layer.md)
 
-- **Judge #6 Validation:** [judge-six-validation.md](./docs/cor8-pnkln-stack-global-edge-fabric/03-technical-architecture/judge-six-validation.md)
+- **Judge 6 Validation:** [judge-six-validation.md](./docs/cor8-pnkln-stack-global-edge-fabric/03-technical-architecture/judge-six-validation.md)
 
 - **API Schemas:** [api-schemas.md](./docs/cor8-pnkln-stack-global-edge-fabric/09-implementation/api-schemas.md)
 

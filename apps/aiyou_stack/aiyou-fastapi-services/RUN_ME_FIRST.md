@@ -96,7 +96,7 @@ This shows all available endpoints with:
 - ✅ **Prometheus metrics** - Real metrics collection
 - ✅ **Kill switch** - Actual monitoring logic
 - 🔄 **File Search** - Mocked Vertex AI responses
-- 🔄 **Judge #6** - Placeholder responses
+- 🔄 **Judge 6** - Placeholder responses
 
 Mock responses simulate realistic latencies and data structures.
 
@@ -108,7 +108,7 @@ Perfect for:
 
 - Understanding the API
 - Testing your client code
-- Developing Judge #6 layers
+- Developing Judge 6 layers
 - Integration testing
 
 ### Option 2: Switch to Real GCP
@@ -181,7 +181,7 @@ pip install -e .
 
 While the service is running in mock mode, you can:
 
-1. **Edit Judge #6 implementation** - See `JUDGE_IMPLEMENTATION_GUIDE.md`
+1. **Edit Judge 6 implementation** - See `JUDGE_IMPLEMENTATION_GUIDE.md`
 2. **Add custom verticals** - Edit `src/pnkln_file_search/config/verticals.py`
 3. **Customize mock responses** - Edit `src/pnkln_file_search/config/mock_mode.py`
 4. **Test different scenarios** - Modify queries in `test_local.sh`

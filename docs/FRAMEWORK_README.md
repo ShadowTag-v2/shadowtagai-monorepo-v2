@@ -151,7 +151,7 @@ stack.deployment       # {"dev": "Vertex AI Workbench", "prod": "GKE"}
 
 ## 3. Operating Framework
 
-**ATP 5-19 Risk Management + Decision Protocols**
+**Compliance Framework Risk Management + Decision Protocols**
 
 ### Risk Assessment
 
@@ -203,7 +203,7 @@ approved, message = protocol.validate_decision(
     action="Launch new vertical",
     mission_aligned=True,           # Purpose: ShadowTag-v2JR alignment
     doctrine_compliant=True,        # Reason: SOPs A-D compliance
-    risk_level=RiskLevel.M_MEDIUM   # Brakes: ATP 5-19 assessment
+    risk_level=RiskLevel.M_MEDIUM   # Brakes: Compliance Framework assessment
 )
 ```
 
@@ -262,7 +262,7 @@ state = StateSummary(
     technical_foundation={"stack": "Python + LangGraph"},
     business_model={"type": "Vertical SaaS"},
     go_to_market={"phase_1": "5 pilots, $10K MRR"},
-    critical_frameworks=["ATP 5-19", "SOPs A-D"]
+    critical_frameworks=["Compliance Framework", "SOPs A-D"]
 )
 
 # Define immediate actions

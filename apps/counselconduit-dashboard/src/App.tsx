@@ -738,7 +738,7 @@ function ModelsView() {
             }}
           />
           <div>
-            <div style={{ fontWeight: 600, fontSize: '0.87rem' }}>Judge #6 Gate Active</div>
+            <div style={{ fontWeight: 600, fontSize: '0.87rem' }}>Judge 6 Gate Active</div>
             <div style={{ fontSize: '0.73rem', color: 'var(--text-tertiary)' }}>
               All model routing decisions pass through ATP 5-19 policy evaluation. Hallucination
               circuit breaker (RKILL) is armed.

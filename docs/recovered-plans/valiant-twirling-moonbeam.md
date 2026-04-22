@@ -1686,7 +1686,7 @@ class JuraComplianceEngine:
 
     async def gate_decision(self, decision: Decision) -> GateResult:
         """
-        ATP 5-19 Risk Assessment + Regulatory Compliance
+        Compliance Framework Risk Assessment + Regulatory Compliance
 
         DENY if ANY regulation violated.
         APPROVE only if ALL gates pass.
@@ -1711,7 +1711,7 @@ class JuraComplianceEngine:
                 risk_tier=5,  # Maximum risk
             )
 
-        # Pass to ATP 5-19 risk assessment
+        # Pass to Compliance Framework risk assessment
         return await self._atp_519_assessment(decision)
 
     async def audit_trail(self, decision: Decision, result: GateResult):
@@ -1987,7 +1987,7 @@ print(f'Trackable metrics: {len(TRACKABLE_METRICS)}')
 ║  2. AI weaves each protocol into Army Composite Risk Management framework    ║
 ║  3. Employer locks policy onto company machines                               ║
 ║  4. Johnny the Weasel can't upload CSAM or attempt fraud                     ║
-║  5. Training materials pulled from Google Drive (ATP 5-19, FM 3-0, etc.)     ║
+║  5. Training materials pulled from Google Drive (Compliance Framework, FM 3-0, etc.)     ║
 ║                                                                               ║
 ║  CONFIRMED TECH STACK:                                                        ║
 ║  ✅ LangChain (referenced)                                                    ║
@@ -2105,7 +2105,7 @@ CONTENT_SAFETY_PROTOCOLS = {
 │              ARMY COMPOSITE RISK MANAGEMENT (CRM) WEAVE                      │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
-│  SOURCE: ATP 5-19 Risk Management (Army Doctrine Publication)               │
+│  SOURCE: Compliance Framework Risk Management (Army Doctrine Publication)               │
 │                                                                              │
 │  5-STEP CRM PROCESS:                                                         │
 │  ┌─────────────────────────────────────────────────────────────────────┐    │
@@ -2125,7 +2125,7 @@ CONTENT_SAFETY_PROTOCOLS = {
 │  │         └── Continuous monitoring + dashboard + alerts             │    │
 │  └─────────────────────────────────────────────────────────────────────┘    │
 │                                                                              │
-│  RISK MATRIX (ATP 5-19):                                                    │
+│  RISK MATRIX (Compliance Framework):                                                    │
 │  ┌───────────┬──────────────────────────────────────────────────┐          │
 │  │           │              PROBABILITY                          │          │
 │  │ SEVERITY  │  Frequent  Likely  Occasional  Seldom  Unlikely  │          │
@@ -2153,7 +2153,7 @@ class CRMWeaveEngine:
     Output: CRM-formatted policy ready for enterprise deployment
     """
 
-    # ATP 5-19 Risk Categories
+    # Compliance Framework Risk Categories
     SEVERITY = {
         "I": "Catastrophic - Death, total mission failure, >$10M loss",
         "II": "Critical - Severe injury, major damage, $1M-$10M loss",
@@ -2240,8 +2240,8 @@ class CRMWeaveEngine:
 
 TRAINING_SOURCES = {
     # Army Doctrine
-    "atp_5_19": {
-        "title": "ATP 5-19 Risk Management",
+    "compliance_framework": {
+        "title": "Compliance Framework Risk Management",
         "drive_id": "FOLDER_ID_HERE",
         "type": "doctrine",
         "sections": ["CRM Process", "Risk Assessment Matrix", "Control Measures"],
@@ -2506,7 +2506,7 @@ class ProtocolPricingEngine:
 ## 9.7 Implementation Order
 
 1. **Protocol Library** - Define all protocols with metadata
-2. **CRM Weave Engine** - ATP 5-19 integration
+2. **CRM Weave Engine** - Compliance Framework integration
 3. **Google Drive Integration** - Training material fetching
 4. **Content Safety Protocols** - CSAM/fraud detection
 5. **Endpoint Locker** - GPO/MDM policy generation

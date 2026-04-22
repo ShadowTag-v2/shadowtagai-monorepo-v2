@@ -1,6 +1,6 @@
 """PNKLN Forensic Index (Code: GLASS BOX)
 
-Full-text compliance search engine for Judge #6 and ShadowTag.
+Full-text compliance search engine for Judge 6 and ShadowTag.
 Based on ArXiv 2510.09471 (Apertus Methodology).
 
 Components:

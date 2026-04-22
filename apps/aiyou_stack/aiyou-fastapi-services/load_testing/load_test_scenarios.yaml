@@ -1,6 +1,6 @@
 scenarios:
   - name: "Judge6_Spike"
-    description: "Spike test for Judge #6 enforcement endpoint"
+    description: "Spike test for Judge 6 enforcement endpoint"
     target_endpoint: "https://judge6.pnkln.ai/enforce"
     iterations: 2000
     warmup_iterations: 100

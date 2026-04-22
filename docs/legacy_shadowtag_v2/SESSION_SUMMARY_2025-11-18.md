@@ -104,7 +104,7 @@ Progressive disclosure + batch filtering + embeddings = 97% cost savings
 
    - arXiv paper search & metadata extraction
 
-   - Ethical scraping (ATP 5-19 compliant, RFC 9309 robots.txt)
+   - Ethical scraping (Compliance Framework compliant, RFC 9309 robots.txt)
 
 2. **JR Engine scoring** (`nightly_intel_pipeline/engines/jr_engine.py`)
    - Purpose Alignment (35%)
@@ -166,7 +166,7 @@ Progressive disclosure + batch filtering + embeddings = 97% cost savings
 
 - Data moat: 18,000 scored items after Year 1
 
-- Platform synergy: Feeds Kosmos, Judge #6, pnkln-stack
+- Platform synergy: Feeds Kosmos, Judge 6, pnkln-stack
 
 - Competitive moat: 12-18 month lead
 
@@ -506,7 +506,7 @@ Created **`docs/MAC_DEPLOYMENT.md`** (comprehensive local deployment):
 
 GitHub + arXiv → Ethical Scraper → JR Engine → Tier Classifier → Briefing
                                                                          ↓
-                                                              Kosmos + Judge #6 + pnkln-stack
+                                                              Kosmos + Judge 6 + pnkln-stack
 
 ```
 
@@ -758,7 +758,7 @@ Cursor/Claude/Codex → Extract → Gemini Metadata → Git Version Control
 
 - 4 weighted criteria
 
-- ATP 5-19 risk levels
+- Compliance Framework risk levels
 
 ### 9.3 Memory Systems
 

@@ -13,7 +13,7 @@
 **SHADOWTAGAI Platform (3-Layer Stack)**:
 
 - Layer 1 (Gemini Ingestion): $77/month
-- Layer 2 (Judge #6 + JR Engine): $1,000-1,600/month
+- Layer 2 (Judge 6 + JR Engine): $1,000-1,600/month
 - Layer 3 (Kosmos Agents): $100-500/month (optional)
 - **Total Monthly Cost**: $1,177-2,177/month
 
@@ -357,7 +357,7 @@
 
 - **ShadowTag + SHADOWTAGAI = Only platform** combining:
   - Intelligence collection (SHADOWTAGAI)
-  - Enforcement (Judge #6)
+  - Enforcement (Judge 6)
   - Comprehensive compliance (ShadowTag)
   - Autonomous research (Kosmos)
 

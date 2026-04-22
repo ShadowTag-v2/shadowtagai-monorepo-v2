@@ -794,10 +794,10 @@
 - [ARN39444-ATP_3-20.96-000-WEB-0.pdf](https://drive.google.com/file/d/1Hvt5WgxiuqB4_xQK-8ySfNcaBzblR59P/view?usp=drivesdk) `(12.1MB)`
 
 
-- [ATP 5-19 Risk Management.pdf](https://drive.google.com/file/d/12EZSKYQWkBcR4QiFAVpkV6z5vw8ACrQP/view?usp=drivesdk) `(5.1MB)`
+- [Compliance Framework Risk Management.pdf](https://drive.google.com/file/d/12EZSKYQWkBcR4QiFAVpkV6z5vw8ACrQP/view?usp=drivesdk) `(5.1MB)`
 
 
-- [ATP 5-19 Risk Management.pdf](https://drive.google.com/file/d/1qd48r5dAoJjLNyBSZdMCXHWGsfaO8Eax/view?usp=drivesdk) `(5.1MB)`
+- [Compliance Framework Risk Management.pdf](https://drive.google.com/file/d/1qd48r5dAoJjLNyBSZdMCXHWGsfaO8Eax/view?usp=drivesdk) `(5.1MB)`
 
 
 - [Advanced Architectures.pdf](https://drive.google.com/file/d/1a2q-CwLeVKNzVX3lSbz8_s0JR0NSJd8v/view?usp=drivesdk) `(1.4MB)`

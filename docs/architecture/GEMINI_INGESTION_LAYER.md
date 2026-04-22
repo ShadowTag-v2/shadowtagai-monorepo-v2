@@ -588,7 +588,7 @@ message BatchMetadata {
 **Calls**:
 
 - `ingestion-processing` namespace: Pushes raw batches
-- `validation-enforcement` namespace: Sends items for Judge #6 validation
+- `validation-enforcement` namespace: Sends items for Judge 6 validation
 - Monitoring services: Sends metrics and health checks
 
 ---
@@ -725,9 +725,9 @@ The Gemini analysis prompt will produce:
 
 ---
 
-## Comparison with Judge #6
+## Comparison with Judge 6
 
-| Aspect                  | Gemini Ingestion Layer                | Judge #6                        |
+| Aspect                  | Gemini Ingestion Layer                | Judge 6                        |
 | ----------------------- | ------------------------------------- | ------------------------------- |
 | **Role**                | Proactive collector                   | Reactive validator              |
 | **Position**            | Upstream/preventive                   | Downstream/reactive             |
@@ -735,13 +735,13 @@ The Gemini analysis prompt will produce:
 | **Execution**           | Batch (nightly ~45 min)               | Real-time (p99 ≤90ms)           |
 | **Key Metrics**         | Items/day, sources, cost/item, scores | Latency, throughput, block rate |
 | **Integration**         | Called by services in 4 namespaces    | Calls services in 4 namespaces  |
-| **Unique Features**     | Ethical crawling, tier classification | ATP 5-19, JR validation         |
+| **Unique Features**     | Ethical crawling, tier classification | Compliance Framework, JR validation         |
 | **Cost Model**          | Monthly operational (~$77)            | API calls per validation        |
 | **Quality Focus**       | Relevance, timeliness, completeness   | FP/FN rates, coverage           |
 | **Coverage Target**     | Source diversity, volume              | 98% test coverage               |
 | **Analysis Confidence** | ≥60% (specs-only, pre-prod)           | ≥70% (with prod data)           |
 
-**Complementary Design**: Ingestion focuses on broad, ethical collection; Judge #6 ensures what's collected meets strict validation rules. Together they form a robust intelligence pipeline.
+**Complementary Design**: Ingestion focuses on broad, ethical collection; Judge 6 ensures what's collected meets strict validation rules. Together they form a robust intelligence pipeline.
 
 ---
 
@@ -775,7 +775,7 @@ The Gemini analysis prompt will produce:
 ### Internal Documentation
 
 - [PNKLN Core Stack Architecture](./PNKLN_CORE_STACK.md)
-- [Judge #6 Specifications](./JUDGE_SIX.md)
+- [Judge 6 Specifications](./JUDGE_SIX.md)
 - [Gemini Ingestion Layer Analysis Prompt](../prompts/gemini_ingestion_analysis.md)
 - [Cost Model Details](./COST_MODEL.md)
 - [Deployment Manifests](../deployment/gke/)

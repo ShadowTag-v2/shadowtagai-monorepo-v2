@@ -1,5 +1,5 @@
 #!/bin/bash
-# PNKLN Judge #6 - Landing Page Deployment Script
+# PNKLN Judge 6 - Landing Page Deployment Script
 # Deploy to Cloudflare Pages
 
 set -euo pipefail

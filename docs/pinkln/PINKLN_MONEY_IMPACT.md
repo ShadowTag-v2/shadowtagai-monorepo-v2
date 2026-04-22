@@ -48,7 +48,7 @@ MONEY IMPACT:
 ### Tier 1: Kernel Chain API
 
 **Price**: $0.0003 per decision
-**Target Market**: Defense contractors, procurement teams (ATP 5-19 compliance)
+**Target Market**: Defense contractors, procurement teams (Compliance Framework compliance)
 
 **Value Proposition**:
 
@@ -263,7 +263,7 @@ in 30 days or I'll refund you and you fire me."
 
 - SLA-backed uptime (99.9%)
 
-- Cryptographic audit compliance (ATP 5-19, HIPAA, SOC 2)
+- Cryptographic audit compliance (Compliance Framework, HIPAA, SOC 2)
 
 **Customer Acquisition**:
 
@@ -482,7 +482,7 @@ After 20 cycles: 1.00 → 2.07 (107% improvement)
 
 **Tactics**:
 
-1. **Direct Sales** to defense contractors (ATP 5-19 compliance)
+1. **Direct Sales** to defense contractors (Compliance Framework compliance)
 
    - Target: 10 enterprise clients @ $5K/mo
 
@@ -710,7 +710,7 @@ After 20 cycles: 1.00 → 2.07 (107% improvement)
 
 2. **Onboard First 3 Enterprise Clients**
 
-   - Defense contractors (ATP 5-19 compliance)
+   - Defense contractors (Compliance Framework compliance)
 
    - Contract value: 3 × $5K/mo = $15K/mo
 

@@ -4,7 +4,7 @@
 
 ## Overview
 
-The Gemini Ingestion Layer is the foundational intelligence collection system for the PNKLN Core Stack™. Operating as a **proactive collector** rather than a reactive validator, it gathers, classifies, and delivers multi-source data for downstream processing by components like Judge #6.
+The Gemini Ingestion Layer is the foundational intelligence collection system for the PNKLN Core Stack™. Operating as a **proactive collector** rather than a reactive validator, it gathers, classifies, and delivers multi-source data for downstream processing by components like Judge 6.
 
 ### Position in PNKLN Core Stack™
 
@@ -33,7 +33,7 @@ The Gemini Ingestion Layer is the foundational intelligence collection system fo
 │  │                    │                              │  │
 │  │                    ▼                              │  │
 │  │        ┌──────────────────────────────┐          │  │
-│  │        │      Judge #6                │          │  │
+│  │        │      Judge 6                │          │  │
 │  │        │  (Validation Namespace)      │          │  │
 │  │        │  - Data Validation           │          │  │
 │  │        │  - Quality Enforcement       │          │  │
@@ -734,11 +734,11 @@ The Gemini Ingestion Layer is called by services in 4 namespaces:
 **Integration**: Webhook callbacks for briefing delivery
 **Data Flow**: Ingestion → Briefing Generation → Report Distribution
 
-#### 4. Validation Namespace (Judge #6)
+#### 4. Validation Namespace (Judge 6)
 
 **Purpose**: Enforce data quality and compliance
 **Integration**: Message queue for async validation
-**Data Flow**: Ingestion → Judge #6 Validation → Acceptance/Rejection
+**Data Flow**: Ingestion → Judge 6 Validation → Acceptance/Rejection
 
 ### API Endpoints
 
@@ -990,17 +990,17 @@ All Gemini analyses must include:
 
 5. **Comparison to Targets**: How current state compares to goals
 
-## Evolution from Judge #6
+## Evolution from Judge 6
 
 ### Key Differences
 
-| Aspect | Judge #6 (Validation) | Gemini Ingestion Layer (Collection) |
+| Aspect | Judge 6 (Validation) | Gemini Ingestion Layer (Collection) |
 |--------|----------------------|-------------------------------------|
 | **Role** | Reactive validator | Proactive collector |
 | **Architecture** | Hybrid Gemini+PyTorch | GKE CronJob Multi-Container |
 | **Key Metrics** | Latency (p99 ≤90ms), Throughput, Block Rate | Items/Day, Sources, Cost/Item |
 | **Integration** | Calls services in 4 namespaces | Called by services in 4 namespaces |
-| **Unique Features** | ATP 5-19, JR Validation | Ethical Crawling, Tier Classification |
+| **Unique Features** | Compliance Framework, JR Validation | Ethical Crawling, Tier Classification |
 | **Cost Model** | Per API call | Monthly operational (~$77) |
 | **Quality Focus** | FP/FN rates | Relevance, Timeliness, Completeness |
 
@@ -1008,7 +1008,7 @@ All Gemini analyses must include:
 
 ```
 
-Gemini Ingestion Layer → Judge #6
+Gemini Ingestion Layer → Judge 6
 (Collection)              (Validation)
 
 
@@ -1032,7 +1032,7 @@ The two systems work together in the PNKLN Core Stack™ to ensure:
 1. **High-quality data collection** (Ingestion Layer)
 
 
-2. **Rigorous quality enforcement** (Judge #6)
+2. **Rigorous quality enforcement** (Judge 6)
 
 
 3. **End-to-end intelligence pipeline integrity**
@@ -1118,7 +1118,7 @@ The two systems work together in the PNKLN Core Stack™ to ensure:
 - [GKE Deployment Guide](./deployment.md)
 
 
-- [Judge #6 Specification](./judge_six.md)
+- [Judge 6 Specification](./judge_six.md)
 
 
 - [Ethical Crawling Best Practices](https://www.robotstxt.org/)

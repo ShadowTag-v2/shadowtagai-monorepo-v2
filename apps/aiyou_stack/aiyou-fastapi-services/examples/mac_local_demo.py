@@ -105,8 +105,8 @@ def test_jr_engine():
 
 
 def test_judge_six():
-    """Test Judge #6 Lite enforcement"""
-    print_header("TEST 3: Judge #6 Lite (Compliance Verification)")
+    """Test Judge 6 Lite enforcement"""
+    print_header("TEST 3: Judge 6 Lite (Compliance Verification)")
 
     try:
         from pnkln_agents import JudgeSixLite
@@ -131,7 +131,7 @@ San Francisco, CA 94105
 
         verification = judge.verify(compliant_content, context={"is_marketing_email": True})
 
-        print_success("Judge #6 verification executed")
+        print_success("Judge 6 verification executed")
         print_metric("Verification time", f"{verification.verification_time_ms:.2f}ms")
         print_metric("Passed", verification.passed)
         print_metric("Violations", len(verification.violations))
@@ -143,7 +143,7 @@ San Francisco, CA 94105
 
         return True
     except Exception as e:
-        print_error(f"Judge #6 test failed: {e}")
+        print_error(f"Judge 6 test failed: {e}")
         import traceback
 
         traceback.print_exc()
@@ -361,7 +361,7 @@ def main():
     tests = [
         ("Core Imports", test_imports),
         ("JR Engine", test_jr_engine),
-        ("Judge #6 Lite", test_judge_six),
+        ("Judge 6 Lite", test_judge_six),
         ("Gemini Ingestion", test_gemini_ingestion),
         ("Intelligence Agent", test_intelligence_agent),
         ("Compliance SDR Agent", test_compliance_sdr),

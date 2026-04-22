@@ -1,4 +1,4 @@
-"""Judge #6 Tests - Validate Purpose/Reasons/Brakes enforcement"""
+"""Judge 6 Tests - Validate Purpose/Reasons/Brakes enforcement"""
 
 import os
 import sys
@@ -26,7 +26,7 @@ def dangerous_function(database: str) -> dict:
 
 @pytest.fixture
 def judge_six():
-    """Create Judge #6 instance for testing."""
+    """Create Judge 6 instance for testing."""
     if not os.environ.get("GOOGLE_API_KEY"):
         pytest.skip("GOOGLE_API_KEY not set")
 

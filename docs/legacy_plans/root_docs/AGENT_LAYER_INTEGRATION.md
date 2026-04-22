@@ -178,7 +178,7 @@ This integration transforms the platform from:
 New value proposition:
 
 1. **Infrastructure layer**: Sky-ground GPU mesh (existing)
-2. **Intelligence layer**: Gemini ingestion + Judge #6 (existing)
+2. **Intelligence layer**: Gemini ingestion + Judge 6 (existing)
 3. **Agent layer**: PanelGPT, Code Crafter, Wealth Accelerator (NEW)
 4. **Evolution layer**: DTE self-improvement + GRPO training (NEW)
 

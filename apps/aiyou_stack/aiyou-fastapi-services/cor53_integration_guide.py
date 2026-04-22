@@ -7,13 +7,13 @@ This module provides the complete end-to-end integration of:
 - Gemini Ingestion Layer (multi-source intelligence collection)
 - COR Skill Registry (discovery & risk assessment)
 - AutoGen Orchestration (multi-agent execution)
-- Judge #6 Enforcement (doctrine compliance)
+- Judge 6 Enforcement (doctrine compliance)
 - Gemini Secondary Validation
 
 Complete Workflow:
 0. Intelligence ingestion (multi-source collection & tier classification)
 1. Task intake and decomposition (from intelligence or manual)
-2. Judge #6 PRB pre-flight validation
+2. Judge 6 PRB pre-flight validation
 3. Skill discovery and routing
 4. AutoGen multi-agent orchestration
 5. Execution with watermark injection
@@ -166,8 +166,8 @@ class COR53UnifiedPipeline:
         start_time = datetime.utcnow()
         logger.info(f"Processing task {task_request.task_id}: {task_request.description[:50]}...")
 
-        # PHASE 1: Judge #6 Pre-Flight Validation
-        logger.info("PHASE 1: Judge #6 PRB Validation")
+        # PHASE 1: Judge 6 Pre-Flight Validation
+        logger.info("PHASE 1: Judge 6 PRB Validation")
 
         validation_context = {
             "cost_estimate": task_request.cost_estimate or 0,

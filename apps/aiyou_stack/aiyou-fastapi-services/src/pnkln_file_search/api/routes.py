@@ -38,12 +38,12 @@ async def process_query(
     corpus_manager: CorpusManager = Depends(get_corpus_manager),
     kill_switch: KillSwitch = Depends(get_kill_switch),
 ):
-    """Process a query with file search and Judge #6 enforcement
+    """Process a query with file search and Judge 6 enforcement
 
     This endpoint orchestrates:
     1. File search for policy context (async)
-    2. Judge #6 Layer 1 assessment (async, parallel with file search)
-    3. Judge #6 Layers 2+3 enforcement (sequential)
+    2. Judge 6 Layer 1 assessment (async, parallel with file search)
+    3. Judge 6 Layers 2+3 enforcement (sequential)
     """
     try:
         # Check if file search is enabled

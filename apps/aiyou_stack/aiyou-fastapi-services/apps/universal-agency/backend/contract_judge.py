@@ -20,7 +20,7 @@ class ContractReview:
 
 
 class ContractJudge:
-    """Judge #6 Domain Judge: Law (Representation).
+    """Judge 6 Domain Judge: Law (Representation).
     Reviews contracts for fairness, compliance, and leverage.
     """
 

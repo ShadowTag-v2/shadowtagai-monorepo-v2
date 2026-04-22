@@ -1,6 +1,6 @@
 # MCP Code Execution Validation Sprint
 
-## 72-Hour Technical Validation Plan for Judge #6 v2.0
+## 72-Hour Technical Validation Plan for Judge 6 v2.0
 
 **Sprint Start:** Hour 0 (from GO command)
 **Sprint End:** Hour 72 (GO/NO-GO decision)
@@ -10,7 +10,7 @@
 
 ## EXECUTIVE SUMMARY
 
-This validation sprint determines whether MCP code execution can replace traditional tool calls in Judge #6 v2.0 while meeting:
+This validation sprint determines whether MCP code execution can replace traditional tool calls in Judge 6 v2.0 while meeting:
 
 
 - **Performance SLA:** p99 ≤90ms (targeting ≤75ms with safety margin)
@@ -30,7 +30,7 @@ This validation sprint determines whether MCP code execution can replace traditi
 - PIVOT: Partial MCP deployment (AutoGen only, $200K/year savings)
 
 
-- ABORT: Traditional Judge #6 with post-launch MCP (no immediate benefit)
+- ABORT: Traditional Judge 6 with post-launch MCP (no immediate benefit)
 
 ---
 
@@ -221,7 +221,7 @@ metrics = {
 **NO-GO Criteria:**
 
 
-- ❌ p99 latency >90ms → ABORT to Option B (traditional Judge #6)
+- ❌ p99 latency >90ms → ABORT to Option B (traditional Judge 6)
 
 
 - ❌ Success rate <99% → ABORT (reliability showstopper)
@@ -596,7 +596,7 @@ Determine FedRAMP audit timeline and identify compliance gaps.
 
 ### Objective
 
-Design Judge #6 v2.0 with MCP at core, ensuring clean rollback path.
+Design Judge 6 v2.0 with MCP at core, ensuring clean rollback path.
 
 ### Prerequisites
 
@@ -606,7 +606,7 @@ Design Judge #6 v2.0 with MCP at core, ensuring clean rollback path.
 
 
 
-- Judge #6 v1.2 architecture diagrams
+- Judge 6 v1.2 architecture diagrams
 
 
 - AutoGen integration design docs
@@ -638,7 +638,7 @@ Design Judge #6 v2.0 with MCP at core, ensuring clean rollback path.
 **Owner:** Principal Engineer
 **Status:** CRITICAL PATH (determines integration scope)
 
-**Current Judge #6 v1.2 Architecture:**
+**Current Judge 6 v1.2 Architecture:**
 
 ```
 
@@ -663,7 +663,7 @@ Design Judge #6 v2.0 with MCP at core, ensuring clean rollback path.
 
 ```
 
-**Proposed Judge #6 v2.0 Architecture (with MCP):**
+**Proposed Judge 6 v2.0 Architecture (with MCP):**
 
 ```
 
@@ -765,12 +765,12 @@ result = await mcp_execute(code)  # Single round trip, 2K tokens, 75ms latency
 **Owner:** ML Engineering
 **Status:** RECOMMENDED (reduces Anthropic lock-in)
 
-**Current Vendor Distribution (Judge #6 v1.2):**
+**Current Vendor Distribution (Judge 6 v1.2):**
 
 
 - Claude Opus: 100% (high cost, high quality)
 
-**Proposed Vendor Distribution (Judge #6 v2.0 with MCP):**
+**Proposed Vendor Distribution (Judge 6 v2.0 with MCP):**
 
 ```python
 llm_routing_strategy = {
@@ -899,10 +899,10 @@ Week 3-4: Code Generation Layer
 
 - [ ] Unit test framework for generated code
 
-Week 5-6: Integration with Judge #6
+Week 5-6: Integration with Judge 6
 
 
-- [ ] Refactor Judge #6 to code-first architecture
+- [ ] Refactor Judge 6 to code-first architecture
 
 
 - [ ] Feature flag: USE_MCP (default: false)
@@ -974,7 +974,7 @@ ROLLBACK_PROCEDURE = """
 1. Set USE_MCP=false in config (takes effect in < 1 min)
 
 
-2. Verify traffic routing to traditional Judge #6
+2. Verify traffic routing to traditional Judge 6
 
 
 3. Investigate root cause (latency spike, errors, security)
@@ -1002,7 +1002,7 @@ ROLLBACK_PROCEDURE = """
 **NO-GO Criteria:**
 
 
-- ❌ Integration >16 weeks → Ship traditional Judge #6, add MCP post-launch
+- ❌ Integration >16 weeks → Ship traditional Judge 6, add MCP post-launch
 
 
 - ❌ Rollback plan untested → ABORT (operational risk)
@@ -1086,7 +1086,7 @@ ROLLBACK_PROCEDURE = """
          │              ▼                ▼              ▼
          │         PIVOT to         PIVOT to       ABORT to
          │         Option B:        Option C:      Traditional:
-         │         AutoGen-only     Vertex AI      Judge #6 v1.2
+         │         AutoGen-only     Vertex AI      Judge 6 v1.2
          │         (non-latency)    native code    (MCP later)
          │              │                │              │
          ▼              ▼                ▼              ▼
@@ -1111,7 +1111,7 @@ ROLLBACK_PROCEDURE = """
 
 - ✅ Integration ≤12 weeks
 
-**Decision:** Proceed with full MCP integration into Judge #6 v2.0
+**Decision:** Proceed with full MCP integration into Judge 6 v2.0
 
 **Timeline:**
 
@@ -1192,7 +1192,7 @@ Year 2-5:
 - ✅ ShadowTag compliance checks via MCP (batch processing)
 
 
-- ❌ Judge #6 v2.0 stays traditional (too latency-sensitive)
+- ❌ Judge 6 v2.0 stays traditional (too latency-sensitive)
 
 **Timeline:**
 
@@ -1230,12 +1230,12 @@ Year 2-5:
 - Reduced risk (non-latency-critical only)
 
 
-- Option to expand to Judge #6 later (after latency optimization)
+- Option to expand to Judge 6 later (after latency optimization)
 
 **Risks Accepted:**
 
 
-- 20% chance Judge #6 stays traditional forever (technical debt)
+- 20% chance Judge 6 stays traditional forever (technical debt)
 
 
 - Competitor ships full MCP first (lose category ownership)
@@ -1325,7 +1325,7 @@ Year 2-5:
 
 ---
 
-### OPTION D: ABORT (Traditional Judge #6, MCP Later)
+### OPTION D: ABORT (Traditional Judge 6, MCP Later)
 
 **Conditions:**
 
@@ -1338,12 +1338,12 @@ Year 2-5:
 
 - OR ❌ Integration >16 weeks
 
-**Decision:** Ship traditional Judge #6 v1.2 on GKE, revisit MCP in 6-12 months
+**Decision:** Ship traditional Judge 6 v1.2 on GKE, revisit MCP in 6-12 months
 
 **Scope:**
 
 
-- ✅ Judge #6 v1.2 (existing implementation, proven)
+- ✅ Judge 6 v1.2 (existing implementation, proven)
 
 
 - ✅ GKE deployment (infrastructure ready)
@@ -1369,7 +1369,7 @@ Year 2-5:
 Year 1:
   Cost savings: $0 (no MCP benefits)
   Integration cost: -$50K (traditional deployment only)
-  Security audit: -$100K (SOC2 for Judge #6 v1.2)
+  Security audit: -$100K (SOC2 for Judge 6 v1.2)
   Net Year 1: -$150K
 
 Year 2:
@@ -1501,7 +1501,7 @@ Year 2:
 
 ```markdown
 
-# Judge #6 v2.0 Architecture
+# Judge 6 v2.0 Architecture
 
 ## Design
 
@@ -1593,7 +1593,7 @@ Year 2:
 
 
 
-- Fallback: Traditional Judge #6 v1.2
+- Fallback: Traditional Judge 6 v1.2
 
 
 - Reassess: [Date]
@@ -1662,7 +1662,7 @@ Year 2:
 
 ## ABORT CONDITIONS (Anytime During Sprint)
 
-Immediately abort to traditional Judge #6 if:
+Immediately abort to traditional Judge 6 if:
 
 
 
@@ -1717,7 +1717,7 @@ Immediately abort to traditional Judge #6 if:
 2. git revert <MCP integration commits>
 
 
-3. Notify stakeholders: "Aborting to traditional Judge #6"
+3. Notify stakeholders: "Aborting to traditional Judge 6"
 
 
 4. Schedule post-mortem (no blame, just learning)
@@ -1732,7 +1732,7 @@ Immediately abort to traditional Judge #6 if:
 6. Reassess MCP in 6 months
 
 
-7. Ship traditional Judge #6 v1.2
+7. Ship traditional Judge 6 v1.2
 
 ```
 

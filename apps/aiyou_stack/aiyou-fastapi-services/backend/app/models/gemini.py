@@ -130,7 +130,7 @@ class IngestionLayerAnalysis(BaseModel):
 
 
 class ComparisonAnalysisRequest(BaseModel):
-    """Request to compare two systems (e.g., Judge #6 vs Ingestion Layer)."""
+    """Request to compare two systems (e.g., Judge 6 vs Ingestion Layer)."""
 
     system_a_name: str
     system_a_specs: str

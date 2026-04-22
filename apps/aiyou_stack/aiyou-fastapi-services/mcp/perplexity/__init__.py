@@ -1,7 +1,7 @@
 """Perplexity MCP Server - Governance Bridge for Comet Browser & AI Shopping
 
 Integrates:
-- Judge #6 compliance scoring for transaction governance
+- Judge 6 compliance scoring for transaction governance
 - SHADOWTAG watermarking for AI-generated content
 - Apertus manifest logging for audit trail
 """

@@ -55,7 +55,7 @@ def demo_jr_engine():
             justification="Automated lead generation with compliance enforcement",
             risk_probability=0.2,
             risk_severity=0.3,
-            mitigation_strategy="Judge #6 GDPR/CAN-SPAM filtering",
+            mitigation_strategy="Judge 6 GDPR/CAN-SPAM filtering",
         ),
     ]
 
@@ -104,8 +104,8 @@ def demo_jr_engine():
 
 
 def demo_judge_six():
-    """Demonstrate Judge #6 Lite verification"""
-    print_separator("Judge #6 Lite: Rule-Based Enforcement")
+    """Demonstrate Judge 6 Lite verification"""
+    print_separator("Judge 6 Lite: Rule-Based Enforcement")
 
     judge = JudgeSixLite()
 

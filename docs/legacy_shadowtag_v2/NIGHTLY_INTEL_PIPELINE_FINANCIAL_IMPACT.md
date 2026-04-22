@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-Integrated a complete AI/MLOps intelligence gathering pipeline that autonomously discovers, scores, and delivers executive briefings from multiple sources (GitHub, arXiv, YouTube, Twitter, News APIs) using ethical scraping and ATP 5-19 risk management frameworks.
+Integrated a complete AI/MLOps intelligence gathering pipeline that autonomously discovers, scores, and delivers executive briefings from multiple sources (GitHub, arXiv, YouTube, Twitter, News APIs) using ethical scraping and Compliance Framework risk management frameworks.
 
 ### Key Metrics
 
@@ -53,7 +53,7 @@ Integrated a complete AI/MLOps intelligence gathering pipeline that autonomously
 
 **Unique value propositions**:
 
-- **Ethical scraping** (ATP 5-19 compliant, RFC 9309 robots.txt parsing)
+- **Ethical scraping** (Compliance Framework compliant, RFC 9309 robots.txt parsing)
 
 - **Multi-source intelligence** (5+ sources, not just one)
 
@@ -85,7 +85,7 @@ Integrated a complete AI/MLOps intelligence gathering pipeline that autonomously
 │     - Purpose Alignment (35%)                                │
 │     - Technical Merit (25%)                                  │
 │     - Adoption Potential (20%)                               │
-│     - Risk Assessment (20%, ATP 5-19)                        │
+│     - Risk Assessment (20%, Compliance Framework)                        │
 │                                                              │
 │  4. TIER CLASSIFICATION (instant)                            │
 │     - Tier 1: Executive review (score ≥85)                  │
@@ -108,13 +108,13 @@ Integrated a complete AI/MLOps intelligence gathering pipeline that autonomously
 
 | Component                  | Role                   | Integration Point                           |
 | -------------------------- | ---------------------- | ------------------------------------------- |
-| **Nightly Intel Pipeline** | Intelligence collector | Feeds data to Kosmos, Judge #6, pnkln-stack |
-| **Judge #6**               | Validator              | Validates intel items before ingestion      |
+| **Nightly Intel Pipeline** | Intelligence collector | Feeds data to Kosmos, Judge 6, pnkln-stack |
+| **Judge 6**               | Validator              | Validates intel items before ingestion      |
 | **Kosmos**                 | Research orchestrator  | Uses intel for hypothesis generation        |
 | **pnkln-stack Governance** | Compliance checker     | Assesses intel sources for compliance       |
 | **MCP Batch API**          | Efficiency layer       | Could batch-score 100s of intel items       |
 
-**Key insight**: Nightly Intel Pipeline is the **data acquisition layer** for the entire SHADOWTAGAI platform. Without it, Kosmos and Judge #6 have no real-time data to work with.
+**Key insight**: Nightly Intel Pipeline is the **data acquisition layer** for the entire SHADOWTAGAI platform. Without it, Kosmos and Judge 6 have no real-time data to work with.
 
 ---
 
@@ -383,7 +383,7 @@ Integrated a complete AI/MLOps intelligence gathering pipeline that autonomously
 | ---------------------------- | ------ | ---------------- |
 | Core pipeline implementation | 24     | $3,600           |
 | JR Engine integration        | 8      | $1,200           |
-| Ethical scraping (ATP 5-19)  | 12     | $1,800           |
+| Ethical scraping (Compliance Framework)  | 12     | $1,800           |
 | GKE deployment config        | 6      | $900             |
 | Multi-source scrapers        | 16     | $2,400           |
 | Briefing generator           | 6      | $900             |
@@ -490,11 +490,11 @@ With aggressive growth: **5-6 months**
 
 **Value**: Kosmos becomes **data-driven** instead of manually configured
 
-#### Integration 2: Judge #6 Validation
+#### Integration 2: Judge 6 Validation
 
-**How Judge #6 validates Intel**:
+**How Judge 6 validates Intel**:
 
-1. Before ingesting discovered repos/papers, Judge #6 validates:
+1. Before ingesting discovered repos/papers, Judge 6 validates:
    - Security risks (malware, backdoors)
 
    - License compliance (AGPL, commercial restrictions)
@@ -503,7 +503,7 @@ With aggressive growth: **5-6 months**
 
 2. Only validated items enter the intelligence database
 
-3. ATP 5-19 risk levels align between Judge #6 and JR Engine
+3. Compliance Framework risk levels align between Judge 6 and JR Engine
 
 **Value**: **Trust layer** ensures intelligence is safe to act on
 
@@ -559,7 +559,7 @@ With aggressive growth: **5-6 months**
 
 2. **Multi-source** (5+ sources, not just one)
 
-3. **Ethical scraping** (ATP 5-19 compliant, defensible in court)
+3. **Ethical scraping** (Compliance Framework compliant, defensible in court)
 
 4. **Tier classification** (executive vs auto-action vs archive)
 
@@ -614,7 +614,7 @@ With aggressive growth: **5-6 months**
 | **GKE CronJob failures**            | Low         | High   | Retry logic, alerting, fallback to Cloud Run Jobs     |
 | **Claude API costs spike**          | Medium      | Medium | Switch to Gemini Flash 2.0 (free tier)                |
 | **Data quality degradation**        | Low         | High   | JR Engine validation, human-in-loop for Tier 1        |
-| **Scraping ethics violations**      | Low         | High   | ATP 5-19 compliance, legal review, robots.txt parsing |
+| **Scraping ethics violations**      | Low         | High   | Compliance Framework compliance, legal review, robots.txt parsing |
 
 **Overall technical risk**: Low-Medium (mature stack, well-tested patterns)
 
@@ -625,7 +625,7 @@ With aggressive growth: **5-6 months**
 | **Low customer adoption**        | Medium      | High   | Free tier, partnerships, content marketing |
 | **Competitor copycat**           | High        | Medium | Data moat, JR Engine IP, 12-18 month lead  |
 | **Pricing pressure**             | Medium      | Low    | 99% margin allows flexibility              |
-| **Regulatory issues** (scraping) | Low         | High   | Legal compliance (RFC 9309, ATP 5-19)      |
+| **Regulatory issues** (scraping) | Low         | High   | Legal compliance (RFC 9309, Compliance Framework)      |
 | **Data privacy concerns**        | Low         | Medium | Only public data, no PII, GDPR compliant   |
 
 **Overall business risk**: Low-Medium (strong unit economics, defensible moat)
@@ -785,7 +785,7 @@ With aggressive growth: **5-6 months**
 | Layer                     | Service                 | Monthly Cost     | Monthly Revenue     | Margin         |
 | ------------------------- | ----------------------- | ---------------- | ------------------- | -------------- |
 | **Layer 1: Intelligence** | Nightly Intel Pipeline  | $21              | $1,736              | 98.8%          |
-| **Layer 2: Validation**   | Judge #6                | $1,400-2,600     | Included in Layer 1 | -              |
+| **Layer 2: Validation**   | Judge 6                | $1,400-2,600     | Included in Layer 1 | -              |
 | **Layer 3: Research**     | Kosmos                  | $215-700         | $14,000             | 98.5%          |
 | **Layer 4: Governance**   | pnkln-stack + Batch API | $152-437         | $49,736             | 99.1-99.7%     |
 | **Total**                 |                         | **$1,788-3,758** | **$65,472**         | **97.3-98.0%** |
@@ -853,7 +853,7 @@ With aggressive growth: **5-6 months**
 2. **Strategic value exceeds financial value**
    - Data moat: 18,000 scored items after Year 1
 
-   - Platform synergy: Feeds Kosmos, Judge #6, pnkln-stack
+   - Platform synergy: Feeds Kosmos, Judge 6, pnkln-stack
 
    - Competitive moat: 12-18 month lead (JR Engine + multi-source + ethical scraping)
 
@@ -869,7 +869,7 @@ With aggressive growth: **5-6 months**
 
    - Leverages existing JR Engine (Purpose → Reasons → Brakes)
 
-   - Integrates with all 4 layers (Intel → Judge #6 → Kosmos → pnkln-stack)
+   - Integrates with all 4 layers (Intel → Judge 6 → Kosmos → pnkln-stack)
 
 ### 9.2 Recommendations
 
@@ -983,7 +983,7 @@ Nightly Intel Pipeline transforms SHADOWTAGAI from a "research orchestration pla
 
 1. **Data acquisition** (Nightly Intel)
 
-2. **Validation** (Judge #6)
+2. **Validation** (Judge 6)
 
 3. **Research** (Kosmos)
 
@@ -1002,7 +1002,7 @@ This is the **missing piece** that makes the entire stack valuable.
 **26 Python files, 3,111 lines of code**:
 
 1. **Scrapers** (nightly_intel_pipeline/scrapers/)
-   - `ethical_scraper.py`: ATP 5-19 compliant base scraper
+   - `ethical_scraper.py`: Compliance Framework compliant base scraper
 
    - `github_flattener.py`: Repo discovery + code flattening
 
@@ -1026,7 +1026,7 @@ This is the **missing piece** that makes the entire stack valuable.
    - `secret.yaml.example`: API key template
 
 5. **Configuration** (nightly_intel_pipeline/config.py)
-   - Ethical scraping settings (ATP 5-19)
+   - Ethical scraping settings (Compliance Framework)
 
    - GitHub/arXiv/YouTube/Twitter/News API configs
 
@@ -1044,7 +1044,7 @@ This is the **missing piece** that makes the entire stack valuable.
 
 - **Adoption Potential** (20%): Community traction (stars, forks, citations)
 
-- **Risk Assessment** (20%): ATP 5-19 risk levels (RA-1 through RA-4)
+- **Risk Assessment** (20%): Compliance Framework risk levels (RA-1 through RA-4)
 
 **Example score calculation**:
 
@@ -1067,7 +1067,7 @@ total_score = (92 * 0.35) + (88 * 0.25) + (85 * 0.20) + (85 * 0.20)
 
 ### A.3 Ethical Scraping Implementation
 
-**ATP 5-19 RA-1 Compliance**:
+**Compliance Framework RA-1 Compliance**:
 
 1. **robots.txt parsing** (RFC 9309)
    - 24-hour cache

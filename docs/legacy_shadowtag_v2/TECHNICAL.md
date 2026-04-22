@@ -19,7 +19,7 @@
 
 - **Product:** "The Child" (Sovereign AI Node).
 - **Tech:** Air-gapped Edge TPU clusters.
-- **Compliance:** ITAR / ATP 5-19 / Classified-Compatible.
+- **Compliance:** ITAR / Compliance Framework / Classified-Compatible.
 
 ### LAYER 5: ORBITAL (The High Ground)
 
@@ -39,7 +39,7 @@
 
 ### LAYER 2: CORE PROTOCOLS (The OS)
 
-- **Governance:** Judge #6 (Purpose/Reasons/Brakes).
+- **Governance:** Judge 6 (Purpose/Reasons/Brakes).
 - **Compliance:** ActiveShield MCF (EU AI Act Auto-Audit).
 - **Identity:** Vexa (Universal Transcription).
 
@@ -59,7 +59,7 @@ We do not use generic agents. We use **Troops** aligned with ATP 3-20.96.
 
 | Troop        | Function                         | Count | Model                  |
 | :----------- | :------------------------------- | :---- | :--------------------- |
-| **HHT**      | **Command** (Judge #6, Strategy) | 115   | Gemini 2.5 Ultra       |
+| **HHT**      | **Command** (Judge 6, Strategy) | 115   | Gemini 2.5 Ultra       |
 | **TROOP A**  | **Recon** (RSTA, Market Intel)   | 120   | Perplexity / Grok      |
 | **TROOP B**  | **Ranger Eng** (Build, Deploy)   | 130   | Gemini 2.5 Coding      |
 | **TROOP C**  | **Defense** (MilDec, Security)   | 130   | Custom Security Models |

@@ -2,7 +2,7 @@
 # AIYOU PLATFORM - VERTEX AI INTEGRATION
 # ═══════════════════════════════════════════════════════════════
 # Purpose: Vertex AI Workload Identity, service accounts, and
-#          Workbench setup for Judge #6 Layer 1 training
+#          Workbench setup for Judge 6 Layer 1 training
 # ═══════════════════════════════════════════════════════════════
 
 terraform {
@@ -143,7 +143,7 @@ resource "google_storage_bucket_iam_member" "vertex_ai_bucket_access" {
 
 resource "google_vertex_ai_tensorboard" "judge_training" {
   display_name = "judge-training-${var.environment}"
-  description  = "Tensorboard for Judge #6 Layer 1 training experiments"
+  description  = "Tensorboard for Judge 6 Layer 1 training experiments"
   project      = var.project_id
   region       = var.region
 

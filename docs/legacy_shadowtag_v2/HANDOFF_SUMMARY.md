@@ -379,7 +379,7 @@ HANDOFF_SUMMARY.md                     → Concise handoff summary
    registry = FunctionRegistry()
 
    @registry.register(
-       description="Extract ATP 5-19 violations",
+       description="Extract Compliance Framework violations",
        parameters={"context": {"type": "string"}}
    )
    def atp_519_scan(context: str) -> dict:

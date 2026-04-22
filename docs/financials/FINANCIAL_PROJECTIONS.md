@@ -99,7 +99,7 @@ Scenario 3: Bootstrap from $0 (design partner funded)
 
 | Vertical               | Customers | Avg ACV   | ARR         | % of Total | Gross Margin |
 | ---------------------- | --------- | --------- | ----------- | ---------- | ------------ |
-| **Judge #6**           | 50        | $250K     | $12.5M      | 9.4%       | 75%          |
+| **Judge 6**           | 50        | $250K     | $12.5M      | 9.4%       | 75%          |
 | **JR Engine + Cor**    | 200       | $180K     | $36M        | 27.2%      | 80%          |
 | **ShadowTag**          | 75        | $120K     | $9M         | 6.8%       | 85%          |
 | **AutoGen**            | 100       | $150K     | $15M        | 11.3%      | 78%          |

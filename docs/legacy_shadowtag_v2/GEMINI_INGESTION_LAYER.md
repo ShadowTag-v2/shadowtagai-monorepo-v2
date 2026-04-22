@@ -28,7 +28,7 @@ The Gemini Ingestion Layer is a nightly batch processing pipeline that collects,
     ┌───────────────────────────────────────────────────┐
     │   DATA DELIVERY (Called BY services)              │
     ├───────────────────┬───────────────────────────────┤
-    │ pnkln-stackjr-governance│ Judge #6 Hybrid Enforcement   │
+    │ pnkln-stackjr-governance│ Judge 6 Hybrid Enforcement   │
     │ autogen-orchestr. │ Multi-Agent Coordination      │
     │ cognitive-stack-v5│ LLM Routing Layer             │
     │ shadowtag-v2      │ Watermarking Security         │
@@ -37,7 +37,7 @@ The Gemini Ingestion Layer is a nightly batch processing pipeline that collects,
 
 ### Design Philosophy
 
-**Compared to Judge #6** (reactive validation):
+**Compared to Judge 6** (reactive validation):
 
 - **Proactive vs Reactive**: Collects data upstream vs validates downstream
 - **Batch vs Real-time**: Nightly cron (45 min) vs sub-90ms response
@@ -305,7 +305,7 @@ Key panels:
 
 Services in the 4 namespaces can fetch ingested data:
 
-**pnkln-stackjr-governance** (Judge #6):
+**pnkln-stackjr-governance** (Judge 6):
 
 ```python
 # Fetch daily intelligence for validation

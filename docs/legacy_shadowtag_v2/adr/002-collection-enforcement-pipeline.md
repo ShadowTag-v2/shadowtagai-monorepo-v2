@@ -12,7 +12,7 @@
 
 ## Context and Problem Statement
 
-ADR-001 established enforcement-first architecture (Judge #6 + JR Engine) for compliance validation. However, this addressed only the **downstream** enforcement problem. The **upstream** intelligence collection problem remained unsolved:
+ADR-001 established enforcement-first architecture (Judge 6 + JR Engine) for compliance validation. However, this addressed only the **downstream** enforcement problem. The **upstream** intelligence collection problem remained unsolved:
 
 - No standardized data collection pipeline
 
@@ -44,7 +44,7 @@ Implement **dual-layer architecture** combining intelligence collection (upstrea
 │  ├─ Quality scoring (relevance/timeliness/completeness) │
 │  └─ AM briefing delivery                                │
 │                                                          │
-│  LAYER 2: Judge #6 + JR Engine (Enforcement - Downstream)│
+│  LAYER 2: Judge 6 + JR Engine (Enforcement - Downstream)│
 │  ├─ Purpose/Reasons/Brakes validation                   │
 │  ├─ GDPR/CAN-SPAM/HIPAA compliance                      │
 │  ├─ Content policy enforcement                          │
@@ -66,14 +66,14 @@ Proactive intelligence collector (upstream of enforcement)
 
 ### Key Characteristics
 
-| Aspect              | Judge #6 (Downstream)           | Gemini Ingestion (Upstream)           |
+| Aspect              | Judge 6 (Downstream)           | Gemini Ingestion (Upstream)           |
 | ------------------- | ------------------------------- | ------------------------------------- |
 | **Function**        | Reactive validator              | Proactive collector                   |
 | **Architecture**    | Hybrid Gemini+PyTorch           | GKE CronJob Multi-Container           |
 | **Performance**     | p99 ≤90ms (real-time)           | ~45 min/night (batch)                 |
 | **Key Metrics**     | Latency, Throughput, Block Rate | Items/Day, Sources, Cost/Item, Scores |
 | **Integration**     | Calls Services in 4 Namespaces  | Called by Services in 4 Namespaces    |
-| **Unique Features** | ATP 5-19, JR Validation         | Ethical Crawling, Tier Classification |
+| **Unique Features** | Compliance Framework, JR Validation         | Ethical Crawling, Tier Classification |
 | **Cost Model**      | API Calls per Validation        | Monthly Operational ~$77              |
 | **Quality Focus**   | FP/FN Rates (accuracy)          | Relevance, Timeliness, Completeness   |
 
@@ -176,7 +176,7 @@ class IntelligenceAgent(ShadowTagAiAgent):
        └─ Validate collection purpose
 
 
-    3. Judge #6 Enforcement (Compliance)
+    3. Judge 6 Enforcement (Compliance)
        ├─ GDPR/CAN-SPAM checks
        └─ Content policy verification
 
@@ -234,7 +234,7 @@ class IntelligenceAgent(ShadowTagAiAgent):
 | Layer                    | Cost/Month             |
 | ------------------------ | ---------------------- |
 | **Gemini Ingestion**     | $77                    |
-| **Judge #6 + JR Engine** | $1,000-1,600           |
+| **Judge 6 + JR Engine** | $1,000-1,600           |
 | **Total**                | **$1,077-1,677/month** |
 
 **Break-Even (with collection):**
@@ -316,11 +316,11 @@ result = agent.generate_leads(
 
 ---
 
-## Comparison: Judge #6 vs Gemini Ingestion
+## Comparison: Judge 6 vs Gemini Ingestion
 
-### Adapted from Judge #6 Analysis Prompt
+### Adapted from Judge 6 Analysis Prompt
 
-| Dimension               | Judge #6 (Enforcement)    | Gemini Ingestion (Collection)     |
+| Dimension               | Judge 6 (Enforcement)    | Gemini Ingestion (Collection)     |
 | ----------------------- | ------------------------- | --------------------------------- |
 | **File References**     | judge_six.py              | Pipeline docs, architecture specs |
 | **Performance Metrics** | p99 ≤90ms (real-time)     | ~45 min/night (batch)             |
@@ -539,9 +539,9 @@ spec:
 
 - ADR-001: Enforcement-First Agent Architecture
 
-- Gemini Ingestion Layer Analysis Prompt (adapted from Judge #6 version)
+- Gemini Ingestion Layer Analysis Prompt (adapted from Judge 6 version)
 
-- ATP 5-19: US Army risk assessment methodology
+- Compliance Framework: US Army risk assessment methodology
 
 - robots.txt Standard: https://www.robotstxt.org/
 

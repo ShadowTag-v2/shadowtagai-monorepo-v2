@@ -14,7 +14,7 @@
 **pnkln-stack (ShadowTag)** is the world's first **ISO 26262-inspired Safety-as-a-Service** platform for the content moderation era. We replace slow, manual "trust and safety" teams with an automated, audit-ready AI pipeline that fixes vulnerabilities 92% faster than humans.
 
 - **The Problem**: The $8.5B content moderation market is broken. It's too slow (days to patch), too expensive ($100k+ setup), and legally opaque (EU AI Act non-compliant).
-- **The Solution**: An automated safety pipeline (Judge #6 + Kernel Chaining) that provides **99.9% uptime**, **78% auto-fix rate**, and **SOC 2 evidence** from Day 1.
+- **The Solution**: An automated safety pipeline (Judge 6 + Kernel Chaining) that provides **99.9% uptime**, **78% auto-fix rate**, and **SOC 2 evidence** from Day 1.
 - **The Shift**: Moving from "reactionary takedowns" to "proactive safety cases."
 
 ---
@@ -52,7 +52,7 @@ Our "Safety-Case" architecture allows us to monetize both **volume** (API calls)
 
 - **Value**: Real-time safety decisions for social feeds.
 - **Pricing**: **$499/mo (Base)** + **$0.01 / decision**.
-- **Differentiation**: Automated "Judge #6" audit trail.
+- **Differentiation**: Automated "Judge 6" audit trail.
 
 ### C. Safety-as-a-Service (Enterprise)
 

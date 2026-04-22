@@ -342,7 +342,7 @@ class CheatSheetOptimizedFailover(GlickoEnhancedFailover):
 
     def _format_judge_prompt(self, context: Dict[str, Any], provider: ProviderType) -> str:
         """
-        Format Judge #6 prompt using provider-specific cheat sheet.
+        Format Judge 6 prompt using provider-specific cheat sheet.
 
         This ensures each provider receives prompts optimized for its
         strengths, improving decision quality and reducing latency.

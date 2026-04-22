@@ -262,7 +262,7 @@ Zero Missed Deadlines
 **Erik Hancock** (Founder/CEO)
 
 - Systems Engineering background (MIT-equivalent)
-- Risk Management expertise (ATP 5-19)
+- Risk Management expertise (Compliance Framework)
 - Prior: Built Pinkln Ultrathink ecosystem (31× faster AI)
 
 **Open Roles** (Post-Seed):
@@ -368,7 +368,7 @@ Zero Missed Deadlines
 │  [Deadline Extraction] ← Powered by Pinkln                  │
 │    ├─ Regex patterns (common formats)                       │
 │    ├─ Gemini 2.0 Flash (ambiguous cases)                    │
-│    └─ Kernel chain validation (ATP 5-19)                    │
+│    └─ Kernel chain validation (Compliance Framework)                    │
 │                                                             │
 │  [Calendar Sync]                                            │
 │    ├─ Google Calendar API                                   │

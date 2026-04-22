@@ -193,7 +193,7 @@ This analysis quantifies the monetary impact of transitioning from kernel-chaini
 - Adaptive load control
 - Degradation detection
 - Jitter analysis
-- ATP 5-19 compliant audit trail
+- Compliance Framework compliant audit trail
 
 **Cost Structure**:
 

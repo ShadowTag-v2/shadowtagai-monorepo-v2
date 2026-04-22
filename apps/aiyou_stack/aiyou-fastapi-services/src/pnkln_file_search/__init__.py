@@ -1,5 +1,5 @@
 """Pnkln File Search Integration
-Google File Search API integration for Pnkln Core Stack with Judge #6
+Google File Search API integration for Pnkln Core Stack with Judge 6
 """
 
 __version__ = "0.1.0"

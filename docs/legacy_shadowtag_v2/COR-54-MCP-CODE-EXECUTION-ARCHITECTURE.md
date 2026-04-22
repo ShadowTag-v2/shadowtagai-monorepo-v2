@@ -79,7 +79,7 @@ Total: 26K tokens/turn          Total: 300 tokens/turn
 ┌─────────────────────────────────────────────────────────────┐
 │                  MCP SERVERS                                 │
 │  ┌────────────────┬─────────────────┬─────────────────┐    │
-│  │ Code Executor  │ Judge #6        │ ShadowTag       │    │
+│  │ Code Executor  │ Judge 6        │ ShadowTag       │    │
 │  │ (Sandboxed)    │ (Validation)    │ (Watermarking)  │    │
 │  └────────────────┴─────────────────┴─────────────────┘    │
 │  ┌────────────────┬─────────────────────────────────────┐  │
@@ -106,7 +106,7 @@ Total: 26K tokens/turn          Total: 300 tokens/turn
    ↓
 3. Code routed to appropriate MCP server(s)
    ↓
-4. PreToolUse hook → Judge #6 validation
+4. PreToolUse hook → Judge 6 validation
    ↓
 5. Execute code in sandboxed environment
    ↓
@@ -125,7 +125,7 @@ Total: 26K tokens/turn          Total: 300 tokens/turn
 
 ### 1. Code Executor MCP Server
 
-**Purpose:** Secure code execution with ATP 5-19 compliance
+**Purpose:** Secure code execution with Compliance Framework compliance
 
 **Capabilities:**
 
@@ -152,7 +152,7 @@ Total: 26K tokens/turn          Total: 300 tokens/turn
 
 ---
 
-### 2. Judge #6 Validation Server
+### 2. Judge 6 Validation Server
 
 **Purpose:** Hybrid enforcement with PRB coverage and security scanning
 
@@ -479,7 +479,7 @@ Based on POC testing:
 
 ## SECURITY & COMPLIANCE
 
-### ATP 5-19 Risk Stratification
+### Compliance Framework Risk Stratification
 
 **Risk Levels:**
 
@@ -556,7 +556,7 @@ Based on POC testing:
 │  │              NAMESPACE: mcp-production                │  │
 │  │                                                        │  │
 │  │  ┌──────────────┐  ┌──────────────┐  ┌────────────┐ │  │
-│  │  │ Code Exec    │  │ Judge #6     │  │ ShadowTag  │ │  │
+│  │  │ Code Exec    │  │ Judge 6     │  │ ShadowTag  │ │  │
 │  │  │ Pods (3x)    │  │ Pods (3x)    │  │ Pods (2x)  │ │  │
 │  │  └──────────────┘  └──────────────┘  └────────────┘ │  │
 │  │                                                        │  │
@@ -802,7 +802,7 @@ pnkln-stack-fastapi-services/
 
 ### Appendix B: Validation Rules Reference
 
-See Judge #6 Validator source code for complete rule definitions.
+See Judge 6 Validator source code for complete rule definitions.
 
 **Rule Categories:**
 
@@ -880,7 +880,7 @@ The MCP Code Execution Architecture achieves **category-shifting performance imp
 ✓ **98.7% token reduction** → Massive cost savings
 ✓ **3-5x latency improvement** → Better user experience
 ✓ **$18-25K monthly savings** → Budget compliance
-✓ **ATP 5-19 compliant** → Regulatory ready
+✓ **Compliance Framework compliant** → Regulatory ready
 ✓ **98% PRB coverage** → Quality gates enforced
 
 **Strategic Impact:**
@@ -893,7 +893,7 @@ The MCP Code Execution Architecture achieves **category-shifting performance imp
 **Next Steps:**
 
 1. Deploy to GKE staging environment
-2. Run ATP 5-19 security audit
+2. Run Compliance Framework security audit
 3. Conduct load testing (p99 validation)
 4. Document operational runbooks
 5. Train team on monitoring/debugging

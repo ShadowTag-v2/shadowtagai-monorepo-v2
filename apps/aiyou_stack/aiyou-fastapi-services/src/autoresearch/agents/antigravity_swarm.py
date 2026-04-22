@@ -1,8 +1,8 @@
-"""Antigravity Swarm - Judge #6 Governed Agent Orchestration
+"""Antigravity Swarm - Judge 6 Governed Agent Orchestration
 
 Purpose: ShadowTag-v2JR doctrine enforcement
 Reason: SOP compliance + research delta application
-Brakes: Judge #6 validation (p99 ≤90ms target)
+Brakes: Judge 6 validation (p99 ≤90ms target)
 """
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ if TYPE_CHECKING:
 
 
 class Threshold:
-    """Judge #6 validation thresholds."""
+    """Judge 6 validation thresholds."""
 
     PURPOSE: Final[float] = 0.3  # Keyword match baseline
     REASONS: Final[float] = 0.8  # Doctrine alignment
@@ -118,7 +118,7 @@ logger = logging.getLogger(__name__)
 
 
 class AntigravitySwarm(minion):
-    """Judge #6 governed agent swarm.
+    """Judge 6 governed agent swarm.
 
     Extends minion with Antigravity doctrine:
     - Purpose: ShadowTag-v2JR mission alignment
@@ -189,7 +189,7 @@ class AntigravitySwarm(minion):
         fn_args: dict[str, Any],
         context: str,
     ) -> None:
-        """Run Judge #6 validation and record decision."""
+        """Run Judge 6 validation and record decision."""
         try:
             # Try public API first, fallback to private if needed
             if hasattr(self.judge, "validate"):

@@ -138,7 +138,7 @@ class SwarmStatus:
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                  ║
 ║  {"✅" if self.token_compression_implemented else "⏸️ "} Token Compression Pipeline{"  " if not self.token_compression_implemented else ""}                         ║
-║  {"✅" if self.judge6_deployed else "⏸️ "} Judge #6 Deployment{"       " if not self.judge6_deployed else ""}                                   ║
+║  {"✅" if self.judge6_deployed else "⏸️ "} Judge 6 Deployment{"       " if not self.judge6_deployed else ""}                                   ║
 ║  {"✅" if self.monitoring_operational else "⏸️ "} Monitoring Infrastructure{"   " if not self.monitoring_operational else ""}                            ║
 ║  {"✅" if self.status_page_live else "⏸️ "} Public Status Page{"         " if not self.status_page_live else ""}                                    ║
 ║  {"✅" if self.load_testing_complete else "⏸️ "} Load Testing Complete{"     " if not self.load_testing_complete else ""}                                 ║
@@ -148,7 +148,7 @@ class SwarmStatus:
 ║  PERFORMANCE METRICS                                             ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                  ║
-║  Judge #6 p99 Latency: {self.p99_latency_ms:>6.1f} ms  (SLA: ≤90ms)           ║
+║  Judge 6 p99 Latency: {self.p99_latency_ms:>6.1f} ms  (SLA: ≤90ms)           ║
 ║  Platform Uptime:      {self.uptime_percent:>6.2f} %   (SLA: ≥99.9%)         ║
 ║                                                                  ║
 ╠══════════════════════════════════════════════════════════════════╣
@@ -162,7 +162,7 @@ class SwarmStatus:
 ╚══════════════════════════════════════════════════════════════════╝
 
 Platform Valuation: $421.5B (2030 target)
-ShadowTagAi - Judge #6 + Token Compression Soft Launch
+ShadowTagAi - Judge 6 + Token Compression Soft Launch
 """
         return dashboard
 

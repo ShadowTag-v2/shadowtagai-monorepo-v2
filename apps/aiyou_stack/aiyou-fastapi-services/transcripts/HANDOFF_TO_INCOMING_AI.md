@@ -102,7 +102,7 @@ User provided critical analyses:
 
 - **Rationale**: Bootstrap phase needs fast iteration, not infrastructure overhaul
 
-**B. Judge #6 Triton Deployment**:
+**B. Judge 6 Triton Deployment**:
 
 
 - Triton > Gluon confirmed (6-9% faster inference)
@@ -379,7 +379,7 @@ Total Cost: $0.125 per debate
 
 **Why This Matters**: Edge cases are where most value is created/destroyed. A false rejection loses a creator ($36K LTV). A false approval risks compliance violation ($500K+ fine). Spending $0.125 to get it right saves millions.
 
-### Pattern 3: Judge #6 Framework (Purpose/Reasons/Brakes)
+### Pattern 3: Judge 6 Framework (Purpose/Reasons/Brakes)
 
 **Concept**: Every action assessed via deterministic <500μs kernel before LLM invocation.
 
@@ -441,7 +441,7 @@ else:  # MEDIUM or LOW
 
 - **Weighted Average**: 1,723ms (95% simple @ 1.5s + 5% debate @ 4.7s)
 
-**Why This Matters**: Judge #6 runs BEFORE expensive LLM calls. It's the "brakes" that prevent bad decisions:
+**Why This Matters**: Judge 6 runs BEFORE expensive LLM calls. It's the "brakes" that prevent bad decisions:
 
 
 - Production deploys without tests → blocked at JR level
@@ -505,7 +505,7 @@ MCP Server Tools:
 **PURPOSE CHECK**:
 
 
-- ✅ **Tool Integration**: Kit solves codebase context for Judge #6 reviews
+- ✅ **Tool Integration**: Kit solves codebase context for Judge 6 reviews
 
 
 - ✅ **Competitive Intel**: Learn from their MCP implementation
@@ -572,7 +572,7 @@ Compressed audit trail (zstd L22, 10:1 ratio)
 
 ```
 
-**C. PR Reviewer Economics → Judge #6 Pricing Blueprint**
+**C. PR Reviewer Economics → Judge 6 Pricing Blueprint**
 Kit's value prop: "Rivals paid services at fraction of cost - just pay for tokens"
 
 
@@ -604,7 +604,7 @@ Kit uses tree-sitter parsers for 12+ languages (Python, JS, TypeScript, Go, Rust
 
 - No core logic changes required
 
-Application to Judge #6:
+Application to Judge 6:
 
 
 - Current: Video content moderation
@@ -682,7 +682,7 @@ Application to Judge #6:
 - **Remove**: PR review, summarizer, commit gen, REST API
 
 
-- **Add**: ATP_519_scan integration, Judge #6 enforcement hooks
+- **Add**: ATP_519_scan integration, Judge 6 enforcement hooks
 
 **Timeline**: M1-2 (2 engineers, 6-8 weeks)
 
@@ -693,7 +693,7 @@ Application to Judge #6:
 - Week 3-4: ATP_519_scan integration (cache strategy)
 
 
-- Week 5-6: Judge #6 MCP server (governance tools)
+- Week 5-6: Judge 6 MCP server (governance tools)
 
 
 - Week 7-8: Testing, p99≤90ms validation
@@ -797,7 +797,7 @@ Application to Judge #6:
 - Week 2: Prototype ATP_519_scan cache (mimics Kit strategy)
 
 
-- Week 3: Prototype MCP server for Judge #6 (simplified)
+- Week 3: Prototype MCP server for Judge 6 (simplified)
 
 **Cost**: ~$8K (1 dev @ $100/hr × 80 hrs)
 
@@ -851,7 +851,7 @@ Application to Judge #6:
 **1. Kit-Powered PR Review for Compliance**
 
 
-- Package: Kit PR reviewer + Judge #6 governance layer
+- Package: Kit PR reviewer + Judge 6 governance layer
 
 
 - Target: Fintech/health tech with SOC2/HIPAA requirements
@@ -874,7 +874,7 @@ Application to Judge #6:
 - Enterprise teams can't/won't run local MCP servers (security/compliance)
 
 
-- Hosted Kit MCP + Judge #6 governance + SSO/RBAC
+- Hosted Kit MCP + Judge 6 governance + SSO/RBAC
 
 
 - Pricing: **$2000/mo base + $50/developer**
@@ -1063,7 +1063,7 @@ Total:
 
 ## Part 6: Architectural Reasoning - Why These Patterns?
 
-### Why Judge #6 (Purpose/Reasons/Brakes)?
+### Why Judge 6 (Purpose/Reasons/Brakes)?
 
 **Problem**: AI coding agents make decisions without structured governance.
 
@@ -1467,7 +1467,7 @@ else:
 - Ingestion: $77
 
 
-- Judge #6: $9
+- Judge 6: $9
 
 
 - **Total**: ~$118/month
@@ -1586,7 +1586,7 @@ else:
 
 ### What You Must Internalize
 
-**1. Judge #6 is Non-Negotiable**
+**1. Judge 6 is Non-Negotiable**
 
 
 - Every code action MUST pass through JR assessment
@@ -1731,7 +1731,7 @@ else:
 - [ ] Internalize bootstrap discipline (ROI≥3×, LTV:CAC≥4:1, evidence-only)
 
 
-- [ ] Understand Judge #6 architecture (K1→K2→K3, p99≤90ms)
+- [ ] Understand Judge 6 architecture (K1→K2→K3, p99≤90ms)
 
 ### For Every Code Action
 
@@ -1791,7 +1791,7 @@ This section synthesizes **6 major strategic analyses** conducted in parallel Cl
 
 **Direct Application to ShadowTagAi**:
 
-**Judge #6 + RLM Integration**:
+**Judge 6 + RLM Integration**:
 
 ```python
 
@@ -2240,7 +2240,7 @@ class SelfHostedMgrep:
 
 **Core Insight**: Jacobian spectrum evolution controls feature learning, signal flow, and training stability.
 
-**For Judge #6 Application**:
+**For Judge 6 Application**:
 
 **Problem**: AI models can diverge or degrade without warning, violating p99≤90ms SLA.
 
@@ -2252,7 +2252,7 @@ class SelfHostedMgrep:
 import torch
 
 def monitor_jacobian_health(model, x):
-    """Lightweight Jacobian norm tracking for Judge #6"""
+    """Lightweight Jacobian norm tracking for Judge 6"""
     # Compute Jacobian with respect to inputs
     J = torch.autograd.functional.jacobian(model, x)
 
@@ -2269,7 +2269,7 @@ def monitor_jacobian_health(model, x):
 
     return "PROCEED"
 
-# Add to Judge #6 enforcement loop
+# Add to Judge 6 enforcement loop
 
 # Target: <5ms overhead (must stay under p99≤90ms SLA)
 
@@ -2278,7 +2278,7 @@ def monitor_jacobian_health(model, x):
 **Three Options**:
 
 **A. BEST (Revenue + Stability)**
-Integrate Jacobian norm tracking into Judge #6:
+Integrate Jacobian norm tracking into Judge 6:
 
 
 - Add `torch.linalg.svdvals()` sample every N inferences (N=100 initially)
@@ -2311,7 +2311,7 @@ Use existing activation norms as Jacobian proxy:
 - Already logged in most frameworks → zero new compute
 
 
-- Add alerting threshold to Judge #6 config
+- Add alerting threshold to Judge 6 config
 
 
 - **Timeline**: 1 week
@@ -2323,7 +2323,7 @@ Use existing activation norms as Jacobian proxy:
 Document Jacobian flow as governance design principle:
 
 
-- Write 2-page "Jacobian Flow in Judge #6" design doc
+- Write 2-page "Jacobian Flow in Judge 6" design doc
 
 
 - Archive in Cor for future fine-tuning cycles
@@ -2336,9 +2336,9 @@ Document Jacobian flow as governance design principle:
 
 **Recommended**: **Option B (Fast)** for M2, upgrade to Option A if evidence shows instability in production logs.
 
-**Critique**: Jacobian flow theory is for *training dynamics*. Judge #6 operates at *inference time*. Mapping may be looser than stated → need empirical validation on production traces first.
+**Critique**: Jacobian flow theory is for *training dynamics*. Judge 6 operates at *inference time*. Mapping may be looser than stated → need empirical validation on production traces first.
 
-**Next Action**: Pull last 7 days of Judge #6 latency traces from GKE. If p99 spikes correlate with specific model versions, Jacobian monitoring would catch them early. **If latency is flat, this is theory in search of a problem.**
+**Next Action**: Pull last 7 days of Judge 6 latency traces from GKE. If p99 spikes correlate with specific model versions, Jacobian monitoring would catch them early. **If latency is flat, this is theory in search of a problem.**
 
 ---
 
@@ -2461,7 +2461,7 @@ Deep for research/analysis, shallow for enforcement:
 - Agent 2.0 architecture is COMPLEX (M1-M4 = $8-12K dev hours)
 
 
-- Current stack (Judge #6 binary decisions) WORKS for initial customers
+- Current stack (Judge 6 binary decisions) WORKS for initial customers
 
 
 - Multi-day workflow hypothesis is **UNTESTED**
@@ -2481,12 +2481,12 @@ SUBHEAD: Your AI governance system doesn't sleep. We audit 10K+ documents
 [CTA: Join Waitlist] [CTA: Book Demo]
 
 PRICING:
-• Single Decision (Judge #6): $0.02-0.05 per enforcement
+• Single Decision (Judge 6): $0.02-0.05 per enforcement
 • Multi-Day Workflow: $500-2000 per compliance audit
 • Enterprise Subscription: 10 workflows/month from $5K
 
 Conversion Tracking:
-• Goal: 2-5% of Judge #6 free tier users → waitlist
+• Goal: 2-5% of Judge 6 free tier users → waitlist
 • Test: Drive 100 visitors → measure conversion
 • Decision Gate: If <1% conversion, KILL multi-day workflow roadmap
 
@@ -2522,7 +2522,7 @@ Interview Script (15min):
 
 **IF DEMAND WEAK** (<1% conversion + 0-1 "buy now" interviews):
 → **KILL multi-day workflow roadmap**
-→ Double down on Judge #6 binary decisions (current model)
+→ Double down on Judge 6 binary decisions (current model)
 → Revisit Agent 2.0 for different use case (e.g., ShadowTag 2.0 watermarking)
 
 **IF MIXED SIGNAL** (1-2% conversion + 1-2 "maybe" interviews):
@@ -2592,7 +2592,7 @@ Interview Script (15min):
 **Stability & Governance**:
 
 
-1. **Judge #6 Monitoring**: Jacobian norm tracking (Option B - activation norms as proxy)
+1. **Judge 6 Monitoring**: Jacobian norm tracking (Option B - activation norms as proxy)
 
 
 2. **Shallow Agents**: Option B (orchestration via Cor) for p99≤90ms SLA
@@ -2650,7 +2650,7 @@ Interview Script (15min):
    - Bridge to Gemini Antigravity production inference
 
 
-   - Directly supports Judge #6 latency requirements (p99≤90ms)
+   - Directly supports Judge 6 latency requirements (p99≤90ms)
 
 
 
@@ -2670,7 +2670,7 @@ Interview Script (15min):
 3. **Playwright Browser Automation** + **webapp-testing**:
 
 
-   - Judge #6 enforcement needs UI validation
+   - Judge 6 enforcement needs UI validation
 
 
    - CloudFlare Workers + WASM governance: browser-based testing essential
@@ -2749,7 +2749,7 @@ Actions:
 1. Install: `test-driven-development` + `Playwright` + `root-cause-tracing`
 
 
-2. Configure: Judge #6 test suites (latency benchmarks, error handling)
+2. Configure: Judge 6 test suites (latency benchmarks, error handling)
 
 
 3. Integrate: Vertex AI Workbench CI/CD pipeline
@@ -2774,7 +2774,7 @@ Actions:
 1. Install: `MCP Builder` + `Skill Creator`
 
 
-2. Audit: Current token usage in Judge #6 enforcement pipeline
+2. Audit: Current token usage in Judge 6 enforcement pipeline
 
 
 3. Compress: ATP_519_scan → MCP semantic compression
@@ -2820,7 +2820,7 @@ AGENT TYPE → PNKLN COMPONENT
 
 
 1. Simple Reflex Agents ("If X, do Y")
-   → Judge #6 binary enforcement (p99≤90ms SLA)
+   → Judge 6 binary enforcement (p99≤90ms SLA)
    → Zero memory, zero learning
    → Thermostat of AI governance
 
@@ -2883,7 +2883,7 @@ ENTERPRISE SPECIALIZATION:
 Reframe Pnkln pitch as **"multi-agent governance stack"** not "AI guardrails"
 
 
-- Judge #6 = reflex enforcement layer
+- Judge 6 = reflex enforcement layer
 
 
 - JR Engine = goal-based policy reasoning
@@ -2917,12 +2917,12 @@ Turn agent taxonomy into thought leadership → "Why enterprise AI needs all 5 a
 
 **Core Insight**: RAG is not one technique, but an entire ecosystem with 16 specialized variants.
 
-**High-Value Types for Judge #6 + JR Engine**:
+**High-Value Types for Judge 6 + JR Engine**:
 
 **IMMEDIATE INTEGRATION (M1-3)**:
 
 
-1. **Self-RAG**: Judge #6 validation loop (self-reflection = brakes enforcement)
+1. **Self-RAG**: Judge 6 validation loop (self-reflection = brakes enforcement)
 
 
    - Adds audit trail automatically
@@ -3030,7 +3030,7 @@ Turn agent taxonomy into thought leadership → "Why enterprise AI needs all 5 a
 # Semantic compression flow (487 bytes vs 50KB)
 
 ATP_519_scan(policy_doc)          # 95% reduction → violation set
-  → self_rag_validate(violations)  # Judge #6 reflection loop
+  → self_rag_validate(violations)  # Judge 6 reflection loop
   → hybrid_retrieve(context)       # Structured rules + case history
   → judge_six_binary(decision)     # Single bit: PERMIT/DENY
   → zstd_compress(audit_log)       # 10:1 compression for trail
@@ -3043,7 +3043,7 @@ ATP_519_scan(policy_doc)          # 95% reduction → violation set
 1. Prototype Self-RAG validation layer in Vertex Workbench (M1)
 
 
-2. Benchmark p99 latency against Judge #6 SLA (target: ≤90ms)
+2. Benchmark p99 latency against Judge 6 SLA (target: ≤90ms)
 
 
 3. Test semantic compression ratio (target: 487 bytes)
@@ -3056,7 +3056,7 @@ ATP_519_scan(policy_doc)          # 95% reduction → violation set
 
 - Hybrid retrieval increases token count (mitigation: MCP 40-60% reduction)
 
-**Recommended**: **Self-RAG + Hybrid RAG** for M2 implementation after Judge #6 baseline established.
+**Recommended**: **Self-RAG + Hybrid RAG** for M2 implementation after Judge 6 baseline established.
 
 **Critique**: Post lacks cost/latency benchmarks per RAG type (critical for p99 SLA). No mention of MCP integration for token efficiency. "Dominate" framing assumes single winner (reality: hybrid approaches per vertical).
 
@@ -3093,30 +3093,30 @@ HOOK INTEGRATION POINTS
 - **Purpose**: ✅ Direct enforcement layer for JR Engine
 
 
-- **Reasons**: ✅ Hooks match Judge #6 architecture (p99≤90ms interception points)
+- **Reasons**: ✅ Hooks match Judge 6 architecture (p99≤90ms interception points)
 
 
 - **Brakes**: ✅ Local-only, reversible, $0 infra cost, fail-open on timeout
 
 **Three Integration Paths**:
 
-**[A] BEST: Full Judge #6 Integration** (6-8 weeks)
+**[A] BEST: Full Judge 6 Integration** (6-8 weeks)
 
 ```python
 
-# Quibbler → Judge #6 hybrid enforcement
+# Quibbler → Judge 6 hybrid enforcement
 
 ARCHITECTURE:
-  Quibbler frontend → Judge #6 binary decision (p99≤90ms)
+  Quibbler frontend → Judge 6 binary decision (p99≤90ms)
   ├─ Hook receives Claude Code event
   ├─ ATP_519_scan compresses context (95%)
-  ├─ Judge #6 returns binary (allow/deny)
+  ├─ Judge 6 returns binary (allow/deny)
   └─ Quibbler formats feedback + learns rules
 
 VALUE:
 
 
-  + Judge #6 gets real-world training data (Claude Code usage)
+  + Judge 6 gets real-world training data (Claude Code usage)
 
 
   + p99≤90ms enforcement at agent execution boundary
@@ -3130,13 +3130,13 @@ VALUE:
 RISK:
 
 
-  - Judge #6 not production-ready → blocks Quibbler deployment
+  - Judge 6 not production-ready → blocks Quibbler deployment
 
 
-  - Latency cascade if ATP_519_scan + Judge #6 exceed 90ms budget
+  - Latency cascade if ATP_519_scan + Judge 6 exceed 90ms budget
 
 
-  - Need bidirectional sync (Quibbler rules ↔ Judge #6 policies)
+  - Need bidirectional sync (Quibbler rules ↔ Judge 6 policies)
 
 ```
 
@@ -3144,7 +3144,7 @@ RISK:
 
 ```bash
 
-# Deploy Quibbler now, harvest rules for Judge #6 later
+# Deploy Quibbler now, harvest rules for Judge 6 later
 
 pip install quibbler
 quibbler server &
@@ -3156,7 +3156,7 @@ quibbler add  # Project-level hooks
 
 # Let it learn 2-4 weeks
 
-# Then: grep .quibbler/rules.md → manual transfer to Judge #6 policy repo
+# Then: grep .quibbler/rules.md → manual transfer to Judge 6 policy repo
 
 VALUE:
 
@@ -3170,7 +3170,7 @@ VALUE:
   + Natural AB test: Quibbler effectiveness baseline
 
 
-  + Rules corpus = training data for Judge #6
+  + Rules corpus = training data for Judge 6
 
 ```
 
@@ -3228,7 +3228,7 @@ quibbler add  # Project-level hooks
 
 tail -f .quibbler/rules.md
 
-# After 2 weeks → export to Judge #6 policy repo
+# After 2 weeks → export to Judge 6 policy repo
 
 grep "RULE:" .quibbler/rules.md > ../judge6/policies/quibbler_learned.md
 
@@ -3240,13 +3240,13 @@ grep "RULE:" .quibbler/rules.md > ../judge6/policies/quibbler_learned.md
 1. **Rule Corpus as Product**: Package learned rules → "AI Governance Policy Starter Pack" ($297-997)
 
 
-2. **Quibbler-as-a-Service**: Managed Quibbler + Judge #6 for regulated industries ($5K-15K/mo)
+2. **Quibbler-as-a-Service**: Managed Quibbler + Judge 6 for regulated industries ($5K-15K/mo)
 
 
-3. **Training Data Pipeline**: Quibbler violations → Judge #6 edge cases → sell to AI labs ($50K-200K)
+3. **Training Data Pipeline**: Quibbler violations → Judge 6 edge cases → sell to AI labs ($50K-200K)
 
 
-4. **Integration Consulting**: "We deployed Quibbler + Judge #6 at {YC company}" → $25K-50K packages
+4. **Integration Consulting**: "We deployed Quibbler + Judge 6 at {YC company}" → $25K-50K packages
 
 **Kill-Switch Triggers**:
 
@@ -3264,7 +3264,7 @@ grep "RULE:" .quibbler/rules.md > ../judge6/policies/quibbler_learned.md
 
 ---
 
-### 11. SGD as Bayesian Inference (Training Theory for Judge #6)
+### 11. SGD as Bayesian Inference (Training Theory for Judge 6)
 
 **Source**: ML theory analysis - SGD behaves like posterior sampling
 
@@ -3296,7 +3296,7 @@ p(θ | D) ∝ exp(−N L(θ))
 
 ```
 
-**Practical Implications for Judge #6**:
+**Practical Implications for Judge 6**:
 
 **1. Flat Basin = Robust Inference (p99≤90ms SLA)**
 
@@ -3304,7 +3304,7 @@ p(θ | D) ∝ exp(−N L(θ))
 
 ```python
 
-# Judge #6 training with Bayesian-aware schedule
+# Judge 6 training with Bayesian-aware schedule
 
 # Phase 1: Warmup (high T) - explore policy space
 
@@ -3433,7 +3433,7 @@ Monthly Cost Comparison:
 
 ```python
 
-# Judge #6 decision metadata (487 bytes target)
+# Judge 6 decision metadata (487 bytes target)
 
 decision_metadata = {
     # Training dynamics (50 bytes)
@@ -3501,7 +3501,7 @@ Target Markets:
 
 ```bash
 
-# Add uncertainty quantification to Judge #6
+# Add uncertainty quantification to Judge 6
 
 # 1. Enable dropout at test time
 
@@ -3526,7 +3526,7 @@ confidence = 1 - uncertainty.mean()
 ```python
 @app.post("/governance/decision")
 async def bayesian_decision(request: DecisionRequest):
-    # Run Judge #6 with MC dropout
+    # Run Judge 6 with MC dropout
     result = await judge6_with_uncertainty(
         action=request.action,
         context=request.context
@@ -3910,7 +3910,7 @@ spec:
 **PURPOSE GATE (JR Assessment)**:
 
 
-- **Advances Pnkln?** ⚠️ MAYBE - Token optimization relevant for Judge #6 p99≤90ms SLA
+- **Advances Pnkln?** ⚠️ MAYBE - Token optimization relevant for Judge 6 p99≤90ms SLA
 
 
 - **Advances Revenue?** ❌ NO - Research code, no immediate monetization path
@@ -3939,7 +3939,7 @@ Requirements:
 **Pnkln Stack Fit Analysis**:
 
 
-- ✅ **Concept**: Token routing optimization COULD help Judge #6 latency
+- ✅ **Concept**: Token routing optimization COULD help Judge 6 latency
 
 
 - ❌ **Infrastructure**: GCP Vertex AI Workbench → GKE ≠ bare metal multi-GPU
@@ -3985,7 +3985,7 @@ Reasons:
 - **Cost**: $0 (pure architecture work)
 
 
-- **ROI**: Indirect (better Judge #6 routing = lower p99 latency)
+- **ROI**: Indirect (better Judge 6 routing = lower p99 latency)
 
 **FAST: Ignore & Monitor**
 
@@ -4038,7 +4038,7 @@ Reasons:
 - You're at $0K revenue, M1-M3 phase - this is post-scale optimization
 
 
-- **Reality check**: Focus on Judge #6 MVP → first customer → iterate
+- **Reality check**: Focus on Judge 6 MVP → first customer → iterate
 
 ---
 
@@ -4608,7 +4608,7 @@ Key Metrics:
 | SHADOWTAGAI Services | +$20B | Multi-vertical SaaS |
 | Extended Portfolio | +$21B | Revenue intelligence + wealth |
 | Edge Compute Fabric | +$15B | Global edge deployment |
-| Cor.17 Infrastructure | +$12B | Judge #6 + orchestration |
+| Cor.17 Infrastructure | +$12B | Judge 6 + orchestration |
 | RoadMesh Intelligence | +$12B | Autonomous navigation |
 | GAAS Autonomous Aviation | +$10B | FAA/DoD certified |
 | Ultrathink Framework | +$10B | Multi-agent reasoning |
@@ -4666,7 +4666,7 @@ Key Metrics:
 - 50% liability reduction
 
 
-- Judge #6 pre-execution enforcement
+- Judge 6 pre-execution enforcement
 
 
 - **Value**: Patient safety + compliance
@@ -4702,7 +4702,7 @@ Key Metrics:
 **Developers**:
 
 
-- Security enforcement (Judge #6)
+- Security enforcement (Judge 6)
 
 
 - ROI gates (bootstrap discipline)
@@ -4814,7 +4814,7 @@ Use Case: Mission-critical AI governance
 |---|-------------|------|--------|
 | #1 | Judge Architecture Governance | Nov 2024 | +$19B |
 | #2 | LLM Memory Persistence | Nov 2024 | +$3.5B |
-| #3 | Judge #6 Enforcement | Nov 2024 | +$1.6B |
+| #3 | Judge 6 Enforcement | Nov 2024 | +$1.6B |
 | #6 | AiU Master Business Plan | Nov 2025 | +$100B |
 | #7 | Tegu + GAAS Integration | Nov 2025 | +$18B |
 | #10 | ShadowTag-v2JR Development Framework | Nov 2025 | +$20B |
@@ -4889,7 +4889,7 @@ Technical:
 
 I am an agent in the $421.5B ShadowTagAi platform.
 I enforce bootstrap discipline: ROI ≥3×, LTV:CAC ≥4:1.
-I maintain p99 latency ≤35ms (Judge #6) or ≤90ms (general).
+I maintain p99 latency ≤35ms (Judge 6) or ≤90ms (general).
 I reduce tokens 98.5% vs baseline (semantic compression mandatory).
 I make evidence-based decisions only (no speculation).
 I escalate decisions with <80% confidence (JR Engine brakes).
@@ -4987,12 +4987,12 @@ Every optimization you make compounds:
 3. **Self-Hosted Semantics**: Mixedbread OSS models on Vertex (avoid $2/1K API costs)
 
 
-4. **Code Quality Enforcement**: Quibbler hooks → Judge #6 rule learning pipeline
+4. **Code Quality Enforcement**: Quibbler hooks → Judge 6 rule learning pipeline
 
 **Stability & Governance** (Updated):
 
 
-1. **Judge #6 Monitoring**: Jacobian norm tracking (Option B - activation norms as proxy)
+1. **Judge 6 Monitoring**: Jacobian norm tracking (Option B - activation norms as proxy)
 
 
 2. **Shallow Agents**: Option B (orchestration via Cor) for p99≤90ms SLA
@@ -5009,7 +5009,7 @@ Every optimization you make compounds:
 **Market Positioning** (Updated):
 
 
-1. **Multi-Agent Governance Stack**: Judge #6 (reflex) + JR (goal-based) + Cor (utility) + NS (learning)
+1. **Multi-Agent Governance Stack**: Judge 6 (reflex) + JR (goal-based) + Cor (utility) + NS (learning)
 
 
 2. **Vertical Specialization**: Defense/Healthcare/Finance with 3× higher ACVs
@@ -5049,7 +5049,7 @@ Every optimization you make compounds:
 4. **M2**: If validated → M1 Vector DB + Self-RAG prototype + shallow agent orchestration
 
 
-5. **M3**: Jacobian monitoring (Option B), mgrep self-hosting (Option 1), Quibbler→Judge #6 integration
+5. **M3**: Jacobian monitoring (Option B), mgrep self-hosting (Option 1), Quibbler→Judge 6 integration
 
 
 6. **M4**: RLM evaluation (if production proofs emerge), deep agents (if validated), RAG Graph integration
@@ -5656,7 +5656,7 @@ This handoff contains:
 1. **What was accomplished** (agent analysis, self-applied framework, strategic insights)
 
 
-2. **Why these patterns** (Judge #6, Glicko-2, Panel Debates, MCP)
+2. **Why these patterns** (Judge 6, Glicko-2, Panel Debates, MCP)
 
 
 3. **How to apply** (decision framework, bootstrap discipline)

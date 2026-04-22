@@ -1,6 +1,6 @@
 #!/bin/bash
 # Pnkln GKE Inference Validation Sprint - Infrastructure Bootstrap
-# Purpose: Deploy GKE Autopilot cluster with GPU support for Judge #6 validation
+# Purpose: Deploy GKE Autopilot cluster with GPU support for Judge 6 validation
 # Target SLA: p99 ≤ 90ms for 3-layer hybrid enforcement
 # Budget: $5K cloud spend cap for 2-week validation sprint
 
@@ -286,7 +286,7 @@ print_summary() {
     log_info "Network: ${NETWORK_NAME}"
     echo ""
     log_info "Next Steps:"
-    echo "  1. Deploy Judge #6 components: kubectl apply -f k8s/judge/"
+    echo "  1. Deploy Judge 6 components: kubectl apply -f k8s/judge/"
     echo "  2. Deploy monitoring: kubectl apply -f k8s/monitoring/"
     echo "  3. Run validation workload: python src/workload-generator/synthetic_workload.py"
     echo "  4. Monitor SLA compliance: scripts/monitor-sla.sh"
@@ -304,7 +304,7 @@ print_summary() {
 
 main() {
     log_info "Starting Pnkln GKE Infrastructure Bootstrap..."
-    log_info "Target: Validation Sprint for Judge #6 (p99 ≤ 90ms SLA)"
+    log_info "Target: Validation Sprint for Judge 6 (p99 ≤ 90ms SLA)"
     echo ""
 
     check_prerequisites

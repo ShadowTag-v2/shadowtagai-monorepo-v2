@@ -1,4 +1,4 @@
-# Judge #6 Layer 3: Rules Engine (Deterministic Policy Enforcement)
+# Judge 6 Layer 3: Rules Engine (Deterministic Policy Enforcement)
 # Target: p99 <20ms via Rego/OPA
 # Allocation: 15% of inference requests (escalated from Layer 2, high-risk)
 # Use case: Final arbiter for ATP 5-19 critical violations

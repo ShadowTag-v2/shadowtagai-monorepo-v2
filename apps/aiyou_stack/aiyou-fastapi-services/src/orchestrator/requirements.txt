@@ -1,4 +1,4 @@
-# Pnkln Judge #6 Orchestrator Dependencies
+# Pnkln Judge 6 Orchestrator Dependencies
 
 # Google Cloud
 google-cloud-aiplatform==1.38.1

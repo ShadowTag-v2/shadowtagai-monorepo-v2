@@ -4,11 +4,11 @@
 
 ## Overview
 
-These scripts implement the **Gemini Ingestion Layer Analysis Framework** - an adaptation of the Judge #6 validation approach tailored for intelligence collection systems.
+These scripts implement the **Gemini Ingestion Layer Analysis Framework** - an adaptation of the Judge 6 validation approach tailored for intelligence collection systems.
 
-### Key Differences from Judge #6
+### Key Differences from Judge 6
 
-| Aspect | Judge #6 | Gemini Ingestion Layer |
+| Aspect | Judge 6 | Gemini Ingestion Layer |
 |--------|----------|------------------------|
 | **System Type** | Enforcement/Validation | Collection/Intelligence |
 | **Execution** | Real-time, per-request | Batch, nightly cron |
@@ -566,7 +566,7 @@ sed -i 's/500-1,000/5,000-10,000/' prepare_analysis_input.sh
 - [MASTER_AGENT_PROMPT_FRAMEWORK.md](../../MASTER_AGENT_PROMPT_FRAMEWORK.md) - Master agent framework
 
 
-- [Judge #6 Analysis](https://internal-docs/judge-6-analysis) - Original validation system (internal)
+- [Judge 6 Analysis](https://internal-docs/judge-6-analysis) - Original validation system (internal)
 
 ---
 

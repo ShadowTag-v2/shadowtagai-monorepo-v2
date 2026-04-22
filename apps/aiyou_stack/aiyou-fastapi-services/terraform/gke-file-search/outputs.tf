@@ -197,7 +197,7 @@ output "quickstart_guide" {
      gsutil cp itar_regulations.pdf ${module.gcs.bucket_urls["defense"]}/
 
   5. Monitor latency SLAs:
-     - Judge #6 p99: ≤${var.latency_sla.judge_p99}ms
+     - Judge 6 p99: ≤${var.latency_sla.judge_p99}ms
      - File Search p99: ≤${var.latency_sla.file_search_p99}ms
      - Total acceptable: ≤${var.latency_sla.total_acceptable}ms
 

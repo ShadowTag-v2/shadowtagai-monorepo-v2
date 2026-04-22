@@ -358,9 +358,9 @@ Pre-built dashboards for:
 6. **Real-Time Streaming**: Supplement nightly batch with real-time feeds
 7. **Automated Actions**: Trigger alerts/workflows on high-value items
 
-### Comparison to Judge #6
+### Comparison to Judge 6
 
-| Aspect              | Judge #6                | Gemini Ingestion Layer                |
+| Aspect              | Judge 6                | Gemini Ingestion Layer                |
 | ------------------- | ----------------------- | ------------------------------------- |
 | **Role**            | Enforcement/validation  | Intelligence collection               |
 | **Timing**          | Real-time (reactive)    | Batch (proactive)                     |
@@ -368,7 +368,7 @@ Pre-built dashboards for:
 | **Key Metrics**     | p99 ≤90ms, 98% coverage | ~45 min runtime, Items/day, cost/item |
 | **Integration**     | Calls 4 namespaces      | Called by 4 namespaces                |
 | **Quality Focus**   | FP/FN rates             | Relevance, timeliness, completeness   |
-| **Unique Features** | ATP 5-19, JR validation | Ethical crawling, tier classification |
+| **Unique Features** | Compliance Framework, JR validation | Ethical crawling, tier classification |
 | **Cost Model**      | API calls/validation    | Monthly operational (~$77)            |
 
 ### References

@@ -21,7 +21,7 @@ services:
   # ===========================================================================
   # HHT "HEADHUNTERS" - COMMAND & CONTROL (90 Agents)
   # Role: Superego & Orchestration Layer
-  # Commander: Gemini 3 Pro | SJA: Judge #6
+  # Commander: Gemini 3 Pro | SJA: Judge 6
   # ===========================================================================
   hht-command:
     image: us-central1-docker.pkg.dev/acquired-jet-478701-b3/n-autoresearch/Kosmos/BioAgents/server:gemini25flash
@@ -29,7 +29,7 @@ services:
     hostname: hht.n-autoresearch/Kosmos/BioAgents.internal
     ports:
       - "8600:8080"   # Main Command Interface
-      - "8601:9090"   # Judge #6 Audit Log
+      - "8601:9090"   # Judge 6 Audit Log
     environment:
       <<: *common-env
       ROLE: "COMMAND_AND_CONTROL"
@@ -46,7 +46,7 @@ services:
       COMMAND_AGENTS: "10"
       TACP_AGENTS: "5"
       MEDICAL_AGENTS: "5"
-      # Judge #6 Config
+      # Judge 6 Config
       JUDGE_ENABLED: "true"
       JUDGE_THRESHOLD: "0.75"
       JUDGE_POLICY_PATH: "/opt/policy"

@@ -20,7 +20,7 @@ def governance_score(
     user_region: str | None = None,
     transaction_value: float | None = None,
 ) -> dict[str, Any]:
-    """Judge #6 governance scoring for Perplexity requests.
+    """Judge 6 governance scoring for Perplexity requests.
 
     Args:
         request_type: Type of request (purchase, checkout, query, generate)
@@ -238,7 +238,7 @@ def get_mcp_tools() -> list[dict[str, Any]]:
     return [
         {
             "name": "perplexity_governance_score",
-            "description": "Score a Perplexity request for compliance using Judge #6",
+            "description": "Score a Perplexity request for compliance using Judge 6",
             "function": governance_score,
         },
         {

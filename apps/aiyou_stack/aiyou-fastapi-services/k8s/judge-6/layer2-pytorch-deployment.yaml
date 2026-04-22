@@ -1,4 +1,4 @@
-# Judge #6 Layer 2: PyTorch Fine-Tuned Policy Validation
+# Judge 6 Layer 2: PyTorch Fine-Tuned Policy Validation
 # Target: p99 <40ms via Vertex AI custom-trained model
 # Allocation: 35% of inference requests (escalated from Layer 1)
 # Use case: Complex ATP 5-19 compliance, multi-policy intersection

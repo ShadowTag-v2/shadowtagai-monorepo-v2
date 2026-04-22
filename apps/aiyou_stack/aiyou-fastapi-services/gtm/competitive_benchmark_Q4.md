@@ -5,7 +5,7 @@
 | Feature | PNKLN (ActiveShield) | Starlink (Swarm) | AWS Ground Station |
 | :--- | :--- | :--- | :--- |
 | **Core Focus** | Compute-on-Orbit + Security | Connectivity / Transport | Downlink / Data Pricing |
-| **Security** | Hardware Root of Trust (Judge #6) | Standard TLS | Shared Responsibility |
+| **Security** | Hardware Root of Trust (Judge 6) | Standard TLS | Shared Responsibility |
 | **Latency** | <50ms (On-board processing) | ~40-60ms (Bent pipe) | Dependent on Region |
 | **Compliance** | ITAR / FIPS 140-3 Native | Commercial / Gov variants | FedRAMP High |
 | **Compute** | **Edge-Native (Rust/Wasm)** | Minimal / Relay-only | Cloud-dependent |

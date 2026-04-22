@@ -1,5 +1,5 @@
 # apps/counselconduit/tests/test_judge6.py
-"""Tests for the Judge #6 governance pipeline."""
+"""Tests for the Judge 6 governance pipeline."""
 
 from apps.counselconduit.api.judge6 import RiskLevel, evaluate
 

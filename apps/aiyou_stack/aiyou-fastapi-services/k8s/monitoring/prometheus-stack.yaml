@@ -29,7 +29,7 @@ data:
 
     # Scrape configurations
     scrape_configs:
-    # Judge #6 Layer 1 (Gemini)
+    # Judge 6 Layer 1 (Gemini)
     - job_name: 'judge-layer1'
       kubernetes_sd_configs:
       - role: pod
@@ -49,7 +49,7 @@ data:
         regex: (.+):(.+)
         replacement: $1:9090
 
-    # Judge #6 Layer 2 (PyTorch)
+    # Judge 6 Layer 2 (PyTorch)
     - job_name: 'judge-layer2'
       kubernetes_sd_configs:
       - role: pod
@@ -61,7 +61,7 @@ data:
         action: keep
         regex: judge-layer2
 
-    # Judge #6 Layer 3 (Rules)
+    # Judge 6 Layer 3 (Rules)
     - job_name: 'judge-layer3'
       kubernetes_sd_configs:
       - role: pod
@@ -153,7 +153,7 @@ data:
     - name: judge_coverage
       interval: 30s
       rules:
-      # Judge #6 coverage below 98%
+      # Judge 6 coverage below 98%
       - alert: JudgeCoverageLow
         expr: (sum(rate(judge_requests_total[5m])) / sum(rate(http_requests_total[5m]))) < 0.98
         for: 5m
@@ -161,7 +161,7 @@ data:
           severity: critical
           component: governance
         annotations:
-          summary: "Judge #6 coverage below 98% SLA"
+          summary: "Judge 6 coverage below 98% SLA"
           description: "Current coverage: {{ $value | humanizePercentage }}"
 
       # Judge layer 1 failure rate high

@@ -72,7 +72,7 @@ class GeminiService:
         return f"[GEMINI] Response to: {prompt[:50]}..."
 
     async def run_audit(self, context: str) -> dict[str, Any]:
-        """Run an audit using Gemini (replacement for Judge #6 base logic)"""
+        """Run an audit using Gemini (replacement for Judge 6 base logic)"""
         prompt = f"Audit the following context for risks:\n{context}"
         response = await self.generate_content(prompt)
         return {"status": "audited", "analysis": response}

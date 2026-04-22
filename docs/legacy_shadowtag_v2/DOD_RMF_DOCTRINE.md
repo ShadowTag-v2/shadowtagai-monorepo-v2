@@ -14,7 +14,7 @@
 
 ## II. KEY ROLES
 
-- **AO (Authorizing Official):** Accepts risk. (Judge #6 acts as Digital AO).
+- **AO (Authorizing Official):** Accepts risk. (Judge 6 acts as Digital AO).
 - **ISSM:** Responsible for cybersecurity program.
 - **SCA:** Independent validator.
 

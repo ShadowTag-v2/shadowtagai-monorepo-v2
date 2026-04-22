@@ -189,7 +189,7 @@ shadowtagai/core/gemini_ingestion_layer.py
 
 ---
 
-## Judge #6 - Governance Pipeline
+## Judge 6 - Governance Pipeline
 
 3-kernel validation pipeline with p99 ≤90ms SLA.
 
@@ -201,7 +201,7 @@ shadowtagai/core/gemini_ingestion_layer.py
 │ JUDGE #6 THREE-KERNEL PIPELINE              │
 ├─────────────────────────────────────────────┤
 │                                             │
-│ KERNEL 1: ATP 5-19 SCAN                     │
+│ KERNEL 1: Compliance Framework SCAN                     │
 │ ├─ Model: Gemini Flash                      │
 │ ├─ Latency: 40ms p50                        │
 │ ├─ Input: 50KB raw context                  │
@@ -233,7 +233,7 @@ Deterministic risk assessment in <500μs.
 
 - **Reasons**: Defensible judgment with evidence
 
-- **Brakes**: ATP 5-19 risk assessment
+- **Brakes**: Compliance Framework risk assessment
 
 #### Probability Levels
 
@@ -346,7 +346,7 @@ Based on `router/src/openai-proxy.ts`:
 | Registry  | `us-central1-docker.pkg.dev/PROJECT_ID/shadowtagai-core/` |
 | Namespace | `autopilot-cluster-1`                                     |
 
-### Judge #6 Deployment
+### Judge 6 Deployment
 
 ```yaml
 # k8s/judge6_deployment.yaml
@@ -432,4 +432,4 @@ gcloud builds submit --config=cloudbuild.yaml --project=acquired-jet-478701-b3 .
 
 - Ingestion runs nightly via GKE CronJob
 
-- Judge #6 fast path skips Gemini for 80% of requests
+- Judge 6 fast path skips Gemini for 80% of requests

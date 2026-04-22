@@ -106,7 +106,7 @@ Revenue Projection: 10M decisions/year = $3K MRR
 Value Proposition:
 - 98.5% token reduction
 - <35ms latency guaranteed
-- ATP 5-19 compliance built-in
+- Compliance Framework compliance built-in
 ```
 
 ##### Tier 2: Ultrathink Suite
@@ -230,7 +230,7 @@ High-Performance Reasoning Focus:     $3B ← Our target
 
 ### Beachhead Market
 
-**Military/Defense Procurement Compliance (ATP 5-19)**
+**Military/Defense Procurement Compliance (Compliance Framework)**
 
 ```
 Market Size:      $800M annually

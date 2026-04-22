@@ -1,5 +1,5 @@
 """Query Handler with File Search Integration
-Orchestrates parallel execution of file search and Judge #6 enforcement
+Orchestrates parallel execution of file search and Judge 6 enforcement
 """
 
 import asyncio
@@ -34,12 +34,12 @@ class PolicyContext:
 
 
 class QueryHandler:
-    """Handles query processing with integrated file search and Judge #6
+    """Handles query processing with integrated file search and Judge 6
 
     Architecture:
-    1. Parallel execution: File search + Judge #6 Layer 1 (Gemini)
+    1. Parallel execution: File search + Judge 6 Layer 1 (Gemini)
     2. Merge contexts for enhanced enforcement
-    3. Sequential execution: Judge #6 Layers 2+3 (PyTorch + Rules)
+    3. Sequential execution: Judge 6 Layers 2+3 (PyTorch + Rules)
     """
 
     def __init__(self, corpus_manager: CorpusManager | None = None):
@@ -164,9 +164,9 @@ class QueryHandler:
             raise
 
     async def judge_gemini_layer1(self, query: str) -> dict:
-        """Execute Judge #6 Layer 1 (Gemini fine-tuned model)
+        """Execute Judge 6 Layer 1 (Gemini fine-tuned model)
 
-        This is a placeholder for your actual Judge #6 Layer 1 implementation.
+        This is a placeholder for your actual Judge 6 Layer 1 implementation.
         Replace with real ATP 5-19 compliance checks.
 
         Args:
@@ -178,7 +178,7 @@ class QueryHandler:
         """
         start_time = time.time()
 
-        # TODO: Replace with actual Judge #6 Layer 1 implementation
+        # TODO: Replace with actual Judge 6 Layer 1 implementation
         # This should call your fine-tuned Gemini model for ATP 5-19 checks
         try:
             # Placeholder assessment
@@ -206,7 +206,7 @@ class QueryHandler:
             raise
 
     async def judge_hybrid_enforce(self, enhanced_context: dict) -> dict:
-        """Execute Judge #6 Layers 2+3 sequentially (deterministic)
+        """Execute Judge 6 Layers 2+3 sequentially (deterministic)
 
         Args:
             enhanced_context: Merged context from file search and Layer 1
@@ -217,7 +217,7 @@ class QueryHandler:
         """
         start_time = time.time()
 
-        # TODO: Replace with actual Judge #6 Layers 2+3 implementation
+        # TODO: Replace with actual Judge 6 Layers 2+3 implementation
         # Layer 2: PyTorch model (~30ms)
         # Layer 3: Rules engine (~20ms)
 
@@ -255,11 +255,11 @@ class QueryHandler:
         vertical: str,
         corpus_name: str | None = None,
     ) -> dict:
-        """Process query with file search and Judge #6 enforcement
+        """Process query with file search and Judge 6 enforcement
 
-        Step 1: Parallel execution - File search + Judge #6 Layer 1
+        Step 1: Parallel execution - File search + Judge 6 Layer 1
         Step 2: Merge contexts
-        Step 3: Sequential execution - Judge #6 Layers 2+3
+        Step 3: Sequential execution - Judge 6 Layers 2+3
 
         Args:
             user_query: User's query
@@ -302,7 +302,7 @@ class QueryHandler:
                 "layer1_risk_level": judge_layer1["risk_level"],
             }
 
-            # Step 3: Judge #6 Layers 2+3 (sequential, deterministic)
+            # Step 3: Judge 6 Layers 2+3 (sequential, deterministic)
             enforcement_decision = await self.judge_hybrid_enforce(enhanced_context)
 
             # Compile final response

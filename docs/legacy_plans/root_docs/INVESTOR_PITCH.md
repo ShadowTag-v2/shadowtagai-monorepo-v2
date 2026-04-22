@@ -58,7 +58,7 @@ Latency: 35ms | Cost: $0.0003
 - Multi-agent orchestration: $12B subset
 - **Our Focus**: $3B high-performance reasoning market
 
-**Beachhead**: Military/defense procurement compliance (ATP 5-19)
+**Beachhead**: Military/defense procurement compliance (Compliance Framework)
 
 - Market Size: $800M annually
 - Pain Point: Manual review takes 48+ hours
@@ -182,7 +182,7 @@ Latency: 35ms | Cost: $0.0003
 
 ### Phase 1: Beachhead (Months 1-6)
 
-**Target**: Defense contractors using ATP 5-19
+**Target**: Defense contractors using Compliance Framework
 
 - Marketing: Direct sales to procurement teams
 - Sales Cycle: 30-60 days (pilot → production)
@@ -262,7 +262,7 @@ Latency: 35ms | Cost: $0.0003
 
 ### 1. Military Procurement Compliance
 
-**Problem**: Manual ATP 5-19 review takes 48 hours
+**Problem**: Manual Compliance Framework review takes 48 hours
 **Solution**: Automated compliance check in 35ms
 **Value**: $2M saved per battalion annually
 

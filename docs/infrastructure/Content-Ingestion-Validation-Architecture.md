@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-This document establishes ShadowTag's content ingestion and validation architecture by adapting proven patterns from the **PNKLN Core Stack™**, specifically the **Gemini Ingestion Layer** (proactive intelligence collection) and **Judge #6** (reactive content validation/enforcement). These complementary systems form the foundation of ShadowTag's content ecosystem, ensuring ethical sourcing, quality curation, and brand-safe delivery.
+This document establishes ShadowTag's content ingestion and validation architecture by adapting proven patterns from the **PNKLN Core Stack™**, specifically the **Gemini Ingestion Layer** (proactive intelligence collection) and **Judge 6** (reactive content validation/enforcement). These complementary systems form the foundation of ShadowTag's content ecosystem, ensuring ethical sourcing, quality curation, and brand-safe delivery.
 
 ### Strategic Alignment
 
@@ -20,7 +20,7 @@ This document establishes ShadowTag's content ingestion and validation architect
 1. **Proven Architecture** - Battle-tested patterns for intelligence pipelines adapted to video content
 2. **Ethical-First Design** - Crawling compliance (robots.txt, rate limiting) aligns with EU AI Act/DSA requirements
 3. **Quality Gating** - Multi-tier classification ensures high-value content reaches users
-4. **ATP 5-19 Integration** - After-Action Review framework already core to ShadowTag doctrine
+4. **Compliance Framework Integration** - After-Action Review framework already core to ShadowTag doctrine
 5. **Scalability** - GKE-based architecture supports growth to VLOP scale (45M+ EU users)
 
 **Architectural Philosophy:** Collection + Validation as complementary layers, not competing systems.
@@ -31,7 +31,7 @@ This document establishes ShadowTag's content ingestion and validation architect
 
 ### 1.1 The Two Core Systems
 
-| Aspect                    | Gemini Ingestion Layer (Collection)   | Judge #6 (Validation)               |
+| Aspect                    | Gemini Ingestion Layer (Collection)   | Judge 6 (Validation)               |
 | ------------------------- | ------------------------------------- | ----------------------------------- |
 | **Role**                  | Proactive intelligence collector      | Reactive content validator          |
 | **Function**              | Discovery, crawling, acquisition      | Enforcement, moderation, safety     |
@@ -39,7 +39,7 @@ This document establishes ShadowTag's content ingestion and validation architect
 | **Architecture**          | GKE CronJob Multi-Container           | Hybrid Gemini+PyTorch real-time     |
 | **Key Metrics**           | Items/Day, Sources, Cost/Item         | Latency (p99 ≤90ms), FP/FN Rates    |
 | **Integration**           | Called by services (foundational)     | Calls services in 4 namespaces      |
-| **Unique Features**       | Ethical crawling, Tier classification | ATP 5-19, JR validation, blocking   |
+| **Unique Features**       | Ethical crawling, Tier classification | Compliance Framework, JR validation, blocking   |
 | **Cost Model**            | Monthly operational (~$77)            | Per-API-call validation             |
 | **Quality Focus**         | Relevance, Timeliness, Completeness   | False Positive/Negative rates       |
 | **Performance Target**    | ~45 min/night runtime                 | p99 ≤90ms response time             |
@@ -53,7 +53,7 @@ This document establishes ShadowTag's content ingestion and validation architect
 - **Purpose:** Discover emerging creators, trending topics, viral moments for recommendation seeding
 - **Output:** Content candidates for curation + creator outreach
 
-**Judge #6 → ShadowTag Content Safety Validator**
+**Judge 6 → ShadowTag Content Safety Validator**
 
 - **Trigger:** User uploads, flagged content, automated scans
 - **Purpose:** Brand safety, legal compliance, policy enforcement
@@ -87,11 +87,11 @@ This document establishes ShadowTag's content ingestion and validation architect
                        │ Curated Content
                        ▼
         ┌──────────────────────────────────────────┐
-        │   Judge #6 Validator (Real-Time)         │
+        │   Judge 6 Validator (Real-Time)         │
         │   ────────────────────────────          │
         │   • Brand safety check                  │
         │   • Policy compliance                   │
-        │   • ATP 5-19 logging                    │
+        │   • Compliance Framework logging                    │
         │   • YRM risk scoring                    │
         └──────────────┬───────────────────────────┘
                        │ Approved Content
@@ -230,7 +230,7 @@ ethical_compliance_checks:
   - Homepage featured content
   - New user onboarding recommendations
   - Advertiser brand-safe inventory
-- **SLA:** 100% Judge #6 validation before publication
+- **SLA:** 100% Judge 6 validation before publication
 
 **Tier 2: Standard Content (Target: 50% of daily intake)**
 
@@ -243,7 +243,7 @@ ethical_compliance_checks:
   - Discovery feeds
   - Niche interest recommendations
   - Creator growth pipeline
-- **SLA:** Sampled Judge #6 validation (25% coverage)
+- **SLA:** Sampled Judge 6 validation (25% coverage)
 
 **Tier 3: Exploration Content (Target: 30% of daily intake)**
 
@@ -256,7 +256,7 @@ ethical_compliance_checks:
   - Experimental discovery
   - Long-tail content diversity
   - Creator scouting
-- **SLA:** On-demand validation (user reports trigger Judge #6)
+- **SLA:** On-demand validation (user reports trigger Judge 6)
 
 **Tier Distribution Monitoring:**
 
@@ -386,7 +386,7 @@ monthly_operational_costs:
 
 ---
 
-## 3. Judge #6: Content Safety Validator
+## 3. Judge 6: Content Safety Validator
 
 ### 3.1 Architecture: Hybrid Gemini+PyTorch Real-Time
 
@@ -424,11 +424,11 @@ monthly_operational_costs:
 | **Accuracy**      | 92%          | 97%                     | 99.5%          |
 | **Cost/Decision** | $0.0001      | $0.003                  | $0.15          |
 
-### 3.2 ATP 5-19 Integration: After-Action Review
+### 3.2 Compliance Framework Integration: After-Action Review
 
-**Judge #6 → ATP 5-19 Feedback Loop:**
+**Judge 6 → Compliance Framework Feedback Loop:**
 
-Every validation decision feeds into ShadowTag's ATP 5-19 (After-Action Review) framework:
+Every validation decision feeds into ShadowTag's Compliance Framework (After-Action Review) framework:
 
 1. **Decision Logging (Immutable Audit Trail)**
 
@@ -457,7 +457,7 @@ Every validation decision feeds into ShadowTag's ATP 5-19 (After-Action Review) 
    - Emerging content types (e.g., AI-generated deepfakes) → add new detection models
    - Policy drift → quarterly review of enforcement guidelines
 
-**AAR Metrics for Judge #6:**
+**AAR Metrics for Judge 6:**
 
 - **False Positive Rate:** <2% (target: user appeals upheld / total blocks)
 - **False Negative Rate:** <0.5% (target: viral harmful content missed / total viral)
@@ -484,7 +484,7 @@ Every validation decision feeds into ShadowTag's ATP 5-19 (After-Action Review) 
 **Tier 3 Content: On-Demand Only**
 
 - No pre-publication validation (too high volume, too low reach)
-- User reports trigger Judge #6
+- User reports trigger Judge 6
 - If promoted to Tier 2, retroactive validation
 
 **Confidence Thresholds (Context-Aware):**
@@ -500,7 +500,7 @@ Every validation decision feeds into ShadowTag's ATP 5-19 (After-Action Review) 
 
 ### 3.4 YRM Integration: Risk Scoring
 
-**Every Judge #6 decision includes a ShadowTag Risk Management (YRM) score:**
+**Every Judge 6 decision includes a ShadowTag Risk Management (YRM) score:**
 
 ```yaml
 yrm_risk_scoring:
@@ -568,7 +568,7 @@ yrm_risk_scoring:
 - Too high → Over-moderation, chilling effect on creators
 - Too low → Under-moderation, brand safety risk
 
-**Calibration Process (ATP 5-19 AAR):**
+**Calibration Process (Compliance Framework AAR):**
 
 - Monthly review of block rate trends
 - Quarterly adjustment of model thresholds
@@ -609,11 +609,11 @@ yrm_risk_scoring:
 ┌──────────────────────────────────────────────────────────────┐
 │ 3. VALIDATION PHASE (Real-Time)                              │
 └──────────────────────────────────────────────────────────────┘
-   Judge #6 validates content (PyTorch + Gemini hybrid)
+   Judge 6 validates content (PyTorch + Gemini hybrid)
    │
    ├─> Brand safety checks (NSFW, violence, etc.)
    ├─> Policy compliance (YRM risk scoring)
-   ├─> ATP 5-19 decision logging
+   ├─> Compliance Framework decision logging
    └─> Human escalation if confidence <70%
    │
    ▼
@@ -629,7 +629,7 @@ yrm_risk_scoring:
    └─> Transparency: Recommendation parameters disclosed
    │
    ▼
-   Output: User engagement → ATP 5-19 feedback loop
+   Output: User engagement → Compliance Framework feedback loop
 ```
 
 ### 4.2 Namespace Architecture (4-Namespace Integration)
@@ -640,7 +640,7 @@ yrm_risk_scoring:
    - Called by: Scheduler (CronJob), Manual triggers (ops team)
    - Calls: External APIs (YouTube, Twitter, etc.), `storage-ns` (write to DB)
 
-2. **`validation-ns`** (Judge #6)
+2. **`validation-ns`** (Judge 6)
    - Called by: `ingestion-ns` (Tier 1 pre-validation), `upload-ns` (user uploads), `moderation-ns` (user reports)
    - Calls: `storage-ns` (read content, write decisions), `ml-models-ns` (PyTorch/Gemini inference), `notifications-ns` (creator alerts)
 
@@ -650,7 +650,7 @@ yrm_risk_scoring:
 
 4. **`operations-ns`** (Ops Tools)
    - Called by: Internal dashboards, alerting systems
-   - Calls: All namespaces (metrics collection), `atp5-19-ns` (AAR workflows)
+   - Calls: All namespaces (metrics collection), `compliance-framework-ns` (AAR workflows)
 
 **Cross-Namespace Communication:**
 
@@ -681,7 +681,7 @@ yrm_risk_scoring:
 **Cascading Failure Prevention:**
 
 - Circuit breakers on all external APIs (YouTube, Twitter, Gemini)
-- Rate limiting on Judge #6 to prevent overload
+- Rate limiting on Judge 6 to prevent overload
 - Graceful degradation: If validation unavailable, default to "pending review" (safe default)
 
 ---
@@ -715,14 +715,14 @@ yrm_risk_scoring:
 | **Block rate (overall)**  | 5-8%          | N/A     | 🔴 NOT STARTED |
 | **Human escalation rate** | 5-10%         | N/A     | 🔴 NOT STARTED |
 | **YRM risk accuracy**     | >90%          | N/A     | 🔴 NOT STARTED |
-| **ATP 5-19 AAR closure**  | <7 days       | N/A     | 🔴 NOT STARTED |
+| **Compliance Framework AAR closure**  | <7 days       | N/A     | 🔴 NOT STARTED |
 
 ### 5.3 End-to-End Quality Metrics
 
 | Metric                            | Target          | Notes                                            |
 | --------------------------------- | --------------- | ------------------------------------------------ |
 | **Ingestion → Publication time**  | <48hrs (Tier 1) | From discovery to live on platform               |
-| **User report → Resolution time** | <24hrs (p95)    | Judge #6 validation + human review               |
+| **User report → Resolution time** | <24hrs (p95)    | Judge 6 validation + human review               |
 | **Harmful content escape rate**   | <0.1%           | Viral content (>100K views) that violates policy |
 | **Creator appeal success rate**   | 10-20%          | Healthy calibration (not 0%, not >30%)           |
 | **Recommendation relevance**      | >75% CTR        | From ingested content                            |
@@ -743,13 +743,13 @@ yrm_risk_scoring:
 - [ ] AM Briefing generator
 - [ ] Cost monitoring dashboard
 
-**Judge #6:**
+**Judge 6:**
 
 - [x] Architecture design (this document)
 - [ ] PyTorch model deployment (NSFW, violence detection)
 - [ ] Gemini 2.0 Pro integration (hybrid reasoning)
 - [ ] YRM risk scoring module
-- [ ] ATP 5-19 logging infrastructure
+- [ ] Compliance Framework logging infrastructure
 - [ ] Human review queue UI
 
 **Integration:**
@@ -866,7 +866,7 @@ yrm_risk_scoring:
 | ----------- | ------------------------------------------------------------ | -------------------------------------------- | ------------------------------------ | ---------------------------------- |
 | **YouTube** | Manual creator uploads + YouTube Shorts feed                 | Automated (black box) + human review         | Opaque                               | No public tier system              |
 | **TikTok**  | User uploads + FYP algorithm                                 | Automated (aggressive)                       | Opaque, scrutiny over data practices | Implicit (viral vs. suppressed)    |
-| **ShadowTag**   | **Proactive discovery (Gemini Ingestion) + creator uploads** | **Transparent hybrid (Judge #6 + ATP 5-19)** | **Public ethical crawler policy**    | **Explicit 3-tier (user-visible)** |
+| **ShadowTag**   | **Proactive discovery (Gemini Ingestion) + creator uploads** | **Transparent hybrid (Judge 6 + Compliance Framework)** | **Public ethical crawler policy**    | **Explicit 3-tier (user-visible)** |
 
 **ShadowTag Differentiators:**
 
@@ -899,7 +899,7 @@ This architecture document was designed at **IQ 160** per Cor.5 framework:
 
 - **Maximum foresight:** Anticipated VLOP-scale needs from day one
 - **Risk detection:** Identified failure modes and mitigations proactively
-- **Doctrine alignment:** Every design choice maps to YRM, ATP 5-19, EU AI Act/DSA
+- **Doctrine alignment:** Every design choice maps to YRM, Compliance Framework, EU AI Act/DSA
 
 **Cor.5 Review Checkpoint:** First user milestone to assess if ingestion/validation architecture meets real-world needs.
 
@@ -915,7 +915,7 @@ Ingestion and validation are core components of ShadowTag Network Sovereignty:
 
 - Ingestion/validation metrics published in ShadowTagNS compliance dashboard
 - Real-time status of all 4 namespaces
-- Incident response workflows tied to ATP 5-19
+- Incident response workflows tied to Compliance Framework
 
 ### 9.3 YRM (Risk Management)
 
@@ -935,11 +935,11 @@ Ingestion and validation are core components of ShadowTag Network Sovereignty:
 
 - Ethical compliance module reduces legal risk
 - Multi-tier system balances quality vs. coverage
-- ATP 5-19 feedback loop continuously improves models
+- Compliance Framework feedback loop continuously improves models
 
-### 9.4 ATP 5-19 (After-Action Review)
+### 9.4 Compliance Framework (After-Action Review)
 
-**ATP 5-19 as Continuous Improvement Engine:**
+**Compliance Framework as Continuous Improvement Engine:**
 
 Every major event triggers AAR:
 
@@ -953,7 +953,7 @@ Every major event triggers AAR:
 3. **Mitigation Implementation:** Code changes, policy updates, model retraining
 4. **Effectiveness Review:** 30-day post-incident check
 
-**ATP 5-19 Integration with Judge #6:**
+**Compliance Framework Integration with Judge 6:**
 
 - All validation decisions logged for AAR analysis
 - Monthly AAR review of block rate trends
@@ -973,7 +973,7 @@ Every major event triggers AAR:
 
 2. **Team Formation:**
    - [ ] Assign Ingestion Layer lead engineer
-   - [ ] Assign Judge #6 lead engineer
+   - [ ] Assign Judge 6 lead engineer
    - [ ] Hire/assign human reviewers (5 FTE minimum)
    - [ ] Establish editorial team for AM Briefing review
 
@@ -994,7 +994,7 @@ Every major event triggers AAR:
 - [x] Architecture design complete (this document)
 - [ ] GKE cluster provisioned
 - [ ] Crawler MVP (3 sources: YouTube, Twitter, NewsAPI)
-- [ ] Judge #6 MVP (PyTorch-only, no Gemini hybrid yet)
+- [ ] Judge 6 MVP (PyTorch-only, no Gemini hybrid yet)
 - [ ] AM Briefing v0.1 (manual generation, email-only)
 
 **60 Days:**
@@ -1003,12 +1003,12 @@ Every major event triggers AAR:
 - [ ] Gemini hybrid validation live
 - [ ] Tier classification automated
 - [ ] Human review queue operational
-- [ ] ATP 5-19 logging infrastructure
+- [ ] Compliance Framework logging infrastructure
 
 **90 Days:**
 
 - [ ] 50+ sources, 10K items/day target met
-- [ ] Judge #6 p99 latency ≤90ms achieved
+- [ ] Judge 6 p99 latency ≤90ms achieved
 - [ ] False positive/negative rates within targets
 - [ ] End-to-end integration tested (ingestion → recommendation)
 - [ ] Cost baseline confirmed ($77/month ingestion, ~$3K total)
@@ -1019,7 +1019,7 @@ Every major event triggers AAR:
 - [ ] EU AI Act compliance: Risk assessment for high-risk AI system complete
 - [ ] DSA compliance: Systemic risk mitigation documented
 - [ ] YRM: Ingestion and validation risks formally assessed
-- [ ] ATP 5-19: AAR workflows operational
+- [ ] Compliance Framework: AAR workflows operational
 - [ ] Monitoring/alerting: All KPIs dashboarded
 - [ ] Incident response: Runbooks complete, team trained
 - [ ] Scalability: Load testing at 10x expected volume
@@ -1040,7 +1040,7 @@ Every major event triggers AAR:
 - EU AI Act & DSA VLOP Compliance Framework
 - ShadowTag Network Sovereignty (ShadowTagNS)
 - ShadowTag Risk Management (YRM)
-- ATP 5-19 After-Action Review Framework
+- Compliance Framework After-Action Review Framework
 
 **Next Review:** 2025-12-15 (30-day checkpoint)
 
@@ -1048,4 +1048,4 @@ Every major event triggers AAR:
 
 **END OF ShadowTag CONTENT INGESTION & VALIDATION ARCHITECTURE**
 
-_Powered by PNKLN Core Stack™ Patterns: Gemini Ingestion Layer + Judge #6_
+_Powered by PNKLN Core Stack™ Patterns: Gemini Ingestion Layer + Judge 6_

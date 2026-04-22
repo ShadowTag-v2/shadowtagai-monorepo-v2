@@ -23,7 +23,7 @@ This directory contains comprehensive documentation for the ShadowTag-v2/SHADOWT
 
 - GKE-native deployment system (2,371 lines across 6 files)
 - 19 verticals valuation model ($77.5B - $124.5B)
-- Judge #6 hybrid enforcement architecture
+- Judge 6 hybrid enforcement architecture
 - Cognitive Stack v5 components (BDH, RoT, MoE-CL, CoDA/DLM)
 - ShadowTag v2 watermarking specifications
 - 36-month roadmap ($105.5M capital → $1.2B ARR → $25B EV)
@@ -89,7 +89,7 @@ This directory contains comprehensive documentation for the ShadowTag-v2/SHADOWT
 
 **Contents**:
 
-- Architecture comparison: Judge #6 (validation) vs Gemini Ingestion (collection)
+- Architecture comparison: Judge 6 (validation) vs Gemini Ingestion (collection)
 - Ethical compliance model (robots.txt, rate limiting, transparency)
 - Multi-source coverage analysis (YouTube, Twitter, news, academic, gov)
 - Tier classification metrics (Tier 1/2/3 distribution and scoring)
@@ -167,7 +167,7 @@ Implementation guides and tutorials:
 
 Formal documentation of significant technical decisions:
 
-- **`001-enforcement-first-architecture.md`** - Judge #6 + JR Engine design
+- **`001-enforcement-first-architecture.md`** - Judge 6 + JR Engine design
 - **`002-collection-enforcement-pipeline.md`** - Gemini Ingestion Layer integration
 
 ### Research & Analysis
@@ -284,7 +284,7 @@ founder: "Erik"
 role: "Founder/CEO"
 location: "Lakeport, California"
 starting_capital: "$0K (bootstrap discipline)"
-philosophy: "JR doctrine + ATP 5-19 risk management"
+philosophy: "JR doctrine + Compliance Framework risk management"
 ```
 
 ### Technical Stack
@@ -331,7 +331,7 @@ LAYER 1: Gemini Ingestion (Collection - $77/mo)
 ├─ Ethical compliance
 └─ Tier classification
 
-LAYER 2: Judge #6 + JR Engine (Enforcement - $1,000-1,600/mo)
+LAYER 2: Judge 6 + JR Engine (Enforcement - $1,000-1,600/mo)
 ├─ GDPR/CAN-SPAM/HIPAA validation
 ├─ Purpose/Reasons/Brakes framework
 └─ Audit trail generation
@@ -353,7 +353,7 @@ LAYER 3: Claude Agent Orchestration (Variable)
 ├─────────────────────────────────────────┤
 │ Layer 4: RoadMesh                       │ ← LiDAR, C-V2X, Digital ATC
 ├─────────────────────────────────────────┤
-│ Layer 3: Compliance-First SaaS          │ ← Judge #6, Gemini Ingestion
+│ Layer 3: Compliance-First SaaS          │ ← Judge 6, Gemini Ingestion
 ├─────────────────────────────────────────┤
 │ Layer 2: Inference & Cognitive Stack    │ ← BDH, RoT, MoE-CL, CoDA/DLM
 ├─────────────────────────────────────────┤

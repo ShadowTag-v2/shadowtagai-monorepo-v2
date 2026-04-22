@@ -101,7 +101,7 @@ Receives Stripe webhook events. Requires valid `Stripe-Signature` header.
 
 ## Governance
 
-All AI responses pass through the **Judge #6** governance pipeline before returning:
+All AI responses pass through the **Judge 6** governance pipeline before returning:
 
 | Risk Level | Score | Action |
 |-----------|-------|--------|

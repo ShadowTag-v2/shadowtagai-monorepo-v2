@@ -1,4 +1,4 @@
-"""Judge #6 Validation Service
+"""Judge 6 Validation Service
 Implements PNKLN Core Stack™ Logic & Validation (L) component
 Based on docs/cor8-shadowtag_v4-global-edge-fabric/03-technical-architecture/judge-six-validation.md
 """
@@ -218,7 +218,7 @@ class JRComplianceChecker:
 
 
 class ValidationService:
-    """Main Judge #6 validation service
+    """Main Judge 6 validation service
     Coordinates ATP 5-19 and JR compliance validation
     """
 

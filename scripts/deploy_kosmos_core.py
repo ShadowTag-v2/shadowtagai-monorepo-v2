@@ -9,7 +9,7 @@ def deploy_kosmos_core() -> None:
     Includes:
     - Doctrine (Knowledge Base)
     - Invisible Swarm (Audit Layer)
-    - Judge #6 (Governance Logic).
+    - Judge 6 (Governance Logic).
     """
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     output_filename = f"kosmos_core_transfer_{timestamp}.zip"
