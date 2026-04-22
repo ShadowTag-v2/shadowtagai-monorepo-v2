@@ -78,7 +78,7 @@ def list_all_files(service, mime_type: str | None = None):
     return files
 
 
-def export_google_doc(service, file_id: str, file_name: str) -> str:
+def export_google_doc(service, file_id: str, _file_name: str) -> str:
     """Export a Google Doc as plain text."""
     try:
         request = service.files().export_media(fileId=file_id, mimeType="text/plain")
@@ -88,7 +88,7 @@ def export_google_doc(service, file_id: str, file_name: str) -> str:
         return ""
 
 
-def download_pdf(service, file_id: str, file_name: str) -> bytes:
+def download_pdf(service, file_id: str, _file_name: str) -> bytes:
     """Download a PDF file."""
     try:
         request = service.files().get_media(fileId=file_id)

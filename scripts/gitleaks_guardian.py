@@ -41,9 +41,9 @@ import re
 import subprocess
 import sys
 from collections import defaultdict
-from datetime import datetime, timezone, UTC
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Optional
+
 
 # ============================================================================
 # Configuration
