@@ -1,5 +1,5 @@
 # apps/counselconduit/api/vent_mode.py
-"""Vent Mode — SSE Streaming Chat + Flat-Fee Intake Retainer.
+"""Vent Mode — SSE Streaming Chat + S.E.U. Emotional Architecture.
 
 The "Vent" is the first touchpoint: client pays a flat fee ($50-250)
 for a structured intake session where they can describe their problem
@@ -87,6 +87,15 @@ _VENT_SYSTEM_PROMPT = (
     "(5) Keep responses concise (2-3 paragraphs max)."
 )
 
+# S.E.U. safety directives for Vent Mode
+_VENT_SAFETY = (
+    "This is a privileged attorney-client communication. "
+    "Never log client PII to external services. "
+    "Never give legal advice — only identify issues and validate feelings. "
+    "If a client expresses suicidal ideation or imminent harm, "
+    "immediately provide the 988 Suicide & Crisis Lifeline number."
+)
+
 
 # ── SSE Streaming ─────────────────────────────────────────────────────
 
@@ -95,15 +104,46 @@ async def _stream_vent_response(
     message: str,
     session_id: str,
     history: list[dict[str, str]] | None = None,
+    message_index: int = 0,
 ) -> AsyncGenerator[str, None]:
     """Stream a Vent Mode response via LiteLLM as SSE events.
 
+    S.E.U. ordering: Safety → Empathy → Utility.
     Applies prompt repetition for non-reasoning models.
+    Includes check-in every 3rd response and warm close hooks.
     """
     model_id = "gemini-3.1-flash-lite-preview"
 
+    # Wrap system prompt in S.E.U. ordering
+    try:
+        try:
+            from apps.counselconduit.api.empathy_templates import (
+                get_empathy_opener,
+                get_checkin,
+                should_checkin,
+                wrap_seu_prompt,
+            )
+        except ImportError:
+            from api.empathy_templates import (  # type: ignore[no-redef]
+                get_empathy_opener,
+                get_checkin,
+                should_checkin,
+                wrap_seu_prompt,
+            )
+
+        include_checkin = should_checkin(message_index)
+        system_prompt = wrap_seu_prompt(
+            safety_instructions=_VENT_SAFETY,
+            utility_prompt=_VENT_SYSTEM_PROMPT,
+            session_id=session_id,
+            include_checkin=include_checkin,
+        )
+    except Exception as e:
+        logger.warning("S.E.U. wrapping failed: %s", e)
+        system_prompt = _VENT_SYSTEM_PROMPT
+
     # Build message history
-    messages = [{"role": "system", "content": _VENT_SYSTEM_PROMPT}]
+    messages = [{"role": "system", "content": system_prompt}]
     if history:
         messages.extend(history)
 
