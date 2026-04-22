@@ -34,8 +34,8 @@ try:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from core.ki_engine.activation import spread_activation
     from core.ki_engine.closure import compute_closure
-    from core.ki_engine.decay import rank_kis
-    from core.ki_engine.events import EventAction, append_event
+    from core.ki_engine.decay import rank_kis  # noqa: F811 — used by future phases
+    from core.ki_engine.events import EventAction, append_event  # noqa: F811 — used by future phases
     from core.ki_engine.promotion import detect_conflicts, promote_beliefs
     from core.ki_engine.schema import KIMetadata
     from core.ki_engine.views import generate_all_views
@@ -473,7 +473,7 @@ if __name__ == "__main__":
 
     # Phase 6: Archive to NotebookLM Master Brain (if available)
     try:
-        from notebooklm import NotebookLM  # vulture: used conditionally for archive
+        from notebooklm import NotebookLM  # noqa: F401 — used conditionally for archive
 
         # Master Brain ID from session config
         master_brain_id = os.environ.get(

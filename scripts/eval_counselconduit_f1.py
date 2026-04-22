@@ -96,7 +96,7 @@ def evaluate_query(
     query_text: str,
     expected_citations: list[str],
     predicted_citations: list[str],
-    dimension_weights: dict[str, float] | None = None,
+    _dimension_weights: dict[str, float] | None = None,
 ) -> CitationEvalResult:
     """Evaluate a single query's citations.
 
