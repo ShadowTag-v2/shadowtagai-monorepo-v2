@@ -166,7 +166,7 @@ def evaluate_task(
     observed_behaviors: list[str] | None = None,
     errors_encountered: list[str] | None = None,
     errors_recovered: list[str] | None = None,
-    dimension_weights: dict[str, float] | None = None,
+    _dimension_weights: dict[str, float] | None = None,
 ) -> TaskEvalResult:
     """Evaluate a single agent task execution.
 
