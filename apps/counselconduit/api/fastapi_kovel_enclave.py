@@ -14,6 +14,8 @@ Architecture:
     POST /onboarding/magic-link      → Magic link email authentication
     POST /kovel/attest               → Kovel attestation receipt (HMAC-SHA256)
     POST /vent                       → Vent Mode SSE streaming
+    POST /webhooks/github/pr-review  → Sovereign PR Review (M1 Max Swarm)
+    GET  /pr-review/status/{pr}      → Check review status
 
 Per U.S. v. Heppner (S.D.N.Y., Feb 2026):
     - All client queries are ephemeral (RAM-only)
@@ -78,6 +80,7 @@ try:
     from apps.counselconduit.api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware
     from apps.counselconduit.api.middleware.prompt_guard import PromptGuardMiddleware
     from apps.counselconduit.api.middleware.token_budget import TokenBudgetMiddleware
+    from apps.counselconduit.api.pr_review_webhook import router as pr_review_router
     from apps.counselconduit.api.provider_health import router as provider_health_router
     from apps.counselconduit.api.resend_webhook import router as resend_router
     from apps.counselconduit.api.sandbox_router import SandboxMiddleware
@@ -99,6 +102,7 @@ except ImportError:
     from api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware  # type: ignore[no-redef]
     from api.middleware.prompt_guard import PromptGuardMiddleware  # type: ignore[no-redef]
     from api.middleware.token_budget import TokenBudgetMiddleware  # type: ignore[no-redef]
+    from api.pr_review_webhook import router as pr_review_router  # type: ignore[no-redef]
     from api.provider_health import router as provider_health_router  # type: ignore[no-redef]
     from api.resend_webhook import router as resend_router  # type: ignore[no-redef]
     from api.sandbox_router import SandboxMiddleware  # type: ignore[no-redef]
@@ -211,6 +215,7 @@ app.include_router(connect_onboarding_router)
 app.include_router(dispatch_router)
 app.include_router(token_meter_router)
 app.include_router(provider_health_router)
+app.include_router(pr_review_router)
 
 # ── Static Files (admin dashboard) ────────────────────────────────────────
 import pathlib as _pathlib
@@ -223,7 +228,8 @@ if _static_dir.is_dir():
 
 
 # ── Root-level static files (ZAP WARN fix: 404 on /robots.txt, /favicon.ico) ─
-from starlette.responses import FileResponse as _FileResponse, JSONResponse
+from starlette.responses import FileResponse as _FileResponse
+from starlette.responses import JSONResponse
 
 
 @app.get("/robots.txt", include_in_schema=False)
