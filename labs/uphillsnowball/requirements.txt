@@ -1,18 +1,44 @@
-# UphillSnowball API Dependencies
-# Runtime: CPython 3.14.3 (monorepo .venv)
+# requirements.txt — pnkln V.OMEGA Dependencies
+#
+# Pinned for reproducible builds. No floating versions.
+# Google-native stack. Zero non-essential dependencies.
 
-# Server
-fastapi>=0.115.0
-uvicorn[standard]>=0.34.0
-sse-starlette>=2.2.0
-pydantic>=2.11.0
+# ── Temporal.io (Durable Execution) ────────────────────────────
+temporalio>=1.5.0,<2.0
 
-# Google Cloud
-google-genai>=1.14.0
-google-cloud-firestore>=2.21.0
+# ── Google Cloud (Canonical Infrastructure) ────────────────────
+google-cloud-tasks>=2.16.0,<3.0
+google-cloud-firestore>=2.16.0,<3.0
+google-cloud-bigquery>=3.25.0,<4.0
+google-cloud-secret-manager>=2.20.0,<3.0
 
-# RAG / Vector
-lancedb>=0.30.0
+# ── Redis (Wet Fleece Cache / OCC Whiteboard) ──────────────────
+redis>=5.0.0,<6.0
 
-# Utilities
-httpx>=0.28.0
+# ── HTTP (RadarSense / Sensor Pipelines) ───────────────────────
+requests>=2.31.0,<3.0
+
+# ── Scientific Computing (Epistemological Forensics) ───────────
+numpy>=1.26.0,<3.0
+scipy>=1.14.0,<2.0
+
+# ── Web Automation (Scrapling / Beam Ingest) ───────────────────
+scrapling>=0.2.9,<1.0
+playwright>=1.45,<2.0
+
+# ── Prometheus (Senses Pipeline Metrics / Item 18) ─────────────
+prometheus_client>=0.21.0,<1.0
+
+# ── HTTP Server (Worker Health Endpoint / Item 20) ─────────────
+aiohttp>=3.10.0,<4.0
+
+# ── Code Quality ───────────────────────────────────────────────
+ruff>=0.8.0
+vulture>=2.12
+pytest>=8.0,<9.0
+pytest-asyncio>=0.24,<1.0
+pytest-cov>=5.0,<6.0
+fakeredis>=2.25,<3.0
+
+# ── Apache Beam (Massive Parallel Ingest) ──────────────────────
+apache-beam[gcp]>=2.58.0,<3.0
