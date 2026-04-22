@@ -248,7 +248,7 @@ async def root():
     """Root endpoint — API discovery."""
     return {
         "service": "CounselConduit",
-        "version": "3.0.0",
+        "version": "3.3.2",
         "status": "operational",
         "docs": "/docs" if os.getenv("APP_ENV") == "development" else "disabled",
     }
@@ -420,14 +420,14 @@ async def enclave_health():
     return {
         "status": "operational",
         "service": "CounselConduit Kovel Enclave",
-        "version": "3.0.0",
+        "version": "3.3.2",
         "timestamp": time.time(),
     }
 
 
 @app.on_event("startup")
 async def startup():
-    logger.info("counselconduit_started", version="3.0.0")
+    logger.info("counselconduit_started", version="3.3.2")
 
 
 @app.on_event("shutdown")
