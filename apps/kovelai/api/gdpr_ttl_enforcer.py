@@ -18,7 +18,7 @@ Collection: brief_exports
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, UTC
 
 from pydantic import BaseModel, Field
 
@@ -45,7 +45,7 @@ class DeletionRecord(BaseModel):
     document_id: str
     firm_id: str
     deleted_at: str = Field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+        default_factory=lambda: datetime.now(UTC).isoformat()
     )
     reason: str = "GDPR Article 17 — 30-day TTL expiry"
     ttl_days: int = TTL_DAYS
@@ -85,13 +85,13 @@ async def enforce_brief_ttl(
     Returns:
         DeletionReport with scan/delete summary
     """
-    run_id = f"gdpr-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')}"
+    run_id = f"gdpr-{datetime.now(UTC).strftime('%Y%m%dT%H%M%S')}"
     report = DeletionReport(
         run_id=run_id,
-        started_at=datetime.now(timezone.utc).isoformat(),
+        started_at=datetime.now(UTC).isoformat(),
     )
 
-    cutoff = datetime.now(timezone.utc) - timedelta(days=TTL_DAYS)
+    cutoff = datetime.now(UTC) - timedelta(days=TTL_DAYS)
     logger.info(
         "GDPR TTL enforcement run %s — scanning for docs older than %s",
         run_id,
@@ -162,7 +162,7 @@ async def enforce_brief_ttl(
         logger.error(error_msg)
         report.errors.append(error_msg)
 
-    report.completed_at = datetime.now(timezone.utc).isoformat()
+    report.completed_at = datetime.now(UTC).isoformat()
 
     logger.info(
         "GDPR TTL run %s complete: scanned=%d, deleted=%d, retained=%d, errors=%d",

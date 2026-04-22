@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import io
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 
 logger = logging.getLogger(__name__)
 
@@ -186,7 +186,7 @@ def _markdown_to_html(markdown_content: str, session_id: str) -> str:
             extensions=["tables", "fenced_code", "nl2br"],
         )
 
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    now = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
 
     return f"""<!DOCTYPE html>
 <html lang="en" data-session-id="{session_id}" data-timestamp="{now}">

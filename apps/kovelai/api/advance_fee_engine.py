@@ -64,7 +64,7 @@ class StateAdvanceFeeRule(BaseModel):
         default=False,
         description="Whether the state allows deposit to operating account",
     )
-    operating_conditions: Optional[str] = Field(
+    operating_conditions: str | None = Field(
         None,
         description="Conditions under which operating deposit is allowed",
     )
@@ -80,7 +80,7 @@ class StateAdvanceFeeRule(BaseModel):
         ...,
         description="The state bar rule governing advance fees",
     )
-    notes: Optional[str] = None
+    notes: str | None = None
 
 
 # ═══════════════════════════════════════════════════════════
@@ -354,8 +354,8 @@ class FeeRoutingResult(BaseModel):
     disclosure_required: DisclosureRequirement
     refund_required: bool
     governing_rule: str
-    operating_conditions: Optional[str] = None
-    warning: Optional[str] = None
+    operating_conditions: str | None = None
+    warning: str | None = None
 
 
 def route_advance_fee(
@@ -427,6 +427,6 @@ def get_all_state_rules() -> list[StateAdvanceFeeRule]:
     return list(STATE_RULES.values())
 
 
-def get_state_rule(state_code: str) -> Optional[StateAdvanceFeeRule]:
+def get_state_rule(state_code: str) -> StateAdvanceFeeRule | None:
     """Get the rule for a specific state."""
     return STATE_RULES.get(state_code.upper())
