@@ -40,9 +40,7 @@ _PROVIDERS: dict[str, dict[str, str]] = {
 }
 
 # In-memory latency history (circular buffer, last 100 samples per provider)
-_LATENCY_HISTORY: dict[str, collections.deque] = {
-    name: collections.deque(maxlen=100) for name in _PROVIDERS
-}
+_LATENCY_HISTORY: dict[str, collections.deque] = {name: collections.deque(maxlen=100) for name in _PROVIDERS}
 
 
 def _calculate_percentiles(values: list[float]) -> dict[str, float | None]:
@@ -98,10 +96,7 @@ async def provider_health():
     Includes p50/p95/p99 latency percentiles from recent probes.
     Does NOT send authenticated requests — only probes endpoint reachability.
     """
-    tasks = [
-        _probe_provider(key, info["name"], info["probe"])
-        for key, info in _PROVIDERS.items()
-    ]
+    tasks = [_probe_provider(key, info["name"], info["probe"]) for key, info in _PROVIDERS.items()]
     results = await asyncio.gather(*tasks, return_exceptions=True)
 
     providers = []
@@ -121,4 +116,3 @@ async def provider_health():
         "providers": providers,
         "model_routing": os.getenv("DEFAULT_MODEL", "gemini-2.0-flash"),
     }
-

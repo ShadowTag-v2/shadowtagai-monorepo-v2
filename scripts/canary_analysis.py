@@ -48,7 +48,10 @@ def get_error_rate(
     def _query_metric(mql_filter: str) -> float:
         """Execute a Cloud Monitoring query and return total value."""
         cmd = [
-            "gcloud", "monitoring", "time-series", "list",
+            "gcloud",
+            "monitoring",
+            "time-series",
+            "list",
             f"--project={project}",
             f"--filter={mql_filter}",
             f"--interval-start-time={start_time}",

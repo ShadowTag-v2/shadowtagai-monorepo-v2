@@ -243,6 +243,7 @@ async def favicon():
         return _FileResponse(str(_favicon), media_type="image/x-icon")
     return JSONResponse({"detail": "Not found"}, status_code=404)
 
+
 @app.get("/")
 async def root():
     """Root endpoint — API discovery."""

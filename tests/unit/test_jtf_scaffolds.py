@@ -12,7 +12,7 @@ import sys
 import os
 
 # Ensure repo root is on path for direct src.headquarters imports
-_repo_root = os.path.join(os.path.dirname(__file__), '..', '..')
+_repo_root = os.path.join(os.path.dirname(__file__), "..", "..")
 if _repo_root not in sys.path:
     sys.path.insert(0, os.path.abspath(_repo_root))
 

@@ -106,7 +106,7 @@ def get_access_token(jwt_token: str, installation_id: int) -> str:
     return data["token"]
 
 
-def push_with_token(token: str, org: str, repo: str, branch: str | None = None) -> None:
+def push_with_token(token: str, org: str, repo: str, branch=None) -> None:
     """Push using SSH (primary) with HTTPS+ASKPASS fallback.
 
     Per DOCTRINE_EXTENDED.md Section X:
