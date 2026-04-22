@@ -41,7 +41,11 @@ import re
 import subprocess
 import sys
 from collections import defaultdict
-from datetime import UTC, datetime
+from datetime import datetime, timezone
+try:
+    from datetime import UTC
+except ImportError:
+    UTC = timezone.utc  # Python <3.11 fallback
 from pathlib import Path
 
 
