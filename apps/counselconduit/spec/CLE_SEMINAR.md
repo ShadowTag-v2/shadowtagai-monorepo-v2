@@ -1,152 +1,212 @@
-# CLE Seminar — "AI-Powered Client Intake Under Attorney-Client Privilege"
+# CLE Seminar Demo Script: "Heppner & The End of Privilege"
 
-> **Version**: v1.0 | **Format**: 1-hour CLE accredited seminar
-> **CLE Credits**: 1.0 hour (General + Ethics)
-> **Target Bars**: ABA, NYSBA, CalBar, TexBar, ISBA
-
----
-
-## Seminar Abstract
-
-This CLE seminar examines the intersection of artificial intelligence, attorney-client privilege, and ethical client intake in light of *United States v. Heppner* (S.D.N.Y., Feb. 10, 2026). Attendees will learn how AI-assisted client intake can be conducted under the Kovel doctrine, preserving privilege while dramatically improving client experience and firm efficiency.
+> **Title**: *U.S. v. Heppner and the End of Attorney-Client Privilege:
+> How to Shield Your Firm with the Kovel War Room*
+>
+> **Duration**: 60 minutes (1.0 CLE credit — Ethics)
+> **Speaker**: [Partner Name], CounselConduit Legal Innovation Team
+> **Audience**: Trial attorneys, litigation partners, solo practitioners
+> **Format**: Live demo + interactive Q&A
 
 ---
 
-## Learning Objectives
+## PRE-SHOW CHECKLIST (15 min before)
 
-By the end of this seminar, attendees will be able to:
-
-1. Explain how *Heppner* establishes privilege protection for AI-assisted legal communications
-2. Describe the Kovel attestation framework and its cryptographic implementation
-3. Identify ethical obligations when deploying AI in client-facing roles
-4. Evaluate the S.E.U. (Safety → Empathy → Utility) methodology for AI client intake
-5. Assess risk mitigation strategies for AI-generated legal guidance
+- [ ] CounselConduit staging environment loaded
+- [ ] War Room demo session pre-seeded with sample data
+- [ ] Projector showing KovelAI dashboard (dark mode)
+- [ ] Backup slides in Google Slides (offline PDF in case of WiFi failure)
+- [ ] Handout PDFs printed: 1-page "Heppner Compliance Checklist"
+- [ ] CLE attendance sign-in sheet ready
+- [ ] Demo client account: `demo-partner@clefirm.com`
+- [ ] Demo firm: "Sterling & Associates" (Tier 2: Growth AFA)
 
 ---
 
-## Session Outline (60 minutes)
+## PART 1: THE CRISIS (15 min)
 
-### Module 1: The Legal Landscape (15 min)
+### Slide 1: Title Card
+*"U.S. v. Heppner: The Ruling That Changed Everything"*
 
-#### 1.1 The Heppner Decision
-- *United States v. Heppner*, S.D.N.Y., Feb. 10, 2026
-- Holding: AI-assisted communications between attorney-retained AI services and clients may fall under attorney-client privilege when the Kovel framework is properly applied
-- Key requirements: attorney oversight, privilege attestation, session integrity
-- Distinguishing from *Upjohn* corporate privilege and *In re Grand Jury Subpoena* third-party doctrine
+### Slide 2: The Facts
+> "In February 2026, Judge Rakoff ruled that attorney-client privilege was
+> waived because the defendant used a public AI chatbot to discuss case
+> strategy. The DOJ seized the defendant's phone and read every prompt."
 
-#### 1.2 The Kovel Doctrine (Updated)
-- Original *United States v. Kovel*, 296 F.2d 918 (2d Cir. 1961) — accountants as privilege extension
-- Modern application: AI systems as "agents" of the attorney under Kovel
-- Requirements: (a) attorney retains the AI service, (b) communications are for legal advice, (c) attestation receipt proves the relationship
+**Key talking points:**
+- Heppner used public ChatGPT to ask about his criminal case
+- DOJ subpoenaed device → found prompts → privilege waived
+- The "closed system" vs "public system" distinction
+- Why existing AI tools (ChatGPT, Perplexity, CoPilot) fail the test
 
-#### 1.3 Ethical Rules Implicated
-- ABA Model Rule 1.1 (Competence) — duty to understand AI capabilities and limitations
-- ABA Model Rule 1.6 (Confidentiality) — AI must not leak privileged communications
-- ABA Model Rule 5.3 (Supervision of Nonlawyer Assistance) — attorney oversight of AI
-- ABA Formal Opinion 512 (Generative AI, 2024) — disclosure and competence requirements
+### Slide 3: The Malpractice Trap
+> "If your client uses public AI and you didn't warn them,
+> you may be liable for malpractice."
 
-### Module 2: Technical Architecture (15 min)
+- ALPS insurance now asks: "Do you have an AI use policy?"
+- Firms without policy = higher premiums (5-15% surcharge)
+- The "I didn't know" defense is dead post-Heppner
 
-#### 2.1 Privilege-Preserving AI Infrastructure
-- **Kovel Attestation Receipt**: HMAC-SHA256 cryptographic hash per session
-  - Proves: (a) attorney retained the service, (b) session occurred, (c) communications were for legal advice
-  - Stored immutably, exportable for litigation hold
-- **Dead-Man's Switch**: Ephemeral session protection
-  - Auto-logout after inactivity
-  - No persistent client-side storage
-  - Screen wipe on session end
-- **Privilege Metadata Chain**: session → transcript → attestation → export
+### Slide 4: NY SB 7263
+- Big Tech paralyzed from releasing "Law" models
+- UPL strict liability for substantive legal advice from chatbots
+- CounselConduit's dual-tier architecture solves this
 
-#### 2.2 Multi-Model Routing Under Privilege
-- Routing through Gemini, Claude, GPT, Grok, Perplexity
-- Each model interaction wrapped in privilege envelope
-- No model retains training data from privileged sessions
-- Judge 6 policy gate prevents privilege-breaking outputs
+---
 
-#### 2.3 Security Controls
-- End-to-end encryption (TLS 1.3 + Firestore at-rest encryption)
-- Tenant isolation (per-firm data namespace)
-- GDPR Article 15/17/20 compliance with 30-day TTL
-- Cloud Armor WAF (XSS + SQLi + rate limiting)
+## PART 2: LIVE DEMO — THE WAR ROOM (25 min)
 
-### Module 3: The S.E.U. Methodology (15 min)
+### Demo Flow Script
 
-#### 3.1 Why Empathy Comes Before Utility
-- Client psychological state during legal crisis
-- Research: emotional acknowledgment increases trust and disclosure
-- Practical impact: longer sessions = better intake = better case outcomes
+**[PRESENTER]**: "Let me show you exactly how CounselConduit solves Heppner.
+I'm going to play both the lawyer and the client."
 
-#### 3.2 The S.E.U. Framework
+#### Step 1: The Magic Link (2 min)
 ```
-Safety → Empathy → Utility
+DEMO ACTION: Log in as demo-partner@clefirm.com
+→ Dashboard shows "Sterling & Associates" 
+→ Click "Generate Client Magic Link"
+→ Copy the link: https://app.kovelai.com/intake/s/abc123
 ```
-1. **Safety**: "You're in the right place" — privilege badge, calm UI, no time pressure
-2. **Empathy**: "We understand this is stressful" — AI empathy acknowledger before every response
-3. **Utility**: "Here's what this means for you" — legal analysis in plain English, jargon footnoted
 
-#### 3.3 Vent Mode: The Emotional Release Valve
-- Client speaks unstructured grievances
-- AI validates emotionally while silently extracting legal entities
-- Attorney receives clean structured brief
-- Client satisfaction: NPS > 70 post-vent
+**[SAY]**: "This link is your Kovel directive in digital form. When
+the client clicks it, they see the KovelDirectiveGate — the same 
+legal framework Judge Rakoff identified as the safe harbor."
 
-#### 3.4 Ethical Guardrails
-- AI clearly identified as AI (no impersonation)
-- "How are you feeling?" check-in every 3rd response
-- Warm handoff to human attorney when complexity exceeds threshold
-- Session recaps framed as "what you now understand" (not legal advice)
+#### Step 2: Client Signs the Directive (2 min)
+```
+DEMO ACTION: Open Magic Link in incognito browser
+→ KovelDirectiveGate UI appears
+→ Client reads: "Your attorney has directed you to this system..."
+→ Client enters credit card ($25 triage fee)
+→ Stripe processes → S.E.U. token minted (show the 60-min countdown)
+```
 
-### Module 4: Live Demo + Q&A (15 min)
+**[SAY]**: "Two things just happened. First, the client paid you $25 upfront.
+Second, the system minted a Sandbox-Bound, Ephemeral, User-Billed token.
+This token dies in 60 minutes. If the FBI seizes this server, 
+there is literally nothing to decrypt."
 
-#### 4.1 Demo Walkthrough
-- Client intake flow: S.E.U. progression
-- Vent Mode in action
-- Kovel attestation receipt generation
-- Attorney dashboard view with transcript + summary
+#### Step 3: Client Enters Their Story (3 min)
+```
+DEMO ACTION: Type into the HeppnerEvaporatingChat:
+"I signed a contract with ABC Corp for $500,000 in consulting services.
+They paid the first two invoices but stopped paying in July 2025. 
+I have emails showing they acknowledged the debt. They now claim 
+the contract was never valid because it wasn't notarized."
+```
 
-#### 4.2 Q&A Topics (Prepared)
-- "Is the AI practicing law?" — No. It's intake and information, not advice.
-- "What if the AI gives wrong information?" — Judge 6 policy gate + attorney oversight
-- "How do I explain this to my malpractice carrier?" — Kovel attestation as evidence
-- "Can opposing counsel subpoena the AI transcripts?" — Privilege applies per Heppner
+**[SAY]**: "Notice the countdown timer. This text will crypto-evaporate
+from the client's device in 60 minutes. There is no device to seize,
+no history to subpoena."
+
+#### Step 4: War Room Pipeline Fires (5 min)
+```
+DEMO ACTION: Click "Begin War Room Analysis"
+→ Show the pipeline stages lighting up in real time:
+  1. ✅ Intake Extraction (3 sec)
+  2. ✅ OSINT Query Generation (5 sec)
+  3. ⏳ Kinematic Verb Audit (running...)
+```
+
+**[SAY]**: "This is the Murder Board. Seven stages of analysis
+running simultaneously across Gemini and Claude. The client
+sees a calming 'Your attorney is reviewing...' message.
+The lawyer sees this war room dashboard."
+
+#### Step 5: Show the Verb Matrix (5 min)
+```
+DEMO ACTION: Expand the KinematicVerbMatrix panel
+→ Show verb classifications:
+  - "signed" → Contractual (confidence: 0.95)
+  - "stopped paying" → Omissive (confidence: 0.91)
+  - "acknowledged" → Volitional (confidence: 0.88)
+  - "claim" → Fraudulent (confidence: 0.72)
+→ Show cause-of-action rollup: Breach of Contract (3 verbs), Fraud (1 verb)
+```
+
+**[SAY]**: "The Action Verb Auditor extracted every kinematic verb
+from the client's narrative and mapped them to causes of action.
+This is your case theory, built in 15 seconds."
+
+#### Step 6: Show the Brief (5 min)
+```
+DEMO ACTION: Click "View Attorney Brief"
+→ Show the 15-page brief with:
+  - Privilege header / watermark
+  - Executive Summary
+  - Timeline of Events
+  - Verb Analysis Matrix
+  - Legal Analysis with Citations
+  - Strategy Recommendations
+  - Kovel Attestation Receipt (HMAC-SHA256 hash)
+```
+
+**[SAY]**: "This brief landed directly in your Clio vault.
+The Kovel Attestation Receipt is a cryptographic proof that
+this communication was privileged. If opposing counsel ever
+challenges privilege, this receipt is your court-admissible evidence."
+
+#### Step 7: Show the Citation Panel (3 min)
+```
+DEMO ACTION: Expand CitationPanel
+→ Show Perplexity-style inline citations
+→ Show authority verification badges (✅ Verified, ⚠️ Needs Review)
+→ Click a citation to see full Westlaw reference
+```
 
 ---
 
-## Marketing Strategy
+## PART 3: Q&A + CLOSING (20 min)
 
-### CLE as Inbound Channel
+### Common Questions (Prepared Answers)
 
-| Metric | Target |
-|--------|--------|
-| Seminar attendees | 200+ per virtual session |
-| Lead conversion rate | 15–20% (attorney → trial signup) |
-| CLE partnerships | 5 state bar associations in Y1 |
-| Revenue per converted lead | $299–$999/mo recurring |
+**Q: "Is the Kovel attestation really court-admissible?"**
+> A: The attestation is a cryptographic hash proving the communication
+> occurred within a system meeting the Kovel doctrine requirements.
+> It's analogous to a notarized affidavit — verifiable evidence of
+> the privilege framework, not the content itself.
 
-### Distribution
-1. **State Bar CLE programs** — submit for accreditation in NY, CA, TX, IL, FL
-2. **Legal tech conferences** — Legaltech, ILTACON, ABA TECHSHOW
-3. **Webinar series** — monthly, recorded, on-demand CLE credit
-4. **Law school partnerships** — guest lectures at T14 law schools
+**Q: "What if my state bar hasn't addressed AI privilege?"**
+> A: CounselConduit defaults to ABA Formal Opinion 505 and the
+> most conservative interpretation. Our advance fee engine covers
+> all 50 states + DC.
 
-### Call to Action
-Every CLE session ends with:
-- Free 30-day trial of CounselConduit
-- Beta coupon: `3wseBY7Z` (50% off, 3 months)
-- Direct onboarding link to Stripe Connect attorney setup
+**Q: "Can I use this for criminal defense?"**
+> A: Yes, but with heightened S.E.U. protections. Criminal defense
+> sessions use shorter token windows (30 min) and additional
+> evaporating UI controls. The Heppner case was criminal.
+
+**Q: "What about conflicts of interest?"**
+> A: CounselConduit is a stateless router. We hold zero data.
+> Conflict checks remain with the firm's existing process.
+
+### Closing CTA
+
+**[SAY]**: "Every day you wait is another day a client uses
+public ChatGPT and destroys their privilege. Sign up for your
+Concierge Onboarding — 15 minutes, $499, and your firm is
+Heppner-compliant by this afternoon."
 
 ---
 
-## Faculty Bio Template
+## POST-CLE FOLLOW-UP
 
-**[Speaker Name]**, [Title], CounselConduit  
-[Speaker] is a [background] with expertise in legal technology, artificial intelligence, and attorney-client privilege. [He/She/They] will demonstrate how AI can transform client intake while strictly preserving the attorney-client relationship under the Kovel doctrine.
+1. Email all attendees the "Heppner Compliance Checklist" PDF
+2. Offer 30-day free trial (Growth AFA tier)
+3. Schedule 1:1 Concierge Onboarding for interested firms
+4. Send MCLE certificate within 48 hours
+5. Add to CounselConduit CLE alumni list for monthly webinars
 
 ---
 
-## Compliance Notes
+## HANDOUT: Heppner Compliance Checklist (1-Page)
 
-- All demo data is synthetic — no real client information used
-- AI is clearly identified as AI throughout the demo
-- No legal advice is given during the seminar
-- CLE credit subject to individual state bar approval
+- [ ] Written AI use policy distributed to all clients
+- [ ] Public AI warning clause in engagement letters
+- [ ] CounselConduit or equivalent closed-system AI portal deployed
+- [ ] Kovel directive language approved by malpractice insurer
+- [ ] Trust account routing verified per state bar rules
+- [ ] Staff trained on Magic Link distribution protocol
+- [ ] Evaporating UI tested for device seizure protection
+- [ ] CLE attestation for all attorney users (annual)

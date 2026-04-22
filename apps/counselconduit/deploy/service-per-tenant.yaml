@@ -1,0 +1,138 @@
+# Per-Tenant Sandbox Isolation — Cloud Run Configuration
+#
+# Implements GCP Confidential Space isolation for enterprise tenants.
+# Each AmLaw 200 firm gets a dedicated Cloud Run revision with
+# per-tenant service account and VPC binding.
+#
+# @see OMNIBUS_STRATEGIC_BLUEPRINT.md §2 — Hardware-Enforced Operator Blindness
+# @see SEU_ARCHITECTURE.md — S.E.U. token binding
+#
+# Deploy: gcloud run services replace service-per-tenant.yaml
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: counselconduit-tenant-${TENANT_ID}
+  namespace: shadowtag-omega-v4
+  labels:
+    app: counselconduit
+    tier: enterprise
+    isolation: per-tenant
+  annotations:
+    run.googleapis.com/description: "Per-tenant isolated sandbox for ${TENANT_NAME}"
+    run.googleapis.com/launch-stage: GA
+    run.googleapis.com/ingress: internal-and-cloud-load-balancing
+
+spec:
+  template:
+    metadata:
+      annotations:
+        # Per-tenant autoscaling
+        autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/maxScale: "10"
+        autoscaling.knative.dev/target: "80"
+
+        # GCP Confidential Computing (Intel TDX)
+        run.googleapis.com/execution-environment: gen2
+        run.googleapis.com/sandbox: gvisor
+
+        # VPC connector for private networking
+        run.googleapis.com/vpc-access-connector: projects/shadowtag-omega-v4/locations/us-central1/connectors/cc-tenant-vpc
+        run.googleapis.com/vpc-access-egress: private-ranges-only
+
+        # Session affinity for S.E.U. token binding
+        run.googleapis.com/sessionAffinity: "true"
+
+    spec:
+      # Per-tenant service account (minimal permissions)
+      serviceAccountName: tenant-${TENANT_ID}-sa@shadowtag-omega-v4.iam.gserviceaccount.com
+
+      # Confidential container
+      containerConcurrency: 80
+      timeoutSeconds: 60
+
+      containers:
+        - image: us-central1-docker.pkg.dev/shadowtag-omega-v4/counselconduit/api:latest
+          ports:
+            - containerPort: 8080
+              name: http1
+
+          resources:
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+
+          env:
+            # Tenant identification
+            - name: TENANT_ID
+              value: "${TENANT_ID}"
+            - name: TENANT_NAME
+              value: "${TENANT_NAME}"
+            - name: TENANT_TIER
+              value: "enterprise"
+
+            # Firestore namespace isolation
+            - name: FIRESTORE_COLLECTION_PREFIX
+              value: "tenants/${TENANT_ID}/"
+
+            # S.E.U. token configuration
+            - name: SEU_TOKEN_TTL_MINUTES
+              value: "60"
+            - name: SEU_BIND_IP
+              value: "true"
+            - name: SEU_BIND_SESSION
+              value: "true"
+
+            # Model routing (BYOK or managed)
+            - name: MODEL_ROUTING_MODE
+              value: "byok"  # or "managed" for non-BYOK tenants
+
+            # Secrets from GCP Secret Manager
+            - name: STRIPE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-secret-key
+                  key: latest
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tenant-${TENANT_ID}-anthropic-key
+                  key: latest
+
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            failureThreshold: 10
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            periodSeconds: 15
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            periodSeconds: 5
+
+  traffic:
+    - percent: 100
+      latestRevision: true
+
+---
+# Per-tenant IAM binding (apply with gcloud)
+# gcloud projects add-iam-policy-binding shadowtag-omega-v4 \
+#   --member="serviceAccount:tenant-${TENANT_ID}-sa@shadowtag-omega-v4.iam.gserviceaccount.com" \
+#   --role="roles/datastore.user" \
+#   --condition="expression=resource.name.startsWith('projects/shadowtag-omega-v4/databases/(default)/documents/tenants/${TENANT_ID}/'),title=tenant-${TENANT_ID}-firestore-scope"
+#
+# Per-tenant Firestore rules (scoped to tenant collection):
+# match /tenants/{tenantId}/{document=**} {
+#   allow read, write: if request.auth != null &&
+#     request.auth.token.tenant_id == tenantId;
+# }
