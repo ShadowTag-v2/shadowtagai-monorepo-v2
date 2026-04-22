@@ -1,0 +1,45 @@
+{
+  "name": "CounselConduit Orchestrator",
+  "description": "Privilege-preserving AI routing tier for law firms. Routes legal research, client intake, and billing queries to specialist agents under Kovel privilege protection.",
+  "url": "https://counselconduit-767252945109.us-central1.run.app",
+  "version": "3.2.0",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": true,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": ["bearer"],
+    "credentials": "Firebase Auth ID Token"
+  },
+  "skills": [
+    {
+      "id": "legal_research",
+      "name": "Legal Research",
+      "description": "Multi-model legal research with citation verification via 7-stage Oracle Studio pipeline."
+    },
+    {
+      "id": "client_intake",
+      "name": "Client Intake",
+      "description": "Structured client intake with S.E.U. emotional architecture (Safety → Empathy → Utility)."
+    },
+    {
+      "id": "billing_management",
+      "name": "Billing Management",
+      "description": "Stripe Connect subscription and payment management for law firm billing."
+    },
+    {
+      "id": "vent_mode",
+      "name": "Vent Mode",
+      "description": "Empathetic emotional support for clients during stressful legal proceedings."
+    },
+    {
+      "id": "document_analysis",
+      "name": "Document Analysis",
+      "description": "Legal document entity extraction, summarization, and timeline construction."
+    }
+  ],
+  "defaultInputModes": ["text"],
+  "defaultOutputModes": ["text"]
+}

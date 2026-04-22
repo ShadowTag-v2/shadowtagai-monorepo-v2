@@ -38,7 +38,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 ### counselconduit
 - Path: `apps/counselconduit`
 - Runtime: Cloud Run
-- Status: v3.2.0 LIVE, 30 endpoints
+- Status: v3.2.0 LIVE, 23 modules
 
 ### uphillsnowball
 - Path: `labs/uphillsnowball`

@@ -1,4 +1,4 @@
-# RISK_REGISTER — v10.0
+# RISK_REGISTER — v10.1
 
 > Operational risks tracked as part of the sovereign monorepo governance.
 > Reviewed on each version bump. Mitigations are enforced, not advisory.
@@ -186,3 +186,15 @@
 - **Status**: RESOLVED
 - **Description**: 20 Next.js build artifacts (`apps/kovelai/public/_next/`) were tracked in git, including JS chunks with source maps, CSS bundles, font files (woff2), and build manifests (`_buildManifest.js`, `_ssgManifest.js`). These leak internal build hashes, chunk fingerprints, and potentially expose source structure to attackers. **Root Cause**: `next export` output was committed before `.gitignore` rule `**/public/_next/` was added. **Remediation**: (1) `git rm --cached -r apps/kovelai/public/_next/` executed to untrack 20 files. (2) `.gitignore` already has `**/public/_next/` at line 123. (3) Files remain on disk for local serving but are no longer version-controlled. **Action**: Verify no other build output directories are tracked (`git ls-files --cached '**/dist/' '**/.next/' '**/build/'`). Add pre-commit hook to reject `_next/` additions.
 
+
+## Risk #67: A2A Agent Card Surface Area Expansion
+- **Type**: Security / Architecture
+- **Severity**: 🟡 Medium
+- **Status**: KNOWN
+- **Description**: Adding A2A Agent Cards at `/.well-known/agent.json` exposes the CounselConduit multi-agent topology to any unauthenticated HTTP client. The Agent Card reveals skill IDs, agent URLs, and capability metadata. While the A2A spec requires public discoverability, this conflicts with security-through-obscurity for the legal AI routing layer. **Action**: (1) Agent Card endpoints MUST be rate-limited (10 req/min per IP). (2) Skills list should use generic descriptions, not expose internal pipeline details. (3) All task endpoints behind the card require Bearer auth (Firebase ID token). (4) Add Cloud Armor WAF rule to block automated card scraping (>100 req/hour).
+
+## Risk #68: AG-UI SSE Stream Token/PII Leakage
+- **Type**: Security / Compliance
+- **Severity**: 🟠 High
+- **Status**: MITIGATED
+- **Description**: AG-UI Server-Sent Event streams carry agent reasoning, tool call arguments, and generated text content that may contain PII (client names, case details, legal citations). SSE streams are plaintext HTTP responses that pass through CDN/proxy layers where intermediate caching or logging could expose privileged content. **Mitigation**: (1) ADR 003 mandates Fernet application-layer encryption for all PII-bearing SSE event payloads. (2) Per-session encryption keys stored in Firestore with 1-hour TTL. (3) HMAC-SHA256 Kovel attestation receipts generated per privileged session. (4) PII pattern stripping in all structured logs. (5) `Cache-Control: no-store` and `X-Accel-Buffering: no` headers on all SSE endpoints.
