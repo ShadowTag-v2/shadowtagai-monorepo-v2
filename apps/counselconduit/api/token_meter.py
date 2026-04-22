@@ -7,7 +7,7 @@ Used by the client-facing portal to show remaining quota.
 from __future__ import annotations
 
 import logging
-from datetime import UTC
+from datetime import timezone
 from typing import Annotated
 
 from fastapi import APIRouter, Header
@@ -83,7 +83,7 @@ async def token_meter(
     # Calculate next daily reset (midnight UTC)
     from datetime import datetime, timedelta
 
-    now = datetime.now(UTC)
+    now = datetime.now(timezone.utc)
     reset_at = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
 
     return TokenMeterResponse(

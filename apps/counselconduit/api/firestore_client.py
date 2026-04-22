@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import logging
 import os
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from typing import Any
 
 logger = logging.getLogger("counselconduit.firestore")
@@ -54,7 +54,7 @@ async def store_attestation(firm_id: str, attestation: dict[str, Any]) -> str:
     await doc_ref.set(
         {
             **attestation,
-            "_created_at": datetime.now(UTC).isoformat(),
+            "_created_at": datetime.now(timezone.utc).isoformat(),
             "_immutable": True,
         }
     )
@@ -80,7 +80,7 @@ async def store_matter(firm_id: str, matter: dict[str, Any]) -> str:
     await doc_ref.set(
         {
             **matter,
-            "_created_at": datetime.now(UTC).isoformat(),
+            "_created_at": datetime.now(timezone.utc).isoformat(),
             "consumed": False,
         }
     )
@@ -97,7 +97,7 @@ async def consume_matter_token(firm_id: str, matter_id: str) -> bool:
     data = doc.to_dict()
     if data.get("consumed"):
         return False  # Already used
-    await doc_ref.update({"consumed": True, "_consumed_at": datetime.now(UTC).isoformat()})
+    await doc_ref.update({"consumed": True, "_consumed_at": datetime.now(timezone.utc).isoformat()})
     return True
 
 
@@ -112,7 +112,7 @@ async def store_gdpr_request(firm_id: str, request: dict[str, Any]) -> str:
     await doc_ref.set(
         {
             **request,
-            "_created_at": datetime.now(UTC).isoformat(),
+            "_created_at": datetime.now(timezone.utc).isoformat(),
             "status": "pending_grace_period",
         }
     )
@@ -130,7 +130,7 @@ async def store_session(firm_id: str, session: dict[str, Any]) -> str:
     await doc_ref.set(
         {
             **session,
-            "_created_at": datetime.now(UTC).isoformat(),
+            "_created_at": datetime.now(timezone.utc).isoformat(),
         }
     )
     return session_id
@@ -149,7 +149,7 @@ async def append_session_message(firm_id: str, session_id: str, role: str, conte
                     {
                         "role": role,
                         "content": content,
-                        "timestamp": datetime.now(UTC).isoformat(),
+                        "timestamp": datetime.now(timezone.utc).isoformat(),
                     }
                 ]
             )
@@ -172,13 +172,13 @@ async def update_attorney_usage(
     from google.cloud import firestore as fs
 
     db = _get_client()
-    month_key = datetime.now(UTC).strftime("%Y-%m")
+    month_key = datetime.now(timezone.utc).strftime("%Y-%m")
     doc_ref = db.collection("attorneys").document(attorney_id).collection("usage").document(month_key)
     await doc_ref.set(
         {
             "tokens_used": fs.Increment(tokens_used),
             "query_count": fs.Increment(queries),
-            "_updated_at": datetime.now(UTC).isoformat(),
+            "_updated_at": datetime.now(timezone.utc).isoformat(),
         },
         merge=True,
     )
@@ -203,7 +203,7 @@ class AuditEntry:
         self.resource_type = resource_type
         self.resource_id = resource_id
         self.details = details or {}
-        self.timestamp = datetime.now(UTC).isoformat()
+        self.timestamp = datetime.now(timezone.utc).isoformat()
 
 
 async def write_audit_log(entry: AuditEntry) -> None:

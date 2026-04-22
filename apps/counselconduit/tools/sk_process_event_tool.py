@@ -14,7 +14,7 @@ Usage in ADK agent:
 from __future__ import annotations
 
 import logging
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -102,7 +102,7 @@ class SKProcessEventTool:
                             else "reject"
                         ),
                         "reviewer_notes": (
-                            f"Injected by ADK tool at {datetime.now(UTC).isoformat()}"
+                            f"Injected by ADK tool at {datetime.now(timezone.utc).isoformat()}"
                         ),
                     },
                     headers={
@@ -126,7 +126,7 @@ class SKProcessEventTool:
                         success=False,
                         process_id=input_data.process_id,
                         event_name=input_data.event_name,
-                        timestamp=datetime.now(UTC).isoformat(),
+                        timestamp=datetime.now(timezone.utc).isoformat(),
                         message=f"Failed ({response.status_code}): {error_detail}",
                     )
 
@@ -135,7 +135,7 @@ class SKProcessEventTool:
                 success=False,
                 process_id=input_data.process_id,
                 event_name=input_data.event_name,
-                timestamp=datetime.now(UTC).isoformat(),
+                timestamp=datetime.now(timezone.utc).isoformat(),
                 message="Connection failed — CounselConduit API unreachable",
             )
         except Exception as e:
@@ -144,6 +144,6 @@ class SKProcessEventTool:
                 success=False,
                 process_id=input_data.process_id,
                 event_name=input_data.event_name,
-                timestamp=datetime.now(UTC).isoformat(),
+                timestamp=datetime.now(timezone.utc).isoformat(),
                 message=f"Unexpected error: {e!s}",
             )
