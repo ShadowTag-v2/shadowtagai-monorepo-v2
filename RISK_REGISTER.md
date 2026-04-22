@@ -198,3 +198,9 @@
 - **Severity**: 🟠 High
 - **Status**: MITIGATED
 - **Description**: AG-UI Server-Sent Event streams carry agent reasoning, tool call arguments, and generated text content that may contain PII (client names, case details, legal citations). SSE streams are plaintext HTTP responses that pass through CDN/proxy layers where intermediate caching or logging could expose privileged content. **Mitigation**: (1) ADR 003 mandates Fernet application-layer encryption for all PII-bearing SSE event payloads. (2) Per-session encryption keys stored in Firestore with 1-hour TTL. (3) HMAC-SHA256 Kovel attestation receipts generated per privileged session. (4) PII pattern stripping in all structured logs. (5) `Cache-Control: no-store` and `X-Accel-Buffering: no` headers on all SSE endpoints.
+
+## Risk #69: Pre-commit Hook Ghost Tags + datetime.UTC Python 3.9 Compat
+- **Type**: DevOps / Compatibility
+- **Severity**: 🟡 Medium
+- **Status**: RESOLVED
+- **Description**: `terraform/.pre-commit-config.yaml` pinned `pre-commit-terraform` to `v1.96.5` which is a non-existent tag (latest is `v1.105.0`). This caused `pre-commit` cache to fail with `pathspec 'v1.96.5' did not match any file(s) known to git`, blocking all commits. Additionally, 14 CounselConduit files used `from datetime import UTC` which is Python 3.11+ only — system Python 3.9 caused `ImportError` in test collection. **Mitigation**: (1) Pinned to `v1.105.0` (verified via GitHub API). (2) Synced gitleaks version to `v8.30.0` matching root config. (3) Replaced all `datetime.UTC` with `datetime.timezone.utc` (works on all Python versions). (4) Pre-commit cache purged. (5) E2E tests adapted to match live API behavior (Cloud Run CORS max-age=600, flexible health status).

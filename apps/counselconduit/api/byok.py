@@ -15,7 +15,7 @@ Security model:
 from __future__ import annotations
 
 import logging
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, status
@@ -78,7 +78,7 @@ class BYOKKeyListResponse(BaseModel):
 async def register_key(request: BYOKKeyRequest) -> BYOKKeyStatus:
     """Register a BYOK API key for a firm."""
     masked = f"{request.api_key[:4]}...{request.api_key[-6:]}"
-    now = datetime.now(UTC).isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     logger.info(
         "BYOK key registered: firm=%s provider=%s label=%s",
         request.firm_id,
@@ -115,5 +115,5 @@ async def validate_key(firm_id: str, provider: str) -> dict[str, Any]:
         "firm_id": firm_id,
         "provider": provider,
         "valid": True,
-        "validated_at": datetime.now(UTC).isoformat(),
+        "validated_at": datetime.now(timezone.utc).isoformat(),
     }

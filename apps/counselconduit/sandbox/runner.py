@@ -15,7 +15,7 @@ from __future__ import annotations
 import logging
 import uuid
 from dataclasses import dataclass, field
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from enum import StrEnum
 from typing import Any
 
@@ -136,7 +136,7 @@ class SandboxRunner:
             raise ValueError(f"Execution {execution_id} not found")
 
         execution.status = "running"
-        execution.started_at = datetime.now(UTC)
+        execution.started_at = datetime.now(timezone.utc)
 
         # Phase 3 TODO: Submit to Cloud Run Jobs / GKE sandbox
         # For now, validate the configuration is correct
@@ -149,7 +149,7 @@ class SandboxRunner:
         )
 
         execution.status = "completed"
-        execution.completed_at = datetime.now(UTC)
+        execution.completed_at = datetime.now(timezone.utc)
         execution.exit_code = 0
         execution.output = f"[SCAFFOLD] Tool '{execution.tool_name}' validated for sandbox execution"
 
@@ -161,7 +161,7 @@ class SandboxRunner:
 
     def cleanup_expired(self, max_age_seconds: int = 3600) -> int:
         """Remove completed executions older than max_age_seconds."""
-        now = datetime.now(UTC)
+        now = datetime.now(timezone.utc)
         expired = [eid for eid, ex in self._executions.items() if ex.completed_at and (now - ex.completed_at).total_seconds() > max_age_seconds]
         for eid in expired:
             del self._executions[eid]

@@ -16,7 +16,7 @@ from __future__ import annotations
 import json
 import logging
 import os
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, Request, status
@@ -54,14 +54,14 @@ async def schedule_hard_delete(
 
         # Schedule 30 days from now
         schedule_time = timestamp_pb2.Timestamp()
-        execute_at = datetime.now(UTC) + timedelta(days=GRACE_PERIOD_DAYS)
+        execute_at = datetime.now(timezone.utc) + timedelta(days=GRACE_PERIOD_DAYS)
         schedule_time.FromDatetime(execute_at)
 
         task_body = {
             "firm_id": firm_id,
             "user_id": user_id,
             "request_id": request_id,
-            "scheduled_at": datetime.now(UTC).isoformat(),
+            "scheduled_at": datetime.now(timezone.utc).isoformat(),
             "execute_at": execute_at.isoformat(),
         }
 
@@ -154,7 +154,7 @@ async def execute_deletion(request: Request) -> dict[str, Any]:
         await gdpr_ref.update(
             {
                 "status": "completed",
-                "_completed_at": datetime.now(UTC).isoformat(),
+                "_completed_at": datetime.now(timezone.utc).isoformat(),
                 "deleted_collections": deleted_collections,
             }
         )
