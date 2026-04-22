@@ -95,6 +95,14 @@ jobs:
           fi
           echo "✅ Canary healthy at ${{ github.event.inputs.traffic_percent }}%"
 
+      - name: Run Canary Analysis (scripts/canary_analysis.py)
+        if: ${{ github.event.inputs.rollback != 'true' }}
+        run: |
+          pip install httpx
+          python3 scripts/canary_analysis.py
+        env:
+          GOOGLE_CLOUD_PROJECT: ${{ env.PROJECT_ID }}
+
       - name: Run Smoke Tests Against Canary
         if: ${{ github.event.inputs.rollback != 'true' }}
         run: |
