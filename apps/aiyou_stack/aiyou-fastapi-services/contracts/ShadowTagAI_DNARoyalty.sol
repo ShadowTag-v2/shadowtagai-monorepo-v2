@@ -109,18 +109,9 @@ contract ShadowTagAI_DNARoyalty is UUPSUpgradeable, OwnableUpgradeable, Pausable
             TBA_IMPLEMENTATION,
             bytes32(0), // salt
             block.chainid,
-<<<<<<< HEAD
             address(agentNFT),
             agentNFTId,
             initData
-||||||| f285896f1
-            address(agentNFT), // Updated argument
-            agentNFTId // Updated argument (assuming agentId in snippet refers to agentNFTId)
-=======
-            address(agentNFT), // Updated argument
-            agentNFTId, // Updated argument (assuming agentId in snippet refers to agentNFTId)
-            initData
->>>>>>> feature/n-autoresearch/Kosmos/BioAgentss-integration
         );
         if (childTBA == address(0)) revert BindingFailed();
         parentOf[childTBA] = OVERLORD;
@@ -129,18 +120,9 @@ contract ShadowTagAI_DNARoyalty is UUPSUpgradeable, OwnableUpgradeable, Pausable
         // 3. Register in ERC-8004 Identity
         IDENTITY_REGISTRY.register(agentNFTId, agentCardURI);
 
-<<<<<<< HEAD
-        // 4. Post initial reputation (score: 100 -> capped to uint8 max)
-        REPUTATION_REGISTRY.postFeedback(agentNFTId, 100, "spawn", "");
-        uint8 repScore = REPUTATION_REGISTRY.getReputation(agentNFTId);
-||||||| f285896f1
-        // 4. Post initial reputation
-        uint256 repScore = REPUTATION_REGISTRY.postFeedback(agentNFTId, 100, "spawn", bytes(""));
-=======
         // 4. Post initial reputation
         REPUTATION_REGISTRY.postFeedback(agentNFTId, 100, "spawn", "");
         uint256 repScore = REPUTATION_REGISTRY.getReputation(agentNFTId);
->>>>>>> feature/n-autoresearch/Kosmos/BioAgentss-integration
         if (repScore < MIN_REP_SCORE) revert LowReputation();
 
         // 5. Validate spawn
