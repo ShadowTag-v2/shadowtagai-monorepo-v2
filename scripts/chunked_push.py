@@ -146,7 +146,7 @@ def group_into_chunks(files: list[tuple[str, int]], chunk_mb: int) -> list[list[
     return chunks
 
 
-def push_chunk(chunk: list[tuple[str, int]], chunk_idx: int, token: str, dry_run: bool) -> list[dict]:
+def push_chunk(chunk: list[tuple[str, int]], _chunk_idx: int, token: str, dry_run: bool) -> list[dict]:
     """Push a chunk of files as blobs, return tree items."""
     tree_items = []
     sum(s for _, s in chunk) / 1024 / 1024

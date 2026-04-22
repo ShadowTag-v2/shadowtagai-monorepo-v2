@@ -247,3 +247,6 @@ labs/uphillsnowball/product-pitch-site/cloner-tool/
 .terragrunt-cache/
 *.tfstate
 *.tfstate.backup
+
+# Omni-Ingest cloned repos (reference only, not committed)
+external_repos/omni_ingest/

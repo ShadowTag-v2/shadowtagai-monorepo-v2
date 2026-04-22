@@ -29,7 +29,6 @@ def configure_ttl_policy() -> None:
     """Create or update TTL policy on tenant_quotas.updated_at."""
     try:
         from google.cloud.firestore_admin_v1 import (
-            CreateIndexRequest,
             Field,
             FirestoreAdminClient,
             UpdateFieldRequest,

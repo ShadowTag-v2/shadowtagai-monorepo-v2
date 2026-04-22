@@ -17,7 +17,7 @@ def check_env() -> None:
         sys.exit(1)
 
 
-def import_documents(project_id: str, location: str, data_store_id: str, input_dir: str) -> None:
+def import_documents(project_id: str, location: str, data_store_id: str, _input_dir: str) -> None:
     """Imports documents from a local directory to Vertex AI Search.
     Note: In a real scenario, we usually upload to GCS first, but here we'll simulate
     or use the inline content method if files are small, or guide the user to GCS.
