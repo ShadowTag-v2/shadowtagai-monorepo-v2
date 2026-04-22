@@ -15,7 +15,8 @@ PrometheusIngestor: Structured metrics ingestion from internal
 from __future__ import annotations
 
 import logging
-from typing import Any, Generator
+from typing import Any
+from collections.abc import Generator
 
 import requests
 

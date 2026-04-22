@@ -68,7 +68,7 @@ class CallOfQuestion:
     original_intent_verbatim: str
     request_hash: str
     purpose: str
-    key_tasks: List[str]
+    key_tasks: list[str]
     end_state: str
     privilege_meta: PrivilegePortal
 
@@ -79,9 +79,9 @@ class CallOfQuestion:
         prompt: str,
         privilege: PrivilegePortal,
         purpose: str,
-        key_tasks: List[str],
+        key_tasks: list[str],
         end_state: str,
-    ) -> "CallOfQuestion":
+    ) -> CallOfQuestion:
         """Forge an immutable CallOfQuestion with SHA-256 hash binding.
 
         Args:
@@ -133,8 +133,8 @@ class BoundedAlert:
     """
 
     alert_id: str
-    entity: Dict[str, str]
+    entity: dict[str, str]
     action: str
     rationale: str
-    risk_budget: Dict[str, float] = field(default_factory=dict)
+    risk_budget: dict[str, float] = field(default_factory=dict)
     c2pa_signature: str = ""

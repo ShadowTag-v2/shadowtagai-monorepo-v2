@@ -48,6 +48,19 @@ _EMPATHY_OPENERS: list[str] = [
     "Thank you for your patience in explaining this. We want to get it right.",
     "I know dealing with legal matters can be daunting. We'll take it step by step.",
     "We're committed to making sure you feel heard and understood throughout this process.",
+    # ── Domain-specific variants (v10.0 expansion) ──
+    "Family matters are deeply personal. We're here to help you navigate this with care.",
+    "Immigration concerns can feel life-altering. You've come to the right place for guidance.",
+    "I understand how frightening a criminal matter can be. Let's work through this together.",
+    "Planning for the future takes courage. We'll make sure your wishes are clearly understood.",
+    "Business disputes can feel overwhelming. Let's break this down into manageable steps.",
+    "I know the uncertainty you're feeling right now is the hardest part. We're here to bring clarity.",
+    "Whatever brought you here today, we want you to know this is a safe space to explore your options.",
+    "Legal situations often feel more complex than they actually are. Let's simplify this together.",
+    "I can hear the weight of this situation in your words. You don't have to carry it alone.",
+    "You've already taken the most important step by seeking help. Let's build on that.",
+    "The legal system can feel intimidating, but understanding your rights changes everything.",
+    "No matter how complicated this feels right now, there are always paths forward. Let's find yours.",
 ]
 
 # Warm close templates — never use "goodbye" variants

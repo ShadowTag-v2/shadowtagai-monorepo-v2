@@ -1,0 +1,549 @@
+openapi: "3.1.0"
+info:
+  title: CounselConduit API
+  version: "10.0.0"
+  description: |
+    Privilege-preserving Legal AI routing tier — the "Shopify for Legal AI".
+    
+    All endpoints require Firebase Auth JWT unless explicitly marked public.
+    Responses follow RFC 9457 (Problem Details) for errors.
+    
+    **S.E.U. Framework**: All client-facing LLM responses follow Safety → Empathy → Utility ordering.
+  contact:
+    name: ShadowTag Engineering
+    url: https://kovelai.web.app
+  license:
+    name: Proprietary
+    identifier: LicenseRef-ShadowTag
+
+servers:
+  - url: https://counselconduit-767252945109.us-central1.run.app
+    description: Production (Cloud Run)
+  - url: https://counselconduit-staging-767252945109.us-central1.run.app
+    description: Staging (Cloud Run)
+
+tags:
+  - name: Core
+    description: Root, health, and heartbeat endpoints
+  - name: Enclave
+    description: Kovel Enclave — privileged query endpoints
+  - name: Dispatch
+    description: NadirClaw multi-model dispatch router
+  - name: Vent Mode
+    description: Emotional release valve — SSE streaming intake
+  - name: GDPR
+    description: Article 15/17/20 compliance endpoints
+  - name: Stripe
+    description: Billing webhooks and payment processing
+  - name: Stripe Connect
+    description: Attorney dual-billing onboarding
+  - name: BYOK
+    description: Bring Your Own Key management
+  - name: Human Gate
+    description: Human-in-the-loop approval gate
+  - name: Magic Link
+    description: Client portal magic link generation
+  - name: Token Meter
+    description: Token usage metering and budget tracking
+
+paths:
+  /:
+    get:
+      operationId: getRoot
+      tags: [Core]
+      summary: API root — identity and version
+      responses:
+        "200":
+          description: API identity response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  service: { type: string, example: "CounselConduit Kovel Enclave" }
+                  version: { type: string, example: "3.2.0" }
+
+  /health:
+    get:
+      operationId: getHealth
+      tags: [Core]
+      summary: Health check
+      responses:
+        "200":
+          description: Service healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: "healthy" }
+                  version: { type: string }
+                  uptime_seconds: { type: number }
+
+  /heartbeat:
+    post:
+      operationId: postHeartbeat
+      tags: [Core]
+      summary: Session heartbeat (keeps Dead-Man's Switch alive)
+      security:
+        - firebaseAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                session_id: { type: string, format: uuid }
+                tenant_id: { type: string }
+      responses:
+        "200":
+          description: Heartbeat acknowledged
+
+  /enclave/v1/query:
+    post:
+      operationId: postEnclaveQuery
+      tags: [Enclave]
+      summary: Submit privileged query through Oracle Studio
+      description: |
+        Routes client query through the 7-stage Oracle Studio pipeline with S.E.U. wrapping.
+        Generates Kovel attestation receipt per session.
+      security:
+        - firebaseAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueryRequest"
+      responses:
+        "200":
+          description: Privileged query response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResponse"
+        "429":
+          description: Rate limited
+        "503":
+          description: All model providers unavailable
+
+  /enclave/v1/query/stream:
+    post:
+      operationId: postEnclaveQueryStream
+      tags: [Enclave]
+      summary: Stream privileged query response via SSE
+      security:
+        - firebaseAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueryRequest"
+      responses:
+        "200":
+          description: SSE stream of response chunks
+          content:
+            text/event-stream: {}
+
+  /enclave/v1/health:
+    get:
+      operationId: getEnclaveHealth
+      tags: [Enclave]
+      summary: Enclave-specific health check
+      responses:
+        "200":
+          description: Enclave subsystem health
+
+  /api/v1/dispatch:
+    post:
+      operationId: postDispatch
+      tags: [Dispatch]
+      summary: NadirClaw model dispatch
+      description: Routes queries to optimal LLM with circuit breaker and fallback chain.
+      security:
+        - firebaseAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query: { type: string }
+                model_preference: { type: string, enum: [gemini, claude, gpt, grok, perplexity, auto] }
+                session_id: { type: string, format: uuid }
+                tenant_id: { type: string }
+      responses:
+        "200":
+          description: Dispatched response
+
+  /api/v1/vent/start:
+    post:
+      operationId: postVentStart
+      tags: [Vent Mode]
+      summary: Start a Vent Mode session
+      description: |
+        Initiates emotional release valve session. Client speaks unstructured grievances.
+        AI validates emotionally while silently extracting legal entities.
+      security:
+        - firebaseAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                session_id: { type: string, format: uuid }
+                tenant_id: { type: string }
+      responses:
+        "200":
+          description: Vent session started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VentCheckoutResponse"
+
+  /api/v1/vent/message:
+    post:
+      operationId: postVentMessage
+      tags: [Vent Mode]
+      summary: Send a message in Vent Mode
+      security:
+        - firebaseAuth: []
+      responses:
+        "200":
+          description: Vent response
+
+  /api/v1/vent/message/stream:
+    post:
+      operationId: postVentMessageStream
+      tags: [Vent Mode]
+      summary: Stream Vent Mode response via SSE
+      security:
+        - firebaseAuth: []
+      responses:
+        "200":
+          description: SSE stream
+          content:
+            text/event-stream: {}
+
+  /api/v1/vent/summarize:
+    post:
+      operationId: postVentSummarize
+      tags: [Vent Mode]
+      summary: Generate structured intake summary from Vent session
+      security:
+        - firebaseAuth: []
+      responses:
+        "200":
+          description: Structured intake summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VentIntakeSummary"
+
+  /api/v1/gdpr/delete:
+    post:
+      operationId: postGdprDelete
+      tags: [GDPR]
+      summary: Request GDPR Article 17 data deletion
+      description: Enqueues deletion via Google Cloud Tasks with 30-day TTL.
+      security:
+        - firebaseAuth: []
+      responses:
+        "202":
+          description: Deletion request accepted
+
+  /api/v1/gdpr/export:
+    post:
+      operationId: postGdprExport
+      tags: [GDPR]
+      summary: Request GDPR Article 20 data export
+      security:
+        - firebaseAuth: []
+      responses:
+        "202":
+          description: Export request accepted
+
+  /api/v1/gdpr/deletion-status/{receipt_id}:
+    get:
+      operationId: getGdprDeletionStatus
+      tags: [GDPR]
+      summary: Check deletion request status
+      parameters:
+        - name: receipt_id
+          in: path
+          required: true
+          schema: { type: string }
+      security:
+        - firebaseAuth: []
+      responses:
+        "200":
+          description: Deletion status
+
+  /webhooks/stripe:
+    post:
+      operationId: postWebhookStripe
+      tags: [Stripe]
+      summary: Stripe webhook handler
+      description: HMAC-verified webhook for subscription events.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Webhook processed
+
+  /webhooks/stripe-connect:
+    post:
+      operationId: postWebhookStripeConnect
+      tags: [Stripe Connect]
+      summary: Stripe Connect webhook handler
+      responses:
+        "200":
+          description: Connect webhook processed
+
+  /api/v1/connect/onboard:
+    post:
+      operationId: postConnectOnboard
+      tags: [Stripe Connect]
+      summary: Start attorney Stripe Connect onboarding
+      security:
+        - firebaseAuth: []
+      responses:
+        "200":
+          description: Onboarding link generated
+
+  /api/v1/connect/status/{account_id}:
+    get:
+      operationId: getConnectStatus
+      tags: [Stripe Connect]
+      summary: Check attorney Stripe Connect status
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          schema: { type: string }
+      security:
+        - firebaseAuth: []
+      responses:
+        "200":
+          description: Connect account status
+
+  /api/v1/byok/keys:
+    post:
+      operationId: postByokKey
+      tags: [BYOK]
+      summary: Register a BYOK API key
+      security:
+        - firebaseAuth: []
+      responses:
+        "201":
+          description: Key registered
+
+  /api/v1/byok/keys/{firm_id}:
+    get:
+      operationId: getByokKeys
+      tags: [BYOK]
+      summary: List BYOK keys for a firm
+      parameters:
+        - name: firm_id
+          in: path
+          required: true
+          schema: { type: string }
+      security:
+        - firebaseAuth: []
+      responses:
+        "200":
+          description: Key list
+
+  /api/v1/byok/keys/{firm_id}/{provider}:
+    delete:
+      operationId: deleteByokKey
+      tags: [BYOK]
+      summary: Delete a BYOK key
+      parameters:
+        - name: firm_id
+          in: path
+          required: true
+          schema: { type: string }
+        - name: provider
+          in: path
+          required: true
+          schema: { type: string }
+      security:
+        - firebaseAuth: []
+      responses:
+        "204":
+          description: Key deleted
+
+  /api/v1/gate/decide:
+    post:
+      operationId: postGateDecide
+      tags: [Human Gate]
+      summary: Submit to human-in-the-loop approval gate
+      security:
+        - firebaseAuth: []
+      responses:
+        "200":
+          description: Gate decision
+
+  /api/v1/gate/{process_id}:
+    get:
+      operationId: getGateStatus
+      tags: [Human Gate]
+      summary: Check human gate approval status
+      parameters:
+        - name: process_id
+          in: path
+          required: true
+          schema: { type: string }
+      security:
+        - firebaseAuth: []
+      responses:
+        "200":
+          description: Gate status
+
+  /api/v1/magic-link/create-matter:
+    post:
+      operationId: postMagicLinkCreate
+      tags: [Magic Link]
+      summary: Generate client portal magic link
+      security:
+        - firebaseAuth: []
+      responses:
+        "200":
+          description: Magic link generated
+
+  /api/v1/magic-link/verify/{token}:
+    get:
+      operationId: getMagicLinkVerify
+      tags: [Magic Link]
+      summary: Verify and consume magic link token
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Token verified
+
+  /api/v1/tokens/usage:
+    get:
+      operationId: getTokenUsage
+      tags: [Token Meter]
+      summary: Get token usage for current billing period
+      security:
+        - firebaseAuth: []
+      responses:
+        "200":
+          description: Token usage data
+
+components:
+  securitySchemes:
+    firebaseAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Firebase Auth ID token
+
+  schemas:
+    QueryRequest:
+      type: object
+      required: [query]
+      properties:
+        query:
+          type: string
+          description: Client query text
+          maxLength: 10000
+        session_id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+        model_preference:
+          type: string
+          enum: [auto, gemini, claude, gpt, grok, perplexity]
+          default: auto
+
+    QueryResponse:
+      type: object
+      properties:
+        response:
+          type: string
+          description: S.E.U.-wrapped response text
+        citations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Citation"
+        session_id:
+          type: string
+          format: uuid
+        model_used:
+          type: string
+        tokens_used:
+          type: integer
+        kovel_attestation_id:
+          type: string
+
+    Citation:
+      type: object
+      properties:
+        index:
+          type: integer
+        authority:
+          type: string
+          description: Statute, case law, or regulation reference
+        excerpt:
+          type: string
+        authority_type:
+          type: string
+          enum: [federal_statute, state_statute, case_law, regulation, bar_opinion]
+        relevance_score:
+          type: number
+          minimum: 0
+          maximum: 1
+
+    VentCheckoutResponse:
+      type: object
+      properties:
+        session_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [active, queued]
+        empathy_opener:
+          type: string
+
+    VentIntakeSummary:
+      type: object
+      properties:
+        session_id:
+          type: string
+          format: uuid
+        duration_minutes:
+          type: number
+        entities_extracted:
+          type: array
+          items:
+            type: object
+            properties:
+              entity: { type: string }
+              type: { type: string }
+              confidence: { type: number }
+        legal_issues:
+          type: array
+          items:
+            type: string
+        emotional_state:
+          type: string
+          enum: [distressed, anxious, frustrated, calm, determined]
+        structured_brief:
+          type: string
