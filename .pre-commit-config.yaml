@@ -79,8 +79,8 @@ repos:
         name: Biome Format & Lint
         entry: npx @biomejs/biome check --write --unsafe
         language: system
-        types_or: [javascript, jsx, typescript, tsx, json]
-        exclude: '^(node_modules/|third_party/|external_repos/|archive/|.venv/)'
+        files: '\.(js|jsx|ts|tsx|json)$'
+        exclude: '^(node_modules/|third_party/|external_repos/|archive/|\.venv/)'
 
   # AST-Grep — structural pattern enforcement
   - repo: local
