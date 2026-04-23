@@ -1,6 +1,7 @@
 name: "CI Failure Notification"
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows:
       - "Quality Gate"

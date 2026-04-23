@@ -1,6 +1,7 @@
 name: Pnkln Governance CI
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches: [main, master]

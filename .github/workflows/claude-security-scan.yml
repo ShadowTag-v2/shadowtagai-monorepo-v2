@@ -1,6 +1,7 @@
 name: Claude Security Scan
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [opened, synchronize]
     paths:
