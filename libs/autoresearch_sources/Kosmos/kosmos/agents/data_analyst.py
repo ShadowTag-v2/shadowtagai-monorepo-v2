@@ -579,8 +579,8 @@ Format your response as JSON with the following structure:
         anomalies = []
 
         # Check for significant p-value with tiny effect size
-        if result.primary_p_value is not None and result.primary_effect_size is not None:
-            if result.primary_p_value < self.significance_threshold_strict:
+        if result.primary_p_value is not None and result.primary_effect_size is not None:  # noqa: SIM102
+            if result.primary_p_value < self.significance_threshold_strict:  # noqa: SIM102
                 if abs(result.primary_effect_size) < self.effect_size_threshold:
                     anomalies.append(
                         f"ANOMALY: Statistically significant (p={result.primary_p_value:.4f}) "
@@ -589,8 +589,8 @@ Format your response as JSON with the following structure:
                     )
 
         # Check for large effect size with non-significant p-value
-        if result.primary_p_value is not None and result.primary_effect_size is not None:
-            if result.primary_p_value > self.significance_threshold_relaxed:
+        if result.primary_p_value is not None and result.primary_effect_size is not None:  # noqa: SIM102
+            if result.primary_p_value > self.significance_threshold_relaxed:  # noqa: SIM102
                 if abs(result.primary_effect_size) > 0.5:  # Cohen's d > 0.5 is medium/large
                     anomalies.append(
                         f"ANOMALY: Large effect size ({result.primary_effect_size:.4f}) "

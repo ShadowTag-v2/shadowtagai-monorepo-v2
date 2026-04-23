@@ -67,7 +67,7 @@ if (form) {
         setTimeout(() => toast.classList.remove('show'), 4000);
       }
       form.reset();
-    } catch (err) {
+    } catch (_err) {
       /* silent */
     }
   });

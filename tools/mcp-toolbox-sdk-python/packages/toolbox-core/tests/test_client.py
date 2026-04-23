@@ -619,19 +619,17 @@ async def test_client_init_with_client_info():
 def test_toolbox_client_no_warning_on_mcp():
     """Test that initializing ToolboxClient with Protocol.MCP issues NO DeprecationWarning."""
     # Mock the transport to avoid actual connection attempts or MCP version warnings
-    with patch("toolbox_core.client.McpHttpTransportV20250618"):
-        with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter("always")
+    with patch("toolbox_core.client.McpHttpTransportV20250618"), warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
 
-            ToolboxClient("http://localhost:5000", protocol=Protocol.MCP)
-            assert len(w) == 0
+        ToolboxClient("http://localhost:5000", protocol=Protocol.MCP)
+        assert len(w) == 0
 
 
 def test_toolbox_client_no_warning_on_explicit_mcp_version():
     """Test that specific MCP versions do not trigger the toolbox deprecation warning."""
-    with patch("toolbox_core.client.McpHttpTransportV20251125"):
-        with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter("always")
+    with patch("toolbox_core.client.McpHttpTransportV20251125"), warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
 
-            ToolboxClient("http://localhost:5000", protocol=Protocol.MCP_v20251125)
-            assert len(w) == 0
+        ToolboxClient("http://localhost:5000", protocol=Protocol.MCP_v20251125)
+        assert len(w) == 0

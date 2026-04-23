@@ -36,7 +36,7 @@ class CheckoutRequest(BaseModel):
 @router.get("/products", response_model=list[ProductResponse])
 async def list_products(
     category: str = None,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
     skip: int = 0,
     limit: int = 50,
 ):
@@ -63,8 +63,8 @@ async def list_products(
 @router.post("/cart", status_code=status.HTTP_201_CREATED)
 async def add_to_cart(
     item: CartItem,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Add item to user cart."""
     # Find or create cart
@@ -86,8 +86,8 @@ async def add_to_cart(
 @router.post("/checkout")
 async def checkout(
     request: CheckoutRequest,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Process checkout."""
     cart = db.query(Cart).filter(Cart.user_id == current_user.id).first()

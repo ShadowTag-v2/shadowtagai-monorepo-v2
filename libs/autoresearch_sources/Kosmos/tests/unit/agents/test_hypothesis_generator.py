@@ -136,7 +136,7 @@ class TestHypothesisValidation:
     def test_validate_statement_too_short(self, hypothesis_agent):
         """Test that Pydantic rejects hypothesis with too-short statement."""
         # Pydantic model now validates statement length during object creation
-        with pytest.raises(Exception):  # ValidationError
+        with pytest.raises(Exception):  # ValidationError  # noqa: B017
             Hypothesis(
                 research_question="Test question?",
                 statement="Too short",  # Only 9 chars, min is 10
@@ -147,7 +147,7 @@ class TestHypothesisValidation:
     def test_validate_rationale_too_short(self, hypothesis_agent):
         """Test that Pydantic rejects hypothesis with too-short rationale."""
         # Pydantic model now validates rationale length during object creation
-        with pytest.raises(Exception):  # ValidationError
+        with pytest.raises(Exception):  # ValidationError  # noqa: B017
             Hypothesis(
                 research_question="Test question?",
                 statement="This is a reasonable hypothesis statement",

@@ -176,7 +176,7 @@ def run_gemini_agent(agent: str, diff_text: str, out_path: Path) -> tuple[str, b
         time.time() - t0
         output = result.stdout.strip() or result.stderr.strip()
         out_path.write_text(output)
-        [l for l in output.splitlines() if l.startswith("FILE:")]
+        [l for l in output.splitlines() if l.startswith("FILE:")]  # noqa: E741
         return agent, True
     except subprocess.TimeoutExpired:
         out_path.write_text("NO_FINDINGS\n# agent timed out after 300s")

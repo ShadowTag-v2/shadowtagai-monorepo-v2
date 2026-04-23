@@ -33,13 +33,13 @@ def world_model():
     """Provide a clean world model instance for each test."""
     try:
         wm = get_world_model()
-        try:
+        try:  # noqa: SIM105
             wm.reset(project="test_persistence")
         except Exception:
             pass
         yield wm
     finally:
-        try:
+        try:  # noqa: SIM105
             reset_world_model()
         except Exception:
             pass
@@ -414,7 +414,7 @@ class TestREQ_WM_PERSIST_002_ImportGraph:
 
         # Import should handle gracefully (warn or accept)
         # Specific behavior depends on implementation
-        try:
+        try:  # noqa: SIM105
             world_model.import_graph(str(export_path), project="test_persistence")
         except Exception:
             # May raise exception for incompatible version
@@ -424,7 +424,7 @@ class TestREQ_WM_PERSIST_002_ImportGraph:
         """Verify import handles missing file gracefully."""
         nonexistent_path = "/tmp/nonexistent_export.json"
 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             world_model.import_graph(nonexistent_path, project="test_persistence")
 
 

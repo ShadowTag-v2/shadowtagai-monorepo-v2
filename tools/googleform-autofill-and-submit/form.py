@@ -46,7 +46,7 @@ def extract_script_variables(name: str, html: str):
             import ast
 
             return ast.literal_eval(value_str)
-        except:
+        except Exception:
             print("ast.literal_eval also failed")
             return None
 

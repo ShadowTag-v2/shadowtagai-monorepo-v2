@@ -818,7 +818,7 @@ async def _persist_session_pin_with_ttl(
 
 # ── Structured Logging for BigQuery (Item #17) ────────────────────────────
 
-import json as _json
+import json as _json  # noqa: E402
 
 
 def emit_structured_dispatch_log(
@@ -981,7 +981,7 @@ async def verify_admin_auth(request: Request) -> bool:
             logger.warning("JWT verification failed: %s", e)
 
     # Soft-fail in development, hard-fail in production
-    if os.getenv("APP_ENV") == "production":
+    if os.getenv("APP_ENV") == "production":  # noqa: SIM103
         return False
     return True  # Dev mode permissive
 

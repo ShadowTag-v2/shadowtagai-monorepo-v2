@@ -6,7 +6,7 @@ print(f"Type: {type(YouTubeTranscriptApi)}")
 print(f"Dir: {dir(YouTubeTranscriptApi)}")
 try:
     print(f"File: {inspect.getfile(YouTubeTranscriptApi)}")
-except:
+except Exception:
     print("File: unknown")
 
 try:

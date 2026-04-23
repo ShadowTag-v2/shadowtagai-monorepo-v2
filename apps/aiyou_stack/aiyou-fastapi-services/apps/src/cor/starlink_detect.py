@@ -22,5 +22,5 @@ def is_starlink_ip(ip: str) -> bool:
 def get_public_ip() -> str:
     try:
         return requests.get("https://api.ipify.org", timeout=2).text
-    except:
+    except Exception:
         return "127.0.0.1"

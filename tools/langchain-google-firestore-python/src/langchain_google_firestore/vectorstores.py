@@ -443,11 +443,11 @@ class FirestoreVectorStore(VectorStore):
             try:
                 embeddings = self.embedding_service.embed_images(image_uris)
             except Exception as e:
-                raise Exception(f"Make sure your selected embedding model supports list of image URIs as input. {str(e)}")
+                raise Exception(f"Make sure your selected embedding model supports list of image URIs as input. {str(e)}")  # noqa: B904
         elif hasattr(self.embedding_service, "embed_image"):
             try:
                 # Handle embed_image() methods with a single image or a list of images
-                method = getattr(self.embedding_service, "embed_image")
+                method = self.embedding_service.embed_image
                 signature = inspect.signature(method)
                 parameters = list(signature.parameters.values())
                 first_param = parameters[0]
@@ -457,7 +457,7 @@ class FirestoreVectorStore(VectorStore):
                 elif first_param.annotation == str:
                     embeddings = [self.embedding_service.embed_image(uri) for uri in image_uris]
             except Exception as e:
-                raise Exception(f"Make sure your selected embedding model supports a list of image URIs or a single image URI as input. {str(e)}")
+                raise Exception(f"Make sure your selected embedding model supports a list of image URIs or a single image URI as input. {str(e)}")  # noqa: B904
         else:
             raise ValueError("Please use an embedding model that supports image embedding.")
         return embeddings

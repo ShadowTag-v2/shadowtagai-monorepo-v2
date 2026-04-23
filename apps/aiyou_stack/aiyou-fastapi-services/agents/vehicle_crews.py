@@ -374,7 +374,7 @@ class SquadronVotingEngine:
         confidence = decision.get("confidence", 0.8)
 
         # Use agent ID hash for deterministic-ish behavior
-        agent_hash = int(hashlib.md5(agent_id.encode()).hexdigest()[:8], 16)
+        agent_hash = int(hashlib.md5(agent_id.encode(), usedforsecurity=False).hexdigest()[:8], 16)  # noqa: S324 — deterministic simulation, not security
         threshold = int(confidence * 0xFFFFFFFF)
 
         if agent_hash < threshold:

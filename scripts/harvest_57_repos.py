@@ -78,7 +78,7 @@ def categorize_repo_via_ane(name: str, path: str) -> str:
     try:
         root_files = os.listdir(path)
         payload_data = ",".join(root_files[:20])  # Take top 20 files
-    except:
+    except Exception:
         payload_data = ""
 
     # The ANE execution matrix
@@ -117,7 +117,7 @@ RESULT = {{"category": category}}
         try:
             # Parse the stringified dict back (Zero-CPU router stringifies inner dicts sometimes)
             return eval(result.get("data")).get("category", "services")
-        except:
+        except Exception:
             return "services"
     return "unclassified"
 

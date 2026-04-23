@@ -255,7 +255,7 @@ class FeedbackLoop:
             return "execution_error"
 
         # Check statistical issues
-        if result.primary_p_value is not None:
+        if result.primary_p_value is not None:  # noqa: SIM102
             if result.primary_p_value > 0.05 and result.primary_effect_size is not None:
                 if abs(result.primary_effect_size) < 0.2:
                     return "underpowered"  # Not significant, small effect

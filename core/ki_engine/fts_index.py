@@ -13,6 +13,7 @@ import sqlite3
 from pathlib import Path
 
 from core.ki_engine.schema import KIMetadata
+import contextlib
 
 
 DB_NAME = ".ki-index.db"
@@ -178,10 +179,8 @@ def reindex_all(ki_dir: Path) -> int:
             if artifacts_dir.exists():
                 for artifact in artifacts_dir.iterdir():
                     if artifact.suffix in (".md", ".txt"):
-                        try:
+                        with contextlib.suppress(OSError):
                             artifact_text += " " + artifact.read_text(errors="replace")
-                        except OSError:
-                            pass
 
             index_ki(conn, ki, artifact_text)
             count += 1

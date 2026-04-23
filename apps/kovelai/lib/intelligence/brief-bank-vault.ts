@@ -28,11 +28,13 @@ export const BriefBankEntrySchema = z.object({
   tags: z.array(z.string()).max(20),
   content: z.string(),
   contentType: z.enum(['dossier', 'memo', 'brief_fragment', 'template', 'research_chain']),
-  citations: z.array(z.object({
-    authority: z.string(),
-    type: z.string(),
-    confidence: z.number(),
-  })),
+  citations: z.array(
+    z.object({
+      authority: z.string(),
+      type: z.string(),
+      confidence: z.number(),
+    }),
+  ),
   metadata: z.object({
     createdBy: z.string(),
     createdAt: z.string().datetime(),
@@ -99,10 +101,7 @@ export class BriefBankVault {
 
     BriefBankEntrySchema.parse(fullEntry);
 
-    await this.firestoreWrite(
-      `firms/${this.firmId}/brief_bank/${fullEntry.id}`,
-      fullEntry,
-    );
+    await this.firestoreWrite(`firms/${this.firmId}/brief_bank/${fullEntry.id}`, fullEntry);
 
     return fullEntry;
   }
@@ -164,7 +163,9 @@ export class BriefBankVault {
     this.firestoreUpdate(path, {
       'metadata.accessCount': (entry.metadata.accessCount ?? 0) + 1,
       'metadata.lastAccessedAt': new Date().toISOString(),
-    }).catch(() => { /* swallow */ });
+    }).catch(() => {
+      /* swallow */
+    });
 
     return entry;
   }
@@ -185,7 +186,11 @@ export class BriefBankVault {
    * Import a dossier into the brief bank.
    */
   async importDossier(
-    dossier: { title: string; markdown: string; allCitations: Array<{ authority: string; type: string; confidence: number }> },
+    dossier: {
+      title: string;
+      markdown: string;
+      allCitations: Array<{ authority: string; type: string; confidence: number }>;
+    },
     practiceArea: string,
     jurisdiction: string,
     tags: string[] = [],

@@ -9,15 +9,15 @@ import sys
 
 logger = logging.getLogger(__name__)
 
-import typer
-from dotenv import load_dotenv
-from rich.panel import Panel
-from rich.traceback import install as install_rich_traceback
+import typer  # noqa: E402
+from dotenv import load_dotenv  # noqa: E402
+from rich.panel import Panel  # noqa: E402
+from rich.traceback import install as install_rich_traceback  # noqa: E402
 
 # Load environment variables from .env file
 load_dotenv()
 
-from kosmos.cli.utils import (
+from kosmos.cli.utils import (  # noqa: E402
     console,
     get_icon,
     print_error,
@@ -273,7 +273,7 @@ def info():
 
     except Exception as e:
         print_error(f"Failed to load configuration: {str(e)}")
-        raise typer.Exit(1)
+        raise typer.Exit(1)  # noqa: B904
 
 
 @app.command()

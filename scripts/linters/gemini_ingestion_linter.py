@@ -104,7 +104,7 @@ class GeminiIngestionLinter(ast.NodeVisitor):
         """Check assignments for tier classification and User-Agent."""
         # Rule GIL005: Ingested items must have tier classification
         for target in node.targets:
-            if isinstance(target, ast.Name) and "item" in target.id.lower():
+            if isinstance(target, ast.Name) and "item" in target.id.lower():  # noqa: SIM102
                 # Check if tier is assigned in the same scope
                 if isinstance(node.value, ast.Dict):
                     has_tier = any(isinstance(key, ast.Constant) and key.value == "tier" for key in node.value.keys)

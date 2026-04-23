@@ -18,7 +18,7 @@ import time
 SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SCRIPTS_DIR)
 
-from auth_github_app import get_token  # type: ignore[import]
+from auth_github_app import get_token  # type: ignore[import]  # noqa: E402
 
 
 def _gh_api(method: str, path: str, token: str, body: dict | None = None) -> dict:
@@ -57,8 +57,8 @@ def review_pr(pr_num: int, token: str, dry_run: bool = False) -> dict:
 
     # Parse findings
     output = result.stdout + result.stderr
-    findings = [l for l in output.splitlines() if "finding(s)" in l]
-    total_findings = sum(int(l.split(":")[1].strip().split()[0]) for l in findings if ":" in l)
+    findings = [l for l in output.splitlines() if "finding(s)" in l]  # noqa: E741
+    total_findings = sum(int(l.split(":")[1].strip().split()[0]) for l in findings if ":" in l)  # noqa: E741
 
     return {
         "pr": pr_num,

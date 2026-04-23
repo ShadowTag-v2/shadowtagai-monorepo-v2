@@ -36,7 +36,7 @@ result = os.listdir('/')  # Attempt to list root directory
     # Act & Assert: Sandbox should prevent file system access
     # or the validator should block this code
     try:
-        with pytest.raises((PermissionError, SecurityError, Exception)):
+        with pytest.raises((PermissionError, SecurityError, Exception)):  # noqa: F821
             result = sandbox.execute(dangerous_code)
             # If execution succeeds, check that it's restricted
             if result.success:

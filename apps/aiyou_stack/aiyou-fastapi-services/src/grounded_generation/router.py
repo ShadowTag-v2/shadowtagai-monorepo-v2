@@ -29,7 +29,7 @@ class GenerateResponse(BaseModel):
 @router.post("/generate", response_model=GenerateResponse)
 async def generate_content(
     request: GenerateRequest,
-    service: GroundedGenerationService = Depends(get_service),
+    service: GroundedGenerationService = Depends(get_service),  # noqa: B008
 ):
     """Generate content grounded in Google Search."""
     try:

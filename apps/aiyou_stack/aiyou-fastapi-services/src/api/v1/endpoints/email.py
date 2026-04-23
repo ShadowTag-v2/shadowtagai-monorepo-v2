@@ -17,7 +17,7 @@ router = APIRouter(prefix="/email", tags=["email"])
 
 # Recipients
 @router.post("/recipients", response_model=schemas.RecipientResponse, status_code=201)
-def create_recipient(recipient: schemas.RecipientCreate, db: Session = Depends(get_db)):
+def create_recipient(recipient: schemas.RecipientCreate, db: Session = Depends(get_db)):  # noqa: B008
     """Create a new email recipient"""
     # Check if recipient already exists
     existing = repository.EmailRepository.get_recipient_by_email(db, recipient.email)
@@ -28,7 +28,7 @@ def create_recipient(recipient: schemas.RecipientCreate, db: Session = Depends(g
 
 
 @router.get("/recipients/{recipient_id}", response_model=schemas.RecipientResponse)
-def get_recipient(recipient_id: int, db: Session = Depends(get_db)):
+def get_recipient(recipient_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Get recipient by ID"""
     recipient = repository.EmailRepository.get_recipient(db, recipient_id)
     if not recipient:
@@ -40,7 +40,7 @@ def get_recipient(recipient_id: int, db: Session = Depends(get_db)):
 def list_recipients(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """List all recipients"""
     return repository.EmailRepository.get_recipients(db, skip, limit)
@@ -50,7 +50,7 @@ def list_recipients(
 def update_recipient(
     recipient_id: int,
     recipient_update: schemas.RecipientUpdate,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Update recipient"""
     recipient = repository.EmailRepository.update_recipient(db, recipient_id, recipient_update)
@@ -61,7 +61,7 @@ def update_recipient(
 
 # Templates
 @router.post("/templates", response_model=schemas.EmailTemplateResponse, status_code=201)
-def create_template(template: schemas.EmailTemplateCreate, db: Session = Depends(get_db)):
+def create_template(template: schemas.EmailTemplateCreate, db: Session = Depends(get_db)):  # noqa: B008
     """Create a new email template"""
     # Check if template already exists
     existing = repository.EmailRepository.get_template_by_name(db, template.name)
@@ -72,7 +72,7 @@ def create_template(template: schemas.EmailTemplateCreate, db: Session = Depends
 
 
 @router.get("/templates/{template_id}", response_model=schemas.EmailTemplateResponse)
-def get_template(template_id: int, db: Session = Depends(get_db)):
+def get_template(template_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Get template by ID"""
     template = repository.EmailRepository.get_template(db, template_id)
     if not template:
@@ -84,7 +84,7 @@ def get_template(template_id: int, db: Session = Depends(get_db)):
 def list_templates(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """List all templates"""
     return repository.EmailRepository.get_templates(db, skip, limit)
@@ -94,8 +94,8 @@ def list_templates(
 @router.post("/flows", response_model=schemas.EmailFlowResponse, status_code=201)
 def create_flow(
     flow: schemas.EmailFlowCreate,
-    db: Session = Depends(get_db),
-    email_service: EmailService = Depends(get_email_service),
+    db: Session = Depends(get_db),  # noqa: B008
+    email_service: EmailService = Depends(get_email_service),  # noqa: B008
 ):
     """Create a new email flow"""
     try:
@@ -105,7 +105,7 @@ def create_flow(
 
 
 @router.get("/flows/{flow_id}", response_model=schemas.EmailFlowResponse)
-def get_flow(flow_id: int, db: Session = Depends(get_db)):
+def get_flow(flow_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Get flow by ID"""
     flow = repository.EmailRepository.get_flow(db, flow_id)
     if not flow:
@@ -114,7 +114,7 @@ def get_flow(flow_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/flows", response_model=list[schemas.EmailFlowResponse])
-def list_flows(active_only: bool = Query(False), db: Session = Depends(get_db)):
+def list_flows(active_only: bool = Query(False), db: Session = Depends(get_db)):  # noqa: B008
     """List all email flows"""
     return repository.EmailRepository.get_flows(db, active_only)
 
@@ -124,8 +124,8 @@ def list_flows(active_only: bool = Query(False), db: Session = Depends(get_db)):
 def enroll_in_flow(
     flow_id: int,
     recipient_email: str,
-    db: Session = Depends(get_db),
-    email_service: EmailService = Depends(get_email_service),
+    db: Session = Depends(get_db),  # noqa: B008
+    email_service: EmailService = Depends(get_email_service),  # noqa: B008
 ):
     """Enroll a recipient in an email flow"""
     try:
@@ -137,8 +137,8 @@ def enroll_in_flow(
 @router.post("/flows/bulk-enroll", response_model=schemas.BulkEnrollResponse)
 async def bulk_enroll(
     request: schemas.BulkEnrollRequest,
-    db: Session = Depends(get_db),
-    email_service: EmailService = Depends(get_email_service),
+    db: Session = Depends(get_db),  # noqa: B008
+    email_service: EmailService = Depends(get_email_service),  # noqa: B008
 ):
     """Bulk enroll recipients in a flow"""
     return await email_service.bulk_enroll(db, request)
@@ -148,8 +148,8 @@ async def bulk_enroll(
 @router.post("/send", response_model=schemas.EmailResponse, status_code=201)
 async def send_email(
     request: schemas.EmailSendRequest,
-    db: Session = Depends(get_db),
-    email_service: EmailService = Depends(get_email_service),
+    db: Session = Depends(get_db),  # noqa: B008
+    email_service: EmailService = Depends(get_email_service),  # noqa: B008
 ):
     """Send an email"""
     try:
@@ -163,7 +163,7 @@ async def send_email(
 
 
 @router.get("/emails/{email_id}", response_model=schemas.EmailResponse)
-def get_email(email_id: int, db: Session = Depends(get_db)):
+def get_email(email_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Get email by ID"""
     email = repository.EmailRepository.get_email(db, email_id)
     if not email:
@@ -177,7 +177,7 @@ def list_emails(
     status: str | None = Query(None),
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """List emails"""
     from src.db.models import EmailStatus as EmailStatusEnum
@@ -194,7 +194,7 @@ def list_emails(
 
 # Analytics
 @router.get("/emails/{email_id}/analytics", response_model=schemas.EmailAnalyticsResponse)
-def get_email_analytics(email_id: int, db: Session = Depends(get_db)):
+def get_email_analytics(email_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Get email analytics"""
     from src.db.models import EmailAnalytics
 
@@ -208,8 +208,8 @@ def get_email_analytics(email_id: int, db: Session = Depends(get_db)):
 def get_campaign_metrics(
     flow_id: int | None = Query(None),
     days: int = Query(30, ge=1, le=365),
-    db: Session = Depends(get_db),
-    email_service: EmailService = Depends(get_email_service),
+    db: Session = Depends(get_db),  # noqa: B008
+    email_service: EmailService = Depends(get_email_service),  # noqa: B008
 ):
     """Get campaign metrics"""
     return email_service.get_campaign_metrics(db, flow_id, days)
@@ -219,8 +219,8 @@ def get_campaign_metrics(
 @router.get("/track/open/{tracking_id}")
 def track_open(
     tracking_id: str,
-    db: Session = Depends(get_db),
-    email_service: EmailService = Depends(get_email_service),
+    db: Session = Depends(get_db),  # noqa: B008
+    email_service: EmailService = Depends(get_email_service),  # noqa: B008
 ):
     """Track email open (typically called via tracking pixel)"""
     email_service.track_open(db, tracking_id)
@@ -237,8 +237,8 @@ def track_open(
 def track_click(
     tracking_id: str,
     url: str = Query(...),
-    db: Session = Depends(get_db),
-    email_service: EmailService = Depends(get_email_service),
+    db: Session = Depends(get_db),  # noqa: B008
+    email_service: EmailService = Depends(get_email_service),  # noqa: B008
 ):
     """Track email click and redirect"""
     from fastapi.responses import RedirectResponse
@@ -252,8 +252,8 @@ def track_click(
 async def process_email_queue(
     background_tasks: BackgroundTasks,
     batch_size: int = Query(100, ge=1, le=1000),
-    db: Session = Depends(get_db),
-    email_service: EmailService = Depends(get_email_service),
+    db: Session = Depends(get_db),  # noqa: B008
+    email_service: EmailService = Depends(get_email_service),  # noqa: B008
 ):
     """Process email queue (typically called by scheduler)"""
     count = await email_service.process_email_queue(db, batch_size)
@@ -263,8 +263,8 @@ async def process_email_queue(
 @router.post("/process/flows")
 async def process_flow_enrollments(
     background_tasks: BackgroundTasks,
-    db: Session = Depends(get_db),
-    email_service: EmailService = Depends(get_email_service),
+    db: Session = Depends(get_db),  # noqa: B008
+    email_service: EmailService = Depends(get_email_service),  # noqa: B008
 ):
     """Process flow enrollments (typically called by scheduler)"""
     count = await email_service.process_flow_enrollments(db)

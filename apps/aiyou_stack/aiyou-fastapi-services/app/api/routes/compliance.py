@@ -44,8 +44,8 @@ async def get_database():
 @router.post("/ccpa/request", response_model=CCPARequestResponse)
 async def submit_ccpa_request(
     request_data: CCPARequestSubmit,
-    current_user: dict = Depends(get_current_user),
-    db=Depends(get_database),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db=Depends(get_database),  # noqa: B008
 ):
     """Submit a CCPA consumer request
 
@@ -81,8 +81,8 @@ async def submit_ccpa_request(
 @router.get("/ccpa/request/{request_id}")
 async def get_ccpa_request_status(
     request_id: str,
-    current_user: dict = Depends(get_current_user),
-    db=Depends(get_database),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db=Depends(get_database),  # noqa: B008
 ):
     """Get the status of a CCPA request"""
     ccpa = CCPACompliance(db)
@@ -108,9 +108,9 @@ async def get_ccpa_request_status(
 
 @router.get("/ccpa/export")
 async def export_my_data(
-    format: DataExportFormat = Query(DataExportFormat.JSON, description="Export format"),
-    current_user: dict = Depends(get_current_user),
-    db=Depends(get_database),
+    format: DataExportFormat = Query(DataExportFormat.JSON, description="Export format"),  # noqa: B008
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db=Depends(get_database),  # noqa: B008
 ):
     """Export all your personal data (CCPA right to know)
 
@@ -136,8 +136,8 @@ async def export_my_data(
 
 @router.delete("/ccpa/delete-my-data")
 async def delete_my_data(
-    current_user: dict = Depends(get_current_user),
-    db=Depends(get_database),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db=Depends(get_database),  # noqa: B008
 ):
     """Request deletion of all your personal data (CCPA right to delete)
 
@@ -160,8 +160,8 @@ async def delete_my_data(
 
 @router.post("/ccpa/do-not-sell")
 async def opt_out_of_sale(
-    current_user: dict = Depends(get_current_user),
-    db=Depends(get_database),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db=Depends(get_database),  # noqa: B008
 ):
     """Opt-out of personal data sales (CCPA "Do Not Sell My Personal Information")"""
     ccpa = CCPACompliance(db)
@@ -184,8 +184,8 @@ async def opt_out_of_sale(
 
 @router.get("/ccpa/opt-out-status")
 async def check_opt_out_status(
-    current_user: dict = Depends(get_current_user),
-    db=Depends(get_database),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db=Depends(get_database),  # noqa: B008
 ):
     """Check if you have opted out of data sales"""
     ccpa = CCPACompliance(db)
@@ -218,8 +218,8 @@ async def get_privacy_disclosures():
 @router.get("/gdpr/consent/{purpose}")
 async def check_consent_status(
     purpose: str,
-    current_user: dict = Depends(get_current_user),
-    db=Depends(get_database),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db=Depends(get_database),  # noqa: B008
 ):
     """Check your consent status for a specific purpose (GDPR)
 
@@ -246,8 +246,8 @@ async def check_consent_status(
 async def update_consent(
     purpose: str,
     granted: bool = Query(..., description="Whether to grant consent"),
-    current_user: dict = Depends(get_current_user),
-    db=Depends(get_database),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db=Depends(get_database),  # noqa: B008
 ):
     """Update your consent for a specific purpose (GDPR)"""
     from app.compliance import GDPRCompliance

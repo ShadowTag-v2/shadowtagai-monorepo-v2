@@ -220,7 +220,7 @@ class StageEvent(BaseEvent):
 
 
 # Union type for all streaming events
-StreamingEvent = Union[
+StreamingEvent = Union[  # noqa: UP007
     BaseEvent, WorkflowEvent, CycleEvent, TaskEvent, LLMEvent, ExecutionEvent, StageEvent
 ]
 
@@ -273,7 +273,7 @@ def parse_event(data: dict[str, Any]) -> StreamingEvent:
     try:
         event_type = EventType(event_type_str)
     except ValueError:
-        raise ValueError(f"Unknown event type: {event_type_str}")
+        raise ValueError(f"Unknown event type: {event_type_str}")  # noqa: B904
 
     event_class = EVENT_CLASS_MAP.get(event_type, BaseEvent)
 

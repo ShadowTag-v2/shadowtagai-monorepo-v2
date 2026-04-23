@@ -294,7 +294,7 @@ if (length(.kosmos_results) > 0) {{
         try:
             import docker
         except ImportError:
-            raise ImportError("docker package required for Docker execution")
+            raise ImportError("docker package required for Docker execution")  # noqa: B904
 
         client = docker.from_env()
 
@@ -346,7 +346,7 @@ if (length(.kosmos_results) > 0) {{
 
         finally:
             # Clean up container
-            try:
+            try:  # noqa: SIM105
                 container.remove(force=True)
             except Exception:
                 pass

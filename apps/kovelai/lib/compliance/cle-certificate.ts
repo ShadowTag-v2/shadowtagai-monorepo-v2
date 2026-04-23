@@ -58,7 +58,8 @@ export const CLE_COURSES = [
   {
     id: 'CLE-001',
     title: 'AI-Privileged Legal Research: The Kovel Doctrine in the Digital Age',
-    description: 'Understanding how attorney-client privilege extends to AI-assisted research under United States v. Heppner (S.D.N.Y. 2026).',
+    description:
+      'Understanding how attorney-client privilege extends to AI-assisted research under United States v. Heppner (S.D.N.Y. 2026).',
     creditHours: 1.5,
     creditType: 'TECHNOLOGY' as const,
     accreditedStates: ['NY', 'CA', 'IL', 'TX', 'FL', 'PA', 'NJ'],
@@ -66,7 +67,8 @@ export const CLE_COURSES = [
   {
     id: 'CLE-002',
     title: 'Ethics of AI in Legal Practice: Competence and Confidentiality',
-    description: 'Model Rule 1.1 competence requirements for attorneys using AI tools, and Model Rule 1.6 confidentiality obligations.',
+    description:
+      'Model Rule 1.1 competence requirements for attorneys using AI tools, and Model Rule 1.6 confidentiality obligations.',
     creditHours: 2.0,
     creditType: 'ETHICS' as const,
     accreditedStates: ['NY', 'CA', 'IL', 'TX', 'FL', 'PA', 'NJ', 'MA', 'DC'],
@@ -74,7 +76,8 @@ export const CLE_COURSES = [
   {
     id: 'CLE-003',
     title: 'Privilege Waiver in the Age of Public AI',
-    description: 'How using ChatGPT, Claude, and Gemini on consumer platforms can waive attorney-client privilege, and how to prevent it.',
+    description:
+      'How using ChatGPT, Claude, and Gemini on consumer platforms can waive attorney-client privilege, and how to prevent it.',
     creditHours: 1.0,
     creditType: 'PROFESSIONAL_RESPONSIBILITY' as const,
     accreditedStates: ['NY', 'CA', 'IL', 'TX', 'FL'],
@@ -156,12 +159,11 @@ export function generateCLECertificate(
 /**
  * Verifies a CLE certificate by its verification code.
  */
-export function verifyCertificate(
-  certificate: CLECertificate,
-  verificationCode: string,
-): boolean {
-  return certificate.verificationCode === verificationCode &&
-    new Date(certificate.validUntil) > new Date();
+export function verifyCertificate(certificate: CLECertificate, verificationCode: string): boolean {
+  return (
+    certificate.verificationCode === verificationCode &&
+    new Date(certificate.validUntil) > new Date()
+  );
 }
 
 // ─── PDF Template Data ──────────────────────────────────────────────

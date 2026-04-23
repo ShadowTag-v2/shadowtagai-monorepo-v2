@@ -191,7 +191,7 @@ class WealthAnalysis:
         ]
 
         if self.leaks:
-            for leak in sorted(self.leaks, key=lambda l: l.cost_per_month, reverse=True):
+            for leak in sorted(self.leaks, key=lambda l: l.cost_per_month, reverse=True):  # noqa: E741
                 lines.append(leak.to_hard_truth())
                 lines.append("")
             lines.append(f"💸 TOTAL MONTHLY LEAKS: ${self.total_leak_cost:.2f}")

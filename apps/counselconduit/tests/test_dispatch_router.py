@@ -74,7 +74,7 @@ class TestDispatchRequest:
         assert req.preferred_model == "gemini-pro"
 
     def test_empty_query_rejected(self):
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             DispatchRequest(query="", firm_id="firm-001")
 
 

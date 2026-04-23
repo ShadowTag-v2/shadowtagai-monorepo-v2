@@ -136,5 +136,5 @@ class NewsCollector(BaseCollector):
             if age_days <= 7:
                 return 0.7
             return 0.5
-        except:
+        except Exception:
             return 0.5

@@ -17,8 +17,8 @@ IMPORTANT: This module must NOT import from pnkln.governance
 to avoid circular imports. models.py imports from here.
 """
 
-import logging
-from enum import Enum
+import logging  # noqa: E402
+from enum import Enum  # noqa: E402
 
 logger = logging.getLogger(__name__)
 

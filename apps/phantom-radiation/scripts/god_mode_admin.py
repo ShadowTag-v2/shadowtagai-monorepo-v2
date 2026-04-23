@@ -21,6 +21,7 @@ from libs.steel.vfs import ShadowVFS
 from libs.steel.write_memory import SovereignMemoryPool
 
 from libs.steel.sentinel import JudgeSixSentinel
+import contextlib
 
 logging.basicConfig(
     level=logging.INFO,
@@ -91,13 +92,11 @@ class GodModeRuntime:
 
         loop = asyncio.get_running_loop()
         for sig in (signal.SIGINT, signal.SIGTERM):
-            try:
+            with contextlib.suppress(NotImplementedError):
                 loop.add_signal_handler(
                     sig,
                     lambda: asyncio.create_task(self.enqueue(AdminTask(task_type="shutdown"))),
                 )
-            except NotImplementedError:
-                pass
 
         workers = [asyncio.create_task(self.worker(i)) for i in range(3)]
         scheduler = asyncio.create_task(self.scheduler_loop())

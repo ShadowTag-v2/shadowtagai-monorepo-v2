@@ -323,11 +323,11 @@ async def health_check():
     tags=["Documents"],
 )
 async def upload_document(
-    file: UploadFile = File(...),
-    document_type: DocumentType = Query(..., description="Document type"),
+    file: UploadFile = File(...),  # noqa: B008
+    document_type: DocumentType = Query(..., description="Document type"),  # noqa: B008
     jurisdiction: str = Query(..., description="Jurisdiction"),
     case_number: str | None = Query(None, description="Case number"),
-    service_date: date | None = Query(None, description="Service date"),
+    service_date: date | None = Query(None, description="Service date"),  # noqa: B008
     service_method: str | None = Query(None, description="Service method"),
     uploaded_by: str = Query(..., description="User ID"),
 ):
@@ -613,8 +613,8 @@ async def create_rule(rule: DeadlineRule):
 @app.get("/statistics", response_model=DeadlineStatistics, tags=["Analytics"])
 async def get_statistics(
     jurisdiction: str | None = Query(None),
-    date_from: date | None = Query(None),
-    date_to: date | None = Query(None),
+    date_from: date | None = Query(None),  # noqa: B008
+    date_to: date | None = Query(None),  # noqa: B008
 ):
     """Get deadline management statistics
 

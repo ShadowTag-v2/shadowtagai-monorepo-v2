@@ -14,9 +14,9 @@
  * @see CounselConduit: apps/counselconduit
  */
 
-import { NextResponse, type NextRequest } from 'next/server';
+import crypto from 'node:crypto';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import crypto from 'crypto';
 
 // ─── Auth ───────────────────────────────────────────────────────────
 
@@ -26,15 +26,9 @@ function verifyBridgeAuth(req: NextRequest, body: string): boolean {
   const signature = req.headers.get('x-bridge-signature');
   if (!signature || !BRIDGE_SECRET) return false;
 
-  const expected = crypto
-    .createHmac('sha256', BRIDGE_SECRET)
-    .update(body)
-    .digest('hex');
+  const expected = crypto.createHmac('sha256', BRIDGE_SECRET).update(body).digest('hex');
 
-  return crypto.timingSafeEqual(
-    Buffer.from(signature, 'hex'),
-    Buffer.from(expected, 'hex'),
-  );
+  return crypto.timingSafeEqual(Buffer.from(signature, 'hex'), Buffer.from(expected, 'hex'));
 }
 
 // ─── Request Schemas ────────────────────────────────────────────────
@@ -47,13 +41,15 @@ const ProvisionSchema = z.object({
   adminEmail: z.string().email(),
   stripeAccountId: z.string().optional(),
   maxSeats: z.number().int().min(1).default(5),
-  features: z.object({
-    murderBoard: z.boolean().default(true),
-    warRoom: z.boolean().default(false),
-    oracleMemo: z.boolean().default(true),
-    cleCredits: z.boolean().default(false),
-    byok: z.boolean().default(false),
-  }).default({}),
+  features: z
+    .object({
+      murderBoard: z.boolean().default(true),
+      warRoom: z.boolean().default(false),
+      oracleMemo: z.boolean().default(true),
+      cleCredits: z.boolean().default(false),
+      byok: z.boolean().default(false),
+    })
+    .default({}),
 });
 
 const SyncTierSchema = z.object({
@@ -83,10 +79,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   // Verify HMAC signature
   if (!verifyBridgeAuth(req, bodyText)) {
-    return NextResponse.json(
-      { error: 'Unauthorized bridge request' },
-      { status: 401 },
-    );
+    return NextResponse.json({ error: 'Unauthorized bridge request' }, { status: 401 });
   }
 
   let body: unknown;
@@ -113,10 +106,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         return handleAttorneyVerify(AttorneyVerifySchema.parse(body));
 
       default:
-        return NextResponse.json(
-          { error: `Unknown action: ${action}` },
-          { status: 400 },
-        );
+        return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -125,10 +115,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 },
       );
     }
-    return NextResponse.json(
-      { error: 'Bridge handler failed' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Bridge handler failed' }, { status: 500 });
   }
 }
 
@@ -165,9 +152,7 @@ function handleProvision(data: z.infer<typeof ProvisionSchema>): NextResponse {
       oracle: tenantConfig.oracleEndpoint
         ? `${process.env.NEXT_PUBLIC_APP_URL}${tenantConfig.oracleEndpoint}`
         : null,
-      cle: data.features.cleCredits
-        ? `${process.env.NEXT_PUBLIC_APP_URL}/api/cle/generate`
-        : null,
+      cle: data.features.cleCredits ? `${process.env.NEXT_PUBLIC_APP_URL}/api/cle/generate` : null,
     },
   });
 }

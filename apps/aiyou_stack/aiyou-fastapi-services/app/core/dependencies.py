@@ -20,8 +20,8 @@ security = HTTPBearer()
 
 
 async def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    db: AsyncSession = Depends(get_db),
+    credentials: HTTPAuthorizationCredentials = Depends(security),  # noqa: B008
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ) -> User:
     """Get current authenticated user from JWT token
 
@@ -70,7 +70,7 @@ async def get_current_user(
     return user
 
 
-async def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
+async def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:  # noqa: B008
     """Get current user and ensure account is active
 
     Security:
@@ -89,7 +89,7 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
 
 async def require_tier(
     required_tier: str,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
 ) -> User:
     """Require specific subscription tier
 
@@ -122,11 +122,11 @@ async def require_tier(
 
 
 # Convenience dependencies for tier requirements
-async def require_pro_tier(current_user: User = Depends(get_current_active_user)) -> User:
+async def require_pro_tier(current_user: User = Depends(get_current_active_user)) -> User:  # noqa: B008
     """Require pro tier or higher"""
     return await require_tier("pro", current_user)
 
 
-async def require_enterprise_tier(current_user: User = Depends(get_current_active_user)) -> User:
+async def require_enterprise_tier(current_user: User = Depends(get_current_active_user)) -> User:  # noqa: B008
     """Require enterprise tier"""
     return await require_tier("enterprise", current_user)

@@ -34,7 +34,7 @@ class RiskCategory(Enum):
 class Severity(Enum):
     """ATP 5-19 Severity Categories."""
 
-    I = "catastrophic"  # Death or system loss
+    I = "catastrophic"  # Death or system loss  # noqa: E741
     II = "critical"  # Severe injury/damage
     III = "marginal"  # Minor injury/damage
     IV = "negligible"  # Less than minor

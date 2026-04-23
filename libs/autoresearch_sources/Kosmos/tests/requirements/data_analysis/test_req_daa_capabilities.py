@@ -237,8 +237,8 @@ def test_req_daa_cap_005_advanced_analyses():
 
     # Split and fit two segments
     mask = X_seg < 5
-    lr1 = LinearRegression().fit(X_seg[mask].reshape(-1, 1), y_seg[mask])
-    lr2 = LinearRegression().fit(X_seg[~mask].reshape(-1, 1), y_seg[~mask])
+    lr1 = LinearRegression().fit(X_seg[mask].reshape(-1, 1), y_seg[mask])  # noqa: F821
+    lr2 = LinearRegression().fit(X_seg[~mask].reshape(-1, 1), y_seg[~mask])  # noqa: F821
 
     # Assert: Segmented regression captures different slopes
     assert lr1.coef_[0] > 0  # Positive slope in first segment

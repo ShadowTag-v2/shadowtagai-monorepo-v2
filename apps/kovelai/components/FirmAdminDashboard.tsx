@@ -12,7 +12,7 @@
  * Nag Protocol #19: Build firm admin dashboard
  */
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 // ─── Types ────────────────────────────────────────────────────────────
 interface FirmStats {
@@ -69,9 +69,9 @@ export default function FirmAdminDashboard({
   billing,
   insurance,
 }: FirmAdminDashboardProps) {
-  const [activeTab, setActiveTab] = useState<
-    'overview' | 'team' | 'billing' | 'compliance'
-  >('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'team' | 'billing' | 'compliance'>(
+    'overview',
+  );
 
   const tabs = [
     { key: 'overview' as const, label: 'Overview', icon: '📊' },
@@ -121,10 +121,7 @@ export default function FirmAdminDashboard({
                 value={`$${stats.monthlyRevenue.toLocaleString()}`}
               />
               <StatCard label="AI Queries" value={stats.aiQueriesThisMonth} />
-              <StatCard
-                label="Avg Response"
-                value={`${stats.avgResponseTime}s`}
-              />
+              <StatCard label="Avg Response" value={`${stats.avgResponseTime}s`} />
               <StatCard
                 label="Compliance"
                 value={`${stats.privilegeComplianceScore}%`}
@@ -142,15 +139,11 @@ export default function FirmAdminDashboard({
                 <div className="flex items-center gap-3 mb-3">
                   <span
                     className={`w-3 h-3 rounded-full ${
-                      billing.stripeConnected
-                        ? 'bg-green-500'
-                        : 'bg-red-500 animate-pulse'
+                      billing.stripeConnected ? 'bg-green-500' : 'bg-red-500 animate-pulse'
                     }`}
                   />
                   <span className="text-white font-medium">
-                    {billing.stripeConnected
-                      ? 'Stripe Connected'
-                      : 'Stripe Not Connected'}
+                    {billing.stripeConnected ? 'Stripe Connected' : 'Stripe Not Connected'}
                   </span>
                 </div>
                 <div className="text-slate-500 text-sm space-y-1">
@@ -158,7 +151,8 @@ export default function FirmAdminDashboard({
                     Tier: <span className="text-white uppercase">{billing.tier}</span>
                   </div>
                   <div>
-                    Monthly: <span className="text-white">${billing.monthlySpend.toLocaleString()}</span>
+                    Monthly:{' '}
+                    <span className="text-white">${billing.monthlySpend.toLocaleString()}</span>
                   </div>
                   <div>
                     Next billing: <span className="text-white">{billing.nextBillingDate}</span>
@@ -188,18 +182,12 @@ export default function FirmAdminDashboard({
                   </div>
                   <div>
                     Coverage:{' '}
-                    <span className="text-white">
-                      ${insurance.coverage.toLocaleString()}
-                    </span>
+                    <span className="text-white">${insurance.coverage.toLocaleString()}</span>
                   </div>
                   <div>
                     Expires in:{' '}
                     <span
-                      className={
-                        insurance.daysUntilExpiry < 30
-                          ? 'text-red-400'
-                          : 'text-white'
-                      }
+                      className={insurance.daysUntilExpiry < 30 ? 'text-red-400' : 'text-white'}
                     >
                       {insurance.daysUntilExpiry} days
                     </span>
@@ -264,9 +252,7 @@ export default function FirmAdminDashboard({
                         {new Date(member.lastActive).toLocaleDateString()}
                       </td>
                       <td className="px-4 py-3">
-                        <button className="text-slate-500 hover:text-white text-xs">
-                          Manage
-                        </button>
+                        <button className="text-slate-500 hover:text-white text-xs">Manage</button>
                       </td>
                     </tr>
                   ))}
@@ -313,11 +299,7 @@ function StatCard({
       </div>
       <div
         className={`text-xl font-black ${
-          isWarning
-            ? 'text-red-400'
-            : isHighlight
-              ? 'text-green-400'
-              : 'text-white'
+          isWarning ? 'text-red-400' : isHighlight ? 'text-green-400' : 'text-white'
         }`}
       >
         {value}

@@ -10,14 +10,14 @@
  * @see openapi-war-room.yaml — API schema
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 // ═══════════════════════════════════════════════════════════
 // Configuration
 // ═══════════════════════════════════════════════════════════
 
-const BASE_URL = process.env.API_BASE_URL
-  || 'https://counselconduit-767252945109.us-central1.run.app';
+const _BASE_URL =
+  process.env.API_BASE_URL || 'https://counselconduit-767252945109.us-central1.run.app';
 
 const HEALTH_ENDPOINTS = [
   { path: '/health', expectedStatus: 200 },
@@ -47,7 +47,8 @@ describe('Smoke Tests — API Schema', () => {
   it('Murder Board request requires firmId and clientStatement', () => {
     const validRequest = {
       firmId: 'firm_test_001',
-      clientStatement: 'I signed a contract and the other party breached it by failing to deliver services as agreed upon in the written agreement dated June 2025.',
+      clientStatement:
+        'I signed a contract and the other party breached it by failing to deliver services as agreed upon in the written agreement dated June 2025.',
       jurisdiction: 'CA',
     };
 
@@ -59,8 +60,15 @@ describe('Smoke Tests — API Schema', () => {
 
   it('MurderBoardStatus has valid enum values', () => {
     const validStatuses = [
-      'intake', 'osint', 'verb_audit', 'oracle',
-      'citations', 'brief', 'vault', 'complete', 'failed',
+      'intake',
+      'osint',
+      'verb_audit',
+      'oracle',
+      'citations',
+      'brief',
+      'vault',
+      'complete',
+      'failed',
     ];
 
     const currentStatus = 'complete';
@@ -102,9 +110,9 @@ describe('Smoke Tests — S.E.U. Tokens', () => {
     };
 
     // S.E.U. invariants
-    expect(mockToken.is_sandbox_bound).toBe(true);   // S
-    expect(mockToken.is_ephemeral).toBe(true);        // E
-    expect(mockToken.is_user_billed).toBe(true);      // U
+    expect(mockToken.is_sandbox_bound).toBe(true); // S
+    expect(mockToken.is_ephemeral).toBe(true); // E
+    expect(mockToken.is_user_billed).toBe(true); // U
 
     // TTL check: exactly 60 minutes
     const ttlMs = mockToken.expires_at - mockToken.issued_at;
@@ -166,11 +174,56 @@ describe('Smoke Tests — Advance Fee Engine', () => {
     // This would import from advance_fee_engine.py in production
     const expectedStates = 51; // 50 states + DC
     const configuredStates = [
-      'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL',
-      'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME',
-      'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH',
-      'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI',
-      'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI',
+      'AL',
+      'AK',
+      'AZ',
+      'AR',
+      'CA',
+      'CO',
+      'CT',
+      'DE',
+      'DC',
+      'FL',
+      'GA',
+      'HI',
+      'ID',
+      'IL',
+      'IN',
+      'IA',
+      'KS',
+      'KY',
+      'LA',
+      'ME',
+      'MD',
+      'MA',
+      'MI',
+      'MN',
+      'MS',
+      'MO',
+      'MT',
+      'NE',
+      'NV',
+      'NH',
+      'NJ',
+      'NM',
+      'NY',
+      'NC',
+      'ND',
+      'OH',
+      'OK',
+      'OR',
+      'PA',
+      'RI',
+      'SC',
+      'SD',
+      'TN',
+      'TX',
+      'UT',
+      'VT',
+      'VA',
+      'WA',
+      'WV',
+      'WI',
       'WY',
     ];
 

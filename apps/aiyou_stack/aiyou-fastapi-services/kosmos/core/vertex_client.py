@@ -13,7 +13,7 @@ from typing import Any
 
 try:
     import vertexai
-    from vertexai.generative_models import GenerationConfig, GenerativeModel, Part
+    from vertexai.generative_models import GenerationConfig, GenerativeModel, Part  # noqa: F401
     from vertexai.preview.generative_models import FunctionDeclaration, Tool
 except ImportError:
     raise ImportError(

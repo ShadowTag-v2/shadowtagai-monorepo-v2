@@ -20,7 +20,7 @@ from .intake import Atom
 
 # Import Kosmos if available
 try:
-    from kosmos.core import KosmosInstance, KosmosPool, KosmosType, create_kosmos_pool
+    from kosmos.core import KosmosInstance, KosmosPool, KosmosType, create_kosmos_pool  # noqa: F401
 
     KOSMOS_AVAILABLE = True
 except ImportError:

@@ -253,4 +253,4 @@ class EthicalCrawler:
 
 
 # Need to import asyncio here to avoid circular import
-import asyncio
+import asyncio  # noqa: E402

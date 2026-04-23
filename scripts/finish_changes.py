@@ -3,7 +3,7 @@ import subprocess
 
 
 def run_cmd(cmd) -> None:
-    try:
+    try:  # noqa: SIM105
         subprocess.run(cmd, shell=True, check=True)  # nosec B602 — intentional shell for git/system ops
     except subprocess.CalledProcessError:
         pass

@@ -3,8 +3,8 @@ import json
 import logging
 
 try:
-    from vertexai.generative_models import GenerativeModel, Tool
-    from google import genai
+    from vertexai.generative_models import GenerativeModel, Tool  # noqa: F401
+    from google import genai  # noqa: F401
 except ImportError:
     pass
 

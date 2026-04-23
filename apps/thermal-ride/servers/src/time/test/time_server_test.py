@@ -470,7 +470,7 @@ def test_get_local_tz_with_override():
 
 def test_get_local_tz_with_invalid_override():
     """Test that invalid timezone override raises an error."""
-    with pytest.raises(Exception):  # ZoneInfo will raise an exception
+    with pytest.raises(Exception):  # ZoneInfo will raise an exception  # noqa: B017
         get_local_tz("Invalid/Timezone")
 
 

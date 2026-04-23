@@ -70,11 +70,11 @@ def manage_config(
 
     except KeyboardInterrupt:
         console.print("\n[warning]Config operation cancelled[/warning]")
-        raise typer.Exit(130)
+        raise typer.Exit(130)  # noqa: B904
 
     except Exception as e:
         print_error(f"Config operation failed: {str(e)}")
-        raise typer.Exit(1)
+        raise typer.Exit(1)  # noqa: B904
 
 
 def show_config_path():
@@ -190,7 +190,7 @@ def display_config():
 
     except Exception as e:
         print_error(f"Failed to load configuration: {str(e)}")
-        raise typer.Exit(1)
+        raise typer.Exit(1)  # noqa: B904
 
 
 def validate_config():
@@ -291,7 +291,7 @@ def validate_config():
 
     except Exception as e:
         print_error(f"Validation failed: {str(e)}")
-        raise typer.Exit(1)
+        raise typer.Exit(1)  # noqa: B904
 
 
 def edit_config():

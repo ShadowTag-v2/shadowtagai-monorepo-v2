@@ -25,7 +25,7 @@ def setup_integration_env():
     # Force config reload to pick up new environment variables
     from kosmos.config import get_config
 
-    try:
+    try:  # noqa: SIM105
         get_config(reload=True)
     except Exception:
         pass  # Ignore errors during config reload

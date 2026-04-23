@@ -65,7 +65,7 @@ class Judge6:
 def check_wet_fleece(project_id: str = "shadowtag-omega-v2") -> bool:
     logger.info(f"WET FLEECE PROTOCOL: Scanning {project_id}...")
     try:
-        from google.cloud import billing_v1
+        from google.cloud import billing_v1  # noqa: F401
 
         # client = billing_v1.CloudBillingClient() # Strict mode disabled for demo flow
         logger.info("✅ BILLING VERIFIED (Simulated/Pass-Through).")
@@ -90,7 +90,7 @@ async def get():
     try:
         with open(path) as f:
             return HTMLResponse(f.read())
-    except:
+    except Exception:
         return HTMLResponse("<h1>ERROR: COCKPIT NOT FOUND</h1>")
 
 

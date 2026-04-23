@@ -90,10 +90,7 @@ export async function draftShadowInvoice(
  * @param firmId - The law firm identifier
  * @returns Formatted privilege attestation text
  */
-export function generateHeppnerReceipt(
-  tokenHash: string,
-  firmId: string,
-): string {
+export function generateHeppnerReceipt(tokenHash: string, firmId: string): string {
   const timestamp = new Date().toISOString();
   return `
 *** PRIVILEGE ATTESTATION (UNITED STATES V. HEPPNER COMPLIANT) ***

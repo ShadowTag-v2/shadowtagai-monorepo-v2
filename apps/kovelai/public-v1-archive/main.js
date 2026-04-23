@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.getElementById('nav-toggle');
   const links = document.getElementById('nav-links');
 
-  let lastScroll = 0;
+  let _lastScroll = 0;
   window.addEventListener(
     'scroll',
     () => {
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         nav.classList.remove('scrolled');
       }
-      lastScroll = current;
+      _lastScroll = current;
     },
     { passive: true },
   );
@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       })
       .then((resp) => {
-        if (!resp.ok) throw new Error('Lead capture failed: ' + resp.status);
+        if (!resp.ok) throw new Error(`Lead capture failed: ${resp.status}`);
         if (typeof gtag === 'function') {
           gtag('event', 'lead_captured', {
             source: formData.source || 'contact_modal',

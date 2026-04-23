@@ -928,7 +928,7 @@ def test_req_sci_ana_007_no_cherry_picking():
                 "id": analysis_id,
                 "type": analysis_type,
                 "description": data_description,
-                "timestamp": datetime.now(),
+                "timestamp": datetime.now(),  # noqa: F821
                 "status": "registered",
                 "result": None,
                 "metadata": kwargs,

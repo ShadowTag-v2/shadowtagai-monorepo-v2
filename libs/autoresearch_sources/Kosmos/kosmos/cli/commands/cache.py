@@ -83,11 +83,11 @@ def manage_cache(
 
     except KeyboardInterrupt:
         console.print("\n[warning]Cache operation cancelled[/warning]")
-        raise typer.Exit(130)
+        raise typer.Exit(130)  # noqa: B904
 
     except Exception as e:
         print_error(f"Cache operation failed: {str(e)}")
-        raise typer.Exit(1)
+        raise typer.Exit(1)  # noqa: B904
 
 
 def display_cache_stats(cache_manager):

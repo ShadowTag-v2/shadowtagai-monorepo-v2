@@ -91,7 +91,7 @@ class ColabCoop:
         }
 
         # minions endpoint for complex routing
-        self.minions_url = os.getenv("minionS_URL", "http://localhost:8600")
+        self.minions_url = os.getenv("minionS_URL", "http://localhost:8600")  # noqa: SIM112
 
         print(f"///▞ COLAB COOP :: Initialized with {len(self.pool.clients)} accounts")
         print(f"///▞ COLAB COOP :: Strategy: {strategy.value}")

@@ -11,10 +11,11 @@
  *
  * Nag Protocol #15: Build client intake Magic Link generator
  */
-import { NextResponse, type NextRequest } from 'next/server';
-import { z } from 'zod';
+
+import { randomUUID } from 'node:crypto';
 import jwt from 'jsonwebtoken';
-import { randomUUID } from 'crypto';
+import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 const MagicLinkSchema = z.object({
   firmId: z.string().uuid(),
@@ -33,9 +34,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const parsed = MagicLinkSchema.parse(body);
 
     const linkId = randomUUID();
-    const expiresAt = new Date(
-      Date.now() + parsed.expiryHours * 60 * 60 * 1000,
-    );
+    const expiresAt = new Date(Date.now() + parsed.expiryHours * 60 * 60 * 1000);
 
     // Create a signed intake token
     const token = jwt.sign(
@@ -96,19 +95,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 },
       );
     }
-    return NextResponse.json(
-      { error: 'Magic link generation failed' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Magic link generation failed' }, { status: 500 });
   }
 }
 
 function getIntakeSecret(): string {
   const secret = process.env.KOVELAI_INTAKE_SECRET;
   if (!secret || secret.length < 32) {
-    throw new Error(
-      '[INTAKE] KOVELAI_INTAKE_SECRET must be set and at least 32 characters',
-    );
+    throw new Error('[INTAKE] KOVELAI_INTAKE_SECRET must be set and at least 32 characters');
   }
   return secret;
 }

@@ -22,6 +22,7 @@ import pyarrow.parquet as pq
 import rustbpe
 import tiktoken
 import torch
+import contextlib
 
 # ---------------------------------------------------------------------------
 # Constants (fixed, do not modify)
@@ -80,10 +81,8 @@ def download_single_shard(index):
             print(f"  Attempt {attempt}/{max_attempts} failed for {filename}: {e}")
             for path in [filepath + ".tmp", filepath]:
                 if os.path.exists(path):
-                    try:
+                    with contextlib.suppress(OSError):
                         os.remove(path)
-                    except OSError:
-                        pass
             if attempt < max_attempts:
                 time.sleep(2**attempt)
     return False

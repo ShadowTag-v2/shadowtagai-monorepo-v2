@@ -47,7 +47,7 @@ router = APIRouter(
 )
 async def analyze_costs(
     request: CostAnalysisRequest,
-    service: CostOptimizerService = Depends(get_cost_optimizer_service),
+    service: CostOptimizerService = Depends(get_cost_optimizer_service),  # noqa: B008
 ) -> CostAnalysisResponse:
     """Analyze AWS costs for the specified parameters."""
     try:
@@ -88,7 +88,7 @@ async def analyze_costs(
 )
 async def get_recommendations(
     request: RecommendationRequest,
-    service: CostOptimizerService = Depends(get_cost_optimizer_service),
+    service: CostOptimizerService = Depends(get_cost_optimizer_service),  # noqa: B008
 ) -> RecommendationsResponse:
     """Get cost optimization recommendations."""
     try:
@@ -125,7 +125,7 @@ async def get_recommendations(
     """,
 )
 async def analyze_waste(
-    service: CostOptimizerService = Depends(get_cost_optimizer_service),
+    service: CostOptimizerService = Depends(get_cost_optimizer_service),  # noqa: B008
 ) -> WasteAnalysisResponse:
     """Analyze AWS resource waste."""
     try:
@@ -155,7 +155,7 @@ async def analyze_waste(
 )
 async def get_insights(
     days: int = Query(30, ge=1, le=90, description="Number of days to analyze"),
-    service: CostOptimizerService = Depends(get_cost_optimizer_service),
+    service: CostOptimizerService = Depends(get_cost_optimizer_service),  # noqa: B008
 ):
     """Get cost insights for the specified period."""
     try:

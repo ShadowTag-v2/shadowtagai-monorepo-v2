@@ -14,11 +14,8 @@
  * Each stage is streamed via SSE for real-time dashboard UX.
  * Uses Cloud Tasks for async stage execution (BullMQ banned).
  */
-import {
-  buildMurderBoardPrompt,
-  type MurderBoardStage,
-} from '../prompts/war-room-prompts';
-import { AntigravityMCPClient } from '../mcp/antigravity-client';
+
+import { buildMurderBoardPrompt, type MurderBoardStage } from '../prompts/war-room-prompts';
 
 // ─── Types ────────────────────────────────────────────────────────────
 export interface MurderBoardInput {
@@ -154,7 +151,7 @@ export async function executeMurderBoard(
 // ─── Stage Input Builder ──────────────────────────────────────────────
 function buildStageInput(
   stage: MurderBoardStage,
-  previousOutput: string,
+  _previousOutput: string,
   previousStages: StageResult[],
   input: MurderBoardInput,
 ): string {
@@ -172,9 +169,7 @@ function buildStageInput(
     if (prev.status === 'completed' && prev.output) {
       parts.push(
         `[STAGE ${prev.stage} OUTPUT]\n${
-          typeof prev.output === 'string'
-            ? prev.output
-            : JSON.stringify(prev.output, null, 2)
+          typeof prev.output === 'string' ? prev.output : JSON.stringify(prev.output, null, 2)
         }`,
       );
     }
@@ -183,9 +178,7 @@ function buildStageInput(
   // Stage-specific context
   switch (stage) {
     case 'CONFLICT_CHECK':
-      parts.push(
-        `[FIRM ID] ${input.firmId}\n[MATTER ID] ${input.matterId ?? 'NEW MATTER'}`,
-      );
+      parts.push(`[FIRM ID] ${input.firmId}\n[MATTER ID] ${input.matterId ?? 'NEW MATTER'}`);
       break;
     case 'FEE_STRUCTURE':
       parts.push(`[JURISDICTION FOR FEE RULES] ${input.jurisdiction}`);
@@ -202,9 +195,7 @@ function buildStageInput(
  * Creates an SSE stream for real-time Murder Board progress.
  * Each stage completion sends an event to the client.
  */
-export function createMurderBoardSSEStream(
-  input: MurderBoardInput,
-): ReadableStream<Uint8Array> {
+export function createMurderBoardSSEStream(input: MurderBoardInput): ReadableStream<Uint8Array> {
   const encoder = new TextEncoder();
 
   return new ReadableStream({

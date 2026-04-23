@@ -247,7 +247,7 @@ Return JSON with:
             minions response
 
         """
-        minions_url = os.getenv("minionS_URL", "http://localhost:8600")
+        minions_url = os.getenv("minionS_URL", "http://localhost:8600")  # noqa: SIM112
 
         try:
             async with (

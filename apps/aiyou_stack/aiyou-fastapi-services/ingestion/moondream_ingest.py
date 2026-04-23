@@ -44,7 +44,7 @@ def parse_with_moondream(file_path: Path) -> dict[str, Any]:
         try:
             text = file_path.read_text(encoding="utf-8")
             return {"text": text, "json": None, "meta": {"mode": "plain_text", "encoding": "utf-8"}}
-        except:
+        except Exception:
             return {
                 "text": "",
                 "json": None,

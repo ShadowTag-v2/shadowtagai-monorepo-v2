@@ -18,13 +18,13 @@ from app.services.user_service import UserService
 router = APIRouter()
 
 
-def get_user_service(db: AsyncSession = Depends(get_db)) -> UserService:
+def get_user_service(db: AsyncSession = Depends(get_db)) -> UserService:  # noqa: B008
     """Dependency to get UserService instance."""
     return UserService(db)
 
 
 @router.get("/me", response_model=UserResponse)
-async def get_current_user_info(current_user: User = Depends(get_current_active_user)) -> User:
+async def get_current_user_info(current_user: User = Depends(get_current_active_user)) -> User:  # noqa: B008
     """Get current user information
 
     Security:
@@ -37,8 +37,8 @@ async def get_current_user_info(current_user: User = Depends(get_current_active_
 @router.patch("/me", response_model=UserResponse)
 async def update_current_user(
     user_data: UserUpdate,
-    current_user: User = Depends(get_current_active_user),
-    service: UserService = Depends(get_user_service),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    service: UserService = Depends(get_user_service),  # noqa: B008
 ) -> User:
     """Update current user information
 
@@ -52,8 +52,8 @@ async def update_current_user(
 
 @router.delete("/me", status_code=status.HTTP_200_OK)
 async def delete_current_user(
-    current_user: User = Depends(get_current_active_user),
-    service: UserService = Depends(get_user_service),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    service: UserService = Depends(get_user_service),  # noqa: B008
 ) -> dict:
     """Soft delete current user account
 

@@ -34,7 +34,7 @@ def get_ingestion_service() -> IngestionService:
 @router.post("/sources", response_model=DataSource)
 async def create_source(
     request: CreateDataSourceRequest,
-    service: IngestionService = Depends(get_ingestion_service),
+    service: IngestionService = Depends(get_ingestion_service),  # noqa: B008
 ):
     """Create a new data source."""
     try:
@@ -54,17 +54,17 @@ async def create_source(
 
 @router.get("/sources", response_model=list[DataSource])
 async def list_sources(
-    source_type: DataSourceType | None = Query(None),
-    tier: DataTier | None = Query(None),
+    source_type: DataSourceType | None = Query(None),  # noqa: B008
+    tier: DataTier | None = Query(None),  # noqa: B008
     enabled_only: bool = Query(True),
-    service: IngestionService = Depends(get_ingestion_service),
+    service: IngestionService = Depends(get_ingestion_service),  # noqa: B008
 ):
     """List data sources with optional filtering."""
     return service.list_sources(source_type=source_type, tier=tier, enabled_only=enabled_only)
 
 
 @router.get("/sources/{source_id}", response_model=DataSource)
-async def get_source(source_id: str, service: IngestionService = Depends(get_ingestion_service)):
+async def get_source(source_id: str, service: IngestionService = Depends(get_ingestion_service)):  # noqa: B008
     """Get a specific data source."""
     source = service.get_source(source_id)
     if not source:
@@ -73,7 +73,7 @@ async def get_source(source_id: str, service: IngestionService = Depends(get_ing
 
 
 @router.delete("/sources/{source_id}")
-async def delete_source(source_id: str, service: IngestionService = Depends(get_ingestion_service)):
+async def delete_source(source_id: str, service: IngestionService = Depends(get_ingestion_service)):  # noqa: B008
     """Delete a data source."""
     success = service.delete_source(source_id)
     if not success:
@@ -87,7 +87,7 @@ async def delete_source(source_id: str, service: IngestionService = Depends(get_
 @router.post("/jobs/start", response_model=IngestionJobStatusResponse)
 async def start_job(
     request: StartIngestionJobRequest,
-    service: IngestionService = Depends(get_ingestion_service),
+    service: IngestionService = Depends(get_ingestion_service),  # noqa: B008
 ):
     """Start a new ingestion job."""
     try:
@@ -102,7 +102,7 @@ async def start_job(
 
 
 @router.get("/jobs/{job_id}", response_model=IngestionJobStatusResponse)
-async def get_job_status(job_id: str, service: IngestionService = Depends(get_ingestion_service)):
+async def get_job_status(job_id: str, service: IngestionService = Depends(get_ingestion_service)):  # noqa: B008
     """Get the status of an ingestion job."""
     job = service.get_job(job_id)
     if not job:
@@ -113,9 +113,9 @@ async def get_job_status(job_id: str, service: IngestionService = Depends(get_in
 
 @router.get("/jobs", response_model=list[IngestionJob])
 async def list_jobs(
-    status: IngestionStatus | None = Query(None),
+    status: IngestionStatus | None = Query(None),  # noqa: B008
     limit: int = Query(50, ge=1, le=100),
-    service: IngestionService = Depends(get_ingestion_service),
+    service: IngestionService = Depends(get_ingestion_service),  # noqa: B008
 ):
     """List ingestion jobs with optional filtering."""
     return service.list_jobs(status=status, limit=limit)
@@ -125,7 +125,7 @@ async def list_jobs(
 
 
 @router.get("/metrics/latest", response_model=Optional[IngestionMetrics])  # noqa: UP045
-async def get_latest_metrics(service: IngestionService = Depends(get_ingestion_service)):
+async def get_latest_metrics(service: IngestionService = Depends(get_ingestion_service)):  # noqa: B008
     """Get the latest ingestion metrics."""
     return service.get_latest_metrics()
 
@@ -133,7 +133,7 @@ async def get_latest_metrics(service: IngestionService = Depends(get_ingestion_s
 @router.get("/metrics/summary")
 async def get_metrics_summary(
     days: int = Query(7, ge=1, le=90),
-    service: IngestionService = Depends(get_ingestion_service),
+    service: IngestionService = Depends(get_ingestion_service),  # noqa: B008
 ):
     """Get metrics summary for the past N days."""
     return service.get_metrics_summary(days=days)
@@ -143,7 +143,7 @@ async def get_metrics_summary(
 
 
 @router.get("/coverage/analyze", response_model=CoverageAnalysisResponse)
-async def analyze_coverage(service: IngestionService = Depends(get_ingestion_service)):
+async def analyze_coverage(service: IngestionService = Depends(get_ingestion_service)):  # noqa: B008
     """Analyze multi-source coverage."""
     coverage = service.analyze_coverage()
     return CoverageAnalysisResponse(coverage=coverage, recommendations=coverage.recommendations)
@@ -153,7 +153,7 @@ async def analyze_coverage(service: IngestionService = Depends(get_ingestion_ser
 
 
 @router.get("/tiers/metrics", response_model=TierClassificationMetrics)
-async def get_tier_metrics(service: IngestionService = Depends(get_ingestion_service)):
+async def get_tier_metrics(service: IngestionService = Depends(get_ingestion_service)):  # noqa: B008
     """Get tier classification metrics."""
     return service.get_tier_metrics()
 
@@ -164,7 +164,7 @@ async def get_tier_metrics(service: IngestionService = Depends(get_ingestion_ser
 @router.get("/compliance/check/{source_id}")
 async def check_source_compliance(
     source_id: str,
-    service: IngestionService = Depends(get_ingestion_service),
+    service: IngestionService = Depends(get_ingestion_service),  # noqa: B008
 ):
     """Perform ethical compliance check for a source."""
     try:
@@ -175,7 +175,7 @@ async def check_source_compliance(
 
 
 @router.get("/compliance/summary")
-async def get_compliance_summary(service: IngestionService = Depends(get_ingestion_service)):
+async def get_compliance_summary(service: IngestionService = Depends(get_ingestion_service)):  # noqa: B008
     """Get overall compliance summary."""
     return service.get_compliance_summary()
 
@@ -186,7 +186,7 @@ async def get_compliance_summary(service: IngestionService = Depends(get_ingesti
 @router.get("/briefings/effectiveness")
 async def get_briefing_effectiveness(
     days: int = Query(7, ge=1, le=90),
-    service: IngestionService = Depends(get_ingestion_service),
+    service: IngestionService = Depends(get_ingestion_service),  # noqa: B008
 ):
     """Get AM briefing effectiveness metrics."""
     return service.get_briefing_effectiveness(days=days)

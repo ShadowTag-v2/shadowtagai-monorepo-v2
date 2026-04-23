@@ -31,27 +31,45 @@ export enum MitigationTier {
 // Tool risk classification
 const TOOL_RISK_MATRIX: Record<string, { maxTier: MitigationTier; description: string }> = {
   // Read-only operations — safe
-  'clio_get_contact': { maxTier: MitigationTier.Tier1_ACCEPT, description: 'Read contact' },
-  'clio_get_matter': { maxTier: MitigationTier.Tier1_ACCEPT, description: 'Read matter' },
-  'clio_fuzzy_conflict_check': { maxTier: MitigationTier.Tier1_ACCEPT, description: 'Conflict check' },
-  'sharepoint_read_document': { maxTier: MitigationTier.Tier1_ACCEPT, description: 'Read document' },
+  clio_get_contact: { maxTier: MitigationTier.Tier1_ACCEPT, description: 'Read contact' },
+  clio_get_matter: { maxTier: MitigationTier.Tier1_ACCEPT, description: 'Read matter' },
+  clio_fuzzy_conflict_check: {
+    maxTier: MitigationTier.Tier1_ACCEPT,
+    description: 'Conflict check',
+  },
+  sharepoint_read_document: { maxTier: MitigationTier.Tier1_ACCEPT, description: 'Read document' },
 
   // Write operations — mitigate
-  'clio_attach_dossier': { maxTier: MitigationTier.Tier2_MITIGATE, description: 'Attach document to matter' },
-  'clio_draft_time_entry': { maxTier: MitigationTier.Tier2_MITIGATE, description: 'Draft billable time' },
-  'sharepoint_upload_document': { maxTier: MitigationTier.Tier2_MITIGATE, description: 'Upload to SharePoint' },
+  clio_attach_dossier: {
+    maxTier: MitigationTier.Tier2_MITIGATE,
+    description: 'Attach document to matter',
+  },
+  clio_draft_time_entry: {
+    maxTier: MitigationTier.Tier2_MITIGATE,
+    description: 'Draft billable time',
+  },
+  sharepoint_upload_document: {
+    maxTier: MitigationTier.Tier2_MITIGATE,
+    description: 'Upload to SharePoint',
+  },
 
   // Financial operations — review required
-  'stripe_create_charge': { maxTier: MitigationTier.Tier3_REVIEW, description: 'Create Stripe charge' },
-  'clio_submit_invoice': { maxTier: MitigationTier.Tier3_REVIEW, description: 'Submit invoice to client' },
+  stripe_create_charge: {
+    maxTier: MitigationTier.Tier3_REVIEW,
+    description: 'Create Stripe charge',
+  },
+  clio_submit_invoice: {
+    maxTier: MitigationTier.Tier3_REVIEW,
+    description: 'Submit invoice to client',
+  },
 
   // Destructive operations — reject
-  'clio_delete_matter': { maxTier: MitigationTier.Tier4_REJECT, description: 'Delete matter' },
-  'clio_delete_contact': { maxTier: MitigationTier.Tier4_REJECT, description: 'Delete contact' },
+  clio_delete_matter: { maxTier: MitigationTier.Tier4_REJECT, description: 'Delete matter' },
+  clio_delete_contact: { maxTier: MitigationTier.Tier4_REJECT, description: 'Delete contact' },
 
   // Catastrophic operations — RKILL
-  'clio_export_all_data': { maxTier: MitigationTier.Tier5_RKILL, description: 'Mass data export' },
-  'admin_reset_database': { maxTier: MitigationTier.Tier5_RKILL, description: 'Database reset' },
+  clio_export_all_data: { maxTier: MitigationTier.Tier5_RKILL, description: 'Mass data export' },
+  admin_reset_database: { maxTier: MitigationTier.Tier5_RKILL, description: 'Database reset' },
 };
 
 interface RiskContext {
@@ -96,10 +114,14 @@ export function evaluateRisk(context: RiskContext): MitigationTier {
 
 // ─── MCP Client Wrapper ───────────────────────────────────────────────
 const MCPCallResultSchema = z.object({
-  content: z.array(z.object({
-    type: z.string(),
-    text: z.string().optional(),
-  })).optional(),
+  content: z
+    .array(
+      z.object({
+        type: z.string(),
+        text: z.string().optional(),
+      }),
+    )
+    .optional(),
   isError: z.boolean().optional(),
 });
 
@@ -165,9 +187,6 @@ export class AntigravityMCPClient {
     if (riskTier === MitigationTier.Tier3_REVIEW) {
       logEntry.action = 'REVIEW_PASSED';
       await this.logInterception(logEntry);
-      console.warn(
-        `[ANTIGRAVITY REVIEW] Tool ${toolName} requires human review. Proceeding with logging.`,
-      );
     }
 
     // Tier 1-2: Proceed

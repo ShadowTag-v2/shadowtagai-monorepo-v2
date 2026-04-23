@@ -61,7 +61,12 @@ export async function POST(req: Request) {
     const isValidToken = await verifySEUToken(ephemeralToken, clientIp, sandboxId);
     if (!isValidToken) {
       return NextResponse.json(
-        { type: 'https://kovelai.com/errors/auth', title: 'Sandbox Compromised', status: 401, detail: 'S.E.U. token validation failed.' },
+        {
+          type: 'https://kovelai.com/errors/auth',
+          title: 'Sandbox Compromised',
+          status: 401,
+          detail: 'S.E.U. token validation failed.',
+        },
         { status: 401 },
       );
     }
@@ -168,10 +173,7 @@ async function convertAudioToText(audioBase64: string): Promise<string> {
   return `[AUDIO_TRANSCRIPT_PLACEHOLDER:${audioBase64.slice(0, 20)}...]`;
 }
 
-async function executePrivilegedSearch(
-  queries: string[],
-  cxId: string,
-): Promise<SearchResult[]> {
+async function executePrivilegedSearch(queries: string[], cxId: string): Promise<SearchResult[]> {
   const results: SearchResult[] = [];
 
   for (const query of queries) {

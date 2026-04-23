@@ -24,18 +24,60 @@
     "**/.ruff_cache": true,
     "**/node_modules": true,
     "**/reference_architectures": true,
-    "**/external_repos": true
+    "**/external_repos": true,
+    "**/external_sdks": true,
+    "**/.mypy_cache": true,
+    "**/.pixi": true,
+    "**/deep-archive": true,
+    "**/archive": true,
+    "**/bazel-*": true
   },
   "search.exclude": {
     "**/node_modules": true,
     "**/reference_architectures": true,
     "**/external_repos": true,
-    "**/.venv": true
+    "**/external_sdks": true,
+    "**/.venv": true,
+    "**/.mypy_cache": true,
+    "**/__pycache__": true,
+    "**/deep-archive": true,
+    "**/archive": true,
+    "**/build": true,
+    "**/dist": true
   },
   "files.watcherExclude": {
+    "**/.git/objects/**": true,
     "**/node_modules/**": true,
     "**/.venv/**": true,
+    "**/.venv*/**": true,
+    "**/.pixi/**": true,
+    "**/.mypy_cache/**": true,
+    "**/__pycache__/**": true,
+    "**/clones/**": true,
+    "**/clone-base/**": true,
     "**/reference_architectures/**": true,
-    "**/external_repos/**": true
-  }
+    "**/external_repos/**": true,
+    "**/external_sdks/**": true,
+    "**/deep-archive/**": true,
+    "**/archive/**": true,
+    "**/build/**": true,
+    "**/dist/**": true,
+    "**/.gradle/**": true,
+    "**/.lancedb/**": true,
+    "**/.gitnexus/**": true,
+    "**/.chroma_db/**": true,
+    "**/.uv-cache/**": true,
+    "**/third_party/**": true,
+    "**/bazel-*/**": true,
+    "**/.ruff_cache/**": true,
+    "**/.pytest_cache/**": true
+  },
+  "terminal.integrated.env.osx": {
+    "NODE_OPTIONS": "--no-deprecation"
+  },
+  "terminal.integrated.env.linux": {
+    "NODE_OPTIONS": "--no-deprecation"
+  },
+  "extensions.autoUpdate": false,
+  "extensions.autoCheckUpdates": false
 }

@@ -124,4 +124,4 @@ class Sequential(Layer):
         return params
 
     def __repr__(self):
-        return f"Sequential({', '.join(repr(l) for l in self.layers)})"
+        return f"Sequential({', '.join(repr(l) for l in self.layers)})"  # noqa: E741

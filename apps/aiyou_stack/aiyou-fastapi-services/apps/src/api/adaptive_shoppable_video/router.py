@@ -110,8 +110,8 @@ app.add_middleware(
 
 
 # ================================================================================
-from .database import *
-from .service import *
+from .database import *  # noqa: E402
+from .service import *  # noqa: E402
 
 # API ENDPOINTS
 # ================================================================================

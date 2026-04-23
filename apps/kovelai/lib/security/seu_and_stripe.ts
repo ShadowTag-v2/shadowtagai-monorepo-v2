@@ -15,9 +15,9 @@
  * @see arXiv:2512.14982 (prompt repetition accuracy boost)
  */
 
-import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
+import crypto from 'node:crypto';
+import { type JWTPayload, jwtVerify, SignJWT } from 'jose';
 import Stripe from 'stripe';
-import crypto from 'crypto';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const SECRET_KEY = new TextEncoder().encode(process.env.SEU_JWT_SECRET);
@@ -55,10 +55,7 @@ export async function chargeAndMintSEU(
   // 2. Token is Sandbox-Bound (IP & Payment ID), Ephemeral (1 hr), and User-Billed
   const token = await new SignJWT({
     sandboxId: paymentIntent.id,
-    clientIpHash: crypto
-      .createHash('sha256')
-      .update(clientIp)
-      .digest('hex'),
+    clientIpHash: crypto.createHash('sha256').update(clientIp).digest('hex'),
     firmId,
   } satisfies SeuPayload)
     .setProtectedHeader({ alg: 'HS256' })
@@ -77,21 +74,13 @@ export async function chargeAndMintSEU(
  * @returns Decoded payload if valid
  * @throws Error if token is expired, invalid, or IP mismatches
  */
-export async function verifySeuToken(
-  token: string,
-  incomingIp: string,
-): Promise<SeuPayload> {
+export async function verifySeuToken(token: string, incomingIp: string): Promise<SeuPayload> {
   const { payload } = await jwtVerify(token, SECRET_KEY);
-  const incomingIpHash = crypto
-    .createHash('sha256')
-    .update(incomingIp)
-    .digest('hex');
+  const incomingIpHash = crypto.createHash('sha256').update(incomingIp).digest('hex');
 
   // [S] Sandbox-Bound Check: Blocks .npmrc exfiltration hacks
   if ((payload as SeuPayload).clientIpHash !== incomingIpHash) {
-    throw new Error(
-      'S.E.U. Perimeter Breach: IP Mismatch. Execution Halted.',
-    );
+    throw new Error('S.E.U. Perimeter Breach: IP Mismatch. Execution Halted.');
   }
 
   return payload as SeuPayload;

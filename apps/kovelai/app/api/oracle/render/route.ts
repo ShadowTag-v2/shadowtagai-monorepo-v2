@@ -13,9 +13,9 @@
  * @see lib/oracle/memo-pdf.ts
  */
 
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { OracleMemoSchema, renderMemoHTML, generateMemoPDFTemplate } from '@/lib/oracle/memo-pdf';
+import { generateMemoPDFTemplate, OracleMemoSchema, renderMemoHTML } from '@/lib/oracle/memo-pdf';
 
 // ─── Request Schema ─────────────────────────────────────────────────
 
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.PDF_RENDERER_TOKEN ?? ''}`,
+        Authorization: `Bearer ${process.env.PDF_RENDERER_TOKEN ?? ''}`,
       },
       body: JSON.stringify({
         html: renderMemoHTML(memo),
@@ -93,9 +93,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 },
       );
     }
-    return NextResponse.json(
-      { error: 'Memo rendering failed' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Memo rendering failed' }, { status: 500 });
   }
 }

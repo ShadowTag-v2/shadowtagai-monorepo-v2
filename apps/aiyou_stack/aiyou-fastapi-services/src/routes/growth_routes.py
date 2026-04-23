@@ -19,7 +19,7 @@ router = APIRouter(prefix="/growth", tags=["growth"])
 @router.post("/analyze")
 async def analyze_growth(
     request: AnalyticsMetrics,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ) -> dict[str, Any]:
     """Analyze growth metrics using the Growth Engineer agent.
 
@@ -59,7 +59,7 @@ Please provide:
 @router.post("/ab-test/design")
 async def design_ab_test(
     request: ABTestRequest,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ) -> dict[str, Any]:
     """Design an A/B test with the Growth Engineer agent.
 
@@ -103,7 +103,7 @@ Please provide:
 @router.post("/viral-loop/analyze")
 async def analyze_viral_loop(
     request: ViralLoopRequest,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ) -> dict[str, Any]:
     """Analyze viral loop potential using the Growth Engineer agent.
 
@@ -145,7 +145,7 @@ Please provide:
 @router.post("/retention/analyze")
 async def analyze_retention(
     cohort_data: dict[str, Any],
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ) -> dict[str, Any]:
     """Analyze user retention using the Growth Engineer agent.
 
@@ -185,7 +185,7 @@ Please provide:
 @router.post("/funnel/analyze")
 async def analyze_funnel(
     funnel_steps: dict[str, Any],
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ) -> dict[str, Any]:
     """Analyze conversion funnel using the Growth Engineer agent.
 
@@ -225,7 +225,7 @@ Please provide:
 @router.post("/hooks/identify")
 async def identify_user_hooks(
     user_journey: dict[str, Any],
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ) -> dict[str, Any]:
     """Identify user hooks in the application using the Growth Engineer agent.
 
@@ -265,7 +265,7 @@ Please analyze using the Hook Model (Trigger → Action → Reward → Investmen
 @router.post("/experiment/recommend")
 async def recommend_experiments(
     product_context: dict[str, Any],
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ) -> dict[str, Any]:
     """Get experiment recommendations from the Growth Engineer agent.
 

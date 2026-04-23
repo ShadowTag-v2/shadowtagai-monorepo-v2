@@ -17,7 +17,7 @@ from pydantic import BaseModel
 # LOCAL IMPORTS (Self-Healing Fix)
 # ==============================================================================
 try:
-    from judge6 import RiskLevel, Verdict, judge_unified
+    from judge6 import RiskLevel, Verdict, judge_unified  # noqa: F401
 
     JUDGE6_AVAILABLE = True
 except ImportError:
@@ -133,7 +133,7 @@ async def agui_endpoint(request: Request):
     """AG-UI Protocol Endpoint for CopilotKit integration."""
     try:
         body = await request.json()
-    except:
+    except Exception:
         body = {}
 
     messages = body.get("messages", [])

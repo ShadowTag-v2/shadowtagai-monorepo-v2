@@ -12,7 +12,7 @@ for p in root.rglob("*"):
     if p.is_file() and p.suffix.lower() in {".html", ".js", ".css"}:
         try:
             s = p.read_text(encoding="utf-8", errors="ignore")
-        except:
+        except Exception:
             continue
         for m in URL.finditer(s):
             found.add(m.group(1))

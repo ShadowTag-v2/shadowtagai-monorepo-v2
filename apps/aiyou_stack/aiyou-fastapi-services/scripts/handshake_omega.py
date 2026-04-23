@@ -9,7 +9,7 @@ sys.path.append(
     ),
 )
 try:
-    from src.atomic_core import initiate_research_omega, monitor_and_capture_omega
+    from src.atomic_core import initiate_research_omega, monitor_and_capture_omega  # noqa: F401
 except ImportError:
     # Fallback for direct execution structure
     sys.path.append(

@@ -169,19 +169,18 @@ class ResultVerifier:
         issues = []
 
         # Check p-value range
-        if result.primary_p_value is not None:
-            if not (0 <= result.primary_p_value <= 1):
-                issues.append(
-                    VerificationIssue(
-                        severity="error",
-                        category="sanity",
-                        message=f"P-value out of range [0, 1]: {result.primary_p_value}",
-                        details={"p_value": result.primary_p_value},
-                    )
+        if result.primary_p_value is not None and not (0 <= result.primary_p_value <= 1):
+            issues.append(
+                VerificationIssue(
+                    severity="error",
+                    category="sanity",
+                    message=f"P-value out of range [0, 1]: {result.primary_p_value}",
+                    details={"p_value": result.primary_p_value},
                 )
+            )
 
         # Check for inf/nan in primary metrics
-        if result.primary_effect_size is not None:
+        if result.primary_effect_size is not None:  # noqa: SIM102
             if np.isnan(result.primary_effect_size) or np.isinf(result.primary_effect_size):
                 issues.append(
                     VerificationIssue(
@@ -205,7 +204,7 @@ class ResultVerifier:
                 )
 
         # Check for empty results
-        if result.status == ResultStatus.SUCCESS:
+        if result.status == ResultStatus.SUCCESS:  # noqa: SIM102
             if not result.raw_data and not result.processed_data:
                 issues.append(
                     VerificationIssue(
@@ -217,7 +216,7 @@ class ResultVerifier:
                 )
 
         # Check for contradictions
-        if result.supports_hypothesis is not None and result.primary_p_value is not None:
+        if result.supports_hypothesis is not None and result.primary_p_value is not None:  # noqa: SIM102
             # If p < 0.05, should generally support hypothesis
             if result.primary_p_value < 0.05 and result.supports_hypothesis is False:
                 issues.append(
@@ -388,7 +387,7 @@ class ResultVerifier:
         issues = []
 
         # Check status matches data
-        if result.status == ResultStatus.SUCCESS:
+        if result.status == ResultStatus.SUCCESS:  # noqa: SIM102
             if result.stderr and "error" in result.stderr.lower():
                 issues.append(
                     VerificationIssue(
@@ -399,7 +398,7 @@ class ResultVerifier:
                     )
                 )
 
-        if result.status == ResultStatus.FAILED:
+        if result.status == ResultStatus.FAILED:  # noqa: SIM102
             if result.primary_p_value is not None or result.supports_hypothesis is not None:
                 issues.append(
                     VerificationIssue(
@@ -411,7 +410,7 @@ class ResultVerifier:
                 )
 
         # Check supports_hypothesis matches p_value
-        if result.supports_hypothesis is True and result.primary_p_value is not None:
+        if result.supports_hypothesis is True and result.primary_p_value is not None:  # noqa: SIM102
             if result.primary_p_value > 0.05:
                 issues.append(
                     VerificationIssue(
@@ -490,7 +489,7 @@ class ResultVerifier:
                 )
 
         # Check hypothesis support is consistent
-        if original.supports_hypothesis is not None and replication.supports_hypothesis is not None:
+        if original.supports_hypothesis is not None and replication.supports_hypothesis is not None:  # noqa: SIM102
             if original.supports_hypothesis != replication.supports_hypothesis:
                 issues.append(
                     VerificationIssue(

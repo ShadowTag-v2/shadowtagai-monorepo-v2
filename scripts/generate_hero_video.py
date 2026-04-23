@@ -192,7 +192,7 @@ class Veo31Pipeline:
                 len(video_bytes) / (1024 * 1024)
             else:
                 msg = "Could not download video bytes from response."
-                raise RuntimeError(msg)
+                raise RuntimeError(msg)  # noqa: B904
 
         return output_path
 

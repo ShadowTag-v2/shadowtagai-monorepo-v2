@@ -33,7 +33,7 @@ router = APIRouter()
 logger = get_logger(__name__)
 
 
-def get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:
+def get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:  # noqa: B008
     """Dependency to get AuthService instance."""
     return AuthService(db)
 
@@ -41,7 +41,7 @@ def get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def register(
     user_data: UserCreate,
-    service: AuthService = Depends(get_auth_service),
+    service: AuthService = Depends(get_auth_service),  # noqa: B008
 ) -> User:
     """Register new user
 
@@ -79,7 +79,7 @@ async def register(
 @router.post("/login", response_model=TokenResponse)
 async def login(
     credentials: LoginRequest,
-    service: AuthService = Depends(get_auth_service),
+    service: AuthService = Depends(get_auth_service),  # noqa: B008
 ) -> TokenResponse:
     """Login user and return JWT tokens
 
@@ -140,7 +140,7 @@ async def login(
 @router.post("/refresh", response_model=TokenResponse)
 async def refresh_access_token(
     refresh_data: RefreshTokenRequest,
-    service: AuthService = Depends(get_auth_service),
+    service: AuthService = Depends(get_auth_service),  # noqa: B008
 ) -> TokenResponse:
     """Refresh access token using refresh token
 
@@ -178,8 +178,8 @@ async def refresh_access_token(
 @router.post("/change-password", status_code=status.HTTP_200_OK)
 async def change_password(
     password_data: PasswordChangeRequest,
-    current_user: User = Depends(get_current_user),
-    service: AuthService = Depends(get_auth_service),
+    current_user: User = Depends(get_current_user),  # noqa: B008
+    service: AuthService = Depends(get_auth_service),  # noqa: B008
 ) -> dict:
     """Change user password
 

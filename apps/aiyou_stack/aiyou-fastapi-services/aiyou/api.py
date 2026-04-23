@@ -246,7 +246,7 @@ async def get_feed(request: FeedRequest):
 
 @app.post("/upload", response_model=UploadResponse)
 async def upload_content(
-    file: UploadFile = File(...),
+    file: UploadFile = File(...),  # noqa: B008
     content_type: Literal["image", "video", "audio"] = Form(...),
     title: str = Form(...),
     description: str | None = Form(None),

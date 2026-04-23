@@ -153,7 +153,7 @@ async def health_check():
 
 @app.post("/authenticate", response_model=AuthenticationResponse)
 async def authenticate_asset(
-    file: UploadFile = File(...),
+    file: UploadFile = File(...),  # noqa: B008
     owner_address: str = Form(...),
     asset_type: Literal["image", "video", "audio", "text"] = Form(...),
     embed_watermark: bool = Form(True),
@@ -263,7 +263,7 @@ async def authenticate_asset(
 
 @app.post("/verify", response_model=VerificationResponse)
 async def verify_asset(
-    file: UploadFile = File(...),
+    file: UploadFile = File(...),  # noqa: B008
     asset_id: str | None = Form(None),
     claimed_owner: str | None = Form(None),
 ):

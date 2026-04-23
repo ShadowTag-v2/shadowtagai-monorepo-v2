@@ -9,7 +9,7 @@
  * @see lib/orchestrator/murder-board-v2.ts
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock fetch globally
 const mockFetch = vi.fn();
@@ -48,9 +48,7 @@ describe('Murder Board Orchestrator v2', () => {
           }),
       });
 
-      const { executeMurderBoard } = await import(
-        '../lib/orchestrator/murder-board-v2'
-      );
+      const { executeMurderBoard } = await import('../lib/orchestrator/murder-board-v2');
 
       const stages: string[] = [];
       const result = await executeMurderBoard(
@@ -114,9 +112,7 @@ describe('Murder Board Orchestrator v2', () => {
         });
       });
 
-      const { executeMurderBoard } = await import(
-        '../lib/orchestrator/murder-board-v2'
-      );
+      const { executeMurderBoard } = await import('../lib/orchestrator/murder-board-v2');
 
       const result = await executeMurderBoard({
         caseDescription: 'Test case for rejection',
@@ -156,9 +152,7 @@ describe('Murder Board Orchestrator v2', () => {
         });
       });
 
-      const { executeMurderBoard } = await import(
-        '../lib/orchestrator/murder-board-v2'
-      );
+      const { executeMurderBoard } = await import('../lib/orchestrator/murder-board-v2');
 
       const result = await executeMurderBoard({
         caseDescription: 'Test case for conditional',
@@ -191,9 +185,7 @@ describe('Murder Board Orchestrator v2', () => {
         });
       });
 
-      const { executeMurderBoard } = await import(
-        '../lib/orchestrator/murder-board-v2'
-      );
+      const { executeMurderBoard } = await import('../lib/orchestrator/murder-board-v2');
 
       const result = await executeMurderBoard({
         caseDescription: 'Test case for failure',
@@ -212,9 +204,7 @@ describe('Murder Board Orchestrator v2', () => {
     it('should throw when API key is missing', async () => {
       delete process.env.GOOGLE_AI_API_KEY;
 
-      const { executeMurderBoard } = await import(
-        '../lib/orchestrator/murder-board-v2'
-      );
+      const { executeMurderBoard } = await import('../lib/orchestrator/murder-board-v2');
 
       const result = await executeMurderBoard({
         caseDescription: 'Test case without API key',
@@ -240,9 +230,7 @@ describe('Murder Board Orchestrator v2', () => {
           }),
       });
 
-      const { executeMurderBoard } = await import(
-        '../lib/orchestrator/murder-board-v2'
-      );
+      const { executeMurderBoard } = await import('../lib/orchestrator/murder-board-v2');
 
       const result = await executeMurderBoard({
         caseDescription: 'Duration test',
@@ -273,9 +261,7 @@ describe('Murder Board Orchestrator v2', () => {
           }),
       });
 
-      const { createMurderBoardSSEStream } = await import(
-        '../lib/orchestrator/murder-board-v2'
-      );
+      const { createMurderBoardSSEStream } = await import('../lib/orchestrator/murder-board-v2');
 
       const stream = createMurderBoardSSEStream({
         caseDescription: 'SSE stream test',
@@ -294,9 +280,7 @@ describe('Murder Board Orchestrator v2', () => {
 
 describe('War Room Prompts', () => {
   it('should build prompts for all 7 stages', async () => {
-    const { generateFullPipelinePrompts } = await import(
-      '../lib/prompts/war-room-prompts'
-    );
+    const { generateFullPipelinePrompts } = await import('../lib/prompts/war-room-prompts');
 
     const prompts = generateFullPipelinePrompts('Test case', 'flash');
     expect(prompts).toHaveLength(7);
@@ -314,9 +298,7 @@ describe('War Room Prompts', () => {
   });
 
   it('should apply prompt repetition for non-reasoning tiers', async () => {
-    const { buildMurderBoardPrompt } = await import(
-      '../lib/prompts/war-room-prompts'
-    );
+    const { buildMurderBoardPrompt } = await import('../lib/prompts/war-room-prompts');
 
     const flashPrompt = buildMurderBoardPrompt('EXTRACTION', 'Test input', 'flash');
     expect(flashPrompt.system).toContain('INSTRUCTION EMPHASIS');
@@ -326,9 +308,7 @@ describe('War Room Prompts', () => {
   });
 
   it('should NOT apply prompt repetition for reasoning tier', async () => {
-    const { buildMurderBoardPrompt } = await import(
-      '../lib/prompts/war-room-prompts'
-    );
+    const { buildMurderBoardPrompt } = await import('../lib/prompts/war-room-prompts');
 
     const reasoningPrompt = buildMurderBoardPrompt('EXTRACTION', 'Test input', 'reasoning');
     // The system prompt already contains INSTRUCTION EMPHASIS inline, but
@@ -338,9 +318,7 @@ describe('War Room Prompts', () => {
   });
 
   it('should include all critical elements in RISK_GATE prompt', async () => {
-    const { MURDER_BOARD_PROMPTS } = await import(
-      '../lib/prompts/war-room-prompts'
-    );
+    const { MURDER_BOARD_PROMPTS } = await import('../lib/prompts/war-room-prompts');
 
     const riskPrompt = MURDER_BOARD_PROMPTS.RISK_GATE.system;
     expect(riskPrompt).toContain('APPROVED');

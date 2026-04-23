@@ -20,7 +20,7 @@ router = APIRouter(prefix="/analytics", tags=["analytics"])
 @router.post("/time-series", response_model=TimeSeriesResponse)
 async def get_time_series(
     query: TimeSeriesQuery,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get time series data
 
@@ -37,7 +37,7 @@ async def analyze_user_behavior(
     user_id: str = None,
     segment: str = None,
     days: int = 30,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Analyze user behavior
 
@@ -62,7 +62,7 @@ async def analyze_user_behavior(
 @router.get("/insights", response_model=InsightResponse)
 async def generate_insights(
     days: int = 7,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Generate insights
 
@@ -80,7 +80,7 @@ async def generate_insights(
 @router.get("/overview")
 async def get_analytics_overview(
     days: int = 7,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get analytics overview
 

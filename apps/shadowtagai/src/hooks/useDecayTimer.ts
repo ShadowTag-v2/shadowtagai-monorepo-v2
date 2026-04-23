@@ -27,13 +27,11 @@ export function useDecayTimer(ttlSeconds: number, onPurge: () => void) {
     document.cookie.split(';').forEach((c) => {
       document.cookie = c
         .replace(/^ +/, '')
-        .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+        .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
     });
 
     // 4. Trigger application state wipe callback
     onPurge();
-
-    console.warn('🛡️ [KOVEL SHIELD] Data mathematically evicted from DOM.');
   }, [onPurge]);
 
   useEffect(() => {

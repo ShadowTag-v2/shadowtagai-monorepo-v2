@@ -86,7 +86,7 @@ for repo, dest in REPOS.items():
                             if st in content:
                                 stale_hits.append(f"{path} contains stale string: '{st}'")
                                 break
-                except:
+                except Exception:
                     pass
 
     remote_set = set(remote_files)

@@ -12,7 +12,7 @@ import logging
 from collections import deque
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple  # noqa: UP035
+from typing import Dict, List, Optional, Tuple  # noqa: F401, UP035
 
 import numpy as np
 

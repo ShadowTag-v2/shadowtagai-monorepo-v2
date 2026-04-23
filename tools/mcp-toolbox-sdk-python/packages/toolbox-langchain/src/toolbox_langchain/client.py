@@ -51,10 +51,10 @@ class ToolboxClient:
     async def aload_tool(
         self,
         tool_name: str,
-        auth_token_getters: dict[str, Callable[[], str]] = {},
+        auth_token_getters: dict[str, Callable[[], str]] = None,
         auth_tokens: dict[str, Callable[[], str]] | None = None,
         auth_headers: dict[str, Callable[[], str]] | None = None,
-        bound_params: dict[str, Any | Callable[[], Any]] = {},
+        bound_params: dict[str, Any | Callable[[], Any]] = None,
     ) -> ToolboxTool:
         """
         Loads the tool with the given tool name from the Toolbox service.
@@ -71,16 +71,20 @@ class ToolboxClient:
         Returns:
             A tool loaded from the Toolbox.
         """
+        if bound_params is None:
+            bound_params = {}
+        if auth_token_getters is None:
+            auth_token_getters = {}
         if auth_tokens:
             if auth_token_getters:
                 warn(
                     "Both `auth_token_getters` and `auth_tokens` are provided. `auth_tokens` is deprecated, and `auth_token_getters` will be used.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
             else:
                 warn(
                     "Argument `auth_tokens` is deprecated. Use `auth_token_getters` instead.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
                 auth_token_getters = auth_tokens
 
@@ -88,12 +92,12 @@ class ToolboxClient:
             if auth_token_getters:
                 warn(
                     "Both `auth_token_getters` and `auth_headers` are provided. `auth_headers` is deprecated, and `auth_token_getters` will be used.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
             else:
                 warn(
                     "Argument `auth_headers` is deprecated. Use `auth_token_getters` instead.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
                 auth_token_getters = auth_headers
 
@@ -108,10 +112,10 @@ class ToolboxClient:
     async def aload_toolset(
         self,
         toolset_name: str | None = None,
-        auth_token_getters: dict[str, Callable[[], str]] = {},
+        auth_token_getters: dict[str, Callable[[], str]] = None,
         auth_tokens: dict[str, Callable[[], str]] | None = None,
         auth_headers: dict[str, Callable[[], str]] | None = None,
-        bound_params: dict[str, Any | Callable[[], Any]] = {},
+        bound_params: dict[str, Any | Callable[[], Any]] = None,
         strict: bool = False,
     ) -> list[ToolboxTool]:
         """
@@ -136,16 +140,20 @@ class ToolboxClient:
         Returns:
             A list of all tools loaded from the Toolbox.
         """
+        if bound_params is None:
+            bound_params = {}
+        if auth_token_getters is None:
+            auth_token_getters = {}
         if auth_tokens:
             if auth_token_getters:
                 warn(
                     "Both `auth_token_getters` and `auth_tokens` are provided. `auth_tokens` is deprecated, and `auth_token_getters` will be used.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
             else:
                 warn(
                     "Argument `auth_tokens` is deprecated. Use `auth_token_getters` instead.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
                 auth_token_getters = auth_tokens
 
@@ -153,12 +161,12 @@ class ToolboxClient:
             if auth_token_getters:
                 warn(
                     "Both `auth_token_getters` and `auth_headers` are provided. `auth_headers` is deprecated, and `auth_token_getters` will be used.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
             else:
                 warn(
                     "Argument `auth_headers` is deprecated. Use `auth_token_getters` instead.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
                 auth_token_getters = auth_headers
 
@@ -178,10 +186,10 @@ class ToolboxClient:
     def load_tool(
         self,
         tool_name: str,
-        auth_token_getters: dict[str, Callable[[], str]] = {},
+        auth_token_getters: dict[str, Callable[[], str]] = None,
         auth_tokens: dict[str, Callable[[], str]] | None = None,
         auth_headers: dict[str, Callable[[], str]] | None = None,
-        bound_params: dict[str, Any | Callable[[], Any]] = {},
+        bound_params: dict[str, Any | Callable[[], Any]] = None,
     ) -> ToolboxTool:
         """
         Loads the tool with the given tool name from the Toolbox service.
@@ -198,16 +206,20 @@ class ToolboxClient:
         Returns:
             A tool loaded from the Toolbox.
         """
+        if bound_params is None:
+            bound_params = {}
+        if auth_token_getters is None:
+            auth_token_getters = {}
         if auth_tokens:
             if auth_token_getters:
                 warn(
                     "Both `auth_token_getters` and `auth_tokens` are provided. `auth_tokens` is deprecated, and `auth_token_getters` will be used.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
             else:
                 warn(
                     "Argument `auth_tokens` is deprecated. Use `auth_token_getters` instead.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
                 auth_token_getters = auth_tokens
 
@@ -215,12 +227,12 @@ class ToolboxClient:
             if auth_token_getters:
                 warn(
                     "Both `auth_token_getters` and `auth_headers` are provided. `auth_headers` is deprecated, and `auth_token_getters` will be used.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
             else:
                 warn(
                     "Argument `auth_headers` is deprecated. Use `auth_token_getters` instead.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
                 auth_token_getters = auth_headers
 
@@ -234,10 +246,10 @@ class ToolboxClient:
     def load_toolset(
         self,
         toolset_name: str | None = None,
-        auth_token_getters: dict[str, Callable[[], str]] = {},
+        auth_token_getters: dict[str, Callable[[], str]] = None,
         auth_tokens: dict[str, Callable[[], str]] | None = None,
         auth_headers: dict[str, Callable[[], str]] | None = None,
-        bound_params: dict[str, Any | Callable[[], Any]] = {},
+        bound_params: dict[str, Any | Callable[[], Any]] = None,
         strict: bool = False,
     ) -> list[ToolboxTool]:
         """
@@ -262,16 +274,20 @@ class ToolboxClient:
         Returns:
             A list of all tools loaded from the Toolbox.
         """
+        if bound_params is None:
+            bound_params = {}
+        if auth_token_getters is None:
+            auth_token_getters = {}
         if auth_tokens:
             if auth_token_getters:
                 warn(
                     "Both `auth_token_getters` and `auth_tokens` are provided. `auth_tokens` is deprecated, and `auth_token_getters` will be used.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
             else:
                 warn(
                     "Argument `auth_tokens` is deprecated. Use `auth_token_getters` instead.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
                 auth_token_getters = auth_tokens
 
@@ -279,12 +295,12 @@ class ToolboxClient:
             if auth_token_getters:
                 warn(
                     "Both `auth_token_getters` and `auth_headers` are provided. `auth_headers` is deprecated, and `auth_token_getters` will be used.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
             else:
                 warn(
                     "Argument `auth_headers` is deprecated. Use `auth_token_getters` instead.",
-                    DeprecationWarning,
+                    DeprecationWarning, stacklevel=2,
                 )
                 auth_token_getters = auth_headers
 

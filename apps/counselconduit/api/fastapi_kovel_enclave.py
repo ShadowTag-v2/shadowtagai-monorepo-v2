@@ -84,7 +84,7 @@ try:
     from apps.counselconduit.api.provider_health import router as provider_health_router
     from apps.counselconduit.api.resend_webhook import router as resend_router
     from apps.counselconduit.api.sandbox_router import SandboxMiddleware
-    from apps.counselconduit.api.session_pin_monitor import cleanup_session_pins_firestore
+    from apps.counselconduit.api.session_pin_monitor import cleanup_session_pins_firestore  # noqa: F401
     from apps.counselconduit.api.stripe_connect_onboarding import router as connect_onboarding_router
     from apps.counselconduit.api.stripe_connect_webhook import router as connect_webhook_router
     from apps.counselconduit.api.token_meter import router as token_meter_router
@@ -218,7 +218,7 @@ app.include_router(provider_health_router)
 app.include_router(pr_review_router)
 
 # ── Static Files (admin dashboard) ────────────────────────────────────────
-import pathlib as _pathlib
+import pathlib as _pathlib  # noqa: E402
 
 _static_dir = _pathlib.Path(__file__).resolve().parent.parent / "static"
 if _static_dir.is_dir():
@@ -228,8 +228,8 @@ if _static_dir.is_dir():
 
 
 # ── Root-level static files (ZAP WARN fix: 404 on /robots.txt, /favicon.ico) ─
-from starlette.responses import FileResponse as _FileResponse
-from starlette.responses import JSONResponse
+from starlette.responses import FileResponse as _FileResponse  # noqa: E402
+from starlette.responses import JSONResponse  # noqa: E402
 
 
 @app.get("/robots.txt", include_in_schema=False)

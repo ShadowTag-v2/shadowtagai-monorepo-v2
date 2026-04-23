@@ -27,6 +27,6 @@ def verify_zero_trust(token: str) -> dict:
 
 
 @router.post("/query")
-async def execute_query(payload: ZeroTrustPayload, auth: dict = Depends(verify_zero_trust)):
+async def execute_query(payload: ZeroTrustPayload, auth: dict = Depends(verify_zero_trust)):  # noqa: B008
     """Routes strictly validated heavy-lift tasks to Temporal Omega-Swarm Queue."""
     return {"status": "dispatched", "queue": "omega-swarm-queue", "agent_id": payload.agent_id}

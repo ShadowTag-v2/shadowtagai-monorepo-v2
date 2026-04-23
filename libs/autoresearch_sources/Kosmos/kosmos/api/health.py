@@ -367,7 +367,7 @@ class HealthChecker:
         try:
             if hasattr(os, "getloadavg"):
                 load = os.getloadavg()
-                return [round(l, 2) for l in load]
+                return [round(l, 2) for l in load]  # noqa: E741
             return None
         except Exception:
             return None

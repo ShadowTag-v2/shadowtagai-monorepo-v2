@@ -3,8 +3,12 @@
 import logging
 
 try:
-    import google.generativeai as genai
-    from google.generativeai.types import GenerationConfig, HarmBlockThreshold, HarmCategory
+    import google.generativeai as genai  # noqa: F401
+    from google.generativeai.types import (  # noqa: F401
+        GenerationConfig,
+        HarmBlockThreshold,
+        HarmCategory,
+    )
 
     GEMINI_AVAILABLE = True
 except ImportError:

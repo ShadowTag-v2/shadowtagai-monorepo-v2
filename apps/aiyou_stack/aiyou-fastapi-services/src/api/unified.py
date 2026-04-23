@@ -11,16 +11,20 @@ from .unified.valuationrequest import ValuationRequest
 from .unified.valuationresponse import ValuationResponse
 
 "\nUnified API for Complete $715B Ecosystem Integration\n\nCombines all 8 architectural layers:\n1. Layer 0: Optimization (Aegaeon GPU pooling, DeepSeek compression, monetization)\n2. Aerospace: Satellite + cell tower + vehicle edge mesh\n3. Pinkln AI: Multi-agent debates, COR orchestration, trust layer\n4. Memory: 4-LLM orchestration with 2,121+ conversation persistence\n5. Kernels: ATP 5-19 scan, Judge Six, Audit compress\n6. Ratings: Glicko-2 performance tracking\n7. Training: GRPO self-improvement\n8. Evolution: DTE with +3.7% accuracy gains\n\nPerformance Targets:\n- Latency: p99 ≤90ms (achieves 35ms via unified orchestrator)\n- Cost: $0.0003 per execution (97% cheaper than AutoGen)\n- GPU Efficiency: 82% savings via Aegaeon pooling\n- Token Efficiency: 98.5% reduction through kernel chaining\n"
-from datetime import datetime
+from datetime import datetime  # noqa: E402
 
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, Header, HTTPException  # noqa: E402
 
-from src.aerospace import EdgeMeshArchitecture, EnterpriseValuationModel, ROICalculator
-from src.evolution.dte import DTESystem
-from src.integration.unified_orchestrator import UnifiedPinklnOrchestrator
-from src.models.pool import GPUPool
-from src.models.registry import ModelRegistry
-from src.monetization import PRICING_PLANS, PricingTier
+from src.aerospace import (  # noqa: E402
+    EdgeMeshArchitecture,
+    EnterpriseValuationModel,
+    ROICalculator,
+)
+from src.evolution.dte import DTESystem  # noqa: E402
+from src.integration.unified_orchestrator import UnifiedPinklnOrchestrator  # noqa: E402
+from src.models.pool import GPUPool  # noqa: E402
+from src.models.registry import ModelRegistry  # noqa: E402
+from src.monetization import PRICING_PLANS, PricingTier  # noqa: E402
 
 router = APIRouter(prefix="/api/v1/unified", tags=["Unified Ecosystem"])
 

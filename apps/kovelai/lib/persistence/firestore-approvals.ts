@@ -8,7 +8,7 @@
  * TTL: 90 days (configurable per firm)
  */
 
-import { getFirestore, Timestamp, FieldValue } from 'firebase-admin/firestore';
+import { FieldValue, getFirestore, Timestamp } from 'firebase-admin/firestore';
 
 const db = getFirestore();
 
@@ -21,12 +21,12 @@ interface ApprovalRequestDoc {
   firmId: string;
   sessionId: string;
   memoId: string;
-  requestedBy: string;        // System or paralegal email
-  assignedTo: string;         // Attorney email
+  requestedBy: string; // System or paralegal email
+  assignedTo: string; // Attorney email
   status: ApprovalStatus;
   channel: 'slack' | 'google_chat' | 'email' | 'in_app';
   proofOfReviewHash?: string; // HMAC-SHA256 of review action
-  tokenHash: string;          // Hash of the one-time approval token
+  tokenHash: string; // Hash of the one-time approval token
   expiresAt: Timestamp;
   metadata: {
     memoTitle: string;
@@ -81,10 +81,13 @@ export async function createApprovalRequest(params: {
   await ref.set(doc);
 
   // Update firm-level pending count
-  await db.collection('approval_requests').doc(params.firmId).set(
-    { pendingCount: FieldValue.increment(1), lastRequestAt: Timestamp.now() },
-    { merge: true }
-  );
+  await db
+    .collection('approval_requests')
+    .doc(params.firmId)
+    .set(
+      { pendingCount: FieldValue.increment(1), lastRequestAt: Timestamp.now() },
+      { merge: true },
+    );
 
   return { path: ref.path, requestId };
 }
@@ -115,10 +118,10 @@ export async function resolveApproval(params: {
   });
 
   // Decrement pending count
-  await db.collection('approval_requests').doc(params.firmId).set(
-    { pendingCount: FieldValue.increment(-1) },
-    { merge: true }
-  );
+  await db
+    .collection('approval_requests')
+    .doc(params.firmId)
+    .set({ pendingCount: FieldValue.increment(-1) }, { merge: true });
 }
 
 /**
@@ -148,10 +151,10 @@ export async function expireStaleApprovals(firmId: string): Promise<number> {
 
   if (count > 0) {
     await batch.commit();
-    await db.collection('approval_requests').doc(firmId).set(
-      { pendingCount: FieldValue.increment(-count) },
-      { merge: true }
-    );
+    await db
+      .collection('approval_requests')
+      .doc(firmId)
+      .set({ pendingCount: FieldValue.increment(-count) }, { merge: true });
   }
 
   return count;
@@ -162,7 +165,7 @@ export async function expireStaleApprovals(firmId: string): Promise<number> {
  */
 export async function getApprovalAuditTrail(
   firmId: string,
-  options?: { sessionId?: string; limit?: number }
+  options?: { sessionId?: string; limit?: number },
 ): Promise<ApprovalRequestDoc[]> {
   let query = db
     .collection('approval_requests')

@@ -143,7 +143,7 @@ async def get_current_user(token: str | None = Depends(oauth2_scheme)) -> User |
     return user
 
 
-async def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
+async def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:  # noqa: B008
     """Get the current authenticated and active user.
 
     Args:

@@ -194,17 +194,17 @@ app.include_router(ingestion.router, prefix="/api/v1")
 app.include_router(validation.router, prefix="/api/v1")
 
 # Gemini Agents (AutoGen → Gemini migration)
-from app.routes import gemini_agents
+from app.routes import gemini_agents  # noqa: E402
 
 app.include_router(gemini_agents.router, prefix="/api/v1")
 
 # LLM Orchestrator (Superpowers Marketplace + PNKLN integration)
-from app.routes import orchestrator
+from app.routes import orchestrator  # noqa: E402
 
 app.include_router(orchestrator.router, prefix="/api/v1")
 
 # Cor.17 Integration (GPTRAM + Semantic Search + Content Safety)
-from app.routes import cor17
+from app.routes import cor17  # noqa: E402
 
 app.include_router(cor17.router, prefix="/api/v1")
 

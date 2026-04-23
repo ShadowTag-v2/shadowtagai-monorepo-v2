@@ -15,7 +15,7 @@ router = APIRouter(prefix="/performance", tags=["performance"])
 @router.get("/report", response_model=PerformanceReport)
 async def get_performance_report(
     hours: int = Query(default=24, ge=1, le=168),
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_session),  # noqa: B008
 ):
     """Get comprehensive performance report
 
@@ -79,7 +79,7 @@ async def get_bottlenecks(
     limit: int = Query(default=10, ge=1, le=100),
     endpoint: str | None = None,
     severity: str | None = None,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_session),  # noqa: B008
 ):
     """Get detected bottlenecks
 
@@ -95,7 +95,7 @@ async def get_bottlenecks(
 
 
 @router.get("/bottlenecks/{bottleneck_id}/fix")
-async def get_bottleneck_fix(bottleneck_id: int, session: AsyncSession = Depends(get_session)):
+async def get_bottleneck_fix(bottleneck_id: int, session: AsyncSession = Depends(get_session)):  # noqa: B008
     """Get specific fix suggestions for a bottleneck
 
     Returns actionable code examples and optimization strategies
@@ -112,7 +112,7 @@ async def get_bottleneck_fix(bottleneck_id: int, session: AsyncSession = Depends
 @router.get("/slow-endpoints")
 async def get_slow_endpoints(
     hours: int = Query(default=24, ge=1, le=168),
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_session),  # noqa: B008
 ):
     """Analyze slowest endpoints
 
@@ -132,7 +132,7 @@ async def get_slow_endpoints(
 async def get_endpoint_trends(
     endpoint: str,
     hours: int = Query(default=24, ge=1, le=168),
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_session),  # noqa: B008
 ):
     """Get performance trends for a specific endpoint
 
@@ -148,7 +148,7 @@ async def get_endpoint_trends(
 
 
 @router.get("/n-plus-one")
-async def detect_n_plus_one(session: AsyncSession = Depends(get_session)):
+async def detect_n_plus_one(session: AsyncSession = Depends(get_session)):  # noqa: B008
     """Detect N+1 query problems
 
     Identifies potential database performance issues
@@ -165,7 +165,7 @@ async def detect_n_plus_one(session: AsyncSession = Depends(get_session)):
 @router.get("/memory-leaks")
 async def detect_memory_leaks(
     hours: int = Query(default=24, ge=1, le=168),
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(get_session),  # noqa: B008
 ):
     """Detect potential memory leaks
 
@@ -182,7 +182,7 @@ async def detect_memory_leaks(
 
 
 @router.get("/optimization-suggestions")
-async def get_optimization_suggestions(session: AsyncSession = Depends(get_session)):
+async def get_optimization_suggestions(session: AsyncSession = Depends(get_session)):  # noqa: B008
     """Get all optimization suggestions
 
     AI-generated recommendations to make your app faster
@@ -222,7 +222,7 @@ async def clear_cache():
 
 
 @router.get("/summary")
-async def get_performance_summary(session: AsyncSession = Depends(get_session)):
+async def get_performance_summary(session: AsyncSession = Depends(get_session)):  # noqa: B008
     """Get quick performance summary
 
     The 5 most important things to fix right now

@@ -1,6 +1,6 @@
 (() => {
   const e = document.createElement(`link`).relList;
-  if (e && e.supports && e.supports(`modulepreload`)) return;
+  if (e?.supports?.(`modulepreload`)) return;
   for (const e of document.querySelectorAll(`link[rel="modulepreload"]`)) n(e);
   new MutationObserver((e) => {
     for (const t of e)
@@ -72,23 +72,21 @@ var r = document.getElementById(`contactModal`),
       r.setAttribute(`aria-hidden`, `true`),
       r.setAttribute(`inert`, ``));
   }),
-  r &&
-    r.addEventListener(`click`, (e) => {
-      e.target === r && window.closeContactModal();
-    });
-var a = document.getElementById(`contactForm`);
-a &&
-  a.addEventListener(`submit`, async (e) => {
-    e.preventDefault();
-    const t = new FormData(a);
-    if (!t.get(`_honey`))
-      try {
-        await fetch(a.action, { method: `POST`, body: t }),
-          window.closeContactModal(),
-          i && (i.classList.add(`show`), setTimeout(() => i.classList.remove(`show`), 4e3)),
-          a.reset();
-      } catch {}
+  r?.addEventListener(`click`, (e) => {
+    e.target === r && window.closeContactModal();
   });
+var a = document.getElementById(`contactForm`);
+a?.addEventListener(`submit`, async (e) => {
+  e.preventDefault();
+  const t = new FormData(a);
+  if (!t.get(`_honey`))
+    try {
+      await fetch(a.action, { method: `POST`, body: t }),
+        window.closeContactModal(),
+        i && (i.classList.add(`show`), setTimeout(() => i.classList.remove(`show`), 4e3)),
+        a.reset();
+    } catch {}
+});
 var o = document.querySelector(`.nav`);
 o &&
   window.addEventListener(

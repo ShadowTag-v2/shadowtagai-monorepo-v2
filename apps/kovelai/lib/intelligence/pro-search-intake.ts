@@ -84,11 +84,7 @@ export interface ProSearchResult {
  *    "What is the statute of limitations for whistleblower claims in CA?",
  *    "Recent California whistleblower case law 2024-2025"]
  */
-export function decomposeQuery(
-  query: string,
-  jurisdiction: string,
-  maxSteps: number,
-): string[] {
+export function decomposeQuery(query: string, jurisdiction: string, maxSteps: number): string[] {
   // Static decomposition heuristics (LLM decomposition happens server-side)
   const subQuestions: string[] = [];
   const queryLower = query.toLowerCase();
@@ -145,9 +141,10 @@ export async function executeProSearch(
     const subQuestion = subQuestions[i];
 
     // Execute search with progressive context
-    const contextPrefix = steps.length > 0
-      ? `[Context from previous research: ${steps.map(s => s.synthesized).join(' | ')}]\n\n`
-      : '';
+    const contextPrefix =
+      steps.length > 0
+        ? `[Context from previous research: ${steps.map((s) => s.synthesized).join(' | ')}]\n\n`
+        : '';
 
     const enrichedQuery = contextPrefix + subQuestion;
     let searchResults: SearchFragment[];
@@ -186,9 +183,10 @@ export async function executeProSearch(
       subQuestion,
       searchResults: scoredResults,
       synthesized,
-      confidence: scoredResults.length > 0
-        ? scoredResults.reduce((sum, r) => sum + r.relevanceScore, 0) / scoredResults.length
-        : 0,
+      confidence:
+        scoredResults.length > 0
+          ? scoredResults.reduce((sum, r) => sum + r.relevanceScore, 0) / scoredResults.length
+          : 0,
       citations: stepCitations,
       durationMs: Date.now() - stepStart,
     });
@@ -217,9 +215,7 @@ function scoreRelevance(result: SearchFragment, originalQuery: string): number {
   return Math.min(1, matches / Math.max(queryTerms.length, 1));
 }
 
-function classifyCitationType(
-  result: SearchFragment,
-): ProCitation['type'] {
+function classifyCitationType(result: SearchFragment): ProCitation['type'] {
   const text = `${result.title} ${result.url}`.toLowerCase();
   if (text.includes('code') || text.includes('statute') || text.includes('§')) return 'statute';
   if (text.includes('v.') || text.includes('case') || text.includes('court')) return 'case';
@@ -231,7 +227,10 @@ function classifyCitationType(
 
 function synthesizeStep(subQuestion: string, results: SearchFragment[]): string {
   if (results.length === 0) return `No results found for: ${subQuestion}`;
-  const topSnippets = results.slice(0, 3).map((r) => r.snippet).join(' ');
+  const topSnippets = results
+    .slice(0, 3)
+    .map((r) => r.snippet)
+    .join(' ');
   return `[${subQuestion}]: ${topSnippets}`;
 }
 
@@ -243,7 +242,7 @@ function synthesizeFinal(originalQuery: string, steps: ProSearchStep[]): string 
 async function callPrivilegedSearchAPI(
   query: string,
   sessionId: string,
-  firmId: string,
+  _firmId: string,
 ): Promise<SearchFragment[]> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
   try {

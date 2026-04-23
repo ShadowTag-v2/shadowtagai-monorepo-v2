@@ -123,7 +123,7 @@ class LiteLLMProvider(LLMProvider):
 
             self.litellm = litellm
         except ImportError:
-            raise ImportError(
+            raise ImportError(  # noqa: B904
                 "LiteLLM is required for LiteLLMProvider. Install it with: pip install litellm"
             )
 
@@ -345,7 +345,7 @@ class LiteLLMProvider(LLMProvider):
 
         except Exception as e:
             logger.error(f"LiteLLM generation failed: {e}")
-            raise ProviderAPIError("litellm", f"Generation failed: {e}", raw_error=e)
+            raise ProviderAPIError("litellm", f"Generation failed: {e}", raw_error=e)  # noqa: B904
 
     async def generate_async(
         self,
@@ -389,7 +389,7 @@ class LiteLLMProvider(LLMProvider):
 
         except Exception as e:
             logger.error(f"LiteLLM async generation failed: {e}")
-            raise ProviderAPIError("litellm", f"Async generation failed: {e}", raw_error=e)
+            raise ProviderAPIError("litellm", f"Async generation failed: {e}", raw_error=e)  # noqa: B904
 
     def generate_with_messages(
         self, messages: list[Message], max_tokens: int = None, temperature: float = None, **kwargs
@@ -424,7 +424,7 @@ class LiteLLMProvider(LLMProvider):
 
         except Exception as e:
             logger.error(f"LiteLLM message generation failed: {e}")
-            raise ProviderAPIError("litellm", f"Message generation failed: {e}", raw_error=e)
+            raise ProviderAPIError("litellm", f"Message generation failed: {e}", raw_error=e)  # noqa: B904
 
     def generate_structured(
         self,
@@ -488,7 +488,7 @@ The response must match this schema: """
             return json.loads(content)
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse JSON response: {content[:200]}...")
-            raise ProviderAPIError(
+            raise ProviderAPIError(  # noqa: B904
                 "litellm", f"Invalid JSON response: {e}", raw_error=e, recoverable=False
             )
 
@@ -534,7 +534,7 @@ The response must match this schema: """
 
         except Exception as e:
             logger.error(f"LiteLLM streaming failed: {e}")
-            raise ProviderAPIError("litellm", f"Streaming failed: {e}", raw_error=e)
+            raise ProviderAPIError("litellm", f"Streaming failed: {e}", raw_error=e)  # noqa: B904
 
     async def generate_stream_async(
         self,
@@ -578,7 +578,7 @@ The response must match this schema: """
 
         except Exception as e:
             logger.error(f"LiteLLM async streaming failed: {e}")
-            raise ProviderAPIError("litellm", f"Async streaming failed: {e}", raw_error=e)
+            raise ProviderAPIError("litellm", f"Async streaming failed: {e}", raw_error=e)  # noqa: B904
 
     def get_model_info(self) -> dict[str, Any]:
         """

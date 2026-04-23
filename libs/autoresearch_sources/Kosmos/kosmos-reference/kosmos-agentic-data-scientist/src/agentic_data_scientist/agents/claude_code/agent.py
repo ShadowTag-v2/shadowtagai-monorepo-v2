@@ -159,16 +159,16 @@ class ClaudeCodeAgent(Agent):
     model_config = {"extra": "allow"}
 
     # Define working_dir and output_key as instance variables
-    _working_dir: Optional[str] = None
+    _working_dir: Optional[str] = None  # noqa: UP045
     _output_key: str = "implementation_summary"
 
     def __init__(
         self,
         name: str = "claude_coding_agent",
-        description: Optional[str] = None,
-        working_dir: Optional[str] = None,
+        description: Optional[str] = None,  # noqa: UP045
+        working_dir: Optional[str] = None,  # noqa: UP045
         output_key: str = "implementation_summary",
-        after_agent_callback: Optional[Any] = None,
+        after_agent_callback: Optional[Any] = None,  # noqa: UP045
         **kwargs: Any,
     ):
         """
@@ -208,7 +208,7 @@ class ClaudeCodeAgent(Agent):
         self._output_key = output_key
 
     @property
-    def working_dir(self) -> Optional[str]:
+    def working_dir(self) -> Optional[str]:  # noqa: UP045
         return self._working_dir
 
     @property

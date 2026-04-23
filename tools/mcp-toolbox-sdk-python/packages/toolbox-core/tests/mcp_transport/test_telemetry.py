@@ -45,45 +45,39 @@ from toolbox_core.mcp_transport.telemetry import (
 class TestGetTracer:
     def test_returns_tracer_when_available(self):
         mock_tracer = MagicMock()
-        with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", True):
-            with patch.object(telemetry_module, "trace") as mock_trace:
-                mock_trace.get_tracer.return_value = mock_tracer
-                result = get_tracer()
-                mock_trace.get_tracer.assert_called_once_with("toolbox.mcp.sdk", None)
-                assert result == mock_tracer
+        with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", True), patch.object(telemetry_module, "trace") as mock_trace:
+            mock_trace.get_tracer.return_value = mock_tracer
+            result = get_tracer()
+            mock_trace.get_tracer.assert_called_once_with("toolbox.mcp.sdk", None)
+            assert result == mock_tracer
 
     def test_returns_tracer_with_custom_name_and_version(self):
-        with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", True):
-            with patch.object(telemetry_module, "trace") as mock_trace:
-                get_tracer("my.scope", "1.2.3")
-                mock_trace.get_tracer.assert_called_once_with("my.scope", "1.2.3")
+        with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", True), patch.object(telemetry_module, "trace") as mock_trace:
+            get_tracer("my.scope", "1.2.3")
+            mock_trace.get_tracer.assert_called_once_with("my.scope", "1.2.3")
 
     def test_raises_when_unavailable(self):
-        with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", False):
-            with pytest.raises(RuntimeError, match="pip install toolbox-core"):
-                get_tracer()
+        with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", False), pytest.raises(RuntimeError, match="pip install toolbox-core"):
+            get_tracer()
 
 
 class TestGetMeter:
     def test_returns_meter_when_available(self):
         mock_meter = MagicMock()
-        with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", True):
-            with patch.object(telemetry_module, "metrics") as mock_metrics:
-                mock_metrics.get_meter.return_value = mock_meter
-                result = get_meter()
-                mock_metrics.get_meter.assert_called_once_with("toolbox.mcp.sdk", "")
-                assert result == mock_meter
+        with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", True), patch.object(telemetry_module, "metrics") as mock_metrics:
+            mock_metrics.get_meter.return_value = mock_meter
+            result = get_meter()
+            mock_metrics.get_meter.assert_called_once_with("toolbox.mcp.sdk", "")
+            assert result == mock_meter
 
     def test_returns_meter_with_custom_name_and_version(self):
-        with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", True):
-            with patch.object(telemetry_module, "metrics") as mock_metrics:
-                get_meter("my.scope", "2.0.0")
-                mock_metrics.get_meter.assert_called_once_with("my.scope", "2.0.0")
+        with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", True), patch.object(telemetry_module, "metrics") as mock_metrics:
+            get_meter("my.scope", "2.0.0")
+            mock_metrics.get_meter.assert_called_once_with("my.scope", "2.0.0")
 
     def test_raises_when_unavailable(self):
-        with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", False):
-            with pytest.raises(RuntimeError, match="pip install toolbox-core"):
-                get_meter()
+        with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", False), pytest.raises(RuntimeError, match="pip install toolbox-core"):
+            get_meter()
 
 
 class TestCreateOperationDurationHistogram:

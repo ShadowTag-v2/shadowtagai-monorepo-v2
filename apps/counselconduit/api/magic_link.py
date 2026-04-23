@@ -130,7 +130,7 @@ async def create_matter(req: MatterCreateRequest) -> MagicLinkResponse:
     """
     matter_id, token, expires_unix = _create_token(req)
     magic_link = f"{_BASE_URL}/portal?token={token}"
-    expires_at = datetime.fromtimestamp(expires_unix, tz=UTC).isoformat()
+    expires_at = datetime.fromtimestamp(expires_unix, tz=UTC).isoformat()  # noqa: F821
 
     # TODO: Store matter in Firestore
     # TODO: Send email to client via Resend/SendGrid

@@ -140,17 +140,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-import os
+import os  # noqa: E402
 
-from fastapi.staticfiles import StaticFiles
+from fastapi.staticfiles import StaticFiles  # noqa: E402
 
 app.include_router(auth.router)
 app.include_router(knowledge.router)
 app.include_router(agents.agents_router)
 
-import urllib.request
+import urllib.request  # noqa: E402
 
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse  # noqa: E402
 
 
 @app.get("/images/{filename}")

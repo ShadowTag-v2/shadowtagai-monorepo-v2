@@ -455,7 +455,7 @@ class FatigueSessionTracker:
             "predictions_count": len(self.predictions),
             "breaks_taken": self.breaks_taken,
             "interventions_triggered": self.interventions_triggered,
-            "time_in_severe_fatigue_min": sum(1 for l in levels if l in ["severe", "critical"])
+            "time_in_severe_fatigue_min": sum(1 for l in levels if l in ["severe", "critical"])  # noqa: E741
             * 0.5,
         }
 

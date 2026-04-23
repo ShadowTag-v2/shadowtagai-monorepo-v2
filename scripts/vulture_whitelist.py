@@ -5,7 +5,7 @@ and are legitimately needed at runtime when the module is available.
 """
 
 # dream_consolidation.py — KI engine optional imports
-rank_kis  # type: ignore  # noqa: F821
-append_event  # type: ignore  # noqa: F821
-EventAction  # type: ignore  # noqa: F821
-NotebookLM  # type: ignore  # noqa: F821
+rank_kis  # type: ignore  # noqa: B018, F821
+append_event  # type: ignore  # noqa: B018, F821
+EventAction  # type: ignore  # noqa: B018, F821
+NotebookLM  # type: ignore  # noqa: B018, F821

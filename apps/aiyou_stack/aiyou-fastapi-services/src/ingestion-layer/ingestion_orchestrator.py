@@ -42,7 +42,7 @@ from pathlib import Path
 from typing import Any
 
 try:
-    import httpx
+    import httpx  # noqa: F401
     import vertexai
     from google.cloud import bigquery, storage
     from vertexai.generative_models import GenerationConfig, GenerativeModel

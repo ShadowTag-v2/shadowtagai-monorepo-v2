@@ -52,7 +52,9 @@ const DEFAULTS = {
 // ─── SSE Client ─────────────────────────────────────────────────────
 
 export class ResilientSSEClient {
-  private config: Required<Omit<SSEClientConfig, 'onError' | 'onOpen' | 'onClose' | 'onReconnecting'>> & {
+  private config: Required<
+    Omit<SSEClientConfig, 'onError' | 'onOpen' | 'onClose' | 'onReconnecting'>
+  > & {
     onError?: SSEClientConfig['onError'];
     onOpen?: SSEClientConfig['onOpen'];
     onClose?: SSEClientConfig['onClose'];
@@ -88,7 +90,7 @@ export class ResilientSSEClient {
     this.controller = new AbortController();
 
     const headers: Record<string, string> = {
-      'Accept': 'text/event-stream',
+      Accept: 'text/event-stream',
       'Cache-Control': 'no-cache',
       ...(this.config.headers ?? {}),
     };
@@ -207,7 +209,6 @@ export class ResilientSSEClient {
   private startHeartbeatMonitor(): void {
     this.clearHeartbeatMonitor();
     this.heartbeatTimer = setTimeout(() => {
-      console.warn('[SSE] Heartbeat timeout — reconnecting');
       this.handleDisconnect(new Error('Heartbeat timeout'));
     }, this.config.heartbeatTimeoutMs);
   }
@@ -235,7 +236,6 @@ export class ResilientSSEClient {
     this.config.onError?.(error, this.retryCount);
 
     if (this.retryCount >= this.config.maxRetries) {
-      console.error(`[SSE] Max retries (${this.config.maxRetries}) exceeded. Giving up.`);
       this.config.onClose?.();
       return;
     }
@@ -250,7 +250,9 @@ export class ResilientSSEClient {
     const delay = this.calculateBackoff();
     this.config.onReconnecting?.(this.retryCount, delay);
 
-    console.log(`[SSE] Reconnecting in ${delay}ms (attempt ${this.retryCount}/${this.config.maxRetries})`);
+    console.log(
+      `[SSE] Reconnecting in ${delay}ms (attempt ${this.retryCount}/${this.config.maxRetries})`,
+    );
 
     setTimeout(() => {
       if (!this._isDestroyed) {
@@ -265,7 +267,7 @@ export class ResilientSSEClient {
    * delay = min(baseDelay * 2^attempt ± jitter, maxDelay)
    */
   private calculateBackoff(): number {
-    const exponentialDelay = this.config.baseDelayMs * Math.pow(2, this.retryCount - 1);
+    const exponentialDelay = this.config.baseDelayMs * 2 ** (this.retryCount - 1);
     const cappedDelay = Math.min(exponentialDelay, this.config.maxDelayMs);
 
     // Add ±30% jitter
@@ -319,7 +321,6 @@ export function createWarRoomSSEClient(
     onClose: () => console.log('[Vent Mode] SSE disconnected permanently'),
     onReconnecting: (retry, delay) =>
       console.log(`[Vent Mode] Reconnecting (${retry}) in ${delay}ms`),
-    onError: (error, retry) =>
-      console.error(`[Vent Mode] Error (retry ${retry}):`, error.message),
+    onError: (_error, _retry) => {},
   });
 }

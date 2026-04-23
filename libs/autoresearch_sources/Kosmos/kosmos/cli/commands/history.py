@@ -82,11 +82,11 @@ def show_history(
 
     except KeyboardInterrupt:
         console.print("\n[warning]History display cancelled[/warning]")
-        raise typer.Exit(130)
+        raise typer.Exit(130)  # noqa: B904
 
     except Exception as e:
         print_error(f"Failed to get history: {str(e)}")
-        raise typer.Exit(1)
+        raise typer.Exit(1)  # noqa: B904
 
 
 def get_research_runs(

@@ -229,7 +229,7 @@ async def check_onboarding_status(
 
         # Update Firestore if onboarding just completed
         if onboarding_complete and not data.get("onboarding_complete"):
-            try:
+            try:  # noqa: SIM105
                 db.collection("beta_accounts").document(x_kovel_auth).set(
                     {"onboarding_complete": True, "onboarding_completed_at": _fs.SERVER_TIMESTAMP},
                     merge=True,

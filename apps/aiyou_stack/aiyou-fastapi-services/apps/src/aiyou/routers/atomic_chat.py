@@ -241,7 +241,7 @@ async def execute_workflow(request: ExecuteWorkflowRequest) -> dict[str, Any]:
 
 @router.post("/scholarly-pdfs/upload")
 async def upload_scholarly_pdf(
-    file: UploadFile = File(...),
+    file: UploadFile = File(...),  # noqa: B008
     title: str = Form(...),
     authors: str = Form(...),  # Comma-separated
     year: int = Form(...),

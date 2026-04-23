@@ -13,7 +13,8 @@
  * @see seu_and_stripe.ts — S.E.U. token binding
  */
 
-import React, { useState, useCallback } from 'react';
+import type React from 'react';
+import { useCallback, useState } from 'react';
 
 // ═══════════════════════════════════════════════════════════
 // Types
@@ -79,24 +80,13 @@ const PROVIDERS: ByokProvider[] = [
 // ═══════════════════════════════════════════════════════════
 
 async function generateEncryptionKey(): Promise<CryptoKey> {
-  return crypto.subtle.generateKey(
-    { name: 'AES-GCM', length: 256 },
-    true,
-    ['encrypt', 'decrypt'],
-  );
+  return crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, true, ['encrypt', 'decrypt']);
 }
 
-async function encryptApiKey(
-  plaintext: string,
-  key: CryptoKey,
-): Promise<string> {
+async function encryptApiKey(plaintext: string, key: CryptoKey): Promise<string> {
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const encoded = new TextEncoder().encode(plaintext);
-  const ciphertext = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv },
-    key,
-    encoded,
-  );
+  const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
   // Combine IV + ciphertext for transport
   const combined = new Uint8Array(iv.length + new Uint8Array(ciphertext).length);
   combined.set(iv);
@@ -104,11 +94,11 @@ async function encryptApiKey(
   return btoa(String.fromCharCode(...combined));
 }
 
-async function hashApiKey(key: string): Promise<string> {
+async function _hashApiKey(key: string): Promise<string> {
   const encoded = new TextEncoder().encode(key);
   const hash = await crypto.subtle.digest('SHA-256', encoded);
   return Array.from(new Uint8Array(hash))
-    .map(b => b.toString(16).padStart(2, '0'))
+    .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
 }
 
@@ -156,7 +146,7 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
   }, [selectedProvider, apiKey, onKeyRegistered]);
 
   const getProviderStatus = (providerId: string): RegisteredKey | undefined => {
-    return registeredKeys.find(k => k.providerId === providerId);
+    return registeredKeys.find((k) => k.providerId === providerId);
   };
 
   return (
@@ -165,8 +155,8 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
       <div style={styles.header}>
         <h2 style={styles.title}>🔐 BYOK Key Management</h2>
         <p style={styles.subtitle}>
-          Bring Your Own Keys — Pass-through compute billing.
-          Keys encrypted client-side via WebCrypto API. We never see plaintext.
+          Bring Your Own Keys — Pass-through compute billing. Keys encrypted client-side via
+          WebCrypto API. We never see plaintext.
         </p>
       </div>
 
@@ -176,7 +166,7 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
 
       {/* Provider Cards */}
       <div style={styles.providerGrid}>
-        {PROVIDERS.map(provider => {
+        {PROVIDERS.map((provider) => {
           const registered = getProviderStatus(provider.id);
           const isSelected = selectedProvider === provider.id;
 
@@ -200,9 +190,7 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
 
               {registered && (
                 <div style={styles.keyMeta}>
-                  <span style={styles.keyHash}>
-                    Hash: {registered.keyHash.substring(0, 12)}...
-                  </span>
+                  <span style={styles.keyHash}>Hash: {registered.keyHash.substring(0, 12)}...</span>
                   <span style={styles.keyDate}>
                     Registered: {new Date(registered.registeredAt).toLocaleDateString()}
                   </span>
@@ -215,14 +203,14 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
                     <input
                       type={showKey ? 'text' : 'password'}
                       value={apiKey}
-                      onChange={e => setApiKey(e.target.value)}
+                      onChange={(e) => setApiKey(e.target.value)}
                       placeholder={provider.placeholder}
                       style={styles.input}
-                      onClick={e => e.stopPropagation()}
+                      onClick={(e) => e.stopPropagation()}
                     />
                     <button
                       style={styles.toggleBtn}
-                      onClick={e => {
+                      onClick={(e) => {
                         e.stopPropagation();
                         setShowKey(!showKey);
                       }}
@@ -233,7 +221,7 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
                   <div style={styles.actions}>
                     <button
                       style={styles.registerBtn}
-                      onClick={e => {
+                      onClick={(e) => {
                         e.stopPropagation();
                         handleSubmit();
                       }}
@@ -246,7 +234,7 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
                       target="_blank"
                       rel="noopener noreferrer"
                       style={styles.docsLink}
-                      onClick={e => e.stopPropagation()}
+                      onClick={(e) => e.stopPropagation()}
                     >
                       📄 Docs
                     </a>
@@ -258,7 +246,7 @@ export const ByokKeyManagement: React.FC<ByokKeyManagementProps> = ({
                 <div style={styles.revokeSection}>
                   <button
                     style={styles.revokeBtn}
-                    onClick={e => {
+                    onClick={(e) => {
                       e.stopPropagation();
                       onKeyRevoked(provider.id);
                     }}

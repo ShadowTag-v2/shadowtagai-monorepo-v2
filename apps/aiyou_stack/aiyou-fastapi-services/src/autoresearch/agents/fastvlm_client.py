@@ -112,7 +112,7 @@ class FastVLMClient:
             return self._mlx_available
 
         try:
-            import mlx_vlm
+            import mlx_vlm  # noqa: F401
 
             self._mlx_available = True
         except ImportError:

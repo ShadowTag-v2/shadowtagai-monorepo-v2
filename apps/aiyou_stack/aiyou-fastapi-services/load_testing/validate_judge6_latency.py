@@ -329,7 +329,7 @@ async def run_validation():
         # Get connection pool stats
         try:
             connections_in_use = len(client._transport._pool._requests)
-        except:
+        except Exception:
             connections_in_use = 0
 
         pool_stats = {

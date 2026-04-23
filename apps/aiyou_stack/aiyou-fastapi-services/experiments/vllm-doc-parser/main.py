@@ -17,7 +17,7 @@ def health():
 
 
 @app.post("/parse")
-async def parse_document(file: UploadFile = File(...)):
+async def parse_document(file: UploadFile = File(...)):  # noqa: B008
     """Endpoint to parse a document image/PDF using the Vision Model."""
     # 1. Save temp file
     # 2. Preprocess image

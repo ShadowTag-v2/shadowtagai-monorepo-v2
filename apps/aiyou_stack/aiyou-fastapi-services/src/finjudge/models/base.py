@@ -51,7 +51,7 @@ class Probability(StrEnum):
 class Severity(StrEnum):
     """ATP 5-19 Severity Levels"""
 
-    I = "I"  # Catastrophic: >$10M loss
+    I = "I"  # Catastrophic: >$10M loss  # noqa: E741
     II = "II"  # Critical: $1M-$10M loss
     III = "III"  # Moderate: $100K-$1M loss
     IV = "IV"  # Negligible: <$100K loss

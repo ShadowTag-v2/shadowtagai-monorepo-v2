@@ -235,7 +235,7 @@ class TestWorkflowContinuation:
         ]  # fail, fail, success, fail, success, success
 
         for should_fail in operations:
-            try:
+            try:  # noqa: SIM105
                 await failing_operation(should_fail)
             except Exception:
                 pass

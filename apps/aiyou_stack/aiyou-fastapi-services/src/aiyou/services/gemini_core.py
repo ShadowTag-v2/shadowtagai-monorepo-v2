@@ -10,22 +10,22 @@ Rate Limit Fallback Chain (ID/EGO/SUPEREGO):
 - Fallback2: gemini-3.1-flash-lite-preview (SUPEREGO: guaranteed execution)
 """
 
-import contextlib
-import hashlib
-import json
-import logging
-import os
-import time
+import contextlib  # noqa: E402
+import hashlib  # noqa: E402
+import json  # noqa: E402
+import logging  # noqa: E402
+import os  # noqa: E402
+import time  # noqa: E402
 
 # Google Generative AI (API key) imports
-import google.generativeai as genai
-import redis
+import google.generativeai as genai  # noqa: E402
+import redis  # noqa: E402
 
 # Vertex AI imports
-import vertexai
-from google.generativeai.types import HarmBlockThreshold, HarmCategory
-from vertexai.generative_models import GenerativeModel as VertexModel
-from vertexai.generative_models import Part, SafetySetting
+import vertexai  # noqa: E402
+from google.generativeai.types import HarmBlockThreshold, HarmCategory  # noqa: E402
+from vertexai.generative_models import GenerativeModel as VertexModel  # noqa: E402
+from vertexai.generative_models import Part, SafetySetting  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +66,7 @@ class GeminiAntigravity:
             self._redis = redis.Redis(host=redis_host, port=redis_port, decode_responses=True)
             self._redis.ping()
             self._cache_available = True
-        except:
+        except Exception:
             self._redis = None
             self._cache_available = False
 
@@ -140,7 +140,7 @@ class GeminiAntigravity:
         if self._cache_available:
             try:
                 return self._redis.get(key)
-            except:
+            except Exception:
                 pass
         return None
 

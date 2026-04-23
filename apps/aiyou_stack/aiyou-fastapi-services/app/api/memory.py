@@ -23,11 +23,11 @@ router = APIRouter()
 
 @router.get("/", response_model=MemoryListResponse)
 async def get_memory(
-    project_id: UUID | None = Query(None),
-    category: MemoryCategory | None = Query(None),
+    project_id: UUID | None = Query(None),  # noqa: B008
+    category: MemoryCategory | None = Query(None),  # noqa: B008
     active_only: bool = Query(True),
     min_confidence: float | None = Query(None, ge=0.0, le=1.0),
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get active memory entries."""
     service = MemoryService(db)
@@ -56,7 +56,7 @@ async def get_memory(
 @router.post("/", response_model=MemoryEntryResponse, status_code=status.HTTP_201_CREATED)
 async def create_memory_entry(
     memory_data: MemoryEntryCreate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Manually create a memory entry."""
     service = MemoryService(db)
@@ -68,7 +68,7 @@ async def create_memory_entry(
 async def update_memory_entry(
     memory_id: UUID,
     update_data: MemoryEntryUpdate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Update a memory entry."""
     service = MemoryService(db)
@@ -84,7 +84,7 @@ async def update_memory_entry(
 @router.delete("/{memory_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_memory_entry(
     memory_id: UUID,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Delete a memory entry."""
     service = MemoryService(db)
@@ -99,7 +99,7 @@ async def delete_memory_entry(
 @router.post("/synthesize", response_model=MemorySynthesisResponse)
 async def trigger_synthesis(
     request: MemorySynthesisRequest,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Manually trigger memory synthesis."""
     service = SynthesisService(db)

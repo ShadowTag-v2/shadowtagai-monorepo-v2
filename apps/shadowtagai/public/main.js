@@ -28,7 +28,7 @@
     if (!scrollProgress) return;
     var docHeight = document.documentElement.scrollHeight - window.innerHeight;
     var progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
-    scrollProgress.style.width = progress + '%';
+    scrollProgress.style.width = `${progress}%`;
   }
 
   function onScroll() {

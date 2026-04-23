@@ -52,7 +52,7 @@ def should_auto_search(question: str) -> bool:
         return True
 
     # References component with "the" (implies we've discussed it)
-    if any(comp in question_lower for comp in COMPONENT_REFERENCES.keys()):
+    if any(comp in question_lower for comp in COMPONENT_REFERENCES):
         return True
 
     # Mid-context question (no subject defined)
@@ -60,10 +60,7 @@ def should_auto_search(question: str) -> bool:
         return True
 
     # Update request (need current state)
-    if any(kw in question_lower for kw in UPDATE_KEYWORDS):
-        return True
-
-    return False
+    return bool(any(kw in question_lower for kw in UPDATE_KEYWORDS))
 
 
 def is_mid_context_question(question: str) -> bool:
@@ -82,10 +79,7 @@ def is_mid_context_question(question: str) -> bool:
         return True
 
     # Very short question (implies assumed context)
-    if len(words) < 5:
-        return True
-
-    return False
+    return len(words) < 5
 
 
 def extract_technical_terms(question: str) -> list[str]:
@@ -100,7 +94,7 @@ def extract_technical_terms(question: str) -> list[str]:
             terms.append(word_clean)
 
     # Also add words that match known components
-    for key in COMPONENT_MAP.keys():
+    for key in COMPONENT_MAP:
         if key in question.lower():
             terms.append(key)
 

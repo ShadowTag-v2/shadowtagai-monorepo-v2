@@ -95,7 +95,7 @@ class RecursiveAgent:
                 try:
                     target = int(decision.split()[1])
                     current_pos = target
-                except:
+                except Exception:
                     print(f"{'  ' * depth}  ! Error parsing Jump")
 
             elif decision.startswith("READ_NEXT"):

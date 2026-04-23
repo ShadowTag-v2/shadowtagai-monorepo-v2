@@ -28,21 +28,14 @@
  * @see DIGITAL_PRIVILEGE_SHIELD.md — Kovel attestation
  */
 
-import { NextResponse } from 'next/server';
-import { streamText, generateText } from 'ai';
-import { google } from '@ai-sdk/google';
 import { anthropic } from '@ai-sdk/anthropic';
-import { verifySeuToken } from '@/lib/security/seu_and_stripe';
+import { google } from '@ai-sdk/google';
+import { generateText, streamText } from 'ai';
+import { NextResponse } from 'next/server';
+import { draftShadowInvoice, generateHeppnerReceipt, pushToLawyerVault } from '@/lib/clio-vault';
 import { executePrivilegedWebSearch } from '@/lib/intelligence/vertex_search_engine';
-import {
-  pushToLawyerVault,
-  draftShadowInvoice,
-  generateHeppnerReceipt,
-} from '@/lib/clio-vault';
-import {
-  TRIAGE_PACIFIER_PROMPT,
-  LAWYER_ORACLE_PROMPT,
-} from '@/lib/prompts';
+import { LAWYER_ORACLE_PROMPT, TRIAGE_PACIFIER_PROMPT } from '@/lib/prompts';
+import { verifySeuToken } from '@/lib/security/seu_and_stripe';
 
 export const runtime = 'edge';
 
@@ -74,14 +67,9 @@ export async function POST(req: Request) {
     // 2. WEB-TO-PRIVILEGE PIPELINE (Vertex ZDR Search)
     // ──────────────────────────────────────────────────────
     const searchContext = webSearchQuery
-      ? await executePrivilegedWebSearch(
-          webSearchQuery,
-          payload.firmId ?? 'unknown',
-        )
+      ? await executePrivilegedWebSearch(webSearchQuery, payload.firmId ?? 'unknown')
       : '';
-    const hybridContext = searchContext
-      ? `[WEB OSINT/RESEARCH]:\n${searchContext}`
-      : '';
+    const hybridContext = searchContext ? `[WEB OSINT/RESEARCH]:\n${searchContext}` : '';
 
     // ──────────────────────────────────────────────────────
     // 3. ALGORITHMIC OPTIMIZATION: arXiv:2512.14982
@@ -131,15 +119,8 @@ export async function POST(req: Request) {
           });
 
           // Stateless Direct-to-Vault Transfer
-          const heppnerReceipt = generateHeppnerReceipt(
-            seuToken,
-            payload.firmId ?? 'unknown',
-          );
-          await pushToLawyerVault(
-            clioOAuthToken,
-            oracleResponse.text,
-            heppnerReceipt,
-          );
+          const heppnerReceipt = generateHeppnerReceipt(seuToken, payload.firmId ?? 'unknown');
+          await pushToLawyerVault(clioOAuthToken, oracleResponse.text, heppnerReceipt);
 
           // Auto-Draft Shadow Invoice in Clio
           await draftShadowInvoice(clioOAuthToken, 2.5, 350.0);
@@ -152,15 +133,13 @@ export async function POST(req: Request) {
     // ──────────────────────────────────────────────────────
     return new NextResponse(pacifierStream.toDataStream(), {
       headers: {
-        'Cache-Control':
-          'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
         'X-Kovel-Attestation': 'active',
         'X-SEU-Sandbox': payload.sandboxId,
       },
     });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : 'Unknown error';
+    const message = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
       {
         error: 'Stateless Execution Failed or S.E.U. Blocked',

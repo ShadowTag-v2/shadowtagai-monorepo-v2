@@ -85,8 +85,8 @@ class StreamStartResponse(BaseModel):
 @router.post("/upload", response_model=UploadResponse)
 async def submit_upload(
     request: UploadRequest,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Initialize a video upload.
     Creates an IngestionJob and returns a signed upload URL.
@@ -116,8 +116,8 @@ async def submit_upload(
 @router.get("/upload/{job_id}/status", response_model=UploadStatusResponse)
 async def get_upload_status(
     job_id: str,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),  # noqa: B008
+    current_user: User = Depends(get_current_user),  # noqa: B008
 ):
     """Get the status of an ingestion job."""
     job = db.query(IngestionJob).filter(IngestionJob.id == job_id).first()
@@ -148,8 +148,8 @@ async def get_upload_status(
 async def publish_content(
     job_id: str,
     request: ContentPublishRequest,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),  # noqa: B008
+    current_user: User = Depends(get_current_user),  # noqa: B008
 ):
     """Publish content from a completed ingestion job."""
     job = db.query(IngestionJob).filter(IngestionJob.id == job_id).first()
@@ -200,7 +200,7 @@ async def list_content(
     content_type: str | None = None,
     limit: int = Query(default=20, le=100),
     skip: int = 0,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """List published content."""
     query = db.query(Content).filter(Content.is_published)
@@ -214,7 +214,7 @@ async def list_content(
 @router.get("/content/{content_id}", response_model=ContentResponse)
 async def get_content(
     content_id: str,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Get content details."""
     content = db.query(Content).filter(Content.id == content_id).first()
@@ -231,8 +231,8 @@ async def get_content(
 @router.post("/content/{content_id}/stream/start", response_model=StreamStartResponse)
 async def start_stream(
     content_id: str,
-    db: Session = Depends(get_db),
-    current_user: User | None = Depends(get_current_user),  # Allow anonymous
+    db: Session = Depends(get_db),  # noqa: B008
+    current_user: User | None = Depends(get_current_user),  # Allow anonymous  # noqa: B008
 ):
     """Start a streaming session."""
     content = db.query(Content).filter(Content.id == content_id).first()
@@ -278,7 +278,7 @@ class TranscodeCompleteWebhook(BaseModel):
 @router.post("/webhook/transcode-complete")
 async def transcode_complete_webhook(
     payload: TranscodeCompleteWebhook,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Webhook to update job status."""
     job = db.query(IngestionJob).filter(IngestionJob.id == payload.job_id).first()

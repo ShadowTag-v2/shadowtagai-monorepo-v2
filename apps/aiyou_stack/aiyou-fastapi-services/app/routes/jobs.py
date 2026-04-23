@@ -11,7 +11,7 @@ from app.services.automation_service import ScheduledJobService
 router = APIRouter(prefix="/jobs", tags=["scheduled-jobs"])
 
 
-def get_job_service(db: AsyncSession = Depends(get_db)) -> ScheduledJobService:
+def get_job_service(db: AsyncSession = Depends(get_db)) -> ScheduledJobService:  # noqa: B008
     """Dependency to get ScheduledJobService instance."""
     return ScheduledJobService(db)
 
@@ -19,7 +19,7 @@ def get_job_service(db: AsyncSession = Depends(get_db)) -> ScheduledJobService:
 @router.post("/", response_model=ScheduledJobResponse, status_code=201)
 async def create_scheduled_job(
     job: ScheduledJobCreate,
-    service: ScheduledJobService = Depends(get_job_service),
+    service: ScheduledJobService = Depends(get_job_service),  # noqa: B008
 ):
     """Create a new scheduled job."""
     db_job = await service.create(job.model_dump())
@@ -35,7 +35,7 @@ async def create_scheduled_job(
 async def list_scheduled_jobs(
     skip: int = 0,
     limit: int = 100,
-    service: ScheduledJobService = Depends(get_job_service),
+    service: ScheduledJobService = Depends(get_job_service),  # noqa: B008
 ):
     """List all scheduled jobs."""
     return await service.list(skip, limit)
@@ -44,7 +44,7 @@ async def list_scheduled_jobs(
 @router.get("/{job_id}", response_model=ScheduledJobResponse)
 async def get_scheduled_job(
     job_id: int,
-    service: ScheduledJobService = Depends(get_job_service),
+    service: ScheduledJobService = Depends(get_job_service),  # noqa: B008
 ):
     """Get a specific scheduled job by ID."""
     job = await service.get(job_id)
@@ -57,7 +57,7 @@ async def get_scheduled_job(
 async def update_scheduled_job(
     job_id: int,
     job_update: ScheduledJobUpdate,
-    service: ScheduledJobService = Depends(get_job_service),
+    service: ScheduledJobService = Depends(get_job_service),  # noqa: B008
 ):
     """Update a scheduled job."""
     job = await service.get(job_id)
@@ -80,7 +80,7 @@ async def update_scheduled_job(
 @router.delete("/{job_id}", status_code=204)
 async def delete_scheduled_job(
     job_id: int,
-    service: ScheduledJobService = Depends(get_job_service),
+    service: ScheduledJobService = Depends(get_job_service),  # noqa: B008
 ):
     """Delete a scheduled job."""
     job = await service.get(job_id)
@@ -97,7 +97,7 @@ async def delete_scheduled_job(
 @router.post("/{job_id}/run", status_code=202)
 async def run_scheduled_job_now(
     job_id: int,
-    service: ScheduledJobService = Depends(get_job_service),
+    service: ScheduledJobService = Depends(get_job_service),  # noqa: B008
 ):
     """Manually trigger a scheduled job to run now."""
     job = await service.get(job_id)

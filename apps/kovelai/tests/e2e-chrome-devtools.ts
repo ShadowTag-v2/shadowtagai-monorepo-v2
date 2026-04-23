@@ -62,18 +62,24 @@ export const KOVELAI_E2E_TESTS: E2ETestCase[] = [
     description: 'Verify copy and right-click are blocked on results',
     steps: [
       { action: 'navigate', value: 'http://localhost:3000' },
-      { action: 'evaluate', value: `
+      {
+        action: 'evaluate',
+        value: `
         const el = document.querySelector('[oncontextmenu]');
         const event = new MouseEvent('contextmenu', { cancelable: true });
         const blocked = !el?.dispatchEvent(event);
         return blocked;
-      ` },
-      { action: 'evaluate', value: `
+      `,
+      },
+      {
+        action: 'evaluate',
+        value: `
         const el = document.querySelector('[oncopy]');
         const event = new ClipboardEvent('copy', { cancelable: true });
         const blocked = !el?.dispatchEvent(event);
         return blocked;
-      ` },
+      `,
+      },
     ],
     expectedOutcome: 'Context menu and copy events are prevented',
   },
@@ -93,10 +99,13 @@ export const KOVELAI_E2E_TESTS: E2ETestCase[] = [
     steps: [
       { action: 'navigate', value: 'http://localhost:3000' },
       { action: 'wait', value: 'Session:', timeout: 5000 },
-      { action: 'evaluate', value: `
+      {
+        action: 'evaluate',
+        value: `
         const footer = document.querySelector('footer, [style*="position: fixed"][style*="bottom"]');
         return footer?.textContent ?? '';
-      ` },
+      `,
+      },
     ],
     expectedOutcome: 'Footer shows truncated session ID and heartbeat count',
   },
@@ -115,7 +124,9 @@ export const KOVELAI_E2E_TESTS: E2ETestCase[] = [
     name: 'TC-007: Security Headers',
     description: 'Verify anti-caching headers on API responses',
     steps: [
-      { action: 'evaluate', value: `
+      {
+        action: 'evaluate',
+        value: `
         const res = await fetch('/api/privileged-search', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -126,7 +137,8 @@ export const KOVELAI_E2E_TESTS: E2ETestCase[] = [
           pragma: res.headers.get('pragma'),
           privilegeShield: res.headers.get('x-privilege-shield'),
         };
-      ` },
+      `,
+      },
     ],
     expectedOutcome: 'Response includes no-store, no-cache, and X-Privilege-Shield headers',
   },

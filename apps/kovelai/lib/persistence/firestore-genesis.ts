@@ -8,8 +8,8 @@
  * TTL: Permanent (evidence records never expire)
  */
 
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
-import { getFirestore, Timestamp, FieldValue } from 'firebase-admin/firestore';
+import { cert, getApps, initializeApp } from 'firebase-admin/app';
+import { FieldValue, getFirestore, Timestamp } from 'firebase-admin/firestore';
 
 // Initialize Firebase Admin (idempotent)
 if (!getApps().length) {
@@ -26,9 +26,9 @@ interface GenesisBlockDoc {
   blockId: string;
   firmId: string;
   sessionId: string;
-  contentHash: string;       // SHA-256 of original content
+  contentHash: string; // SHA-256 of original content
   algorithm: 'sha256';
-  c2paManifest?: string;     // C2PA manifest URI
+  c2paManifest?: string; // C2PA manifest URI
   sourceType: 'query' | 'document' | 'transcript' | 'search_result';
   metadata: {
     fileName?: string;
@@ -36,10 +36,10 @@ interface GenesisBlockDoc {
     byteLength: number;
     modelUsed?: string;
   };
-  attestationRef?: string;   // Reference to Kovel attestation
+  attestationRef?: string; // Reference to Kovel attestation
   createdAt: Timestamp;
-  createdBy: string;         // Attorney email
-  chainPrevious?: string;    // Previous block hash for chain integrity
+  createdBy: string; // Attorney email
+  chainPrevious?: string; // Previous block hash for chain integrity
 }
 
 /**
@@ -74,19 +74,15 @@ export async function persistGenesisBlock(params: {
     chainPrevious: params.chainPrevious,
   };
 
-  const ref = db
-    .collection('genesis_blocks')
-    .doc(params.firmId)
-    .collection('blocks')
-    .doc(blockId);
+  const ref = db.collection('genesis_blocks').doc(params.firmId).collection('blocks').doc(blockId);
 
   await ref.set(doc);
 
   // Update firm-level block count
-  await db.collection('genesis_blocks').doc(params.firmId).set(
-    { blockCount: FieldValue.increment(1), lastBlockAt: Timestamp.now() },
-    { merge: true }
-  );
+  await db
+    .collection('genesis_blocks')
+    .doc(params.firmId)
+    .set({ blockCount: FieldValue.increment(1), lastBlockAt: Timestamp.now() }, { merge: true });
 
   return { path: ref.path, blockId };
 }
@@ -96,7 +92,7 @@ export async function persistGenesisBlock(params: {
  */
 export async function getSessionChain(
   firmId: string,
-  sessionId: string
+  sessionId: string,
 ): Promise<GenesisBlockDoc[]> {
   const snapshot = await db
     .collection('genesis_blocks')
@@ -114,7 +110,7 @@ export async function getSessionChain(
  */
 export async function verifyChainIntegrity(
   firmId: string,
-  sessionId: string
+  sessionId: string,
 ): Promise<{ valid: boolean; brokenAt?: string }> {
   const chain = await getSessionChain(firmId, sessionId);
 

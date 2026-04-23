@@ -33,13 +33,13 @@ def world_model():
     """Provide a clean world model instance for each test."""
     try:
         wm = get_world_model()
-        try:
+        try:  # noqa: SIM105
             wm.reset(project="test_concurrency")
         except Exception:
             pass
         yield wm
     finally:
-        try:
+        try:  # noqa: SIM105
             reset_world_model()
         except Exception:
             pass
@@ -279,7 +279,7 @@ class TestREQ_WM_CONC_002_ACIDCompliance:
         invalid_rel = Relationship(source_id=id1, target_id=fake_id, type="CITES")
 
         # Should fail to maintain consistency
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             world_model.add_relationship(invalid_rel)
 
         # Original entity should still exist

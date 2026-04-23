@@ -172,7 +172,7 @@ def test_req_sec_api_001_config_file_security():
 
         # Note: On Windows, permission model is different
         # This test primarily applies to Unix-like systems
-        if os.name != "nt":  # Not Windows
+        if os.name != "nt":  # Not Windows  # noqa: SIM102
             # Ideally, config files should be owner-only (0600)
             # But we'll accept if they're not world-readable
             if world_readable:
