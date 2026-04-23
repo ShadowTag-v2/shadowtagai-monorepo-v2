@@ -72,12 +72,12 @@ async def create_thread(
         thread = await service.create_thread(data)
         return thread
     except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to create thread: {e!s}",
-        )
+        ) from e
 
 
 @router.get("/{thread_id}", response_model=ThreadResponse)
@@ -266,7 +266,7 @@ async def bulk_import_threads(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Import failed: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/export", response_model=ExportResponse)
@@ -298,7 +298,7 @@ async def export_threads(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Export failed: {e!s}",
-        )
+        ) from e
 
 
 # ============================================================================

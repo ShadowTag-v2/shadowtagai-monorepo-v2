@@ -62,7 +62,7 @@ async def generate_embeddings(request: EmbeddingRequest):
         raise
     except Exception as e:
         logger.error("Embedding generation failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.post("/collections/{collection_name}/documents")
@@ -89,7 +89,7 @@ async def add_documents(collection_name: str, request: DocumentAddRequest):
 
     except Exception as e:
         logger.error("Adding documents failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.post("/search", response_model=SearchResponse)
@@ -117,7 +117,7 @@ async def search_documents(request: SearchRequest):
 
     except Exception as e:
         logger.error("Search failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.get("/collections")
@@ -131,7 +131,7 @@ async def list_collections():
 
     except Exception as e:
         logger.error("List collections failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.delete("/collections/{collection_name}")
@@ -145,7 +145,7 @@ async def delete_collection(collection_name: str):
 
     except Exception as e:
         logger.error("Delete collection failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.post("/collections/{collection_name}")
@@ -159,4 +159,4 @@ async def create_collection(collection_name: str, metadata: dict = None):
 
     except Exception as e:
         logger.error("Create collection failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e

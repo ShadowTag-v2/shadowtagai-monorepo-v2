@@ -169,7 +169,7 @@ RULES:
         for signal in output.explicit_content_signals:
             signal.confidence = min(1.0, signal.confidence * adjustment_factor)
 
-        for signal in output.self_harm_signals:
+        for signal in output.self_harm_signals:  # noqa: B007
             # Self-harm signals always high priority regardless of age
             pass
 

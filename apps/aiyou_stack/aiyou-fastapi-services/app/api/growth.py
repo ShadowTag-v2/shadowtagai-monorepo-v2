@@ -84,7 +84,7 @@ async def analyze_user_hooks(request: UserHookAnalysisRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error analyzing user hooks: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/design/viral-loop", response_model=AgentResponse)
@@ -121,7 +121,7 @@ async def design_viral_loop(request: ViralLoopRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error designing viral loop: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/experiment/ab-test", response_model=AgentResponse)
@@ -160,7 +160,7 @@ async def create_ab_test(request: ABTestRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error creating A/B test: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/analyze/metrics", response_model=AgentResponse)
@@ -195,7 +195,7 @@ async def analyze_growth_metrics(request: GrowthMetricsRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error analyzing growth metrics: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/design/engagement-feature", response_model=AgentResponse)
@@ -232,7 +232,7 @@ async def design_engagement_feature(request: EngagementFeatureRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error designing engagement feature: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/implement/analytics", response_model=AgentResponse)
@@ -268,7 +268,7 @@ async def implement_analytics_tracking(request: AnalyticsTrackingRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error implementing analytics: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/optimize/referral", response_model=AgentResponse)
@@ -303,7 +303,7 @@ async def optimize_referral_system(request: ReferralOptimizationRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error optimizing referral system: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/query", response_model=AgentResponse)
@@ -330,4 +330,4 @@ async def general_growth_query(request: GeneralGrowthQuery):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error processing query: {e!s}",
-        )
+        ) from e

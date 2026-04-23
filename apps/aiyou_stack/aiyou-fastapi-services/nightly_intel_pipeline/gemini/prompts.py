@@ -72,7 +72,7 @@ OUTPUT FORMAT (JSON only, no markdown):
   "confidence": <0.0-1.0>
 }}
 
-Respond with ONLY the JSON object.""".format(
+Respond with ONLY the JSON object.""".format(  # noqa: F524
     topic_categories=", ".join(TOPIC_CATEGORIES),
     risk_tags=", ".join(RISK_TAGS),
 )

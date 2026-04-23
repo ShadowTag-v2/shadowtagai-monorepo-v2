@@ -141,7 +141,7 @@ class MetricsAggregator:
     async def _collect_v2x_metrics(self) -> ServiceMetrics:
         """Collect V2X mesh metrics"""
         try:
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession() as session:  # noqa: SIM117
                 async with session.get(f"{self.v2x_endpoint}/metrics", timeout=5) as resp:
                     if resp.status == 200:
                         data = await resp.json()
@@ -158,7 +158,7 @@ class MetricsAggregator:
     async def _collect_ingestion_metrics(self) -> ServiceMetrics:
         """Collect Ingestion layer metrics"""
         try:
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession() as session:  # noqa: SIM117
                 async with session.get(f"{self.ingestion_endpoint}/metrics", timeout=5) as resp:
                     if resp.status == 200:
                         data = await resp.json()

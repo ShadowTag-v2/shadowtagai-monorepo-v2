@@ -23,7 +23,7 @@ async def record_revenue(event: RevenueEvent):
             "level": whiteboard.state["current_level"],
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/status")

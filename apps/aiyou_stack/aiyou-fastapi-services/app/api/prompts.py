@@ -32,7 +32,7 @@ async def list_templates():
 
     except Exception as e:
         logger.error("List templates failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.get("/templates/{template_name}")
@@ -51,7 +51,7 @@ async def get_template(template_name: str):
         raise
     except Exception as e:
         logger.error("Get template failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.post("/templates")
@@ -74,7 +74,7 @@ async def create_template(request: PromptTemplateCreate):
 
     except Exception as e:
         logger.error("Create template failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.delete("/templates/{template_name}")
@@ -93,7 +93,7 @@ async def delete_template(template_name: str):
         raise
     except Exception as e:
         logger.error("Delete template failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.post("/render")
@@ -112,10 +112,10 @@ async def render_template(request: PromptRenderRequest):
 
     except ValueError as e:
         logger.error("Render template failed - validation error", error=str(e))
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         logger.error("Render template failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.post("/templates/export")
@@ -129,7 +129,7 @@ async def export_templates(filepath: str):
 
     except Exception as e:
         logger.error("Export templates failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.post("/templates/import")
@@ -143,4 +143,4 @@ async def import_templates(filepath: str):
 
     except Exception as e:
         logger.error("Import templates failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e

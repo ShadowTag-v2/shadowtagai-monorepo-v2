@@ -126,7 +126,7 @@ async def revoke_consent(
         )
         return consent
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e)) from e
 
 
 # Data Retention Policies

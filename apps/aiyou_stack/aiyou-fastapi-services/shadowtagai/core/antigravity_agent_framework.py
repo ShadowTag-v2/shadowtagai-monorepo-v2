@@ -416,15 +416,15 @@ class PanelDebateSystem:
         counter_arguments = []
 
         # Counter prosecutor's points with context
-        if "production deployment" in prosecutor.reasoning.lower():
+        if "production deployment" in prosecutor.reasoning.lower():  # noqa: SIM102
             if context.get("canary_deployment"):
                 counter_arguments.append("Canary deployment limits blast radius to 5%")
 
-        if "no test coverage" in prosecutor.reasoning.lower():
+        if "no test coverage" in prosecutor.reasoning.lower():  # noqa: SIM102
             if context.get("manual_qa_planned"):
                 counter_arguments.append("Manual QA review scheduled pre-deployment")
 
-        if "breaking API change" in prosecutor.reasoning.lower():
+        if "breaking API change" in prosecutor.reasoning.lower():  # noqa: SIM102
             if context.get("backwards_compatible"):
                 counter_arguments.append("Maintains backwards compatibility via v2 endpoint")
 

@@ -171,7 +171,7 @@ async def process_query(request: ProcessQueryRequest):
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Orchestration failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Orchestration failed: {e!s}") from e
 
 
 @router.post("/intelligence/classify", response_model=ProcessQueryResponse)
@@ -256,7 +256,7 @@ async def classify_intelligence(request: IntelligenceClassificationRequest):
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Intelligence classification failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Intelligence classification failed: {e!s}") from e
 
 
 @router.get("/providers", response_model=list[BenchmarkResponse])

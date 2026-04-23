@@ -79,7 +79,7 @@ async def create_session(request: CreateSessionRequest):
             session=session,
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/sessions/{session_id}", response_model=SessionResponse)
@@ -243,7 +243,7 @@ async def create_summary(request: CreateSummaryRequest):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/summaries/{session_id}", response_model=SummaryResponse)

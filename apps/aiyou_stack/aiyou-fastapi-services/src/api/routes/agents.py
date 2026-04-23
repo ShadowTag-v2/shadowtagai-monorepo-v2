@@ -80,7 +80,7 @@ async def analyze_market(request: MarketAnalysisRequest) -> MarketAnalysisRespon
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Analysis failed: {e!s}",
-        )
+        ) from e
 
 
 @router.post(
@@ -117,7 +117,7 @@ async def competitor_analysis(request: CompetitorAnalysisRequest) -> CompetitorA
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Competitor analysis failed: {e!s}",
-        )
+        ) from e
 
 
 @router.post(
@@ -156,7 +156,7 @@ async def prioritize_features(request: FeaturePrioritizationRequest) -> dict[str
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Feature prioritization failed: {e!s}",
-        )
+        ) from e
 
 
 @router.get(

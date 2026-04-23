@@ -219,11 +219,11 @@ class CRDTMapStore:
         features = []
         for feature_id in feature_ids:
             feature = self.features.get(feature_id)
-            if feature:
+            if feature:  # noqa: SIM102
                 # Check if in bounds
-                if self._in_bounds(feature, min_lat, max_lat, min_lon, max_lon):
+                if self._in_bounds(feature, min_lat, max_lat, min_lon, max_lon):  # noqa: SIM102
                     # Check type filter
-                    if feature_types is None or feature.feature_type in feature_types:
+                    if feature_types is None or feature.feature_type in feature_types:  # noqa: SIM102
                         # Check not expired
                         if feature.valid_until is None or feature.valid_until > int(
                             time.time() * 1000,

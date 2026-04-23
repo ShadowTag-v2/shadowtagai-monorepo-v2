@@ -7,12 +7,12 @@ __INTERNAL_LIB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..
 if __INTERNAL_LIB_DIR not in sys.path:
     sys.path.append(__INTERNAL_LIB_DIR)
 
-try:
+try:  # noqa: SIM105
     from markitdown import MarkItDown  # type: ignore
 except ImportError:
     pass
 
-try:
+try:  # noqa: SIM105
     from scrapling import StealthyFetcher  # type: ignore
 except ImportError:
     pass

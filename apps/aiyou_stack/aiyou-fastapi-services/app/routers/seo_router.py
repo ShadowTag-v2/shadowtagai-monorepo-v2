@@ -49,7 +49,7 @@ def analyze_url(url_data: SEOAnalysisCreate, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Failed to analyze URL: {e!s}",
-        )
+        ) from e
 
 
 @router.get("/analyze/{analysis_id}", response_model=SEOAnalysisResponse)
@@ -117,7 +117,7 @@ def create_meta_tags(meta_tag_data: MetaTagCreate, db: Session = Depends(get_db)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Failed to create meta tags: {e!s}",
-        )
+        ) from e
 
 
 @router.get("/meta-tags/{meta_tag_id}/html", response_model=MetaTagHTMLResponse)
@@ -154,7 +154,7 @@ def create_schema_markup(schema_data: SchemaMarkupCreate, db: Session = Depends(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Failed to create schema markup: {e!s}",
-        )
+        ) from e
 
 
 @router.get("/schema/{schema_id}/jsonld", response_model=SchemaMarkupJSONLDResponse)
@@ -190,7 +190,7 @@ def create_sitemap(sitemap_data: SitemapCreate, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Failed to create sitemap: {e!s}",
-        )
+        ) from e
 
 
 @router.get("/sitemap/{sitemap_id}", response_model=SitemapResponse)
@@ -249,7 +249,7 @@ def record_core_web_vitals(vitals_data: CoreWebVitalCreate, db: Session = Depend
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Failed to record Core Web Vitals: {e!s}",
-        )
+        ) from e
 
 
 # Health Check

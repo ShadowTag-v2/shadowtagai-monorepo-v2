@@ -61,7 +61,7 @@ def main():
     total = len(repos)
     print(f"Starting parallel migration of {total} repos with {MAX_WORKERS} workers...")
 
-    with open(LOG_FILE, "a") as log:
+    with open(LOG_FILE, "a") as log:  # noqa: SIM117
         with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             # Submit all
             future_to_repo = {executor.submit(migrate_repo, repo): repo for repo in repos}
@@ -69,7 +69,7 @@ def main():
             completed = 0
             for future in concurrent.futures.as_completed(future_to_repo):
                 result = future.result()
-                completed += 1
+                completed += 1  # noqa: SIM113
                 if result:
                     msg = f"[{completed}/{total}] {result}"
                     print(msg)

@@ -45,7 +45,7 @@ class ProductDeliveryGate:
         """
         blockers = []
 
-        if feature == "dte_evolution_variant":
+        if feature == "dte_evolution_variant":  # noqa: SIM102
             # Example: DTE variant must have explainability
             if metrics and metrics.get("accuracy", 0) < 0.60:
                 blockers.append("Accuracy below 60% target (quality gate)")

@@ -104,7 +104,7 @@ class DecisionProtocol:
         """Validate if action can proceed"""
         if risk_level == RiskLevel.EH_EXTREMELY_HIGH:
             return False
-        if risk_level == RiskLevel.H_HIGH:
+        if risk_level == RiskLevel.H_HIGH:  # noqa: SIM103
             # Requires human approval
             return False
         return True

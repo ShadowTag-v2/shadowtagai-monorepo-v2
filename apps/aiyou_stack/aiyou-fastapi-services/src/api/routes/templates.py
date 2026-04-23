@@ -52,7 +52,7 @@ async def create_optimization_strategy(optimization: DoingLessBetterResults):
             "framework": "Doing Less Better Results",
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error creating strategy: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Error creating strategy: {e!s}") from e
 
 
 @router.get("/optimization/framework", summary="Get optimization framework overview")

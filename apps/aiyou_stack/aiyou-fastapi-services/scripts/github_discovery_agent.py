@@ -252,7 +252,7 @@ class GitHubDiscoveryAgent:
             issues.append("hardcoded paths")
 
         # Missing error handling
-        if "try:" not in content and "except" not in content:
+        if "try:" not in content and "except" not in content:  # noqa: SIM102
             if "open(" in content or "requests." in content:
                 issues.append("missing error handling")
 

@@ -60,7 +60,7 @@ async def validate_single_item(request: ValidateItemRequest):
 
     except Exception as e:
         logger.error(f"Error validating item: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/validate-batch", response_model=ValidateBatchResponse)
@@ -82,7 +82,7 @@ async def validate_item_batch(request: ValidateBatchRequest):
 
     except Exception as e:
         logger.error(f"Error validating batch: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/metrics", response_model=ValidationMetrics)

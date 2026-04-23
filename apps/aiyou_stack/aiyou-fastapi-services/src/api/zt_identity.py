@@ -89,13 +89,13 @@ async def verify_zero_trust_token(api_key: str = Security(api_key_header)) -> Ze
         raise HTTPException(
             status_code=401,
             detail=f"VIOLATION: Zero-Trust JWT Signature Verification Failed: {e}",
-        )
+        ) from e
     except ValidationError as e:
         # Missing JWT schema claims (not a real GCP token)
         raise HTTPException(
             status_code=422,
             detail=f"VIOLATION: Zero-Trust Identity structure invalid: {e}",
-        )
+        ) from e
 
 
 async def parse_and_lock_identity(
@@ -110,6 +110,6 @@ async def parse_and_lock_identity(
         payload = TemporalIdentityPayload(**raw_json)
         return payload
     except ValidationError as e:
-        raise HTTPException(status_code=422, detail=f"Structural JSON Identity Violation: {e}")
+        raise HTTPException(status_code=422, detail=f"Structural JSON Identity Violation: {e}") from e
     except Exception:
-        raise HTTPException(status_code=400, detail="Malformed Temporal Payload")
+        raise HTTPException(status_code=400, detail="Malformed Temporal Payload") from None

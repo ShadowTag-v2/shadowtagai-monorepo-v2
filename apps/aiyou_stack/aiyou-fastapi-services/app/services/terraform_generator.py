@@ -59,7 +59,7 @@ class TerraformGeneratorService:
         # Basic validation checks
         for file in request.files:
             # Check for common issues
-            if "resource" in file.content and "provider" not in file.content:
+            if "resource" in file.content and "provider" not in file.content:  # noqa: SIM102
                 if file.filename == "main.tf":
                     issues.append(
                         ValidationIssue(

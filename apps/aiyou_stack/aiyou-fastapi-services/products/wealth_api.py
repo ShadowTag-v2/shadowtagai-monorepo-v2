@@ -33,7 +33,7 @@ async def analyze_business(req: AnalysisRequest):
         )
         return plan
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @app.get("/health")

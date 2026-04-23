@@ -180,7 +180,7 @@ class VoiceConsensusClient:
                                     timeout=0.5,
                                     phrase_time_limit=0.5,
                                 )
-                                audio_chunks.append(chunk)
+                                audio_chunks.append(chunk)  # noqa: B023
                             except sr.WaitTimeoutError:
                                 continue
 
@@ -248,7 +248,7 @@ class VoiceConsensusClient:
                 # Capture audio
                 transcript = self.voice.capture_audio(timeout=10)
 
-                if transcript:
+                if transcript:  # noqa: SIM102
                     # Check for wake word
                     if wake_word.lower() in transcript.lower():
                         query = transcript.lower().replace(wake_word.lower(), "").strip()

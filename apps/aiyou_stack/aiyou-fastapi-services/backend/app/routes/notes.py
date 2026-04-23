@@ -36,7 +36,7 @@ async def create_note(
         )
         return CreateNoteResponse(note_id=note_id, message="Note created successfully")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to create note: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to create note: {e!s}") from e
 
 
 @router.post("/append", response_model=AppendToNoteResponse)
@@ -49,9 +49,9 @@ async def append_to_note(
         note_id = storage.append_to_note(title=request.title, content=request.content)
         return AppendToNoteResponse(note_id=note_id, message="Content appended successfully")
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e)) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to append to note: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to append to note: {e!s}") from e
 
 
 @router.get("/by-title/{title}", response_model=GetNoteResponse)

@@ -63,7 +63,7 @@ class AppendToNoteAction(BaseAction):
 
 
 # Union type for all action types
-WorkflowAction = Union[
+WorkflowAction = Union[  # noqa: UP007
     AskForInputAction,
     GetDateAction,
     OpenAppAction,

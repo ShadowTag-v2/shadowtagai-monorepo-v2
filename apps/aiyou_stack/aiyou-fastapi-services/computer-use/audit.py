@@ -49,7 +49,7 @@ def get_audit_log() -> list[dict]:
         for line in f:
             line = line.strip()
             if line:
-                try:
+                try:  # noqa: SIM105
                     records.append(json.loads(line))
                 except json.JSONDecodeError:
                     pass  # Skip malformed lines

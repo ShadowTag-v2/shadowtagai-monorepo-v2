@@ -420,7 +420,7 @@ class LongShortRouter:
         # Simple contexts prefer short model
         simple_contexts = ["summarize", "format", "extract", "classify", "translate"]
 
-        if tier == ModelTier.LONG and any(ctx in context.lower() for ctx in simple_contexts):
+        if tier == ModelTier.LONG and any(ctx in context.lower() for ctx in simple_contexts):  # noqa: SIM102
             if entropy < 0.5:  # Only if not very high entropy
                 return ModelTier.SHORT, f"{reasoning} [ADJUSTED: simple context '{context}']"
 

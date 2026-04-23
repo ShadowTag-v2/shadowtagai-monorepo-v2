@@ -67,10 +67,10 @@ async def chat_completion(request: ChatRequest, db: AsyncSession = Depends(get_d
 
     except ValueError as e:
         logger.error("Chat completion failed - validation error", error=str(e))
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         logger.error("Chat completion failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.post("/stream")
@@ -107,10 +107,10 @@ async def chat_stream(request: ChatRequest, db: AsyncSession = Depends(get_db)):
 
     except ValueError as e:
         logger.error("Chat stream failed - validation error", error=str(e))
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         logger.error("Chat stream failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.post("/conversations", response_model=ConversationResponse)
@@ -134,7 +134,7 @@ async def create_conversation(
 
     except Exception as e:
         logger.error("Conversation creation failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.get("/conversations/{session_id}", response_model=ConversationResponse)
@@ -155,7 +155,7 @@ async def get_conversation(session_id: str, assistant: AIAssistant = Depends(get
         raise
     except Exception as e:
         logger.error("Get conversation failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.get("/conversations/{session_id}/messages", response_model=list[MessageResponse])
@@ -175,7 +175,7 @@ async def get_conversation_messages(
 
     except Exception as e:
         logger.error("Get messages failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.delete("/conversations/{session_id}")
@@ -193,7 +193,7 @@ async def delete_conversation(session_id: str, assistant: AIAssistant = Depends(
         raise
     except Exception as e:
         logger.error("Delete conversation failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.get("/conversations", response_model=list[ConversationResponse])
@@ -215,4 +215,4 @@ async def list_conversations(
 
     except Exception as e:
         logger.error("List conversations failed", error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e

@@ -380,7 +380,7 @@ async def upload_content(
 
     except Exception as e:
         logger.error("upload_failed", error=str(e), exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Upload failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Upload failed: {e!s}") from e
 
 
 @app.get("/item/{item_id}")

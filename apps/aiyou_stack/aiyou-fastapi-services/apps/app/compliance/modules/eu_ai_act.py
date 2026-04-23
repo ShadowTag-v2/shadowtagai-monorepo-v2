@@ -298,7 +298,7 @@ class EUAIActModule(ComplianceModule):
                 evidence="Content is not AI-generated",
             )
 
-        if control.control_id == "EU-AI-14.1":
+        if control.control_id == "EU-AI-14.1":  # noqa: SIM102
             # Human Oversight Mechanisms
             if risk_tier in [RiskTier.HIGH, RiskTier.UNACCEPTABLE]:
                 has_oversight = input_data.metadata.get("human_oversight_enabled", False)

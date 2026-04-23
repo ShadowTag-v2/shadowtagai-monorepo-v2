@@ -342,7 +342,7 @@ class VerbSpecification:
             for word in words:
                 # Clean word
                 clean_word = "".join(c for c in word if c.isalnum())
-                if clean_word in known_verbs or clean_word in verb_indicators:
+                if clean_word in known_verbs or clean_word in verb_indicators:  # noqa: SIM102
                     if clean_word not in verbs:
                         verbs.append(clean_word)
 

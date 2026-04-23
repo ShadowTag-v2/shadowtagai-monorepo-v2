@@ -137,7 +137,7 @@ class DatabaseSettings(BaseSettings):
             if not (0 <= hour < 24 and 0 <= minute < 60):
                 raise ValueError
         except (ValueError, AttributeError):
-            raise ValueError("delivery_time must be in HH:MM format (e.g., '06:00')")
+            raise ValueError("delivery_time must be in HH:MM format (e.g., '06:00')") from None
         return v
 
     @property
@@ -175,7 +175,7 @@ class DeliverySettings(BaseSettings):
             if not (0 <= hour < 24 and 0 <= minute < 60):
                 raise ValueError
         except (ValueError, AttributeError):
-            raise ValueError("delivery_time must be in HH:MM format (e.g., '06:00')")
+            raise ValueError("delivery_time must be in HH:MM format (e.g., '06:00')") from None
         return v
 
     @property

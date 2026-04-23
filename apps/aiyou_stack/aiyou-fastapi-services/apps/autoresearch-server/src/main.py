@@ -135,7 +135,7 @@ async def query_lake(query: LakeQuery):
         results = bridge.query_lake(query.sql)
         return {"status": "success", "rows": results}
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @app.get("/memory")

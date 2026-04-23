@@ -81,7 +81,7 @@ class RulesEngine:
                 days_to_add = 30
             elif event_type == EventType.COMPLAINT_FILED:
                 days_to_add = 30  # Just an example
-        elif jurisdiction == Jurisdiction.FEDERAL:
+        elif jurisdiction == Jurisdiction.FEDERAL:  # noqa: SIM102
             if event_type == EventType.SUMMONS_SERVICE or event_type == EventType.COMPLAINT_FILED:
                 days_to_add = 21
 

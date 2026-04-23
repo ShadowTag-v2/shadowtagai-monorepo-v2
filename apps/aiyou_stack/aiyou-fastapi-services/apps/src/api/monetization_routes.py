@@ -145,7 +145,7 @@ async def create_checkout_session(request: CreateCheckoutRequest):
     try:
         tier_enum = PricingTier[request.tier.upper()]
     except KeyError:
-        raise HTTPException(status_code=400, detail=f"Invalid tier: {request.tier}")
+        raise HTTPException(status_code=400, detail=f"Invalid tier: {request.tier}") from None
 
     stripe = get_stripe_integration()
 
@@ -164,7 +164,7 @@ async def create_checkout_session(request: CreateCheckoutRequest):
 
     except Exception as e:
         logger.error(f"Failed to create checkout session: {e}")
-        raise HTTPException(status_code=500, detail="Failed to create checkout session")
+        raise HTTPException(status_code=500, detail="Failed to create checkout session") from e
 
 
 @billing_router.post("/create-portal-session")
@@ -199,7 +199,7 @@ async def create_portal_session(request: CreatePortalRequest):
 
     except Exception as e:
         logger.error(f"Failed to create portal session: {e}")
-        raise HTTPException(status_code=500, detail="Failed to create portal session")
+        raise HTTPException(status_code=500, detail="Failed to create portal session") from e
 
 
 # Usage tracking
@@ -247,7 +247,7 @@ async def get_usage_stats(customer_id: str):
 
     except Exception as e:
         logger.error(f"Failed to get usage stats: {e}")
-        raise HTTPException(status_code=500, detail="Failed to get usage stats")
+        raise HTTPException(status_code=500, detail="Failed to get usage stats") from e
 
 
 @billing_router.get("/subscription", response_model=SubscriptionResponse)
@@ -284,7 +284,7 @@ async def get_subscription(customer_id: str):
         raise
     except Exception as e:
         logger.error(f"Failed to get subscription: {e}")
-        raise HTTPException(status_code=500, detail="Failed to get subscription")
+        raise HTTPException(status_code=500, detail="Failed to get subscription") from e
 
 
 # Webhooks
@@ -316,7 +316,7 @@ async def stripe_webhook(
 
     except Exception as e:
         logger.error(f"Webhook processing failed: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 # Revenue analytics (admin only)
@@ -341,7 +341,7 @@ async def get_revenue_analytics():
 
     except Exception as e:
         logger.error(f"Failed to get revenue analytics: {e}")
-        raise HTTPException(status_code=500, detail="Failed to get revenue analytics")
+        raise HTTPException(status_code=500, detail="Failed to get revenue analytics") from e
 
 
 @revenue_router.get("/projections")
@@ -363,7 +363,7 @@ async def get_revenue_projections():
 
     except Exception as e:
         logger.error(f"Failed to get revenue projections: {e}")
-        raise HTTPException(status_code=500, detail="Failed to get revenue projections")
+        raise HTTPException(status_code=500, detail="Failed to get revenue projections") from e
 
 
 # Include all routers

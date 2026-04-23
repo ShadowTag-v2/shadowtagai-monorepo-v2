@@ -229,7 +229,7 @@ Refine the answer based on this critique. Leave this interaction better than you
         missing = []
 
         required_fields = ["output", "metadata"]
-        for field in required_fields:
+        for field in required_fields:  # noqa: F402
             if field not in response:
                 missing.append(f"Missing required field: {field}")
 

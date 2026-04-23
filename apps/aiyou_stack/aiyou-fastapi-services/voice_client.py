@@ -231,7 +231,7 @@ class VoiceUnGPTClient:
                 # Capture audio
                 transcript = self.voice.capture_audio(timeout=10)
 
-                if transcript:
+                if transcript:  # noqa: SIM102
                     # Check for wake word
                     if wake_word.lower() in transcript.lower():
                         query = transcript.lower().replace(wake_word.lower(), "").strip()

@@ -104,7 +104,7 @@ def update(
 
     # Step 2: Compute v (variance)
     v_inv = 0.0
-    for opponent, result in zip(opponents, results, strict=False):
+    for opponent, result in zip(opponents, results, strict=False):  # noqa: B007
         mu_j, phi_j = opponent.to_glicko_scale()
         E_val = E(mu, mu_j, phi_j)
         v_inv += g(phi_j) ** 2 * E_val * (1 - E_val)

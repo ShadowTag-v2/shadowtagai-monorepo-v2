@@ -79,7 +79,7 @@ class SecretManager:
 
         # Decrypt if requested and cipher available
         if decrypt and self._cipher and isinstance(value, str):
-            try:
+            try:  # noqa: SIM105
                 value = self._cipher.decrypt(value.encode()).decode()
             except Exception:
                 pass  # Return encrypted value if decryption fails

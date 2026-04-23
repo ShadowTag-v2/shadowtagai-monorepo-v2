@@ -67,7 +67,7 @@ def verify_endpoint(check: EndpointCheck):
         return result
     except Exception as e:
         logger.error(f"Jetski error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @app.post("/verify/render")
@@ -90,7 +90,7 @@ def verify_render(check: PageRenderCheck):
         return result
     except Exception as e:
         logger.error(f"Render check error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @app.post("/intercept")
@@ -109,7 +109,7 @@ def intercept_traffic(config: InterceptionConfig):
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @app.on_event("shutdown")

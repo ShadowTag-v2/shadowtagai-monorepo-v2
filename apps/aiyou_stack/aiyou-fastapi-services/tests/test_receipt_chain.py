@@ -298,6 +298,6 @@ class TestGCPSecretIntegration:
         """Should raise error if google-cloud-secret-manager not installed."""
         from shadowtag_v2.receipt_chain import _get_private_key_from_gcp
 
-        with patch.dict("sys.modules", {"google.cloud": None}):
+        with patch.dict("sys.modules", {"google.cloud": None}):  # noqa: SIM117
             with pytest.raises(ImportError, match="google-cloud-secret-manager required"):
                 _get_private_key_from_gcp("test", "project")

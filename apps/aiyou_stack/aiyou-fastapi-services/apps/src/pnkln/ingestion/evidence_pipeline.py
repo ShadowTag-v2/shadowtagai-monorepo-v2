@@ -31,7 +31,7 @@ try:
 except ImportError as e:
     raise ImportError(
         f"Missing dependency: {e}. Run: pip install chromadb pypdf playwright aiohttp",
-    )
+    ) from e
 
 # --- CONFIGURATION ---
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api/generate")
@@ -190,7 +190,7 @@ async def process_item(session, browser, item):
 
 async def run_pipeline():
     ssl_context = ssl.create_default_context(cafile=certifi.where())
-    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=ssl_context)) as session:
+    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=ssl_context)) as session:  # noqa: SIM117
         async with async_playwright() as p:
             # Launch Browser (Headless)
             browser = await p.chromium.launch(headless=True)
