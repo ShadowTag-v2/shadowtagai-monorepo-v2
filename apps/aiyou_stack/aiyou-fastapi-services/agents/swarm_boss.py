@@ -20,7 +20,6 @@ import google.generativeai as genai
 
 # NOTE: Environment variables loaded via `source scripts/load_mcp_secrets.sh`
 # or GCP Secret Manager in production. python-dotenv is banned (GEMINI.md §secrets).
-
 from agents.hybrid_swarm_optimizer import HybridSwarmOptimizer
 
 # Army Doctrine Integration
