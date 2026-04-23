@@ -6,6 +6,7 @@
         "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/@modelcontextprotocol/server-sequential-thinking/dist/index.js"
       ],
       "env": {
+        "NODE_OPTIONS": "--no-deprecation",
         "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
         "HOME": "/Users/pikeymickey"
       }
@@ -22,6 +23,7 @@
         "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"
       ],
       "env": {
+        "NODE_OPTIONS": "--no-deprecation",
         "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
         "GCLOUD_PROJECT": "shadowtag-omega-v4",
         "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
@@ -39,6 +41,7 @@
         "X-Goog-Api-Key: ${DEVELOPER_KNOWLEDGE_API_KEY}"
       ],
       "env": {
+        "NODE_OPTIONS": "--no-deprecation",
         "DEVELOPER_KNOWLEDGE_API_KEY": "${DEVELOPER_KNOWLEDGE_API_KEY}",
         "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
         "HOME": "/Users/pikeymickey"
@@ -53,6 +56,7 @@
         "X-Goog-Api-Key: ${STITCH_API_KEY}"
       ],
       "env": {
+        "NODE_OPTIONS": "--no-deprecation",
         "STITCH_API_KEY": "${STITCH_API_KEY}",
         "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
         "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
@@ -66,6 +70,7 @@
         "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/chrome-devtools-mcp/build/src/bin/chrome-devtools-mcp.js"
       ],
       "env": {
+        "NODE_OPTIONS": "--no-deprecation",
         "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
         "HOME": "/Users/pikeymickey"
       }
@@ -79,6 +84,7 @@
         "X-Goog-Api-Key: ${GOOGLE_DESIGN_API_KEY}"
       ],
       "env": {
+        "NODE_OPTIONS": "--no-deprecation",
         "GOOGLE_DESIGN_API_KEY": "${GOOGLE_DESIGN_API_KEY}",
         "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
         "HOME": "/Users/pikeymickey"
@@ -90,6 +96,7 @@
         "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/github-app-mcp-wrapper.mjs"
       ],
       "env": {
+        "NODE_OPTIONS": "--no-deprecation",
         "GITHUB_APP_ID": "3018200",
         "GITHUB_INSTALLATION_ID": "114307210",
         "GITHUB_PEM_PATH": "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem",
