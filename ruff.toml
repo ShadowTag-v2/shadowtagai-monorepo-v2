@@ -18,6 +18,9 @@ extend-exclude = [
     "docs/bundles/",
     "apps/ShadowTag-v2_stack/cosmic-crab-payload/",
     "**/external_repos/",
+    "**/external_sdks/",
+    "**/libs/autoresearch_sources/",
+    "labs/gemini-cookbook/",
     "tools/",
 ]
 

@@ -155,6 +155,7 @@ exclude = [
     "third_party/",
     "reference_architectures/",
     "libs/autoresearch_sources/",
+    "external_sdks/",
     ".venv/",
     "node_modules/",
 ]
