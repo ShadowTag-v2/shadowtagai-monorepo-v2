@@ -1,58 +1,8 @@
 {
-  "name": "ShadowTag-v2-fastapi-services",
-  "version": "1.0.0",
-  "description": "AI Agent system for FastAPI services with System Architect agent and ShadowTagAI DNA Royalty",
-  "main": "index.js",
+  "name": "uphillsnowball",
+  "version": "11.0.0",
   "scripts": {
-    "test": "hardhat test",
-    "compile": "hardhat compile",
-    "deploy": "hardhat run scripts/deploy_dna_royalty.js",
-    "lint": "biome check .",
-    "lint:fix": "biome check --write .",
-    "lint:design": "node tools/design-system-lint.mjs src/",
-    "gate0": "npm run lint:fix && npm run lint:design",
-    "memory:status": "python3 tools/unified_memory.py status",
-    "memory:recall": "python3 tools/unified_memory.py recall",
-    "memory:hydrate": "python3 tools/unified_memory.py hydrate"
-  },
-  "keywords": [
-    "ai",
-    "agent",
-    "fastapi",
-    "solidity",
-    "erc-6551",
-    "erc-4337",
-    "erc-8004"
-  ],
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "@anthropic-ai/claude-agent-sdk": "^0.2.96",
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "scrape-tiktok": "^1.2.0",
-    "sqlite3": "^6.0.1",
-    "zod": "^4.3.6",
-    "punycode": "^2.3.1"
-  },
-  "devDependencies": {
-    "@jest/globals": "^30.3.0",
-    "@nomicfoundation/hardhat-toolbox": "^7.0.0",
-    "@openzeppelin/contracts": "^5.6.1",
-    "@openzeppelin/contracts-upgradeable": "^5.6.1",
-    "@openzeppelin/hardhat-upgrades": "^3.9.1",
-    "@playwright/test": "^1.59.1",
-    "@typescript-eslint/eslint-plugin": "^8.58.1",
-    "@typescript-eslint/parser": "^8.47.0",
-    "eslint": "^10.2.0",
-    "eslint-plugin-cor-rules": "file:eslint-plugin-cor-rules",
-    "hardhat": "^2.28.0",
-    "typescript": "^6.0.2"
-  },
-  "overrides": {
-    "punycode": "^2.3.1",
-    "node": "file:external_sdks/npm/node",
-    "cli": "file:external_sdks/npm/cli",
-    "node-semver": "file:external_sdks/npm/node-semver"
+    "build": "echo 'Building Monorepo'",
+    "deploy": "firebase deploy"
   }
 }
