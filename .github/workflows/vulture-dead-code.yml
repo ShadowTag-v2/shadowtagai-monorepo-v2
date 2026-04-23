@@ -5,6 +5,7 @@
 name: Vulture Dead Code Scan
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths: ['scripts/**/*.py', 'apps/kovelai/**/*.py', 'apps/counselconduit/**/*.py']
