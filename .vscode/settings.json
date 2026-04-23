@@ -78,6 +78,8 @@
   "terminal.integrated.env.linux": {
     "NODE_OPTIONS": "--no-deprecation"
   },
+  "cloudcode.project": "shadowtag-omega-v4",
+  "cloudcode.region": "us-central1",
   "extensions.autoUpdate": false,
   "extensions.autoCheckUpdates": false
 }
