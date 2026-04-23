@@ -29,9 +29,9 @@ repos:
     hooks:
       - id: ruff
         args: [--fix]
-        exclude: '^(tools/|third_party/|libs/|labs/|reference_architectures/|external_repos/|clones/|archive/|packages/|docs/bundles/)'
+        exclude: '^(tools/|third_party/|libs/|labs/|reference_architectures/|external_repos/|clones/|archive/|packages/|docs/bundles/|external_sdks/)'
       - id: ruff-format
-        exclude: '^(tools/|third_party/|libs/|labs/|reference_architectures/|external_repos/|clones/|archive/|packages/|docs/bundles/)'
+        exclude: '^(tools/|third_party/|libs/|labs/|reference_architectures/|external_repos/|clones/|archive/|packages/|docs/bundles/|external_sdks/)'
 
   # Vulture — dead code detection (Rich Hickey Doctrine)
   - repo: local

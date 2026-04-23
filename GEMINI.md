@@ -4,7 +4,7 @@ scope: antigravity_local_operator_invariants
 status: LOCKED
 ---
 
-# GEMINI.md — v10.1
+# GEMINI.md — v10.2
 
 <system_directive>
 <workspace_alignment>

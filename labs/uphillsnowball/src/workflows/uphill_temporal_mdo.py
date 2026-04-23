@@ -21,8 +21,7 @@ from temporalio import workflow
 from temporalio.exceptions import ApplicationError
 
 with workflow.unsafe.imports_passed_through():
-    from src.intelligence.scholar_eval import EpistemologicalFirewall
-
+    pass
 
 @workflow.defn(name="UphillSnowballCampaign")
 class UphillSnowballCampaign:
