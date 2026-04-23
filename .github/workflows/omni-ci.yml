@@ -1,6 +1,7 @@
 name: "\U0001F6E1\uFE0F Omni-Sanitation & Zero-Trust CI"
 
 on:
+  workflow_dispatch:
   pull_request:
     branches: ["main"]
 

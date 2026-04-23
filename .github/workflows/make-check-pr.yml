@@ -1,5 +1,6 @@
 name: PR Quality Gate (make check)
 on:
+  workflow_dispatch:
   pull_request:
     branches: [main]
     paths:
