@@ -41,12 +41,9 @@ import re
 import subprocess
 import sys
 from collections import defaultdict
-from datetime import datetime
-
-try:
-    from datetime import UTC
-except ImportError:
-    UTC = UTC  # Python <3.11 fallback
+import datetime
+from datetime import datetime as dt
+UTC = getattr(datetime, "UTC", datetime.UTC)
 from pathlib import Path
 
 
