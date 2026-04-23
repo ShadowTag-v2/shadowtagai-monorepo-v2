@@ -227,7 +227,9 @@ hardened_state:
   lighthouse_bp: "100"
   lighthouse_seo: "100"
   ruff_violations_counselconduit: 0
-  ruff_version: "0.11.8"
+  ruff_violations_aiyou_stack: 0
+  ruff_version: "0.15.11"
+  ruff_sarif_output: true
   vulture_false_positives: 2
   nested_git_remaining: 0
   firestore_databases: 2
@@ -246,7 +248,7 @@ hardened_state:
   model_refs_purged: true
   veo_pipeline: "scripts/veo_pipeline.py (6 presets)"
   veo_presets: ["hero_drift", "counselconduit_hero", "shadowtagai_marketing", "onboarding_flow", "billing_explainer", "stripe_webhook"]
-  skills_added: ["google-external-cognitive-suite", "veo3-flow-cinematic", "a2a-agent-card-publisher", "a2ui-generative-blueprint", "agui-sse-transport", "adk2-graph-workflow", "four-pillar-protocol-stack", "agent-encryption-doctrine", "sequential-attention-selector", "cloud-api-registry-mcp-binder", "developer-connect-cicd", "a2a-development-patterns"]
+  skills_added: ["google-external-cognitive-suite", "veo3-flow-cinematic", "a2a-agent-card-publisher", "a2ui-generative-blueprint", "agui-sse-transport", "adk2-graph-workflow", "four-pillar-protocol-stack", "agent-encryption-doctrine", "sequential-attention-selector", "cloud-api-registry-mcp-binder", "developer-connect-cicd", "a2a-development-patterns", "ruff-debt-eradication", "cognitive-structural-synthesis-v4"]
   pinkln_docs_relocated: "docs/pinkln/ (11 files, 27K words)"
   disk_reclaimed_gb: 219
   a2a_protocol_version: "1.0"

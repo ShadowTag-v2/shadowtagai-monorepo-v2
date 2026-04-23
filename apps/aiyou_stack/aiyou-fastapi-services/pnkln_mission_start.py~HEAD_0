@@ -4,13 +4,15 @@ ANTIGRAVITY // MISSION LAUNCHER
 Integrates with pnkln_tasks.sh and SOP Snippets
 """
 
-import sys, json, logging
+import json
+import logging
+import sys
 
 logging.basicConfig(level=logging.INFO)
 
 
 def load_doctrine():
-    with open("pnkln/Prompts/pnkln_SOPSnippets.json", "r") as f:
+    with open("pnkln/Prompts/pnkln_SOPSnippets.json") as f:
         return json.load(f)
 
 

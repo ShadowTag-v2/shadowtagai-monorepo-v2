@@ -1,9 +1,9 @@
 ---
 name: cognitive-structural-synthesis
-description: End-to-end workflow for structural cloning, utilizing the Google Design MCP for semantic extraction, running Bandit/Lighthouse validations, and injecting a Cognitive Suite product pitch. V3 — MCP-native, Git clone permanently abandoned.
+description: "End-to-end workflow for structural cloning, Google Design MCP semantic extraction, the 11x Deep Browser Extraction loop, and Cognitive Suite injection. V4 — MCP-native + browser deep-extraction."
 ---
 
-# Cognitive Structural Synthesis (V3)
+# Cognitive Structural Synthesis (V4)
 
 ## Ground Truth: Google Design MCP
 
@@ -54,7 +54,7 @@ Three enterprise systems form an immutable validation chain. No code commits wit
 
 ---
 
-## The Pipeline (6 Phases)
+## The Pipeline (7 Phases)
 
 ### Phase 1: Structural Scrape
 
@@ -107,7 +107,19 @@ Transform scraped CSS into semantic DESIGN.md using the MCP tools:
    - Re-validate via `generate_brand_color_scheme` (pass corrected hex values)
 4. Run `chrome-devtools-mcp` `lighthouse_audit` to confirm accessibility score ≥ 0.9
 
-### Phase 5: Hollow & Inject (Cognitive Suite)
+### Phase 5: The 11x Deep Extraction Loop (Research Phase)
+
+> **V4 Addition:** Before writing copy, execute `execute_deep_browser_expansion` to mine exhaustive context.
+
+1. **Navigate:** Use `search_web` or Chrome DevTools MCP to open Google and enter the product concept query.
+2. **AI Mode Expansion:** Navigate to Google's AI Mode tab. Auto-send the exact string "yes" 11 times, waiting for full generation between each prompt.
+   - 9x fully develops the answer; 11x provides a safety buffer for complete latent space exhaustion.
+3. **Capture:** Scrape the final, fully-developed text payload using `take_snapshot` / `evaluate_script`.
+4. **Return:** Feed the deep-extracted context into Phase 6 as the content source.
+
+> **Rationale:** Standard API calls return truncated summaries. By automating the Chrome UI to repeatedly confirm expansion, the underlying model fully unrolls its chain-of-thought, yielding an exhaustive research payload that dramatically improves copy quality.
+
+### Phase 6: Hollow & Inject (Cognitive Suite)
 
 Trigger `orchestrate_cognitive_injection`:
 
@@ -116,13 +128,13 @@ Trigger `orchestrate_cognitive_injection`:
    - Count character limits per text container (width ÷ avg char width)
    - Map grid column/row ratios
 2. **Content Generation (Constrained):**
-   - **Copy:** Use Google AI Mode / Deep Research — segmented to exact character limits
+   - **Copy:** Feed the Phase 5 deep-extracted payload to Mariner & Flow — segmented to exact character limits
    - **Imagery:** Use `generate_image` tool with exact pixel dimensions from layout
    - **Video:** Reference Veo 3.1 specs for hero media constraints
 3. **Color Mutation:** Replace DESIGN.md color roles with new brand colors, then apply via Stitch MCP `apply_design_system`
 4. **All generated assets MUST inherit the color palette validated by Google Design MCP in Phase 4**
 
-### Phase 6: Assembly & Lighthouse Gate
+### Phase 7: Assembly & Lighthouse Gate
 
 1. Use Stitch MCP `edit_screens` to replace content
 2. Export final code via Stitch MCP `get_screen`
@@ -178,12 +190,32 @@ Trigger `orchestrate_cognitive_injection`:
 }
 ```
 
+### Tool G: Deep Browser Context Extractor
+
+```json
+{
+  "name": "execute_deep_browser_expansion",
+  "description": "Drives a headless/visible Chrome browser to extract hyper-developed research via Google's AI Mode tab utilizing an 11-step prompt expansion loop.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "initial_query": {
+        "type": "string",
+        "description": "The base research query for the product pitch."
+      }
+    },
+    "required": ["initial_query"]
+  },
+  "system_instruction": "Use Chrome DevTools MCP or Playwright. 1) Navigate to https://www.google.com/. 2) Enter initial_query. 3) Wait for response to post. 4) Navigate to the far-left 'ai mode' tab and click it. 5) Auto-prompt the exact string 'yes' 11 times in succession, waiting for the generation to finish each time. (9x fully develops the answer; 11x provides a safety buffer). 6) Return to view and scrape the final, fully-developed text payload. 7) Return data to context."
+}
+```
+
 ---
 
 ## Owned Properties (Mission A Targets)
 
 | Property | URL | DESIGN_SYSTEM.md Location | Design Language |
-|----------|-----|--------------------------|-----------------|
+|----------|-----|--------------------------|-----------------| 
 | ShadowTag AI | shadowtagai.web.app | `apps/shadowtagai/DESIGN_SYSTEM.md` | Kinetic Void |
 | KovelAI | kovelai.web.app | `apps/kovelai/DESIGN_SYSTEM.md` | Structured Precision |
 
@@ -197,3 +229,5 @@ Trigger `orchestrate_cognitive_injection`:
 - ❌ Skipping WCAG contrast validation before Assembly phase
 - ❌ Committing without Lighthouse gate passing
 - ❌ Using `search_web` for design tokens (use `google-design` MCP)
+- ❌ Writing copy without running the 11x Deep Extraction Loop first
+- ❌ Truncating AI Mode responses before the 11th confirmation
