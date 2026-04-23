@@ -8,6 +8,10 @@
     "scripts"
   ],
 
+  "extraPaths": [
+    "./external_repos/corp-monorepo"
+  ],
+
   "exclude": [
     "**/.git",
     "**/__pycache__",
@@ -24,7 +28,9 @@
     "**/coverage",
 
     "archive",
+    "tools",
     "tools/legacy",
+    "third_party",
     "docs/legacy_shadowtag_v2",
     "apps/aiyou_ecosystem/raw_ingest",
 
