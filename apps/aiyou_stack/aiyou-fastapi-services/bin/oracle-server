@@ -12,16 +12,16 @@ Endpoints:
     GET  /context  - Read FULLAUTO_CONTEXT.md
 """
 
+import json
 import os
 import subprocess
-import json
-from pathlib import Path
 from datetime import datetime
-from typing import Optional, List
+from pathlib import Path
+from typing import List, Optional
 
+import uvicorn
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import uvicorn
 
 app = FastAPI(
     title="Oracle Server", description="Gemini 1M+ context wrapper for Claude Code", version="1.0"
@@ -34,20 +34,20 @@ PORT = int(os.environ.get("ORACLE_PORT", 8700))
 
 class AskRequest(BaseModel):
     prompt: str
-    files: Optional[List[str]] = None
-    lines: Optional[str] = None
+    files: list[str] | None = None
+    lines: str | None = None
 
 
 class AskResponse(BaseModel):
     response: str
-    files_included: List[str]
+    files_included: list[str]
     history_size: int
 
 
 class HistoryEntry(BaseModel):
     timestamp: str
     prompt: str
-    files: List[str]
+    files: list[str]
     response: str
 
 
@@ -63,7 +63,7 @@ def load_history() -> list:
     return history[-MAX_HISTORY:]
 
 
-def save_history(prompt: str, response: str, files: List[str] = None):
+def save_history(prompt: str, response: str, files: list[str] = None):
     """Append exchange to history."""
     HISTORY_DIR.mkdir(exist_ok=True)
     history_file = HISTORY_DIR / "conversation.json"

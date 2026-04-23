@@ -41,10 +41,9 @@ import re
 import shutil
 import subprocess
 import sys
-import time
 import textwrap
-
-from datetime import tzinfo, timedelta, datetime
+import time
+from datetime import datetime, timedelta, tzinfo
 
 __all__ = [
     "Blob",
@@ -242,7 +241,7 @@ class PathQuoting:
         return unquoted_string
 
 
-class AncestryGraph(object):
+class AncestryGraph:
     """
     A class that maintains a direct acycle graph of commits for the purpose of
     determining if one commit is the ancestor of another.
@@ -406,7 +405,7 @@ class AncestryGraph(object):
         return False
 
 
-class MailmapInfo(object):
+class MailmapInfo:
     def __init__(self, filename):
         self.changes = {}
         self._parse_file(filename)
@@ -420,7 +419,7 @@ class MailmapInfo(object):
             count = 0
             for line in f:
                 count += 1
-                err = "Unparseable mailmap file: line #{} is bad: {}".format(count, line)
+                err = f"Unparseable mailmap file: line #{count} is bad: {line}"
                 # Remove comments
                 line = comment_re.sub(b"", line)
                 # Remove leading and trailing whitespace
@@ -459,7 +458,7 @@ class MailmapInfo(object):
         return (name, email)
 
 
-class ProgressWriter(object):
+class ProgressWriter:
     def __init__(self):
         self._last_progress_update = time.time()
         self._last_message = None
@@ -469,7 +468,7 @@ class ProgressWriter(object):
         now = time.time()
         if now - self._last_progress_update > 0.1:
             self._last_progress_update = now
-            sys.stdout.write("\r{}".format(msg))
+            sys.stdout.write(f"\r{msg}")
             sys.stdout.flush()
 
     def finish(self):
@@ -479,7 +478,7 @@ class ProgressWriter(object):
         sys.stdout.write("\n")
 
 
-class _IDs(object):
+class _IDs:
     """
     A class that maintains the 'name domain' of all the 'marks' (short int
     id for a blob/commit git object). There are two reasons this mechanism
@@ -580,7 +579,7 @@ class _IDs(object):
         return rv
 
 
-class _GitElement(object):
+class _GitElement:
     """
     The base class for all git elements that we create.
     """
@@ -1052,7 +1051,7 @@ class Alias(_GitElement):
         file_.write(b"alias\nmark :%d\nto :%d\n\n" % (self.ref, self.to_ref))
 
 
-class FastExportParser(object):
+class FastExportParser:
     """
     A class for parsing and handling the output from fast-export. This
     class allows the user to register callbacks when various types of
@@ -1464,7 +1463,7 @@ class FastExportParser(object):
 
         # Now print the resulting commit, or if prunable skip it
         self._latest_orig_commit[branch] = commit.id
-        if not (commit.old_id or commit.id) in _SKIPPED_COMMITS:
+        if (commit.old_id or commit.id) not in _SKIPPED_COMMITS:
             self._latest_commit[branch] = commit.id
         if not commit.dumped:
             self._imported_refs.add(commit.branch)
@@ -1614,9 +1613,7 @@ class FastExportParser(object):
                 self._parse_progress()
             elif self._currentline.startswith(b"checkpoint"):
                 self._parse_checkpoint()
-            elif self._currentline.startswith(b"feature"):
-                self._parse_literal_command()
-            elif self._currentline.startswith(b"option"):
+            elif self._currentline.startswith(b"feature") or self._currentline.startswith(b"option"):
                 self._parse_literal_command()
             elif self._currentline.startswith(b"done"):
                 if self._done_callback:
@@ -1676,7 +1673,7 @@ NEXT STEPS FOR YOUR SENSITIVE DATA REMOVAL:
 )
 
 
-class SubprocessWrapper(object):
+class SubprocessWrapper:
     @staticmethod
     def decodify(args):
         if type(args) == str:
@@ -1715,7 +1712,7 @@ if platform.system() == "Windows" or "PRETEND_UNICODE_ARGS" in os.environ:
     subproc = SubprocessWrapper
 
 
-class GitUtils(object):
+class GitUtils:
     @staticmethod
     def get_commit_count(repo, *args):
         """
@@ -1748,13 +1745,13 @@ class GitUtils(object):
     @staticmethod
     def is_repository_bare(repo_working_dir):
         out = subproc.check_output(
-            "git rev-parse --is-bare-repository".split(), cwd=repo_working_dir
+            ["git", "rev-parse", "--is-bare-repository"], cwd=repo_working_dir
         )
         return out.strip() == b"true"
 
     @staticmethod
     def determine_git_dir(repo_working_dir):
-        d = subproc.check_output("git rev-parse --git-dir".split(), cwd=repo_working_dir).strip()
+        d = subproc.check_output(["git", "rev-parse", "--git-dir"], cwd=repo_working_dir).strip()
         if repo_working_dir == b"." or d.startswith(b"/"):
             return d
         return os.path.join(repo_working_dir, d)
@@ -1762,12 +1759,12 @@ class GitUtils(object):
     @staticmethod
     def get_refs(repo_working_dir):
         try:
-            output = subproc.check_output("git show-ref".split(), cwd=repo_working_dir)
+            output = subproc.check_output(["git", "show-ref"], cwd=repo_working_dir)
         except subprocess.CalledProcessError as e:
             # If error code is 1, there just aren't any refs; i.e. new repo.
             # If error code is other than 1, some other error (e.g. not a git repo)
             if e.returncode != 1:
-                raise SystemExit("fatal: {}".format(e))
+                raise SystemExit(f"fatal: {e}")
             output = ""
         return dict(reversed(x.split()) for x in output.splitlines())
 
@@ -1775,9 +1772,9 @@ class GitUtils(object):
     def get_config_settings(repo_working_dir):
         output = ""
         try:
-            output = subproc.check_output("git config --list --null".split(), cwd=repo_working_dir)
+            output = subproc.check_output(["git", "config", "--list", "--null"], cwd=repo_working_dir)
         except subprocess.CalledProcessError as e:  # pragma: no cover
-            raise SystemExit("fatal: {}".format(e))
+            raise SystemExit(f"fatal: {e}")
 
         # FIXME: Ignores multi-valued keys, just let them overwrite for now
         return dict(item.split(b"\n", maxsplit=1) for item in output.strip().split(b"\0") if item)
@@ -1833,7 +1830,7 @@ class GitUtils(object):
                 identifier = BLOB_HASH_TO_NEW_ID.get(newhash, newhash)
                 file_changes.append(FileChange(b"M", path, identifier, mode))
             else:  # pragma: no cover
-                raise SystemExit("Unknown change type for line {}".format(line))
+                raise SystemExit(f"Unknown change type for line {line}")
 
         return file_changes
 
@@ -1846,12 +1843,12 @@ class GitUtils(object):
         contents = re.sub(rb"\A#\!.*", rb"#!/usr/bin/env python3", contents)
         contents = re.sub(rb'(\("GIT_TEXTDOMAINDIR"\) or ").*"', rb'\1@@LOCALEDIR@@"', contents)
 
-        cmd = "git hash-object --stdin".split()
+        cmd = ["git", "hash-object", "--stdin"]
         version = subproc.check_output(cmd, input=contents).strip()
         print(decode(version[0:12]))
 
 
-class FilteringOptions(object):
+class FilteringOptions:
     default_replace_text = b"***REMOVED***"
 
     class AppendFilter(argparse.Action):
@@ -2197,9 +2194,7 @@ EXAMPLES
                 "By default, each expression is treated as literal text, "
                 "but 'regex:' and 'glob:' prefixes are supported.  You can "
                 "end the line with '==>' and some replacement text to "
-                "choose a replacement choice other than the default of '{}'.".format(
-                    decode(FilteringOptions.default_replace_text)
-                )
+                f"choose a replacement choice other than the default of '{decode(FilteringOptions.default_replace_text)}'."
             ),
         )
         contents.add_argument(
@@ -2621,7 +2616,7 @@ EXAMPLES
         # Also throw some sanity checks on git version here;
         # PERF: remove these checks once new enough git versions are common
         p = subproc.Popen(
-            "git fast-export -h".split(), stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+            ["git", "fast-export", "-h"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
         )
         output = p.stdout.read()
         if b"--anonymize-map" not in output:  # pragma: no cover
@@ -2645,7 +2640,7 @@ EXAMPLES
             # If we don't have fast-exoprt --reencode, we may also be missing
             # diff-tree --combined-all-paths, which is even more important...
             p = subproc.Popen(
-                "git diff-tree -h".split(), stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+                ["git", "diff-tree", "-h"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
             )
             output = p.stdout.read()
             if b"--combined-all-paths" not in output:
@@ -2653,7 +2648,7 @@ EXAMPLES
                 raise SystemExit(_("Error: need git >= 2.22.0"))
         if args.sensitive_data_removal:
             p = subproc.Popen(
-                "git cat-file -h".split(), stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+                ["git", "cat-file", "-h"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
             )
             output = p.stdout.read()
             if b"--batch-command" not in output:  # pragma: no cover
@@ -2813,7 +2808,7 @@ EXAMPLES
         return args
 
 
-class RepoAnalyze(object):
+class RepoAnalyze:
     # First, several helper functions for analyze_commit()
 
     @staticmethod
@@ -2899,9 +2894,7 @@ class RepoAnalyze(object):
                         stats["tree_deletions"][f] = date
                     else:
                         stats["file_deletions"][f] = date
-            elif change_types.strip(b"AMT") == b"":
-                RepoAnalyze.handle_file(stats, graph, commit, modes, shas, filenames)
-            elif modes[-1] == b"040000" and change_types.strip(b"RAM") == b"":
+            elif change_types.strip(b"AMT") == b"" or modes[-1] == b"040000" and change_types.strip(b"RAM") == b"":
                 RepoAnalyze.handle_file(stats, graph, commit, modes, shas, filenames)
             elif change_types.strip(b"RAMT") == b"":
                 RepoAnalyze.handle_file(stats, graph, commit, modes, shas, filenames)
@@ -2981,7 +2974,7 @@ class RepoAnalyze(object):
             # If someone is trying to analyze a subset of the history, make sure
             # to avoid dying on commits with parents that we haven't seen before
             if args.refs:
-                graph.record_external_commits([p for p in parents if not p in graph.value])
+                graph.record_external_commits([p for p in parents if p not in graph.value])
 
             # Analyze this commit and update progress
             RepoAnalyze.analyze_commit(stats, graph, commit, parents, date, file_changes)
@@ -3169,7 +3162,7 @@ class RepoAnalyze(object):
                 seen.add(equiv_group)
                 f.write(
                     (
-                        "{} ->\n    ".format(decode(equiv_group[0]))
+                        f"{decode(equiv_group[0])} ->\n    "
                         + "\n    ".join(decode(x) for x in equiv_group[1:])
                         + "\n"
                     ).encode()
@@ -3535,7 +3528,7 @@ class DualFileWriter:
         self.file2.close()
 
 
-class RepoFilter(object):
+class RepoFilter:
     def __init__(
         self,
         args,
@@ -3676,11 +3669,11 @@ class RepoFilter(object):
             which_under = which.replace("-", "_")
             if not args:
                 args = which
-            callback_field = "_{}_callback".format(which_under)
+            callback_field = f"_{which_under}_callback"
             code_string = getattr(self._args, which_under + "_callback")
             if code_string:
                 if os.path.exists(code_string):
-                    with open(code_string, "r", encoding="utf-8") as f:
+                    with open(code_string, encoding="utf-8") as f:
                         code_string = f.read()
                 if getattr(self, callback_field):
                     raise SystemExit(
@@ -3716,7 +3709,7 @@ class RepoFilter(object):
             return
 
         if self._args.debug:
-            print("[DEBUG] Passed arguments:\n{}".format(self._args))
+            print(f"[DEBUG] Passed arguments:\n{self._args}")
 
         # Determine basic repository information
         target_working_dir = self._args.target or b"."
@@ -3913,7 +3906,7 @@ class RepoFilter(object):
         # Note that transfer.unpackLimit defaults to 100, meaning that a
         # repository with no packs and less than 100 objects should be considered
         # fully packed.
-        output = subproc.check_output("git count-objects -v".split())
+        output = subproc.check_output(["git", "count-objects", "-v"])
         stats = dict(x.split(b": ") for x in output.splitlines())
         num_packs = int(stats[b"packs"])
         num_loose_objects = int(stats[b"count"])
@@ -3930,7 +3923,7 @@ class RepoFilter(object):
 
         # Make sure there is precisely one remote, named "origin"...or that this
         # is a new bare repo with no packs and no remotes
-        output = subproc.check_output("git remote".split()).strip()
+        output = subproc.check_output(["git", "remote"]).strip()
         if not (output == b"origin" or (num_packs == 0 and not output)):
             abort(_("expected one remote, origin"))
 
@@ -3953,11 +3946,11 @@ class RepoFilter(object):
         # Do extra checks in non-bare repos
         if not is_bare:
             # Avoid uncommitted, unstaged, or untracked changes
-            if subproc.call("git diff --staged --quiet".split()):
+            if subproc.call(["git", "diff", "--staged", "--quiet"]):
                 abort(_("you have uncommitted changes"))
-            if subproc.call("git diff --quiet".split()):
+            if subproc.call(["git", "diff", "--quiet"]):
                 abort(_("you have unstaged changes"))
-            untracked_output = subproc.check_output("git ls-files -o".split())
+            untracked_output = subproc.check_output(["git", "ls-files", "-o"])
             if len(untracked_output) > 0:
                 uf = untracked_output.rstrip(b"\n").split(b"\n")
                 # Since running git-filter-repo can result in files being written to
@@ -3978,7 +3971,7 @@ class RepoFilter(object):
                     abort(_("%s does not match %s") % (decode(refname), decode(origin_ref)))
 
             # Make sure there is only one worktree
-            output = subproc.check_output("git worktree list".split())
+            output = subproc.check_output(["git", "worktree", "list"])
             if len(output.splitlines()) > 1:
                 abort(_("you have multiple worktrees"))
 
@@ -3995,19 +3988,19 @@ class RepoFilter(object):
         cleanup_cmds = []
         if repack:
             cleanup_cmds = [
-                "git reflog expire --expire=now --all".split(),
-                "git gc {} --prune=now".format(quiet_flags).split(),
+                ["git", "reflog", "expire", "--expire=now", "--all"],
+                f"git gc {quiet_flags} --prune=now".split(),
             ]
         if reset:
-            cleanup_cmds.insert(0, "git reset {} --hard".format(quiet_flags).split())
-        location_info = " (in {})".format(decode(repo)) if repo != b"." else ""
+            cleanup_cmds.insert(0, f"git reset {quiet_flags} --hard".split())
+        location_info = f" (in {decode(repo)})" if repo != b"." else ""
         for cmd in cleanup_cmds:
             if show_debuginfo:
                 print("[DEBUG] Running{}: {}".format(location_info, " ".join(cmd)))
             ret = subproc.call(cmd, cwd=repo)
             if ret != 0:
                 raise SystemExit("fatal: running '%s' failed!" % " ".join(cmd))
-            if cmd[0:3] == "git reflog expire".split():
+            if cmd[0:3] == ["git", "reflog", "expire"]:
                 self._write_stash()
 
     def _get_rename(self, old_hash):
@@ -4292,7 +4285,7 @@ class RepoFilter(object):
             self._args.replace_text
             and not self._file_info_callback
             # not (if blob contains zero byte in the first 8Kb, that is, if blob is binary data)
-            and not b"\0" in blob.data[0:8192]
+            and b"\0" not in blob.data[0:8192]
         ):
             for literal, replacement in self._args.replace_text["literals"]:
                 blob.data = blob.data.replace(literal, replacement)
@@ -4654,7 +4647,7 @@ class RepoFilter(object):
             fullref = self._refname_callback(fullref)
             if not fullref.startswith(tag_prefix):
                 msg = "Error: fast-import requires tags to be in refs/tags/ namespace."
-                msg += "\n       {} renamed to {}".format(tag_prefix + tag.ref, fullref)
+                msg += f"\n       {tag_prefix + tag.ref} renamed to {fullref}"
                 raise SystemExit(msg)
         tag.ref = fullref[len(tag_prefix) :]
 
@@ -4689,7 +4682,7 @@ class RepoFilter(object):
         return d
 
     def _load_marks_file(self, marks_basename):
-        full_branch = "refs/heads/{}".format(self._args.state_branch)
+        full_branch = f"refs/heads/{self._args.state_branch}"
         marks_file = os.path.join(self.results_tmp_dir(), marks_basename)
         working_dir = self._args.target or b"."
         cmd = ["git", "-C", working_dir, "show-ref", full_branch]
@@ -4721,7 +4714,7 @@ class RepoFilter(object):
 
         # Check whether the branch exists
         parent = []
-        full_branch = "refs/heads/{}".format(self._args.state_branch)
+        full_branch = f"refs/heads/{self._args.state_branch}"
         cmd = ["git", "-C", working_dir, "show-ref", full_branch]
         if subproc.call(cmd, stdout=subprocess.DEVNULL) == 0:
             parent = ["-p", full_branch]
@@ -4857,7 +4850,7 @@ class RepoFilter(object):
                 if self._args.debug:
                     tmp = [decode(x) if isinstance(x, bytes) else x for x in fep_cmd]
                     print("[DEBUG] Running: {}".format(" ".join(tmp)))
-                    print("  (saving a copy of the output at {})".format(decode(self._fe_orig)))
+                    print(f"  (saving a copy of the output at {decode(self._fe_orig)})")
 
     def _setup_output(self):
         if not self._args.dry_run:
@@ -4887,7 +4880,7 @@ class RepoFilter(object):
             self._output = DualFileWriter(self._fip.stdin, self._output)
             tmp = [decode(x) if isinstance(x, bytes) else x for x in fip_cmd]
             print("[DEBUG] Running: {}".format(" ".join(tmp)))
-            print("  (using the following file as input: {})".format(decode(self._fe_filt)))
+            print(f"  (using the following file as input: {decode(self._fe_filt)})")
 
     def _migrate_origin_to_heads(self):
         source_working_dir = self._args.source or b"."
@@ -4898,7 +4891,7 @@ class RepoFilter(object):
             if self._args.debug:
                 print("[DEBUG] Migrating refs/remotes/origin/* -> refs/heads/*")
             p = subproc.Popen(
-                "git update-ref --no-deref --stdin".split(),
+                ["git", "update-ref", "--no-deref", "--stdin"],
                 stdin=subprocess.PIPE,
                 cwd=source_working_dir,
             )
@@ -4976,7 +4969,7 @@ class RepoFilter(object):
             % url
         )
         print(m)
-        subproc.call("git remote rm origin".split(), cwd=target_working_dir)
+        subproc.call(["git", "remote", "rm", "origin"], cwd=target_working_dir)
 
     def _final_commands(self):
         self._finalize_handled = True
@@ -4990,7 +4983,7 @@ class RepoFilter(object):
     def _ref_update(self, target_working_dir):
         # Start the update-ref process
         p = subproc.Popen(
-            "git update-ref --no-deref --stdin".split(),
+            ["git", "update-ref", "--no-deref", "--stdin"],
             stdin=subprocess.PIPE,
             cwd=target_working_dir,
         )
@@ -5297,7 +5290,7 @@ class RepoFilter(object):
             print(f"You rewrote {changed_commits} (of {len(commit_renames)}) commits.")
             print("")  # Add a blank line before important rewrite information
             print(
-                f"NOTE: First Changed Commit(s) is/are:\n  "
+                "NOTE: First Changed Commit(s) is/are:\n  "
                 + decode(b"\n  ".join(x for x in first_changes))
             )
 
@@ -5345,7 +5338,7 @@ class RepoFilter(object):
                     ).encode()
                 )
                 for oldhash, newhash in self._commits_no_longer_merges:
-                    f.write("  {} {}\n".format(oldhash, newhash).encode())
+                    f.write(f"  {oldhash} {newhash}\n".encode())
                 f.write(b"\n")
 
             if self._commits_referenced_but_removed:
@@ -5360,7 +5353,7 @@ class RepoFilter(object):
                     ).encode()
                 )
                 for bad_commit_reference in self._commits_referenced_but_removed:
-                    f.write("  {}\n".format(bad_commit_reference).encode())
+                    f.write(f"  {bad_commit_reference}\n".encode())
                 f.write(b"\n")
 
             if not issues_found:
