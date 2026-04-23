@@ -260,7 +260,7 @@
 - **Severity:** 🟡 Medium
 - **Status:** RESOLVED
 - **Description**: Legacy `.env` file (repo root, kernel-locked with `chflags uchg`) contained 15 vars: project config (non-secret) + 1 BANNED `GITHUB_PERSONAL_ACCESS_TOKEN`. The actual MCP API keys were never in `.env` — they were resolved by the Antigravity platform's native env injection. `.env` was a vestigial artifact providing false sense of security.
-- **Resolution**: (2026-04-22) Kernel lock removed (`chflags nouchg`). File deleted. `scripts/load_mcp_secrets.sh` created — fetches 9 secrets from GCP Secret Manager + exports 8 non-secret config vars. `google-design-api-key` uploaded to SM (was missing). GEMINI.md v10.1 `secrets_manager_doctrine` updated to ban `.env` creation. All `python-dotenv` / `dotenv` usage banned in production code.
+- **Resolution**: (2026-04-22) Kernel lock removed (`chflags nouchg`). File deleted. `scripts/load_mcp_secrets.sh` created — fetches 9 secrets from GCP Secret Manager + exports 8 non-secret config vars. `google-design-api-key` uploaded to SM (was missing). GEMINI.md v10.2 `secrets_manager_doctrine` updated to ban `.env` creation. All `python-dotenv` / `dotenv` usage banned in production code.
 
 ## Risk #76: Cloud Code Sign-In Failure — Expired gcloud Auth + Missing ADC + Keychain Block
 - **Type**: DevOps / Authentication

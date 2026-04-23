@@ -29,9 +29,9 @@ from prune_gca_chat_threads import (
 
 def _create_test_db(state_dict: dict) -> Path:
     """Create a temporary state.vscdb with the given GCA state."""
-    tmp = tempfile.NamedTemporaryFile(suffix=".vscdb", delete=False)
-    tmp.close()
-    conn = sqlite3.connect(tmp.name)
+    with tempfile.NamedTemporaryFile(suffix=".vscdb", delete=False) as tmp:
+        tmp.close()
+        conn = sqlite3.connect(tmp.name)
     conn.execute("CREATE TABLE IF NOT EXISTS ItemTable (key TEXT PRIMARY KEY, value TEXT)")
     conn.execute(
         "INSERT INTO ItemTable (key, value) VALUES (?, ?)",
@@ -171,9 +171,9 @@ def test_prune_keep_newest():
 
 def test_invalid_json_fails_safely():
     """If the state value is invalid JSON, prune must refuse and not modify."""
-    tmp = tempfile.NamedTemporaryFile(suffix=".vscdb", delete=False)
-    tmp.close()
-    conn = sqlite3.connect(tmp.name)
+    with tempfile.NamedTemporaryFile(suffix=".vscdb", delete=False) as tmp:
+        tmp.close()
+        conn = sqlite3.connect(tmp.name)
     conn.execute("CREATE TABLE IF NOT EXISTS ItemTable (key TEXT PRIMARY KEY, value TEXT)")
     broken_json = '{"geminiCodeAssist.chatThreads": [{"id": "x"'  # truncated
     conn.execute("INSERT INTO ItemTable (key, value) VALUES (?, ?)", (STATE_KEY, broken_json))
@@ -198,9 +198,9 @@ def test_invalid_json_fails_safely():
 
 def test_missing_key_fails_gracefully():
     """If the state key doesn't exist, prune returns failure without crash."""
-    tmp = tempfile.NamedTemporaryFile(suffix=".vscdb", delete=False)
-    tmp.close()
-    conn = sqlite3.connect(tmp.name)
+    with tempfile.NamedTemporaryFile(suffix=".vscdb", delete=False) as tmp:
+        tmp.close()
+        conn = sqlite3.connect(tmp.name)
     conn.execute("CREATE TABLE IF NOT EXISTS ItemTable (key TEXT PRIMARY KEY, value TEXT)")
     conn.commit()
     conn.close()
