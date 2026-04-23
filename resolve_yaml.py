@@ -11,4 +11,4 @@ resolved_content = pattern.sub(r"\1", content)
 with open("monorepo_manifest.yaml", "w") as f:
     f.write(resolved_content)
 
-print("Conflicts resolved.")
+# print("Conflicts resolved.")
