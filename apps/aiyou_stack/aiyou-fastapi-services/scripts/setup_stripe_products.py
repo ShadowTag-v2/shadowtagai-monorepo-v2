@@ -2,9 +2,9 @@ import json
 import os
 
 import stripe
-from dotenv import load_dotenv
 
-load_dotenv()
+# NOTE: Environment variables loaded via `source scripts/load_mcp_secrets.sh`
+# or GCP Secret Manager in production. python-dotenv is banned (GEMINI.md §secrets).
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 

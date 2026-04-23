@@ -90,6 +90,11 @@ tmp/
 **/*.db
 **/*.cache
 
+# --- True Obsidian Vault (ephemeral data — never commit) ---
+vault/ingest/
+vault/quarantine/
+vault/embed/
+
 # --- Heavy Archive Payloads ---
 control/legacy_workspaces/
 

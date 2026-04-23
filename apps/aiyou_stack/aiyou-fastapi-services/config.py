@@ -5,12 +5,8 @@ Loads from environment variables with sensible defaults
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
-
-# Load .env file if it exists
-env_path = Path(__file__).parent / ".env"
-if env_path.exists():
-    load_dotenv(env_path)
+# NOTE: Environment variables loaded via `source scripts/load_mcp_secrets.sh`
+# or GCP Secret Manager in production. python-dotenv is banned (GEMINI.md §secrets).
 
 
 class Config:

@@ -19,6 +19,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 - `antigravity-mcp-config.json` is the canonical MCP truth.
 - `BUSINESS_CONTEXT_LOCKED.md` is pricing and architecture truth.
 - `RISK_REGISTER.md` is operational risk truth.
+- `vault/` is the True Obsidian intelligence pipeline (zero-trust ingest → IPI quarantine → serve).
 
 ## Architecture
 
