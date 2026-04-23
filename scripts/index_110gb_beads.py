@@ -1,8 +1,18 @@
 import json
+import logging
+
 import os
+import logging
+
 import sqlite3
+import logging
+
 import subprocess
+import logging
+
 import sys
+import logging
+
 from datetime import datetime
 
 # Try to load the ANE Router
@@ -15,6 +25,8 @@ except ImportError:
     ANE_ENABLED = False
 
 import pathlib
+import logging
+
 
 ROOT_DIR = str(pathlib.Path(__file__).parent.parent.absolute())
 BEADS_DIR = os.path.join(ROOT_DIR, ".beads")
@@ -61,6 +73,8 @@ def ane_semantic_scan(filepath: str, filename: str) -> str:
 
     ane_code = f"""
 import json
+import logging
+
 filename = "{filename}"
 if "master" in filename.lower() or "doctrine" in filename.lower():
     cat = "CORE_SYSTEM_RULES"
@@ -68,7 +82,7 @@ elif "architecture" in filename.lower():
     cat = "SYSTEM_TOPOLOGY"
 else:
     cat = "UNCATEGORIZED_INTELLIGENCE"
-print(json.dumps({{"category": cat}}))
+logging.info(json.dumps({{"category": cat}}))
 """
     result = dispatch_compute(text=ane_code, prompt_description=f"bead_{filename[:10]}", examples=[], file_name=filename)
     if isinstance(result, list) and len(result) > 0:

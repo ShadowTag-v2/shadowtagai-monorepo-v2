@@ -1058,9 +1058,8 @@ def main(args: argparse.Namespace):  # <-- Pass parsed args to main
                 right_context = []
                 right_final_query = user_question
             else:
-                with right_col:
-                    with st.spinner("Retrieving context for Right Model..."):
-                        right_context = get_relevant_docs(right_rephrased, retriever_llm)
+                with right_col, st.spinner("Retrieving context for Right Model..."):
+                    right_context = get_relevant_docs(right_rephrased, retriever_llm)
                 right_final_query = right_rephrased
 
             # Display retrieved context (optional, can be verbose)
