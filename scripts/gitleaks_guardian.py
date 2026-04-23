@@ -42,7 +42,7 @@ import subprocess
 import sys
 from collections import defaultdict
 import datetime
-from datetime import datetime as dt
+
 UTC = getattr(datetime, "UTC", datetime.timezone.utc)  # noqa: UP017
 from pathlib import Path
 
@@ -350,7 +350,7 @@ def generate_report(findings: list[Finding], output_path: str | None = None) -> 
     warns = [f for f in findings if f.verdict == "WARN"]
     ignores = [f for f in findings if f.verdict == "IGNORE"]
 
-    timestamp = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+    timestamp = datetime.datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     report = f"""# 🛡️ Gitleaks Guardian — Audit Report
 
@@ -522,7 +522,7 @@ Examples:
     findings = classify_findings(raw_findings)
     blocks = [f for f in findings if f.verdict == "BLOCK"]
     warns = [f for f in findings if f.verdict == "WARN"]
-    [f for f in findings if f.verdict == "IGNORE"]
+    # IGNORE findings handled by auto_remediate_ignores below
 
     # Auto-remediate ignores
     if args.auto_ignore:
@@ -617,7 +617,7 @@ def _generate_manifest(raw_findings: list[dict], output_dir: str | None = None) 
         secrets[key]["files"].append(f"{short_path}:{line}")
         secrets[key]["repos"].add(_extract_repo(file_path))
 
-    timestamp = datetime.now(UTC).strftime("%Y-%m-%d")
+    timestamp = datetime.datetime.now(UTC).strftime("%Y-%m-%d")
 
     # ── Markdown manifest ──
     by_rule: dict[str, list] = defaultdict(list)
@@ -700,7 +700,7 @@ def _generate_manifest(raw_findings: list[dict], output_dir: str | None = None) 
         rules = defaultdict(int)
         for f in items:
             rules[f.get("RuleID", "")] += 1
-        ", ".join(f"{r}:{c}" for r, c in sorted(rules.items(), key=lambda x: -x[1]))
+        _  = ", ".join(f"{r}:{c}" for r, c in sorted(rules.items(), key=lambda x: -x[1]))  # noqa: F841 — used in future sub-manifest generation
 
     # ── Deduplicated secrets-only list ──
     dedup_path = out_dir / "third_party_secrets_deduped.txt"
