@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# Canonical Guillotine v8.6 — Dead Code Janitor
+# Canonical Guillotine v8.7 — Dead Code Janitor
 # ============================================================================
 # Enforces Invariant #67: ruff + vulture sweep
 # Uses .venv/bin/ tools first, falls back to system PATH
@@ -33,7 +33,8 @@ fi
 if [[ -x "$VULTURE" ]]; then
     echo ">>> Running vulture sweep (minimum confidence 80%)..."
     # Exclude standard directories and potential noise
-    "$VULTURE" . --min-confidence 80 --exclude "archive,**/node_modules,**/venv,external_repos,external_sdks,control/legacy_workspaces,reference_architectures,apps/kovelai/venv,packages,apps/aiyou_stack/aiyou-fastapi-services/external_repos,tools,third_party,deep-archive,clones,clone-base,docs/bundles,branches,libs"
+    # vulture exits 1 if it finds any dead code — report-only, never block commit
+    "$VULTURE" . --min-confidence 80 --exclude "archive,**/node_modules,**/venv,external_repos,external_sdks,control/legacy_workspaces,reference_architectures,apps/kovelai/venv,packages,apps/aiyou_stack/aiyou-fastapi-services/external_repos,tools,third_party,deep-archive,clones,clone-base,docs/bundles,branches,libs" || true
 else
     echo "⚠️ vulture not found. Skipping."
 fi

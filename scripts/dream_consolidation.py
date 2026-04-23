@@ -25,10 +25,10 @@ import json
 import os
 import sys
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 
 # Python 3.9 compatibility: datetime.UTC was added in 3.11
-UTC = timezone.utc
+UTC = UTC
 from pathlib import Path
 
 # --- KI Engine Integration ---------------------------------------------------
