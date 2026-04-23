@@ -29,8 +29,10 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any
 
-from dotenv import load_dotenv
 from mitmproxy import http
+
+# NOTE: Environment variables loaded via `source scripts/load_mcp_secrets.sh`
+# or GCP Secret Manager in production. python-dotenv is banned (GEMINI.md §secrets).
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # FEATURE 1: Smart Key Health Tracking
@@ -584,8 +586,7 @@ class EnhancedKeyRotator:
     """Production-grade mitmproxy addon with advanced rate limiting"""
 
     def __init__(self):
-        # Load environment variables
-        load_dotenv()
+        # Environment variables already loaded via load_mcp_secrets.sh
 
         # Load configuration
         self.cache_enabled = os.getenv("MITMPROXY_CACHE_ENABLED", "true").lower() == "true"

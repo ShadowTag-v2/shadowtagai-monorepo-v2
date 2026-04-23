@@ -1,11 +1,10 @@
 import os
 import random
 
-from dotenv import load_dotenv
 from mitmproxy import http
 
-# Load environment variables
-load_dotenv()
+# NOTE: Environment variables loaded via `source scripts/load_mcp_secrets.sh`
+# or GCP Secret Manager in production. python-dotenv is banned (GEMINI.md §secrets).
 
 # Load keys from GEMINI_API_KEYS (comma-separated)
 # Fallback to single GEMINI_API_KEY if the list is empty

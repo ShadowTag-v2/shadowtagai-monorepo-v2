@@ -1,11 +1,9 @@
 """Environment configuration management"""
 
-from dotenv import load_dotenv
+# NOTE: Environment variables loaded via `source scripts/load_mcp_secrets.sh`
+# or GCP Secret Manager in production. python-dotenv is banned (GEMINI.md §secrets).
 from pydantic import field_validator
 from pydantic_settings import BaseSettings
-
-# Load environment variables
-load_dotenv()
 
 
 class Settings(BaseSettings):
@@ -53,8 +51,6 @@ class Settings(BaseSettings):
         return value
 
     class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
         case_sensitive = False
         extra = "ignore"
 
