@@ -43,7 +43,7 @@ import sys
 from collections import defaultdict
 import datetime
 from datetime import datetime as dt
-UTC = getattr(datetime, "UTC", datetime.UTC)
+UTC = getattr(datetime, "UTC", datetime.timezone.utc)  # noqa: UP017
 from pathlib import Path
 
 
