@@ -299,4 +299,6 @@ Please provide:
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Experiment recommendation failed: {e!s}") from e
+        raise HTTPException(
+            status_code=500, detail=f"Experiment recommendation failed: {e!s}"
+        ) from e

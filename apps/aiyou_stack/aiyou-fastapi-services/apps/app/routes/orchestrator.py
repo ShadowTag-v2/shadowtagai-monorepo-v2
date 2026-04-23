@@ -256,7 +256,9 @@ async def classify_intelligence(request: IntelligenceClassificationRequest):
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Intelligence classification failed: {e!s}") from e
+        raise HTTPException(
+            status_code=500, detail=f"Intelligence classification failed: {e!s}"
+        ) from e
 
 
 @router.get("/providers", response_model=list[BenchmarkResponse])

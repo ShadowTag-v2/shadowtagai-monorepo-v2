@@ -44,9 +44,7 @@ class DeletionRecord(BaseModel):
 
     document_id: str
     firm_id: str
-    deleted_at: str = Field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
-    )
+    deleted_at: str = Field(default_factory=lambda: datetime.now(UTC).isoformat())
     reason: str = "GDPR Article 17 — 30-day TTL expiry"
     ttl_days: int = TTL_DAYS
 
@@ -100,11 +98,7 @@ async def enforce_brief_ttl(
 
     try:
         # Query expired documents
-        query = (
-            db.collection(COLLECTION)
-            .where("expires_at", "<=", cutoff)
-            .limit(BATCH_SIZE)
-        )
+        query = db.collection(COLLECTION).where("expires_at", "<=", cutoff).limit(BATCH_SIZE)
 
         docs = query.stream()
         batch = db.batch()

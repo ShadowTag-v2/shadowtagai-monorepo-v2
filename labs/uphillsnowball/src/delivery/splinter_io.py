@@ -39,9 +39,7 @@ class SplinterDistributionMoat:
     """
 
     def __init__(self) -> None:
-        self._project = os.environ.get(
-            "GOOGLE_CLOUD_PROJECT", "pnkln-uphill-snowball-v1"
-        )
+        self._project = os.environ.get("GOOGLE_CLOUD_PROJECT", "pnkln-uphill-snowball-v1")
         self._region = os.environ.get("REGION", "us-central1")
         self._queue = "splinter"
 
@@ -60,27 +58,19 @@ class SplinterDistributionMoat:
             hallucinations_averted=alert.get("hallucinations_averted", 0),
         )
 
-        parent = (
-            f"projects/{self._project}/locations/{self._region}/queues/{self._queue}"
-        )
+        parent = f"projects/{self._project}/locations/{self._region}/queues/{self._queue}"
 
         task_body = {
             "http_request": {
                 "http_method": tasks_v2.HttpMethod.POST,
                 "url": "https://api.uphillsnowball.io/v5/media/syndicate/linkedin",
-                "body": json.dumps(
-                    {"narrative": narrative, "alert": alert}
-                ).encode(),
+                "body": json.dumps({"narrative": narrative, "alert": alert}).encode(),
                 "headers": {"Content-Type": "application/json"},
             }
         }
 
         client = tasks_v2.CloudTasksClient()
-        response = client.create_task(
-            request={"parent": parent, "task": task_body}
-        )
+        response = client.create_task(request={"parent": parent, "task": task_body})
 
-        logger.info(
-            "📡 SPLINTER IO: Triumph syndicated → %s", response.name
-        )
+        logger.info("📡 SPLINTER IO: Triumph syndicated → %s", response.name)
         return {"task_name": response.name, "status": "SYNDICATED"}

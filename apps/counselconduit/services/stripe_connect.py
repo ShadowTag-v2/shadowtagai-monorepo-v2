@@ -41,7 +41,7 @@ class StripeConnectService:
     """
 
     TIER_PRICES = {
-        "solo": 29900,      # $299
+        "solo": 29900,  # $299
         "practice": 59900,  # $599
         "enterprise": 99900,  # $999
     }
@@ -74,6 +74,7 @@ class StripeConnectService:
         """
         try:
             import stripe
+
             stripe.api_key = self._api_key
 
             account = stripe.Account.create(
@@ -125,6 +126,7 @@ class StripeConnectService:
         """
         try:
             import stripe
+
             stripe.api_key = self._api_key
 
             link = stripe.AccountLink.create(
@@ -158,22 +160,25 @@ class StripeConnectService:
 
         try:
             import stripe
+
             stripe.api_key = self._api_key
 
             # Create the subscription on the platform account
             # (not on the connected account)
             subscription = stripe.Subscription.create(
                 customer=stripe_account_id,
-                items=[{
-                    "price_data": {
-                        "currency": "usd",
-                        "unit_amount": price_cents,
-                        "recurring": {"interval": "month"},
-                        "product_data": {
-                            "name": f"CounselConduit {tier.title()} Plan",
+                items=[
+                    {
+                        "price_data": {
+                            "currency": "usd",
+                            "unit_amount": price_cents,
+                            "recurring": {"interval": "month"},
+                            "product_data": {
+                                "name": f"CounselConduit {tier.title()} Plan",
+                            },
                         },
-                    },
-                }],
+                    }
+                ],
                 metadata={
                     "tier": tier,
                     "platform": "counselconduit",

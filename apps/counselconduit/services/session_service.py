@@ -32,12 +32,8 @@ class SessionRecord:
     agent_role: str = "orchestrator"
     state: str = "active"
     encryption_key_ref: str = ""  # Firestore doc ref to encryption key
-    created_at: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
-    )
-    updated_at: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
-    )
+    created_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
+    updated_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     ttl_seconds: int = 3600
     metadata: dict[str, Any] = field(default_factory=dict)
 
@@ -71,24 +67,17 @@ class FirestoreSessionService:
         if self._db is None:
             try:
                 from google.cloud import firestore
+
                 self._db = firestore.AsyncClient()
             except ImportError:
-                logger.error(
-                    "google-cloud-firestore not installed. "
-                    "Run: pip install google-cloud-firestore"
-                )
+                logger.error("google-cloud-firestore not installed. Run: pip install google-cloud-firestore")
                 raise
         return self._db
 
     def _session_ref(self, tenant_id: str, session_id: str) -> Any:
         """Get Firestore document reference for a session."""
         db = self._ensure_db()
-        return (
-            db.collection(self.COLLECTION)
-            .document(tenant_id)
-            .collection(self.SESSIONS_SUBCOL)
-            .document(session_id)
-        )
+        return db.collection(self.COLLECTION).document(tenant_id).collection(self.SESSIONS_SUBCOL).document(session_id)
 
     async def create_session(self, record: SessionRecord) -> str:
         """Create a new session document in Firestore.
@@ -108,9 +97,7 @@ class FirestoreSessionService:
         )
         return record.session_id
 
-    async def get_session(
-        self, tenant_id: str, session_id: str
-    ) -> SessionRecord | None:
+    async def get_session(self, tenant_id: str, session_id: str) -> SessionRecord | None:
         """Retrieve a session from Firestore.
 
         Args:
@@ -126,9 +113,7 @@ class FirestoreSessionService:
             return SessionRecord(**doc.to_dict())
         return None
 
-    async def update_session_state(
-        self, tenant_id: str, session_id: str, state: str
-    ) -> None:
+    async def update_session_state(self, tenant_id: str, session_id: str, state: str) -> None:
         """Update the state of a session.
 
         Args:
@@ -137,10 +122,12 @@ class FirestoreSessionService:
             state: The new state value.
         """
         ref = self._session_ref(tenant_id, session_id)
-        await ref.update({
-            "state": state,
-            "updated_at": datetime.now(UTC).isoformat(),
-        })
+        await ref.update(
+            {
+                "state": state,
+                "updated_at": datetime.now(UTC).isoformat(),
+            }
+        )
 
     async def store_attestation(
         self,
@@ -159,11 +146,7 @@ class FirestoreSessionService:
             The attestation document ID.
         """
         attestation_id = str(uuid.uuid4())
-        ref = (
-            self._session_ref(tenant_id, session_id)
-            .collection(self.ATTESTATIONS_SUBCOL)
-            .document(attestation_id)
-        )
+        ref = self._session_ref(tenant_id, session_id).collection(self.ATTESTATIONS_SUBCOL).document(attestation_id)
         await ref.set(attestation)
         logger.info(
             "Attestation stored: tenant=%s session=%s attestation=%s",
@@ -173,9 +156,7 @@ class FirestoreSessionService:
         )
         return attestation_id
 
-    async def expire_session(
-        self, tenant_id: str, session_id: str
-    ) -> None:
+    async def expire_session(self, tenant_id: str, session_id: str) -> None:
         """Mark a session as expired (dead-man's switch trigger).
 
         Args:

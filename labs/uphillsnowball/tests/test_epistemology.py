@@ -17,9 +17,7 @@ class TestValidateStatisticalClaim:
 
     def test_empty_data_rejected(self, engine):
         """Empty data list is always rejected."""
-        result = engine.validate_statistical_claim(
-            real_data=[], claimed_effect_size=1.0
-        )
+        result = engine.validate_statistical_claim(real_data=[], claimed_effect_size=1.0)
         assert result["valid"] is False
         assert result["directive"] == "REJECT_EMPTY_DATA"
         assert result["p_value"] == 1.0

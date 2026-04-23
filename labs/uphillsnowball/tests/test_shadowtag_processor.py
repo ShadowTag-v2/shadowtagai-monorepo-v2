@@ -53,9 +53,7 @@ class TestDCTTransforms:
         block = np.random.randint(0, 256, (8, 8), dtype=np.uint8)
         dct_block = perform_dct(block)
         recovered = inverse_dct(dct_block)
-        np.testing.assert_array_almost_equal(
-            block.astype(float), recovered.astype(float), decimal=0
-        )
+        np.testing.assert_array_almost_equal(block.astype(float), recovered.astype(float), decimal=0)
 
     def test_dct_shape_preserved(self):
         """DCT output is 8x8."""

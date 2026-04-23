@@ -29,15 +29,9 @@ router = APIRouter(prefix="/api/v1/process", tags=["process-gate"])
 class HumanGateDecision(BaseModel):
     """Client payload for approving/rejecting a pending human gate."""
 
-    process_id: str = Field(
-        ..., description="The SK process instance ID awaiting approval."
-    )
-    decision: str = Field(
-        ..., pattern="^(approve|reject)$", description="Must be 'approve' or 'reject'."
-    )
-    reviewer_notes: str | None = Field(
-        None, max_length=2000, description="Optional reviewer notes attached to decision."
-    )
+    process_id: str = Field(..., description="The SK process instance ID awaiting approval.")
+    decision: str = Field(..., pattern="^(approve|reject)$", description="Must be 'approve' or 'reject'.")
+    reviewer_notes: str | None = Field(None, max_length=2000, description="Optional reviewer notes attached to decision.")
 
 
 class HumanGateResponse(BaseModel):
@@ -197,11 +191,7 @@ async def list_pending_gates(
     if not x_firm_id:
         raise HTTPException(status_code=401, detail="Missing X-Firm-Id header")
 
-    pending = [
-        {"process_id": pid, **gate}
-        for pid, gate in _pending_gates.items()
-        if gate["status"] == "pending"
-    ]
+    pending = [{"process_id": pid, **gate} for pid, gate in _pending_gates.items() if gate["status"] == "pending"]
 
     return {
         "firm_id": x_firm_id,
