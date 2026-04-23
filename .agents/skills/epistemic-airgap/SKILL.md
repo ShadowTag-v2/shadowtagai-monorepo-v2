@@ -82,6 +82,10 @@ search_web("kovel_attestation_service.py line 42 KovelHashMismatchError in _vali
 search_web("HMAC SHA256 validation error Python mismatch hash comparison")
 ```
 
+### PROPRIETARY ISOLATION (Mandatory Enforcement)
+
+> **PROPRIETARY ISOLATION:** Internal IP searches MUST route to local `rg`/`ast-grep` against `./external_repos/corp-monorepo/`. Never leak corporate schemas, internal API keys, proprietary variable names, or internal module paths to the open web or public MCPs. This is a non-negotiable DLP enforcement — violation constitutes an IP leak incident.
+
 ## 3. Supply Chain Protection (Dependency Confusion Prevention)
 
 ### The Samsung Problem — Prevention Protocol
