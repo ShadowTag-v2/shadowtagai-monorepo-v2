@@ -38,7 +38,7 @@ try:
     from src.kosmos.doctrine import (
         RiskManager as DoctrineRiskManager,
     )
-    from src.kosmos.doctrine.atp_5_19 import APPROVAL_AUTHORITY, CONSENSUS_THRESHOLDS
+    from src.kosmos.doctrine.atp_5_19 import APPROVAL_AUTHORITY, CONSENSUS_THRESHOLDS  # noqa: F401
 
     DOCTRINE_AVAILABLE = True
 except ImportError:

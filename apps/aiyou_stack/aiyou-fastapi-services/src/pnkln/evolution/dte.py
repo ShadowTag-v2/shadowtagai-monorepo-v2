@@ -2,10 +2,15 @@ from .dte.dtesystem import DTESystem
 from .dte.evolutionstrategy import EvolutionStrategy
 
 "\nDTE (Debate-Train-Evolve) Evolution System for Pnkln\nVersion: 2.0.0\n\nPhilosophy: Self-improving AI through iterative evolution\nDesign: RCR-MAD + GRPO + Benchmarks\n\nIntegrated from: claude/autogen-to-gemini-migration branch\nEnhanced with: Pnkln Ultrathink principles\n"
-import asyncio
+import asyncio  # noqa: E402
 
 try:
-    from pnkln.core.grpo import GRPOBatch, GRPOConfig, GRPOTrainer, generate_synthetic_batch
+    from pnkln.core.grpo import (  # noqa: F401
+        GRPOBatch,
+        GRPOConfig,
+        GRPOTrainer,
+        generate_synthetic_batch,
+    )
 except ImportError:
     import sys
     from pathlib import Path

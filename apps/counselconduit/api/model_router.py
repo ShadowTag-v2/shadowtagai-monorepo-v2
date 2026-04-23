@@ -450,10 +450,9 @@ async def dispatch_request(
     _NON_REASONING_SIGNALS = ("flash", "lite", "mini", "haiku", "pplx")
     prompt_repeated = False
     effective_query = query
-    if any(sig in model.model_id.lower() for sig in _NON_REASONING_SIGNALS):
-        if not model.model_id.lower().endswith("-thinking"):
-            effective_query = f"{query}\n\n---\n[Instruction Repeat]: {query}"
-            prompt_repeated = True
+    if any(sig in model.model_id.lower() for sig in _NON_REASONING_SIGNALS) and not model.model_id.lower().endswith("-thinking"):
+        effective_query = f"{query}\n\n---\n[Instruction Repeat]: {query}"
+        prompt_repeated = True
 
     # Record metrics for Cloud Monitoring
     record_dispatch(tier.value, model.model_id)

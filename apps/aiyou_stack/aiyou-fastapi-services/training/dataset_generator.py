@@ -850,7 +850,7 @@ class QualityFilter:
             else:
                 example.has_security_violations = False
 
-        except:
+        except Exception:
             pass
 
         # 3. Complexity validation (code should be under 50 lines)

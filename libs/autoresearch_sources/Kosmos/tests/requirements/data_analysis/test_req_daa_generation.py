@@ -394,8 +394,8 @@ def test_req_daa_gen_006_no_eval_exec_on_untrusted():
                 tree = ast.parse(code)
                 has_eval_exec = False
                 for node in ast.walk(tree):
-                    if isinstance(node, ast.Call):
-                        if isinstance(node.func, ast.Name):
+                    if isinstance(node, ast.Call):  # noqa: SIM102
+                        if isinstance(node.func, ast.Name):  # noqa: SIM102
                             if node.func.id in ("eval", "exec", "__import__", "compile"):
                                 has_eval_exec = True
                                 break

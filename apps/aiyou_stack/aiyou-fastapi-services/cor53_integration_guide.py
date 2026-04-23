@@ -33,15 +33,20 @@ Author: PNKLN Strategic Systems
 Version: 2.0.0 (with Gemini Ingestion Layer integration)
 """
 
-import json
-import logging
-import os
-from dataclasses import asdict, dataclass
-from datetime import datetime
-from typing import Any
+import json  # noqa: E402
+import logging  # noqa: E402
+import os  # noqa: E402
+from dataclasses import asdict, dataclass  # noqa: E402
+from datetime import datetime  # noqa: E402
+from typing import Any  # noqa: E402
 
-from cor_autogen_integration import COROrchestrator
-from judge6_enforcement import DoctrineConstraints, Judge6Enforcer, ValidationResult, ViolationLevel
+from cor_autogen_integration import COROrchestrator  # noqa: E402
+from judge6_enforcement import (  # noqa: E402
+    DoctrineConstraints,
+    Judge6Enforcer,
+    ValidationResult,
+    ViolationLevel,
+)
 
 # Import Gemini Ingestion Layer
 try:
@@ -49,7 +54,7 @@ try:
         DataTier,
         GeminiIngestionPipeline,
         IngestionMetrics,
-        IntelligenceItem,
+        IntelligenceItem,  # noqa: F401
         SourceType,
     )
 

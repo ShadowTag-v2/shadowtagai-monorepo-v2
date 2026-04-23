@@ -9,7 +9,7 @@ export async function evaluateAST(input) {
 
     const result = await response.json();
     return result;
-  } catch (err) {
+  } catch (_err) {
     throw new Error('Local API unavailable');
   }
 }

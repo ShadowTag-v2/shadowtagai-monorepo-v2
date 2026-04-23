@@ -10,10 +10,10 @@ Usage:
     python scripts/eval_uphillsnowball_f1.py [--ground-truth PATH] [--results PATH]
 """
 
-import json
-import sys
-from dataclasses import dataclass, field
-from pathlib import Path
+import json  # noqa: E402
+import sys  # noqa: E402
+from dataclasses import dataclass, field  # noqa: E402
+from pathlib import Path  # noqa: E402
 
 
 @dataclass

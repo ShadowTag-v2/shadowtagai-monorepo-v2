@@ -43,12 +43,12 @@ from app.services.thread_service import ThreadService
 router = APIRouter()
 
 
-def get_thread_service(db: Session = Depends(get_db)) -> ThreadService:
+def get_thread_service(db: Session = Depends(get_db)) -> ThreadService:  # noqa: B008
     """Dependency to get ThreadService instance."""
     return ThreadService(db)
 
 
-def get_scrape_job_service(db: Session = Depends(get_db)) -> ScrapeJobService:
+def get_scrape_job_service(db: Session = Depends(get_db)) -> ScrapeJobService:  # noqa: B008
     """Dependency to get ScrapeJobService instance."""
     return ScrapeJobService(db)
 
@@ -61,7 +61,7 @@ def get_scrape_job_service(db: Session = Depends(get_db)) -> ScrapeJobService:
 @router.post("", response_model=ThreadResponse, status_code=status.HTTP_201_CREATED)
 async def create_thread(
     data: ThreadCreate,
-    service: ThreadService = Depends(get_thread_service),
+    service: ThreadService = Depends(get_thread_service),  # noqa: B008
 ):
     """Create a new AI agent thread.
 
@@ -83,7 +83,7 @@ async def create_thread(
 @router.get("/{thread_id}", response_model=ThreadResponse)
 async def get_thread(
     thread_id: str,
-    service: ThreadService = Depends(get_thread_service),
+    service: ThreadService = Depends(get_thread_service),  # noqa: B008
 ):
     """Get a thread by ID with all posts and author info."""
     thread = await service.get_thread(thread_id)
@@ -99,7 +99,7 @@ async def get_thread(
 async def update_thread(
     thread_id: str,
     data: ThreadUpdate,
-    service: ThreadService = Depends(get_thread_service),
+    service: ThreadService = Depends(get_thread_service),  # noqa: B008
 ):
     """Update thread fields (title, category, tags, scores, metadata)."""
     thread = await service.update_thread(thread_id, data)
@@ -114,7 +114,7 @@ async def update_thread(
 @router.delete("/{thread_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_thread(
     thread_id: str,
-    service: ThreadService = Depends(get_thread_service),
+    service: ThreadService = Depends(get_thread_service),  # noqa: B008
 ):
     """Delete a thread and all related posts/embeddings."""
     deleted = await service.delete_thread(thread_id)
@@ -130,12 +130,12 @@ async def list_threads(
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=20, ge=1, le=100),
     category: ThreadCategoryEnum | None = None,
-    status_filter: ThreadStatusEnum | None = Query(default=None, alias="status"),
+    status_filter: ThreadStatusEnum | None = Query(default=None, alias="status"),  # noqa: B008
     min_likes: int | None = Query(default=None, ge=0),
     tags: str | None = Query(default=None, description="Comma-separated tags"),
     author_username: str | None = None,
     sort: SortOrder = SortOrder.LIKES_DESC,
-    service: ThreadService = Depends(get_thread_service),
+    service: ThreadService = Depends(get_thread_service),  # noqa: B008
 ):
     """List threads with pagination and filters.
 
@@ -166,7 +166,7 @@ async def list_threads(
 @router.post("/search", response_model=SearchResponse)
 async def search_threads(
     request: SearchRequest,
-    service: ThreadService = Depends(get_thread_service),
+    service: ThreadService = Depends(get_thread_service),  # noqa: B008
 ):
     """Semantic search for threads.
 
@@ -227,7 +227,7 @@ async def search_threads(
 @router.post("/bulk-import", response_model=BulkImportResponse)
 async def bulk_import_threads(
     request: BulkImportRequest,
-    service: ThreadService = Depends(get_thread_service),
+    service: ThreadService = Depends(get_thread_service),  # noqa: B008
 ):
     """Bulk import threads from a raw compilation.
 
@@ -272,7 +272,7 @@ async def bulk_import_threads(
 @router.post("/export", response_model=ExportResponse)
 async def export_threads(
     request: ExportRequest,
-    service: ThreadService = Depends(get_thread_service),
+    service: ThreadService = Depends(get_thread_service),  # noqa: B008
 ):
     """Export threads to specified format.
 
@@ -308,7 +308,7 @@ async def export_threads(
 
 @router.get("/analytics/summary", response_model=ThreadAnalytics)
 async def get_analytics(
-    service: ThreadService = Depends(get_thread_service),
+    service: ThreadService = Depends(get_thread_service),  # noqa: B008
 ):
     """Get analytics summary for the thread collection."""
     return await service.get_analytics()
@@ -352,7 +352,7 @@ def _get_category_description(category: ThreadCategoryEnum) -> str:
 @router.post("/scrape-jobs", response_model=ScrapeJobResponse, status_code=status.HTTP_201_CREATED)
 async def create_scrape_job(
     data: ScrapeJobCreate,
-    service: ScrapeJobService = Depends(get_scrape_job_service),
+    service: ScrapeJobService = Depends(get_scrape_job_service),  # noqa: B008
 ):
     """Create a new scrape job to collect threads.
 
@@ -367,7 +367,7 @@ async def create_scrape_job(
 async def list_scrape_jobs(
     status_filter: str | None = Query(default=None, alias="status"),
     limit: int = Query(default=20, ge=1, le=100),
-    service: ScrapeJobService = Depends(get_scrape_job_service),
+    service: ScrapeJobService = Depends(get_scrape_job_service),  # noqa: B008
 ):
     """List scrape jobs with optional status filter."""
     return service.list(status_filter, limit)
@@ -376,7 +376,7 @@ async def list_scrape_jobs(
 @router.get("/scrape-jobs/{job_id}", response_model=ScrapeJobResponse)
 async def get_scrape_job(
     job_id: str,
-    service: ScrapeJobService = Depends(get_scrape_job_service),
+    service: ScrapeJobService = Depends(get_scrape_job_service),  # noqa: B008
 ):
     """Get scrape job status by ID."""
     job = service.get(job_id)
@@ -396,7 +396,7 @@ async def get_scrape_job(
 @router.get("/unindexed", response_model=list[ThreadSummary])
 async def get_unindexed_threads(
     limit: int = Query(default=100, ge=1, le=500),
-    service: ThreadService = Depends(get_thread_service),
+    service: ThreadService = Depends(get_thread_service),  # noqa: B008
 ):
     """Get threads pending vector indexing."""
     threads = await service.get_unindexed_threads(limit)
@@ -421,7 +421,7 @@ async def get_unindexed_threads(
 async def mark_thread_indexed(
     thread_id: str,
     embedding_id: str = Query(..., description="Reference to vector store embedding"),
-    service: ThreadService = Depends(get_thread_service),
+    service: ThreadService = Depends(get_thread_service),  # noqa: B008
 ):
     """Mark a thread as indexed with its embedding reference."""
     success = await service.mark_thread_indexed(thread_id, embedding_id)

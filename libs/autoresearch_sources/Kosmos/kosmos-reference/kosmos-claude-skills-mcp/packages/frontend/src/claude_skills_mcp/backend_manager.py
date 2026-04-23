@@ -106,7 +106,7 @@ class BackendManager:
 
         except Exception as e:
             logger.error(f"Failed to start backend: {e}")
-            raise RuntimeError(f"Failed to start backend server: {e}")
+            raise RuntimeError(f"Failed to start backend server: {e}")  # noqa: B904
 
     async def _consume_stream(self, stream: asyncio.StreamReader, prefix: str) -> None:
         """Consume a stream and relay lines to logger.
@@ -174,7 +174,7 @@ class BackendManager:
                         else:
                             # Show progress
                             last_error = f"Loading: {skills_loaded} skills so far..."
-                            if int(elapsed) % 30 == 0 and int(elapsed) > 0:
+                            if int(elapsed) % 30 == 0 and int(elapsed) > 0:  # noqa: F821
                                 logger.info(
                                     f"Still loading skills... ({skills_loaded} loaded so far)"
                                 )
@@ -253,7 +253,7 @@ class BackendManager:
             try:
                 logger.info(f"Terminating backend process group (PID: {self.backend_process.pid})")
 
-                try:
+                try:  # noqa: SIM105
                     # Kill the whole process group (negative PID)
                     os.killpg(os.getpgid(self.backend_process.pid), signal.SIGTERM)
                 except ProcessLookupError:
@@ -266,7 +266,7 @@ class BackendManager:
                 except TimeoutError:
                     # Force kill if it doesn't exit
                     logger.warning("Backend didn't exit gracefully, force killing")
-                    try:
+                    try:  # noqa: SIM105
                         os.killpg(os.getpgid(self.backend_process.pid), signal.SIGKILL)
                     except ProcessLookupError:
                         pass

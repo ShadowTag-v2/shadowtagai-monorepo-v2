@@ -202,7 +202,7 @@ def compact_log(
     # Keep only latest N per KI
     kept: list[KIEvent] = []
     removed = 0
-    for ki_name, ki_events in per_ki.items():
+    for _ki_name, ki_events in per_ki.items():
         if len(ki_events) > keep_latest_per_ki:
             removed += len(ki_events) - keep_latest_per_ki
             ki_events = ki_events[-keep_latest_per_ki:]

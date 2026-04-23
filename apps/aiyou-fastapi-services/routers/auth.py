@@ -32,7 +32,7 @@ async def verify_activeshield_jwt(token: str = Depends(oauth2_scheme)):
     return TokenData(username="sovereign_sysadmin", scopes=["execute"])
 
 
-def get_current_active_operator(token_data: TokenData = Depends(verify_activeshield_jwt)):
+def get_current_active_operator(token_data: TokenData = Depends(verify_activeshield_jwt)):  # noqa: B008
     if "execute" not in token_data.scopes:
         raise HTTPException(status_code=403, detail="ActiveShield MCF: Scope violation.")
     return token_data

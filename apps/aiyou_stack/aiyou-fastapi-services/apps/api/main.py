@@ -22,7 +22,7 @@ except ImportError:
 
 app = FastAPI(title="Antigravity API", version="0.1.0")
 
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
 
 app.add_middleware(
     CORSMiddleware,

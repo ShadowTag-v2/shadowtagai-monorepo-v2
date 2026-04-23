@@ -360,7 +360,7 @@ class ToolboxTool:
 
         """
         param_names = set(p.name for p in self.__params)
-        for name in bound_params.keys():
+        for name in bound_params:
             if name in self.__bound_parameters:
                 raise ValueError(f"cannot re-bind parameter: parameter '{name}' is already bound")
 

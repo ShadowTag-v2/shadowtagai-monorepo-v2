@@ -106,7 +106,7 @@ class TestParquetRealWorld:
     def large_parquet_file(self, tmp_path_factory):
         """Create a realistic large parquet file for testing."""
         try:
-            import pyarrow
+            import pyarrow  # noqa: F401
         except ImportError:
             pytest.skip("pyarrow not installed")
 
@@ -192,8 +192,8 @@ class TestMixedFormatWorkflow:
     def test_load_and_combine_formats(self, tmp_path):
         """Test loading data from multiple formats and combining."""
         try:
-            import anndata
-            import pyarrow
+            import anndata  # noqa: F401
+            import pyarrow  # noqa: F401
         except ImportError:
             pytest.skip("pyarrow and anndata required")
 
@@ -269,7 +269,7 @@ class TestDataFormatEdgeCases:
     def test_parquet_with_compression(self, tmp_path):
         """Test parquet files with different compression codecs."""
         try:
-            import pyarrow
+            import pyarrow  # noqa: F401
         except ImportError:
             pytest.skip("pyarrow not installed")
 
@@ -294,8 +294,8 @@ class TestDataFormatEdgeCases:
     def test_parquet_with_nested_types(self, tmp_path):
         """Test parquet with complex nested data types."""
         try:
-            import pyarrow as pa
-            import pyarrow.parquet as pq
+            import pyarrow as pa  # noqa: F401
+            import pyarrow.parquet as pq  # noqa: F401
         except ImportError:
             pytest.skip("pyarrow not installed")
 

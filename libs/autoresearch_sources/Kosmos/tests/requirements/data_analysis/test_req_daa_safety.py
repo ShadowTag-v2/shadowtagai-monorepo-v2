@@ -238,7 +238,7 @@ def test_req_daa_safe_003_block_prohibited_operations():
             assert not validation.is_safe, f"Should mark as unsafe: {code}"
 
             # Assert: Should not execute
-            with pytest.raises((SecurityError, ValueError, RuntimeError, Exception)):
+            with pytest.raises((SecurityError, ValueError, RuntimeError, Exception)):  # noqa: F821
                 result = sandbox.execute(code)
                 if hasattr(result, "success") and result.success:
                     pytest.fail(f"Should not successfully execute: {code}")

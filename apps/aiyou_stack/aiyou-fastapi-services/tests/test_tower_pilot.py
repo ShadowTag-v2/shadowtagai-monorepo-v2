@@ -7,9 +7,9 @@ sys.modules["google.cloud"] = MagicMock()
 sys.modules["google.cloud.bigquery"] = mock_bq_module
 
 
-import pytest
+import pytest  # noqa: E402
 
-from src.pnkln.verticals.tower_edge import ConnectionType, Telemetry, TowerNode
+from src.pnkln.verticals.tower_edge import ConnectionType, Telemetry, TowerNode  # noqa: E402
 
 
 @pytest.fixture

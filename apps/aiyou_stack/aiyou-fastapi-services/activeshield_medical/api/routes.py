@@ -43,19 +43,19 @@ router = APIRouter(prefix="/api/v1/activeshield", tags=["ActiveShieldMedical"])
 
 
 # Dependency injection for components
-def get_shield(db: Session = Depends(get_db)) -> LiabilityShield:
+def get_shield(db: Session = Depends(get_db)) -> LiabilityShield:  # noqa: B008
     return LiabilityShield(db=db)
 
 
-def get_sb243(db: Session = Depends(get_db)) -> SB243ComplianceEngine:
+def get_sb243(db: Session = Depends(get_db)) -> SB243ComplianceEngine:  # noqa: B008
     return SB243ComplianceEngine(db=db)
 
 
-def get_dlp(db: Session = Depends(get_db)) -> MedicalDLPEngine:
+def get_dlp(db: Session = Depends(get_db)) -> MedicalDLPEngine:  # noqa: B008
     return MedicalDLPEngine(db=db)
 
 
-def get_gateway(db: Session = Depends(get_db)) -> ClinicalDecisionGateway:
+def get_gateway(db: Session = Depends(get_db)) -> ClinicalDecisionGateway:  # noqa: B008
     return ClinicalDecisionGateway(db=db)
 
 
@@ -148,7 +148,7 @@ class CertificateRequest(BaseModel):
 @router.post("/scan", response_model=dict[str, Any])
 async def pre_hoc_scan(
     request: ScanRequest,
-    shield: LiabilityShield = Depends(get_shield),
+    shield: LiabilityShield = Depends(get_shield),  # noqa: B008
 ):
     """PRE-HOC: Validate user input before AI processing.
 
@@ -181,7 +181,7 @@ async def pre_hoc_scan(
 @router.post("/monitor", response_model=dict[str, Any])
 async def mid_hoc_monitor(
     request: MonitorRequest,
-    shield: LiabilityShield = Depends(get_shield),
+    shield: LiabilityShield = Depends(get_shield),  # noqa: B008
 ):
     """MID-HOC: Validate AI response before sending to user.
 
@@ -226,7 +226,7 @@ async def mid_hoc_monitor(
 @router.post("/audit", response_model=dict[str, Any])
 async def post_hoc_audit(
     request: AuditRequest,
-    shield: LiabilityShield = Depends(get_shield),
+    shield: LiabilityShield = Depends(get_shield),  # noqa: B008
 ):
     """POST-HOC: Log session for compliance audit.
 
@@ -253,7 +253,7 @@ async def post_hoc_audit(
 @router.get("/trace/{session_id}", response_model=dict[str, Any])
 async def get_audit_trace(
     session_id: str,
-    shield: LiabilityShield = Depends(get_shield),
+    shield: LiabilityShield = Depends(get_shield),  # noqa: B008
 ):
     """Get complete audit trail for a session.
 
@@ -285,7 +285,7 @@ async def get_audit_trace(
 @router.post("/certificate", response_model=dict[str, Any])
 async def generate_certificate(
     request: CertificateRequest,
-    shield: LiabilityShield = Depends(get_shield),
+    shield: LiabilityShield = Depends(get_shield),  # noqa: B008
 ):
     """Generate compliance certificate for a session.
 
@@ -308,7 +308,7 @@ async def generate_certificate(
 @router.get("/report", response_model=dict[str, Any])
 async def get_liability_report(
     since_days: int = Query(default=30, description="Report period in days"),
-    shield: LiabilityShield = Depends(get_shield),
+    shield: LiabilityShield = Depends(get_shield),  # noqa: B008
 ):
     """Generate liability exposure report.
 
@@ -333,7 +333,7 @@ async def get_liability_report(
 @router.post("/sb243/check", response_model=dict[str, Any])
 async def sb243_check(
     request: SB243CheckRequest,
-    engine: SB243ComplianceEngine = Depends(get_sb243),
+    engine: SB243ComplianceEngine = Depends(get_sb243),  # noqa: B008
 ):
     """Direct SB 243 compliance check.
 
@@ -373,7 +373,7 @@ async def sb243_check(
 @router.get("/sb243/disclosure", response_model=dict[str, Any])
 async def get_ai_disclosure(
     platform_name: str = Query(default="this platform"),
-    engine: SB243ComplianceEngine = Depends(get_sb243),
+    engine: SB243ComplianceEngine = Depends(get_sb243),  # noqa: B008
 ):
     """Get compliant AI disclosure statement.
 
@@ -390,7 +390,7 @@ async def get_ai_disclosure(
 @router.post("/dlp/scan", response_model=dict[str, Any])
 async def dlp_scan(
     request: DLPScanRequest,
-    engine: MedicalDLPEngine = Depends(get_dlp),
+    engine: MedicalDLPEngine = Depends(get_dlp),  # noqa: B008
 ):
     """Scan text for PHI and clinical data.
 
@@ -425,7 +425,7 @@ async def dlp_scan(
 @router.post("/clinical/evaluate", response_model=dict[str, Any])
 async def clinical_evaluate(
     request: ClinicalEvaluateRequest,
-    gateway: ClinicalDecisionGateway = Depends(get_gateway),
+    gateway: ClinicalDecisionGateway = Depends(get_gateway),  # noqa: B008
 ):
     """Evaluate a clinical decision through the gateway.
 

@@ -25,7 +25,7 @@ from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session  # noqa: E402
 
 
 class PHIType(StrEnum):

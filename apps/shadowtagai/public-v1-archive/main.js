@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
   );
   const observer = new IntersectionObserver(
     (entries) => {
-      entries.forEach((entry, i) => {
+      entries.forEach((entry, _i) => {
         if (entry.isIntersecting) {
           entry.target.style.opacity = '1';
           entry.target.style.transform = 'translateY(0)';

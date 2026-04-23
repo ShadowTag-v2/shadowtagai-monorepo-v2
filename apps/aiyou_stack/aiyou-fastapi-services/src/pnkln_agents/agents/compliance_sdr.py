@@ -58,8 +58,8 @@ class ComplianceSDRAgent:
 if __name__ == "__main__":
     agent = ComplianceSDRAgent()
     agent.generate_leads(100, "German Fintech CTOs")
-from ..core.agent_pattern import AgentResult, AgentTask, ShadowTagAiAgent
-from ..core.jr_engine import Reason
+from ..core.agent_pattern import AgentResult, AgentTask, ShadowTagAiAgent  # noqa: E402
+from ..core.jr_engine import Reason  # noqa: E402
 
 
 class LeadStatus(Enum):

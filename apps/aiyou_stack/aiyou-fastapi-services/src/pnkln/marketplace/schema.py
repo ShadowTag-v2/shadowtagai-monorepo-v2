@@ -2,7 +2,7 @@ from .schema.superpowercategory import SuperpowerCategory
 
 "\nPNKLN Marketplace - Database Schema\nTwo-sided marketplace for AI superpowers and kernel chains\n\nRevenue model:\n- Platform fees: 20-30% of all transactions\n- Publishing fees: $99/year per superpower\n- Featured placement: $500-$5K/mo\n- Enterprise bundles: $10K-$100K/year\n\nYear 1 target: $100K revenue (50 superpowers @ $2K GMV avg, 20% take rate)\nYear 5 target: $10M revenue (marketplace GMV $50M @ 20% take rate)\n"
 
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.declarative import declarative_base  # noqa: E402
 
 Base = declarative_base()
 

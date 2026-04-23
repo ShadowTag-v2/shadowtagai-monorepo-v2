@@ -24,8 +24,8 @@ router = APIRouter()
 
 @router.post("/encode", response_model=EncodeResponse)
 async def encode_video(
-    video: UploadFile = File(..., description="Input video file"),
-    payload: UploadFile = File(..., description="Data to hide"),
+    video: UploadFile = File(..., description="Input video file"),  # noqa: B008
+    payload: UploadFile = File(..., description="Data to hide"),  # noqa: B008
     bits_per_channel: int = Form(default=2, ge=1, le=4),
     use_encryption: bool = Form(default=True),
     error_correction: bool = Form(default=True),
@@ -106,7 +106,7 @@ async def encode_video(
 
 @router.post("/decode", response_model=DecodeResponse)
 async def decode_video(
-    video: UploadFile = File(..., description="Video file with hidden data"),
+    video: UploadFile = File(..., description="Video file with hidden data"),  # noqa: B008
     verify_hash: str | None = Form(default=None),
     create_receipt: bool = Form(default=True),
 ):
@@ -168,7 +168,7 @@ async def decode_video(
 
 @router.post("/capacity", response_model=CapacityResponse)
 async def estimate_capacity(
-    video: UploadFile = File(..., description="Video file to analyze"),
+    video: UploadFile = File(..., description="Video file to analyze"),  # noqa: B008
 ):
     """Estimate the embedding capacity of a video file.
 

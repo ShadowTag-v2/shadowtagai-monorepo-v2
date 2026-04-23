@@ -74,7 +74,7 @@ class WestlawConnector implements LegalSearchProvider {
 
     const response = await fetch(`${this.baseUrl}/search?${params}`, {
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
         'X-Client-Id': 'kovelai-privileged-search',
       },
@@ -122,7 +122,7 @@ class LexisNexisConnector implements LegalSearchProvider {
     const response = await fetch(`${this.baseUrl}/search`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -181,7 +181,7 @@ class CourtListenerConnector implements LegalSearchProvider {
 
     const response = await fetch(`${this.baseUrl}/search/?${params}`, {
       headers: {
-        'Authorization': `Token ${process.env.COURTLISTENER_API_KEY ?? ''}`,
+        Authorization: `Token ${process.env.COURTLISTENER_API_KEY ?? ''}`,
       },
     });
 
@@ -195,12 +195,12 @@ class CourtListenerConnector implements LegalSearchProvider {
     return {
       citations: (data.results || []).map((r: Record<string, unknown>) => ({
         caseId: String(r.id),
-        caseName: r.caseName as string ?? 'Untitled',
-        citation: r.citation as string ?? '',
-        court: r.court as string ?? '',
-        dateDecided: r.dateFiled as string ?? '',
-        snippet: (r.snippet as string ?? '').slice(0, 300),
-        url: `https://www.courtlistener.com${r.absolute_url as string ?? ''}`,
+        caseName: (r.caseName as string) ?? 'Untitled',
+        citation: (r.citation as string) ?? '',
+        court: (r.court as string) ?? '',
+        dateDecided: (r.dateFiled as string) ?? '',
+        snippet: ((r.snippet as string) ?? '').slice(0, 300),
+        url: `https://www.courtlistener.com${(r.absolute_url as string) ?? ''}`,
         source: 'courtlistener' as const,
         relevanceScore: 0.5,
       })),
@@ -250,7 +250,8 @@ export async function searchLegalDatabases(
     throw new Error('No legal search provider available');
   }
 
-  const apiKey = effectiveKeys[provider.name] ?? process.env[`${provider.name.toUpperCase()}_API_KEY`] ?? '';
+  const apiKey =
+    effectiveKeys[provider.name] ?? process.env[`${provider.name.toUpperCase()}_API_KEY`] ?? '';
 
   return provider.search(query, apiKey);
 }

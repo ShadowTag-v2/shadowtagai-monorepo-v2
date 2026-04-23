@@ -29,9 +29,7 @@ const QUEUE_CONFIG = {
   project: process.env.GCP_PROJECT_ID || 'shadowtag-omega-v4',
   location: 'us-central1',
   queue: 'kovelai-murder-board',
-  targetUrl:
-    process.env.CLOUD_RUN_URL ||
-    'https://counselconduit-767252945109.us-central1.run.app',
+  targetUrl: process.env.CLOUD_RUN_URL || 'https://counselconduit-767252945109.us-central1.run.app',
 } as const;
 
 /**
@@ -61,9 +59,7 @@ export async function enqueueStage(payload: CloudTaskPayload): Promise<string> {
 
   if (process.env.NODE_ENV !== 'production') {
     // Development: return a mock task ID
-    console.log(
-      `[DEV] Would enqueue stage ${payload.stage} for session ${payload.sessionId}`,
-    );
+    console.log(`[DEV] Would enqueue stage ${payload.stage} for session ${payload.sessionId}`);
     return `dev-task-${payload.sessionId}-stage-${payload.stage}`;
   }
 
@@ -72,11 +68,7 @@ export async function enqueueStage(payload: CloudTaskPayload): Promise<string> {
   const { CloudTasksClient } = await import('@google-cloud/tasks');
   const client = new CloudTasksClient();
 
-  const parent = client.queuePath(
-    QUEUE_CONFIG.project,
-    QUEUE_CONFIG.location,
-    QUEUE_CONFIG.queue,
-  );
+  const parent = client.queuePath(QUEUE_CONFIG.project, QUEUE_CONFIG.location, QUEUE_CONFIG.queue);
 
   const idempotencyKey = `${payload.sessionId}-stage-${payload.stage}-${Date.now()}`;
 

@@ -42,7 +42,7 @@ try:
     from tenacity import (
         before_sleep_log,
         retry,
-        retry_if_exception_type,
+        retry_if_exception_type,  # noqa: F401
         stop_after_attempt,
         wait_exponential,
     )
@@ -168,7 +168,7 @@ def is_recoverable_error(error: Exception) -> bool:
         # Check error message for hints
         error_str = str(error).lower()
         non_recoverable = ["invalid", "authentication", "unauthorized", "forbidden"]
-        if any(term in error_str for term in non_recoverable):
+        if any(term in error_str for term in non_recoverable):  # noqa: SIM103
             return False
         return True  # Default to recoverable for API errors
 
@@ -471,7 +471,7 @@ class AsyncClaudeClient:
             except TimeoutError:
                 logger.error(f"LLM API call timed out after {timeout_seconds}s")
                 await self.circuit_breaker.record_failure(APITimeoutError("timeout"))
-                raise APITimeoutError(f"API call exceeded timeout of {timeout_seconds}s")
+                raise APITimeoutError(f"API call exceeded timeout of {timeout_seconds}s")  # noqa: B904
 
             # Update statistics
             self.total_requests += 1

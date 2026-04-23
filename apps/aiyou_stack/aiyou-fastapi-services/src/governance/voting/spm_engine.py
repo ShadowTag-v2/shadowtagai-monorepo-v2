@@ -141,7 +141,7 @@ class SPMEngine:
             resp = self.gca_model.generate_content(prompt)
             text = resp.text.strip().replace("```json", "").replace("```", "")
             return json.loads(text)
-        except:
+        except Exception:
             return ["Improve error handling", "Optimize latency"]
 
     def _gca_write_code(self, prompts: list[str], current_code: str) -> str:

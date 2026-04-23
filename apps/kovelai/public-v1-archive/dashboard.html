@@ -94,7 +94,7 @@
                     // We clear table instead of appending for simplicity on update
                     tableBody.innerHTML = '';
 
-                    const isNewData = false;
+                    const _isNewData = false;
 
                     snapshot.forEach((doc) => {
                         const data = doc.data();
@@ -120,8 +120,7 @@
                     initialLoad = false;
                     loadedCount = snapshot.docs.length;
 
-                }, (error) => {
-                    console.error("Firestore Error:", error);
+                }, (_error) => {
                     tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Access Denied. Admin authentication required.</td></tr>`;
                 });
             }, 1000);

@@ -47,7 +47,7 @@ def create_func_docstring(description: str, params: Sequence[ParameterSchema]) -
 def warn_if_http_and_headers(url: str, headers: Mapping[str, Any] | None) -> None:
     """Logs a warning if the url uses HTTP and sensitive headers are present."""
     if url.lower().startswith("http://") and headers:
-        warnings.warn("This connection is using HTTP. To prevent credential exposure, please ensure all communication is sent over HTTPS.")
+        warnings.warn("This connection is using HTTP. To prevent credential exposure, please ensure all communication is sent over HTTPS.", stacklevel=2)
 
 
 def identify_auth_requirements(

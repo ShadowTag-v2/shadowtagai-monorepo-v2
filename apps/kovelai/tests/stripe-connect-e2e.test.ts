@@ -12,7 +12,7 @@
  * @see PRICING.md — Tier definitions
  */
 
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 // ═══════════════════════════════════════════════════════════
 // Mock Stripe (Test Mode)
@@ -116,13 +116,15 @@ describe('Stripe Connect — Destination Charges', () => {
         customer: 'cus_test_sterling',
         status: 'active',
         items: {
-          data: [{
-            price: {
-              id: TEST_PRICES.starter.id,
-              unit_amount: TEST_PRICES.starter.amount,
-              recurring: { interval: 'month' },
+          data: [
+            {
+              price: {
+                id: TEST_PRICES.starter.id,
+                unit_amount: TEST_PRICES.starter.amount,
+                recurring: { interval: 'month' },
+              },
             },
-          }],
+          ],
         },
       };
 
@@ -136,13 +138,15 @@ describe('Stripe Connect — Destination Charges', () => {
         customer: 'cus_test_sterling',
         status: 'active',
         items: {
-          data: [{
-            price: {
-              id: TEST_PRICES.growth.id,
-              unit_amount: TEST_PRICES.growth.amount,
-              recurring: { interval: 'month' },
+          data: [
+            {
+              price: {
+                id: TEST_PRICES.growth.id,
+                unit_amount: TEST_PRICES.growth.amount,
+                recurring: { interval: 'month' },
+              },
             },
-          }],
+          ],
         },
       };
 
@@ -156,13 +160,15 @@ describe('Stripe Connect — Destination Charges', () => {
         customer: 'cus_test_sterling',
         status: 'active',
         items: {
-          data: [{
-            price: {
-              id: TEST_PRICES.oracle.id,
-              unit_amount: TEST_PRICES.oracle.amount,
-              recurring: { interval: 'month' },
+          data: [
+            {
+              price: {
+                id: TEST_PRICES.oracle.id,
+                unit_amount: TEST_PRICES.oracle.amount,
+                recurring: { interval: 'month' },
+              },
             },
-          }],
+          ],
         },
       };
 
@@ -216,13 +222,15 @@ describe('Stripe Connect — Destination Charges', () => {
         customer: 'cus_test_biglaw_llp',
         status: 'active',
         items: {
-          data: [{
-            price: {
-              id: TEST_PRICES.amlaw.id,
-              unit_amount: TEST_PRICES.amlaw.amount,
-              recurring: { interval: 'month' },
+          data: [
+            {
+              price: {
+                id: TEST_PRICES.amlaw.id,
+                unit_amount: TEST_PRICES.amlaw.amount,
+                recurring: { interval: 'month' },
+              },
             },
-          }],
+          ],
         },
       };
 

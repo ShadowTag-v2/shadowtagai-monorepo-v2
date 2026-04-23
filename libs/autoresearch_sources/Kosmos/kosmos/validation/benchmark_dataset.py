@@ -275,10 +275,9 @@ class BenchmarkGenerator:
             summary_params[param] = value
 
         # For inaccurate findings, use implausible values
-        if not is_accurate:
-            if "p_value" in statistics:
-                statistics["p_value"] = self.random.uniform(0.15, 0.5)
-                summary_params["p_value"] = statistics["p_value"]
+        if not is_accurate and "p_value" in statistics:
+            statistics["p_value"] = self.random.uniform(0.15, 0.5)
+            summary_params["p_value"] = statistics["p_value"]
 
         summary = template.format(**summary_params)
 

@@ -32,9 +32,20 @@ const PROJECT_ID = process.env.GCLOUD_PROJECT || 'shadowtag-omega-v4';
  * PII fields that must NEVER appear in logs (Cor.30 R11).
  */
 const PII_FIELDS = new Set([
-  'email', 'password', 'ssn', 'creditCard', 'cardNumber',
-  'token', 'secret', 'apiKey', 'authorization', 'cookie',
-  'phoneNumber', 'address', 'dateOfBirth', 'ipAddress',
+  'email',
+  'password',
+  'ssn',
+  'creditCard',
+  'cardNumber',
+  'token',
+  'secret',
+  'apiKey',
+  'authorization',
+  'cookie',
+  'phoneNumber',
+  'address',
+  'dateOfBirth',
+  'ipAddress',
 ]);
 
 /**
@@ -64,7 +75,7 @@ function formatEntry(
   message: string,
   data?: Record<string, unknown>,
   component?: string,
-  traceId?: string
+  traceId?: string,
 ): LogEntry {
   const entry: LogEntry = {
     severity,
@@ -75,8 +86,7 @@ function formatEntry(
   if (component) entry.component = component;
 
   if (traceId && IS_CLOUD_RUN) {
-    entry['logging.googleapis.com/trace'] =
-      `projects/${PROJECT_ID}/traces/${traceId}`;
+    entry['logging.googleapis.com/trace'] = `projects/${PROJECT_ID}/traces/${traceId}`;
   }
 
   if (data) {
@@ -93,7 +103,7 @@ function formatEntry(
 function emit(entry: LogEntry): void {
   if (IS_CLOUD_RUN) {
     // Cloud Logging auto-parses JSON from stdout
-    process.stdout.write(JSON.stringify(entry) + '\n');
+    process.stdout.write(`${JSON.stringify(entry)}\n`);
   } else {
     const colors: Record<Severity, string> = {
       DEBUG: '\x1b[90m',
@@ -107,9 +117,7 @@ function emit(entry: LogEntry): void {
     const reset = '\x1b[0m';
     const color = colors[entry.severity] || '';
     const { severity, message, timestamp, ...rest } = entry;
-    const extra = Object.keys(rest).length > 0
-      ? ` ${JSON.stringify(rest)}`
-      : '';
+    const extra = Object.keys(rest).length > 0 ? ` ${JSON.stringify(rest)}` : '';
     // eslint-disable-next-line no-console
     console.log(`${color}[${severity}]${reset} ${timestamp} ${message}${extra}`);
   }

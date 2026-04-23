@@ -82,7 +82,7 @@ class JuraProtocol:
             self.redis = redis.Redis(host=redis_host, port=redis_port, decode_responses=True)
             self.redis.ping()
             self._redis_available = True
-        except:
+        except Exception:
             self.redis = None
             self._redis_available = False
 

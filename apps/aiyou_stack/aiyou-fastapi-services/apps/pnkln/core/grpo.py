@@ -65,7 +65,7 @@ class GRPOTrainer:
     This is simpler, more stable, and often performs better.
     """
 
-    def __init__(self, config: GRPOConfig = GRPOConfig()):
+    def __init__(self, config: GRPOConfig = GRPOConfig()):  # noqa: B008
         self.config = config
         self.training_history: list[dict[str, Any]] = []
 

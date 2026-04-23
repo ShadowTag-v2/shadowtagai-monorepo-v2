@@ -11,8 +11,8 @@ _BACKEND = "numpy"
 # Check environment variable
 if os.environ.get("TINYTORCH_BACKEND", "").lower() == "jax":
     try:
-        import jax
-        import jax.numpy as np
+        import jax  # noqa: F401
+        import jax.numpy as np  # noqa: F401
 
         _BACKEND = "jax"
         # Pre-allocate to check device availability if needed, but keeping it lazy for now

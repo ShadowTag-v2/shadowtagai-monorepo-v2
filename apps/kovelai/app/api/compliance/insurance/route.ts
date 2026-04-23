@@ -6,7 +6,7 @@
  *
  * Nag Protocol #14: Insurance compliance verification API
  */
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 const InsuranceVerifySchema = z.object({
@@ -35,9 +35,19 @@ const TIER_REQUIREMENTS = {
 
 // Approved carriers (subset — full list from insurance alliance)
 const APPROVED_CARRIERS = new Set([
-  'CNA', 'Travelers', 'AIG', 'Swiss Re', 'Hartford',
-  'Zurich', 'Chubb', 'Berkshire Hathaway', 'Lloyd\'s',
-  'Hiscox', 'ALPS', 'Lawyers Mutual', 'Minnesota Lawyers Mutual',
+  'CNA',
+  'Travelers',
+  'AIG',
+  'Swiss Re',
+  'Hartford',
+  'Zurich',
+  'Chubb',
+  'Berkshire Hathaway',
+  "Lloyd's",
+  'Hiscox',
+  'ALPS',
+  'Lawyers Mutual',
+  'Minnesota Lawyers Mutual',
 ]);
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -86,14 +96,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     // Check coverage type
-    if (parsed.coverageType !== 'PROFESSIONAL_LIABILITY' && parsed.coverageType !== 'ERRORS_OMISSIONS') {
+    if (
+      parsed.coverageType !== 'PROFESSIONAL_LIABILITY' &&
+      parsed.coverageType !== 'ERRORS_OMISSIONS'
+    ) {
       warnings.push(
         `Coverage type "${parsed.coverageType}" may not satisfy malpractice requirements — verify with bar`,
       );
     }
 
-    const status =
-      issues.length > 0 ? 'FAILED' : warnings.length > 0 ? 'CONDITIONAL' : 'VERIFIED';
+    const status = issues.length > 0 ? 'FAILED' : warnings.length > 0 ? 'CONDITIONAL' : 'VERIFIED';
 
     return NextResponse.json({
       status,
@@ -118,9 +130,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 },
       );
     }
-    return NextResponse.json(
-      { error: 'Insurance verification failed' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Insurance verification failed' }, { status: 500 });
   }
 }

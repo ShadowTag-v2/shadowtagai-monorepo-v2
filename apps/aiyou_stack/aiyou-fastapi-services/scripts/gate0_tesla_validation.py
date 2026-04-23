@@ -171,7 +171,7 @@ print("Next Action: Review with Erik Hancock")
 print(f"Timestamp : {datetime.now().isoformat()}")
 
 # Optional: save a compact summary CSV for quick sharing
-import csv
+import csv  # noqa: E402
 
 csv_path = "gate0_summary.csv"
 with open(csv_path, "w", newline="") as f:

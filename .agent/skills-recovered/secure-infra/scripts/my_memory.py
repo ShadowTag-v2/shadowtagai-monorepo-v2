@@ -2,6 +2,7 @@ import sys
 import os
 import json
 import fcntl
+import contextlib
 
 # A robust, local JSON-based Key-Value memory store.
 # Uses fcntl for file locking to prevent corruption under concurrent agent writes,
@@ -76,10 +77,8 @@ def main():
         value = sys.argv[3]
 
         # Try to parse value as JSON if possible, otherwise store as string
-        try:
+        with contextlib.suppress(json.JSONDecodeError):
             value = json.loads(value)
-        except json.JSONDecodeError:
-            pass
 
         data = read_memory()
         data[key] = value

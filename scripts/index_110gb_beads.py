@@ -76,7 +76,7 @@ print(json.dumps({{"category": cat}}))
         if result_dict.get("attrs", {}).get("compute_target") == "ANE-NPU":
             try:
                 return json.loads(result_dict.get("text")).get("category", "UNKNOWN")
-            except:
+            except Exception:
                 return "ANE_DECODE_ERROR"
     return "UNKNOWN"
 

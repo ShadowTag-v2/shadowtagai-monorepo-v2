@@ -367,7 +367,7 @@ p {
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: var(--primary) !important;
+  color: var(--primary);
   background: var(--accent);
   border-radius: 8px;
   transition: all 0.3s var(--ease);
@@ -376,7 +376,7 @@ p {
 .contactSales:hover {
   box-shadow: 0 0 20px var(--accent-glow);
   transform: translateY(-1px);
-  color: var(--primary) !important;
+  color: var(--primary);
 }
 
 /* Navigation */
@@ -438,11 +438,11 @@ p {
   display: block;
   padding: 10px 20px;
   font-size: 0.825rem;
-  color: var(--text-secondary) !important;
+  color: var(--text-secondary);
   transition: all 0.2s var(--ease);
 }
 .sub-menu .menu-item a:hover {
-  color: var(--accent) !important;
+  color: var(--accent);
   background: var(--accent-dim);
 }
 
@@ -679,7 +679,7 @@ p {
   margin-bottom: 0.25rem;
 }
 .positive {
-  color: #4caf50 !important;
+  color: #4caf50;
 }
 
 .metrics-card__status {
@@ -1268,8 +1268,8 @@ p {
   margin-bottom: 0.25rem;
 }
 .footer__legal {
-  font-size: 0.7rem !important;
-  color: var(--text-muted) !important;
+  font-size: 0.7rem;
+  color: var(--text-muted);
   font-style: italic;
 }
 
@@ -1292,8 +1292,8 @@ p {
     transform 0.8s var(--ease);
 }
 .animate-in {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Floating particles */
@@ -1357,8 +1357,8 @@ p {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
   }
 }

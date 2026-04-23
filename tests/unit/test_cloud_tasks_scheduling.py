@@ -9,6 +9,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone, UTC
 
 import pytest
+import contextlib
 
 
 def _get_scheduler():
@@ -43,10 +44,8 @@ class TestCloudTasksScheduling:
         scheduler = _get_scheduler()
         deletion_date = (datetime.now(UTC) + timedelta(days=30)).isoformat()
 
-        try:
+        with contextlib.suppress(Exception):
             await scheduler("receipt_002", "firm_002", deletion_date)
-        except Exception:
-            pass
 
     @pytest.mark.asyncio
     async def test_deletion_date_is_30_days_out(self):

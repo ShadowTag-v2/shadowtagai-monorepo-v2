@@ -100,7 +100,7 @@ async def verify_zero_trust_token(api_key: str = Security(api_key_header)) -> Ze
 
 async def parse_and_lock_identity(
     request: Request,
-    identity: ZeroTrustIdentity = Depends(verify_zero_trust_token),
+    identity: ZeroTrustIdentity = Depends(verify_zero_trust_token),  # noqa: B008
 ) -> TemporalIdentityPayload:
     """Intercepts the raw JSON payload in FastAPI and maps it to the Pydantic identity schema.
     If the JSON is poisoned or lacks mandatory Pinkln doctrine metadata, the node throws an error.

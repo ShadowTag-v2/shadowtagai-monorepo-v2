@@ -37,7 +37,7 @@ def assert_pydantic_models_equivalent(model_cls1: type[BaseModel], model_cls2: t
 
     assert fields1.keys() == fields2.keys(), f"Field names mismatch: {fields1.keys()} != {fields2.keys()}"
 
-    for field_name in fields1.keys():
+    for field_name in fields1:
         field_info1 = fields1[field_name]
         field_info2 = fields2[field_name]
 

@@ -546,7 +546,7 @@ DECISION FRAMEWORK:
                 try:
                     confidence = int(match.group(1))
                     return min(100, max(0, confidence)) / 100.0
-                except:
+                except Exception:
                     pass
 
         # Default to moderate confidence if not found

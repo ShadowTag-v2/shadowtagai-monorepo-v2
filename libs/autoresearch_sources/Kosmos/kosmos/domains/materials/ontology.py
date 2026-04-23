@@ -471,7 +471,7 @@ class MaterialsOntology:
             if relation.source_id == concept_id:
                 if relation_type is None or relation.relation_type == relation_type:
                     related_ids.add(relation.target_id)
-            elif relation.target_id == concept_id:
+            elif relation.target_id == concept_id:  # noqa: SIM102
                 if relation_type is None or relation.relation_type == relation_type:
                     related_ids.add(relation.source_id)
 

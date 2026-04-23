@@ -874,9 +874,9 @@ class WealthAnalyzer:
             "year_5_annual_usd": year_5_annual,
             "total_5_year_usd": total_5_year,
             "leaks_by_difficulty": {
-                "easy": sum(l.monthly_loss_usd for l in leaks if l.fix_difficulty == "easy"),
-                "medium": sum(l.monthly_loss_usd for l in leaks if l.fix_difficulty == "medium"),
-                "hard": sum(l.monthly_loss_usd for l in leaks if l.fix_difficulty == "hard"),
+                "easy": sum(l.monthly_loss_usd for l in leaks if l.fix_difficulty == "easy"),  # noqa: E741
+                "medium": sum(l.monthly_loss_usd for l in leaks if l.fix_difficulty == "medium"),  # noqa: E741
+                "hard": sum(l.monthly_loss_usd for l in leaks if l.fix_difficulty == "hard"),  # noqa: E741
             },
         }
 

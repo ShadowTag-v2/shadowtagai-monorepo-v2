@@ -390,11 +390,10 @@ class PackageResolver:
                         # Get top-level module
                         module = alias.name.split(".")[0]
                         imports.add(module)
-                elif isinstance(node, ast.ImportFrom):
-                    if node.module:
-                        # Get top-level module
-                        module = node.module.split(".")[0]
-                        imports.add(module)
+                elif isinstance(node, ast.ImportFrom) and node.module:
+                    # Get top-level module
+                    module = node.module.split(".")[0]
+                    imports.add(module)
         except SyntaxError as e:
             logger.warning(f"Syntax error parsing code for imports: {e}")
             # Fallback to regex for invalid Python

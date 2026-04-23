@@ -224,8 +224,8 @@ async def batch_assess(
     description="Generate compliance report for a time period.",
 )
 async def get_report(
-    start_date: datetime = Query(..., description="Report period start"),
-    end_date: datetime = Query(default=None, description="Report period end"),
+    start_date: datetime = Query(..., description="Report period start"),  # noqa: B008
+    end_date: datetime = Query(default=None, description="Report period end"),  # noqa: B008
     platform_id: str | None = Query(None, description="Filter by platform"),
     x_api_key: str | None = Header(None),
 ) -> ComplianceReport:

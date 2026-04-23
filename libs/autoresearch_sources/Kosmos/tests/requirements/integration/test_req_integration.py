@@ -534,9 +534,8 @@ def test_req_int_cross_003_prevent_circular_dependencies():
                 return False
 
             for task_id in tasks:
-                if task_id not in visited:
-                    if visit(task_id):
-                        return True
+                if task_id not in visited and visit(task_id):
+                    return True
 
             return False
 
@@ -809,7 +808,7 @@ def test_req_int_par_003_fair_resource_allocation():
                     with lock:
                         completed_tasks.append(task["id"])
                     task_queue.task_done()
-                except:
+                except Exception:
                     break
 
         # Start workers

@@ -7,7 +7,7 @@
  * @see lib/security/seu-token-manager.ts
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock jsonwebtoken
 const mockSign = vi.fn().mockReturnValue('mock.jwt.token');
@@ -83,11 +83,7 @@ describe('S.E.U. Token Manager', () => {
     it('should use default tier when not specified', async () => {
       const { mintSEUProxyToken } = await import('../lib/security/seu-token-manager');
 
-      mintSEUProxyToken(
-        'sandbox-002',
-        '10.0.0.1',
-        '550e8400-e29b-41d4-a716-446655440000',
-      );
+      mintSEUProxyToken('sandbox-002', '10.0.0.1', '550e8400-e29b-41d4-a716-446655440000');
 
       expect(mockSign).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -107,11 +103,7 @@ describe('S.E.U. Token Manager', () => {
       const { mintSEUProxyToken } = await import('../lib/security/seu-token-manager');
 
       expect(() =>
-        mintSEUProxyToken(
-          'sandbox-003',
-          '10.0.0.1',
-          '550e8400-e29b-41d4-a716-446655440000',
-        ),
+        mintSEUProxyToken('sandbox-003', '10.0.0.1', '550e8400-e29b-41d4-a716-446655440000'),
       ).toThrow('KOVELAI_PROXY_SECRET');
     });
 
@@ -122,11 +114,7 @@ describe('S.E.U. Token Manager', () => {
       const { mintSEUProxyToken } = await import('../lib/security/seu-token-manager');
 
       expect(() =>
-        mintSEUProxyToken(
-          'sandbox-004',
-          '10.0.0.1',
-          '550e8400-e29b-41d4-a716-446655440000',
-        ),
+        mintSEUProxyToken('sandbox-004', '10.0.0.1', '550e8400-e29b-41d4-a716-446655440000'),
       ).toThrow('KOVELAI_PROXY_SECRET');
     });
 
@@ -167,11 +155,7 @@ describe('S.E.U. Token Manager', () => {
 
       const { verifySEUToken } = await import('../lib/security/seu-token-manager');
 
-      const result = await verifySEUToken(
-        'valid.jwt.token',
-        '192.168.1.100',
-        'sandbox-001',
-      );
+      const result = await verifySEUToken('valid.jwt.token', '192.168.1.100', 'sandbox-001');
 
       expect(result.firm_id).toBe('550e8400-e29b-41d4-a716-446655440000');
       expect(result.allowed_ip).toBe('192.168.1.100');
@@ -187,9 +171,9 @@ describe('S.E.U. Token Manager', () => {
         '../lib/security/seu-token-manager'
       );
 
-      await expect(
-        verifySEUToken('valid.jwt.token', '10.0.0.99', 'sandbox-001'),
-      ).rejects.toThrow('IP_MISMATCH');
+      await expect(verifySEUToken('valid.jwt.token', '10.0.0.99', 'sandbox-001')).rejects.toThrow(
+        'IP_MISMATCH',
+      );
     });
 
     it('should reject token with sandbox mismatch', async () => {
@@ -227,9 +211,7 @@ describe('S.E.U. Token Manager', () => {
 
   describe('Token Revocation', () => {
     it('should mark tokens as revoked', async () => {
-      const { revokeSEUToken, isRevoked } = await import(
-        '../lib/security/seu-token-manager'
-      );
+      const { revokeSEUToken, isRevoked } = await import('../lib/security/seu-token-manager');
 
       const jti = '550e8400-e29b-41d4-a716-446655440000';
 

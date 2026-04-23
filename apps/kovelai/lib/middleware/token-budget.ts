@@ -138,11 +138,7 @@ export function checkBudget(
 /**
  * Records token usage after a successful LLM call.
  */
-export function recordUsage(
-  firmId: string,
-  inputTokens: number,
-  outputTokens: number,
-): void {
+export function recordUsage(firmId: string, inputTokens: number, outputTokens: number): void {
   const totalTokens = inputTokens + outputTokens;
   const now = new Date().toISOString();
   const dateKey = getDateKey();
@@ -190,9 +186,7 @@ export function recordUsage(
   const limits = TIER_BUDGETS.practice; // Default to practice tier for logging
   const dailyPct = (dailyRecord.totalTokens / limits.dailyTokenLimit) * 100;
   if (dailyPct >= 95) {
-    console.error(`[TokenBudget] 🔴 CRITICAL: Firm ${firmId} at ${dailyPct.toFixed(0)}% daily budget`);
   } else if (dailyPct >= 80) {
-    console.warn(`[TokenBudget] ⚠️ WARNING: Firm ${firmId} at ${dailyPct.toFixed(0)}% daily budget`);
   }
 }
 

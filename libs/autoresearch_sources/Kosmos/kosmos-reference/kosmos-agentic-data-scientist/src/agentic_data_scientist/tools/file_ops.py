@@ -78,7 +78,7 @@ def _validate_path(path: str, working_dir: str) -> Path:
         target_path.relative_to(working_path)
     except ValueError:
         # Don't expose the full path in error message for security
-        raise ValueError("Access denied: Path is outside the allowed working directory")
+        raise ValueError("Access denied: Path is outside the allowed working directory")  # noqa: B904
 
     return target_path
 
@@ -107,8 +107,8 @@ def _format_size(size_bytes: int) -> str:
 def read_file(
     path: str,
     working_dir: str,
-    head: Optional[int] = None,
-    tail: Optional[int] = None,
+    head: Optional[int] = None,  # noqa: UP045
+    tail: Optional[int] = None,  # noqa: UP045
     max_content_length: int = 10000,
 ) -> str:
     """
@@ -358,7 +358,7 @@ def list_directory(
 def directory_tree(
     path: str = ".",
     working_dir: str = "",
-    exclude_patterns: Optional[list[str]] = None,
+    exclude_patterns: Optional[list[str]] = None,  # noqa: UP045
     max_content_length: int = 10000,
 ) -> str:
     """
@@ -503,7 +503,7 @@ def search_files(
     pattern: str,
     working_dir: str,
     path: str = ".",
-    exclude_patterns: Optional[list[str]] = None,
+    exclude_patterns: Optional[list[str]] = None,  # noqa: UP045
     max_content_length: int = 10000,
 ) -> str:
     """

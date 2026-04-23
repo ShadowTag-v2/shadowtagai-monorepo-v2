@@ -39,7 +39,7 @@ def _allowed(url: str) -> bool:
     """Check if a URL is allowed per the allowlist."""
     try:
         host = (urlparse(url).hostname or "").lower()
-    except:
+    except Exception:
         return False
 
     # Check domain allowlist

@@ -309,7 +309,7 @@ class MCPProxy:
         # Cancel backend task
         if self._backend_task and not self._backend_task.done():
             self._backend_task.cancel()
-            try:
+            try:  # noqa: SIM105
                 await self._backend_task
             except asyncio.CancelledError:
                 pass

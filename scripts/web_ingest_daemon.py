@@ -10,21 +10,21 @@ Web/Local Document Ingest Daemon
 Extracts structure from downloaded PDFs (Kaggle, DoD, NIST) using LangExtract.
 """
 
-import json
-import logging
-import os
-import sqlite3
-import sys
-import textwrap
-import time
-from pathlib import Path
+import json  # noqa: E402
+import logging  # noqa: E402
+import os  # noqa: E402
+import sqlite3  # noqa: E402
+import sys  # noqa: E402
+import textwrap  # noqa: E402
+import time  # noqa: E402
+from pathlib import Path  # noqa: E402
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-import langextract as lx
-from dotenv import load_dotenv
+import langextract as lx  # noqa: E402
+from dotenv import load_dotenv  # noqa: E402
 
 load_dotenv(override=True)
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -126,7 +126,7 @@ class CheckpointDB:
 
 class JSONLWriter:
     def __init__(self, path: Path) -> None:
-        self.fh = open(path, "a", encoding="utf-8")
+        self.fh = open(path, "a", encoding="utf-8")  # noqa: SIM115
 
     def write(self, file_id: str, extractions: list[dict]) -> None:
         for ex in extractions:

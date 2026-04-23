@@ -13,14 +13,14 @@ import traceback
 from datetime import datetime
 
 os.chdir("/mnt/c/python/Kosmos")
-from dotenv import load_dotenv
+from dotenv import load_dotenv  # noqa: E402
 
 load_dotenv(override=True)
 
 # Initialize DB so NoveltyChecker doesn't fail in subprocess (Issue #4)
-from kosmos.db import init_from_config
+from kosmos.db import init_from_config  # noqa: E402
 
-try:
+try:  # noqa: SIM105
     init_from_config()
 except RuntimeError:
     pass  # Already initialized

@@ -108,7 +108,7 @@ async def _create_event_summary_with_llm(
                 if hasattr(part, 'function_call') and part.function_call:
                     tool_calls.append(part.function_call.name)
                     events_with_tools += 1
-                if hasattr(part, 'function_response') and part.function_response:
+                if hasattr(part, 'function_response') and part.function_response:  # noqa: SIM102
                     # Extract function response name
                     if hasattr(part.function_response, 'name'):
                         function_responses.append(part.function_response.name)
@@ -281,7 +281,7 @@ async def _compress_session_events(
 def create_compression_callback(
     event_threshold: int = DEFAULT_EVENT_THRESHOLD,
     overlap_size: int = DEFAULT_OVERLAP_SIZE,
-    model_name: Optional[str] = None,
+    model_name: Optional[str] = None,  # noqa: UP045
 ):
     """
     Factory function to create an event compression callback.
@@ -477,7 +477,7 @@ async def compress_events_manually(
     ctx,
     event_threshold: int = DEFAULT_EVENT_THRESHOLD,
     overlap_size: int = DEFAULT_OVERLAP_SIZE,
-    model_name: Optional[str] = None,
+    model_name: Optional[str] = None,  # noqa: UP045
 ):
     """
     Manually trigger event compression outside of callbacks.

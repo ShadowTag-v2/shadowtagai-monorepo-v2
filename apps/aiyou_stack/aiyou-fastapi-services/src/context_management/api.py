@@ -136,8 +136,8 @@ async def update_session(session_id: str, request: UpdateSessionRequest):
 
 @router.get("/sessions", response_model=SessionListResponse)
 async def list_sessions(
-    role: AnalysisRole | None = Query(None, description="Filter by analysis role"),
-    status: SessionStatus | None = Query(None, description="Filter by session status"),
+    role: AnalysisRole | None = Query(None, description="Filter by analysis role"),  # noqa: B008
+    status: SessionStatus | None = Query(None, description="Filter by session status"),  # noqa: B008
     limit: int = Query(100, ge=1, le=500, description="Maximum number of results"),
 ):
     """List sessions with optional filtering
@@ -159,7 +159,7 @@ async def list_sessions(
 @router.get("/sessions/search", response_model=SessionListResponse)
 async def search_sessions(
     q: str = Query(..., description="Search query"),
-    fields: list[str] = Query(
+    fields: list[str] = Query(  # noqa: B008
         ["issue_title", "goal", "constraints"],
         description="Fields to search in",
     ),

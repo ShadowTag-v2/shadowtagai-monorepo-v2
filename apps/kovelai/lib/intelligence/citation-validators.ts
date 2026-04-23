@@ -40,11 +40,11 @@ export interface CitationValidationResult {
 }
 
 export type ShepardStatus =
-  | 'positive'     // Green — followed
-  | 'caution'      // Yellow — distinguished
-  | 'negative'     // Red — overruled
-  | 'questioned'   // Orange — questioned
-  | 'unchecked';   // Gray — not yet validated
+  | 'positive' // Green — followed
+  | 'caution' // Yellow — distinguished
+  | 'negative' // Red — overruled
+  | 'questioned' // Orange — questioned
+  | 'unchecked'; // Gray — not yet validated
 
 export interface CitationProvider {
   name: string;
@@ -164,7 +164,7 @@ export class FormatValidationProvider implements CitationProvider {
 export class WestlawProvider implements CitationProvider {
   name = 'Westlaw (Stub — Phase 3)';
 
-  constructor(private _apiKey?: string) {
+  constructor(_apiKey?: string) {
     // API key would come from BYOK key management
   }
 
@@ -173,13 +173,11 @@ export class WestlawProvider implements CitationProvider {
     // TR API: https://developer.thomsonreuters.com/
     const formatProvider = new FormatValidationProvider();
     const result = await formatProvider.validateCitation(text);
-    result.warnings.push(
-      'Westlaw integration pending (Phase 3). Using format validation only.',
-    );
+    result.warnings.push('Westlaw integration pending (Phase 3). Using format validation only.');
     return result;
   }
 
-  async checkCurrency(text: string): Promise<ShepardStatus> {
+  async checkCurrency(_text: string): Promise<ShepardStatus> {
     // TODO(Phase 3): Implement KeyCite currency check
     return 'unchecked';
   }
@@ -197,7 +195,7 @@ export class WestlawProvider implements CitationProvider {
 export class LexisNexisProvider implements CitationProvider {
   name = 'LexisNexis (Stub — Phase 3)';
 
-  constructor(private _apiKey?: string) {
+  constructor(_apiKey?: string) {
     // API key would come from BYOK key management
   }
 
@@ -205,9 +203,7 @@ export class LexisNexisProvider implements CitationProvider {
     // TODO(Phase 3): Implement LexisNexis Web Services validation
     const formatProvider = new FormatValidationProvider();
     const result = await formatProvider.validateCitation(text);
-    result.warnings.push(
-      'LexisNexis integration pending (Phase 3). Using format validation only.',
-    );
+    result.warnings.push('LexisNexis integration pending (Phase 3). Using format validation only.');
     return result;
   }
 
@@ -247,7 +243,5 @@ export async function validateCitations(
   citations: string[],
   provider: CitationProvider = new FormatValidationProvider(),
 ): Promise<CitationValidationResult[]> {
-  return Promise.all(
-    citations.map(c => provider.validateCitation(c)),
-  );
+  return Promise.all(citations.map((c) => provider.validateCitation(c)));
 }

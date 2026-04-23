@@ -150,7 +150,7 @@ def push_with_token(token: str, org: str, repo: str, branch=None) -> None:
             check=True,
         )
 
-        askpass_script = tempfile.NamedTemporaryFile(mode="w", suffix=".sh", prefix="git_askpass_", delete=False)
+        askpass_script = tempfile.NamedTemporaryFile(mode="w", suffix=".sh", prefix="git_askpass_", delete=False)  # noqa: SIM115
         askpass_script.write(f'#!/bin/sh\ncase "$1" in\n  *sername*) echo "x-access-token" ;;\n  *) echo "{token}" ;;\nesac\n')
         askpass_script.close()
         os.chmod(askpass_script.name, stat.S_IRWXU)

@@ -72,7 +72,7 @@ def get_provider(provider_name: str, config: dict[str, Any]) -> LLMProvider:
         return provider
     except Exception as e:
         logger.error(f"Failed to instantiate {provider_name} provider: {e}")
-        raise ProviderAPIError(provider_name, f"Failed to initialize provider: {e}", raw_error=e)
+        raise ProviderAPIError(provider_name, f"Failed to initialize provider: {e}", raw_error=e)  # noqa: B904
 
 
 def get_provider_from_config(kosmos_config) -> LLMProvider:

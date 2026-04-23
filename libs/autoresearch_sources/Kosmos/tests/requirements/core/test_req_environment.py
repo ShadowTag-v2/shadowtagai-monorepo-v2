@@ -289,8 +289,8 @@ class TestREQ_ENV_004_DomainLibraries:
 
         # Try to import rpy2 if available
         try:
-            import rpy2
-            import rpy2.robjects as robjects
+            import rpy2  # noqa: F401
+            import rpy2.robjects as robjects  # noqa: F401
 
             # If rpy2 is available, test we can check for R packages
             from rpy2.robjects.packages import isinstalled
@@ -335,7 +335,7 @@ class TestREQ_ENV_004_DomainLibraries:
         # Mock a missing domain library import
         with patch.dict(sys.modules, {"fake_domain_lib": None}):
             try:
-                import fake_domain_lib
+                import fake_domain_lib  # noqa: F401
 
                 # Should not reach here
                 pytest.fail("Should have raised ImportError")
@@ -419,7 +419,7 @@ class TestREQ_ENV_005_GracefulMissingDependencies:
             try:
                 return importlib.import_module(library_name)
             except ImportError:
-                raise ImportError(
+                raise ImportError(  # noqa: B904
                     f"{library_name} is required for this feature. "
                     f"Install it with: pip install {library_name}"
                 )
@@ -499,7 +499,7 @@ class TestREQ_ENV_006_MetabolomicsLibraries:
         def metabolomics_feature_available() -> bool:
             """Check if metabolomics features are available."""
             try:
-                import pyopenms
+                import pyopenms  # noqa: F401
 
                 return True
             except ImportError:
@@ -531,7 +531,7 @@ class TestREQ_ENV_007_MaterialsScienceLibraries:
             print(f"✓ pymatgen available: {pymatgen.__version__}")
 
             # If available, test basic functionality
-            from pymatgen.core import Lattice, Structure
+            from pymatgen.core import Lattice, Structure  # noqa: F401
 
             # Create simple structure
             lattice = Lattice.cubic(4.2)

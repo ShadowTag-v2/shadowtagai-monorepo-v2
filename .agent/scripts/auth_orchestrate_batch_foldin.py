@@ -168,7 +168,7 @@ for repo_name, dest_path in REPOS:
                 if rep_data.get("blocked"):
                     blockers = str(rep_data.get("block_reasons", "Unknown block"))
                     status = "blocked"
-            except:
+            except Exception:
                 pass
 
     if status == "blocked":

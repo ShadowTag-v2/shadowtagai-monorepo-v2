@@ -14,7 +14,7 @@ sys.modules["google.generativeai"] = MagicMock()
 sys.modules["google.generativeai.types"] = MagicMock()
 sys.modules["redis"] = MagicMock()
 
-from shadowtag_v4.services.gemini_core import MODEL_FALLBACK_CHAIN, GeminiAntigravity
+from shadowtag_v4.services.gemini_core import MODEL_FALLBACK_CHAIN, GeminiAntigravity  # noqa: E402
 
 
 class TestGeminiFailover(unittest.TestCase):

@@ -193,12 +193,11 @@ class SafetyGuardrails:
             RuntimeError: If emergency stop is active
         """
         # Check flag file
-        if self.STOP_FLAG_FILE.exists():
-            if not self.emergency_stop.is_active:
-                logger.warning("Emergency stop flag file detected")
-                self.trigger_emergency_stop(
-                    triggered_by="flag_file", reason="Emergency stop flag file created"
-                )
+        if self.STOP_FLAG_FILE.exists() and not self.emergency_stop.is_active:
+            logger.warning("Emergency stop flag file detected")
+            self.trigger_emergency_stop(
+                triggered_by="flag_file", reason="Emergency stop flag file created"
+            )
 
         # Raise exception if stop is active
         if self.is_emergency_stop_active():

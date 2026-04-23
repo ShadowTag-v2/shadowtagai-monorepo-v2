@@ -39,7 +39,7 @@ def _truncate_content(content: str, max_content_length: int) -> str:
 def fetch_url(
     url: str,
     timeout: int = 30,
-    user_agent: Optional[str] = None,
+    user_agent: Optional[str] = None,  # noqa: UP045
     max_content_length: int = 10000,
 ) -> str:
     """

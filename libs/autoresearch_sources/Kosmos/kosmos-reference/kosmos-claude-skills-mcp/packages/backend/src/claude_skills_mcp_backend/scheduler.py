@@ -154,7 +154,7 @@ class HourlyScheduler:
 
         if self._task:
             self._task.cancel()
-            try:
+            try:  # noqa: SIM105
                 await self._task
             except asyncio.CancelledError:
                 pass

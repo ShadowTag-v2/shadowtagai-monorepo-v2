@@ -12,7 +12,7 @@ from app.services.automation_service import ExecutionService
 router = APIRouter(prefix="/executions", tags=["executions"])
 
 
-def get_execution_service(db: AsyncSession = Depends(get_db)) -> ExecutionService:
+def get_execution_service(db: AsyncSession = Depends(get_db)) -> ExecutionService:  # noqa: B008
     """Dependency to get ExecutionService instance."""
     return ExecutionService(db)
 
@@ -30,10 +30,10 @@ async def execute_workflow(execution_request: ExecuteWorkflowRequest):
 @router.get("/", response_model=list[JobExecutionResponse])
 async def list_executions(
     workflow_id: int | None = Query(None, description="Filter by workflow ID"),
-    status: JobStatus | None = Query(None, description="Filter by status"),
+    status: JobStatus | None = Query(None, description="Filter by status"),  # noqa: B008
     skip: int = 0,
     limit: int = 100,
-    service: ExecutionService = Depends(get_execution_service),
+    service: ExecutionService = Depends(get_execution_service),  # noqa: B008
 ):
     """List job executions with optional filters."""
     return await service.list(workflow_id, status, skip, limit)
@@ -42,7 +42,7 @@ async def list_executions(
 @router.get("/{execution_id}", response_model=JobExecutionResponse)
 async def get_execution(
     execution_id: int,
-    service: ExecutionService = Depends(get_execution_service),
+    service: ExecutionService = Depends(get_execution_service),  # noqa: B008
 ):
     """Get a specific job execution by ID."""
     execution = await service.get(execution_id)
@@ -54,7 +54,7 @@ async def get_execution(
 @router.post("/{execution_id}/retry", response_model=JobExecutionResponse, status_code=202)
 async def retry_execution(
     execution_id: int,
-    service: ExecutionService = Depends(get_execution_service),
+    service: ExecutionService = Depends(get_execution_service),  # noqa: B008
 ):
     """Retry a failed job execution."""
     execution = await service.get(execution_id)
@@ -78,7 +78,7 @@ async def retry_execution(
 @router.delete("/{execution_id}", status_code=204)
 async def delete_execution(
     execution_id: int,
-    service: ExecutionService = Depends(get_execution_service),
+    service: ExecutionService = Depends(get_execution_service),  # noqa: B008
 ):
     """Delete a job execution record."""
     execution = await service.get(execution_id)

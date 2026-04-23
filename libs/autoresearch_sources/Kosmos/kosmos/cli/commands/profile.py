@@ -35,7 +35,7 @@ def profile_command(
     mode: str = typer.Option(
         "standard", "--mode", "-m", help="Profiling mode: light, standard, full"
     ),
-    output: Path | None = typer.Option(
+    output: Path | None = typer.Option(  # noqa: B008
         None, "--output", "-o", help="Save profile data to file (JSON)"
     ),
     compare: str | None = typer.Option(

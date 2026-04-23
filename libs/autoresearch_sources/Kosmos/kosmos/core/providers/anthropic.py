@@ -33,7 +33,7 @@ from kosmos.core.utils.json_parser import JSONParseError, parse_json_response
 
 logger = logging.getLogger(__name__)
 
-from kosmos.config import _DEFAULT_CLAUDE_HAIKU_MODEL, _DEFAULT_CLAUDE_SONNET_MODEL
+from kosmos.config import _DEFAULT_CLAUDE_HAIKU_MODEL, _DEFAULT_CLAUDE_SONNET_MODEL  # noqa: E402
 
 
 class AnthropicProvider(LLMProvider):
@@ -126,7 +126,7 @@ class AnthropicProvider(LLMProvider):
                 )
         except Exception as e:
             logger.error(f"Failed to initialize Anthropic client: {e}")
-            raise ProviderAPIError("anthropic", f"Failed to initialize: {e}", raw_error=e)
+            raise ProviderAPIError("anthropic", f"Failed to initialize: {e}", raw_error=e)  # noqa: B904
 
         # Lazy-initialized async client (same config as sync client)
         self._async_client: AsyncAnthropic | None = None
@@ -349,7 +349,7 @@ class AnthropicProvider(LLMProvider):
 
         except Exception as e:
             logger.error(f"Anthropic generation failed: {e}")
-            raise ProviderAPIError("anthropic", f"Generation failed: {e}", raw_error=e)
+            raise ProviderAPIError("anthropic", f"Generation failed: {e}", raw_error=e)  # noqa: B904
 
     @property
     def async_client(self) -> "AsyncAnthropic":
@@ -440,7 +440,7 @@ class AnthropicProvider(LLMProvider):
 
         except Exception as e:
             logger.error(f"Async Anthropic API error: {e}")
-            raise ProviderAPIError("anthropic", f"Async generation failed: {e}", raw_error=e)
+            raise ProviderAPIError("anthropic", f"Async generation failed: {e}", raw_error=e)  # noqa: B904
 
     def generate_with_messages(
         self, messages: list[Message], max_tokens: int = 4096, temperature: float = 0.7, **kwargs
@@ -507,7 +507,7 @@ class AnthropicProvider(LLMProvider):
 
         except Exception as e:
             logger.error(f"Anthropic multi-turn generation failed: {e}")
-            raise ProviderAPIError("anthropic", f"Multi-turn generation failed: {e}", raw_error=e)
+            raise ProviderAPIError("anthropic", f"Multi-turn generation failed: {e}", raw_error=e)  # noqa: B904
 
     def generate_structured(
         self,
@@ -562,7 +562,7 @@ class AnthropicProvider(LLMProvider):
                 logger.error(f"Failed to parse JSON after {e.attempts} attempts")
                 logger.error(f"Response text: {response_text[:500]}")
                 # JSON parse errors are NOT recoverable - retrying won't help
-                raise ProviderAPIError(
+                raise ProviderAPIError(  # noqa: B904
                     "anthropic",
                     f"Invalid JSON response: {e.message}",
                     raw_error=e,
@@ -573,7 +573,7 @@ class AnthropicProvider(LLMProvider):
             if isinstance(e, ProviderAPIError):
                 raise
             logger.error(f"Structured generation failed: {e}")
-            raise ProviderAPIError("anthropic", f"Structured generation failed: {e}", raw_error=e)
+            raise ProviderAPIError("anthropic", f"Structured generation failed: {e}", raw_error=e)  # noqa: B904
 
     def get_model_info(self) -> dict[str, Any]:
         """
@@ -807,7 +807,7 @@ class AnthropicProvider(LLMProvider):
                     )
                 )
             logger.error(f"Anthropic streaming failed: {e}")
-            raise ProviderAPIError("anthropic", f"Streaming failed: {e}", raw_error=e)
+            raise ProviderAPIError("anthropic", f"Streaming failed: {e}", raw_error=e)  # noqa: B904
 
     async def generate_stream_async(
         self,
@@ -923,7 +923,7 @@ class AnthropicProvider(LLMProvider):
                     )
                 )
             logger.error(f"Anthropic async streaming failed: {e}")
-            raise ProviderAPIError("anthropic", f"Async streaming failed: {e}", raw_error=e)
+            raise ProviderAPIError("anthropic", f"Async streaming failed: {e}", raw_error=e)  # noqa: B904
 
 
 # Backward compatibility alias

@@ -19,19 +19,19 @@ router = APIRouter(prefix="/dualco", tags=["DualCo Strategy"])
 
 
 @router.post("/metrics", response_model=DualCoStatus)
-def ingest_metrics(metrics: MetricsInput, db: Session = Depends(get_db)):
+def ingest_metrics(metrics: MetricsInput, db: Session = Depends(get_db)):  # noqa: B008
     engine = DualCoEngine(db)
     return engine.ingest_metrics(metrics)
 
 
 @router.get("/board-packet", response_model=BoardResolution)
-def get_board_packet(db: Session = Depends(get_db)):
+def get_board_packet(db: Session = Depends(get_db)):  # noqa: B008
     engine = DualCoEngine(db)
     return engine.generate_board_resolution()
 
 
 @router.post("/decisions", response_model=DecisionLogRead)
-def log_decision(decision: DecisionLogCreate, db: Session = Depends(get_db)):
+def log_decision(decision: DecisionLogCreate, db: Session = Depends(get_db)):  # noqa: B008
     db_decision = DualCoDecision(**decision.dict())
     db.add(db_decision)
     db.commit()
@@ -40,5 +40,5 @@ def log_decision(decision: DecisionLogCreate, db: Session = Depends(get_db)):
 
 
 @router.get("/decisions", response_model=list[DecisionLogRead])
-def get_decisions(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def get_decisions(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):  # noqa: B008
     return db.query(DualCoDecision).offset(skip).limit(limit).all()

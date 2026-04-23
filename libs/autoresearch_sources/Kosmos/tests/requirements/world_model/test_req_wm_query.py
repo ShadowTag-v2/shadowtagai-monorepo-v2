@@ -31,13 +31,13 @@ def world_model():
     try:
         wm = get_world_model()
         # Try to reset for clean state
-        try:
+        try:  # noqa: SIM105
             wm.reset(project="test_query_project")
         except Exception:
             pass
         yield wm
     finally:
-        try:
+        try:  # noqa: SIM105
             reset_world_model()
         except Exception:
             pass

@@ -35,7 +35,7 @@ class GeminiCodeAssistProxy:
             print(f"⚡️ God Mode: Direct writing to {file_path}")
 
             # Ensure directory exists
-            try:
+            try:  # noqa: SIM105
                 os.makedirs(os.path.dirname(file_path), exist_ok=True)
             except OSError:
                 pass  # Path might be root or existing

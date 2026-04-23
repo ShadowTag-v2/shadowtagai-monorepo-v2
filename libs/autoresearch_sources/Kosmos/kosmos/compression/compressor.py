@@ -22,7 +22,7 @@ from dataclasses import dataclass
 from typing import Any
 
 logger = logging.getLogger(__name__)
-from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL
+from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL  # noqa: E402
 
 
 @dataclass
@@ -237,7 +237,7 @@ Provide a {max_lines}-line summary that captures the essential discovery."""
             summary = response.content[0].text.strip()
 
             # Ensure it's actually 2 lines (split and rejoin)
-            lines = [l.strip() for l in summary.split("\n") if l.strip()]
+            lines = [l.strip() for l in summary.split("\n") if l.strip()]  # noqa: E741
             return "\n".join(lines[:max_lines])
 
         except Exception as e:
@@ -396,7 +396,7 @@ class LiteratureCompressor:
         # Look for p-values
         p_values = re.findall(r"p\s*[=<>]\s*([\d.]+(?:e-?\d+)?)", text, re.IGNORECASE)
         if p_values:
-            try:
+            try:  # noqa: SIM105
                 stats["p_value"] = min(float(p) for p in p_values if float(p) <= 1.0)
             except (ValueError, TypeError):
                 pass
@@ -453,7 +453,7 @@ class ContextCompressor:
                         task_result["notebook_path"], task_result.get("notebook_content")
                     )
                     compressed_tasks.append(compressed)
-            elif task_result.get("type") == "literature_review":
+            elif task_result.get("type") == "literature_review":  # noqa: SIM102
                 if "papers" in task_result:
                     compressed_papers = self.literature_compressor.compress_papers(
                         task_result["papers"]

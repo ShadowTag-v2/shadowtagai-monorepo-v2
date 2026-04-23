@@ -21,7 +21,7 @@ from pydantic import BaseModel, Field
 
 # Import swarm voter
 try:
-    from agents.autoresearch2 import SwarmVoter, VoteDecision, swarm_vote
+    from agents.autoresearch2 import SwarmVoter, VoteDecision, swarm_vote  # noqa: F401
 
     SWARM_AVAILABLE = True
 except ImportError:
@@ -270,7 +270,7 @@ async def validate_api_key(x_api_key: str = Header(...)) -> dict[str, Any]:
 @router.post("/vote", response_model=SwarmVoteResponse)
 async def vote(
     request: SwarmVoteRequest,
-    api_key_info: dict = Depends(validate_api_key),
+    api_key_info: dict = Depends(validate_api_key),  # noqa: B008
 ) -> SwarmVoteResponse:
     """Execute swarm voting on a decision.
 
@@ -333,7 +333,7 @@ async def status() -> SwarmStatusResponse:
 
 @router.get("/usage", response_model=UsageResponse)
 async def usage(
-    api_key_info: dict = Depends(validate_api_key),
+    api_key_info: dict = Depends(validate_api_key),  # noqa: B008
 ) -> UsageResponse:
     """Get API usage statistics for current API key."""
     # Stub - replace with real usage tracking
@@ -351,7 +351,7 @@ async def usage(
 @router.post("/batch")
 async def batch_vote(
     requests: list[SwarmVoteRequest],
-    api_key_info: dict = Depends(validate_api_key),
+    api_key_info: dict = Depends(validate_api_key),  # noqa: B008
 ) -> list[SwarmVoteResponse]:
     """Execute swarm voting on multiple decisions in batch.
 

@@ -261,9 +261,8 @@ class TestSyncClientLifecycle:
             mock_close_method.assert_called_once()
 
         with patch.object(ToolboxSyncClient, "close", wraps=ToolboxSyncClient.close, autospec=True) as mock_close_method_exc:
-            with pytest.raises(ValueError, match="Test exception"):
-                with ToolboxSyncClient(TEST_BASE_URL):
-                    raise ValueError("Test exception")
+            with pytest.raises(ValueError, match="Test exception"), ToolboxSyncClient(TEST_BASE_URL):
+                raise ValueError("Test exception")
             mock_close_method_exc.assert_called_once()
 
     @pytest.mark.usefixtures("sync_client_environment")

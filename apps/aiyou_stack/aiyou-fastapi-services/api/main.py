@@ -76,7 +76,7 @@ async def health_check() -> HealthResponse:
     tags=["Watermarking"],
 )
 async def embed_watermark(
-    file: UploadFile = File(..., description="Video or audio file to watermark"),
+    file: UploadFile = File(..., description="Video or audio file to watermark"),  # noqa: B008
     request: EmbedRequest = None,
 ) -> EmbedResponse:
     """Embed watermark into video or audio file.
@@ -172,7 +172,7 @@ async def embed_watermark(
     tags=["Watermarking"],
 )
 async def verify_watermark(
-    file: UploadFile = File(..., description="Watermarked video or audio file"),
+    file: UploadFile = File(..., description="Watermarked video or audio file"),  # noqa: B008
     request: VerifyRequest = None,
 ) -> VerifyResponse:
     """Verify watermark in video or audio file.

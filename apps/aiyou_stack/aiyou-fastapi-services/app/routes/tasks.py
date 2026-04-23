@@ -11,7 +11,7 @@ router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
 
 @router.post("/", response_model=TaskResponse, status_code=status.HTTP_201_CREATED)
-async def create_task(task: TaskCreate, db: Session = Depends(get_db)):
+async def create_task(task: TaskCreate, db: Session = Depends(get_db)):  # noqa: B008
     """Create a new task."""
     user = TaskService.get_user(db, task.user_id)
     if not user:
@@ -25,14 +25,14 @@ async def list_tasks(
     limit: int = 100,
     status: TaskStatus | None = None,
     priority: int | None = None,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """List all tasks with filtering and pagination."""
     return TaskService.list_tasks(db, skip, limit, status, priority)
 
 
 @router.get("/{task_id}", response_model=TaskResponse)
-async def get_task(task_id: int, db: Session = Depends(get_db)):
+async def get_task(task_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Get a specific task by ID."""
     task = TaskService.get_task(db, task_id)
     if not task:
@@ -41,7 +41,7 @@ async def get_task(task_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{task_id}", response_model=TaskResponse)
-async def update_task(task_id: int, task_update: TaskCreate, db: Session = Depends(get_db)):
+async def update_task(task_id: int, task_update: TaskCreate, db: Session = Depends(get_db)):  # noqa: B008
     """Update a task."""
     task = TaskService.get_task(db, task_id)
     if not task:
@@ -50,7 +50,7 @@ async def update_task(task_id: int, task_update: TaskCreate, db: Session = Depen
 
 
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_task(task_id: int, db: Session = Depends(get_db)):
+async def delete_task(task_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Delete a task."""
     task = TaskService.get_task(db, task_id)
     if not task:
@@ -59,7 +59,7 @@ async def delete_task(task_id: int, db: Session = Depends(get_db)):
 
 
 @router.patch("/{task_id}/status")
-async def update_task_status(task_id: int, new_status: TaskStatus, db: Session = Depends(get_db)):
+async def update_task_status(task_id: int, new_status: TaskStatus, db: Session = Depends(get_db)):  # noqa: B008
     """Update only the status of a task."""
     task = TaskService.get_task(db, task_id)
     if not task:

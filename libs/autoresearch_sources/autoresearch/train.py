@@ -25,7 +25,7 @@ cap = torch.cuda.get_device_capability()
 repo = "varunneal/flash-attention-3" if cap == (9, 0) else "kernels-community/flash-attn3"
 fa3 = get_kernel(repo).flash_attn_interface
 
-from prepare import MAX_SEQ_LEN, TIME_BUDGET, Tokenizer, make_dataloader, evaluate_bpb
+from prepare import MAX_SEQ_LEN, TIME_BUDGET, Tokenizer, make_dataloader, evaluate_bpb  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # GPT Model
@@ -324,7 +324,7 @@ class GPT(nn.Module):
 
     def forward(self, idx, targets=None, reduction="mean"):
         B, T = idx.size()
-        assert T <= self.cos.size(1)
+        assert self.cos.size(1) >= T
         cos_sin = self.cos[:, :T], self.sin[:, :T]
 
         x = self.transformer.wte(idx)
@@ -645,7 +645,7 @@ step = 0
 while True:
     torch.cuda.synchronize()
     t0 = time.time()
-    for micro_step in range(grad_accum_steps):
+    for _micro_step in range(grad_accum_steps):
         with autocast_ctx:
             loss = model(x, y)
         train_loss = loss.detach()

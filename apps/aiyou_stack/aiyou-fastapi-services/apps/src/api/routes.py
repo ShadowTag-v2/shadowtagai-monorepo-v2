@@ -66,7 +66,7 @@ async def stream_response(iterator: AsyncIterator[str]) -> AsyncIterator[bytes]:
 @app.post("/analyze")
 async def analyze(
     request: AnalysisRequest,
-    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
+    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),  # noqa: B008
 ):
     """General analysis endpoint for custom queries
 
@@ -92,7 +92,7 @@ async def analyze(
 @app.post("/analyze/monetization")
 async def analyze_monetization(
     request: MonetizationStrategyRequest,
-    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
+    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),  # noqa: B008
 ):
     """Analyze complete monetization strategy
 
@@ -118,7 +118,7 @@ async def analyze_monetization(
 @app.post("/analyze/funnel")
 async def analyze_funnel(
     request: FunnelAnalysisRequest,
-    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
+    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),  # noqa: B008
 ):
     """Analyze conversion funnel
 
@@ -142,7 +142,7 @@ async def analyze_funnel(
 @app.post("/analyze/pricing")
 async def evaluate_pricing(
     request: PricingEvaluationRequest,
-    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
+    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),  # noqa: B008
 ):
     """Evaluate pricing strategy
 
@@ -166,7 +166,7 @@ async def evaluate_pricing(
 @app.post("/analyze/projections")
 async def project_revenue(
     request: RevenueProjectionRequest,
-    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
+    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),  # noqa: B008
 ):
     """Calculate revenue projections
 
@@ -191,7 +191,7 @@ async def project_revenue(
 @app.post("/analyze/ltv")
 async def calculate_ltv(
     request: LTVCalculationRequest,
-    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
+    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),  # noqa: B008
 ):
     """Calculate customer lifetime value
 
@@ -216,7 +216,7 @@ async def calculate_ltv(
 @app.post("/analyze/opportunities")
 async def assess_opportunities(
     request: OpportunityAssessmentRequest,
-    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
+    service: WealthAccelerationService = Depends(get_wealth_acceleration_service),  # noqa: B008
 ):
     """Assess market opportunities
 

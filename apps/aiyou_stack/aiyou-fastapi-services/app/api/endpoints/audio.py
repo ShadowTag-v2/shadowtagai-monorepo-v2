@@ -24,8 +24,8 @@ router = APIRouter()
 
 @router.post("/encode", response_model=EncodeResponse)
 async def encode_audio(
-    audio: UploadFile = File(..., description="Input audio file"),
-    payload: UploadFile = File(..., description="Data to hide"),
+    audio: UploadFile = File(..., description="Input audio file"),  # noqa: B008
+    payload: UploadFile = File(..., description="Data to hide"),  # noqa: B008
     method: str = Form(default="lsb", regex="^(lsb|phase|echo|spread_spectrum)$"),
     bits_per_sample: int = Form(default=1, ge=1, le=4),
     use_encryption: bool = Form(default=True),
@@ -101,7 +101,7 @@ async def encode_audio(
 
 @router.post("/decode", response_model=DecodeResponse)
 async def decode_audio(
-    audio: UploadFile = File(..., description="Audio file with hidden data"),
+    audio: UploadFile = File(..., description="Audio file with hidden data"),  # noqa: B008
     verify_hash: str | None = Form(default=None),
     create_receipt: bool = Form(default=True),
 ):

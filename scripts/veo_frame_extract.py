@@ -587,7 +587,7 @@ Examples:
     )
 
     if args.list_presets:
-        for preset in SCROLL_PRESETS.values():
+        for preset in SCROLL_PRESETS.values():  # noqa: B007
             pass
         return 0
 

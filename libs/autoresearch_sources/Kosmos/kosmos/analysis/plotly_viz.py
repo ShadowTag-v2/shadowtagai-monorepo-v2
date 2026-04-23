@@ -9,7 +9,7 @@ import logging
 import numpy as np
 
 try:
-    import plotly.express as px
+    import plotly.express as px  # noqa: F401
     import plotly.graph_objects as go
     from plotly.subplots import make_subplots
 

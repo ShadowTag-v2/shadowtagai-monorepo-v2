@@ -166,7 +166,9 @@ class CodeMenderAgent:
 
             # Run Test
             logger.info(f"Running verification: {test_cmd}")
-            proc = subprocess.run(test_cmd, shell=True, capture_output=True, text=True, timeout=30)
+            import shlex
+
+            proc = subprocess.run(shlex.split(test_cmd), capture_output=True, text=True, timeout=30)  # noqa: S603 — test_cmd from trusted agent caller
 
             log = f"STDOUT: {proc.stdout}\nSTDERR: {proc.stderr}"
 

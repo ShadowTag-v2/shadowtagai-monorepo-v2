@@ -92,7 +92,10 @@ export type ClientAnxietyProfile = z.infer<typeof ClientAnxietyProfileSchema>;
  * Only the hash, classification, and metadata are persisted.
  */
 export async function recordIntent(
-  intent: Omit<SearchIntent, 'id' | 'createdAt' | 'dayOfWeek' | 'hourOfDay' | 'isAfterHours' | 'isEscalation'>,
+  intent: Omit<
+    SearchIntent,
+    'id' | 'createdAt' | 'dayOfWeek' | 'hourOfDay' | 'isAfterHours' | 'isEscalation'
+  >,
 ): Promise<SearchIntent> {
   const now = new Date();
 
@@ -108,10 +111,6 @@ export async function recordIntent(
 
   // Log escalation alerts
   if (fullIntent.isEscalation) {
-    console.warn(
-      `[Intent Vault] ⚠️ ESCALATION: Client ${fullIntent.clientId.substring(0, 8)} | ` +
-      `Category: ${fullIntent.category} | Urgency: ${fullIntent.urgency}/10`,
-    );
   }
 
   return fullIntent;
@@ -157,8 +156,9 @@ export function buildAnxietyProfile(
   }
 
   // Find top category
-  const topCategory = Object.entries(categoryBreakdown)
-    .sort((a, b) => b[1] - a[1])[0][0] as SearchIntent['category'];
+  const topCategory = Object.entries(categoryBreakdown).sort(
+    (a, b) => b[1] - a[1],
+  )[0][0] as SearchIntent['category'];
 
   const avgUrgency = totalUrgency / intents.length;
   const afterHoursPercentage = (afterHoursCount / intents.length) * 100;
@@ -178,7 +178,7 @@ export function buildAnxietyProfile(
     maxUrgency,
     afterHoursPercentage: Math.round(afterHoursPercentage),
     escalationCount,
-    categoryBreakdown: categoryBreakdown as Record<typeof ANXIETY_CATEGORIES[number], number>,
+    categoryBreakdown: categoryBreakdown as Record<(typeof ANXIETY_CATEGORIES)[number], number>,
     lastActivity: intents[intents.length - 1].createdAt,
     riskLevel,
   };

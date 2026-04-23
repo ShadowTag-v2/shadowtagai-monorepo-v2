@@ -89,11 +89,11 @@ class IngestionStats(BaseModel):
 
 @router.post("/jobs", response_model=IngestionJobResponse)
 async def create_ingestion_job(
-    file: UploadFile = File(...),
-    content_type: ContentType = Query(...),
-    background_tasks: BackgroundTasks = BackgroundTasks(),
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    file: UploadFile = File(...),  # noqa: B008
+    content_type: ContentType = Query(...),  # noqa: B008
+    background_tasks: BackgroundTasks = BackgroundTasks(),  # noqa: B008
+    current_user: User = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Upload content for ingestion and Gemini analysis
 
@@ -163,8 +163,8 @@ async def create_ingestion_job(
 @router.get("/jobs/{job_id}", response_model=IngestionJobResponse)
 async def get_ingestion_job(
     job_id: str,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Get ingestion job status"""
     job = (
@@ -206,8 +206,8 @@ async def get_ingestion_job(
 @router.get("/jobs/{job_id}/analysis", response_model=IngestionAnalysisResponse)
 async def get_ingestion_analysis(
     job_id: str,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Get detailed Gemini analysis results"""
     job = (
@@ -242,8 +242,8 @@ async def list_ingestion_jobs(
     content_type: ContentType | None = None,
     limit: int = Query(50, le=100),
     offset: int = Query(0),
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """List user's ingestion jobs"""
     query = db.query(IngestionJob).filter(IngestionJob.user_id == current_user.id)
@@ -274,8 +274,8 @@ async def list_ingestion_jobs(
 @router.get("/stats", response_model=IngestionStats)
 async def get_ingestion_stats(
     days: int = Query(30, le=90),
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Get ingestion statistics for the user"""
     since = datetime.utcnow() - timedelta(days=days)

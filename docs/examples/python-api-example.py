@@ -41,12 +41,11 @@ async def async_stream_response(url: str, data: dict):
         url: API endpoint URL
         data: Request payload
     """
-    async with aiohttp.ClientSession() as session:
-        async with session.post(url, json=data) as response:
-            response.raise_for_status()
-            async for chunk in response.content.iter_any():
-                if chunk:
-                    print(chunk.decode("utf-8"), end="", flush=True)
+    async with aiohttp.ClientSession() as session, session.post(url, json=data) as response:
+        response.raise_for_status()
+        async for chunk in response.content.iter_any():
+            if chunk:
+                print(chunk.decode("utf-8"), end="", flush=True)
     print("\n")
 
 

@@ -49,7 +49,7 @@ class HybridOrchestrator:
     - Loop Agent: Architect/Critic/Refiner iterations
     """
 
-    minionS_URL = os.environ.get("minionS_URL", "http://localhost:8600")
+    minionS_URL = os.environ.get("minionS_URL", "http://localhost:8600")  # noqa: SIM112
     E2B_API_KEY = os.environ.get("E2B_API_KEY", "")
 
     # Task type to layer mapping

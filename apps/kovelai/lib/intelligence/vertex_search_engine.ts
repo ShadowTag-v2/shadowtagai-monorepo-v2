@@ -25,10 +25,7 @@ const searchClient = new v1alpha.SearchServiceClient();
  * @param firmId - The firm identifier for audit logging
  * @returns Aggregated search snippets as a single string
  */
-export async function executePrivilegedWebSearch(
-  query: string,
-  firmId: string,
-): Promise<string> {
+export async function executePrivilegedWebSearch(query: string, _firmId: string): Promise<string> {
   const projectId = process.env.GCP_PROJECT;
   if (!projectId) {
     throw new Error('GCP_PROJECT environment variable is required');
@@ -46,8 +43,8 @@ export async function executePrivilegedWebSearch(
   const snippets = response.results
     ?.map(
       (r) =>
-        r.document?.derivedStructData?.fields?.snippets?.listValue
-          ?.values?.[0]?.structValue?.fields?.snippet?.stringValue,
+        r.document?.derivedStructData?.fields?.snippets?.listValue?.values?.[0]?.structValue?.fields
+          ?.snippet?.stringValue,
     )
     .filter(Boolean)
     .join('\n');
@@ -68,8 +65,5 @@ export async function executePrivilegedMedicalSearch(
   firmId: string,
 ): Promise<string> {
   // Route through the same ZDR engine with medical-specific context
-  return executePrivilegedWebSearch(
-    `medical research: ${query}`,
-    firmId,
-  );
+  return executePrivilegedWebSearch(`medical research: ${query}`, firmId);
 }

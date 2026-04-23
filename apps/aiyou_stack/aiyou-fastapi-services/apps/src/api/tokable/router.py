@@ -25,7 +25,7 @@ app = FastAPI(
 
 
 # ============================================================================
-from .schemas import *
+from .schemas import *  # noqa: E402
 
 # Core Endpoints
 # ============================================================================
@@ -285,8 +285,8 @@ async def websocket_fan_watch(websocket: WebSocket, stream_id: str):
 async def get_nfts(
     _is_listed: bool | None = Query(None),
     creator_id: str | None = Query(None),
-    _min_price: Decimal | None = Query(None, ge=0),
-    _max_price: Decimal | None = Query(None, ge=0),
+    _min_price: Decimal | None = Query(None, ge=0),  # noqa: B008
+    _max_price: Decimal | None = Query(None, ge=0),  # noqa: B008
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
 ):

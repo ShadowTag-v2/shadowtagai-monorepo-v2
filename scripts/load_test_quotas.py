@@ -89,7 +89,7 @@ async def run_load_test(
 
 def _print_results(results: list[LoadTestResult]) -> None:
     """Print load test results as a formatted table."""
-    for r in results:
+    for r in results:  # noqa: B007
         pass
 
     # Validate quotas

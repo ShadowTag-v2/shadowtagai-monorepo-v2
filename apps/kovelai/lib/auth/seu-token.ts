@@ -25,13 +25,15 @@ export const SEUTokenSchema = z.object({
   issuedAt: z.string().datetime(),
   expiresAt: z.string().datetime(),
   tier: z.enum(['solo', 'practice', 'enterprise']),
-  scope: z.array(z.enum([
-    'privileged_search',
-    'murder_board',
-    'anxiety_radar',
-    'oracle_memo',
-    'byok_management',
-  ])),
+  scope: z.array(
+    z.enum([
+      'privileged_search',
+      'murder_board',
+      'anxiety_radar',
+      'oracle_memo',
+      'byok_management',
+    ]),
+  ),
   usageTokens: z.number().int().default(0),
   revoked: z.boolean().default(false),
 });
@@ -41,15 +43,21 @@ export type SEUToken = z.infer<typeof SEUTokenSchema>;
 // ─── TTL Configuration ──────────────────────────────────────────────
 
 const TTL_BY_TIER: Record<SEUToken['tier'], number> = {
-  solo: 24 * 60 * 60 * 1000,       // 24 hours
-  practice: 12 * 60 * 60 * 1000,   // 12 hours
-  enterprise: 8 * 60 * 60 * 1000,  // 8 hours (tighter for compliance)
+  solo: 24 * 60 * 60 * 1000, // 24 hours
+  practice: 12 * 60 * 60 * 1000, // 12 hours
+  enterprise: 8 * 60 * 60 * 1000, // 8 hours (tighter for compliance)
 };
 
 const DEFAULT_SCOPES: Record<SEUToken['tier'], SEUToken['scope']> = {
   solo: ['privileged_search', 'anxiety_radar'],
   practice: ['privileged_search', 'murder_board', 'anxiety_radar', 'oracle_memo'],
-  enterprise: ['privileged_search', 'murder_board', 'anxiety_radar', 'oracle_memo', 'byok_management'],
+  enterprise: [
+    'privileged_search',
+    'murder_board',
+    'anxiety_radar',
+    'oracle_memo',
+    'byok_management',
+  ],
 };
 
 // ─── Token Minting ──────────────────────────────────────────────────
@@ -91,7 +99,9 @@ export async function mintSEUToken(request: MintTokenRequest): Promise<SEUToken>
     revoked: false,
   };
 
-  console.log(`[S.E.U.] Minted token ${token.tokenId} for firm ${token.firmId} | TTL: ${ttl / 1000}s`);
+  console.log(
+    `[S.E.U.] Minted token ${token.tokenId} for firm ${token.firmId} | TTL: ${ttl / 1000}s`,
+  );
 
   return token;
 }

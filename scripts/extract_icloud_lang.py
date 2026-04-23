@@ -9,10 +9,10 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-import langextract as lx
-from dotenv import load_dotenv
-from rag_engine.memory_service import SequentialMemoryService
-from shared.config import settings
+import langextract as lx  # noqa: E402
+from dotenv import load_dotenv  # noqa: E402
+from rag_engine.memory_service import SequentialMemoryService  # noqa: E402
+from shared.config import settings  # noqa: E402
 
 load_dotenv(override=True)
 

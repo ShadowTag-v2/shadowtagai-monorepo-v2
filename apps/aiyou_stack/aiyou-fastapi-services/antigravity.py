@@ -154,7 +154,7 @@ async def main():
                 try:
                     if a.process:
                         a.process.terminate()
-                except:
+                except Exception:
                     pass
             break
 

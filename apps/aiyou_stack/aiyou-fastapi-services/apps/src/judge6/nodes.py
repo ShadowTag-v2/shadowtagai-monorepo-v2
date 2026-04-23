@@ -29,7 +29,7 @@ from .state import (
 
 # Import swarm voter for n-autoresearch/Kosmos/BioAgents2 integration
 try:
-    from agents.autoresearch2 import SwarmVoter, VoteDecision, swarm_vote
+    from agents.autoresearch2 import SwarmVoter, VoteDecision, swarm_vote  # noqa: F401
 
     SWARM_AVAILABLE = True
 except ImportError:

@@ -27,15 +27,15 @@ logger = get_logger(__name__)
 settings = get_settings()
 
 
-def get_subscription_service(db: AsyncSession = Depends(get_db)) -> SubscriptionService:
+def get_subscription_service(db: AsyncSession = Depends(get_db)) -> SubscriptionService:  # noqa: B008
     """Dependency to get SubscriptionService instance."""
     return SubscriptionService(db)
 
 
 @router.get("/my-subscription", response_model=SubscriptionResponse)
 async def get_my_subscription(
-    current_user: User = Depends(get_current_active_user),
-    service: SubscriptionService = Depends(get_subscription_service),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    service: SubscriptionService = Depends(get_subscription_service),  # noqa: B008
 ) -> Subscription:
     """Get current user's subscription
 
@@ -54,8 +54,8 @@ async def get_my_subscription(
 
 @router.get("/usage", response_model=UsageResponse)
 async def get_usage(
-    current_user: User = Depends(get_current_active_user),
-    service: SubscriptionService = Depends(get_subscription_service),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    service: SubscriptionService = Depends(get_subscription_service),  # noqa: B008
 ) -> UsageResponse:
     """Get current usage statistics
 
@@ -88,8 +88,8 @@ async def get_usage(
 @router.post("/upgrade", response_model=SubscriptionResponse)
 async def upgrade_subscription(
     upgrade_data: SubscriptionUpgradeRequest,
-    current_user: User = Depends(get_current_active_user),
-    service: SubscriptionService = Depends(get_subscription_service),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    service: SubscriptionService = Depends(get_subscription_service),  # noqa: B008
 ) -> Subscription:
     """Upgrade subscription to higher tier
 
@@ -144,8 +144,8 @@ async def upgrade_subscription(
 
 @router.post("/cancel", status_code=status.HTTP_200_OK)
 async def cancel_subscription(
-    current_user: User = Depends(get_current_active_user),
-    service: SubscriptionService = Depends(get_subscription_service),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    service: SubscriptionService = Depends(get_subscription_service),  # noqa: B008
 ) -> dict:
     """Cancel subscription
 

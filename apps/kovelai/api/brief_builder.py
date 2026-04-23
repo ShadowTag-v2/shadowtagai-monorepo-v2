@@ -17,7 +17,6 @@ Firestore: brief_exports collection (with 30-day GDPR TTL).
 from __future__ import annotations
 
 import hashlib
-import io
 from datetime import datetime, timedelta, UTC
 
 from pydantic import BaseModel, Field

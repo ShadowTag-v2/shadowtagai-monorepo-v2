@@ -266,12 +266,12 @@ class DomainKnowledgeBase:
                 continue
 
             # Check if concept matches source
-            if mapping.source_concept_id == concept_id:
+            if mapping.source_concept_id == concept_id:  # noqa: SIM102
                 if source_domain is None or mapping.source_domain == source_domain:
                     results.append(mapping)
 
             # Check if concept matches target
-            if mapping.target_concept_id == concept_id:
+            if mapping.target_concept_id == concept_id:  # noqa: SIM102
                 if source_domain is None or mapping.target_domain == source_domain:
                     # Reverse the mapping
                     results.append(

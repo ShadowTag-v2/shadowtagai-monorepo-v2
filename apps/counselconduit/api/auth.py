@@ -68,25 +68,25 @@ def verify_firebase_token(id_token: str) -> dict[str, Any]:
         return decoded
     except auth.RevokedIdTokenError:
         logger.warning("Revoked Firebase token presented")
-        raise HTTPException(
+        raise HTTPException(  # noqa: B904
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token has been revoked. Please re-authenticate.",
         )
     except auth.InvalidIdTokenError as e:
         logger.warning("Invalid Firebase token: %s", e)
-        raise HTTPException(
+        raise HTTPException(  # noqa: B904
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid authentication token.",
         )
     except auth.ExpiredIdTokenError:
         logger.warning("Expired Firebase token")
-        raise HTTPException(
+        raise HTTPException(  # noqa: B904
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token has expired. Please re-authenticate.",
         )
     except Exception as e:
         logger.error("Firebase auth error: %s", e)
-        raise HTTPException(
+        raise HTTPException(  # noqa: B904
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Authentication service error.",
         )

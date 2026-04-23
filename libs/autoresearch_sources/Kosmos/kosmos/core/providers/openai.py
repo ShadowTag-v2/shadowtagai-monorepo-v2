@@ -155,7 +155,7 @@ class OpenAIProvider(LLMProvider):
 
         except Exception as e:
             logger.error(f"Failed to initialize OpenAI client: {e}")
-            raise ProviderAPIError("openai", f"Failed to initialize: {e}", raw_error=e)
+            raise ProviderAPIError("openai", f"Failed to initialize: {e}", raw_error=e)  # noqa: B904
 
     def generate(
         self,
@@ -291,7 +291,7 @@ class OpenAIProvider(LLMProvider):
 
         except Exception as e:
             logger.error(f"OpenAI generation failed: {e}")
-            raise ProviderAPIError("openai", f"Generation failed: {e}", raw_error=e)
+            raise ProviderAPIError("openai", f"Generation failed: {e}", raw_error=e)  # noqa: B904
 
     @property
     def async_client(self) -> "AsyncOpenAI":
@@ -380,7 +380,7 @@ class OpenAIProvider(LLMProvider):
 
         except Exception as e:
             logger.error(f"Async OpenAI API error: {e}")
-            raise ProviderAPIError("openai", f"Async generation failed: {e}", raw_error=e)
+            raise ProviderAPIError("openai", f"Async generation failed: {e}", raw_error=e)  # noqa: B904
 
     def generate_with_messages(
         self, messages: list[Message], max_tokens: int = 4096, temperature: float = 0.7, **kwargs
@@ -454,7 +454,7 @@ class OpenAIProvider(LLMProvider):
 
         except Exception as e:
             logger.error(f"OpenAI multi-turn generation failed: {e}")
-            raise ProviderAPIError("openai", f"Multi-turn generation failed: {e}", raw_error=e)
+            raise ProviderAPIError("openai", f"Multi-turn generation failed: {e}", raw_error=e)  # noqa: B904
 
     def generate_structured(
         self,
@@ -527,7 +527,7 @@ class OpenAIProvider(LLMProvider):
                     )
 
                 # JSON parse errors are NOT recoverable - retrying won't help
-                raise ProviderAPIError(
+                raise ProviderAPIError(  # noqa: B904
                     "openai", f"Invalid JSON response: {e.message}", raw_error=e, recoverable=False
                 )
 
@@ -544,7 +544,7 @@ class OpenAIProvider(LLMProvider):
                 )
 
             logger.error(f"Structured generation failed: {e}")
-            raise ProviderAPIError("openai", f"Structured generation failed: {e}", raw_error=e)
+            raise ProviderAPIError("openai", f"Structured generation failed: {e}", raw_error=e)  # noqa: B904
 
     def get_model_info(self) -> dict[str, Any]:
         """

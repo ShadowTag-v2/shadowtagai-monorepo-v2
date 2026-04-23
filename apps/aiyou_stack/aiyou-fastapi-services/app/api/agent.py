@@ -22,7 +22,7 @@ router = APIRouter()
 @router.post("/query", response_model=AgentQueryResponse)
 async def query_with_memory(
     request: AgentQueryRequest,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Query Claude with memory context."""
     conversation_service = ConversationService(db)
@@ -123,7 +123,7 @@ async def query_with_memory(
 @router.post("/stream")
 async def stream_with_memory(
     request: AgentQueryRequest,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Streaming query with memory context."""
     conversation_service = ConversationService(db)

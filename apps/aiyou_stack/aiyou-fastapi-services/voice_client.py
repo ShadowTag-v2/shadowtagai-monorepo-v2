@@ -25,7 +25,7 @@ except ImportError:
     console = None
 
 try:
-    import keyboard
+    import keyboard  # noqa: F401
 
     KEYBOARD_AVAILABLE = True
 except ImportError:

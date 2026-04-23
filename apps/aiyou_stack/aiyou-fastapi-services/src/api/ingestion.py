@@ -251,7 +251,7 @@ async def get_ingestion_status(
 async def get_ingested_items(
     tier: int | None = Query(None, ge=1, le=3, description="Filter by tier (1/2/3)"),
     source: str | None = Query(None, description="Filter by source prefix (e.g. 'reddit')"),
-    since: datetime | None = Query(
+    since: datetime | None = Query(  # noqa: B008
         None,
         description="Only items ingested after this UTC timestamp",
     ),

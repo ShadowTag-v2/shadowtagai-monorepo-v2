@@ -131,7 +131,7 @@ def main():
             try:
                 size_mb = float(asset["size"]) / (1024 * 1024)
                 size_str = f"{size_mb:.1f}MB" if size_mb > 1 else f"{int(asset['size']) // 1024}KB"
-            except:
+            except Exception:
                 size_str = "?"
 
             md_content += f"- [{asset['name']}]({asset['link']}) `({size_str})`\n"
