@@ -53,6 +53,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 5. **Prompt Repetition (arXiv 2512.14982):** Applies ONLY to non-reasoning model tiers (flash, lite, mini) to boost accuracy 1–8%. Do NOT apply to thinking/extended-thinking models.
 6. **daScript MCP Reference:** The 29-tool MCP server in the daScript repository is the gold-standard reference architecture for compiler-backed tools. Use it as a blueprint for routing tools.
 7. **Lighthouse-CI:** Use Lighthouse-CI for budget assertions in CI pipelines.
+8. **V10 Epistemic Airgap:** Corporate monorepo lives in `./external_repos/corp-monorepo/` (gitignored + AI-excluded). DLP Circuit Breaker prohibits passing proprietary identifiers into public search. Supply chain protection prevents blind `pip install` of internal package names. Skill: `.agents/skills/epistemic-airgap/SKILL.md`.
 
 ## Open Infrastructure Blockers
 
