@@ -27,10 +27,10 @@ repos:
     rev: v0.15.11
     hooks:
       - id: ruff
-        args: [--fix, --select, "E9,F63,F7,F82", --ignore, "F821"]
-        exclude: '^(tools/|third_party/|libs/autoresearch_sources/)'
+        args: [--fix]
+        exclude: '^(tools/|third_party/|libs/|reference_architectures/|external_repos/|clones/|archive/|packages/|docs/bundles/)'
       - id: ruff-format
-        exclude: '^(tools/|third_party/|libs/autoresearch_sources/)'
+        exclude: '^(tools/|third_party/|libs/|reference_architectures/|external_repos/|clones/|archive/|packages/|docs/bundles/)'
 
   # Vulture — dead code detection (Rich Hickey Doctrine)
   - repo: local

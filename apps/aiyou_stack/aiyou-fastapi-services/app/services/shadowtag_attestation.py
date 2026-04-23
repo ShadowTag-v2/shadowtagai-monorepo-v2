@@ -327,15 +327,15 @@ class ShadowTagClient:
             return False, AttestationStatus.INVALID
 
         # Verify higher-level proofs
-        if attestation.level >= AttestationLevel.L2_WITNESSED:
+        if attestation.level >= AttestationLevel.L2_WITNESSED:  # noqa: SIM102
             if not attestation.witness_signatures:
                 return False, AttestationStatus.INVALID
 
-        if attestation.level >= AttestationLevel.L3_NOTARIZED:
+        if attestation.level >= AttestationLevel.L3_NOTARIZED:  # noqa: SIM102
             if not attestation.notary_signature:
                 return False, AttestationStatus.INVALID
 
-        if attestation.level >= AttestationLevel.L4_ANCHORED:
+        if attestation.level >= AttestationLevel.L4_ANCHORED:  # noqa: SIM102
             if not attestation.blockchain_tx_id:
                 return False, AttestationStatus.INVALID
 

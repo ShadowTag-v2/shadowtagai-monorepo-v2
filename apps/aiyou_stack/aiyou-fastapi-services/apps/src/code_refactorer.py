@@ -217,7 +217,7 @@ async def analyze_code_tool(code: str, language: str | None = None) -> dict[str,
                 )
 
     # Check for missing docstrings (Python-specific)
-    if (language == "python" or not language) and ("def " in code or "class " in code):
+    if (language == "python" or not language) and ("def " in code or "class " in code):  # noqa: SIM102
         if '"""' not in code and "'''" not in code:
             issues.append(
                 {

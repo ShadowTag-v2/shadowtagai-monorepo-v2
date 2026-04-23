@@ -58,7 +58,7 @@ async def run_ingestion_pipeline(request: RunIngestionRequest):
 
     except Exception as e:
         logger.error(f"Error running ingestion pipeline: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/metrics", response_model=IngestionMetrics)
@@ -87,7 +87,7 @@ async def get_compliance_report():
 
     except Exception as e:
         logger.error(f"Error fetching compliance report: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/sources")

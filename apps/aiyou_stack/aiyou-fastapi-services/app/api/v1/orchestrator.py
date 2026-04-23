@@ -29,4 +29,4 @@ async def run_orchestrator(task: TaskRequest):
             "trace_id": "simulated-trace-id",  # TODO: integrate real tracing
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e

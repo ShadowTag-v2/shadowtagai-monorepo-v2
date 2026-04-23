@@ -238,7 +238,7 @@ class KineticActionParser:
         # Split into sentences for context extraction
         sentences = self._split_sentences(text)
 
-        for i, sentence in enumerate(sentences):
+        for _i, sentence in enumerate(sentences):
             offset = text.find(sentence)
 
             # Layer 1: Performative verbs (highest priority)

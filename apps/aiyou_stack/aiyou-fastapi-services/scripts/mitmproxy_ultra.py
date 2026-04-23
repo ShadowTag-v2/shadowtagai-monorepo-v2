@@ -55,7 +55,7 @@ class KeyHealth:
         """Check if key is currently usable"""
         if self.rate_limited_until and datetime.now() < self.rate_limited_until:
             return False
-        if self.consecutive_failures >= 5:  # Temporary blacklist after 5 failures
+        if self.consecutive_failures >= 5:  # Temporary blacklist after 5 failures  # noqa: SIM103
             return False
         return True
 
@@ -723,7 +723,7 @@ class EnhancedKeyRotator:
             flow.request.headers["x-goog-api-key"] = key_health.key
 
         # FEATURE 9: Model fallback (pro → flash)
-        if self.enable_model_fallback and (
+        if self.enable_model_fallback and (  # noqa: SIM102
             "gemini-3.1-flash-lite-preview" in flow.request.path
             or "gemini-pro" in flow.request.path
         ):

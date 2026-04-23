@@ -214,7 +214,7 @@ async def execute_decision(context: DecisionContext):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": str(e), "trace_id": context.trace_id},
-        )
+        ) from e
 
 
 @app.get("/validation")

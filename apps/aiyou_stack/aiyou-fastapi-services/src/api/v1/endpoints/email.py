@@ -101,7 +101,7 @@ def create_flow(
     try:
         return email_service.create_flow(db, flow)
     except InvalidEmailFlow as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @router.get("/flows/{flow_id}", response_model=schemas.EmailFlowResponse)
@@ -131,7 +131,7 @@ def enroll_in_flow(
     try:
         return email_service.enroll_recipient(db, flow_id, recipient_email)
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @router.post("/flows/bulk-enroll", response_model=schemas.BulkEnrollResponse)
@@ -155,11 +155,11 @@ async def send_email(
     try:
         return await email_service.send_email(db, request)
     except TemplateNotFound as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e)) from e
     except EmailProviderError as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to send email: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to send email: {e!s}") from e
 
 
 @router.get("/emails/{email_id}", response_model=schemas.EmailResponse)
@@ -187,7 +187,7 @@ def list_emails(
         try:
             email_status = EmailStatusEnum(status)
         except ValueError:
-            raise HTTPException(status_code=400, detail=f"Invalid status: {status}")
+            raise HTTPException(status_code=400, detail=f"Invalid status: {status}") from None
 
     return repository.EmailRepository.get_emails(db, recipient_id, email_status, skip, limit)
 

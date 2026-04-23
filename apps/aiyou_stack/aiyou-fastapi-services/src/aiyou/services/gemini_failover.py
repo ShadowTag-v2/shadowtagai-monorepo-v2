@@ -166,7 +166,7 @@ class GeminiFailoverClient:
                 logger.info(f"✅ Vertex AI initialized: {self.project_id}/{self.model_name}")
             except Exception as e:
                 logger.error(f"❌ Vertex AI initialization failed: {e}")
-                raise RuntimeError(f"Vertex AI required but failed to initialize: {e}")
+                raise RuntimeError(f"Vertex AI required but failed to initialize: {e}") from e
         else:
             raise RuntimeError("vertexai package not installed - required for Vertex-only mode")
 

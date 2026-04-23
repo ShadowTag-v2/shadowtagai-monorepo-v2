@@ -258,7 +258,7 @@ async def authenticate_asset(
 
     except Exception as e:
         logger.error("authentication_failed", error=str(e), exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Authentication failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Authentication failed: {e!s}") from e
 
 
 @app.post("/verify", response_model=VerificationResponse)
@@ -364,7 +364,7 @@ async def verify_asset(
 
     except Exception as e:
         logger.error("verification_failed", error=str(e), exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Verification failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Verification failed: {e!s}") from e
 
 
 @app.get("/receipt/{asset_id}")

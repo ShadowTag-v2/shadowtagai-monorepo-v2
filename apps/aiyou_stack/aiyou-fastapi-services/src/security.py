@@ -47,7 +47,7 @@ async def get_current_user(
         if email is None:
             raise credentials_exception
     except JWTError:
-        raise credentials_exception
+        raise credentials_exception from None
 
     stmt = select(models.User).where(models.User.email == email)
     result = await db.execute(stmt)
@@ -95,4 +95,4 @@ def verify_zero_trust(token: str = Depends(zero_trust_scheme)) -> GCPServiceAcco
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=f"Zero-Trust Policy Violation: {e!s}",
-        )
+        ) from e

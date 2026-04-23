@@ -26,7 +26,7 @@ class TestSettings:
     def test_required_secret_key(self, monkeypatch):
         """Test SECRET_KEY is required"""
         monkeypatch.delenv("SECRET_KEY", raising=False)
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             # Should fail without secret_key
             Settings(_env_file=None, database_url="sqlite:///test.db")
 

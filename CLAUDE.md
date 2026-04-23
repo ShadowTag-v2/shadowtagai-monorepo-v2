@@ -37,12 +37,30 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 ### counselconduit
 - Path: `apps/counselconduit`
 - Runtime: Cloud Run
-- Status: v3.2.0 LIVE, 30 endpoints
+- Status: v3.2.0 LIVE, 23 modules
 
 ### uphillsnowball
 - Path: `labs/uphillsnowball`
 - Runtime: local Apple Silicon
 - Purpose: R&D only
+
+## Core Technical Truths (DO NOT HALLUCINATE OVERRIDES)
+
+1. **uuid7 Fallback:** Cloud Run container `counselconduit-00015-mmq` uses an old image. We MUST use `try/except ImportError` for `uuid7` resolution between monorepo and container paths.
+2. **.NET Environment:** .NET 11.0 Preview 2 IS CONFIRMED INSTALLED (`v11.0.100-preview.2.26159.112`). Semantic Kernel (net10.0, SK 1.74.0) build-verified.
+3. **Semantic Kernel Process.cs:** `OnExternalEvent` is the CORRECT API for `Microsoft.SemanticKernel.Process.Core v1.21.0-alpha`. Do NOT apply the `OnInputEvent` rename until Process.Core >= v1.30+.
+4. **Skill Fleet:** We maintain 182 cherry-picked community skills inside our local Matrix.
+5. **Prompt Repetition (arXiv 2512.14982):** Applies ONLY to non-reasoning model tiers (flash, lite, mini) to boost accuracy 1–8%. Do NOT apply to thinking/extended-thinking models.
+6. **daScript MCP Reference:** The 29-tool MCP server in the daScript repository is the gold-standard reference architecture for compiler-backed tools. Use it as a blueprint for routing tools.
+7. **Lighthouse-CI:** Use Lighthouse-CI for budget assertions in CI pipelines.
+
+## Open Infrastructure Blockers
+
+- MAGIC_LINK_SECRET needs creation via GCP Secret Manager.
+- Firebase Storage needs console initialization (Rules are currently `deny-all`).
+- `lead-capture-router` requires a `firebase-admin` upgrade to fix protobufjs vulnerabilities.
+- `NotebookLM MCP` CLI needs installation (`uv tool install notebooklm-mcp-cli`).
+- Cloud Run redeploy needed for uuid7 fix (container `counselconduit-00015-mmq`).
 
 ## Guardrails
 

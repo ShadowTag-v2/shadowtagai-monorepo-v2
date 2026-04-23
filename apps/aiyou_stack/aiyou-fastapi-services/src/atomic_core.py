@@ -78,7 +78,7 @@ def initiate_research_omega(query: str, file_store: str | None = None) -> str:
 
         except Exception as e2:
             print(f"❌ Fallback Failed: {e2}")
-            raise e
+            raise e from e2
 
 
 def monitor_and_capture_omega(interaction_id: str) -> str:

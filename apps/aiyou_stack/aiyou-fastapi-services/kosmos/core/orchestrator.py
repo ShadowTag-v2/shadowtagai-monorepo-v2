@@ -283,7 +283,7 @@ Top hypotheses:
             )
             return response.text
         except Exception as e:
-            raise RuntimeError(f"LLM generation failed: {e}")
+            raise RuntimeError(f"LLM generation failed: {e}") from e
 
     def _parse_response(self, response: str) -> tuple[str, str | None, Any | None]:
         """Parse LLM response to extract Thought, Action, Action Input.

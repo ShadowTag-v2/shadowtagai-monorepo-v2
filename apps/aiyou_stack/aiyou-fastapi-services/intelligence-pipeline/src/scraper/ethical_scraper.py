@@ -94,7 +94,7 @@ class EthicalScraper:
 
         try:
             timeout = aiohttp.ClientTimeout(total=30)
-            async with aiohttp.ClientSession(timeout=timeout) as session:
+            async with aiohttp.ClientSession(timeout=timeout) as session:  # noqa: SIM117
                 async with session.get(url, headers=request_headers) as response:
                     # Handle rate limiting
                     if response.status == 429:
@@ -162,7 +162,7 @@ class EthicalScraper:
             parser.set_url(robots_url)
 
             timeout = aiohttp.ClientTimeout(total=10)
-            async with aiohttp.ClientSession(timeout=timeout) as session:
+            async with aiohttp.ClientSession(timeout=timeout) as session:  # noqa: SIM117
                 async with session.get(robots_url) as response:
                     if response.status == 200:
                         robots_txt = await response.text()

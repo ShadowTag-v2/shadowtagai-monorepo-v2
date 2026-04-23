@@ -1,129 +1,143 @@
 ---
 name: cognitive-structural-synthesis
-description: End-to-end workflow for structurally cloning a target website, reverse-engineering its DESIGN.md semantic spec using the Google Design MCP (design.googleapis.com/mcp), and injecting a new product pitch using Stitch MCP and the Google External Cognitive Suite.
+description: End-to-end workflow for structural cloning, utilizing the Google Design MCP for semantic extraction, running Bandit/Lighthouse validations, and injecting a Cognitive Suite product pitch. V3 — MCP-native, Git clone permanently abandoned.
 ---
 
-# Cognitive Structural Synthesis
-
-## When to Use This Skill
-
-1. **Design Archaeology:** When asked to generate a `DESIGN.md` for live owned properties (ShadowTagAI, KovelAI).
-2. **Structural Hijacking:** When cloning a site and replacing branding/content with a new product pitch while preserving JS layouts.
-3. **Brand Color Extraction:** When extracting color palettes from screenshots or existing sites.
-4. **WCAG Auto-Correction:** When auditing and fixing accessibility contrast violations in design tokens.
+# Cognitive Structural Synthesis (V3)
 
 ## Ground Truth: Google Design MCP
 
-The canonical design spec authority is **NOT** a GitHub repository.
-It is the Google Design MCP server at `https://design.googleapis.com/mcp`.
+> **CRITICAL:** The design specification authority is the Google Design MCP server at `https://design.googleapis.com/mcp`.
+> There is NO `google-labs-code/design.md` GitHub repo. There is NO `@google-labs/design-cli` npm package.
+> Phase 0 (Git clone) is **PERMANENTLY ABANDONED**.
 
-### Available Tools (Ground Truth)
+### MCP Server Configuration
 
-| Tool | Purpose |
-|------|---------|
-| `generate_brand_color_scheme` | Generate unified color scheme from hex inputs (neutralKey, primaryKey, secondaryKey, tertiaryKey) |
-| `extract_brand_colors_from_image` | Extract background + accent colors from base64-encoded image |
-| `extract_and_generate_brand_color_scheme` | Combined: extract from image → generate full scheme |
-| `search_icons` | Find Material Design icons by keyword |
-| `icons_instructions` | Get Material Icons/Symbols usage instructions |
-| `search_fonts` | Find fonts by category/language |
-| `describe_font` | Get detailed font family description |
-
-### Usage Pattern
-
-```bash
-# List all available tools
-curl --location 'https://design.googleapis.com/mcp' \
-  --header 'content-type: application/json' \
-  --header 'accept: application/json, text/event-stream' \
-  --data '{ "method": "tools/list", "jsonrpc": "2.0", "id": 1 }'
-
-# Generate color scheme from brand colors
-curl --location 'https://design.googleapis.com/mcp' \
-  --header 'content-type: application/json' \
-  --data '{
-    "method": "tools/call",
-    "jsonrpc": "2.0",
-    "id": 2,
-    "params": {
-      "name": "generate_brand_color_scheme",
-      "arguments": {
-        "neutralKey": "#0a0f1e",
-        "primaryKey": "#c9a96e",
-        "secondaryKey": "#8da3be",
-        "tertiaryKey": "#4caf80"
-      }
-    }
-  }'
+```json
+{
+  "google-design": {
+    "command": "<node_path>",
+    "args": ["<mcp-remote-path>", "https://design.googleapis.com/mcp", "--header", "X-Goog-Api-Key: ${GOOGLE_DESIGN_API_KEY}"]
+  }
+}
 ```
 
-## The Pipeline
+### Available Tools (7 Total)
 
-### Phase 0: Ground Truth Alignment
+| Tool | Input | Output | Purpose |
+|------|-------|--------|---------|
+| `generate_brand_color_scheme` | `{neutralKey, primaryKey, secondaryKey, tertiaryKey}` hex values | Unified color scheme JSON | Generate mathematically consistent brand palette |
+| `extract_brand_colors_from_image` | Base64-encoded image | Array of hex colors | Extract background + accent colors from screenshot |
+| `extract_and_generate_brand_color_scheme` | Base64-encoded image | Full brand color scheme JSON | Combined: extract → generate in one call |
+| `search_icons` | Keywords describing usage/style/shape | Matching Material icons | Find Material Design icons |
+| `icons_instructions` | None | Usage instructions | Get Material Icons/Symbols web integration guide |
+| `search_fonts` | Categories and/or languages | Matching font families | Font discovery |
+| `describe_font` | Font family name | Detailed description | Font metadata, weights, usage instructions |
 
-Before writing any DESIGN.md color tokens, call the Google Design MCP:
-1. Screenshot the target site (use `chrome-devtools-mcp` `take_screenshot`)
-2. Call `extract_and_generate_brand_color_scheme` with the base64 screenshot
-3. Use the returned scheme as the canonical color roles
+---
+
+## The Holy Trinity Pipeline
+
+Three enterprise systems form an immutable validation chain. No code commits without all three passing.
+
+```
+┌─────────────────────┐     ┌──────────────┐     ┌─────────────────┐
+│ Google Design MCP   │────▶│  Bandit       │────▶│  Lighthouse CI  │
+│ (Visual Correctness)│     │  (Security)   │     │  (Performance)  │
+│                     │     │              │     │                 │
+│ • Color math        │     │ • B310 SSRF   │     │ • Perf ≥ 70     │
+│ • WCAG contrast     │     │ • URL schemes  │     │ • A11y ≥ 90     │
+│ • Font validation   │     │ • Injection    │     │ • SEO  ≥ 80     │
+│ • Material icons    │     │ • Secrets      │     │ • BP   ≥ 80     │
+└─────────────────────┘     └──────────────┘     └─────────────────┘
+```
+
+---
+
+## The Pipeline (6 Phases)
 
 ### Phase 1: Structural Scrape
 
 Execute `execute_headless_structural_clone`:
-1. Use Chrome DevTools MCP to navigate to the target URL
-2. Wait for full JS execution (scroll to bottom, lazy-load triggers)
-3. Take a full-page accessibility snapshot (`take_snapshot`)
-4. Capture full-page screenshot for color extraction
-5. Save the DOM structure for geometric analysis
+1. Use Chrome DevTools MCP `navigate_page` to load target URL
+2. Wait for full JS execution — scroll to bottom, trigger lazy-load
+3. `take_snapshot` — full-page accessibility tree
+4. `take_screenshot(fullPage: true)` — pixel-perfect capture for color extraction
+5. `evaluate_script` — extract all computed styles, grid geometry, font stacks
+6. Save DOM structure with element dimensions for geometric constraint mapping
 
-**Fallback:** If Chrome DevTools MCP is not available, use Scrapling:
+**Fallback:** If Chrome DevTools MCP is unavailable:
 ```python
 from scrapling import Fetcher
 page = Fetcher().get(url, headless=True, wait=10)
 ```
 
-### Phase 2: Design Archaeology (The Translation Bridge)
+### Phase 2: Security Gate (Bandit)
 
-Translate scraped hardcoded CSS into semantic DESIGN.md:
+```bash
+/opt/homebrew/bin/python3.14 -m bandit -r ./clone-base --skip B101 -ll
+```
 
-1. **Extract Raw Tokens:** Parse CSS custom properties, hex codes, font-family declarations, spacing values
-2. **Map to Semantic Roles:**
-   - `primary` = main accent / CTA color
-   - `neutral` = canvas / background color
-   - `secondary` = supporting accent
-   - `tertiary` = status/signal color
-   - `error` = error states
-3. **Generate DESIGN.md:** Using Stitch MCP `create_design_system` or `update_design_system`, create a design system that maps to these roles
-4. **Font Resolution:** Use Google Design MCP `describe_font` to get canonical font metadata
+- URL fetching logic must pass B310 audit
+- Apply `# nosec B310` ONLY to intentional scraper targets with validated URL construction
+- Any unresolved Medium+ findings **block** Phase 3
 
-### Phase 3: WCAG Auto-Correction
+### Phase 3: Design Archaeology via Google Design MCP
 
-1. Extract all text-on-background color pairs from the DESIGN.md
+Transform scraped CSS into semantic DESIGN.md using the MCP tools:
+
+1. **Color Extraction:** Call `extract_and_generate_brand_color_scheme` with the fullPage screenshot (base64)
+2. **Role Mapping:** Map the MCP response to semantic roles:
+   - `primary` → main accent / CTA color
+   - `neutral` → canvas / background color  
+   - `secondary` → supporting accent
+   - `tertiary` → status/signal color
+   - `error` → error states (derive from warm hue)
+3. **Font Resolution:** Call `describe_font` for each font-family found in computed styles
+4. **Icon Discovery:** Call `search_icons` for any icon elements found in the DOM
+5. **Output:** Generate `.stitch/DESIGN.md` with strictly compliant tokens (Tokens = Roles)
+
+### Phase 4: MCP-Driven WCAG Auto-Correction
+
+1. Extract all text-on-background color pairs from the generated DESIGN.md
 2. Calculate contrast ratios (WCAG AA = 4.5:1, AAA = 7:1)
 3. For any failing pair:
-   - Lighten text or darken background by minimum delta to hit 4.5:1
-   - Preserve hue and saturation, adjust only lightness
-   - Update the DESIGN.md frontmatter with corrected hex values
-4. Run Lighthouse accessibility audit via `chrome-devtools-mcp` `lighthouse_audit`
+   - Adjust lightness by minimum delta to hit 4.5:1
+   - Preserve hue and saturation
+   - Re-validate via `generate_brand_color_scheme` (pass corrected hex values)
+4. Run `chrome-devtools-mcp` `lighthouse_audit` to confirm accessibility score ≥ 0.9
 
-### Phase 4: Hollow & Inject (Cognitive Suite)
+### Phase 5: Hollow & Inject (Cognitive Suite)
 
-For structural hijacking (replacing branding while preserving layout):
+Trigger `orchestrate_cognitive_injection`:
 
 1. **Geometric Constraint Mapping:**
-   - Measure all `<img>` and `<video>` element dimensions from the snapshot
-   - Count character limits per text container
+   - Measure all `<img>` and `<video>` element dimensions from Phase 1 snapshot
+   - Count character limits per text container (width ÷ avg char width)
    - Map grid column/row ratios
 2. **Content Generation (Constrained):**
-   - **Copy:** Use Google AI Mode / Deep Research to generate market copy segmented to exact character limits
-   - **Imagery:** Use `generate_image` tool with exact pixel dimensions matching placeholder aspect ratios
-   - **Video:** Reference Veo 3.1 specs from `.stitch/kovelai-hero-video-spec.md` for hero media constraints
-3. **Color Mutation:** Change DESIGN.md color roles to new brand, then apply via Stitch MCP `apply_design_system`
+   - **Copy:** Use Google AI Mode / Deep Research — segmented to exact character limits
+   - **Imagery:** Use `generate_image` tool with exact pixel dimensions from layout
+   - **Video:** Reference Veo 3.1 specs for hero media constraints
+3. **Color Mutation:** Replace DESIGN.md color roles with new brand colors, then apply via Stitch MCP `apply_design_system`
+4. **All generated assets MUST inherit the color palette validated by Google Design MCP in Phase 4**
 
-### Phase 5: Assembly
+### Phase 6: Assembly & Lighthouse Gate
 
-1. Use Stitch MCP `edit_screens` to replace content in generated screens
-2. Export final code via Stitch MCP `get_screen` (fetch HTML/CSS)
-3. Validate structure preserved by comparing DOM tree depth/breadth
+1. Use Stitch MCP `edit_screens` to replace content
+2. Export final code via Stitch MCP `get_screen`
+3. Run Lighthouse CI validation:
+   ```bash
+   lhci autorun
+   ```
+4. **Gate criteria (from `.lighthouserc.json`):**
+   - Performance ≥ 70 (warn)
+   - Accessibility ≥ 90 (error — hard gate)
+   - Best Practices ≥ 80 (warn)
+   - SEO ≥ 80 (warn)
+5. **Only commit to staging if all gates pass**
+
+---
 
 ## Tool Schemas
 
@@ -141,7 +155,7 @@ For structural hijacking (replacing branding while preserving layout):
     },
     "required": ["target_url"]
   },
-  "implementation": "Uses chrome-devtools-mcp navigate_page → take_snapshot → take_screenshot (fullPage: true) → evaluate_script (extract computed styles)"
+  "implementation": "chrome-devtools-mcp: navigate_page → take_snapshot → take_screenshot(fullPage) → evaluate_script(extract computed styles)"
 }
 ```
 
@@ -150,19 +164,21 @@ For structural hijacking (replacing branding while preserving layout):
 ```json
 {
   "name": "orchestrate_cognitive_injection",
-  "description": "Interfaces with Google Design MCP + Stitch MCP to generate multimedia assets constrained to fit a cloned HTML shell's aspect ratios and character limits.",
+  "description": "Chains Google Design MCP + Stitch MCP to generate multimedia assets constrained to fit a cloned HTML shell's geometry.",
   "parameters": {
     "type": "object",
     "properties": {
-      "target_directory": {"type": "string", "description": "Path to the cloned data."},
-      "new_product_pitch": {"type": "string", "description": "The concept for the new product to inject."},
-      "design_md_path": {"type": "string", "description": "Path to the semantic DESIGN.md blueprint."}
+      "target_directory": {"type": "string"},
+      "new_product_pitch": {"type": "string"},
+      "design_md_path": {"type": "string"}
     },
     "required": ["target_directory", "new_product_pitch"]
   },
   "implementation": "Google Design MCP (color scheme) → Stitch MCP (screen generation) → generate_image (constrained assets)"
 }
 ```
+
+---
 
 ## Owned Properties (Mission A Targets)
 
@@ -173,9 +189,11 @@ For structural hijacking (replacing branding while preserving layout):
 
 ## Anti-Patterns (FORBIDDEN)
 
-- ❌ Generating CSS from memory — ALWAYS scrape first
-- ❌ Using `google-labs-code/design.md` GitHub repo (does not exist as public repo — use `design.googleapis.com/mcp`)
-- ❌ Generating images without geometric constraints from the source layout
-- ❌ Generating copy without character-count limits from the source containers
+- ❌ `git clone` of any `design.md` or `design-cli` repository (does NOT exist)
+- ❌ `npx @google-labs/design-cli` or any local CLI (does NOT exist)
+- ❌ Generating CSS from memory — ALWAYS scrape first, then validate via MCP
+- ❌ Generating images without geometric constraints from source layout
+- ❌ Generating copy without character-count limits from source containers
 - ❌ Skipping WCAG contrast validation before Assembly phase
-- ❌ Using `npm install -g @google-labs/design-cli` (does not exist — use the Google Design MCP endpoint)
+- ❌ Committing without Lighthouse gate passing
+- ❌ Using `search_web` for design tokens (use `google-design` MCP)

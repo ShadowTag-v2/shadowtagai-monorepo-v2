@@ -112,7 +112,7 @@ async def execute_code(
         raise HTTPException(
             status_code=500,
             detail=f"Code execution failed: {e!s}",
-        )
+        ) from e
 
 
 @router.get("/sandbox/stats", response_model=SandboxStatsResponse)

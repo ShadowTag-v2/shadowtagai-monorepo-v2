@@ -70,6 +70,20 @@
         "HOME": "/Users/pikeymickey"
       }
     },
+    "google-design": {
+      "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
+      "args": [
+        "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/mcp-remote/dist/proxy.js",
+        "https://design.googleapis.com/mcp",
+        "--header",
+        "X-Goog-Api-Key: ${GOOGLE_DESIGN_API_KEY}"
+      ],
+      "env": {
+        "GOOGLE_DESIGN_API_KEY": "${GOOGLE_DESIGN_API_KEY}",
+        "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
+        "HOME": "/Users/pikeymickey"
+      }
+    },
     "github": {
       "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
       "args": [

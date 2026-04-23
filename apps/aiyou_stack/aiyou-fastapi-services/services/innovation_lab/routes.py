@@ -102,7 +102,7 @@ async def generate_ideas(request: InnovationRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error generating ideas: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/prototype", response_model=PrototypeDesign, tags=["Innovation"])
@@ -133,7 +133,7 @@ async def design_prototype(request: PrototypeRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error designing prototype: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/evaluate", response_model=TechEvaluationResponse, tags=["Innovation"])
@@ -163,7 +163,7 @@ async def evaluate_technology(request: TechEvaluationRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error evaluating technology: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/experiment", tags=["Innovation"])
@@ -234,7 +234,7 @@ async def design_experiment(hypothesis: str, variables: list[str], success_crite
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error designing experiment: {e!s}",
-        )
+        ) from e
 
 
 @router.get("/trends", tags=["Innovation"])
@@ -307,4 +307,4 @@ async def get_tech_trends(domain: str = "general", limit: int = 10):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error fetching trends: {e!s}",
-        )
+        ) from e

@@ -67,7 +67,7 @@ async def render_rtf_template(template: RTFTemplate):
     try:
         return renderer.render_rtf(template)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}") from e
 
 
 @router.post("/tag", response_model=PromptTemplateResponse, summary="Render T-A-G template")
@@ -79,7 +79,7 @@ async def render_tag_template(template: TAGTemplate):
     try:
         return renderer.render_tag(template)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}") from e
 
 
 @router.post("/bab", response_model=PromptTemplateResponse, summary="Render B-A-B template")
@@ -91,7 +91,7 @@ async def render_bab_template(template: BABTemplate):
     try:
         return renderer.render_bab(template)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}") from e
 
 
 @router.post("/care", response_model=PromptTemplateResponse, summary="Render C-A-R-E template")
@@ -103,7 +103,7 @@ async def render_care_template(template: CARETemplate):
     try:
         return renderer.render_care(template)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}") from e
 
 
 @router.post("/rise", response_model=PromptTemplateResponse, summary="Render R-I-S-E template")
@@ -115,7 +115,7 @@ async def render_rise_template(template: RISETemplate):
     try:
         return renderer.render_rise(template)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}") from e
 
 
 @router.get("/examples/{template_type}", summary="Get example for specific template")

@@ -3,7 +3,7 @@ import yaml
 
 class PnklnCostEstimator:
     def __init__(self, path="pnkln_config/pricing.yaml"):
-        self.tiers = yaml.safe_load(open(path))["pricing_tiers"]
+        self.tiers = yaml.safe_load(open(path))["pricing_tiers"]  # noqa: SIM115
         self.tiers.sort(
             key=lambda t: t["max_requests"] if t["max_requests"] is not None else 10**18,
         )

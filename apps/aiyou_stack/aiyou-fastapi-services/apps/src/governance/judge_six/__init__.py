@@ -13,7 +13,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import date
 from enum import Enum
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional, Set  # noqa: UP035
 
 from vertexai.generative_models import HarmBlockThreshold, HarmCategory, SafetySetting
 

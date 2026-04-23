@@ -121,7 +121,7 @@ class ParticleSwarm:
             fitness = fitness_fn(particle.position)
 
             # Update personal best
-            if particle.update_personal_best(fitness):
+            if particle.update_personal_best(fitness):  # noqa: SIM102
                 # Check if this is new global best
                 if fitness < self.global_best_fitness:
                     self.global_best = particle.position.copy()
@@ -180,7 +180,7 @@ class ParticleSwarm:
         # Update particles with evaluated fitness
         improved = False
         for particle, fitness in zip(self.particles, fitnesses, strict=False):
-            if particle.update_personal_best(fitness):
+            if particle.update_personal_best(fitness):  # noqa: SIM102
                 if fitness < self.global_best_fitness:
                     self.global_best = particle.position.copy()
                     self.global_best_fitness = fitness

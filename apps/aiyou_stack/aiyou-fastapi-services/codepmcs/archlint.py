@@ -45,7 +45,7 @@ class ArchLint:
                     for pattern, message in FORBIDDEN_PATTERNS.items():
                         if pattern in line:
                             # EXCEPTIONS LOGIC
-                            if pattern == "import torch":
+                            if pattern == "import torch":  # noqa: SIM102
                                 # Allow torch in tinytorch/steel components only (the 'containment zone')
                                 if "tinytorch" in filepath or "/steel/" in filepath:
                                     continue

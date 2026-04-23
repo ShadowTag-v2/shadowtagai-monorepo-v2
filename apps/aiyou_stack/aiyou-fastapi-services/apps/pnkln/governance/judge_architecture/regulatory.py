@@ -118,13 +118,13 @@ class RegulatoryComplianceEngine:
         remediation = []
 
         # Risk classification check
-        if "ai model" in decision.description.lower():
+        if "ai model" in decision.description.lower():  # noqa: SIM102
             if decision.risk_level == RiskLevel.HIGH:
                 gaps.append("High-risk AI system requires conformity assessment")
                 remediation.append("Conduct EU AI Act risk assessment and documentation")
 
         # Transparency requirements
-        if "recommender" in decision.description.lower():
+        if "recommender" in decision.description.lower():  # noqa: SIM102
             if "explainability" not in decision.description.lower():
                 gaps.append("AI system lacks transparency documentation")
                 remediation.append("Add 'Why this?' explainability UI (Recital 47)")
@@ -146,13 +146,13 @@ class RegulatoryComplianceEngine:
         remediation = []
 
         # Systemic risk assessment
-        if "recommender" in decision.description.lower():
+        if "recommender" in decision.description.lower():  # noqa: SIM102
             if "risk assessment" not in decision.description.lower():
                 gaps.append("Missing DSA systemic risk assessment")
                 remediation.append("Conduct annual systemic risk assessment (Art. 34)")
 
         # Recommender explainability
-        if "recommender" in decision.description.lower():
+        if "recommender" in decision.description.lower():  # noqa: SIM102
             if "why this" not in decision.description.lower():
                 gaps.append("Missing recommender explainability ('Why this content?')")
                 remediation.append("Implement 'Why this?' UI (Art. 27, 90-day deadline)")

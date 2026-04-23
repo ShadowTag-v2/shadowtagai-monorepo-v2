@@ -71,4 +71,4 @@ async def ingest_document(workspace_id: str = Path(...), file: UploadFile = File
 
     except Exception as e:
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e

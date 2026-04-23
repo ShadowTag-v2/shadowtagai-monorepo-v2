@@ -53,7 +53,7 @@ async def query_agent(request: QueryRequest):
 
     except Exception as e:
         logger.error(f"Error querying agent: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/models")

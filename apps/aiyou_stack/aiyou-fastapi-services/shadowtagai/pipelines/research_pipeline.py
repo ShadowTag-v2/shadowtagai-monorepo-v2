@@ -157,13 +157,13 @@ class MultiSourceResearchPipeline:
         source_names = []
 
         # Build tasks for each recommended source
-        if ResearchSourceType.DRIVE in intent.recommended_sources:
+        if ResearchSourceType.DRIVE in intent.recommended_sources:  # noqa: SIM102
             if self.tool_availability.get("drive_search"):
                 source_tasks.append(self._search_drive(intent.extracted_topic))
                 source_names.append("drive")
                 result.sources_queried.append("drive")
 
-        if ResearchSourceType.GMAIL in intent.recommended_sources:
+        if ResearchSourceType.GMAIL in intent.recommended_sources:  # noqa: SIM102
             if self.tool_availability.get("gmail_search"):
                 source_tasks.append(self._search_gmail(intent.extracted_topic))
                 source_names.append("gmail")

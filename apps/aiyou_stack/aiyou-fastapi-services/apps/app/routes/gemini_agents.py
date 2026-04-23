@@ -109,7 +109,7 @@ async def classify_with_debate(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Debate classification failed: {e!s}",
-        )
+        ) from e
 
 
 @router.post(
@@ -207,7 +207,7 @@ async def single_agent_proposal(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Agent proposal failed: {e!s}",
-        )
+        ) from e
 
 
 @router.get(

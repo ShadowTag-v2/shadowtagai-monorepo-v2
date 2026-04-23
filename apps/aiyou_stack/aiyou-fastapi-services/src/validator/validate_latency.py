@@ -157,7 +157,7 @@ class LatencyValidator:
 
         for coro in asyncio.as_completed(tasks):
             await coro
-            completed += 1
+            completed += 1  # noqa: SIM113
 
             if completed % report_interval == 0:
                 logger.info(

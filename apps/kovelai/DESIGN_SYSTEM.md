@@ -1,175 +1,130 @@
-# KovelAI Design System
-> Version 1.0 | Status: CANONICAL | Legal-Tech Precision Aesthetic
+# KovelAI — DESIGN_SYSTEM.md
+## Creative North Star: "The Sovereign Lens"
 
-## Brand Philosophy
-**Structured Precision** — not creative fluidity. Every visual decision must signal order, security, and the ability to process massive amounts of privileged legal data instantly. The aesthetic is the interior of a digital vault inside a white-shoe law firm.
-
----
-
-## Color Palette
-
-### Core Tokens
-| Token | Hex | RGB | Usage |
-|-------|-----|-----|-------|
-| `--navy` | `#0a0f1e` | `10, 15, 30` | Primary background, hero void |
-| `--navy-mid` | `#131c31` | `19, 28, 49` | Card surfaces, elevated layers |
-| `--navy-light` | `#1e2a3a` | `30, 42, 58` | Borders, dividers, slate layer |
-| `--gold` | `#c9a96e` | `201, 169, 110` | Primary accent, CTA, nodes |
-| `--gold-dim` | `rgba(201,169,110,0.15)` | — | Borders, glass panels |
-| `--gold-glow` | `rgba(201,169,110,0.35)` | — | Box shadows, halos |
-| `--warm-white` | `#f5ede0` | `245, 237, 224` | Body text, on-dark headings |
-| `--slate` | `#8da3be` | `141, 163, 190` | Secondary text, labels |
-| `--danger` | `#e05252` | — | Error states only |
-| `--success` | `#4caf80` | — | Confirmation states only |
-
-### Gradient Recipes
-```css
-/* Hero CTA button */
-background: linear-gradient(135deg, #c9a96e 0%, #a07840 100%);
-
-/* Gold text shimmer */
-background: linear-gradient(135deg, #c9a96e, #f5ede0 60%, #c9a96e);
--webkit-background-clip: text; -webkit-text-fill-color: transparent;
-
-/* Card glass */
-background: rgba(19, 28, 49, 0.7);
-backdrop-filter: blur(24px);
-border: 1px solid rgba(201, 169, 110, 0.15);
-```
+> Extracted from Stitch MCP project `8471866363933916169` (KovelAI — Legal AI Platform)
+> Design Theme: Sovereign Lens | Color Variant: FIDELITY | Device: DESKTOP
+> Last synced: 2026-04-22
 
 ---
 
-## Typography
+## Identity
 
-| Role | Family | Weight | Size | Tracking |
-|------|--------|--------|------|----------|
-| Headline | Inter | 800 | `clamp(1.75rem, 3.5vw + 0.5rem, 4.5rem)` | `-0.04em` |
-| Sub-headline | Inter | 600 | `1.5rem – 2rem` | `-0.02em` |
-| Body | Inter | 400 | `0.9rem – 1rem` | `0` |
-| Label / Eyebrow | Inter | 700 | `0.65rem – 0.75rem` | `+0.2em` |
-| Code | system mono | 400 | `0.8rem` | `0` |
-
-```html
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet" media="print" onload="this.media='all'" />
-```
-
----
-
-## Spacing Scale (rem)
-`0.25 · 0.5 · 0.75 · 1 · 1.5 · 2 · 3 · 4 · 6 · 8 · 12`
-
----
-
-## Border Radius
-| Component | Value |
-|-----------|-------|
-| Button | `0.5rem` (8px) |
-| Card | `1rem – 1.25rem` |
-| Badge / Pill | `999px` |
-| Input | `0.5rem` |
-
----
-
-## Shadows
-```css
-/* Card glow */
-box-shadow: 0 0 40px rgba(201, 169, 110, 0.06), 0 8px 32px rgba(0, 0, 0, 0.4);
-
-/* CTA button hover */
-box-shadow: 0 4px 20px rgba(201, 169, 110, 0.35);
-
-/* Focus ring */
-outline: 2px solid rgba(201, 169, 110, 0.6);
-outline-offset: 2px;
-```
-
----
-
-## Motion & Animation
 | Property | Value |
 |----------|-------|
-| Duration base | `200ms` |
-| Duration emphasis | `400ms` |
-| Duration hero | `8s loop` |
-| Easing standard | `cubic-bezier(0.4, 0, 0.2, 1)` |
-| Easing decelerate | `cubic-bezier(0, 0, 0.2, 1)` |
-
-```css
-/* Standard interactive transition */
-transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-
-/* Hover lift */
-transform: translateY(-2px);
-```
-**Rule:** No bouncy easing. No spring physics. Precision motion only — every animation serves information, not delight.
+| Project | KovelAI — Legal AI Platform |
+| Stitch ID | `8471866363933916169` |
+| Color Mode | DARK |
+| Headline Font | Inter |
+| Body Font | Inter |
+| Label Font | Inter |
+| Roundness | ROUND_FOUR |
+| Spacing Scale | 3 |
+| Color Variant | FIDELITY |
 
 ---
 
-## Hero Background Spec
-→ See `.stitch/kovelai-hero-video-spec.md` for the complete Veo 3.1 generation spec.
+## Color Tokens
+
+### Core Palette
+
+| Role | Hex | Usage |
+|------|-----|-------|
+| `primary` | `#fffffd` | Main accent, high-contrast text |
+| `primary_container` | `#00ffd1` | CTA backgrounds, hero elements |
+| `primary_fixed` | `#15ffd1` | Fixed primary declarations |
+| `primary_fixed_dim` | `#00e0b7` | Reduced fixed primary |
+| `secondary` | `#c3c0ff` | Supporting accent (indigo) |
+| `secondary_container` | `#3626ce` | Secondary containers |
+| `tertiary` | `#ffffff` | Warm accent |
+| `tertiary_container` | `#e9ddff` | Tertiary containers (violet) |
+| `error` | `#ffb4ab` | Error states |
+| `error_container` | `#93000a` | Error containers |
+
+### Surface Hierarchy
+
+| Role | Hex | Usage |
+|------|-----|-------|
+| `surface` | `#0f131f` | Base canvas / void |
+| `surface_bright` | `#353946` | Elevated surfaces |
+| `surface_container` | `#1b1f2c` | Primary containers |
+| `surface_container_high` | `#262a37` | Interactive cards |
+| `surface_container_highest` | `#313442` | Modals, overlays |
+| `surface_container_low` | `#171b28` | Large content blocks |
+| `surface_container_lowest` | `#0a0e1a` | Deepest background |
+| `surface_dim` | `#0f131f` | Dimmed surfaces |
+| `surface_variant` | `#313442` | Variant containers |
+| `surface_tint` | `#00e0b7` | Tint overlay |
+
+### Text / On-Surface
+
+| Role | Hex |
+|------|-----|
+| `on_background` | `#dfe2f3` |
+| `on_surface` | `#dfe2f3` |
+| `on_surface_variant` | `#b9cbc3` |
+| `on_primary` | `#00382c` |
+| `on_primary_container` | `#00725c` |
+| `on_secondary` | `#1d00a5` |
+| `on_tertiary` | `#3c0090` |
+| `on_error` | `#690005` |
+
+### Outline
+
+| Role | Hex |
+|------|-----|
+| `outline` | `#83958d` |
+| `outline_variant` | `#3a4a44` |
+
+### Override Colors
+
+| Role | Hex |
+|------|-----|
+| Override Primary | `#00FFD1` |
+| Override Secondary | `#4F46E5` |
+| Override Tertiary | `#7000FF` |
+| Override Neutral | `#0A0E1A` |
 
 ---
 
-## Component Library
+## Design Rules
 
-### Primary Button
-```html
-<button class="btn-primary">Schedule Demo</button>
-```
-```css
-.btn-primary {
-  padding: 0.75rem 2rem;
-  background: linear-gradient(135deg, #c9a96e 0%, #a07840 100%);
-  color: #0a0f1e;
-  font-weight: 700;
-  font-size: 0.9rem;
-  border-radius: 0.5rem;
-  letter-spacing: 0.04em;
-  border: none;
-  cursor: pointer;
-  transition: opacity 0.2s, transform 0.2s;
-}
-.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-```
+### The "No-Line" Rule
+To maintain a premium, bespoke feel, **1px solid borders are strictly prohibited for sectioning.** Structural boundaries must be defined through:
+- **Background Shifts:** `surface_container_low` (#171B28) against `surface` (#0F131F)
+- **Negative Space:** Generous gutters from spacing scale 3
+- **Tonal Transitions:** Subtle shifts in the navy spectrum
 
-### Glass Card
-```css
-.card-glass {
-  background: rgba(19, 28, 49, 0.7);
-  border: 1px solid rgba(201, 169, 110, 0.15);
-  border-radius: 1rem;
-  backdrop-filter: blur(24px);
-  box-shadow: 0 0 40px rgba(201, 169, 110, 0.06),
-              0 8px 32px rgba(0,0,0,0.4);
-}
-```
+### Glass & Gradient Rule
+- **Sovereign Gradient:** Linear gradient `primary_fixed` (#15FFD1) → `secondary_container` (#3626CE)
+- **Glassmorphism:** `surface` at 60-80% opacity, `backdrop-filter: blur(24px)`
+- **Ghost Border:** `outline_variant` (#3A4A44) at **15% opacity** — felt, not seen
 
-### Gold Eyebrow Label
-```css
-.label-eyebrow {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #c9a96e;
-}
-```
+### Surface Philosophy
+Treat the UI as a physical stack of semi-translucent materials:
+1. **Base Layer:** `surface_container_lowest` (#0A0E1A) — deep background/void
+2. **Middle Layer:** `surface_container_low` (#171B28) — primary workspace areas
+3. **Top Layer:** `surface_container_highest` (#313442) — interactive cards, floating elements
+
+### Ambient Shadows
+- For floating elements: `0px 24px 48px -12px` with 10% opacity of `on_secondary_fixed` (#0F0069)
+- Teal glows: `primary_container` (#00FFD1) with 20-40px blur at 10% opacity behind AI components
+
+### Typography Rules
+- Display/Headlines: Inter Bold, -0.02em letter-spacing, 3.5rem display-lg
+- Body: Inter, 0.875rem body-md, line-height 1.6
+- Secondary metadata: `on_surface_variant` (#B9CBC3)
+- Labels: Inter label-md, `font-feature-settings: "tnum"` for numerical alignment
+
+### Components
+- **Primary Button:** Sovereign Gradient (primary_fixed → secondary_fixed_dim), `on_primary_fixed` text
+- **Secondary (Ghost):** No background, ghost border, `primary_fixed` text
+- **Input Fields:** `surface_container_high` background, no border, ghost border on focus
+- **Glass Navigation:** Fixed sidebar with glassmorphism, 2px vertical `primary_container` light bar for active state
+- **AI Insight Chips:** `tertiary_container` background with subtle indigo pulse animation
 
 ---
 
-## Accessibility
-- All text on `--navy` / `--navy-mid`: min contrast ratio ≥ 4.5:1 (WCAG AA)
-- Focus states: gold outline, 2px offset
-- Interactive elements: min 44×44px tap target
-- `prefers-reduced-motion`: disable all GPU transforms, keep opacity fades only
-
----
-
-## Anti-Patterns (FORBIDDEN)
-- ❌ Bright white backgrounds
-- ❌ Consumer blue/purple gradients
-- ❌ Bouncy/spring animations
-- ❌ Generic sans-serif fallbacks (must load Inter)
-- ❌ Decorative elements that don't encode data meaning
-- ❌ More than 2 accent colors per section
+## MCP Validation Source
+- **Google Design MCP:** `https://design.googleapis.com/mcp`
+- Tool: `generate_brand_color_scheme` with primary=#00FFD1, secondary=#4F46E5, tertiary=#7000FF, neutral=#0A0E1A
+- All color tokens mathematically derived from FIDELITY variant

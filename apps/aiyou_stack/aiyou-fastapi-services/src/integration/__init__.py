@@ -9,7 +9,7 @@ This is the bridge between:
 """
 
 import asyncio
-from typing import Any, Dict, List
+from typing import Any, Dict, List  # noqa: UP035
 
 from pnkln.core.judge_six_pipeline import JudgeSixKernel
 

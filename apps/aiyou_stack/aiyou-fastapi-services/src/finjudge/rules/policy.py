@@ -165,7 +165,7 @@ class PolicyEngine:
         for item in evidence:
             if "trade_size_usd" in item.data:
                 trade_size = item.data["trade_size_usd"]
-                if trade_size > policy["threshold"]:
+                if trade_size > policy["threshold"]:  # noqa: SIM102
                     # Check if approval documented
                     if not item.data.get("senior_approval"):
                         return (

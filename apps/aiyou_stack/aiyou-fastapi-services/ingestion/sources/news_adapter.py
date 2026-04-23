@@ -182,7 +182,7 @@ class NewsAdapter(SourceAdapter):
                             continue
 
                         # Filter by query keywords if provided
-                        if queries:
+                        if queries:  # noqa: SIM102
                             if not self._matches_queries(item, queries):
                                 continue
 

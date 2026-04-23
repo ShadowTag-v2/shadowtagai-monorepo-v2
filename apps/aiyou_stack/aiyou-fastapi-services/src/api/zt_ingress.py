@@ -23,7 +23,7 @@ def verify_zero_trust(token: str) -> dict:
             raise ValueError("Audience constraint failure.")
         return decoded
     except Exception:
-        raise HTTPException(status_code=403, detail="Zero-Trust Boundary Enforced.")
+        raise HTTPException(status_code=403, detail="Zero-Trust Boundary Enforced.") from None
 
 
 @router.post("/query")

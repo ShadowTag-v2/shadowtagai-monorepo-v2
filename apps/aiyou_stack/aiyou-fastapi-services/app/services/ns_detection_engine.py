@@ -439,7 +439,7 @@ class NSDetectionEngine:
                         )
 
         # Hive API for images/video
-        if media_data and self.config.hive_api_enabled:
+        if media_data and self.config.hive_api_enabled:  # noqa: SIM102
             if content_type in [ContentType.IMAGE, ContentType.MIXED_MEDIA]:
                 hive_result = await self.hive_client.moderate_image(media_data)
                 if hive_result.get("enabled"):

@@ -37,7 +37,7 @@ class PromptTemplate:
                 template_name=self.name,
                 missing_variable=str(e),
             )
-            raise ValueError(f"Missing required variable: {e}")
+            raise ValueError(f"Missing required variable: {e}") from e
 
     def to_dict(self) -> dict[str, Any]:
         """Convert template to dictionary."""

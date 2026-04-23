@@ -96,7 +96,7 @@ async def encode_audio(
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/decode", response_model=DecodeResponse)
@@ -158,7 +158,7 @@ async def decode_audio(
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 def _create_audio_receipt(

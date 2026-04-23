@@ -80,7 +80,7 @@ async def record_billing_event(request: UsageRequest):
         }
     except Exception as e:
         logger.error(f"Failed to record billing event: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/invoices", response_model=InvoiceResponse)
@@ -108,7 +108,7 @@ async def create_invoice(request: InvoiceRequest):
         return InvoiceResponse(invoice_id=invoice_id, amount_usd=round(bill, 2), status="created")
     except Exception as e:
         logger.error(f"Failed to create invoice: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/invoices/{client_id}")
@@ -143,7 +143,7 @@ async def list_invoices(client_id: str, limit: int = 10):
         }
     except Exception as e:
         logger.error(f"Failed to list invoices: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/webhooks/stripe")

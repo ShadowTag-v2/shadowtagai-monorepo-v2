@@ -126,7 +126,7 @@ class GPUPool:
         # Filter GPUs that can fit the model
         candidates = []
         for gpu_id, gpu_info in self.gpus.items():
-            if gpu_info.available_memory_gb >= required_memory_gb:
+            if gpu_info.available_memory_gb >= required_memory_gb:  # noqa: SIM102
                 if len(gpu_info.models_loaded) < self.max_models_per_gpu:
                     candidates.append((gpu_id, gpu_info))
 

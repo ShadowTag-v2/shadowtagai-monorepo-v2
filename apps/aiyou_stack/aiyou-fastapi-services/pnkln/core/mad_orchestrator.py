@@ -480,7 +480,7 @@ class MADOrchestrator:
             all_positions.extend(round_result.positions)
 
             # Check for early consensus
-            if round_num >= self.min_rounds:
+            if round_num >= self.min_rounds:  # noqa: SIM102
                 if round_result.consensus_score >= self.consensus_threshold:
                     break  # Consensus reached
 

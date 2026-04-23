@@ -103,7 +103,7 @@ class AuthService:
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not validate credentials",
                 headers={"WWW-Authenticate": "Bearer"},
-            )
+            ) from None
 
     @staticmethod
     def authenticate_user(db: Session, email: str, password: str) -> User | None:

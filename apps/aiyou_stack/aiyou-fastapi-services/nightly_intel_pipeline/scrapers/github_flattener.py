@@ -86,7 +86,7 @@ class GitHubFlattener:
                             stars=repo.stargazers_count,
                             topic=topic,
                         )
-                    count += 1
+                    count += 1  # noqa: SIM113
 
             except GithubException as e:
                 logger.error("search_error", topic=topic, error=str(e))
@@ -330,7 +330,7 @@ class GitHubFlattener:
                             updated=repo.updated_at,
                             topic=topic,
                         )
-                    count += 1
+                    count += 1  # noqa: SIM113
 
             except GithubException as e:
                 logger.error("recent_search_error", topic=topic, error=str(e))

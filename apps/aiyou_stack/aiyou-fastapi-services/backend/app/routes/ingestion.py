@@ -49,7 +49,7 @@ async def create_source(
         )
         return source
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to create source: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to create source: {e!s}") from e
 
 
 @router.get("/sources", response_model=list[DataSource])
@@ -98,7 +98,7 @@ async def start_job(
         )
         return IngestionJobStatusResponse(job=job, message=f"Job {job.job_id} started successfully")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to start job: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to start job: {e!s}") from e
 
 
 @router.get("/jobs/{job_id}", response_model=IngestionJobStatusResponse)
@@ -124,7 +124,7 @@ async def list_jobs(
 # Metrics Endpoints
 
 
-@router.get("/metrics/latest", response_model=Optional[IngestionMetrics])
+@router.get("/metrics/latest", response_model=Optional[IngestionMetrics])  # noqa: UP045
 async def get_latest_metrics(service: IngestionService = Depends(get_ingestion_service)):
     """Get the latest ingestion metrics."""
     return service.get_latest_metrics()
@@ -171,7 +171,7 @@ async def check_source_compliance(
         check = service.check_compliance(source_id)
         return check
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e)) from e
 
 
 @router.get("/compliance/summary")

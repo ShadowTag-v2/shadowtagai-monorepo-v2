@@ -135,9 +135,9 @@ async def assess_endpoint(
         return result
 
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Assessment failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Assessment failed: {e!s}") from e
 
 
 @router.post(
@@ -175,9 +175,9 @@ async def quick_assess(
         )
 
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Assessment failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Assessment failed: {e!s}") from e
 
 
 @router.post(
@@ -212,9 +212,9 @@ async def batch_assess(
     except HTTPException:
         raise
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Batch assessment failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Batch assessment failed: {e!s}") from e
 
 
 @router.get(
@@ -253,7 +253,7 @@ async def get_report(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Report generation failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Report generation failed: {e!s}") from e
 
 
 @router.post(
@@ -296,7 +296,7 @@ async def certify_content(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Certification failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Certification failed: {e!s}") from e
 
 
 @router.get(
@@ -316,7 +316,7 @@ async def get_usage(
         return usage
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get usage: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to get usage: {e!s}") from e
 
 
 @router.get(
@@ -343,7 +343,7 @@ async def get_stats(
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get stats: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to get stats: {e!s}") from e
 
 
 @router.get(

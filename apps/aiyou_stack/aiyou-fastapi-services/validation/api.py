@@ -174,7 +174,7 @@ async def validate_item(
 
     except Exception as e:
         logger.error("validation_error", item_id=request.item.id, error=str(e), exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Validation failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Validation failed: {e!s}") from e
 
 
 @app.post("/validate/batch", response_model=BatchValidationResponse)

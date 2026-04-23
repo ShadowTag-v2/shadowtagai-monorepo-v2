@@ -267,7 +267,7 @@ class DigitalMall:
             if category and product.category != category:
                 continue
 
-            if compliance_frameworks:
+            if compliance_frameworks:  # noqa: SIM102
                 if not all(fw in product.compliance_frameworks for fw in compliance_frameworks):
                     continue
 

@@ -73,4 +73,4 @@ class HFClientPool:
                 return str(data)
         except Exception as e:
             logger.error(f"HF error on {ep.name}: {e}")
-            raise HTTPException(500, f"HF error on {ep.name}: {e}")
+            raise HTTPException(500, f"HF error on {ep.name}: {e}") from e

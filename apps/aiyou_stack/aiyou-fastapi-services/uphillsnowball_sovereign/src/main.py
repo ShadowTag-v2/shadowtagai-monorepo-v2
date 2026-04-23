@@ -99,13 +99,13 @@ async def rag_query(req: RAGQueryRequest):
         raise HTTPException(
             status_code=503,
             detail=f"RAG pipeline not available: {e}",
-        )
+        ) from e
     except Exception as e:
         logger.error("RAG query failed: %s", e)
         raise HTTPException(
             status_code=500,
             detail=f"RAG query error: {e}",
-        )
+        ) from e
 
 
 @app.get("/rag/stats")

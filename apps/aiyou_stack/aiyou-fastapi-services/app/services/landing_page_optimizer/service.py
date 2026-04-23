@@ -106,7 +106,7 @@ Provide concrete examples and prioritize recommendations by expected impact on c
             raise AgentException(
                 message=f"Failed to optimize landing page: {e!s}",
                 details={"request": request.model_dump()},
-            )
+            ) from e
 
     async def generate_headlines(
         self,
@@ -149,7 +149,7 @@ Format your response as a JSON array of objects with fields: text, reasoning, ta
             ]
         except Exception as e:
             logger.exception(f"Error generating headlines: {e!s}")
-            raise AgentException(f"Failed to generate headlines: {e!s}")
+            raise AgentException(f"Failed to generate headlines: {e!s}") from e
 
     async def generate_ctas(self, request: GenerateCTARequest) -> list[CTAVariation]:
         """Generate CTA variations
@@ -190,7 +190,7 @@ Format your response as a JSON array of objects with fields: text, color_suggest
             ]
         except Exception as e:
             logger.exception(f"Error generating CTAs: {e!s}")
-            raise AgentException(f"Failed to generate CTAs: {e!s}")
+            raise AgentException(f"Failed to generate CTAs: {e!s}") from e
 
     async def generate_social_proof(
         self,
@@ -232,7 +232,7 @@ Format your response as a JSON array of objects with fields: type, content, plac
             ]
         except Exception as e:
             logger.exception(f"Error generating social proof: {e!s}")
-            raise AgentException(f"Failed to generate social proof: {e!s}")
+            raise AgentException(f"Failed to generate social proof: {e!s}") from e
 
     def _build_optimization_prompt(self, request: OptimizePageRequest) -> str:
         """Build the optimization prompt from request parameters"""
@@ -343,7 +343,7 @@ Focus on providing specific, actionable recommendations that can be implemented 
 
         except Exception as e:
             logger.exception(f"Error querying Claude: {e!s}")
-            raise AgentException(f"Failed to query Claude Agent: {e!s}")
+            raise AgentException(f"Failed to query Claude Agent: {e!s}") from e
 
     def _parse_optimization_response(
         self,
@@ -456,4 +456,4 @@ Focus on providing specific, actionable recommendations that can be implemented 
             return data
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse JSON: {e!s}\nContent: {json_str[:500]}")
-            raise ValueError(f"Invalid JSON in response: {e!s}")
+            raise ValueError(f"Invalid JSON in response: {e!s}") from e

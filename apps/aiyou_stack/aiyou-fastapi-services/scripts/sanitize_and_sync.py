@@ -75,7 +75,7 @@ def sanitize_content(content: str) -> str:
                 email = match.group(0)
                 if any(allowed in email.lower() for allowed in ALLOWED_EMAILS):
                     return email
-                return replacement
+                return replacement  # noqa: B023
 
             content = re.sub(pattern, email_replacer, content, flags=re.IGNORECASE)
         else:

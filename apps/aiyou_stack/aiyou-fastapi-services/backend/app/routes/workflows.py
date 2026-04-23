@@ -56,9 +56,9 @@ async def start_workflow(
         )
 
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e)) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to start workflow: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to start workflow: {e!s}") from e
 
 
 @router.post("/input", response_model=ProvideInputResponse)
@@ -87,9 +87,9 @@ async def provide_input(
         )
 
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to provide input: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to provide input: {e!s}") from e
 
 
 @router.get("/status/{execution_id}", response_model=WorkflowStatusResponse)
