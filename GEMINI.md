@@ -1,10 +1,10 @@
 ---
-version: 10.0
+version: 10.1
 scope: antigravity_local_operator_invariants
 status: LOCKED
 ---
 
-# GEMINI.md — v10.0
+# GEMINI.md — v10.1
 
 <system_directive>
 <workspace_alignment>
@@ -199,17 +199,18 @@ End every runtime response with EXACTLY 22 explicitly selectable actionable prom
 - Upload script: `bash scripts/upload_secrets_to_gcp.sh`
 
 ### Local Development (MCP servers, agent, scripts)
-- `.env` (repo root, gitignored, `chflags uchg` kernel-locked) — for local dev ONLY
-- MCP config uses `${VAR}` references that resolve from environment
-- AI blindfolds: `.aiexclude`, `.geminiignore`, `.clineignore`, `.rooignore` all exclude `.env`
-- Validate: `bash scripts/validate_env.sh`
+- `.env` is **DEPRECATED AND DELETED** (2026-04-22). Do NOT recreate.
+- All secrets fetched from GCP Secret Manager via `source scripts/load_mcp_secrets.sh`
+- MCP config uses `${VAR}` references resolved by the Antigravity platform's native env injection
+- Non-secret project config (project IDs, regions, flags) is embedded in `load_mcp_secrets.sh`
+- Secret Manager secrets: `developer-knowledge-api-key`, `stitch-api-key`, `google-design-api-key`, `gemini-api-key`, `stripe-*`, `KOVEL_ATTESTATION_SECRET`, `MAGIC_LINK_SECRET`
 
 ### Auth Chain
-- **MCP servers** authenticate via Google ADC (`~/.config/gcloud/`) + env vars from `.env`
-- **Firebase MCP** uses its own OAuth session (not `.env`)
+- **MCP servers** authenticate via Google ADC (`~/.config/gcloud/`) + platform env injection
+- **Firebase MCP** uses its own OAuth session (`npx firebase-tools login --reauth`)
 - **GitHub** uses SSH keys + GitHub App PEM (`$SHADOWTAG_PEM`)
-- **Stitch MCP** uses `STITCH_API_KEY` from `.env`
-- **Stripe** uses `STRIPE_SECRET_KEY` from Secret Manager (prod) / `.env` (local)
+- **Stitch MCP** uses `STITCH_API_KEY` from Secret Manager
+- **Stripe** uses `STRIPE_SECRET_KEY` from Secret Manager (prod and local)
 
 ### Stripe Live Configuration
 - Account: `acct_1Syh9JEHnWpykeMi` (US, charges+payouts enabled)
@@ -224,9 +225,10 @@ End every runtime response with EXACTLY 22 explicitly selectable actionable prom
 ### NEVER (Absolute Prohibitions)
 - Hardcoded API keys in source files or committed config
 - API keys in logs, chat messages, or frontend code (except `STRIPE_PUBLISHABLE_KEY`)
-- `.env` committed to git (it is gitignored and kernel-locked)
+- Creating, modifying, or recreating `.env` files — **BANNED** (use `scripts/load_mcp_secrets.sh`)
 - Secrets in MCP config inline args (use `${VAR}` references only)
 - Secrets guessed from memory or documentation
+- Using `python-dotenv`, `dotenv`, or any local env file loader in production code
 </secrets_manager_doctrine>
 
 <cor30_security_doctrine>

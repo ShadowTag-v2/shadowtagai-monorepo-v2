@@ -1,4 +1,4 @@
-# RISK_REGISTER — v10.4
+# RISK_REGISTER — v10.5
 
 > Operational risks tracked as part of the sovereign monorepo governance.
 > Reviewed on each version bump. Mitigations are enforced, not advisory.
@@ -247,3 +247,17 @@
 - **Severity:** 🟢 Low
 - **Status:** KNOWN
 - **Description**: `.pre-commit-config.yaml` ruff hook now excludes `tools/`, `third_party/`, `libs/`, `external_repos/`, `clones/`, `archive/`, `packages/`, `docs/bundles/` — but `labs/` (2 errors) is NOT excluded. This causes pre-commit to fail on `labs/` files that have legitimate ruff violations from R&D code. **Action**: Either exclude `labs/` from ruff pre-commit or fix the 2 remaining errors (`SIM105` + `UP035` in `labs/`).
+
+## Risk #74: Node.js 24.x `punycode` DEP0040 Corrupts MCP JSON-RPC Streams
+- **Type**: Infrastructure / MCP
+- **Severity:** 🟠 High
+- **Status:** RESOLVED
+- **Description**: Node.js 24.x emits `(node:PID) [DEP0040] DeprecationWarning: The 'punycode' module...` to stderr. For stdio-transport MCP servers, this warning text corrupts the JSON-RPC message framing, causing parse failures and silent server drops. All 7 Node.js MCP servers were affected (firebase, chrome-devtools, sequential-thinking, google-developer-knowledge, StitchMCP, google-design, github).
+- **Resolution**: Added `NODE_OPTIONS: "--no-deprecation"` to all Node.js MCP server `env` blocks in both `~/.antigravity/mcp/config.json` (platform truth) and `antigravity-mcp-config.json` (repo truth). Verified all 5 core MCP servers respond after Antigravity restart. Cline extension confirmed NOT installed (not a contributing factor).
+
+## Risk #75: `.env` File Deprecated — GCP Secret Manager Is Sole Source
+- **Type**: Security / Secrets Management
+- **Severity:** 🟡 Medium
+- **Status:** RESOLVED
+- **Description**: Legacy `.env` file (repo root, kernel-locked with `chflags uchg`) contained 15 vars: project config (non-secret) + 1 BANNED `GITHUB_PERSONAL_ACCESS_TOKEN`. The actual MCP API keys were never in `.env` — they were resolved by the Antigravity platform's native env injection. `.env` was a vestigial artifact providing false sense of security.
+- **Resolution**: (2026-04-22) Kernel lock removed (`chflags nouchg`). File deleted. `scripts/load_mcp_secrets.sh` created — fetches 9 secrets from GCP Secret Manager + exports 8 non-secret config vars. `google-design-api-key` uploaded to SM (was missing). GEMINI.md v10.1 `secrets_manager_doctrine` updated to ban `.env` creation. All `python-dotenv` / `dotenv` usage banned in production code.
