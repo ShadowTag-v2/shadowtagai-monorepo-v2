@@ -4,5 +4,9 @@
   "scripts": {
     "build": "echo 'Building Monorepo'",
     "deploy": "firebase deploy"
+  },
+  "devDependencies": {
+    "@ast-grep/cli": "^0.42.1",
+    "@biomejs/biome": "^2.4.13"
   }
 }
