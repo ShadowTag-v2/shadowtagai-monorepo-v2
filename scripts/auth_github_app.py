@@ -130,36 +130,49 @@ def get_token(force_refresh: bool = False) -> str:
 
 
 def _update_remote_url(token: str) -> None:
-    """Rewrite the git remote URL with the current token."""
-    try:
-        import subprocess
+    """Rewrite the git remote push URL with the current token.
 
+    Handles both SSH and HTTPS remotes:
+    - SSH (git@github.com:Org/Repo.git) → sets a separate --push URL via HTTPS
+    - HTTPS (https://github.com/...) → rewrites embedded token
+    """
+    import re
+    import subprocess
+
+    try:
         result = subprocess.run(
             ["git", "-C", str(REPO_ROOT), "remote", "get-url", "origin"],
             capture_output=True,
             text=True,
         )
-        if result.returncode == 0:
-            current = result.stdout.strip()
-            # Only rewrite HTTPS remotes
-            if "github.com" in current:
-                import re
+        if result.returncode != 0:
+            return
 
-                new_url = re.sub(
-                    r"https://[^@]*@github\.com/",
+        current = result.stdout.strip()
+        https_token_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
+
+        if current.startswith("git@github.com:"):
+            # SSH remote: preserve SSH for fetch, set HTTPS push URL
+            subprocess.run(
+                ["git", "-C", str(REPO_ROOT), "remote", "set-url", "--push", "origin", https_token_url],
+                capture_output=True,
+            )
+        elif "github.com" in current:
+            # HTTPS remote: rewrite the token in-place
+            new_url = re.sub(
+                r"https://[^@]*@github\.com/",
+                f"https://x-access-token:{token}@github.com/",
+                current,
+            )
+            if new_url == current:
+                new_url = current.replace(
+                    "https://github.com/",
                     f"https://x-access-token:{token}@github.com/",
-                    current,
                 )
-                if new_url == current:
-                    # No existing token in URL — insert one
-                    new_url = current.replace(
-                        "https://github.com/",
-                        f"https://x-access-token:{token}@github.com/",
-                    )
-                subprocess.run(
-                    ["git", "-C", str(REPO_ROOT), "remote", "set-url", "origin", new_url],
-                    capture_output=True,
-                )
+            subprocess.run(
+                ["git", "-C", str(REPO_ROOT), "remote", "set-url", "origin", new_url],
+                capture_output=True,
+            )
     except Exception:
         pass
 

@@ -116,7 +116,9 @@
       "**/deep-archive/**": true,
       "**/.gradle/**": true,
       "**/dist/**": true,
-      "**/.next/**": true
+      "**/.next/**": true,
+      "**/libs/**": true,
+      "**/labs/gemini-cookbook/**": true
     },
     "files.watcherExclude": {
       "**/.git/objects/**": true,
@@ -149,7 +151,9 @@
       "**/.uv-cache/**": true,
       "**/bazel-*/**": true,
       "**/.memory-index.db*": true,
-      "**/events.ndjson": true
+      "**/events.ndjson": true,
+      "**/libs/**": true,
+      "**/labs/gemini-cookbook/**": true
     },
     "python.analysis.exclude": [
       "**/archive",
