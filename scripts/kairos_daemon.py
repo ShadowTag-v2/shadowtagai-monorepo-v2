@@ -38,12 +38,16 @@ SCRIPTS_DIR = REPO_ROOT / "scripts"
 BEADS_DIR = REPO_ROOT / ".beads"
 HEARTBEAT_FILE = BEADS_DIR / "kairos_heartbeat.json"
 
+VAULT_DIR = REPO_ROOT / "vault"
+
 # Task intervals (seconds)
 HEALTH_CHECK_INTERVAL = 300  # 5 minutes
 DREAM_INTERVAL = 86400  # 24 hours
 DEAD_CODE_INTERVAL = 86400  # 24 hours
 LOOP_STEWARD_INTERVAL = 300  # 5 minutes
 STANDUP_INTERVAL = 86400  # 24 hours
+VAULT_INGEST_INTERVAL = 300  # 5 minutes
+QUARANTINE_PURGE_INTERVAL = 3600  # 1 hour
 
 _running = True
 
@@ -87,9 +91,9 @@ def health_check() -> dict:
     lancedb_dir = REPO_ROOT / "data" / "lancedb"
     checks["lancedb"] = "ok" if lancedb_dir.exists() and any(lancedb_dir.iterdir()) else "empty"
 
-    # 4. .env file
-    env_file = REPO_ROOT / ".env"
-    checks["dotenv"] = "ok" if env_file.exists() else "missing"
+    # 4. Vault directory
+    vault_ingest = VAULT_DIR / "ingest"
+    checks["vault"] = "ok" if vault_ingest.exists() else "missing"
 
     # 5. Git status clean
     try:
@@ -213,11 +217,57 @@ def run_standup_report() -> bool:
         return False
 
 
+def run_vault_ingest() -> bool:
+    """Process new files in vault/ingest/ via zero-trust pipeline."""
+    script = SCRIPTS_DIR / "vault" / "zero_trust_pipeline.py"
+    ingest_dir = VAULT_DIR / "ingest"
+    if not script.exists():
+        logger.warning("zero_trust_pipeline.py not found, skipping vault ingest")
+        return False
+    if not ingest_dir.exists():
+        return True  # Nothing to do
+    files = [f for f in ingest_dir.iterdir() if f.is_file() and f.name != ".gitkeep"]
+    if not files:
+        return True  # Nothing to do
+    try:
+        result = subprocess.run(
+            [sys.executable, str(script), "--scan-dir", str(ingest_dir)],
+            capture_output=True,
+            text=True,
+            timeout=120,
+            cwd=str(REPO_ROOT),
+        )
+        logger.info("Vault ingest: %d files, exit=%d", len(files), result.returncode)
+        return result.returncode == 0
+    except subprocess.TimeoutExpired:
+        logger.exception("Vault ingest timed out (120s)")
+        return False
+
+
+def run_quarantine_purge() -> bool:
+    """Delete quarantine files older than 24 hours."""
+    quarantine_dir = VAULT_DIR / "quarantine"
+    if not quarantine_dir.exists():
+        return True
+    import time as _time
+    now = _time.time()
+    purged = 0
+    for path in quarantine_dir.iterdir():
+        if path.is_file() and path.name != ".gitkeep":
+            age_hours = (now - path.stat().st_mtime) / 3600
+            if age_hours > 24:
+                path.unlink()
+                purged += 1
+    if purged > 0:
+        logger.info("Quarantine purge: removed %d stale file(s)", purged)
+    return True
+
+
 def write_heartbeat(status: dict) -> None:
     """Write heartbeat file for monitoring."""
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
     heartbeat = {
-        "timestamp": datetime.datetime.now(datetime.UTC).isoformat(),
+        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),  # noqa: UP017
         "pid": os.getpid(),
         "status": status,
     }
@@ -239,6 +289,8 @@ def main_loop(once: bool = False) -> None:
     last_dead_code = 0.0
     last_steward = 0.0
     last_standup = 0.0
+    last_vault_ingest = 0.0
+    last_quarantine_purge = 0.0
 
     cycle = 0
     while _running:
@@ -275,6 +327,18 @@ def main_loop(once: bool = False) -> None:
             run_standup_report()
             last_standup = now
             status["standup"] = "ran"
+
+        # Vault ingest sweep (every 5 min)
+        if now - last_vault_ingest >= VAULT_INGEST_INTERVAL:
+            run_vault_ingest()
+            last_vault_ingest = now
+            status["vault_ingest"] = "ran"
+
+        # Quarantine purge (every hour)
+        if now - last_quarantine_purge >= QUARANTINE_PURGE_INTERVAL:
+            run_quarantine_purge()
+            last_quarantine_purge = now
+            status["quarantine_purge"] = "ran"
 
         write_heartbeat(status)
 

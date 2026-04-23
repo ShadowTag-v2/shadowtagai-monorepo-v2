@@ -4,10 +4,9 @@ import sys
 import traceback
 
 import google.generativeai as genai
-from dotenv import load_dotenv
 
-# Load env vars (specifically the PROXY and API KEY)
-load_dotenv()
+# NOTE: Environment variables loaded via `source scripts/load_mcp_secrets.sh`
+# or GCP Secret Manager in production. python-dotenv is banned (GEMINI.md §secrets).
 
 
 def run_monkey(mission_id: str, objective: str):
