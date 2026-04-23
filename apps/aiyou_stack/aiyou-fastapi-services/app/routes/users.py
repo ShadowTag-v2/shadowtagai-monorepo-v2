@@ -165,4 +165,4 @@ async def delete_user(
 
 
 # Import at the end to avoid circular imports
-from datetime import datetime
+from datetime import datetime  # noqa: E402

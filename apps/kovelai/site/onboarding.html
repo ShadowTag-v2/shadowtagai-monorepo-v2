@@ -129,8 +129,8 @@
 
   <script>
     let currentStep = 1;
-    let practiceSize = '';
-    function nextStep(n) {
+    let _practiceSize = '';
+    function _nextStep(n) {
       document.getElementById(`step-${currentStep}`).classList.add('hidden');
       document.getElementById(`step-${n}`).classList.remove('hidden');
       document.querySelector(`.step-dot[data-step="${currentStep}"]`).classList.remove('active');
@@ -138,7 +138,7 @@
       document.querySelector(`.step-dot[data-step="${n}"]`).classList.add('active');
       currentStep = n;
     }
-    function prevStep(n) {
+    function _prevStep(n) {
       document.getElementById(`step-${currentStep}`).classList.add('hidden');
       document.getElementById(`step-${n}`).classList.remove('hidden');
       document.querySelector(`.step-dot[data-step="${currentStep}"]`).classList.remove('active');
@@ -146,10 +146,10 @@
       document.querySelector(`.step-dot[data-step="${n}"]`).classList.remove('done');
       currentStep = n;
     }
-    function selectSize(el, size) {
+    function _selectSize(el, size) {
       document.querySelectorAll('.practice-size').forEach(s => s.classList.remove('selected'));
       el.classList.add('selected');
-      practiceSize = size;
+      _practiceSize = size;
     }
   </script>
 </body>

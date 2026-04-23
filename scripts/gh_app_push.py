@@ -41,7 +41,7 @@ subprocess.run(cmd, shell=True, check=True)  # nosec B602 — intentional shell 
 
 subprocess.run("python3 scripts/finish_changes.py", shell=True)  # nosec B602 — intentional shell for git/system ops
 
-try:
+try:  # noqa: SIM105
     subprocess.run("python3 scripts/omega-loopin.py", shell=True, check=True)  # nosec B602 — intentional shell for git/system ops
 except Exception:
     pass

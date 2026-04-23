@@ -15,7 +15,7 @@ def crawl(query, page):
     # Wait for initial load
     try:
         page.wait_for_selector("a", timeout=5000)
-    except:
+    except Exception:
         print("   Warning: Timeout waiting for initial links")
 
     # Scroll loop

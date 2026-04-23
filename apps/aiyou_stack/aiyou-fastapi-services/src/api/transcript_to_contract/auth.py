@@ -18,7 +18,7 @@ security = HTTPBearer()
 
 
 def verify_zero_trust(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
+    credentials: HTTPAuthorizationCredentials = Depends(security),  # noqa: B008
 ) -> GCPServiceIdentity:
     """Enforces the Zero-Trust identity protocol prior to Temporal temporal execution.
     Only allows 'shadowtag-core-run-sa' or 'headless-runner' JWTs inside the Omega-v4 project.

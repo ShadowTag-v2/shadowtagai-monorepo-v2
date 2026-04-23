@@ -31,7 +31,7 @@ async def test_backend_http_server_health():
     finally:
         # Cleanup
         server_task.cancel()
-        try:
+        try:  # noqa: SIM105
             await server_task
         except asyncio.CancelledError:
             pass

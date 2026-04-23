@@ -32,8 +32,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from core.aegaeon import SwarmRouter, SwarmTask, SwarmTier
-from core.rag_evolve import search_corpus  # type: ignore[import]
+from core.aegaeon import SwarmRouter, SwarmTask, SwarmTier  # noqa: E402
+from core.rag_evolve import search_corpus  # type: ignore[import]  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("gemini_agent_swarm")

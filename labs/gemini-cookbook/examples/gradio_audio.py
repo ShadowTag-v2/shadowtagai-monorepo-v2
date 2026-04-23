@@ -238,21 +238,19 @@ def registry(name: str, token: str | None = None, **kwargs):
         raise ValueError(f"{KEY_NAME} environment variable is not set.")
 
     interface = gr.Blocks()
-    with interface:
-        with gr.Tabs():
-            with gr.TabItem("Voice Chat"):
-                gr.HTML(
-                    """
+    with interface, gr.Tabs(), gr.TabItem("Voice Chat"):
+        gr.HTML(
+            """
                     <div style='text-align: left'>
                         <h1>Gemini API Voice Chat</h1>
                     </div>
                     """
-                )
-                gemini_handler = GeminiHandler()
-                with gr.Row():
-                    audio = WebRTC(label="Voice Chat", modality="audio", mode="send-receive")
+        )
+        gemini_handler = GeminiHandler()
+        with gr.Row():
+            audio = WebRTC(label="Voice Chat", modality="audio", mode="send-receive")
 
-                audio.stream(gemini_handler, inputs=[audio], outputs=[audio], time_limit=600, concurrency_limit=10)
+        audio.stream(gemini_handler, inputs=[audio], outputs=[audio], time_limit=600, concurrency_limit=10)
     return interface
 
 

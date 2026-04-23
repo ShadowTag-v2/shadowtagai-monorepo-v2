@@ -127,7 +127,7 @@ class DockerManager:
             logger.info("Docker client initialized successfully")
         except docker.errors.DockerException as e:
             logger.error(f"Failed to initialize Docker client: {e}")
-            raise RuntimeError(f"Docker not available: {e}")
+            raise RuntimeError(f"Docker not available: {e}")  # noqa: B904
 
     async def initialize_pool(self):
         """Pre-warm container pool for faster execution."""
@@ -159,7 +159,7 @@ class DockerManager:
             logger.info(f"Docker image '{self.config.image}' found")
         except docker.errors.ImageNotFound:
             logger.warning(f"Docker image '{self.config.image}' not found")
-            raise RuntimeError(
+            raise RuntimeError(  # noqa: B904
                 f"Docker image '{self.config.image}' not found. "
                 f"Build it with: cd docker/sandbox && docker build -t {self.config.image} ."
             )
@@ -328,7 +328,7 @@ class DockerManager:
 
         async with self._lock:
             for _cid, instance in self._container_pool.items():
-                if instance.status == ContainerStatus.READY:
+                if instance.status == ContainerStatus.READY:  # noqa: SIM102
                     if not self._is_container_healthy(instance):
                         instance.status = ContainerStatus.UNHEALTHY
                         unhealthy.append(instance)
@@ -373,7 +373,7 @@ class DockerManager:
         # Cancel health check task
         if self._health_check_task:
             self._health_check_task.cancel()
-            try:
+            try:  # noqa: SIM105
                 await self._health_check_task
             except asyncio.CancelledError:
                 pass
@@ -415,7 +415,7 @@ class DockerManager:
 
     def __del__(self):
         """Cleanup on deletion."""
-        try:
+        try:  # noqa: SIM105
             self.client.close()
         except Exception:
             pass

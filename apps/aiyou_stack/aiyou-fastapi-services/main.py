@@ -42,7 +42,7 @@ app = FastAPI(
 
 
 @app.post("/users", response_model=UserResponse, status_code=201)
-def create_user(user: UserCreate, db: Session = Depends(get_db)) -> User:
+def create_user(user: UserCreate, db: Session = Depends(get_db)) -> User:  # noqa: B008
     """Create a new user in the database."""
     # Check if the user already exists using SQLAlchemy 2.0 syntax
     stmt = select(User).where(User.email == user.email)
@@ -66,7 +66,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)) -> User:
 
 
 @app.get("/users", response_model=list[UserResponse])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):  # noqa: B008
     """Fetch a list of all users."""
     # Fetch users using SQLAlchemy 2.0 syntax
     stmt = select(User).offset(skip).limit(limit)

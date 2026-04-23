@@ -15,7 +15,7 @@ except ImportError:
 
 INTEL_DIR = os.path.abspath("apps/ShadowTag-v2_ecosystem/recovered_intel")
 # Use physical mapping to the active root
-import pathlib
+import pathlib  # noqa: E402
 
 ROOT_DIR = str(pathlib.Path(__file__).parent.parent.absolute())
 BEADS_DB_PATH = os.path.join(ROOT_DIR, ".beads", "ane_memory_beads.sqlite")
@@ -47,7 +47,7 @@ def process_directory_via_ane(folder_path: str, folder_name: str) -> dict:
     try:
         root_files = os.listdir(folder_path)[:15]  # Top 15 files for context footprint
         payload_data = ",".join(root_files).lower()
-    except:
+    except Exception:
         payload_data = "empty"
 
     # Neural Engine Tensor Code

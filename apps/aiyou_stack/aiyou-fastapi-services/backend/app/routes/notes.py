@@ -25,7 +25,7 @@ def get_storage_service() -> StorageService:
 @router.post("/", response_model=CreateNoteResponse)
 async def create_note(
     request: CreateNoteRequest,
-    storage: StorageService = Depends(get_storage_service),
+    storage: StorageService = Depends(get_storage_service),  # noqa: B008
 ):
     """Create a new note."""
     try:
@@ -42,7 +42,7 @@ async def create_note(
 @router.post("/append", response_model=AppendToNoteResponse)
 async def append_to_note(
     request: AppendToNoteRequest,
-    storage: StorageService = Depends(get_storage_service),
+    storage: StorageService = Depends(get_storage_service),  # noqa: B008
 ):
     """Append content to an existing note."""
     try:
@@ -55,7 +55,7 @@ async def append_to_note(
 
 
 @router.get("/by-title/{title}", response_model=GetNoteResponse)
-async def get_note_by_title(title: str, storage: StorageService = Depends(get_storage_service)):
+async def get_note_by_title(title: str, storage: StorageService = Depends(get_storage_service)):  # noqa: B008
     """Get a note by its title."""
     note = storage.get_note_by_title(title)
     if not note:
@@ -65,7 +65,7 @@ async def get_note_by_title(title: str, storage: StorageService = Depends(get_st
 
 
 @router.get("/{note_id}", response_model=GetNoteResponse)
-async def get_note_by_id(note_id: str, storage: StorageService = Depends(get_storage_service)):
+async def get_note_by_id(note_id: str, storage: StorageService = Depends(get_storage_service)):  # noqa: B008
     """Get a note by its ID."""
     note = storage.get_note_by_id(note_id)
     if not note:
@@ -77,7 +77,7 @@ async def get_note_by_id(note_id: str, storage: StorageService = Depends(get_sto
 @router.get("/", response_model=ListNotesResponse)
 async def list_notes(
     folder: str | None = Query(None, description="Filter by folder"),
-    storage: StorageService = Depends(get_storage_service),
+    storage: StorageService = Depends(get_storage_service),  # noqa: B008
 ):
     """List all notes, optionally filtered by folder."""
     notes = storage.list_notes(folder=folder)
@@ -85,7 +85,7 @@ async def list_notes(
 
 
 @router.delete("/{note_id}")
-async def delete_note(note_id: str, storage: StorageService = Depends(get_storage_service)):
+async def delete_note(note_id: str, storage: StorageService = Depends(get_storage_service)):  # noqa: B008
     """Delete a note."""
     success = storage.delete_note(note_id)
     if not success:

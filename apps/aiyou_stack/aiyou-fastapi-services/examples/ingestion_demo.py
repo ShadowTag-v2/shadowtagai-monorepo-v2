@@ -17,7 +17,7 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 
-from src.ingestion import (
+from src.ingestion import (  # noqa: E402
     DEFAULT_SOURCES,
     BriefingGenerator,
     BriefingVisualizer,

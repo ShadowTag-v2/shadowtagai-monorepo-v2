@@ -249,7 +249,7 @@ async def cmd_status(args):
     try:
         result = subprocess.run(["gh", "auth", "status"], capture_output=True, timeout=5)
         gh_status = "Authenticated" if result.returncode == 0 else "Not authenticated"
-    except:
+    except Exception:
         gh_status = "Not installed"
     print(f"GitHub CLI: {gh_status}")
 
@@ -257,7 +257,7 @@ async def cmd_status(args):
     try:
         result = subprocess.run(["ruff", "--version"], capture_output=True, text=True, timeout=5)
         ruff_version = result.stdout.strip() if result.returncode == 0 else "Not available"
-    except:
+    except Exception:
         ruff_version = "Not installed"
     print(f"Ruff: {ruff_version}")
 

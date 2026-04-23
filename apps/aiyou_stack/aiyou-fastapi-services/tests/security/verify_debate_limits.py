@@ -7,10 +7,10 @@ sys.modules["prometheus_client.make_asgi_app"] = MagicMock()
 sys.modules["torch"] = MagicMock()
 
 # Mock internal app modules that might import heavy stuff
-from enum import StrEnum
-from typing import Any
+from enum import StrEnum  # noqa: E402
+from typing import Any  # noqa: E402
 
-from pydantic import BaseModel
+from pydantic import BaseModel  # noqa: E402
 
 
 class EvolutionStrategy(StrEnum):
@@ -79,9 +79,9 @@ mock_config.settings.max_cost_per_decision = 1.0
 mock_config.settings.log_level = "INFO"
 sys.modules["app.config"] = mock_config
 
-from fastapi.testclient import TestClient
+from fastapi.testclient import TestClient  # noqa: E402
 
-from app.main_ecosystem import app
+from app.main_ecosystem import app  # noqa: E402
 
 client = TestClient(app)
 

@@ -611,7 +611,7 @@ def test_req_test_ci_002_deployment_gates():
         content = config_file.read_text()
 
         # Look for deployment jobs that depend on tests
-        if "deploy" in content.lower():
+        if "deploy" in content.lower():  # noqa: SIM102
             # Check if deployment needs test success
             if "needs:" in content and "test" in content:
                 has_deployment_gate = True

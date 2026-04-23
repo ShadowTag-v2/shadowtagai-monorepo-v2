@@ -77,7 +77,8 @@ export function collectEncryptionEvidence(): EvidenceRecord {
     id: crypto.randomUUID(),
     controlId: 'CC6.3',
     title: 'Encryption at Rest — GCP Native',
-    description: 'Firestore uses AES-256 at rest by default. Secret Manager uses Google-managed encryption keys.',
+    description:
+      'Firestore uses AES-256 at rest by default. Secret Manager uses Google-managed encryption keys.',
     collectedAt: new Date().toISOString(),
     collectedBy: 'automated',
     status: 'PASS',

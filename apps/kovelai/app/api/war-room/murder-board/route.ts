@@ -9,14 +9,10 @@
  * @see WAR_ROOM_ARCHITECTURE.md — Technical design
  */
 
+import crypto from 'node:crypto';
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
+import { createSession, getSession, runFullPipeline } from '@/lib/orchestrator/murder-board';
 import { verifySeuToken } from '@/lib/security/seu_and_stripe';
-import {
-  createSession,
-  getSession,
-  runFullPipeline,
-} from '@/lib/orchestrator/murder-board';
 
 export const runtime = 'edge';
 
@@ -32,12 +28,8 @@ interface MurderBoardRequest {
  */
 export async function POST(req: Request) {
   try {
-    const {
-      transcript,
-      seuToken,
-      clioOAuthToken,
-      contextCacheId,
-    }: MurderBoardRequest = await req.json();
+    const { transcript, seuToken, clioOAuthToken, contextCacheId }: MurderBoardRequest =
+      await req.json();
 
     // 1. Validate S.E.U. token
     const clientIp = req.headers.get('x-forwarded-for') || 'unknown';
@@ -48,14 +40,7 @@ export async function POST(req: Request) {
     const firmId = payload.firmId ?? 'unknown';
 
     // 3. Create pipeline session in Firestore
-    await createSession(
-      sessionId,
-      firmId,
-      transcript,
-      seuToken,
-      clioOAuthToken,
-      contextCacheId,
-    );
+    await createSession(sessionId, firmId, transcript, seuToken, clioOAuthToken, contextCacheId);
 
     // 4. In production, enqueue Stage 1 via Cloud Tasks.
     //    For development, run the full pipeline directly.
@@ -107,19 +92,13 @@ export async function GET(req: Request) {
   const sessionId = url.searchParams.get('sessionId');
 
   if (!sessionId) {
-    return NextResponse.json(
-      { error: 'sessionId parameter required' },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: 'sessionId parameter required' }, { status: 400 });
   }
 
   const session = await getSession(sessionId);
 
   if (!session) {
-    return NextResponse.json(
-      { error: 'Session not found' },
-      { status: 404 },
-    );
+    return NextResponse.json({ error: 'Session not found' }, { status: 404 });
   }
 
   return NextResponse.json({

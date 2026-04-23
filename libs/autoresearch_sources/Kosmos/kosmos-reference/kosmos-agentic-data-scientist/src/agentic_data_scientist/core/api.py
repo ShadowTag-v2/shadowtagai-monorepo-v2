@@ -41,10 +41,10 @@ class SessionConfig:
     """Configuration for an Agentic Data Scientist session."""
 
     agent_type: str = "adk"  # "adk" or "claude_code"
-    mcp_servers: Optional[List[str]] = None
+    mcp_servers: Optional[List[str]] = None  # noqa: UP045
     max_llm_calls: int = 1024
-    session_id: Optional[str] = None
-    working_dir: Optional[str] = None
+    session_id: Optional[str] = None  # noqa: UP045
+    working_dir: Optional[str] = None  # noqa: UP045
     auto_cleanup: bool = True
 
 
@@ -63,10 +63,10 @@ class Result:
 
     session_id: str
     status: str
-    response: Optional[str] = None
-    error: Optional[str] = None
+    response: Optional[str] = None  # noqa: UP045
+    error: Optional[str] = None  # noqa: UP045
     files_created: List[str] = field(default_factory=list)
-    duration: Optional[float] = None
+    duration: Optional[float] = None  # noqa: UP045
     events_count: int = 0
 
 
@@ -94,9 +94,9 @@ class DataScientist:
     def __init__(
         self,
         agent_type: str = "adk",
-        mcp_servers: Optional[List[str]] = None,
-        working_dir: Optional[str] = None,
-        auto_cleanup: Optional[bool] = None,
+        mcp_servers: Optional[List[str]] = None,  # noqa: UP045
+        working_dir: Optional[str] = None,  # noqa: UP045
+        auto_cleanup: Optional[bool] = None,  # noqa: UP045
     ):
         """Initialize Agentic Data Scientist core with configuration."""
         # Generate session ID
@@ -251,7 +251,7 @@ class DataScientist:
 
         return file_info_list
 
-    def prepare_prompt(self, message: str, file_info: Optional[List[FileInfo]] = None) -> str:
+    def prepare_prompt(self, message: str, file_info: Optional[List[FileInfo]] = None) -> str:  # noqa: UP045
         """
         Prepare the prompt with optional file information.
 
@@ -292,10 +292,10 @@ class DataScientist:
     async def run_async(
         self,
         message: str,
-        files: Optional[List[tuple]] = None,
+        files: Optional[List[tuple]] = None,  # noqa: UP045
         stream: bool = False,
-        context: Optional[Dict] = None,
-    ) -> Union[Result, AsyncGenerator[Dict[str, Any], None]]:
+        context: Optional[Dict] = None,  # noqa: UP045
+    ) -> Union[Result, AsyncGenerator[Dict[str, Any], None]]:  # noqa: UP007
         """
         Run agent asynchronously.
 
@@ -385,7 +385,7 @@ class DataScientist:
                 event_count += 1
 
                 # Process event content
-                if hasattr(event, 'author') and hasattr(event, 'content'):
+                if hasattr(event, 'author') and hasattr(event, 'content'):  # noqa: SIM102
                     if event.content and hasattr(event.content, 'parts'):
                         for part in event.content.parts:
                             # Handle text content
@@ -462,7 +462,7 @@ class DataScientist:
             files_created = []
             if self.working_dir.exists():
                 for file_path in self.working_dir.rglob('*'):
-                    if file_path.is_file() and 'user_data' not in file_path.parts:
+                    if file_path.is_file() and 'user_data' not in file_path.parts:  # noqa: SIM102
                         # Exclude hidden directories (starting with .)
                         if not any(part.startswith('.') for part in file_path.parts):
                             relative_path = file_path.relative_to(self.working_dir)
@@ -507,14 +507,13 @@ class DataScientist:
                 event_count += 1
 
                 # Collect text outputs
-                if hasattr(event, 'content') and event.content:
-                    if hasattr(event.content, 'parts'):
-                        for part in event.content.parts:
-                            if hasattr(part, 'text') and part.text:
-                                is_thought = hasattr(part, 'thought') and part.thought is True
-                                author = getattr(event, 'author', 'agent')
-                                prefix = f"[{author}]" if not is_thought else f"[{author} - THINKING]"
-                                responses.append(f"{prefix}: {part.text}")
+                if hasattr(event, 'content') and event.content and hasattr(event.content, 'parts'):
+                    for part in event.content.parts:
+                        if hasattr(part, 'text') and part.text:
+                            is_thought = hasattr(part, 'thought') and part.thought is True
+                            author = getattr(event, 'author', 'agent')
+                            prefix = f"[{author}]" if not is_thought else f"[{author} - THINKING]"
+                            responses.append(f"{prefix}: {part.text}")
 
             # Calculate duration
             duration = (datetime.now() - start_time).total_seconds()
@@ -523,7 +522,7 @@ class DataScientist:
             files_created = []
             if self.working_dir.exists():
                 for file_path in self.working_dir.rglob('*'):
-                    if file_path.is_file() and 'user_data' not in file_path.parts:
+                    if file_path.is_file() and 'user_data' not in file_path.parts:  # noqa: SIM102
                         # Exclude hidden directories (starting with .)
                         if not any(part.startswith('.') for part in file_path.parts):
                             relative_path = file_path.relative_to(self.working_dir)
@@ -547,7 +546,7 @@ class DataScientist:
                 duration=(datetime.now() - start_time).total_seconds(),
             )
 
-    def run(self, message: str, files: Optional[List[tuple]] = None, **kwargs) -> Result:
+    def run(self, message: str, files: Optional[List[tuple]] = None, **kwargs) -> Result:  # noqa: UP045
         """
         Synchronous wrapper for run_async.
 

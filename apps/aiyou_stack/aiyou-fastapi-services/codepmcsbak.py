@@ -68,7 +68,7 @@ class MissionLogger:
             # Filter for failures/blocks
             failures = [h for h in history if h["outcome"] == "BLOCKED"]
             return failures[-limit:]
-        except:
+        except Exception:
             return []
 
     def send_alert(self, target, hazards, risk):
@@ -85,7 +85,7 @@ class MissionLogger:
                 headers={"Content-Type": "application/json"},
             )
             urllib.request.urlopen(req)
-        except:
+        except Exception:
             pass
 
     def log_mission(self, target, hazards, risk, outcome):
@@ -99,7 +99,7 @@ class MissionLogger:
         try:
             with open(self.log_file) as f:
                 h = json.load(f)
-        except:
+        except Exception:
             h = []
         h.append(entry)
         with open(self.log_file, "w") as f:
@@ -192,7 +192,7 @@ class JudgeSixSentinel:
 
         # 1. GHOST WRITER
         if "???" in content:
-            prompt = [l for l in content.split("\n") if "???" in l][0].replace("???", "").strip()
+            prompt = [l for l in content.split("\n") if "???" in l][0].replace("???", "").strip()  # noqa: E741
             content = self.ask_gemini(prompt, content)
             with open(file_path, "w") as f:
                 f.write(content)
@@ -203,7 +203,7 @@ class JudgeSixSentinel:
 
         # 3. MITIGATION (Auto-Scrub)
         if any(h["severity"] == "IV" for h in hazards):
-            content = "\n".join([l for l in content.split("\n") if "print(" not in l])
+            content = "\n".join([l for l in content.split("\n") if "print(" not in l])  # noqa: E741
             with open(file_path, "w") as f:
                 f.write(content)
             risk = 1  # Downgrade risk after scrub
@@ -237,7 +237,7 @@ def get_changed_files():
         # Check staged/modified files
         res = subprocess.check_output(["git", "diff", "--name-only", "HEAD"]).decode().splitlines()
         return [f for f in res if f.endswith(".py")]
-    except:
+    except Exception:
         return glob.glob("*.py")  # Fallback to all
 
 

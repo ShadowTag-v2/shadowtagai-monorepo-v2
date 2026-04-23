@@ -119,7 +119,7 @@ def main() -> None:
     if not args.beads_only:
         hits = query_chroma(query, top_k)
         if hits:
-            for _i, h in enumerate(hits, 1):
+            for _i, h in enumerate(hits, 1):  # noqa: B007
                 pass
         else:
             pass

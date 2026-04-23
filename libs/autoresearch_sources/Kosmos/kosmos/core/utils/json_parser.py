@@ -65,7 +65,7 @@ def parse_json_response(
         return json.loads(text)
     except json.JSONDecodeError:
         if strict:
-            raise JSONParseError(f"JSON decode failed: {text[:100]}...", response_text, attempts)
+            raise JSONParseError(f"JSON decode failed: {text[:100]}...", response_text, attempts)  # noqa: B904
 
     # Strategy 2: Extract from ```json code blocks
     attempts += 1

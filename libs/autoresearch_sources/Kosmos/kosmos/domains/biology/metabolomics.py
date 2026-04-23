@@ -366,7 +366,7 @@ class MetabolomicsAnalyzer:
             return MetaboliteType.SALVAGE_PRECURSOR
 
         # Synthesis products: nucleotides (contain MP, DP, TP)
-        if any(x in compound_name for x in ["MP", "DP", "TP"]):
+        if any(x in compound_name for x in ["MP", "DP", "TP"]):  # noqa: SIM102
             # But exclude salvage-like names
             if not compound_name.endswith(("ine", "osine")):
                 return MetaboliteType.SYNTHESIS_PRODUCT

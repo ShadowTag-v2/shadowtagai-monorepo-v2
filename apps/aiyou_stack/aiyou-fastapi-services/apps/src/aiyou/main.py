@@ -17,7 +17,7 @@ from .config import settings
 from .database import Base, engine
 
 logger = logging.getLogger(__name__)
-from .middleware import (
+from .middleware import (  # noqa: E402
     RateLimitMiddleware,
     RequestValidationMiddleware,
     RevenueGateMiddleware,
@@ -221,10 +221,10 @@ async def internal_error_handler(request: Request, exc):
 
 # Include service routers
 # Include service routers
-from .routers import atomic_chat
-from .routes.cineverse import router as cineverse_router
-from .routes.governance import router as governance_router
-from .routes.ingestion import router as ingestion_router
+from .routers import atomic_chat  # noqa: E402
+from .routes.cineverse import router as cineverse_router  # noqa: E402
+from .routes.governance import router as governance_router  # noqa: E402
+from .routes.ingestion import router as ingestion_router  # noqa: E402
 
 app.include_router(ingestion_router)
 app.include_router(governance_router, tags=["Governance"])

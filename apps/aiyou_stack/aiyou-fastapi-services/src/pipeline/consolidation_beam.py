@@ -21,7 +21,7 @@ except ImportError:
             return f
 
         @staticmethod
-        def Create(l):
+        def Create(l):  # noqa: E741
             return l
 
 

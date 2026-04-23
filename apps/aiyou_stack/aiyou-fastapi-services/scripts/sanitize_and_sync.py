@@ -115,7 +115,7 @@ def process_file(src_path: Path, dst_path: Path) -> bool:
         try:
             with open(src_path, encoding="utf-8", errors="ignore") as f:
                 content = f.read()
-        except:
+        except Exception:
             shutil.copy2(src_path, dst_path)
             return True
 

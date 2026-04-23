@@ -72,7 +72,7 @@ async def test_protected_route_dependency(async_client: AsyncClient):
 
     # Add a temporary test route
     @app.get("/api/v1/test_protected")
-    async def protected_route(user=Depends(get_current_user)):
+    async def protected_route(user=Depends(get_current_user)):  # noqa: B008
         return {"user_email": getattr(user, "email", "unknown")}
 
     # Register & Login to get token

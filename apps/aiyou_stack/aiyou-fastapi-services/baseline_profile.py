@@ -35,7 +35,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(PROJECT_ROOT)
 
 # Import the Judge#6 runtime (adjust import if the module path changes)
-import importlib.util
+import importlib.util  # noqa: E402
 
 # Dynamically load JudgeSixRuntime from the file path (handles hyphenated directory name)
 runtime_path = os.path.join(PROJECT_ROOT, "erik-hancock-llm-memory", "judge6", "runtime", "base.py")
@@ -82,7 +82,7 @@ def main():
         print(f"Iteration {i + 1}/{args.iterations}: {elapsed * 1000:.2f} ms")
 
     # Statistics (ms)
-    lat_ms = [l * 1000 for l in latencies]
+    lat_ms = [l * 1000 for l in latencies]  # noqa: E741
     print("\n=== Summary ===")
     print(f"Mean   : {mean(lat_ms):.2f} ms")
     print(f"Median : {median(lat_ms):.2f} ms")

@@ -13,25 +13,21 @@
  * @see legal-prompts.ts — System prompts for each stage
  */
 
-import { initializeApp, cert, getApps, type App } from 'firebase-admin/app';
-import { getFirestore, type Firestore, FieldValue } from 'firebase-admin/firestore';
-import { google } from '@ai-sdk/google';
 import { anthropic } from '@ai-sdk/anthropic';
+import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
+import { type App, getApps, initializeApp } from 'firebase-admin/app';
+import { FieldValue, type Firestore, getFirestore } from 'firebase-admin/firestore';
+import { draftShadowInvoice, generateHeppnerReceipt, pushToLawyerVault } from '@/lib/clio-vault';
+import { executePrivilegedWebSearch } from '@/lib/intelligence/vertex_search_engine';
 import {
+  BRIEF_BUILDER_PROMPT,
+  CITATION_VALIDATOR_PROMPT,
   INTAKE_EXTRACTION_PROMPT,
   OSINT_QUERY_GENERATOR_PROMPT,
   VERB_AUDITOR_PROMPT,
   WAR_ROOM_ORACLE_PROMPT,
-  CITATION_VALIDATOR_PROMPT,
-  BRIEF_BUILDER_PROMPT,
 } from '@/lib/prompts/legal-prompts';
-import { executePrivilegedWebSearch } from '@/lib/intelligence/vertex_search_engine';
-import {
-  pushToLawyerVault,
-  draftShadowInvoice,
-  generateHeppnerReceipt,
-} from '@/lib/clio-vault';
 
 // ─── Firebase initialization ─────────────────────────────
 let app: App;
@@ -48,7 +44,16 @@ const db: Firestore = getFirestore(app);
 export interface MurderBoardSession {
   sessionId: string;
   firmId: string;
-  status: 'intake' | 'osint' | 'verb_audit' | 'oracle' | 'citations' | 'brief' | 'vault' | 'complete' | 'failed';
+  status:
+    | 'intake'
+    | 'osint'
+    | 'verb_audit'
+    | 'oracle'
+    | 'citations'
+    | 'brief'
+    | 'vault'
+    | 'complete'
+    | 'failed';
   startedAt: FirebaseFirestore.Timestamp;
   completedAt?: FirebaseFirestore.Timestamp;
   transcript: string;
@@ -245,13 +250,16 @@ export async function runStage3VerbAudit(sessionId: string): Promise<void> {
     const verbs: VerbEntry[] = JSON.parse(result.text);
 
     // Write to verb_ledger collection for analytics
-    await db.collection('verb_ledger').doc(sessionId).set({
-      session_id: sessionId,
-      firm_id: session.firmId,
-      timestamp: FieldValue.serverTimestamp(),
-      verbs,
-      causes_of_action_summary: summarizeVerbsByAction(verbs),
-    });
+    await db
+      .collection('verb_ledger')
+      .doc(sessionId)
+      .set({
+        session_id: sessionId,
+        firm_id: session.firmId,
+        timestamp: FieldValue.serverTimestamp(),
+        verbs,
+        causes_of_action_summary: summarizeVerbsByAction(verbs),
+      });
 
     await updateSession(sessionId, {
       verbAudit: verbs,
@@ -400,8 +408,7 @@ ${JSON.stringify(session.intakeData, null, 2)}
  */
 export async function runStage7VaultPush(sessionId: string): Promise<void> {
   const session = await getSession(sessionId);
-  if (!session?.briefContent)
-    throw new Error(`Session ${sessionId} missing brief content`);
+  if (!session?.briefContent) throw new Error(`Session ${sessionId} missing brief content`);
 
   try {
     if (session.clioOAuthToken) {

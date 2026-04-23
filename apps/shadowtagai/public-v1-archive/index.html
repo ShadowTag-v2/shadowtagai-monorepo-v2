@@ -218,10 +218,10 @@
 
         /* Investor Deck highlight */
         .nav-dropdown-highlight {
-            color: var(--primary) !important;
-            font-weight: 700 !important;
+            color: var(--primary);
+            font-weight: 700;
             border-left: 3px solid var(--primary);
-            padding-left: calc(0.75rem - 3px) !important;
+            padding-left: calc(0.75rem - 3px);
         }
 
         /* ===== UNDULATING BACKGROUND ===== */
@@ -375,15 +375,15 @@
         /* Nav CTA button */
         .nav-cta {
             background: linear-gradient(135deg, var(--primary-dim), var(--primary));
-            color: var(--on-primary) !important;
-            padding: 0.5rem 1.25rem !important;
+            color: var(--on-primary);
+            padding: 0.5rem 1.25rem;
             border-radius: 4px;
-            font-weight: 700 !important;
-            text-transform: uppercase !important;
-            font-size: 0.75rem !important;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
             letter-spacing: 0.06em;
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.15);
-            transition: all 0.3s ease !important;
+            transition: all 0.3s ease;
         }
         .nav-cta:hover {
             box-shadow: 0 0 35px rgba(0, 255, 136, 0.3);
@@ -993,14 +993,14 @@
 
         /* ===== GLASSMORPHISM CARDS ===== */
         .glass-card {
-            background: rgba(15, 19, 31, 0.5) !important;
+            background: rgba(15, 19, 31, 0.5);
             backdrop-filter: blur(16px) saturate(180%);
             -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border: 1px solid rgba(0, 255, 136, 0.08) !important;
+            border: 1px solid rgba(0, 255, 136, 0.08);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.04);
         }
         .glass-card:hover {
-            border-color: rgba(0, 255, 136, 0.2) !important;
+            border-color: rgba(0, 255, 136, 0.2);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.06), 0 0 40px rgba(0, 255, 136, 0.05);
         }
 
@@ -1064,9 +1064,9 @@
         /* ===== REDUCED MOTION ===== */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms;
+                animation-iteration-count: 1;
+                transition-duration: 0.01ms;
             }
             .kinetic-word { opacity: 1; transform: none; }
             .scroll-progress { display: none; }
@@ -1480,7 +1480,7 @@
         <style>
             @media (max-width: 768px) {
                 .pipeline-flow {
-                    grid-template-columns: 1fr !important;
+                    grid-template-columns: 1fr;
                 }
                 .pipeline-flow > div:nth-child(2),
                 .pipeline-flow > div:nth-child(4) {
@@ -1791,7 +1791,7 @@
 /* ===== PAGE SECTION ROUTING ===== */
 function showSection(section) {
     document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
-    const target = document.getElementById('page-' + section);
+    const target = document.getElementById(`page-${section}`);
     if (target) {
         target.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1848,15 +1848,14 @@ document.getElementById('contactForm').addEventListener('submit', async function
 
         const payload = {};
         formData.forEach((value, key) => { if (key !== '_honey' && key !== 'recaptcha_token') payload[key] = value; });
-        payload['created_at'] = window.firebase.firestore.FieldValue.serverTimestamp();
-        payload['recaptcha_token'] = recaptchaToken;
-        payload['recaptcha_action'] = 'contact_submit';
+        payload.created_at = window.firebase.firestore.FieldValue.serverTimestamp();
+        payload.recaptcha_token = recaptchaToken;
+        payload.recaptcha_action = 'contact_submit';
 
         await db.collection("contact_requests").add(payload);
 
         this.reset(); showToast();
     } catch (err) {
-        console.error("Form submission error:", err);
         alert("Failed to send message. Please email us directly.");
         this.reset();
     }
@@ -1876,10 +1875,10 @@ function showToast() {
     for (let i = 0; i < count; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
-        p.style.left = Math.random() * 100 + '%';
-        p.style.animationDuration = (8 + Math.random() * 16) + 's';
-        p.style.animationDelay = (Math.random() * 12) + 's';
-        p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+        p.style.left = `${Math.random() * 100}%`;
+        p.style.animationDuration = `${8 + Math.random() * 16}s`;
+        p.style.animationDelay = `${Math.random() * 12}s`;
+        p.style.width = p.style.height = `${1 + Math.random() * 2}px`;
         if (Math.random() > 0.7) p.style.background = 'var(--secondary)';
         if (Math.random() > 0.9) p.style.background = 'var(--tertiary)';
         container.appendChild(p);
@@ -1937,7 +1936,7 @@ window.addEventListener('scroll', () => {
             const span = document.createElement('span');
             span.className = 'kinetic-word';
             span.textContent = word;
-            span.style.transitionDelay = (wordIndex * 0.12) + 's';
+            span.style.transitionDelay = `${wordIndex * 0.12}s`;
             heroTitle.appendChild(span);
             wordIndex++;
             if (i < words.length - 1) heroTitle.appendChild(document.createTextNode(' '));
@@ -1990,7 +1989,7 @@ window.addEventListener('scroll', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting && !entry.target.dataset.counted) {
                 entry.target.dataset.counted = 'true';
-                const target = parseInt(entry.target.dataset.target);
+                const target = parseInt(entry.target.dataset.target, 10);
                 const suffix = entry.target.dataset.suffix || '';
                 if (target === 0 && !suffix) {
                     // Infinity symbol — just leave it
@@ -2084,7 +2083,7 @@ if (window.location.hash) {
             const newFaces = [];
             const midCache = {};
             function getMid(a, b) {
-                const key = Math.min(a,b) + ':' + Math.max(a,b);
+                const key = `${Math.min(a,b)}:${Math.max(a,b)}`;
                 if (midCache[key] !== undefined) return midCache[key];
                 const m = [(verts[a][0]+verts[b][0])/2, (verts[a][1]+verts[b][1])/2, (verts[a][2]+verts[b][2])/2];
                 const l = Math.sqrt(m[0]*m[0]+m[1]*m[1]+m[2]*m[2]);
@@ -2103,7 +2102,7 @@ if (window.location.hash) {
         const edges = [];
         faces.forEach(f => {
             [[f[0],f[1]],[f[1],f[2]],[f[2],f[0]]].forEach(([a,b]) => {
-                const key = Math.min(a,b) + ':' + Math.max(a,b);
+                const key = `${Math.min(a,b)}:${Math.max(a,b)}`;
                 if (!edgeSet.has(key)) { edgeSet.add(key); edges.push([a,b]); }
             });
         });
@@ -2152,7 +2151,7 @@ if (window.location.hash) {
                 ctx.beginPath();
                 ctx.moveTo(pa.x, pa.y);
                 ctx.lineTo(pb.x, pb.y);
-                ctx.strokeStyle = primary.replace('1)', opacity + ')');
+                ctx.strokeStyle = primary.replace('1)', `${opacity})`);
                 ctx.lineWidth = isHero ? 0.8 : 0.5;
                 ctx.stroke();
             });
@@ -2213,7 +2212,7 @@ if (window.location.hash) {
                     const ptSize = (isHero ? 2.5 : 1) * pulse;
                     ctx.beginPath();
                     ctx.arc(pt.x, pt.y, ptSize, 0, Math.PI * 2);
-                    ctx.fillStyle = orbitalColor.replace('1)', (0.5 + pt.z * 0.3) + ')');
+                    ctx.fillStyle = orbitalColor.replace('1)', `${0.5 + pt.z * 0.3})`);
                     ctx.fill();
                     // Point glow (hero only)
                     if (isHero && pt.z > 0.3) {
@@ -2244,8 +2243,8 @@ if (window.location.hash) {
             const rect = canvas.parentElement.getBoundingClientRect();
             w = canvas.width = rect.width * (window.devicePixelRatio || 1);
             h = canvas.height = rect.height * (window.devicePixelRatio || 1);
-            canvas.style.width = rect.width + 'px';
-            canvas.style.height = rect.height + 'px';
+            canvas.style.width = `${rect.width}px`;
+            canvas.style.height = `${rect.height}px`;
             ctx.setTransform(window.devicePixelRatio || 1, 0, 0, window.devicePixelRatio || 1, 0, 0);
         }
         resize();
@@ -2305,7 +2304,7 @@ if (window.location.hash) {
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = 'rgba(0,255,136,' + opacity + ')';
+                        ctx.strokeStyle = `rgba(0,255,136,${opacity})`;
                         ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
@@ -2316,7 +2315,7 @@ if (window.location.hash) {
             particles.forEach(p => {
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = p.color + '0.4)';
+                ctx.fillStyle = `${p.color}0.4)`;
                 ctx.fill();
             });
 
@@ -2407,7 +2406,6 @@ if (window.location.hash) {
 
         // Graceful fallback
         v1.addEventListener('error', () => {
-            console.warn('Hero video failed to load — falling back to CSS aurora.');
             v1.style.display = 'none';
             v2.style.display = 'none';
             const vignette = document.querySelector('.hero-video-vignette');

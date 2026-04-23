@@ -36,13 +36,13 @@ router = APIRouter(prefix="/compliance", tags=["Compliance"])
 @router.get("/audit-logs", response_model=AuditLogListResponse)
 async def get_audit_logs(
     user_id: str | None = Query(None),
-    action: ActionType | None = Query(None),
+    action: ActionType | None = Query(None),  # noqa: B008
     resource_type: str | None = Query(None),
-    start_date: datetime | None = Query(None),
-    end_date: datetime | None = Query(None),
+    start_date: datetime | None = Query(None),  # noqa: B008
+    end_date: datetime | None = Query(None),  # noqa: B008
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=100),
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get audit logs with filtering and pagination"""
     service = ComplianceService(db)
@@ -72,7 +72,7 @@ async def get_audit_logs(
 @router.post("/consent", response_model=ConsentResponse, status_code=201)
 async def create_consent(
     consent_data: ConsentCreate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Create a new consent record"""
     service = ComplianceService(db)
@@ -93,9 +93,9 @@ async def create_consent(
 @router.get("/consent/{user_id}", response_model=list[ConsentResponse])
 async def get_user_consents(
     user_id: str,
-    consent_type: ConsentType | None = Query(None),
+    consent_type: ConsentType | None = Query(None),  # noqa: B008
     active_only: bool = Query(True),
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get user's consent records"""
     service = ComplianceService(db)
@@ -114,7 +114,7 @@ async def get_user_consents(
 async def revoke_consent(
     consent_id: str,
     user_id: str = Query(...),
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Revoke a consent"""
     service = ComplianceService(db)
@@ -132,9 +132,9 @@ async def revoke_consent(
 # Data Retention Policies
 @router.get("/retention-policies", response_model=list[DataRetentionPolicyResponse])
 async def get_retention_policies(
-    data_category: DataCategory | None = Query(None),
+    data_category: DataCategory | None = Query(None),  # noqa: B008
     active_only: bool = Query(True),
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get data retention policies"""
     service = ComplianceService(db)
@@ -151,7 +151,7 @@ async def get_retention_policies(
 @router.post("/check", response_model=ComplianceCheckResponse)
 async def check_compliance(
     request: ComplianceCheckRequest,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Perform AI-powered compliance check"""
     service = ComplianceService(db)
@@ -204,7 +204,7 @@ async def check_compliance(
 @router.post("/privacy-request", response_model=PrivacyRequestResponse)
 async def submit_privacy_request(
     request: PrivacyRequest,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Submit a privacy request (data access, deletion, etc.)"""
     service = ComplianceService(db)
@@ -235,9 +235,9 @@ async def submit_privacy_request(
 # Compliance Report
 @router.get("/report")
 async def generate_compliance_report(
-    start_date: datetime | None = Query(None),
-    end_date: datetime | None = Query(None),
-    db: AsyncSession = Depends(get_db),
+    start_date: datetime | None = Query(None),  # noqa: B008
+    end_date: datetime | None = Query(None),  # noqa: B008
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Generate compliance report"""
     service = ComplianceService(db)

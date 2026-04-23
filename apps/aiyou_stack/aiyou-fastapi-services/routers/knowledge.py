@@ -35,7 +35,7 @@ def chunk_text(text: str, chunk_size: int = 1000, overlap: int = 200) -> list[st
 
 
 @knowledge_router.post("/{workspace_id}/knowledge", response_model=IngestionResponse)
-async def ingest_document(workspace_id: str = Path(...), file: UploadFile = File(...)):
+async def ingest_document(workspace_id: str = Path(...), file: UploadFile = File(...)):  # noqa: B008
     try:
         content = await file.read()
         try:

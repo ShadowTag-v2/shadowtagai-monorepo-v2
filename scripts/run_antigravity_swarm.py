@@ -18,7 +18,7 @@ if os.path.exists(env_path):
                 except ValueError:
                     pass
 
-from pnkln.core.judge_six_pipeline import JudgeSix
+from pnkln.core.judge_six_pipeline import JudgeSix  # noqa: E402
 
 
 class AgentUnit:
@@ -45,7 +45,7 @@ class AntigravitySwarm:
         self.governance_log = []
 
         # Override Judge 6 with Antigravity parameters
-        try:
+        try:  # noqa: SIM105
             self.judge = JudgeSix()
         except TypeError:
             # Fallback if it needs arguments

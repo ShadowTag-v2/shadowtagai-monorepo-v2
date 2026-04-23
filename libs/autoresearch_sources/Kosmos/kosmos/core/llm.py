@@ -343,7 +343,7 @@ class ClaudeClient:
             # Cache the response (if caching enabled)
             if self.cache and not bypass_cache:
                 metadata = {}
-                if hasattr(response, "usage") and response.usage:
+                if hasattr(response, "usage") and response.usage:  # noqa: SIM102
                     if hasattr(response.usage, "input_tokens") and hasattr(
                         response.usage, "output_tokens"
                     ):

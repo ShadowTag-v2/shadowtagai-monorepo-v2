@@ -16,10 +16,10 @@ Features:
 """
 
 import logging
-from collections import defaultdict
+from collections import defaultdict  # noqa: F401
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional  # noqa: UP035
+from typing import Dict, List, Optional  # noqa: F401, UP035
 
 logger = logging.getLogger(__name__)
 

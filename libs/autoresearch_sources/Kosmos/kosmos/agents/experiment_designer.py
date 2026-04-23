@@ -523,7 +523,7 @@ class ExperimentDesignerAgent(BaseAgent):
 
         except Exception as e:
             logger.error(f"Error generating protocol with Claude: {e}")
-            raise ValueError(f"Failed to generate protocol: {e}")
+            raise ValueError(f"Failed to generate protocol: {e}")  # noqa: B904
 
     def _parse_claude_protocol(
         self, data: dict[str, Any], hypothesis: Hypothesis, experiment_type: ExperimentType

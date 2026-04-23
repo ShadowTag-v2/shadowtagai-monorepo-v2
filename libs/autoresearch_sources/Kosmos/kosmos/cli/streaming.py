@@ -12,7 +12,7 @@ try:
     from rich.console import Console
     from rich.live import Live
     from rich.panel import Panel
-    from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn
+    from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn  # noqa: F401
     from rich.table import Table
     from rich.text import Text
 
@@ -346,9 +346,8 @@ class SimpleStreamingDisplay:
             elif event.type == EventType.CYCLE_STARTED:
                 if hasattr(event, "cycle"):
                     print(f"\n--- Cycle {event.cycle} ---")
-            elif event.type == EventType.CYCLE_COMPLETED:
-                if hasattr(event, "cycle"):
-                    print(f"--- Cycle {event.cycle} Complete ---")
+            elif event.type == EventType.CYCLE_COMPLETED and hasattr(event, "cycle"):
+                print(f"--- Cycle {event.cycle} Complete ---")
 
 
 def create_streaming_display(

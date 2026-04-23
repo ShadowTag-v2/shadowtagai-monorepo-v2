@@ -9,7 +9,6 @@ window.trackEvent = (eventName, eventParams) => {
   if (typeof window.gtag === 'function') {
     window.gtag('event', eventName, eventParams);
   } else {
-    console.debug(`[Mock GA4] Event tracked: ${eventName}`, eventParams);
   }
 };
 

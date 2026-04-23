@@ -154,7 +154,7 @@ class TestAsyncToolboxTool:
             mock_core_bind_params.assert_called_once_with(params_to_bind)
             assert isinstance(new_langchain_tool._AsyncToolboxTool__core_tool, ToolboxCoreTool)
             new_core_tool_signature_params = new_langchain_tool._AsyncToolboxTool__core_tool.__signature__.parameters
-            for bound_param_name in params_to_bind.keys():
+            for bound_param_name in params_to_bind:
                 assert bound_param_name not in new_core_tool_signature_params
 
     async def test_toolbox_tool_bind_params_invalid(self, toolbox_tool):

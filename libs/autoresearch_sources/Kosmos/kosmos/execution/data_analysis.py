@@ -436,7 +436,7 @@ class DataAnalyzer:
         try:
             import shap
         except ImportError:
-            raise ImportError("shap package required. Install with: pip install shap")
+            raise ImportError("shap package required. Install with: pip install shap")  # noqa: B904
 
         # Convert to DataFrame if numpy array
         if isinstance(X_train, np.ndarray):
@@ -519,7 +519,7 @@ class DataAnalyzer:
         try:
             import gseapy as gp
         except ImportError:
-            raise ImportError("gseapy package required. Install with: pip install gseapy")
+            raise ImportError("gseapy package required. Install with: pip install gseapy")  # noqa: B904
 
         # Run enrichment analysis
         enr = gp.enrichr(
@@ -659,7 +659,7 @@ class DataAnalyzer:
         try:
             import pwlf
         except ImportError:
-            raise ImportError("pwlf package required. Install with: pip install pwlf")
+            raise ImportError("pwlf package required. Install with: pip install pwlf")  # noqa: B904
 
         # Convert to numpy arrays
         if isinstance(x, pd.Series):
@@ -798,7 +798,7 @@ class DataAnalyzer:
             import nbformat
             from nbformat.v4 import new_code_cell, new_markdown_cell, new_notebook
         except ImportError:
-            raise ImportError("nbformat required. Install with: pip install nbformat")
+            raise ImportError("nbformat required. Install with: pip install nbformat")  # noqa: B904
 
         # Create new notebook
         nb = new_notebook()
@@ -921,7 +921,7 @@ class DataLoader:
         try:
             import anndata
         except ImportError:
-            raise ImportError(
+            raise ImportError(  # noqa: B904
                 "anndata package required for h5ad files. "
                 "Install with: pip install anndata "
                 "or: pip install kosmos-ai-scientist[science]"
@@ -991,9 +991,9 @@ class DataLoader:
             or: pip install kosmos-ai-scientist[science]
         """
         try:
-            import pyarrow.parquet as pq
+            import pyarrow.parquet as pq  # noqa: F401
         except ImportError:
-            raise ImportError(
+            raise ImportError(  # noqa: B904
                 "pyarrow package required for Parquet files. "
                 "Install with: pip install pyarrow "
                 "or: pip install kosmos-ai-scientist[science]"

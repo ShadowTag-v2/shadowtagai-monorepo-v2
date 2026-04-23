@@ -21,7 +21,7 @@ router = APIRouter(prefix="/dashboards", tags=["dashboards"])
 @router.post("/", response_model=DashboardResponse, status_code=status.HTTP_201_CREATED)
 async def create_dashboard(
     dashboard: DashboardCreate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Create a new dashboard
 
@@ -33,7 +33,7 @@ async def create_dashboard(
 
 
 @router.get("/default", response_model=DashboardResponse)
-async def get_default_dashboard(db: AsyncSession = Depends(get_db)):
+async def get_default_dashboard(db: AsyncSession = Depends(get_db)):  # noqa: B008
     """Get the default dashboard
 
     Retrieve the dashboard marked as default.
@@ -52,7 +52,7 @@ async def get_default_dashboard(db: AsyncSession = Depends(get_db)):
 @router.get("/{dashboard_id}", response_model=DashboardResponse)
 async def get_dashboard(
     dashboard_id: UUID,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get dashboard by ID
 
@@ -72,7 +72,7 @@ async def get_dashboard(
 @router.get("/", response_model=list[DashboardResponse])
 async def list_dashboards(
     is_public: bool = None,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """List all dashboards
 
@@ -87,7 +87,7 @@ async def list_dashboards(
 async def update_dashboard(
     dashboard_id: UUID,
     dashboard_data: DashboardUpdate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Update dashboard
 
@@ -107,7 +107,7 @@ async def update_dashboard(
 @router.delete("/{dashboard_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_dashboard(
     dashboard_id: UUID,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Delete dashboard
 
@@ -130,7 +130,7 @@ async def delete_dashboard(
 async def add_widget(
     dashboard_id: UUID,
     widget: WidgetCreate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Add widget to dashboard
 
@@ -150,7 +150,7 @@ async def add_widget(
 @router.delete("/widgets/{widget_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_widget(
     widget_id: UUID,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Delete widget
 

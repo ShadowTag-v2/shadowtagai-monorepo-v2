@@ -11,8 +11,9 @@
  *
  * @see arXiv:2512.14982 — Prompt Repetition applied to token validation
  */
+
+import { randomUUID } from 'node:crypto';
 import jwt from 'jsonwebtoken';
-import { randomUUID } from 'crypto';
 import { z } from 'zod';
 
 // ─── Token Payload Schema ─────────────────────────────────────────────
@@ -146,9 +147,7 @@ export class SEUViolationError extends Error {
 function getProxySecret(): string {
   const secret = process.env.KOVELAI_PROXY_SECRET;
   if (!secret || secret.length < 32) {
-    throw new Error(
-      '[SEU FATAL] KOVELAI_PROXY_SECRET must be set and at least 32 characters',
-    );
+    throw new Error('[SEU FATAL] KOVELAI_PROXY_SECRET must be set and at least 32 characters');
   }
   return secret;
 }

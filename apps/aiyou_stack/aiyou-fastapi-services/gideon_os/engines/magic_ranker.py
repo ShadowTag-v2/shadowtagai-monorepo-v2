@@ -26,7 +26,7 @@ class ModernMagicFormula:
                 roc = info.get("returnOnAssets", 0)
 
                 data.append({"ticker": t, "ey": earnings_yield, "roc": roc, "type": "STOCK"})
-            except:
+            except Exception:
                 continue
         return pd.DataFrame(data)
 

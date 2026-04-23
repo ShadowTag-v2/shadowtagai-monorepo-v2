@@ -27,10 +27,13 @@ STRUCTURE = ["apps", "libs", "infra", "tools", "scripts", ".vscode", ".gemini"]
 EXCLUDES = {".git", ".venv", "node_modules", "pyproject.toml", "uv.lock", "antigravity_unibody.py"}
 
 
-def run_cmd(cmd, shell=True):
+def run_cmd(cmd, shell=False):
     """Executes a shell command with elegance."""
+    import shlex
+
     try:
-        subprocess.run(cmd, shell=shell, check=True, text=True, capture_output=True)
+        cmd_list = cmd if isinstance(cmd, list) else shlex.split(cmd)
+        subprocess.run(cmd_list, check=True, text=True, capture_output=True)
         return True
     except subprocess.CalledProcessError as e:
         print(f"    ❌ Command failed: {cmd}\n    Error: {e.stderr}")

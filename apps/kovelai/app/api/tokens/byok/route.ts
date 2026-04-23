@@ -16,7 +16,7 @@
  * @see Cor.30 Pillar 2 — Secrets & Supply Chain
  */
 
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ─── Schemas ────────────────────────────────────────────────────────
@@ -41,10 +41,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const seuToken = req.headers.get('x-seu-token');
     if (!seuToken) {
-      return NextResponse.json(
-        { error: 'S.E.U. token required' },
-        { status: 401 },
-      );
+      return NextResponse.json({ error: 'S.E.U. token required' }, { status: 401 });
     }
 
     const body = await req.json();
@@ -73,7 +70,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           replication: { automatic: {} },
@@ -88,11 +85,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     // If secret already exists (409), that's fine — we'll add a new version
     if (!createResponse.ok && createResponse.status !== 409) {
-      console.error(`[BYOK] Failed to create secret: ${createResponse.status}`);
-      return NextResponse.json(
-        { error: 'Failed to store key' },
-        { status: 500 },
-      );
+      return NextResponse.json({ error: 'Failed to store key' }, { status: 500 });
     }
 
     // Add the secret version
@@ -102,7 +95,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           payload: {
@@ -113,26 +106,25 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
 
     if (!versionResponse.ok) {
-      console.error(`[BYOK] Failed to add secret version: ${versionResponse.status}`);
-      return NextResponse.json(
-        { error: 'Failed to store key version' },
-        { status: 500 },
-      );
+      return NextResponse.json({ error: 'Failed to store key version' }, { status: 500 });
     }
 
     console.log(`[BYOK] Registered ${provider} key for firm ${firmId.substring(0, 8)}`);
 
-    return NextResponse.json({
-      status: 'registered',
-      provider,
-      secretId,
-      registeredAt: new Date().toISOString(),
-    }, {
-      headers: {
-        'Cache-Control': 'no-store, private',
-        'X-Content-Type-Options': 'nosniff',
+    return NextResponse.json(
+      {
+        status: 'registered',
+        provider,
+        secretId,
+        registeredAt: new Date().toISOString(),
       },
-    });
+      {
+        headers: {
+          'Cache-Control': 'no-store, private',
+          'X-Content-Type-Options': 'nosniff',
+        },
+      },
+    );
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -140,10 +132,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 },
       );
     }
-    return NextResponse.json(
-      { error: 'Registration failed' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Registration failed' }, { status: 500 });
   }
 }
 
@@ -153,10 +142,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
   try {
     const seuToken = req.headers.get('x-seu-token');
     if (!seuToken) {
-      return NextResponse.json(
-        { error: 'S.E.U. token required' },
-        { status: 401 },
-      );
+      return NextResponse.json({ error: 'S.E.U. token required' }, { status: 401 });
     }
 
     const body = await req.json();
@@ -172,16 +158,13 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
       {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       },
     );
 
     if (!deleteResponse.ok && deleteResponse.status !== 404) {
-      return NextResponse.json(
-        { error: 'Failed to revoke key' },
-        { status: 500 },
-      );
+      return NextResponse.json({ error: 'Failed to revoke key' }, { status: 500 });
     }
 
     console.log(`[BYOK] Revoked ${provider} key for firm ${firmId.substring(0, 8)}`);
@@ -198,10 +181,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
         { status: 400 },
       );
     }
-    return NextResponse.json(
-      { error: 'Revocation failed' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Revocation failed' }, { status: 500 });
   }
 }
 

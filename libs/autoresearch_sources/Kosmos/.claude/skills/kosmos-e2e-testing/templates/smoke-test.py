@@ -52,14 +52,14 @@ def test_provider_modules():
 
     providers = []
     try:
-        from kosmos.core.providers import anthropic_provider
+        from kosmos.core.providers import anthropic_provider  # noqa: F401
 
         providers.append("anthropic")
     except ImportError:
         pass
 
     try:
-        from kosmos.core.providers import openai_provider
+        from kosmos.core.providers import openai_provider  # noqa: F401
 
         providers.append("openai")
     except ImportError:

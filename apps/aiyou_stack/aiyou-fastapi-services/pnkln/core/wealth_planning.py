@@ -598,12 +598,12 @@ class WealthPlanningAnalyzer:
         execution_priority = []
 
         # Quick wins first (low difficulty, high impact)
-        quick_win_leaks = [l for l in leaks if l.fix_difficulty <= 2]
-        quick_win_leaks.sort(key=lambda l: -l.annual_impact_usd)
+        quick_win_leaks = [l for l in leaks if l.fix_difficulty <= 2]  # noqa: E741
+        quick_win_leaks.sort(key=lambda l: -l.annual_impact_usd)  # noqa: E741
         execution_priority.extend(
             [
                 f"Fix {l.category.value}: {l.description} (${l.annual_impact_usd:,.0f}/year)"
-                for l in quick_win_leaks
+                for l in quick_win_leaks  # noqa: E741
             ],
         )
 
@@ -625,12 +625,12 @@ class WealthPlanningAnalyzer:
         )
 
         # Remaining leaks
-        remaining_leaks = [l for l in leaks if l.fix_difficulty > 2]
-        remaining_leaks.sort(key=lambda l: -l.annual_impact_usd)
+        remaining_leaks = [l for l in leaks if l.fix_difficulty > 2]  # noqa: E741
+        remaining_leaks.sort(key=lambda l: -l.annual_impact_usd)  # noqa: E741
         execution_priority.extend(
             [
                 f"Fix {l.category.value}: {l.description} (${l.annual_impact_usd:,.0f}/year, difficulty {l.fix_difficulty}/5)"
-                for l in remaining_leaks
+                for l in remaining_leaks  # noqa: E741
             ],
         )
 

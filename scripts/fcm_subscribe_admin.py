@@ -22,7 +22,7 @@ def subscribe_to_topic(registration_token: str, topic: str = "counselconduit-p1-
         logger.error("firebase-admin not installed. Run: pip install firebase-admin")
         return {"error": "firebase-admin not installed"}
 
-    try:
+    try:  # noqa: SIM105
         initialize_app()
     except ValueError:
         pass  # Already initialized

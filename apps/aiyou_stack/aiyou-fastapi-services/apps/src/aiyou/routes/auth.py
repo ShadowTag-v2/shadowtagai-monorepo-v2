@@ -25,8 +25,8 @@ class Token(BaseModel):
 
 @router.post("/token", response_model=Token)
 async def login_for_access_token(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    db: Session = Depends(get_db),
+    form_data: OAuth2PasswordRequestForm = Depends(),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Login endpoint to get JWT token."""
     user = db.query(User).filter(User.email == form_data.username).first()

@@ -22,9 +22,9 @@ class RecursiveCharacterTextSplitter:
         return [text]
 
 
-from pydantic import BaseModel
+from pydantic import BaseModel  # noqa: E402
 
-from src.gov_config import settings
+from src.gov_config import settings  # noqa: E402
 
 
 class PolicyChunk(BaseModel):

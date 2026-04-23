@@ -101,20 +101,20 @@
                 const result = await evaluateAST(input);
                 if(result.status === "VIOLATION") {
                     output.style.color = '#ff4444';
-                    output.innerHTML += '<br/>[VIOLATION] ' + result.message + '<br/>> SHIELD ENFORCED: <b>' + result.shield + '</b>.';
+                    output.innerHTML += `<br/>[VIOLATION] ${result.message}<br/>> SHIELD ENFORCED: <b>${result.shield}</b>.`;
                 } else {
                     output.style.color = '#00ff88';
-                    output.innerHTML += '<br/>[OK] ' + result.message + '<br/>> SHIELD ENFORCED: <b>' + result.shield + '</b>.';
+                    output.innerHTML += `<br/>[OK] ${result.message}<br/>> SHIELD ENFORCED: <b>${result.shield}</b>.`;
                 }
-            } catch (err) {
+            } catch (_err) {
                 output.innerHTML += '<br/>WARN: Local API unavailable. Running deterministic WASM tree-sitter fallback...<br/>';
                 const result = await evaluateWASM(input);
                 if(result.status === "VIOLATION") {
                     output.style.color = '#ff4444';
-                    output.innerHTML += '<br/>[VIOLATION] ' + result.message + '<br/>> SHIELD ENFORCED: <b>' + result.shield + '</b>.';
+                    output.innerHTML += `<br/>[VIOLATION] ${result.message}<br/>> SHIELD ENFORCED: <b>${result.shield}</b>.`;
                 } else {
                     output.style.color = '#00ff88';
-                    output.innerHTML += '<br/>[OK] ' + result.message + '<br/>> SHIELD ENFORCED: <b>' + result.shield + '</b>.';
+                    output.innerHTML += `<br/>[OK] ${result.message}<br/>> SHIELD ENFORCED: <b>${result.shield}</b>.`;
                 }
             }
         });

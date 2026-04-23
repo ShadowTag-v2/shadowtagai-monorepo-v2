@@ -7,6 +7,7 @@ import lancedb
 import pyarrow as pa
 
 from ..providers.embeddings import embed_text
+import contextlib
 
 TABLE_NAME = "ane_chunks"
 EMBED_DIM = 1536
@@ -46,10 +47,8 @@ def ensure_table(root: str):
 def _delete_existing(table, chunk_ids: list[str]):
     # robust per-id delete semantics; slower than a true merge, but correct
     for cid in chunk_ids:
-        try:
+        with contextlib.suppress(Exception):
             table.delete(f"chunk_id = '{cid}'")
-        except Exception:
-            pass
 
 
 def upsert_chunks(root: str, chunks: list[dict[str, Any]]):
@@ -69,10 +68,8 @@ def upsert_chunks(root: str, chunks: list[dict[str, Any]]):
 
 def delete_doc_chunks(root: str, doc_id: str):
     table = ensure_table(root)
-    try:
+    with contextlib.suppress(Exception):
         table.delete(f"doc_id = '{doc_id}'")
-    except Exception:
-        pass
     return {"deleted_doc_id": doc_id}
 
 

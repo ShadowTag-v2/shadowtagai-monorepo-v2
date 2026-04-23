@@ -222,7 +222,7 @@ if __name__ == "__main__":
     print(f"  Average PPO loss: {avg_ppo_loss:.4f}")
     print(f"  Loss range: [{min(ppo_losses):.4f}, {max(ppo_losses):.4f}]")
     print(
-        f"  Loss std dev: {(sum((l - avg_ppo_loss) ** 2 for l in ppo_losses) / len(ppo_losses)) ** 0.5:.4f}",
+        f"  Loss std dev: {(sum((l - avg_ppo_loss) ** 2 for l in ppo_losses) / len(ppo_losses)) ** 0.5:.4f}",  # noqa: E741
     )
 
     # GRPO Training
@@ -257,7 +257,7 @@ if __name__ == "__main__":
     print("  ✓ Pros: Industry standard, well-understood")
     print("  ✗ Cons: Requires value function, sensitive to clip_epsilon")
     print(
-        f"  📊 Loss stability: {(sum((l - avg_ppo_loss) ** 2 for l in ppo_losses) / len(ppo_losses)) ** 0.5:.4f} (std dev)",
+        f"  📊 Loss stability: {(sum((l - avg_ppo_loss) ** 2 for l in ppo_losses) / len(ppo_losses)) ** 0.5:.4f} (std dev)",  # noqa: E741
     )
 
     print("\nGRPO:")

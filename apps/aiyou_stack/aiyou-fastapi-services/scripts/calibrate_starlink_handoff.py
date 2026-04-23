@@ -13,7 +13,7 @@ project_root = os.path.dirname(current_dir)
 sys.path.insert(0, project_root)
 
 # Mocking Telemetry for the test since we don't have real hardware
-from src.pnkln.verticals.tower_edge import ConnectionType, Telemetry, TowerNode
+from src.pnkln.verticals.tower_edge import ConnectionType, Telemetry, TowerNode  # noqa: E402
 
 
 def mock_high_latency_sensors(self) -> Telemetry:

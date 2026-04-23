@@ -112,7 +112,7 @@ def run_clang_format_diff_wrapper(args, file):
     except DiffError:
         raise
     except Exception as e:
-        raise UnexpectedError(f"{file}: {e.__class__.__name__}: {e}", e)
+        raise UnexpectedError(f"{file}: {e.__class__.__name__}: {e}", e)  # noqa: B904
 
 
 def run_clang_format_diff(args, file):
@@ -120,7 +120,7 @@ def run_clang_format_diff(args, file):
         with open(file, encoding="utf-8") as f:
             original = f.readlines()
     except OSError as exc:
-        raise DiffError(str(exc))
+        raise DiffError(str(exc))  # noqa: B904
 
     if args.in_place:
         invocation = [args.clang_format_executable, "-i", file]
@@ -164,7 +164,7 @@ def run_clang_format_diff(args, file):
             **encoding_py3,
         )
     except OSError as exc:
-        raise DiffError(f"Command '{subprocess.list2cmdline(invocation)}' failed to start: {exc}")
+        raise DiffError(f"Command '{subprocess.list2cmdline(invocation)}' failed to start: {exc}")  # noqa: B904
     proc_stdout = proc.stdout
     proc_stderr = proc.stderr
     # hopefully the stderr pipe won't get full and block the process
@@ -271,7 +271,7 @@ def main():
     # https://bugs.python.org/issue14229#msg156446
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     try:
-        signal.SIGPIPE
+        signal.SIGPIPE  # noqa: B018
     except AttributeError:
         # compatibility, SIGPIPE does not exist on Windows
         pass

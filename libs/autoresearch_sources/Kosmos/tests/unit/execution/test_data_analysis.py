@@ -548,8 +548,8 @@ class TestDataLoaderParquet:
     def sample_parquet_file(self, tmp_path):
         """Create a sample parquet file for testing."""
         try:
-            import pyarrow as pa
-            import pyarrow.parquet as pq
+            import pyarrow as pa  # noqa: F401
+            import pyarrow.parquet as pq  # noqa: F401
         except ImportError:
             pytest.skip("pyarrow not installed")
 
@@ -622,7 +622,7 @@ class TestDataLoaderAutoDetect:
     def test_autodetect_parquet(self, tmp_path):
         """Test auto-detection of parquet files."""
         try:
-            import pyarrow
+            import pyarrow  # noqa: F401
         except ImportError:
             pytest.skip("pyarrow not installed")
 

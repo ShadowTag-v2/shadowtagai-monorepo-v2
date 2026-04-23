@@ -118,7 +118,7 @@ class LoopDetectionAgent(LlmAgent):
 
         return "".join(text_parts)
 
-    def _detect_pattern_repetition(self, text: str) -> Tuple[bool, Optional[str]]:
+    def _detect_pattern_repetition(self, text: str) -> Tuple[bool, Optional[str]]:  # noqa: UP045
         """
         Optimized pattern detection - check smallest patterns first.
 
@@ -167,7 +167,7 @@ class LoopDetectionAgent(LlmAgent):
 
         return False, None
 
-    def _parse_unknown_tool_error(self, exc: Exception) -> Tuple[bool, Optional[str]]:
+    def _parse_unknown_tool_error(self, exc: Exception) -> Tuple[bool, Optional[str]]:  # noqa: UP045
         """Detect if an exception indicates an unknown tool function call.
 
         Parameters

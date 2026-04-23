@@ -118,8 +118,8 @@ async def _stream_vent_response(
     try:
         try:
             from apps.counselconduit.api.empathy_templates import (
-                get_checkin,
-                get_empathy_opener,
+                get_checkin,  # noqa: F401
+                get_empathy_opener,  # noqa: F401
                 should_checkin,
                 wrap_seu_prompt,
             )

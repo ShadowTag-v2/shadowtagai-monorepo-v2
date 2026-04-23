@@ -26,8 +26,8 @@ from anthropic import Anthropic
 
 # AutoGen imports - note: requires autogen package
 try:
-    import autogen
-    from autogen import AssistantAgent, GroupChat, GroupChatManager, UserProxyAgent
+    import autogen  # noqa: F401
+    from autogen import AssistantAgent, GroupChat, GroupChatManager, UserProxyAgent  # noqa: F401
 
     AUTOGEN_AVAILABLE = True
 except ImportError:

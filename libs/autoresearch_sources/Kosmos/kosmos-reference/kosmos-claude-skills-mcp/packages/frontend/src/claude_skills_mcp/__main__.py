@@ -148,7 +148,7 @@ async def main_async() -> None:
                 timeout=2,
                 capture_output=True,
             )
-        except:
+        except Exception:
             pass  # Silent failure - this is last-ditch cleanup
 
     # Register atexit handler (runs on ANY exit except SIGKILL)

@@ -105,11 +105,17 @@ spec:
                 secretKeyRef:
                   name: google-ai-api-key
                   key: latest
-${config.byokProviders?.map((p) => `            - name: BYOK_${p.toUpperCase().replace('-', '_')}_SECRET
+${
+  config.byokProviders
+    ?.map(
+      (p) => `            - name: BYOK_${p.toUpperCase().replace('-', '_')}_SECRET
               valueFrom:
                 secretKeyRef:
                   name: byok-${config.firmId.substring(0, 8)}-${p}
-                  key: latest`).join('\n') ?? ''}
+                  key: latest`,
+    )
+    .join('\n') ?? ''
+}
   traffic:
     - percent: 100
       latestRevision: true
@@ -164,7 +170,7 @@ function getTierInstanceConfig(tier: TenantServiceConfig['tier']): TierInstanceC
 
 // ─── Provision API Route ────────────────────────────────────────────
 
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 const ProvisionRequestSchema = z.object({
@@ -206,9 +212,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 },
       );
     }
-    return NextResponse.json(
-      { error: 'Provisioning failed' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Provisioning failed' }, { status: 500 });
   }
 }

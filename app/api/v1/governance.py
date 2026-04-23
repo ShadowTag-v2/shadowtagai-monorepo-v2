@@ -237,4 +237,4 @@ async def assess_batch_governance(
         }
 
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Batch assessment failed: {str(e)}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Batch assessment failed: {str(e)}")  # noqa: B904

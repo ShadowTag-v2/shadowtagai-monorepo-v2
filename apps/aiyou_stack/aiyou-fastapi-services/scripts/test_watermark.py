@@ -19,7 +19,7 @@ def test_watermark():
         print(f"Status: {response.status_code}")
         try:
             print(f"Response: {json.dumps(response.json(), indent=2)}")
-        except:
+        except Exception:
             print(f"Response text: {response.text}")
     except Exception as e:
         print(f"Error: {e}")

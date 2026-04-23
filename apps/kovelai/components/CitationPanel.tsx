@@ -65,15 +65,10 @@ export function CitationPanel({
   return (
     <div style={styles.container}>
       {/* Header */}
-      <button
-        onClick={() => setIsCollapsed(!isCollapsed)}
-        style={styles.headerButton}
-      >
+      <button onClick={() => setIsCollapsed(!isCollapsed)} style={styles.headerButton}>
         <div style={styles.headerLeft}>
           <span style={styles.headerIcon}>📎</span>
-          <span style={styles.headerTitle}>
-            Citations ({citations.length})
-          </span>
+          <span style={styles.headerTitle}>Citations ({citations.length})</span>
           <span style={styles.headerMeta}>
             {verifiedCount} verified
             {suspectCount > 0 && (
@@ -119,9 +114,7 @@ export function CitationPanel({
               >
                 <div
                   style={styles.citationHeader}
-                  onClick={() =>
-                    setExpandedCitation(isExpanded ? null : citation.index)
-                  }
+                  onClick={() => setExpandedCitation(isExpanded ? null : citation.index)}
                 >
                   {/* Index badge */}
                   <span style={styles.indexBadge}>{citation.index}</span>
@@ -171,8 +164,7 @@ export function CitationPanel({
                 {isExpanded && (
                   <div style={styles.expandedDetail}>
                     <div style={styles.excerptBlock}>
-                      <strong>Excerpt:</strong>{' '}
-                      <em>&ldquo;{citation.excerpt}&rdquo;</em>
+                      <strong>Excerpt:</strong> <em>&ldquo;{citation.excerpt}&rdquo;</em>
                     </div>
                     {citation.notes && (
                       <div style={styles.notesBlock}>
@@ -180,8 +172,7 @@ export function CitationPanel({
                       </div>
                     )}
                     <div style={styles.detailMeta}>
-                      Format correct:{' '}
-                      {citation.citation_format_correct ? '✓ Yes' : '✗ No'}
+                      Format correct: {citation.citation_format_correct ? '✓ Yes' : '✗ No'}
                     </div>
                   </div>
                 )}

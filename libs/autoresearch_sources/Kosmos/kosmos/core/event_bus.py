@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 # Callback type definitions
 SyncCallback = Callable[[StreamingEvent], None]
 AsyncCallback = Callable[[StreamingEvent], "asyncio.coroutine"]
-Callback = Union[SyncCallback, AsyncCallback]
+Callback = Union[SyncCallback, AsyncCallback]  # noqa: UP007
 
 
 class EventBus:

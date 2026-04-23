@@ -135,11 +135,11 @@ em {
   color: var(--text);
 }
 .btn-nav {
-  background: var(--accent) !important;
-  color: var(--bg) !important;
-  padding: 10px 22px !important;
+  background: var(--accent);
+  color: var(--bg);
+  padding: 10px 22px;
   border-radius: 8px;
-  font-weight: 700 !important;
+  font-weight: 700;
   transition:
     transform 0.2s,
     box-shadow 0.2s;

@@ -228,7 +228,7 @@ Return JSON:
             if json_start != -1 and json_end > json_start:
                 response_text = response_text[json_start:json_end]
             review_data = json.loads(response_text)
-        except:
+        except Exception:
             # Fallback if JSON parsing fails
             review_data = {
                 "agreement_score": 0.5,

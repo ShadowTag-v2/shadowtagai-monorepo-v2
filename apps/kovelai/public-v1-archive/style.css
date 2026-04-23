@@ -194,18 +194,18 @@ strong {
   width: 100%;
 }
 .btn-nav {
-  background: var(--gold) !important;
-  color: var(--text-inverse) !important;
-  padding: 10px 24px !important;
+  background: var(--gold);
+  color: var(--text-inverse);
+  padding: 10px 24px;
   border-radius: var(--radius-sm);
-  font-weight: 700 !important;
-  font-family: var(--font-body) !important;
+  font-weight: 700;
+  font-family: var(--font-body);
   transition:
     transform var(--duration-fast) ease,
     box-shadow var(--duration-fast) ease;
 }
 .btn-nav::after {
-  display: none !important;
+  display: none;
 }
 .btn-nav:hover {
   transform: translateY(-1px);

@@ -45,10 +45,7 @@ const SALT_LENGTH = 32; // 256 bits
 /**
  * Derives an AES-256 key from a passphrase using PBKDF2.
  */
-async function deriveKey(
-  passphrase: string,
-  salt: Uint8Array,
-): Promise<CryptoKey> {
+async function deriveKey(passphrase: string, salt: Uint8Array): Promise<CryptoKey> {
   const encoder = new TextEncoder();
   const keyMaterial = await crypto.subtle.importKey(
     'raw',
@@ -80,10 +77,7 @@ async function deriveKey(
  * The passphrase is NEVER transmitted. Only the encrypted
  * payload (ciphertext + IV + salt) is sent to the server.
  */
-export async function encryptAPIKey(
-  apiKey: string,
-  passphrase: string,
-): Promise<EncryptedPayload> {
+export async function encryptAPIKey(apiKey: string, passphrase: string): Promise<EncryptedPayload> {
   const encoder = new TextEncoder();
 
   // Generate random salt and IV
@@ -129,11 +123,7 @@ export async function decryptAPIKey(
 
   const key = await deriveKey(passphrase, salt);
 
-  const plaintext = await crypto.subtle.decrypt(
-    { name: 'AES-GCM', iv },
-    key,
-    ciphertext,
-  );
+  const plaintext = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
 
   return new TextDecoder().decode(plaintext);
 }

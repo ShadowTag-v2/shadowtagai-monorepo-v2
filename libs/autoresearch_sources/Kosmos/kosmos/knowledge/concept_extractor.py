@@ -22,7 +22,7 @@ from kosmos.literature.base_client import PaperMetadata
 
 logger = logging.getLogger(__name__)
 
-from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL
+from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL  # noqa: E402
 
 
 @dataclass

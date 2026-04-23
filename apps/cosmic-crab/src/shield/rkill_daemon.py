@@ -29,9 +29,8 @@ class RkillDaemon:
     def _load_dynamic_boundaries(self):
         for p in self.whiteboard.state.get("patterns", []):
             pattern = p.get("pattern", "")
-            if "path" in pattern.lower() or "/" in pattern:
-                if pattern not in self.blacklist_paths:
-                    self.blacklist_paths.append(pattern)
+            if ("path" in pattern.lower() or "/" in pattern) and pattern not in self.blacklist_paths:
+                self.blacklist_paths.append(pattern)
         logger.info(f"🛡️ RKILL: Loaded {len(self.blacklist_paths)} boundary rules.")
 
     def monitor(self):

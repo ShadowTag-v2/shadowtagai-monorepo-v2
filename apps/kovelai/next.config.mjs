@@ -50,7 +50,7 @@ const nextConfig = {
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: https: blob:",
               "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.stripe.com https://api.perplexity.ai wss://*.firebaseio.com",
-              "frame-src https://js.stripe.com https://hooks.stripe.com",
+              'frame-src https://js.stripe.com https://hooks.stripe.com',
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",

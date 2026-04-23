@@ -191,7 +191,7 @@ class CitationParser:
             # Parse year
             year = None
             if "year" in entry:
-                try:
+                try:  # noqa: SIM105
                     year = int(entry["year"])
                 except ValueError:
                     pass
@@ -247,7 +247,7 @@ class CitationParser:
             # Parse year (PY tag)
             year = None
             if "PY" in data:
-                try:
+                try:  # noqa: SIM105
                     year = int(data["PY"].split("/")[0])  # Handle PY  - 2024/01/15
                 except (ValueError, IndexError):
                     pass

@@ -15,7 +15,7 @@
  * @see lib/billing/stripe-connect.ts
  */
 
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
@@ -27,9 +27,9 @@ const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET ?? '';
 // ─── Tier Mapping ───────────────────────────────────────────────────
 
 const PRICE_TO_TIER: Record<string, string> = {
-  'price_1TNKSREHnWpykeMiRMDlVgLl': 'pro_monthly',
-  'price_1TNKSjEHnWpykeMi0S9GCVjy': 'pro_annual',
-  'price_1TNKSREHnWpykeMi8mrDf4rI': 'enterprise',
+  price_1TNKSREHnWpykeMiRMDlVgLl: 'pro_monthly',
+  price_1TNKSjEHnWpykeMi0S9GCVjy: 'pro_annual',
+  price_1TNKSREHnWpykeMi8mrDf4rI: 'enterprise',
 };
 
 // ─── Main Handler ───────────────────────────────────────────────────
@@ -47,8 +47,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     event = stripe.webhooks.constructEvent(body, signature, WEBHOOK_SECRET);
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Unknown';
-    console.error(`[STRIPE WEBHOOK] Signature verification failed: ${message}`);
+    const _message = err instanceof Error ? err.message : 'Unknown';
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
   }
 
@@ -87,8 +86,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     await markProcessed(eventId);
     return NextResponse.json({ received: true });
-  } catch (err) {
-    console.error(`[STRIPE WEBHOOK] Handler error:`, err);
+  } catch (_err) {
     return NextResponse.json({ error: 'Handler failed' }, { status: 500 });
   }
 }
@@ -100,7 +98,6 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
   const clientEmail = session.customer_email;
 
   if (!firmId) {
-    console.error('[STRIPE] checkout.session.completed missing firmId metadata');
     return;
   }
 
@@ -118,9 +115,11 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session): Promis
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription): Promise<void> {
   const firmId = subscription.metadata?.firmId;
   const priceId = subscription.items?.data?.[0]?.price?.id;
-  const newTier = priceId ? PRICE_TO_TIER[priceId] ?? 'unknown' : 'unknown';
+  const newTier = priceId ? (PRICE_TO_TIER[priceId] ?? 'unknown') : 'unknown';
 
-  console.log(`[STRIPE] Subscription updated: firm=${firmId}, tier=${newTier}, status=${subscription.status}`);
+  console.log(
+    `[STRIPE] Subscription updated: firm=${firmId}, tier=${newTier}, status=${subscription.status}`,
+  );
 
   if (firmId && subscription.status === 'active') {
     await updateTenantTier(firmId, newTier);
@@ -142,7 +141,9 @@ async function handleAccountUpdated(account: Stripe.Account): Promise<void> {
   const chargesEnabled = account.charges_enabled;
   const payoutsEnabled = account.payouts_enabled;
 
-  console.log(`[STRIPE] Account updated: firm=${firmId}, charges=${chargesEnabled}, payouts=${payoutsEnabled}`);
+  console.log(
+    `[STRIPE] Account updated: firm=${firmId}, charges=${chargesEnabled}, payouts=${payoutsEnabled}`,
+  );
 
   if (firmId) {
     await updateConnectStatus(firmId, {
@@ -158,7 +159,9 @@ async function handlePaymentFailed(invoice: Stripe.Invoice): Promise<void> {
   const customerEmail = typeof invoice.customer_email === 'string' ? invoice.customer_email : '';
   const amountDue = invoice.amount_due;
 
-  console.log(`[STRIPE] Payment failed: firm=${firmId}, email=${customerEmail}, amount=${amountDue}`);
+  console.log(
+    `[STRIPE] Payment failed: firm=${firmId}, email=${customerEmail}, amount=${amountDue}`,
+  );
 
   if (firmId) {
     await notifyPaymentFailure(firmId, customerEmail, amountDue);

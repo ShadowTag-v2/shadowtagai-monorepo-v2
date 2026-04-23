@@ -17,7 +17,7 @@ router = APIRouter()
 settings = get_settings()
 
 
-def get_health_service(db: AsyncSession = Depends(get_db)) -> HealthService:
+def get_health_service(db: AsyncSession = Depends(get_db)) -> HealthService:  # noqa: B008
     """Dependency to get HealthService instance."""
     return HealthService(db)
 
@@ -39,7 +39,7 @@ async def health_check() -> dict:
 
 
 @router.get("/readiness")
-async def readiness_check(service: HealthService = Depends(get_health_service)) -> dict:
+async def readiness_check(service: HealthService = Depends(get_health_service)) -> dict:  # noqa: B008
     """Readiness check with database connectivity
 
     Operations:

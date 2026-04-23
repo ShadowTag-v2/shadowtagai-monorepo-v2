@@ -6,4 +6,4 @@
 # function body, but it's part of the public API contract and will be used
 # when additional fee type routing logic is implemented.
 
-fee_type  # route_advance_fee() parameter — public API contract
+fee_type  # route_advance_fee() parameter — public API contract  # noqa: B018, F821

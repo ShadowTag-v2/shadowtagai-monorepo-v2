@@ -215,7 +215,7 @@ class AIScraperClient:
                     try:
                         if fallback == "httpx":
                             return await self._scrape_httpx(url, include_html)
-                    except:
+                    except Exception:
                         continue
 
             # Return error result

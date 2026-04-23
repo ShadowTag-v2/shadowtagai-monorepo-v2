@@ -34,7 +34,7 @@ class JudgeSixAgent(Agent):
         )
 
 
-from src.governance.judge_six.risk_router import JudgeSixRouter, RiskLevel
+from src.governance.judge_six.risk_router import JudgeSixRouter, RiskLevel  # noqa: E402
 
 # Export the agent instance for main.py
 root_agent = JudgeSixAgent()

@@ -22,7 +22,7 @@ while True:
 
             try:
                 namespace = {}
-                exec(open(inbox_path).read(), namespace)
+                exec(open(inbox_path).read(), namespace)  # noqa: SIM115
                 output = {
                     "status": "success",
                     "data": str(namespace.get("RESULT", "Done")),

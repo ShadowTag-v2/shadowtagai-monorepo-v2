@@ -37,16 +37,16 @@ def get_api_key(api_key: str = Depends(api_key_header)):
 limiter = Limiter(key_func=get_remote_address)
 
 # --- JR Engine Integration ---
-from ...judge_six.jr_engine import JREngine
-from ...judge_six.models import Action
-from ...judge_six.models import VerdictStatus as JRVerdictStatus
-from ..core.schiznit_engine import schiznit_engine
-from ..enums import TaskStatus, UrgencyLevel, VerticalType
-from ..models.task import Task, TaskCompletion, TaskCreate, TaskUpdate
-from ..verticals.family import FamilyTaskCreate
-from ..verticals.medical import MedicalTaskCreate
-from ..verticals.school import SchoolTaskCreate
-from ..verticals.workplace import WorkplaceTaskCreate
+from ...judge_six.jr_engine import JREngine  # noqa: E402
+from ...judge_six.models import Action  # noqa: E402
+from ...judge_six.models import VerdictStatus as JRVerdictStatus  # noqa: E402
+from ..core.schiznit_engine import schiznit_engine  # noqa: E402
+from ..enums import TaskStatus, UrgencyLevel, VerticalType  # noqa: E402
+from ..models.task import Task, TaskCompletion, TaskCreate, TaskUpdate  # noqa: E402
+from ..verticals.family import FamilyTaskCreate  # noqa: E402
+from ..verticals.medical import MedicalTaskCreate  # noqa: E402
+from ..verticals.school import SchoolTaskCreate  # noqa: E402
+from ..verticals.workplace import WorkplaceTaskCreate  # noqa: E402
 
 jr_engine = JREngine()
 

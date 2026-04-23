@@ -55,7 +55,7 @@ async def list_agents():
 @agents_router.post("/query")
 async def process_matrix_query(
     payload: QueryPayload,
-    identity: TemporalIdentityPayload = Depends(parse_and_lock_identity),
+    identity: TemporalIdentityPayload = Depends(parse_and_lock_identity),  # noqa: B008
 ):
     # --> Stage 4 Hardening: Temporal.io Invincible Orchestration
     temporal_host = os.environ.get("TEMPORAL_HOST", "localhost:7233")

@@ -24,7 +24,7 @@ def get_workflow_engine() -> WorkflowEngine:
 
 
 @router.get("/", response_model=ListWorkflowsResponse)
-async def list_workflows(engine: WorkflowEngine = Depends(get_workflow_engine)):
+async def list_workflows(engine: WorkflowEngine = Depends(get_workflow_engine)):  # noqa: B008
     """List all available workflows."""
     workflows = engine.get_workflows()
     return ListWorkflowsResponse(workflows=workflows, count=len(workflows))
@@ -33,7 +33,7 @@ async def list_workflows(engine: WorkflowEngine = Depends(get_workflow_engine)):
 @router.post("/start", response_model=StartWorkflowResponse)
 async def start_workflow(
     request: StartWorkflowRequest,
-    engine: WorkflowEngine = Depends(get_workflow_engine),
+    engine: WorkflowEngine = Depends(get_workflow_engine),  # noqa: B008
 ):
     """Start a new workflow execution."""
     try:
@@ -64,7 +64,7 @@ async def start_workflow(
 @router.post("/input", response_model=ProvideInputResponse)
 async def provide_input(
     request: ProvideInputRequest,
-    engine: WorkflowEngine = Depends(get_workflow_engine),
+    engine: WorkflowEngine = Depends(get_workflow_engine),  # noqa: B008
 ):
     """Provide user input for a waiting workflow."""
     try:
@@ -95,7 +95,7 @@ async def provide_input(
 @router.get("/status/{execution_id}", response_model=WorkflowStatusResponse)
 async def get_workflow_status(
     execution_id: str,
-    engine: WorkflowEngine = Depends(get_workflow_engine),
+    engine: WorkflowEngine = Depends(get_workflow_engine),  # noqa: B008
 ):
     """Get the status of a workflow execution."""
     execution = engine.get_execution(execution_id)

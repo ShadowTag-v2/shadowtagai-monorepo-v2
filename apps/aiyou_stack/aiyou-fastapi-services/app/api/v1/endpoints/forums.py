@@ -28,7 +28,7 @@ router = APIRouter()
 
 
 @router.get("/categories", response_model=list[ForumCategoryResponse])
-async def list_categories(db: Session = Depends(get_db)):
+async def list_categories(db: Session = Depends(get_db)):  # noqa: B008
     """List all forum categories."""
     return ForumService.list_categories(db)
 
@@ -40,8 +40,8 @@ async def list_categories(db: Session = Depends(get_db)):
 )
 async def create_category(
     category_data: ForumCategoryCreate,
-    current_user: User = Depends(get_current_superuser),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_superuser),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Create a new forum category (admin only)."""
     if ForumService.get_category_by_slug(db, category_data.slug):
@@ -53,7 +53,7 @@ async def create_category(
 
 
 @router.get("/categories/{category_id}", response_model=ForumCategoryResponse)
-async def get_category(category_id: int, db: Session = Depends(get_db)):
+async def get_category(category_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Get a forum category."""
     category = ForumService.get_category(db, category_id)
     if not category:
@@ -65,8 +65,8 @@ async def get_category(category_id: int, db: Session = Depends(get_db)):
 async def update_category(
     category_id: int,
     category_data: ForumCategoryUpdate,
-    current_user: User = Depends(get_current_superuser),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_superuser),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Update a forum category (admin only)."""
     category = ForumService.get_category(db, category_id)
@@ -81,7 +81,7 @@ async def update_category(
 @router.get("/categories/{category_id}/topics", response_model=ForumTopicListResponse)
 async def list_topics(
     category_id: int,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
     page: int = 1,
     size: int = 20,
 ):
@@ -111,8 +111,8 @@ async def list_topics(
 @router.post("/topics", response_model=ForumTopicResponse, status_code=status.HTTP_201_CREATED)
 async def create_topic(
     topic_data: ForumTopicCreate,
-    current_user: User = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Create a new forum topic with initial post."""
     category = ForumService.get_category(db, topic_data.category_id)
@@ -126,7 +126,7 @@ async def create_topic(
 
 
 @router.get("/topics/{topic_id}", response_model=ForumTopicResponse)
-async def get_topic(topic_id: int, db: Session = Depends(get_db)):
+async def get_topic(topic_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Get a forum topic."""
     topic = ForumService.get_topic(db, topic_id)
     if not topic:
@@ -140,8 +140,8 @@ async def get_topic(topic_id: int, db: Session = Depends(get_db)):
 async def update_topic(
     topic_id: int,
     topic_data: ForumTopicUpdate,
-    current_user: User = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Update a forum topic."""
     topic = ForumService.get_topic(db, topic_id)
@@ -161,7 +161,7 @@ async def update_topic(
 
 
 @router.get("/topics/{topic_id}/posts", response_model=ForumPostListResponse)
-async def list_posts(topic_id: int, db: Session = Depends(get_db), page: int = 1, size: int = 20):
+async def list_posts(topic_id: int, db: Session = Depends(get_db), page: int = 1, size: int = 20):  # noqa: B008
     """List posts in a topic."""
     topic = ForumService.get_topic(db, topic_id)
     if not topic:
@@ -188,8 +188,8 @@ async def list_posts(topic_id: int, db: Session = Depends(get_db), page: int = 1
 @router.post("/posts", response_model=ForumPostResponse, status_code=status.HTTP_201_CREATED)
 async def create_post(
     post_data: ForumPostCreate,
-    current_user: User = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Create a new forum post."""
     topic = ForumService.get_topic(db, post_data.topic_id)
@@ -203,7 +203,7 @@ async def create_post(
 
 
 @router.get("/posts/{post_id}", response_model=ForumPostResponse)
-async def get_post(post_id: int, db: Session = Depends(get_db)):
+async def get_post(post_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Get a forum post."""
     post = ForumService.get_post(db, post_id)
     if not post:
@@ -215,8 +215,8 @@ async def get_post(post_id: int, db: Session = Depends(get_db)):
 async def update_post(
     post_id: int,
     post_data: ForumPostUpdate,
-    current_user: User = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Update a forum post."""
     post = ForumService.get_post(db, post_id)
@@ -235,8 +235,8 @@ async def update_post(
 @router.delete("/posts/{post_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_post(
     post_id: int,
-    current_user: User = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Delete a forum post."""
     post = ForumService.get_post(db, post_id)

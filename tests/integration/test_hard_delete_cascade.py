@@ -47,7 +47,7 @@ class TestHardDeleteCascade:
         from apps.counselconduit.api.gdpr import SUBCOLLECTIONS_TO_DELETE
 
         expected = ["sessions", "transcripts", "matters", "billing_records", "clients"]
-        assert SUBCOLLECTIONS_TO_DELETE == expected
+        assert expected == SUBCOLLECTIONS_TO_DELETE
 
     @pytest.mark.asyncio
     async def test_cascade_preserves_audit_trail(self):

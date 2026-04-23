@@ -69,7 +69,7 @@ def check_layer_1_pnkln_stack() -> tuple[bool, list[str]]:
         # Check if modules are importable
         try:
             sys.path.insert(0, str(Path.cwd()))
-            from src.pnkln import NS, Cor, JudgeSix, ShadowTag
+            from src.pnkln import NS, Cor, JudgeSix, ShadowTag  # noqa: F401
 
             checks.append(f"  {GREEN}✓{RESET} PNKLN modules importable")
         except ImportError as e:

@@ -18,7 +18,9 @@ test.describe('KovelAI Landing Page', () => {
 
   test('has primary CTA visible', async ({ page }) => {
     await page.goto(BASE_URL);
-    const cta = page.locator('a:has-text("Get Started"), button:has-text("Get Started"), a:has-text("Book"), button:has-text("Book")');
+    const cta = page.locator(
+      'a:has-text("Get Started"), button:has-text("Get Started"), a:has-text("Book"), button:has-text("Book")',
+    );
     await expect(cta.first()).toBeVisible();
   });
 
@@ -31,11 +33,11 @@ test.describe('KovelAI Landing Page', () => {
 
   test('no console errors on load', async ({ page }) => {
     const errors = [];
-    page.on('console', msg => {
+    page.on('console', (msg) => {
       if (msg.type() === 'error') errors.push(msg.text());
     });
     await page.goto(BASE_URL, { waitUntil: 'networkidle' });
-    expect(errors.filter(e => !e.includes('favicon') && !e.includes('cookie'))).toHaveLength(0);
+    expect(errors.filter((e) => !e.includes('favicon') && !e.includes('cookie'))).toHaveLength(0);
   });
 
   test('mobile viewport renders correctly', async ({ page }) => {

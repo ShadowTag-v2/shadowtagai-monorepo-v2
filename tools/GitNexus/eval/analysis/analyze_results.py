@@ -111,7 +111,7 @@ def compute_metrics(run_data: dict) -> dict:
     gn_augment_hits = []
     gn_augment_calls = []
 
-    for instance_id, traj in trajectories.items():
+    for instance_id, traj in trajectories.items():  # noqa: B007
         info = traj.get("info", {})
         model_stats = info.get("model_stats", {})
         costs.append(model_stats.get("instance_cost", 0))

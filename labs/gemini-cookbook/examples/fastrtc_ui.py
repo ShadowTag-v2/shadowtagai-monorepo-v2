@@ -151,27 +151,26 @@ with gr.Blocks() as demo:
             value=os.getenv("GOOGLE_API_KEY", ""),
             type="password",
         )
-    with gr.Row(visible=False) as row:
-        with gr.Column():
-            webrtc = WebRTC(
-                label="Audio",
-                modality="audio",
-                mode="send-receive",
-                pulse_color="rgb(35, 157, 225)",
-                icon_button_color="rgb(255, 255, 255)",
-                icon="https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png",
-            )
-            voice = gr.Dropdown(
-                label="Voice",
-                choices=[
-                    "Puck",
-                    "Charon",
-                    "Kore",
-                    "Fenrir",
-                    "Aoede",
-                ],
-                value="Puck",
-            )
+    with gr.Row(visible=False) as row, gr.Column():
+        webrtc = WebRTC(
+            label="Audio",
+            modality="audio",
+            mode="send-receive",
+            pulse_color="rgb(35, 157, 225)",
+            icon_button_color="rgb(255, 255, 255)",
+            icon="https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png",
+        )
+        voice = gr.Dropdown(
+            label="Voice",
+            choices=[
+                "Puck",
+                "Charon",
+                "Kore",
+                "Fenrir",
+                "Aoede",
+            ],
+            value="Puck",
+        )
     webrtc.stream(
         GeminiHandler(),
         inputs=[webrtc, api_key, voice],

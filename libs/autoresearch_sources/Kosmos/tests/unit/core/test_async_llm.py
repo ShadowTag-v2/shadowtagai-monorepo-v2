@@ -218,7 +218,7 @@ class TestErrorHandling:
             max_requests_per_minute=10,
         )
 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             await asyncio.wait_for(client.async_generate(prompt="Test"), timeout=30.0)
 
         await client.close()

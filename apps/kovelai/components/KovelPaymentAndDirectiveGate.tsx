@@ -15,12 +15,8 @@
 
 'use client';
 
-import { useState, type FormEvent } from 'react';
-import {
-  PaymentElement,
-  useStripe,
-  useElements,
-} from '@stripe/react-stripe-js';
+import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { type FormEvent, useState } from 'react';
 
 interface KovelPaymentGateProps {
   lawyerName: string;
@@ -46,11 +42,10 @@ export default function KovelPaymentGate({
     setError(null);
 
     // 1. Process upfront payment directly to Lawyer's Stripe Connect Account
-    const { error: stripeError, paymentIntent } =
-      await stripe.confirmPayment({
-        elements,
-        redirect: 'if_required',
-      });
+    const { error: stripeError, paymentIntent } = await stripe.confirmPayment({
+      elements,
+      redirect: 'if_required',
+    });
 
     if (stripeError) {
       setError(stripeError.message ?? 'Payment failed.');
@@ -86,19 +81,15 @@ export default function KovelPaymentGate({
       </h2>
 
       <div className="bg-gray-900 p-6 border border-gray-800 rounded mb-6 text-sm font-mono text-gray-400 leading-relaxed">
-        Pursuant to <em>United States v. Heppner</em> (S.D.N.Y. 2026), you
-        acknowledge: <br />
+        Pursuant to <em>United States v. Heppner</em> (S.D.N.Y. 2026), you acknowledge: <br />
         <br />
         1. You are accessing a Closed Enterprise AI System at the{' '}
         <strong>express direction of {lawyerName}</strong>.<br />
-        2. Your search activity (Medical, Financial, Web) and uploads are
-        protected Attorney Work-Product.
+        2. Your search activity (Medical, Financial, Web) and uploads are protected Attorney
+        Work-Product.
         <br />
-        3.{' '}
-        <strong>
-          FEE: You agree to a ${feeAmount} upfront retainer per triage session
-        </strong>
-        , billed directly to your attorney&apos;s operating account.
+        3. <strong>FEE: You agree to a ${feeAmount} upfront retainer per triage session</strong>,
+        billed directly to your attorney&apos;s operating account.
       </div>
 
       {error && (
@@ -116,9 +107,7 @@ export default function KovelPaymentGate({
           disabled={isProcessing || !stripe}
           className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 text-white font-bold py-4 rounded transition-all tracking-wide"
         >
-          {isProcessing
-            ? 'SECURING TUNNEL...'
-            : `AUTHORIZE & PAY $${feeAmount}`}
+          {isProcessing ? 'SECURING TUNNEL...' : `AUTHORIZE & PAY $${feeAmount}`}
         </button>
       </form>
     </div>

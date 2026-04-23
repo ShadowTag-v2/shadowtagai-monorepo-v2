@@ -160,7 +160,7 @@ class DebateOrchestrator:
         # Simple heuristic: if all answers similar length, assume some consensus
         lengths = [len(a) for a in answers]
         avg_len = sum(lengths) / len(lengths)
-        variance = sum((l - avg_len) ** 2 for l in lengths) / len(lengths)
+        variance = sum((l - avg_len) ** 2 for l in lengths) / len(lengths)  # noqa: E741
 
         # Normalize variance to [0, 1] score
         consensus = max(0.0, min(1.0, 1.0 - variance / (avg_len**2 + 1)))

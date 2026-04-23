@@ -16,7 +16,7 @@ from src.services.checkpointing_service import CheckpointingService
 router = APIRouter(prefix="/checkpoints", tags=["checkpoints"])
 
 
-def get_checkpoint_service(db: Session = Depends(get_db)) -> CheckpointingService:
+def get_checkpoint_service(db: Session = Depends(get_db)) -> CheckpointingService:  # noqa: B008
     """Get checkpoint service instance."""
     return CheckpointingService(db=db)
 
@@ -24,7 +24,7 @@ def get_checkpoint_service(db: Session = Depends(get_db)) -> CheckpointingServic
 @router.post("", response_model=CheckpointResponse, status_code=status.HTTP_201_CREATED)
 async def create_checkpoint(
     checkpoint_data: CheckpointCreate,
-    service: CheckpointingService = Depends(get_checkpoint_service),
+    service: CheckpointingService = Depends(get_checkpoint_service),  # noqa: B008
 ):
     """Create a new checkpoint.
 
@@ -53,7 +53,7 @@ async def create_checkpoint(
 @router.get("/{checkpoint_id}", response_model=CheckpointResponse)
 async def get_checkpoint(
     checkpoint_id: str,
-    service: CheckpointingService = Depends(get_checkpoint_service),
+    service: CheckpointingService = Depends(get_checkpoint_service),  # noqa: B008
 ):
     """Get checkpoint details by ID.
 
@@ -84,7 +84,7 @@ async def list_checkpoints(
     session_id: str,
     limit: int = 100,
     offset: int = 0,
-    service: CheckpointingService = Depends(get_checkpoint_service),
+    service: CheckpointingService = Depends(get_checkpoint_service),  # noqa: B008
 ):
     """List all checkpoints for a session.
 
@@ -107,7 +107,7 @@ async def list_checkpoints(
 async def restore_checkpoint(
     checkpoint_id: str,
     restore_data: CheckpointRestore,
-    service: CheckpointingService = Depends(get_checkpoint_service),
+    service: CheckpointingService = Depends(get_checkpoint_service),  # noqa: B008
 ):
     """Restore a checkpoint.
 
@@ -141,7 +141,7 @@ async def restore_checkpoint(
 @router.get("/{checkpoint_id}/files", response_model=list[FileSnapshotResponse])
 async def get_checkpoint_files(
     checkpoint_id: str,
-    service: CheckpointingService = Depends(get_checkpoint_service),
+    service: CheckpointingService = Depends(get_checkpoint_service),  # noqa: B008
 ):
     """Get all file snapshots for a checkpoint.
 
@@ -172,7 +172,7 @@ async def get_checkpoint_files(
 @router.delete("/{checkpoint_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_checkpoint(
     checkpoint_id: str,
-    service: CheckpointingService = Depends(get_checkpoint_service),
+    service: CheckpointingService = Depends(get_checkpoint_service),  # noqa: B008
 ):
     """Delete a checkpoint.
 
@@ -198,7 +198,7 @@ async def delete_checkpoint(
 @router.get("/sessions/{session_id}/stats")
 async def get_session_stats(
     session_id: str,
-    service: CheckpointingService = Depends(get_checkpoint_service),
+    service: CheckpointingService = Depends(get_checkpoint_service),  # noqa: B008
 ):
     """Get checkpoint statistics for a session.
 
@@ -215,7 +215,7 @@ async def get_session_stats(
 
 @router.post("/cleanup", status_code=status.HTTP_200_OK)
 async def cleanup_expired_checkpoints(
-    service: CheckpointingService = Depends(get_checkpoint_service),
+    service: CheckpointingService = Depends(get_checkpoint_service),  # noqa: B008
 ):
     """Clean up expired checkpoints.
 

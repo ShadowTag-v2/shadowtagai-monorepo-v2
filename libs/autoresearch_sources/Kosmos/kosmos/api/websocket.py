@@ -283,7 +283,7 @@ if HAS_FASTAPI:
             # Cancel remaining tasks
             for task in pending:
                 task.cancel()
-                try:
+                try:  # noqa: SIM105
                     await task
                 except asyncio.CancelledError:
                     pass

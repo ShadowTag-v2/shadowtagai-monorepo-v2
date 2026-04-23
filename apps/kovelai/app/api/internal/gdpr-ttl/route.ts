@@ -55,10 +55,7 @@ export async function enforceGDPRRetention(): Promise<DeleteReport[]> {
 
   for (const collection of COLLECTIONS_TO_ENFORCE) {
     try {
-      const deletedCount = await purgeExpiredDocuments(
-        collection,
-        cutoffDate,
-      );
+      const deletedCount = await purgeExpiredDocuments(collection, cutoffDate);
 
       const report: DeleteReport = {
         collection,
@@ -69,8 +66,7 @@ export async function enforceGDPRRetention(): Promise<DeleteReport[]> {
 
       reports.push(report);
       console.log(`[GDPR TTL] ${collection}: deleted ${deletedCount} expired records`);
-    } catch (error) {
-      console.error(`[GDPR TTL] Failed to purge ${collection}:`, error);
+    } catch (_error) {
       reports.push({
         collection,
         deletedCount: -1,
@@ -88,10 +84,7 @@ export async function enforceGDPRRetention(): Promise<DeleteReport[]> {
 
 // ─── Firestore Purge Logic ──────────────────────────────────────────
 
-async function purgeExpiredDocuments(
-  collection: string,
-  cutoffDate: Date,
-): Promise<number> {
+async function purgeExpiredDocuments(collection: string, cutoffDate: Date): Promise<number> {
   const projectId = process.env.GCP_PROJECT_ID ?? 'shadowtag-omega-v4';
   const databaseId = '(default)';
   const baseUrl = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${databaseId}/documents`;
@@ -103,7 +96,7 @@ async function purgeExpiredDocuments(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${await getAccessToken()}`,
+        Authorization: `Bearer ${await getAccessToken()}`,
       },
       body: JSON.stringify({
         structuredQuery: {
@@ -136,7 +129,7 @@ async function purgeExpiredDocuments(
       const deleteResponse = await fetch(`${baseUrl}/${result.document.name}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${await getAccessToken()}`,
+          Authorization: `Bearer ${await getAccessToken()}`,
         },
       });
 
@@ -175,7 +168,7 @@ async function logComplianceReport(reports: DeleteReport[]): Promise<void> {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${await getAccessToken()}`,
+          Authorization: `Bearer ${await getAccessToken()}`,
         },
         body: JSON.stringify({
           fields: {
@@ -184,9 +177,7 @@ async function logComplianceReport(reports: DeleteReport[]): Promise<void> {
         }),
       },
     );
-  } catch (error) {
-    console.error('[GDPR TTL] Failed to log compliance report:', error);
-  }
+  } catch (_error) {}
 }
 
 // ─── Cloud Scheduler Configuration ──────────────────────────────────
@@ -220,7 +211,7 @@ async function getAccessToken(): Promise<string> {
 
 // ─── Next.js API Route Handler ──────────────────────────────────────
 
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // Verify internal-only access
@@ -238,7 +229,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   } catch (error) {
     return NextResponse.json(
-      { error: 'GDPR enforcement failed', details: error instanceof Error ? error.message : 'Unknown' },
+      {
+        error: 'GDPR enforcement failed',
+        details: error instanceof Error ? error.message : 'Unknown',
+      },
       { status: 500 },
     );
   }

@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 # Optional sandbox import
 try:
-    from kosmos.execution.sandbox import DockerSandbox, SandboxExecutionResult
+    from kosmos.execution.sandbox import DockerSandbox, SandboxExecutionResult  # noqa: F401
 
     SANDBOX_AVAILABLE = True
 except ImportError:
@@ -27,7 +27,7 @@ except ImportError:
 
 # Optional R executor import
 try:
-    from kosmos.execution.r_executor import RExecutionResult, RExecutor, is_r_code
+    from kosmos.execution.r_executor import RExecutionResult, RExecutor, is_r_code  # noqa: F401
 
     R_EXECUTOR_AVAILABLE = True
 except ImportError:
@@ -217,7 +217,7 @@ class CodeExecutor:
                             mgr = ReproducibilityManager()
                             is_deterministic = mgr.test_determinism(
                                 experiment_function=lambda: self._execute_once(
-                                    current_code, local_vars
+                                    current_code, local_vars  # noqa: B023
                                 ),
                                 seed=42,
                                 n_runs=2,

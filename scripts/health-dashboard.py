@@ -39,7 +39,7 @@ def check_git() -> dict:
     _, branch = run("git branch --show-current")
     _, status = run("git status --porcelain")
     _, last_commit = run("git log -1 --format='%h %s' 2>/dev/null")
-    dirty_count = len([l for l in status.split("\n") if l.strip()]) if status else 0
+    dirty_count = len([l for l in status.split("\n") if l.strip()]) if status else 0  # noqa: E741
     return {
         "branch": branch,
         "dirty_files": dirty_count,
@@ -58,7 +58,7 @@ def check_workflows() -> dict:
 
 def check_daemons() -> dict:
     _code, out = run("launchctl list 2>/dev/null | grep pnkln")
-    daemons = [l.split("\t") for l in out.split("\n") if l.strip()] if out else []
+    daemons = [l.split("\t") for l in out.split("\n") if l.strip()] if out else []  # noqa: E741
     active = sum(1 for d in daemons if d[0] != "-")
     return {
         "total": len(daemons),

@@ -271,7 +271,7 @@ class ReproducibilityManager:
         checks = []
 
         # Check if results are same type
-        if type(original_result) != type(replication_result):
+        if type(original_result) != type(replication_result):  # noqa: E721
             issues.append(
                 f"Result types differ: {type(original_result)} vs {type(replication_result)}"
             )

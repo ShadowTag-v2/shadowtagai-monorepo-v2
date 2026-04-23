@@ -61,7 +61,7 @@ class LoopAgent:
     3. Exit when: no feedback OR max iterations reached
     """
 
-    minionS_URL = os.environ.get("minionS_URL", "http://localhost:8600")
+    minionS_URL = os.environ.get("minionS_URL", "http://localhost:8600")  # noqa: SIM112
 
     # Prompts for each agent role
     ARCHITECT_PROMPT = """You are a senior cloud architect. Design a solution for:

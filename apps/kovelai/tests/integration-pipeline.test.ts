@@ -15,7 +15,7 @@
  * @see tests/murder-board.test.ts — Unit tests
  */
 
-import { describe, it, expect, vi, beforeAll } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 // ─── Mock Imports ───────────────────────────────────────────────────
 
@@ -41,7 +41,6 @@ vi.stubGlobal('crypto', {
 // ─── Test Suite: Full Pipeline ──────────────────────────────────────
 
 describe('KovelAI Integration Pipeline', () => {
-
   // ─── 1. Tenant → S.E.U. → Search → Receipt ─────────────────────
   describe('Tenant Provisioning Flow', () => {
     it('should provision a tenant and generate initial S.E.U. token', async () => {
@@ -153,7 +152,9 @@ describe('KovelAI Integration Pipeline', () => {
   // ─── 5. Cloud Armor Policy ────────────────────────────────────
   describe('Cloud Armor WAF Policy', () => {
     it('should generate valid policy with all required rules', async () => {
-      const { generateCloudArmorPolicy, validatePolicy } = await import('../lib/security/cloud-armor');
+      const { generateCloudArmorPolicy, validatePolicy } = await import(
+        '../lib/security/cloud-armor'
+      );
 
       const policy = generateCloudArmorPolicy();
       const validation = validatePolicy(policy);
@@ -167,9 +168,7 @@ describe('KovelAI Integration Pipeline', () => {
       const { generateCloudArmorPolicy } = await import('../lib/security/cloud-armor');
 
       const policy = generateCloudArmorPolicy();
-      const owaspRules = policy.rules.filter((r) =>
-        r.description.includes('OWASP CRS'),
-      );
+      const owaspRules = policy.rules.filter((r) => r.description.includes('OWASP CRS'));
 
       // Should have SQLi, XSS, RFI, Scanner
       expect(owaspRules.length).toBe(4);

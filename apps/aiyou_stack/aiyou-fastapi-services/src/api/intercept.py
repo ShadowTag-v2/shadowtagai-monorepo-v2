@@ -28,7 +28,7 @@ class ToolCallResponse(BaseModel):
 @router.post("/tool-call", response_model=ToolCallResponse)
 async def intercept_tool_call(
     request: ToolCallRequest,
-    identity: ZeroTrustIdentity = Depends(verify_zero_trust_token),
+    identity: ZeroTrustIdentity = Depends(verify_zero_trust_token),  # noqa: B008
 ):
     logger.info(
         f"[SHIELD 1] Intercepting tool call: {request.function_name} by principal ID: {identity.email}",

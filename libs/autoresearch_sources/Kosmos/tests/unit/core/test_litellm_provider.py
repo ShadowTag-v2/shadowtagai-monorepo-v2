@@ -228,7 +228,7 @@ class TestLiteLLMProviderErrorHandling:
         """Test handling of invalid model."""
         provider = LiteLLMProvider({"model": "invalid-model-xyz", "api_key": "invalid-key"})
 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             provider.generate(prompt="Test")
 
     def test_missing_api_key(self):
@@ -243,5 +243,5 @@ class TestLiteLLMProviderErrorHandling:
 
         # Should fail when trying to generate (unless env var is set)
         if not os.getenv("ANTHROPIC_API_KEY"):
-            with pytest.raises(Exception):
+            with pytest.raises(Exception):  # noqa: B017
                 provider.generate(prompt="Test")

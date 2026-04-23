@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 
 
-def load_prompt(name: str, domain: Optional[str] = None) -> str:
+def load_prompt(name: str, domain: Optional[str] = None) -> str:  # noqa: UP045
     """
     Load prompt template by name.
 

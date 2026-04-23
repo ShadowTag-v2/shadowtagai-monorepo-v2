@@ -455,7 +455,7 @@ class ProviderAPIError(Exception):
             return False
 
         # Check status code for known non-recoverable errors
-        if self.status_code is not None:
+        if self.status_code is not None:  # noqa: SIM102
             # 4xx client errors (except 429 rate limit) are not recoverable
             if 400 <= self.status_code < 500 and self.status_code != 429:
                 return False
@@ -498,7 +498,7 @@ class ProviderAPIError(Exception):
             return True
 
         # If explicitly mentions non-recoverable error type
-        if any(pattern in message_lower for pattern in non_recoverable_patterns):
+        if any(pattern in message_lower for pattern in non_recoverable_patterns):  # noqa: SIM103
             return False
 
         # Default to recoverable for unknown errors

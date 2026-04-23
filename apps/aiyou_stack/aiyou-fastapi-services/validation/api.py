@@ -137,7 +137,7 @@ async def startup_event():
 
 
 @app.get("/health", response_model=HealthResponse)
-async def health_check(validator: Judge6Validator = Depends(get_validator)):
+async def health_check(validator: Judge6Validator = Depends(get_validator)):  # noqa: B008
     """Health check endpoint."""
     stats = validator.get_stats()
 
@@ -152,7 +152,7 @@ async def health_check(validator: Judge6Validator = Depends(get_validator)):
 @app.post("/validate", response_model=ValidationResponse)
 async def validate_item(
     request: ValidationRequest,
-    validator: Judge6Validator = Depends(get_validator),
+    validator: Judge6Validator = Depends(get_validator),  # noqa: B008
 ):
     """Validate a single item.
 
@@ -180,7 +180,7 @@ async def validate_item(
 @app.post("/validate/batch", response_model=BatchValidationResponse)
 async def validate_batch(
     request: BatchValidationRequest,
-    validator: Judge6Validator = Depends(get_validator),
+    validator: Judge6Validator = Depends(get_validator),  # noqa: B008
 ):
     """Validate multiple items in batch.
 
@@ -237,7 +237,7 @@ async def validate_batch(
 
 
 @app.get("/stats")
-async def get_stats(validator: Judge6Validator = Depends(get_validator)):
+async def get_stats(validator: Judge6Validator = Depends(get_validator)):  # noqa: B008
     """Get validation statistics."""
     return validator.get_stats()
 

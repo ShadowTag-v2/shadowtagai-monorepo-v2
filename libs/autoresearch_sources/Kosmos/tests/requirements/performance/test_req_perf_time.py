@@ -391,9 +391,9 @@ class TestREQ_PERF_TIME_003_DatabaseQueryPerformance:
             assert duration < 1.0, f"Write query took {duration:.3f}s, exceeds 1 second limit"
 
             # Cleanup
-            try:
+            try:  # noqa: SIM105
                 wm.delete_hypothesis(hypothesis_id)
-            except:
+            except Exception:
                 pass
 
         except Exception as e:
@@ -442,9 +442,9 @@ class TestREQ_PERF_TIME_003_DatabaseQueryPerformance:
 
             # Cleanup
             for hyp_id in hypothesis_ids:
-                try:
+                try:  # noqa: SIM105
                     wm.delete_hypothesis(hyp_id)
-                except:
+                except Exception:
                     pass
 
         except Exception as e:

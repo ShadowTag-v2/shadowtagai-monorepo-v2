@@ -3,7 +3,7 @@ from fastapi import APIRouter, File, HTTPException, UploadFile, status
 # Local app imports based on conventional structure
 # Note: we stub models/database imports if they don't exist yet to prevent crashes
 try:
-    import models
+    import models  # noqa: F401
     from database import get_db
     from routers.agents import verify_workspace_access
     from security import get_current_user
@@ -27,7 +27,7 @@ router = APIRouter(prefix="/workspaces/{workspace_id}/knowledge", tags=["Knowled
 @router.post("/upload", status_code=status.HTTP_201_CREATED)
 async def upload_workspace_document(
     workspace_id: int,
-    file: UploadFile = File(...),
+    file: UploadFile = File(...),  # noqa: B008
 ):
     # verify_workspace_access(workspace_id, current_user.id, db)
 

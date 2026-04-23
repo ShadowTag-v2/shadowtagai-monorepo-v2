@@ -42,7 +42,7 @@ def check_bioagents_server():
 
         response = requests.get("http://localhost:8888/health", timeout=2)
         return response.status_code == 200
-    except:
+    except Exception:
         return False
 
 

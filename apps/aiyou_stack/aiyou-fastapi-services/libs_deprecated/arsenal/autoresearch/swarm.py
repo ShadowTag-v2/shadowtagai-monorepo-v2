@@ -34,7 +34,7 @@ class CavMTOE:
                 config=types.GenerateContentConfig(response_mime_type="application/json"),
             )
             return json.loads(res.text)
-        except:
+        except Exception:
             return {"vote": "NO", "reason": "Timeout"}
 
     async def deploy_bravo(self, intent: str):

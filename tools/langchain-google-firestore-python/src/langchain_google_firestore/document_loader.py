@@ -45,8 +45,8 @@ class FirestoreLoader(BaseLoader):
     def __init__(
         self,
         source: Query | CollectionGroup | DocumentReference | str,
-        page_content_fields: list[str] = [],
-        metadata_fields: list[str] = [],
+        page_content_fields: list[str] = None,
+        metadata_fields: list[str] = None,
         client: Client = None,
     ) -> None:
         """Document Loader for Google Cloud Firestore.
@@ -62,6 +62,10 @@ class FirestoreLoader(BaseLoader):
                 it will write all fields that are not in `page_content`into `metadata`.
             client: Client for interacting with the Google Cloud Firestore API.
         """
+        if metadata_fields is None:
+            metadata_fields = []
+        if page_content_fields is None:
+            page_content_fields = []
         self.client = client_with_user_agent(USER_AGENT_LOADER, client)
         self.source = source
         self.page_content_fields = page_content_fields

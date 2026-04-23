@@ -21,7 +21,7 @@ router = APIRouter()
 @router.post("/conversations", response_model=SearchResponse)
 async def search_conversations(
     request: SearchRequest,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Search conversations semantically."""
     service = SearchService(db)
@@ -53,7 +53,7 @@ async def search_conversations(
 @router.post("/messages", response_model=SearchResponse)
 async def search_messages(
     request: SearchRequest,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Search specific messages."""
     service = SearchService(db)
@@ -84,9 +84,9 @@ async def search_messages(
 
 @router.get("/suggestions", response_model=list[ConversationResponse])
 async def get_suggestions(
-    conversation_id: UUID | None = Query(None),
+    conversation_id: UUID | None = Query(None),  # noqa: B008
     limit: int = Query(5, ge=1, le=20),
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get related conversation suggestions."""
     service = SearchService(db)

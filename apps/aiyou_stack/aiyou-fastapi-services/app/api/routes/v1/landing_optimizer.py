@@ -58,7 +58,7 @@ async def service_info():
 )
 async def analyze_landing_page(
     request: OptimizePageRequest,
-    service: LandingPageOptimizerService = Depends(get_optimizer_service),
+    service: LandingPageOptimizerService = Depends(get_optimizer_service),  # noqa: B008
 ) -> OptimizePageResponse:
     """Analyze a landing page for optimization opportunities
 
@@ -126,7 +126,7 @@ async def analyze_landing_page(
 )
 async def generate_headlines(
     request: GenerateHeadlinesRequest,
-    service: LandingPageOptimizerService = Depends(get_optimizer_service),
+    service: LandingPageOptimizerService = Depends(get_optimizer_service),  # noqa: B008
 ) -> GenerateHeadlinesResponse:
     """Generate headline variations
 
@@ -176,7 +176,7 @@ async def generate_headlines(
 )
 async def generate_ctas(
     request: GenerateCTARequest,
-    service: LandingPageOptimizerService = Depends(get_optimizer_service),
+    service: LandingPageOptimizerService = Depends(get_optimizer_service),  # noqa: B008
 ) -> GenerateCTAResponse:
     """Generate CTA (Call-to-Action) variations
 
@@ -226,7 +226,7 @@ async def generate_ctas(
 )
 async def generate_social_proof(
     request: GenerateSocialProofRequest,
-    service: LandingPageOptimizerService = Depends(get_optimizer_service),
+    service: LandingPageOptimizerService = Depends(get_optimizer_service),  # noqa: B008
 ) -> GenerateSocialProofResponse:
     """Generate social proof suggestions
 
