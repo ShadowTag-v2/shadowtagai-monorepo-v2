@@ -1,0 +1,56 @@
+name: "Nightly Vulture Dead Code Sweep"
+
+on:
+  schedule:
+    - cron: "0 6 * * *"  # Daily at 06:00 UTC
+  workflow_dispatch:  # Manual trigger
+
+permissions:
+  contents: read
+
+jobs:
+  vulture-sweep:
+    name: "Full Monorepo Dead Code Scan"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - path: apps/kovelai/api
+            name: kovelai
+          - path: apps/counselconduit
+            name: counselconduit
+          - path: scripts
+            name: scripts
+          - path: apps/shadowtagai
+            name: shadowtagai
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install vulture
+        run: pip install vulture>=2.14
+
+      - name: Run vulture on ${{ matrix.target.name }}
+        run: |
+          WHITELIST=""
+          if [ -f "${{ matrix.target.path }}/vulture_whitelist.py" ]; then
+            WHITELIST="${{ matrix.target.path }}/vulture_whitelist.py"
+          fi
+          vulture ${{ matrix.target.path }} $WHITELIST --min-confidence 80 \
+            --exclude "node_modules,__pycache__,.venv,migrations,alembic" \
+            2>&1 | tee /tmp/vulture-${{ matrix.target.name }}.txt
+          echo "### Vulture Results: ${{ matrix.target.name }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat /tmp/vulture-${{ matrix.target.name }}.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vulture-${{ matrix.target.name }}
+          path: /tmp/vulture-${{ matrix.target.name }}.txt

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import enum
 from datetime import datetime
-from typing import Optional
+
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -25,7 +25,7 @@ from pydantic import BaseModel, Field, field_validator
 # ═══════════════════════════════════════════════════════════
 
 
-class KinematicClassification(str, enum.Enum):
+class KinematicClassification(enum.StrEnum):
     """Legal-linguistic verb classification categories."""
 
     CONTACT_FORCE = "CONTACT_FORCE"
@@ -38,7 +38,7 @@ class KinematicClassification(str, enum.Enum):
     DOCUMENT_ACTION = "DOCUMENT_ACTION"
 
 
-class VerbImpact(str, enum.Enum):
+class VerbImpact(enum.StrEnum):
     """Whether the verb strengthens or weakens the client's case."""
 
     STRENGTHENS = "strengthens"
@@ -183,7 +183,7 @@ class VerbLedgerDocument(BaseModel):
 # ═══════════════════════════════════════════════════════════
 
 
-class CitationType(str, enum.Enum):
+class CitationType(enum.StrEnum):
     """Legal citation classification."""
 
     STATUTE = "statute"
@@ -193,7 +193,7 @@ class CitationType(str, enum.Enum):
     SECONDARY = "secondary"
 
 
-class CitationStatus(str, enum.Enum):
+class CitationStatus(enum.StrEnum):
     """Citation verification status."""
 
     VERIFIED = "verified"
