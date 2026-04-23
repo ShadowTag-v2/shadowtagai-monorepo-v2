@@ -13,6 +13,8 @@
     "git.defaultCloneDirectory": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball",
     "geminicodeassist.updateChannel": "Insiders",
     "cloudcode.updateChannel": "Insiders",
+    "cloudcode.project": "shadowtag-omega-v4",
+    "cloudcode.region": "us-central1",
     "geminicodeassist.agentYoloMode": true,
     "geminicodeassist.customInstructions": "*** PRE-ACTION MEMORY GATE ***Location: `/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/operator_invariants.json`Before doing any repo-wide action:1. Acknowledge whether memory is LOCKED or DRIFTED.3. If DRIFTED, stop immediately and request re-lock.4. Verify the presence of `DEVELOPER_KNOWLEDGE_API_KEY` in the environment to ensure MCP access is authorized. See: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.env.,5. Always reference: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/CLAUDE.md.,6. If LOCKED and authorized, proceed immediately to the Execution Phase below.*** DONT RE-PRINT THE WHOLE LIST ***",
     "cline.autoApprovalSettings": {

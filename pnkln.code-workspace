@@ -131,7 +131,9 @@
       "**/.pytest_cache/**": true,
       "**/.chroma_db/**": true,
       "**/.uv-cache/**": true,
-      "**/bazel-*/**": true
+      "**/bazel-*/**": true,
+      "**/.memory-index.db*": true,
+      "**/events.ndjson": true
     },
     "python.analysis.exclude": [
       "**/archive",
