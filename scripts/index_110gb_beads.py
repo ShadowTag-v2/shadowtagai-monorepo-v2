@@ -2,16 +2,12 @@ import json
 import logging
 
 import os
-import logging
 
 import sqlite3
-import logging
 
 import subprocess
-import logging
 
 import sys
-import logging
 
 from datetime import datetime
 
@@ -25,7 +21,6 @@ except ImportError:
     ANE_ENABLED = False
 
 import pathlib
-import logging
 
 
 ROOT_DIR = str(pathlib.Path(__file__).parent.parent.absolute())

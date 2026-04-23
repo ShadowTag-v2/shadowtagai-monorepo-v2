@@ -18,7 +18,7 @@ extend-exclude = [
     "docs/bundles/",
     "apps/ShadowTag-v2_stack/cosmic-crab-payload/",
     "**/external_repos/",
-    "tools/external_sdks/",
+    "tools/",
 ]
 
 [lint]
