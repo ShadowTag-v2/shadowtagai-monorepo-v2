@@ -53,9 +53,7 @@ class TestSwarmWhiteboardWrite:
 
     def test_write_to_empty_issue(self, whiteboard):
         """First write to empty issue succeeds with version 0."""
-        success = whiteboard.write_state(
-            "ISSUE-1", expected_version=0, new_data={"status": "assigned"}
-        )
+        success = whiteboard.write_state("ISSUE-1", expected_version=0, new_data={"status": "assigned"})
         assert success is True
         state = whiteboard.read_state("ISSUE-1")
         assert state["version"] == 1
@@ -64,9 +62,7 @@ class TestSwarmWhiteboardWrite:
     def test_write_with_correct_version(self, whiteboard):
         """Write with matching version succeeds."""
         whiteboard.write_state("ISSUE-2", expected_version=0, new_data={"v": 1})
-        success = whiteboard.write_state(
-            "ISSUE-2", expected_version=1, new_data={"v": 2}
-        )
+        success = whiteboard.write_state("ISSUE-2", expected_version=1, new_data={"v": 2})
         assert success is True
         state = whiteboard.read_state("ISSUE-2")
         assert state["version"] == 2
@@ -77,9 +73,7 @@ class TestSwarmWhiteboardWrite:
         # Another agent increments
         whiteboard.write_state("ISSUE-3", expected_version=1, new_data={"v": 2})
         # First agent tries with stale version
-        success = whiteboard.write_state(
-            "ISSUE-3", expected_version=1, new_data={"v": "STALE"}
-        )
+        success = whiteboard.write_state("ISSUE-3", expected_version=1, new_data={"v": "STALE"})
         assert success is False
         state = whiteboard.read_state("ISSUE-3")
         assert state["data"]["v"] == 2  # Not overwritten

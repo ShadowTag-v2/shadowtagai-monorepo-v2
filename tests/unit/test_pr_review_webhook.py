@@ -15,6 +15,7 @@ class TestEnforceM1MaxConstraints:
     @pytest.fixture(autouse=True)
     def _import_function(self) -> None:
         from apps.counselconduit.api.pr_review_webhook import enforce_m1_max_constraints
+
         self.fn = enforce_m1_max_constraints
 
     def test_safe_standard_bert(self) -> None:
@@ -87,11 +88,13 @@ class TestWebhookSignature:
     @pytest.fixture(autouse=True)
     def _import_function(self) -> None:
         from apps.counselconduit.api.pr_review_webhook import _verify_github_signature
+
         self.verify = _verify_github_signature
 
     def test_no_secret_allows_all(self, monkeypatch: pytest.MonkeyPatch) -> None:
         """With no GITHUB_WEBHOOK_SECRET, all signatures pass (dev mode)."""
         import apps.counselconduit.api.pr_review_webhook as mod
+
         monkeypatch.setattr(mod, "GITHUB_WEBHOOK_SECRET", "")
         assert self.verify(b"any payload", "sha256=anything") is True
 
@@ -101,18 +104,18 @@ class TestWebhookSignature:
         import hmac as hmac_mod
 
         import apps.counselconduit.api.pr_review_webhook as mod
+
         secret = "test-secret-key"
         monkeypatch.setattr(mod, "GITHUB_WEBHOOK_SECRET", secret)
 
         payload = b'{"action": "opened"}'
-        expected = "sha256=" + hmac_mod.new(
-            secret.encode(), payload, hashlib.sha256
-        ).hexdigest()
+        expected = "sha256=" + hmac_mod.new(secret.encode(), payload, hashlib.sha256).hexdigest()
 
         assert self.verify(payload, expected) is True
 
     def test_invalid_signature(self, monkeypatch: pytest.MonkeyPatch) -> None:
         """Invalid signature should be rejected."""
         import apps.counselconduit.api.pr_review_webhook as mod
+
         monkeypatch.setattr(mod, "GITHUB_WEBHOOK_SECRET", "real-secret")
         assert self.verify(b"payload", "sha256=deadbeef") is False

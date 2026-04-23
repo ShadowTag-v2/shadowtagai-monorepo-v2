@@ -1,0 +1,25 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "workspaces": {
+    "apps/kovelai/site": {
+      "entry": ["src/main.{js,ts}", "vite.config.{js,ts}"],
+      "project": ["src/**/*.{js,ts,jsx,tsx}"],
+      "ignore": ["src/vite-env.d.ts"]
+    },
+    "apps/shadowtagai/site": {
+      "entry": ["src/main.{js,ts}", "vite.config.{js,ts}"],
+      "project": ["src/**/*.{js,ts,jsx,tsx}"],
+      "ignore": ["src/vite-env.d.ts"]
+    }
+  },
+  "ignoreDependencies": [
+    "@biomejs/biome",
+    "punycode"
+  ],
+  "ignoreWorkspaces": [
+    "apps/counselconduit/**",
+    "libs/**",
+    "third_party/**",
+    "tools/**"
+  ]
+}

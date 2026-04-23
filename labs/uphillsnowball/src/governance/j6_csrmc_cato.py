@@ -134,21 +134,11 @@ class Judge6_CSRMC_cATO:
             FIPS 199 categorization with C/I/A impact levels.
         """
         categorization_map: dict[str, FIPS199Categorization] = {
-            "LEGAL_FILING": FIPS199Categorization(
-                ImpactLevel.HIGH, ImpactLevel.HIGH, ImpactLevel.MODERATE
-            ),
-            "MEDICAL_RECORD": FIPS199Categorization(
-                ImpactLevel.HIGH, ImpactLevel.HIGH, ImpactLevel.HIGH
-            ),
-            "FINANCIAL_ANALYSIS": FIPS199Categorization(
-                ImpactLevel.MODERATE, ImpactLevel.HIGH, ImpactLevel.MODERATE
-            ),
-            "CODE_MODIFICATION": FIPS199Categorization(
-                ImpactLevel.MODERATE, ImpactLevel.HIGH, ImpactLevel.HIGH
-            ),
-            "OSINT_REPORT": FIPS199Categorization(
-                ImpactLevel.LOW, ImpactLevel.MODERATE, ImpactLevel.LOW
-            ),
+            "LEGAL_FILING": FIPS199Categorization(ImpactLevel.HIGH, ImpactLevel.HIGH, ImpactLevel.MODERATE),
+            "MEDICAL_RECORD": FIPS199Categorization(ImpactLevel.HIGH, ImpactLevel.HIGH, ImpactLevel.HIGH),
+            "FINANCIAL_ANALYSIS": FIPS199Categorization(ImpactLevel.MODERATE, ImpactLevel.HIGH, ImpactLevel.MODERATE),
+            "CODE_MODIFICATION": FIPS199Categorization(ImpactLevel.MODERATE, ImpactLevel.HIGH, ImpactLevel.HIGH),
+            "OSINT_REPORT": FIPS199Categorization(ImpactLevel.LOW, ImpactLevel.MODERATE, ImpactLevel.LOW),
         }
         return categorization_map.get(
             payload_type,
@@ -192,9 +182,7 @@ class Judge6_CSRMC_cATO:
             ApplicationError: If risk is EXTREMELY_HIGH (RKILL) or
                 if HIGH risk lacks commander authorization.
         """
-        logger.info(
-            "🔐 J-6 ZTA PEP: Intercepting handoff %s → %s", source, destination
-        )
+        logger.info("🔐 J-6 ZTA PEP: Intercepting handoff %s → %s", source, destination)
 
         payload_type = payload.get("type", "UNKNOWN")
         fips = Judge6_CSRMC_cATO.categorize_system(payload_type)

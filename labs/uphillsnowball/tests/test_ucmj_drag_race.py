@@ -23,9 +23,7 @@ class TestUCMJDragRaceSLA:
         async def fast_agent() -> dict:
             return {"status": "COMPLETE", "data": "fast_result"}
 
-        result = await ucmj_drag_race_sla(
-            fast_agent, timeout_ms=5000, agent_name="FastBot"
-        )
+        result = await ucmj_drag_race_sla(fast_agent, timeout_ms=5000, agent_name="FastBot")
         assert result["status"] == "COMPLETE"
         assert result["data"] == "fast_result"
 
@@ -37,9 +35,7 @@ class TestUCMJDragRaceSLA:
             await asyncio.sleep(10)  # Way over SLA
             return {"status": "COMPLETE"}
 
-        result = await ucmj_drag_race_sla(
-            slow_agent, timeout_ms=100, agent_name="SlowBot"
-        )
+        result = await ucmj_drag_race_sla(slow_agent, timeout_ms=100, agent_name="SlowBot")
         assert result["status"] == "HUNG"
         assert result["ucmj"] == "ARTICLE_92_VIOLATION"
         assert result["directive"] == "REPLACE_AGENT"

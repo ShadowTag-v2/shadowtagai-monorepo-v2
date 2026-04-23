@@ -274,9 +274,13 @@ class CodeValidator:
                                     details={"module": alias.name},
                                 )
                             )
-                elif isinstance(node, ast.ImportFrom) and node.module and (
-                    node.module in self.DANGEROUS_MODULES
-                    or any(node.module.startswith(f"{m}.") for m in self.DANGEROUS_MODULES)
+                elif (
+                    isinstance(node, ast.ImportFrom)
+                    and node.module
+                    and (
+                        node.module in self.DANGEROUS_MODULES
+                        or any(node.module.startswith(f"{m}.") for m in self.DANGEROUS_MODULES)
+                    )
                 ):
                     violations.append(
                         SafetyViolation(

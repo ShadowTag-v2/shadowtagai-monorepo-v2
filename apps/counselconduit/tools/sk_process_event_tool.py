@@ -25,9 +25,7 @@ logger = logging.getLogger("sk_process_event_tool")
 class SKProcessEventInput(BaseModel):
     """Input schema for the SK Process Event Injection tool."""
 
-    process_id: str = Field(
-        ..., description="The SK Process instance ID to target."
-    )
+    process_id: str = Field(..., description="The SK Process instance ID to target.")
     event_name: str = Field(
         ...,
         description="The external event name to fire. Common values: 'UserApproved', 'UserRejected'.",
@@ -36,9 +34,7 @@ class SKProcessEventInput(BaseModel):
         None,
         description="Optional JSON payload to attach to the event.",
     )
-    firm_id: str = Field(
-        ..., description="The firm tenant ID for authorization scoping."
-    )
+    firm_id: str = Field(..., description="The firm tenant ID for authorization scoping.")
 
 
 class SKProcessEventOutput(BaseModel):
@@ -96,14 +92,8 @@ class SKProcessEventTool:
                     url,
                     json={
                         "process_id": input_data.process_id,
-                        "decision": (
-                            "approve"
-                            if input_data.event_name == "UserApproved"
-                            else "reject"
-                        ),
-                        "reviewer_notes": (
-                            f"Injected by ADK tool at {datetime.now(UTC).isoformat()}"
-                        ),
+                        "decision": ("approve" if input_data.event_name == "UserApproved" else "reject"),
+                        "reviewer_notes": (f"Injected by ADK tool at {datetime.now(UTC).isoformat()}"),
                     },
                     headers={
                         "X-Firm-Id": input_data.firm_id,

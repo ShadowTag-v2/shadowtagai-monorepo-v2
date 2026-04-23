@@ -64,8 +64,7 @@ class EpistemologicalForensics:
 
         if p_value > alpha:
             logger.warning(
-                "🚨 HALLUCINATED ALPHA DETECTED. P-Value: %.4f > %.2f. "
-                "Claimed effect size %.4f is not statistically significant.",
+                "🚨 HALLUCINATED ALPHA DETECTED. P-Value: %.4f > %.2f. Claimed effect size %.4f is not statistically significant.",
                 p_value,
                 alpha,
                 claimed_effect_size,
@@ -101,9 +100,7 @@ class EpistemologicalForensics:
         Returns:
             Dict with stdout, stderr, and success status.
         """
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".R", delete=False, dir="/tmp"
-        ) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".R", delete=False, dir="/tmp") as f:
             f.write(script_code)
             script_path = f.name
 

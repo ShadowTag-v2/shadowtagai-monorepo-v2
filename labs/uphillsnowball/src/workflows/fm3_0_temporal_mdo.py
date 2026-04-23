@@ -121,9 +121,7 @@ class MultiDomainTheaterCampaign:
             )
 
             if not roc_report.get("passed", False):
-                workflow.logger.warning(
-                    "❌ ROC Drill FAILED (attempt %d). Kickback to J-3.", attempt
-                )
+                workflow.logger.warning("❌ ROC Drill FAILED (attempt %d). Kickback to J-3.", attempt)
                 continue  # Temporal retries from shaping ops
 
             # SUSTAINING OPS — ShadowTag DCT Watermarking

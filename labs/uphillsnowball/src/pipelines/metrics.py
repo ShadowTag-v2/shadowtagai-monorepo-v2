@@ -90,11 +90,13 @@ def init_metrics(port: int = 9090, build_version: str = "dev") -> None:
         port: Port to expose metrics on.
         build_version: Build version string.
     """
-    BUILD_INFO.info({
-        "version": build_version,
-        "component": "senses-pipeline",
-        "runtime": "pnkln-omega",
-    })
+    BUILD_INFO.info(
+        {
+            "version": build_version,
+            "component": "senses-pipeline",
+            "runtime": "pnkln-omega",
+        }
+    )
     WORKER_HEALTHY.set(1)
     start_http_server(port)
     logger.info("📊 Prometheus metrics server started on port %d", port)

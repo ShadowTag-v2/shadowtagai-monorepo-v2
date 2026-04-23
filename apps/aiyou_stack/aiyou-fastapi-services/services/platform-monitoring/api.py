@@ -218,7 +218,9 @@ async def record_cost(request: CostRecordRequest):
         )
         return {"status": "recorded"}
     except ValueError:
-        raise HTTPException(status_code=400, detail=f"Invalid category: {request.category}") from None
+        raise HTTPException(
+            status_code=400, detail=f"Invalid category: {request.category}"
+        ) from None
 
 
 @app.get("/costs/status")

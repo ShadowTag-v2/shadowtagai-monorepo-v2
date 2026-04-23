@@ -108,18 +108,14 @@ class CloudTasksHandler:
 
         return {"status": "ignored", "message": "Unknown notification type"}
 
-    async def _handle_task_completed(
-        self, notification: PushNotification
-    ) -> dict[str, Any]:
+    async def _handle_task_completed(self, notification: PushNotification) -> dict[str, Any]:
         """Handle task completion notification."""
         logger.info("Task completed: %s", notification.task_id)
         if self._callback:
             await self._callback("task_completed", notification)
         return {"status": "ok", "task_id": notification.task_id}
 
-    async def _handle_task_failed(
-        self, notification: PushNotification
-    ) -> dict[str, Any]:
+    async def _handle_task_failed(self, notification: PushNotification) -> dict[str, Any]:
         """Handle task failure notification."""
         logger.warning(
             "Task failed: %s reason=%s",
@@ -128,9 +124,7 @@ class CloudTasksHandler:
         )
         return {"status": "ok", "task_id": notification.task_id}
 
-    async def _handle_session_expired(
-        self, notification: PushNotification
-    ) -> dict[str, Any]:
+    async def _handle_session_expired(self, notification: PushNotification) -> dict[str, Any]:
         """Handle dead-man's switch session expiry."""
         logger.info(
             "Session expired (dead-man's switch): session=%s tenant=%s",
@@ -144,16 +138,12 @@ class CloudTasksHandler:
             )
         return {"status": "ok", "session_id": notification.session_id}
 
-    async def _handle_memo_ready(
-        self, notification: PushNotification
-    ) -> dict[str, Any]:
+    async def _handle_memo_ready(self, notification: PushNotification) -> dict[str, Any]:
         """Handle Oracle memo generation completion."""
         logger.info("Memo ready: task=%s", notification.task_id)
         return {"status": "ok", "task_id": notification.task_id}
 
-    async def _handle_gdpr_delete(
-        self, notification: PushNotification
-    ) -> dict[str, Any]:
+    async def _handle_gdpr_delete(self, notification: PushNotification) -> dict[str, Any]:
         """Handle GDPR 30-day deletion request.
 
         Triggered by Cloud Tasks scheduled 30 days after session creation.
@@ -212,16 +202,15 @@ class DeadManSwitch:
             task = tasks_v2.Task(
                 http_request=tasks_v2.HttpRequest(
                     http_method=tasks_v2.HttpMethod.POST,
-                    url=(
-                        "https://counselconduit-767252945109"
-                        ".us-central1.run.app/api/v1/notifications/push"
-                    ),
+                    url=("https://counselconduit-767252945109.us-central1.run.app/api/v1/notifications/push"),
                     headers={"Content-Type": "application/json"},
-                    body=json.dumps({
-                        "type": "session_expired",
-                        "tenant_id": tenant_id,
-                        "session_id": session_id,
-                    }).encode(),
+                    body=json.dumps(
+                        {
+                            "type": "session_expired",
+                            "tenant_id": tenant_id,
+                            "session_id": session_id,
+                        }
+                    ).encode(),
                 ),
                 schedule_time=schedule_time,
             )
@@ -242,10 +231,7 @@ class DeadManSwitch:
             return task_name
 
         except ImportError:
-            logger.warning(
-                "google-cloud-tasks not installed. "
-                "Dead-man's switch disabled."
-            )
+            logger.warning("google-cloud-tasks not installed. Dead-man's switch disabled.")
             return ""
 
     async def reset(self, tenant_id: str, session_id: str) -> str:
@@ -273,12 +259,9 @@ class DeadManSwitch:
         if task_name:
             try:
                 from google.cloud import tasks_v2
+
                 client = tasks_v2.CloudTasksClient()
                 client.delete_task(name=task_name)
-                logger.info(
-                    "Dead-man's switch disarmed: session=%s", session_id
-                )
+                logger.info("Dead-man's switch disarmed: session=%s", session_id)
             except Exception as e:
-                logger.warning(
-                    "Failed to disarm dead-man's switch: %s", e
-                )
+                logger.warning("Failed to disarm dead-man's switch: %s", e)

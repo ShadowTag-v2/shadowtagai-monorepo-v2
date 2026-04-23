@@ -89,11 +89,15 @@ class ADP5_0_OperationsProcess:
         # ── Step 4: EXECUTE (N-Autoresearch Triad) ─────────────
         for attempt in range(1, _MAX_EXECUTE_RETRIES + 1):
             # J-6 ZTA check before every execution attempt
-            Judge6_CSRMC_cATO.enforce_zero_trust_handoff("J5", "J3", {
-                "type": opord.get("type", "CODE_MODIFICATION"),
-                "risk_prob": "SELDOM",
-                "risk_sev": "MARGINAL",
-            })
+            Judge6_CSRMC_cATO.enforce_zero_trust_handoff(
+                "J5",
+                "J3",
+                {
+                    "type": opord.get("type", "CODE_MODIFICATION"),
+                    "risk_prob": "SELDOM",
+                    "risk_sev": "MARGINAL",
+                },
+            )
 
             execution_result = await workflow.execute_activity(
                 j3_n_autoresearch_execute,
@@ -104,9 +108,7 @@ class ADP5_0_OperationsProcess:
             if execution_result.get("success", False):
                 break
 
-            workflow.logger.warning(
-                "❌ Execution attempt %d failed. J-4 repair.", attempt
-            )
+            workflow.logger.warning("❌ Execution attempt %d failed. J-4 repair.", attempt)
 
             # J-4 Corrector: Logistics repair (git reset, context wipe)
             await workflow.execute_activity(

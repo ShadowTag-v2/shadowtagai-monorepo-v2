@@ -172,6 +172,8 @@ class LanceDBRetriever:
         """
         try:
             search = self.table.search(query, query_type="hybrid").limit(k)
+            if fts_columns:
+                search = search.select(fts_columns)
             results = search.to_pandas()
 
             chunks = []

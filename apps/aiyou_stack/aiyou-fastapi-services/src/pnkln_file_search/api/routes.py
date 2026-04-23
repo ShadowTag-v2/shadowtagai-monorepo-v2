@@ -193,7 +193,9 @@ async def get_vertical(vertical_name: str):
             description=vertical.description,
         )
     except ValueError:
-        raise HTTPException(status_code=404, detail=f"Vertical not found: {vertical_name}") from None
+        raise HTTPException(
+            status_code=404, detail=f"Vertical not found: {vertical_name}"
+        ) from None
 
 
 @router.get("/monitoring/health", response_model=HealthResponse)

@@ -118,9 +118,7 @@ class UploadForm:
 
     widget_type: str = "upload_form"
     title: str = "Upload Document"
-    accepted_types: list[str] = field(
-        default_factory=lambda: [".pdf", ".docx", ".txt"]
-    )
+    accepted_types: list[str] = field(default_factory=lambda: [".pdf", ".docx", ".txt"])
     max_size_mb: int = 25
     multiple: bool = False
 

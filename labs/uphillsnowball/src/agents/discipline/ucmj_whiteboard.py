@@ -92,8 +92,7 @@ class SwarmWhiteboard:
 
                 if current["version"] != expected_version:
                     logger.warning(
-                        "⚠️ OCC CONFLICT: Issue %s. Expected v%d, got v%d. "
-                        "Agent must re-read and retry.",
+                        "⚠️ OCC CONFLICT: Issue %s. Expected v%d, got v%d. Agent must re-read and retry.",
                         issue_id,
                         expected_version,
                         current["version"],
@@ -118,8 +117,7 @@ class SwarmWhiteboard:
 
             except redis.WatchError:
                 logger.warning(
-                    "⚠️ WATCH CONFLICT: Issue %s modified during transaction. "
-                    "Concurrent agent detected.",
+                    "⚠️ WATCH CONFLICT: Issue %s modified during transaction. Concurrent agent detected.",
                     issue_id,
                 )
                 return False
@@ -159,15 +157,12 @@ async def ucmj_drag_race_sla(
             agent_task(),
             timeout=timeout_ms / 1000.0,
         )
-        logger.info(
-            "✅ Agent %s completed within SLA (%dms).", agent_name, timeout_ms
-        )
+        logger.info("✅ Agent %s completed within SLA (%dms).", agent_name, timeout_ms)
         return result
 
     except TimeoutError:
         logger.critical(
-            "⏰ UCMJ ARTICLE 92 VIOLATION: Agent %s exceeded %dms SLA. "
-            "Court-martial initiated. Agent will be replaced.",
+            "⏰ UCMJ ARTICLE 92 VIOLATION: Agent %s exceeded %dms SLA. Court-martial initiated. Agent will be replaced.",
             agent_name,
             timeout_ms,
         )
