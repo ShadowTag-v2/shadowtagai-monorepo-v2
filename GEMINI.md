@@ -39,27 +39,40 @@ CRITICAL RULE: You are strictly forbidden from writing SQL or database logic wit
 
 **ABSOLUTE RULE: Firebase MCP server is the ONLY authorized deployment path.**
 
-### Architecture
-- **Tools** are callable functions (`firebase_init`, `firebase_get_environment`, etc.)
-- **Resources/Prompts** are step-by-step guides (`firebase://guides/init/hosting`)
-- **Deploy is a Resource/Prompt, NOT a Tool.** Read `firebase://guides/init/hosting` before any deploy.
+### MCP Protocol Architecture
+- **Tools** are callable functions (`firebase_init`, `firebase_get_environment`, `firebase_login`, etc.) — execute actions, return results.
+- **Resources** are read-only data identified by URIs (`firebase://guides/init/hosting`) — contain step-by-step instructions the agent follows.
+- **Deploy is a Resource, NOT a Tool.** Read `firebase://guides/init/hosting` before any deploy. It instructs you to call `firebase_init` (Tool) + run build (terminal) + run deploy (terminal).
+
+### Three-Layer Auth Architecture (CRITICAL)
+Firebase has THREE independent auth channels that do NOT share tokens:
+
+1. **Firebase CLI (Layer 1)**: OAuth2 refresh token in `~/.config/configstore/firebase-tools.json`. Used by `firebase deploy`, `firebase hosting:*` terminal commands. Install globally (`npm i -g firebase-tools`), NOT via `npx`. Use `CI=true` to bypass Inquirer.js TUI prompts.
+2. **Firebase MCP Server (Layer 2)**: In-memory OAuth2 session within the IDE's MCP process. Authenticated via the `firebase_login` MCP tool. Does NOT read the CLI's token file. Required for Resources and Firebase Management API calls.
+3. **Application Default Credentials (Layer 3)**: `~/.config/gcloud/application_default_credentials.json`. Used by Google client libraries. Can access GCP services (Secret Manager, Cloud Run) but NOT Firebase-specific APIs.
 
 ### Prohibited Actions
-- Running `npx firebase-tools deploy` without MCP auth verification.
-- Assuming `firebase_get_environment` confirms live auth (it may read cached config).
-- Terminal CLI does NOT inherit the MCP server's in-memory session or credentials.
+- Running `firebase deploy` in terminal without verifying CLI auth (Layer 1).
+- Assuming `firebase_get_environment` confirms live auth — it reads cached config files, not API calls.
+- Using `npx firebase-tools` for ANY operation — tokens are lost in ephemeral `_npx/` cache.
+- Assuming terminal CLI inherits the MCP server's in-memory session.
 
 ### Authorized Deployment Lifecycle
-1. **Verify Auth**: Call `firebase_get_environment`. Check "Authenticated User" is populated.
-2. **Read Hosting Guide**: `read_resource("firebase-mcp-server", "firebase://guides/init/hosting")`
-3. **Initialize**: Call `firebase_init` with hosting config.
-4. **Deploy** (MCP-orchestrated CLI): Only after auth + guide + init are confirmed.
-5. **Verify**: Follow capability ownership defined in `antigravity-mcp-config.json`.
+1. **Verify MCP Auth**: Call `firebase_login` MCP tool if MCP server auth is expired. Check `firebase_get_environment` shows `Authenticated User: <email>` (not "Application Default Credentials").
+2. **Verify CLI Auth**: Run `CI=true firebase login:list` in terminal. If expired: `CI=true firebase login --reauth --no-localhost`.
+3. **Read Hosting Guide**: `read_resource("firebase-mcp-server", "firebase://guides/init/hosting")`
+4. **Initialize**: Call `firebase_init` MCP tool with hosting config per the guide.
+5. **Build**: Run the framework's build command in terminal (e.g., `npm run build`).
+6. **Deploy**: Run `firebase deploy --only hosting` in terminal (CLI auth required).
+7. **Verify**: Use Chrome DevTools MCP `lighthouse_audit` on the live URL.
 
-### Auth Refresh (only authorized CLI command for auth)
-If auth is expired: `npx -y firebase-tools@latest login --reauth`
+### Auth Refresh Commands
+- **MCP Server**: Call `firebase_login` MCP tool → browser flow → pass `authCode` back to tool.
+- **CLI**: `CI=true firebase login --reauth --no-localhost` → browser flow → paste code in terminal.
+- **ADC**: `gcloud auth application-default login --project=shadowtag-omega-v4`
 
 ### Skill Reference
+
 Full doctrine: `skills/firebase-mcp-deploy-doctrine/SKILL.md`
 </firebase_mcp_doctrine>
 
