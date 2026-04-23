@@ -1,0 +1,41 @@
+name: "Lighthouse CI Budget"
+
+on:
+  push:
+    branches: [main]
+    paths: ['apps/kovelai/**', 'apps/shadowtagai/**']
+  pull_request:
+    branches: [main]
+    paths: ['apps/kovelai/**', 'apps/shadowtagai/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    name: "Lighthouse Audit — ${{ matrix.app }}"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - app: kovelai
+            url: https://kovelai.web.app
+          - app: shadowtagai
+            url: https://shadowtagai.web.app
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: ${{ matrix.url }}
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          configPath: .lighthouserc.json
+
+      - name: Budget summary
+        if: always()
+        run: |
+          echo "### 🔦 Lighthouse: ${{ matrix.app }}" >> $GITHUB_STEP_SUMMARY
+          echo "URL: ${{ matrix.url }}" >> $GITHUB_STEP_SUMMARY

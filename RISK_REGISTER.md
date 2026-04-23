@@ -216,3 +216,22 @@
 - **Severity**: 🟡 Medium
 - **Status**: RESOLVED
 - **Description**: `pip-audit` flagged `python-dotenv==1.0.1` with CVE-2026-28684. It's a transitive dependency from uvicorn/fastapi, not directly pinned. **Remediation**: Added explicit `python-dotenv>=1.2.2` pin to `apps/counselconduit/requirements.txt` to force the patched version.
+
+## Risk #15: System Python 3.9 Broken pip Metadata
+- **Severity:** Low
+- **Status:** Documented
+- **Description:** `/usr/bin/python3` (macOS system Python 3.9.6) has corrupted `urllib3-2.5.0.dist-info/METADATA`, preventing pip installs. Homebrew Python 3.14 at `/opt/homebrew/bin/python3.14` is the working interpreter.
+- **Mitigation:** All dev tooling (vulture, bandit, pip-audit) pinned to Homebrew Python 3.14. CI/CD uses `actions/setup-python@v5` with Python 3.13.
+- **Resolution:** System Python 3.9 is deprecated and should not be used for any monorepo operations.
+
+## Risk #16: Vulture 60% Confidence Sweep — 8,414 Findings
+- **Severity:** Low (informational)
+- **Status:** Tracked
+- **Description:** Full monorepo vulture sweep at 60% confidence returns ~8,414 items. Most are false positives (FastAPI route handlers, pytest fixtures, Pydantic model fields). Only items at 90%+ confidence are enforced in CI gates.
+- **Mitigation:** Production gates (kovelai, counselconduit) enforce 90% confidence. Nightly sweep uses 80% as a monitoring threshold.
+
+## Risk #17: Google Design MCP Ground Truth (Not GitHub Repo)
+- **Severity:** Medium (architectural)
+- **Status:** Active
+- **Description:** The "google-labs-code/design.md" GitHub repository referenced in the Cognitive Structural Synthesis directive does not exist as a public repo. The actual Ground Truth is the Google Design MCP server at `https://design.googleapis.com/mcp`. The skill has been corrected to reference the MCP endpoint.
+- **Mitigation:** The `cognitive-structural-synthesis` SKILL.md documents the correct endpoint and anti-patterns prevent referencing the non-existent repo.

@@ -18,8 +18,7 @@ from __future__ import annotations
 
 import hashlib
 import io
-from datetime import datetime, timedelta, timezone, UTC
-from typing import Optional
+from datetime import datetime, timedelta, UTC
 
 from pydantic import BaseModel, Field
 

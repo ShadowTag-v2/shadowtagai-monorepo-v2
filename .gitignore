@@ -250,3 +250,7 @@ labs/uphillsnowball/product-pitch-site/cloner-tool/
 
 # Omni-Ingest cloned repos (reference only, not committed)
 external_repos/omni_ingest/
+external_repos/
+clone-base/
+product-pitch-site/
+clones/

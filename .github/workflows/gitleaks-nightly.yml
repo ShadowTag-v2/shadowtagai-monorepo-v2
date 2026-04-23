@@ -1,0 +1,43 @@
+name: "Gitleaks Nightly Scan"
+
+on:
+  schedule:
+    - cron: "0 5 * * *"  # Daily at 05:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gitleaks:
+    name: "Secret Leak Detection"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for commit-range scanning
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: "--verbose --no-git --source=."
+
+      - name: Generate report
+        if: always()
+        run: |
+          echo "### Gitleaks Nightly Report — $(date -u +%Y-%m-%d)" >> $GITHUB_STEP_SUMMARY
+          if [ -f "results.sarif" ]; then
+            echo "⚠️ Findings detected. Review SARIF artifact." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ No leaks detected." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload SARIF
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gitleaks-report-${{ github.run_id }}
+          path: results.sarif
+          if-no-files-found: ignore
