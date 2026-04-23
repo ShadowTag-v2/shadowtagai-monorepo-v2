@@ -1,8 +1,14 @@
 import os
+import logging
+
 import sqlite3
+import logging
+
 
 # --- ANE BYPASS INTEGRATION ---
 import sys
+import logging
+
 from datetime import datetime
 
 sys.path.append(os.path.abspath("apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"))
@@ -16,6 +22,8 @@ except ImportError:
 INTEL_DIR = os.path.abspath("apps/ShadowTag-v2_ecosystem/recovered_intel")
 # Use physical mapping to the active root
 import pathlib  # noqa: E402
+import logging
+
 
 ROOT_DIR = str(pathlib.Path(__file__).parent.parent.absolute())
 BEADS_DB_PATH = os.path.join(ROOT_DIR, ".beads", "ane_memory_beads.sqlite")
@@ -73,7 +81,9 @@ elif "code_tracker" in folder_name:
     summary = "Persistent file tracking and IDE active sessions."
 
 import json
-print(json.dumps({{"semantic_type": semantic_type, "neural_summary": summary}}))
+import logging
+
+logging.info(json.dumps({{"semantic_type": semantic_type, "neural_summary": summary}}))
 """
 
     result = dispatch_compute(
