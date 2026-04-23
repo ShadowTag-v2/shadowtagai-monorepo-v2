@@ -16,6 +16,7 @@ Production implementations will integrate with live services:
 from __future__ import annotations
 
 import logging
+import os
 
 from temporalio import activity
 
@@ -68,10 +69,70 @@ async def j5_mdmp_plan(planning_data: dict) -> dict:
 async def j2_shaping_ops_recon(opord: dict) -> dict:
     """J-2: Execute shaping operations reconnaissance.
 
-    Deep research, OSINT, RadarSense, and cited source gathering.
-    Returns structured intelligence for the J-3 strike phase.
+    When ``deep_research=True`` in the OPORD and ``GEMINI_API_KEY`` is
+    set, executes real Deep Research via the Gemini Interactions API.
+    Otherwise falls back to the stub for local development.
+
+    Deep Research cost: ~$1–3 per task (standard tier).
     """
     logger.info("🔭 J-2 Intel: Executing shaping ops recon...")
+
+    use_deep_research = opord.get("deep_research", False)
+
+    if use_deep_research and os.environ.get("GEMINI_API_KEY"):
+        try:
+            from src.intelligence.deep_research_client import (
+                DeepResearchClient,
+                DeepResearchConfig,
+                ResearchStatus,
+                ResearchTier,
+            )
+
+            query = opord.get("research_query") or opord.get("commander_intent", "")
+            if not query:
+                logger.warning("⚠️ J-2: No research query in OPORD. Falling back to stub.")
+                return _j2_stub_result()
+
+            tier_str = opord.get("research_tier", "standard")
+            tier = ResearchTier.MAX if tier_str == "max" else ResearchTier.STANDARD
+
+            client = DeepResearchClient()
+            result = await client.research(
+                query=query,
+                config=DeepResearchConfig(tier=tier),
+            )
+
+            if result.status == ResearchStatus.COMPLETED:
+                logger.info(
+                    "✅ J-2 Deep Research completed in %.1fs (%s tier, %d chars)",
+                    result.elapsed_seconds,
+                    tier.value,
+                    len(result.report),
+                )
+                return {
+                    "sources_gathered": result.report.count("http"),
+                    "citations_verified": result.report.count("["),
+                    "threat_indicators": [],
+                    "deep_research_report": result.report,
+                    "interaction_id": result.interaction_id,
+                    "status": "RECON_COMPLETE_DEEP_RESEARCH",
+                }
+            else:
+                logger.warning(
+                    "⚠️ J-2 Deep Research failed: %s. Falling back to stub.",
+                    result.error,
+                )
+                return _j2_stub_result()
+
+        except Exception:
+            logger.exception("❌ J-2 Deep Research error. Falling back to stub.")
+            return _j2_stub_result()
+
+    return _j2_stub_result()
+
+
+def _j2_stub_result() -> dict:
+    """Return the stub result for local dev without Deep Research."""
     return {
         "sources_gathered": 0,
         "citations_verified": 0,

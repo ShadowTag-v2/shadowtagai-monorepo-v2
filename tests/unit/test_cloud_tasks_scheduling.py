@@ -32,11 +32,10 @@ class TestCloudTasksScheduling:
 
         # The function should not raise even if Cloud Tasks is unavailable
         # It catches exceptions and logs warnings
-        try:
+        import contextlib
+
+        with contextlib.suppress(Exception):
             await scheduler("receipt_001", "firm_001", deletion_date)
-        except Exception:
-            # Expected in test environment without Cloud Tasks credentials
-            pass
 
     @pytest.mark.asyncio
     async def test_schedule_returns_without_crash(self):

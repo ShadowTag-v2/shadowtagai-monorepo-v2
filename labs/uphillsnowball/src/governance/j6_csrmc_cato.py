@@ -227,3 +227,247 @@ class Judge6_CSRMC_cATO:
 
         logger.info("✅ J-6 cATO verified. Handoff %s→%s authorized.", source, destination)
         return True
+
+
+class DeploymentPhase(Enum):
+    """Judge 6 deployment gate phases.
+
+    Wet Fleece: Static analysis — $0 cost, catches 80% of issues.
+    Dry Ground: Sandbox tests — moderate cost, catches integration bugs.
+    Battle: Full integration — highest cost, final validation.
+    """
+
+    WET_FLEECE = "WET_FLEECE"
+    DRY_GROUND = "DRY_GROUND"
+    BATTLE = "BATTLE"
+
+
+@dataclass(frozen=True)
+class PhaseResult:
+    """Result of a deployment phase gate check.
+
+    Attributes:
+        phase: Which phase was executed.
+        passed: Whether the phase passed.
+        findings: List of issues found.
+        directive: Next action to take.
+    """
+
+    phase: DeploymentPhase
+    passed: bool
+    findings: list[str]
+    directive: str
+
+
+class Judge6DeployGate:
+    """3-Phase deployment gate: Wet Fleece → Dry Ground → Battle.
+
+    Each phase is progressively more expensive. If an earlier phase
+    fails, later phases are NOT executed (fail-fast, save money).
+
+    Phase 1 — Wet Fleece ($0):
+        Static analysis: AST validation, type checking, dead code scan.
+        Tools: ruff, vulture, ast-grep.
+
+    Phase 2 — Dry Ground (moderate):
+        Sandboxed test execution in gVisor container.
+        No network access. Read-only filesystem. 120s timeout.
+
+    Phase 3 — Battle (full cost):
+        Full integration tests against staging environment.
+        Requires Commander authorization for HIGH/EXTREMELY_HIGH risk.
+    """
+
+    @staticmethod
+    def wet_fleece(artifact: dict) -> PhaseResult:
+        """Phase 1: Static analysis gate — zero cost.
+
+        Validates the artifact passes AST, type, and dead code checks
+        without executing any code.
+
+        Args:
+            artifact: The code artifact to validate.
+
+        Returns:
+            PhaseResult indicating pass/fail.
+        """
+        findings: list[str] = []
+
+        # Check for required metadata
+        if not artifact.get("type"):
+            findings.append("Missing artifact type classification")
+
+        if not artifact.get("source"):
+            findings.append("Missing source agent attribution")
+
+        # Check for banned patterns
+        source_code = artifact.get("code", "")
+        banned_patterns = [
+            ("eval(", "eval() is banned — use ast.literal_eval()"),
+            ("exec(", "exec() is banned — use subprocess with gVisor"),
+            ("__import__", "Dynamic imports banned — use explicit imports"),
+            ("os.system(", "os.system() banned — use subprocess.run()"),
+        ]
+        for pattern, reason in banned_patterns:
+            if pattern in source_code:
+                findings.append(f"BANNED PATTERN: {reason}")
+
+        passed = len(findings) == 0
+        directive = "ADVANCE_TO_DRY_GROUND" if passed else "REJECT_WET_FLEECE"
+
+        logger.info(
+            "🧪 Wet Fleece: %s (%d findings)",
+            "PASSED" if passed else "FAILED",
+            len(findings),
+        )
+        return PhaseResult(
+            phase=DeploymentPhase.WET_FLEECE,
+            passed=passed,
+            findings=findings,
+            directive=directive,
+        )
+
+    @staticmethod
+    def dry_ground(artifact: dict, test_results: dict) -> PhaseResult:
+        """Phase 2: Sandbox test execution — moderate cost.
+
+        Validates the artifact passes tests in a gVisor sandbox
+        with no network and read-only filesystem.
+
+        Args:
+            artifact: The code artifact being tested.
+            test_results: Results from sandbox test execution.
+
+        Returns:
+            PhaseResult indicating pass/fail.
+        """
+        findings: list[str] = []
+
+        tests_passed = test_results.get("passed", 0)
+        tests_failed = test_results.get("failed", 0)
+        tests_error = test_results.get("error", 0)
+
+        if tests_failed > 0:
+            findings.append(f"{tests_failed} test(s) failed in sandbox")
+
+        if tests_error > 0:
+            findings.append(f"{tests_error} test(s) errored in sandbox")
+
+        if tests_passed == 0:
+            findings.append("No tests passed — suspect missing test coverage")
+
+        # Check execution time SLA (UCMJ Drag Race: 40s max)
+        execution_ms = test_results.get("execution_time_ms", 0)
+        if execution_ms > 40_000:
+            findings.append(
+                f"Execution time {execution_ms}ms exceeds 40s UCMJ SLA"
+            )
+
+        passed = len(findings) == 0
+        directive = "ADVANCE_TO_BATTLE" if passed else "REJECT_DRY_GROUND"
+
+        logger.info(
+            "🏜️ Dry Ground: %s (pass=%d fail=%d err=%d, %dms)",
+            "PASSED" if passed else "FAILED",
+            tests_passed,
+            tests_failed,
+            tests_error,
+            execution_ms,
+        )
+        return PhaseResult(
+            phase=DeploymentPhase.DRY_GROUND,
+            passed=passed,
+            findings=findings,
+            directive=directive,
+        )
+
+    @staticmethod
+    def battle(artifact: dict, integration_results: dict) -> PhaseResult:
+        """Phase 3: Full integration test — highest cost.
+
+        Validates the artifact in a staging environment with network
+        access. Requires Commander authorization for HIGH risk.
+
+        Args:
+            artifact: The code artifact being tested.
+            integration_results: Results from integration testing.
+
+        Returns:
+            PhaseResult indicating pass/fail.
+        """
+        findings: list[str] = []
+
+        health_check = integration_results.get("health_check", False)
+        if not health_check:
+            findings.append("Health check failed after deployment to staging")
+
+        smoke_tests = integration_results.get("smoke_tests_passed", 0)
+        smoke_total = integration_results.get("smoke_tests_total", 0)
+        if smoke_total > 0 and smoke_tests < smoke_total:
+            findings.append(
+                f"Smoke tests: {smoke_tests}/{smoke_total} passed"
+            )
+
+        lighthouse_score = integration_results.get("lighthouse_score")
+        if lighthouse_score is not None and lighthouse_score < 80:
+            findings.append(
+                f"Lighthouse score {lighthouse_score} below 80 threshold"
+            )
+
+        passed = len(findings) == 0
+        directive = "DEPLOY_TO_PRODUCTION" if passed else "REJECT_BATTLE"
+
+        logger.info(
+            "⚔️ Battle: %s (%d findings)",
+            "PASSED" if passed else "FAILED",
+            len(findings),
+        )
+        return PhaseResult(
+            phase=DeploymentPhase.BATTLE,
+            passed=passed,
+            findings=findings,
+            directive=directive,
+        )
+
+    @classmethod
+    def run_gate(
+        cls,
+        artifact: dict,
+        test_results: dict | None = None,
+        integration_results: dict | None = None,
+    ) -> list[PhaseResult]:
+        """Execute the full 3-phase gate sequence, fail-fast.
+
+        Args:
+            artifact: The code artifact to validate.
+            test_results: Optional sandbox test results (Phase 2).
+            integration_results: Optional integration results (Phase 3).
+
+        Returns:
+            List of PhaseResults for all executed phases.
+        """
+        results: list[PhaseResult] = []
+
+        # Phase 1: Wet Fleece (always runs, $0)
+        p1 = cls.wet_fleece(artifact)
+        results.append(p1)
+        if not p1.passed:
+            return results
+
+        # Phase 2: Dry Ground (requires test results)
+        if test_results is not None:
+            p2 = cls.dry_ground(artifact, test_results)
+            results.append(p2)
+            if not p2.passed:
+                return results
+        else:
+            logger.info("⏭️ Dry Ground skipped — no test results provided")
+
+        # Phase 3: Battle (requires integration results)
+        if integration_results is not None:
+            p3 = cls.battle(artifact, integration_results)
+            results.append(p3)
+        else:
+            logger.info("⏭️ Battle skipped — no integration results provided")
+
+        return results

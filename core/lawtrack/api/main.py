@@ -1,6 +1,7 @@
 import os
+from typing import Annotated
 
-from fastapi import FastAPI, HTTPException, Security
+from fastapi import Depends, FastAPI, HTTPException, Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 app = FastAPI(title="Cor.LawTrack Engine", description="Zero-Trust API Gateway for Multi-Vertical Compliance", version="1.0.0")
@@ -9,7 +10,7 @@ app = FastAPI(title="Cor.LawTrack Engine", description="Zero-Trust API Gateway f
 security = HTTPBearer()
 
 
-def verify_token(credentials: HTTPAuthorizationCredentials = Security(security)):
+def verify_token(credentials: Annotated[HTTPAuthorizationCredentials, Depends(security)]):
     # Placeholder for actual JWKS OIDC validation against SSO provier (e.g. Google/Okta)
     # The Business Judgment Rule mandates this cannot remain a placeholder in prod
     if credentials.credentials != os.environ.get("LAWTRACK_SYSTEM_KEY", "dev-override-key"):
