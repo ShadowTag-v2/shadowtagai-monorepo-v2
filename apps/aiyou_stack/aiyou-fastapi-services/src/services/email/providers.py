@@ -87,7 +87,7 @@ class SMTPProvider(EmailProvider):
 
         except Exception as e:
             logger.error(f"SMTP send failed: {e!s}")
-            raise EmailProviderError(f"SMTP send failed: {e!s}")
+            raise EmailProviderError(f"SMTP send failed: {e!s}") from e
 
 
 class SendGridProvider(EmailProvider):
@@ -147,10 +147,10 @@ class SendGridProvider(EmailProvider):
 
         except httpx.HTTPError as e:
             logger.error(f"SendGrid HTTP error: {e!s}")
-            raise EmailProviderError(f"SendGrid send failed: {e!s}")
+            raise EmailProviderError(f"SendGrid send failed: {e!s}") from e
         except Exception as e:
             logger.error(f"SendGrid send failed: {e!s}")
-            raise EmailProviderError(f"SendGrid send failed: {e!s}")
+            raise EmailProviderError(f"SendGrid send failed: {e!s}") from e
 
 
 class MailgunProvider(EmailProvider):
@@ -208,10 +208,10 @@ class MailgunProvider(EmailProvider):
 
         except httpx.HTTPError as e:
             logger.error(f"Mailgun HTTP error: {e!s}")
-            raise EmailProviderError(f"Mailgun send failed: {e!s}")
+            raise EmailProviderError(f"Mailgun send failed: {e!s}") from e
         except Exception as e:
             logger.error(f"Mailgun send failed: {e!s}")
-            raise EmailProviderError(f"Mailgun send failed: {e!s}")
+            raise EmailProviderError(f"Mailgun send failed: {e!s}") from e
 
 
 class EmailProviderFactory:

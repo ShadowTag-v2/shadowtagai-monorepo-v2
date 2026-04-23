@@ -95,7 +95,7 @@ def transform_to_conversation(item: dict[str, Any]) -> dict[str, Any] | None:
         # Sometimes content is valid text
         if isinstance(content_val, str) and len(content_val) > 50:
             messages = [{"role": "user", "content": content_val}]
-        elif isinstance(content_val, dict):
+        elif isinstance(content_val, dict):  # noqa: SIM102
             # Try to find text in complex object
             if "value" in content_val:
                 val = content_val["value"]

@@ -18,7 +18,7 @@ try:
 except ImportError:
     raise ImportError(
         "Vertex AI SDK not installed. Install with: pip install google-cloud-aiplatform",
-    )
+    ) from None
 
 logger = logging.getLogger(__name__)
 
@@ -235,7 +235,7 @@ class VertexAIClient:
 
         except Exception as e:
             logger.error(f"Generation failed with {model.value}: {e}")
-            raise RuntimeError(f"Gemini generation failed: {e}")
+            raise RuntimeError(f"Gemini generation failed: {e}") from e
 
     def generate_with_auto_routing(
         self,

@@ -329,7 +329,7 @@ async def process_query(
 
     except Exception as e:
         logger.error(f"Query failed: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Query processing failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Query processing failed: {e!s}") from e
 
 
 # === Error Handlers ===

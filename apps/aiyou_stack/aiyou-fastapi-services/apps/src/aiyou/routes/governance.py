@@ -109,7 +109,7 @@ async def upload_trace(trace: TraceUploadRequest):
         generator.upload_trace(decision_id, trace_record)
         trace_url = generator.generate_trace_url(decision_id)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to upload trace: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to upload trace: {e!s}") from e
 
     # Build viewer URL (relative)
     viewer_url = f"/governance/trace/{decision_id}"
@@ -130,7 +130,7 @@ async def get_trace_url(decision_id: str, expiration_minutes: int = 15):
     try:
         trace_url = generate_trace_url(decision_id, expiration_minutes)
     except Exception as e:
-        raise HTTPException(status_code=404, detail=f"Trace not found or expired: {e!s}")
+        raise HTTPException(status_code=404, detail=f"Trace not found or expired: {e!s}") from e
 
     return {
         "decision_id": decision_id,

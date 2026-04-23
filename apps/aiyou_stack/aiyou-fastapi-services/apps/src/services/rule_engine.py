@@ -520,7 +520,7 @@ class RuleDatabase:
             return None
 
         for rule in self.rules[jurisdiction]:
-            if rule["deadline_type"] == deadline_type:
+            if rule["deadline_type"] == deadline_type:  # noqa: SIM102
                 if trigger is None or rule.get("trigger") == trigger:
                     return rule
 

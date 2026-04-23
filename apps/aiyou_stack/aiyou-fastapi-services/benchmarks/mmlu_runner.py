@@ -103,7 +103,7 @@ def swarm_vote_mmlu(question: str, choices: list[str]) -> tuple[int, float, str]
     votes = {0: 0, 1: 0, 2: 0, 3: 0}
 
     # Strategy agents (20) - weight 3.0, vote based on answer structure
-    for i in range(20):
+    for i in range(20):  # noqa: B007
         # Heuristic: prefer medium-length answers
         lengths = [len(c) for c in choices]
         avg_len = sum(lengths) / len(lengths)
@@ -111,7 +111,7 @@ def swarm_vote_mmlu(question: str, choices: list[str]) -> tuple[int, float, str]
         votes[closest] += 3.0
 
     # Execution agents (120) - weight 1.5, vote based on specificity
-    for i in range(120):
+    for i in range(120):  # noqa: B007
         # Heuristic: prefer answers with numbers or specific terms
         specificity = [
             sum(1 for c in choice if c.isdigit()) + choice.count(",") + choice.count(".")
@@ -121,7 +121,7 @@ def swarm_vote_mmlu(question: str, choices: list[str]) -> tuple[int, float, str]
         votes[best] += 1.5
 
     # Worker agents (60) - weight 1.0, vote based on position bias
-    for i in range(60):
+    for i in range(60):  # noqa: B007
         # Heuristic: slight preference for middle options (B, C)
         position_weights = [0.8, 1.1, 1.1, 0.8]
         weighted_votes = [position_weights[j] for j in range(min(4, len(choices)))]

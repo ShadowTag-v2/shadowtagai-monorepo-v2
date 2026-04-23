@@ -221,7 +221,7 @@ class GeminiFunctionCaller:
                     raise ValueError(f"Exceeded maximum function calls ({self.max_function_calls})")
 
                 # Validation callback (for JR Engine integration)
-                if validation_callback:
+                if validation_callback:  # noqa: SIM102
                     if not validation_callback(fn_name, fn_args):
                         raise ValueError(f"Function call validation failed: {fn_name}({fn_args})")
 
@@ -267,7 +267,7 @@ class GeminiFunctionCaller:
                             error=str(e),
                         ),
                     )
-                    raise ValueError(f"Function execution failed: {fn_name} - {e}")
+                    raise ValueError(f"Function execution failed: {fn_name} - {e}") from e
 
             else:
                 # Final response - no more function calls

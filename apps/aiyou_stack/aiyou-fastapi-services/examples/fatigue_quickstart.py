@@ -102,7 +102,7 @@ async def simulate_ar_session():
     # ========================================================================
 
     for i in range(total_updates):
-        update_count += 1
+        update_count += 1  # noqa: SIM113
         elapsed_min = (i * 5) / 60  # 5-second intervals
 
         # Simulate progressive fatigue (gets worse over time)

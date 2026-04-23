@@ -73,7 +73,7 @@ class ArxivCrawler:
         scores = []
 
         # Layer 2: Core Stack (highest priority)
-        if any(c in categories for c in ["cs.lg", "cs.ai", "stat.ml"]):
+        if any(c in categories for c in ["cs.lg", "cs.ai", "stat.ml"]):  # noqa: SIM102
             if any(t in text for t in ["llm", "transformer", "governance", "mlops"]):
                 scores.append(weights.get("core_stack", 1.0))
 
@@ -86,7 +86,7 @@ class ArxivCrawler:
             scores.append(weights.get("digital_mall", 0.9))
 
         # Layer 4: RoadMesh
-        if any(c in categories for c in ["cs.ro", "cs.cv"]):
+        if any(c in categories for c in ["cs.ro", "cs.cv"]):  # noqa: SIM102
             if any(t in text for t in ["v2x", "autonomous", "lidar", "vehicle"]):
                 scores.append(weights.get("roadmesh", 0.85))
 

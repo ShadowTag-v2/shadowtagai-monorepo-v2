@@ -53,7 +53,7 @@ Please provide:
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Analysis failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {e!s}") from e
 
 
 @router.post("/ab-test/design")
@@ -97,7 +97,7 @@ Please provide:
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Test design failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Test design failed: {e!s}") from e
 
 
 @router.post("/viral-loop/analyze")
@@ -139,7 +139,7 @@ Please provide:
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Viral loop analysis failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Viral loop analysis failed: {e!s}") from e
 
 
 @router.post("/retention/analyze")
@@ -179,7 +179,7 @@ Please provide:
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Retention analysis failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Retention analysis failed: {e!s}") from e
 
 
 @router.post("/funnel/analyze")
@@ -219,7 +219,7 @@ Please provide:
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Funnel analysis failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Funnel analysis failed: {e!s}") from e
 
 
 @router.post("/hooks/identify")
@@ -259,7 +259,7 @@ Please analyze using the Hook Model (Trigger → Action → Reward → Investmen
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Hook identification failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Hook identification failed: {e!s}") from e
 
 
 @router.post("/experiment/recommend")
@@ -299,4 +299,4 @@ Please provide:
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Experiment recommendation failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Experiment recommendation failed: {e!s}") from e

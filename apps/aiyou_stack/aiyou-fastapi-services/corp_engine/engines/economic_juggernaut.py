@@ -416,7 +416,7 @@ class EconomicJuggernaut:
         Requires transparency for high-risk AI systems.
         """
         # High-risk changes must be logged and auditable
-        if proposal.risk_level == "high":
+        if proposal.risk_level == "high":  # noqa: SIM102
             # Ensure audit trail exists
             if not proposal.proposal_id:
                 return False

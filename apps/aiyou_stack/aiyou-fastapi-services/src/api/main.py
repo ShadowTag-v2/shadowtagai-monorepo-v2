@@ -275,7 +275,7 @@ async def process_query(request: QueryRequest):
                 vertical_config = get_vertical_config(vertical_type)
                 logger.info(f"Using vertical config: {vertical_config.name}")
             except ValueError as e:
-                raise HTTPException(status_code=400, detail=str(e))
+                raise HTTPException(status_code=400, detail=str(e)) from e
 
         # Determine k value
         k = request.k
@@ -293,7 +293,7 @@ async def process_query(request: QueryRequest):
                 raise HTTPException(
                     status_code=400,
                     detail=f"Invalid task_type: {request.task_type}",
-                )
+                ) from None
 
         # Override model if specified
         original_model = controller.gemini_model
@@ -336,7 +336,7 @@ async def process_query(request: QueryRequest):
 
     except Exception as e:
         logger.error(f"Query processing failed: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @app.get("/stats", response_model=StatsResponse)
@@ -412,7 +412,7 @@ async def get_vertical_details(vertical_name: str):
         }
 
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e)) from e
 
 
 # ============================================================================

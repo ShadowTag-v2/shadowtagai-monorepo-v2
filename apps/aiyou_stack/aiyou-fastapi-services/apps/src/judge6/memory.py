@@ -46,7 +46,7 @@ class SovereignMemory:
 
         # 2. Deep Reasoning (Graph Traversal)
         graph_context = []
-        if "risk" in query.lower():
+        if "risk" in query.lower():  # noqa: SIM102
             # Traverse graph for risk-related nodes
             if "RiskScoring" in self.knowledge_graph:
                 neighbors = list(self.knowledge_graph.neighbors("RiskScoring"))

@@ -72,9 +72,9 @@ async def execute_agent(
         )
         return result
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e)) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Execution failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Execution failed: {e!s}") from e
 
 
 @router.get("/{agent_id}/history")
@@ -115,7 +115,7 @@ async def get_agent_tools(agent_id: str, db: Session = Depends(get_db)) -> dict[
     try:
         return service.get_agent_tools(agent_id)
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e)) from e
 
 
 @router.post("/tools/{tool_name}/execute")
@@ -139,6 +139,6 @@ async def execute_tool(
     try:
         return service.execute_tool(tool_name, args)
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e)) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Tool execution failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Tool execution failed: {e!s}") from e

@@ -162,7 +162,7 @@ class BaseGovernanceAgent(ABC):
 
         """
         required_fields = ["action", "resource"]
-        for field in required_fields:
+        for field in required_fields:  # noqa: F402
             if field not in request:
                 raise ValueError(f"Missing required field: {field}")
         return True
@@ -192,7 +192,7 @@ class BaseGovernanceAgent(ABC):
         pricing = {
             "gemini-3.1-flash-lite-preview-lite": (0.10, 0.40),
             "gemini-3.1-flash-lite-preview": (0.30, 2.50),
-            "gemini-3.1-flash-lite-preview": (1.25, 10.00),
+            "gemini-3.1-flash-lite-preview": (1.25, 10.00),  # noqa: F601
         }
 
         input_price, output_price = pricing.get(

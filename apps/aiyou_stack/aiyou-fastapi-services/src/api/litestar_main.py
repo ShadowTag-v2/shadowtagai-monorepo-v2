@@ -43,7 +43,7 @@ async def execute_temporal_job(data: dict) -> dict:
         identity = TemporalIdentityPayload(**data)
         return {"status": "Verified", "framework": "litestar", "identity": identity.model_dump()}
     except ValidationError as e:
-        raise HTTPException(status_code=422, detail=f"Structural JSON Identity Violation: {e}")
+        raise HTTPException(status_code=422, detail=f"Structural JSON Identity Violation: {e}") from e
 
 
 app = Litestar(route_handlers=[execute_temporal_job])

@@ -65,7 +65,7 @@ async def analyze_costs(
 
     except Exception as e:
         logger.error(f"Error in analyze_costs: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post(
@@ -104,7 +104,7 @@ async def get_recommendations(
 
     except Exception as e:
         logger.error(f"Error in get_recommendations: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get(
@@ -137,7 +137,7 @@ async def analyze_waste(
 
     except Exception as e:
         logger.error(f"Error in analyze_waste: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get(
@@ -205,7 +205,7 @@ async def get_insights(
 
     except Exception as e:
         logger.error(f"Error in get_insights: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get(

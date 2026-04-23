@@ -280,7 +280,7 @@ class AntigravityRouter:
             return response.text
         except Exception as e:
             self.gemini_failures += 1
-            raise RuntimeError(f"Gemini API error: {e}")
+            raise RuntimeError(f"Gemini API error: {e}") from e
 
     async def _call_claude(self, prompt: str, context: dict[str, Any]) -> str:
         """Call Claude API"""
@@ -316,7 +316,7 @@ class AntigravityRouter:
 
         except Exception as e:
             self.claude_failures += 1
-            raise RuntimeError(f"Claude API error: {e}")
+            raise RuntimeError(f"Claude API error: {e}") from e
 
     async def _call_gpt5(self, prompt: str, context: dict[str, Any]) -> str:
         """Call GPT-5 API"""
@@ -347,7 +347,7 @@ class AntigravityRouter:
                 data = response.json()
                 return data["choices"][0]["message"]["content"]
         except Exception as e:
-            raise RuntimeError(f"GPT-5 API error: {e}")
+            raise RuntimeError(f"GPT-5 API error: {e}") from e
 
     def get_stats(self) -> dict[str, Any]:
         """Get router statistics"""

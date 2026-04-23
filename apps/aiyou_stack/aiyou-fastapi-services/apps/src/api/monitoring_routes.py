@@ -163,7 +163,7 @@ async def list_alerts(
         try:
             priority_enum = AlertPriority[priority.upper()]
         except KeyError:
-            raise HTTPException(status_code=400, detail=f"Invalid priority: {priority}")
+            raise HTTPException(status_code=400, detail=f"Invalid priority: {priority}") from None
 
     alerts = alerting.get_active_alerts(category=category, priority=priority_enum)
 

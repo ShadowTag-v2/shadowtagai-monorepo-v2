@@ -91,7 +91,7 @@ class DockerSandbox(CodeSandbox):
                     exit_code = container.wait(timeout=timeout)["StatusCode"]
                 except Exception:
                     # timeout enforcement: kill the container
-                    try:
+                    try:  # noqa: SIM105
                         container.kill()
                     except Exception:
                         # Best-effort cleanup: ignore errors if the container is already

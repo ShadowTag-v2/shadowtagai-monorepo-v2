@@ -25,4 +25,4 @@ async def temporal_query_submit(payload: ContractPayload):
         return {"status": "dispatched", "workflow_id": f"contract-{payload.video_id}"}
     except Exception as e:
         logger.error(f"Temporal Handshake Failed: {e}")
-        raise HTTPException(status_code=500, detail="Matrix Orchestration Failure")
+        raise HTTPException(status_code=500, detail="Matrix Orchestration Failure") from e

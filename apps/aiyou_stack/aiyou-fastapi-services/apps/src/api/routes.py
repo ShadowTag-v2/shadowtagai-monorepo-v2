@@ -86,7 +86,7 @@ async def analyze(
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Analysis failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {e!s}") from e
 
 
 @app.post("/analyze/monetization")
@@ -112,7 +112,7 @@ async def analyze_monetization(
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Monetization analysis failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Monetization analysis failed: {e!s}") from e
 
 
 @app.post("/analyze/funnel")
@@ -136,7 +136,7 @@ async def analyze_funnel(
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Funnel analysis failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Funnel analysis failed: {e!s}") from e
 
 
 @app.post("/analyze/pricing")
@@ -160,7 +160,7 @@ async def evaluate_pricing(
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Pricing evaluation failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Pricing evaluation failed: {e!s}") from e
 
 
 @app.post("/analyze/projections")
@@ -185,7 +185,7 @@ async def project_revenue(
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Revenue projection failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Revenue projection failed: {e!s}") from e
 
 
 @app.post("/analyze/ltv")
@@ -210,7 +210,7 @@ async def calculate_ltv(
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"LTV calculation failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"LTV calculation failed: {e!s}") from e
 
 
 @app.post("/analyze/opportunities")
@@ -235,7 +235,7 @@ async def assess_opportunities(
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Opportunity assessment failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Opportunity assessment failed: {e!s}") from e
 
 
 # Export the app

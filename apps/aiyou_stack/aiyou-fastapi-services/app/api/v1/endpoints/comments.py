@@ -123,7 +123,7 @@ async def like_comment(
     try:
         CommentService.like_comment(db, comment_id, current_user.id)
     except ValueError:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Comment already liked")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Comment already liked") from None
 
     return {"message": "Comment liked successfully"}
 
@@ -138,4 +138,4 @@ async def unlike_comment(
     try:
         CommentService.unlike_comment(db, comment_id, current_user.id)
     except ValueError:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Like not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Like not found") from None

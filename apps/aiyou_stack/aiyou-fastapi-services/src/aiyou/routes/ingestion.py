@@ -157,7 +157,7 @@ async def create_ingestion_job(
 
     except Exception as e:
         logger.error(f"Failed to create ingestion job: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/jobs/{job_id}", response_model=IngestionJobResponse)

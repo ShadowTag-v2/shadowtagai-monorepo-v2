@@ -266,4 +266,4 @@ async def assess_batch_governance(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Batch assessment failed: {e!s}",
-        )
+        ) from e

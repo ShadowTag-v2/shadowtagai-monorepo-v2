@@ -51,7 +51,7 @@ async def parse_document(request: DocumentRequest):
         return {"status": "success", "text": responses.text, "usage": str(responses.usage_metadata)}
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @app.get("/health")

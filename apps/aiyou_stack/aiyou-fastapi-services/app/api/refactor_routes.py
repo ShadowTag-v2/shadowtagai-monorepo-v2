@@ -29,7 +29,7 @@ async def refactor_code(request: RefactorRequest) -> RefactorResponse:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Refactoring failed: {e!s}",
-        )
+        ) from e
 
 
 @router.post(
@@ -57,7 +57,7 @@ async def analyze_code(request: AnalyzeRequest) -> AnalyzeResponse:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Analysis failed: {e!s}",
-        )
+        ) from e
 
 
 @router.get(

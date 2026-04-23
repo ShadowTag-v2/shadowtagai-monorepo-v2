@@ -76,7 +76,7 @@ class KernelChain:
                 raise KernelChainError(f"Kernel {kernel.name} failed: {output.error}")
 
             # Check confidence threshold (if applicable)
-            if output.metrics and output.metrics.confidence is not None:
+            if output.metrics and output.metrics.confidence is not None:  # noqa: SIM102
                 if output.metrics.confidence < settings.confidence_threshold:
                     raise KernelChainError(
                         f"Kernel {kernel.name} confidence "

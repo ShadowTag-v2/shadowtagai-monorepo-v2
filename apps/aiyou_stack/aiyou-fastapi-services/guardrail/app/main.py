@@ -95,7 +95,7 @@ class SafetyEstop:
         except Exception as e:
             logger.error(f"Google Armor Error: {e}")
             # FAIL CLOSED: If security is down, nobody enters.
-            raise HTTPException(status_code=503, detail="Safety Service Unavailable")
+            raise HTTPException(status_code=503, detail="Safety Service Unavailable") from e
 
     @retry(stop=stop_after_attempt(2))
     def call_hive(self, prompt: str, strict_mode: bool) -> tuple[bool, str]:
@@ -135,7 +135,7 @@ class SafetyEstop:
         except Exception as e:
             logger.error(f"Hive API Error: {e}")
             # Fail Closed
-            raise HTTPException(status_code=503, detail="Content Moderation Unavailable")
+            raise HTTPException(status_code=503, detail="Content Moderation Unavailable") from e
 
 
 # --- APP FACTORY ---

@@ -136,10 +136,10 @@ async def create_context(request: CreateContextRequest) -> dict[str, Any]:
         )
         return result
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         logger.error(f"Failed to create context: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.get("/contexts/{opord_number}")
@@ -172,7 +172,7 @@ async def update_context(opord_number: int, request: UpdateContextRequest) -> di
 
     except Exception as e:
         logger.error(f"Failed to update context: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.post("/contexts/search")
@@ -202,7 +202,7 @@ async def search_contexts(request: SearchContextsRequest) -> list[dict[str, Any]
 
     except Exception as e:
         logger.error(f"Search failed: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.post("/workflows/execute")
@@ -233,10 +233,10 @@ async def execute_workflow(request: ExecuteWorkflowRequest) -> dict[str, Any]:
         return result
 
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         logger.error(f"Workflow execution failed: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.post("/scholarly-pdfs/upload")
@@ -275,7 +275,7 @@ async def upload_scholarly_pdf(
 
     except Exception as e:
         logger.error(f"PDF upload failed: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.post("/scholarly-pdfs/search")
@@ -315,7 +315,7 @@ async def search_scholarly_pdfs(
 
     except Exception as e:
         logger.error(f"PDF search failed: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 
 @router.get("/shifts/{shift_number}/contexts")

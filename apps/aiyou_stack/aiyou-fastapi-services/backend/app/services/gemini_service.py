@@ -74,7 +74,7 @@ class GeminiService:
             response = self.model.generate_content(prompt)
             analysis_text = response.text
         except Exception as e:
-            raise ValueError(f"Gemini API error: {e!s}")
+            raise ValueError(f"Gemini API error: {e!s}") from e
 
         # Parse the response
         sections = self._parse_analysis_sections(analysis_text, request.confidence_threshold)
@@ -493,7 +493,7 @@ Provide structured output with clear sections.
             response = self.model.generate_content(prompt)
             analysis_text = response.text
         except Exception as e:
-            raise ValueError(f"Gemini API error: {e!s}")
+            raise ValueError(f"Gemini API error: {e!s}") from e
 
         # Parse comparison (simplified)
         comparisons = {}

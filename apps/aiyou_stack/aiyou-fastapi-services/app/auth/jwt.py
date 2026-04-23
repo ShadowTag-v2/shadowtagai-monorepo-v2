@@ -101,7 +101,7 @@ def verify_token(token: str, token_type: str = "access") -> TokenData:
         token_data = TokenData(username=username)
 
     except JWTError:
-        raise credentials_exception
+        raise credentials_exception from None
 
     return token_data
 

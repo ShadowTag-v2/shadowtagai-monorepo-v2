@@ -45,7 +45,7 @@ class JudgeSixSentinel:
         logger.info(f"{Fore.YELLOW}>>> ⚖️  Judge 6 Scan: {file_pattern}...{Style.RESET_ALL}")
 
         # 1. MEMORY CHECK
-        if "from * import" in proposed_fix:
+        if "from * import" in proposed_fix:  # noqa: SIM102
             if self.memory.consult(file_pattern, "allow_wildcard_imports") == "ALLOW":
                 logger.info(f"{Fore.BLUE}>>> 🧠 MEMORY: Suppressing alert.{Style.RESET_ALL}")
                 return True, RiskTier.GREEN, proposed_fix

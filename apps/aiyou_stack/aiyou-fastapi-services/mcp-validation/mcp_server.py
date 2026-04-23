@@ -212,7 +212,7 @@ class SecurityValidator:
                     if alias.name not in config.ALLOWED_IMPORTS:
                         violations.append(f"Blocked import: {alias.name}")
 
-            if isinstance(node, ast.ImportFrom):
+            if isinstance(node, ast.ImportFrom):  # noqa: SIM102
                 if node.module not in config.ALLOWED_IMPORTS:
                     violations.append(f"Blocked import from: {node.module}")
 

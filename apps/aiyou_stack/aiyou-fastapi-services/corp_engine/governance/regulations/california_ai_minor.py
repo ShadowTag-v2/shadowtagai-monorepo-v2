@@ -435,7 +435,7 @@ class CaliforniaAIMinorCompliance:
                 warnings.append("Algorithmic amplification should prioritize minor well-being")
 
         # Recommendation system check
-        if data.get("personalized_recommendations"):
+        if data.get("personalized_recommendations"):  # noqa: SIM102
             if protection_level in [MinorProtectionLevel.UNDER_13, MinorProtectionLevel.TEEN_13_15]:
                 violations.append(
                     {
@@ -491,7 +491,7 @@ class CaliforniaAIMinorCompliance:
             if protection_level == MinorProtectionLevel.UNDER_13:
                 if any(flag in flags for flag in high_risk_flags):
                     return ContentRisk.PROHIBITED
-            elif protection_level == MinorProtectionLevel.TEEN_13_15:
+            elif protection_level == MinorProtectionLevel.TEEN_13_15:  # noqa: SIM102
                 if any(flag in flags for flag in high_risk_flags):
                     return ContentRisk.HIGH_RISK
 

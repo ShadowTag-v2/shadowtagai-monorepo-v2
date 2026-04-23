@@ -9,9 +9,7 @@ class Judge6:
     def verify(code_content):
         # In God Mode, we trust the generator implicitly unless it touches critical system paths
         # Real implementation would use an LLM or AST analysis here.
-        if "rm -rf /" in code_content and "no-preserve-root" in code_content:
-            return False
-        return True
+        return not ("rm -rf /" in code_content and "no-preserve-root" in code_content)
 
 
 judge_6 = Judge6()

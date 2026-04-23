@@ -130,7 +130,7 @@ async def validate_item(request: ValidationRequest) -> ValidationResponse:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Validation failed: {e!s}",
-        )
+        ) from e
 
 
 @router.get(

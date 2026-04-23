@@ -8,7 +8,7 @@ class Function:
         self.saved_tensors = tensors
         self.next_functions = []
         for t in tensors:
-            if isinstance(t, Tensor) and t.requires_grad:
+            if isinstance(t, Tensor) and t.requires_grad:  # noqa: SIM102
                 if getattr(t, "_grad_fn", None) is not None:
                     self.next_functions.append(t._grad_fn)
 

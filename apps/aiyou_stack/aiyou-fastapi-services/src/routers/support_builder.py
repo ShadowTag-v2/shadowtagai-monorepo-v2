@@ -271,9 +271,9 @@ async def send_chat_message(
         result = await SupportBuilderService.process_chat_message(db, session_id, message.content)
         return ChatResponse(**result)
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e)) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error processing message: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Error processing message: {e!s}") from e
 
 
 @router.get("/chat/sessions/{session_id}/history", response_model=list[ChatMessageResponse])

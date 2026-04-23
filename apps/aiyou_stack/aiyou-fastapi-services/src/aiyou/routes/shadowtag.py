@@ -46,7 +46,7 @@ async def forward_report(payload: ChirpReport):
 
     except httpx.TimeoutException:
         logger.error("Verifier timed out (UCMJ Violation). Aborting.")
-        raise HTTPException(status_code=504, detail="Verifier service timed out (UCMJ Violation)")
+        raise HTTPException(status_code=504, detail="Verifier service timed out (UCMJ Violation)") from None
     except httpx.RequestError as e:
         logger.error(f"Connection failed: {e}")
-        raise HTTPException(status_code=503, detail="Verifier service unavailable")
+        raise HTTPException(status_code=503, detail="Verifier service unavailable") from None

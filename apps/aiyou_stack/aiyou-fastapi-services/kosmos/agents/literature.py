@@ -91,7 +91,7 @@ Always provide:
         # Simplified extraction logic - real implementation would parse
         # structured output from search tools
         for step in result.steps:
-            if step.action in ["arxiv_search", "semantic_scholar_search", "google_search"]:
+            if step.action in ["arxiv_search", "semantic_scholar_search", "google_search"]:  # noqa: SIM102
                 if step.observation and "title:" in step.observation.lower():
                     # This is a placeholder - actual implementation would
                     # parse structured JSON from search tools

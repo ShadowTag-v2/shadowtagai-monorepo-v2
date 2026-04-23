@@ -6,7 +6,7 @@ from typing import Any
 import uvicorn
 from fastapi import FastAPI, Request
 
-try:
+try:  # noqa: SIM105
     from playwright.sync_api import sync_playwright  # type: ignore
 except ImportError:
     pass

@@ -318,7 +318,7 @@ class COPPAModule(ComplianceModule):
             )
 
         # Data Security
-        if control.control_id == "COPPA-8.1":
+        if control.control_id == "COPPA-8.1":  # noqa: SIM102
             if is_child or metadata.get("child_directed_service", False):
                 security_implemented = metadata.get("security_measures_implemented", False)
                 if security_implemented:

@@ -294,7 +294,7 @@ async def typeform_webhook(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to generate API key: {e!s}",
-        )
+        ) from e
 
 
 @router.post("/manual", response_model=SignupResponse, status_code=status.HTTP_201_CREATED)
@@ -335,4 +335,4 @@ async def manual_signup(request: SignupRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to generate API key: {e!s}",
-        )
+        ) from e

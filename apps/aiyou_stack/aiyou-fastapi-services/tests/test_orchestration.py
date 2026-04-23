@@ -111,7 +111,7 @@ class TestChainResilience:
         kernels = [ATP519ScanKernel()]
         chain = KernelChain(kernels)
 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             # Should fail with invalid input
             await chain.execute(initial_input={"invalid": "input"})
 

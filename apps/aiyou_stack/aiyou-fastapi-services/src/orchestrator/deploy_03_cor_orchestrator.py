@@ -124,7 +124,7 @@ class COROrchestrator:
 
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse Gemini response as JSON: {e}")
-            raise ValueError(f"Invalid JSON in model response: {e}")
+            raise ValueError(f"Invalid JSON in model response: {e}") from None
         except Exception as e:
             logger.error(f"Failed to generate orchestration plan: {e}")
             raise

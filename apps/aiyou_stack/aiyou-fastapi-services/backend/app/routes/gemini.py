@@ -53,9 +53,9 @@ async def analyze_system(
         response = await service.analyze(request)
         return response
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Analysis failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {e!s}") from e
 
 
 @router.post("/compare", response_model=ComparisonAnalysisResponse)
@@ -85,9 +85,9 @@ async def compare_systems(
         response = await service.compare_systems(request)
         return response
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Comparison failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Comparison failed: {e!s}") from e
 
 
 @router.post("/analyze/ingestion-layer")
@@ -130,4 +130,4 @@ async def analyze_ingestion_layer(
         response = await service.analyze(request)
         return response
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Analysis failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {e!s}") from e

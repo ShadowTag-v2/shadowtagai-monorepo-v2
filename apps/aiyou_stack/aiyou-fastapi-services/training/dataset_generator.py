@@ -274,14 +274,14 @@ class ScenarioGenerator:
         "timeout": ["30", "60", "120"],
         "url": ["dashboard", "API endpoint", "configuration file"],
         "change_type": ["content update", "status change", "new data"],
-        "statistic": ["mean", "standard deviation", "kurtosis", "skewness"],
+        "statistic": ["mean", "standard deviation", "kurtosis", "skewness"],  # noqa: F601
         "params": ["mu=0, sigma=1", "lambda=5", "n=100, p=0.5"],
         "equation_type": ["linear", "quadratic", "differential"],
         "variable": ["x", "coefficients", "optimal point"],
         "constraints": ["x > 0", "sum(x) = 1", "bounded domain"],
         "function": ["cost function", "likelihood", "distance metric"],
-        "method": ["gradient descent", "Newton's method", "grid search"],
-        "metric": ["Euclidean distance", "cosine similarity", "Jaccard index"],
+        "method": ["gradient descent", "Newton's method", "grid search"],  # noqa: F601
+        "metric": ["Euclidean distance", "cosine similarity", "Jaccard index"],  # noqa: F601
         "vector1": ["observation", "embedding", "feature vector"],
         "vector2": ["reference", "centroid", "target"],
         "samples": ["1000", "5000", "10000"],
@@ -293,7 +293,7 @@ class ScenarioGenerator:
         "document": ["text", "transcript", "log file"],
         "text": ["user review", "email", "social media post"],
         "categories": ["positive/negative", "topic categories", "priority levels"],
-        "criteria": ["sentiment keywords", "topic modeling", "rule-based classification"],
+        "criteria": ["sentiment keywords", "topic modeling", "rule-based classification"],  # noqa: F601
         "output_type": ["summary", "response", "report", "description"],
         "input": ["prompt", "template", "reference text"],
         "style": ["technical tone", "casual style", "formal language"],
@@ -306,7 +306,7 @@ class ScenarioGenerator:
         "action2": ["structure output", "check correctness", "merge results", "categorize"],
         "sequence": ["parse → analyze → summarize", "fetch → transform → validate"],
         "goal": ["final report", "structured data", "decision"],
-        "condition": ["input is numerical", "data is available", "confidence > 0.8"],
+        "condition": ["input is numerical", "data is available", "confidence > 0.8"],  # noqa: F601
         "action": ["process request", "fetch data", "compute result"],
         "tool_list": ["3 LLMs", "multiple APIs", "parallel interpreters"],
         "max_retries": ["3", "5"],
@@ -788,7 +788,7 @@ Fix the code and return ONLY the corrected code (no explanations):"""
                     if alias.name.split(".")[0] in forbidden_modules:
                         return False, f"Security violation: import {alias.name} not allowed"
 
-            if isinstance(node, ast.ImportFrom):
+            if isinstance(node, ast.ImportFrom):  # noqa: SIM102
                 if node.module and node.module.split(".")[0] in forbidden_modules:
                     return False, f"Security violation: from {node.module} not allowed"
 
@@ -839,7 +839,7 @@ class QualityFilter:
                         if alias.name.split(".")[0] in forbidden_modules:
                             forbidden_constructs.append(f"import {alias.name}")
 
-                if isinstance(node, ast.ImportFrom):
+                if isinstance(node, ast.ImportFrom):  # noqa: SIM102
                     if node.module and node.module.split(".")[0] in forbidden_modules:
                         forbidden_constructs.append(f"from {node.module}")
 

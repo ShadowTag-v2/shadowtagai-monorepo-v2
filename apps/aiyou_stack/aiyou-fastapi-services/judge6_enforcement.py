@@ -106,7 +106,7 @@ class PurposeGate:
         task_lower = task_description.lower()
 
         # Check for capital expenditure violations
-        if any(keyword in task_lower for keyword in ["purchase", "buy", "subscribe", "pay"]):
+        if any(keyword in task_lower for keyword in ["purchase", "buy", "subscribe", "pay"]):  # noqa: SIM102
             if context.get("cost_estimate", 0) > self.doctrine.bootstrap_limit:
                 score -= 0.4
                 violations.append(
@@ -220,11 +220,11 @@ class BrakesGate:
 
         # BRAKE 3: Compliance framework violations
         compliance_violations = []
-        if "patient data" in task_lower and "HIPAA" in self.doctrine.compliance_frameworks:
+        if "patient data" in task_lower and "HIPAA" in self.doctrine.compliance_frameworks:  # noqa: SIM102
             if not context.get("hipaa_compliant", False):
                 compliance_violations.append("HIPAA")
 
-        if "financial transaction" in task_lower and "SEC" in self.doctrine.compliance_frameworks:
+        if "financial transaction" in task_lower and "SEC" in self.doctrine.compliance_frameworks:  # noqa: SIM102
             if not context.get("sec_compliant", False):
                 compliance_violations.append("SEC")
 

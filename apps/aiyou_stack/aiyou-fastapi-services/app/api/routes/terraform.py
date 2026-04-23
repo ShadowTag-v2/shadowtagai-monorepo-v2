@@ -23,7 +23,7 @@ async def generate_terraform(request: TerraformGenerateRequest):
         terraform_code = terraform_service.generate(request)
         return terraform_code
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/validate", response_model=TerraformValidateResponse)
@@ -35,7 +35,7 @@ async def validate_terraform(request: TerraformValidateRequest):
         validation = terraform_service.validate(request)
         return validation
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/modules")
