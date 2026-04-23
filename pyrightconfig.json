@@ -4,12 +4,23 @@
   "include": [
     "apps/aiyou_stack/aiyou-fastapi-services/src",
     "apps/aiyou_stack/aiyou-fastapi-services/tests",
+    "apps/counselconduit",
+    "core",
+    "control",
     "libs",
     "scripts"
   ],
 
   "extraPaths": [
-    "./external_repos/corp-monorepo"
+    ".",
+    "./apps/counselconduit",
+    "./apps/kovelai",
+    "./core",
+    "./control",
+    "./libs",
+    "./scripts",
+    "./external_repos/corp-monorepo",
+    "./.venv/lib/python3.14/site-packages"
   ],
 
   "exclude": [
@@ -60,6 +71,15 @@
     },
     {
       "root": "apps/aiyou_stack/aiyou-fastapi-services/tests"
+    },
+    {
+      "root": "apps/counselconduit"
+    },
+    {
+      "root": "core"
+    },
+    {
+      "root": "control"
     },
     {
       "root": "libs"
