@@ -1,10 +1,10 @@
 ---
-version: 9.6
+version: 10.0
 scope: antigravity_local_operator_invariants
 status: LOCKED
 ---
 
-# GEMINI.md — v9.6
+# GEMINI.md — v10.0
 
 <system_directive>
 <workspace_alignment>
@@ -79,7 +79,34 @@ Full doctrine: `skills/firebase-mcp-deploy-doctrine/SKILL.md`
 - Taking screenshots with external tools (use `chrome-devtools-mcp` MCP)
 - Hand-coding design tokens from memory (use `StitchMCP`)
 - Ad-hoc reasoning lists for architecture (use `sequential-thinking` MCP)
+- Searching the public web with proprietary identifiers (use `epistemic-airgap` skill)
+- Running `pip install` on unresolved internal package names (supply chain attack vector)
 </capability_resolution_doctrine>
+
+<epistemic_airgap_doctrine>
+## V10 Epistemic Airgap — Zero-Trust Cognitive Routing
+
+**Skill reference:** `.agents/skills/epistemic-airgap/SKILL.md`
+**Tool manifest:** `.agents/skills/epistemic-airgap/tool_h_manifest.json`
+**Pyright config:** `pyrightconfig.json` (extraPaths includes `./external_repos/corp-monorepo`)
+
+### Cognitive Search Classification
+Before ANY search operation, classify intent:
+- **Internal IP** (proprietary microservice, corporate schema, shared type) → Route to `rg`/`sg` against `./external_repos/corp-monorepo/` ONLY
+- **Public IP** (open-source library, public API docs) → Route to `google-developer-knowledge` MCP or `search_web`
+- **Hybrid** (internal wrapper of public library) → Search internal FIRST, then public, intersect in local RAM
+
+### DLP Circuit Breaker (ABSOLUTE)
+Never pass proprietary variable names, corporate database schemas, internal IP addresses, corporate API keys, internal error traces, or internal package names into public search tools. All public queries MUST be sanitized.
+
+### Supply Chain Protection
+1. Never `pip install` or `npm install` an unresolved import without first checking `./external_repos/corp-monorepo/`
+2. If package name matches an internal module → HALT and warn user
+3. Pyright `extraPaths` resolves internal imports locally without hitting public registries
+
+### Override Rule
+If proprietary corporate code and public open-source patterns conflict, **corporate code ALWAYS wins**.
+</epistemic_airgap_doctrine>
 
 <github_doctrine>
 ## GitHub Access — App PEM Exclusive
