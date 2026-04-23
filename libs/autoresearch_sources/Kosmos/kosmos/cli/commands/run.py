@@ -53,12 +53,12 @@ def run_research(
         10, "--max-iterations", "-i", help="Maximum number of research iterations"
     ),
     budget: float | None = typer.Option(None, "--budget", "-b", help="Budget limit in USD"),
-    data_path: Path | None = typer.Option(
+    data_path: Path | None = typer.Option(  # noqa: B008
         None, "--data-path", "-D", help="Path to CSV dataset for experiments"
     ),
     no_cache: bool = typer.Option(False, "--no-cache", help="Disable caching"),
     interactive: bool = typer.Option(False, "--interactive", help="Use interactive mode"),
-    output: Path | None = typer.Option(
+    output: Path | None = typer.Option(  # noqa: B008
         None, "--output", "-o", help="Save results to file (JSON or Markdown)"
     ),
     stream: bool = typer.Option(
@@ -221,13 +221,13 @@ def run_research(
 
     except KeyboardInterrupt:
         console.print("\n[warning]Research interrupted by user[/warning]")
-        raise typer.Exit(130)
+        raise typer.Exit(130)  # noqa: B904
 
     except Exception as e:
         print_error(f"Research failed: {str(e)}", title="Error")
         if "--debug" in sys.argv:
             raise
-        raise typer.Exit(1)
+        raise typer.Exit(1)  # noqa: B904
 
 
 async def run_with_progress_async(

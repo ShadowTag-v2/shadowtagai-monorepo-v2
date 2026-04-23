@@ -125,11 +125,18 @@ export class MCPInterceptor {
 
     // Block T4 forbidden operations
     if (riskTier === 'T4_FORBIDDEN') {
-      const log = this.createLog(toolName, serverName, args, {
-        status: 'error',
-        durationMs: 0,
-        errorMessage: `BLOCKED: Tool ${toolKey} is T4_FORBIDDEN and cannot be executed.`,
-      }, riskTier, stage);
+      const log = this.createLog(
+        toolName,
+        serverName,
+        args,
+        {
+          status: 'error',
+          durationMs: 0,
+          errorMessage: `BLOCKED: Tool ${toolKey} is T4_FORBIDDEN and cannot be executed.`,
+        },
+        riskTier,
+        stage,
+      );
 
       this.logs.push(log);
       await this.persist(log);
@@ -141,10 +148,17 @@ export class MCPInterceptor {
       const result = await executor();
       const durationMs = Math.round(performance.now() - start);
 
-      const log = this.createLog(toolName, serverName, args, {
-        status: 'success',
-        durationMs,
-      }, riskTier, stage);
+      const log = this.createLog(
+        toolName,
+        serverName,
+        args,
+        {
+          status: 'success',
+          durationMs,
+        },
+        riskTier,
+        stage,
+      );
 
       this.logs.push(log);
       await this.persist(log);
@@ -153,11 +167,18 @@ export class MCPInterceptor {
     } catch (error) {
       const durationMs = Math.round(performance.now() - start);
 
-      const log = this.createLog(toolName, serverName, args, {
-        status: 'error',
-        durationMs,
-        errorMessage: error instanceof Error ? error.message : 'Unknown error',
-      }, riskTier, stage);
+      const log = this.createLog(
+        toolName,
+        serverName,
+        args,
+        {
+          status: 'error',
+          durationMs,
+          errorMessage: error instanceof Error ? error.message : 'Unknown error',
+        },
+        riskTier,
+        stage,
+      );
 
       this.logs.push(log);
       await this.persist(log);

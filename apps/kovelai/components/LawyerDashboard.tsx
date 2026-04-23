@@ -15,7 +15,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -53,7 +53,11 @@ interface DashboardStats {
 function RiskBadge({ level }: { level: string }) {
   const colors: Record<string, { bg: string; text: string; border: string }> = {
     LOW: { bg: 'rgba(62, 254, 138, 0.1)', text: '#3efe8a', border: 'rgba(62, 254, 138, 0.3)' },
-    MODERATE: { bg: 'rgba(122, 208, 255, 0.1)', text: '#7ad0ff', border: 'rgba(122, 208, 255, 0.3)' },
+    MODERATE: {
+      bg: 'rgba(122, 208, 255, 0.1)',
+      text: '#7ad0ff',
+      border: 'rgba(122, 208, 255, 0.3)',
+    },
     HIGH: { bg: 'rgba(255, 179, 71, 0.1)', text: '#ffb347', border: 'rgba(255, 179, 71, 0.3)' },
     CRITICAL: { bg: 'rgba(255, 82, 82, 0.1)', text: '#ff5252', border: 'rgba(255, 82, 82, 0.3)' },
   };
@@ -61,17 +65,19 @@ function RiskBadge({ level }: { level: string }) {
   const c = colors[level] ?? colors.LOW;
 
   return (
-    <span style={{
-      padding: '2px 8px',
-      borderRadius: '4px',
-      fontSize: '11px',
-      fontWeight: 600,
-      background: c.bg,
-      color: c.text,
-      border: `1px solid ${c.border}`,
-      textTransform: 'uppercase' as const,
-      letterSpacing: '0.05em',
-    }}>
+    <span
+      style={{
+        padding: '2px 8px',
+        borderRadius: '4px',
+        fontSize: '11px',
+        fontWeight: 600,
+        background: c.bg,
+        color: c.text,
+        border: `1px solid ${c.border}`,
+        textTransform: 'uppercase' as const,
+        letterSpacing: '0.05em',
+      }}
+    >
       {level}
     </span>
   );
@@ -104,10 +110,12 @@ function RadarChart({ data }: { data: RadarDataPoint[] }) {
       {/* Grid rings */}
       {Array.from({ length: levels }, (_, i) => {
         const r = ((i + 1) / levels) * maxRadius;
-        const ringPoints = data.map((_, j) => {
-          const angle = j * angleStep - Math.PI / 2;
-          return `${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`;
-        }).join(' ');
+        const ringPoints = data
+          .map((_, j) => {
+            const angle = j * angleStep - Math.PI / 2;
+            return `${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`;
+          })
+          .join(' ');
         return (
           <polygon
             key={`ring-${i}`}
@@ -147,13 +155,7 @@ function RadarChart({ data }: { data: RadarDataPoint[] }) {
 
       {/* Data points */}
       {points.map((p, i) => (
-        <circle
-          key={`point-${i}`}
-          cx={p.x}
-          cy={p.y}
-          r="3"
-          fill="#00d4ff"
-        />
+        <circle key={`point-${i}`} cx={p.x} cy={p.y} r="3" fill="#00d4ff" />
       ))}
 
       {/* Labels */}
@@ -244,63 +246,87 @@ export function LawyerDashboard() {
   const monthlyPct = Math.round((stats.tokenUsage.monthly / stats.tokenUsage.monthlyLimit) * 100);
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: '#0d1117',
-      color: '#e2e0fc',
-      fontFamily: 'Inter, sans-serif',
-    }}>
+    <div
+      style={{
+        minHeight: '100vh',
+        background: '#0d1117',
+        color: '#e2e0fc',
+        fontFamily: 'Inter, sans-serif',
+      }}
+    >
       {/* ── Header ── */}
-      <header style={{
-        padding: '16px 24px',
-        background: '#111125',
-        borderBottom: '1px solid rgba(60, 73, 78, 0.15)',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}>
-        <h1 style={{
-          fontFamily: 'Space Grotesk, sans-serif',
-          fontSize: '20px',
-          fontWeight: 600,
-          letterSpacing: '-0.02em',
-          margin: 0,
-        }}>
+      <header
+        style={{
+          padding: '16px 24px',
+          background: '#111125',
+          borderBottom: '1px solid rgba(60, 73, 78, 0.15)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <h1
+          style={{
+            fontFamily: 'Space Grotesk, sans-serif',
+            fontSize: '20px',
+            fontWeight: 600,
+            letterSpacing: '-0.02em',
+            margin: 0,
+          }}
+        >
           Attorney Dashboard
         </h1>
-        <span style={{
-          padding: '4px 12px',
-          background: 'rgba(62, 254, 138, 0.1)',
-          color: '#3efe8a',
-          border: '1px solid rgba(62, 254, 138, 0.3)',
-          borderRadius: '4px',
-          fontSize: '12px',
-          fontWeight: 600,
-        }}>
+        <span
+          style={{
+            padding: '4px 12px',
+            background: 'rgba(62, 254, 138, 0.1)',
+            color: '#3efe8a',
+            border: '1px solid rgba(62, 254, 138, 0.3)',
+            borderRadius: '4px',
+            fontSize: '12px',
+            fontWeight: 600,
+          }}
+        >
           KOVEL ACTIVE
         </span>
       </header>
 
       {/* ── Stats Bar ── */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: '16px',
-        padding: '24px',
-      }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '16px',
+          padding: '24px',
+        }}
+      >
         {[
           { label: 'Active Sessions', value: stats.activeSessions, color: '#3efe8a' },
           { label: 'Total Clients', value: stats.totalClients, color: '#a8e8ff' },
-          { label: 'Today\'s Queries', value: stats.todayQueries, color: '#7ad0ff' },
-          { label: 'Escalations', value: clients.reduce((a, c) => a + c.escalationCount, 0), color: '#ffb347' },
+          { label: "Today's Queries", value: stats.todayQueries, color: '#7ad0ff' },
+          {
+            label: 'Escalations',
+            value: clients.reduce((a, c) => a + c.escalationCount, 0),
+            color: '#ffb347',
+          },
         ].map((stat) => (
-          <div key={stat.label} style={{
-            padding: '20px',
-            background: '#1a1a2e',
-            borderRadius: '6px',
-            borderTop: '0.5px solid rgba(180, 235, 255, 0.08)',
-          }}>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: stat.color, fontFamily: 'Space Grotesk' }}>
+          <div
+            key={stat.label}
+            style={{
+              padding: '20px',
+              background: '#1a1a2e',
+              borderRadius: '6px',
+              borderTop: '0.5px solid rgba(180, 235, 255, 0.08)',
+            }}
+          >
+            <div
+              style={{
+                fontSize: '28px',
+                fontWeight: 700,
+                color: stat.color,
+                fontFamily: 'Space Grotesk',
+              }}
+            >
               {stat.value}
             </div>
             <div style={{ fontSize: '13px', color: '#859398', marginTop: '4px' }}>{stat.label}</div>
@@ -309,24 +335,30 @@ export function LawyerDashboard() {
       </div>
 
       {/* ── Main Layout ── */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '24px',
-        padding: '0 24px 24px',
-      }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '24px',
+          padding: '0 24px 24px',
+        }}
+      >
         {/* ── Client List ── */}
-        <div style={{
-          background: '#1a1a2e',
-          borderRadius: '6px',
-          padding: '20px',
-        }}>
-          <h2 style={{
-            fontFamily: 'Space Grotesk',
-            fontSize: '16px',
-            fontWeight: 600,
-            marginBottom: '16px',
-          }}>
+        <div
+          style={{
+            background: '#1a1a2e',
+            borderRadius: '6px',
+            padding: '20px',
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: 'Space Grotesk',
+              fontSize: '16px',
+              fontWeight: 600,
+              marginBottom: '16px',
+            }}
+          >
             Client Activity
           </h2>
           {clients.map((client) => (
@@ -335,7 +367,9 @@ export function LawyerDashboard() {
               onClick={() => setSelectedClient(client)}
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter') setSelectedClient(client); }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') setSelectedClient(client);
+              }}
               style={{
                 padding: '16px',
                 marginBottom: '8px',
@@ -360,17 +394,21 @@ export function LawyerDashboard() {
         </div>
 
         {/* ── Radar Panel ── */}
-        <div style={{
-          background: '#1a1a2e',
-          borderRadius: '6px',
-          padding: '20px',
-        }}>
-          <h2 style={{
-            fontFamily: 'Space Grotesk',
-            fontSize: '16px',
-            fontWeight: 600,
-            marginBottom: '16px',
-          }}>
+        <div
+          style={{
+            background: '#1a1a2e',
+            borderRadius: '6px',
+            padding: '20px',
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: 'Space Grotesk',
+              fontSize: '16px',
+              fontWeight: 600,
+              marginBottom: '16px',
+            }}
+          >
             Anxiety Radar
           </h2>
           {selectedClient ? (
@@ -393,46 +431,70 @@ export function LawyerDashboard() {
 
       {/* ── Token Usage ── */}
       <div style={{ padding: '0 24px 24px' }}>
-        <div style={{
-          background: '#1a1a2e',
-          borderRadius: '6px',
-          padding: '20px',
-        }}>
-          <h2 style={{
-            fontFamily: 'Space Grotesk',
-            fontSize: '16px',
-            fontWeight: 600,
-            marginBottom: '16px',
-          }}>
+        <div
+          style={{
+            background: '#1a1a2e',
+            borderRadius: '6px',
+            padding: '20px',
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: 'Space Grotesk',
+              fontSize: '16px',
+              fontWeight: 600,
+              marginBottom: '16px',
+            }}
+          >
             Token Budget
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
             <div>
               <div style={{ fontSize: '13px', color: '#859398', marginBottom: '6px' }}>
-                Daily: {(stats.tokenUsage.daily / 1000).toFixed(0)}K / {(stats.tokenUsage.dailyLimit / 1_000_000).toFixed(0)}M ({dailyPct}%)
+                Daily: {(stats.tokenUsage.daily / 1000).toFixed(0)}K /{' '}
+                {(stats.tokenUsage.dailyLimit / 1_000_000).toFixed(0)}M ({dailyPct}%)
               </div>
-              <div style={{ background: '#111125', borderRadius: '4px', height: '8px', overflow: 'hidden' }}>
-                <div style={{
-                  width: `${dailyPct}%`,
-                  height: '100%',
-                  background: dailyPct > 80 ? '#ffb347' : '#00d4ff',
+              <div
+                style={{
+                  background: '#111125',
                   borderRadius: '4px',
-                  transition: 'width 0.3s',
-                }} />
+                  height: '8px',
+                  overflow: 'hidden',
+                }}
+              >
+                <div
+                  style={{
+                    width: `${dailyPct}%`,
+                    height: '100%',
+                    background: dailyPct > 80 ? '#ffb347' : '#00d4ff',
+                    borderRadius: '4px',
+                    transition: 'width 0.3s',
+                  }}
+                />
               </div>
             </div>
             <div>
               <div style={{ fontSize: '13px', color: '#859398', marginBottom: '6px' }}>
-                Monthly: {(stats.tokenUsage.monthly / 1_000_000).toFixed(1)}M / {(stats.tokenUsage.monthlyLimit / 1_000_000).toFixed(0)}M ({monthlyPct}%)
+                Monthly: {(stats.tokenUsage.monthly / 1_000_000).toFixed(1)}M /{' '}
+                {(stats.tokenUsage.monthlyLimit / 1_000_000).toFixed(0)}M ({monthlyPct}%)
               </div>
-              <div style={{ background: '#111125', borderRadius: '4px', height: '8px', overflow: 'hidden' }}>
-                <div style={{
-                  width: `${monthlyPct}%`,
-                  height: '100%',
-                  background: monthlyPct > 80 ? '#ffb347' : '#00d4ff',
+              <div
+                style={{
+                  background: '#111125',
                   borderRadius: '4px',
-                  transition: 'width 0.3s',
-                }} />
+                  height: '8px',
+                  overflow: 'hidden',
+                }}
+              >
+                <div
+                  style={{
+                    width: `${monthlyPct}%`,
+                    height: '100%',
+                    background: monthlyPct > 80 ? '#ffb347' : '#00d4ff',
+                    borderRadius: '4px',
+                    transition: 'width 0.3s',
+                  }}
+                />
               </div>
             </div>
           </div>

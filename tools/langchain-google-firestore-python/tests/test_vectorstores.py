@@ -95,7 +95,7 @@ def test_firestore_add_vectors(
 
     # Verify that the vectors were added to Firestore
     docs = firestore_store.collection.stream()
-    for doc, text, metadata in zip(docs, texts, metadatas):
+    for doc, text, metadata in zip(docs, texts, metadatas, strict=False):
         data = doc.to_dict()
         test_case.assertEqual(data["content"], text)
         test_case.assertEqual(data["metadata"], metadata)
@@ -123,7 +123,7 @@ def test_firestore_add_vectors_auto_id(
     # Order is not guarnteed, so we order the documents by content to match the texts.
     docs = firestore_store.collection.order_by("content").get()
 
-    for doc, _id, text in zip(docs, ids, texts):
+    for doc, _id, text in zip(docs, ids, texts, strict=False):
         data = doc.to_dict()
         test_case.assertEqual(data["content"], text)
         test_case.assertEqual(doc.id, _id)
@@ -196,7 +196,7 @@ def test_firestore_add_image_vectors(
 
     # Verify that the vectors were added to Firestore
     docs = firestore_store.collection.stream()
-    for doc, _id, image_path, metadata in zip(docs, ids, image_paths, metadatas):
+    for doc, _id, _image_path, metadata in zip(docs, ids, image_paths, metadatas, strict=False):
         data = doc.to_dict()
         test_case.assertEqual(doc.id, _id)
         test_case.assertEqual(data["content"], "")
@@ -226,7 +226,7 @@ def test_firestore_add_image_vectors_store_encodings_true(
 
     # Verify that the vectors were added to Firestore and the content is empty
     docs = firestore_store.collection.stream()
-    for doc, _id, image_path, metadata in zip(docs, ids, image_paths, metadatas):
+    for doc, _id, image_path, metadata in zip(docs, ids, image_paths, metadatas, strict=False):
         data = doc.to_dict()
         test_case.assertEqual(doc.id, _id)
         test_case.assertEqual(data["metadata"], metadata)
@@ -253,7 +253,7 @@ def test_firestore_update_vectors(
 
     # Verify that the vectors were updated in Firestore
     docs = firestore_store.collection.stream()
-    for doc, text, _id in zip(docs, texts, ids):
+    for doc, text, _id in zip(docs, texts, ids, strict=False):
         data = doc.to_dict()
         test_case.assertEqual(data["content"], text)
         test_case.assertEqual(doc.id, _id)
@@ -500,7 +500,7 @@ def test_firestore_from_texts(
 
     # Assert that the vectors were added to Firestore
     docs = firestore_store.collection.stream()
-    for text, doc in zip(texts, docs):
+    for text, doc in zip(texts, docs, strict=False):
         data = doc.to_dict()
         test_case.assertEqual(data["content"], text)
 
@@ -528,7 +528,7 @@ def test_firestore_from_documents(
 
     # Assert that the vectors were added to Firestore
     docs = firestore_store.collection.stream()
-    for doc, document in zip(docs, documents):
+    for doc, document in zip(docs, documents, strict=False):
         test_case.assertEqual(doc.to_dict()["content"], document.page_content)
         test_case.assertEqual(doc.to_dict()["metadata"], document.metadata)
         test_case.assertEqual(doc.id, "1")
@@ -557,7 +557,7 @@ async def test_firestore_from_documents_async(
 
     # Assert that the vectors were added to Firestore
     docs = firestore_store.collection.stream()
-    for doc, document in zip(docs, documents):
+    for doc, document in zip(docs, documents, strict=False):
         test_case.assertEqual(doc.to_dict()["content"], document.page_content)
         test_case.assertEqual(doc.to_dict()["metadata"], document.metadata)
 

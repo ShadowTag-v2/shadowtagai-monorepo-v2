@@ -104,4 +104,4 @@ async def generate_forensic_reveal(req: AnalyzeRequest):
             "gemini_verdict": final_verdict.strip(),
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))  # noqa: B904

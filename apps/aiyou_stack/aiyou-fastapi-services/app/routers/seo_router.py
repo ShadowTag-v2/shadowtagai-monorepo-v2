@@ -31,7 +31,7 @@ router = APIRouter(
 
 # SEO Analysis Endpoints
 @router.post("/analyze", response_model=SEOAnalysisResponse, status_code=status.HTTP_201_CREATED)
-def analyze_url(url_data: SEOAnalysisCreate, db: Session = Depends(get_db)):
+def analyze_url(url_data: SEOAnalysisCreate, db: Session = Depends(get_db)):  # noqa: B008
     """Analyze a URL for SEO optimization.
 
     Returns comprehensive SEO analysis including:
@@ -53,7 +53,7 @@ def analyze_url(url_data: SEOAnalysisCreate, db: Session = Depends(get_db)):
 
 
 @router.get("/analyze/{analysis_id}", response_model=SEOAnalysisResponse)
-def get_seo_analysis(analysis_id: int, db: Session = Depends(get_db)):
+def get_seo_analysis(analysis_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Get SEO analysis by ID"""
     analysis = SEOService.get_seo_analysis_by_id(db, analysis_id)
     if not analysis:
@@ -65,14 +65,14 @@ def get_seo_analysis(analysis_id: int, db: Session = Depends(get_db)):
 def list_seo_analyses(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """List all SEO analyses with pagination"""
     return SEOService.list_seo_analyses(db, skip=skip, limit=limit)
 
 
 @router.post("/analyze/batch", response_model=BatchURLAnalysisResponse)
-def batch_analyze_urls(batch_request: BatchURLAnalysisRequest, db: Session = Depends(get_db)):
+def batch_analyze_urls(batch_request: BatchURLAnalysisRequest, db: Session = Depends(get_db)):  # noqa: B008
     """Analyze multiple URLs in batch.
     Maximum 100 URLs per request.
     """
@@ -101,7 +101,7 @@ def batch_analyze_urls(batch_request: BatchURLAnalysisRequest, db: Session = Dep
 
 # Meta Tags Endpoints
 @router.post("/meta-tags", response_model=MetaTagResponse, status_code=status.HTTP_201_CREATED)
-def create_meta_tags(meta_tag_data: MetaTagCreate, db: Session = Depends(get_db)):
+def create_meta_tags(meta_tag_data: MetaTagCreate, db: Session = Depends(get_db)):  # noqa: B008
     """Create or update meta tags for a URL.
 
     Includes:
@@ -121,7 +121,7 @@ def create_meta_tags(meta_tag_data: MetaTagCreate, db: Session = Depends(get_db)
 
 
 @router.get("/meta-tags/{meta_tag_id}/html", response_model=MetaTagHTMLResponse)
-def get_meta_tags_html(meta_tag_id: int, db: Session = Depends(get_db)):
+def get_meta_tags_html(meta_tag_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Generate HTML meta tags ready to be inserted in <head> section."""
     from app.db.models.seo import MetaTag
 
@@ -135,7 +135,7 @@ def get_meta_tags_html(meta_tag_id: int, db: Session = Depends(get_db)):
 
 # Schema Markup Endpoints
 @router.post("/schema", response_model=SchemaMarkupResponse, status_code=status.HTTP_201_CREATED)
-def create_schema_markup(schema_data: SchemaMarkupCreate, db: Session = Depends(get_db)):
+def create_schema_markup(schema_data: SchemaMarkupCreate, db: Session = Depends(get_db)):  # noqa: B008
     """Create Schema.org structured data markup.
 
     Supports types like:
@@ -158,7 +158,7 @@ def create_schema_markup(schema_data: SchemaMarkupCreate, db: Session = Depends(
 
 
 @router.get("/schema/{schema_id}/jsonld", response_model=SchemaMarkupJSONLDResponse)
-def get_schema_jsonld(schema_id: int, db: Session = Depends(get_db)):
+def get_schema_jsonld(schema_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Generate JSON-LD script tag for schema markup.
     Ready to be inserted in <head> or <body> section.
     """
@@ -174,7 +174,7 @@ def get_schema_jsonld(schema_id: int, db: Session = Depends(get_db)):
 
 # Sitemap Endpoints
 @router.post("/sitemap", response_model=SitemapResponse, status_code=status.HTTP_201_CREATED)
-def create_sitemap(sitemap_data: SitemapCreate, db: Session = Depends(get_db)):
+def create_sitemap(sitemap_data: SitemapCreate, db: Session = Depends(get_db)):  # noqa: B008
     """Generate XML sitemap for a website.
 
     Include URLs with:
@@ -194,7 +194,7 @@ def create_sitemap(sitemap_data: SitemapCreate, db: Session = Depends(get_db)):
 
 
 @router.get("/sitemap/{sitemap_id}", response_model=SitemapResponse)
-def get_sitemap(sitemap_id: int, db: Session = Depends(get_db)):
+def get_sitemap(sitemap_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Get sitemap by ID"""
     sitemap = SEOService.get_sitemap_by_id(db, sitemap_id)
     if not sitemap:
@@ -203,7 +203,7 @@ def get_sitemap(sitemap_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/sitemap/{sitemap_id}/xml", response_model=SitemapXMLResponse)
-def get_sitemap_xml(sitemap_id: int, db: Session = Depends(get_db)):
+def get_sitemap_xml(sitemap_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Get sitemap XML content.
     Ready to be saved as sitemap.xml file.
     """
@@ -218,7 +218,7 @@ def get_sitemap_xml(sitemap_id: int, db: Session = Depends(get_db)):
 def list_sitemaps(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """List all sitemaps with pagination"""
     return SEOService.list_sitemaps(db, skip=skip, limit=limit)
@@ -230,7 +230,7 @@ def list_sitemaps(
     response_model=CoreWebVitalResponse,
     status_code=status.HTTP_201_CREATED,
 )
-def record_core_web_vitals(vitals_data: CoreWebVitalCreate, db: Session = Depends(get_db)):
+def record_core_web_vitals(vitals_data: CoreWebVitalCreate, db: Session = Depends(get_db)):  # noqa: B008
     """Record Core Web Vitals metrics for a URL.
 
     Metrics include:

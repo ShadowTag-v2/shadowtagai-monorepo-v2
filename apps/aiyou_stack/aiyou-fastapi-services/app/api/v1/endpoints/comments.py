@@ -20,8 +20,8 @@ router = APIRouter()
 @router.post("/", response_model=CommentResponse, status_code=status.HTTP_201_CREATED)
 async def create_comment(
     comment_data: CommentCreate,
-    current_user: User = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Create a new comment."""
     return CommentService.create_comment(
@@ -36,7 +36,7 @@ async def create_comment(
 @router.get("/post/{post_id}", response_model=CommentListResponse)
 async def list_comments_for_post(
     post_id: int,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
     page: int = 1,
     size: int = 20,
 ):
@@ -60,7 +60,7 @@ async def list_comments_for_post(
 
 
 @router.get("/{comment_id}", response_model=CommentResponse)
-async def get_comment(comment_id: int, db: Session = Depends(get_db)):
+async def get_comment(comment_id: int, db: Session = Depends(get_db)):  # noqa: B008
     """Get a comment."""
     comment = CommentService.get_comment(db, comment_id)
     if not comment:
@@ -72,8 +72,8 @@ async def get_comment(comment_id: int, db: Session = Depends(get_db)):
 async def update_comment(
     comment_id: int,
     comment_data: CommentUpdate,
-    current_user: User = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Update a comment."""
     comment = CommentService.get_comment(db, comment_id)
@@ -92,8 +92,8 @@ async def update_comment(
 @router.delete("/{comment_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_comment(
     comment_id: int,
-    current_user: User = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Delete a comment."""
     comment = CommentService.get_comment(db, comment_id)
@@ -112,8 +112,8 @@ async def delete_comment(
 @router.post("/{comment_id}/like", status_code=status.HTTP_201_CREATED)
 async def like_comment(
     comment_id: int,
-    current_user: User = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Like a comment."""
     comment = CommentService.get_comment(db, comment_id)
@@ -131,8 +131,8 @@ async def like_comment(
 @router.delete("/{comment_id}/like", status_code=status.HTTP_204_NO_CONTENT)
 async def unlike_comment(
     comment_id: int,
-    current_user: User = Depends(get_current_active_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Unlike a comment."""
     try:

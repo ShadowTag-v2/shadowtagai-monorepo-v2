@@ -14,7 +14,7 @@
 
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -50,14 +50,18 @@ export default function HeppnerEvaporatingChat({
     if (typeof window === 'undefined') return;
 
     // 1. Clear session storage
-    try { sessionStorage.clear(); } catch { /* noop */ }
+    try {
+      sessionStorage.clear();
+    } catch {
+      /* noop */
+    }
 
     // 2. Purge service worker caches
     try {
-      caches.keys().then((names) =>
-        names.forEach((name) => caches.delete(name)),
-      );
-    } catch { /* noop */ }
+      caches.keys().then((names) => names.forEach((name) => caches.delete(name)));
+    } catch {
+      /* noop */
+    }
 
     // 3. Clear any DOM text nodes (defense against DOM scraping tools)
     const el = document.getElementById(`msg-${messageId}`);

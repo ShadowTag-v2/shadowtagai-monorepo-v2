@@ -22,9 +22,25 @@ extend-exclude = [
 ]
 
 [lint]
-# E: Errors, F: Pyflakes (unused imports), I: Isort, UP: PyUpgrade (strict typing)
-select = ["E", "F", "I", "UP"]
-ignore = ["E501", "E402", "E722", "F841", "E741", "F821", "I001", "PTH118", "PTH123", "SIM108", "N815", "F401"]
+# E: Errors, F: Pyflakes, I: Isort, UP: PyUpgrade, B: Bugbear, SIM: Simplify
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = [
+    "E501",    # line-too-long (handled by formatter)
+    "E402",    # module-import-not-at-top (intentional sys.path manipulation)
+    "E722",    # bare-except (being fixed via AST-Grep, not noqa)
+    "E741",    # ambiguous-variable-name (intentional math/physics vars)
+    "F841",    # unused-variable (may be needed for unpacking)
+    "F821",    # undefined-name (dynamic imports, TYPE_CHECKING)
+    "F401",    # unused-import (may be re-exports)
+    "I001",    # isort violations (handled separately)
+    "PTH118",  # pathlib (gradual migration)
+    "PTH123",  # pathlib (gradual migration)
+    "SIM108",  # ternary (readability preference)
+    "SIM102",  # collapsible-if (chunked AI refactor later)
+    "N815",    # mixed-case (external API compliance)
+    "B017",    # assert-raises-exception (test patterns)
+    "B023",    # function-uses-loop-variable (intentional closures)
+]
 
 [lint.isort]
 force-single-line = false

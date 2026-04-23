@@ -14,7 +14,7 @@ router = APIRouter(prefix="/events", tags=["events"])
 @router.post("/", response_model=EventResponse, status_code=status.HTTP_201_CREATED)
 async def track_event(
     event: EventCreate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Track a new event
 
@@ -38,7 +38,7 @@ async def get_events(
     session_id: str = None,
     limit: int = 100,
     offset: int = 0,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get events with filtering
 
@@ -61,7 +61,7 @@ async def get_events(
 @router.get("/stats/count")
 async def get_event_count(
     event_name: str = None,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get count of events
 
@@ -74,7 +74,7 @@ async def get_event_count(
 
 @router.get("/stats/unique-users")
 async def get_unique_users(
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get count of unique users
 
@@ -88,7 +88,7 @@ async def get_unique_users(
 @router.get("/stats/top-events")
 async def get_top_events(
     limit: int = 10,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get top events by count
 

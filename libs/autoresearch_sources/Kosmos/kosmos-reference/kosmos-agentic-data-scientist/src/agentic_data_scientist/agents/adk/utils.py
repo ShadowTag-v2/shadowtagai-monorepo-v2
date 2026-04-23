@@ -122,7 +122,7 @@ def exit_loop_simple(tool_context: ToolContext):
     return {}
 
 
-def get_generate_content_config(temperature: float = 0.0, output_tokens: Optional[int] = None):
+def get_generate_content_config(temperature: float = 0.0, output_tokens: Optional[int] = None):  # noqa: UP045
     """
     Create a GenerateContentConfig with retry settings.
 

@@ -24,8 +24,8 @@ router = APIRouter()
 @router.post("", response_model=WebhookResponse, status_code=status.HTTP_201_CREATED)
 def create_webhook(
     webhook_data: WebhookCreate,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Create a new webhook"""
     user_id = int(current_user.get("sub"))
@@ -37,11 +37,11 @@ def create_webhook(
 @router.get("", response_model=list[WebhookResponse])
 def list_webhooks(
     integration_id: int | None = Query(None),
-    status_filter: WebhookStatus | None = Query(None, alias="status"),
+    status_filter: WebhookStatus | None = Query(None, alias="status"),  # noqa: B008
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """List user webhooks"""
     user_id = int(current_user.get("sub"))
@@ -59,8 +59,8 @@ def list_webhooks(
 @router.get("/{webhook_id}", response_model=WebhookResponse)
 def get_webhook(
     webhook_id: int,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Get webhook by ID"""
     user_id = int(current_user.get("sub"))
@@ -77,8 +77,8 @@ def get_webhook(
 def update_webhook(
     webhook_id: int,
     webhook_data: WebhookUpdate,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Update webhook"""
     user_id = int(current_user.get("sub"))
@@ -94,8 +94,8 @@ def update_webhook(
 @router.delete("/{webhook_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_webhook(
     webhook_id: int,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Delete webhook"""
     user_id = int(current_user.get("sub"))
@@ -114,8 +114,8 @@ def delete_webhook(
 def trigger_webhook(
     webhook_id: int,
     event_data: WebhookEventCreate,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Trigger a webhook event"""
     user_id = int(current_user.get("sub"))
@@ -144,8 +144,8 @@ def trigger_webhook(
 def get_event_deliveries(
     webhook_id: int,
     event_id: int,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Get delivery attempts for a webhook event"""
     user_id = int(current_user.get("sub"))
@@ -164,8 +164,8 @@ def get_event_deliveries(
 async def test_webhook(
     webhook_id: int,
     test_request: WebhookTestRequest,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Test webhook delivery"""
     user_id = int(current_user.get("sub"))

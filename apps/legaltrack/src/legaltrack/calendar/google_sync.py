@@ -71,7 +71,7 @@ class GoogleCalendarController:
             return {"status": "error", "error": str(e)}
 
 
-from pydantic import BaseModel
+from pydantic import BaseModel  # noqa: E402
 
 
 class CalendarUpsertRequest(BaseModel):

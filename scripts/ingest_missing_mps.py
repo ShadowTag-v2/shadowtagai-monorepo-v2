@@ -48,7 +48,7 @@ def execute_ingestion() -> None:
     # Force MPS on Apple Silicon
     try:
         model = SentenceTransformer("all-MiniLM-L6-v2", device="mps")
-    except:
+    except Exception:
         model = SentenceTransformer("all-MiniLM-L6-v2")
 
     def local_embed_fn(text: str):
@@ -66,7 +66,7 @@ def execute_ingestion() -> None:
             try:
                 with open(file, encoding="utf-8") as f:
                     content = f.read()
-            except:
+            except Exception:
                 continue
 
             chunks = chunk_text(content)

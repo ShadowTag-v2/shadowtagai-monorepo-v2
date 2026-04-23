@@ -37,7 +37,7 @@ class VelocityEngine:
                     line_num = data["data"]["line_number"]
                     content = data["data"]["lines"]["text"].strip()
                     matches.append(f"🎯 [{file}:{line_num}] {content}")
-            except:
+            except Exception:
                 continue
         return "\n".join(matches[:20])  # Limit output to avoid flooding
 

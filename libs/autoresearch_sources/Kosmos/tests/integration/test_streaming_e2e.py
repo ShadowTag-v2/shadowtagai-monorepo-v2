@@ -408,7 +408,7 @@ class TestAPIStreamingEndpoints:
                         break
             finally:
                 producer_task.cancel()
-                try:
+                try:  # noqa: SIM105
                     await producer_task
                 except asyncio.CancelledError:
                     pass

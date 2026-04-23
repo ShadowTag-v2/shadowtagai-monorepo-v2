@@ -11,7 +11,7 @@
  * via the Intent Vault background queue.
  */
 'use client';
-import React, { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 // ─── Types ────────────────────────────────────────────────────────────
 interface AnxietyVector {
@@ -46,10 +46,33 @@ function getUrgencyColor(score: number): {
   text: string;
   badge: string;
 } {
-  if (score >= 9) return { bg: 'bg-red-950', border: 'border-red-500', text: 'text-red-300', badge: 'bg-red-600' };
-  if (score >= 7) return { bg: 'bg-orange-950', border: 'border-orange-500', text: 'text-orange-300', badge: 'bg-orange-600' };
-  if (score >= 5) return { bg: 'bg-yellow-950', border: 'border-yellow-500', text: 'text-yellow-300', badge: 'bg-yellow-600' };
-  return { bg: 'bg-slate-900', border: 'border-slate-600', text: 'text-slate-400', badge: 'bg-slate-600' };
+  if (score >= 9)
+    return {
+      bg: 'bg-red-950',
+      border: 'border-red-500',
+      text: 'text-red-300',
+      badge: 'bg-red-600',
+    };
+  if (score >= 7)
+    return {
+      bg: 'bg-orange-950',
+      border: 'border-orange-500',
+      text: 'text-orange-300',
+      badge: 'bg-orange-600',
+    };
+  if (score >= 5)
+    return {
+      bg: 'bg-yellow-950',
+      border: 'border-yellow-500',
+      text: 'text-yellow-300',
+      badge: 'bg-yellow-600',
+    };
+  return {
+    bg: 'bg-slate-900',
+    border: 'border-slate-600',
+    text: 'text-slate-400',
+    badge: 'bg-slate-600',
+  };
 }
 
 function getTrendIcon(trend: string): string {
@@ -96,9 +119,7 @@ export default function LawyerIntentDashboard({
       <header className="border-b border-slate-800 px-8 py-6">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-black tracking-tight">
-              Client Research & Intent Radar
-            </h1>
+            <h1 className="text-3xl font-black tracking-tight">Client Research & Intent Radar</h1>
             <p className="text-slate-500 text-sm mt-1 font-mono">
               Session {sessionId.slice(0, 8)}… • {clientName} • Kovel Protected
             </p>
@@ -155,9 +176,7 @@ export default function LawyerIntentDashboard({
               return (
                 <button
                   key={vec.topic}
-                  onClick={() =>
-                    setActiveFilter(activeFilter === vec.topic ? 'all' : vec.topic)
-                  }
+                  onClick={() => setActiveFilter(activeFilter === vec.topic ? 'all' : vec.topic)}
                   className={`${colors.bg} border ${colors.border} p-5 rounded-xl text-left transition-all hover:scale-[1.02] ${
                     activeFilter === vec.topic ? 'ring-2 ring-white/30' : ''
                   }`}
@@ -172,9 +191,7 @@ export default function LawyerIntentDashboard({
                   </div>
                   <div className="text-3xl font-black text-white mt-1">
                     {vec.searchCount}
-                    <span className="text-sm font-normal text-slate-500 ml-1">
-                      queries
-                    </span>
+                    <span className="text-sm font-normal text-slate-500 ml-1">queries</span>
                   </div>
                   <div className="flex items-center gap-2 mt-3">
                     <span
@@ -182,9 +199,7 @@ export default function LawyerIntentDashboard({
                     >
                       URGENCY {vec.urgencyScore}/10
                     </span>
-                    <span className="text-slate-600 text-xs">
-                      Peak: {vec.peakHour}
-                    </span>
+                    <span className="text-slate-600 text-xs">Peak: {vec.peakHour}</span>
                   </div>
                 </button>
               );
@@ -295,11 +310,7 @@ function MetricCard({
       </div>
       <div
         className={`text-2xl font-black ${
-          highlight
-            ? 'text-red-400'
-            : isGreen
-              ? 'text-green-400'
-              : 'text-white'
+          highlight ? 'text-red-400' : isGreen ? 'text-green-400' : 'text-white'
         }`}
       >
         {value}

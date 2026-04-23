@@ -6,7 +6,7 @@
  *
  * Nag Protocol #8: Implement S.E.U. token minting endpoint
  */
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { mintSEUProxyToken } from '@/lib/security/seu-token-manager';
 
@@ -50,9 +50,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 },
       );
     }
-    return NextResponse.json(
-      { error: 'Token minting failed' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Token minting failed' }, { status: 500 });
   }
 }

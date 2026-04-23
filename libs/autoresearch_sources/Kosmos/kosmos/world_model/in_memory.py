@@ -104,15 +104,15 @@ class InMemoryWorldModel(WorldModelStorage, EntityManager):
         related = []
         for rel in self._relationships.values():
             if direction == "incoming" and rel.target_id == entity_id:
-                if relationship_type is None or rel.type == relationship_type:
+                if relationship_type is None or rel.type == relationship_type:  # noqa: SIM102
                     if rel.source_id in self._entities:
                         related.append(self._entities[rel.source_id])
             elif direction == "outgoing" and rel.source_id == entity_id:
-                if relationship_type is None or rel.type == relationship_type:
+                if relationship_type is None or rel.type == relationship_type:  # noqa: SIM102
                     if rel.target_id in self._entities:
                         related.append(self._entities[rel.target_id])
-            elif direction == "both":
-                if rel.source_id == entity_id or rel.target_id == entity_id:
+            elif direction == "both":  # noqa: SIM102
+                if rel.source_id == entity_id or rel.target_id == entity_id:  # noqa: SIM102
                     if relationship_type is None or rel.type == relationship_type:
                         other_id = rel.target_id if rel.source_id == entity_id else rel.source_id
                         if other_id in self._entities:

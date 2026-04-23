@@ -6,7 +6,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   /* ─── HEADER SCROLL ─── */
   const header = document.getElementById('site-header');
-  let lastScroll = 0;
+  let _lastScroll = 0;
   window.addEventListener(
     'scroll',
     () => {
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         header.classList.remove('scrolled');
       }
-      lastScroll = y;
+      _lastScroll = y;
     },
     { passive: true },
   );
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const observer = new IntersectionObserver(
     (entries) => {
-      entries.forEach((entry, index) => {
+      entries.forEach((entry, _index) => {
         if (entry.isIntersecting) {
           // Stagger animation by sibling index
           const parent = entry.target.parentElement;

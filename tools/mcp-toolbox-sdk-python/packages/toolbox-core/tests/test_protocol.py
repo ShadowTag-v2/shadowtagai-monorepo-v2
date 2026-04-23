@@ -122,7 +122,7 @@ def test_parameter_schema_string_optional():
         description="An optional nickname",
         required=False,
     )
-    expected_type = Optional[str]
+    expected_type = Optional[str]  # noqa: UP045
 
     # Test __get_type()
     assert schema._ParameterSchema__get_type() == expected_type
@@ -163,7 +163,7 @@ def test_parameter_schema_array_optional():
         items=item_schema,
         required=False,
     )
-    expected_type = Optional[list[int]]
+    expected_type = Optional[list[int]]  # noqa: UP045
 
     # Test __get_type()
     assert schema._ParameterSchema__get_type() == expected_type
@@ -261,7 +261,7 @@ def test_parameter_schema_map_optional():
         required=False,
         additionalProperties=True,
     )
-    expected_type = Optional[dict[str, Any]]
+    expected_type = Optional[dict[str, Any]]  # noqa: UP045
     assert schema._ParameterSchema__get_type() == expected_type
     param = schema.to_param()
     assert param.annotation == expected_type
@@ -292,7 +292,7 @@ def test_parameter_schema_optional_with_default_uses_none_signature_default():
         required=False,
         default=10,
     )
-    expected_type = Optional[int]
+    expected_type = Optional[int]  # noqa: UP045
 
     assert schema._ParameterSchema__get_type() == expected_type
 

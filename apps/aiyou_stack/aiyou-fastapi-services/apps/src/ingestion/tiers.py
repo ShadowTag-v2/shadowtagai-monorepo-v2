@@ -144,7 +144,7 @@ class TierClassifier:
                 item_time = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
                 age_hours = (datetime.now() - item_time).total_seconds() / 3600
                 timeliness = max(0.0, 1.0 - (age_hours / 168))  # Decay over 7 days
-            except:
+            except Exception:
                 timeliness = 0.5
         else:
             timeliness = 0.5
@@ -199,7 +199,7 @@ class TierClassifier:
             try:
                 item_time = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
                 age_hours = (datetime.now() - item_time).total_seconds() / 3600
-            except:
+            except Exception:
                 pass
 
         # Tier 1: High value

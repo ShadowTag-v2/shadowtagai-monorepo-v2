@@ -77,7 +77,7 @@ class McpHttpTransportV20250326(_McpHttpTransportBase):
                 except Exception:
                     # Fallback if the error doesn't match our schema exactly
                     raw_error = json_resp.get("error", {})
-                    raise RuntimeError(f"MCP request failed: {raw_error}")
+                    raise RuntimeError(f"MCP request failed: {raw_error}")  # noqa: B904
 
             # Parse Result
             if isinstance(request, types.MCPRequest):
@@ -85,7 +85,7 @@ class McpHttpTransportV20250326(_McpHttpTransportBase):
                     rpc_resp = types.JSONRPCResponse.model_validate(json_resp)
                     return request.get_result_model().model_validate(rpc_resp.result)
                 except Exception as e:
-                    raise RuntimeError(f"Failed to parse JSON-RPC response: {e}")
+                    raise RuntimeError(f"Failed to parse JSON-RPC response: {e}")  # noqa: B904
             return None
 
     async def _initialize_session(self, headers: Mapping[str, str] | None = None) -> None:

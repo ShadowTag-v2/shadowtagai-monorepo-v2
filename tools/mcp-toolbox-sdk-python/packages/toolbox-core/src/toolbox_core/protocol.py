@@ -54,7 +54,7 @@ def _get_python_type(type_name: str) -> type:
     try:
         return __TYPE_MAP[type_name]
     except KeyError:
-        raise ValueError(f"Unsupported schema type: {type_name}")
+        raise ValueError(f"Unsupported schema type: {type_name}")  # noqa: B904
 
 
 class AdditionalPropertiesSchema(BaseModel):
@@ -105,7 +105,7 @@ class ParameterSchema(BaseModel):
             base_type = _get_python_type(self.type)
 
         if not self.required:
-            return Optional[base_type]  # type: ignore
+            return Optional[base_type]  # type: ignore  # noqa: UP045
 
         return base_type
 

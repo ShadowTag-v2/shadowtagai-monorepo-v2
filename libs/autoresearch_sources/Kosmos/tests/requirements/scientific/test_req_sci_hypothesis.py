@@ -397,7 +397,7 @@ def test_req_sci_hyp_005_no_contradicting_physical_laws():
             )
 
         # Check for conservation law violations
-        if "create energy" in statement_lower or "destroy energy" in statement_lower:
+        if "create energy" in statement_lower or "destroy energy" in statement_lower:  # noqa: SIM102
             # Check if properly justified
             if "virtual" not in statement_lower and "quantum" not in rationale_lower:
                 violations.append(

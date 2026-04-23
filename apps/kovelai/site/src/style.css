@@ -902,7 +902,10 @@ a {
   border: 1px solid rgba(230, 196, 135, 0.08);
   border-radius: 16px;
   padding: 2rem;
-  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
 }
 .testimonial-card:hover {
   transform: translateY(-4px);
@@ -979,10 +982,10 @@ a {
   color: var(--color-on-surface-variant);
 }
 .comparison-risk {
-  color: var(--color-error) !important;
+  color: var(--color-error);
 }
 .comparison-safe {
-  color: var(--color-primary) !important;
+  color: var(--color-primary);
 }
 .comparison-feature {
   font-weight: 600;
@@ -1017,7 +1020,9 @@ a {
   padding: 2.5rem 2rem;
   text-align: center;
   position: relative;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 .pricing-card:hover {
   transform: translateY(-4px);
@@ -1210,15 +1215,23 @@ a {
 .scroll-entrance {
   opacity: 0;
   transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .scroll-entrance.entered {
   opacity: 1;
   transform: translateY(0);
 }
-.scroll-entrance:nth-child(2) { transition-delay: 0.1s; }
-.scroll-entrance:nth-child(3) { transition-delay: 0.2s; }
-.scroll-entrance:nth-child(4) { transition-delay: 0.3s; }
+.scroll-entrance:nth-child(2) {
+  transition-delay: 0.1s;
+}
+.scroll-entrance:nth-child(3) {
+  transition-delay: 0.2s;
+}
+.scroll-entrance:nth-child(4) {
+  transition-delay: 0.3s;
+}
 
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 1024px) {

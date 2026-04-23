@@ -32,8 +32,8 @@ interface ConflictResult {
 interface ClioConfig {
   firmId: string;
   clioRegion: 'us' | 'ca' | 'eu';
-  accessToken: string;   // OAuth2 access token (short-lived)
-  refreshToken: string;  // OAuth2 refresh token (stored in Secret Manager)
+  accessToken: string; // OAuth2 access token (short-lived)
+  refreshToken: string; // OAuth2 refresh token (stored in Secret Manager)
 }
 
 /**
@@ -48,13 +48,14 @@ export async function checkClioConflicts(
     prospectiveName: string;
     adverseParties: string[];
     matterType: string;
-  }
+  },
 ): Promise<ConflictResult> {
-  const baseUrl = config.clioRegion === 'eu'
-    ? 'https://eu.app.clio.com/api/v4'
-    : config.clioRegion === 'ca'
-      ? 'https://ca.app.clio.com/api/v4'
-      : 'https://app.clio.com/api/v4';
+  const baseUrl =
+    config.clioRegion === 'eu'
+      ? 'https://eu.app.clio.com/api/v4'
+      : config.clioRegion === 'ca'
+        ? 'https://ca.app.clio.com/api/v4'
+        : 'https://app.clio.com/api/v4';
 
   const allNames = [params.prospectiveName, ...params.adverseParties];
   const matchedEntities: ConflictResult['matchedEntities'] = [];
@@ -68,7 +69,7 @@ export async function checkClioConflicts(
             Authorization: `Bearer ${config.accessToken}`,
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -79,7 +80,7 @@ export async function checkClioConflicts(
         continue;
       }
 
-      const data = await response.json() as {
+      const data = (await response.json()) as {
         data: Array<{
           id: number;
           name: string;
@@ -116,12 +117,10 @@ export async function checkClioConflicts(
   if (hasConflict) {
     // Check if matched entity is a current client
     const isCurrentClient = matchedEntities.some(
-      (e) => e.name.toLowerCase() === params.prospectiveName.toLowerCase()
+      (e) => e.name.toLowerCase() === params.prospectiveName.toLowerCase(),
     );
-    const isAdverseMatch = matchedEntities.some(
-      (e) => params.adverseParties.some(
-        (ap) => computeNameSimilarity(ap, e.name) >= 0.85
-      )
+    const isAdverseMatch = matchedEntities.some((e) =>
+      params.adverseParties.some((ap) => computeNameSimilarity(ap, e.name) >= 0.85),
     );
 
     if (isCurrentClient && isAdverseMatch) {
@@ -196,7 +195,8 @@ function computeNameSimilarity(a: string, b: string): number {
     k++;
   }
 
-  const jaro = (matches / s1.length + matches / s2.length + (matches - transpositions / 2) / matches) / 3;
+  const jaro =
+    (matches / s1.length + matches / s2.length + (matches - transpositions / 2) / matches) / 3;
 
   // Winkler prefix bonus
   let prefix = 0;

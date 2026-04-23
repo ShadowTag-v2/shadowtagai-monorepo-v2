@@ -63,7 +63,7 @@ def run_database_migrations(database_url: str) -> tuple[bool, str | None]:
         from alembic.config import Config
         from alembic.runtime.migration import MigrationContext
         from alembic.script import ScriptDirectory
-        from sqlalchemy import create_engine, text
+        from sqlalchemy import create_engine, text  # noqa: F401
 
         from alembic import command
 

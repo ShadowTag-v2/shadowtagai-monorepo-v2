@@ -9,8 +9,8 @@
  */
 
 import { getAuth } from 'firebase-admin/auth';
-import { createLogger } from '../observability/structured-logger';
 import type { NextRequest } from 'next/server';
+import { createLogger } from '../observability/structured-logger';
 
 const logger = createLogger('mfa-gate');
 const auth = getAuth();
@@ -54,7 +54,7 @@ export async function verifyMFA(request: NextRequest): Promise<MFAVerification> 
 
     // Check if this route requires MFA
     const requiresMFA = MFA_REQUIRED_ROUTES.some((route) =>
-      request.nextUrl.pathname.startsWith(route)
+      request.nextUrl.pathname.startsWith(route),
     );
 
     if (!requiresMFA) {
@@ -67,8 +67,9 @@ export async function verifyMFA(request: NextRequest): Promise<MFAVerification> 
     }
 
     // Check for MFA factor in the token
-    const hasMFA = decoded.firebase?.sign_in_second_factor === 'totp'
-      || decoded.firebase?.sign_in_second_factor === 'phone';
+    const hasMFA =
+      decoded.firebase?.sign_in_second_factor === 'totp' ||
+      decoded.firebase?.sign_in_second_factor === 'phone';
 
     if (!hasMFA) {
       logger.warn('MFA required but not present', {
@@ -123,7 +124,7 @@ export async function enrollTOTP(uid: string): Promise<{
     secretKey: totpConfig.sharedSecretKey,
     qrCodeUrl: totpConfig.generateQrCodeUrl(
       (await auth.getUser(uid)).email || 'attorney@firm.com',
-      'KovelAI'
+      'KovelAI',
     ),
   };
 }

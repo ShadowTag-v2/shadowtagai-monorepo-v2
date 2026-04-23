@@ -108,7 +108,7 @@ class JetskiAgent:
                     # Smart Click (Selector or Visual Text)
                     try:
                         await page.click(decision["selector"], timeout=2000)
-                    except:
+                    except Exception:
                         await page.get_by_text(decision["selector"], exact=False).first.click()
 
                 elif decision["action"] == "type":

@@ -35,7 +35,7 @@ class TestVariableValuesParsing:
         This is the D1 bug: LLMs return strings like 'Variable (from dataset)'
         instead of lists. Without coercion in _parse_claude_protocol, this crashes.
         """
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             Variable(
                 name="substrate",
                 type=VariableType.INDEPENDENT,

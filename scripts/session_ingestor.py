@@ -38,7 +38,7 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 EMBED_MODEL = "text-embedding-004"
 CHUNK_SIZE = 1500
 CHUNK_OVERLAP = 200
-DRY_RUN = os.getenv("ShadowTag-v2_DRY_RUN", "0") == "1"
+DRY_RUN = os.getenv("ShadowTag-v2_DRY_RUN", "0") == "1"  # noqa: SIM112
 
 # ── Text utilities ─────────────────────────────────────────────────────────────
 
@@ -237,7 +237,7 @@ def main() -> None:
                 continue
             chunks = chunk_text(text)
             if DRY_RUN:
-                for i, _c in enumerate(chunks):
+                for i, _c in enumerate(chunks):  # noqa: B007
                     pass
                 continue
             ingested = 0

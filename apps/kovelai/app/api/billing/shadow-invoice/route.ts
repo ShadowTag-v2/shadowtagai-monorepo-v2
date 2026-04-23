@@ -7,7 +7,7 @@
  *
  * Nag Protocol #11: Shadow Invoice auto-draft for Clio
  */
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { AntigravityMCPClient } from '@/lib/mcp/antigravity-client';
 
@@ -57,10 +57,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // Build the Clio time entry via Antigravity MCP (risk-checked)
     const clioMcpUrl = process.env.CLIO_MCP_URL;
     if (!clioMcpUrl) {
-      return NextResponse.json(
-        { error: 'Clio MCP not configured' },
-        { status: 503 },
-      );
+      return NextResponse.json({ error: 'Clio MCP not configured' }, { status: 503 });
     }
 
     const mcpClient = new AntigravityMCPClient(clioMcpUrl, 'shadow-invoice');
@@ -106,9 +103,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 },
       );
     }
-    return NextResponse.json(
-      { error: 'Shadow invoice draft failed' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Shadow invoice draft failed' }, { status: 500 });
   }
 }

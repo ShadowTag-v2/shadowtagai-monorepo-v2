@@ -45,7 +45,7 @@ class PipelineResult:
 
 # Import Kosmos for embedded consensus per stage
 try:
-    from kosmos.core import KosmosInstance, KosmosType, create_kosmos
+    from kosmos.core import KosmosInstance, KosmosType, create_kosmos  # noqa: F401
 
     KOSMOS_AVAILABLE = True
 except ImportError:

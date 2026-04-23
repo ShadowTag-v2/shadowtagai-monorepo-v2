@@ -13,7 +13,7 @@ router = APIRouter(prefix="/users", tags=["users"])
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def create_user(
     user: UserCreate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Create a new user
 
@@ -35,7 +35,7 @@ async def create_user(
 @router.get("/{user_id}", response_model=UserResponse)
 async def get_user(
     user_id: str,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get user by ID
 
@@ -56,7 +56,7 @@ async def get_user(
 async def update_user(
     user_id: str,
     user_data: UserUpdate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Update user information
 
@@ -80,7 +80,7 @@ async def list_users(
     is_active: bool = None,
     limit: int = 100,
     offset: int = 0,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """List users with filtering
 
@@ -99,7 +99,7 @@ async def list_users(
 
 
 @router.get("/meta/segments")
-async def get_segments(db: AsyncSession = Depends(get_db)):
+async def get_segments(db: AsyncSession = Depends(get_db)):  # noqa: B008
     """Get all user segments
 
     Returns a list of all unique user segments.
@@ -110,7 +110,7 @@ async def get_segments(db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/meta/cohorts")
-async def get_cohorts(db: AsyncSession = Depends(get_db)):
+async def get_cohorts(db: AsyncSession = Depends(get_db)):  # noqa: B008
     """Get all user cohorts
 
     Returns a list of all unique user cohorts.

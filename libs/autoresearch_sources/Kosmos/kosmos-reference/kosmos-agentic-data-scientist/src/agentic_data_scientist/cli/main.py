@@ -77,14 +77,14 @@ logger = logging.getLogger(__name__)
     help='Path to log file (default: .agentic_ds.log in working directory)',
 )
 def main(
-    query: Optional[str],
+    query: Optional[str],  # noqa: UP045
     files: tuple,
     mode: str,
-    working_dir: Optional[str],
+    working_dir: Optional[str],  # noqa: UP045
     temp_dir: bool,
     keep_files: bool,
     verbose: bool,
-    log_file: Optional[str],
+    log_file: Optional[str],  # noqa: UP045
 ):
     """
     Run Agentic Data Scientist with a query.

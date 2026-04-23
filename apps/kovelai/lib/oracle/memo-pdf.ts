@@ -39,23 +39,27 @@ export const OracleMemoSchema = z.object({
   riskLevel: z.enum(['LOW', 'MODERATE', 'HIGH', 'CRITICAL']),
 
   // Research Findings
-  findings: z.array(z.object({
-    findingId: z.string(),
-    title: z.string(),
-    analysis: z.string(),
-    relevanceScore: z.number().min(0).max(1),
-    confidence: z.enum(['HIGH', 'MEDIUM', 'LOW']),
-  })),
+  findings: z.array(
+    z.object({
+      findingId: z.string(),
+      title: z.string(),
+      analysis: z.string(),
+      relevanceScore: z.number().min(0).max(1),
+      confidence: z.enum(['HIGH', 'MEDIUM', 'LOW']),
+    }),
+  ),
 
   // Citations
-  citations: z.array(z.object({
-    caseTitle: z.string(),
-    citation: z.string(),
-    court: z.string(),
-    year: z.number(),
-    relevance: z.string(),
-    url: z.string().url().optional(),
-  })),
+  citations: z.array(
+    z.object({
+      caseTitle: z.string(),
+      citation: z.string(),
+      court: z.string(),
+      year: z.number(),
+      relevance: z.string(),
+      url: z.string().url().optional(),
+    }),
+  ),
 
   // Risk Assessment
   riskAssessment: z.object({
@@ -65,11 +69,13 @@ export const OracleMemoSchema = z.object({
   }),
 
   // Recommendations
-  recommendations: z.array(z.object({
-    priority: z.enum(['IMMEDIATE', 'SHORT_TERM', 'LONG_TERM']),
-    action: z.string(),
-    rationale: z.string(),
-  })),
+  recommendations: z.array(
+    z.object({
+      priority: z.enum(['IMMEDIATE', 'SHORT_TERM', 'LONG_TERM']),
+      action: z.string(),
+      rationale: z.string(),
+    }),
+  ),
 
   // Attestation
   attestation: z.object({
@@ -140,7 +146,8 @@ export function generateMemoPDFTemplate(memo: OracleMemo): MemoPDFTemplate {
           practiceArea: memo.practiceArea,
           riskLevel: memo.riskLevel,
           memoId: memo.memoId,
-          footer: 'This document is protected by attorney-client privilege under the Kovel Doctrine.',
+          footer:
+            'This document is protected by attorney-client privilege under the Kovel Doctrine.',
         },
       },
 
@@ -160,8 +167,9 @@ export function generateMemoPDFTemplate(memo: OracleMemo): MemoPDFTemplate {
         type: 'content',
         content: {
           heading: 'Research Findings',
-          findings: memo.findings.map((f) =>
-            `[${f.confidence}] ${f.title} (relevance: ${Math.round(f.relevanceScore * 100)}%)\n${f.analysis}`,
+          findings: memo.findings.map(
+            (f) =>
+              `[${f.confidence}] ${f.title} (relevance: ${Math.round(f.relevanceScore * 100)}%)\n${f.analysis}`,
           ),
         },
       },
@@ -171,8 +179,8 @@ export function generateMemoPDFTemplate(memo: OracleMemo): MemoPDFTemplate {
         type: 'citations',
         content: {
           heading: 'Cited Authorities',
-          citations: memo.citations.map((c) =>
-            `${c.caseTitle}, ${c.citation} (${c.court}, ${c.year})\n${c.relevance}`,
+          citations: memo.citations.map(
+            (c) => `${c.caseTitle}, ${c.citation} (${c.court}, ${c.year})\n${c.relevance}`,
           ),
         },
       },

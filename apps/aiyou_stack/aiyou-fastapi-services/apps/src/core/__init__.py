@@ -74,8 +74,8 @@ Core Gemini Function Calling Implementation
 AutoGen → Native Gemini Migration
 """
 
-from .function_registry import FunctionRegistry
-from .gemini_function_calling import (
+from .function_registry import FunctionRegistry  # noqa: E402
+from .gemini_function_calling import (  # noqa: E402
     FunctionResult,
     FunctionTool,
     GeminiFunctionCaller,

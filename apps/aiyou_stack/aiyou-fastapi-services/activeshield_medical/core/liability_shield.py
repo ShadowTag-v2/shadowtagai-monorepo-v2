@@ -86,7 +86,7 @@ class ShieldResult(BaseModel):
     processing_time_ms: float = 0.0
 
 
-from sqlalchemy.orm import (
+from sqlalchemy.orm import (  # noqa: E402
     Session,  # noqa: E402 — must follow Pydantic models (circular import guard)
 )
 

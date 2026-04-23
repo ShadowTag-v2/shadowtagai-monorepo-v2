@@ -26,8 +26,8 @@ router = APIRouter()
 @router.post("", response_model=IntegrationResponse, status_code=status.HTTP_201_CREATED)
 def create_integration(
     integration_data: IntegrationCreate,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Create a new integration"""
     user_id = int(current_user.get("sub"))
@@ -39,11 +39,11 @@ def create_integration(
 @router.get("", response_model=list[IntegrationResponse])
 def list_integrations(
     provider: str | None = Query(None),
-    status_filter: IntegrationStatus | None = Query(None, alias="status"),
+    status_filter: IntegrationStatus | None = Query(None, alias="status"),  # noqa: B008
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """List user integrations"""
     user_id = int(current_user.get("sub"))
@@ -61,8 +61,8 @@ def list_integrations(
 @router.get("/{integration_id}", response_model=IntegrationResponse)
 def get_integration(
     integration_id: int,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Get integration by ID"""
     user_id = int(current_user.get("sub"))
@@ -79,8 +79,8 @@ def get_integration(
 def update_integration(
     integration_id: int,
     integration_data: IntegrationUpdate,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Update integration"""
     user_id = int(current_user.get("sub"))
@@ -96,8 +96,8 @@ def update_integration(
 @router.delete("/{integration_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_integration(
     integration_id: int,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Delete integration"""
     user_id = int(current_user.get("sub"))
@@ -112,8 +112,8 @@ def delete_integration(
 def add_credentials(
     integration_id: int,
     credentials: IntegrationCredentialCreate,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Add or update integration credentials"""
     user_id = int(current_user.get("sub"))
@@ -129,8 +129,8 @@ def add_credentials(
 @router.get("/{integration_id}/credentials", response_model=IntegrationCredentialResponse)
 def get_credentials(
     integration_id: int,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Get integration credentials (without sensitive data)"""
     user_id = int(current_user.get("sub"))
@@ -147,8 +147,8 @@ def get_credentials(
 async def test_integration(
     integration_id: int,
     test_request: IntegrationTestRequest | None = None,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Test integration connection"""
     user_id = int(current_user.get("sub"))
@@ -162,8 +162,8 @@ def initiate_oauth(
     integration_id: int,
     redirect_uri: str = Query(..., description="OAuth redirect URI"),
     scope: str | None = Query(None, description="OAuth scope"),
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Initiate OAuth flow for integration"""
     user_id = int(current_user.get("sub"))
@@ -191,8 +191,8 @@ def initiate_oauth(
 async def oauth_callback(
     integration_id: int,
     callback_data: OAuthCallbackRequest,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Handle OAuth callback"""
     user_id = int(current_user.get("sub"))
@@ -213,8 +213,8 @@ async def oauth_callback(
 @router.post("/{integration_id}/oauth/refresh", response_model=IntegrationCredentialResponse)
 async def refresh_oauth_token(
     integration_id: int,
-    current_user: dict = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Refresh OAuth access token"""
     user_id = int(current_user.get("sub"))

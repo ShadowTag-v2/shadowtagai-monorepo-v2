@@ -171,7 +171,7 @@ class ReferenceManager:
                     if query_lower in author_names:
                         matches.append(paper)
                         break
-                elif field == "abstract" and paper.abstract:
+                elif field == "abstract" and paper.abstract:  # noqa: SIM102
                     if query_lower in paper.abstract.lower():
                         matches.append(paper)
                         break
@@ -728,7 +728,7 @@ class DeduplicationEngine:
             return True
 
         # Check fuzzy title
-        if paper1.title and paper2.title:
+        if paper1.title and paper2.title:  # noqa: SIM102
             if self._title_similarity(paper1.title, paper2.title) >= 0.9:
                 return True
 

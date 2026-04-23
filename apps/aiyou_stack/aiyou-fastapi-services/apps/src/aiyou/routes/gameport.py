@@ -31,7 +31,7 @@ class GameSessionResponse(BaseModel):
 
 
 @router.get("/games", response_model=list[dict])
-async def list_games(db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
+async def list_games(db: Session = Depends(get_db), skip: int = 0, limit: int = 100):  # noqa: B008
     """List available games."""
     games = db.query(Game).filter(Game.is_active).offset(skip).limit(limit).all()
     return [{"id": g.id, "title": g.title, "genre": g.genre} for g in games]
@@ -40,8 +40,8 @@ async def list_games(db: Session = Depends(get_db), skip: int = 0, limit: int = 
 @router.post("/sessions", response_model=GameSessionResponse)
 async def create_session(
     session_in: GameSessionCreate,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),  # noqa: B008
+    db: Session = Depends(get_db),  # noqa: B008
 ):
     """Start a new cloud gaming session."""
     game = db.query(Game).filter(Game.id == session_in.game_id).first()

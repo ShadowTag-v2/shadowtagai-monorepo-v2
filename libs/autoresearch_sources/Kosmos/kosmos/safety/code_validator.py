@@ -274,19 +274,18 @@ class CodeValidator:
                                     details={"module": alias.name},
                                 )
                             )
-                elif isinstance(node, ast.ImportFrom):
-                    if node.module and (
-                        node.module in self.DANGEROUS_MODULES
-                        or any(node.module.startswith(f"{m}.") for m in self.DANGEROUS_MODULES)
-                    ):
-                        violations.append(
-                            SafetyViolation(
-                                type=ViolationType.DANGEROUS_CODE,
-                                severity=RiskLevel.CRITICAL,
-                                message=f"Dangerous import detected: from {node.module}",
-                                details={"module": node.module},
-                            )
+                elif isinstance(node, ast.ImportFrom) and node.module and (
+                    node.module in self.DANGEROUS_MODULES
+                    or any(node.module.startswith(f"{m}.") for m in self.DANGEROUS_MODULES)
+                ):
+                    violations.append(
+                        SafetyViolation(
+                            type=ViolationType.DANGEROUS_CODE,
+                            severity=RiskLevel.CRITICAL,
+                            message=f"Dangerous import detected: from {node.module}",
+                            details={"module": node.module},
                         )
+                    )
         except SyntaxError:
             # Fall back to string matching if code has syntax errors
             for module in self.DANGEROUS_MODULES:
@@ -433,7 +432,7 @@ class CodeValidator:
 
         # Require approval for ethical violations
         ethical_violations = report.get_violations_by_type(ViolationType.ETHICAL_VIOLATION)
-        if ethical_violations:
+        if ethical_violations:  # noqa: SIM103
             return True
 
         return False

@@ -862,7 +862,7 @@ class TestConfigurationEdgeCases:
                 "LOG_LEVEL": "info",  # mixed case
             },
         ):
-            try:
+            try:  # noqa: SIM105
                 KosmosConfig()
                 # Should handle case variations
             except ValidationError:

@@ -61,9 +61,7 @@ setInterval(() => {
 export function createRateLimiter(customConfig?: Partial<RateLimitConfig>) {
   const config = { ...DEFAULT_CONFIG, ...customConfig };
 
-  return function rateLimitMiddleware(
-    handler: (req: NextRequest) => Promise<NextResponse>,
-  ) {
+  return function rateLimitMiddleware(handler: (req: NextRequest) => Promise<NextResponse>) {
     return async function rateLimitedHandler(req: NextRequest): Promise<NextResponse> {
       const routeConfig = ROUTE_LIMITS[req.nextUrl.pathname];
       const effectiveConfig = { ...config, ...routeConfig };
@@ -77,14 +75,10 @@ export function createRateLimiter(customConfig?: Partial<RateLimitConfig>) {
       }
 
       // Slide the window
-      entry.timestamps = entry.timestamps.filter(
-        (t) => now - t < effectiveConfig.windowMs,
-      );
+      entry.timestamps = entry.timestamps.filter((t) => now - t < effectiveConfig.windowMs);
 
       if (entry.timestamps.length >= effectiveConfig.maxRequests) {
-        const retryAfter = Math.ceil(
-          (entry.timestamps[0] + effectiveConfig.windowMs - now) / 1000,
-        );
+        const retryAfter = Math.ceil((entry.timestamps[0] + effectiveConfig.windowMs - now) / 1000);
 
         return NextResponse.json(
           {

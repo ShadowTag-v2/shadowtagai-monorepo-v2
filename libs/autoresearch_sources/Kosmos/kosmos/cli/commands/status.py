@@ -61,11 +61,11 @@ def show_status(
 
     except KeyboardInterrupt:
         console.print("\n[warning]Status display cancelled[/warning]")
-        raise typer.Exit(130)
+        raise typer.Exit(130)  # noqa: B904
 
     except Exception as e:
         print_error(f"Failed to get status: {str(e)}")
-        raise typer.Exit(1)
+        raise typer.Exit(1)  # noqa: B904
 
 
 def get_research_data(run_id: str | None = None) -> dict | None:

@@ -243,7 +243,7 @@ def _analyze_progress(text: str, current_stage: str, current_percentage: int) ->
     text_lower = text.lower()
 
     # Check for various progress indicators
-    if "research" in text_lower or "literature" in text_lower or "searching" in text_lower:
+    if "research" in text_lower or "literature" in text_lower or "searching" in text_lower:  # noqa: SIM102
         if current_stage != "research":
             return "research", 30, "Conducting literature research"
 
@@ -253,7 +253,7 @@ def _analyze_progress(text: str, current_stage: str, current_percentage: int) ->
         elif current_percentage < 70:
             return "writing", min(current_percentage + 10, 70), "Writing paper sections"
 
-    if "compil" in text_lower or "latex" in text_lower or "pdf" in text_lower:
+    if "compil" in text_lower or "latex" in text_lower or "pdf" in text_lower:  # noqa: SIM102
         if current_stage != "compilation":
             return "compilation", 80, "Compiling LaTeX to PDF"
 

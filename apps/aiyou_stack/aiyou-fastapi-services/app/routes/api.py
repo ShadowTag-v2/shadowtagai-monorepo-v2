@@ -20,7 +20,7 @@ router = APIRouter()
 _executor: SandboxExecutor = None
 
 
-def get_executor(settings: AppSettings = Depends(get_settings)) -> SandboxExecutor:
+def get_executor(settings: AppSettings = Depends(get_settings)) -> SandboxExecutor:  # noqa: B008
     """Get or create sandbox executor instance."""
     global _executor
     if _executor is None:
@@ -30,7 +30,7 @@ def get_executor(settings: AppSettings = Depends(get_settings)) -> SandboxExecut
 
 @router.get("/health", response_model=HealthResponse)
 async def health_check(
-    settings: AppSettings = Depends(get_settings),
+    settings: AppSettings = Depends(get_settings),  # noqa: B008
 ) -> HealthResponse:
     """Health check endpoint.
 
@@ -46,8 +46,8 @@ async def health_check(
 @router.post("/execute", response_model=CodeExecutionResponse)
 async def execute_code(
     request: CodeExecutionRequest,
-    executor: SandboxExecutor = Depends(get_executor),
-    settings: AppSettings = Depends(get_settings),
+    executor: SandboxExecutor = Depends(get_executor),  # noqa: B008
+    settings: AppSettings = Depends(get_settings),  # noqa: B008
 ) -> CodeExecutionResponse:
     """Execute Python code in a sandboxed environment.
 
@@ -117,7 +117,7 @@ async def execute_code(
 
 @router.get("/sandbox/stats", response_model=SandboxStatsResponse)
 async def get_sandbox_stats(
-    executor: SandboxExecutor = Depends(get_executor),
+    executor: SandboxExecutor = Depends(get_executor),  # noqa: B008
 ) -> SandboxStatsResponse:
     """Get sandbox execution statistics.
 
@@ -134,7 +134,7 @@ async def get_sandbox_stats(
 
 @router.post("/sandbox/reset-stats")
 async def reset_sandbox_stats(
-    executor: SandboxExecutor = Depends(get_executor),
+    executor: SandboxExecutor = Depends(get_executor),  # noqa: B008
 ) -> dict:
     """Reset sandbox execution statistics.
 

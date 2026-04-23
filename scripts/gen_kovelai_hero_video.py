@@ -17,7 +17,7 @@ import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-from google import genai
+from google import genai  # noqa: E402
 
 # ─── Output Configuration ────────────────────────────────────────────────────
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "apps", "kovelai", "public", "hero-videos")

@@ -336,5 +336,5 @@ Provide output in JSON format:
         try:
             clean = text.replace("```json", "").replace("```", "").strip()
             return json.loads(clean)
-        except:
+        except Exception:
             return {}

@@ -21,7 +21,7 @@ import aiohttp
 # Army Doctrine Integration
 try:
     from src.kosmos.doctrine import (
-        RiskLevel as DoctrineRiskLevel,
+        RiskLevel as DoctrineRiskLevel,  # noqa: F401
     )
     from src.kosmos.doctrine import (
         RiskManager as DoctrineRiskManager,
@@ -297,7 +297,7 @@ Return JSON:
                 response_text = response_text.split("```")[1].split("```")[0]
 
             review_data = json.loads(response_text.strip())
-        except:
+        except Exception:
             # Fallback if JSON parsing fails
             review_data = {
                 "agreement_score": 0.5,

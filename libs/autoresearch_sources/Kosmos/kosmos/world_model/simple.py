@@ -328,14 +328,14 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
         # Parse timestamps
         created_at = None
         if node.get("created_at"):
-            try:
+            try:  # noqa: SIM105
                 created_at = datetime.fromisoformat(node["created_at"])
             except (ValueError, TypeError):
                 pass
 
         updated_at = None
         if node.get("updated_at"):
-            try:
+            try:  # noqa: SIM105
                 updated_at = datetime.fromisoformat(node["updated_at"])
             except (ValueError, TypeError):
                 pass
@@ -353,7 +353,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
 
                     ann_created_at = None
                     if ann_dict.get("created_at"):
-                        try:
+                        try:  # noqa: SIM105
                             ann_created_at = datetime.fromisoformat(ann_dict["created_at"])
                         except ValueError:
                             pass
@@ -564,7 +564,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
         # Parse created_at
         created_at = None
         if rel.get("created_at"):
-            try:
+            try:  # noqa: SIM105
                 created_at = datetime.fromisoformat(rel["created_at"])
             except (ValueError, TypeError):
                 pass

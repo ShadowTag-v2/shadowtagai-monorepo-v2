@@ -567,7 +567,7 @@
       }
       /* Level 2 Sub-Dropdown (Corporate Governance flyout) */
       .nav-sub-item { position: relative; }
-      .nav-sub-item > a { display: flex !important; justify-content: space-between; align-items: center; }
+      .nav-sub-item > a { display: flex; justify-content: space-between; align-items: center; }
       .nav-sub-dropdown {
           position: absolute; top: 0; left: 100%;
           min-width: 220px; padding: 8px 0;
@@ -592,10 +592,10 @@
       }
       /* Investor Deck highlight */
       .nav-dropdown-highlight {
-          color: #e6c487 !important;
-          font-weight: 700 !important;
+          color: #e6c487;
+          font-weight: 700;
           border-left: 3px solid #e6c487;
-          padding-left: calc(20px - 3px) !important;
+          padding-left: calc(20px - 3px);
       }
       /* ── Corporate Section Styles ── */
       .ceo-card {
@@ -613,45 +613,45 @@
       }
       @media (max-width: 768px) {
           .ceo-headshot { width: 140px; height: 140px; }
-          .mobile-nav-toggle { display: block !important; }
-          .desktop-nav { display: none !important; }
+          .mobile-nav-toggle { display: block; }
+          .desktop-nav { display: none; }
           /* Hero responsive: hard-contain all hero content within viewport */
           header .max-w-7xl {
-              max-width: 100vw !important;
-              overflow: hidden !important;
-              box-sizing: border-box !important;
-              padding-left: 1rem !important;
-              padding-right: 1rem !important;
+              max-width: 100vw;
+              overflow: hidden;
+              box-sizing: border-box;
+              padding-left: 1rem;
+              padding-right: 1rem;
           }
           #heroTitle {
-              font-size: clamp(1.4rem, 4.5vw, 2.2rem) !important;
-              word-break: break-word !important;
-              overflow-wrap: break-word !important;
-              max-width: 100% !important;
-              hyphens: auto !important;
+              font-size: clamp(1.4rem, 4.5vw, 2.2rem);
+              word-break: break-word;
+              overflow-wrap: break-word;
+              max-width: 100%;
+              hyphens: auto;
           }
           header p.text-on-surface-variant,
           #heroTitle + p {
-              max-width: 92vw !important;
-              font-size: 0.95rem !important;
-              word-break: break-word !important;
+              max-width: 92vw;
+              font-size: 0.95rem;
+              word-break: break-word;
           }
           /* Overflow containment: aurora orbs, toast, modal */
           .kovel-aurora-orb {
-              max-width: 100vw !important;
-              overflow: hidden !important;
+              max-width: 100vw;
+              overflow: hidden;
           }
           .toast {
-              right: 12px !important;
-              max-width: calc(100vw - 24px) !important;
+              right: 12px;
+              max-width: calc(100vw - 24px);
           }
           .modal-content {
-              max-width: calc(100vw - 2rem) !important;
-              padding: 24px !important;
-              box-sizing: border-box !important;
+              max-width: calc(100vw - 2rem);
+              padding: 24px;
+              box-sizing: border-box;
           }
           .modal-content .grid-cols-2 {
-              grid-template-columns: 1fr !important;
+              grid-template-columns: 1fr;
           }
       }
 
@@ -2619,7 +2619,7 @@ Sign Up for Alerts
 
 <script>
 // ===== Contact Modal =====
-function openContactModal(e) {
+function _openContactModal(e) {
     if (e) e.preventDefault();
     const modal = document.getElementById('contactModal');
     modal.classList.add('active');
@@ -2665,7 +2665,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
         urlEncoded.append('recaptcha_token', recaptchaToken);
         urlEncoded.append('recaptcha_action', 'contact_submit');
 
-        const response = await fetch(this.action, {
+        const _response = await fetch(this.action, {
             method: 'POST',
             mode: 'no-cors',
             body: urlEncoded,
@@ -2675,7 +2675,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
         closeContactModal();
         this.reset();
         showToast();
-    } catch (err) {
+    } catch (_err) {
         // Apps Script may respond with opaque redirect — still succeeds server-side
         closeContactModal();
         this.reset();
@@ -2715,16 +2715,16 @@ function ccInit() {
 }
 function ccShowFloat() { document.getElementById('ccFloat').classList.add('visible'); }
 function ccHideFloat() { document.getElementById('ccFloat').classList.remove('visible'); }
-function ccDismiss() {
+function _ccDismiss() {
     document.getElementById('ccBanner').classList.remove('visible');
     ccShowFloat();
 }
-function ccAcceptAll() {
+function _ccAcceptAll() {
     ccStore({ necessary:true, performance:true, targeting:true, functionality:true });
     document.getElementById('ccBanner').classList.remove('visible');
     ccShowFloat();
 }
-function ccDeclineAll() {
+function _ccDeclineAll() {
     ccStore({ necessary:true, performance:false, targeting:false, functionality:false });
     document.getElementById('ccBanner').classList.remove('visible');
     ['ccPerf','ccTarget','ccFunc'].forEach(id => { const el = document.getElementById(id); if(el) el.checked = false; });
@@ -2781,14 +2781,14 @@ var _kovelSessionId = null;
 var _kovelVisitorId = null;
 
 function ccGenerateId() {
-    return 'xxxx-xxxx-xxxx'.replace(/x/g, () => Math.floor(Math.random() * 16).toString(16)) + '-' + Date.now().toString(36);
+    return `${'xxxx-xxxx-xxxx'.replace(/x/g, () => Math.floor(Math.random() * 16).toString(16))}-${Date.now().toString(36)}`;
 }
 
 function ccInitSession() {
     // Visitor ID (persistent, 1 year) — first-party fingerprint
     _kovelVisitorId = localStorage.getItem('kovelai_fpt');
     if (!_kovelVisitorId) {
-        _kovelVisitorId = 'kv_' + ccGenerateId();
+        _kovelVisitorId = `kv_${ccGenerateId()}`;
         localStorage.setItem('kovelai_fpt', _kovelVisitorId);
     }
 
@@ -2809,7 +2809,7 @@ function ccInitSession() {
         } catch(e) { sidData = null; }
     }
     if (!sidData) {
-        _kovelSessionId = 'ks_' + ccGenerateId();
+        _kovelSessionId = `ks_${ccGenerateId()}`;
         localStorage.setItem('kovelai_sid', JSON.stringify({
             id: _kovelSessionId,
             ts: Date.now(),
@@ -2870,7 +2870,7 @@ function ccProfileDevice() {
         platform: navigator.platform || 'unknown',
         lang: navigator.language || 'en',
         tz: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
-        connection: (navigator.connection && navigator.connection.effectiveType) || 'unknown',
+        connection: (navigator.connection?.effectiveType) || 'unknown',
         touch: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
         cores: navigator.hardwareConcurrency || 'unknown'
     };
@@ -2898,7 +2898,7 @@ function ccTrackEngagement() {
                 try { var u = localStorage.getItem('kovelai_utm'); return u ? JSON.parse(u).utm_source : 'organic'; } catch(e) { return 'organic'; }
             })(),
             'session_count': (() => {
-                var c = parseInt(localStorage.getItem('kovelai_sc') || '0') + 1;
+                var c = parseInt(localStorage.getItem('kovelai_sc') || '0', 10) + 1;
                 localStorage.setItem('kovelai_sc', c.toString());
                 return c;
             })()
@@ -2910,8 +2910,8 @@ function ccTrackEngagement() {
             'page_path': window.location.pathname,
             'visitor_id': _kovelVisitorId,
             'session_id': _kovelSessionId,
-            'screen_resolution': deviceProfile.screen_w + 'x' + deviceProfile.screen_h,
-            'viewport': deviceProfile.viewport_w + 'x' + deviceProfile.viewport_h,
+            'screen_resolution': `${deviceProfile.screen_w}x${deviceProfile.screen_h}`,
+            'viewport': `${deviceProfile.viewport_w}x${deviceProfile.viewport_h}`,
             'device_pixel_ratio': deviceProfile.dpr,
             'is_touch': deviceProfile.touch,
             'cpu_cores': deviceProfile.cores
@@ -2930,7 +2930,7 @@ function ccTrackEngagement() {
                 scrollFired[t] = true;
                 if (typeof gtag === 'function') {
                     gtag('event', 'scroll_depth', {
-                        'depth': t + '%',
+                        'depth': `${t}%`,
                         'page': window.location.pathname,
                         'session_id': _kovelSessionId
                     });
@@ -2960,7 +2960,7 @@ function ccTrackEngagement() {
             if (typeof gtag === 'function') {
                 gtag('event', 'time_on_page', {
                     'seconds': sec,
-                    'max_scroll': maxScroll + '%',
+                    'max_scroll': `${maxScroll}%`,
                     'session_id': _kovelSessionId
                 });
             }
@@ -2996,7 +2996,7 @@ function ccTrackEngagement() {
                     gtag('event', 'section_view', {
                         'section_id': entry.target.id,
                         'section_title': entry.target.querySelector('h1,h2,h3')?.textContent?.trim().substring(0, 80) || entry.target.id,
-                        'time_to_view': Math.round(performance.now() / 1000) + 's',
+                        'time_to_view': `${Math.round(performance.now() / 1000)}s`,
                         'session_id': _kovelSessionId
                     });
                 }
@@ -3016,8 +3016,8 @@ function ccTrackEngagement() {
             if (typeof gtag === 'function') {
                 gtag('event', 'exit_intent', {
                     'page': window.location.pathname,
-                    'max_scroll': maxScroll + '%',
-                    'time_on_page': Math.round(performance.now() / 1000) + 's',
+                    'max_scroll': `${maxScroll}%`,
+                    'time_on_page': `${Math.round(performance.now() / 1000)}s`,
                     'visitor_id': _kovelVisitorId
                 });
             }
@@ -3041,7 +3041,7 @@ function ccTrackEngagement() {
                     gtag('event', 'rage_click', {
                         'x': e.clientX,
                         'y': e.clientY,
-                        'element': (e.target.tagName + '.' + (e.target.className || '').toString().substring(0, 40)).substring(0, 60),
+                        'element': (`${e.target.tagName}.${(e.target.className || '').toString().substring(0, 40)}`).substring(0, 60),
                         'page': window.location.pathname
                     });
                 }
@@ -3064,7 +3064,7 @@ function ccTrackEngagement() {
                         if (typeof gtag === 'function') {
                             gtag('event', 'video_progress', {
                                 'video_id': 'hero_video',
-                                'progress': m + '%',
+                                'progress': `${m}%`,
                                 'session_id': _kovelSessionId
                             });
                         }
@@ -3081,7 +3081,7 @@ function ccTrackEngagement() {
             if (typeof gtag === 'function') {
                 gtag('event', 'video_pause', {
                     'video_id': 'hero_video',
-                    'progress': heroVideo.duration ? Math.round((heroVideo.currentTime / heroVideo.duration) * 100) + '%' : '0%',
+                    'progress': heroVideo.duration ? `${Math.round((heroVideo.currentTime / heroVideo.duration) * 100)}%` : '0%',
                     'session_id': _kovelSessionId
                 });
             }
@@ -3112,8 +3112,8 @@ function ccTrackEngagement() {
                 event: 'session_end',
                 session_id: _kovelSessionId,
                 visitor_id: _kovelVisitorId,
-                max_scroll: maxScroll + '%',
-                time_on_page: Math.round(performance.now() / 1000) + 's',
+                max_scroll: `${maxScroll}%`,
+                time_on_page: `${Math.round(performance.now() / 1000)}s`,
                 sections_viewed: Object.keys(visibilityFired).join(',')
             };
             // GA4 event via Measurement Protocol would go here
@@ -3138,11 +3138,11 @@ function ccTrackEngagement() {
     ccCaptureAttribution();
     ccInitSession();
 })();
-function ccReopenBanner() {
+function _ccReopenBanner() {
     ccHideFloat();
     document.getElementById('ccBanner').classList.add('visible');
 }
-function ccOpenModal() {
+function _ccOpenModal() {
     document.getElementById('ccModalPerf').checked = document.getElementById('ccPerf').checked;
     document.getElementById('ccModalTarget').checked = document.getElementById('ccTarget').checked;
     document.getElementById('ccModalFunc').checked = document.getElementById('ccFunc').checked;
@@ -3153,7 +3153,7 @@ function ccCloseModal() {
     document.getElementById('ccModalOverlay').classList.remove('active');
     document.body.style.overflow = '';
 }
-function ccSavePrefs() {
+function _ccSavePrefs() {
     ccStore({
         necessary: true,
         performance: document.getElementById('ccModalPerf').checked,
@@ -3167,7 +3167,7 @@ function ccSavePrefs() {
     document.getElementById('ccBanner').classList.remove('visible');
     ccShowFloat();
 }
-function ccSwitchTab(btn, showId) {
+function _ccSwitchTab(btn, showId) {
     document.querySelectorAll('.cc-modal-tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('ccTabDecl').classList.toggle('hidden', showId !== 'ccTabDecl');
@@ -3206,7 +3206,7 @@ document.addEventListener('DOMContentLoaded', ccInit);
     }
   }
 
-  function drawParticles(t) {
+  function drawParticles(_t) {
     pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
     particles.forEach(p => {
       p.x += p.vx;
@@ -3347,7 +3347,7 @@ document.addEventListener('DOMContentLoaded', ccInit);
       if (heroVideo && !heroVideo.paused) heroVideo.pause();
     } else {
       if (!raf) animate(performance.now());
-      if (heroVideo && heroVideo.paused) heroVideo.play().catch(() => {});
+      if (heroVideo?.paused) heroVideo.play().catch(() => {});
     }
   }, { threshold: 0.05 });
   heroObserver.observe(hero);
@@ -3387,7 +3387,7 @@ document.addEventListener('DOMContentLoaded', ccInit);
                     const span = document.createElement('span');
                     span.className = 'kinetic-word';
                     span.textContent = word;
-                    span.style.transitionDelay = (wordIndex * 0.08) + 's';
+                    span.style.transitionDelay = `${wordIndex * 0.08}s`;
                     fragment.appendChild(span);
                     wordIndex++;
                 } else if (word) {

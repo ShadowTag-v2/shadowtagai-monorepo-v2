@@ -26,7 +26,7 @@ class MessageEvent(BaseEvent):
     author: str = "agent"
     is_thought: bool = False
     is_partial: bool = False
-    event_number: Optional[int] = None
+    event_number: Optional[int] = None  # noqa: UP045
 
 
 @dataclass
@@ -37,7 +37,7 @@ class FunctionCallEvent(BaseEvent):
     name: str = ""
     arguments: Dict[str, Any] = field(default_factory=dict)
     author: str = "agent"
-    event_number: Optional[int] = None
+    event_number: Optional[int] = None  # noqa: UP045
 
 
 @dataclass
@@ -48,7 +48,7 @@ class FunctionResponseEvent(BaseEvent):
     name: str = ""
     response: Any = None
     author: str = "agent"
-    event_number: Optional[int] = None
+    event_number: Optional[int] = None  # noqa: UP045
 
 
 @dataclass
@@ -58,7 +58,7 @@ class FileCreatedEvent(BaseEvent):
     type: Literal["file_created"] = "file_created"
     file_path: str = ""
     file_size: int = 0
-    event_number: Optional[int] = None
+    event_number: Optional[int] = None  # noqa: UP045
 
 
 @dataclass
@@ -77,7 +77,7 @@ class KeepaliveEvent(BaseEvent):
 
     type: Literal["keepalive"] = "keepalive"
     content: str = "Still processing..."
-    event_number: Optional[int] = None
+    event_number: Optional[int] = None  # noqa: UP045
 
 
 @dataclass

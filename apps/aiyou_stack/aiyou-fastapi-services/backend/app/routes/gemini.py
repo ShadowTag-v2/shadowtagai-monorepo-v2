@@ -20,7 +20,7 @@ def get_gemini_service() -> GeminiService:
 
 
 @router.get("/status")
-async def get_gemini_status(service: GeminiService = Depends(get_gemini_service)):
+async def get_gemini_status(service: GeminiService = Depends(get_gemini_service)):  # noqa: B008
     """Check if Gemini AI is available."""
     available = service.is_available()
     return {
@@ -33,7 +33,7 @@ async def get_gemini_status(service: GeminiService = Depends(get_gemini_service)
 @router.post("/analyze", response_model=GeminiAnalysisResponse)
 async def analyze_system(
     request: GeminiAnalysisRequest,
-    service: GeminiService = Depends(get_gemini_service),
+    service: GeminiService = Depends(get_gemini_service),  # noqa: B008
 ):
     """Perform AI-powered analysis of a system using Gemini.
 
@@ -61,7 +61,7 @@ async def analyze_system(
 @router.post("/compare", response_model=ComparisonAnalysisResponse)
 async def compare_systems(
     request: ComparisonAnalysisRequest,
-    service: GeminiService = Depends(get_gemini_service),
+    service: GeminiService = Depends(get_gemini_service),  # noqa: B008
 ):
     """Compare two systems (e.g., Judge 6 vs Ingestion Layer).
 
@@ -95,7 +95,7 @@ async def analyze_ingestion_layer(
     architecture_specs: str,
     metrics_data: dict = None,
     documentation: str = None,
-    service: GeminiService = Depends(get_gemini_service),
+    service: GeminiService = Depends(get_gemini_service),  # noqa: B008
 ):
     """Specialized endpoint for Gemini Ingestion Layer Analysis.
 

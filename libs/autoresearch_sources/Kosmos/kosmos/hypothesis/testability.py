@@ -430,7 +430,7 @@ class TestabilityAnalyzer:
             )
 
         # Check for data availability
-        if "dataset" in statement or "data" in statement:
+        if "dataset" in statement or "data" in statement:  # noqa: SIM102
             if "specific" in statement or "proprietary" in statement:
                 challenges.append("May require access to specific or proprietary datasets")
 

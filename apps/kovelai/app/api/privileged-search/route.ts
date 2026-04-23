@@ -16,10 +16,9 @@
  *
  * @see U.S. v. Heppner (S.D.N.Y. 2026) — privilege waiver on public AI
  */
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { verifySEUToken, type SEUViolationError } from '@/lib/security/seu-token-manager';
-import { withRateLimit } from '@/lib/middleware/rate-limiter';
+import { verifySEUToken } from '@/lib/security/seu-token-manager';
 
 // ─── Request Validation ───────────────────────────────────────────────
 const SearchRequestSchema = z.object({
@@ -53,17 +52,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     // 1. Validate S.E.U. token — sandbox-bound, ephemeral, user-billed
     const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? '0.0.0.0';
-    const tokenPayload = await verifySEUToken(
-      parsed.ephemeralToken,
-      clientIp,
-      parsed.sandboxId,
-    );
+    const tokenPayload = await verifySEUToken(parsed.ephemeralToken, clientIp, parsed.sandboxId);
 
     // 2. Execute privileged search via ZDR enterprise API
-    const results = await executePrivilegedSearch(
-      parsed.query,
-      parsed.firmGoogleCxId,
-    );
+    const results = await executePrivilegedSearch(parsed.query, parsed.firmGoogleCxId);
 
     // 3. Classify the anxiety signal for the lawyer's intent dashboard
     const anxietySignal = classifyAnxietyVector(parsed.query);
@@ -93,7 +85,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       {
         headers: {
           'Cache-Control': 'no-store, no-cache, must-revalidate, private',
-          'Pragma': 'no-cache',
+          Pragma: 'no-cache',
           'X-Privilege-Shield': 'kovel-doctrine-active',
           'X-Content-Type-Options': 'nosniff',
         },
@@ -113,10 +105,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 },
       );
     }
-    return NextResponse.json(
-      { error: 'Secure Transit Failed' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Secure Transit Failed' }, { status: 500 });
   }
 }
 
@@ -126,10 +115,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
  * Google sees a headless server request — NOT the client's IP.
  * Enterprise B2B APIs are legally bound by Zero Data Retention (ZDR).
  */
-async function executePrivilegedSearch(
-  query: string,
-  firmCxId?: string,
-): Promise<SearchResult[]> {
+async function executePrivilegedSearch(query: string, firmCxId?: string): Promise<SearchResult[]> {
   const googleApiKey = process.env.GOOGLE_ENTERPRISE_KEY;
   const defaultCxId = process.env.GOOGLE_DEFAULT_CX_ID;
   const cxId = firmCxId ?? defaultCxId;
@@ -147,12 +133,11 @@ async function executePrivilegedSearch(
     url.searchParams.set('num', '8');
 
     const res = await fetch(url.toString(), {
-      headers: { 'Accept': 'application/json' },
+      headers: { Accept: 'application/json' },
       signal: AbortSignal.timeout(10000),
     });
 
     if (!res.ok) {
-      console.error(`[PRIVILEGED SEARCH] Google API responded ${res.status}`);
       return executePerplexityFallback(query);
     }
 
@@ -180,7 +165,7 @@ async function executePerplexityFallback(query: string): Promise<SearchResult[]>
     const res = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -221,27 +206,75 @@ async function executePerplexityFallback(query: string): Promise<SearchResult[]>
  * psychological map and exact fears BEFORE the first phone call.
  */
 const ANXIETY_CATEGORIES: Record<string, { keywords: string[]; urgency: number }> = {
-  'CRIMINAL_EXPOSURE': {
-    keywords: ['arrest', 'indictment', 'felony', 'prison', 'extradition', 'warrant', 'criminal', 'plea', 'probation', 'bail'],
+  CRIMINAL_EXPOSURE: {
+    keywords: [
+      'arrest',
+      'indictment',
+      'felony',
+      'prison',
+      'extradition',
+      'warrant',
+      'criminal',
+      'plea',
+      'probation',
+      'bail',
+    ],
     urgency: 10,
   },
-  'ASSET_PROTECTION': {
-    keywords: ['hidden', 'offshore', 'crypto', 'forfeiture', 'seizure', 'garnishment', 'lien', 'freeze', 'asset', 'property'],
+  ASSET_PROTECTION: {
+    keywords: [
+      'hidden',
+      'offshore',
+      'crypto',
+      'forfeiture',
+      'seizure',
+      'garnishment',
+      'lien',
+      'freeze',
+      'asset',
+      'property',
+    ],
     urgency: 8,
   },
-  'FAMILY_LAW': {
-    keywords: ['custody', 'divorce', 'alimony', 'prenup', 'child support', 'visitation', 'restraining', 'domestic'],
+  FAMILY_LAW: {
+    keywords: [
+      'custody',
+      'divorce',
+      'alimony',
+      'prenup',
+      'child support',
+      'visitation',
+      'restraining',
+      'domestic',
+    ],
     urgency: 7,
   },
-  'EMPLOYMENT': {
-    keywords: ['wrongful termination', 'discrimination', 'harassment', 'whistleblower', 'retaliation', 'severance', 'non-compete'],
+  EMPLOYMENT: {
+    keywords: [
+      'wrongful termination',
+      'discrimination',
+      'harassment',
+      'whistleblower',
+      'retaliation',
+      'severance',
+      'non-compete',
+    ],
     urgency: 6,
   },
-  'REGULATORY': {
-    keywords: ['compliance', 'audit', 'SEC', 'FDA', 'HIPAA', 'violation', 'investigation', 'subpoena'],
+  REGULATORY: {
+    keywords: [
+      'compliance',
+      'audit',
+      'SEC',
+      'FDA',
+      'HIPAA',
+      'violation',
+      'investigation',
+      'subpoena',
+    ],
     urgency: 7,
   },
-  'GENERAL_ANXIETY': {
+  GENERAL_ANXIETY: {
     keywords: ['what happens if', 'can they', 'am I liable', 'is it legal', 'will I lose'],
     urgency: 5,
   },
@@ -286,7 +319,6 @@ function queueIntentVault(payload: IntentVaultPayload): void {
   // Fire-and-forget to Cloud Tasks
   const cloudTasksUrl = process.env.CLOUD_TASKS_QUEUE_URL;
   if (!cloudTasksUrl) {
-    console.warn('[INTENT VAULT] Cloud Tasks URL not configured, skipping vault');
     return;
   }
 
@@ -297,7 +329,5 @@ function queueIntentVault(payload: IntentVaultPayload): void {
       task: 'vault_search_intent',
       payload,
     }),
-  }).catch((err) => {
-    console.error('[INTENT VAULT] Failed to queue:', err);
-  });
+  }).catch((_err) => {});
 }

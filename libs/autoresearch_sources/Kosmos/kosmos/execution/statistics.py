@@ -602,12 +602,11 @@ class StatisticalValidator:
             )
 
         # Sample size check
-        if test_type in ["t-test", "anova"]:
-            if len(data) < 30:
-                warnings_list.append(
-                    f"Small sample size (n={len(data)}). "
-                    "Results may not be reliable. Consider n ≥ 30."
-                )
+        if test_type in ["t-test", "anova"] and len(data) < 30:
+            warnings_list.append(
+                f"Small sample size (n={len(data)}). "
+                "Results may not be reliable. Consider n ≥ 30."
+            )
 
         return {
             "normality_test": {

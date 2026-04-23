@@ -16,7 +16,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // ─── Configuration ──────────────────────────────────────────────────
 
@@ -190,38 +190,54 @@ export function EphemeralSearchUI({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <span style={{
-            fontFamily: 'Space Grotesk, sans-serif',
-            fontSize: '18px',
-            fontWeight: 600,
-            letterSpacing: '-0.02em',
-          }}>
+          <span
+            style={{
+              fontFamily: 'Space Grotesk, sans-serif',
+              fontSize: '18px',
+              fontWeight: 600,
+              letterSpacing: '-0.02em',
+            }}
+          >
             KovelAI
           </span>
-          <span style={{
-            padding: '4px 12px',
-            borderRadius: '4px',
-            fontSize: '12px',
-            fontWeight: 600,
-            background: kovelStatus === 'ACTIVE' ? 'rgba(62, 254, 138, 0.15)' :
-                        kovelStatus === 'EXPIRING' ? 'rgba(255, 179, 71, 0.15)' :
-                        'rgba(255, 82, 82, 0.15)',
-            color: kovelStatus === 'ACTIVE' ? '#3efe8a' :
-                   kovelStatus === 'EXPIRING' ? '#ffb347' :
-                   '#ff5252',
-            border: `1px solid ${kovelStatus === 'ACTIVE' ? 'rgba(62, 254, 138, 0.3)' :
-                                  kovelStatus === 'EXPIRING' ? 'rgba(255, 179, 71, 0.3)' :
-                                  'rgba(255, 82, 82, 0.3)'}`,
-          }}>
+          <span
+            style={{
+              padding: '4px 12px',
+              borderRadius: '4px',
+              fontSize: '12px',
+              fontWeight: 600,
+              background:
+                kovelStatus === 'ACTIVE'
+                  ? 'rgba(62, 254, 138, 0.15)'
+                  : kovelStatus === 'EXPIRING'
+                    ? 'rgba(255, 179, 71, 0.15)'
+                    : 'rgba(255, 82, 82, 0.15)',
+              color:
+                kovelStatus === 'ACTIVE'
+                  ? '#3efe8a'
+                  : kovelStatus === 'EXPIRING'
+                    ? '#ffb347'
+                    : '#ff5252',
+              border: `1px solid ${
+                kovelStatus === 'ACTIVE'
+                  ? 'rgba(62, 254, 138, 0.3)'
+                  : kovelStatus === 'EXPIRING'
+                    ? 'rgba(255, 179, 71, 0.3)'
+                    : 'rgba(255, 82, 82, 0.3)'
+              }`,
+            }}
+          >
             KOVEL {kovelStatus}
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <span style={{
-            fontFamily: 'monospace',
-            fontSize: '14px',
-            color: '#bbc9cf',
-          }}>
+          <span
+            style={{
+              fontFamily: 'monospace',
+              fontSize: '14px',
+              color: '#bbc9cf',
+            }}
+          >
             {formatTimer(sessionTimer)}
           </span>
           <button
@@ -243,27 +259,31 @@ export function EphemeralSearchUI({
 
       {/* ── Warning Banner ── */}
       {showWarning && (
-        <div style={{
-          padding: '12px 24px',
-          background: 'rgba(255, 179, 71, 0.1)',
-          borderBottom: '1px solid rgba(255, 179, 71, 0.2)',
-          color: '#ffb347',
-          fontSize: '14px',
-          textAlign: 'center',
-        }}>
+        <div
+          style={{
+            padding: '12px 24px',
+            background: 'rgba(255, 179, 71, 0.1)',
+            borderBottom: '1px solid rgba(255, 179, 71, 0.2)',
+            color: '#ffb347',
+            fontSize: '14px',
+            textAlign: 'center',
+          }}
+        >
           ⚠️ Session expiring due to inactivity. Move your mouse to continue.
         </div>
       )}
 
       {/* ── Search Area ── */}
       <main style={{ maxWidth: '800px', margin: '0 auto', padding: '48px 24px' }}>
-        <h1 style={{
-          fontFamily: 'Space Grotesk, sans-serif',
-          fontSize: '28px',
-          fontWeight: 600,
-          letterSpacing: '-0.02em',
-          marginBottom: '8px',
-        }}>
+        <h1
+          style={{
+            fontFamily: 'Space Grotesk, sans-serif',
+            fontSize: '28px',
+            fontWeight: 600,
+            letterSpacing: '-0.02em',
+            marginBottom: '8px',
+          }}
+        >
           Privileged Research Portal
         </h1>
         <p style={{ color: '#bbc9cf', marginBottom: '32px', fontSize: '15px' }}>
@@ -271,16 +291,23 @@ export function EphemeralSearchUI({
         </p>
 
         {/* ── Search Input ── */}
-        <div style={{
-          display: 'flex',
-          gap: '8px',
-          marginBottom: '32px',
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: '8px',
+            marginBottom: '32px',
+          }}
+        >
           <input
             type="text"
             value={query}
-            onChange={(e) => { setQuery(e.target.value); resetInactivityTimer(); }}
-            onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              resetInactivityTimer();
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleSearch();
+            }}
             placeholder="Enter your legal research query..."
             autoComplete="off"
             autoCorrect="off"
@@ -330,28 +357,34 @@ export function EphemeralSearchUI({
                 borderTop: '0.5px solid rgba(180, 235, 255, 0.1)',
               }}
             >
-              <h3 style={{
-                fontFamily: 'Space Grotesk, sans-serif',
-                fontSize: '16px',
-                fontWeight: 600,
-                color: '#a8e8ff',
-                marginBottom: '8px',
-              }}>
+              <h3
+                style={{
+                  fontFamily: 'Space Grotesk, sans-serif',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  color: '#a8e8ff',
+                  marginBottom: '8px',
+                }}
+              >
                 {result.title}
               </h3>
-              <p style={{
-                fontSize: '14px',
-                color: '#bbc9cf',
-                lineHeight: 1.6,
-                marginBottom: '8px',
-              }}>
+              <p
+                style={{
+                  fontSize: '14px',
+                  color: '#bbc9cf',
+                  lineHeight: 1.6,
+                  marginBottom: '8px',
+                }}
+              >
                 {result.snippet}
               </p>
-              <span style={{
-                fontSize: '12px',
-                color: '#859398',
-                fontFamily: 'monospace',
-              }}>
+              <span
+                style={{
+                  fontSize: '12px',
+                  color: '#859398',
+                  fontFamily: 'monospace',
+                }}
+              >
                 {result.source}
               </span>
             </div>
@@ -360,20 +393,22 @@ export function EphemeralSearchUI({
       </main>
 
       {/* ── Footer ── */}
-      <footer style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        padding: '8px 24px',
-        background: '#111125',
-        borderTop: '1px solid rgba(60, 73, 78, 0.15)',
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '24px',
-        fontSize: '11px',
-        color: '#859398',
-      }}>
+      <footer
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: '8px 24px',
+          background: '#111125',
+          borderTop: '1px solid rgba(60, 73, 78, 0.15)',
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '24px',
+          fontSize: '11px',
+          color: '#859398',
+        }}
+      >
         <span>Protected by Kovel Doctrine</span>
         <span>•</span>
         <span>Zero Data Retention</span>

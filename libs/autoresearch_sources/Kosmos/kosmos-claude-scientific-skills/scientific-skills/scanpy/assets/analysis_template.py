@@ -258,7 +258,7 @@ print("\n" + "=" * 80)
 print("SAVING RESULTS")
 print("=" * 80)
 
-import os
+import os  # noqa: E402
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 

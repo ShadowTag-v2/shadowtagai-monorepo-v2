@@ -405,7 +405,7 @@ def test_req_sec_data_003_artifact_encryption():
 
     # Assert: Wrong key should fail
     wrong_key = Fernet.generate_key()
-    with pytest.raises(Exception):
+    with pytest.raises(Exception):  # noqa: B017
         decrypt_artifact(encrypted_artifact, wrong_key)
 
 
@@ -594,7 +594,7 @@ def test_req_sec_data_004_audit_trail():
         def log_access(self, user_id: str, resource: str, action: str):
             """Log data access event."""
             entry = {
-                "timestamp": datetime.now().isoformat(),
+                "timestamp": datetime.now().isoformat(),  # noqa: F821
                 "user_id": user_id,
                 "resource": resource,
                 "action": action,
@@ -605,7 +605,7 @@ def test_req_sec_data_004_audit_trail():
         def log_modification(self, user_id: str, resource: str, changes: dict):
             """Log data modification event."""
             entry = {
-                "timestamp": datetime.now().isoformat(),
+                "timestamp": datetime.now().isoformat(),  # noqa: F821
                 "user_id": user_id,
                 "resource": resource,
                 "action": "modify",

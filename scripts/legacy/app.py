@@ -55,10 +55,10 @@ async def execute_agent_endpoint(req: AgentExecutionRequest):
 
     except PermissionError as pe:
         logger.exception(f"[GATE 0 FAILED] {pe!s}")
-        raise HTTPException(status_code=403, detail=str(pe))
+        raise HTTPException(status_code=403, detail=str(pe))  # noqa: B904
     except RuntimeError as re:
         logger.exception(f"[GATE 1 SEMANTIC JUDGE FAILED] {re!s}")
-        raise HTTPException(status_code=451, detail=str(re))
+        raise HTTPException(status_code=451, detail=str(re))  # noqa: B904
     except Exception as e:
         logger.critical(f"[LATTICE_ERROR] Terminal Containment activated. Cause: {e!s}")
-        raise HTTPException(status_code=500, detail="Terminal Governance Contains this Flow.")
+        raise HTTPException(status_code=500, detail="Terminal Governance Contains this Flow.")  # noqa: B904

@@ -15,7 +15,7 @@
  * @see Cor.30 Pillar 5 — Payments & Webhooks
  */
 
-import Stripe from 'stripe';
+import type Stripe from 'stripe';
 import { z } from 'zod';
 
 // ─── Configuration ──────────────────────────────────────────────────
@@ -179,8 +179,8 @@ export async function createClientSubscription(
 
   console.log(
     `[Stripe Connect] Subscription ${subscription.id} | ` +
-    `Client → Firm ${validated.firmStripeAccountId} | ` +
-    `Platform fee: ${PLATFORM_FEES[tier].applicationFeePercent}%`,
+      `Client → Firm ${validated.firmStripeAccountId} | ` +
+      `Platform fee: ${PLATFORM_FEES[tier].applicationFeePercent}%`,
   );
 
   return {
@@ -203,9 +203,8 @@ export async function createPlatformSubscription(
   subscriptionId: string;
   checkoutUrl: string;
 }> {
-  const priceId = tier === 'enterprise'
-    ? STRIPE_CONFIG.prices.enterprise
-    : STRIPE_CONFIG.prices.proMonthly;
+  const priceId =
+    tier === 'enterprise' ? STRIPE_CONFIG.prices.enterprise : STRIPE_CONFIG.prices.proMonthly;
 
   const session = await stripe.checkout.sessions.create({
     mode: 'subscription',

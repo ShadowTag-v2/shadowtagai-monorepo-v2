@@ -86,13 +86,17 @@ def mock_web3_provider(monkeypatch):
 
 
 # --- Database & Auth Fixtures ---
-import pytest_asyncio
-from httpx import ASGITransport, AsyncClient
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.pool import StaticPool
+import pytest_asyncio  # noqa: E402
+from httpx import ASGITransport, AsyncClient  # noqa: E402
+from sqlalchemy.ext.asyncio import (  # noqa: E402
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
+from sqlalchemy.pool import StaticPool  # noqa: E402
 
-from src.database import Base, get_db
-from src.main import app
+from src.database import Base, get_db  # noqa: E402
+from src.main import app  # noqa: E402
 
 # Override the database with an in-memory SQLite database for testing
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"

@@ -494,4 +494,4 @@ class GlickoModelSelector:
 
 
 # Import at end to avoid circular imports
-import uuid
+import uuid  # noqa: E402

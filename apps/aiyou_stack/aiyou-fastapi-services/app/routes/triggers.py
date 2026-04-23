@@ -16,7 +16,7 @@ from app.services.automation_service import TriggerService
 router = APIRouter(prefix="/triggers", tags=["triggers"])
 
 
-def get_trigger_service(db: AsyncSession = Depends(get_db)) -> TriggerService:
+def get_trigger_service(db: AsyncSession = Depends(get_db)) -> TriggerService:  # noqa: B008
     """Dependency to get TriggerService instance."""
     return TriggerService(db)
 
@@ -24,7 +24,7 @@ def get_trigger_service(db: AsyncSession = Depends(get_db)) -> TriggerService:
 @router.post("/", response_model=TriggerResponse, status_code=201)
 async def create_trigger(
     trigger: TriggerCreate,
-    service: TriggerService = Depends(get_trigger_service),
+    service: TriggerService = Depends(get_trigger_service),  # noqa: B008
 ):
     """Create a new trigger."""
     db_trigger = await service.create(trigger.model_dump())
@@ -40,7 +40,7 @@ async def create_trigger(
 async def list_triggers(
     skip: int = 0,
     limit: int = 100,
-    service: TriggerService = Depends(get_trigger_service),
+    service: TriggerService = Depends(get_trigger_service),  # noqa: B008
 ):
     """List all triggers."""
     return await service.list(skip, limit)
@@ -49,7 +49,7 @@ async def list_triggers(
 @router.get("/{trigger_id}", response_model=TriggerResponse)
 async def get_trigger(
     trigger_id: int,
-    service: TriggerService = Depends(get_trigger_service),
+    service: TriggerService = Depends(get_trigger_service),  # noqa: B008
 ):
     """Get a specific trigger by ID."""
     trigger = await service.get(trigger_id)
@@ -62,7 +62,7 @@ async def get_trigger(
 async def update_trigger(
     trigger_id: int,
     trigger_update: TriggerUpdate,
-    service: TriggerService = Depends(get_trigger_service),
+    service: TriggerService = Depends(get_trigger_service),  # noqa: B008
 ):
     """Update a trigger."""
     trigger = await service.get(trigger_id)
@@ -83,7 +83,7 @@ async def update_trigger(
 @router.delete("/{trigger_id}", status_code=204)
 async def delete_trigger(
     trigger_id: int,
-    service: TriggerService = Depends(get_trigger_service),
+    service: TriggerService = Depends(get_trigger_service),  # noqa: B008
 ):
     """Delete a trigger."""
     trigger = await service.get(trigger_id)

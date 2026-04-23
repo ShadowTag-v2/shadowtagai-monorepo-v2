@@ -175,15 +175,15 @@
           if (data.checkout_url) {
             window.location.href = data.checkout_url;
           }
-        } catch (err) {
+        } catch (_err) {
           // Fallback: direct Stripe redirect
           const { error } = await stripe.redirectToCheckout({
             lineItems: [{ price: priceId, quantity: 1 }],
             mode: 'subscription',
-            successUrl: window.location.origin + '/chat.html?session=success',
+            successUrl: `${window.location.origin}/chat.html?session=success`,
             cancelUrl: window.location.href,
           });
-          if (error) console.error(error);
+          if (error) 
         }
       });
     });

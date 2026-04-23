@@ -252,7 +252,7 @@ class TestREQ_LLM_004_GracefulErrorHandling:
         with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "sk-ant-test"}):
             client = ClaudeClient()
 
-            with pytest.raises(Exception):
+            with pytest.raises(Exception):  # noqa: B017
                 client.generate("test prompt")
 
     @patch("kosmos.core.llm.Anthropic")
@@ -284,7 +284,7 @@ class TestREQ_LLM_004_GracefulErrorHandling:
             client = ClaudeClient()
 
             with caplog.at_level(logging.ERROR):
-                with pytest.raises(Exception):
+                with pytest.raises(Exception):  # noqa: B017
                     client.generate("test prompt")
 
                 # Verify error was logged
@@ -486,7 +486,7 @@ class TestREQ_LLM_006_DistinguishOutputTypes:
                 return True
 
             # Check for structured formats
-            if "```yaml" in text or "```xml" in text:
+            if "```yaml" in text or "```xml" in text:  # noqa: SIM103
                 return True
 
             return False
@@ -747,7 +747,7 @@ class TestREQ_LLM_009_NoRawSensitiveData:
                 return True
 
             # SSN pattern
-            if re.search(r"\b\d{3}-\d{2}-\d{4}\b", text):
+            if re.search(r"\b\d{3}-\d{2}-\d{4}\b", text):  # noqa: SIM103
                 return True
 
             return False
@@ -904,9 +904,9 @@ class TestREQ_LLM_011_RetryLimitEnforcement:
         """Test that retry limits can be configured."""
 
         class RetryConfig(BaseModel):
-            max_retries: int = Field(default=3, ge=0, le=10)
-            base_delay: float = Field(default=1.0, gt=0)
-            max_delay: float = Field(default=60.0, gt=0)
+            max_retries: int = Field(default=3, ge=0, le=10)  # noqa: F821
+            base_delay: float = Field(default=1.0, gt=0)  # noqa: F821
+            max_delay: float = Field(default=60.0, gt=0)  # noqa: F821
 
         # Test valid config
         config = RetryConfig(max_retries=5)

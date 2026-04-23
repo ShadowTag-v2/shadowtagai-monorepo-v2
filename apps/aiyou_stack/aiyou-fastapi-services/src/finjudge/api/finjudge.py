@@ -199,7 +199,7 @@ async def get_ruling(ruling_id: str):
 
 @app.get("/finjudge/rulings", response_model=RulingListResponse, tags=["Decisions"])
 async def list_rulings(
-    decision_outcome: DecisionOutcome | None = Query(
+    decision_outcome: DecisionOutcome | None = Query(  # noqa: B008
         None,
         description="Filter by decision outcome",
     ),

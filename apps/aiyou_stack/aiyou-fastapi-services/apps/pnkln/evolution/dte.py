@@ -15,10 +15,10 @@ Based on Agent0 paper (arXiv:2511.16043v1):
 Part of PNKLN evolution stack.
 """
 
-import math
-from dataclasses import dataclass, field
-from datetime import datetime
-from enum import Enum
+import math  # noqa: E402
+from dataclasses import dataclass, field  # noqa: E402
+from datetime import datetime  # noqa: E402
+from enum import Enum  # noqa: E402
 
 
 class DifficultyStrategy(Enum):

@@ -491,7 +491,7 @@ print(f"RESULT:{result}")
 
         except Exception as e:
             # Cleanup on error
-            try:
+            try:  # noqa: SIM105
                 kg.delete_paper(test_paper.id)
             except Exception:
                 pass

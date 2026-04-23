@@ -401,8 +401,8 @@ class NonEscalatingLoopAgent(LoopAgent):
 
 
 def create_agent(
-    working_dir: Optional[str] = None,
-    mcp_servers: Optional[List[str]] = None,
+    working_dir: Optional[str] = None,  # noqa: UP045
+    mcp_servers: Optional[List[str]] = None,  # noqa: UP045
 ) -> LoopDetectionAgent:
     """
     Factory function to create an Agentic Data Scientist ADK agent.
@@ -445,7 +445,7 @@ def create_agent(
     # This ensures ADK sees the correct signature without working_dir
     working_dir_str = str(working_dir)
 
-    def read_file_bound(path: str, head: Optional[int] = None, tail: Optional[int] = None) -> str:
+    def read_file_bound(path: str, head: Optional[int] = None, tail: Optional[int] = None) -> str:  # noqa: UP045
         """Read file contents with optional head/tail line limits."""
         return read_file(path, working_dir_str, head, tail)
 
@@ -457,11 +457,11 @@ def create_agent(
         """List directory contents with optional size display and sorting."""
         return list_directory(path, working_dir_str, show_sizes, sort_by)
 
-    def directory_tree_bound(path: str = ".", exclude_patterns: Optional[list[str]] = None) -> str:
+    def directory_tree_bound(path: str = ".", exclude_patterns: Optional[list[str]] = None) -> str:  # noqa: UP045
         """Generate a recursive directory tree view."""
         return directory_tree(path, working_dir_str, exclude_patterns)
 
-    def search_files_bound(pattern: str, path: str = ".", exclude_patterns: Optional[list[str]] = None) -> str:
+    def search_files_bound(pattern: str, path: str = ".", exclude_patterns: Optional[list[str]] = None) -> str:  # noqa: UP045
         """Search for files matching a pattern."""
         return search_files(pattern, working_dir_str, path, exclude_patterns)
 
@@ -689,8 +689,8 @@ def create_agent(
 
 
 def create_app(
-    working_dir: Optional[str] = None,
-    mcp_servers: Optional[List[str]] = None,
+    working_dir: Optional[str] = None,  # noqa: UP045
+    mcp_servers: Optional[List[str]] = None,  # noqa: UP045
 ) -> App:
     """
     Create an App instance with context management for the ADK agent.

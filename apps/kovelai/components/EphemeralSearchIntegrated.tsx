@@ -9,7 +9,8 @@
 
 'use client';
 
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { DeadManSwitch, useDeadManSwitch } from './DeadManSwitch';
 
 // ─── Types ──────────────────────────────────────────────────────────
@@ -48,7 +49,7 @@ export function EphemeralSearchIntegrated({
   // ─── Dead Man's Switch Integration ────────────────────────────
   const { isActive, isPaused, heartbeatCount } = useDeadManSwitch({
     timeoutMs: 5 * 60 * 1000, // 5 min
-    warningMs: 60 * 1000,     // 1 min warning
+    warningMs: 60 * 1000, // 1 min warning
     heartbeatIntervalMs: 5000,
     onTimeout: () => {
       // WIPE EVERYTHING
@@ -127,8 +128,7 @@ export function EphemeralSearchIntegrated({
 
       const data = await res.json();
       setResults(data.results ?? []);
-    } catch (err) {
-      console.error('[Ephemeral Search] Error:', err);
+    } catch (_err) {
       setResults([]);
     } finally {
       setIsSearching(false);
@@ -138,15 +138,17 @@ export function EphemeralSearchIntegrated({
   // ─── Render ──────────────────────────────────────────────────
   if (isWiped) {
     return (
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        background: '#0D1117',
-        color: '#6e7681',
-        fontFamily: 'Inter, sans-serif',
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
+          background: '#0D1117',
+          color: '#6e7681',
+          fontFamily: 'Inter, sans-serif',
+        }}
+      >
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔒</div>
           <h2 style={{ color: '#c9d1d9', marginBottom: '8px' }}>Session Expired</h2>
@@ -168,36 +170,36 @@ export function EphemeralSearchIntegrated({
       }}
     >
       {/* Privilege Banner */}
-      <div style={{
-        textAlign: 'center',
-        padding: '8px',
-        background: 'rgba(0, 212, 255, 0.1)',
-        borderRadius: '6px',
-        border: '1px solid rgba(0, 212, 255, 0.2)',
-        marginBottom: '24px',
-        fontSize: '12px',
-        color: '#00D4FF',
-        letterSpacing: '0.1em',
-        textTransform: 'uppercase',
-      }}>
+      <div
+        style={{
+          textAlign: 'center',
+          padding: '8px',
+          background: 'rgba(0, 212, 255, 0.1)',
+          borderRadius: '6px',
+          border: '1px solid rgba(0, 212, 255, 0.2)',
+          marginBottom: '24px',
+          fontSize: '12px',
+          color: '#00D4FF',
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+        }}
+      >
         🛡️ PRIVILEGED SESSION — KOVEL PROTECTED — ZERO DATA RETENTION
       </div>
 
       {/* Dead Man's Switch Status */}
-      <DeadManSwitch
-        timeoutMs={5 * 60 * 1000}
-        warningMs={60 * 1000}
-        onTimeout={wipeSession}
-      />
+      <DeadManSwitch timeoutMs={5 * 60 * 1000} warningMs={60 * 1000} onTimeout={wipeSession} />
 
       {/* Search Form */}
       <form onSubmit={handleSearch} style={{ marginBottom: '24px' }}>
-        <div style={{
-          display: 'flex',
-          gap: '12px',
-          maxWidth: '800px',
-          margin: '0 auto',
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: '12px',
+            maxWidth: '800px',
+            margin: '0 auto',
+          }}
+        >
           <input
             ref={inputRef}
             type="text"
@@ -272,20 +274,22 @@ export function EphemeralSearchIntegrated({
       </div>
 
       {/* Footer */}
-      <div style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        padding: '8px',
-        background: '#0D1117',
-        borderTop: '1px solid #21262d',
-        textAlign: 'center',
-        fontSize: '11px',
-        color: '#484f58',
-      }}>
-        Session: {sessionId.slice(0, 8)}… | Heartbeats: {heartbeatCount} |
-        Status: {isPaused ? '⏸ Paused' : isActive ? '🟢 Active' : '🔴 Expired'}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: '8px',
+          background: '#0D1117',
+          borderTop: '1px solid #21262d',
+          textAlign: 'center',
+          fontSize: '11px',
+          color: '#484f58',
+        }}
+      >
+        Session: {sessionId.slice(0, 8)}… | Heartbeats: {heartbeatCount} | Status:{' '}
+        {isPaused ? '⏸ Paused' : isActive ? '🟢 Active' : '🔴 Expired'}
       </div>
     </div>
   );

@@ -36,7 +36,12 @@ export async function POST(req: Request) {
     // Validate inputs (Pydantic/Zod equivalent — never trust user input)
     if (!clientName || !adverseParties?.length || !firmId || !lawyerIoltaStripeId) {
       return NextResponse.json(
-        { type: 'https://kovelai.com/errors/validation', title: 'Validation Error', status: 400, detail: 'Missing required fields.' },
+        {
+          type: 'https://kovelai.com/errors/validation',
+          title: 'Validation Error',
+          status: 400,
+          detail: 'Missing required fields.',
+        },
         { status: 400 },
       );
     }
@@ -53,7 +58,8 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           status: 'CONFLICT',
-          message: 'Unable to consult. Potential conflict of interest detected. No data has been saved or transmitted.',
+          message:
+            'Unable to consult. Potential conflict of interest detected. No data has been saved or transmitted.',
           // Never expose which parties matched (that itself would be a privilege violation)
         },
         { status: 403 },
@@ -65,17 +71,14 @@ export async function POST(req: Request) {
     //    $99 total → $79 to lawyer's IOLTA, $20 KovelAI commission
     // ══════════════════════════════════════════════════════════════
 
-    const checkoutSession = await createStripeCheckoutSession(
-      lawyerIoltaStripeId,
-      firmId,
-    );
+    const checkoutSession = await createStripeCheckoutSession(lawyerIoltaStripeId, firmId);
 
     return NextResponse.json({
       status: 'CLEARED',
       checkoutUrl: checkoutSession.url,
       sessionId: checkoutSession.id,
     });
-  } catch (error) {
+  } catch (_error) {
     // RFC 9457 error format — never expose stack traces
     return NextResponse.json(
       {
@@ -92,8 +95,8 @@ export async function POST(req: Request) {
 // ─── Conflict Check (MCP-backed) ────────────────────────────────
 
 async function performConflictCheck(
-  firmId: string,
-  adverseParties: string[],
+  _firmId: string,
+  _adverseParties: string[],
 ): Promise<ConflictCheckResult> {
   // In production, this calls the Antigravity MCP Gateway → Clio MCP tool:
   //
@@ -117,7 +120,7 @@ async function performConflictCheck(
 // ─── Stripe Checkout Session ────────────────────────────────────
 
 async function createStripeCheckoutSession(
-  lawyerIoltaStripeId: string,
+  _lawyerIoltaStripeId: string,
   firmId: string,
 ): Promise<{ id: string; url: string }> {
   // In production, this uses the Stripe Connect API:

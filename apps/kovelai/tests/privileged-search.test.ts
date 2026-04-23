@@ -13,7 +13,7 @@
  * @see app/api/privileged-search/route.ts
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 // ─── Anxiety Vector Classification Tests ──────────────────────────────
 // We test the classification logic directly since it's the core IP
@@ -21,23 +21,71 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 describe('Anxiety Vector Classification', () => {
   const ANXIETY_CATEGORIES: Record<string, { keywords: string[]; urgency: number }> = {
     CRIMINAL_EXPOSURE: {
-      keywords: ['arrest', 'indictment', 'felony', 'prison', 'extradition', 'warrant', 'criminal', 'plea', 'probation', 'bail'],
+      keywords: [
+        'arrest',
+        'indictment',
+        'felony',
+        'prison',
+        'extradition',
+        'warrant',
+        'criminal',
+        'plea',
+        'probation',
+        'bail',
+      ],
       urgency: 10,
     },
     ASSET_PROTECTION: {
-      keywords: ['hidden', 'offshore', 'crypto', 'forfeiture', 'seizure', 'garnishment', 'lien', 'freeze', 'asset', 'property'],
+      keywords: [
+        'hidden',
+        'offshore',
+        'crypto',
+        'forfeiture',
+        'seizure',
+        'garnishment',
+        'lien',
+        'freeze',
+        'asset',
+        'property',
+      ],
       urgency: 8,
     },
     FAMILY_LAW: {
-      keywords: ['custody', 'divorce', 'alimony', 'prenup', 'child support', 'visitation', 'restraining', 'domestic'],
+      keywords: [
+        'custody',
+        'divorce',
+        'alimony',
+        'prenup',
+        'child support',
+        'visitation',
+        'restraining',
+        'domestic',
+      ],
       urgency: 7,
     },
     EMPLOYMENT: {
-      keywords: ['wrongful termination', 'discrimination', 'harassment', 'whistleblower', 'retaliation', 'severance', 'non-compete'],
+      keywords: [
+        'wrongful termination',
+        'discrimination',
+        'harassment',
+        'whistleblower',
+        'retaliation',
+        'severance',
+        'non-compete',
+      ],
       urgency: 6,
     },
     REGULATORY: {
-      keywords: ['compliance', 'audit', 'SEC', 'FDA', 'HIPAA', 'violation', 'investigation', 'subpoena'],
+      keywords: [
+        'compliance',
+        'audit',
+        'SEC',
+        'FDA',
+        'HIPAA',
+        'violation',
+        'investigation',
+        'subpoena',
+      ],
       urgency: 7,
     },
     GENERAL_ANXIETY: {
@@ -59,7 +107,12 @@ describe('Anxiety Vector Classification', () => {
       }
     }
 
-    return { query, timestamp: new Date().toISOString(), category: bestCategory, urgencyScore: bestUrgency };
+    return {
+      query,
+      timestamp: new Date().toISOString(),
+      category: bestCategory,
+      urgencyScore: bestUrgency,
+    };
   }
 
   it('should classify criminal queries at maximum urgency', () => {
@@ -143,7 +196,7 @@ describe('Search Result Integrity', () => {
   it('should enforce anti-forensic caching headers', () => {
     const headers = {
       'Cache-Control': 'no-store, no-cache, must-revalidate, private',
-      'Pragma': 'no-cache',
+      Pragma: 'no-cache',
       'X-Privilege-Shield': 'kovel-doctrine-active',
       'X-Content-Type-Options': 'nosniff',
     };

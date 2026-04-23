@@ -24,7 +24,7 @@ class LegalWhiteboard:
         if WHITEBOARD_PATH.exists():
             try:
                 self.state = json.loads(WHITEBOARD_PATH.read_text())
-            except:
+            except Exception:
                 self._init_state()
         else:
             self._init_state()

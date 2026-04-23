@@ -84,7 +84,7 @@ class SovereignRAG:
         results = self.collection.query(query_texts=[intent], n_results=n_results)
 
         context = "RETRIEVED CODEBASE CONTEXT:\n"
-        for doc, meta in zip(results["documents"][0], results["metadatas"][0]):
+        for doc, meta in zip(results["documents"][0], results["metadatas"][0], strict=False):
             context += f"\n--- File: {meta['file']} ---\n{doc}\n"
         return context
 

@@ -11,7 +11,7 @@ router = APIRouter(prefix="/api/v1/auth", tags=["Authentication"])
 
 
 @router.post("/register", response_model=AuthUserResponse, status_code=status.HTTP_201_CREATED)
-async def register_user(user: AuthUserCreate, db: AsyncSession = Depends(get_db)):
+async def register_user(user: AuthUserCreate, db: AsyncSession = Depends(get_db)):  # noqa: B008
     """Register a new user."""
     stmt = select(models.User).where(models.User.email == user.email)
     result = await db.execute(stmt)
@@ -34,8 +34,8 @@ async def register_user(user: AuthUserCreate, db: AsyncSession = Depends(get_db)
 
 @router.post("/login", response_model=Token)
 async def login(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    db: AsyncSession = Depends(get_db),
+    form_data: OAuth2PasswordRequestForm = Depends(),  # noqa: B008
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Authenticate a user and return a JWT."""
     stmt = select(models.User).where(models.User.email == form_data.username)

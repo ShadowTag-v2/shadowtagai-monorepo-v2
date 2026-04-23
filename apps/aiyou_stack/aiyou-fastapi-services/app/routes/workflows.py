@@ -10,7 +10,7 @@ from app.services.automation_service import WorkflowService
 router = APIRouter(prefix="/workflows", tags=["workflows"])
 
 
-def get_workflow_service(db: AsyncSession = Depends(get_db)) -> WorkflowService:
+def get_workflow_service(db: AsyncSession = Depends(get_db)) -> WorkflowService:  # noqa: B008
     """Dependency to get WorkflowService instance."""
     return WorkflowService(db)
 
@@ -18,7 +18,7 @@ def get_workflow_service(db: AsyncSession = Depends(get_db)) -> WorkflowService:
 @router.post("/", response_model=WorkflowResponse, status_code=201)
 async def create_workflow(
     workflow: WorkflowCreate,
-    service: WorkflowService = Depends(get_workflow_service),
+    service: WorkflowService = Depends(get_workflow_service),  # noqa: B008
 ):
     """Create a new workflow."""
     return await service.create(workflow.model_dump())
@@ -28,7 +28,7 @@ async def create_workflow(
 async def list_workflows(
     skip: int = 0,
     limit: int = 100,
-    service: WorkflowService = Depends(get_workflow_service),
+    service: WorkflowService = Depends(get_workflow_service),  # noqa: B008
 ):
     """List all workflows."""
     return await service.list(skip, limit)
@@ -37,7 +37,7 @@ async def list_workflows(
 @router.get("/{workflow_id}", response_model=WorkflowResponse)
 async def get_workflow(
     workflow_id: int,
-    service: WorkflowService = Depends(get_workflow_service),
+    service: WorkflowService = Depends(get_workflow_service),  # noqa: B008
 ):
     """Get a specific workflow by ID."""
     workflow = await service.get(workflow_id)
@@ -50,7 +50,7 @@ async def get_workflow(
 async def update_workflow(
     workflow_id: int,
     workflow_update: WorkflowUpdate,
-    service: WorkflowService = Depends(get_workflow_service),
+    service: WorkflowService = Depends(get_workflow_service),  # noqa: B008
 ):
     """Update a workflow."""
     workflow = await service.get(workflow_id)
@@ -64,7 +64,7 @@ async def update_workflow(
 @router.delete("/{workflow_id}", status_code=204)
 async def delete_workflow(
     workflow_id: int,
-    service: WorkflowService = Depends(get_workflow_service),
+    service: WorkflowService = Depends(get_workflow_service),  # noqa: B008
 ):
     """Delete a workflow."""
     workflow = await service.get(workflow_id)

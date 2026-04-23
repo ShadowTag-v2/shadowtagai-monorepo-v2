@@ -12,12 +12,12 @@
  * @see lib/compliance/cle-certificate.ts
  */
 
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import {
+  CLE_COURSES,
   generateCLECertificate,
   getCertificatePDFData,
-  CLE_COURSES,
 } from '@/lib/compliance/cle-certificate';
 
 // ─── Request Schema ─────────────────────────────────────────────────
@@ -43,10 +43,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const result = generateCLECertificate(parsed);
 
     if ('error' in result) {
-      return NextResponse.json(
-        { error: result.error },
-        { status: 422 },
-      );
+      return NextResponse.json({ error: result.error }, { status: 422 });
     }
 
     const pdfData = getCertificatePDFData(result);
@@ -62,10 +59,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 },
       );
     }
-    return NextResponse.json(
-      { error: 'Certificate generation failed' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Certificate generation failed' }, { status: 500 });
   }
 }
 

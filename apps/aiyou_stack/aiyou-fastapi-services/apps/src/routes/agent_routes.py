@@ -15,7 +15,7 @@ router = APIRouter(prefix="/agents", tags=["agents"])
 
 
 @router.get("/")
-async def list_agents(db: Session = Depends(get_db)) -> dict[str, Any]:
+async def list_agents(db: Session = Depends(get_db)) -> dict[str, Any]:  # noqa: B008
     """List all available agents.
 
     Returns:
@@ -27,7 +27,7 @@ async def list_agents(db: Session = Depends(get_db)) -> dict[str, Any]:
 
 
 @router.get("/{agent_id}")
-async def get_agent(agent_id: str, db: Session = Depends(get_db)) -> dict[str, Any]:
+async def get_agent(agent_id: str, db: Session = Depends(get_db)) -> dict[str, Any]:  # noqa: B008
     """Get agent details.
 
     Args:
@@ -50,7 +50,7 @@ async def get_agent(agent_id: str, db: Session = Depends(get_db)) -> dict[str, A
 async def execute_agent(
     agent_id: str,
     request: AgentExecuteRequest,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ) -> dict[str, Any]:
     """Execute an agent with a task.
 
@@ -82,7 +82,7 @@ async def get_agent_history(
     agent_id: str,
     limit: int = Query(default=10, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ) -> dict[str, Any]:
     """Get execution history for an agent.
 
@@ -100,7 +100,7 @@ async def get_agent_history(
 
 
 @router.get("/{agent_id}/tools")
-async def get_agent_tools(agent_id: str, db: Session = Depends(get_db)) -> dict[str, Any]:
+async def get_agent_tools(agent_id: str, db: Session = Depends(get_db)) -> dict[str, Any]:  # noqa: B008
     """Get available tools for an agent.
 
     Args:
@@ -122,7 +122,7 @@ async def get_agent_tools(agent_id: str, db: Session = Depends(get_db)) -> dict[
 async def execute_tool(
     tool_name: str,
     args: dict[str, Any],
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008
 ) -> dict[str, Any]:
     """Execute a tool directly.
 

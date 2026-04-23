@@ -281,9 +281,9 @@ async def get_ingestion_status(
 
 @app.get("/ingestion/items", response_model=list[IngestedItem], tags=["Ingestion"])
 async def get_ingested_items(
-    tier: TierLevel | None = Query(None, description="Filter by tier"),
-    source_type: SourceType | None = Query(None, description="Filter by source type"),
-    since: datetime | None = Query(None, description="Filter by ingested_at >= since"),
+    tier: TierLevel | None = Query(None, description="Filter by tier"),  # noqa: B008
+    source_type: SourceType | None = Query(None, description="Filter by source type"),  # noqa: B008
+    since: datetime | None = Query(None, description="Filter by ingested_at >= since"),  # noqa: B008
     limit: int = Query(100, ge=1, le=1000, description="Max items to return"),
     offset: int = Query(0, ge=0, description="Pagination offset"),
 ):

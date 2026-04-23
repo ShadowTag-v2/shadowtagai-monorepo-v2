@@ -77,7 +77,7 @@ def report_local() -> None:
     jsonl = ingest / "extractions.jsonl"
     docs = ingest / "docs"
     if jsonl.exists():
-        sum(1 for _ in open(jsonl))
+        sum(1 for _ in open(jsonl))  # noqa: SIM115
     if docs.exists():
         sum(1 for _ in docs.iterdir())
 

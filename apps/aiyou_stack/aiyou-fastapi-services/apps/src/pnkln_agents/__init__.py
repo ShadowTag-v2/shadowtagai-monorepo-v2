@@ -41,7 +41,7 @@ from .core.agent_pattern import (
     AgentResult,
     AgentStatus,
     AgentTask,
-    PnklnAgent,
+    PnklnAgent,  # noqa: F401
     SimpleAgent,
 )
 from .core.gemini_ingestion import (

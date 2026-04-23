@@ -64,7 +64,7 @@ class GeminiAntigravity:
             self._redis = redis.Redis(host=redis_host, port=redis_port, decode_responses=True)
             self._redis.ping()
             self._cache_available = True
-        except:
+        except Exception:
             self._redis = None
             self._cache_available = False
 
@@ -138,7 +138,7 @@ class GeminiAntigravity:
         if self._cache_available:
             try:
                 return self._redis.get(key)
-            except:
+            except Exception:
                 pass
         return None
 

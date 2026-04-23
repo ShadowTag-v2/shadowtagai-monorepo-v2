@@ -201,7 +201,7 @@ def read_file_context(file_path: str, line: int, radius: int = 20) -> str:
     lines = p.read_text(errors="replace").splitlines()
     start = max(0, line - radius - 1)
     end = min(len(lines), line + radius)
-    numbered = [f"{i + 1}: {l}" for i, l in enumerate(lines[start:end], start=start)]
+    numbered = [f"{i + 1}: {l}" for i, l in enumerate(lines[start:end], start=start)]  # noqa: E741
     return "\n".join(numbered)
 
 

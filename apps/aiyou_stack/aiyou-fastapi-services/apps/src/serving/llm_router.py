@@ -380,7 +380,7 @@ class LLMRouter:
             # Fallback
             try:
                 self._gemini_models[model] = genai.GenerativeModel(model)
-            except:
+            except Exception:
                 model = "gemini-3.1-flash-lite-preview"
                 if model not in self._gemini_models:
                     self._gemini_models[model] = genai.GenerativeModel(model)

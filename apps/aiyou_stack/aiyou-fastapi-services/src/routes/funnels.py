@@ -16,7 +16,7 @@ router = APIRouter(prefix="/funnels", tags=["funnels"])
 @router.post("/", response_model=FunnelResponse, status_code=status.HTTP_201_CREATED)
 async def create_funnel(
     funnel: FunnelCreate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Create a new conversion funnel
 
@@ -30,7 +30,7 @@ async def create_funnel(
 @router.get("/{funnel_id}", response_model=FunnelResponse)
 async def get_funnel(
     funnel_id: UUID,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get funnel by ID
 
@@ -50,7 +50,7 @@ async def get_funnel(
 @router.get("/", response_model=list[FunnelResponse])
 async def list_funnels(
     is_active: bool = None,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """List all funnels
 
@@ -65,7 +65,7 @@ async def list_funnels(
 async def update_funnel(
     funnel_id: UUID,
     funnel_data: FunnelUpdate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Update funnel
 
@@ -85,7 +85,7 @@ async def update_funnel(
 @router.delete("/{funnel_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_funnel(
     funnel_id: UUID,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Delete funnel
 
@@ -104,7 +104,7 @@ async def delete_funnel(
 async def analyze_funnel(
     funnel_id: UUID,
     days: int = 7,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Analyze funnel performance
 

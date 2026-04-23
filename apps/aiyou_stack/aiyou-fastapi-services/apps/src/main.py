@@ -152,7 +152,7 @@ app.include_router(growth_router, prefix=settings.api_prefix)
 
 
 # WEALTH LEAK PLUG: Monetization Middleware
-from .pnkln.api.monetization import monetization
+from .pnkln.api.monetization import monetization  # noqa: E402
 
 
 class MonetizationMiddleware(BaseHTTPMiddleware):

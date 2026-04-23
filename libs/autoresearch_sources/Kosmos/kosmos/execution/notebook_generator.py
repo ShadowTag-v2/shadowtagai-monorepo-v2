@@ -381,10 +381,9 @@ class NotebookGenerator:
                 in_imports = False
 
             # Check for function/class definitions (start new cell)
-            if stripped.startswith(("def ", "class ", "async def ")):
-                if current_cell:
-                    cells.append("\n".join(current_cell))
-                    current_cell = []
+            if stripped.startswith(("def ", "class ", "async def ")) and current_cell:
+                cells.append("\n".join(current_cell))
+                current_cell = []
 
             current_cell.append(line)
 

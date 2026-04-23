@@ -61,7 +61,7 @@ def test_req_meta_001_all_must_requirements_have_tests():
                 req_id = f"REQ-{match.group(1)}-{match.group(2).zfill(3)}"
                 # Verify it's actually a MUST/SHALL by checking context
                 # (line contains MUST or SHALL)
-                if "MUST" in line.upper() or "SHALL" in line.upper():
+                if "MUST" in line.upper() or "SHALL" in line.upper():  # noqa: SIM102
                     # Exclude MUST NOT / SHALL NOT as they're constraints, not features
                     if "MUST NOT" not in line and "SHALL NOT" not in line:
                         critical_reqs.add(req_id)
@@ -275,7 +275,7 @@ def test_req_meta_002_deployment_gate_exists():
             content = workflow.read_text()
 
             # Look for deployment jobs that depend on tests
-            if "deploy" in content.lower():
+            if "deploy" in content.lower():  # noqa: SIM102
                 if ("needs" in content and "test" in content) or (
                     "if:" in content and "success" in content
                 ):

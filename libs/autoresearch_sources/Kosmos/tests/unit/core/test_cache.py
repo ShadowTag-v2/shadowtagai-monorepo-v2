@@ -276,7 +276,7 @@ class TestRedisCache:
             client.ping()
             client.flushdb()  # Clean test database
             return True
-        except:
+        except Exception:
             pytest.skip("Redis not available for testing")
 
     def test_redis_set_get(self, redis_available):

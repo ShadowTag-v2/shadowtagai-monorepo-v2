@@ -35,8 +35,8 @@ def get_kill_switch(request: Request) -> KillSwitch:
 @router.post("/query", response_model=QueryResponse)
 async def process_query(
     query_req: QueryRequest,
-    corpus_manager: CorpusManager = Depends(get_corpus_manager),
-    kill_switch: KillSwitch = Depends(get_kill_switch),
+    corpus_manager: CorpusManager = Depends(get_corpus_manager),  # noqa: B008
+    kill_switch: KillSwitch = Depends(get_kill_switch),  # noqa: B008
 ):
     """Process a query with file search and Judge 6 enforcement
 
@@ -82,7 +82,7 @@ async def process_query(
 
 @router.get("/corpus", response_model=list[CorpusInfo])
 async def list_corpora(
-    corpus_manager: CorpusManager = Depends(get_corpus_manager),
+    corpus_manager: CorpusManager = Depends(get_corpus_manager),  # noqa: B008
 ):
     """List all corpora"""
     try:
@@ -96,7 +96,7 @@ async def list_corpora(
 @router.post("/corpus", response_model=dict[str, str])
 async def create_corpus(
     create_req: CorpusCreateRequest,
-    corpus_manager: CorpusManager = Depends(get_corpus_manager),
+    corpus_manager: CorpusManager = Depends(get_corpus_manager),  # noqa: B008
 ):
     """Create a new corpus for a vertical"""
     try:
@@ -122,7 +122,7 @@ async def create_corpus(
 @router.post("/corpus/import")
 async def import_files(
     import_req: FileImportRequest,
-    corpus_manager: CorpusManager = Depends(get_corpus_manager),
+    corpus_manager: CorpusManager = Depends(get_corpus_manager),  # noqa: B008
 ):
     """Import files into a corpus"""
     try:
@@ -151,7 +151,7 @@ async def import_files(
 @router.delete("/corpus/{corpus_name}")
 async def delete_corpus(
     corpus_name: str,
-    corpus_manager: CorpusManager = Depends(get_corpus_manager),
+    corpus_manager: CorpusManager = Depends(get_corpus_manager),  # noqa: B008
 ):
     """Delete a corpus"""
     try:
@@ -198,7 +198,7 @@ async def get_vertical(vertical_name: str):
 
 @router.get("/monitoring/health", response_model=HealthResponse)
 async def get_health(
-    kill_switch: KillSwitch = Depends(get_kill_switch),
+    kill_switch: KillSwitch = Depends(get_kill_switch),  # noqa: B008
 ):
     """Get detailed health status"""
     health_check = kill_switch.check_health()
@@ -207,7 +207,7 @@ async def get_health(
 
 @router.post("/monitoring/kill-switch/enable")
 async def enable_kill_switch(
-    kill_switch: KillSwitch = Depends(get_kill_switch),
+    kill_switch: KillSwitch = Depends(get_kill_switch),  # noqa: B008
 ):
     """Manually enable file search"""
     kill_switch.force_enable()
@@ -216,7 +216,7 @@ async def enable_kill_switch(
 
 @router.post("/monitoring/kill-switch/disable")
 async def disable_kill_switch(
-    kill_switch: KillSwitch = Depends(get_kill_switch),
+    kill_switch: KillSwitch = Depends(get_kill_switch),  # noqa: B008
 ):
     """Manually disable file search"""
     kill_switch.force_disable()

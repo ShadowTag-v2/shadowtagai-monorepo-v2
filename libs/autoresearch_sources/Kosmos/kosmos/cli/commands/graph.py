@@ -81,11 +81,11 @@ def manage_graph(
 
     except KeyboardInterrupt:
         console.print("\n[warning]Graph operation cancelled[/warning]")
-        raise typer.Exit(130)
+        raise typer.Exit(130)  # noqa: B904
 
     except Exception as e:
         print_error(f"Graph operation failed: {str(e)}")
-        raise typer.Exit(1)
+        raise typer.Exit(1)  # noqa: B904
 
 
 def display_graph_stats(wm):
@@ -211,12 +211,11 @@ def import_graph(wm, filepath: str, clear: bool = False):
         raise typer.Exit(1)
 
     # Warn if clearing
-    if clear:
-        if not confirm_action(
-            "⚠️  Clear existing graph before import? This will DELETE all current data."
-        ):
-            console.print("[warning]Import cancelled[/warning]")
-            return
+    if clear and not confirm_action(
+        "⚠️  Clear existing graph before import? This will DELETE all current data."
+    ):
+        console.print("[warning]Import cancelled[/warning]")
+        return
 
     # Get current stats
     current_stats = wm.get_statistics()

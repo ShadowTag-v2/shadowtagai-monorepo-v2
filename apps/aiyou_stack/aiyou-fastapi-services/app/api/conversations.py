@@ -21,7 +21,7 @@ router = APIRouter()
 @router.post("/", response_model=ConversationResponse, status_code=status.HTTP_201_CREATED)
 async def create_conversation(
     conversation_data: ConversationCreate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Create a new conversation."""
     service = ConversationService(db)
@@ -32,7 +32,7 @@ async def create_conversation(
 @router.get("/{conversation_id}", response_model=ConversationResponse)
 async def get_conversation(
     conversation_id: UUID,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Get a specific conversation."""
     service = ConversationService(db)
@@ -47,12 +47,12 @@ async def get_conversation(
 
 @router.get("/", response_model=ConversationListResponse)
 async def list_conversations(
-    project_id: UUID | None = Query(None),
+    project_id: UUID | None = Query(None),  # noqa: B008
     include_incognito: bool = Query(False),
     active_only: bool = Query(True),
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=100),
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """List all conversations with pagination."""
     service = ConversationService(db)
@@ -75,7 +75,7 @@ async def list_conversations(
 async def update_conversation(
     conversation_id: UUID,
     update_data: ConversationUpdate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Update a conversation."""
     service = ConversationService(db)
@@ -91,7 +91,7 @@ async def update_conversation(
 @router.delete("/{conversation_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_conversation(
     conversation_id: UUID,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Delete a conversation."""
     service = ConversationService(db)
@@ -111,7 +111,7 @@ async def delete_conversation(
 async def add_message(
     conversation_id: UUID,
     message_data: MessageCreate,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
     """Add a message to a conversation."""
     service = ConversationService(db)

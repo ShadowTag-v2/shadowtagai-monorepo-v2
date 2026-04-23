@@ -54,7 +54,7 @@ def count_python_files() -> int:
     """Count Python files in the project (excluding vendored dirs)."""
     count = 0
     exclude = {".venv", "node_modules", "__pycache__", ".git", "bazel-", ".chroma_db"}
-    for root, dirs, files in os.walk("."):
+    for _root, dirs, files in os.walk("."):
         dirs[:] = [d for d in dirs if d not in exclude and not d.startswith("bazel-")]
         count += sum(1 for f in files if f.endswith(".py"))
     return count

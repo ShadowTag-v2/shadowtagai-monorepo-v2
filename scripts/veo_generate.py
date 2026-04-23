@@ -385,7 +385,7 @@ Examples:
     )
 
     if args.list_presets:
-        for prompt in DEMO_PRESETS.values():
+        for prompt in DEMO_PRESETS.values():  # noqa: B007
             pass
         return 0
 

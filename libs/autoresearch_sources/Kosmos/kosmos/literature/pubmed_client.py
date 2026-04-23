@@ -476,7 +476,7 @@ class PubMedClient(BaseLiteratureClient):
             # Parse publication date
             pub_date = None
             date_str = record.get("DP", "")
-            try:
+            try:  # noqa: SIM105
                 # Try to parse "2023 Jan 15" format
                 pub_date = datetime.strptime(date_str.split()[0], "%Y")
             except (ValueError, IndexError):

@@ -34,8 +34,8 @@ try:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from core.ki_engine.activation import spread_activation
     from core.ki_engine.closure import compute_closure
-    from core.ki_engine.decay import rank_kis  # noqa: F811 — used by future phases
-    from core.ki_engine.events import EventAction, append_event  # noqa: F811 — used by future phases
+    from core.ki_engine.decay import rank_kis  # noqa: F401, F811
+    from core.ki_engine.events import EventAction, append_event  # noqa: F401, F811
     from core.ki_engine.promotion import detect_conflicts, promote_beliefs
     from core.ki_engine.schema import KIMetadata
     from core.ki_engine.views import generate_all_views

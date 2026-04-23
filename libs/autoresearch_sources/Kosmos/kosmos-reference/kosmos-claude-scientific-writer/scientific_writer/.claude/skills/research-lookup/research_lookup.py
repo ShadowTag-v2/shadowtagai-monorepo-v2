@@ -143,7 +143,7 @@ class ResearchLookup:
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
-            raise Exception(f"API request failed: {str(e)}")
+            raise Exception(f"API request failed: {str(e)}")  # noqa: B904
 
     def _format_research_prompt(self, query: str) -> str:
         """Format the query for optimal research results."""

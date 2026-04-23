@@ -30,13 +30,13 @@ def world_model():
     try:
         wm = get_world_model()
         # Try to reset for clean state
-        try:
+        try:  # noqa: SIM105
             wm.reset(project="test_project")
         except Exception:
             pass  # If reset fails, continue anyway
         yield wm
     finally:
-        try:
+        try:  # noqa: SIM105
             reset_world_model()
         except Exception:
             pass
@@ -270,7 +270,7 @@ class TestREQ_WM_CRUD_003_UpdateEntity:
         fake_id = str(uuid.uuid4())
 
         # Should raise error for non-existent entity
-        with pytest.raises(Exception):  # Specific exception depends on implementation
+        with pytest.raises(Exception):  # Specific exception depends on implementation  # noqa: B017
             world_model.update_entity(fake_id, {"verified": True})
 
     def test_update_preserves_entity_id(self, world_model, sample_entity):
@@ -334,7 +334,7 @@ class TestREQ_WM_CRUD_004_DeleteEntity:
         """Verify deleting non-existent entity raises error."""
         fake_id = str(uuid.uuid4())
 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             world_model.delete_entity(fake_id)
 
     def test_delete_entity_removes_relationships(self, world_model):
@@ -501,7 +501,7 @@ class TestREQ_WM_CRUD_006_CreateReadRelationships:
         rel = Relationship(source_id=id1, target_id=fake_id, type="CITES")
 
         # Should raise error (specific error depends on implementation)
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             world_model.add_relationship(rel)
 
     def test_create_relationship_with_all_types(self, world_model):

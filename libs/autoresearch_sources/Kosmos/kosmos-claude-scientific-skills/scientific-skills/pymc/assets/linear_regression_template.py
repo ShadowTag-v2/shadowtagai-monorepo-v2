@@ -181,7 +181,7 @@ print("\n" + "=" * 60)
 print("COEFFICIENT ESTIMATES")
 print("=" * 60)
 beta_samples = idata.posterior["beta"]
-for i, name in enumerate(predictor_names):
+for i, name in enumerate(predictor_names):  # noqa: B007
     mean = beta_samples.sel(predictors=name).mean().item()
     hdi = az.hdi(beta_samples.sel(predictors=name), hdi_prob=0.95)
     print(f"{name:20s}: {mean:7.3f}  [95% HDI: {hdi.values[0]:7.3f}, {hdi.values[1]:7.3f}]")

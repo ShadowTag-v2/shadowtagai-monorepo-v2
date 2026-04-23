@@ -282,7 +282,7 @@ class GitHubDiscoveryAgent:
                     if f"import {name}" in other.read_text(errors="ignore"):
                         evidence.append(f"imported by {other.name}")
                         break
-                except:
+                except Exception:
                     pass
 
         # Check if in CI
@@ -292,7 +292,7 @@ class GitHubDiscoveryAgent:
                 if name in ci.read_text(errors="ignore"):
                     evidence.append("referenced in CI")
                     break
-            except:
+            except Exception:
                 pass
 
         return evidence[:3]

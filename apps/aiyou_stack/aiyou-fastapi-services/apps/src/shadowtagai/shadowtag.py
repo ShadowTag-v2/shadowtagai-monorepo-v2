@@ -55,7 +55,7 @@ class Watermark:
             verifier = eddsa.new(public_key, "rfc8032")
             verifier.verify(h, sig_bytes)
             return True
-        except:
+        except Exception:
             return False
 
     def _construct_message(self) -> str:
@@ -237,4 +237,4 @@ class ShadowTag:
 
 
 # Import os for key path handling
-import os
+import os  # noqa: E402

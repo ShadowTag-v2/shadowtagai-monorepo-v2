@@ -85,7 +85,10 @@ export function generateCloudArmorPolicy(): CloudArmorPolicy {
         description: 'Auth endpoint rate limiting — 10 req/min per IP',
         priority: 2100,
         match: {
-          expr: { expression: "request.path.matches('/api/tokens/.*') || request.path.matches('/api/auth/.*')" },
+          expr: {
+            expression:
+              "request.path.matches('/api/tokens/.*') || request.path.matches('/api/auth/.*')",
+          },
         },
         action: 'rate_based_ban',
         rateLimitOptions: {

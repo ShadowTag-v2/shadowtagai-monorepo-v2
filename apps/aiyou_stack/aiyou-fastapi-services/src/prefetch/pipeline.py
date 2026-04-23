@@ -299,7 +299,7 @@ class WebPrefetcher:
 
         # Try to import httpx for async requests
         try:
-            import httpx
+            import httpx  # noqa: F401
 
             self._http_available = True
         except ImportError:

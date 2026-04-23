@@ -370,7 +370,7 @@ Provide critical peer review in JSON:
             if "```json" in review_text:
                 review_text = review_text.split("```json")[1].split("```")[0]
             review_data = json.loads(review_text.strip())
-        except:
+        except Exception:
             review_data = {"agreement_score": 0.5, "critique": review_text, "suggestions": []}
 
         return PeerReview(

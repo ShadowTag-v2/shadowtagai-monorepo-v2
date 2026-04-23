@@ -999,7 +999,7 @@ Return the enhanced Python code only."""
             logger.info("Code syntax validation passed")
         except SyntaxError as e:
             logger.error(f"Generated code has syntax error: {e}")
-            raise ValueError(f"Invalid Python syntax in generated code: {e}")
+            raise ValueError(f"Invalid Python syntax in generated code: {e}")  # noqa: B904
 
     def save_code(self, code: str, file_path: str) -> None:
         """Save generated code to file."""

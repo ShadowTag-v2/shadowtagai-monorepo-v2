@@ -72,7 +72,7 @@ Return ONLY the JSON."""
             raw = response.text.replace("```json", "").replace("```", "").strip()
             tasks = json.loads(raw)
             return [Atom(id=t["id"][:12], content=t["content"]) for t in tasks[:3]]
-        except:
+        except Exception:
             return [Atom(id="main", content=task)]
 
     async def _generate_and_pr(self, atom: Atom) -> CodeResult:
@@ -152,7 +152,7 @@ git push -u origin {branch}
             if pr_proc.returncode == 0:
                 return stdout.decode().strip()
             return None
-        except:
+        except Exception:
             return None
 
 

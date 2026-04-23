@@ -118,7 +118,7 @@ class DockerSandbox:
             logger.info("Docker client initialized successfully")
         except docker.errors.DockerException as e:
             logger.error(f"Failed to initialize Docker client: {e}")
-            raise RuntimeError(f"Docker not available: {e}")
+            raise RuntimeError(f"Docker not available: {e}")  # noqa: B904
 
         # Verify image exists
         self._verify_image()
@@ -154,7 +154,7 @@ class DockerSandbox:
 
         except docker.errors.BuildError as e:
             logger.error(f"Failed to build Docker image: {e}")
-            raise RuntimeError(f"Docker build failed: {e}")
+            raise RuntimeError(f"Docker build failed: {e}")  # noqa: B904
 
     def execute(
         self,

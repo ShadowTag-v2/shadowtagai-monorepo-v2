@@ -160,7 +160,7 @@ def test_req_limit_002_no_auto_external_access():
             config = get_config(reload=True)
 
             # Literature APIs should require explicit keys
-            if hasattr(config, "literature"):
+            if hasattr(config, "literature"):  # noqa: SIM102
                 # Should not have default API keys
                 if hasattr(config.literature, "semantic_scholar_api_key"):
                     assert (
@@ -581,7 +581,7 @@ class TestSystemLimitationsIntegration:
             config = get_config(reload=True)
 
             # Config should support autonomous execution
-            if hasattr(config, "research"):
+            if hasattr(config, "research"):  # noqa: SIM102
                 # Check for autonomous execution settings
                 if hasattr(config.research, "autonomous_mode"):
                     # Should default to True

@@ -61,7 +61,7 @@ def _reset_eval_state():
 
     from kosmos.core.cache_manager import get_cache_manager, reset_cache_manager
 
-    try:
+    try:  # noqa: SIM105
         get_cache_manager().clear()
     except Exception:
         pass
@@ -73,7 +73,7 @@ def _reset_eval_state():
 
     from kosmos.agents.registry import get_registry
 
-    try:
+    try:  # noqa: SIM105
         get_registry().clear()
     except Exception:
         pass
@@ -1223,7 +1223,7 @@ def run_phase7_paper_compliance(
 
     # 12. Parallel agent instances
     try:
-        from kosmos.execution.parallel import ParallelExperimentExecutor
+        from kosmos.execution.parallel import ParallelExperimentExecutor  # noqa: F401
 
         claims.append(
             claim(
@@ -1239,7 +1239,7 @@ def run_phase7_paper_compliance(
 
     # 13. Docker sandbox
     try:
-        from kosmos.execution.sandbox import DockerSandbox
+        from kosmos.execution.sandbox import DockerSandbox  # noqa: F401
 
         claims.append(
             claim(
@@ -1275,7 +1275,7 @@ def run_phase7_paper_compliance(
 
     # 15. Reports with citations
     try:
-        from kosmos.analysis.summarizer import ResultSummarizer
+        from kosmos.analysis.summarizer import ResultSummarizer  # noqa: F401
 
         claims.append(
             claim(

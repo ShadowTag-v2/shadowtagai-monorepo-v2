@@ -16,7 +16,7 @@
 
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 // ─── Types ───────────────────────────────────────────────
 
@@ -127,9 +127,7 @@ export function KinematicVerbMatrix({
         {causesOfAction.map((coa) => (
           <button
             key={coa.action}
-            onClick={() =>
-              setFilterAction(filterAction === coa.action ? null : coa.action)
-            }
+            onClick={() => setFilterAction(filterAction === coa.action ? null : coa.action)}
             style={{
               ...styles.rollUpCard,
               ...(filterAction === coa.action ? styles.rollUpCardActive : {}),
@@ -218,8 +216,7 @@ export function KinematicVerbMatrix({
                       </span>
                     </td>
                     <td style={styles.td}>
-                      {STRENGTH_ICONS[verb.strengthens_or_weakens]}{' '}
-                      {verb.strengthens_or_weakens}
+                      {STRENGTH_ICONS[verb.strengthens_or_weakens]} {verb.strengthens_or_weakens}
                     </td>
                   </tr>
                   {isExpanded && (
@@ -227,15 +224,13 @@ export function KinematicVerbMatrix({
                       <td colSpan={5} style={styles.expandedRow}>
                         <div style={styles.expandedContent}>
                           <div>
-                            <strong>Context:</strong>{' '}
-                            <em>&ldquo;{verb.context}&rdquo;</em>
+                            <strong>Context:</strong> <em>&ldquo;{verb.context}&rdquo;</em>
                           </div>
                           <div>
                             <strong>Element Matched:</strong> {verb.element_matched}
                           </div>
                           <div style={styles.expandedMeta}>
-                            Session: {sessionId} · Classification:{' '}
-                            {verb.kinematic_classification}
+                            Session: {sessionId} · Classification: {verb.kinematic_classification}
                           </div>
                         </div>
                       </td>

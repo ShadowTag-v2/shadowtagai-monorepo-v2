@@ -234,7 +234,7 @@
             }
           }
         }
-      } catch (err) {
+      } catch (_err) {
         removeTyping();
         addMessage('⚠️ Connection error. The server may be offline.', 'assistant');
       } finally {
@@ -255,7 +255,7 @@
     // Auto-resize textarea
     input.addEventListener('input', () => {
       input.style.height = 'auto';
-      input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+      input.style.height = `${Math.min(input.scrollHeight, 120)}px`;
     });
   </script>
 </body>

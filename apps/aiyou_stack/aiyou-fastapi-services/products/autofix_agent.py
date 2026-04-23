@@ -10,8 +10,8 @@ import os
 import subprocess
 
 try:
-    from google.cloud import aiplatform as v
-    from google.cloud.aiplatform.explain.metadata.tf.v2 import SavedModelMetadata
+    from google.cloud import aiplatform as v  # noqa: F401
+    from google.cloud.aiplatform.explain.metadata.tf.v2 import SavedModelMetadata  # noqa: F401
 except ImportError:
     print("Error: google-cloud-aiplatform not installed.")
     print("pip install google-cloud-aiplatform")

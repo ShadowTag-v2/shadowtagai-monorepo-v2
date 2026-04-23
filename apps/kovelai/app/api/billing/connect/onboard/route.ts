@@ -7,7 +7,7 @@
  *
  * Nag Protocol #18: Set up Stripe Connect onboarding flow
  */
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 const OnboardingSchema = z.object({
@@ -27,17 +27,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
     if (!stripeSecretKey) {
-      return NextResponse.json(
-        { error: 'Stripe not configured' },
-        { status: 503 },
-      );
+      return NextResponse.json({ error: 'Stripe not configured' }, { status: 503 });
     }
 
     // Step 1: Create Connected Account for the law firm
     const accountRes = await fetch('https://api.stripe.com/v1/accounts', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${stripeSecretKey}`,
+        Authorization: `Bearer ${stripeSecretKey}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
@@ -66,7 +63,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const linkRes = await fetch('https://api.stripe.com/v1/account_links', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${stripeSecretKey}`,
+        Authorization: `Bearer ${stripeSecretKey}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
@@ -101,9 +98,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         { status: 400 },
       );
     }
-    return NextResponse.json(
-      { error: 'Onboarding failed' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Onboarding failed' }, { status: 500 });
   }
 }

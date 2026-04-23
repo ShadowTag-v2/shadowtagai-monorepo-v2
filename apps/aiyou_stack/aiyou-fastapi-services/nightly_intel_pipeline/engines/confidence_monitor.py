@@ -311,7 +311,7 @@ class ConfidenceMonitor:
             for token_logits in logits:
                 if isinstance(token_logits, (list, tuple)):
                     max_logit = max(token_logits)
-                    exp_logits = [math.exp(l - max_logit) for l in token_logits]
+                    exp_logits = [math.exp(l - max_logit) for l in token_logits]  # noqa: E741
                     sum_exp = sum(exp_logits)
                     probs = [e / sum_exp for e in exp_logits]
                     confidences.append(max(probs))

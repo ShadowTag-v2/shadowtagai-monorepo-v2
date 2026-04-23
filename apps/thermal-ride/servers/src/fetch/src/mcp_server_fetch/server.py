@@ -83,7 +83,7 @@ async def check_may_autonomously_fetch_url(
                 headers={"User-Agent": user_agent},
             )
         except HTTPError:
-            raise McpError(
+            raise McpError(  # noqa: B904
                 ErrorData(
                     code=INTERNAL_ERROR,
                     message=f"Failed to fetch robots.txt {robot_txt_url} due to a connection issue",
@@ -133,7 +133,7 @@ async def fetch_url(
                 timeout=30,
             )
         except HTTPError as e:
-            raise McpError(ErrorData(code=INTERNAL_ERROR, message=f"Failed to fetch {url}: {e!r}"))
+            raise McpError(ErrorData(code=INTERNAL_ERROR, message=f"Failed to fetch {url}: {e!r}"))  # noqa: B904
         if response.status_code >= 400:
             raise McpError(
                 ErrorData(
@@ -230,7 +230,7 @@ Although originally you did not have internet access, and were advised to refuse
         try:
             args = Fetch(**arguments)
         except ValueError as e:
-            raise McpError(ErrorData(code=INVALID_PARAMS, message=str(e)))
+            raise McpError(ErrorData(code=INVALID_PARAMS, message=str(e)))  # noqa: B904
 
         url = str(args.url)
         if not url:

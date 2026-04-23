@@ -15,8 +15,8 @@ from pathlib import Path
 ROOT = Path(__file__).parents[1]
 sys.path.insert(0, str(ROOT))
 
-from ingestion.sources.reddit_adapter import RedditAdapter
-from ingestion.storage.sqlite_store import IngestStore
+from ingestion.sources.reddit_adapter import RedditAdapter  # noqa: E402
+from ingestion.storage.sqlite_store import IngestStore  # noqa: E402
 
 TEST_DB = ROOT / "data/web_ingest/test_ingest.db"
 TEST_SUBREDDITS = ["LocalLLaMA", "MachineLearning"]

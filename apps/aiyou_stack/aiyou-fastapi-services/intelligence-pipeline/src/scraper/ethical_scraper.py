@@ -206,7 +206,7 @@ class EthicalScraper:
                 if delay:
                     logger.debug(f"Using robots.txt crawl-delay of {delay}s for {domain}")
                     return float(delay)
-            except:
+            except Exception:
                 pass  # crawl_delay not supported in all Python versions
 
         # Use domain-specific defaults from config

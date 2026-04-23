@@ -14,15 +14,15 @@ Uses ML predictions to alert:
 - Performance degradation predictions
 """
 
-import asyncio
-import json
+import asyncio  # noqa: F401
+import json  # noqa: F401
 import logging
-from collections import defaultdict
+from collections import defaultdict  # noqa: F401
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Dict, List, Optional  # noqa: UP035
+from typing import Dict, List, Optional  # noqa: F401, UP035
 
 logger = logging.getLogger(__name__)
 
