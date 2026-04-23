@@ -235,3 +235,15 @@
 - **Status:** Active
 - **Description:** The "google-labs-code/design.md" GitHub repository referenced in the Cognitive Structural Synthesis directive does not exist as a public repo. The actual Ground Truth is the Google Design MCP server at `https://design.googleapis.com/mcp`. The skill has been corrected to reference the MCP endpoint.
 - **Mitigation:** The `cognitive-structural-synthesis` SKILL.md documents the correct endpoint and anti-patterns prevent referencing the non-existent repo.
+
+## Risk #72: Ruff Noqa Baseline — 83 Deferred Refactors in aiyou_stack
+- **Type**: Code Quality / Technical Debt
+- **Severity:** 🟢 Low
+- **Status:** TRACKED
+- **Description**: During the ruff 828→0 debt eradication (commit `1a504095482`), 83 errors were baselined with `# noqa` directives rather than mechanically fixed. Breakdown: UP035 (29 deprecated imports), B007 (12 unused loop vars), F601 (11 multi-value dict keys), SIM102/SIM117 (112 style preferences), plus misc. These are all in `apps/aiyou_stack/`. The 390 B904 errors were mechanically fixed via `raise X from e` script. **Action**: Schedule UP035 fixes (mechanical `typing.List` → `list`), then B007/F601 chunked refactors. SIM102/SIM117 are style preferences — permanent noqa is acceptable.
+
+## Risk #73: Pre-commit Ruff Scope — labs/ Not Excluded
+- **Type**: DevOps / CI
+- **Severity:** 🟢 Low
+- **Status:** KNOWN
+- **Description**: `.pre-commit-config.yaml` ruff hook now excludes `tools/`, `third_party/`, `libs/`, `external_repos/`, `clones/`, `archive/`, `packages/`, `docs/bundles/` — but `labs/` (2 errors) is NOT excluded. This causes pre-commit to fail on `labs/` files that have legitimate ruff violations from R&D code. **Action**: Either exclude `labs/` from ruff pre-commit or fix the 2 remaining errors (`SIM105` + `UP035` in `labs/`).

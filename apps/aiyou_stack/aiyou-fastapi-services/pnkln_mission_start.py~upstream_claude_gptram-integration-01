@@ -4,10 +4,14 @@ ANTIGRAVITY // MISSION LAUNCHER
 Integrates with pnkln_tasks.sh and SOP Snippets
 """
 
-import sys, json, logging, subprocess, time
-import urllib.request, urllib.error
-
+import json
+import logging
 import ssl
+import subprocess
+import sys
+import time
+import urllib.error
+import urllib.request
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
@@ -31,7 +35,7 @@ def get_identity_token():
 
 
 def load_doctrine():
-    with open("Prompts/pnkln_SOPSnippets.json", "r") as f:
+    with open("Prompts/pnkln_SOPSnippets.json") as f:
         return json.load(f)
 
 

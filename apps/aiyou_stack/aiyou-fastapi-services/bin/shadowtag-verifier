@@ -6,16 +6,18 @@ Antigravity ShadowTag Verifier Service
 import base64
 import io
 import os
+
 import uvicorn
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 from PIL import Image
+from pydantic import BaseModel
+
+from src.aiyou.jura.classifier import CostTier
+from src.aiyou.jura.router import JuraRouter
 
 # Local imports
 from src.pnkln.neural_hash import NeuralHash
 from src.shadowtagai.ledger import get_ledger
-from src.aiyou.jura.router import JuraRouter
-from src.aiyou.jura.classifier import CostTier
 
 app = FastAPI(title="ShadowTag Verifier", version="2.0.0")
 
