@@ -40,7 +40,14 @@ ignore = [
     "N815",    # mixed-case (external API compliance)
     "B017",    # assert-raises-exception (test patterns)
     "B023",    # function-uses-loop-variable (intentional closures)
+    "B028",    # no-explicit-stacklevel (gradual migration)
 ]
+
+[lint.per-file-ignores]
+"tests/**/*.py" = ["S101", "PLR2004", "D103"]
+"**/test_*.py" = ["S101", "PLR2004", "D103"]
+"**/conftest.py" = ["F401", "E402"]
+"scripts/**/*.py" = ["T201"]  # Allow print() in scripts
 
 [lint.isort]
 force-single-line = false

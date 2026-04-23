@@ -110,20 +110,18 @@ class JTFHeadquarters:
         """
         # Authorized handoff chains per JP 3-33
         authorized_chains: dict[str, list[str]] = {
-            "J2": ["J5"],          # Intel → Plans
-            "J5": ["J3", "J6"],    # Plans → Ops or Cyber
-            "J3": ["J4", "J6"],    # Ops → Logistics or Cyber
-            "J4": ["J3"],          # Logistics → Ops (retry)
-            "J6": ["J1", "J9"],    # Cyber → Vault or Info Ops
-            "J1": [],              # Vault = terminal (deploy)
-            "J9": [],              # Info Ops = terminal (syndicate)
+            "J2": ["J5"],  # Intel → Plans
+            "J5": ["J3", "J6"],  # Plans → Ops or Cyber
+            "J3": ["J4", "J6"],  # Ops → Logistics or Cyber
+            "J4": ["J3"],  # Logistics → Ops (retry)
+            "J6": ["J1", "J9"],  # Cyber → Vault or Info Ops
+            "J1": [],  # Vault = terminal (deploy)
+            "J9": [],  # Info Ops = terminal (syndicate)
         }
 
         allowed = authorized_chains.get(source, [])
         if destination not in allowed:
-            logger.warning(
-                "UNAUTHORIZED HANDOFF: %s → %s. JP 3-33 violation.", source, destination
-            )
+            logger.warning("UNAUTHORIZED HANDOFF: %s → %s. JP 3-33 violation.", source, destination)
             return False
 
         logger.info("JP 3-33 handoff authorized: %s → %s", source, destination)

@@ -37,9 +37,7 @@ class KovelAttestation:
     session_id: str = ""
     tenant_id: str = ""
     user_id: str = ""
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     content_hash: str = ""  # SHA-256 of session content
     hmac_signature: str = ""  # HMAC-SHA256 of the receipt
     privilege_basis: str = "Kovel (United States v. Heppner, S.D.N.Y. 2026)"

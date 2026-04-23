@@ -71,3 +71,24 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+
+  # Biome — JS/TS/JSON formatting and linting
+  - repo: local
+    hooks:
+      - id: biome-check
+        name: Biome Format & Lint
+        entry: npx @biomejs/biome check --write --unsafe
+        language: system
+        types_or: [javascript, jsx, typescript, tsx, json]
+        exclude: '^(node_modules/|third_party/|external_repos/|archive/|.venv/)'
+
+  # AST-Grep — structural pattern enforcement
+  - repo: local
+    hooks:
+      - id: ast-grep-scan
+        name: AST-Grep Structural Rules
+        entry: npx @ast-grep/cli scan --format github
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true

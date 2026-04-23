@@ -110,6 +110,8 @@ async def parse_and_lock_identity(
         payload = TemporalIdentityPayload(**raw_json)
         return payload
     except ValidationError as e:
-        raise HTTPException(status_code=422, detail=f"Structural JSON Identity Violation: {e}") from e
+        raise HTTPException(
+            status_code=422, detail=f"Structural JSON Identity Violation: {e}"
+        ) from e
     except Exception:
         raise HTTPException(status_code=400, detail="Malformed Temporal Payload") from None

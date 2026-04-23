@@ -187,13 +187,18 @@ STATE_RULES: dict[str, StateAdvanceFeeRule] = {
     ),
     # ─── Remaining states (ABA Model Rules baseline) ──────────
     "AL": StateAdvanceFeeRule(
-        state="AL", state_name="Alabama", governing_rule="Alabama RPC 1.15",
+        state="AL",
+        state_name="Alabama",
+        governing_rule="Alabama RPC 1.15",
     ),
     "AK": StateAdvanceFeeRule(
-        state="AK", state_name="Alaska", governing_rule="Alaska RPC 1.15",
+        state="AK",
+        state_name="Alaska",
+        governing_rule="Alaska RPC 1.15",
     ),
     "AZ": StateAdvanceFeeRule(
-        state="AZ", state_name="Arizona",
+        state="AZ",
+        state_name="Arizona",
         default_destination=FeeDestination.TRUST_WITH_EXCEPTION,
         allows_operating_deposit=True,
         operating_conditions="Flat fee with written disclosure may be deposited to operating",
@@ -202,32 +207,48 @@ STATE_RULES: dict[str, StateAdvanceFeeRule] = {
         notes="Arizona allows earned-on-receipt flat fees with proper written agreement",
     ),
     "AR": StateAdvanceFeeRule(
-        state="AR", state_name="Arkansas", governing_rule="Arkansas RPC 1.15",
+        state="AR",
+        state_name="Arkansas",
+        governing_rule="Arkansas RPC 1.15",
     ),
     "CT": StateAdvanceFeeRule(
-        state="CT", state_name="Connecticut", governing_rule="Connecticut RPC 1.15",
+        state="CT",
+        state_name="Connecticut",
+        governing_rule="Connecticut RPC 1.15",
     ),
     "DE": StateAdvanceFeeRule(
-        state="DE", state_name="Delaware", governing_rule="Delaware RPC 1.15",
+        state="DE",
+        state_name="Delaware",
+        governing_rule="Delaware RPC 1.15",
     ),
     "DC": StateAdvanceFeeRule(
-        state="DC", state_name="District of Columbia",
+        state="DC",
+        state_name="District of Columbia",
         governing_rule="DC Rule of Professional Conduct 1.15",
     ),
     "HI": StateAdvanceFeeRule(
-        state="HI", state_name="Hawaii", governing_rule="Hawaii RPC 1.15",
+        state="HI",
+        state_name="Hawaii",
+        governing_rule="Hawaii RPC 1.15",
     ),
     "ID": StateAdvanceFeeRule(
-        state="ID", state_name="Idaho", governing_rule="Idaho RPC 1.15",
+        state="ID",
+        state_name="Idaho",
+        governing_rule="Idaho RPC 1.15",
     ),
     "IN": StateAdvanceFeeRule(
-        state="IN", state_name="Indiana", governing_rule="Indiana RPC 1.15",
+        state="IN",
+        state_name="Indiana",
+        governing_rule="Indiana RPC 1.15",
     ),
     "IA": StateAdvanceFeeRule(
-        state="IA", state_name="Iowa", governing_rule="Iowa RPC 32:1.15",
+        state="IA",
+        state_name="Iowa",
+        governing_rule="Iowa RPC 32:1.15",
     ),
     "KS": StateAdvanceFeeRule(
-        state="KS", state_name="Kansas",
+        state="KS",
+        state_name="Kansas",
         default_destination=FeeDestination.TRUST_WITH_EXCEPTION,
         allows_operating_deposit=True,
         operating_conditions="Flat fee deemed earned on receipt with written agreement",
@@ -236,68 +257,101 @@ STATE_RULES: dict[str, StateAdvanceFeeRule] = {
         notes="Kansas adopted earned-on-receipt rule for flat fees",
     ),
     "KY": StateAdvanceFeeRule(
-        state="KY", state_name="Kentucky", governing_rule="Kentucky SCR 3.130(1.15)",
+        state="KY",
+        state_name="Kentucky",
+        governing_rule="Kentucky SCR 3.130(1.15)",
     ),
     "LA": StateAdvanceFeeRule(
-        state="LA", state_name="Louisiana", governing_rule="Louisiana RPC 1.15",
+        state="LA",
+        state_name="Louisiana",
+        governing_rule="Louisiana RPC 1.15",
     ),
     "ME": StateAdvanceFeeRule(
-        state="ME", state_name="Maine", governing_rule="Maine RPC 1.15",
+        state="ME",
+        state_name="Maine",
+        governing_rule="Maine RPC 1.15",
     ),
     "MD": StateAdvanceFeeRule(
-        state="MD", state_name="Maryland",
+        state="MD",
+        state_name="Maryland",
         governing_rule="Maryland Attorneys' Rules of Professional Conduct 19-301.15",
     ),
     "MA": StateAdvanceFeeRule(
-        state="MA", state_name="Massachusetts",
+        state="MA",
+        state_name="Massachusetts",
         governing_rule="Massachusetts RPC 1.15",
         notes="Massachusetts requires all advance fees to be deposited in IOLTA trust",
     ),
     "MI": StateAdvanceFeeRule(
-        state="MI", state_name="Michigan", governing_rule="Michigan RPC 1.15",
+        state="MI",
+        state_name="Michigan",
+        governing_rule="Michigan RPC 1.15",
     ),
     "MN": StateAdvanceFeeRule(
-        state="MN", state_name="Minnesota", governing_rule="Minnesota RPC 1.15",
+        state="MN",
+        state_name="Minnesota",
+        governing_rule="Minnesota RPC 1.15",
     ),
     "MS": StateAdvanceFeeRule(
-        state="MS", state_name="Mississippi", governing_rule="Mississippi RPC 1.15",
+        state="MS",
+        state_name="Mississippi",
+        governing_rule="Mississippi RPC 1.15",
     ),
     "MO": StateAdvanceFeeRule(
-        state="MO", state_name="Missouri", governing_rule="Missouri RPC 4-1.15",
+        state="MO",
+        state_name="Missouri",
+        governing_rule="Missouri RPC 4-1.15",
     ),
     "MT": StateAdvanceFeeRule(
-        state="MT", state_name="Montana", governing_rule="Montana RPC 1.15",
+        state="MT",
+        state_name="Montana",
+        governing_rule="Montana RPC 1.15",
     ),
     "NE": StateAdvanceFeeRule(
-        state="NE", state_name="Nebraska", governing_rule="Nebraska CT R Prof Cond 1.15",
+        state="NE",
+        state_name="Nebraska",
+        governing_rule="Nebraska CT R Prof Cond 1.15",
     ),
     "NV": StateAdvanceFeeRule(
-        state="NV", state_name="Nevada", governing_rule="Nevada RPC 1.15",
+        state="NV",
+        state_name="Nevada",
+        governing_rule="Nevada RPC 1.15",
     ),
     "NH": StateAdvanceFeeRule(
-        state="NH", state_name="New Hampshire", governing_rule="New Hampshire RPC 1.15",
+        state="NH",
+        state_name="New Hampshire",
+        governing_rule="New Hampshire RPC 1.15",
     ),
     "NJ": StateAdvanceFeeRule(
-        state="NJ", state_name="New Jersey",
+        state="NJ",
+        state_name="New Jersey",
         governing_rule="New Jersey RPC 1.15",
         notes="NJ requires detailed trust account recordkeeping (R. 1:21-6)",
     ),
     "NM": StateAdvanceFeeRule(
-        state="NM", state_name="New Mexico", governing_rule="New Mexico RPC 16-115",
+        state="NM",
+        state_name="New Mexico",
+        governing_rule="New Mexico RPC 16-115",
     ),
     "NC": StateAdvanceFeeRule(
-        state="NC", state_name="North Carolina",
+        state="NC",
+        state_name="North Carolina",
         governing_rule="North Carolina RPC 1.15",
         notes="NC requires quarterly trust account reconciliation",
     ),
     "ND": StateAdvanceFeeRule(
-        state="ND", state_name="North Dakota", governing_rule="North Dakota RPC 1.15",
+        state="ND",
+        state_name="North Dakota",
+        governing_rule="North Dakota RPC 1.15",
     ),
     "OK": StateAdvanceFeeRule(
-        state="OK", state_name="Oklahoma", governing_rule="Oklahoma RPC 1.15",
+        state="OK",
+        state_name="Oklahoma",
+        governing_rule="Oklahoma RPC 1.15",
     ),
     "OR": StateAdvanceFeeRule(
-        state="OR", state_name="Oregon",
+        state="OR",
+        state_name="Oregon",
         governing_rule="Oregon RPC 1.15",
         notes="Oregon allows earned-on-receipt for flat fees with proper disclosure",
         default_destination=FeeDestination.TRUST_WITH_EXCEPTION,
@@ -306,36 +360,55 @@ STATE_RULES: dict[str, StateAdvanceFeeRule] = {
         disclosure_required=DisclosureRequirement.SIGNED_AGREEMENT,
     ),
     "RI": StateAdvanceFeeRule(
-        state="RI", state_name="Rhode Island", governing_rule="Rhode Island RPC 1.15",
+        state="RI",
+        state_name="Rhode Island",
+        governing_rule="Rhode Island RPC 1.15",
     ),
     "SC": StateAdvanceFeeRule(
-        state="SC", state_name="South Carolina", governing_rule="South Carolina RPC 1.15",
+        state="SC",
+        state_name="South Carolina",
+        governing_rule="South Carolina RPC 1.15",
     ),
     "SD": StateAdvanceFeeRule(
-        state="SD", state_name="South Dakota", governing_rule="South Dakota RPC 1.15",
+        state="SD",
+        state_name="South Dakota",
+        governing_rule="South Dakota RPC 1.15",
     ),
     "TN": StateAdvanceFeeRule(
-        state="TN", state_name="Tennessee", governing_rule="Tennessee RPC 1.15",
+        state="TN",
+        state_name="Tennessee",
+        governing_rule="Tennessee RPC 1.15",
     ),
     "UT": StateAdvanceFeeRule(
-        state="UT", state_name="Utah", governing_rule="Utah RPC 1.15",
+        state="UT",
+        state_name="Utah",
+        governing_rule="Utah RPC 1.15",
     ),
     "VT": StateAdvanceFeeRule(
-        state="VT", state_name="Vermont", governing_rule="Vermont RPC 1.15",
+        state="VT",
+        state_name="Vermont",
+        governing_rule="Vermont RPC 1.15",
     ),
     "VA": StateAdvanceFeeRule(
-        state="VA", state_name="Virginia",
+        state="VA",
+        state_name="Virginia",
         governing_rule="Virginia RPC 1.15",
         notes="Virginia LEO opinions require trust deposit for all advance fees",
     ),
     "WV": StateAdvanceFeeRule(
-        state="WV", state_name="West Virginia", governing_rule="West Virginia RPC 1.15",
+        state="WV",
+        state_name="West Virginia",
+        governing_rule="West Virginia RPC 1.15",
     ),
     "WI": StateAdvanceFeeRule(
-        state="WI", state_name="Wisconsin", governing_rule="Wisconsin SCR 20:1.15",
+        state="WI",
+        state_name="Wisconsin",
+        governing_rule="Wisconsin SCR 20:1.15",
     ),
     "WY": StateAdvanceFeeRule(
-        state="WY", state_name="Wyoming", governing_rule="Wyoming RPC 1.15",
+        state="WY",
+        state_name="Wyoming",
+        governing_rule="Wyoming RPC 1.15",
     ),
 }
 
@@ -403,10 +476,7 @@ def route_advance_fee(
     if rule.allows_operating_deposit:
         if not has_signed_agreement:
             destination = FeeDestination.TRUST
-            warning = (
-                f"{rule.state_name} allows operating deposit but requires "
-                f"signed agreement. Routing to trust until agreement is signed."
-            )
+            warning = f"{rule.state_name} allows operating deposit but requires signed agreement. Routing to trust until agreement is signed."
         else:
             destination = FeeDestination.OPERATING
 

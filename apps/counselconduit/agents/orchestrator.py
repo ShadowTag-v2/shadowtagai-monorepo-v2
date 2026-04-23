@@ -55,9 +55,7 @@ class TaskContext:
     role: AgentRole = AgentRole.ORCHESTRATOR
     state: TaskState = TaskState.SUBMITTED
     model_preference: str = "gemini-3.1-flash-lite-preview-thinking"
-    created_at: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
-    )
+    created_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     metadata: dict[str, Any] = field(default_factory=dict)
 
 
@@ -71,11 +69,13 @@ class Judge6Gate:
     - Model routing policy enforcement
     """
 
-    BLOCKED_DOMAINS = frozenset({
-        "medical_advice",
-        "financial_advice_unlicensed",
-        "immigration_specific",
-    })
+    BLOCKED_DOMAINS = frozenset(
+        {
+            "medical_advice",
+            "financial_advice_unlicensed",
+            "immigration_specific",
+        }
+    )
 
     def evaluate(self, ctx: TaskContext, prompt: str) -> tuple[bool, str]:
         """Evaluate whether a task should proceed through the gate.

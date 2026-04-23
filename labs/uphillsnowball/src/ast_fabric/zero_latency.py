@@ -109,14 +109,8 @@ class ASTZeroLatencyMitigator:
                 return MitigationResult(compliant=True)
 
             # sg returns non-zero when rewrites occurred
-            modified = [
-                line
-                for line in result.stdout.splitlines()
-                if line.strip() and ":" in line
-            ]
-            logger.warning(
-                "⚠️ AST Fabric: %d files rewritten for compliance.", len(modified)
-            )
+            modified = [line for line in result.stdout.splitlines() if line.strip() and ":" in line]
+            logger.warning("⚠️ AST Fabric: %d files rewritten for compliance.", len(modified))
             return MitigationResult(
                 compliant=True,  # After rewrite, it IS compliant
                 rules_applied=len(modified),
@@ -145,9 +139,7 @@ class ASTZeroLatencyMitigator:
 
         try:
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
-            violations = [
-                line for line in result.stdout.splitlines() if line.strip()
-            ]
+            violations = [line for line in result.stdout.splitlines() if line.strip()]
             return MitigationResult(
                 compliant=len(violations) == 0,
                 rules_applied=len(violations),

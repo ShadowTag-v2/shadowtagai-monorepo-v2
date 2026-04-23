@@ -29,7 +29,9 @@ def patch_sys_path():
     # and src.kosmos.doctrine.atp_5_19 (not yet built). Each intermediate must
     # look like a real package (have __path__) for importlib to traverse.
     _kosmos_mods = [
-        "src", "src.kosmos", "src.kosmos.doctrine",
+        "src",
+        "src.kosmos",
+        "src.kosmos.doctrine",
         "src.kosmos.doctrine.atp_5_19",
     ]
     for mod_name in _kosmos_mods:

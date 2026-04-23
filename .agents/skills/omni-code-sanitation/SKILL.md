@@ -1,43 +1,111 @@
 ---
 name: omni-code-sanitation
-description: Top 0.001% Standard Operating Procedure for resolving massive tech debt across Python and TS/JS. Utilizes AST-aware refactoring, dead-code necromancy, Biome, and Type-Guarded LLM chunks.
+description: Top 0.001% Standard Operating Procedure for resolving massive tech debt across Python and TS/JS. Utilizes AST-aware refactoring, dead-code necromancy, Biome, Type-Guarded LLM chunks, Remote GitOps Enforcement, Self-Healing CI, Zero-Trust Gates, and SARIF annotations.
 ---
 # Omni-Sanitation Pipeline
 
-## Strict Order of Operations
+## 1. The Necromancy Pass (Kill Zombie Code Locally)
 
-**1. The Necromancy Pass (Kill Zombie Code):**
-Before formatting or linting, we must delete what isn't used. Never waste LLM tokens reading dead code.
-- **Python (Vulture):** Run `vulture . --make-whitelist > .vulture_whitelist.py` to protect dynamic endpoints (FastAPI/Pydantic). Then run `vulture . .vulture_whitelist.py --min-confidence 90`. Delete strictly dead code.
-- **TS/JS (Knip):** Run `knip`. Delete unused exports and remove bloated NPM dependencies.
+### Python
+```bash
+vulture . --make-whitelist > .vulture_whitelist.py
+vulture . .vulture_whitelist.py --min-confidence 90
+```
+Delete everything flagged at 100% confidence. Whitelist intentional unused code.
 
-**2. The Polyglot Rust Auto-Fix Pass:**
-Use compiler engines to mathematically fix styling and modernizations without LLM context limits.
-- **Python:** Run `ruff check . --fix --unsafe-fixes`.
-- **TS/JS (Biome):** Run `biome check --write --unsafe ./apps`. (This replaces Prettier/ESLint entirely).
+### TypeScript/JavaScript
+```bash
+npx knip
+```
+Delete unused exports, unused dependencies, and orphaned files.
 
-**3. Strategic Triage & Baselining (Ruff):**
-- Add noisy/intentional rules (`E402`, `E741`) to `ignore` arrays in `ruff.toml`.
-- Baseline mechanical debt to unblock CI using `ruff check . --add-noqa`.
+## 2. The Local Rust Auto-Fix Pass
 
-**4. The AST-Grep Scalpel (No Regex):**
-Never use `sed` or Regex to refactor code blocks. Use AST-Grep (`sg`) for deterministic structural replacements (e.g., `sg --lang python -p 'except:' -r 'except Exception:' --update-all`).
+```bash
+# Ruff: lint + format
+ruff check . --fix --unsafe-fixes --exclude external_repos,external_sdks,third_party
+ruff format . --exclude external_repos,external_sdks,third_party
 
-**5. Chunked AI Refactoring & Type Guarding:**
-For architectural refactors (e.g., `SIM102` collapsible ifs):
-- Refactor a maximum of 3-5 files at a time.
-- **The Guardrail:** Run `pyright <file>` (Python) or `tsc --noEmit` (JS/TS) AND `pytest` on the chunk. The LLM must not break static typing during an AST rewrite.
+# Biome: JS/TS format + lint
+biome check --write --unsafe ./apps ./libs
+```
 
-## Tool Versions (Minimum)
-- ruff >= 0.15.0
-- vulture >= 2.14
-- biome >= 2.4.0
-- ast-grep (sg) >= 0.42.0
-- knip >= 6.0.0
+## 3. Strategic Triage (Baselining Noisy Rules)
 
-## Anti-Patterns (PROHIBITED)
-- Using `sed` or `re.sub()` for code refactoring (use `sg` instead)
-- Auto-fixing 800+ errors on `main` branch (use `debt-burn` branch)
-- Running Prettier or ESLint alongside Biome (Biome replaces both)
-- Applying `--unsafe-fixes` without immediate `pytest` verification
-- Deleting Vulture-flagged code without checking for dynamic usage (FastAPI routes, Pydantic validators)
+For massive backlogs (>100 errors):
+1. Add `E402`, `E741`, `PLR0913` to `[tool.ruff.lint] ignore` in `ruff.toml`
+2. Baseline mechanical debt: `ruff check . --add-noqa`
+3. Track debt via CI metrics job (counts `# noqa` directives per PR)
+
+## 4. The AST-Grep Scalpel
+
+For deterministic structural replacements using `.ast-grep/rules/`:
+```bash
+sg scan --update-all   # Apply all auto-fix rules
+sg scan --format json  # Audit without fixing
+```
+
+**Permanent rules in `.ast-grep/rules/`:**
+- `no-bare-except.yml` — E722 auto-fix
+- `no-mutable-default-arg.yml` — B006 detection
+- `no-print-statement.yml` — production code hygiene
+- `no-console-log.yml` — TypeScript console.log detection
+
+## 5. Per-File Ignores for Test Directories
+
+Test files legitimately use patterns that production rules flag:
+```toml
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101", "PLR2004", "D103"]
+"**/test_*.py" = ["S101", "PLR2004", "D103"]
+"**/conftest.py" = ["F401", "E402"]
+"scripts/**/*.py" = ["T201"]  # Allow print() in scripts
+```
+
+## 6. The Omni-CI Doctrine (Remote Enforcement)
+
+Local execution is secondary; GitHub Actions are absolute truth.
+
+### Zero-Trust Gates (Job 1)
+- **TruffleHog**: Scans git diff history for leaked secrets. Blocks merge on verified secrets.
+- **Dependency Review**: Intercepts `npm install` / `pip install` with known CVEs. Blocks on `high` severity.
+
+### Self-Healing PRs (Job 2)
+- GitHub Actions runs `biome check --write`, `ruff check --fix`, `sg scan --update-all`
+- `stefanzweifel/git-auto-commit-action` pushes fixes back to the PR branch
+- You do not need to burn LLM tokens fixing formatting — CI does it autonomously
+
+### SARIF & Semantic Annotations (Job 2 + Job 4)
+- `biome ci --reporter=github` → inline annotations in PR "Files Changed" tab
+- `sg scan --format github` → inline annotations in PR "Files Changed" tab
+- `ruff check --output-format=sarif` → uploaded to GitHub Advanced Security tab
+- **CodeQL**: Traces data flow from HTTP request → database to catch SQLi/XSS
+
+### The Necromancy Gate (Job 3)
+- CI blocks merge if Knip flags unused exports/dependencies
+- CI blocks merge if Vulture flags dead Python code at 90% confidence
+- Pyright type checks critical paths
+
+### Lighthouse CI (Job 5)
+- Performance: ≥70% (error)
+- Accessibility: ≥90% (error)
+- Best Practices: ≥80% (error)
+- SEO: ≥80% (warn)
+
+### Debt Metrics (Job 6)
+- Counts `# noqa`, `# nosec`, `# type: ignore` per PR
+- Outputs table to GitHub Step Summary
+- Trend tracking over time
+
+## 7. Biome Pre-Commit Hook
+
+Add to `.pre-commit-config.yaml`:
+```yaml
+- repo: local
+  hooks:
+    - id: biome-check
+      name: Biome Format & Lint
+      entry: npx @biomejs/biome check --write --unsafe
+      language: system
+      types_or: [javascript, jsx, typescript, tsx, json]
+```

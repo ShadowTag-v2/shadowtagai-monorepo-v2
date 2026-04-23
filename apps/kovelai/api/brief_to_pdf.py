@@ -227,10 +227,7 @@ def brief_markdown_to_pdf(
     try:
         from weasyprint import HTML
     except ImportError as exc:
-        raise ImportError(
-            "weasyprint is required for PDF generation. "
-            "Install with: pip install weasyprint"
-        ) from exc
+        raise ImportError("weasyprint is required for PDF generation. Install with: pip install weasyprint") from exc
 
     html_content = _markdown_to_html(markdown_content, session_id)
 

@@ -28,9 +28,7 @@ logger = logging.getLogger("ScholarEval-Forensics")
 
 # Standard federal/state reporter citation patterns.
 # Matches: "410 U.S. 113", "786 F.3d 1122", "123 F.Supp.2d 456"
-_CITATION_PATTERN = re.compile(
-    r"(\d+)\s+(U\.S\.|F\.\d?d|F\.Supp\.\d?d|S\.Ct\.|L\.Ed\.\d?d)\s+(\d+)"
-)
+_CITATION_PATTERN = re.compile(r"(\d+)\s+(U\.S\.|F\.\d?d|F\.Supp\.\d?d|S\.Ct\.|L\.Ed\.\d?d)\s+(\d+)")
 
 
 @dataclass(frozen=True)
@@ -83,9 +81,7 @@ class EpistemologicalFirewall:
             A dict with "status" ("CLEARED" | "KICKBACK"), "total_citations",
             "verified_citations", and "invalid" (list of failed citations).
         """
-        logger.info(
-            "⚖️ ScholarEval: Cryptographically verifying citations against PACER..."
-        )
+        logger.info("⚖️ ScholarEval: Cryptographically verifying citations against PACER...")
 
         raw_citations = _CITATION_PATTERN.findall(draft_text)
         if not raw_citations:
@@ -113,34 +109,25 @@ class EpistemologicalFirewall:
                         "PACER API unreachable for %s. Fail-safe KICKBACK.",
                         citation_str,
                     )
-                    invalid.append(
-                        {"cite": citation_str, "reason": "VERIFICATION_UNAVAILABLE"}
-                    )
+                    invalid.append({"cite": citation_str, "reason": "VERIFICATION_UNAVAILABLE"})
                     continue
 
                 if not results:
-                    invalid.append(
-                        {"cite": citation_str, "reason": "HALLUCINATION_DOES_NOT_EXIST"}
-                    )
+                    invalid.append({"cite": citation_str, "reason": "HALLUCINATION_DOES_NOT_EXIST"})
                     logger.critical(
                         "🛑 HALLUCINATION DETECTED: %s does not exist in PACER",
                         citation_str,
                     )
                 elif results[0].get("negative_treatment_count", 0) > 0:
-                    invalid.append(
-                        {"cite": citation_str, "reason": "BAD_LAW_OVERTURNED"}
-                    )
-                    logger.warning(
-                        "⚠️ BAD LAW: %s has negative treatment", citation_str
-                    )
+                    invalid.append({"cite": citation_str, "reason": "BAD_LAW_OVERTURNED"})
+                    logger.warning("⚠️ BAD LAW: %s has negative treatment", citation_str)
 
         total = len(raw_citations)
         verified = total - len(invalid)
 
         if invalid:
             logger.critical(
-                "🛑 S&C HALLUCINATION SHIELD ACTIVATED: %d/%d citations invalid. "
-                "Issuing KICKBACK directive.",
+                "🛑 S&C HALLUCINATION SHIELD ACTIVATED: %d/%d citations invalid. Issuing KICKBACK directive.",
                 len(invalid),
                 total,
             )

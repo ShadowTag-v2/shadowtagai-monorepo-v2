@@ -52,9 +52,7 @@ class AGUIEvent:
     type: AGUIEventType
     data: dict[str, Any] = field(default_factory=dict)
     event_id: str = field(default_factory=lambda: str(uuid.uuid4()))
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
     def to_sse(self) -> str:
         """Serialize to SSE wire format."""
@@ -97,9 +95,7 @@ class AGUIStreamManager:
         self._sessions: dict[str, SSESessionContext] = {}
         self._encryption = encryption_service
 
-    def create_session(
-        self, tenant_id: str, user_id: str
-    ) -> SSESessionContext:
+    def create_session(self, tenant_id: str, user_id: str) -> SSESessionContext:
         """Create a new SSE session with a fresh encryption key.
 
         Args:
@@ -111,6 +107,7 @@ class AGUIStreamManager:
         """
         try:
             from cryptography.fernet import Fernet
+
             key = Fernet.generate_key()
         except ImportError:
             logger.warning("cryptography not installed, using empty key")
@@ -137,9 +134,7 @@ class AGUIStreamManager:
             return None
         return session
 
-    def encrypt_payload(
-        self, session: SSESessionContext, data: dict[str, Any]
-    ) -> str:
+    def encrypt_payload(self, session: SSESessionContext, data: dict[str, Any]) -> str:
         """Encrypt a payload using the session's Fernet key.
 
         Args:
@@ -153,6 +148,7 @@ class AGUIStreamManager:
         if session.encryption_key:
             try:
                 from cryptography.fernet import Fernet
+
                 f = Fernet(session.encryption_key)
                 return f.encrypt(plaintext).decode()
             except ImportError:
@@ -186,9 +182,7 @@ class AGUIStreamManager:
                 AGUIEventType.TOOL_CALL_ARGS,
                 AGUIEventType.STATE_SNAPSHOT,
             ):
-                event.data["_encrypted"] = self.encrypt_payload(
-                    session, event.data
-                )
+                event.data["_encrypted"] = self.encrypt_payload(session, event.data)
 
             yield event.to_sse()
 
