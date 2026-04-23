@@ -1,10 +1,9 @@
 # vertex_ai_setup.py - The Nervous System
 import os
 
-from dotenv import load_dotenv
+# NOTE: Environment variables loaded via `source scripts/load_mcp_secrets.sh`
+# or GCP Secret Manager in production. python-dotenv is banned (GEMINI.md §secrets).
 from google.cloud import aiplatform, bigquery, pubsub_v1
-
-load_dotenv()
 
 
 class MallDeployment:

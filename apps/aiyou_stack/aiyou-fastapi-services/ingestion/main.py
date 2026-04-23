@@ -13,14 +13,13 @@ from argparse import ArgumentParser
 from datetime import datetime
 
 import structlog
-from dotenv import load_dotenv
+
+# NOTE: Environment variables loaded via `source scripts/load_mcp_secrets.sh`
+# or GCP Secret Manager in production. python-dotenv is banned (GEMINI.md §secrets).
 
 from ingestion.core.config import get_config
 from ingestion.core.pipeline import IngestionPipeline
 from ingestion.delivery.briefing import AMBriefingGenerator
-
-# Load environment variables
-load_dotenv()
 
 
 # Configure structured logging

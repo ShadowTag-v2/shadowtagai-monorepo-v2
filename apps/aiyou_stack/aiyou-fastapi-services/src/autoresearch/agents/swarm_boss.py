@@ -17,12 +17,11 @@ from enum import Enum
 from typing import Any
 
 import google.generativeai as genai
-from dotenv import load_dotenv
+
+# NOTE: Environment variables loaded via `source scripts/load_mcp_secrets.sh`
+# or GCP Secret Manager in production. python-dotenv is banned (GEMINI.md §secrets).
 
 from agents.hybrid_swarm_optimizer import HybridSwarmOptimizer
-
-# Load environment variables
-load_dotenv()
 
 # Army Doctrine Integration
 try:
