@@ -78,7 +78,7 @@ repos:
     hooks:
       - id: biome-check
         name: Biome Format & Lint
-        entry: npx @biomejs/biome check --write --unsafe
+        entry: /opt/homebrew/bin/npx @biomejs/biome check --write --unsafe
         language: system
         files: '\.(js|jsx|ts|tsx|json)$'
         exclude: '^(node_modules/|third_party/|external_repos/|archive/|\.venv/)'
@@ -88,7 +88,7 @@ repos:
     hooks:
       - id: ast-grep-scan
         name: AST-Grep Structural Rules
-        entry: npx @ast-grep/cli scan --format github
+        entry: /opt/homebrew/bin/npx @ast-grep/cli scan --format github
         language: system
         types: [python]
         pass_filenames: false
