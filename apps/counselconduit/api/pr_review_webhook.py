@@ -363,7 +363,7 @@ async def _post_review_comments(pr_number: int, findings: list[dict]) -> None:
                 "X-GitHub-Api-Version": "2022-11-28",
             },
         )
-        with urllib.request.urlopen(req) as resp:
+        with urllib.request.urlopen(req) as resp:  # nosec B310 — URL from GitHub API, not user input
             logger.info("review_comment_posted", pr=pr_number, status=resp.status)
 
     except Exception as e:

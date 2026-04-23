@@ -1,35 +1,26 @@
-# Ruler Configuration — Monorepo-Uphillsnowball
-# Single source of truth: .ruler/AGENTS.md → distributed to all agents
-
-default_agents = ["claude", "copilot", "cursor", "gemini-cli", "cline", "windsurf"]
-
-[gitignore]
-enabled = true
-local = true  # write to .git/info/exclude (don't pollute .gitignore)
-
-# --- Agent Configurations ---
+[workspace]
+name = "shadowtag-omega-v4"
 
 [agents.claude]
 enabled = true
 
-[agents.copilot]
+[agents.gemini]
 enabled = true
-output_path = ".github/copilot-instructions.md"
 
 [agents.cursor]
 enabled = true
 
-[agents.gemini-cli]
-enabled = true
-
-[agents.cline]
+[agents.copilot]
 enabled = true
 
 [agents.windsurf]
 enabled = true
 
-# --- MCP Servers (distributed to agents that support MCP) ---
+[agents.cline]
+enabled = true
 
-[mcp_servers.sequential-thinking]
-command = "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node"
-args = ["/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/@anthropic-ai/claude-code/vendor/@anthropic-ai/mcp-server-sequential-thinking/dist/index.js"]
+[agents.aider]
+enabled = true
+
+[agents.kiro]
+enabled = true

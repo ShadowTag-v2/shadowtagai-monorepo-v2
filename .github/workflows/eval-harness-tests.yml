@@ -1,0 +1,42 @@
+name: "Eval Harness Self-Tests"
+
+on:
+  push:
+    branches: [main]
+    paths: ['scripts/eval_*', 'tests/eval_*', 'apps/counselconduit/eval/**']
+  pull_request:
+    branches: [main]
+    paths: ['scripts/eval_*', 'tests/eval_*', 'apps/counselconduit/eval/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  eval-harness:
+    name: "Evaluation Harness Tests"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          pip install pydantic>=2.5.0 pytest>=7.4.0 pytest-asyncio>=0.21.0
+
+      - name: Run eval harness self-tests
+        run: |
+          if [ -d "tests/eval_harness" ]; then
+            pytest tests/eval_harness/ -v --tb=short
+          elif [ -d "apps/counselconduit/eval" ]; then
+            pytest apps/counselconduit/eval/ -v --tb=short
+          else
+            echo "⚠️ No eval harness tests found. Create tests/eval_harness/ or apps/counselconduit/eval/"
+            echo "### Eval Harness" >> $GITHUB_STEP_SUMMARY
+            echo "No eval tests found. Skipping." >> $GITHUB_STEP_SUMMARY
+          fi
