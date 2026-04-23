@@ -212,15 +212,15 @@ highest_value_opportunities:
 
 hardened_state:
   version: "10.3"
-  timestamp: "2026-04-23T05:13:00Z"
+  timestamp: "2026-04-23T01:57:00Z"
   ci_python: "3.13"
   venv_primary: "3.14.3"
   venv_secondary: "3.14.3"
   dotnet_sdk: "10.0.202"
   dotnet_target_framework: "net10.0"
   counselconduit_version: "3.2.0"
-  tests_passed: "212"
-  tests_e2e_skipped: "5 (live Cloud Run — expected failures)"
+  tests_passed: "202"
+  tests_e2e_skipped: "1 (pytest collection skip)"
   e2e_tests: "tests/e2e/test_counselconduit_e2e.py"
   lighthouse_perf: "93+"
   lighthouse_a11y: "93+"

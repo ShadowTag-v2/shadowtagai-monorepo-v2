@@ -10,7 +10,7 @@ status: LOCKED
 <workspace_alignment>
 - Active project: `shadowtag-omega-v4`
 - Only authorized external runtime model: `gemini-3.1-flash-lite-preview-thinking`
-- NOTE: `.NET 10.0.106` is installed. Semantic Kernel (net10.0, SK 1.74.0) build-verified. OnExternalEvent is correct SK Process.Core API.
+- NOTE: `.NET 10.0.202` is installed. Semantic Kernel (net10.0, SK 1.74.0) build-verified. OnExternalEvent is correct SK Process.Core API.
 </workspace_alignment>
 
 <canonical_truth_hierarchy>

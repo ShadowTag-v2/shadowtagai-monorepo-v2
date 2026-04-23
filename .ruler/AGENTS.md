@@ -43,7 +43,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 ## Core Technical Truths (DO NOT HALLUCINATE OVERRIDES)
 
 1. **uuid7 Fallback:** Cloud Run container `counselconduit-00015-mmq` uses an old image. We MUST use `try/except ImportError` for `uuid7` resolution between monorepo and container paths.
-2. **.NET Environment:** .NET 11.0 Preview 2 IS CONFIRMED INSTALLED (`v11.0.100-preview.2.26159.112`). Semantic Kernel (net10.0, SK 1.74.0) build-verified.
+2. **.NET Environment:** .NET 10.0.202 IS CONFIRMED INSTALLED (`dotnet --version` = `10.0.202`). Semantic Kernel (net10.0, SK 1.74.0) build-verified. Target framework: `net10.0`.
 3. **Semantic Kernel Process.cs:** `OnExternalEvent` is the CORRECT API for `Microsoft.SemanticKernel.Process.Core v1.21.0-alpha`. Do NOT apply the `OnInputEvent` rename until Process.Core >= v1.30+.
 4. **Skill Fleet:** We maintain 182 cherry-picked community skills inside our local Matrix.
 5. **Prompt Repetition (arXiv 2512.14982):** Applies ONLY to non-reasoning model tiers (flash, lite, mini) to boost accuracy 1–8%. Do NOT apply to thinking/extended-thinking models.
