@@ -18,7 +18,7 @@ Collection: brief_exports
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timedelta, timezone, UTC
+from datetime import datetime, timedelta, UTC
 
 from pydantic import BaseModel, Field
 

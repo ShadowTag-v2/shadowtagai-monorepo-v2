@@ -19,7 +19,7 @@ Firestore Collection: advance_fee_rules (read-only reference data)
 from __future__ import annotations
 
 import enum
-from typing import Optional
+
 
 from pydantic import BaseModel, Field
 
@@ -29,7 +29,7 @@ from pydantic import BaseModel, Field
 # ═══════════════════════════════════════════════════════════
 
 
-class FeeDestination(str, enum.Enum):
+class FeeDestination(enum.StrEnum):
     """Where the advance fee should be deposited."""
 
     TRUST = "trust"
@@ -37,7 +37,7 @@ class FeeDestination(str, enum.Enum):
     TRUST_WITH_EXCEPTION = "trust_with_exception"
 
 
-class DisclosureRequirement(str, enum.Enum):
+class DisclosureRequirement(enum.StrEnum):
     """Required client disclosures for advance fees."""
 
     NONE = "none"

@@ -45,7 +45,7 @@ from datetime import datetime, timezone
 try:
     from datetime import UTC
 except ImportError:
-    UTC = timezone.utc  # Python <3.11 fallback
+    UTC = UTC  # Python <3.11 fallback
 from pathlib import Path
 
 
