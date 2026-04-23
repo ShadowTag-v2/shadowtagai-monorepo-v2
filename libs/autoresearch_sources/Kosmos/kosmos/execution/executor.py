@@ -217,7 +217,8 @@ class CodeExecutor:
                             mgr = ReproducibilityManager()
                             is_deterministic = mgr.test_determinism(
                                 experiment_function=lambda: self._execute_once(
-                                    current_code, local_vars  # noqa: B023
+                                    current_code,
+                                    local_vars,  # noqa: B023
                                 ),
                                 seed=42,
                                 n_runs=2,

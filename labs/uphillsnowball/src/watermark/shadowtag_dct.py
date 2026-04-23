@@ -66,9 +66,7 @@ def inverse_dct(dct_block: np.ndarray) -> np.ndarray:
     """
     from scipy.fftpack import idct
 
-    return idct(
-        idct(dct_block, axis=0, norm="ortho"), axis=1, norm="ortho"
-    ).clip(0, 255).astype(np.uint8)
+    return idct(idct(dct_block, axis=0, norm="ortho"), axis=1, norm="ortho").clip(0, 255).astype(np.uint8)
 
 
 def embed_qim(coefficient: float, bit: int, delta: float = _DEFAULT_DELTA) -> float:

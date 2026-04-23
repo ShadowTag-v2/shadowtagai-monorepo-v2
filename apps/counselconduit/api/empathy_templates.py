@@ -214,16 +214,16 @@ def wrap_seu_prompt(
 
     parts = [
         f"[SAFETY]\n{safety_instructions}",
-        f"\n[EMPATHY]\nOpen your response with this empathy acknowledgement (you may paraphrase naturally): \"{empathy}\"",
+        f'\n[EMPATHY]\nOpen your response with this empathy acknowledgement (you may paraphrase naturally): "{empathy}"',
         f"\n[UTILITY]\n{utility_prompt}",
     ]
 
     if include_checkin:
         checkin = get_checkin(seed=session_id)
-        parts.append(f"\n[CHECK-IN]\nInclude a natural check-in: \"{checkin}\"")
+        parts.append(f'\n[CHECK-IN]\nInclude a natural check-in: "{checkin}"')
 
     if include_one_more_thing:
         hook = get_one_more_thing(seed=session_id)
-        parts.append(f"\n[CADENCE]\nEnd with a forward hook: \"{hook}\"")
+        parts.append(f'\n[CADENCE]\nEnd with a forward hook: "{hook}"')
 
     return "\n".join(parts)

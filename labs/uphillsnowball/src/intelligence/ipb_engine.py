@@ -191,9 +191,7 @@ class ATP_2_01_3_IPB:
             ),
         ]
 
-    def _determine_coas(
-        self, threats: list[ThreatModel], mcoo: MCOO
-    ) -> tuple[list[str], str, str]:
+    def _determine_coas(self, threats: list[ThreatModel], mcoo: MCOO) -> tuple[list[str], str, str]:
         """Step 4: Determine Threat COAs and derive the HPTL."""
         hptl = [
             "Hallucinated legal citations (ScholarEval intercept)",

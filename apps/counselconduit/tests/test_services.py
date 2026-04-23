@@ -90,9 +90,7 @@ class TestKovelAttestation:
     """Tests for HMAC-SHA256 Kovel attestation."""
 
     def setup_method(self) -> None:
-        self.service = KovelAttestationService(
-            secret_key=b"test-signing-key"
-        )
+        self.service = KovelAttestationService(secret_key=b"test-signing-key")
 
     def test_create_attestation(self) -> None:
         att = self.service.create_attestation(
@@ -168,9 +166,7 @@ class TestLiteLLMProxy:
         assert valid is False
 
     def test_record_usage(self) -> None:
-        token = self.proxy.issue_token(
-            "firm-123", "sess-456", max_tokens=100
-        )
+        token = self.proxy.issue_token("firm-123", "sess-456", max_tokens=100)
         self.proxy.record_usage(token.token_id, 50)
         assert token.usage_tokens == 50
         assert not token.is_budget_exceeded
@@ -190,11 +186,13 @@ class TestCloudTasksHandler:
 
     @pytest.mark.asyncio
     async def test_handle_valid_push(self) -> None:
-        body = json.dumps({
-            "type": "task_completed",
-            "task_id": "task-123",
-            "tenant_id": "firm-456",
-        }).encode()
+        body = json.dumps(
+            {
+                "type": "task_completed",
+                "task_id": "task-123",
+                "tenant_id": "firm-456",
+            }
+        ).encode()
         result = await self.handler.handle_push(body)
         assert result["status"] == "ok"
 
@@ -205,11 +203,13 @@ class TestCloudTasksHandler:
 
     @pytest.mark.asyncio
     async def test_handle_session_expired(self) -> None:
-        body = json.dumps({
-            "type": "session_expired",
-            "session_id": "sess-789",
-            "tenant_id": "firm-456",
-        }).encode()
+        body = json.dumps(
+            {
+                "type": "session_expired",
+                "session_id": "sess-789",
+                "tenant_id": "firm-456",
+            }
+        ).encode()
         result = await self.handler.handle_push(body)
         assert result["status"] == "ok"
 

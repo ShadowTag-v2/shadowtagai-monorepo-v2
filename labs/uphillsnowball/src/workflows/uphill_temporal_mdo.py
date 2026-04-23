@@ -71,8 +71,7 @@ class UphillSnowballCampaign:
             # Wipe context. Force the agent triad to rewrite without
             # the hallucinated citations. Bill for the save.
             workflow.logger.info(
-                "KICKBACK RECEIVED: %d invalid citations. "
-                "Forcing Agent Triad rewrite.",
+                "KICKBACK RECEIVED: %d invalid citations. Forcing Agent Triad rewrite.",
                 len(eval_result.get("invalid", [])),
             )
 

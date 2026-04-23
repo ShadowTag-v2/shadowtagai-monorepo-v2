@@ -74,7 +74,9 @@ class ClaudeAgentService:
 
         except ImportError:
             logger.error("claude_agent_sdk not installed")
-            raise Exception("Claude Agent SDK not installed. Run: pip install claude-agent-sdk") from None
+            raise Exception(
+                "Claude Agent SDK not installed. Run: pip install claude-agent-sdk"
+            ) from None
 
         except Exception as e:
             logger.error(f"Error in Claude Agent query: {e}", exc_info=True)

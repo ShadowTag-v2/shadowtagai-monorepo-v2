@@ -61,9 +61,7 @@ class RadarSense:
             if resp.ok:
                 logger.info("📡 RadarSense: Domain health fetched for %s", domain)
                 return resp.json()
-            logger.warning(
-                "⚠️ RadarSense: HTTP %d for domain %s", resp.status_code, domain
-            )
+            logger.warning("⚠️ RadarSense: HTTP %d for domain %s", resp.status_code, domain)
             return {"error": f"HTTP {resp.status_code}"}
         except requests.RequestException as e:
             logger.error("❌ RadarSense fetch failed: %s", e)
@@ -106,6 +104,7 @@ class IngestHBR_LangExtract:
         """Initialize the StealthyFetcher on worker startup."""
         try:
             from scrapling import StealthyFetcher
+
             self.fetcher = StealthyFetcher(adaptive=True)
         except ImportError:
             logger.warning("Scrapling not available. Using requests fallback.")

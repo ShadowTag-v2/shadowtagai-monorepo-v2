@@ -104,9 +104,7 @@ class SplinterSyndication:
             from google.cloud import tasks_v2
 
             client = tasks_v2.CloudTasksClient()
-            parent = client.queue_path(
-                self.project_id, self.location, self.queue_name
-            )
+            parent = client.queue_path(self.project_id, self.location, self.queue_name)
 
             tasks_created = []
             for platform in platforms:
@@ -115,22 +113,24 @@ class SplinterSyndication:
                         "http_method": tasks_v2.HttpMethod.POST,
                         "url": self.delivery_url,
                         "headers": {"Content-Type": "application/json"},
-                        "body": json.dumps({
-                            "payload": payload.headline,
-                            "platform": platform,
-                            "entity": payload.entity,
-                            "body": payload.body,
-                        }).encode(),
+                        "body": json.dumps(
+                            {
+                                "payload": payload.headline,
+                                "platform": platform,
+                                "entity": payload.entity,
+                                "body": payload.body,
+                            }
+                        ).encode(),
                     }
                 }
 
-                response = client.create_task(
-                    request={"parent": parent, "task": task}
+                response = client.create_task(request={"parent": parent, "task": task})
+                tasks_created.append(
+                    {
+                        "platform": platform,
+                        "task_name": response.name,
+                    }
                 )
-                tasks_created.append({
-                    "platform": platform,
-                    "task_name": response.name,
-                })
 
             logger.info(
                 "📢 Splinter: Queued %d syndication tasks for %s",
@@ -140,9 +140,7 @@ class SplinterSyndication:
             return {"success": True, "tasks": tasks_created}
 
         except ImportError:
-            logger.warning(
-                "google-cloud-tasks not installed. Logging syndication payload."
-            )
+            logger.warning("google-cloud-tasks not installed. Logging syndication payload.")
             logger.info("📢 Splinter (dry run): %s → %s", payload.headline, platforms)
             return {"success": False, "reason": "cloud_tasks_not_available"}
         except Exception as e:

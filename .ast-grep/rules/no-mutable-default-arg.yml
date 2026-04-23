@@ -1,0 +1,8 @@
+id: no-mutable-default-arg-list
+message: "Bug: Mutable default argument (list). Use 'None' and assign inside function body."
+severity: warning
+language: python
+rule:
+  pattern: |
+    def $FUNC($$$BEFORE, $ARG=[], $$$AFTER):
+      $$$BODY

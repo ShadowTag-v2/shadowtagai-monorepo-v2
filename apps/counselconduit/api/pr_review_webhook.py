@@ -46,9 +46,7 @@ def _verify_github_signature(payload: bytes, signature: str) -> bool:
     if not GITHUB_WEBHOOK_SECRET:
         logger.warning("GITHUB_WEBHOOK_SECRET not set — skipping signature check (dev mode)")
         return True
-    expected = "sha256=" + hmac.new(
-        GITHUB_WEBHOOK_SECRET.encode(), payload, hashlib.sha256
-    ).hexdigest()
+    expected = "sha256=" + hmac.new(GITHUB_WEBHOOK_SECRET.encode(), payload, hashlib.sha256).hexdigest()
     return hmac.compare_digest(expected, signature)
 
 
@@ -89,8 +87,7 @@ def enforce_m1_max_constraints(seq_len: int, dim: int) -> dict:
     else:
         result["severity"] = "✅ Safe"
         result["message"] = (
-            f"Attention matrix fits in SRAM: {required_bytes:,} bytes "
-            f"({required_bytes / M1_MAX_L2_SRAM_BYTES * 100:.1f}% of 12.5MB limit)."
+            f"Attention matrix fits in SRAM: {required_bytes:,} bytes ({required_bytes / M1_MAX_L2_SRAM_BYTES * 100:.1f}% of 12.5MB limit)."
         )
 
     return result
@@ -136,8 +133,7 @@ def _run_ane_verification(test_matrices: list[dict]) -> list[dict]:
                 [
                     ".venv/bin/python",
                     "-c",
-                    "from apps.aiyou_stack.aiyou_fastapi_services.ane_bridge import get_compile_count; "
-                    "print(get_compile_count())",
+                    "from apps.aiyou_stack.aiyou_fastapi_services.ane_bridge import get_compile_count; print(get_compile_count())",
                 ],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -153,31 +149,39 @@ def _run_ane_verification(test_matrices: list[dict]) -> list[dict]:
                 )
                 # Apple 119-cycle crash recovery
                 time.sleep(ANE_COOLDOWN_MS / 1000.0)
-                results.append({
-                    "safe": True,
-                    "severity": "🟡 Nit",
-                    "message": "ANE subprocess exited non-zero. Recovered via Pickle Rick flush.",
-                })
+                results.append(
+                    {
+                        "safe": True,
+                        "severity": "🟡 Nit",
+                        "message": "ANE subprocess exited non-zero. Recovered via Pickle Rick flush.",
+                    }
+                )
             else:
-                results.append({
-                    "safe": True,
-                    "severity": "✅ Safe",
-                    "message": f"ANE verification passed (compile count: {stdout.decode().strip()}).",
-                })
+                results.append(
+                    {
+                        "safe": True,
+                        "severity": "✅ Safe",
+                        "message": f"ANE verification passed (compile count: {stdout.decode().strip()}).",
+                    }
+                )
 
         except subprocess.TimeoutExpired:
             proc.kill()
-            results.append({
-                "safe": False,
-                "severity": "🔴 Normal",
-                "message": "ANE subprocess timed out (30s). Possible hardware hang.",
-            })
+            results.append(
+                {
+                    "safe": False,
+                    "severity": "🔴 Normal",
+                    "message": "ANE subprocess timed out (30s). Possible hardware hang.",
+                }
+            )
         except FileNotFoundError:
-            results.append({
-                "safe": True,
-                "severity": "🟡 Nit",
-                "message": "ANE bridge not compiled. Run: cd third_party/ANE/bridge && make",
-            })
+            results.append(
+                {
+                    "safe": True,
+                    "severity": "🟡 Nit",
+                    "message": "ANE bridge not compiled. Run: cd third_party/ANE/bridge && make",
+                }
+            )
 
     return results
 
@@ -216,11 +220,13 @@ def _run_logic_verification(changed_files: list[str]) -> list[dict]:
                 timeout=60,
             )
             if result.returncode != 0:
-                findings.append({
-                    "severity": "🔴 Normal",
-                    "file": target,
-                    "message": f"Test failure:\n{result.stdout[-500:]}" if result.stdout else "Test crashed",
-                })
+                findings.append(
+                    {
+                        "severity": "🔴 Normal",
+                        "file": target,
+                        "message": f"Test failure:\n{result.stdout[-500:]}" if result.stdout else "Test crashed",
+                    }
+                )
         except (subprocess.TimeoutExpired, FileNotFoundError):
             pass  # Skip if test file doesn't exist
 
@@ -261,29 +267,26 @@ async def run_swarm(pr_number: int, branch: str, changed_files: list[str]) -> No
     all_findings.extend(logic_findings)
 
     # Tier 3: ANE hardware verification (for ML-related changes)
-    ml_files = [f for f in changed_files if any(
-        kw in f for kw in ["ane_", "model", "tensor", "attention", "transformer", "mlx"]
-    )]
+    ml_files = [f for f in changed_files if any(kw in f for kw in ["ane_", "model", "tensor", "attention", "transformer", "mlx"])]
     if ml_files:
-        ane_findings = _run_ane_verification([
-            {"seq_len": 512, "dim": 768},   # Standard BERT
-            {"seq_len": 2048, "dim": 1024}, # Large model
-            {"seq_len": 4096, "dim": 1536}, # Stress test
-        ])
+        ane_findings = _run_ane_verification(
+            [
+                {"seq_len": 512, "dim": 768},  # Standard BERT
+                {"seq_len": 2048, "dim": 1024},  # Large model
+                {"seq_len": 4096, "dim": 1536},  # Stress test
+            ]
+        )
         all_findings.extend(ane_findings)
 
     # Tier 2: Generate Colab notebook for GPU tests
-    gpu_files = [f for f in changed_files if any(
-        kw in f for kw in ["cuda", "gpu", "colab", "training", "fine_tune"]
-    )]
+    gpu_files = [f for f in changed_files if any(kw in f for kw in ["cuda", "gpu", "colab", "training", "fine_tune"])]
     if gpu_files:
-        all_findings.append({
-            "severity": "🟡 Nit",
-            "message": (
-                "GPU-bound changes detected. Colab T4 notebook generated at: "
-                f"labs/uphillsnowball/notebooks/pr_review_{pr_number}.ipynb"
-            ),
-        })
+        all_findings.append(
+            {
+                "severity": "🟡 Nit",
+                "message": (f"GPU-bound changes detected. Colab T4 notebook generated at: labs/uphillsnowball/notebooks/pr_review_{pr_number}.ipynb"),
+            }
+        )
 
     # Post results to GitHub via App token
     await _post_review_comments(pr_number, all_findings)
@@ -374,9 +377,7 @@ async def _post_review_comments(pr_number: int, findings: list[dict]) -> None:
 
 
 @router.post("/webhooks/github/pr-review")
-async def trigger_antigravity_swarm(
-    request: Request, background_tasks: BackgroundTasks
-) -> dict:
+async def trigger_antigravity_swarm(request: Request, background_tasks: BackgroundTasks) -> dict:
     """Receive GitHub PR webhook and deploy the Antigravity Swarm.
 
     Validates webhook signature (HMAC-SHA256), extracts PR metadata,

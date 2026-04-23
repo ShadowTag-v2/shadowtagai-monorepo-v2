@@ -169,7 +169,9 @@ def proxy_comfy_image(filename: str):
 
         return StreamingResponse(iterfile(), media_type="image/png")
     except Exception:
-        raise HTTPException(status_code=404, detail="Image not found or ComfyUI is offline.") from None
+        raise HTTPException(
+            status_code=404, detail="Image not found or ComfyUI is offline."
+        ) from None
 
 
 # Mount Omega Playground (Injected R&D Telemetry Panel)

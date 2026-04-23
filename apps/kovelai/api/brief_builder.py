@@ -33,9 +33,7 @@ class BriefMetadata(BaseModel):
     session_id: str
     firm_id: str
     generated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
-    expires_at: datetime = Field(
-        default_factory=lambda: datetime.now(UTC) + timedelta(days=30)
-    )
+    expires_at: datetime = Field(default_factory=lambda: datetime.now(UTC) + timedelta(days=30))
     kovel_attestation_hash: str = ""
     privilege_designation: str = "Attorney Work-Product — Not Subject to Compulsory Disclosure"
     pages: int = 0
@@ -91,9 +89,7 @@ def build_brief(
     Returns:
         AttorneyBrief with all sections populated
     """
-    kovel_hash = hashlib.sha256(
-        f"{session_id}:{firm_id}:{seu_token_hash}".encode()
-    ).hexdigest()
+    kovel_hash = hashlib.sha256(f"{session_id}:{firm_id}:{seu_token_hash}".encode()).hexdigest()
 
     brief = AttorneyBrief(
         metadata=BriefMetadata(
@@ -261,13 +257,7 @@ def _build_citation_appendix(citations: list[dict]) -> str:
         rel = f"{round(citation.get('relevance_score', 0) * 100)}%"
         status = citation.get("status", "unverified")
         icon = "✓" if status == "verified" else "?" if status == "unverified" else "⚠"
-        lines.append(
-            f"| {citation.get('index', '')} "
-            f"| {citation.get('authority', '')} "
-            f"| {citation.get('type', '')} "
-            f"| {rel} "
-            f"| {icon} {status} |"
-        )
+        lines.append(f"| {citation.get('index', '')} | {citation.get('authority', '')} | {citation.get('type', '')} | {rel} | {icon} {status} |")
 
     return "\n".join(lines)
 
