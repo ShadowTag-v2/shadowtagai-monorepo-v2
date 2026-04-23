@@ -105,7 +105,7 @@ Always:
                     success="error" not in step.observation.lower(),
                 )
 
-            elif step.action == "plot_generator" and step.observation:
+            elif step.action == "plot_generator" and step.observation:  # noqa: SIM102
                 # Store plot reference (observation should contain Cloud Storage URL)
                 if result.steps:  # Get most recent analysis result
                     recent_results = self.world_model.analysis_results

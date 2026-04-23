@@ -63,7 +63,7 @@ class TestAntigravityLogic(unittest.TestCase):
         resp2 = {"candidates": [{"content": {"parts": [{"text": "I found foo."}]}}]}
         mock_gemini.side_effect = [resp1, resp2]
 
-        with patch.dict("os.environ", {"GEMINI_API_KEY": "test"}):
+        with patch.dict("os.environ", {"GEMINI_API_KEY": "test"}):  # noqa: SIM117
             with patch("antigravity_service.code_search_tool") as mock_tool:
                 mock_tool.return_value = {"result": "found it"}
                 answer = antigravity_service.run_agent_loop("model", "search for foo")

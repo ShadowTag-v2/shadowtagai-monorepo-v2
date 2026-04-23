@@ -18,7 +18,7 @@ def mrr_at_k(g1, p, k):
 
 def evaluate(path):
     R5, R10, MRR = [], [], []
-    for l in open(path):
+    for l in open(path):  # noqa: SIM115
         ex = json.loads(l)
         R5.append(recall_at_k(ex["gold"], ex["preds"], 5))
         R10.append(recall_at_k(ex["gold"], ex["preds"], 10))

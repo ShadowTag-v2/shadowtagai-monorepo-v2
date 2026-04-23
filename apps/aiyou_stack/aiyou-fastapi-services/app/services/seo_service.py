@@ -135,7 +135,7 @@ class SEOService:
             return analysis
 
         except Exception as e:
-            raise Exception(f"Failed to analyze URL: {e!s}")
+            raise Exception(f"Failed to analyze URL: {e!s}") from e
 
     @staticmethod
     def _calculate_seo_score(data: dict[str, Any]) -> float:

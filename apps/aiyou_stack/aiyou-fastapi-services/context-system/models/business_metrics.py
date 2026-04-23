@@ -187,7 +187,7 @@ class KillSwitches:
                         },
                     )
 
-            elif gate.month == 12 and current_month >= 12:
+            elif gate.month == 12 and current_month >= 12:  # noqa: SIM102
                 if current_mrr < 100_000 or ltv_cac < 4.0:
                     triggered_gates.append(
                         {

@@ -221,7 +221,7 @@ class TestDataModels:
 
     def test_innovation_request_validation(self):
         """Test InnovationRequest validation"""
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             # Should fail - prompt too short
             InnovationRequest(prompt="Test")
 

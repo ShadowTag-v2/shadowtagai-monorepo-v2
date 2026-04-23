@@ -242,7 +242,7 @@ async def inference(request: InferenceRequest):
     except Exception as e:
         logger.error(f"Inference error: {e}", exc_info=True)
         REQUEST_COUNT.labels(method="POST", endpoint="/v1/inference", status="500").inc()
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @app.get("/health")

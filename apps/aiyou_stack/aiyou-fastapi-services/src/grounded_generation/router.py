@@ -36,4 +36,4 @@ async def generate_content(
         result = await service.generate(request.prompt, request.model_id)
         return GenerateResponse(**result)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e

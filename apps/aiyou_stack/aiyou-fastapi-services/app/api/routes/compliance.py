@@ -90,7 +90,7 @@ async def get_ccpa_request_status(
     try:
         request = await ccpa._get_request(request_id)
     except ValueError:
-        raise HTTPException(status_code=404, detail="Request not found")
+        raise HTTPException(status_code=404, detail="Request not found") from None
 
     # Verify request belongs to current user
     if request.user_id != current_user["user_id"]:

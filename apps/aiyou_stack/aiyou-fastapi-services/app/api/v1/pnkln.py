@@ -180,7 +180,7 @@ async def search(
         results = ng.search(q, topk=topk)
         reranked = rerank(q, results)[:topk]
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Search failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Search failed: {e}") from e
 
     cards = [SearchCard(snip=r.text[:96], score=round(r.rank_score, 3), id=r.id) for r in reranked]
 
@@ -254,7 +254,7 @@ async def run_chain(request: ChainRequest) -> ChainResponse:
         result = pnkln_parallel(prompt=request.prompt, store_trace=request.store_trace)
         return ChainResponse(**result.to_dict())
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Chain execution failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Chain execution failed: {e}") from e
 
 
 @router.get("/rot/retrieve")

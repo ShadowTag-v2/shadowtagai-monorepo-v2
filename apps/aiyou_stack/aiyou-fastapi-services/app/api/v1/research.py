@@ -128,10 +128,10 @@ async def execute_research(request: ResearchRequest):
 
     except TimeoutError as e:
         logger.error(f"Research timeout: {e}")
-        raise HTTPException(status_code=504, detail=f"Research query timed out: {e!s}")
+        raise HTTPException(status_code=504, detail=f"Research query timed out: {e!s}") from e
     except Exception as e:
         logger.error(f"Research failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Research execution failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Research execution failed: {e!s}") from e
 
 
 @router.get("/tools", response_model=ToolAvailabilityResponse)

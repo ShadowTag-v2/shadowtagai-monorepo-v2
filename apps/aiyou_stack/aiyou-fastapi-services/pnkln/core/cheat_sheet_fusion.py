@@ -426,7 +426,7 @@ class CheatSheetFusion:
             selected.append(FusedTechnique.META_REASONING)
 
         # Always add confidence calibration for quality control
-        if FusedTechnique.CONFIDENCE_CALIBRATION not in selected:
+        if FusedTechnique.CONFIDENCE_CALIBRATION not in selected:  # noqa: SIM102
             if len(selected) < max_techniques:
                 selected.append(FusedTechnique.CONFIDENCE_CALIBRATION)
 

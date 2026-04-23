@@ -103,7 +103,7 @@ class LLMRouter:
     PRICING = {
         "gemini-3.1-flash-lite-preview": {"input": 0.075, "output": 0.30},
         "gemini-3.1-flash-lite-preview-thinking-exp": {"input": 0.075, "output": 0.30},
-        "gemini-3.1-flash-lite-preview": {"input": 3.50, "output": 10.50},
+        "gemini-3.1-flash-lite-preview": {"input": 3.50, "output": 10.50},  # noqa: F601
     }
 
     # Ada-K: Entropy thresholds for adaptive routing

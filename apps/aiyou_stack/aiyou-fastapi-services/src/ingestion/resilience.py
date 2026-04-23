@@ -83,7 +83,7 @@ class CircuitBreaker:
             self.stats.total_requests += 1
 
             # Check if circuit is open
-            if self.stats.state == CircuitState.OPEN:
+            if self.stats.state == CircuitState.OPEN:  # noqa: SIM102
                 # Check if timeout has elapsed
                 if self.stats.last_failure_time:
                     elapsed = (datetime.now() - self.stats.last_failure_time).total_seconds()
@@ -117,7 +117,7 @@ class CircuitBreaker:
         async with self._lock:
             self.stats.success_count += 1
 
-            if self.stats.state == CircuitState.HALF_OPEN:
+            if self.stats.state == CircuitState.HALF_OPEN:  # noqa: SIM102
                 if self.stats.success_count >= self.config.success_threshold:
                     logger.info(f"Circuit breaker {self.name} closing (recovered)")
                     self.stats.state = CircuitState.CLOSED

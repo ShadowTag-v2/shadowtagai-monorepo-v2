@@ -237,7 +237,7 @@ class VertexAIClient:
                 batch = texts[i : i + batch_size]
                 embeddings = await asyncio.get_event_loop().run_in_executor(
                     None,
-                    lambda: model_instance.get_embeddings(batch),
+                    lambda: model_instance.get_embeddings(batch),  # noqa: B023
                 )
                 all_embeddings.extend([emb.values for emb in embeddings])
 

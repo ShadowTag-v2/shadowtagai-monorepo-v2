@@ -264,7 +264,7 @@ class SB243ComplianceEngine:
             warnings.append("HIGH PRIORITY: Route to human counselor")
 
         # Check if crisis response is adequate (for AI responses)
-        if is_ai_response and crisis_level != CrisisLevel.NONE:
+        if is_ai_response and crisis_level != CrisisLevel.NONE:  # noqa: SIM102
             if not context.get("crisis_resources_provided"):
                 violations.append(
                     SB243Violation(

@@ -80,7 +80,7 @@ async def submit_item(request: IngestionSubmitRequest) -> IngestionSubmitRespons
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Ingestion failed: {e!s}",
-        )
+        ) from e
 
 
 @router.get(

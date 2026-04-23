@@ -115,10 +115,10 @@ class Judge6:
         # LAYER 3: OPERATIONAL & LINDY (The "Stability")
         # The "No Marrying the Zeitgeist" Rule
         # ---------------------------------------------------------
-        if action.action_type == ActionType.CODE_MERGE:
+        if action.action_type == ActionType.CODE_MERGE:  # noqa: SIM102
             # Rule: If tech is < 6 months old and we are Conservative, REJECT.
             # "Lindy Effect": The longer technology has been around, the longer it will stay.
-            if action.tech_age_months is not None and action.tech_age_months < 6:
+            if action.tech_age_months is not None and action.tech_age_months < 6:  # noqa: SIM102
                 if self.context.risk_tolerance == RiskLevel.LOW:
                     self.log(
                         "OPERATIONAL",
@@ -128,7 +128,7 @@ class Judge6:
                     return False
 
         # Rule: High Hype + Zero Returns = Trap
-        if action.action_type == ActionType.PURCHASE:
+        if action.action_type == ActionType.PURCHASE:  # noqa: SIM102
             if action.hype_score > 0.90 and action.return_policy_days < 14:
                 self.log("OPERATIONAL", "FAIL", "Critical Hype detected with no Exit Strategy.")
                 return False

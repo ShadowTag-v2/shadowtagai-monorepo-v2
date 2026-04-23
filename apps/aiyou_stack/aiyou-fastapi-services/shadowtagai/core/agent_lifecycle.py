@@ -479,7 +479,7 @@ if __name__ == "__main__":
     print("\n" + "=" * 60)
     print("Continuing to trigger regeneration...")
 
-    for i in range(25):
+    for i in range(25):  # noqa: B007
         lifecycle.record_task("agent_alpha", True, False)
 
     # Check if needs regeneration

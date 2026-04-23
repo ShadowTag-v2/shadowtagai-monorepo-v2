@@ -572,7 +572,7 @@ async def process_query(request: UnGPTRequest, user_id: str = Depends(get_user_i
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Query execution failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Query execution failed: {e!s}") from e
 
 
 @app.get("/v1/ungpt/health")
@@ -610,7 +610,7 @@ async def get_budget_status(user_id: str):
             },
         }
     except redis.RedisError as e:
-        raise HTTPException(status_code=503, detail=f"Budget service unavailable: {e!s}")
+        raise HTTPException(status_code=503, detail=f"Budget service unavailable: {e!s}") from e
 
 
 if __name__ == "__main__":

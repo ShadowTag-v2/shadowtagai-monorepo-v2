@@ -140,7 +140,7 @@ class TierClassifier:
             return json.loads(json_str)
         except json.JSONDecodeError as e:
             logger.error("json_parse_error", error=str(e), response=response_text)
-            raise ValueError(f"Failed to parse Gemini response: {e}")
+            raise ValueError(f"Failed to parse Gemini response: {e}") from None
 
     def _calculate_overall_score(
         self,

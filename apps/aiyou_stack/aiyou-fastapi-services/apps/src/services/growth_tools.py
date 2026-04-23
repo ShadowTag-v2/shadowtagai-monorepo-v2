@@ -87,7 +87,7 @@ def analyze_metrics(args: dict[str, Any]) -> dict[str, Any]:
         analysis["summary"]["referral_conversion_rate"] = round(conversion_rate, 2)
 
     # Generate insights based on patterns
-    if analysis["summary"]:
+    if analysis["summary"]:  # noqa: SIM102
         if any(v > 20 for k, v in analysis["summary"].items() if "growth" in k):
             analysis["insights"].append(
                 "Strong growth detected. Consider scaling acquisition channels.",

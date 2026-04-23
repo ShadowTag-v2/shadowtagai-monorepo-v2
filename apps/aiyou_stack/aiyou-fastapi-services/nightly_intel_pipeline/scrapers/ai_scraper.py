@@ -413,7 +413,7 @@ class AIScraperClient:
         data = {}
         content = result.content
 
-        for field, field_type in schema.items():
+        for field, field_type in schema.items():  # noqa: F402
             if field_type == "string":
                 # Try to find field in content
                 if field.lower() in ["title", "headline"]:

@@ -43,7 +43,7 @@ class TurboQuantCompressorV2:
         try:
             from scipy import integrate
         except ImportError:
-            raise RuntimeError("scipy is required for Lloyd-Max initialization.")
+            raise RuntimeError("scipy is required for Lloyd-Max initialization.") from None
 
         n_levels = 2**bits
         sigma = 1.0 / math.sqrt(d)

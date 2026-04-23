@@ -331,8 +331,8 @@ class ChildSpawner:
         count = 0
 
         for lifecycle in list(self.lifecycles.values()):
-            if lifecycle.state not in (LifecycleState.RETIRED, LifecycleState.RETIRING):
-                if now >= lifecycle.expires_at:
+            if lifecycle.state not in (LifecycleState.RETIRED, LifecycleState.RETIRING):  # noqa: SIM102
+                if now >= lifecycle.expires_at:  # noqa: SIM102
                     if await self.retire(lifecycle.agent_id):
                         count += 1
 

@@ -422,8 +422,8 @@ class EUAIActCompliance:
                     )
 
         # Limited risk = transparency check
-        if risk_level in [RiskClassification.HIGH, RiskClassification.LIMITED]:
-            if operation_data.get("generates_content"):
+        if risk_level in [RiskClassification.HIGH, RiskClassification.LIMITED]:  # noqa: SIM102
+            if operation_data.get("generates_content"):  # noqa: SIM102
                 if not operation_data.get("disclosure_provided"):
                     result["violations"].append(
                         {

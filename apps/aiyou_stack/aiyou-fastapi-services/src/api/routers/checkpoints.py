@@ -47,7 +47,7 @@ async def create_checkpoint(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to create checkpoint: {e!s}",
-        )
+        ) from e
 
 
 @router.get("/{checkpoint_id}", response_model=CheckpointResponse)
@@ -130,12 +130,12 @@ async def restore_checkpoint(
         checkpoint = await service.restore_checkpoint(checkpoint_id, restore_data)
         return checkpoint
     except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to restore checkpoint: {e!s}",
-        )
+        ) from e
 
 
 @router.get("/{checkpoint_id}/files", response_model=list[FileSnapshotResponse])

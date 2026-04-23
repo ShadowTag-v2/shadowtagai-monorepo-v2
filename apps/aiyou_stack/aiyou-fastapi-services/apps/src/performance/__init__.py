@@ -14,7 +14,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime
 from functools import wraps
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional  # noqa: UP035
 
 import psutil
 

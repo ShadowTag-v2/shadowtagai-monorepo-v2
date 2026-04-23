@@ -42,7 +42,7 @@ class Glicko2Engine:
 
         # Step 3: Compute v (variance)
         v_inv = 0.0
-        for opp_rating, opp_rd, score in results:
+        for opp_rating, opp_rd, score in results:  # noqa: B007
             mu_j = (opp_rating - 1500.0) / 173.7178
             phi_j = opp_rd / 173.7178
             g_phi_j = self._g(phi_j)

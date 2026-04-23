@@ -74,4 +74,4 @@ async def create_code_fix(request: FixRequest):
         raise HTTPException(
             status_code=500,
             detail=f"An error occurred in the Fixer Agent: {e!s}",
-        )
+        ) from e

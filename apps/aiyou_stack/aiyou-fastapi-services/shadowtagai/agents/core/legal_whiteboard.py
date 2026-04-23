@@ -157,7 +157,7 @@ class Whiteboard:
                 state = AgentState(agent_id=agent_id)
                 self.save_agent_state(state)
                 return state
-            raise ValueError(f"Agent state not found: {agent_id}")
+            raise ValueError(f"Agent state not found: {agent_id}") from None
 
     def save_agent_state(self, state: AgentState) -> None:
         """Save agent state to disk.

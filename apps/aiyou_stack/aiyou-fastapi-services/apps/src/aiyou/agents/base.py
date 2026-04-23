@@ -94,7 +94,7 @@ class SandboxedExecutor:
                 raise SecurityError(f"Forbidden attribute access: {node.attr}")
 
             # Check forbidden function calls
-            if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):  # noqa: SIM102
                 if node.func.id in (
                     "eval",
                     "exec",

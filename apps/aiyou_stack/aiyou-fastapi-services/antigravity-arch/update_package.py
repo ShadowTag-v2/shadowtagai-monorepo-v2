@@ -49,7 +49,7 @@ def fetch_upstream_version() -> str:
             print("Warning: Remote fetch failed, using local pyproject.toml")
             content = local_path.read_text()
         else:
-            raise RuntimeError(f"Failed to fetch upstream pyproject.toml: {e}")
+            raise RuntimeError(f"Failed to fetch upstream pyproject.toml: {e}") from e
 
     match = re.search(r'version\s*=\s*"([^"]+)"', content)
     if not match:

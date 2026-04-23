@@ -146,7 +146,7 @@ class TrainingConfig:
                 )
                 project_id = result.stdout.strip()
             except:
-                raise ValueError("GCP_PROJECT_ID not set and gcloud not configured")
+                raise ValueError("GCP_PROJECT_ID not set and gcloud not configured") from None
 
         return cls(project_id=project_id)
 

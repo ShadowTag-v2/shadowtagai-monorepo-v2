@@ -99,13 +99,13 @@ async def analyze_landing_page(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Agent error", "message": e.message, "details": e.details},
-        )
+        ) from e
     except ValidationException as e:
         logger.warning(f"Validation error: {e.message}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail={"error": "Validation error", "message": e.message, "details": e.details},
-        )
+        ) from e
     except Exception as e:
         logger.exception(f"Unexpected error during analysis: {e!s}")
         raise HTTPException(
@@ -114,7 +114,7 @@ async def analyze_landing_page(
                 "error": "Internal server error",
                 "message": "An unexpected error occurred during analysis",
             },
-        )
+        ) from e
 
 
 @router.post(
@@ -158,13 +158,13 @@ async def generate_headlines(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Agent error", "message": e.message},
-        )
+        ) from e
     except Exception as e:
         logger.exception(f"Error generating headlines: {e!s}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Internal server error", "message": str(e)},
-        )
+        ) from e
 
 
 @router.post(
@@ -208,13 +208,13 @@ async def generate_ctas(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Agent error", "message": e.message},
-        )
+        ) from e
     except Exception as e:
         logger.exception(f"Error generating CTAs: {e!s}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Internal server error", "message": str(e)},
-        )
+        ) from e
 
 
 @router.post(
@@ -258,10 +258,10 @@ async def generate_social_proof(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Agent error", "message": e.message},
-        )
+        ) from e
     except Exception as e:
         logger.exception(f"Error generating social proof: {e!s}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Internal server error", "message": str(e)},
-        )
+        ) from e

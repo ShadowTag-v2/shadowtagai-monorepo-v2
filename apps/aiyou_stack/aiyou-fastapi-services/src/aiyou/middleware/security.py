@@ -139,7 +139,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         # Special handling for upload endpoints
         is_upload = request.method == "POST" and "/ingestion/jobs" in str(request.url.path)
 
-        if is_upload:
+        if is_upload:  # noqa: SIM102
             # Check upload-specific limit
             if not self._check_upload_limit(client_ip):
                 logger.warning(f"Upload rate limit exceeded for {client_ip}")
@@ -271,7 +271,7 @@ class RequestValidationMiddleware(BaseHTTPMiddleware):
             content_type = request.headers.get("content-type", "")
 
             # Allow multipart for uploads
-            if "/ingestion/jobs" in str(request.url.path):
+            if "/ingestion/jobs" in str(request.url.path):  # noqa: SIM102
                 if not content_type.startswith("multipart/form-data"):
                     logger.warning(f"Invalid content-type for upload: {content_type}")
                     return JSONResponse(

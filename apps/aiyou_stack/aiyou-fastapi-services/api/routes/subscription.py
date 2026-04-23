@@ -34,4 +34,4 @@ async def create_checkout_session(req: CheckoutRequest):
         )
         return {"checkout_url": session.url, "session_id": session.id}
     except Exception as e:
-        raise HTTPException(400, str(e))
+        raise HTTPException(400, str(e)) from e

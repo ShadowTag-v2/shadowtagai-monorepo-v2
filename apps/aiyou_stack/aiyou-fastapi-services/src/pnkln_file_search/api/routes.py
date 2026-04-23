@@ -74,10 +74,10 @@ async def process_query(
         return result
 
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         logger.error("query_processing_error", error=str(e))
-        raise HTTPException(status_code=500, detail=f"Query processing failed: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Query processing failed: {e!s}") from e
 
 
 @router.get("/corpus", response_model=list[CorpusInfo])
@@ -90,7 +90,7 @@ async def list_corpora(
         return corpora
     except Exception as e:
         logger.error("corpus_list_error", error=str(e))
-        raise HTTPException(status_code=500, detail=f"Failed to list corpora: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to list corpora: {e!s}") from e
 
 
 @router.post("/corpus", response_model=dict[str, str])
@@ -113,10 +113,10 @@ async def create_corpus(
         }
 
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except Exception as e:
         logger.error("corpus_creation_error", error=str(e), vertical=create_req.vertical)
-        raise HTTPException(status_code=500, detail=f"Failed to create corpus: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to create corpus: {e!s}") from e
 
 
 @router.post("/corpus/import")
@@ -145,7 +145,7 @@ async def import_files(
             error=str(e),
             corpus=import_req.corpus_name,
         )
-        raise HTTPException(status_code=500, detail=f"Failed to import files: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to import files: {e!s}") from e
 
 
 @router.delete("/corpus/{corpus_name}")
@@ -164,7 +164,7 @@ async def delete_corpus(
 
     except Exception as e:
         logger.error("corpus_deletion_error", error=str(e), corpus=corpus_name)
-        raise HTTPException(status_code=500, detail=f"Failed to delete corpus: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to delete corpus: {e!s}") from e
 
 
 @router.get("/verticals", response_model=list[VerticalInfo])
@@ -193,7 +193,7 @@ async def get_vertical(vertical_name: str):
             description=vertical.description,
         )
     except ValueError:
-        raise HTTPException(status_code=404, detail=f"Vertical not found: {vertical_name}")
+        raise HTTPException(status_code=404, detail=f"Vertical not found: {vertical_name}") from None
 
 
 @router.get("/monitoring/health", response_model=HealthResponse)

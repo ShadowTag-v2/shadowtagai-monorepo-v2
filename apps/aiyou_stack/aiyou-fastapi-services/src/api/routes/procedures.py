@@ -89,7 +89,7 @@ async def create_is_is_not_diagram(diagram: IsIsNotDiagram):
         rendered = renderer.render_is_is_not_diagram(diagram)
         return {"diagram": diagram, "rendered": rendered}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error creating diagram: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Error creating diagram: {e!s}") from e
 
 
 @router.post("/problem-solving", summary="Create structured problem-solving process")
@@ -102,7 +102,7 @@ async def create_problem_solving_process(process: StructuredProblemSolvingProces
         rendered = renderer.render_problem_solving_process(process)
         return {"process": process, "rendered": rendered}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error creating process: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Error creating process: {e!s}") from e
 
 
 @router.get("/problem-solving/example", summary="Get example problem-solving process")

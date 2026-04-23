@@ -228,7 +228,7 @@ This is not optional. Your runway depends on it."""
         return analysis
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error generating analysis: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Error generating analysis: {e!s}") from e
 
 
 @router.get("/leaks", summary="List common financial leak types")

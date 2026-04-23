@@ -56,7 +56,7 @@ async def start_ingestion_job(request: JobStartRequest):
 
     except Exception as e:
         logger.error(f"Failed to start ingestion job: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Failed to start job: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Failed to start job: {e!s}") from e
 
 
 @router.get("/jobs/{job_id}/status", response_model=JobStatusResponse)

@@ -352,7 +352,7 @@ class DSAModule(ComplianceModule):
                 return RiskTier.HIGH
 
         # Advertising targeting minors
-        if input_data.user_age and input_data.user_age < 18:
+        if input_data.user_age and input_data.user_age < 18:  # noqa: SIM102
             if "advertisement" in content_type:
                 return RiskTier.HIGH
 

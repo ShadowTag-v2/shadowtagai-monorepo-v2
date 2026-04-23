@@ -30,7 +30,7 @@ async def design_infrastructure(request: InfrastructureDesignRequest):
         design = infrastructure_service.design_architecture(request)
         return design
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/cost-estimate", response_model=CostEstimateResponse)
@@ -42,7 +42,7 @@ async def estimate_costs(request: CostEstimateRequest):
         estimate = cost_service.calculate_costs(request)
         return estimate
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.post("/scaling-recommendations", response_model=ScalingRecommendation)
@@ -54,7 +54,7 @@ async def get_scaling_recommendations(request: dict[str, Any]):
         recommendations = scaling_service.analyze_and_recommend(request)
         return recommendations
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @router.get("/templates")

@@ -99,7 +99,7 @@ class GeminiClient:
         self.pricing = {
             "gemini-3.1-flash-lite-preview": {"input": 3.50, "output": 10.50},  # USD per 1M tokens
             "gemini-3.1-flash-lite-preview-vision": {"input": 3.50, "output": 10.50},
-            "gemini-3.1-flash-lite-preview": {
+            "gemini-3.1-flash-lite-preview": {  # noqa: F601
                 "input": 0.35,
                 "output": 1.05,
             },  # Cheaper, faster model
@@ -109,7 +109,7 @@ class GeminiClient:
         # Rate limits (requests per minute)
         self.rate_limits = {
             "gemini-3.1-flash-lite-preview": 60,
-            "gemini-3.1-flash-lite-preview": 360,
+            "gemini-3.1-flash-lite-preview": 360,  # noqa: F601
         }
 
         self._request_counts = {}  # Track requests for rate limiting
@@ -218,7 +218,7 @@ class GeminiClient:
 
         except Exception as e:
             logger.error(f"Image analysis failed: {e}")
-            raise GeminiServiceError(f"Failed to analyze image: {e!s}")
+            raise GeminiServiceError(f"Failed to analyze image: {e!s}") from e
 
     @async_retry(max_retries=3, backoff_seconds=2.0)
     async def analyze_video(
@@ -287,7 +287,7 @@ class GeminiClient:
 
         except Exception as e:
             logger.error(f"Video analysis failed: {e}")
-            raise GeminiServiceError(f"Failed to analyze video: {e!s}")
+            raise GeminiServiceError(f"Failed to analyze video: {e!s}") from e
 
     @async_retry(max_retries=3, backoff_seconds=2.0)
     async def moderate_text(self, text: str) -> dict[str, Any]:
@@ -343,7 +343,7 @@ class GeminiClient:
 
         except Exception as e:
             logger.error(f"Text moderation failed: {e}")
-            raise GeminiServiceError(f"Failed to moderate text: {e!s}")
+            raise GeminiServiceError(f"Failed to moderate text: {e!s}") from e
 
     @async_retry(max_retries=3, backoff_seconds=2.0)
     async def generate_metadata(
@@ -455,7 +455,7 @@ class GeminiClient:
 
         except Exception as e:
             logger.error(f"Embedding generation failed: {e}")
-            raise GeminiServiceError(f"Failed to generate embedding: {e!s}")
+            raise GeminiServiceError(f"Failed to generate embedding: {e!s}") from e
 
     def calculate_cost(self, tokens_used: int, model: str, token_type: str = "total") -> float:
         """Calculate cost in USD for Gemini API usage

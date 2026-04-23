@@ -144,7 +144,7 @@ async def generate_blueprint(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Blueprint generation failed", "message": str(e)},
-        )
+        ) from e
 
 
 @router.post(
@@ -181,13 +181,13 @@ async def run_assessment(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail={"error": "Invalid request", "message": str(e)},
-        )
+        ) from e
     except Exception as e:
         logger.error(f"Assessment failed: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Assessment failed", "message": str(e)},
-        )
+        ) from e
 
 
 @router.get(
@@ -246,7 +246,7 @@ async def get_module(regulation_id: str) -> ModuleDetailResponse:
                 "error": "Module not found",
                 "available": [r.value for r in RegulationId],
             },
-        )
+        ) from None
 
     info = engine.get_module_info(reg_id)
     if not info:
@@ -293,7 +293,7 @@ async def validate_content(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Validation failed", "message": str(e)},
-        )
+        ) from e
 
 
 @router.post(
@@ -335,7 +335,7 @@ async def batch_assessment(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Batch assessment failed", "message": str(e)},
-        )
+        ) from e
 
 
 @router.get(
@@ -414,7 +414,7 @@ async def assess_single_module(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail={"error": "Module not found"},
-        )
+        ) from None
 
     # Override modules in input
     input_data.modules = [reg_id]
@@ -442,7 +442,7 @@ async def get_module_checklist(regulation_id: str) -> dict[str, Any]:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail={"error": "Module not found"},
-        )
+        ) from None
 
     info = engine.get_module_info(reg_id)
     if not info:

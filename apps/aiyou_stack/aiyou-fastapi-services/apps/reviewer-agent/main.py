@@ -50,7 +50,7 @@ async def review_fix(request: ReviewRequest):
         )
         return json.loads(response.text)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 if __name__ == "__main__":

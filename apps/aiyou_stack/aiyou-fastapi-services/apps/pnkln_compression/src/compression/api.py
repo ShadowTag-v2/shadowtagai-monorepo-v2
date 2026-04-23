@@ -43,7 +43,7 @@ async def decision(req: RequestData):
             "metrics": metrics.stage_latencies,
         }
     except Exception as e:
-        raise HTTPException(500, str(e))
+        raise HTTPException(500, str(e)) from e
 
 
 @app.get("/health")
