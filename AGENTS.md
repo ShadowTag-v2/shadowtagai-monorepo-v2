@@ -61,7 +61,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 - MAGIC_LINK_SECRET needs creation via GCP Secret Manager.
 - ~~Firebase Storage needs console initialization~~ — ✅ RESOLVED (2026-04-23): `storage.rules` deployed with deny-all rules.
 - ~~`lead-capture-router` requires a `firebase-admin` upgrade~~ — ✅ RESOLVED: Already at `^13.8.0` (latest major).
-- `NotebookLM MCP` CLI needs installation (`uv tool install notebooklm-mcp-cli`).
+- ~~`NotebookLM MCP` CLI needs installation~~ — ✅ RESOLVED (2026-04-23): Replaced with `antigravity-notebooklm-mcp` MCP server in `antigravity-mcp-config.json`.
 - Cloud Run redeploy needed for uuid7 fix (container `counselconduit-00015-mmq`).
 
 ## Guardrails

@@ -4,9 +4,25 @@
       "path": "."
     }
   ],
+  "mcpServers": {
+    "antigravity-notebooklm-mcp": {
+      "command": "node",
+      "args": ["${workspaceFolder}/external_repos/antigravity-notebooklm-mcp/build/index.js"],
+      "env": {}
+    },
+    "switchboard-mcp": {
+      "command": "node",
+      "args": ["${workspaceFolder}/external_repos/switchboard/src/mcp-server/mcp-server.js"],
+      "env": {
+        "SWITCHBOARD_WORKSPACE_ROOT": "${workspaceFolder}"
+      }
+    }
+  },
   "settings": {
     "terminal.integrated.env.osx": {
-      "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json"
+      "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
+      "NODE_OPTIONS": "--require /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/patches/suppress-punycode-dep0040.js",
+      "PATH": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/Users/pikeymickey/google-cloud-sdk/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
     },
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "python.envFile": "${workspaceFolder}/.env",
@@ -17,7 +33,7 @@
       "Python3_EXECUTABLE": "${workspaceFolder}/.venv/bin/python",
       "PYTHON_EXECUTABLE": "${workspaceFolder}/.venv/bin/python"
     },
-    "geminicodeassist.agentYoloMode": true,
+    "geminicodeassist.agentYoloMode": false,
     "java.import.generatesSources": false,
     "java.import.exclusions": [
       "**/*.proto",

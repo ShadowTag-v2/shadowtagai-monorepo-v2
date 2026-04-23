@@ -4,6 +4,20 @@
     "shadowtag-core": {
       "path": "apps/counselconduit",
       "tools": ["StitchMCP", "chrome-devtools-mcp"]
+    },
+    "antigravity-notebooklm-mcp": {
+      "command": "node",
+      "args": ["external_repos/antigravity-notebooklm-mcp/dist/index.js"],
+      "env": {},
+      "note": "IPI quarantine zone. Closed RAG sandbox — cannot execute local code. All untrusted external data MUST route through this MCP before entering the agent context."
+    },
+    "switchboard-mcp": {
+      "command": "node",
+      "args": ["external_repos/switchboard/src/mcp-server/mcp-server.js"],
+      "env": {
+        "SWITCHBOARD_WORKSPACE_ROOT": "."
+      },
+      "note": "Routing firewall and task orchestrator. Queues external data retrieval without exposing raw API keys to the agent context."
     }
   }
 }
