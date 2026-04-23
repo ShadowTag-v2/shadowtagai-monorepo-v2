@@ -1,8 +1,14 @@
 {
-  "unwantedRecommendations": ["google.cros-ide", "mtxr.sqltools"],
+  "unwantedRecommendations": [
+    "google.cros-ide",
+    "mtxr.sqltools",
+    "dsznajder.es7-react-js-snippets",
+    "ritwickdey.liveserver"
+  ],
   "recommendations": [
     "astral-sh.ty",
     "charliermarsh.ruff",
+    "biomejs.biome",
     "esbenp.prettier-vscode",
     "google.geminicodeassist",
     "DavidAnson.vscode-markdownlint"
