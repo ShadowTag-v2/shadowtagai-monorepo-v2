@@ -1,6 +1,7 @@
 name: Claude Code — Interactive + Auto Review
 
 on:
+  workflow_dispatch:
   # Interactive mode: respond to @claude mentions in issues/PRs
   issue_comment:
     types: [created]

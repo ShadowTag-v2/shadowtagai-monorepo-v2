@@ -1,6 +1,7 @@
 name: Playwright API Limit Guardian
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
   pull_request:
