@@ -12,14 +12,14 @@ Usage:
     oracle context                         - Show FULLAUTO_CONTEXT.md
 """
 
-import subprocess
+import argparse
 import json
 import os
+import subprocess
 import sys
-import argparse
-from pathlib import Path
 from datetime import datetime
-from typing import Optional, List
+from pathlib import Path
+from typing import List, Optional
 
 HISTORY_DIR = Path(".oracle_history")
 MAX_HISTORY = 5  # exchanges per project
@@ -37,7 +37,7 @@ def load_history() -> list:
     return history[-MAX_HISTORY:]
 
 
-def save_history(prompt: str, response: str, files: List[str] = None):
+def save_history(prompt: str, response: str, files: list[str] = None):
     """Append exchange to history."""
     HISTORY_DIR.mkdir(exist_ok=True)
     history_file = HISTORY_DIR / "conversation.json"
@@ -80,8 +80,8 @@ def format_history(history: list) -> str:
 
 def oracle_ask(
     prompt: str,
-    files: Optional[List[str]] = None,
-    lines: Optional[str] = None,
+    files: list[str] | None = None,
+    lines: str | None = None,
 ) -> str:
     """Query Gemini with conversation history."""
     # Build @file syntax
@@ -118,7 +118,7 @@ def oracle_ask(
     return response
 
 
-def oracle_quick(prompt: str, files: Optional[List[str]] = None) -> str:
+def oracle_quick(prompt: str, files: list[str] | None = None) -> str:
     """One-off query without history."""
     file_refs = " ".join(f"@{f}" for f in (files or []))
     full_prompt = f"{file_refs} {prompt}".strip()

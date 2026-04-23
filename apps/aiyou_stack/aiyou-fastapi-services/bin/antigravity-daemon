@@ -10,14 +10,14 @@ Commands:
     antigravity-daemon restart  - Restart all services
 """
 
+import argparse
+import os
+import signal
 import subprocess
 import sys
 import time
-import os
-import signal
-import argparse
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 # Service configuration
 SERVICES = {

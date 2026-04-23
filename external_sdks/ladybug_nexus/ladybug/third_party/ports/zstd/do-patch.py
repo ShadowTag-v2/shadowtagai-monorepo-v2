@@ -38,7 +38,7 @@ def remove_assembly_file(srcdir):
         asm_file.unlink()
         print(f"    Removed: {asm_file.relative_to(srcdir)}")
     else:
-        print(f"    Assembly file not found (already removed or doesn't exist)")
+        print("    Assembly file not found (already removed or doesn't exist)")
 
 
 def main():
