@@ -5,11 +5,13 @@ on:
     paths:
       - 'product-pitch-site/**'
       - 'apps/kovelai/**'
+      - 'apps/shadowtagai/**'
   pull_request:
     branches: [main]
     paths:
       - 'product-pitch-site/**'
       - 'apps/kovelai/**'
+      - 'apps/shadowtagai/**'
 
 jobs:
   lighthouse:
