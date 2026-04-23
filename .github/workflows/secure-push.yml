@@ -1,0 +1,54 @@
+---
+# Secure Push with GitHub App Short-Lived Tokens
+# Uses peter-murray/workflow-application-token-action@v4 to generate
+# ephemeral 60-minute installation tokens. No PATs, no deploy keys.
+# Reference: .agents/skills/github-app-push/SKILL.md
+
+name: Secure Push with GitHub App Token
+
+on:
+  workflow_dispatch:
+    inputs:
+      organization:
+        description: 'GitHub organization name'
+        required: true
+        default: 'ShadowTag-v2'
+        type: string
+
+jobs:
+  authenticated-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Generate Short-Lived Token
+        id: get_actions_token
+        uses: peter-murray/workflow-application-token-action@v4
+        with:
+          application_id: ${{ secrets.GH_APP_ID }}
+          application_private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          organization: ${{ inputs.organization }}
+          permissions: "contents:write,pull_requests:write,actions:write,statuses:write"
+          revoke_token: true
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.get_actions_token.outputs.token }}
+          fetch-depth: 0
+
+      - name: Configure Git Identity
+        run: |
+          git config user.name "antigravity-shadowtag-manager[bot]"
+          git config user.email "3018200+antigravity-shadowtag-manager[bot]@users.noreply.github.com"
+
+      - name: Push to Origin
+        run: git push origin main
+        env:
+          GITHUB_TOKEN: ${{ steps.get_actions_token.outputs.token }}
