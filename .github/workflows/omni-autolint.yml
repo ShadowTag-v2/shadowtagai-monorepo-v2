@@ -1,0 +1,152 @@
+name: "🤖 Omni-Autolint — Continuous Self-Healing"
+# Replaces autolint.yml. Creates PRs (not direct pushes) for review.
+# Uses peter-murray/workflow-application-token-action for short-lived tokens.
+# Reference: https://github.com/peter-murray/workflow-application-token-action
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.py'
+      - '**.ts'
+      - '**.tsx'
+      - '**.js'
+      - '**.jsx'
+  schedule:
+    - cron: '0 6 * * 1'  # Weekly Monday 6am UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  omni-autolint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # ── Step 1: Generate short-lived GitHub App token ──
+      - name: Generate GitHub App token
+        id: app-token
+        uses: peter-murray/workflow-application-token-action@v4
+        with:
+          application_id: ${{ secrets.GH_APP_ID }}
+          application_private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          permissions: "contents:write,pull_requests:write,metadata:read"
+          revoke_token: true
+
+      # ── Step 2: Checkout with token ──
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          ref: main
+          fetch-depth: 0
+
+      # ── Step 3: Setup runtimes ──
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # ── Step 4: Install linters ──
+      - name: Install linters
+        run: |
+          pip install ruff vulture
+          npm install @biomejs/biome @ast-grep/cli
+
+      # ── Step 5: Run Omni-Linter triad ──
+      - name: "Lint: ruff check --fix"
+        id: ruff-check
+        run: ruff check --fix --exit-zero .
+
+      - name: "Lint: ruff format"
+        id: ruff-format
+        run: ruff format .
+        continue-on-error: true
+
+      - name: "Lint: biome check --write"
+        id: biome
+        run: |
+          npx biome check --write --unsafe \
+            --files-ignore-unknown=true \
+            --no-errors-on-unmatched .
+        continue-on-error: true
+
+      - name: "Lint: ast-grep scan"
+        id: ast-grep
+        run: npx ast-grep scan --format github . || true
+
+      # ── Step 6: Judgment Check — fatal errors ──
+      - name: "Judgment: Check for fatal linter crashes"
+        run: |
+          # If ruff check had exit > 1 (not just warnings), fail the job
+          if [ "${{ steps.ruff-check.outcome }}" = "failure" ]; then
+            echo "❌ Ruff check encountered a fatal error. Aborting."
+            exit 1
+          fi
+
+      # ── Step 7: Detect changes ──
+      - name: Check for AST changes
+        id: diff
+        run: |
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "### 🧹 AST Changes Detected" >> "$GITHUB_STEP_SUMMARY"
+            echo '```diff' >> "$GITHUB_STEP_SUMMARY"
+            git diff | head -200 >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      # ── Step 8: Create PR (not direct push) ──
+      - name: Create Auto-Heal PR
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          BRANCH="gca/ast-autofix-$(git rev-parse --short HEAD)-$(date +%Y%m%d%H%M)"
+          git config user.name "ShadowTag GCA Bot"
+          git config user.email "gca-bot@shadowtagai.ai"
+          git checkout -b "$BRANCH"
+          git add -A
+          git commit -m "chore(ast): autonomous AST optimization via GCA
+
+          Automated fixes applied by the Omni-Autolint CI pipeline:
+          - ruff check --fix (Pyflakes, pycodestyle, isort, bugbear)
+          - ruff format (Black-compatible formatting)
+          - biome check --write (JS/TS/JSON formatting + linting)
+          - ast-grep scan (structural pattern analysis)
+
+          This PR was generated automatically. Review before merging."
+
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --title "🤖 AST Auto-Heal: Omni-Linter Corrections" \
+            --body "## Automated AST Optimization
+
+          This PR contains auto-fixable linting corrections detected by the Omni-Autolint pipeline.
+
+          ### Linters Applied
+          - **ruff check --fix** — Python lint + auto-fix
+          - **ruff format** — Black-compatible formatting
+          - **biome check --write** — JS/TS/JSON lint + format
+          - **ast-grep scan** — Structural pattern analysis
+
+          ### Review Checklist
+          - [ ] Verify no semantic changes (only formatting/style)
+          - [ ] Confirm no import removals that break runtime
+          - [ ] Check that unfixable rules (B018, F841) were NOT auto-fixed
+
+          > Generated by \`ShadowTag GCA Bot\` via \`.github/workflows/omni-autolint.yml\`" \
+            --base main \
+            --head "$BRANCH" \
+            --label "bot,ast-autofix"
