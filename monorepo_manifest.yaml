@@ -1,4 +1,16 @@
-version: 11.0 # Antigravity Handoff
+version: 11.1 # Stage 3/4 Hardening — 2026-04-23
+hardened_state:
+  last_hardened: "2026-04-23"
+  gold_master_tag: SOVEREIGN_GOLD_MASTER_W9.4
+  tests_passing: 201
+  tests_skipped: 1
+  test_runner: /opt/homebrew/bin/python3.14
+  risk_register_version: v10.6
+  risk_register_count: 37  # Includes Risk #79 + #80 added 2026-04-23
+  python_canonical: /opt/homebrew/bin/python3.14
+  counselconduit_version: v3.2.0
+  firebase_mcp_auth: founder@shadowtagai.com
+  ruff_state: all_checks_passed
 active_silos:
   - id: shadowtag_core
     path: packages/core
