@@ -25,7 +25,7 @@ Before beginning code execution on a high-entropy task, you must explicitly use 
 Available context retrieval methods (in priority order):
 1. **Knowledge Items (KIs)** — Check KI summaries at conversation start
 2. **Conversation Logs** — Raw logs from past conversations in `<appDataDir>/brain/`
-3. **NotebookLM MCP** — `uv tool install notebooklm-mcp-cli` (50 queries/day)
+3. **NotebookLM MCP** — `antigravity-notebooklm-mcp` server (tools: `manage_notebook`, `query_notebook`, `manage_source`, `perform_deep_research`). Auth via `~/.notebooklm-mcp/auth.json`.
 4. **Google Developer Knowledge MCP** — For Google API/SDK documentation
 5. **LanceDB Local RAG** — `retriever_lancedb.py` for workspace-local search
 
