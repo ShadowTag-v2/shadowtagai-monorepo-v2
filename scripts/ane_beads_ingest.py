@@ -2,12 +2,10 @@ import os
 import logging
 
 import sqlite3
-import logging
 
 
 # --- ANE BYPASS INTEGRATION ---
 import sys
-import logging
 
 from datetime import datetime
 
@@ -22,7 +20,6 @@ except ImportError:
 INTEL_DIR = os.path.abspath("apps/ShadowTag-v2_ecosystem/recovered_intel")
 # Use physical mapping to the active root
 import pathlib  # noqa: E402
-import logging
 
 
 ROOT_DIR = str(pathlib.Path(__file__).parent.parent.absolute())
