@@ -1,4 +1,4 @@
-# RISK_REGISTER — v10.5
+# RISK_REGISTER — v10.6
 
 > Operational risks tracked as part of the sovereign monorepo governance.
 > Reviewed on each version bump. Mitigations are enforced, not advisory.
@@ -281,3 +281,15 @@
 - **Status:** RESOLVED
 - **Description**: Firebase CLI (`npx -y firebase-tools@latest`) refresh tokens do not persist across agent shell invocations, causing 4+ re-authentication prompts within 5 minutes. Root causes: (1) `npx` installs to ephemeral `_npx/` cache directory, losing the stored token between invocations. (2) The Inquirer.js TUI prompt (`? Enter authorization code:`) consumes input character-by-character in non-PTY agent shells. (3) `firebase logout` + `firebase login` cycle invalidates the previous refresh token.
 - **Resolution**: (2026-04-23) Three-layer fix applied: **Layer 1 (CLI)**: Installed firebase-tools v15.15.0 globally (`npm i -g firebase-tools`) — token now persists in `~/.config/configstore/firebase-tools.json`. Using `CI=true` env var bypasses all Inquirer.js TUI prompts. **Layer 2 (MCP Server)**: Authenticated the Firebase MCP server directly via the `firebase_login` MCP tool (which has its own OAuth2 session independent of the CLI token). **Layer 3 (ADC)**: Application Default Credentials remain valid for GCP services but cannot access Firebase Management APIs. **Architecture insight**: The Firebase MCP server, CLI, and ADC are THREE independent auth channels. `firebase_get_environment` reads cached local config (works with stale auth), but `firebase://guides/init/hosting` resource and deployment operations require active MCP server auth via `firebase_login`. Terminal `firebase deploy` requires CLI auth. They do not share tokens.
+
+## Risk #79: pytest.ini System Python 3.9 + --cov Blocker
+- **Type**: Build / CI
+- **Severity:** 🟡 Medium
+- **Status:** RESOLVED
+- **Description**: `pytest.ini` v8.4 had two compounding blockers: (1) `testpaths = tests` listed only the root `tests/` dir, not `apps/counselconduit/tests/`. (2) `addopts` included `--cov=apps/counselconduit --cov-fail-under=10` which required `pytest-cov`, but `pip install` was failing against macOS system Python 3.9 (Xcode) with `NotOpenSSLWarning` + `unrecognized arguments` error. Test suite was failing at collection phase. **Resolution**: (2026-04-23) `pytest.ini` bumped to v8.5: (1) `testpaths` expanded to include `apps/counselconduit/tests`. (2) `--cov` flags commented out with install instructions. (3) Python path updated to include `apps/counselconduit`. (4) Run command canonicalized: `/opt/homebrew/bin/python3.14 -m pytest`. Test suite verified: **201 passed, 1 skipped** in 62.3s. See Risk #64 for Python version mismatch root cause.
+
+## Risk #80: Untracked Switchboard Plans + IMPLEMENTATION_PLAN.md — Orphan File Accumulation
+- **Type**: Git Hygiene / Architecture
+- **Severity:** 🟢 Low
+- **Status:** KNOWN
+- **Description**: `git status` reveals 3 untracked `.switchboard/plans/brain_*.md` files and an `IMPLEMENTATION_PLAN.md` at repo root. These are agent-generated session artifacts not under version control. The `src/vs/` directory (VSCode source subtree) is also untracked. **Action**: Add `.switchboard/plans/brain_*.md` and `IMPLEMENTATION_PLAN.md` to `.gitignore` if ephemeral, or commit them if they represent canonical state. `src/vs/` should be verified as intentional (likely needs gitignore exclusion).
