@@ -1,88 +1,111 @@
 /**
- * Deep Browser Extractor — 11x Chrome AI Mode Expansion Loop
+ * Deep Browser Extractor — 11x Latent Space Exhaustion Tool
  *
- * Drives Google's AI Mode through 11 consecutive expansion cycles
- * to extract maximally deep context on any research topic.
+ * Purpose: Physically manipulate the Google Chrome "AI Mode" UI to bypass
+ * API truncation limits, forcing the underlying model to unroll its entire
+ * latent knowledge space into an exhaustive master thesis.
+ *
+ * This is NOT a replacement for MCP search — it serves a fundamentally
+ * different purpose: deep context extraction via iterative expansion.
  *
  * Usage: node tools/scripts/deep_browser_extractor.js "your query here"
  *
- * IMPORTANT: This script launches a VISIBLE browser window.
- * It is designed for local R&D workstation use only.
- * Never deploy to CI/CD or headless environments.
- *
- * Dependencies: npx playwright install chromium
+ * Prerequisites: npm install playwright
  */
 
-const { chromium } = require('playwright');
-const fs = require('fs');
-const path = require('path');
+const { chromium } = require("playwright");
 
 const EXPANSION_CYCLES = 11;
 const CYCLE_WAIT_MS = 8000;
 const AI_MODE_WAIT_MS = 3000;
-const OUTPUT_DIR = path.join(__dirname, '..', '..', '.beads', 'extractions');
 
 async function extractDeepContext(query) {
-  console.log(`🔬 Initiating Deep Extraction for: "${query}"`);
-  console.log(`   Cycles: ${EXPANSION_CYCLES} | Wait: ${CYCLE_WAIT_MS}ms per cycle`);
+  console.log(`\n🔬 Deep Context Extraction — 11x Latent Space Exhaustion`);
+  console.log(`   Query: "${query}"`);
+  console.log(`   Cycles: ${EXPANSION_CYCLES}`);
+  console.log(`   Estimated time: ~${(EXPANSION_CYCLES * CYCLE_WAIT_MS) / 1000 + 10}s\n`);
 
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext({
-    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+    userAgent:
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
   });
   const page = await context.newPage();
-  let finalPayload = '';
 
   try {
-    await page.goto('https://www.google.com/', { waitUntil: 'networkidle' });
+    // Navigate to Google
+    await page.goto("https://www.google.com/", { waitUntil: "networkidle" });
+    console.log("✅ Google loaded");
 
-    // Enter query
-    const searchInput = page.locator('textarea[name="q"], input[name="q"]').first();
+    // Enter search query
+    const searchInput = page.locator('textarea[name="q"], input[name="q"]');
     await searchInput.fill(query);
-    await page.keyboard.press('Enter');
-    await page.waitForLoadState('networkidle');
+    await page.keyboard.press("Enter");
+    await page.waitForLoadState("networkidle");
+    console.log("✅ Search results loaded");
 
-    // Attempt AI Mode activation
-    const aiTab = page.locator('text="AI Mode"').first();
-    if (await aiTab.isVisible({ timeout: 5000 }).catch(() => false)) {
-      console.log('🧠 AI Mode detected — activating...');
+    // Attempt to activate AI Mode
+    const aiTab = page.locator('text="AI mode"').first();
+    const aiTabVisible = await aiTab
+      .isVisible({ timeout: 5000 })
+      .catch(() => false);
+
+    if (aiTabVisible) {
       await aiTab.click();
       await page.waitForTimeout(AI_MODE_WAIT_MS);
+      console.log("✅ AI Mode activated\n");
 
+      // 11x Expansion Loop
       for (let i = 0; i < EXPANSION_CYCLES; i++) {
-        console.log(`   ↳ Expansion cycle ${i + 1}/${EXPANSION_CYCLES}...`);
-        const inputArea = page.locator('textarea').last();
-        await inputArea.fill('yes, expand further with more detail and examples');
-        await page.keyboard.press('Enter');
-        await page.waitForTimeout(CYCLE_WAIT_MS);
+        const cycleNum = i + 1;
+        console.log(
+          `   ⚡ Expansion cycle ${cycleNum}/${EXPANSION_CYCLES}...`
+        );
+
+        try {
+          const inputArea = page.locator("textarea").last();
+          await inputArea.fill("yes, continue with more detail");
+          await page.keyboard.press("Enter");
+          await page.waitForTimeout(CYCLE_WAIT_MS);
+        } catch (cycleErr) {
+          console.log(
+            `   ⚠️  Cycle ${cycleNum} encountered resistance: ${cycleErr.message}`
+          );
+          // Continue — some cycles may hit rate limits
+        }
       }
 
-      finalPayload = await page.locator('body').innerText();
-      console.log('✅ Deep Extraction Complete.');
-    } else {
-      console.log('⚠️  AI Mode tab not found. Extracting standard search results.');
-      finalPayload = await page.locator('body').innerText();
-    }
+      // Extract final payload
+      const finalPayload = await page.locator("body").innerText();
+      const outputPath = `tools/scripts/extraction_${Date.now()}.txt`;
 
-    // Save extraction
-    if (!fs.existsSync(OUTPUT_DIR)) {
-      fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+      // Write to file
+      const fs = require("fs");
+      fs.writeFileSync(outputPath, finalPayload, "utf-8");
+
+      console.log(`\n✅ Deep Extraction Complete.`);
+      console.log(`   Output: ${outputPath}`);
+      console.log(`   Payload size: ${finalPayload.length} chars`);
+      console.log(
+        `   Preview: ${finalPayload.substring(0, 500)}...\n`
+      );
+    } else {
+      console.log(
+        "⚠️  AI Mode tab not found. Extracting standard search results instead."
+      );
+      const standardPayload = await page.locator("body").innerText();
+      console.log(`   Extracted ${standardPayload.length} chars from SERP`);
     }
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const sanitizedQuery = query.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 50);
-    const outFile = path.join(OUTPUT_DIR, `extraction_${sanitizedQuery}_${timestamp}.txt`);
-    fs.writeFileSync(outFile, finalPayload);
-    console.log(`📄 Saved to: ${outFile}`);
-    console.log(`   Length: ${finalPayload.length} chars`);
   } catch (e) {
-    console.error('❌ Extraction failed:', e.message);
+    console.error("❌ Extraction failed:", e.message);
+    process.exitCode = 1;
   } finally {
     await browser.close();
+    console.log("🔒 Browser closed.");
   }
-
-  return finalPayload;
 }
 
-// CLI entry point
-const query = process.argv[2] || 'Next-generation spatial computing architectures';
-extractDeepContext(query).then(() => process.exit(0));
+// Entry point
+const query =
+  process.argv[2] || "Next-generation spatial computing architectures";
+extractDeepContext(query);
