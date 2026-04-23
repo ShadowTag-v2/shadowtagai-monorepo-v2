@@ -43,7 +43,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 ## Core Technical Truths (DO NOT HALLUCINATE OVERRIDES)
 
 1. **uuid7 Fallback:** Cloud Run container `counselconduit-00015-mmq` uses an old image. We MUST use `try/except ImportError` for `uuid7` resolution between monorepo and container paths.
-2. **.NET Environment:** .NET 10.0.202 IS CONFIRMED INSTALLED (`dotnet --version` = `10.0.202`). Semantic Kernel (net10.0, SK 1.74.0) build-verified. Target framework: `net10.0`.
+2. **.NET Environment:** .NET 8.0.419 IS CONFIRMED INSTALLED (`dotnet --version` = `8.0.419`, runtime 8.0.25). Semantic Kernel target framework: `net8.0`. Previous claims of 10.0.x and 11.0.x were FABRICATED — verified 2026-04-23.
 3. **Semantic Kernel Process.cs:** `OnExternalEvent` is the CORRECT API for `Microsoft.SemanticKernel.Process.Core v1.21.0-alpha`. Do NOT apply the `OnInputEvent` rename until Process.Core >= v1.30+.
 4. **Skill Fleet:** We maintain 182 cherry-picked community skills inside our local Matrix.
 5. **Prompt Repetition (arXiv 2512.14982):** Applies ONLY to non-reasoning model tiers (flash, lite, mini) to boost accuracy 1–8%. Do NOT apply to thinking/extended-thinking models.
@@ -54,8 +54,8 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 ## Open Infrastructure Blockers
 
 - MAGIC_LINK_SECRET needs creation via GCP Secret Manager.
-- Firebase Storage needs console initialization (Rules are currently `deny-all`).
-- `lead-capture-router` requires a `firebase-admin` upgrade to fix protobufjs vulnerabilities.
+- ~~Firebase Storage needs console initialization~~ — ✅ RESOLVED (2026-04-23): `storage.rules` deployed with deny-all rules.
+- ~~`lead-capture-router` requires a `firebase-admin` upgrade~~ — ✅ RESOLVED: Already at `^13.8.0` (latest major).
 - `NotebookLM MCP` CLI needs installation (`uv tool install notebooklm-mcp-cli`).
 - Cloud Run redeploy needed for uuid7 fix (container `counselconduit-00015-mmq`).
 
