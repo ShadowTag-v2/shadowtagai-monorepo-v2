@@ -145,7 +145,6 @@ async function run(): Promise<void> {
       })),
     );
   } else {
-    console.warn('Skipping OpenAI tests: OPENAI_API_KEY not set.');
   }
 
   const anthropicKey = process.env.ANTHROPIC_API_KEY;
@@ -189,7 +188,6 @@ async function run(): Promise<void> {
       })),
     );
   } else {
-    console.warn('Skipping Anthropic tests: ANTHROPIC_API_KEY not set.');
   }
 
   const googleKey = process.env.GOOGLE_API_KEY;
@@ -232,7 +230,6 @@ async function run(): Promise<void> {
       })),
     );
   } else {
-    console.warn('Skipping Google tests: GOOGLE_API_KEY not set.');
   }
 
   const openRouterKey = process.env.OPENROUTER_API_KEY;
@@ -275,11 +272,9 @@ async function run(): Promise<void> {
       })),
     );
   } else {
-    console.warn('Skipping OpenRouter tests: OPENROUTER_API_KEY not set.');
   }
 
   if (outcomes.length === 0) {
-    console.error('No providers tested. Set OPENAI_API_KEY and/or ANTHROPIC_API_KEY to run tests.');
     process.exitCode = 1;
     return;
   }
@@ -295,8 +290,7 @@ async function run(): Promise<void> {
   }
 }
 
-run().catch((error) => {
-  console.error('Unexpected error while running tests:', error);
+run().catch((_error) => {
   console.log('Test failed');
   process.exitCode = 1;
 });

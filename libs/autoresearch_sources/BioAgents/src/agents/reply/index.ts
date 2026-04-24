@@ -108,7 +108,7 @@ export async function replyAgent(input: {
 
     // Extract summary section for conversation history
     const summaryMatch = reply.match(/## Summary\s+([\s\S]+?)(?:\n---|\n##|$)/);
-    const summary = summaryMatch ? summaryMatch[1]!.trim() : reply.substring(0, 300) + '...'; // Fallback to first 300 chars
+    const summary = summaryMatch ? summaryMatch[1]?.trim() : `${reply.substring(0, 300)}...`; // Fallback to first 300 chars
 
     logger.info(
       {

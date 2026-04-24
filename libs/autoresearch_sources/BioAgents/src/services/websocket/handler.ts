@@ -156,7 +156,7 @@ export const websocketHandler = new Elysia().ws('/api/ws', {
           if (!conversationClients.has(conversationId)) {
             conversationClients.set(conversationId, new Set());
           }
-          conversationClients.get(conversationId)!.add(ws);
+          conversationClients.get(conversationId)?.add(ws);
           (ws.data as any).subscriptions.add(conversationId);
 
           ws.send(
@@ -235,7 +235,7 @@ export function broadcastToConversation(conversationId: string, message: object)
     try {
       client.send(payload);
       successCount++;
-    } catch (e) {
+    } catch (_e) {
       errorCount++;
       // Client disconnected, will be cleaned up
     }

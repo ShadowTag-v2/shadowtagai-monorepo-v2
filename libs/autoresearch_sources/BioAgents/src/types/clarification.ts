@@ -5,8 +5,6 @@
  * collects answers, and creates an approved plan before deep research starts.
  */
 
-import type { PlanTask } from './core';
-
 /**
  * Categories of clarification questions
  * - ambiguity: Vague terms, unclear scope, multiple interpretations

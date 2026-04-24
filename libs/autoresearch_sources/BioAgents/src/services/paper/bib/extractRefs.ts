@@ -100,7 +100,7 @@ function classifyUrl(url: string, line: string): ExtractedRef | null {
     return {
       type: 'pmc',
       url,
-      id: pmcMatch[1]!.toUpperCase(),
+      id: pmcMatch[1]?.toUpperCase(),
       title: extractTitleFromLine(line, url),
     };
   }
@@ -122,7 +122,7 @@ function classifyUrl(url: string, line: string): ExtractedRef | null {
     return {
       type: 'nct',
       url,
-      id: nctMatch[1]!.toUpperCase(),
+      id: nctMatch[1]?.toUpperCase(),
       title: extractTitleFromLine(line, url),
     };
   }
@@ -155,7 +155,7 @@ function classifyUrl(url: string, line: string): ExtractedRef | null {
     return {
       type: 'uniprot',
       url,
-      id: uniprotMatch[1]!.toUpperCase(),
+      id: uniprotMatch[1]?.toUpperCase(),
       title: extractTitleFromLine(line, url),
     };
   }

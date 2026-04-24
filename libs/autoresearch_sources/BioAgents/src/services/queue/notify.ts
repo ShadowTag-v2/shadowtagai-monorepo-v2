@@ -11,7 +11,7 @@
 
 import logger from '../../utils/logger';
 import { getPublisher } from './connection';
-import type { Notification, NotificationType } from './types';
+import type { Notification } from './types';
 
 /**
  * Publish a notification to Redis Pub/Sub

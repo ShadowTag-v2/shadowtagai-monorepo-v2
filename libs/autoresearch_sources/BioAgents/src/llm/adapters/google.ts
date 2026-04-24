@@ -306,7 +306,7 @@ export class GoogleAdapter extends LLMAdapter {
       const lastUserMessageIndex = contents.map((c) => c.role).lastIndexOf('user');
       if (lastUserMessageIndex >= 0) {
         const lastUserMessage = contents[lastUserMessageIndex];
-        if (lastUserMessage && lastUserMessage.parts) {
+        if (lastUserMessage?.parts) {
           const fileParts = request.fileUris.map((fileInfo) => ({
             fileData: {
               fileUri: fileInfo.fileUri,

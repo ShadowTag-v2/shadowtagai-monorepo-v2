@@ -4,9 +4,9 @@
  * Shells out to pandoc to produce syntactically valid LaTeX from Markdown.
  */
 
-import { spawn } from 'child_process';
-import * as fs from 'fs';
-import * as path from 'path';
+import { spawn } from 'node:child_process';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import logger from '../../../utils/logger';
 
 /**
@@ -97,8 +97,7 @@ function patchForXelatex(tex: string): string {
     }
 
     if (preambleAdditions.length > 0) {
-      result =
-        result.slice(0, docBegin) + preambleAdditions.join('\n') + '\n\n' + result.slice(docBegin);
+      result = `${result.slice(0, docBegin) + preambleAdditions.join('\n')}\n\n${result.slice(docBegin)}`;
     }
   }
 

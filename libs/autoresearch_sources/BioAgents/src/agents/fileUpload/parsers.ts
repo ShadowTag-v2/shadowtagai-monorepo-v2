@@ -42,11 +42,11 @@ export async function parseCSV(buffer: Buffer, filename: string): Promise<Parsed
   }
 
   const headers = result.meta.fields || [];
-  let formattedText = headers.join(', ') + '\n';
+  let formattedText = `${headers.join(', ')}\n`;
 
   for (const row of result.data as Record<string, any>[]) {
     const values = headers.map((h) => row[h] || '');
-    formattedText += values.join(', ') + '\n';
+    formattedText += `${values.join(', ')}\n`;
   }
 
   return {

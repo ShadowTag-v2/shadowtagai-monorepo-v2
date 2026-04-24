@@ -14,7 +14,7 @@ function isRetryable(error: unknown): boolean {
   const msg = `${error.name} ${error.message}`.toLowerCase();
   const code = ((error as NodeJS.ErrnoException).code || '').toLowerCase();
   return /econnre|enotfound|etimedout|socket|network|fetch failed|abort|unable to connect|connectionrefused/i.test(
-    msg + ' ' + code,
+    `${msg} ${code}`,
   );
 }
 

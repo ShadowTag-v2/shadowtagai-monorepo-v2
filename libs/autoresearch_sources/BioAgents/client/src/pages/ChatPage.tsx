@@ -140,7 +140,16 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
         setFreshSessionCreated(true);
       }
     }
-  }, [urlSessionId, sessions, isLoadingSessions, freshSessionCreated]);
+  }, [
+    urlSessionId,
+    sessions,
+    isLoadingSessions,
+    freshSessionCreated,
+    switchSession,
+    currentSession?.messages?.length,
+    currentSessionId,
+    createNewSession,
+  ]);
 
   // Real-time states for thinking visualization and research state
   const { currentState, conversationState, refetchConversationState } = useStates(
@@ -200,7 +209,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
   // Clear processed messages when switching conversations
   useEffect(() => {
     processedMessageIds.current.clear();
-  }, [currentSessionId]);
+  }, []);
 
   // WebSocket message handler (backup for when polling doesn't catch it)
   const handleMessageUpdated = useCallback(
@@ -230,9 +239,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
           setLoadingMessageId(null);
           setPendingMessageData(null);
         }
-      } catch (err) {
-        console.error('[ChatPage] WebSocket handler error:', err);
-      }
+      } catch (_err) {}
     },
     [addMessage, tryMarkAsProcessed],
   );
@@ -401,7 +408,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
   useEffect(() => {
     setLoadingMessageId(null);
     setIsDeepResearch(false);
-  }, [currentSessionId]);
+  }, []);
 
   // Auto-expand research panel when deep research starts
   useEffect(() => {
@@ -423,7 +430,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
       clearLoading();
       scrollToBottom();
     }
-  }, [messages, isDeepResearch, isCurrentConversationLoading]);
+  }, [messages, isDeepResearch, isCurrentConversationLoading, scrollToBottom, clearLoading]);
 
   // Watch for deep research completion via state
   useEffect(() => {
@@ -464,7 +471,14 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
         setLoadingMessageId(null);
       }
     }
-  }, [currentState, isCurrentConversationLoading, messages, loadingMessageId]);
+  }, [
+    currentState,
+    isCurrentConversationLoading,
+    messages,
+    loadingMessageId,
+    scrollToBottom,
+    addMessage,
+  ]);
 
   // Ref to track loading message ID for polling (avoids stale closure)
   const loadingMessageIdRef = useRef(loadingMessageId);
@@ -539,9 +553,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
           setLoadingMessageId(null);
           setPendingMessageData(null);
         }
-      } catch (err) {
-        console.error('[ChatPage] Poll error:', err);
-      }
+      } catch (_err) {}
     };
 
     // Poll immediately and then every 2 seconds (same interval as research state)
@@ -559,7 +571,13 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
     if (x402Enabled && isEmbeddedWalletConnected && embeddedWalletAddress && embeddedWalletClient) {
       x402.setEmbeddedWalletClient(embeddedWalletClient, embeddedWalletAddress);
     }
-  }, [x402Enabled, isEmbeddedWalletConnected, embeddedWalletAddress, embeddedWalletClient]);
+  }, [
+    x402Enabled,
+    isEmbeddedWalletConnected,
+    embeddedWalletAddress,
+    embeddedWalletClient,
+    x402.setEmbeddedWalletClient,
+  ]);
 
   // Fetch and attach states to messages
   useEffect(() => {
@@ -615,8 +633,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
         );
 
         return attachedCount > 0;
-      } catch (err) {
-        console.error('[ChatPage] Error fetching states:', err);
+      } catch (_err) {
         return false;
       }
     }
@@ -629,7 +646,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [currentSessionId, userId, messages.length]);
+  }, [currentSessionId, userId, messages.length, updateSessionMessages, messages.filter]);
 
   /**
    * Handle sending a message
@@ -771,7 +788,6 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
         }
       }
     } catch (err: any) {
-      console.error('Chat error:', err);
       if (err?.isPaymentConfirmation) return;
 
       removeMessage(userMessage.id);
@@ -1114,7 +1130,7 @@ export function ChatPage({ sessionId: urlSessionId }: ChatPageProps) {
               setTimeout(() => scrollToBottom(), 50);
               const response = await confirmPayment();
 
-              if (response && response.text) {
+              if (response?.text) {
                 scrollToBottom();
                 setLoadingConversationId(null);
                 setLoadingMessageId(null);

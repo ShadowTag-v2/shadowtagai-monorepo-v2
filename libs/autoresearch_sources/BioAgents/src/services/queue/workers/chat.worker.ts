@@ -466,7 +466,7 @@ Respond with ONLY "YES" if a hypothesis is needed, or "NO" if it's not needed.`;
  * Start the chat worker
  */
 export function startChatWorker(): Worker {
-  const concurrency = parseInt(process.env.CHAT_QUEUE_CONCURRENCY || '5');
+  const concurrency = parseInt(process.env.CHAT_QUEUE_CONCURRENCY || '5', 10);
 
   const worker = new Worker<ChatJobData, ChatJobResult>('chat', processChatJob, {
     connection: getBullMQConnection(),

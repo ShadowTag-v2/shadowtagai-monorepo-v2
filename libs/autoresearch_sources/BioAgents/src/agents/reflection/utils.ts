@@ -95,7 +95,7 @@ export async function reflectOnWorld(
         .replace(/\n?```$/, '')
         .trim();
       parsedResponse = JSON.parse(cleaned);
-    } catch (parseError) {
+    } catch (_parseError) {
       // try to locate the json inbetween {} in the message content
       const jsonMatch = response.content.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/);
       const jsonString = jsonMatch ? jsonMatch[1] || '' : '';

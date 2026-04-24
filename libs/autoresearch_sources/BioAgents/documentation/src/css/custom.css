@@ -230,35 +230,35 @@ article {
 
 /* Code blocks */
 [class*='codeBlockContainer'] {
-  margin: 1.5rem 0 !important;
-  border-radius: 8px !important;
-  border: 1px solid var(--ifm-toc-border-color) !important;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  border: 1px solid var(--ifm-toc-border-color);
   overflow: hidden;
-  box-shadow: none !important;
-  background: transparent !important;
+  box-shadow: none;
+  background: transparent;
 }
 
 [class*='codeBlockContent'] {
-  background: #f6f8fa !important;
+  background: #f6f8fa;
 }
 
 [data-theme='dark'] [class*='codeBlockContent'] {
-  background: #161b22 !important;
+  background: #161b22;
 }
 
 pre {
-  border-radius: 0 !important;
-  border: none !important;
-  background: transparent !important;
-  padding: 1rem 1.25rem !important;
-  margin: 0 !important;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  padding: 1rem 1.25rem;
+  margin: 0;
   line-height: 1.65;
 }
 
 pre code {
-  background: transparent !important;
-  border: none !important;
-  padding: 0 !important;
+  background: transparent;
+  border: none;
+  padding: 0;
   font-size: 0.8125rem;
   line-height: 1.65;
 }
@@ -505,8 +505,8 @@ tr:hover td {
 
 /* Search dropdown */
 .DocSearch-Button {
-  border-radius: 8px !important;
-  padding: 0 12px !important;
+  border-radius: 8px;
+  padding: 0 12px;
 }
 
 [class*='searchBarContainer'] {

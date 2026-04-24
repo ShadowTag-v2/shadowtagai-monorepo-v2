@@ -45,7 +45,6 @@ const ScrollAnimator = (() => {
   function init(config) {
     canvas = document.getElementById(config.canvasId);
     if (!canvas) {
-      console.error(`[ScrollAnimator] Canvas #${config.canvasId} not found.`);
       return;
     }
 
@@ -83,7 +82,6 @@ const ScrollAnimator = (() => {
       };
 
       img.onerror = () => {
-        console.warn(`[ScrollAnimator] Failed to load: ${img.src}`);
         loadedCount++;
         if (loadedCount === totalFrames) {
           isLoaded = true;
@@ -132,7 +130,7 @@ const ScrollAnimator = (() => {
     currentFrame = frameIndex;
 
     const img = frames[frameIndex];
-    if (!img || !img.complete || !img.naturalWidth) return;
+    if (!img?.complete || !img.naturalWidth) return;
 
     // Cover-fit the frame to the canvas
     const canvasW = canvas.width / (window.devicePixelRatio || 1);

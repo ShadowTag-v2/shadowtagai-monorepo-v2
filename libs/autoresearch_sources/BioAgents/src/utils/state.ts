@@ -48,7 +48,7 @@ export function cleanWebSearchResults(webSearchResults: WebSearchResult[]): WebS
 
         // Ensure it starts with www.
         if (!cleanedTitle.startsWith('www.')) {
-          cleanedTitle = 'www.' + cleanedTitle;
+          cleanedTitle = `www.${cleanedTitle}`;
         }
       } catch {
         // If parsing fails, keep the original title
@@ -121,8 +121,8 @@ export function parseKeyValueXml(text: string): Record<string, any> | null {
     if (match[1] === match[3]) {
       const key = match[1]!;
       // Basic unescaping for common XML entities (add more as needed)
-      const value = match[2]!
-        .replace(/&lt;/g, '<')
+      const value = match[2]
+        ?.replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
         .replace(/&amp;/g, '&')
         .replace(/&quot;/g, '"')

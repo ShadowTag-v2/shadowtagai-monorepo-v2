@@ -9,7 +9,7 @@ interface Dataset {
   size?: number;
 }
 
-function formatFileSize(bytes: number): string {
+function _formatFileSize(bytes: number): string {
   if (bytes === 0) return '0 Bytes';
   const k = 1024;
   const sizes = ['Bytes', 'KB', 'MB', 'GB'];
@@ -144,7 +144,7 @@ export function ResearchStatePanel({
   const currentStep = state?.plan?.find((step) => step.start && !step.end);
 
   // Show loading state when deep research is starting but no state yet
-  const showLoadingState = isLoading && (!state || !state.currentObjective);
+  const showLoadingState = isLoading && !state?.currentObjective;
 
   return (
     <div className={`research-state-panel ${isExpanded ? 'expanded' : ''}`}>
@@ -426,7 +426,7 @@ export function ResearchStatePanel({
                                 {isOutputExpanded
                                   ? step.output
                                   : needsTruncation
-                                    ? step.output.slice(0, outputPreviewLength) + '...'
+                                    ? `${step.output.slice(0, outputPreviewLength)}...`
                                     : step.output}
                               </pre>
                               {needsTruncation && (

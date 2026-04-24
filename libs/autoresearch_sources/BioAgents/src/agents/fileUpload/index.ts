@@ -247,7 +247,7 @@ Description:`;
     }
 
     return description;
-  } catch (error) {
+  } catch (_error) {
     if (logger) {
       logger.warn(`Failed to generate description for ${filename}, using fallback`);
     }
