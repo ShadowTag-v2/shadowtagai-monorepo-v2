@@ -91,3 +91,23 @@ repos:
         types: [python]
         pass_filenames: false
         always_run: true
+
+  # Monorepo manifest drift guard — validates CI workflow existence
+  - repo: local
+    hooks:
+      - id: manifest-drift-guard
+        name: Monorepo Manifest Drift Guard
+        entry: bash scripts/manifest_drift_guard.sh
+        language: system
+        files: 'monorepo_manifest\.yaml$|\.github/workflows/.*\.yml$'
+        pass_filenames: false
+
+  # Weekly compliance copy scanner
+  - repo: local
+    hooks:
+      - id: compliance-copy-scan
+        name: Compliance Copy Scanner
+        entry: bash scripts/compliance_copy_scan_weekly.sh
+        language: system
+        files: '\.(html|tsx|ts|mdx|md)$'
+        pass_filenames: false
