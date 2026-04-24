@@ -466,8 +466,8 @@ export async function chatHandler(ctx: any, options: ChatHandlerOptions = {}) {
         return { ok: false, error: dataSetup.error || 'Data setup failed' };
       }
 
-      conversationStateRecord = dataSetup.data!.conversationStateRecord;
-      stateRecord = dataSetup.data!.stateRecord;
+      conversationStateRecord = dataSetup.data?.conversationStateRecord;
+      stateRecord = dataSetup.data?.stateRecord;
 
       logger.info(
         {

@@ -5,7 +5,7 @@
  * and non-DOI references (PMC, PMID, NCT, ArXiv, generic URLs) as @misc entries.
  */
 
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 import logger from '../../../utils/logger';
 import type { BibTeXEntry } from '../types';
 import {

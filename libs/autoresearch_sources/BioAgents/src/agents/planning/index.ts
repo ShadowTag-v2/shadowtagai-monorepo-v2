@@ -323,7 +323,7 @@ async function buildContextFromState(
               parts.push(`Assistant: ${msg.summary}`);
             } else if (msg.content) {
               const content =
-                msg.content.length > 300 ? msg.content.substring(0, 300) + '...' : msg.content;
+                msg.content.length > 300 ? `${msg.content.substring(0, 300)}...` : msg.content;
               parts.push(`Assistant: ${content}`);
             }
 
@@ -409,7 +409,7 @@ async function buildContextFromState(
   if (completedAnalysisTasks.length > 0) {
     const artifactsText = completedAnalysisTasks
       .flatMap((task) =>
-        task.artifacts!.map((artifact) => {
+        task.artifacts?.map((artifact) => {
           return `  - ${artifact.name} (id: ${artifact.id}) [from ${task.id}]: ${artifact.description}`;
         }),
       )

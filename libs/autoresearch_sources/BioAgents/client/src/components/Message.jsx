@@ -10,7 +10,7 @@ export function Message({ message }) {
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return null;
     const date = timestamp instanceof Date ? timestamp : new Date(timestamp);
-    if (isNaN(date.getTime())) return null;
+    if (Number.isNaN(date.getTime())) return null;
 
     // Format: "12:34 PM" for today, "Dec 29, 12:34 PM" for other days
     const now = new Date();
@@ -38,9 +38,7 @@ export function Message({ message }) {
       await navigator.clipboard.writeText(message.content);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
+    } catch (_err) {}
   };
 
   const formatFileSize = (bytes) => {

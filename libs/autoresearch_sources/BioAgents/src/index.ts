@@ -230,7 +230,7 @@ const app = new Elysia()
           enabled: true,
           redis: 'connected',
         };
-      } catch (error) {
+      } catch (_error) {
         health.jobQueue = {
           enabled: true,
           redis: 'disconnected',
@@ -294,7 +294,7 @@ if (queueDashboard) {
       const authHeader = request.headers.get('Authorization');
 
       // Check for valid basic auth
-      if (!authHeader || !authHeader.startsWith('Basic ')) {
+      if (!authHeader?.startsWith('Basic ')) {
         set.status = 401;
         set.headers['WWW-Authenticate'] = 'Basic realm="Admin Dashboard"';
         return new Response('Unauthorized', { status: 401 });
@@ -410,7 +410,6 @@ app.listen(
       if (logger) {
         logger.error({ error }, 'x402_initialization_failed');
       } else {
-        console.error('x402 initialization failed:', error);
       }
       // Don't exit - server can still run, just x402 payments will fail
     }
@@ -428,7 +427,6 @@ app.listen(
         if (logger) {
           logger.error({ error }, 'websocket_redis_subscription_failed');
         } else {
-          console.error('Failed to start WebSocket Redis subscription:', error);
         }
       }
 
@@ -465,7 +463,6 @@ async function gracefulShutdown(signal: string) {
     if (logger) {
       logger.error({ error }, 'graceful_shutdown_error');
     } else {
-      console.error('Error during shutdown:', error);
     }
     process.exit(1);
   }

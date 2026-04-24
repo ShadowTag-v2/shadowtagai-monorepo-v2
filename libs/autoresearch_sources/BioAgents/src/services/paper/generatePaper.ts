@@ -11,10 +11,10 @@
  * 7. Upload PDF + .tex to storage
  */
 
-import { randomUUID } from 'crypto';
-import * as fs from 'fs';
-import * as os from 'os';
-import * as path from 'path';
+import { randomUUID } from 'node:crypto';
+import * as fs from 'node:fs';
+import * as os from 'node:os';
+import * as path from 'node:path';
 import { getServiceClient } from '../../db/client';
 import { getConversation, getConversationState, getUser } from '../../db/operations';
 import { LLM } from '../../llm/provider';
@@ -211,7 +211,7 @@ export async function generatePaperFromConversation(
     for (let i = 0; i < discoveryContexts.length; i++) {
       const ctx = discoveryContexts[i];
       const figures = await downloadDiscoveryFigures(
-        ctx!.allowedTasks,
+        ctx?.allowedTasks,
         i + 1,
         figuresDir,
         userId,

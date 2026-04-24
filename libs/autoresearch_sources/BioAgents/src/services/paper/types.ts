@@ -2,8 +2,6 @@
  * Type definitions for paper generation service
  */
 
-import type { ConversationStateValues, Discovery, PlanTask } from '../../types/core';
-
 export type PaperGenerationResult = {
   paperId: string;
   conversationId: string;

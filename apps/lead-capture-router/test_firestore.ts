@@ -5,15 +5,11 @@ admin.initializeApp({ projectId: 'shadowtag-omega-v4' });
 
 // Try initializing with DB ID
 try {
-  const db1 = getFirestore('shadowtag-engine');
+  const _db1 = getFirestore('shadowtag-engine');
   console.log('Success with string ID!');
-} catch (e) {
-  console.error('Failed string', e);
-}
+} catch (_e) {}
 
 try {
-  const db2 = getFirestore(admin.app(), 'shadowtag-engine');
+  const _db2 = getFirestore(admin.app(), 'shadowtag-engine');
   console.log('Success with app + ID');
-} catch (e) {
-  console.error('Failed app+ID', e);
-}
+} catch (_e) {}

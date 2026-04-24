@@ -35,9 +35,7 @@ function getStoredToken(): string | null {
 function storeToken(token: string): void {
   try {
     localStorage.setItem(AUTH_TOKEN_KEY, token);
-  } catch (error) {
-    console.error('Failed to store auth token:', error);
-  }
+  } catch (_error) {}
 }
 
 /**
@@ -46,9 +44,7 @@ function storeToken(token: string): void {
 function clearStoredToken(): void {
   try {
     localStorage.removeItem(AUTH_TOKEN_KEY);
-  } catch (error) {
-    console.error('Failed to clear auth token:', error);
-  }
+  } catch (_error) {}
 }
 
 /**
@@ -81,7 +77,7 @@ export function AuthProvider({ children }: { children: ComponentChildren }) {
 
   useEffect(() => {
     checkAuthStatus();
-  }, []);
+  }, [checkAuthStatus]);
 
   /**
    * Check authentication status with server
@@ -93,7 +89,7 @@ export function AuthProvider({ children }: { children: ComponentChildren }) {
       const headers: Record<string, string> = {};
 
       if (storedToken) {
-        headers['Authorization'] = `Bearer ${storedToken}`;
+        headers.Authorization = `Bearer ${storedToken}`;
       }
 
       const response = await fetch('/api/auth/status', {
@@ -123,8 +119,7 @@ export function AuthProvider({ children }: { children: ComponentChildren }) {
           setUserId(null);
         }
       }
-    } catch (error) {
-      console.error('Failed to check auth status:', error);
+    } catch (_error) {
       setIsAuthenticated(false);
       setIsAuthRequired(false);
     } finally {
@@ -164,8 +159,7 @@ export function AuthProvider({ children }: { children: ComponentChildren }) {
         }
       }
       return false;
-    } catch (error) {
-      console.error('Login failed:', error);
+    } catch (_error) {
       return false;
     }
   };
@@ -181,9 +175,7 @@ export function AuthProvider({ children }: { children: ComponentChildren }) {
       await fetch('/api/auth/logout', {
         method: 'POST',
       });
-    } catch (error) {
-      console.error('Logout request failed:', error);
-    }
+    } catch (_error) {}
 
     // Clear token and state regardless of server response
     clearStoredToken();

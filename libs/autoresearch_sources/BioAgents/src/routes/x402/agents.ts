@@ -1,9 +1,9 @@
-import { Elysia, t } from 'elysia';
+import { Elysia } from 'elysia';
 import { analysisAgent, type Dataset } from '../../agents/analysis';
 import { discoveryAgent } from '../../agents/discovery';
 import { hypothesisAgent } from '../../agents/hypothesis';
 // Import agents
-import { type BioLiteratureMode, literatureAgent } from '../../agents/literature';
+import { literatureAgent } from '../../agents/literature';
 import { planningAgent } from '../../agents/planning';
 import { reflectionAgent } from '../../agents/reflection';
 import { replyAgent } from '../../agents/reply';
@@ -24,7 +24,7 @@ function getX402Settlement(request: Request): X402Settlement | undefined {
 /**
  * Create a minimal Message object for agent input
  */
-function createMessage(content: string, userId: string): Message {
+function _createMessage(content: string, userId: string): Message {
   return {
     id: crypto.randomUUID(),
     userId,

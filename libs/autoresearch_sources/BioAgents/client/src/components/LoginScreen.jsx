@@ -22,7 +22,7 @@ export function LoginScreen({ onLogin }) {
         setError('Invalid password');
         setPassword('');
       }
-    } catch (err) {
+    } catch (_err) {
       setError('An error occurred. Please try again.');
       setPassword('');
     } finally {
@@ -71,7 +71,6 @@ export function LoginScreen({ onLogin }) {
               }}
               placeholder="Enter password"
               className="login-input"
-              autoFocus
             />
           </div>
 

@@ -55,7 +55,7 @@ export async function discoveryAgent(input: {
         'processing_task_for_discovery',
       );
 
-      if (task.output && task.output.trim()) {
+      if (task.output?.trim()) {
         discoveryDocs.push({
           title: task.objective,
           text: `Task ID: ${task.id}\nJob ID: ${task.jobId || 'N/A'}\nTask Type: ${task.type}\n\nOutput:\n${task.output}`,

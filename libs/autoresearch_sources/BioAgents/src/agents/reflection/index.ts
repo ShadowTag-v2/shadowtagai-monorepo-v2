@@ -60,7 +60,7 @@ export async function reflectionAgent(input: {
         'processing_max_level_task_for_reflection',
       );
 
-      if (task.output && task.output.trim()) {
+      if (task.output?.trim()) {
         reflectionDocs.push({
           title: `${task.type} Task (Level ${task.level}) Output`,
           text: `Task Objective: ${task.objective}\n\nOutput:\n${task.output}`,

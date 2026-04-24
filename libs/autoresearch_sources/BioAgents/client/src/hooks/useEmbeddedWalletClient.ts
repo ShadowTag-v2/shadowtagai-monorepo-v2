@@ -48,10 +48,7 @@ export function useEmbeddedWalletClient(network?: string, x402Enabled: boolean =
       evmAddress = addressResult?.evmAddress ?? null;
       signEvmTransaction = signTxResult?.signEvmTransaction ?? null;
       signEvmTypedData = signTypedDataResult?.signEvmTypedData ?? null;
-    } catch (err) {
-      // CDP hooks not available - x402 disabled or provider not mounted
-      console.debug('[useEmbeddedWalletClient] CDP hooks not available:', err);
-    }
+    } catch (_err) {}
   }
 
   const chain = useMemo(() => {
@@ -76,35 +73,25 @@ export function useEmbeddedWalletClient(network?: string, x402Enabled: boolean =
         // Handle EIP-712 typed data signing (required for EIP-3009 gasless transfers)
         if (method === 'eth_signTypedData_v4' || method === 'eth_signTypedData') {
           const [_address, typedDataString] = params;
-          try {
-            const typedData =
-              typeof typedDataString === 'string' ? JSON.parse(typedDataString) : typedDataString;
+          const typedData =
+            typeof typedDataString === 'string' ? JSON.parse(typedDataString) : typedDataString;
 
-            const result = await signEvmTypedData({
-              evmAccount: evmAddress,
-              typedData,
-            });
+          const result = await signEvmTypedData({
+            evmAccount: evmAddress,
+            typedData,
+          });
 
-            return result.signature;
-          } catch (error) {
-            console.error('[useEmbeddedWalletClient] Sign typed data error:', error);
-            throw error;
-          }
+          return result.signature;
         }
 
         if (method === 'eth_signTransaction') {
           // Use CDP's signEvmTransaction
           const [tx] = params;
-          try {
-            const result = await signEvmTransaction({
-              evmAccount: evmAddress,
-              transaction: tx,
-            });
-            return result.signedTransaction;
-          } catch (error) {
-            console.error('[useEmbeddedWalletClient] Sign transaction error:', error);
-            throw error;
-          }
+          const result = await signEvmTransaction({
+            evmAccount: evmAddress,
+            transaction: tx,
+          });
+          return result.signedTransaction;
         }
 
         if (method === 'eth_sendTransaction') {
@@ -149,33 +136,26 @@ export function useEmbeddedWalletClient(network?: string, x402Enabled: boolean =
           // For other wallet methods, return null or throw
           throw new Error(`Wallet method ${method} not supported`);
         }
+        // Get RPC URL based on network (supports Base and BNB chains)
+        const rpcUrl =
+          RPC_MAP[network || 'base-sepolia'] || 'https://base-sepolia-rpc.publicnode.com';
 
-        // For other RPC methods, use a reliable public RPC endpoint
-        try {
-          // Get RPC URL based on network (supports Base and BNB chains)
-          const rpcUrl =
-            RPC_MAP[network || 'base-sepolia'] || 'https://base-sepolia-rpc.publicnode.com';
+        const response = await fetch(rpcUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            jsonrpc: '2.0',
+            id: Date.now(),
+            method,
+            params,
+          }),
+        });
 
-          const response = await fetch(rpcUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              jsonrpc: '2.0',
-              id: Date.now(),
-              method,
-              params,
-            }),
-          });
-
-          const json = await response.json();
-          if (json.error) {
-            throw new Error(json.error.message || 'RPC request failed');
-          }
-          return json.result;
-        } catch (error) {
-          console.error('[useEmbeddedWalletClient] RPC request failed:', method, error);
-          throw error;
+        const json = await response.json();
+        if (json.error) {
+          throw new Error(json.error.message || 'RPC request failed');
         }
+        return json.result;
       },
     });
 

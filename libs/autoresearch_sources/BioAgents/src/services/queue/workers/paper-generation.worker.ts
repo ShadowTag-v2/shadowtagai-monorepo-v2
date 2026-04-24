@@ -128,7 +128,7 @@ async function processPaperGenerationJob(
  * Start the paper generation worker
  */
 export function startPaperGenerationWorker(): Worker {
-  const concurrency = parseInt(process.env.PAPER_GENERATION_CONCURRENCY || '1');
+  const concurrency = parseInt(process.env.PAPER_GENERATION_CONCURRENCY || '1', 10);
 
   const worker = new Worker<PaperGenerationJobData, PaperGenerationJobResult>(
     'paper-generation',

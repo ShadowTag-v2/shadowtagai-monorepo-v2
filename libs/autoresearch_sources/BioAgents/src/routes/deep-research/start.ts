@@ -253,7 +253,7 @@ export async function deepResearchStartHandler(ctx: any) {
       conversationId,
       conversationStateId: conversationStateRecord.id,
       stateId: stateRecord.id,
-      messagePreview: message.length > 200 ? message.substring(0, 200) + '...' : message,
+      messagePreview: message.length > 200 ? `${message.substring(0, 200)}...` : message,
       messageLength: message.length,
     },
     'deep_research_state_initialized',
@@ -747,7 +747,7 @@ async function runDeepResearch(params: {
         ? 1 // Steering mode: single iteration, always ask user
         : researchMode === 'fully-autonomous'
           ? 20 // Fully autonomous: hard cap
-          : parseInt(process.env.MAX_AUTO_ITERATIONS || '5'); // Semi-autonomous: configurable
+          : parseInt(process.env.MAX_AUTO_ITERATIONS || '5', 10); // Semi-autonomous: configurable
 
     let iterationCount = 0;
     let shouldContinueLoop = true;

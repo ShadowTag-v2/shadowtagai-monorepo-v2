@@ -193,7 +193,7 @@ export class OpenRouterAdapter extends LLMAdapter {
         parsed?.error?.code ?? parsed?.error?.type ?? parsed?.code ?? `HTTP_${res.status}`;
       const errMsg = parsed?.error?.message ?? parsed?.message ?? (raw || res.statusText);
 
-      const errorDetails = {
+      const _errorDetails = {
         url,
         status: res.status,
         statusText: res.statusText,
@@ -201,8 +201,6 @@ export class OpenRouterAdapter extends LLMAdapter {
         message: errMsg,
         body: parsed ?? raw,
       };
-
-      console.error('OpenRouter API error response:', errorDetails);
 
       throw new Error(
         `OpenRouter API error: ${res.status} ${res.statusText} [${errCode}] - ${errMsg}`,

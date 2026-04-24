@@ -2,8 +2,8 @@
  * Assemble a complete Markdown document with YAML frontmatter from LLM outputs
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import logger from '../../../utils/logger';
 import type { DiscoverySection } from '../types';
 
@@ -83,10 +83,10 @@ export function assembleMarkdown(opts: AssembleMarkdownOptions): string {
 
   // Discovery sections (already contain their own # headings)
   for (const ds of discoverySections) {
-    sections.push('\n' + ds.sectionMarkdown);
+    sections.push(`\n${ds.sectionMarkdown}`);
   }
 
-  const fullDocument = frontmatter + '\n\n' + sections.join('\n') + '\n';
+  const fullDocument = `${frontmatter}\n\n${sections.join('\n')}\n`;
 
   const outputPath = path.join(outputDir, 'paper.md');
   fs.writeFileSync(outputPath, fullDocument, 'utf-8');

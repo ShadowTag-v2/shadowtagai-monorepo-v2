@@ -88,7 +88,7 @@ export async function fetchStaticContent(url: string): Promise<string | null> {
 
     // Limit content to 4000 characters to avoid overwhelming the context
     return textContent.slice(0, 4000);
-  } catch (error) {
+  } catch (_error) {
     // Return null for timeouts, network errors, or dynamic content
     return null;
   }
@@ -143,9 +143,7 @@ export async function enrichMessagesWithUrlContent(
       } else {
         urlResults.push({ url, content: null });
       }
-    } catch (error) {
-      // Mark as failed to fetch
-      console.debug(`Failed to fetch content from ${url}:`, error);
+    } catch (_error) {
       urlResults.push({ url, content: null });
     }
   }

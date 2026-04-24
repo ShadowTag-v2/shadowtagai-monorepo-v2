@@ -119,7 +119,7 @@ export const x402Route = new Elysia({ prefix: '/api/x402' })
   // Get or create user by wallet address
   .get('/user/:walletAddress', async ({ params: { walletAddress }, set }) => {
     try {
-      if (!walletAddress || !walletAddress.startsWith('0x')) {
+      if (!walletAddress?.startsWith('0x')) {
         set.status = 400;
         return { ok: false, error: 'Invalid wallet address' };
       }

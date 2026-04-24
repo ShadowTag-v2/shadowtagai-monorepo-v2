@@ -135,7 +135,7 @@ export async function decideContinuation(
         .replace(/\n?```$/, '')
         .trim();
       parsedResponse = JSON.parse(cleaned);
-    } catch (parseError) {
+    } catch (_parseError) {
       // Try to locate JSON between {}
       const jsonMatch = response.content.match(/\{[\s\S]*?\}/);
       const jsonString = jsonMatch ? jsonMatch[0] : '';

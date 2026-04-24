@@ -35,8 +35,7 @@ export async function checkIdempotency(
     });
 
     return isFresh;
-  } catch (e) {
-    console.error(`[Idempotency Firewall] Error checking key ${idempotencyKey}:`, e);
+  } catch (_e) {
     // Fail-safe open on DB error, or modify depending on risk tolerance
     return true;
   }
