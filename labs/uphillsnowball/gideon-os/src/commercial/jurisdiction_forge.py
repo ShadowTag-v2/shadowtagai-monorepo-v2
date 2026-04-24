@@ -33,9 +33,7 @@ class UphillsnowballMatrixForge:
             ],
         }
 
-    def provision_jurisdiction(
-        self, client_name: str, selected_ids: list[str]
-    ) -> dict[str, Any]:
+    def provision_jurisdiction(self, client_name: str, selected_ids: list[str]) -> dict[str, Any]:
         mrr = self.base_tier["price"]
         active_hooks = list(self.base_tier["hooks"])
 

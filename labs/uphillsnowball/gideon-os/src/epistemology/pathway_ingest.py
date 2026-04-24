@@ -13,10 +13,7 @@ logger = logging.getLogger("Pathway-Sync")
 
 def sync_to_notebooklm(file_path: str) -> str:
     """Push new data to NotebookLM Master Brain."""
-    logger.info(
-        f"🔄 [PATHWAY] New data detected at {file_path}."
-        " Pushing to NotebookLM Master Brain."
-    )
+    logger.info(f"🔄 [PATHWAY] New data detected at {file_path}. Pushing to NotebookLM Master Brain.")
     subprocess.run(
         [
             "notebooklm",
@@ -43,9 +40,7 @@ class PathwaySyncEngine:
             mode="streaming",
             with_metadata=True,
         )
-        _processed = data.select(
-            synced_path=pw.apply(sync_to_notebooklm, pw.this.metadata.path)
-        )
+        _processed = data.select(synced_path=pw.apply(sync_to_notebooklm, pw.this.metadata.path))
         pw.run()
 
 

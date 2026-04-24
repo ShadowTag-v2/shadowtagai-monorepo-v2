@@ -165,9 +165,7 @@ class NAutoresearchClient:
 
     async def suggest_search(self, run_id: str) -> dict[str, Any]:
         """Get search strategy suggestions based on experiment history."""
-        run_experiments = [
-            e for e in self._experiments.values() if e.run_id == run_id
-        ]
+        run_experiments = [e for e in self._experiments.values() if e.run_id == run_id]
         kept = sum(1 for e in run_experiments if e.status == ExperimentStatus.KEPT)
         total = len(run_experiments)
 
@@ -181,21 +179,13 @@ class NAutoresearchClient:
 
     async def generate_summary(self, run_id: str) -> dict[str, Any]:
         """Generate a summary report for a run's experiments."""
-        run_experiments = [
-            e for e in self._experiments.values() if e.run_id == run_id
-        ]
+        run_experiments = [e for e in self._experiments.values() if e.run_id == run_id]
         return {
             "run_id": run_id,
             "total_experiments": len(run_experiments),
-            "kept": sum(
-                1 for e in run_experiments if e.status == ExperimentStatus.KEPT
-            ),
-            "discarded": sum(
-                1 for e in run_experiments if e.status == ExperimentStatus.DISCARDED
-            ),
-            "crashed": sum(
-                1 for e in run_experiments if e.status == ExperimentStatus.CRASHED
-            ),
+            "kept": sum(1 for e in run_experiments if e.status == ExperimentStatus.KEPT),
+            "discarded": sum(1 for e in run_experiments if e.status == ExperimentStatus.DISCARDED),
+            "crashed": sum(1 for e in run_experiments if e.status == ExperimentStatus.CRASHED),
             "best_bpb": self._best_bpb,
             "search_mode": self._search_mode.value,
         }
