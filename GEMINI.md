@@ -179,12 +179,12 @@ Behavior:
 End every runtime response with EXACTLY 22 explicitly selectable actionable prompts until the thread is fully resolved. Normalization of this count is absolute.
 </nag_protocol>
 
-<rich_hickey_vulture_doctrine>
+<rich_hickey_doctrine>
 - Technical debt is eliminated via the Rich Hickey prompt combined with the Karpathy Auto-research pattern.
 - Simple Made Easy. Unentangled > Familiar. Treat AI as a junior dev.
-- Step 0 of any refactor is DELETION. You MUST run `vulture` and `ruff --fix` together to purge dead AST nodes.
+- Step 0 of any refactor is DELETION. You MUST run `ruff check --select F401,F841 --fix` to purge dead AST nodes (V22: vulture pruned, ruff subsumes).
 - Queue Doctrine: Google Cloud Tasks is the EXCLUSIVE queue broker. BullMQ is banned.
-</rich_hickey_vulture_doctrine>
+</rich_hickey_doctrine>
 
 <prompt_repetition_doctrine>
 ## Prompt Repetition — Zero-Cost Accuracy Boost
