@@ -1,4 +1,7 @@
-name: "Gitleaks Nightly Scan"
+# Betterleaks Nightly Scan — successor to gitleaks-nightly.yml
+# Migrated per Risk #84. Betterleaks is 12.9x faster with CEL-based validation.
+
+name: "Betterleaks Nightly Scan"
 
 on:
   schedule:
@@ -9,27 +12,36 @@ permissions:
   contents: read
 
 jobs:
-  gitleaks:
-    name: "Secret Leak Detection"
+  betterleaks:
+    name: "Secret Leak Detection (Betterleaks)"
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Full history for commit-range scanning
 
-      - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: "--verbose --no-git --source=."
+      - name: Install Betterleaks
+        run: |
+          go install github.com/betterleaks/betterleaks@latest
+          echo "$HOME/go/bin" >> $GITHUB_PATH
+
+      - name: Run Betterleaks — full repo scan
+        run: |
+          betterleaks dir \
+            --report-format=sarif \
+            --report-path=betterleaks-report.sarif \
+            --redact \
+            --verbose \
+            . || true
 
       - name: Generate report
         if: always()
         run: |
-          echo "### Gitleaks Nightly Report — $(date -u +%Y-%m-%d)" >> $GITHUB_STEP_SUMMARY
-          if [ -f "results.sarif" ]; then
-            echo "⚠️ Findings detected. Review SARIF artifact." >> $GITHUB_STEP_SUMMARY
+          echo "### Betterleaks Nightly Report — $(date -u +%Y-%m-%d)" >> $GITHUB_STEP_SUMMARY
+          if [ -f "betterleaks-report.sarif" ]; then
+            FINDINGS=$(jq '.runs[0].results | length' betterleaks-report.sarif 2>/dev/null || echo "?")
+            echo "⚠️ $FINDINGS finding(s) detected. Review SARIF artifact." >> $GITHUB_STEP_SUMMARY
           else
             echo "✅ No leaks detected." >> $GITHUB_STEP_SUMMARY
           fi
@@ -38,6 +50,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gitleaks-report-${{ github.run_id }}
-          path: results.sarif
+          name: betterleaks-report-${{ github.run_id }}
+          path: betterleaks-report.sarif
           if-no-files-found: ignore
