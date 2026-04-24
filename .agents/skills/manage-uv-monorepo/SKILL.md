@@ -1,3 +1,8 @@
+---
+name: manage-uv-monorepo
+description: "Instructions for Antigravity agents on managing Python dependencies, virtual environments, and script execution using uv in the monorepo."
+---
+
 ## Skill: Managing Python Workspaces with UV
 
 **Description:** Instructions for Antigravity agents on how to handle Python dependencies, virtual environments, and script execution within the `Monorepo-Uphillsnowball` using `uv`.
