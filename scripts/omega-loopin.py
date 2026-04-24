@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/opt/homebrew/bin/python3.14
 # scripts/omega-loopin.py
 # ============================================================================
 # SHADOWTAG OS: THE IMMORTAL DURABLE EXECUTION LOOP
