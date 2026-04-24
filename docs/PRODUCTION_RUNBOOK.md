@@ -18,7 +18,7 @@
 | Credential | Location | Rotation Schedule |
 |-----------|----------|-------------------|
 | GitHub App PEM | `$SHADOWTAG_PEM` → `~/Downloads/antigravity-shadowtag-*.pem` | On exposure/incident |
-| Gemini API Key | `.env` → `GEMINI_API_KEY` | Quarterly |
+| Gemini API Key | GCP Secret Manager → `gemini-api-key` | Quarterly |
 | Stripe Secret Key | GCP Secret Manager → `stripe-secret-key` | On exposure/incident |
 | Stripe Webhook Secret | GCP Secret Manager → `stripe-webhook-secret` | On exposure/incident |
 | Developer Knowledge API Key | GCP Secret Manager → `developer-knowledge-api-key` | Quarterly |
@@ -117,7 +117,7 @@ gcloud run services update-traffic counselconduit \
 
 ### Daily Automated Checks
 - Cloud Scheduler: `counselconduit-backup-verify` (weekly probe)
-- Pre-commit hooks: Gitleaks + Ruff + Bandit + detect-private-key
+- Pre-commit hooks: Betterleaks + Ruff + Bandit + detect-private-key
 - CI: Python tests on push to main
 
 ### Manual Verification Cadence
@@ -130,10 +130,10 @@ gcloud run services update-traffic counselconduit \
 | GitNexus freshness | Weekly | `npx gitnexus analyze .` |
 | Secret rotation status | Monthly | Check Secret Manager versions |
 
-## Environment Variables (.env)
+## Environment Variables
 
-> See `GEMINI.md` §env_master_doctrine for the full 11-section map.
-> `.env` is kernel-locked (`chflags uchg`). To edit: `chflags nouchg .env` → edit → `chflags uchg .env`
+> **`.env` is DEPRECATED AND DELETED** (2026-04-22). All secrets fetched from GCP Secret Manager via `source scripts/load_mcp_secrets.sh`.
+> See `GEMINI.md` §secrets_manager_doctrine for the full configuration map.
 
 ## Stripe Configuration
 
