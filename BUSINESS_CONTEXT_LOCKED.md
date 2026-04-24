@@ -222,28 +222,31 @@ Key metrics:
 
 ## §6 — Hardened Production State
 
-### v10.0 canonicalized: 2026-04-22
-- Latest production commit: `13da4ddf2b` (2026-04-22)
-- Lighthouse LHCI (KovelAI): P93+ / A93+ / BP100 / SEO100
-- Lighthouse LHCI (ShadowTagAI): P93+ / A93+ / BP96 / SEO100
-- Structural tests: 68/68
-- Dead code: clean (vulture + ruff) — Kosmos dead code noted, production paths clean
-- CounselConduit: v3.2.0 LIVE on Cloud Run (23 API modules, 44 endpoint files)
+### v10.0 → v10.1 canonicalized: 2026-04-24
+- Latest production commit: `4c42972f3a6` (2026-04-24)
+- Lighthouse LHCI (KovelAI): A94 / BP100 / SEO100
+- Lighthouse LHCI (ShadowTagAI): A95 / BP96 / SEO100
+- Tests: 504 collected, 499 passed, 2 E2E expected failures, 3 skipped
+- Dead code: clean (ruff 0.15.11 F401/F841 — 0 errors)
+- CounselConduit: v3.2.0 LIVE on Cloud Run rev `counselconduit-00037-7mf`
 - Cloud Armor WAF: `counselconduit-waf` (XSS + SQLi + rate limiting active)
 - Cloud Monitoring: 9 alert policies + email channel
 - SLO: CounselConduit 99.5% Availability, 30-day rolling
 - Firestore TTL: session_pins.expire_at ACTIVE
+- Firestore PITR: ENABLED on both databases (7-day retention)
 - Security: Cor.30 v2.5 + OWASP LLM10 enforced
-- Pre-commit: Gitleaks + Ruff + Bandit + detect-private-key
-- Secret Manager: 23 secrets, 9 imported to OpenTofu state
+- Pre-commit: Betterleaks + Ruff + Bandit + detect-private-key + check-yaml + trailing-whitespace
+- Secret Manager: 22 secrets (5 orphans deleted)
 - OpenTofu: 19 resources provisioned
-- RISK_REGISTER: v9.5 (61 tracked risks)
+- RISK_REGISTER: v10.9 (86+ tracked risks)
+- Cloud Functions: 4 active (analyticalWebhook, captureContact, captureLead, cspReport)
+- Firestore: 2 databases (default nam5, shadowtag-engine us-central1) — delete-protection ENABLED
 - Open PRs: 0
 
 ### CounselConduit Cloud Run
 | Service | URL | Rev |
 |---------|-----|-----|
-| Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00010-s74 (100% traffic) |
+| Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00037-7mf (100% traffic) |
 | Staging | https://counselconduit-staging-767252945109.us-central1.run.app | counselconduit-staging-00003-l9h |
 
 ### Deployed Hosting Targets
