@@ -7,7 +7,7 @@
 #   2. python-test     — pytest with Redis service container
 #   3. go-build        — Cor.Go ZTA kernel compilation
 #   4. docker-build    — Multi-stage sealed container validation
-#   5. security-scan   — Gitleaks + Bandit on the lab
+#   5. security-scan   — Betterleaks + Bandit on the lab
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 name: Uphill Snowball CI
@@ -183,7 +183,7 @@ jobs:
 
   # ── 5. Security Scan ─────────────────────────────────────────
   security-scan:
-    name: 🔒 Security (Gitleaks + Bandit)
+    name: 🔒 Security (Betterleaks + Bandit)
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -192,11 +192,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Gitleaks scan
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: false
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
+      - name: Betterleaks scan
+        run: |
+          go install github.com/betterleaks/betterleaks@latest
+          ~/go/bin/betterleaks git --redact --verbose --config .betterleaks.toml
 
       - uses: actions/setup-python@v5
         with:
