@@ -1,4 +1,4 @@
-# RISK_REGISTER — v10.9
+# RISK_REGISTER — v10.10
 
 > Operational risks tracked as part of the sovereign monorepo governance.
 > Reviewed on each version bump. Mitigations are enforced, not advisory.
@@ -347,3 +347,27 @@
 - **Severity:** 🟡 Medium
 - **Status:** KNOWN
 - **Description**: Three "Start Free Trial" buttons on kovelai.web.app use placeholder Stripe test URLs (`buy.stripe.com/test_00g00000000000000`) that 404 on click. Live Stripe Price IDs exist (Pro Monthly: `price_1TNKSREHnWpykeMiRMDlVgLl`, Pro Annual: `price_1TNKSjEHnWpykeMi0S9GCVjy`) but no Payment Links have been created in the Stripe Dashboard. **Action**: Create Payment Links in Stripe Dashboard → update 3 href attributes in `apps/kovelai/site/index.html` (lines 205, 456, 572).
+
+## Risk #90: Cross-Directory Skill Duplication — 7 Skills with Divergent Copies
+- **Type**: Architecture / Governance
+- **Severity:** 🟡 Medium
+- **Status:** ✅ RESOLVED (2026-04-24)
+- **Description**: 7 skills existed in both `.agents/skills/` (monorepo) and `~/.gemini/antigravity/skills/` (global) with DIFFERENT content. The smaller stub was replaced with a redirect pointing to the canonical (larger) copy. **Skills resolved**: mcp-fleet-vanguard (global wins, 5947>3017B), hybrid-osint-router (agent wins, 2467>500B), notebooklm-orchestrator (global wins, 4698>423B), obsidian-formatter (global wins, 3159>313B), expert-agent-builder (agent wins, 589≈550B), notebooklm-oracle (global wins, 4237>2464B), session-wrap-up (global wins, 3404>428B). Redirect stubs use YAML frontmatter `redirect:` key for machine-readability.
+
+## Risk #91: lead-capture-router firebase-functions Peer Dep Conflict
+- **Type**: Build / Dependency
+- **Severity:** 🟡 Medium
+- **Status:** ✅ RESOLVED (2026-04-24)
+- **Description**: `firebase-functions@^4.9.0` only supports `firebase-admin@^10|^11|^12` but `package.json` had `firebase-admin@^13.8.0`. `npm install` failed with `ERESOLVE` peer dependency conflict. **Root Cause**: `firebase-admin` was bumped to v13 without bumping `firebase-functions`. **Resolution**: Bumped `firebase-functions` from `^4.9.0` to `^7.2.5` (latest, supports `firebase-admin@^11|^12|^13`). `firebase-functions-test@3.4.1` already supported `firebase-admin@^13`. Clean install: 718 packages, 0 peer dep errors. TSC build verified: 0 errors.
+
+## Risk #92: CounselConduit Security Scan Baseline — Bandit + Semgrep
+- **Type**: Security / Code Quality
+- **Severity:** 🟢 Low
+- **Status:** TRACKED
+- **Description**: Security scan baseline established for `apps/counselconduit/` (11,269 LOC). **Bandit**: 0 High, 0 Medium, 386 Low (informational). 1 `#nosec` suppression. **Semgrep (auto config)**: 10 findings — 8 WARNING (logger calls flagged as "potential hardcoded secret" — all false positives, they log error *messages* not secrets), 1 WARNING (urllib `file://` scheme — `pr_review_webhook.py:369`), 1 INFO (k8s container posture). **No actionable HIGH/CRITICAL findings.** The urllib `file://` finding in `pr_review_webhook.py` should be reviewed if user-supplied URLs are ever accepted (currently internal only).
+
+## Risk #93: pnkln-evolve Daemon — 7 Duplicate Skills Detected
+- **Type**: Architecture / Governance
+- **Severity:** 🟢 Low
+- **Status:** ✅ RESOLVED (2026-04-24)
+- **Description**: `pnkln-evolve --once` detected 7 duplicate skills across `.agents/skills/` and `~/.gemini/antigravity/skills/`. Additionally: 249 total skills cataloged, 74 CI workflows tracked, 73 repos (0 stale). Manifest drift: 41 agent skills vs 215 global skills. **Resolution**: See Risk #90 — all 7 duplicates resolved with canonical redirect stubs.

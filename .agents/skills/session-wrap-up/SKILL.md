@@ -1,10 +1,11 @@
 ---
 name: session-wrap-up
-description: Creates persistent memory across sessions into the Master Brain notebook.
+description: "Creates persistent memory across sessions into the Master Brain notebook."
+redirect: ~/.gemini/antigravity/skills/session-wrap-up/SKILL.md
 ---
-# Persistent Session Memory
-1. Write chat history summary to `session-[DATE].md`.
-2. `notebooklm use <master-brain-notebook-id>`
-3. `notebooklm source add "./session-[DATE].md"`
-4. `notebooklm ask "Extract architecture and unresolved bugs. \n\n Extract architecture and unresolved bugs."`
-5. Delete local file.
+
+# Session Wrap-Up
+
+> **CANONICAL SOURCE**: `~/.gemini/antigravity/skills/session-wrap-up/SKILL.md`
+>
+> This file is a redirect stub. The full skill definition lives in the global skills directory.
