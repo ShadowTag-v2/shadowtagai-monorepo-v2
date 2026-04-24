@@ -1,9 +1,73 @@
 {
-  "version": "1.0",
+  "version": "2.0",
   "mcpServers": {
     "shadowtag-core": {
       "path": "apps/counselconduit",
       "tools": ["StitchMCP", "chrome-devtools-mcp"]
+    },
+    "firebase-mcp-server": {
+      "command": "npx",
+      "args": ["-y", "firebase-tools@latest", "experimental:mcp"],
+      "env": {},
+      "capability_owner": true,
+      "owns": [
+        "firebase_init",
+        "firebase_deploy",
+        "firestore_*",
+        "auth_*",
+        "hosting_*",
+        "storage_*",
+        "functions_*",
+        "apphosting_*",
+        "remoteconfig_*",
+        "messaging_*"
+      ],
+      "note": "Firebase MCP — MUST use instead of terminal firebase CLI for all Firebase operations. Three-layer auth: CLI token, MCP OAuth2 session, ADC."
+    },
+    "chrome-devtools-mcp": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/chrome-devtools-mcp@latest"],
+      "env": {},
+      "capability_owner": true,
+      "owns": [
+        "take_screenshot",
+        "take_snapshot",
+        "lighthouse_audit",
+        "performance_*",
+        "navigate_page",
+        "evaluate_script"
+      ],
+      "note": "Chrome DevTools MCP — MUST use instead of external screenshot tools. Owns all browser interaction, performance tracing, and Lighthouse audits."
+    },
+    "StitchMCP": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/stitch-mcp@latest"],
+      "env": {},
+      "capability_owner": true,
+      "owns": [
+        "generate_screen_*",
+        "edit_screens",
+        "create_design_system",
+        "apply_design_system",
+        "generate_variants"
+      ],
+      "note": "Stitch MCP — MUST use for all UI design, screen generation, and design system work. No hand-coding design tokens."
+    },
+    "google-developer-knowledge": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/google-developer-knowledge-mcp@latest"],
+      "env": {},
+      "capability_owner": true,
+      "owns": ["search_documents", "get_documents", "answer_query"],
+      "note": "Google Developer Knowledge MCP — MUST use instead of search_web for ALL Google API documentation queries."
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/sequential-thinking-mcp@latest"],
+      "env": {},
+      "capability_owner": true,
+      "owns": ["sequentialthinking"],
+      "note": "Sequential Thinking MCP — MUST use for architecture decisions, multi-step reasoning, and complex problem decomposition. No ad-hoc reasoning lists."
     },
     "antigravity-notebooklm-mcp": {
       "command": "node",
@@ -19,5 +83,21 @@
       },
       "note": "Routing firewall and task orchestrator. Queues external data retrieval without exposing raw API keys to the agent context."
     }
-  }
+  },
+  "routing_rules": {
+    "google_api_docs": "google-developer-knowledge",
+    "firebase_operations": "firebase-mcp-server",
+    "browser_interaction": "chrome-devtools-mcp",
+    "ui_design": "StitchMCP",
+    "architecture_reasoning": "sequential-thinking",
+    "document_analysis": "antigravity-notebooklm-mcp",
+    "task_routing": "switchboard-mcp"
+  },
+  "anti_patterns": [
+    "NEVER use search_web for Google API documentation — use google-developer-knowledge MCP",
+    "NEVER use terminal for firebase deploy — use firebase-mcp-server MCP",
+    "NEVER take screenshots with external tools — use chrome-devtools-mcp MCP",
+    "NEVER hand-code design tokens — use StitchMCP",
+    "NEVER use ad-hoc reasoning lists — use sequential-thinking MCP"
+  ]
 }
