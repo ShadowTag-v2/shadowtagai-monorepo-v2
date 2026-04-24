@@ -18,6 +18,12 @@ import crypto from 'node:crypto';
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
+/** Structured server-side logger (no console.log in production — Cor.30 R17). */
+function structuredLog(context: string, data: Record<string, unknown>): void {
+  const entry = { timestamp: new Date().toISOString(), context, ...data };
+  process.stdout.write(`${JSON.stringify(entry)}\n`);
+}
+
 // ─── Auth ───────────────────────────────────────────────────────────
 
 const BRIDGE_SECRET = process.env.COUNSELCONDUIT_BRIDGE_SECRET ?? '';
@@ -139,7 +145,7 @@ function handleProvision(data: z.infer<typeof ProvisionSchema>): NextResponse {
     oracleEndpoint: data.features.oracleMemo ? `/api/oracle/render` : null,
   };
 
-  console.log(`[BRIDGE] Provisioning tenant: ${data.firmId} (${data.tier})`);
+  structuredLog('BRIDGE_PROVISION', { level: 'info', firmId: data.firmId, tier: data.tier });
 
   return NextResponse.json({
     status: 'provisioned',
@@ -159,7 +165,12 @@ function handleProvision(data: z.infer<typeof ProvisionSchema>): NextResponse {
 
 function handleSyncTier(data: z.infer<typeof SyncTierSchema>): NextResponse {
   // TODO: Wire to Firestore tier update
-  console.log(`[BRIDGE] Tier sync: ${data.firmId} ${data.previousTier} → ${data.newTier}`);
+  structuredLog('BRIDGE_TIER_SYNC', {
+    level: 'info',
+    firmId: data.firmId,
+    previousTier: data.previousTier,
+    newTier: data.newTier,
+  });
 
   return NextResponse.json({
     status: 'synced',
@@ -182,7 +193,11 @@ function handleHealth(data: z.infer<typeof HealthSchema>): NextResponse {
 
 function handleAttorneyVerify(data: z.infer<typeof AttorneyVerifySchema>): NextResponse {
   // TODO: Wire to actual bar association verification API
-  console.log(`[BRIDGE] Attorney verify: ${data.barNumber} (${data.jurisdiction})`);
+  structuredLog('BRIDGE_ATTORNEY_VERIFY', {
+    level: 'info',
+    jurisdiction: data.jurisdiction,
+    firmId: data.firmId,
+  });
 
   return NextResponse.json({
     status: 'pending',
