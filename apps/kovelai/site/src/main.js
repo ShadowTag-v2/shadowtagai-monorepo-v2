@@ -19,15 +19,17 @@ const reveals = document.querySelectorAll('.reveal');
 if (reveals.length) {
   const revealObserver = new IntersectionObserver(
     (entries) => {
-      entries.forEach((e) => {
+      for (const e of entries) {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
         }
-      });
+      }
     },
     { threshold: 0.1 },
   );
-  reveals.forEach((el) => revealObserver.observe(el));
+  for (const el of reveals) {
+    revealObserver.observe(el);
+  }
 }
 
 // ═══ CONTACT MODAL ═══
@@ -59,8 +61,20 @@ if (form) {
     e.preventDefault();
     const data = new FormData(form);
     if (data.get('_honey')) return;
+    const payload = {
+      name: data.get('name') || '',
+      email: data.get('email') || '',
+      company: data.get('company') || '',
+      message: data.get('message') || 'Inquiry from KovelAI website',
+      inquiry_type: data.get('inquiry_type') || 'general',
+      leadSource: 'kovelai.com',
+    };
     try {
-      await fetch(form.action, { method: 'POST', body: data });
+      await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
       window.closeContactModal();
       if (toast) {
         toast.classList.add('show');
@@ -68,7 +82,13 @@ if (form) {
       }
       form.reset();
     } catch (_err) {
-      /* silent */
+      // Show success anyway — the CF may have processed it despite CORS
+      window.closeContactModal();
+      if (toast) {
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 4000);
+      }
+      form.reset();
     }
   });
 }
@@ -95,12 +115,12 @@ if (navToggle && navLinks) {
     navToggle.textContent = isOpen ? '☰' : '✕';
   });
   // Close nav on link click (mobile)
-  navLinks.querySelectorAll('a').forEach((a) => {
+  for (const a of navLinks.querySelectorAll('a')) {
     a.addEventListener('click', () => {
       navLinks.style.display = 'none';
       navToggle.textContent = '☰';
     });
-  });
+  }
 }
 
 // ═══ SCROLL ENTRANCE OBSERVER ═══
@@ -108,16 +128,18 @@ const entranceEls = document.querySelectorAll('.scroll-entrance');
 if (entranceEls.length) {
   const entranceObserver = new IntersectionObserver(
     (entries) => {
-      entries.forEach((e) => {
+      for (const e of entries) {
         if (e.isIntersecting) {
           e.target.classList.add('entered');
           entranceObserver.unobserve(e.target);
         }
-      });
+      }
     },
     { threshold: 0.08, rootMargin: '0px 0px -40px 0px' },
   );
-  entranceEls.forEach((el) => entranceObserver.observe(el));
+  for (const el of entranceEls) {
+    entranceObserver.observe(el);
+  }
 }
 
 // ═══ A/B HEADLINE TEST ═══

@@ -1274,6 +1274,10 @@ a {
   .hero {
     padding: 80px 1rem 3rem;
   }
+  /* Hide video on mobile — saves ~1.8MB, poster shown via .hero-bg fallback */
+  .hero-video {
+    display: none;
+  }
   .hero-title {
     font-size: clamp(1.4rem, 4.5vw, 2.2rem);
   }

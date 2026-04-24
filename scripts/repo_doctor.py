@@ -137,7 +137,7 @@ def check_dirty_files(report: HealthReport) -> None:
 
 def check_conflict_markers(report: HealthReport) -> None:
     """Gate 2: Check for merge conflict markers."""
-    r = _run(["grep", "-rln", "<<<<<<<", "apps", "libs", "scripts", "docs"])
+    r = _run(["git", "grep", "-l", "^<<<<<<<", "--", "apps", "libs", "scripts", "docs"])
     if r.returncode == 0 and r.stdout.strip():
         for line in r.stdout.strip().splitlines()[:10]:
             report.findings.append(
