@@ -23,6 +23,7 @@ from temporalio.exceptions import ApplicationError
 with workflow.unsafe.imports_passed_through():
     pass
 
+
 @workflow.defn(name="UphillSnowballCampaign")
 class UphillSnowballCampaign:
     """The Immortal Execution Engine of Uphill Snowball.

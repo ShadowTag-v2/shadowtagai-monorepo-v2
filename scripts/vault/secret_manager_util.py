@@ -70,7 +70,11 @@ def get_secret(name: str, *, version: str = "latest", project: str | None = None
     try:
         result = subprocess.run(
             [
-                "gcloud", "secrets", "versions", "access", version,
+                "gcloud",
+                "secrets",
+                "versions",
+                "access",
+                version,
                 f"--secret={name}",
                 f"--project={proj}",
                 "--quiet",
@@ -99,7 +103,9 @@ def list_secrets(*, project: str | None = None) -> list[str]:
     try:
         result = subprocess.run(
             [
-                "gcloud", "secrets", "list",
+                "gcloud",
+                "secrets",
+                "list",
                 f"--project={proj}",
                 "--format=value(name)",
                 "--quiet",

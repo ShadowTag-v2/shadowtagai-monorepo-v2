@@ -96,13 +96,7 @@ def route_to_obsidian(path: Path, content: str, *, dry_run: bool = False) -> dic
     """
     # Generate YAML frontmatter
     now = datetime.now(timezone.utc)  # noqa: UP017
-    frontmatter = (
-        "---\n"
-        f"date: {now.strftime('%Y-%m-%d')}\n"
-        f"source: {path.name}\n"
-        "tags: [ai-generated, vault-ingested]\n"
-        "---\n\n"
-    )
+    frontmatter = f"---\ndate: {now.strftime('%Y-%m-%d')}\nsource: {path.name}\ntags: [ai-generated, vault-ingested]\n---\n\n"
 
     # Add WikiLinks for detected entities
     wikified = _add_wikilinks(content)
@@ -147,13 +141,34 @@ def route_to_firestore(path: Path, content: str, *, dry_run: bool = False) -> di
 
 # Entities to auto-link in Obsidian notes
 _KNOWN_ENTITIES = {
-    "kovelai", "counselconduit", "uphillsnowball", "shadowtag",
-    "firestore", "cloud run", "cloud tasks", "firebase",
-    "gemini", "claude", "openai", "lancedb", "obsidian",
-    "kairos", "oracle studio", "judge 6", "kovel",
-    "stripe", "gcp", "secret manager",
-    "react", "next.js", "vite", "python", "typescript",
-    "pydantic", "fastapi", "semantic kernel",
+    "kovelai",
+    "counselconduit",
+    "uphillsnowball",
+    "shadowtag",
+    "firestore",
+    "cloud run",
+    "cloud tasks",
+    "firebase",
+    "gemini",
+    "claude",
+    "openai",
+    "lancedb",
+    "obsidian",
+    "kairos",
+    "oracle studio",
+    "judge 6",
+    "kovel",
+    "stripe",
+    "gcp",
+    "secret manager",
+    "react",
+    "next.js",
+    "vite",
+    "python",
+    "typescript",
+    "pydantic",
+    "fastapi",
+    "semantic kernel",
 }
 
 
@@ -166,7 +181,7 @@ def _add_wikilinks(content: str) -> str:
         match = pattern.search(content)
         if match:
             original = match.group()
-            content = content[:match.start()] + f"[[{original}]]" + content[match.end():]
+            content = content[: match.start()] + f"[[{original}]]" + content[match.end() :]
     return content
 
 

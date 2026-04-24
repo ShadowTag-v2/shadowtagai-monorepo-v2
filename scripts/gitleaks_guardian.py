@@ -700,7 +700,7 @@ def _generate_manifest(raw_findings: list[dict], output_dir: str | None = None) 
         rules = defaultdict(int)
         for f in items:
             rules[f.get("RuleID", "")] += 1
-        _  = ", ".join(f"{r}:{c}" for r, c in sorted(rules.items(), key=lambda x: -x[1]))  # noqa: F841 — used in future sub-manifest generation
+        _ = ", ".join(f"{r}:{c}" for r, c in sorted(rules.items(), key=lambda x: -x[1]))  # noqa: F841 — used in future sub-manifest generation
 
     # ── Deduplicated secrets-only list ──
     dedup_path = out_dir / "third_party_secrets_deduped.txt"

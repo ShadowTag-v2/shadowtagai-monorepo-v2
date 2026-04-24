@@ -21,11 +21,13 @@ bq_client = bigquery.Client()
 class PredictiveRevocationEngine:
     """Preemptively revokes IAM access based on real-world life events."""
 
-    CRITICAL_LIFE_EVENTS = frozenset({
-        "ARREST_RECORD",
-        "BANKRUPTCY_FILING",
-        "MALPRACTICE_LAWSUIT",
-    })
+    CRITICAL_LIFE_EVENTS = frozenset(
+        {
+            "ARREST_RECORD",
+            "BANKRUPTCY_FILING",
+            "MALPRACTICE_LAWSUIT",
+        }
+    )
 
     def process_osint_life_stream(self, event_data: dict) -> dict:
         """Process an OSINT life event and determine if IAM revocation is needed.
@@ -43,11 +45,7 @@ class PredictiveRevocationEngine:
 
         # 1. Is this entity one of our Captive PC-MSO Professionals?
         # PARAMETERIZED QUERY — per AGENTS.md Rule 6
-        query = (
-            "SELECT profession_code, gcp_user_id "
-            "FROM `shadowtag_db.licensed_practitioners` "
-            "WHERE entity_id = @entity_id"
-        )
+        query = "SELECT profession_code, gcp_user_id FROM `shadowtag_db.licensed_practitioners` WHERE entity_id = @entity_id"
         job_config = bigquery.QueryJobConfig(
             query_parameters=[
                 bigquery.ScalarQueryParameter("entity_id", "STRING", entity_id),
@@ -73,16 +71,10 @@ class PredictiveRevocationEngine:
             self._execute_iam_quarantine(user_id)
 
             # Update status via parameterized query
-            update_query = (
-                "UPDATE `shadowtag_db.licensed_practitioners` "
-                "SET status = @status "
-                "WHERE gcp_user_id = @user_id"
-            )
+            update_query = "UPDATE `shadowtag_db.licensed_practitioners` SET status = @status WHERE gcp_user_id = @user_id"
             update_config = bigquery.QueryJobConfig(
                 query_parameters=[
-                    bigquery.ScalarQueryParameter(
-                        "status", "STRING", "PREEMPTIVE_SUSPENSION"
-                    ),
+                    bigquery.ScalarQueryParameter("status", "STRING", "PREEMPTIVE_SUSPENSION"),
                     bigquery.ScalarQueryParameter("user_id", "STRING", user_id),
                 ]
             )

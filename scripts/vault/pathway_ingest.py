@@ -52,6 +52,7 @@ def process_new_files() -> int:
     # Import here to avoid circular deps and allow standalone testing
     # Import from sibling module using path resolution
     import importlib.util
+
     ztp_path = Path(__file__).resolve().parent / "zero_trust_pipeline.py"
     spec = importlib.util.spec_from_file_location("zero_trust_pipeline", ztp_path)
     ztp = importlib.util.module_from_spec(spec)

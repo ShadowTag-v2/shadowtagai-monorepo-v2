@@ -6,6 +6,7 @@ from datetime import datetime, UTC
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
+
 def get_current_state():
     """Phase 1: Hypothesis (Kosmos)
     Gathers current AST state, test vectors, and error regressions via Omni-Linter."""
@@ -13,6 +14,7 @@ def get_current_state():
     # Simulating omni-linter execution
     result = subprocess.run(["ruff", "check", "--output-format=json", "."], capture_output=True, text=True)
     return result.stdout
+
 
 def apply_mutations():
     """Phase 2: Execution (Builder)
@@ -24,12 +26,14 @@ def apply_mutations():
     subprocess.run(["ruff", "check", "--fix", "."], capture_output=True)
     return True
 
+
 def run_gauntlet():
     """Phase 3: The Gauntlet (n-autoresearch)
     Runs Pytest isolation matrix to test constraints."""
     logging.info("Executing Phase 3: The Gauntlet")
     result = subprocess.run(["python3.14", "-m", "pytest", "-q"], capture_output=True, text=True)
     return result.returncode == 0
+
 
 def temporal_reversal():
     """Phase 4: Temporal-Reversal (Judge 6 Gate)
@@ -38,14 +42,18 @@ def temporal_reversal():
     subprocess.run(["git", "restore", "."], capture_output=True)
     logging.warning("Reverted to known good state.")
 
+
 def commit_to_vault():
     """Phase 5: The Vault
     Commits state as LanceDB vector + Obsidian Markdown log."""
     logging.info("Executing Phase 5: The Vault")
     # Commit changes
     subprocess.run(["git", "add", "."], capture_output=True)
-    subprocess.run(["git", "commit", "-m", f"chore(heal): Autoresearch Triad automated healing at {datetime.now(UTC).isoformat()}"], capture_output=True)
+    subprocess.run(
+        ["git", "commit", "-m", f"chore(heal): Autoresearch Triad automated healing at {datetime.now(UTC).isoformat()}"], capture_output=True
+    )
     logging.info("State committed to Vault.")
+
 
 def daemon_loop():
     logging.info("Starting GCA Triad Orchestrator Daemon")
@@ -65,6 +73,7 @@ def daemon_loop():
 
         logging.info("Sleeping for 5 minutes...")
         time.sleep(300)
+
 
 if __name__ == "__main__":
     daemon_loop()
