@@ -1,1 +1,2060 @@
-{"openapi":"3.1.0","info":{"title":"CounselConduit: Kovel Enclave","description":"Privileged Legal AI under the Kovel Doctrine. Zero-retention architecture.","version":"3.3.2"},"paths":{"/webhooks/stripe":{"post":{"tags":["webhooks"],"summary":"Stripe Webhook","description":"Receive and verify Stripe webhook events.\n\nThe endpoint reads the raw body for HMAC verification,\nthen dispatches to the appropriate event handler.\nReturns 200 immediately — Stripe retries on 4xx/5xx.","operationId":"stripe_webhook_webhooks_stripe_post","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Stripe Webhook Webhooks Stripe Post"}}}}}}},"/connect/onboard":{"post":{"tags":["connect"],"summary":"Create Onboarding Link","description":"Create a Stripe Connect onboarding link for a law firm.\n\n1. Creates a Stripe Connect Custom account for the firm\n2. Stores the account ID in Firestore (beta_accounts collection)\n3. Returns the Stripe-hosted onboarding URL\n\nThe attorney is redirected to Stripe to complete KYC/bank setup.","operationId":"create_onboarding_link_connect_onboard_post","parameters":[{"name":"x-kovel-auth","in":"header","required":false,"schema":{"type":"string","title":"X-Kovel-Auth"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/OnboardingRequest"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/OnboardingResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/connect/status/{account_id}":{"get":{"tags":["Stripe Connect"],"summary":"Get Connect Status","description":"Check the status of an attorney's Stripe Connect account.","operationId":"get_connect_status_connect_status__account_id__get","parameters":[{"name":"account_id","in":"path","required":true,"schema":{"type":"string","title":"Account Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ConnectStatusResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/connect/create-payment-intent":{"post":{"tags":["Stripe Connect"],"summary":"Create Connected Payment","description":"Create a payment intent that sends funds to the attorney's Connect account.\n\nPlatform fee (our cut) is calculated as 15% of the transaction.","operationId":"create_connected_payment_connect_create_payment_intent_post","parameters":[{"name":"amount_cents","in":"query","required":true,"schema":{"type":"integer","title":"Amount Cents"}},{"name":"attorney_account_id","in":"query","required":true,"schema":{"type":"string","title":"Attorney Account Id"}},{"name":"session_id","in":"query","required":true,"schema":{"type":"string","title":"Session Id"}},{"name":"description","in":"query","required":false,"schema":{"type":"string","default":"Legal research session","title":"Description"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Create Connected Payment Connect Create Payment Intent Post"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/account/delete":{"post":{"tags":["GDPR"],"summary":"Request Account Deletion","description":"Request account deletion (GDPR Article 17 — Right to Erasure).\n\n- Requires explicit confirmation string\n- Rate-limited: 1 request per firm per 24 hours\n- Schedules deletion 30 days out (grace period for undo)\n- Stores soft-delete record in Firestore\n- Schedules Cloud Task for hard deletion\n- Logs to append-only audit trail\n- Sends email receipt (if email provided)","operationId":"request_account_deletion_account_delete_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/DeletionRequest"}}},"required":true},"responses":{"202":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/DeletionReceipt"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/account/export":{"post":{"tags":["GDPR"],"summary":"Request Data Export","description":"Request data export (GDPR Article 20 — Right to Portability).\n\nGenerates a download link (signed URL, 24h TTL) for all user data:\n- Profile information\n- Session transcripts (lawyer view only)\n- Billing history\n- Audit log (user's own actions)","operationId":"request_data_export_account_export_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/DataExportRequest"}}},"required":true},"responses":{"202":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Request Data Export Account Export Post"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/account/deletion-status/{receipt_id}":{"get":{"tags":["GDPR"],"summary":"Check Deletion Status","description":"Check the status of a pending account deletion.","operationId":"check_deletion_status_account_deletion_status__receipt_id__get","parameters":[{"name":"receipt_id","in":"path","required":true,"schema":{"type":"string","title":"Receipt Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Check Deletion Status Account Deletion Status  Receipt Id  Get"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/attestation/generate":{"post":{"tags":["Kovel Attestation"],"summary":"Create Attestation","description":"Generate a new Kovel Attestation Receipt.\n\nThe receipt proves that a privileged attorney-client communication\noccurred via AI under the Kovel doctrine, without storing the\nactual content (only SHA-256 hashes).\n\nRate-limited: 10 requests per minute per firm.","operationId":"create_attestation_attestation_generate_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AttestationRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/SessionAttestation"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/attestation/verify":{"post":{"tags":["Kovel Attestation"],"summary":"Verify Receipt","description":"Verify the integrity of a Kovel Attestation Receipt.","operationId":"verify_receipt_attestation_verify_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/SessionAttestation"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Verify Receipt Attestation Verify Post"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/onboarding/create-matter":{"post":{"tags":["Onboarding"],"summary":"Create Matter","description":"Create a new matter and generate a magic link for client onboarding.\n\nThe attorney sends this link to their client. The client clicks it\nto access the ephemeral research portal — no password needed.","operationId":"create_matter_onboarding_create_matter_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/MatterCreateRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/MagicLinkResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/onboarding/verify/{token}":{"get":{"tags":["Onboarding"],"summary":"Verify Magic Link","description":"Verify a magic link token and return session parameters.\n\nCalled by the client portal on initial load.\nToken is consumed (single-use) after successful verification.","operationId":"verify_magic_link_onboarding_verify__token__get","parameters":[{"name":"token","in":"path","required":true,"schema":{"type":"string","title":"Token"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/MagicLinkVerification"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/vent/start":{"post":{"tags":["Vent Mode"],"summary":"Start Vent Session","description":"Start a Vent Mode intake session.\n\nCreates a Stripe Checkout session for the flat intake fee.\nThe fee goes to the attorney's Stripe Connect account.\nAfter payment, client is redirected to the Vent chat interface.","operationId":"start_vent_session_vent_start_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/VentSessionRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/VentCheckoutResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/vent/message":{"post":{"tags":["Vent Mode"],"summary":"Send Vent Message","description":"Send a message in an active Vent session (non-streaming).","operationId":"send_vent_message_vent_message_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/VentMessage"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Send Vent Message Vent Message Post"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/vent/message/stream":{"post":{"tags":["Vent Mode"],"summary":"Stream Vent Message","description":"Stream a Vent Mode response via Server-Sent Events.\n\nReal-time streaming chat interface for empathetic intake.\nUses prompt repetition (arXiv 2512.14982) for accuracy boost.","operationId":"stream_vent_message_vent_message_stream_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/VentMessage"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/vent/summarize":{"post":{"tags":["Vent Mode"],"summary":"Generate Intake Summary","description":"Generate the final intake summary from a completed Vent session.\n\nSent to the attorney dashboard for review.\nTriggers magic-link generation for full Oracle Studio access.","operationId":"generate_intake_summary_vent_summarize_post","parameters":[{"name":"session_id","in":"query","required":true,"schema":{"type":"string","title":"Session Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/VentIntakeSummary"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/tasks/execute-deletion":{"post":{"tags":["Cloud Tasks"],"summary":"Execute Deletion","description":"Execute a GDPR hard delete (called by Cloud Tasks after 30-day grace).\n\nThis endpoint verifies the OIDC token from Cloud Tasks,\nthen deletes all user data across Firestore collections.","operationId":"execute_deletion_tasks_execute_deletion_post","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Execute Deletion Tasks Execute Deletion Post"}}}}}}},"/webhooks/stripe-connect":{"post":{"tags":["Connect Webhooks"],"summary":"Stripe Connect Webhook","description":"Handle Stripe Connect account lifecycle events.\n\nVerifies signature, then dispatches to handler.","operationId":"stripe_connect_webhook_webhooks_stripe_connect_post","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Stripe Connect Webhook Webhooks Stripe Connect Post"}}}}}}},"/webhooks/resend":{"post":{"tags":["Email Webhooks"],"summary":"Resend Webhook","description":"Handle Resend email delivery events.","operationId":"resend_webhook_webhooks_resend_post","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Resend Webhook Webhooks Resend Post"}}}}}}},"/byok/keys":{"post":{"tags":["BYOK"],"summary":"Register Key","description":"Register a BYOK API key for a firm.","operationId":"register_key_byok_keys_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/BYOKKeyRequest"}}},"required":true},"responses":{"201":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/BYOKKeyStatus"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/byok/keys/{firm_id}":{"get":{"tags":["BYOK"],"summary":"List Keys","description":"List all BYOK keys for a firm (masked).","operationId":"list_keys_byok_keys__firm_id__get","parameters":[{"name":"firm_id","in":"path","required":true,"schema":{"type":"string","title":"Firm Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/BYOKKeyListResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/byok/keys/{firm_id}/{provider}":{"delete":{"tags":["BYOK"],"summary":"Revoke Key","description":"Revoke a BYOK key.","operationId":"revoke_key_byok_keys__firm_id___provider__delete","parameters":[{"name":"firm_id","in":"path","required":true,"schema":{"type":"string","title":"Firm Id"}},{"name":"provider","in":"path","required":true,"schema":{"type":"string","title":"Provider"}}],"responses":{"204":{"description":"Successful Response"},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/byok/keys/{firm_id}/{provider}/validate":{"post":{"tags":["BYOK"],"summary":"Validate Key","description":"Validate an existing BYOK key by test API call.","operationId":"validate_key_byok_keys__firm_id___provider__validate_post","parameters":[{"name":"firm_id","in":"path","required":true,"schema":{"type":"string","title":"Firm Id"}},{"name":"provider","in":"path","required":true,"schema":{"type":"string","title":"Provider"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Validate Key Byok Keys  Firm Id   Provider  Validate Post"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/tasks/gdpr/execute-deletion":{"post":{"tags":["gdpr-tasks"],"summary":"Execute Gdpr Deletion","description":"Execute GDPR Article 17 data deletion after 30-day grace period.\n\nThis endpoint is called by Cloud Tasks, NOT directly by users.\nThe 30-day grace period is enforced by the Cloud Tasks scheduler.\n\nDeletion targets (per attorney_id):\n1. kovel_sessions — ephemeral query sessions\n2. audit_logs — usage audit trail (anonymized, not deleted)\n3. billing_events — payment records (retained for tax compliance, anonymized)\n4. beta_accounts — account profile data\n5. stripe_events — webhook event logs for this attorney","operationId":"execute_gdpr_deletion_tasks_gdpr_execute_deletion_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/DeletionPayload"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/DeletionResult"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/connect/status":{"get":{"tags":["connect"],"summary":"Check Onboarding Status","description":"Check the Stripe Connect onboarding status for the authenticated attorney.","operationId":"check_onboarding_status_connect_status_get","parameters":[{"name":"x-kovel-auth","in":"header","required":false,"schema":{"type":"string","title":"X-Kovel-Auth"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/OnboardingStatus"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/dispatch":{"post":{"tags":["dispatch"],"summary":"Route a query to the optimal LLM","description":"NadirClaw 3-tier dispatch: classifies prompt complexity (~10ms), selects optimal model based on firm policy + tier + session context, tracks quota, and returns routing decision with cost estimate.","operationId":"dispatch_endpoint_api_v1_dispatch_post","parameters":[{"name":"X-User-Tier","in":"header","required":false,"schema":{"type":"string","default":"trial","title":"X-User-Tier"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/DispatchRequest"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/DispatchResponse"}}}},"429":{"description":"Rate limit exceeded"},"503":{"description":"Circuit breaker open"},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/admin/metrics":{"get":{"tags":["dispatch"],"summary":"Dispatch metrics for Cloud Monitoring","description":"Returns all NadirClaw dispatch metrics: tier distribution, fallback hits, totals.","operationId":"admin_metrics_endpoint_admin_metrics_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/MetricsResponse"}}}}}}},"/admin/models":{"get":{"tags":["dispatch"],"summary":"List available models for subscription tier","description":"Return available models filtered by subscription tier.","operationId":"admin_models_endpoint_admin_models_get","parameters":[{"name":"tier","in":"query","required":false,"schema":{"type":"string","default":"trial","title":"Tier"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ModelInfoResponse"},"title":"Response Admin Models Endpoint Admin Models Get"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/admin/firm-policy":{"post":{"tags":["dispatch"],"summary":"Set per-firm model policy and quota","description":"Create or update model routing policy for a specific firm. Controls allowed models and quota limits.","operationId":"admin_firm_policy_endpoint_admin_firm_policy_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/FirmPolicyRequest"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/FirmPolicyResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/admin/session-cleanup":{"post":{"tags":["dispatch"],"summary":"Evict expired session pins","description":"Manually trigger session pin cleanup. Can be called from Cloud Scheduler.","operationId":"admin_session_cleanup_admin_session_cleanup_post","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Admin Session Cleanup Admin Session Cleanup Post"}}}}}}},"/admin/circuit-breaker":{"get":{"tags":["dispatch"],"summary":"Circuit breaker status","description":"Return current circuit breaker state.","operationId":"admin_circuit_breaker_status_admin_circuit_breaker_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Admin Circuit Breaker Status Admin Circuit Breaker Get"}}}}}}},"/admin/firm-policies":{"get":{"tags":["dispatch"],"summary":"List all firm policies (Firestore-backed)","description":"List all cached firm policies. Optionally reload from Firestore.","operationId":"admin_list_firm_policies_admin_firm_policies_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Admin List Firm Policies Admin Firm Policies Get"}}}}}}},"/admin/firm-policies/reload":{"post":{"tags":["dispatch"],"summary":"Reload firm policies from Firestore","description":"Force-reload all firm policies from Firestore.","operationId":"admin_reload_firm_policies_admin_firm_policies_reload_post","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Admin Reload Firm Policies Admin Firm Policies Reload Post"}}}}}}},"/admin/provider-health":{"get":{"tags":["dispatch"],"summary":"Provider Health","description":"Health status of upstream LLM providers with circuit breaker state.","operationId":"provider_health_admin_provider_health_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Provider Health Admin Provider Health Get"}}}}}}},"/admin/firm-policy-history/{firm_id}":{"get":{"tags":["dispatch"],"summary":"Firm policy version history","description":"Returns the version history of a firm's policy changes from Firestore.","operationId":"admin_firm_policy_history_admin_firm_policy_history__firm_id__get","parameters":[{"name":"firm_id","in":"path","required":true,"schema":{"type":"string","title":"Firm Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Admin Firm Policy History Admin Firm Policy History  Firm Id  Get"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/admin/token-budgets":{"get":{"tags":["dispatch"],"summary":"Token Budgets","description":"Current token budget consumption by tier with Firestore backing.","operationId":"token_budgets_admin_token_budgets_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Token Budgets Admin Token Budgets Get"}}}}}}},"/admin/vent-mode/diagnostics":{"get":{"tags":["dispatch"],"summary":"Vent Mode Diagnostics","description":"SSE stream health diagnostics for Vent Mode.","operationId":"vent_mode_diagnostics_admin_vent_mode_diagnostics_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Vent Mode Diagnostics Admin Vent Mode Diagnostics Get"}}}}}}},"/admin/slo-report":{"get":{"tags":["dispatch"],"summary":"Slo Compliance Report","description":"Monthly SLO compliance report for CounselConduit.","operationId":"slo_compliance_report_admin_slo_report_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Slo Compliance Report Admin Slo Report Get"}}}}}}},"/api/v1/token-meter":{"get":{"tags":["client-portal"],"summary":"Token budget meter for client portal","description":"Returns current token consumption and remaining budget for display in the client portal.","operationId":"token_meter_api_v1_token_meter_get","parameters":[{"name":"firm_id","in":"query","required":true,"schema":{"type":"string","title":"Firm Id"}},{"name":"X-User-Tier","in":"header","required":false,"schema":{"type":"string","default":"trial","title":"X-User-Tier"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/TokenMeterResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/health/providers":{"get":{"tags":["Health"],"summary":"Provider Health","description":"Per-provider health check with latency metrics.\n\nReturns status for each LLM provider (Gemini, Claude, OpenAI).\nDoes NOT send authenticated requests — only probes endpoint reachability.","operationId":"provider_health_health_providers_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}},"/":{"get":{"summary":"Root","description":"Root endpoint — API discovery.","operationId":"root__get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}},"/health":{"get":{"summary":"Health","description":"Health check for Cloud Run / load balancer probes.\n\nIncludes Firestore connectivity verification.","operationId":"health_health_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}},"/heartbeat":{"post":{"summary":"Heartbeat","description":"Client session heartbeat — keeps session alive, resets dead-man's switch.","operationId":"heartbeat_heartbeat_post","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}},"/enclave/v1/query":{"post":{"summary":"Execute Query","description":"Execute a Kovel-privileged query against the Gemini RAG pipeline.\n\nSynchronous endpoint — returns full response after completion.\nAll responses pass through Judge #6 governance before returning.","operationId":"execute_query_enclave_v1_query_post","parameters":[{"name":"x-kovel-auth","in":"header","required":false,"schema":{"type":"string","title":"X-Kovel-Auth"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/QueryRequest"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/QueryResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/enclave/v1/query/stream":{"post":{"summary":"Stream Query","description":"Stream a Kovel-privileged query response via Server-Sent Events.\n\nReal-time streaming for chat-style interfaces.","operationId":"stream_query_enclave_v1_query_stream_post","parameters":[{"name":"x-kovel-auth","in":"header","required":false,"schema":{"type":"string","title":"X-Kovel-Auth"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/QueryRequest"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/enclave/v1/health":{"get":{"summary":"Enclave Health","description":"Health check endpoint for Cloud Run and load balancers.","operationId":"enclave_health_enclave_v1_health_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}}},"components":{"schemas":{"AttestationRequest":{"properties":{"session_id":{"type":"string","title":"Session Id"},"attorney_id":{"type":"string","title":"Attorney Id"},"firm_id":{"type":"string","title":"Firm Id"},"client_id":{"type":"string","title":"Client Id"},"model_used":{"type":"string","title":"Model Used"},"query_text":{"type":"string","title":"Query Text"},"response_text":{"type":"string","title":"Response Text"}},"type":"object","required":["session_id","attorney_id","firm_id","client_id","model_used","query_text","response_text"],"title":"AttestationRequest","description":"Request to generate an attestation receipt."},"BYOKConfig":{"properties":{"enabled":{"type":"boolean","title":"Enabled","default":false},"kms_key_uri":{"type":"string","title":"Kms Key Uri","default":""},"kms_rotation_period_days":{"type":"integer","title":"Kms Rotation Period Days","default":90},"kms_next_rotation_time":{"type":"string","title":"Kms Next Rotation Time","default":""},"key_algorithm":{"type":"string","title":"Key Algorithm","default":"GOOGLE_SYMMETRIC_ENCRYPTION"}},"type":"object","title":"BYOKConfig","description":"Bring-Your-Own-Key configuration for enterprise tenants.\n\nSupports customer-managed encryption keys via Cloud KMS.\nFields:\n    enabled: Whether BYOK is active for this tenant.\n    kms_key_uri: Full Cloud KMS CryptoKey resource name.\n    kms_rotation_period_days: Key rotation period in days (default 90).\n    kms_next_rotation_time: ISO 8601 timestamp for next scheduled rotation.\n    key_algorithm: KMS key algorithm (default GOOGLE_SYMMETRIC_ENCRYPTION)."},"BYOKKeyListResponse":{"properties":{"firm_id":{"type":"string","title":"Firm Id"},"keys":{"items":{"$ref":"#/components/schemas/BYOKKeyStatus"},"type":"array","title":"Keys"},"total":{"type":"integer","title":"Total"}},"type":"object","required":["firm_id","keys","total"],"title":"BYOKKeyListResponse","description":"List of BYOK keys for a firm."},"BYOKKeyRequest":{"properties":{"firm_id":{"type":"string","maxLength":128,"minLength":1,"title":"Firm Id"},"provider":{"type":"string","pattern":"^(openai|anthropic|google|mistral)$","title":"Provider","description":"LLM provider"},"api_key":{"type":"string","maxLength":256,"minLength":10,"title":"Api Key"},"label":{"type":"string","maxLength":64,"title":"Label","default":"default"}},"type":"object","required":["firm_id","provider","api_key"],"title":"BYOKKeyRequest","description":"Request to register a BYOK API key."},"BYOKKeyStatus":{"properties":{"firm_id":{"type":"string","title":"Firm Id"},"provider":{"type":"string","title":"Provider"},"label":{"type":"string","title":"Label"},"status":{"type":"string","title":"Status"},"registered_at":{"type":"string","title":"Registered At"},"last_validated_at":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Last Validated At"},"masked_key":{"type":"string","title":"Masked Key"}},"type":"object","required":["firm_id","provider","label","status","registered_at","masked_key"],"title":"BYOKKeyStatus","description":"Status of a registered BYOK key (never includes the key itself)."},"ConnectOnboardRequest":{"properties":{"attorney_id":{"type":"string","title":"Attorney Id"},"firm_id":{"type":"string","title":"Firm Id"},"email":{"type":"string","title":"Email"},"business_name":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Business Name"},"country":{"type":"string","title":"Country","default":"US"}},"type":"object","required":["attorney_id","firm_id","email"],"title":"ConnectOnboardRequest","description":"Attorney initiates Stripe Connect onboarding."},"ConnectOnboardResponse":{"properties":{"account_id":{"type":"string","title":"Account Id"},"onboarding_url":{"type":"string","title":"Onboarding Url"},"message":{"type":"string","title":"Message","default":"Complete your Stripe account setup to start receiving payments."}},"type":"object","required":["account_id","onboarding_url"],"title":"ConnectOnboardResponse","description":"Response with Stripe Connect onboarding URL."},"ConnectStatusResponse":{"properties":{"account_id":{"type":"string","title":"Account Id"},"charges_enabled":{"type":"boolean","title":"Charges Enabled"},"payouts_enabled":{"type":"boolean","title":"Payouts Enabled"},"details_submitted":{"type":"boolean","title":"Details Submitted"},"requirements":{"items":{"type":"string"},"type":"array","title":"Requirements"}},"type":"object","required":["account_id","charges_enabled","payouts_enabled","details_submitted"],"title":"ConnectStatusResponse","description":"Status of attorney's Stripe Connect account."},"DataExportRequest":{"properties":{"format":{"type":"string","pattern":"^(json|csv)$","title":"Format","default":"json"}},"type":"object","title":"DataExportRequest","description":"GDPR Article 20 — Right to data portability."},"DeletionPayload":{"properties":{"attorney_id":{"type":"string","title":"Attorney Id"},"firm_id":{"type":"string","title":"Firm Id"},"requested_at":{"type":"number","title":"Requested At"},"deletion_type":{"type":"string","title":"Deletion Type","default":"full"}},"type":"object","required":["attorney_id","firm_id","requested_at"],"title":"DeletionPayload","description":"Payload sent by Cloud Tasks for GDPR deletion."},"DeletionReceipt":{"properties":{"status":{"type":"string","title":"Status","default":"scheduled"},"deletion_date":{"type":"string","title":"Deletion Date"},"receipt_id":{"type":"string","title":"Receipt Id"},"message":{"type":"string","title":"Message","default":"Your account and all associated data will be permanently deleted within 30 days. You will receive a confirmation email when complete."}},"type":"object","required":["deletion_date","receipt_id"],"title":"DeletionReceipt","description":"Receipt confirming deletion was scheduled."},"DeletionRequest":{"properties":{"confirmation":{"type":"string","title":"Confirmation","description":"Must be 'DELETE MY ACCOUNT' to confirm"},"reason":{"anyOf":[{"type":"string","maxLength":500},{"type":"null"}],"title":"Reason","description":"Optional reason (not required, data-minimization)"},"firm_id":{"type":"string","title":"Firm Id","description":"Firm ID for tenant scoping","default":"demo-firm"},"attorney_id":{"type":"string","title":"Attorney Id","description":"Requesting attorney's ID","default":"demo-attorney"},"email":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Email","description":"Email for deletion receipt (optional)"}},"type":"object","required":["confirmation"],"title":"DeletionRequest","description":"User-initiated account deletion request."},"DeletionResult":{"properties":{"attorney_id":{"type":"string","title":"Attorney Id"},"collections_deleted":{"items":{"type":"string"},"type":"array","title":"Collections Deleted"},"documents_deleted":{"type":"integer","title":"Documents Deleted"},"completed_at":{"type":"number","title":"Completed At"},"idempotency_key":{"type":"string","title":"Idempotency Key"}},"type":"object","required":["attorney_id","collections_deleted","documents_deleted","completed_at","idempotency_key"],"title":"DeletionResult","description":"Result of a GDPR deletion execution."},"DispatchRequest":{"properties":{"query":{"type":"string","maxLength":50000,"minLength":1,"title":"Query","description":"User query text"},"firm_id":{"type":"string","maxLength":128,"minLength":1,"title":"Firm Id","description":"Firm tenant ID"},"session_id":{"type":"string","maxLength":128,"title":"Session Id","description":"Session ID for model pinning","default":""},"preferred_model":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Preferred Model","description":"Override auto-routing with specific model"},"firm_allowed_models":{"items":{"type":"string"},"type":"array","title":"Firm Allowed Models","description":"Models permitted by firm policy"}},"type":"object","required":["query","firm_id"],"title":"DispatchRequest","description":"POST /api/v1/dispatch request body."},"DispatchResponse":{"properties":{"model":{"type":"string","title":"Model","description":"Selected model ID"},"provider":{"type":"string","title":"Provider","description":"Model provider (gemini, claude, openai, etc.)"},"tier":{"type":"string","title":"Tier","description":"Dispatch tier (simple, complex, agentic)"},"session_pinned":{"type":"boolean","title":"Session Pinned","description":"Whether session is pinned to this model"},"cost_per_1k_input":{"type":"number","title":"Cost Per 1K Input","description":"Cost per 1K input tokens (USD)"},"latency_ms":{"type":"number","title":"Latency Ms","description":"Routing latency in milliseconds"}},"type":"object","required":["model","provider","tier","session_pinned","cost_per_1k_input","latency_ms"],"title":"DispatchResponse","description":"POST /api/v1/dispatch response body."},"FirmPolicyRequest":{"properties":{"firm_id":{"type":"string","title":"Firm Id"},"allowed_models":{"items":{"type":"string"},"type":"array","title":"Allowed Models"},"max_rpm":{"type":"integer","title":"Max Rpm","default":60},"max_daily":{"type":"integer","title":"Max Daily","default":5000},"byok":{"$ref":"#/components/schemas/BYOKConfig"}},"type":"object","required":["firm_id","allowed_models"],"title":"FirmPolicyRequest","description":"POST /admin/firm-policy request body."},"FirmPolicyResponse":{"properties":{"firm_id":{"type":"string","title":"Firm Id"},"allowed_models":{"items":{"type":"string"},"type":"array","title":"Allowed Models"},"quota_rpm":{"type":"integer","title":"Quota Rpm"},"quota_daily":{"type":"integer","title":"Quota Daily"},"byok_enabled":{"type":"boolean","title":"Byok Enabled"},"status":{"type":"string","title":"Status","default":"updated"}},"type":"object","required":["firm_id","allowed_models","quota_rpm","quota_daily","byok_enabled"],"title":"FirmPolicyResponse","description":"POST /admin/firm-policy response body."},"HTTPValidationError":{"properties":{"detail":{"items":{"$ref":"#/components/schemas/ValidationError"},"type":"array","title":"Detail"}},"type":"object","title":"HTTPValidationError"},"MagicLinkResponse":{"properties":{"matter_id":{"type":"string","title":"Matter Id"},"magic_link":{"type":"string","title":"Magic Link"},"expires_at":{"type":"string","title":"Expires At"},"client_email":{"type":"string","title":"Client Email"},"message":{"type":"string","title":"Message","default":"Send this link to your client. It expires in 72 hours and can only be used once."}},"type":"object","required":["matter_id","magic_link","expires_at","client_email"],"title":"MagicLinkResponse","description":"Response containing the generated magic link."},"MagicLinkVerification":{"properties":{"valid":{"type":"boolean","title":"Valid"},"matter_id":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Matter Id"},"firm_id":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Firm Id"},"attorney_id":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Attorney Id"},"allowed_models":{"items":{"type":"string"},"type":"array","title":"Allowed Models"},"session_ttl_hours":{"type":"integer","title":"Session Ttl Hours","default":4}},"type":"object","required":["valid"],"title":"MagicLinkVerification","description":"Result of verifying a magic link token."},"MatterCreateRequest":{"properties":{"attorney_id":{"type":"string","title":"Attorney Id"},"firm_id":{"type":"string","title":"Firm Id"},"client_name":{"type":"string","title":"Client Name"},"client_email":{"type":"string","title":"Client Email"},"matter_description":{"type":"string","title":"Matter Description","default":""},"allowed_models":{"items":{"type":"string"},"type":"array","title":"Allowed Models"},"session_ttl_hours":{"type":"integer","maximum":24.0,"minimum":1.0,"title":"Session Ttl Hours","default":4}},"type":"object","required":["attorney_id","firm_id","client_name","client_email"],"title":"MatterCreateRequest","description":"Attorney creates a new matter for client onboarding."},"MetricsResponse":{"properties":{"dispatch_counts":{"additionalProperties":{"type":"integer"},"type":"object","title":"Dispatch Counts"},"total_dispatches":{"type":"integer","title":"Total Dispatches"},"uptime_seconds":{"type":"number","title":"Uptime Seconds"}},"type":"object","required":["dispatch_counts","total_dispatches","uptime_seconds"],"title":"MetricsResponse","description":"GET /admin/metrics response body."},"ModelInfoResponse":{"properties":{"key":{"type":"string","title":"Key"},"model_id":{"type":"string","title":"Model Id"},"display_name":{"type":"string","title":"Display Name"},"provider":{"type":"string","title":"Provider"},"cost_per_1k_input":{"type":"number","title":"Cost Per 1K Input"},"cost_per_1k_output":{"type":"number","title":"Cost Per 1K Output"},"supports_streaming":{"type":"boolean","title":"Supports Streaming"},"supports_tools":{"type":"boolean","title":"Supports Tools"}},"type":"object","required":["key","model_id","display_name","provider","cost_per_1k_input","cost_per_1k_output","supports_streaming","supports_tools"],"title":"ModelInfoResponse","description":"Individual model info for GET /admin/models."},"OnboardingRequest":{"properties":{"firm_name":{"type":"string","title":"Firm Name"},"attorney_email":{"type":"string","title":"Attorney Email"},"return_url":{"type":"string","title":"Return Url","default":"https://kovelai.web.app/onboarding/complete"},"refresh_url":{"type":"string","title":"Refresh Url","default":"https://kovelai.web.app/onboarding/refresh"}},"type":"object","required":["firm_name","attorney_email"],"title":"OnboardingRequest","description":"Request body for Stripe Connect onboarding."},"OnboardingResponse":{"properties":{"account_link_url":{"type":"string","title":"Account Link Url"},"account_id":{"type":"string","title":"Account Id"},"expires_at":{"type":"integer","title":"Expires At"}},"type":"object","required":["account_link_url","account_id","expires_at"],"title":"OnboardingResponse","description":"Response with Stripe Connect account link."},"OnboardingStatus":{"properties":{"account_id":{"type":"string","title":"Account Id"},"charges_enabled":{"type":"boolean","title":"Charges Enabled"},"payouts_enabled":{"type":"boolean","title":"Payouts Enabled"},"details_submitted":{"type":"boolean","title":"Details Submitted"},"onboarding_complete":{"type":"boolean","title":"Onboarding Complete"}},"type":"object","required":["account_id","charges_enabled","payouts_enabled","details_submitted","onboarding_complete"],"title":"OnboardingStatus","description":"Onboarding status response."},"QueryRequest":{"properties":{"attorney_id":{"type":"string","title":"Attorney Id"},"query":{"type":"string","title":"Query"},"context_documents":{"items":{"type":"string"},"type":"array","title":"Context Documents","default":[]},"max_tokens":{"type":"integer","title":"Max Tokens","default":4096},"temperature":{"type":"number","title":"Temperature","default":0.3}},"type":"object","required":["attorney_id","query"],"title":"QueryRequest","description":"Incoming privileged query from an attorney."},"QueryResponse":{"properties":{"attorney_id":{"type":"string","title":"Attorney Id"},"response":{"type":"string","title":"Response"},"token_count":{"type":"integer","title":"Token Count"},"model":{"type":"string","title":"Model"},"citations":{"items":{"type":"string"},"type":"array","title":"Citations","default":[]}},"type":"object","required":["attorney_id","response","token_count","model"],"title":"QueryResponse","description":"Response from the Gemini RAG pipeline."},"SessionAttestation":{"properties":{"attestation_id":{"type":"string","title":"Attestation Id"},"session_id":{"type":"string","title":"Session Id"},"attorney_id":{"type":"string","title":"Attorney Id"},"firm_id":{"type":"string","title":"Firm Id"},"client_id":{"type":"string","title":"Client Id"},"model_used":{"type":"string","title":"Model Used"},"query_hash":{"type":"string","title":"Query Hash"},"response_hash":{"type":"string","title":"Response Hash"},"timestamp":{"type":"string","title":"Timestamp"},"privilege_type":{"type":"string","title":"Privilege Type","default":"kovel_doctrine"},"hmac_signature":{"type":"string","title":"Hmac Signature"},"metadata":{"additionalProperties":true,"type":"object","title":"Metadata"}},"type":"object","required":["attestation_id","session_id","attorney_id","firm_id","client_id","model_used","query_hash","response_hash","timestamp","hmac_signature"],"title":"SessionAttestation","description":"Kovel Attestation Receipt — cryptographic proof of privileged session."},"TokenMeterResponse":{"properties":{"firm_id":{"type":"string","title":"Firm Id"},"tier":{"type":"string","title":"Tier"},"budget_limit":{"type":"integer","title":"Budget Limit"},"budget_used":{"type":"integer","title":"Budget Used"},"budget_remaining":{"type":"integer","title":"Budget Remaining"},"usage_pct":{"type":"number","title":"Usage Pct"},"status":{"type":"string","title":"Status"},"reset_at":{"type":"string","title":"Reset At"},"warning_threshold_pct":{"type":"number","title":"Warning Threshold Pct","default":80.0},"critical_threshold_pct":{"type":"number","title":"Critical Threshold Pct","default":95.0}},"type":"object","required":["firm_id","tier","budget_limit","budget_used","budget_remaining","usage_pct","status","reset_at"],"title":"TokenMeterResponse","description":"Token budget meter for client portal display."},"ValidationError":{"properties":{"loc":{"items":{"anyOf":[{"type":"string"},{"type":"integer"}]},"type":"array","title":"Location"},"msg":{"type":"string","title":"Message"},"type":{"type":"string","title":"Error Type"},"input":{"title":"Input"},"ctx":{"type":"object","title":"Context"}},"type":"object","required":["loc","msg","type"],"title":"ValidationError"},"VentCheckoutResponse":{"properties":{"checkout_url":{"type":"string","title":"Checkout Url"},"session_id":{"type":"string","title":"Session Id"},"amount_display":{"type":"string","title":"Amount Display"}},"type":"object","required":["checkout_url","session_id","amount_display"],"title":"VentCheckoutResponse","description":"Stripe Checkout session for Vent intake fee."},"VentIntakeSummary":{"properties":{"session_id":{"type":"string","title":"Session Id"},"client_narrative":{"type":"string","title":"Client Narrative"},"identified_issues":{"items":{"type":"string"},"type":"array","title":"Identified Issues"},"suggested_practice_areas":{"items":{"type":"string"},"type":"array","title":"Suggested Practice Areas"},"urgency_level":{"type":"string","title":"Urgency Level"},"recommended_next_step":{"type":"string","title":"Recommended Next Step"},"estimated_complexity":{"type":"string","title":"Estimated Complexity"}},"type":"object","required":["session_id","client_narrative","identified_issues","suggested_practice_areas","urgency_level","recommended_next_step","estimated_complexity"],"title":"VentIntakeSummary","description":"AI-generated intake summary from Vent session."},"VentMessage":{"properties":{"session_id":{"type":"string","title":"Session Id"},"message":{"type":"string","maxLength":5000,"minLength":1,"title":"Message"}},"type":"object","required":["session_id","message"],"title":"VentMessage","description":"Client message in a Vent session."},"VentSessionRequest":{"properties":{"firm_id":{"type":"string","title":"Firm Id"},"attorney_id":{"type":"string","title":"Attorney Id"},"client_name":{"type":"string","title":"Client Name"},"client_email":{"type":"string","title":"Client Email"},"fee_amount_cents":{"type":"integer","maximum":25000.0,"minimum":2500.0,"title":"Fee Amount Cents","default":5000}},"type":"object","required":["firm_id","attorney_id","client_name","client_email"],"title":"VentSessionRequest","description":"Client starts a Vent Mode intake session."}}},"tags":[{"name":"Kovel Enclave","description":"Privileged query endpoints protected by Kovel doctrine"},{"name":"Stripe Connect","description":"Dual-billing engine: client→attorney + attorney→us"},{"name":"GDPR","description":"Article 17 erasure + Article 20 data portability"},{"name":"Attestation","description":"HMAC-SHA256 Kovel attestation receipts"},{"name":"Vent Mode","description":"SSE streaming for real-time AI interaction"},{"name":"Sandbox","description":"Phase 3: Tenant isolation, quota enforcement, proxy tokens"},{"name":"BYOK","description":"Bring Your Own Key — customer-managed LLM API keys"},{"name":"dispatch","description":"NadirClaw 3-tier model dispatch + routing metrics"}]}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CounselConduit: Kovel Enclave",
+    "description": "Privileged Legal AI under the Kovel Doctrine. Zero-retention architecture.",
+    "version": "3.3.2"
+  },
+  "paths": {
+    "/webhooks/stripe": {
+      "post": {
+        "tags": ["webhooks"],
+        "summary": "Stripe Webhook",
+        "description": "Receive and verify Stripe webhook events.\n\nThe endpoint reads the raw body for HMAC verification,\nthen dispatches to the appropriate event handler.\nReturns 200 immediately — Stripe retries on 4xx/5xx.",
+        "operationId": "stripe_webhook_webhooks_stripe_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Stripe Webhook Webhooks Stripe Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/onboard": {
+      "post": {
+        "tags": ["connect"],
+        "summary": "Create Onboarding Link",
+        "description": "Create a Stripe Connect onboarding link for a law firm.\n\n1. Creates a Stripe Connect Custom account for the firm\n2. Stores the account ID in Firestore (beta_accounts collection)\n3. Returns the Stripe-hosted onboarding URL\n\nThe attorney is redirected to Stripe to complete KYC/bank setup.",
+        "operationId": "create_onboarding_link_connect_onboard_post",
+        "parameters": [
+          {
+            "name": "x-kovel-auth",
+            "in": "header",
+            "required": false,
+            "schema": { "type": "string", "title": "X-Kovel-Auth" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/OnboardingRequest" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/OnboardingResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/status/{account_id}": {
+      "get": {
+        "tags": ["Stripe Connect"],
+        "summary": "Get Connect Status",
+        "description": "Check the status of an attorney's Stripe Connect account.",
+        "operationId": "get_connect_status_connect_status__account_id__get",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Account Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ConnectStatusResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/create-payment-intent": {
+      "post": {
+        "tags": ["Stripe Connect"],
+        "summary": "Create Connected Payment",
+        "description": "Create a payment intent that sends funds to the attorney's Connect account.\n\nPlatform fee (our cut) is calculated as 15% of the transaction.",
+        "operationId": "create_connected_payment_connect_create_payment_intent_post",
+        "parameters": [
+          {
+            "name": "amount_cents",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "title": "Amount Cents" }
+          },
+          {
+            "name": "attorney_account_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Attorney Account Id" }
+          },
+          {
+            "name": "session_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Session Id" }
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "Legal research session",
+              "title": "Description"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Create Connected Payment Connect Create Payment Intent Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/delete": {
+      "post": {
+        "tags": ["GDPR"],
+        "summary": "Request Account Deletion",
+        "description": "Request account deletion (GDPR Article 17 — Right to Erasure).\n\n- Requires explicit confirmation string\n- Rate-limited: 1 request per firm per 24 hours\n- Schedules deletion 30 days out (grace period for undo)\n- Stores soft-delete record in Firestore\n- Schedules Cloud Task for hard deletion\n- Logs to append-only audit trail\n- Sends email receipt (if email provided)",
+        "operationId": "request_account_deletion_account_delete_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/DeletionRequest" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/DeletionReceipt" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/export": {
+      "post": {
+        "tags": ["GDPR"],
+        "summary": "Request Data Export",
+        "description": "Request data export (GDPR Article 20 — Right to Portability).\n\nGenerates a download link (signed URL, 24h TTL) for all user data:\n- Profile information\n- Session transcripts (lawyer view only)\n- Billing history\n- Audit log (user's own actions)",
+        "operationId": "request_data_export_account_export_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/DataExportRequest" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Request Data Export Account Export Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/deletion-status/{receipt_id}": {
+      "get": {
+        "tags": ["GDPR"],
+        "summary": "Check Deletion Status",
+        "description": "Check the status of a pending account deletion.",
+        "operationId": "check_deletion_status_account_deletion_status__receipt_id__get",
+        "parameters": [
+          {
+            "name": "receipt_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Receipt Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Check Deletion Status Account Deletion Status  Receipt Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/attestation/generate": {
+      "post": {
+        "tags": ["Kovel Attestation"],
+        "summary": "Create Attestation",
+        "description": "Generate a new Kovel Attestation Receipt.\n\nThe receipt proves that a privileged attorney-client communication\noccurred via AI under the Kovel doctrine, without storing the\nactual content (only SHA-256 hashes).\n\nRate-limited: 10 requests per minute per firm.",
+        "operationId": "create_attestation_attestation_generate_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/AttestationRequest" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SessionAttestation" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/attestation/verify": {
+      "post": {
+        "tags": ["Kovel Attestation"],
+        "summary": "Verify Receipt",
+        "description": "Verify the integrity of a Kovel Attestation Receipt.",
+        "operationId": "verify_receipt_attestation_verify_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/SessionAttestation" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Verify Receipt Attestation Verify Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/onboarding/create-matter": {
+      "post": {
+        "tags": ["Onboarding"],
+        "summary": "Create Matter",
+        "description": "Create a new matter and generate a magic link for client onboarding.\n\nThe attorney sends this link to their client. The client clicks it\nto access the ephemeral research portal — no password needed.",
+        "operationId": "create_matter_onboarding_create_matter_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/MatterCreateRequest" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MagicLinkResponse" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/onboarding/verify/{token}": {
+      "get": {
+        "tags": ["Onboarding"],
+        "summary": "Verify Magic Link",
+        "description": "Verify a magic link token and return session parameters.\n\nCalled by the client portal on initial load.\nToken is consumed (single-use) after successful verification.",
+        "operationId": "verify_magic_link_onboarding_verify__token__get",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Token" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MagicLinkVerification" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vent/start": {
+      "post": {
+        "tags": ["Vent Mode"],
+        "summary": "Start Vent Session",
+        "description": "Start a Vent Mode intake session.\n\nCreates a Stripe Checkout session for the flat intake fee.\nThe fee goes to the attorney's Stripe Connect account.\nAfter payment, client is redirected to the Vent chat interface.",
+        "operationId": "start_vent_session_vent_start_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/VentSessionRequest" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/VentCheckoutResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vent/message": {
+      "post": {
+        "tags": ["Vent Mode"],
+        "summary": "Send Vent Message",
+        "description": "Send a message in an active Vent session (non-streaming).",
+        "operationId": "send_vent_message_vent_message_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/VentMessage" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Send Vent Message Vent Message Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vent/message/stream": {
+      "post": {
+        "tags": ["Vent Mode"],
+        "summary": "Stream Vent Message",
+        "description": "Stream a Vent Mode response via Server-Sent Events.\n\nReal-time streaming chat interface for empathetic intake.\nUses prompt repetition (arXiv 2512.14982) for accuracy boost.",
+        "operationId": "stream_vent_message_vent_message_stream_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/VentMessage" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vent/summarize": {
+      "post": {
+        "tags": ["Vent Mode"],
+        "summary": "Generate Intake Summary",
+        "description": "Generate the final intake summary from a completed Vent session.\n\nSent to the attorney dashboard for review.\nTriggers magic-link generation for full Oracle Studio access.",
+        "operationId": "generate_intake_summary_vent_summarize_post",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Session Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/VentIntakeSummary" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks/execute-deletion": {
+      "post": {
+        "tags": ["Cloud Tasks"],
+        "summary": "Execute Deletion",
+        "description": "Execute a GDPR hard delete (called by Cloud Tasks after 30-day grace).\n\nThis endpoint verifies the OIDC token from Cloud Tasks,\nthen deletes all user data across Firestore collections.",
+        "operationId": "execute_deletion_tasks_execute_deletion_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Execute Deletion Tasks Execute Deletion Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webhooks/stripe-connect": {
+      "post": {
+        "tags": ["Connect Webhooks"],
+        "summary": "Stripe Connect Webhook",
+        "description": "Handle Stripe Connect account lifecycle events.\n\nVerifies signature, then dispatches to handler.",
+        "operationId": "stripe_connect_webhook_webhooks_stripe_connect_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Stripe Connect Webhook Webhooks Stripe Connect Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webhooks/resend": {
+      "post": {
+        "tags": ["Email Webhooks"],
+        "summary": "Resend Webhook",
+        "description": "Handle Resend email delivery events.",
+        "operationId": "resend_webhook_webhooks_resend_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Resend Webhook Webhooks Resend Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/byok/keys": {
+      "post": {
+        "tags": ["BYOK"],
+        "summary": "Register Key",
+        "description": "Register a BYOK API key for a firm.",
+        "operationId": "register_key_byok_keys_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/BYOKKeyRequest" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/BYOKKeyStatus" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/byok/keys/{firm_id}": {
+      "get": {
+        "tags": ["BYOK"],
+        "summary": "List Keys",
+        "description": "List all BYOK keys for a firm (masked).",
+        "operationId": "list_keys_byok_keys__firm_id__get",
+        "parameters": [
+          {
+            "name": "firm_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Firm Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BYOKKeyListResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/byok/keys/{firm_id}/{provider}": {
+      "delete": {
+        "tags": ["BYOK"],
+        "summary": "Revoke Key",
+        "description": "Revoke a BYOK key.",
+        "operationId": "revoke_key_byok_keys__firm_id___provider__delete",
+        "parameters": [
+          {
+            "name": "firm_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Firm Id" }
+          },
+          {
+            "name": "provider",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Provider" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/byok/keys/{firm_id}/{provider}/validate": {
+      "post": {
+        "tags": ["BYOK"],
+        "summary": "Validate Key",
+        "description": "Validate an existing BYOK key by test API call.",
+        "operationId": "validate_key_byok_keys__firm_id___provider__validate_post",
+        "parameters": [
+          {
+            "name": "firm_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Firm Id" }
+          },
+          {
+            "name": "provider",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Provider" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Validate Key Byok Keys  Firm Id   Provider  Validate Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks/gdpr/execute-deletion": {
+      "post": {
+        "tags": ["gdpr-tasks"],
+        "summary": "Execute Gdpr Deletion",
+        "description": "Execute GDPR Article 17 data deletion after 30-day grace period.\n\nThis endpoint is called by Cloud Tasks, NOT directly by users.\nThe 30-day grace period is enforced by the Cloud Tasks scheduler.\n\nDeletion targets (per attorney_id):\n1. kovel_sessions — ephemeral query sessions\n2. audit_logs — usage audit trail (anonymized, not deleted)\n3. billing_events — payment records (retained for tax compliance, anonymized)\n4. beta_accounts — account profile data\n5. stripe_events — webhook event logs for this attorney",
+        "operationId": "execute_gdpr_deletion_tasks_gdpr_execute_deletion_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/DeletionPayload" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/DeletionResult" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/connect/status": {
+      "get": {
+        "tags": ["connect"],
+        "summary": "Check Onboarding Status",
+        "description": "Check the Stripe Connect onboarding status for the authenticated attorney.",
+        "operationId": "check_onboarding_status_connect_status_get",
+        "parameters": [
+          {
+            "name": "x-kovel-auth",
+            "in": "header",
+            "required": false,
+            "schema": { "type": "string", "title": "X-Kovel-Auth" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/OnboardingStatus" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/dispatch": {
+      "post": {
+        "tags": ["dispatch"],
+        "summary": "Route a query to the optimal LLM",
+        "description": "NadirClaw 3-tier dispatch: classifies prompt complexity (~10ms), selects optimal model based on firm policy + tier + session context, tracks quota, and returns routing decision with cost estimate.",
+        "operationId": "dispatch_endpoint_api_v1_dispatch_post",
+        "parameters": [
+          {
+            "name": "X-User-Tier",
+            "in": "header",
+            "required": false,
+            "schema": { "type": "string", "default": "trial", "title": "X-User-Tier" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/DispatchRequest" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/DispatchResponse" } }
+            }
+          },
+          "429": { "description": "Rate limit exceeded" },
+          "503": { "description": "Circuit breaker open" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/metrics": {
+      "get": {
+        "tags": ["dispatch"],
+        "summary": "Dispatch metrics for Cloud Monitoring",
+        "description": "Returns all NadirClaw dispatch metrics: tier distribution, fallback hits, totals.",
+        "operationId": "admin_metrics_endpoint_admin_metrics_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MetricsResponse" } }
+            }
+          }
+        }
+      }
+    },
+    "/admin/models": {
+      "get": {
+        "tags": ["dispatch"],
+        "summary": "List available models for subscription tier",
+        "description": "Return available models filtered by subscription tier.",
+        "operationId": "admin_models_endpoint_admin_models_get",
+        "parameters": [
+          {
+            "name": "tier",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "default": "trial", "title": "Tier" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ModelInfoResponse" },
+                  "title": "Response Admin Models Endpoint Admin Models Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/firm-policy": {
+      "post": {
+        "tags": ["dispatch"],
+        "summary": "Set per-firm model policy and quota",
+        "description": "Create or update model routing policy for a specific firm. Controls allowed models and quota limits.",
+        "operationId": "admin_firm_policy_endpoint_admin_firm_policy_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/FirmPolicyRequest" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FirmPolicyResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/session-cleanup": {
+      "post": {
+        "tags": ["dispatch"],
+        "summary": "Evict expired session pins",
+        "description": "Manually trigger session pin cleanup. Can be called from Cloud Scheduler.",
+        "operationId": "admin_session_cleanup_admin_session_cleanup_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Admin Session Cleanup Admin Session Cleanup Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/circuit-breaker": {
+      "get": {
+        "tags": ["dispatch"],
+        "summary": "Circuit breaker status",
+        "description": "Return current circuit breaker state.",
+        "operationId": "admin_circuit_breaker_status_admin_circuit_breaker_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Admin Circuit Breaker Status Admin Circuit Breaker Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/firm-policies": {
+      "get": {
+        "tags": ["dispatch"],
+        "summary": "List all firm policies (Firestore-backed)",
+        "description": "List all cached firm policies. Optionally reload from Firestore.",
+        "operationId": "admin_list_firm_policies_admin_firm_policies_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Admin List Firm Policies Admin Firm Policies Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/firm-policies/reload": {
+      "post": {
+        "tags": ["dispatch"],
+        "summary": "Reload firm policies from Firestore",
+        "description": "Force-reload all firm policies from Firestore.",
+        "operationId": "admin_reload_firm_policies_admin_firm_policies_reload_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Admin Reload Firm Policies Admin Firm Policies Reload Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/provider-health": {
+      "get": {
+        "tags": ["dispatch"],
+        "summary": "Provider Health",
+        "description": "Health status of upstream LLM providers with circuit breaker state.",
+        "operationId": "provider_health_admin_provider_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Provider Health Admin Provider Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/firm-policy-history/{firm_id}": {
+      "get": {
+        "tags": ["dispatch"],
+        "summary": "Firm policy version history",
+        "description": "Returns the version history of a firm's policy changes from Firestore.",
+        "operationId": "admin_firm_policy_history_admin_firm_policy_history__firm_id__get",
+        "parameters": [
+          {
+            "name": "firm_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Firm Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Admin Firm Policy History Admin Firm Policy History  Firm Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/token-budgets": {
+      "get": {
+        "tags": ["dispatch"],
+        "summary": "Token Budgets",
+        "description": "Current token budget consumption by tier with Firestore backing.",
+        "operationId": "token_budgets_admin_token_budgets_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Token Budgets Admin Token Budgets Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/vent-mode/diagnostics": {
+      "get": {
+        "tags": ["dispatch"],
+        "summary": "Vent Mode Diagnostics",
+        "description": "SSE stream health diagnostics for Vent Mode.",
+        "operationId": "vent_mode_diagnostics_admin_vent_mode_diagnostics_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Vent Mode Diagnostics Admin Vent Mode Diagnostics Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/slo-report": {
+      "get": {
+        "tags": ["dispatch"],
+        "summary": "Slo Compliance Report",
+        "description": "Monthly SLO compliance report for CounselConduit.",
+        "operationId": "slo_compliance_report_admin_slo_report_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Slo Compliance Report Admin Slo Report Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/token-meter": {
+      "get": {
+        "tags": ["client-portal"],
+        "summary": "Token budget meter for client portal",
+        "description": "Returns current token consumption and remaining budget for display in the client portal.",
+        "operationId": "token_meter_api_v1_token_meter_get",
+        "parameters": [
+          {
+            "name": "firm_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Firm Id" }
+          },
+          {
+            "name": "X-User-Tier",
+            "in": "header",
+            "required": false,
+            "schema": { "type": "string", "default": "trial", "title": "X-User-Tier" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TokenMeterResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/providers": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Provider Health",
+        "description": "Per-provider health check with latency metrics.\n\nReturns status for each LLM provider (Gemini, Claude, OpenAI).\nDoes NOT send authenticated requests — only probes endpoint reachability.",
+        "operationId": "provider_health_health_providers_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Root",
+        "description": "Root endpoint — API discovery.",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "description": "Health check for Cloud Run / load balancer probes.\n\nIncludes Firestore connectivity verification.",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/heartbeat": {
+      "post": {
+        "summary": "Heartbeat",
+        "description": "Client session heartbeat — keeps session alive, resets dead-man's switch.",
+        "operationId": "heartbeat_heartbeat_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/enclave/v1/query": {
+      "post": {
+        "summary": "Execute Query",
+        "description": "Execute a Kovel-privileged query against the Gemini RAG pipeline.\n\nSynchronous endpoint — returns full response after completion.\nAll responses pass through Judge #6 governance before returning.",
+        "operationId": "execute_query_enclave_v1_query_post",
+        "parameters": [
+          {
+            "name": "x-kovel-auth",
+            "in": "header",
+            "required": false,
+            "schema": { "type": "string", "title": "X-Kovel-Auth" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/QueryRequest" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/QueryResponse" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/enclave/v1/query/stream": {
+      "post": {
+        "summary": "Stream Query",
+        "description": "Stream a Kovel-privileged query response via Server-Sent Events.\n\nReal-time streaming for chat-style interfaces.",
+        "operationId": "stream_query_enclave_v1_query_stream_post",
+        "parameters": [
+          {
+            "name": "x-kovel-auth",
+            "in": "header",
+            "required": false,
+            "schema": { "type": "string", "title": "X-Kovel-Auth" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/QueryRequest" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/enclave/v1/health": {
+      "get": {
+        "summary": "Enclave Health",
+        "description": "Health check endpoint for Cloud Run and load balancers.",
+        "operationId": "enclave_health_enclave_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AttestationRequest": {
+        "properties": {
+          "session_id": { "type": "string", "title": "Session Id" },
+          "attorney_id": { "type": "string", "title": "Attorney Id" },
+          "firm_id": { "type": "string", "title": "Firm Id" },
+          "client_id": { "type": "string", "title": "Client Id" },
+          "model_used": { "type": "string", "title": "Model Used" },
+          "query_text": { "type": "string", "title": "Query Text" },
+          "response_text": { "type": "string", "title": "Response Text" }
+        },
+        "type": "object",
+        "required": [
+          "session_id",
+          "attorney_id",
+          "firm_id",
+          "client_id",
+          "model_used",
+          "query_text",
+          "response_text"
+        ],
+        "title": "AttestationRequest",
+        "description": "Request to generate an attestation receipt."
+      },
+      "BYOKConfig": {
+        "properties": {
+          "enabled": { "type": "boolean", "title": "Enabled", "default": false },
+          "kms_key_uri": { "type": "string", "title": "Kms Key Uri", "default": "" },
+          "kms_rotation_period_days": {
+            "type": "integer",
+            "title": "Kms Rotation Period Days",
+            "default": 90
+          },
+          "kms_next_rotation_time": {
+            "type": "string",
+            "title": "Kms Next Rotation Time",
+            "default": ""
+          },
+          "key_algorithm": {
+            "type": "string",
+            "title": "Key Algorithm",
+            "default": "GOOGLE_SYMMETRIC_ENCRYPTION"
+          }
+        },
+        "type": "object",
+        "title": "BYOKConfig",
+        "description": "Bring-Your-Own-Key configuration for enterprise tenants.\n\nSupports customer-managed encryption keys via Cloud KMS.\nFields:\n    enabled: Whether BYOK is active for this tenant.\n    kms_key_uri: Full Cloud KMS CryptoKey resource name.\n    kms_rotation_period_days: Key rotation period in days (default 90).\n    kms_next_rotation_time: ISO 8601 timestamp for next scheduled rotation.\n    key_algorithm: KMS key algorithm (default GOOGLE_SYMMETRIC_ENCRYPTION)."
+      },
+      "BYOKKeyListResponse": {
+        "properties": {
+          "firm_id": { "type": "string", "title": "Firm Id" },
+          "keys": {
+            "items": { "$ref": "#/components/schemas/BYOKKeyStatus" },
+            "type": "array",
+            "title": "Keys"
+          },
+          "total": { "type": "integer", "title": "Total" }
+        },
+        "type": "object",
+        "required": ["firm_id", "keys", "total"],
+        "title": "BYOKKeyListResponse",
+        "description": "List of BYOK keys for a firm."
+      },
+      "BYOKKeyRequest": {
+        "properties": {
+          "firm_id": { "type": "string", "maxLength": 128, "minLength": 1, "title": "Firm Id" },
+          "provider": {
+            "type": "string",
+            "pattern": "^(openai|anthropic|google|mistral)$",
+            "title": "Provider",
+            "description": "LLM provider"
+          },
+          "api_key": { "type": "string", "maxLength": 256, "minLength": 10, "title": "Api Key" },
+          "label": { "type": "string", "maxLength": 64, "title": "Label", "default": "default" }
+        },
+        "type": "object",
+        "required": ["firm_id", "provider", "api_key"],
+        "title": "BYOKKeyRequest",
+        "description": "Request to register a BYOK API key."
+      },
+      "BYOKKeyStatus": {
+        "properties": {
+          "firm_id": { "type": "string", "title": "Firm Id" },
+          "provider": { "type": "string", "title": "Provider" },
+          "label": { "type": "string", "title": "Label" },
+          "status": { "type": "string", "title": "Status" },
+          "registered_at": { "type": "string", "title": "Registered At" },
+          "last_validated_at": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Last Validated At"
+          },
+          "masked_key": { "type": "string", "title": "Masked Key" }
+        },
+        "type": "object",
+        "required": ["firm_id", "provider", "label", "status", "registered_at", "masked_key"],
+        "title": "BYOKKeyStatus",
+        "description": "Status of a registered BYOK key (never includes the key itself)."
+      },
+      "ConnectOnboardRequest": {
+        "properties": {
+          "attorney_id": { "type": "string", "title": "Attorney Id" },
+          "firm_id": { "type": "string", "title": "Firm Id" },
+          "email": { "type": "string", "title": "Email" },
+          "business_name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Business Name"
+          },
+          "country": { "type": "string", "title": "Country", "default": "US" }
+        },
+        "type": "object",
+        "required": ["attorney_id", "firm_id", "email"],
+        "title": "ConnectOnboardRequest",
+        "description": "Attorney initiates Stripe Connect onboarding."
+      },
+      "ConnectOnboardResponse": {
+        "properties": {
+          "account_id": { "type": "string", "title": "Account Id" },
+          "onboarding_url": { "type": "string", "title": "Onboarding Url" },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Complete your Stripe account setup to start receiving payments."
+          }
+        },
+        "type": "object",
+        "required": ["account_id", "onboarding_url"],
+        "title": "ConnectOnboardResponse",
+        "description": "Response with Stripe Connect onboarding URL."
+      },
+      "ConnectStatusResponse": {
+        "properties": {
+          "account_id": { "type": "string", "title": "Account Id" },
+          "charges_enabled": { "type": "boolean", "title": "Charges Enabled" },
+          "payouts_enabled": { "type": "boolean", "title": "Payouts Enabled" },
+          "details_submitted": { "type": "boolean", "title": "Details Submitted" },
+          "requirements": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Requirements"
+          }
+        },
+        "type": "object",
+        "required": ["account_id", "charges_enabled", "payouts_enabled", "details_submitted"],
+        "title": "ConnectStatusResponse",
+        "description": "Status of attorney's Stripe Connect account."
+      },
+      "DataExportRequest": {
+        "properties": {
+          "format": {
+            "type": "string",
+            "pattern": "^(json|csv)$",
+            "title": "Format",
+            "default": "json"
+          }
+        },
+        "type": "object",
+        "title": "DataExportRequest",
+        "description": "GDPR Article 20 — Right to data portability."
+      },
+      "DeletionPayload": {
+        "properties": {
+          "attorney_id": { "type": "string", "title": "Attorney Id" },
+          "firm_id": { "type": "string", "title": "Firm Id" },
+          "requested_at": { "type": "number", "title": "Requested At" },
+          "deletion_type": { "type": "string", "title": "Deletion Type", "default": "full" }
+        },
+        "type": "object",
+        "required": ["attorney_id", "firm_id", "requested_at"],
+        "title": "DeletionPayload",
+        "description": "Payload sent by Cloud Tasks for GDPR deletion."
+      },
+      "DeletionReceipt": {
+        "properties": {
+          "status": { "type": "string", "title": "Status", "default": "scheduled" },
+          "deletion_date": { "type": "string", "title": "Deletion Date" },
+          "receipt_id": { "type": "string", "title": "Receipt Id" },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Your account and all associated data will be permanently deleted within 30 days. You will receive a confirmation email when complete."
+          }
+        },
+        "type": "object",
+        "required": ["deletion_date", "receipt_id"],
+        "title": "DeletionReceipt",
+        "description": "Receipt confirming deletion was scheduled."
+      },
+      "DeletionRequest": {
+        "properties": {
+          "confirmation": {
+            "type": "string",
+            "title": "Confirmation",
+            "description": "Must be 'DELETE MY ACCOUNT' to confirm"
+          },
+          "reason": {
+            "anyOf": [{ "type": "string", "maxLength": 500 }, { "type": "null" }],
+            "title": "Reason",
+            "description": "Optional reason (not required, data-minimization)"
+          },
+          "firm_id": {
+            "type": "string",
+            "title": "Firm Id",
+            "description": "Firm ID for tenant scoping",
+            "default": "demo-firm"
+          },
+          "attorney_id": {
+            "type": "string",
+            "title": "Attorney Id",
+            "description": "Requesting attorney's ID",
+            "default": "demo-attorney"
+          },
+          "email": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Email",
+            "description": "Email for deletion receipt (optional)"
+          }
+        },
+        "type": "object",
+        "required": ["confirmation"],
+        "title": "DeletionRequest",
+        "description": "User-initiated account deletion request."
+      },
+      "DeletionResult": {
+        "properties": {
+          "attorney_id": { "type": "string", "title": "Attorney Id" },
+          "collections_deleted": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Collections Deleted"
+          },
+          "documents_deleted": { "type": "integer", "title": "Documents Deleted" },
+          "completed_at": { "type": "number", "title": "Completed At" },
+          "idempotency_key": { "type": "string", "title": "Idempotency Key" }
+        },
+        "type": "object",
+        "required": [
+          "attorney_id",
+          "collections_deleted",
+          "documents_deleted",
+          "completed_at",
+          "idempotency_key"
+        ],
+        "title": "DeletionResult",
+        "description": "Result of a GDPR deletion execution."
+      },
+      "DispatchRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 50000,
+            "minLength": 1,
+            "title": "Query",
+            "description": "User query text"
+          },
+          "firm_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Firm Id",
+            "description": "Firm tenant ID"
+          },
+          "session_id": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Session Id",
+            "description": "Session ID for model pinning",
+            "default": ""
+          },
+          "preferred_model": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Preferred Model",
+            "description": "Override auto-routing with specific model"
+          },
+          "firm_allowed_models": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Firm Allowed Models",
+            "description": "Models permitted by firm policy"
+          }
+        },
+        "type": "object",
+        "required": ["query", "firm_id"],
+        "title": "DispatchRequest",
+        "description": "POST /api/v1/dispatch request body."
+      },
+      "DispatchResponse": {
+        "properties": {
+          "model": { "type": "string", "title": "Model", "description": "Selected model ID" },
+          "provider": {
+            "type": "string",
+            "title": "Provider",
+            "description": "Model provider (gemini, claude, openai, etc.)"
+          },
+          "tier": {
+            "type": "string",
+            "title": "Tier",
+            "description": "Dispatch tier (simple, complex, agentic)"
+          },
+          "session_pinned": {
+            "type": "boolean",
+            "title": "Session Pinned",
+            "description": "Whether session is pinned to this model"
+          },
+          "cost_per_1k_input": {
+            "type": "number",
+            "title": "Cost Per 1K Input",
+            "description": "Cost per 1K input tokens (USD)"
+          },
+          "latency_ms": {
+            "type": "number",
+            "title": "Latency Ms",
+            "description": "Routing latency in milliseconds"
+          }
+        },
+        "type": "object",
+        "required": [
+          "model",
+          "provider",
+          "tier",
+          "session_pinned",
+          "cost_per_1k_input",
+          "latency_ms"
+        ],
+        "title": "DispatchResponse",
+        "description": "POST /api/v1/dispatch response body."
+      },
+      "FirmPolicyRequest": {
+        "properties": {
+          "firm_id": { "type": "string", "title": "Firm Id" },
+          "allowed_models": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Allowed Models"
+          },
+          "max_rpm": { "type": "integer", "title": "Max Rpm", "default": 60 },
+          "max_daily": { "type": "integer", "title": "Max Daily", "default": 5000 },
+          "byok": { "$ref": "#/components/schemas/BYOKConfig" }
+        },
+        "type": "object",
+        "required": ["firm_id", "allowed_models"],
+        "title": "FirmPolicyRequest",
+        "description": "POST /admin/firm-policy request body."
+      },
+      "FirmPolicyResponse": {
+        "properties": {
+          "firm_id": { "type": "string", "title": "Firm Id" },
+          "allowed_models": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Allowed Models"
+          },
+          "quota_rpm": { "type": "integer", "title": "Quota Rpm" },
+          "quota_daily": { "type": "integer", "title": "Quota Daily" },
+          "byok_enabled": { "type": "boolean", "title": "Byok Enabled" },
+          "status": { "type": "string", "title": "Status", "default": "updated" }
+        },
+        "type": "object",
+        "required": ["firm_id", "allowed_models", "quota_rpm", "quota_daily", "byok_enabled"],
+        "title": "FirmPolicyResponse",
+        "description": "POST /admin/firm-policy response body."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "MagicLinkResponse": {
+        "properties": {
+          "matter_id": { "type": "string", "title": "Matter Id" },
+          "magic_link": { "type": "string", "title": "Magic Link" },
+          "expires_at": { "type": "string", "title": "Expires At" },
+          "client_email": { "type": "string", "title": "Client Email" },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Send this link to your client. It expires in 72 hours and can only be used once."
+          }
+        },
+        "type": "object",
+        "required": ["matter_id", "magic_link", "expires_at", "client_email"],
+        "title": "MagicLinkResponse",
+        "description": "Response containing the generated magic link."
+      },
+      "MagicLinkVerification": {
+        "properties": {
+          "valid": { "type": "boolean", "title": "Valid" },
+          "matter_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Matter Id"
+          },
+          "firm_id": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Firm Id" },
+          "attorney_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Attorney Id"
+          },
+          "allowed_models": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Allowed Models"
+          },
+          "session_ttl_hours": { "type": "integer", "title": "Session Ttl Hours", "default": 4 }
+        },
+        "type": "object",
+        "required": ["valid"],
+        "title": "MagicLinkVerification",
+        "description": "Result of verifying a magic link token."
+      },
+      "MatterCreateRequest": {
+        "properties": {
+          "attorney_id": { "type": "string", "title": "Attorney Id" },
+          "firm_id": { "type": "string", "title": "Firm Id" },
+          "client_name": { "type": "string", "title": "Client Name" },
+          "client_email": { "type": "string", "title": "Client Email" },
+          "matter_description": { "type": "string", "title": "Matter Description", "default": "" },
+          "allowed_models": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Allowed Models"
+          },
+          "session_ttl_hours": {
+            "type": "integer",
+            "maximum": 24.0,
+            "minimum": 1.0,
+            "title": "Session Ttl Hours",
+            "default": 4
+          }
+        },
+        "type": "object",
+        "required": ["attorney_id", "firm_id", "client_name", "client_email"],
+        "title": "MatterCreateRequest",
+        "description": "Attorney creates a new matter for client onboarding."
+      },
+      "MetricsResponse": {
+        "properties": {
+          "dispatch_counts": {
+            "additionalProperties": { "type": "integer" },
+            "type": "object",
+            "title": "Dispatch Counts"
+          },
+          "total_dispatches": { "type": "integer", "title": "Total Dispatches" },
+          "uptime_seconds": { "type": "number", "title": "Uptime Seconds" }
+        },
+        "type": "object",
+        "required": ["dispatch_counts", "total_dispatches", "uptime_seconds"],
+        "title": "MetricsResponse",
+        "description": "GET /admin/metrics response body."
+      },
+      "ModelInfoResponse": {
+        "properties": {
+          "key": { "type": "string", "title": "Key" },
+          "model_id": { "type": "string", "title": "Model Id" },
+          "display_name": { "type": "string", "title": "Display Name" },
+          "provider": { "type": "string", "title": "Provider" },
+          "cost_per_1k_input": { "type": "number", "title": "Cost Per 1K Input" },
+          "cost_per_1k_output": { "type": "number", "title": "Cost Per 1K Output" },
+          "supports_streaming": { "type": "boolean", "title": "Supports Streaming" },
+          "supports_tools": { "type": "boolean", "title": "Supports Tools" }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "model_id",
+          "display_name",
+          "provider",
+          "cost_per_1k_input",
+          "cost_per_1k_output",
+          "supports_streaming",
+          "supports_tools"
+        ],
+        "title": "ModelInfoResponse",
+        "description": "Individual model info for GET /admin/models."
+      },
+      "OnboardingRequest": {
+        "properties": {
+          "firm_name": { "type": "string", "title": "Firm Name" },
+          "attorney_email": { "type": "string", "title": "Attorney Email" },
+          "return_url": {
+            "type": "string",
+            "title": "Return Url",
+            "default": "https://kovelai.web.app/onboarding/complete"
+          },
+          "refresh_url": {
+            "type": "string",
+            "title": "Refresh Url",
+            "default": "https://kovelai.web.app/onboarding/refresh"
+          }
+        },
+        "type": "object",
+        "required": ["firm_name", "attorney_email"],
+        "title": "OnboardingRequest",
+        "description": "Request body for Stripe Connect onboarding."
+      },
+      "OnboardingResponse": {
+        "properties": {
+          "account_link_url": { "type": "string", "title": "Account Link Url" },
+          "account_id": { "type": "string", "title": "Account Id" },
+          "expires_at": { "type": "integer", "title": "Expires At" }
+        },
+        "type": "object",
+        "required": ["account_link_url", "account_id", "expires_at"],
+        "title": "OnboardingResponse",
+        "description": "Response with Stripe Connect account link."
+      },
+      "OnboardingStatus": {
+        "properties": {
+          "account_id": { "type": "string", "title": "Account Id" },
+          "charges_enabled": { "type": "boolean", "title": "Charges Enabled" },
+          "payouts_enabled": { "type": "boolean", "title": "Payouts Enabled" },
+          "details_submitted": { "type": "boolean", "title": "Details Submitted" },
+          "onboarding_complete": { "type": "boolean", "title": "Onboarding Complete" }
+        },
+        "type": "object",
+        "required": [
+          "account_id",
+          "charges_enabled",
+          "payouts_enabled",
+          "details_submitted",
+          "onboarding_complete"
+        ],
+        "title": "OnboardingStatus",
+        "description": "Onboarding status response."
+      },
+      "QueryRequest": {
+        "properties": {
+          "attorney_id": { "type": "string", "title": "Attorney Id" },
+          "query": { "type": "string", "title": "Query" },
+          "context_documents": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Context Documents",
+            "default": []
+          },
+          "max_tokens": { "type": "integer", "title": "Max Tokens", "default": 4096 },
+          "temperature": { "type": "number", "title": "Temperature", "default": 0.3 }
+        },
+        "type": "object",
+        "required": ["attorney_id", "query"],
+        "title": "QueryRequest",
+        "description": "Incoming privileged query from an attorney."
+      },
+      "QueryResponse": {
+        "properties": {
+          "attorney_id": { "type": "string", "title": "Attorney Id" },
+          "response": { "type": "string", "title": "Response" },
+          "token_count": { "type": "integer", "title": "Token Count" },
+          "model": { "type": "string", "title": "Model" },
+          "citations": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Citations",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": ["attorney_id", "response", "token_count", "model"],
+        "title": "QueryResponse",
+        "description": "Response from the Gemini RAG pipeline."
+      },
+      "SessionAttestation": {
+        "properties": {
+          "attestation_id": { "type": "string", "title": "Attestation Id" },
+          "session_id": { "type": "string", "title": "Session Id" },
+          "attorney_id": { "type": "string", "title": "Attorney Id" },
+          "firm_id": { "type": "string", "title": "Firm Id" },
+          "client_id": { "type": "string", "title": "Client Id" },
+          "model_used": { "type": "string", "title": "Model Used" },
+          "query_hash": { "type": "string", "title": "Query Hash" },
+          "response_hash": { "type": "string", "title": "Response Hash" },
+          "timestamp": { "type": "string", "title": "Timestamp" },
+          "privilege_type": {
+            "type": "string",
+            "title": "Privilege Type",
+            "default": "kovel_doctrine"
+          },
+          "hmac_signature": { "type": "string", "title": "Hmac Signature" },
+          "metadata": { "additionalProperties": true, "type": "object", "title": "Metadata" }
+        },
+        "type": "object",
+        "required": [
+          "attestation_id",
+          "session_id",
+          "attorney_id",
+          "firm_id",
+          "client_id",
+          "model_used",
+          "query_hash",
+          "response_hash",
+          "timestamp",
+          "hmac_signature"
+        ],
+        "title": "SessionAttestation",
+        "description": "Kovel Attestation Receipt — cryptographic proof of privileged session."
+      },
+      "TokenMeterResponse": {
+        "properties": {
+          "firm_id": { "type": "string", "title": "Firm Id" },
+          "tier": { "type": "string", "title": "Tier" },
+          "budget_limit": { "type": "integer", "title": "Budget Limit" },
+          "budget_used": { "type": "integer", "title": "Budget Used" },
+          "budget_remaining": { "type": "integer", "title": "Budget Remaining" },
+          "usage_pct": { "type": "number", "title": "Usage Pct" },
+          "status": { "type": "string", "title": "Status" },
+          "reset_at": { "type": "string", "title": "Reset At" },
+          "warning_threshold_pct": {
+            "type": "number",
+            "title": "Warning Threshold Pct",
+            "default": 80.0
+          },
+          "critical_threshold_pct": {
+            "type": "number",
+            "title": "Critical Threshold Pct",
+            "default": 95.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "firm_id",
+          "tier",
+          "budget_limit",
+          "budget_used",
+          "budget_remaining",
+          "usage_pct",
+          "status",
+          "reset_at"
+        ],
+        "title": "TokenMeterResponse",
+        "description": "Token budget meter for client portal display."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" },
+          "input": { "title": "Input" },
+          "ctx": { "type": "object", "title": "Context" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      },
+      "VentCheckoutResponse": {
+        "properties": {
+          "checkout_url": { "type": "string", "title": "Checkout Url" },
+          "session_id": { "type": "string", "title": "Session Id" },
+          "amount_display": { "type": "string", "title": "Amount Display" }
+        },
+        "type": "object",
+        "required": ["checkout_url", "session_id", "amount_display"],
+        "title": "VentCheckoutResponse",
+        "description": "Stripe Checkout session for Vent intake fee."
+      },
+      "VentIntakeSummary": {
+        "properties": {
+          "session_id": { "type": "string", "title": "Session Id" },
+          "client_narrative": { "type": "string", "title": "Client Narrative" },
+          "identified_issues": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Identified Issues"
+          },
+          "suggested_practice_areas": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Suggested Practice Areas"
+          },
+          "urgency_level": { "type": "string", "title": "Urgency Level" },
+          "recommended_next_step": { "type": "string", "title": "Recommended Next Step" },
+          "estimated_complexity": { "type": "string", "title": "Estimated Complexity" }
+        },
+        "type": "object",
+        "required": [
+          "session_id",
+          "client_narrative",
+          "identified_issues",
+          "suggested_practice_areas",
+          "urgency_level",
+          "recommended_next_step",
+          "estimated_complexity"
+        ],
+        "title": "VentIntakeSummary",
+        "description": "AI-generated intake summary from Vent session."
+      },
+      "VentMessage": {
+        "properties": {
+          "session_id": { "type": "string", "title": "Session Id" },
+          "message": { "type": "string", "maxLength": 5000, "minLength": 1, "title": "Message" }
+        },
+        "type": "object",
+        "required": ["session_id", "message"],
+        "title": "VentMessage",
+        "description": "Client message in a Vent session."
+      },
+      "VentSessionRequest": {
+        "properties": {
+          "firm_id": { "type": "string", "title": "Firm Id" },
+          "attorney_id": { "type": "string", "title": "Attorney Id" },
+          "client_name": { "type": "string", "title": "Client Name" },
+          "client_email": { "type": "string", "title": "Client Email" },
+          "fee_amount_cents": {
+            "type": "integer",
+            "maximum": 25000.0,
+            "minimum": 2500.0,
+            "title": "Fee Amount Cents",
+            "default": 5000
+          }
+        },
+        "type": "object",
+        "required": ["firm_id", "attorney_id", "client_name", "client_email"],
+        "title": "VentSessionRequest",
+        "description": "Client starts a Vent Mode intake session."
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Kovel Enclave",
+      "description": "Privileged query endpoints protected by Kovel doctrine"
+    },
+    {
+      "name": "Stripe Connect",
+      "description": "Dual-billing engine: client→attorney + attorney→us"
+    },
+    { "name": "GDPR", "description": "Article 17 erasure + Article 20 data portability" },
+    { "name": "Attestation", "description": "HMAC-SHA256 Kovel attestation receipts" },
+    { "name": "Vent Mode", "description": "SSE streaming for real-time AI interaction" },
+    {
+      "name": "Sandbox",
+      "description": "Phase 3: Tenant isolation, quota enforcement, proxy tokens"
+    },
+    { "name": "BYOK", "description": "Bring Your Own Key — customer-managed LLM API keys" },
+    { "name": "dispatch", "description": "NadirClaw 3-tier model dispatch + routing metrics" }
+  ]
+}

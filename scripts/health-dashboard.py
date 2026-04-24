@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Monorepo Health Dashboard — generates a terminal-friendly status report.
 
+V22 Pruned Singularity: vulture replaced with ruff F401/F841 dead-code pass.
+
 Usage:
     python3 scripts/health-dashboard.py
     python3 scripts/health-dashboard.py --json  # Machine-readable output
@@ -30,8 +32,9 @@ def check_ruff() -> dict:
     return {"status": "✅" if code == 0 else "❌", "detail": out or "All checks passed", "code": code}
 
 
-def check_vulture() -> dict:
-    code, out = run("python3 -m vulture control/pnkln/ scripts/ .vulture_whitelist.py --min-confidence 80 2>/dev/null")
+def check_ruff_dead_code() -> dict:
+    """Dead-code detection via ruff F401/F841 (replaces vulture, V22 Pruned Singularity)."""
+    code, out = run("python3 -m ruff check --select F401,F841 scripts/ apps/counselconduit/ --statistics 2>/dev/null")
     return {"status": "✅" if code == 0 else "⚠️", "detail": out or "No dead code", "code": code}
 
 
@@ -95,7 +98,7 @@ def main() -> None:
         "timestamp": datetime.now().isoformat(),
         "tests": check_tests(),
         "lint": check_ruff(),
-        "dead_code": check_vulture(),
+        "dead_code": check_ruff_dead_code(),
         "git": check_git(),
         "workflows": check_workflows(),
         "daemons": check_daemons(),

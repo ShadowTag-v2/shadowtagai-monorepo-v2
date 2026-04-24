@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """Omni-Autolint Daemon — Secure lint + push via GitHub App short-lived tokens.
 
+Astral Ruff Integration:
+    - Core: https://github.com/astral-sh/ruff
+    - Pre-commit: https://github.com/astral-sh/ruff-pre-commit
+    - VSCode: https://github.com/astral-sh/ruff-vscode (charliermarsh.ruff)
+
 Usage:
     python3 scripts/gca_autolint_daemon.py              # Interactive mode
     python3 scripts/gca_autolint_daemon.py --yes         # Headless auto-approve
@@ -9,6 +14,7 @@ Usage:
     python3 scripts/gca_autolint_daemon.py --timeout 300 # Custom lint timeout (seconds)
     python3 scripts/gca_autolint_daemon.py --exclude 'libs/,docs/' # Skip paths
     python3 scripts/gca_autolint_daemon.py --notify      # Send GWS notification on completion
+    python3 scripts/gca_autolint_daemon.py --aggressive  # Enable unsafe ruff fixes
     CI=true python3 scripts/gca_autolint_daemon.py       # Headless via env var
 """
 
@@ -20,7 +26,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from pathlib import Path
 
 # Augment PATH for non-interactive shells (Python 3.14 subprocess may not
@@ -98,7 +104,7 @@ def resolve_pem_path() -> Path:
             tmp = Path(tempfile.mktemp(suffix=".pem"))
             tmp.write_text(result.stdout)
             return tmp
-    except (FileNotFoundError, subprocess.TimeoutExpired):
+    except FileNotFoundError, subprocess.TimeoutExpired:
         pass
 
     print("[!] FATAL: No PEM file found in any of the 5 fallback tiers.")
@@ -195,27 +201,65 @@ def secure_push(access_token: str, branch_name: str) -> subprocess.CompletedProc
     return result
 
 
-def run_linters(timeout: int = DEFAULT_TIMEOUT, exclude: str = "") -> dict:
-    """Execute the full Omni-Linter suite and return structured results."""
+def get_ruff_version() -> str:
+    """Capture current ruff version for reproducibility (item 5)."""
+    try:
+        r = subprocess.run(
+            ["ruff", "--version"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        return r.stdout.strip() if r.returncode == 0 else "unknown"
+    except FileNotFoundError, subprocess.TimeoutExpired:
+        return "unknown"
+
+
+def run_linters(
+    timeout: int = DEFAULT_TIMEOUT,
+    exclude: str = "",
+    aggressive: bool = False,
+    dry_run: bool = False,
+) -> dict:
+    """Execute the full Omni-Linter suite and return structured results.
+
+    Ruff integration:
+        - Core: https://github.com/astral-sh/ruff
+        - Pre-commit: https://github.com/astral-sh/ruff-pre-commit
+        - VSCode: https://github.com/astral-sh/ruff-vscode
+    """
     results = {}
     base_exclude = "external_repos,node_modules,.venv"
     if exclude:
         base_exclude = f"{base_exclude},{exclude}"
 
-    # 1. Ruff check + fix
-    r = run_command(["uv", "run", "ruff", "check", "--fix", "."], check_fatal=True)
+    # Item 5: Capture ruff version for beads reproducibility
+    results["ruff_version"] = {"exit_code": 0, "stdout": get_ruff_version(), "stderr": ""}
+
+    # 1. Ruff check + fix (item 7: JSON output, item 9: --unsafe-fixes)
+    ruff_check_cmd = ["ruff", "check", "--fix", "--output-format=json", "."]
+    if aggressive:
+        ruff_check_cmd.insert(3, "--unsafe-fixes")
+    r = run_command(ruff_check_cmd, check_fatal=True)
     results["ruff_check"] = {"exit_code": r.returncode, "stdout": r.stdout, "stderr": r.stderr}
 
-    # 2. Ruff format
-    r = run_command(["uv", "run", "ruff", "format", "."], check_fatal=True)
+    # Item 8: Ruff statistics summary
+    r_stats = run_command(["ruff", "check", "--statistics", "."])
+    results["ruff_statistics"] = {"exit_code": r_stats.returncode, "stdout": r_stats.stdout, "stderr": r_stats.stderr}
+
+    # 2. Ruff format (item 11: diff mode for dry-run)
+    if dry_run:
+        r = run_command(["ruff", "format", "--diff", "."])
+    else:
+        r = run_command(["ruff", "format", "."], check_fatal=True)
     results["ruff_format"] = {"exit_code": r.returncode, "stdout": r.stdout, "stderr": r.stderr}
 
-    # 3. Vulture dead code scan (read-only, no fixes)
+    # 3. Ruff dead-code focused pass (V22 Pruned Singularity — replaces vulture)
     r = run_command(
-        ["uv", "run", "vulture", ".", "--min-confidence", "90", "--exclude", base_exclude],
+        ["ruff", "check", "--select", "F401,F841", "--statistics", "."],
         check_fatal=False,
     )
-    results["vulture"] = {"exit_code": r.returncode, "stdout": r.stdout, "stderr": r.stderr}
+    results["ruff_dead_code"] = {"exit_code": r.returncode, "stdout": r.stdout, "stderr": r.stderr}
 
     # 4. Biome check + fix
     r = run_command(["npx", "@biomejs/biome", "check", "--write", "."], check_fatal=True)
@@ -227,15 +271,18 @@ def run_linters(timeout: int = DEFAULT_TIMEOUT, exclude: str = "") -> dict:
 def write_beads_entry(lint_results: dict) -> None:
     """Append a structured entry to .beads/issues.jsonl for audit trail (item 9)."""
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
-    total_warnings = sum(1 for d in lint_results.values() if d["exit_code"] == 1)
-    total_fatals = sum(1 for d in lint_results.values() if d["exit_code"] > 1)
+    # Exclude meta-entries (ruff_version, ruff_statistics) from severity calc
+    tool_results = {k: v for k, v in lint_results.items() if k not in ("ruff_version", "ruff_statistics")}
+    total_warnings = sum(1 for d in tool_results.values() if d["exit_code"] == 1)
+    total_fatals = sum(1 for d in tool_results.values() if d["exit_code"] > 1)
     entry = {
         "timestamp": datetime.now(UTC).isoformat(),
         "source": "omni-autolint-daemon",
         "type": "lint_sweep",
         "severity": "FATAL" if total_fatals else ("WARNING" if total_warnings else "CLEAN"),
-        "summary": f"{total_fatals} fatal, {total_warnings} warnings across {len(lint_results)} tools",
-        "tools": {k: {"exit_code": v["exit_code"]} for k, v in lint_results.items()},
+        "summary": f"{total_fatals} fatal, {total_warnings} warnings across {len(tool_results)} tools",
+        "tools": {k: {"exit_code": v["exit_code"]} for k, v in tool_results.items()},
+        "ruff_version": lint_results.get("ruff_version", {}).get("stdout", "unknown"),
     }
     with BEADS_ISSUES.open("a") as f:
         f.write(json.dumps(entry) + "\n")
@@ -277,7 +324,7 @@ def send_gws_notification(summary: str, branch: str = "") -> None:
             timeout=15,
         )
         print(f"[*] GWS notification sent: {msg[:80]}")
-    except (FileNotFoundError, subprocess.TimeoutExpired):
+    except FileNotFoundError, subprocess.TimeoutExpired:
         print("[*] GWS notification failed — continuing")
 
 
@@ -320,6 +367,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT, help=f"Timeout per linter in seconds (default: {DEFAULT_TIMEOUT})")
     parser.add_argument("--exclude", type=str, default="", help="Comma-separated paths to exclude (e.g., 'libs/,docs/')")
     parser.add_argument("--notify", action="store_true", help="Send GWS notification on completion")
+    parser.add_argument("--aggressive", action="store_true", help="Enable ruff --unsafe-fixes (item 9)")
     return parser.parse_args()
 
 
@@ -350,9 +398,15 @@ def main() -> None:
     run_command(["git", "pull", "origin", "main"])
 
     # --- Phase 3: Lint ---
-    print("\n[3] Running Omni-Linter Suite (ruff + vulture + biome)...")
+    print("\n[3] Running Omni-Linter Suite (ruff + biome)...")
+    print("    Ruff: https://github.com/astral-sh/ruff")
     write_heartbeat("lint", "running")
-    lint_results = run_linters(timeout=args.timeout, exclude=args.exclude)
+    lint_results = run_linters(
+        timeout=args.timeout,
+        exclude=args.exclude,
+        aggressive=args.aggressive,
+        dry_run=args.dry_run,
+    )
     write_heartbeat("lint", "complete")
 
     # Write beads audit trail (item 9)

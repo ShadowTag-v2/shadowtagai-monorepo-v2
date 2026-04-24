@@ -20,7 +20,7 @@
     {
       "title": "SLO Burn Rate (99.5% target)",
       "type": "gauge",
-      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 0},
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 0 },
       "targets": [
         {
           "expr": "1 - (sum(rate(http_requests_total{status=~\"5..\",service=\"counselconduit\"}[30m])) / sum(rate(http_requests_total{service=\"counselconduit\"}[30m])))",
@@ -31,9 +31,9 @@
         "defaults": {
           "thresholds": {
             "steps": [
-              {"color": "red", "value": 0.99},
-              {"color": "yellow", "value": 0.995},
-              {"color": "green", "value": 0.999}
+              { "color": "red", "value": 0.99 },
+              { "color": "yellow", "value": 0.995 },
+              { "color": "green", "value": 0.999 }
             ]
           },
           "min": 0.98,
@@ -45,7 +45,7 @@
     {
       "title": "Error Budget Remaining",
       "type": "stat",
-      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 0},
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 0 },
       "targets": [
         {
           "expr": "1 - ((sum(increase(http_requests_total{status=~\"5..\",service=\"counselconduit\"}[30d])) / sum(increase(http_requests_total{service=\"counselconduit\"}[30d]))) / 0.005)",
@@ -57,9 +57,9 @@
           "unit": "percentunit",
           "thresholds": {
             "steps": [
-              {"color": "red", "value": 0},
-              {"color": "yellow", "value": 0.25},
-              {"color": "green", "value": 0.5}
+              { "color": "red", "value": 0 },
+              { "color": "yellow", "value": 0.25 },
+              { "color": "green", "value": 0.5 }
             ]
           }
         }
@@ -68,7 +68,7 @@
     {
       "title": "Provider Latency Heatmap",
       "type": "heatmap",
-      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 0},
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 0 },
       "targets": [
         {
           "expr": "sum(rate(http_request_duration_seconds_bucket{service=\"counselconduit\"}[5m])) by (le, provider)",
@@ -78,13 +78,13 @@
       ],
       "options": {
         "calculate": false,
-        "yAxis": {"unit": "s"}
+        "yAxis": { "unit": "s" }
       }
     },
     {
       "title": "Request Rate by Dispatch Tier",
       "type": "timeseries",
-      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
       "targets": [
         {
           "expr": "sum(rate(counselconduit_dispatch_total[5m])) by (tier)",
@@ -95,7 +95,7 @@
     {
       "title": "Circuit Breaker State",
       "type": "state-timeline",
-      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
       "targets": [
         {
           "expr": "counselconduit_circuit_breaker_state",
@@ -106,7 +106,7 @@
     {
       "title": "Token Budget Usage by Tier",
       "type": "bargauge",
-      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
       "targets": [
         {
           "expr": "counselconduit_token_budget_used / counselconduit_token_budget_limit",
@@ -118,9 +118,9 @@
           "unit": "percentunit",
           "thresholds": {
             "steps": [
-              {"color": "green", "value": 0},
-              {"color": "yellow", "value": 0.8},
-              {"color": "red", "value": 0.95}
+              { "color": "green", "value": 0 },
+              { "color": "yellow", "value": 0.8 },
+              { "color": "red", "value": 0.95 }
             ]
           }
         }
@@ -129,7 +129,7 @@
     {
       "title": "Prompt Repetition Efficacy",
       "type": "timeseries",
-      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
       "targets": [
         {
           "expr": "sum(rate(counselconduit_prompt_repeated_total[1h])) by (model)",
@@ -145,7 +145,7 @@
   "refresh": "30s",
   "schemaVersion": 38,
   "tags": ["counselconduit", "slo", "production"],
-  "time": {"from": "now-24h", "to": "now"},
+  "time": { "from": "now-24h", "to": "now" },
   "title": "CounselConduit — SLO Burn Rate & Provider Health",
   "uid": "counselconduit-slo-burn",
   "version": 1
