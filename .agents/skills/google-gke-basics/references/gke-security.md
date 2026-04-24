@@ -212,4 +212,3 @@ gcloud projects add-iam-policy-binding <PROJECT_ID> \
 ```
 
 In all cases, the GSA must be bound to a KSA via Workload Identity (see setup above). The pod then uses the KSA to authenticate as the GSA.
-
