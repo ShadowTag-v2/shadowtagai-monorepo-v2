@@ -1,4 +1,4 @@
-version: 11.2 # Ex Toto Omni-Compile — 2026-04-24
+version: 11.3 # Repo Maintenance Doctrine + Betterleaks — 2026-04-24
 hardened_state:
   last_hardened: "2026-04-24"
   gold_master_tag: v11.2-gold
@@ -6,8 +6,12 @@ hardened_state:
   tests_skipped: 3
   tests_failed: 2
   test_runner: /opt/homebrew/bin/python3.14
-  risk_register_version: v10.7
-  risk_register_count: 40  # +3: Gideon OS risks #81-#83
+  risk_register_version: v10.8
+  risk_register_count: 42  # +2: Betterleaks #84 + Repo Maintenance #85
+  betterleaks_migrated: true
+  repo_doctor: scripts/repo_doctor.py
+  canonical_map: docs/CANONICAL_REPO_MAP.md
+  maintenance_runbook: docs/REPO_MAINTENANCE_RUNBOOK.md
   python_canonical: /opt/homebrew/bin/python3.14
   counselconduit_version: v3.2.0
   firebase_mcp_auth: founder@shadowtagai.com

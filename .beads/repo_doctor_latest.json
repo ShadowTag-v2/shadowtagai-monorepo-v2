@@ -1,0 +1,178 @@
+{
+  "score": "C",
+  "total_findings": 24,
+  "critical": 0,
+  "errors": 2,
+  "warnings": 19,
+  "info": 3,
+  "findings": [
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "beads/issues.jsonl",
+      "fix": "git checkout -- beads/issues.jsonl"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".beads/kairos_heartbeat.json",
+      "fix": "git checkout -- .beads/kairos_heartbeat.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".gitignore",
+      "fix": "git checkout -- .gitignore"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "GEMINI.md",
+      "fix": "git checkout -- GEMINI.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "RISK_REGISTER.md",
+      "fix": "git checkout -- RISK_REGISTER.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "monorepo_manifest.yaml",
+      "fix": "git checkout -- monorepo_manifest.yaml"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "scripts/preflight_gate.sh",
+      "fix": "git checkout -- scripts/preflight_gate.sh"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (??)",
+      "path": ".betterleaksignore",
+      "fix": "git add .betterleaksignore"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (??)",
+      "path": ".stitch-sdk/",
+      "fix": "git add .stitch-sdk/"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (??)",
+      "path": "docs/CANONICAL_REPO_MAP.md",
+      "fix": "git add docs/CANONICAL_REPO_MAP.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (??)",
+      "path": "docs/REPO_MAINTENANCE_RUNBOOK.md",
+      "fix": "git add docs/REPO_MAINTENANCE_RUNBOOK.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (??)",
+      "path": "scripts/repo_doctor.py",
+      "fix": "git add scripts/repo_doctor.py"
+    },
+    {
+      "gate": "conflict markers",
+      "severity": "error",
+      "message": "Command '['grep', '-rln', '<<<<<<<', 'apps', 'libs', 'scripts', 'docs']' timed out after 60 seconds",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "secrets",
+      "severity": "error",
+      "message": "Command '['/Users/pikeymickey/go/bin/betterleaks', 'dir', '-c', '.betterleaks.toml', '--report-format', 'json', '--report-path', '/tmp/repo_doctor_secrets.json', '.']' timed out after 60 seconds",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "large_files",
+      "severity": "warn",
+      "message": "Large file (737 KB > 500 KB)",
+      "path": ".beads/issues.jsonl",
+      "fix": "Add .beads/issues.jsonl to .gitignore or compress"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "app/__init__.py",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "app/api/__init__.py",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "app/api/v1/__init__.py",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "app/api/v1/governance.py",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "app/models/__init__.py",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "... and 2152 more drift files",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "lint",
+      "severity": "info",
+      "message": "Ruff lint clean",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "manifest",
+      "severity": "info",
+      "message": "Manifest v11.3 valid",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "tests",
+      "severity": "info",
+      "message": "Tests: ========================= 483 tests collected in 1.37s =========================",
+      "path": "",
+      "fix": ""
+    }
+  ]
+}

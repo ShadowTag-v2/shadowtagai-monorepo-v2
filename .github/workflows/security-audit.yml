@@ -114,3 +114,23 @@ jobs:
       - name: ruff dead code scan (F401/F841 — V22 replaces vulture)
         run: ruff check apps/counselconduit/ --select F401,F841 --statistics || true
         continue-on-error: true
+
+  # ── Repo Health Gate ──────────────────────────────────────────────────────
+  repo-health:
+    name: "🩺 Repo Doctor"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install deps
+        run: pip install ruff pyyaml
+
+      - name: Run Repo Doctor
+        run: python scripts/repo_doctor.py --json
+        continue-on-error: true
