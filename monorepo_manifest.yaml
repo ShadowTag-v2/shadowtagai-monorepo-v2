@@ -1,14 +1,14 @@
-version: 11.6 # Mega-sweep Phase 2: Risk #84/#85 RESOLVED + deep Stripe scan + 174 tests passed — 2026-04-24
+version: 11.7 # Stage 3+4 Canonicalization: 504 tests, ruff clean, Lighthouse A94+/BP96+/SEO100, BUSINESS_CONTEXT aligned — 2026-04-24
 hardened_state:
   last_hardened: "2026-04-24"
-  gold_master_tag: v11.5-gold
+  gold_master_tag: v11.7-gold
   tests_collected: 504
-  tests_passing: 480
+  tests_passing: 499
   tests_skipped: 3
-  tests_e2e_expected_failures: 24
+  tests_e2e_expected_failures: 2
   test_runner: /opt/homebrew/bin/python3.14
   risk_register_version: v10.9
-  risk_register_count: 42
+  risk_register_count: 86
   betterleaks_migrated: true
   betterleaksignore: .betterleaksignore
   repo_doctor: scripts/repo_doctor.py
@@ -20,6 +20,11 @@ hardened_state:
   python_canonical: /opt/homebrew/bin/python3.14
   counselconduit_version: v3.2.0
   firebase_mcp_auth: founder@shadowtagai.com
+  lighthouse_kovelai: "A94/BP100/SEO100"
+  lighthouse_shadowtagai: "A95/BP96/SEO100"
+  cloud_functions_count: 4
+  firestore_databases: 2
+  firestore_pitr: enabled
   ruff_state: all_checks_passed
   ruff_version: "0.15.11"
   biome_version: "1.x"
