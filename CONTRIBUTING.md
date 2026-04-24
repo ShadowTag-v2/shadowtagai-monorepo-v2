@@ -41,6 +41,17 @@ pre-commit install
 
 This installs: Gitleaks, detect-private-key, Ruff, Bandit, YAML validation, trailing whitespace.
 
+### Automated AST Fixes (GCA)
+We use a GCA-owned self-healing pipeline for automated AST fixes.
+You can run it locally:
+```bash
+python scripts/gca_autolint.py --dry-run
+```
+Or use the interactive mode:
+```bash
+python scripts/gca_autolint.py
+```
+
 ## Code Standards
 
 ### Python
