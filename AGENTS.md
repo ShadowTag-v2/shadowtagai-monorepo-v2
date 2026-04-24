@@ -56,7 +56,8 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 6. **daScript MCP Reference:** The 29-tool MCP server in the daScript repository is the gold-standard reference architecture for compiler-backed tools. Use it as a blueprint for routing tools.
 7. **Lighthouse-CI:** Use Lighthouse-CI for budget assertions in CI pipelines.
 8. **V10 Epistemic Airgap:** Corporate monorepo lives in `./external_repos/corp-monorepo/` (gitignored + AI-excluded). DLP Circuit Breaker prohibits passing proprietary identifiers into public search. Supply chain protection prevents blind `pip install` of internal package names. Skill: `.agents/skills/epistemic-airgap/SKILL.md`.
-9. **Python 3.14 Test Execution:** All test runs MUST use `/opt/homebrew/bin/python3.14 -m pytest`. System Python 3.9 (Xcode, `/usr/bin/python3`) cannot import `StrEnum` (3.11+) or `datetime.UTC` (3.11+) and will fail at collection. Baseline: **201 tests passing, 1 skipped** (2026-04-23). `pytest.ini` v8.5 codifies this. See Risk #64 + Risk #79.
+9. **Python 3.14 Test Execution:** All test runs MUST use `/opt/homebrew/bin/python3.14 -m pytest`. System Python 3.9 (Xcode, `/usr/bin/python3`) cannot import `StrEnum` (3.11+) or `datetime.UTC` (3.11+) and will fail at collection. Baseline: **499 tests passing, 3 skipped, 2 E2E expected failures** (2026-04-24). `pytest.ini` v8.5 codifies this. See Risk #64 + Risk #79.
+10. **Gideon OS Architecture:** 14-block sovereign OS spanning 7 languages. Canonical manifest in `monorepo_manifest.yaml` → `gideon_os` silo. Execution brief at `labs/uphillsnowball/EXECUTION_BRIEF_OMNI_SWEEP.md`. All blocks: vault_constitution, kairos_supervisor, shield1_ingress_go, zero_trust_pipeline, pathway_ingest, midas_montecarlo_cpp, panopticon, jurisdiction_forge, browser_extension, cor_yay_bridge, adminlte_glassbox, tauri_cockpit, sovereign_infra_tf, genesis_bootstrapper. Risks: #81 (multi-language CI), #82 (IPI quarantine), #83 (Tauri biometric).
 
 ## Open Infrastructure Blockers
 
@@ -65,6 +66,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 - ~~`lead-capture-router` requires a `firebase-admin` upgrade~~ — ✅ RESOLVED: Already at `^13.8.0` (latest major).
 - ~~`NotebookLM MCP` CLI needs installation~~ — ✅ RESOLVED (2026-04-23): Replaced with `antigravity-notebooklm-mcp` MCP server in `antigravity-mcp-config.json`.
 - ~~Cloud Run redeploy needed for uuid7 fix~~ — ✅ RESOLVED (2026-04-23): Current revision `counselconduit-00037-7mf` deployed with uuid7 try/except pattern across 5 modules.
+- ~~Gideon OS Go/Rust/C++ build configs missing~~ — ✅ RESOLVED (2026-04-24): `go.mod`, `Cargo.toml`, `tauri.conf.json` scaffolded.
 
 ## Guardrails
 
