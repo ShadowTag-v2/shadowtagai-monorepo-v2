@@ -1,7 +1,11 @@
 ---
 name: obsidian-formatter
-description: Enforces Obsidian visual graph syntax for all research generation.
+description: "Enforces Obsidian visual graph syntax for all research generation."
+redirect: ~/.gemini/antigravity/skills/obsidian-formatter/SKILL.md
 ---
-# Visual Graph Protocol
-1. **Frontmatter:** `date: YYYY-MM-DD`, `tags: [ai-generated]`
-2. **WikiLinks:** Wrap entities in double brackets to create node connections (e.g., [[React]], [[NotebookLM]]).
+
+# Obsidian Formatter
+
+> **CANONICAL SOURCE**: `~/.gemini/antigravity/skills/obsidian-formatter/SKILL.md`
+>
+> This file is a redirect stub. The full skill definition lives in the global skills directory.
