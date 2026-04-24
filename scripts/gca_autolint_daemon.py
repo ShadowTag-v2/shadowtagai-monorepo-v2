@@ -1,0 +1,353 @@
+#!/usr/bin/env python3
+"""Omni-Autolint Daemon — Secure lint + push via GitHub App short-lived tokens.
+
+Usage:
+    python3 scripts/gca_autolint_daemon.py              # Interactive mode
+    python3 scripts/gca_autolint_daemon.py --yes         # Headless auto-approve
+    python3 scripts/gca_autolint_daemon.py --json        # Write results to .lint-results/
+    python3 scripts/gca_autolint_daemon.py --dry-run     # Run linters, skip push
+    CI=true python3 scripts/gca_autolint_daemon.py       # Headless via env var
+"""
+
+import argparse
+import contextlib
+import json
+import os
+import subprocess
+import sys
+import tempfile
+import time
+from datetime import datetime, timezone, UTC
+from pathlib import Path
+
+# Augment PATH for non-interactive shells (Python 3.14 subprocess may not
+# inherit zsh PATH that includes homebrew, cargo, etc.)
+_EXTRA_PATHS = [
+    "/opt/homebrew/bin",
+    str(Path.home() / ".local" / "bin"),
+    str(Path.home() / ".cargo" / "bin"),
+    "/usr/local/bin",
+]
+_current_path = os.environ.get("PATH", "")
+_missing = [p for p in _EXTRA_PATHS if p not in _current_path]
+if _missing:
+    os.environ["PATH"] = ":".join(_missing) + ":" + _current_path
+
+import jwt
+import requests
+
+# --- Constants ---
+APP_ID = "3018200"
+REPO_OWNER = "ShadowTag-v2"
+REPO_NAME = "Monorepo-Uphillsnowball"
+GITHUB_APP_NOREPLY = "3018200+shadowtag-bot[bot]@users.noreply.github.com"
+RESULTS_DIR = Path(".lint-results")
+RESULTS_FILE = RESULTS_DIR / "latest.json"
+
+# 5-tier PEM fallback chain (github_doctrine)
+PEM_CANDIDATES = [
+    # Tier 1: GCP Secret Manager — handled separately via gcloud CLI
+    # Tier 2: keys/ directory
+    Path("keys/antigravity-shadowtag-manager.pem"),
+    # Tier 3: ~/Downloads (canonical local)
+    Path.home() / "Downloads" / "antigravity-shadowtag-manager.2026-03-17.private-key.pem",
+    # Tier 4: ~/.ssh/
+    Path.home() / ".ssh" / "antigravity-shadowtag-manager.pem",
+]
+
+
+def resolve_pem_path() -> Path:
+    """Resolve PEM path using the 5-tier fallback chain."""
+    # Tier 5: $SHADOWTAG_PEM env var (checked first for override)
+    import os
+
+    env_pem = os.environ.get("SHADOWTAG_PEM")
+    if env_pem:
+        p = Path(env_pem)
+        if p.exists():
+            return p
+
+    for candidate in PEM_CANDIDATES:
+        if candidate.exists():
+            return candidate
+
+    # Tier 1 fallback: Try GCP Secret Manager
+    try:
+        result = subprocess.run(
+            [
+                "gcloud",
+                "secrets",
+                "versions",
+                "access",
+                "latest",
+                "--secret=github-app-shadowtag-v2-pem",
+                "--project=shadowtag-omega-v4",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            tmp = Path(tempfile.mktemp(suffix=".pem"))
+            tmp.write_text(result.stdout)
+            return tmp
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        pass
+
+    print("[!] FATAL: No PEM file found in any of the 5 fallback tiers.")
+    print("    Checked: $SHADOWTAG_PEM, keys/, ~/Downloads/, ~/.ssh/, GCP Secret Manager")
+    sys.exit(1)
+
+
+def generate_jwt(app_id: str, pem_path: Path) -> str:
+    """Generate RS256 JWT for GitHub App Authentication."""
+    private_key = pem_path.read_bytes()
+    now = int(time.time())
+    payload = {"iat": now - 60, "exp": now + (10 * 60), "iss": app_id}
+    return jwt.encode(payload, private_key, algorithm="RS256")
+
+
+def get_installation_id(jwt_token: str) -> int:
+    """Fetch the installation ID for the specific repository."""
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/installation"
+    headers = {"Authorization": f"Bearer {jwt_token}", "Accept": "application/vnd.github.v3+json"}
+    response = requests.get(url, headers=headers, timeout=15)
+    response.raise_for_status()
+    return response.json()["id"]
+
+
+def get_access_token(jwt_token: str, installation_id: int) -> str:
+    """Exchange JWT and Installation ID for a short-lived access token."""
+    url = f"https://api.github.com/app/installations/{installation_id}/access_tokens"
+    headers = {"Authorization": f"Bearer {jwt_token}", "Accept": "application/vnd.github.v3+json"}
+    response = requests.post(url, headers=headers, timeout=15)
+    response.raise_for_status()
+    return response.json()["token"]
+
+
+def run_command(
+    command: list[str],
+    check_fatal: bool = False,
+    env_override: dict | None = None,
+) -> subprocess.CompletedProcess:
+    """Run a shell command, optionally checking for fatal errors (exit code > 1)."""
+    print(f"[*] Running: {' '.join(command)}")
+
+    import os
+
+    kwargs: dict = {"capture_output": True, "text": True}
+    if env_override:
+        env = dict(os.environ)
+        env.update(env_override)
+        kwargs["env"] = env
+
+    result = subprocess.run(command, **kwargs)
+
+    if check_fatal and result.returncode > 1:
+        print(f"\n[!] FATAL ERROR: {' '.join(command)} exited with code {result.returncode}")
+        print("STDOUT:\n", result.stdout[-2000:] if result.stdout else "(empty)")
+        print("STDERR:\n", result.stderr[-2000:] if result.stderr else "(empty)")
+        print("Aborting to prevent pushing a broken tree.")
+        sys.exit(1)
+
+    return result
+
+
+def create_git_askpass_helper(token: str) -> str:
+    """Create a temporary GIT_ASKPASS helper script that injects the token securely.
+
+    This prevents the token from appearing in process arguments, shell history,
+    or git remote -v output.
+    """
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".sh", delete=False) as helper:
+        helper.write(f"#!/bin/sh\necho {token}\n")
+    Path(helper.name).chmod(0o700)
+    return helper.name
+
+
+def secure_push(access_token: str, branch_name: str) -> subprocess.CompletedProcess:
+    """Push via HTTPS with token injected through GIT_ASKPASS (never in URL)."""
+    import os
+
+    askpass_helper = create_git_askpass_helper(access_token)
+    remote_url = f"https://x-access-token@github.com/{REPO_OWNER}/{REPO_NAME}.git"
+
+    try:
+        result = run_command(
+            ["git", "push", remote_url, f"HEAD:refs/heads/{branch_name}"],
+            env_override={
+                "GIT_ASKPASS": askpass_helper,
+                "GIT_TERMINAL_PROMPT": "0",
+            },
+        )
+    finally:
+        # Clean up helper script immediately
+        with contextlib.suppress(OSError):
+            os.unlink(askpass_helper)
+
+    return result
+
+
+def run_linters() -> dict:
+    """Execute the full Omni-Linter suite and return structured results."""
+    results = {}
+
+    # 1. Ruff check + fix
+    r = run_command(["uv", "run", "ruff", "check", "--fix", "."], check_fatal=True)
+    results["ruff_check"] = {"exit_code": r.returncode, "stdout": r.stdout, "stderr": r.stderr}
+
+    # 2. Ruff format
+    r = run_command(["uv", "run", "ruff", "format", "."], check_fatal=True)
+    results["ruff_format"] = {"exit_code": r.returncode, "stdout": r.stdout, "stderr": r.stderr}
+
+    # 3. Vulture dead code scan (read-only, no fixes)
+    r = run_command(
+        ["uv", "run", "vulture", ".", "--min-confidence", "90", "--exclude", "external_repos,node_modules,.venv"],
+        check_fatal=False,
+    )
+    results["vulture"] = {"exit_code": r.returncode, "stdout": r.stdout, "stderr": r.stderr}
+
+    # 4. Biome check + fix
+    r = run_command(["npx", "@biomejs/biome", "check", "--write", "."], check_fatal=True)
+    results["biome"] = {"exit_code": r.returncode, "stdout": r.stdout, "stderr": r.stderr}
+
+    return results
+
+
+def write_results_json(lint_results: dict, diff_stats: str) -> None:
+    """Write structured results to .lint-results/latest.json for cross-agent consumption."""
+    RESULTS_DIR.mkdir(exist_ok=True)
+
+    output = {
+        "timestamp": datetime.now(UTC).isoformat(),
+        "findings": {},
+        "git_diff_stats": diff_stats,
+    }
+
+    for tool_name, data in lint_results.items():
+        exit_code = data["exit_code"]
+        if exit_code > 1:
+            severity = "FATAL"
+        elif exit_code == 1:
+            severity = "WARNING"
+        else:
+            severity = "CLEAN"
+
+        output["findings"][tool_name] = {
+            "severity": severity,
+            "exit_code": exit_code,
+            "output_lines": len(data["stdout"].splitlines()) if data["stdout"] else 0,
+        }
+
+    RESULTS_FILE.write_text(json.dumps(output, indent=2))
+    print(f"[*] Results written to {RESULTS_FILE}")
+
+
+def parse_args() -> argparse.Namespace:
+    """Parse CLI arguments."""
+    parser = argparse.ArgumentParser(description="Omni-Autolint Daemon — Secure lint + push")
+    parser.add_argument("--yes", "-y", action="store_true", help="Auto-approve changes (headless mode)")
+    parser.add_argument("--json", action="store_true", help="Write structured results to .lint-results/")
+    parser.add_argument("--dry-run", action="store_true", help="Run linters but skip commit/push")
+    parser.add_argument("--branch", type=str, default=None, help="Custom branch name (default: chore/autolint-{timestamp})")
+    return parser.parse_args()
+
+
+def main() -> None:
+    """Main daemon entry point."""
+    import os
+
+    args = parse_args()
+    headless = args.yes or os.environ.get("CI", "").lower() == "true"
+
+    print("=== Omni-Autolint Daemon ===")
+
+    # --- Phase 1: Authenticate ---
+    print("[1] Authenticating with GitHub App...")
+    try:
+        pem_path = resolve_pem_path()
+        print(f"[*] PEM resolved: {pem_path}")
+        jwt_token = generate_jwt(APP_ID, pem_path)
+        installation_id = get_installation_id(jwt_token)
+        access_token = get_access_token(jwt_token, installation_id)
+        print(f"[*] Short-lived token acquired (Installation ID: {installation_id}).")
+    except Exception as e:
+        print(f"[!] Authentication failed: {e}")
+        sys.exit(1)
+
+    # --- Phase 2: Sync ---
+    print("\n[2] Synchronizing with origin/main...")
+    run_command(["git", "pull", "origin", "main"])
+
+    # --- Phase 3: Lint ---
+    print("\n[3] Running Omni-Linter Suite (ruff + vulture + biome)...")
+    lint_results = run_linters()
+
+    # --- Phase 4: Evaluate ---
+    print("\n[4] Evaluating modifications...")
+    status_result = run_command(["git", "status", "--porcelain"])
+    diff_stat_result = run_command(["git", "diff", "--stat"])
+
+    # Write JSON results if requested
+    if args.json:
+        write_results_json(lint_results, diff_stat_result.stdout)
+
+    if not status_result.stdout.strip():
+        print("[*] No AST changes detected. Working tree is clean.")
+        return
+
+    # --- Phase 5: Review + Push ---
+    print("\n[*] AST modifications detected:")
+    print(diff_stat_result.stdout)
+
+    if args.dry_run:
+        print("[DRY-RUN] Skipping commit/push as requested.")
+        return
+
+    # Human-in-the-loop or headless auto-approve
+    if headless:
+        print("[HEADLESS] Auto-approving changes (--yes or CI=true).")
+        approved = True
+    else:
+        diff_result = run_command(["git", "diff"])
+        print("\n--- DIFF START ---")
+        print(diff_result.stdout[:10000])
+        if len(diff_result.stdout) > 10000:
+            print(f"... ({len(diff_result.stdout) - 10000} more characters truncated)")
+        print("--- DIFF END ---\n")
+        choice = input("Proceed with commit and push? (y/n): ")
+        approved = choice.strip().lower() == "y"
+
+    if not approved:
+        print("[*] Commit aborted by user.")
+        return
+
+    # Create branch (never push directly to main)
+    branch_name = args.branch or f"chore/autolint-{int(time.time())}"
+    run_command(["git", "checkout", "-b", branch_name])
+
+    # Configure git user
+    run_command(["git", "config", "user.name", "Omni-Autolint Bot[bot]"])
+    run_command(["git", "config", "user.email", GITHUB_APP_NOREPLY])
+
+    # Stage and commit
+    run_command(["git", "add", "."])
+    run_command(["git", "commit", "-m", "chore(ast): autonomous AST optimization via GCA"])
+
+    # Secure push via GIT_ASKPASS (token never in URL args)
+    print("[*] Pushing securely via GIT_ASKPASS...")
+    push_result = secure_push(access_token, branch_name)
+
+    if push_result.returncode != 0:
+        print(f"[!] Push failed:\n{push_result.stderr}")
+        sys.exit(1)
+
+    print(f"[*] Push successful to branch: {branch_name}")
+
+    # Return to main
+    run_command(["git", "checkout", "main"])
+    print(f"[*] Done. Create a PR from '{branch_name}' → main.")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,20 @@
+# Invoked via: /vibe-guardrails
+description = "Apply repo vibe-coding guardrails for file size and concern separation."
+
+prompt = """
+Apply the repo's vibe-coding guardrails without becoming mechanical.
+
+Rules:
+- Split by concern, not line-count superstition
+- Prefer components under 150 lines
+- If a file is 150-300 lines, scrutinize boundaries
+- If a file exceeds 300 lines, propose refactor points explicitly
+- Keep UI separate from business logic when it reduces cognitive load
+- Never split an otherwise coherent file purely to satisfy a threshold
+- Prefer maintainability, clarity, and safe iteration over maximal fragmentation
+
+Return:
+- Guardrail violations (with file:line references)
+- Suggested restructures (smallest safe refactor)
+- Safe next moves (ordered by risk level)
+"""

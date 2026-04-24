@@ -1,0 +1,32 @@
+# Invoked via: /lint:scan
+# Runs the full Omni-Autolint suite and reports findings without pushing.
+description = "Run the Omni-Autolint suite (ruff + vulture + biome) and report findings."
+
+prompt = """
+Execute the Omni-Autolint pipeline by running these commands IN SEQUENCE.
+For each command, capture the full stdout/stderr and exit code.
+
+1. `uv run ruff check --fix . 2>&1`
+2. `uv run ruff format . 2>&1`
+3. `uv run vulture . --min-confidence 90 --exclude "external_repos,node_modules,.venv" 2>&1`
+4. `npx @biomejs/biome check --write . 2>&1`
+
+After all linters complete, produce a SUMMARY TABLE:
+
+| Tool         | Exit Code | Severity | Findings |
+|--------------|-----------|----------|----------|
+| ruff check   | ...       | ...      | N lines  |
+| ruff format  | ...       | ...      | N lines  |
+| vulture      | ...       | ...      | N lines  |
+| biome        | ...       | ...      | N lines  |
+
+Severity classification:
+- FATAL: exit code > 1 (crash, abort everything)
+- WARNING: exit code = 1 (fixable issues found)
+- CLEAN: exit code = 0
+
+Then run `git diff --stat` and show the modified file summary.
+
+CRITICAL: Do NOT commit or push. Only report findings.
+If any tool has FATAL severity, highlight it prominently.
+"""

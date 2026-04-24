@@ -1,0 +1,24 @@
+# Invoked via: /security-sweep
+description = "Focused security sweep of target code for common vulnerabilities."
+
+prompt = """
+Perform a focused security sweep of the target code.
+
+Check for:
+- Missing server-side authorization
+- Weak session handling
+- Unsafe redirects
+- Unsanitized inputs
+- Non-parameterized queries
+- Missing rate limits on sensitive endpoints
+- Insecure file upload handling
+- Storage access control problems
+- Leaked secrets in code or logs
+- Missing webhook signature verification
+
+Classify findings by severity (🔴 CRITICAL / 🟡 HIGH / 🟢 MEDIUM / ℹ️ LOW).
+State uncertainty explicitly.
+Recommend the smallest secure fix first.
+
+Output a table with: Finding | Severity | File:Line | Fix
+"""
