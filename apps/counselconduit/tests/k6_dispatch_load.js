@@ -6,8 +6,8 @@
 //   - load:   50 VUs, 60s  — sustained throughput
 //   - stress: 200 VUs, 30s — breaking point discovery
 
-import http from 'k6/http';
 import { check, sleep } from 'k6';
+import http from 'k6/http';
 import { Rate, Trend } from 'k6/metrics';
 
 // ── Custom Metrics ──────────────────────────────────────────────────────
@@ -49,21 +49,17 @@ export const options = {
     },
   },
   thresholds: {
-    'dispatch_latency_ms': ['p(95)<50', 'p(99)<100'],  // NadirClaw: <50ms p95
-    'dispatch_errors': ['rate<0.05'],                     // <5% error rate
-    'circuit_breaker_hits': ['rate<0.01'],                // <1% circuit breaker
-    'http_req_duration': ['p(95)<200'],                   // overall HTTP <200ms p95
+    dispatch_latency_ms: ['p(95)<50', 'p(99)<100'], // NadirClaw: <50ms p95
+    dispatch_errors: ['rate<0.05'], // <5% error rate
+    circuit_breaker_hits: ['rate<0.01'], // <1% circuit breaker
+    http_req_duration: ['p(95)<200'], // overall HTTP <200ms p95
   },
 };
 
 // ── Test Data ───────────────────────────────────────────────────────────
 
 const QUERIES = {
-  simple: [
-    'What is a deposition?',
-    'Define habeas corpus',
-    'What does pro bono mean?',
-  ],
+  simple: ['What is a deposition?', 'Define habeas corpus', 'What does pro bono mean?'],
   complex: [
     'Explain the difference between civil and criminal liability in tort cases',
     'What are the implications of the Chevron doctrine reversal for administrative law?',
@@ -132,12 +128,12 @@ export default function () {
     circuitBreakerHits.add(true);
     errorRate.add(true);
   } else if (res.status === 429) {
-    errorRate.add(false);  // rate limit is expected behavior, not an error
+    errorRate.add(false); // rate limit is expected behavior, not an error
   } else {
     errorRate.add(true);
   }
 
-  sleep(0.1);  // 100ms think time
+  sleep(0.1); // 100ms think time
 }
 
 // ── Metrics Endpoint Test ───────────────────────────────────────────────

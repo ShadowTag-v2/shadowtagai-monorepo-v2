@@ -110,7 +110,7 @@ class IngestHBR_LangExtract:
             logger.warning("Scrapling not available. Using requests fallback.")
             self.fetcher = None
 
-    def process(self, url: str) -> Generator[dict, None, None]:
+    def process(self, url: str) -> Generator[dict]:
         """Process a single URL for ingestion.
 
         Args:

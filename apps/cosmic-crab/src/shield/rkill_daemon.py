@@ -68,7 +68,7 @@ class RkillDaemon:
                         proc.terminate()
                         del self.strikes[pid]
 
-                except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                except psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess:
                     pass
 
             time.sleep(5)

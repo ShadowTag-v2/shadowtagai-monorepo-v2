@@ -2,8 +2,8 @@
 // Install: brew install k6
 // Run: k6 run scripts/k6_dispatch_load.js
 
-import http from 'k6/http';
 import { check, sleep } from 'k6';
+import http from 'k6/http';
 import { Rate, Trend } from 'k6/metrics';
 
 const errorRate = new Rate('errors');
@@ -11,15 +11,15 @@ const dispatchDuration = new Trend('dispatch_duration');
 
 export const options = {
   stages: [
-    { duration: '30s', target: 10 },   // Ramp to 10 VUs
-    { duration: '1m', target: 25 },     // Ramp to 25 VUs
-    { duration: '30s', target: 50 },    // Peak at 50 VUs
-    { duration: '1m', target: 50 },     // Hold peak
-    { duration: '30s', target: 0 },     // Ramp down
+    { duration: '30s', target: 10 }, // Ramp to 10 VUs
+    { duration: '1m', target: 25 }, // Ramp to 25 VUs
+    { duration: '30s', target: 50 }, // Peak at 50 VUs
+    { duration: '1m', target: 50 }, // Hold peak
+    { duration: '30s', target: 0 }, // Ramp down
   ],
   thresholds: {
-    http_req_duration: ['p(95)<3000'],   // 95% of requests < 3s
-    http_req_failed: ['rate<0.01'],       // <1% failure rate
+    http_req_duration: ['p(95)<3000'], // 95% of requests < 3s
+    http_req_failed: ['rate<0.01'], // <1% failure rate
     errors: ['rate<0.01'],
   },
 };
@@ -30,8 +30,16 @@ const QUERIES = [
   { query: 'What is attorney-client privilege?', tier: 'simple' },
   { query: 'Hello', tier: 'simple' },
   { query: 'Explain the concept of mens rea in criminal law', tier: 'simple' },
-  { query: 'Draft a comprehensive analysis of the doctrine of equitable estoppel and tolling provisions under federal bankruptcy code', tier: 'agentic' },
-  { query: 'Analyze SEC Rule 10b-5 implications for insider trading with a detailed memo on recent circuit splits', tier: 'agentic' },
+  {
+    query:
+      'Draft a comprehensive analysis of the doctrine of equitable estoppel and tolling provisions under federal bankruptcy code',
+    tier: 'agentic',
+  },
+  {
+    query:
+      'Analyze SEC Rule 10b-5 implications for insider trading with a detailed memo on recent circuit splits',
+    tier: 'agentic',
+  },
 ];
 
 export default function () {

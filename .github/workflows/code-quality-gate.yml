@@ -1,4 +1,4 @@
-name: "Code Quality Gate — Ruff + Vulture"
+name: "Code Quality Gate — Ruff + Biome"
 
 on:
   pull_request:
@@ -39,8 +39,8 @@ jobs:
       - name: Ruff format check
         run: ruff format --check .
 
-  vulture:
-    name: Vulture Dead Code Detection
+  ruff-dead-code:
+    name: Ruff Dead Code Detection (F401/F841 — V22 replaces vulture)
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -50,12 +50,12 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Install vulture
-        run: pip install "vulture>=2.14"
+      - name: Install ruff
+        run: pip install "ruff>=0.15.0"
 
-      - name: Run vulture (90%+ confidence)
+      - name: Run ruff dead code (F401/F841)
         run: |
-          vulture apps/counselconduit/ scripts/ core/ tools/eval/ \
-            --min-confidence 90 \
+          ruff check apps/counselconduit/ scripts/ core/ tools/eval/ \
+            --select F401,F841 \
             --exclude ".venv,node_modules,__pycache__,reference_architectures" \
-            || true
+            --statistics || true

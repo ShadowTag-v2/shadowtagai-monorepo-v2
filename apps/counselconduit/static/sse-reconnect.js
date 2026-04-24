@@ -40,8 +40,8 @@ export function createSSEClient(url, options = {}) {
 
   function calculateDelay() {
     const baseDelay = Math.min(
-      config.initialDelayMs * Math.pow(config.backoffMultiplier, retryCount),
-      config.maxDelayMs
+      config.initialDelayMs * config.backoffMultiplier ** retryCount,
+      config.maxDelayMs,
     );
     // Add jitter to prevent thundering herd
     const jitter = baseDelay * config.jitterFactor * (Math.random() * 2 - 1);
@@ -51,7 +51,6 @@ export function createSSEClient(url, options = {}) {
   function resetHeartbeatTimer() {
     if (heartbeatTimer) clearTimeout(heartbeatTimer);
     heartbeatTimer = setTimeout(() => {
-      console.warn('[SSE] Heartbeat timeout — reconnecting');
       if (eventSource) {
         eventSource.close();
         scheduleReconnect();
@@ -62,14 +61,15 @@ export function createSSEClient(url, options = {}) {
   function scheduleReconnect() {
     if (isManualDisconnect || retryCount >= config.maxRetries) {
       if (retryCount >= config.maxRetries) {
-        console.error(`[SSE] Max retries (${config.maxRetries}) exceeded. Giving up.`);
         config.onMaxRetriesExceeded?.();
       }
       return;
     }
 
     const delay = calculateDelay();
-    console.log(`[SSE] Reconnecting in ${delay}ms (attempt ${retryCount + 1}/${config.maxRetries})`);
+    console.log(
+      `[SSE] Reconnecting in ${delay}ms (attempt ${retryCount + 1}/${config.maxRetries})`,
+    );
     config.onReconnecting?.({ attempt: retryCount + 1, delay });
 
     reconnectTimer = setTimeout(() => {
@@ -115,14 +115,12 @@ export function createSSEClient(url, options = {}) {
       });
 
       eventSource.onerror = () => {
-        console.warn('[SSE] Connection error');
         if (heartbeatTimer) clearTimeout(heartbeatTimer);
         eventSource.close();
         config.onError?.({ type: 'connection_error', attempt: retryCount });
         scheduleReconnect();
       };
     } catch (err) {
-      console.error('[SSE] Failed to create EventSource:', err);
       config.onError?.({ type: 'creation_error', error: err });
       scheduleReconnect();
     }

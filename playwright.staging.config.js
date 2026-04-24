@@ -6,7 +6,8 @@ const config = {
   timeout: 45000,
   retries: 2,
   use: {
-    baseURL: process.env.STAGING_URL || 'https://counselconduit-staging-767252945109.us-central1.run.app',
+    baseURL:
+      process.env.STAGING_URL || 'https://counselconduit-staging-767252945109.us-central1.run.app',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     extraHTTPHeaders: {

@@ -85,7 +85,7 @@ class PolicyWASM:
         self.hash = hashlib.sha256(wasm_binary).hexdigest()[:16]
 
     @classmethod
-    def load_precompiled(cls, policy_name: str) -> "PolicyWASM":
+    def load_precompiled(cls, policy_name: str) -> PolicyWASM:
         """Load pre-compiled WASM from R2 cache (Simulated)"""
         # In prototype, we just use dummy bytes
         return cls(policy_name=policy_name, wasm_binary=b"DUMMY_WASM_BYTES")
@@ -100,7 +100,7 @@ class EdgeQueue:
         self.commands: list[EdgeCommand] = []
         self._submitted = False
 
-    def wait(self, signal: EdgeSignal, value: int) -> "EdgeQueue":
+    def wait(self, signal: EdgeSignal, value: int) -> EdgeQueue:
         """Enqueue wait command"""
         if self._submitted:
             raise RuntimeError("Cannot modify queue after submit()")
@@ -108,7 +108,7 @@ class EdgeQueue:
         self.commands.append(EdgeCommand(type="wait", args={"signal_id": signal.do_id, "value": value}))
         return self
 
-    def exec(self, policy: PolicyWASM, context: dict[str, Any]) -> "EdgeQueue":
+    def exec(self, policy: PolicyWASM, context: dict[str, Any]) -> EdgeQueue:
         """Enqueue WASM policy execution"""
         if self._submitted:
             raise RuntimeError("Cannot modify queue after submit()")
@@ -126,7 +126,7 @@ class EdgeQueue:
         )
         return self
 
-    def signal(self, signal: EdgeSignal, value: int) -> "EdgeQueue":
+    def signal(self, signal: EdgeSignal, value: int) -> EdgeQueue:
         """Enqueue signal write"""
         if self._submitted:
             raise RuntimeError("Cannot modify queue after submit()")
@@ -134,7 +134,7 @@ class EdgeQueue:
         self.commands.append(EdgeCommand(type="signal", args={"signal_id": signal.do_id, "value": value}))
         return self
 
-    def timestamp(self, signal: EdgeSignal) -> "EdgeQueue":
+    def timestamp(self, signal: EdgeSignal) -> EdgeQueue:
         """Enqueue timestamp capture"""
         if self._submitted:
             raise RuntimeError("Cannot modify queue after submit()")

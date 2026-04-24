@@ -59,13 +59,13 @@ jobs:
           python-version: '3.13'
 
       - name: Install lint tools
-        run: pip install ruff vulture
+        run: pip install ruff
 
       - name: Run ruff
         run: ruff check . --select=E,W,F --ignore=E501
 
-      - name: Run vulture (dead code scan)
-        run: vulture apps/ labs/ scripts/ --min-confidence 80 || true
+      - name: Run ruff dead code scan (F401/F841 — V22 replaces vulture)
+        run: ruff check apps/ labs/ scripts/ --select F401,F841 --statistics || true
 
   security-scan:
     name: Security Scan

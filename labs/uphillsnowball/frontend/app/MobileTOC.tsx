@@ -10,31 +10,34 @@
 // The SHA-256 hash is computed client-side using Web Crypto API for
 // zero-latency edge hashing. The mission is immutable once locked.
 
-"use client";
+'use client';
 
-import React, { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 // Status type for campaign tracking
-type CampaignStatus = 'IDLE' | 'DISPATCHED' | 'BACKBRIEF_PENDING' | 'EXECUTING' | 'COMPLETE' | 'FAILED';
+type CampaignStatus =
+  | 'IDLE'
+  | 'DISPATCHED'
+  | 'BACKBRIEF_PENDING'
+  | 'EXECUTING'
+  | 'COMPLETE'
+  | 'FAILED';
 
 export default function MobileTheaterCommand() {
-  const [mission, setMission] = useState("");
-  const [opordHash, setOpordHash] = useState("");
+  const [mission, setMission] = useState('');
+  const [opordHash, setOpordHash] = useState('');
   const [status, setStatus] = useState<CampaignStatus>('IDLE');
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const lockOpordAndDispatch = useCallback(async () => {
     if (!mission.trim()) return;
-    setError("");
+    setError('');
 
     try {
       // Web Crypto API: Zero-Latency Client-Side Edge Hashing
-      const hashBuffer = await crypto.subtle.digest(
-        'SHA-256',
-        new TextEncoder().encode(mission)
-      );
+      const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(mission));
       const hashHex = Array.from(new Uint8Array(hashBuffer))
-        .map(b => b.toString(16).padStart(2, '0'))
+        .map((b) => b.toString(16).padStart(2, '0'))
         .join('')
         .substring(0, 16)
         .toUpperCase();
@@ -51,19 +54,19 @@ export default function MobileTheaterCommand() {
         body: JSON.stringify({
           payload: mission,
           hash: hashHex,
-          agent_id: "Architect",
-          tenant_id: "T-001",
+          agent_id: 'Architect',
+          tenant_id: 'T-001',
         }),
       });
 
       if (response.status === 402) {
-        setError("WET FLEECE: Payment required. Invoice past due.");
+        setError('WET FLEECE: Payment required. Invoice past due.');
         setStatus('FAILED');
       } else if (response.status === 423) {
-        setError("RKILL: Payload blocked by Judge 6.1.");
+        setError('RKILL: Payload blocked by Judge 6.1.');
         setStatus('FAILED');
       } else if (response.status === 406) {
-        setError("KICKBACK: Unauthorized practice detected.");
+        setError('KICKBACK: Unauthorized practice detected.');
         setStatus('FAILED');
       } else if (response.ok) {
         setStatus('BACKBRIEF_PENDING');
@@ -88,10 +91,10 @@ export default function MobileTheaterCommand() {
   }, []);
 
   const resetMission = useCallback(() => {
-    setMission("");
-    setOpordHash("");
+    setMission('');
+    setOpordHash('');
     setStatus('IDLE');
-    setError("");
+    setError('');
   }, []);
 
   const statusColor: Record<CampaignStatus, string> = {
@@ -110,9 +113,7 @@ export default function MobileTheaterCommand() {
         <h1 className="text-lg font-bold text-white border-b border-emerald-900 pb-2">
           JTF COMMAND NODE
         </h1>
-        <span className={`text-[10px] font-bold ${statusColor[status]}`}>
-          ● {status}
-        </span>
+        <span className={`text-[10px] font-bold ${statusColor[status]}`}>● {status}</span>
       </div>
 
       {/* Error Banner */}
@@ -137,10 +138,7 @@ export default function MobileTheaterCommand() {
         {opordHash ? (
           <div className="mt-2 flex items-center justify-between">
             <p className="text-[10px] text-emerald-400">🔒 LOCKED: {opordHash}</p>
-            <button
-              onClick={resetMission}
-              className="text-[10px] text-red-400 underline"
-            >
+            <button onClick={resetMission} className="text-[10px] text-red-400 underline">
               RESET
             </button>
           </div>

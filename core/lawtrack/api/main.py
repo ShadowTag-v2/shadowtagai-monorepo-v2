@@ -1,7 +1,7 @@
 import os
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException, Security
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 app = FastAPI(title="Cor.LawTrack Engine", description="Zero-Trust API Gateway for Multi-Vertical Compliance", version="1.0.0")

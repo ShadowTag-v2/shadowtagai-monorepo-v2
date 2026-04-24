@@ -22,8 +22,6 @@
     }
   ],
   "combiner": "OR",
-  "notificationChannels": [
-    "projects/shadowtag-omega-v4/notificationChannels/11292559663830648124"
-  ],
+  "notificationChannels": ["projects/shadowtag-omega-v4/notificationChannels/11292559663830648124"],
   "enabled": true
 }

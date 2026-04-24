@@ -27,13 +27,13 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install linters
-        run: pip install ruff vulture
+        run: pip install ruff
       - name: Ruff lint
         run: ruff check . --output-format=github
       - name: Ruff format check
         run: ruff format --check .
-      - name: Vulture dead code
-        run: vulture apps/ labs/ --min-confidence 80 || true
+      - name: Ruff dead code (F401/F841 — V22 replaces vulture)
+        run: ruff check apps/ labs/ --select F401,F841 --statistics || true
 
   # ── CounselConduit Tests ───────────────────────────────────────────
   test-counselconduit:

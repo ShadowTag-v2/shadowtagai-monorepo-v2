@@ -24,6 +24,6 @@ jobs:
         with:
           python-version: '3.13'
       - name: Install dependencies
-        run: pip install ruff pytest vulture
+        run: pip install ruff pytest
       - name: Run make check
         run: make check

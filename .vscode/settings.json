@@ -10,6 +10,16 @@
       "source.organizeImports": "explicit"
     }
   },
+  // Ruff VSCode Extension — https://github.com/astral-sh/ruff-vscode
+  // Uses native ruff server (replaces deprecated ruff-lsp)
+  "ruff.nativeServer": "on",
+  "ruff.lint.run": "onType",
+  "ruff.organizeImports": true,
+  "ruff.fixAll": true,
+  "ruff.importStrategy": "fromEnvironment",
+  "ruff.showNotifications": "onWarning",
+  "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
+  "ruff.configuration": "${workspaceFolder}/ruff.toml",
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome",
     "editor.formatOnSave": true

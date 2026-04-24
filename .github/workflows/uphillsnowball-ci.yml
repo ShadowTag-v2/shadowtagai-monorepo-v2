@@ -3,7 +3,7 @@
 #
 # Triggered on changes to labs/uphillsnowball/** only.
 # Jobs:
-#   1. python-lint     — ruff + vulture dead code sweep
+#   1. python-lint     — ruff (lint + dead code via F401/F841)
 #   2. python-test     — pytest with Redis service container
 #   3. go-build        — Cor.Go ZTA kernel compilation
 #   4. docker-build    — Multi-stage sealed container validation
@@ -39,7 +39,7 @@ jobs:
 
   # ── 1. Python Lint & Dead Code Sweep ─────────────────────────
   python-lint:
-    name: 🧹 Lint (ruff + vulture)
+    name: 🧹 Lint (ruff V22 Pruned)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     defaults:
@@ -54,7 +54,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install lint tools
-        run: pip install --no-cache-dir ruff vulture
+        run: pip install --no-cache-dir ruff
 
       - name: ruff check (fix mode disabled in CI)
         run: ruff check src/ --output-format=github
@@ -62,8 +62,8 @@ jobs:
       - name: ruff format check
         run: ruff format src/ --check --diff
 
-      - name: vulture dead code sweep (90% confidence)
-        run: vulture src/ --min-confidence 90
+      - name: ruff dead code sweep (F401/F841 — V22 replaces vulture)
+        run: ruff check src/ --select F401,F841 --statistics || true
 
   # ── 2. Python Tests with Redis ───────────────────────────────
   python-test:

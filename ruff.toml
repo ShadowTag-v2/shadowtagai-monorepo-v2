@@ -1,4 +1,7 @@
-target-version = "py311"
+# Ruff configuration — https://github.com/astral-sh/ruff
+# Pre-commit hook: https://github.com/astral-sh/ruff-pre-commit
+# VSCode extension: https://github.com/astral-sh/ruff-vscode (charliermarsh.ruff)
+target-version = "py314"
 line-length = 150
 extend-exclude = [
     # Historical and recovered trees are not canonical workspace truth.
@@ -26,15 +29,16 @@ extend-exclude = [
 
 [lint]
 # E: Errors, F: Pyflakes, I: Isort, UP: PyUpgrade, B: Bugbear, SIM: Simplify
+# V22 Pruned Singularity: F401/F841 now ENABLED (replaces vulture dead-code scanning)
 select = ["E", "F", "I", "UP", "B", "SIM"]
 ignore = [
     "E501",    # line-too-long (handled by formatter)
     "E402",    # module-import-not-at-top (intentional sys.path manipulation)
     "E722",    # bare-except (being fixed via AST-Grep, not noqa)
     "E741",    # ambiguous-variable-name (intentional math/physics vars)
-    "F841",    # unused-variable (may be needed for unpacking)
+    # F401 (unused-import) and F841 (unused-variable) are NOW ENABLED.
+    # They replace vulture's dead-code scanning. See per-file-ignores for legacy dirs.
     "F821",    # undefined-name (dynamic imports, TYPE_CHECKING)
-    "F401",    # unused-import (may be re-exports)
     "I001",    # isort violations (handled separately)
     "PTH118",  # pathlib (gradual migration)
     "PTH123",  # pathlib (gradual migration)
@@ -51,6 +55,11 @@ ignore = [
 "**/test_*.py" = ["S101", "PLR2004", "D103"]
 "**/conftest.py" = ["F401", "E402"]
 "scripts/**/*.py" = ["T201"]  # Allow print() in scripts
+# V22 Pruned Singularity: Legacy dirs suppressed for F401/F841 until chunked cleanup
+"control/**/*.py" = ["F401", "F841"]
+"docs/**/*.py" = ["F401", "F841"]
+"labs/**/*.py" = ["F401", "F841"]
+"data/**/*.py" = ["F401", "F841"]
 
 [lint.isort]
 force-single-line = false

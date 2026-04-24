@@ -10,9 +10,9 @@
 //
 // This is the Commander's full-spectrum mobile C2 node.
 
-"use client";
+'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 
 type JStaffStatus = {
   jCode: string;
@@ -24,7 +24,7 @@ type JStaffStatus = {
 type RiskLevel = 'LOW' | 'MODERATE' | 'HIGH' | 'EXTREMELY_HIGH';
 
 export default function MobileJTFCommand() {
-  const [jStaff, setJStaff] = useState<JStaffStatus[]>([
+  const [jStaff, _setJStaff] = useState<JStaffStatus[]>([
     { jCode: 'J-1', role: 'Vault', status: 'IDLE', lastActivity: 'Awaiting artifacts' },
     { jCode: 'J-2', role: 'Intel', status: 'IDLE', lastActivity: 'Awaiting tasking' },
     { jCode: 'J-3', role: 'Ops', status: 'IDLE', lastActivity: 'Standing by' },
@@ -34,8 +34,8 @@ export default function MobileJTFCommand() {
     { jCode: 'J-9', role: 'Splinter', status: 'IDLE', lastActivity: 'No content queued' },
   ]);
 
-  const [currentRisk, setCurrentRisk] = useState<RiskLevel>('LOW');
-  const [activeWorkflows, setActiveWorkflows] = useState(0);
+  const [currentRisk, _setCurrentRisk] = useState<RiskLevel>('LOW');
+  const [activeWorkflows, _setActiveWorkflows] = useState(0);
 
   const statusColor: Record<string, string> = {
     IDLE: 'bg-gray-700',
@@ -60,12 +60,8 @@ export default function MobileJTFCommand() {
           <p className="text-[8px] text-emerald-800">JP 3-33 COMMAND NODE</p>
         </div>
         <div className="text-right">
-          <p className={`text-xs font-bold ${riskColor[currentRisk]}`}>
-            RISK: {currentRisk}
-          </p>
-          <p className="text-[8px] text-emerald-800">
-            {activeWorkflows} active workflows
-          </p>
+          <p className={`text-xs font-bold ${riskColor[currentRisk]}`}>RISK: {currentRisk}</p>
+          <p className="text-[8px] text-emerald-800">{activeWorkflows} active workflows</p>
         </div>
       </div>
 
@@ -85,14 +81,10 @@ export default function MobileJTFCommand() {
                 <p className="text-[10px] font-bold text-emerald-400">
                   {staff.jCode} — {staff.role}
                 </p>
-                <p className="text-[8px] text-emerald-800">
-                  {staff.lastActivity}
-                </p>
+                <p className="text-[8px] text-emerald-800">{staff.lastActivity}</p>
               </div>
             </div>
-            <span className="text-[8px] text-emerald-600">
-              {staff.status}
-            </span>
+            <span className="text-[8px] text-emerald-600">{staff.status}</span>
           </div>
         ))}
       </div>

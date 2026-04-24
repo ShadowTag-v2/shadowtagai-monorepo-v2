@@ -159,7 +159,7 @@ class AGUIStreamManager:
         self,
         session: SSESessionContext,
         events: list[AGUIEvent],
-    ) -> AsyncGenerator[str, None]:
+    ) -> AsyncGenerator[str]:
         """Stream AG-UI events as SSE with encryption.
 
         Args:

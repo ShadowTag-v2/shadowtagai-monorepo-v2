@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # COR.HYBRID LINTER SCAFFOLDING
-# Sets up: ESLint plugin (cor-rules), Husky pre-commit hooks, Vulture for Python
+# Sets up: ESLint plugin (cor-rules), Husky pre-commit hooks, Ruff for Python
 # ==============================================================================
 set -e
 echo "🚀 Scaffolding Cor.Hybrid Linter & Git Hooks..."
@@ -12,10 +12,10 @@ npm i -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin husky
     echo "⚠️ npm install had warnings (non-fatal). Continuing..."
 }
 
-# --- Step 2: Install Vulture via pip (no git clone required) ---
-echo "🐍 Installing Vulture for Python dead-code detection..."
-pip3 install vulture ruff 2>/dev/null || python3 -m pip install vulture ruff 2>/dev/null || {
-    echo "⚠️ Vulture/Ruff pip install failed. Install manually: pip install vulture ruff"
+# --- Step 2: Install Ruff via pip (V22 Pruned — vulture removed) ---
+echo "🐍 Installing Ruff for Python linting + dead-code detection..."
+pip3 install ruff 2>/dev/null || python3 -m pip install ruff 2>/dev/null || {
+    echo "⚠️ Ruff pip install failed. Install manually: pip install ruff"
 }
 
 # --- Step 3: Create Cor.Hybrid Custom ESLint Plugin ---

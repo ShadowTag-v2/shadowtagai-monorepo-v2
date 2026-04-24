@@ -148,7 +148,7 @@ Return a JSON object with: { format: string, schema: object, rules: string[] }
     return JSON.parse(result);
   },
   validate: (result) => {
-    return result && result.format && result.schema && Array.isArray(result.rules);
+    return result?.format && result.schema && Array.isArray(result.rules);
   },
 };
 
@@ -351,8 +351,6 @@ class WorkflowEngine {
       } catch (error) {
         const duration = Date.now() - stepStartTime;
 
-        console.error(`✗ ${step.name} failed:`, error.message);
-
         context.metadata.stepResults.push({
           step: step.name,
           success: false,
@@ -425,8 +423,7 @@ async function main() {
       console.log(`Errors: ${report.errors.length}`);
       console.log(`Warnings: ${report.warnings.length}`);
     }
-  } catch (error) {
-    console.error('\n✗ Workflow execution failed:', error.message);
+  } catch (_error) {
     process.exit(1);
   }
 }
@@ -437,4 +434,4 @@ if (require.main === module) {
 }
 
 // Export for use as module
-export { WorkflowEngine, type WorkflowStep, type WorkflowContext, type ValidationReport };
+export { type ValidationReport, type WorkflowContext, WorkflowEngine, type WorkflowStep };

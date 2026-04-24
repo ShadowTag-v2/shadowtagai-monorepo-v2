@@ -25,7 +25,7 @@ import json
 import os
 import sys
 from dataclasses import dataclass, field
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 
 # Python 3.9 compatibility: datetime.UTC was added in 3.11
 UTC = UTC
@@ -130,7 +130,7 @@ def orient(ki_dir: Path) -> list[KIEntry]:
             )
             entries.append(entry)
 
-        except (json.JSONDecodeError, KeyError):
+        except json.JSONDecodeError, KeyError:
             pass
 
     return entries
@@ -202,7 +202,7 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
                             "updated_at": entry.updated_at,
                         },
                     )
-            except (ValueError, TypeError):
+            except ValueError, TypeError:
                 pass
 
     report.ki_scanned = len(entries)
