@@ -26,4 +26,3 @@ profile_id = None  # Kosmos CLI unpacking pattern
 profile_type = None  # Kosmos CLI unpacking pattern
 jurisdiction_name = None  # Lawtrack timeline_engine unpacking
 fts_columns = None  # LanceDB hybrid search parameter
-

@@ -32,9 +32,7 @@ class EpistemologicalCrucible:
         self.model = "gemini-3-pro-preview"
         self.tenant_id = tenant_id
 
-    async def execute_6_step_extraction(
-        self, raw_text: str, user_context: str
-    ) -> dict:
+    async def execute_6_step_extraction(self, raw_text: str, user_context: str) -> dict:
         """Execute the full 6-stage epistemological extraction pipeline.
 
         Args:
@@ -55,15 +53,12 @@ class EpistemologicalCrucible:
 
         # Step 2: Assumption Auditor
         _assump = await self._prompt(
-            "Identify every significant unstated assumption. "
-            "Which assumption, if wrong, collapses the thesis?\n\n"
-            f"{arg.text}"
+            f"Identify every significant unstated assumption. Which assumption, if wrong, collapses the thesis?\n\n{arg.text}"
         )
 
         # Step 3: Personal Relevance Filter
         _relevance = await self._prompt(
-            f"Context: [{user_context}]. Which specific frameworks are directly "
-            f"applicable to this context?\n\n{raw_text}"
+            f"Context: [{user_context}]. Which specific frameworks are directly applicable to this context?\n\n{raw_text}"
         )
 
         # Step 4: Steelman & Challenger
@@ -75,16 +70,12 @@ class EpistemologicalCrucible:
 
         # Step 5: Action Extractor
         actions = await self._prompt(
-            "Generate 5 specific, immediately actionable changes for the next "
-            "30 days. Rank by Impact vs Friction.\n\n"
-            f"{raw_text}"
+            f"Generate 5 specific, immediately actionable changes for the next 30 days. Rank by Impact vs Friction.\n\n{raw_text}"
         )
 
         # Step 6: Permanent Note Builder
         notes = await self._prompt(
-            "Synthesize into 5 permanent Zettelkasten notes. State idea, "
-            "connect domain, end with open question.\n\n"
-            f"{raw_text}"
+            f"Synthesize into 5 permanent Zettelkasten notes. State idea, connect domain, end with open question.\n\n{raw_text}"
         )
 
         logger.info("✅ [EPISTEMOLOGY] 6-Stage extraction complete.")
@@ -97,6 +88,4 @@ class EpistemologicalCrucible:
 
     async def _prompt(self, text: str):
         """Send a prompt to the Gemini model."""
-        return await self.client.models.generate_content_async(
-            model=self.model, contents=text
-        )
+        return await self.client.models.generate_content_async(model=self.model, contents=text)

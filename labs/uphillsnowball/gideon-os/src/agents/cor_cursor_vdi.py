@@ -29,9 +29,7 @@ class CinematicTesterAgent:
         self.client = genai.Client()
         self.tenant_id = tenant_id
 
-    async def execute_visual_proof(
-        self, task_id: str, _branch_name: str, run_script: str
-    ) -> dict:
+    async def execute_visual_proof(self, task_id: str, _branch_name: str, run_script: str) -> dict:
         """Execute cinematic visual verification for a UI change.
 
         Args:
@@ -56,8 +54,18 @@ class CinematicTesterAgent:
 
         ffmpeg_proc = subprocess.Popen(
             [
-                "ffmpeg", "-y", "-f", "x11grab", "-video_size", "1920x1080",
-                "-i", ":99.0", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
+                "ffmpeg",
+                "-y",
+                "-f",
+                "x11grab",
+                "-video_size",
+                "1920x1080",
+                "-i",
+                ":99.0",
+                "-preset",
+                "ultrafast",
+                "-pix_fmt",
+                "yuv420p",
                 video_path,
             ],
             stdout=subprocess.DEVNULL,
@@ -94,9 +102,7 @@ class CinematicTesterAgent:
 
         if "FAIL" in verdict.text.upper():
             logger.warning("❌ Visual Critique Failed. Executing Temporal-Reversal.")
-            subprocess.run(
-                ["git", "reset", "--hard", "latest-stable"], check=False
-            )
+            subprocess.run(["git", "reset", "--hard", "latest-stable"], check=False)
             return {"status": "KICKBACK", "reason": verdict.text}
 
         logger.info("✅ [COR.CURSOR] Visual verification PASSED for %s", task_id)

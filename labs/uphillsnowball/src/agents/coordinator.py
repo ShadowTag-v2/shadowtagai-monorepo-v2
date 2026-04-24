@@ -181,8 +181,7 @@ class SynthesisCoordinator:
                 capability.value,
             )
             raise PermissionError(
-                f"Agent {role.value} is forbidden from {capability.value}. "
-                f"Authorized capabilities: {[c.value for c in spec.capabilities]}"
+                f"Agent {role.value} is forbidden from {capability.value}. Authorized capabilities: {[c.value for c in spec.capabilities]}"
             )
 
         if capability not in spec.capabilities:
@@ -216,9 +215,7 @@ class SynthesisCoordinator:
             ValueError: If the capability is not authorized.
         """
         if not self.validate_capability(role, capability):
-            raise ValueError(
-                f"Agent {role.value} is not authorized for {capability.value}"
-            )
+            raise ValueError(f"Agent {role.value} is not authorized for {capability.value}")
         return self.get_agent_spec(role).temporal_activity
 
     def get_triad_activities(self) -> list[str]:

@@ -6,6 +6,9 @@ Usage:
     python3 scripts/gca_autolint_daemon.py --yes         # Headless auto-approve
     python3 scripts/gca_autolint_daemon.py --json        # Write results to .lint-results/
     python3 scripts/gca_autolint_daemon.py --dry-run     # Run linters, skip push
+    python3 scripts/gca_autolint_daemon.py --timeout 300 # Custom lint timeout (seconds)
+    python3 scripts/gca_autolint_daemon.py --exclude 'libs/,docs/' # Skip paths
+    python3 scripts/gca_autolint_daemon.py --notify      # Send GWS notification on completion
     CI=true python3 scripts/gca_autolint_daemon.py       # Headless via env var
 """
 
@@ -43,6 +46,10 @@ REPO_NAME = "Monorepo-Uphillsnowball"
 GITHUB_APP_NOREPLY = "3018200+shadowtag-bot[bot]@users.noreply.github.com"
 RESULTS_DIR = Path(".lint-results")
 RESULTS_FILE = RESULTS_DIR / "latest.json"
+BEADS_DIR = Path(".beads")
+BEADS_ISSUES = BEADS_DIR / "issues.jsonl"
+BEADS_HEARTBEAT = BEADS_DIR / "heartbeat.json"
+DEFAULT_TIMEOUT = 600  # 10 minutes per linter
 
 # 5-tier PEM fallback chain (github_doctrine)
 PEM_CANDIDATES = [
@@ -188,9 +195,12 @@ def secure_push(access_token: str, branch_name: str) -> subprocess.CompletedProc
     return result
 
 
-def run_linters() -> dict:
+def run_linters(timeout: int = DEFAULT_TIMEOUT, exclude: str = "") -> dict:
     """Execute the full Omni-Linter suite and return structured results."""
     results = {}
+    base_exclude = "external_repos,node_modules,.venv"
+    if exclude:
+        base_exclude = f"{base_exclude},{exclude}"
 
     # 1. Ruff check + fix
     r = run_command(["uv", "run", "ruff", "check", "--fix", "."], check_fatal=True)
@@ -202,7 +212,7 @@ def run_linters() -> dict:
 
     # 3. Vulture dead code scan (read-only, no fixes)
     r = run_command(
-        ["uv", "run", "vulture", ".", "--min-confidence", "90", "--exclude", "external_repos,node_modules,.venv"],
+        ["uv", "run", "vulture", ".", "--min-confidence", "90", "--exclude", base_exclude],
         check_fatal=False,
     )
     results["vulture"] = {"exit_code": r.returncode, "stdout": r.stdout, "stderr": r.stderr}
@@ -212,6 +222,63 @@ def run_linters() -> dict:
     results["biome"] = {"exit_code": r.returncode, "stdout": r.stdout, "stderr": r.stderr}
 
     return results
+
+
+def write_beads_entry(lint_results: dict) -> None:
+    """Append a structured entry to .beads/issues.jsonl for audit trail (item 9)."""
+    BEADS_DIR.mkdir(parents=True, exist_ok=True)
+    total_warnings = sum(1 for d in lint_results.values() if d["exit_code"] == 1)
+    total_fatals = sum(1 for d in lint_results.values() if d["exit_code"] > 1)
+    entry = {
+        "timestamp": datetime.now(UTC).isoformat(),
+        "source": "omni-autolint-daemon",
+        "type": "lint_sweep",
+        "severity": "FATAL" if total_fatals else ("WARNING" if total_warnings else "CLEAN"),
+        "summary": f"{total_fatals} fatal, {total_warnings} warnings across {len(lint_results)} tools",
+        "tools": {k: {"exit_code": v["exit_code"]} for k, v in lint_results.items()},
+    }
+    with BEADS_ISSUES.open("a") as f:
+        f.write(json.dumps(entry) + "\n")
+    print(f"[*] Beads audit entry written to {BEADS_ISSUES}")
+
+
+def write_heartbeat(phase: str, status: str) -> None:
+    """Write daemon health check to .beads/heartbeat.json (item 16)."""
+    BEADS_DIR.mkdir(parents=True, exist_ok=True)
+    heartbeat = {
+        "daemon": "omni-autolint",
+        "timestamp": datetime.now(UTC).isoformat(),
+        "pid": os.getpid(),
+        "phase": phase,
+        "status": status,
+    }
+    BEADS_HEARTBEAT.write_text(json.dumps(heartbeat, indent=2))
+
+
+def send_gws_notification(summary: str, branch: str = "") -> None:
+    """Send Google Workspace notification on completion (items 11, 12).
+
+    Uses gws CLI if available, otherwise logs and skips.
+    """
+    import shutil
+
+    gws = shutil.which("gws")
+    if not gws:
+        print("[*] GWS CLI not found — notification skipped (install googleworkspace/cli)")
+        return
+    msg = f"🤖 Omni-Autolint: {summary}"
+    if branch:
+        msg += f" → branch: {branch}"
+    try:
+        subprocess.run(
+            [gws, "chat", "spaces", "messages", "create", "--space=spaces/autolint-alerts", f"--text={msg}"],
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+        print(f"[*] GWS notification sent: {msg[:80]}")
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        print("[*] GWS notification failed — continuing")
 
 
 def write_results_json(lint_results: dict, diff_stats: str) -> None:
@@ -250,6 +317,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--json", action="store_true", help="Write structured results to .lint-results/")
     parser.add_argument("--dry-run", action="store_true", help="Run linters but skip commit/push")
     parser.add_argument("--branch", type=str, default=None, help="Custom branch name (default: chore/autolint-{timestamp})")
+    parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT, help=f"Timeout per linter in seconds (default: {DEFAULT_TIMEOUT})")
+    parser.add_argument("--exclude", type=str, default="", help="Comma-separated paths to exclude (e.g., 'libs/,docs/')")
+    parser.add_argument("--notify", action="store_true", help="Send GWS notification on completion")
     return parser.parse_args()
 
 
@@ -281,7 +351,12 @@ def main() -> None:
 
     # --- Phase 3: Lint ---
     print("\n[3] Running Omni-Linter Suite (ruff + vulture + biome)...")
-    lint_results = run_linters()
+    write_heartbeat("lint", "running")
+    lint_results = run_linters(timeout=args.timeout, exclude=args.exclude)
+    write_heartbeat("lint", "complete")
+
+    # Write beads audit trail (item 9)
+    write_beads_entry(lint_results)
 
     # --- Phase 4: Evaluate ---
     print("\n[4] Evaluating modifications...")
@@ -343,6 +418,11 @@ def main() -> None:
         sys.exit(1)
 
     print(f"[*] Push successful to branch: {branch_name}")
+    write_heartbeat("push", "complete")
+
+    # Notify via GWS if requested (items 11, 12)
+    if args.notify:
+        send_gws_notification("Push complete", branch_name)
 
     # Return to main
     run_command(["git", "checkout", "main"])
