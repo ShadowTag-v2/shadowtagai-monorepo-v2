@@ -1,6 +1,6 @@
-version: 11.7 # Stage 3+4 Canonicalization: 504 tests, ruff clean, Lighthouse A94+/BP96+/SEO100, BUSINESS_CONTEXT aligned — 2026-04-24
+version: 11.8 # Stage 3+4 Canonicalization + Doctrine Activation: Cor.30 CI gate, DLP circuit breaker, MCP config v2.0, BullMQ AST-ban — 2026-04-24
 hardened_state:
-  last_hardened: "2026-04-24"
+  last_hardened: "2026-04-24"  # v11.8 doctrine activation pass
   gold_master_tag: v11.7-gold
   tests_collected: 504
   tests_passing: 499
@@ -51,6 +51,8 @@ ci_workflows:
     purpose: UphillSnowball lab CI
   - path: .github/workflows/gca-pr-review.yml
     purpose: GCA sovereign PR review
+  - path: .github/workflows/cor30-checklist-gate.yml
+    purpose: Cor.30 six-pillar security checklist gate
 active_silos:
   # REMOVED: packages/core (never created, dead reference)
   # REMOVED: packages/ag-ui (never created, dead reference)

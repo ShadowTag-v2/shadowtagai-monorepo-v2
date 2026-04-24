@@ -43,9 +43,47 @@ The KAIROS daemon (`scripts/kairos_daemon.py`) runs these vault cycles:
 - **Obsidian Sync** (hourly) — sync KI atoms to `serve/` as Obsidian notes
 - **Betterleaks Scan** (nightly) — scan vault for accidentally ingested secrets
 
+## IPI Context Tainting (TACSOP B2)
+
+All file content read from the workspace MUST be wrapped in XML taint tags
+before being passed to external knowledge consumers (NotebookLM, LLM context):
+
+```xml
+<!-- Clean files (threat_level: clean) -->
+<untrusted_workspace_data source='path/to/file.md'>
+  [file content]
+</untrusted_workspace_data>
+
+<!-- Suspicious files (threat_level: quarantined) -->
+<quarantined_workspace_data source='path/to/file.md' threat='quarantined'>
+  [file content]
+</quarantined_workspace_data>
+
+<!-- Blocked files (threat_level: blocked) -->
+<blocked_content source='path/to/file.md' reason='ipi_detected'>
+  [CONTENT BLOCKED — IPI threat detected. See quarantine log.]
+</blocked_content>
+```
+
+The `tools/intelligence_router.py` enforces this taint wrapping automatically.
+
+## Memdir Taxonomy
+
+The `vault/memdir/` directory contains 4 atomic memory files:
+
+| File | Purpose |
+|------|---------|
+| `user_role.md` | Operator permissions and agent identity |
+| `feedback_testing.md` | Test framework, baseline, known gaps |
+| `project_deadline.md` | Milestone targets across all products |
+| `reference_linear.md` | Quick-access links to docs, services, repos |
+
+These files are read at session start for rapid context hydration.
+
 ## Security
 
 - `ingest/` and `quarantine/` are gitignored (ephemeral hostile data)
 - `embed/` is gitignored (binary vector data)
 - `serve/` is tracked (cleaned knowledge)
 - `monitor/` is tracked (observability)
+- `memdir/` is tracked (persistent memory taxonomy)
