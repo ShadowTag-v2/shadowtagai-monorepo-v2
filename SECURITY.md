@@ -66,7 +66,7 @@ We support responsible disclosure. If you act in good faith:
 
 This repository enforces:
 
-- **Pre-commit**: Gitleaks + detect-private-key + Bandit
+- **Pre-commit**: Betterleaks (Gitleaks successor) + detect-private-key + Bandit
 - **CI**: CodeQL analysis, dependency review, security audit
 - **Runtime**: Cloud Armor WAF, CSP headers, HSTS
 - **Secrets**: GCP Secret Manager (production), kernel-locked `.env` (local)

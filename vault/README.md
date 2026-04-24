@@ -41,7 +41,7 @@ The KAIROS daemon (`scripts/kairos_daemon.py`) runs these vault cycles:
 - **Vault Ingest Sweep** (5 min) — process new files in `ingest/`
 - **Quarantine Purge** (hourly) — delete stale quarantine files
 - **Obsidian Sync** (hourly) — sync KI atoms to `serve/` as Obsidian notes
-- **Gitleaks Scan** (nightly) — scan vault for accidentally ingested secrets
+- **Betterleaks Scan** (nightly) — scan vault for accidentally ingested secrets
 
 ## Security
 

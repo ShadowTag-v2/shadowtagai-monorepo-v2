@@ -3,12 +3,15 @@
 # Run all: pre-commit run --all-files
 
 repos:
-  # Gitleaks — secret detection (Cor.30 R3)
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.0
+  # Betterleaks — secret detection (successor to Gitleaks by same authors, Cor.30 R3)
+  # Features: parallelized git scanning, CEL-based secret validation, token efficiency filter
+  - repo: local
     hooks:
-      - id: gitleaks
-        args: ['--config', '.gitleaks.toml']
+      - id: betterleaks
+        name: Detect hardcoded secrets (Betterleaks)
+        entry: /opt/homebrew/bin/betterleaks git --pre-commit --redact --staged --verbose --config .betterleaks.toml
+        language: system
+        pass_filenames: false
 
   # Detect private keys
   - repo: https://github.com/pre-commit/pre-commit-hooks
