@@ -293,3 +293,21 @@
 - **Severity:** 🟢 Low
 - **Status:** KNOWN
 - **Description**: `git status` reveals 3 untracked `.switchboard/plans/brain_*.md` files and an `IMPLEMENTATION_PLAN.md` at repo root. These are agent-generated session artifacts not under version control. The `src/vs/` directory (VSCode source subtree) is also untracked. **Action**: Add `.switchboard/plans/brain_*.md` and `IMPLEMENTATION_PLAN.md` to `.gitignore` if ephemeral, or commit them if they represent canonical state. `src/vs/` should be verified as intentional (likely needs gitignore exclusion).
+
+## Risk #81: Gideon OS Multi-Language Build Matrix — No Unified CI
+- **Type**: Build / Architecture
+- **Severity:** 🟡 Medium
+- **Status:** KNOWN
+- **Description**: Gideon OS introduces 7 languages (Python, Go, Rust, C++, TypeScript, Terraform, Bash) across 14 architecture blocks. There is no unified CI pipeline that builds/tests all of them. Go module (`go.mod`) and Rust (`Cargo.toml`) configs are not yet initialized. C++ `midas_montecarlo.cpp` requires `httplib.h` and `json.hpp` vendored headers. Terraform requires `terraform init` with GCP provider. **Action**: Create a `gideon-os-ci.yml` GitHub Actions workflow that builds Go, Rust, and C++ blocks. Add `go.mod` and `Cargo.toml` scaffolds.
+
+## Risk #82: Zero-Trust IPI Quarantine — Untested Integration Path
+- **Type**: Security / Architecture
+- **Severity:** 🟠 High
+- **Status:** KNOWN
+- **Description**: The Secure BLAST Pipeline (`src/epistemology/zero_trust_pipeline.py`) routes hostile data through NotebookLM MCP for quarantine, but the `notebooklm-mcp-cli` tool is not installed or verified. The `switchboard` MCP server is cloned but not configured in `antigravity-mcp-config.json`. Without live integration testing, the quarantine path is aspirational. **Action**: (1) Install `notebooklm-mcp-cli`. (2) Add both servers to MCP config. (3) Write integration test with mock hostile payload.
+
+## Risk #83: Tauri Biometric — `trigger_biometric_auth` Always Returns True
+- **Type**: Security / UX
+- **Severity:** 🟡 Medium
+- **Status:** KNOWN
+- **Description**: `src-tauri/src/main.rs` contains `trigger_biometric_auth()` which always returns `true` (simulated). The Terminal Execution Policy ("ASK") is not enforced until LocalAuthentication framework integration is complete. Any Tauri-wrapped deployment button currently bypasses biometric verification. **Action**: Integrate `security-framework-sys` Rust crate for real TouchID/FaceID on macOS. Add `#[cfg(target_os = "macos")]` conditional compilation.
