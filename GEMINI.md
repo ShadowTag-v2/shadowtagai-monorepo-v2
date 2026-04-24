@@ -384,4 +384,22 @@ CounselConduit is the "Shopify for Legal AI" — a privilege-preserving routing 
 | pnkln-evolve | `scripts/pnkln-evolve.py` | Background | Recursive self-improvement loop |
 | Omni-Autolint | `scripts/gca_autolint_daemon.py` | Daily 3-5AM | Secure lint+push via GitHub App tokens, beads audit trail |
 </daemon_fleet_registry>
+
+<tacsop_operational_patterns>
+## TACSOP Operational Patterns — Locked Doctrine (2026-04-24)
+
+**Full definitions:** `.agents/skills/tacsop-operational-patterns/SKILL.md`
+**Audit trail:** `knowledge/tacsop2-disposition-audit/`
+
+Six patterns extracted from TACSOP 2 (V15-V21). 47 concepts already active, 12 refused (dangerous), 5 no-op.
+
+| # | Pattern | Trigger |
+|---|---------|---------|
+| 1 | Asynchronous Cascade Execution | 5+ sequential steps → don't stop, use `[STEP N/M]` markers |
+| 2 | Execution Ledger Checkpoint | >10 checkpoints → numbered CP-IDs with timestamps in task.md |
+| 3 | Temporal-Reversal on Lint Failure | Introduced lint error → `git checkout -- <file>` (NEVER `git reset --hard`) |
+| 4 | Universal AST Evaluator | Multi-language tests → unified pass/fail table |
+| 5 | Autoresearch Mutation Fitness | Dead code cleanup → bench_ms before/after (5% threshold) |
+| 6 | 8-Agent Board Synthesis | STATE B architecture decisions → 8 role perspectives (CTO/DX/Sec/Money/Infra/QA/Legal/UX) |
+</tacsop_operational_patterns>
 </system_directive>
