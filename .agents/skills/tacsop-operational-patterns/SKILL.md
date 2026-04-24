@@ -7,6 +7,7 @@ description: Six operational patterns extracted from Cor.Antigravity TACSOP 2 (V
 
 **Source:** Cor.Antigravity TACSOP 2 (V15-V21), audited 2026-04-24
 **Disposition:** 47 concepts already active, 12 refused (dangerous/prohibited), 5 no-op. These 6 patterns are the genuinely new additions.
+**TACSOP 4 Kairos:** See `.agents/skills/kairos-zero-day-matrix/SKILL.md` for the Tri-Partite Cognitive Architecture and Patterns 7-9.
 
 ---
 

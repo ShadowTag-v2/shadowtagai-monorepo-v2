@@ -51,6 +51,9 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 7. **Lighthouse-CI:** Use Lighthouse-CI for budget assertions in CI pipelines.
 8. **V10 Epistemic Airgap:** Corporate monorepo lives in `./external_repos/corp-monorepo/` (gitignored + AI-excluded). DLP Circuit Breaker prohibits passing proprietary identifiers into public search. Supply chain protection prevents blind `pip install` of internal package names. Skill: `.agents/skills/epistemic-airgap/SKILL.md`.
 9. **Python 3.14 Test Execution:** All test runs MUST use `/opt/homebrew/bin/python3.14 -m pytest`. System Python 3.9 (Xcode, `/usr/bin/python3`) cannot import `StrEnum` (3.11+) or `datetime.UTC` (3.11+) and will fail at collection. Baseline: **504 tests collected, 480 unit passed, 3 skipped, E2E expected failures** (2026-04-24). `pytest.ini` v8.5 codifies this. See Risk #64 + Risk #79.
+10. **Gideon OS Architecture:** 14-block sovereign OS spanning 7 languages. Canonical manifest in `monorepo_manifest.yaml` → `gideon_os` silo. Execution brief at `labs/uphillsnowball/EXECUTION_BRIEF_OMNI_SWEEP.md`. Risks: #81 (multi-language CI), #82 (IPI quarantine).
+11. **Cor.autoresearch Architecture:** UphillSnowball engine retired FlyingMonkeys (2026-04-24). Replacement: `AutoresearchEngine` in `labs/uphillsnowball/engine/cor_autoresearch.py`. Three-layer: Kosmos directs, BioAgents routes, n-autoresearch executes. Governance: JudgeSix-Human + JudgeSix-Agent + RKILL.
+12. **Tri-Partite Cognitive Architecture (TACSOP 4 Kairos):** Brainstem (5 MCP Servers—muscle memory, <100ms), Hippocampus (NotebookLM + Obsidian—persistent memory, session-bridging), Motor Cortex (Kairos Zero-Day Matrix + npx skills—dynamic acquisition). All three layers MUST be engaged per session. Skill: `.agents/skills/kairos-zero-day-matrix/SKILL.md`.
 
 ## Open Infrastructure Blockers
 
