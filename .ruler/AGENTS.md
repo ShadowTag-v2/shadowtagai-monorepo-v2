@@ -42,7 +42,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 
 ## Core Technical Truths (DO NOT HALLUCINATE OVERRIDES)
 
-1. **uuid7 Fallback:** Cloud Run container `counselconduit-00015-mmq` uses an old image. We MUST use `try/except ImportError` for `uuid7` resolution between monorepo and container paths.
+1. **uuid7 Fallback:** `try/except ImportError` pattern is REQUIRED for `uuid7` resolution between monorepo (`apps.counselconduit.api.uuid7`) and container (`api.uuid7`) paths. ~~Old container `counselconduit-00015-mmq`~~ → current: `counselconduit-00037-7mf` (deployed 2026-04-23).
 2. **.NET Environment:** `dotnet-sdk-11.0.100-preview` IS CONFIRMED INSTALLED (`dotnet --version` = `11.0.100-preview.3.26207.106`). Also available: 10.0.202, 8.0.419. `global.json` pins to 11.0 Preview 3. Semantic Kernel target framework: `net11.0`.
 3. **Semantic Kernel Process.cs:** `OnExternalEvent` is the CORRECT API for `Microsoft.SemanticKernel.Process.Core v1.21.0-alpha`. Do NOT apply the `OnInputEvent` rename until Process.Core >= v1.30+.
 4. **Skill Fleet:** We maintain 182 cherry-picked community skills inside our local Matrix.
@@ -54,11 +54,11 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 
 ## Open Infrastructure Blockers
 
-- MAGIC_LINK_SECRET needs creation via GCP Secret Manager (placeholder staged, pending manual entry).
+- ~~MAGIC_LINK_SECRET needs creation via GCP Secret Manager~~ — ✅ RESOLVED (2026-04-23): Secret exists with live value in `shadowtag-omega-v4`.
 - ~~Firebase Storage needs console initialization~~ — ✅ RESOLVED (2026-04-23): `storage.rules` deployed with deny-all rules.
 - ~~`lead-capture-router` requires a `firebase-admin` upgrade~~ — ✅ RESOLVED: Already at `^13.8.0` (latest major).
 - ~~`NotebookLM MCP` CLI needs installation~~ — ✅ RESOLVED (2026-04-23): Added to `pnkln.code-workspace` mcpServers block.
-- Cloud Run redeploy needed for uuid7 fix (container `counselconduit-00015-mmq`) — deployment pending.
+- ~~Cloud Run redeploy needed for uuid7 fix~~ — ✅ RESOLVED (2026-04-23): Current revision `counselconduit-00037-7mf` deployed with uuid7 try/except pattern across 5 modules.
 
 ## Guardrails
 
