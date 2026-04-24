@@ -5,3 +5,8 @@ language: typescript
 rule:
   pattern: |
     console.log($$$ARGS)
+files:
+  - "apps/kovelai/**/*.ts"
+  - "apps/kovelai/**/*.tsx"
+  - "apps/counselconduit-dashboard/**/*.ts"
+  - "apps/counselconduit-dashboard/**/*.tsx"
