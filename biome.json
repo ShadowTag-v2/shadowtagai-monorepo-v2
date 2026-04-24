@@ -106,6 +106,7 @@
       "!docs/legacy_shadowtag_v2",
       "!reference_architectures",
       "!libs/autoresearch_sources",
+      "!apps/kovelai/public/assets",
       "!tests"
     ],
     "maxSize": 2097152
