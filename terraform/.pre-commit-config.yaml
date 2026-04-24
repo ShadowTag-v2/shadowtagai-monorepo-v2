@@ -31,8 +31,8 @@ repos:
         args:
           - '--args=--config=__GIT_WORKING_DIR__/terraform/.tflint.hcl'
 
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.0
+  - repo: https://github.com/betterleaks/betterleaks
+    rev: v9.0.0
     hooks:
-      - id: gitleaks
-        name: Gitleaks Secret Scanner
+      - id: betterleaks
+        name: Betterleaks Secret Scanner
