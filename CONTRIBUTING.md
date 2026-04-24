@@ -1,151 +1,76 @@
-# Contributing to Monorepo-Uphillsnowball
+# Contributing to ShadowTag Monorepo
 
-## Before You Start
-
-1. Read `AGENTS.md` — the canonical contract
-2. Read `SECURITY.md` — responsible disclosure policy
-3. Check `monorepo_manifest.yaml` — workspace truth
+## Prerequisites
+- Python 3.14+ (`/opt/homebrew/bin/python3.14`)
+- Node.js 24+ with npm
+- Go 1.24+ (for Gideon OS Go blocks)
+- Rust/Cargo (for Tauri cockpit)
+- .NET 10.0+ (for AiYou Kernel)
+- Google Cloud SDK (`gcloud`)
+- Firebase CLI v15+ (installed globally, not via npx)
 
 ## Development Setup
 
-### Prerequisites
-
-- macOS (Apple Silicon recommended)
-- Python 3.13+ (3.14.3 primary)
-- Node.js 20+ (via nvm)
-- .NET 11.0 Preview 2 (for Semantic Kernel)
-- Google Cloud SDK (`gcloud`)
-- Firebase CLI (`npx firebase-tools`)
-
-### Clone
-
 ```bash
+# Clone
 git clone git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git
 cd Monorepo-Uphillsnowball
+
+# Python deps
+/opt/homebrew/bin/python3.14 -m pip install -r requirements.txt
+
+# MCP secrets (requires GCP auth)
+source scripts/load_mcp_secrets.sh
+
+# Run tests
+/opt/homebrew/bin/python3.14 -m pytest
 ```
 
-### Python Environment
+## Architecture
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+| Component | Path | Language | Owner |
+|-----------|------|----------|-------|
+| CounselConduit | `apps/counselconduit/` | Python | pnkln-backend |
+| KovelAI | `apps/kovelai/` | TypeScript | pnkln-frontend |
+| AiYou Kernel | `apps/aiyou-kernel/` | C# | pnkln-backend |
+| Gideon OS | `labs/uphillsnowball/gideon-os/` | Multi | pnkln-architecture |
+
+## Gideon OS Development
+
+Gideon OS spans 7 languages across 14 blocks. See `labs/uphillsnowball/EXECUTION_BRIEF_OMNI_SWEEP.md` for the full architecture.
+
+### Block-Specific Commands
+
+| Block | Build | Test |
+|-------|-------|------|
+| Python | `ruff check --fix` | `pytest` |
+| Go (Shield1) | `go build ./cmd/gideon-go/...` | `go test ./...` |
+| Rust (Tauri) | `cargo build` | `cargo test` |
+| C++ (Midas) | `gcloud builds submit` | Manual |
+| TypeScript | `npx @biomejs/biome check` | `jest` |
+| Terraform | `terraform plan` | `terraform validate` |
+
+## Security Requirements (Cor.30)
+
+All contributions MUST comply with the Cor.30 security framework:
+1. No secrets in code — use GCP Secret Manager
+2. All inputs validated with Pydantic (Python) or Zod (TypeScript)
+3. Errors via RFC 9457 — never expose stack traces
+4. IPI quarantine maintained — no raw external data in agent context
+
+## Commit Convention
+
+Use Conventional Commits:
+```
+feat(gideon-os): add shield1 ingress Go service
+fix(counselconduit): resolve magic link token expiry
+chore(ci): update ruff to v0.15.11
 ```
 
-### Pre-commit Hooks
+## PR Process
 
-```bash
-pip install pre-commit
-pre-commit install
-```
-
-This installs: Gitleaks, detect-private-key, Ruff, Bandit, YAML validation, trailing whitespace.
-
-### Automated AST Fixes (GCA)
-We use a GCA-owned self-healing pipeline for automated AST fixes.
-You can run it locally:
-```bash
-python scripts/gca_autolint.py --dry-run
-```
-Or use the interactive mode:
-```bash
-python scripts/gca_autolint.py
-```
-
-## Code Standards
-
-### Python
-
-- **Linter**: Ruff (0.11.8+)
-- **Type checker**: basedpyright
-- **Dead code**: Vulture (90%+ confidence)
-- **Style**: Google Python Style Guide
-- **Imports**: `ruff --fix` auto-sorts
-
-### TypeScript
-
-- **Style**: Google TypeScript Style Guide
-- **Lint**: ESLint with strict config
-
-### Shell
-
-- **Style**: Google Shell Style Guide
-- **Lint**: shellcheck
-
-### All Languages
-
-- Functions ≤ 500 LOC
-- No duplicated logic — check for existing utilities first
-- Every async operation needs loading + error states
-
-## Commit Messages
-
-Follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-type(scope): description
-
-feat(counselconduit): add Kovel attestation endpoint
-fix(kovelai): resolve SSR hydration mismatch
-harden(ci): add timeout-minutes to all workflows
-docs(readme): update architecture diagram
-```
-
-Types: `feat`, `fix`, `harden`, `docs`, `refactor`, `test`, `chore`, `perf`, `ci`
-
-## Pull Requests
-
-1. Branch from `main`
-2. Keep PRs focused — one concern per PR
-3. Run locally before pushing:
-   ```bash
-   ruff check . --fix
-   vulture . --min-confidence 90
-   pytest
-   ```
-4. CI must pass (when Actions minutes are available)
-5. PRs are auto-reviewed by GCA (Gemini Code Assist)
-
-## Architecture Rules
-
-### Immutable Zones
-
-These files require explicit approval to modify:
-
-- `AGENTS.md`, `GEMINI.md` — control plane
-- `monorepo_manifest.yaml` — workspace truth
-- `antigravity-mcp-config.json` — MCP truth
-- `BUSINESS_CONTEXT_LOCKED.md` — pricing truth
-- `RISK_REGISTER.md` — operational risk
-
-### Product Split
-
-| Product | Path | Runtime |
-|---------|------|---------|
-| KovelAI | `apps/kovelai/` | Firebase Hosting |
-| CounselConduit | `apps/counselconduit/` | Cloud Run |
-| AiYou Stack | `apps/aiyou_stack/` | Cloud Run |
-| Uphillsnowball | `labs/uphillsnowball/` | Local only |
-
-### Security
-
-- No secrets in code, logs, or frontend
-- All API routes authenticated by default
-- Validate all inputs with Zod/Pydantic
-- Use parameterized queries only
-- See `SECURITY.md` for full policy
-
-## Prohibited Patterns
-
-- ❌ BullMQ (use Google Cloud Tasks)
-- ❌ `rm -rf` or `sudo` in scripts
-- ❌ Personal Access Tokens (use GitHub App)
-- ❌ Docker Hub (migrating to Artifact Registry)
-- ❌ Hardcoded API keys anywhere
-- ❌ `npm audit fix --force` without review
-
-## Getting Help
-
-- Open an issue for bugs or feature requests
-- Check existing KIs in `.gemini/antigravity/knowledge/`
-- Reference the doctrine docs in `docs/doctrine/`
+1. Create branch from `main`
+2. Use the Gideon OS PR template if touching `labs/uphillsnowball/`
+3. All tests must pass (499+ pytest, 0 .NET errors)
+4. Gitleaks pre-commit must pass
+5. Ruff + Biome lint must be clean
