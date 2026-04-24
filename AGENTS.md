@@ -51,7 +51,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 1. **uuid7 Fallback:** `try/except ImportError` pattern is REQUIRED for `uuid7` resolution between monorepo (`apps.counselconduit.api.uuid7`) and container (`api.uuid7`) paths. ~~Old container `counselconduit-00015-mmq`~~ → current: `counselconduit-00037-7mf` (deployed 2026-04-23).
 2. **.NET Environment:** .NET 11.0.100-preview IS CONFIRMED INSTALLED (2026-04-24). Also available: 10.0.106, 10.0.202, 8.0.419. `global.json` pins to `11.0.100-preview` with `rollForward: latestFeature`. Semantic Kernel target framework: `net11.0`. SK v1.74.0 build-verified.
 3. **Semantic Kernel Process.cs:** `OnExternalEvent` is the CORRECT API for `Microsoft.SemanticKernel.Process.Core v1.21.0-alpha`. Do NOT apply the `OnInputEvent` rename until Process.Core >= v1.30+.
-4. **Skill Fleet:** We maintain 182 cherry-picked community skills inside our local Matrix.
+4. **Skill Fleet:** We maintain 259 skills (42 agent + 216 global + 1 meta-SOP) inside our local Matrix.
 5. **Prompt Repetition (arXiv 2512.14982):** Applies ONLY to non-reasoning model tiers (flash, lite, mini) to boost accuracy 1–8%. Do NOT apply to thinking/extended-thinking models.
 6. **daScript MCP Reference:** The 29-tool MCP server in the daScript repository is the gold-standard reference architecture for compiler-backed tools. Use it as a blueprint for routing tools.
 7. **Lighthouse-CI:** Use Lighthouse-CI for budget assertions in CI pipelines.
@@ -60,6 +60,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 10. **Gideon OS Architecture:** 14-block sovereign OS spanning 7 languages. Canonical manifest in `monorepo_manifest.yaml` → `gideon_os` silo. Execution brief at `labs/uphillsnowball/EXECUTION_BRIEF_OMNI_SWEEP.md`. All blocks: vault_constitution, kairos_supervisor, shield1_ingress_go, zero_trust_pipeline, pathway_ingest, midas_montecarlo_cpp, panopticon, jurisdiction_forge, browser_extension, cor_yay_bridge, adminlte_glassbox, ~~tauri_cockpit~~ (DEPRECATED — archived, replaced by browser tab + WebAuthn), sovereign_infra_tf, genesis_bootstrapper. Risks: #81 (multi-language CI), #82 (IPI quarantine), ~~#83 (Tauri biometric)~~ RESOLVED.
 11. **Cor.autoresearch Architecture:** UphillSnowball engine retired FlyingMonkeys (2026-04-24). Replacement: `AutoresearchEngine` in `labs/uphillsnowball/engine/cor_autoresearch.py`. Three-layer: Kosmos directs, BioAgents routes, n-autoresearch executes. Governance: JudgeSix-Human + JudgeSix-Agent + RKILL. See `docs/UPHILLSNOWBALL_ARCHITECTURE.md` + `docs/COR_AUTORESEARCH.md`.
 12. **Tri-Partite Cognitive Architecture (TACSOP 4 Kairos):** Brainstem (5 MCP Servers—muscle memory, <100ms), Hippocampus (NotebookLM + Obsidian—persistent memory, session-bridging), Motor Cortex (Kairos Zero-Day Matrix + npx skills—dynamic acquisition). All three layers MUST be engaged per session. Skill: `.agents/skills/kairos-zero-day-matrix/SKILL.md`.
+13. **TACSOP 0 Building Websites (Fully Activated 2026-04-24):** 29-component meta-SOP chaining 24 skills into a 5-phase pipeline (Research → Design → Architecture → Implementation → Deployment). ADRs 003-005 formalized. 11x Browser Extractor script at `scripts/11x_browser_extractor.py`. Meta-skill: `.agents/skills/tacsop0-building-websites/SKILL.md`.
 
 ## Open Infrastructure Blockers
 
