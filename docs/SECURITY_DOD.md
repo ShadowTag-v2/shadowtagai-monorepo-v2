@@ -30,7 +30,7 @@ shipping. No exceptions. AI velocity does not excuse missing security hygiene â€
 - [ ] Secret rotation: Stripe keys rotated every 90 days (Terraform `rotation` block)
 - [ ] Secret access: only `secretAccessor` role, scoped to specific SAs
 - [ ] Secret IaC: all secrets declared in `infra/terraform/secrets.tf`
-- [ ] Gitleaks pre-commit hook active (`.pre-commit-config.yaml`)
+- [ ] Betterleaks pre-commit hook active (`.pre-commit-config.yaml`)
 - [ ] Dependencies pinned with exact versions in `requirements.txt`
 - [ ] No `npm audit fix --force` (manual review only)
 - [ ] Package provenance verified (PyPI/npm signatures)
@@ -118,7 +118,7 @@ shipping. No exceptions. AI velocity does not excuse missing security hygiene â€
 
 ## Pre-Merge CI Gate
 
-- Gitleaks scan (pre-commit + CI)
+- Betterleaks scan (pre-commit + CI)
 - Ruff lint (E9, F63, F7, F82)
 - Bandit scan (Python security)
 - npm audit (advisory check, no auto-fix)
