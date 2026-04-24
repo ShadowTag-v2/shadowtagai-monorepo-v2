@@ -3,7 +3,7 @@
 
 Runs in continuous mode, executing scheduled maintenance tasks:
   1. Dream Consolidation (nightly) — KI maintenance
-  2. Dead code audit (daily)  — vulture + ruff sweep
+  2. Dead code audit (daily)  — ruff F401/F841 sweep (V22 Pruned — vulture removed)
   3. Health check (every 5 min) — GCP auth, dylib presence, LanceDB integrity
   4. Loop Steward handoff (on-demand) — autonomous task continuation
 
@@ -81,7 +81,7 @@ def health_check() -> dict:
             timeout=15,
         )
         checks["gcp_adc"] = "ok" if result.returncode == 0 else "expired"
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except subprocess.TimeoutExpired, FileNotFoundError:
         checks["gcp_adc"] = "missing"
 
     # 2. ANE dylib
@@ -107,7 +107,7 @@ def health_check() -> dict:
         )
         dirty_count = len(result.stdout.strip().splitlines()) if result.stdout.strip() else 0
         checks["git_dirty"] = f"{dirty_count} files" if dirty_count > 0 else "clean"
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except subprocess.TimeoutExpired, FileNotFoundError:
         checks["git_dirty"] = "unknown"
 
     # 6. Git fetch --prune (GitHub-first context: keep remote refs fresh)
@@ -120,7 +120,7 @@ def health_check() -> dict:
             cwd=str(REPO_ROOT),
         )
         checks["git_fetch"] = "ok" if fetch_result.returncode == 0 else "failed"
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    except subprocess.TimeoutExpired, FileNotFoundError:
         checks["git_fetch"] = "timeout"
 
     logger.info("Health: %s", json.dumps(checks))

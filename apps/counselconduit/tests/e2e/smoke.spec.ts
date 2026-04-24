@@ -1,10 +1,10 @@
 // CounselConduit Staging Smoke Tests
 // Validates core API functionality on staging before production canary
 
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
-const BASE_URL = process.env.STAGING_URL ||
-  'https://counselconduit-staging-767252945109.us-central1.run.app';
+const BASE_URL =
+  process.env.STAGING_URL || 'https://counselconduit-staging-767252945109.us-central1.run.app';
 
 test.describe('Smoke Tests', () => {
   test('GET /health returns 200', async ({ request }) => {

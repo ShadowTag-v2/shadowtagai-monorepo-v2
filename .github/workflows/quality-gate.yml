@@ -28,7 +28,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install ruff vulture pytest numpy
+          pip install ruff pytest numpy
 
       - name: Lint (ruff check)
         run: python3 -m ruff check control/pnkln/ scripts/
@@ -39,6 +39,6 @@ jobs:
       - name: Tests (55 expected)
         run: python3 -m pytest tests/ -v --tb=short
 
-      - name: Dead code (vulture)
-        run: python3 -m vulture control/pnkln/ scripts/ --min-confidence 90
+      - name: Dead code (ruff F401/F841 — V22 replaces vulture)
+        run: python3 -m ruff check control/pnkln/ scripts/ --select F401,F841 --statistics || true
         continue-on-error: true

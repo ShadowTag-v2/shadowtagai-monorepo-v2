@@ -114,7 +114,7 @@ class TestDispatchJudge6Integration:
     async def test_dispatch_with_session_pinning_and_judge6(self):
         """Dispatch with session pinning should maintain model through Judge 6."""
         # First dispatch — establishes session pin
-        result1 = await dispatch_request(
+        _result1 = await dispatch_request(
             query="Hello",
             firm_id="firm-pin-j6",
             session_id="session-judge6-1",

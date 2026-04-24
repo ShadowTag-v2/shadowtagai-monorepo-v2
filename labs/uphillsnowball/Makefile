@@ -35,7 +35,7 @@ test:
 # ── Lint & Format ──────────────────────────────────────────────
 lint:
 	ruff check src/ --fix
-	vulture src/ --min-confidence 90 || true
+	ruff check src/ --select F401,F841 --statistics || true
 
 # ── Clean Build Artifacts ──────────────────────────────────────
 clean:

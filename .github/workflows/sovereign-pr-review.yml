@@ -25,7 +25,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -e ".[dev]" 2>/dev/null || pip install pytest ruff vulture structlog
+          pip install -e ".[dev]" 2>/dev/null || pip install pytest ruff structlog
 
       - name: Tier 1 — Monty Logic Verification
         run: |
@@ -39,9 +39,9 @@ jobs:
         run: |
           ruff check apps/counselconduit/ --select=E,F,I --output-format=github || true
 
-      - name: Tier 1 — Vulture Dead Code
+      - name: Tier 1 — Ruff Dead Code (F401/F841 — V22 replaces vulture)
         run: |
-          vulture apps/counselconduit/ --min-confidence 90 || true
+          ruff check apps/counselconduit/ --select F401,F841 --statistics || true
 
       - name: Tier 3 — SRAM Constraint Check
         run: |

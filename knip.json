@@ -12,14 +12,6 @@
       "ignore": ["src/vite-env.d.ts"]
     }
   },
-  "ignoreDependencies": [
-    "@biomejs/biome",
-    "punycode"
-  ],
-  "ignoreWorkspaces": [
-    "apps/counselconduit/**",
-    "libs/**",
-    "third_party/**",
-    "tools/**"
-  ]
+  "ignoreDependencies": ["@biomejs/biome", "punycode"],
+  "ignoreWorkspaces": ["apps/counselconduit/**", "libs/**", "third_party/**", "tools/**"]
 }

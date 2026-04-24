@@ -159,7 +159,7 @@ async def execute_privileged_query(request: QueryRequest) -> QueryResponse:
 
 async def stream_privileged_query(
     request: QueryRequest,
-) -> AsyncGenerator[str, None]:
+) -> AsyncGenerator[str]:
     """Stream a Kovel-privileged query response via SSE.
 
     Yields chunks as they arrive from Gemini for real-time display.

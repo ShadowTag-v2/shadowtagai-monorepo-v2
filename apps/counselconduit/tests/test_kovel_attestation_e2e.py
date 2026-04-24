@@ -44,7 +44,7 @@ class TestKovelAttestationFlow:
 
     def test_attest_missing_auth_returns_403(self):
         """No X-Kovel-Auth header → 403."""
-        r = httpx.get(f"{BASE_URL}/health")
+        httpx.get(f"{BASE_URL}/health")  # Health check precondition
         # Health doesn't require auth, but attest should
         r2 = httpx.post(f"{BASE_URL}/kovel/attest", json={"session_id": "test"})
         assert r2.status_code in (403, 404, 422)

@@ -84,13 +84,13 @@
       "!**/*.min.css",
       "!**/coverage",
       "!**/.git",
-      "!tools/**",
-      "!third_party/**",
-      "!external_repos/**",
-      "!archive/**",
-      "!docs/legacy_shadowtag_v2/**",
-      "!apps/aiyou_ecosystem/raw_ingest/**",
-      "!**/arsenal_recovered/**"
+      "!tools",
+      "!third_party",
+      "!external_repos",
+      "!archive",
+      "!docs/legacy_shadowtag_v2",
+      "!apps/aiyou_ecosystem/raw_ingest",
+      "!**/arsenal_recovered"
     ],
     "maxSize": 2097152
   },
