@@ -471,6 +471,10 @@ video {
   animation: fadeInUp 0.6s ease-out;
 }
 
+.hero__eyebrow .label-sm {
+  color: #ffffff;
+}
+
 .hero__eyebrow-icon {
   width: 14px;
   height: 14px;
@@ -886,11 +890,11 @@ video {
   padding-top: var(--space-lg);
   border-top: 1px solid var(--ghost-border);
   font-size: var(--label-sm);
-  color: var(--outline);
+  color: #9b9aad;
 }
 
 .footer__bottom a {
-  color: var(--outline);
+  color: #9b9aad;
 }
 
 .footer__bottom a:hover {
