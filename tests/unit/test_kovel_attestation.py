@@ -12,10 +12,6 @@ Tests cover:
 from __future__ import annotations
 
 import hashlib
-import hmac as hmac_mod
-import json
-import time
-from unittest.mock import patch
 
 import pytest
 

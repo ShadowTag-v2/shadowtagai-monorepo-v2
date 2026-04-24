@@ -45,7 +45,7 @@ async def extract_deadline_from_filing(event: LegalFilingEvent):
         from datetime import datetime as _dt
 
         deadline_dt = _dt.fromisoformat(raw_deadline) if raw_deadline else event.received_at
-    except (ValueError, TypeError):
+    except ValueError, TypeError:
         deadline_dt = event.received_at
 
     return ParsedDeadline(

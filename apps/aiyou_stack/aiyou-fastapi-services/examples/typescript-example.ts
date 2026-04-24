@@ -48,10 +48,10 @@ for(var i=0;i<data.length;i++) {
 
   console.log('Original Code:');
   console.log(messyCode);
-  console.log('\n' + '='.repeat(50) + '\n');
+  console.log(`\n${'='.repeat(50)}\n`);
   console.log('Refactored Code:');
   console.log(result.refactoredCode);
-  console.log('\n' + '='.repeat(50) + '\n');
+  console.log(`\n${'='.repeat(50)}\n`);
   console.log('Summary:');
   console.log(result.summary);
 }
@@ -86,7 +86,7 @@ function processUserData(user) {
 
   console.log('Code to Analyze:');
   console.log(problematicCode);
-  console.log('\n' + '='.repeat(50) + '\n');
+  console.log(`\n${'='.repeat(50)}\n`);
   console.log('Analysis Results:');
   console.log(JSON.stringify(analysis, null, 2));
 }
@@ -136,10 +136,10 @@ function processItems(items) {
 
   console.log('Original Code:');
   console.log(slowCode);
-  console.log('\n' + '='.repeat(50) + '\n');
+  console.log(`\n${'='.repeat(50)}\n`);
   console.log('Optimized Code:');
   console.log(result.refactoredCode);
-  console.log('\n' + '='.repeat(50) + '\n');
+  console.log(`\n${'='.repeat(50)}\n`);
   console.log('Optimization Summary:');
   console.log(result.summary);
 }
@@ -181,7 +181,7 @@ class dataProcessor {
 
   console.log('Original Code:');
   console.log(unstyledCode);
-  console.log('\n' + '='.repeat(50) + '\n');
+  console.log(`\n${'='.repeat(50)}\n`);
   console.log('Styled Code:');
   console.log(result.refactoredCode);
 }
@@ -268,10 +268,10 @@ function saveToLocalStorage(key, value) {
 
   console.log('Original Code:');
   console.log(buggyCode);
-  console.log('\n' + '='.repeat(50) + '\n');
+  console.log(`\n${'='.repeat(50)}\n`);
   console.log('Fixed Code:');
   console.log(result.refactoredCode);
-  console.log('\n' + '='.repeat(50) + '\n');
+  console.log(`\n${'='.repeat(50)}\n`);
   console.log('Fixes Applied:');
   console.log(result.summary);
 }
@@ -291,8 +291,7 @@ async function main() {
     await specificIssuesExample();
 
     console.log('\n\n✅ All examples completed successfully!');
-  } catch (error) {
-    console.error('❌ Error running examples:', error);
+  } catch (_error) {
     process.exit(1);
   }
 }
@@ -303,10 +302,10 @@ if (require.main === module) {
 }
 
 export {
-  basicRefactorExample,
   analyzeCodeExample,
-  performanceRefactorExample,
-  styleGuideRefactorExample,
+  basicRefactorExample,
   interactiveRefactorExample,
+  performanceRefactorExample,
   specificIssuesExample,
+  styleGuideRefactorExample,
 };

@@ -1,5 +1,5 @@
-import http from 'k6/http';
 import { check, sleep } from 'k6';
+import http from 'k6/http';
 import { Rate, Trend } from 'k6/metrics';
 
 const errorRate = new Rate('errors');
@@ -7,13 +7,13 @@ const healthLatency = new Trend('health_latency');
 
 export const options = {
   stages: [
-    { duration: '10s', target: 5 },   // ramp up
-    { duration: '20s', target: 10 },   // sustained
-    { duration: '5s', target: 0 },     // ramp down
+    { duration: '10s', target: 5 }, // ramp up
+    { duration: '20s', target: 10 }, // sustained
+    { duration: '5s', target: 0 }, // ramp down
   ],
   thresholds: {
     http_req_duration: ['p(95)<2000'], // 95th percentile < 2s
-    errors: ['rate<0.1'],              // <10% error rate
+    errors: ['rate<0.1'], // <10% error rate
   },
 };
 

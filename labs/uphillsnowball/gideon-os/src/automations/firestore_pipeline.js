@@ -19,7 +19,8 @@ async function computeTrendVelocityIndex() {
   console.log('🌊 [HIVE MIND] Executing Native Firestore Pipeline for Global Alpha...');
 
   // The O(1) Heavy Lift: Aggregate OSINT exhaust ingested by the Jetski fleet
-  const snapshot = await db.pipeline()
+  const snapshot = await db
+    .pipeline()
     .collection('global_osint_exhaust')
     .unnest(field('extracted_tags').as('trendName'))
     .aggregate({
@@ -31,12 +32,13 @@ async function computeTrendVelocityIndex() {
     .execute();
 
   if (snapshot.docs.length === 0) {
-    console.warn('⚠️ No OSINT data found in pipeline.');
     return { trendName: 'NONE', velocityScore: 0 };
   }
 
   const topTrend = snapshot.docs[0].data();
-  console.log(`🔥 HIGH VELOCITY TREND ACQUIRED: ${topTrend.trendName} (Score: ${topTrend.velocityScore})`);
+  console.log(
+    `🔥 HIGH VELOCITY TREND ACQUIRED: ${topTrend.trendName} (Score: ${topTrend.velocityScore})`,
+  );
   return topTrend;
 }
 
@@ -48,7 +50,8 @@ async function computeTrendVelocityIndex() {
 async function fetchComplianceTelemetry() {
   console.log('📊 [CISO] Fetching compliance telemetry via Firestore Pipeline...');
 
-  const telemetry = await db.pipeline()
+  const telemetry = await db
+    .pipeline()
     .collection('whiteboard_issues')
     .where(field('status').equal('KICKBACK_LOOP'))
     .unnest(field('violated_layers').as('layerId'))

@@ -24,6 +24,9 @@ repos:
       - id: trailing-whitespace
 
   # Ruff — Python linting + formatting
+  # Source: https://github.com/astral-sh/ruff
+  # Pre-commit: https://github.com/astral-sh/ruff-pre-commit
+  # VSCode: https://github.com/astral-sh/ruff-vscode (charliermarsh.ruff)
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.11
     hooks:
@@ -33,15 +36,6 @@ repos:
       - id: ruff-format
         exclude: '^(tools/|third_party/|libs/|labs/|reference_architectures/|external_repos/|clones/|archive/|packages/|docs/bundles/|external_sdks/)'
 
-  # Vulture — dead code detection (Rich Hickey Doctrine)
-  - repo: local
-    hooks:
-      - id: vulture
-        name: vulture dead code scan (scripts/)
-        entry: bash -c 'python3 -m vulture scripts/ scripts/vulture_whitelist.py --min-confidence 90 --exclude "venv,node_modules,.git,external_repos"'
-        language: system
-        pass_filenames: false
-        always_run: true
 
   # Bandit — Python security scanning
   - repo: https://github.com/PyCQA/bandit

@@ -7,7 +7,7 @@ on:
       - "Quality Gate"
       - "Security — Bandit SAST"
       - "Backend CI (shadowtag-omega-v4-fastapi-services)"
-      - "Code Quality Gate — Ruff + Vulture"
+      - "Code Quality Gate — Ruff + Biome"
     types:
       - completed
 

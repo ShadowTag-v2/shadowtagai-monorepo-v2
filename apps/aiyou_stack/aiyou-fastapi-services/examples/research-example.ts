@@ -5,7 +5,7 @@
  * with different personas and tools for various research tasks.
  */
 
-import { ClaudeAgentOptions, query } from '@anthropic-ai/claude-agent-sdk';
+import { query } from '@anthropic-ai/claude-agent-sdk';
 import searchTool from '../agents/research/tools/search.js';
 import synthesisTool from '../agents/research/tools/synthesis.js';
 
@@ -195,10 +195,9 @@ async function main() {
     await customResearchWithToolsExample();
     await streamingResearchExample();
 
-    console.log('\n' + '='.repeat(60));
+    console.log(`\n${'='.repeat(60)}`);
     console.log('\nAll examples completed successfully!');
-  } catch (error) {
-    console.error('Error running examples:', error);
+  } catch (_error) {
     process.exit(1);
   }
 }
@@ -211,7 +210,7 @@ if (require.main === module) {
 export {
   academicResearchExample,
   businessResearchExample,
-  technicalResearchExample,
   customResearchWithToolsExample,
   streamingResearchExample,
+  technicalResearchExample,
 };

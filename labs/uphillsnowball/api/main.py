@@ -284,7 +284,7 @@ async def stream_task(task_id: str) -> StreamingResponse:
     if not task:
         raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
 
-    async def event_stream() -> AsyncGenerator[str, None]:
+    async def event_stream() -> AsyncGenerator[str]:
         yield f"event: status\ndata: {{'task_id': '{task_id}', 'status': '{task['status']}'}}\n\n"
 
         # Simulate processing -> completion

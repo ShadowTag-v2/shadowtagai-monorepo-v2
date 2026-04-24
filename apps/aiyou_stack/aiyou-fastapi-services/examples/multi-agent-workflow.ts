@@ -439,35 +439,34 @@ async function main() {
   try {
     // Example 1: Full product development
     console.log('\n\nWorkflow 1: Product Development\n');
-    const productResult = await productDevelopmentWorkflow();
+    const _productResult = await productDevelopmentWorkflow();
     console.log('Product development workflow completed!');
 
     // Example 2: Bug fix workflow
     console.log('\n\nWorkflow 2: Bug Fix\n');
-    const bugResult = await bugFixWorkflow(
+    const _bugResult = await bugFixWorkflow(
       'Memory leak in WebSocket connections causing server crashes after 24 hours',
     );
     console.log('Bug fix workflow completed!');
 
     // Example 3: Documentation generation
     console.log('\n\nWorkflow 3: Documentation Generation\n');
-    const docsResult = await documentationWorkflow('./src');
+    const _docsResult = await documentationWorkflow('./src');
     console.log('Documentation workflow completed!');
 
     // Example 4: Performance optimization
     console.log('\n\nWorkflow 4: Performance Optimization\n');
-    const perfResult = await performanceOptimizationWorkflow('User Authentication Service');
+    const _perfResult = await performanceOptimizationWorkflow('User Authentication Service');
     console.log('Performance optimization workflow completed!');
 
-    console.log('\n' + '='.repeat(70));
+    console.log(`\n${'='.repeat(70)}`);
     console.log('\nAll workflows completed successfully!');
     console.log('\nResults summary:');
     console.log('- Product development: Complete');
     console.log('- Bug fix: Implemented and tested');
     console.log('- Documentation: Generated');
     console.log('- Performance: Optimized');
-  } catch (error) {
-    console.error('Error in workflow execution:', error);
+  } catch (_error) {
     process.exit(1);
   }
 }
@@ -478,8 +477,8 @@ if (require.main === module) {
 }
 
 export {
-  productDevelopmentWorkflow,
   bugFixWorkflow,
   documentationWorkflow,
   performanceOptimizationWorkflow,
+  productDevelopmentWorkflow,
 };

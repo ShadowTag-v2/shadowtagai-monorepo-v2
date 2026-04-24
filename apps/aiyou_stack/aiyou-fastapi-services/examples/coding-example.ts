@@ -342,10 +342,9 @@ async function main() {
     await refactoringExample();
     await performanceOptimizationExample();
 
-    console.log('\n' + '='.repeat(60));
+    console.log(`\n${'='.repeat(60)}`);
     console.log('\nAll examples completed successfully!');
-  } catch (error) {
-    console.error('Error running examples:', error);
+  } catch (_error) {
     process.exit(1);
   }
 }
@@ -357,10 +356,10 @@ if (require.main === module) {
 
 export {
   backendDevelopmentExample,
-  frontendDevelopmentExample,
-  devopsPipelineExample,
   codeReviewExample,
-  testSuiteCreationExample,
-  refactoringExample,
+  devopsPipelineExample,
+  frontendDevelopmentExample,
   performanceOptimizationExample,
+  refactoringExample,
+  testSuiteCreationExample,
 };

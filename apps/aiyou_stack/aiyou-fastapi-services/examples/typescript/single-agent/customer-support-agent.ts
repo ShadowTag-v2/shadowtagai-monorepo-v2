@@ -402,8 +402,6 @@ class CustomerSupportAgent {
 
       return response;
     } catch (error) {
-      console.error(`[Error] ${error.message}`);
-
       const errorResponse = `I apologize, but I encountered an error: ${error.message}. Let me create a ticket to have a specialist assist you.`;
 
       this.context.conversationHistory.push({
@@ -460,7 +458,7 @@ async function main() {
   ];
 
   for (const message of conversation) {
-    const response = await agent.handleMessage(message);
+    const _response = await agent.handleMessage(message);
     console.log(); // Add spacing
 
     // Small delay to simulate real conversation
@@ -478,4 +476,4 @@ if (require.main === module) {
 }
 
 // Export for use as module
-export { CustomerSupportAgent, type CustomerContext, type CustomerAccount, type SupportTicket };
+export { type CustomerAccount, type CustomerContext, CustomerSupportAgent, type SupportTicket };

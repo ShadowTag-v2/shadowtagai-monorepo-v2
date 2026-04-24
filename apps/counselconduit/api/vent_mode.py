@@ -105,7 +105,7 @@ async def _stream_vent_response(
     session_id: str,
     history: list[dict[str, str]] | None = None,
     message_index: int = 0,
-) -> AsyncGenerator[str, None]:
+) -> AsyncGenerator[str]:
     """Stream a Vent Mode response via LiteLLM as SSE events.
 
     S.E.U. ordering: Safety → Empathy → Utility.

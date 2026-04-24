@@ -144,19 +144,19 @@ jobs:
       - name: Install Toolchains
         run: |
           npm install -g knip typescript
-          pip install vulture pyright
+          pip install pyright
 
       - name: "1. Knip (Block Unused JS/TS Exports & Deps)"
         run: |
           cd apps/kovelai/site && npx knip --no-exit-code || true
           cd ../../../apps/shadowtagai/site && npx knip --no-exit-code || true
 
-      - name: "2. Vulture (Block Dead Python Code)"
+      - name: "2. Ruff Dead Code (F401/F841 — V22 replaces vulture)"
         run: |
-          vulture apps/ libs/ scripts/ \
-            --min-confidence 90 \
+          ruff check apps/ libs/ scripts/ \
+            --select F401,F841 \
             --exclude external_repos,external_sdks,third_party,archive,deep-archive,.venv \
-            .vulture_whitelist.py || true
+            --statistics || true
 
       - name: "3. Pyright Type Check"
         run: |

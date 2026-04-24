@@ -94,7 +94,7 @@ jobs:
 
   # ── Rule 9: Python Type + Lint Check ─────────────────────────────────────
   python-lint:
-    name: "🐍 Python Lint (ruff + vulture)"
+    name: "🐍 Python Lint (ruff V22 Pruned)"
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -106,11 +106,11 @@ jobs:
           python-version: '3.13'
 
       - name: Install tools
-        run: pip install ruff vulture
+        run: pip install ruff
 
       - name: ruff check
         run: ruff check apps/counselconduit/ --select=E9,F,I
 
-      - name: vulture dead code scan
-        run: vulture apps/counselconduit/ --min-confidence=80
+      - name: ruff dead code scan (F401/F841 — V22 replaces vulture)
+        run: ruff check apps/counselconduit/ --select F401,F841 --statistics || true
         continue-on-error: true

@@ -63,7 +63,7 @@ class RulePack:
     math: DeadlineMath
 
     @classmethod
-    def from_db_row(cls, row: dict[str, Any]) -> "RulePack":
+    def from_db_row(cls, row: dict[str, Any]) -> RulePack:
         math_json: dict[str, Any] = row["deadline_math_json"]
         return cls(
             rule_id=str(row["rule_id"]),

@@ -1,21 +1,21 @@
 [
-    {
-          "path": "/*",
-          "resourceSizes": [
-                  {
-                            "resourceType": "total",
-                            "budget": 1000
-                  },
-                  {
-                            "resourceType": "script",
-                            "budget": 500
-                  }
-          ],
-          "resourceCounts": [
-                  {
-                            "resourceType": "third-party",
-                            "budget": 20
-                  }
-          ]
-    }
+  {
+    "path": "/*",
+    "resourceSizes": [
+      {
+        "resourceType": "total",
+        "budget": 1000
+      },
+      {
+        "resourceType": "script",
+        "budget": 500
+      }
+    ],
+    "resourceCounts": [
+      {
+        "resourceType": "third-party",
+        "budget": 20
+      }
+    ]
+  }
 ]
