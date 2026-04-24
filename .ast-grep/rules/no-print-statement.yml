@@ -5,3 +5,6 @@ language: python
 rule:
   pattern: |
     print($$$ARGS)
+files:
+  - "apps/counselconduit/**/*.py"
+  - "apps/kovelai/**/*.py"

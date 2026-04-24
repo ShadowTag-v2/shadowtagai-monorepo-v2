@@ -15,6 +15,7 @@ storage_state.json
 
 # --- Language Runtimes ---
 .venv/
+.venv*/
 __pycache__/
 **/__pycache__/
 node_modules/
@@ -293,6 +294,20 @@ src/vs/
 
 # ── Implementation plans (session artifacts, not canonical) ──
 IMPLEMENTATION_PLAN.md
+
+# ── External SDKs (cloned reference repos — never committed) ──
+tools/external_sdks/
+third_party/security/betterleaks/
+third_party/security/gitleaks/
+third_party/security/gitleaks-action/
+
+# ── Browser Artifacts (agent-generated, never committed) ──
+browser_artifacts/
+**/*.webm
+
+# ── Betterleaks / Gitleaks Guardian reports ──
+.beads/betterleaks_*.md
+.beads/betterleaks_*.csv
 
 # Invariant #102: Large binary exclusions (GitHub Push Chunking Protocol)
 **/*.onnx

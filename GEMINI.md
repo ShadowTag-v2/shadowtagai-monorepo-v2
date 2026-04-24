@@ -250,14 +250,14 @@ End every runtime response with EXACTLY 22 explicitly selectable actionable prom
 **Canonical checklist:** `docs/SECURITY_DOD.md`
 **Enforcer skill:** `skills/cor30-security-enforcer/SKILL.md`
 **CI gate:** `.github/workflows/security-audit.yml`
-**Pre-commit:** `.pre-commit-config.yaml` (Gitleaks + detect-private-key)
+**Pre-commit:** `.pre-commit-config.yaml` (Betterleaks + detect-private-key)
 
 ### Core Principle
 AI velocity does not excuse missing security hygiene — it multiplies the cost of skipping it.
 
 ### 6-Pillar Framework
 1. **Identity & Session** (R1–2, 13, 32): Short-lived access tokens (15–60 min), rotated refresh, MFA for admin/billing, CSRF protection, redirect allow-lists.
-2. **Secrets & Supply Chain** (R3–8, 33–35): Secret Manager only, Gitleaks pre-commit, pinned deps, verified packages, no blind npm audit fix.
+2. **Secrets & Supply Chain** (R3–8, 33–35): Secret Manager only, Betterleaks pre-commit (12.9x faster gitleaks successor), pinned deps, verified packages, no blind npm audit fix.
 3. **API Hardening** (R9, 12, 14–16, 23, 31): Pydantic/Zod validation, per-user+route rate limits, server-side authz, security headers (CSP/HSTS).
 4. **Storage & Uploads** (R10, 19–20): Tenant isolation, signed URLs, magic-byte file validation, malware scan.
 5. **Payments & Webhooks** (R21–22, 30): HMAC signature verification, idempotency keys, SPF/DKIM/DMARC, test/prod separation.

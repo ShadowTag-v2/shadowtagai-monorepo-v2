@@ -51,12 +51,15 @@ if command -v python3 -m ruff >/dev/null 2>&1 || python3 -c "import ruff" 2>/dev
     python3 -m ruff check ./apps/ShadowTag-v2_stack ./apps/counselconduit || echo "⚠️ Ruff Lint Warning."
 fi
 
-# 6. Gitleaks Security Scan
+# 6. Betterleaks Security Scan (PRIMARY — successor to Gitleaks)
 echo "=> [6/6] Asserting Anti-Credentials Leak Security..."
-if command -v gitleaks >/dev/null 2>&1; then
-    gitleaks detect --redact --verbose || echo "⚠️ Gitleaks Warning - Check logs."
+BETTERLEAKS_BIN="${HOME}/go/bin/betterleaks"
+if [ -x "$BETTERLEAKS_BIN" ]; then
+    "$BETTERLEAKS_BIN" dir -c .betterleaks.toml --redact . || echo "⚠️ Betterleaks Warning - Check logs."
+elif command -v betterleaks >/dev/null 2>&1; then
+    betterleaks dir -c .betterleaks.toml --redact . || echo "⚠️ Betterleaks Warning - Check logs."
 else
-    echo "⚠️ Gitleaks not found in path, skipping security scan."
+    echo "⚠️ Betterleaks not found in PATH or ~/go/bin/, skipping security scan."
 fi
 
 echo "==========================================================="
