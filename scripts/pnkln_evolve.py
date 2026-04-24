@@ -17,12 +17,11 @@ Rich Hickey Doctrine: Step 0 is DELETION.
 
 import argparse
 import json
-import os
 import random
 import subprocess
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from pathlib import Path
 
 MONOREPO_ROOT = Path(__file__).resolve().parent.parent
@@ -37,7 +36,7 @@ def log_event(event_type: str, details: dict) -> None:
     """Append a structured event to the evolve log."""
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
     entry = {
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "type": event_type,
         **details,
     }
@@ -77,7 +76,7 @@ def scan_duplicate_skills() -> dict:
             # Read first 5 lines for description
             try:
                 with open(skill_md) as f:
-                    header = f.read(500)
+                    _ = f.read(500)  # Guard: check file is readable
             except OSError:
                 continue
 
@@ -139,7 +138,7 @@ def scan_stale_repos() -> dict:
 
 def run_evolve_pass() -> dict:
     """Execute one full evolution pass."""
-    print(f"[pnkln-evolve] Starting pass at {datetime.now(timezone.utc).isoformat()}")
+    print(f"[pnkln-evolve] Starting pass at {datetime.now(UTC).isoformat()}")
 
     results = {
         "dead_code": scan_dead_code(),
