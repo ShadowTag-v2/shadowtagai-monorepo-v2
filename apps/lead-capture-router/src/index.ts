@@ -138,7 +138,15 @@ export const captureLead = onRequest(
 
 export const captureContact = onRequest(
   {
-    cors: true,
+    cors: [
+      'https://kovelai.web.app',
+      'https://kovelai.com',
+      'https://www.kovelai.com',
+      'https://shadowtagai.web.app',
+      'https://shadowtagai.com',
+      'https://www.shadowtagai.com',
+      /localhost:\d+/,
+    ],
     maxInstances: 5,
     memory: '256MiB',
   },

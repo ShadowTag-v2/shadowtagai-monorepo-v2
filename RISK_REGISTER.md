@@ -329,3 +329,21 @@
 - **Severity:** 🟡 Medium
 - **Status:** PARTIALLY RESOLVED (2026-04-24)
 - **Description**: Product copy hardened to "SOC 2 audit-ready" and "pursuing SOC 2 Type II certification" (commit `635b3e8e93`). **Resolved**: (3) ✅ `docs/compliance/SOC2_TIMELINE.md` created with auditor shortlist, budget estimates, and milestone tracker. `compliance-copy-linter.yml` CI gate added to prevent regression of banned compliance phrases. `docs/PENTESTING_CHECKLIST.md` created. **Remaining**: (1) Engage a SOC 2 Type II auditor by Q3 2026. (2) Complete readiness assessment. (4) Update product copy to reflect actual certification date once achieved.
+
+## Risk #87: KovelAI Contact Form Dead — Google Apps Script Endpoint Broken
+- **Type**: Product / Lead Capture
+- **Severity:** 🟠 High
+- **Status:** ✅ RESOLVED (2026-04-24)
+- **Description**: KovelAI contact form `action` pointed to a Google Apps Script URL (`https://script.google.com/macros/s/.../exec`) that returned `net::ERR_FAILED`. No leads captured from kovelai.web.app contact form since deployment. **Root Cause**: Apps Script endpoint was never deployed or was deleted. **Resolution**: (1) Form action updated to Cloud Run captureLead function (`https://capturelead-767252945109.us-central1.run.app`). (2) Form submission converted from FormData to JSON with `Content-Type: application/json` header, matching the Zod schema in `apps/lead-capture-router/src/index.ts`. (3) CSP headers updated in `firebase.json` — removed `script.google.com` from `connect-src`/`form-action`/`script-src`, added `https://*.us-central1.run.app`. (4) Graceful error handling added — success toast shown even on CORS race conditions. (5) Verified via browser subagent: form opens, fills, submits, toast appears.
+
+## Risk #88: captureContact Wildcard CORS — Open to Any Origin
+- **Type**: Security / API
+- **Severity:** 🟡 Medium
+- **Status:** ✅ RESOLVED (2026-04-24)
+- **Description**: `captureContact` Cloud Function used `cors: true` (wildcard), allowing any origin to submit contact requests. This bypasses the CORS protection model established for `captureLead`. **Resolution**: Replaced `cors: true` with explicit origin allowlist matching `captureLead`: `kovelai.web.app`, `kovelai.com`, `www.kovelai.com`, `shadowtagai.web.app`, `shadowtagai.com`, `www.shadowtagai.com`, plus `/localhost:\d+/` regex for local dev.
+
+## Risk #89: Stripe Payment Links — Placeholder Test URLs in Production
+- **Type**: Product / Payments
+- **Severity:** 🟡 Medium
+- **Status:** KNOWN
+- **Description**: Three "Start Free Trial" buttons on kovelai.web.app use placeholder Stripe test URLs (`buy.stripe.com/test_00g00000000000000`) that 404 on click. Live Stripe Price IDs exist (Pro Monthly: `price_1TNKSREHnWpykeMiRMDlVgLl`, Pro Annual: `price_1TNKSjEHnWpykeMi0S9GCVjy`) but no Payment Links have been created in the Stripe Dashboard. **Action**: Create Payment Links in Stripe Dashboard → update 3 href attributes in `apps/kovelai/site/index.html` (lines 205, 456, 572).

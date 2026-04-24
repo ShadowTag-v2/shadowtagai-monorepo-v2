@@ -422,7 +422,7 @@ def main() -> None:
             [_sys.executable, str(repo_doctor_script)],
             capture_output=True,
             text=True,
-            timeout=60,
+            timeout=300,
         )
         if rd.returncode != 0:
             print(f"[!] Repo Doctor warnings:\n{rd.stdout[-1000:]}")
