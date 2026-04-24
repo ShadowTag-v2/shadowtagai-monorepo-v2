@@ -70,7 +70,7 @@ export function WelcomeScreen({ onExampleClick }) {
             <div
               key={index}
               className="example-prompt"
-              onClick={() => onExampleClick && onExampleClick(example.text)}
+              onClick={() => onExampleClick?.(example.text)}
             >
               <div className="example-prompt-icon">
                 <Icon name={example.icon} size={20} />

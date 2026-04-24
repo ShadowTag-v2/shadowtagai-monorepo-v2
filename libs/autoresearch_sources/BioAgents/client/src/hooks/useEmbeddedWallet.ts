@@ -3,12 +3,12 @@ import { useEmbeddedWalletClient } from './useEmbeddedWalletClient';
 import { useToast } from './useToast';
 
 // Lazy import CDP hooks to avoid context errors when provider is not mounted
-let cdpHooksModule: typeof import('@coinbase/cdp-hooks') | null = null;
+let _cdpHooksModule: typeof import('@coinbase/cdp-hooks') | null = null;
 
 /**
  * Safe wrapper for CDP hooks that returns null values when CDP context is not available
  */
-function useSafeCdpHooks(x402Enabled: boolean) {
+function _useSafeCdpHooks(x402Enabled: boolean) {
   const [cdpState, setCdpState] = useState<{
     isSignedIn: boolean;
     evmAddress: string | null;
@@ -27,7 +27,7 @@ function useSafeCdpHooks(x402Enabled: boolean) {
 
     // Dynamically import CDP hooks to avoid errors when provider is not mounted
     import('@coinbase/cdp-hooks').then((module) => {
-      cdpHooksModule = module;
+      _cdpHooksModule = module;
     });
   }, [x402Enabled]);
 
@@ -67,10 +67,7 @@ export function useEmbeddedWallet(network?: string, x402Enabled: boolean = true)
       isSignedIn = signedInResult?.isSignedIn ?? false;
       evmAddress = addressResult?.evmAddress ?? null;
       signOutFn = signOutResult?.signOut ?? null;
-    } catch (err) {
-      // CDP hooks failed - context not available
-      console.debug('[useEmbeddedWallet] CDP hooks not available:', err);
-    }
+    } catch (_err) {}
   }
 
   const walletClient = useEmbeddedWalletClient(network, x402Enabled);
@@ -90,11 +87,10 @@ export function useEmbeddedWallet(network?: string, x402Enabled: boolean = true)
       // Reset the flag when user signs out
       hasShownToast.current = false;
     }
-  }, [isSignedIn, evmAddress]);
+  }, [isSignedIn, evmAddress, toast.success]);
 
   const disconnectEmbeddedWallet = useCallback(async () => {
     if (!signOutFn) {
-      console.warn('[useEmbeddedWallet] Sign out not available');
       return;
     }
 
@@ -102,7 +98,6 @@ export function useEmbeddedWallet(network?: string, x402Enabled: boolean = true)
       await signOutFn();
       toast.info('👋 Embedded Wallet Disconnected', 3000);
     } catch (err: any) {
-      console.error('[useEmbeddedWallet] Sign out failed:', err);
       toast.error(`❌ Failed to disconnect: ${err?.message || 'Unknown error'}`, 5000);
     }
   }, [signOutFn, toast]);

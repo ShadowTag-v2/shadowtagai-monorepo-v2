@@ -49,7 +49,7 @@ export function parseCitationsFromText(text: string): {
   // Remove citation markers from text
   // Replace [text]{urls} with just 'text' (keeping the cited text)
   // Replace [text]{} or []{} with just 'text' or nothing (removing empty citations)
-  const textWithoutCitations = text.replace(citationRegex, (match, citedText) => {
+  const textWithoutCitations = text.replace(citationRegex, (_match, citedText) => {
     return citedText || ''; // Return the cited text, or empty string if no text
   });
 
@@ -73,7 +73,7 @@ export function extractUniqueCitations(citations: Citation[]): Array<{
       if (!urlMap.has(url)) {
         urlMap.set(url, []);
       }
-      urlMap.get(url)!.push(citation.index);
+      urlMap.get(url)?.push(citation.index);
     });
   });
 

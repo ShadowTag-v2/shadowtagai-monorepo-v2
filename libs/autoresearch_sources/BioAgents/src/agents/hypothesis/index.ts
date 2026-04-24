@@ -61,7 +61,7 @@ export async function hypothesisAgent(input: {
         'processing_completed_task_for_hypothesis',
       );
 
-      if (task.output && task.output.trim()) {
+      if (task.output?.trim()) {
         hypDocs.push({
           title: `${task.type} Task Output`,
           text: `Task Objective: ${task.objective}\n\nOutput:\n${task.output}`,

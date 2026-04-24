@@ -1,6 +1,6 @@
-import { spawn } from 'child_process';
-import * as fs from 'fs';
-import * as path from 'path';
+import { spawn } from 'node:child_process';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import logger from '../../../utils/logger';
 
 const LATEXMK_TIMEOUT_MS = 120_000; // 120 seconds for full latexmk run
@@ -22,7 +22,7 @@ export async function compileLatexToPDF(
   try {
     const result = await tryLatexmk(latexDir, mainTexFile);
     if (result.success) return result;
-  } catch (error) {
+  } catch (_error) {
     logger.warn('latexmk_failed_trying_manual');
   }
 
@@ -70,7 +70,7 @@ async function tryLatexmk(
 
     proc.on('close', (code) => {
       clearTimeout(timer);
-      const logs = stdout + '\n' + stderr;
+      const logs = `${stdout}\n${stderr}`;
       const pdfPath = path.join(latexDir, mainTexFile.replace('.tex', '.pdf'));
 
       if (killed) {
@@ -108,14 +108,14 @@ async function tryManualCompilation(
     ['-interaction=nonstopmode', '-halt-on-error', '-file-line-error', mainTexFile],
     latexDir,
   );
-  allLogs += '=== XELATEX PASS 1 ===\n' + pass1.logs + '\n\n';
+  allLogs += `=== XELATEX PASS 1 ===\n${pass1.logs}\n\n`;
 
   if (!pass1.success) return { success: false, logs: allLogs };
 
   const auxPath = path.join(latexDir, `${baseFilename}.aux`);
   if (fs.existsSync(auxPath)) {
     const bibtexResult = await runCommand('bibtex', [baseFilename], latexDir);
-    allLogs += '=== BIBTEX ===\n' + bibtexResult.logs + '\n\n';
+    allLogs += `=== BIBTEX ===\n${bibtexResult.logs}\n\n`;
   }
 
   const pass2 = await runCommand(
@@ -123,7 +123,7 @@ async function tryManualCompilation(
     ['-interaction=nonstopmode', '-halt-on-error', '-file-line-error', mainTexFile],
     latexDir,
   );
-  allLogs += '=== XELATEX PASS 2 ===\n' + pass2.logs + '\n\n';
+  allLogs += `=== XELATEX PASS 2 ===\n${pass2.logs}\n\n`;
 
   if (!pass2.success) return { success: false, logs: allLogs };
 
@@ -132,7 +132,7 @@ async function tryManualCompilation(
     ['-interaction=nonstopmode', '-halt-on-error', '-file-line-error', mainTexFile],
     latexDir,
   );
-  allLogs += '=== XELATEX PASS 3 ===\n' + pass3.logs + '\n\n';
+  allLogs += `=== XELATEX PASS 3 ===\n${pass3.logs}\n\n`;
 
   const pdfPath = path.join(latexDir, `${baseFilename}.pdf`);
 
@@ -178,7 +178,7 @@ async function runCommand(
 
     proc.on('close', (code) => {
       clearTimeout(timer);
-      const logs = stdout + '\n' + stderr;
+      const logs = `${stdout}\n${stderr}`;
       if (killed) {
         resolve({
           success: false,

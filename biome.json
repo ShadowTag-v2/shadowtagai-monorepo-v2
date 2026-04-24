@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.11/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.13/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -90,7 +90,23 @@
       "!archive",
       "!docs/legacy_shadowtag_v2",
       "!apps/aiyou_ecosystem/raw_ingest",
-      "!**/arsenal_recovered"
+      "!**/arsenal_recovered",
+      "!playwright-report",
+      "!.stitch-sdk",
+      "!.claude/hooks",
+      "!apps/aiyou_stack",
+      "!apps/thermal-ride",
+      "!apps/cosmic-crab",
+      "!apps/aiyou-web-dashboard",
+      "!packages/aiyou",
+      "!labs/gemini-cookbook",
+      "!external_sdks",
+      "!control",
+      "!docs/atlantis",
+      "!docs/legacy_shadowtag_v2",
+      "!reference_architectures",
+      "!libs/autoresearch_sources",
+      "!tests"
     ],
     "maxSize": 2097152
   },

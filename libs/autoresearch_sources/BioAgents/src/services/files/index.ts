@@ -113,7 +113,7 @@ export async function requestUploadUrl(
     let conversation;
     try {
       conversation = await getConversation(conversationId);
-    } catch (error) {
+    } catch (_error) {
       // Conversation doesn't exist yet (happens when uploading before first message)
       conversation = null;
     }
@@ -534,7 +534,7 @@ export async function deleteFile(fileId: string, userId: string): Promise<void> 
   // Remove from conversation state
   try {
     const state = await getConversationState(status.conversationStateId);
-    if (state && state.values.uploadedDatasets) {
+    if (state?.values.uploadedDatasets) {
       const uploadedDatasets = state.values.uploadedDatasets.filter((f: any) => f.id !== fileId);
       await updateConversationState(
         status.conversationStateId,

@@ -55,7 +55,7 @@ export function ArtifactViewer({ results, defaultExpanded = true }: Props) {
   const { userId, conversationStateId } = useConversation();
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const [selectedArtifact, setSelectedArtifact] = useState<Artifact | null>(null);
-  const [isDownloading, setIsDownloading] = useState<string | null>(null);
+  const [_isDownloading, setIsDownloading] = useState<string | null>(null);
   const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
 
   const allArtifacts = results.flatMap((r) => r.artifacts || []);
@@ -88,7 +88,7 @@ export function ArtifactViewer({ results, defaultExpanded = true }: Props) {
     };
 
     loadImages();
-  }, [allArtifacts, userId, conversationStateId]);
+  }, [allArtifacts, userId, conversationStateId, imageUrls]);
 
   if (!hasArtifacts && !hasOutput && !hasErrors) return null;
 
@@ -128,8 +128,7 @@ export function ArtifactViewer({ results, defaultExpanded = true }: Props) {
       }
 
       throw new Error('No download method available');
-    } catch (err) {
-      console.error('Failed to download artifact:', err);
+    } catch (_err) {
     } finally {
       setIsDownloading(null);
     }

@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 export interface Character {
   name: string;
@@ -65,10 +65,7 @@ function loadCharacter(): Character {
         console.log(`[Character] Loaded character "${parsed.name}" from CHARACTER_JSON`);
         return parsed as Character;
       }
-      console.warn("[Character] CHARACTER_JSON missing 'name' or 'system' field, using default");
-    } catch (error) {
-      console.warn('[Character] Failed to parse CHARACTER_JSON, using default:', error);
-    }
+    } catch (_error) {}
   }
 
   // Try CHARACTER_FILE (path to JSON file)
@@ -82,18 +79,9 @@ function loadCharacter(): Character {
           console.log(`[Character] Loaded character "${parsed.name}" from file: ${characterFile}`);
           return parsed as Character;
         }
-        console.warn(
-          `[Character] File ${characterFile} missing 'name' or 'system' field, using default`,
-        );
       } else {
-        console.warn(`[Character] File not found: ${characterFile}, using default`);
       }
-    } catch (error) {
-      console.warn(
-        `[Character] Failed to load character from file: ${characterFile}, using default:`,
-        error,
-      );
-    }
+    } catch (_error) {}
   }
 
   // Fall back to default BIOS character

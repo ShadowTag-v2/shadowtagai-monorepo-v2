@@ -11,5 +11,5 @@ export function sanitizeFilename(filename: string): string {
  */
 export function truncateText(text: string, maxLength: number): string {
   if (!text || text.length <= maxLength) return text;
-  return text.slice(0, maxLength - 3) + '...';
+  return `${text.slice(0, maxLength - 3)}...`;
 }

@@ -26,11 +26,11 @@ interface RateLimitConfig {
  */
 const RATE_LIMITS: Record<string, RateLimitConfig> = {
   chat: {
-    max: parseInt(process.env.CHAT_RATE_LIMIT_PER_MINUTE || '10'),
+    max: parseInt(process.env.CHAT_RATE_LIMIT_PER_MINUTE || '10', 10),
     window: 60, // 1 minute
   },
   'deep-research': {
-    max: parseInt(process.env.DEEP_RESEARCH_RATE_LIMIT_PER_5MIN || '3'),
+    max: parseInt(process.env.DEEP_RESEARCH_RATE_LIMIT_PER_5MIN || '3', 10),
     window: 300, // 5 minutes
   },
 };
@@ -109,7 +109,7 @@ export async function checkRateLimit(
       // Get oldest entry to calculate reset time
       const oldest = await redis.zrange(key, 0, 0, 'WITHSCORES');
       const resetIn =
-        oldest.length > 1 ? config.window - (now - parseInt(oldest[1] || '0')) : config.window;
+        oldest.length > 1 ? config.window - (now - parseInt(oldest[1] || '0', 10)) : config.window;
 
       logger.warn(
         {

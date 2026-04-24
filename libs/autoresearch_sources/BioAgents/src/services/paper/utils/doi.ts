@@ -21,7 +21,7 @@ export function normalizeDOI(doi: string): string {
  */
 export function doiToCitekey(doi: string): string {
   const normalized = normalizeDOI(doi);
-  return 'doi_' + normalized.replace(/[^a-z0-9]/g, '_');
+  return `doi_${normalized.replace(/[^a-z0-9]/g, '_')}`;
 }
 
 /**

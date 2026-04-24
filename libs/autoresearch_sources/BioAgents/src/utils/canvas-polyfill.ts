@@ -1,12 +1,12 @@
 // Polyfills for pdfjs-dist DOM APIs (needed for pdf-parse@2.x in server environments)
 
-import * as nodeFs from 'fs';
-import nodeFsPromises from 'fs/promises';
-import * as nodeHttp from 'http';
-import * as nodeHttps from 'https';
-import * as nodePath from 'path';
-import * as nodeUrl from 'url';
-import * as nodeZlib from 'zlib';
+import * as nodeFs from 'node:fs';
+import nodeFsPromises from 'node:fs/promises';
+import * as nodeHttp from 'node:http';
+import * as nodeHttps from 'node:https';
+import * as nodePath from 'node:path';
+import * as nodeUrl from 'node:url';
+import * as nodeZlib from 'node:zlib';
 
 // Ensure fs.promises is available (some bundlers strip it)
 const fsWithPromises = {
@@ -66,7 +66,6 @@ if (canvasModule) {
 if (!globalThis.Path2D) {
   // @ts-expect-error
   globalThis.Path2D = class Path2D {
-    constructor(_path?: string | Path2D) {}
     addPath(_path: Path2D, _transform?: DOMMatrix2DInit) {}
     closePath() {}
     moveTo(_x: number, _y: number) {}

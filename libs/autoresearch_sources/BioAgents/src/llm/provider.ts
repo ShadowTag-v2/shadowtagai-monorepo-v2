@@ -10,7 +10,6 @@ import type { LLMProvider, LLMRequest, LLMResponse, WebSearchResponse } from './
 
 export class LLM {
   private adapter: LLMAdapter;
-  private provider: LLMProvider;
   private providerName: string;
 
   constructor(provider: LLMProvider) {

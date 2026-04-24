@@ -76,7 +76,7 @@ export async function ensureUserAndConversation(
       }
       return { success: true };
     }
-  } catch (err: any) {
+  } catch (_err: any) {
     // Conversation doesn't exist - that's fine, we'll create it
     if (logger) {
       logger.info({ conversationId }, 'conversation_not_found_will_create');
@@ -123,10 +123,10 @@ export async function setupConversationData(
   conversationId: string,
   userId: string,
   source: string,
-  isExternal: boolean,
-  message: string,
-  fileCount: number,
-  agentId?: string,
+  _isExternal: boolean,
+  _message: string,
+  _fileCount: number,
+  _agentId?: string,
 ): Promise<{ success: boolean; data?: ConversationSetup; error?: string }> {
   let conversationStateRecord: any;
   let stateRecord: any;

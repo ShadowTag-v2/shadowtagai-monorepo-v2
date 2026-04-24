@@ -157,15 +157,15 @@ function checkEmptySections(markdown: string): void {
   const emptySections: string[] = [];
 
   for (let i = 0; i < sections.length; i++) {
-    const start = sections[i]!.startIndex;
+    const start = sections[i]?.startIndex;
     const end =
       i + 1 < sections.length
-        ? markdown.lastIndexOf('\n', markdown.indexOf(sections[i + 1]!.heading, start))
+        ? markdown.lastIndexOf('\n', markdown.indexOf(sections[i + 1]?.heading, start))
         : markdown.length;
 
     const content = markdown.slice(start, end).trim();
     if (content.length < 20) {
-      emptySections.push(sections[i]!.heading);
+      emptySections.push(sections[i]?.heading);
     }
   }
 

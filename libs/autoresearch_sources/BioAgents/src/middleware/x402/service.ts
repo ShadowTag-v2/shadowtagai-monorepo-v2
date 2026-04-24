@@ -63,7 +63,7 @@ export interface PaymentSettlementResult {
 export function usdToBaseUnits(amountUSD: string): string {
   const numericAmount = amountUSD.replace(/[^0-9.]/g, '');
   const [whole = '0', fraction = ''] = numericAmount.split('.');
-  const normalizedFraction = (fraction + '000000').slice(0, 6);
+  const normalizedFraction = `${fraction}000000`.slice(0, 6);
   const result = `${whole}${normalizedFraction}`.replace(/^0+/, '') || '0';
   return result;
 }
