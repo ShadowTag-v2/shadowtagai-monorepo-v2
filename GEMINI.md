@@ -1,10 +1,10 @@
 ---
-version: 10.3
+version: 10.4
 scope: antigravity_local_operator_invariants
 status: LOCKED
 ---
 
-# GEMINI.md — v10.3
+# GEMINI.md — v10.4
 
 <system_directive>
 <workspace_alignment>
@@ -95,6 +95,32 @@ Full doctrine: `skills/firebase-mcp-deploy-doctrine/SKILL.md`
 - Searching the public web with proprietary identifiers (use `epistemic-airgap` skill)
 - Running `pip install` on unresolved internal package names (supply chain attack vector)
 </capability_resolution_doctrine>
+
+<mcp_fleet_vanguard_invariant>
+## Fleet Vanguard — Mandatory Per-Tool-Call Gate
+
+**ABSOLUTE RULE: Every single tool action MUST be routed through the MCP Fleet Vanguard skill.**
+
+**Canonical source:** `.agents/skills/mcp-fleet-vanguard/SKILL.md` (redirect) → `~/.gemini/antigravity/skills/mcp-fleet-vanguard/SKILL.md` (v11.0)
+
+### Protocol
+1. **At conversation start:** Run the 5-server pre-flight integrity check (list_pages, firebase_get_environment, list_projects, search_documents, sequentialthinking).
+2. **Before each tool call:** Verify the target MCP server is UP. If not, execute the Self-Healing Loop.
+3. **No raw terminal fallbacks** for any operation that has a working MCP server equivalent.
+4. **Report the status table** to the user at conversation start and after any server failure.
+
+### Fleet Manifest (5 servers, 90 tools)
+| # | Server | Tools | Domain |
+|---|--------|-------|--------|
+| 1 | StitchMCP | 12 | Design systems, screen generation, UI variants |
+| 2 | chrome-devtools-mcp | 29 | Browser automation, screenshots, DOM, Lighthouse, perf traces |
+| 3 | firebase-mcp-server | 45 | Firebase Auth, Firestore, Hosting, Functions, Storage, Config, Messaging |
+| 4 | google-developer-knowledge | 3 | Google developer docs search, retrieval, grounded answers |
+| 5 | sequential-thinking | 1 | Multi-step reasoning, hypothesis verification |
+
+### Enforcement
+This is NOT optional. It is a behavioral invariant enforced at the operator level. Violations are logged to `.beads/issues.jsonl`.
+</mcp_fleet_vanguard_invariant>
 
 <epistemic_airgap_doctrine>
 ## V10 Epistemic Airgap — Zero-Trust Cognitive Routing
@@ -402,4 +428,90 @@ Six patterns extracted from TACSOP 2 (V15-V21). 47 concepts already active, 12 r
 | 5 | Autoresearch Mutation Fitness | Dead code cleanup → bench_ms before/after (5% threshold) |
 | 6 | 8-Agent Board Synthesis | STATE B architecture decisions → 8 role perspectives (CTO/DX/Sec/Money/Infra/QA/Legal/UX) |
 </tacsop_operational_patterns>
+
+<motor_cortex_reflexes>
+## Motor Cortex — Dynamic Skill Hunting Reflexes (TACSOP 4 Kairos Delta)
+
+**Activated:** 2026-04-24 | **Source:** Kairos Delta directive
+
+Two standalone tactical reflexes wired into the Motor Cortex for autonomous skill acquisition:
+
+### 1. Global Google Ingestor (`google-skills-core`)
+- **Skill:** `.agents/skills/google-skills-core/SKILL.md`
+- **Source repo:** `external_repos/google-skills/` (https://github.com/google/skills)
+- **Trigger:** When base-level reasoning upgrades or Google AI capabilities are needed
+- **Command:** `npx skills add google/skills`
+- **Fallback:** Direct copy from `external_repos/google-skills/skills/`
+
+### 2. Omni-Skill Hunter (`omni-skill-hunter`)
+- **Skill:** `.agents/skills/omni-skill-hunter/SKILL.md`
+- **Source repos:** `external_repos/google-skills/` + `external_repos/vercel-skills/`
+- **Trigger:** When a specific coding problem lacks an existing skill; before declaring capability gaps
+- **Command:** `npx skills add vercel-labs/skills --skill find-skills && npx skills add google/skills --skill find-skills`
+- **Fallback:** `grep -rl "<term>" external_repos/google-skills/ external_repos/vercel-skills/`
+
+### Mandatory Pre-Task Protocol
+Before starting any complex implementation task, the agent MUST:
+1. Check `.agents/skills/` for existing capabilities
+2. If no match, fire `omni-skill-hunter` to search both ecosystems
+3. If a Google-only upgrade is needed, fire `google-skills-core`
+4. Report installed skills to user with new total count
+
+### Skill Fleet Census
+- **Total skills:** 269 (45 workspace + 223 global + 1 meta-SOP)
+- **External repos cloned:** google-skills, vercel-skills
+- **Community skills available:** 1,415+ (antigravity-awesome-skills)
+</motor_cortex_reflexes>
+
+<session_memory_corpus>
+## Consolidated Session Memory — Broadly Incorporated
+
+**Source sessions:** `689b3e62`, `1cf03834` | **Incorporated:** 2026-04-24
+
+### Thread 689b3e62 — Critical Corrections (LOCKED)
+1. **uuid7 Import Fallback:** `try/except ImportError` pattern REQUIRED. Current container: `counselconduit-00037-7mf` (deployed 2026-04-23).
+2. **.NET 11.0 Preview 2:** CONFIRMED INSTALLED at `/usr/local/share/dotnet/dotnet`. GEMINI.md v9.6 was wrong.
+3. **OnExternalEvent:** CORRECT API for SK Process.Core v1.21.0-alpha. Do NOT rename to OnInputEvent until >= v1.30+.
+4. **Firebase Storage:** Initialized with deny-all rules. Console setup required for full activation.
+5. **MAGIC_LINK_SECRET:** ✅ RESOLVED — exists in GCP Secret Manager.
+6. **Lighthouse Mobile:** KovelAI P93/A100/BP100/SEO100.
+7. **Python 3.14.3:** CPython, 126 packages, MLX 0.31.1, grpcio 1.78.0, numpy 2.4.3.
+8. **Lighthouse-CI:** Recommended for CI pipeline budget assertions.
+
+### Thread 1cf03834 — Skills + Memory Expansion
+1. **Skills Fleet:** 160→182 (22 cherry-picked from antigravity-awesome-skills).
+2. **Media MCP Server:** `labs/uphillsnowball/media-mcp-server/` (Veo 3.1 + NB Pro).
+3. **Cinematic Scroll:** `labs/uphillsnowball/cinematic-scroll/` (Lighthouse A95/BP96/SEO100).
+4. **Reference Agents:** `labs/uphillsnowball/reference_agents/` (54 files from devrel-demos).
+5. **NotebookLM MCP:** Evaluated YES — `uv tool install notebooklm-mcp-cli` approved.
+6. **Awesome-AITools:** 239 tools cataloged, 4 evaluate: MemPalace, codesight, NadirClaw, CLI-Anything.
+
+### Memory Kernel Analysis — Adoptable Patterns
+**Source:** mainion-ai/memory-kernel v1.11.0 (Apache 2.0, TypeScript)
+**Architecture:** File-first (markdown + YAML frontmatter), SQLite derived index, NDJSON event log.
+
+**8 Patterns for Selective Adoption:**
+1. **Typed Knowledge with Confidence Scoring** — HIGH: 9 atom types with confidence + TTL. Encode epistemic status.
+2. **Temporal Decay in Recall** — HIGH: `exp(-λ × age_days)`, half_life=30d. ACT-R (1998) proven.
+3. **Event Sourcing** — MEDIUM: NDJSON event log with deterministic replay.
+4. **Spreading Activation (Wander)** — HIGH: ACT-R base-level activation through knowledge graph. <30ms for 200 atoms.
+5. **Operational Closure Metrics** — MEDIUM: Luhmann-based entanglement measurement. Predicts automation resistance.
+6. **Token-Budget-Aware Recall** — HIGH: Two-pass reservation (critical types get guaranteed slots).
+7. **View Generation** — HIGH: Auto-generates INDEX/HANDOFF/DECISIONS/CONSTRAINTS from raw atoms.
+8. **File-First with Derived Index** — MEDIUM: SQLite FTS5 index over markdown atoms.
+
+**Decision:** Selective pattern adoption, NOT wholesale migration. Do NOT run alongside KI system (complected).
+
+### daScript Reference Architecture
+**Source:** Gaijin Entertainment daScript/Daslang
+- **29-tool MCP server:** Gold-standard compiler-backed MCP. Tools expose diagnostics, type_of, find_references, eval_expression, AOT.
+- **Adoptable:** Compiler-backed tool pattern, semantic hashing for hot-reload, build timing honesty in CLAUDE.md.
+- **Status:** Reference only, documented in THIRD_PARTY_TAPESTRY.json.
+
+### Ruler — Agent Config Unification
+**Source:** intellectronica/ruler (MIT, TypeScript)
+- **Purpose:** Single `.ruler/` source → generates AGENTS.md, CLAUDE.md, GEMINI.md, Copilot, Cursor, Windsurf, Cline, Aider configs.
+- **Status:** Install recommended (`npm install -g @intellectronica/ruler`). Would eliminate 3-file agent config drift.
+- **Action items:** Create `.ruler/`, migrate content, run `ruler apply`, add to CI.
+</session_memory_corpus>
 </system_directive>
