@@ -6,12 +6,12 @@ description: Top 0.001% Standard Operating Procedure for resolving massive tech 
 
 ## 1. The Necromancy Pass (Kill Zombie Code Locally)
 
-### Python
+### Python (V22 — ruff subsumes vulture)
 ```bash
-vulture . --make-whitelist > .vulture_whitelist.py
-vulture . .vulture_whitelist.py --min-confidence 90
+ruff check . --select F401,F841 --fix --exclude external_repos,external_sdks,third_party
 ```
-Delete everything flagged at 100% confidence. Whitelist intentional unused code.
+F401 = unused imports, F841 = unused variables. Auto-fix removes dead code deterministically.
+Vulture is permanently retired (V22). Do NOT use vulture.
 
 ### TypeScript/JavaScript
 ```bash
@@ -83,7 +83,7 @@ Local execution is secondary; GitHub Actions are absolute truth.
 
 ### The Necromancy Gate (Job 3)
 - CI blocks merge if Knip flags unused exports/dependencies
-- CI blocks merge if Vulture flags dead Python code at 90% confidence
+- CI blocks merge if ruff F401/F841 flags dead Python code (V22 — vulture retired)
 - Pyright type checks critical paths
 
 ### Lighthouse CI (Job 5)
