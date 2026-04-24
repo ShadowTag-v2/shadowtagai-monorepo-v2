@@ -1,0 +1,67 @@
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# compliance-copy-linter.yml — CI gate for compliance copy claims
+#
+# Scans HTML, TSX, and MDX files for banned compliance phrases
+# that make unqualified certification/audit claims.
+#
+# Prevents regression of the SOC 2/HIPAA copy hardening.
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+name: Compliance Copy Linter
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'apps/kovelai/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'apps/kovelai/**'
+  workflow_dispatch:
+
+jobs:
+  copy-lint:
+    name: 📝 Compliance Copy Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan for banned compliance phrases
+        run: |
+          BANNED_PATTERNS=(
+            "SOC 2 Type II certified"
+            "SOC 2 Type II ready"
+            "HIPAA compliant"
+            "HIPAA certified"
+            "HIPAA-adjacent"
+            "fully compliant"
+            "certified infrastructure"
+            "SOC 2 reports"
+          )
+
+          FOUND=0
+          for pattern in "${BANNED_PATTERNS[@]}"; do
+            MATCHES=$(grep -rni "$pattern" site/ apps/kovelai/ --include="*.html" --include="*.tsx" --include="*.mdx" --include="*.md" 2>/dev/null || true)
+            if [ -n "$MATCHES" ]; then
+              echo "❌ BANNED PHRASE FOUND: \"$pattern\""
+              echo "$MATCHES"
+              FOUND=1
+            fi
+          done
+
+          if [ "$FOUND" -eq 1 ]; then
+            echo ""
+            echo "════════════════════════════════════════════════"
+            echo "❌ Compliance copy violations detected."
+            echo "Use defensible language: 'audit-ready', 'pursuing certification', 'aligned with standards'."
+            echo "See: docs/compliance/SOC2_TIMELINE.md"
+            echo "════════════════════════════════════════════════"
+            exit 1
+          fi
+
+          echo "✅ No banned compliance phrases found."

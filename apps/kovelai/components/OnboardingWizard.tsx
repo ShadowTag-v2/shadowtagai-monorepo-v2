@@ -188,34 +188,50 @@ export function OnboardingWizard() {
             <p style={{ color: '#859398', fontSize: '14px', marginBottom: '32px' }}>
               Tell us about your practice.
             </p>
-            <label style={labelStyle}>Firm Name</label>
+            <label htmlFor="firmName" style={labelStyle}>
+              Firm Name
+            </label>
             <input
+              id="firmName"
               style={inputStyle}
               value={firmData.firmName}
               onChange={(e) => updateField('firmName', e.target.value)}
               placeholder="e.g., Smith & Associates LLP"
+              aria-label="Firm Name"
             />
-            <label style={labelStyle}>Contact Email</label>
+            <label htmlFor="contactEmail" style={labelStyle}>
+              Contact Email
+            </label>
             <input
+              id="contactEmail"
               style={inputStyle}
               type="email"
               value={firmData.contactEmail}
               onChange={(e) => updateField('contactEmail', e.target.value)}
               placeholder="partner@firm.com"
+              aria-label="Contact Email"
             />
-            <label style={labelStyle}>Bar Number</label>
+            <label htmlFor="barNumber" style={labelStyle}>
+              Bar Number
+            </label>
             <input
+              id="barNumber"
               style={inputStyle}
               value={firmData.barNumber}
               onChange={(e) => updateField('barNumber', e.target.value)}
               placeholder="e.g., NY-1234567"
+              aria-label="Bar Number"
             />
-            <label style={labelStyle}>Primary Jurisdiction</label>
+            <label htmlFor="jurisdiction" style={labelStyle}>
+              Primary Jurisdiction
+            </label>
             <input
+              id="jurisdiction"
               style={inputStyle}
               value={firmData.jurisdiction}
               onChange={(e) => updateField('jurisdiction', e.target.value)}
               placeholder="e.g., New York, Southern District"
+              aria-label="Primary Jurisdiction"
             />
           </>
         )}
@@ -238,13 +254,19 @@ export function OnboardingWizard() {
               All plans include Kovel privilege protection.
             </p>
             {(Object.entries(TIER_INFO) as [string, typeof TIER_INFO.solo][]).map(([key, tier]) => (
+              // biome-ignore lint/a11y/useSemanticElements: custom styled radio card, native input[type=radio] breaks visual layout
               <div
                 key={key}
                 onClick={() => updateField('tier', key)}
-                role="button"
+                role="radio"
+                aria-checked={firmData.tier === key}
+                aria-label={`Select ${tier.name} plan at ${tier.price}`}
                 tabIndex={0}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') updateField('tier', key);
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    updateField('tier', key);
+                  }
                 }}
                 style={{
                   padding: '20px',
@@ -347,10 +369,28 @@ export function OnboardingWizard() {
                 never see the plaintext.
               </p>
             </div>
-            <label style={labelStyle}>Anthropic API Key (optional)</label>
-            <input style={inputStyle} type="password" placeholder="sk-ant-..." autoComplete="off" />
-            <label style={labelStyle}>Google Vertex AI Key (optional)</label>
-            <input style={inputStyle} type="password" placeholder="AIza..." autoComplete="off" />
+            <label htmlFor="anthropicKey" style={labelStyle}>
+              Anthropic API Key (optional)
+            </label>
+            <input
+              id="anthropicKey"
+              style={inputStyle}
+              type="password"
+              placeholder="sk-ant-..."
+              autoComplete="off"
+              aria-label="Anthropic API Key"
+            />
+            <label htmlFor="vertexKey" style={labelStyle}>
+              Google Vertex AI Key (optional)
+            </label>
+            <input
+              id="vertexKey"
+              style={inputStyle}
+              type="password"
+              placeholder="AIza..."
+              autoComplete="off"
+              aria-label="Google Vertex AI Key"
+            />
           </>
         )}
 
@@ -408,6 +448,7 @@ export function OnboardingWizard() {
         >
           {step > 1 && step < 5 && (
             <button
+              type="button"
               onClick={prevStep}
               style={{
                 padding: '12px 24px',
@@ -424,6 +465,7 @@ export function OnboardingWizard() {
           )}
           {step < 4 && (
             <button
+              type="button"
               onClick={nextStep}
               style={{
                 padding: '12px 24px',
@@ -442,6 +484,7 @@ export function OnboardingWizard() {
           )}
           {step === 4 && (
             <button
+              type="button"
               onClick={handleSubmit}
               disabled={loading}
               style={{
