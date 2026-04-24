@@ -1,16 +1,16 @@
 ---
-version: 10.2
+version: 10.3
 scope: antigravity_local_operator_invariants
 status: LOCKED
 ---
 
-# GEMINI.md — v10.2
+# GEMINI.md — v10.3
 
 <system_directive>
 <workspace_alignment>
 - Active project: `shadowtag-omega-v4`
 - Only authorized external runtime model: `gemini-3.1-flash-lite-preview-thinking`
-- NOTE: `.NET 10.0.106` is installed. Semantic Kernel (net10.0, SK 1.74.0) build-verified. OnExternalEvent is correct SK Process.Core API.
+- NOTE: `.NET 11.0.100-preview` IS INSTALLED (2026-04-24). Also available: 10.0.106, 10.0.202, 8.0.419. Semantic Kernel target: `net11.0` (SK 1.74.0) build-verified. OnExternalEvent is correct SK Process.Core API.
 </workspace_alignment>
 
 <canonical_truth_hierarchy>
