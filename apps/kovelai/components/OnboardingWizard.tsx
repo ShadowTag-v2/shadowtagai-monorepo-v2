@@ -55,7 +55,7 @@ const TIER_INFO = {
       '10M tokens/day',
       'BYOK',
       'Custom models',
-      'SOC 2 reports',
+      'Compliance reports',
       'Dedicated support',
     ],
   },
