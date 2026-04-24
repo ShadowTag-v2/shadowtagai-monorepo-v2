@@ -1,5 +1,5 @@
 ---
-version: 10.1
+version: 10.2
 scope: antigravity_local_operator_invariants
 status: LOCKED
 ---
