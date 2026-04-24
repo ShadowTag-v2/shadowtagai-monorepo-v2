@@ -1,4 +1,4 @@
-# RISK_REGISTER — v10.6
+# RISK_REGISTER — v10.8
 
 > Operational risks tracked as part of the sovereign monorepo governance.
 > Reviewed on each version bump. Mitigations are enforced, not advisory.
@@ -311,3 +311,15 @@
 - **Severity:** 🟡 Medium
 - **Status:** KNOWN
 - **Description**: `src-tauri/src/main.rs` contains `trigger_biometric_auth()` which always returns `true` (simulated). The Terminal Execution Policy ("ASK") is not enforced until LocalAuthentication framework integration is complete. Any Tauri-wrapped deployment button currently bypasses biometric verification. **Action**: Integrate `security-framework-sys` Rust crate for real TouchID/FaceID on macOS. Add `#[cfg(target_os = "macos")]` conditional compilation.
+
+## Risk #84: Gitleaks → Betterleaks Migration — CI Action Unverified
+- **Type**: Security / CI
+- **Severity:** 🟡 Medium
+- **Status:** KNOWN
+- **Description**: Secret scanning migrated from gitleaks v8.x to betterleaks v1.1.2 (12.9x faster). Pre-commit hook, preflight_gate.sh, and `.betterleaks.toml` all updated. `.betterleaksignore` created from `.gitleaksignore` (1,150 fingerprints). CI workflow references `betterleaks/betterleaks-action@v2` but this action has not been verified on GitHub Marketplace. Git scan shows 1,260 findings: 966 google-api-key (mostly test keys), 194 generic-api-key-inline, 99 github-token, 1 stripe-secret-key (history only). **Action**: (1) Verify betterleaks-action@v2 exists or replace with `run:` step. (2) Review 99 github-token findings for rotation. (3) Investigate 1 stripe-secret-key in git history. (4) Bulk-add false positive fingerprints to `.betterleaksignore`.
+
+## Risk #85: Repo Maintenance Doctrine — Preflight Not Enforced in CI
+- **Type**: Architecture / Governance
+- **Severity:** 🟡 Medium
+- **Status:** KNOWN
+- **Description**: `scripts/preflight_gate.sh` exists and is usable locally, but is NOT enforced in CI (no GitHub Actions workflow calls it). `scripts/repo_doctor.py` created as Phase 1 health checker but is not yet wired into CI or the GCA autolint daemon. The 5-gate maintenance doctrine (Root, Secret, Drift, Build, Memory) is documented in `docs/REPO_MAINTENANCE_RUNBOOK.md` but only the Secret gate is enforced via pre-commit. **Action**: (1) Add preflight_gate.sh to a CI workflow. (2) Wire repo_doctor.py into GCA autolint daemon. (3) Enforce drift guard in pre-commit. (4) Activate autolint daemon via launchd/cron.
