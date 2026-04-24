@@ -1,0 +1,42 @@
+# Invoked via: /research:query
+description = "Run the Autoresearch Triad (web + docs + codebase) and synthesize findings."
+
+prompt = """
+Execute the Autoresearch Triad pattern against the given query.
+
+## Phase 1: Classify Intent
+Before searching, classify the query intent:
+- **Internal IP** → Search codebase with `rg` / `sg` against local files ONLY
+- **Public IP** → Use google-developer-knowledge MCP or web search
+- **Hybrid** → Search internal FIRST, then public, intersect findings
+
+## Phase 2: Parallel Search Triad
+Run these three search vectors simultaneously:
+
+### Vector 1: Codebase Search
+Search the monorepo for relevant code, patterns, and implementations:
+- Use ripgrep for exact matches
+- Check imports, function definitions, and usage patterns
+
+### Vector 2: Documentation Search
+Use google-developer-knowledge MCP to find official docs:
+- API references, guides, best practices
+- Release notes and migration guides
+
+### Vector 3: Web Search
+Search for community solutions, Stack Overflow, GitHub issues:
+- Recent solutions (last 6 months preferred)
+- Architecture patterns and anti-patterns
+
+## Phase 3: Synthesis
+Combine all three vectors into a coherent answer:
+1. What the codebase already does (cite files)
+2. What official docs recommend (cite URLs)
+3. What the community has found (cite sources)
+4. Recommended action with confidence level
+
+## DLP Circuit Breaker (MANDATORY)
+NEVER pass proprietary variable names, corporate schemas, internal API keys,
+or internal package names into public search tools.
+All public queries MUST be sanitized.
+"""

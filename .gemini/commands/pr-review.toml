@@ -1,0 +1,28 @@
+# Invoked via: /pr-review
+description = "High-signal code review using REVIEW.md contract."
+
+prompt = """
+Review this change like a high-signal code reviewer.
+
+Use REVIEW.md as the governing contract.
+
+Review in this order:
+1. Correctness
+2. Security
+3. Performance
+4. Maintainability
+5. Style
+
+Requirements:
+- Do NOT invent bugs
+- Only mark 🔴 when there is a concrete failure mode or deterministic proof path
+- Prefer a few high-value findings over many weak ones
+- Identify pre-existing issues separately as 🟣
+- Recommend the smallest sensible fix
+
+Output format:
+- Summary
+- Findings (🔴 critical / 🟡 warning / 🟣 pre-existing)
+- Risks not fully verified
+- Suggested follow-up tests
+"""

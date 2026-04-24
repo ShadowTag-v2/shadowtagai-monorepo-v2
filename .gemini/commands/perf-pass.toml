@@ -1,0 +1,21 @@
+# Invoked via: /perf-pass
+description = "Run a performance-oriented review of React or Next.js code."
+
+prompt = """
+Run a performance-oriented review of the targeted React or Next.js code.
+
+Prioritize in this exact order:
+1. Eliminate async waterfalls
+2. Reduce client bundle size
+3. Cut server-side waste
+4. Reduce unnecessary re-renders
+5. Only then consider micro-optimizations
+
+For each issue include:
+- Where it is (file + line)
+- Why it matters (user impact)
+- Likely impact (quantified if possible)
+- Smallest fix (code patch or refactor step)
+
+Output a prioritized table of findings sorted by impact.
+"""
