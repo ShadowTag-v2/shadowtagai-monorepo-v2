@@ -54,6 +54,8 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 10. **Gideon OS Architecture:** 14-block sovereign OS spanning 7 languages. Canonical manifest in `monorepo_manifest.yaml` → `gideon_os` silo. Execution brief at `labs/uphillsnowball/EXECUTION_BRIEF_OMNI_SWEEP.md`. Risks: #81 (multi-language CI), #82 (IPI quarantine).
 11. **Cor.autoresearch Architecture:** UphillSnowball engine retired FlyingMonkeys (2026-04-24). Replacement: `AutoresearchEngine` in `labs/uphillsnowball/engine/cor_autoresearch.py`. Three-layer: Kosmos directs, BioAgents routes, n-autoresearch executes. Governance: JudgeSix-Human + JudgeSix-Agent + RKILL.
 12. **Tri-Partite Cognitive Architecture (TACSOP 4 Kairos):** Brainstem (5 MCP Servers—muscle memory, <100ms), Hippocampus (NotebookLM + Obsidian—persistent memory, session-bridging), Motor Cortex (Kairos Zero-Day Matrix + npx skills—dynamic acquisition). All three layers MUST be engaged per session. Skill: `.agents/skills/kairos-zero-day-matrix/SKILL.md`.
+13. **TACSOP 0 Building Websites (Fully Activated 2026-04-24):** 29-component meta-SOP chaining 24 skills into a 5-phase pipeline (Research → Design → Architecture → Implementation → Deployment). Meta-skill: `.agents/skills/tacsop0-building-websites/SKILL.md`.
+14. **Cor.NotebookLM TACSOP (Fully Activated 2026-04-24):** Zero-Trust Automation Architecture. All untrusted external data MUST route through NotebookLM MCP for IPI quarantine before entering agent context. Skill: `.agents/skills/cor-notebooklm-tacsop/SKILL.md`.
 
 ## Open Infrastructure Blockers
 
