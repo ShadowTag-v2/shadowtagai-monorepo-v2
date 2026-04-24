@@ -1,0 +1,22 @@
+# Invoked via: /ui-audit
+description = "Audit frontend for architecture, performance, and UX consistency."
+
+prompt = """
+Audit this frontend using the repo architecture contract.
+
+Check for:
+- Atoms, molecules, sections, and features mixed together
+- Business logic embedded in presentational components
+- Components that should become hooks or services
+- Unnecessary client-side work
+- Async waterfalls
+- Oversized client bundles
+- Unnecessary re-renders
+- Inconsistent buttons, duplicated UI, orphaned actions, or broken flows
+
+Deliver:
+1. Architecture findings (component boundary violations)
+2. Performance findings (bundle, render, async issues)
+3. UX consistency findings (visual + interaction inconsistencies)
+4. Prioritized fix plan (ordered by impact)
+"""

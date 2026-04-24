@@ -48,6 +48,7 @@ LOOP_STEWARD_INTERVAL = 300  # 5 minutes
 STANDUP_INTERVAL = 86400  # 24 hours
 VAULT_INGEST_INTERVAL = 300  # 5 minutes
 QUARANTINE_PURGE_INTERVAL = 3600  # 1 hour
+AUTOLINT_INTERVAL = 86400  # 24 hours
 
 _running = True
 
@@ -250,6 +251,7 @@ def run_quarantine_purge() -> bool:
     if not quarantine_dir.exists():
         return True
     import time as _time
+
     now = _time.time()
     purged = 0
     for path in quarantine_dir.iterdir():
@@ -261,6 +263,30 @@ def run_quarantine_purge() -> bool:
     if purged > 0:
         logger.info("Quarantine purge: removed %d stale file(s)", purged)
     return True
+
+
+def run_omni_autolint() -> bool:
+    """Execute gca_autolint_daemon.py in headless dry-run + JSON mode."""
+    script = SCRIPTS_DIR / "gca_autolint_daemon.py"
+    if not script.exists():
+        logger.warning("gca_autolint_daemon.py not found, skipping")
+        return False
+    try:
+        result = subprocess.run(
+            [sys.executable, str(script), "--dry-run", "--json"],
+            capture_output=True,
+            text=True,
+            timeout=600,
+            cwd=str(REPO_ROOT),
+        )
+        if result.returncode == 0:
+            logger.info("Omni-Autolint completed successfully")
+            return True
+        logger.error("Omni-Autolint failed: %s", result.stderr[:500])
+        return False
+    except subprocess.TimeoutExpired:
+        logger.exception("Omni-Autolint timed out (600s)")
+        return False
 
 
 def write_heartbeat(status: dict) -> None:
@@ -291,6 +317,7 @@ def main_loop(once: bool = False) -> None:
     last_standup = 0.0
     last_vault_ingest = 0.0
     last_quarantine_purge = 0.0
+    last_autolint = 0.0
 
     cycle = 0
     while _running:
@@ -339,6 +366,12 @@ def main_loop(once: bool = False) -> None:
             run_quarantine_purge()
             last_quarantine_purge = now
             status["quarantine_purge"] = "ran"
+
+        # Omni-Autolint (daily, during off-hours 3-5 AM)
+        if now - last_autolint >= AUTOLINT_INTERVAL and 3 <= hour <= 5:
+            run_omni_autolint()
+            last_autolint = now
+            status["autolint"] = "ran"
 
         write_heartbeat(status)
 

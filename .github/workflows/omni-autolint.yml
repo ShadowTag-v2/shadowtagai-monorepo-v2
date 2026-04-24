@@ -1,152 +1,145 @@
-name: "🤖 Omni-Autolint — Continuous Self-Healing"
-# Replaces autolint.yml. Creates PRs (not direct pushes) for review.
-# Uses peter-murray/workflow-application-token-action for short-lived tokens.
-# Reference: https://github.com/peter-murray/workflow-application-token-action
+name: Omni-Autolint Secure Pipeline
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '**.py'
-      - '**.ts'
-      - '**.tsx'
-      - '**.js'
-      - '**.jsx'
   schedule:
-    - cron: '0 6 * * 1'  # Weekly Monday 6am UTC
-  workflow_dispatch: {}
-
-permissions:
-  contents: write
-  pull-requests: write
+    - cron: '0 3 * * *' # Run daily at 3 AM UTC
+  workflow_dispatch: # Allow manual triggering
 
 jobs:
   omni-autolint:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
-      # ── Step 1: Generate short-lived GitHub App token ──
-      - name: Generate GitHub App token
-        id: app-token
+      - name: Generate Short-Lived GitHub App Token
+        id: generate-token
         uses: peter-murray/workflow-application-token-action@v4
         with:
-          application_id: ${{ secrets.GH_APP_ID }}
-          application_private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-          permissions: "contents:write,pull_requests:write,metadata:read"
-          revoke_token: true
+          application_id: ${{ secrets.APP_ID }}
+          application_private_key: ${{ secrets.APP_PRIVATE_KEY }}
 
-      # ── Step 2: Checkout with token ──
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          token: ${{ steps.app-token.outputs.token }}
-          ref: main
+          token: ${{ steps.generate-token.outputs.token }}
           fetch-depth: 0
 
-      # ── Step 3: Setup runtimes ──
-      - name: Set up Python 3.14
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.14'
-
-      - name: Set up Node.js 24
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24'
 
-      # ── Step 4: Install linters ──
-      - name: Install linters
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Run Ruff (check + format)
+        id: ruff
         run: |
-          pip install ruff vulture
-          npm install @biomejs/biome @ast-grep/cli
+          uv run ruff check --fix .
+          RUFF_CHECK_EXIT=$?
+          if [ $RUFF_CHECK_EXIT -gt 1 ]; then
+            echo "::error::Ruff check crashed with exit code $RUFF_CHECK_EXIT"
+            exit $RUFF_CHECK_EXIT
+          fi
 
-      # ── Step 5: Run Omni-Linter triad ──
-      - name: "Lint: ruff check --fix"
-        id: ruff-check
-        run: ruff check --fix --exit-zero .
+          uv run ruff format .
+          RUFF_FMT_EXIT=$?
+          if [ $RUFF_FMT_EXIT -gt 1 ]; then
+            echo "::error::Ruff format crashed with exit code $RUFF_FMT_EXIT"
+            exit $RUFF_FMT_EXIT
+          fi
 
-      - name: "Lint: ruff format"
-        id: ruff-format
-        run: ruff format .
+      - name: Run Vulture (dead code scan)
+        id: vulture
         continue-on-error: true
+        run: |
+          uv run vulture . --min-confidence 90 \
+            --exclude "external_repos,node_modules,.venv" \
+            | tee /tmp/vulture-output.txt
+          echo "vulture_findings=$(wc -l < /tmp/vulture-output.txt | tr -d ' ')" >> "$GITHUB_OUTPUT"
 
-      - name: "Lint: biome check --write"
+      - name: Run Biome (check + fix)
         id: biome
         run: |
-          npx biome check --write --unsafe \
-            --files-ignore-unknown=true \
-            --no-errors-on-unmatched .
-        continue-on-error: true
-
-      - name: "Lint: ast-grep scan"
-        id: ast-grep
-        run: npx ast-grep scan --format github . || true
-
-      # ── Step 6: Judgment Check — fatal errors ──
-      - name: "Judgment: Check for fatal linter crashes"
-        run: |
-          # If ruff check had exit > 1 (not just warnings), fail the job
-          if [ "${{ steps.ruff-check.outcome }}" = "failure" ]; then
-            echo "❌ Ruff check encountered a fatal error. Aborting."
-            exit 1
+          npx @biomejs/biome check --write .
+          BIOME_EXIT=$?
+          if [ $BIOME_EXIT -gt 1 ]; then
+            echo "::error::Biome crashed with exit code $BIOME_EXIT"
+            exit $BIOME_EXIT
           fi
 
-      # ── Step 7: Detect changes ──
-      - name: Check for AST changes
-        id: diff
+      - name: Check for AST Modifications
+        id: git-check
         run: |
-          if git diff --quiet && git diff --staged --quiet; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "changes=true" >> "$GITHUB_OUTPUT"
+            echo "diff_stat<<EOF" >> "$GITHUB_OUTPUT"
+            git diff --stat >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
           else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "### 🧹 AST Changes Detected" >> "$GITHUB_STEP_SUMMARY"
-            echo '```diff' >> "$GITHUB_STEP_SUMMARY"
-            git diff | head -200 >> "$GITHUB_STEP_SUMMARY"
-            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            echo "changes=false" >> "$GITHUB_OUTPUT"
           fi
 
-      # ── Step 8: Create PR (not direct push) ──
-      - name: Create Auto-Heal PR
-        if: steps.diff.outputs.changed == 'true'
+      - name: Gitleaks Secret Scan
+        if: steps.git-check.outputs.changes == 'true'
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          args: --no-git --path .
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+      - name: Commit, Push Branch & Open PR
+        if: steps.git-check.outputs.changes == 'true'
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
-          BRANCH="gca/ast-autofix-$(git rev-parse --short HEAD)-$(date +%Y%m%d%H%M)"
-          git config user.name "ShadowTag GCA Bot"
-          git config user.email "gca-bot@shadowtagai.ai"
-          git checkout -b "$BRANCH"
-          git add -A
-          git commit -m "chore(ast): autonomous AST optimization via GCA
+          BRANCH_NAME="chore/omni-autolint-$(date +%s)"
 
-          Automated fixes applied by the Omni-Autolint CI pipeline:
-          - ruff check --fix (Pyflakes, pycodestyle, isort, bugbear)
-          - ruff format (Black-compatible formatting)
-          - biome check --write (JS/TS/JSON formatting + linting)
-          - ast-grep scan (structural pattern analysis)
+          # Configure Git user (GitHub App noreply)
+          git config user.name "Omni-Autolint Bot[bot]"
+          git config user.email "3018200+shadowtag-bot[bot]@users.noreply.github.com"
 
-          This PR was generated automatically. Review before merging."
+          # Create branch and commit
+          git checkout -b "$BRANCH_NAME"
+          git add .
+          git commit -m "chore(ast): autonomous AST optimization via GCA"
 
-          git push origin "$BRANCH"
+          # Push securely using the short-lived token
+          git push origin "$BRANCH_NAME"
+
+          # Build PR body with vulture findings
+          VULTURE_COUNT="${{ steps.vulture.outputs.vulture_findings }}"
+          PR_BODY="## 🤖 Autonomous AST Optimization
+
+          **Generated by:** Omni-Autolint Secure Pipeline
+          **Linters:** ruff check + format, vulture (${VULTURE_COUNT:-0} dead code findings), biome
+
+          ### Diff Stats
+          \`\`\`
+          ${{ steps.git-check.outputs.diff_stat }}
+          \`\`\`
+
+          ### Vulture Findings
+          <details>
+          <summary>${VULTURE_COUNT:-0} dead code items detected</summary>
+
+          \`\`\`
+          $(cat /tmp/vulture-output.txt 2>/dev/null || echo 'No findings')
+          \`\`\`
+          </details>
+
+          ---
+          *Gitleaks scan passed. No secrets detected in lint fixes.*"
 
           gh pr create \
             --title "🤖 AST Auto-Heal: Omni-Linter Corrections" \
-            --body "## Automated AST Optimization
-
-          This PR contains auto-fixable linting corrections detected by the Omni-Autolint pipeline.
-
-          ### Linters Applied
-          - **ruff check --fix** — Python lint + auto-fix
-          - **ruff format** — Black-compatible formatting
-          - **biome check --write** — JS/TS/JSON lint + format
-          - **ast-grep scan** — Structural pattern analysis
-
-          ### Review Checklist
-          - [ ] Verify no semantic changes (only formatting/style)
-          - [ ] Confirm no import removals that break runtime
-          - [ ] Check that unfixable rules (B018, F841) were NOT auto-fixed
-
-          > Generated by \`ShadowTag GCA Bot\` via \`.github/workflows/omni-autolint.yml\`" \
+            --body "$PR_BODY" \
             --base main \
-            --head "$BRANCH" \
-            --label "bot,ast-autofix"
+            --head "$BRANCH_NAME" \
+            --label "autolint,auto-merge"
+
+          # Enable auto-merge if branch protection allows
+          gh pr merge "$BRANCH_NAME" --auto --squash || true
