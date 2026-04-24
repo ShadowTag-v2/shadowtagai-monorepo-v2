@@ -44,6 +44,12 @@ ALLOWED_FILES=(
   'scripts/dlp_circuit_breaker.sh'
   'docs/DEPLOYMENT_RUNBOOK.md'
   'docs/deployment.md'
+  # Google Cloud skills reference docs — parameterized SA patterns from official docs
+  '.agents/skills/google-cloud-sql-basics/references/'
+  '.agents/skills/google-gke-basics/references/'
+  '.agents/skills/google-cloud-run-basics/references/'
+  '.agents/skills/google-firebase-basics/references/'
+  '.agents/skills/google-google-cloud-recipe-auth/'
 )
 
 echo "🔒 DLP Circuit Breaker — Scanning staged files..."

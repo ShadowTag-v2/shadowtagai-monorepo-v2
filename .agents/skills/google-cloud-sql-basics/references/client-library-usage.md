@@ -63,7 +63,7 @@ certificates.
     Then add dependencies for your database:
 
     *   **PostgreSQL:**
-        ```xml  
+        ```xml
         <dependencies>
           <dependency>
             <groupId>org.postgresql</groupId>
@@ -78,7 +78,7 @@ certificates.
         ```
 
     *   **MySQL:**
-        ```xml 
+        ```xml
         <dependencies>
           <dependency>
             <groupId>com.mysql</groupId>
