@@ -111,3 +111,13 @@ repos:
         language: system
         files: '\.(html|tsx|ts|mdx|md)$'
         pass_filenames: false
+
+  # DLP Circuit Breaker — epistemic airgap enforcement (Cor.30 R3, GEMINI.md epistemic_airgap_doctrine)
+  - repo: local
+    hooks:
+      - id: dlp-circuit-breaker
+        name: DLP Circuit Breaker (Internal IP Leak Prevention)
+        entry: bash scripts/dlp_circuit_breaker.sh
+        language: system
+        pass_filenames: false
+        always_run: true
