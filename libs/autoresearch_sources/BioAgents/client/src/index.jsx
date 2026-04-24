@@ -160,5 +160,4 @@ const root = document.getElementById('app');
 if (root) {
   render(<Root />, root);
 } else {
-  console.error('Root element #app not found');
 }

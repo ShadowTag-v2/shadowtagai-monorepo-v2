@@ -104,7 +104,7 @@ function getOrCreateDevUserId(): string {
   const stored = localStorage.getItem(STORAGE_KEY);
 
   // Migration: If stored ID is old format (dev_user_*), clear it and generate new UUID
-  if (stored && stored.startsWith('dev_user_')) {
+  if (stored?.startsWith('dev_user_')) {
     console.log('[useSessions] Migrating old dev user ID to UUID format:', stored);
     localStorage.removeItem(STORAGE_KEY);
     // Fall through to create new UUID
@@ -218,8 +218,7 @@ export function useSessions(
                   title,
                   messages: uiMessages,
                 };
-              } catch (err) {
-                console.error(`Error loading messages for conversation ${conv.id}:`, err);
+              } catch (_err) {
                 return {
                   id: conv.id!,
                   title: 'New conversation',
@@ -279,8 +278,7 @@ export function useSessions(
             }
           }
         }
-      } catch (err) {
-        console.error('Error loading conversations:', err);
+      } catch (_err) {
         // Fallback to local session
         if (mounted) {
           // If we had messages in a temporary session, preserve it
@@ -310,7 +308,7 @@ export function useSessions(
     return () => {
       mounted = false;
     };
-  }, [userId]);
+  }, [userId, sessions.find, currentSessionId]);
 
   /**
    * Polling for message updates
@@ -360,7 +358,7 @@ export function useSessions(
             return session;
           }),
         );
-      } catch (err) {
+      } catch (_err) {
         // Silently ignore polling errors
       }
     };
@@ -494,7 +492,7 @@ export function useSessions(
               if (session.id !== currentSessionId) return session;
 
               // When a message is updated, the backend is updating the content (assistant response)
-              if (!updatedMessage.content || !updatedMessage.content.trim()) {
+              if (!updatedMessage.content?.trim()) {
                 return session; // No content to update
               }
 
@@ -762,9 +760,7 @@ export function useSessions(
           return session;
         }),
       );
-    } catch (err) {
-      console.error('[useSessions] refetchMessages error:', err);
-    }
+    } catch (_err) {}
   };
 
   return {

@@ -635,12 +635,12 @@ body {
 .message-action-disabled {
   opacity: 0.3;
   cursor: not-allowed;
-  color: var(--text-tertiary) !important;
+  color: var(--text-tertiary);
 }
 
 .message-action-disabled:hover {
-  background: transparent !important;
-  color: var(--text-tertiary) !important;
+  background: transparent;
+  color: var(--text-tertiary);
 }
 
 /* Markdown styling */
@@ -1303,8 +1303,8 @@ textarea::placeholder {
 }
 
 .input-action-btn-disabled:hover {
-  background: transparent !important;
-  color: var(--text-tertiary) !important;
+  background: transparent;
+  color: var(--text-tertiary);
 }
 
 .input-action-btn-active {

@@ -29,7 +29,7 @@ export async function startRedisSubscription() {
     // Subscribe to conversation channels using pattern
     await subscriber.psubscribe('conversation:*');
 
-    subscriber.on('pmessage', (pattern, channel, message) => {
+    subscriber.on('pmessage', (_pattern, channel, message) => {
       try {
         // channel = "conversation:abc123"
         const conversationId = channel.split(':')[1];

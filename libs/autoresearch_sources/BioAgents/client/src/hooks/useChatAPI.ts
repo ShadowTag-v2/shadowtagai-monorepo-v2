@@ -106,42 +106,37 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
     const authToken = getAuthToken();
     const headers: Record<string, string> = {};
     if (authToken) {
-      headers['Authorization'] = `Bearer ${authToken}`;
+      headers.Authorization = `Bearer ${authToken}`;
     }
 
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      try {
-        const response = await fetch(pollUrl, {
-          method: 'GET',
-          headers,
-          credentials: 'include',
-        });
+      const response = await fetch(pollUrl, {
+        method: 'GET',
+        headers,
+        credentials: 'include',
+      });
 
-        if (!response.ok) {
-          throw new Error(`Poll failed: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log(`[useChatAPI] Poll attempt ${attempt + 1}:`, data.status);
-
-        if (data.status === 'completed' && data.result) {
-          return {
-            text: data.result.text || data.result.response || '',
-            messageId,
-            files: data.result.files,
-          };
-        }
-
-        if (data.status === 'failed') {
-          throw new Error(data.error || 'Job failed');
-        }
-
-        // Still processing, wait and retry
-        await new Promise((resolve) => setTimeout(resolve, intervalMs));
-      } catch (err) {
-        console.error(`[useChatAPI] Poll error:`, err);
-        throw err;
+      if (!response.ok) {
+        throw new Error(`Poll failed: ${response.status}`);
       }
+
+      const data = await response.json();
+      console.log(`[useChatAPI] Poll attempt ${attempt + 1}:`, data.status);
+
+      if (data.status === 'completed' && data.result) {
+        return {
+          text: data.result.text || data.result.response || '',
+          messageId,
+          files: data.result.files,
+        };
+      }
+
+      if (data.status === 'failed') {
+        throw new Error(data.error || 'Job failed');
+      }
+
+      // Still processing, wait and retry
+      await new Promise((resolve) => setTimeout(resolve, intervalMs));
     }
 
     throw new Error('Job timed out waiting for result');
@@ -167,7 +162,6 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
         formData.append('userId', validUserId);
         console.log('[useChatAPI] Sending with userId:', validUserId);
       } else {
-        console.warn('[useChatAPI] No valid userId provided!');
       }
 
       // Support both single file (legacy) and multiple files
@@ -186,7 +180,7 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
       const headers: Record<string, string> = {};
       const authToken = getAuthToken();
       if (authToken) {
-        headers['Authorization'] = `Bearer ${authToken}`;
+        headers.Authorization = `Bearer ${authToken}`;
       }
 
       // Determine endpoint based on x402 payment status
@@ -206,7 +200,7 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
 
         // If 402, show confirmation modal instead of automatically paying
         if (response.status === 402) {
-          const errorData = await response.json().catch(() => ({}));
+          const _errorData = await response.json().catch(() => ({}));
 
           // Extract payment amount from pricing header or response
           const pricingHeader = response.headers.get('x-pricing');
@@ -216,7 +210,7 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
             try {
               const pricing = JSON.parse(pricingHeader);
               amount = pricing.cost || pricing.price || '0.01';
-            } catch (e) {
+            } catch (_e) {
               // Use default
             }
           }
@@ -273,7 +267,7 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
             setPaymentTxHash(paymentResponse.transaction);
 
             // Show success toast with transaction link
-            const network = paymentResponse.network || 'base-sepolia';
+            const _network = paymentResponse.network || 'base-sepolia';
             const txShort = `${paymentResponse.transaction.slice(0, 8)}...${paymentResponse.transaction.slice(-6)}`;
 
             toast.success(
@@ -293,9 +287,7 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
               }, 1000); // Wait 1 second for transaction to settle
             }
           }
-        } catch (err) {
-          console.warn('[useChatAPI] Failed to decode payment response:', err);
-        }
+        } catch (_err) {}
       }
 
       const data = await response.json();
@@ -406,7 +398,6 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
         formData.append('userId', validUserId);
         console.log('[useChatAPI] Deep research with userId:', validUserId);
       } else {
-        console.warn('[useChatAPI] No valid userId for deep research!');
       }
 
       // Support both single file (legacy) and multiple files
@@ -422,7 +413,7 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
       const headers: Record<string, string> = {};
       const authToken = getAuthToken();
       if (authToken) {
-        headers['Authorization'] = `Bearer ${authToken}`;
+        headers.Authorization = `Bearer ${authToken}`;
       }
 
       // Determine endpoint based on x402 payment status
@@ -444,7 +435,7 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
 
         // If 402, show confirmation modal
         if (response.status === 402) {
-          const errorData = await response.json().catch(() => ({}));
+          const _errorData = await response.json().catch(() => ({}));
 
           // Extract payment amount from pricing header or response
           const pricingHeader = response.headers.get('x-pricing');
@@ -454,7 +445,7 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
             try {
               const pricing = JSON.parse(pricingHeader);
               amount = pricing.cost || pricing.price || '0.025';
-            } catch (e) {
+            } catch (_e) {
               // Use default
             }
           }
@@ -527,9 +518,7 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
               }, 1000);
             }
           }
-        } catch (err) {
-          console.warn('[useChatAPI] Failed to decode payment response:', err);
-        }
+        } catch (_err) {}
       }
 
       const data = await response.json();
@@ -615,7 +604,6 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
   const confirmDeepResearchPayment = async (): Promise<DeepResearchResponse | null> => {
     console.log('[useChatAPI] confirmDeepResearchPayment called, params:', pendingMessageParams);
     if (!pendingMessageParams) {
-      console.error('[useChatAPI] No pending message params!');
       return null;
     }
 
@@ -630,7 +618,6 @@ export function useChatAPI(x402Context?: UseX402PaymentReturn): UseChatAPIReturn
       setPendingMessageParams(null);
       return response;
     } catch (err) {
-      console.error('[useChatAPI] confirmDeepResearchPayment error:', err);
       setIsLoading(false);
       throw err;
     }

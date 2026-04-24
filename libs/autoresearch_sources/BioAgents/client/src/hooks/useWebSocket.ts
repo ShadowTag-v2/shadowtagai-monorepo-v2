@@ -105,7 +105,6 @@ export function useWebSocket(
           }
 
           if (message.type === 'error') {
-            console.warn('[WebSocket] Error:', message);
             return;
           }
 
@@ -135,9 +134,7 @@ export function useWebSocket(
               console.log('[WebSocket] Job progress:', message.type, message.progress);
               break;
           }
-        } catch (err) {
-          console.warn('[WebSocket] Failed to parse message:', err);
-        }
+        } catch (_err) {}
       };
 
       ws.onclose = (event) => {
@@ -154,12 +151,8 @@ export function useWebSocket(
         }
       };
 
-      ws.onerror = (error) => {
-        console.error('[WebSocket] Error:', error);
-      };
-    } catch (err) {
-      console.error('[WebSocket] Failed to create connection:', err);
-    }
+      ws.onerror = (_error) => {};
+    } catch (_err) {}
   }, []); // No dependencies - refs are used for callbacks to avoid stale closures
 
   // Connect when userId is available

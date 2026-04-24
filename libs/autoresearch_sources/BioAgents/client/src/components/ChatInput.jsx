@@ -100,7 +100,7 @@ export function ChatInput({
         return false;
       }
       // Check extension
-      const ext = '.' + file.name.split('.').pop()?.toLowerCase();
+      const ext = `.${file.name.split('.').pop()?.toLowerCase()}`;
       const isSupported = supportedExtensions.includes(ext);
       if (!isSupported) {
         console.log('[ChatInput] processFiles - unsupported extension:', file.name, ext);
@@ -194,9 +194,9 @@ export function ChatInput({
 
   // Format file size
   const formatSize = (bytes) => {
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   // Get total size
@@ -249,7 +249,7 @@ export function ChatInput({
                   <div key={`${file.name}-${index}`} className="file-chip">
                     <Icon name="file" size={14} />
                     <span className="file-name" title={file.name}>
-                      {file.name.length > 25 ? file.name.substring(0, 22) + '...' : file.name}
+                      {file.name.length > 25 ? `${file.name.substring(0, 22)}...` : file.name}
                     </span>
                     <span className="file-size">{formatSize(file.size)}</span>
                     <button

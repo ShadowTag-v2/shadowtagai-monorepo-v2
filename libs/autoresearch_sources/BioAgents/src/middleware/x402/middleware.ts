@@ -254,7 +254,7 @@ export function x402Middleware(options: X402MiddlewareOptions = {}) {
 
       if (logger) {
         logger.info(
-          { paymentResponseHeader: paymentResponseHeader.substring(0, 50) + '...' },
+          { paymentResponseHeader: `${paymentResponseHeader.substring(0, 50)}...` },
           'x402_v2_response_header_set',
         );
       }

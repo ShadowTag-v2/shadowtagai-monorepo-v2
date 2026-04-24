@@ -1855,7 +1855,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
         await db.collection("contact_requests").add(payload);
 
         this.reset(); showToast();
-    } catch (err) {
+    } catch (_err) {
         alert("Failed to send message. Please email us directly.");
         this.reset();
     }

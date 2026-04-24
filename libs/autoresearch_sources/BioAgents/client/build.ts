@@ -6,8 +6,8 @@
  * Supports watch mode with --watch flag
  */
 
-import { existsSync, mkdirSync, readFileSync, watch, writeFileSync } from 'fs';
-import { join, resolve } from 'path';
+import { existsSync, mkdirSync, readFileSync, watch, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
 const clientDir = import.meta.dir;
 const distDir = join(clientDir, 'dist');
@@ -89,9 +89,7 @@ async function build() {
   });
 
   if (!buildResult.success) {
-    console.error('❌ Build failed:');
-    for (const message of buildResult.logs) {
-      console.error(message);
+    for (const _message of buildResult.logs) {
     }
     if (!isWatchMode) {
       process.exit(1);
@@ -145,7 +143,7 @@ if (isWatchMode) {
   };
 
   // Watch src directory
-  watch(srcDir, { recursive: true }, (eventType, filename) => {
+  watch(srcDir, { recursive: true }, (_eventType, filename) => {
     if (filename) {
       console.log(`📝 Changed: ${filename}`);
       triggerRebuild();
@@ -153,7 +151,7 @@ if (isWatchMode) {
   });
 
   // Watch public directory
-  watch(publicDir, { recursive: true }, (eventType, filename) => {
+  watch(publicDir, { recursive: true }, (_eventType, filename) => {
     if (filename) {
       console.log(`📝 Changed: ${filename}`);
       triggerRebuild();

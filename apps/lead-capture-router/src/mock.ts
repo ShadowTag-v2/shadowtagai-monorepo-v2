@@ -12,11 +12,11 @@ app.post('/shadowtag-omega-v4/us-central1/captureLead', (req, res) => {
   res.set('Access-Control-Allow-Methods', 'GET, POST');
   res.set('Access-Control-Allow-Headers', 'Content-Type, Accept');
 
-  captureLead(req as any, res as any);
+  captureLead(req as unknown, res as unknown);
 });
 
 // also handle OPTIONS preflight
-app.options('/shadowtag-omega-v4/us-central1/captureLead', (req, res) => {
+app.options('/shadowtag-omega-v4/us-central1/captureLead', (_req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET, POST');
   res.set('Access-Control-Allow-Headers', 'Content-Type, Accept');

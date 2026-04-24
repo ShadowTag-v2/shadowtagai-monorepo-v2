@@ -18,7 +18,6 @@ export async function apiWrapper<T>(
 
     if (!res.ok) {
       if (res.status >= 500) {
-        console.error(`[API Wrapper] Critical Server Error at ${url}:`, res.status, data);
         return {
           data: null,
           error: 'Internal Server Error. Our team has been notified.',
@@ -29,8 +28,7 @@ export async function apiWrapper<T>(
     }
 
     return { data, error: null, status: res.status };
-  } catch (e: any) {
-    console.error(`[API Wrapper] Network or Fetch Error at ${url}:`, e);
+  } catch (_e: unknown) {
     return { data: null, error: 'Network Error. Please check your connection.', status: 0 };
   }
 }

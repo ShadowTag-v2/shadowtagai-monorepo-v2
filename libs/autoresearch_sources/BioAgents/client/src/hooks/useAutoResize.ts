@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'preact/hooks';
  * Custom hook for auto-resizing textarea
  * Automatically adjusts height based on content
  */
-export function useAutoResize(value: string, minRows = 1, maxRows = 10) {
+export function useAutoResize(_value: string, minRows = 1, maxRows = 10) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export function useAutoResize(value: string, minRows = 1, maxRows = 10) {
     textarea.style.height = 'auto';
 
     // Calculate the height
-    const lineHeight = parseInt(getComputedStyle(textarea).lineHeight) || 24;
+    const lineHeight = parseInt(getComputedStyle(textarea).lineHeight, 10) || 24;
     const minHeight = lineHeight * minRows;
     const maxHeight = lineHeight * maxRows;
 
@@ -33,7 +33,7 @@ export function useAutoResize(value: string, minRows = 1, maxRows = 10) {
     } else {
       textarea.style.overflowY = 'hidden';
     }
-  }, [value, minRows, maxRows]);
+  }, [minRows, maxRows]);
 
   return textareaRef;
 }

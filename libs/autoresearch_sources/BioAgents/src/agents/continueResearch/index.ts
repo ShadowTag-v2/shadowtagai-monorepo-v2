@@ -59,7 +59,7 @@ export async function continueResearchAgent(input: {
     );
     // Messages are newest-first; find the most recent with a non-empty question.
     // Continuation messages have question="" so they are skipped.
-    const lastUserMsg = messages?.find((m) => m.question && m.question.trim());
+    const lastUserMsg = messages?.find((m) => m.question?.trim());
     userLastMessage = lastUserMsg?.question || '';
   } catch (err) {
     logger.warn({ err }, 'failed_to_fetch_user_last_message');
@@ -152,7 +152,7 @@ export async function continueResearchAgent(input: {
     const latestIterationTasks = allTasks.filter((t) => t.level === maxLevel);
 
     latestIterationTasks.forEach((task) => {
-      if (task.output && task.output.trim()) {
+      if (task.output?.trim()) {
         docs.push({
           title: `${task.type} Task`,
           text: `Objective: ${task.objective}\n\nOutput:\n${task.output}`,

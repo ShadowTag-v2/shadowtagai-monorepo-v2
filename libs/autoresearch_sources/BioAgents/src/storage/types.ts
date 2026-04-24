@@ -1,9 +1,4 @@
-/**
- * Storage Provider Interface
- * Defines the contract for file storage backends (S3, Azure, etc.)
- */
-import { base } from 'viem/chains';
-import { getConversationBasePath, getUploadPath } from '../storage';
+import { getConversationBasePath } from '../storage';
 import logger from '../utils/logger';
 
 export abstract class StorageProvider {

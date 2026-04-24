@@ -138,7 +138,7 @@ export async function generatePlanFromContext(input: {
     try {
       // Try to extract JSON from potential markdown code blocks
       const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
-      const jsonStr = jsonMatch && jsonMatch[1] ? jsonMatch[1].trim() : content;
+      const jsonStr = jsonMatch?.[1] ? jsonMatch[1].trim() : content;
       parsed = JSON.parse(jsonStr);
     } catch (parseError) {
       logger.error({ content, parseError }, 'failed_to_parse_plan_response');
@@ -248,7 +248,7 @@ export async function regeneratePlanFromFeedback(input: {
     try {
       // Try to extract JSON from potential markdown code blocks
       const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
-      const jsonStr = jsonMatch && jsonMatch[1] ? jsonMatch[1].trim() : content;
+      const jsonStr = jsonMatch?.[1] ? jsonMatch[1].trim() : content;
       parsed = JSON.parse(jsonStr);
     } catch (parseError) {
       logger.error({ content, parseError }, 'failed_to_parse_regenerated_plan_response');

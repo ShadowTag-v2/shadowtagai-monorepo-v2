@@ -12,7 +12,6 @@ const JWT_EXPIRATION = 24 * 60 * 60; // 24 hours in seconds
 async function generateUIToken(userId: string): Promise<string | null> {
   const secret = process.env.BIOAGENTS_SECRET;
   if (!secret) {
-    console.warn('[Auth] BIOAGENTS_SECRET not configured, cannot generate JWT');
     return null;
   }
 

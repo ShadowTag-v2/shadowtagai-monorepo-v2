@@ -120,7 +120,6 @@ export function Icon({ name, size = 16, className = '', strokeWidth = 2 }: IconP
   const IconComponent = iconMap[name];
 
   if (!IconComponent) {
-    console.warn(`Icon "${name}" not found`);
     return null;
   }
 

@@ -87,7 +87,7 @@ async function processDeepResearchJob(
       isInitialIteration,
       messagePreview: message
         ? message.length > 200
-          ? message.substring(0, 200) + '...'
+          ? `${message.substring(0, 200)}...`
           : message
         : undefined,
       messageLength: message?.length,
@@ -168,7 +168,7 @@ async function processDeepResearchJob(
         ? 1 // Steering mode: single iteration, always ask user
         : researchMode === 'fully-autonomous'
           ? 20 // Fully autonomous: hard cap
-          : parseInt(process.env.MAX_AUTO_ITERATIONS || '5'); // Semi-autonomous: configurable
+          : parseInt(process.env.MAX_AUTO_ITERATIONS || '5', 10); // Semi-autonomous: configurable
 
     // Variables for this iteration
     let tasksToExecute: PlanTask[] = [];
@@ -1089,7 +1089,7 @@ async function processDeepResearchJob(
  * Start the deep research worker
  */
 export function startDeepResearchWorker(): Worker {
-  const concurrency = parseInt(process.env.DEEP_RESEARCH_QUEUE_CONCURRENCY || '3');
+  const concurrency = parseInt(process.env.DEEP_RESEARCH_QUEUE_CONCURRENCY || '3', 10);
 
   const worker = new Worker<DeepResearchJobData, DeepResearchJobResult>(
     'deep-research',

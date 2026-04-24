@@ -131,13 +131,13 @@ export function useX402Payment(): UseX402PaymentReturn {
         fetch('/api/x402/pricing').catch(() => null),
       ]);
 
-      if (configRes && configRes.ok) {
+      if (configRes?.ok) {
         setConfig(await configRes.json());
       } else {
         setConfig({ enabled: false });
       }
 
-      if (pricingRes && pricingRes.ok) {
+      if (pricingRes?.ok) {
         setPricing(await pricingRes.json());
       } else {
         setPricing(null);
@@ -153,7 +153,7 @@ export function useX402Payment(): UseX402PaymentReturn {
 
   useEffect(() => {
     void fetchConfig();
-  }, []);
+  }, [fetchConfig]);
 
   useEffect(() => {
     resetSigner();
@@ -161,14 +161,13 @@ export function useX402Payment(): UseX402PaymentReturn {
     if (!config?.enabled) {
       return;
     }
-  }, [config?.enabled, config?.network, resetSigner]);
+  }, [config?.enabled, resetSigner]);
 
   const getTargetChain = useCallback((): Chain => {
     const network = config?.network ?? 'base-sepolia';
     switch (network) {
       case 'base':
         return base;
-      case 'base-sepolia':
       default:
         return baseSepolia;
     }
@@ -180,7 +179,6 @@ export function useX402Payment(): UseX402PaymentReturn {
       setIsCheckingBalance(true);
       try {
         if (!provider) {
-          console.error('[checkBalance] Provider not available');
           throw new Error('Provider not available');
         }
 
@@ -217,7 +215,7 @@ export function useX402Payment(): UseX402PaymentReturn {
         const balanceInToken = Number(balanceInWei) / Number(divisor);
 
         setUsdcBalance(balanceInToken.toFixed(2));
-      } catch (err) {
+      } catch (_err) {
         setUsdcBalance('0.00');
       } finally {
         setIsCheckingBalance(false);
@@ -461,9 +459,6 @@ export function useX402Payment(): UseX402PaymentReturn {
       });
 
       if (!shouldUseWrapped) {
-        console.warn(
-          '[useX402Payment] NOT using wrapped fetch - payment header will NOT be added!',
-        );
       }
 
       return actualFetch(input, init) as Promise<Response>;
@@ -478,7 +473,6 @@ export function useX402Payment(): UseX402PaymentReturn {
   const setEmbeddedWalletClient = useCallback(
     (client: any, address: string) => {
       if (!client || !address) {
-        console.error('[useX402Payment] Invalid embedded wallet client or address');
         return;
       }
 
@@ -504,13 +498,8 @@ export function useX402Payment(): UseX402PaymentReturn {
       // Create an EIP-1193 provider shim for balance checking
       const providerShim = {
         request: async ({ method, params }: any) => {
-          try {
-            // Forward all requests to the client's transport
-            return await client.transport.request({ method, params });
-          } catch (error) {
-            console.error('[useX402Payment] Provider shim error:', method, error);
-            throw error;
-          }
+          // Forward all requests to the client's transport
+          return await client.transport.request({ method, params });
         },
       };
 

@@ -48,7 +48,7 @@ export interface PaymentSettlementResult {
 export function usdToBaseUnits(amountUSD: string): string {
   // USDT on BNB Chain has 18 decimals
   const [whole, fraction = ''] = amountUSD.split('.');
-  const normalizedFraction = (fraction + '000000000000000000').slice(0, 18);
+  const normalizedFraction = `${fraction}000000000000000000`.slice(0, 18);
   return `${whole}${normalizedFraction}`.replace(/^0+/, '') || '0';
 }
 

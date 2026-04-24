@@ -205,7 +205,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 .st-active {
-  color: var(--st-text) !important;
+  color: var(--st-text);
 }
 
 .st-expanded {

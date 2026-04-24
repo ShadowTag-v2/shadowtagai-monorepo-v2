@@ -161,7 +161,7 @@ export const captureContact = onRequest(
         deviceUserAgent: request.headers['user-agent'] || 'unknown',
       });
       response.status(200).json({ success: true, requestId: docRef.id });
-    } catch (error) {
+    } catch (_error) {
       response.status(400).json({ error: 'Validation Failed' });
     }
   },

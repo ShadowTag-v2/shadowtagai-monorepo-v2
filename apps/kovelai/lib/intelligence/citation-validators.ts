@@ -164,10 +164,6 @@ export class FormatValidationProvider implements CitationProvider {
 export class WestlawProvider implements CitationProvider {
   name = 'Westlaw (Stub — Phase 3)';
 
-  constructor(_apiKey?: string) {
-    // API key would come from BYOK key management
-  }
-
   async validateCitation(text: string): Promise<CitationValidationResult> {
     // TODO(Phase 3): Implement Westlaw API validation
     // TR API: https://developer.thomsonreuters.com/
@@ -194,10 +190,6 @@ export class WestlawProvider implements CitationProvider {
 
 export class LexisNexisProvider implements CitationProvider {
   name = 'LexisNexis (Stub — Phase 3)';
-
-  constructor(_apiKey?: string) {
-    // API key would come from BYOK key management
-  }
 
   async validateCitation(text: string): Promise<CitationValidationResult> {
     // TODO(Phase 3): Implement LexisNexis Web Services validation

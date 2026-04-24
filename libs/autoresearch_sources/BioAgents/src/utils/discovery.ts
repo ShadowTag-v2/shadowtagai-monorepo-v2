@@ -44,7 +44,7 @@ export function getDiscoveryRunConfig(
   }
 
   // Check if there are any tasks with outputs to consider
-  const tasksWithOutput = tasksToConsider.filter((task) => task.output && task.output.trim());
+  const tasksWithOutput = tasksToConsider.filter((task) => task.output?.trim());
 
   if (tasksWithOutput.length === 0) {
     logger.info(

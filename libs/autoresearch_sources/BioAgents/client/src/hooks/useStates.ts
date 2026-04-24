@@ -144,7 +144,6 @@ export function useStates(userId: string, conversationId: string): UseStatesRetu
           }
         }
       } catch (err) {
-        console.error('[useStates] Error fetching state:', err);
         if (mounted) {
           setError(err instanceof Error ? err.message : 'Failed to fetch state');
         }
@@ -181,7 +180,7 @@ export function useStates(userId: string, conversationId: string): UseStatesRetu
             setConversationState(convState as ConversationState);
           }
         }
-      } catch (err) {
+      } catch (_err) {
         // Silently ignore polling errors
       }
     };
@@ -256,9 +255,7 @@ export function useStates(userId: string, conversationId: string): UseStatesRetu
               console.log('[useStates] Updated conversation state from INSERT:', convState);
               setConversationState(convState as ConversationState);
             }
-          } catch (err) {
-            console.error('[useStates] Error refetching conversation state:', err);
-          }
+          } catch (_err) {}
         },
       )
       .on(
@@ -284,9 +281,7 @@ export function useStates(userId: string, conversationId: string): UseStatesRetu
                 console.log('[useStates] ✅ Fetched and set conversation state from UPDATE');
                 setConversationState(convState as ConversationState);
               }
-            } catch (err) {
-              console.error('[useStates] Error refetching conversation state:', err);
-            }
+            } catch (_err) {}
           }
         },
       )
@@ -298,7 +293,7 @@ export function useStates(userId: string, conversationId: string): UseStatesRetu
       supabase.removeChannel(statesChannel);
       supabase.removeChannel(convStatesChannel);
     };
-  }, [userId, conversationId]);
+  }, [userId, conversationId, conversationState.id, conversationState]);
 
   // Manual refetch function for WebSocket-triggered updates
   const refetchConversationState = async () => {
@@ -309,9 +304,7 @@ export function useStates(userId: string, conversationId: string): UseStatesRetu
         console.log('[useStates] Refetched conversation state:', convState.id);
         setConversationState(convState as ConversationState);
       }
-    } catch (err) {
-      console.error('[useStates] Error refetching conversation state:', err);
-    }
+    } catch (_err) {}
   };
 
   return {

@@ -145,7 +145,7 @@ export function InlineCitationText({ content }) {
 
       anchor.appendChild(button);
     });
-  }, [citations, contentWithAnchors]);
+  }, [citations, handleCitationLeave, handleCitationHover, handleCitationClick]);
 
   // Render markdown with citations removed, then inject buttons via DOM manipulation
   const rawHtml = marked(contentWithAnchors);

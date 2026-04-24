@@ -17,7 +17,7 @@
  *   - Lists all papers for a conversation
  */
 
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { Elysia } from 'elysia';
 import { getServiceClient } from '../../db/client';
 import { getConversation } from '../../db/operations';
@@ -384,7 +384,7 @@ async function checkUserHasConcurrentPaperJob(userId: string): Promise<boolean> 
  * Check if global concurrent paper job limit is reached
  */
 async function checkGlobalConcurrentPaperLimit(): Promise<{ exceeded: boolean; current: number }> {
-  const maxConcurrent = parseInt(process.env.MAX_CONCURRENT_PAPER_JOBS || '3');
+  const maxConcurrent = parseInt(process.env.MAX_CONCURRENT_PAPER_JOBS || '3', 10);
 
   const { count, error } = await supabase
     .from('paper')
@@ -479,7 +479,7 @@ async function asyncPaperGenerationHandler(ctx: any) {
     // Check global concurrent paper job limit
     const globalLimit = await checkGlobalConcurrentPaperLimit();
     if (globalLimit.exceeded) {
-      const maxConcurrent = parseInt(process.env.MAX_CONCURRENT_PAPER_JOBS || '3');
+      const maxConcurrent = parseInt(process.env.MAX_CONCURRENT_PAPER_JOBS || '3', 10);
       set.status = 429;
       return {
         error: 'System busy',

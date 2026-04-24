@@ -15,10 +15,6 @@ export function CDPProvider({ children }: CDPProviderProps) {
   const projectId = import.meta.env.CDP_PROJECT_ID;
 
   if (!projectId || projectId === 'your-project-id-here') {
-    console.warn(
-      'CDP_PROJECT_ID not configured. Please set it in your .env file.\n' +
-        'Get your project ID from https://portal.cdp.coinbase.com/products/embedded-wallets',
-    );
     // Return children without CDP provider if not configured
     return <>{children}</>;
   }

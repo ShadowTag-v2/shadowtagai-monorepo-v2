@@ -37,7 +37,6 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
       const result = await signInWithEmail({ email });
       setFlowId(result.flowId);
     } catch (err: any) {
-      console.error('Sign in failed:', err);
       setError(err?.message || 'Failed to send verification code. Please try again.');
     } finally {
       setIsSigningIn(false);
@@ -63,7 +62,6 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
       setOtp('');
       setEmail('');
     } catch (err: any) {
-      console.error('OTP verification failed:', err);
       setError(err?.message || 'Invalid verification code. Please try again.');
     } finally {
       setIsVerifying(false);
@@ -78,7 +76,6 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
       setEmail('');
       setError(null);
     } catch (err: any) {
-      console.error('Sign out failed:', err);
       setError(err?.message || 'Failed to sign out.');
     }
   };
@@ -353,7 +350,6 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
               onChange={(e) => setOtp((e.target as HTMLInputElement).value)}
               placeholder="000000"
               maxLength={6}
-              autoFocus
               disabled={isVerifying}
               style={{
                 width: '100%',
@@ -604,7 +600,6 @@ export function EmbeddedWalletAuth({ onWalletConnected, usdcBalance }: EmbeddedW
             placeholder="you@example.com"
             required
             disabled={isSigningIn}
-            autoFocus
             style={{
               width: '100%',
               padding: '14px 16px',

@@ -91,7 +91,7 @@ export const adminJobsRoute = new Elysia().guard(
       .get('/api/admin/jobs', async ({ query, set }) => {
         const queueName = (query.queue as string) || 'deep-research';
         const status = (query.status as string) || 'all';
-        const limit = parseInt((query.limit as string) || '50');
+        const limit = parseInt((query.limit as string) || '50', 10);
 
         if (!isJobQueueEnabled()) {
           set.status = 503;

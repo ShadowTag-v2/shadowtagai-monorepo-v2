@@ -80,7 +80,7 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
     };
     const authToken = getAuthToken();
     if (authToken) {
-      headers['Authorization'] = `Bearer ${authToken}`;
+      headers.Authorization = `Bearer ${authToken}`;
     }
     return headers;
   }, []);
@@ -187,7 +187,6 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
 
         return completedFile;
       } catch (error) {
-        console.error('[usePresignedUpload] Upload failed:', error);
         const errorMessage = error instanceof Error ? error.message : 'Upload failed';
         setUploadError(errorMessage);
 
@@ -367,7 +366,6 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
         setIsUploading(false);
         return results;
       } catch (error) {
-        console.error('[usePresignedUpload] Upload failed:', error);
         setUploadError(error instanceof Error ? error.message : 'Upload failed');
         setIsUploading(false);
         return [];
@@ -411,8 +409,7 @@ export function usePresignedUpload(): UsePresignedUploadReturn {
         setUploadedFiles((prev) => prev.map((f) => (f.fileId === fileId ? fileStatus : f)));
 
         return fileStatus;
-      } catch (error) {
-        console.error('[usePresignedUpload] Status poll failed:', error);
+      } catch (_error) {
         return null;
       }
     },
