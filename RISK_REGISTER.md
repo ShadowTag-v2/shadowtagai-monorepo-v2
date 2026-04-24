@@ -306,11 +306,11 @@
 - **Status:** KNOWN
 - **Description**: The Secure BLAST Pipeline (`src/epistemology/zero_trust_pipeline.py`) routes hostile data through NotebookLM MCP for quarantine, but the `notebooklm-mcp-cli` tool is not installed or verified. The `switchboard` MCP server is cloned but not configured in `antigravity-mcp-config.json`. Without live integration testing, the quarantine path is aspirational. **Action**: (1) Install `notebooklm-mcp-cli`. (2) Add both servers to MCP config. (3) Write integration test with mock hostile payload.
 
-## Risk #83: Tauri Biometric — `trigger_biometric_auth` Always Returns True
+## Risk #83: ~~Tauri Biometric — `trigger_biometric_auth` Always Returns True~~
 - **Type**: Security / UX
 - **Severity:** 🟡 Medium
-- **Status:** KNOWN
-- **Description**: `src-tauri/src/main.rs` contains `trigger_biometric_auth()` which always returns `true` (simulated). The Terminal Execution Policy ("ASK") is not enforced until LocalAuthentication framework integration is complete. Any Tauri-wrapped deployment button currently bypasses biometric verification. **Action**: Integrate `security-framework-sys` Rust crate for real TouchID/FaceID on macOS. Add `#[cfg(target_os = "macos")]` conditional compilation.
+- **Status:** ✅ RESOLVED (2026-04-24)
+- **Resolution**: Tauri retired from UphillSnowball. Desktop wrapper replaced by browser tab + WebAuthn / FIDO2 passkeys. `tauri-agentic-workspace/` archived to `archive/legacy_tauri_workspace/`. Biometric verification now handled by Web Authentication API in the browser. See `docs/UPHILLSNOWBALL_ARCHITECTURE.md`.
 
 ## Risk #84: Gitleaks → Betterleaks Migration — CI Action Unverified
 - **Type**: Security / CI

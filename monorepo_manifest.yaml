@@ -43,6 +43,6 @@ active_silos:
       - browser_extension
       - cor_yay_bridge
       - adminlte_glassbox
-      - tauri_cockpit
+      - tauri_cockpit  # DEPRECATED 2026-04-24: Archived to archive/legacy_tauri_workspace/. Replaced by browser tab + WebAuthn.
       - sovereign_infra_tf
       - genesis_bootstrapper
