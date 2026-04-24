@@ -18,9 +18,20 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-/** Structured server-side logger (no console.log in production — Cor.30 R17). */
-function structuredLog(context: string, data: Record<string, unknown>): void {
-  const entry = { timestamp: new Date().toISOString(), context, ...data };
+/** Structured server-side logger — Cloud Logging JSON compliant (Cor.30 R17). */
+function structuredLog(
+  context: string,
+  data: Record<string, unknown>,
+  severity: 'INFO' | 'WARNING' | 'ERROR' | 'DEBUG' = 'INFO',
+): void {
+  const entry = {
+    severity,
+    timestamp: new Date().toISOString(),
+    message: context,
+    context,
+    serviceContext: { service: 'kovelai-stripe-webhook', version: '1.0.0' },
+    ...data,
+  };
   process.stdout.write(`${JSON.stringify(entry)}\n`);
 }
 

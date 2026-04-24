@@ -33,9 +33,7 @@ class ForensicPacket:
     run_id: str = ""
     reason: str = ""
     triggered_by: str = ""  # "judge_agent" | "watchdog" | "operator"
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     whiteboard_snapshot: dict[str, Any] = field(default_factory=dict)
     last_outputs: list[dict[str, Any]] = field(default_factory=list)
     experiment_summary: dict[str, Any] = field(default_factory=dict)

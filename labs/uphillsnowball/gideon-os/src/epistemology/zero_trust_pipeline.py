@@ -30,24 +30,15 @@ class SecureBlastOrchestrator:
         from mcp.client.stdio import stdio_client, StdioServerParameters
         from mcp import ClientSession
 
-        logger.info(
-            f"🛡️ [ZERO-TRUST] Initiating Secure BLAST Pipeline"
-            f" for {target_source}"
-        )
+        logger.info(f"🛡️ [ZERO-TRUST] Initiating Secure BLAST Pipeline for {target_source}")
 
-        switchboard_params = StdioServerParameters(
-            command=self.switchboard_cmd, args=self.switchboard_args
-        )
-        notebooklm_params = StdioServerParameters(
-            command=self.notebooklm_cmd, args=self.notebooklm_args
-        )
+        switchboard_params = StdioServerParameters(command=self.switchboard_cmd, args=self.switchboard_args)
+        notebooklm_params = StdioServerParameters(command=self.notebooklm_cmd, args=self.notebooklm_args)
 
         # 1. FETCH (Hostile Domain)
         async with stdio_client(switchboard_params) as (r_sw, w_sw), ClientSession(r_sw, w_sw) as sw_session:
             await sw_session.initialize()
-            raw_data = await sw_session.call_tool(
-                "fetch_data", arguments={"source": target_source}
-            )
+            raw_data = await sw_session.call_tool("fetch_data", arguments={"source": target_source})
 
         # 2. QUARANTINE & EXTRACT (Google's Compute Subsidy)
         async with stdio_client(notebooklm_params) as (r_nl, w_nl), ClientSession(r_nl, w_nl) as nl_session:
@@ -82,7 +73,5 @@ class SecureBlastOrchestrator:
                 arguments={"notebook_id": nb_id, "query": query},
             )
 
-        logger.info(
-            "✅ [ZERO-TRUST] Hostile data neutralized. Clean intel acquired."
-        )
+        logger.info("✅ [ZERO-TRUST] Hostile data neutralized. Clean intel acquired.")
         return clean_intel.content[0].text
