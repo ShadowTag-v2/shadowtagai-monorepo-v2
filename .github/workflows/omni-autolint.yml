@@ -98,14 +98,11 @@ jobs:
             echo "changes=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Gitleaks Secret Scan
+      - name: Betterleaks Secret Scan
         if: steps.git-check.outputs.changes == 'true'
-        uses: gitleaks/gitleaks-action@v2
-        with:
-          args: --no-git --path .
-        env:
-          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+        run: |
+          go install github.com/betterleaks/betterleaks@latest
+          ~/go/bin/betterleaks dir --no-git --path . --config .betterleaks.toml --redact
 
       - name: Commit, Push Branch & Open PR
         if: steps.git-check.outputs.changes == 'true'
@@ -148,7 +145,7 @@ jobs:
           </details>
 
           ---
-          *Gitleaks scan passed. No secrets detected in lint fixes.*"
+          *Betterleaks scan passed. No secrets detected in lint fixes.*"
 
           gh pr create \
             --title "🤖 AST Auto-Heal: Omni-Linter Corrections" \
