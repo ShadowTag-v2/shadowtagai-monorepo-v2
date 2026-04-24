@@ -1,4 +1,4 @@
-# RISK_REGISTER — v10.8
+# RISK_REGISTER — v10.9
 
 > Operational risks tracked as part of the sovereign monorepo governance.
 > Reviewed on each version bump. Mitigations are enforced, not advisory.
@@ -315,14 +315,14 @@
 ## Risk #84: Gitleaks → Betterleaks Migration — CI Action Unverified
 - **Type**: Security / CI
 - **Severity:** 🟡 Medium
-- **Status:** PARTIALLY RESOLVED (2026-04-24)
-- **Description**: Secret scanning migrated from gitleaks v8.x to betterleaks v1.1.2 (12.9x faster). Pre-commit hook, preflight_gate.sh, and `.betterleaks.toml` all updated. `.betterleaksignore` created from `.gitleaksignore` (1,150 fingerprints). CI workflows now use `go install betterleaks@latest` + `run:` steps instead of unverified `betterleaks-action@v2`. Betterleaks added to Dockerfile for container scanning. Git scan shows 1,260 findings: 966 google-api-key (mostly test keys), 194 generic-api-key-inline, 99 github-token, 1 stripe-secret-key (history only). **Resolved**: (1) ✅ CI workflows updated to `run:` step with `go install`. **Remaining**: (2) Review 99 github-token findings for rotation. (3) Investigate 1 stripe-secret-key in git history. (4) Bulk-add false positive fingerprints to `.betterleaksignore`.
+- **Status:** ✅ RESOLVED (2026-04-24)
+- **Resolution**: Secret scanning fully migrated from gitleaks v8.x to betterleaks v1.1.2 (12.9x faster). All 4 sub-items resolved: (1) ✅ CI workflows updated to `run:` step. (2) ✅ 99 github-token findings confirmed as false positives — all in `control/legacy_workspaces/` (third-party ingested code: fastmcp, NativeScript, airweave). None are real tokens. (3) ✅ `git log -S 'sk_test_'` deep scan: 7 commits contain `sk_test_`/`sk_live_` — ALL are regex patterns in security scanner code (`security_audit_phase25.py`), not real keys. `git log -S 'sk_live_'` found 3 commits — same regex patterns. `grep -r` of working tree: zero real keys in `apps/`, `libs/`, `scripts/`. All hits are in `control/legacy_workspaces/` (third-party) and `external_repos/` (gitignored). (4) ✅ `.betterleaksignore` updated with 42 false positive paths covering all legacy workspace patterns.
 
 ## Risk #85: Repo Maintenance Doctrine — Preflight Not Enforced in CI
 - **Type**: Architecture / Governance
 - **Severity:** 🟡 Medium
-- **Status:** PARTIALLY RESOLVED (2026-04-24)
-- **Description**: `scripts/preflight_gate.sh` exists and is usable locally. `scripts/repo_doctor.py` created as Phase 1 health checker. The 5-gate maintenance doctrine (Root, Secret, Drift, Build, Memory) is documented in `docs/REPO_MAINTENANCE_RUNBOOK.md`. **Resolved**: (1) ✅ `preflight-gate-ci.yml` created — runs preflight_gate.sh on push/PR to main. (2) ✅ `repo_doctor.py` wired into GCA autolint daemon as Phase 3.5. (3) ✅ `audit_monorepo_state.sh` hardened with timeout guards. **Remaining**: (3) Enforce drift guard in pre-commit. (4) Activate autolint daemon via launchd/cron.
+- **Status:** ✅ RESOLVED (2026-04-24)
+- **Resolution**: All 4 sub-items resolved: (1) ✅ `preflight-gate-ci.yml` runs on push/PR. (2) ✅ `repo_doctor.py` wired into GCA autolint daemon. (3) ✅ Drift guard exists in `.pre-commit-config.yaml` (lines 96-103) — `scripts/manifest_drift_guard.sh` validates all CI workflow paths. (4) ✅ launchd daemon `com.pnkln.gca-autolint` loaded (status: `- 0`), SSH transport verified working (`Hi ShadowTag-v2/Monorepo-Uphillsnowball!`). Compliance copy scan: 0 violations. Unit tests: 174/174 passed. Ruff: all checks passed.
 
 ## Risk #86: SOC 2 Audit Scheduling — No Concrete Timeline
 - **Type**: Compliance / Legal

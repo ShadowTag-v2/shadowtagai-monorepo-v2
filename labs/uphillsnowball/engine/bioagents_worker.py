@@ -133,8 +133,6 @@ class BioAgentsWorker:
                 agent,
                 {"run_id": run_id, "hypothesis": hypothesis},
             )
-            pipeline_result["stages"].append(
-                {"agent": agent.value, "job_id": job.job_id}
-            )
+            pipeline_result["stages"].append({"agent": agent.value, "job_id": job.job_id})
 
         return pipeline_result

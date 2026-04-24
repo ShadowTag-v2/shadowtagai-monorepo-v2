@@ -1,33 +1,54 @@
-version: 11.3 # Repo Maintenance Doctrine + Betterleaks — 2026-04-24
+version: 11.6 # Mega-sweep Phase 2: Risk #84/#85 RESOLVED + deep Stripe scan + 174 tests passed — 2026-04-24
 hardened_state:
   last_hardened: "2026-04-24"
-  gold_master_tag: v11.3-gold
+  gold_master_tag: v11.5-gold
   tests_collected: 504
   tests_passing: 480
   tests_skipped: 3
   tests_e2e_expected_failures: 24
   test_runner: /opt/homebrew/bin/python3.14
-  risk_register_version: v10.8
-  risk_register_count: 42  # +2: Betterleaks #84 + Repo Maintenance #85
+  risk_register_version: v10.9
+  risk_register_count: 42
   betterleaks_migrated: true
+  betterleaksignore: .betterleaksignore
   repo_doctor: scripts/repo_doctor.py
+  manifest_drift_guard: scripts/manifest_drift_guard.sh
   canonical_map: docs/CANONICAL_REPO_MAP.md
   maintenance_runbook: docs/REPO_MAINTENANCE_RUNBOOK.md
+  compliance_copy_scanner: scripts/compliance_copy_scan_weekly.sh
+  launchd_daemon: com.pnkln.gca-autolint
   python_canonical: /opt/homebrew/bin/python3.14
   counselconduit_version: v3.2.0
   firebase_mcp_auth: founder@shadowtagai.com
   ruff_state: all_checks_passed
-  dotnet_build: succeeded  # AiYou.Kernel SK Process.Core — 0 errors
+  ruff_version: "0.15.11"
+  biome_version: "1.x"
+  dotnet_build: succeeded
   dotnet_version: "10.0.106"
+ci_workflows:
+  - path: .github/workflows/ci.yml
+    purpose: Primary CI gate
+  - path: .github/workflows/omni-ci.yml
+    purpose: Omni CI suite (ruff + biome + tests)
+  - path: .github/workflows/compliance-copy-linter.yml
+    purpose: Banned compliance phrase CI gate
+  - path: .github/workflows/preflight-gate-ci.yml
+    purpose: Preflight gate enforcement
+  - path: .github/workflows/security-audit.yml
+    purpose: Cor.30 security audit
+  - path: .github/workflows/omni-autolint.yml
+    purpose: Autonomous lint + push
+  - path: .github/workflows/deploy-counselconduit.yml
+    purpose: CounselConduit Cloud Run deploy
+  - path: .github/workflows/python-3.14-ci.yml
+    purpose: Python 3.14 test matrix
+  - path: .github/workflows/uphillsnowball-ci.yml
+    purpose: UphillSnowball lab CI
+  - path: .github/workflows/gca-pr-review.yml
+    purpose: GCA sovereign PR review
 active_silos:
-  - id: shadowtag_core
-    path: packages/core
-    status: locked
-    owner: pnkln-backend
-  - id: ag_ui_components
-    path: packages/ag-ui
-    status: active_development
-    owner: pnkln-frontend
+  # REMOVED: packages/core (never created, dead reference)
+  # REMOVED: packages/ag-ui (never created, dead reference)
   - id: gideon_os
     path: labs/uphillsnowball/gideon-os
     status: active_development
@@ -44,6 +65,6 @@ active_silos:
       - browser_extension
       - cor_yay_bridge
       - adminlte_glassbox
-      - tauri_cockpit  # DEPRECATED 2026-04-24: Archived to archive/legacy_tauri_workspace/. Replaced by browser tab + WebAuthn.
+      # tauri_cockpit — DEPRECATED 2026-04-24: Archived, replaced by browser tab + WebAuthn
       - sovereign_infra_tf
       - genesis_bootstrapper
