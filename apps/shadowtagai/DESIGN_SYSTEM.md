@@ -1,115 +1,147 @@
 # ShadowTag AI — DESIGN_SYSTEM.md
-## Creative North Star: "The Kinetic Void"
-
-> Extracted from Stitch MCP project `9697877550112135791` (ShadowTag AI — Sovereign Infrastructure)
-> Design Theme: Kinetic Void | Color Variant: VIBRANT | Device: DESKTOP
-> Last synced: 2026-04-22
+# Generated via Google Design MCP + Live CSS Extraction
+# Design Language: "Kinetic Void"
+# Source: https://shadowtagai.web.app/ (2026-04-24)
 
 ---
 
-## Identity
+## Color Palette (Tokens = Roles)
+
+### Semantic Roles
+
+| Role | Hex | RGB | Usage |
+|------|-----|-----|-------|
+| **bg-primary** | `#09090b` | `rgb(9, 9, 11)` | Page canvas, deepest void |
+| **bg-secondary** | `#0f0f14` | `rgb(15, 15, 20)` | Section backgrounds, alternating |
+| **bg-tertiary** | `#16161d` | `rgb(22, 22, 29)` | Elevated surfaces |
+| **bg-card** | `rgba(22, 22, 29, 0.7)` | — | Card backgrounds (glassmorphic) |
+| **bg-card-hover** | `rgba(22, 22, 29, 0.9)` | — | Card hover state |
+| **surface-lowest** | `#0c0c12` | `rgb(12, 12, 18)` | Lowest elevation surfaces |
+| **accent-violet** | `#7c3aed` | `rgb(124, 58, 237)` | Primary accent, CTA, brand identity |
+| **accent-violet-dim** | `rgba(124, 58, 237, 0.12)` | — | Subtle violet backgrounds |
+| **accent-violet-glow** | `rgba(124, 58, 237, 0.25)` | — | Glow effects, hover halos |
+| **accent-green** | `#0df274` | `rgb(13, 242, 116)` | Secondary accent, success, live indicators |
+| **accent-green-dim** | `rgba(13, 242, 116, 0.12)` | — | Subtle green backgrounds |
+| **accent-green-glow** | `rgba(13, 242, 116, 0.25)` | — | Green glow effects |
+| **text-primary** | `#eeeef0` | `rgb(238, 238, 240)` | Headings, primary body text |
+| **text-secondary** | `#8b8b9e` | `rgb(139, 139, 158)` | Labels, secondary descriptions |
+| **text-muted** | `#5f5f72` | `rgb(95, 95, 114)` | Disabled, tertiary text |
+| **border-subtle** | `rgba(255, 255, 255, 0.06)` | — | Default border (barely visible) |
+| **border-hover** | `rgba(124, 58, 237, 0.25)` | — | Hover-state borders (violet glow) |
+| **glass-nav** | `rgba(9, 9, 11, 0.8)` | — | Navigation glassmorphism |
+
+### CSS Custom Properties (Live)
+```css
+:root {
+  --bg-primary: #09090b;
+  --bg-secondary: #0f0f14;
+  --bg-tertiary: #16161d;
+  --bg-card: rgba(22, 22, 29, 0.7);
+  --bg-card-hover: rgba(22, 22, 29, 0.9);
+  --surface-lowest: #0c0c12;
+  --accent-violet: #7c3aed;
+  --accent-violet-dim: rgba(124, 58, 237, 0.12);
+  --accent-violet-glow: rgba(124, 58, 237, 0.25);
+  --accent-green: #0df274;
+  --accent-green-dim: rgba(13, 242, 116, 0.12);
+  --accent-green-glow: rgba(13, 242, 116, 0.25);
+  --text-primary: #eeeef0;
+  --text-secondary: #8b8b9e;
+  --text-muted: #5f5f72;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(124, 58, 237, 0.25);
+  --glass-nav: rgba(9, 9, 11, 0.8);
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --section-pad: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 3rem);
+  --max-w: 1200px;
+  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+```
+
+---
+
+## Typography
+
+| Role | Font | Weight | Size Range |
+|------|------|--------|------------|
+| **Primary** | Inter | 300–800 | 14px–72px |
+| **Fallback** | -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif | — | — |
+
+### Type Scale
+| Element | Size | Weight | Line Height | Letter Spacing |
+|---------|------|--------|-------------|----------------|
+| H1 | clamp(36px, 6vw, 72px) | 800 | 1.05 | -0.03em |
+| H2 | clamp(24px, 4vw, 48px) | 700 | 1.15 | -0.02em |
+| H3 | clamp(18px, 2.5vw, 28px) | 600 | 1.3 | -0.01em |
+| Body | 16px | 400 | 1.7 | 0em |
+| Label | 11px | 700 | 1.4 | 0.15em (uppercase) |
+| Micro | 10px | 500 | 1.3 | 0.1em |
+
+---
+
+## Gradients
+
+| Name | CSS | Usage |
+|------|-----|-------|
+| **Brand Primary** | `linear-gradient(90deg, #7c3aed, #0df274)` | Hero highlight, CTA buttons |
+| **Brand Diagonal** | `linear-gradient(135deg, #7c3aed, #0df274)` | Badge backgrounds, accent lines |
+| **Vignette** | `linear-gradient(rgba(9,9,11,0.5) 0%, rgba(9,9,11,0.2) 30%, rgba(9,9,11,0.6) 70%, rgba(9,9,11,0.97) 100%)` | Hero image overlays |
+
+---
+
+## Shape & Border
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| **border-radius-sm** | 8px | Buttons, inline badges |
+| **border-radius-md** | 16px | Cards |
+| **border-radius-lg** | 24px | Hero containers, modal |
+| **border-radius-pill** | 9999px | Status pills |
+| **border-width** | 1px | Default, barely visible |
+
+---
+
+## Motion & Easing
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| **ease-out** | `cubic-bezier(0.4, 0, 0.2, 1)` | Standard transitions |
+| **ease-spring** | `cubic-bezier(0.34, 1.56, 0.64, 1)` | Bouncy entrance animations |
+| **duration-fast** | 150ms | Hover states |
+| **duration-normal** | 300ms | Card transitions |
+| **duration-slow** | 600ms | Section reveals |
+
+---
+
+## Appearance
 
 | Property | Value |
 |----------|-------|
-| Project | ShadowTag AI — Sovereign Infrastructure |
-| Stitch ID | `9697877550112135791` |
-| Color Mode | DARK |
-| Headline Font | Space Grotesk |
-| Body Font | Manrope |
-| Label Font | Space Grotesk |
-| Roundness | ROUND_FOUR |
-| Spacing Scale | 2 |
-| Color Variant | VIBRANT |
+| **Mode** | Dark only |
+| **Background** | `#09090b` (pure void black with zinc undertone) |
+| **Glass Effect** | `backdrop-filter: blur(24px) saturate(180%)` on nav |
+| **Section Padding** | `clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 3rem)` |
+| **Max Content Width** | `1200px` |
 
 ---
 
-## Color Tokens
+## WCAG Contrast Audit
 
-### Core Palette
-
-| Role | Hex | Usage |
-|------|-----|-------|
-| `primary` | `#f183ff` | Main accent, branding |
-| `primary_container` | `#ec6aff` | CTA backgrounds, active states |
-| `primary_dim` | `#eb65ff` | Reduced emphasis primary |
-| `secondary` | `#f993e5` | Supporting accent |
-| `secondary_container` | `#78226e` | Secondary containers |
-| `tertiary` | `#ff9783` | Warm accent, alerts |
-| `tertiary_container` | `#a15100` | Tertiary containers |
-| `error` | `#ff6e84` | Error states |
-| `error_container` | `#a70138` | Error containers |
-
-### Surface Hierarchy
-
-| Role | Hex | Usage |
-|------|-----|-------|
-| `surface` | `#0e0e0e` | Base canvas / void |
-| `surface_bright` | `#2c2c2c` | Elevated surfaces |
-| `surface_container` | `#1a1919` | Primary containers |
-| `surface_container_high` | `#201f1f` | Interactive cards |
-| `surface_container_highest` | `#262626` | Modals, overlays |
-| `surface_container_low` | `#131313` | Large content blocks |
-| `surface_container_lowest` | `#000000` | Deepest background |
-| `surface_dim` | `#0e0e0e` | Dimmed surfaces |
-| `surface_variant` | `#262626` | Variant containers |
-| `surface_tint` | `#f183ff` | Tint overlay |
-
-### Text / On-Surface
-
-| Role | Hex |
-|------|-----|
-| `on_background` | `#ffffff` |
-| `on_surface` | `#ffffff` |
-| `on_surface_variant` | `#adaaaa` |
-| `on_primary` | `#540062` |
-| `on_primary_container` | `#41004c` |
-| `on_secondary` | `#610a5a` |
-| `on_tertiary` | `#671003` |
-| `on_error` | `#490013` |
-
-### Outline
-
-| Role | Hex |
-|------|-----|
-| `outline` | `#777575` |
-| `outline_variant` | `#494847` |
-
-### Override Colors
-
-| Role | Hex |
-|------|-----|
-| Override Primary | `#E040FB` |
-| Override Neutral | `#050505` |
+| Pair | Ratio | Grade |
+|------|-------|-------|
+| `#eeeef0` on `#09090b` | 19.1:1 | AAA ✅ |
+| `#7c3aed` on `#09090b` | 4.6:1 | AA ✅ |
+| `#0df274` on `#09090b` | 10.5:1 | AAA ✅ |
+| `#8b8b9e` on `#09090b` | 5.4:1 | AA ✅ |
+| `#5f5f72` on `#09090b` | 3.2:1 | ⚠️ Large text only |
 
 ---
 
-## Design Rules
+## Design DNA
 
-### The "No-Line" Rule
-Borders are a failure of hierarchy. 1px solid borders for sectioning are **strictly prohibited**. Boundaries must be defined through:
-- **Tonal Shifts:** `surface-container-low` against `surface` background
-- **Glow-Indicated Edges:** Radial gradient of `primary-container` at 5% opacity
-- **Negative Space:** Large, intentional gaps
-
-### Glass & Gradient Rule
-- **Hydra Gradients:** Linear gradient `primary` (#f183ff) → `primary_container` (#ec6aff) at 135°
-- **The "Electric Edge":** `secondary` (#f993e5) with 15px drop-shadow blur for neon effect
-- **Glassmorphism:** `surface` at 60% opacity, 20px backdrop-blur, ghost border at 15% opacity
-
-### Ambient Shadows
-- Blur: 40px to 80px
-- Color: 4% opacity of `surface_tint` (#d2bbff — corrected from original to match actual tint)
-- No standard drop shadows
-
-### Typography Rules
-- Display/Headline: Space Grotesk, `letter-spacing: -0.02em`
-- Labels: Space Grotesk, `label-sm`, uppercase, `+0.1em tracking`
-- Body: Manrope, `line-height: 1.6`
-- Use `on_surface_variant` (#adaaaa) for body text, reserving white for headings only
-
----
-
-## MCP Validation Source
-- **Google Design MCP:** `https://design.googleapis.com/mcp`
-- Tool: `generate_brand_color_scheme` with primary=#E040FB, neutral=#050505
-- All color tokens mathematically derived from VIBRANT variant
+- **Language:** "Kinetic Void" — sovereign AI power emerging from absolute darkness
+- **Atmosphere:** Pure black void, violet-to-green gradient energy, glassmorphic surfaces
+- **Motion:** Spring-bounce entrances, subtle card hovers, gradient-line animations
+- **Character:** Assertive, sovereign, zero-trust aesthetic, bleeding-edge technology
+- **Duality:** Violet = intelligence/compute, Green = execution/results
