@@ -382,5 +382,6 @@ CounselConduit is the "Shopify for Legal AI" — a privilege-preserving routing 
 | Loop Steward | `scripts/loop_steward.py` | 5-min cycles | Autonomous task continuation with idle scaling |
 | KAIROS | `scripts/kairos_daemon.py` | Background | Background autonomous agent mode |
 | pnkln-evolve | `scripts/pnkln-evolve.py` | Background | Recursive self-improvement loop |
+| Omni-Autolint | `scripts/gca_autolint_daemon.py` | Daily 3-5AM | Secure lint+push via GitHub App tokens, beads audit trail |
 </daemon_fleet_registry>
 </system_directive>

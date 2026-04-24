@@ -22,10 +22,13 @@ from src.intelligence.deep_research_client import (
 @pytest.fixture
 def mock_genai():
     """Mock the google.genai module and Client."""
-    with patch.dict("os.environ", {"GEMINI_API_KEY": "test-key-fake"}), patch("src.intelligence.deep_research_client.DeepResearchClient._create_client") as mock_create:
-            mock_client = MagicMock()
-            mock_create.return_value = mock_client
-            yield mock_client
+    with (
+        patch.dict("os.environ", {"GEMINI_API_KEY": "test-key-fake"}),
+        patch("src.intelligence.deep_research_client.DeepResearchClient._create_client") as mock_create,
+    ):
+        mock_client = MagicMock()
+        mock_create.return_value = mock_client
+        yield mock_client
 
 
 class TestDeepResearchClient:

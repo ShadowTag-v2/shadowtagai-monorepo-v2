@@ -38,9 +38,7 @@ class SovereignAutoResearchLoop:
         Args:
             max_generations: Maximum number of mutation generations to attempt.
         """
-        logger.info(
-            "🦇 INITIATING NIGHTLY MUTAGENESIS. Target: %d gens.", max_generations
-        )
+        logger.info("🦇 INITIATING NIGHTLY MUTAGENESIS. Target: %d gens.", max_generations)
 
         for gen in range(max_generations):
             logger.info(
@@ -55,12 +53,8 @@ class SovereignAutoResearchLoop:
             new_latency = metrics.get("human_review_latency_ms", self.baseline_latency)
 
             if val_lpb > 0:
-                logger.warning(
-                    "🔴 FELONY RISK: %s UPL violations detected. Reverting.", val_lpb
-                )
-                subprocess.run(
-                    ["git", "checkout", "--", self.target_script], check=False
-                )
+                logger.warning("🔴 FELONY RISK: %s UPL violations detected. Reverting.", val_lpb)
+                subprocess.run(["git", "checkout", "--", self.target_script], check=False)
 
             elif new_latency < self.baseline_latency:
                 logger.critical(
@@ -70,7 +64,9 @@ class SovereignAutoResearchLoop:
                 self.baseline_latency = new_latency
                 subprocess.run(
                     [
-                        "git", "commit", "-am",
+                        "git",
+                        "commit",
+                        "-am",
                         f"auto-opt: margin increased, latency {new_latency}ms",
                     ],
                     check=False,
@@ -78,9 +74,7 @@ class SovereignAutoResearchLoop:
 
             else:
                 logger.info("⚪ Gen %d: No improvement. Reverting.", gen)
-                subprocess.run(
-                    ["git", "checkout", "--", self.target_script], check=False
-                )
+                subprocess.run(["git", "checkout", "--", self.target_script], check=False)
 
     def _invoke_coder_agent(self, _script: str, _constraints: str) -> None:
         """Invoke the coder agent to mutate the target script.

@@ -43,8 +43,18 @@ MONITOR_DIR = VAULT_DIR / "monitor"
 
 MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024  # 10 MB
 ALLOWED_EXTENSIONS = {
-    ".txt", ".md", ".json", ".csv", ".xml", ".yaml", ".yml",
-    ".html", ".htm", ".log", ".rst", ".toml",
+    ".txt",
+    ".md",
+    ".json",
+    ".csv",
+    ".xml",
+    ".yaml",
+    ".yml",
+    ".html",
+    ".htm",
+    ".log",
+    ".rst",
+    ".toml",
 }
 
 # Patterns that indicate hostile content (IPI payloads)
@@ -281,9 +291,7 @@ def main() -> int:
 
     # Summary
     for r in results:
-        status_icon = {"clean": "✅", "quarantined": "⚠️", "rejected": "🚫", "error": "❌"}.get(
-            r["status"], "❓"
-        )
+        status_icon = {"clean": "✅", "quarantined": "⚠️", "rejected": "🚫", "error": "❌"}.get(r["status"], "❓")
         logger.info("%s %s → %s", status_icon, r["file"], r["status"])
 
     rejected = sum(1 for r in results if r["status"] == "rejected")

@@ -64,9 +64,7 @@ class KairosPersistentAssistant:
         """
         logger.info("🌐 [ULTRAPLAN] Farming task to Remote Gemini 3 Pro...")
 
-        parent = self.task_client.queue_path(
-            self._project, self._region, self._queue
-        )
+        parent = self.task_client.queue_path(self._project, self._region, self._queue)
 
         for i in range(5):
             task = {
@@ -77,9 +75,7 @@ class KairosPersistentAssistant:
                         "Content-Type": "application/json",
                         "x-tengu-scratch": f"vol-{i}",
                     },
-                    "body": json.dumps(
-                        {"task": f"Sub-task {i}: {objective}"}
-                    ).encode(),
+                    "body": json.dumps({"task": f"Sub-task {i}: {objective}"}).encode(),
                 }
             }
             self.task_client.create_task(request={"parent": parent, "task": task})

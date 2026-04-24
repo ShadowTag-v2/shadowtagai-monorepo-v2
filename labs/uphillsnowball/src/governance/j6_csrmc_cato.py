@@ -359,9 +359,7 @@ class Judge6DeployGate:
         # Check execution time SLA (UCMJ Drag Race: 40s max)
         execution_ms = test_results.get("execution_time_ms", 0)
         if execution_ms > 40_000:
-            findings.append(
-                f"Execution time {execution_ms}ms exceeds 40s UCMJ SLA"
-            )
+            findings.append(f"Execution time {execution_ms}ms exceeds 40s UCMJ SLA")
 
         passed = len(findings) == 0
         directive = "ADVANCE_TO_BATTLE" if passed else "REJECT_DRY_GROUND"
@@ -404,15 +402,11 @@ class Judge6DeployGate:
         smoke_tests = integration_results.get("smoke_tests_passed", 0)
         smoke_total = integration_results.get("smoke_tests_total", 0)
         if smoke_total > 0 and smoke_tests < smoke_total:
-            findings.append(
-                f"Smoke tests: {smoke_tests}/{smoke_total} passed"
-            )
+            findings.append(f"Smoke tests: {smoke_tests}/{smoke_total} passed")
 
         lighthouse_score = integration_results.get("lighthouse_score")
         if lighthouse_score is not None and lighthouse_score < 80:
-            findings.append(
-                f"Lighthouse score {lighthouse_score} below 80 threshold"
-            )
+            findings.append(f"Lighthouse score {lighthouse_score} below 80 threshold")
 
         passed = len(findings) == 0
         directive = "DEPLOY_TO_PRODUCTION" if passed else "REJECT_BATTLE"
