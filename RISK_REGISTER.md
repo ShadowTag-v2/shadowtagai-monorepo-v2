@@ -315,17 +315,17 @@
 ## Risk #84: Gitleaks → Betterleaks Migration — CI Action Unverified
 - **Type**: Security / CI
 - **Severity:** 🟡 Medium
-- **Status:** KNOWN
-- **Description**: Secret scanning migrated from gitleaks v8.x to betterleaks v1.1.2 (12.9x faster). Pre-commit hook, preflight_gate.sh, and `.betterleaks.toml` all updated. `.betterleaksignore` created from `.gitleaksignore` (1,150 fingerprints). CI workflow references `betterleaks/betterleaks-action@v2` but this action has not been verified on GitHub Marketplace. Git scan shows 1,260 findings: 966 google-api-key (mostly test keys), 194 generic-api-key-inline, 99 github-token, 1 stripe-secret-key (history only). **Action**: (1) Verify betterleaks-action@v2 exists or replace with `run:` step. (2) Review 99 github-token findings for rotation. (3) Investigate 1 stripe-secret-key in git history. (4) Bulk-add false positive fingerprints to `.betterleaksignore`.
+- **Status:** PARTIALLY RESOLVED (2026-04-24)
+- **Description**: Secret scanning migrated from gitleaks v8.x to betterleaks v1.1.2 (12.9x faster). Pre-commit hook, preflight_gate.sh, and `.betterleaks.toml` all updated. `.betterleaksignore` created from `.gitleaksignore` (1,150 fingerprints). CI workflows now use `go install betterleaks@latest` + `run:` steps instead of unverified `betterleaks-action@v2`. Betterleaks added to Dockerfile for container scanning. Git scan shows 1,260 findings: 966 google-api-key (mostly test keys), 194 generic-api-key-inline, 99 github-token, 1 stripe-secret-key (history only). **Resolved**: (1) ✅ CI workflows updated to `run:` step with `go install`. **Remaining**: (2) Review 99 github-token findings for rotation. (3) Investigate 1 stripe-secret-key in git history. (4) Bulk-add false positive fingerprints to `.betterleaksignore`.
 
 ## Risk #85: Repo Maintenance Doctrine — Preflight Not Enforced in CI
 - **Type**: Architecture / Governance
 - **Severity:** 🟡 Medium
-- **Status:** KNOWN
-- **Description**: `scripts/preflight_gate.sh` exists and is usable locally, but is NOT enforced in CI (no GitHub Actions workflow calls it). `scripts/repo_doctor.py` created as Phase 1 health checker but is not yet wired into CI or the GCA autolint daemon. The 5-gate maintenance doctrine (Root, Secret, Drift, Build, Memory) is documented in `docs/REPO_MAINTENANCE_RUNBOOK.md` but only the Secret gate is enforced via pre-commit. **Action**: (1) Add preflight_gate.sh to a CI workflow. (2) Wire repo_doctor.py into GCA autolint daemon. (3) Enforce drift guard in pre-commit. (4) Activate autolint daemon via launchd/cron.
+- **Status:** PARTIALLY RESOLVED (2026-04-24)
+- **Description**: `scripts/preflight_gate.sh` exists and is usable locally. `scripts/repo_doctor.py` created as Phase 1 health checker. The 5-gate maintenance doctrine (Root, Secret, Drift, Build, Memory) is documented in `docs/REPO_MAINTENANCE_RUNBOOK.md`. **Resolved**: (1) ✅ `preflight-gate-ci.yml` created — runs preflight_gate.sh on push/PR to main. (2) ✅ `repo_doctor.py` wired into GCA autolint daemon as Phase 3.5. (3) ✅ `audit_monorepo_state.sh` hardened with timeout guards. **Remaining**: (3) Enforce drift guard in pre-commit. (4) Activate autolint daemon via launchd/cron.
 
 ## Risk #86: SOC 2 Audit Scheduling — No Concrete Timeline
 - **Type**: Compliance / Legal
 - **Severity:** 🟡 Medium
-- **Status:** KNOWN
-- **Description**: Product copy on kovelai.web.app and OnboardingWizard previously claimed "SOC 2 Type II ready" and "HIPAA-adjacent". Copy has been hardened to "SOC 2 audit-ready" and "pursuing SOC 2 Type II certification" (commit `635b3e8e93`). However, no concrete audit timeline, auditor engagement, or readiness assessment exists. Without a scheduled audit, the "audit-ready" claim becomes stale and potentially misleading. **Action**: (1) Engage a SOC 2 Type II auditor by Q3 2026. (2) Complete readiness assessment. (3) Document audit timeline in `docs/compliance/SOC2_TIMELINE.md`. (4) Update product copy to reflect actual certification date once achieved.
+- **Status:** PARTIALLY RESOLVED (2026-04-24)
+- **Description**: Product copy hardened to "SOC 2 audit-ready" and "pursuing SOC 2 Type II certification" (commit `635b3e8e93`). **Resolved**: (3) ✅ `docs/compliance/SOC2_TIMELINE.md` created with auditor shortlist, budget estimates, and milestone tracker. `compliance-copy-linter.yml` CI gate added to prevent regression of banned compliance phrases. `docs/PENTESTING_CHECKLIST.md` created. **Remaining**: (1) Engage a SOC 2 Type II auditor by Q3 2026. (2) Complete readiness assessment. (4) Update product copy to reflect actual certification date once achieved.
