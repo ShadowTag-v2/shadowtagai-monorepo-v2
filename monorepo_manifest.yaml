@@ -1,10 +1,11 @@
 version: 11.3 # Repo Maintenance Doctrine + Betterleaks — 2026-04-24
 hardened_state:
   last_hardened: "2026-04-24"
-  gold_master_tag: v11.2-gold
-  tests_passing: 499
+  gold_master_tag: v11.3-gold
+  tests_collected: 504
+  tests_passing: 480
   tests_skipped: 3
-  tests_failed: 2
+  tests_e2e_expected_failures: 24
   test_runner: /opt/homebrew/bin/python3.14
   risk_register_version: v10.8
   risk_register_count: 42  # +2: Betterleaks #84 + Repo Maintenance #85
@@ -17,7 +18,7 @@ hardened_state:
   firebase_mcp_auth: founder@shadowtagai.com
   ruff_state: all_checks_passed
   dotnet_build: succeeded  # AiYou.Kernel SK Process.Core — 0 errors
-  dotnet_version: "10.0.202"
+  dotnet_version: "10.0.106"
 active_silos:
   - id: shadowtag_core
     path: packages/core

@@ -43,14 +43,14 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 ## Core Technical Truths (DO NOT HALLUCINATE OVERRIDES)
 
 1. **uuid7 Fallback:** `try/except ImportError` pattern is REQUIRED for `uuid7` resolution between monorepo (`apps.counselconduit.api.uuid7`) and container (`api.uuid7`) paths. ~~Old container `counselconduit-00015-mmq`~~ → current: `counselconduit-00037-7mf` (deployed 2026-04-23).
-2. **.NET Environment:** `dotnet-sdk-11.0.100-preview` IS CONFIRMED INSTALLED (`dotnet --version` = `11.0.100-preview.3.26207.106`). Also available: 10.0.202, 8.0.419. `global.json` pins to 11.0 Preview 3. Semantic Kernel target framework: `net11.0`.
+2. **.NET Environment:** .NET 10.0.106 IS CONFIRMED INSTALLED. Also available: 10.0.202, 8.0.419. `global.json` pins to `10.0.106` with `rollForward: latestFeature`. Semantic Kernel target framework: `net10.0`. SK v1.74.0 build-verified.
 3. **Semantic Kernel Process.cs:** `OnExternalEvent` is the CORRECT API for `Microsoft.SemanticKernel.Process.Core v1.21.0-alpha`. Do NOT apply the `OnInputEvent` rename until Process.Core >= v1.30+.
 4. **Skill Fleet:** We maintain 182 cherry-picked community skills inside our local Matrix.
 5. **Prompt Repetition (arXiv 2512.14982):** Applies ONLY to non-reasoning model tiers (flash, lite, mini) to boost accuracy 1–8%. Do NOT apply to thinking/extended-thinking models.
 6. **daScript MCP Reference:** The 29-tool MCP server in the daScript repository is the gold-standard reference architecture for compiler-backed tools. Use it as a blueprint for routing tools.
 7. **Lighthouse-CI:** Use Lighthouse-CI for budget assertions in CI pipelines.
 8. **V10 Epistemic Airgap:** Corporate monorepo lives in `./external_repos/corp-monorepo/` (gitignored + AI-excluded). DLP Circuit Breaker prohibits passing proprietary identifiers into public search. Supply chain protection prevents blind `pip install` of internal package names. Skill: `.agents/skills/epistemic-airgap/SKILL.md`.
-9. **Python 3.14 Test Execution:** All test runs MUST use `/opt/homebrew/bin/python3.14 -m pytest`. System Python 3.9 (Xcode) cannot import `StrEnum` or `datetime.UTC`. Baseline: **201 tests passing, 1 skipped** (2026-04-23). `pytest.ini` v8.5 codifies this. See Risk #64 + Risk #79.
+9. **Python 3.14 Test Execution:** All test runs MUST use `/opt/homebrew/bin/python3.14 -m pytest`. System Python 3.9 (Xcode, `/usr/bin/python3`) cannot import `StrEnum` (3.11+) or `datetime.UTC` (3.11+) and will fail at collection. Baseline: **504 tests collected, 480 unit passed, 3 skipped, E2E expected failures** (2026-04-24). `pytest.ini` v8.5 codifies this. See Risk #64 + Risk #79.
 
 ## Open Infrastructure Blockers
 
