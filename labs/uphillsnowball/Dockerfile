@@ -25,11 +25,13 @@ RUN g++ -std=c++17 -O2 -o /usr/src/midas_ipc midas_ipc_client.cpp -lzmq
 # ── Stage 3: Python Runtime ───────────────────────────────────
 FROM python:3.12-slim
 
-# System dependencies
+# System dependencies + Betterleaks secret scanner
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-      curl jq ffmpeg libnss3 libzmq5 && \
-    rm -rf /var/lib/apt/lists/*
+      curl jq ffmpeg libnss3 libzmq5 golang-go && \
+    GOBIN=/usr/local/bin go install github.com/betterleaks/betterleaks@latest && \
+    apt-get purge -y golang-go && apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/* /root/go
 
 # Copy compiled binaries from builder stages
 COPY --from=rust-builder /usr/local/cargo/bin/sg /usr/local/bin/sg

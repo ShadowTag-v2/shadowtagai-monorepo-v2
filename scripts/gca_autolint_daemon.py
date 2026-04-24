@@ -412,6 +412,26 @@ def main() -> None:
     # Write beads audit trail (item 9)
     write_beads_entry(lint_results)
 
+    # --- Phase 3.5: Repo Doctor Health Check (Risk #85 remediation) ---
+    print("\n[3.5] Running Repo Doctor health check...")
+    repo_doctor_script = Path("scripts/repo_doctor.py")
+    if repo_doctor_script.exists():
+        import sys as _sys
+
+        rd = subprocess.run(
+            [_sys.executable, str(repo_doctor_script)],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        if rd.returncode != 0:
+            print(f"[!] Repo Doctor warnings:\n{rd.stdout[-1000:]}")
+        else:
+            print("[*] Repo Doctor: healthy")
+        lint_results["repo_doctor"] = {"exit_code": rd.returncode, "stdout": rd.stdout, "stderr": rd.stderr}
+    else:
+        print("[*] Repo Doctor script not found — skipping")
+
     # --- Phase 4: Evaluate ---
     print("\n[4] Evaluating modifications...")
     status_result = run_command(["git", "status", "--porcelain"])
