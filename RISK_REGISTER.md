@@ -323,3 +323,9 @@
 - **Severity:** 🟡 Medium
 - **Status:** KNOWN
 - **Description**: `scripts/preflight_gate.sh` exists and is usable locally, but is NOT enforced in CI (no GitHub Actions workflow calls it). `scripts/repo_doctor.py` created as Phase 1 health checker but is not yet wired into CI or the GCA autolint daemon. The 5-gate maintenance doctrine (Root, Secret, Drift, Build, Memory) is documented in `docs/REPO_MAINTENANCE_RUNBOOK.md` but only the Secret gate is enforced via pre-commit. **Action**: (1) Add preflight_gate.sh to a CI workflow. (2) Wire repo_doctor.py into GCA autolint daemon. (3) Enforce drift guard in pre-commit. (4) Activate autolint daemon via launchd/cron.
+
+## Risk #86: SOC 2 Audit Scheduling — No Concrete Timeline
+- **Type**: Compliance / Legal
+- **Severity:** 🟡 Medium
+- **Status:** KNOWN
+- **Description**: Product copy on kovelai.web.app and OnboardingWizard previously claimed "SOC 2 Type II ready" and "HIPAA-adjacent". Copy has been hardened to "SOC 2 audit-ready" and "pursuing SOC 2 Type II certification" (commit `635b3e8e93`). However, no concrete audit timeline, auditor engagement, or readiness assessment exists. Without a scheduled audit, the "audit-ready" claim becomes stale and potentially misleading. **Action**: (1) Engage a SOC 2 Type II auditor by Q3 2026. (2) Complete readiness assessment. (3) Document audit timeline in `docs/compliance/SOC2_TIMELINE.md`. (4) Update product copy to reflect actual certification date once achieved.
