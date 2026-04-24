@@ -293,3 +293,18 @@ src/vs/
 
 # ── Implementation plans (session artifacts, not canonical) ──
 IMPLEMENTATION_PLAN.md
+
+# Invariant #102: Large binary exclusions (GitHub Push Chunking Protocol)
+**/*.onnx
+**/*.bin
+**/*.dmg
+**/*.iso
+**/*.tar.gz
+**/*.tgz
+**/*.tar
+**/*.7z
+**/*.zip
+**/*.rar
+**/*.sqlite
+**/*.sqlite3
+**/*.heapsnapshot
