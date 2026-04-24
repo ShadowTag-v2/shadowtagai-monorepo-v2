@@ -125,4 +125,3 @@ spec:
 - **Google-managed SSL certificates**: Use `ManagedCertificate` CRD with Gateway API. Auto-provisions and renews.
 - **Container-native LB**: Enabled by default on VPC-native clusters (golden path). Targets pods via NEGs, bypassing iptables. Annotation: `cloud.google.com/neg: '{"ingress": true}'`.
 - **Private Service Connect (PSC)**: Use `ServiceAttachment` CRD to expose services across VPCs without peering.
-

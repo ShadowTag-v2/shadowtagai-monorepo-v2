@@ -89,7 +89,7 @@ Transform scraped CSS into semantic DESIGN.md using the MCP tools:
 1. **Color Extraction:** Call `extract_and_generate_brand_color_scheme` with the fullPage screenshot (base64)
 2. **Role Mapping:** Map the MCP response to semantic roles:
    - `primary` → main accent / CTA color
-   - `neutral` → canvas / background color  
+   - `neutral` → canvas / background color
    - `secondary` → supporting accent
    - `tertiary` → status/signal color
    - `error` → error states (derive from warm hue)
@@ -215,7 +215,7 @@ Trigger `orchestrate_cognitive_injection`:
 ## Owned Properties (Mission A Targets)
 
 | Property | URL | DESIGN_SYSTEM.md Location | Design Language |
-|----------|-----|--------------------------|-----------------| 
+|----------|-----|--------------------------|-----------------|
 | ShadowTag AI | shadowtagai.web.app | `apps/shadowtagai/DESIGN_SYSTEM.md` | Kinetic Void |
 | KovelAI | kovelai.web.app | `apps/kovelai/DESIGN_SYSTEM.md` | Structured Precision |
 

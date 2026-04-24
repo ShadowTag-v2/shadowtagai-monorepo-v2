@@ -18,12 +18,12 @@ This skill MUST be evaluated automatically **prior to EACH tool call** that invo
 ### 1. FIRESTORE (The Swarm & The Edge)
 - **Use exclusively for:** Agent Whiteboards / State tracking, Swarm Telemetry, micro-payload ingestion (NFC taps, RLHF events), and real-time client updates.
 - **Mandate:** Use Firestore's native `onSnapshot` listeners to bind the UI directly to the database document for sub-millisecond updates. Do NOT build custom WebSocket servers.
-- **Aggregation:** Use Firestore Enterprise `.pipeline()`, `.aggregate(countAll())`, and `.unnest()` for analytical queries. 
+- **Aggregation:** Use Firestore Enterprise `.pipeline()`, `.aggregate(countAll())`, and `.unnest()` for analytical queries.
 
 ### 2. SUPABASE / POSTGRES (The Enterprise Vault)
 - **Use exclusively for:** Multi-tenant B2B ledgers (CounselConduit), Stripe entitlement, billing, and strict ACID compliance.
-- **Mandate:** You MUST implement Row-Level Security (RLS) policies on every table upon creation. 
+- **Mandate:** You MUST implement Row-Level Security (RLS) policies on every table upon creation.
 
 ## Enforcement Gate
-Before returning a code artifact or executing a DB tool call, you must explicitly state: 
+Before returning a code artifact or executing a DB tool call, you must explicitly state:
 `[DB ORACLE] Routing to <Firestore/Supabase> because <Reason>.`
