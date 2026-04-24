@@ -21,6 +21,7 @@ import json
 import logging
 import os
 import pathlib
+import random
 import signal
 import subprocess
 import sys
@@ -49,6 +50,15 @@ STANDUP_INTERVAL = 86400  # 24 hours
 VAULT_INGEST_INTERVAL = 300  # 5 minutes
 QUARANTINE_PURGE_INTERVAL = 3600  # 1 hour
 AUTOLINT_INTERVAL = 86400  # 24 hours
+
+# Jitter range (±30s) to prevent thundering herd — TACSOP B8
+JITTER_SECONDS = 30
+
+
+def _jittered(interval: float) -> float:
+    """Add ±JITTER_SECONDS random offset to an interval."""
+    return interval + random.uniform(-JITTER_SECONDS, JITTER_SECONDS)
+
 
 _running = True
 
@@ -325,50 +335,50 @@ def main_loop(once: bool = False) -> None:
         now = time.time()
         status: dict[str, str] = {"cycle": str(cycle)}
 
-        # Health check (every 5 min)
-        if now - last_health >= HEALTH_CHECK_INTERVAL:
+        # Health check (every 5 min, jittered)
+        if now - last_health >= _jittered(HEALTH_CHECK_INTERVAL):
             status["health"] = json.dumps(health_check())
             last_health = now
 
         # Dream consolidation (daily, only between 2-4 AM local)
         hour = datetime.datetime.now().hour
-        if now - last_dream >= DREAM_INTERVAL and 2 <= hour <= 4:
+        if now - last_dream >= _jittered(DREAM_INTERVAL) and 2 <= hour <= 4:
             run_dream_consolidation()
             last_dream = now
             status["dream"] = "ran"
 
         # Dead code audit (daily, during off-hours)
-        if now - last_dead_code >= DEAD_CODE_INTERVAL and 1 <= hour <= 5:
+        if now - last_dead_code >= _jittered(DEAD_CODE_INTERVAL) and 1 <= hour <= 5:
             run_dead_code_audit()
             last_dead_code = now
             status["dead_code"] = "ran"
 
         # Loop steward (every 5 min)
-        if now - last_steward >= LOOP_STEWARD_INTERVAL:
+        if now - last_steward >= _jittered(LOOP_STEWARD_INTERVAL):
             run_loop_steward()
             last_steward = now
             status["steward"] = "ran"
 
         # Standup report (daily, at 8 AM local)
-        if now - last_standup >= STANDUP_INTERVAL and hour == 8:
+        if now - last_standup >= _jittered(STANDUP_INTERVAL) and hour == 8:
             run_standup_report()
             last_standup = now
             status["standup"] = "ran"
 
         # Vault ingest sweep (every 5 min)
-        if now - last_vault_ingest >= VAULT_INGEST_INTERVAL:
+        if now - last_vault_ingest >= _jittered(VAULT_INGEST_INTERVAL):
             run_vault_ingest()
             last_vault_ingest = now
             status["vault_ingest"] = "ran"
 
         # Quarantine purge (every hour)
-        if now - last_quarantine_purge >= QUARANTINE_PURGE_INTERVAL:
+        if now - last_quarantine_purge >= _jittered(QUARANTINE_PURGE_INTERVAL):
             run_quarantine_purge()
             last_quarantine_purge = now
             status["quarantine_purge"] = "ran"
 
         # Omni-Autolint (daily, during off-hours 3-5 AM)
-        if now - last_autolint >= AUTOLINT_INTERVAL and 3 <= hour <= 5:
+        if now - last_autolint >= _jittered(AUTOLINT_INTERVAL) and 3 <= hour <= 5:
             run_omni_autolint()
             last_autolint = now
             status["autolint"] = "ran"
