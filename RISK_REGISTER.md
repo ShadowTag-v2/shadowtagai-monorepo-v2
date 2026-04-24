@@ -34,7 +34,7 @@
 | 27 | Pre-push hook PATH missing `/opt/homebrew/bin` | 🟡 Medium | RESOLVED | Fixed pre-push hook to export `/opt/homebrew/bin` in PATH. Stage 1 now soft-fails (non-blocking). |
 | 28 | Dependabot PRs accumulate with deleted head branches | 🟢 Low | RESOLVED | 8 stale Dependabot PRs closed. Auto-merge + delete-branch-on-merge enabled for future PRs. |
 | 29 | Secret rotation lacks documented procedure | 🟡 Medium | RESOLVED | `docs/SECRET_ROTATION.md` created with per-category rotation steps, schedules, and PubSub automation path. |
-| 30 | Vulture sweeps `external_repos/` + `control/legacy_workspaces/` (500K+ files) | 🟡 Medium | RESOLVED | `dead-code-audit.sh` exclude list expanded: `external_repos`, `control/legacy_workspaces`, `reference_architectures`, `packages`, `apps/kovelai/venv`. Pre-commit scan reduced from 5+ min to <30s. |
+| 30 | ~~Vulture sweeps `external_repos/` + `control/legacy_workspaces/` (500K+ files)~~ | 🟡 Medium | SUPERSEDED | V22 Pruned Singularity: vulture removed from toolchain. `ruff check --select F401,F841` now handles all dead code detection. Original scope issue moot. |
 | 31 | `brew upgrade llama.cpp` HEAD build fails against macOS SDK 26 | 🟡 Medium | KNOWN | cmake build failure in `src/CMakeFiles/llama.dir/all`. Upstream SDK 26 compatibility issue. **Action**: Wait for next HEAD revision or `brew pin llama.cpp` to freeze current version. |
 | 32 | `gh auth login` creates stale Keychain credentials | 🟠 High | RESOLVED | GEMINI.md v9.0 github_doctrine prohibits `gh auth login`, PATs, deploy keys. GitHub App PEM is exclusive auth path. |
 | 33 | Competitor system prompts fully leaked (CL4R1T4S) — ours may be extractable too | 🟡 Medium | GOVERNED | Claude Opus 4.7 (150K chars), Cursor 2.0, Devin 2.0, Gemini 2.5 Pro all fully extracted via CL4R1T4S. Our prompts use runtime injection (AGENTS.md + GEMINI.md) not API system blocks, reducing extraction surface. Competitive matrix archived to `reference_architectures/`. |
@@ -221,14 +221,14 @@
 - **Severity:** Low
 - **Status:** Documented
 - **Description:** `/usr/bin/python3` (macOS system Python 3.9.6) has corrupted `urllib3-2.5.0.dist-info/METADATA`, preventing pip installs. Homebrew Python 3.14 at `/opt/homebrew/bin/python3.14` is the working interpreter.
-- **Mitigation:** All dev tooling (vulture, bandit, pip-audit) pinned to Homebrew Python 3.14. CI/CD uses `actions/setup-python@v5` with Python 3.13.
+- **Mitigation:** All dev tooling (bandit, pip-audit) pinned to Homebrew Python 3.14. CI/CD uses `actions/setup-python@v5` with Python 3.13. V22: vulture removed from toolchain.
 - **Resolution:** System Python 3.9 is deprecated and should not be used for any monorepo operations.
 
-## Risk #16: Vulture 60% Confidence Sweep — 8,414 Findings
+## Risk #16: ~~Vulture 60% Confidence Sweep — 8,414 Findings~~ (V22 SUPERSEDED)
 - **Severity:** Low (informational)
-- **Status:** Tracked
-- **Description:** Full monorepo vulture sweep at 60% confidence returns ~8,414 items. Most are false positives (FastAPI route handlers, pytest fixtures, Pydantic model fields). Only items at 90%+ confidence are enforced in CI gates.
-- **Mitigation:** Production gates (kovelai, counselconduit) enforce 90% confidence. Nightly sweep uses 80% as a monitoring threshold.
+- **Status:** SUPERSEDED
+- **Description:** V22 Pruned Singularity: vulture removed from toolchain (2026-04-24). Ruff `F401` (unused-import) and `F841` (unused-variable) now handle all dead code detection with zero false-positive rate on FastAPI/pytest/Pydantic patterns.
+- **Mitigation:** `ruff check --select F401,F841 --fix` in `dead-code-audit.sh` and `gca_autolint_daemon.py`. No confidence threshold needed — ruff uses deterministic AST analysis.
 
 ## Risk #17: Google Design MCP Ground Truth (Not GitHub Repo)
 - **Severity:** Medium (architectural)

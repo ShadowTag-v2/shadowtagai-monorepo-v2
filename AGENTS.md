@@ -89,7 +89,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 
 ## Dev Standards
 
-- Python: Google style, CPython 3.14.3, ruff + vulture at 90%
+- Python: Google style, CPython 3.14.3, ruff (F401/F841 dead code) at 90%
 - TypeScript: Google style, biome linting
 - Go: Google style
 - Shell: Google style
