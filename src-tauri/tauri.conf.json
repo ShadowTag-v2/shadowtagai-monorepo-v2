@@ -1,0 +1,44 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "build": {
+    "beforeDevCommand": "",
+    "beforeBuildCommand": "",
+    "devPath": "http://localhost:3000",
+    "distDir": "../frontend/out"
+  },
+  "package": {
+    "productName": "Gideon OS Cockpit",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "open": true
+      },
+      "fs": {
+        "readFile": true,
+        "writeFile": true,
+        "createDir": true,
+        "scope": ["/Users/Shared/Obsidian_Vault/**"]
+      }
+    },
+    "bundle": {
+      "active": true,
+      "identifier": "com.shadowtag.gideon-cockpit",
+      "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png"]
+    },
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' wss://ide.sovereign-gideon.com ws://localhost:3000"
+    },
+    "windows": [
+      {
+        "title": "GIDEON OS COCKPIT",
+        "width": 1440,
+        "height": 900,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ]
+  }
+}
