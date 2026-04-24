@@ -120,18 +120,14 @@ class TestGenerateAttestation:
         from apps.counselconduit.api.kovel_attestation import generate_attestation
 
         result = generate_attestation(attestation_request)
-        expected_hash = hashlib.sha256(
-            attestation_request.query_text.encode()
-        ).hexdigest()
+        expected_hash = hashlib.sha256(attestation_request.query_text.encode()).hexdigest()
         assert result.query_hash == expected_hash
 
     def test_hashes_response_text(self, attestation_request):
         from apps.counselconduit.api.kovel_attestation import generate_attestation
 
         result = generate_attestation(attestation_request)
-        expected_hash = hashlib.sha256(
-            attestation_request.response_text.encode()
-        ).hexdigest()
+        expected_hash = hashlib.sha256(attestation_request.response_text.encode()).hexdigest()
         assert result.response_hash == expected_hash
 
     def test_unique_attestation_ids(self, attestation_request):

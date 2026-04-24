@@ -118,10 +118,7 @@ class DeepResearchClient:
         """
         self._api_key = api_key or os.environ.get("GEMINI_API_KEY")
         if not self._api_key:
-            raise ValueError(
-                "GEMINI_API_KEY not set. Source it from GCP Secret Manager: "
-                "`source scripts/load_mcp_secrets.sh`"
-            )
+            raise ValueError("GEMINI_API_KEY not set. Source it from GCP Secret Manager: `source scripts/load_mcp_secrets.sh`")
         self._client = self._create_client()
 
     def _create_client(self):
@@ -136,10 +133,7 @@ class DeepResearchClient:
         try:
             from google import genai
         except ImportError as exc:
-            raise RuntimeError(
-                "google-genai SDK not installed. "
-                "Run: pip install 'google-genai>=1.0.0'"
-            ) from exc
+            raise RuntimeError("google-genai SDK not installed. Run: pip install 'google-genai>=1.0.0'") from exc
 
         return genai.Client(api_key=self._api_key)
 
