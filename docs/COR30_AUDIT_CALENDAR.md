@@ -14,9 +14,9 @@
 ## Checklist Per Audit
 
 ### Pre-Audit (day before)
-- [ ] Run `gitleaks detect --source apps/ --config .gitleaks.toml`
+- [ ] Run `betterleaks dir -c .betterleaks.toml --redact apps/`
 - [ ] Run `vulture` + `ruff --fix` on all production paths
-- [ ] Verify `.gitleaksignore` fingerprint count matches expectations
+- [ ] Verify `.betterleaksignore` fingerprint count matches expectations
 - [ ] Check RISK_REGISTER.md for open items
 
 ### During Audit
@@ -39,7 +39,7 @@
 
 | Tool | Command | Purpose |
 |------|---------|---------|
-| Gitleaks Guardian | `python3 scripts/gitleaks_guardian.py --mode scan --scope production` | Secret detection |
+| Betterleaks Guardian | `python3 scripts/gitleaks_guardian.py --mode scan --scope production` | Secret detection |
 | Vulture | `python3 -m vulture scripts/ --min-confidence 80` | Dead code |
 | Ruff | `python3 -m ruff check apps/ scripts/ tests/` | Lint |
 | Lighthouse | `npx lighthouse https://kovelai.web.app --output=json` | Web quality |
@@ -48,7 +48,7 @@
 ## Baseline (Q2 2026 — Audit #0)
 
 - **Date**: 2026-04-19
-- **Gitleaks**: 686 third-party findings audited → 0 risk
+- **Betterleaks**: 686 third-party findings audited → 0 risk (migrated from gitleaks per Risk #84)
 - **Production scan**: 33 findings (all aiyou_stack `.example` files — false positives)
 - **Vulture**: 0 violations at 80%+ confidence
 - **Ruff**: 0 in counselconduit

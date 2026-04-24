@@ -52,14 +52,16 @@ if command -v python3 -m ruff >/dev/null 2>&1 || python3 -c "import ruff" 2>/dev
 fi
 
 # 6. Betterleaks Security Scan (PRIMARY — successor to Gitleaks)
+# HARD GATE: Betterleaks MUST pass. No secrets may bypass the preflight.
 echo "=> [6/6] Asserting Anti-Credentials Leak Security..."
 BETTERLEAKS_BIN="${HOME}/go/bin/betterleaks"
 if [ -x "$BETTERLEAKS_BIN" ]; then
-    "$BETTERLEAKS_BIN" dir -c .betterleaks.toml --redact . || echo "⚠️ Betterleaks Warning - Check logs."
+    "$BETTERLEAKS_BIN" dir -c .betterleaks.toml --redact . || { echo "❌ Betterleaks BLOCKED: secrets detected. Pipeline HALTED."; exit 1; }
 elif command -v betterleaks >/dev/null 2>&1; then
-    betterleaks dir -c .betterleaks.toml --redact . || echo "⚠️ Betterleaks Warning - Check logs."
+    betterleaks dir -c .betterleaks.toml --redact . || { echo "❌ Betterleaks BLOCKED: secrets detected. Pipeline HALTED."; exit 1; }
 else
-    echo "⚠️ Betterleaks not found in PATH or ~/go/bin/, skipping security scan."
+    echo "❌ Betterleaks not found in PATH or ~/go/bin/. Install: go install github.com/betterleaks/betterleaks@latest"
+    exit 1
 fi
 
 echo "==========================================================="
