@@ -18,9 +18,11 @@ set -e
 REPO_ROOT=$(git rev-parse --show-toplevel)
 cd "$REPO_ROOT"
 
-# Resolve tool paths — prefer .venv/bin over system
+# Resolve tool paths — prefer .venv/bin, then Homebrew, then system
 RUFF="${REPO_ROOT}/.venv/bin/ruff"
 [[ -x "${REPO_ROOT}/.venv/bin/ruff" ]] || RUFF=$(command -v ruff 2>/dev/null || echo "")
+[[ -n "$RUFF" && -x "$RUFF" ]] || RUFF="/opt/homebrew/bin/ruff"
+[[ -x "$RUFF" ]] || RUFF=""
 
 echo ">>> 🔪 Initializing Guillotine v9.0 [ruff + biome]..."
 
