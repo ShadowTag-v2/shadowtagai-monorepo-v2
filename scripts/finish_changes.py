@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/opt/homebrew/bin/python3.14
 # scripts/finish_changes.py
 # ============================================================================
 # SHADOWTAG OS: PRE-ACTION MEMORY GATE & REPO-DRIFT AUDIT
