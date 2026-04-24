@@ -1,7 +1,7 @@
-version: 11.9 # Mega-audit: Google Skills 13x, vulture purge, Gideon scaffold, pnkln-evolve, Lighthouse mobile — 2026-04-24
+version: 12.0 # TACSOP 0 full activation: 5 ADRs, 11x extractor, meta-skill SOP — 2026-04-24
 hardened_state:
-  last_hardened: "2026-04-24"  # v11.9 mega-audit pass
-  gold_master_tag: v11.8-gold
+  last_hardened: "2026-04-24"  # v12.0 TACSOP 0 activation
+  gold_master_tag: v11.9-gold
   tests_collected: 504
   tests_passing: 499
   tests_skipped: 3
@@ -9,6 +9,8 @@ hardened_state:
   test_runner: /opt/homebrew/bin/python3.14
   risk_register_version: v10.9
   risk_register_count: 86
+  adr_count: 5
+  tacsop0_status: fully_activated
   betterleaks_migrated: true
   betterleaksignore: .betterleaksignore
   repo_doctor: scripts/repo_doctor.py
@@ -43,8 +45,8 @@ hardened_state:
   dotnet_version: "10.0.106"
   vulture_status: permanently_retired_v22
   dead_code_tool: "ruff --select F401,F841"
-  skill_count_agent: 41
-  skill_count_global: 215
+  skill_count_agent: 42
+  skill_count_global: 216
   skill_count_google_official: 13
   skill_duplicates: 7
   pnkln_evolve_daemon: scripts/pnkln_evolve.py
@@ -54,6 +56,7 @@ hardened_state:
   stripe_hmac_coverage: 8_files
   console_log_clean: true
   omni_ingest_repos: 73
+  browser_extractor: scripts/11x_browser_extractor.py
 ci_workflows:
   total_count: 74
   registered:
