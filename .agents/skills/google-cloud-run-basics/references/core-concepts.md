@@ -57,7 +57,7 @@ Cloud Run services scale automatically based on:
     use instance-based billing, Cloud Run instances are charged for the entire
     lifecycle of instances, even when there are no incoming requests.
 
-## Container contract 
+## Container contract
 
 Your container image can run code written in the programming language
 of your choice and use any base image, provided that it respects the
