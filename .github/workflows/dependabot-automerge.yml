@@ -21,11 +21,23 @@ jobs:
     if: github.actor == 'dependabot[bot]'
 
     steps:
+      # GitHub App short-lived token enables downstream workflow triggers
+      # that secrets.GITHUB_TOKEN cannot do by design.
+      - name: Generate Short-Lived Token
+        id: get_app_token
+        uses: peter-murray/workflow-application-token-action@v4
+        with:
+          application_id: ${{ secrets.GH_APP_ID }}
+          application_private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          organization: ShadowTag-v2
+          permissions: "contents:write,pull_requests:write,statuses:write"
+          revoke_token: true
+
       - name: Dependabot metadata
         id: metadata
         uses: dependabot/fetch-metadata@v2
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          github-token: "${{ steps.get_app_token.outputs.token }}"
 
       - name: Auto-approve patch and minor updates
         if: |
@@ -34,14 +46,14 @@ jobs:
         run: gh pr review --approve "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.get_app_token.outputs.token }}
 
       - name: Enable auto-merge for patch updates
         if: steps.metadata.outputs.update-type == 'version-update:semver-patch'
         run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.get_app_token.outputs.token }}
 
       - name: Enable auto-merge for minor updates (non-breaking)
         if: |
@@ -52,7 +64,7 @@ jobs:
         run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.get_app_token.outputs.token }}
 
       - name: Comment on major updates
         if: steps.metadata.outputs.update-type == 'version-update:semver-major'
@@ -67,4 +79,4 @@ jobs:
           Please review the changelog and test before approving."
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.get_app_token.outputs.token }}
