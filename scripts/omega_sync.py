@@ -184,9 +184,13 @@ def push_with_token(token: str, org: str, repo: str, branch=None) -> None:
     finally:
         if askpass_script and os.path.exists(askpass_script.name):
             os.unlink(askpass_script.name)
-        # Restore SSH as canonical remote
+        # Restore SSH as canonical remote (fetch AND push URLs)
         subprocess.run(
             ["git", "remote", "set-url", "origin", ssh_url],
+            check=False,
+        )
+        subprocess.run(
+            ["git", "remote", "set-url", "--push", "origin", ssh_url],
             check=False,
         )
 
