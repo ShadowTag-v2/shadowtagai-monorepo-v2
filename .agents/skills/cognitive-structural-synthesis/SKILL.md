@@ -29,7 +29,7 @@ description: >
 ### Tier 2 — Agent Capabilities (Direct)
 | Capability | Tool | Purpose |
 |-----------|------|---------|
-| **Image Generation** | `generate_image` | Create 4K brand imagery, hero visuals, product photos |
+| **Image Generation** | `Stitch MCP → generate_screen_from_text` | BANNED: `generate_image` per TACSOP 7. Use Stitch screens, CSS gradients, or SVG placeholders |
 | **Browser Subagent** | `browser_subagent` | Autonomous DOM interaction, visual verification, video recording |
 | **URL Content Reader** | `read_url_content` | HTML→markdown extraction for text/structure |
 | **Web Search** | `search_web` | Market research, competitive intelligence |
@@ -147,10 +147,11 @@ description: >
 - Character count matching: agent counts original chars per element, constrains replacements
 - No CSS grid breaks because agent respects extracted `max-width`, `grid-template-columns`
 
-**Image Generation** (replaces fictional "Nano Banana 2"):
-- `generate_image` tool with prompts derived from DESIGN.md mood/palette
-- Aspect ratios extracted from Phase 1's `getComputedStyle()` measurements
-- For photorealistic product imagery: detailed prompts with brand color constraints
+**Image Generation** (TACSOP 7 — Visual Provenance):
+- `Stitch MCP → generate_screen_from_text` for UI section imagery
+- CSS gradient/SVG placeholders for decorative elements (DESIGN.md tokens)
+- `browser_subagent` to download original assets from target site to `public/images/`
+- BANNED: `generate_image` tool (no provenance tracking, hallucinated aspect ratios)
 
 **Icon Replacement**:
 - Design MCP → `search_icons` with semantic tags

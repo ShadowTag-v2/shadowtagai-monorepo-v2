@@ -387,3 +387,6 @@ tools/bazel
 /opencode.json.bak
 # END Ruler Generated Files
 tools/cloner-engine/template
+
+# M2M Firebase SA key (NEVER COMMIT)
+.beads/firebase-sa.json
