@@ -51,7 +51,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 1. **uuid7 Fallback:** `try/except ImportError` pattern is REQUIRED for `uuid7` resolution between monorepo (`apps.counselconduit.api.uuid7`) and container (`api.uuid7`) paths. ~~Old container `counselconduit-00015-mmq`~~ → current: `counselconduit-00037-7mf` (verified live 2026-04-25 via gcloud).
 2. **.NET Environment:** .NET 11.0.100-preview IS CONFIRMED INSTALLED (2026-04-24). Also available: 10.0.106, 10.0.202, 8.0.419. `global.json` pins to `11.0.100-preview` with `rollForward: latestFeature`. Semantic Kernel target framework: `net11.0`. SK v1.74.0 build-verified.
 3. **Semantic Kernel Process.cs:** `OnExternalEvent` is the CORRECT API for `Microsoft.SemanticKernel.Process.Core v1.21.0-alpha`. Do NOT apply the `OnInputEvent` rename until Process.Core >= v1.30+.
-4. **Skill Fleet:** We maintain 247 active skills (54 workspace + 210 global − 17 overlap) inside our local Matrix. 20 additional skills archived in `_archive_redundant_2026-04-25/`.
+4. **Skill Fleet:** We maintain 260 active skills (68 workspace + 209 global − 18 overlap) inside our local Matrix. 20 additional skills archived in `_archive_redundant_2026-04-25/`. `npx skills` CLI fully operational (Node v25.9.0, `.zshenv` PATH fix applied).
 5. **Prompt Repetition (arXiv 2512.14982):** Applies ONLY to non-reasoning model tiers (flash, lite, mini) to boost accuracy 1–8%. Do NOT apply to thinking/extended-thinking models.
 6. **daScript MCP Reference:** The 29-tool MCP server in the daScript repository is the gold-standard reference architecture for compiler-backed tools. Use it as a blueprint for routing tools.
 7. **Lighthouse-CI:** Use Lighthouse-CI for budget assertions in CI pipelines.
