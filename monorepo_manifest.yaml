@@ -1,4 +1,4 @@
-version: 12.1 # Stage 3/4 canonicalization: manifest drift fix, Lighthouse A100, risk count 94 — 2026-04-25
+version: 12.2 # Stage 5 reconciliation: skill fleet 247 active, daemon path fix, GEMINI v11.1 — 2026-04-25
 hardened_state:
   last_hardened: "2026-04-25"  # v12.1 Stage 3/4 canonicalization
   gold_master_tag: v11.7-gold
@@ -45,10 +45,10 @@ hardened_state:
   dotnet_version: "11.0.100-preview"
   vulture_status: permanently_retired_v22
   dead_code_tool: "ruff --select F401,F841"
-  skill_count_agent: 51
-  skill_count_global: 209
+  skill_count_agent: 54
+  skill_count_global: 210
   skill_count_google_official: 13
-  skill_duplicates: 0  # All 7 resolved with redirect stubs (Risk #90/#93)
+  skill_duplicates: 17  # 17 WS skills overlap with global (11 have redirect stubs, 6 are standalone)
   pnkln_evolve_daemon: scripts/pnkln_evolve.py
   gideon_os_blocks_scaffolded: 13
   adc_project: shadowtag-omega-v4
