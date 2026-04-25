@@ -1,14 +1,14 @@
-version: 12.0 # TACSOP 0 full activation: 5 ADRs, 11x extractor, meta-skill SOP — 2026-04-24
+version: 12.1 # Stage 3/4 canonicalization: manifest drift fix, Lighthouse A100, risk count 94 — 2026-04-25
 hardened_state:
-  last_hardened: "2026-04-24"  # v12.0 TACSOP 0 activation
-  gold_master_tag: v11.9-gold
+  last_hardened: "2026-04-25"  # v12.1 Stage 3/4 canonicalization
+  gold_master_tag: v11.7-gold
   tests_collected: 504
   tests_passing: 499
   tests_skipped: 3
   tests_e2e_expected_failures: 2
   test_runner: /opt/homebrew/bin/python3.14
   risk_register_version: v10.9
-  risk_register_count: 86
+  risk_register_count: 94
   adr_count: 5
   tacsop0_status: fully_activated
   betterleaks_migrated: true
@@ -29,8 +29,8 @@ hardened_state:
   counselconduit_version: v3.2.0
   counselconduit_health: "HTTP 200 (0.44s)"
   firebase_mcp_auth: founder@shadowtagai.com
-  lighthouse_kovelai_mobile: "A94/BP96/SEO100"
-  lighthouse_shadowtagai_mobile: "A100/BP96/SEO100"
+  lighthouse_kovelai_desktop: "A100/BP96/SEO100"
+  lighthouse_shadowtagai_desktop: "A100/BP96/SEO100"
   cloud_functions_count: 4
   cloud_tasks_gdpr_queue: active
   firestore_databases: 2
@@ -45,10 +45,10 @@ hardened_state:
   dotnet_version: "11.0.100-preview"
   vulture_status: permanently_retired_v22
   dead_code_tool: "ruff --select F401,F841"
-  skill_count_agent: 49
-  skill_count_global: 224
+  skill_count_agent: 51
+  skill_count_global: 209
   skill_count_google_official: 13
-  skill_duplicates: 7
+  skill_duplicates: 0  # All 7 resolved with redirect stubs (Risk #90/#93)
   pnkln_evolve_daemon: scripts/pnkln_evolve.py
   gideon_os_blocks_scaffolded: 13
   adc_project: shadowtag-omega-v4
@@ -58,7 +58,7 @@ hardened_state:
   omni_ingest_repos: 73
   browser_extractor: scripts/11x_browser_extractor.py
 ci_workflows:
-  total_count: 74
+  total_count: 75
   registered:
     - path: .github/workflows/ci.yml
       purpose: Primary CI gate

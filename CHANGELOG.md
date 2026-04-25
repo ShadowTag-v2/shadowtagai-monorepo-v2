@@ -1,5 +1,17 @@
 # Changelog
 
+## [v12.1] - 2026-04-25
+
+- fix(truth): Stage 3 canonicalization — align manifest v12.0→v12.1 with 7 drift corrections
+- fix(truth): gold_master_tag v11.9→v11.7 (actual latest tag), risk_register_count 86→94
+- fix(truth): skill counts agent 49→51, global 224→209, duplicates 7→0 (all resolved)
+- fix(truth): CI workflow count 74→75, Lighthouse labels desktop (not mobile)
+- fix(secrets): prodding_engine.py api_key="TBD" → os.getenv("TESLA_API_KEY") compliance
+- audit(lighthouse): kovelai A100/BP96/SEO100, shadowtagai A100/BP96/SEO100 (improved A93→A100)
+- audit(tests): 504 collected, 499 passed, 3 skipped, 2 xfailed (full suite verified)
+- audit(ruff): 0 F401/F841 violations across apps/libs/scripts/tests
+- chore(branches): deleted stale merged branch feat/design-spec-gold-standard
+
 ## [v11.3-gold] - 2026-04-24
 
 - fix(truth): canonicalize .NET version across all truth surfaces (11.0 Preview→10.0.106, matching global.json + csproj)
