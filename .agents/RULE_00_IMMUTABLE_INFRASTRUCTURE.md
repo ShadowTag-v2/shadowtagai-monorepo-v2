@@ -1,9 +1,9 @@
 # RULE 00: IMMUTABLE INFRASTRUCTURE — THE ABSOLUTE LAW
 
-**Status:** ACTIVE  
-**Enacted:** 2026-04-25  
-**Authority:** Human operator directive  
-**Scope:** ALL agents across ALL sessions in this workspace  
+**Status:** ACTIVE
+**Enacted:** 2026-04-25
+**Authority:** Human operator directive
+**Scope:** ALL agents across ALL sessions in this workspace
 
 ---
 
