@@ -67,14 +67,14 @@ visuals:
     generator: veo-3.1
     prompt: "Abstract technological grid, deep navy and gold"
     provenance: gemini-api-audit-log
-  
+
   product_screenshot:
     type: static_image
     generator: stitch-mcp
     project_id: "12345678"
     screen_id: "abcdef"
     provenance: stitch-project-metadata
-  
+
   icon_set:
     type: svg
     generator: manual
