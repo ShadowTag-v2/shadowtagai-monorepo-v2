@@ -1,5 +1,25 @@
 # Changelog
 
+## [v12.2] - 2026-04-25
+
+- fix(truth): reconcile skill fleet count across 4 surfaces (AGENTS.md, GEMINI.md ×2, manifest) to 247 active (54 WS + 210 global − 17 overlap)
+- fix(truth): daemon path pnkln-evolve.py → pnkln_evolve.py (underscore) in GEMINI.md
+- fix(truth): manifest skill_duplicates 0→17, skill_count_agent 51→54, global 209→210
+- chore(version): GEMINI.md v11.0 → v11.1
+- audit(skills): 20 archived in _archive_redundant_2026-04-25/, 11/17 overlaps have redirect stubs
+- audit(repos): 88 external repos, 21 unreferenced candidates for pruning
+- audit(extractors): deep_browser_extractor.js (45L) is a slim JS wrapper; 11x_browser_extractor.py (191L) is canonical
+- audit(dead-code): ruff F401/F841 clean across all scripts/
+- audit(KI): 25 KI directories, no knowledge.lock file (integrity via directory existence)
+- audit(beads): 4 entries in issues.jsonl, all RESOLVED
+- audit(risk): 46 entries in RISK_REGISTER.md (last: #46)
+- audit(ruff): pnkln_evolve.py passes ruff check + format
+- audit(community): 1,415+ is skills.sh community total (accurate as community metric)
+- audit(manifest): stale skill counts corrected
+- audit(biome): cloner template has no TS files in expected path (0 files checked)
+- audit(pytest): 504 tests collected — baseline holds ✅
+- audit(mcp): 8 servers configured, 2 local paths ✅, 4 npm package refs (runtime-resolved), 2 core
+
 ## [v12.1] - 2026-04-25
 
 - fix(truth): Stage 3 canonicalization — align manifest v12.0→v12.1 with 7 drift corrections
