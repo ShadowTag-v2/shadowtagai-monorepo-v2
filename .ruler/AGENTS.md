@@ -103,3 +103,11 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 - Think through edge cases before writing code
 - Consider 2+ approaches before committing
 - For changes >100 LOC: outline first, then implement
+
+## Stack Lock & Pipeline Supremacy
+
+1. **BANNED:** Vanilla HTML/CSS chassis files. Single-file prototypes (`chassis-preview.html`) are strictly forbidden.
+2. **MANDATORY STACK:** Next.js 16, Tailwind v4, shadcn/ui.
+3. **ARTIFACT GATING:** You MUST write component specifications to `docs/research/components/*.spec.md` BEFORE you are allowed to generate any `.tsx` code.
+4. **PIPELINE CONFORMITY:** You must execute the 5-phase cloning pipeline (Recon → Foundation → Specs → Parallel Build → Assembly). If a slash command like `/clone-website` is unavailable, you must execute the underlying scripts and logic manually.
+5. **THE MENU KILL-SWITCH:** You are explicitly forbidden from generating 22-item menus or "suggested next steps" at the end of your responses.

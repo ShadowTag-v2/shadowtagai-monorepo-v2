@@ -80,7 +80,12 @@
     "**/third_party/**": true,
     "**/bazel-*/**": true,
     "**/.ruff_cache/**": true,
-    "**/.pytest_cache/**": true
+    "**/.pytest_cache/**": true,
+    "**/dist-runtime/**": true,
+    "**/target/**": true,
+    "**/drive_corpus/**": true,
+    "**/data/lancedb/**": true,
+    "**/frames/**": true
   },
   "terminal.integrated.env.osx": {
     "NODE_OPTIONS": "--no-deprecation"
@@ -91,5 +96,7 @@
   "cloudcode.project": "shadowtag-omega-v4",
   "cloudcode.region": "us-central1",
   "extensions.autoUpdate": false,
-  "extensions.autoCheckUpdates": false
+  "extensions.autoCheckUpdates": false,
+  "sqltools.autoStartSession": false,
+  "sqltools.autoOpenSessionFiles": false
 }
