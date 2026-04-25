@@ -390,3 +390,31 @@ tools/cloner-engine/template
 
 # M2M Firebase SA key (NEVER COMMIT)
 .beads/firebase-sa.json
+external_repos/ai-website-cloner/
+# npx skills symlinked agent dirs
+.augment/
+.bob/
+.cline/
+.codebuff/
+.codex/
+.codespin/
+.comet/
+.copilot/
+.cursor/
+.deepagents/
+.github/agents/
+.guarden/
+.junie/
+.kiro/
+.melty/
+.openhands/
+.pi/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.vibe/
+.windsurf/
+.zencoder/
+skills//
