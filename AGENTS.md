@@ -48,7 +48,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 
 ## Core Technical Truths (DO NOT HALLUCINATE OVERRIDES)
 
-1. **uuid7 Fallback:** `try/except ImportError` pattern is REQUIRED for `uuid7` resolution between monorepo (`apps.counselconduit.api.uuid7`) and container (`api.uuid7`) paths. ~~Old container `counselconduit-00015-mmq`~~ → current: `counselconduit-00034-wuk` (verified 2026-04-25 via gcloud).
+1. **uuid7 Fallback:** `try/except ImportError` pattern is REQUIRED for `uuid7` resolution between monorepo (`apps.counselconduit.api.uuid7`) and container (`api.uuid7`) paths. ~~Old container `counselconduit-00015-mmq`~~ → current: `counselconduit-00037-7mf` (verified live 2026-04-25 via gcloud).
 2. **.NET Environment:** .NET 11.0.100-preview IS CONFIRMED INSTALLED (2026-04-24). Also available: 10.0.106, 10.0.202, 8.0.419. `global.json` pins to `11.0.100-preview` with `rollForward: latestFeature`. Semantic Kernel target framework: `net11.0`. SK v1.74.0 build-verified.
 3. **Semantic Kernel Process.cs:** `OnExternalEvent` is the CORRECT API for `Microsoft.SemanticKernel.Process.Core v1.21.0-alpha`. Do NOT apply the `OnInputEvent` rename until Process.Core >= v1.30+.
 4. **Skill Fleet:** We maintain 274 skills (49 agent + 224 global + 1 meta-SOP) inside our local Matrix.
