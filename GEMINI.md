@@ -314,7 +314,7 @@ End every runtime response with EXACTLY 22 explicitly selectable actionable prom
 | Dream Consolidation | `scripts/dream_consolidation.py` | Nightly | KI maintenance: orient → gather → consolidate → prune |
 | Loop Steward | `scripts/loop_steward.py` | 5-min cycles | Autonomous task continuation with idle scaling |
 | KAIROS | `scripts/kairos_daemon.py` | Background | Background autonomous agent mode |
-| pnkln-evolve | `scripts/pnkln-evolve.py` | Background | Recursive self-improvement loop |
+| pnkln-evolve | `scripts/pnkln_evolve.py` | Background | Recursive self-improvement loop |
 | Omni-Autolint | `scripts/gca_autolint_daemon.py` | Daily 3-5AM | Secure lint+push via GitHub App tokens, beads audit trail |
 </daemon_fleet_registry>
 
@@ -391,7 +391,7 @@ Before starting any complex implementation task, the agent MUST:
 4. Report installed skills to user with new total count
 
 ### Skill Fleet Census
-- **Total skills:** 261 unique (51 workspace + 223 global − 14 overlap + 1 meta-SOP)
+- **Total skills:** 247 active (54 workspace + 210 global − 17 overlap). 20 archived in `_archive_redundant_2026-04-25/`.
 - **External repos cloned:** google-skills, vercel-skills
 - **Community skills available:** 1,415+ (antigravity-awesome-skills)
 </motor_cortex_reflexes>
@@ -402,7 +402,7 @@ Before starting any complex implementation task, the agent MUST:
 - uuid7 `try/except ImportError` REQUIRED. Container: `counselconduit-00037-7mf`.
 - .NET 11.0.100-preview INSTALLED. SK 1.74.0. OnExternalEvent is correct API.
 - Python 3.14.3 CPython. 126 packages. MLX 0.31.1.
-- Skills fleet: 243 unique (52 WS + 228 global − 17 overlap − 20 archived).
+- Skills fleet: 247 active (54 WS + 210 global − 17 overlap). 20 archived.
 - Ruler (`@intellectronica/ruler`) recommended for agent config unification.
 - Memory Kernel patterns: selective adoption only, NOT wholesale migration.
 </session_memory_corpus>
