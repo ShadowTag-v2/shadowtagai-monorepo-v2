@@ -1,17 +1,24 @@
 'use client';
 
 import type React from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
  * GavelHero — Cinematic gavel-fall hero overlay for KovelAI
  *
  * Architecture:
- * - Layer 0 (z-0): Full-bleed background video zone (placeholder div until Veo 3.1 asset arrives)
+ * - Layer 0 (z-0): Canvas scroll-driven frame engine (replaces <video> for smoothness)
+ * - Layer 0.5 (z-1): SVG grain overlay for premium texture
  * - Layer 1 (z-10): Semi-transparent atmospheric-glass scrim
  * - Layer 2 (z-20): Headline + CTA floating over the impact zone
  *
+ * Per scroll-experience skill:
+ * - Only animate transform + opacity (GPU-friendly)
+ * - rAF-throttled scroll handler
+ * - prefers-reduced-motion respected
+ * - Content in DOM for SEO (not canvas-only)
+ *
  * Design tokens: KovelAI DESIGN.md atmospheric-glass dark mode
- * Video: Sized for 16:9 or 21:9 cinematic gavel descent
  * TACSOP 7: No generate_image — CSS gradient placeholder until Veo asset
  */
 
@@ -37,12 +44,12 @@ const styles = {
     justifyContent: 'center',
   } satisfies React.CSSProperties,
 
-  /* Layer 0 — Video / Gavel animation background */
-  videoZone: {
+  /* Layer 0 — Canvas scroll-driven frame zone (replaces <video>) */
+  canvasZone: {
     position: 'absolute' as const,
     inset: 0,
     zIndex: 0,
-    /* Cinematic gavel-fall gradient placeholder (until Veo 3.1 asset is ready) */
+    /* Cinematic gradient placeholder (visible until frames load) */
     background: `
       radial-gradient(
         ellipse 80% 60% at 50% 40%,
@@ -58,6 +65,23 @@ const styles = {
         ${T.surface} 100%
       )
     `,
+  } satisfies React.CSSProperties,
+
+  canvas: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover' as const,
+    opacity: 0.12,
+  } satisfies React.CSSProperties,
+
+  /* Grain overlay for premium texture */
+  grain: {
+    position: 'absolute' as const,
+    inset: 0,
+    zIndex: 1,
+    opacity: 0.04,
+    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+    pointerEvents: 'none' as const,
   } satisfies React.CSSProperties,
 
   /* The gavel "impact point" — a bright cyan pulse at center-bottom */
@@ -190,36 +214,139 @@ interface GavelHeroProps {
   headline?: React.ReactNode;
   /** Subheadline */
   subheadline?: string;
-  /** When Veo 3.1 asset is ready, pass video URL here */
-  videoSrc?: string;
+  /**
+   * Directory containing extracted frames (e.g., '/frames/').
+   * Frames must be named frame_0001.jpg, frame_0002.jpg, ...
+   * Generate with: ./scripts/extract_frames.sh <veo_video.mp4> <output_dir>
+   */
+  frameDir?: string;
+  /** Total number of frames in the sequence (default: 240 = 8s @ 30fps) */
+  frameCount?: number;
 }
 
 export function GavelHero({
   headline,
   subheadline = 'Multi-model AI routing with cryptographic privilege attestation. Protected under United States v. Heppner.',
-  videoSrc,
+  frameDir = '/frames/',
+  frameCount = 240,
 }: GavelHeroProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Frame state
+    const frames: HTMLImageElement[] = [];
+    let framesLoaded = 0;
+    let currentFrame = 0;
+    let canvasReady = false;
+
+    // Resize canvas to match container
+    const resizeCanvas = () => {
+      const rect = canvas.parentElement?.getBoundingClientRect();
+      if (!rect) return;
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      if (canvasReady && frames[currentFrame]) drawFrame(currentFrame);
+    };
+
+    // Draw a single frame with cover-fit
+    const drawFrame = (idx: number) => {
+      const img = frames[idx];
+      if (!img?.complete) return;
+      const cw = canvas.width,
+        ch = canvas.height;
+      const iw = img.naturalWidth,
+        ih = img.naturalHeight;
+      const scale = Math.max(cw / iw, ch / ih);
+      const dx = (cw - iw * scale) / 2;
+      const dy = (ch - ih * scale) / 2;
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.drawImage(img, dx, dy, iw * scale, ih * scale);
+    };
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas, { passive: true });
+
+    // eslint-disable-next-line prefer-const -- assigned conditionally
+    let onScroll: (() => void) | null = null;
+
+    if (prefersReduced) {
+      // prefers-reduced-motion: show static poster frame only
+      const poster = new Image();
+      poster.src = `${frameDir}frame_0000.png`;
+      poster.onload = () => {
+        canvasReady = true;
+        frames[0] = poster;
+        drawFrame(0);
+      };
+    } else {
+      // Preload all frames
+      for (let i = 1; i <= frameCount; i++) {
+        const img = new Image();
+        img.src = `${frameDir}frame_${String(i).padStart(4, '0')}.jpg`;
+        img.onload = () => {
+          framesLoaded++;
+          if (framesLoaded === frameCount) {
+            canvasReady = true;
+            drawFrame(0);
+          }
+        };
+        // If frames don't exist (pre-Veo), canvas stays transparent.
+        // CSS gradient placeholder is visible behind it.
+        img.onerror = () => {};
+        frames[i - 1] = img;
+      }
+
+      // rAF-throttled scroll → frame mapping
+      let scrollTicking = false;
+      const updateScrollFrame = () => {
+        if (!canvasReady) return;
+        const scrollY = window.scrollY;
+        const maxScroll = window.innerHeight;
+        const progress = Math.min(Math.max(scrollY / maxScroll, 0), 1);
+        const frameIdx = Math.floor(progress * (frameCount - 1));
+        if (frameIdx !== currentFrame) {
+          currentFrame = frameIdx;
+          drawFrame(currentFrame);
+        }
+      };
+
+      onScroll = () => {
+        if (!scrollTicking) {
+          requestAnimationFrame(() => {
+            updateScrollFrame();
+            scrollTicking = false;
+          });
+          scrollTicking = true;
+        }
+      };
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+      if (onScroll) window.removeEventListener('scroll', onScroll);
+    };
+  }, [frameDir, frameCount]);
+
   return (
     <>
       <style>{keyframesCSS}</style>
       <div style={styles.wrapper} id="gavel-hero">
-        {/* Layer 0 — Video or gradient placeholder */}
-        {videoSrc ? (
-          <video
-            style={{
-              ...styles.videoZone,
-              objectFit: 'cover',
-              background: 'none',
-            }}
-            src={videoSrc}
-            autoPlay
-            muted
-            loop
-            playsInline
-          />
-        ) : (
-          <div style={styles.videoZone} aria-hidden="true" />
-        )}
+        {/* Layer 0 — Canvas scroll-driven frame engine (CSS gradient fallback underneath) */}
+        <div style={styles.canvasZone} aria-hidden="true">
+          <canvas ref={canvasRef} style={styles.canvas} />
+        </div>
+
+        {/* Grain overlay for premium texture */}
+        <div style={styles.grain} aria-hidden="true" />
 
         {/* Impact point glow line */}
         <div style={styles.impactPoint} aria-hidden="true" />
@@ -227,7 +354,7 @@ export function GavelHero({
         {/* Layer 1 — Glass scrim */}
         <div style={styles.scrim} aria-hidden="true" />
 
-        {/* Layer 2 — Content */}
+        {/* Layer 2 — Content (in DOM for SEO, per scroll-experience skill) */}
         <div style={styles.content}>
           <div style={styles.badge}>
             <span>⚖</span>
