@@ -61,7 +61,7 @@ Generally **more common** than in civil cases.
 ## California Privilege Statutes (Independent of Heppner)
 
 California defines confidential lawyer-client communications as those not disclosed
-to unnecessary third persons. Privilege is waived where a significant part is 
+to unnecessary third persons. Privilege is waived where a significant part is
 voluntarily disclosed, **but** privilege is preserved for electronic communications
 merely because electronic intermediaries store or transmit them.
 
@@ -73,7 +73,7 @@ keep client fact development inside the lawyer-directed system, not in consumer 
 ## The Defensible Customer Statement
 
 > ❌ "Web searches almost never get found." (Not supported by data)
-> 
+>
 > ✅ "There is no good national frequency number, but both civil discovery and criminal
 > process can absolutely surface search history in the right case, and once surfaced it
 > can be devastatingly interpretable."

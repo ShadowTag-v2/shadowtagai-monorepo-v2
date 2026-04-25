@@ -15,7 +15,7 @@ const btnFetchJobs = document.getElementById('btn-fetch-jobs');
 
 // JSON Syntax Highlighter
 function syntaxHighlight(json) {
-  if (typeof json != 'string') {
+  if (typeof json !== 'string') {
     json = JSON.stringify(json, undefined, 2);
   }
   json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -34,7 +34,7 @@ function syntaxHighlight(json) {
       } else if (/null/.test(match)) {
         cls = 'null';
       }
-      return '<span class="' + cls + '">' + match + '</span>';
+      return `<span class="${cls}">${match}</span>`;
     },
   );
 }
@@ -72,8 +72,7 @@ async function pingServer() {
                 <span class="metric-value">${data.version}</span>
             </div>
         `;
-  } catch (error) {
-    console.error('Health Ping Failed:', error);
+  } catch (_error) {
     setConnectionStatus(false);
     healthMetricsGrid.innerHTML = `
             <div class="metric-card" style="grid-column: span 2; border-color: var(--warning);">

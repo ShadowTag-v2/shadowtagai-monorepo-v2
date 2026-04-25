@@ -2,9 +2,9 @@ const { McpServer } = require('@modelcontextprotocol/sdk/server/mcp.js');
 const { SSEServerTransport } = require('@modelcontextprotocol/sdk/server/sse.js');
 const { z } = require('zod');
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
+const fs = require('node:fs');
+const path = require('node:path');
+const os = require('node:os');
 const { v4: uuidv4 } = require('uuid');
 
 // Configuration
@@ -61,7 +61,7 @@ server.tool(
 const app = express();
 const transports = new Map(); // sessionId -> transport
 
-app.get('/messages', async (req, res) => {
+app.get('/messages', async (_req, res) => {
   const transport = new SSEServerTransport('/messages', res);
 
   // Hook into the transport to capture the session ID once it's established
@@ -86,7 +86,6 @@ app.get('/messages', async (req, res) => {
       transports.delete(transport.sessionId);
     };
   } else {
-    console.error('[Mock IDE] Failed to capture session ID from transport');
   }
 });
 
@@ -140,9 +139,7 @@ function createDiscoveryFile(port) {
         fs.unlinkSync(filePath);
         console.log(`[Mock IDE] Discovery file removed.`);
       }
-    } catch (e) {
-      console.error(`[Mock IDE] Failed to cleanup discovery file: ${e.message}`);
-    }
+    } catch (_e) {}
     process.exit();
   };
 

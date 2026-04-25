@@ -9,7 +9,7 @@ async function run() {
     taskQueue: 'kovelai-idempotency-queue',
     interceptors: {
       activityInbound: [
-        (ctx) => ({
+        (_ctx) => ({
           async execute(input, next) {
             // Read X-KOVELAI-IDEMPOTENCY implicitly validated by neurosymbolic ASIC gate
             console.log('Enforcing idempotency headers against temporal registry.');
@@ -24,7 +24,6 @@ async function run() {
   await worker.run();
 }
 
-run().catch((err) => {
-  console.error(err);
+run().catch((_err) => {
   process.exit(1);
 });

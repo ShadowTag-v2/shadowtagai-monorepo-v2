@@ -1,8 +1,8 @@
 # ADR 003: Application-Layer Encryption for Privileged Content
 
-**Status:** DECIDED  
-**Date:** 2026-04-22  
-**Deciders:** @pikeymickey, Antigravity Agent  
+**Status:** DECIDED
+**Date:** 2026-04-22
+**Deciders:** @pikeymickey, Antigravity Agent
 
 ## Context
 
