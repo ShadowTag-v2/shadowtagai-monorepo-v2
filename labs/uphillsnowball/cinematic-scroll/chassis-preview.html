@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" data-color-scheme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>UphillSnowball — Cinematic Chassis Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --void-bg: #020408;
+      --scrim: rgba(3, 5, 9, 0.96);
+      --section-dark: #060a10;
+      --section-light: #0a0e16;
+      --footer-bg: #020306;
+      --text-primary: #ffffff;
+      --text-muted: #9ca3af;
+      --text-subtle: #4b5563;
+      --accent: #a0aabf;
+      --accent-blue: #3b82f6;
+      --border-ghost: rgba(255, 255, 255, 0.05);
+      --container: 1170px;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: var(--void-bg);
+      color: var(--text-primary);
+      font-family: var(--font);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .animate-fade-up { animation: fadeUp 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards; opacity: 0; }
+    .delay-1 { animation-delay: 0.12s; }
+    .delay-2 { animation-delay: 0.24s; }
+    .delay-3 { animation-delay: 0.36s; }
+    .delay-4 { animation-delay: 0.48s; }
+    .delay-5 { animation-delay: 0.60s; }
+    .delay-6 { animation-delay: 0.72s; }
+
+    .container { max-width: var(--container); width: 100%; margin: 0 auto; padding: 0 24px; }
+
+    /* ─── Header ─── */
+    .chassis-header {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 72px; z-index: 50;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .chassis-header.scrolled {
+      background: rgba(2, 4, 8, 0.85);
+      border-bottom: 1px solid var(--border-ghost);
+      backdrop-filter: blur(24px) saturate(1.2);
+    }
+    .header-inner {
+      max-width: var(--container); width: 100%; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { font-size: 17px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-primary); }
+    .logo span { color: var(--text-muted); font-weight: 300; opacity: 0.7; }
+    .nav-items { display: flex; gap: 28px; list-style: none; }
+    .nav-items a {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 12px; font-weight: 400; letter-spacing: 0.08em;
+      text-transform: uppercase; transition: color 0.3s ease;
+    }
+    .nav-items a:hover { color: var(--text-primary); }
+    .header-cta {
+      padding: 7px 20px; border: 1px solid rgba(59, 130, 246, 0.3);
+      background: rgba(59, 130, 246, 0.08); color: var(--accent-blue);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer; border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .header-cta:hover { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.5); }
+
+    /* ─── Hero ─── */
+    .chassis-hero {
+      position: relative; width: 100%; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg { position: absolute; inset: 0; z-index: 1; }
+    .hero-bg video { width: 100%; height: 100%; object-fit: cover; opacity: 0.06; }
+    .hero-scrim { position: absolute; inset: 0; z-index: 2; background: var(--scrim); }
+    .hero-content {
+      position: relative; z-index: 3;
+      max-width: var(--container); width: 100%;
+      margin: 0 auto; padding: 0 24px; text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px; margin-bottom: 28px;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      background: rgba(59, 130, 246, 0.06);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--accent-blue);
+      border-radius: 2px;
+    }
+    .hero-title {
+      font-size: clamp(44px, 6.5vw, 80px); font-weight: 800;
+      line-height: 1.02; letter-spacing: -0.03em;
+      margin-bottom: 28px;
+      background: linear-gradient(135deg, #ffffff 0%, #9ca3af 50%, #ffffff 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 8s ease infinite;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-subtitle {
+      font-size: 17px; font-weight: 300; line-height: 1.7;
+      color: var(--text-muted); max-width: 580px; margin: 0 auto 52px;
+    }
+    .hero-cta-row { display: flex; gap: 14px; justify-content: center; }
+    .btn-primary {
+      padding: 13px 36px; background: #ffffff; color: var(--void-bg);
+      font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; border: none; cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 32px rgba(255,255,255,0.08); }
+    .btn-ghost {
+      padding: 13px 36px; background: transparent;
+      border: 1px solid var(--border-ghost); color: var(--text-muted);
+      font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.03); color: var(--text-primary); }
+
+    /* ─── Sections ─── */
+    .chassis-section { position: relative; width: 100%; padding: 100px 0; }
+    .section-dark { background: var(--section-dark); }
+    .section-light { background: var(--section-light); }
+    .section-title {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--text-subtle);
+      margin-bottom: 56px;
+    }
+
+    /* ─── Pillar Cards ─── */
+    .pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .pillar-card {
+      padding: 44px 28px;
+      background: rgba(255,255,255,0.015);
+      border: 1px solid var(--border-ghost);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative; overflow: hidden;
+    }
+    .pillar-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 1px; background: linear-gradient(90deg, transparent, rgba(59,130,246,0.3), transparent);
+      opacity: 0; transition: opacity 0.5s ease;
+    }
+    .pillar-card:hover { background: rgba(255,255,255,0.03); transform: translateY(-3px); }
+    .pillar-card:hover::before { opacity: 1; }
+    .pillar-number {
+      font-size: 11px; font-weight: 500; color: var(--accent-blue);
+      letter-spacing: 0.15em; margin-bottom: 20px; opacity: 0.6;
+    }
+    .pillar-name { font-size: 18px; font-weight: 600; margin-bottom: 14px; color: var(--text-primary); }
+    .pillar-desc { font-size: 13px; font-weight: 300; line-height: 1.7; color: var(--text-subtle); }
+
+    /* ─── BG Section ─── */
+    .chassis-section-bg { position: relative; width: 100%; padding: 100px 0; overflow: hidden; }
+    .section-bg-layer { position: absolute; inset: 0; z-index: 1; }
+    .section-bg-layer video { width: 100%; height: 100%; object-fit: cover; opacity: 0.05; }
+    .section-bg-scrim { position: absolute; inset: 0; z-index: 2; background: var(--scrim); }
+    .section-bg-content { position: relative; z-index: 3; max-width: var(--container); width: 100%; margin: 0 auto; padding: 0 24px; }
+
+    /* ─── Architecture Grid ─── */
+    .arch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .arch-card {
+      padding: 36px 20px; text-align: center;
+      border: 1px solid var(--border-ghost);
+      background: rgba(255,255,255,0.015);
+      transition: all 0.4s ease;
+    }
+    .arch-card:hover { background: rgba(59,130,246,0.04); border-color: rgba(59,130,246,0.15); }
+    .arch-icon { font-size: 28px; margin-bottom: 14px; filter: grayscale(0.3); }
+    .arch-title { font-size: 13px; font-weight: 500; color: var(--text-primary); letter-spacing: 0.02em; }
+    .arch-sub { font-size: 11px; font-weight: 300; color: var(--text-subtle); margin-top: 6px; }
+
+    /* ─── Metrics ─── */
+    .metrics-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center; }
+    .metric-value {
+      font-size: 52px; font-weight: 800; line-height: 1; margin-bottom: 10px;
+      background: linear-gradient(to bottom, #fff 0%, var(--text-muted) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .metric-label {
+      font-size: 11px; font-weight: 400; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--text-subtle);
+    }
+
+    /* ─── CTA ─── */
+    .cta-content { text-align: center; max-width: 680px; margin: 0 auto; }
+    .cta-title {
+      font-size: clamp(28px, 4vw, 48px); font-weight: 800; line-height: 1.08;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #fff 0%, var(--text-muted) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .cta-desc { font-size: 15px; font-weight: 300; color: var(--text-muted); margin-bottom: 44px; line-height: 1.7; }
+
+    /* ─── Footer ─── */
+    .chassis-footer {
+      width: 100%; padding: 36px 0;
+      background: var(--footer-bg);
+      border-top: 1px solid var(--border-ghost);
+    }
+    .footer-inner {
+      max-width: var(--container); width: 100%; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-copy { font-size: 11px; color: var(--text-subtle); font-weight: 300; letter-spacing: 0.03em; }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { color: var(--text-subtle); text-decoration: none; font-size: 11px; transition: color 0.3s ease; }
+    .footer-links a:hover { color: var(--text-muted); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      .pillars-grid { grid-template-columns: 1fr; }
+      .arch-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics-row { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+      .nav-items { display: none; }
+      .hero-cta-row { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="chassis-header" id="header">
+    <div class="header-inner">
+      <div class="logo">Uphill<span>Snowball</span></div>
+      <ul class="nav-items">
+        <li><a href="#">Engine</a></li>
+        <li><a href="#">Architecture</a></li>
+        <li><a href="#">Research</a></li>
+        <li><a href="#">Labs</a></li>
+      </ul>
+      <button class="header-cta">Access Labs</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="chassis-hero">
+    <div class="hero-bg">
+      <video autoplay muted loop playsinline>
+        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero-scrim"></div>
+    <div class="hero-content">
+      <div class="hero-badge animate-fade-up">Sovereign AI R&D</div>
+      <h1 class="hero-title animate-fade-up delay-1">Compound Intelligence<br>Rolling Uphill.</h1>
+      <p class="hero-subtitle animate-fade-up delay-2">
+        Multi-agent orchestration engine with autoresearch triad,
+        zero-trust cognitive routing, and Apple Silicon sovereignty.
+      </p>
+      <div class="hero-cta-row animate-fade-up delay-3">
+        <button class="btn-primary">Explore Engine</button>
+        <button class="btn-ghost">Read Architecture</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pillars -->
+  <section class="chassis-section section-dark">
+    <div class="container">
+      <div class="section-title animate-fade-up">The Three Pillars</div>
+      <div class="pillars-grid">
+        <div class="pillar-card animate-fade-up delay-1">
+          <div class="pillar-number">01</div>
+          <div class="pillar-name">Kosmos Director</div>
+          <div class="pillar-desc">Swarm-level orchestration with agent registry, task decomposition, consensus voting, and result aggregation across model boundaries.</div>
+        </div>
+        <div class="pillar-card animate-fade-up delay-2">
+          <div class="pillar-number">02</div>
+          <div class="pillar-name">BioAgents Router</div>
+          <div class="pillar-desc">Intelligent capability routing through 274 skills across 49 agent specializations and 224 global utilities with zero-day acquisition.</div>
+        </div>
+        <div class="pillar-card animate-fade-up delay-3">
+          <div class="pillar-number">03</div>
+          <div class="pillar-name">n-Autoresearch</div>
+          <div class="pillar-desc">Evidence-based ML loop with Karpathy auto-research pattern. JudgeSix-Human + JudgeSix-Agent + RKILL governance chain.</div>
+        </div>
+        <div class="pillar-card animate-fade-up delay-4">
+          <div class="pillar-number">04</div>
+          <div class="pillar-name">Kairos Supervisor</div>
+          <div class="pillar-desc">Tri-partite cognitive architecture: Brainstem MCP (<100ms), Hippocampus memory (session-bridging), Motor Cortex (dynamic acquisition).</div>
+        </div>
+        <div class="pillar-card animate-fade-up delay-5">
+          <div class="pillar-number">05</div>
+          <div class="pillar-name">Vault Constitution</div>
+          <div class="pillar-desc">Zero-trust Obsidian intelligence pipeline. IPI quarantine for all untrusted data. NotebookLM sanitization before agent context.</div>
+        </div>
+        <div class="pillar-card animate-fade-up delay-6">
+          <div class="pillar-number">06</div>
+          <div class="pillar-name">Gideon OS</div>
+          <div class="pillar-desc">14-block sovereign OS spanning 7 languages. From Genesis bootstrapper to Panopticon observability across the entire stack.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture (with bg) -->
+  <section class="chassis-section-bg">
+    <div class="section-bg-layer">
+      <video autoplay muted loop playsinline>
+        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="section-bg-scrim"></div>
+    <div class="section-bg-content">
+      <div class="section-title animate-fade-up">Infrastructure</div>
+      <div class="arch-grid">
+        <div class="arch-card animate-fade-up delay-1">
+          <div class="arch-icon">🧠</div>
+          <div class="arch-title">Apple Neural Engine</div>
+          <div class="arch-sub">10.22 TOPS sovereign</div>
+        </div>
+        <div class="arch-card animate-fade-up delay-2">
+          <div class="arch-icon">⚡</div>
+          <div class="arch-title">MLX TurboQuant</div>
+          <div class="arch-sub">GPU-accelerated inference</div>
+        </div>
+        <div class="arch-card animate-fade-up delay-3">
+          <div class="arch-icon">🔒</div>
+          <div class="arch-title">Zero-Trust Pipeline</div>
+          <div class="arch-sub">IPI quarantine layer</div>
+        </div>
+        <div class="arch-card animate-fade-up delay-4">
+          <div class="arch-icon">☁️</div>
+          <div class="arch-title">GCP Cloud Run</div>
+          <div class="arch-sub">Serverless control plane</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metrics -->
+  <section class="chassis-section section-light">
+    <div class="container">
+      <div class="section-title animate-fade-up">Engine Telemetry</div>
+      <div class="metrics-row">
+        <div class="animate-fade-up delay-1">
+          <div class="metric-value">274</div>
+          <div class="metric-label">Skills Active</div>
+        </div>
+        <div class="animate-fade-up delay-2">
+          <div class="metric-value">14</div>
+          <div class="metric-label">Gideon Blocks</div>
+        </div>
+        <div class="animate-fade-up delay-3">
+          <div class="metric-value">7</div>
+          <div class="metric-label">Languages</div>
+        </div>
+        <div class="animate-fade-up delay-4">
+          <div class="metric-value">504</div>
+          <div class="metric-label">Tests Passing</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="chassis-section-bg">
+    <div class="section-bg-layer">
+      <video autoplay muted loop playsinline>
+        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="section-bg-scrim"></div>
+    <div class="section-bg-content">
+      <div class="cta-content">
+        <div class="cta-title animate-fade-up">The Snowball Compounds.</div>
+        <p class="cta-desc animate-fade-up delay-1">Every skill acquired, every agent deployed, every research loop completed adds mass. The momentum is irreversible.</p>
+        <div class="hero-cta-row animate-fade-up delay-2">
+          <button class="btn-primary">Enter the Lab</button>
+          <button class="btn-ghost">View Architecture</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="chassis-footer">
+    <div class="footer-inner">
+      <div class="footer-copy">© 2026 ShadowTag AI. UphillSnowball Engine. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#">GitHub</a>
+        <a href="#">Docs</a>
+        <a href="#">Status</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+  </script>
+</body>
+</html>
