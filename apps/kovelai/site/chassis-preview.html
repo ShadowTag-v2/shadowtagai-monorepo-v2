@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" data-color-scheme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>CounselConduit — Cinematic Chassis Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Reset ─── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    /* ─── Cinematic Legal-Tech Tokens ─── */
+    :root {
+      --void-bg: #050505;
+      --scrim: rgba(8, 13, 20, 0.95);
+      --section-dark: #080808;
+      --section-light: #0c0c0c;
+      --footer-bg: #030303;
+      --text-primary: #ffffff;
+      --text-muted: #8da2c0;
+      --text-subtle: #5a6a7f;
+      --accent: #a0aabf;
+      --border-ghost: rgba(255, 255, 255, 0.06);
+      --container: 1170px;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    
+    body {
+      background: var(--void-bg);
+      color: var(--text-primary);
+      font-family: var(--font);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* ─── Animations ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes subtlePulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.7; }
+    }
+    
+    .animate-fade-up {
+      animation: fadeUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      opacity: 0;
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .delay-6 { animation-delay: 0.6s; }
+    
+    /* ─── Container ─── */
+    .container {
+      max-width: var(--container);
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    
+    /* ─── SECTION 1: Fixed Header ─── */
+    .chassis-header {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 80px; z-index: 50;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .chassis-header.scrolled {
+      background: var(--void-bg);
+      border-bottom: 1px solid var(--border-ghost);
+      backdrop-filter: blur(20px);
+    }
+    .header-inner {
+      max-width: var(--container); width: 100%; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-size: 18px; font-weight: 600; letter-spacing: 0.05em;
+      color: var(--text-primary);
+    }
+    .logo span { color: var(--text-muted); font-weight: 300; }
+    .nav-items {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav-items a {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 13px; font-weight: 400; letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+    }
+    .nav-items a:hover { color: var(--text-primary); }
+    .header-cta {
+      padding: 8px 24px; border: 1px solid var(--border-ghost);
+      background: transparent; color: var(--text-muted);
+      font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .header-cta:hover {
+      background: rgba(255,255,255,0.05); color: var(--text-primary);
+    }
+    
+    /* ─── SECTION 2: Hero ─── */
+    .chassis-hero {
+      position: relative; width: 100%; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 1;
+    }
+    .hero-bg video {
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: 0.08;
+    }
+    .hero-scrim {
+      position: absolute; inset: 0; z-index: 2;
+      background: var(--scrim);
+    }
+    .hero-content {
+      position: relative; z-index: 3;
+      max-width: var(--container); width: 100%;
+      margin: 0 auto; padding: 0 24px;
+      text-align: center;
+    }
+    .hero-label {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-size: clamp(40px, 6vw, 72px); font-weight: 800;
+      line-height: 1.05; letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      background: linear-gradient(to bottom, #ffffff 0%, #a0aabf 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-subtitle {
+      font-size: 18px; font-weight: 300; line-height: 1.7;
+      color: var(--text-muted); max-width: 600px; margin: 0 auto 48px;
+    }
+    .hero-cta-row {
+      display: flex; gap: 16px; justify-content: center;
+    }
+    .btn-primary {
+      padding: 14px 40px; background: var(--text-primary); color: var(--void-bg);
+      font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; border: none; cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-ghost {
+      padding: 14px 40px; background: transparent;
+      border: 1px solid var(--border-ghost); color: var(--text-muted);
+      font-size: 13px; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.04); color: var(--text-primary); }
+    
+    /* ─── SECTION 3: Features ─── */
+    .chassis-section {
+      position: relative; width: 100%; padding: 100px 0;
+    }
+    .section-dark { background: var(--section-dark); }
+    .section-light { background: var(--section-light); }
+    .section-title {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 64px;
+    }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+    }
+    .feature-card {
+      padding: 40px 32px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-ghost);
+      transition: all 0.4s ease;
+    }
+    .feature-card:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+    }
+    .feature-icon {
+      width: 40px; height: 40px; margin-bottom: 24px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted);
+    }
+    .feature-icon svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .feature-name {
+      font-size: 16px; font-weight: 500; margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+    .feature-desc {
+      font-size: 14px; font-weight: 300; line-height: 1.6;
+      color: var(--text-subtle);
+    }
+    
+    /* ─── SECTION 4: BG Section ─── */
+    .chassis-section-bg {
+      position: relative; width: 100%; padding: 100px 0; overflow: hidden;
+    }
+    .section-bg-layer { position: absolute; inset: 0; z-index: 1; }
+    .section-bg-layer video {
+      width: 100%; height: 100%; object-fit: cover; opacity: 0.06;
+    }
+    .section-bg-scrim {
+      position: absolute; inset: 0; z-index: 2;
+      background: var(--scrim);
+    }
+    .section-bg-content {
+      position: relative; z-index: 3;
+      max-width: var(--container); width: 100%;
+      margin: 0 auto; padding: 0 24px;
+    }
+    
+    /* ─── Quick Links Grid ─── */
+    .quick-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    }
+    .quick-card {
+      padding: 48px 24px; text-align: center;
+      border: 1px solid var(--border-ghost);
+      background: rgba(255,255,255,0.02);
+      transition: all 0.4s ease;
+    }
+    .quick-card:hover {
+      background: rgba(255,255,255,0.05);
+      transform: translateY(-4px);
+    }
+    .quick-card-icon {
+      font-size: 32px; margin-bottom: 16px;
+    }
+    .quick-card-title {
+      font-size: 14px; font-weight: 500; color: var(--text-primary);
+      letter-spacing: 0.03em;
+    }
+    
+    /* ─── SECTION 5: Metrics ─── */
+    .metrics-row {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 48px; font-weight: 800; line-height: 1;
+      margin-bottom: 8px;
+      background: linear-gradient(to bottom, #fff 0%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-label {
+      font-size: 12px; font-weight: 400; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    
+    /* ─── SECTION 6: CTA ─── */
+    .cta-content {
+      text-align: center; max-width: 720px; margin: 0 auto;
+    }
+    .cta-title {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 800;
+      line-height: 1.1; margin-bottom: 20px;
+      background: linear-gradient(to bottom, #fff 0%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cta-desc {
+      font-size: 16px; font-weight: 300; color: var(--text-muted);
+      margin-bottom: 40px; line-height: 1.7;
+    }
+    
+    /* ─── SECTION 7: Footer ─── */
+    .chassis-footer {
+      width: 100%; padding: 40px 0;
+      background: var(--footer-bg);
+      border-top: 1px solid var(--border-ghost);
+    }
+    .footer-inner {
+      max-width: var(--container); width: 100%; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-copy {
+      font-size: 12px; color: var(--text-subtle); font-weight: 300;
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      color: var(--text-subtle); text-decoration: none; font-size: 12px;
+      transition: color 0.3s ease;
+    }
+    .footer-links a:hover { color: var(--text-muted); }
+    
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .quick-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics-row { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+      .nav-items { display: none; }
+      .hero-cta-row { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <!-- SECTION 1: Header -->
+  <header class="chassis-header" id="header">
+    <div class="header-inner">
+      <div class="logo">Counsel<span>Conduit</span></div>
+      <ul class="nav-items">
+        <li><a href="#">Platform</a></li>
+        <li><a href="#">Oracle Studio</a></li>
+        <li><a href="#">Compliance</a></li>
+        <li><a href="#">Pricing</a></li>
+      </ul>
+      <button class="header-cta">Request Access</button>
+    </div>
+  </header>
+
+  <!-- SECTION 2: Hero -->
+  <section class="chassis-hero">
+    <div class="hero-bg">
+      <video autoplay muted loop playsinline>
+        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero-scrim"></div>
+    <div class="hero-content">
+      <div class="hero-label animate-fade-up">Privilege-Preserving AI for Law</div>
+      <h1 class="hero-title animate-fade-up delay-1">The Shopify for<br>Legal AI.</h1>
+      <p class="hero-subtitle animate-fade-up delay-2">
+        Multi-model AI routing with cryptographic privilege attestation. 
+        Protected under <em>United States v. Heppner</em>.
+      </p>
+      <div class="hero-cta-row animate-fade-up delay-3">
+        <button class="btn-primary">Start Free Trial</button>
+        <button class="btn-ghost">Watch Demo</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: Features -->
+  <section class="chassis-section section-dark">
+    <div class="container">
+      <div class="section-title animate-fade-up">Platform Capabilities</div>
+      <div class="features-grid">
+        <div class="feature-card animate-fade-up delay-1">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="feature-name">Kovel Attestation</div>
+          <div class="feature-desc">Cryptographic HMAC-SHA256 receipts proving privileged communication per session.</div>
+        </div>
+        <div class="feature-card animate-fade-up delay-2">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="feature-name">Oracle Studio</div>
+          <div class="feature-desc">7-stage AI pipeline with Judge 6 policy gate across Gemini, Claude, GPT, and Grok.</div>
+        </div>
+        <div class="feature-card animate-fade-up delay-3">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="feature-name">Multi-Model Routing</div>
+          <div class="feature-desc">Intelligent LiteLLM proxy with tenant-scoped, sandbox-bound ephemeral tokens.</div>
+        </div>
+        <div class="feature-card animate-fade-up delay-4">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div class="feature-name">Vent Mode SSE</div>
+          <div class="feature-desc">Real-time streaming responses with dead-man's switch auto-logout and screen wipe.</div>
+        </div>
+        <div class="feature-card animate-fade-up delay-5">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="feature-name">Dual-Billing Engine</div>
+          <div class="feature-desc">Stripe Connect: clients pay lawyers, lawyers pay us. Fee isolation preserved.</div>
+        </div>
+        <div class="feature-card animate-fade-up delay-6">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div class="feature-name">GDPR 30-Day Delete</div>
+          <div class="feature-desc">Cloud Tasks-driven automatic data purge with evidence-grade audit exports.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: Quick Links Section (with bg) -->
+  <section class="chassis-section-bg">
+    <div class="section-bg-layer">
+      <video autoplay muted loop playsinline>
+        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="section-bg-scrim"></div>
+    <div class="section-bg-content">
+      <div class="section-title animate-fade-up">Resources</div>
+      <div class="quick-grid">
+        <div class="quick-card animate-fade-up delay-1">
+          <div class="quick-card-icon">⚖️</div>
+          <div class="quick-card-title">Case Studies</div>
+        </div>
+        <div class="quick-card animate-fade-up delay-2">
+          <div class="quick-card-icon">📋</div>
+          <div class="quick-card-title">Documentation</div>
+        </div>
+        <div class="quick-card animate-fade-up delay-3">
+          <div class="quick-card-icon">🔐</div>
+          <div class="quick-card-title">Security Whitepaper</div>
+        </div>
+        <div class="quick-card animate-fade-up delay-4">
+          <div class="quick-card-icon">📞</div>
+          <div class="quick-card-title">Contact Sales</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: Metrics -->
+  <section class="chassis-section section-light">
+    <div class="container">
+      <div class="section-title animate-fade-up">By The Numbers</div>
+      <div class="metrics-row">
+        <div class="animate-fade-up delay-1">
+          <div class="metric-value">23</div>
+          <div class="metric-label">Modules Live</div>
+        </div>
+        <div class="animate-fade-up delay-2">
+          <div class="metric-value">6</div>
+          <div class="metric-label">LLM Models</div>
+        </div>
+        <div class="animate-fade-up delay-3">
+          <div class="metric-value">99.9%</div>
+          <div class="metric-label">Uptime SLA</div>
+        </div>
+        <div class="animate-fade-up delay-4">
+          <div class="metric-value">SOC 2</div>
+          <div class="metric-label">Compliance</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: CTA (with bg) -->
+  <section class="chassis-section-bg">
+    <div class="section-bg-layer">
+      <video autoplay muted loop playsinline>
+        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="section-bg-scrim"></div>
+    <div class="section-bg-content">
+      <div class="cta-content">
+        <div class="cta-title animate-fade-up">Ready to Transform Your Practice?</div>
+        <p class="cta-desc animate-fade-up delay-1">Join the firms already using CounselConduit to route AI queries with full attorney-client privilege protection.</p>
+        <div class="hero-cta-row animate-fade-up delay-2">
+          <button class="btn-primary">Start Free Trial</button>
+          <button class="btn-ghost">Schedule Demo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7: Footer -->
+  <footer class="chassis-footer">
+    <div class="footer-inner">
+      <div class="footer-copy">© 2026 CounselConduit. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+        <a href="#">Status</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll-triggered header transition
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+  </script>
+</body>
+</html>
