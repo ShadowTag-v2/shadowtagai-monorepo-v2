@@ -147,7 +147,6 @@ export class ScrollEngine {
       };
 
       img.onerror = () => {
-        console.warn(`Failed to load frame ${index}: ${img.src}`);
         reject(new Error(`Frame ${index} failed to load`));
       };
     });

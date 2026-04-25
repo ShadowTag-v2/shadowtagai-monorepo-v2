@@ -222,6 +222,7 @@
     },
     "geminicodeassist.project": "shadowtag-omega-v4",
     "extensions.autoUpdate": false,
-    "extensions.autoCheckUpdates": false
+    "extensions.autoCheckUpdates": false,
+    "liveServer.settings.port": 5501
   }
 }

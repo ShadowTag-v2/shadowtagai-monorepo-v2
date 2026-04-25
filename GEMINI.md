@@ -20,12 +20,16 @@ status: LOCKED
 - `antigravity-mcp-config.json` is MCP truth.
 - `BUSINESS_CONTEXT_LOCKED.md` is pricing and architecture truth.
 - `RISK_REGISTER.md` is operational risk truth.
+- `.agents/RULE_00_IMMUTABLE_INFRASTRUCTURE.md` is the non-destruction law.
 </canonical_truth_hierarchy>
 
 <tool_and_telemetry_posture>
 - Allowed tool classes: `command(*)`, `mcp(*)`
+- **RULE 00: IMMUTABLE INFRASTRUCTURE** — No `rm`, `unlink`, or destructive `>` on existing files without explicit human authorization. Archive-only deactivation. Full spec: `.agents/RULE_00_IMMUTABLE_INFRASTRUCTURE.md`
 - Excluded destructive tools (DO NOT ATTEMPT TO USE):
   - `ShellTool(rm -rf)`
+  - `ShellTool(rm)`
+  - `ShellTool(unlink)`
   - `ShellTool(sudo)`
 - Telemetry severed: `DISABLE_TELEMETRY=1`, `DISABLE_ERROR_REPORTING=1`
 </tool_and_telemetry_posture>
