@@ -70,9 +70,61 @@
     .delay-5 { transition-delay: 0.5s; }
     .delay-6 { transition-delay: 0.6s; }
 
+    /* ─── Kinetic Text ─── */
+    .kinetic-title {
+      display: inline;
+    }
+    .kinetic-char {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .kinetic-char.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* Whitespace between words */
+    .kinetic-space {
+      display: inline;
+      width: 0.3em;
+    }
+
+    /* ─── Section Gradient Blending ─── */
+    .section-gradient-top {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, var(--void-bg), transparent);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .section-gradient-bottom {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 120px;
+      background: linear-gradient(to top, var(--void-bg), transparent);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .section-dark .section-gradient-top { background: linear-gradient(to bottom, var(--void-bg), transparent); }
+    .section-dark .section-gradient-bottom { background: linear-gradient(to top, var(--section-light), transparent); }
+    .section-light .section-gradient-top { background: linear-gradient(to bottom, var(--section-dark), transparent); }
+
+    /* ─── Count-up pulse ─── */
+    .metric-value.is-counting {
+      transition: opacity 0.1s ease;
+    }
+
     /* Respect prefers-reduced-motion */
     @media (prefers-reduced-motion: reduce) {
       .animate-fade-up {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .kinetic-char {
         opacity: 1;
         transform: none;
         transition: none;
@@ -137,14 +189,25 @@
     }
     .hero-bg {
       position: absolute; inset: 0; z-index: 1;
+      /* CSS gradient placeholder until Veo 3.1 frames are extracted */
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(74, 144, 217, 0.06) 0%, transparent 70%),
+        linear-gradient(180deg, var(--void-bg) 0%, #0d0d14 30%, #12121c 50%, #0a0a10 80%, var(--void-bg) 100%);
     }
-    .hero-bg video {
+    .hero-bg canvas {
       width: 100%; height: 100%; object-fit: cover;
-      opacity: 0.08;
+      opacity: 0.12;
     }
     .hero-scrim {
       position: absolute; inset: 0; z-index: 2;
       background: var(--scrim);
+    }
+    /* Grain overlay for premium texture */
+    .hero-grain {
+      position: absolute; inset: 0; z-index: 3;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      pointer-events: none;
     }
     .hero-content {
       position: relative; z-index: 3;
@@ -232,9 +295,12 @@
     .chassis-section-bg {
       position: relative; width: 100%; padding: 100px 0; overflow: hidden;
     }
-    .section-bg-layer { position: absolute; inset: 0; z-index: 1; }
-    .section-bg-layer video {
-      width: 100%; height: 100%; object-fit: cover; opacity: 0.06;
+    .section-bg-layer {
+      position: absolute; inset: 0; z-index: 1;
+      /* CSS gradient replaces <video> — per scroll-experience skill: no video in bg sections */
+      background:
+        radial-gradient(ellipse 60% 40% at 30% 50%, rgba(74, 144, 217, 0.04) 0%, transparent 60%),
+        linear-gradient(135deg, var(--section-dark) 0%, #0b0b12 50%, var(--section-light) 100%);
     }
     .section-bg-scrim {
       position: absolute; inset: 0; z-index: 2;
@@ -346,17 +412,16 @@
     </div>
   </header>
 
-  <!-- SECTION 2: Hero -->
+  <!-- SECTION 2: Hero (Canvas scroll-driven frame engine replaces <video>) -->
   <section class="chassis-hero">
     <div class="hero-bg">
-      <video autoplay muted loop playsinline>
-        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
-      </video>
+      <canvas id="hero-scroll-canvas" aria-hidden="true"></canvas>
     </div>
+    <div class="hero-grain" aria-hidden="true"></div>
     <div class="hero-scrim"></div>
     <div class="hero-content">
       <div class="hero-label animate-fade-up">Privilege-Preserving AI for Law</div>
-      <h1 class="hero-title animate-fade-up delay-1">Deploy AI.<br>Preserve Privilege.</h1>
+      <h1 class="hero-title animate-fade-up delay-1" aria-label="Deploy AI. Preserve Privilege." id="kinetic-hero-title">Deploy AI.<br>Preserve Privilege.</h1>
       <p class="hero-subtitle animate-fade-up delay-2">
         Multi-model AI routing with cryptographic privilege attestation.
         Protected under <em>United States v. Heppner</em>.
@@ -369,7 +434,8 @@
   </section>
 
   <!-- SECTION 3: Features -->
-  <section class="chassis-section section-dark">
+  <section class="chassis-section section-dark" style="position: relative;">
+    <div class="section-gradient-top"></div>
     <div class="container">
       <div class="section-title animate-fade-up">Platform Capabilities</div>
       <div class="features-grid">
@@ -417,15 +483,12 @@
         </div>
       </div>
     </div>
+    <div class="section-gradient-bottom"></div>
   </section>
 
-  <!-- SECTION 4: Quick Links Section (with bg) -->
+  <!-- SECTION 4: Quick Links Section (CSS gradient bg, no video) -->
   <section class="chassis-section-bg">
-    <div class="section-bg-layer">
-      <video autoplay muted loop playsinline>
-        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
-      </video>
-    </div>
+    <div class="section-bg-layer" aria-hidden="true"></div>
     <div class="section-bg-scrim"></div>
     <div class="section-bg-content">
       <div class="section-title animate-fade-up">Resources</div>
@@ -451,37 +514,34 @@
   </section>
 
   <!-- SECTION 5: Metrics -->
-  <section class="chassis-section section-light">
+  <section class="chassis-section section-light" style="position: relative;">
+    <div class="section-gradient-top"></div>
     <div class="container">
       <div class="section-title animate-fade-up">By The Numbers</div>
-      <div class="metrics-row">
+      <div class="metrics-row" id="metrics-row">
         <div class="animate-fade-up delay-1">
-          <div class="metric-value">23</div>
+          <div class="metric-value" data-target="23" data-type="int">0</div>
           <div class="metric-label">Modules Live</div>
         </div>
         <div class="animate-fade-up delay-2">
-          <div class="metric-value">6</div>
+          <div class="metric-value" data-target="6" data-type="int">0</div>
           <div class="metric-label">LLM Models</div>
         </div>
         <div class="animate-fade-up delay-3">
-          <div class="metric-value">99.9%</div>
+          <div class="metric-value" data-target="99.9" data-suffix="%" data-type="float">0%</div>
           <div class="metric-label">Uptime SLA</div>
         </div>
         <div class="animate-fade-up delay-4">
-          <div class="metric-value">SOC 2</div>
+          <div class="metric-value" data-target="SOC 2" data-type="text">SOC 2</div>
           <div class="metric-label">Compliance</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SECTION 6: CTA (with bg) -->
+  <!-- SECTION 6: CTA (CSS gradient bg, no video) -->
   <section class="chassis-section-bg">
-    <div class="section-bg-layer">
-      <video autoplay muted loop playsinline>
-        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
-      </video>
-    </div>
+    <div class="section-bg-layer" aria-hidden="true"></div>
     <div class="section-bg-scrim"></div>
     <div class="section-bg-content">
       <div class="cta-content">
@@ -509,17 +569,133 @@
   </footer>
 
   <script>
-    // ── Phase 5: Behavioral Replication ──
+    // ── Phase 5: Cinematic Canvas Engine + Kinetic Polish ──
+    // Per scroll-experience skill: rAF-throttled, GPU-friendly, a11y-safe
     (() => {
+      'use strict';
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      // 1. Scroll-triggered header morph (transparent → glass)
+      // ═══════════════════════════════════════════════════════════════
+      // 0. SCROLL-DRIVEN CANVAS FRAME ENGINE
+      //    Maps window.scrollY to a preloaded image sequence on <canvas>
+      //    Replaces <video> for smooth Apple-style scroll animation
+      // ═══════════════════════════════════════════════════════════════
+      const canvas = document.getElementById('hero-scroll-canvas');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        // Frame configuration — update FRAME_COUNT after running extract_frames.sh
+        const FRAME_DIR = './frames/';
+        const FRAME_COUNT = 240; // ~8s at 30fps
+        const FRAME_PAD = 4;     // frame_0001.jpg format
+
+        const frames = [];
+        let framesLoaded = 0;
+        let currentFrame = 0;
+        let canvasReady = false;
+
+        // Resize canvas to match container
+        const resizeCanvas = () => {
+          const rect = canvas.parentElement.getBoundingClientRect();
+          canvas.width = rect.width;
+          canvas.height = rect.height;
+          if (canvasReady && frames[currentFrame]) {
+            drawFrame(currentFrame);
+          }
+        };
+
+        const drawFrame = (idx) => {
+          const img = frames[idx];
+          if (!img || !img.complete) return;
+          // Cover-fit: maintain aspect ratio, fill canvas
+          const cw = canvas.width, ch = canvas.height;
+          const iw = img.naturalWidth, ih = img.naturalHeight;
+          const scale = Math.max(cw / iw, ch / ih);
+          const dx = (cw - iw * scale) / 2;
+          const dy = (ch - ih * scale) / 2;
+          ctx.clearRect(0, 0, cw, ch);
+          ctx.drawImage(img, dx, dy, iw * scale, ih * scale);
+        };
+
+        // Preload all frames
+        const preloadFrames = () => {
+          for (let i = 1; i <= FRAME_COUNT; i++) {
+            const img = new Image();
+            img.src = FRAME_DIR + 'frame_' + String(i).padStart(FRAME_PAD, '0') + '.jpg';
+            img.onload = () => {
+              framesLoaded++;
+              if (framesLoaded === FRAME_COUNT) {
+                canvasReady = true;
+                drawFrame(0);
+              }
+            };
+            img.onerror = () => {
+              // If frames don't exist yet (pre-Veo), canvas stays transparent
+              // CSS gradient placeholder is visible behind it
+            };
+            frames[i - 1] = img;
+          }
+        };
+
+        // Map scroll position to frame index
+        const updateScrollFrame = () => {
+          if (!canvasReady) return;
+          const scrollY = window.scrollY;
+          const maxScroll = window.innerHeight; // Map hero viewport height
+          const progress = Math.min(Math.max(scrollY / maxScroll, 0), 1);
+          const frameIdx = Math.floor(progress * (FRAME_COUNT - 1));
+          if (frameIdx !== currentFrame) {
+            currentFrame = frameIdx;
+            drawFrame(currentFrame);
+          }
+        };
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas, { passive: true });
+
+        if (prefersReduced) {
+          // prefers-reduced-motion: show static poster frame only
+          const poster = new Image();
+          poster.src = FRAME_DIR + 'frame_0000.png';
+          poster.onload = () => {
+            canvasReady = true;
+            frames[0] = poster;
+            drawFrame(0);
+          };
+        } else {
+          preloadFrames();
+
+          // rAF-throttled scroll handler (per scroll-experience skill)
+          let scrollTicking = false;
+          window.addEventListener('scroll', () => {
+            if (!scrollTicking) {
+              requestAnimationFrame(() => {
+                updateScrollFrame();
+                scrollTicking = false;
+              });
+              scrollTicking = true;
+            }
+          }, { passive: true });
+        }
+      }
+
+      // ═══════════════════════════════════════════════════════════════
+      // 1. SCROLL-TRIGGERED HEADER MORPH (transparent → glass)
+      // ═══════════════════════════════════════════════════════════════
       const header = document.getElementById('header');
+      let headerTicking = false;
       window.addEventListener('scroll', () => {
-        header.classList.toggle('scrolled', window.scrollY > 50);
+        if (!headerTicking) {
+          requestAnimationFrame(() => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+            headerTicking = false;
+          });
+          headerTicking = true;
+        }
       }, { passive: true });
 
-      // 2. IntersectionObserver for scroll-triggered reveals
+      // ═══════════════════════════════════════════════════════════════
+      // 2. INTERSECTION OBSERVER — scroll-triggered reveals
+      // ═══════════════════════════════════════════════════════════════
       if (!prefersReduced) {
         const revealObserver = new IntersectionObserver((entries) => {
           for (const entry of entries) {
@@ -532,25 +708,26 @@
           threshold: 0.15,
           rootMargin: '0px 0px -60px 0px'
         });
-
         document.querySelectorAll('.animate-fade-up').forEach((el) => {
           revealObserver.observe(el);
         });
       } else {
-        // Reduced motion: show everything immediately
         document.querySelectorAll('.animate-fade-up').forEach((el) => {
           el.classList.add('is-visible');
         });
       }
 
-      // 3. Hero parallax (subtle upward drift on scroll)
+      // ═══════════════════════════════════════════════════════════════
+      // 3. HERO PARALLAX (subtle upward drift — transform + opacity only)
+      //    Per scroll-experience: only animate GPU-friendly properties
+      // ═══════════════════════════════════════════════════════════════
       const heroContent = document.querySelector('.hero-content');
       const heroScrim = document.querySelector('.hero-scrim');
       if (heroContent && !prefersReduced) {
-        let ticking = false;
+        let parallaxTicking = false;
         window.addEventListener('scroll', () => {
-          if (!ticking) {
-            window.requestAnimationFrame(() => {
+          if (!parallaxTicking) {
+            requestAnimationFrame(() => {
               const scrollY = window.scrollY;
               const heroH = window.innerHeight;
               if (scrollY < heroH) {
@@ -561,11 +738,115 @@
                   heroScrim.style.opacity = String(0.95 + ratio * 0.05);
                 }
               }
-              ticking = false;
+              parallaxTicking = false;
             });
-            ticking = true;
+            parallaxTicking = true;
           }
         }, { passive: true });
+      }
+
+      // ═══════════════════════════════════════════════════════════════
+      // 4. KINETIC TEXT — Character-level stagger with a11y
+      //    aria-label on wrapper, aria-hidden="true" on each span
+      // ═══════════════════════════════════════════════════════════════
+      const kineticTitle = document.getElementById('kinetic-hero-title');
+      if (kineticTitle) {
+        const lines = kineticTitle.innerHTML.split('<br>');
+        kineticTitle.innerHTML = '';
+        let charIndex = 0;
+        lines.forEach((line, lineIdx) => {
+          const trimmed = line.trim();
+          for (let i = 0; i < trimmed.length; i++) {
+            const ch = trimmed[i];
+            if (ch === ' ') {
+              const space = document.createElement('span');
+              space.className = 'kinetic-space';
+              space.setAttribute('aria-hidden', 'true');
+              space.textContent = '\u00A0';
+              kineticTitle.appendChild(space);
+            } else {
+              const span = document.createElement('span');
+              span.className = 'kinetic-char';
+              span.setAttribute('aria-hidden', 'true');
+              span.textContent = ch;
+              span.style.transitionDelay = `${charIndex * 0.03}s`;
+              kineticTitle.appendChild(span);
+            }
+            charIndex++;
+          }
+          if (lineIdx < lines.length - 1) {
+            kineticTitle.appendChild(document.createElement('br'));
+          }
+        });
+
+        if (!prefersReduced) {
+          const kineticObserver = new IntersectionObserver((entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                setTimeout(() => {
+                  kineticTitle.querySelectorAll('.kinetic-char').forEach((ch) => {
+                    ch.classList.add('is-revealed');
+                  });
+                }, 200);
+                kineticObserver.unobserve(entry.target);
+              }
+            }
+          }, { threshold: 0.3 });
+          kineticObserver.observe(kineticTitle);
+        } else {
+          kineticTitle.querySelectorAll('.kinetic-char').forEach((ch) => {
+            ch.classList.add('is-revealed');
+          });
+        }
+      }
+
+      // ═══════════════════════════════════════════════════════════════
+      // 5. COUNT-UP ANIMATION — IntersectionObserver-triggered
+      //    rAF-driven, ease-out cubic easing
+      // ═══════════════════════════════════════════════════════════════
+      const metricsRow = document.getElementById('metrics-row');
+      if (metricsRow) {
+        const countUpEl = (el) => {
+          const target = el.dataset.target;
+          const type = el.dataset.type;
+          const suffix = el.dataset.suffix || '';
+          if (type === 'text') return;
+
+          const targetNum = parseFloat(target);
+          const isFloat = type === 'float';
+          const duration = 1800;
+          const startTime = performance.now();
+          el.classList.add('is-counting');
+
+          const step = (now) => {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = eased * targetNum;
+
+            el.textContent = isFloat
+              ? current.toFixed(1) + suffix
+              : Math.round(current) + suffix;
+
+            if (progress < 1) {
+              requestAnimationFrame(step);
+            } else {
+              el.textContent = target + suffix;
+              el.classList.remove('is-counting');
+            }
+          };
+          requestAnimationFrame(step);
+        };
+
+        const metricsObserver = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.querySelectorAll('.metric-value[data-target]').forEach(countUpEl);
+              metricsObserver.unobserve(entry.target);
+            }
+          }
+        }, { threshold: 0.3 });
+        metricsObserver.observe(metricsRow);
       }
     })();
   </script>
