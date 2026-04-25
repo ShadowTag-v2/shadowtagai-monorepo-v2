@@ -8,7 +8,7 @@ hardened_state:
   tests_e2e_expected_failures: 2
   test_runner: /opt/homebrew/bin/python3.14
   risk_register_version: v10.9
-  risk_register_count: 94
+  risk_register_count: 46
   adr_count: 5
   tacsop0_status: fully_activated
   betterleaks_migrated: true
