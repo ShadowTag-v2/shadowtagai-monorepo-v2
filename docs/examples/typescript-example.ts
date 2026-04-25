@@ -320,8 +320,7 @@ async function example9_errorHandling() {
     console.log(
       '\n\nNote: The agent will request more specific information when context is insufficient.',
     );
-  } catch (error) {
-    console.error('Error during analysis:', error);
+  } catch (_error) {
     // Implement your error handling logic here
   }
 }

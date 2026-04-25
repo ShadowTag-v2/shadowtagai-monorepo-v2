@@ -27,7 +27,7 @@ const DemoReel = () => {
 
   return (
     <>
-      {clips.map((clip, i) => (
+      {clips.map((clip, _i) => (
         <Composition
           key={clip.label}
           id={clip.label.replace(/\s/g, '')}

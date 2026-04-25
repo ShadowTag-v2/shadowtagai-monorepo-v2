@@ -64,13 +64,13 @@ I'm going to play both the lawyer and the client."
 #### Step 1: The Magic Link (2 min)
 ```
 DEMO ACTION: Log in as demo-partner@clefirm.com
-→ Dashboard shows "Sterling & Associates" 
+→ Dashboard shows "Sterling & Associates"
 → Click "Generate Client Magic Link"
 → Copy the link: https://app.kovelai.com/intake/s/abc123
 ```
 
 **[SAY]**: "This link is your Kovel directive in digital form. When
-the client clicks it, they see the KovelDirectiveGate — the same 
+the client clicks it, they see the KovelDirectiveGate — the same
 legal framework Judge Rakoff identified as the safe harbor."
 
 #### Step 2: Client Signs the Directive (2 min)
@@ -84,15 +84,15 @@ DEMO ACTION: Open Magic Link in incognito browser
 
 **[SAY]**: "Two things just happened. First, the client paid you $25 upfront.
 Second, the system minted a Sandbox-Bound, Ephemeral, User-Billed token.
-This token dies in 60 minutes. If the FBI seizes this server, 
+This token dies in 60 minutes. If the FBI seizes this server,
 there is literally nothing to decrypt."
 
 #### Step 3: Client Enters Their Story (3 min)
 ```
 DEMO ACTION: Type into the HeppnerEvaporatingChat:
 "I signed a contract with ABC Corp for $500,000 in consulting services.
-They paid the first two invoices but stopped paying in July 2025. 
-I have emails showing they acknowledged the debt. They now claim 
+They paid the first two invoices but stopped paying in July 2025.
+I have emails showing they acknowledged the debt. They now claim
 the contract was never valid because it wasn't notarized."
 ```
 

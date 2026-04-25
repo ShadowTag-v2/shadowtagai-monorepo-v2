@@ -3,7 +3,7 @@ import { useState } from 'react';
 import '@packages/ui/dark-luxury.css';
 
 export default function HeadFadeSwiper() {
-  const [video, setVideo] = useState('gs://headfade-cdn-origin/genesis_clip_01.mp4');
+  const [video, _setVideo] = useState('gs://headfade-cdn-origin/genesis_clip_01.mp4');
   const [reveal, setReveal] = useState('');
 
   const castVote = async (vote: 'REAL' | 'AI') => {
@@ -27,7 +27,7 @@ export default function HeadFadeSwiper() {
       const decoder = new TextDecoder();
 
       while (true) {
-        const { done, value } = await reader!.read();
+        const { done, value } = await reader?.read();
         if (done) break;
         const chunk = decoder.decode(value, { stream: true });
 
@@ -43,7 +43,7 @@ export default function HeadFadeSwiper() {
         }
       }
     } catch (e) {
-      setReveal('> FATAL FORENSIC ARBITER ERROR: ' + e);
+      setReveal(`> FATAL FORENSIC ARBITER ERROR: ${e}`);
     }
   };
 

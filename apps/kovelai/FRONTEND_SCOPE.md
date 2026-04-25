@@ -154,11 +154,11 @@ Auto-detect legal jargon and footnote with plain-English translations.
 Response text with inline jargon references¹ and legal terms².
 
 ──────────────────────────────────────────────
-¹ Summary judgment — When a court decides a case 
-  without a full trial because the key facts are 
+¹ Summary judgment — When a court decides a case
+  without a full trial because the key facts are
   not in dispute.
-² Statute of limitations — The deadline for filing 
-  a lawsuit. After this deadline, you generally 
+² Statute of limitations — The deadline for filing
+  a lawsuit. After this deadline, you generally
   can't bring the case to court.
 ```
 

@@ -15,8 +15,8 @@
  *   --dry-run                          Show combined prompt without running analysis
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 // ============================================================================
 // Configuration
@@ -103,7 +103,6 @@ function loadPrompt() {
   console.log(`📄 Loading prompt from: ${CONFIG.promptPath}`);
 
   if (!fs.existsSync(CONFIG.promptPath)) {
-    console.error(`❌ Error: Prompt file not found at ${CONFIG.promptPath}`);
     process.exit(1);
   }
 
@@ -114,7 +113,6 @@ function loadSupportingDocuments() {
   console.log(`📂 Loading supporting documents from: ${CONFIG.inputsDir}`);
 
   if (!fs.existsSync(CONFIG.inputsDir)) {
-    console.warn(`⚠️  Warning: Inputs directory not found. Creating empty directory.`);
     fs.mkdirSync(CONFIG.inputsDir, { recursive: true });
     return '';
   }
@@ -122,8 +120,6 @@ function loadSupportingDocuments() {
   const files = fs.readdirSync(CONFIG.inputsDir);
 
   if (files.length === 0) {
-    console.warn(`⚠️  Warning: No supporting documents found in ${CONFIG.inputsDir}`);
-    console.warn(`   Add specification files (YAML, Markdown, etc.) to improve analysis quality.`);
     return '';
   }
 
@@ -142,7 +138,7 @@ function loadSupportingDocuments() {
     const extension = path.extname(file).slice(1);
 
     combined += `### Document: ${file}\n\n`;
-    combined += '```' + extension + '\n';
+    combined += `\`\`\`${extension}\n`;
     combined += content;
     combined += '\n```\n\n';
   }
@@ -153,7 +149,7 @@ function loadSupportingDocuments() {
 }
 
 function combineMaterials(prompt, supportingDocs) {
-  const divider = '\n\n' + '='.repeat(80) + '\n\n';
+  const divider = `\n\n${'='.repeat(80)}\n\n`;
   return prompt + divider + supportingDocs;
 }
 
@@ -161,14 +157,12 @@ function combineMaterials(prompt, supportingDocs) {
 // Analysis Execution
 // ============================================================================
 
-async function runAnalysisWithGemini(combinedPrompt) {
+async function runAnalysisWithGemini(_combinedPrompt) {
   console.log('\n🔮 Running analysis with Gemini 2.0 Pro...\n');
 
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    console.error('❌ Error: GEMINI_API_KEY environment variable not set.');
-    console.error('   Set it with: export GEMINI_API_KEY=your_key_here');
     process.exit(1);
   }
 
@@ -232,20 +226,17 @@ async function runAnalysisWithClaude(combinedPrompt) {
     console.log('\n✅ Analysis complete\n');
 
     return messages.join('');
-  } catch (error) {
-    console.error('❌ Error running Claude analysis:', error.message);
-    console.error('\nMake sure @anthropic-ai/claude-agent-sdk is installed.');
+  } catch (_error) {
     process.exit(1);
   }
 }
 
-async function runAnalysisWithOpenAI(combinedPrompt) {
+async function runAnalysisWithOpenAI(_combinedPrompt) {
   console.log('\n🧠 Running analysis with OpenAI GPT-4...\n');
 
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
-    console.error('❌ Error: OPENAI_API_KEY environment variable not set.');
     process.exit(1);
   }
 
@@ -264,8 +255,6 @@ async function runAnalysis(provider, combinedPrompt) {
     case 'openai':
       return await runAnalysisWithOpenAI(combinedPrompt);
     default:
-      console.error(`❌ Error: Unknown provider "${provider}"`);
-      console.error('   Supported providers: gemini, claude, openai');
       process.exit(1);
   }
 }
@@ -383,7 +372,6 @@ async function main() {
 // Entry Point
 // ============================================================================
 
-main().catch((error) => {
-  console.error('\n❌ Fatal error:', error);
+main().catch((_error) => {
   process.exit(1);
 });
