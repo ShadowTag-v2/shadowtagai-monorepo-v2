@@ -5,7 +5,7 @@ This file tracks the progress of the 22-step Stitch MCP workflow.
 - [x] 1. Share the prior thread, summarize this instruction block, and open a designated .beads/stitch_workflow.md artifact.
 - [ ] 2. Verify my identity and verify target repo
 - [ ] 3. Pull Stitch UI DESIGN.md
-- [ ] 4. Authenticate Stitch MCP Server 
+- [ ] 4. Authenticate Stitch MCP Server
 - [ ] 5. Start `npm run dev` in the local workspace on a dedicated port
 - [ ] 6. Use Stitch MCP tool `generate_screen_from_text`
 - [ ] 7. Iterate generation by prompting for theme-dark aesthetics

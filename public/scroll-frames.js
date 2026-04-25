@@ -175,7 +175,7 @@
 
   // ── Draw a specific frame ──
   function drawFrame(index) {
-    if (!ctx || !images[index] || !images[index].complete || !images[index].naturalWidth) return;
+    if (!ctx || !images[index]?.complete || !images[index].naturalWidth) return;
     const img = images[index];
     const dpr = CONFIG.enableRetina ? window.devicePixelRatio || 1 : 1;
     const cw = canvas.width / dpr;
@@ -244,7 +244,7 @@
       navigator.serviceWorker
         .register('/sw.js')
         .then((reg) => console.log('[SW] Registered:', reg.scope))
-        .catch((err) => console.warn('[SW] Registration failed:', err));
+        .catch((_err) => {});
     }
   }
 
@@ -253,7 +253,6 @@
     registerSW();
 
     if (!canvas || !ctx) {
-      console.warn('[ScrollFrames] Canvas not found');
       return;
     }
 

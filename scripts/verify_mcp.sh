@@ -3,24 +3,28 @@ set -euo pipefail
 
 ROOT="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"
 CONFIG="$ROOT/antigravity-mcp-config.json"
-ENV_FILE="$ROOT/.env"
+SECRETS_LOADER="$ROOT/scripts/load_mcp_secrets.sh"
 TOOLS_FILE="$ROOT/database_tools.yaml"
 
 echo "[verify_mcp] root: $ROOT"
 
 [[ -f "$CONFIG" ]] || { echo "[verify_mcp] missing $CONFIG"; exit 1; }
-[[ -f "$ENV_FILE" ]] || { echo "[verify_mcp] missing $ENV_FILE"; exit 1; }
-[[ -f "$TOOLS_FILE" ]] || { echo "[verify_mcp] missing $TOOLS_FILE"; exit 1; }
-
-echo "[verify_mcp] loading env"
-set -a
-source "$ENV_FILE"
-set +a
+# NOTE: .env is BANNED per secrets_manager_doctrine (2026-04-22).
+# Secrets are loaded via load_mcp_secrets.sh or GCP Secret Manager.
+if [[ -f "$SECRETS_LOADER" ]]; then
+  echo "[verify_mcp] loading secrets via load_mcp_secrets.sh"
+  set -a
+  source "$SECRETS_LOADER"
+  set +a
+else
+  echo "[verify_mcp] WARN: load_mcp_secrets.sh not found; relying on env injection"
+fi
+[[ -f "$TOOLS_FILE" ]] || { echo "[verify_mcp] WARN: $TOOLS_FILE missing (non-fatal)"; }
 
 required_vars=(
   STITCH_API_KEY
   DEVELOPER_KNOWLEDGE_API_KEY
-  API_KEY
+  GEMINI_API_KEY
 )
 
 for var in "${required_vars[@]}"; do

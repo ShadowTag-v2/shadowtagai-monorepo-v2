@@ -1,7 +1,7 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
+const http = require('node:http');
+const fs = require('node:fs');
+const path = require('node:path');
+const os = require('node:os');
 
 // 1. Find Discovery File
 const discoveryDir = path.join(os.tmpdir(), 'gemini', 'ide');
@@ -23,13 +23,11 @@ const interval = setInterval(() => {
       clearInterval(interval);
       runTest(discoveryFile);
     } else if (attempts >= maxAttempts) {
-      console.error('[Test Client] Timeout waiting for discovery file.');
       clearInterval(interval);
       process.exit(1);
     }
-  } catch (e) {
+  } catch (_e) {
     if (attempts >= maxAttempts) {
-      console.error(`[Test Client] Error reading directory: ${e.message}`);
       clearInterval(interval);
       process.exit(1);
     }
@@ -60,7 +58,6 @@ function runTest(filePath) {
     console.log(`[Test Client] SSE Connection Status: ${res.statusCode}`);
 
     if (res.statusCode !== 200) {
-      console.error('[Test Client] Failed to connect to SSE stream');
       process.exit(1);
     }
 
@@ -101,7 +98,7 @@ function runTest(filePath) {
                   process.exit(0);
                 }
               }
-            } catch (e) {
+            } catch (_e) {
               // Ignore parsing errors for partial chunks
             }
           }
@@ -110,9 +107,7 @@ function runTest(filePath) {
     });
   });
 
-  req.on('error', (e) => {
-    console.error(`[Test Client] SSE Request Error: ${e.message}`);
-  });
+  req.on('error', (_e) => {});
 
   req.end();
 }
@@ -144,9 +139,7 @@ function sendToolCall(port, sessionId, authToken) {
     // We don't expect the body here, just 202 Accepted
   });
 
-  req.on('error', (e) => {
-    console.error(`[Test Client] POST Request Error: ${e.message}`);
-  });
+  req.on('error', (_e) => {});
 
   req.write(postData);
   req.end();
