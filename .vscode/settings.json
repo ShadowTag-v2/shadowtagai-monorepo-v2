@@ -87,8 +87,25 @@
     "**/data/lancedb/**": true,
     "**/frames/**": true
   },
+  // Fix 6: Python language server — enable Pylance for autocomplete + hover + type checking
+  "python.languageServer": "Pylance",
+  // Fix 5: CSpell — stop scanning volatile build/vendor directories
+  "cSpell.ignorePaths": [
+    "**/node_modules/**",
+    "**/dist-runtime/**",
+    "**/.agent/incoming_repos/**",
+    "**/vendor/a2ui/**",
+    "**/external_repos/**",
+    "**/deep-archive/**",
+    "**/archive/**",
+    "**/build/**",
+    "**/dist/**",
+    "**/.venv/**"
+  ],
   "terminal.integrated.env.osx": {
-    "NODE_OPTIONS": "--no-deprecation"
+    "NODE_OPTIONS": "--no-deprecation",
+    "SHADOWTAG_PEM": "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem",
+    "PATH": "/opt/homebrew/bin:/opt/homebrew/sbin:${env:PATH}"
   },
   "terminal.integrated.env.linux": {
     "NODE_OPTIONS": "--no-deprecation"
