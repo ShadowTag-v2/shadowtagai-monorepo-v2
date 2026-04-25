@@ -19,9 +19,22 @@ jobs:
       contents: write
 
     steps:
+      # GitHub App token for push operations and release creation.
+      # GITHUB_TOKEN push events don't trigger downstream workflows.
+      - name: Generate Short-Lived Token
+        id: get_app_token
+        uses: peter-murray/workflow-application-token-action@v4
+        with:
+          application_id: ${{ secrets.GH_APP_ID }}
+          application_private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          organization: ShadowTag-v2
+          permissions: "contents:write"
+          revoke_token: true
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          token: ${{ steps.get_app_token.outputs.token }}
           fetch-depth: 0  # Full history for proper versioning
 
       - name: Set up Python
@@ -36,8 +49,8 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
+          git config user.name "antigravity-shadowtag-manager[bot]"
+          git config user.email "3018200+antigravity-shadowtag-manager[bot]@users.noreply.github.com"
 
       - name: Run extraction
         env:
@@ -59,13 +72,13 @@ jobs:
         run: |
           git push origin main --tags
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.get_app_token.outputs.token }}
 
       - name: Create release
         if: steps.check_changes.outputs.has_changes == 'true'
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.get_app_token.outputs.token }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Memory Update ${{ github.ref }}

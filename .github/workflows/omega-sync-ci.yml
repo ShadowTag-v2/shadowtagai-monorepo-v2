@@ -29,7 +29,9 @@ jobs:
         uses: peter-murray/workflow-application-token-action@v4
         with:
           application_id: ${{ secrets.GH_APP_ID }}
-          application_private_key: ${{ secrets.GH_APP_PEM }}
+          application_private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          organization: ShadowTag-v2
+          revoke_token: true
 
       - name: Set up Python 3.13
         uses: actions/setup-python@v5
@@ -79,7 +81,9 @@ jobs:
         uses: peter-murray/workflow-application-token-action@v4
         with:
           application_id: ${{ secrets.GH_APP_ID }}
-          application_private_key: ${{ secrets.GH_APP_PEM }}
+          application_private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          organization: ShadowTag-v2
+          revoke_token: true
 
       - name: Scan for secrets
         run: |
