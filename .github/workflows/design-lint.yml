@@ -1,0 +1,76 @@
+name: "🎨 DESIGN.md Lint & Validation"
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "**/DESIGN.md"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  design-lint:
+    name: "🎨 DESIGN.md Spec Compliance"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: "1. Lint Production DESIGN.md Files"
+        run: |
+          echo "## DESIGN.md Lint Results" >> $GITHUB_STEP_SUMMARY
+
+          FAIL=0
+          for f in \
+            apps/kovelai/DESIGN.md \
+            apps/shadowtagai/DESIGN.md \
+            apps/kovelai/.stitch/DESIGN.md \
+            apps/thumbly/DESIGN.md; do
+            if [ -f "$f" ]; then
+              echo "::group::Linting $f"
+              RESULT=$(npx -y @google/design.md@0.1.1 lint "$f" 2>&1) || true
+              echo "$RESULT"
+              echo "::endgroup::"
+
+              ERRORS=$(echo "$RESULT" | grep -o '"errors": [0-9]*' | grep -o '[0-9]*' || echo "0")
+              WARNINGS=$(echo "$RESULT" | grep -o '"warnings": [0-9]*' | grep -o '[0-9]*' || echo "0")
+
+              if [ "$ERRORS" -gt 0 ]; then
+                echo "| \`$f\` | ❌ $ERRORS errors, $WARNINGS warnings |" >> $GITHUB_STEP_SUMMARY
+                FAIL=1
+              else
+                echo "| \`$f\` | ✅ 0 errors, $WARNINGS warnings |" >> $GITHUB_STEP_SUMMARY
+              fi
+            else
+              echo "| \`$f\` | ⏭️ Not found (skipped) |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+          if [ "$FAIL" -eq 1 ]; then
+            echo ""
+            echo "::error::DESIGN.md lint errors detected. Fix broken token references before merging."
+            exit 1
+          fi
+
+      - name: "2. Verify Tailwind Export (Dry Run)"
+        if: always()
+        run: |
+          for f in apps/kovelai/DESIGN.md apps/shadowtagai/DESIGN.md; do
+            if [ -f "$f" ]; then
+              echo "::group::Export test: $f"
+              npx -y @google/design.md@0.1.1 export --format tailwind "$f" > /dev/null 2>&1 && \
+                echo "✅ Tailwind export OK" || \
+                echo "⚠️ Tailwind export failed"
+              echo "::endgroup::"
+            fi
+          done

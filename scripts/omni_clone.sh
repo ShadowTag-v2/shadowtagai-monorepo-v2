@@ -104,7 +104,7 @@ SKIP=0
 
 for url in "${URLS[@]}"; do
   repo_name=$(basename "$url" .git)
-  
+
   # Check skip list
   skip=false
   for s in "${SKIP_LIST[@]}"; do
@@ -115,7 +115,7 @@ for url in "${URLS[@]}"; do
     ((SKIP++))
     continue
   fi
-  
+
   # Check if already cloned at top level
   already=false
   for a in "${ALREADY_CLONED[@]}"; do
@@ -126,14 +126,14 @@ for url in "${URLS[@]}"; do
     ((SKIP++))
     continue
   fi
-  
+
   # Check if already in omni_ingest
   if [ -d "$DEST/$repo_name" ]; then
     echo "✅ EXISTS (omni_ingest): $repo_name"
     ((SKIP++))
     continue
   fi
-  
+
   # Clone
   echo "📥 Cloning $repo_name..."
   if git clone --depth 1 "$url" "$DEST/$repo_name" 2>/dev/null; then

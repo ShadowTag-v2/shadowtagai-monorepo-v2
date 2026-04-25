@@ -1613,7 +1613,9 @@ class FastExportParser:
                 self._parse_progress()
             elif self._currentline.startswith(b"checkpoint"):
                 self._parse_checkpoint()
-            elif self._currentline.startswith(b"feature") or self._currentline.startswith(b"option"):
+            elif self._currentline.startswith(b"feature") or self._currentline.startswith(
+                b"option"
+            ):
                 self._parse_literal_command()
             elif self._currentline.startswith(b"done"):
                 if self._done_callback:
@@ -1772,7 +1774,9 @@ class GitUtils:
     def get_config_settings(repo_working_dir):
         output = ""
         try:
-            output = subproc.check_output(["git", "config", "--list", "--null"], cwd=repo_working_dir)
+            output = subproc.check_output(
+                ["git", "config", "--list", "--null"], cwd=repo_working_dir
+            )
         except subprocess.CalledProcessError as e:  # pragma: no cover
             raise SystemExit(f"fatal: {e}")
 
@@ -2894,7 +2898,11 @@ class RepoAnalyze:
                         stats["tree_deletions"][f] = date
                     else:
                         stats["file_deletions"][f] = date
-            elif change_types.strip(b"AMT") == b"" or modes[-1] == b"040000" and change_types.strip(b"RAM") == b"":
+            elif (
+                change_types.strip(b"AMT") == b""
+                or modes[-1] == b"040000"
+                and change_types.strip(b"RAM") == b""
+            ):
                 RepoAnalyze.handle_file(stats, graph, commit, modes, shas, filenames)
             elif change_types.strip(b"RAMT") == b"":
                 RepoAnalyze.handle_file(stats, graph, commit, modes, shas, filenames)
