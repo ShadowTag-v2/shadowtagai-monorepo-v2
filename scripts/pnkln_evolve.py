@@ -49,13 +49,18 @@ def scan_dead_code() -> dict:
     try:
         result = subprocess.run(
             [
-                "ruff", "check",
-                "--select", "F401,F841",
+                "ruff",
+                "check",
+                "--select",
+                "F401,F841",
                 "--statistics",
-                "--exclude", "external_repos,external_sdks,third_party,control/legacy_workspaces",
+                "--exclude",
+                "external_repos,external_sdks,third_party,control/legacy_workspaces",
                 str(MONOREPO_ROOT),
             ],
-            capture_output=True, text=True, timeout=60,
+            capture_output=True,
+            text=True,
+            timeout=60,
         )
         lines = result.stdout.strip().split("\n") if result.stdout.strip() else []
         return {"dead_code_lines": len(lines), "output": result.stdout[:500]}
@@ -81,11 +86,13 @@ def scan_duplicate_skills() -> dict:
                 continue
 
             if name in skills:
-                duplicates.append({
-                    "name": name,
-                    "path_a": str(skills[name]),
-                    "path_b": str(skill_md),
-                })
+                duplicates.append(
+                    {
+                        "name": name,
+                        "path_a": str(skills[name]),
+                        "path_b": str(skill_md),
+                    }
+                )
             else:
                 skills[name] = skill_md
 

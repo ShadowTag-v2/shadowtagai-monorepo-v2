@@ -4,10 +4,10 @@ info:
   version: "10.0.0"
   description: |
     Privilege-preserving Legal AI routing tier — the "Shopify for Legal AI".
-    
+
     All endpoints require Firebase Auth JWT unless explicitly marked public.
     Responses follow RFC 9457 (Problem Details) for errors.
-    
+
     **S.E.U. Framework**: All client-facing LLM responses follow Safety → Empathy → Utility ordering.
   contact:
     name: ShadowTag Engineering

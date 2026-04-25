@@ -51,8 +51,6 @@ export async function POST(req: Request) {
     });
 
     if (debitError) {
-      // In production, queue a retry or raise a severe alert. Do not block the user's return if inference already succeeded.
-      console.error('WARNING: Ledger debit failed after successful generation.', debitError);
     }
 
     // Return the generated asset URI

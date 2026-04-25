@@ -1,8 +1,8 @@
 # ADR 004: CopilotKit as Mandatory A2UI Consumer
 
-**Status:** DECIDED  
-**Date:** 2026-04-22  
-**Deciders:** @pikeymickey, Antigravity Agent  
+**Status:** DECIDED
+**Date:** 2026-04-22
+**Deciders:** @pikeymickey, Antigravity Agent
 
 ## Context
 
