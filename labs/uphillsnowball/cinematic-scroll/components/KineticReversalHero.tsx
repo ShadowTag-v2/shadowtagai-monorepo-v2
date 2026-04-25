@@ -1,7 +1,7 @@
 'use client';
 
+import { AnimatePresence, motion, useAnimation } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useAnimation, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
 
 /**
  * KineticReversalHero — "Physics-Defying Compounding Momentum"
@@ -23,72 +23,98 @@ import { motion, useAnimation, useMotionValue, useTransform, AnimatePresence } f
 
 /* ── STRICT HEX TOKENS (dark mode) ── */
 const C = {
-  void:           '#0A0A0F',
-  surfaceDim:     '#0D1117',
-  surfaceCard:    '#101621',
-  surfaceHigh:    '#1A1F2E',
-  glowCyan:       '#00BCD4',
-  glowCyanDim:    '#006064',
-  glowPurple:     '#7C4DFF',
-  glowPurpleDim:  '#311B92',
-  glowBlue:       '#4285F4',
-  white:          '#FFFFFF',
-  whiteGhost:     '#8B949E',
+  void: '#0A0A0F',
+  surfaceDim: '#0D1117',
+  surfaceCard: '#101621',
+  surfaceHigh: '#1A1F2E',
+  glowCyan: '#00BCD4',
+  glowCyanDim: '#006064',
+  glowPurple: '#7C4DFF',
+  glowPurpleDim: '#311B92',
+  glowBlue: '#4285F4',
+  white: '#FFFFFF',
+  whiteGhost: '#8B949E',
   silverElevated: '#C9D1D9',
-  sphereGlass:    '#1A2332',
-  sphereBorder:   '#2A3A4E',
+  sphereGlass: '#1A2332',
+  sphereBorder: '#2A3A4E',
 } as const;
 
 /* ── DATA NODES — positions, sizes, delays for floating particles ── */
 interface DataNode {
   id: number;
-  x: number;       // % from left
-  y: number;       // % from top
-  size: number;    // px
+  x: number; // % from left
+  y: number; // % from top
+  size: number; // px
   color: string;
-  delay: number;   // seconds
+  delay: number; // seconds
   shape: 'hex' | 'circle' | 'diamond';
 }
 
 const DATA_NODES: DataNode[] = [
-  { id: 1,  x: 15, y: 70, size: 12, color: C.glowCyan,   delay: 0,    shape: 'hex' },
-  { id: 2,  x: 25, y: 55, size: 8,  color: C.glowBlue,   delay: 0.3,  shape: 'circle' },
-  { id: 3,  x: 35, y: 80, size: 10, color: C.glowPurple,  delay: 0.6,  shape: 'diamond' },
-  { id: 4,  x: 45, y: 40, size: 14, color: C.glowCyan,   delay: 0.9,  shape: 'hex' },
-  { id: 5,  x: 55, y: 65, size: 9,  color: C.glowBlue,   delay: 1.2,  shape: 'circle' },
-  { id: 6,  x: 65, y: 35, size: 11, color: C.glowPurple,  delay: 1.5,  shape: 'diamond' },
-  { id: 7,  x: 72, y: 50, size: 7,  color: C.glowCyan,   delay: 1.8,  shape: 'hex' },
-  { id: 8,  x: 82, y: 75, size: 13, color: C.glowBlue,   delay: 2.1,  shape: 'circle' },
-  { id: 9,  x: 40, y: 25, size: 10, color: C.glowPurple,  delay: 2.4,  shape: 'diamond' },
-  { id: 10, x: 60, y: 85, size: 8,  color: C.glowCyan,   delay: 2.7,  shape: 'hex' },
-  { id: 11, x: 20, y: 30, size: 11, color: C.glowBlue,   delay: 3.0,  shape: 'circle' },
-  { id: 12, x: 80, y: 20, size: 9,  color: C.glowPurple,  delay: 3.3,  shape: 'diamond' },
+  { id: 1, x: 15, y: 70, size: 12, color: C.glowCyan, delay: 0, shape: 'hex' },
+  { id: 2, x: 25, y: 55, size: 8, color: C.glowBlue, delay: 0.3, shape: 'circle' },
+  { id: 3, x: 35, y: 80, size: 10, color: C.glowPurple, delay: 0.6, shape: 'diamond' },
+  { id: 4, x: 45, y: 40, size: 14, color: C.glowCyan, delay: 0.9, shape: 'hex' },
+  { id: 5, x: 55, y: 65, size: 9, color: C.glowBlue, delay: 1.2, shape: 'circle' },
+  { id: 6, x: 65, y: 35, size: 11, color: C.glowPurple, delay: 1.5, shape: 'diamond' },
+  { id: 7, x: 72, y: 50, size: 7, color: C.glowCyan, delay: 1.8, shape: 'hex' },
+  { id: 8, x: 82, y: 75, size: 13, color: C.glowBlue, delay: 2.1, shape: 'circle' },
+  { id: 9, x: 40, y: 25, size: 10, color: C.glowPurple, delay: 2.4, shape: 'diamond' },
+  { id: 10, x: 60, y: 85, size: 8, color: C.glowCyan, delay: 2.7, shape: 'hex' },
+  { id: 11, x: 20, y: 30, size: 11, color: C.glowBlue, delay: 3.0, shape: 'circle' },
+  { id: 12, x: 80, y: 20, size: 9, color: C.glowPurple, delay: 3.3, shape: 'diamond' },
 ];
 
 /* ── SHAPE RENDERERS ── */
-function NodeShape({ shape, size, color }: { shape: DataNode['shape']; size: number; color: string }) {
+function NodeShape({
+  shape,
+  size,
+  color,
+}: {
+  shape: DataNode['shape'];
+  size: number;
+  color: string;
+}) {
   if (shape === 'hex') {
     return (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill={color} opacity={0.7}>
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill={color}
+        opacity={0.7}
+        role="img"
+        aria-label="Hexagonal data node"
+      >
         <polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5" />
       </svg>
     );
   }
   if (shape === 'diamond') {
     return (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill={color} opacity={0.7}>
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill={color}
+        opacity={0.7}
+        role="img"
+        aria-label="Diamond data node"
+      >
         <polygon points="12,2 22,12 12,22 2,12" />
       </svg>
     );
   }
   return (
-    <div style={{
-      width: size,
-      height: size,
-      borderRadius: '50%',
-      backgroundColor: color,
-      opacity: 0.7,
-    }} />
+    <div
+      style={{
+        width: size,
+        height: size,
+        borderRadius: '50%',
+        backgroundColor: color,
+        opacity: 0.7,
+      }}
+    />
   );
 }
 
@@ -132,11 +158,14 @@ export function KineticReversalHero({
         }, 3000);
         return;
       }
-      timerRef.current = setTimeout(() => {
-        setAbsorbed((prev) => new Set([...prev, DATA_NODES[index].id]));
-        setSphereScale((s) => Math.min(s + 0.06, 1.8));
-        absorb(index + 1);
-      }, DATA_NODES[index].delay * 1000 + 400);
+      timerRef.current = setTimeout(
+        () => {
+          setAbsorbed((prev) => new Set([...prev, DATA_NODES[index].id]));
+          setSphereScale((s) => Math.min(s + 0.06, 1.8));
+          absorb(index + 1);
+        },
+        DATA_NODES[index].delay * 1000 + 400,
+      );
     };
     absorb(0);
 
@@ -162,6 +191,8 @@ export function KineticReversalHero({
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1 }}
         viewBox="0 0 1440 900"
         preserveAspectRatio="none"
+        role="img"
+        aria-label="Diagonal vector line representing uphill momentum"
       >
         <defs>
           <linearGradient id="vecGrad" x1="0%" y1="100%" x2="100%" y2="0%">
@@ -190,54 +221,73 @@ export function KineticReversalHero({
 
         {/* The sharp diagonal vector line */}
         <line
-          x1="100"  y1="800"
-          x2="1340" y2="100"
+          x1="100"
+          y1="800"
+          x2="1340"
+          y2="100"
           stroke="url(#vecGrad)"
           strokeWidth="2"
           filter="url(#lineGlow)"
         />
         {/* Fainter parallel guides */}
-        <line x1="80"  y1="820" x2="1320" y2="120" stroke={C.glowCyanDim} strokeWidth="0.5" opacity="0.15" />
-        <line x1="120" y1="780" x2="1360" y2="80"  stroke={C.glowPurpleDim} strokeWidth="0.5" opacity="0.15" />
+        <line
+          x1="80"
+          y1="820"
+          x2="1320"
+          y2="120"
+          stroke={C.glowCyanDim}
+          strokeWidth="0.5"
+          opacity="0.15"
+        />
+        <line
+          x1="120"
+          y1="780"
+          x2="1360"
+          y2="80"
+          stroke={C.glowPurpleDim}
+          strokeWidth="0.5"
+          opacity="0.15"
+        />
       </svg>
 
       {/* ── FLOATING DATA NODES ── */}
       <AnimatePresence>
-        {DATA_NODES.map((node) => (
-          !absorbed.has(node.id) && (
-            <motion.div
-              key={node.id}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{
-                opacity: [0, 0.8, 0.6, 0.8],
-                scale: [0, 1, 0.9, 1],
-                y: [0, -8, 4, -4],
-              }}
-              exit={{
-                opacity: 0,
-                scale: 0,
-                x: '40vw',
-                y: '-20vh',
-                transition: { duration: 0.8, ease: 'easeIn' },
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                repeatType: 'reverse',
-                delay: node.delay,
-              }}
-              style={{
-                position: 'absolute',
-                left: `${node.x}%`,
-                top: `${node.y}%`,
-                zIndex: 2,
-                pointerEvents: 'none',
-              }}
-            >
-              <NodeShape shape={node.shape} size={node.size} color={node.color} />
-            </motion.div>
-          )
-        ))}
+        {DATA_NODES.map(
+          (node) =>
+            !absorbed.has(node.id) && (
+              <motion.div
+                key={node.id}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{
+                  opacity: [0, 0.8, 0.6, 0.8],
+                  scale: [0, 1, 0.9, 1],
+                  y: [0, -8, 4, -4],
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0,
+                  x: '40vw',
+                  y: '-20vh',
+                  transition: { duration: 0.8, ease: 'easeIn' },
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
+                  delay: node.delay,
+                }}
+                style={{
+                  position: 'absolute',
+                  left: `${node.x}%`,
+                  top: `${node.y}%`,
+                  zIndex: 2,
+                  pointerEvents: 'none',
+                }}
+              >
+                <NodeShape shape={node.shape} size={node.size} color={node.color} />
+              </motion.div>
+            ),
+        )}
       </AnimatePresence>
 
       {/* ── THE SPHERE — Frosted glass, rolling upward ── */}
@@ -252,9 +302,9 @@ export function KineticReversalHero({
           height: 120,
           borderRadius: '50%',
           background: `
-            radial-gradient(circle at 35% 35%, 
-              rgba(26, 35, 50, 0.95) 0%, 
-              rgba(13, 17, 23, 0.8) 40%, 
+            radial-gradient(circle at 35% 35%,
+              rgba(26, 35, 50, 0.95) 0%,
+              rgba(13, 17, 23, 0.8) 40%,
               rgba(10, 10, 15, 0.6) 100%
             )
           `,
@@ -362,9 +412,10 @@ export function KineticReversalHero({
                 {i > 0 && <br />}
                 <span
                   style={{
-                    background: i === 1
-                      ? `linear-gradient(135deg, ${C.glowCyan} 0%, ${C.glowPurple} 100%)`
-                      : 'none',
+                    background:
+                      i === 1
+                        ? `linear-gradient(135deg, ${C.glowCyan} 0%, ${C.glowPurple} 100%)`
+                        : 'none',
                     WebkitBackgroundClip: i === 1 ? 'text' : undefined,
                     WebkitTextFillColor: i === 1 ? 'transparent' : undefined,
                   }}
@@ -393,6 +444,7 @@ export function KineticReversalHero({
           {/* CTA */}
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
             <button
+              type="button"
               style={{
                 background: `linear-gradient(135deg, ${C.glowCyan} 0%, ${C.glowBlue} 100%)`,
                 color: '#003238',
@@ -409,6 +461,7 @@ export function KineticReversalHero({
               Enter the Engine
             </button>
             <button
+              type="button"
               style={{
                 backgroundColor: 'transparent',
                 color: C.glowPurple,
