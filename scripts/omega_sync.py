@@ -19,11 +19,13 @@ import time
 try:
     import jwt  # PyJWT
 except ImportError:
+    print("FATAL: PyJWT not installed. Run: /opt/homebrew/bin/python3.14 -m pip install 'PyJWT[crypto]'")
     sys.exit(1)
 
 try:
     import requests
 except ImportError:
+    print("FATAL: requests not installed. Run: /opt/homebrew/bin/python3.14 -m pip install requests")
     sys.exit(1)
 
 # ============================================================
