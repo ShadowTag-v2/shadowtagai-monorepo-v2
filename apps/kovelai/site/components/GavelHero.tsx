@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import type React from 'react';
 
 /**
  * GavelHero — Cinematic gavel-fall hero overlay for KovelAI
@@ -17,12 +17,12 @@ import React from 'react';
 
 /* ── DESIGN TOKENS ── */
 const T = {
-  surface:     '#0A0A0F',
-  tertiary:    '#00BCD4',
-  onTertiary:  '#003238',
-  onSurface:   '#FFFFFF',
-  onSurfaceV:  '#8B949E',
-  glass:       'rgba(10, 10, 15, 0.65)',
+  surface: '#0A0A0F',
+  tertiary: '#00BCD4',
+  onTertiary: '#003238',
+  onSurface: '#FFFFFF',
+  onSurfaceV: '#8B949E',
+  glass: 'rgba(10, 10, 15, 0.65)',
   glassBorder: 'rgba(255, 255, 255, 0.08)',
 } as const;
 
@@ -81,7 +81,8 @@ const styles = {
     position: 'absolute' as const,
     inset: 0,
     zIndex: 10,
-    background: 'linear-gradient(180deg, transparent 0%, rgba(10,10,15,0.4) 40%, rgba(10,10,15,0.85) 100%)',
+    background:
+      'linear-gradient(180deg, transparent 0%, rgba(10,10,15,0.4) 40%, rgba(10,10,15,0.85) 100%)',
     backdropFilter: 'blur(2px)',
     WebkitBackdropFilter: 'blur(2px)',
   } satisfies React.CSSProperties,
@@ -246,8 +247,12 @@ export function GavelHero({
           <p style={styles.subheadline}>{subheadline}</p>
 
           <div style={styles.ctas}>
-            <button style={styles.ctaPrimary}>Start Free Trial</button>
-            <button style={styles.ctaGhost}>Watch Demo</button>
+            <button type="button" style={styles.ctaPrimary}>
+              Start Free Trial
+            </button>
+            <button type="button" style={styles.ctaGhost}>
+              Watch Demo
+            </button>
           </div>
         </div>
       </div>

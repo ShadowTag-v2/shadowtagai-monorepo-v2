@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import type React from 'react';
 
 /**
  * UnusualChassis — Structural layout chassis extracted from unusualmachines.com
@@ -19,21 +19,21 @@ import React from 'react';
 
 /* ── Design Token Constants (from DESIGN.md) ── */
 const TOKENS = {
-  surface:              '#0A0A0F',
-  surfaceDim:           '#0A0A0F',
-  surfaceContainerLow:  '#0D1117',
-  surfaceContainer:     '#111827',
+  surface: '#0A0A0F',
+  surfaceDim: '#0A0A0F',
+  surfaceContainerLow: '#0D1117',
+  surfaceContainer: '#111827',
   surfaceContainerHigh: '#1A1F2E',
-  surfaceOverlay:       '#0C0C12',
-  surfaceCard:          '#101621',
-  surfaceAccentTint:    '#0A2B30',
-  onSurface:            '#FFFFFF',
-  onSurfaceVariant:     '#8B949E',
-  onSurfaceElevated:    '#C9D1D9',
-  tertiary:             '#00BCD4',
-  onTertiary:           '#003238',
-  tertiaryContainer:    '#00838F',
-  statusPremium:        '#7C4DFF',
+  surfaceOverlay: '#0C0C12',
+  surfaceCard: '#101621',
+  surfaceAccentTint: '#0A2B30',
+  onSurface: '#FFFFFF',
+  onSurfaceVariant: '#8B949E',
+  onSurfaceElevated: '#C9D1D9',
+  tertiary: '#00BCD4',
+  onTertiary: '#003238',
+  tertiaryContainer: '#00838F',
+  statusPremium: '#7C4DFF',
 } as const;
 
 /* ── Inline Styles (no Tailwind dependency for portability) ── */
@@ -293,18 +293,29 @@ export function UnusualChassis({
         <ul style={styles.navLinks}>
           {navLinks.map((label) => (
             <li key={label}>
-              <a style={styles.navLink}>{label}</a>
+              <a href={`#${label.toLowerCase().replace(/\s+/g, '-')}`} style={styles.navLink}>
+                {label}
+              </a>
             </li>
           ))}
         </ul>
-        <button style={styles.navCta}>{ctaLabel}</button>
+        <button type="button" style={styles.navCta}>
+          {ctaLabel}
+        </button>
       </nav>
 
       {/* ── HERO ZONE (full bleed injection point) ── */}
       <section style={styles.heroZone} id="chassis-hero">
         {heroContent ?? (
           <div style={{ textAlign: 'center', padding: '0 24px' }}>
-            <h1 style={{ ...styles.sectionHeading, fontSize: 64, fontWeight: 900, letterSpacing: '-0.03em' }}>
+            <h1
+              style={{
+                ...styles.sectionHeading,
+                fontSize: 64,
+                fontWeight: 900,
+                letterSpacing: '-0.03em',
+              }}
+            >
               {/* Placeholder — inject real headline */}
               Hero Headline Slot
             </h1>
@@ -312,8 +323,18 @@ export function UnusualChassis({
               Subheadline slot for value proposition
             </p>
             <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
-              <button style={styles.navCta}>{ctaLabel}</button>
-              <button style={{ ...styles.navCta, backgroundColor: 'transparent', border: `1px solid ${TOKENS.tertiary}`, color: TOKENS.tertiary }}>
+              <button type="button" style={styles.navCta}>
+                {ctaLabel}
+              </button>
+              <button
+                type="button"
+                style={{
+                  ...styles.navCta,
+                  backgroundColor: 'transparent',
+                  border: `1px solid ${TOKENS.tertiary}`,
+                  color: TOKENS.tertiary,
+                }}
+              >
                 Learn More
               </button>
             </div>
@@ -335,9 +356,7 @@ export function UnusualChassis({
       <div style={{ ...styles.splitSection, direction: 'rtl' }} id="chassis-split-2">
         <div style={{ direction: 'ltr' }}>
           <h2 style={styles.sectionHeading}>Reversed Section Slot</h2>
-          <p style={styles.sectionSubheading}>
-            Reversed layout. Media left, text right.
-          </p>
+          <p style={styles.sectionSubheading}>Reversed layout. Media left, text right.</p>
         </div>
         <div style={{ ...styles.mediaMock, direction: 'ltr' }}>Media Placeholder</div>
       </div>
@@ -349,11 +368,14 @@ export function UnusualChassis({
           Responsive 3→2→1 column card grid
         </p>
         <div style={styles.featureGrid}>
-          {(features.length > 0 ? features : Array.from({ length: 6 }, (_, i) => ({
-            icon: '⬡',
-            title: `Feature ${i + 1}`,
-            description: 'Feature description slot — inject real content here.',
-          }))).map((feat, i) => (
+          {(features.length > 0
+            ? features
+            : Array.from({ length: 6 }, (_, i) => ({
+                icon: '⬡',
+                title: `Feature ${i + 1}`,
+                description: 'Feature description slot — inject real content here.',
+              }))
+          ).map((feat, i) => (
             <div key={i} style={styles.featureCard}>
               <div style={styles.featureCardIcon}>{feat.icon}</div>
               <h3 style={styles.featureCardTitle}>{feat.title}</h3>
@@ -369,7 +391,9 @@ export function UnusualChassis({
         <p style={{ ...styles.sectionSubheading, margin: '0 auto 32px', textAlign: 'center' }}>
           Full-width conversion zone
         </p>
-        <button style={styles.navCta}>{ctaLabel}</button>
+        <button type="button" style={styles.navCta}>
+          {ctaLabel}
+        </button>
       </section>
 
       {/* ── CUSTOM CHILDREN INJECTION POINT ── */}
@@ -377,22 +401,33 @@ export function UnusualChassis({
 
       {/* ── FOOTER ── */}
       <footer style={styles.footer} id="chassis-footer">
-        {(footerGroups.length > 0 ? footerGroups : [
-          { heading: 'Platform', links: ['Overview', 'Features', 'Pricing', 'Security'] },
-          { heading: 'Company', links: ['About', 'Careers', 'Press', 'Contact'] },
-          { heading: 'Legal', links: ['Privacy', 'Terms', 'Compliance', 'Post-Heppner'] },
-          { heading: 'Connect', links: ['Investors', 'Partners', 'Support', 'API Docs'] },
-        ]).map((group) => (
+        {(footerGroups.length > 0
+          ? footerGroups
+          : [
+              { heading: 'Platform', links: ['Overview', 'Features', 'Pricing', 'Security'] },
+              { heading: 'Company', links: ['About', 'Careers', 'Press', 'Contact'] },
+              { heading: 'Legal', links: ['Privacy', 'Terms', 'Compliance', 'Post-Heppner'] },
+              { heading: 'Connect', links: ['Investors', 'Partners', 'Support', 'API Docs'] },
+            ]
+        ).map((group) => (
           <div key={group.heading}>
             <h4 style={styles.footerHeading}>{group.heading}</h4>
             {group.links.map((link) => (
-              <a key={link} style={styles.footerLink}>{link}</a>
+              <a
+                key={link}
+                href={`#${link.toLowerCase().replace(/\s+/g, '-')}`}
+                style={styles.footerLink}
+              >
+                {link}
+              </a>
             ))}
           </div>
         ))}
       </footer>
       <div style={styles.footerBar}>
-        <span>© {new Date().getFullYear()} {brandName}. All Rights Reserved.</span>
+        <span>
+          © {new Date().getFullYear()} {brandName}. All Rights Reserved.
+        </span>
         <span>Privilege-Protected AI</span>
       </div>
     </div>
