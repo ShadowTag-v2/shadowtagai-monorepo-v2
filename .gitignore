@@ -323,3 +323,16 @@ browser_artifacts/
 **/*.sqlite
 **/*.sqlite3
 **/*.heapsnapshot
+external_repos/ai-website-cloner-template/
+
+# TACSOP 5 — Additional binary/data exclusions (2026-04-25)
+.lancedb_data/
+*.weights
+*.pt
+*.key
+*.heapsnapshot
+data/lancedb/
+labs/gemini-cookbook/**/*.ipynb
+# Binaries untracked
+apps/bennett/edge/bennett-edge
+tools/bazel
