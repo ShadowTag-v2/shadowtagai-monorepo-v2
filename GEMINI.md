@@ -1,10 +1,10 @@
 ---
-version: 10.4
+version: 10.5
 scope: antigravity_local_operator_invariants
 status: LOCKED
 ---
 
-# GEMINI.md — v10.4
+# GEMINI.md — v10.5
 
 <system_directive>
 <workspace_alignment>
@@ -454,6 +454,32 @@ Six patterns extracted from TACSOP 2 (V15-V21). 47 concepts already active, 12 r
 | 6 | 8-Agent Board Synthesis | STATE B architecture decisions → 8 role perspectives (CTO/DX/Sec/Money/Infra/QA/Legal/UX) |
 </tacsop_operational_patterns>
 
+<tacsop5_linting_doctrine>
+## TACSOP 5 — Continuous Self-Healing Linting (2026-04-25)
+
+**Skill reference:** `.agents/skills/tacsop5-linting-doctrine/SKILL.md`
+**Daemon:** `scripts/gca_autolint_daemon.py` (508L, GitHub App JWT auth, GIT_ASKPASS push)
+**Dead code:** `scripts/dead-code-audit.sh` (Guillotine v9.0, ruff F401/F841)
+
+### Stack
+- **Python:** `ruff` (lint + format + dead code). Vulture banned.
+- **TypeScript/JS:** `biome` (lint + format). ESLint/Prettier banned.
+- **Structural:** `ast-grep` (search-and-replace weapon, not a lint target).
+
+### Self-Healing Behavior
+After EVERY file modification, run `ruff check --fix` + `ruff format` on the modified file. Never prompt the user with linting errors — fix them silently. Enforced by `post-edit-validation-loop` skill.
+</tacsop5_linting_doctrine>
+
+<tacsop7_visual_provenance>
+## TACSOP 7 — Visual Provenance (2026-04-25)
+
+**Skill reference:** `.agents/skills/ban-native-image-gen/SKILL.md`
+**Policy:** `docs/VISUAL_PROVENANCE.md`
+
+### Prohibition
+Native `generate_image` tool is BANNED across all agents. All visual assets MUST use provenance-tracked alternatives (Stitch MCP, Veo 3.1, semantic CSS/SVG placeholders). EU AI Act Article 52 compliance enforced.
+</tacsop7_visual_provenance>
+
 <motor_cortex_reflexes>
 ## Motor Cortex — Dynamic Skill Hunting Reflexes (TACSOP 4 Kairos Delta)
 
@@ -483,7 +509,7 @@ Before starting any complex implementation task, the agent MUST:
 4. Report installed skills to user with new total count
 
 ### Skill Fleet Census
-- **Total skills:** 269 (45 workspace + 223 global + 1 meta-SOP)
+- **Total skills:** 261 unique (51 workspace + 223 global − 14 overlap + 1 meta-SOP)
 - **External repos cloned:** google-skills, vercel-skills
 - **Community skills available:** 1,415+ (antigravity-awesome-skills)
 </motor_cortex_reflexes>
