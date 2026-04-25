@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShadowtagAI | UphillSnowball</title>
+  <meta name="description" content="Relentless compounding momentum for elite law firms. Sovereign intelligence that continuously absorbs, structures, and weaponizes your legal data.">
+  <meta name="color-scheme" content="dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'] },
+          colors: {
+            abyss: '#020408',
+            'abyss-surface': '#0a0e14',
+            'steel-border': '#1f2937',
+            'steel-text': '#6b7280',
+            'ash-text': '#9ca3af',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes breathe {
+      0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.04); }
+      50% { box-shadow: 0 0 40px rgba(255,255,255,0.08); }
+    }
+    .animate-fade-up { animation: fadeUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .animate-fade-up-delay { animation: fadeUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards; opacity: 0; }
+    .animate-fade-up-delay-2 { animation: fadeUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards; opacity: 0; }
+    .animate-fade-up-delay-3 { animation: fadeUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.9s forwards; opacity: 0; }
+    .animate-scale-in { animation: scaleIn 2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .animate-breathe { animation: breathe 4s ease-in-out infinite; }
+
+    .vignette::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(2,4,8,0.7) 100%);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .btn-light { transition: all 0.3s ease; }
+    .btn-light:hover { box-shadow: 0 0 24px rgba(255,255,255,0.1); }
+    .btn-outline { transition: all 0.3s ease; }
+    .btn-outline:hover { background: rgba(255,255,255,0.03); }
+  </style>
+</head>
+<body class="bg-abyss text-white font-sans antialiased">
+
+  <!-- ═══ HERO ═══ -->
+  <main class="relative w-full h-screen overflow-hidden flex flex-col justify-center items-center vignette">
+
+    <!-- Layer 0: Cinematic Video Background -->
+    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 animate-scale-in opacity-[0.06]">
+      <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Layer 1: Deep Atmospheric Glass -->
+    <div class="absolute inset-0 bg-[#030509] z-10" style="opacity:0.96"></div>
+
+    <!-- Layer 2: Content -->
+    <div class="relative z-20 text-center max-w-5xl px-6">
+
+      <!-- Badge -->
+      <span class="px-4 py-1.5 text-[10px] font-semibold tracking-[0.2em] uppercase border border-steel-border rounded-full text-steel-text mb-8 inline-block bg-black/50 backdrop-blur-sm animate-fade-up">
+        Autonomous Discovery
+      </span>
+
+      <!-- Headline -->
+      <h1 class="text-5xl md:text-7xl lg:text-8xl font-light tracking-[-0.03em] text-white mb-6 animate-fade-up-delay">
+        <span class="font-bold">UphillSnowball</span>
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="text-lg md:text-xl lg:text-2xl text-ash-text font-light mb-12 leading-relaxed max-w-2xl mx-auto animate-fade-up-delay-2">
+        Relentless compounding momentum for elite law firms. Sovereign intelligence that continuously absorbs, structures, and weaponizes your legal data. Quiet luxury. Total data control.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex gap-4 justify-center animate-fade-up-delay-3">
+        <button class="btn-light px-8 py-3.5 bg-[#e5e7eb] text-abyss font-semibold rounded-sm hover:bg-white transition-all text-sm tracking-wide shadow-[0_0_20px_rgba(255,255,255,0.06)]">
+          Request Access
+        </button>
+        <button class="btn-outline px-8 py-3.5 border border-steel-border text-white rounded-sm transition-all backdrop-blur-sm text-sm tracking-wide">
+          Read the Dossier
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom gradient -->
+    <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-abyss to-transparent z-20 pointer-events-none"></div>
+  </main>
+
+  <!-- ═══ PHILOSOPHY SECTION ═══ -->
+  <section class="bg-abyss py-28 px-6">
+    <div class="max-w-4xl mx-auto">
+
+      <!-- Manifesto -->
+      <div class="text-center mb-24">
+        <span class="text-[10px] tracking-[0.2em] uppercase text-steel-text font-semibold mb-6 block">The Thesis</span>
+        <blockquote class="text-2xl md:text-3xl lg:text-4xl font-light tracking-tight leading-snug text-white/90 mb-8">
+          "Most AI tools leak. Ours compounds.<br>
+          <span class="text-ash-text">Data rolls uphill here."</span>
+        </blockquote>
+      </div>
+
+      <!-- Three pillars -->
+      <div class="grid md:grid-cols-3 gap-px bg-white/[0.04] rounded overflow-hidden">
+        <div class="p-10 bg-abyss-surface hover:bg-[#0c1018] transition-all group">
+          <div class="text-2xl font-bold mb-1 tracking-tight">01</div>
+          <h3 class="text-base font-semibold mb-4 tracking-tight text-white/90">Absorb</h3>
+          <p class="text-sm text-ash-text leading-relaxed">Ingest legal data from every touchpoint: email, transcript, filing, research. Zero data loss. Zero privilege breach.</p>
+        </div>
+        <div class="p-10 bg-abyss-surface hover:bg-[#0c1018] transition-all group">
+          <div class="text-2xl font-bold mb-1 tracking-tight">02</div>
+          <h3 class="text-base font-semibold mb-4 tracking-tight text-white/90">Structure</h3>
+          <p class="text-sm text-ash-text leading-relaxed">Autonomous classification, entity extraction, and knowledge graph construction. Machine-speed taxonomy.</p>
+        </div>
+        <div class="p-10 bg-abyss-surface hover:bg-[#0c1018] transition-all group">
+          <div class="text-2xl font-bold mb-1 tracking-tight">03</div>
+          <h3 class="text-base font-semibold mb-4 tracking-tight text-white/90">Compound</h3>
+          <p class="text-sm text-ash-text leading-relaxed">Every query makes the system smarter. Reverse-entropy intelligence that grows stronger with every iteration.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ METRICS ═══ -->
+  <section class="bg-abyss py-20 px-6 border-t border-white/[0.04]">
+    <div class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+      <div>
+        <div class="text-3xl md:text-4xl font-bold tracking-tight mb-2">274</div>
+        <div class="text-xs text-ash-text tracking-[0.15em] uppercase">Active Skills</div>
+      </div>
+      <div>
+        <div class="text-3xl md:text-4xl font-bold tracking-tight mb-2">5</div>
+        <div class="text-xs text-ash-text tracking-[0.15em] uppercase">MCP Servers</div>
+      </div>
+      <div>
+        <div class="text-3xl md:text-4xl font-bold tracking-tight mb-2">504</div>
+        <div class="text-xs text-ash-text tracking-[0.15em] uppercase">Tests Passing</div>
+      </div>
+      <div>
+        <div class="text-3xl md:text-4xl font-bold tracking-tight mb-2">14</div>
+        <div class="text-xs text-ash-text tracking-[0.15em] uppercase">Gideon Blocks</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="bg-abyss py-24 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-6">Built for firms that refuse to leak.</h2>
+      <p class="text-ash-text text-base mb-10 max-w-xl mx-auto leading-relaxed">
+        UphillSnowball is not a chatbot. It's a sovereign intelligence engine with relentless compounding momentum.
+      </p>
+      <button class="btn-light px-10 py-4 bg-[#e5e7eb] text-abyss font-semibold rounded-sm hover:bg-white transition-all text-sm tracking-wide shadow-[0_0_20px_rgba(255,255,255,0.06)]">
+        Request Access
+      </button>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="bg-abyss border-t border-white/[0.04] py-12 px-6">
+    <div class="max-w-5xl mx-auto flex justify-between items-center">
+      <span class="text-xs text-ash-text">© 2026 ShadowtagAI. Quiet Luxury. Total Control.</span>
+      <div class="flex gap-8">
+        <a href="#" class="text-xs text-ash-text hover:text-white transition-colors">Privacy</a>
+        <a href="#" class="text-xs text-ash-text hover:text-white transition-colors">Security</a>
+        <a href="#" class="text-xs text-ash-text hover:text-white transition-colors">Dossier</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
