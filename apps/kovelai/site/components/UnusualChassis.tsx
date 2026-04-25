@@ -279,7 +279,7 @@ interface UnusualChassisProps {
 export function UnusualChassis({
   brandName = 'KovelAI',
   navLinks = ['Platform', 'For Law Firms', 'Pricing', 'Post-Heppner', 'Investors'],
-  ctaLabel = 'Start Free Trial',
+  ctaLabel = 'Request Access',
   heroContent,
   features = [],
   footerGroups = [],
@@ -316,11 +316,13 @@ export function UnusualChassis({
                 letterSpacing: '-0.03em',
               }}
             >
-              {/* Placeholder — inject real headline */}
-              Hero Headline Slot
+              Deploy AI.
+              <br />
+              Preserve Privilege.
             </h1>
             <p style={{ ...styles.sectionSubheading, margin: '16px auto 32px' }}>
-              Subheadline slot for value proposition
+              Multi-model AI routing with cryptographic privilege attestation. Protected under{' '}
+              <em>United States v. Heppner</em>.
             </p>
             <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
               <button type="button" style={styles.navCta}>
@@ -335,7 +337,7 @@ export function UnusualChassis({
                   color: TOKENS.tertiary,
                 }}
               >
-                Learn More
+                Read the Brief
               </button>
             </div>
           </div>
