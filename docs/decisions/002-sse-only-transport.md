@@ -1,8 +1,8 @@
 # ADR 002: SSE-Only Transport for AG-UI
 
-**Status:** DECIDED  
-**Date:** 2026-04-22  
-**Deciders:** @pikeymickey, Antigravity Agent  
+**Status:** DECIDED
+**Date:** 2026-04-22
+**Deciders:** @pikeymickey, Antigravity Agent
 
 ## Context
 

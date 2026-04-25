@@ -1,7 +1,7 @@
 import { TransitionSeries } from '@remotion/transitions';
 import { fade } from '@remotion/transitions/fade';
 import { slide } from '@remotion/transitions/slide';
-import { Composition, Sequence } from 'remotion';
+import { Composition } from 'remotion';
 import screensManifest from '../screens.json';
 import { ScreenSlide } from './ScreenSlide';
 
@@ -57,15 +57,13 @@ export const RemotionRoot: React.FC = () => {
   const durationInFrames = calculateDuration();
 
   return (
-    <>
-      <Composition
-        id="WalkthroughComposition"
-        component={WalkthroughComposition}
-        durationInFrames={durationInFrames}
-        fps={fps}
-        width={width}
-        height={height}
-      />
-    </>
+    <Composition
+      id="WalkthroughComposition"
+      component={WalkthroughComposition}
+      durationInFrames={durationInFrames}
+      fps={fps}
+      width={width}
+      height={height}
+    />
   );
 };

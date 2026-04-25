@@ -28,7 +28,7 @@ constexpr int RECV_TIMEOUT_MS = 35000;
 int main(int argc, char* argv[]) {
     zmq::context_t context(1);
     zmq::socket_t socket(context, ZMQ_REQ);
-    
+
     // Set receive timeout (UCMJ Article 92 enforcement)
     socket.set(zmq::sockopt::rcvtimeo, RECV_TIMEOUT_MS);
     socket.connect(IPC_ENDPOINT);
@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
     // Send request
     zmq::message_t request(payload_str.size());
     memcpy(request.data(), payload_str.c_str(), payload_str.size());
-    
+
     auto send_start = std::chrono::steady_clock::now();
     socket.send(request, zmq::send_flags::none);
 
@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
     zmq::message_t reply;
     auto result = socket.recv(reply, zmq::recv_flags::none);
     auto send_end = std::chrono::steady_clock::now();
-    
+
     auto latency_us = std::chrono::duration_cast<std::chrono::microseconds>(
         send_end - send_start
     ).count();
@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
     }
 
     std::string response(static_cast<char*>(reply.data()), reply.size());
-    std::cout << "🧠 Temporal Brain responded (" << latency_us << "µs): " 
+    std::cout << "🧠 Temporal Brain responded (" << latency_us << "µs): "
               << response << std::endl;
 
     return 0;

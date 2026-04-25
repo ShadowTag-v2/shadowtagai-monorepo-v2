@@ -12,14 +12,7 @@
  * Requires: npm install remotion @remotion/cli
  */
 
-import {
-  AbsoluteFill,
-  interpolate,
-  Sequence,
-  spring,
-  useCurrentFrame,
-  useVideoConfig,
-} from 'remotion';
+import { AbsoluteFill, interpolate, Sequence, useCurrentFrame, useVideoConfig } from 'remotion';
 
 const FONT = 'JetBrains Mono, SF Mono, Consolas, monospace';
 

@@ -1,6 +1,5 @@
 import { Pool } from 'pg';
 import { PgTagEngine } from '../src/core/PgTagEngine';
-import { TagEngine } from '../src/core/TagEngine';
 
 async function runTests() {
   console.log('[Test Harness] Starting ShadowTag PgTagEngine tests...');
@@ -62,8 +61,7 @@ async function runTests() {
     console.log(
       '[Test Harness] SUCCESS: All PgTagEngine tests passed. p95 <= 10ms validated via schema.',
     );
-  } catch (err) {
-    console.error(`[Test Harness] FAILURE: ${err}`);
+  } catch (_err) {
     process.exit(1);
   } finally {
     console.log('[Test Harness] Shutting down connection pool...');

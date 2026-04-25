@@ -1,7 +1,7 @@
 # A2A Integration Architecture — CounselConduit
 
-> **Protocol:** Google Agent-to-Agent (A2A) v1.0  
-> **Status:** Design Complete, Implementation Pending  
+> **Protocol:** Google Agent-to-Agent (A2A) v1.0
+> **Status:** Design Complete, Implementation Pending
 > **Last Updated:** 2026-04-22
 
 ---
@@ -147,10 +147,10 @@ from google.adk.tools import FunctionTool
 
 class A2AToolBridge:
     """Bridge that exposes A2A agent discovery as an MCP tool."""
-    
+
     def __init__(self, registry_url: str):
         self.registry_url = registry_url
-    
+
     async def discover_agents(self, capability: str) -> list[dict]:
         """MCP tool that discovers A2A agents by capability."""
         async with httpx.AsyncClient() as client:
@@ -163,7 +163,7 @@ class A2AToolBridge:
                 if capability.lower() in s["description"].lower()
             ]
             return matching
-    
+
     async def delegate_to_agent(
         self, agent_url: str, skill_id: str, message: str
     ) -> dict:
@@ -207,19 +207,19 @@ from google.cloud import firestore
 
 class FirestoreSessionService(InMemorySessionService):
     """Persists ADK sessions to Firestore for cross-instance continuity."""
-    
+
     def __init__(self, db: firestore.AsyncClient):
         super().__init__()
         self.db = db
         self.collection = "adk_sessions"
-    
+
     async def save_session(self, session_id: str, data: dict):
         await self.db.collection(self.collection).document(session_id).set({
             **data,
             "updated_at": firestore.SERVER_TIMESTAMP,
             "ttl": datetime.utcnow() + timedelta(hours=24),
         })
-    
+
     async def load_session(self, session_id: str) -> dict | None:
         doc = await self.db.collection(self.collection).document(session_id).get()
         return doc.to_dict() if doc.exists else None
@@ -239,7 +239,7 @@ async def schedule_push_notification(
     """Schedule a Cloud Tasks notification for when a long-running Oracle query completes."""
     client = tasks_v2.CloudTasksClient()
     parent = client.queue_path("shadowtag-omega-v4", "us-central1", "a2a-notifications")
-    
+
     task = tasks_v2.Task(
         http_request=tasks_v2.HttpRequest(
             http_method=tasks_v2.HttpMethod.POST,
@@ -255,7 +255,7 @@ async def schedule_push_notification(
             seconds=int(time.time()) + delay_seconds,
         ),
     )
-    
+
     client.create_task(parent=parent, task=task)
 ```
 

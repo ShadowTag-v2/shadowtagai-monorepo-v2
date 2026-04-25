@@ -88,7 +88,7 @@ export function isValidEmail(email: unknown): boolean {
 // ─── Date Functions ───
 
 export function formatDate(date: Date, format: 'short' | 'long' = 'short'): string {
-  if (!(date instanceof Date) || isNaN(date.getTime())) {
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
     throw new Error('Invalid date');
   }
   if (format === 'long') {

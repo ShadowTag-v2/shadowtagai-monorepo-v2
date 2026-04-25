@@ -44,7 +44,7 @@ function initCookieConsent() {
 
 /* ── 2. Cloudflare Turnstile ──────────────────────────────────────────── */
 
-function initTurnstile(containerId, siteKey, callback) {
+function _initTurnstile(containerId, siteKey, callback) {
   if (!window.turnstile) {
     const script = document.createElement('script');
     script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
@@ -67,9 +67,7 @@ function renderTurnstile(containerId, siteKey, callback) {
     callback: (token) => {
       if (callback) callback(token);
     },
-    'error-callback': () => {
-      console.error('Turnstile verification failed');
-    },
+    'error-callback': () => {},
   });
 }
 
@@ -91,7 +89,7 @@ function registerServiceWorker() {
             });
           });
         })
-        .catch((err) => console.warn('[SW] Registration failed:', err));
+        .catch((_err) => {});
     });
   }
 }

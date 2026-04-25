@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function ThreatRadarWidget() {
   return (
     <div className="glass-panel">
