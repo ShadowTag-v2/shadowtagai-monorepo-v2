@@ -42,11 +42,11 @@ hardened_state:
   biome_warnings: 108
   biome_errors: 229
   dotnet_build: succeeded
-  dotnet_version: "10.0.106"
+  dotnet_version: "11.0.100-preview"
   vulture_status: permanently_retired_v22
   dead_code_tool: "ruff --select F401,F841"
-  skill_count_agent: 42
-  skill_count_global: 216
+  skill_count_agent: 48
+  skill_count_global: 223
   skill_count_google_official: 13
   skill_duplicates: 7
   pnkln_evolve_daemon: scripts/pnkln_evolve.py
