@@ -1,3 +1,5 @@
+import os
+
 from fastapi import APIRouter, BackgroundTasks
 
 from ..models import CEOTrackSchedule
@@ -5,7 +7,10 @@ from .integrations.tesla_api import TeslaController
 
 router = APIRouter()
 
-tesla = TeslaController(api_key="TBD", active_vin="TBD")
+tesla = TeslaController(
+    api_key=os.getenv("TESLA_API_KEY", ""),
+    active_vin=os.getenv("TESLA_ACTIVE_VIN", ""),
+)
 
 
 async def _orchestrate_departure(schedule: CEOTrackSchedule):
