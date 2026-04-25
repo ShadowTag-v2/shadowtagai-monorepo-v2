@@ -84,7 +84,7 @@ The separation lets the business story stay simple while the technical engine co
 ## Funding Strategy
 
 | Stage | Amount | Post-Money | Milestone |
-|-------|--------|-----------|-----------| 
+|-------|--------|-----------|-----------|
 | Pre-seed | Self-funded | — | Current state |
 | Seed | $2–3M | $15M | First 50 firms, hire 3 engineers |
 | Series A | $10–15M | $80M | 500 firms, enterprise launch |

@@ -13,7 +13,7 @@ const scriptProp = PropertiesService.getScriptProperties();
  * Run this function ONCE to bind the script to the active spreadsheet.
  * Go to Run > Run Function > initialSetup
  */
-function initialSetup() {
+function _initialSetup() {
   const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   scriptProp.setProperty('key', activeSpreadsheet.getId());
 }
@@ -22,7 +22,7 @@ function initialSetup() {
  * Handles POST requests from the HTML contact forms.
  * Writes form data to the appropriate sheet and sends email notification.
  */
-function doPost(e) {
+function _doPost(e) {
   const lock = LockService.getScriptLock();
   lock.tryLock(10000);
 
@@ -101,7 +101,7 @@ function sanitize(value) {
   if (typeof value !== 'string') return value;
   const dangerousChars = ['=', '+', '-', '@'];
   if (dangerousChars.some((c) => value.startsWith(c))) {
-    return "'" + value;
+    return `'${value}`;
   }
   return value;
 }
@@ -148,9 +148,7 @@ function sendNotification(params, sheetName, row) {
       htmlBody: body,
       name: senderName,
     });
-  } catch (mailErr) {
-    console.error('Mail notification failed:', mailErr);
-  }
+  } catch (_mailErr) {}
 }
 
 /**
@@ -188,9 +186,7 @@ function sendAutoReply(params, sheetName) {
       htmlBody: body,
       name: replyFrom,
     });
-  } catch (mailErr) {
-    console.error('Auto-reply failed:', mailErr);
-  }
+  } catch (_mailErr) {}
 }
 
 /**
@@ -201,10 +197,8 @@ function sendErrorNotification(err, sheetName) {
     MailApp.sendEmail({
       to: 'founder@kovelai.com',
       subject: `[${sheetName || 'FormScript'}] Error in form submission`,
-      body: 'Form submission error:\n' + err.toString(),
+      body: `Form submission error:\n${err.toString()}`,
       name: 'Form Script Alert',
     });
-  } catch (mailErr) {
-    console.error('Error notification failed:', mailErr);
-  }
+  } catch (_mailErr) {}
 }

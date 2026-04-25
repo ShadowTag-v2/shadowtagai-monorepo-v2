@@ -112,6 +112,16 @@ repos:
         files: '\.(html|tsx|ts|mdx|md)$'
         pass_filenames: false
 
+  # RULE 00: Immutable Infrastructure — blocks rm/unlink on .agents/ .ruler/ SKILL.md
+  - repo: local
+    hooks:
+      - id: rule00-immutable-infrastructure
+        name: "RULE 00: Immutable Infrastructure Guard"
+        entry: bash scripts/rule00_compliance_test.sh
+        language: system
+        pass_filenames: false
+        always_run: true
+
   # DLP Circuit Breaker — epistemic airgap enforcement (Cor.30 R3, GEMINI.md epistemic_airgap_doctrine)
   - repo: local
     hooks:

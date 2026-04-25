@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function UphillSnowballWidgets() {
   return (
     <div className="glass-panel">

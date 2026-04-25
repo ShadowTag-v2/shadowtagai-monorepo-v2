@@ -49,8 +49,7 @@ export function createShadowTagRouter(engine: TagEngine): Router {
       console.log(`[Metric] timer: shadowtag.api.bulkPut_ms = ${ms}`);
 
       return res.status(201).json({ success: true, count: parsed.data.length });
-    } catch (err: any) {
-      console.error('[ShadowTag API] /tags Error:', err);
+    } catch (_err: any) {
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   });
@@ -71,8 +70,7 @@ export function createShadowTagRouter(engine: TagEngine): Router {
       console.log(`[Metric] timer: shadowtag.api.query_ms = ${ms}`);
 
       return res.status(200).json(results);
-    } catch (err: any) {
-      console.error('[ShadowTag API] /tags/query Error:', err);
+    } catch (_err: any) {
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   });
