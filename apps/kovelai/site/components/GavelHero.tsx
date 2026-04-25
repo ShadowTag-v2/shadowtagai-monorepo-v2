@@ -196,7 +196,7 @@ interface GavelHeroProps {
 
 export function GavelHero({
   headline,
-  subheadline = 'The Shopify for Legal AI. Post-Heppner privileged routing for every client query.',
+  subheadline = 'Multi-model AI routing with cryptographic privilege attestation. Protected under United States v. Heppner.',
   videoSrc,
 }: GavelHeroProps) {
   return (
@@ -231,15 +231,15 @@ export function GavelHero({
         <div style={styles.content}>
           <div style={styles.badge}>
             <span>⚖</span>
-            <span>POST-HEPPNER COMPLIANT</span>
+            <span>PRIVILEGE-PRESERVING AI FOR LAW</span>
           </div>
 
           <h1 style={styles.headline}>
             {headline ?? (
               <>
-                Privilege-Protected
+                Deploy AI.
                 <br />
-                <span style={styles.headlineAccent}>AI for Law Firms</span>
+                <span style={styles.headlineAccent}>Preserve Privilege.</span>
               </>
             )}
           </h1>
@@ -248,10 +248,10 @@ export function GavelHero({
 
           <div style={styles.ctas}>
             <button type="button" style={styles.ctaPrimary}>
-              Start Free Trial
+              Request Access
             </button>
             <button type="button" style={styles.ctaGhost}>
-              Watch Demo
+              Read the Brief
             </button>
           </div>
         </div>
