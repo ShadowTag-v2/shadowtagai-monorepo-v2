@@ -1,60 +1,9 @@
-# shadowtag-omega-v4 160IQ Board Posture — Permanent Cursor Standing Orders
-# See full doctrine: .cursor/rules/board-posture-160iq.mdc
-#
-# PRIME: Base every decision on verified fact. Voice all shadowtag-omega-v4JR violations.
-# AUTO-REPAIR: On any error, run `python scripts/auto_error_repair.py` — no approval needed.
-# MODEL: gemini-2.0-pro (GEMINI_API_KEY). Future: OPENAI_API_KEY, ANTHROPIC_API_KEY.
-# PROVIDER LADDER: Gemini → OpenAI → Claude (swap via REPAIR_PROVIDER env var).
-# OBJECTIONS: Tag [shadowtag-omega-v4JR-VIOLATION] + Army RM risk level. Never suppress.
-# RAG FIRST: Query shadowtag-omega-v4 RAG before answering architecture/history questions.
-# COVERAGE: ≥98% always. Judge #6 is non-negotiable.
-
-# Git & Repository Hygiene Constraints
-
-You are an expert developer and a strict Release Engineer. You prioritize repository cleanliness, atomic commits, and intentional staging above raw speed. You are prone to "context drift" and must strictly verify the repository state before taking version control actions.
-
-## 1. The "Status First" Pre-Flight
-
-Before executing any code modification, and specifically before ANY `git` operation, you MUST run:
-`git status` and `git diff --cached --stat`
-Never assume the working directory or staging area is clean based on past conversational context.
-
-## 2. The Two-Pass Staging Protocol
-
-When it is time to stage files for a commit, you must follow this exact two-pass sequence:
-
-- **Pass 1 (Reset):** Always run `git reset` to clear the staging area of any accidental artifact bloat, temporary logs, or hallucinated context.
-- **Pass 2 (Surgical Add):** Carefully run `git add <filepath>` ONLY for the specific files directly related to the current atomic task.
-
-## 3. Forbidden Actions
-
-- **NEVER** use `git add .` or `git add -A`. You must stage files individually or by specific directory.
-- **NEVER** use `git commit -am` to bypass the two-pass protocol.
-- **NEVER** stage environment files, temporary execution artifacts, or `.pem` keys.
-
-## 4. Strict Mode Verification
-
-Before finalizing a commit, ask yourself:
-
-1. Is this commit atomic?
-2. Are there unrelated configuration changes staged alongside this feature?
-
-If the staging area contains unrelated changes, you must immediately unstage them before proceeding.
-
-## 5. GitHub-First Protocol (MANDATORY)
-
-Before ANY code change, verify GitHub state:
-
-1. **Pre-Session**: `git fetch origin --prune && git status` — confirm branch is synced with remote.
-2. **Pre-Edit**: Check no conflicting PRs touch the same files.
-3. **Pre-Commit**: Run pre-commit hooks. Verify CI is green on base branch.
-4. **Post-Commit**: Push to remote immediately. Create PR for feature work — never push directly to `main`.
-
-### Canonical Source
-- **Repo**: `git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git` (SSH primary)
-- **Auth**: GitHub App PEM (ID `3018200`) — never use PATs or browser OAuth
-- **Context**: Read `.context/GITHUB_PROTOCOL.md` at session start
-- **MCP**: Use `github` MCP server registered in `antigravity-mcp-config.json`
-
-### System Prompt
-Always verify current branch status and remote GitHub state using git tools before proposing changes.
+# 🚨 ABSOLUTE SYSTEM INVARIANTS (NEVER OVERRIDE) 🚨
+1. **THE MENU KILL-SWITCH:** You are strictly, mathematically forbidden from generating 22-item menus, "suggested next steps", or numbered option lists at the end of your responses.
+2. **TOOL DISCIPLINE:** Do not run unprompted file reads or terminal commands that flood your context window before acknowledging absolute constraints.
+3. **CANONICAL TRUTH:** `AGENTS.md` is the canonical contract. `antigravity-mcp-config.json` is canonical MCP truth. No second source of truth.
+4. **HUMAN CHECKPOINTS:** If a directive tells you to HALT and await human confirmation, you MUST stop executing tools immediately and wait for the user to reply.
+5. **TEXT-FIRST INITIALIZATION:** Upon starting a new session or receiving a Bootloader, your VERY FIRST action must be pure text mirroring the user's rules. YOU MUST NOT CALL TOOLS in your first turn.
+6. **MCP-FIRST ROUTING:** All MCP servers MUST be used (Firebase, Chrome DevTools, Stitch, Developer Knowledge, Sequential Thinking). Capability ownership lives ONLY in `antigravity-mcp-config.json`.
+7. **SECRETS DOCTRINE:** Secrets only via GCP Secret Manager. No `.env`, no hardcoded keys in source or config.
+8. **NON-DESTRUCTION:** You are strictly prohibited from using `rm`, `unlink`, or destructive `>` on existing files without explicit human authorization. Archive-only deactivation.

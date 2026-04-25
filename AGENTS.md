@@ -107,3 +107,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 - Think through edge cases before writing code
 - Consider 2+ approaches before committing
 - For changes >100 LOC: outline first, then implement
+
+## State Anchor Protocol (Anti-Amnesia Doctrine)
+
+CRITICAL RULE: ALWAYS READ `walkthrough.md` AND `git log -n 3` BEFORE BEGINNING ANY WORK TO ESTABLISH GROUND TRUTH. The nag_protocol (22 actionable prompts) in GEMINI.md REMAINS ACTIVE — but `f1 gca` is permanently banned from appearing as a nag prompt. It is an operator alias, not a suggestion.
