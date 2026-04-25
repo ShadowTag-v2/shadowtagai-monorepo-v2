@@ -20,17 +20,27 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      # Generate short-lived GitHub App token instead of PAT
+      # Reference: peter-murray/workflow-application-token-action@v4
+      # Tokens auto-expire after 60 minutes. revoke_token invalidates immediately post-job.
+      - name: Generate Short-Lived Token
+        id: get_app_token
+        uses: peter-murray/workflow-application-token-action@v4
+        with:
+          application_id: ${{ secrets.GH_APP_ID }}
+          application_private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          organization: ShadowTag-v2
+          permissions: "pull_requests:write,contents:read,statuses:write"
+          revoke_token: true
+
       - name: Auto-approve PR
         uses: hmarr/auto-approve-action@v4
         with:
-          github-token: ${{ secrets.AUTO_APPROVE_PAT || secrets.GITHUB_TOKEN }}
+          github-token: ${{ steps.get_app_token.outputs.token }}
 
       - name: Auto-merge if enabled
-        env:
-          AUTO_APPROVE_PAT: ${{ secrets.AUTO_APPROVE_PAT }}
-        if: env.AUTO_APPROVE_PAT != ''
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
-          token: ${{ secrets.AUTO_APPROVE_PAT }}
+          token: ${{ steps.get_app_token.outputs.token }}
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: squash
