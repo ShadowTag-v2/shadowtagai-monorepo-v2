@@ -49,9 +49,9 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 ## Core Technical Truths (DO NOT HALLUCINATE OVERRIDES)
 
 1. **uuid7 Fallback:** `try/except ImportError` pattern is REQUIRED for `uuid7` resolution between monorepo (`apps.counselconduit.api.uuid7`) and container (`api.uuid7`) paths. ~~Old container `counselconduit-00015-mmq`~~ → current: `counselconduit-00037-7mf` (verified live 2026-04-25 via gcloud).
-2. **.NET Environment:** .NET 11.0.100-preview IS CONFIRMED INSTALLED (2026-04-24). Also available: 10.0.106, 10.0.202, 8.0.419. `global.json` pins to `11.0.100-preview` with `rollForward: latestFeature`. Semantic Kernel target framework: `net11.0`. SK v1.74.0 build-verified.
+2. **.NET Environment:** .NET 11.0.100-preview.3 (26207.106) is the CANONICAL target framework (upgraded from 10.0 on 2026-04-26). Also installed: 10.0.203, 10.0.107 (Homebrew), 8.0.419. `global.json` pins to `11.0.100-preview.3.26207.106` with `rollForward: latestFeature`. Semantic Kernel target: `net11.0`. SK v1.74.0 build-verified. **Namespace collision resolved:** `ShadowTagV4.Kernel` vs `Microsoft.SemanticKernel.Kernel` — use fully-qualified `Microsoft.SemanticKernel.Kernel` in all Process.cs references.
 3. **Semantic Kernel Process.cs:** `OnExternalEvent` is the CORRECT API for `Microsoft.SemanticKernel.Process.Core v1.21.0-alpha`. Do NOT apply the `OnInputEvent` rename until Process.Core >= v1.30+.
-4. **Skill Fleet:** We maintain 260 active skills (68 workspace + 209 global − 18 overlap) inside our local Matrix. 20 additional skills archived in `_archive_redundant_2026-04-25/`. `npx skills` CLI fully operational (Node v25.9.0, `.zshenv` PATH fix applied).
+4. **Skill Fleet:** We maintain 261 active skills (60 workspace + 201 global, 0 overlap) inside our local Matrix. 38 skills archived (20 redundant + 18 dedup stubs). `npx skills` CLI fully operational (Node v25.9.0).
 5. **Prompt Repetition (arXiv 2512.14982):** Applies ONLY to non-reasoning model tiers (flash, lite, mini) to boost accuracy 1–8%. Do NOT apply to thinking/extended-thinking models.
 6. **daScript MCP Reference:** The 29-tool MCP server in the daScript repository is the gold-standard reference architecture for compiler-backed tools. Use it as a blueprint for routing tools.
 7. **Lighthouse-CI:** Use Lighthouse-CI for budget assertions in CI pipelines.
@@ -80,6 +80,7 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 
 ## Guardrails
 
+- **RULE 00: IMMUTABLE INFRASTRUCTURE** — No file deletions (`rm`, `unlink`, destructive `>`) without explicit human authorization. "Refactoring" by move+delete = unauthorized destruction. Archive (`mv` to `_archive_*`) is the only authorized deactivation. Full spec: `.agents/RULE_00_IMMUTABLE_INFRASTRUCTURE.md`
 - Never introduce a second source of truth for MCP
 - Never commit real secrets
 - Never treat duplicate recovered trees as canonical
@@ -110,6 +111,10 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 - Consider 2+ approaches before committing
 - For changes >100 LOC: outline first, then implement
 
-## State Anchor Protocol (Anti-Amnesia Doctrine)
+## Stack Lock & Pipeline Supremacy
 
-CRITICAL RULE: ALWAYS READ `walkthrough.md` AND `git log -n 3` BEFORE BEGINNING ANY WORK TO ESTABLISH GROUND TRUTH. The nag_protocol (22 actionable prompts) in GEMINI.md REMAINS ACTIVE — but `f1 gca` is permanently banned from appearing as a nag prompt. It is an operator alias, not a suggestion.
+1. **BANNED:** Vanilla HTML/CSS chassis files. Single-file prototypes (`chassis-preview.html`) are strictly forbidden.
+2. **MANDATORY STACK:** Next.js 16, Tailwind v4, shadcn/ui.
+3. **ARTIFACT GATING:** You MUST write component specifications to `docs/research/components/*.spec.md` BEFORE you are allowed to generate any `.tsx` code.
+4. **PIPELINE CONFORMITY:** You must execute the 5-phase cloning pipeline (Recon → Foundation → Specs → Parallel Build → Assembly). If a slash command like `/clone-website` is unavailable, you must execute the underlying scripts and logic manually.
+5. **NAG PROTOCOL CONFORMITY:** The 22-prompt nag protocol defined in `GEMINI.md` is the authoritative behavioral rule. Do not contradict it.
