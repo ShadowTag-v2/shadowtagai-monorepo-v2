@@ -63,7 +63,27 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${geistMono.variable} antialiased`}>
       <head>
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+            />
+            {/* biome-ignore lint/security/noDangerouslySetInnerHtml: GA4 gtag — static server-rendered config, no user input */}
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
+                `,
+              }}
+            />
+          </>
+        )}
         <link rel="canonical" href="https://kovelai.com/" />
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: LD+JSON structured data — static server-rendered SEO markup */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
