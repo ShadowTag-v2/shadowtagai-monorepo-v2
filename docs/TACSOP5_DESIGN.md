@@ -1,3 +1,17 @@
+---
+name: TACSOP5 Omni-Sanitation Pipeline
+version: 2.0.0
+status: production
+description: Self-Healing CI/CD Pipeline Architecture with 7 jobs, necromancy gates, and .NET 11.0 build validation.
+tokens:
+  lint_python: ruff
+  lint_typescript: biome
+  lint_structural: ast-grep
+  lint_secrets: betterleaks
+  type_python: pyright
+  type_dotnet: dotnet-build
+---
+
 # DESIGN.md — TACSOP 5 Omni-Sanitation & Zero-Trust CI
 
 > Design System for the Self-Healing CI/CD Pipeline Architecture
