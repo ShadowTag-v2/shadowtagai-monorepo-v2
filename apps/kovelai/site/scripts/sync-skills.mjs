@@ -7,7 +7,7 @@
  * Usage: node scripts/sync-skills.mjs
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -72,25 +72,25 @@ write(
   `# AUTO-GENERATED from .claude/skills/clone-website/SKILL.md\n` +
     `# Run \`node scripts/sync-skills.mjs\` to regenerate.\n\n` +
     `description = "${shortDesc}"\n\n` +
-    `[prompt]\ntext = '''\n${geminiBody}\n'''\n`
+    `[prompt]\ntext = '''\n${geminiBody}\n'''\n`,
 );
 
 // 6. OpenCode — markdown + YAML frontmatter, $ARGUMENTS works natively
 write(
   '.opencode/commands/clone-website.md',
-  `---\ndescription: "${shortDesc}"\n---\n${HEADER}${body}`
+  `---\ndescription: "${shortDesc}"\n---\n${HEADER}${body}`,
 );
 
 // 7. Augment Code — markdown + YAML frontmatter
 write(
   '.augment/commands/clone-website.md',
-  `---\ndescription: "${shortDesc}"\nargument-hint: "<url>"\n---\n${HEADER}${body}`
+  `---\ndescription: "${shortDesc}"\nargument-hint: "<url>"\n---\n${HEADER}${body}`,
 );
 
 // 8. Continue — prompt file with invokable: true
 write(
   '.continue/commands/clone-website.md',
-  `---\nname: clone-website\ndescription: "${shortDesc}"\ninvokable: true\n---\n${HEADER}${body}`
+  `---\nname: clone-website\ndescription: "${shortDesc}"\ninvokable: true\n---\n${HEADER}${body}`,
 );
 
 // 9. Amazon Q — JSON agent definition
@@ -104,8 +104,8 @@ write(
       fileContext: ['AGENTS.md', 'docs/research/**'],
     },
     null,
-    2
-  ) + '\n'
+    2,
+  ) + '\n',
 );
 
 console.log('\nDone! 9 platform command files generated from source skill.');
