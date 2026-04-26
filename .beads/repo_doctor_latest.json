@@ -1,24 +1,17 @@
 {
   "score": "F",
-  "total_findings": 67,
+  "total_findings": 29,
   "critical": 10,
   "errors": 1,
-  "warnings": 53,
-  "info": 3,
+  "warnings": 14,
+  "info": 4,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "agent/skills/generate_image.ts",
-      "fix": "git checkout -- agent/skills/generate_image.ts"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".beads/heartbeat.json",
-      "fix": "git checkout -- .beads/heartbeat.json"
+      "path": "beads/heartbeat.json",
+      "fix": "git checkout -- beads/heartbeat.json"
     },
     {
       "gate": "dirty",
@@ -38,120 +31,36 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/stitch_workflow.md",
-      "fix": "git checkout -- .beads/stitch_workflow.md"
+      "path": "apps/kovelai/site/_archive_vanilla_html_2026-04-25/chassis-preview.html",
+      "fix": "git checkout -- apps/kovelai/site/_archive_vanilla_html_2026-04-25/chassis-preview.html"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".clinerules",
-      "fix": "git checkout -- .clinerules"
+      "path": "apps/kovelai/site/eslint.config.mjs",
+      "fix": "git checkout -- apps/kovelai/site/eslint.config.mjs"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".github/copilot-instructions.md",
-      "fix": "git checkout -- .github/copilot-instructions.md"
+      "path": "apps/kovelai/site/postcss.config.mjs",
+      "fix": "git checkout -- apps/kovelai/site/postcss.config.mjs"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".gitignore",
-      "fix": "git checkout -- .gitignore"
+      "path": "apps/kovelai/site/scripts/sync-skills.mjs",
+      "fix": "git checkout -- apps/kovelai/site/scripts/sync-skills.mjs"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".ruler/AGENTS.md",
-      "fix": "git checkout -- .ruler/AGENTS.md"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "AGENTS.md",
-      "fix": "git checkout -- AGENTS.md"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "GEMINI.md",
-      "fix": "git checkout -- GEMINI.md"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "RISK_REGISTER.md",
-      "fix": "git checkout -- RISK_REGISTER.md"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/git-filter-repo",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/git-filter-repo"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/arsenal_recovered_utils_manage_firestore_db.py",
-      "fix": "git checkout -- apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/arsenal_recovered_utils_manage_firestore_db.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/utils_manage_firestore_db.py",
-      "fix": "git checkout -- apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/utils_manage_firestore_db.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (D)",
-      "path": "apps/bennett/edge/bennett-edge",
-      "fix": "git checkout -- apps/bennett/edge/bennett-edge"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/counselconduit/openapi.yaml",
-      "fix": "git checkout -- apps/counselconduit/openapi.yaml"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/counselconduit/spec/CLE_SEMINAR.md",
-      "fix": "git checkout -- apps/counselconduit/spec/CLE_SEMINAR.md"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/counselconduit/spec/PRIVILEGE_RISK_ASSESSMENT.md",
-      "fix": "git checkout -- apps/counselconduit/spec/PRIVILEGE_RISK_ASSESSMENT.md"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/counselconduit/spec/VALUATION.md",
-      "fix": "git checkout -- apps/counselconduit/spec/VALUATION.md"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "... and 190 more dirty files",
-      "path": "",
-      "fix": ""
+      "path": "apps/unusual-machines-clone/src/app/globals.css",
+      "fix": "git checkout -- apps/unusual-machines-clone/src/app/globals.css"
     },
     {
       "gate": "conflicts",
@@ -232,185 +141,10 @@
     },
     {
       "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (7894 KB > 500 KB)",
-      "path": "apps/bennett/edge/bennett-edge",
-      "fix": "Add apps/bennett/edge/bennett-edge to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (1990 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/examples/Animated_Story_Video_Generation_gemini.ipynb",
-      "fix": "Add labs/gemini-cookbook/examples/Animated_Story_Video_Generation_gemini.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (72723 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/examples/Book_illustration.ipynb",
-      "fix": "Add labs/gemini-cookbook/examples/Book_illustration.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (1022 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/examples/Browser_as_a_tool.ipynb",
-      "fix": "Add labs/gemini-cookbook/examples/Browser_as_a_tool.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (846 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/examples/Google_IO2025_Live_Coding.ipynb",
-      "fix": "Add labs/gemini-cookbook/examples/Google_IO2025_Live_Coding.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (3714 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/examples/LiveAPI_plotting_and_mapping.ipynb",
-      "fix": "Add labs/gemini-cookbook/examples/LiveAPI_plotting_and_mapping.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (18865 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/examples/Spatial_understanding_3d.ipynb",
-      "fix": "Add labs/gemini-cookbook/examples/Spatial_understanding_3d.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (1195 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/examples/Tag_and_caption_images.ipynb",
-      "fix": "Add labs/gemini-cookbook/examples/Tag_and_caption_images.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (825 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/examples/haystack/Gemini_Embedding_Haystack_Crossmodal_Retrieval.ipynb",
-      "fix": "Add labs/gemini-cookbook/examples/haystack/Gemini_Embedding_Haystack_Crossmodal_Retrieval.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (519 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/Counting_Tokens.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/Counting_Tokens.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (19716 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/Get_Started_Nano_Banana.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/Get_Started_Nano_Banana.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (691 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/Get_started_LiveAPI.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/Get_started_LiveAPI.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (18381 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/Get_started_Lyria.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/Get_started_Lyria.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (10028 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/Get_started_LyriaRealTime.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/Get_started_LyriaRealTime.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (986 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/Get_started_OpenAI_Compatibility.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/Get_started_OpenAI_Compatibility.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (6133 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/Get_started_TTS.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/Get_started_TTS.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (967 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/Get_started_Veo.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/Get_started_Veo.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (13057 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/Get_started_Veo_REST.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/Get_started_Veo_REST.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (725 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/Get_started_imagen.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/Get_started_imagen.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (2203 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/Search_Grounding.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/Search_Grounding.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (15620 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/gemini-robotics-er.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/gemini-robotics-er.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (509 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/rest/Imagen_REST.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/rest/Imagen_REST.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (3381 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/websockets/Get_started_LiveAPI.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/websockets/Get_started_LiveAPI.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (7538 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/websockets/Get_started_LiveAPI_tools.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/websockets/Get_started_LiveAPI_tools.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (15039 KB > 500 KB)",
-      "path": "labs/gemini-cookbook/quickstarts/websockets/Get_started_LyriaRealTime_websockets.ipynb",
-      "fix": "Add labs/gemini-cookbook/quickstarts/websockets/Get_started_LyriaRealTime_websockets.ipynb to .gitignore or compress"
-    },
-    {
-      "gate": "large_files",
-      "severity": "warn",
-      "message": "Large file (5689 KB > 500 KB)",
-      "path": "tools/bazel",
-      "fix": "Add tools/bazel to .gitignore or compress"
+      "severity": "info",
+      "message": "No large files in staging",
+      "path": "",
+      "fix": ""
     },
     {
       "gate": "drift",
@@ -450,7 +184,7 @@
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 2142 more drift files",
+      "message": "... and 2165 more drift files",
       "path": "",
       "fix": ""
     },
@@ -464,14 +198,14 @@
     {
       "gate": "manifest",
       "severity": "info",
-      "message": "Manifest v12.0 valid",
+      "message": "Manifest v12.2 valid",
       "path": "",
       "fix": ""
     },
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ========================= 483 tests collected in 0.66s =========================",
+      "message": "Tests: ========================= 483 tests collected in 2.04s =========================",
       "path": "",
       "fix": ""
     }
