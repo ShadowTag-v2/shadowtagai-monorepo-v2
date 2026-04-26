@@ -52,6 +52,7 @@ export default function Footer({ onOpenModal }: FooterProps) {
             <ul className="footer-links">
               <li>
                 <button
+                  type="button"
                   onClick={onOpenModal}
                   className="bg-transparent border-none cursor-pointer text-[#d0c5b5] hover:text-[#d7e3fc] transition-colors text-[0.8125rem] p-0"
                 >

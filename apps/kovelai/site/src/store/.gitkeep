@@ -1,0 +1,2 @@
+# Store — Client-side global state management
+# Extract modal state and other shared UI state here when complexity grows.
