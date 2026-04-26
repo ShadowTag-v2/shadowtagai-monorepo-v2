@@ -16,12 +16,6 @@
 
 import type React from 'react';
 
-interface ChassisSection {
-  id: string;
-  children?: React.ReactNode;
-  className?: string;
-}
-
 /* ─── Section Title ─── */
 function SectionTitle({
   children,
@@ -82,6 +76,7 @@ export default function UnusualChassis({
           <div className="flex items-center gap-3">
             <div
               className="w-10 h-10 rounded-lg bg-white/10 border border-white/20"
+              role="img"
               aria-label="Logo placeholder"
             />
             <span className="text-lg font-semibold tracking-tight">Brand</span>
@@ -111,7 +106,10 @@ export default function UnusualChassis({
           </nav>
 
           {/* CTA */}
-          <button className="px-5 py-2.5 rounded-lg bg-white/10 border border-white/20 text-sm font-medium hover:bg-white/20 transition-all">
+          <button
+            type="button"
+            className="px-5 py-2.5 rounded-lg bg-white/10 border border-white/20 text-sm font-medium hover:bg-white/20 transition-all"
+          >
             Get Started
           </button>
         </Container>
@@ -133,16 +131,13 @@ export default function UnusualChassis({
         <Container>
           <SectionTitle variant="dark">Highlights</SectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {highlightsSlot ?? (
-              <>
-                {[1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className="aspect-[4/3] rounded-2xl bg-gray-100 border border-gray-200"
-                  />
-                ))}
-              </>
-            )}
+            {highlightsSlot ??
+              [1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="aspect-[4/3] rounded-2xl bg-gray-100 border border-gray-200"
+                />
+              ))}
           </div>
         </Container>
       </section>
@@ -156,16 +151,13 @@ export default function UnusualChassis({
         <Container>
           <SectionTitle variant="light">Quick Access</SectionTitle>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {quickAccessSlot ?? (
-              <>
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className="aspect-square rounded-2xl bg-white/5 border border-white/10 hover:border-white/30 transition-colors"
-                  />
-                ))}
-              </>
-            )}
+            {quickAccessSlot ??
+              [1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="aspect-square rounded-2xl bg-white/5 border border-white/10 hover:border-white/30 transition-colors"
+                />
+              ))}
           </div>
         </Container>
       </section>
@@ -187,7 +179,10 @@ export default function UnusualChassis({
               <div className="h-12 rounded-lg bg-white/5 border border-white/10" />
               <div className="h-12 rounded-lg bg-white/5 border border-white/10" />
               <div className="h-32 rounded-lg bg-white/5 border border-white/10" />
-              <button className="w-full py-3 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all font-medium">
+              <button
+                type="button"
+                className="w-full py-3 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all font-medium"
+              >
                 Send Message
               </button>
             </div>
@@ -196,22 +191,18 @@ export default function UnusualChassis({
       </section>
 
       {/* ─── FOOTER: py-5, #291e44 ─── */}
-      <footer
-        className="py-5 text-white/60 text-sm"
-        style={{ backgroundColor: '#291e44' }}
-        aria-label="Footer"
-      >
+      <footer className="py-5 text-white/60 text-sm" style={{ backgroundColor: '#291e44' }}>
         <Container className="flex items-center justify-between">
           {footerSlot ?? (
             <>
               <span>&copy; {new Date().getFullYear()} Brand. All rights reserved.</span>
               <div className="flex gap-4">
-                <a href="#" className="hover:text-white transition-colors">
+                <button type="button" className="hover:text-white transition-colors">
                   Privacy
-                </a>
-                <a href="#" className="hover:text-white transition-colors">
+                </button>
+                <button type="button" className="hover:text-white transition-colors">
                   Terms
-                </a>
+                </button>
               </div>
             </>
           )}

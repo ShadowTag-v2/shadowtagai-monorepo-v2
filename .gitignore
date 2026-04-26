@@ -419,3 +419,8 @@ external_repos/ai-website-cloner/
 .zencoder/
 skills//
 pickle-rick-extension
+
+# Scratch/temp files
+STEP_BY_STEP_GUIDE.md
+install_ext.py
+pickle_package.json
