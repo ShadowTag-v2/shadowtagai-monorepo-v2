@@ -144,19 +144,19 @@ jobs:
       - name: Install Toolchains
         run: |
           npm install -g knip typescript
-          pip install pyright
+          pip install pyright ruff
 
       - name: "1. Knip (Block Unused JS/TS Exports & Deps)"
         run: |
-          cd apps/kovelai/site && npx knip --no-exit-code || true
-          cd ../../../apps/shadowtagai/site && npx knip --no-exit-code || true
+          cd apps/kovelai/site && npx knip
+          cd ../../../apps/shadowtagai/site && npx knip
 
       - name: "2. Ruff Dead Code (F401/F841 — V22 replaces vulture)"
         run: |
           ruff check apps/ libs/ scripts/ \
             --select F401,F841 \
             --exclude external_repos,external_sdks,third_party,archive,deep-archive,.venv \
-            --statistics || true
+            --statistics
 
       - name: "3. Pyright Type Check"
         run: |
@@ -239,3 +239,48 @@ jobs:
           echo "Total noqa: $NOQA_COUNT"
           echo "Total nosec: $NOSEC_COUNT"
           echo "Total type-ignore: $TYPE_IGNORE"
+
+  # ─────────────────────────────────────────────────────
+  # JOB 7: .NET 11.0 Build Validation (Semantic Kernel)
+  # ─────────────────────────────────────────────────────
+  dotnet-build:
+    name: "🔧 .NET 11.0 Build Gate"
+    runs-on: ubuntu-latest
+    needs: self-healing-and-sarif
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 11.0 Preview
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "11.0.x"
+          include-prerelease: true
+
+      - name: "Build All C# Projects"
+        run: |
+          echo "::group::AiYou.Kernel"
+          dotnet build apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/AiYou.Kernel.csproj --configuration Release --no-restore || dotnet restore apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/AiYou.Kernel.csproj && dotnet build apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/AiYou.Kernel.csproj --configuration Release
+          echo "::endgroup::"
+
+          echo "::group::SemanticKernel"
+          dotnet build apps/agent-starter-pack/shadowtag-agent/src/SemanticKernel/SemanticKernel.csproj --configuration Release
+          echo "::endgroup::"
+
+          echo "::group::SeatJudge"
+          dotnet build apps/aiyou_stack/aiyou-fastapi-services/apps/seatjudge-mcp/SeatJudge.Inventory.Mcp.csproj --configuration Release
+          echo "::endgroup::"
+
+          echo "::group::Explore"
+          dotnet build apps/aiyou_stack/aiyou-fastapi-services/apps/api-explorer/Explore.csproj --configuration Release
+          echo "::endgroup::"
+
+      - name: "Report Build Summary"
+        if: always()
+        run: |
+          echo "## .NET 11.0 Build Results" >> $GITHUB_STEP_SUMMARY
+          echo "| Project | TFM |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|-----|" >> $GITHUB_STEP_SUMMARY
+          echo "| AiYou.Kernel | net11.0 |" >> $GITHUB_STEP_SUMMARY
+          echo "| SemanticKernel | net11.0 |" >> $GITHUB_STEP_SUMMARY
+          echo "| SeatJudge.Inventory.Mcp | net11.0 |" >> $GITHUB_STEP_SUMMARY
+          echo "| Explore | net11.0 |" >> $GITHUB_STEP_SUMMARY
