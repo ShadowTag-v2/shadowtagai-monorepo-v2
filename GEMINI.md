@@ -1,10 +1,10 @@
 ---
-version: 11.1
+version: 11.2
 scope: antigravity_local_operator_invariants
 status: LOCKED
 ---
 
-# GEMINI.md — v11.1
+# GEMINI.md — v11.2
 
 <system_directive>
 <workspace_alignment>
@@ -186,12 +186,24 @@ Behavior:
 </execution_state_machine>
 
 <nag_protocol>
-End every runtime response with EXACTLY 22 explicitly selectable actionable prompts until the thread is fully resolved. Normalization of this count is absolute.
+End every runtime response with **5–22** explicitly selectable actionable prompts, scaled to task complexity and phase. The count is task-proportional, not fixed.
+
+### Complexity-Proportional Prompt Counts
+| Task Phase | Prompt Count |
+|-----------|--------------|
+| Simple follow-up, status report | 5–8 |
+| Active implementation, mid-task | 8–14 |
+| Architecture decision, planning | 14–18 |
+| Session start, full audit | 18–22 |
+
+### Deep Think Pre-Consultation
+Before producing nag prompts for complex tasks, route through `sequential-thinking` MCP for structured reasoning. Skill: `.agents/skills/deep-think-consultation/SKILL.md`.
 
 ### Forbidden Prompt Fillers (NEVER include these as nag prompts)
 - `f1 gca` — This is an operator alias, not a suggestion. The agent knows when to run it. Offering it as a menu item is filler padding.
 - `"Want me to show you?"` / `"Should I proceed?"` / `"Shall I continue?"` — Rhetorical stalling. YOLO envelope means automatic approval. Never ask permission in a nag prompt.
 - Any prompt that restates what the agent just said it would do — If you just said "I'll open the browser," do not then offer "Open the browser" as a nag prompt.
+- Generic filler like `"Let me know if you need anything else"` — Not actionable.
 </nag_protocol>
 
 <rich_hickey_doctrine>
@@ -402,7 +414,7 @@ Before starting any complex implementation task, the agent MUST:
 - uuid7 `try/except ImportError` REQUIRED. Container: `counselconduit-00037-7mf`.
 - .NET 11.0.100-preview INSTALLED. SK 1.74.0. OnExternalEvent is correct API.
 - Python 3.14.3 CPython. 126 packages. MLX 0.31.1.
-- Skills fleet: 247 active (54 WS + 210 global − 17 overlap). 20 archived.
+- Skills fleet: 248 active (55 WS + 210 global − 17 overlap). 20 archived. New: `deep-think-consultation` (2026-04-26).
 - Ruler (`@intellectronica/ruler`) recommended for agent config unification.
 - Memory Kernel patterns: selective adoption only, NOT wholesale migration.
 </session_memory_corpus>
