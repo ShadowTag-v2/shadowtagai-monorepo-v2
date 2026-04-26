@@ -14,7 +14,7 @@
  * Container: max-w-[1140px] mx-auto (matches source)
  */
 
-import React from "react";
+import type React from 'react';
 
 interface ChassisSection {
   id: string;
@@ -25,16 +25,16 @@ interface ChassisSection {
 /* ─── Section Title ─── */
 function SectionTitle({
   children,
-  variant = "dark",
+  variant = 'dark',
 }: {
   children: React.ReactNode;
-  variant?: "dark" | "light";
+  variant?: 'dark' | 'light';
 }) {
   return (
     <h2
       className={`
         inline-block text-4xl font-bold mb-11 tracking-tight
-        ${variant === "light" ? "text-white" : "text-gray-900"}
+        ${variant === 'light' ? 'text-white' : 'text-gray-900'}
       `}
     >
       {children}
@@ -43,11 +43,15 @@ function SectionTitle({
 }
 
 /* ─── Container ─── */
-function Container({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function Container({
+  children,
+  className = '',
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className={`max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>
-      {children}
-    </div>
+    <div className={`max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>{children}</div>
   );
 }
 
@@ -76,7 +80,10 @@ export default function UnusualChassis({
         <Container className="h-full flex items-center justify-between">
           {/* Logo placeholder zone */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-white/10 border border-white/20" aria-label="Logo placeholder" />
+            <div
+              className="w-10 h-10 rounded-lg bg-white/10 border border-white/20"
+              aria-label="Logo placeholder"
+            />
             <span className="text-lg font-semibold tracking-tight">Brand</span>
           </div>
 
@@ -84,10 +91,21 @@ export default function UnusualChassis({
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
             {navSlot ?? (
               <>
-                <a href="#highlights" className="text-white/70 hover:text-white transition-colors">Products</a>
-                <a href="#quick-access" className="text-white/70 hover:text-white transition-colors">Solutions</a>
-                <a href="#events" className="text-white/70 hover:text-white transition-colors">Resources</a>
-                <a href="#contact" className="text-white/70 hover:text-white transition-colors">Contact</a>
+                <a href="#highlights" className="text-white/70 hover:text-white transition-colors">
+                  Products
+                </a>
+                <a
+                  href="#quick-access"
+                  className="text-white/70 hover:text-white transition-colors"
+                >
+                  Solutions
+                </a>
+                <a href="#events" className="text-white/70 hover:text-white transition-colors">
+                  Resources
+                </a>
+                <a href="#contact" className="text-white/70 hover:text-white transition-colors">
+                  Contact
+                </a>
               </>
             )}
           </nav>
@@ -111,18 +129,17 @@ export default function UnusualChassis({
       </section>
 
       {/* ─── HIGHLIGHTS: py-14, white bg, block ─── */}
-      <section
-        id="highlights"
-        className="py-14 bg-white text-gray-900"
-        aria-label="Highlights"
-      >
+      <section id="highlights" className="py-14 bg-white text-gray-900" aria-label="Highlights">
         <Container>
           <SectionTitle variant="dark">Highlights</SectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {highlightsSlot ?? (
               <>
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="aspect-[4/3] rounded-2xl bg-gray-100 border border-gray-200" />
+                  <div
+                    key={i}
+                    className="aspect-[4/3] rounded-2xl bg-gray-100 border border-gray-200"
+                  />
                 ))}
               </>
             )}
@@ -142,7 +159,10 @@ export default function UnusualChassis({
             {quickAccessSlot ?? (
               <>
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="aspect-square rounded-2xl bg-white/5 border border-white/10 hover:border-white/30 transition-colors" />
+                  <div
+                    key={i}
+                    className="aspect-square rounded-2xl bg-white/5 border border-white/10 hover:border-white/30 transition-colors"
+                  />
                 ))}
               </>
             )}
@@ -151,25 +171,15 @@ export default function UnusualChassis({
       </section>
 
       {/* ─── EVENTS: py-14, white bg ─── */}
-      <section
-        id="events"
-        className="py-14 bg-white text-gray-900"
-        aria-label="Events"
-      >
+      <section id="events" className="py-14 bg-white text-gray-900" aria-label="Events">
         <Container>
           <SectionTitle variant="dark">Events</SectionTitle>
-          {eventsSlot ?? (
-            <div className="h-48 rounded-2xl bg-gray-100 border border-gray-200" />
-          )}
+          {eventsSlot ?? <div className="h-48 rounded-2xl bg-gray-100 border border-gray-200" />}
         </Container>
       </section>
 
       {/* ─── CONTACT: py-14, dark overlay, relative ─── */}
-      <section
-        id="contact"
-        className="relative py-14 bg-black/50 text-white"
-        aria-label="Contact"
-      >
+      <section id="contact" className="relative py-14 bg-black/50 text-white" aria-label="Contact">
         <Container>
           <SectionTitle variant="light">Get in Touch</SectionTitle>
           {contactSlot ?? (
@@ -188,7 +198,7 @@ export default function UnusualChassis({
       {/* ─── FOOTER: py-5, #291e44 ─── */}
       <footer
         className="py-5 text-white/60 text-sm"
-        style={{ backgroundColor: "#291e44" }}
+        style={{ backgroundColor: '#291e44' }}
         aria-label="Footer"
       >
         <Container className="flex items-center justify-between">
@@ -196,8 +206,12 @@ export default function UnusualChassis({
             <>
               <span>&copy; {new Date().getFullYear()} Brand. All rights reserved.</span>
               <div className="flex gap-4">
-                <a href="#" className="hover:text-white transition-colors">Privacy</a>
-                <a href="#" className="hover:text-white transition-colors">Terms</a>
+                <a href="#" className="hover:text-white transition-colors">
+                  Privacy
+                </a>
+                <a href="#" className="hover:text-white transition-colors">
+                  Terms
+                </a>
               </div>
             </>
           )}

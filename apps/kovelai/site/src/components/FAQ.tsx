@@ -4,7 +4,7 @@ export default function FAQ() {
   const faqs = [
     {
       q: 'What is the Kovel Doctrine?',
-      a: 'The Kovel Doctrine (from United States v. Kovel, 296 F.2d 918) extends attorney-client privilege to non-attorney agents — like accountants, interpreters, or AI tools — working under the attorney\'s direction. KovelAI operates as a Kovel agent under your firm\'s privilege umbrella. After In re Heppner, this doctrine is more critical than ever for protecting client web activity.',
+      a: "The Kovel Doctrine (from United States v. Kovel, 296 F.2d 918) extends attorney-client privilege to non-attorney agents — like accountants, interpreters, or AI tools — working under the attorney's direction. KovelAI operates as a Kovel agent under your firm's privilege umbrella. After In re Heppner, this doctrine is more critical than ever for protecting client web activity.",
     },
     {
       q: 'Is my client data stored anywhere?',
@@ -24,7 +24,7 @@ export default function FAQ() {
     },
     {
       q: 'Does KovelAI support SOC 2 / HIPAA-aligned practices?',
-      a: "KovelAI is pursuing SOC 2 Type II certification with assessment scheduling underway. Our zero-retention architecture means no PHI is ever stored, providing a HIPAA-supportive foundation for healthcare law practices. Enterprise plans include dedicated compliance officer support and custom retention policy configuration.",
+      a: 'KovelAI is pursuing SOC 2 Type II certification with assessment scheduling underway. Our zero-retention architecture means no PHI is ever stored, providing a HIPAA-supportive foundation for healthcare law practices. Enterprise plans include dedicated compliance officer support and custom retention policy configuration.',
     },
   ];
 
