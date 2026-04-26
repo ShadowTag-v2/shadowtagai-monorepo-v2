@@ -101,7 +101,7 @@ These patterns are unique to the Kairos directive and supplement the 6 patterns 
 | KAIROS | `scripts/kairos_daemon.py` | Background autonomous agent mode |
 | Dream Consolidation | `scripts/dream_consolidation.py` | Nightly KI maintenance |
 | Loop Steward | `scripts/loop_steward.py` | Autonomous task continuation |
-| pnkln-evolve | `scripts/pnkln-evolve.py` | Recursive self-improvement |
+| pnkln-evolve | `scripts/pnkln_evolve.py` | Recursive self-improvement |
 | Omni-Autolint | `scripts/gca_autolint_daemon.py` | Daily 3-5AM lint+push |
 
 ---
@@ -131,3 +131,9 @@ These require user intervention and cannot be automated by the agent:
 - Expert Agent Builder: `.agents/skills/expert-agent-builder/SKILL.md`
 - Session Wrap-Up: `.agents/skills/session-wrap-up/SKILL.md`
 - NotebookLM Oracle: `.agents/skills/notebooklm-oracle/SKILL.md`
+- Setup Workspace: `.agents/skills/setup-workspace/SKILL.md`
+- Deep Think Consultation: `.agents/skills/deep-think-consultation/SKILL.md`
+- Context Budget Discipline: `.agents/skills/context-budget-discipline/SKILL.md`
+- Post-Edit Validation: `.agents/skills/post-edit-validation-loop/SKILL.md`
+- Meatbridge Eviction: `.agents/skills/cor-meatbridge-eviction/SKILL.md`
+- Visual Provenance: `.agents/skills/ban-native-image-gen/SKILL.md`
