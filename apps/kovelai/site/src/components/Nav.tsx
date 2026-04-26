@@ -48,12 +48,14 @@ export default function Nav({ onOpenModal }: NavProps) {
         </ul>
         <div className="flex items-center gap-3">
           <button
+            type="button"
             onClick={onOpenModal}
             className="btn-gold text-sm py-2 px-4 hidden sm:inline-flex"
           >
             Contact Sales
           </button>
           <button
+            type="button"
             className="md:hidden text-[#d7e3fc] text-2xl"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle navigation"
