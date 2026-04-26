@@ -104,6 +104,9 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         onClick={(e) => {
           if (e.target === e.currentTarget) handleClose();
         }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') handleClose();
+        }}
       >
         <div className="modal-content" ref={modalRef}>
           <div className="flex justify-between items-center mb-8">
@@ -111,6 +114,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               Contact KovelAI
             </h3>
             <button
+              type="button"
               ref={closeButtonRef}
               onClick={handleClose}
               className="bg-transparent border-none text-[#998f81] cursor-pointer text-2xl hover:text-primary-text transition-colors"
