@@ -44,9 +44,9 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 ## Core Technical Truths (DO NOT HALLUCINATE OVERRIDES)
 
 1. **uuid7 Fallback:** `try/except ImportError` pattern is REQUIRED for `uuid7` resolution between monorepo (`apps.counselconduit.api.uuid7`) and container (`api.uuid7`) paths. ~~Old container `counselconduit-00015-mmq`~~ → current: `counselconduit-00037-7mf` (verified live 2026-04-25 via gcloud).
-2. **.NET Environment:** .NET 11.0.100-preview IS CONFIRMED INSTALLED (2026-04-24). Also available: 10.0.106, 10.0.202, 8.0.419. `global.json` pins to `11.0.100-preview` with `rollForward: latestFeature`. Semantic Kernel target framework: `net11.0`. SK v1.74.0 build-verified.
+2. **.NET Environment:** .NET 10.0.202 (stable) is the CANONICAL target framework (migrated from 11.0-preview on 2026-04-26). Also installed: 11.0.100-preview, 10.0.106, 8.0.419. `global.json` pins to `10.0.202` with `rollForward: latestFeature`. Semantic Kernel target: `net10.0`. SK v1.74.0 build-verified. **Namespace collision resolved:** `ShadowTagV4.Kernel` vs `Microsoft.SemanticKernel.Kernel` — use fully-qualified `Microsoft.SemanticKernel.Kernel` in all Process.cs references.
 3. **Semantic Kernel Process.cs:** `OnExternalEvent` is the CORRECT API for `Microsoft.SemanticKernel.Process.Core v1.21.0-alpha`. Do NOT apply the `OnInputEvent` rename until Process.Core >= v1.30+.
-4. **Skill Fleet:** We maintain 242 skills (50 agent + 208 global, 20 archived 2026-04-25) inside our local Matrix. Archive: `~/.gemini/antigravity/skills/_archive_redundant_2026-04-25/`.
+4. **Skill Fleet:** We maintain 260 active skills (71 workspace + 208 global − 19 overlap) inside our local Matrix. 20 additional skills archived in `~/.gemini/antigravity/skills/_archive_redundant_2026-04-25/`. `npx skills` CLI fully operational (Node v25.9.0).
 5. **Prompt Repetition (arXiv 2512.14982):** Applies ONLY to non-reasoning model tiers (flash, lite, mini) to boost accuracy 1–8%. Do NOT apply to thinking/extended-thinking models.
 6. **daScript MCP Reference:** The 29-tool MCP server in the daScript repository is the gold-standard reference architecture for compiler-backed tools. Use it as a blueprint for routing tools.
 7. **Lighthouse-CI:** Use Lighthouse-CI for budget assertions in CI pipelines.
