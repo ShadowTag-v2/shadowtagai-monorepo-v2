@@ -15,5 +15,11 @@
     "**/dist-runtime/**": true,
     "**/.pixi/**": true,
     "**/.venv/**": true
-  }
+  },
+  "extensions.experimental.affinity": {
+    "google.geminicodeassist": 1,
+    "googlecloudtools.cloudcode": 1,
+    "mtxr.sqltools": 2
+  },
+  "telemetry.telemetryLevel": "off"
 }
