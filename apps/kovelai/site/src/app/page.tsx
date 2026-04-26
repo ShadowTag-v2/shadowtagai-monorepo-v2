@@ -1,22 +1,22 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import BlogTeaser from '@/components/BlogTeaser';
-import ComparisonTable from '@/components/ComparisonTable';
-import ContactModal from '@/components/ContactModal';
-import CTASection from '@/components/CTASection';
-import DiscoveryRisk from '@/components/DiscoveryRisk';
-import FAQ from '@/components/FAQ';
-import Features from '@/components/Features';
-import Footer from '@/components/Footer';
-import Hero from '@/components/Hero';
-import HowItWorks from '@/components/HowItWorks';
-import Management from '@/components/Management';
-import Nav from '@/components/Nav';
-import Pricing from '@/components/Pricing';
-import ScrollProgress from '@/components/ScrollProgress';
-import StatsBar from '@/components/StatsBar';
-import Testimonials from '@/components/Testimonials';
+import BlogTeaser from '@/components/shared/BlogTeaser';
+import ComparisonTable from '@/components/shared/ComparisonTable';
+import ContactModal from '@/components/shared/ContactModal';
+import CTASection from '@/components/shared/CTASection';
+import DiscoveryRisk from '@/components/shared/DiscoveryRisk';
+import FAQ from '@/components/shared/FAQ';
+import Features from '@/components/shared/Features';
+import Footer from '@/components/shared/Footer';
+import Hero from '@/components/shared/Hero';
+import HowItWorks from '@/components/shared/HowItWorks';
+import Management from '@/components/shared/Management';
+import Nav from '@/components/shared/Nav';
+import Pricing from '@/components/shared/Pricing';
+import ScrollProgress from '@/components/shared/ScrollProgress';
+import StatsBar from '@/components/shared/StatsBar';
+import Testimonials from '@/components/shared/Testimonials';
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
