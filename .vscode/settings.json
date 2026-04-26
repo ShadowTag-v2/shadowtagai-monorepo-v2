@@ -1,119 +1,19 @@
 {
   "editor.formatOnSave": true,
-  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
-  "python.analysis.typeCheckingMode": "basic",
-  "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll": "explicit",
-      "source.organizeImports": "explicit"
-    }
-  },
-  // Ruff VSCode Extension — https://github.com/astral-sh/ruff-vscode
-  // Uses native ruff server (replaces deprecated ruff-lsp)
-  "ruff.nativeServer": "on",
-  "ruff.lint.run": "onType",
-  "ruff.organizeImports": true,
-  "ruff.fixAll": true,
-  "ruff.importStrategy": "fromEnvironment",
-  "ruff.showNotifications": "onWarning",
-  "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
-  "ruff.configuration": "${workspaceFolder}/ruff.toml",
-  "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome",
-    "editor.formatOnSave": true
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome",
-    "editor.formatOnSave": true
-  },
-  "files.exclude": {
-    "**/__pycache__": true,
-    "**/.pytest_cache": true,
-    "**/.ruff_cache": true,
-    "**/node_modules": true,
-    "**/reference_architectures": true,
-    "**/external_repos": true,
-    "**/external_sdks": true,
-    "**/.mypy_cache": true,
-    "**/.pixi": true,
-    "**/deep-archive": true,
-    "**/archive": true,
-    "**/bazel-*": true
-  },
-  "search.exclude": {
-    "**/node_modules": true,
-    "**/reference_architectures": true,
-    "**/external_repos": true,
-    "**/external_sdks": true,
-    "**/.venv": true,
-    "**/.mypy_cache": true,
-    "**/__pycache__": true,
-    "**/deep-archive": true,
-    "**/archive": true,
-    "**/build": true,
-    "**/dist": true
-  },
-  "files.watcherExclude": {
-    "**/.git/objects/**": true,
-    "**/node_modules/**": true,
-    "**/.venv/**": true,
-    "**/.venv*/**": true,
-    "**/.pixi/**": true,
-    "**/.mypy_cache/**": true,
-    "**/__pycache__/**": true,
-    "**/clones/**": true,
-    "**/clone-base/**": true,
-    "**/reference_architectures/**": true,
-    "**/external_repos/**": true,
-    "**/external_sdks/**": true,
-    "**/deep-archive/**": true,
-    "**/archive/**": true,
-    "**/build/**": true,
-    "**/dist/**": true,
-    "**/.gradle/**": true,
-    "**/.lancedb/**": true,
-    "**/.gitnexus/**": true,
-    "**/.chroma_db/**": true,
-    "**/.uv-cache/**": true,
-    "**/third_party/**": true,
-    "**/bazel-*/**": true,
-    "**/.ruff_cache/**": true,
-    "**/.pytest_cache/**": true,
-    "**/dist-runtime/**": true,
-    "**/target/**": true,
-    "**/drive_corpus/**": true,
-    "**/data/lancedb/**": true,
-    "**/frames/**": true
-  },
-  // Fix 6: Python language server — enable Pylance for autocomplete + hover + type checking
   "python.languageServer": "Pylance",
-  // Fix 5: CSpell — stop scanning volatile build/vendor directories
+  "python.defaultInterpreterPath": "/opt/homebrew/bin/python3.14",
+  "git.decorations.enabled": false,
   "cSpell.ignorePaths": [
-    "**/node_modules/**",
     "**/dist-runtime/**",
     "**/.agent/incoming_repos/**",
     "**/vendor/a2ui/**",
-    "**/external_repos/**",
-    "**/deep-archive/**",
-    "**/archive/**",
-    "**/build/**",
-    "**/dist/**",
-    "**/.venv/**"
+    "**/payload-starter/**"
   ],
-  "terminal.integrated.env.osx": {
-    "NODE_OPTIONS": "--no-deprecation",
-    "SHADOWTAG_PEM": "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem",
-    "PATH": "/opt/homebrew/bin:/opt/homebrew/sbin:${env:PATH}"
-  },
-  "terminal.integrated.env.linux": {
-    "NODE_OPTIONS": "--no-deprecation"
-  },
-  "cloudcode.project": "shadowtag-omega-v4",
-  "cloudcode.region": "us-central1",
-  "extensions.autoUpdate": false,
-  "extensions.autoCheckUpdates": false,
-  "sqltools.autoStartSession": false,
-  "sqltools.autoOpenSessionFiles": false
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/node_modules/**": true,
+    "**/dist-runtime/**": true,
+    "**/.pixi/**": true,
+    "**/.venv/**": true
+  }
 }

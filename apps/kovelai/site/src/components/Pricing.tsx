@@ -1,6 +1,24 @@
 'use client';
 
-export default function Pricing() {
+/**
+ * Stripe Integration Reference (DO NOT DELETE):
+ * - Account: acct_1Syh9JEHnWpykeMi
+ * - Pro Monthly Price ID: price_1TNKSREHnWpykeMiRMDlVgLl ($149/mo)
+ * - Pro Annual Price ID: price_1TNKSjEHnWpykeMi0S9GCVjy ($1,428/yr)
+ * - Enterprise Price ID: price_1TNKSREHnWpykeMi8mrDf4rI ($20K/mo)
+ * - Beta Coupon Code: 3wseBY7Z (50% off, 3 months, max 100 redemptions)
+ * - Customer Portal: bpc_1TNKSjEHnWpykeMi0qQPoaHm
+ *
+ * TODO: Replace Pro CTA link with live Stripe Payment Link once created in Dashboard.
+ * The current implementation routes Professional inquiries through the contact modal
+ * to capture high-intent leads while the payment link is being provisioned.
+ */
+
+interface PricingProps {
+  onOpenModal: () => void;
+}
+
+export default function Pricing({ onOpenModal }: PricingProps) {
   const plans = [
     {
       tier: 'Trial',
@@ -22,6 +40,7 @@ export default function Pricing() {
       tier: 'Professional',
       price: '149',
       period: '/mo',
+      badge: '50% OFF — Beta Launch',
       features: [
         '100,000 tokens/month',
         'Everything in Trial, plus:',
@@ -31,8 +50,8 @@ export default function Pricing() {
         'Matter pipeline integration',
         'Priority support',
       ],
-      cta: 'Subscribe — $149/mo',
-      ctaLink: '#',
+      cta: 'Start Pro — $74.50/mo',
+      ctaAction: true, // Routes to contact modal for high-intent lead capture
       ctaStyle: 'btn-gold',
       featured: true,
       annual: 'or $1,428/yr (save $360)',
@@ -57,10 +76,6 @@ export default function Pricing() {
     },
   ];
 
-  const openModal = () => {
-    document.getElementById('contactModal')?.classList.add('modal-overlay--visible');
-  };
-
   return (
     <section className="py-20 md:py-28 bg-surface-lowest" id="pricing">
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -77,13 +92,18 @@ export default function Pricing() {
               className={`pricing-card ${p.featured ? 'pricing-card--featured' : ''}`}
             >
               {p.featured && <div className="pricing-badge">Most Popular</div>}
-              <div className="text-xs uppercase tracking-[0.05em] text-[#998f81] mb-2">
+              {p.badge && (
+                <div className="text-[0.65rem] uppercase tracking-[0.15em] text-gold font-semibold mb-1">
+                  {p.badge}
+                </div>
+              )}
+              <div className="text-xs uppercase tracking-[0.05em] text-[#a89d8e] mb-2">
                 {p.tier}
               </div>
               <div className="text-3xl font-extrabold text-primary-text mb-4">
-                <span className="text-lg text-[#998f81]">$</span>
+                <span className="text-lg text-[#a89d8e]">$</span>
                 {p.price}
-                <span className="text-sm font-normal text-[#998f81]">{p.period}</span>
+                <span className="text-sm font-normal text-[#a89d8e]">{p.period}</span>
               </div>
               <ul className="flex-1 space-y-2 mb-6">
                 {p.features.map((f) => (
@@ -94,7 +114,11 @@ export default function Pricing() {
                 ))}
               </ul>
               {p.ctaAction ? (
-                <button onClick={openModal} className={`${p.ctaStyle} w-full justify-center text-sm`}>
+                <button
+                  type="button"
+                  onClick={onOpenModal}
+                  className={`${p.ctaStyle} w-full justify-center text-sm`}
+                >
                   {p.cta}
                 </button>
               ) : (
@@ -102,9 +126,7 @@ export default function Pricing() {
                   {p.cta}
                 </a>
               )}
-              {p.annual && (
-                <p className="text-xs text-center text-[#998f81] mt-2">{p.annual}</p>
-              )}
+              {p.annual && <p className="text-xs text-center text-[#a89d8e] mt-2">{p.annual}</p>}
             </div>
           ))}
         </div>
