@@ -1,9 +1,9 @@
 /* ===== Design Tokens from unusualmachines.com extraction ===== */
 :root {
   /* Brand Colors */
-  --um-dark: #211d32;          /* rgb(33, 29, 50) */
-  --um-purple: #53478a;        /* rgb(83, 71, 138) */
-  --um-purple-dark: #291e44;   /* rgb(41, 30, 68) */
+  --um-dark: #211d32; /* rgb(33, 29, 50) */
+  --um-purple: #53478a; /* rgb(83, 71, 138) */
+  --um-purple-dark: #291e44; /* rgb(41, 30, 68) */
   --um-purple-light: #7a6fb8;
   --um-white: #ffffff;
   --um-black: #000000;
@@ -28,7 +28,9 @@
 }
 
 /* ===== Reset ===== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -60,7 +62,8 @@ img {
   display: block;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
@@ -71,7 +74,12 @@ button {
   font-family: inherit;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-primary);
 }
 
@@ -278,14 +286,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes heroZoom {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.05); }
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
 }
 
 .hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.6) 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
 }
 
 .hero__content {
