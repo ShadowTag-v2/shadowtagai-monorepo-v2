@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export default function Hero() {
   return (
-    <header className="relative min-h-screen flex items-center overflow-hidden" id="hero">
+    <header className="relative min-h-[100dvh] flex items-center overflow-hidden" id="hero">
       {/* Layer 0: Vault interior hero (Flow-generated, Nano Banana 2) */}
       <Image
         src="/images/hero-vault-optimized.webp"

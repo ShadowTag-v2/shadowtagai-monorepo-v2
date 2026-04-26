@@ -51,7 +51,7 @@ export default function Pricing({ onOpenModal }: PricingProps) {
         'Priority support',
       ],
       cta: 'Start Pro — $74.50/mo',
-      ctaAction: true, // Routes to contact modal for high-intent lead capture
+      ctaLink: 'https://buy.stripe.com/test_aEU5nR1Jy9Mg8zS000?prefilled_promo_code=3wseBY7Z',
       ctaStyle: 'btn-gold',
       featured: true,
       annual: 'or $1,428/yr (save $360)',
