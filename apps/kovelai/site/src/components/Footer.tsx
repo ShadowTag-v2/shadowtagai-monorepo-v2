@@ -1,4 +1,10 @@
-export default function Footer() {
+'use client';
+
+interface FooterProps {
+  onOpenModal?: () => void;
+}
+
+export default function Footer({ onOpenModal }: FooterProps) {
   return (
     <footer className="border-t border-[rgba(77,70,58,0.15)] pt-12 pb-6">
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -6,33 +12,60 @@ export default function Footer() {
           <div>
             <div className="text-xl font-bold text-primary-text mb-3">KovelAI</div>
             <p className="text-sm text-secondary-text leading-relaxed">
-              Post-Heppner privileged client AI and web search infrastructure for law firms.
-              Capture revenue, protect privilege, automate intake.
+              Post-Heppner privileged client AI and web search infrastructure for law firms. Capture
+              revenue, protect privilege, automate intake.
             </p>
           </div>
           <div>
             <div className="footer-heading">Platform</div>
             <ul className="footer-links">
-              <li><a href="#features">Features</a></li>
-              <li><a href="#how-it-works">How It Works</a></li>
-              <li><a href="#discovery-risk">Discovery Risk</a></li>
+              <li>
+                <a href="#features">Features</a>
+              </li>
+              <li>
+                <a href="#how-it-works">How It Works</a>
+              </li>
+              <li>
+                <a href="#discovery-risk">Discovery Risk</a>
+              </li>
             </ul>
           </div>
           <div>
             <div className="footer-heading">Company</div>
             <ul className="footer-links">
-              <li><a href="#management">Leadership</a></li>
-              <li><a href="/privacy">Privacy Policy</a></li>
-              <li><a href="/terms">Terms of Service</a></li>
-              <li><a href="#blog">Blog</a></li>
+              <li>
+                <a href="#management">Leadership</a>
+              </li>
+              <li>
+                <a href="/privacy">Privacy Policy</a>
+              </li>
+              <li>
+                <a href="/terms">Terms of Service</a>
+              </li>
+              <li>
+                <a href="#blog">Blog</a>
+              </li>
             </ul>
           </div>
           <div>
             <div className="footer-heading">Contact</div>
             <ul className="footer-links">
-              <li><a href="#" onClick={(e) => { e.preventDefault(); document.getElementById('contactModal')?.classList.add('modal-overlay--visible'); }}>Contact Sales</a></li>
-              <li><a href="mailto:founder@shadowtagai.com">Email</a></li>
-              <li><a href="https://shadowtagai.web.app" target="_blank" rel="noopener noreferrer">ShadowTagAI ↗</a></li>
+              <li>
+                <button
+                  onClick={onOpenModal}
+                  className="bg-transparent border-none cursor-pointer text-[#d0c5b5] hover:text-[#d7e3fc] transition-colors text-[0.8125rem] p-0"
+                >
+                  Contact Sales
+                </button>
+              </li>
+              <li>
+                <a href="mailto:founder@shadowtagai.com">Email</a>
+              </li>
+              <li>
+                <a href="https://shadowtagai.web.app" target="_blank" rel="noopener noreferrer">
+                  ShadowTagAI ↗
+                </a>
+              </li>
             </ul>
           </div>
         </div>

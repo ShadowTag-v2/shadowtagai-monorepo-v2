@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Geist_Mono } from 'next/font/google';
+import { Geist_Mono, Inter } from 'next/font/google';
 import './globals.css';
 
 const inter = Inter({
@@ -46,7 +46,11 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-64.png', sizes: '64x64', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
   },
   manifest: '/manifest.json',
 };
@@ -89,7 +93,12 @@ export default function RootLayout({
                   applicationCategory: 'LegalService',
                   operatingSystem: 'Web',
                   offers: [
-                    { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: 'Trial — 10,000 tokens/month' },
+                    {
+                      '@type': 'Offer',
+                      price: '0',
+                      priceCurrency: 'USD',
+                      description: 'Trial — 10,000 tokens/month',
+                    },
                     {
                       '@type': 'Offer',
                       price: '149',
@@ -101,6 +110,59 @@ export default function RootLayout({
                       price: '20000',
                       priceCurrency: 'USD',
                       description: 'Enterprise — Unlimited',
+                    },
+                  ],
+                },
+                {
+                  '@type': 'FAQPage',
+                  mainEntity: [
+                    {
+                      '@type': 'Question',
+                      name: 'What is the Kovel Doctrine?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: "The Kovel Doctrine (from United States v. Kovel, 296 F.2d 918) extends attorney-client privilege to non-attorney agents — like accountants, interpreters, or AI tools — working under the attorney's direction. KovelAI operates as a Kovel agent under your firm's privilege umbrella.",
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'Is my client data stored anywhere?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'No. KovelAI uses zero-retention architecture. All data is processed in RAM only and never written to disk. Session data is cryptographically shredded when the session ends.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'What happened in In re Heppner?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'In In re Heppner (S.D.N.Y., Feb. 10, 2026), the court ruled that client internet search histories conducted outside of attorney-supervised channels are discoverable in litigation. This created the post-Heppner compliance gap that KovelAI was built to fill.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'How does billing work for privileged sessions?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: "Clients access KovelAI through your firm's branded portal. Each privileged session generates a billable entry. Most firms bill clients $50–$250 per session for privileged AI and web search access.",
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'What AI model does KovelAI use?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'KovelAI uses Google Gemini 2.5 Flash via Vertex AI, governed by the Judge 6 Compliance Framework. The model never trains on your data, and all inference happens within our zero-retention pipeline.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'Does KovelAI support SOC 2 / HIPAA-aligned practices?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'KovelAI is pursuing SOC 2 Type II certification. Our zero-retention architecture means no PHI is ever stored, providing a HIPAA-supportive foundation for healthcare law practices.',
+                      },
                     },
                   ],
                 },

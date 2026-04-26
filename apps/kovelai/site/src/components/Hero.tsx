@@ -1,24 +1,23 @@
 'use client';
 
+import Image from 'next/image';
+
 export default function Hero() {
   return (
     <header className="relative min-h-screen flex items-center overflow-hidden" id="hero">
-      {/* Layer 0: Video background (desktop) */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover opacity-30"
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="none"
-        poster="/images/supercar-poster.png"
-      >
-        <source src="/videos/supercar-peelout.mp4" type="video/mp4" />
-        <source src="/videos/hero-bg.mp4" type="video/mp4" />
-      </video>
+      {/* Layer 0: Vault interior hero (Flow-generated, Nano Banana 2) */}
+      <Image
+        src="/images/hero-vault-optimized.webp"
+        alt="Abstract vault interior with scales of justice — representing privileged legal protection"
+        fill
+        priority
+        quality={80}
+        className="object-cover opacity-40"
+        sizes="(max-width: 640px) 640px, (max-width: 1024px) 1024px, 1408px"
+      />
 
-      {/* Layer 0b: Static fallback gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#071325] via-[#0a1a30] to-[#071325] opacity-70" />
+      {/* Layer 0b: Deep navy overlay for text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#071325]/80 via-[#0a1a30]/60 to-[#071325]/90" />
 
       {/* Layer 0.5: Bottom fade */}
       <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#071325] to-transparent" />
