@@ -1,333 +1,348 @@
 ---
-name: ShadowTagAI
-description: >
-  Sovereign AI Infrastructure — Autonomous Intelligence for Total Data Sovereignty.
-  Enterprise-grade on-premise AI for institutions requiring zero-cloud dependency.
-  Dark mode with violet brand accent, zinc-950 foundation.
+name: ShadowTag Omega
 colors:
-  # Core surface hierarchy (zinc-950 foundation)
-  surface: "#09090B"
-  surface-elevated: "#0F0F14"
-  surface-card: "#16161D"
-  surface-matte: "#0C0C12"
-  surface-overlay: "#0B0B0E"
-  surface-card-opaque: "#17171E"
-  on-surface: "#EEEEF0"
-  on-surface-variant: "#8B8B9E"
-  on-surface-muted: "#5F5F72"
-  # Primary ink — light text on dark backgrounds
-  primary: "#EEEEF0"
-  on-primary: "#09090B"
-  # Brand accent — violet
-  tertiary: "#7C3AED"
-  on-tertiary: "#FFFFFF"
-  tertiary-container: "#6D28D9"
-  tertiary-tint: "#1A0F2E"
-  # Status
-  secondary: "#0DF274"
-  on-secondary: "#003D1D"
-  # Semantic states
-  status-success: "#0DF274"
-  status-warning: "#FBBF24"
-  status-error: "#EF4444"
-  # Inverse
-  inverse-surface: "#EEEEF0"
-  inverse-on-surface: "#09090B"
-  # Borders
-  outline-variant: "#2A2A3C"
+  surface: "#08080E"
+  surface-dim: "#050508"
+  surface-bright: "#1A1A28"
+  surface-container-lowest: "#030306"
+  surface-container-low: "#0C0C16"
+  surface-container: "#10101C"
+  surface-container-high: "#161624"
+  surface-container-highest: "#1E1E30"
+  on-surface: "#E0E0F0"
+  on-surface-variant: "#9898B0"
+  inverse-surface: "#E0E0F0"
+  inverse-on-surface: "#141422"
+  outline: "#585878"
+  outline-variant: "#2C2C44"
+  surface-tint: "#7B6BCF"
+  primary: "#7B6BCF"
+  on-primary: "#FFFFFF"
+  primary-container: "#1E1440"
+  on-primary-container: "#B8A8E8"
+  inverse-primary: "#453A78"
+  secondary: "#22B8F0"
+  on-secondary: "#00243A"
+  secondary-container: "#003D5C"
+  on-secondary-container: "#88D8FF"
+  tertiary: "#FF4081"
+  on-tertiary: "#3E0020"
+  tertiary-container: "#5C0030"
+  on-tertiary-container: "#FFB0CB"
+  error: "#FF6B6B"
+  on-error: "#4A0000"
+  error-container: "#8B0000"
+  on-error-container: "#FFB8B8"
+  primary-fixed: "#C8B8F0"
+  primary-fixed-dim: "#A090D8"
+  on-primary-fixed: "#140C28"
+  on-primary-fixed-variant: "#4A3A80"
+  secondary-fixed: "#B0E4FF"
+  secondary-fixed-dim: "#70C8F0"
+  on-secondary-fixed: "#001824"
+  on-secondary-fixed-variant: "#1A5070"
+  tertiary-fixed: "#FFD0E0"
+  tertiary-fixed-dim: "#FF90B8"
+  on-tertiary-fixed: "#300018"
+  on-tertiary-fixed-variant: "#701040"
+  background: "#08080E"
+  on-background: "#E0E0F0"
+  surface-variant: "#1E1E30"
+  success: "#40C057"
+  on-success: "#082010"
+  warning: "#FAB005"
+  on-warning: "#281C04"
+  accent-glow: "#22B8F01F"
+  accent-hot: "#FF408126"
+  accent-grid: "#7B6BCF0F"
 typography:
-  headline-display:
+  display-xl:
     fontFamily: Inter
-    fontSize: 64px
-    fontWeight: 800
-    lineHeight: 1.1
+    fontSize: 96px
+    fontWeight: "900"
+    lineHeight: 96px
+    letterSpacing: -0.05em
+  display-lg:
+    fontFamily: Inter
+    fontSize: 72px
+    fontWeight: "800"
+    lineHeight: 76px
+    letterSpacing: -0.04em
+  display-md:
+    fontFamily: Inter
+    fontSize: 48px
+    fontWeight: "700"
+    lineHeight: 52px
     letterSpacing: -0.03em
   headline-lg:
     fontFamily: Inter
-    fontSize: 40px
-    fontWeight: 700
-    lineHeight: 1.15
+    fontSize: 36px
+    fontWeight: "700"
+    lineHeight: 44px
     letterSpacing: -0.02em
   headline-md:
     fontFamily: Inter
     fontSize: 28px
-    fontWeight: 700
-    lineHeight: 1.25
-    letterSpacing: -0.015em
+    fontWeight: "600"
+    lineHeight: 36px
+    letterSpacing: -0.01em
   body-lg:
     fontFamily: Inter
     fontSize: 18px
-    fontWeight: 400
-    lineHeight: 1.6
+    fontWeight: "400"
+    lineHeight: 28px
   body-md:
     fontFamily: Inter
     fontSize: 16px
-    fontWeight: 400
-    lineHeight: 1.5
+    fontWeight: "400"
+    lineHeight: 24px
   body-sm:
     fontFamily: Inter
     fontSize: 14px
-    fontWeight: 500
-    lineHeight: 1.5
+    fontWeight: "400"
+    lineHeight: 20px
   label-lg:
     fontFamily: Inter
     fontSize: 14px
-    fontWeight: 600
-    lineHeight: 1
-    letterSpacing: 0.02em
-  label-md:
+    fontWeight: "700"
+    lineHeight: 20px
+    letterSpacing: 0.05em
+    textTransform: uppercase
+  label-sm:
     fontFamily: Inter
-    fontSize: 12px
-    fontWeight: 500
-    lineHeight: 1
-    letterSpacing: 0.04em
+    fontSize: 11px
+    fontWeight: "700"
+    lineHeight: 16px
+    letterSpacing: 0.08em
+    textTransform: uppercase
+  code-lg:
+    fontFamily: JetBrains Mono
+    fontSize: 16px
+    fontWeight: "500"
+    lineHeight: 24px
+  code-md:
+    fontFamily: JetBrains Mono
+    fontSize: 14px
+    fontWeight: "400"
+    lineHeight: 22px
+  mono-display:
+    fontFamily: JetBrains Mono
+    fontSize: 48px
+    fontWeight: "300"
+    lineHeight: 56px
+    letterSpacing: -0.02em
 rounded:
-  sm: 4px
-  md: 8px
-  lg: 12px
-  xl: 16px
+  none: 0
+  xs: 0.125rem
+  sm: 0.25rem
+  DEFAULT: 0.375rem
+  md: 0.5rem
+  lg: 0.75rem
+  xl: 1rem
+  pill: 50px
   full: 9999px
 spacing:
-  base: 8px
-  xs: 4px
-  sm: 8px
-  md: 16px
-  lg: 24px
-  xl: 32px
-  2xl: 48px
-  3xl: 64px
-  section-margin: 80px
+  unit: 4px
+  container-padding: 32px
+  card-gap: 12px
+  section-margin: 96px
+  glass-padding: 28px
+  nav-height: 64px
+  grid-line: 1px
 components:
+  card-dark:
+    backgroundColor: "{colors.surface-container}"
+    textColor: "{colors.on-surface}"
+    rounded: "{rounded.md}"
+    padding: 24px
+    border: 1px solid {colors.outline-variant}
+  card-glass:
+    backgroundColor: rgba(123, 107, 207, 0.05)
+    textColor: "{colors.on-surface}"
+    rounded: "{rounded.lg}"
+    padding: "{spacing.glass-padding}"
+    backdropFilter: blur(24px)
+    border: 1px solid rgba(123, 107, 207, 0.10)
+  card-hot:
+    backgroundColor: rgba(255, 64, 129, 0.08)
+    textColor: "{colors.on-surface}"
+    rounded: "{rounded.lg}"
+    padding: 24px
+    border: 1px solid rgba(255, 64, 129, 0.15)
   button-primary:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.label-lg}"
+    rounded: "{rounded.pill}"
+    height: 44px
+    padding: 0 24px
+  button-primary-hover:
+    backgroundColor: "{colors.primary-fixed-dim}"
+    boxShadow: "0 0 24px rgba(123, 107, 207, 0.4)"
+  button-danger:
     backgroundColor: "{colors.tertiary}"
     textColor: "{colors.on-tertiary}"
     typography: "{typography.label-lg}"
-    rounded: "{rounded.lg}"
-    height: 48px
-    padding: 0 28px
-  button-primary-hover:
-    backgroundColor: "{colors.tertiary-container}"
-  button-secondary:
-    backgroundColor: transparent
-    textColor: "{colors.primary}"
-    typography: "{typography.label-lg}"
-    rounded: "{rounded.lg}"
-    height: 48px
-    padding: 0 28px
-  card-feature:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.on-surface}"
-    rounded: "{rounded.xl}"
-    padding: "{spacing.xl}"
-  card-glass:
-    backgroundColor: "{colors.surface-card-opaque}"
-    textColor: "{colors.on-surface}"
-    rounded: "{rounded.xl}"
-    padding: "{spacing.xl}"
-  nav-bar:
-    backgroundColor: "{colors.surface-overlay}"
-    textColor: "{colors.on-surface}"
-    height: 64px
+    rounded: "{rounded.pill}"
+    height: 44px
     padding: 0 24px
-  section-container:
-    backgroundColor: "{colors.surface-elevated}"
-    textColor: "{colors.on-surface}"
-    padding: "{spacing.3xl}"
-  footer-section:
-    backgroundColor: "{colors.surface-matte}"
-    textColor: "{colors.on-surface-variant}"
-    padding: "{spacing.3xl}"
-  badge-status-success:
-    backgroundColor: "{colors.status-success}"
-    textColor: "{colors.on-secondary}"
-    typography: "{typography.label-md}"
-    rounded: "{rounded.full}"
-    padding: 4px 12px
-  badge-status-warning:
-    backgroundColor: "{colors.status-warning}"
-    textColor: "{colors.on-primary}"
-    typography: "{typography.label-md}"
-    rounded: "{rounded.full}"
-    padding: 4px 12px
-  badge-status-error:
-    backgroundColor: "{colors.status-error}"
-    textColor: "{colors.on-primary}"
-    typography: "{typography.label-md}"
-    rounded: "{rounded.full}"
-    padding: 4px 12px
-  badge-brand:
-    backgroundColor: "{colors.tertiary-tint}"
-    textColor: "{colors.on-surface}"
-    typography: "{typography.label-md}"
-    rounded: "{rounded.full}"
-    padding: 4px 12px
-  pill-muted:
-    backgroundColor: "{colors.surface-elevated}"
-    textColor: "{colors.on-surface-variant}"
-    typography: "{typography.label-md}"
-    rounded: "{rounded.full}"
-    padding: 4px 12px
-  chip-inverse:
-    backgroundColor: "{colors.inverse-surface}"
-    textColor: "{colors.inverse-on-surface}"
-    typography: "{typography.label-md}"
-    rounded: "{rounded.full}"
-    padding: 4px 12px
-  page-canvas:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.on-surface}"
-  hero-block:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.primary}"
-    padding: "{spacing.section-margin}"
-  footnote-label:
-    backgroundColor: transparent
-    textColor: "{colors.on-surface-muted}"
-    typography: "{typography.label-md}"
-  input-field:
-    backgroundColor: "{colors.surface-card}"
-    textColor: "{colors.on-surface}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    height: 48px
-    padding: 0 16px
-  secondary-link:
+  button-ghost:
     backgroundColor: transparent
     textColor: "{colors.secondary}"
-    typography: "{typography.label-lg}"
-  ghost-border-rule:
-    backgroundColor: "{colors.outline-variant}"
-    height: 1px
+    typography: "{typography.label-sm}"
+    rounded: "{rounded.pill}"
+    border: 1px solid {colors.outline-variant}
+  button-ghost-hover:
+    backgroundColor: "{colors.accent-glow}"
+    borderColor: "{colors.secondary}"
+  input-field:
+    backgroundColor: "{colors.surface-container-lowest}"
+    textColor: "{colors.on-surface}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.DEFAULT}"
+    padding: 12px 16px
+    height: 44px
+    border: 1px solid {colors.outline-variant}
+  input-field-focus:
+    border: 1px solid {colors.secondary}
+    boxShadow: "0 0 0 2px rgba(34, 184, 240, 0.2)"
+  nav-bar:
+    backgroundColor: rgba(8, 8, 14, 0.90)
+    backdropFilter: blur(16px)
+    height: "{spacing.nav-height}"
+    padding: 0 32px
+    borderBottom: 1px solid {colors.outline-variant}
+  terminal-block:
+    backgroundColor: "{colors.surface-container-lowest}"
+    textColor: "{colors.success}"
+    typography: "{typography.code-md}"
+    rounded: "{rounded.md}"
+    padding: 20px
+    border: 1px solid {colors.outline-variant}
+  badge-product:
+    backgroundColor: "{colors.primary-container}"
+    textColor: "{colors.on-primary-container}"
+    typography: "{typography.label-sm}"
+    rounded: "{rounded.pill}"
+    padding: 4px 10px
+  badge-status:
+    backgroundColor: rgba(64, 192, 87, 0.15)
+    textColor: "{colors.success}"
+    typography: "{typography.label-sm}"
+    rounded: "{rounded.pill}"
+    padding: 4px 10px
+  stat-number:
+    textColor: "{colors.secondary}"
+    typography: "{typography.mono-display}"
+  stat-label:
+    textColor: "{colors.on-surface-variant}"
+    typography: "{typography.label-sm}"
+  hero-headline:
+    textColor: "{colors.on-surface}"
+    typography: "{typography.display-lg}"
+    textTransform: uppercase
+    letterSpacing: -0.04em
+  footer:
+    backgroundColor: "{colors.surface-container-lowest}"
+    textColor: "{colors.on-surface-variant}"
+    padding: 80px 32px 40px
+    borderTop: 1px solid {colors.outline-variant}
 ---
 
-## Overview
+## Brand & Style
 
-> MCP-validated design system — Source: https://shadowtagai.web.app
-> Lighthouse: Accessibility 95 | Best Practices 100 | SEO 100
+ShadowTagAI is the parent technology company — the holding entity above KovelAI that represents the full AI infrastructure play. Where KovelAI is professional and legal-grade, ShadowTagAI is technical, aggressive, and uncompromising. The design language channels **military-grade technology** crossed with **hacker culture**: near-black surfaces, monospaced data displays, and hot-pink/cyan accent bursts against void-dark backgrounds.
 
-ShadowTagAI is "Sovereign AI Infrastructure" — an enterprise-grade platform
-for institutions requiring zero-cloud dependency, on-premise AI deployment,
-and total data sovereignty. The interface projects **absolute institutional
-authority** through a dark zinc-950 foundation and controlled violet accent
-that signals precision without frivolity.
+Visual DNA from [Unusual Machines](https://www.unusualmachines.com/) is present but pushed to its limit:
+- UMAC's deep purple (#291E44) darkens further to near-void `#1E1440`
+- UMAC's blue-mist accent (#A0AED1) sharpens to full cyan `#22B8F0`
+- UMAC's stock ticker → becomes a real-time system health dashboard
+- UMAC's corporate hero → becomes a dense, data-rich command center
+- UMAC's pill buttons → preserved, but with glow shadows on hover
 
-The visual identity is austere and engineered — the near-black void with violet
-punctuation speaks to military-grade infrastructure rather than consumer SaaS.
-The emerald green secondary is reserved exclusively for status/online/success
-indicators, creating a clear visual language where color carries functional
-meaning rather than decorative weight.
+The emotional register is **competence under pressure** — the interface of an organization that builds AI infrastructure at scale and is not afraid of complexity.
 
 ## Colors
 
-The palette is built on a **zinc-950 near-black foundation** with two functional
-accent colors:
+The palette is near-monochromatic dark with two accent system: **cyan** for data/information and **hot pink** for actions/alerts. The purple primary serves as the bridge — present everywhere but never overwhelming.
 
-- **Surface (#09090B):** The zinc-950 void canvas — deeper than KovelAI's
-  blue-black, this is a true neutral near-black.
-- **Primary (#EEEEF0):** Zinc-100 light text for maximum readability on the
-  dark canvas — all headlines and core content.
-- **On-Surface-Variant (#8B8B9E):** Zinc-500 for body copy, descriptions, and
-  information that should recede behind headlines.
-- **On-Surface-Muted (#5F5F72):** Zinc-600 for deemphasized tertiary text —
-  timestamps, metadata, and auxiliary labels.
-- **Tertiary / Violet (#7C3AED):** The brand accent — violet-600. Used for
-  primary CTAs, interactive highlights, and brand identity moments. Distinct
-  from KovelAI's cyan to maintain product differentiation.
-- **Secondary / Emerald (#0DF274):** Bright emerald exclusively for status
-  indicators, success states, and online/active signals. Never used decoratively.
-- **Surface-Card (#16161D):** Card backgrounds with 1px borders at ~10% white
-  opacity for subtle edge definition in the glassmorphic stack.
+- **Surface Stack:** Darker than KovelAI. The base `#08080E` is nearly black with a blue-violet micro-tint. 6 surface tokens provide granular elevation ordering.
+- **Primary Purple:** `#7B6BCF` — slightly darker than KovelAI's `#8B7BCF`. Used for primary CTAs and links, never for backgrounds.
+- **Secondary Cyan:** `#22B8F0` — the operational color. Data readouts, active states, terminal prompts, system-healthy indicators. Directly evolved from UMAC's `rgba(34,184,240,0.26)` accent.
+- **Tertiary Hot Pink:** `#FF4081` — the attention color. Alerts, destructive actions, important badges, live indicators. Not present in UMAC; added for visual intensity.
+- **Grid Lines:** Ultra-subtle `rgba(123,107,207,0.06)` — used for background grid patterns suggesting a control room / command center aesthetic.
 
 ## Typography
 
-The typography uses **Inter** as the exclusive typeface family, consistent with
-the KovelAI sibling product for cross-product coherence. The weight range is
-slightly narrower (700-800 vs 700-900) to maintain the austere, institutional
-tone.
+Like KovelAI, **Inter** is the primary face, but usage is more aggressive:
+- Weights skew heavier (700–900 for headlines vs. KovelAI's 600–800)
+- Label text uses `text-transform: uppercase` and wide letter-spacing (`0.05–0.08em`) — a military-technical convention
+- **JetBrains Mono** has elevated status here: a dedicated `mono-display` style at 48px for statistics/dashboards, plus `code-lg` and `code-md` for terminal blocks
 
-- **Headlines:** Inter at weights 700–800 with tight letter-spacing (-0.02em to
-  -0.03em) for compressed, authoritative headings.
-- **Body:** Inter Regular (400) at 16-18px with 1.5-1.6 line height for
-  comfortable reading against the dark background.
-- **Labels:** Inter Medium/SemiBold at 12-14px with positive letter-spacing
-  for navigation, badges, and data labels.
-- **Fallback Stack:** Arial (sans-serif), Times (serif) for system fallback.
+Type treatment:
+- Headlines are ALWAYS uppercase with negative tracking (`-0.04em`) for a compressed, urgent feel
+- Body text remains Normal case for readability
+- Labels are small, loud, and spaced: `11px / 700 / uppercase / 0.08em tracking`
 
-## Layout
+## Layout & Spacing
 
-The layout follows the same centered max-width container model as KovelAI
-for product family consistency, with generous negative space that lets the
-dark background establish the "void" feeling.
+The layout is tighter and denser than KovelAI. ShadowTagAI shows more information per viewport.
 
-- **Container:** Max-width 1200px, centered.
-- **Sections:** 80px vertical separation between major content blocks.
-- **Cards:** Grouped in responsive grids (typically 3-column on desktop)
-  with 16-24px gaps.
-- **Hero:** Full-width with vertically stacked content — two-line H1,
-  sovereignty tagline, and dual CTA buttons.
+- **Base unit:** 4px (half of KovelAI's 8px) — enabling finer-grained alignment for data-dense UIs
+- **Container padding:** 32px (wider than KovelAI's 24px — more breathing room at extremes)
+- **Card gap:** 12px (tighter than KovelAI's 16px — denser grid)
+- **Section margin:** 96px (larger than KovelAI's 80px — dramatic section breaks)
+- **Grid overlay:** An optional ultra-subtle grid pattern using `accent-grid` color creates a "command center" aesthetic in hero and dashboard sections
 
 ## Elevation & Depth
 
-Depth is achieved through **surface elevation hierarchy** — progressively
-lighter backgrounds as surfaces rise closer to the viewer. No box-shadows
-are used; the glassmorphic stack with backdrop-blur creates natural
-layering.
+Similar glass system to KovelAI but colder and harder:
 
-- **Level 0 (Canvas):** `#09090B` — the zinc-950 void.
-- **Level 1 (Sections):** `#0F0F14` — slightly elevated for section backgrounds.
-- **Level 2 (Cards):** `#16161D` — card surfaces with 1px border at ~10% white.
-- **Level 3 (Nav/Overlays):** `#0B0B0E` with `backdrop-filter: blur(12px)`.
-- **Level 4 (Interactive):** `#17171E` — glassmorphic cards with blur.
-- **No box-shadows.** Depth comes from progressive surface lightening only.
+- **Level 1:** Near-void surface with optional grid overlay pattern
+- **Level 2 (Card Dark):** `surface-container` with `outline-variant` border. No transparency — solid dark surfaces suggest physical hardware panels.
+- **Level 3 (Card Glass):** Lower blur than KovelAI (`blur(24px)` vs `blur(20px)`) with lower opacity purple tint (`0.05` vs `0.08`). More transparent = more dangerous energy showing through.
+- **Level 4 (Card Hot):** Hot pink tinted glass — `rgba(255, 64, 129, 0.08)` with pink border. Used for alert states, active processes, live data.
+- **Glow effects:** Primary buttons gain `box-shadow: 0 0 24px rgba(123, 107, 207, 0.4)` on hover — a diffuse neon glow.
 
 ## Shapes
 
-The shape language is **consistently rounded at 12-16px** — technical enough
-for enterprise credibility while soft enough to feel contemporary:
+Sharper than KovelAI. The default radius is `0.375rem` (6px) — tight, mechanical corners. Only CTAs get the pill treatment.
 
-- **Cards:** `16px` (xl) corner radius — the standard containment shape.
-- **Buttons:** `12px` (lg) for CTAs — slightly sharper than cards.
-- **Badges/Pills:** `9999px` (full) for status indicators and tags.
-- **Inputs:** `8px` (md) for form fields.
+- **Cards:** `md` (0.5rem / 8px) — barely rounded, industrial.
+- **Buttons:** `pill` (50px) — UMAC heritage. The rounded CTA against sharp containers creates visual tension.
+- **Inputs:** `DEFAULT` (0.375rem) — functional, not decorative.
+- **Terminal blocks:** `md` (0.5rem) — code containers look like actual terminal windows.
+- **No soft edges** — every surface is either sharp or pill. No in-between.
 
 ## Components
 
+### Terminal Blocks
+
+A unique component not present in KovelAI. Dark `surface-container-lowest` background with green text (success color), monospaced font, 1px border. Simulates actual terminal output for technical credibility.
+
 ### Navigation
-Sticky navbar with surface-overlay background and backdrop-blur. Minimal
-layout: logo + primary navigation links. Mobile hamburger menu for
-responsive breakpoints.
+
+Darker and tighter than KovelAI: `rgba(8,8,14,0.90)` with `blur(16px)`. 64px height (compact). Bottom border only — no shadow in default state. Shadow appears only on scroll.
 
 ### Hero
-Two-line H1 ("Autonomous Intelligence for Total Data Sovereignty") with
-sovereignty tagline. Dual CTA: primary (solid violet) and secondary
-(outline/ghost with primary text).
 
-### Value Proposition Cards
-Three-column grid: "Zero Cloud Dependency", "Institutional-Grade Intelligence",
-"Compliance by Architecture". Cards use surface-card background with 1px
-ghost borders and xl corner radius.
+Dense, information-rich hero. Background uses animated grid lines or particle field. Stats rendered in `mono-display` (JetBrains Mono 48px) with cyan `secondary` color. Labels in `label-sm` uppercase. The hero is the command center — not a marketing billboard.
 
-### Platform Showcase
-Three-column technical cards: "Zero-Trust Architecture", "Sovereign Inference",
-"Autonomous Operations". Same card pattern as value props but with deeper
-technical content.
+### Cards
 
-### Enterprise Intelligence
-Capability showcase: "Document Intelligence", "Autonomous Research",
-"Risk Assessment". Feature-level detail cards.
+Three tiers: Dark (data display), Glass (feature highlights), Hot (alerts/live). Each has distinct border treatment and background opacity. Hover states add subtle border brightening, never background lightening.
 
-### Contact Section
-Contact form with input fields using surface-card backgrounds, md corner
-radius, and violet-focused form submission button.
+### Footer
 
-## Do's and Don'ts
+Ultra-minimal. Single `outline-variant` top border separating it from content. `surface-container-lowest` background — the darkest usable surface. Copyright and links in `on-surface-variant` (muted). No heavy multi-column grid — ShadowTagAI's footer is a single line with essentials.
 
-- Do use violet (#7C3AED) only for interactive elements — buttons, links, active states
-- Do use emerald (#0DF274) exclusively for status/success/online indicators
-- Do maintain the zinc surface elevation hierarchy (950 → card → elevated → interactive)
-- Do use 1px borders at ~10% white opacity for card edge definition
-- Don't use pure black (#000000) for backgrounds — always zinc-950 (#09090B)
-- Don't use box-shadows — rely on surface elevation and backdrop-blur
-- Don't use violet decoratively — it must always signal interactivity
-- Don't use emerald for branding or decoration — it means "success/active" only
-- Don't use rounded corners larger than 16px — stay technical and institutional
+## Motion
+
+Motion is restrained and purposeful — more subtle than KovelAI. ShadowTagAI's interface should feel stable, not animated.
+
+- **Entry:** `opacity: 0 → 1` only (no translateY). Duration: `300ms ease-out`. Minimal stagger: `50ms`.
+- **Hover:** Glow shadow addition only. No translation. Duration: `200ms ease`.
+- **Active:** `scale(0.97)` — tighter compression than KovelAI's `0.98`. Duration: `80ms ease`.
+- **Focus:** Ring appears instantly — no animation. Solid 2px.
+- **Data updates:** Counter rolls use monospace font to prevent layout shift. `tabular-nums` for all numeric data.
+- **Reduced motion:** All motion removed entirely (not softened) — this is a professional tool.

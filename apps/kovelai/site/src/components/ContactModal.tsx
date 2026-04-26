@@ -1,15 +1,63 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { type FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
-export default function ContactModal() {
+interface ContactModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  const closeModal = () => {
-    document.getElementById('contactModal')?.classList.remove('modal-overlay--visible');
+  // Focus trap + Escape handler
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // Focus the close button when modal opens
+    setTimeout(() => closeButtonRef.current?.focus(), 50);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+
+      // Focus trap: Tab cycling within modal
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  const handleClose = useCallback(() => {
     if (submitted) setSubmitted(false);
-  };
+    onClose();
+  }, [submitted, onClose]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,7 +78,7 @@ export default function ContactModal() {
         toast.classList.add('toast--visible');
         setTimeout(() => toast.classList.remove('toast--visible'), 4000);
       }
-      setTimeout(closeModal, 2000);
+      setTimeout(handleClose, 2000);
     } catch {
       // Silent fail with toast
     } finally {
@@ -38,31 +86,33 @@ export default function ContactModal() {
     }
   };
 
+  if (!isOpen) return null;
+
   return (
     <>
       {/* Toast */}
-      <div id="toast" className="toast">
+      <div id="toast" className="toast" role="status" aria-live="polite">
         ✓ Inquiry received. Our team will respond within 24 hours.
       </div>
 
       {/* Modal */}
       <div
-        id="contactModal"
-        className="modal-overlay"
+        className="modal-overlay modal-overlay--visible"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modalTitle"
         onClick={(e) => {
-          if (e.target === e.currentTarget) closeModal();
+          if (e.target === e.currentTarget) handleClose();
         }}
       >
-        <div className="modal-content">
+        <div className="modal-content" ref={modalRef}>
           <div className="flex justify-between items-center mb-8">
             <h3 id="modalTitle" className="text-2xl font-bold">
               Contact KovelAI
             </h3>
             <button
-              onClick={closeModal}
+              ref={closeButtonRef}
+              onClick={handleClose}
               className="bg-transparent border-none text-[#998f81] cursor-pointer text-2xl hover:text-primary-text transition-colors"
               aria-label="Close modal"
             >
@@ -81,7 +131,13 @@ export default function ContactModal() {
           ) : (
             <form onSubmit={handleSubmit}>
               {/* Honeypot */}
-              <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" />
+              <input
+                type="text"
+                name="_honey"
+                className="hidden"
+                tabIndex={-1}
+                autoComplete="off"
+              />
               <input type="hidden" name="sheet_name" value="KovelAI" />
               <input type="hidden" name="source" value="kovelai.com" />
 
@@ -142,7 +198,12 @@ export default function ContactModal() {
                   >
                     Subject
                   </label>
-                  <select id="kv-subject" name="inquiry_type" className="modal-input" style={{ appearance: 'auto' }}>
+                  <select
+                    id="kv-subject"
+                    name="inquiry_type"
+                    className="modal-input"
+                    style={{ appearance: 'auto' }}
+                  >
                     <option value="demo">Schedule a Demo</option>
                     <option value="enterprise">Enterprise Pricing</option>
                     <option value="compliance">Compliance Question</option>
