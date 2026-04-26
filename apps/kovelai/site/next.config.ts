@@ -1,8 +1,10 @@
 import type { NextConfig } from 'next';
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const nextConfig: NextConfig = {
-  output: 'export',
-  distDir: '../public',
+  // Static export for Firebase Hosting deployment
+  ...(isProd && { output: 'export', distDir: '../public' }),
   images: {
     unoptimized: true,
   },
