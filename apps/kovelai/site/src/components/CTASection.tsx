@@ -25,7 +25,7 @@ export default function CTASection({ onOpenModal }: CTASectionProps) {
           >
             Start Free Trial
           </a>
-          <button onClick={onOpenModal} className="btn-ghost text-base py-3 px-8">
+          <button type="button" onClick={onOpenModal} className="btn-ghost text-base py-3 px-8">
             Schedule a Demo
           </button>
         </div>
