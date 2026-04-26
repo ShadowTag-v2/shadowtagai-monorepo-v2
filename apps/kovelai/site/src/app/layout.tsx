@@ -69,8 +69,8 @@ export default function RootLayout({
               async
               src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
             />
-            {/* biome-ignore lint/security/noDangerouslySetInnerHtml: GA4 gtag — static server-rendered config, no user input */}
             <script
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: GA4 gtag bootstrap — static server-rendered analytics
               dangerouslySetInnerHTML={{
                 __html: `
                   window.dataLayer = window.dataLayer || [];
@@ -83,9 +83,9 @@ export default function RootLayout({
           </>
         )}
         <link rel="canonical" href="https://kovelai.com/" />
-        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: LD+JSON structured data — static server-rendered SEO markup */}
         <script
           type="application/ld+json"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: LD+JSON structured data — static server-rendered SEO markup
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
