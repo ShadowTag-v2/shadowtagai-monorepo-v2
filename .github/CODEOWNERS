@@ -6,18 +6,23 @@
 /.github/workflows/ @ehanc69
 /.github/dependabot.yml @ehanc69
 /.github/CODEOWNERS @ehanc69
+/lighthouserc.json @ehanc69
 
 # Monorepo governance (immutable zone)
 /AGENTS.md @ehanc69
 /GEMINI.md @ehanc69
+/.ruler/AGENTS.md @ehanc69
+/.ruler/GEMINI.md @ehanc69
 /monorepo_manifest.yaml @ehanc69
 /antigravity-mcp-config.json @ehanc69
 /BUSINESS_CONTEXT_LOCKED.md @ehanc69
 /RISK_REGISTER.md @ehanc69
+/global.json @ehanc69
 
 # Core apps
 /apps/counselconduit/ @ehanc69
 /apps/kovelai/ @ehanc69
+/apps/shadowtagai/ @ehanc69
 /apps/aiyou_stack/ @ehanc69
 /apps/lawtrack-ui/ @ehanc69
 
@@ -25,11 +30,13 @@
 /scripts/auth_github_app.py @ehanc69
 /scripts/upload_secrets_to_gcp.sh @ehanc69
 /.pre-commit-config.yaml @ehanc69
+/.gitleaksignore @ehanc69
 /firestore.rules @ehanc69
 /storage.rules @ehanc69
 
 # Infrastructure
 /infra/ @ehanc69
+/infrastructure-pulumi/ @ehanc69
 /.tofu/ @ehanc69
 
 # Core libraries

@@ -92,6 +92,15 @@
         "SWITCHBOARD_WORKSPACE_ROOT": "."
       },
       "note": "Routing firewall and task orchestrator. Queues external data retrieval without exposing raw API keys to the agent context."
+    "mnemos-memory": {
+      "command": "node",
+      "args": ["external_repos/mnemos/build/index.js"],
+      "env": {
+        "MNEMOS_DATA_DIR": ".beads/mnemos"
+      },
+      "capability_owner": true,
+      "owns": ["memory_store", "memory_recall", "memory_search", "memory_graph"],
+      "note": "Mnemos Living Memory Architecture — persistent identity, autonomous maintenance, memory graphs with decay and reconsolidation. Cross-session agent memory."
     }
   },
   "routing_rules": {
@@ -101,7 +110,8 @@
     "ui_design": "StitchMCP",
     "architecture_reasoning": "sequential-thinking",
     "document_analysis": "antigravity-notebooklm-mcp",
-    "task_routing": "switchboard-mcp"
+    "task_routing": "switchboard-mcp",
+    "persistent_memory": "mnemos-memory"
   },
   "anti_patterns": [
     "NEVER use search_web for Google API documentation — use google-developer-knowledge MCP",

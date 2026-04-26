@@ -1147,3 +1147,34 @@ apps/aiyou_stack/aiyou-fastapi-services/tests/test_config.py:generic-api-key-inl
 apps/aiyou_stack/aiyou-fastapi-services/tests/test_config.py:generic-api-key-inline:17
 apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/k8s/05-secrets.yaml.template:generic-api-key-inline:22
 apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/k8s/05-secrets.yaml.template:generic-api-key-inline:25
+
+# ════════════════════════════════════════════════════════
+# AGENTS.md / GEMINI.md doctrine references — 2026-04-26
+# These are documentation references, NOT live credentials.
+# GitHub App ID, Client ID, and Stripe product/price IDs
+# are intentionally documented in agent instruction files.
+# ════════════════════════════════════════════════════════
+
+# GitHub App metadata (public identifiers, not secrets)
+.ruler/AGENTS.md:generic-api-key
+AGENTS.md:generic-api-key
+CLAUDE.md:generic-api-key
+CRUSH.md:generic-api-key
+WARP.md:generic-api-key
+.trae/rules/project_rules.md:generic-api-key
+firebender.json:generic-api-key
+opencode.json:generic-api-key
+.roo/mcp.json:generic-api-key
+
+# Stripe test product/price IDs (public publishable identifiers)
+.ruler/AGENTS.md:stripe-api-key
+AGENTS.md:stripe-api-key
+CLAUDE.md:stripe-api-key
+
+# App Client ID (public OAuth2 client, not a secret)
+.ruler/AGENTS.md:github-app-token
+AGENTS.md:github-app-token
+
+# docs/BUSINESS_CONTEXT_LOCKED.md Stripe references
+docs/BUSINESS_CONTEXT_LOCKED.md:stripe-api-key
+docs/BUSINESS_CONTEXT_LOCKED.md:generic-api-key
