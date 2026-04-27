@@ -1,4 +1,10 @@
-# Workflow: Batch Finish Open Files
+> [!WARNING]
+> **DEPRECATED (2026-04-27)** — Superseded by `/gated-maintenance`.
+> This workflow performs unbounded file iteration that risks modifying working code.
+> Use `/gated-maintenance` for bounded, safe maintenance passes.
+> Retained for reference only. Do not execute.
+
+# Workflow: Batch Finish Open Files — DEPRECATED
 
 **Trigger:** "Finish all open files" or "Batch complete".
 

@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# scripts/repo-oracle — Lookup-before-invention gate
+# Searches the monorepo for existing implementations before creating new ones.
+# Usage: scripts/repo-oracle <query> [--json]
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+if [[ $# -lt 1 ]]; then
+  echo "Usage: scripts/repo-oracle <query> [--json]"
+  echo "  Searches packages/, scripts/, .agents/skills/, libs/, apps/ for existing code."
+  exit 1
+fi
+
+QUERY="$1"
+JSON_OUTPUT=false
+[[ "${2:-}" == "--json" ]] && JSON_OUTPUT=true
+
+# Delegate to the Python oracle if available
+ORACLE_PY="${REPO_ROOT}/packages/repo_oracle/oracle.py"
+if [[ -f "$ORACLE_PY" ]]; then
+  if [[ "$JSON_OUTPUT" == "true" ]]; then
+    exec python3 "$ORACLE_PY" "$QUERY" --json
+  else
+    exec python3 "$ORACLE_PY" "$QUERY"
+  fi
+fi
+
+# Fallback: simple grep-based search
+echo "═══════════════════════════════════════════"
+echo "  Repo Oracle — Searching: ${QUERY}"
+echo "═══════════════════════════════════════════"
+
+SEARCH_DIRS=(
+  "${REPO_ROOT}/packages"
+  "${REPO_ROOT}/scripts"
+  "${REPO_ROOT}/.agents/skills"
+  "${REPO_ROOT}/libs"
+  "${REPO_ROOT}/apps"
+  "${REPO_ROOT}/tool_contracts"
+)
+
+FOUND=0
+for dir in "${SEARCH_DIRS[@]}"; do
+  if [[ -d "$dir" ]]; then
+    results=$(grep -rl --include="*.py" --include="*.sh" --include="*.ts" --include="*.yaml" --include="*.md" \
+      -i "$QUERY" "$dir" 2>/dev/null || true)
+    if [[ -n "$results" ]]; then
+      while IFS= read -r file; do
+        FOUND=$((FOUND + 1))
+        rel_path="${file#"${REPO_ROOT}/"}"
+        echo "  ✓ ${rel_path}"
+      done <<< "$results"
+    fi
+  fi
+done
+
+echo "  ─────────────────────────────────────────"
+echo "  Matches found: ${FOUND}"
+echo "═══════════════════════════════════════════"
+
+if [[ "$FOUND" -gt 0 ]]; then
+  echo "  ⚠ Existing implementations detected. Review before creating new code."
+fi

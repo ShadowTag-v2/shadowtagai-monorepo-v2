@@ -1,0 +1,33 @@
+# ═══════════════════════════════════════════════════════════
+# repo.oracle.yaml — Repo Oracle Tool Contract
+# Version: 1.0.0
+# Purpose: Lookup-before-invention gate
+# ═══════════════════════════════════════════════════════════
+contract: repo.oracle
+version: 1
+
+trigger:
+  - agent is about to create a new file, module, or pattern
+  - agent is asked to implement a feature that may already exist
+  - /repo-pulse workflow invokes oracle for drift detection
+
+preconditions:
+  - query: MUST provide a search term or capability description
+  - scope: search covers packages/, scripts/, .agents/skills/, libs/, apps/
+
+invariants:
+  - lookup_before_invention: ALWAYS search before creating
+  - no_reinvention: if oracle finds >=80% match, agent MUST use existing code
+  - external_check: if no local match, check external_repos/ before writing from scratch
+
+postconditions:
+  - report: oracle returns structured JSON with matches, confidence scores, and file paths
+  - evidence: append search result to .agent/evidence/index.ndjson
+
+evidence:
+  - append to .agent/evidence/index.ndjson:
+      event: repo.oracle.query
+      query: <search-term>
+      matches_found: <count>
+      action_taken: reuse | create_new | defer
+      timestamp: ISO8601
