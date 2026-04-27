@@ -74,6 +74,11 @@ archive/
 # --- Data & Caches ---
 .lancedb/
 data/lancedb/
+**/data/lancedb/
+**/*.lance
+**/*.manifest
+**/*.txn
+**/*.bak
 data/intelligence_pipeline/
 data/aegaeon/
 data/sovereign_mlx/
