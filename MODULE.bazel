@@ -14,7 +14,11 @@ module(
 # Language rules — pinned versions
 # =============================================================================
 
-bazel_dep(name = "rules_python", version = "1.4.1")
+bazel_dep(name = "rules_python", version = "1.7.0")
+
+# Go rules — for apps/counselconduit/shield (ATP 5-19 risk interceptor)
+bazel_dep(name = "rules_go", version = "0.60.0")
+bazel_dep(name = "gazelle", version = "0.42.0")
 
 # TypeScript/JS rules — staged adoption (Phase 5+)
 # bazel_dep(name = "aspect_rules_js", version = "2.3.7")
@@ -32,3 +36,10 @@ python.toolchain(
     is_default = True,
     python_version = "3.14",
 )
+
+# =============================================================================
+# Go toolchain — pin to system Go (for shield sub-package)
+# =============================================================================
+
+go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
+go_sdk.download(version = "1.24.2")
