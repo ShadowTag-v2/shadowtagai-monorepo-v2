@@ -1,0 +1,46 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+	<main class="w-full max-w-6xl mx-auto px-6 py-24 flex flex-col items-center text-center min-h-screen justify-center">
+
+		<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+			<span class="text-sm font-medium text-emerald-100 tracking-wide uppercase">Powered by Nano Banana 2</span>
+		</div>
+
+		<h1 class="text-6xl md:text-8xl font-black tracking-tight mb-8">
+			Generate High-Conversion <br />
+			<span class="text-gradient">YouTube Thumbnails.</span>
+		</h1>
+
+		<p class="text-xl md:text-2xl text-zinc-400 max-w-2xl mb-12 leading-relaxed font-light">
+			Stop guessing what works. Thumbly uses Gemini 3.1 Flash Image to craft CTR-optimized imagery in under 3 seconds.
+		</p>
+
+		<div class="relative group inline-block">
+			<div class="absolute inset-0 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full blur-xl opacity-50 group-hover:opacity-100 transition duration-300"></div>
+			<a href="/studio" class="relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-black rounded-full text-lg font-bold hover:scale-105 active:scale-95 transition-transform duration-300">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:fill-current"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+				Enter Generator Studio
+			</a>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-32 w-full">
+			<div class="glass-panel p-8 rounded-3xl text-left border border-white/5 hover:-translate-y-2 transition-transform duration-300">
+				<h3 class="text-xl font-bold text-white mb-2">Subject Consistency</h3>
+				<p class="text-zinc-400">Maintains absolute perfect character and environment likeness across up to 5 individual subjects per generation.</p>
+			</div>
+			<div class="glass-panel p-8 rounded-3xl text-left border border-white/5 hover:-translate-y-2 transition-transform duration-300">
+				<h3 class="text-xl font-bold text-white mb-2">Stripe Ledger</h3>
+				<p class="text-zinc-400">Strict deterministic server-side credit checks preventing unentitled 4K rendering abuse.</p>
+			</div>
+			<div class="glass-panel p-8 rounded-3xl text-left border border-white/5 hover:-translate-y-2 transition-transform duration-300">
+				<h3 class="text-xl font-bold text-white mb-2">Flash Image Speed</h3>
+				<p class="text-zinc-400">Generates pro-tier 1280x720 multi-object compositions in under three seconds guaranteed.</p>
+			</div>
+		</div>
+
+	</main>
+</Layout>

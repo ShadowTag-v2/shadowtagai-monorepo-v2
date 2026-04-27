@@ -1,0 +1,39 @@
+{
+  "count": 49,
+  "search_query": "Which genes are differentially expressed between drug-treated and control cancer",
+  "research_question": "Which genes are differentially expressed between drug-treated and control cancer cell lines, and what biological pathways do they implicate?",
+  "papers": [
+    {
+      "title": "MicroRNAs and target genes as regulators of colon cancer immune signaling",
+      "source": "PaperSource.SEMANTIC_SCHOLAR",
+      "year": 2025,
+      "has_abstract": true
+    },
+    {
+      "title": "Identification of novel neutrophil-extracellular-traps-related genes as biomarkers for breast cancer prognosis and immunotherapy",
+      "source": "PaperSource.SEMANTIC_SCHOLAR",
+      "year": 2025,
+      "has_abstract": true
+    },
+    {
+      "title": "Development of a prognostic model related to mitochondria and programmed cell death-related genes in bladder cancer",
+      "source": "PaperSource.SEMANTIC_SCHOLAR",
+      "year": 2025,
+      "has_abstract": true
+    },
+    {
+      "title": "Exploration of propionate metabolism-related genes to predict prognosis and immunotherapy response in ovarian cancer",
+      "source": "PaperSource.SEMANTIC_SCHOLAR",
+      "year": 2025,
+      "has_abstract": true
+    },
+    {
+      "title": "Identifying Differentially Expressed tRNA-Derived Small Fragments as a Biomarker for the Progression and Metastasis of Colorectal Cancer",
+      "source": "PaperSource.SEMANTIC_SCHOLAR",
+      "year": 2022,
+      "has_abstract": true
+    }
+  ],
+  "status": "PASS",
+  "duration_seconds": 25.86
+}

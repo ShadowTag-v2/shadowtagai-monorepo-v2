@@ -1,0 +1,41 @@
+diff --git a/pipenv/patched/pip/_internal/index/package_finder.py b/pipenv/patched/pip/_internal/index/package_finder.py
+index ebeb118cc..9122946d4 100644
+--- a/pipenv/patched/pip/_internal/index/package_finder.py
++++ b/pipenv/patched/pip/_internal/index/package_finder.py
+@@ -503,13 +503,20 @@ class CandidateEvaluator:
+         """
+         Return the applicable candidates from a list of candidates.
+         """
+-        # Using None infers from the specifier instead.
++        # By default, do not allow prereleases solely because a specifier
++        # mentions one (for example, a transitive dependency like
++        # ">=4.2.0rc1"). However, preserve PEP 440 fallback behavior and allow
++        # prereleases when no final releases match, as long as prereleases were
++        # not explicitly disabled via release control.
+         if self._release_control is not None:
+             allow_prereleases = self._release_control.allows_prereleases(
+                 canonicalize_name(self._project_name)
+             )
+         else:
+             allow_prereleases = None
++        use_prerelease_fallback = allow_prereleases is None
++        if allow_prereleases is None:
++            allow_prereleases = False
+         specifier = self._specifier
+ 
+         # When using the pkg_resources backend we turn the version object into
+@@ -532,6 +539,14 @@ class CandidateEvaluator:
+             )
+         )
+ 
++        if not versions and candidates_and_versions and use_prerelease_fallback:
++            versions = set(
++                specifier.filter(
++                    (v for _, v in candidates_and_versions),
++                    prereleases=None,
++                )
++            )
++
+         applicable_candidates = [c for c, v in candidates_and_versions if v in versions]
+         filtered_applicable_candidates = filter_unallowed_hashes(
+             candidates=applicable_candidates,

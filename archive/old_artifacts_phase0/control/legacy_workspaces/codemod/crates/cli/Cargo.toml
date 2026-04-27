@@ -1,0 +1,79 @@
+[package]
+name = "codemod"
+version.workspace = true
+edition = "2021"
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+repository.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+ast-grep-config = { workspace = true }
+butterflow-models = { workspace = true }
+butterflow-core = { workspace = true }
+butterflow-state = { workspace = true }
+butterflow-runners = { workspace = true }
+codemod-sandbox = { workspace = true }
+codemod-telemetry = { workspace = true }
+codemod-mcp = { workspace = true }
+testing-utils = { workspace = true }
+codemod-llrt-capabilities = { workspace = true }
+language-core = { workspace = true }
+semantic-factory = { workspace = true }
+tokio = { workspace = true }
+clap = { version = "4.5", features = ["derive"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing = "0.1"
+rmcp = { workspace = true, features = ["transport-io"] }
+flate2 = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde_json_canonicalizer = { workspace = true }
+serde_yaml = { workspace = true }
+anyhow = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+log = { workspace = true }
+env_logger = { workspace = true }
+regex = { workspace = true }
+walkdir = { workspace = true }
+tempfile = { workspace = true }
+num_cpus = "1.16"
+thiserror = { workspace = true }
+dirs = { workspace = true }
+tar = { workspace = true }
+urlencoding = "2.1"
+humantime = "2.1"
+inquire = "0.7"
+console = "0.15"
+rolldown = { git = "https://github.com/rolldown/rolldown.git", rev = "3d1985ab40923590b3ae9f626b2438d9543dc588" }
+
+# OIDC and HTTP dependencies
+reqwest = { workspace = true, features = ["stream", "multipart"] }
+oauth2 = "4.4"
+url = "2.4"
+base64 = "0.22"
+sha2 = "0.10"
+rand = "0.8"
+hyper = { version = "0.14", features = ["full"] }
+hyper-rustls = "0.24"
+rustls = "0.21"
+tokio-rustls = "0.24"
+percent-encoding = "2.3"
+open = "5.0"
+
+# Testing framework dependencies
+libtest-mimic = "0.8"
+similar = "2.0"
+ast-grep-language.workspace = true
+tabled = "0.20.0"
+posthog-rs = "0.3.7"
+async-trait.workspace = true
+indicatif = "0.18.0"
+
+[features]
+default = []
+docker = ["butterflow-models/docker", "butterflow-runners/docker"]
+podman = ["butterflow-models/podman", "butterflow-runners/podman"]

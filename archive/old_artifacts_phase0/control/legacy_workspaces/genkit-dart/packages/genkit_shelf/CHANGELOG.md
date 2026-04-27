@@ -1,0 +1,123 @@
+## 0.1.4
+
+ - updated internal dependencies.
+
+## 0.1.3
+
+ - updated internal dependencies.
+
+## 0.1.2
+
+ - updated internal dependencies.
+
+## 0.1.1
+
+### Other Changes
+
+ - Add context provider examples to `genkit_shelf` README and update schema helper syntax (#208)
+
+
+## 0.1.0+1
+
+ - Update a dependency to the latest release.
+
+## 0.1.0
+
+ - Graduate package to a stable release. See pre-releases prior to this version for changelog entries.
+
+## 0.1.0-dev.1
+
+ - Update a dependency to the latest release.
+
+## 0.0.1-dev.18
+
+> Note: This release has breaking changes.
+
+ - **REFACTOR**: make all classes `final` or `base` (#179).
+ - **REFACTOR**: centralize status-to-http mapping for transport errors (#181).
+ - **BREAKING** **REFACTOR**: renamed @Schematic() to @Schema() (#192).
+
+## 0.0.1-dev.17
+
+> Note: This release has breaking changes.
+
+ - **REFACTOR**: hide package:json_schema_builder (#167).
+ - **FIX**: fix strict casts (#165).
+ - **BREAKING** **FEAT**: move basic type functions to static creation method on SchemanticType (#154).
+
+## 0.0.1-dev.16
+
+ - Update a dependency to the latest release.
+
+## 0.0.1-dev.15
+
+ - **FEAT**: Add remote model support and enable serving actions via shelf (#143).
+
+## 0.0.1-dev.14
+
+ - **REFACTOR**: automate telemetry exporter configuration (#131).
+
+## 0.0.1-dev.13
+
+ - Update a dependency to the latest release.
+
+## 0.0.1-dev.12
+
+ - Update a dependency to the latest release.
+
+## 0.0.1-dev.11
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **REFACTOR**: update GenkitException to use a StatusCodes enum instead of raw integer status codes. (#68).
+
+## 0.0.1-dev.10
+
+ - **FEAT**: updated AnyOf support for union types in Schemantic, including helper class generation and schema type handling. (#62).
+
+## 0.0.1-dev.9
+
+> Note: This release has breaking changes.
+
+ - **FEAT**: use combining builder and header option (#52).
+ - **BREAKING** **FEAT**: implement Schemantic API redesign with $ prefixed schema definitions and static `$schema` for unified schema access. (#60).
+
+## 0.0.1-dev.8
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **REFACTOR**: renamed JsonExtensionType to SchemanticType (#44).
+
+## 0.0.1-dev.7
+
+ - Update a dependency to the latest release.
+
+## 0.0.1-dev.6
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: Refactor basic types into factory functions to support schema constraints (#34).
+
+## 0.0.1-dev.5
+
+ - **REFACTOR**: move the package-specific schema generator into a peer package (#31).
+
+## 0.0.1-dev.4
+
+ - Update a dependency to the latest release.
+
+## 0.0.1-dev.3
+
+> Note: This release has breaking changes.
+
+ - **FEAT**: bump analyzer dependency (#25).
+ - **FEAT**: added support for schema refs/defs in the schema generator (#22).
+ - **BREAKING** **REFACTOR**: renamed genkit_schema_builder package to schemantic (#26).
+
+## 0.0.1-dev.2
+
+ - Update a dependency to the latest release.
+
+## 0.0.1-dev.1
+
+- Initial release.

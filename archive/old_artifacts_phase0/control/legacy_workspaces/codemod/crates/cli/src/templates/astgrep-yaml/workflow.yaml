@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/codemod/codemod/refs/heads/main/schemas/workflow.json
+
+version: "1"
+nodes:
+  - id: apply-rules
+    name: Apply AST-grep Rules
+    steps:
+      - name: "Scan {language} files and apply fixes"
+        ast-grep:
+          config_file: "rules/config.yml"

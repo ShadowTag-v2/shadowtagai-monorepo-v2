@@ -1,0 +1,7 @@
+name: genkit_workspace
+
+packages:
+  - packages/**
+  - testapps/**
+
+# scripts are defined in the root pubspec.yaml

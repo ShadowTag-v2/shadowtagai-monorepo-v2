@@ -1,0 +1,13 @@
+
+# User Data & Backups
+Data/
+*.log
+*.tmp
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+Desktop.ini

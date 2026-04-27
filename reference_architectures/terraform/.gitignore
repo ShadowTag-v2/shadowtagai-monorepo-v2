@@ -1,5 +1,0 @@
-# Reference repos are shallow clones for reading only.
-# Exclude all source content — only track MANIFEST.md and this .gitignore.
-*/
-!.gitignore
-!MANIFEST.md

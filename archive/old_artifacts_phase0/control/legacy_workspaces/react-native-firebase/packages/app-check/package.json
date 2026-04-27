@@ -1,0 +1,77 @@
+{
+  "name": "@react-native-firebase/app-check",
+  "version": "24.0.0",
+  "author": "Invertase <oss@invertase.io> (http://invertase.io)",
+  "description": "React Native Firebase - App Check",
+  "main": "./dist/module/index.js",
+  "types": "./dist/typescript/lib/index.d.ts",
+  "scripts": {
+    "build": "genversion --esm --semi lib/version.ts",
+    "build:clean": "rimraf android/build && rimraf ios/build",
+    "build:plugin": "rimraf plugin/build && tsc --build plugin",
+    "lint:plugin": "eslint plugin/src/*",
+    "compile": "bob build",
+    "prepare": "yarn run build && yarn compile && yarn run build:plugin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/invertase/react-native-firebase/tree/main/packages/app-check"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "react",
+    "react-native",
+    "firebase",
+    "app-check",
+    "appCheck"
+  ],
+  "peerDependencies": {
+    "@react-native-firebase/app": "24.0.0",
+    "expo": ">=47.0.0"
+  },
+  "devDependencies": {
+    "expo": "^55.0.5",
+    "react-native-builder-bob": "^0.40.17",
+    "typescript": "^5.9.3"
+  },
+  "peerDependenciesMeta": {
+    "expo": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "exports": {
+    ".": {
+      "source": "./lib/index.ts",
+      "types": "./dist/typescript/lib/index.d.ts",
+      "default": "./dist/module/index.js"
+    },
+    "./app.plugin.js": "./app.plugin.js",
+    "./package.json": "./package.json"
+  },
+  "react-native-builder-bob": {
+    "source": "lib",
+    "output": "dist",
+    "targets": [
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "tsc": "../../node_modules/.bin/tsc"
+        }
+      ]
+    ]
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "dist/"
+  ]
+}
