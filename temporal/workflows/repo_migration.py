@@ -9,6 +9,7 @@ from dataclasses import dataclass
 @dataclass
 class MigrationState:
     """State for a repository migration workflow."""
+
     source_repo: str
     target_path: str
     phase: str = "pending"
