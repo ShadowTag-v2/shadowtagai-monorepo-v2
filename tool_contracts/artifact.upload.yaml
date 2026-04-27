@@ -1,4 +1,25 @@
-# tool_contracts/artifact.upload.yaml
-version: 1
-description: "Contract for artifact.upload operations."
-enforcement: advisory
+# Tool Contract: artifact.upload
+# Governs uploads to artifact storage (GCS, Releases, LFS).
+# Two-Lane Upload Doctrine (Invariant #111): Git is for source, not heavy payloads.
+
+tool_id: artifact.upload
+description: >
+  Upload binary artifacts, generated outputs, or large files to artifact storage.
+  Per Invariant #111, heavy payloads go to GCS/Releases — not Git.
+risk_level: medium
+requires_state_b: false
+
+preconditions:
+  - name: manifest_created
+    type: check
+    description: >
+      An artifact manifest (URI, sha256, owner, retention_class, source, status)
+      MUST be committed to Git per Invariant #114. The payload itself is NOT committed.
+
+  - name: size_gate
+    type: check
+    description: Verify file does not exceed upload_policy.yaml size limits.
+
+evidence_requirements:
+  - type: log_upload
+    description: Log artifact URI, sha256 hash, size, and destination bucket.
