@@ -1,8 +1,0 @@
-# Create runtime directories for SHADOWTAGAI
-# Format: Type Path Mode User Group Age
-
-# Log directory
-d /var/log/shadowtagai 0750 shadowtagai shadowtagai -
-
-# Runtime directory (for PID files, sockets, etc.)
-d /run/shadowtagai 0755 shadowtagai shadowtagai -

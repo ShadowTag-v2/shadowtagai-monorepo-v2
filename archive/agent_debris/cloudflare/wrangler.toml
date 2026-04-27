@@ -1,8 +1,0 @@
-name = "shadowtag-stripe-edge"
-main = "stripe_edge_worker.js"
-compatibility_date = "2026-04-02"
-workers_dev = true
-
-[vars]
-# In production, use `wrangler secret put STRIPE_WEBHOOK_SECRET`
-ENVIRONMENT = "production"
