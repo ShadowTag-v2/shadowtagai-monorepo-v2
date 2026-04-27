@@ -7,15 +7,16 @@
 
 ```text
 Monorepo OS
-  ├── Source Truth        Git-tracked canonical code only
-  ├── Artifact Truth      GCS/Releases/LFS-by-exception, with manifests
-  ├── Build Truth         Bazel + BEP
-  ├── Execution Truth     Dagger (future) / scripts (current)
-  ├── Safety Truth        ToolGateway contracts + Betterleaks
-  ├── Evidence Truth      OTel + .agent/evidence/ + BEP JSON
-  ├── Push Truth          GitHub App short-lived tokens + preflight gates
-  ├── Memory Truth        .memory/ atoms + events.ndjson
-  └── Task Truth          .beads/ issues + session ledger
+  ├── Source Truth           Git-tracked canonical code only
+  ├── Artifact Truth         GCS/Releases/LFS-by-exception, with manifests
+  ├── Build Truth            Bazel + BEP
+  ├── Execution Truth        Dagger (future) / scripts (current)
+  ├── Safety Truth           ToolGateway contracts + Betterleaks
+  ├── Evidence Truth         OTel + .agent/evidence/ + BEP JSON
+  ├── Push Truth             GitHub App short-lived tokens + preflight gates
+  ├── Memory Truth           .memory/ atoms + events.ndjson
+  ├── Task Truth             .beads/ issues + session ledger
+  └── Client Action Truth    Firebase Tool Bridge — registry + gate + evidence
 ```
 
 ## Subsystem Registry
@@ -31,6 +32,7 @@ Monorepo OS
 | **Evidence** | `.agent/evidence/` | reports only | Flight recorder |
 | **Index Fabric** | `index_policy.yaml` | yes | Multi-index routing |
 | **Upload Policy** | `upload_policy.yaml` | yes | Two-lane upload doctrine |
+| **Firebase Tool Bridge** | `packages/firebase_tool_bridge/` | yes | Client Action Truth — function registry, confirmation gate, evidence |
 
 ## Core Doctrine
 
@@ -123,6 +125,21 @@ locations. The `.gitignore` already excludes generated Ruler output files.
 Evidence reports from `.agent/evidence/` are referenced in Beads issues.
 Every push attempt records evidence in `.agent/evidence/push/`.
 
+### Client Action Truth (Firebase Tool Bridge)
+Firebase AI Logic function calls flow through the Tool Bridge:
+
+```text
+Model proposes → FunctionRegistry validates → ConfirmationGate checks risk
+  → App callable executes → EvidenceLogger records → SDK returns to model
+```
+
+- **Registry** (`registry.py`): Whitelists functions with `RiskTier` classification
+- **Bridge** (`bridge.py`): Dispatch core — validates, gates, executes, logs
+- **Evidence** (`evidence.py`): Append-only NDJSON to `.agent/evidence/function_calls.ndjson`
+- **Contract**: `tool_contracts/firebase.function_bridge.yaml` governs behavior
+- HIGH/CRITICAL risk functions require user confirmation before execution
+- Args are SHA-256 hashed in evidence — raw args are NEVER stored
+
 ## Version History
 
 | Version | Date | Changes |
@@ -130,3 +147,4 @@ Every push attempt records evidence in `.agent/evidence/push/`.
 | v1.0 | 2026-04-27 | Initial Monorepo OS integration |
 | v1.1 | 2026-04-27 | Phase 6: BUILD coverage complete (12 targets), shield go_test, .mypy_cache gitignore, 60 GiB disk recovery |
 | v1.2 | 2026-04-27 | Phase 6 finalized: 27.3 GiB reclaimed (archive/, .gitnexus/, .mypy_cache/), Go 6/6 + Python 201/201 pass, Bazel 14 targets resolved, heartbeat 11/0/1, 3 new quality-gate beads seeded (ISSUE-014–016) |
+| v1.3 | 2026-04-27 | Client Action Truth: Firebase Tool Bridge implemented (bridge.py + registry.py + evidence.py), BUILD.bazel + 22-test suite, ConfirmationProvider gate for HIGH/CRITICAL risk, hook system for extensibility |
