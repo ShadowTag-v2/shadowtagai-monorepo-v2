@@ -2,7 +2,7 @@
 # scripts/repo-oracle — Lookup-before-invention gate
 # Searches the monorepo for existing implementations before creating new ones.
 # Usage: scripts/repo-oracle <query> [--json]
-set -euo pipefail
+set -uo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
@@ -26,7 +26,7 @@ if [[ -f "$ORACLE_PY" ]]; then
   fi
 fi
 
-# Fallback: simple grep-based search
+# Fallback: ripgrep-based search (fast, respects .gitignore)
 echo "═══════════════════════════════════════════"
 echo "  Repo Oracle — Searching: ${QUERY}"
 echo "═══════════════════════════════════════════"
@@ -41,19 +41,38 @@ SEARCH_DIRS=(
 )
 
 FOUND=0
-for dir in "${SEARCH_DIRS[@]}"; do
-  if [[ -d "$dir" ]]; then
-    results=$(grep -rl --include="*.py" --include="*.sh" --include="*.ts" --include="*.yaml" --include="*.md" \
-      -i "$QUERY" "$dir" 2>/dev/null || true)
-    if [[ -n "$results" ]]; then
+
+# Use ripgrep if available (fast, respects .gitignore)
+if command -v rg &>/dev/null; then
+  for dir in "${SEARCH_DIRS[@]}"; do
+    if [[ -d "$dir" ]]; then
       while IFS= read -r file; do
         FOUND=$((FOUND + 1))
         rel_path="${file#"${REPO_ROOT}/"}"
         echo "  ✓ ${rel_path}"
-      done <<< "$results"
+      done < <(rg -l -i \
+        --glob '*.py' --glob '*.sh' --glob '*.ts' --glob '*.tsx' --glob '*.yaml' --glob '*.yml' --glob '*.md' \
+        --glob '!node_modules/**' --glob '!.next/**' --glob '!.venv/**' --glob '!__pycache__/**' \
+        --glob '!*.min.js' --glob '!dist/**' --glob '!build/**' \
+        "$QUERY" "$dir" 2>/dev/null || true)
     fi
-  fi
-done
+  done
+else
+  # Fallback: grep with exclusions
+  EXCLUDE_DIRS="--exclude-dir=node_modules --exclude-dir=.next --exclude-dir=.venv --exclude-dir=__pycache__ --exclude-dir=dist --exclude-dir=build --exclude-dir=.git"
+  for dir in "${SEARCH_DIRS[@]}"; do
+    if [[ -d "$dir" ]]; then
+      while IFS= read -r file; do
+        [[ -z "$file" ]] && continue
+        FOUND=$((FOUND + 1))
+        rel_path="${file#"${REPO_ROOT}/"}"
+        echo "  ✓ ${rel_path}"
+      done < <(grep -rl $EXCLUDE_DIRS \
+        --include="*.py" --include="*.sh" --include="*.ts" --include="*.yaml" --include="*.md" \
+        -i "$QUERY" "$dir" 2>/dev/null || true)
+    fi
+  done
+fi
 
 echo "  ─────────────────────────────────────────"
 echo "  Matches found: ${FOUND}"
