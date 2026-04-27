@@ -1,0 +1,4 @@
+# tool_contracts/repo.large_file_scan.yaml
+version: 1
+description: "Contract for repo.large_file_scan operations."
+enforcement: advisory

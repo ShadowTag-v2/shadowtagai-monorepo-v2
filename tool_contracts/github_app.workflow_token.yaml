@@ -1,0 +1,4 @@
+# tool_contracts/github_app.workflow_token.yaml
+version: 1
+description: "Contract for github_app.workflow_token operations."
+enforcement: advisory

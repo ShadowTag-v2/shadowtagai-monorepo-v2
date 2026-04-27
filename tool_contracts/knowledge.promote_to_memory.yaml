@@ -1,0 +1,4 @@
+# tool_contracts/knowledge.promote_to_memory.yaml
+version: 1
+description: "Contract for knowledge.promote_to_memory operations."
+enforcement: advisory

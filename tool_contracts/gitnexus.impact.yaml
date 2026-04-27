@@ -1,0 +1,4 @@
+# tool_contracts/gitnexus.impact.yaml
+version: 1
+description: "Contract for gitnexus.impact operations."
+enforcement: advisory

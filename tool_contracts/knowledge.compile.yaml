@@ -1,0 +1,4 @@
+# tool_contracts/knowledge.compile.yaml
+version: 1
+description: "Contract for knowledge.compile operations."
+enforcement: advisory

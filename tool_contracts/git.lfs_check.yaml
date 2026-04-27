@@ -1,0 +1,4 @@
+# tool_contracts/git.lfs_check.yaml
+version: 1
+description: "Contract for git.lfs_check operations."
+enforcement: advisory

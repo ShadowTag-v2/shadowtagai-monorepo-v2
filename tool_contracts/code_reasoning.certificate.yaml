@@ -1,0 +1,4 @@
+# tool_contracts/code_reasoning.certificate.yaml
+version: 1
+description: "Contract for code_reasoning.certificate operations."
+enforcement: advisory

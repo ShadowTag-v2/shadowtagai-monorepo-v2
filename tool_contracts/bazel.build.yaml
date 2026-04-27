@@ -1,0 +1,4 @@
+# tool_contracts/bazel.build.yaml
+version: 1
+description: "Contract for bazel.build operations."
+enforcement: advisory

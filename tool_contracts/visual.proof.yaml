@@ -1,0 +1,4 @@
+# tool_contracts/visual.proof.yaml
+version: 1
+description: "Contract for visual.proof operations."
+enforcement: advisory
