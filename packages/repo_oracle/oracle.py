@@ -15,6 +15,7 @@ from reinventing existing infrastructure.
 
 from __future__ import annotations
 
+import datetime
 import json
 import logging
 import subprocess
@@ -176,6 +177,24 @@ class RepoOracle:
         }
 
 
+def _log_evidence(repo_root: Path, query: str, match_count: int) -> None:
+    """Append a repo.oracle.query event to the evidence flight recorder."""
+    evidence_dir = repo_root / ".agent" / "evidence"
+    evidence_file = evidence_dir / "index.ndjson"
+    try:
+        evidence_dir.mkdir(parents=True, exist_ok=True)
+        event = {
+            "event": "repo.oracle.query",
+            "query": query,
+            "matches": match_count,
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        }
+        with open(evidence_file, "a") as f:
+            f.write(json.dumps(event) + "\n")
+    except OSError:
+        logger.warning("Failed to write evidence to %s", evidence_file)
+
+
 def main() -> None:
     """CLI entrypoint for scripts/repo-oracle delegation."""
     if len(sys.argv) < 2:
@@ -191,6 +210,9 @@ def main() -> None:
 
     results = oracle.grep_pattern(query, max_results=25)
     summary = oracle.summary()
+
+    # Log to evidence flight recorder
+    _log_evidence(repo_root, query, len(results))
 
     if json_output:
         print(json.dumps({"query": query, "matches": results, "summary": summary}, indent=2))
