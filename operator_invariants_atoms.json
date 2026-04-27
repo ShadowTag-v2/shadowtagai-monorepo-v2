@@ -111,6 +111,28 @@
       "source_type": "operator_invariants",
       "source_ref": "operator_invariants.json",
       "tags": ["git", "remote", "monorepo"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "autolint_daemon",
+      "predicate": "scope_boundary",
+      "object_text": "Autolint daemons may perform deterministic formatting and lint autofixes only. No broad refactors, archive deletion, history rewrites, dependency migrations, IDE hot-swaps, or production-affecting changes.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#113",
+      "tags": ["autolint", "scope", "safety", "canonical"]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "artifact_upload",
+      "predicate": "manifest_requirement",
+      "object_text": "Non-source payloads moved out of Git must have an artifact manifest (URI, sha256, owner, retention_class, source, status, retrieval_instructions). Manifest is committed; payload is not.",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json#114",
+      "tags": ["artifact", "manifest", "two-lane", "canonical"]
     }
   ]
 }

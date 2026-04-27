@@ -148,3 +148,6 @@ Model proposes → FunctionRegistry validates → ConfirmationGate checks risk
 | v1.1 | 2026-04-27 | Phase 6: BUILD coverage complete (12 targets), shield go_test, .mypy_cache gitignore, 60 GiB disk recovery |
 | v1.2 | 2026-04-27 | Phase 6 finalized: 27.3 GiB reclaimed (archive/, .gitnexus/, .mypy_cache/), Go 6/6 + Python 201/201 pass, Bazel 14 targets resolved, heartbeat 11/0/1, 3 new quality-gate beads seeded (ISSUE-014–016) |
 | v1.3 | 2026-04-27 | Client Action Truth: Firebase Tool Bridge implemented (bridge.py + registry.py + evidence.py), BUILD.bazel + 22-test suite, ConfirmationProvider gate for HIGH/CRITICAL risk, hook system for extensibility |
+| v1.4 | 2026-04-27 | Beads capture, guardian patch, CI drift gates, MIRAS memory atoms, ADR-0006 VPC egress |
+| v1.5 | 2026-04-27 | Cross-reference: 8 operator invariants (104,111,112,121,129,131,136,137), 4 enforcement scripts |
+| v1.6 | 2026-04-27 | Governance completion: Invariants #113 (Autolint Scope Boundary) and #114 (Artifact Manifest Requirement) added. 10 invariants total. Memory atoms wired. Upload subsystem fully governed. |

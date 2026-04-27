@@ -38,5 +38,15 @@
     "id": 137,
     "name": "Taste Is A Gate, Not A Vibe",
     "rule": "Taste Skill concepts may guide design output, but repo-owned design.md, tokens.css, screenshots, accessibility checks, and lint gates remain the source of truth."
+  },
+  {
+    "id": 113,
+    "name": "Autolint Scope Boundary",
+    "rule": "Autolint daemons may perform deterministic formatting and lint autofixes only. They may not perform broad refactors, archive deletion, history rewrites, dependency migrations, IDE hot-swaps, or direct production-affecting changes. Non-lint architectural changes require a separate branch, GitNexus impact check, build/test evidence, and human review."
+  },
+  {
+    "id": 114,
+    "name": "Artifact Manifest Requirement",
+    "rule": "Any non-source payload moved out of Git must be represented by an artifact manifest containing URI, sha256, owner, retention class, source, status, and retrieval instructions. The manifest is committed; the payload is not."
   }
 ]
