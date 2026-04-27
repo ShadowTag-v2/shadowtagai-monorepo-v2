@@ -1,115 +1,310 @@
-# ANTIGRAVITY_CONTROL_PLANE.md
+# ANTIGRAVITY_CONTROL_PLANE.md — v2.0
 
-## Purpose
+> **Status:** LOCKED — Canonical control plane specification for the UphillSnowball monorepo.
+>
+> **Last updated:** 2026-04-27
 
-This document defines the control plane for the pnkln workspace.
+---
 
-## Operator entrypoint
+## Core Thesis
 
-Open the workspace through:
+**Antigravity is a control plane, not just another editor.**
 
-`pnkln.code-workspace`
+It is a VS Code fork with agent-first capabilities. The fastest path is not "rewrite the IDE."
+The path is:
 
-That is the intended top-level entry for daily work.
+1. **Stabilize** the VS Code-compatible base
+2. **Harden** the agent loop
+3. **Make remote compute first-class**
+4. **Make every agent action observable**
+5. **Make every agent action reversible**
 
-## Sources of truth
+---
 
-### Workspace truth
+## Pillar 1 — VS Code Base Stabilization
 
-- `monorepo_manifest.yaml`
+### Entry Point
 
-### MCP truth
+```
+pnkln.code-workspace
+```
 
-- `antigravity-mcp-config.json`
+This is the ONLY authorized workspace entry point. All multi-root folders, settings, and
+extension recommendations flow from this file.
 
-### Agent behavior truth
+### Extension Compatibility
 
-- `AGENTS.md`
+Antigravity inherits the full VS Code extension ecosystem. Extensions are additive capabilities,
+not replacements for MCP servers. If an MCP server can perform the operation, the MCP server wins.
 
-### Surviving pack truth
+### Settings Hierarchy
 
-- `docs/UPDATED_pnkln_PACK.md`
+| Layer | File | Scope |
+|-------|------|-------|
+| Workspace | `pnkln.code-workspace` | Multi-root layout, shared settings |
+| Project | `.vscode/settings.json` | Per-root overrides |
+| User | `~/.config/Code/User/settings.json` | Global defaults |
 
-## Multi-root layout
+### Multi-Root Layout
 
 The workspace is organized as one control plane with multiple live roots:
 
-- monorepo root
-- `apps/counselconduit`
-- `labs/uphillsnowball`
-- `apps/pnkln-stack_stack/pnkln-stack-fastapi-services`
-- `apps/pnkln-stack_stack/Pipeline`
-- `apps/pnkln-stack_stack/nascent-apollo`
+- `/` — Monorepo root (canonical)
+- `apps/kovelai` — KovelAI (Firebase Hosting, Next.js 16)
+- `apps/counselconduit` — CounselConduit (Cloud Run, FastAPI)
+- `labs/uphillsnowball` — R&D (Apple Silicon, local-only)
 
-## Product split
+---
 
-### counselconduit
+## Pillar 2 — Agent Loop Hardening
 
-Google-native MVP path.
+### Anti-Theater Protocol
 
-- project: `shadowtag-omega-v4`
-- model: `gemini-3.1-flash-lite-preview`
+"Agent theater" is the #1 failure mode: plans claiming files exist, scripts failing silently,
+false confidence reports. The antidote is **verification at every step**.
 
-### uphillsnowball
+| Checkpoint | Enforcement |
+|-----------|-------------|
+| File existence | `view_file` or `list_dir` before claiming a file exists |
+| Build success | `run_command` with exit code check, not just "I ran the command" |
+| Test pass | Actual test output parsed, not assumed |
+| Deploy success | Live URL verified via `chrome-devtools-mcp`, not assumed |
+| Auth validity | Token expiry checked before push, not assumed |
 
-Apple Silicon local R&D path.
+### MCP-First Routing
 
-- used for experimentation and method improvement
-- not the product control plane
+If an operation CAN be performed by an MCP server, it MUST be.
 
-## Agent split
+| Operation | MCP Server | Fallback |
+|-----------|-----------|----------|
+| Google API docs | `google-developer-knowledge` | NEVER `search_web` |
+| Firebase deploy | `firebase-mcp-server` | NEVER raw terminal |
+| Screenshots/DOM | `chrome-devtools-mcp` | NEVER external tools |
+| Design systems | `StitchMCP` | NEVER hand-coded tokens |
+| Architecture reasoning | `sequential-thinking` | NEVER ad-hoc lists |
 
-### Gemini Code Assist
+### Pre-Action Memory Gate
 
-- trusted workspace
-- YOLO mode allowed inside canonical workspace root only
+Before EVERY action:
 
-### Cline
+1. Check KI summaries for existing patterns
+2. Verify the target MCP server is UP (Fleet Vanguard)
+3. Establish temporal anchor (`git log -n 1`)
+4. Confirm auth state (GitHub, Firebase, GCP)
 
-- auto-approve allowed for routine in-workspace actions
-- broader risky work should happen on disposable branches
+### Post-Edit Validation Loop
 
-### Pickle Rick
+After EVERY file modification:
 
-- skills layer only
-- not a second control plane
-- must conform to `AGENTS.md`, `monorepo_manifest.yaml`, and `antigravity-mcp-config.json`
+1. `ruff check --fix` + `ruff format` (Python)
+2. `biome check --fix` (TypeScript/JS)
+3. Verify no new lint errors introduced
+4. If lint regression: temporal rollback (`git checkout -- <file>`)
 
-## MCP model
+### Execution State Machine
 
-There must be exactly one canonical MCP config:
+| State | Trigger | Behavior |
+|-------|---------|----------|
+| **A — Pure YOLO** | Standard work, known patterns | Execute unconstrained, parallelize |
+| **B — Clutch** | Force-push, migrations, auth changes | Plan → lock → research → bound → log → disengage |
 
-- `antigravity-mcp-config.json`
+---
 
-Other MCP-related files are adapters or retired surfaces only.
+## Pillar 3 — Remote Compute
 
-## Secret handling
+### Compute Topology
 
-- all API tokens belong in `.env`
-- no live secrets in committed workspace JSON
-- `.env.example` files define shape, not values
+```
+┌─────────────────────────────────────────────────┐
+│              ANTIGRAVITY CONTROL PLANE           │
+│         (VS Code fork + Agent + MCP Fleet)       │
+├─────────────────────────────────────────────────┤
+│                                                  │
+│  LOCAL (Apple Silicon M-series)                  │
+│  ├─ ANE: 10.22 TOPS neural inference             │
+│  ├─ MLX: Sovereign KV-cache slab architecture    │
+│  └─ CPU: Python 3.14.3, .NET 11.0               │
+│                                                  │
+│  GOOGLE CLOUD                                    │
+│  ├─ Cloud Run: CounselConduit API                │
+│  ├─ Firestore: Document database                 │
+│  ├─ Cloud Tasks: Job queue (BullMQ BANNED)       │
+│  ├─ Secret Manager: All secrets                  │
+│  └─ Firebase Hosting: KovelAI, ShadowTagAI       │
+│                                                  │
+│  COLAB (on-demand)                               │
+│  ├─ GPU/TPU: Training, heavy inference           │
+│  └─ Notebook: Interactive experimentation        │
+│                                                  │
+└─────────────────────────────────────────────────┘
+```
 
-## Merge truth
+### Compute Dispatch Rules
 
-The four live canonical roots remain:
+| Workload | Target | Rationale |
+|----------|--------|-----------|
+| Lint, format, git ops | Local CPU | Sub-second latency |
+| ML inference (<7B params) | Local ANE/MLX | Zero egress, sovereign |
+| ML inference (>7B params) | Colab GPU | Cost-effective burst |
+| Production API | Cloud Run | Managed, autoscaling |
+| Document storage | Firestore | Native Firebase integration |
+| Job scheduling | Cloud Tasks | Durable, exactly-once |
+| Static hosting | Firebase Hosting | CDN, SSL, custom domains |
 
-- `apps/pnkln-stack_stack/pnkln-stack-fastapi-services`
-- `apps/pnkln-stack_stack/cosmic-crab-payload`
-- `apps/pnkln-stack_stack/Pipeline`
-- `apps/pnkln-stack_stack/nascent-apollo`
+---
 
-## Operating rule
+## Pillar 4 — Observability
 
-Fix in this order:
+### Every Agent Action is Observable
 
-1. workspace truth
-2. merge truth
-3. MCP truth
-4. runtime truth
-5. product hardening
+No silent failures. No assumed success. Every action produces a verifiable trace.
 
-## Non-goals
+#### Beads Audit Trail
 
-- no second source of truth
-- no inline secrets
-- no revival of superseded thread artifacts
+```
+.beads/
+├── issues.jsonl          # Structured issue log (append-only)
+├── kairos_heartbeat.json # Daemon heartbeat (5-min cycles)
+└── session_pins/         # Active session state
+```
+
+Format for `issues.jsonl`:
+```json
+{"ts": "2026-04-27T07:00:00Z", "type": "lint_fix", "file": "api/routes.py", "detail": "F401 removed unused import"}
+```
+
+#### MCP Fleet Status Table
+
+Report at conversation start and after any server failure:
+
+| # | Server | Status | Tools |
+|---|--------|--------|-------|
+| 1 | StitchMCP | ✅ UP | 12 |
+| 2 | chrome-devtools-mcp | ✅ UP | 29 |
+| 3 | firebase-mcp-server | ✅ UP | 45 |
+| 4 | google-developer-knowledge | ✅ UP | 3 |
+| 5 | sequential-thinking | ✅ UP | 1 |
+
+#### Daemon Fleet Monitoring
+
+| Daemon | Script | Health Check |
+|--------|--------|-------------|
+| Dream Consolidation | `scripts/dream_consolidation.py` | KI count + timestamp |
+| Loop Steward | `scripts/loop_steward.py` | Task queue depth |
+| KAIROS | `scripts/kairos_daemon.py` | Heartbeat file |
+| pnkln-evolve | `scripts/pnkln_evolve.py` | Evolution log |
+| Omni-Autolint | `scripts/gca_autolint_daemon.py` | Last push timestamp |
+
+#### Git as Audit Log
+
+Every commit is a trace entry. Conventional Commits format enforced:
+
+```
+<type>(<scope>): <description>
+
+Types: feat, fix, chore, docs, refactor, test, ci, perf
+Scope: the affected package or module
+```
+
+---
+
+## Pillar 5 — Reversibility
+
+### Every Agent Action is Reversible
+
+No destructive operations without explicit human authorization.
+
+#### RULE 00: Immutable Infrastructure
+
+- **No `rm`, `unlink`, or destructive `>`** on existing files
+- Archive-only deactivation: `mv <file> _archive_<date>/`
+- Full spec: `.agents/RULE_00_IMMUTABLE_INFRASTRUCTURE.md`
+
+#### Temporal Rollback Protocol
+
+If a code change introduces a regression:
+
+1. **Lint regression:** `git checkout -- <file>` (NEVER `git reset --hard`)
+2. **Build regression:** Revert the specific commit with `git revert <sha>`
+3. **Deploy regression:** Firebase rollback to previous version
+4. **Data regression:** Firestore point-in-time recovery
+
+#### Archive-Only Deactivation
+
+When retiring a component:
+
+```bash
+# CORRECT — archive
+mv component/ archive/legacy_component_$(date +%Y-%m-%d)/
+
+# PROHIBITED — destruction
+rm -rf component/  # BANNED
+```
+
+---
+
+## Sources of Truth
+
+| Domain | File | Authority |
+|--------|------|-----------|
+| Workspace structure | `monorepo_manifest.yaml` | CANONICAL |
+| Agent behavior | `AGENTS.md` (via `.ruler/`) | CANONICAL |
+| Agent shim | `CLAUDE.md` | THIN SHIM |
+| MCP configuration | `antigravity-mcp-config.json` | CANONICAL |
+| Pricing & architecture | `BUSINESS_CONTEXT_LOCKED.md` | CANONICAL |
+| Operational risk | `RISK_REGISTER.md` | CANONICAL |
+| Control plane | This document | CANONICAL |
+
+### Fix Order
+
+When truth surfaces conflict, fix in this order:
+
+1. `monorepo_manifest.yaml` (workspace truth)
+2. `AGENTS.md` (agent behavior truth)
+3. `antigravity-mcp-config.json` (MCP truth)
+4. Runtime configuration
+5. Product hardening
+
+---
+
+## Secret Handling
+
+- **GCP Secret Manager** is the ONLY production secret store
+- `.env` files are **BANNED** (deprecated 2026-04-22)
+- Local secrets: `source scripts/load_mcp_secrets.sh`
+- MCP config: `${VAR}` references resolved by platform env injection
+- NEVER commit secrets to source control
+
+---
+
+## Agent Split
+
+### Antigravity (Primary)
+
+- Agent-first VS Code fork
+- YOLO mode (STATE A) for standard operations
+- Clutch mode (STATE B) for high-risk operations
+- MCP fleet: 5 servers, 90 tools
+
+### Claude Code (Secondary)
+
+- Async reviewer and cross-model coordination
+- Governed by CLAUDE.md shim pointing to AGENTS.md
+- Not a second control plane
+
+### Cline / Cursor / Others
+
+- Extension-layer agents only
+- Must conform to AGENTS.md, monorepo_manifest.yaml, antigravity-mcp-config.json
+- Not second control planes
+
+---
+
+## Non-Goals
+
+- No second source of truth for any domain
+- No inline secrets in code or config
+- No revival of superseded thread artifacts
+- No agent theater (claiming success without verification)
+- No terminal fallbacks for MCP-capable operations
+- No `rm`, `unlink`, or destructive operations without human authorization
