@@ -1,0 +1,39 @@
+name: design_system.lint
+risk: medium
+
+description: >
+  Enforces canonical design tokens, semantic color roles, component inheritance,
+  and accessibility checks before frontend UI changes are considered complete.
+  Taste Skill may guide design direction, but repo-owned tokens and visual proof
+  remain the source of truth.
+
+requires:
+  - design_md_present
+  - tokens_css_present
+  - biome_check
+  - design_system_lint
+  - visual_proof_for_ui_changes
+
+allowed_sources:
+  - design.md
+  - tokens.css
+  - CSS variables beginning with --st-
+  - approved theme files
+  - design/taste_profile.yaml
+
+blocks:
+  - raw_hex_color_in_component
+  - raw_rgb_hsl_color_in_component
+  - raw_spacing_value_in_component
+  - raw_z_index_in_component
+  - raw_transition_duration_in_component
+  - raw_shadow_in_component
+  - placeholder_ui_claim
+  - ui_success_without_artifact
+
+evidence:
+  - biome_report
+  - token_lint_report
+  - files_checked
+  - violations
+  - screenshot_or_video_path

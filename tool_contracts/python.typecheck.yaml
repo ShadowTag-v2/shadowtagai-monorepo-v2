@@ -1,0 +1,34 @@
+name: python.typecheck
+risk: medium
+
+description: >
+  Runs Python static type checking through Pyrefly. This is a source-quality
+  gate, not a formatter and not a replacement for tests.
+
+requires:
+  - canonical_python_scope
+  - pyrefly_available_or_pinned_precommit_hook
+  - pyproject_or_pyrefly_config_reviewed
+  - reports_directory
+
+forbidden:
+  - running_over_archive
+  - running_over_external_repos
+  - running_over_venv
+  - treating_typecheck_as_behavioral_test
+  - broad_baseline_failures_blocking_emergency_security_fix_without_override
+
+modes:
+  advisory:
+    command: pyrefly check --output-format=github
+    blocks_push: false
+  enforced:
+    command: pyrefly check --output-format=github
+    blocks_push: true
+
+evidence:
+  - command
+  - scope
+  - report_path
+  - failure_count
+  - mode

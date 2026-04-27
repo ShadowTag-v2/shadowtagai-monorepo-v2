@@ -160,4 +160,3 @@ gcloud container clusters update <CLUSTER_NAME> --region <REGION> \
 ```
 
 View in Cloud Billing > GKE Cost Allocation.
-
