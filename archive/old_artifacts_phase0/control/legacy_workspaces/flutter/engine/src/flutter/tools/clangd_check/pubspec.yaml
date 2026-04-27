@@ -20,4 +20,3 @@ dependencies:
 
 dev_dependencies:
   process_fakes: any
-

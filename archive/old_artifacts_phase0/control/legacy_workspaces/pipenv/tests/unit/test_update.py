@@ -414,4 +414,3 @@ def test_process_package_args_writes_to_pipfile_when_package_in_correct_category
     project.add_pipfile_entry_to_pipfile.assert_called_once_with(
         "requests", "requests", "==2.31.0", category="packages"
     )
-

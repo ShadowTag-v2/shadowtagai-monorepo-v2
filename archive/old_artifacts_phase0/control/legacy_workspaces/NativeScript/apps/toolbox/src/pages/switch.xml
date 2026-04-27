@@ -4,7 +4,7 @@
         </ActionBar>
     </Page.actionBar>
 
-    <GridLayout class="switch-demo-page">   
+    <GridLayout class="switch-demo-page">
       <ScrollView>
           <StackLayout ios:padding="20" visionos:padding="40">
 
@@ -22,7 +22,7 @@
                 <Label text="Default + Checked + Disabled" />
                 <Switch checked="true" isEnabled="false" col="1" />
             </GridLayout>
-            
+
             <GridLayout columns="*, auto" marginTop="24">
                 <Label text="Default + UnChecked + Disabled" />
                 <Switch checked="false" isEnabled="false" col="1" />
@@ -42,12 +42,12 @@
                 <Label text="Custom + Checked + Disabled" />
                 <Switch class="custom-switch" checked="true" isEnabled="false" col="1" />
             </GridLayout>
-            
+
             <GridLayout columns="*, auto" marginTop="24">
                 <Label text="Custom + UnChecked + Disabled" />
                 <Switch class="custom-switch" checked="false" isEnabled="false" col="1" />
             </GridLayout>
-            
+
              <GridLayout columns="*, auto" marginTop="24">
                 <Label text="Custom + Checked + Enabled + offBgColor" />
                 <Switch class="custom-switch" checked="true" backgroundColor="blue" offBackgroundColor="red" col="1" />

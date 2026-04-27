@@ -66,7 +66,7 @@ async function transform(root: SgRoot): Promise<string | null> {
       inside: {
         kind: "block_mapping_pair",
         has: {
-          field: "key", 
+          field: "key",
           kind: "plain_scalar",
           regex: "^services$"
         }
@@ -75,7 +75,7 @@ async function transform(root: SgRoot): Promise<string | null> {
         kind: "block_mapping_pair",
         has: {
           field: "key",
-          kind: "plain_scalar", 
+          kind: "plain_scalar",
           regex: "^links$"
         }
       }

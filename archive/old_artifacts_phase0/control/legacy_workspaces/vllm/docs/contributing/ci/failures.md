@@ -3,7 +3,7 @@
 What should I do when a CI job fails on my PR, but I don't think my PR caused
 the failure?
 
-- Check the dashboard of current CI test failures:  
+- Check the dashboard of current CI test failures:
   👉 [CI Failures Dashboard](https://github.com/orgs/vllm-project/projects/20)
 
 - If your failure **is already listed**, it's likely unrelated to your PR.
@@ -15,7 +15,7 @@ the failure?
 
 ## Filing a CI Test Failure Issue
 
-- **File a bug report:**  
+- **File a bug report:**
     👉 [New CI Failure Report](https://github.com/vllm-project/vllm/issues/new?template=450-ci-failure.yml)
 
 - **Use this title format:**
@@ -46,9 +46,9 @@ the failure?
 
     ```text
     ERROR 05-20 03:26:38 [dump_input.py:68] Dumping input data
-    --- Logging error ---  
-    Traceback (most recent call last):  
-      File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 203, in execute_model  
+    --- Logging error ---
+    Traceback (most recent call last):
+      File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 203, in execute_model
         return self.model_executor.execute_model(scheduler_output)
     ...
     FAILED failing/test.py:failing_test1 - Failure description
@@ -79,8 +79,8 @@ tail -525 ci_build.log | wl-copy
 ## Investigating a CI Test Failure
 
 1. Go to 👉 [Buildkite main branch](https://buildkite.com/vllm/ci/builds?branch=main)
-2. Bisect to find the first build that shows the issue.  
-3. Add your findings to the GitHub issue.  
+2. Bisect to find the first build that shows the issue.
+3. Add your findings to the GitHub issue.
 4. If you find a strong candidate PR, mention it in the issue and ping contributors.
 
 ## Reproducing a Failure

@@ -28,7 +28,7 @@ from fastmcp import FastMCP
 # Create an HTTP client for your API
 client = httpx.AsyncClient(base_url="https://api.example.com")
 
-# Load your OpenAPI spec 
+# Load your OpenAPI spec
 openapi_spec = httpx.get("https://api.example.com/openapi.json").json()
 
 # Create the MCP server
@@ -58,7 +58,7 @@ api_client = httpx.AsyncClient(
 
 # Create MCP server with authenticated client
 mcp = FastMCP.from_openapi(
-    openapi_spec=spec, 
+    openapi_spec=spec,
     client=api_client,
     timeout=30.0  # 30 second timeout for all requests
 )
@@ -128,14 +128,14 @@ mcp = FastMCP.from_openapi(
     route_maps=[
         # Analytics `GET` endpoints are tools
         RouteMap(
-            methods=["GET"], 
-            pattern=r"^/analytics/.*", 
+            methods=["GET"],
+            pattern=r"^/analytics/.*",
             mcp_type=MCPType.TOOL,
         ),
 
         # Exclude all admin endpoints
         RouteMap(
-            pattern=r"^/admin/.*", 
+            pattern=r"^/admin/.*",
             mcp_type=MCPType.EXCLUDE,
         ),
 
@@ -154,7 +154,7 @@ The default route maps are always applied after your custom maps, so you do not 
 
 ### Excluding Routes
 
-To exclude routes from the MCP server, use a route map to assign them to `MCPType.EXCLUDE`. 
+To exclude routes from the MCP server, use a route map to assign them to `MCPType.EXCLUDE`.
 
 You can use this to remove sensitive or internal routes by targeting them specifically:
 
@@ -218,11 +218,11 @@ def custom_route_mapper(route: HTTPRoute, mcp_type: MCPType) -> MCPType | None:
 
     elif "internal" in route.tags:
         return MCPType.EXCLUDE
-    
+
     # Convert user detail routes to templates even if they're POST
     elif route.path.startswith("/users/") and route.method == "POST":
         return MCPType.RESOURCE_TEMPLATE
-    
+
     # Use defaults for all other routes
     return None
 
@@ -254,7 +254,7 @@ mcp = FastMCP.from_openapi(
     client=client,
     mcp_names={
         "list_users__with_pagination": "user_list",
-        "create_user__admin_required": "create_user", 
+        "create_user__admin_required": "create_user",
         "get_user_details__admin_required": "user_detail",
     }
 )
@@ -286,7 +286,7 @@ mcp = FastMCP.from_openapi(
             mcp_type=MCPType.TOOL,
             mcp_tags={"write-operation", "api-mutation"}
         ),
-        
+
         # Add different tags to detail view endpoints
         RouteMap(
             methods=["GET"],
@@ -294,7 +294,7 @@ mcp = FastMCP.from_openapi(
             mcp_type=MCPType.RESOURCE_TEMPLATE,
             mcp_tags={"detail-view", "parameterized"}
         ),
-        
+
         # Add tags to list endpoints
         RouteMap(
             methods=["GET"],
@@ -372,16 +372,16 @@ from fastmcp.server.openapi import (
 )
 
 def customize_components(
-    route: HTTPRoute, 
+    route: HTTPRoute,
     component: OpenAPITool | OpenAPIResource | OpenAPIResourceTemplate,
 ) -> None:
     # Add custom tags to all components
     component.tags.add("openapi")
-    
+
     # Customize based on component type
     if isinstance(component, OpenAPITool):
         component.description = f"🔧 {component.description} (via API)"
-    
+
     if isinstance(component, OpenAPIResource):
         component.description = f"📊 {component.description}"
         component.tags.add("data")
@@ -405,7 +405,7 @@ By default, FastMCP only includes query parameters that have non-empty values. P
 # When calling this tool...
 await client.call_tool("search_products", {
     "category": "electronics",  # ✅ Included
-    "min_price": 100,           # ✅ Included  
+    "min_price": 100,           # ✅ Included
     "max_price": None,          # ❌ Excluded
     "brand": "",                # ❌ Excluded
 })
@@ -439,7 +439,7 @@ FastMCP handles array parameters according to OpenAPI specifications:
 # Query array with explode=true (default)
 # ?tags=red&tags=blue&tags=green
 
-# Query array with explode=false  
+# Query array with explode=false
 # ?tags=red,blue,green
 
 # Path array (always comma-separated)

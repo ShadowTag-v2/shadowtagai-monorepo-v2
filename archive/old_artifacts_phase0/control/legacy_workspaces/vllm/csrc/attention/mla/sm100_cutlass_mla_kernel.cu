@@ -234,7 +234,7 @@ void sm100_cutlass_mla_decode(
   at::cuda::CUDAGuard device_guard{(char)q_nope.get_device()};
   const cudaStream_t stream = at::cuda::getCurrentCUDAStream(q_nope.get_device());
   const int page_size = kv_c_and_k_pe_cache.sizes()[1];
-  
+
   // NOTE(alcanderian): IsPersistent has bug with manual split_kv.
   // Kernel will hang if batch is too large with large num_kv_splits. (for example bs=8, num_kv_splits=8)
   // Maybe per batch split kv will fix this.

@@ -14,7 +14,7 @@
     dispatch_queue_t asyncQueue = dispatch_queue_create("org.nativescript.TNSWidgets.fileHandle", NULL);
     dispatch_async(asyncQueue, ^(void) {
         NSError *error = nil;
-        
+
         if (@available(iOS 13.0, *)) {
             [self seekToEndReturningOffset:nil error:&error];
             [self writeData:data error:&error];
@@ -23,7 +23,7 @@
                 [self seekToEndOfFile];
                 [self writeData:data];
             } @catch (NSException *exception) {
-              
+
                 NSMutableDictionary * info = [NSMutableDictionary dictionary];
                    [info setValue:exception.name forKey:@"ExceptionName"];
                    [info setValue:exception.reason forKey:@"ExceptionReason"];
@@ -32,15 +32,15 @@
                    [info setValue:exception.userInfo forKey:@"ExceptionUserInfo"];
 
                 error = [[NSError alloc] initWithDomain:@"" code: 1 userInfo:info];
-                
+
             }
         }
-       
-        
+
+
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             callback(error);
         });
-        
+
     });
 }
 
@@ -49,7 +49,7 @@
     dispatch_async(asyncQueue, ^(void) {
         NSFileHandle* handle = [NSFileHandle fileHandleForWritingAtPath: path];
         NSError *error = nil;
-        
+
         if (@available(iOS 13.0, *)) {
             [handle seekToEndReturningOffset:nil error:&error];
             [handle writeData:data error:&error];
@@ -58,7 +58,7 @@
                 [handle seekToEndOfFile];
                 [handle writeData:data];
             } @catch (NSException *exception) {
-              
+
                 NSMutableDictionary * info = [NSMutableDictionary dictionary];
                    [info setValue:exception.name forKey:@"ExceptionName"];
                    [info setValue:exception.reason forKey:@"ExceptionReason"];
@@ -67,15 +67,15 @@
                    [info setValue:exception.userInfo forKey:@"ExceptionUserInfo"];
 
                 error = [[NSError alloc] initWithDomain:@"" code: 1 userInfo:info];
-                
+
             }
         }
-       
-        
+
+
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             callback(handle,error);
         });
-        
+
     });
 }
 

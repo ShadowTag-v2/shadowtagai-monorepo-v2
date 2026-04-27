@@ -498,4 +498,3 @@ agentic-data-scientist "Explain PCA and when to use it" --mode simple --temp-dir
 agentic-data-scientist "Show me how to use pandas groupby with multiple aggregations" \
   --mode simple --temp-dir
 ```
-

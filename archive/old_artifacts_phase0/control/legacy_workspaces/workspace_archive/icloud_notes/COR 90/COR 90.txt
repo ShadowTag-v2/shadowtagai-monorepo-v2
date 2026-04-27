@@ -58,10 +58,10 @@ COR 90
   ╠══════════════════════════════════════════════════════════════╣
   ║ MCP SERVERS CONFIGURED:                                      ║
   ║  - gemini-bridge  → Gemini API routing                       ║
-  ║  - gptram         → UNGPT tools for Claude Code              ║    
+  ║  - gptram         → UNGPT tools for Claude Code              ║
 
 
-> continue n-autoresearch/Kosmos/BioAgents, codepmcs servers while you reboot. exit 
+> continue n-autoresearch/Kosmos/BioAgents, codepmcs servers while you reboot. exit
 
 ⏺ Bash(cd "/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services" && git status)
   ⎿  Running…
@@ -158,15 +158,15 @@ COR 90
 
      Cloud Code Assist Status ✅
 
-     | Component | Status       | Details                                                                           
+     | Component | Status       | Details
          |
      |-----------|--------------|-----------------------------------------------------------------------------------
      ----|
-     | API       | ✅ ENABLED    | cloudaicompanion.googleapis.com                                                  
+     | API       | ✅ ENABLED    | cloudaicompanion.googleapis.com
           |
-     | Licenses  | ✅ 2 Standard | 9K completions/day, 3K chat/day                                                  
+     | Licenses  | ✅ 2 Standard | 9K completions/day, 3K chat/day
           |
-     | IAM Roles | ✅ GRANTED    | codeRepositoryIndexesAdmin, codeToolsAdmin, repositoryGroupsUser, settingsAdmin, 
+     | IAM Roles | ✅ GRANTED    | codeRepositoryIndexesAdmin, codeToolsAdmin, repositoryGroupsUser, settingsAdmin,
      user |
 
      Current Quotas (Default)
@@ -681,14 +681,13 @@ COR 90
 ⏺ Now let me find the worktree directory to create the CAV MTOE voting module:
 
 ⏺ Search(pattern: "**/.claude-worktrees/**/lib/*.py")
-  ⎿  Found 0 files 
+  ⎿  Found 0 files
 
 ⏺ Bash(ls -la ~/.claude-worktrees/aiyou-fastapi-services/ 2>/dev/null | head -20)
-  ⎿  total 16                                                
+  ⎿  total 16
      drwxr-xr-x@   5 pikeymickey  staff   160 Dec  1 06:56 .
      drwxr-xr-x@   4 pikeymickey  staff   128 Dec  1 06:56 ..
      … +3 lines (ctrl+o to expand)
 
 ✶ Compacting conversation… (esc to interrupt · ctrl+t to show todos · 38s · ↓ 1.3k tokens)
   ⎿  Next: Create bin/ungpt - Main CLI orchestrator
-

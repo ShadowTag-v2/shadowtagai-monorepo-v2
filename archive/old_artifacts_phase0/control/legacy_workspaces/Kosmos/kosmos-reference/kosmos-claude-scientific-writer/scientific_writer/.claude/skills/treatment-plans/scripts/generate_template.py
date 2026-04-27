@@ -241,4 +241,3 @@ Available template types:
 
 if __name__ == '__main__':
     main()
-

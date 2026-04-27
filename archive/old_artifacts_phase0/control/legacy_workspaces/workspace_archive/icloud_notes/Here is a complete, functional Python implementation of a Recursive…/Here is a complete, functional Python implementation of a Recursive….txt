@@ -7,7 +7,7 @@ Python
 import os
 from typing import List, Optional
 
-# Mocking an LLM client for demonstration. 
+# Mocking an LLM client for demonstration.
 # Replace this with standard OpenAI/Gemini/Anthropic API calls.
 class LLMClient:
     def __init__(self, api_key):
@@ -21,7 +21,7 @@ class LLMClient:
         # REAL IMPLEMENTATION:
         # response = client.chat.completions.create(...)
         # return response.choices[0].message.content
-        
+
         # DUMMY LOGIC FOR DEMO:
         if "Table of Contents" in context:
             return "JUMP 15000" # Simulating finding the right chapter
@@ -32,7 +32,7 @@ class LLMClient:
 
 class TextEnvironment:
     """
-    Represents the 'World' the model lives in. 
+    Represents the 'World' the model lives in.
     This allows the model to access a massive file without loading it all into memory.
     """
     def __init__(self, file_path: str, chunk_size: int = 1000):
@@ -40,7 +40,7 @@ class TextEnvironment:
             self.full_text = f.read()
         self.total_length = len(self.full_text)
         self.chunk_size = chunk_size
-        
+
     def read(self, start_index: int) -> str:
         """Reads a specific chunk from the environment."""
         end_index = min(start_index + self.chunk_size, self.total_length)
@@ -51,25 +51,25 @@ class RecursiveAgent:
         self.client = client
         self.env = env
         self.max_depth = 3  # Prevent infinite recursion loops
-    
+
     def construct_system_prompt(self, query: str, current_pos: int, total_len: int) -> str:
         return f"""
         GOAL: Answer the user's query: "{query}"
-        
+
         ENVIRONMENT STATUS:
         - Total Document Length: {total_len} characters.
         - Your Current Position: {current_pos}.
-        
+
         INSTRUCTIONS:
         You are an intelligent reader. You are NOT retrieving vectors. You are navigating a book.
         Based on the text chunk you see below, decide your next move.
-        
+
         COMMANDS YOU CAN USE:
         1. READ_NEXT: Read the immediate next chunk.
         2. JUMP <integer>: Jump to a specific character index (e.g., if you see a Chapter Index).
         3. RECURSE <query>: Spawn a sub-agent to investigate a specific sub-topic found in the text.
         4. ANSWER <text>: You found the answer. Output it and end.
-        
+
         OUTPUT FORMAT:
         Just the command. Example: "JUMP 5000"
         """
@@ -81,16 +81,16 @@ class RecursiveAgent:
         current_pos = start_index
         steps_taken = 0
         max_steps = 10 # Safety limit
-        
+
         print(f"{'  ' * depth}➤ [Depth {depth}] Agent started at index {current_pos} for query: '{query}'")
 
         while steps_taken < max_steps:
             # 1. Observe the environment (Read)
             chunk = self.env.read(current_pos)
-            
+
             # 2. Construct the prompt
             prompt = self.construct_system_prompt(query, current_pos, self.env.total_length)
-            
+
             # 3. Act (Call LLM)
             # In real code, print(chunk) would go into the context
             decision = self.client.get_response(prompt, context=chunk)
@@ -99,17 +99,17 @@ class RecursiveAgent:
             # 4. Parse Decision
             if decision.startswith("ANSWER"):
                 return decision.replace("ANSWER ", "")
-            
+
             elif decision.startswith("JUMP"):
                 try:
                     target = int(decision.split()[1])
                     current_pos = target
                 except:
                     print(f"{'  ' * depth}  ! Error parsing Jump")
-            
+
             elif decision.startswith("READ_NEXT"):
                 current_pos += self.env.chunk_size
-                
+
             elif decision.startswith("RECURSE"):
                 # *** THE RECURSIVE MAGIC ***
                 # The agent found a complex topic and spawns a NEW agent to solve just that part.
@@ -122,9 +122,9 @@ class RecursiveAgent:
                     return sub_answer
                 else:
                     return "Error: Max recursion depth reached."
-            
+
             steps_taken += 1
-            
+
         return "I could not find the answer within the step limit."
 
 # --- USAGE ---
@@ -186,14 +186,14 @@ JSON
   // --------------------------------------------------------
   // Point to the single Monorepo Virtual Environment
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
-  
+
   // Enable Pylance to see across the Monorepo (Namespace Packages)
   "python.analysis.extraPaths": [
     "${workspaceFolder}/libs/auth/src",
     "${workspaceFolder}/libs/db/src",
     "${workspaceFolder}/apps/backend_api/src"
   ],
-  
+
   // Ruff: The "Tricorder" Robot. Strict, instant linting.
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
@@ -203,19 +203,19 @@ JSON
       "source.organizeImports": "explicit"
     }
   },
-  
+
   // --------------------------------------------------------
   // 2. The "Gemini" Brain Configuration
   // --------------------------------------------------------
   // These settings optimize the AI extension (assuming Gemini Code Assist)
-  
+
   // Allow AI to index the huge file tree (Critical for Monorepos)
-  "gemini.context.includeWorkspace": true, 
-  
+  "gemini.context.includeWorkspace": true,
+
   // Suppress standard suggestions in favor of AI
   "editor.inlineSuggest.enabled": true,
   "github.copilot.enable": false, // Disable competitors to save RAM
-  
+
   // --------------------------------------------------------
   // 3. The "Cider" Visuals (Noise Reduction)
   // --------------------------------------------------------
@@ -251,7 +251,7 @@ JSON
     {
       "label": "🤖 AI: Review Changes",
       "type": "shell",
-      "command": "echo 'AI Code Review triggered...'", 
+      "command": "echo 'AI Code Review triggered...'",
       // In practice, this binds to a Gemini prompt command
       "detail": "Simulate a Google 'Critique' review."
     }
@@ -286,4 +286,3 @@ uv venv
 Apply Configs: Copy the settings.json and tasks.json above.
 First Run: Open Command Palette (Ctrl+Shift+P) -> Tasks: Run Task -> 🚀 Antigravity: Sync.
 You now have a local environment where dependency management is instant (uv), linting is instant (ruff), and the "Senior Engineer" sits in your sidebar (Gemini), fully aware of your entire monorepo context.
-

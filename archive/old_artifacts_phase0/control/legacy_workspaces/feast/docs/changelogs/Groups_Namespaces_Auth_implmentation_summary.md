@@ -14,7 +14,7 @@ This document summarizes the implementation of groups and namespaces extraction 
 
 ### 2. New Policy Types (`sdk/python/feast/permissions/policy.py`)
 - **GroupBasedPolicy**: Grants access based on user group membership
-- **NamespaceBasedPolicy**: Grants access based on user namespace association  
+- **NamespaceBasedPolicy**: Grants access based on user namespace association
 - **CombinedGroupNamespacePolicy**: Requires both group OR namespace match
 - **Updated Policy.from_proto()** to handle new policy types
 - **Maintained backward compatibility** with existing RoleBasedPolicy

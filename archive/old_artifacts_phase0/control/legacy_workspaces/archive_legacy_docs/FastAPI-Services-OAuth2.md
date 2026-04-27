@@ -30,5 +30,3 @@ $ MYAPI_DATABASE__DSN=postgresql://... uvicorn app.main:app
 
 ### License
 MIT License (see LICENSE).
-
-

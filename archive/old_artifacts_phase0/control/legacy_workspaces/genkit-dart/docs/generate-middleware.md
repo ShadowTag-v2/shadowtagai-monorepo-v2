@@ -174,7 +174,7 @@ void main() {
 
 ## Lifecycle and Stateful Middleware
 
-When you register a middleware using the `GenerateMiddlewareRef` pattern, **a new instance of the middleware is instantiated for every single `generate` call.** 
+When you register a middleware using the `GenerateMiddlewareRef` pattern, **a new instance of the middleware is instantiated for every single `generate` call.**
 
 Because of this per-request lifecycle, the middleware instance is isolated safely to that specific generation execution. This makes it the perfect place to maintain state across the different interceptors (`generate`, `model`, and `tool`) and across multi-turn tool calling loops.
 
@@ -183,7 +183,7 @@ For example, you could write a stateful middleware to count and strictly enforce
 ```dart
 class TurnLimitingMiddleware extends GenerateMiddleware {
   final int maxTurns;
-  
+
   // Isolated state for this specific `generate` call
   int _turnCount = 0;
 
@@ -202,7 +202,7 @@ class TurnLimitingMiddleware extends GenerateMiddleware {
     if (_turnCount > maxTurns) {
       throw Exception('Exceeded custom turn limit of $maxTurns.');
     }
-    
+
     print('Starting turn: $_turnCount');
     return next(request, ctx);
   }

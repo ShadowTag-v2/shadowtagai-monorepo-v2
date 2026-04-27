@@ -3,29 +3,29 @@
 namespace mittens {
 namespace ducks {
 namespace g {
-    
+
     //template<int d> concept cdim = (d > 0); // represents a compile-time dimension
     //template<int d> concept rdim = (d == -1); // represents a runtime dimension
-    
+
     template<int d>
     struct compiled_dim {
         static_assert(d > 0, "Invalid compile-time dimension value"); // Replace `cdim` concept check
         static constant constexpr uint32_t v = d;
-        
+
         METAL_FUNC compiled_dim(thread const metal::nullptr_t &_) {}
-        
+
         METAL_FUNC constexpr operator uint32_t() const { return v; }
     };
-    
+
     struct runtime_dim {
         uint32_t v;
         METAL_FUNC runtime_dim(thread const uint32_t &_v) : v(_v) {}
         METAL_FUNC operator uint32_t() const { return v; }
     };
-    
+
     template<int d> using make_dim_t = metal::conditional_t<d == -1, runtime_dim, compiled_dim<d>>;
     template<int d> using make_arg_t = metal::conditional_t<d == -1, size_t, metal::nullptr_t>; // we pass runtime dims as size_t, comptime dims as nullptr_t
-    
+
 }
 }
 

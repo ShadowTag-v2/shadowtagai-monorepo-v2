@@ -44,9 +44,9 @@ This guide will help you quickly get started with vLLM to perform:
 === "AMD ROCm"
 
     Use a pre-built docker image from Docker Hub. The public stable image is [rocm/vllm:latest](https://hub.docker.com/r/rocm/vllm). There is also a development image at [rocm/vllm-dev](https://hub.docker.com/r/rocm/vllm-dev).
-    
+
     The `-v` flag in the `docker run` command below mounts a local directory into the container. Replace `<path/to/your/models>` with the path on your host machine to the directory containing your models. The models will then be accessible inside the container at `/app/models`.
-    
+
     ???+ console "Commands"
         ```bash
         docker pull rocm/vllm-dev:nightly # to get the latest image
@@ -66,7 +66,7 @@ This guide will help you quickly get started with vLLM to perform:
 === "Google TPU"
 
     To run vLLM on Google TPUs, you need to install the `vllm-tpu` package.
-    
+
     ```bash
     uv pip install vllm-tpu
     ```
@@ -135,11 +135,11 @@ for output in outputs:
     The `llm.generate` method does not automatically apply the model's chat template to the input prompt. Therefore, if you are using an Instruct model or Chat model, you should manually apply the corresponding chat template to ensure the expected behavior. Alternatively, you can use the `llm.chat` method and pass a list of messages which have the same format as those passed to OpenAI's `client.chat.completions`:
 
     ??? code
-    
+
         ```python
         # Using tokenizer to apply chat template
         from transformers import AutoTokenizer
-    
+
         tokenizer = AutoTokenizer.from_pretrained("/path/to/chat_model")
         messages_list = [
             [{"role": "user", "content": prompt}]
@@ -150,16 +150,16 @@ for output in outputs:
             tokenize=False,
             add_generation_prompt=True,
         )
-        
+
         # Generate outputs
         outputs = llm.generate(texts, sampling_params)
-        
+
         # Print the outputs.
         for output in outputs:
             prompt = output.prompt
             generated_text = output.outputs[0].text
             print(f"Prompt: {prompt!r}, Generated text: {generated_text!r}")
-    
+
         # Using chat interface.
         outputs = llm.chat(messages_list, sampling_params)
         for idx, output in enumerate(outputs):

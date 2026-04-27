@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# This script downloads previous maven packages that have been downloaded 
+# This script downloads previous maven packages that have been downloaded
 # from Google Cloud Storage to local path for faster build
 
 usage()
@@ -24,10 +24,10 @@ if [[ ! ${ARCHIVE_URI} ]]; then usage; exit 1; fi
 if [[ ! ${OUTPUT_DIR}  ]]; then usage; exit 1; fi
 
 # Install Google Cloud SDK if gsutil command not exists
-if [[ ! $(command -v gsutil) ]]; then 
+if [[ ! $(command -v gsutil) ]]; then
   CURRENT_DIR=$(dirname "$BASH_SOURCE")
   . "${CURRENT_DIR}"/install-google-cloud-sdk.sh
-fi  
+fi
 
 gsutil -q cp ${ARCHIVE_URI} /tmp/.m2.tar
 tar xf /tmp/.m2.tar -C ${OUTPUT_DIR}

@@ -28,7 +28,7 @@ jobs:
             for (const artifact of allArtifacts.data.artifacts) {
               // Extract the PR number and package version from the artifact name
               const match = /^npm-package-create-t3-app@(.*?)-pr-(\d+)/.exec(artifact.name);
-              
+
               if (match) {
                 require("fs").appendFileSync(
                   process.env.GITHUB_ENV,

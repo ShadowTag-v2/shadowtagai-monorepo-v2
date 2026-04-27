@@ -72,5 +72,3 @@ mocha opt file is located at "../config/mocha.opts".
 ***grep particular suit or test***
 
 ` npm run e2e ios -- --grep=tabs-tab(s-\\w+)-suite`
-
-

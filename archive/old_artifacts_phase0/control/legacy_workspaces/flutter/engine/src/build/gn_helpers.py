@@ -130,4 +130,3 @@ def ToGNString(value, pretty=False):
   if isinstance(value, dict) or '\n' in ret:
     return ret + '\n'
   return ret
-

@@ -47,8 +47,8 @@ async function runTests() {
 const testPath = [];
 
 /**
- * @param {string} description 
- * @param {() => void} handler 
+ * @param {string} description
+ * @param {() => void} handler
  */
 function describe(description, handler) {
   testPath.push(description);

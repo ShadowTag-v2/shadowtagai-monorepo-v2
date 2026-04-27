@@ -97,7 +97,7 @@ Chunked processing uses **MEAN aggregation** for cross-chunk combination when in
 With `MAX_EMBED_LEN=3072000`, you can process:
 
 - **Academic papers**: Full research papers with references
-- **Legal documents**: Complete contracts and legal texts  
+- **Legal documents**: Complete contracts and legal texts
 - **Books**: Entire chapters or small books
 - **Code repositories**: Large codebases and documentation
 
@@ -145,11 +145,11 @@ The test client demonstrates:
    **Solution**: Increase `max_embed_len` in pooler config or reduce input length
 
 3. **Memory errors**:
-  
+
    ```log
    RuntimeError: CUDA out of memory
    ```
-  
+
    **Solution**: Reduce chunk size by adjusting model's `max_position_embeddings` or use fewer GPUs
 
 4. **Slow processing**:

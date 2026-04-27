@@ -310,7 +310,7 @@
 ### 🩹 Fixes
 
 - transient package update
-  
+
 ## 8.9.7 (2025-07-26)
 
 ### 🩹 Fixes
@@ -332,7 +332,7 @@
 ### 🩹 Fixes
 
 - package format for current hook handling
-  
+
 ## 8.9.4 (2025-07-14)
 
 ### 🚀 Features
@@ -455,7 +455,7 @@
 ### Bug Fixes
 
 * **visionos:** multi-scene improvements ([#10653](https://github.com/NativeScript/NativeScript/issues/10653)) ([d6922b9](https://github.com/NativeScript/NativeScript/commit/d6922b9896ff60d819c5439d6828c7907618b0a9))
-  
+
 
 ### Bug Fixes
 
@@ -866,11 +866,11 @@ Application.on(Application.orientationChangedEvent, (event: OrientationChangedEv
 ```
 
 2. Android labels are vertical align middle by default.
-   
+
 This means that potentially if you were using margins to position, for example on font icon labels, they may appear mis-positioned intially after updating. You should be able to remove custom margin handling to simplify.
 
 3. Page transitions have improved their API to provide more platform control and introduced a breaking change to the method signatures on iOS. If you had created a custom by extending the `Transition` class:
-   
+
 - BEFORE:
 ```
 animateIOSTransition(containerView: UIView, fromView: UIView, toView: UIView, operation: UINavigationControllerOperation, completion: (finished: boolean) => void): void {
@@ -936,7 +936,7 @@ animateIOSTransition(transitionContext: UIViewControllerContextTransitioning, fr
 
 - Android WeakRef usage is now standardized and aligned with iOS and latest JavaScript standards to universally use `deref` instead of the deprecated `get` API. In 8.4, iOS allowed usage of `deref` but Android still required `get`. With 8.5 you can now use `deref` the same everywhere.
 - If you were using an iterator over an iOS NSArray, always make sure it's using proper platform API, for example:
-  
+
 Incorrect:
 ```ts
 // collection: NSArray
@@ -1030,7 +1030,7 @@ for (var i = 0; i < collection.count; i++) {
 ### Bug Fixes
 
 * **core:** circular imports of SDK_VERSION ([82d60ae](https://github.com/NativeScript/NativeScript/commit/82d60ae057f0f14718c1065f51bf3edbf36ad96a))
-  
+
 
 ## [8.4.0](https://github.com/NativeScript/NativeScript/compare/8.3.6-core...8.4.0-core) (2022-11-30)
 
@@ -1082,7 +1082,7 @@ for (var i = 0; i < collection.count; i++) {
 ### Performance Improvements
 
 * **core:** android sdk check ([#10084](https://github.com/NativeScript/NativeScript/issues/10084)) ([abd722c](https://github.com/NativeScript/NativeScript/commit/abd722cd3dec73f4caa1bc15f5ae4864550a46f9))
-  
+
 
 
 ## [8.3.6](https://github.com/NativeScript/NativeScript/compare/8.3.5-core...8.3.6-core) (2022-11-12)
@@ -2178,7 +2178,7 @@ public writeAsync(path: string, bytes: androidNative.Array<number>) ...
 ### Features
 
 * setProperty on Observable ([#8521](https://github.com/NativeScript/NativeScript/pull/8521))([7cf3c97](https://github.com/NativeScript/NativeScript/commit/7cf3c97))
- 
+
 ### Bug Fixes
 
 * fix ios hmr ([#8559](https://github.com/NativeScript/NativeScript/pull/8559)) ([446163d](https://github.com/NativeScript/NativeScript/commit/446163d))

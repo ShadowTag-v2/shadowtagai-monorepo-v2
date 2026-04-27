@@ -529,4 +529,3 @@ async def test_empty_registry_state(registry):
     assert summary["active_activities_count"] == 0
     assert summary["active_sync_jobs"] == []
     assert summary["active_activities"] == []
-

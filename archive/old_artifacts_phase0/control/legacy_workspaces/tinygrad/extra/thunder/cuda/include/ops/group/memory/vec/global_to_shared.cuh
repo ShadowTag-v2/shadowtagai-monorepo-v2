@@ -1,15 +1,15 @@
 /**
  * @file
- * @brief Group (collaborative warp) ops for loading shared vectors from and storing to global memory. 
+ * @brief Group (collaborative warp) ops for loading shared vectors from and storing to global memory.
  */
 
 /**
  * @brief Loads data from global memory into shared memory vector.
- * 
+ *
  * This function loads data from a global memory location pointed to by `src` into a shared memory vector `dst`.
  * It calculates the number of elements that can be transferred in one operation based on the size ratio of `float4` to the data type of `SV`.
  * The function ensures coalesced memory access and efficient use of bandwidth by dividing the work among threads in a warp.
- * 
+ *
  * @tparam SV Shared vector type, must satisfy ducks::sv::all concept.
  * @param dst Reference to the shared vector where the data will be loaded.
  * @param src Pointer to the global memory location from where the data will be loaded.
@@ -32,11 +32,11 @@ __device__ static inline void load(SV &dst, const GL &src, const COORD &idx) {
 
 /**
  * @brief Stores data from a shared memory vector to global memory.
- * 
+ *
  * This function stores data from a shared memory vector `src` to a global memory location pointed to by `dst`.
  * Similar to the load function, it calculates the number of elements that can be transferred in one operation based on the size ratio of `float4` to the data type of `SV`.
  * The function ensures coalesced memory access and efficient use of bandwidth by dividing the work among threads in a warp.
- * 
+ *
  * @tparam SV Shared vector type, must satisfy ducks::sv::all concept.
  * @param dst Pointer to the global memory location where the data will be stored.
  * @param src Reference to the shared vector from where the data will be stored.

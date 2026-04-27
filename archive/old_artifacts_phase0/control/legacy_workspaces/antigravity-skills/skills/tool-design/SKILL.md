@@ -160,7 +160,7 @@ Claude can optimize its own tools. When given a tool and observed failure modes,
 def optimize_tool_description(tool_spec, failure_examples):
     """
     Use an agent to analyze tool failures and improve descriptions.
-    
+
     Process:
     1. Agent attempts to use tool across diverse tasks
     2. Collect failure modes and friction points
@@ -169,20 +169,20 @@ def optimize_tool_description(tool_spec, failure_examples):
     """
     prompt = f"""
     Analyze this tool specification and the observed failures.
-    
+
     Tool: {tool_spec}
-    
+
     Failures observed:
     {failure_examples}
-    
+
     Identify:
     1. Why agents are failing with this tool
     2. What information is missing from the description
     3. What ambiguities cause incorrect usage
-    
+
     Propose an improved tool description that addresses these issues.
     """
-    
+
     return get_agent_response(prompt)
 ```
 
@@ -220,19 +220,19 @@ When designing tool collections:
 def get_customer(customer_id: str, format: str = "concise"):
     """
     Retrieve customer information by ID.
-    
+
     Use when:
     - User asks about specific customer details
     - Need customer context for decision-making
     - Verifying customer identity
-    
+
     Args:
         customer_id: Format "CUST-######" (e.g., "CUST-000001")
         format: "concise" for key fields, "detailed" for complete record
-    
+
     Returns:
         Customer object with requested fields
-    
+
     Errors:
         NOT_FOUND: Customer ID not found
         INVALID_FORMAT: ID must match CUST-###### pattern

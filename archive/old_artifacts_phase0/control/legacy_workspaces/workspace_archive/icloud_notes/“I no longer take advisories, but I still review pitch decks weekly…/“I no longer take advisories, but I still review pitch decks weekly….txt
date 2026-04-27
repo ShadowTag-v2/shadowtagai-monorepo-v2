@@ -4,9 +4,9 @@ it's technically correct to list all the partners, markets, regions, and acquisi
 
 but most teams tend to overcomplicate. the GTM slides should answer these questions:
 
-how do you make money? 
-why should this work? 
-who's buying? 
+how do you make money?
+why should this work?
+who's buying?
 how can I (as an investor) be sure you'll make a few X(s) in a year from now?
 
 assume you can't accompany this with a storytelling, and all partners, markets, and channels should be self-explanatory
@@ -15,7 +15,7 @@ GTM roadmap isn't static, and should be updated every month, if not weekly, in t
 
 market and revenue projections are fundamental, but out of those promising trillions, only a few will sustain until the next year
 
-many GTM slides lack realism. not only is the positioning "visionary"; teams list Aaves and Mophos of this world as their "partners" when they're just at the stage of knowing a guy who knows a guy 
+many GTM slides lack realism. not only is the positioning "visionary"; teams list Aaves and Mophos of this world as their "partners" when they're just at the stage of knowing a guy who knows a guy
 
 too many details make it hard to read, and template patterns as "CT lead", "10m giveaway in IG", "building strong community in Discord" are vaporwave
 

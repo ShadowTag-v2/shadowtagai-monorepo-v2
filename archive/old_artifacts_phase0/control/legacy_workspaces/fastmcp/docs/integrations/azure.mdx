@@ -28,24 +28,24 @@ Create an App registration in Azure Portal to get the credentials needed for aut
 <Steps>
 <Step title="Navigate to App registrations">
     Go to the [Azure Portal](https://portal.azure.com) and navigate to **Microsoft Entra ID → App registrations**.
-    
+
     Click **"New registration"** to create a new application.
 </Step>
 
 <Step title="Configure Your Application">
     Fill in the application details:
-    
+
     - **Name**: Choose a name users will recognize (e.g., "My FastMCP Server")
     - **Supported account types**: Choose based on your needs:
       - **Single tenant**: Only users in your organization
       - **Multitenant**: Users in any Microsoft Entra directory
       - **Multitenant + personal accounts**: Any Microsoft account
     - **Redirect URI**: Select "Web" and enter your server URL + `/auth/callback` (e.g., `http://localhost:8000/auth/callback`)
-    
+
     <Warning>
     The redirect URI must match exactly. The default path is `/auth/callback`, but you can customize it using the `redirect_path` parameter. For local development, Azure allows `http://localhost` URLs. For production, you must use HTTPS.
     </Warning>
-    
+
     <Tip>
     If you want to use a custom callback path (e.g., `/auth/azure/callback`), make sure to set the same path in both your Azure App registration and the `redirect_path` parameter when configuring the AzureProvider.
     </Tip>
@@ -84,12 +84,12 @@ Create an App registration in Azure Portal to get the credentials needed for aut
 
 <Step title="Create Client Secret">
     After registration, navigate to **Certificates & secrets** in your app's settings.
-    
+
     - Click **"New client secret"**
     - Add a description (e.g., "FastMCP Server")
     - Choose an expiration period
     - Click **"Add"**
-    
+
     <Warning>
     Copy the secret value immediately - it won't be shown again! You'll need to create a new secret if you lose it.
     </Warning>
@@ -97,11 +97,11 @@ Create an App registration in Azure Portal to get the credentials needed for aut
 
 <Step title="Note Your Credentials">
     From the **Overview** page of your app registration, note:
-    
+
     - **Application (client) ID**: A UUID like `835f09b6-0f0f-40cc-85cb-f32c5829a149`
     - **Directory (tenant) ID**: A UUID like `08541b6e-646d-43de-a0eb-834e6713d6d5`
     - **Client Secret**: The value you copied in the previous step
-    
+
     <Tip>
     Store these credentials securely. Never commit them to version control. Use environment variables or a secrets manager in production.
     </Tip>
@@ -138,7 +138,7 @@ mcp = FastMCP(name="Azure Secured App", auth=auth_provider)
 async def get_user_info() -> dict:
     """Returns information about the authenticated Azure user."""
     from fastmcp.server.dependencies import get_access_token
-    
+
     token = get_access_token()
     # The AzureProvider stores user data in token claims
     return {
@@ -217,7 +217,7 @@ async def main():
     async with Client("http://localhost:8000/mcp", auth="oauth") as client:
         # First-time connection will open Azure login in your browser
         print("✓ Authenticated with Azure!")
-        
+
         # Test the protected tool
         result = await client.call_tool("get_user_info")
         print(f"Azure user: {result['email']}")
@@ -388,4 +388,3 @@ async def protected_tool(query: str) -> str:
     # Your tool implementation here
     return f"Processing authenticated request: {query}"
 ```
-

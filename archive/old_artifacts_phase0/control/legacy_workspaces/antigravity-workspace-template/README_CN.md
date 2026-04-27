@@ -54,19 +54,19 @@ sequenceDiagram
 
     User->>Agent: "重构认证模块"
     activate Agent
-    
+
     Agent->>Artifacts: 创建实施计划
-    
+
     Note over Agent: <thought> 深度思考过程 </thought>
     Agent->>Agent: 制定策略
-    
+
     Agent->>Tools: 执行工具 (code_edit)
     activate Tools
     Tools-->>Agent: 结果
     deactivate Tools
-    
+
     Agent->>Artifacts: 保存日志/证据
-    
+
     Agent-->>User: 最终报告 (Walkthrough)
     deactivate Agent
 ```

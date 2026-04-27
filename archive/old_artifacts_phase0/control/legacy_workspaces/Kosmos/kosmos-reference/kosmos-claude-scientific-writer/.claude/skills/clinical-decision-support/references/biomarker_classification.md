@@ -38,7 +38,7 @@ Biomarkers are measurable indicators of biological state or condition. In clinic
 
 **Oncology - Targeted Therapy**
 - **EGFR exon 19 del/L858R → EGFR TKIs**: Response rate 60-70%, PFS 10-14 months
-- **ALK rearrangement → ALK inhibitors**: ORR 70-90%, PFS 25-34 months  
+- **ALK rearrangement → ALK inhibitors**: ORR 70-90%, PFS 25-34 months
 - **HER2 amplification → Trastuzumab**: Benefit only in HER2+ (IHC 3+ or FISH+)
 - **BRAF V600E → BRAF inhibitors**: ORR 50%, PFS 6-7 months (melanoma)
 - **PD-L1 ≥50% → Pembrolizumab**: ORR 45%, PFS 10 months vs 6 months (chemo)
@@ -476,7 +476,7 @@ Broad molecular profiling for all advanced NSCLC at diagnosis:
 Required (FDA-approved therapies available):
 ✓ EGFR mutations (exons 18, 19, 20, 21)
 ✓ ALK rearrangement
-✓ ROS1 rearrangement  
+✓ ROS1 rearrangement
 ✓ BRAF V600E
 ✓ MET exon 14 skipping
 ✓ RET rearrangements
@@ -658,7 +658,7 @@ TP53 Mutation (p.R273H)
 
 BIOMARKERS ASSESSED - NEGATIVE
 - ALK rearrangement: Not detected
-- ROS1 rearrangement: Not detected  
+- ROS1 rearrangement: Not detected
 - BRAF V600E: Not detected
 - MET exon 14 skipping: Not detected
 - RET rearrangement: Not detected
@@ -716,4 +716,3 @@ CLIA #: [Number]  |  CAP #: [Number]
 - Participate in external quality assurance schemes
 - Blinded sample exchange with reference laboratories
 - Document corrective actions for failures
-

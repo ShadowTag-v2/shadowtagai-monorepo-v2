@@ -5,7 +5,7 @@ This repo contains Helm charts for Feast Java components that are being installe
     * [Feature Server](charts/feature-server): High performant JVM-based implementation of feature server.
     * [Transformation Service](charts/transformation-service): Transformation server for calculating on-demand features
     * Redis: (Optional) One of possible options for an online store used by Feature Server
-   
+
 ## Chart: Feast
 
 Feature store for machine learning Current chart version is `0.57.0`

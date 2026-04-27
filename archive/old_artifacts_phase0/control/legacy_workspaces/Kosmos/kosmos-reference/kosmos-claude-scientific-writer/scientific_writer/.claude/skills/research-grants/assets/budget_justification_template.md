@@ -21,10 +21,10 @@ A budget justification provides detailed explanation for each budget line item, 
 
 **Effort**: [X] calendar months ([Y]% FTE) per year
 
-**Justification**: 
+**Justification**:
 The PI will provide overall scientific leadership, supervise all research activities, mentor graduate students and postdocs, analyze data, prepare manuscripts, and report to the funding agency. The PI will be responsible for [specific activities related to aims]. [X] months of effort is necessary given the scope of the project and the PI's other commitments ([describe other activities briefly]).
 
-**Calculation**: 
+**Calculation**:
 - Year 1: [Annual salary] × [% effort] × [inflation factor if applicable] = $[amount]
 - Years 2-5: [include escalation if applicable]
 
@@ -35,7 +35,7 @@ The PI will provide overall scientific leadership, supervise all research activi
 
 *Justification*: Dr. Smith will provide overall project leadership including: (1) supervising all experimental work and data analysis for Aims 1-3, (2) weekly mentoring meetings with 3 graduate students and 2 postdocs, (3) coordinating with collaborators at partner institutions, (4) analyzing multi-omics datasets and interpreting results, (5) preparing manuscripts and presenting at conferences, and (6) managing budget and reporting to NIH. 2.5 months effort is necessary for a project of this scope involving multiple aims, techniques, and personnel. Dr. Smith's remaining effort supports teaching (3 months), other research projects (4 months), and administrative duties (2.5 months).
 
-*Calculation*: 
+*Calculation*:
 - Year 1: $120,000 × 0.2083 = $25,000
 - Years 2-5: 3% annual increase
 
@@ -53,7 +53,7 @@ Dr. [Name] will be responsible for [specific aspects of project related to their
 
 *Effort*: 1 calendar month (8.3% FTE) per year
 
-*Justification*: Dr. Johnson will lead the computational analysis for Aim 1, including multi-omics data integration, machine learning-based subtype classification, and biomarker identification. His expertise in unsupervised clustering methods and experience with similar T2D datasets is essential for this aim. Specific responsibilities include: (1) developing analysis pipelines, (2) training graduate student in bioinformatics methods, (3) interpreting computational results, and (4) co-authoring manuscripts. 
+*Justification*: Dr. Johnson will lead the computational analysis for Aim 1, including multi-omics data integration, machine learning-based subtype classification, and biomarker identification. His expertise in unsupervised clustering methods and experience with similar T2D datasets is essential for this aim. Specific responsibilities include: (1) developing analysis pipelines, (2) training graduate student in bioinformatics methods, (3) interpreting computational results, and (4) co-authoring manuscripts.
 
 *Calculation*: Year 1: $150,000 × 0.0833 = $12,500
 
@@ -92,7 +92,7 @@ One full-time postdoctoral researcher is essential to conduct [which experiments
 
 **Calculation**:
 - Stipend: $[amount]/student/year (following university RA rates)
-- Tuition: $[amount]/student/year  
+- Tuition: $[amount]/student/year
 - Total per student: $[amount]
 - Number of students: [N]
 - Total: $[amount] per year
@@ -102,7 +102,7 @@ One full-time postdoctoral researcher is essential to conduct [which experiments
 
 *Justification*: Three PhD students are required to execute the experimental work across all three aims:
 - Student 1 will lead Aim 1 work on multi-omics profiling and subtype classification
-- Student 2 will conduct Aim 2 mechanistic studies using patient-derived cells  
+- Student 2 will conduct Aim 2 mechanistic studies using patient-derived cells
 - Student 3 will perform Aim 3 treatment response analyses in cell models and humanized mice
 
 This project provides excellent interdisciplinary training in genomics, cell biology, and translational diabetes research. Students will present annually at the American Diabetes Association and co-author peer-reviewed publications. We will recruit students from our Biological Sciences PhD program, with priority recruitment from underrepresented groups through our IMSD program (NIH R25).
@@ -146,7 +146,7 @@ A [full/part]-time research technician is necessary to [specific technical suppo
 **Justification**:
 Fringe benefit rates are based on our institution's federally negotiated rates. Rates differ by personnel category:
 - Faculty: [X]%
-- Postdocs: [X]%  
+- Postdocs: [X]%
 - Graduate students: [X]% (if applicable)
 - Staff: [X]%
 
@@ -191,7 +191,7 @@ Travel is requested for [purpose: presenting results, collaboration, training]. 
 **Example**:
 *Domestic Travel*
 
-*Justification*: Annual travel for the PI, postdoc, and 2 graduate students to present research findings and network with the diabetes research community. 
+*Justification*: Annual travel for the PI, postdoc, and 2 graduate students to present research findings and network with the diabetes research community.
 
 Trips include:
 1. American Diabetes Association Scientific Sessions (annual, June): Premier venue for diabetes research dissemination. PI and 2 trainees will present posters/talks, attend workshops, and meet with collaborators. ($2,500/person × 3 people = $7,500)
@@ -240,7 +240,7 @@ Trips include:
 - Cell culture reagents (media, growth factors, serum): $15,000/year
   - Maintaining >50 patient-derived iPSC, hepatocyte, and adipocyte lines
   - Differentiation protocols requiring specialized media
-  
+
 - Molecular biology supplies (RNA extraction, qPCR, Western blotting): $12,000/year
   - Processing samples from cell assays and mouse tissues
   - Validation experiments for omics findings
@@ -254,7 +254,7 @@ Trips include:
   - Blood collection and plasma analysis
   - Tissue harvest and processing
 
-- Immunoassays and ELISAs: $8,000/year  
+- Immunoassays and ELISAs: $8,000/year
   - Insulin, c-peptide, GLP-1, cytokine measurements
   - ~500 assays/year across aims
 
@@ -382,7 +382,7 @@ Indirect cost rate is based on our institution's federally negotiated rate agree
 **Example**:
 *Facilities & Administrative Costs*: 57% of MTDC (on-campus rate)
 
-*Justification*: Our institution's federally negotiated F&A rate with DHHS is 57% for on-campus research, effective July 1, 2023 - June 30, 2027. This rate covers facilities costs (building depreciation, utilities, operations and maintenance) and administrative costs (sponsored projects administration, accounting, library, general administration). 
+*Justification*: Our institution's federally negotiated F&A rate with DHHS is 57% for on-campus research, effective July 1, 2023 - June 30, 2027. This rate covers facilities costs (building depreciation, utilities, operations and maintenance) and administrative costs (sponsored projects administration, accounting, library, general administration).
 
 *Calculation example (Year 1)*:
 - Total direct costs: $550,000
@@ -431,7 +431,7 @@ Indirect cost rate is based on our institution's federally negotiated rate agree
 
 ## Agency-Specific Notes
 
-**NIH**: 
+**NIH**:
 - Salary cap applies (~$221,900 for 2024)
 - Modular budgets (≤$250K direct) require less detail
 - Participant support costs excluded from F&A
@@ -450,4 +450,3 @@ Indirect cost rate is based on our institution's federally negotiated rate agree
 - Detailed costs by phase and task
 - Often requires supporting cost data
 - May need rates approved (DCAA audit for industry)
-

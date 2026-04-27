@@ -284,5 +284,5 @@ Based on the configuration, the content of the multi-modal caches on `P0` and `P
 | shm | Shared Memory Caching | K | N/A | V | `mm_processor_cache_gb * api_server_count` |
 | N/A | Disabled | N/A | N/A | N/A | `0` |
 
-K: Stores the hashes of multi-modal items  
+K: Stores the hashes of multi-modal items
 V: Stores the processed tensor data of multi-modal items

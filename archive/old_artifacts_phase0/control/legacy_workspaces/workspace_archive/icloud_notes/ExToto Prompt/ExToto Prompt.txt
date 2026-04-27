@@ -1,6 +1,6 @@
 ExToto Prompt
 GEMINI_[CREDENTIAL_REDACTED]
-“Automating gemini code assists workflows” is key thread 
+“Automating gemini code assists workflows” is key thread
 /Users/pikeymickey/aiyou-stack/ShadowTag-v2
 Use n-autoresearch/Kosmos/BioAgentss and this to accomplish
 Is only gemini and google cloud. no other llms. get rid of all other llms
@@ -28,7 +28,7 @@ Is only gemini and google cloud. no other llms. get rid of all other llms
   ║ LIQUIDITY: IPO $150-170B | Private $100B+ | Strategic $50-80B   ║
   ║ URGENCY: NEED CASH IMMEDIATELY                                  ║
   ╚═════════════════════════════════════════════════════════════════╝
-Only working directory!  Always point yourself here: 
+Only working directory!  Always point yourself here:
 "cd /Users/pikeymickey/aiyou-stack/ShadowTag-v2."
 Notify when you are not.
 implement the following in yourself, before proceeding further:
@@ -189,7 +189,7 @@ To be for vertex ai studio, colab enterprise, and google cloud run, fully google
 - **Only Gemini layers, full cloud run, google maintained.
  - Gemini bridge: Orchestration with Gemini Antigravity for production inference
  - Cross-model delegation: Gemini Pro (deep analysis/refactoring) ↔ Gemini Flash (production runtime).
-“Cloud Code Assist” to be integral with all coding processes;.                                                            
+“Cloud Code Assist” to be integral with all coding processes;.
  - Token budget optimization: Implement Long⊗Short routing. Use a 7B "short-thought" model for the 80% low-entropy tokens in your governance logs.
  - Use cases: Gemini for computer use, code generation, analysis; Gemini for scaled inference
  - Artifacts: Single-file HTML/React/Markdown rendering in nanobana 3 interface
@@ -202,10 +202,10 @@ To be for vertex ai studio, colab enterprise, and google cloud run, fully google
  - **Set-RL**: entropy collapse guard—optimize over *sets* of trajectories
  - **Bridge/Interdependent Generations**: ~2.8–5.1% params add → up to +50% accuracy gain in RL-verifiable tasks
  - **ICoT**: implicit chain-of-thought → 100% on 4×4 multiplication; std FT ≈1%;
-adapting to industry pivot from "more params,” to "smarter tokens" and "structured agency." 
+adapting to industry pivot from "more params,” to "smarter tokens" and "structured agency."
 Inference-time efficiency (Long⊗Short) and entropy-based RL, moving away from brute-force CoT.
  - **MoE economics**: expert-parallel + KV compression → large-batch cheap tokens
- - **Google Cloud/serverless/pub/sub*: Extended thinking, computer use, multi-file editing, artifact generation. 
+ - **Google Cloud/serverless/pub/sub*: Extended thinking, computer use, multi-file editing, artifact generation.
 SOP-C Decision Protocol:
 "Lowest-Confidence Check". When the model hits its lowest confidence token in a reasoning chain, trigger an immediate branch/review (SOP-C), as this predicts 75% of downstream errors.
 Root repo: https://github.com/ShadowTag-v2/aiyou-fastapi-services.git”
@@ -214,7 +214,7 @@ Run this immediately after your seed script:
 Bash
 
 # ==========================================
-# ANTIGRAVITY DOCTRINE 
+# ANTIGRAVITY DOCTRINE
  (MERGE)
 # ==========================================
 
@@ -274,6 +274,6 @@ search all https://developers.google.com/code-search  for what we can use in eve
 :: ∎ :: ///▙▖▙▖▞▞▙▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
 ▛///▞ 
 Re-read call of the question inside the long lines ^^^, then action.
-Only working directory!  Always point yourself here: 
+Only working directory!  Always point yourself here:
 cd /Users/pikeymickey/aiyou-stack/ShadowTag-v2.
 ∎ //▚▚▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂

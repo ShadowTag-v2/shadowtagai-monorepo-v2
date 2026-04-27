@@ -293,7 +293,7 @@ verifier = JWTVerifier(
 # Generate a test token using the private key
 test_token = key_pair.create_token(
     subject="test-user-123",
-    issuer="https://test.yourcompany.com", 
+    issuer="https://test.yourcompany.com",
     audience="test-mcp-server",
     scopes=["read", "write", "admin"]
 )
@@ -338,4 +338,3 @@ mcp = FastMCP(name="Production API")
 ```
 
 This approach enables the same codebase to run across development, staging, and production environments with different authentication requirements. Development might use static tokens while production uses JWT verification, all controlled through environment configuration.
-

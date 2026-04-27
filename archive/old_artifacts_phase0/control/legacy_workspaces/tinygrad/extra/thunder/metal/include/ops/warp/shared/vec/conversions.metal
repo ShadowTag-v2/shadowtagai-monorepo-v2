@@ -9,7 +9,7 @@
 #include "../../../../types/types.metal"
 
 namespace mittens {
-    
+
 
 /**
  * @brief Copies data from one shared vector to another, converting data types if necessary.
@@ -56,5 +56,3 @@ subvec_inplace(threadgroup SV &src, int vec_idx) {
 }
 
 }
-
-

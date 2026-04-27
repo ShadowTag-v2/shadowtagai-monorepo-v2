@@ -20,11 +20,11 @@ data:
       {{- else }}
       transformationServiceEndpoint: {{ .Release.Name }}-transformation-service:{{ .Values.transformationService.port }}
       {{- end }}
-      
+
       activeStore: online
       stores:
       - name: online
-        type: REDIS 
+        type: REDIS
         config:
           host: {{ .Release.Name }}-redis-master
           port: 6379

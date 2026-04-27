@@ -1,5 +1,5 @@
 ---
-title: "From Raw Data to Model Serving: A Blueprint for the AI/ML Lifecycle with Kubeflow and Feast" 
+title: "From Raw Data to Model Serving: A Blueprint for the AI/ML Lifecycle with Kubeflow and Feast"
 description: We'll walk through the entire ML lifecycle—from data preparation to live inference—leveraging Feast and the Kubeflow platform to create a cohesive, production-grade MLOps workflow.
 date: 2025-07-17
 authors: ["Helber Belmiro"]
@@ -48,7 +48,7 @@ This project demonstrates the power of using Kubeflow to abstract away the compl
 **Focus on AI, Not DevOps**: With the infrastructure automated, you can spend your time on the activities that directly impact model performance:
 
 - Experimenting with different feature engineering approaches
-- Tuning hyperparameters and model architectures  
+- Tuning hyperparameters and model architectures
 - Analyzing prediction results and model behavior
 - Iterating on data preparation and validation strategies
 
@@ -576,9 +576,9 @@ class ONNXModel(kserve.Model):
         return {"user_id": user_id, "prediction": result[0].tolist()}
 ```
 
-> **Note:**  
-> By default, KServe supports several model serving runtimes, including [Triton Inference Server](https://github.com/triton-inference-server/server) (often used via the `kserve-tritonserver` runtime). However, the official Triton server does not support macOS/arm64, which is why this project uses a custom Python predictor for local development and demonstration.  
-> If you are running on a supported platform (such as x86_64 Linux), you may want to use the `kserve-tritonserver` runtime for production workloads, as it offers high performance and native ONNX support.  
+> **Note:**
+> By default, KServe supports several model serving runtimes, including [Triton Inference Server](https://github.com/triton-inference-server/server) (often used via the `kserve-tritonserver` runtime). However, the official Triton server does not support macOS/arm64, which is why this project uses a custom Python predictor for local development and demonstration.
+> If you are running on a supported platform (such as x86_64 Linux), you may want to use the `kserve-tritonserver` runtime for production workloads, as it offers high performance and native ONNX support.
 > If you want to use Feast for online feature retrieval at inference time, a custom Python predictor (like the one in this repo) is the most straightforward approach. If you use the standard `kserve-tritonserver` runtime, you would need to implement feature fetching as a [Triton Python backend](https://github.com/triton-inference-server/python_backend) or as a pre-processing step outside of Triton, since Triton itself does not natively integrate with Feast.
 
 By structuring the inference step this way, the pipeline ensures that the deployed model always uses the freshest features for each prediction, supporting robust, real-time fraud detection.
@@ -625,7 +625,7 @@ The service retrieves features for `user_0`, runs a prediction, and returns the 
 {"user_id":"user_0","prediction":[[0.8173668384552002]]}
 ```
 
-> Note: The result of the prediction may vary depending on the initial raw data you uploaded.  
+> Note: The result of the prediction may vary depending on the initial raw data you uploaded.
 > Try sending requests with a few different `user_id` values (e.g., `"user_1"`, `"user_2"`, etc.) to see how the predictions change.
 
 ## Conclusion

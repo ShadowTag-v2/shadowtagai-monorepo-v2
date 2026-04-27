@@ -31,8 +31,8 @@ namespace mittens {
 constant constexpr const int TILE_DIM{8};
 constant constexpr const int TILE_ELEMENTS{TILE_DIM*TILE_DIM};
 constant constexpr const int SIMD_THREADS{32};
-    
-    
+
+
 #ifdef M2_PRO
 constant constexpr int MAX_SHARED_MEMORY = 32768;
 #else
@@ -57,20 +57,20 @@ struct default_type {};
 // This macro can't be done as a template, so it doesn't really have a location in mittens.
 #define typeof(A) typename std::remove_const<typename std::remove_reference<decltype(A)>::type>::type
 
-    
+
 }
-    
+
 /* ----------  SHUFFLE UTILS  ---------- */
 /**
  * @brief Mask constant for all active threads in a warp.
  */
 constant static constexpr uint32_t MASK_ALL = 0xFFFFFFFF;
-    
+
 template<typename T>
 static METAL_FUNC T shfl_sync(thread const T &f, const ushort laneid) {
     return metal::simd_shuffle(f, laneid);
 }
-    
+
 template<>
 METAL_FUNC bfloat shfl_sync<bfloat>(thread const bf16 &f, const ushort laneid) {
 //    return as_type<bf16>(metal::simd_shuffle(*(thread half*)(&f), laneid));
@@ -78,7 +78,7 @@ METAL_FUNC bfloat shfl_sync<bfloat>(thread const bf16 &f, const ushort laneid) {
     float shfl_val = metal::simd_shuffle(f_val, laneid);
     return (bf16)shfl_val;
 }
-    
+
 template<>
 METAL_FUNC bfloat2 shfl_sync<bfloat2>(thread const bf16_2 &f, const ushort laneid) {
 //    return as_type<bf16_2>(metal::simd_shuffle(*(thread half2*)(&f), laneid));
@@ -86,12 +86,12 @@ METAL_FUNC bfloat2 shfl_sync<bfloat2>(thread const bf16_2 &f, const ushort lanei
     float2 shfl_val = metal::simd_shuffle(f_val, laneid);
     return (bf16_2)shfl_val;
 }
-    
+
 template<typename T>
 static METAL_FUNC T shfl_down_fill_sync(thread const T &f, thread const T& fill_data, const ushort laneid) {
     return metal::simd_shuffle_and_fill_down(f, laneid, fill_data);
 }
-    
+
 template<>
 METAL_FUNC bfloat shfl_down_fill_sync<bfloat>(thread const bfloat &f, thread const bfloat &fill_data, const ushort laneid) {
 //    return as_type<bf16>(metal::simd_shuffle_and_fill_down(*(thread half*)(&f), *(thread half*)(&fill_data), laneid));
@@ -134,16 +134,16 @@ template<>
 METAL_FUNC bfloat2 shfl_down_sync<bfloat2>(thread const bf16_2 &f, int delta) {
 //    return as_type<bf16_2>(metal::simd_shuffle_rotate_down(*(thread const half2*)(&f), delta));
 //    return base_types::convertor<bf16_2, float2>::convert(metal::simd_shuffle_rotate_down(base_types::convertor<float2, bf16_2>::convert(f), delta));
-    
+
     float2 f_val = (float2)f;
     float2 shfl_val = metal::simd_shuffle_rotate_down(f_val, delta);
     return (bf16_2)shfl_val;
 //    return as_type<bf16_2>(metal::simd_shuffle_rotate_down(*(thread half2*)(&f), delta));
 }
-    
-    
+
+
 /* ----------  LOOP UNROLLING UTILS  ---------- */
-    
+
 namespace meta {
 template <int Start, int End, int Stride, bool = (Start < End)>
 struct unroll_i_in_range {
@@ -202,7 +202,7 @@ struct unroll_i_j_in_range<StartOuter, EndOuter, StrideOuter,
     static METAL_FUNC void run(F, Args...) {
     }
 };
-    
+
 }
 
 
@@ -215,11 +215,9 @@ struct ReadVector {
 
 #define mittens_ALIGN_AS(n) alignas(n)
 #define mittens_DEFAULT_ALIGN mittens_ALIGN_AS(16)
-    
+
 /**
  * @brief Dummy structure for alignment purposes. Needed for WGMMA and TMA calls.
  */
 struct mittens_DEFAULT_ALIGN alignment_dummy { int dummy; };
 }
-
-

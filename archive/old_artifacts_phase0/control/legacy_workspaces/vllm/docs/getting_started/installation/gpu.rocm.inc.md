@@ -101,7 +101,7 @@ Currently, there are no pre-built ROCm wheels.
     !!! note
         - You will need to config the `$AITER_BRANCH_OR_COMMIT` for your purpose.
         - The validated `$AITER_BRANCH_OR_COMMIT` can be found in the [docker/Dockerfile.rocm_base](https://github.com/vllm-project/vllm/blob/main/docker/Dockerfile.rocm_base).
-        
+
 
 4. Build vLLM. For example, vLLM on ROCM 7.0 can be built with the following steps:
 

@@ -10,7 +10,7 @@
        <Button tap="{{dialogConfirm}}" text="Confirm" />
        <Button tap="{{dialogLogin}}" text="Login" />
        <Button tap="{{dialogAction}}" text="Actions" />
-        
+
       </StackLayout>
     </ScrollView>
 </Page>

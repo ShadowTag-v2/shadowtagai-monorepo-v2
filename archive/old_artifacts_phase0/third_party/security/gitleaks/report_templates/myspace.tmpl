@@ -395,12 +395,12 @@
           color: #00ffff;
           text-decoration: none;
         }
-        
+
         /* File path styling */
         .file-path-container {
           max-width: 100%;
         }
-        
+
         .file-path {
           display: inline-block;
           max-width: 100%;
@@ -696,7 +696,7 @@
                 const secret = container.getAttribute('data-secret');
                 const match = container.getAttribute('data-match');
                 const toggleButton = container.querySelector('.match-toggle');
-                
+
                 // If secret and match are the same, or if match is empty, hide the toggle button
                 if ((secret && match && secret.trim() === match.trim()) || !match) {
                     if (toggleButton) {

@@ -1,31 +1,31 @@
 plugins:
   feast-dev/feast:
-  - approve      
+  - approve
   - assign
   - help
   - hold
   - label
   - lgtm
-  - lifecycle     
+  - lifecycle
   - size
-  - verify-owners 
-  - wip         
+  - verify-owners
+  - wip
   - trigger
   - config-updater
   feast-dev/feast-spark:
-  - approve      
+  - approve
   - assign
   - help
   - hold
   - label
   - lgtm
-  - lifecycle     
+  - lifecycle
   - size
-  - verify-owners 
-  - wip         
+  - verify-owners
+  - wip
   - trigger
   - config-updater
- 
+
 config_updater:
   maps:
     .prow/config.yaml:

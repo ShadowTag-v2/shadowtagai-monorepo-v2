@@ -1732,7 +1732,7 @@ uint32_t getPathWeight(const char* filename,
         }
         --p;
     }
-    
+
     if ( *suffix != '\0' )
     {
         p = filename_start;
@@ -2002,4 +2002,3 @@ int main(int argc, const char* argv[])
 
     return 0;
 }
-

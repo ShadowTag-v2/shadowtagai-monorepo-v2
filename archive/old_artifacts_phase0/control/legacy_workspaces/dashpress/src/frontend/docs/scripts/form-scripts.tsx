@@ -79,8 +79,8 @@ return {
   },
 }
 
-/* 
-This will hide the "whatCanWeDoBetter" field 
+/*
+This will hide the "whatCanWeDoBetter" field
 when the value of "rating" is equal than 5
 */
 return {
@@ -89,9 +89,9 @@ return {
   }
 }
 
-/* 
-This will hide the "accountBalance" field 
-when the current user is updating his account  
+/*
+This will hide the "accountBalance" field
+when the current user is updating his account
 */
 return {
   accountBalance: {
@@ -99,8 +99,8 @@ return {
   }
 }
 
-/* 
-There is no limit to the composition 
+/*
+There is no limit to the composition
 */
 return {
   field1: {
@@ -144,15 +144,15 @@ and will be seeing the message in an alert,
 */
 return "You shall not pass"
 
-/* 
-For more practical use, you will want to wrap the text 
+/*
+For more practical use, you will want to wrap the text
 in a logic block and can it be as complex as needed
 */
 if(
-    $.formValues.age > 1000 && 
+    $.formValues.age > 1000 &&
     (
       $.formValues.planet != "Earth" ||
-      $.formValues.technology == "Advance" 
+      $.formValues.technology == "Advance"
     )
   ) {
   return "Only Aliens can submit this form"

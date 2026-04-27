@@ -21,7 +21,7 @@
 #if defined(FB_SONARKIT_ENABLED) && __has_include(<FlipperKit/FlipperClient.h>)
   InitializeFlipper(application);
 #endif
-  
+
   // the line below is malfolmed not to be matched by the Expo plugin regex
   // RCTBridge* briddge = [RCTBridge new];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:briddge moduleName:@"main" initialProperties:nil];

@@ -445,4 +445,3 @@ def test_special_characters_in_labels():
     # Should not crash with hyphens or underscores in connector names
     metrics_str = get_prometheus_metrics().decode("utf-8")
     assert 'connector_type="google_drive"' in metrics_str or "google_drive" in metrics_str
-

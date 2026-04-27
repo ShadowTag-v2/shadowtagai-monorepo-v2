@@ -26,5 +26,3 @@ dart_runner:
 
     fuchsia:
       uri: "../../dart_pkg/fuchsia/lib/fuchsia.dart"
-
-

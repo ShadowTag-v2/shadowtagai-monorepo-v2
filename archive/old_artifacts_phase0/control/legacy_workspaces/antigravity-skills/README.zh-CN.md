@@ -102,7 +102,7 @@ ln -s ~/antigravity-skills/skills/* .agent/skills/
 1.  **配置源**: 根目录下的 `skills_sources.json` 文件已预置了主要 Skill 的上游仓库配置，通常无需手动修改。
 2.  **运行同步**:
     你可以选择同步所有 Skill，或者仅同步指定的某一个：
-    
+
     ```bash
     # 同步所有配置的源
     ./scripts/sync_skills.sh

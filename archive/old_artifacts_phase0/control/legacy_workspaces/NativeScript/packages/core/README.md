@@ -17,10 +17,10 @@
 </p>
 
 <p align="center">
-  <a href="https://docs.nativescript.org">Getting Started</a> · 
-  <a href="https://docs.nativescript.org/setup/">Environment Setup</a> · 
-  <a href="https://nativescript.org/showcase">Showcase</a> · 
-  <a href="https://github.com/NativeScript/NativeScript/blob/main/tools/notes/CONTRIBUTING.md">Contribute</a> · 
+  <a href="https://docs.nativescript.org">Getting Started</a> ·
+  <a href="https://docs.nativescript.org/setup/">Environment Setup</a> ·
+  <a href="https://nativescript.org/showcase">Showcase</a> ·
+  <a href="https://github.com/NativeScript/NativeScript/blob/main/tools/notes/CONTRIBUTING.md">Contribute</a> ·
   <a href="https://nativescript.org/discord">Community</a>
 </p>
 

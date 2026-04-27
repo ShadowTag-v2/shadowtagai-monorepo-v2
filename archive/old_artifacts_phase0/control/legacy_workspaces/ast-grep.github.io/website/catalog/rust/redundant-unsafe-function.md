@@ -20,7 +20,7 @@ language: rust
 severity: error
 message: Unsafe function without unsafe block inside
 note: |
-  Consider whether this function needs to be marked unsafe 
+  Consider whether this function needs to be marked unsafe
   or if unsafe operations should be wrapped in an unsafe block
 rule:
   all:

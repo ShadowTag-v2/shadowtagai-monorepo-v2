@@ -40,8 +40,8 @@ This is the root of the mono-repo for React Native Firebase, if you're looking f
 
 The main package that you interface with is `App` (`@react-native-firebase/app`)
 
-| Name                                                     | Downloads                                                                                                                                                                                       |                                                                                        
-| -------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | 
+| Name                                                     | Downloads                                                                                                                                                                                       |
+| -------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | [AI](/packages/ai)                                       |           [![badge](https://img.shields.io/npm/dm/@react-native-firebase/ai.svg?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/@react-native-firebase/ai)           |
 | [Analytics](/packages/analytics)                         |           [![badge](https://img.shields.io/npm/dm/@react-native-firebase/analytics.svg?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/@react-native-firebase/analytics)           |
 | [App](/packages/app)                                     |                 [![badge](https://img.shields.io/npm/dm/@react-native-firebase/app.svg?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/@react-native-firebase/app)                 |

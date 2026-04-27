@@ -37,4 +37,3 @@ export async function insertThought(event) {
     return { statusCode: 500, body: JSON.stringify({ error: 'Insert failed', details: String(err && err.message || err) }) };
   }
 }
-

@@ -25,7 +25,7 @@ The bot reconfiguration system has an identity mismatch between the control plan
 ### How It Works Now
 
 #### 1. Bot Launch
-- Bot-manager generates `connection_id = uuid.uuid4()` 
+- Bot-manager generates `connection_id = uuid.uuid4()`
 - Stores mapping in Redis: `bm:meeting:{platform}:{native_meeting_id}:current_uid` → `connection_id`
 - Bot subscribes to: `bot_commands:{connection_id}`
 - Passes `connection_id` to bot via `BOT_CONFIG` environment variable
@@ -50,7 +50,7 @@ handleRedisMessage(message, channel, page) {
   const command = JSON.parse(message);
   currentLanguage = command.language;
   currentTask = command.task;
-  
+
   // Trigger browser-side reconfiguration
   page.evaluate(() => {
     window.triggerWebSocketReconfigure(lang, task);
@@ -64,7 +64,7 @@ handleRedisMessage(message, channel, page) {
 window.triggerWebSocketReconfigure = async (lang, task) => {
   cfg.language = lang;
   cfg.task = task;
-  
+
   // Close to force reconnect
   whisperLiveService.socket.close(1000, 'Reconfiguration requested');
 };
@@ -72,7 +72,7 @@ window.triggerWebSocketReconfigure = async (lang, task) => {
 // BrowserWhisperLiveService (browser.ts)
 socket.onopen = (event) => {
   this.currentUid = generateBrowserUUID();  // ← NEW UUID GENERATED
-  
+
   const configPayload = {
     uid: this.currentUid,                    // ← Fresh UID sent
     language: this.botConfigData.language,
@@ -265,16 +265,16 @@ except Exception as e:
 const handleRedisMessage = async (message: string, channel: string, page: Page | null) => {
   log(`[DEBUG] handleRedisMessage entered for channel ${channel}.`);
   log(`Received command on ${channel}: ${message}`);
-  
+
   try {
     const command = JSON.parse(message);
-    
+
     // Validate this command is for us
     if (command.meeting_id && command.meeting_id !== botConfig.meeting_id) {
       log(`⚠️ Ignoring command for different meeting: ${command.meeting_id} (ours: ${botConfig.meeting_id})`);
       return;
     }
-    
+
     if (command.action === 'reconfigure') {
       log(`Processing reconfigure command: Lang=${command.language}, Task=${command.task}`);
       currentLanguage = command.language;
@@ -421,8 +421,8 @@ After:  "Could not find meeting 12345"
 
 ## What Doesn't Change
 
-✅ The WS session UID is client-provided and may change on reconnection (ephemeral, data-plane only). The server does not auto-generate UIDs when missing; missing UID causes an immediate connection error.  
-✅ Core reconfiguration logic remains the same (close → stubborn reconnect → new config)  
+✅ The WS session UID is client-provided and may change on reconnection (ephemeral, data-plane only). The server does not auto-generate UIDs when missing; missing UID causes an immediate connection error.
+✅ Core reconfiguration logic remains the same (close → stubborn reconnect → new config)
 ✅ Meeting uniqueness constraint still enforced at database level
 
 ---
@@ -560,4 +560,3 @@ After:  "Could not find meeting 12345"
 **Related Documentation:**
 - vexa/services/vexa-bot/README.md - Bot architecture overview
 - vexa/services/bot-manager/README.md - Bot-manager API documentation
-

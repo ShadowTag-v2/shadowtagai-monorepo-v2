@@ -15,7 +15,7 @@ async function getCommits(url: string) {
     const data = await fetchGithub(url, { fetchType: "commits" });
     return data;
   } catch (e) {
-    console.warn(`[warn]  /src/components/AvatarList.astro 
+    console.warn(`[warn]  /src/components/AvatarList.astro
     ${(e as Error)?.message ?? e}`);
     return [] as Commit[];
   }

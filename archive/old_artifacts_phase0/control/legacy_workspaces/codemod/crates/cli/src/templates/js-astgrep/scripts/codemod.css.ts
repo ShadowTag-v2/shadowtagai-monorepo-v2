@@ -23,7 +23,7 @@ async function transform(root: SgRoot): Promise<string> {
       }
     });
 
-    if (propertyNameNode) {      
+    if (propertyNameNode) {
       const block = declaration.parent(); // Get the containing block
       if (block) {
         edits.push(declaration.replace(""));

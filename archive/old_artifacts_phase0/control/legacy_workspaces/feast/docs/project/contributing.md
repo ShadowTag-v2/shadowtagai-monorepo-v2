@@ -2,7 +2,7 @@
 
 ## Getting started
 After familiarizing yourself with the documentation, the simplest way to get started is to:
-1. Setup your developer environment by following [development guide](development-guide.md). 
+1. Setup your developer environment by following [development guide](development-guide.md).
 2. Either create a [GitHub issue](https://github.com/feast-dev/feast/issues) or make a draft PR (following [development guide](development-guide.md)) to get the ball rolling!
 
 ## Decision making process

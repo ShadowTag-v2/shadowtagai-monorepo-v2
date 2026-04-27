@@ -9,4 +9,3 @@ class WordDocumentContent(BaseModel):
     title: str = Field(description="Document title")
     content: str = Field(description="Document content in markdown format")
     summary: str = Field(description="Brief summary of the document")
-

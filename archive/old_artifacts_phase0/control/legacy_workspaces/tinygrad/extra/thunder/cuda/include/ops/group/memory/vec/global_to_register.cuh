@@ -21,7 +21,7 @@ __device__ inline static void load(RV &dst, const GL &src, const coord<rv<typena
 
         U *src_ptr = (U*)&src[(idx.template unit_coord<-1, 3>())];
         int laneid = ::kittens::laneid();
-        
+
         if constexpr (std::is_same_v<typename RV::layout, align_l>) {
             #pragma unroll
             for(auto w = 0; w < (dst.outer_dim+3)/4; w++) {
@@ -91,10 +91,10 @@ __device__ inline static void store(GL &dst, const RV &src, const coord<rv<typen
         using U = typename GL::dtype;
         using U2 = base_types::packing<U>::packed_type;
         using T = base_types::packing<T2>::unpacked_type;
-        
+
         U *dst_ptr = (U*)&dst[(idx.template unit_coord<-1, 3>())];
         int laneid = ::kittens::laneid();
-        
+
         if constexpr (std::is_same_v<typename RV::layout, align_l>) {
             #pragma unroll
             for(auto w = 0; w < (src.outer_dim+3)/4; w++) {

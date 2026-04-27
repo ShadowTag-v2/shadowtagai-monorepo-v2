@@ -121,7 +121,7 @@ def request(flow: http.HTTPFlow) -> None:
         # Replace API key
         if "x-goog-api-key" in flow.request.headers:
             flow.request.headers["x-goog-api-key"] = YOUR_API_KEY
-        
+
         # Replace in URL
         if "key=" in flow.request.url:
             import re

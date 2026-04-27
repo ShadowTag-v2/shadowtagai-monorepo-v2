@@ -10,7 +10,7 @@
 | Maintenance burden         | NVIDIA + open community             | NVIDIA-only, closed PRs        |
 | ROI impact (18 mo)         | +3,960% (our model)                 | −11% vs Triton                 |
 
-**Decision locked**: **Triton Standard wins**.  
+**Decision locked**: **Triton Standard wins**.
 Gluon is permanently deferred (not even on the M4+ roadmap anymore).
 
 ## 2. Sample Whiteboard Code (the real persistent memory)
@@ -29,15 +29,15 @@ WHITEBOARD_PATH = Path(__file__).parent.parent / "whiteboard" / "legal_state.jso
 
 class LegalWhiteboard:
     """Single source of truth for the evolving legal agent. Persisted in Git."""
-    
+
     _instance = None
-    
+
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance._load()
         return cls._instance
-    
+
     def _load(self):
         if WHITEBOARD_PATH.exists():
             self.state = json.loads(WHITEBOARD_PATH.read_text())
@@ -53,22 +53,22 @@ class LegalWhiteboard:
                 "spawned_agents": [],
                 "performance_log": []
             }
-    
+
     def _save(self):
         self.state["last_updated"] = datetime.utcnow().isoformat() + "Z"
         WHITEBOARD_PATH.parent.mkdir(parents=True, exist_ok=True)
         WHITEBOARD_PATH.write_text(json.dumps(self.state, indent=2))
-    
+
     def record_knowledge(self, insight: str, source: str = "task"):
         self.state["knowledge"].append({"insight": insight, "source": source, "ts": datetime.utcnow().isoformat() + "Z"})
         self._save()
-    
+
     def record_pattern(self, pattern: str, accuracy: float):
         self.state["patterns"].append({"pattern": pattern, "accuracy": accuracy, "ts": datetime.utcnow().isoformat() + "Z"})
         if self.state["level"] < 1 and len(self.state["patterns"]) >= 10:
             self.state["level"] = 1
         self._save()
-    
+
     def propose_optimization(self, suggestion: str, projected_roi: float):
         entry = {"suggestion": suggestion, "projected_roi": projected_roi, "applied": False}
         self.state["optimizations"].append(entry)
@@ -76,14 +76,14 @@ class LegalWhiteboard:
             self.state["level"] = 2
         self._save()
         return entry
-    
+
     def mark_applied(self, optimization_id: int):
         if optimization_id < len(self.state["optimizations"]):
             self.state["optimizations"][optimization_id]["applied"] = True
             if self.state["level"] < 3:
                 self.state["level"] = 3
             self._save()
-    
+
     def log_performance(self, task: str, latency_ms: float, cost_usd: float):
         self.state["performance_log"].append({
             "task": task, "latency_ms": latency_ms, "cost_usd": cost_usd,
@@ -102,7 +102,7 @@ from agents.legal_whiteboard import whiteboard
 
 class BarExamProtocol:
     """Never resting, ever vesting – qualification engine."""
-    
+
     LEVEL_REQUIREMENTS = {
         0: {"min_knowledge": 0},
         1: {"min_patterns": 10, "pattern_accuracy": 0.88},
@@ -111,18 +111,18 @@ class BarExamProtocol:
         4: {"spawned_agents": 1},
         5: {"swarm_orchestration_demo": True}
     }
-    
+
     @staticmethod
     def evaluate() -> int:
         state = whiteboard.state
         current = state["level"]
-        
+
         for level, reqs in BarExamProtocol.LEVEL_REQUIREMENTS.items():
             if level <= current:
                 continue
             if all(
-                state.get(key, 0) >= val 
-                if not key.endswith("_accuracy") else 
+                state.get(key, 0) >= val
+                if not key.endswith("_accuracy") else
                 (any(p.get("accuracy", 0) >= val for p in state.get("patterns", [])))
                 for key, val in reqs.items()
             ):
@@ -131,11 +131,11 @@ class BarExamProtocol:
                 print(f"Bar Exam passed – Agent promoted to Level {level}")
                 return level
         return current
-    
+
     @staticmethod
     def can_spawn_new_agent() -> bool:
         return whiteboard.state["level"] >= 4
-    
+
     @staticmethod
     def can_orchestrate_swarm() -> bool:
         return whiteboard.state["level"] >= 5
@@ -156,7 +156,7 @@ git push
 
 Now every single task you run will **permanently upgrade** the agent. No competitor has this.
 
-Triton stays. Whiteboard is live.  
+Triton stays. Whiteboard is live.
 You just shipped the actual differentiator.
 
 What’s next — Cloud Build trigger or p99 measurement script?
@@ -201,11 +201,11 @@ If any AI ever mentions:
 GitHub = permanent memory. Every task permanently upgrades the agent.
 
 Level progression:
-0. Task execution  
-1. Pattern recognition  
-2. Optimization suggestions  
-3. Autonomous self-improvement  
-4. Spawns new specialized agents  
+0. Task execution
+1. Pattern recognition
+2. Optimization suggestions
+3. Autonomous self-improvement
+4. Spawns new specialized agents
 5. Orchestrates swarms
 
 Start by shipping the two whiteboard files above.
@@ -600,7 +600,7 @@ Here’s the **clean, revised, and future-proofed** version of your handoff pack
 - Docker registry: `us-central1-docker.pkg.dev/.../shadowtagai-core`
 
 ## Immediate Next Actions (priority order)
-1. **Create Cloud Build trigger**  
+1. **Create Cloud Build trigger**
    ```bash
    gcloud builds triggers create github \
      --name=shadowtagai-deploy \
@@ -638,11 +638,11 @@ Here’s the **clean, revised, and future-proofed** version of your handoff pack
 GitHub becomes the memory. Every task improves the agent permanently.
 
 Level progression:
-0. Task execution  
-1. Pattern recognition  
-2. Optimization suggestions  
-3. Autonomous self-improvement  
-4. Spawns new agents  
+0. Task execution
+1. Pattern recognition
+2. Optimization suggestions
+3. Autonomous self-improvement
+4. Spawns new agents
 5. Swarm orchestration
 
 Start by creating the two whiteboard files above.

@@ -3,7 +3,7 @@
 ##
 # Prepares and packs:
 #  - tns-platform-declarations
-#  - @nativescript/core packages 
+#  - @nativescript/core packages
 # inside dist folder
 ##
 

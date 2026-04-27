@@ -67,7 +67,7 @@ runs:
           HIGHEST_SEMVER_TAG="${{ inputs.custom_version }}"
           echo "::set-output name=highest_semver_tag::$HIGHEST_SEMVER_TAG"
           echo "Using custom version as highest semantic version: $HIGHEST_SEMVER_TAG"
-        else 
+        else
           source infra/scripts/setup-common-functions.sh
           SEMVER_REGEX='^v[0-9]+\.[0-9]+\.[0-9]+(-([0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*))?$'
           if echo "${RELEASE_VERSION}" | grep -P "$SEMVER_REGEX" &>/dev/null ; then

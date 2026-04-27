@@ -59,4 +59,3 @@ Usage: `/prompts:research-better-lib BASELINE_LIB=Fuse.js DOMAIN_USE_CASE="fuzzy
 
 **Resulting research question:**
 "Which modern JS/TS fuzzy search libraries outperform Fuse.js on 5k–50k items for fuzzy matching tool names + short descriptions (10–500 chars), with ESM, TS types, and <25 KB gzip bundle? Please compare fuzzysort, quick‑score, FlexSearch, MiniSearch, Orama by p95 latency, relevance (NDCG@5), bundle size, multi‑field weighting, and maintenance."
-

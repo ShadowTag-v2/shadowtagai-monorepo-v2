@@ -33,8 +33,8 @@ New pitch:
 👉 Board-level summary:
 We go from “we need $5–10M and 20 engineers to stand up infra” → to “one founder, Cursor, and partner credits can ship MVP in half a year.”
 ⸻
-Do you want me to re-roll your pitch deck slides specifically for CoreWeave/NVIDIA with this compressed timeline + “AI-native YouTube” framing? That way, you’ve got a targeted deck for infra partners, not just investors." 
-<next> 
+Do you want me to re-roll your pitch deck slides specifically for CoreWeave/NVIDIA with this compressed timeline + “AI-native YouTube” framing? That way, you’ve got a targeted deck for infra partners, not just investors."
+<next>
 
 "Alright, let’s ground this in your MVP path under Tiny Teams doctrine, factoring in Cloudflare’s FL2/Rust modularization and AiYouJR as the operating compass:
 

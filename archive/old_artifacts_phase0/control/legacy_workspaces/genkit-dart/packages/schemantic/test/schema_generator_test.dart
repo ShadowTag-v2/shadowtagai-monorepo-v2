@@ -220,7 +220,7 @@ abstract class $Config {
 
   @IntegerField(defaultValue: 8080)
   int get port;
-  
+
   @Field(defaultValue: true)
   bool get enabled;
 }

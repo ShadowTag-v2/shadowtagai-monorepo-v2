@@ -1,7 +1,7 @@
 Cor.83 # **PNKLN CODE COMPENDIUM: STRATEGIC ANALYSIS**
 
-**Date:** October 29, 2025  
-**Analyst:** Claude  
+**Date:** October 29, 2025
+**Analyst:** Claude
 **Subject:** Code architecture, strategic value, and integration recommendations
 
 -----
@@ -300,7 +300,7 @@ def build(items, np_out, meta_out):
     # Create embeddings for all documents
     # Save as NumPy array (efficient)
     # Save metadata separately (JSON)
-    
+
 def query(q, np_path, meta_path, top=3):
     # Load embeddings
     # Compute cosine similarity
@@ -385,12 +385,12 @@ Monetization: Free (drives storage upgrades)
 **What it does:**
 
 ```python
-def init(project, location): 
+def init(project, location):
     # Initialize Vertex AI SDK
-    
+
 def gemini(model="gemini-1.5-flash"):
     # Return Gemini model instance
-    
+
 def embedding(model="text-embedding-005"):
     # Return embedding model instance
 ```
@@ -491,7 +491,7 @@ That `or 1e-9` is what separates production code from prototypes. You handle edg
 ```
 Problem: Need to track what code is deployed where
 Solution: Manifest file with deployment metadata
-Use case: 
+Use case:
   - Debugging: "What version is running in prod?"
   - Rollback: "Revert to manifest from 2 hours ago"
   - Auditing: "Who deployed what when?"
@@ -565,13 +565,13 @@ def ocr_path(path: str) -> str:
 # Better
 def ocr_path(path: str) -> str:
     """Extract text from image using Cloud Vision OCR.
-    
+
     Args:
         path: Local file path to image/PDF
-    
+
     Returns:
         Extracted text content
-    
+
     Raises:
         FileNotFoundError: If path doesn't exist
         google.api_core.exceptions.GoogleAPIError: If OCR fails
@@ -688,7 +688,7 @@ Current valuation (pre-revenue): $30M-$50M
 function analyzeContract() {
   var doc = DocumentApp.getActiveDocument();
   var text = doc.getBody().getText();
-  
+
   // Call PNKLN API
   var response = UrlFetchApp.fetch(
     'https://api.pnkln.ai/v1/analyze/contract',
@@ -698,9 +698,9 @@ function analyzeContract() {
       headers: {'Authorization': 'Bearer ' + getAccessToken()}
     }
   );
-  
+
   var analysis = JSON.parse(response.getContentText());
-  
+
   // Insert matrix at end of doc
   doc.getBody().appendParagraph('Contract Analysis:');
   doc.getBody().appendTable(createMatrix(analysis));
@@ -733,7 +733,7 @@ function onNewEmail(email) {
   if (isBusinessEmail(email)) {
     // Extract deadlines
     var deadlines = extractDeadlines(email.body);
-    
+
     // Add to Calendar
     deadlines.forEach(function(deadline) {
       CalendarApp.createEvent(
@@ -743,7 +743,7 @@ function onNewEmail(email) {
         {description: 'Extracted from: ' + email.subject}
       );
     });
-    
+
     // Label email
     GmailApp.getUserLabelByName('Deadlines').addToThread(email.thread);
   }
@@ -783,21 +783,21 @@ function extractDeadlines(text) {
 def on_drive_upload(file_id):
     # Download file
     file_content = drive.files().get_media(fileId=file_id).execute()
-    
+
     # Check if scanned (low text-to-image ratio)
     if is_scanned(file_content):
         # OCR
         text = pnkln.ocr(file_content)
-        
+
         # Create searchable version
         drive.files().update(
             fileId=file_id,
             body={'description': text[:500]}  # First 500 chars as description
         )
-        
+
         # Generate summary
         summary = pnkln.summarize(text)
-        
+
         # Create summary doc
         drive.files().create(
             body={
@@ -851,16 +851,16 @@ public class PnklnCameraService extends CameraService {
             getLocation(),
             System.currentTimeMillis()
         );
-        
+
         // Sign image
         ProvenanceData provenance = PnklnSDK.sign(
             image.getBytes(),
             ctx
         );
-        
+
         // Embed in EXIF
         image.setExif("Provenance", provenance.toJSON());
-        
+
         // Save
         saveImage(image);
     }
@@ -899,18 +899,18 @@ app = Flask(__name__)
 def sign_asset():
     file = request.files['file']
     metadata = request.json.get('metadata', {})
-    
+
     # Sign
     provenance = pnkln.sign(
         file.read(),
         creator_id=request.headers['X-User-ID'],
         metadata=metadata
     )
-    
+
     # Store in Cloud Storage
     blob = storage.bucket('provenance-data').blob(provenance.id)
     blob.upload_from_string(file.read())
-    
+
     return jsonify({
         'provenance_id': provenance.id,
         'signature': provenance.signature,
@@ -967,7 +967,7 @@ logger.info(f"OCR processed {len(docs)} documents")
 logger.error(f"Failed: {e}", exc_info=True)
 ```
 
-**Effort:** 1 day  
+**Effort:** 1 day
 **Value:** 10x easier debugging
 
 -----
@@ -983,7 +983,7 @@ def test_contract_analysis():
     assert len(result['issues']) > 0
 ```
 
-**Effort:** 1 week  
+**Effort:** 1 week
 **Value:** Confidence in deployments
 
 -----
@@ -993,17 +993,17 @@ def test_contract_analysis():
 ```python
 def ocr_path(path: str) -> str:
     """Extract text from image using Cloud Vision OCR.
-    
+
     Args:
         path: Local file path to image/PDF
-        
+
     Returns:
         Extracted text as string
-        
+
     Raises:
         FileNotFoundError: If path invalid
         vision.exceptions.GoogleAPIError: If OCR service fails
-        
+
     Example:
         >>> text = ocr_path('/path/to/scan.pdf')
         >>> print(text)
@@ -1011,7 +1011,7 @@ def ocr_path(path: str) -> str:
     """
 ```
 
-**Effort:** 2 days  
+**Effort:** 2 days
 **Value:** Easier for new engineers
 
 -----
@@ -1036,7 +1036,7 @@ record_metric('pnkln/ocr/latency_ms', elapsed_ms)
 record_metric('pnkln/ocr/success_rate', 1.0 if success else 0.0)
 ```
 
-**Effort:** 3 days  
+**Effort:** 3 days
 **Value:** Production visibility
 
 -----

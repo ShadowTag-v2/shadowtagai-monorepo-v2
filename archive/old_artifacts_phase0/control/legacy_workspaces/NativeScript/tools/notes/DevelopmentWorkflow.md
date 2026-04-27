@@ -17,7 +17,7 @@ Clone (or fork/clone) the repo and run setup script:
 
 ```bash
 git clone https://github.com/NativeScript/NativeScript.git
-cd NativeScript 
+cd NativeScript
 npm run setup
 ```
 
@@ -28,7 +28,7 @@ npm run setup
 A. Using convenient start menu:
 
 ```bash
-npm start 
+npm start
 > (Type) "core.test" (...to isolate the menu to "@nativescript.core.test"), hit ENTER
 ```
 
@@ -51,13 +51,13 @@ npx nx run core:test --watch
 Run a single test by it's describe name, for example to run just the `xml/index.spec.ts`, the describe block is named `XmlParser` therefore:
 
 ```
-npx nx run core:test --watch -t 'XmlParser' 
+npx nx run core:test --watch -t 'XmlParser'
 ```
 
 ## Running the `e2e` Test Apps
 
 There are a couple of application used for development and testing.
-* `apps/automated` Automated e2e tests 
+* `apps/automated` Automated e2e tests
 * `apps/toolbox` Used for local development experimentation and confirming cases. More simplistic, use this one most often.
 * `apps/ui` Also used for local development experimentation and confirming cases. More sophisticated setup.
 

@@ -59,6 +59,6 @@ Examples:
   - "https://mk8.tockdom.com/wiki/BFRES_(File_Format), https://wiki.vg-resource.com/BFRES, https://wiki.oatmealdome.me/BFRES_(File_Format)"
 - A PDF:
   - "https://www.collada.org/2008/03/COLLADASchema"
- 
+
 **Additional context**
 Add any other context or screenshots about the feature request here.

@@ -56,4 +56,3 @@ def transformed_conv_rate(inputs: pd.DataFrame) -> pd.DataFrame:
     df["conv_rate_plus_val1"] = inputs["conv_rate"] + inputs["val_to_add"]
     df["conv_rate_plus_val2"] = inputs["conv_rate"] + inputs["val_to_add_2"]
     return df
-

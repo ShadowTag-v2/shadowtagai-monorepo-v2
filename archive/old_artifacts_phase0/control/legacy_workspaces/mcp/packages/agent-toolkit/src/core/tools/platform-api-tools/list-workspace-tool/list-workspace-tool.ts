@@ -83,7 +83,7 @@ export class ListWorkspaceTool extends BaseMondayApiTool<typeof listWorkspaceToo
       .join('\n');
 
 
-    return { 
+    return {
       content: `
 ${shouldIncludeNoFilteringDisclaimer ? 'IMPORTANT: Search term was not applied. Returning all workspaces. Please perform the filtering manually.' : ''}
 ${workspacesList}

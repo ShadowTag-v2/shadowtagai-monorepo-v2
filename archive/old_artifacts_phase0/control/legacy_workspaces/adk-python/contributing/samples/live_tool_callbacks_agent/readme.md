@@ -91,4 +91,4 @@ Observe how multiple callbacks in the chain are processed.
 - Multiple callbacks are supported and processed in order
 - Both sync and async callbacks are supported
 - Callbacks can modify, enhance, or block tool execution
-- The callback system provides full control over the tool execution pipeline 
+- The callback system provides full control over the tool execution pipeline

@@ -12,4 +12,3 @@ CREATE TABLE IF NOT EXISTS thoughts (
 CREATE INDEX IF NOT EXISTS thoughts_embedding_idx ON thoughts USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
 
 CREATE INDEX IF NOT EXISTS thoughts_created_at_idx ON thoughts (created_at DESC);
-

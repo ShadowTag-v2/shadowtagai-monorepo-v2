@@ -32,7 +32,7 @@ body:
       Please provide a clear and concise description of the failing test.
     placeholder: |
       A clear and concise description of the failing test.
-  
+
       ```
       The error message you got, with the full traceback and the error logs with [dump_input.py:##] if present.
       ```

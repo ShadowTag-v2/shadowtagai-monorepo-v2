@@ -45,16 +45,16 @@ IMPORTANT: ids returned by this tool are prefixed with the type of the object (e
   getInputSchema(): SearchToolInput {
     return searchSchema;
   }
-  
+
   protected async executeInternal(input: ToolInputType<SearchToolInput>): Promise<ToolOutputType<never>> {
     const handlers = {
       [GlobalSearchType.BOARD]: this.searchBoardsAsync.bind(this),
       [GlobalSearchType.DOCUMENTS]: this.searchDocsAsync.bind(this),
-      [GlobalSearchType.FOLDERS]: this.searchFoldersAsync.bind(this), 
+      [GlobalSearchType.FOLDERS]: this.searchFoldersAsync.bind(this),
     };
 
     const handler = handlers[input.searchType];
-    
+
     if (!handler) {
       throw new Error(`Unsupported search type: ${input.searchType}`);
     }
@@ -64,7 +64,7 @@ IMPORTANT: ids returned by this tool are prefixed with the type of the object (e
       disclaimer: (data.wasFiltered || !input.searchTerm)? undefined : '[IMPORTANT]Items were not filtered. Please perform the filtering.',
       results: data.items
     }
-    
+
     return {
       content: JSON.stringify(response, null, 2)
     };
@@ -75,10 +75,10 @@ IMPORTANT: ids returned by this tool are prefixed with the type of the object (e
       ...this.getPagingParamsForSearch(input),
       workspace_ids: input.workspaceIds?.map((id) => id.toString()),
     };
-    
+
     const response = await this.mondayApi.request<GetFoldersQuery>(getFolders, variables);
     const data = this.searchAndVirtuallyPaginate(input, response.folders || [], folder => folder!.name);
-    
+
     const result = {
       items: data.items.map(folder => ({
         id: ObjectPrefixes.FOLDER + folder!.id,
@@ -95,7 +95,7 @@ IMPORTANT: ids returned by this tool are prefixed with the type of the object (e
       ...this.getPagingParamsForSearch(input),
       workspace_ids: input.workspaceIds?.map((id) => id.toString()),
     };
-    
+
     const response = await this.mondayApi.request<GetDocsQuery>(getDocs, variables);
     const data = this.searchAndVirtuallyPaginate(input, response.docs || [], doc => doc!.name);
 
@@ -116,7 +116,7 @@ IMPORTANT: ids returned by this tool are prefixed with the type of the object (e
       ...this.getPagingParamsForSearch(input),
       workspace_ids: input.workspaceIds?.map((id) => id.toString()),
     };
-    
+
     const response = await this.mondayApi.request<GetBoardsQuery>(getBoards, variables);
     const data = this.searchAndVirtuallyPaginate(input, response.boards || [], board => board!.name);
 

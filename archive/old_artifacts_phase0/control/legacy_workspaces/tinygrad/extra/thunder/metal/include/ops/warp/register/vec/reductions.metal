@@ -57,7 +57,7 @@ reduce(
         metal::simdgroup_barrier(metal::mem_flags::mem_none);
         accum = op::template op<T>(accum, shfl_down_sync<T>(accum, 8));
         metal::simdgroup_barrier(metal::mem_flags::mem_none);
-        
+
         accum = shfl_sync<T>(accum, 0);
         metal::simdgroup_barrier(metal::mem_flags::mem_none);
         if (!reset) accum = op::template op<T>(accum, src_accum);
@@ -87,7 +87,7 @@ reduce(
                 accum = op::template op<T>(accum, shfl_down_sync<T>(accum, 1));
                 accum = op::template op<T>(accum, shfl_down_sync<T>(accum, 2));
                 accum = op::template op<T>(accum, shfl_down_sync<T>(accum, 4));
-                
+
                 T shfle_val = shfl_down_sync<T>(accum, 8);
                 if (laneid < 16) {
                     accum = op::template op<T>(accum, shfle_val);
@@ -95,7 +95,7 @@ reduce(
                 metal::simdgroup_barrier(metal::mem_flags::mem_none);
                 accum = op::template op<T>(accum, shfl_down_sync<T>(accum, 16));
             }
-            
+
         } else {
             metal::simdgroup_barrier(metal::mem_flags::mem_none);
             accum = op::template op<T>(accum, shfl_down_sync<T>(accum, 1));
@@ -109,12 +109,12 @@ reduce(
             accum = op::template op<T>(accum, shfl_down_sync<T>(accum, 16));
             metal::simdgroup_barrier(metal::mem_flags::mem_none);
         }
-        
+
         if (!reset) accum = op::template op<T>(accum, src_accum);
         dst_accum = shfl_sync(accum, 0);
     }
 }
-    
+
 /**
  * @brief Finds the maximum element in a register vector.
  *

@@ -7,4 +7,3 @@ null:third_party/dart
 
 # Ignore errors in SwiftShader
 undefined:flutter/third_party/swiftshader
-

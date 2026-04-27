@@ -17,7 +17,7 @@ describe('Create Item Tool Behaviour', () => {
     beforeEach(() => {
       mocks = createMockApiClient();
       jest.clearAllMocks();
-      
+
       // Setup mock for ChangeItemColumnValuesTool
       mockChangeColumnValuesTool = {
         execute: jest.fn(),
@@ -175,7 +175,7 @@ describe('Create Item Tool Behaviour', () => {
         });
 
         expect(result.content).toBe('Item 987654321 successfully duplicated from 123 and updated');
-        
+
         // Verify duplicate call
         expect(mocks.getMockRequest()).toHaveBeenCalledWith(
           expect.stringContaining('mutation duplicateItem'),
@@ -231,7 +231,7 @@ describe('Create Item Tool Behaviour', () => {
       it('Handles invalid JSON in columnValues for duplicate path', async () => {
         // Set up a successful duplicate response so the API call succeeds, but JSON parsing fails
         mocks.setResponse(successfulDuplicateItemResponse);
-        
+
         const tool = new CreateItemTool(mocks.mockApiClient, 'fake_token', { boardId: 456 });
 
         await expect(tool.execute({
@@ -282,7 +282,7 @@ describe('Create Item Tool Behaviour', () => {
         });
 
         expect(result.content).toBe('Item 987654321 successfully duplicated from 123 and updated');
-        
+
         // Verify duplicate call uses input boardId
         expect(mocks.getMockRequest()).toHaveBeenCalledWith(
           expect.stringContaining('mutation duplicateItem'),
@@ -324,7 +324,7 @@ describe('Create Item Tool Behaviour', () => {
         });
 
         expect(result.content).toBe('Subitem 111222333 successfully created under parent item 123');
-        
+
         expect(mocks.getMockRequest()).toHaveBeenCalledWith(
           expect.stringContaining('mutation createSubitem'),
           {

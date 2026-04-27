@@ -9,7 +9,7 @@ This repository uses automated version bumping based on Pull Request labels. Whe
 Add one of these labels to your Pull Request to control the version bump:
 
 - **`bump:major`** - For breaking changes (1.0.0 → 2.0.0)
-- **`bump:minor`** - For new features (1.0.0 → 1.1.0)  
+- **`bump:minor`** - For new features (1.0.0 → 1.1.0)
 - **`bump:patch`** - For bug fixes (1.0.0 → 1.0.1)
 
 ### Default Behavior
@@ -52,7 +52,7 @@ If no bump label is added, the version will be bumped as a **patch** release by 
 ```
 1. Create PR with your fix
 2. Add label: `bump:patch` (or no label)
-3. See preview comment: "1.1.0 → 1.1.1"  
+3. See preview comment: "1.1.0 → 1.1.1"
 4. Merge PR
 5. "Release" workflow runs automatically
 ```

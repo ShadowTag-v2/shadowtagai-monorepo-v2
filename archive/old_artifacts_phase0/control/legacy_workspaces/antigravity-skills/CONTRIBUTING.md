@@ -14,7 +14,7 @@ To contribute a new skill, please follow these steps:
 6.  **Update the Index**: Run the indexing script or ensure your skill is added to `skills_index.json`.
 
 ### 2. Improving Documentation
-We value clear documentation. You can improve existing manuals, README files, or add examples to current skills. 
+We value clear documentation. You can improve existing manuals, README files, or add examples to current skills.
 - Technical manuals are located in the `docs/` directory.
 - We maintain bilingual support (English/Chinese) for major documentation.
 

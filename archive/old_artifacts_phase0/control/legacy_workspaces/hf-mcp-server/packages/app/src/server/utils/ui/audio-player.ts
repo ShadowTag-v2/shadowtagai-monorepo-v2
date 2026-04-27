@@ -56,11 +56,11 @@ export function buildAudioPlayerHTML({
 			* { box-sizing: border-box; }
 			html, body { margin: 0; padding: 0; background: transparent; }
 			body { color: var(--fg); font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-			.card { 
-				background: var(--card); 
-				border: 1px solid var(--border); 
-				border-radius: 12px; 
-				padding: 16px 20px; 
+			.card {
+				background: var(--card);
+				border: 1px solid var(--border);
+				border-radius: 12px;
+				padding: 16px 20px;
 				max-width: 560px;
 				transition: all 0.2s ease;
 				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -70,19 +70,19 @@ export function buildAudioPlayerHTML({
 				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
 			}
 			.header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-			.brand { 
-				margin-left: auto; 
-				display: inline-flex; 
-				align-items: center; 
+			.brand {
+				margin-left: auto;
+				display: inline-flex;
+				align-items: center;
 				color: var(--primary);
 				transition: color 0.2s ease;
 			}
 			.brand:hover { color: var(--primary-hover); }
 			.brand svg { height: 40px; width: auto; display: block; }
-			.title { 
-				font-weight: 600; 
-				font-size: 15px; 
-				color: var(--fg); 
+			.title {
+				font-weight: 600;
+				font-size: 15px;
+				color: var(--fg);
 				letter-spacing: -0.01em;
 				flex: 1;
 			}
@@ -92,8 +92,8 @@ export function buildAudioPlayerHTML({
 				border-radius: 8px;
 				padding: 8px;
 			}
-			.player { 
-				width: 100%; 
+			.player {
+				width: 100%;
 				height: 40px;
 				filter: saturate(1.1);
 				outline: none;

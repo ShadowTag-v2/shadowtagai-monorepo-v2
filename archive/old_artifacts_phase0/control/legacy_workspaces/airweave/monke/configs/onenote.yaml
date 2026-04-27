@@ -60,4 +60,3 @@ verification:
   score_threshold: 0.1
   max_retries: 3
   retry_delay_seconds: 5
-

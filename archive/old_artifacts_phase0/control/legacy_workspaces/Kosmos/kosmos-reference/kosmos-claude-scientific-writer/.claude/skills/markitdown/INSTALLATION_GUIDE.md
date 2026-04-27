@@ -290,12 +290,12 @@ def test_basic():
     # Create a simple test file
     with open("test.txt", "w") as f:
         f.write("Hello MarkItDown!")
-    
+
     # Convert it
     result = md.convert("test.txt")
     print("✓ Basic conversion works")
     print(result.text_content)
-    
+
     # Cleanup
     import os
     os.remove("test.txt")
@@ -315,4 +315,3 @@ python test_markitdown.py
 - **GitHub Issues**: https://github.com/microsoft/markitdown/issues
 - **Examples**: `assets/example_usage.md`
 - **API Reference**: `references/api_reference.md`
-

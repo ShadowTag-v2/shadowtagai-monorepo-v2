@@ -8,7 +8,7 @@ This sample demonstrates how to use the `ApplicationIntegrationToolset` within a
 
 1.  **Set up Integration Connection:**
     *   You need an existing [Integration connection](https://cloud.google.com/integration-connectors/docs/overview) configured to interact with your Jira instance. Follow the [documentation](https://google.github.io/adk-docs/tools/google-cloud-tools/#use-integration-connectors) to provision the Integration Connector in Google Cloud and then use this [documentation](https://cloud.google.com/integration-connectors/docs/connectors/jiracloud/configure) to create an Jira connection. Note the `Connection Name`, `Project ID`, and `Location` of your connection.
-    * 
+    *
 
 2.  **Configure Environment Variables:**
     *   Create a `.env` file in the same directory as `agent.py` (or add to your existing one).
@@ -36,4 +36,3 @@ Here are some examples of how you can interact with the agent:
 *   `Can you list me all the issues ?`
 *   `Can you list me all the projects ?`
 *   `Can you create an issue: "Bug in product XYZ" in project ABC ?`
-

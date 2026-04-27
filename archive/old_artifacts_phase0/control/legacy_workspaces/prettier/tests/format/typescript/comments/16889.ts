@@ -68,4 +68,3 @@ class A {
   abstract method():void;
 
 }
-

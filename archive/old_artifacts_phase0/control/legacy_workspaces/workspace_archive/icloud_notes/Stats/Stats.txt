@@ -1,6 +1,6 @@
-Stats 
+Stats
 Frequentist approach - you know reason for the distribution - based on what you’ve seen
  Degrees of freedom and
-Regression 
+Regression
 Over specification
-Trying to explain more models than degrees of freedom 
+Trying to explain more models than degrees of freedom

@@ -9,5 +9,3 @@
 - Ask why repeatedly until reaching a systemic root cause.
 - Capture contributing factors and missing controls.
 - Define corrective and preventive actions with owners/dates.
-
-

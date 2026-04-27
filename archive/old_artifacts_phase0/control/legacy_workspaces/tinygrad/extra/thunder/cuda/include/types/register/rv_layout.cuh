@@ -11,7 +11,7 @@ namespace kittens {
 namespace ducks {
 /**
  * @namespace rv_layout
- * 
+ *
  * @brief A namespace for template metaprogramming with register vector layouts.
  */
 namespace rv_layout {

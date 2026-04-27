@@ -18,23 +18,23 @@ int main() {
     auto widget = std::make_unique<Widget>();
     std::vector<int> numbers(10);
     auto message = std::make_unique<std::string>();
-    
+
     // Usage patterns
     widget->getValue();
     numbers[0] = 5;
     *message = "Updated";
-    
+
     // This won't be matched (already smart pointer)
     auto smart_widget = std::make_unique<Widget>(100);
-    
+
     // Complex allocation
     auto complex = std::make_unique<Widget>();
-    
+
     // Manual cleanup (will need to be removed)
     // Automatic cleanup with smart pointers
     // Automatic cleanup with smart pointers
     // Automatic cleanup with smart pointers
     // Automatic cleanup with smart pointers
-    
+
     return 0;
 }

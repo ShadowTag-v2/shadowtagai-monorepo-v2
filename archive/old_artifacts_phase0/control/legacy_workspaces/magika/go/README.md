@@ -60,7 +60,7 @@ and [`cli/cli.go`](cli/cli.go) provides a somewhat more elaborate usage of the g
 - [`docker`](./docker) contains a sample docker file that builds a
 container image that ties together a Magika CLI, an ONNX Runtime,
 and a [model](../assets/models/standard_v3_3).
-- [`cli`](./cli) contains a basic CLI that illustrates how 
+- [`cli`](./cli) contains a basic CLI that illustrates how
 the Magika go library may be called from within an application.
 - [`magika`](./magika) contains the library, that extracts
 features from a sequence of bytes, and provides a scanner to infer

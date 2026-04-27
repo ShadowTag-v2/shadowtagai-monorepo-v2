@@ -93,7 +93,7 @@ export class SseTransport extends StatefulTransport<SSEConnection> {
 			// Create new transport
 			const transport = new SSEServerTransport('/message', res);
 			const sessionId = transport.sessionId;
-			
+
 			// Create server with session info (client info will be updated after initialization)
 			const isAuthenticated = authResult.shouldContinue && !!headers['authorization'];
 			const result = await this.serverFactory(headers, undefined, false, {

@@ -45,8 +45,8 @@ product_search_tool = Tool.from_tool(
     search,
     name="find_products",
     description="""
-        Search for products in the e-commerce catalog. 
-        Use this when customers ask about finding specific items, 
+        Search for products in the e-commerce catalog.
+        Use this when customers ask about finding specific items,
         checking availability, or browsing product categories.
         """,
 )
@@ -156,7 +156,7 @@ new_tool = Tool.from_tool(
 
 ### Names
 
-At times, you may want to rename an argument to make it more intuitive for an LLM. 
+At times, you may want to rename an argument to make it more intuitive for an LLM.
 
 For example, in the following example, we take a generic `q` argument and expand it to `search_query`:
 
@@ -226,14 +226,14 @@ mcp = FastMCP()
 def send_email(to: str, subject: str, body: str, api_key: str):
     """Sends an email."""
     ...
-    
+
 # Create a simplified version that hides the API key
 new_tool = Tool.from_tool(
     send_email,
     name="send_notification",
     transform_args={
         "api_key": ArgTransform(
-            hide=True, 
+            hide=True,
             default=os.environ.get("EMAIL_API_KEY"),
         )
     }
@@ -293,7 +293,7 @@ You can also remove meta information entirely:
 # Remove meta information from parent tool
 simplified_tool = Tool.from_tool(
     analyze_data,
-    name="simple_analyzer", 
+    name="simple_analyzer",
     meta=None  # Removes any meta information
 )
 ```
@@ -324,7 +324,7 @@ The `from_tool()` method takes a `transform_fn` parameter, which is an async fun
 
 ### The Transform Function
 
-The `transform_fn` is an async function that **completely replaces** the parent tool's logic. 
+The `transform_fn` is an async function that **completely replaces** the parent tool's logic.
 
 Critically, the transform function's arguments are used to determine the new tool's final schema. Any arguments that are not already present in the parent tool schema OR the `transform_args` will be added to the new tool's schema. Note that when `transform_args` and your function have the same argument name, the `transform_args` metadata will take precedence, if provided.
 
@@ -540,7 +540,7 @@ The transformed tool automatically uses the parent tool's output schema and stru
 **Custom Output Schema**
 ```python
 Tool.from_tool(parent_tool, output_schema={
-    "type": "object", 
+    "type": "object",
     "properties": {"status": {"type": "string"}}
 })
 ```

@@ -363,11 +363,11 @@ Notes on the HF pool
 
 “Model Spec v2”—what is it, is it published, and how do we use it here?
 
-What it is. The OpenAI Model Spec is a living doc that defines desired model behavior: authority/order (Root→System→Developer→User→Guideline), safety priorities, agentic rules, etc. OpenAI has released updated versions in 2025 (often informally referred to as “v2”) and keeps it public.  
+What it is. The OpenAI Model Spec is a living doc that defines desired model behavior: authority/order (Root→System→Developer→User→Guideline), safety priorities, agentic rules, etc. OpenAI has released updated versions in 2025 (often informally referred to as “v2”) and keeps it public.
 
 Where to read/copy.
 	•	Human-readable site (latest): model-spec.openai.com (linked from OpenAI docs/blog).
-	•	Source & archived HTML (pin a commit): openai/model_spec on GitHub. It explicitly says the repo contains markdown for the spec and archived versions starting from the second release (Feb 12, 2025).  
+	•	Source & archived HTML (pin a commit): openai/model_spec on GitHub. It explicitly says the repo contains markdown for the spec and archived versions starting from the second release (Feb 12, 2025).
 
 How to “copy it into here.”
 Two practical ways:
@@ -425,8 +425,8 @@ Quick “Cursor checklist”
 ⸻
 
 About “Model Spec v2” publication status (receipts)
-	•	OpenAI publicly documents updates to the Model Spec (e.g., Sept 12, 2025 update; archive notes and guidance on authority, agentic behavior).  
-	•	The GitHub repo openai/model_spec hosts the markdown + archived HTML starting with the second release (2025-02-12)—that’s the “v2” era you’re referring to. You can vendor it directly.  
+	•	OpenAI publicly documents updates to the Model Spec (e.g., Sept 12, 2025 update; archive notes and guidance on authority, agentic behavior).
+	•	The GitHub repo openai/model_spec hosts the markdown + archived HTML starting with the second release (2025-02-12)—that’s the “v2” era you’re referring to. You can vendor it directly.
 
 If you want, I can trim a house-spec (one page) tailored to AiYou’s use cases (video tooling + safety + watermarking) and drop it into the three system prompts above.”
 
@@ -434,10 +434,10 @@ If you want, I can trim a house-spec (one page) tailored to AiYou’s use cases 
 
 Model Spec v2 — what it is, where it is
 	•	What: OpenAI’s “Model Spec” v2 is the public document that defines desired model behavior (principles, do/don’t, trade-offs) plus evaluation prompts.
-	•	Status: Published and open-sourced under CC0 (public domain). You’re free to copy, adapt, and vendor it.  
+	•	Status: Published and open-sourced under CC0 (public domain). You’re free to copy, adapt, and vendor it.
 	•	Where:
-	•	Human-readable: model-spec.openai.com (always the latest).  
-	•	Source + eval prompts: github.com/openai/model_spec (includes model_spec.md, examples/, and an archive of released HTML versions starting from the Feb 12, 2025 update).  
+	•	Human-readable: model-spec.openai.com (always the latest).
+	•	Source + eval prompts: github.com/openai/model_spec (includes model_spec.md, examples/, and an archive of released HTML versions starting from the Feb 12, 2025 update).
 
 Copying v2 into your codebase (Cursor-friendly)
 
@@ -468,8 +468,8 @@ C) Import into docs tooling
 	•	If you want it as a Cursor prompt reference, store it in /prompts/model-spec/ and reference sections in your Cursor recipes (e.g., “Follow §‘Upholding intellectual freedom’ and §‘Measuring progress’ from docs/model-spec/model_spec.md”).
 
 Notes for use in your stack
-	•	License: CC0 ⇒ no attribution required, but keep a VERSION note with the commit/date you imported.  
-	•	Evaluation: The repo’s examples/ are tough prompts mapped to spec footnotes—good for internal red-team/unit tests.  
+	•	License: CC0 ⇒ no attribution required, but keep a VERSION note with the commit/date you imported.
+	•	Evaluation: The repo’s examples/ are tough prompts mapped to spec footnotes—good for internal red-team/unit tests.
 
 If you want, paste your repo layout and I’ll give you exact file paths + a ready-to-commit patch.”
 
@@ -638,7 +638,7 @@ To implement under your attached Bourne/160 persona with elevated privileges:
 
 ⸻
 
-Would you like me to output the Cursor-ready files now (JSON + router + task pack) and stage them under .cursor/shadowtag_v5/ so the MVP clock starts?”  
+Would you like me to output the Cursor-ready files now (JSON + router + task pack) and stage them under .cursor/shadowtag_v5/ so the MVP clock starts?”
 
 “Got it—here’s the “courtroom” view, laser-focused on the opponent setup, the judge, uniqueness, error mitigation, and a starter template you can use today.
 
@@ -1234,7 +1234,7 @@ Quick actions in Cursor
 	•	agent:bulk-sweep → micro-batches (≤200 LOC/≤5 files)
 	•	agent:validate → KPIs into DECISION_LOG.md
 
-Want me to add the dual-chain + cross-exam mode as a new task (agent:dual-chain-review) with a tiny arbiter script? I can drop those files now. 
+Want me to add the dual-chain + cross-exam mode as a new task (agent:dual-chain-review) with a tiny arbiter script? I can drop those files now.
 
 
 Here’s a straight, numbers-first view of your idea: “make the LLM explain its answer to another LLM before publishing” (I’ll call it Explain-to-Peer, E2P). It’s a lightweight debate where Model A must show its work to Model B; Model B interrogates, A revises, and only then do we publish. You get debate-style reliability without the full cost of multi-turn debates/self-consistency.

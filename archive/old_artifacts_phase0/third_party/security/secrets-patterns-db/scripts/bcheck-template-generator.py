@@ -21,7 +21,7 @@ def create_bcheck_template(name, regex, confidence):
 
 given response then
 """
-    
+
 def append_condition(name: str, confidence: str, regex: str)-> None:
     value = f"""
  if {{latest.response}} matches "{regex}" then
@@ -66,10 +66,10 @@ def main():
                 append_condition(name, confidence, regex)
             else:
                 create_bcheck_template(name, regex, confidence)
-    
+
     for key, value in bcheck_templates.items():
         print(f'saving {key}.bcheck')
         save_bcheck_file(key, value)
-    
+
 if __name__ == "__main__":
     main()

@@ -1,4 +1,4 @@
-Cor. possible operating procedure template 
+Cor. possible operating procedure template
 
 “R-T-F
 Act as a TROLE]
@@ -210,7 +210,4 @@ Protect your time & energy by saying "no" to things you don't want to do.
   Delegate or eliminate what doesn't move the needle.
 delegate eliminate”
 
-<next> 
-
-
-
+<next>

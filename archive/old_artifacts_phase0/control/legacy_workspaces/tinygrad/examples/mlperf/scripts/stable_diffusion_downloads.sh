@@ -5,7 +5,7 @@
 
 DATA=/raid/datasets/stable_diffusion
 
-LAION=$DATA/laion-400m/webdataset-moments-filtered 
+LAION=$DATA/laion-400m/webdataset-moments-filtered
 COCO=$DATA/coco2014
 mkdir -p $LAION $COCO
 

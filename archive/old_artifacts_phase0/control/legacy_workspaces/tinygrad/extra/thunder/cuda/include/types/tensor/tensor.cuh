@@ -12,7 +12,7 @@ namespace kittens {
 namespace ducks {
 /**
  * @namespace tensor_allocator
- * 
+ *
  * @brief The namespace where concepts and abstract types for tensor memory allocation live.
  */
 namespace tensor_allocator {

@@ -90,7 +90,7 @@ struct base<T_D, T_AB, 240, trans_a, trans_b> {
 
             :   "r"(*(uint32_t*)&a_rt.data[0]), "r"(*(uint32_t*)&a_rt.data[1]),
                 "r"(*(uint32_t*)&a_rt.data[2]), "r"(*(uint32_t*)&a_rt.data[3]),
-                
+
                 "l"(b_st_desc), "r"(scale_d), "n"(trans_b), "n"(scale_b)
             );
         }
@@ -171,7 +171,7 @@ struct base<T_D, T_AB, 240, trans_a, trans_b> {
 
             :   "r"(*(uint32_t*)&a_rt.data[0]), "r"(*(uint32_t*)&a_rt.data[1]),
                 "r"(*(uint32_t*)&a_rt.data[2]), "r"(*(uint32_t*)&a_rt.data[3]),
-                
+
                 "l"(b_st_desc), "r"(scale_d), "n"(trans_b), "n"(scale_b)
             );
         }
@@ -252,7 +252,7 @@ struct base<T_D, T_AB, 240, trans_a, trans_b> {
 
             :   "r"(*(uint32_t*)&a_rt.data[0]), "r"(*(uint32_t*)&a_rt.data[1]),
                 "r"(*(uint32_t*)&a_rt.data[2]), "r"(*(uint32_t*)&a_rt.data[3]),
-                
+
                 "l"(b_st_desc), "r"(scale_d), "n"(trans_b), "n"(scale_b)
             );
         }
@@ -347,7 +347,7 @@ struct base<T_D, T_AB, 240, trans_a, trans_b> {
 
             :   "l"(a_st_desc),
                 "l"(b_st_desc),
-                
+
                 "r"(scale_d),
                 "n"(trans_a),
                 "n"(trans_b),
@@ -431,7 +431,7 @@ struct base<T_D, T_AB, 240, trans_a, trans_b> {
 
             :   "l"(a_st_desc),
                 "l"(b_st_desc),
-                
+
                 "r"(scale_d),
                 "n"(trans_a),
                 "n"(trans_b),
@@ -515,7 +515,7 @@ struct base<T_D, T_AB, 240, trans_a, trans_b> {
 
             :   "l"(a_st_desc),
                 "l"(b_st_desc),
-                
+
                 "r"(scale_d),
                 "n"(trans_a),
                 "n"(trans_b),

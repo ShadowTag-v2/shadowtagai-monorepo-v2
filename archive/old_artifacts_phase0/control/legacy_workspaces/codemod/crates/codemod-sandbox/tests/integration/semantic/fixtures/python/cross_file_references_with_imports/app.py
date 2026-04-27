@@ -6,6 +6,3 @@ def create_user(name):
 
 admin = User("Admin")
 guest = User("Guest")
-
-
-

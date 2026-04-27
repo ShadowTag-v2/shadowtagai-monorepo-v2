@@ -7,7 +7,7 @@ environment:
 
 workspace:
   # NOTE: This list is intentionally incomplete.
-  # Packages that depend on flutter are excluded! 
+  # Packages that depend on flutter are excluded!
   - packages/_schema_generator
   - packages/genkit
   - packages/genkit_mcp
@@ -41,12 +41,12 @@ dev_dependencies:
   pub_semver: ^2.2.0
   test: ^1.30.0
   yaml: ^3.1.2
-  
+
 melos:
   name: genkit_workspace
   packages:
     - packages/**
-  
+
   scripts:
     test:
       exec: dart test

@@ -33,4 +33,3 @@ publish:
 # Usage: make publish-leave
 publish-leave:
 	@$(MAKE) publish DATA='{"action":"leave"}'
-

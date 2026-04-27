@@ -14,7 +14,7 @@ namespace ducks {
  * @brief A namespace for template metaprogramming with register tile layouts.
  */
 namespace rt_layout {
-    
+
 /**
  * @brief A dummy type used to identify a row-major layout for a register tile.
  */
@@ -40,6 +40,6 @@ METAL_FUNC static constexpr bool is_rt_layout() {
     return is_row_layout<_layout>() || is_col_layout<_layout>();
 }
 
-    
+
 } // namespace ducks
 } // namespace mittens

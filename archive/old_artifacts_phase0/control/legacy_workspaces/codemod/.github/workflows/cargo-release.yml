@@ -288,7 +288,7 @@ jobs:
         run: |
           # Create directories if they don't exist
           mkdir -p crates/cli/npm/platforms/darwin-arm64
-          mkdir -p crates/cli/npm/platforms/darwin-x64  
+          mkdir -p crates/cli/npm/platforms/darwin-x64
           mkdir -p crates/cli/npm/platforms/linux-x64-gnu
           mkdir -p crates/cli/npm/platforms/linux-arm64-gnu
           mkdir -p crates/cli/npm/platforms/win32-x64-msvc

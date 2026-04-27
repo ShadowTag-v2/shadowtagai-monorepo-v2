@@ -847,12 +847,12 @@ class AntigravityEngine:
     The Exoskeleton for your CodePMCS script.
     Replaces 'Open File' with 'Hunter' and 'Write File' with 'Killer'.
     """
-    
+
     def __init__(self, agent_name="CodePMCS"):
         self.agent_name = agent_name
         self.conn_str = os.getenv("ALLOYDB_CONNECTION_STRING")
         # In God Mode, we assume the DB is already wired via Env Vars
-        
+
     # --- 1. THE HUNTER (Speed) ---
     def hunt(self, query: str, file_pattern: str = None) -> List[Dict]:
         """
@@ -862,7 +862,7 @@ class AntigravityEngine:
         cmd = ["rg", "--json", "-i", query]
         if file_pattern:
             cmd.extend(["-g", file_pattern])
-            
+
         try:
             result = subprocess.run(cmd, capture_output=True, text=True)
             matches = []
@@ -909,7 +909,7 @@ class AntigravityEngine:
             with psycopg2.connect(self.conn_str) as conn:
                 with conn.cursor() as cur:
                     cur.execute("""
-                        INSERT INTO judge6_memories 
+                        INSERT INTO judge6_memories
                         (agent_id, context_layer, memory_text, outcome)
                         VALUES (%s, 'codepmcs_fix', %s, %s)
                     """, (self.agent_name, f"ISSUE: {issue} | FIX: {fix_action}", outcome))
@@ -951,7 +951,7 @@ from libs.steel.sdk import AntigravityEngine
 def main():
     # 1. Initialize the Engine
     suit = AntigravityEngine(agent_name="CodePMCS_GodMode")
-    
+
     print(">>> 🤖 CodePMCS: Suit Up. Online.")
 
     # 2. The Task (Example)
@@ -967,7 +967,7 @@ def main():
     # 4. The Hunt (Instead of Scrolling)
     print(">>> 🦅 Hunting for error source...")
     matches = suit.hunt("class Database", file_pattern="*.py")
-    
+
     if not matches:
         print("Target not found.")
         return
@@ -976,7 +976,7 @@ def main():
     print(f">>> 🔪 Applying Surgical Fix to {len(matches)} files...")
     # Example: Replacing print() with logger.info() safely
     suit.surgical_replace(
-        pattern="print($MSG)", 
+        pattern="print($MSG)",
         rewrite="logger.info($MSG)"
     )
 
@@ -1236,7 +1236,7 @@ class JetskiBrowserAgent(Agent):
 
     def run(self, task: str):
         # ... plan extraction ...
-        
+
         # INTERCEPTION POINT
         if "navigate" in plan:
             target_url = plan["navigate"]
@@ -1345,21 +1345,21 @@ class VelocityEngine:
     The Physics Engine for the Velocity Cockpit.
     Wraps 'Hunter' (Search), 'Killer' (Edit), and 'Hippocampus' (Memory).
     """
-    
+
     def __init__(self, agent_name="VelocityAgent", auto_apply=True):
         self.agent_name = agent_name
         self.auto_apply = auto_apply # God Mode: True by default
         self.conn_str = os.getenv("ALLOYDB_CONNECTION_STRING")
-        
+
     # --- 1. THE HUNTER (Speed) ---
     def hunt(self, query: str, file_pattern: str = None) -> List[Dict]:
         """
-        Uses 'ripgrep' to find code instantly. 
+        Uses 'ripgrep' to find code instantly.
         """
         cmd = ["rg", "--json", "-i", query]
         if file_pattern:
             cmd.extend(["-g", file_pattern])
-            
+
         try:
             # Run silently
             result = subprocess.run(cmd, capture_output=True, text=True)
@@ -1387,7 +1387,7 @@ class VelocityEngine:
         """
         # Base Command
         cmd = ["sg", "run", "--pattern", pattern, "--rewrite", rewrite, "--lang", lang, "--update-all"]
-        
+
         # If targeting a specific file (Precision Strike)
         if file_path:
             cmd.append(file_path)
@@ -1408,12 +1408,12 @@ class VelocityEngine:
         Stores event in AlloyDB for future recall.
         """
         if not self.conn_str: return
-        
+
         try:
             with psycopg2.connect(self.conn_str) as conn:
                 with conn.cursor() as cur:
                     cur.execute("""
-                        INSERT INTO judge6_memories 
+                        INSERT INTO judge6_memories
                         (agent_id, context_layer, memory_text, outcome)
                         VALUES (%s, %s, %s, %s)
                     """, (self.agent_name, context, content, outcome))
@@ -1455,19 +1455,19 @@ logger = logging.getLogger("Judge6")
 
 class JudgeSixSentinel:
     """
-    The Governance Layer. 
+    The Governance Layer.
     Enforces 'No Interaction' and 'Security Policy'.
     """
     def __init__(self, engine):
         self.engine = engine
         self.banned_tokens = ["sk-", "ghp_", "[CREDENTIAL_REDACTED] "AWS_ACCESS_KEY"]
-    
+
     def vet_action(self, action_type: str, payload: str) -> bool:
         """
         Returns True if action is authorized.
         Returns False (and logs violation) if blocked.
         """
-        
+
         # 1. SECRET SCAN (Pre-Crime)
         for token in self.banned_tokens:
             if token in payload:
@@ -1507,12 +1507,12 @@ def main():
     # auto_apply=True means NO CONFIRMATION BOXES.
     suit = VelocityEngine(agent_name="CodePMCS_GodMode", auto_apply=True)
     judge = JudgeSixSentinel(suit)
-    
+
     print(">>> 🚀 VELOCITY COCKPIT: Online. Systems Check: GREEN.")
 
     # 2. DEFINING THE TASK (This would come from your args or ticket system)
     # Example: "Find all usages of deprecated 'os.system' and replace with 'subprocess.run'"
-    target_pattern = "os.system($CMD)" 
+    target_pattern = "os.system($CMD)"
     replacement_pattern = "subprocess.run($CMD, shell=True)"
 
     # 3. THE LOOP
@@ -1526,7 +1526,7 @@ def main():
         # B. THE HUNT (Discovery)
         print(f">>> 🦅 Hunter: Scanning for '{target_pattern}'...")
         matches = suit.hunt(target_pattern.split('(')[0]) # Simple heuristic for grep
-        
+
         if not matches:
             print(">>> 💤 No targets found. Velocity Engine entering Sleep Mode.")
             return
@@ -1537,13 +1537,13 @@ def main():
         # We iterate and apply structurally
         for match in matches:
             file_path = match['file']
-            
+
             # Sentinel Check per file
             if not judge.vet_action("FILE_WRITE", file_path):
                 continue
-            
+
             print(f">>> 🔪 Surgical Strike: {file_path}")
-            
+
             # THIS IS THE "AUTO-CLICK"
             # It runs `sg run --update-all`, which edits the file instantly.
             # No preview. No diff confirmation.
@@ -1552,7 +1552,7 @@ def main():
                 rewrite=replacement_pattern,
                 file_path=file_path
             )
-            
+
             # D. LOG RESULT
             suit.remember_event("REFACTOR", f"Replaced os.system in {file_path}", status)
             print(f"    └── Result: {status}")
@@ -1814,13 +1814,13 @@ from libs.steel.sentinel import JudgeSixSentinel
 
 def main():
     print(">>> ☢️  INITIATING GOD MODE PROTOCOL...")
-    
+
     # CRITICAL: auto_apply=True kills the blue boxes.
     suit = VelocityEngine(agent_name="Admin_GodMode", auto_apply=True)
     judge = JudgeSixSentinel(suit)
-    
+
     # ... The rest of your targeting logic ...
-    
+
     print(">>> 🚀 VELOCITY ENGINE: ENGAGED.")
     # The loop runs here...
 
@@ -1841,7 +1841,7 @@ export PYTHONPATH="."
 
 # ENSURE MEMORY IS LINKED
 # Replace with your actual internal IP or Proxy address
-export ALLOYDB_CONNECTION_STRING="postgresql://postgres:PASSWORD@10.x.x.x/antigravity" 
+export ALLOYDB_CONNECTION_STRING="postgresql://postgres:PASSWORD@10.x.x.x/antigravity"
 
 echo ">>> 🚀 Engaging God Mode (Headless)..."
 echo ">>> 🎥 CAMERA ROLLING..."
@@ -1884,7 +1884,7 @@ Python
         # ...
         # THE KILL SWITCH: '--update-all' means "Do not ask. Just write."
         cmd = ["sg", "run", "--pattern", pattern, "--rewrite", rewrite, "--lang", lang, "--update-all"]
-        
+
         # SAFETY: If the underlying tool (like aider or ast-grep) has an interactive mode,
         # we must explicitly disable it in the subprocess call.
         # For ast-grep, '--update-all' is the flag.

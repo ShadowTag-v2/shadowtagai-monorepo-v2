@@ -4,15 +4,15 @@ sidebarTitle: "Welcome!"
 description: The fast, Pythonic way to build MCP servers and clients.
 icon: hand-wave
 ---
-<img 
-  src="/assets/brand/f-watercolor-waves.png" 
-  
+<img
+  src="/assets/brand/f-watercolor-waves.png"
+
   alt="'F' logo on a watercolor background"
   noZoom
   className="rounded-2xl block dark:hidden"
   />
-<img 
-  src="/assets/brand/f-watercolor-waves-dark.png" 
+<img
+  src="/assets/brand/f-watercolor-waves-dark.png"
   alt="'F' logo on a watercolor background"
   noZoom
   className="rounded-2xl hidden dark:block"
@@ -81,7 +81,7 @@ The FastMCP documentation is available in multiple LLM-friendly formats:
 
 ### MCP Server
 
-The FastMCP docs are accessible via MCP! The server URL is `https://gofastmcp.com/mcp`. 
+The FastMCP docs are accessible via MCP! The server URL is `https://gofastmcp.com/mcp`.
 
 In fact, you can use FastMCP to search the FastMCP docs:
 
@@ -92,7 +92,7 @@ from fastmcp import Client
 async def main():
     async with Client("https://gofastmcp.com/mcp") as client:
         result = await client.call_tool(
-            name="SearchFastMcp", 
+            name="SearchFastMcp",
             arguments={"query": "deploy a FastMCP server"}
         )
     print(result)

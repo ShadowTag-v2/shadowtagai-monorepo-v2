@@ -65,7 +65,7 @@
   color: ededed
   description: Release please has completed a release for this.
 
-  
+
 - name: 'docs: deploy-preview'
   color: BFDADC
   description: Label to trigger Github Action docs preview.

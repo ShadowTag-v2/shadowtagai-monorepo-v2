@@ -229,10 +229,10 @@ export class SubtleCrypto {
 
 				/* instance.update(data as any);
                 const digest = instance.digest();
-    
+
                 const ab = new ArrayBuffer(digest.length);
                 (<any>org).nativescript.winter_tc.Utils.copyToBuffer(ab, digest);
-    
+
                 resolve(ab);
 
                 */

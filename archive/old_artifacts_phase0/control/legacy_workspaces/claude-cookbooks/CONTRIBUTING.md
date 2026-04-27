@@ -15,7 +15,7 @@ Thank you for your interest in contributing to the Claude Cookbooks! This guide 
    ```bash
    curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
-   
+
    Or with Homebrew:
    ```bash
    brew install uv
@@ -31,7 +31,7 @@ Thank you for your interest in contributing to the Claude Cookbooks! This guide 
    ```bash
    # Create virtual environment and install dependencies
    uv sync --all-extras
-   
+
    # Or with pip:
    pip install -e ".[dev]"
    ```
@@ -85,7 +85,7 @@ These commands use the exact same validation logic as our CI pipeline, helping y
    ```bash
    uv run ruff check skills/ --fix
    uv run ruff format skills/
-   
+
    uv run python scripts/validate_notebooks.py
    ```
 
@@ -143,7 +143,7 @@ If a hook fails, fix the issues and try committing again.
 2. **Use conventional commits**:
    ```bash
    # Format: <type>(<scope>): <subject>
-   
+
    # Types:
    feat     # New feature
    fix      # Bug fix
@@ -153,7 +153,7 @@ If a hook fails, fix the issues and try committing again.
    test     # Tests
    chore    # Maintenance
    ci       # CI/CD changes
-   
+
    # Examples:
    git commit -m "feat(skills): add text-to-sql notebook"
    git commit -m "fix(api): use environment variable for API key"

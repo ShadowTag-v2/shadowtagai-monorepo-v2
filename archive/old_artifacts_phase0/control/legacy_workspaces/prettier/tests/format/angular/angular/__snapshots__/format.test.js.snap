@@ -2083,36 +2083,36 @@ printWidth: 80
 {{ generatedDiscountCodes }}</textarea>
 <textarea>
     {{ generatedDiscountCodes }}</textarea>
-<textarea>  
+<textarea>
 {{ generatedDiscountCodes }}</textarea>
-<textarea>  
+<textarea>
     {{ generatedDiscountCodes }}</textarea>
 <textarea>{{ generatedDiscountCodes }}123</textarea>
 <textarea>
 {{ generatedDiscountCodes }}123</textarea>
 <textarea>
     {{ generatedDiscountCodes }}123</textarea>
-<textarea>  
+<textarea>
 {{ generatedDiscountCodes }}123</textarea>
-<textarea>  
+<textarea>
     {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
 {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
     {{ generatedDiscountCodes }}</textarea>
-<textarea type="text">  
+<textarea type="text">
 {{ generatedDiscountCodes }}</textarea>
-<textarea type="text">  
+<textarea type="text">
     {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
 {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
     {{ generatedDiscountCodes }}123</textarea>
-<textarea type="text">  
+<textarea type="text">
 {{ generatedDiscountCodes }}123</textarea>
-<textarea type="text">  
+<textarea type="text">
     {{ generatedDiscountCodes }}123</textarea>
 
 =====================================output=====================================
@@ -2120,44 +2120,44 @@ printWidth: 80
 <textarea>{{ generatedDiscountCodes }}</textarea>
 <textarea>    {{ generatedDiscountCodes }}</textarea>
 <textarea>
-  
+
 {{ generatedDiscountCodes }}</textarea
 >
 <textarea>
-  
+
     {{ generatedDiscountCodes }}</textarea
 >
 <textarea>{{ generatedDiscountCodes }}123</textarea>
 <textarea>{{ generatedDiscountCodes }}123</textarea>
 <textarea>    {{ generatedDiscountCodes }}123</textarea>
 <textarea>
-  
+
 {{ generatedDiscountCodes }}123</textarea
 >
 <textarea>
-  
+
     {{ generatedDiscountCodes }}123</textarea
 >
 <textarea type="text">{{ generatedDiscountCodes }}</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}</textarea>
 <textarea type="text">    {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
-  
+
 {{ generatedDiscountCodes }}</textarea
 >
 <textarea type="text">
-  
+
     {{ generatedDiscountCodes }}</textarea
 >
 <textarea type="text">{{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">    {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
-  
+
 {{ generatedDiscountCodes }}123</textarea
 >
 <textarea type="text">
-  
+
     {{ generatedDiscountCodes }}123</textarea
 >
 
@@ -2176,36 +2176,36 @@ printWidth: 80
 {{ generatedDiscountCodes }}</textarea>
 <textarea>
     {{ generatedDiscountCodes }}</textarea>
-<textarea>  
+<textarea>
 {{ generatedDiscountCodes }}</textarea>
-<textarea>  
+<textarea>
     {{ generatedDiscountCodes }}</textarea>
 <textarea>{{ generatedDiscountCodes }}123</textarea>
 <textarea>
 {{ generatedDiscountCodes }}123</textarea>
 <textarea>
     {{ generatedDiscountCodes }}123</textarea>
-<textarea>  
+<textarea>
 {{ generatedDiscountCodes }}123</textarea>
-<textarea>  
+<textarea>
     {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
 {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
     {{ generatedDiscountCodes }}</textarea>
-<textarea type="text">  
+<textarea type="text">
 {{ generatedDiscountCodes }}</textarea>
-<textarea type="text">  
+<textarea type="text">
     {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
 {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
     {{ generatedDiscountCodes }}123</textarea>
-<textarea type="text">  
+<textarea type="text">
 {{ generatedDiscountCodes }}123</textarea>
-<textarea type="text">  
+<textarea type="text">
     {{ generatedDiscountCodes }}123</textarea>
 
 =====================================output=====================================
@@ -2213,44 +2213,44 @@ printWidth: 80
 <textarea>{{ generatedDiscountCodes }}</textarea>
 <textarea>    {{ generatedDiscountCodes }}</textarea>
 <textarea>
-  
+
 {{ generatedDiscountCodes }}</textarea
 >
 <textarea>
-  
+
     {{ generatedDiscountCodes }}</textarea
 >
 <textarea>{{ generatedDiscountCodes }}123</textarea>
 <textarea>{{ generatedDiscountCodes }}123</textarea>
 <textarea>    {{ generatedDiscountCodes }}123</textarea>
 <textarea>
-  
+
 {{ generatedDiscountCodes }}123</textarea
 >
 <textarea>
-  
+
     {{ generatedDiscountCodes }}123</textarea
 >
 <textarea type="text">{{ generatedDiscountCodes }}</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}</textarea>
 <textarea type="text">    {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
-  
+
 {{ generatedDiscountCodes }}</textarea
 >
 <textarea type="text">
-  
+
     {{ generatedDiscountCodes }}</textarea
 >
 <textarea type="text">{{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">    {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
-  
+
 {{ generatedDiscountCodes }}123</textarea
 >
 <textarea type="text">
-  
+
     {{ generatedDiscountCodes }}123</textarea
 >
 
@@ -2268,36 +2268,36 @@ printWidth: 1
 {{ generatedDiscountCodes }}</textarea>
 <textarea>
     {{ generatedDiscountCodes }}</textarea>
-<textarea>  
+<textarea>
 {{ generatedDiscountCodes }}</textarea>
-<textarea>  
+<textarea>
     {{ generatedDiscountCodes }}</textarea>
 <textarea>{{ generatedDiscountCodes }}123</textarea>
 <textarea>
 {{ generatedDiscountCodes }}123</textarea>
 <textarea>
     {{ generatedDiscountCodes }}123</textarea>
-<textarea>  
+<textarea>
 {{ generatedDiscountCodes }}123</textarea>
-<textarea>  
+<textarea>
     {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
 {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
     {{ generatedDiscountCodes }}</textarea>
-<textarea type="text">  
+<textarea type="text">
 {{ generatedDiscountCodes }}</textarea>
-<textarea type="text">  
+<textarea type="text">
     {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
 {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
     {{ generatedDiscountCodes }}123</textarea>
-<textarea type="text">  
+<textarea type="text">
 {{ generatedDiscountCodes }}123</textarea>
-<textarea type="text">  
+<textarea type="text">
     {{ generatedDiscountCodes }}123</textarea>
 
 =====================================output=====================================
@@ -2317,13 +2317,13 @@ printWidth: 1
   }}</textarea
 >
 <textarea>
-  
+
 {{
     generatedDiscountCodes
   }}</textarea
 >
 <textarea>
-  
+
     {{
     generatedDiscountCodes
   }}</textarea
@@ -2344,13 +2344,13 @@ printWidth: 1
   }}123</textarea
 >
 <textarea>
-  
+
 {{
     generatedDiscountCodes
   }}123</textarea
 >
 <textarea>
-  
+
     {{
     generatedDiscountCodes
   }}123</textarea
@@ -2377,7 +2377,7 @@ printWidth: 1
 <textarea
   type="text"
 >
-  
+
 {{
     generatedDiscountCodes
   }}</textarea
@@ -2385,7 +2385,7 @@ printWidth: 1
 <textarea
   type="text"
 >
-  
+
     {{
     generatedDiscountCodes
   }}</textarea
@@ -2412,7 +2412,7 @@ printWidth: 1
 <textarea
   type="text"
 >
-  
+
 {{
     generatedDiscountCodes
   }}123</textarea
@@ -2420,7 +2420,7 @@ printWidth: 1
 <textarea
   type="text"
 >
-  
+
     {{
     generatedDiscountCodes
   }}123</textarea
@@ -2441,36 +2441,36 @@ trailingComma: "es5"
 {{ generatedDiscountCodes }}</textarea>
 <textarea>
     {{ generatedDiscountCodes }}</textarea>
-<textarea>  
+<textarea>
 {{ generatedDiscountCodes }}</textarea>
-<textarea>  
+<textarea>
     {{ generatedDiscountCodes }}</textarea>
 <textarea>{{ generatedDiscountCodes }}123</textarea>
 <textarea>
 {{ generatedDiscountCodes }}123</textarea>
 <textarea>
     {{ generatedDiscountCodes }}123</textarea>
-<textarea>  
+<textarea>
 {{ generatedDiscountCodes }}123</textarea>
-<textarea>  
+<textarea>
     {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
 {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
     {{ generatedDiscountCodes }}</textarea>
-<textarea type="text">  
+<textarea type="text">
 {{ generatedDiscountCodes }}</textarea>
-<textarea type="text">  
+<textarea type="text">
     {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
 {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
     {{ generatedDiscountCodes }}123</textarea>
-<textarea type="text">  
+<textarea type="text">
 {{ generatedDiscountCodes }}123</textarea>
-<textarea type="text">  
+<textarea type="text">
     {{ generatedDiscountCodes }}123</textarea>
 
 =====================================output=====================================
@@ -2478,44 +2478,44 @@ trailingComma: "es5"
 <textarea>{{ generatedDiscountCodes }}</textarea>
 <textarea>    {{ generatedDiscountCodes }}</textarea>
 <textarea>
-  
+
 {{ generatedDiscountCodes }}</textarea
 >
 <textarea>
-  
+
     {{ generatedDiscountCodes }}</textarea
 >
 <textarea>{{ generatedDiscountCodes }}123</textarea>
 <textarea>{{ generatedDiscountCodes }}123</textarea>
 <textarea>    {{ generatedDiscountCodes }}123</textarea>
 <textarea>
-  
+
 {{ generatedDiscountCodes }}123</textarea
 >
 <textarea>
-  
+
     {{ generatedDiscountCodes }}123</textarea
 >
 <textarea type="text">{{ generatedDiscountCodes }}</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}</textarea>
 <textarea type="text">    {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
-  
+
 {{ generatedDiscountCodes }}</textarea
 >
 <textarea type="text">
-  
+
     {{ generatedDiscountCodes }}</textarea
 >
 <textarea type="text">{{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">    {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
-  
+
 {{ generatedDiscountCodes }}123</textarea
 >
 <textarea type="text">
-  
+
     {{ generatedDiscountCodes }}123</textarea
 >
 
@@ -2534,36 +2534,36 @@ trailingComma: "none"
 {{ generatedDiscountCodes }}</textarea>
 <textarea>
     {{ generatedDiscountCodes }}</textarea>
-<textarea>  
+<textarea>
 {{ generatedDiscountCodes }}</textarea>
-<textarea>  
+<textarea>
     {{ generatedDiscountCodes }}</textarea>
 <textarea>{{ generatedDiscountCodes }}123</textarea>
 <textarea>
 {{ generatedDiscountCodes }}123</textarea>
 <textarea>
     {{ generatedDiscountCodes }}123</textarea>
-<textarea>  
+<textarea>
 {{ generatedDiscountCodes }}123</textarea>
-<textarea>  
+<textarea>
     {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
 {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
     {{ generatedDiscountCodes }}</textarea>
-<textarea type="text">  
+<textarea type="text">
 {{ generatedDiscountCodes }}</textarea>
-<textarea type="text">  
+<textarea type="text">
     {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
 {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
     {{ generatedDiscountCodes }}123</textarea>
-<textarea type="text">  
+<textarea type="text">
 {{ generatedDiscountCodes }}123</textarea>
-<textarea type="text">  
+<textarea type="text">
     {{ generatedDiscountCodes }}123</textarea>
 
 =====================================output=====================================
@@ -2571,44 +2571,44 @@ trailingComma: "none"
 <textarea>{{ generatedDiscountCodes }}</textarea>
 <textarea>    {{ generatedDiscountCodes }}</textarea>
 <textarea>
-  
+
 {{ generatedDiscountCodes }}</textarea
 >
 <textarea>
-  
+
     {{ generatedDiscountCodes }}</textarea
 >
 <textarea>{{ generatedDiscountCodes }}123</textarea>
 <textarea>{{ generatedDiscountCodes }}123</textarea>
 <textarea>    {{ generatedDiscountCodes }}123</textarea>
 <textarea>
-  
+
 {{ generatedDiscountCodes }}123</textarea
 >
 <textarea>
-  
+
     {{ generatedDiscountCodes }}123</textarea
 >
 <textarea type="text">{{ generatedDiscountCodes }}</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}</textarea>
 <textarea type="text">    {{ generatedDiscountCodes }}</textarea>
 <textarea type="text">
-  
+
 {{ generatedDiscountCodes }}</textarea
 >
 <textarea type="text">
-  
+
     {{ generatedDiscountCodes }}</textarea
 >
 <textarea type="text">{{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">{{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">    {{ generatedDiscountCodes }}123</textarea>
 <textarea type="text">
-  
+
 {{ generatedDiscountCodes }}123</textarea
 >
 <textarea type="text">
-  
+
     {{ generatedDiscountCodes }}123</textarea
 >
 
@@ -4723,7 +4723,7 @@ The null hero's name is {{nullHero && nullHero.name}}
 <a class="to-toc" href="#toc">top</a>
 
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -4744,7 +4744,7 @@ can be found in the LICENSE file at http://angular.io/license
 </div>
 
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -5516,7 +5516,7 @@ See console log:
 
 <a class="to-toc" href="#toc">top</a>
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -5542,7 +5542,7 @@ can be found in the LICENSE file at http://angular.io/license
   </div>
 </div>
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -6250,7 +6250,7 @@ The null hero's name is {{nullHero && nullHero.name}}
 <a class="to-toc" href="#toc">top</a>
 
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -6271,7 +6271,7 @@ can be found in the LICENSE file at http://angular.io/license
 </div>
 
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -7181,7 +7181,7 @@ See console log:
 
 <a class="to-toc" href="#toc">top</a>
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -7207,7 +7207,7 @@ can be found in the LICENSE file at http://angular.io/license
   </div>
 </div>
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -7914,7 +7914,7 @@ The null hero's name is {{nullHero && nullHero.name}}
 <a class="to-toc" href="#toc">top</a>
 
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -7935,7 +7935,7 @@ can be found in the LICENSE file at http://angular.io/license
 </div>
 
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -10573,7 +10573,7 @@ See console log:
   >top</a
 >
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -10630,7 +10630,7 @@ can be found in the LICENSE file at http://angular.io/license
   </div>
 </div>
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -11338,7 +11338,7 @@ The null hero's name is {{nullHero && nullHero.name}}
 <a class="to-toc" href="#toc">top</a>
 
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -11359,7 +11359,7 @@ can be found in the LICENSE file at http://angular.io/license
 </div>
 
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -12131,7 +12131,7 @@ See console log:
 
 <a class="to-toc" href="#toc">top</a>
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -12157,7 +12157,7 @@ can be found in the LICENSE file at http://angular.io/license
   </div>
 </div>
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -12865,7 +12865,7 @@ The null hero's name is {{nullHero && nullHero.name}}
 <a class="to-toc" href="#toc">top</a>
 
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -12886,7 +12886,7 @@ can be found in the LICENSE file at http://angular.io/license
 </div>
 
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -13658,7 +13658,7 @@ See console log:
 
 <a class="to-toc" href="#toc">top</a>
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
@@ -13684,7 +13684,7 @@ can be found in the LICENSE file at http://angular.io/license
   </div>
 </div>
 
-<!-- 
+<!--
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license

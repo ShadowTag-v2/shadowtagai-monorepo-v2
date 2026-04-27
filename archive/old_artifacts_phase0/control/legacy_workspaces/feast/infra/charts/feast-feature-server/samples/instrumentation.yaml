@@ -4,7 +4,7 @@ metadata:
   name: feast-instrumentation
 spec:
   exporter:
-    endpoint: <endpoint> # eg: http://{{ .Values.service.name }}-collector.{{ .Release.Namespace }}.svc.cluster.local:4318 
+    endpoint: <endpoint> # eg: http://{{ .Values.service.name }}-collector.{{ .Release.Namespace }}.svc.cluster.local:4318
   env:
   propagators:
     - tracecontext

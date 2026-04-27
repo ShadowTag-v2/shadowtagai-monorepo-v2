@@ -65,7 +65,7 @@ See all available options in the [CLI reference](/cli#codemod-jssg).
 // input.ts
 console.log("test");
 
-// expected.ts  
+// expected.ts
 logger.log("test");
 ```
 
@@ -117,15 +117,15 @@ function Component() {
     ```bash
     # For TypeScript files
     npx codemod jssg test -l typescript ./scripts/codemod.ts
-    
-    # For TSX files  
+
+    # For TSX files
     npx codemod jssg test -l tsx ./scripts/codemod.ts
-    
+
     # For JavaScript files
     npx codemod jssg test -l javascript ./scripts/codemod.ts
     ```
   </Accordion>
-  
+
   <Accordion title="Files not found">
     **Problem:** "No test files found" error.<br/><br/>
     **Solution:** Check your directory structure and file names:
@@ -133,13 +133,13 @@ function Component() {
     # Verify structure
     ls -la tests/basic-transform/
     # Should show: input.ts  expected.ts
-    
+
     # Check file names are correct
     ls tests/basic-transform/
     # Should show: input.ts  expected.ts
     ```
   </Accordion>
-  
+
   <Accordion title="Transform not applied">
     **Problem:** Test passes but no changes were made.<br/><br/>
     **Solution:** This is normal if your transform returns `null` for unchanged files. If you expect changes:
@@ -148,7 +148,7 @@ function Component() {
     npx codemod jssg test -l tsx ./scripts/codemod.ts -v
     ```
   </Accordion>
-  
+
   <Accordion title="Unexpected diffs">
     **Problem:** Test fails with unexpected output.<br/><br/>
     **Solution:** Update expected output if changes are intentional:
@@ -157,14 +157,14 @@ function Component() {
     npx codemod jssg test -l tsx ./scripts/codemod.ts -u
     ```
   </Accordion>
-  
+
   <Accordion title="Codemod syntax errors">
     **Problem:** "Syntax error in codemod" or TypeScript errors.<br/><br/>
     **Solution:** Check your transform file:
     ```bash
     # Validate TypeScript
     npx tsc --noEmit ./scripts/codemod.ts
-    
+
     # Test with a simple file first
     echo 'console.log("test");' > test-input.js
     npx codemod jssg run -l javascript ./scripts/codemod.ts test-input.js
@@ -262,5 +262,3 @@ AST comparison preserves order when it matters semantically. For example, spread
 - **Keep tests focused**: One transformation per test case
 - **Validate locally**: Always test before publishing
 - **Use `--strictness loose`**: When testing transforms that may produce semantically equivalent outputs with different formatting or ordering
-
-

@@ -27,7 +27,7 @@ By default, the test app will run all the tests from all registered test modules
 function runTests() {
     setTimeout(() => tests.runAll('HTTP'), 10);
 }
-``` 
+```
 
 * **Execute single test from a specific test module**:
 
@@ -35,7 +35,7 @@ function runTests() {
 function runTests() {
     setTimeout(() => tests.runAll('HTTP.test_getJSON'), 10);
 }
-``` 
+```
 
 ## Register Test Module
 Test modules are organized in separate files and are registered in the [`tests/app/testRunner.ts`](tests/app/testRunner.ts) file:
@@ -63,7 +63,7 @@ import * as TKUnit from "../tk-unit";
 
 export function testSomethingWorksFast() {
     let arr = [1, 2, 3];
-    
+
     TKUnit.assertNotNull(arr, "Array should be defined");
     TKUnit.assertTrue(arr[2] > 2, "arr[2] is not big enough")
     TKUnit.assertEqual(arr.length, 3, "Array length should be 3");

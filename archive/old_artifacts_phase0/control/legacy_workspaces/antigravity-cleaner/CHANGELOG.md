@@ -24,7 +24,7 @@ This is a **major milestone** release with a complete UI/UX redesign, new featur
   - SF Pro-inspired typography (Inter, Outfit fonts)
   - Responsive grid layouts that adapt to window size
   - Beautiful gradient accents and hover effects
-  
+
 - **Dark/Light Mode Support**
   - Seamless theme switching with smooth transitions
   - System-aware theme detection
@@ -44,7 +44,7 @@ This is a **major milestone** release with a complete UI/UX redesign, new featur
   - Gemini AI service connectivity
   - Google Cloud Platform status
   - AI Studio accessibility check
-  
+
 - **Detailed Diagnostics Window**
   - Latency measurements for each service
   - Visual status indicators (✅ Success, ❌ Failed, ⏳ Testing)
@@ -104,7 +104,7 @@ This is a **major milestone** release with a complete UI/UX redesign, new featur
   - Disk space analysis
   - Memory usage tracking
   - Process monitoring
-  
+
 - **Quick Actions Panel**
   - One-click access to common tasks
   - Status indicators for each module
@@ -203,12 +203,12 @@ This is a **major milestone** release with a complete UI/UX redesign, new featur
   - ✅ Fixed SmartScreen warnings with proper manifest
   - ✅ Resolved UAC elevation prompts
   - ✅ Fixed registry access errors on restricted accounts
-  
+
 - **macOS:**
   - ✅ Fixed Gatekeeper warnings
   - ✅ Resolved permission issues with browser directories
   - ✅ Fixed Safari session detection
-  
+
 - **Linux:**
   - ✅ Fixed missing tkinter dependencies
   - ✅ Resolved file permission issues
@@ -313,8 +313,8 @@ This is a **major milestone** release with a complete UI/UX redesign, new featur
 
 ### 🙏 Credits
 
-**Developed by:** Tawana Mohammadi / Tawana Network  
-**Contributors:** Community feedback and testing  
+**Developed by:** Tawana Mohammadi / Tawana Network
+**Contributors:** Community feedback and testing
 **Special Thanks:** All users who reported issues and suggested features
 
 ---
@@ -360,7 +360,7 @@ This is a **major milestone** release with a complete UI/UX redesign, new featur
 
 ---
 
-**Powered by TAWANA NETWORK**  
+**Powered by TAWANA NETWORK**
 **Copyright © 2024-2025 Tawana Mohammadi. All Rights Reserved.**
 
 ---

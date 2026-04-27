@@ -15,7 +15,7 @@ class BashExecutor:
     A macOS-hardened bash execution environment for AI agents.
     Implements EPIC 1: The macOS Sandbox requirements.
     """
-    
+
     def __init__(self):
         pass
 
@@ -32,11 +32,11 @@ class BashExecutor:
 
         agent_ctx = get_agent_context()
         cwd = agent_ctx.cwd_override or os.getcwd()
-        
+
         # We need a unique tmp file per agent to avoid race conditions
         # when multiple async agents are running bash commands.
         tmp_cwd_file = f"/tmp/ag-cwd-snapshot-{agent_ctx.agent_id}.txt"
-        
+
         # Claude Code CWD persistence trick:
         # 1. CD into the agent's tracked directory
         # 2. Run the user's command
@@ -46,7 +46,7 @@ class BashExecutor:
 cd "{cwd}" && export CI=true DEBIAN_FRONTEND=noninteractive && eval {self._shell_quote(command)}
 pwd -P >| "{tmp_cwd_file}"
 """
-        
+
         try:
             # We use asyncio.create_subprocess_shell to run without blocking the event loop
             process = await asyncio.create_subprocess_shell(
@@ -56,31 +56,31 @@ pwd -P >| "{tmp_cwd_file}"
                 shell=True,
                 executable='/bin/bash'
             )
-            
+
             stdout_bytes, stderr_bytes = await process.communicate()
             stdout = stdout_bytes.decode('utf-8', errors='replace')
             stderr = stderr_bytes.decode('utf-8', errors='replace')
             returncode = process.returncode
-            
+
             # Post-execution: Read the new CWD
             if os.path.exists(tmp_cwd_file):
                 with open(tmp_cwd_file, 'r') as f:
                     new_cwd_raw = f.read().strip()
-                    
+
                 # macOS APFS Unicode normalization (NFC)
                 # Apple's filesystem returns decomposed NFD strings, which can cause
                 # false "directory changed" triggers when compared to standard strings.
                 new_cwd = unicodedata.normalize('NFC', new_cwd_raw)
-                
+
                 # Update the context variable for this specific agent
                 set_current_cwd(new_cwd)
-                
+
                 # Cleanup the tmp file
                 try:
                     os.remove(tmp_cwd_file)
                 except Exception:
                     pass
-                    
+
             return returncode, stdout, stderr
 
         except Exception as e:
@@ -96,12 +96,12 @@ pwd -P >| "{tmp_cwd_file}"
 # Example usage function for demonstration
 async def demo_execution():
     from core.agent_context import AgentContext, current_agent_context
-    
+
     # Setup agent 1
     agent_token = current_agent_context.set(AgentContext(agent_id="agent-001"))
     executor = BashExecutor()
-    
+
     await executor.execute("cd /tmp && mkdir -p test_ag && cd test_ag")
     print(f"Agent 1 CWD after cd: {get_agent_context().cwd_override}")
-    
+
     current_agent_context.reset(agent_token)

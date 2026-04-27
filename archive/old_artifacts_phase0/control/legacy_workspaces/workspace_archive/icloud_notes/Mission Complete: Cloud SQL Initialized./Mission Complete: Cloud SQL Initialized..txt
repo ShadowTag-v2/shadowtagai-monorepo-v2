@@ -11,4 +11,4 @@ You can view the new database and query data in the Cloud SQL Studio.
 Use the credentials above to login.
 Your environment is now fully "Gucci Mode" compliant and data-ready.
 
-Run scripts/clone_gcp_repos.sh and scripts/fix imageshap.py 
+Run scripts/clone_gcp_repos.sh and scripts/fix imageshap.py

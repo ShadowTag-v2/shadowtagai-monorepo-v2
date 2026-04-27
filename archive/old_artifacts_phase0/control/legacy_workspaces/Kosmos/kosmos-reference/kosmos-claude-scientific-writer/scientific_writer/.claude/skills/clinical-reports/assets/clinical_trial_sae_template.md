@@ -2,48 +2,48 @@
 
 ## Report Information
 
-**Report Type:** [ ] Initial Report  [ ] Follow-up Report  [ ] Final Report  
-**Report Number:** [SAE-YYYY-####]  
-**Report Date:** [MM/DD/YYYY]  
-**Reporter:** [Name and title]  
+**Report Type:** [ ] Initial Report  [ ] Follow-up Report  [ ] Final Report
+**Report Number:** [SAE-YYYY-####]
+**Report Date:** [MM/DD/YYYY]
+**Reporter:** [Name and title]
 **Reporter Contact:** [Email and phone]
 
-**Follow-up Number:** [If follow-up: #1, #2, etc.]  
+**Follow-up Number:** [If follow-up: #1, #2, etc.]
 **Previous Report Date:** [If follow-up]
 
 ---
 
 ## Study Information
 
-**Protocol Number:** [Protocol ID]  
-**Protocol Title:** [Full study title]  
-**Study Phase:** [ ] Phase I  [ ] Phase II  [ ] Phase III  [ ] Phase IV  
-**Study Sponsor:** [Sponsor name]  
-**IND/IDE Number:** [IND or IDE number if applicable]  
+**Protocol Number:** [Protocol ID]
+**Protocol Title:** [Full study title]
+**Study Phase:** [ ] Phase I  [ ] Phase II  [ ] Phase III  [ ] Phase IV
+**Study Sponsor:** [Sponsor name]
+**IND/IDE Number:** [IND or IDE number if applicable]
 **ClinicalTrials.gov ID:** [NCT number]
 
-**Principal Investigator:** [Name]  
-**Site Number:** [Site ID]  
+**Principal Investigator:** [Name]
+**Site Number:** [Site ID]
 **Site Name:** [Institution name]
 
 ---
 
 ## Subject Information (De-identified)
 
-**Subject ID / Randomization Number:** [ID only, no name]  
-**Subject Initials:** [XX] (if permitted by regulatory authority)  
-**Age:** [Years] OR **Date of Birth:** [Year only: YYYY]  
-**Sex:** [ ] Male  [ ] Female  [ ] Other  
-**Race:** [Category]  
-**Ethnicity:** [Hispanic or Latino / Not Hispanic or Latino]  
-**Weight:** [kg]  
+**Subject ID / Randomization Number:** [ID only, no name]
+**Subject Initials:** [XX] (if permitted by regulatory authority)
+**Age:** [Years] OR **Date of Birth:** [Year only: YYYY]
+**Sex:** [ ] Male  [ ] Female  [ ] Other
+**Race:** [Category]
+**Ethnicity:** [Hispanic or Latino / Not Hispanic or Latino]
+**Weight:** [kg]
 **Height:** [cm]
 
 **Study Arm / Treatment Group:** [ ] Treatment A  [ ] Treatment B  [ ] Placebo  [ ] Blinded
 
-**Date of Informed Consent:** [MM/DD/YYYY]  
-**Date of First Study Drug:** [MM/DD/YYYY]  
-**Date of Last Study Drug:** [MM/DD/YYYY]  
+**Date of Informed Consent:** [MM/DD/YYYY]
+**Date of First Study Drug:** [MM/DD/YYYY]
+**Date of Last Study Drug:** [MM/DD/YYYY]
 **Study Drug Status at Time of Event:** [ ] Ongoing  [ ] Completed  [ ] Discontinued
 
 ---
@@ -60,9 +60,9 @@
 **Event Description:**
 [Detailed narrative description of the adverse event]
 
-**Date of Onset:** [MM/DD/YYYY]  
-**Time of Onset:** [HH:MM] (if known and relevant)  
-**Date of Resolution:** [MM/DD/YYYY] OR [ ] Ongoing  
+**Date of Onset:** [MM/DD/YYYY]
+**Time of Onset:** [HH:MM] (if known and relevant)
+**Date of Resolution:** [MM/DD/YYYY] OR [ ] Ongoing
 **Duration:** [Days/hours if resolved]
 
 **Event Location:** [ ] Inpatient  [ ] Outpatient  [ ] Home  [ ] Other: ________
@@ -84,7 +84,7 @@
 - Admission Date: [MM/DD/YYYY]
 - Discharge Date: [MM/DD/YYYY] OR [ ] Still hospitalized
 - Hospital Name: [Name and location]
-- ICU Admission: [ ] Yes  [ ] No  
+- ICU Admission: [ ] Yes  [ ] No
   - If yes, dates: [MM/DD/YYYY to MM/DD/YYYY]
 
 ---
@@ -231,10 +231,10 @@
 
 **Example Structure:**
 ```
-A [age]-year-old [sex] with a history of [relevant medical conditions] enrolled in 
-Study [protocol] on [date] and was randomized to [treatment arm]. The patient had 
-been receiving [study drug] at [dose] for [duration] when, on [date], the patient 
-developed [initial symptoms]. 
+A [age]-year-old [sex] with a history of [relevant medical conditions] enrolled in
+Study [protocol] on [date] and was randomized to [treatment arm]. The patient had
+been receiving [study drug] at [dose] for [duration] when, on [date], the patient
+developed [initial symptoms].
 
 [Describe progression of symptoms, timeline, clinical findings...]
 
@@ -244,7 +244,7 @@ developed [initial symptoms].
 
 [Describe outcome and current status...]
 
-The investigator assessed this event as [causality] related to study drug because 
+The investigator assessed this event as [causality] related to study drug because
 [reasoning]. Alternative explanations include [list alternative causes considered].
 ```
 
@@ -299,9 +299,9 @@ The investigator assessed this event as [causality] related to study drug becaus
 
 **Investigator Signature:**
 
-**Name:** [Principal Investigator name]  
-**Title:** [MD, credentials]  
-**Signature:** ____________________  
+**Name:** [Principal Investigator name]
+**Title:** [MD, credentials]
+**Signature:** ____________________
 **Date:** [MM/DD/YYYY]
 
 **I certify that this report is accurate and complete to the best of my knowledge.**
@@ -310,9 +310,9 @@ The investigator assessed this event as [causality] related to study drug becaus
 
 **Sponsor Representative (if applicable):**
 
-**Name:** [Name]  
-**Title:** [Medical Monitor, Safety Officer]  
-**Signature:** ____________________  
+**Name:** [Name]
+**Title:** [Medical Monitor, Safety Officer]
+**Signature:** ____________________
 **Date:** [MM/DD/YYYY]
 
 ---
@@ -355,5 +355,3 @@ The investigator assessed this event as [causality] related to study drug becaus
 - Follow up until event resolved
 - Maintain patient confidentiality
 - Use only de-identified information
-
-

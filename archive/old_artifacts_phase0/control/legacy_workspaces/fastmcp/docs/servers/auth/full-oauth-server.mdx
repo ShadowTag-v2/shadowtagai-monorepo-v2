@@ -37,13 +37,13 @@ You must implement these abstract methods to create a functioning OAuth server:
 <Card icon="code" title="Client Management Methods">
 <ParamField body="get_client" type="async method">
   Retrieve client information by ID from your database.
-  
+
   <Expandable title="Parameters">
     <ParamField body="client_id" type="str">
       Client identifier to look up
     </ParamField>
   </Expandable>
-  
+
   <Expandable title="Returns">
     <ParamField body="OAuthClientInformationFull | None" type="return type">
       Client information object or `None` if client not found
@@ -53,13 +53,13 @@ You must implement these abstract methods to create a functioning OAuth server:
 
 <ParamField body="register_client" type="async method">
   Store new client registration information in your database.
-  
+
   <Expandable title="Parameters">
     <ParamField body="client_info" type="OAuthClientInformationFull">
       Complete client registration information to store
     </ParamField>
   </Expandable>
-  
+
   <Expandable title="Returns">
     <ParamField body="None" type="return type">
       No return value
@@ -73,7 +73,7 @@ You must implement these abstract methods to create a functioning OAuth server:
 <Card icon="code" title="Authorization Flow Methods">
 <ParamField body="authorize" type="async method">
   Handle authorization request and return redirect URL. Must implement user authentication and consent collection.
-  
+
   <Expandable title="Parameters">
     <ParamField body="client" type="OAuthClientInformationFull">
       OAuth client making the authorization request
@@ -82,7 +82,7 @@ You must implement these abstract methods to create a functioning OAuth server:
       Authorization request parameters from the client
     </ParamField>
   </Expandable>
-  
+
   <Expandable title="Returns">
     <ParamField body="str" type="return type">
       Redirect URL to send the client to
@@ -92,7 +92,7 @@ You must implement these abstract methods to create a functioning OAuth server:
 
 <ParamField body="load_authorization_code" type="async method">
   Load authorization code from storage by code string. Return `None` if code is invalid or expired.
-  
+
   <Expandable title="Parameters">
     <ParamField body="client" type="OAuthClientInformationFull">
       OAuth client attempting to use the authorization code
@@ -101,7 +101,7 @@ You must implement these abstract methods to create a functioning OAuth server:
       Authorization code string to look up
     </ParamField>
   </Expandable>
-  
+
   <Expandable title="Returns">
     <ParamField body="AuthorizationCode | None" type="return type">
       Authorization code object or `None` if not found
@@ -115,7 +115,7 @@ You must implement these abstract methods to create a functioning OAuth server:
 <Card icon="code" title="Token Management Methods">
 <ParamField body="exchange_authorization_code" type="async method">
   Exchange authorization code for access and refresh tokens. Must validate code and create new tokens.
-  
+
   <Expandable title="Parameters">
     <ParamField body="client" type="OAuthClientInformationFull">
       OAuth client exchanging the authorization code
@@ -124,7 +124,7 @@ You must implement these abstract methods to create a functioning OAuth server:
       Valid authorization code object to exchange
     </ParamField>
   </Expandable>
-  
+
   <Expandable title="Returns">
     <ParamField body="OAuthToken" type="return type">
       New OAuth token containing access and refresh tokens
@@ -134,7 +134,7 @@ You must implement these abstract methods to create a functioning OAuth server:
 
 <ParamField body="load_refresh_token" type="async method">
   Load refresh token from storage by token string. Return `None` if token is invalid or expired.
-  
+
   <Expandable title="Parameters">
     <ParamField body="client" type="OAuthClientInformationFull">
       OAuth client attempting to use the refresh token
@@ -143,7 +143,7 @@ You must implement these abstract methods to create a functioning OAuth server:
       Refresh token string to look up
     </ParamField>
   </Expandable>
-  
+
   <Expandable title="Returns">
     <ParamField body="RefreshToken | None" type="return type">
       Refresh token object or `None` if not found
@@ -153,7 +153,7 @@ You must implement these abstract methods to create a functioning OAuth server:
 
 <ParamField body="exchange_refresh_token" type="async method">
   Exchange refresh token for new access/refresh token pair. Must validate scopes and token.
-  
+
   <Expandable title="Parameters">
     <ParamField body="client" type="OAuthClientInformationFull">
       OAuth client using the refresh token
@@ -165,7 +165,7 @@ You must implement these abstract methods to create a functioning OAuth server:
       Requested scopes for the new access token
     </ParamField>
   </Expandable>
-  
+
   <Expandable title="Returns">
     <ParamField body="OAuthToken" type="return type">
       New OAuth token with updated access and refresh tokens
@@ -175,13 +175,13 @@ You must implement these abstract methods to create a functioning OAuth server:
 
 <ParamField body="load_access_token" type="async method">
   Load an access token by its token string.
-  
+
   <Expandable title="Parameters">
     <ParamField body="token" type="str">
       The access token to verify
     </ParamField>
   </Expandable>
-  
+
   <Expandable title="Returns">
     <ParamField body="AccessToken | None" type="return type">
       The access token object, or `None` if the token is invalid
@@ -191,13 +191,13 @@ You must implement these abstract methods to create a functioning OAuth server:
 
 <ParamField body="revoke_token" type="async method">
   Revoke access or refresh token, marking it as invalid in storage.
-  
+
   <Expandable title="Parameters">
     <ParamField body="token" type="AccessToken | RefreshToken">
       Token object to revoke and mark invalid
     </ParamField>
   </Expandable>
-  
+
   <Expandable title="Returns">
     <ParamField body="None" type="return type">
       No return value
@@ -207,13 +207,13 @@ You must implement these abstract methods to create a functioning OAuth server:
 
 <ParamField body="verify_token" type="async method">
   Verify bearer token for incoming requests. Return `AccessToken` if valid, `None` if invalid.
-  
+
   <Expandable title="Parameters">
     <ParamField body="token" type="str">
       Bearer token string from incoming request
     </ParamField>
   </Expandable>
-  
+
   <Expandable title="Returns">
     <ParamField body="AccessToken | None" type="return type">
       Access token object if valid, `None` if invalid or expired

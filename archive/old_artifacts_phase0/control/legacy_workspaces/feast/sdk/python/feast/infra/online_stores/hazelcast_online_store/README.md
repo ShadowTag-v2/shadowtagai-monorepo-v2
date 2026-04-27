@@ -7,7 +7,7 @@ is handled as with any other online store: schema creation, read/write from/to H
 
 ## Quick usage
 
-The following refers to the [Feast quickstart](https://docs.feast.dev/getting-started/quickstart) page. 
+The following refers to the [Feast quickstart](https://docs.feast.dev/getting-started/quickstart) page.
 Only the Step 2 is different from this tutorial since it requires you to configure your Hazelcast online store.
 
 ### Creating the feature repository
@@ -32,8 +32,8 @@ features) proceed exactly as in the general Feast quickstart instructions.
 
 #### Hazelcast setup
 
-In order to use [Hazelcast](https://hazelcast.com) as online store, you need to have a running Hazelcast cluster. 
-You can create a cluster using Hazelcast Viridian Serverless easily or deploy one on your local/remote machine. 
+In order to use [Hazelcast](https://hazelcast.com) as online store, you need to have a running Hazelcast cluster.
+You can create a cluster using Hazelcast Viridian Serverless easily or deploy one on your local/remote machine.
 See this [getting started](https://hazelcast.com/get-started/) page for more details.
 
 Hazelcast online store provides capability to connect local/remote or Hazelcast Viridian Serverless cluster.
@@ -70,9 +70,9 @@ online_store:
 #### TTL configuration
 
 TTL is the maximum time in seconds for each feature to stay idle in the map.
-It limits the lifetime of the features relative to the time of the last read or write access performed on them. 
-The features whose idle period exceeds this limit are expired and evicted automatically. 
-A feature is idle if no get or put is called on it. 
+It limits the lifetime of the features relative to the time of the last read or write access performed on them.
+The features whose idle period exceeds this limit are expired and evicted automatically.
+A feature is idle if no get or put is called on it.
 Valid values are integers between 0 and Integer.MAX_VALUE.
 Its default value is 0, which means infinite.
 
@@ -86,4 +86,3 @@ online_store:
 ### More info
 
 You can learn about Hazelcast more from the [Hazelcast Documentation](https://docs.hazelcast.com/home/).
-

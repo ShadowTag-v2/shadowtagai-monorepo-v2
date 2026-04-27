@@ -7,13 +7,13 @@ For this tutorial, we setup Feast with Redis, using the Feast CLI to register an
 1.  Start minikube (`minikube start`)
 2.  Use helm to install a default Redis cluster
     ```bash
-    helm repo add bitnami https://charts.bitnami.com/bitnami 
-    helm repo update 
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm repo update
     helm install my-redis bitnami/redis
     ```
     ![](redis-screenshot.png)
 3. Port forward Redis so we can materialize features to it
-    
+
     ```bash
     kubectl port-forward --namespace default svc/my-redis-master 6379:6379
     ```
@@ -42,12 +42,12 @@ For this tutorial, we setup Feast with Redis, using the Feast CLI to register an
     entity_key_serialization_version: 3
     ```
 4. Run `feast apply` to apply your local features to the remote registry
-     - Note: you may need to authenticate to gcloud first with `gcloud auth login` 
+     - Note: you may need to authenticate to gcloud first with `gcloud auth login`
 6. Materialize features to the online store:
     ```bash
-    CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%S")                                    
+    CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%S")
     feast materialize-incremental $CURRENT_TIME
-    ``` 
+    ```
 
 ## Now let's setup the Feast Server
 1. Add the gcp-auth addon to mount GCP credentials:
@@ -80,10 +80,10 @@ For this tutorial, we setup Feast with Redis, using the Feast CLI to register an
       project: feast_java_demo
     ```
 4. Install the Feast helm chart: `helm install feast-release feast-charts/feast --values application-override.yaml`
-   > **Dev instructions**: if you're changing the java logic or chart, you can do 
+   > **Dev instructions**: if you're changing the java logic or chart, you can do
    >1. `eval $(minikube docker-env)`
-   >2. `make build-java-docker-dev` 
-   >3. In the `application-override.yaml`, uncomment the two `image: tag: dev` blocks 
+   >2. `make build-java-docker-dev`
+   >3. In the `application-override.yaml`, uncomment the two `image: tag: dev` blocks
    >4. `helm install feast-release ../../../infra/charts/feast --values application-override.yaml`
 5. (Optional): check logs of the server to make sure it's working
    ```bash
@@ -99,7 +99,7 @@ For this tutorial, we setup Feast with Redis, using the Feast CLI to register an
         python test.py
       ```
     - gRPC cli:
-        
+
         ```bash
         grpc_cli call localhost:6566 GetOnlineFeatures '
         features {
@@ -118,9 +118,9 @@ For this tutorial, we setup Feast with Redis, using the Feast CLI to register an
           }
         }'
         ```
-        
+
         -   Response:
-        
+
         ```bash
         connecting to localhost:6566
         metadata {
@@ -162,5 +162,5 @@ For this tutorial, we setup Feast with Redis, using the Feast CLI to register an
           }
         }
         Rpc succeeded with OK status
-        
+
         ```

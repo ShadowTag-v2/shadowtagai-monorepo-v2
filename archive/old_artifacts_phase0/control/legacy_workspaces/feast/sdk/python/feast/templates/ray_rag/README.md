@@ -18,7 +18,7 @@ ray_rag/
 │   ├── feature_store.yaml      # Ray + Milvus configuration
 │   ├── example_repo.py         # Feature definitions with Ray UDF
 │   ├── test_workflow.py        # End-to-end demo
-│   └── data/                   
+│   └── data/
 │       └── raw_movies.parquet  # Sample IMDB dataset (10 movies)
 ├── bootstrap.py                # Template initialization
 └── README.md
@@ -52,7 +52,7 @@ feast apply
 
 ```bash
 # Generate embeddings for sample movies
-feast materialize --disable-event-timestamp 
+feast materialize --disable-event-timestamp
 ```
 
 ### 5. Test the Pipeline
@@ -75,7 +75,7 @@ Raw Data (IMDB CSV)
 Ray Offline Store (Distributed I/O)
     ↓
 Ray Compute Engine (Parallel Embedding Generation)
-    ↓  
+    ↓
 Milvus Online Store (Vector Search)
     ↓
 RAG Application
@@ -131,7 +131,7 @@ The template includes a small sample dataset (10 movies) for quick testing. To w
 2. **Install Kaggle API and download dataset:**
    ```bash
    pip install kaggle
-   
+
    # Download to your feature_repo/data directory
    cd feature_repo
    kaggle datasets download -d yashgupta24/48000-movies-dataset -p ./data --unzip
@@ -143,16 +143,16 @@ The template includes a small sample dataset (10 movies) for quick testing. To w
    import pyarrow as pa
    import pyarrow.parquet as pq
    from pathlib import Path
-   
+
    # Read the CSV file (filename may vary)
    data_path = Path("./data")
    csv_files = list(data_path.glob("*.csv"))
    df = pd.read_csv(csv_files[0])
-   
+
    # Convert DatePublished to datetime with UTC timezone
    df = df.dropna(subset=["DatePublished"])
    df["DatePublished"] = pd.to_datetime(df["DatePublished"], errors="coerce", utc=True)
-   
+
    # Write to parquet
    table = pa.Table.from_pandas(df)
    pq.write_table(table, data_path / "raw_movies.parquet")

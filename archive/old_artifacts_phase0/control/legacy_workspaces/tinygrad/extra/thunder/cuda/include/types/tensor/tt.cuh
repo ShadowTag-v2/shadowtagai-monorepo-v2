@@ -14,7 +14,7 @@ namespace kittens {
 namespace ducks {
 /**
  * @namespace tt
- * 
+ *
  * @brief The namespace where concepts and abstract types for shared tiles live.
  */
 namespace tt {
@@ -55,7 +55,7 @@ struct tt {
     static constexpr int cols    = _cols;
     static constexpr int height  = rows / kittens::TILE_ROW_DIM<T>;
     static constexpr int width   = cols / kittens::TILE_COL_DIM<T>;
-    
+
     uint32_t addr;
 
     __device__ inline tt() : addr(0) {}
@@ -90,7 +90,7 @@ struct tt {
                 static_assert(sizeof(T) == 999, "Currently unsupported type for input to an mma.");
             }
         }
-    } 
+    }
 
 };
 

@@ -58,7 +58,7 @@ function App() {
            F.L.O.W. Framework Active
         </div>
       </header>
-      
+
       <div className="dashboard-grid">
         <main>
           <div className="card">
@@ -84,9 +84,9 @@ function App() {
           <div className="card">
             <h2>Command Center</h2>
             <form className="task-input-area" onSubmit={handleSubmit}>
-              <input 
-                type="text" 
-                placeholder="Enter operational directive (e.g. 'Scan src/main.py')" 
+              <input
+                type="text"
+                placeholder="Enter operational directive (e.g. 'Scan src/main.py')"
                 value={taskInput}
                 onChange={(e) => setTaskInput(e.target.value)}
                 disabled={loading}

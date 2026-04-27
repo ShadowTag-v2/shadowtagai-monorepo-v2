@@ -134,7 +134,7 @@ FP0UKUssQjLKmubcJWo84T83woxfZVSj15x8X+ohzSvSK8wIe2uobKKNl8F0yW8X
 3dEzwc2wJsUVYLQ6fgZ4KMfY+fMThY7EDQPsR2M7YFW3p4+3GPQMGBGCOQZysuVh
 4uvQbrc9rUWzLMmmJrbb2/xwMm1iCoJfRyLKOGqQV8O6NfnYz5n0/vYzXUCvEbfl
 YH0ROM05IRf2nOI6KInaiz4POk6JvdTb
------END CERTIFICATE-----		
+-----END CERTIFICATE-----
 `
 
 		Expect(cert.Extensions).To(HaveSameSANsAs(expectedSanExtension))

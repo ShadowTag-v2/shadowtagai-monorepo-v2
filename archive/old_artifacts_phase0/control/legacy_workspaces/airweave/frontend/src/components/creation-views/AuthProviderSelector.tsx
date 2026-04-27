@@ -88,10 +88,10 @@ export const AuthProviderSelector: React.FC<AuthProviderSelectorProps> = ({
 
   if (filteredAuthProviderConnections.length === 0) {
     const hasConnections = authProviderConnections.length > 0;
-    const message = hasConnections 
+    const message = hasConnections
       ? "This source is not supported by your connected auth providers."
       : "No auth providers connected.";
-    
+
     return (
       <div className={cn(
         "p-3 rounded-lg border text-center",

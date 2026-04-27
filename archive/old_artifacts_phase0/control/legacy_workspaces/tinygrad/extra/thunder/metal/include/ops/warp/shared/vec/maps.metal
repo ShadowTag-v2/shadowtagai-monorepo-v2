@@ -17,7 +17,7 @@ namespace mittens {
  * @tparam T Shared memory vector type.
  * @param dst[out] Destination vector in which to store the result.
  * @param src[in] Source vector to apply the unary operation.
- */ 
+ */
 template<typename op, typename SV>
 static METAL_FUNC typename metal::enable_if<ducks::is_shared_vector<SV>(), void>::type
 unary_op(threadgroup SV &dst, threadgroup const SV &src, const ushort laneid) {

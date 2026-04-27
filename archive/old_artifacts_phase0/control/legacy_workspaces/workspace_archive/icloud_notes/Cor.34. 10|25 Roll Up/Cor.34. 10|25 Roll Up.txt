@@ -2,7 +2,7 @@ Cor.34. 10/25 Roll Up
 
 Cor.35 Flagship Highlight: AiU Digital Mall
 
-Combine all into one large mega roll up. Then describe launch order. Value with money 
+Combine all into one large mega roll up. Then describe launch order. Value with money
 
 “AiU Pitch Deck — Text Format for Sophisticated Investors (2025)
 (Flagship Highlight: AiU Digital Mall)
@@ -217,7 +217,7 @@ Normally, this would be 7 startups run by 7 different YC cohorts. Here it’s on
 
 Do you want me to package this into a deck-style roll-up (like a “Seven Pillars of AiYou” visual, with valuation ranges under each wedge) so you can show it at YC or to William when discussing buy/sell strategy?”
 
-<next> 
+<next>
 
 “Here’s a simple numbered list summarizing every current point from this entire thread, rolled up into one master outline — no redundancy, just clean facts in short sentences:
 

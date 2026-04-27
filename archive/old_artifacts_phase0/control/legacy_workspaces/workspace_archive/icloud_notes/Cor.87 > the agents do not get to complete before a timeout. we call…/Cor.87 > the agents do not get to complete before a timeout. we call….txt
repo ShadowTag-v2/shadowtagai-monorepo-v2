@@ -1,4 +1,4 @@
-Cor.87 > the agents do not get to complete before a timeout. we call out the last remaining time before endex, show a drag race style light bar in the center of the whiteboard, 
+Cor.87 > the agents do not get to complete before a timeout. we call out the last remaining time before endex, show a drag race style light bar in the center of the whiteboard,
 then end it. we take stats and push changes to un-hang the individual agents, to all. however, use the military structure to have the team leaders and squad leaders scream
  at the line agents, and threaten theem with ucmj. incorporate a ucmj style system to enforce agent discipline along army lines
 

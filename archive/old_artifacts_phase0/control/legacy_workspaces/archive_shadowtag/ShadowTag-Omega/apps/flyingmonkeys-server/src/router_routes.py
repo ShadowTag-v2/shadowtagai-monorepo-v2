@@ -23,7 +23,7 @@ class RequestModel(BaseModel):
 def dispatch_task(r: RequestModel):
     # 1. Ask the Router (Is this for the n-autoresearch/Kosmos/BioAgents?)
     decision = agent_router.dispatch(r.query)
-    
+
     # 2. Execute
     if decision["route"] == "SWARM":
         # Launch the Swarm

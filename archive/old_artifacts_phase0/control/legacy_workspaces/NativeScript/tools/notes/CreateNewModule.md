@@ -37,7 +37,7 @@ export class Foo implements FooDefinition {
 }
 ```
 
-### The module implementation depends on native APIs ONLY and the common pure JavaScript code between platform-specific implementations is minimal. 
+### The module implementation depends on native APIs ONLY and the common pure JavaScript code between platform-specific implementations is minimal.
 
 _Example:_ [timer module](tns-core-modules/timer)
 

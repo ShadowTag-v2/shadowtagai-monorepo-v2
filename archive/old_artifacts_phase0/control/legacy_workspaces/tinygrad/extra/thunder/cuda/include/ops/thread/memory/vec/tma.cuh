@@ -215,7 +215,7 @@ template<cache_policy policy> __device__ static inline void vec_load_async_tma_i
                 : "memory"
             );
         }
-    } else 
+    } else
 #endif
     if constexpr (policy == cache_policy::NORMAL) {
         asm volatile (

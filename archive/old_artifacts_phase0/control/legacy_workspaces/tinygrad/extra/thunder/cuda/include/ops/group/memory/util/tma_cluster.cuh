@@ -7,7 +7,7 @@
 */
 __device__ static inline void wait(semaphore& bar, int kPhaseBit) {
     void const* const ptr = &bar;
-    uint32_t mbar_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(ptr)); 
+    uint32_t mbar_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(ptr));
 
     asm volatile (
         "{\n"
@@ -29,7 +29,7 @@ __device__ static inline void wait(semaphore& bar, int kPhaseBit) {
 * This function sets the number of bytes expected at the semaphore for the first thread in the warp.
 * It converts the semaphore pointer to a generic shared memory pointer and uses an inline assembly
 * instruction to set the expected number of bytes.
-* 
+*
 * It's worth being aware that this function is particularly necessary for multicast loads, and
 * distributed shared memory can actually be done with a normal tma::expect followed by wait. See
 * the unit tests of dsmem for an example.

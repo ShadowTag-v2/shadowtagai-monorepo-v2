@@ -9,12 +9,10 @@ module.exports = (env) => {
 			Object.assign(args[0], {
 				__CI__: !!process.env.CI,
 			})
-	  
+
 			return args
 		  })
 	})
 
 	return webpack.resolveConfig();
 };
-
-

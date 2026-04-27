@@ -39,11 +39,11 @@ message Store {
     // The Redis data types used (https://redis.io/topics/data-types):
     // - key: STRING
     // - value: STRING
-    // 
+    //
     // Encodings:
     // - key: byte array of RedisKey (refer to feast.storage.RedisKeyV2)
     // - value: Redis hashmap
-    // 
+    //
     REDIS = 1;
 
     REDIS_CLUSTER = 4;

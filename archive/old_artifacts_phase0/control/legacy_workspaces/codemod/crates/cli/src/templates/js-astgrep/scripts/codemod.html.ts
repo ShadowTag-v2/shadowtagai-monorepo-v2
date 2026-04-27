@@ -28,7 +28,7 @@ async function transform(root: SgRoot<Html>): Promise<string> {
     ...fontNodes.map(node => {
       const content = node.getMatch("CONTENT")?.text();
       const attrs = node.getMatch("ATTRS")?.text();
-      
+
       // Convert color and size attributes to inline CSS
       let style = "";
       if (attrs?.includes('color="')) {
@@ -44,7 +44,7 @@ async function transform(root: SgRoot<Html>): Promise<string> {
           style += `font-size: ${fontSize}px; `;
         }
       }
-      
+
       return node.replace(`<span style="${style.trim()}">${content}</span>`);
     })
   ];

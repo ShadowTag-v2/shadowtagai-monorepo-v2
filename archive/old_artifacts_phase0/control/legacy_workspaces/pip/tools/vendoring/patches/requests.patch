@@ -5,14 +5,14 @@ index 300a16c5..a66f6024 100644
 @@ -49,10 +49,7 @@ try:
  except ImportError:
      charset_normalizer_version = None
- 
+
 -try:
 -    from chardet import __version__ as chardet_version
 -except ImportError:
 -    chardet_version = None
 +chardet_version = None
- 
- 
+
+
  def check_compatibility(urllib3_version, chardet_version, charset_normalizer_version):
 @@ -76,11 +76,8 @@ def check_compatibility(urllib3_version, chardet_version, charset_normalizer_ver
          # charset_normalizer >= 2.0.0 < 4.0.0
@@ -47,7 +47,7 @@ index 6776163c..7819bb99 100644
 @@ -27,19 +24,10 @@ is_py2 = _ver[0] == 2
  #: Python 3.x?
  is_py3 = _ver[0] == 3
- 
+
 -# json/simplejson module import resolution
 -has_simplejson = False
 -try:
@@ -65,7 +65,7 @@ index 6776163c..7819bb99 100644
 +#       upgrading simplejson on Windows.
 +import json
 +from json import JSONDecodeError
- 
+
  # Keep OrderedDict for backwards compatibility.
  from collections import OrderedDict
 diff --git a/src/pip/_vendor/requests/help.py b/src/pip/_vendor/requests/help.py
@@ -75,13 +75,13 @@ index 8fbcd656..094e2046 100644
 @@ -15,10 +15,7 @@ try:
  except ImportError:
      charset_normalizer = None
- 
+
 -try:
 -    import chardet
 -except ImportError:
 -    chardet = None
 +chardet = None
- 
+
  try:
      from urllib3.contrib import pyopenssl
 diff --git a/src/pip/_vendor/requests/__init__.py b/src/pip/_vendor/requests/__init__.py

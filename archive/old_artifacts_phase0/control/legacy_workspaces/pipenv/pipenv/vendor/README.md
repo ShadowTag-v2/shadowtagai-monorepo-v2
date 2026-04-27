@@ -24,5 +24,5 @@ and it will also download any necessary licenses (if available).
 Note that this will not download any dependencies, you must add those each
 individually.
 
-When updating, ensure that the corresponding LICENSE files are still 
+When updating, ensure that the corresponding LICENSE files are still
 up-to-date.

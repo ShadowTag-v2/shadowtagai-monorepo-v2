@@ -94,7 +94,7 @@ Feature View definitions including:
 ...
 ```
 
-### Components 
+### Components
 The compute engine is responsible for executing the materialization and retrieval tasks defined in the feature views. It
 builds a directed acyclic graph (DAG) of operations that need to be performed to generate the features.
 The Core components of the compute engine are:
@@ -125,11 +125,11 @@ DAG nodes are defined as follows:
              v
    +--------------------------------------+
    |  TransformationNode / JoinNode (*)   |   <- Merge data sources, custom transformations by user, or default join
-   +--------------------------------------+ 
+   +--------------------------------------+
              |
              v
    +---------------------+
-   |    FilterNode       |   <- used for point-in-time filtering 
+   |    FilterNode       |   <- used for point-in-time filtering
    +---------------------+
              |
              v

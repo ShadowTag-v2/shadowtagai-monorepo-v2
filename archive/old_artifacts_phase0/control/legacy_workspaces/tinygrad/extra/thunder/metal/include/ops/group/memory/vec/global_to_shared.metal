@@ -22,14 +22,14 @@ load(threadgroup SV &dst, thread const GL &_src, thread const coord &idx, const 
     constexpr int elem_per_transfer = sizeof(read_vector) / sizeof(typename SV::dtype);
     constexpr int total_calls = SV::length / elem_per_transfer; // guaranteed to divide
     device U *src = (device U*)&_src.template get<SV>(idx);
-    
+
     #pragma clang loop unroll(full)
     for(int i = laneid(threadIdx); i < total_calls; i+=GROUP_THREADS) {
         if(i * elem_per_transfer < dst.length)
             *(threadgroup read_vector*)&dst[i*elem_per_transfer] = *(device read_vector*)&src[i*elem_per_transfer];
     }
 }
- 
+
 /**
  * @brief Stores data from a shared memory vector to global memory.
  *
@@ -49,7 +49,7 @@ store(thread const GL &_dst, threadgroup const SV &src, thread const coord &idx,
     constexpr int elem_per_transfer = sizeof(read_vector) / sizeof(typename SV::dtype);
     constexpr int total_calls = SV::length / elem_per_transfer; // guaranteed to divide
     device U *dst = (device U*)&_dst.template get<SV>(idx);
-    
+
     metal::simdgroup_barrier(metal::mem_flags::mem_none);
     #pragma clang loop unroll(full)
     for(int i = laneid(threadIdx); i < total_calls; i+= GROUP_THREADS) {

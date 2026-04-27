@@ -33,7 +33,7 @@ WRONG: avg(tile1, tile2) ≠ (avg_tile1 + avg_tile2) / 2
 Example:
   tile1: [10, 20, 30] → avg = 20
   tile2: [100]        → avg = 100
-  
+
   Correct merged avg: (10+20+30+100) / 4 = 40
   Wrong merged avg:   (20 + 100) / 2     = 60
 ```
@@ -92,8 +92,8 @@ These require storing multiple intermediate values:
 
 #### Average (`avg`, `mean`)
 
-**Stored IRs**: `sum`, `count`  
-**Final computation**: `avg = sum / count`  
+**Stored IRs**: `sum`, `count`
+**Final computation**: `avg = sum / count`
 **Merge strategy**: Sum the sums and counts, then divide
 
 **Storage**: 3 columns (final + 2 IRs)
@@ -102,8 +102,8 @@ These require storing multiple intermediate values:
 
 #### Standard Deviation (`std`, `stddev`)
 
-**Stored IRs**: `count`, `sum`, `sum_of_squares`  
-**Final computation**: 
+**Stored IRs**: `count`, `sum`, `sum_of_squares`
+**Final computation**:
 ```python
 variance = (sum_sq - sum²/count) / (count - δ)
 std = sqrt(variance)
@@ -118,7 +118,7 @@ std = sqrt(variance)
 
 #### Variance (`var`, `variance`)
 
-**Stored IRs**: `count`, `sum`, `sum_of_squares`  
+**Stored IRs**: `count`, `sum`, `sum_of_squares`
 **Final computation**: Same as std but without `sqrt()`
 
 **Storage**: 4 columns (final + 3 IRs)
@@ -212,7 +212,7 @@ customer_features = StreamFeatureView(
     ],
     timestamp_field="event_timestamp",
     online=True,
-    
+
     # Tiling configuration
     enable_tiling=True,  # speedup for streaming!
     tiling_hop_size=timedelta(minutes=5),  # Update frequency

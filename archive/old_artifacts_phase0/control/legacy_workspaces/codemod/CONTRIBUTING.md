@@ -35,7 +35,7 @@ Help improve our documentation (`docs/`) to make Codemod more accessible:
 
 ### 🛠️ Tooling
 
-> We especially welcome bug fixes and moderate improvements to existing tooling. Drastic changes to user experience or major feature additions typically require broader alignment, as they affect many users and workflows—these are often discussed with the core team internally first.  
+> We especially welcome bug fixes and moderate improvements to existing tooling. Drastic changes to user experience or major feature additions typically require broader alignment, as they affect many users and workflows—these are often discussed with the core team internally first.
 >
 > If you have a cool new idea or want to explore bigger changes, please **ping us in the [community channel](https://codemod.com/community)** before submitting a PR. We’d love to chat and help shape the direction together!
 
@@ -183,7 +183,7 @@ This monorepo contains the open-source Codemod CLI and core libraries:
    # TypeScript/JavaScript
    pnpm lint
    pnpm format
-   
+
    # Rust
    cargo fmt --check
    cargo clippy
@@ -193,7 +193,7 @@ This monorepo contains the open-source Codemod CLI and core libraries:
    # TypeScript/JavaScript
    pnpm lint:fix
    pnpm format:fix
-   
+
    # Rust
    cargo fmt
    ```

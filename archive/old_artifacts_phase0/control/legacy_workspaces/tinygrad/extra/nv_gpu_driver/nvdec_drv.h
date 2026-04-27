@@ -154,8 +154,8 @@ typedef struct _nvdec_pass2_otf_ext_s {
 //NVDEC5.0 low latency decoding (partial stream kickoff without context switch), method will reuse HevcSetSliceInfoBufferOffset.
 typedef struct _nvdec_substream_entry_s {
     unsigned int substream_start_offset;                    //substream byte start offset to bitstream base address
-    unsigned int substream_length;                          //subsream length in byte  
-    unsigned int substream_first_tile_idx           : 8;    //the first tile index(raster scan in frame) of this substream,max is 255 
+    unsigned int substream_length;                          //subsream length in byte
+    unsigned int substream_first_tile_idx           : 8;    //the first tile index(raster scan in frame) of this substream,max is 255
     unsigned int substream_last_tile_idx            : 8;    //the last tile index(raster scan in frame) of this substream, max is 255
     unsigned int last_substream_entry_in_frame      : 1;    //this entry is the last substream entry of this frame
     unsigned int reserved                           : 15;
@@ -1421,21 +1421,21 @@ typedef struct _frame_info_t{
 typedef struct _ref_frame_struct_s{
     frame_info_t    info;
     scale_factors_reference_s sf;                              // scalefactor for reference frame and current frame size, driver can calculate it
-    unsigned char   sign_bias                    : 1;          // calcuate based on frame_offset and current frame offset 
+    unsigned char   sign_bias                    : 1;          // calcuate based on frame_offset and current frame offset
     unsigned char   wmtype                       : 2;          // global motion parameters : identity,translation,rotzoom,affine
-    unsigned char   reserved_rf                  : 5;          
-    short           frame_off;                                 // relative offset to current frame  
-    short           roffset;                                   // relative offset from current frame  
+    unsigned char   reserved_rf                  : 5;
+    short           frame_off;                                 // relative offset to current frame
+    short           roffset;                                   // relative offset from current frame
 } ref_frame_struct_s;
 
 typedef struct _av1_fgs_cfg_t{
-    //from AV1 spec 5.9.30 Film Grain Params syntax 
-    unsigned short apply_grain                   : 1; 
-    unsigned short overlap_flag                  : 1; 
-    unsigned short clip_to_restricted_range      : 1; 
-    unsigned short chroma_scaling_from_luma      : 1; 
-    unsigned short num_y_points_b                : 1;          // flag indicates num_y_points>0 
-    unsigned short num_cb_points_b               : 1;          // flag indicates num_cb_points>0 
+    //from AV1 spec 5.9.30 Film Grain Params syntax
+    unsigned short apply_grain                   : 1;
+    unsigned short overlap_flag                  : 1;
+    unsigned short clip_to_restricted_range      : 1;
+    unsigned short chroma_scaling_from_luma      : 1;
+    unsigned short num_y_points_b                : 1;          // flag indicates num_y_points>0
+    unsigned short num_cb_points_b               : 1;          // flag indicates num_cb_points>0
     unsigned short num_cr_points_b               : 1;          // flag indicates num_cr_points>0
     unsigned short scaling_shift                 : 4;
     unsigned short reserved_fgs                  : 5;
@@ -1466,7 +1466,7 @@ typedef struct _nvdec_av1_pic_s
     unsigned int    stream_len;                                // stream length.
     unsigned int    reserved12;                                // skip bytes length to real frame data .
 
-    //sequence header 
+    //sequence header
     unsigned int    use_128x128_superblock       : 1;          // superblock 128x128 or 64x64, 0:64x64, 1: 128x128
     unsigned int    chroma_format                : 2;          // 1:420, others:reserved for future
     unsigned int    bit_depth                    : 4;          // bitdepth
@@ -1476,25 +1476,25 @@ typedef struct _nvdec_av1_pic_s
     unsigned int    enable_masked_compound       : 1;
     unsigned int    enable_dual_filter           : 1;          // enable or disable vertical and horiz filter selection
     unsigned int    reserved10                   : 1;          // 0 - disable order hint, and related tools
-    unsigned int    reserved0                    : 3;         
+    unsigned int    reserved0                    : 3;
     unsigned int    enable_jnt_comp              : 1;          // 0 - disable joint compound modes
     unsigned int    reserved1                    : 1;
     unsigned int    enable_cdef                  : 1;
     unsigned int    reserved11                   : 1;
     unsigned int    enable_fgs                   : 1;
-    unsigned int    enable_substream_decoding    : 1;          //enable frame substream kickoff mode without context switch 
+    unsigned int    enable_substream_decoding    : 1;          //enable frame substream kickoff mode without context switch
     unsigned int    reserved2                    : 10;         // reserved bits
 
-    //frame header     
+    //frame header
     unsigned int    frame_type                   : 2;          // 0:Key frame, 1:Inter frame, 2:intra only, 3:s-frame
-    unsigned int    show_frame                   : 1;          // show frame flag 
-    unsigned int    reserved13                   : 1;  
+    unsigned int    show_frame                   : 1;          // show frame flag
+    unsigned int    reserved13                   : 1;
     unsigned int    disable_cdf_update           : 1;          // disable CDF update during symbol decoding
     unsigned int    allow_screen_content_tools   : 1;          // screen content tool enable
     unsigned int    cur_frame_force_integer_mv   : 1;          // AMVR enable
     unsigned int    scale_denom_minus9           : 3;          // The denominator minus9  of the superres scale
     unsigned int    allow_intrabc                : 1;          // IBC enable
-    unsigned int    allow_high_precision_mv      : 1;          // 1/8 precision mv enable 
+    unsigned int    allow_high_precision_mv      : 1;          // 1/8 precision mv enable
     unsigned int    interp_filter                : 3;          // interpolation filter : EIGHTTAP_REGULAR,....
     unsigned int    switchable_motion_mode       : 1;          // 0: simple motion mode, 1: SIMPLE, OBMC, LOCAL  WARP
     unsigned int    use_ref_frame_mvs            : 1;          // 1: current frame can use the previous frame mv information, MFMV
@@ -1504,29 +1504,29 @@ typedef struct _nvdec_av1_pic_s
     unsigned int    delta_lf_present_flag        : 1;          // specified whether loop filter delta values are present in the block level
     unsigned int    delta_lf_res                 : 2;          // specifies the left shift will apply to decoded loop filter values
     unsigned int    delta_lf_multi               : 1;          // seperate loop filter deltas for Hy,Vy,U,V edges
-    unsigned int    reserved3                    : 1;         
-    unsigned int    coded_lossless               : 1;          // 1 means all segments use lossless coding. Frame is fully lossless, CDEF/DBF will disable 
-    unsigned int    tile_enabled                 : 1;          // tile enable  
-    unsigned int    reserved4                    : 2;        
-    unsigned int    superres_is_scaled           : 1;          // frame level frame for using_superres                
+    unsigned int    reserved3                    : 1;
+    unsigned int    coded_lossless               : 1;          // 1 means all segments use lossless coding. Frame is fully lossless, CDEF/DBF will disable
+    unsigned int    tile_enabled                 : 1;          // tile enable
+    unsigned int    reserved4                    : 2;
+    unsigned int    superres_is_scaled           : 1;          // frame level frame for using_superres
     unsigned int    reserved_fh                  : 1;
-    
+
     unsigned int    tile_cols                    : 8;          // horizontal tile numbers in frame, max is 64
     unsigned int    tile_rows                    : 8;          // vertical tile numbers in frame, max is 64
     unsigned int    context_update_tile_id       : 16;         // which tile cdf will be seleted as the backward update CDF, MAXTILEROW=64, MAXTILECOL=64, 12bits
-    
-    unsigned int    cdef_damping_minus_3         : 2;          // controls the amount of damping in the deringing filter 
-    unsigned int    cdef_bits                    : 2;          // the number of bits needed to specify which CDEF filter to apply    
+
+    unsigned int    cdef_damping_minus_3         : 2;          // controls the amount of damping in the deringing filter
+    unsigned int    cdef_bits                    : 2;          // the number of bits needed to specify which CDEF filter to apply
     unsigned int    frame_tx_mode                : 3;          // 0:ONLY4x4,3:LARGEST,4:SELECT
     unsigned int    frame_reference_mode         : 2;          // single,compound,select
     unsigned int    skip_mode_flag               : 1;          // skip mode
-    unsigned int    skip_ref0                    : 4;  
-    unsigned int    skip_ref1                    : 4;  
+    unsigned int    skip_ref0                    : 4;
+    unsigned int    skip_ref1                    : 4;
     unsigned int    allow_warp                   : 1;          // sequence level & frame level warp enable
     unsigned int    reduced_tx_set_used          : 1;          // whether the frame is  restricted to oa reduced subset of the full set of transform types
     unsigned int    ref_scaling_enable           : 1;
-    unsigned int    reserved5                    : 1;            
-    unsigned int    reserved6                    : 10;         // reserved bits                 
+    unsigned int    reserved5                    : 1;
+    unsigned int    reserved6                    : 10;         // reserved bits
     unsigned short  superres_upscaled_width;                   // upscale width, frame_size_with_refs() syntax,restoration will use it
     unsigned short  superres_luma_step;
     unsigned short  superres_chroma_step;
@@ -1543,7 +1543,7 @@ typedef struct _nvdec_av1_pic_s
     unsigned char   qm_y;                                      // 4bit: 0-15
     unsigned char   qm_u;
     unsigned char   qm_v;
- 
+
     /*cdef, need to update in the new spec*/
     unsigned int    cdef_y_pri_strength;                       // 4bit for one, max is 8
     unsigned int    cdef_uv_pri_strength;                      // 4bit for one, max is 8
@@ -1560,8 +1560,8 @@ typedef struct _nvdec_av1_pic_s
     unsigned char   segid_preskip;                             // Whether the segment id will be read before the skip syntax element.
                                                                // 1: the segment id will be read first.
                                                                // 0: the skip syntax element will be read first.
-    unsigned char   prevsegid_flag;                            // 1 : previous segment id is  available 
-    unsigned char   segment_quant_sign           : 8;          // sign bit for segment alternative QP  
+    unsigned char   prevsegid_flag;                            // 1 : previous segment id is  available
+    unsigned char   segment_quant_sign           : 8;          // sign bit for segment alternative QP
 
     /*loopfilter*/
     unsigned char   filter_level[2];
@@ -1572,19 +1572,19 @@ typedef struct _nvdec_av1_pic_s
     char            lf_mode_deltas[2];                         // 0 = ZERO_MV, MV
 
     /*restoration*/
-    unsigned char   lr_type ;                                  // restoration type.  Y:bit[1:0];U:bit[3:2],V:bit[5:4]  
+    unsigned char   lr_type ;                                  // restoration type.  Y:bit[1:0];U:bit[3:2],V:bit[5:4]
     unsigned char   lr_unit_size;                              // restoration unit size 0:32x32, 1:64x64, 2:128x128,3:256x256;  Y:bit[1:0];U:bit[3:2],V:bit[5:4]
 
     //general
     frame_info_t    current_frame;
-    ref_frame_struct_s ref_frame[7];                           // Last, Last2, Last3, Golden, BWDREF, ALTREF2, ALTREF 
-    
+    ref_frame_struct_s ref_frame[7];                           // Last, Last2, Last3, Golden, BWDREF, ALTREF2, ALTREF
+
     unsigned int    use_temporal0_mvs            : 1;
     unsigned int    use_temporal1_mvs            : 1;
     unsigned int    use_temporal2_mvs            : 1;
-    unsigned int    mf1_type                     : 3; 
-    unsigned int    mf2_type                     : 3; 
-    unsigned int    mf3_type                     : 3; 
+    unsigned int    mf1_type                     : 3;
+    unsigned int    mf2_type                     : 3;
+    unsigned int    mf3_type                     : 3;
     unsigned int    reserved_mfmv                : 20;
 
     short           mfmv_offset[3][7];                         // 3: mf0~2, 7: Last, Last2, Last3, Golden, BWDREF, ALTREF2, ALTREF
@@ -1593,10 +1593,10 @@ typedef struct _nvdec_av1_pic_s
 
     unsigned char   tileformat                   : 2;          // 0: TBL; 1: KBL;
     unsigned char   gob_height                   : 3;          // Set GOB height, 0: GOB_2, 1: GOB_4, 2: GOB_8, 3: GOB_16, 4: GOB_32 (NVDEC3 onwards)
-    unsigned char   errorConcealOn               : 1;          // this field is not used, use ctrl_param.error_conceal_on to enable error concealment in ucode, 
+    unsigned char   errorConcealOn               : 1;          // this field is not used, use ctrl_param.error_conceal_on to enable error concealment in ucode,
                                                                // always set NV_CNVDEC_GIP_ERR_CONCEAL_CTRL_ON = 1 to enable error detect in hw
-    unsigned char   reserver8                    : 2;          // reserve 
-    
+    unsigned char   reserver8                    : 2;          // reserve
+
     unsigned char   stream_error_detection       : 1;
     unsigned char   mv_error_detection           : 1;
     unsigned char   coeff_error_detection        : 1;
@@ -1609,9 +1609,9 @@ typedef struct _nvdec_av1_pic_s
     unsigned int    Av1LrVertOffset;                           // lr vertical buffer offset respect to filter buffer, 256 bytes unit
     unsigned int    Av1HusVertOffset;                          // hus vertical buffer offset respect to filter buffer, 256 bytes unit
     unsigned int    Av1FgsVertOffset;                          // fgs vertical buffer offset respect to filter buffer, 256 bytes unit
-    
+
     unsigned int    enable_histogram             : 1;
-    unsigned int    sw_skip_start_length         : 14;         //skip start length 
+    unsigned int    sw_skip_start_length         : 14;         //skip start length
     unsigned int    reserved_stat                : 17;
 
 } nvdec_av1_pic_s;
@@ -1619,7 +1619,7 @@ typedef struct _nvdec_av1_pic_s
 //////////////////////////////////////////////////////////////////////
 // AV1 Buffer structure
 //////////////////////////////////////////////////////////////////////
-typedef struct _AV1FilmGrainMemory 
+typedef struct _AV1FilmGrainMemory
  {
     unsigned char   scaling_lut_y[256];
     unsigned char   scaling_lut_cb[256];
@@ -1642,7 +1642,7 @@ typedef struct _AV1TileInfo_OLD
     unsigned char   tile_end_b2;
     unsigned char   tile_end_b3;
     unsigned char   padding[6];
-} AV1TileInfo_OLD; 
+} AV1TileInfo_OLD;
 
 typedef struct _AV1TileInfo
 {
@@ -1650,14 +1650,14 @@ typedef struct _AV1TileInfo
     unsigned char   padding_w;
     unsigned char   height_in_sb;
     unsigned char   padding_h;
-} AV1TileInfo; 
+} AV1TileInfo;
 
 typedef struct _AV1TileStreamInfo
 {
     unsigned int    tile_start;
     unsigned int    tile_end;
     unsigned char   padding[8];
-} AV1TileStreamInfo; 
+} AV1TileStreamInfo;
 
 
 // AV1 TileSize buffer
@@ -1677,13 +1677,13 @@ typedef struct _AV1TileStreamInfo
 
 // AV1 Temporal MV buffer
 #define AV1_TEMPORAL_MV_SIZE_IN_64x64       256            // 4Bytes for 8x8
-#define AV1_TEMPORAL_MV_BUF_SIZE(w, h)      ALIGN_UP( ALIGN_UP(w,128) * ALIGN_UP(h,128) / (64*64) * AV1_TEMPORAL_MV_SIZE_IN_64x64, 4096)            
+#define AV1_TEMPORAL_MV_BUF_SIZE(w, h)      ALIGN_UP( ALIGN_UP(w,128) * ALIGN_UP(h,128) / (64*64) * AV1_TEMPORAL_MV_SIZE_IN_64x64, 4096)
 
 // AV1 SegmentID buffer
 #define AV1_SEGMENT_ID_SIZE_IN_64x64        128            // (3bits + 1 pad_bits) for 4x4
-#define AV1_SEGMENT_ID_BUF_SIZE(w, h)       ALIGN_UP( ALIGN_UP(w,128) * ALIGN_UP(h,128) / (64*64) * AV1_SEGMENT_ID_SIZE_IN_64x64, 4096)            
+#define AV1_SEGMENT_ID_BUF_SIZE(w, h)       ALIGN_UP( ALIGN_UP(w,128) * ALIGN_UP(h,128) / (64*64) * AV1_SEGMENT_ID_SIZE_IN_64x64, 4096)
 
-// AV1 Global Motion buffer 
+// AV1 Global Motion buffer
 #define AV1_GLOBAL_MOTION_BUF_SIZE          NVDEC_ALIGN(7*32)
 
 // AV1 Intra Top buffer
@@ -1693,23 +1693,23 @@ typedef struct _AV1TileStreamInfo
 #define AV1_HISTOGRAM_BUF_SIZE              NVDEC_ALIGN(1024)
 
 // AV1 Filter FG buffer
-#define AV1_DBLK_TOP_SIZE_IN_SB64           ALIGN_UP(1920, 128)                
+#define AV1_DBLK_TOP_SIZE_IN_SB64           ALIGN_UP(1920, 128)
 #define AV1_DBLK_TOP_BUF_SIZE(w)            NVDEC_ALIGN( (ALIGN_UP(w,64)/64 + 2) * AV1_DBLK_TOP_SIZE_IN_SB64)
 
-#define AV1_DBLK_LEFT_SIZE_IN_SB64          ALIGN_UP(1536, 128)                
+#define AV1_DBLK_LEFT_SIZE_IN_SB64          ALIGN_UP(1536, 128)
 #define AV1_DBLK_LEFT_BUF_SIZE(h)           NVDEC_ALIGN( (ALIGN_UP(h,64)/64 + 2) * AV1_DBLK_LEFT_SIZE_IN_SB64)
 
-#define AV1_CDEF_LEFT_SIZE_IN_SB64          ALIGN_UP(1792, 128)                
+#define AV1_CDEF_LEFT_SIZE_IN_SB64          ALIGN_UP(1792, 128)
 #define AV1_CDEF_LEFT_BUF_SIZE(h)           NVDEC_ALIGN( (ALIGN_UP(h,64)/64 + 2) * AV1_CDEF_LEFT_SIZE_IN_SB64)
 
-#define AV1_HUS_LEFT_SIZE_IN_SB64           ALIGN_UP(12544, 128) 
+#define AV1_HUS_LEFT_SIZE_IN_SB64           ALIGN_UP(12544, 128)
 #define AV1_ASIC_HUS_LEFT_BUFFER_SIZE(h)    NVDEC_ALIGN( (ALIGN_UP(h,64)/64 + 2) * AV1_HUS_LEFT_SIZE_IN_SB64)
 #define AV1_HUS_LEFT_BUF_SIZE(h)            2*AV1_ASIC_HUS_LEFT_BUFFER_SIZE(h)     // Ping-Pong buffers
 
-#define AV1_LR_LEFT_SIZE_IN_SB64            ALIGN_UP(1920, 128)                
+#define AV1_LR_LEFT_SIZE_IN_SB64            ALIGN_UP(1920, 128)
 #define AV1_LR_LEFT_BUF_SIZE(h)             NVDEC_ALIGN( (ALIGN_UP(h,64)/64 + 2) * AV1_LR_LEFT_SIZE_IN_SB64)
 
-#define AV1_FGS_LEFT_SIZE_IN_SB64           ALIGN_UP(320, 128)                
+#define AV1_FGS_LEFT_SIZE_IN_SB64           ALIGN_UP(320, 128)
 #define AV1_FGS_LEFT_BUF_SIZE(h)            NVDEC_ALIGN( (ALIGN_UP(h,64)/64 + 2) * AV1_FGS_LEFT_SIZE_IN_SB64)
 
 // AV1 Hint Dump Buffer
@@ -1719,7 +1719,7 @@ typedef struct _AV1TileStreamInfo
 
 
 /*******************************************************************
-                New  H264 
+                New  H264
 ********************************************************************/
 typedef struct _nvdec_new_h264_pic_s
 {

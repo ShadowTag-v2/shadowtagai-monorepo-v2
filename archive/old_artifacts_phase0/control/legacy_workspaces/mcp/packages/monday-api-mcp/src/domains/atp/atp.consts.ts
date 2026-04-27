@@ -28,7 +28,7 @@ export const TOOL_DESCRIPTIONS = {
 **Multi-line Example:**
 \`\`\`typescript
 // 1. Get board with columns and cursor
-const boards = await api.monday.query_boards({ 
+const boards = await api.monday.query_boards({
   ids: ['BOARD_ID'],
   _fields: 'id,columns{id,title,type},items_page{cursor}'
 });
@@ -42,7 +42,7 @@ let cursor = board.items_page.cursor;
 const allItems = [];
 for (let page = 0; page < 20; page++) {
   if (!cursor) break;
-  const result = await api.monday.query_next_items_page({ 
+  const result = await api.monday.query_next_items_page({
     cursor, limit: 100,
     _fields: 'cursor,items{id,name,group{title},column_values{id,text}}'
   });
@@ -60,7 +60,7 @@ Use AFTER exploring the API to understand available operations.`,
 
 **Navigation Paths:**
 - "/monday/query" - List all query operations (read data)
-- "/monday/mutation" - List all mutation operations (write data)  
+- "/monday/mutation" - List all mutation operations (write data)
 - "/monday/query/boards" - See parameters for boards query
 - "/monday/query/items" - See parameters for items query
 
@@ -75,7 +75,7 @@ Use AFTER exploring the API to understand available operations.`,
 Only explore: /monday/query, /monday/mutation, or /monday/query/<operation_name>
 
 **Example Workflow:**
-1. explore_api path="/monday/query" → discover "boards", "items", "users" operations  
+1. explore_api path="/monday/query" → discover "boards", "items", "users" operations
 2. explore_api path="/monday/query/boards" → see ids, _fields parameters
 3. YOU MUST USE THE EXPLORE_API TOOL TO DISCOVER THE OPERATIONS AND PARAMETERS BEFORE USING THE EXECUTE_CODE TOOL
 4. NOW write code using execute_code with discovered operations

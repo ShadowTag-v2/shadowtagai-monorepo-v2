@@ -9,7 +9,7 @@
 #include <metal_stdlib>
 namespace mittens {
 
-//    
+//
 namespace meta {
 template<typename ST, int memcpy_per_row, int elem_per_memcpy, int READ_FLOATS>
 METAL_FUNC static typename metal::enable_if<ducks::is_shared_tile<ST>(), void>::type
@@ -32,7 +32,7 @@ store(int i, device typename ST::dtype *dst, threadgroup const ST *src, thread c
         *(device ReadVector<READ_FLOATS>*)(&dst[row*row_stride + col]) = *(threadgroup ReadVector<READ_FLOATS>*)(&(*src)[int2(row, col)]);
     }
 }
-    
+
 } // namespace meta
 
 //
@@ -61,19 +61,19 @@ store(int i, device typename ST::dtype *dst, threadgroup const ST *src, thread c
 //        unsigned col = (idx*elem_per_memcpy) % ST::cols;
 //        *(threadgroup read_type*)(&dst[int2(row, col)]) = *(device read_type*)(&src[row*row_stride + col]);
 //    }
-//    
+//
 ////    ducks::assert_shared_tile<ST>();
 ////    const constexpr int read_size = 1;
 ////    using read_type = ReadVector<read_size>;
 ////    constexpr const unsigned elem_per_memcpy = sizeof(read_type)/sizeof(typename ST::dtype); // 2
 ////    constexpr const unsigned memcpy_per_row = ST::cols / elem_per_memcpy;                    // 32/2=16 not power of 2
 ////    constexpr const unsigned total_calls = ST::num_elements / (SIMD_THREADS*elem_per_memcpy); // 1024/(32*2)=16
-////    
-////    
+////
+////
 ////    meta::unroll_i_in_range<0, total_calls * SIMD_THREADS, SIMD_THREADS>::run(meta::load<ST, memcpy_per_row, elem_per_memcpy, read_size>, &dst, src, row_stride, laneid);
 //}
-//    
-//    
+//
+//
 ///**
 // * @brief Stores data from a shared memory tile with a row layout into global memory.
 // *
@@ -99,8 +99,8 @@ store(int i, device typename ST::dtype *dst, threadgroup const ST *src, thread c
 //        unsigned col = (idx*elem_per_memcpy) % src.cols;
 //        *(device read_type*)(&dst[row*row_stride + col]) = *(threadgroup read_type*)(&src[int2(row, col)]);
 //    }
-//    
-////    
+//
+////
 ////    ducks::assert_shared_tile<ST>();
 ////    const constexpr int read_size = 1;
 ////    using read_type = ReadVector<read_size>;
@@ -112,7 +112,7 @@ store(int i, device typename ST::dtype *dst, threadgroup const ST *src, thread c
 ////
 ////    meta::unroll_i_in_range<0, total_calls * SIMD_THREADS, SIMD_THREADS>::run(meta::store<ST, memcpy_per_row, elem_per_memcpy, read_size>, dst, &src, row_stride, laneid);
 //}
-    
+
 
 
 /**
@@ -147,10 +147,10 @@ load(threadgroup ST &dst, thread const GL &src, thread const coord &idx, short l
     meta::unroll_i_in_range<0, total_calls * SIMD_THREADS, SIMD_THREADS>::run(meta::load<ST, memcpy_per_row, elem_per_memcpy, read_size>, &dst, src_ptr, row_stride, laneid);
 }
     /*
-     
+
      */
-    
-    
+
+
 /**
  * @brief Stores data from a shared memory tile with a row layout into global memory.
  *
@@ -168,7 +168,7 @@ store(thread GL &dst, threadgroup const ST &src, thread const coord &idx, short 
     using read_type = ReadVector<read_size>;
     device U *dst_ptr = (device U*)&dst.template get<ST>(idx);
     const int row_stride = dst.row_stride();
-    
+
     constexpr const unsigned elem_per_memcpy = sizeof(read_type)/sizeof(typename ST::dtype);
     constexpr const unsigned memcpy_per_row = ST::cols / elem_per_memcpy;
     constexpr const unsigned total_calls = ST::num_elements / (SIMD_THREADS*elem_per_memcpy);
@@ -181,12 +181,10 @@ store(thread GL &dst, threadgroup const ST &src, thread const coord &idx, short 
 //        unsigned col = (idx*elem_per_memcpy) % src.cols;
 //        *(device read_type*)(&dst_ptr[row*row_stride + col]) = *(threadgroup read_type*)(&src[int2(row, col)]);
 //    }
-    
+
     meta::unroll_i_in_range<0, total_calls * SIMD_THREADS, SIMD_THREADS>::run(meta::store<ST, memcpy_per_row, elem_per_memcpy, read_size>, dst_ptr, &src, row_stride, laneid);
 }
-    
 
-    
+
+
 }
-
-

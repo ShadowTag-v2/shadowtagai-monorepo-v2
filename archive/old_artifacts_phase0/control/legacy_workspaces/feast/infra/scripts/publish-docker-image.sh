@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e 
+set -e
 set -o pipefail
 
 usage()
@@ -14,7 +14,7 @@ usage()
 
     --file        path to the Dockerfile
 
-    [--google-service-account-file  
+    [--google-service-account-file
     path to Google Cloud service account JSON key file]
 "
 }
@@ -25,7 +25,7 @@ while [ "$1" != "" ]; do
       --tag        )           TAG="$2";                shift;;
       --file       )           FILE="$2";               shift;;
       --google-service-account-file ) GOOGLE_SERVICE_ACCOUNT_FILE="$2";        shift;;
-      -h | --help )            usage;                   exit;; 
+      -h | --help )            usage;                   exit;;
       * )                      usage;                   exit 1
   esac
   shift
@@ -34,8 +34,8 @@ done
 if [ -z $REPOSITORY ]; then usage; exit 1; fi
 if [ -z $TAG ]; then usage; exit 1; fi
 if [ -z $FILE ]; then usage; exit 1; fi
-  
-if [ $GOOGLE_SERVICE_ACCOUNT_FILE ]; then 
+
+if [ $GOOGLE_SERVICE_ACCOUNT_FILE ]; then
     gcloud -q auth activate-service-account --key-file $GOOGLE_SERVICE_ACCOUNT_FILE
     gcloud -q auth configure-docker
 fi

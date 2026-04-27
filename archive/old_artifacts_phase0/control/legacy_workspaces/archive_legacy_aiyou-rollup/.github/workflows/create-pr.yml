@@ -35,5 +35,3 @@ jobs:
           branch: ${{ github.event.inputs.branch }}
           base: main
           signoff: true
-
-

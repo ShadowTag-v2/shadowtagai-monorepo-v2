@@ -20,21 +20,21 @@ index b1c5dbf..1fecb4b 100644
  #include "internal/host/nvshmemi_symmetric_heap.hpp"
 +// eep-dev
 +#include "internal/host/nvshmemi_mem_transport.hpp"
- 
+
  extern __constant__ nvshmemi_device_host_state_t nvshmemi_device_state_d;
  static std::map<void *, int> registered_device_states;
 @@ -1293,6 +1295,14 @@ void nvshmemid_hostlib_finalize(void *device_ctx, void *transport_device_ctx) {
          /* Multi-init Multi-fini*/
          nvshmemi_state = NULL;
          nvshmemi_device_state.nvshmemi_is_nvshmem_initialized = 0;
-+        
++
 +        // eep-dev
 +        nvshmemi_mem_p2p_transport::destroy_instance();
 +        nvshmemi_mem_remote_transport::destroy_instance();
 +        free(nvshmemi_default_session);
 +        nvshmemi_default_session = nullptr;
 +        nvshmemi_device_state.nvshmemi_is_nvshmem_bootstrapped = false;
-+        
++
          nvshmemi_is_device_state_ready = false;
      } else
          nvshmemi_boot_handle.barrier(&nvshmemi_boot_handle);
@@ -53,13 +53,13 @@ index 2495844..e4f408a 100644
 +            p2p_objref_ = nullptr;
 +        }
 +    }
- 
+
      void print_mem_handle(int pe_id, int transport_idx, nvshmemi_symmetric_heap &obj);
- 
+
 @@ -87,6 +94,14 @@ class nvshmemi_mem_remote_transport final {
          }
      }
- 
+
 +    // eep-dev
 +    static void destroy_instance(void) {
 +        if (remote_objref_ != nullptr) {
@@ -87,6 +87,5 @@ index a1fa748..788fa96 100644
      if (handle->pre_init_ops == nullptr) {
          BOOTSTRAP_CALLOC(&handle->pre_init_ops, 1);
          handle->pre_init_ops->get_unique_id = bootstrap_get_unique_id;
--- 
+--
 2.43.0
-

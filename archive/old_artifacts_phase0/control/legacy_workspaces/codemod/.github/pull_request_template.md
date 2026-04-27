@@ -17,13 +17,13 @@ test(vsce): add tests for VS Code extension
 -->
 
 #### 📚 Description
-<!-- 
+<!--
 A summary of the change. Include relevant motivation and context.
 For visual changes, add a snapshot or a Loom screencast to speed up reviews.
 -->
 
 #### 🔗 Linked Issue
-<!-- 
+<!--
 For trivial changes, this can be removed. For non-trivial changes, link to an issue that includes the impact, priority, effort, and more context and discussions. Mention its number here. For example:
 - Fixes #XXXX (GitHub issue number for community contributions)
 or
@@ -31,7 +31,7 @@ or
 -->
 
 #### 🧪 Test Plan
-<!-- 
+<!--
 Describe the tests you ran to verify your changes. Provide instructions so we can reproduce them.
 -->
 

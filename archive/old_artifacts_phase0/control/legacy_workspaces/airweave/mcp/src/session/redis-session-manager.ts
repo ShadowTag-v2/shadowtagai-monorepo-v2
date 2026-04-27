@@ -1,15 +1,15 @@
 /**
  * Redis-based session manager for MCP server
- * 
+ *
  * Stores session metadata in Redis to enable stateless, horizontally-scalable deployments.
  * Session state includes: API key hash, collections metadata, last access timestamp.
- * 
+ *
  * Security measures:
  * - API keys are hashed (SHA-256) before storage for defense-in-depth
  * - Session TTL limits exposure window
  * - Client binding (IP/User-Agent) prevents session hijacking
  * - Comprehensive audit logging for security monitoring
- * 
+ *
  * Note: We still need plaintext API keys at runtime to call Airweave API,
  * but Redis compromise won't expose them.
  */
@@ -306,4 +306,3 @@ export class RedisSessionManager {
         }
     }
 }
-

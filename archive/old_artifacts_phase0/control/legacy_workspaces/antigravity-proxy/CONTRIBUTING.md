@@ -96,11 +96,11 @@ cp .env.example .env
 def replace_api_key(request: http.HTTPFlow, new_key: str) -> bool:
     """
     Replace API key in request headers.
-    
+
     Args:
         request: The HTTP flow to modify
         new_key: The new API key to use
-        
+
     Returns:
         True if key was replaced, False otherwise
     """
@@ -152,7 +152,7 @@ Before submitting a PR:
    ```bash
    # Start proxy
    mitmproxy -s mitmproxy-addon.py
-   
+
    # Test with curl
    HTTP_PROXY=http://localhost:8080 \
    HTTPS_PROXY=http://localhost:8080 \

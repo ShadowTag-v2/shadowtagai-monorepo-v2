@@ -135,7 +135,7 @@ http_server.py
 # Update checker tests
 uv run pytest tests/test_update_checker.py -v
 
-# Scheduler tests  
+# Scheduler tests
 uv run pytest tests/test_scheduler.py -v
 ```
 
@@ -208,4 +208,3 @@ Skills will still be loaded on startup, but won't auto-update.
 3. **Set appropriate intervals** based on your update frequency needs
 4. **Test** with integration tests before deploying
 5. **Check logs** for update status and errors
-

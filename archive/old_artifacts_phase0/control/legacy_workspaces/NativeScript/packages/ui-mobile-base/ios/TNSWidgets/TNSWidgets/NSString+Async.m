@@ -13,7 +13,7 @@
 + (void)stringWithContentsOfFile:(nonnull NSString*)path
                         encoding:(NSStringEncoding)enc
                       completion:(void (^) (NSString*, NSError*))callback {
-    
+
     dispatch_queue_t asyncQueue = dispatch_queue_create("org.nativescript.TNSWidgets.string", NULL);
     dispatch_async(asyncQueue, ^(void) {
         NSError *error = nil;
@@ -23,7 +23,7 @@
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             callback(output, error);
         });
-        
+
     });
 }
 
@@ -32,7 +32,7 @@
          atomically:(BOOL)atomically
            encoding:(NSStringEncoding)enc
          completion:(void (^) (NSError*))callback {
-    
+
     dispatch_queue_t asyncQueue = dispatch_queue_create("org.nativescript.TNSWidgets.string", NULL);
     dispatch_async(asyncQueue, ^(void) {
         NSError *error = nil;
@@ -40,11 +40,11 @@
                atomically:atomically
                  encoding:enc
                     error:&error];
-        
+
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             callback(error);
         });
-        
+
     });
 }
 

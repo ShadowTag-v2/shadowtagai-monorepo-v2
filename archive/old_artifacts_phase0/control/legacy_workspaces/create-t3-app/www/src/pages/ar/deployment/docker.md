@@ -192,7 +192,7 @@ docker compose up
 </details>
 ## الـ Deploy علي Railway
 
-يُمكنك أن تستخدم PaaS كـ [Railway's](https://railway.app) كـ [Dockerfile deployments](https://docs.railway.app/deploy/dockerfiles)  
+يُمكنك أن تستخدم PaaS كـ [Railway's](https://railway.app) كـ [Dockerfile deployments](https://docs.railway.app/deploy/dockerfiles)
 إذا أردت أن تستخدم [Railway CLI installed](https://docs.railway.app/develop/cli#install) يُمكنك أن تُشغل هذا الأمر:
 
 ```bash

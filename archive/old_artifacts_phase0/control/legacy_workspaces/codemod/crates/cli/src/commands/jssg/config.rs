@@ -57,7 +57,7 @@ impl TestConfig {
     /// Load configuration from a specific path
     /// Supports multiple config file formats and aliases in order of precedence:
     /// 1. test.config.json
-    /// 2. test.config.yaml  
+    /// 2. test.config.yaml
     /// 3. codemod-test.config.json
     /// 4. codemod-test.config.yaml
     pub fn load_from_path(path: &Path) -> Result<Option<TestConfig>> {

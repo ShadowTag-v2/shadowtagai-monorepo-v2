@@ -1,4 +1,4 @@
-Cor.26 “Letter to all” rollup 
+Cor.26 “Letter to all” rollup
 
 “Perfect — rolling up everything from the recent research, architectures, and deployment-side advances into one integrated, Cursor-ready “mega roll-up.”
 This merges Dragon Hatchling (BDH), Retrieval-of-Thought (RoT), MoE-CL continual tuning, diffusion-based coding (CoDA), and Qwen3 reranker / multimodal lines into one cohesive technical and operational stack.
@@ -188,7 +188,7 @@ All comply with AiYouJR doctrine: verified facts → structured decision → aut
 
 ⸻
 
- Letter to All content 
+ Letter to All content
 
 Here’s the breakdown you asked for — how AiYouJR enforces purpose, reasons, and brakes, how that produces executable plans, and what the differences look like when compared with (a) a plain 6th arbitrator and (b) current competitors.
 

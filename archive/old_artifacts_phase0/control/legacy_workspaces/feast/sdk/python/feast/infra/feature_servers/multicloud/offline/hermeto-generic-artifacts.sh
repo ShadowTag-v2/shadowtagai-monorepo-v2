@@ -70,7 +70,7 @@ artifacts:' > ${artifacts_file}
   # set substrait manually until using an arrow version w/ this fix - https://github.com/apache/arrow/pull/46191
   substrait_tar_name="substrait-${SUBSTRAIT_VERSION}.tar.gz"
   set_dependency "https://github.com/substrait-io/substrait/archive/v${SUBSTRAIT_VERSION}.tar.gz" "${SUBSTRAIT_ARCHIVE_SHA256_CHECKSUM}" ${substrait_tar_name}
-  
+
   cat ${artifacts_file}
 }
 

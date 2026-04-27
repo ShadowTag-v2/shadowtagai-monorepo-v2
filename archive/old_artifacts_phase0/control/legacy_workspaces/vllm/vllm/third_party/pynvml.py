@@ -790,7 +790,7 @@ NVML_FI_DEV_NVLINK_GET_POWER_THRESHOLD_MIN               = 223
 NVML_FI_DEV_NVLINK_GET_POWER_THRESHOLD_UNITS             = 224 # Values are in the form NVML_NVLINK_LOW_POWER_THRESHOLD_UNIT_*
 NVML_FI_DEV_NVLINK_GET_POWER_THRESHOLD_SUPPORTED         = 225
 
-NVML_FI_DEV_RESET_STATUS                                 = 226 # Deprecated use NVML_FI_DEV_GET_GPU_RECOVERY_ACTION instead 
+NVML_FI_DEV_RESET_STATUS                                 = 226 # Deprecated use NVML_FI_DEV_GET_GPU_RECOVERY_ACTION instead
 NVML_FI_DEV_DRAIN_AND_RESET_STATUS                       = 227 # Deprecated use NVML_FI_DEV_GET_GPU_RECOVERY_ACTION instead
 NVML_FI_DEV_PCIE_OUTBOUND_ATOMICS_MASK                   = 228
 NVML_FI_DEV_PCIE_INBOUND_ATOMICS_MASK                    = 229
@@ -945,11 +945,11 @@ NVML_CC_SYSTEM_DEVTOOLS_MODE_ON = 1
 
 NVML_CC_SYSTEM_MULTIGPU_NONE = 0
 NVML_CC_SYSTEM_MULTIGPU_PROTECTED_PCIE = 1
- 
+
 NVML_CC_SYSTEM_ENVIRONMENT_UNAVAILABLE = 0
 NVML_CC_SYSTEM_ENVIRONMENT_SIM = 1
 NVML_CC_SYSTEM_ENVIRONMENT_PROD = 2
- 
+
 _nvmlConfComputeCcFeature_t = c_uint
 NVML_CC_SYSTEM_FEATURE_DISABLED = 0
 NVML_CC_SYSTEM_FEATURE_ENABLED = 1
@@ -2081,7 +2081,7 @@ class c_nvmlGpuInstanceProfileInfo_v2_t(_PrintableStructure):
                 ("memorySizeMB", c_ulonglong),
                 ("name", c_char * NVML_DEVICE_NAME_V2_BUFFER_SIZE)
                ]
-    
+
     def __init__(self):
         super(c_nvmlGpuInstanceProfileInfo_v2_t, self).__init__(version=nvmlGpuInstanceProfileInfo_v2)
 
@@ -3060,7 +3060,7 @@ nvmlTemperature_v1 = 0x100000C
 def nvmlDeviceGetTemperatureV1(handle, sensor):
     c_temp = c_nvmlTemperature_v1_t()
     c_temp.version = nvmlTemperature_v1
-    c_temp.sensorType = _nvmlTemperatureSensors_t(sensor) 
+    c_temp.sensorType = _nvmlTemperatureSensors_t(sensor)
     fn = _nvmlGetFunctionPointer("nvmlDeviceGetTemperatureV")
     ret = fn(handle, byref(c_temp))
     _nvmlCheckReturn(ret)
@@ -5161,7 +5161,7 @@ def nvmlGpuInstanceGetComputeInstanceProfileInfo(device, profile, engProfile, ve
         c_info = c_nvmlComputeInstanceProfileInfo_t()
         fn = _nvmlGetFunctionPointer("nvmlGpuInstanceGetComputeInstanceProfileInfo")
     else:
-        raise NVMLError(NVML_ERROR_FUNCTION_NOT_FOUND) 
+        raise NVMLError(NVML_ERROR_FUNCTION_NOT_FOUND)
     ret = fn(device, profile, engProfile, byref(c_info))
     _nvmlCheckReturn(ret)
     return c_info
@@ -6137,4 +6137,3 @@ def nvmlDevicePowerSmoothingSetState(device, state):
     fn = _nvmlGetFunctionPointer("nvmlDevicePowerSmoothingSetState")
     ret = fn(device, state)
     _nvmlCheckReturn(ret)
-

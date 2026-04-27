@@ -76,4 +76,4 @@ Inference throughput: +82%
 Token cost per output: –59%
 Memory footprint: –47%”
 
-<next> 
+<next>

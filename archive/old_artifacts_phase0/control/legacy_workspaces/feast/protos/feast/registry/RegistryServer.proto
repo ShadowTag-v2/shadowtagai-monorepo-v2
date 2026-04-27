@@ -25,7 +25,7 @@ service RegistryServer{
   rpc GetEntity (GetEntityRequest) returns (feast.core.Entity) {}
   rpc ListEntities (ListEntitiesRequest) returns (ListEntitiesResponse) {}
   rpc DeleteEntity (DeleteEntityRequest) returns (google.protobuf.Empty) {}
-  
+
   // DataSource RPCs
   rpc ApplyDataSource (ApplyDataSourceRequest) returns (google.protobuf.Empty) {}
   rpc GetDataSource (GetDataSourceRequest) returns (feast.core.DataSource) {}
@@ -134,11 +134,11 @@ message GetInfraRequest {
 
 message ListProjectMetadataRequest {
   string project = 1;
-  bool allow_cache = 2;    
+  bool allow_cache = 2;
 }
 
 message ListProjectMetadataResponse {
-  repeated feast.core.ProjectMetadata project_metadata = 1;     
+  repeated feast.core.ProjectMetadata project_metadata = 1;
 }
 
 message ApplyMaterializationRequest {
@@ -255,7 +255,7 @@ message AnyFeatureView {
         feast.core.FeatureView feature_view = 1;
         feast.core.OnDemandFeatureView on_demand_feature_view = 2;
         feast.core.StreamFeatureView stream_feature_view = 3;
-    }    
+    }
 }
 
 message GetAnyFeatureViewRequest {

@@ -63,7 +63,7 @@ This is the easiest way to get started with vLLM on Hugging Face Inference Endpo
 
 This method applies to models with the [`transformers` library tag](https://huggingface.co/models?library=transformers) in their metadata. It allows you to deploy a model directly from the Hub UI without manual configuration.
 
-1. Navigate to a model on [Hugging Face Hub](https://huggingface.co/models).  
+1. Navigate to a model on [Hugging Face Hub](https://huggingface.co/models).
    For this example we will use the [`ibm-granite/granite-docling-258M`](https://huggingface.co/ibm-granite/granite-docling-258M) model. You can verify that the model is compatible by checking the front matter in the [README](https://huggingface.co/ibm-granite/granite-docling-258M/blob/main/README.md), where the library is tagged as `library: transformers`.
 
 2. Locate the **Deploy** button. The button appears for models tagged with `transformers` at the top right of the [model card](https://huggingface.co/ibm-granite/granite-docling-258M).
@@ -138,7 +138,7 @@ In this guide, we demonstrate manual deployment using the [`rednote-hilab/dots.o
 
     ![Select model](../../assets/deployment/hf-inference-endpoints-select-model.png)
 
-3. Choosing infrastructure. On the configuration page, select the cloud provider and hardware from the available options.  
+3. Choosing infrastructure. On the configuration page, select the cloud provider and hardware from the available options.
    For this demo, we choose AWS and L4 GPU. Adjust according to your hardware needs.
 
     ![Choose Infra](../../assets/deployment/hf-inference-endpoints-choose-infra.png)

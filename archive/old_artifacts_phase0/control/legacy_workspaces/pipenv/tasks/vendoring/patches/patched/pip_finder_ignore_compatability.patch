@@ -23,7 +23,7 @@ index aa7c2ebd4..ebeb118cc 100644
              ignore_requires_python = False
 +        if ignore_compatibility is None:
 +            ignore_compatibility = False
- 
+
          self._allow_yanked = allow_yanked
          self._canonical_name = canonical_name
          self._ignore_requires_python = ignore_requires_python
@@ -54,7 +54,7 @@ index aa7c2ebd4..ebeb118cc 100644
                  try:
 @@ -216,7 +230,7 @@ class LinkEvaluator:
                      return (LinkType.different_project, reason)
- 
+
                  supported_tags = self._target_python.get_unsorted_tags()
 -                if not wheel.supported(supported_tags):
 +                if not wheel.supported(supported_tags) and not self._ignore_compatibility:
@@ -69,7 +69,7 @@ index aa7c2ebd4..ebeb118cc 100644
 +        if not supports_python and not self._ignore_compatibility:
              requires_python = link.requires_python
              if requires_python:
- 
+
 @@ -425,6 +439,7 @@ class CandidateEvaluator:
          release_control: ReleaseControl | None = None,
          specifier: specifiers.BaseSpecifier | None = None,
@@ -77,14 +77,14 @@ index aa7c2ebd4..ebeb118cc 100644
 +        ignore_compatibility: bool = False,
      ) -> CandidateEvaluator:
          """Create a CandidateEvaluator object.
- 
+
 @@ -450,6 +465,7 @@ class CandidateEvaluator:
              prefer_binary=prefer_binary,
              release_control=release_control,
              hashes=hashes,
 +            ignore_compatibility=ignore_compatibility,
          )
- 
+
      def __init__(
 @@ -460,6 +476,7 @@ class CandidateEvaluator:
          prefer_binary: bool = False,
@@ -133,9 +133,9 @@ index aa7c2ebd4..ebeb118cc 100644
              candidate_prefs = CandidatePreferences()
 +        if ignore_compatibility is None:
 +            ignore_compatibility = False
- 
+
          format_control = format_control or FormatControl(set(), set())
- 
+
          self._allow_yanked = allow_yanked
          self._candidate_prefs = candidate_prefs
          self._ignore_requires_python = ignore_requires_python
@@ -150,7 +150,7 @@ index aa7c2ebd4..ebeb118cc 100644
 +            ignore_compatibility=selection_prefs.ignore_compatibility,
              uploaded_prior_to=uploaded_prior_to,
          )
- 
+
 @@ -790,6 +815,7 @@ class PackageFinder:
              target_python=self._target_python,
              allow_yanked=self._allow_yanked,
@@ -158,14 +158,14 @@ index aa7c2ebd4..ebeb118cc 100644
 +            ignore_compatibility=self._ignore_compatibility,
              uploaded_prior_to=self._uploaded_prior_to,
          )
- 
+
 @@ -949,6 +975,7 @@ class PackageFinder:
              release_control=candidate_prefs.release_control,
              specifier=specifier,
              hashes=hashes,
 +            ignore_compatibility=self._ignore_compatibility,
          )
- 
+
      def find_best_candidate(
 diff --git a/pipenv/patched/pip/_internal/models/selection_prefs.py b/pipenv/patched/pip/_internal/models/selection_prefs.py
 index 04ef63ab5..eff71d2ab 100644
@@ -177,7 +177,7 @@ index 04ef63ab5..eff71d2ab 100644
          "ignore_requires_python",
 +        "ignore_compatibility",
      ]
- 
+
      # Don't include an allow_yanked default value to make sure each call
 @@ -31,6 +32,7 @@ class SelectionPreferences:
          format_control: FormatControl | None = None,
@@ -186,7 +186,7 @@ index 04ef63ab5..eff71d2ab 100644
 +        ignore_compatibility: bool | None = None,
      ) -> None:
          """Create a SelectionPreferences object.
- 
+
 @@ -45,12 +47,17 @@ class SelectionPreferences:
              dist over a new source dist.
          :param ignore_requires_python: Whether to ignore incompatible
@@ -198,7 +198,7 @@ index 04ef63ab5..eff71d2ab 100644
              ignore_requires_python = False
 +        if ignore_compatibility is None:
 +            ignore_compatibility = False
- 
+
          self.allow_yanked = allow_yanked
          self.release_control = release_control
          self.format_control = format_control

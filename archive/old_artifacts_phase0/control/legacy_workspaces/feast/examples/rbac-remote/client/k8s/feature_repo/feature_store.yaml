@@ -11,4 +11,3 @@ online_store:
   path: http://feast-feature-server.feast-dev.svc.cluster.local:80
 auth:
   type: kubernetes
-

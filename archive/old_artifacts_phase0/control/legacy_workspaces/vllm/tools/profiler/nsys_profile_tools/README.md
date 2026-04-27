@@ -9,10 +9,10 @@ profiling and analyzing nsys profile output.
 
 ### Command-line Arguments
 
-- `--in_file`  
-  **(required)**  
-  List of input files and their metadata. Each entry should be in the format:  
-  `<nsys-rep>,<engine>,<model>,<elapsed_nonprofiled_sec>`  
+- `--in_file`
+  **(required)**
+  List of input files and their metadata. Each entry should be in the format:
+  `<nsys-rep>,<engine>,<model>,<elapsed_nonprofiled_sec>`
     - `nsys-rep`: Path to the `.nsys-rep` file.
     - `engine`: Engine name (e.g., `vllm`).
     - `model`: Model name (e.g., `llama`, `gpt-oss`, `ds`).
@@ -21,16 +21,16 @@ profiling and analyzing nsys profile output.
     (this may inflate non-GPU time if actual runtime without profiling is
     less). Multiple entries can be provided, separated by spaces.
 
-- `--out_dir`  
-  Output directory for the generated CSV and HTML files.  
+- `--out_dir`
+  Output directory for the generated CSV and HTML files.
   If not specified, results are saved in the current directory.
 
-- `--title`  
+- `--title`
   Title for the HTML chart/visualization.
 
-- `--nsys_cmd`  
-  Path to the `nsys` command.  
-  Default: `nsys` (assumes it is in your PATH).  
+- `--nsys_cmd`
+  Path to the `nsys` command.
+  Default: `nsys` (assumes it is in your PATH).
   Use this if `nsys` is not in your system PATH.
 
 ## Notes
@@ -145,7 +145,7 @@ gputrc2graph.py with the same format as the other json files, like the following
 ```json
 {
   "DEF": {
-      "ABC": { 
+      "ABC": {
           "H|I": "gemm",
           "J|K": "attn",
           "CUDA mem": "non-gpu-H_D_memops",

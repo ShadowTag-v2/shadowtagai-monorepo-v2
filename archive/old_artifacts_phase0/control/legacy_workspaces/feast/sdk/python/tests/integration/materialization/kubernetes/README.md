@@ -17,6 +17,3 @@ When the tests are complete, delete the created cluster with:
 ``` shell
 > eksctl delete cluster feast-cluster
 ```
-
-
-

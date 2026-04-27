@@ -68,7 +68,7 @@ This will scaffold a new folder with the required files and structure.
     - <b>Edit flow</b>: find nodes → build edits → `commitEdits(edits)` → return resulting string<br/>
     - <b>Return contract</b>: string → modified (unless equal to input), null/undefined → unmodified; anything else → error<br/>
     - <b>Type safety</b>: Always check node types before accessing fields
-    
+
     ```ts codemod.ts
     import type { Transform } from "codemod:ast-grep";
     import type TSX from "codemod:ast-grep/langs/tsx";
@@ -98,7 +98,7 @@ This will scaffold a new folder with the required files and structure.
         const args = node.getMultipleMatches("ARGS")
           .map(arg => arg.text())
           .join(", ");
-        
+
         return node.replace(`logger.${method}(${args})`);
       });
 

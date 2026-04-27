@@ -27,7 +27,7 @@ async function transform(root: SgRoot<PHP>): Promise<string> {
       all: [
         {
           has: {
-            field: "function", 
+            field: "function",
             kind: "name",
             regex: "^mysql_fetch_array$"
           }
@@ -44,7 +44,7 @@ async function transform(root: SgRoot<PHP>): Promise<string> {
         {
           has: {
             field: "function",
-            kind: "name", 
+            kind: "name",
             regex: "^mysql_fetch_assoc$"
           }
         }
@@ -60,13 +60,13 @@ async function transform(root: SgRoot<PHP>): Promise<string> {
       const argsText = argsNode ? argsNode.text() : "()";
       return node.replace(`$pdo->query${argsText}`);
     }),
-    
+
     // Convert mysql_fetch_array to PDO fetch
     ...fetchArrayNodes.map(node => {
       // Get the first argument (the result variable) from the arguments
       return node.replace(`$result->fetch(PDO::FETCH_BOTH)`);
     }),
-    
+
     // Convert mysql_fetch_assoc to PDO fetch
     ...fetchAssocNodes.map(node => {
       return node.replace(`$result->fetch(PDO::FETCH_ASSOC)`);

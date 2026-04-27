@@ -16,4 +16,3 @@ entity_key_serialization_version: 3
 # By default, no_auth for authentication and authorization, other possible values kubernetes and oidc. Refer the documentation for more details.
 auth:
     type: no_auth
-

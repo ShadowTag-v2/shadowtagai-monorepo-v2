@@ -1,12 +1,12 @@
 /**
  * @file broker.cuh
  * @brief Utility for multiprocess data exchange and synchronization.
- * 
+ *
  * This file provides the KittensBroker class, which enables efficient inter-process
  * communication and synchronization using POSIX shared memory, semaphores, and sockets.
  * The broker is designed to work in multi-GPU environments where processes need to
  * exchange data and synchronize execution across different local ranks.
- * 
+ *
  * @note This implementation relies on POSIX IPC mechanisms and is intended for
  *       Unix-like systems. All processes must be running on the same node.
  */
@@ -119,7 +119,7 @@ __host__ inline void *open_shm(const char *key, size_t size) {
         shm_fd = shm_open(key, O_RDWR | O_CLOEXEC, 0);
         if (shm_fd >= 0)
             break;
-        if (errno != ENOENT) 
+        if (errno != ENOENT)
             throw std::runtime_error("KittensBroker: Failed to open shared memory");
         usleep(1);
     }
@@ -165,7 +165,7 @@ __host__ inline int create_socket(const char *key, int local_rank) {
     int n = snprintf(unique_key, sizeof(unique_key), "%s%d", key, local_rank);
     if (n < 0 || n >= (int)sizeof(unique_key)) {
         close(sock_fd);
-        throw std::runtime_error("KittensBroker: Socket name too long"); 
+        throw std::runtime_error("KittensBroker: Socket name too long");
     }
 
     size_t len = strnlen(unique_key, sizeof(addr.sun_path));
@@ -203,11 +203,11 @@ __host__ inline void send_fd(
         close(data_fd);
         throw std::runtime_error("KittensBroker: Failed to allocate a control buffer");
     }
-  
+
     struct msghdr msg {};
     msg.msg_control = control_un.control;
     msg.msg_controllen = sizeof_control;
-  
+
     struct cmsghdr *cmptr = CMSG_FIRSTHDR(&msg);
     cmptr->cmsg_len = CMSG_LEN(sizeof(int));
     cmptr->cmsg_level = SOL_SOCKET;
@@ -218,23 +218,23 @@ __host__ inline void send_fd(
     addr.sun_family = AF_UNIX;
     char dst_unique_key[64];
     int n = snprintf(dst_unique_key, sizeof(dst_unique_key), "%s%d", dst_key, dst_local_rank);
-    if (n < 0 || n >= (int)sizeof(dst_unique_key)) { 
+    if (n < 0 || n >= (int)sizeof(dst_unique_key)) {
         free(control_un.control);
         close(sock_fd);
         close(data_fd);
-        throw std::runtime_error("KittensBroker: dst path too long"); 
+        throw std::runtime_error("KittensBroker: dst path too long");
     }
     strcpy(addr.sun_path, dst_unique_key);
     msg.msg_name = (void *)&addr;
     msg.msg_namelen = sizeof(struct sockaddr_un);
-  
+
     int payload = src_local_rank;
     struct iovec iov[1];
     iov[0].iov_base = &payload;
     iov[0].iov_len  = sizeof(payload);
     msg.msg_iov = iov;
     msg.msg_iovlen = 1;
-  
+
     while (true) {
         ssize_t sent = sendmsg(sock_fd, &msg, 0);
         if (sent <= 0) {
@@ -328,7 +328,7 @@ __host__ inline void close_socket(int sock_fd) {
 /**
     @brief KittensBroker utility for multiprocess data exchange.
 
-    Note that the code relies on POSIX sockets/shared memory/semaphores for 
+    Note that the code relies on POSIX sockets/shared memory/semaphores for
     inter-process communication and synchronization.
 
     The main functions meant to be used by the user are:
@@ -352,7 +352,7 @@ struct KittensBroker {
     int sock_;
 
     __host__ inline KittensBroker(int local_rank, int local_world_size)
-        : local_rank_(local_rank), 
+        : local_rank_(local_rank),
           local_world_size_(local_world_size),
           shm_raw_(nullptr),
           shm_(nullptr),
@@ -455,7 +455,7 @@ struct KittensBroker {
         sync(); // ensure all processes enter together
         memcpy(const_cast<uint8_t *>(shm_->data) + local_rank_ * detail::broker::VAULT_SIZE_PER_RANK, src, size);
         sync(); // ensure all processes exit together
-    
+
         // Pack and copy back to destination
         for (int i = 0; i < local_world_size_; i++)
             memcpy(dst + i * size, const_cast<uint8_t *>(shm_->data) + i * detail::broker::VAULT_SIZE_PER_RANK, size);

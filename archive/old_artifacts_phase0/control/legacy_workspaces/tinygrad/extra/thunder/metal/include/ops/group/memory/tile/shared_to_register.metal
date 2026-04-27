@@ -24,7 +24,7 @@ load(thread RT &dst, threadgroup const ST &src, const int threadIdx) {
     using T2 = typename base_types::packing<T>::packed_type;
     using U  = typename ST::dtype;
     using U2 = typename base_types::packing<U>::packed_type;
-    
+
     int warp_laneid = simd_laneid(threadIdx);
     const int row_offset = RT::rows * warpid(threadIdx);
     const short qid = warp_laneid / 4;
@@ -40,7 +40,7 @@ load(thread RT &dst, threadgroup const ST &src, const int threadIdx) {
             dst.tiles[i][j].data.thread_elements()[0] = src2[0];
             dst.tiles[i][j].data.thread_elements()[1] = src2[1];
         }
-    } 
+    }
 }
 
 template<typename RT, typename ST>
@@ -56,7 +56,7 @@ load(thread RT &dst, threadgroup const ST &src, const int threadIdx) {
     using T2 = typename base_types::packing<T>::packed_type;
     using U  = typename ST::dtype;
     using U2 = typename base_types::packing<U>::packed_type;
-    
+
     int warp_laneid = simd_laneid(threadIdx);
     const int row_offset = RT::rows * warpid(threadIdx);
     const short qid = warp_laneid / 4;
@@ -136,7 +136,7 @@ store(threadgroup ST &dst, thread const RT &src, const int threadIdx) {
     const short simd_x = (qid & 4) + (warp_laneid / 2) % 4;
     #pragma clang loop unroll(full)
     for(int i = 0; i < RT::height; i++) {
-        
+
         #pragma clang loop unroll(full)
         for(int j = 0; j < RT::width; j++) {
             int row = simd_y + i * mittens::TILE_DIM;
@@ -144,7 +144,7 @@ store(threadgroup ST &dst, thread const RT &src, const int threadIdx) {
 //            U2 src2 = base_types::convertor<U2, T2>::convert(T2(src.tiles[i][j].data.thread_elements()[0],
 //                                                                src.tiles[i][j].data.thread_elements()[1]));
 //            *(threadgroup U2*)(&dst[{row, col}]) = src2;
-            
+
             dst[{row + 0, col}] = base_types::convertor<U, T>::convert(src.tiles[i][j].data.thread_elements()[0]);
             dst[{row + 1, col}] = base_types::convertor<U, T>::convert(src.tiles[i][j].data.thread_elements()[1]);
         }

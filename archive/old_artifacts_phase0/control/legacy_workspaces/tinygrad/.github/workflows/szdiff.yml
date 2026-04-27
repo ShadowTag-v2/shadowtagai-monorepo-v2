@@ -14,7 +14,7 @@ jobs:
     outputs:
       branchstat: ${{ steps.brstat.outputs.stat}}
     steps:
-      - name: Check code from PR branch 
+      - name: Check code from PR branch
         uses: actions/checkout@v4
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}

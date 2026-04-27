@@ -2640,4 +2640,3 @@ PyMODINIT_FUNC initfuzzyEngine(void)
 }
 
 #endif
-

@@ -2,7 +2,7 @@
  * @file
  * @brief Templated layouts for global memory.
  */
- 
+
 #pragma once
 
 #include "../../common/common.cuh"
@@ -54,7 +54,7 @@ template<typename _T, int _axis=-9999, bool _swizzle_flag=true> struct descripto
     using T = detail::tma::descriptor_copy_helper_t<_T>;
     static_assert(ducks::st::all<T> || ducks::sv::all<T> || ducks::tma::descriptor::all<T>, "Must be a shared TK type to generate a TMA descriptor.");
     static constexpr int axis = (
-        ducks::tma::descriptor::all<_T> ? detail::tma::descriptor_copy_helper_v<_T> : // if a copy, inherit the axis from the original descriptor. 
+        ducks::tma::descriptor::all<_T> ? detail::tma::descriptor_copy_helper_v<_T> : // if a copy, inherit the axis from the original descriptor.
         (_axis != -9999) ? _axis : detail::tma::descriptor_copy_helper_v<_T>); // if a default value was provided, use it.
     static_assert((kittens::ducks::st::all<T> && axis >= 0 && axis <= 2) || (kittens::ducks::sv::all<T> && axis == -1), "Internal template error detected.");
     static constexpr bool swizzle_flag = ducks::tma::descriptor::all<_T> ? detail::tma::descriptor_copy_helper_swizzle_flag<_T> : _swizzle_flag;
@@ -160,7 +160,7 @@ struct gl {
         else if constexpr (axis==2) { return size_t(rows()); }
         else if constexpr (axis==3) { return size_t(cols()); }
     }
-    template<int axis> __device__ inline size_t stride() const { 
+    template<int axis> __device__ inline size_t stride() const {
         static_assert(axis==0 || axis==1 || axis==2 || axis==3, "Axis must be 0, 1, 2, or 3.");
         if      constexpr (axis==0) { return depth()*rows()*cols(); }
         else if constexpr (axis==1) { return rows()*cols(); }

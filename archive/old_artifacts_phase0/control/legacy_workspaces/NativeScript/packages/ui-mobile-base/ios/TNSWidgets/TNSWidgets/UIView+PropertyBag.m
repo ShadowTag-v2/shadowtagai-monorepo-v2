@@ -46,7 +46,7 @@ __strong NSMutableDictionary *_propertyBagHolder; // Properties for every class 
         propBag = [NSMutableDictionary dictionary];
         [self setPropertyBag:propBag];
     }
-    
+
     return propBag;
 }
 
@@ -54,7 +54,7 @@ __strong NSMutableDictionary *_propertyBagHolder; // Properties for every class 
     if (_propertyBagHolder == nil) {
         _propertyBagHolder = [[NSMutableDictionary alloc] initWithCapacity:100];
     }
-    
+
     [_propertyBagHolder setValue:propertyBag forKey:[[NSString alloc] initWithFormat:@"%p", self]];
 }
 

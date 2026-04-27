@@ -1259,7 +1259,7 @@ def train_bert():
       tqdm.write(results)
 
       if WANDB:
-        wandb.log({"eval/lm_loss": avg_lm_loss, "eval/clsf_loss": avg_clsf_loss, "eval/lm_accuracy": avg_lm_acc, 
+        wandb.log({"eval/lm_loss": avg_lm_loss, "eval/clsf_loss": avg_clsf_loss, "eval/lm_accuracy": avg_lm_acc,
                     "eval/clsf_accuracy": avg_clsf_acc, "eval/forward_time": avg_fw_time, "epoch": (i + 1) * GBS})
 
       if MLLOGGER and RUNMLPERF:
@@ -1589,7 +1589,7 @@ def train_stable_diffusion():
     loss, out_lr = loss.detach().to("CPU"), optimizer.lr.to("CPU")
     Tensor.realize(loss, out_lr)
     return loss, out_lr
-    
+
   # checkpointing takes ~9 minutes without this, and ~1 minute with this
   @TinyJit
   def ckpt_to_cpu():
@@ -1628,7 +1628,7 @@ def train_stable_diffusion():
     if i == 3:
       for _ in range(3): ckpt_to_cpu()  # do this at the beginning of run to prevent OOM surprises when checkpointing
       print("BEAM COMPLETE", flush=True)  # allows wrapper script to detect BEAM search completion and retry if it failed
-      
+
     total_train_time = time.perf_counter() - train_start_time
     if WANDB:
       wandb.log({"train/loss": loss_item, "train/lr": lr_item, "train/loop_time_prev": loop_time, "train/dl_time": dl_time, "train/step": i,

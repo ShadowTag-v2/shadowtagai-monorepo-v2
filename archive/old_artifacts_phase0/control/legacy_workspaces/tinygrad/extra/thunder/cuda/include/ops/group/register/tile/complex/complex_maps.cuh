@@ -83,11 +83,11 @@ __device__ static inline void mul(T &dst, const T &lhs, const T &rhs) {
     // out of place storage regs
     dtype rdst;
     dtype idst;
-    
+
     // (a + bi) * (c + di) --> (ac - bd) + (ad + bc)i
     // Real component
-    mul(rdst, lhs.real, rhs.real);  
-    mul(tmp, lhs.imag, rhs.imag);    
+    mul(rdst, lhs.real, rhs.real);
+    mul(tmp, lhs.imag, rhs.imag);
     sub(rdst, rdst, tmp);
 
     // Imag component
@@ -133,5 +133,3 @@ __device__ static inline void div(T &dst, const T &lhs, const T &rhs) {
     copy(dst.real, rdst);
     copy(dst.imag, idst);
 }
-
-

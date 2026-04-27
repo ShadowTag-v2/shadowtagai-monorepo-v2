@@ -105,4 +105,3 @@ trap cleanup EXIT
 start_network
 start_nodes
 run_nodes
-

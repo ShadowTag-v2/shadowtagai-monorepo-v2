@@ -299,11 +299,11 @@ mod tests {
 
         assert_eq!(
             String::from_utf8(buf)?,
-            "PREFIX:Page 1: 
-PREFIX:Page 2: 
+            "PREFIX:Page 1:
+PREFIX:Page 2:
 PREFIX:Page 3: HelloWorld
-PREFIX:Page 3: 
-PREFIX:Page 3: 
+PREFIX:Page 3:
+PREFIX:Page 3:
 ",
         );
 

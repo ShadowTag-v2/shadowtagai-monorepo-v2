@@ -193,12 +193,3 @@ Save it as full_setup.sh, make it executable (chmod +x full_setup.sh), and run 
 
 🎯 Next step for you
 Tell me which of the above actions you’d like me to run automatically (e.g., “run the setup script with these keys”, “commit the git changes”, “run the memory extraction”), or let me know any custom values you want to use, and I’ll execute the commands right away. 🚀
-
-
-
-
-
-
-
-
-

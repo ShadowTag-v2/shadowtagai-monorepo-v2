@@ -404,14 +404,14 @@ hosts:
   - 192.168.1.2
   - 192.168.1.3
 keyspace: KeyspaceName
-port: 9042                                                              
-username: user                                                          
-password: secret                                                        
-protocol_version: 5                                                     
-load_balancing:                                                         
-  local_dc: datacenter1                                             
+port: 9042
+username: user
+password: secret
+protocol_version: 5
+load_balancing:
+  local_dc: datacenter1
   load_balancing_policy: TokenAwarePolicy(DCAwareRoundRobinPolicy)
-read_concurrency: 100                                                   
+read_concurrency: 100
 write_concurrency: 100
 `
 	var parameters map[string]interface{}

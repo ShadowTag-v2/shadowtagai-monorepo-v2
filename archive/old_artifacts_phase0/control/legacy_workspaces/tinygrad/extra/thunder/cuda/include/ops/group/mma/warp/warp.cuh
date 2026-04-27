@@ -157,7 +157,7 @@ __device__ static inline void hmma16816(      half_2 &d0,       half_2 &d1,
  * @param[in] c0,c1 Input float2 accumulator matrix C values
  */
 __device__ static inline void hmma16816(      float2 &d0,       float2 &d1,
-                                       const fp8e4m3_4 &a0, const fp8e4m3_4 &a1, 
+                                       const fp8e4m3_4 &a0, const fp8e4m3_4 &a1,
                                        const fp8e4m3_4 &a2, const fp8e4m3_4 &a3,
                                        const fp8e4m3_4 &b0, const fp8e4m3_4 &b1,
                                        const float2 &c0, const float2 &c1) {
@@ -167,18 +167,18 @@ __device__ static inline void hmma16816(      float2 &d0,       float2 &d1,
         "{%4, %5, %6, %7}, "
         "{%8, %9}, "
         "{%10, %11, %12, %13};"
-        
+
         // D matrix (output)
         : "+f"(d0.x), "+f"(d0.y),
           "+f"(d1.x), "+f"(d1.y)
-        
+
         // A matrix
         : "r"(*(uint32_t*)(&a0)), "r"(*(uint32_t*)(&a1)),
           "r"(*(uint32_t*)(&a2)), "r"(*(uint32_t*)(&a3)),
-        
+
         // B matrix
         "r"(*(uint32_t*)(&b0)), "r"(*(uint32_t*)(&b1)),
-        
+
         // C matrix
         "f"(c0.x), "f"(c0.y),
         "f"(c1.x), "f"(c1.y)
@@ -893,7 +893,7 @@ __device__ static inline void mma_AB(crt_hf<N, M, ducks::rt_layout::row> &d,
                                const crt_hf<K, M, ducks::rt_layout::col> &b,
                                const crt_hf<N, M, ducks::rt_layout::row> &c) {
     KITTENS_CHECK_WARP
-    
+
     // Copy data from input accumulate register into output
     ::kittens::group<1>::copy(d.real, c.real);
     ::kittens::group<1>::copy(d.imag, c.imag);
@@ -929,7 +929,7 @@ __device__ static inline void mma_AB(crt_fl<N, M, ducks::rt_layout::row> &d,
                                const crt_bf<K, M, ducks::rt_layout::col> &b,
                                const crt_fl<N, M, ducks::rt_layout::row> &c) {
     KITTENS_CHECK_WARP
-    
+
     // Copy data from input accumulate register into output
     ::kittens::group<1>::copy(d.real, c.real);
     ::kittens::group<1>::copy(d.imag, c.imag);

@@ -62,4 +62,3 @@ Rule of thumb: prompts go in Cursor’s chat or edit UI, never in the terminal.
 
 3) Code Actions palette
    - Right-click selection → AI → Custom Prompt, paste the instruction, apply.
-

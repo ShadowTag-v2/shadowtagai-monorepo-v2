@@ -4,7 +4,7 @@ Gitleaks has a neat little feature that lets you format the output of your findi
 --report-path=index.html --report-format=template --report-template=report_templates/basic.tmpl
 ```
 
-Below lies "vibe coding" slop. 
+Below lies "vibe coding" slop.
 
 ## Basic (Light)
 <img width="1425" alt="Screenshot 2025-03-02 at 8 09 39 PM" src="https://github.com/user-attachments/assets/fdd75f95-067b-467b-95c0-3cae581fb069" />

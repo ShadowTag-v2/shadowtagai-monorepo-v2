@@ -41,7 +41,7 @@ External applications can discover Feast instances by:
    ```bash
    # For OpenShift
    kubectl get configmap feast-configs-registry -n redhat-ods-applications -o jsonpath='{.data.namespaces}'
-   
+
    # For Kubernetes
    kubectl get configmap feast-configs-registry -n feast-operator-system -o jsonpath='{.data.namespaces}'
    ```
@@ -54,5 +54,3 @@ The namespace registry automatically manages the lifecycle of feature store inst
 2. **Updates**: If a feature store is updated, its entry remains in the ConfigMap
 3. **Deletion**: When a feature store is deleted, its entry is automatically removed from the ConfigMap
 4. **Namespace Cleanup**: If all feature stores in a namespace are deleted, the namespace entry is also removed
-
-

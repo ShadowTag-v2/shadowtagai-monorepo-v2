@@ -23,7 +23,7 @@
 
  #ifndef _DISCOVERY_H_
  #define _DISCOVERY_H_
- 
+
  #define PSP_HEADER_SIZE                 256
  #define BINARY_SIGNATURE                0x28211407
  #define DISCOVERY_TABLE_SIGNATURE       0x53445049
@@ -32,7 +32,7 @@
  #define VCN_INFO_TABLE_ID               0x004E4356
  #define MALL_INFO_TABLE_ID              0x4C4C414D
  #define NPS_INFO_TABLE_ID 0x0053504E
- 
+
  typedef enum {
 	 IP_DISCOVERY = 0,
 	 GC,
@@ -42,9 +42,9 @@
 	 NPS_INFO,
 	 TOTAL_TABLES = 6
  } table;
- 
+
  #pragma pack(1)
- 
+
  typedef struct table_info
  {
 	 uint16_t offset;   /* Byte offset */
@@ -52,7 +52,7 @@
 	 uint16_t size;     /* Table size */
 	 uint16_t padding;
  } table_info;
- 
+
  typedef struct binary_header
  {
 	 /* psp structure should go at the top of this structure */
@@ -63,14 +63,14 @@
 	 uint16_t binary_size;      /* Binary Size*/
 	 table_info table_list[TOTAL_TABLES];
  } binary_header;
- 
+
  typedef struct die_info
  {
 	 uint16_t die_id;
 	 uint16_t die_offset; /* Points to the corresponding die_header structure */
  } die_info;
- 
- 
+
+
  typedef struct ip_discovery_header
  {
 	 uint32_t signature;    /* Table Signature */
@@ -88,7 +88,7 @@
 		 };
 	 };
  } ip_discovery_header;
- 
+
  typedef struct ip
  {
 	 uint16_t hw_id;           /* Hardware ID */
@@ -106,7 +106,7 @@
  #endif
 	 uint32_t base_address[]; /* variable number of Addresses */
  } ip;
- 
+
  typedef struct ip_v3
  {
 	 uint16_t hw_id;                         /* Hardware ID */
@@ -124,7 +124,7 @@
  #endif
 	 uint32_t base_address[];		/* Base Address list. Corresponds to the num_base_address field*/
  } ip_v3;
- 
+
  typedef struct ip_v4 {
 	 uint16_t hw_id;                         /* Hardware ID */
 	 uint8_t instance_number;                /* Instance number for the IP */
@@ -140,13 +140,13 @@
 	 uint8_t sub_revision : 4;               /* HCID Sub-Revision */
  #endif
  } ip_v4;
- 
+
  typedef struct die_header
  {
 	 uint16_t die_id;
 	 uint16_t num_ips;
  } die_header;
- 
+
  typedef struct ip_structure
  {
 	 ip_discovery_header* header;
@@ -161,17 +161,17 @@
 		 };                                  /* IP list. Variable size*/
 	 } die;
  } ip_structure;
- 
+
  struct gpu_info_header {
 	 uint32_t table_id;      /* table ID */
 	 uint16_t version_major; /* table version */
 	 uint16_t version_minor; /* table version */
 	 uint32_t size;          /* size of the entire header+data in bytes */
  };
- 
+
  struct gc_info_v1_0 {
 	 struct gpu_info_header header;
- 
+
 	 uint32_t gc_num_se;
 	 uint32_t gc_num_wgp0_per_sa;
 	 uint32_t gc_num_wgp1_per_sa;
@@ -192,10 +192,10 @@
 	 uint32_t gc_num_packer_per_sc;
 	 uint32_t gc_num_gl2a;
  };
- 
+
  struct gc_info_v1_1 {
 	 struct gpu_info_header header;
- 
+
 	 uint32_t gc_num_se;
 	 uint32_t gc_num_wgp0_per_sa;
 	 uint32_t gc_num_wgp1_per_sa;
@@ -219,7 +219,7 @@
 	 uint32_t gc_num_sdp_interface;
 	 uint32_t gc_num_tcps;
  };
- 
+
  struct gc_info_v1_2 {
 	 struct gpu_info_header header;
 	 uint32_t gc_num_se;
@@ -253,7 +253,7 @@
 	 uint32_t gc_gl1c_size_per_instance;
 	 uint32_t gc_gl2c_per_gpu;
  };
- 
+
  struct gc_info_v1_3 {
 	 struct gpu_info_header header;
 	 uint32_t gc_num_se;
@@ -295,10 +295,10 @@
 	 uint32_t gc_tcc_size;
 	 uint32_t gc_tcc_cache_line_size;
  };
- 
+
  struct gc_info_v2_0 {
 	 struct gpu_info_header header;
- 
+
 	 uint32_t gc_num_se;
 	 uint32_t gc_num_cu_per_sh;
 	 uint32_t gc_num_sh_per_se;
@@ -317,10 +317,10 @@
 	 uint32_t gc_num_sc_per_se;
 	 uint32_t gc_num_packer_per_sc;
  };
- 
+
  struct gc_info_v2_1 {
 	 struct gpu_info_header header;
- 
+
 	 uint32_t gc_num_se;
 	 uint32_t gc_num_cu_per_sh;
 	 uint32_t gc_num_sh_per_se;
@@ -347,30 +347,30 @@
 	 uint32_t gc_scalar_data_cache_size_per_sqc;
 	 uint32_t gc_tcc_size;
  };
- 
+
  typedef struct harvest_info_header {
 	 uint32_t signature; /* Table Signature */
 	 uint32_t version;   /* Table Version */
  } harvest_info_header;
- 
+
  typedef struct harvest_info {
 	 uint16_t hw_id;          /* Hardware ID */
 	 uint8_t number_instance; /* Instance of the IP */
 	 uint8_t reserved;        /* Reserved for alignment */
  } harvest_info;
- 
+
  typedef struct harvest_table {
 	 harvest_info_header header;
 	 harvest_info list[32];
  } harvest_table;
- 
+
  struct mall_info_header {
 	 uint32_t table_id; /* table ID */
 	 uint16_t version_major; /* table version */
 	 uint16_t version_minor; /* table version */
 	 uint32_t size_bytes; /* size of the entire header+data in bytes */
  };
- 
+
  struct mall_info_v1_0 {
 	 struct mall_info_header header;
 	 uint32_t mall_size_per_m;
@@ -379,22 +379,22 @@
 	 uint32_t m_mall_config;
 	 uint32_t reserved[5];
  };
- 
+
  struct mall_info_v2_0 {
 	 struct mall_info_header header;
 	 uint32_t mall_size_per_umc;
 	 uint32_t reserved[8];
  };
- 
+
  #define VCN_INFO_TABLE_MAX_NUM_INSTANCES 4
- 
+
  struct vcn_info_header {
 	 uint32_t table_id; /* table ID */
 	 uint16_t version_major; /* table version */
 	 uint16_t version_minor; /* table version */
 	 uint32_t size_bytes; /* size of the entire header+data in bytes */
  };
- 
+
  struct vcn_instance_info_v1_0
  {
 	 uint32_t instance_num; /* VCN IP instance number. 0 - VCN0; 1 - VCN1 etc*/
@@ -410,28 +410,28 @@
 	 } fuse_data;
 	 uint32_t reserved[2];
  };
- 
+
  struct vcn_info_v1_0 {
 	 struct vcn_info_header header;
 	 uint32_t num_of_instances; /* number of entries used in instance_info below*/
 	 struct vcn_instance_info_v1_0 instance_info[VCN_INFO_TABLE_MAX_NUM_INSTANCES];
 	 uint32_t reserved[4];
  };
- 
+
  #define NPS_INFO_TABLE_MAX_NUM_INSTANCES 12
- 
+
  struct nps_info_header {
 	 uint32_t table_id; /* table ID */
 	 uint16_t version_major; /* table version */
 	 uint16_t version_minor; /* table version */
 	 uint32_t size_bytes; /* size of the entire header+data in bytes = 0x000000D4 (212) */
  };
- 
+
  struct nps_instance_info_v1_0 {
 	 uint64_t base_address;
 	 uint64_t limit_address;
  };
- 
+
  struct nps_info_v1_0 {
 	 struct nps_info_header header;
 	 uint32_t nps_type;
@@ -439,7 +439,7 @@
 	 struct nps_instance_info_v1_0
 		 instance_info[NPS_INFO_TABLE_MAX_NUM_INSTANCES];
  };
- 
+
  enum amd_hw_ip_block_type {
 	GC_HWIP = 1,
 	HDP_HWIP,
@@ -597,4 +597,4 @@ static int hw_id_map[MAX_HWIP] = {
 
 #endif
 
- 
+

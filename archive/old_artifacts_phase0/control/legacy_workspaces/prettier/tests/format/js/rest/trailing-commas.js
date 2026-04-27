@@ -16,4 +16,3 @@ class D { f(...superSuperSuperSuperSuperSuperSuperSuperSuperSuperSuperSuperSuper
 
 [veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLong, ...a] = [];
 var {veryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryVeryLong, ...a} = {};
-

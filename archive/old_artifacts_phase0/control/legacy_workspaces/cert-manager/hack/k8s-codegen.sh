@@ -211,7 +211,7 @@ gen-defaulters() {
   clean internal/apis 'zz_generated.defaults.go'
   clean pkg/webhook/handlers/testdata/apis 'zz_generated.defaults.go'
   echo "+++ Generating defaulting functions..." >&2
-  
+
   DEFAULT_EXTRA_PEER_PKGS=(
     github.com/cert-manager/cert-manager/internal/apis/meta \
     github.com/cert-manager/cert-manager/internal/apis/meta/v1 \

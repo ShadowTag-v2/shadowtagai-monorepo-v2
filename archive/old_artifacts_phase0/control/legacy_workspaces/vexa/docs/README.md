@@ -17,7 +17,7 @@ This directory contains comprehensive documentation for Vexa self-hosted deploym
   - Quick reference and troubleshooting
 
 - **[WebSocket Guide](websocket.md)** - Real-time transcript streaming via WebSocket
-  
+
 - **[User API Guide](user_api_guide.md)** - Complete REST API reference
 
 ## Example Notebooks
@@ -41,4 +41,3 @@ Interactive Jupyter notebooks for testing and development are located in the `..
 - **Discord**: https://discord.gg/Ga9duGkVz9
 - **GitHub Issues**: https://github.com/Vexa-ai/vexa/issues
 - **Website**: https://vexa.ai
-

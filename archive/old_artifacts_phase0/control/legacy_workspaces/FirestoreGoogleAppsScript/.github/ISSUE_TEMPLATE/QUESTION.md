@@ -26,4 +26,4 @@ const firestore = FirestoreApp.getFirestore(email, key, projectId);
 ### Other Comments
 
 
-##### Library Version: 
+##### Library Version:

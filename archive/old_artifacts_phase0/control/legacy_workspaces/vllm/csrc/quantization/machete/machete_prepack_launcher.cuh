@@ -54,7 +54,7 @@ torch::Tensor prepack_impl(torch::Tensor const B) {
   auto const layout_Bt = make_layout(
       transform_with_idx(l_Bt_packed.shape(), [&](auto ele, auto idx) {
         return idx == 1 ? ele * eles_per_storage : ele;
-      }), 
+      }),
       transform_with_idx(l_Bt_packed.stride(), [&](auto ele, auto idx) {
         return idx != 1 ? ele * eles_per_storage : ele;
       }));

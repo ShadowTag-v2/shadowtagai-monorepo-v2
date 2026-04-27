@@ -15,4 +15,3 @@ assignees:
 # Set to 0 to add all of the assignees.
 # Uses numberOfReviewers if unset.
 numberOfAssignees: 1
-

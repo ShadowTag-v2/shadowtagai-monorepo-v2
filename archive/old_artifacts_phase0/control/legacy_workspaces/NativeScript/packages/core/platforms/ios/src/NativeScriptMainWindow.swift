@@ -12,7 +12,7 @@ var hasMainSetMainScene = false
 
 @available(iOS 14.0, *)
 struct NativeScriptMainWindow: Scene {
-    
+
     #if os(visionOS)
     // Environment control
     @Environment(\.openWindow) private var openWindow
@@ -20,7 +20,7 @@ struct NativeScriptMainWindow: Scene {
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     #endif
-    
+
     var body: some Scene {
         #if os(visionOS)
         // windowStyle is only supported on visionOS
@@ -75,7 +75,7 @@ struct NativeScriptMainWindow: Scene {
                 DispatchQueue.main.async {
                     NativeScriptEmbedder.boot()
                 }
-                
+
             }
         }
         #endif
@@ -104,7 +104,7 @@ struct NativeScriptMainWindow: Scene {
                 }
             }
             return [id: isImmersive]
-            
+
         }
         return ["_": false]
     }
@@ -115,7 +115,7 @@ struct NativeScriptMainWindow: Scene {
 struct NativeScriptAppView: UIViewRepresentable {
     /// A closure that's called when the window is found.
     var found: ((UIWindowScene?) -> Void)
-  
+
     func makeUIView(context: Context) -> UIView {
         // print("NativeScriptAppView makeUIView")
         var window: UIWindow? {
@@ -126,14 +126,14 @@ struct NativeScriptAppView: UIViewRepresentable {
             }
             return window
         }
-        
+
         DispatchQueue.main.async {
             found(window?.windowScene)
         }
-        
+
         return NativeScriptViewFactory.app!.view
     }
-    
+
     func updateUIView(_ uiView: UIView, context: Context) {
         // print("NativeScriptAppView updateUIView")
         // could update data through the controller
@@ -144,7 +144,7 @@ struct NativeScriptAppView: UIViewRepresentable {
 @objc public class NativeScriptViewFactory: NSObject, NativeScriptEmbedderDelegate {
     @objc static var shared: NativeScriptViewFactory?
     @objc static var app: NativeScriptContainerCtrl?
-    
+
     // holds key/value map of views for lifecycle handling
     @objc public var views: NSMutableDictionary?
 
@@ -161,7 +161,7 @@ struct NativeScriptAppView: UIViewRepresentable {
         }
         return views!.object(forKey: id) as! UIView
     }
-    
+
     @available(iOS 15.0, *)
     @objc public static func getKeyWindow() -> UIWindow? {
         return UIApplication
@@ -178,7 +178,7 @@ struct NativeScriptAppView: UIViewRepresentable {
             NativeScriptViewFactory.shared!.views = NSMutableDictionary()
         }
     }
-    
+
     public func presentNativeScriptApp(_ vc: UIViewController!) -> Any! {
         vc.view.frame = NativeScriptViewFactory.app!.view.bounds
         vc.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]

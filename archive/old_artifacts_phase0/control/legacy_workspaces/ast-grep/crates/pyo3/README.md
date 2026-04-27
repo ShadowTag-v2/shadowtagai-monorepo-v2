@@ -9,7 +9,7 @@
 
 ## ast-grep
 
-`ast-grep` is a tool for code structural search, lint, and rewriting. 
+`ast-grep` is a tool for code structural search, lint, and rewriting.
 
 This crate intends to build a native python binding of ast-grep and provide a python API for programmatic usage.
 

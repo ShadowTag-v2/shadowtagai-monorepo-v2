@@ -28,7 +28,7 @@ In order to use the Software under this Agreement, you may be required to obtain
 
 1.5 Electronic Delivery. All Software and license documentation shall be delivered by electronic means. Software shall be deemed delivered when the License Key is made available to you.
 
-2. Restricted Uses. 
+2. Restricted Uses.
 
 2.1 You shall not (and shall not allow any third party to):
   (a) Distribute, sell, sublicense, rent, or lease the Software, except as expressly permitted under this Agreement, or as may be permitted by a separate reseller agreement between you and Gitleaks LLC;
@@ -40,20 +40,20 @@ In order to use the Software under this Agreement, you may be required to obtain
 
 2.2 UNDER NO CIRCUMSTANCES MAY YOU USE THE SOFTWARE AS PART OF A PRODUCT OR SERVICE THAT PROVIDES SIMILAR FUNCTIONALITY TO THE SOFTWARE ITSELF.
 
-3. Ownership. Notwithstanding anything to the contrary contained herein, except for the limited license rights expressly provided herein, Gitleaks LLC and its suppliers have and will retain all rights, title and interest (including, without limitation, all patent, copyright, trademark, trade secret and other intellectual property rights) in and to the Software and all copies, modifications and derivative works thereof (including any changes which incorporate any of your ideas, feedback or suggestions). You acknowledge that you are obtaining only a limited license right to the Software, and that irrespective of any use of the words “purchase”, “sale” or like terms hereunder no ownership rights are being conveyed to you under this Agreement or otherwise. 
+3. Ownership. Notwithstanding anything to the contrary contained herein, except for the limited license rights expressly provided herein, Gitleaks LLC and its suppliers have and will retain all rights, title and interest (including, without limitation, all patent, copyright, trademark, trade secret and other intellectual property rights) in and to the Software and all copies, modifications and derivative works thereof (including any changes which incorporate any of your ideas, feedback or suggestions). You acknowledge that you are obtaining only a limited license right to the Software, and that irrespective of any use of the words “purchase”, “sale” or like terms hereunder no ownership rights are being conveyed to you under this Agreement or otherwise.
 
-4. Fees and Payment. The Software license fees will be due and payable in full as set forth in the applicable invoice or at the time of purchase. If the Software does not function properly within two weeks of purchase, please contact us within those two weeks for a refund. You shall be responsible for all taxes, withholdings, duties and levies arising from the order (excluding taxes based on the net income of Gitleaks LLC). 
+4. Fees and Payment. The Software license fees will be due and payable in full as set forth in the applicable invoice or at the time of purchase. If the Software does not function properly within two weeks of purchase, please contact us within those two weeks for a refund. You shall be responsible for all taxes, withholdings, duties and levies arising from the order (excluding taxes based on the net income of Gitleaks LLC).
 
 5. Support, Maintenance and Services. Subject to the terms and conditions of this Agreement, as set forth in your invoice, support and maintenance services may be included with the purchase of your license subscription.
 
-6. Term of Agreement. 
+6. Term of Agreement.
 
 6.1 Term. This Agreement is effective as of the delivery of the License Key and expires at such time as all license and service subscriptions hereunder have expired in accordance with their own terms (the “Term”). The term of your license under this Agreement shall be specified at your time of purchase. Either party may terminate this Agreement (including all related Invoices) if the other party:
   (a) fails to cure any material breach of this Agreement within thirty (30) days after written notice of such breach, provided that Gitleaks LLC may terminate this Agreement immediately upon any breach of Section 1 or 2;
   (b) ceases operation without a successor; or
   (c) seeks protection under any bankruptcy, receivership, trust deed, creditors arrangement, composition or comparable proceeding, or if any such proceeding is instituted against such party (and not dismissed within sixty (60) days)). Termination is not an exclusive remedy and the exercise by either party of any remedy under this Agreement will be without prejudice to any other remedies it may have under this Agreement, by law, or otherwise.
 
-6.2 Termination. Upon any termination of this Agreement, you shall cease any and all use of the Software and destroy all copies of the Software and source code that you may have obtained. 
+6.2 Termination. Upon any termination of this Agreement, you shall cease any and all use of the Software and destroy all copies of the Software and source code that you may have obtained.
 
 6.3 Expiration of License. Upon the expiration of any term under this Agreement,
   (a) all Software updates and services pursuant to the license shall cease,
@@ -63,10 +63,10 @@ In order to use the Software under this Agreement, you may be required to obtain
  6.4 Use of User Logos
  During the term of this Agreement, we may publicly identify you as a Gitleaks-Action user, which includes use of your logo. If you do not want us to identify you as a user, please contact us. Neither you nor we will imply any untrue sponsorship, endorsement, or affiliation between you and Gitleaks LLC. Upon termination of your Gitleaks-Action subscription, Gitleaks LLC will remove any public references to our relationship from our websites.
 
-7. Disclaimer of Warranties. The Software is provided "as is," with all faults, defects and errors, and without warranty of any kind. Gitleaks LLC does not warrant that the Software will be free of bugs, errors, viruses or other defects, and Gitleaks LLC shall have no liability of any kind for the use of or inability to use the Software, the Software content or any associated service, and you acknowledge that it is not technically practicable for Gitleaks LLC to do so. 
+7. Disclaimer of Warranties. The Software is provided "as is," with all faults, defects and errors, and without warranty of any kind. Gitleaks LLC does not warrant that the Software will be free of bugs, errors, viruses or other defects, and Gitleaks LLC shall have no liability of any kind for the use of or inability to use the Software, the Software content or any associated service, and you acknowledge that it is not technically practicable for Gitleaks LLC to do so.
 To the maximum extent permitted by applicable law, Gitleaks LLC disclaims all warranties, express, implied, arising by law or otherwise, regarding the Software, the Software content and their respective performance or suitability for your intended use, including without limitation any implied warranty of merchantability or fitness for a particular purpose.
 
-8. Limitation of Liability. 
+8. Limitation of Liability.
 
 In no event will Gitleaks LLC be liable for any direct, indirect, consequential, incidental, special, exemplary, or punitive damages or liabilities whatsoever arising from or relating to the Software, the Software content or this Agreement, whether based on contract, tort (including negligence), strict liability or other theory, even if Gitleaks LLC has been advised of the possibility of such damages.
 
@@ -100,9 +100,9 @@ In no event will Gitleaks LLC's liability exceed the Software license price as i
 
 12.5 Indemnification. You agree to defend, indemnify, and hold harmless Gitleaks LLC from and against any lawsuits, claims, losses, damages, fines and expenses (including attorneys' fees and costs) arising out of your use of the Software or breach of this Agreement.
 
-12.6 Governing Law. This Agreement is governed by the laws of the State of Illinois and the United States without regard to conflicts of provisions thereof, and without regard to the United Nations Convention on the International Sale of Goods or the Uniform Computer Information Transactions Act, as currently enacted by any jurisdiction or as may be codified or amended from time to time by any jurisdiction. The jurisdiction and venue for actions related to the subject matter hereof shall be the state of Illinois and United States federal courts located in Chicago, Illinois, and both parties hereby submit to the jurisdiction of such courts. 
+12.6 Governing Law. This Agreement is governed by the laws of the State of Illinois and the United States without regard to conflicts of provisions thereof, and without regard to the United Nations Convention on the International Sale of Goods or the Uniform Computer Information Transactions Act, as currently enacted by any jurisdiction or as may be codified or amended from time to time by any jurisdiction. The jurisdiction and venue for actions related to the subject matter hereof shall be the state of Illinois and United States federal courts located in Chicago, Illinois, and both parties hereby submit to the jurisdiction of such courts.
 
-12.7 Attorneys' Fees and Costs. The prevailing party in any action to enforce this Agreement will be entitled to recover its attorneys' fees and costs in connection with such action. 
+12.7 Attorneys' Fees and Costs. The prevailing party in any action to enforce this Agreement will be entitled to recover its attorneys' fees and costs in connection with such action.
 
 12.8 Severability. If any provision of this Agreement is held by a court of competent jurisdiction to be invalid, illegal, or unenforceable, the remainder of this Agreement will remain in full force and effect.
 

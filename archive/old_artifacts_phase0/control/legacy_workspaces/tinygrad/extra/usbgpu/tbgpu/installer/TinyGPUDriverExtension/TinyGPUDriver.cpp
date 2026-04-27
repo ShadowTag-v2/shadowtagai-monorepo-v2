@@ -35,7 +35,7 @@ bool TinyGPUDriver::init()
 void TinyGPUDriver::free()
 {
 	if (ivars != nullptr) {
-		
+
 	}
 	IOSafeDeleteNULL(ivars, TinyGPUDriver_IVars, 1);
 	super::free();
@@ -160,7 +160,7 @@ kern_return_t TinyGPUDriver::CreateDMA(size_t size, TinyGPUCreateDMAResp* dmaDes
 		os_log(OS_LOG_DEFAULT, "tinygpu: failed to alloc user buffer, err=%d", err);
 		goto error;
 	}
-	
+
 	err = IODMACommand::Create(ivars->pci, kIODMACommandCreateNoOptions, &dmaSpec, &dmaCmd);
 	if (err) {
 		os_log(OS_LOG_DEFAULT, "tinygpu: failed to create dma command, err=%d", err);

@@ -40,7 +40,7 @@ const edgeAnimationStyle = `
       stroke-dashoffset: 0;
     }
   }
-  
+
   @keyframes dataflow {
     0% {
       stroke-dashoffset: 20;

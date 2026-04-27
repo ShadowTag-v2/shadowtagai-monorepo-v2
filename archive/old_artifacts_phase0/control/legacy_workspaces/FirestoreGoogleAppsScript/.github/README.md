@@ -28,10 +28,10 @@ The easiest way to use this library is to create a Google Service Account for yo
 If you don't already have a Firestore project you want to use, create one at the [Firebase admin console](//console.firebase.google.com).
 
 To make a service account,
-1. Open the [Google Service Accounts page by clicking here](//console.developers.google.com/projectselector/iam-admin/serviceaccounts). 
-2. Select your Firestore project, and then click "Create Service Account." 
-3. For your service account's role, choose `Datastore > Cloud Datastore Owner`. 
-4. Check the "Furnish a new private key" box and select JSON as your key type. 
+1. Open the [Google Service Accounts page by clicking here](//console.developers.google.com/projectselector/iam-admin/serviceaccounts).
+2. Select your Firestore project, and then click "Create Service Account."
+3. For your service account's role, choose `Datastore > Cloud Datastore Owner`.
+4. Check the "Furnish a new private key" box and select JSON as your key type.
 5. When you press "Create," your browser will download a `.json` file with your private key (`private_key`), service account email (`client_email`), and project ID (`project_id`). Copy these values into your Google Apps Script — you'll need them to authenticate with Firestore.
 6. **[Bonus]** It is considered best practice to make use of the [Properties Service](//developers.google.com/apps-script/guides/properties) to store this sensitive information.
 
@@ -138,7 +138,7 @@ const path         = doc.path     // Local document path (My Collection/My Docum
 
 ##### Getting Documents (Advanced method using Query)
 If more specific queries need to be performed, you can use the `query` function followed by an `.Execute()` invocation to get that data:
-    
+
 ```javascript
 const allDocumentsWithTest = firestore.query("FirstCollection").Where("name", "==", "Test!").Execute();
 ```
@@ -181,13 +181,13 @@ See other library methods and details [in the wiki](../../../wiki).
   -  Undo breaking change from v23. `document.createTime` and `document.updateTime` will remain as timestamped strings. However `document.created`, `document.updated`, and `document.read` are Date objects.
 - **v23:** When retrieving documents the createTime and updateTime document properties are JS Date objects and not Timestamp Strings.
 - **v16:** **Removed:** `createDocumentWithId(documentId, path, fields)`
-  > Utilize `createDocument(path + '/' + documentId, fields)` instead to create a document with a specific ID. 
+  > Utilize `createDocument(path + '/' + documentId, fields)` instead to create a document with a specific ID.
 
 ## Contributions
 Contributions are welcome — send a pull request! See [here](CONTRIBUTING.md) for more information on contributing.
 
 After cloning this repository, you can push it to your own private copy of this Google Apps Script project to test it yourself. See [here](//github.com/google/clasp) for directions on using `clasp` to develop App Scripts locally.
 Install all packages from `package.json` with a bare `npm install`.
- 
 
-If you want to view the source code directly on Google Apps Script, where you can make a copy for yourself to edit, click [here](//script.google.com/d/1VUSl4b1r1eoNcRWotZM3e87ygkxvXltOgyDZhixqncz9lQ3MjfT1iKFw/edit). 
+
+If you want to view the source code directly on Google Apps Script, where you can make a copy for yourself to edit, click [here](//script.google.com/d/1VUSl4b1r1eoNcRWotZM3e87ygkxvXltOgyDZhixqncz9lQ3MjfT1iKFw/edit).

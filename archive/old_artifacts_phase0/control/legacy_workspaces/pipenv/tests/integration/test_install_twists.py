@@ -572,4 +572,3 @@ pytest = "*"
         else:
             # This will execute if we don't find aws-cdk-lib in the output
             raise AssertionError("aws-cdk-lib not found in pip freeze output")
-

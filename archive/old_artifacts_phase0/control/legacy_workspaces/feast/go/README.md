@@ -1,4 +1,4 @@
-[Update 10/31/2024] This Go feature server code is updated from the Expedia Group's forked Feast branch (https://github.com/ExpediaGroup/feast.git) on 10/22/2024. Thanks the engineers of the Expedia Groups who contributed and improved the Go Feature Server.  
+[Update 10/31/2024] This Go feature server code is updated from the Expedia Group's forked Feast branch (https://github.com/ExpediaGroup/feast.git) on 10/22/2024. Thanks the engineers of the Expedia Groups who contributed and improved the Go Feature Server.
 
 
 ## Build and Run
@@ -15,11 +15,11 @@ To build and run the Go Feature Server locally, create a feature_store.yaml file
 ## OTEL based observability
 The OS level env variable `ENABLE_OTEL_TRACING=="true"/"false"` (string type) is used to enable/disable this service (with Tracing only).
 
-The default exporter URL is "http://localhost:4318". The default schema of sending data to collector is **HTTP**. Please refer the following two docs about the configuration of the OTEL exporter:  
-1. https://opentelemetry.io/docs/languages/sdk-configuration/otlp-exporter/  
-2. https://pkg.go.dev/go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp#WithEndpoint  
+The default exporter URL is "http://localhost:4318". The default schema of sending data to collector is **HTTP**. Please refer the following two docs about the configuration of the OTEL exporter:
+1. https://opentelemetry.io/docs/languages/sdk-configuration/otlp-exporter/
+2. https://pkg.go.dev/go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp#WithEndpoint
 
-## List of files have OTEL observability code  
+## List of files have OTEL observability code
 1. internal/feast/transformation/transformation.go
 2. internal/feast/onlinestore/redisonlinestore.go
 3. internal/feast/server/grpc_server.go
@@ -28,7 +28,7 @@ The default exporter URL is "http://localhost:4318". The default schema of sendi
 6. internal/feast/featurestore.go
 
 ## Example monitoring infra setup
-1. docker compose file to setup Prometheus, Jaeger, and OTEL-collector.  
+1. docker compose file to setup Prometheus, Jaeger, and OTEL-collector.
 ```yaml
 services:
   prometheus:
@@ -58,8 +58,8 @@ services:
     depends_on:
       - jaeger
       - prometheus
-```  
-2. OTEL collector configure file.  
+```
+2. OTEL collector configure file.
 ```yaml
 receivers:
   otlp:
@@ -101,7 +101,7 @@ service:
     scrape_interval: 1m
     scrape_timeout: 30s # Increase this if needed
     static_configs:
-      # Check the IP address of or Docker host network. 
+      # Check the IP address of or Docker host network.
       # Refer: https://stackoverflow.com/questions/48546124/what-is-the-linux-equivalent-of-host-docker-internal
       - targets: ['172.17.0.1:8888'] # Replace with the Collector's IP and port
   - job_name: 'otel-collected'
@@ -110,4 +110,4 @@ service:
     static_configs:
       - targets: ['172.17.0.1:8889'] # Replace with the Collector's IP and port
 ```
-4. Jaeger config file is not used in this setup.    
+4. Jaeger config file is not used in this setup.

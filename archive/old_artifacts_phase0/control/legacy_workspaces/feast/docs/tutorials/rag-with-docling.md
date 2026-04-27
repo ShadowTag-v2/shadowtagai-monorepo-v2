@@ -30,7 +30,7 @@ import os
 import io
 import pypdf
 import logging
-import hashlib 
+import hashlib
 from datetime import datetime
 import requests
 import pandas as pd
@@ -235,7 +235,7 @@ source = FileSource(
 input_request_pdf = RequestSource(
     name="pdf_request_source",
     schema=[
-        Field(name="document_id", dtype=String),        
+        Field(name="document_id", dtype=String),
         Field(name="pdf_bytes", dtype=PdfBytes),
         Field(name="file_name", dtype=String),
     ],
@@ -315,7 +315,7 @@ feast apply
 Process your documents, generate embeddings, and ingest them into the Feast online store:
 
 ```python
-import pandas as pd 
+import pandas as pd
 from feast import FeatureStore
 
 store = FeatureStore(repo_path=".")
@@ -333,15 +333,15 @@ store.write_to_online_store(feature_view_name='docling_feature_view', df=df)
 
 # Turning off transformation on writes is as simple as changing the default behavior
 store.write_to_online_store(
-    feature_view_name='docling_transform_docs', 
-    df=df[df['document_id']!='doc-1'], 
+    feature_view_name='docling_transform_docs',
+    df=df[df['document_id']!='doc-1'],
     transform_on_write=False,
 )
 
 # Now we can transform a raw PDF on the fly
 store.write_to_online_store(
-    feature_view_name='docling_transform_docs', 
-    df=mdf[mdf['document_id']=='doc-1'], 
+    feature_view_name='docling_transform_docs',
+    df=mdf[mdf['document_id']=='doc-1'],
     transform_on_write=True, # this is the default
 )
 ```
@@ -390,7 +390,7 @@ client = OpenAI(
 
 # Format documents for context
 def format_documents(context_data, base_prompt):
-    documents = "\n".join([f"Document {i+1}: {row['embedded_documents__sentence_chunks']}" 
+    documents = "\n".join([f"Document {i+1}: {row['embedded_documents__sentence_chunks']}"
                           for i, row in context_data.iterrows()])
     return f"{base_prompt}\n\nContext documents:\n{documents}"
 

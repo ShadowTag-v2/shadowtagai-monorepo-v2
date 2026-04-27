@@ -5,7 +5,7 @@
         <img src="/images/feast_icon-black.png" alt="Feast Logo">
         <a href="/" class="text-mono">FEAST</a>
       </div>
-      
+
       <div class="desktop-menu">
         <a href="https://github.com/feast-dev/feast/releases" class="nav-item">RELEASES</a>
         <a href="https://docs.feast.dev/" class="nav-item">DOCS</a>
@@ -13,14 +13,14 @@
         <a href="https://github.com/feast-dev/feast" class="nav-item">GITHUB</a>
         <a href="https://slack.feast.dev/" class="nav-item">COMMUNITY</a>
       </div>
-      
+
       <button class="mobile-menu-button" id="mobile-menu-button">
         <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
       </button>
     </div>
-    
+
     <div class="mobile-menu" id="mobile-menu">
       <a href="https://github.com/feast-dev/feast/releases" class="nav-item">RELEASES</a>
       <a href="https://docs.feast.dev/" class="nav-item">DOCS</a>
@@ -95,7 +95,7 @@
       display: flex;
       align-items: center;
     }
-    
+
     .mobile-menu-button {
       display: none;
     }
@@ -129,10 +129,10 @@
 <script>
   const menuButton = document.getElementById('mobile-menu-button');
   const mobileMenu = document.getElementById('mobile-menu');
-  
+
   if (menuButton && mobileMenu) {
     menuButton.addEventListener('click', () => {
       mobileMenu.classList.toggle('active');
     });
   }
-</script> 
+</script>

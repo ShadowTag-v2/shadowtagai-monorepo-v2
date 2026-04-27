@@ -70,7 +70,7 @@ def test_pull_latest_from_table_with_nested_timestamp_or_query(mock_get_conn):
 
     expected_query = """SELECT
                 b."key1", b."key2", b."feature1", b."feature2", b."event_header.event_published_datetime_utc", b."created_timestamp"
-                
+
             FROM (
                 SELECT a."key1", a."key2", a."feature1", a."feature2", a."event_header.event_published_datetime_utc", a."created_timestamp",
                 ROW_NUMBER() OVER(PARTITION BY a."key1", a."key2" ORDER BY a."event_header.event_published_datetime_utc" DESC, a."created_timestamp" DESC) AS _feast_row
@@ -129,7 +129,7 @@ def test_pull_latest_from_table_without_nested_timestamp_or_query(mock_get_conn)
 
     expected_query = """SELECT
                 b."key1", b."key2", b."feature1", b."feature2", b."event_published_datetime_utc", b."created_timestamp"
-                
+
             FROM (
                 SELECT a."key1", a."key2", a."feature1", a."feature2", a."event_published_datetime_utc", a."created_timestamp",
                 ROW_NUMBER() OVER(PARTITION BY a."key1", a."key2" ORDER BY a."event_published_datetime_utc" DESC, a."created_timestamp" DESC) AS _feast_row

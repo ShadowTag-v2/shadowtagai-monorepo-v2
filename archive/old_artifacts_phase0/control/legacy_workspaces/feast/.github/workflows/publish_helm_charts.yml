@@ -62,4 +62,3 @@ jobs:
         env:
           VERSION_WITHOUT_PREFIX: ${{ steps.get-version.outputs.version_without_prefix }}
         run: ./infra/scripts/helm/push-helm-charts.sh $VERSION_WITHOUT_PREFIX
-

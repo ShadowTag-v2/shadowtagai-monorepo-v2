@@ -60,4 +60,3 @@ static constexpr void assert_cgl() {
 }
 
 }
-

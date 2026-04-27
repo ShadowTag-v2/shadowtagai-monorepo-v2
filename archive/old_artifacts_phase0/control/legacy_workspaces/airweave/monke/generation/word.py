@@ -73,4 +73,3 @@ async def generate_documents_content(
         filenames.append(filename)
 
     return filenames, documents
-

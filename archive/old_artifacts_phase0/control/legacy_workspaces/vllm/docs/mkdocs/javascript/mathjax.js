@@ -12,7 +12,7 @@ window.MathJax = {
   }
 };
 
-document$.subscribe(() => { 
+document$.subscribe(() => {
   MathJax.startup.output.clearCache()
   MathJax.typesetClear()
   MathJax.texReset()

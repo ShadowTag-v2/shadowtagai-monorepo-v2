@@ -83,4 +83,3 @@ echo "2. Test backend HTTP server manually"
 echo "3. Test frontend proxy manually"
 echo "4. Run full integration tests"
 echo ""
-

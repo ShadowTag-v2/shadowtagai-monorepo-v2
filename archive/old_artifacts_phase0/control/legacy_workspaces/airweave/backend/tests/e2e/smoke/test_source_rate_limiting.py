@@ -93,88 +93,88 @@ async def clear_redis():
 
 async def monitor_redis_during_sync(pattern: str, duration: int = 10, interval: int = 2) -> Dict[str, List[int]]:
     """Monitor Redis counters during sync execution.
-    
+
     Args:
         pattern: Redis key pattern to monitor
         duration: How long to monitor (seconds)
         interval: Check interval (seconds)
-        
+
     Returns:
         Dictionary mapping keys to list of counter values over time
     """
     monitoring_data = {}
     start_time = time.time()
-    
+
     while time.time() - start_time < duration:
         keys = await get_redis_keys(pattern)
-        
+
         for key in keys:
             if key not in monitoring_data:
                 monitoring_data[key] = []
-            
+
             counter = await get_redis_counter(key)
             monitoring_data[key].append(counter)
-        
+
         await asyncio.sleep(interval)
-    
+
     return monitoring_data
 
 
 async def get_current_org_id(api_client: httpx.AsyncClient) -> str:
     """Get the current organization ID from organizations list.
-    
+
     In DEV_MODE with AUTH disabled, there's a default organization.
     We get the list and use the first one.
-    
+
     Args:
         api_client: HTTP client
-        
+
     Returns:
         Organization ID as string
     """
     response = await api_client.get("/admin/organizations")
-    
+
     if response.status_code != 200:
         raise Exception(f"Could not fetch organizations: {response.status_code} - {response.text}")
-    
+
     orgs = response.json()
     if not orgs or len(orgs) == 0:
         raise Exception("No organizations found")
-    
+
     # In DEV_MODE, use the first (default) organization
     return str(orgs[0]["id"])
 
 
 async def verify_feature_flag_enabled(api_client: httpx.AsyncClient, flag_name: str = "source_rate_limiting") -> bool:
     """Check if a feature flag is enabled for the test organization.
-    
+
     Args:
         api_client: HTTP client
         flag_name: Feature flag name
-        
+
     Returns:
         True if enabled, False otherwise
     """
     org_id = await get_current_org_id(api_client)
     response = await api_client.get(f"/admin/organizations/{org_id}")
-    
+
     if response.status_code != 200:
         print(f"Could not fetch org info: {response.status_code}")
         return False
-    
+
     org = response.json()
     # Feature flags come as a list of objects with 'flag' and 'enabled' fields
     feature_flags = org.get("feature_flags", [])
-    
+
     is_enabled = any(ff.get("flag") == flag_name and ff.get("enabled") for ff in feature_flags)
     print(f"Feature flag '{flag_name}': {'ENABLED' if is_enabled else 'DISABLED'}")
-    
+
     return is_enabled
 
 
 async def enable_feature_flag(api_client: httpx.AsyncClient, flag_name: str = "source_rate_limiting", org_id: Optional[str] = None):
     """Enable a feature flag for the test organization.
-    
+
     Args:
         api_client: HTTP client
         flag_name: Feature flag name
@@ -182,18 +182,18 @@ async def enable_feature_flag(api_client: httpx.AsyncClient, flag_name: str = "s
     """
     if org_id is None:
         org_id = await get_current_org_id(api_client)
-    
+
     response = await api_client.post(f"/admin/organizations/{org_id}/feature-flags/{flag_name}/enable")
-    
+
     if response.status_code != 200:
         raise Exception(f"Failed to enable feature flag: {response.text}")
-    
+
     print(f"✓ Enabled feature flag '{flag_name}' for org {org_id}")
 
 
 async def disable_feature_flag(api_client: httpx.AsyncClient, flag_name: str = "source_rate_limiting", org_id: Optional[str] = None):
     """Disable a feature flag for the test organization.
-    
+
     Args:
         api_client: HTTP client
         flag_name: Feature flag name
@@ -201,12 +201,12 @@ async def disable_feature_flag(api_client: httpx.AsyncClient, flag_name: str = "
     """
     if org_id is None:
         org_id = await get_current_org_id(api_client)
-    
+
     response = await api_client.post(f"/admin/organizations/{org_id}/feature-flags/{flag_name}/disable")
-    
+
     if response.status_code != 200:
         raise Exception(f"Failed to disable feature flag: {response.text}")
-    
+
     print(f"✓ Disabled feature flag '{flag_name}' for org {org_id}")
 
 
@@ -310,7 +310,7 @@ async def wait_for_sync_completion(
 
 def verify_sync_stats_only_inserts(job: Dict, connection_name: str = "connection"):
     """Verify that sync only performed inserts (fresh sync, no updates/deletes/skips/keeps).
-    
+
     Args:
         job: Sync job dictionary with entity count fields
         connection_name: Name for error messages
@@ -320,13 +320,13 @@ def verify_sync_stats_only_inserts(job: Dict, connection_name: str = "connection
     deleted = job.get("entities_deleted", 0)
     skipped = job.get("entities_skipped", 0)
     kept = job.get("entities_kept", 0)
-    
+
     assert inserted > 0, f"No entities inserted for {connection_name}: inserted={inserted}"
     assert updated == 0, f"Unexpected updates in {connection_name}: updated={updated}"
     assert deleted == 0, f"Unexpected deletes in {connection_name}: deleted={deleted}"
     assert skipped == 0, f"Entities skipped in {connection_name}: skipped={skipped}"
     assert kept == 0, f"Unexpected kept entities in {connection_name}: kept={kept}"
-    
+
     print(f"✅ {connection_name}: {inserted} inserted, 0 updates/deletes/skips/keeps")
 
 
@@ -819,7 +819,7 @@ async def test_rate_limiting_feature_flag_disabled(
 
     # Store initial feature flag state
     initial_state = await verify_feature_flag_enabled(api_client, "source_rate_limiting")
-    
+
     # Ensure feature is ENABLED for first test
     await enable_feature_flag(api_client, "source_rate_limiting", org_id=collection["organization_id"])
     await clear_redis()
@@ -854,14 +854,14 @@ async def test_rate_limiting_feature_flag_disabled(
         print("\n" + "="*60)
         print("TEST 1: Feature Flag ENABLED")
         print("="*60)
-        
+
         await trigger_sync(api_client, connection["id"])
-        
+
         # Monitor Redis
         monitoring_task = asyncio.create_task(
             monitor_redis_during_sync("source_rate_limit:*:google_drive:*", duration=15, interval=2)
         )
-        
+
         start_time = time.time()
         job1 = await wait_for_sync_completion(api_client, connection["id"], timeout=120)
         elapsed1 = time.time() - start_time
@@ -872,31 +872,31 @@ async def test_rate_limiting_feature_flag_disabled(
 
         # Verify rate limiting WAS applied (use monitoring data since keys expire after 3s TTL)
         assert len(monitoring_data1) > 0, f"Expected rate limit keys during sync when feature is enabled, got {len(monitoring_data1)}"
-        
+
         print(f"\n📊 Redis monitoring (feature ENABLED):")
         for key, counters in monitoring_data1.items():
             max_counter = max(counters) if counters else 0
             print(f"  {key}: max={max_counter}/{RATE_LIMIT}, samples={counters}")
             assert max_counter <= RATE_LIMIT, f"Rate limit violated: {max_counter}/{RATE_LIMIT}"
-        
+
         print(f"\n✅ Feature ENABLED: Rate limiting applied ({len(monitoring_data1)} keys tracked), sync took {elapsed1:.1f}s")
 
         # ========== TEST 2: Feature Flag DISABLED ==========
         print("\n" + "="*60)
         print("TEST 2: Feature Flag DISABLED")
         print("="*60)
-        
+
         # Disable the feature flag
         await disable_feature_flag(api_client, "source_rate_limiting", org_id=collection["organization_id"])
         await clear_redis()
-        
+
         await trigger_sync(api_client, connection["id"])
-        
+
         # Monitor Redis during second sync
         monitoring_task2 = asyncio.create_task(
             monitor_redis_during_sync("source_rate_limit:*:google_drive:*", duration=15, interval=2)
         )
-        
+
         start_time = time.time()
         job2 = await wait_for_sync_completion(api_client, connection["id"], timeout=120)
         elapsed2 = time.time() - start_time
@@ -908,26 +908,26 @@ async def test_rate_limiting_feature_flag_disabled(
 
         # Verify rate limiting was SKIPPED (no keys created during sync)
         assert len(monitoring_data2) == 0, f"Rate limit keys should NOT exist when feature is disabled, but found {len(monitoring_data2)}: {list(monitoring_data2.keys())}"
-        
+
         print(f"\n✅ Feature DISABLED: Rate limiting skipped (0 keys tracked), sync took {elapsed2:.1f}s")
-        
+
         # Sync should be faster when rate limiting is disabled
         if elapsed2 < elapsed1:
             print(f"✅ Disabled sync was faster ({elapsed2:.1f}s vs {elapsed1:.1f}s)")
-        
+
         print(f"\n✅ Feature flag toggle confirmed (both syncs completed)")
 
     finally:
         # Cleanup and restore original state
         await api_client.delete(f"/source-connections/{connection['id']}")
         await delete_source_rate_limit(api_client, "google_drive")
-        
+
         # Restore original feature flag state
         if initial_state:
             await enable_feature_flag(api_client, "source_rate_limiting", org_id=collection["organization_id"])
         else:
             await disable_feature_flag(api_client, "source_rate_limiting", org_id=collection["organization_id"])
-        
+
         await clear_redis()
 
 
@@ -1069,7 +1069,7 @@ async def test_atomic_lua_prevents_bursts(
 
         # Verify sync completed
         assert job["status"] == "completed", f"Sync failed: {job.get('error')}"
-        
+
         # Verify only inserts
         verify_sync_stats_only_inserts(job, "atomic test")
 
@@ -1078,11 +1078,11 @@ async def test_atomic_lua_prevents_bursts(
         for key, counters in monitoring_data.items():
             max_counter = max(counters) if counters else 0
             print(f"  {key}: max={max_counter}/1, all samples={counters}")
-            
+
             # With atomic Lua, NO sample should exceed the limit
             for i, counter in enumerate(counters):
                 assert counter <= 1, f"Atomic script FAILED: sample {i} had counter={counter}/1 (burst detected!)"
-            
+
             print(f"  ✓ All {len(counters)} samples respected limit (no bursts)")
 
         print(f"\n✅ Atomic Lua script verified: No bursts beyond configured limit")
@@ -1092,4 +1092,3 @@ async def test_atomic_lua_prevents_bursts(
         await api_client.delete(f"/source-connections/{connection['id']}")
         await delete_source_rate_limit(api_client, "notion")
         await clear_redis()  # Prevent interference with other tests
-

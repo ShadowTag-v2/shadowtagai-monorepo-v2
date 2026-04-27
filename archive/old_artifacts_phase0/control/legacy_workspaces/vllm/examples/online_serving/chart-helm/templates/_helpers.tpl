@@ -116,7 +116,7 @@ Define User used for the main container
 */}}
 {{- define "chart.user" }}
 {{-   if .Values.image.runAsUser  }}
-runAsUser: 
+runAsUser:
 {{-     with .Values.runAsUser }}
 {{-       toYaml . | nindent 2 }}
 {{-     end }}

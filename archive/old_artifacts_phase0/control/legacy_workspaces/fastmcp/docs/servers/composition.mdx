@@ -73,7 +73,7 @@ async def setup():
 
 # Result: main_mcp now contains prefixed components:
 # - Tool: "weather_get_forecast"
-# - Resource: "data://weather/cities/supported" 
+# - Resource: "data://weather/cities/supported"
 
 if __name__ == "__main__":
     asyncio.run(setup())
@@ -182,7 +182,7 @@ async def test_dynamic_mount():
     tools = await main_mcp.get_tools()
     print("Available tools:", list(tools.keys()))
     # Shows: ['dynamic_initial_tool', 'dynamic_added_later']
-    
+
     async with Client(main_mcp) as client:
         result = await client.call_tool("dynamic_added_later")
         print("Result:", result.data)
@@ -234,7 +234,7 @@ FastMCP supports two mounting modes:
    - No client lifecycle events occur on the mounted server
    - The mounted server's lifespan context is not executed
    - Communication is handled through direct method calls
-   
+
 2. **Proxy Mounting**: The parent server treats the mounted server as a separate entity and communicates with it through a client interface.
    - Full client lifecycle events occur on the mounted server
    - The mounted server's lifespan is executed when a client connects

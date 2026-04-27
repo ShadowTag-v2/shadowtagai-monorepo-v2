@@ -1,13 +1,13 @@
 # Evaluations with Promptfoo
 
-### Pre-requisities 
-To use Promptfoo you will need to have node.js & npm installed on your system. For more information follow [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)  
+### Pre-requisities
+To use Promptfoo you will need to have node.js & npm installed on your system. For more information follow [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
-You can install promptfoo using npm or run it directly using npx. In this guide we will use npx.  
+You can install promptfoo using npm or run it directly using npx. In this guide we will use npx.
 
-*Note: For this example you will not need to run `npx promptfoo@latest init` there is already an initialized `promptfooconfig.yaml` file in this directory*  
+*Note: For this example you will not need to run `npx promptfoo@latest init` there is already an initialized `promptfooconfig.yaml` file in this directory*
 
-See the official docs [here](https://www.promptfoo.dev/docs/getting-started)  
+See the official docs [here](https://www.promptfoo.dev/docs/getting-started)
 
 
 ### Getting Started
@@ -47,10 +47,10 @@ To get started with Promptfoo open your terminal and navigate to this directory 
 
 Before running your evaluation you must define the following enviroment variables:
 
-`export ANTHROPIC_API_KEY=YOUR_API_KEY`  
+`export ANTHROPIC_API_KEY=YOUR_API_KEY`
 `export VOYAGE_API_KEY=YOUR_API_KEY`
 
-From the `evaluation` directory, run one of the following commands.  
+From the `evaluation` directory, run one of the following commands.
 
 - To evaluate the end to end system performance: `npx promptfoo@latest eval -c promptfooconfig_end_to_end.yaml --output ../data/end_to_end_results.json`
 

@@ -44,13 +44,13 @@ export function PresentationScriptDocumentation() {
         , <code>status</code>
       </p>
       <RenderCode
-        input={`/* This will prefix the image with the CDN path 
+        input={`/* This will prefix the image with the CDN path
 for images stored without paths and suffix the dimension */
 if($.field === "image"){
   return "https://cdn.mycompany.com/" + $.value + "?size=320x640";
 }
 
-/* This will truncate the description field to the first 
+/* This will truncate the description field to the first
  120 characters only on the table view */
 if($.field === "description" && $.from === "table"){
   return $.value.substr(0, 120)

@@ -57,7 +57,7 @@
         "test_name": "serving_llama70B_tp4_sharegpt_specdecode",
         "qps_list": [2],
         "server_parameters": {
-            "model": "meta-llama/Meta-Llama-3.1-70B-Instruct", 
+            "model": "meta-llama/Meta-Llama-3.1-70B-Instruct",
             "tensor_parallel_size": 4,
             "swap_space": 16,
             "speculative_config": {
@@ -71,7 +71,7 @@
             "backend": "vllm",
             "dataset_name": "sharegpt",
             "dataset_path": "./ShareGPT_V3_unfiltered_cleaned_split.json",
-            "num_prompts": 200 
+            "num_prompts": 200
         }
     }
 ]

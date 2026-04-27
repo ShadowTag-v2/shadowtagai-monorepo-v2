@@ -3,7 +3,7 @@
 “Go to PromptEngineering
 r/PromptEngineering
 
-“After 1000 hours of prompt engineering, I found the 6 patterns that actually matter 
+“After 1000 hours of prompt engineering, I found the 6 patterns that actually matter
 
 I'm a tech lead who's been obsessing over prompt engineering for the past year. After tracking and analyzing over 1000 real work prompts, I discovered that successful prompts follow six consistent patterns.
 I call it KERNEL, and it's transformed how our entire team uses AI.

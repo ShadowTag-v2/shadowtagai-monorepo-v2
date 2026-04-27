@@ -413,8 +413,8 @@ export function StatefulTransportMetrics({ metrics }: StatefulTransportMetricsPr
 							<TableRow>
 								<TableCell className="font-medium text-sm">Gradio Success/Fail</TableCell>
 								<TableCell className="text-sm font-mono">
-									{metrics.gradioMetrics ? 
-										`${metrics.gradioMetrics.success}/${metrics.gradioMetrics.failure}` : 
+									{metrics.gradioMetrics ?
+										`${metrics.gradioMetrics.success}/${metrics.gradioMetrics.failure}` :
 										'0/0'
 									}
 								</TableCell>

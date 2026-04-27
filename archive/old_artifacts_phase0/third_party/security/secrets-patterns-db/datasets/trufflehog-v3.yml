@@ -3135,4 +3135,3 @@ patterns:
       name: Hypertrack - 2
       regex: "(?i)(?:hypertrack).{0,40}\\b([0-9a-zA-Z\\_\\-]{27})\\b"
       confidence: high
-

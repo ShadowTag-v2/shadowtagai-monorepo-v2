@@ -61,7 +61,7 @@ void main() {
   // Nesting types
   final matrix = SchemanticType.list(.list(.integer()));
   print(matrix.parse([[1, 2], [3, 4]])); // [[1, 2], [3, 4]]
-  
+
   // JSON Schema generation works as expected
   print(scores.jsonSchema().toJson());
   // {type: object, additionalProperties: {type: integer}}
@@ -112,7 +112,7 @@ void main() async {
   );
 
   // Serialize to JSON
-  print(user.toJson()); 
+  print(user.toJson());
   // Output: {name: Alice, age: 30, isAdmin: true}
 
   // Parse from JSON
@@ -124,9 +124,9 @@ void main() async {
 
   // Access JSON Schema at runtime
   final schema = User.$schema.jsonSchema;
-  print(schema.toJson()); 
+  print(schema.toJson());
   // Output: {type: object, properties: {name: {type: string}, ...}, required: [name, isAdmin]}
-  
+
   // Validate data
   final validation = await schema.validate({'name': 'Charlie'}); // Missing 'isAdmin'
   if (validation.isNotEmpty) {
@@ -193,7 +193,7 @@ abstract class $Node {
 void main() {
   // Must use useRefs: true for recursive schemas
   final schema = Node.$schema.jsonSchema;
-  
+
   print(schema.toJson());
   // Generates schema with "$ref": "#/$defs/Node"
 }
@@ -291,7 +291,7 @@ Schemantic provides specialized annotations for defining schema constraints:
 abstract class $User {
   // Map 'age' to 'years_old' in JSON, and add validation
   @IntegerField(
-    name: 'years_old', 
+    name: 'years_old',
     description: 'Age of the user',
     minimum: 0,
     maximum: 120,
@@ -314,4 +314,3 @@ abstract class $User {
 ```
 
 Validation matches the Dart type (e.g., using `@StringField` on an `int` getter will throw a build-time error).
-

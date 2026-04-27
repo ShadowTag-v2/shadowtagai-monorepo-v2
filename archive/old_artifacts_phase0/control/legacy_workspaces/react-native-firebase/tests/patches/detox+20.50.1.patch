@@ -3,7 +3,7 @@ index be01a0d..88af8da 100644
 --- a/node_modules/detox/android/detox/src/full/java/com/wix/detox/reactnative/idlingresources/network/NetworkIdlingResource.kt
 +++ b/node_modules/detox/android/detox/src/full/java/com/wix/detox/reactnative/idlingresources/network/NetworkIdlingResource.kt
 @@ -50,23 +50,6 @@ class NetworkIdlingResource(private val dispatcher: Dispatcher) : DetoxIdlingRes
- 
+
      @Synchronized
      override fun checkIdle(): Boolean {
 -        busyResources.clear()
@@ -31,7 +31,7 @@ index 462908c..a367e18 100644
 --- a/node_modules/detox/android/detox/src/full/java/com/wix/detox/reactnative/idlingresources/timers/TimersIdlingResource.kt
 +++ b/node_modules/detox/android/detox/src/full/java/com/wix/detox/reactnative/idlingresources/timers/TimersIdlingResource.kt
 @@ -32,15 +32,8 @@ class TimersIdlingResource @JvmOverloads constructor(
- 
+
      @SuppressLint("VisibleForTests")
      override fun checkIdle(): Boolean {
 -        val isIdle = !timingModule.hasActiveTimersInRange(BUSY_WINDOW_THRESHOLD)
@@ -46,7 +46,7 @@ index 462908c..a367e18 100644
 +        notifyIdle()
 +        return true
      }
- 
+
      override fun doFrame(frameTimeNanos: Long) {
 diff --git a/node_modules/detox/android/detox/src/full/java/com/wix/detox/reactnative/idlingresources/uimodule/fabric/FabricUIManagerIdlingResources.kt b/node_modules/detox/android/detox/src/full/java/com/wix/detox/reactnative/idlingresources/uimodule/fabric/FabricUIManagerIdlingResources.kt
 index 2793164..98ceab1 100644
@@ -54,7 +54,7 @@ index 2793164..98ceab1 100644
 +++ b/node_modules/detox/android/detox/src/full/java/com/wix/detox/reactnative/idlingresources/uimodule/fabric/FabricUIManagerIdlingResources.kt
 @@ -16,13 +16,8 @@ class FabricUIManagerIdlingResources(
  ) : DetoxIdlingResource(), Choreographer.FrameCallback {
- 
+
      override fun checkIdle(): Boolean {
 -        return if (getViewCommandMountItemsSize() == 0 && getMountItemsSize() == 0) {
 -            notifyIdle()
@@ -66,5 +66,5 @@ index 2793164..98ceab1 100644
 +        notifyIdle()
 +        return true
      }
- 
+
      override fun registerIdleTransitionCallback(callback: IdlingResource.ResourceCallback?) {

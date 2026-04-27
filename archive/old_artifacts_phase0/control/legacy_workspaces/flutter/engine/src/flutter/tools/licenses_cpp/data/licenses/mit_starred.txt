@@ -1,4 +1,4 @@
-mit starred 
+mit starred
 (?s)^ \* Copyright.*Permission is hereby granted, free of charge
 (?s).*Copyright \(c\).*
  \*

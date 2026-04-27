@@ -8,7 +8,7 @@
 /**
  * @brief Swaps the layout of a complex register tile.
  *
- * This function swaps the layout of a complex register tile by 
+ * This function swaps the layout of a complex register tile by
  * swapping the real and imaginary component tiles' layouts
  *
  * @tparam T2 The data type of the register tile elements.
@@ -44,7 +44,7 @@ __device__ static inline crt<T2, _height, _width, typename ducks::rt_layout::tra
 
 /**
  * @brief Transposes a complex register tile.
- * 
+ *
  * This function is marked "sep", which means that the registers underlying dst MUST be separate
  * from the registers underlying src.
  *

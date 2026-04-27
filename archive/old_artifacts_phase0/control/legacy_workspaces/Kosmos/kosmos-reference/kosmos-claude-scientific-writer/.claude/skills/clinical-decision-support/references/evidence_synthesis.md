@@ -405,7 +405,7 @@ Compare multiple treatments simultaneously when no head-to-head trials exist
 
 **Example Scenario**
 - Drug A vs placebo (Trial 1)
-- Drug B vs placebo (Trial 2)  
+- Drug B vs placebo (Trial 2)
 - Drug C vs Drug A (Trial 3)
 - **Question**: How does Drug B compare to Drug C? (no direct comparison)
 
@@ -451,7 +451,7 @@ Smith 2020    RCT     450  Advanced NSCLC  Drug A 10mg vs               Median P
                                                                         HR (95% CI)        0.48 (0.36-0.64)
                                                                         p-value            p<0.001
 
-                                                                        ORR                65% vs 35%            
+                                                                        ORR                65% vs 35%
                                                                         Grade 3-4 AEs      42% vs 38%
 
 Jones 2021    RCT     380  Advanced NSCLC  Drug A 10mg vs               Median PFS         10 vs 5.5 months      High
@@ -511,11 +511,11 @@ ASCO 2020 Endorsement:
 Synthesis:
   Strong consensus for pertuzumab + trastuzumab + taxane as first-line standard.
   Evidence: CLEOPATRA trial (Swain 2015): median OS 56.5 vs 40.8 months (HR 0.68, p<0.001)
-  
+
 Recommendation:
-  Pertuzumab 840 mg IV loading then 420 mg + trastuzumab 8 mg/kg loading then 6 mg/kg 
+  Pertuzumab 840 mg IV loading then 420 mg + trastuzumab 8 mg/kg loading then 6 mg/kg
   + docetaxel 75 mg/m² every 3 weeks until progression.
-  
+
   Strength: Strong (GRADE 1A)
   Evidence: High-quality, multiple RCTs, guideline concordance
 ```
@@ -539,7 +539,7 @@ NICE (UK) 2022:
 Synthesis:
   Efficacy demonstrated in phase 3 trial (ADAURA), FDA/EMA approved.
   Guideline discordance based on cost-effectiveness, not clinical efficacy.
-  
+
   US practice: NCCN Category 1, widely adopted
   European/UK: Variable adoption based on national HTA decisions
 
@@ -626,13 +626,13 @@ O - Outcomes: Major adverse cardiovascular events (3P-MACE), hospitalization for
 **Step 5: Wording the Recommendation**
 ```
 Strong: "We recommend..."
-  Example: "We recommend SGLT2 inhibitor therapy for adults with type 2 diabetes and 
-  established cardiovascular disease to reduce risk of hospitalization for heart failure 
+  Example: "We recommend SGLT2 inhibitor therapy for adults with type 2 diabetes and
+  established cardiovascular disease to reduce risk of hospitalization for heart failure
   and cardiovascular death (Strong recommendation, high-quality evidence - GRADE 1A)."
 
 Conditional: "We suggest..."
-  Example: "We suggest considering GLP-1 receptor agonist therapy for adults with type 2 
-  diabetes and CKD to reduce risk of kidney disease progression (Conditional recommendation, 
+  Example: "We suggest considering GLP-1 receptor agonist therapy for adults with type 2
+  diabetes and CKD to reduce risk of kidney disease progression (Conditional recommendation,
   moderate-quality evidence - GRADE 2B)."
 ```
 
@@ -737,7 +737,7 @@ Conditional: "We suggest..."
 EVIDENCE SYNTHESIS: Osimertinib for EGFR-Mutated NSCLC
 
 Clinical Question:
-Should adults with treatment-naïve advanced NSCLC harboring EGFR exon 19 deletion 
+Should adults with treatment-naïve advanced NSCLC harboring EGFR exon 19 deletion
 or L858R mutation receive osimertinib versus first-generation EGFR TKIs?
 
 Evidence Review:
@@ -785,9 +785,9 @@ GRADE Assessment:
   Cost: Higher cost than first-gen TKIs, but widely accessible in developed countries
 
 FINAL RECOMMENDATION:
-  Osimertinib 80 mg PO daily is recommended as first-line therapy for adults with 
+  Osimertinib 80 mg PO daily is recommended as first-line therapy for adults with
   advanced NSCLC harboring EGFR exon 19 deletion or L858R mutation.
-  
+
   Strength: STRONG (Grade 1)
   Quality of Evidence: HIGH (⊕⊕⊕⊕)
   GRADE: 1A
@@ -837,4 +837,3 @@ FINAL RECOMMENDATION:
 3. Incorporate year's evidence
 4. Major version release
 5. Continuing education activities
-

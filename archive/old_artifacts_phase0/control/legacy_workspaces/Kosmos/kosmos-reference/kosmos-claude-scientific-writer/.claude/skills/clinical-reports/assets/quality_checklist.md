@@ -323,8 +323,8 @@ Before finalizing any clinical report:
 
 **Quality Assurance Reviewer:**
 
-**Name:** ____________________  
-**Date:** ____________________  
+**Name:** ____________________
+**Date:** ____________________
 **Signature:** ____________________
 
 **Quality Score:** _____ / 100
@@ -334,5 +334,3 @@ Before finalizing any clinical report:
 2. [Issue and recommendation]
 
 **Follow-up Required:** [ ] Yes  [ ] No
-
-

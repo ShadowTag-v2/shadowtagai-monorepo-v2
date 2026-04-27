@@ -24,7 +24,7 @@ The answer lies in **standardization**. The AI ecosystem is fragmented. Every mo
 3.  **Security & Safety:** MCP provides a clear, sandboxed boundary. An LLM can't execute arbitrary code on your server; it can only *request* to run the specific, typed, and validated functions you explicitly expose.
 4.  **Composability:** You can build small, specialized MCP servers and combine them to create powerful, complex applications.
 
-## Core MCP Components 
+## Core MCP Components
 
 An MCP server exposes its capabilities through three primary components: Tools, Resources, and Prompts.
 
@@ -102,7 +102,7 @@ def summarize_text(text_to_summarize: str) -> str:
     """Creates a prompt asking the LLM to summarize a piece of text."""
     return f"""
         Please provide a concise, one-paragraph summary of the following text:
-        
+
         {text_to_summarize}
         """
 ```

@@ -316,10 +316,10 @@ describe('DocSearchTool', () => {
 		it('should handle token budget by truncating or switching to links', async () => {
 			// Create a tool with a small token budget to trigger limits
 			const smallBudgetTool = new DocSearchTool(undefined, undefined, 5000); // 5k token budget
-			
+
 			// Create a result with a very long excerpt
 			const longText = 'This is a very long text that repeats. '.repeat(100); // ~3900 chars per excerpt
-			
+
 			// Create many results to exceed budget (5k tokens = ~16.5k chars)
 			const manyResults: Array<{
 				text: string;
@@ -355,16 +355,16 @@ describe('DocSearchTool', () => {
 			// Debug: let's see what the result looks like
 			console.log('Result length:', result.formatted.length);
 			console.log('Estimated tokens:', Math.ceil(result.formatted.length / 3.3));
-			
-			// Check that early pages have content 
+
+			// Check that early pages have content
 			expect(result.formatted).toContain('#### Excerpt from the "Section 0" section');
 			expect(result.formatted).toContain('This is a very long text that repeats');
-			
+
 			// With token budget, we should see either truncation or link-only section
 			const hasTruncation = result.formatted.includes(`*[Content truncated - use ${DOC_FETCH_CONFIG.name} for full text or narrow search terms]*`);
 			const hasAdditionalResults = result.formatted.includes('## Further results were found in:');
-			
-			
+
+
 			// At least one of these should indicate budget management
 			expect(hasTruncation || hasAdditionalResults).toBeTruthy();
 

@@ -10,7 +10,7 @@
  * @tparam RT The row-major layout tile type.
  * @tparam U The data type of the source array.
  * @param dst[out] The destination tile to load data into.
- * @param src[in] The source array to load data from. 
+ * @param src[in] The source array to load data from.
  * @param row_stride[in] The stride in elements between rows in the source array.
  */
 template<typename RT, typename GL>
@@ -22,7 +22,7 @@ load(thread RT &dst, thread const GL &_src, thread const coord &idx, const int t
     using U2 = typename base_types::packing<U>::packed_type;
     const device U *src = (device U*)&_src.template get<RT>(idx);
     const int row_stride = _src.row_stride();
-    
+
     int warp_laneid = threadIdx % 32;
     const int row_offset = dst.rows * warpid(threadIdx);
     const short qid = warp_laneid / 4;
@@ -50,7 +50,7 @@ load(thread RT &dst, thread const GL &_src, thread const coord &idx, const int t
     using U2 = typename base_types::packing<U>::packed_type;
     const device U *src = (device U*)&_src.template get<RT>(idx);
     const int row_stride = _src.row_stride();
-    
+
     int warp_laneid = threadIdx % 32;
     const int row_offset = dst.rows * warpid(threadIdx);
     const short qid = warp_laneid / 4;

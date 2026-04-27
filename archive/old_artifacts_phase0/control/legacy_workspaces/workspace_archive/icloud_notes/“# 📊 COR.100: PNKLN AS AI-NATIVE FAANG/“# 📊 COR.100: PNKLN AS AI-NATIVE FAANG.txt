@@ -6,7 +6,7 @@
 WHAT FAANG WOULD BUILD TODAY IF STARTING FRESH:
 
 YouTube Founder (2005) → Today would build: Provenance-verified content platform
-Amazon Founder (1994) → Today would build: AI agent marketplace  
+Amazon Founder (1994) → Today would build: AI agent marketplace
 Twitter Founder (2006) → Today would build: Human-verified social graph
 Facebook Founder (2004) → Today would build: Cryptographic identity network
 Apple Founder (1976) → Today would build: Distributed edge AI infrastructure
@@ -388,7 +388,7 @@ ADVANTAGES:
 WHAT FAANG WOULD BUILD TODAY IF STARTING FRESH:
 
 YouTube Founder (2005) → Today would build: Provenance-verified content platform
-Amazon Founder (1994) → Today would build: AI agent marketplace  
+Amazon Founder (1994) → Today would build: AI agent marketplace
 Twitter Founder (2006) → Today would build: Human-verified social graph
 Facebook Founder (2004) → Today would build: Cryptographic identity network
 Apple Founder (1976) → Today would build: Distributed edge AI infrastructure
@@ -852,7 +852,7 @@ BUT they cannot PROVE TRUSTWORTHINESS to the other side of their marketplace.
 ├─ YouTube: Can use AI for recommendations
 │   └─ But CANNOT prove to advertisers which content is human-made
 │
-├─ Amazon: Can build AI shopping agents  
+├─ Amazon: Can build AI shopping agents
 │   └─ But CANNOT guarantee to customers those agents are unbiased
 ```
 
@@ -947,7 +947,7 @@ WHAT AI LETS FAANG DO:
 WHAT AI PREVENTS FAANG FROM PROVING:
 
 YouTube → Cannot prove to ADVERTISERS: "This content is human-made"
-Amazon → Cannot prove to CUSTOMERS: "This agent is unbiased"  
+Amazon → Cannot prove to CUSTOMERS: "This agent is unbiased"
 Meta → Cannot prove to ADVERTISERS: "This engagement is from real humans"
 Apple → Cannot prove to USERS: "This recommendation is fair"
 Google → Cannot prove to ENTERPRISES: "Your data is private/compliant"
@@ -2730,11 +2730,11 @@ class MallIngestion:
         self.bq_client = bigquery.Client()
         self.weaviate_client = Client("http://weaviate:8080")
         self.topic_path = self.publisher.topic_path("pnkln-mall", "events")
-        
+
     def ingest_event(self, store: str, event_type: str, payload: dict):
         """
         Universal event ingestion.
-        
+
         Args:
             store: 'search' | 'video' | 'social' | 'commerce' | 'device'
             event_type: 'query' | 'upload' | 'post' | 'transaction' | 'telemetry'
@@ -2744,7 +2744,7 @@ class MallIngestion:
         event_id = hashlib.sha256(
             f"{store}-{event_type}-{datetime.utcnow().isoformat()}".encode()
         ).hexdigest()
-        
+
         # Enrich with metadata
         event = {
             "id": event_id,
@@ -2753,23 +2753,23 @@ class MallIngestion:
             "timestamp": datetime.utcnow().isoformat(),
             "payload": payload
         }
-        
+
         # Publish to Pub/Sub (real-time)
         self.publisher.publish(
             self.topic_path,
             data=str(event).encode("utf-8")
         )
-        
+
         # Write to BigQuery (analytics)
         table_id = f"pnkln-mall.events.{store}_{event_type}"
         self.bq_client.insert_rows_json(table_id, [event])
-        
+
         # Index in Weaviate (semantic search)
         if event_type in ["query", "post", "upload"]:
             self._index_content(event)
-            
+
         return event_id
-    
+
     def _index_content(self, event):
         """Index text/image content in vector database"""
         # Implementation: CLIP embeddings for multimodal content
@@ -2803,42 +2803,42 @@ class ModelRouter:
             "deepseek-v3": 0.15,
             "claude-sonnet-4.5": 0.10
         }
-        
+
         self.cost_per_1m = {
             "gemini-3.1-pro": 1.25,      # input
             "gpt-5": 5.00,               # estimated
             "deepseek-v3": 0.03,         # cheapest
             "claude-sonnet-4.5": 3.00
         }
-        
+
     def route(
-        self, 
+        self,
         query_type: Literal["search", "video", "social", "commerce", "device"],
         complexity: Literal["simple", "medium", "complex"]
     ) -> str:
         """
         Route query to optimal model based on type and complexity.
-        
+
         Simple queries → DeepSeek (cost)
         Medium queries → Gemini (balance)
         Complex queries → GPT-5/Claude (quality)
         """
-        
+
         if complexity == "simple":
             # Prioritize cost for simple queries
             return "deepseek-v3"
-        
+
         elif complexity == "medium":
             # Gemini for most queries (best balance)
             return "gemini-3.1-pro"
-        
+
         else:  # complex
             # Use allocation for complex queries
             return random.choices(
                 list(self.allocation.keys()),
                 weights=list(self.allocation.values())
             )[0]
-    
+
     def estimate_cost(self, model: str, input_tokens: int, output_tokens: int) -> float:
         """Estimate API cost for a query"""
         cost_input = (input_tokens / 1_000_000) * self.cost_per_1m[model]
@@ -2868,7 +2868,7 @@ stripe.[CREDENTIAL_REDACTED]  # Configure via environment
 class MallWallet:
     def __init__(self, db_connection):
         self.db = db_connection
-        
+
     def get_balance(self, user_id: str) -> Decimal:
         """Get user's Mall Credit balance"""
         result = self.db.execute(
@@ -2876,7 +2876,7 @@ class MallWallet:
             (user_id,)
         )
         return result.fetchone()["balance"]
-    
+
     def credit(self, user_id: str, amount: Decimal, reason: str):
         """
         Add Mall Credits to user wallet.
@@ -2884,13 +2884,13 @@ class MallWallet:
         """
         self.db.execute(
             """
-            UPDATE wallets 
+            UPDATE wallets
             SET balance = balance + %s, updated_at = %s
             WHERE user_id = %s
             """,
             (amount, datetime.utcnow(), user_id)
         )
-        
+
         # Log transaction
         self.db.execute(
             """
@@ -2899,7 +2899,7 @@ class MallWallet:
             """,
             (user_id, amount, reason, datetime.utcnow())
         )
-    
+
     def debit(self, user_id: str, amount: Decimal, reason: str):
         """
         Deduct Mall Credits from user wallet.
@@ -2908,16 +2908,16 @@ class MallWallet:
         balance = self.get_balance(user_id)
         if balance < amount:
             raise ValueError("Insufficient funds")
-        
+
         self.db.execute(
             """
-            UPDATE wallets 
+            UPDATE wallets
             SET balance = balance - %s, updated_at = %s
             WHERE user_id = %s
             """,
             (amount, datetime.utcnow(), user_id)
         )
-        
+
         # Log transaction
         self.db.execute(
             """
@@ -2926,26 +2926,26 @@ class MallWallet:
             """,
             (user_id, amount, reason, datetime.utcnow())
         )
-    
+
     def cashout(self, user_id: str, amount: Decimal) -> str:
         """Convert Mall Credits → USD via Stripe"""
         balance = self.get_balance(user_id)
         if balance < amount:
             raise ValueError("Insufficient funds")
-        
+
         # Convert to USD (1 Mall Credit = $0.01)
         usd_amount = int(amount * 100)  # Stripe uses cents
-        
+
         # Create payout via Stripe
         payout = stripe.Payout.create(
             amount=usd_amount,
             currency="usd",
             destination=self._get_stripe_account(user_id)
         )
-        
+
         # Debit wallet
         self.debit(user_id, amount, "cashout")
-        
+
         return payout.id
 
 # Usage
@@ -3152,7 +3152,7 @@ resource "google_bigquery_dataset" "mall_events" {
 resource "google_bigquery_table" "search_queries" {
   dataset_id = google_bigquery_dataset.mall_events.dataset_id
   table_id   = "search_queries"
-  
+
   schema = jsonencode([
     {
       name = "id"
@@ -3186,9 +3186,9 @@ resource "google_pubsub_topic" "mall_events" {
 resource "google_pubsub_subscription" "mall_events_sub" {
   name  = "mall-events-sub"
   topic = google_pubsub_topic.mall_events.name
-  
+
   ack_deadline_seconds = 20
-  
+
   expiration_policy {
     ttl = "604800s"  # 7 days
   }
@@ -3198,7 +3198,7 @@ resource "google_pubsub_subscription" "mall_events_sub" {
 resource "google_container_cluster" "mall_cluster" {
   name     = "pnkln-mall-cluster"
   location = var.zone
-  
+
   remove_default_node_pool = true
   initial_node_count       = 1
 }
@@ -3208,11 +3208,11 @@ resource "google_container_node_pool" "mall_nodes" {
   location   = var.zone
   cluster    = google_container_cluster.mall_cluster.name
   node_count = 2
-  
+
   node_config {
     preemptible  = false
     machine_type = "e2-standard-4"
-    
+
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
@@ -3223,14 +3223,14 @@ resource "google_container_node_pool" "mall_nodes" {
 resource "google_storage_bucket" "mall_artifacts" {
   name     = "${var.project_id}-artifacts"
   location = var.region
-  
+
   uniform_bucket_level_access = true
 }
 
 # Secret Manager for API keys
 resource "google_secret_manager_secret" "openai_key" {
   secret_id = "openai-api-key"
-  
+
   replication {
     auto {}
   }
@@ -3238,7 +3238,7 @@ resource "google_secret_manager_secret" "openai_key" {
 
 resource "google_secret_manager_secret" "deepseek_key" {
   secret_id = "deepseek-api-key"
-  
+
   replication {
     auto {}
   }
@@ -3317,96 +3317,96 @@ class MallDeployment:
     def __init__(self):
         self.project_id = os.getenv("GCP_PROJECT_ID")
         self.region = os.getenv("GCP_REGION")
-        
+
         # Initialize clients
         aiplatform.init(project=self.project_id, location=self.region)
         self.bq_client = bigquery.Client()
         self.pubsub_publisher = pubsub_v1.PublisherClient()
-        
+
     def deploy_nervous_system(self):
         """Deploy NS data ingestion pipeline"""
         print("📊 Deploying Nervous System...")
-        
+
         # Create Vertex AI Pipeline
         from kfp.v2 import dsl
         from kfp.v2.dsl import component
-        
+
         @component(base_image="python:3.11")
         def ingest_events():
             from google.cloud import pubsub_v1
             import json
-            
+
             # Subscribe to Pub/Sub events
             # Process and route to BigQuery
             pass
-        
+
         @dsl.pipeline(
             name="mall-ingestion-pipeline",
             description="Unified event ingestion for Mall stores"
         )
         def ingestion_pipeline():
             ingest_task = ingest_events()
-        
+
         # Compile and create pipeline
         from kfp.v2 import compiler
         compiler.Compiler().compile(
             pipeline_func=ingestion_pipeline,
             package_path="ns_pipeline.json"
         )
-        
+
         # Upload to Vertex AI
         job = aiplatform.PipelineJob(
             display_name="mall-ns-pipeline",
             template_path="ns_pipeline.json",
             enable_caching=False
         )
-        
+
         job.submit()
         print("✅ Nervous System deployed")
-        
+
     def deploy_orchestrator(self):
         """Deploy Cor LLM routing"""
         print("🧠 Deploying Cognitive Orchestrator...")
-        
+
         # Deploy as Cloud Function
         from google.cloud import functions_v2
-        
+
         # Code will be deployed from /core/orchestrator/
         print("✅ Orchestrator deployed")
-        
+
     def deploy_wallet(self):
         """Deploy wallet service"""
         print("💰 Deploying Mall Wallet...")
-        
+
         # Deploy as Cloud Run service
         # Code from /core/wallet/
         print("✅ Wallet deployed")
-        
+
     def verify_deployment(self):
         """Verify all services are running"""
         print("🔍 Verifying deployment...")
-        
+
         # Check BigQuery tables
         datasets = list(self.bq_client.list_datasets())
         assert any(d.dataset_id == "mall_events" for d in datasets)
-        
+
         # Check Pub/Sub topic
         topic_path = self.pubsub_publisher.topic_path(
             self.project_id, "mall-events"
         )
         assert self.pubsub_publisher.get_topic(request={"topic": topic_path})
-        
+
         print("✅ All services verified")
-        
+
     def run_full_deployment(self):
         """Execute complete deployment"""
         print("🚀 Starting PNKLN Mall deployment...\n")
-        
+
         self.deploy_nervous_system()
         self.deploy_orchestrator()
         self.deploy_wallet()
         self.verify_deployment()
-        
+
         print("\n🎉 PNKLN Mall deployed successfully!")
         print(f"📍 Project: {self.project_id}")
         print(f"🌍 Region: {self.region}")
@@ -3516,56 +3516,56 @@ class DeploymentTests:
     def __init__(self):
         self.project_id = os.getenv("GCP_PROJECT_ID")
         self.region = os.getenv("GCP_REGION")
-        
+
         # Get Cloud Run URLs (update after deployment)
         self.omnisearch_url = os.getenv("OMNISEARCH_URL")
         self.fluxtube_url = os.getenv("FLUXTUBE_URL")
-        
+
     def test_omnisearch(self):
         """Test search endpoint"""
         print("🔍 Testing OmniSearch...")
-        
+
         response = requests.post(
             f"{self.omnisearch_url}/search",
             json={"query": "best camping tents"}
         )
-        
+
         assert response.status_code == 200
         assert "results" in response.json()
         print("✅ OmniSearch working")
-        
+
     def test_fluxtube(self):
         """Test video upload endpoint"""
         print("📹 Testing FluxTube...")
-        
+
         response = requests.get(f"{self.fluxtube_url}/health")
         assert response.status_code == 200
         print("✅ FluxTube working")
-        
+
     def test_cross_store_flow(self):
         """Test search → video flow"""
         print("🔄 Testing cross-store integration...")
-        
+
         # Search for content
         search_response = requests.post(
             f"{self.omnisearch_url}/search",
             json={"query": "camping"}
         )
-        
+
         results = search_response.json()["results"]
-        
+
         # Check if video results are included
         assert any(r["type"] == "video" for r in results)
         print("✅ Cross-store flow working")
-        
+
     def run_all_tests(self):
         """Execute full test suite"""
         print("🧪 Running integration tests...\n")
-        
+
         self.test_omnisearch()
         self.test_fluxtube()
         self.test_cross_store_flow()
-        
+
         print("\n🎉 All tests passed!")
 
 if __name__ == "__main__":
@@ -3651,7 +3651,7 @@ Phase 1: GCP Project Setup (15 min)
 
 Phase 2: Infrastructure Provisioning (30 min)
 ├─ Terraform: BigQuery datasets + tables
-├─ Terraform: Pub/Sub topics + subscriptions  
+├─ Terraform: Pub/Sub topics + subscriptions
 ├─ Terraform: GKE cluster for Weaviate
 ├─ Terraform: Cloud Storage buckets
 └─ Terraform: Secret Manager for API keys

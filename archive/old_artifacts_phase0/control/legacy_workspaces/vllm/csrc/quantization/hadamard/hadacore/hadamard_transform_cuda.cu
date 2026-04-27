@@ -40,25 +40,25 @@ using b32 = uint32_t;
 constexpr int launch_configs_big[7][3] = {
     // default
     {2, 1, 24},
-    {2, 2, 16}, 
-    {2, 4, 8}, 
-    {2, 8, 4}, 
+    {2, 2, 16},
+    {2, 4, 8},
+    {2, 8, 4},
     {2, 16, 3},
     {4, 16, 2},
     {8, 16, 1}
     // // extra coalescing
     // {2, 1, 24},
-    // {2, 2, 16}, 
-    // {2, 4, 8}, 
-    // {2, 8, 4}, 
+    // {2, 2, 16},
+    // {2, 4, 8},
+    // {2, 8, 4},
     // {4, 8, 3},
     // {8, 8, 2},
     // {16, 8, 1}
     // // less coalescing
     // {2, 1, 24},
-    // {2, 2, 16}, 
-    // {2, 4, 8}, 
-    // {2, 8, 4}, 
+    // {2, 2, 16},
+    // {2, 4, 8},
+    // {2, 8, 4},
     // {1, 32, 1},
     // {2, 32, 1},
     // {4, 32, 1}
@@ -295,7 +295,7 @@ hadamard_transform_kernel(b16* a, b16* out, int total_num_chunks) {
                         for (int64_t k = 0; k < num_chunks; k++) {
                             // here, j represents register, and k represents 8-offset/chunk
                             uint64_t real_chunk_num = (num_chunks - (threadid % num_chunks) + k) % num_chunks; // chunk at which you have target thread #'s data
-                            
+
                             int64_t real_thread_id = (threadid / num_chunks) * num_chunks + k; // target thread #
                             int64_t chunk_idx = 128 * real_chunk_num; // index due to fetching from another chunk (chunk in which this thread has the target thread's original data)
                             int64_t thread_group_idx = (real_thread_id / 4) * 16; // index due to fetching from another group of num_chunk threads (since shuffle is between num_chunk threads)
@@ -649,7 +649,7 @@ hadamard_transform_kernel(b16* a, b16* out, int total_num_chunks) {
                 for (int64_t i = 0; i < num_chunks; i++) {
                     if (real_chunk_num == i) data = b_frag_all[i][j];
                 }
-                
+
                 int64_t real_thread_id = (threadid / num_chunks) * num_chunks + k; // target thread #
                 int64_t chunk_idx = 128 * real_chunk_num; // index due to fetching from another chunk (chunk in which this thread has the target thread's original data)
                 int64_t thread_group_idx = (real_thread_id / 4) * 16; // index due to fetching from another group of num_chunk threads (since shuffle is between num_chunk threads)
@@ -713,7 +713,7 @@ void __forceinline__ run_kernel(b16* a_mat, b16* out, int64_t num_chunks, cudaSt
         CHECK_SHARED_LIM();
         kernel<<<dim3(grid_size), dim3(block_size), shared_size, stream>>>(a_mat, out, num_chunks);
     }
-    
+
     C10_CUDA_KERNEL_LAUNCH_CHECK();
 }
 
@@ -775,19 +775,19 @@ torch::Tensor hadacore_transform(torch::Tensor& x, bool inplace) {
     auto dtype = x.scalar_type();
     TORCH_CHECK(dtype == torch::ScalarType::Half || dtype == torch::ScalarType::BFloat16, "Only fp16 and bf16 supported currently");
     TORCH_CHECK(x.is_cuda());
-    
+
     const int had_size = x.size(-1);
     TORCH_CHECK(is_power_of_two(had_size) && (had_size <= (1U << 15)),
         "Only power of two Hadamard sizes up to 2^15 are supported, got ", had_size);
-    
+
     const auto res_shape = x.sizes();
     x = x.reshape({-1, had_size});
-    
+
     auto numel = x.numel();
     if (numel % 256 != 0) {
         x = torch::nn::functional::pad(x, torch::nn::functional::PadFuncOptions({0, 0, 0, (256 - numel % 256) / had_size}));
     }
-    
+
     if (x.stride(-1) != 1) {
         x = x.contiguous();
     }

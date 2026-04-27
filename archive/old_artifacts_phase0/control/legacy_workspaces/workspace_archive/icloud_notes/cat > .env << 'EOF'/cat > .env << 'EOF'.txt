@@ -1,4 +1,4 @@
-cat > .env << 'EOF' 
+cat > .env << 'EOF'
 # Gemini Configuration
 GOOGLE_[CREDENTIAL_REDACTED]
 
@@ -13,7 +13,7 @@ from vertexai.generative_models import GenerativeModel, Tool
 
 # --- CONFIGURATION ---
 # ⚠️ REPLACE WITH YOUR PROJECT ID
-PROJECT_ID = "acquired-jet-478701-b3” 
+PROJECT_ID = "acquired-jet-478701-b3”
 LOCATION = "us-central1"
 
 # --- 1. PROXY CONNECTION ---
@@ -36,7 +36,7 @@ vertexai.init(project=PROJECT_ID, location=LOCATION)
 code_execution_tool = Tool(
     code_execution=Tool.CodeExecution(
         # Optional: Allow it to make HTTP calls if you want
-        # http_enabled=True 
+        # http_enabled=True
     )
 )
 
@@ -53,19 +53,19 @@ def run_mission(prompt):
     print(f"\n⚡ MISSION: {prompt}")
     # We don't need manual prompt engineering; the model knows how to use the tool.
     response = chat.send_message(prompt)
-    
+
     # Print the code it executed (if any)
     for part in response.candidates[0].content.parts:
         if part.executable_code:
             print(f"\n💻 EXECUTED CODE:\n{part.executable_code.code}")
         if part.code_execution_result:
             print(f"\n📉 OUTPUT:\n{part.code_execution_result.output}")
-            
+
     print(f"\n✅ ANSWER:\n{response.text}")
 
 if __name__ == "__main__":
     # Test 1: Math (Forces code execution)
     run_mission("Calculate the 50th Fibonacci number.")
-    
+
     # Test 2: Data Processing (Forces sandbox usage)
     run_mission("Create a list of 20 random numbers, find the median, and tell me if it's prime.")

@@ -8,10 +8,10 @@ A generic rule template for detecting imports of specific packages in Go source 
 
 This rule identifies Go import statements based on the configured regex pattern, including:
 
-Direct imports: `import "package/name"`  
-Versioned imports: `import "package/name/v4"`  
-Subpackage imports: `import "package/name/subpkg"`  
-Grouped imports within `import () blocks` 
+Direct imports: `import "package/name"`
+Versioned imports: `import "package/name/v4"`
+Subpackage imports: `import "package/name/subpkg"`
+Grouped imports within `import () blocks`
 
 ### YAML
 
@@ -22,7 +22,7 @@ rule:
   kind: import_spec
   has:
     regex: PACKAGE_PATTERN_HERE
-``` 
+```
 
 ### Example
 

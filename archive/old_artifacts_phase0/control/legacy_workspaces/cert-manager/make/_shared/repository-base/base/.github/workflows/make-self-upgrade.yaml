@@ -19,7 +19,7 @@ jobs:
 
     permissions:
       id-token: write
-    
+
     env:
       SOURCE_BRANCH: "${{ github.ref_name }}"
       SELF_UPGRADE_BRANCH: "self-upgrade-${{ github.ref_name }}"
@@ -93,7 +93,7 @@ jobs:
               base: process.env.SOURCE_BRANCH,
               state: 'open',
             });
-            
+
             if (pulls.data.length < 1) {
               const result = await github.rest.pulls.create({
                 title: '[CI] Merge ' + process.env.SELF_UPGRADE_BRANCH + ' into ' + process.env.SOURCE_BRANCH,

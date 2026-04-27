@@ -153,7 +153,7 @@ Original Request:
   POST /v1beta/models/gemini-1.5-flash:generateContent
   Headers:
     x-goog-api-key: AIzaSyABC123...  ← Antigravity's key
-    
+
          ↓ Interceptor
 
 Modified Request:
@@ -212,7 +212,7 @@ All requests to `generativelanguage.googleapis.com` are:
 ```javascript
 proxy.on('error', (err, req, res) => {
   logError(err);
-  
+
   if (!res.headersSent) {
     res.writeHead(500, {
       'Content-Type': 'application/json'

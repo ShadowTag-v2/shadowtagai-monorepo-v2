@@ -2,14 +2,14 @@
 
 
 
-### Pre-requisities 
-To use Promptfoo you will need to have node.js & npm installed on your system. For more information follow [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)  
+### Pre-requisities
+To use Promptfoo you will need to have node.js & npm installed on your system. For more information follow [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
-You can install promptfoo using npm or run it directly using npx. In this guide we will use npx.  
+You can install promptfoo using npm or run it directly using npx. In this guide we will use npx.
 
-*Note: For this example you will not need to run `npx promptfoo@latest init` there is already an initialized `promptfooconfig.yaml` file in this directory*  
+*Note: For this example you will not need to run `npx promptfoo@latest init` there is already an initialized `promptfooconfig.yaml` file in this directory*
 
-See the official docs [here](https://www.promptfoo.dev/docs/getting-started)  
+See the official docs [here](https://www.promptfoo.dev/docs/getting-started)
 
 
 
@@ -28,7 +28,7 @@ The evaluation is orchestrated by the `promptfooconfig.yaml` file. In this file 
     - Promptfoo has a wide array of built in tests which can be found [here](https://www.promptfoo.dev/docs/configuration/expected-outputs/deterministic).
     - In this example we will define a test in our `dataset.csv` as the conditions of our evaluation change with each row and a test in the `promptfooconfig.yaml` for conditions that are consistent across all test cases. Read more about this [here](https://www.promptfoo.dev/docs/configuration/parameters/#import-from-csv)
 - Transform
-    - In the `defaultTest` section we define a transform function. This is a python function which extracts the specific output we want to test from the LLM response. 
+    - In the `defaultTest` section we define a transform function. This is a python function which extracts the specific output we want to test from the LLM response.
 - Output
     - We define the path for the output file. Promptfoo can output results in many formats, [see here](https://www.promptfoo.dev/docs/configuration/parameters/#output-file). Alternatively you can use Promptfoo's web UI, [see here](https://www.promptfoo.dev/docs/usage/web-ui).
 
@@ -39,19 +39,17 @@ To get started with Promptfoo open your terminal and navigate to this directory 
 
 Before running your evaluation you must define the following environment variables:
 
-`export ANTHROPIC_API_KEY=YOUR_API_KEY`  
+`export ANTHROPIC_API_KEY=YOUR_API_KEY`
 `export VOYAGE_API_KEY=YOUR_API_KEY`
 
-From the `evaluation` directory, run the following command.  
+From the `evaluation` directory, run the following command.
 
 `npx promptfoo@latest eval`
 
-If you would like to increase the concurrency of the requests (default = 4), run the following command.  
+If you would like to increase the concurrency of the requests (default = 4), run the following command.
 
-`npx promptfoo@latest eval -j 25`  
+`npx promptfoo@latest eval -j 25`
 
 When the evaluation is complete the terminal will print the results for each row in the dataset.
 
 You can now go back to `guide.ipynb` to analyze the results!
-
-

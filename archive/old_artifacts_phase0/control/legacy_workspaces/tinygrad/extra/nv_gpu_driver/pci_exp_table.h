@@ -130,5 +130,3 @@ typedef struct _NV_PCI_DATA_EXT_STRUCT
 #pragma pack()
 
 #endif // PCIEXPTBL_H
-
-

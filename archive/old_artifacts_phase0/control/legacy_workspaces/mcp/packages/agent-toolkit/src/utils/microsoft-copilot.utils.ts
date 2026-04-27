@@ -8,9 +8,9 @@ export const STRINGIFIED_SUFFIX = 'Stringified' as const;
  * For example, if the object has both `form` and `formStringified`, then 'form' is extracted.
  */
 type KeysWithStringifiedVersion<T> = {
-  [K in keyof T]: K extends string 
-    ? `${K}${typeof STRINGIFIED_SUFFIX}` extends keyof T 
-      ? K 
+  [K in keyof T]: K extends string
+    ? `${K}${typeof STRINGIFIED_SUFFIX}` extends keyof T
+      ? K
       : never
     : never
 }[keyof T];
@@ -18,11 +18,11 @@ type KeysWithStringifiedVersion<T> = {
 /**
  * Parses a stringified JSON field and assigns it to another field in the input object.
  * This is useful for handling Microsoft Copilot's stringified parameters.
- * 
+ *
  * @param input - The input object containing the fields
  * @param jsonKey - The key where the parsed JSON should be assigned (must have a corresponding stringified version)
  * @param schema - The Zod schema to validate the parsed JSON against
- * 
+ *
  * Type safety: Only keys that have a corresponding `${key}Stringified` property can be passed as jsonKey.
  * For example, if input has `form` and `formStringified`, you can pass 'form' as jsonKey.
  */

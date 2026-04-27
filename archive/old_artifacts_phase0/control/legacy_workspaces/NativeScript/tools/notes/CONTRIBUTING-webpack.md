@@ -55,7 +55,7 @@ The repository contains several ingredients:
     npm install
     ```
 
-The last command also runs `npm prepare` which compiles the TypeScript files in the plugin. 
+The last command also runs `npm prepare` which compiles the TypeScript files in the plugin.
 You are good to go! You're strongly encouraged to follow the official NativeScript [Coding Conventions](https://github.com/NativeScript/NativeScript/blob/master/CodingConvention.md) and to use ES features available in NodeJS v6. If unsure, check on [node.green](http://node.green/).
 
 ## Testing locally by running e2e tests
@@ -163,7 +163,7 @@ git checkout release && git pull
 ```
 git merge --ff-only origin/master
 ```
-*** Note: If there are commits in release branch which are not merged in master branch '-ff-merge' command will fail. 
+*** Note: If there are commits in release branch which are not merged in master branch '-ff-merge' command will fail.
 In this case the commits should be merged firstly from release in master branch as explained in section 'Merge changes from release into master' and then repeat step 1.
 
 2. Execute `npm i` to install dependencies:
@@ -201,7 +201,7 @@ curl -d '{"title": "release: cut the [release-version] release","body": "docs: u
 ```
 10. Merge PR into release branch.
 
-11. If all checks has passed publish package. Usually the night builds will be triggered and the package will be ready to be released on the next day. 
+11. If all checks has passed publish package. Usually the night builds will be triggered and the package will be ready to be released on the next day.
 
 ## Merge changes from release into master
 

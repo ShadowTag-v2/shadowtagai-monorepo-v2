@@ -4,7 +4,7 @@
 function tryAstGrep() {
     console.log('matched in metavar!')
 }
-  
+
 const multiLineExpression =
   console
     .log({

@@ -62,5 +62,3 @@ uvx claude-skills-mcp --verbose
 - API reference (tools and parameters): see `api.md`.
 - Usage patterns and examples: see `usage.md`.
 - Testing instructions: see `testing.md`.
-
-

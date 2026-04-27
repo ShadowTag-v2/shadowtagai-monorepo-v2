@@ -117,7 +117,7 @@ export const getRelatedBoardIdFromRelationColumn = (column: NonNullable<Board['c
   if (!column?.settings) return null;
 
   const settings = column.settings as any;
-  const boardId = 
+  const boardId =
     (settings.boardIds && Array.isArray(settings.boardIds) && settings.boardIds[0]?.toString()) ||
     settings.boardId?.toString();
 

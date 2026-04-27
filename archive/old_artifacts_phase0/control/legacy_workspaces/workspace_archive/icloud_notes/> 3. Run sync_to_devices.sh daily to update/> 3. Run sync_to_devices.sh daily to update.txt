@@ -1,4 +1,4 @@
-> 3. Run sync_to_devices.sh daily to update 
+> 3. Run sync_to_devices.sh daily to update
 
 
 ⏺ The implementation is complete. All the swarm voting integration has been added to nodes.py:

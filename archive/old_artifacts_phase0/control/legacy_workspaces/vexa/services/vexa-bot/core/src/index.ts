@@ -133,17 +133,17 @@ const handleRedisMessage = async (message: string, channel: string, page: Page |
   log(`[DEBUG] handleRedisMessage entered for channel ${channel}. Message: ${message.substring(0, 100)}...`);
   // ++++++++++++++++++++++++++++++++++
   log(`Received command on ${channel}: ${message}`);
-  // --- ADDED: Implement reconfigure command handling --- 
+  // --- ADDED: Implement reconfigure command handling ---
   try {
       const command = JSON.parse(message);
-      
+
       // Validate this command is for us (fail-fast)
       const meetingId = (globalThis as any).botConfig?.meeting_id;
       if (command.meeting_id && command.meeting_id !== meetingId) {
         log(`⚠️ Ignoring command for different meeting: ${command.meeting_id} (ours: ${meetingId})`);
         return;
       }
-      
+
       if (command.action === 'reconfigure') {
           log(`Processing reconfigure command: Lang=${command.language}, Task=${command.task}`);
 
@@ -260,7 +260,7 @@ async function performGracefulLeave(
   if (botManagerCallbackUrl && currentConnectionId) {
     // Use unified callback for exit status
     const statusMapping = mapExitReasonToStatus(finalCallbackReason, finalCallbackExitCode);
-    
+
     const botConfig = {
       botManagerCallbackUrl,
       connectionId: currentConnectionId,
@@ -336,7 +336,7 @@ async function performGracefulLeave(
 export async function runBot(botConfig: BotConfig): Promise<void> {
   // Store botConfig globally for command validation
   (globalThis as any).botConfig = botConfig;
-  
+
   // --- UPDATED: Parse and store config values ---
   currentLanguage = botConfig.language;
   currentTask = botConfig.task || 'transcribe';
@@ -381,7 +381,7 @@ export async function runBot(botConfig: BotConfig): Promise<void> {
       await redisSubscriber.subscribe(commandChannel, (message, channel) => {
           log(`[DEBUG] Redis subscribe callback fired for channel ${channel}.`); // Log before handling
           handleRedisMessage(message, channel, page)
-      }); 
+      });
       // ++++++++++++++++++++++++++++++++++++++++++++++++
       log(`Subscribed to Redis channel: ${commandChannel}`);
 
@@ -400,7 +400,7 @@ export async function runBot(botConfig: BotConfig): Promise<void> {
   if (botConfig.platform === "teams") {
     log("Using MS Edge browser for Teams platform (simple-bot.js approach)");
     // Launch browser in headless mode with Edge channel with insecure WebSocket support
-    browserInstance = await chromium.launch({ 
+    browserInstance = await chromium.launch({
       headless: false,
       channel: 'msedge',
       args: [
@@ -414,14 +414,14 @@ export async function runBot(botConfig: BotConfig): Promise<void> {
         '--disable-features=VizDisplayCompositor'
       ]
     });
-    
+
     // Create context with CSP bypass to allow script injection (like Google Meet)
     const context = await browserInstance.newContext({
       permissions: ['microphone', 'camera'],
       ignoreHTTPSErrors: true,
       bypassCSP: true
     });
-    
+
     // Pre-inject browser utils before any page scripts (affects current + future navigations)
     try {
       await context.addInitScript({
@@ -430,7 +430,7 @@ export async function runBot(botConfig: BotConfig): Promise<void> {
     } catch (e) {
       log(`Warning: context.addInitScript failed: ${(e as any)?.message || e}`);
     }
-    
+
     page = await context.newPage();
   } else {
     log("Using Chrome browser for non-Teams platform");
@@ -454,7 +454,7 @@ export async function runBot(botConfig: BotConfig): Promise<void> {
         height: 720
       }
     });
-    
+
     page = await context.newPage();
   }
 

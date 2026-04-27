@@ -79,7 +79,7 @@ get_tag_release() {
 
   # Sort version tags in highest semver version first.
   # To make sure that prerelease versions (ie versions vMAJOR.MINOR.PATCH-PRERELEASE suffix)
-  # are sorted after stable versions (ie vMAJOR.MINOR.PATCH), we append '_' after 
+  # are sorted after stable versions (ie vMAJOR.MINOR.PATCH), we append '_' after
   # eachustable version as '_' is after '-' found in prerelease version
   # alphanumerically and remove after sorting.
   local SEMVER_SORTED_TAGS=$(echo "$FILTERED_TAGS" | sed -e '/-/!{s/$/_/}' | sort -rV \

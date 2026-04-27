@@ -1,5 +1,5 @@
 !foo in bar;
-(!foo in bar); 
+(!foo in bar);
 !(foo in bar);
 (!foo) in bar;
 
@@ -9,7 +9,7 @@
 (!foo) instanceof Bar;
 
 ~foo in bar;
-(~foo in bar); 
+(~foo in bar);
 ~(foo in bar);
 (~foo) in bar;
 
@@ -19,7 +19,7 @@
 (~foo) instanceof Bar;
 
 +foo in bar;
-(+foo in bar); 
+(+foo in bar);
 +(foo in bar);
 (+foo) in bar;
 
@@ -29,7 +29,7 @@
 (+foo) instanceof Bar;
 
 -foo in bar;
-(-foo in bar); 
+(-foo in bar);
 -(foo in bar);
 (-foo) in bar;
 

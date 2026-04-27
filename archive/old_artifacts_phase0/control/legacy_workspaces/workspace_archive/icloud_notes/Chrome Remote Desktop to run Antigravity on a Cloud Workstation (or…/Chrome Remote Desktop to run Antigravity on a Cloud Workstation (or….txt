@@ -73,7 +73,7 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearm
     rm -rf /var/lib/apt/lists/*
 
 # Chrome Sandbox Fix
-# Chrome will crash in Docker without --no-sandbox. 
+# Chrome will crash in Docker without --no-sandbox.
 # We divert the binary to force this flag.
 RUN dpkg-divert --add --rename --divert /usr/bin/google-chrome-stable.real /usr/bin/google-chrome-stable && \
     echo '#!/bin/bash' > /usr/bin/google-chrome-stable && \
@@ -94,7 +94,7 @@ RUN mkdir -p /etc/apt/keyrings && \
     apt-get install -y antigravity && \
     dpkg-divert --add --rename --divert /usr/bin/antigravity.real /usr/bin/antigravity && \
     echo '#!/bin/bash' > /usr/bin/antigravity && \
-    echo 'exec /usr/bin/antigravity.real --no-sandbox --disable-dev-shm-usage --disable-gpu "$@"' >> /usr/bin/antigravity && \    
+    echo 'exec /usr/bin/antigravity.real --no-sandbox --disable-dev-shm-usage --disable-gpu "$@"' >> /usr/bin/antigravity && \
     chmod +x /usr/bin/antigravity
 
 # 5. Runtime customization scripts

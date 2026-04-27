@@ -44,5 +44,3 @@ describe('normalizeString', () => {
       .toBe('test123abc');
   });
 });
-
-

@@ -44,7 +44,7 @@ The `Permission` class identifies a single permission configured on the feature 
 To simplify configuration, several constants are defined to streamline the permissions setup:
 - In module `feast.feast_object`:
   - `ALL_RESOURCE_TYPES` is the list of all the `FeastObject` types.
-  - `ALL_FEATURE_VIEW_TYPES` is the list of all the feature view types, including those not inheriting from `FeatureView` type like 
+  - `ALL_FEATURE_VIEW_TYPES` is the list of all the feature view types, including those not inheriting from `FeatureView` type like
   `OnDemandFeatureView`.
 - In module `feast.permissions.action`:
   - `ALL_ACTIONS` is the list of all managed actions.
@@ -52,7 +52,7 @@ To simplify configuration, several constants are defined to streamline the permi
   - `WRITE` includes all the write actions for online and offline store.
   - `CRUD` includes all the state management actions to create, describe, update or delete a Feast resource.
 
-Given the above definitions, the feature store can be configured with granular control over each resource, enabling partitioned access by 
+Given the above definitions, the feature store can be configured with granular control over each resource, enabling partitioned access by
 teams to meet organizational requirements for service and data sharing, and protection of sensitive information.
 
 The `feast` CLI includes a new `permissions` command to list the registered permissions, with options to identify the matching resources for each configured permission and the existing resources that are not covered by any permission.

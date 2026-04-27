@@ -819,5 +819,3 @@ _Appears in:_
 | --- | --- |
 | `configMapRef` _[LocalObjectReference](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#localobjectreference-v1-core)_ | references the local k8s configmap where the TLS cert resides |
 | `certName` _string_ | defines the configmap key name for the client TLS cert. |
-
-

@@ -21,4 +21,3 @@ function zip<T, U>(array1: T[], array2: U[]): [[T, U]] {
 var zipResult = zip(["foo", "bar"], [5, 6]);
 var zipResultEle = zipResult[0]; // [string, number]
 var zipResultEleEle = zipResult[0][0]; // string
-

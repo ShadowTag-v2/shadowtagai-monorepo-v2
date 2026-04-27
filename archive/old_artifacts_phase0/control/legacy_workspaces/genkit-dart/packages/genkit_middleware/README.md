@@ -37,7 +37,7 @@ void main() {
       ToolApprovalPlugin(),
     ],
   );
-  
+
   // ...
 }
 ```
@@ -127,7 +127,7 @@ When a protected tool is called, `generate` will return with `FinishReason.inter
 if (response.finishReason == FinishReason.interrupted) {
   final interrupt = response.interrupts.first;
   print('Tool ${interrupt.toolRequest.name} requires approval.');
-  
+
   // Ask user for approval
   final isApproved = await askUser(); // Implement your logic
 

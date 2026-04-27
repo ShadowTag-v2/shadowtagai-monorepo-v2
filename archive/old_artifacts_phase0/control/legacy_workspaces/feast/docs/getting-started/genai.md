@@ -164,7 +164,7 @@ The MCP integration uses the `fastapi_mcp` library to automatically transform yo
 The fastapi_mcp integration automatically exposes your Feast feature server's FastAPI endpoints as MCP tools. This means AI assistants can:
 
 * **Call `/get-online-features`** to retrieve features from the feature store
-* **Use `/health`** to check server status  
+* **Use `/health`** to check server status
 
 For a complete example, see the [MCP Feature Store Example](../../examples/mcp_feature_store/).
 

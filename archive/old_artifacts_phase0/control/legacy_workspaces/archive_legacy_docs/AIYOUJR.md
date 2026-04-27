@@ -35,5 +35,3 @@ We interpret productivity “enhancements” as legal, tooling-based methods: SO
 - PR template requires: pre-mortem, 5-Whys, pair/recipe review, static analysis, tests, objections captured, postmortem readiness
 - Lightweight PR gate enforces presence of sections and denies merge on missing doctrine fields
 - Logs and metrics are retained for auditability
-
-

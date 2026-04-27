@@ -187,7 +187,7 @@ export class DuplicateSpaceTool extends HfApiCall<DuplicateSpaceParams, Duplicat
 			// Step 5: Check for warnings
 			let hardwareWarning: string | undefined;
 			if (sourceHardwareStr && !FREE_HARDWARE.includes(sourceHardwareStr)) {
-				hardwareWarning = `Note: The source space uses '${sourceHardwareStr}' which is paid hardware. Your duplicated space is set to '${hardwareKey}'. "+ 
+				hardwareWarning = `Note: The source space uses '${sourceHardwareStr}' which is paid hardware. Your duplicated space is set to '${hardwareKey}'. "+
 				"You may need to upgrade in Settings to run this space or achieve the same performance.`;
 			}
 
@@ -236,7 +236,7 @@ export class DuplicateSpaceTool extends HfApiCall<DuplicateSpaceParams, Duplicat
 	}
 
 	private formatInstructions(url: string, hardware: string, isPrivate: boolean, warnings: string[]): string {
-		let instructions = `✅ 🤗 Space successfully duplicated! 
+		let instructions = `✅ 🤗 Space successfully duplicated!
 
 🔗 Your new space: ${url}
 

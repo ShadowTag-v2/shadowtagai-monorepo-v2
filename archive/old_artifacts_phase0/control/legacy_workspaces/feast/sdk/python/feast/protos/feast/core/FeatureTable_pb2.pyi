@@ -88,7 +88,7 @@ class FeatureTableSpec(google.protobuf.message.Message):
     """Name of Feast project that this feature table belongs to."""
     @property
     def entities(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
-        """List names of entities to associate with the Features defined in this 
+        """List names of entities to associate with the Features defined in this
         Feature Table. Not updatable.
         """
     @property
@@ -100,20 +100,20 @@ class FeatureTableSpec(google.protobuf.message.Message):
     @property
     def max_age(self) -> google.protobuf.duration_pb2.Duration:
         """Features in this feature table can only be retrieved from online serving
-        younger than max age. Age is measured as the duration of time between 
+        younger than max age. Age is measured as the duration of time between
         the feature's event timestamp and when the feature is retrieved
         Feature values outside max age will be returned as unset values and indicated to end user
         """
     @property
     def batch_source(self) -> feast.core.DataSource_pb2.DataSource:
         """Batch/Offline DataSource to source batch/offline feature data.
-        Only batch DataSource can be specified 
+        Only batch DataSource can be specified
         (ie source type should start with 'BATCH_')
         """
     @property
     def stream_source(self) -> feast.core.DataSource_pb2.DataSource:
         """Stream/Online DataSource to source stream/online feature data.
-        Only stream DataSource can be specified 
+        Only stream DataSource can be specified
         (ie source type should start with 'STREAM_')
         """
     def __init__(

@@ -148,10 +148,10 @@ nodes:
           include:
             - "**/*.ts"
             - "**/*.tsx"
-      
+
       - name: "Format code"
         run: npx prettier --write "**/*.{ts,tsx}"
-      
+
       - name: "Run tests"
         run: npm test
 ```

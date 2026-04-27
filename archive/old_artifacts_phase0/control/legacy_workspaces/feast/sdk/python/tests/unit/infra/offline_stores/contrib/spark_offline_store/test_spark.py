@@ -63,7 +63,7 @@ def test_pull_latest_from_table_with_nested_timestamp_or_query(mock_get_spark_se
 
     expected_query = """SELECT
                     key1, key2, feature1, feature2, nested_timestamp, created_timestamp
-                    
+
                 FROM (
                     SELECT key1, key2, feature1, feature2, event_header.event_published_datetime_utc AS nested_timestamp, created_timestamp,
                     ROW_NUMBER() OVER(PARTITION BY key1, key2 ORDER BY event_header.event_published_datetime_utc DESC, created_timestamp DESC) AS feast_row_
@@ -125,12 +125,12 @@ def test_pull_latest_from_table_with_nested_timestamp_or_query_and_date_partitio
 
     expected_query = """SELECT
                     key1, key2, feature1, feature2, nested_timestamp, created_timestamp
-                    
+
                 FROM (
                     SELECT key1, key2, feature1, feature2, event_header.event_published_datetime_utc AS nested_timestamp, created_timestamp,
                     ROW_NUMBER() OVER(PARTITION BY key1, key2 ORDER BY event_header.event_published_datetime_utc DESC, created_timestamp DESC) AS feast_row_
                     FROM `offline_store_database_name`.`offline_store_table_name` t1
-                    WHERE event_header.event_published_datetime_utc BETWEEN TIMESTAMP('2021-01-01 00:00:00.000000') AND TIMESTAMP('2021-01-02 00:00:00.000000') AND effective_date >= '2021-01-01' AND effective_date <= '2021-01-02' 
+                    WHERE event_header.event_published_datetime_utc BETWEEN TIMESTAMP('2021-01-01 00:00:00.000000') AND TIMESTAMP('2021-01-02 00:00:00.000000') AND effective_date >= '2021-01-01' AND effective_date <= '2021-01-02'
                 ) t2
                 WHERE feast_row_ = 1"""  # noqa: W293, W291
 
@@ -183,7 +183,7 @@ def test_pull_latest_from_table_without_nested_timestamp_or_query(
 
     expected_query = """SELECT
                     key1, key2, feature1, feature2, event_published_datetime_utc, created_timestamp
-                    
+
                 FROM (
                     SELECT key1, key2, feature1, feature2, event_published_datetime_utc, created_timestamp,
                     ROW_NUMBER() OVER(PARTITION BY key1, key2 ORDER BY event_published_datetime_utc DESC, created_timestamp DESC) AS feast_row_
@@ -242,12 +242,12 @@ def test_pull_latest_from_table_without_nested_timestamp_or_query_and_date_parti
 
     expected_query = """SELECT
                     key1, key2, feature1, feature2, event_published_datetime_utc, created_timestamp
-                    
+
                 FROM (
                     SELECT key1, key2, feature1, feature2, event_published_datetime_utc, created_timestamp,
                     ROW_NUMBER() OVER(PARTITION BY key1, key2 ORDER BY event_published_datetime_utc DESC, created_timestamp DESC) AS feast_row_
                     FROM `offline_store_database_name`.`offline_store_table_name` t1
-                    WHERE event_published_datetime_utc BETWEEN TIMESTAMP('2021-01-01 00:00:00.000000') AND TIMESTAMP('2021-01-02 00:00:00.000000') AND effective_date >= '2021-01-01' AND effective_date <= '2021-01-02' 
+                    WHERE event_published_datetime_utc BETWEEN TIMESTAMP('2021-01-01 00:00:00.000000') AND TIMESTAMP('2021-01-02 00:00:00.000000') AND effective_date >= '2021-01-01' AND effective_date <= '2021-01-02'
                 ) t2
                 WHERE feast_row_ = 1"""  # noqa: W293, W291
 

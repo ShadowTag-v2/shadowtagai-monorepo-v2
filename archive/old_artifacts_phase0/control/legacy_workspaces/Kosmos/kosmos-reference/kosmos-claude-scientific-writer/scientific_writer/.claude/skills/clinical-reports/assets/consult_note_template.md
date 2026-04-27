@@ -1,17 +1,17 @@
 # Consultation Note Template
 
-**Patient Name:** [Last, First]  
-**Medical Record Number:** [MRN]  
-**Date of Birth:** [MM/DD/YYYY]  
+**Patient Name:** [Last, First]
+**Medical Record Number:** [MRN]
+**Date of Birth:** [MM/DD/YYYY]
 **Age/Sex:** [years, M/F]
 
-**Consultation Date:** [MM/DD/YYYY]  
-**Consultation Time:** [HH:MM]  
+**Consultation Date:** [MM/DD/YYYY]
+**Consultation Time:** [HH:MM]
 **Location:** [Floor, Room number]
 
-**Requesting Service:** [Primary team]  
-**Requesting Physician:** [Name]  
-**Consulting Service:** [Cardiology, Nephrology, etc.]  
+**Requesting Service:** [Primary team]
+**Requesting Physician:** [Name]
+**Consulting Service:** [Cardiology, Nephrology, etc.]
 **Consulting Physician:** [Name and credentials]
 
 ---
@@ -76,7 +76,7 @@ Example: "Please evaluate and manage acute kidney injury in setting of heart fai
 
 [Focus on systems relevant to consultation question]
 
-**[Relevant system]:** [Findings]  
+**[Relevant system]:** [Findings]
 **[Additional relevant systems]:** [Findings]
 
 ---
@@ -91,7 +91,7 @@ Example: "Please evaluate and manage acute kidney injury in setting of heart fai
 - Oxygen Saturation: _____% on [O2 status]
 - Weight: _____ kg (if relevant)
 
-**General:**  
+**General:**
 [Overall appearance, distress level]
 
 **[Focused Examination Relevant to Consultation]:**
@@ -201,9 +201,9 @@ Example: "Please evaluate and manage acute kidney injury in setting of heart fai
 
 ## Consultantdiscussion with Primary Team
 
-**Discussed with:** [Name, role]  
-**Date/Time:** [MM/DD/YYYY at HH:MM]  
-**Topics discussed:** [Key points discussed]  
+**Discussed with:** [Name, role]
+**Date/Time:** [MM/DD/YYYY at HH:MM]
+**Topics discussed:** [Key points discussed]
 **Plan agreed upon:** [Agreement or modifications]
 
 ---
@@ -225,15 +225,15 @@ Example: "Please evaluate and manage acute kidney injury in setting of heart fai
 
 ## Signature
 
-**Consultant:** [Name, MD/DO, credentials]  
-**Service:** [Consulting service]  
-**Date/Time:** [MM/DD/YYYY at HH:MM]  
-**Pager/Contact:** [Number]  
+**Consultant:** [Name, MD/DO, credentials]
+**Service:** [Consulting service]
+**Date/Time:** [MM/DD/YYYY at HH:MM]
+**Pager/Contact:** [Number]
 **Signature:** ____________________
 
-**Co-signature (if fellow or resident):**  
-**Attending:** [Name, credentials]  
-**Date/Time:** [MM/DD/YYYY at HH:MM]  
+**Co-signature (if fellow or resident):**
+**Attending:** [Name, credentials]
+**Date/Time:** [MM/DD/YYYY at HH:MM]
 **Signature:** ____________________
 
 ---
@@ -301,5 +301,3 @@ Example: "Please evaluate and manage acute kidney injury in setting of heart fai
 - Communicate recommendations verbally when appropriate
 - Be available for questions
 - Follow up consistently if ongoing consultation
-
-

@@ -158,9 +158,9 @@ If you want, I can now merge these Musk parameters into your persistent strategy
 
 Do you want me to go ahead and save them permanently so they apply to all current and future verticals? - yes”
 
-<next> 
+<next>
 
-Cor.14 operating procedure template 
+Cor.14 operating procedure template
 
 “R-T-F
 Act as a TROLE]
@@ -372,7 +372,7 @@ Protect your time & energy by saying "no" to things you don't want to do.
 *   Delegate or eliminate what doesn't move the needle.
 delegate eliminate”
 
-<next> 
+<next>
 
 Cor.8
 

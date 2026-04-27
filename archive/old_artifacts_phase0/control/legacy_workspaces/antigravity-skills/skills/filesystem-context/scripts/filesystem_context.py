@@ -348,4 +348,3 @@ if __name__ == "__main__":
     print("Cleanup demo files? (y/n): ", end="")
     # Auto-cleanup for non-interactive runs
     cleanup_demo()
-

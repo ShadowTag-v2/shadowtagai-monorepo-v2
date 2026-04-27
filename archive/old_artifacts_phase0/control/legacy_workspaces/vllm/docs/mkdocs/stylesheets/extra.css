@@ -147,7 +147,7 @@ body[data-md-color-scheme="slate"] .md-nav__item--section > label.md-nav__link .
 }
 
 /* Slack and Forum css */
-.slack-button, 
+.slack-button,
 .forum-button {
   display: inline-flex;
   align-items: center;

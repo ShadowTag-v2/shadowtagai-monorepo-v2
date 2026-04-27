@@ -13,7 +13,7 @@ cd "$ROOT_DIR"
 
 mkdir -p "$DIST"
 
-## NPM INSTALL 
+## NPM INSTALL
 (
     echo "NPM install in root of the repo"
     cd "$ROOT_DIR"
@@ -69,7 +69,7 @@ mkdir -p "$DIST"
         cd "$DIST/$PACKAGE"
         npm install
     )
-    
+
     # Aways execute npx tsc from repo root to use the local typescript
     echo 'TypeScript transpile...'
     npx tsc -v

@@ -11,7 +11,7 @@ offline_store:
   target_partition_size_mb: 64
   enable_ray_logging: true
   # ray_address: "127.0.0.1:10001"
-  
+
 # Ray compute engine configuration for batch embedding processing
 batch_engine:
   type: ray.engine

@@ -4,7 +4,7 @@ Vertex AI plugin for Genkit Dart.
 
 ## Usage
 
-To use Google's Vertex AI models, simply import this package and pass `vertexAI` to the `Genkit` initialization. 
+To use Google's Vertex AI models, simply import this package and pass `vertexAI` to the `Genkit` initialization.
 
 Authentication is handled automatically via Application Default Credentials (e.g. `gcloud auth application-default login`), keeping the implementation clean and avoiding dependencies on `dart:io` in the core components.
 

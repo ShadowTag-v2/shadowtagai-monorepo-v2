@@ -19,13 +19,13 @@ namespace kittens {
 namespace ducks {
 /**
  * @namespace rt
- * 
+ *
  * @brief The namespace where concepts and abstract types for register vectors live.
  */
 namespace rv {
 /**
  * @brief A dummy type used to identify register vectors.
- * 
+ *
  * For a type to quack like an rv, it should define its identifier as ducks::rv::identifier.
  * If a type quacks like ducks::rv::identifier, it will be treated as an rv by compiler checks.
  */

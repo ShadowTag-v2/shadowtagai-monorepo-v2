@@ -24,7 +24,7 @@ void main() async {
 
 ### Configuration
 
-You can optionally pass in `FirebaseApp`, `FirebaseAppCheck`, `FirebaseAuth` 
+You can optionally pass in `FirebaseApp`, `FirebaseAppCheck`, `FirebaseAuth`
 instances, and `useLimitedUseAppCheckTokens` flag when initializing the plugin:
 
 ```dart
@@ -58,4 +58,3 @@ final response = await ai.generate(
   toolNames: ['getWeather'],
 );
 ```
-

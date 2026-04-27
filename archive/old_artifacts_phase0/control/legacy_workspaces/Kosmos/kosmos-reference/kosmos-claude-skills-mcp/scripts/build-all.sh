@@ -50,4 +50,3 @@ echo ""
 echo "Frontend artifacts:"
 ls -lh packages/frontend/dist/
 echo ""
-

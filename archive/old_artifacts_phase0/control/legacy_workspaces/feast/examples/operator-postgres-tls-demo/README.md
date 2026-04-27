@@ -1,6 +1,6 @@
 # Installing Feast on Kubernetes with PostgreSQL TLS Demo using feast operator
 
-This example folder contains a series of Jupyter Notebooks that guide you through setting up [Feast](https://feast.dev/) on a Kubernetes cluster. 
+This example folder contains a series of Jupyter Notebooks that guide you through setting up [Feast](https://feast.dev/) on a Kubernetes cluster.
 
 In this demo, Feast connects to a PostgreSQL database running in TLS mode, ensuring secure communication between services. Additionally, the example demonstrates how feast application references TLS certificates using Kubernetes volumes and volume mounts. While the focus is on mounting TLS certificates, you can also mount any other resources supported by Kubernetes volumes.
 
@@ -16,13 +16,13 @@ In this demo, Feast connects to a PostgreSQL database running in TLS mode, ensur
 
 The following Jupyter Notebooks will walk you through the entire process:
 
-1. **[01-Install-postgres-tls-using-helm.ipynb](./01-Install-postgres-tls-using-helm.ipynb)**  
+1. **[01-Install-postgres-tls-using-helm.ipynb](./01-Install-postgres-tls-using-helm.ipynb)**
    Installs PostgreSQL in TLS mode using a Helm chart.
 
-2. **[02-Install-feast.ipynb](02-Install-feast.ipynb)**  
+2. **[02-Install-feast.ipynb](02-Install-feast.ipynb)**
    Deploys Feast using the Feast Operator.
 
-3. **[03-Uninstall.ipynb](./03-Uninstall.ipynb)**  
+3. **[03-Uninstall.ipynb](./03-Uninstall.ipynb)**
    Uninstalls Feast, the Feast Operator, and the PostgreSQL deployments set up in this demo.
 
 ## How to Run the Demo

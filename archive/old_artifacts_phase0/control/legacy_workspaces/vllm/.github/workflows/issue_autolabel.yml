@@ -300,14 +300,14 @@ jobs:
             }
             // Process all configured labels
             const labelsAddedResults = await Promise.all(
-              Object.entries(labelConfig).map(([labelName, config]) => 
+              Object.entries(labelConfig).map(([labelName, config]) =>
                 processLabel(labelName, config).then(added => ({ labelName, added }))
               )
             );
-            
+
             const numLabelsAdded = labelsAddedResults.filter(r => r.added).length;
             core.notice(`Processing complete. ${numLabelsAdded} label(s) added.`);
-            
+
             // Return which labels were added for the next step
             const addedLabels = labelsAddedResults.filter(r => r.added).map(r => r.labelName);
             core.setOutput('labels_added', JSON.stringify(addedLabels));
@@ -336,26 +336,26 @@ jobs:
               //   message: 'CC {users} for performance issue'
               // },
             };
-            
+
             const labelsAdded = JSON.parse('${{ steps.label-step.outputs.labels_added }}');
             core.notice(`Labels added: ${labelsAdded.join(', ')}`);
-            
+
             // Get existing comments to check for already mentioned users
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
             });
-            
+
             const issueBody = context.payload.issue.body || '';
             const allExistingText = issueBody + '\n' + comments.data.map(c => c.body).join('\n');
-            
+
             // Process each label that was added
             for (const label of labelsAdded) {
               if (ccConfig[label]) {
                 const config = ccConfig[label];
                 const usersToMention = [];
-                
+
                 // Check which users haven't been mentioned yet
                 for (const user of config.users) {
                   const mentionPattern = new RegExp(`@${user}\\b`, 'i');
@@ -365,19 +365,19 @@ jobs:
                     core.notice(`@${user} already mentioned for label "${label}", skipping`);
                   }
                 }
-                
+
                 // Post comment if there are users to mention
                 if (usersToMention.length > 0) {
                   const mentions = usersToMention.map(u => `@${u}`).join(' ');
                   const message = config.message.replace('{users}', mentions);
-                  
+
                   await github.rest.issues.createComment({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     issue_number: context.issue.number,
                     body: message
                   });
-                  
+
                   core.notice(`CC comment added for label "${label}": ${mentions}`);
                 } else {
                   core.notice(`All users for label "${label}" already mentioned, skipping comment`);

@@ -624,4 +624,3 @@ EV = $175.6B
 **Confidence**: 85% (Base Case), 70% (Bull Case), 95% (Bear Case)
 
 **Disclaimer**: Forward-looking statements. Actual results may vary. Do your own due diligence.
-

@@ -120,8 +120,8 @@ export class HfDatasetLogger {
 		const filename = `logs-${timestamp}-${this.sessionId}.jsonl`;
 
 		const dateFolder = new Date().toISOString().split('T')[0];
-		const folder = this.logType === 'Query' ? 'queries' 
-			: this.logType === 'System' ? 'sessions' 
+		const folder = this.logType === 'Query' ? 'queries'
+			: this.logType === 'System' ? 'sessions'
 			: this.logType === 'Gradio' ? 'gradio'
 			: 'logs';
 		const pathInRepo = `${folder}/${dateFolder}/${filename}`;

@@ -1,4 +1,4 @@
-#pragma once // doneington but add register tile col 
+#pragma once // doneington but add register tile col
 #include "../../../../common/common.metal"
 #include "../../../../types/types.metal"
 
@@ -37,27 +37,27 @@ unary_map(thread RT &dst, thread const RT &src) {
 //            T2 op2 = op::template op<T2>(T2{src.tiles[i][j].data.thread_elements()[0], src.tiles[i][j].data.thread_elements()[1]});
 ////            dst.tiles[i][j].data.thread_elements()[0] = op::template op<typename RT::dtype>(src.tiles[i][j].data.thread_elements()[0]);
 ////            dst.tiles[i][j].data.thread_elements()[1] = op::template op<typename RT::dtype>(src.tiles[i][j].data.thread_elements()[1]);
-//            
+//
 //            dst.tiles[i][j].data.thread_elements()[0] = op2[0];
 //            dst.tiles[i][j].data.thread_elements()[1] = op2[1];
-//            
+//
 ////            dst.tiles[i][j].data.thread_elements()[0] = base_ops::abs::template op<T>(src.tiles[i][j].data.thread_elements()[0]);
 ////            dst.tiles[i][j].data.thread_elements()[1] = base_ops::abs::template op<T>(src.tiles[i][j].data.thread_elements()[1]);
 ////            dst.tiles[i][j].data.thread_elements()[0] = (T)(metal::abs(-1.f));
 ////            dst.tiles[i][j].data.thread_elements()[1] = (T)(metal::abs(-1.f));
-//            
+//
 ////            ((T)(((float)src.tiles[i][j].data.thread_elements()[0])));
 ////            dst.tiles[i][j].data.thread_elements()[1] = metal::abs((T)((float)src.tiles[i][j].data.thread_elements()[1]));
-//            
+//
 ////            dst.tiles[i][j].data.thread_elements()[0] = base_types::constants<typename RT::dtype>::one();
 ////            dst.tiles[i][j].data.thread_elements()[1] = base_types::constants<typename RT::dtype>::one();
 ////            metal::simdgroup_barrier(metal::mem_flags::mem_none);
-//            
+//
 //////            T2 val = op::template op<T2>(T2{src.tiles[i][j].data.thread_elements()[0],
 //////                                            src.tiles[i][j].data.thread_elements()[1]});
 //////            dst.tiles[i][j].data.thread_elements()[0] = val[0];
 //////            dst.tiles[i][j].data.thread_elements()[1] = val[1];
-////////            
+////////
 //////            T4 val = op::template op<T4>(T4{src.tiles[i][j].data.thread_elements()[0],
 //////                                            src.tiles[i][j].data.thread_elements()[1],
 //////                                            src.tiles[i][j+1].data.thread_elements()[0],
@@ -68,11 +68,11 @@ unary_map(thread RT &dst, thread const RT &src) {
 //////            dst.tiles[i][j+1].data.thread_elements()[1] = val[3];
 //        }
 //    }
-    
+
     meta::unroll_i_j_in_range<0, RT::height, 1, 0, RT::width, 1>::run(meta::unary_map_unroll<op, RT>, &dst, &src);
 }
 
-    
+
 namespace meta {
 template<typename op, typename RT>
 static METAL_FUNC typename metal::enable_if<ducks::is_register_tile<RT>(), void>::type
@@ -129,7 +129,7 @@ binary_map_unroll(int i, int j, thread RT *dst, thread const RT *lhs, thread con
 ////
 //    dst->tiles[i][j].data.thread_elements()[0] = vals[0];
 //    dst->tiles[i][j].data.thread_elements()[1] = vals[1];
-    
+
 //    dst->tiles[i][j].data.thread_elements()[0] = op::template op<typename RT::dtype>(lhs->tiles[i][j].data.thread_elements()[0],
 //                                                                                    rhs->tiles[i][j].data.thread_elements()[0]);
 //    dst->tiles[i][j].data.thread_elements()[1] = op::template op<typename RT::dtype>(lhs->tiles[i][j].data.thread_elements()[1],
@@ -210,7 +210,7 @@ row_map(thread RT &dst, thread const RT &src, thread const RV &row_values) {
     using T4 = typename base_types::packing<typename RT::dtype>::packed_four;
     using T2 = typename RT::T2;
     using T = typename RT::dtype;
-    
+
 
 //    #pragma clang loop unroll(full)
 //    for(int i = 0; i < RT::height; i++) {
@@ -225,17 +225,17 @@ row_map(thread RT &dst, thread const RT &src, thread const RV &row_values) {
 //        }
 //    }
     meta::unroll_i_j_in_range<0, RT::height, 1, 0, RT::width, 1>::run(meta::row_map_unroll<op, RT, RV>, &dst, &src, &row_values);
-    
-    
+
+
 //    meta::unroll_i_j_in_range<0, RT::height, 1,
 //                              0, (RT::width / 2) * 2, 2>::run(meta::row_map_unroll<op, RT, RV, 0, 1>, &dst, &src, &row_values);
 //    meta::unroll_i_j_in_range<0, (RT::height / 2) * 2, 2,
 //                             (RT::width / 2) * 2, RT::width, 1>::run(meta::row_map_unroll<op, RT, RV, 1, 0>, &dst, &src, &row_values);
-//    
+//
 //    meta::unroll_i_j_in_range<(RT::height / 2) * 2, RT::height, 1,
 //                              (RT::width / 2) * 2,  RT::width,  1>::run(meta::row_map_unroll<op, RT, RV>, &dst, &src, &row_values);
 }
-    
+
 /**
  * @brief Applies an operation across the rows of a tile in a row-major layout.
  *
@@ -255,7 +255,7 @@ row_map(thread RT &dst, thread const RT &src, thread const RV &row_values) {
     using T4 = typename base_types::packing<typename RT::dtype>::packed_four;
     using T2 = typename RT::T2;
     using T = typename RT::dtype;
-    
+
 
     #pragma clang loop unroll(full)
     for(int i = 0; i < RT::height; i++) {
@@ -294,7 +294,7 @@ row_map(thread RT &dst, thread const RT &a, thread const RT &b, thread const RV 
     static_assert(ducks::is_ortho_layout<RV::layout>(), "rv must be ortho layout for row rt");
     static_assert(metal::is_same_v<typename RV::dtype, typename RT::dtype>, "rt and rv must be same type"); // compatible type
     static_assert(RV::outer_dim == RT::height, "rv and rt dimensions don't match"); // compatible size
-    
+
 
     using dtype = typename RT::dtype;
 
@@ -304,12 +304,12 @@ row_map(thread RT &dst, thread const RT &a, thread const RT &b, thread const RV 
         #pragma clang loop unroll(full)
         for(int j = 0; j < dst.width; j++) {
             dst.tiles[i][j].data.thread_elements()[0] = op::template op<dtype>(a.tiles[i][j].data.thread_elements()[0], b.tiles[i][j].data.thread_elements()[0], vec_val);
-            
+
             dst.tiles[i][j].data.thread_elements()[1] = op::template op<dtype>(a.tiles[i][j].data.thread_elements()[1], b.tiles[i][j].data.thread_elements()[1], vec_val);
         }
     }
 }
-    
+
 /**
  * @brief Applies an operation across the rows of two tiles in a column-major layout, using a third operand.
  *
@@ -327,7 +327,7 @@ row_map(thread RT &dst, thread const RT &a, thread const RT &b, thread const RV 
     static_assert(ducks::is_align_layout<RV::layout>(), "rv must be align layout for row rt");
     static_assert(metal::is_same_v<typename RV::dtype, typename RT::dtype>, "rt and rv must be same type"); // compatible type
     static_assert(RV::outer_dim == RT::height, "rv and rt dimensions don't match"); // compatible size
-    
+
 
     using dtype = typename RT::dtype;
 
@@ -336,7 +336,7 @@ row_map(thread RT &dst, thread const RT &a, thread const RT &b, thread const RV 
         #pragma clang loop unroll(full)
         for(int j = 0; j < dst.width; j++) {
             dst.tiles[i][j].data.thread_elements()[0] = op::template op<dtype>(a.tiles[i][j].data.thread_elements()[0], b.tiles[i][j].data.thread_elements()[0], row_values[i][0]);
-            
+
             dst.tiles[i][j].data.thread_elements()[1] = op::template op<dtype>(a.tiles[i][j].data.thread_elements()[1], b.tiles[i][j].data.thread_elements()[1], row_values[i][1]);
         }
     }
@@ -360,7 +360,7 @@ col_map(thread RT &dst, thread const RT &src, thread const RV &col_values) {
     static_assert(ducks::is_align_layout<typename RV::layout>(), "rv must be align layout for row rt"); // compatible type
     static_assert(metal::is_same_v<typename RV::dtype, typename RT::dtype>, "rv and rt must be of the same type"); // compatible type
     static_assert(RV::outer_dim == RT::width, "rv and rt dimensions do not match"); // compatible size
-    
+
     using dtype = typename RT::dtype;
 
     #pragma clang loop unroll(full)
@@ -372,7 +372,7 @@ col_map(thread RT &dst, thread const RT &src, thread const RV &col_values) {
         }
     }
 }
-    
+
 /**
  * @brief Applies an operation across the columns of a tile in a col-major layout.
  *
@@ -420,7 +420,7 @@ col_map(thread RT &dst, thread const RT &a, thread const RT &b, thread const RV 
     static_assert(ducks::is_align_layout<RV::layout>(), "rv must be align layout");
     static_assert(metal::is_same_v<typename RV::dtype, typename RT::dtype>, "rv and rt must be of the same type"); // compatible type
     static_assert(RV::outer_dim == RT::width, "rv and rt dims don't match"); // compatible size
-    
+
 
     using dtype = typename RT::dtype;
 
@@ -433,7 +433,7 @@ col_map(thread RT &dst, thread const RT &a, thread const RT &b, thread const RV 
         }
     }
 }
-    
+
 /**
  * @brief Applies an operation across the columns of two tiles in a row-major layout, using a third operand.
  *
@@ -451,7 +451,7 @@ col_map(thread RT &dst, thread const RT &a, thread const RT &b, thread const RV 
     static_assert(ducks::is_ortho_layout<RV::layout>(), "rv must be ortho layout");
     static_assert(metal::is_same_v<typename RV::dtype, typename RT::dtype>, "rv and rt must be of the same type"); // compatible type
     static_assert(RV::outer_dim == RT::width, "rv and rt dims don't match"); // compatible size
-    
+
 
     using dtype = typename RT::dtype;
 
@@ -587,7 +587,7 @@ template<typename RT, typename U>
 static METAL_FUNC typename metal::enable_if<ducks::is_register_tile<RT>(), void>::type
 copy(thread RT &dst, thread const U &src) {
     bin_map<base_ops::copy2, RT>(dst, dst, src);
-} 
+}
 
 /**
  * @brief Applies the max operation element-wise between two tiles or a tile and a scalar.
@@ -717,7 +717,7 @@ sub_row(thread RT &dst, thread const RT &src, thread const RV &row_values) {
 //    //            dst.tiles[i][j+1].data.thread_elements()[0] = val[2];
 //    //            dst.tiles[i][j+1].data.thread_elements()[1] = val[3];
 //    //        }
-//        
+//
 //    //        #pragma clang loop unroll(full)
 //    //        for(int j = 0; j < RT::width; j++) {
 //    //            T2 val = op::template op<T2>({src.tiles[i][j].data.thread_elements()[0],
@@ -764,8 +764,8 @@ mul_row(thread RT &dst, thread const RT &src, thread const RV &row_values) {
 ////            T s2 = src.tiles[i][j].data.thread_elements()[1];
 ////            T v2 = row_values[i][1];
 ////            dst.tiles[i][j].data.thread_elements()[1] = s2 * v2;
-//            
-//            
+//
+//
 ////            dst.tiles[i][j].data.thread_elements()[0] = op::template op<T>(src.tiles[i][j].data.thread_elements()[0], row_values[i][0]);
 ////            dst.tiles[i][j].data.thread_elements()[1] = op::template op<T>(src.tiles[i][j].data.thread_elements()[1], row_values[i][0]);
 //            T2 val = op::template op<T2>({src.tiles[i][j].data.thread_elements()[0], row_values[i][0]);
@@ -873,6 +873,6 @@ static METAL_FUNC typename metal::enable_if<ducks::is_register_tile<RT>() && duc
 broadcast_col(thread RT &dst, thread const RV &col_values) {
     col_map<base_ops::copy2, RT, RV>(dst, dst, col_values);
 }
-        
+
 
 }

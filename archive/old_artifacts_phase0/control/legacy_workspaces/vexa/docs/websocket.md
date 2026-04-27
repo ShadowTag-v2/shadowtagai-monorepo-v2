@@ -228,12 +228,12 @@ for segment in ws_segments:
     abs_start = segment.get('absolute_start_time')
     if not abs_start or not segment.get('text', '').strip():
         continue
-    
+
     existing = transcript_by_abs_start.get(abs_start)
     if existing and existing.get('updated_at') and segment.get('updated_at'):
         if segment['updated_at'] < existing['updated_at']:
             continue  # Keep existing (newer)
-    
+
     transcript_by_abs_start[abs_start] = segment
 ```
 
@@ -256,7 +256,7 @@ Group consecutive segments by same speaker:
 def group_by_speaker(segments):
     groups = []
     current_group = None
-    
+
     for segment in segments:
         speaker = segment.get('speaker', 'Unknown')
         if current_group and current_group['speaker'] == speaker:
@@ -271,7 +271,7 @@ def group_by_speaker(segments):
                 'start_time': segment['absolute_start_time'],
                 'end_time': segment['absolute_end_time']
             }
-    
+
     if current_group:
         groups.append(current_group)
     return groups
@@ -285,16 +285,16 @@ For maximum readability, re-render the entire transcript on every update:
 def render_full_transcript():
     # Clear screen and move cursor to top
     print('\033[H\033[J', end='')
-    
+
     # Render header
     print("=" * 60)
     print("📝 LIVE TRANSCRIPT")
     print("=" * 60)
-    
+
     # Get sorted segments and group by speaker
     sorted_segments = sorted(transcript_by_abs_start.values(), key=lambda s: s['absolute_start_time'])
     groups = group_by_speaker(sorted_segments)
-    
+
     # Render all groups
     for group in groups:
         start_time = format_time(group['start_time'])

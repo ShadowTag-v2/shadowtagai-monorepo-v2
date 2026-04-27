@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- INFORMATION ABOUT USAGE
     We use this file bacause we want to enable for the release build various checks from the
-    Android SDK(initially just NewApi and InlinedApi) plus our own custom checks. 
-    
+    Android SDK(initially just NewApi and InlinedApi) plus our own custom checks.
+
     Using the check() method on lintOptions in the lint.gradle file would be nice but it
     doesn't work as it will NOT recognize any custom Lint checks(from a local module(like lint-rules)
     or from a library added as a dependency) .

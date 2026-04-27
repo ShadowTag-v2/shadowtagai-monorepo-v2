@@ -41,7 +41,7 @@ export class GetBoardSchemaTool extends BaseMondayApiTool<typeof getBoardSchemaT
     const res = await this.mondayApi.request<GetBoardSchemaQuery>(getBoardSchema, variables);
 
     return {
-      content: `The current schema of the board ${boardId} is: 
+      content: `The current schema of the board ${boardId} is:
     \n\nColumns:\n ${res.boards?.[0]?.columns?.map((column) => `Id - ${column?.id}\n Title - ${column?.title}\n Type - ${column?.type}`).join('\n')}
     \n\nGroups:\n ${res.boards?.[0]?.groups?.map((group) => `Id - ${group?.id}\n Title - ${group?.title}`).join('\n')}`,
     };

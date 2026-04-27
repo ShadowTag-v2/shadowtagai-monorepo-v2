@@ -25,23 +25,23 @@ function createLogger(): Logger {
 	if (hfLoggingEnabled) {
 		const datasetId = process.env.LOGGING_DATASET_ID;
 		const hfToken = process.env.LOGGING_HF_TOKEN || process.env.DEFAULT_HF_TOKEN;
-		
+
 		if (!hfToken) {
 			console.warn('[Logger] HF Dataset logging disabled: No HF token found (set LOGGING_HF_TOKEN or DEFAULT_HF_TOKEN)');
 		} else {
 			console.log(`[Logger] HF Dataset logging enabled for dataset: ${datasetId}`);
-			
+
 			try {
 				const transportPath = join(__dirname, 'hf-dataset-transport.js');
-				
+
 				const targets = [
 					// Console output
 					{
 						target: 'pino-pretty',
 						level: logLevel,
-						options: { 
-							colorize: isDev, 
-							destination 
+						options: {
+							colorize: isDev,
+							destination
 						},
 					},
 					// HF dataset output
@@ -51,7 +51,7 @@ function createLogger(): Logger {
 						options: { sync: false },
 					},
 				];
-				
+
 				return pino({ ...baseOptions, transport: { targets } });
 			} catch (error) {
 				console.error('[Logger] Failed to setup HF transport, falling back to console only:', error);

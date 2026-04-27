@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>Welcome, {{ user.username }}</h1>
-  
+
   {% if user.is_admin %}
     <p>Admin privileges granted. You can <a href="{{ url_for('admin.dashboard') }}">go to the admin dashboard</a>.</p>
   {% else %}

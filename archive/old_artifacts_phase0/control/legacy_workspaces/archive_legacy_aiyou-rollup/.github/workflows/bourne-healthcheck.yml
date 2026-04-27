@@ -24,4 +24,3 @@ jobs:
       - name: Fail if GitHub not visible
         run: |
           node -e "const fs=require('fs');if(!fs.existsSync('healthcheck.json')){console.log('no healthcheck.json, passing');process.exit(0);}const j=JSON.parse(fs.readFileSync('healthcheck.json','utf8'));if(j && j.githubVisible===false){console.error('GitHub not visible. Failing per Bourne healthcheck.');process.exit(1);}"
-

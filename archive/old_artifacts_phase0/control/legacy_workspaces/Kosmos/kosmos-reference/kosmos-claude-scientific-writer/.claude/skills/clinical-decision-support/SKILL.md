@@ -107,14 +107,14 @@ The first page of every CDS document should contain ONLY the executive summary w
 1. **Document Title and Type**
    - Main title (e.g., "Biomarker-Stratified Cohort Analysis" or "Evidence-Based Treatment Recommendations")
    - Subtitle with disease state and focus
-   
+
 2. **Report Information Box** (using colored tcolorbox)
    - Document type and purpose
    - Date of analysis/report
    - Disease state and patient population
    - Author/institution (if applicable)
    - Analysis framework or methodology
-   
+
 3. **Key Findings Boxes** (3-5 colored boxes using tcolorbox)
    - **Primary Results** (blue box): Main efficacy/outcome findings
    - **Biomarker Insights** (green box): Key molecular subtype findings
@@ -229,18 +229,18 @@ The first page of every CDS document should contain ONLY the executive summary w
 - **First Page**: Always a complete executive summary spanning entire page 1 (see Document Structure section)
 
 **Visual Elements:**
-- **Colors**: 
+- **Colors**:
   - Page 1 boxes: blue=data/information, green=biomarkers/recommendations, yellow/orange=clinical implications, red=warnings
   - Recommendation boxes (green=strong recommendation, yellow=conditional, blue=research needed)
   - Biomarker stratification (color-coded molecular subtypes)
   - Statistical significance (color-coded p-values, hazard ratios)
-- **Tables**: 
+- **Tables**:
   - Demographics with baseline characteristics
   - Biomarker frequency by subgroup
   - Outcomes table (ORR, PFS, OS, DOR by molecular subtype)
   - Adverse events by cohort
   - Evidence summary tables with GRADE ratings
-- **Figures**: 
+- **Figures**:
   - Kaplan-Meier survival curves with log-rank p-values and number at risk tables
   - Waterfall plots showing best response by patient
   - Forest plots for subgroup analyses with confidence intervals
@@ -285,22 +285,22 @@ This skill integrates with:
 
 **Example 1: NSCLC Biomarker Stratification**
 ```
-> Analyze a cohort of 45 NSCLC patients stratified by PD-L1 expression (<1%, 1-49%, ≥50%) 
-> receiving pembrolizumab. Include outcomes: ORR, median PFS, median OS with hazard ratios 
+> Analyze a cohort of 45 NSCLC patients stratified by PD-L1 expression (<1%, 1-49%, ≥50%)
+> receiving pembrolizumab. Include outcomes: ORR, median PFS, median OS with hazard ratios
 > comparing PD-L1 ≥50% vs <50%. Generate Kaplan-Meier curves and waterfall plot.
 ```
 
 **Example 2: GBM Molecular Subtype Analysis**
 ```
-> Generate cohort analysis for 30 GBM patients classified into Cluster 1 (Mesenchymal-Immune-Active) 
-> and Cluster 2 (Proneural) molecular subtypes. Compare outcomes including median OS, 6-month PFS rate, 
+> Generate cohort analysis for 30 GBM patients classified into Cluster 1 (Mesenchymal-Immune-Active)
+> and Cluster 2 (Proneural) molecular subtypes. Compare outcomes including median OS, 6-month PFS rate,
 > and response to TMZ+bevacizumab. Include biomarker profile table and statistical comparison.
 ```
 
 **Example 3: Breast Cancer HER2 Cohort**
 ```
-> Analyze 60 HER2-positive metastatic breast cancer patients treated with trastuzumab-deruxtecan, 
-> stratified by prior trastuzumab exposure (yes/no). Include ORR, DOR, median PFS with forest plot 
+> Analyze 60 HER2-positive metastatic breast cancer patients treated with trastuzumab-deruxtecan,
+> stratified by prior trastuzumab exposure (yes/no). Include ORR, DOR, median PFS with forest plot
 > showing subgroup analyses by hormone receptor status, brain metastases, and number of prior lines.
 ```
 
@@ -308,25 +308,25 @@ This skill integrates with:
 
 **Example 1: HER2+ Metastatic Breast Cancer Guidelines**
 ```
-> Create evidence-based treatment recommendations for HER2-positive metastatic breast cancer including 
-> biomarker-guided therapy selection. Use GRADE system to grade recommendations for first-line 
-> (trastuzumab+pertuzumab+taxane), second-line (trastuzumab-deruxtecan), and third-line options. 
+> Create evidence-based treatment recommendations for HER2-positive metastatic breast cancer including
+> biomarker-guided therapy selection. Use GRADE system to grade recommendations for first-line
+> (trastuzumab+pertuzumab+taxane), second-line (trastuzumab-deruxtecan), and third-line options.
 > Include decision algorithm flowchart based on brain metastases, hormone receptor status, and prior therapies.
 ```
 
 **Example 2: Advanced NSCLC Treatment Algorithm**
 ```
-> Generate treatment recommendation report for advanced NSCLC based on PD-L1 expression, EGFR mutation, 
-> ALK rearrangement, and performance status. Include GRADE-graded recommendations for each molecular subtype, 
-> TikZ flowchart for biomarker-directed therapy selection, and evidence tables from KEYNOTE-189, FLAURA, 
+> Generate treatment recommendation report for advanced NSCLC based on PD-L1 expression, EGFR mutation,
+> ALK rearrangement, and performance status. Include GRADE-graded recommendations for each molecular subtype,
+> TikZ flowchart for biomarker-directed therapy selection, and evidence tables from KEYNOTE-189, FLAURA,
 > and CheckMate-227 trials.
 ```
 
 **Example 3: Multiple Myeloma Line-of-Therapy Sequencing**
 ```
-> Create treatment algorithm for newly diagnosed multiple myeloma through relapsed/refractory setting. 
-> Include GRADE recommendations for transplant-eligible vs ineligible, high-risk cytogenetics considerations, 
-> and sequencing of daratumumab, carfilzomib, and CAR-T therapy. Provide flowchart showing decision points 
+> Create treatment algorithm for newly diagnosed multiple myeloma through relapsed/refractory setting.
+> Include GRADE recommendations for transplant-eligible vs ineligible, high-risk cytogenetics considerations,
+> and sequencing of daratumumab, carfilzomib, and CAR-T therapy. Provide flowchart showing decision points
 > at each line of therapy.
 ```
 
@@ -354,7 +354,7 @@ This skill integrates with:
 
 **GRADE System**
 - **1A**: Strong recommendation, high-quality evidence
-- **1B**: Strong recommendation, moderate-quality evidence  
+- **1B**: Strong recommendation, moderate-quality evidence
 - **2A**: Weak recommendation, high-quality evidence
 - **2B**: Weak recommendation, moderate-quality evidence
 - **2C**: Weak recommendation, low-quality evidence
@@ -370,7 +370,7 @@ This skill integrates with:
 
 1. **Patient Selection Transparency**: Clearly document inclusion/exclusion criteria, patient flow, and reasons for exclusions
 2. **Biomarker Clarity**: Specify assay methods, platforms (e.g., FoundationOne, Caris), cut-points, and validation status
-3. **Statistical Rigor**: 
+3. **Statistical Rigor**:
    - Report hazard ratios with 95% confidence intervals, not just p-values
    - Include median follow-up time for survival analyses
    - Specify statistical tests used (log-rank, Cox regression, Fisher's exact)
@@ -389,11 +389,11 @@ This skill integrates with:
 
 ### For Treatment Recommendation Reports
 
-1. **Evidence Grading Transparency**: 
+1. **Evidence Grading Transparency**:
    - Use GRADE system consistently (1A, 1B, 2A, 2B, 2C)
    - Document rationale for each grade
    - Clearly state quality of evidence (high, moderate, low, very low)
-2. **Comprehensive Evidence Review**: 
+2. **Comprehensive Evidence Review**:
    - Include phase 3 randomized trials as primary evidence
    - Supplement with phase 2 data for emerging therapies
    - Note real-world evidence and meta-analyses
@@ -410,7 +410,7 @@ This skill integrates with:
 
 ### General Best Practices
 
-1. **First Page Executive Summary (MANDATORY)**: 
+1. **First Page Executive Summary (MANDATORY)**:
    - ALWAYS create a complete executive summary on page 1 that spans the entire first page
    - Use 3-5 colored tcolorbox elements to highlight key findings
    - No table of contents or detailed sections on page 1
@@ -462,4 +462,3 @@ See the `scripts/` directory for analysis and visualization tools:
 - `calculate_statistics.py` - Hazard ratios, Cox regression, log-rank tests, Fisher's exact
 - `validate_cds_document.py` - Quality and compliance checks (HIPAA, statistical reporting standards)
 - `grade_evidence.py` - Automated GRADE assessment helper for treatment recommendations
-

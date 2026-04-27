@@ -1,6 +1,6 @@
 # Data Types in Feast
 
-Feast frequently has to mediate data across platforms and systems, each with its own unique type system. 
+Feast frequently has to mediate data across platforms and systems, each with its own unique type system.
 To make this possible, Feast itself has a type system for all the types it is able to handle natively.
 
 Feast's type system is built on top of [protobuf](https://github.com/protocolbuffers/protobuf). The messages that make up the type system can be found [here](https://github.com/feast-dev/feast/blob/master/protos/feast/types/Value.proto), and the corresponding python classes that wrap them can be found [here](https://github.com/feast-dev/feast/blob/master/sdk/python/feast/types.py).

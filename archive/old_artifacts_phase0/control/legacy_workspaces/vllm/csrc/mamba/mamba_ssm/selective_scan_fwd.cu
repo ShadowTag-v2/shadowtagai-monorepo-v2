@@ -119,7 +119,7 @@ void selective_scan_fwd_kernel(SSMParamsBase params) {
 
     const int* cache_indices = params.cache_indices_ptr == nullptr ? nullptr
         : reinterpret_cast<int *>(params.cache_indices_ptr);
-    const int cache_index = cache_indices == nullptr ? batch_id : cache_indices[batch_id]; 
+    const int cache_index = cache_indices == nullptr ? batch_id : cache_indices[batch_id];
     // cache_index == params.pad_slot_id is defined as padding, so we exit early
     if (cache_index == params.pad_slot_id){
         return;
@@ -145,7 +145,7 @@ void selective_scan_fwd_kernel(SSMParamsBase params) {
             cache_index * params.ssm_states_batch_stride +
             dim_id * kNRows * params.ssm_states_dim_stride;
     }
-    
+
     float D_val[kNRows] = {0};
     if (params.D_ptr != nullptr) {
         #pragma unroll
@@ -199,7 +199,7 @@ void selective_scan_fwd_kernel(SSMParamsBase params) {
         }
         u += kChunkSize;
         delta += kChunkSize;
-    
+
         float delta_vals[kNRows][kNItems], delta_u_vals[kNRows][kNItems], out_vals[kNRows][kNItems];
         #pragma unroll
         for (int r = 0; r < kNRows; ++r) {
@@ -608,7 +608,7 @@ void set_ssm_params_fwd(SSMParamsBase &params,
         }
         params.out_batch_stride = out.stride(0);
         params.out_d_stride = out.stride(1);
-        
+
         params.ssm_states_batch_stride = ssm_states.stride(0);
         params.ssm_states_dim_stride = ssm_states.stride(1);
         params.ssm_states_dstate_stride = ssm_states.stride(2);
@@ -677,7 +677,7 @@ void selective_scan_fwd(const torch::Tensor &u, const torch::Tensor &delta,
     if (varlen) {
         CHECK_SHAPE(B, n_groups, dstate, seqlen);
     } else {
-        CHECK_SHAPE(B, batch_size, n_groups, dstate, seqlen); 
+        CHECK_SHAPE(B, batch_size, n_groups, dstate, seqlen);
     }
     TORCH_CHECK(B.stride(-1) == 1 || B.size(-1) == 1);
 
@@ -685,7 +685,7 @@ void selective_scan_fwd(const torch::Tensor &u, const torch::Tensor &delta,
     if (varlen) {
         CHECK_SHAPE(C, n_groups, dstate, seqlen);
     } else {
-        CHECK_SHAPE(C, batch_size, n_groups, dstate, seqlen); 
+        CHECK_SHAPE(C, batch_size, n_groups, dstate, seqlen);
     }
     TORCH_CHECK(C.stride(-1) == 1 || C.size(-1) == 1);
 
@@ -736,7 +736,7 @@ void selective_scan_fwd(const torch::Tensor &u, const torch::Tensor &delta,
             CHECK_SHAPE(cache_indices_, batch_size);
         }
     }
-   
+
 
     at::Tensor z, out_z;
     const bool has_z = z_.has_value();
@@ -750,7 +750,7 @@ void selective_scan_fwd(const torch::Tensor &u, const torch::Tensor &delta,
         } else {
             CHECK_SHAPE(z, batch_size, dim, seqlen);
         }
-        
+
         out_z = z;
     }
 
@@ -781,7 +781,7 @@ void selective_scan_fwd(const torch::Tensor &u, const torch::Tensor &delta,
                        initial_state_idx
                        );
 
-    
+
     const at::cuda::OptionalCUDAGuard device_guard(device_of(u));
     auto stream = at::cuda::getCurrentCUDAStream().stream();
     DISPATCH_WTYPE_ITYPE_FLOAT_AND_HALF_AND_BF16(u.scalar_type(), ssm_states.scalar_type(), "selective_scan_fwd", [&] {

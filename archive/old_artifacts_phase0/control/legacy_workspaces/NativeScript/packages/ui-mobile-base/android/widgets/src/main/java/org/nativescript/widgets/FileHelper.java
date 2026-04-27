@@ -788,7 +788,7 @@ public class FileHelper {
 		} catch (Exception exception){
 			Log.e(TAG, "Failed to updateValue: " + exception.getMessage());
 		}
-		
+
 	}
 
 	public void renameSync(Context context, String newName, @Nullable Callback callback) {

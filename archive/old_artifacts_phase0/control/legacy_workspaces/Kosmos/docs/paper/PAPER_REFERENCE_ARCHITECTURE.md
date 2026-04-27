@@ -1,7 +1,7 @@
 # 🪐 Kosmos: AI Scientist — Operational Runbook v2.0
 
-**System Role:** Autonomous Data-Driven Research Engine  
-**Standard Runtime:** Up to 12 hours (continuous operation)  
+**System Role:** Autonomous Data-Driven Research Engine
+**Standard Runtime:** Up to 12 hours (continuous operation)
 **Output:** Fully cited scientific reports, executable code repository, literature log, and figures
 
 ---
@@ -95,7 +95,7 @@ Provide an **open-ended, high-level scientific goal** in natural language.
 
 The Literature Search Agent requires API access to:
 - PubMed
-- Semantic Scholar  
+- Semantic Scholar
 - arXiv
 
 Ensure network connectivity to these services before initiating a run.
@@ -281,5 +281,5 @@ The general-purpose architecture (world model + two domain-agnostic agents) enab
 
 ---
 
-*Document version: 2.0*  
+*Document version: 2.0*
 *Based on: Mitchener et al., "Kosmos: An AI Scientist for Autonomous Discovery" (arXiv:2511.02824v2)*

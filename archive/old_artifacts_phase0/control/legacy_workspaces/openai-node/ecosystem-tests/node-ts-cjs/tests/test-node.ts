@@ -182,9 +182,9 @@ describe('toFile', () => {
       .then((x) => toFile(new FormDataFile([x], filename)));
 
     expect(file.name).toEqual(filename);
-  
+
     const params: TranscriptionCreateParams = { file, model };
-  
+
     const result = await client.audio.transcriptions.create(params);
     expect(result.text).toBeSimilarTo(correctAnswer, 12);
   });

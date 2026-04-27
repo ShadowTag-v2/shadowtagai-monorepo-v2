@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 # System Dependencies (must be installed separately):
-# 
+#
 # LaTeX Distribution (required for PDF compilation):
 #   - macOS: MacTeX (https://www.tug.org/mactex/) or BasicTeX
 #     Install: brew install --cask mactex-no-gui
@@ -41,4 +41,3 @@ packages = ["scientific_writer"]
 
 [tool.uv]
 dev-dependencies = []
-

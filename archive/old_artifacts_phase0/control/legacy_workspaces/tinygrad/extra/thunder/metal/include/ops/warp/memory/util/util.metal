@@ -6,14 +6,14 @@
 #include "../tile/tile.metal"
 #include "../../../../types/shared/shared.metal"
 namespace mittens {
-    
+
 // sizeof() can be unreliable when working with references to objects
 // plus, template magic allows arrays of these objects to be copied, too.
 namespace detail {
 
 template <typename T, uint32_t... dims>
 struct size_info;
-    
+
 template <typename T>
 struct size_info<T> {
 private:
@@ -32,6 +32,6 @@ struct size_info<T, dim, rest_dims...> {
 template<typename T, uint32_t... dims> constant constexpr uint32_t size_elements = detail::size_info<T, dims...>::elements;
 template<typename T, uint32_t... dims> constant constexpr uint32_t size_bytes    = detail::size_info<T, dims...>::bytes;
 
-    
-        
+
+
 }

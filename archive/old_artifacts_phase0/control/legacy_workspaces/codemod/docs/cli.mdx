@@ -95,7 +95,7 @@ npx codemod <package-name>
 
 <ResponseField name="-t, --target <PATH>" type="string">
   Target directory to run the workflow on.
-  
+
   ```bash
   # Specify a target directory
   npx codemod workflow run -w ./my-codemod -t /abs/path/to/repo
@@ -111,7 +111,7 @@ npx codemod <package-name>
   ```bash
   # Single parameter:
   npx codemod workflow run -w workflow.yaml --param format=cjs
-  
+
   # Multiple parameters:
   npx codemod workflow run -w workflow.yaml --param format=cjs --param strict=true
   ```
@@ -582,13 +582,13 @@ npx codemod unpublish <PACKAGE> [options]
   ```bash
   # Preview removal of a single version
   npx codemod unpublish my-codemod --version 0.1.0 --dry-run
-  
+
   # Remove a single version (will prompt)
   npx codemod unpublish my-codemod --version 0.1.0
-  
+
   # Remove all versions (will prompt)
   npx codemod unpublish my-codemod --force
-  
+
   # Unpublish from a custom registry
   npx codemod unpublish my-codemod --force --registry https://registry.example.com
   ```

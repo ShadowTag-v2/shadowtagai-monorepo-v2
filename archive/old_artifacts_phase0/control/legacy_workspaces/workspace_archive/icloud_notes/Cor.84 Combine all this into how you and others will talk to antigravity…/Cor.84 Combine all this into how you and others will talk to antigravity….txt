@@ -3,7 +3,7 @@ Cor.84 Combine all this into how you and others will talk to antigravity. Initia
 1.        All local, on mac, unless not possible:
 2.        Gemini 3 pro web does intake,
 3.        Include the whisper voice option,
-4.        Gemini 3 pro - business - browser, 
+4.        Gemini 3 pro - business - browser,
 5.        or phone app,
 6.        Breaks the input into atomic chats, and
 7.        Searches all pipeline, drive, memory, and web,
@@ -14,17 +14,17 @@ Cor.84 Combine all this into how you and others will talk to antigravity. Initia
 12.  (So far, perplexity is the only local install, however iphone link to apps is available,)
 13.  As well as to apply its biz acumen to the atom;
 14.  (Actually, want this as a shortcut on iphone too.)
-15.  For SuperGrok to research in all sources for any useful or upgrades, and 
+15.  For SuperGrok to research in all sources for any useful or upgrades, and
 16.  SuperGrok specifically to search X and grokipedia, for such,
 17.  As well as to apply its biz acumen to the atom;
 18.  All 3, plus following, to operate at all times with flyingmonkey agenting structure.
 19.  Supergrok then routes the atoms to one of my 10 cloud code standard licenses,
 20.  Bu the same manner of explanation.
-21.  All running in headless format, 
+21.  All running in headless format,
 22.  With common dashboard,
-23.  With the 10-cloud code standard licenses, 
-24.  Churning through then no, they push code to git, 
-25.  pull prs, merge changes, 
+23.  With the 10-cloud code standard licenses,
+24.  Churning through then no, they push code to git,
+25.  pull prs, merge changes,
 26.  Then send to google cloud run for,
 27.  Interfacing to google cloud for production.
 28.  All chats to be saved to github for referencing.
@@ -34,12 +34,12 @@ Cor.84 Combine all this into how you and others will talk to antigravity. Initia
 32.  Investigate making the squad/troop guys in our flyingmonkey structure do the research and voting. Then the chain of command functions as designed, but in reverse, as a bottom fed organization.  But use the cav mtoe, to expediate the process.  For instance the squad and team leaders could simply coalate the vote from their agents. Then they forward to higher, rather than voting. With the highest 50 ranks in our adapted cav structure, forming the executive, pro, decision breaking block. But take max advantage of the survivability and controllability of the .mil org chart.
 33.  <next>
 34.  Adapt CodePMCS to check all chats for updates from pipleline
-35.  Same for all other code.  
+35.  Same for all other code. 
 36.  CodePMCS to additionally update all code with the inputs from pipeline.
 37.  End state Claude code terminal mac and antigravity local mac can communicate as follows:
 38.  Then answer:
-39.  When new tech becomes available.  
-40.  Who else is doing this? 
+39.  When new tech becomes available. 
+40.  Who else is doing this?
 41.  What problem does this solve.
 42.  Do valuation as vertical”
 
@@ -70,13 +70,13 @@ async def search_all_sources(self, content):
 # Any LLM can ask another for clarification
 answer = await llm_conv.ask_llm(
     from_llm="gemini",
-    to_llm="perplexity", 
+    to_llm="perplexity",
     question="What's the current best practice for auth?",
     context=handoff
 )
 4. Full 650 n-autoresearch/Kosmos/BioAgents Per LLM
 Gemini:        650 agents
-Perplexity:    650 agents  
+Perplexity:    650 agents
 SuperGrok:     650 agents
 Code Assist:   650 × 10 = 6,500 agents
 ─────────────────────────────
@@ -94,7 +94,7 @@ chmod +x bin/ungpt
 
 # Shows:
 # - Gemini searching pipeline/drive/memory/web
-# - Reasoning handoff to Perplexity  
+# - Reasoning handoff to Perplexity
 # - Reasoning handoff to SuperGrok
 # - Route to Code Assist license with full chain
 # - Swarm votes from all 8,450 agents
@@ -465,11 +465,11 @@ Notes on the HF pool
 
 “Model Spec v2”—what is it, is it published, and how do we use it here?
 
-What it is. The OpenAI Model Spec is a living doc that defines desired model behavior: authority/order (Root→System→Developer→User→Guideline), safety priorities, agentic rules, etc. OpenAI has released updated versions in 2025 (often informally referred to as “v2”) and keeps it public.  
+What it is. The OpenAI Model Spec is a living doc that defines desired model behavior: authority/order (Root→System→Developer→User→Guideline), safety priorities, agentic rules, etc. OpenAI has released updated versions in 2025 (often informally referred to as “v2”) and keeps it public.
 
 Where to read/copy.
 	•	Human-readable site (latest): model-spec.openai.com (linked from OpenAI docs/blog).
-	•	Source & archived HTML (pin a commit): openai/model_spec on GitHub. It explicitly says the repo contains markdown for the spec and archived versions starting from the second release (Feb 12, 2025).  
+	•	Source & archived HTML (pin a commit): openai/model_spec on GitHub. It explicitly says the repo contains markdown for the spec and archived versions starting from the second release (Feb 12, 2025).
 
 How to “copy it into here.”
 Two practical ways:
@@ -527,8 +527,8 @@ Quick “Cursor checklist”
 ⸻
 
 About “Model Spec v2” publication status (receipts)
-	•	OpenAI publicly documents updates to the Model Spec (e.g., Sept 12, 2025 update; archive notes and guidance on authority, agentic behavior).  
-	•	The GitHub repo openai/model_spec hosts the markdown + archived HTML starting with the second release (2025-02-12)—that’s the “v2” era you’re referring to. You can vendor it directly.  
+	•	OpenAI publicly documents updates to the Model Spec (e.g., Sept 12, 2025 update; archive notes and guidance on authority, agentic behavior).
+	•	The GitHub repo openai/model_spec hosts the markdown + archived HTML starting with the second release (2025-02-12)—that’s the “v2” era you’re referring to. You can vendor it directly.
 
 If you want, I can trim a house-spec (one page) tailored to AiYou’s use cases (video tooling + safety + watermarking) and drop it into the three system prompts above.”
 
@@ -536,10 +536,10 @@ If you want, I can trim a house-spec (one page) tailored to AiYou’s use cases 
 
 Model Spec v2 — what it is, where it is
 	•	What: OpenAI’s “Model Spec” v2 is the public document that defines desired model behavior (principles, do/don’t, trade-offs) plus evaluation prompts.
-	•	Status: Published and open-sourced under CC0 (public domain). You’re free to copy, adapt, and vendor it.  
+	•	Status: Published and open-sourced under CC0 (public domain). You’re free to copy, adapt, and vendor it.
 	•	Where:
-	•	Human-readable: model-spec.openai.com (always the latest).  
-	•	Source + eval prompts: github.com/openai/model_spec (includes model_spec.md, examples/, and an archive of released HTML versions starting from the Feb 12, 2025 update).  
+	•	Human-readable: model-spec.openai.com (always the latest).
+	•	Source + eval prompts: github.com/openai/model_spec (includes model_spec.md, examples/, and an archive of released HTML versions starting from the Feb 12, 2025 update).
 
 Copying v2 into your codebase (Cursor-friendly)
 
@@ -570,8 +570,8 @@ C) Import into docs tooling
 	•	If you want it as a Cursor prompt reference, store it in /prompts/model-spec/ and reference sections in your Cursor recipes (e.g., “Follow §‘Upholding intellectual freedom’ and §‘Measuring progress’ from docs/model-spec/model_spec.md”).
 
 Notes for use in your stack
-	•	License: CC0 ⇒ no attribution required, but keep a VERSION note with the commit/date you imported.  
-	•	Evaluation: The repo’s examples/ are tough prompts mapped to spec footnotes—good for internal red-team/unit tests.  
+	•	License: CC0 ⇒ no attribution required, but keep a VERSION note with the commit/date you imported.
+	•	Evaluation: The repo’s examples/ are tough prompts mapped to spec footnotes—good for internal red-team/unit tests.
 
 If you want, paste your repo layout and I’ll give you exact file paths + a ready-to-commit patch.”
 
@@ -740,7 +740,7 @@ To implement under your attached Bourne/160 persona with elevated privileges:
 
 ⸻
 
-Would you like me to output the Cursor-ready files now (JSON + router + task pack) and stage them under .cursor/shadowtag_v5/ so the MVP clock starts?”  
+Would you like me to output the Cursor-ready files now (JSON + router + task pack) and stage them under .cursor/shadowtag_v5/ so the MVP clock starts?”
 
 “Got it—here’s the “courtroom” view, laser-focused on the opponent setup, the judge, uniqueness, error mitigation, and a starter template you can use today.
 
@@ -1336,7 +1336,7 @@ Quick actions in Cursor
 	•	agent:bulk-sweep → micro-batches (≤200 LOC/≤5 files)
 	•	agent:validate → KPIs into DECISION_LOG.md
 
-Want me to add the dual-chain + cross-exam mode as a new task (agent:dual-chain-review) with a tiny arbiter script? I can drop those files now. 
+Want me to add the dual-chain + cross-exam mode as a new task (agent:dual-chain-review) with a tiny arbiter script? I can drop those files now.
 
 
 Here’s a straight, numbers-first view of your idea: “make the LLM explain its answer to another LLM before publishing” (I’ll call it Explain-to-Peer, E2P). It’s a lightweight debate where Model A must show its work to Model B; Model B interrogates, A revises, and only then do we publish. You get debate-style reliability without the full cost of multi-turn debates/self-consistency.
@@ -1780,15 +1780,15 @@ axes:
   - id: "functional_correctness"
     description: "Does the code satisfy the prompt and pass logic checks?"
     weight: 0.35
-    
+
   - id: "security_and_policy"
     description: "Are there vulnerabilities, PII leaks, or spec violations?"
     weight: 0.30
-    
+
   - id: "stability_and_robustness"
     description: "Are edge cases handled? Is exception handling present?"
     weight: 0.20
-    
+
   - id: "performance_and_cost"
     description: "Is the solution efficient (O-notation) and token-light?"
     weight: 0.15
@@ -1928,7 +1928,7 @@ const judge = new Judge();
 
 const caseFile = {
   requestId: "req_123",
-  riskLevel: "MED", 
+  riskLevel: "MED",
   witnessFlags: bugBotResults.failed ? ["witness_tests_failed"] : [],
   criticScores: criticJson.scores, // e.g. { functional_correctness: 0.95, ... }
   criticNotes: criticJson.rationale
@@ -1958,7 +1958,7 @@ JSON
   "version": "2.1",
   "model_config": {
     "provider": "openai",
-    "model": "gpt-5-preview", 
+    "model": "gpt-5-preview",
     "temperature": 0.1,
     "response_format": { "type": "json_object" }
   },
@@ -2725,7 +2725,7 @@ Concrete:
      - For each challenge:
        - CALL TOOLS (math, RAG, Nowgrep, ShadowTag verify, Bugbot, etc.).
        - Emit:
-         - `repairs[] = {claim_id, status: fixed|disputed, receipts[]}` 
+         - `repairs[] = {claim_id, status: fixed|disputed, receipts[]}`
            (receipts = tool outputs: hashes, test logs, citations).
      - New answer: `answer_v2` + updated `claims_v2`, `tests_v2`, `receipts[]`.
 
@@ -3007,7 +3007,7 @@ M:: {Modes: Text/Code/Video | Observability: Traces + DECISION_LOG.md | Scale: L
 ▛///▞ Value.Lock
 (⊢ ∙ ⇨ ∙ ⟿ ∙ ▷) ⇨ PRISM ≡ Value.Lock – One architecture to rule them all: Reliability without the bloat, innovation without the risk.
 :: ∎ :: ///▙▖▙▖▞▞▙▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
-▛///▞ 
+▛///▞
 
 # MEGA ROLLUP: AiYou Agent Stack – Paired Reviewers, Arbiters, & ShadowTag Courtroom (2025 Edition)
 
@@ -3041,7 +3041,7 @@ Core flow: **Draft (cheap HF/MoE) → Escalate if risk ≥ T → Dual Review (GP
 
 **RoE/RoT Levers:** RoE (MoE): K=16 Clean-Cache → 1.5x quality, -30% latency. RoT: -59% cost, +82% speed, ±0% acc. Always-on for reasoning.
 
-**Agent Tips from X/Web (2025 Searches):** 
+**Agent Tips from X/Web (2025 Searches):**
 - LatentMAS: Latent-space collab (no text) → +14.6% acc, 4x faster, 70% fewer tokens. Fold into arbiter for lossless merges.
 - LangGraph: Supervisor coords research/RAG/NL2SQL sub-agents. Use for Deep Agents (planning + filesystems).
 - LLM Consortium: Multiple LLMs → Arbiter synthesizes/iterates. Matches our dual-review.
@@ -3204,7 +3204,7 @@ echo "Tier-0: Green"
 
 **Risks & Guardrails:** ToS: Owned HF only—no rotation abuse. Observability: LangSmith traces; kill-switch on >X% disagrees. Human: RHR on red-band risks.
 
-**Next:** Paste files → Run first trial on ShadowTag video. Tweak rubrics. Want LatentMAS fork or full zip? Say the word—this is your revolution.” 
+**Next:** Paste files → Run first trial on ShadowTag video. Tweak rubrics. Want LatentMAS fork or full zip? Say the word—this is your revolution.”
 
 “///▙▖▙▖▞▞▙▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
 ▛//▞ Ultrathink :: IMPROVE AI AGENT TECHNIQUES – WEB & X ROLLUP ⫸
@@ -3229,7 +3229,7 @@ M:: {Modes: Debate (reliability), Reuse (efficiency), Human-Hybrid (trust)}
 ▛///▞ Value.Lock
 (⊢ ∙ ⇨ ∙ ⟿ ∙ ▷) ⇨ PRISM ≡ Value.Lock – One insight: Agents aren't toys. They're systems. Master evals, reuse modules, debate ruthlessly—unlock 3.4x ROI. Beauty in the unbreakable.
 :: ∎ :: ///▙▖▙▖▞▞▙▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
-▛///▞ 
+▛///▞
 
 # ULTRATHINK ROLLUP: Elevate AI Agent Techniques – 2025 Web/X Synthesis
 
@@ -3284,30 +3284,30 @@ Biggest predictor? Disciplined evals/error analysis—not buzzy tools. Prototype
 3.        Include the whisper voice option,
 4.        Gemini intake breaks the input into atomic chats, and
 5.        Writes the tests for each,
-6.        Sends to Perplexity 
+6.        Sends to Perplexity
 7.        For perplexity to research in all sources for any useful or upgrades,
 8.        Perplexity sends to SuperGrok,
 9.        So far, perplexity is the only local install, however iphone link to apps is available,
 10.  As well as to apply its biz acumen to the atom;
 11.  Actually, want this as a shortcut on iphone too.
-12.  For SuperGrok to research in all sources for any useful or upgrades, and 
+12.  For SuperGrok to research in all sources for any useful or upgrades, and
 13.  SuperGrok specifically to search X and grokipedia, for such,
 14.  As well as to apply its biz acumen to the atom;
 15.  All 3, plus following, to operate at all times with flyingmonkey agenting structure.
 16.  Supergrok then routes the atoms to one of my 10 cloud code standard licenses.
-17.  All running in headless format, 
+17.  All running in headless format,
 18.  With common dashboard,
-19.  With the 10-cloud code standard licenses, 
-20.  Churning through then Sending to 
+19.  With the 10-cloud code standard licenses,
+20.  Churning through then Sending to
 21.  Cloude Code console
 22.  To code, then pulling all pr’s, and
 23.  Interfacing to google cloud for production.
 24.  All chats to be saved to github for referencing.
 25.  Adapt CodePMCS to check all chats for updates from pipleline
-26.  Same for all other code.  
-27.  CodePMCS to additionally update all code with the inputs from pipeline, 
-28.  When new tech becomes available.  
-29.  Who else is doing this? 
+26.  Same for all other code. 
+27.  CodePMCS to additionally update all code with the inputs from pipeline,
+28.  When new tech becomes available. 
+29.  Who else is doing this?
 30.  What problem does this solve.
 31.  Do valuation as vertical”
 “ExToto Prompt

@@ -40,7 +40,7 @@ body:
     id: actual
     attributes:
       label: What issue are you seeing?
-      description: Please include the full error messages and prompts with PII redacted. If possible, please provide text instead of a screenshot. 
+      description: Please include the full error messages and prompts with PII redacted. If possible, please provide text instead of a screenshot.
     validations:
       required: true
   - type: textarea

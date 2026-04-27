@@ -44,7 +44,7 @@ Website: (leave blank or add your website)
 
 Topics:
 - proxy
-- mitmproxy  
+- mitmproxy
 - antigravity
 - gemini-api
 - api-interception

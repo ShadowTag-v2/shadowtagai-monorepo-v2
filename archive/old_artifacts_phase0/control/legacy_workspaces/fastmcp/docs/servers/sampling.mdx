@@ -32,17 +32,17 @@ mcp = FastMCP("SamplingDemo")
 @mcp.tool
 async def analyze_sentiment(text: str, ctx: Context) -> dict:
     """Analyze the sentiment of text using the client's LLM."""
-    prompt = f"""Analyze the sentiment of the following text as positive, negative, or neutral. 
+    prompt = f"""Analyze the sentiment of the following text as positive, negative, or neutral.
     Just output a single word - 'positive', 'negative', or 'neutral'.
-    
+
     Text to analyze: {text}"""
-    
+
     # Request LLM analysis
     response = await ctx.sample(prompt)
-    
+
     # Process the LLM's response
     sentiment = response.text.strip().lower()
-    
+
     # Map to standard sentiment values
     if "positive" in sentiment:
         sentiment = "positive"
@@ -50,7 +50,7 @@ async def analyze_sentiment(text: str, ctx: Context) -> dict:
         sentiment = "negative"
     else:
         sentiment = "neutral"
-    
+
     return {"text": text, "sentiment": sentiment}
 ```
 
@@ -59,29 +59,29 @@ async def analyze_sentiment(text: str, ctx: Context) -> dict:
 <Card icon="code" title="Context Sampling Method">
 <ResponseField name="ctx.sample" type="async method">
   Request text generation from the client's LLM
-  
+
   <Expandable title="Parameters">
     <ResponseField name="messages" type="str | list[str | SamplingMessage]">
       A string or list of strings/message objects to send to the LLM
     </ResponseField>
-    
+
     <ResponseField name="system_prompt" type="str | None" default="None">
       Optional system prompt to guide the LLM's behavior
     </ResponseField>
-    
+
     <ResponseField name="temperature" type="float | None" default="None">
       Optional sampling temperature (controls randomness, typically 0.0-1.0)
     </ResponseField>
-    
+
     <ResponseField name="max_tokens" type="int | None" default="512">
       Optional maximum number of tokens to generate
     </ResponseField>
-    
+
     <ResponseField name="model_preferences" type="ModelPreferences | str | list[str] | None" default="None">
       Optional model selection preferences (e.g., model hint string, list of hints, or ModelPreferences object)
     </ResponseField>
   </Expandable>
-  
+
   <Expandable title="Response">
     <ResponseField name="response" type="TextContent | ImageContent">
       The LLM's response content (typically TextContent with a .text attribute)
@@ -101,7 +101,7 @@ Generate text with simple string prompts:
 async def generate_summary(content: str, ctx: Context) -> str:
     """Generate a summary of the provided content."""
     prompt = f"Please provide a concise summary of the following content:\n\n{content}"
-    
+
     response = await ctx.sample(prompt)
     return response.text
 ```
@@ -120,7 +120,7 @@ async def generate_code_example(concept: str, ctx: Context) -> str:
         temperature=0.7,
         max_tokens=300
     )
-    
+
     code_example = response.text
     return f"```python\n{code_example}\n```"
 ```
@@ -141,7 +141,7 @@ async def creative_writing(topic: str, ctx: Context) -> str:
         temperature=0.9,  # High creativity
         max_tokens=1000
     )
-    
+
     return response.text
 
 @mcp.tool
@@ -153,7 +153,7 @@ async def technical_analysis(data: str, ctx: Context) -> str:
         temperature=0.2,  # Low randomness for consistency
         max_tokens=800
     )
-    
+
     return response.text
 ```
 
@@ -172,13 +172,13 @@ async def multi_turn_analysis(user_query: str, context_data: str, ctx: Context) 
         SamplingMessage(role="assistant", content="I can see your data. What would you like me to analyze?"),
         SamplingMessage(role="user", content=user_query)
     ]
-    
+
     response = await ctx.sample(
         messages=messages,
         system_prompt="You are a data analyst. Provide detailed insights based on the conversation context.",
         temperature=0.3
     )
-    
+
     return response.text
 ```
 

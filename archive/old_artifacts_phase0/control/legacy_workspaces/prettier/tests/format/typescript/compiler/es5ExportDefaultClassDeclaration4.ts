@@ -13,4 +13,3 @@ declare module "foo" {
 
     export var t: typeof C;
 }
-

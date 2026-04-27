@@ -1,5 +1,5 @@
 use std::fs::File;
-use std::io::{Write, BufWriter}; 
+use std::io::{Write, BufWriter};
 
 // Function to create a  CSV file
 fn create_csv() -> std::io::Result<()> {
@@ -18,7 +18,7 @@ fn create_json() -> std::io::Result<()> {
     Ok(())
 }
 
-// Main function 
+// Main function
 fn main() -> std::io::Result<()> {
     // Function calls
     create_csv()?;

@@ -75,5 +75,3 @@ jobs:
               issue_number: Number('${{ steps.pr.outputs.number }}'),
               body
             });
-
-

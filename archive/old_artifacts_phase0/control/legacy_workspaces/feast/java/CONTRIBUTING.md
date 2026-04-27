@@ -8,7 +8,7 @@ the feast-java Repository:
 - [Feast Serving](#feast-serving)
 - [Feast Serving Client](#feast-serving-client)
 
-> Don't see the Feast component that you want to contribute to here?  
+> Don't see the Feast component that you want to contribute to here?
 > Check out the [Development Guide](https://docs.feast.dev/v/master/project/development-guide)
 > to learn how Feast components are distributed over multiple repositories.
 
@@ -25,11 +25,11 @@ There are four key top level packages:
 The primary entrypoint into the Feast Serving server is `ServingGuiceApplication`, which connects to the rest of the packages:
 - `connectors`: Contains online store connectors (e.g. Redis)
 - `exception`: Contains user-facing exceptions thrown by Feast Serving
-- `registry`: Logic to parse a Feast file-based registry (in GCS, S3, or local) into the `Registry` proto object, and automatically re-sync the registry. 
+- `registry`: Logic to parse a Feast file-based registry (in GCS, S3, or local) into the `Registry` proto object, and automatically re-sync the registry.
 - `service`: Core logic that exposes and backs the serving APIs. This includes communication with a feature transformation server to execute on demand transformations
   - The root code in this package creates the main entrypoint (`ServingServiceV2`) which is injected into `OnlineServingGrpcServiceV2` in `grpc/` implement the gRPC service.
   - `config`: Guice modules to power the server and config
-    - Includes server config / guice modules in `ServerModule` 
+    - Includes server config / guice modules in `ServerModule`
     - Maps overall Feast Serving user configuration from Java to YAML in `ApplicationPropertiesModule` and `ApplicationProperties`
   - `controller`: server controllers (right now, only a gRPC health check)
   - `grpc`: Implementation of the gRPC serving service
@@ -93,7 +93,7 @@ See instructions [here](serving/README.md) for developing.
 Setting up your development environment:
 1. Complete the feast-java [Common Setup](#common-setup)
 
-> Feast Serving Client is a Serving Client for retrieving Features from a running Feast Serving instance.  
+> Feast Serving Client is a Serving Client for retrieving Features from a running Feast Serving instance.
 > See the [Feast Serving Section](#feast-serving) section for how to get a Feast Serving instance running.
 
 ### Building

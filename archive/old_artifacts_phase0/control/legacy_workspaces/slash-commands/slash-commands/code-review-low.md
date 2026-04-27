@@ -46,10 +46,10 @@ Senior engineer reviewing **only**: code smells, security, performance, and whet
 ## Output format
 - **Summary**: what changed, top 1–3 risks, **Decision**: approve | request_changes | blocker
 - **Findings** grouped by **Smell | Security | Performance | Tests**
-  - `[severity] <title>`  
-    - Where: `<file:line-range>`  
-    - Impact: `<who/what is affected>`  
-    - Recommendation: `<smallest safe fix>`  
+  - `[severity] <title>`
+    - Where: `<file:line-range>`
+    - Impact: `<who/what is affected>`
+    - Recommendation: `<smallest safe fix>`
     - Tests: `<tests to add/update>`
 - Cite exact files and line ranges. Keep code excerpts ≤20 lines.
 

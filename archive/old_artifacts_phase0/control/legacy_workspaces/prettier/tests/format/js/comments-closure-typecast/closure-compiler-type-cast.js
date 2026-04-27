@@ -57,4 +57,3 @@ const style2 =/**
 */({
   width,
 });
-

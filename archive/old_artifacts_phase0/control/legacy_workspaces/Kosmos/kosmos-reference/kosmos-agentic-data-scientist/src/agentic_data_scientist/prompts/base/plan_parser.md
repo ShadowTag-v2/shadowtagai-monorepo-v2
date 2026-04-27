@@ -86,4 +86,3 @@ For a request "Analyze customer churn and build a predictive model":
 - Extract stages and criteria directly from the plan
 - Preserve the intent and content from the original plan
 - If the plan uses different terminology, normalize it to "stages" and "success_criteria"
-

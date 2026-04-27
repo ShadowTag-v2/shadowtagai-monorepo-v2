@@ -913,4 +913,3 @@ Validation failed since several expectations didn't pass:
 * Trip count (mean) decreased more than 10% (which is expected when comparing Dec 2020 vs June 2019)
 * Average Fare increased - all quantiles are higher than expected
 * Earn per hour (mean) increased more than 10% (most probably due to increased fare)
-

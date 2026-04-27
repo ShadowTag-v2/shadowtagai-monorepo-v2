@@ -13,4 +13,4 @@ online_store:
 offline_store:
   type: file
 
-entity_key_serialization_version: 3 
+entity_key_serialization_version: 3

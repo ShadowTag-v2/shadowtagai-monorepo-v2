@@ -12,9 +12,9 @@ def trufflehogv2_output(y):
         if i["pattern"]["confidence"] != "high":
             continue
         output.update({i["pattern"]["name"]: i["pattern"]["regex"]})
-    
+
     return json.dumps(output, indent=4, sort_keys=True)
-    
+
 
 def trufflehogv3_output(y):
     output = []
@@ -50,7 +50,7 @@ def main(arg):
     f = open(arg.database_file, "r")
     y = yaml.safe_load(f.read())
     f.close()
-    
+
     output_string = ""
     ext_string = ""
     if arg.output_type == "trufflehogv2":
@@ -62,8 +62,8 @@ def main(arg):
     elif arg.output_type == "trufflehogv3":
         output_string = yaml.dump(trufflehogv3_output(y), sort_keys=False)
         ext_string = "yml"
-    
-    if arg.export_filename is not None:              
+
+    if arg.export_filename is not None:
         f = open(f"{arg.export_filename}.{ext_string}", "w")
         if arg.output_type == "trufflehogv3" :
             f.write('detectors:\n')
@@ -79,5 +79,5 @@ if __name__ == "__main__":
     parser.add_argument("--type", dest= "output_type", required = True, choices=['trufflehogv2', 'trufflehogv3', 'gitleaks'], help = "Supported output types: trufflehog, gitleaks")
     parser.add_argument('--export', dest="export_filename", help = "Give filename, extension toml/json/yaml will be added")
     args = parser.parse_args()
-    
+
     main(args)

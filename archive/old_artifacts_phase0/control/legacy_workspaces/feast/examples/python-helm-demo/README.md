@@ -1,21 +1,21 @@
-# Running Feast Python / Go Feature Server with Redis on Kubernetes 
+# Running Feast Python / Go Feature Server with Redis on Kubernetes
 
-For this tutorial, we set up Feast with Redis. 
+For this tutorial, we set up Feast with Redis.
 
-We use the Feast CLI to register and materialize features from the current machine, and then retrieving via a 
+We use the Feast CLI to register and materialize features from the current machine, and then retrieving via a
 Feast Python feature server deployed in Kubernetes
 
 ## First, let's set up a Redis cluster
 1.  Start minikube (`minikube start`)
 1.  Use helm to install a default Redis cluster
     ```bash
-    helm repo add bitnami https://charts.bitnami.com/bitnami 
-    helm repo update 
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm repo update
     helm install my-redis bitnami/redis
     ```
     ![](redis-screenshot.png)
 1. Port forward Redis so we can materialize features to it
-    
+
     ```bash
     kubectl port-forward --namespace default svc/my-redis-master 6379:6379
     ```
@@ -80,9 +80,9 @@ are defined in [minio.env](./minio.env):
 1. Materialize features to the online store:
     ```bash
     cd  feature_repo
-    CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%S")                                    
+    CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%S")
     feast materialize-incremental $CURRENT_TIME
-    ``` 
+    ```
 
 ## Now let's setup the Feast Server
 1. Add Feast's Python feature server chart repo
@@ -90,14 +90,14 @@ are defined in [minio.env](./minio.env):
     helm repo add feast-charts https://feast-helm-charts.storage.googleapis.com
     helm repo update
     ```
-1. For this tutorial, we'll use a predefined configuration where we just needs to inject the Redis service password: 
+1. For this tutorial, we'll use a predefined configuration where we just needs to inject the Redis service password:
     ```console
     sed "s/_REDIS_PASSWORD_/$REDIS_PASSWORD/" online_feature_store.yaml.template > online_feature_store.yaml
     cat online_feature_store.yaml
     ```
     As you see, the connection points to `my-redis-master:6379` instead of `localhost:6379`.
 
-1. Install the Feast helm chart: 
+1. Install the Feast helm chart:
     ```console
     helm upgrade --install feast-online feast-charts/feast-feature-server \
     --set fullnameOverride=online-server --set feast_mode=online \
@@ -149,7 +149,7 @@ are defined in [minio.env](./minio.env):
    ```bash
    kubectl port-forward svc/online-server 6566:80
    ```
-1. Run test fetches for online features:8. 
+1. Run test fetches for online features:8.
       ```bash
       source minio.env
       cd test
@@ -165,5 +165,5 @@ are defined in [minio.env](./minio.env):
 
       --- Online features with HTTP endpoint ---
       conv_rate  :  [0.67995876 0.9761166 ]
-      driver_id  :  [1001 1002]      
+      driver_id  :  [1001 1002]
       ```

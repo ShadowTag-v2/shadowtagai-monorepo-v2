@@ -12,7 +12,7 @@ Try running directly - this might work instantly:
 git clone https://github.com/Vexa-ai/vexa.git && cd vexa
 make all  # CPU laptop (whisper tiny model - good for development)
 ```
-or 
+or
 
 ```bash
 git clone https://github.com/Vexa-ai/vexa.git && cd vexa

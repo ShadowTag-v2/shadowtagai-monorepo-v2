@@ -6,9 +6,9 @@ This extension connects Gemini CLI to monday.com's hosted Model Context Protocol
 
 Prior to using tools from the monday.com MCP server you must authenticate. This is done by running `/mcp auth monday` which will open a OAuth flow in your browser.
 
-## Custom Commands 
+## Custom Commands
 
-Several custom slash commands are available to interact with monday.com. These commands are shortcuts for common monday.com tasks. 
+Several custom slash commands are available to interact with monday.com. These commands are shortcuts for common monday.com tasks.
 
 They all are prefixed with `/monday:`:
 

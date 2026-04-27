@@ -7,20 +7,20 @@
 
 **Study Title:** [Full descriptive title including compound, indication, phase]
 
-**Protocol Number:** [Sponsor protocol number]  
+**Protocol Number:** [Sponsor protocol number]
 **Protocol Version:** [Final protocol version and date]
 
-**Sponsor:** [Company name and address]  
-**Compound/Drug Name:** [Generic and proprietary names, compound code]  
+**Sponsor:** [Company name and address]
+**Compound/Drug Name:** [Generic and proprietary names, compound code]
 **Indication:** [Therapeutic area and specific indication studied]
 
-**Study Phase:** [I / II / III / IV]  
+**Study Phase:** [I / II / III / IV]
 **Study Type:** [Interventional / Observational]
 
-**Report Date:** [MM/DD/YYYY]  
+**Report Date:** [MM/DD/YYYY]
 **Report Version:** [Version number]
 
-**Medical Expert:** [Name, MD, Title]  
+**Medical Expert:** [Name, MD, Title]
 **Biostatistician:** [Name, PhD, Title]
 
 **Confidentiality Statement:**
@@ -32,8 +32,8 @@
 
 **Title:** [Abbreviated title]
 
-**Protocol Number:** [Number]  
-**Study Phase:** [Phase]  
+**Protocol Number:** [Number]
+**Study Phase:** [Phase]
 **Study Period:** [Start date - End date]
 
 ## Study Objectives
@@ -349,5 +349,3 @@ Informed consent was obtained from all participants before any study-specific pr
 - Section 10: Tables, Figures, and Graphs
 - Section 11: References
 - Section 12-14: Appendices (Protocol, CRFs, Investigator list, etc.)
-
-

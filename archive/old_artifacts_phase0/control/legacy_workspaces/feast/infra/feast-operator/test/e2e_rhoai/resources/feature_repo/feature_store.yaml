@@ -13,4 +13,3 @@ offline_store:
 entity_key_serialization_version: 3
 auth:
     type: no_auth
-

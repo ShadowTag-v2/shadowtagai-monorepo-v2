@@ -84,7 +84,7 @@ This format is widely adopted across the MCP ecosystem:
 The `fastmcp install mcp-json` command generates configuration in the standard `mcpServers` format used across the MCP ecosystem. This is useful when:
 
 - **Working with unsupported clients** - Any MCP client not directly integrated with FastMCP
-- **CI/CD environments** - Automated configuration generation for deployments  
+- **CI/CD environments** - Automated configuration generation for deployments
 - **Configuration sharing** - Easy distribution of server setups to team members
 - **Custom tooling** - Integration with your own MCP management tools
 - **Manual setup** - When you prefer to manually configure your MCP client
@@ -106,7 +106,7 @@ This outputs the server configuration JSON with the server name as the root key:
     "args": [
       "run",
       "--with",
-      "fastmcp", 
+      "fastmcp",
       "fastmcp",
       "run",
       "/absolute/path/to/server.py"
@@ -125,7 +125,7 @@ To use this in a client configuration file, add it to the `mcpServers` object in
       "args": [
         "run",
         "--with",
-        "fastmcp", 
+        "fastmcp",
         "fastmcp",
         "run",
         "/absolute/path/to/server.py"
@@ -163,7 +163,7 @@ Add Python packages your server needs:
 # Single package
 fastmcp install mcp-json server.py --with pandas
 
-# Multiple packages  
+# Multiple packages
 fastmcp install mcp-json server.py --with pandas --with requests --with httpx
 
 # Editable local package
@@ -259,7 +259,7 @@ Output:
       "run",
       "--with",
       "fastmcp",
-      "fastmcp", 
+      "fastmcp",
       "run",
       "/home/user/dice_server.py"
     ]
@@ -299,11 +299,11 @@ Output:
       "--with",
       "fastmcp",
       "--with",
-      "python-dotenv", 
+      "python-dotenv",
       "--with",
       "requests",
       "fastmcp",
-      "run", 
+      "run",
       "/home/user/api_server.py"
     ],
     "env": {
@@ -373,7 +373,7 @@ Copy the `mcpServers` object into `~/.claude/claude_desktop_config.json`
 </Note>
 Add to `~/.cursor/mcp.json`
 
-### VS Code  
+### VS Code
 Add to your workspace's `.vscode/mcp.json` file
 
 ### Custom Applications
@@ -417,6 +417,6 @@ Install uv if not already available:
 # macOS
 brew install uv
 
-# Linux/Windows  
+# Linux/Windows
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```

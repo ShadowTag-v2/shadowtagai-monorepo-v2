@@ -70,5 +70,3 @@ if __name__ == "__main__":
       ref = (a@b).realize()
 
   print((ref-c).mean().item())
-
-

@@ -87,7 +87,7 @@ static METAL_FUNC typename metal::enable_if<ducks::is_register_vector<RV>(), voi
 zero(thread RV &dst) {
     unary_op<base_ops::zero, RV>(dst, dst);
 }
-    
+
 /**
  * @brief Sets all elements of a register vector to one.
  *
@@ -285,4 +285,3 @@ div(thread RV &dst, thread const RV &lhs, thread const U &rhs) {
     bin_op<base_ops::div, RV>(dst, lhs, rhs);
 }
 }
-

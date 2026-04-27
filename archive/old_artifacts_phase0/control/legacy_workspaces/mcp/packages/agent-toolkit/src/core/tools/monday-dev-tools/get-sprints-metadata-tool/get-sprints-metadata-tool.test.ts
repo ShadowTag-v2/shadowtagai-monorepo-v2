@@ -61,7 +61,7 @@ describe('GetSprintsMetadataTool', () => {
 
       const args: InputType = { sprintsBoardId: 123456789, limit: 50 };
       const result = await callToolByNameRawAsync('get_sprints_metadata', args);
-      
+
       expect(result.content[0].text).toContain(expectedSprintsReportOutput);
 
 

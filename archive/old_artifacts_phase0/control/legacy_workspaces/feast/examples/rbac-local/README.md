@@ -42,7 +42,7 @@ In particular, given the configured permissions:
 and the user roles defined in Keycloak:
 | User | Roles |
 |------|-------|
-| reader | reader | 
+| reader | reader |
 | writer | fresh_writer |
 | batch_admin | batch_admin |
 | admin | store_admin |
@@ -50,8 +50,7 @@ and the user roles defined in Keycloak:
 We should expect the following behavior for each test section of the [client notebook](./client.ipynb):
 | User | Basic validation | Historical | Materialization   | Online | Stream push |
 |------|------------------|------------|-------------------|--------|-------------|
-| reader | Ok             | Denied     | Denied            | Denied | Denied      | 
+| reader | Ok             | Denied     | Denied            | Denied | Denied      |
 | writer | Empty          | Denied     | Ok                | Denied | Denied      |
 | batch_admin | No Entities and Permissions | Ok | Denied  | Denied | Denied      |
 | admin | Ok              | Ok         | Ok                | Ok     | Ok          |
-

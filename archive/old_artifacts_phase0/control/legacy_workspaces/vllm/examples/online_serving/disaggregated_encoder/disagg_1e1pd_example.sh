@@ -45,7 +45,7 @@ wait_for_server() {
 cleanup() {
     echo "Stopping everything…"
     trap - INT TERM USR1   # prevent re-entrancy
-    
+
     # Kill all tracked PIDs
     for pid in "${PIDS[@]}"; do
         if kill -0 "$pid" 2>/dev/null; then
@@ -53,10 +53,10 @@ cleanup() {
             kill "$pid" 2>/dev/null
         fi
     done
-    
+
     # Wait a moment for graceful shutdown
     sleep 2
-    
+
     # Force kill any remaining processes
     for pid in "${PIDS[@]}"; do
         if kill -0 "$pid" 2>/dev/null; then
@@ -64,10 +64,10 @@ cleanup() {
             kill -9 "$pid" 2>/dev/null
         fi
     done
-    
+
     # Kill the entire process group as backup
     kill -- -$$ 2>/dev/null
-    
+
     echo "All processes stopped."
     exit 0
 }

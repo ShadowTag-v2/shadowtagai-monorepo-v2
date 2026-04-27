@@ -12,12 +12,12 @@ Feature transformations can be executed by three types of "transformation engine
 
 The three transformation engines are coupled with the [communication pattern used for writes](write-patterns.md).
 
-Importantly, this implies that different feature transformation code may be 
-used under different transformation engines, so understanding the tradeoffs of 
-when to use which transformation engine/communication pattern is extremely critical to 
+Importantly, this implies that different feature transformation code may be
+used under different transformation engines, so understanding the tradeoffs of
+when to use which transformation engine/communication pattern is extremely critical to
 the success of your implementation.
 
-In general, we recommend transformation engines and network calls to be chosen by aligning it with what is most 
+In general, we recommend transformation engines and network calls to be chosen by aligning it with what is most
 appropriate for the data producer, feature/model usage, and overall product.
 
 

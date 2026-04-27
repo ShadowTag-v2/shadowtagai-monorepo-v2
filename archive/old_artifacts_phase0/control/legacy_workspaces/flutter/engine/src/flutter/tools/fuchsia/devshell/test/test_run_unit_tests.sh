@@ -27,4 +27,3 @@ engine-info "Testing run_unit_tests.sh --package-filter flutter_runner_tests-0.f
 
 engine-info "Testing run_unit_tests.sh with no args..."
 "$ENGINE_DIR"/flutter/tools/fuchsia/devshell/run_unit_tests.sh
-

@@ -87,7 +87,7 @@
         {#- Closing bracket for tool call list. -#}
         {{- ']' -}}
     {%- endif -%}
-    
+
     {#- Tool response start tag (for messages from a tool) -#}
     {%- if (message['role'] == 'tool') -%}
         {{ '<tool_response>\n' -}}

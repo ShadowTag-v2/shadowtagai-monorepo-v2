@@ -73,4 +73,3 @@ class PaperResult:
         if isinstance(self.files, PaperFiles):
             result['files'] = self.files.to_dict()
         return result
-

@@ -1,4 +1,4 @@
-SaaS thread prompt 
+SaaS thread prompt
 “Prompt ;
 You are my personal market research assistant. I am a solo developer building B2B or prosumer SaaS tools. I am 100% independent/bootstrapped with no funding - and a hard infra budget that can't exceed more than $200/month. So you'll need to be creative here. I have no team, no capital, so ideally just me - coding and deploying this thing. Your goal: scan the web (Reddit, Hacker News, Indie Hackers, Twitter/X, GitHub issues, niche Discords, Quora, etc.) to describe real pain points currently being suffered by either users or developers or other businesses. Look at reviews, blog comments, etc. For each you'll include:
 

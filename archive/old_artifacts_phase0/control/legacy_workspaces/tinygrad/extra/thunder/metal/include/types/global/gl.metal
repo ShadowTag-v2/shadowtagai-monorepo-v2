@@ -2,7 +2,7 @@
  * @file
  * @brief Templated layouts for global memory.
  */
- 
+
 #pragma once
 
 #include "../../common/common.metal"
@@ -34,7 +34,7 @@ template <typename T>
 static constexpr bool is_tile() {
     return mittens::ducks::is_shared_tile<T>() || mittens::ducks::is_register_tile<T>();
 }
-    
+
 template <typename T>
 static constexpr bool is_vec() {
     return mittens::ducks::is_shared_vector<T>() || mittens::ducks::is_register_vector<T>();
@@ -45,13 +45,13 @@ static constexpr bool is_vec() {
 template<typename _T, int b, int d, int r, int c>
 struct gl {
     using identifier = ducks::gl::identifier;
-    
+
     using T     = typename base_types::packing<_T>::unpacked_type;
     using T2    = typename base_types::packing<_T>::packed_type;
     using dtype = T;
-    
+
     device T* raw_ptr;
-    
+
     ducks::g::make_dim_t<b> batch;
     ducks::g::make_dim_t<d> depth;
     ducks::g::make_dim_t<r> rows;
@@ -60,7 +60,7 @@ struct gl {
 //    int depth;
 //    int rows;
 //    int cols;
-        
+
     METAL_FUNC gl(device T *_data,
                   ducks::g::make_arg_t<b> _batch,
                   ducks::g::make_arg_t<d> _depth,
@@ -75,10 +75,10 @@ struct gl {
 //                  int _cols) :
 //    raw_ptr(_data), batch(_batch), depth(_depth), rows(_rows), cols(_cols) {
 //    }
-//    
+//
     METAL_FUNC gl(thread const gl &other) :
     raw_ptr(other.raw_ptr), batch(other.batch), depth(other.depth), rows(other.rows), cols(other.cols) {}
-    
+
     METAL_FUNC gl(constant const gl &other) :
     raw_ptr(other.raw_ptr), batch(other.batch), depth(other.depth), rows(other.rows), cols(other.cols) {}
 
@@ -132,27 +132,27 @@ static constexpr void assert_gl() {
 }
 }
 
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
 template<typename _T, int b, int d, int r, int c>
 struct gl2 {
     using identifier = ducks::gl::identifier;
-    
+
     using T     = typename base_types::packing<_T>::unpacked_type;
     using T2    = typename base_types::packing<_T>::packed_type;
     using dtype = T;
-    
+
     device T* raw_ptr;
-    
+
 //    ducks::g::make_dim_t<b> batch;
 //    ducks::g::make_dim_t<d> depth;
 //    ducks::g::make_dim_t<r> rows;
 //    ducks::g::make_dim_t<c> cols;
-//        
+//
 //    METAL_FUNC gl2(device T *_data,
 //                  ducks::g::make_arg_t<b> _batch,
 //                  ducks::g::make_arg_t<d> _depth,
@@ -160,12 +160,12 @@ struct gl2 {
 //                  ducks::g::make_arg_t<c> _cols) :
 //    raw_ptr(_data), batch(_batch), depth(_depth), rows(_rows), cols(_cols) {
 //    }
-    
+
     int batch;
     int depth;
     int rows;
     int cols;
-        
+
     METAL_FUNC gl2(device T *_data,
                   int _batch,
                   int _depth,
@@ -173,11 +173,11 @@ struct gl2 {
                   int _cols) :
     raw_ptr(_data), batch(_batch), depth(_depth), rows(_rows), cols(_cols) {
     }
-    
-    
+
+
 //    METAL_FUNC gl2(thread const gl2 &other) :
 //    raw_ptr(other.raw_ptr), batch(other.batch), depth(other.depth), rows(other.rows), cols(other.cols) {}
-//    
+//
 //    METAL_FUNC gl2(constant const gl2 &other) :
 //    raw_ptr(other.raw_ptr), batch(other.batch), depth(other.depth), rows(other.rows), cols(other.cols) {}
 

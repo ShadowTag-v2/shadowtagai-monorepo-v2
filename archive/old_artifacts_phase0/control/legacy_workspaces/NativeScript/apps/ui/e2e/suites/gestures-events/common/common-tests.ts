@@ -47,7 +47,7 @@ describe(`${imagePrefix}-suite`, () => {
         await basePage.navigateToSample("handlers");
 
         const handlersExport = await driver.findElementByText("Handlers as exports");
-       
+
         await handlersExport.click();
         assert.isTrue(getResult("tapAction") != null);
         await cleanResult();

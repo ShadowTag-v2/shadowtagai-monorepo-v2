@@ -92,7 +92,7 @@ interface DefinitionResult<M> {
 
 <Note>
   When a symbol comes from an unresolved import
-  (e.g., `import x from "some-external-module"`), `definition()` now returns the import statement 
+  (e.g., `import x from "some-external-module"`), `definition()` now returns the import statement
   with `kind: 'import'` instead of returning `null`. This allows you to at least
   trace the symbol back to where it was imported.
 </Note>
@@ -432,7 +432,7 @@ class User:
     def __init__(self, name: str, email: str):
         self.name = name
         self.email = email
-    
+
     def display_name(self) -> str:
         return f"{self.name} <{self.email}>"
 ```

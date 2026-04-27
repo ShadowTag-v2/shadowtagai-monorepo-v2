@@ -122,7 +122,7 @@ class TestSettings(BaseSettings):
     TEST_PIPEDREAM_RATE_LIMIT_PROJECT_ID: Optional[str] = Field(
         default=None, description="Pipedream project ID for rate limit tests"
     )
-    
+
     # Pipedream configuration for proxy testing
     TEST_PIPEDREAM_GOOGLE_DRIVE_DEFAULT_OAUTH_ACCOUNT_ID: Optional[str] = Field(
         default=None, description="Pipedream account ID for Google Drive (default OAuth - proxy mode)"

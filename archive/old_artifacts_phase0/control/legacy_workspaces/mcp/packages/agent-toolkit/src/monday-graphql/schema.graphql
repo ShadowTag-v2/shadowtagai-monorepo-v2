@@ -9,9 +9,9 @@ type Query {
   """
   Retrieve audit logs for your Monday account. You can
       filter logs by event types, user ID, IP address and start and end date.
-      
+
       Here is an example audit log query:
-  
+
       query {
         audit_logs(
           user_id: "1234567890"
@@ -41,9 +41,9 @@ type Query {
           }
         }
       }
-  
+
       To get the list of all possible event types, you should use the audit_event_catalogue query like this:
-  
+
       query {
         audit_event_catalogue {
           name
@@ -76,13 +76,13 @@ type Query {
     ip_address: String
 
     """
-    Filter for logs from this date and time onwards. 
+    Filter for logs from this date and time onwards.
             Timestamps must be in ISO 8601 format and are in the UTC timezone.
     """
     start_time: ISO8601DateTime
 
     """
-    Filter for logs up to this date and time. 
+    Filter for logs up to this date and time.
             Timestamps must be in ISO 8601 format and are in the UTC timezone.
     """
     end_time: ISO8601DateTime
@@ -90,9 +90,9 @@ type Query {
 
   """
   Lists all the audit event types that can be logged and information about them.
-      
+
       Example query:
-  
+
       query {
         audit_event_catalogue {
           name
@@ -208,8 +208,8 @@ type Query {
   block_events(triggerUuid: String!, nextPageOffset: Int = 0): BlockEventsPage
 
   """
-  Retrieves the JSON schema definition for a specific create view type. 
-        Use this query before calling create_view mutation to understand the structure and validation rules for the settings parameter. 
+  Retrieves the JSON schema definition for a specific create view type.
+        Use this query before calling create_view mutation to understand the structure and validation rules for the settings parameter.
         The schema defines what properties are available when creating views of a specific type.
   """
   get_view_schema_by_type(
@@ -437,7 +437,7 @@ type Query {
   """Get operations counter current value"""
   app_subscription_operations(
     """
-    Operation name. A string of up to 14 characters containing alphanumeric characters and the symbols -_ 
+    Operation name. A string of up to 14 characters containing alphanumeric characters and the symbols -_
     """
     kind: String = "global"
   ): AppSubscriptionOperationsCounter
@@ -883,9 +883,9 @@ type Mutation {
     tags: [String!]
 
     """
-    Type-specific configuration object containing view settings. 
-            The structure varies by view type - 
-            use get_view_schema_by_type query to see available properties. 
+    Type-specific configuration object containing view settings.
+            The structure varies by view type -
+            use get_view_schema_by_type query to see available properties.
             Examples: APP view include app_feature_id part of it's settings
     """
     settings: JSON
@@ -951,9 +951,9 @@ type Mutation {
     type: ViewKind!
 
     """
-    Type-specific configuration object containing view settings. 
-            The structure varies by view type - 
-            use get_view_schema_by_type query to see available properties. 
+    Type-specific configuration object containing view settings.
+            The structure varies by view type -
+            use get_view_schema_by_type query to see available properties.
             Examples: TABLE view include group_by and columns configuration as part of it's settings
     """
     settings: JSON
@@ -2194,7 +2194,7 @@ type Mutation {
     increment_by: Int = 1
 
     """
-    Operation name. A string of up to 14 characters containing alphanumeric characters and the symbols -_ 
+    Operation name. A string of up to 14 characters containing alphanumeric characters and the symbols -_
     """
     kind: String = "global"
   ): AppSubscriptionOperationsCounter
@@ -3022,7 +3022,7 @@ type AuditLogEntry {
 
 """
 A paginated collection of audit log entries. This object contains two properties:
-  logs, the requested page of AuditLogEntry objects matching your query, and pagination, which 
+  logs, the requested page of AuditLogEntry objects matching your query, and pagination, which
   contains metadata about the current and next page (if present).
 """
 type AuditLogPage {
@@ -9055,8 +9055,8 @@ Represents the mute state of a board for the current user.
 
   - NOT_MUTED: The board is not muted at all (default state). This state, as well as MUTE_ALL, is set by the board owner(s) and only they can change it.
   - MUTE_ALL: All notifications for all users are muted on this board. This state, as well as NOT_MUTED, is set by the board owner(s) and only they can change it.
-  - MENTIONS_AND_ASSIGNS_ONLY: The current user will only be notified if mentioned or assigned on the board. 
-  - CUSTOM_SETTINGS: The current user will only be notified for the enabled custom settings. configurable settings: IM_MENTIONED, IM_ASSIGNED, AUTOMATION_NOTIFY 
+  - MENTIONS_AND_ASSIGNS_ONLY: The current user will only be notified if mentioned or assigned on the board.
+  - CUSTOM_SETTINGS: The current user will only be notified for the enabled custom settings. configurable settings: IM_MENTIONED, IM_ASSIGNED, AUTOMATION_NOTIFY
   - CURRENT_USER_MUTE_ALL: Only the current user has all notifications muted from this board.
 """
 enum BoardMuteState {
@@ -10740,7 +10740,7 @@ type FormMonday {
   includeNameQuestion: Boolean!
 
   """
-  Boolean adding an update/comment field to the form. This is a special question type that represents the updates from the associated item of the submission on the monday board. 
+  Boolean adding an update/comment field to the form. This is a special question type that represents the updates from the associated item of the submission on the monday board.
   """
   includeUpdateQuestion: Boolean!
 
@@ -10763,7 +10763,7 @@ input FormMondayInput {
   includeNameQuestion: Boolean
 
   """
-  Boolean adding an update/comment field to the form. This is a special question type that represents the updates from the associated item of the submission on the monday board. 
+  Boolean adding an update/comment field to the form. This is a special question type that represents the updates from the associated item of the submission on the monday board.
   """
   includeUpdateQuestion: Boolean
 

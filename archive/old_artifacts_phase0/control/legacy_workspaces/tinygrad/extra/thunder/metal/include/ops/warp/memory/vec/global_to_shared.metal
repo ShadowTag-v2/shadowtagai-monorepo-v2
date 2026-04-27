@@ -41,4 +41,4 @@ store(thread const GL &dst, threadgroup const SV &src, thread const coord &idx, 
 }
 
 }
- 
+

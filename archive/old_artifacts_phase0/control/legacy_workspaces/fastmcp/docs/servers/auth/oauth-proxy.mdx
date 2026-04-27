@@ -188,12 +188,12 @@ mcp = FastMCP(name="My Server", auth=auth)
 
 <ParamField body="extra_authorize_params" type="dict[str, str] | None">
   Additional parameters to forward to the upstream authorization endpoint. Useful for provider-specific parameters that aren't part of the standard OAuth2 flow.
-  
+
   For example, Auth0 requires an `audience` parameter to issue JWT tokens:
   ```python
   extra_authorize_params={"audience": "https://api.example.com"}
   ```
-  
+
   These parameters are added to every authorization request sent to the upstream provider.
 </ParamField>
 

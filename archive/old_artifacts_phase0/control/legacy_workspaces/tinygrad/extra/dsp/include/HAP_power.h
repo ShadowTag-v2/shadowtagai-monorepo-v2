@@ -682,4 +682,3 @@ static inline int HAP_power_destroy(void *client){
 }
 #endif
 #endif //_HAP_POWER_H
-

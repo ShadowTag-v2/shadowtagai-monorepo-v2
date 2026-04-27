@@ -4,7 +4,7 @@
 #include "../../../../types/types.metal"
 #include "../../../../common/common.metal"
 namespace mittens {
-        
+
 template <typename R, typename T, typename U, typename V,
           typename l1, typename l2, typename l3, typename l4>
 METAL_FUNC static void mma_base(thread rt_base<R, l1>& d,
@@ -13,7 +13,7 @@ METAL_FUNC static void mma_base(thread rt_base<R, l1>& d,
                                 thread rt_base<V, l4>& c) {
     metal::simdgroup_multiply_accumulate(d.data, a.data, b.data, c.data);
 }
-    
+
 template <typename R, typename T, typename U,
           typename l1, typename l2, typename l3>
 METAL_FUNC static void mm_base(thread rt_base<R, l1>& d,
@@ -132,7 +132,7 @@ mm_ABt_unroll(int n, int m,
     meta::unroll_i_in_range<1, K/TILE_DIM, 1>::run(meta::mma_ABt_unroll_inner<R, T, U, N, K, M>, n, m, d, a, b);
 }
 }
-    
+
 template<typename R, typename T, typename U, typename V, int N, int K, int M>
 static METAL_FUNC typename metal::enable_if<ducks::base_types::isT1Type<R>() && ducks::base_types::isT1Type<T>() && ducks::base_types::isT1Type<U>() && ducks::base_types::isT1Type<V>(), void>::type
 mma_ABt(thread rt<R, N, M, ducks::rt_layout::row>& d,
@@ -210,5 +210,5 @@ mma_AtBt(thread rt<R, N, M, ducks::rt_layout::row>& d,
 }
 
 
-    
+
 }

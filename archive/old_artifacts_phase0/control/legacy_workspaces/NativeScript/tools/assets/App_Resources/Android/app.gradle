@@ -5,15 +5,15 @@
 //	compile 'com.android.support:recyclerview-v7:+'
 //}
 
-android {  
+android {
   compileSdkVersion 35
   buildToolsVersion "35.0.0"
-  defaultConfig {  
+  defaultConfig {
     minSdkVersion 24
     targetSdkVersion 35
     generatedDensities = []
-  }  
-  aaptOptions {  
-    additionalParameters "--no-version-vectors"  
-  }  
-} 
+  }
+  aaptOptions {
+    additionalParameters "--no-version-vectors"
+  }
+}

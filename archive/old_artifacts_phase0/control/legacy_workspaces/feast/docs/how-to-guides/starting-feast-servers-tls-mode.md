@@ -1,7 +1,7 @@
 # Starting feast servers in TLS (SSL) mode.
-TLS (Transport Layer Security) and SSL (Secure Sockets Layer) are both protocols encrypts communications between a client and server to provide enhanced security.TLS or SSL words used interchangeably. 
-This article is going to show the sample code to start all the feast servers such as online server, offline server, registry server and UI server in TLS mode. 
-Also show examples related to feast clients to communicate with the feast servers started in TLS mode. 
+TLS (Transport Layer Security) and SSL (Secure Sockets Layer) are both protocols encrypts communications between a client and server to provide enhanced security.TLS or SSL words used interchangeably.
+This article is going to show the sample code to start all the feast servers such as online server, offline server, registry server and UI server in TLS mode.
+Also show examples related to feast clients to communicate with the feast servers started in TLS mode.
 
 We assume you have basic understanding of feast terminology before going through this tutorial, if you are new to feast then we would recommend to go through existing [starter tutorials](./../../examples) of feast.
 

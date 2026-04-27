@@ -1,6 +1,6 @@
-Cor.56 CI + agent system 
+Cor.56 CI + agent system
 
-For instance 
+For instance
 
 Perfect. Let’s quantify the numerical and financial impact of the full CI + agent system pack we just assembled (Implementer/Critic/ArchLint/Scope Lint/Agent Review).
 These numbers are grounded in current 2025 developer productivity benchmarks (GitHub Octoverse, LinearB, StackOverflow Pulse) and cloud infra averages (AWS vs Hetzner, 2025 data).

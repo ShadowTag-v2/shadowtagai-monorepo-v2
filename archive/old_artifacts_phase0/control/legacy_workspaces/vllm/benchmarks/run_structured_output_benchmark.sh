@@ -16,7 +16,7 @@ usage() {
     echo "Usage: $0 [options]"
     echo "Options:"
     echo "  --model MODEL                  Model to benchmark (default: $MODEL)"
-    echo "  --backend BACKEND              Backend to use (default: $BACKEND)" 
+    echo "  --backend BACKEND              Backend to use (default: $BACKEND)"
     echo "  --dataset DATASET              Dataset to use (default: $DATASET)"
     echo "  --max-new-tokens N             Maximum number of tokens to generate (default: $MAX_NEW_TOKENS)"
     echo "  --output-dir DIR               Output directory for results (default: $OUTPUT_DIR)"

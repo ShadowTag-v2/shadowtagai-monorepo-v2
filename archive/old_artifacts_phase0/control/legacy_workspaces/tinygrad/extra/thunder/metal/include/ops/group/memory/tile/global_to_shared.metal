@@ -58,11 +58,11 @@ load(threadgroup ST &dst, thread const GL &_src, thread const coord &idx, const 
 //    int group_laneid = threadIdx % GROUP_THREADS;
 //    int groupid = threadIdx / GROUP_THREADS;
 //    int laneid = threadIdx % SIMD_THREADS;
-//    
+//
 //    using U = typename GL::dtype;
 //    device U *src = (device U*)&_src.template get<ST>(idx);
 //    const int row_stride = _src.row_stride();
-//    
+//
 //    int elem_per_memcpy = sizeof(float)/sizeof(typename ST::dtype);
 //    int memcpy_per_row = ST::cols / elem_per_memcpy;
 //    int total_calls = ((ST::height * ST::width + (N_WARPS-1))) * TILE_DIM*TILE_DIM / (N_WARPS*SIMD_THREADS*elem_per_memcpy); // round up
@@ -89,19 +89,19 @@ load(threadgroup ST &dst, thread const GL &_src, thread const coord &idx, const 
 //    int warp_id = threadIdx / SIMD_THREADS;
 //    int lane_id = threadIdx % SIMD_THREADS;
 ////    int N_WARPS = /* number of warps in your group */;
-//    
+//
 //    using U = typename GL::dtype;
 //    device U *src = (device U*)&_src.template get<ST>(idx);
 //    const int row_stride = _src.row_stride();
-//    
+//
 //    int elem_per_memcpy = sizeof(float)/sizeof(typename ST::dtype);
 //    int memcpy_per_row = ST::cols / elem_per_memcpy;
 //    int total_memcpy_elems = (ST::height * ST::cols) / elem_per_memcpy;
 //    int elems_per_warp = (total_memcpy_elems + N_WARPS - 1) / N_WARPS;  // Ceiling division
-//    
+//
 //    int start_idx = warp_id * elems_per_warp;
 //    int end_idx = metal::min(start_idx + elems_per_warp, total_memcpy_elems);
-//    
+//
 //    #pragma clang loop unroll(full)
 //    for (int idx = start_idx + lane_id; idx < end_idx; idx += SIMD_THREADS) {
 //        int row = idx / memcpy_per_row;
@@ -124,12 +124,12 @@ store(thread const GL &_dst, threadgroup const ST &src, thread const coord &idx,
     int elem_per_memcpy = sizeof(read_vector)/sizeof(typename ST::dtype); // float/float -> 1
     int memcpy_per_row = ST::cols / elem_per_memcpy; // 240 memcpy per row
     int total_calls = ((src.height * src.width + (N_WARPS-1))) * TILE_DIM*TILE_DIM / (N_WARPS*SIMD_THREADS*elem_per_memcpy); // round up
-    
+
     #pragma clang loop unroll(full)
     for(int i = 0; i < total_calls; i++) {
 
         int idx = i * GROUP_THREADS + group_laneid;
-        
+
         int row = idx / memcpy_per_row;
         int col = (idx*elem_per_memcpy) % src.cols;
         if (row<src.rows && col < src.cols) {
@@ -141,4 +141,3 @@ store(thread const GL &_dst, threadgroup const ST &src, thread const coord &idx,
 //    dst[0] = total_calls;
 //    dst[0] = base_types::convertor<U, float>::convert(1);
 }
-

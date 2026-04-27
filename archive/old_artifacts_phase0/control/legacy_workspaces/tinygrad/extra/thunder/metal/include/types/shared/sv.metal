@@ -54,7 +54,7 @@ struct mittens_DEFAULT_ALIGN sv {
     template<size_t _len> using subvec = sv<dtype, _len>;
 };
 
-    
+
 namespace ducks {
 template <typename T>
 struct has_sv_identifier {
@@ -66,7 +66,7 @@ template<typename _T, size_t _length>
 struct has_sv_identifier<mittens::sv<_T, _length>> {
     static constant constexpr bool value = true;
 };
-    
+
 template <typename ST>
 static constexpr bool is_shared_vector() {
     return has_sv_identifier<ST>::value;
@@ -76,11 +76,9 @@ static constexpr void assert_shared_vector() {
     static_assert(is_shared_vector<ST>(), "T must be a sv");
 }
 }
-        
-    
+
+
 template<size_t _tiles> using sv_bf = sv<bfloat, _tiles>;
 template<size_t _tiles> using sv_hf = sv<half  , _tiles>;
 template<size_t _tiles> using sv_fl = sv<float , _tiles>;
 }
-
-

@@ -40,12 +40,12 @@ struct csv {
     using T          = typename component::T;
     using T2         = typename component::T2;
     using dtype      = typename component::dtype; ///< Data type of the elements in the tile.
-    
+
     constant static constexpr int length     = component::length;
     constant static constexpr int tiles      = component::tiles;
-    
+
     // todo: fill in the rest for convenience, but they're all accessible via component so it's not urgent.
-    
+
     // Real/imag tiles have same internal layout and size
     component real;
     component imag;
@@ -58,13 +58,13 @@ template <typename T>
 struct has_csv_identifier {
     static constant constexpr bool value = false; // Default case
 };
- 
+
 // Specialize for specific template instantiations of st
 template <typename _T, int _length>
 struct has_csv_identifier<mittens::csv<_T, _length>> {
     static constant constexpr bool value = true;
 };
-    
+
 template <typename CSV>
 static constexpr bool is_complex_shared_vector() {
     return has_csv_identifier<CSV>::value;
@@ -83,4 +83,3 @@ template<int _length> using csv_hf = csv<half,  _length>;
 template<int _length> using csv_fl = csv<float, _length>;
 
 }
-

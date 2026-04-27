@@ -55,7 +55,7 @@ export const getBoardItemsPageToolSchema = {
   cursor: z.string().optional().describe('The cursor to get the next page of items, use the nextCursor from the previous response. If the nextCursor was null, it means there are no more items to get'),
   includeColumns: z.boolean().optional().default(false).describe(`Whether to include column values in the response.
 PERFORMANCE OPTIMIZATION: Only set this to true when you actually need the column data. Excluding columns significantly reduces token usage and improves response latency. If you only need to count items, get item IDs/names, or check if items exist, keep this false.`),
-  
+
   includeSubItems: z.boolean().optional().default(false).describe('Whether to include sub items in the response. PERFORMANCE OPTIMIZATION: Only set this to true when you actually need the sub items data.'),
   subItemLimit: z.number().min(MIN_LIMIT).max(MAX_SUB_ITEM_LIMIT).optional().default(DEFAULT_LIMIT).describe('The number of sub items to get per item. This is only used when includeSubItems is true.'),
 
@@ -67,7 +67,7 @@ PERFORMANCE OPTIMIZATION: Only set this to true when you actually need the colum
     operator: z.nativeEnum(ItemsQueryRuleOperator).optional().default(ItemsQueryRuleOperator.AnyOf).describe('The operator to use for the filter'),
   })).optional().describe('The configuration of filters to apply on the items. Before sending the filters, use get_board_info tool to check "filteringGuidelines" key for filtering by the column.'),
   filtersOperator: z.nativeEnum(ItemsQueryOperator).optional().default(ItemsQueryOperator.And).describe('The operator to use for the filters'),
-  
+
   columnIds: z.array(z.string()).optional().describe('The ids of the item columns and subitem columns to get, can be used to reduce the response size when user asks for specific columns. Works only when includeColumns is true. If not provided, all columns will be returned'),
   orderByStringified: z.string().optional().describe('**ONLY FOR MICROSOFT COPILOT**: The order by to apply on the items. Send this as a stringified JSON array of "orderBy" field. Read "orderBy" field description for details how to use it.'),
   orderBy: z.array(z.object({
@@ -100,7 +100,7 @@ export class GetBoardItemsPageTool extends BaseMondayApiTool<GetBoardItemsPageTo
   getInputSchema(): GetBoardItemsPageToolInput {
     return getBoardItemsPageToolSchema;
   }
-  
+
   protected async executeInternal(input: ToolInputType<GetBoardItemsPageToolInput>): Promise<ToolOutputType<never>> {
     // Passing filters + cursor returns an error as cursor has them encoded in it
     const canIncludeFilters = !input.cursor;
@@ -118,7 +118,7 @@ export class GetBoardItemsPageTool extends BaseMondayApiTool<GetBoardItemsPageTo
         fallbackToStringifiedVersionIfNull(input, 'filters', getBoardItemsPageToolSchema.filters);
         input.filters = this.rebuildFiltersWithManualSearch(input.searchTerm, input.filters);
       }
-      
+
     }
 
     const variables: GetBoardItemsPageQueryVariables = {
@@ -133,7 +133,7 @@ export class GetBoardItemsPageTool extends BaseMondayApiTool<GetBoardItemsPageTo
     fallbackToStringifiedVersionIfNull(input, 'filters', getBoardItemsPageToolSchema.filters);
     fallbackToStringifiedVersionIfNull(input, 'orderBy', getBoardItemsPageToolSchema.orderBy);
 
-    if(canIncludeFilters && (input.itemIds || input.filters || input.orderBy)) { 
+    if(canIncludeFilters && (input.itemIds || input.filters || input.orderBy)) {
       variables.queryParams = {
         ids: input.itemIds?.map(id => id.toString()),
         operator: input.filtersOperator,
@@ -164,7 +164,7 @@ export class GetBoardItemsPageTool extends BaseMondayApiTool<GetBoardItemsPageTo
 
     // In theory, this filter should not be present but we can't trust the LLM.
     filters = filters.filter(filter => filter.columnId !== 'name');
-    
+
     filters.push({columnId: 'name', operator: ItemsQueryRuleOperator.ContainsText, compareValue: searchTerm});
     return filters;
   }
@@ -212,9 +212,9 @@ export class GetBoardItemsPageTool extends BaseMondayApiTool<GetBoardItemsPageTo
     return itemResult;
   }
 
-  private getColumnValueData(cv: ColumnValue): any {  
+  private getColumnValueData(cv: ColumnValue): any {
 
-    switch(cv.type) {      
+    switch(cv.type) {
       case NonDeprecatedColumnType.BoardRelation:
         return (cv as BoardRelationValue).linked_items;
 
@@ -226,16 +226,16 @@ export class GetBoardItemsPageTool extends BaseMondayApiTool<GetBoardItemsPageTo
     }
 
     // fallback logic for most column types
-    if (cv.text) {  
-      return cv.text;  
-    }  
-  
-    try {  
-      return JSON.parse(cv.value);  
-    } catch {  
+    if (cv.text) {
+      return cv.text;
+    }
+
+    try {
+      return JSON.parse(cv.value);
+    } catch {
       return cv.value || null;
-    }  
-  }  
+    }
+  }
 
   private async getItemIdsFromSmartSearchAsync(input: ToolInputType<GetBoardItemsPageToolInput>): Promise<number[]> {
     const smartSearchVariables: SmartSearchBoardItemIdsQueryVariables = {
@@ -244,7 +244,7 @@ export class GetBoardItemsPageTool extends BaseMondayApiTool<GetBoardItemsPageTo
     };
 
     const smartSearchRes = await this.mondayApi.request<SmartSearchBoardItemIdsQuery>(smartSearchGetBoardItemIds, smartSearchVariables);
-    
+
     const itemIdsFromSmartSearch = smartSearchRes.search_items?.results?.map(result => Number(result.data.id)) ?? [];
 
     if(itemIdsFromSmartSearch.length === 0) {
@@ -253,7 +253,7 @@ export class GetBoardItemsPageTool extends BaseMondayApiTool<GetBoardItemsPageTo
     }
 
     const initialItemIds = input.itemIds ?? [];
-    
+
     if(initialItemIds.length === 0) {
       return itemIdsFromSmartSearch;
     }

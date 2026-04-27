@@ -12,4 +12,3 @@
 
     <button @click=" foo ( arg, 'string' ) "></button>
 </template>
-

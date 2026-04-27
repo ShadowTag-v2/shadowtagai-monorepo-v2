@@ -34,7 +34,7 @@ pip install vllm litellm
 ??? code
 
     ```python
-    import litellm 
+    import litellm
 
     messages = [{"content": "Hello, how are you?", "role": "user"}]
 
@@ -61,7 +61,7 @@ pip install vllm litellm
 1. Call it with litellm:
 
 ```python
-from litellm import embedding   
+from litellm import embedding
 import os
 
 os.environ["HOSTED_VLLM_API_BASE"] = "http://{your-vllm-server-host}:{your-vllm-server-port}/v1"

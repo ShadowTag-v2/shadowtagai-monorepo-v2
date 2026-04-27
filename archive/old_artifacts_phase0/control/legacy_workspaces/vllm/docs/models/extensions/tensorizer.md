@@ -50,7 +50,7 @@ Once the model is serialized where you want it, you can load the model using `vl
 ```bash
 vllm serve s3://my-bucket/vllm/facebook/opt-125m/v1 \
     --load-format tensorizer \
-    --enable-lora 
+    --enable-lora
 ```
 
 Or, with `LLM()`:
@@ -58,7 +58,7 @@ Or, with `LLM()`:
 ```python
 from vllm import LLM
 llm = LLM(
-    "s3://my-bucket/vllm/facebook/opt-125m/v1", 
+    "s3://my-bucket/vllm/facebook/opt-125m/v1",
     load_format="tensorizer",
     enable_lora=True,
 )
@@ -94,7 +94,7 @@ Or with `LLM()`:
 ```python
 from vllm import LLM
 llm = LLM(
-    "s3://my-bucket/vllm/facebook/opt-125m/v1", 
+    "s3://my-bucket/vllm/facebook/opt-125m/v1",
     load_format="tensorizer",
     enable_lora=True,
     model_loader_extra_config={"deserialization_kwargs": {"num_readers": 2}},

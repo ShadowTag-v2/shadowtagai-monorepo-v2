@@ -36,7 +36,7 @@ export function createMockApiClient() {
         mockRequest.mockRejectedValue(messageOrError);
       }
     },
- 
+
 
     reset: () => {
       mockRequest.mockReset();
@@ -76,7 +76,7 @@ export async function callToolByNameRawAsync(toolName: string, args: any, config
   // Get the registered MCP tool handler
   const server = toolkit.getServer();
   const tool = (server as any)._registeredTools[toolName];
-  
+
   expect(tool).toBeDefined();
 
   // Call the tool through the MCP interface

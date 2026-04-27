@@ -35,7 +35,7 @@ if ($IsWin) {
         $Shortcut = $WshShell.CreateShortcut($ShortcutFile)
         $Shortcut.TargetPath = "powershell.exe"
         $Shortcut.Arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$TargetFile`""
-        $Shortcut.IconLocation = "shell32.dll,238" 
+        $Shortcut.IconLocation = "shell32.dll,238"
         $Shortcut.Save()
         Write-Host "Shortcut created on Desktop." -ForegroundColor Green
     }

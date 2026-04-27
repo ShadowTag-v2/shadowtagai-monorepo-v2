@@ -297,4 +297,3 @@ def extract_title_from_tex(tex_file: str | None) -> str | None:
         pass
 
     return None
-

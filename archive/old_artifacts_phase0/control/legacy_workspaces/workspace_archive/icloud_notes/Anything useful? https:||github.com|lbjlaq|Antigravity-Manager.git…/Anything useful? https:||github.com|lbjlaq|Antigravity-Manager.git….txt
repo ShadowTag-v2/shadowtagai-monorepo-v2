@@ -1,8 +1,8 @@
 Anything useful? https://github.com/lbjlaq/Antigravity-Manager.git; https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.git; https://github.com/jacopone/antigravity-nix.git; https://github.com/SFARPak/AliFullStack; https://github.com/nhonn/antigravity-switcher; https://github.com/dunward/com.unity.ides.git; https://github.com/nhonn/antigravity-switcher.git; https://github.com/xscriptordev/vscode.git; https://github.com/karozi/Awesome-Vibecoding-and-Speccoding-Resources; https://github.com/Seen-Design-Lab/alpha-shadcn.git; https://github.com/GlobalTC/smartCFL.git; https://github.com/TermWay/unity-ide-antigravity.git; https://github.com/Dark-Vinaal/tailwind-ecommerce-site.git;
-https://github.com/GenR8ive/Webhoxy.git; https://github.com/er-pritamdas/Portfolio.git; https://github.com/Thairu-dev/StealthIt.git; https://github.com/sheikhlimon/antigravity-pkg.git; https://github.com/harshaljanjani/cerberus.git; https://github.com/plantacerium/SiliceProtocol.git; https://github.com/Zero-Research/prompts.git; https://github.com/DiceNameIsMy/brno-websites-occupancy-crawler.git; https://github.com/cruzyjapan/Gemini-CLI-UI; https://github.com/marcinjahn/gemini-cli.nvim/tree/main; https://github.com/dvcrn/gemini-code-assist-proxy/tree/main; 
+https://github.com/GenR8ive/Webhoxy.git; https://github.com/er-pritamdas/Portfolio.git; https://github.com/Thairu-dev/StealthIt.git; https://github.com/sheikhlimon/antigravity-pkg.git; https://github.com/harshaljanjani/cerberus.git; https://github.com/plantacerium/SiliceProtocol.git; https://github.com/Zero-Research/prompts.git; https://github.com/DiceNameIsMy/brno-websites-occupancy-crawler.git; https://github.com/cruzyjapan/Gemini-CLI-UI; https://github.com/marcinjahn/gemini-cli.nvim/tree/main; https://github.com/dvcrn/gemini-code-assist-proxy/tree/main;
 
-> implement also, https://github.com/kinopeee/windsurf-antigravity-rules.git, 
-https://github.com/lbjlaq/Antigravity-Manager.git; https://github.com/liuw1535/antigravity2api-nodejs.git; 
-https://github.com/study8677/antigravity-workspace-template; https://github.com/wusimpl/AntigravityQuotaWatcher; 
-https://github.com/GoogleCloudPlatform/generative-ai; https://github.com/gemini-projects/gemini; 
+> implement also, https://github.com/kinopeee/windsurf-antigravity-rules.git,
+https://github.com/lbjlaq/Antigravity-Manager.git; https://github.com/liuw1535/antigravity2api-nodejs.git;
+https://github.com/study8677/antigravity-workspace-template; https://github.com/wusimpl/AntigravityQuotaWatcher;
+https://github.com/GoogleCloudPlatform/generative-ai; https://github.com/gemini-projects/gemini;
 https://github.com/zszszszsz/.config; https://github.com/gemini-projects/gemini engage the n-autoresearch/Kosmos/BioAgents and continue

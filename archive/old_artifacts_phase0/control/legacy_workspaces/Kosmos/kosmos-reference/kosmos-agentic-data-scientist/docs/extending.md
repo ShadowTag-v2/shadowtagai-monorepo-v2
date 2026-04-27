@@ -140,7 +140,7 @@ Transform financial analysis requests into comprehensive, risk-aware plans.
 
 Focus on:
 1. Data quality and compliance verification
-2. Risk assessment and statistical validation  
+2. Risk assessment and statistical validation
 3. Regulatory compliance checks
 4. Backtesting and validation strategies
 
@@ -191,10 +191,10 @@ from agentic_data_scientist.prompts import load_prompt
 
 def create_custom_plan_maker(tools):
     """Create a custom plan maker with specialized behavior."""
-    
+
     # Load custom prompt
     custom_instructions = load_prompt("custom_plan_maker", domain="finance")
-    
+
     # DEFAULT_MODEL is a LiteLLM model instance configured to use OpenRouter
     return LoopDetectionAgent(
         name="custom_plan_maker",
@@ -222,18 +222,18 @@ from typing import AsyncGenerator
 
 class ValidationAgent(LoopDetectionAgent):
     """Custom validation agent for specific checks."""
-    
+
     def __init__(self, validation_rules, **kwargs):
         super().__init__(**kwargs)
         self.validation_rules = validation_rules
-    
+
     async def _run_async_impl(self, ctx: InvocationContext) -> AsyncGenerator[Event, None]:
         """Custom validation logic."""
         state = ctx.session.state
-        
+
         # Get implementation results
         implementation = state.get("implementation_summary", "")
-        
+
         # Apply custom validation rules
         validation_results = []
         for rule_name, rule_fn in self.validation_rules.items():
@@ -242,10 +242,10 @@ class ValidationAgent(LoopDetectionAgent):
                 'rule': rule_name,
                 'passed': passed
             })
-        
+
         # Store results
         state["validation_results"] = validation_results
-        
+
         # Yield results as event
         summary = f"Validation: {sum(r['passed'] for r in validation_results)}/{len(validation_results)} checks passed"
         yield Event(
@@ -269,18 +269,18 @@ logger = logging.getLogger(__name__)
 
 def create_custom_workflow(working_dir, mcp_servers=None):
     """Create workflow with custom agents."""
-    
+
     # Get standard agents
     from agentic_data_scientist.agents.adk.agent import (
         create_agent as base_create_agent
     )
-    
+
     # Create base workflow
     workflow = base_create_agent(working_dir, mcp_servers)
-    
+
     # Or build custom workflow from scratch
     from google.adk.agents import SequentialAgent
-    
+
     custom_workflow = SequentialAgent(
         name="custom_workflow",
         description="Workflow with custom agents",
@@ -288,7 +288,7 @@ def create_custom_workflow(working_dir, mcp_servers=None):
             # Your custom agent composition
         ]
     )
-    
+
     return custom_workflow
 ```
 
@@ -310,14 +310,14 @@ def custom_data_analysis(
 ) -> str:
     """
     Perform custom data analysis.
-    
+
     Parameters
     ----------
     query : str
         Analysis query
     working_dir : str
         Working directory for security validation
-        
+
     Returns
     -------
     str
@@ -327,7 +327,7 @@ def custom_data_analysis(
         # Your custom logic here
         # Validate paths against working_dir for security
         work_path = Path(working_dir).resolve()
-        
+
         # Perform analysis
         result = f"Analysis for: {query}"
         return result
@@ -337,21 +337,21 @@ def custom_data_analysis(
 def fetch_custom_api(endpoint: str, timeout: int = 30) -> str:
     """
     Fetch data from a custom API.
-    
+
     Parameters
     ----------
     endpoint : str
         API endpoint path
     timeout : int, optional
         Request timeout in seconds
-        
+
     Returns
     -------
     str
         API response or error message
     """
     import requests
-    
+
     try:
         base_url = "https://api.example.com"
         response = requests.get(f"{base_url}/{endpoint}", timeout=timeout)
@@ -376,24 +376,24 @@ from agentic_data_scientist.tools import (
 
 def create_agent_with_custom_tools(working_dir: str):
     """Create agent with custom tools."""
-    
+
     # Import your custom tools
     from my_tools import custom_data_analysis, fetch_custom_api
-    
+
     # Create tools list with working_dir bound
     tools = [
         # Standard file tools
         partial(read_file, working_dir=working_dir),
         partial(list_directory, working_dir=working_dir),
-        
+
         # Custom tools
         partial(custom_data_analysis, working_dir=working_dir),
-        
+
         # Web tools (no working_dir needed)
         fetch_url,
         fetch_custom_api,
     ]
-    
+
     # Create agent with custom tools
     # Note: You'll need to modify agent.py to accept tools parameter
     # or directly instantiate agents with your tools list
@@ -423,7 +423,7 @@ def query_database(
 ) -> str:
     """
     Execute a read-only SQL query on a database.
-    
+
     Parameters
     ----------
     query : str
@@ -432,7 +432,7 @@ def query_database(
         Working directory containing the database
     db_name : str, optional
         Database filename, default "data.db"
-        
+
     Returns
     -------
     str
@@ -442,27 +442,27 @@ def query_database(
         # Security: Validate database is in working_dir
         work_path = Path(working_dir).resolve()
         db_path = (work_path / db_name).resolve()
-        
+
         if not db_path.is_relative_to(work_path):
             return f"Error: Database must be in working directory"
-        
+
         # Security: Only allow SELECT queries
         if not query.strip().upper().startswith("SELECT"):
             return "Error: Only SELECT queries allowed"
-        
+
         # Execute query
         conn = sqlite3.connect(db_path)
         cursor = conn.execute(query)
         results = cursor.fetchall()
         conn.close()
-        
+
         # Format results
         if not results:
             return "No results found"
-        
+
         # Simple formatting
         return "\n".join(str(row) for row in results)
-        
+
     except Exception as e:
         return f"Error executing query: {e}"
 
@@ -481,18 +481,18 @@ Create custom handlers to process workflow events:
 ```python
 async def custom_event_processor(ds, query):
     """Custom event processing with metrics."""
-    
+
     metrics = {
         'plan_iterations': 0,
         'implementation_iterations': 0,
         'stages_completed': 0,
         'tools_used': set(),
     }
-    
+
     async for event in await ds.run_async(query, stream=True):
         event_type = event.get('type')
         author = event.get('author', '')
-        
+
         # Track metrics
         if 'plan_maker' in author:
             metrics['plan_iterations'] += 1
@@ -500,17 +500,17 @@ async def custom_event_processor(ds, query):
             metrics['implementation_iterations'] += 1
         elif 'Stage' in event.get('content', ''):
             metrics['stages_completed'] += 1
-        
+
         if event_type == 'function_call':
             metrics['tools_used'].add(event['name'])
-        
+
         # Custom handling
         if event_type == 'message':
             # Filter or transform messages
             content = event['content']
             if 'ERROR' in content:
                 logger.error(f"Error in {author}: {content}")
-        
+
         elif event_type == 'completed':
             # Log metrics
             logger.info(f"Workflow Metrics: {metrics}")
@@ -531,15 +531,15 @@ from agentic_data_scientist.core.events import event_to_dict
 def transform_event(event):
     """Add custom fields to events."""
     event_dict = event_to_dict(event)
-    
+
     # Add custom metadata
     event_dict['processed_at'] = time.time()
     event_dict['workflow_phase'] = detect_phase(event_dict['author'])
-    
+
     # Enhance with additional info
     if event_dict['type'] == 'message':
         event_dict['word_count'] = len(event_dict['content'].split())
-    
+
     return event_dict
 
 def detect_phase(author):
@@ -569,13 +569,13 @@ app = FastAPI()
 async def websocket_endpoint(websocket: WebSocket):
     """WebSocket endpoint for real-time analysis."""
     await websocket.accept()
-    
+
     try:
         # Receive request
         data = await websocket.receive_json()
         query = data.get('query')
         files = data.get('files', [])
-        
+
         # Run workflow with streaming
         async with DataScientist() as ds:
             async for event in await ds.run_async(
@@ -585,7 +585,7 @@ async def websocket_endpoint(websocket: WebSocket):
             ):
                 # Send events to client
                 await websocket.send_json(event)
-                
+
     except Exception as e:
         await websocket.send_json({
             'type': 'error',
@@ -599,10 +599,10 @@ async def analyze_endpoint(query: str, files: list = None):
     """REST endpoint for analysis."""
     async with DataScientist() as ds:
         result = await ds.run_async(query, files=files)
-        
+
         if result.status == "error":
             raise HTTPException(status_code=500, detail=result.error)
-        
+
         return {
             'response': result.response,
             'files_created': result.files_created,
@@ -620,10 +620,10 @@ import asyncio
 async def notebook_analysis(query, files=None):
     """Run analysis in Jupyter with rich formatting."""
     display(Markdown(f"## Analysis Request\n\n{query}"))
-    
+
     async with DataScientist() as ds:
         display(Markdown("### Workflow Progress"))
-        
+
         current_phase = None
         async for event in await ds.run_async(
             query,
@@ -631,7 +631,7 @@ async def notebook_analysis(query, files=None):
             stream=True
         ):
             author = event.get('author', '')
-            
+
             # Track phase changes
             if 'plan_maker' in author and current_phase != 'Planning':
                 current_phase = 'Planning'
@@ -642,13 +642,13 @@ async def notebook_analysis(query, files=None):
             elif 'summary' in author and current_phase != 'Summary':
                 current_phase = 'Summary'
                 display(Markdown(f"**Phase: {current_phase}**"))
-            
+
             if event['type'] == 'message':
                 content = event['content']
                 # Display formatted messages
                 if len(content) < 200:
                     display(Markdown(f"*{author}*: {content}"))
-                    
+
             elif event['type'] == 'completed':
                 files = event['files_created']
                 display(Markdown(f"### Results\n\n**Files Created:**"))
@@ -668,18 +668,18 @@ from pathlib import Path
 
 class PersistentDataScientist:
     """DataScientist with session persistence."""
-    
+
     def __init__(self, session_dir="./sessions"):
         self.session_dir = Path(session_dir)
         self.session_dir.mkdir(exist_ok=True)
         self.ds = None
         self.session_id = None
-    
+
     async def start_session(self, session_id=None):
         """Start or resume a session."""
         self.ds = DataScientist()
         await self.ds.__aenter__()
-        
+
         if session_id:
             # Resume existing session
             self.session_id = session_id
@@ -688,9 +688,9 @@ class PersistentDataScientist:
             # New session
             self.session_id = self.ds.session_id
             context = {}
-        
+
         return context
-    
+
     def load_context(self, session_id):
         """Load session context."""
         context_file = self.session_dir / f"{session_id}.json"
@@ -698,23 +698,23 @@ class PersistentDataScientist:
             with open(context_file) as f:
                 return json.load(f)
         return {}
-    
+
     def save_context(self, context):
         """Save session context."""
         context_file = self.session_dir / f"{self.session_id}.json"
         with open(context_file, 'w') as f:
             json.dump(context, f, indent=2)
-    
+
     async def run(self, query, context=None):
         """Run query with persistent context."""
         if context is None:
             context = self.load_context(self.session_id)
-        
+
         result = await self.ds.run_async(query, context=context)
         self.save_context(context)
-        
+
         return result
-    
+
     async def close(self):
         """Close session."""
         if self.ds:

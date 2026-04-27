@@ -55,9 +55,9 @@ The Codemod MCP server provides these tools for AI assistants:
 <Steps>
   <Step title="Ask the AI for a specific codemod">
     Describe your transformation [clearly](#best-practices):
-    
+
     ```
-    "Create a jssg codemod that converts all console.log statements to console.info in TypeScript files. 
+    "Create a jssg codemod that converts all console.log statements to console.info in TypeScript files.
     The codemod should:
     - Target .ts and .tsx files
     - Only transform console.log calls (not console.error, console.warn, etc.)
@@ -65,7 +65,7 @@ The Codemod MCP server provides these tools for AI assistants:
     - Include test cases for the transformation"
     ```
   </Step>
-  
+
   <Step title="Let MCP build the Codemod package">
     The AI will use MCP tools to:
     - Analyze your codebase structure with `dump_ast`
@@ -74,18 +74,18 @@ The Codemod MCP server provides these tools for AI assistants:
     - Generate test cases with `run_jssg_tests`
     - Set up the [`workflow.yaml`](/workflows/reference) and [`codemod.yaml`](/package-structure) files
   </Step>
-  
+
   <Step title="Validate the workflow">
     ```bash
     npx codemod@latest workflow validate -w workflow.yaml
     ```
-    
+
     This ensures your workflow file is syntactically correct and follows the schema.
   </Step>
-  
+
   <Step title="Understand and run the output package">
     The MCP will create a complete Codemod package structure:
-    
+
     <Tree>
       <Tree.Folder name="my-codemod" defaultOpen>
         <Tree.File name="codemod.yaml" />
@@ -96,7 +96,7 @@ The Codemod MCP server provides these tools for AI assistants:
         <Tree.Folder name="tests" defaultOpen />
       </Tree.Folder>
     </Tree>
-    
+
     Run your codemod:
     ```bash
     npx codemod@latest workflow run -w ./my-codemod/

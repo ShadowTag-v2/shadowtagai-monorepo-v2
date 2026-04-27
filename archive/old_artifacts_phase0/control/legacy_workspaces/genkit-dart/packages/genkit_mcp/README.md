@@ -157,7 +157,7 @@ void main() async {
 
   // Retrieve the tools from the connected client
   final tools = await client.getActiveTools(ai);
-  
+
   final response = await ai.generate(
     model: 'gemini-2.5-flash',
     prompt: 'Read the contents of README.md',

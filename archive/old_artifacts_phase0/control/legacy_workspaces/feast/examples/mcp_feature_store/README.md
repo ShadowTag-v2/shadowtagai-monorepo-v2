@@ -30,13 +30,13 @@ cd examples/mcp_feature_store
 
 2. Initialize a Feast repository in this directory. We'll use the existing `feature_store.yaml` that's already configured for MCP:
 ```bash
-feast init . 
+feast init .
 ```
 This will create a `data` subdirectory and a `feature_repo` subdirectory if they don't exist, and will use the `feature_store.yaml` present in the current directory (`examples/mcp_feature_store`).
 
 3. Apply the feature store configuration:
 ```bash
-cd feature_repo 
+cd feature_repo
 feast apply
 cd .. # Go back to examples/mcp_feature_store for the next steps
 ```
@@ -60,7 +60,7 @@ INFO:feast.feature_server:MCP support has been enabled for the Feast feature ser
 The fastapi_mcp integration automatically exposes your Feast feature server's FastAPI endpoints as MCP tools. This means AI assistants can:
 
 - **Call `/get-online-features`** to retrieve features from the feature store
-- **Use `/health`** to check server status  
+- **Use `/health`** to check server status
 
 
 ## Configuration Details

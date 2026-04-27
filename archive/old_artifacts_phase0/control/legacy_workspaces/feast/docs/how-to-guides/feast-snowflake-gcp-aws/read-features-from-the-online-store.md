@@ -56,4 +56,3 @@ online_features = fs.get_online_features(
    ]
 }
 ```
-

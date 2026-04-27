@@ -29,7 +29,7 @@ pub fn capabilities_security_callback(no_interaction: bool) -> CapabilitiesSecur
             return Ok(());
         }
         let answer = Confirm::new(&format!(
-            "🛡️  \x1b[31mSecurity Notice\x1b[0m: This action will grant access to `{}`, which may perform sensitive operations. Are you sure you want to continue?", 
+            "🛡️  \x1b[31mSecurity Notice\x1b[0m: This action will grant access to `{}`, which may perform sensitive operations. Are you sure you want to continue?",
             need_to_check.iter().map(|c| format!("{c:?}")).collect::<Vec<_>>().join(", ")
         ))
         .with_default(false)

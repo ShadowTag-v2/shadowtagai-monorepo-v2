@@ -33,7 +33,7 @@ Further update the model as follows:
   +     pixel_values: torch.Tensor,
     ) -> SamplerOutput:
   ```
-  
+
   More conveniently, you can simply pass `**kwargs` to the [forward][torch.nn.Module.forward] method and retrieve the keyword parameters for multimodal inputs from it.
 
 - Implement [embed_multimodal][vllm.model_executor.models.interfaces.SupportsMultiModal.embed_multimodal] that returns the embeddings from running the multimodal inputs through the multimodal tokenizer of the model. Below we provide a boilerplate of a typical implementation pattern, but feel free to adjust it to your own needs.
@@ -71,7 +71,7 @@ Further update the model as follows:
     [PlaceholderRange][vllm.multimodal.inputs.PlaceholderRange] from input processing.
     This logic can be found at [embed_input_ids][vllm.model_executor.models.interfaces.SupportsMultiModal.embed_input_ids].
 
-    You may override this method if additional logic is required for your model when merging embeddings. 
+    You may override this method if additional logic is required for your model when merging embeddings.
 
 - Implement [get_language_model][vllm.model_executor.models.interfaces.SupportsMultiModal.get_language_model] getter to provide stable access to the underlying language model.
 

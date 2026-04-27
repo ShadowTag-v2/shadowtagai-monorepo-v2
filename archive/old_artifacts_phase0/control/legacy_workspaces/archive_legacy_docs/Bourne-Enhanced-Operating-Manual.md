@@ -56,4 +56,3 @@
 - Endurance: 2.2× baseline
 
 **ShadowTag runs as a disciplined, compartmentalized, continuously boosted unit.**
-

@@ -1,5 +1,5 @@
 Cor.58 AiYouJR as a Gemini CLI extension
-This software I’ve already apparently written, is already worth something?  
+This software I’ve already apparently written, is already worth something?
 Gpt full dropped this plan on me yesterday:
 
 Perfect — here’s the economic + control-flow diagram for AiYouJR as a Gemini CLI extension, expressed textually so you can drop it straight into a README or architecture doc (I can render a visual later in Cursor once GitHub visibility is live).

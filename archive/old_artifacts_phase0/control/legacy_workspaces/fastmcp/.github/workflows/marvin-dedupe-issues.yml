@@ -61,7 +61,7 @@ jobs:
           Found 3 possible duplicate issues:
 
           1. #123: Issue title here
-          2. #456: Another issue title  
+          2. #456: Another issue title
           3. #789: Third issue title
 
           This issue will be automatically closed as a duplicate in 3 days.

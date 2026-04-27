@@ -6,9 +6,9 @@ Generally, Feast supports several patterns of feature retrieval:
 
 1. Training data generation (via `feature_store.get_historical_features(...)`)
 2. Offline feature retrieval for batch scoring (via `feature_store.get_historical_features(...)`)
-3. Online feature retrieval for real-time model predictions 
+3. Online feature retrieval for real-time model predictions
    - via the SDK: `feature_store.get_online_features(...)`
-   - via deployed feature server endpoints: `requests.post('http://localhost:6566/get-online-features', data=json.dumps(online_request))` 
+   - via deployed feature server endpoints: `requests.post('http://localhost:6566/get-online-features', data=json.dumps(online_request))`
 
 Each of these retrieval mechanisms accept:
 

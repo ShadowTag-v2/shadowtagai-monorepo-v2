@@ -9,12 +9,12 @@ class TinyGPUDriverLoadingStateMachine {
 class TinyGPUViewModel: NSObject {
 
 	@Published private var state: TinyGPUDriverLoadingStateMachine.State = .unloaded
-	
+
 	override init() {
 		super.init()
 		refreshInitialDextState()
 	}
-	
+
 	private func refreshInitialDextState() {
 #if os(macOS)
 		Task.detached { [dextIdentifier] in
@@ -80,7 +80,7 @@ extension TinyGPUViewModel: ObservableObject {
 	func activateMyDext() {
 		activateExtension(dextIdentifier)
 	}
-	
+
 	func deactivateMyDext() {
 		deactivateExtension(dextIdentifier)
 	}
@@ -95,7 +95,7 @@ extension TinyGPUViewModel: ObservableObject {
 
 		self.state = .activating
 	}
-	
+
 	func deactivateExtension(_ dextIdentifier: String) {
 
 		let request = OSSystemExtensionRequest.deactivationRequest(forExtensionWithIdentifier: dextIdentifier, queue: .main)

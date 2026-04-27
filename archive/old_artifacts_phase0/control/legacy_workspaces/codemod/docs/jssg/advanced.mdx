@@ -107,7 +107,7 @@ export default transform;
 ### Return Semantics
 
 - **`string`**: Modified code (if identical to input, treated as unmodified)
-- **`null`**: No changes needed  
+- **`null`**: No changes needed
 - **`undefined`**: Same as null
 - **Other types**: Runtime error
 
@@ -131,7 +131,7 @@ const transform: Transform<TSX> = async (root, options) => {
   const library = options.params?.library || "next-intl";
   const shardingMethod = options.params?.shardingMethod || "directory";
   const prSize = options.params?.prSize || "50";
-  
+
   // Use parameters in your transformation logic
   if (library === "react-i18next") {
     // Apply react-i18next specific transformations
@@ -196,7 +196,7 @@ Access matrix values via `options.matrixValues`:
 
 ```ts
 import type { parseAsync, GetParser, Transform } from "codemod:ast-grep";
-import type TSX from "codemod:ast-grep/langs/tsx";    
+import type TSX from "codemod:ast-grep/langs/tsx";
 
 const transform: Transform<TSX> = async (root, options) => {
   // Access matrix values passed from the workflow (if matrix strategy is used)
@@ -426,7 +426,7 @@ import type TSX from "codemod:ast-grep/langs/tsx";
 const transform: Transform<TSX> = async (root, options) => {
   const filePath = root.filename();
   const repoName = options.matrixValues?.repo_name;
-  
+
   // Apply repo-specific transformations
   if (repoName === "frontend-app") {
     // Frontend-specific logic

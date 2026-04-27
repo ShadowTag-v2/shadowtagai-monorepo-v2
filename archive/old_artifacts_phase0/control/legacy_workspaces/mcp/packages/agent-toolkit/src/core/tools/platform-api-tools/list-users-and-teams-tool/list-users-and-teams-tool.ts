@@ -86,7 +86,7 @@ export class ListUsersAndTeamsTool extends BaseMondayApiTool<typeof listUsersAnd
   });
 
   getDescription(): string {
-    return `Tool to fetch users and/or teams data. 
+    return `Tool to fetch users and/or teams data.
 
       MANDATORY BEST PRACTICES:
       1. ALWAYS use specific IDs or names when available

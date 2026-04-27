@@ -108,7 +108,7 @@ PROXY_PORT=8081
    ```bash
    # Make sure you launch with the script
    ./scripts/launch-antigravity.sh
-   
+
    # Or set environment variables manually
    HTTP_PROXY=http://localhost:8080 \
    HTTPS_PROXY=http://localhost:8080 \
@@ -159,7 +159,7 @@ HTTPS_PROXY=http://localhost:8080 \
    ```bash
    # Search for Antigravity
    mdfind -name "Antigravity"
-   
+
    # Or check Applications
    ls -la /Applications/ | grep -i antigravity
    ```
@@ -314,10 +314,10 @@ Debug output includes:
    ```bash
    # Test API key directly
    curl "https://generativelanguage.googleapis.com/v1beta/models?key=YOUR_KEY"
-   
+
    # Test proxy
    npm test
-   
+
    # Test Antigravity launch
    ./scripts/launch-antigravity.sh
    ```

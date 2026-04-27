@@ -48,4 +48,3 @@ function! leaderf#Window#NormalModeFilter(winid, key) abort
 
     return 1
 endfunction
-

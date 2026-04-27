@@ -626,11 +626,11 @@ Explainable Moderation (SAE + case-based)	AI reasons every action	100 % auditabl
 📊 3. Monetization Model
 
 Stream	Unit	Price	Year 3 Volume	ARR	GM %
-Creator subscriptions	$10 / mo	1 M creators	$120 M	80 %	
-Ad revenue share	CPM $4 (AI-verified ads)	10 B views	$40 M	75 %	
-Enterprise AI feed licensing	$50 K / license	500 partners	$25 M	78 %	
-ShadowTag integration fees	$0.02 / asset	2 B uploads	$40 M	80 %	
-Data insights API	$0.001 / query	50 B queries	$50 M	85 %	
+Creator subscriptions	$10 / mo	1 M creators	$120 M	80 %
+Ad revenue share	CPM $4 (AI-verified ads)	10 B views	$40 M	75 %
+Enterprise AI feed licensing	$50 K / license	500 partners	$25 M	78 %
+ShadowTag integration fees	$0.02 / asset	2 B uploads	$40 M	80 %
+Data insights API	$0.001 / query	50 B queries	$50 M	85 %
 
 Total Year 3 ARR ≈ $275 M; GM ≈ 79 %;
 Operating margin ≈ 50 %; Net ≈ $135 M profit potential.
@@ -1636,10 +1636,10 @@ Starlink’s own network load drops nearly in half because aircraft relay intra-
 Your orchestrator tracks every byte of rebroadcasted payload and invoices SpaceX or its enterprise tenants.
 
 Item	Model	Rate	Example
-Rebroadcast bandwidth fee	$ 0.01 – 0.03 / GB	Starlink pays you for saved backhaul	
-AI-edge processing fee	$ 0.002 / call	For inference handled at CoreWeave node	
-Data-cache license (airline)	$ 500 / aircraft / mo	Airlines monetize cabin AI connectivity	
-Maintenance & telemetry	flat 10 % O&M markup	Automatic in SaaS billing	
+Rebroadcast bandwidth fee	$ 0.01 – 0.03 / GB	Starlink pays you for saved backhaul
+AI-edge processing fee	$ 0.002 / call	For inference handled at CoreWeave node
+Data-cache license (airline)	$ 500 / aircraft / mo	Airlines monetize cabin AI connectivity
+Maintenance & telemetry	flat 10 % O&M markup	Automatic in SaaS billing
 
 Revenue potential
 
@@ -1970,10 +1970,10 @@ Latency Gain	27 % avg (to < 25 ms)
 Purpose: verification + explanation of every code/decision run inside Cursor / Gemini CLI.
 
 Step	Description
-Run 1: Primary LLM chain generates code or plan.	
-Run 2 (Plan Mode): Same chain uses Cursor Plan to reverse-engineer Run 1 → produces “explanation” JSON.	
-Run 3: Opposing chain re-runs using Run 2 as its data, outputs evaluation + correction.	
-Cursor / Gemini Layer: merges both with weighted consensus (variance < 3 %) before commit.	
+Run 1: Primary LLM chain generates code or plan.
+Run 2 (Plan Mode): Same chain uses Cursor Plan to reverse-engineer Run 1 → produces “explanation” JSON.
+Run 3: Opposing chain re-runs using Run 2 as its data, outputs evaluation + correction.
+Cursor / Gemini Layer: merges both with weighted consensus (variance < 3 %) before commit.
 
 ✅ Adds ≈ 18 % reliability uplift, reduces hallucinated commits ≈ 40 %.
 💵 Expected cost ≈ $0.002 / run vs >$0.01 manual review.
@@ -2088,10 +2088,10 @@ Latency Gain	27 % avg (to < 25 ms)
 Purpose: verification + explanation of every code/decision run inside Cursor / Gemini CLI.
 
 Step	Description
-Run 1: Primary LLM chain generates code or plan.	
-Run 2 (Plan Mode): Same chain uses Cursor Plan to reverse-engineer Run 1 → produces “explanation” JSON.	
-Run 3: Opposing chain re-runs using Run 2 as its data, outputs evaluation + correction.	
-Cursor / Gemini Layer: merges both with weighted consensus (variance < 3 %) before commit.	
+Run 1: Primary LLM chain generates code or plan.
+Run 2 (Plan Mode): Same chain uses Cursor Plan to reverse-engineer Run 1 → produces “explanation” JSON.
+Run 3: Opposing chain re-runs using Run 2 as its data, outputs evaluation + correction.
+Cursor / Gemini Layer: merges both with weighted consensus (variance < 3 %) before commit.
 
 ✅ Adds ≈ 18 % reliability uplift, reduces hallucinated commits ≈ 40 %.
 💵 Expected cost ≈ $0.002 / run vs >$0.01 manual review.
@@ -2823,7 +2823,7 @@ Data center / CoreWeave contracts	$10 M	$20 M	GPU leases
 Starlink & network fees	—	$12 M	Usage-based
 Staff / DevOps	—	$25 M	60 FTE equivalent
 Regulatory & certification	$5 M	$2 M	Aviation / Maritime
-Total (Yr 1)	≈ $40 M CAPEX, $60 M OPEX		
+Total (Yr 1)	≈ $40 M CAPEX, $60 M OPEX
 
 
 ⸻
@@ -3006,11 +3006,11 @@ From packet to perception, AiYou authenticates every signal and monetizes trust 
 Would you like me to follow this with a Cursor-ready Monte Carlo simulation notebook (Python) showing valuation probability curves and sensitivity to growth & margin assumptions?
 
 Include a competitor to Netflix,
-But hosted entirely inside starlink. 
-Also our apis to allow video games to also be accessed from inside our virtual mall. So you walk out of the virtual Ai video theater, into world of Warcraft. Then into our Amazon equivalent to look at and handle, even virtually demo any product. 
-Show to your friends virtually next to you. Before actually purchasing. 
-The actual item comes to your house. 
-Full virtual tech support for purchased product. Their Ai figure walks you through troubleshooting, which you implement at home after taking off the goggles 
+But hosted entirely inside starlink.
+Also our apis to allow video games to also be accessed from inside our virtual mall. So you walk out of the virtual Ai video theater, into world of Warcraft. Then into our Amazon equivalent to look at and handle, even virtually demo any product.
+Show to your friends virtually next to you. Before actually purchasing.
+The actual item comes to your house.
+Full virtual tech support for purchased product. Their Ai figure walks you through troubleshooting, which you implement at home after taking off the goggles
 
 Here’s the updated executive summary incorporating your new components:
 ✅ a Netflix-class streaming competitor hosted entirely inside Starlink,

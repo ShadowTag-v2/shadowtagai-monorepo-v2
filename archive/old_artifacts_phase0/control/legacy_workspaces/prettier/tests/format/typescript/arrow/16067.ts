@@ -1,12 +1,12 @@
-const foo1 = 
+const foo1 =
   // comment
   <T>() => () => 1;
 
-const foo2 = 
+const foo2 =
   // comment
   () => () => 1;
 
-const foo3 = 
+const foo3 =
   // comment
   <T>() => 1;
 
@@ -30,6 +30,6 @@ cond ?
   // comment
   <T>() => () => 1;
 
-foo4 = 
+foo4 =
   // comment
   <T>() => () => 1;

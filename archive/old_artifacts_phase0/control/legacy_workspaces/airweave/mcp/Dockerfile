@@ -44,4 +44,3 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 
 # Run the HTTP server
 CMD ["node", "build/index-http.js"]
-

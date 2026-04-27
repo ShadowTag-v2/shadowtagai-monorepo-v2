@@ -170,7 +170,7 @@ Rules are authored as plain JavaScript objects with the same semantics as ast-gr
 { rule: { pattern: "console.log($ARG)" } }
 
 // Multiple patterns
-{ rule: { 
+{ rule: {
   any: [
     { pattern: "console.log($ARG)" },
     { pattern: "console.warn($ARG)" }
@@ -178,7 +178,7 @@ Rules are authored as plain JavaScript objects with the same semantics as ast-gr
 }}
 
 // With node type restriction
-{ rule: { 
+{ rule: {
   pattern: "$FUNC($$$ARGS)",
   kind: "call_expression"
 }}
@@ -196,7 +196,7 @@ Rules are authored as plain JavaScript objects with the same semantics as ast-gr
 
 ```ts
 // Find nodes inside other nodes
-{ rule: { 
+{ rule: {
   pattern: "console.log($ARG)",
   inside: { pattern: "function $NAME($$$PARAMS)" }
 }}
@@ -317,10 +317,10 @@ import type TSX from "codemod:ast-grep/langs/tsx";
 
 const transform: Transform<TSX> = (root) => {
   const rootNode = root.root();
-  
+
   // Find all console.* calls
   const matches = rootNode.findAll({
-    rule: { 
+    rule: {
       any: [
         { pattern: "console.log($$$ARGS)" },
         { pattern: "console.warn($$$ARGS)" },
@@ -328,11 +328,11 @@ const transform: Transform<TSX> = (root) => {
       ]
     }
   });
-  
+
   if (matches.length === 0) {
     return null; // No changes needed
   }
-  
+
   // Create edits
   const edits = matches.map((node: SgNode<TSX>) => {
     const callee = node.field("function");
@@ -340,10 +340,10 @@ const transform: Transform<TSX> = (root) => {
     const args = node.getMultipleMatches("ARGS")
       .map(arg => arg.text())
       .join(", ");
-    
+
     return node.replace(`logger.${method}(${args})`);
   });
-  
+
   return rootNode.commitEdits(edits);
 }
 ```
@@ -446,12 +446,12 @@ function isReactComponent(
   node: SgNode<TSX>
 ): node is SgNode<TSX, "function_declaration" | "arrow_function"> {
   if (!isFunctionLike(node)) return false;
-  
+
   // Check if it returns JSX
   const returnStatements = node.findAll({
     rule: { pattern: "return $EXPR" },
   });
-  
+
   return returnStatements.some((ret) => {
     const expr = ret.getMatch("EXPR");
     return expr?.kind() === "jsx_element" || expr?.kind() === "jsx_fragment";
@@ -478,15 +478,15 @@ For large codebases:
 ```ts
 const transform: Transform<TSX> = (root) => {
   const rootNode = root.root();
-  
+
   // Early return for non-applicable files
   if (!root.filename().endsWith(".tsx")) {
     return null;
   }
-  
+
   // Single traversal for multiple patterns
   const edits: Edit[] = [];
-  
+
   rootNode
     .findAll({
       rule: {
@@ -501,7 +501,7 @@ const transform: Transform<TSX> = (root) => {
       // Process all patterns in one pass
       edits.push(node.replace(`logger.${method}(${args})`));
     });
-  
+
   return edits.length > 0 ? rootNode.commitEdits(edits) : null;
 }
 
@@ -627,16 +627,16 @@ JSSG supports async operations for complex transformations:
 ```ts
 export default async function transform(root: SgRoot<TSX>): Promise<string | null> {
   const filePath = root.filename();
-  
+
   // Async file system operations
   const config = await loadProjectConfig(filePath);
-  
+
   // Async API calls or analysis
   const metadata = await analyzeImports(root.root());
-  
+
   // Use gathered data in transformation
   const edits = await generateEdits(root.root(), config, metadata);
-  
+
   return root.root().commitEdits(edits);
 }
 ```
@@ -658,13 +658,13 @@ import { findProjectRoot, analyzeExports } from "./utils/project-analysis";
 
 export default async function transform(root: SgRoot<TSX>): Promise<string | null> {
   const projectRoot = await findProjectRoot(root.filename());
-  
+
   // Analyze exports from related files
   const componentExports = await analyzeExports(projectRoot, "src/components");
-  
+
   // Use cross-file information in transformation
   const edits = transformImports(root.root(), componentExports);
-  
+
   return root.root().commitEdits(edits);
 }
 ```
@@ -707,7 +707,7 @@ const transform: Transform<TSX> = (root) => {
   const defaultExport = rootNode.find({
     rule: { pattern: "export default $COMPONENT" }
   });
-  
+
   if (!defaultExport) return null;
 
   const component = defaultExport.getMatch("COMPONENT");
@@ -718,7 +718,7 @@ const transform: Transform<TSX> = (root) => {
   // Check for parameters that need typing
   const params = component.field("parameters");
   const secondParam = params?.child(1);
-  
+
   if (!secondParam?.is("required_parameter")) {
     return null; // No second parameter
   }
@@ -756,15 +756,15 @@ For large codebases, optimize your traversal:
 ```ts
 const transform: Transform<TSX> = (root) => {
   const rootNode = root.root();
-  
+
   // Early return for non-applicable files
   if (!root.filename().endsWith(".tsx")) {
     return null;
   }
-  
+
   // Single traversal for multiple patterns
   const edits: Edit[] = [];
-  
+
   rootNode
     .findAll({
       rule: {
@@ -783,7 +783,7 @@ const transform: Transform<TSX> = (root) => {
         .join(", ");
       edits.push(node.replace(`logger.${method}(${args})`));
     });
-  
+
   return edits.length > 0 ? rootNode.commitEdits(edits) : null;
 }
 
@@ -838,23 +838,23 @@ export default transform;
     {`
     const transform: Transform<TSX> = (root) => {
     const rootNode = root.root();
-    
+
     // Add debug logging
     console.log("Processing file:", root.filename());
-    
+
     const matches = rootNode.findAll({ rule: { pattern: "your pattern" } });
     console.log("Found matches:", matches.length);
-    
+
     if (matches.length === 0) {
       console.log("No matches found - check your pattern");
       return null;
     }
-    
+
     // Log each match for inspection
     matches.forEach((match, i) => {
       console.log(\`Match \${i}:\`, match.text());
     });
-    
+
     return rootNode.commitEdits(edits);
     }
     export default transform;`}
@@ -916,5 +916,3 @@ function helper(node: SgNode<TSX>): Edit | null {
 <Info>
 Language kinds and editor IntelliSense are available via [codemod:ast-grep/langs/*](https://github.com/codemod/codemod/tree/main/packages/jssg-types/src/langs). E.g., `import { TSX } from "codemod:ast-grep/langs/tsx"`.
 </Info>
-
-

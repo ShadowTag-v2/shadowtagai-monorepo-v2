@@ -21,7 +21,7 @@ set -eu -o pipefail
 # kubebuilder-tools can get re-pushed for the same version of Kubernetes, so the
 # SHAs can change https://kubernetes.slack.com/archives/CAR30FCJZ/p1665057725119059?thread_ts=1665057082.715119&cid=CAR30FCJZ
 
-if [ $# -ne 1 ]; 
+if [ $# -ne 1 ];
     then echo "error: incorrect number of args: usage ${0} <kubebuilder-tools-version>"
     echo "you can discover available versions by running gsutil ls gs://kubebuilder-tools"
     exit 1

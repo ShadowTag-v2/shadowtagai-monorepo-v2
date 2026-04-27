@@ -1,5 +1,5 @@
 # Warning: this file is not used in production. It is only used for development.
-# The secrets that we openly share with you are for development purposes only and cannot 
+# The secrets that we openly share with you are for development purposes only and cannot
 # be used in production.
 
 integrations:

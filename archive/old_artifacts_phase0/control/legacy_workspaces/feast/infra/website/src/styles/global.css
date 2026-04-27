@@ -151,7 +151,7 @@ main::before {
         display: flex;
         align-items: center;
     }
-    
+
     .mobile-menu-button {
         display: none;
     }
@@ -892,50 +892,50 @@ main::before {
         line-height: 40px;
         padding: 0 10px;
     }
-    
+
     .hero-subtitle {
         font-size: 14px;
         line-height: 20px;
         width: 100%;
         padding: 0 10px;
     }
-    
+
     .metrics-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .metric-tile:not(:last-child) {
         border-bottom: 1px solid var(--border-color);
     }
-    
+
     .metric-tile:not(:last-child)::after {
         display: none;
     }
-    
+
     .use-cases-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .use-case-tile:not(:last-child) {
         border-bottom: 1px solid var(--border-color);
     }
-    
+
     .use-case-tile:not(:last-child)::after {
         display: none;
     }
-    
+
     .use-cases-subtitle {
         font-size: 32px;
         line-height: 36px;
         padding: var(--spacing-md) var(--spacing-md) 0;
     }
-    
+
     .ridgeline-container {
         height: 180px;
         margin-left: -10px;
         width: calc(100% + 20px);
     }
-    
+
     .ridgeline-container .metric-label {
         font-size: 9px;
     }
@@ -943,20 +943,20 @@ main::before {
     .cta-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .cta-tile {
         min-height: 250px;
         padding: var(--spacing-sd) var(--spacing-sd);
     }
-    
+
     .cta-tile:not(:last-child) {
         border-bottom: 1px solid var(--border-color);
     }
-    
+
     .cta-tile:not(:last-child)::after {
         display: none;
     }
-    
+
     .cta-description {
         margin-bottom: 20px;
     }
@@ -997,16 +997,16 @@ main::before {
         grid-template-columns: 1fr;
         gap: 24px;
     }
-    
+
     .blog-post {
         padding: 0 0 var(--spacing-md) 0;
     }
-    
+
     .blog-post:not(:last-child) {
         border-bottom: 1px solid var(--border-color);
     }
-    
+
     .blog-post:not(:last-child)::after {
         display: none;
     }
-} 
+}

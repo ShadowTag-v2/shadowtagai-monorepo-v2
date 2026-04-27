@@ -24,4 +24,3 @@ for i in range(10):
   et = time.perf_counter()-st
   tflops = (OPS*1e-12)/et
   print(f"time {et*1e3:.2f} ms, TFLOPS {tflops:6.2f}, MFU {(tflops/MAX_TFLOPS)*100:4.2f}% out shape {C.shape} dtype {C.dtype}")
-

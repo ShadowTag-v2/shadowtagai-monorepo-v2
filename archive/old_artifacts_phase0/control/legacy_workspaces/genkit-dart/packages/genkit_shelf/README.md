@@ -155,7 +155,7 @@ final response = await remoteFlow(
 
 // Consuming a secure model
 final remoteModel = ai.defineRemoteModel(
-  name: 'remoteModel', 
+  name: 'remoteModel',
   url: 'http://localhost:8080/secureModel',
   headers: (context) async => {'Authorization': 'Bearer ${await getUserToken()}'},
 );

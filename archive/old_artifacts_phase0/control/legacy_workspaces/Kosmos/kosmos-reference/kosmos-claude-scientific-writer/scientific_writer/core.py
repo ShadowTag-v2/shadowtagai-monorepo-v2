@@ -394,4 +394,3 @@ def create_data_context_message(processed_info: dict[str, Any] | None) -> str:
     context_parts.append("[END DATA FILES]\n")
 
     return "\n".join(context_parts)
-

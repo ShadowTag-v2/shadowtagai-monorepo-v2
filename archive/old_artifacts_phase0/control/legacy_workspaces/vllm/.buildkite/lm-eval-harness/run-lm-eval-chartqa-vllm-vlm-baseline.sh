@@ -20,16 +20,16 @@ usage() {
 
 while getopts "m:l:t:" OPT; do
   case ${OPT} in
-    m ) 
+    m )
         MODEL="$OPTARG"
         ;;
-    l ) 
+    l )
         LIMIT="$OPTARG"
         ;;
-    t ) 
+    t )
         TP_SIZE="$OPTARG"
         ;;
-    \? ) 
+    \? )
         usage
         exit 1
         ;;

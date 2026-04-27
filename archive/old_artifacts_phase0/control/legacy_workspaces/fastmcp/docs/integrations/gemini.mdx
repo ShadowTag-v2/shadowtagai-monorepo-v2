@@ -65,7 +65,7 @@ import asyncio
 mcp_client = Client("server.py")
 gemini_client = genai.Client()
 
-async def main():    
+async def main():
     async with mcp_client:
         response = await gemini_client.aio.models.generate_content(
             model="gemini-2.0-flash",
@@ -104,5 +104,3 @@ mcp_client = Client(
 ```
 
 The rest of the code remains the same.
-
-

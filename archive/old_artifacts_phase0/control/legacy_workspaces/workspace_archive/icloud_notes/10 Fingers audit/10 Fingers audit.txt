@@ -36,7 +36,7 @@ def pnkln_score_10fingers(scores):
     returns: composite viability score 0-100
     """
     import math
-    s = sum(min(10, max(0, scores.get(k, 0))) * weights[k] 
+    s = sum(min(10, max(0, scores.get(k, 0))) * weights[k]
             for k, _ in pnkln_10fingers)
     mx = sum(10 * weights[k] for k, _ in pnkln_10fingers)
     return round(100 * s / mx, 1)

@@ -132,7 +132,7 @@ function multilineBlockNextLine() {
   return (
     /**
     * @type {string}
-    */ 
+    */
     'result'
   )
 }
@@ -162,7 +162,7 @@ function singleLineBlockSameLine() {
 
 function singleLineBlockNextLine() {
   return (
-    /** Result below */ 
+    /** Result below */
     'result'
   )
 }

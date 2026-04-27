@@ -11,7 +11,7 @@ resource "google_cloud_run_v2_service" "n8n" {
   template {
     containers {
       image = "docker.io/n8nio/n8n:latest"
-      
+
       ports {
         container_port = 5678
       }
@@ -20,12 +20,12 @@ resource "google_cloud_run_v2_service" "n8n" {
         name  = "N8N_PORT"
         value = "5678"
       }
-      
+
       env {
         name  = "N8N_HOST"
-        value = "n8n-server-s2its66sea-uc.a.run.app" 
+        value = "n8n-server-s2its66sea-uc.a.run.app"
       }
-      
+
       env {
         name = "N8N_PROTOCOL"
         value = "https"

@@ -1,4 +1,4 @@
-Gemini Cloud Code Assist 
+Gemini Cloud Code Assist
 1 license successfully assigned
 
 Next steps

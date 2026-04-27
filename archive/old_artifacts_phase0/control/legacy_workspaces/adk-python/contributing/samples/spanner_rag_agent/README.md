@@ -223,4 +223,3 @@ implementation details):
        spanner_tool_settings=SpannerToolSettings(),
      )
      ```
-

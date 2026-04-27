@@ -349,11 +349,11 @@ exports[`show detailed usage with --help log-level  1`] = `
 
 Valid options:
 
-  silent   
-  error    
-  warn     
-  log      
-  debug    
+  silent
+  error
+  warn
+  log
+  debug
 
 Default: log",
   "write": [],

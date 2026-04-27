@@ -14,16 +14,16 @@ Before the fix, Optional parameters required manual conversion:
 
 ```python
 def create_full_user_account(
-    profile: UserProfile, 
+    profile: UserProfile,
     preferences: Optional[UserPreferences] = None
 ) -> dict:
     # Manual conversion needed:
     if not isinstance(profile, UserProfile):
         profile = UserProfile.model_validate(profile)
-    
+
     if preferences is not None and not isinstance(preferences, UserPreferences):
         preferences = UserPreferences.model_validate(preferences)
-    
+
     # Your function logic here...
 ```
 
@@ -31,7 +31,7 @@ def create_full_user_account(
 
 ```python
 def create_full_user_account(
-    profile: UserProfile, 
+    profile: UserProfile,
     preferences: Optional[UserPreferences] = None
 ) -> dict:
     # Both profile and preferences are guaranteed to be proper instances!

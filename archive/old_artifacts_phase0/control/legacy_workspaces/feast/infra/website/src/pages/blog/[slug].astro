@@ -4,7 +4,7 @@ import Navigation from '../../components/Navigation.astro';
 
 export async function getStaticPaths() {
   const posts = await Astro.glob('../../../docs/blog/*.md');
-  
+
   return posts.map(post => ({
     params: {
       slug: post.file.split('/').pop().replace('.md', '')
@@ -316,4 +316,4 @@ const { title, description, date, authors = [] } = post.frontmatter;
       font-size: 18px;
     }
   }
-</style> 
+</style>

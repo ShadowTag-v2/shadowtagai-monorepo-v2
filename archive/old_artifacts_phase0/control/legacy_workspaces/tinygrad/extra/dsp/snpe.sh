@@ -8,4 +8,3 @@ export PYTHONPATH="/data/tinygrad"
 cd /data/snpe
 #ADSP_LIBRARY_PATH="." strace -f -e ioctl ./snpe-net-run --container MobileNetV2.dlc --input_list hello --use_dsp
 ADSP_LIBRARY_PATH="." ./snpe-net-run --container MobileNetV2.dlc --input_list hello --use_dsp
-

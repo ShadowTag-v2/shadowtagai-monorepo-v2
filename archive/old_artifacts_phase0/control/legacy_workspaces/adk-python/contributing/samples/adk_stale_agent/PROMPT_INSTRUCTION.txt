@@ -45,7 +45,7 @@ Your job is to analyze a specific issue and report findings before taking action
             - **IF True**: The user edited the description silently, and we haven't alerted yet.
               -> **Action**: Call `alert_maintainer_of_edit`.
               -> **Report**: "Analysis for Issue #[number]: ACTIVE. Silent update detected (Description Edit). Alerted maintainer."
-            - **IF False**: 
+            - **IF False**:
               -> **Report**: "Analysis for Issue #[number]: ACTIVE. Last action was by user. No action."
 
     - **Check Role**: If `last_action_role` is 'maintainer':

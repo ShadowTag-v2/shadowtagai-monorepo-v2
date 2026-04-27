@@ -12,30 +12,30 @@
 
 + (void)dataWithContentsOfFile:(nonnull NSString*)path
                     completion:(void (^) (NSData*))callback {
-    
+
     dispatch_queue_t asyncQueue = dispatch_queue_create("org.nativescript.TNSWidgets.data", NULL);
     dispatch_async(asyncQueue, ^(void) {
         NSData *output = [NSData dataWithContentsOfFile:path];
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             callback(output);
         });
-        
+
     });
 }
 
 - (void)writeToFile:(nonnull NSString*) path
          atomically:(BOOL)atomically
          completion:(void (^) (void))callback {
-    
+
     dispatch_queue_t asyncQueue = dispatch_queue_create("org.nativescript.TNSWidgets.data", NULL);
     dispatch_async(asyncQueue, ^(void) {
         [self writeToFile:path
                atomically:atomically];
-        
+
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             callback();
         });
-        
+
     });
 }
 

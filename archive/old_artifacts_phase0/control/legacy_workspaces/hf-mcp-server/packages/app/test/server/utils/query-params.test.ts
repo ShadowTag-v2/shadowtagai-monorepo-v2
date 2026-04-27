@@ -120,7 +120,7 @@ describe('extractQueryParamsToHeaders', () => {
 
 	it('should extract gradio, bouquet, and mix together', () => {
 		const req = {
-			query: { 
+			query: {
 				bouquet: 'docs',
 				mix: 'search',
 				gradio: 'evalstate/flux1_schnell'

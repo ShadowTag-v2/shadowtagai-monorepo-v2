@@ -30,7 +30,7 @@
   // which lets us configure any of the available native platform providers,
   // and reconfigure if needed, dynamically after `[FIRApp configure]` just like the other platforms.
   [RNFBAppCheckModule sharedInstance];
-  
+
   // Install the AppCheck debug provider so we may get tokens on iOS Simulators for testing.
   // See https://firebase.google.com/docs/app-check/ios/debug-provider for instructions on configuring a debug token
   // This *must* be done before the `[FIRApp configure]` line, so it must be done in AppDelegate for any app

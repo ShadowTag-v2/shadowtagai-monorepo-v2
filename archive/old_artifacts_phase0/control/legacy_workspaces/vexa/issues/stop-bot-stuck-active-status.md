@@ -159,5 +159,3 @@ Using the test notebook `vexa/nbs/0_basic_test.ipynb`:
 - `vexa/services/bot-manager/app/main.py` Stop, Exit Callback, Delayed Stop implementations
 - `vexa/libs/shared-models/shared_models/schemas.py` `MeetingStatus`
 - Test flows in `vexa/nbs/0_basic_test.ipynb`
-
-

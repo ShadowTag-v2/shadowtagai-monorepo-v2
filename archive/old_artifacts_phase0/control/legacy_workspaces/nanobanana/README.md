@@ -1,4 +1,4 @@
-> [!NOTE]  
+> [!NOTE]
 > Nano Banana Pro (`gemini-3-pro-image-preview`) is now supported in this extension (v1.0.10+)!
 >
 > Set the `NANOBANANA_MODEL` environment variable to `gemini-3-pro-image-preview` to use it.
@@ -179,7 +179,7 @@ The `/generate` command supports advanced options for creating multiple variatio
 
 **`--count=N`** - Number of variations (1-8, default: 1)
 **`--styles="style1,style2"`** - Comma-separated artistic styles
-**`--variations="var1,var2"`** - Specific variation types  
+**`--variations="var1,var2"`** - Specific variation types
 **`--format=grid|separate`** - Output format (default: separate)
 **`--seed=123`** - Seed for reproducible variations
 **`--preview`** - Automatically open generated images in default viewer

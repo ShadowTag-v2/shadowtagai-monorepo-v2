@@ -7,4 +7,3 @@
 const    x      = 1;
 </script>
 <style src="./my-component.css"></style>
-

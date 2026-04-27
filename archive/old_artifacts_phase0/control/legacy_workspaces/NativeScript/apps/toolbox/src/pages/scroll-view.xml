@@ -3,7 +3,7 @@
         <ActionBar title="ScrollView" icon="" class="action-bar">
         </ActionBar>
     </Page.actionBar>
- 
+
       <ScrollView scroll="{{ scroll }}">
           <StackLayout class="p-20">
 

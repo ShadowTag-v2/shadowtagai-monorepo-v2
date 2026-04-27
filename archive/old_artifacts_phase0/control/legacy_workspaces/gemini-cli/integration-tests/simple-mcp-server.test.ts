@@ -46,7 +46,7 @@ class SimpleJSONRPC {
       output: process.stdout,
       terminal: false
     });
-    
+
     this.rl.on('line', (line) => {
       debug(\`Received line: \${line}\`);
       try {
@@ -58,13 +58,13 @@ class SimpleJSONRPC {
       }
     });
   }
-  
+
   send(message) {
     const msgStr = JSON.stringify(message);
     debug(\`Sending message: \${msgStr}\`);
     process.stdout.write(msgStr + '\\n');
   }
-  
+
   async handleMessage(message) {
     if (message.method && this.handlers.has(message.method)) {
       try {
@@ -99,7 +99,7 @@ class SimpleJSONRPC {
       });
     }
   }
-  
+
   on(method, handler) {
     this.handlers.set(method, handler);
   }

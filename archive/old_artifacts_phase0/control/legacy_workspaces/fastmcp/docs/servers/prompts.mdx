@@ -128,7 +128,7 @@ Since the MCP specification only allows string arguments, clients need to know w
 @mcp.prompt
 def analyze_data(
     numbers: list[int],
-    metadata: dict[str, str], 
+    metadata: dict[str, str],
     threshold: float
 ) -> str:
     """Analyze numerical data."""
@@ -147,7 +147,7 @@ def analyze_data(
       "required": true
     },
     {
-      "name": "metadata", 
+      "name": "metadata",
       "description": "Provide as a JSON string matching the following schema: {\"additionalProperties\":{\"type\":\"string\"},\"type\":\"object\"}",
       "required": true
     },
@@ -176,7 +176,7 @@ def analyze_data(
 # This also works for direct calls
 result = await prompt.render({
     "numbers": [1, 2, 3, 4, 5],
-    "metadata": {"source": "api", "version": "1.0"}, 
+    "metadata": {"source": "api", "version": "1.0"},
     "threshold": 2.5
 })
 ```
@@ -312,7 +312,7 @@ def example_prompt() -> str:
 
 # These operations trigger notifications:
 mcp.add_prompt(example_prompt)  # Sends prompts/list_changed notification
-example_prompt.disable()        # Sends prompts/list_changed notification  
+example_prompt.disable()        # Sends prompts/list_changed notification
 example_prompt.enable()         # Sends prompts/list_changed notification
 ```
 
@@ -350,4 +350,4 @@ The duplicate behavior options are:
 -   `"warn"` (default): Logs a warning, and the new prompt replaces the old one.
 -   `"error"`: Raises a `ValueError`, preventing the duplicate registration.
 -   `"replace"`: Silently replaces the existing prompt with the new one.
--   `"ignore"`: Keeps the original prompt and ignores the new registration attempt. 
+-   `"ignore"`: Keeps the original prompt and ignores the new registration attempt.

@@ -164,7 +164,7 @@ __device__ inline static void store(const GL &dst, const RT &src, const COORD &i
     #ifdef KITTENS_HOPPER
     static_assert(!std::is_same_v<T, fp8e4m3_4> && !std::is_same_v<T, fp8e5m2_4>, "Unsupported type for load/store");
     #endif
-    
+
     U *dst_ptr = (U*)&dst[(idx.template unit_coord<axis, 3>())];
     const int row_stride = dst.template stride<axis>();
     int warp_laneid = threadIdx.x % WARP_THREADS;

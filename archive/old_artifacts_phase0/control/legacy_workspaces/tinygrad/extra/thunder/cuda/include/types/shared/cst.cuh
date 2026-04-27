@@ -2,7 +2,7 @@
  * @file
  * @brief Abstraction for a complex register tile composed of real and imaginary tiles
  */
- 
+
 #pragma once
 
 #include "st.cuh"
@@ -13,7 +13,7 @@ namespace ducks {
 namespace cst {
 /**
  * @brief A dummy type used to identify complex register tiles.
- * 
+ *
  * For a type to quack like an st_cmplx, it should define its identifier as ducks::st::cmplx_identifier.
  * If a type quacks like ducks::st::cmplx_identifier, it will be treated as an st_cmplx by compiler checks.
  */
@@ -44,7 +44,7 @@ template <typename T> concept all = requires {
  *
  * This structure is designed to abstract complex number operations internally to the real and imaginary
  * shared tiles, respectively
- * 
+ *
  *
  */
 template<typename _T, int _rows, int _cols>

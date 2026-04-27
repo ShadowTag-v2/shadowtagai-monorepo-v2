@@ -1,6 +1,6 @@
 /**
  * @file
- * @brief Group (collaborative warp) ops for loading shared tiles from and storing to global memory. 
+ * @brief Group (collaborative warp) ops for loading shared tiles from and storing to global memory.
  */
 
 template<int axis, bool assume_aligned, ducks::cst::all CST, ducks::cgl::all CGL, ducks::coord::tile COORD=coord<CST>>

@@ -10,4 +10,3 @@ Using xml requires the Xml module.
 {%snippet xml-module-snippet%}
 ### Parse XML
 {%snippet xml-parser-snippet%}
-

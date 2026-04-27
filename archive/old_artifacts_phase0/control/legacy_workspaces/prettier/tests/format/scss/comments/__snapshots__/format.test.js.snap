@@ -528,9 +528,9 @@ parsers: ["scss"]
 printWidth: 80
                                                                                 | printWidth
 =====================================input======================================
-// This comment won't be included in the CSS. 
+// This comment won't be included in the CSS.
 //This comment won't be included in the CSS.
-//     This comment won't be included in the CSS.     
+//     This comment won't be included in the CSS.
 
 /* But this comment will, except in compressed mode. */
 /*     But this comment will, except in compressed mode.     */
@@ -639,7 +639,7 @@ printWidth: 80
     );
 }
 
-.simplification { 
+.simplification {
   foo: (
     calc() // not a comment anymore
   );

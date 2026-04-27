@@ -2,15 +2,15 @@
 
 /**
  * Airweave MCP Server - HTTP/Streamable Transport with Redis Session Management
- * 
+ *
  * This is the production HTTP server for cloud-based AI platforms like OpenAI Agent Builder.
  * Uses the modern Streamable HTTP transport (MCP 2025-03-26) instead of deprecated SSE.
- * 
+ *
  * Session Management:
  * - Redis stores session metadata (API key, collection, timestamps)
  * - Each pod maintains an in-memory cache of McpServer/Transport instances
  * - Sessions can be served by any pod (stateless, horizontally scalable)
- * 
+ *
  * Endpoint: https://mcp.airweave.ai/mcp
  * Protocol: MCP 2025-03-26 (Streamable HTTP)
  * Authentication: Bearer token, X-API-Key, or query parameter

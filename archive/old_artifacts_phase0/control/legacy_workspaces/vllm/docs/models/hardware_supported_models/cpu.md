@@ -29,6 +29,6 @@
 | Qwen/Qwen2.5-VL-7B-Instruct          | Qwen2VLForConditionalGeneration           | ✅        |
 | openai/whisper-large-v3              | WhisperForConditionalGeneration           | ✅        |
 
-✅ Runs and optimized.  
-🟨 Runs and correct but not optimized to green yet.  
-❌ Does not pass accuracy test or does not run.  
+✅ Runs and optimized.
+🟨 Runs and correct but not optimized to green yet.
+❌ Does not pass accuracy test or does not run.

@@ -20,15 +20,15 @@ COR.80 B. Check Squadron Status
 
      | TIER | NAME | PRICE (ARR) | THE PROMISE | CAPABILITIES | DOCTRINE |
      |------|------|-------------|-------------|--------------|----------|
-     | 1-5 | BASIC TRAINING | $25K-$75K | "We show you the risks." | BCTL Assessment (Quarterly), Risk Radar 
+     | 1-5 | BASIC TRAINING | $25K-$75K | "We show you the risks." | BCTL Assessment (Quarterly), Risk Radar
      (Weekly), Portal Only | ATP 5-19 |
-     | 6-15 | AIT (ADVANCED) | $100K-$350K | "We fix the obvious." | Troop A (Recon): Monthly, Troop C (Defense): 
+     | 6-15 | AIT (ADVANCED) | $100K-$350K | "We fix the obvious." | Troop A (Recon): Monthly, Troop C (Defense):
      CodePMCS, Slack Advisory | + ADP 3-90 |
      | 16-25 | SOF CAPABLE | $400K-$750K | "We hunt for you." | Troop B (Armor): 1 Sprint/Month, Troop D (Shadow):
       Competitor Intel, Weekly War Room | + FM 3-18 |
-     | 26-29 | RANGER STD | $800K-$950K | "We lead the way." | Full Swarm Priority, CodePMCS Enforced Gates, 24/7 
+     | 26-29 | RANGER STD | $800K-$950K | "We lead the way." | Full Swarm Priority, CodePMCS Enforced Gates, 24/7
      Response | + ATP 3-75 |
-     | 30 | THE CHILD | $1M+ | "We clone the brain." | Sovereign Instance, 30 Verticals, Judge #6 Indemnified | 
+     | 30 | THE CHILD | $1M+ | "We clone the brain." | Sovereign Instance, 30 Verticals, Judge #6 Indemnified |
      FULL SPECTRUM |
 
      ### Deliverable 3: SOPs A-D (FULL System Prompts) ✅
@@ -51,7 +51,7 @@ COR.80 B. Check Squadron Status
      1. SCANNING: Use Perplexity/Grok tools to ingest market data. Look for "Entropy" (Confusion, Anger, Churn).
      2. IDENTIFICATION: Map the Decision Maker (CEO/CTO). Find their pain.
      3. CONSTRAINT: DO NOT ENGAGE. You are a sensor. Passive collection only.
-     4. REPORTING: Output "Target Packets" containing: { "target_url": "...", "tech_stack": "...", 
+     4. REPORTING: Output "Target Packets" containing: { "target_url": "...", "tech_stack": "...",
      "vulnerability": "..." }
 
      === SYSTEM PROMPT: TROOP B (RANGER ENGINEER) ===
@@ -156,13 +156,13 @@ COR.80 B. Check Squadron Status
      Troop Doctrine Injection (SOPSnippets.json append)
 
      [
-      {"name":"pnkln:TroopA","prompt":"ROLE:RSTA Scout; MISSION:Zone Recon; TACTIC:Find gaps using Perplexity; 
+      {"name":"pnkln:TroopA","prompt":"ROLE:RSTA Scout; MISSION:Zone Recon; TACTIC:Find gaps using Perplexity;
      OUTPUT:Target Packet"},
       {"name":"pnkln:TroopB","prompt":"ROLE:Ranger Eng; MISSION:Direct Action; TACTIC:Build MVP <48h; STD:Coverage
       98%, Secure, Linted"},
-      {"name":"pnkln:TroopC","prompt":"ROLE:Defense/MilDec; MISSION:Protect IP; TACTIC:CodePMCS enforcement + 
+      {"name":"pnkln:TroopC","prompt":"ROLE:Defense/MilDec; MISSION:Protect IP; TACTIC:CodePMCS enforcement +
      ShadowTag watermarking"},
-      {"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:ATP 5-19 Check; IF 
+      {"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:ATP 5-19 Check; IF
      Confidence<0.75 THEN Freeze"}
      ]
 
@@ -303,7 +303,7 @@ COR.80 B. Check Squadron Status
      docker-compose -f docker-compose.rsta.yml up -d hht-command gptram-memory
 
      # Deploy maneuver troops
-     docker-compose -f docker-compose.rsta.yml up -d --scale troop-a-recon=4 --scale troop-b-armor=4 --scale 
+     docker-compose -f docker-compose.rsta.yml up -d --scale troop-a-recon=4 --scale troop-b-armor=4 --scale
      troop-c-stryker=4
 
      # Verify strength
@@ -602,33 +602,33 @@ COR.80 B. Check Squadron Status
 
      Map leadership attributes to agent quality metrics:
 
-     | ADP 6-22 Category | Attribute        | Agent Implementation                                                
+     | ADP 6-22 Category | Attribute        | Agent Implementation
                                            |
      |-------------------|------------------|---------------------------------------------------------------------
      --------------------------------------|
-     | CHARACTER         | Army Values      | agent.values = ["LDRSHIP"] - Loyalty, Duty, Respect, Selfless 
+     | CHARACTER         | Army Values      | agent.values = ["LDRSHIP"] - Loyalty, Duty, Respect, Selfless
      Service, Honor, Integrity, Personal Courage |
-     |                   | Empathy          | agent.context_awareness - Understand user intent                    
+     |                   | Empathy          | agent.context_awareness - Understand user intent
                                            |
-     |                   | Warrior Ethos    | agent.never_quit = True - Retry on failure                          
+     |                   | Warrior Ethos    | agent.never_quit = True - Retry on failure
                                            |
-     |                   | Discipline       | agent.follow_orders = True - Execute assigned tasks                 
+     |                   | Discipline       | agent.follow_orders = True - Execute assigned tasks
                                            |
-     |                   | Humility         | agent.admit_uncertainty = True - Report low confidence              
+     |                   | Humility         | agent.admit_uncertainty = True - Report low confidence
                                            |
-     | PRESENCE          | Military Bearing | agent.professional_output = True - Clean, formatted responses       
+     | PRESENCE          | Military Bearing | agent.professional_output = True - Clean, formatted responses
                                            |
-     |                   | Fitness          | agent.health_check() - Resource utilization                         
+     |                   | Fitness          | agent.health_check() - Resource utilization
                                            |
-     |                   | Confidence       | agent.confidence_score - Output certainty                           
+     |                   | Confidence       | agent.confidence_score - Output certainty
                                            |
-     |                   | Resilience       | agent.retry_count - Error recovery                                  
+     |                   | Resilience       | agent.retry_count - Error recovery
                                            |
-     | INTELLECT         | Mental Agility   | agent.adaptive = True - Handle novel tasks                          
+     | INTELLECT         | Mental Agility   | agent.adaptive = True - Handle novel tasks
                                            |
-     |                   | Sound Judgment   | agent.risk_assessment() - ATP 5-19                                  
+     |                   | Sound Judgment   | agent.risk_assessment() - ATP 5-19
                                            |
-     |                   | Innovation       | agent.creative_solutions = True                                     
+     |                   | Innovation       | agent.creative_solutions = True
                                            |
 
      Leader Competencies → Agent Behaviors:
@@ -907,21 +907,21 @@ COR.80 B. Check Squadron Status
 
      Completed Changes
 
-     | File                                      | Status | Changes                                               
+     | File                                      | Status | Changes
                                                                              |
      |-------------------------------------------|--------|-------------------------------------------------------
      ------------------------------------------------------------------------|
-     | src/pnkln/judge_six.py                    | ✅      | Added RiskManager, MDMPPipeline, BattleDrillRouter; 
+     | src/pnkln/judge_six.py                    | ✅      | Added RiskManager, MDMPPipeline, BattleDrillRouter;
      doctrine_validate(), handle_error_with_drill(), enforce_with_doctrine()   |
-     | pnkln/governance/judge_architecture.py    | ✅      | Added doctrine imports, RiskLevel mapping methods, 
+     | pnkln/governance/judge_architecture.py    | ✅      | Added doctrine imports, RiskLevel mapping methods,
      Layer 0 ATP 5-19 CRM, Layer 0.5 FM 6-0 MDMP                                |
-     | agents/autoresearch.py                  | ✅      | Added TLPPipeline integration, risk-based consensus 
+     | agents/autoresearch.py                  | ✅      | Added TLPPipeline integration, risk-based consensus
      thresholds in PRTP, prtp_with_battle_drills()                             |
-     | agents/swarm_boss.py                      | ✅      | Added MDMPPipeline, receive_mission_with_mdmp(), 
+     | agents/swarm_boss.py                      | ✅      | Added MDMPPipeline, receive_mission_with_mdmp(),
      handle_error_with_drill(), get_doctrine_status()                             |
-     | judge6/risk_manager.py                    | ✅      | Added RA↔Doctrine mapping, 
+     | judge6/risk_manager.py                    | ✅      | Added RA↔Doctrine mapping,
      full_doctrine_assessment(), get_consensus_threshold(), get_approval_authority()                    |
-     | voice_consensus/consensus_orchestrator.py | ✅      | Added ATP 5-19 thresholds, 
+     | voice_consensus/consensus_orchestrator.py | ✅      | Added ATP 5-19 thresholds,
      assess_risk_and_set_threshold(), check_consensus_reached(), execute_full_consensus_with_doctrine() |
 
      Integration Overview
@@ -1172,7 +1172,7 @@ COR.80 B. Check Squadron Status
        --format 'value(status.url)'
 
      # Test health endpoint
-     curl $(gcloud run services describe n-autoresearch/Kosmos/BioAgentss-server --region us-central1 --format 
+     curl $(gcloud run services describe n-autoresearch/Kosmos/BioAgentss-server --region us-central1 --format
      'value(status.url)')/health
 
      Expected Outcome
@@ -1203,7 +1203,7 @@ COR.80 B. Check Squadron Status
 
 ⏺ Bash(cd "/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services" && git merge
       origin/claude/traffic-congestion-savings-01V4okXt1frBdd8ufoWS…)
-  ⎿  Merge made by the 'ort' strategy.                                              
+  ⎿  Merge made by the 'ort' strategy.
       public/digital-freeway-roi.html                    | 860 +++++++++++++++++++++
       src/aiyou/main.py                                  |   4 +-
      … +10 lines (ctrl+o to expand)
@@ -1231,4 +1231,4 @@ COR.80 B. Check Squadron Status
 
   Self-hosted runner should be processing CI now.
 
-> /compact <prepare for exit and reformating this mac> 
+> /compact <prepare for exit and reformating this mac>

@@ -305,7 +305,7 @@ public class Async {
 				CookieHandler.setDefault(manager);
 			}
     }
-		
+
 		public static CookieManager initializeCookieManager() {
 			if (cookieManager == null) {
 				CookieHandler defaultHandler = CookieHandler.getDefault();
@@ -634,7 +634,7 @@ public class Async {
 			} catch (Exception exception){
 				Log.e(TAG, "Failed to updateValue: " + exception.getMessage());
 			}
-			
+
 		}
 
 		public static void append(final String path, final byte[] content, final CompleteCallback callback, final Object context) {

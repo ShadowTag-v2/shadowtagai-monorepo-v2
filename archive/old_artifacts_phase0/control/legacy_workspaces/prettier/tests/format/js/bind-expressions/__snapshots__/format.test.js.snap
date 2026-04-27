@@ -373,7 +373,7 @@ exports[`long_name_method.js [acorn] format 1`] = `
 > 3 |     this.testLongNameMethodAndSomethingElseLallala = ::this.testLongNameMethodAndSomethingElseLallala;
     |                                                      ^
   4 |   }
-  5 |   
+  5 |
   6 |   testLongNameMethodAndSomethingElseLallala() {
 Cause: Unexpected token (3:53)"
 `;
@@ -385,7 +385,7 @@ exports[`long_name_method.js [espree] format 1`] = `
 > 3 |     this.testLongNameMethodAndSomethingElseLallala = ::this.testLongNameMethodAndSomethingElseLallala;
     |                                                      ^
   4 |   }
-  5 |   
+  5 |
   6 |   testLongNameMethodAndSomethingElseLallala() {
 Cause: Unexpected token :"
 `;
@@ -397,7 +397,7 @@ exports[`long_name_method.js [meriyah] format 1`] = `
 > 3 |     this.testLongNameMethodAndSomethingElseLallala = ::this.testLongNameMethodAndSomethingElseLallala;
     |                                                      ^
   4 |   }
-  5 |   
+  5 |
   6 |   testLongNameMethodAndSomethingElseLallala() {
 Cause: [3:53-3:54]: Unexpected token: ':'"
 `;
@@ -409,7 +409,7 @@ exports[`long_name_method.js [oxc] format 1`] = `
 > 3 |     this.testLongNameMethodAndSomethingElseLallala = ::this.testLongNameMethodAndSomethingElseLallala;
     |                                                      ^
   4 |   }
-  5 |   
+  5 |
   6 |   testLongNameMethodAndSomethingElseLallala() {"
 `;
 
@@ -420,7 +420,7 @@ exports[`long_name_method.js - {"semi":false} [acorn] format 1`] = `
 > 3 |     this.testLongNameMethodAndSomethingElseLallala = ::this.testLongNameMethodAndSomethingElseLallala;
     |                                                      ^
   4 |   }
-  5 |   
+  5 |
   6 |   testLongNameMethodAndSomethingElseLallala() {
 Cause: Unexpected token (3:53)"
 `;
@@ -432,7 +432,7 @@ exports[`long_name_method.js - {"semi":false} [espree] format 1`] = `
 > 3 |     this.testLongNameMethodAndSomethingElseLallala = ::this.testLongNameMethodAndSomethingElseLallala;
     |                                                      ^
   4 |   }
-  5 |   
+  5 |
   6 |   testLongNameMethodAndSomethingElseLallala() {
 Cause: Unexpected token :"
 `;
@@ -444,7 +444,7 @@ exports[`long_name_method.js - {"semi":false} [meriyah] format 1`] = `
 > 3 |     this.testLongNameMethodAndSomethingElseLallala = ::this.testLongNameMethodAndSomethingElseLallala;
     |                                                      ^
   4 |   }
-  5 |   
+  5 |
   6 |   testLongNameMethodAndSomethingElseLallala() {
 Cause: [3:53-3:54]: Unexpected token: ':'"
 `;
@@ -456,7 +456,7 @@ exports[`long_name_method.js - {"semi":false} [oxc] format 1`] = `
 > 3 |     this.testLongNameMethodAndSomethingElseLallala = ::this.testLongNameMethodAndSomethingElseLallala;
     |                                                      ^
   4 |   }
-  5 |   
+  5 |
   6 |   testLongNameMethodAndSomethingElseLallala() {"
 `;
 
@@ -471,7 +471,7 @@ class X {
   constructor() {
     this.testLongNameMethodAndSomethingElseLallala = ::this.testLongNameMethodAndSomethingElseLallala;
   }
-  
+
   testLongNameMethodAndSomethingElseLallala() {
     return true;
   }
@@ -501,7 +501,7 @@ class X {
   constructor() {
     this.testLongNameMethodAndSomethingElseLallala = ::this.testLongNameMethodAndSomethingElseLallala;
   }
-  
+
   testLongNameMethodAndSomethingElseLallala() {
     return true;
   }
@@ -715,7 +715,7 @@ exports[`short_name_method.js [acorn] format 1`] = `
 > 3 |     this.shortMethod = ::this.shortMethod;
     |                        ^
   4 |   }
-  5 |   
+  5 |
   6 |   shortMethod() {
 Cause: Unexpected token (3:23)"
 `;
@@ -727,7 +727,7 @@ exports[`short_name_method.js [espree] format 1`] = `
 > 3 |     this.shortMethod = ::this.shortMethod;
     |                        ^
   4 |   }
-  5 |   
+  5 |
   6 |   shortMethod() {
 Cause: Unexpected token :"
 `;
@@ -739,7 +739,7 @@ exports[`short_name_method.js [meriyah] format 1`] = `
 > 3 |     this.shortMethod = ::this.shortMethod;
     |                        ^
   4 |   }
-  5 |   
+  5 |
   6 |   shortMethod() {
 Cause: [3:23-3:24]: Unexpected token: ':'"
 `;
@@ -751,7 +751,7 @@ exports[`short_name_method.js [oxc] format 1`] = `
 > 3 |     this.shortMethod = ::this.shortMethod;
     |                        ^
   4 |   }
-  5 |   
+  5 |
   6 |   shortMethod() {"
 `;
 
@@ -762,7 +762,7 @@ exports[`short_name_method.js - {"semi":false} [acorn] format 1`] = `
 > 3 |     this.shortMethod = ::this.shortMethod;
     |                        ^
   4 |   }
-  5 |   
+  5 |
   6 |   shortMethod() {
 Cause: Unexpected token (3:23)"
 `;
@@ -774,7 +774,7 @@ exports[`short_name_method.js - {"semi":false} [espree] format 1`] = `
 > 3 |     this.shortMethod = ::this.shortMethod;
     |                        ^
   4 |   }
-  5 |   
+  5 |
   6 |   shortMethod() {
 Cause: Unexpected token :"
 `;
@@ -786,7 +786,7 @@ exports[`short_name_method.js - {"semi":false} [meriyah] format 1`] = `
 > 3 |     this.shortMethod = ::this.shortMethod;
     |                        ^
   4 |   }
-  5 |   
+  5 |
   6 |   shortMethod() {
 Cause: [3:23-3:24]: Unexpected token: ':'"
 `;
@@ -798,7 +798,7 @@ exports[`short_name_method.js - {"semi":false} [oxc] format 1`] = `
 > 3 |     this.shortMethod = ::this.shortMethod;
     |                        ^
   4 |   }
-  5 |   
+  5 |
   6 |   shortMethod() {"
 `;
 
@@ -813,7 +813,7 @@ class X {
   constructor() {
     this.shortMethod = ::this.shortMethod;
   }
-  
+
   shortMethod() {
     return true;
   }
@@ -842,7 +842,7 @@ class X {
   constructor() {
     this.shortMethod = ::this.shortMethod;
   }
-  
+
   shortMethod() {
     return true;
   }

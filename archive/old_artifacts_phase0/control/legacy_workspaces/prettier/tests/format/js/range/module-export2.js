@@ -6,4 +6,3 @@ export    const  x
   <<<PRETTIER_RANGE_END>>>=  42
 
 export   default    42
-

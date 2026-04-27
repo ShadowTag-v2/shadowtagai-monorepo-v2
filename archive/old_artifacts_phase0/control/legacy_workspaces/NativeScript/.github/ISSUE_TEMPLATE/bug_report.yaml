@@ -9,7 +9,7 @@ body:
         Thanks for taking the time to report an issue.
 
         > ## Important! :warning:
-        > 
+        >
         > The issue list is reserved exclusively for bug reports and feature requests. That means we do not accept usage questions. If you open an issue that does not conform to the requirements, it will be closed.
         >
         > For usage questions, please refer to the following resources:
@@ -47,7 +47,7 @@ body:
         Add commands used or steps taken to reproduce the behaviour.
         Include links, references or anything else that will give us more context about the issue you are encountering.
       placeholder: |
-        e.g: 
+        e.g:
         https://github.com/NativeScript/Nativescript
 
         1. clone, and run with `ns run ios`

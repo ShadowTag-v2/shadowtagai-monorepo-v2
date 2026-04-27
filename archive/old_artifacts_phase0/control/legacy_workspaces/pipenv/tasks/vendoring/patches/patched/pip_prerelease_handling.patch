@@ -22,12 +22,12 @@ index ebeb118cc..9122946d4 100644
 +        if allow_prereleases is None:
 +            allow_prereleases = False
          specifier = self._specifier
- 
+
          # When using the pkg_resources backend we turn the version object into
 @@ -532,6 +539,14 @@ class CandidateEvaluator:
              )
          )
- 
+
 +        if not versions and candidates_and_versions and use_prerelease_fallback:
 +            versions = set(
 +                specifier.filter(

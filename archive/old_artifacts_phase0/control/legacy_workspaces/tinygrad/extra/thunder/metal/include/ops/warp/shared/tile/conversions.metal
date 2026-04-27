@@ -54,6 +54,5 @@ static METAL_FUNC void copy(threadgroup st<T, _height, _width> &dst, threadgroup
 //        &src[0], subtile_height*16*row_idx, subtile_width*16*col_idx
 //    );
 //}
-    
-}
 
+}

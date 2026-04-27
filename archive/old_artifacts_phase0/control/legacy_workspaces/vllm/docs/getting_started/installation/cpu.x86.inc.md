@@ -110,7 +110,7 @@ uv pip install dist/*.whl
 docker build -f docker/Dockerfile.cpu \
         --build-arg VLLM_CPU_AVX512BF16=false (default)|true \
         --build-arg VLLM_CPU_AVX512VNNI=false (default)|true \
-        --build-arg VLLM_CPU_DISABLE_AVX512=false (default)|true \ 
+        --build-arg VLLM_CPU_DISABLE_AVX512=false (default)|true \
         --tag vllm-cpu-env \
         --target vllm-openai .
 

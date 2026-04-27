@@ -693,13 +693,13 @@ void topk_softmax(
     torch::Tensor softmax_workspace = torch::empty({workspace_size}, workspace_options);
 
     if (gating_output.scalar_type() == at::ScalarType::Float) {
-        dispatch_topk_softmax_launch<float>(gating_output, topk_weights, topk_indices, 
+        dispatch_topk_softmax_launch<float>(gating_output, topk_weights, topk_indices,
             token_expert_indices, softmax_workspace, num_tokens, num_experts, topk, renormalize, stream);
     } else if (gating_output.scalar_type() == at::ScalarType::Half) {
-        dispatch_topk_softmax_launch<__half>(gating_output, topk_weights, topk_indices, 
+        dispatch_topk_softmax_launch<__half>(gating_output, topk_weights, topk_indices,
             token_expert_indices, softmax_workspace, num_tokens, num_experts, topk, renormalize, stream);
     } else if (gating_output.scalar_type() == at::ScalarType::BFloat16) {
-        dispatch_topk_softmax_launch<__nv_bfloat16>(gating_output, topk_weights, topk_indices, 
+        dispatch_topk_softmax_launch<__nv_bfloat16>(gating_output, topk_weights, topk_indices,
             token_expert_indices, softmax_workspace, num_tokens, num_experts, topk, renormalize, stream);
     } else {
         TORCH_CHECK(false, "Unsupported gating_output data type: ", gating_output.scalar_type());

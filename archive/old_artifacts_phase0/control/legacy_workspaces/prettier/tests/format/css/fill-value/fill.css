@@ -34,4 +34,3 @@ div {
 .this-will-also-wrap-but-incorrectly {
   background: transparent url(/even/longer/path/to/dummy-image.svg) -1000px center no-repeat;
 }
-

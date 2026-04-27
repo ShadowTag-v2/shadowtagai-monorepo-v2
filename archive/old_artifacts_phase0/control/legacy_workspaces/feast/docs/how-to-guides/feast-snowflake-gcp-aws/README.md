@@ -15,4 +15,3 @@
 {% page-ref page="../scaling-feast.md" %}
 
 {% page-ref page="../structuring-repos.md" %}
-

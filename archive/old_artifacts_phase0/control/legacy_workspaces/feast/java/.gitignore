@@ -54,7 +54,7 @@ vendor
 .terraform/
 *.tfvars
 
-# python 
+# python
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

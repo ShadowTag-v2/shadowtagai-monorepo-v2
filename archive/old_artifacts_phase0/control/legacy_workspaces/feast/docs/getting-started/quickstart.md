@@ -5,9 +5,9 @@
 Feast (Feature Store) is an open-source feature store designed to facilitate the management and serving of machine learning features in a way that supports both batch and real-time applications.
 
 * *For Data Scientists*: Feast is a a tool where you can easily define, store, and retrieve your features for both model development and model deployment. By using Feast, you can focus on what you do best: build features that power your AI/ML models and maximize the value of your data.
-	
+
 * *For MLOps Engineers*: Feast is a library that allows you to connect your existing infrastructure (e.g., online database, application server, microservice, analytical database, and orchestration tooling) that enables your Data Scientists to ship features for their models to production using a friendly SDK without having to be concerned with software engineering challenges that occur from serving real-time production systems. By using Feast, you can focus on maintaining a resilient system, instead of implementing features for Data Scientists.
-	
+
 * *For Data Engineers*: Feast provides a centralized catalog for storing feature definitions allowing one to maintain a single source of truth for feature data. It provides the abstraction for reading and writing to many different types of offline and online data stores. Using either the provided python SDK or the feature server service, users can write data to the online and/or offline stores and then read that data out again in either low-latency online scenarios for model inference, or in batch scenarios for model training.
 
 * *For AI Engineers*: Feast provides a platform designed to scale your AI applications by enabling seamless integration of richer data and facilitating fine-tuning. With Feast, you can optimize the performance of your AI models while ensuring a scalable and efficient data pipeline.
@@ -39,30 +39,30 @@ In this tutorial we will:
 
 For this tutorial, we will be using the python SDK.
 
-In this tutorial, we'll use Feast to generate training data and power online model inference for a 
+In this tutorial, we'll use Feast to generate training data and power online model inference for a
 ride-sharing driver satisfaction prediction model. Feast solves several common issues in this flow:
 
-1. **Training-serving skew and complex data joins:** Feature values often exist across multiple tables. Joining 
+1. **Training-serving skew and complex data joins:** Feature values often exist across multiple tables. Joining
    these datasets can be complicated, slow, and error-prone.
-   * Feast joins these tables with battle-tested logic that ensures _point-in-time_ correctness so future feature 
+   * Feast joins these tables with battle-tested logic that ensures _point-in-time_ correctness so future feature
      values do not leak to models.
-2. **Online feature availability:** At inference time, models often need access to features that aren't readily 
+2. **Online feature availability:** At inference time, models often need access to features that aren't readily
    available and need to be precomputed from other data sources.
-   * Feast manages deployment to a variety of online stores (e.g. DynamoDB, Redis, Google Cloud Datastore) and 
+   * Feast manages deployment to a variety of online stores (e.g. DynamoDB, Redis, Google Cloud Datastore) and
      ensures necessary features are consistently _available_ and _freshly computed_ at inference time.
-3. **Feature and model versioning:** Different teams within an organization are often unable to reuse 
-   features across projects, resulting in duplicate feature creation logic. Models have data dependencies that need 
+3. **Feature and model versioning:** Different teams within an organization are often unable to reuse
+   features across projects, resulting in duplicate feature creation logic. Models have data dependencies that need
    to be versioned, for example when running A/B tests on model versions.
-   * Feast enables discovery of and collaboration on previously used features and enables versioning of sets of 
+   * Feast enables discovery of and collaboration on previously used features and enables versioning of sets of
      features (via _feature services_).
-   * _(Experimental)_ Feast enables light-weight feature transformations so users can re-use transformation logic 
+   * _(Experimental)_ Feast enables light-weight feature transformations so users can re-use transformation logic
      across online / offline use cases and across models.
 
 ## Step 1: Install Feast
 
 Install the Feast SDK and CLI using pip:
 
-* In this tutorial, we focus on a local deployment. For a more in-depth guide on how to use Feast with Snowflake / 
+* In this tutorial, we focus on a local deployment. For a more in-depth guide on how to use Feast with Snowflake /
   GCP / AWS deployments, see [Running Feast with Snowflake/GCP/AWS](../how-to-guides/feast-snowflake-gcp-aws/)
 
 {% tabs %}
@@ -267,11 +267,11 @@ driver_activity_v3 = FeatureService(
 {% endtab %}
 {% endtabs %}
 
-The `feature_store.yaml` file configures the key overall architecture of the feature store. 
+The `feature_store.yaml` file configures the key overall architecture of the feature store.
 
-The provider value sets default offline and online stores. 
-* The offline store provides the compute layer to process historical data (for generating training data & feature 
-  values for serving). 
+The provider value sets default offline and online stores.
+* The offline store provides the compute layer to process historical data (for generating training data & feature
+  values for serving).
 * The online store is a low latency store of the latest feature values (for powering real-time inference).
 
 Valid values for `provider` in `feature_store.yaml` are:
@@ -280,7 +280,7 @@ Valid values for `provider` in `feature_store.yaml` are:
 * gcp: use a SQL registry or GCS file registry. By default, use BigQuery (offline store) + Google Cloud Datastore (online store)
 * aws: use a SQL registry or S3 file registry. By default, use Redshift (offline store) + DynamoDB (online store)
 
-Note that there are many other offline / online stores Feast works with, including Spark, Azure, Hive, Trino, and 
+Note that there are many other offline / online stores Feast works with, including Spark, Azure, Hive, Trino, and
 PostgreSQL via community plugins. See [Third party integrations](third-party-integrations.md) for all supported data sources.
 
 A custom setup can also be made by following [Customizing Feast](../how-to-guides/customizing-feast/).
@@ -309,8 +309,8 @@ There's an included `test_workflow.py` file which runs through a full sample wor
 We'll walk through some snippets of code below and explain
 ### Step 4: Register feature definitions and deploy your feature store
 
-The `apply` command scans python files in the current directory for feature view/entity definitions, registers the 
-objects, and deploys infrastructure. In this example, it reads `example_repo.py` and sets up SQLite online store tables. Note that we had specified SQLite as the default online store by 
+The `apply` command scans python files in the current directory for feature view/entity definitions, registers the
+objects, and deploys infrastructure. In this example, it reads `example_repo.py` and sets up SQLite online store tables. Note that we had specified SQLite as the default online store by
 configuring `online_store` in `feature_store.yaml`.
 
 {% tabs %}
@@ -343,11 +343,11 @@ Created sqlite table my_project_driver_hourly_stats
 
 To train a model, we need features and labels. Often, this label data is stored separately (e.g. you have one table storing user survey results and another set of tables with feature values). Feast can help generate the features that map to these labels.
 
-Feast needs a list of **entities** (e.g. driver ids) and **timestamps**. Feast will intelligently join relevant 
+Feast needs a list of **entities** (e.g. driver ids) and **timestamps**. Feast will intelligently join relevant
 tables to create the relevant feature vectors. There are two ways to generate this list:
-1. The user can query that table of labels with timestamps and pass that into Feast as an _entity dataframe_ for 
-training data generation. 
-2. The user can also query that table with a *SQL query* which pulls entities. See the documentation on [feature retrieval](https://docs.feast.dev/getting-started/concepts/feature-retrieval) for details    
+1. The user can query that table of labels with timestamps and pass that into Feast as an _entity dataframe_ for
+training data generation.
+2. The user can also query that table with a *SQL query* which pulls entities. See the documentation on [feature retrieval](https://docs.feast.dev/getting-started/concepts/feature-retrieval) for details
 
 * Note that we include timestamps because we want the features for the same driver at various timestamps to be used in a model.
 
@@ -361,7 +361,7 @@ import pandas as pd
 
 from feast import FeatureStore
 
-# Note: see https://docs.feast.dev/getting-started/concepts/feature-retrieval for 
+# Note: see https://docs.feast.dev/getting-started/concepts/feature-retrieval for
 # more details on how to retrieve for all entities in the offline store instead
 entity_df = pd.DataFrame.from_dict(
     {
@@ -412,18 +412,18 @@ print(training_df.head())
 <class 'pandas.core.frame.DataFrame'>
 RangeIndex: 3 entries, 0 to 2
 Data columns (total 10 columns):
- #   Column                              Non-Null Count  Dtype              
----  ------                              --------------  -----              
- 0   driver_id                           3 non-null      int64              
+ #   Column                              Non-Null Count  Dtype
+---  ------                              --------------  -----
+ 0   driver_id                           3 non-null      int64
  1   event_timestamp                     3 non-null      datetime64[ns, UTC]
- 2   label_driver_reported_satisfaction  3 non-null      int64              
- 3   val_to_add                          3 non-null      int64              
- 4   val_to_add_2                        3 non-null      int64              
- 5   conv_rate                           3 non-null      float32            
- 6   acc_rate                            3 non-null      float32            
- 7   avg_daily_trips                     3 non-null      int32              
- 8   conv_rate_plus_val1                 3 non-null      float64            
- 9   conv_rate_plus_val2                 3 non-null      float64            
+ 2   label_driver_reported_satisfaction  3 non-null      int64
+ 3   val_to_add                          3 non-null      int64
+ 4   val_to_add_2                        3 non-null      int64
+ 5   conv_rate                           3 non-null      float32
+ 6   acc_rate                            3 non-null      float32
+ 7   avg_daily_trips                     3 non-null      int32
+ 8   conv_rate_plus_val1                 3 non-null      float64
+ 9   conv_rate_plus_val2                 3 non-null      float64
 dtypes: datetime64[ns, UTC](1), float32(2), float64(2), int32(1), int64(4)
 memory usage: 336.0 bytes
 None
@@ -431,19 +431,19 @@ None
 ----- Example features -----
 
    driver_id           event_timestamp  label_driver_reported_satisfaction  \
-0       1001 2021-04-12 10:59:42+00:00                                   1   
-1       1002 2021-04-12 08:12:10+00:00                                   5   
-2       1003 2021-04-12 16:40:26+00:00                                   3   
+0       1001 2021-04-12 10:59:42+00:00                                   1
+1       1002 2021-04-12 08:12:10+00:00                                   5
+2       1003 2021-04-12 16:40:26+00:00                                   3
 
    val_to_add  val_to_add_2  conv_rate  acc_rate  avg_daily_trips  \
-0           1            10   0.800648  0.265174              643   
-1           2            20   0.644141  0.996602              765   
-2           3            30   0.855432  0.546345              954   
+0           1            10   0.800648  0.265174              643
+1           2            20   0.644141  0.996602              765
+2           3            30   0.855432  0.546345              954
 
-   conv_rate_plus_val1  conv_rate_plus_val2  
-0             1.800648            10.800648  
-1             2.644141            20.644141  
-2             3.855432            30.855432  
+   conv_rate_plus_val1  conv_rate_plus_val2
+0             1.800648            10.800648
+1             2.644141            20.644141
+2             3.855432            30.855432
 ```
 {% endtab %}
 {% endtabs %}
@@ -478,19 +478,19 @@ print(training_df.head())
 ----- Example features -----
 
    driver_id                  event_timestamp  \
-0       1001 2024-04-19 14:58:16.452895+00:00   
-1       1002 2024-04-19 14:58:16.452895+00:00   
-2       1003 2024-04-19 14:58:16.452895+00:00   
+0       1001 2024-04-19 14:58:16.452895+00:00
+1       1002 2024-04-19 14:58:16.452895+00:00
+2       1003 2024-04-19 14:58:16.452895+00:00
 
    label_driver_reported_satisfaction  val_to_add  val_to_add_2  conv_rate  \
-0                                   1           1            10   0.535773   
-1                                   5           2            20   0.171976   
-2                                   3           3            30   0.275669   
+0                                   1           1            10   0.535773
+1                                   5           2            20   0.171976
+2                                   3           3            30   0.275669
 
-   acc_rate  avg_daily_trips  conv_rate_plus_val1  conv_rate_plus_val2  
-0  0.689705              428             1.535773            10.535773  
-1  0.737113              369             2.171976            20.171976  
-2  0.156630              116             3.275669            30.275669  
+   acc_rate  avg_daily_trips  conv_rate_plus_val1  conv_rate_plus_val2
+0  0.689705              428             1.535773            10.535773
+1  0.737113              369             2.171976            20.171976
+2  0.156630              116             3.275669            30.275669
 ```
 {% endtab %}
 {% endtabs %}
@@ -530,8 +530,8 @@ Materializing 2 feature views to 2024-04-19 10:59:58-04:00 into the sqlite onlin
 
 ### Step 7: Fetching feature vectors for inference
 
-At inference time, we need to quickly read the latest feature values for different drivers (which otherwise might 
-have existed only in batch sources) from the online feature store using `get_online_features()`. These feature 
+At inference time, we need to quickly read the latest feature values for different drivers (which otherwise might
+have existed only in batch sources) from the online feature store using `get_online_features()`. These feature
 vectors can then be fed to the model.
 
 {% tabs %}
@@ -575,9 +575,9 @@ pprint(feature_vector)
 
 ### Step 8: Using a feature service to fetch online features instead.
 
-You can also use feature services to manage multiple features, and decouple feature view definitions and the 
-features needed by end applications. The feature store can also be used to fetch either online or historical 
-features using the same API below. More information can be found 
+You can also use feature services to manage multiple features, and decouple feature view definitions and the
+features needed by end applications. The feature store can also be used to fetch either online or historical
+features using the same API below. More information can be found
 [here](https://docs.feast.dev/getting-started/concepts/feature-retrieval).
 
 The `driver_activity_v1` feature service pulls all features from the `driver_hourly_stats` feature view:
@@ -656,8 +656,8 @@ INFO:     Uvicorn running on http://0.0.0.0:8888 (Press CTRL+C to quit)
 ![](../reference/ui.png)
 
 ## Step 10: Re-examine `test_workflow.py`
-Take a look at `test_workflow.py` again. It showcases many sample flows on how to interact with Feast. You'll see these 
-show up in the upcoming concepts + architecture + tutorial pages as well. 
+Take a look at `test_workflow.py` again. It showcases many sample flows on how to interact with Feast. You'll see these
+show up in the upcoming concepts + architecture + tutorial pages as well.
 
 ## Next steps
 

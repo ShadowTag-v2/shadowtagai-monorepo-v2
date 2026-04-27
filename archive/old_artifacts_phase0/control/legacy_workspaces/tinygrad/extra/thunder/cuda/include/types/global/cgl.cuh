@@ -2,7 +2,7 @@
  * @file
  * @brief Templated layouts for complex global memory.
  */
- 
+
 #pragma once
 
 #include "../../common/common.cuh"

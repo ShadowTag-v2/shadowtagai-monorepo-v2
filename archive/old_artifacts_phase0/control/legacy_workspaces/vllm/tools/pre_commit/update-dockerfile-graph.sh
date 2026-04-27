@@ -34,7 +34,7 @@ if printf '%s\n' "${FILES[@]}" | grep -q "^docker/Dockerfile$"; then
   if [ -f "$TARGET_GRAPH_FILE" ]; then
     OLD_HASH=$(sha256sum "$TARGET_GRAPH_FILE")
   fi
-  
+
   # Generate Dockerfile graph
   echo "Running dockerfilegraph tool..."
   docker run \
@@ -48,7 +48,7 @@ if printf '%s\n' "${FILES[@]}" | grep -q "^docker/Dockerfile$"; then
     --max-label-length 50 \
     --filename docker/Dockerfile \
     --legend
-  
+
   echo "Finding generated PNG file..."
   # Check for Dockerfile.png in the root directory (most likely location)
   if [ -f "./Dockerfile.png" ]; then
@@ -57,7 +57,7 @@ if printf '%s\n' "${FILES[@]}" | grep -q "^docker/Dockerfile$"; then
   else
     # Try to find it elsewhere
     DOCKERFILE_PNG=$(find . -name "Dockerfile.png" -type f | head -1)
-    
+
     if [ -n "$DOCKERFILE_PNG" ]; then
       echo "Found generated file at: $DOCKERFILE_PNG"
       mv "$DOCKERFILE_PNG" "$TARGET_GRAPH_FILE"
@@ -67,7 +67,7 @@ if printf '%s\n' "${FILES[@]}" | grep -q "^docker/Dockerfile$"; then
       exit 1
     fi
   fi
-  
+
   # Check if the graph has changed
   NEW_HASH=$(sha256sum "$TARGET_GRAPH_FILE")
   if [ "$NEW_HASH" != "$OLD_HASH" ]; then

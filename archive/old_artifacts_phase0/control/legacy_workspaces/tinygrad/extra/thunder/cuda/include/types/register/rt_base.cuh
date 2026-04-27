@@ -2,7 +2,7 @@
  * @file
  * @brief The basic 16x16 register tile on which larger register tiles are built.
  */
- 
+
 #pragma once
 
 #include <type_traits>
@@ -18,13 +18,13 @@ namespace kittens {
 namespace ducks {
 /**
  * @namespace rt_base
- * 
+ *
  * @brief The namespace where concepts and abstract types for register base (16x16) tiles live.
  */
 namespace rt_base {
 /**
  * @brief A dummy type used to identify register base tiles.
- * 
+ *
  * For a type to quack like an rt_base, it should define its identifier as ducks::rt_base::identifier.
  * If a type quacks like ducks::rt_base::identifier, it will be treated as an rt_base by compiler checks.
  */
@@ -40,7 +40,7 @@ struct identifier {};
  *
  * This type is a primarily utility for building larger inline templates
  * out of PTX primitives and managing layouts.
- * 
+ *
  * In general, you probably want a row-major tile, unless you specifically want to call mma
  */
 template<typename _T, ducks::rt_layout::all _layout> struct rt_base {

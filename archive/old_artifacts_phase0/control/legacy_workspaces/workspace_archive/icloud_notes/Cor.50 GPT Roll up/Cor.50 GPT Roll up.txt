@@ -64,7 +64,7 @@ def ocr_path(p):with open(p,"rb") as f:img=vision.Image(content=f.read());r=vc.d
 print(0)
 #p-ocr-sum
 %%python
-def ocr_sum(paths):t=[]; 
+def ocr_sum(paths):t=[];
  for p in paths:
   try:t.append(ocr_path(p))
   except Exception as e:t.append("")

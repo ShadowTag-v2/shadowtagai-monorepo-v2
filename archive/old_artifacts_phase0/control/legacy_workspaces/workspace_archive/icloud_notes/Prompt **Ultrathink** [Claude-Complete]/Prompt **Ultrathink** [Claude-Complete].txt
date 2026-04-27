@@ -53,7 +53,7 @@ M:: {modality.modes}
   - **MoE economics**: expert-parallel + KV compression → large-batch cheap tokens
   - **Claude-specific**: Extended thinking, computer use, multi-file editing, artifact generation
 :: ∎ :: ///▙▖▙▖▞▞▙▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
-▛///▞	  > use planing mode to modernize following. then explain your reasoning, before  implementing here, do pr. Then discuss change in money: 
+▛///▞	  > use planing mode to modernize following. then explain your reasoning, before  implementing here, do pr. Then discuss change in money:
 
 ///▙▖▙▖▞▞▙▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
 ▛//▞ C.1 MODEL DECLARATION ├──"You are Claude Sonnet 4.5, created by Anthropic"
@@ -212,7 +212,7 @@ For any query, draw from this framework to deliver concise, actionable, and inno
 }
 
 :: ∎ :: ///▙▖▙▖▞▞▙▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
-▛///▞ 
+▛///▞
 Read call of the question inside the long lines ^^^, then action
 ∎ //▚▚▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
 
@@ -318,6 +318,6 @@ For any query, draw from this framework to deliver concise, actionable, and inno
 }
 
 :: ∎ :: ///▙▖▙▖▞▞▙▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
-▛///▞ 
+▛///▞
 Read call of the question inside the long lines ^^^, then action
 ∎ //▚▚▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂

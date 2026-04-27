@@ -266,10 +266,10 @@ __device__ static inline void mma(D &d, const A &a, const B &b) {
     static_assert(K%red_dim == 0, "K dimension must be divisible by red_dim.");
 
     static_assert(
-        (std::is_same_v<T_D, half> && !std::is_same_v<T_AB, half>) || 
+        (std::is_same_v<T_D, half> && !std::is_same_v<T_AB, half>) ||
         (std::is_same_v<T_D, half> && !std::is_same_v<T_AB, fp8e4m3>) ||
         (std::is_same_v<T_D, half> && !std::is_same_v<T_AB, fp8e5m2>) ||
-        (std::is_same_v<T_D, float> && !std::is_same_v<T_AB, bf16>) || 
+        (std::is_same_v<T_D, float> && !std::is_same_v<T_AB, bf16>) ||
         (std::is_same_v<T_D, float> && !std::is_same_v<T_AB, half>) ||
         (std::is_same_v<T_D, float> && !std::is_same_v<T_AB, fp8e4m3>) ||
         (std::is_same_v<T_D, float> && !std::is_same_v<T_AB, fp8e5m2>),
@@ -325,10 +325,10 @@ __device__ static inline void mma(D &d, const A &a, const B &b) {
     static_assert(K%red_dim == 0, "K dimension must be divisible by red_dim.");
 
     static_assert(
-        (std::is_same_v<T_D, half> && !std::is_same_v<T_AB, half>) || 
-        (std::is_same_v<T_D, half> && !std::is_same_v<T_AB, fp8e4m3>) || 
-        (std::is_same_v<T_D, half> && !std::is_same_v<T_AB, fp8e5m2>) || 
-        (std::is_same_v<T_D, float> && !std::is_same_v<T_AB, bf16>) || 
+        (std::is_same_v<T_D, half> && !std::is_same_v<T_AB, half>) ||
+        (std::is_same_v<T_D, half> && !std::is_same_v<T_AB, fp8e4m3>) ||
+        (std::is_same_v<T_D, half> && !std::is_same_v<T_AB, fp8e5m2>) ||
+        (std::is_same_v<T_D, float> && !std::is_same_v<T_AB, bf16>) ||
         (std::is_same_v<T_D, float> && !std::is_same_v<T_AB, half>) ||
         (std::is_same_v<T_D, float> && !std::is_same_v<T_AB, fp8e4m3>) ||
         (std::is_same_v<T_D, float> && !std::is_same_v<T_AB, fp8e5m2>),
@@ -339,7 +339,7 @@ __device__ static inline void mma(D &d, const A &a, const B &b) {
     kittens::st_descriptor<ducks::st_descriptor::detail::get_st<B>, trans_b> b_desc(b);
 
     asm volatile ("fence.proxy.async.shared::cta;\n" ::: "memory");
-    
+
     detail::tcgen05::template st_st<T_AB, acc, ncta>(
         d.addr,
         a_desc.chunk_descriptor(0),
@@ -520,4 +520,3 @@ __device__ static inline void mm2_AtBt(D &d, const A &a, const B &b) {
 
 
 } // namespace kittens
-

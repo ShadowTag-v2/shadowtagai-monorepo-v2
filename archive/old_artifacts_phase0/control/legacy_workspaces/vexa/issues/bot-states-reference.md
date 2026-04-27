@@ -153,7 +153,7 @@ When a meeting reaches `FAILED` status, it includes a `failure_stage`:
 
 1. **Meeting status is authoritative**: The database `Meeting.status` is the source of truth for business logic
 2. **Container status is informational**: Container status helps with debugging but doesn't drive business logic
-3. **They can be out of sync**: 
+3. **They can be out of sync**:
    - Container can be `Exited` but meeting still `ACTIVE` (the bug we fixed!)
    - Container can be `Up` but meeting `COMPLETED` (if manually finalized)
 4. **Terminal states**: Once `COMPLETED` or `FAILED`, meeting status never changes
@@ -223,4 +223,3 @@ The system ensures meetings always reach terminal states through:
 - Bot callbacks (primary path)
 - Delayed stop finalizer (safety net)
 - Immediate finalization (fast paths for early stops)
-

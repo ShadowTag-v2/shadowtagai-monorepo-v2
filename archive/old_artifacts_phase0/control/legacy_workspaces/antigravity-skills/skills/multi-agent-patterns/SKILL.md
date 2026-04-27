@@ -79,7 +79,7 @@ The fix: implement a `forward_message` tool allowing sub-agents to pass response
 def forward_message(message: str, to_user: bool = True):
     """
     Forward sub-agent response directly to user without supervisor synthesis.
-    
+
     Use when:
     - Sub-agent response is final and complete
     - Supervisor synthesis would lose important details

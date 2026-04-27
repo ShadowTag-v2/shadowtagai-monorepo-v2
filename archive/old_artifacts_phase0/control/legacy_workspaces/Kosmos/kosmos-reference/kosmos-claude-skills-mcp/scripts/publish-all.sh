@@ -49,4 +49,3 @@ echo "Verify at:"
 echo "  - https://pypi.org/project/claude-skills-mcp-backend/"
 echo "  - https://pypi.org/project/claude-skills-mcp/"
 echo ""
-

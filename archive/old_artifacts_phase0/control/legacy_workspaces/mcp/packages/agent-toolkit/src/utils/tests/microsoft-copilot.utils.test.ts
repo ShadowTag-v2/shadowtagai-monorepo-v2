@@ -143,7 +143,7 @@ describe('fallbackToStringifiedVersionIfNull', () => {
         fallbackToStringifiedVersionIfNull(input, 'data', simpleSchema);
       }).toThrow('JSON string defined as dataStringified does not match the specified schema');
     });
-    
+
   });
 
   describe('Success scenarios - Direct object (unwrapped)', () => {
@@ -514,4 +514,3 @@ describe('fallbackToStringifiedVersionIfNull', () => {
     });
   });
 });
-

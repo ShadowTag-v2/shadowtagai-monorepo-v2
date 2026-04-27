@@ -74,4 +74,3 @@ The Feast community offers support on a best-effort basis for stable and beta ap
 * The reporter of the problem can help with further diagnosis and troubleshooting.
 
 Please see the [Community](../community.md) page for channels through which support can be requested.
-

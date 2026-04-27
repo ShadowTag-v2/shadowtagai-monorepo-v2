@@ -8,11 +8,11 @@ A. SONGS Cooling Architecture – The Inevitable Solution
 The Asset We Inherit
 
 We have strong documented facts:
-	•	SONGS used a once-through seawater cooling system with ~ “2.4 billion gallons/day” of seawater for Units 2 & 3.  
-	•	Intake lines ~ 18-foot diameter, ~0.6-miles offshore, twin lines.  
-	•	Outfall/discharge tunnels ~ several thousand feet offshore.  
-	•	The site is federally leased (U.S. Marine Corps Camp Pendleton / state lands) adjacency.  
-	•	The once-through cooling system was subject to environmental regulation (NPDES, CWA §316(b)) and withdrawal/entrapment mitigation.  
+	•	SONGS used a once-through seawater cooling system with ~ “2.4 billion gallons/day” of seawater for Units 2 & 3.
+	•	Intake lines ~ 18-foot diameter, ~0.6-miles offshore, twin lines.
+	•	Outfall/discharge tunnels ~ several thousand feet offshore.
+	•	The site is federally leased (U.S. Marine Corps Camp Pendleton / state lands) adjacency.
+	•	The once-through cooling system was subject to environmental regulation (NPDES, CWA §316(b)) and withdrawal/entrapment mitigation.
 
 These give a credible infrastructure base you can reuse.
 
@@ -25,7 +25,7 @@ You propose: repurpose the seawater intake/outfall + high-flow pumps + site conv
 	•	Existing system flow orders of magnitude larger → margin.
 
 Let’s check plausibility with the documented SONGS system:
-	•	Study indicated intake flow for each unit ~795,600 gpm (for Unit 2 or 3) in retrofit context.  
+	•	Study indicated intake flow for each unit ~795,600 gpm (for Unit 2 or 3) in retrofit context.
 	•	So 72,000 gpm is about ~9% of one unit’s intake in that study’s example. That matches your “≈4.3% of design” ballpark (depending on design assumptions).
 	•	The intake/outfall tunnels exist and capture the cooling conveyance; reuse is credible.
 
@@ -51,8 +51,8 @@ Option 3: Air-Cooled Greenfield
 	•	Standard but far inferior for this site; we agree “reject”.
 
 Regulatory & Permitting – Reality Check
-	•	Reuse of intake/outfall still subject to environmental oversight; discharge permits & cleanup legacy issues matter. For example, intake/discharge had marine entrainment issues at SONGS.  
-	•	SONGS decommissioning: plant shut down 2013; intake/outfall still under oversight.  
+	•	Reuse of intake/outfall still subject to environmental oversight; discharge permits & cleanup legacy issues matter. For example, intake/discharge had marine entrainment issues at SONGS.
+	•	SONGS decommissioning: plant shut down 2013; intake/outfall still under oversight.
 	•	Your “federal preemption” + NRC licensing + CEC path needs verification: site currently under decommissioning license, but reuse for a non-nuclear generation load (data center) may require new or modified permits (especially coastal/regional). You should build a “permit de-risk” track early.
 
 CapEx / Economics – Refined
@@ -62,7 +62,7 @@ Your breakdown was illustrative. To refine: use documented retrofit cost benchma
 Risks & Mitigations
 	•	Infrastructure condition: The tunnels/pumps/etc are aging, decommissioned. Need condition survey (ROV & mechanical).
 	•	Licensing unknowns: Data center cooling reuse may trigger environmental review beyond energy-generation cases.
-	•	Flow/pump re-operability: Study 7 indicated existing pumps not sized for new closed-loop conversion – may require new pumps.  
+	•	Flow/pump re-operability: Study 7 indicated existing pumps not sized for new closed-loop conversion – may require new pumps.
 	•	Thermal discharge constraints: Use of once-through could hit thermal ΔT limits or marine impact; you may need to re-examine outfall capacity.
 
 Final Thought on “Most Likely to Happen” for SONGS
@@ -74,9 +74,9 @@ Yes — of your three “moves”, the above-ground high-density data center reu
 B. Other U.S. Nuclear-Site Opportunities
 
 Let’s scan the broader market for similar nuclear sites where once-through or large cooling water systems exist and might be repurposed.
-	•	Diablo Canyon Power Plant (CA) – Still operational licensed to ~2030, has seawater intake/outfall.  
-	•	Many U.S. older nuclear plants used large cooling water systems (river/lake). E.g., some sites on Wikipedia like Pilgrim Nuclear Power Station had once-through cooling water flows.  
-	•	There’s precedent for retrofitting once-through cooling systems (SONGS study) to closed-cycle wet towers.  
+	•	Diablo Canyon Power Plant (CA) – Still operational licensed to ~2030, has seawater intake/outfall.
+	•	Many U.S. older nuclear plants used large cooling water systems (river/lake). E.g., some sites on Wikipedia like Pilgrim Nuclear Power Station had once-through cooling water flows.
+	•	There’s precedent for retrofitting once-through cooling systems (SONGS study) to closed-cycle wet towers.
 
 Opportunity Framework:
 For each site, assess:
@@ -215,7 +215,7 @@ I want it by Monday. I'm taking it to the governors of New York and Illinois on 
 
 ### Oil Platforms and Offshore Opportunities
 
-- **Floating Data Centers on Oil Platforms:**  
+- **Floating Data Centers on Oil Platforms:**
   Decommissioned oil platforms (especially in the Gulf of Mexico, California, North Sea) are now being reimagined as floating, modular data center hubs.[8]
   - *Cooling Logic:* Direct seawater cooling via immersion or heat-exchange is straightforward, capitalizing on ambient cold water and enormous natural heat sink potential.
   - *Electrical and Data:* Platforms often have existing high-power connections and physical security, valuable for scalable compute or even offshore AI/crypto/mining clusters.

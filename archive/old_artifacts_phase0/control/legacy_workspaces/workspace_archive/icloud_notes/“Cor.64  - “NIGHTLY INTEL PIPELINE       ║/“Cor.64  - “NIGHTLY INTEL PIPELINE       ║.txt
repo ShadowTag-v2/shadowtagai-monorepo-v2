@@ -11,8 +11,8 @@
 
 ## EXECUTIVE SUMMARY: PROJECTED BUSINESS SWING
 
-**SYSTEM:** GKE-Native Nightly Intelligence Pipeline (5th Namespace)  
-**COST:** $370/mo (0.6% of $60-65K budget) | **ROI:** 3.3× in 18 months  
+**SYSTEM:** GKE-Native Nightly Intelligence Pipeline (5th Namespace)
+**COST:** $370/mo (0.6% of $60-65K budget) | **ROI:** 3.3× in 18 months
 **GATE ALIGNMENT:** Supports Gate A→B→C acceleration
 
 -----
@@ -133,79 +133,79 @@ from datetime import datetime, timedelta
 
 class EthicalScraper:
     """ATP 5-19 RA-1 compliant scraper with robots.txt respect"""
-    
+
     def __init__(self, config):
         self.config = config
         self.robots_cache = {}  # Domain → (parser, cached_at)
         self.last_request = {}  # Domain → timestamp
         self.circuit_breakers = {}  # Domain → (failures, opened_at)
-    
+
     async def fetch_url(self, url: str) -> Optional[str]:
         """
         Fetch URL with full ethical compliance
-        
+
         ATP 5-19 Risk Mitigation:
         - RA-4 (Extremely High): Violating robots.txt, DDoS
         - RA-1 (Low): Compliant, throttled, respectful
         """
         domain = urlparse(url).netloc
-        
+
         # 1. Check robots.txt
         if not await self.is_allowed(url):
             print(f"⚠️  {url} disallowed by robots.txt")
             return None
-        
+
         # 2. Check circuit breaker
         if self.is_circuit_open(domain):
             print(f"⚠️  Circuit breaker open for {domain}")
             return None
-        
+
         # 3. Respect crawl-delay
         crawl_delay = await self.get_crawl_delay(domain)
         await self.apply_rate_limit(domain, crawl_delay)
-        
+
         # 4. Make request with proper User-Agent
         headers = {
             "User-Agent": f"{self.config['user_agent']['name']} (+{self.config['user_agent']['url']})",
             "From": self.config['user_agent']['contact']
         }
-        
+
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, headers=headers, timeout=30) as response:
-                    
+
                     # Handle rate limiting
                     if response.status == 429:
                         retry_after = int(response.headers.get('Retry-After', 60))
                         print(f"⚠️  Rate limited on {domain}, waiting {retry_after}s")
                         await asyncio.sleep(retry_after)
                         return await self.fetch_url(url)  # Retry once
-                    
+
                     # Handle server errors
                     if response.status >= 500:
                         self.record_failure(domain)
                         return None
-                    
+
                     # Success
                     self.reset_circuit(domain)
                     return await response.text()
-                    
+
         except Exception as e:
             self.record_failure(domain)
             print(f"❌ Error fetching {url}: {e}")
             return None
-    
+
     async def is_allowed(self, url: str) -> bool:
         """Check robots.txt with 24h caching"""
         domain = urlparse(url).netloc
         robots_url = f"https://{domain}/robots.txt"
-        
+
         # Check cache
         if domain in self.robots_cache:
             parser, cached_at = self.robots_cache[domain]
             if datetime.now() - cached_at < timedelta(hours=24):
                 return parser.is_allowed(self.config['user_agent']['name'], url)
-        
+
         # Fetch robots.txt
         try:
             parser = rerp.RobotExclusionRulesParser()
@@ -219,51 +219,51 @@ class EthicalScraper:
                         # No robots.txt = assume Allow per RFC 9309
                         parser.parse("")
                         self.robots_cache[domain] = (parser, datetime.now())
-            
+
             return parser.is_allowed(self.config['user_agent']['name'], url)
-        
+
         except Exception as e:
             print(f"⚠️  Could not fetch robots.txt for {domain}: {e}")
             # Conservative: assume Disallow on error
             return False
-    
+
     async def get_crawl_delay(self, domain: str) -> float:
         """Extract crawl-delay from robots.txt or use defaults"""
         if domain not in self.robots_cache:
             await self.is_allowed(f"https://{domain}/")  # Populate cache
-        
+
         if domain in self.robots_cache:
             parser, _ = self.robots_cache[domain]
             delay = parser.get_crawl_delay(self.config['user_agent']['name'])
             if delay:
                 return float(delay)
-        
+
         # Use domain-specific defaults
         for pattern, default_delay in self.config['rate_limiting'].items():
             if pattern in domain:
                 return default_delay
-        
+
         return self.config['rate_limiting']['default_delay']
-    
+
     async def apply_rate_limit(self, domain: str, crawl_delay: float):
         """Enforce crawl-delay with adaptive jitter"""
         if domain in self.last_request:
             elapsed = time.time() - self.last_request[domain]
             required_delay = crawl_delay + random.uniform(0, 1)  # Add jitter
-            
+
             if elapsed < required_delay:
                 wait_time = required_delay - elapsed
                 await asyncio.sleep(wait_time)
-        
+
         self.last_request[domain] = time.time()
-    
+
     def is_circuit_open(self, domain: str) -> bool:
         """Circuit breaker pattern for sustained failures"""
         if domain not in self.circuit_breakers:
             return False
-        
+
         failures, opened_at = self.circuit_breakers[domain]
-        
+
         # Open circuit after 5 failures
         if failures >= 5:
             # Try to close after 5 minutes
@@ -271,9 +271,9 @@ class EthicalScraper:
                 del self.circuit_breakers[domain]
                 return False
             return True
-        
+
         return False
-    
+
     def record_failure(self, domain: str):
         """Record failure for circuit breaker"""
         if domain not in self.circuit_breakers:
@@ -281,7 +281,7 @@ class EthicalScraper:
         else:
             failures, _ = self.circuit_breakers[domain]
             self.circuit_breakers[domain] = (failures + 1, datetime.now())
-    
+
     def reset_circuit(self, domain: str):
         """Reset circuit breaker on success"""
         if domain in self.circuit_breakers:
@@ -330,12 +330,12 @@ spec:
         spec:
           serviceAccountName: intelligence-runner
           restartPolicy: OnFailure
-          
+
           containers:
           - name: pipeline
             image: gcr.io/PROJECT_ID/intelligence-pipeline:latest
             imagePullPolicy: Always
-            
+
             env:
             - name: PROJECT_ID
               value: "PROJECT_ID"
@@ -343,7 +343,7 @@ spec:
               value: "pnkln_intelligence"
             - name: GCS_BUCKET
               value: "PROJECT_ID-pnkln-intelligence"
-            
+
             # Ethical scraping config
             - name: SCRAPER_USER_AGENT
               value: "PNKLN-Intelligence-Bot/1.0 (+https://pnkln.ai/bot-policy)"
@@ -353,12 +353,12 @@ spec:
               value: "true"
             - name: DEFAULT_CRAWL_DELAY
               value: "3.0"
-            
+
             # API Keys from Secret
             envFrom:
             - secretRef:
                 name: api-keys
-            
+
             resources:
               requests:
                 cpu: "2"
@@ -366,37 +366,37 @@ spec:
               limits:
                 cpu: "4"
                 memory: "16Gi"
-            
+
             command: ["/bin/bash", "-c"]
             args:
             - |
               #!/bin/bash
               set -e
-              
+
               echo "=== PNKLN NIGHTLY INTELLIGENCE PIPELINE ==="
               echo "Started: $(date -Iseconds)"
-              
+
               # Step 1: Ingestion (ethical scraping)
               python /app/ingestion.py
-              
+
               # Step 2: JR Engine scoring
               python /app/jr_scoring.py
-              
+
               # Step 3: Tier classification
               python /app/tier_classification.py
-              
+
               # Step 4: Cor Brain synthesis (Tier 1 only)
               python /app/cor_synthesis.py
-              
+
               # Step 5: Tier 2 auto-actions
               python /app/tier2_actions.py
-              
+
               # Step 6: BigQuery storage
               python /app/store_bigquery.py
-              
+
               # Step 7: Deliver AM briefing
               python /app/deliver_briefing.py
-              
+
               echo "✓ Pipeline complete: $(date -Iseconds)"
 ```
 
@@ -515,7 +515,7 @@ def calculate_risk(probability, severity):
     Severity: I(Catastrophic) to IV(Negligible)
     """
     matrix = {
-        ('A','I'): 'RA-1', ('A','II'): 'RA-1', 
+        ('A','I'): 'RA-1', ('A','II'): 'RA-1',
         ('B','I'): 'RA-1', ('B','II'): 'RA-2',
         ('C','I'): 'RA-2', ('C','II'): 'RA-3',
         ('D','I'): 'RA-3', ('D','II'): 'RA-3',
@@ -538,23 +538,23 @@ THE PURE ENGINE
 Stripped of YouAi's social wrapper, here's the universal doctrine:
 class UniversalGovernanceEngine:
     """Works for ANY domain - not just social video"""
-    
+
     def __init__(self):
         self.doctrine = "Maximize value in every equation"
         self.risk_engine = ATP519RiskEngine()
         self.controls = ControlHierarchy()
-        
+
     def decide(self, input_decision):
         # Step 1: Calculate value
         value = self.maximize_value(input_decision)
-        
+
         # Step 2: Assess risk
         risk = self.risk_engine.assess(value)
-        
+
         # Step 3: Apply controls if needed
         if risk.level in ['RA-1', 'RA-2']:
             value = self.controls.mitigate(value, risk)
-            
+
         # Step 4: Execute or escalate
         if risk.residual <= self.tolerance:
             return self.execute(value)
@@ -580,7 +580,7 @@ Everything else was just a use case.
 ║                                                               ║
 ║ This is your Judge #6 core.                                 ║
 ╚═══════════════════════════════════════════════════════════════╝
-“     <next> 
+“     <next>
 # PNKLN MASTER FUNDING STRATEGY: The Definitive Path Forward
 ## Integrating All Intelligence for Maximum Value Capture
 ### Board Strategic Document - November 7, 2025
@@ -691,7 +691,7 @@ TOTAL:                  $190M (82% non-dilutive!)
 ## IMMEDIATE ACTION PLAN (REVISED & REALISTIC)
 
 ### Week 1 (Nov 11-15): Foundation Setting
-**Monday**: 
+**Monday**:
 - Begin ERCOT arbitrage algorithm development
 - Review all ARPA-E RFIs on eXCHANGE platform
 - Identify 3 target ERCOT customers
@@ -854,7 +854,7 @@ Investment Required:     $300K (next 6 months)
 Expected Return:        $705M (probability-weighted)
 ROI:                    2,350×
 
-Alternative (SBIR):     
+Alternative (SBIR):
 Investment Required:     $300K (next 6 months)
 Expected Return:        $18M (probability-weighted)
 ROI:                    60×
@@ -896,8 +896,8 @@ The funding is available.
 
 *Submitted with complete strategic clarity,*
 
-Erik [Last Name]  
-Founder & CEO  
+Erik [Last Name]
+Founder & CEO
 Pnkln Corporation
 
 *"The best time to plant a tree was 20 years ago. The second best time is now."*
@@ -984,7 +984,7 @@ def calculate_risk(probability, severity):
     Severity: I(Catastrophic) to IV(Negligible)
     """
     matrix = {
-        ('A','I'): 'RA-1', ('A','II'): 'RA-1', 
+        ('A','I'): 'RA-1', ('A','II'): 'RA-1',
         ('B','I'): 'RA-1', ('B','II'): 'RA-2',
         ('C','I'): 'RA-2', ('C','II'): 'RA-3',
         ('D','I'): 'RA-3', ('D','II'): 'RA-3',
@@ -1007,23 +1007,23 @@ THE PURE ENGINE
 Stripped of YouAi's social wrapper, here's the universal doctrine:
 class UniversalGovernanceEngine:
     """Works for ANY domain - not just social video"""
-    
+
     def __init__(self):
         self.doctrine = "Maximize value in every equation"
         self.risk_engine = ATP519RiskEngine()
         self.controls = ControlHierarchy()
-        
+
     def decide(self, input_decision):
         # Step 1: Calculate value
         value = self.maximize_value(input_decision)
-        
+
         # Step 2: Assess risk
         risk = self.risk_engine.assess(value)
-        
+
         # Step 3: Apply controls if needed
         if risk.level in ['RA-1', 'RA-2']:
             value = self.controls.mitigate(value, risk)
-            
+
         # Step 4: Execute or escalate
         if risk.residual <= self.tolerance:
             return self.execute(value)
@@ -1131,7 +1131,7 @@ def calculate_risk(probability, severity):
     Severity: I(Catastrophic) to IV(Negligible)
     """
     matrix = {
-        ('A','I'): 'RA-1', ('A','II'): 'RA-1', 
+        ('A','I'): 'RA-1', ('A','II'): 'RA-1',
         ('B','I'): 'RA-1', ('B','II'): 'RA-2',
         ('C','I'): 'RA-2', ('C','II'): 'RA-3',
         ('D','I'): 'RA-3', ('D','II'): 'RA-3',
@@ -1154,23 +1154,23 @@ THE PURE ENGINE
 Stripped of YouAi's social wrapper, here's the universal doctrine:
 class UniversalGovernanceEngine:
     """Works for ANY domain - not just social video"""
-    
+
     def __init__(self):
         self.doctrine = "Maximize value in every equation"
         self.risk_engine = ATP519RiskEngine()
         self.controls = ControlHierarchy()
-        
+
     def decide(self, input_decision):
         # Step 1: Calculate value
         value = self.maximize_value(input_decision)
-        
+
         # Step 2: Assess risk
         risk = self.risk_engine.assess(value)
-        
+
         # Step 3: Apply controls if needed
         if risk.level in ['RA-1', 'RA-2']:
             value = self.controls.mitigate(value, risk)
-            
+
         # Step 4: Execute or escalate
         if risk.residual <= self.tolerance:
             return self.execute(value)
@@ -1435,12 +1435,12 @@ resource "google_compute_subnetwork" "gke_subnet" {
   ip_cidr_range           = "10.0.0.0/20"
   region                  = var.region
   private_ip_google_access = true
-  
+
   secondary_ip_range {
     range_name    = "pods"
     ip_cidr_range = "10.4.0.0/14"  # Large range for scaling
   }
-  
+
   secondary_ip_range {
     range_name    = "services"
     ip_cidr_range = "10.8.0.0/20"
@@ -1450,42 +1450,42 @@ resource "google_compute_subnetwork" "gke_subnet" {
 # GKE Cluster with Hypercomputer Support
 resource "google_container_cluster" "pnkln_gke" {
   provider = google-beta
-  
+
   name     = var.cluster_name
   location = var.region
-  
+
   # Use release channel for latest features
   release_channel {
     channel = "RAPID"  # Access to latest inference optimizations
   }
-  
+
   # Network configuration
   network    = google_compute_network.pnkln_vpc.name
   subnetwork = google_compute_subnetwork.gke_subnet.name
-  
+
   # IP allocation for pods and services
   ip_allocation_policy {
     cluster_secondary_range_name  = "pods"
     services_secondary_range_name = "services"
   }
-  
+
   # Private cluster for security
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false  # Keep public for initial setup
     master_ipv4_cidr_block = "[INTERNAL_IP_REDACTED]/28"
   }
-  
+
   # Workload Identity for secure access
   workload_identity_config {
     workload_pool = "${var.project_id}.svc.id.goog"
   }
-  
+
   # Binary Authorization for container security
   binary_authorization {
     evaluation_mode = "PROJECT_SINGLETON_POLICY_ENFORCE"
   }
-  
+
   # Enable required add-ons
   addons_config {
     gce_persistent_disk_csi_driver_config {
@@ -1504,23 +1504,23 @@ resource "google_container_cluster" "pnkln_gke" {
       enabled = true
     }
   }
-  
+
   # Node auto-provisioning for dynamic scaling
   cluster_autoscaling {
     enabled = true
-    
+
     auto_provisioning_defaults {
       service_account = google_service_account.gke_node_sa.email
       oauth_scopes = [
         "https://www.googleapis.com/auth/cloud-platform"
       ]
-      
+
       # Shielded nodes for security
       shielded_instance_config {
         enable_secure_boot          = true
         enable_integrity_monitoring = true
       }
-      
+
       # Image streaming for faster container startup
       node_pool_auto_config {
         network_tags {
@@ -1528,67 +1528,67 @@ resource "google_container_cluster" "pnkln_gke" {
         }
       }
     }
-    
+
     # Resource limits for auto-provisioning
     resource_limits {
       resource_type = "cpu"
       minimum       = 4
       maximum       = 1000
     }
-    
+
     resource_limits {
       resource_type = "memory"
       minimum       = 16
       maximum       = 4000
     }
-    
+
     resource_limits {
       resource_type = "nvidia-l4"
       minimum       = 0
       maximum       = 16
     }
-    
+
     resource_limits {
       resource_type = "nvidia-a100-40gb"
       minimum       = 0
       maximum       = 8
     }
   }
-  
+
   # Monitoring and logging
   monitoring_config {
     enable_components = ["SYSTEM_COMPONENTS", "APISERVER", "SCHEDULER", "CONTROLLER_MANAGER"]
-    
+
     managed_prometheus {
       enabled = true
     }
   }
-  
+
   logging_config {
     enable_components = ["SYSTEM_COMPONENTS", "WORKLOADS", "APISERVER", "SCHEDULER", "CONTROLLER_MANAGER"]
   }
-  
+
   # Initial node pool (minimal, will scale up)
   initial_node_count = 1
-  
+
   node_config {
     machine_type = "n2-standard-4"
-    
+
     service_account = google_service_account.gke_node_sa.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
-    
+
     # Enable image streaming
     gcfs_config {
       enabled = true
     }
-    
+
     # Enable gVNIC for better network performance
     gvnic {
       enabled = true
     }
-    
+
     metadata = {
       disable-legacy-endpoints = "true"
     }
@@ -1600,48 +1600,48 @@ resource "google_container_node_pool" "judge_gpu_pool" {
   name       = "judge-l4-pool"
   location   = var.region
   cluster    = google_container_cluster.pnkln_gke.name
-  
+
   # Auto-scaling configuration
   autoscaling {
     min_node_count = 0
     max_node_count = 4
   }
-  
+
   node_config {
     machine_type = "g2-standard-16"  # 4x L4 GPUs
-    
+
     guest_accelerator {
       type  = "nvidia-l4"
       count = 4
-      
+
       gpu_driver_installation_config {
         gpu_driver_version = "LATEST"
       }
     }
-    
+
     service_account = google_service_account.gke_node_sa.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
-    
+
     # Spot instances for cost optimization
     spot = true
-    
+
     # Enable image streaming
     gcfs_config {
       enabled = true
     }
-    
+
     # Fast local SSDs for model caching
     local_nvme_ssd_block_config {
       local_ssd_count = 2
     }
-    
+
     labels = {
       workload = "judge-enforcement"
       tier     = "inference"
     }
-    
+
     taint {
       key    = "nvidia.com/gpu"
       value  = "true"
@@ -1654,20 +1654,20 @@ resource "google_container_node_pool" "llm_routing_pool" {
   name       = "llm-routing-pool"
   location   = var.region
   cluster    = google_container_cluster.pnkln_gke.name
-  
+
   autoscaling {
     min_node_count = 1
     max_node_count = 10
   }
-  
+
   node_config {
     machine_type = "n2-standard-32"  # High CPU for routing logic
-    
+
     service_account = google_service_account.gke_node_sa.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
-    
+
     labels = {
       workload = "llm-routing"
       tier     = "control-plane"
@@ -1690,7 +1690,7 @@ resource "google_project_iam_member" "gke_node_roles" {
     "roles/artifactregistry.reader",
     "roles/aiplatform.user"
   ])
-  
+
   project = var.project_id
   role    = each.value
   member  = "serviceAccount:${google_service_account.gke_node_sa.email}"
@@ -1701,7 +1701,7 @@ resource "google_artifact_registry_repository" "pnkln_repo" {
   repository_id = "pnkln-inference"
   location      = var.region
   format        = "DOCKER"
-  
+
   docker_config {
     immutable_tags = false
   }
@@ -1712,11 +1712,11 @@ resource "google_storage_bucket" "model_weights" {
   name          = "${var.project_id}-model-weights"
   location      = var.region
   force_destroy = false
-  
+
   versioning {
     enabled = true
   }
-  
+
   lifecycle_rule {
     condition {
       age = 30
@@ -1814,13 +1814,13 @@ spec:
     spec:
       nodeSelector:
         workload: judge-enforcement
-      
+
       tolerations:
       - key: nvidia.com/gpu
         operator: Equal
         value: "true"
         effect: NoSchedule
-      
+
       containers:
       # Layer 1: Gemini Policy Understanding
       - name: gemini-layer
@@ -1843,7 +1843,7 @@ spec:
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
-      
+
       # Layer 2: PyTorch Neural Enforcement
       - name: pytorch-layer
         image: gcr.io/pnkln-core-stack/judge6-pytorch:latest
@@ -1862,7 +1862,7 @@ spec:
           limits:
             memory: "32Gi"
             nvidia.com/gpu: "1"
-      
+
       # Layer 3: Rules Engine
       - name: rules-layer
         image: gcr.io/pnkln-core-stack/judge6-rules:latest
@@ -1879,7 +1879,7 @@ spec:
           limits:
             memory: "4Gi"
             cpu: "4"
-      
+
       # Sidecar: Latency Monitor
       - name: latency-monitor
         image: gcr.io/pnkln-core-stack/latency-monitor:latest
@@ -1892,7 +1892,7 @@ spec:
           requests:
             memory: "512Mi"
             cpu: "500m"
-      
+
       volumes:
       - name: model-weights
         csi:
@@ -1955,7 +1955,7 @@ spec:
     spec:
       nodeSelector:
         workload: llm-routing
-      
+
       containers:
       - name: router
         image: gcr.io/pnkln-core-stack/llm-router:latest
@@ -1976,7 +1976,7 @@ spec:
           limits:
             memory: "16Gi"
             cpu: "8"
-        
+
         # Health checks
         livenessProbe:
           httpGet:
@@ -1984,7 +1984,7 @@ spec:
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 30
-        
+
         readinessProbe:
           httpGet:
             path: /health/ready
@@ -2273,23 +2273,23 @@ KEY OPTIMIZATIONS FROM REFERENCE ARCHITECTURE
 1. IMAGE STREAMING (gcfs_config)
    - 5-10x faster container startup
    - Critical for large model images
-   
+
 2. NODE AUTO-PROVISIONING (NAP)
    - Automatic GPU/TPU provisioning
    - Scales from 0 to minimize costs
-   
+
 3. CUSTOM COMPUTE CLASSES
    - Fallback hierarchy: Reserved → DWS → On-demand → Spot
    - 40-60% cost reduction
-   
+
 4. GCS FUSE FOR MODEL WEIGHTS
    - Direct streaming from Cloud Storage
    - No need to copy models to persistent disks
-   
+
 5. PROMETHEUS CUSTOM METRICS
    - Scale on actual inference metrics (QPS, latency)
    - Not just CPU/memory
-   
+
 6. SPOT INSTANCES FOR INFERENCE
    - 60-91% discount on compute
    - Acceptable for stateless inference workloads
@@ -2455,12 +2455,12 @@ resource "google_compute_subnetwork" "gke_subnet" {
   ip_cidr_range           = "10.0.0.0/20"
   region                  = var.region
   private_ip_google_access = true
-  
+
   secondary_ip_range {
     range_name    = "pods"
     ip_cidr_range = "10.4.0.0/14"  # Large range for scaling
   }
-  
+
   secondary_ip_range {
     range_name    = "services"
     ip_cidr_range = "10.8.0.0/20"
@@ -2470,42 +2470,42 @@ resource "google_compute_subnetwork" "gke_subnet" {
 # GKE Cluster with Hypercomputer Support
 resource "google_container_cluster" "pnkln_gke" {
   provider = google-beta
-  
+
   name     = var.cluster_name
   location = var.region
-  
+
   # Use release channel for latest features
   release_channel {
     channel = "RAPID"  # Access to latest inference optimizations
   }
-  
+
   # Network configuration
   network    = google_compute_network.pnkln_vpc.name
   subnetwork = google_compute_subnetwork.gke_subnet.name
-  
+
   # IP allocation for pods and services
   ip_allocation_policy {
     cluster_secondary_range_name  = "pods"
     services_secondary_range_name = "services"
   }
-  
+
   # Private cluster for security
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false  # Keep public for initial setup
     master_ipv4_cidr_block = "[INTERNAL_IP_REDACTED]/28"
   }
-  
+
   # Workload Identity for secure access
   workload_identity_config {
     workload_pool = "${var.project_id}.svc.id.goog"
   }
-  
+
   # Binary Authorization for container security
   binary_authorization {
     evaluation_mode = "PROJECT_SINGLETON_POLICY_ENFORCE"
   }
-  
+
   # Enable required add-ons
   addons_config {
     gce_persistent_disk_csi_driver_config {
@@ -2524,23 +2524,23 @@ resource "google_container_cluster" "pnkln_gke" {
       enabled = true
     }
   }
-  
+
   # Node auto-provisioning for dynamic scaling
   cluster_autoscaling {
     enabled = true
-    
+
     auto_provisioning_defaults {
       service_account = google_service_account.gke_node_sa.email
       oauth_scopes = [
         "https://www.googleapis.com/auth/cloud-platform"
       ]
-      
+
       # Shielded nodes for security
       shielded_instance_config {
         enable_secure_boot          = true
         enable_integrity_monitoring = true
       }
-      
+
       # Image streaming for faster container startup
       node_pool_auto_config {
         network_tags {
@@ -2548,67 +2548,67 @@ resource "google_container_cluster" "pnkln_gke" {
         }
       }
     }
-    
+
     # Resource limits for auto-provisioning
     resource_limits {
       resource_type = "cpu"
       minimum       = 4
       maximum       = 1000
     }
-    
+
     resource_limits {
       resource_type = "memory"
       minimum       = 16
       maximum       = 4000
     }
-    
+
     resource_limits {
       resource_type = "nvidia-l4"
       minimum       = 0
       maximum       = 16
     }
-    
+
     resource_limits {
       resource_type = "nvidia-a100-40gb"
       minimum       = 0
       maximum       = 8
     }
   }
-  
+
   # Monitoring and logging
   monitoring_config {
     enable_components = ["SYSTEM_COMPONENTS", "APISERVER", "SCHEDULER", "CONTROLLER_MANAGER"]
-    
+
     managed_prometheus {
       enabled = true
     }
   }
-  
+
   logging_config {
     enable_components = ["SYSTEM_COMPONENTS", "WORKLOADS", "APISERVER", "SCHEDULER", "CONTROLLER_MANAGER"]
   }
-  
+
   # Initial node pool (minimal, will scale up)
   initial_node_count = 1
-  
+
   node_config {
     machine_type = "n2-standard-4"
-    
+
     service_account = google_service_account.gke_node_sa.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
-    
+
     # Enable image streaming
     gcfs_config {
       enabled = true
     }
-    
+
     # Enable gVNIC for better network performance
     gvnic {
       enabled = true
     }
-    
+
     metadata = {
       disable-legacy-endpoints = "true"
     }
@@ -2620,48 +2620,48 @@ resource "google_container_node_pool" "judge_gpu_pool" {
   name       = "judge-l4-pool"
   location   = var.region
   cluster    = google_container_cluster.pnkln_gke.name
-  
+
   # Auto-scaling configuration
   autoscaling {
     min_node_count = 0
     max_node_count = 4
   }
-  
+
   node_config {
     machine_type = "g2-standard-16"  # 4x L4 GPUs
-    
+
     guest_accelerator {
       type  = "nvidia-l4"
       count = 4
-      
+
       gpu_driver_installation_config {
         gpu_driver_version = "LATEST"
       }
     }
-    
+
     service_account = google_service_account.gke_node_sa.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
-    
+
     # Spot instances for cost optimization
     spot = true
-    
+
     # Enable image streaming
     gcfs_config {
       enabled = true
     }
-    
+
     # Fast local SSDs for model caching
     local_nvme_ssd_block_config {
       local_ssd_count = 2
     }
-    
+
     labels = {
       workload = "judge-enforcement"
       tier     = "inference"
     }
-    
+
     taint {
       key    = "nvidia.com/gpu"
       value  = "true"
@@ -2674,20 +2674,20 @@ resource "google_container_node_pool" "llm_routing_pool" {
   name       = "llm-routing-pool"
   location   = var.region
   cluster    = google_container_cluster.pnkln_gke.name
-  
+
   autoscaling {
     min_node_count = 1
     max_node_count = 10
   }
-  
+
   node_config {
     machine_type = "n2-standard-32"  # High CPU for routing logic
-    
+
     service_account = google_service_account.gke_node_sa.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
-    
+
     labels = {
       workload = "llm-routing"
       tier     = "control-plane"
@@ -2710,7 +2710,7 @@ resource "google_project_iam_member" "gke_node_roles" {
     "roles/artifactregistry.reader",
     "roles/aiplatform.user"
   ])
-  
+
   project = var.project_id
   role    = each.value
   member  = "serviceAccount:${google_service_account.gke_node_sa.email}"
@@ -2721,7 +2721,7 @@ resource "google_artifact_registry_repository" "pnkln_repo" {
   repository_id = "pnkln-inference"
   location      = var.region
   format        = "DOCKER"
-  
+
   docker_config {
     immutable_tags = false
   }
@@ -2732,11 +2732,11 @@ resource "google_storage_bucket" "model_weights" {
   name          = "${var.project_id}-model-weights"
   location      = var.region
   force_destroy = false
-  
+
   versioning {
     enabled = true
   }
-  
+
   lifecycle_rule {
     condition {
       age = 30
@@ -2834,13 +2834,13 @@ spec:
     spec:
       nodeSelector:
         workload: judge-enforcement
-      
+
       tolerations:
       - key: nvidia.com/gpu
         operator: Equal
         value: "true"
         effect: NoSchedule
-      
+
       containers:
       # Layer 1: Gemini Policy Understanding
       - name: gemini-layer
@@ -2863,7 +2863,7 @@ spec:
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
-      
+
       # Layer 2: PyTorch Neural Enforcement
       - name: pytorch-layer
         image: gcr.io/pnkln-core-stack/judge6-pytorch:latest
@@ -2882,7 +2882,7 @@ spec:
           limits:
             memory: "32Gi"
             nvidia.com/gpu: "1"
-      
+
       # Layer 3: Rules Engine
       - name: rules-layer
         image: gcr.io/pnkln-core-stack/judge6-rules:latest
@@ -2899,7 +2899,7 @@ spec:
           limits:
             memory: "4Gi"
             cpu: "4"
-      
+
       # Sidecar: Latency Monitor
       - name: latency-monitor
         image: gcr.io/pnkln-core-stack/latency-monitor:latest
@@ -2912,7 +2912,7 @@ spec:
           requests:
             memory: "512Mi"
             cpu: "500m"
-      
+
       volumes:
       - name: model-weights
         csi:
@@ -2975,7 +2975,7 @@ spec:
     spec:
       nodeSelector:
         workload: llm-routing
-      
+
       containers:
       - name: router
         image: gcr.io/pnkln-core-stack/llm-router:latest
@@ -2996,7 +2996,7 @@ spec:
           limits:
             memory: "16Gi"
             cpu: "8"
-        
+
         # Health checks
         livenessProbe:
           httpGet:
@@ -3004,7 +3004,7 @@ spec:
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 30
-        
+
         readinessProbe:
           httpGet:
             path: /health/ready
@@ -3293,23 +3293,23 @@ KEY OPTIMIZATIONS FROM REFERENCE ARCHITECTURE
 1. IMAGE STREAMING (gcfs_config)
    - 5-10x faster container startup
    - Critical for large model images
-   
+
 2. NODE AUTO-PROVISIONING (NAP)
    - Automatic GPU/TPU provisioning
    - Scales from 0 to minimize costs
-   
+
 3. CUSTOM COMPUTE CLASSES
    - Fallback hierarchy: Reserved → DWS → On-demand → Spot
    - 40-60% cost reduction
-   
+
 4. GCS FUSE FOR MODEL WEIGHTS
    - Direct streaming from Cloud Storage
    - No need to copy models to persistent disks
-   
+
 5. PROMETHEUS CUSTOM METRICS
    - Scale on actual inference metrics (QPS, latency)
    - Not just CPU/memory
-   
+
 6. SPOT INSTANCES FOR INFERENCE
    - 60-91% discount on compute
    - Acceptable for stateless inference workloads

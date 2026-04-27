@@ -3,13 +3,13 @@
 setup_file() {
     PROJECT_ROOT="$(cd "${BATS_TEST_DIRNAME}/.." && pwd)"
     export PROJECT_ROOT
-    
+
     ORIGINAL_HOME="${HOME:-}"
     export ORIGINAL_HOME
 
     HOME="$(mktemp -d "${BATS_TEST_DIRNAME}/tmp-purge-config.XXXXXX")"
     export HOME
-    
+
     mkdir -p "$HOME"
 }
 
@@ -27,9 +27,9 @@ setup() {
 
 @test "load_purge_config loads default paths when config file is missing" {
     run env HOME="$HOME" bash -c "source '$PROJECT_ROOT/lib/clean/project.sh'; echo \"\${PURGE_SEARCH_PATHS[*]}\""
-    
+
     [ "$status" -eq 0 ]
-    
+
     [[ "$output" == *"$HOME/Projects"* ]]
     [[ "$output" == *"$HOME/GitHub"* ]]
     [[ "$output" == *"$HOME/dev"* ]]
@@ -37,16 +37,16 @@ setup() {
 
 @test "load_purge_config loads custom paths from config file" {
     local config_file="$HOME/.config/mole/purge_paths"
-    
+
     cat > "$config_file" << EOF
 $HOME/custom/projects
 $HOME/work
 EOF
 
     run env HOME="$HOME" bash -c "source '$PROJECT_ROOT/lib/clean/project.sh'; echo \"\${PURGE_SEARCH_PATHS[*]}\""
-    
+
     [ "$status" -eq 0 ]
-    
+
     [[ "$output" == *"$HOME/custom/projects"* ]]
     [[ "$output" == *"$HOME/work"* ]]
     [[ "$output" != *"$HOME/GitHub"* ]]
@@ -54,16 +54,16 @@ EOF
 
 @test "load_purge_config expands tilde in paths" {
     local config_file="$HOME/.config/mole/purge_paths"
-    
+
     cat > "$config_file" << EOF
 ~/tilde/expanded
 ~/another/one
 EOF
 
     run env HOME="$HOME" bash -c "source '$PROJECT_ROOT/lib/clean/project.sh'; echo \"\${PURGE_SEARCH_PATHS[*]}\""
-    
+
     [ "$status" -eq 0 ]
-    
+
     [[ "$output" == *"$HOME/tilde/expanded"* ]]
     [[ "$output" == *"$HOME/another/one"* ]]
     [[ "$output" != *"~"* ]]
@@ -71,22 +71,22 @@ EOF
 
 @test "load_purge_config ignores comments and empty lines" {
     local config_file="$HOME/.config/mole/purge_paths"
-    
+
     cat > "$config_file" << EOF
 $HOME/valid/path
 
-   
+
 $HOME/another/path
 EOF
 
     run env HOME="$HOME" bash -c "source '$PROJECT_ROOT/lib/clean/project.sh'; echo \"\${#PURGE_SEARCH_PATHS[@]}\"; echo \"\${PURGE_SEARCH_PATHS[*]}\""
-    
+
     [ "$status" -eq 0 ]
-    
+
     local lines
     read -r -a lines <<< "$output"
     local count="${lines[0]}"
-    
+
     [ "$count" -eq 2 ]
     [[ "$output" == *"$HOME/valid/path"* ]]
     [[ "$output" == *"$HOME/another/path"* ]]
@@ -97,9 +97,9 @@ EOF
     touch "$config_file"
 
     run env HOME="$HOME" bash -c "source '$PROJECT_ROOT/lib/clean/project.sh'; echo \"\${PURGE_SEARCH_PATHS[*]}\""
-    
+
     [ "$status" -eq 0 ]
-    
+
     [[ "$output" == *"$HOME/Projects"* ]]
 }
 

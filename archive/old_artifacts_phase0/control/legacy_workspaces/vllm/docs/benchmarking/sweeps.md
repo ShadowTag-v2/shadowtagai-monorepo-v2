@@ -90,7 +90,7 @@ vllm bench sweep serve \
 
 !!! tip
     You can use the `--resume` option to continue the parameter sweep if one of the runs failed.
-  
+
 ### SLA auto-tuner
 
 `vllm bench sweep serve_sla` is a wrapper over `vllm bench sweep serve` that tunes either the request rate or concurrency (choose using `--sla-variable`) in order to satisfy the SLA constraints given by `--sla-params`.

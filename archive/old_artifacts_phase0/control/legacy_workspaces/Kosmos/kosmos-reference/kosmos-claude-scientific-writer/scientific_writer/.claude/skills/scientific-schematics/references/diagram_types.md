@@ -52,14 +52,14 @@ Treatment  Control
 
 **Data Processing Pipeline**
 ```
-Raw Data → Quality Control → Normalization → 
+Raw Data → Quality Control → Normalization →
 Statistical Analysis → Visualization → Report
 ```
 
 **Systematic Review Selection**
 ```
-Records identified → Duplicates removed → 
-Title/Abstract screening → Full-text review → 
+Records identified → Duplicates removed →
+Title/Abstract screening → Full-text review →
 Studies included in meta-analysis
 ```
 
@@ -147,7 +147,7 @@ Visualize cellular processes, molecular interactions, signaling pathways, and bi
 
 **MAPK Signaling Pathway**
 ```
-Growth Factor → Receptor → RAS → RAF → MEK → ERK → 
+Growth Factor → Receptor → RAS → RAF → MEK → ERK →
 Transcription Factor → Gene Expression
 ```
 
@@ -235,7 +235,7 @@ Data Layer: [Database] [Cache] [File Storage]
 
 **Experimental Setup**
 ```
-[Light Source] → [Sample Chamber] → [Detector] → [Amplifier] → 
+[Light Source] → [Sample Chamber] → [Detector] → [Amplifier] →
 [Data Acquisition] → [Computer]
       ↑                                              ↓
 [Temperature Controller] ←───────────────── [Control Software]
@@ -275,7 +275,7 @@ Illustrate sequential processes, decision logic, and workflows.
 
 **Quality Control Decision Tree**
 ```
-Start → Measure Parameter → [Within Spec?] 
+Start → Measure Parameter → [Within Spec?]
                               Yes ↓    No ↓
                            Accept   Adjust Settings → Retest
                               ↓         ↓
@@ -634,4 +634,3 @@ Often, complex figures combine multiple diagram types:
 - **Graph Visualization**: Graphviz documentation
 
 Use this catalog to select the appropriate diagram type for your scientific communication needs, then refer to the TikZ guide and templates for implementation.
-
