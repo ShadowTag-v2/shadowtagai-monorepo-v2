@@ -1,12 +1,27 @@
-# Monorepo OS — v1.4
+# Monorepo OS — v1.5
 
-> **Status:** Active | **Version:** 1.4 | **Updated:** 2026-04-27
+> **Status:** Active | **Version:** 1.5 | **Updated:** 2026-04-27
 
 ## Overview
 
 The Monorepo OS is the unified operating system for the ShadowTag-v2/Monorepo-Uphillsnowball
 repository. It replaces fragmented tooling with a coherent truth layer architecture where
 every operational domain has exactly one canonical source.
+
+## Operator Invariants
+
+Canonical source: `operator_invariants.json` (repo root).
+
+| ID | Name | Enforcement |
+|----|------|-------------|
+| 104 | Monorepo-Bounced Tool Calls | `packages/tool_gateway/gateway.py` |
+| 111 | Two-Lane Upload Doctrine | `upload_policy.yaml`, `scripts/classify-upload-payload.sh` |
+| 112 | GitHub App Push Gate | `scripts/auth_github_app.py`, `scripts/push-with-app-gates.sh` |
+| 121 | No Markdown Plan Sprawl | Beads (`bd create`), `.memory/atoms/` |
+| 129 | Research Wiki Is Synthesis | `knowledge/` vault, KI system |
+| 131 | Gate 0 UI Discipline | `tool_contracts/design_system.lint.yaml`, Stitch MCP |
+| 136 | Bootstrap Alignment Is Phased | `tool_contracts/bootstrap.alignment.yaml`, Beads |
+| 137 | Taste Is A Gate, Not A Vibe | `DESIGN.md`, `tokens.css`, design-taste-frontend skill |
 
 ## Truth Layer Architecture
 
@@ -122,6 +137,10 @@ Transition trigger: `>3 packages affected` OR `auth/payment/migration` scope.
 | `prompt-repeat-wrapper.sh` | arXiv 2512.14982 boost | 111 |
 | `write-safe-workspace.sh` | Safe file writer | 140 |
 | `dead-code-audit.sh` | Guillotine v9.0 | 46 |
+| `classify-upload-payload.sh` | Two-Lane payload classifier | 55 |
+| `prepush-bloat-gate.sh` | Pre-push size enforcement | 139 |
+| `secret-scan.sh` | Secret leak scanner | 124 |
+| `push-with-app-gates.sh` | Gated GitHub App push | 379 |
 
 ## Version History
 
@@ -132,3 +151,4 @@ Transition trigger: `>3 packages affected` OR `auth/payment/migration` scope.
 | 1.2 | 2026-04-27 | Added Beads task flow, memory architecture |
 | 1.3 | 2026-04-27 | Script manifest, MIRAS alignment |
 | 1.4 | 2026-04-27 | Complete infrastructure audit closure |
+| 1.5 | 2026-04-27 | Operator Invariants section, enforcement script manifest |
